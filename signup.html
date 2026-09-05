@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Create a Mushavo Budget account." />
+    <meta name="theme-color" content="#ecfeff" />
+    <title>Create account | Mushavo Budget</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="preconnect" href="https://kttkospkblwvguuwnhjj.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
+    <link rel="dns-prefetch" href="//kttkospkblwvguuwnhjj.supabase.co" />
+    <link rel="icon" href="assets/pwa-icon-192.png" type="image/png" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css?v=45" />
+    <script src="config.js?v=26"></script>
+  </head>
+  <body>
+    <main class="workspace">
+      <section id="configWarning" class="notice hidden" role="alert">
+        <strong>Connect Supabase first.</strong>
+        Update <code>config.js</code> with your Supabase project URL and publishable key.
+      </section>
+
+      <section class="auth-panel signup-panel" aria-labelledby="signupTitle">
+        <div class="panel-heading">
+          <img class="brand-mark" src="assets/mushavo-budget-logo.png" alt="Mushavo Budget" width="178" height="120" />
+          <p class="eyebrow">Free account</p>
+          <h1 id="signupTitle">Create your Mushavo Budget login</h1>
+          <p class="muted-copy">Start free with up to 5 personal payments. Family payments are unlimited when you join a family.</p>
+        </div>
+
+        <form id="signupForm" class="form-grid">
+          <label class="full" for="signupName">
+            Full name
+            <input id="signupName" autocomplete="name" required placeholder="Your name" />
+          </label>
+          <label for="signupEmail">
+            Email
+            <input id="signupEmail" type="email" autocomplete="email" required placeholder="you@example.com" />
+          </label>
+          <label for="signupPassword">
+            Password
+            <input id="signupPassword" type="password" autocomplete="new-password" minlength="6" required placeholder="At least 6 characters" />
+          </label>
+          <label class="full" for="signupPasswordConfirm">
+            Confirm password
+            <input id="signupPasswordConfirm" type="password" autocomplete="new-password" minlength="6" required placeholder="Repeat your password" />
+          </label>
+          <section class="signup-currency-section full" aria-labelledby="signupCurrencyTitle">
+            <div class="signup-currency-heading">
+              <div>
+                <span class="field-label" id="signupCurrencyTitle">Your currencies</span>
+                <small>Choose the currency you normally use, then add any others you expect to track.</small>
+              </div>
+              <span id="signupCurrencyCount" class="currency-selection-count">1 selected</span>
+            </div>
+            <label for="signupDefaultCurrency">
+              Default currency
+              <select id="signupDefaultCurrency" required aria-describedby="signupDefaultCurrencyHelp"></select>
+              <small id="signupDefaultCurrencyHelp">Used for your dashboard, reporting, and new payments.</small>
+            </label>
+            <div class="signup-selected-currencies" aria-label="Selected currencies">
+              <span class="field-label">Selected currencies</span>
+              <div id="signupCurrencyChips" class="currency-chip-list" aria-live="polite"></div>
+            </div>
+            <div class="currency-catalogue-picker">
+              <label for="signupCurrencySearch">
+                Add other currencies
+                <input id="signupCurrencySearch" type="search" autocomplete="off" placeholder="Search by currency name or code" />
+              </label>
+              <div id="signupCurrencyOptions" class="currency-option-list" role="group" aria-label="Available currencies"></div>
+              <p id="signupCurrencyLoadStatus" class="currency-picker-help">Your default currency is always included.</p>
+            </div>
+          </section>
+          <div class="button-row">
+            <button id="signupSubmitButton" class="primary" type="submit" disabled>Sign up</button>
+            <a class="button-link" href="app.html">Back to sign in</a>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
+
+      const config = window.MUSHAVO_BUDGET_CONFIG || {};
+      const placeholders = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
+      const isConfigured =
+        config.supabaseUrl &&
+        config.supabasePublishableKey &&
+        !placeholders.some((value) => `${config.supabaseUrl} ${config.supabasePublishableKey}`.includes(value));
+      const form = document.querySelector("#signupForm");
+      const submitButton = document.querySelector("#signupSubmitButton");
+      const toast = document.querySelector("#toast");
+      const defaultCurrencySelect = document.querySelector("#signupDefaultCurrency");
+      const currencySearch = document.querySelector("#signupCurrencySearch");
+      const currencyOptions = document.querySelector("#signupCurrencyOptions");
+      const currencyChips = document.querySelector("#signupCurrencyChips");
+      const currencyCount = document.querySelector("#signupCurrencyCount");
+      const currencyLoadStatus = document.querySelector("#signupCurrencyLoadStatus");
+      const selectedCurrencies = new Set(["USD"]);
+      let currencyCatalogue = [["USD", "US Dollar"]];
+
+      function escapeHtml(value) {
+        const node = document.createElement("span");
+        node.textContent = `${value ?? ""}`;
+        return node.innerHTML;
+      }
+
+      function renderSelectedCurrencies() {
+        const defaultCurrency = defaultCurrencySelect.value || "USD";
+        selectedCurrencies.add(defaultCurrency);
+        const sorted = [...selectedCurrencies].sort((left, right) =>
+          left === defaultCurrency ? -1 : right === defaultCurrency ? 1 : left.localeCompare(right)
+        );
+        currencyCount.textContent = `${sorted.length} selected`;
+        currencyChips.innerHTML = sorted.map((code) => {
+          const name = currencyCatalogue.find(([itemCode]) => itemCode === code)?.[1] || code;
+          const isDefault = code === defaultCurrency;
+          return `<span class="currency-chip${isDefault ? " default" : ""}">
+            <strong>${escapeHtml(code)}</strong><span>${escapeHtml(name)}</span>
+            ${isDefault
+              ? `<em>Default</em>`
+              : `<button type="button" data-remove-signup-currency="${escapeHtml(code)}" aria-label="Remove ${escapeHtml(code)}">&times;</button>`}
+          </span>`;
+        }).join("");
+      }
+
+      function renderCurrencyOptions() {
+        const term = currencySearch.value.trim().toLowerCase();
+        const defaultCurrency = defaultCurrencySelect.value || "USD";
+        const matches = currencyCatalogue.filter(([code, name]) =>
+          !term || code.toLowerCase().includes(term) || name.toLowerCase().includes(term)
+        );
+        currencyOptions.innerHTML = matches.length
+          ? matches.map(([code, name]) => {
+              const isDefault = code === defaultCurrency;
+              const checked = selectedCurrencies.has(code) || isDefault;
+              return `<label class="currency-option${checked ? " selected" : ""}">
+                <input type="checkbox" value="${escapeHtml(code)}" ${checked ? "checked" : ""} ${isDefault ? "disabled" : ""} />
+                <span><strong>${escapeHtml(code)}</strong><small>${escapeHtml(name)}</small></span>
+                ${isDefault ? `<em>Default</em>` : ""}
+              </label>`;
+            }).join("")
+          : `<p class="currency-picker-empty">No currencies match your search.</p>`;
+        renderSelectedCurrencies();
+      }
+
+      async function loadCurrencyCatalogue(supabase) {
+        currencyLoadStatus.textContent = "Loading available currencies...";
+        const { data, error } = await supabase.rpc("get_public_signup_currencies");
+        if (error) throw error;
+        const rows = (data || [])
+          .filter((item) => /^[A-Z]{3}$/.test(item.code) && item.name)
+          .map((item) => [item.code, item.name]);
+        if (!rows.length) throw new Error("No currencies are currently available.");
+        currencyCatalogue = rows;
+        defaultCurrencySelect.innerHTML = rows
+          .map(([code, name]) => `<option value="${escapeHtml(code)}">${escapeHtml(code)} — ${escapeHtml(name)}</option>`)
+          .join("");
+        defaultCurrencySelect.value = rows.some(([code]) => code === "USD") ? "USD" : rows[0][0];
+        selectedCurrencies.clear();
+        selectedCurrencies.add(defaultCurrencySelect.value);
+        currencyLoadStatus.textContent = "Your default currency is always included.";
+        submitButton.disabled = false;
+        renderCurrencyOptions();
+      }
+
+      function showMessage(message) {
+        toast.textContent = message;
+        toast.classList.remove("hidden");
+        window.setTimeout(() => toast.classList.add("hidden"), 4200);
+      }
+
+      if (!isConfigured) {
+        document.querySelector("#configWarning").classList.remove("hidden");
+        form.querySelectorAll("input, select, button").forEach((field) => {
+          field.disabled = true;
+        });
+      } else {
+        const supabase = createClient(config.supabaseUrl, config.supabasePublishableKey);
+
+        loadCurrencyCatalogue(supabase).catch((error) => {
+          currencyLoadStatus.textContent = "Currencies could not be loaded. Please refresh before creating your account.";
+          submitButton.disabled = true;
+          showMessage(error.message || "Currencies could not be loaded.");
+        });
+
+        defaultCurrencySelect.addEventListener("change", () => {
+          selectedCurrencies.add(defaultCurrencySelect.value);
+          renderCurrencyOptions();
+        });
+        currencySearch.addEventListener("input", renderCurrencyOptions);
+        currencyOptions.addEventListener("change", (event) => {
+          const checkbox = event.target.closest('input[type="checkbox"]');
+          if (!checkbox) return;
+          if (checkbox.checked) selectedCurrencies.add(checkbox.value);
+          else selectedCurrencies.delete(checkbox.value);
+          renderCurrencyOptions();
+        });
+        currencyChips.addEventListener("click", (event) => {
+          const button = event.target.closest("[data-remove-signup-currency]");
+          if (!button) return;
+          selectedCurrencies.delete(button.dataset.removeSignupCurrency);
+          renderCurrencyOptions();
+        });
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const fullName = document.querySelector("#signupName").value.trim();
+          const email = document.querySelector("#signupEmail").value.trim().toLowerCase();
+          const password = document.querySelector("#signupPassword").value;
+          const confirmation = document.querySelector("#signupPasswordConfirm").value;
+          const defaultCurrency = defaultCurrencySelect.value;
+
+          selectedCurrencies.add(defaultCurrency);
+
+          if (password !== confirmation) {
+            showMessage("Passwords do not match.");
+            return;
+          }
+
+          submitButton.disabled = true;
+          submitButton.textContent = "Creating account...";
+
+          try {
+            const { data, error } = await supabase.auth.signUp({
+              email,
+              password,
+              options: {
+                data: {
+                  full_name: fullName,
+                  default_currency: defaultCurrency,
+                  enabled_currencies: [...selectedCurrencies].sort()
+                }
+              }
+            });
+            if (error) throw error;
+            if (data.session) await supabase.auth.signOut();
+            const selectedPlan = new URLSearchParams(window.location.search).get("plan");
+            const next = new URL("./app.html", window.location.href);
+            next.searchParams.set("signup", "success");
+            if (selectedPlan) next.searchParams.set("plan", selectedPlan);
+            window.location.replace(next.href);
+          } catch (error) {
+            showMessage(error.message || "The account could not be created. Please try again.");
+            submitButton.disabled = false;
+            submitButton.textContent = "Sign up";
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

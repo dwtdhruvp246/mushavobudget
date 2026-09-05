@@ -1,0 +1,47 @@
+﻿name: Deploy Mushavo Budget to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Prepare public website
+        run: |
+          mkdir -p _site
+          cp .nojekyll _site/
+          cp about.html app.html contact.html index.html offline.html pricing.html signup.html _site/
+          cp app.js config.js site.js sw.js _site/
+          cp site.css styles.css manifest.webmanifest _site/
+          cp -R assets _site/assets
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -2232,6 +2232,7 @@ async function saveWorkspaceCurrencySettings(event) {
     }
     await loadWorkspaceSubscriptionData();
     renderFamilyApp();
+    window.MushavoPWA?.markFormClean("#workspaceCurrencySettingsForm");
     showToast("Workspace currency settings saved. Existing amounts were not changed.");
   } catch (error) {
     showToast(error.message);
@@ -3160,6 +3161,7 @@ async function saveAdminFinanceCurrencySettings(event) {
     }
     await loadAdminData("finance");
     renderAdmin();
+    window.MushavoPWA?.markFormClean("#adminCurrencySettingsForm");
     showToast("Finance currency settings saved.");
   } catch (error) {
     showToast(friendlyMessage(error.message));

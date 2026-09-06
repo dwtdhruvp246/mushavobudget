@@ -31,7 +31,7 @@ jobs:
           cp .nojekyll _site/
           cp about.html app-entry.html app.html contact.html index.html offline.html pricing.html signup.html _site/
           cp app-entry.js app.js config.js pwa.js site.js sw.js _site/
-          cp pwa-shell.css site.css styles.css manifest.webmanifest _site/
+          cp pwa-shell.css pwa-update.css site.css styles.css manifest.webmanifest _site/
           cp -R assets _site/assets
 
       - name: Configure Pages

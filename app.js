@@ -184,25 +184,6 @@ populatePaymentScheduleControls(today);
 $("#recordPaymentDate").value = toDateValue(today);
 $("#renewalPaymentDate").value = toDateValue(today);
 renderPaymentCurrencyOptions("", "USD");
-registerServiceWorker();
-
-function registerServiceWorker() {
-  if (!("serviceWorker" in navigator)) return;
-  let reloadingForServiceWorker = false;
-  navigator.serviceWorker.addEventListener("controllerchange", () => {
-    if (reloadingForServiceWorker) return;
-    reloadingForServiceWorker = true;
-    window.location.reload();
-  });
-  const startRegistration = () => {
-    navigator.serviceWorker
-      .register("./sw.js", { scope: "./", updateViaCache: "none" })
-      .then((registration) => registration.update().catch(() => {}))
-      .catch((error) => console.warn("Service worker registration failed", error));
-  };
-  if (document.readyState === "complete") startRegistration();
-  else window.addEventListener("load", startRegistration, { once: true });
-}
 
 function toDateValue(date) {
   const year = date.getFullYear();

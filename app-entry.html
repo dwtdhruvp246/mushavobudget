@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10b981" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Mushavo" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <title>Opening Mushavo Budget</title>
+    <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="stylesheet" href="/pwa-shell.css?v=1" />
+    <script src="/pwa.js?v=1" defer></script>
+  </head>
+  <body>
+    <main class="pwa-shell" aria-live="polite">
+      <img class="pwa-logo" src="/assets/mushavo-budget-logo.png" alt="Mushavo Budget" width="220" height="149" />
+      <p class="pwa-eyebrow">Secure workspace</p>
+      <h1>Opening Mushavo Budget</h1>
+      <p class="pwa-copy">Preparing the sign-in and workspace screen.</p>
+      <div class="pwa-progress" aria-hidden="true"></div>
+      <noscript><p class="pwa-copy">JavaScript is required to open the app.</p><a class="pwa-button" href="/app.html">Continue</a></noscript>
+    </main>
+    <script>
+      const destination = new URL("./app.html", window.location.href);
+      destination.searchParams.set("source", "pwa");
+      window.location.replace(destination.href);
+    </script>
+  </body>
+</html>

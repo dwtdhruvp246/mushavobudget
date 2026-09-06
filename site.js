@@ -303,16 +303,6 @@ function initContact() {
   });
 }
 
-function initServiceWorker() {
-  if (!("serviceWorker" in navigator) || window.location.protocol === "file:") return;
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js", { scope: "./", updateViaCache: "none" }).catch(() => {
-      // The public website remains usable when service-worker registration is unavailable.
-    });
-  });
-}
-
 initNavigation();
 initPricing();
 initContact();
-initServiceWorker();

@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const RELEASE = "3.0.1";
+  const RELEASE = "4.0.0";
   const UPDATE_CHECK_INTERVAL_MS = 15000;
   const RELOAD_FALLBACK_MS = 5000;
   const dirtyForms = new Set();
@@ -57,6 +57,11 @@
     return element;
   }
 
+  function announceUiState(name) {
+    if (typeof window.CustomEvent !== "function" || typeof window.dispatchEvent !== "function") return;
+    window.dispatchEvent(new window.CustomEvent(name));
+  }
+
   function ensureBanner() {
     if (banner) return banner;
 
@@ -100,6 +105,7 @@
     ensureBanner();
     resetBannerCopy();
     banner.classList.remove("pwa-update-hidden");
+    announceUiState("mushavo:pwa-update-visible");
   }
 
   function dismissUpdate() {
@@ -109,6 +115,7 @@
     }
     dismissedWorker = pendingWorker;
     banner?.classList.add("pwa-update-hidden");
+    announceUiState("mushavo:pwa-update-hidden");
   }
 
   function reloadPageOnce() {

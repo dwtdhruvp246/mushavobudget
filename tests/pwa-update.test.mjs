@@ -179,7 +179,7 @@ test("registers with service-worker HTTP caching disabled and checks immediately
   assert.equal(harness.calls.register[0].options.scope, "/");
   assert.equal(harness.calls.register[0].options.updateViaCache, "none");
   assert.equal(harness.calls.update, 1);
-  assert.equal(harness.window.MushavoPWA.release, "3.0.1");
+  assert.equal(harness.window.MushavoPWA.release, "4.0.0");
 });
 
 test("waiting worker displays an update banner without reloading", async () => {
@@ -255,13 +255,15 @@ test("returning to the foreground checks for updates again", async () => {
 });
 
 test("service worker uses explicit activation and revalidation without caching private data", () => {
-  assert.match(workerSource, /pwa-shell-v5/);
+  assert.match(workerSource, /pwa-shell-v6/);
   assert.match(workerSource, /event\.waitUntil\(self\.skipWaiting\(\)\)/);
   assert.match(workerSource, /fetch\(request, \{ cache: "no-cache" \}\)/);
   assert.doesNotMatch(workerSource, /"\/app\.html/);
   assert.doesNotMatch(workerSource, /"\/config\.js/);
   assert.doesNotMatch(workerSource, /supabase/i);
   assert.match(workflowSource, /pwa-update\.css/);
+  assert.match(workflowSource, /pwa-install\.js/);
+  assert.match(workflowSource, /pwa-install\.css/);
 });
 
 test("saved persistent settings are marked clean after successful writes", () => {

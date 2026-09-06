@@ -1,0 +1,218 @@
+.pwa-install-trigger[hidden] {
+  display: none !important;
+}
+
+button.pwa-install-trigger.text-link,
+button.pwa-install-trigger.auth-home-link,
+button.pwa-install-trigger.button-link {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.pwa-install-banner {
+  position: fixed;
+  left: max(18px, env(safe-area-inset-left));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 9998;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 15px;
+  width: min(650px, calc(100vw - 36px));
+  padding: 17px 18px;
+  border: 1px solid rgba(5, 150, 105, 0.22);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.2);
+  color: #0f172a;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.pwa-install-hidden {
+  display: none;
+}
+
+.pwa-install-icon {
+  width: 52px;
+  height: 52px;
+  border: 1px solid #dbe5e3;
+  border-radius: 15px;
+  object-fit: cover;
+}
+
+.pwa-install-copy {
+  min-width: 0;
+}
+
+.pwa-install-copy strong {
+  display: block;
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+.pwa-install-copy p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.pwa-install-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.pwa-install-actions button,
+.pwa-install-dialog button {
+  min-height: 42px;
+  padding: 9px 15px;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #fff;
+  color: #334155;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.pwa-install-actions .pwa-install-primary,
+.pwa-install-dialog .pwa-install-dialog-done {
+  border-color: #059669;
+  background: #059669;
+  color: #fff;
+}
+
+.pwa-install-dialog {
+  width: min(520px, calc(100vw - 28px));
+  max-height: min(720px, calc(100dvh - 28px));
+  padding: 26px;
+  overflow: auto;
+  border: 1px solid rgba(5, 150, 105, 0.2);
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: 0 30px 90px rgba(15, 23, 42, 0.3);
+  color: #0f172a;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.pwa-install-dialog::backdrop {
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(5px);
+}
+
+.pwa-install-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.pwa-install-eyebrow {
+  display: block;
+  margin-bottom: 7px;
+  color: #047857;
+  font-size: 0.75rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pwa-install-dialog h2 {
+  margin: 0;
+  font-size: clamp(1.55rem, 6vw, 2.1rem);
+  line-height: 1.12;
+}
+
+.pwa-install-dialog .pwa-install-dialog-close {
+  min-height: 38px;
+  padding: 7px 12px;
+}
+
+.pwa-install-dialog-copy {
+  margin: 18px 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.pwa-install-steps {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+}
+
+.pwa-install-steps li {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.pwa-install-steps li > span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: #d1fae5;
+  color: #047857;
+  font-weight: 850;
+}
+
+.pwa-install-steps p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.pwa-install-dialog-done {
+  width: 100%;
+}
+
+@media (max-width: 680px) {
+  .site-header.menu-open .site-actions button.pwa-install-trigger {
+    width: 100%;
+    text-align: center;
+  }
+
+  .pwa-install-banner {
+    right: 14px;
+    bottom: max(14px, env(safe-area-inset-bottom));
+    left: 14px;
+    width: auto;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 12px;
+    padding: 15px;
+    border-radius: 20px;
+  }
+
+  .pwa-install-actions {
+    grid-column: 1 / -1;
+  }
+
+  .pwa-install-actions button {
+    flex: 1;
+  }
+
+  .pwa-install-dialog {
+    padding: 22px 18px;
+    border-radius: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pwa-install-banner:not(.pwa-install-hidden) {
+    animation: pwa-install-enter 180ms ease-out;
+  }
+
+  @keyframes pwa-install-enter {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}

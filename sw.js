@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "mushavo-budget-";
-const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v4`;
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v5`;
 const OFFLINE_URL = "/offline.html";
 const SAFE_SHELL = [
   "/app-entry.html",
@@ -7,7 +7,7 @@ const SAFE_SHELL = [
   "/app-entry.js?v=1",
   "/pwa-shell.css?v=2",
   "/pwa-update.css?v=1",
-  "/pwa.js?v=2",
+  "/pwa.js?v=3",
   "/assets/mushavo-budget-logo.png",
   "/assets/pwa-icon-192.png",
   "/assets/pwa-icon-512.png",
@@ -65,7 +65,7 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("message", (event) => {
-  if (event.data?.type === "SKIP_WAITING") self.skipWaiting();
+  if (event.data?.type === "SKIP_WAITING") event.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener("fetch", (event) => {

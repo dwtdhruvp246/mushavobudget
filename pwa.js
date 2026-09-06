@@ -1,8 +1,9 @@
 (() => {
   "use strict";
 
-  const RELEASE = "3.0.0";
+  const RELEASE = "3.0.1";
   const UPDATE_CHECK_INTERVAL_MS = 15000;
+  const RELOAD_FALLBACK_MS = 5000;
   const dirtyForms = new Set();
   let registration = null;
   let pendingWorker = null;
@@ -14,6 +15,7 @@
   let discardConfirmed = false;
   let reloadRequested = false;
   let reloadStarted = false;
+  let reloadFallbackTimer = null;
   let lastUpdateCheck = 0;
 
   function closestForm(target) {
@@ -64,12 +66,12 @@
     banner.setAttribute("aria-label", "Mushavo Budget update");
 
     const copy = createElement("div", "pwa-update-copy");
-    copy.append(createElement("strong", "", "A new version of Mushavo Budget is available."));
-    bannerMessage = createElement("p", "", "Update now to load the latest improvements.");
+    copy.append(createElement("strong", "", "New Mushavo Budget update available"));
+    bannerMessage = createElement("p", "", "Reload the page to use the latest version.");
     copy.append(bannerMessage);
 
     const actions = createElement("div", "pwa-update-actions");
-    updateButton = createElement("button", "pwa-update-primary", "Update now");
+    updateButton = createElement("button", "pwa-update-primary", "Reload page");
     updateButton.type = "button";
     laterButton = createElement("button", "pwa-update-secondary", "Later");
     laterButton.type = "button";
@@ -85,8 +87,8 @@
   function resetBannerCopy() {
     discardConfirmed = false;
     if (!bannerMessage || !updateButton || !laterButton) return;
-    bannerMessage.textContent = "Update now to load the latest improvements.";
-    updateButton.textContent = "Update now";
+    bannerMessage.textContent = "Reload the page to use the latest version.";
+    updateButton.textContent = "Reload page";
     updateButton.disabled = false;
     laterButton.textContent = "Later";
     laterButton.disabled = false;
@@ -109,14 +111,28 @@
     banner?.classList.add("pwa-update-hidden");
   }
 
+  function reloadPageOnce() {
+    if (!reloadRequested || reloadStarted) return;
+    reloadStarted = true;
+    if (reloadFallbackTimer) window.clearTimeout(reloadFallbackTimer);
+    window.location.reload();
+  }
+
   function beginUpdate() {
     if (!pendingWorker) return;
     reloadRequested = true;
     updateButton.disabled = true;
     laterButton.disabled = true;
-    updateButton.textContent = "Updating…";
-    bannerMessage.textContent = "Installing the new version. Mushavo Budget will reopen automatically.";
-    pendingWorker.postMessage({ type: "SKIP_WAITING" });
+    updateButton.textContent = "Reloading…";
+    bannerMessage.textContent = "Applying the update and reloading Mushavo Budget.";
+    pendingWorker.addEventListener("statechange", () => {
+      if (pendingWorker?.state === "activated") reloadPageOnce();
+    });
+    try {
+      pendingWorker.postMessage({ type: "SKIP_WAITING" });
+    } finally {
+      reloadFallbackTimer = window.setTimeout(reloadPageOnce, RELOAD_FALLBACK_MS);
+    }
   }
 
   function handleUpdateRequest() {
@@ -197,9 +213,7 @@
   if (!("serviceWorker" in navigator) || window.location.protocol === "file:") return;
 
   navigator.serviceWorker.addEventListener("controllerchange", () => {
-    if (!reloadRequested || reloadStarted) return;
-    reloadStarted = true;
-    window.location.reload();
+    reloadPageOnce();
   });
 
   document.addEventListener("visibilitychange", () => {

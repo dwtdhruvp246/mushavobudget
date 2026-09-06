@@ -81,6 +81,8 @@ async function createHarness({ waiting = true } = {}) {
   const registrationEvents = listenerStore();
   const calls = { register: [], update: 0, postMessage: [], reload: 0 };
   let now = 1000;
+  let nextTimerId = 1;
+  const timers = new Map();
 
   const worker = {
     state: "installed",
@@ -125,10 +127,14 @@ async function createHarness({ waiting = true } = {}) {
       return registration;
     },
     addEventListener: windowEvents.add.bind(windowEvents),
-    setTimeout,
-    clearTimeout
+    setTimeout(callback, delay) {
+      const id = nextTimerId++;
+      timers.set(id, { callback, delay });
+      return id;
+    },
+    clearTimeout(id) { timers.delete(id); }
   };
-  const context = { window, document, navigator, Date: HarnessDate, Set, Object, console, setTimeout, clearTimeout };
+  const context = { window, document, navigator, Date: HarnessDate, Set, Object, console };
   vm.runInNewContext(pwaSource, context, { filename: "pwa.js" });
   windowEvents.fire("load");
   await window.__MUSHAVO_PWA_READY__;
@@ -143,9 +149,14 @@ async function createHarness({ waiting = true } = {}) {
     workerEvents,
     registration,
     setNow(value) { now = value; },
-    updateButton: () => findElement(body, (item) => item.textContent === "Update now" || item.textContent === "Update and discard changes" || item.textContent === "Updating…"),
+    updateButton: () => findElement(body, (item) => item.textContent === "Reload page" || item.textContent === "Update and discard changes" || item.textContent === "Reloading…"),
     laterButton: () => findElement(body, (item) => item.textContent === "Later" || item.textContent === "Keep editing"),
-    banner: () => findElement(body, (item) => item.tagName === "ASIDE")
+    banner: () => findElement(body, (item) => item.tagName === "ASIDE"),
+    runTimers() {
+      const pending = [...timers.values()];
+      timers.clear();
+      pending.forEach(({ callback }) => callback());
+    }
   };
 }
 
@@ -168,7 +179,7 @@ test("registers with service-worker HTTP caching disabled and checks immediately
   assert.equal(harness.calls.register[0].options.scope, "/");
   assert.equal(harness.calls.register[0].options.updateViaCache, "none");
   assert.equal(harness.calls.update, 1);
-  assert.equal(harness.window.MushavoPWA.release, "3.0.0");
+  assert.equal(harness.window.MushavoPWA.release, "3.0.1");
 });
 
 test("waiting worker displays an update banner without reloading", async () => {
@@ -179,7 +190,7 @@ test("waiting worker displays an update banner without reloading", async () => {
   assert.equal(harness.calls.postMessage.length, 0);
 });
 
-test("update now activates the waiting worker and reloads only on controller change", async () => {
+test("reload page activates the waiting worker and reloads on controller change", async () => {
   const harness = await createHarness();
   harness.updateButton().dispatch("click");
   assert.equal(harness.calls.postMessage[0].type, "SKIP_WAITING");
@@ -187,6 +198,16 @@ test("update now activates the waiting worker and reloads only on controller cha
   harness.workerEvents.fire("controllerchange");
   assert.equal(harness.calls.reload, 1);
   harness.workerEvents.fire("controllerchange");
+  assert.equal(harness.calls.reload, 1);
+});
+
+test("reload fallback prevents the interface remaining stuck on reloading", async () => {
+  const harness = await createHarness();
+  harness.updateButton().dispatch("click");
+  assert.equal(harness.calls.reload, 0);
+  harness.runTimers();
+  assert.equal(harness.calls.reload, 1);
+  harness.runTimers();
   assert.equal(harness.calls.reload, 1);
 });
 
@@ -234,8 +255,8 @@ test("returning to the foreground checks for updates again", async () => {
 });
 
 test("service worker uses explicit activation and revalidation without caching private data", () => {
-  assert.match(workerSource, /pwa-shell-v4/);
-  assert.match(workerSource, /event\.data\?\.type === "SKIP_WAITING"/);
+  assert.match(workerSource, /pwa-shell-v5/);
+  assert.match(workerSource, /event\.waitUntil\(self\.skipWaiting\(\)\)/);
   assert.match(workerSource, /fetch\(request, \{ cache: "no-cache" \}\)/);
   assert.doesNotMatch(workerSource, /"\/app\.html/);
   assert.doesNotMatch(workerSource, /"\/config\.js/);

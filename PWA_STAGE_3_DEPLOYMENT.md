@@ -6,15 +6,15 @@ Stage 3 adds reliable code-update detection and protects unsaved form data. It d
 
 - Checks for a new service worker when a page launches.
 - Checks again when the app returns to the foreground.
-- Shows a Mushavo-styled update banner when a new version is ready.
-- Activates the new worker only after the user presses **Update now**.
+- Shows a Mushavo-styled **New update available** banner when a new version is ready.
+- Activates the new worker only after the user presses **Reload page**.
 - If an active form contains unsaved changes, the first press displays a warning and requires a separate **Update and discard changes** action.
 - Never silently reloads a page containing unsaved input.
-- Reloads once, and only after the new service worker controls the page.
+- Reloads once after the new worker controls the page, when it reports activation, or through a five-second fallback if Chrome omits both lifecycle events.
 - Uses network-first navigation and revalidation for non-fingerprinted shell files.
 - Keeps Supabase requests, `app.html`, `config.js`, and financial data out of the service-worker cache.
 - Removes older Mushavo Budget shell caches after the approved update activates.
-- Displays the current application release as **Version 3.0.0** in both authenticated sidebars.
+- Displays the current application release as **Version 3.0.1** in both authenticated sidebars.
 
 ## Files in this update
 
@@ -62,7 +62,7 @@ git diff --check
 git status --short
 ```
 
-Expected: **15 tests pass** and the Stage 3 files appear in `git status`.
+Expected: **16 tests pass** and the Stage 3 files appear in `git status`.
 
 ## 3. Commit and deploy
 
@@ -77,14 +77,14 @@ Wait for the **Deploy Mushavo Budget to GitHub Pages** workflow to finish succes
 
 ## 4. Confirm the Stage 3 update on the installed app
 
-This deployment changes the worker cache from `pwa-shell-v3` to `pwa-shell-v4`.
+This corrected deployment changes the worker cache to `pwa-shell-v5`.
 
 1. Keep the currently installed Mushavo Budget app available.
 2. After GitHub Pages finishes, open the installed app while online.
 3. If the app was already open, switch to another app and return to Mushavo Budget.
-4. Expected: a banner says **A new version of Mushavo Budget is available**.
-5. Press **Update now**.
-6. Expected: the app reloads once and the sidebar footer shows **Version 3.0.0**.
+4. Expected: a banner says **New Mushavo Budget update available**.
+5. Press **Reload page**.
+6. Expected: the app reloads once and the sidebar footer shows **Version 3.0.1**.
 
 The previous version did not yet contain Stage 3's banner listener. If the first Stage 3 rollout does not show the banner, close every Mushavo Budget tab and the installed app, open it once, then reopen it. This one-time transition loads the Stage 3 updater; future deployments are detected automatically.
 
@@ -93,12 +93,12 @@ The previous version did not yet contain Stage 3's banner listener. If the first
 A waiting service worker is required for this manual test. If the Stage 3 update banner is still visible:
 
 1. Open a form, such as **Add payment**, and change a field without saving.
-2. Press **Update now**.
+2. Press **Reload page**.
 3. Expected: the banner warns that unsaved changes will be discarded. The app must not reload yet.
 4. Press **Keep editing**.
 5. Expected: the form remains unchanged.
 
-To complete the destructive branch, press **Update now** again and then **Update and discard changes**. The app may reload because that second action explicitly approves losing the unsaved changes.
+To complete the destructive branch, press **Reload page** again and then **Update and discard changes**. The app may reload because that second action explicitly approves losing the unsaved changes.
 
 ## 6. Normal behaviour checks
 

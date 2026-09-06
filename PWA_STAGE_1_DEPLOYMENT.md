@@ -10,6 +10,7 @@ Stage 1 adds the installable PWA foundation. It does **not** add Web Push, brows
 - The service worker caches only a small, non-sensitive PWA shell and a friendly offline page.
 - Supabase and future same-origin Auth, REST, Storage, Realtime, and Function routes are excluded from caching.
 - The old forced tab reload and forced service-worker activation behavior were removed.
+- The manifest is no longer served from the offline cache, and its versioned link forces browsers to fetch the corrected app name.
 - The GitHub Pages workflow now publishes all new Stage 1 files.
 
 ## Files to replace or add
@@ -33,9 +34,10 @@ Push the commit using the same GitHub method used for the production website. Th
 
 The previous service worker may continue controlling an already-open tab until that tab is closed. After the deployment succeeds:
 
-1. Close every open Mushavo Budget browser tab and installed-app window.
-2. Reopen `https://mushavobudget.com` while online.
-3. Refresh once.
+1. If an earlier **Mushavo** app is installed, uninstall it from the device.
+2. Close every open Mushavo Budget browser tab and installed-app window.
+3. Reopen `https://mushavobudget.com` while online.
+4. Refresh once before installing it again.
 
 This lets the new worker activate without forcibly reloading an open form or workspace.
 
@@ -43,7 +45,7 @@ This lets the new worker activate without forcibly reloading an open form or wor
 
 1. Open `https://mushavobudget.com` in Chrome.
 2. Use **Install app** or **Add to Home screen** from Chrome's menu.
-3. Confirm the installed name is **Mushavo** and the icon is not clipped.
+3. Confirm the installed name is **Mushavo Budget** and the icon is not clipped.
 4. Launch it from the home screen.
 5. Confirm it opens without browser chrome and reaches the Mushavo Budget sign-in/workspace screen.
 6. Turn on airplane mode, close the installed app, reopen it, and confirm the branded offline screen appears.
@@ -53,7 +55,7 @@ This lets the new worker activate without forcibly reloading an open form or wor
 
 1. Open `https://mushavobudget.com` in Safari.
 2. Tap **Share**, then **Add to Home Screen**.
-3. Confirm the name is **Mushavo** and the icon is correct.
+3. Confirm the name is **Mushavo Budget** and the icon is correct.
 4. Launch it from the home screen and confirm it opens as a standalone web app.
 5. Repeat the offline and reconnect test above.
 

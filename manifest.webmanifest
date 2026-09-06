@@ -1,6 +1,6 @@
 {
   "name": "Mushavo Budget",
-  "short_name": "Mushavo",
+  "short_name": "Mushavo Budget",
   "description": "Track personal, family, and business payments, responsibilities, reminders, and records.",
   "id": "/",
   "start_url": "/app-entry.html?source=pwa",

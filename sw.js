@@ -1,87 +1,55 @@
-const CACHE_NAME = "mushavo-budget-v48";
-const APP_SHELL = [
-  "./",
-  "./index.html",
-  "./about.html",
-  "./pricing.html",
-  "./contact.html",
-  "./app.html",
-  "./signup.html",
-  "./offline.html",
-  "./site.css?v=3",
-  "./site.js?v=3",
-  "./styles.css?v=45",
-  "./app.js?v=53",
-  "./config.js?v=26",
-  "./manifest.webmanifest",
-  "./assets/mushavo-budget-logo.png",
-  "./assets/pwa-icon-192.png",
-  "./assets/pwa-icon-512.png",
-  "./assets/apple-touch-icon.png"
+const CACHE_PREFIX = "mushavo-budget-";
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v1`;
+const OFFLINE_URL = "/offline.html";
+const SAFE_SHELL = [
+  "/app-entry.html",
+  OFFLINE_URL,
+  "/pwa-shell.css?v=1",
+  "/pwa.js?v=1",
+  "/manifest.webmanifest",
+  "/assets/mushavo-budget-logo.png",
+  "/assets/pwa-icon-192.png",
+  "/assets/pwa-icon-512.png",
+  "/assets/pwa-icon-maskable-512.png",
+  "/assets/apple-touch-icon.png"
 ];
 
-const NETWORK_FIRST_FILES = new Set([
-  "index.html",
-  "about.html",
-  "pricing.html",
-  "contact.html",
-  "app.html",
-  "signup.html",
-  "config.js",
-  "app.js",
-  "styles.css",
-  "site.js",
-  "site.css",
-  "manifest.webmanifest"
-]);
+const SAFE_SHELL_PATHS = new Set(SAFE_SHELL.map((url) => new URL(url, self.location.origin).pathname));
+const NEVER_CACHE_PATH_PREFIXES = [
+  "/auth/",
+  "/rest/",
+  "/storage/",
+  "/functions/",
+  "/realtime/"
+];
 
-async function cacheFreshResponse(request, cacheMode = "no-cache") {
-  const response = await fetch(request, { cache: cacheMode });
-  if (response.ok) {
-    const cache = await caches.open(CACHE_NAME);
-    await cache.put(request, response.clone());
-  }
-  return response;
+function isSensitiveRequest(url) {
+  return NEVER_CACHE_PATH_PREFIXES.some((prefix) => url.pathname.startsWith(prefix));
 }
 
-async function networkFirst(request, fallback, cacheMode = "no-cache") {
+async function navigationResponse(request) {
   try {
-    return await cacheFreshResponse(request, cacheMode);
+    return await fetch(request, { cache: "no-store" });
   } catch (_error) {
-    return (await caches.match(request)) ||
-      (fallback ? await caches.match(fallback) : null) ||
+    const cache = await caches.open(STATIC_CACHE);
+    return (await cache.match(request, { ignoreSearch: true })) ||
+      (await cache.match(OFFLINE_URL)) ||
       Response.error();
   }
 }
 
 self.addEventListener("install", (event) => {
-  event.waitUntil((async () => {
-    const cache = await caches.open(CACHE_NAME);
-    await Promise.allSettled(APP_SHELL.map(async (url) => {
-      const response = await fetch(url, { cache: "reload" });
-      if (response.ok) await cache.put(url, response);
-    }));
-    await self.skipWaiting();
-  })());
+  event.waitUntil(caches.open(STATIC_CACHE).then((cache) => cache.addAll(SAFE_SHELL)));
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
     await Promise.all(keys
-      .filter((key) => key.startsWith("mushavo-budget-") && key !== CACHE_NAME)
+      .filter((key) => key.startsWith(CACHE_PREFIX) && key !== STATIC_CACHE)
       .map((key) => caches.delete(key)));
     await self.clients.claim();
-
-    // Reload tabs controlled by an older worker so they immediately receive
-    // the corrected configuration and asset paths without a hard refresh.
-    const windows = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
-    await Promise.allSettled(windows.map((client) => client.navigate(client.url)));
   })());
-});
-
-self.addEventListener("message", (event) => {
-  if (event.data?.type === "SKIP_WAITING") self.skipWaiting();
 });
 
 self.addEventListener("fetch", (event) => {
@@ -89,21 +57,15 @@ self.addEventListener("fetch", (event) => {
 
   const requestUrl = new URL(event.request.url);
   if (requestUrl.origin !== self.location.origin) return;
+  if (isSensitiveRequest(requestUrl)) return;
 
   if (event.request.mode === "navigate") {
-    event.respondWith(networkFirst(event.request, "./offline.html"));
+    event.respondWith(navigationResponse(event.request));
     return;
   }
 
-  const fileName = requestUrl.pathname.split("/").pop();
-  if (NETWORK_FIRST_FILES.has(fileName)) {
-    event.respondWith(networkFirst(event.request, null, fileName === "config.js" ? "no-store" : "no-cache"));
-    return;
-  }
-
-  const refresh = cacheFreshResponse(event.request).catch(() => null);
-  event.waitUntil(refresh);
-  event.respondWith(
-    caches.match(event.request).then(async (cached) => cached || (await refresh) || Response.error())
-  );
+  if (!SAFE_SHELL_PATHS.has(requestUrl.pathname)) return;
+  event.respondWith(caches.open(STATIC_CACHE).then(async (cache) =>
+    (await cache.match(event.request, { ignoreSearch: true })) || fetch(event.request)
+  ));
 });

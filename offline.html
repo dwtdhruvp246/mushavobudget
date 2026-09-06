@@ -3,18 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10b981" />
     <title>Mushavo Budget offline</title>
-    <link rel="stylesheet" href="styles.css?v=45" />
+    <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="stylesheet" href="/pwa-shell.css?v=1" />
+    <script src="/pwa.js?v=1" defer></script>
   </head>
   <body>
-    <main class="workspace">
-      <section class="setup-panel">
-        <div class="panel-heading">
-          <p class="eyebrow">Offline</p>
-          <h1>Mushavo Budget is offline</h1>
-        </div>
-        <p class="muted-copy">Reconnect to the internet to sign in and sync your personal, family, or business workspace.</p>
-      </section>
+    <main class="pwa-shell">
+      <img class="pwa-logo" src="/assets/mushavo-budget-logo.png" alt="Mushavo Budget" width="220" height="149" />
+      <p class="pwa-eyebrow">You are offline</p>
+      <h1>Your workspace needs a connection</h1>
+      <p class="pwa-copy">Reconnect to sign in and safely sync your personal, family, or business workspace. No financial data has been stored in the offline cache.</p>
+      <a class="pwa-button" href="/app-entry.html?source=offline-retry">Try again</a>
     </main>
   </body>
 </html>

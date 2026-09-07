@@ -143,7 +143,7 @@ test("installed app starts at the session-aware entry while the public homepage 
 });
 
 test("service worker caches only the safe launcher shell", () => {
-  assert.match(serviceWorkerSource, /pwa-shell-v6/);
+  assert.match(serviceWorkerSource, /pwa-shell-v7/);
   assert.match(serviceWorkerSource, /"\/app-entry\.js\?v=1"/);
   assert.doesNotMatch(serviceWorkerSource, /"\/app\.html/);
   assert.doesNotMatch(serviceWorkerSource, /"\/config\.js/);

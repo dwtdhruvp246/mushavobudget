@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 53
+// Mushavo Budget authenticated application — release 54
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -13,6 +13,17 @@ const isConfigured =
 const supabase = isConfigured
   ? createClient(config.supabaseUrl, config.supabasePublishableKey)
   : null;
+
+function createPushDeviceState() {
+  return {
+    busy: false,
+    checked: false,
+    userId: null,
+    subscription: null,
+    record: null,
+    error: null
+  };
+}
 
 const state = {
   session: null,
@@ -32,6 +43,7 @@ const state = {
   workspaceSubscription: null,
   workspaceEntitlement: null,
   workspaceSettings: null,
+  pushDevice: createPushDeviceState(),
   supportedCurrencies: [],
   exchangeRates: [],
   exchangeRateStatus: null,
@@ -90,12 +102,16 @@ let dashboardFitFrame = null;
 let appLoadPromise = null;
 let appLoadUserId = null;
 let toastTimer = null;
+let pushRefreshPromise = null;
+let pushRefreshSequence = 0;
 
 const PAYMENT_PROOF_BUCKET = "payment-proofs";
 const SUBSCRIPTION_PROOF_BUCKET = "subscription-proofs";
 const PAYMENT_PROOF_MAX_BYTES = 10 * 1024 * 1024;
 const PAYMENT_PROOF_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "application/pdf"]);
 const QUERY_TIMEOUT_MS = 15000;
+const PUSH_READY_TIMEOUT_MS = 12000;
+const pushSupport = window.MushavoPushSupport || null;
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -538,6 +554,21 @@ function friendlyMessage(message = "") {
   if (text.includes("PUSH_SUBSCRIPTION_ENDPOINT_CONFLICT")) {
     return "This browser subscription belongs to another signed-in account. Disable notifications for that account or reset this site's notification permission, then try again.";
   }
+  if (text.includes("PUSH_PERMISSION_DENIED")) {
+    return "Notifications are blocked for this site. Allow them in your browser or device settings, then return and try again.";
+  }
+  if (text.includes("PUSH_PERMISSION_NOT_GRANTED")) {
+    return "Notification permission was not granted. You can try again whenever you are ready.";
+  }
+  if (text.includes("PUSH_SERVICE_WORKER_NOT_READY")) {
+    return "The app service worker is not ready. Reload the page while online, then try again.";
+  }
+  if (text.includes("PUSH_SUBSCRIPTION_INVALID")) {
+    return "The browser returned an incomplete notification subscription. Disable it and try again.";
+  }
+  if (text.includes("VAPID_PUBLIC_KEY_MISSING")) {
+    return "Notifications are not configured on this website yet.";
+  }
   if (text.includes("ALREADY_FAMILY_MEMBER")) {
     return "That user is already part of this family.";
   }
@@ -895,6 +926,9 @@ function resetState() {
   state.workspaceSubscription = null;
   state.workspaceEntitlement = null;
   state.workspaceSettings = null;
+  state.pushDevice = createPushDeviceState();
+  pushRefreshSequence += 1;
+  pushRefreshPromise = null;
   state.supportedCurrencies = [];
   state.exchangeRates = [];
   state.exchangeRateStatus = null;
@@ -2075,7 +2109,394 @@ function renderSettings() {
     : `${paymentCount}/${entitlement.active_payment_limit} active personal payments used`;
   $("#settingsMemberAccess").textContent = canManageAnyFamily ? "Can invite family members" : "Can join invited families";
   $("#settingsEmail").textContent = state.session.user.email || "-";
+  renderPushNotificationSettings();
+  schedulePushNotificationRefresh();
   renderWorkspaceCurrencySettings();
+}
+
+function currentPushSupportStatus() {
+  if (!pushSupport) return { supported: false, code: "helper-missing" };
+  return pushSupport.supportStatus(window, navigator);
+}
+
+function currentPushPermission() {
+  return "Notification" in window ? window.Notification.permission : "unavailable";
+}
+
+function pushSupportCopy(code) {
+  if (code === "ios-install-required") {
+    return {
+      title: "Install the app first",
+      message: "On iPhone or iPad, Web Push is available only from an installed Home Screen app.",
+      help: "Open this website in Safari, tap Share, choose Add to Home Screen, then open Mushavo Budget from its new icon."
+    };
+  }
+  if (code === "insecure") {
+    return {
+      title: "A secure connection is required",
+      message: "Notifications only work when Mushavo Budget is opened over HTTPS.",
+      help: "Open https://mushavobudget.com and try again."
+    };
+  }
+  return {
+    title: "Notifications are not supported here",
+    message: "This browser does not provide the Web Push features Mushavo Budget needs.",
+    help: "Try the latest Chrome, Edge, Firefox, or an installed Home Screen app on iPhone or iPad."
+  };
+}
+
+function permissionLabel(permission) {
+  if (permission === "granted") return "Allowed";
+  if (permission === "denied") return "Blocked";
+  if (permission === "default") return "Not decided";
+  return "Unavailable";
+}
+
+function renderPushNotificationSettings() {
+  const panel = $("#pushDeviceStatus");
+  if (!panel) return;
+
+  const badge = $("#pushPermissionBadge");
+  const title = $("#pushDeviceStatusTitle");
+  const message = $("#pushDeviceStatusMessage");
+  const help = $("#pushDeviceHelp");
+  const enableButton = $("#enablePushNotificationsButton");
+  const disableButton = $("#disablePushNotificationsButton");
+  const permission = currentPushPermission();
+  const support = currentPushSupportStatus();
+  const enabled = Boolean(state.pushDevice.subscription && state.pushDevice.record);
+  const hasBrowserSubscription = Boolean(state.pushDevice.subscription);
+
+  $("#pushPermissionValue").textContent = permissionLabel(permission);
+  $("#pushDeviceLabel").textContent = pushSupport?.deviceLabel(navigator, window) || "This browser";
+  panel.setAttribute("aria-busy", `${state.pushDevice.busy || !state.pushDevice.checked}`);
+  enableButton.hidden = true;
+  disableButton.hidden = !hasBrowserSubscription;
+  enableButton.disabled = state.pushDevice.busy;
+  disableButton.disabled = state.pushDevice.busy;
+  help.classList.add("hidden");
+  help.textContent = "";
+
+  let level = "ready";
+  let badgeText = "Ready";
+  let titleText = "Ready to enable";
+  let messageText = "Press Enable notifications when you want payment reminders on this device.";
+
+  if (!support.supported) {
+    const copy = pushSupportCopy(support.code);
+    level = "unavailable";
+    badgeText = support.code === "ios-install-required" ? "Install required" : "Unavailable";
+    titleText = copy.title;
+    messageText = copy.message;
+    help.textContent = copy.help;
+    help.classList.remove("hidden");
+  } else if (state.pushDevice.error) {
+    level = "error";
+    badgeText = "Needs attention";
+    titleText = "This device could not be checked";
+    messageText = friendlyMessage(state.pushDevice.error);
+    enableButton.hidden = permission === "denied";
+  } else if (state.pushDevice.busy) {
+    level = "checking";
+    badgeText = "Working";
+    titleText = "Updating this device";
+    messageText = "Please keep this page open for a moment.";
+  } else if (!state.pushDevice.checked) {
+    level = "checking";
+    badgeText = "Checking";
+    titleText = "Checking this device";
+    messageText = "Looking for an existing browser subscription.";
+  } else if (permission === "denied") {
+    level = "blocked";
+    badgeText = "Blocked";
+    titleText = "Notifications are blocked";
+    messageText = "Mushavo Budget will not ask again while this browser permission is blocked.";
+    help.textContent = pushSupport.isIosDevice(navigator)
+      ? "Open your device Settings, find Notifications, allow Mushavo Budget, then return to the installed app."
+      : "Open this site's browser settings, change Notifications to Allow, then reload this page.";
+    help.classList.remove("hidden");
+  } else if (enabled) {
+    level = "enabled";
+    badgeText = "Enabled";
+    titleText = "Notifications enabled on this device";
+    messageText = "This browser is securely linked to the account currently signed in.";
+    disableButton.hidden = false;
+  } else if (permission === "granted" && hasBrowserSubscription) {
+    level = "ready";
+    badgeText = "Link required";
+    titleText = "Finish linking this device";
+    messageText = "The browser has permission, but its subscription is not linked to this account.";
+    enableButton.textContent = "Finish enabling";
+    enableButton.hidden = false;
+    disableButton.hidden = false;
+  } else {
+    enableButton.textContent = "Enable notifications";
+    enableButton.hidden = false;
+  }
+
+  badge.textContent = badgeText;
+  badge.dataset.level = level;
+  panel.dataset.level = level;
+  title.textContent = titleText;
+  message.textContent = messageText;
+}
+
+function withPushTimeout(promise) {
+  let timeoutId;
+  const timeout = new Promise((_, reject) => {
+    timeoutId = window.setTimeout(() => reject(new Error("PUSH_SERVICE_WORKER_NOT_READY")), PUSH_READY_TIMEOUT_MS);
+  });
+  return Promise.race([promise, timeout]).finally(() => window.clearTimeout(timeoutId));
+}
+
+async function activeServiceWorkerRegistration() {
+  const current = await navigator.serviceWorker.getRegistration("/");
+  if (current?.active) return current;
+  if (window.__MUSHAVO_PWA_READY__) {
+    const pwaRegistration = await withPushTimeout(Promise.resolve(window.__MUSHAVO_PWA_READY__));
+    if (pwaRegistration?.active) return pwaRegistration;
+  }
+  const ready = await withPushTimeout(navigator.serviceWorker.ready);
+  if (!ready?.active) throw new Error("PUSH_SERVICE_WORKER_NOT_READY");
+  return ready;
+}
+
+async function findOwnPushSubscriptionRecord(endpoint) {
+  const { data, error } = await supabase
+    .from("push_subscriptions")
+    .select("id, endpoint, device_label, updated_at")
+    .eq("endpoint", endpoint)
+    .maybeSingle();
+  if (error) throw error;
+  return data;
+}
+
+async function refreshPushNotificationSettings() {
+  const userId = state.session?.user?.id;
+  if (!userId) return;
+  const sequence = ++pushRefreshSequence;
+  const support = currentPushSupportStatus();
+  state.pushDevice = {
+    ...createPushDeviceState(),
+    userId,
+    checked: !support.supported
+  };
+  renderPushNotificationSettings();
+  if (!support.supported) return;
+
+  try {
+    const registration = await activeServiceWorkerRegistration();
+    const subscription = await registration.pushManager.getSubscription();
+    const record = subscription
+      ? await findOwnPushSubscriptionRecord(subscription.endpoint)
+      : null;
+    if (sequence !== pushRefreshSequence || state.session?.user?.id !== userId) return;
+    state.pushDevice = {
+      busy: false,
+      checked: true,
+      userId,
+      subscription,
+      record,
+      error: null
+    };
+  } catch (error) {
+    if (sequence !== pushRefreshSequence || state.session?.user?.id !== userId) return;
+    state.pushDevice = {
+      ...createPushDeviceState(),
+      checked: true,
+      userId,
+      error
+    };
+  }
+  renderPushNotificationSettings();
+}
+
+function schedulePushNotificationRefresh(force = false) {
+  const userId = state.session?.user?.id;
+  if (!userId || state.isAdmin) return;
+  if (!force && state.pushDevice.checked && state.pushDevice.userId === userId) return;
+  if (pushRefreshPromise) return;
+  pushRefreshPromise = refreshPushNotificationSettings()
+    .catch((error) => console.warn("Push subscription check failed", friendlyMessage(error?.message)))
+    .finally(() => {
+      pushRefreshPromise = null;
+    });
+}
+
+async function saveCurrentPushSubscription(subscription) {
+  const userId = state.session?.user?.id;
+  if (!userId) throw new Error("Your secure session has ended. Sign in again.");
+  const keys = pushSupport.subscriptionPayload(subscription);
+  const metadata = {
+    p256dh: keys.p256dh,
+    auth: keys.auth,
+    device_label: pushSupport.deviceLabel(navigator, window),
+    user_agent: String(navigator.userAgent || "Unknown browser").slice(0, 1024)
+  };
+  const existing = await findOwnPushSubscriptionRecord(keys.endpoint);
+  let response;
+  if (existing) {
+    response = await supabase
+      .from("push_subscriptions")
+      .update(metadata)
+      .eq("id", existing.id)
+      .select("id, endpoint, device_label, updated_at")
+      .single();
+  } else {
+    response = await supabase
+      .from("push_subscriptions")
+      .insert({ user_id: userId, endpoint: keys.endpoint, ...metadata })
+      .select("id, endpoint, device_label, updated_at")
+      .single();
+  }
+  if (response.error) {
+    if (pushSupport.isEndpointConflict(response.error)) {
+      const concurrentOwnRecord = await findOwnPushSubscriptionRecord(keys.endpoint);
+      if (!concurrentOwnRecord) throw new Error("PUSH_SUBSCRIPTION_ENDPOINT_CONFLICT");
+      response = await supabase
+        .from("push_subscriptions")
+        .update(metadata)
+        .eq("id", concurrentOwnRecord.id)
+        .select("id, endpoint, device_label, updated_at")
+        .single();
+      if (response.error) throw response.error;
+    } else {
+      throw response.error;
+    }
+  }
+  return response.data;
+}
+
+async function enablePushNotifications() {
+  if (state.pushDevice.busy || !state.session) return;
+  const support = currentPushSupportStatus();
+  if (!support.supported) {
+    renderPushNotificationSettings();
+    return;
+  }
+
+  state.pushDevice.busy = true;
+  state.pushDevice.error = null;
+  renderPushNotificationSettings();
+  let subscription = null;
+  let createdSubscription = false;
+  try {
+    let permission = currentPushPermission();
+    if (permission === "default") {
+      permission = await window.Notification.requestPermission();
+    }
+    if (permission === "denied") throw new Error("PUSH_PERMISSION_DENIED");
+    if (permission !== "granted") throw new Error("PUSH_PERMISSION_NOT_GRANTED");
+
+    const registration = await activeServiceWorkerRegistration();
+    subscription = await registration.pushManager.getSubscription();
+    if (!subscription) {
+      subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: pushSupport.base64UrlToUint8Array(config.vapidPublicKey)
+      });
+      createdSubscription = true;
+    }
+    state.pushDevice.subscription = subscription;
+    const record = await saveCurrentPushSubscription(subscription);
+    state.pushDevice = {
+      busy: false,
+      checked: true,
+      userId: state.session.user.id,
+      subscription,
+      record,
+      error: null
+    };
+    showToast("Notifications enabled on this device.");
+  } catch (error) {
+    if (createdSubscription && subscription) {
+      try {
+        await subscription.unsubscribe();
+        state.pushDevice.subscription = null;
+      } catch (_unsubscribeError) {
+        // The unlinked browser subscription can still be removed with Disable.
+      }
+    }
+    state.pushDevice.checked = true;
+    state.pushDevice.error = error?.message === "PUSH_PERMISSION_DENIED" ? null : error;
+    showToast(error.message);
+  } finally {
+    state.pushDevice.busy = false;
+    renderPushNotificationSettings();
+  }
+}
+
+async function deleteOwnPushRecord(subscription, record = null) {
+  let request = supabase.from("push_subscriptions").delete();
+  if (subscription?.endpoint) request = request.eq("endpoint", subscription.endpoint);
+  else if (record?.id) request = request.eq("id", record.id);
+  else return;
+  const { error } = await request;
+  if (error) throw error;
+}
+
+async function clearApplicationBadge() {
+  if (typeof navigator.clearAppBadge !== "function") return;
+  try {
+    await navigator.clearAppBadge();
+  } catch (_error) {
+    // Badge support is optional and must not block notification cleanup.
+  }
+}
+
+async function removeCurrentDevicePush({ requireDatabaseCleanup = true } = {}) {
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) return;
+  const registration = await navigator.serviceWorker.getRegistration("/");
+  if (!registration) return;
+  const subscription = await registration.pushManager.getSubscription();
+  const record = state.pushDevice.record;
+  if (requireDatabaseCleanup) await deleteOwnPushRecord(subscription, record);
+  if (subscription) {
+    try {
+      await subscription.unsubscribe();
+    } catch (error) {
+      if (!requireDatabaseCleanup) throw error;
+      console.warn("Browser push unsubscribe failed after the protected database row was removed.");
+    }
+  }
+  await clearApplicationBadge();
+}
+
+async function disablePushNotifications() {
+  if (state.pushDevice.busy || !state.session) return;
+  state.pushDevice.busy = true;
+  state.pushDevice.error = null;
+  renderPushNotificationSettings();
+  try {
+    await removeCurrentDevicePush();
+    state.pushDevice = {
+      ...createPushDeviceState(),
+      checked: true,
+      userId: state.session.user.id
+    };
+    showToast("Notifications disabled on this device.");
+  } catch (error) {
+    state.pushDevice.checked = true;
+    state.pushDevice.error = error;
+    showToast(error.message);
+  } finally {
+    state.pushDevice.busy = false;
+    renderPushNotificationSettings();
+  }
+}
+
+async function signOutSafely(button = null) {
+  if (!supabase || !state.session) return;
+  const originalLabel = button?.textContent || "Sign out";
+  setSubmitting(button, true, "Signing out…");
+  try {
+    await removeCurrentDevicePush();
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  } catch (error) {
+    showToast(`Sign-out stopped: ${friendlyMessage(error?.message)}`);
+    setSubmitting(button, false, originalLabel);
+  }
 }
 
 function currencyCatalogue() {
@@ -5158,7 +5579,7 @@ document.addEventListener("click", async (event) => {
     });
   }
   if (event.target.dataset.signOutError !== undefined) {
-    await supabase.auth.signOut();
+    await signOutSafely(event.target);
   }
 
   const configureProfileId = event.target.dataset.configureProfile;
@@ -5395,9 +5816,11 @@ $("#inviteMemberDialog").addEventListener("close", () => {
   $("#inviteEmail").value = "";
   $("#inviteRole").value = "Adult";
 });
-$("#signOutButton").addEventListener("click", async () => supabase.auth.signOut());
-$("#adminSignOutButton").addEventListener("click", async () => supabase.auth.signOut());
-$("#suspendedSignOutButton").addEventListener("click", async () => supabase.auth.signOut());
+$("#enablePushNotificationsButton").addEventListener("click", enablePushNotifications);
+$("#disablePushNotificationsButton").addEventListener("click", disablePushNotifications);
+$("#signOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
+$("#adminSignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
+$("#suspendedSignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
 $("#obligationCurrencySearch").addEventListener("input", (event) => {
   renderPaymentCurrencyOptions(event.target.value, $("#obligationCurrency").value);
 });
@@ -5460,5 +5883,10 @@ window.addEventListener("hashchange", () => {
 
 window.addEventListener("beforeunload", stopRealtime);
 window.addEventListener("resize", scheduleDashboardTextFit);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && state.session && !state.isAdmin && state.familyTab === "settings") {
+    schedulePushNotificationRefresh(true);
+  }
+});
 
 init().catch(handleLoadFailure);

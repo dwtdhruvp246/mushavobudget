@@ -1,0 +1,20 @@
+# Keep development dependencies, database code, tests, and documentation out
+# of the public Cloudflare static-assets deployment.
+node_modules/
+supabase/
+tests/
+docs/
+.github/
+coverage/
+
+*.md
+*.sha256
+*.log
+*.zip
+
+package.json
+package-lock.json
+wrangler.jsonc
+.env*
+.git*
+.assetsignore

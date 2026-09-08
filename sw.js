@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "mushavo-budget-";
-const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v10`;
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v11`;
 const OFFLINE_URL = "/offline.html";
 const DEFAULT_NOTIFICATION_TITLE = "Mushavo Budget";
 const DEFAULT_NOTIFICATION_BODY = "You have a new Mushavo Budget notification.";
@@ -14,6 +14,7 @@ const ALLOWED_NOTIFICATION_HASHES = new Set([
 ]);
 const APP_WINDOW_PATHS = new Set(["/app.html", "/app-entry.html"]);
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const SAFE_SHELL = [
   "/app-entry.html",
   OFFLINE_URL,
@@ -74,8 +75,14 @@ function safeNotificationTarget(value) {
     target.searchParams.set("source", "push");
 
     const paymentItemId = requested.searchParams.get("payment_item");
-    if (paymentItemId && UUID_PATTERN.test(paymentItemId)) {
+    const isPaymentReminder = paymentItemId && UUID_PATTERN.test(paymentItemId);
+    if (isPaymentReminder) {
       target.searchParams.set("payment_item", paymentItemId);
+      const paymentDueDate = requested.searchParams.get("payment_due_date");
+      if (paymentDueDate && DATE_PATTERN.test(paymentDueDate)) {
+        target.searchParams.set("payment_due_date", paymentDueDate);
+      }
+      target.searchParams.set("open_notifications", "1");
     }
 
     const notificationId = requested.searchParams.get("notification_id");
@@ -83,10 +90,10 @@ function safeNotificationTarget(value) {
       target.searchParams.set("notification_id", notificationId);
     }
 
-    target.hash = ALLOWED_NOTIFICATION_HASHES.has(requested.hash)
-      ? requested.hash
-      : paymentItemId
-        ? "#family/payments"
+    target.hash = isPaymentReminder
+      ? "#family/dashboard"
+      : ALLOWED_NOTIFICATION_HASHES.has(requested.hash)
+        ? requested.hash
         : "#family/settings";
     return target.href;
   } catch (_error) {

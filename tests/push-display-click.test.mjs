@@ -4,6 +4,7 @@ import test from "node:test";
 import vm from "node:vm";
 
 const workerSource = await readFile(new URL("../sw.js", import.meta.url), "utf8");
+const applicationSource = await readFile(new URL("../app.js", import.meta.url), "utf8");
 
 function createWorkerHarness({ windowClients = [] } = {}) {
   const listeners = new Map();
@@ -86,9 +87,17 @@ test("push payloads use bounded display fields and an approved payment route", a
   assert.equal(notification.options.timestamp, Date.parse("2026-09-08T12:30:00.000Z"));
   assert.equal(
     notification.options.data.targetUrl,
-    `https://mushavobudget.com/app.html?source=push&payment_item=${paymentId}#family/payments`
+    `https://mushavobudget.com/app.html?source=push&payment_item=${paymentId}&open_notifications=1#family/dashboard`
   );
   assert.deepEqual(harness.calls.badges, [1]);
+});
+
+test("payment clicks open the actionable Notifications panel instead of payment setup", () => {
+  assert.match(applicationSource, /url\.searchParams\.get\("source"\) === "push"/);
+  assert.match(applicationSource, /state\.familyTab = "dashboard"/);
+  assert.match(applicationSource, /openNotificationDialog\(\)/);
+  assert.match(applicationSource, /data-notification-payment-item-id/);
+  assert.match(applicationSource, /data-notification-payment-due-date/);
 });
 
 test("malformed push payloads fall back to private display text", async () => {

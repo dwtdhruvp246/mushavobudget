@@ -1967,6 +1967,32 @@ function handleNotificationDeepLink() {
   const url = new URL(window.location.href);
   const paymentItemId = url.searchParams.get("payment_item");
   if (!paymentItemId) return;
+
+  const isPaymentPush = url.searchParams.get("source") === "push";
+  if (isPaymentPush) {
+    if (state.familyTab !== "dashboard") {
+      state.familyTab = "dashboard";
+      setRoute("family", "dashboard", true);
+      renderFamilyApp();
+    }
+    openNotificationDialog();
+
+    const paymentDueDate = url.searchParams.get("payment_due_date");
+    const dueDateSelector = /^\d{4}-\d{2}-\d{2}$/.test(paymentDueDate || "")
+      ? `[data-notification-payment-due-date="${CSS.escape(paymentDueDate)}"]`
+      : "";
+    const target = document.querySelector(
+      `#notificationDialogList [data-notification-payment-item-id="${CSS.escape(paymentItemId)}"]${dueDateSelector}`
+    );
+    if (!target) return;
+    requestAnimationFrame(() => {
+      target.classList.add("notification-deep-link-target");
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      window.setTimeout(() => target.classList.remove("notification-deep-link-target"), 6000);
+    });
+    return;
+  }
+
   const target = document.querySelector(`[data-payment-item-id="${CSS.escape(paymentItemId)}"]`);
   if (!target) return;
   requestAnimationFrame(() => {
@@ -2936,6 +2962,8 @@ function renderNotificationList(list, compact = false) {
   dueReminders.forEach((occurrence) => {
     const article = document.createElement("article");
     article.className = `record-card${compact ? " notification-card" : ""}`;
+    article.dataset.notificationPaymentItemId = occurrence.item.id;
+    article.dataset.notificationPaymentDueDate = occurrence.dueDate;
     article.innerHTML = `
       <div class="record-main">
         <strong>${escapeHtml(occurrence.item.name)}</strong>

@@ -5,3 +5,8 @@ verify_jwt = false
 # The function validates the bearer token with auth.getUser so it works with
 # the project's current publishable-key authentication flow.
 verify_jwt = false
+
+[functions.dispatch-push-reminders]
+# This administrative function rejects requests unless its dedicated cron
+# secret header matches the protected Edge Function environment value.
+verify_jwt = false

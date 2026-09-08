@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "mushavo-budget-";
-const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v8`;
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v9`;
 const OFFLINE_URL = "/offline.html";
 const SAFE_SHELL = [
   "/app-entry.html",
@@ -68,6 +68,25 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("message", (event) => {
   if (event.data?.type === "SKIP_WAITING") event.waitUntil(self.skipWaiting());
+});
+
+self.addEventListener("push", (event) => {
+  let payload = {};
+  try {
+    payload = event.data?.json?.() || {};
+  } catch (_error) {
+    // Always display a safe notification even if a provider payload is malformed.
+  }
+  const isTest = payload?.type === "test";
+  event.waitUntil(self.registration.showNotification("Mushavo Budget", {
+    body: isTest
+      ? "Your payment reminder notifications are connected."
+      : "You have a new Mushavo Budget notification.",
+    icon: "/assets/pwa-icon-192.png",
+    badge: "/assets/pwa-icon-192.png",
+    tag: isTest ? "mushavo-budget-test-push" : "mushavo-budget-notification",
+    renotify: false
+  }));
 });
 
 self.addEventListener("fetch", (event) => {

@@ -1,2 +1,7 @@
 [functions.sync-exchange-rates]
 verify_jwt = false
+
+[functions.send-test-push]
+# The function validates the bearer token with auth.getUser so it works with
+# the project's current publishable-key authentication flow.
+verify_jwt = false

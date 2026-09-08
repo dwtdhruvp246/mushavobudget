@@ -130,8 +130,10 @@ test("logout cleans up this device before Supabase sign-out", () => {
   assert.match(applicationSource, /signOutButton"\)\.addEventListener\("click", \(event\) => signOutSafely/);
 });
 
-test("Stage 8 assets deploy without adding push delivery yet", () => {
+test("Stage 9 adds test delivery without adding scheduled reminder dispatch", () => {
   assert.match(applicationPage, /\/push-notifications\.js\?v=1/);
   assert.match(workflowSource, /push-notifications\.js/);
-  assert.doesNotMatch(workerSource, /addEventListener\("push"/);
+  assert.match(workerSource, /addEventListener\("push"/);
+  assert.match(workerSource, /showNotification\("Mushavo Budget"/);
+  assert.doesNotMatch(workerSource, /addEventListener\("notificationclick"/);
 });

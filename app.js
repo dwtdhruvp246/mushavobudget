@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 56
+// Mushavo Budget authenticated application — release 59
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -2896,6 +2896,7 @@ function renderNotifications() {
   const unreadCount = state.notifications.filter((item) => !item.read_at).length;
   const dueReminderCount = notificationDueOccurrences().length;
   const alertCount = unreadCount + dueReminderCount;
+  syncApplicationBadge(alertCount);
   if ($("#notificationCount")) $("#notificationCount").textContent = alertCount;
   document.querySelectorAll("[data-notification-count]").forEach((badge) => {
     badge.textContent = alertCount > 99 ? "99+" : alertCount;
@@ -2907,6 +2908,21 @@ function renderNotifications() {
 
   renderNotificationList($("#notificationsList"));
   renderNotificationList($("#notificationDialogList"), true);
+}
+
+function syncApplicationBadge(alertCount) {
+  const count = Math.max(0, Math.floor(Number(alertCount) || 0));
+  let badgeUpdate;
+  if (count > 0 && typeof navigator.setAppBadge === "function") {
+    badgeUpdate = navigator.setAppBadge(count);
+  } else if (count === 0 && typeof navigator.clearAppBadge === "function") {
+    badgeUpdate = navigator.clearAppBadge();
+  } else {
+    return;
+  }
+  Promise.resolve(badgeUpdate).catch(() => {
+    // Badging is optional and must not interrupt the in-app notification count.
+  });
 }
 
 function renderNotificationList(list, compact = false) {

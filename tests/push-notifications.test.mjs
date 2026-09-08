@@ -6,6 +6,7 @@ import vm from "node:vm";
 const helperSource = await readFile(new URL("../push-notifications.js", import.meta.url), "utf8");
 const applicationSource = await readFile(new URL("../app.js", import.meta.url), "utf8");
 const applicationPage = await readFile(new URL("../app.html", import.meta.url), "utf8");
+const applicationStyles = await readFile(new URL("../styles.css", import.meta.url), "utf8");
 const configSource = await readFile(new URL("../config.js", import.meta.url), "utf8");
 const workerSource = await readFile(new URL("../sw.js", import.meta.url), "utf8");
 const workflowSource = await readFile(new URL("../.github/workflows/pages.yml", import.meta.url), "utf8");
@@ -100,6 +101,18 @@ test("the UI asks for permission only inside the explicit enable action", () => 
   assert.ok(enableStart >= 0 && permissionCall > enableStart && permissionCall < disableStart);
   assert.match(applicationPage, /id="enablePushNotificationsButton"/);
   assert.match(applicationPage, /Enable payment reminders on this device/);
+});
+
+test("disabled devices distinguish browser permission from an active subscription", () => {
+  assert.match(applicationPage, /<dt>Browser permission<\/dt>/);
+  assert.match(applicationSource, /Allowed by browser/);
+  assert.match(applicationSource, /reminders are disabled on this device/);
+  assert.match(applicationSource, /disableButton\.hidden = !hasBrowserSubscription/);
+});
+
+test("the hidden attribute overrides global button display styles", () => {
+  assert.match(applicationPage, /id="disablePushNotificationsButton"[^>]*hidden/);
+  assert.match(applicationStyles, /\[hidden\]\s*\{\s*display:\s*none\s*!important;/);
 });
 
 test("subscription writes preserve restricted Stage 7 column permissions", () => {

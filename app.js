@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 54
+// Mushavo Budget authenticated application — release 55
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -2146,9 +2146,9 @@ function pushSupportCopy(code) {
 }
 
 function permissionLabel(permission) {
-  if (permission === "granted") return "Allowed";
-  if (permission === "denied") return "Blocked";
-  if (permission === "default") return "Not decided";
+  if (permission === "granted") return "Allowed by browser";
+  if (permission === "denied") return "Blocked by browser";
+  if (permission === "default") return "Not requested";
   return "Unavailable";
 }
 
@@ -2180,7 +2180,9 @@ function renderPushNotificationSettings() {
   let level = "ready";
   let badgeText = "Ready";
   let titleText = "Ready to enable";
-  let messageText = "Press Enable notifications when you want payment reminders on this device.";
+  let messageText = permission === "granted"
+    ? "Browser permission is allowed, but Mushavo Budget reminders are disabled on this device. Press Enable notifications to reconnect it."
+    : "Press Enable notifications when you want payment reminders on this device.";
 
   if (!support.supported) {
     const copy = pushSupportCopy(support.code);

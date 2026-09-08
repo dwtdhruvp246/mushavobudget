@@ -1,4 +1,4 @@
-/* Mushavo Budget authenticated application stylesheet — release 46 */
+/* Mushavo Budget authenticated application stylesheet — release 47 */
 :root {
   --ink: #0f172a;
   --muted: #64748b;
@@ -176,6 +176,10 @@ code {
 }
 
 .hidden {
+  display: none !important;
+}
+
+[hidden] {
   display: none !important;
 }
 

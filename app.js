@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 55
+// Mushavo Budget authenticated application — release 56
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -17,6 +17,7 @@ const supabase = isConfigured
 function createPushDeviceState() {
   return {
     busy: false,
+    testBusy: false,
     checked: false,
     userId: null,
     subscription: null,
@@ -568,6 +569,30 @@ function friendlyMessage(message = "") {
   }
   if (text.includes("VAPID_PUBLIC_KEY_MISSING")) {
     return "Notifications are not configured on this website yet.";
+  }
+  if (text.includes("PUSH_SUBSCRIPTION_REQUIRED")) {
+    return "Enable notifications on at least one device before sending a test.";
+  }
+  if (text.includes("PUSH_TEST_RATE_LIMITED")) {
+    return "A test was requested recently. Wait one minute before trying again.";
+  }
+  if (text.includes("PUSH_TEST_DELIVERY_FAILED")) {
+    return "The push service could not reach any active device. Re-enable notifications on the device and try again.";
+  }
+  if (text.includes("PUSH_SUBSCRIPTION_LOOKUP_FAILED") || text.includes("PUSH_TEST_RATE_LIMIT_CHECK_FAILED")) {
+    return "The notification service could not check your devices. Try again shortly.";
+  }
+  if (text.includes("PUSH_SERVER_CONFIGURATION_INCOMPLETE")) {
+    return "Test notifications are not fully configured on the server yet.";
+  }
+  if (text.includes("PUSH_SERVER_CONFIGURATION_INVALID")) {
+    return "The server notification keys are invalid. Check the protected VAPID settings.";
+  }
+  if (text.includes("EDGE_FUNCTION_AUTHENTICATION")) {
+    return "Your secure session has ended. Sign in again before sending a test notification.";
+  }
+  if (text.includes("ORIGIN_NOT_ALLOWED")) {
+    return "Test notifications can only be sent from the official Mushavo Budget website.";
   }
   if (text.includes("ALREADY_FAMILY_MEMBER")) {
     return "That user is already part of this family.";
@@ -2161,6 +2186,7 @@ function renderPushNotificationSettings() {
   const message = $("#pushDeviceStatusMessage");
   const help = $("#pushDeviceHelp");
   const enableButton = $("#enablePushNotificationsButton");
+  const testButton = $("#sendTestPushButton");
   const disableButton = $("#disablePushNotificationsButton");
   const permission = currentPushPermission();
   const support = currentPushSupportStatus();
@@ -2171,9 +2197,12 @@ function renderPushNotificationSettings() {
   $("#pushDeviceLabel").textContent = pushSupport?.deviceLabel(navigator, window) || "This browser";
   panel.setAttribute("aria-busy", `${state.pushDevice.busy || !state.pushDevice.checked}`);
   enableButton.hidden = true;
+  testButton.hidden = true;
+  testButton.textContent = "Send test notification";
   disableButton.hidden = !hasBrowserSubscription;
-  enableButton.disabled = state.pushDevice.busy;
-  disableButton.disabled = state.pushDevice.busy;
+  enableButton.disabled = state.pushDevice.busy || state.pushDevice.testBusy;
+  testButton.disabled = state.pushDevice.busy || state.pushDevice.testBusy;
+  disableButton.disabled = state.pushDevice.busy || state.pushDevice.testBusy;
   help.classList.add("hidden");
   help.textContent = "";
 
@@ -2198,11 +2227,17 @@ function renderPushNotificationSettings() {
     titleText = "This device could not be checked";
     messageText = friendlyMessage(state.pushDevice.error);
     enableButton.hidden = permission === "denied";
-  } else if (state.pushDevice.busy) {
+  } else if (state.pushDevice.busy || state.pushDevice.testBusy) {
     level = "checking";
     badgeText = "Working";
-    titleText = "Updating this device";
-    messageText = "Please keep this page open for a moment.";
+    titleText = state.pushDevice.testBusy ? "Sending a test notification" : "Updating this device";
+    messageText = state.pushDevice.testBusy
+      ? "The protected test service is contacting your active devices."
+      : "Please keep this page open for a moment.";
+    if (state.pushDevice.testBusy) {
+      testButton.textContent = "Sending test…";
+      testButton.hidden = false;
+    }
   } else if (!state.pushDevice.checked) {
     level = "checking";
     badgeText = "Checking";
@@ -2222,6 +2257,7 @@ function renderPushNotificationSettings() {
     badgeText = "Enabled";
     titleText = "Notifications enabled on this device";
     messageText = "This browser is securely linked to the account currently signed in.";
+    testButton.hidden = false;
     disableButton.hidden = false;
   } else if (permission === "granted" && hasBrowserSubscription) {
     level = "ready";
@@ -2483,6 +2519,43 @@ async function disablePushNotifications() {
     showToast(error.message);
   } finally {
     state.pushDevice.busy = false;
+    renderPushNotificationSettings();
+  }
+}
+
+async function pushFunctionErrorCode(error) {
+  try {
+    const payload = await error?.context?.json?.();
+    return payload?.error || error?.message || "PUSH_TEST_DELIVERY_FAILED";
+  } catch (_contextError) {
+    return error?.message || "PUSH_TEST_DELIVERY_FAILED";
+  }
+}
+
+async function sendTestPushNotification() {
+  if (state.pushDevice.busy || state.pushDevice.testBusy || !state.session) return;
+  if (!state.pushDevice.subscription || !state.pushDevice.record) {
+    showToast("Enable notifications on this device before sending a test.");
+    return;
+  }
+
+  state.pushDevice.testBusy = true;
+  state.pushDevice.error = null;
+  renderPushNotificationSettings();
+  try {
+    const { data, error } = await supabase.functions.invoke("send-test-push", {
+      body: {},
+    });
+    if (error) throw new Error(await pushFunctionErrorCode(error));
+    if (data?.error) throw new Error(data.error);
+    const delivered = Number(data?.delivered || 0);
+    showToast(delivered === 1
+      ? "Test notification sent to your active device."
+      : `Test notification sent to ${delivered} active devices.`);
+  } catch (error) {
+    showToast(friendlyMessage(error?.message));
+  } finally {
+    state.pushDevice.testBusy = false;
     renderPushNotificationSettings();
   }
 }
@@ -5819,6 +5892,7 @@ $("#inviteMemberDialog").addEventListener("close", () => {
   $("#inviteRole").value = "Adult";
 });
 $("#enablePushNotificationsButton").addEventListener("click", enablePushNotifications);
+$("#sendTestPushButton").addEventListener("click", sendTestPushNotification);
 $("#disablePushNotificationsButton").addEventListener("click", disablePushNotifications);
 $("#signOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
 $("#adminSignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));

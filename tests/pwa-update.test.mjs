@@ -255,7 +255,7 @@ test("returning to the foreground checks for updates again", async () => {
 });
 
 test("service worker uses explicit activation and revalidation without caching private data", () => {
-  assert.match(workerSource, /pwa-shell-v8/);
+  assert.match(workerSource, /pwa-shell-v9/);
   assert.match(workerSource, /event\.waitUntil\(self\.skipWaiting\(\)\)/);
   assert.match(workerSource, /fetch\(request, \{ cache: "no-cache" \}\)/);
   assert.doesNotMatch(workerSource, /"\/app\.html/);

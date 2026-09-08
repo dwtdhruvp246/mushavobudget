@@ -255,7 +255,7 @@ test("all user-facing pages and the deployment shell include Stage 4 assets", ()
     assert.match(page, /\/pwa-install\.js\?v=1/, `${name} is missing install logic`);
     assert.match(page, /\/pwa\.js\?v=6/, `${name} is missing the current release helper`);
   }
-  assert.match(workerSource, /pwa-shell-v8/);
+  assert.match(workerSource, /pwa-shell-v9/);
   assert.match(workerSource, /"\/pwa-install\.js\?v=1"/);
   assert.match(workerSource, /"\/pwa-install\.css\?v=1"/);
   assert.match(workflowSource, /pwa-install\.js/);

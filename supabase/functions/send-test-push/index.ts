@@ -8,6 +8,7 @@ const TEST_PAYLOAD = JSON.stringify({
   title: "Mushavo Budget",
   body: "Your payment reminder notifications are connected.",
   tag: "mushavo-budget-test-push",
+  url: "/app.html#family/settings",
 });
 
 type PushSubscriptionRow = {

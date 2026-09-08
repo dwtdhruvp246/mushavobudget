@@ -31,6 +31,9 @@ A public website and authenticated personal, family, and business payment tracke
 - Notification bell with an in-app inbox, unread count, and invitation actions
 - Supabase Realtime refreshes visible pages after inserts, updates, and deletes
 - In-app payment reminders in the notification bell and inbox
+- User-controlled Web Push subscriptions for each signed-in device
+- Authenticated, rate-limited test notifications with secure same-origin click routing
+- Progressive app badges synchronized with the in-app alert count where supported
 - Reports by category, payment reliability, active obligations, yearly expected totals, and payment history
 - CSV export for the selected month/filter
 - Row Level Security policies for households, members, payment items, records, admin notes, and platform payments
@@ -113,9 +116,11 @@ Deleting a family is different from removing a member. Only the family owner can
 10. Open a due item and record either a partial or full payment. Optionally attach a JPG, PNG, WebP, or PDF receipt up to 10 MB, or add payment details.
 11. Use `Reports` to review paid rate, outstanding dues, category totals, and history.
 
-## In-App Reminders
+## In-App and Device Reminders
 
-The notification bell and Settings inbox show invitations and payment reminders while the user is signed in. Web Push subscriptions, background delivery, VAPID keys, the reminder Edge Function, and the one-minute Cron job are not part of this version.
+The notification bell and Settings inbox show invitations and payment reminders while the user is signed in. A user can also enable Web Push on an individual device and send a protected test notification to their own active devices. Tapping the test notification opens an allowlisted authenticated app route, and app badges mirror the current alert count where the platform supports them.
+
+Automated payment-reminder delivery is not enabled yet. The notification outbox, retry dispatcher, privacy preferences, and production Cron schedule are introduced only in later reviewed stages.
 
 ## Admin Workflow
 

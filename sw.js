@@ -1,6 +1,12 @@
 const CACHE_PREFIX = "mushavo-budget-";
-const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v9`;
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v10`;
 const OFFLINE_URL = "/offline.html";
+const DEFAULT_NOTIFICATION_TARGET = "/app.html#family/dashboard";
+const ALLOWED_NOTIFICATION_TARGETS = new Set([
+  DEFAULT_NOTIFICATION_TARGET,
+  "/app.html#family/payments",
+  "/app.html#family/settings"
+]);
 const SAFE_SHELL = [
   "/app-entry.html",
   OFFLINE_URL,
@@ -9,7 +15,7 @@ const SAFE_SHELL = [
   "/pwa-update.css?v=1",
   "/pwa-install.css?v=1",
   "/pwa-install.js?v=1",
-  "/pwa.js?v=6",
+  "/pwa.js?v=7",
   "/assets/mushavo-budget-logo.png",
   "/assets/pwa-icon-192.png",
   "/assets/pwa-icon-512.png",
@@ -70,6 +76,67 @@ self.addEventListener("message", (event) => {
   if (event.data?.type === "SKIP_WAITING") event.waitUntil(self.skipWaiting());
 });
 
+function allowedNotificationTarget(value, fallback = DEFAULT_NOTIFICATION_TARGET) {
+  const safeFallback = new URL(fallback, self.location.origin);
+  if (typeof value !== "string" || !value || value.length > 512) return safeFallback;
+  try {
+    const target = new URL(value, self.location.origin);
+    const route = `${target.pathname}${target.hash}`;
+    if (target.origin !== self.location.origin || target.search || !ALLOWED_NOTIFICATION_TARGETS.has(route)) {
+      return safeFallback;
+    }
+    return target;
+  } catch (_error) {
+    return safeFallback;
+  }
+}
+
+function notificationDetails(payload) {
+  const isTest = payload?.type === "test";
+  const fallbackTarget = isTest
+    ? "/app.html#family/settings"
+    : DEFAULT_NOTIFICATION_TARGET;
+  const target = allowedNotificationTarget(payload?.url, fallbackTarget);
+  return {
+    title: "Mushavo Budget",
+    options: {
+      body: isTest
+        ? "Your payment reminder notifications are connected."
+        : "You have a new Mushavo Budget notification.",
+      icon: "/assets/pwa-icon-192.png",
+      badge: "/assets/pwa-icon-192.png",
+      tag: isTest ? "mushavo-budget-test-push" : "mushavo-budget-notification",
+      renotify: false,
+      timestamp: Date.now(),
+      data: {
+        type: isTest ? "test" : "notification",
+        url: `${target.pathname}${target.hash}`
+      }
+    }
+  };
+}
+
+async function setWorkerBadge(count) {
+  if (typeof navigator.setAppBadge !== "function") return;
+  try {
+    await navigator.setAppBadge(Math.max(1, Number(count) || 1));
+  } catch (_error) {
+    // Badges are progressive enhancement and must never block a notification.
+  }
+}
+
+async function clearWorkerBadge() {
+  try {
+    if (typeof navigator.clearAppBadge === "function") {
+      await navigator.clearAppBadge();
+    } else if (typeof navigator.setAppBadge === "function") {
+      await navigator.setAppBadge(0);
+    }
+  } catch (_error) {
+    // Unsupported or rejected badge operations do not block click routing.
+  }
+}
+
 self.addEventListener("push", (event) => {
   let payload = {};
   try {
@@ -77,16 +144,45 @@ self.addEventListener("push", (event) => {
   } catch (_error) {
     // Always display a safe notification even if a provider payload is malformed.
   }
-  const isTest = payload?.type === "test";
-  event.waitUntil(self.registration.showNotification("Mushavo Budget", {
-    body: isTest
-      ? "Your payment reminder notifications are connected."
-      : "You have a new Mushavo Budget notification.",
-    icon: "/assets/pwa-icon-192.png",
-    badge: "/assets/pwa-icon-192.png",
-    tag: isTest ? "mushavo-budget-test-push" : "mushavo-budget-notification",
-    renotify: false
-  }));
+  const notification = notificationDetails(payload);
+  event.waitUntil(Promise.all([
+    self.registration.showNotification(notification.title, notification.options),
+    setWorkerBadge(1)
+  ]));
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification?.close?.();
+  const target = allowedNotificationTarget(event.notification?.data?.url);
+  event.waitUntil((async () => {
+    await clearWorkerBadge();
+    const windowClients = await self.clients.matchAll({
+      type: "window",
+      includeUncontrolled: true
+    });
+    const appClient = windowClients.find((client) => {
+      try {
+        const clientUrl = new URL(client.url);
+        return clientUrl.origin === self.location.origin &&
+          ["/app.html", "/app-entry.html"].includes(clientUrl.pathname);
+      } catch (_error) {
+        return false;
+      }
+    });
+
+    if (!appClient) return self.clients.openWindow(target.href);
+    let focusedClient = appClient;
+    if (typeof appClient.navigate === "function" && appClient.url !== target.href) {
+      try {
+        focusedClient = await appClient.navigate(target.href) || appClient;
+      } catch (_error) {
+        return self.clients.openWindow(target.href);
+      }
+    }
+    return typeof focusedClient.focus === "function"
+      ? focusedClient.focus()
+      : self.clients.openWindow(target.href);
+  })());
 });
 
 self.addEventListener("fetch", (event) => {

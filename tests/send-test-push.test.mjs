@@ -72,9 +72,9 @@ test("the test control appears only for a linked current device", () => {
   assert.match(applicationSource, /supabase\.functions\.invoke\("send-test-push"/);
 });
 
-test("Stage 9 displays the push but leaves click routing and scheduling for later stages", () => {
+test("manual test delivery gains Stage 10 click routing without scheduling", () => {
   assert.match(workerSource, /addEventListener\("push"/);
-  assert.match(workerSource, /showNotification\("Mushavo Budget"/);
-  assert.doesNotMatch(workerSource, /addEventListener\("notificationclick"/);
+  assert.match(workerSource, /showNotification\(notification\.title/);
+  assert.match(workerSource, /addEventListener\("notificationclick"/);
   assert.doesNotMatch(functionSource, /cron|schedule/i);
 });

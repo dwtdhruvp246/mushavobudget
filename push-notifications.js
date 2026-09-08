@@ -69,12 +69,37 @@
     );
   }
 
+  async function syncAppBadge(navigatorLike = navigator, count = 0) {
+    const numericCount = Number(count);
+    const badgeCount = Number.isFinite(numericCount)
+      ? Math.max(0, Math.min(99, Math.floor(numericCount)))
+      : 0;
+    try {
+      if (badgeCount > 0 && typeof navigatorLike.setAppBadge === "function") {
+        await navigatorLike.setAppBadge(badgeCount);
+        return true;
+      }
+      if (badgeCount === 0 && typeof navigatorLike.clearAppBadge === "function") {
+        await navigatorLike.clearAppBadge();
+        return true;
+      }
+      if (badgeCount === 0 && typeof navigatorLike.setAppBadge === "function") {
+        await navigatorLike.setAppBadge(0);
+        return true;
+      }
+    } catch (_error) {
+      // Badge support is optional and must not interrupt the app.
+    }
+    return false;
+  }
+
   window.MushavoPushSupport = Object.freeze({
     base64UrlToUint8Array,
     deviceLabel,
     isEndpointConflict,
     isIosDevice,
     isStandalone,
+    syncAppBadge,
     subscriptionPayload,
     supportStatus
   });

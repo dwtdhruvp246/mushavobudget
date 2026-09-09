@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "mushavo-budget-";
-const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v14`;
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v15`;
 const OFFLINE_URL = "/offline.html";
 const DEFAULT_NOTIFICATION_TITLE = "Mushavo Budget";
 const DEFAULT_NOTIFICATION_BODY = "You have a new Mushavo Budget notification.";
@@ -23,7 +23,7 @@ const SAFE_SHELL = [
   "/pwa-update.css?v=1",
   "/pwa-install.css?v=1",
   "/pwa-install.js?v=1",
-  "/pwa.js?v=10",
+  "/pwa.js?v=11",
   "/assets/mushavo-budget-logo.png",
   "/assets/pwa-icon-192.png",
   "/assets/pwa-icon-512.png",

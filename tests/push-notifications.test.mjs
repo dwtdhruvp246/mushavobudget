@@ -48,6 +48,19 @@ function loadHelper({
   return window.MushavoPushSupport;
 }
 
+function loadSubscriptionReconciler(permission, calls) {
+  const start = applicationSource.indexOf("async function reconcileCurrentPushSubscription");
+  const end = applicationSource.indexOf("async function refreshPushNotificationSettings", start);
+  const source = applicationSource.slice(start, end);
+  const context = {
+    currentPushPermission: () => permission,
+    deleteOwnPushRecord: async () => calls.push("delete-record"),
+    clearApplicationBadge: async () => calls.push("clear-badge")
+  };
+  vm.runInNewContext(`${source}\nglobalThis.reconcile = reconcileCurrentPushSubscription;`, context);
+  return context.reconcile;
+}
+
 test("support checks require secure Web Push APIs", () => {
   assert.equal(loadHelper().supportStatus().supported, true);
   assert.equal(loadHelper({ secure: false }).supportStatus().code, "insecure");
@@ -128,6 +141,48 @@ test("logout cleans up this device before Supabase sign-out", () => {
   const body = applicationSource.slice(start, end);
   assert.ok(body.indexOf("await removeCurrentDevicePush()") < body.indexOf("supabase.auth.signOut()"));
   assert.match(applicationSource, /signOutButton"\)\.addEventListener\("click", \(event\) => signOutSafely/);
+});
+
+test("account switching discards a browser subscription not owned by the current user", async () => {
+  const start = applicationSource.indexOf("async function reconcileCurrentPushSubscription");
+  const end = applicationSource.indexOf("async function refreshPushNotificationSettings", start);
+  const body = applicationSource.slice(start, end);
+  assert.ok(start >= 0 && end > start);
+  assert.match(body, /permissionGranted && record/);
+  assert.match(body, /await subscription\.unsubscribe\(\)/);
+  assert.match(applicationSource, /reconcileCurrentPushSubscription\(\s*browserSubscription,\s*ownRecord/);
+
+  const calls = [];
+  const reconcile = loadSubscriptionReconciler("granted", calls);
+  const result = await reconcile({
+    async unsubscribe() { calls.push("unsubscribe"); }
+  }, null);
+  assert.deepEqual({ ...result }, { subscription: null, record: null });
+  assert.deepEqual(calls, ["unsubscribe", "clear-badge"]);
+
+  const retainedCalls = [];
+  const ownSubscription = { async unsubscribe() { retainedCalls.push("unsubscribe"); } };
+  const ownRecord = { id: "own-record" };
+  const retained = await loadSubscriptionReconciler("granted", retainedCalls)(ownSubscription, ownRecord);
+  assert.equal(retained.subscription, ownSubscription);
+  assert.equal(retained.record, ownRecord);
+  assert.deepEqual(retainedCalls, []);
+});
+
+test("revoked permission removes the current account's server row before unsubscribing", async () => {
+  const start = applicationSource.indexOf("async function reconcileCurrentPushSubscription");
+  const end = applicationSource.indexOf("async function refreshPushNotificationSettings", start);
+  const body = applicationSource.slice(start, end);
+  assert.ok(body.indexOf("await deleteOwnPushRecord(subscription, record)") < body.indexOf("await subscription.unsubscribe()"));
+  assert.match(body, /currentPushPermission\(\) === "granted"/);
+  assert.match(body, /await clearApplicationBadge\(\)/);
+
+  const calls = [];
+  const reconcile = loadSubscriptionReconciler("denied", calls);
+  await reconcile({
+    async unsubscribe() { calls.push("unsubscribe"); }
+  }, { id: "own-record" });
+  assert.deepEqual(calls, ["delete-record", "unsubscribe", "clear-badge"]);
 });
 
 test("Stage 10 adds safe click routing and app badges without scheduled dispatch", () => {

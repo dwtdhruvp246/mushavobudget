@@ -87,17 +87,16 @@ test("push payloads use bounded display fields and an approved payment route", a
   assert.equal(notification.options.timestamp, Date.parse("2026-09-08T12:30:00.000Z"));
   assert.equal(
     notification.options.data.targetUrl,
-    `https://mushavobudget.com/app.html?source=push&payment_item=${paymentId}&open_notifications=1#family/dashboard`
+    `https://mushavobudget.com/app.html?source=push&payment_item=${paymentId}#family/payments`
   );
   assert.deepEqual(harness.calls.badges, [1]);
 });
 
-test("payment clicks open the actionable Notifications panel instead of payment setup", () => {
-  assert.match(applicationSource, /url\.searchParams\.get\("source"\) === "push"/);
-  assert.match(applicationSource, /state\.familyTab = "dashboard"/);
-  assert.match(applicationSource, /openNotificationDialog\(\)/);
-  assert.match(applicationSource, /data-notification-payment-item-id/);
-  assert.match(applicationSource, /data-notification-payment-due-date/);
+test("payment clicks open Payments and highlight the matching payment item", () => {
+  assert.match(applicationSource, /state\.familyTab = "payments"/);
+  assert.match(applicationSource, /setRoute\("family", "payments", true\)/);
+  assert.match(applicationSource, /data-payment-item-id/);
+  assert.match(applicationSource, /target\.scrollIntoView/);
 });
 
 test("malformed push payloads fall back to private display text", async () => {
@@ -109,7 +108,7 @@ test("malformed push payloads fall back to private display text", async () => {
   assert.equal(notification.options.body, "You have a new Mushavo Budget notification.");
   assert.equal(
     notification.options.data.targetUrl,
-    "https://mushavobudget.com/app.html?source=push#family/settings"
+    "https://mushavobudget.com/app.html?source=push#family/payments"
   );
 });
 
@@ -128,7 +127,7 @@ test("notification clicks reject an external URL and open the safe signed-in rou
   assert.equal(harness.calls.matchOptions.type, "window");
   assert.equal(harness.calls.matchOptions.includeUncontrolled, true);
   assert.deepEqual(harness.calls.opened, [
-    "https://mushavobudget.com/app.html?source=push#family/settings"
+    "https://mushavobudget.com/app.html?source=push#family/payments"
   ]);
   assert.equal(harness.calls.openedFocused, true);
 });

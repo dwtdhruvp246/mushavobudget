@@ -135,7 +135,7 @@ test("notification clicks reject an external URL and open the safe signed-in rou
 test("notification clicks navigate and focus an existing Mushavo app window", async () => {
   const calls = { navigated: [], focused: 0 };
   const client = {
-    url: "https://mushavobudget.com/app.html#family/dashboard",
+    url: "https://mushavobudget.com/app#family/dashboard",
     async navigate(url) {
       calls.navigated.push(url);
       return this;

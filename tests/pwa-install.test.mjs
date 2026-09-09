@@ -253,9 +253,10 @@ test("all user-facing pages and the deployment shell include Stage 4 assets", ()
   for (const [name, page] of pages) {
     assert.match(page, /\/pwa-install\.css\?v=1/, `${name} is missing install styles`);
     assert.match(page, /\/pwa-install\.js\?v=1/, `${name} is missing install logic`);
-    assert.match(page, /\/pwa\.js\?v=11/, `${name} is missing the current release helper`);
+    assert.match(page, /\/pwa\.js\?v=12/, `${name} is missing the current release helper`);
+    assert.match(page, /\/manifest\.webmanifest\?v=4/, `${name} is missing the current manifest`);
   }
-  assert.match(workerSource, /pwa-shell-v15/);
+  assert.match(workerSource, /pwa-shell-v16/);
   assert.match(workerSource, /"\/pwa-install\.js\?v=1"/);
   assert.match(workerSource, /"\/pwa-install\.css\?v=1"/);
   assert.match(workflowSource, /pwa-install\.js/);

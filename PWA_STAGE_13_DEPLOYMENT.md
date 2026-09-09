@@ -19,10 +19,15 @@ secrets, Vault secrets, or the active 15-minute Cron schedule.
 
 ## Release markers
 
-- App version: `4.4.2`
+- App version: `4.4.3`
 - App script: `app.js?v=63`
-- PWA helper: `pwa.js?v=11`
-- Service-worker cache: `pwa-shell-v15`
+- PWA helper: `pwa.js?v=12`
+- Service-worker cache: `pwa-shell-v16`
+
+Version 4.4.3 stores the session-aware entry shell and generic offline page
+under redirect-independent cache keys. This preserves safe cold launches on
+hosts that canonicalize `/app-entry.html` to `/app-entry`, while continuing to
+exclude the authenticated application and Supabase traffic from the cache.
 
 No Supabase migration or Edge Function deployment is required for this web
 release.

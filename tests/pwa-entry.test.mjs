@@ -137,8 +137,9 @@ test("network failure shows the offline state instead of redirecting", async () 
   assert.equal(elements.entryTitle.textContent, "Connect to open your workspace");
 });
 
-test("installed app starts at the session-aware entry while the public homepage stays public", () => {
-  assert.equal(manifest.start_url, "/app-entry.html?source=pwa");
+test("installed app starts at the canonical session-aware entry while the public homepage stays public", () => {
+  assert.equal(manifest.start_url, "/app-entry?source=pwa");
+  assert.equal(manifest.shortcuts[0].url, "/app-entry?source=shortcut");
   assert.doesNotMatch(publicHomepage, /location\.(?:replace|assign)\([^)]*app-entry/i);
 });
 
@@ -146,9 +147,81 @@ test("service worker caches only the safe launcher shell", () => {
   const shellStart = serviceWorkerSource.indexOf("const SAFE_SHELL = [");
   const shellEnd = serviceWorkerSource.indexOf("];", shellStart);
   const safeShellSource = serviceWorkerSource.slice(shellStart, shellEnd);
-  assert.match(serviceWorkerSource, /pwa-shell-v15/);
+  assert.match(serviceWorkerSource, /pwa-shell-v16/);
   assert.match(serviceWorkerSource, /"\/app-entry\.js\?v=1"/);
   assert.doesNotMatch(safeShellSource, /"\/app\.html/);
   assert.doesNotMatch(safeShellSource, /"\/config\.js/);
   assert.doesNotMatch(safeShellSource, /"\/manifest\.webmanifest/);
+});
+
+function createOfflineWorkerHarness() {
+  const listeners = new Map();
+  const stored = new Map();
+  let offline = false;
+  const cache = {
+    async addAll(urls) {
+      for (const url of urls) stored.set(url, new Response(`asset:${url}`));
+    },
+    async put(key, response) { stored.set(String(key), response.clone()); },
+    async match(key) { return stored.get(String(key))?.clone(); }
+  };
+  const caches = {
+    async open() { return cache; },
+    async keys() { return ["mushavo-budget-pwa-shell-v15", "mushavo-budget-pwa-shell-v16"]; },
+    async delete(key) { stored.delete(key); return true; }
+  };
+  const self = {
+    location: { origin: "https://mushavobudget.com" },
+    navigator: {},
+    registration: { async showNotification() {} },
+    clients: { async claim() {}, async matchAll() { return []; }, async openWindow() {} },
+    addEventListener(type, listener) { listeners.set(type, listener); },
+    async skipWaiting() {}
+  };
+  async function fetch(input) {
+    if (offline) throw new TypeError("Failed to fetch");
+    const url = String(input?.url || input);
+    if (url.includes("app-entry.html")) {
+      return new Response("<!doctype html><title>Opening Mushavo Budget</title>", { status: 200 });
+    }
+    if (url.includes("offline.html")) {
+      return new Response("<!doctype html><title>You are offline</title>", { status: 200 });
+    }
+    return new Response("asset", { status: 200 });
+  }
+  vm.runInNewContext(serviceWorkerSource, {
+    self, caches, fetch, URL, Date, Number, String, Set, Promise, Array, Response, console
+  }, { filename: "sw.js" });
+
+  async function fireInstall() {
+    let pending;
+    listeners.get("install")({ waitUntil(value) { pending = Promise.resolve(value); } });
+    await pending;
+  }
+
+  async function navigate(path) {
+    let responsePromise;
+    listeners.get("fetch")({
+      request: { method: "GET", mode: "navigate", url: `https://mushavobudget.com${path}` },
+      respondWith(value) { responsePromise = Promise.resolve(value); }
+    });
+    return responsePromise;
+  }
+
+  return { fireInstall, navigate, setOffline(value) { offline = value; }, stored };
+}
+
+test("cold offline launch uses redirect-independent cached entry and fallback pages", async () => {
+  const harness = createOfflineWorkerHarness();
+  await harness.fireInstall();
+  assert.equal(harness.stored.has("/__mushavo-budget-offline/app-entry"), true);
+  assert.equal(harness.stored.has("/__mushavo-budget-offline/page"), true);
+
+  harness.setOffline(true);
+  const legacyEntry = await harness.navigate("/app-entry.html?source=pwa");
+  assert.match(await legacyEntry.text(), /Opening Mushavo Budget/);
+  const canonicalEntry = await harness.navigate("/app-entry?source=pwa");
+  assert.match(await canonicalEntry.text(), /Opening Mushavo Budget/);
+  const privateRoute = await harness.navigate("/app.html#family/dashboard");
+  assert.match(await privateRoute.text(), /You are offline/);
 });

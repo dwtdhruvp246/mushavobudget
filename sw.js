@@ -1,6 +1,9 @@
 const CACHE_PREFIX = "mushavo-budget-";
-const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v15`;
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v16`;
+const APP_ENTRY_URL = "/app-entry.html";
 const OFFLINE_URL = "/offline.html";
+const OFFLINE_ENTRY_CACHE_KEY = "/__mushavo-budget-offline/app-entry";
+const OFFLINE_PAGE_CACHE_KEY = "/__mushavo-budget-offline/page";
 const DEFAULT_NOTIFICATION_TITLE = "Mushavo Budget";
 const DEFAULT_NOTIFICATION_BODY = "You have a new Mushavo Budget notification.";
 const DEFAULT_NOTIFICATION_TARGET = "/app.html?source=push#family/payments";
@@ -12,18 +15,17 @@ const ALLOWED_NOTIFICATION_HASHES = new Set([
   "#family/payments",
   "#family/settings"
 ]);
-const APP_WINDOW_PATHS = new Set(["/app.html", "/app-entry.html"]);
+const APP_ENTRY_PATHS = new Set(["/app-entry", "/app-entry.html"]);
+const APP_WINDOW_PATHS = new Set(["/app", "/app.html", "/app-entry", "/app-entry.html"]);
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const SAFE_SHELL = [
-  "/app-entry.html",
-  OFFLINE_URL,
   "/app-entry.js?v=1",
   "/pwa-shell.css?v=2",
   "/pwa-update.css?v=1",
   "/pwa-install.css?v=1",
   "/pwa-install.js?v=1",
-  "/pwa.js?v=11",
+  "/pwa.js?v=12",
   "/assets/mushavo-budget-logo.png",
   "/assets/pwa-icon-192.png",
   "/assets/pwa-icon-512.png",
@@ -184,10 +186,29 @@ async function navigationResponse(request) {
     return await fetch(request, { cache: "no-store" });
   } catch (_error) {
     const cache = await caches.open(STATIC_CACHE);
-    return (await cache.match(request, { ignoreSearch: true })) ||
-      (await cache.match(OFFLINE_URL)) ||
+    const requestUrl = new URL(request.url);
+    const offlineCacheKey = APP_ENTRY_PATHS.has(requestUrl.pathname)
+      ? OFFLINE_ENTRY_CACHE_KEY
+      : OFFLINE_PAGE_CACHE_KEY;
+    return (await cache.match(offlineCacheKey)) ||
       Response.error();
   }
+}
+
+async function cacheStaticShell() {
+  const cache = await caches.open(STATIC_CACHE);
+  const [entryResponse, offlineResponse] = await Promise.all([
+    fetch(APP_ENTRY_URL, { cache: "no-cache" }),
+    fetch(OFFLINE_URL, { cache: "no-cache" })
+  ]);
+  if (!entryResponse.ok || !offlineResponse.ok) {
+    throw new Error("PWA_OFFLINE_SHELL_FETCH_FAILED");
+  }
+  await Promise.all([
+    cache.addAll(SAFE_SHELL),
+    cache.put(OFFLINE_ENTRY_CACHE_KEY, entryResponse),
+    cache.put(OFFLINE_PAGE_CACHE_KEY, offlineResponse)
+  ]);
 }
 
 async function revalidatedShellResponse(request) {
@@ -202,7 +223,7 @@ async function revalidatedShellResponse(request) {
 }
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(STATIC_CACHE).then((cache) => cache.addAll(SAFE_SHELL)));
+  event.waitUntil(cacheStaticShell());
 });
 
 self.addEventListener("activate", (event) => {

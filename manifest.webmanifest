@@ -3,7 +3,7 @@
   "short_name": "Mushavo Budget",
   "description": "Track personal, family, and business payments, responsibilities, reminders, and records.",
   "id": "/",
-  "start_url": "/app-entry.html?source=pwa",
+  "start_url": "/app-entry?source=pwa",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ECFEFF",
@@ -30,6 +30,6 @@
   ],
   "categories": ["finance", "productivity", "utilities"],
   "shortcuts": [
-    { "name": "Open workspace", "short_name": "Workspace", "url": "/app-entry.html?source=shortcut" }
+    { "name": "Open workspace", "short_name": "Workspace", "url": "/app-entry?source=shortcut" }
   ]
 }

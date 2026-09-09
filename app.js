@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 59
+// Mushavo Budget authenticated application — release 60
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -86,6 +86,10 @@ const state = {
   adminTab: "dashboard",
   familyTab: "dashboard",
   editingObligationId: null,
+  paymentSearch: "",
+  paymentSort: "due_soonest",
+  paymentHistoryItemId: null,
+  recordPaymentOccurrenceChoices: [],
   filterMonth: toMonthValue(new Date()),
   filterStatus: "all",
   reportCurrencyFilter: "all",
@@ -992,6 +996,10 @@ function resetState() {
   state.adminFinanceSettings = null;
   state.adminPaymentConversions = [];
   state.adminRateStatus = null;
+  state.paymentSearch = "";
+  state.paymentSort = "due_soonest";
+  state.paymentHistoryItemId = null;
+  state.recordPaymentOccurrenceChoices = [];
   state.adminTab = "dashboard";
   state.familyTab = "dashboard";
   state.editingObligationId = null;
@@ -1155,6 +1163,7 @@ async function selectFamily(familyId) {
     if (!state.family) return;
     state.family = null;
     state.editingObligationId = null;
+    resetPaymentListView();
     persistSelectedFamily();
     await Promise.all([loadFamilyFinancialData(), loadWorkspaceSubscriptionData()]);
     renderFamilyApp();
@@ -1164,9 +1173,18 @@ async function selectFamily(familyId) {
   if (!family || family.id === state.family?.id) return;
   state.family = family;
   state.editingObligationId = null;
+  resetPaymentListView();
   persistSelectedFamily();
   await Promise.all([loadFamilyFinancialData(), loadWorkspaceSubscriptionData()]);
   renderFamilyApp();
+}
+
+function resetPaymentListView() {
+  state.paymentSearch = "";
+  state.paymentHistoryItemId = null;
+  state.recordPaymentOccurrenceChoices = [];
+  if ($("#paymentHistoryDialog")?.open) $("#paymentHistoryDialog").close();
+  if ($("#recordPaymentDialog")?.open) $("#recordPaymentDialog").close();
 }
 
 async function loadFamilyData() {
@@ -1925,18 +1943,90 @@ function renderMemberResponsibility(occurrences) {
 
 function renderObligations() {
   const list = $("#obligationsList");
+  const searchInput = $("#paymentSearch");
+  const sortSelect = $("#paymentSort");
+  const clearButton = $("#clearPaymentSearch");
+  const resultsCount = $("#paymentResultsCount");
+  if (searchInput && searchInput.value !== state.paymentSearch) searchInput.value = state.paymentSearch;
+  if (sortSelect) sortSelect.value = state.paymentSort;
+  if (clearButton) clearButton.hidden = !state.paymentSearch;
   if (!state.paymentItems.length) {
+    if (resultsCount) resultsCount.textContent = "0 payments";
     list.innerHTML = emptyState("No recurring obligations", "Add rent, utilities, school fees, subscriptions, or family contributions.");
     return;
   }
+
+  const occurrenceChoices = new Map(
+    state.paymentItems.map((item) => [item.id, recordableOccurrencesForItem(item)])
+  );
+  const search = state.paymentSearch.trim().toLowerCase();
+  const visibleItems = state.paymentItems
+    .filter((item) => !search || paymentItemSearchText(item).includes(search))
+    .sort((left, right) => comparePaymentItems(left, right, occurrenceChoices));
+
+  if (resultsCount) {
+    resultsCount.textContent = search
+      ? `${visibleItems.length} of ${state.paymentItems.length} payment${state.paymentItems.length === 1 ? "" : "s"}`
+      : `${visibleItems.length} payment${visibleItems.length === 1 ? "" : "s"}`;
+  }
+  if (!visibleItems.length) {
+    list.innerHTML = emptyState("No matching payments", "Try another name, category, currency, member, or recurrence.");
+    return;
+  }
   list.innerHTML = "";
-  state.paymentItems.forEach((item) => list.append(renderObligationCard(item)));
+  visibleItems.forEach((item) => list.append(renderObligationCard(item, occurrenceChoices.get(item.id) || [])));
 }
 
-function renderObligationCard(item) {
+function paymentItemSearchText(item) {
   const member = effectiveResponsibleMember(item);
+  return [
+    item.name,
+    item.category,
+    item.currency,
+    member?.name,
+    member?.role,
+    recurrenceLabel(item),
+    paymentScheduleLabel(item),
+    item.visibility,
+    item.status
+  ].filter(Boolean).join(" ").toLowerCase();
+}
+
+function comparePaymentItems(left, right, occurrenceChoices) {
+  const byName = left.name.localeCompare(right.name, undefined, { sensitivity: "base" });
+  if (state.paymentSort === "name_asc") return byName;
+  if (state.paymentSort === "name_desc") return -byName;
+  if (state.paymentSort === "newest" || state.paymentSort === "oldest") {
+    const direction = state.paymentSort === "newest" ? -1 : 1;
+    return direction * `${left.created_at || ""}`.localeCompare(`${right.created_at || ""}`) || byName;
+  }
+  if (state.paymentSort === "amount_asc" || state.paymentSort === "amount_desc") {
+    const currencyOrder = `${left.currency || ""}`.localeCompare(`${right.currency || ""}`);
+    if (currencyOrder) return currencyOrder;
+    const direction = state.paymentSort === "amount_asc" ? 1 : -1;
+    return direction * (Number(left.amount || 0) - Number(right.amount || 0)) || byName;
+  }
+  const leftDue = preferredRecordOccurrence(occurrenceChoices.get(left.id) || [])?.dueDate || "9999-12-31";
+  const rightDue = preferredRecordOccurrence(occurrenceChoices.get(right.id) || [])?.dueDate || "9999-12-31";
+  const inactiveOrder = Number(left.status === "inactive") - Number(right.status === "inactive");
+  return inactiveOrder || leftDue.localeCompare(rightDue) || byName;
+}
+
+function renderObligationCard(item, occurrenceChoices = []) {
+  const member = effectiveResponsibleMember(item);
+  const occurrence = preferredRecordOccurrence(occurrenceChoices);
+  const workspaceReadOnly = Boolean(state.workspaceEntitlement?.read_only || state.workspaceEntitlement?.effective_status === "suspended");
+  const isPaused = item.status === "inactive";
+  const recordDisabled = workspaceReadOnly || isPaused || !occurrence;
+  const recordReason = workspaceReadOnly
+    ? "Renew this workspace to record payments"
+    : isPaused
+      ? "Reactivate this payment before recording it"
+      : !occurrence
+        ? "No outstanding payment period is available"
+        : "";
   const article = document.createElement("article");
-  article.className = "record-card";
+  article.className = "record-card payment-management-card";
   article.dataset.paymentItemId = item.id;
   article.innerHTML = `
     <div class="record-main">
@@ -1950,13 +2040,23 @@ function renderObligationCard(item) {
       </div>
     </div>
     <div class="record-side">
-      <strong>${money(item.amount, item.currency)}</strong>
-      <div class="row-actions">
-        <button type="button" data-edit-obligation="${item.id}">Edit</button>
-        <button type="button" data-toggle-obligation="${item.id}" data-next-status="${item.status === "inactive" ? "active" : "inactive"}">
-          ${item.status === "inactive" ? "Reactivate" : "Pause"}
-        </button>
-        <button type="button" data-delete-obligation="${item.id}">Delete</button>
+      <div class="payment-card-amount">
+        <strong>${money(item.amount, item.currency)}</strong>
+        ${occurrence && !isPaused ? `<small>${occurrence.status === "overdue" ? "Overdue" : occurrence.status === "partial" ? "Part-paid period" : "Next due"}: ${escapeHtml(occurrence.dueDate)}</small>` : ""}
+      </div>
+      <div class="row-actions payment-card-actions">
+        <button class="primary payment-record-action" type="button" data-record-payment-item="${item.id}" ${recordDisabled ? "disabled" : ""} title="${escapeHtml(recordReason)}">Record payment</button>
+        <button type="button" data-open-payment-history="${item.id}">History</button>
+        <button type="button" data-edit-obligation="${item.id}" ${workspaceReadOnly ? "disabled" : ""}>Edit</button>
+        <details class="payment-more-menu">
+          <summary role="button">More</summary>
+          <div class="payment-more-menu-list">
+            <button type="button" data-toggle-obligation="${item.id}" data-next-status="${isPaused ? "active" : "inactive"}" ${workspaceReadOnly ? "disabled" : ""}>
+              ${isPaused ? "Reactivate" : "Pause"}
+            </button>
+            <button class="danger-text" type="button" data-delete-obligation="${item.id}" ${workspaceReadOnly ? "disabled" : ""}>Delete</button>
+          </div>
+        </details>
       </div>
     </div>
   `;
@@ -4935,6 +5035,124 @@ function userCreatedPersonalPaymentCount() {
   ).length;
 }
 
+function recordableOccurrencesForItem(item) {
+  if (!item || item.status === "inactive") return [];
+  const todayValue = toDateValue(new Date());
+  const currentMonth = toMonthValue(new Date());
+  const byKey = new Map();
+  const addOccurrences = (occurrences) => {
+    occurrences.forEach((occurrence) => {
+      if (occurrence.outstanding > 0.00005) byKey.set(occurrence.key, occurrence);
+    });
+  };
+
+  for (let offset = -12; offset <= 0; offset += 1) {
+    addOccurrences(generateOccurrences([item], state.paymentRecords, offsetMonthValue(currentMonth, offset)));
+  }
+
+  state.paymentRecords
+    .filter((record) => record.payment_item_id === item.id && record.period_start)
+    .forEach((record) => {
+      const targetMonth = `${record.period_start}`.slice(0, 7);
+      const targetDate = parseDate(monthStart(targetMonth));
+      const occurrence = item.recurrence_type === "custom_days"
+        ? occurrenceForItem(item, state.paymentRecords, targetDate, record.period_start)
+        : occurrenceForItem(item, state.paymentRecords, targetDate);
+      addOccurrences([occurrence]);
+    });
+
+  if (item.recurrence_type === "once" && item.start_date) {
+    addOccurrences(generateOccurrences([item], state.paymentRecords, item.start_date.slice(0, 7)));
+  }
+
+  let nextUpcoming = null;
+  for (let offset = 0; item.recurrence_type !== "once" && offset <= 120 && !nextUpcoming; offset += 1) {
+    nextUpcoming = generateOccurrences([item], state.paymentRecords, offsetMonthValue(currentMonth, offset))
+      .find((occurrence) => occurrence.outstanding > 0.00005 && occurrence.dueDate > todayValue) || null;
+  }
+  if (nextUpcoming) addOccurrences([nextUpcoming]);
+
+  const choices = [...byKey.values()].sort((left, right) => left.dueDate.localeCompare(right.dueDate));
+  const partial = choices.filter((occurrence) => occurrence.paid > 0 && occurrence.outstanding > 0);
+  const recentDue = choices
+    .filter((occurrence) => occurrence.dueDate <= todayValue && occurrence.paid <= 0)
+    .slice(-12);
+  const next = choices.find((occurrence) => occurrence.dueDate > todayValue);
+  return [...new Map([...partial, ...recentDue, ...(next ? [next] : [])].map((occurrence) => [occurrence.key, occurrence])).values()]
+    .sort((left, right) => left.dueDate.localeCompare(right.dueDate));
+}
+
+function preferredRecordOccurrence(choices) {
+  if (!choices.length) return null;
+  const todayValue = toDateValue(new Date());
+  const currentMonth = toMonthValue(new Date());
+  const partial = choices.filter((occurrence) => occurrence.paid > 0 && occurrence.outstanding > 0)
+    .sort((left, right) => left.dueDate.localeCompare(right.dueDate))[0];
+  if (partial) return partial;
+  const current = choices.find((occurrence) => occurrence.dueDate.slice(0, 7) === currentMonth);
+  if (current) return current;
+  const overdue = choices.filter((occurrence) => occurrence.dueDate < todayValue).at(-1);
+  return overdue || choices.find((occurrence) => occurrence.dueDate >= todayValue) || choices[0];
+}
+
+function populateRecordPaymentPeriods(choices, selectedKey) {
+  const field = $("#recordPaymentPeriodField");
+  const select = $("#recordPaymentPeriod");
+  select.innerHTML = choices.map((occurrence) => `
+    <option value="${escapeHtml(occurrence.key)}">
+      Due ${escapeHtml(occurrence.dueDate)} — ${escapeHtml(money(occurrence.outstanding, occurrence.item.currency))} outstanding
+    </option>
+  `).join("");
+  select.value = selectedKey;
+  field.hidden = choices.length <= 1;
+}
+
+function applyRecordPaymentOccurrence(occurrence) {
+  if (!occurrence) return;
+  $("#recordItemId").value = occurrence.item.id;
+  $("#recordPeriodStart").value = occurrence.periodStart;
+  $("#recordDueDate").value = occurrence.dueDate;
+  $("#recordPaymentTitle").textContent = `Record ${occurrence.item.name}`;
+  $("#recordPaymentMeta").textContent = `${money(occurrence.outstanding, occurrence.item.currency)} outstanding, due ${occurrence.dueDate}`;
+  $("#recordOutstanding").value = occurrence.outstanding.toFixed(4);
+  $("#recordCurrency").value = occurrence.item.currency;
+  $("#recordPaymentType").value = "full";
+  $("#recordAmount").value = `${Number(occurrence.outstanding.toFixed(4))}`;
+  $("#recordAmount").max = occurrence.outstanding.toFixed(4);
+  $("#recordAmount").readOnly = true;
+  $("#recordPaidBy").value = occurrence.item.responsible_member_id || "";
+}
+
+function showRecordPaymentDialog(choices, selectedOccurrence) {
+  state.recordPaymentOccurrenceChoices = choices;
+  $("#recordPaymentForm").reset();
+  populateRecordPaymentPeriods(choices, selectedOccurrence.key);
+  applyRecordPaymentOccurrence(selectedOccurrence);
+  $("#recordPaymentDate").value = toDateValue(new Date());
+  const dialog = $("#recordPaymentDialog");
+  if (!dialog.open) dialog.showModal();
+}
+
+function openRecordPaymentForItem(itemId) {
+  if (state.workspaceEntitlement?.read_only || state.workspaceEntitlement?.effective_status === "suspended") {
+    showToast("This shared workspace is read-only. The owner must renew it before payments can be recorded.");
+    return;
+  }
+  const item = state.paymentItems.find((paymentItem) => paymentItem.id === itemId);
+  if (!item) return;
+  if (item.status === "inactive") {
+    showToast("Reactivate this payment before recording it.");
+    return;
+  }
+  const choices = recordableOccurrencesForItem(item);
+  const selectedOccurrence = preferredRecordOccurrence(choices);
+  if (!selectedOccurrence) {
+    showToast("There is no outstanding period available for this payment.");
+    return;
+  }
+  showRecordPaymentDialog(choices, selectedOccurrence);
+}
+
 function openRecordPayment(key) {
   if (state.workspaceEntitlement?.read_only || state.workspaceEntitlement?.effective_status === "suspended") {
     showToast("This shared workspace is read-only. The owner must renew it before payments can be recorded.");
@@ -4944,23 +5162,85 @@ function openRecordPayment(key) {
   const occurrences = generateOccurrences(state.paymentItems, state.paymentRecords, periodStart.slice(0, 7));
   const occurrence = occurrences.find((item) => item.key === key);
   if (!occurrence) return;
-  $("#recordItemId").value = occurrence.item.id;
-  $("#recordPeriodStart").value = occurrence.periodStart;
-  $("#recordDueDate").value = occurrence.dueDate;
-  $("#recordPaymentTitle").textContent = `Record ${occurrence.item.name}`;
-  $("#recordPaymentMeta").textContent = `${money(occurrence.outstanding, occurrence.item.currency)} outstanding, due ${occurrence.dueDate}`;
-  $("#recordOutstanding").value = occurrence.outstanding.toFixed(2);
-  $("#recordCurrency").value = occurrence.item.currency;
-  $("#recordPaymentType").value = "full";
-  $("#recordAmount").value = occurrence.outstanding.toFixed(2);
-  $("#recordAmount").max = occurrence.outstanding.toFixed(2);
-  $("#recordAmount").readOnly = true;
-  $("#recordPaidBy").value = occurrence.item.responsible_member_id || "";
-  $("#recordPaymentDate").value = toDateValue(new Date());
-  $("#recordReference").value = "";
-  $("#recordNotes").value = "";
-  $("#recordProof").value = "";
-  $("#recordPaymentDialog").showModal();
+  const choices = recordableOccurrencesForItem(occurrence.item);
+  if (!choices.some((choice) => choice.key === occurrence.key)) choices.push(occurrence);
+  choices.sort((left, right) => left.dueDate.localeCompare(right.dueDate));
+  showRecordPaymentDialog(choices, occurrence);
+}
+
+function paymentHistoryRecordStatus(record, item) {
+  const samePeriod = state.paymentRecords
+    .filter((candidate) => candidate.payment_item_id === item.id && candidate.period_start === record.period_start)
+    .sort((left, right) => `${left.payment_date || ""}:${left.created_at || ""}`.localeCompare(`${right.payment_date || ""}:${right.created_at || ""}`));
+  let cumulative = 0;
+  for (const candidate of samePeriod) {
+    cumulative += Number(candidate.amount || 0);
+    if (candidate.id === record.id) break;
+  }
+  return cumulative + 0.00005 >= Number(item.amount || 0) ? "Paid in full" : "Partial";
+}
+
+function renderPaymentHistoryRecord(record, item) {
+  const member = memberById(record.paid_by_member_id);
+  const recordCurrency = record.currency || item.currency;
+  const status = paymentHistoryRecordStatus(record, item);
+  const workspaceReadOnly = Boolean(state.workspaceEntitlement?.read_only || state.workspaceEntitlement?.effective_status === "suspended");
+  const article = document.createElement("article");
+  article.className = "payment-history-record";
+  article.innerHTML = `
+    <div class="payment-history-record-date">
+      <strong>${parseDate(record.payment_date).getDate()}</strong>
+      <span>${parseDate(record.payment_date).toLocaleString("en", { month: "short", year: "numeric" })}</span>
+    </div>
+    <div class="payment-history-record-main">
+      <div class="payment-history-record-title">
+        <strong>${money(record.amount, recordCurrency)}</strong>
+        <span class="mini-badge ${status === "Paid in full" ? "paid" : "partial"}">${status}</span>
+      </div>
+      <span>Due ${escapeHtml(record.due_date || record.period_start)} &middot; ${escapeHtml(member?.name || "Household account")}</span>
+      <span>${escapeHtml(record.payment_method || "Method not set")} &middot; ${escapeHtml(record.reference_number || "No reference")}</span>
+      ${record.notes ? `<small>${escapeHtml(record.notes)}</small>` : ""}
+      ${record.proof_name ? `<small>Proof: ${escapeHtml(record.proof_name)}${record.proof_size_bytes ? ` &middot; ${formatFileSize(record.proof_size_bytes)}` : ""}</small>` : ""}
+    </div>
+    <div class="payment-history-record-actions">
+      ${record.proof_path ? `<button type="button" data-open-proof="${record.id}">View proof</button>` : ""}
+      <button class="danger-text" type="button" data-delete-record="${record.id}" ${workspaceReadOnly ? "disabled" : ""}>Delete</button>
+    </div>
+  `;
+  return article;
+}
+
+function renderPaymentHistory() {
+  const item = state.paymentItems.find((paymentItem) => paymentItem.id === state.paymentHistoryItemId);
+  if (!item) return;
+  const records = state.paymentRecords
+    .filter((record) => record.payment_item_id === item.id)
+    .sort((left, right) => `${right.payment_date || ""}:${right.created_at || ""}`.localeCompare(`${left.payment_date || ""}:${left.created_at || ""}`));
+  $("#paymentHistoryTitle").textContent = `${item.name} history`;
+  $("#paymentHistoryMeta").textContent = `${item.category} · ${recurrenceLabel(item)} · ${money(item.amount, item.currency)} per payment`;
+  $("#paymentHistoryCount").textContent = `${records.length}`;
+  $("#paymentHistoryTotal").textContent = records.length
+    ? formatCurrencyTotals(records.map((record) => ({
+      amount: record.amount,
+      currency: record.currency || item.currency
+    })))
+    : money(0, item.currency);
+  $("#paymentHistoryLatest").textContent = records.length ? parseDate(records[0].payment_date).toLocaleDateString() : "None";
+  const list = $("#paymentHistoryList");
+  if (!records.length) {
+    list.innerHTML = emptyState("No payment history yet", "Use Record payment to save the first payment for this item.");
+    return;
+  }
+  list.innerHTML = "";
+  records.forEach((record) => list.append(renderPaymentHistoryRecord(record, item)));
+}
+
+function openPaymentHistory(itemId) {
+  if (!state.paymentItems.some((item) => item.id === itemId)) return;
+  state.paymentHistoryItemId = itemId;
+  renderPaymentHistory();
+  const dialog = $("#paymentHistoryDialog");
+  if (!dialog.open) dialog.showModal();
 }
 
 async function savePaymentRecord(event) {
@@ -5057,6 +5337,7 @@ async function openPaymentProof(recordId) {
 
 async function deletePaymentRecord(recordId) {
   const record = state.paymentRecords.find((item) => item.id === recordId);
+  const openHistoryItemId = state.paymentHistoryItemId;
   try {
     await query("payment_records delete", supabase.from("payment_records").delete().eq("id", recordId));
     let proofCleanupFailed = false;
@@ -5066,6 +5347,7 @@ async function deletePaymentRecord(recordId) {
     }
     await loadPaymentRecords();
     renderFamilyApp();
+    if (openHistoryItemId && $("#paymentHistoryDialog").open) renderPaymentHistory();
     showToast(proofCleanupFailed ? "Payment deleted. The receipt file still needs admin cleanup." : "Payment record deleted.");
   } catch (error) {
     showToast(error.message);
@@ -5077,6 +5359,7 @@ async function deletePaymentItem(itemId) {
     .filter((record) => record.payment_item_id === itemId && record.proof_path)
     .map((record) => record.proof_path);
   try {
+    if (state.paymentHistoryItemId === itemId && $("#paymentHistoryDialog").open) $("#paymentHistoryDialog").close();
     await query("payment item delete", supabase.from("payment_items").delete().eq("id", itemId));
     let proofCleanupFailed = false;
     if (proofPaths.length) {
@@ -5613,6 +5896,7 @@ function escapeHtml(value) {
 
 document.addEventListener("click", async (event) => {
   if (event.target.dataset.closePaymentDialog !== undefined) $("#recordPaymentDialog").close();
+  if (event.target.closest("[data-close-payment-history]")) $("#paymentHistoryDialog").close();
   if (event.target.closest("[data-open-payment-item-dialog]")) openPaymentItemDialog();
   if (event.target.closest("[data-close-payment-item-dialog]")) $("#paymentItemDialog").close();
   if (event.target.closest("[data-open-invite-dialog]")) openInviteMemberDialog();
@@ -5731,6 +6015,12 @@ document.addEventListener("click", async (event) => {
     if ($("#notificationDialog").open) $("#notificationDialog").close();
     openRecordPayment(recordPaymentKey);
   }
+
+  const recordPaymentItem = event.target.closest("[data-record-payment-item]");
+  if (recordPaymentItem) openRecordPaymentForItem(recordPaymentItem.dataset.recordPaymentItem);
+
+  const paymentHistory = event.target.closest("[data-open-payment-history]");
+  if (paymentHistory) openPaymentHistory(paymentHistory.dataset.openPaymentHistory);
 
   const openProofId = event.target.dataset.openProof;
   if (openProofId) await openPaymentProof(openProofId);
@@ -5873,12 +6163,24 @@ $("#recurrenceType").addEventListener("change", updateRecurrenceControls);
   field.addEventListener("change", syncPaymentStartDate);
 });
 $("#recordPaymentForm").addEventListener("submit", savePaymentRecord);
+$("#recordPaymentPeriod").addEventListener("change", (event) => {
+  const occurrence = state.recordPaymentOccurrenceChoices.find((choice) => choice.key === event.target.value);
+  applyRecordPaymentOccurrence(occurrence);
+});
+$("#recordPaymentDialog").addEventListener("close", () => {
+  state.recordPaymentOccurrenceChoices = [];
+  $("#recordPaymentPeriod").innerHTML = "";
+  $("#recordPaymentPeriodField").hidden = true;
+});
+$("#paymentHistoryDialog").addEventListener("close", () => {
+  state.paymentHistoryItemId = null;
+});
 $("#recordPaymentType").addEventListener("change", (event) => {
   const amountInput = $("#recordAmount");
   const outstanding = Number($("#recordOutstanding").value || 0);
   const isFullPayment = event.target.value === "full";
   amountInput.readOnly = isFullPayment;
-  amountInput.value = isFullPayment ? outstanding.toFixed(2) : "";
+  amountInput.value = isFullPayment ? `${Number(outstanding.toFixed(4))}` : "";
   if (!isFullPayment) amountInput.focus();
 });
 $("#headForm").addEventListener("submit", addHead);
@@ -5943,6 +6245,26 @@ $("#adminSignOutButton").addEventListener("click", (event) => signOutSafely(even
 $("#suspendedSignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
 $("#obligationCurrencySearch").addEventListener("input", (event) => {
   renderPaymentCurrencyOptions(event.target.value, $("#obligationCurrency").value);
+});
+$("#paymentSearch").addEventListener("input", (event) => {
+  state.paymentSearch = event.target.value;
+  renderObligations();
+});
+$("#clearPaymentSearch").addEventListener("click", () => {
+  state.paymentSearch = "";
+  renderObligations();
+  $("#paymentSearch").focus();
+});
+$("#paymentSort").addEventListener("change", (event) => {
+  state.paymentSort = event.target.value;
+  renderObligations();
+});
+$("#paymentSearchToggle").addEventListener("click", (event) => {
+  const panel = $("#paymentSearchPanel");
+  const expanded = event.currentTarget.getAttribute("aria-expanded") === "true";
+  event.currentTarget.setAttribute("aria-expanded", `${!expanded}`);
+  panel.classList.toggle("mobile-collapsed", expanded);
+  if (!expanded) window.setTimeout(() => $("#paymentSearch").focus(), 0);
 });
 $("#paymentHead").addEventListener("change", (event) => {
   const option = event.target.selectedOptions[0];

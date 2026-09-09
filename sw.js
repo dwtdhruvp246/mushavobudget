@@ -1,9 +1,9 @@
 const CACHE_PREFIX = "mushavo-budget-";
-const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v13`;
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v14`;
 const OFFLINE_URL = "/offline.html";
 const DEFAULT_NOTIFICATION_TITLE = "Mushavo Budget";
 const DEFAULT_NOTIFICATION_BODY = "You have a new Mushavo Budget notification.";
-const DEFAULT_NOTIFICATION_TARGET = "/app.html?source=push#family/settings";
+const DEFAULT_NOTIFICATION_TARGET = "/app.html?source=push#family/payments";
 const NOTIFICATION_ICON = "/assets/pwa-icon-192.png";
 const NOTIFICATION_BADGE = "/assets/pwa-icon-192.png";
 const ALLOWED_NOTIFICATION_PATHS = new Set(["/app.html"]);
@@ -23,7 +23,7 @@ const SAFE_SHELL = [
   "/pwa-update.css?v=1",
   "/pwa-install.css?v=1",
   "/pwa-install.js?v=1",
-  "/pwa.js?v=9",
+  "/pwa.js?v=10",
   "/assets/mushavo-budget-logo.png",
   "/assets/pwa-icon-192.png",
   "/assets/pwa-icon-512.png",
@@ -82,7 +82,6 @@ function safeNotificationTarget(value) {
       if (paymentDueDate && DATE_PATTERN.test(paymentDueDate)) {
         target.searchParams.set("payment_due_date", paymentDueDate);
       }
-      target.searchParams.set("open_notifications", "1");
     }
 
     const notificationId = requested.searchParams.get("notification_id");
@@ -91,7 +90,7 @@ function safeNotificationTarget(value) {
     }
 
     target.hash = isPaymentReminder
-      ? "#family/dashboard"
+      ? "#family/payments"
       : ALLOWED_NOTIFICATION_HASHES.has(requested.hash)
         ? requested.hash
         : "#family/settings";

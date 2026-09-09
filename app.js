@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 60
+// Mushavo Budget authenticated application — release 61
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -2068,29 +2068,10 @@ function handleNotificationDeepLink() {
   const paymentItemId = url.searchParams.get("payment_item");
   if (!paymentItemId) return;
 
-  const isPaymentPush = url.searchParams.get("source") === "push";
-  if (isPaymentPush) {
-    if (state.familyTab !== "dashboard") {
-      state.familyTab = "dashboard";
-      setRoute("family", "dashboard", true);
-      renderFamilyApp();
-    }
-    openNotificationDialog();
-
-    const paymentDueDate = url.searchParams.get("payment_due_date");
-    const dueDateSelector = /^\d{4}-\d{2}-\d{2}$/.test(paymentDueDate || "")
-      ? `[data-notification-payment-due-date="${CSS.escape(paymentDueDate)}"]`
-      : "";
-    const target = document.querySelector(
-      `#notificationDialogList [data-notification-payment-item-id="${CSS.escape(paymentItemId)}"]${dueDateSelector}`
-    );
-    if (!target) return;
-    requestAnimationFrame(() => {
-      target.classList.add("notification-deep-link-target");
-      target.scrollIntoView({ behavior: "smooth", block: "center" });
-      window.setTimeout(() => target.classList.remove("notification-deep-link-target"), 6000);
-    });
-    return;
+  if (state.familyTab !== "payments") {
+    state.familyTab = "payments";
+    setRoute("family", "payments", true);
+    renderFamilyApp();
   }
 
   const target = document.querySelector(`[data-payment-item-id="${CSS.escape(paymentItemId)}"]`);

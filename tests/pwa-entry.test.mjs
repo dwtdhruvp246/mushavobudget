@@ -146,7 +146,7 @@ test("service worker caches only the safe launcher shell", () => {
   const shellStart = serviceWorkerSource.indexOf("const SAFE_SHELL = [");
   const shellEnd = serviceWorkerSource.indexOf("];", shellStart);
   const safeShellSource = serviceWorkerSource.slice(shellStart, shellEnd);
-  assert.match(serviceWorkerSource, /pwa-shell-v13/);
+  assert.match(serviceWorkerSource, /pwa-shell-v14/);
   assert.match(serviceWorkerSource, /"\/app-entry\.js\?v=1"/);
   assert.doesNotMatch(safeShellSource, /"\/app\.html/);
   assert.doesNotMatch(safeShellSource, /"\/config\.js/);

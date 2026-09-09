@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const RELEASE = "4.4.1";
+  const RELEASE = "4.4.2";
   const UPDATE_CHECK_INTERVAL_MS = 15000;
   const RELOAD_FALLBACK_MS = 5000;
   const dirtyForms = new Set();

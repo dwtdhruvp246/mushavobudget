@@ -2416,6 +2416,22 @@ async function findOwnPushSubscriptionRecord(endpoint) {
   return data;
 }
 
+async function reconcileCurrentPushSubscription(subscription, record) {
+  if (!subscription) return { subscription: null, record: null };
+
+  const permissionGranted = currentPushPermission() === "granted";
+  if (permissionGranted && record) return { subscription, record };
+
+  // A browser subscription with no row visible to the signed-in user belongs
+  // to another account or was left behind by an interrupted setup. Unsubscribe
+  // it before this account can enable notifications so private reminders can
+  // never cross an account switch on the same device.
+  if (record) await deleteOwnPushRecord(subscription, record);
+  await subscription.unsubscribe();
+  await clearApplicationBadge();
+  return { subscription: null, record: null };
+}
+
 async function refreshPushNotificationSettings() {
   const userId = state.session?.user?.id;
   if (!userId) return;
@@ -2431,10 +2447,14 @@ async function refreshPushNotificationSettings() {
 
   try {
     const registration = await activeServiceWorkerRegistration();
-    const subscription = await registration.pushManager.getSubscription();
-    const record = subscription
-      ? await findOwnPushSubscriptionRecord(subscription.endpoint)
+    const browserSubscription = await registration.pushManager.getSubscription();
+    const ownRecord = browserSubscription
+      ? await findOwnPushSubscriptionRecord(browserSubscription.endpoint)
       : null;
+    const { subscription, record } = await reconcileCurrentPushSubscription(
+      browserSubscription,
+      ownRecord
+    );
     if (sequence !== pushRefreshSequence || state.session?.user?.id !== userId) return;
     state.pushDevice = {
       busy: false,

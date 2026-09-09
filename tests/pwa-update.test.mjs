@@ -179,7 +179,7 @@ test("registers with service-worker HTTP caching disabled and checks immediately
   assert.equal(harness.calls.register[0].options.scope, "/");
   assert.equal(harness.calls.register[0].options.updateViaCache, "none");
   assert.equal(harness.calls.update, 1);
-  assert.equal(harness.window.MushavoPWA.release, "4.4.1");
+  assert.equal(harness.window.MushavoPWA.release, "4.4.2");
 });
 
 test("waiting worker displays an update banner without reloading", async () => {
@@ -258,7 +258,7 @@ test("service worker uses explicit activation and revalidation without caching p
   const shellStart = workerSource.indexOf("const SAFE_SHELL = [");
   const shellEnd = workerSource.indexOf("];", shellStart);
   const safeShellSource = workerSource.slice(shellStart, shellEnd);
-  assert.match(workerSource, /pwa-shell-v14/);
+  assert.match(workerSource, /pwa-shell-v15/);
   assert.match(workerSource, /event\.waitUntil\(self\.skipWaiting\(\)\)/);
   assert.match(workerSource, /fetch\(request, \{ cache: "no-cache" \}\)/);
   assert.doesNotMatch(safeShellSource, /"\/app\.html/);

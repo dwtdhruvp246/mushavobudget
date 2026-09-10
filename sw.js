@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "mushavo-budget-";
-const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v16`;
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v17`;
 const APP_ENTRY_URL = "/app-entry.html";
 const OFFLINE_URL = "/offline.html";
 const OFFLINE_ENTRY_CACHE_KEY = "/__mushavo-budget-offline/app-entry";
@@ -25,7 +25,7 @@ const SAFE_SHELL = [
   "/pwa-update.css?v=1",
   "/pwa-install.css?v=1",
   "/pwa-install.js?v=1",
-  "/pwa.js?v=12",
+  "/pwa.js?v=13",
   "/assets/mushavo-budget-logo.png",
   "/assets/pwa-icon-192.png",
   "/assets/pwa-icon-512.png",
@@ -34,6 +34,18 @@ const SAFE_SHELL = [
 ];
 
 const SAFE_SHELL_PATHS = new Set(SAFE_SHELL.map((url) => new URL(url, self.location.origin).pathname));
+const OFFLINE_DOCUMENTS = Object.freeze({
+  entry: `<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10b981"><title>Mushavo Budget — Offline</title>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#eefbf7;color:#122033;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.card{box-sizing:border-box;width:min(92vw,480px);padding:32px 24px;border:1px solid #c9eee2;border-radius:24px;background:#fff;box-shadow:0 20px 60px rgba(17,94,89,.12);text-align:center}.brand{margin:0 0 16px;color:#087f6d;font-size:.82rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}h1{margin:0 0 12px;font-size:clamp(1.6rem,7vw,2.2rem)}p{margin:0;color:#56677d;line-height:1.6}.notice{margin-top:20px;padding:14px;border-radius:14px;background:#effcf8;color:#176b5d;font-weight:700}</style>
+</head><body><main class="card"><p class="brand">Mushavo Budget</p><h1>Connect to open your workspace</h1><p>Mushavo Budget cannot verify your saved sign-in while offline. No financial information is being shown as current.</p><p class="notice">Reconnect, then open the app again.</p></main></body></html>`,
+  page: `<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10b981"><title>Mushavo Budget — Offline</title>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#eefbf7;color:#122033;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.card{box-sizing:border-box;width:min(92vw,480px);padding:32px 24px;border:1px solid #c9eee2;border-radius:24px;background:#fff;text-align:center}h1{margin:0 0 12px}p{margin:0;color:#56677d;line-height:1.6}</style>
+</head><body><main class="card"><h1>Your workspace needs a connection</h1><p>Reconnect to verify your session and load current payment information.</p></main></body></html>`
+});
 const NEVER_CACHE_PATH_PREFIXES = [
   "/auth/",
   "/rest/",
@@ -191,24 +203,41 @@ async function navigationResponse(request) {
       ? OFFLINE_ENTRY_CACHE_KEY
       : OFFLINE_PAGE_CACHE_KEY;
     return (await cache.match(offlineCacheKey)) ||
-      Response.error();
+      inlineOfflineResponse(APP_ENTRY_PATHS.has(requestUrl.pathname) ? "entry" : "page");
   }
+}
+
+function inlineOfflineResponse(kind) {
+  return new Response(OFFLINE_DOCUMENTS[kind] || OFFLINE_DOCUMENTS.page, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Mushavo-Offline": "inline"
+    }
+  });
 }
 
 async function cacheStaticShell() {
   const cache = await caches.open(STATIC_CACHE);
-  const [entryResponse, offlineResponse] = await Promise.all([
-    fetch(APP_ENTRY_URL, { cache: "no-cache" }),
-    fetch(OFFLINE_URL, { cache: "no-cache" })
+  const shellResults = await Promise.allSettled(SAFE_SHELL.map(async (url) => {
+    const response = await fetch(url, { cache: "no-cache" });
+    if (!response.ok) throw new Error(`PWA_SHELL_FETCH_FAILED:${url}`);
+    await cache.put(url, response);
+  }));
+
+  const documentResults = await Promise.allSettled([
+    fetch(APP_ENTRY_URL, { cache: "no-cache" }).then((response) => {
+      if (!response.ok) throw new Error("PWA_ENTRY_FETCH_FAILED");
+      return cache.put(OFFLINE_ENTRY_CACHE_KEY, response);
+    }),
+    fetch(OFFLINE_URL, { cache: "no-cache" }).then((response) => {
+      if (!response.ok) throw new Error("PWA_OFFLINE_PAGE_FETCH_FAILED");
+      return cache.put(OFFLINE_PAGE_CACHE_KEY, response);
+    })
   ]);
-  if (!entryResponse.ok || !offlineResponse.ok) {
-    throw new Error("PWA_OFFLINE_SHELL_FETCH_FAILED");
-  }
-  await Promise.all([
-    cache.addAll(SAFE_SHELL),
-    cache.put(OFFLINE_ENTRY_CACHE_KEY, entryResponse),
-    cache.put(OFFLINE_PAGE_CACHE_KEY, offlineResponse)
-  ]);
+
+  return [...shellResults, ...documentResults].every((result) => result.status === "fulfilled");
 }
 
 async function revalidatedShellResponse(request) {
@@ -223,7 +252,13 @@ async function revalidatedShellResponse(request) {
 }
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(cacheStaticShell());
+  event.waitUntil((async () => {
+    // This recovery release must replace stale Android registrations even if
+    // an optional shell asset cannot be cached. Navigation still has a fully
+    // private inline fallback and never exposes authenticated app data.
+    await cacheStaticShell();
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener("activate", (event) => {

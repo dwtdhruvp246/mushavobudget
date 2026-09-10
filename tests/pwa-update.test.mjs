@@ -175,11 +175,11 @@ function activeFormAndInput() {
 
 test("registers with service-worker HTTP caching disabled and checks immediately", async () => {
   const harness = await createHarness();
-  assert.equal(harness.calls.register[0].url, "/sw.js");
+  assert.equal(harness.calls.register[0].url, "/sw.js?v=17");
   assert.equal(harness.calls.register[0].options.scope, "/");
   assert.equal(harness.calls.register[0].options.updateViaCache, "none");
   assert.equal(harness.calls.update, 1);
-  assert.equal(harness.window.MushavoPWA.release, "4.4.3");
+  assert.equal(harness.window.MushavoPWA.release, "4.4.4");
 });
 
 test("waiting worker displays an update banner without reloading", async () => {
@@ -258,7 +258,9 @@ test("service worker uses explicit activation and revalidation without caching p
   const shellStart = workerSource.indexOf("const SAFE_SHELL = [");
   const shellEnd = workerSource.indexOf("];", shellStart);
   const safeShellSource = workerSource.slice(shellStart, shellEnd);
-  assert.match(workerSource, /pwa-shell-v16/);
+  assert.match(workerSource, /pwa-shell-v17/);
+  assert.match(workerSource, /await self\.skipWaiting\(\)/);
+  assert.match(workerSource, /X-Mushavo-Offline/);
   assert.match(workerSource, /event\.waitUntil\(self\.skipWaiting\(\)\)/);
   assert.match(workerSource, /fetch\(request, \{ cache: "no-cache" \}\)/);
   assert.doesNotMatch(safeShellSource, /"\/app\.html/);

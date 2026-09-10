@@ -147,7 +147,7 @@ test("service worker caches only the safe launcher shell", () => {
   const shellStart = serviceWorkerSource.indexOf("const SAFE_SHELL = [");
   const shellEnd = serviceWorkerSource.indexOf("];", shellStart);
   const safeShellSource = serviceWorkerSource.slice(shellStart, shellEnd);
-  assert.match(serviceWorkerSource, /pwa-shell-v16/);
+  assert.match(serviceWorkerSource, /pwa-shell-v17/);
   assert.match(serviceWorkerSource, /"\/app-entry\.js\?v=1"/);
   assert.doesNotMatch(safeShellSource, /"\/app\.html/);
   assert.doesNotMatch(safeShellSource, /"\/config\.js/);
@@ -158,6 +158,7 @@ function createOfflineWorkerHarness() {
   const listeners = new Map();
   const stored = new Map();
   let offline = false;
+  let skipWaitingCalls = 0;
   const cache = {
     async addAll(urls) {
       for (const url of urls) stored.set(url, new Response(`asset:${url}`));
@@ -167,7 +168,7 @@ function createOfflineWorkerHarness() {
   };
   const caches = {
     async open() { return cache; },
-    async keys() { return ["mushavo-budget-pwa-shell-v15", "mushavo-budget-pwa-shell-v16"]; },
+    async keys() { return ["mushavo-budget-pwa-shell-v16", "mushavo-budget-pwa-shell-v17"]; },
     async delete(key) { stored.delete(key); return true; }
   };
   const self = {
@@ -176,7 +177,7 @@ function createOfflineWorkerHarness() {
     registration: { async showNotification() {} },
     clients: { async claim() {}, async matchAll() { return []; }, async openWindow() {} },
     addEventListener(type, listener) { listeners.set(type, listener); },
-    async skipWaiting() {}
+    async skipWaiting() { skipWaitingCalls += 1; }
   };
   async function fetch(input) {
     if (offline) throw new TypeError("Failed to fetch");
@@ -208,7 +209,13 @@ function createOfflineWorkerHarness() {
     return responsePromise;
   }
 
-  return { fireInstall, navigate, setOffline(value) { offline = value; }, stored };
+  return {
+    fireInstall,
+    navigate,
+    setOffline(value) { offline = value; },
+    stored,
+    get skipWaitingCalls() { return skipWaitingCalls; }
+  };
 }
 
 test("cold offline launch uses redirect-independent cached entry and fallback pages", async () => {
@@ -224,4 +231,16 @@ test("cold offline launch uses redirect-independent cached entry and fallback pa
   assert.match(await canonicalEntry.text(), /Opening Mushavo Budget/);
   const privateRoute = await harness.navigate("/app.html#family/dashboard");
   assert.match(await privateRoute.text(), /You are offline/);
+});
+
+test("recovery worker activates and returns a private inline page when shell caching is interrupted", async () => {
+  const harness = createOfflineWorkerHarness();
+  harness.setOffline(true);
+  await harness.fireInstall();
+  assert.equal(harness.skipWaitingCalls, 1);
+
+  const response = await harness.navigate("/app-entry?source=pwa");
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("X-Mushavo-Offline"), "inline");
+  assert.match(await response.text(), /Connect to open your workspace/);
 });

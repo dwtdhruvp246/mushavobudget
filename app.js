@@ -1703,6 +1703,17 @@ function occurrenceStatus(item, dueDate, paid, amount) {
   return "upcoming";
 }
 
+function occurrenceCardStateClass(occurrence) {
+  if (occurrence.status === "paid" || occurrence.outstanding <= 0.00005) return "payment-complete";
+  const todayDay = dateValueToUtcDayNumber(toDateValue(new Date()));
+  const dueDay = dateValueToUtcDayNumber(occurrence.dueDate);
+  const reminderDays = Math.max(Number(occurrence.item.reminder_days_before ?? 3), 0);
+  if (Number.isFinite(todayDay) && Number.isFinite(dueDay) && dueDay - todayDay <= reminderDays) {
+    return "payment-reminder-active";
+  }
+  return "";
+}
+
 function renderDashboard() {
   const occurrences = selectedOccurrences();
   const dueRows = occurrences.map((item) => ({ amount: item.amount, currency: item.item.currency }));
@@ -2117,9 +2128,10 @@ function myOccurrences(occurrences) {
 function renderOccurrenceCard(occurrence, withAction = false, collapsible = false) {
   const member = effectiveResponsibleMember(occurrence.item);
   const article = document.createElement("article");
+  const stateClass = occurrenceCardStateClass(occurrence);
   if (collapsible) {
     const detailsId = `occurrence-details-${occurrence.key.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
-    article.className = "record-card occurrence-card";
+    article.className = `record-card occurrence-card${stateClass ? ` ${stateClass}` : ""}`;
     article.innerHTML = `
       <button class="occurrence-summary-button" type="button" data-toggle-occurrence-details aria-expanded="false" aria-controls="${detailsId}">
         <span class="date-chip">
@@ -2148,7 +2160,7 @@ function renderOccurrenceCard(occurrence, withAction = false, collapsible = fals
     `;
     return article;
   }
-  article.className = "record-card";
+  article.className = `record-card${stateClass ? ` ${stateClass}` : ""}`;
   article.innerHTML = `
     <div class="date-chip">
       <strong>${parseDate(occurrence.dueDate).getDate()}</strong>

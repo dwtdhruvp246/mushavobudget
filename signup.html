@@ -19,9 +19,9 @@
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
-    <link rel="stylesheet" href="styles.css?v=45" />
+    <link rel="stylesheet" href="styles.css?v=50" />
     <script src="config.js?v=26"></script>
-    <script src="/pwa.js?v=14" defer></script>
+    <script src="/pwa.js?v=15" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
   </head>
   <body>
@@ -60,27 +60,40 @@
             <div class="signup-currency-heading">
               <div>
                 <span class="field-label" id="signupCurrencyTitle">Your currencies</span>
-                <small>Choose the currency you normally use, then add any others you expect to track.</small>
+                <small>Select every currency you need, then choose one of them as your default.</small>
               </div>
-              <span id="signupCurrencyCount" class="currency-selection-count">1 selected</span>
+              <span id="signupCurrencyCount" class="currency-selection-count">0 selected</span>
             </div>
-            <label for="signupDefaultCurrency">
-              Default currency
-              <select id="signupDefaultCurrency" required aria-describedby="signupDefaultCurrencyHelp"></select>
-              <small id="signupDefaultCurrencyHelp">Used for your dashboard, reporting, and new payments.</small>
-            </label>
-            <div class="signup-selected-currencies" aria-label="Selected currencies">
-              <span class="field-label">Selected currencies</span>
-              <div id="signupCurrencyChips" class="currency-chip-list" aria-live="polite"></div>
-            </div>
-            <div class="currency-catalogue-picker">
+            <div class="signup-currency-step">
+              <div class="signup-currency-step-heading">
+                <span aria-hidden="true">1</span>
+                <div><strong>Choose currencies</strong><small>Search or tick one or more currencies.</small></div>
+              </div>
               <label for="signupCurrencySearch">
-                Add other currencies
+                Search currencies
                 <input id="signupCurrencySearch" type="search" autocomplete="off" placeholder="Search by currency name or code" />
               </label>
               <div id="signupCurrencyOptions" class="currency-option-list" role="group" aria-label="Available currencies"></div>
-              <p id="signupCurrencyLoadStatus" class="currency-picker-help">Your default currency is always included.</p>
             </div>
+            <div class="signup-currency-step signup-currency-default-step">
+              <div class="signup-currency-step-heading">
+                <span aria-hidden="true">2</span>
+                <div><strong>Choose your default</strong><small>Only currencies selected above will appear here.</small></div>
+              </div>
+              <div class="signup-selected-currencies" aria-label="Selected currencies">
+                <div id="signupCurrencyChips" class="currency-chip-list" aria-live="polite">
+                  <span class="currency-selection-empty">No currencies selected yet.</span>
+                </div>
+              </div>
+              <label for="signupDefaultCurrency">
+                Default currency
+                <select id="signupDefaultCurrency" required disabled aria-describedby="signupDefaultCurrencyHelp">
+                  <option value="">Choose currencies first</option>
+                </select>
+                <small id="signupDefaultCurrencyHelp">Used initially for your dashboard, reporting, and new payments.</small>
+              </label>
+            </div>
+            <p id="signupCurrencyLoadStatus" class="currency-picker-help">Loading available currencies...</p>
           </section>
           <div class="button-row">
             <button id="signupSubmitButton" class="primary" type="submit" disabled>Sign up</button>
@@ -110,8 +123,9 @@
       const currencyChips = document.querySelector("#signupCurrencyChips");
       const currencyCount = document.querySelector("#signupCurrencyCount");
       const currencyLoadStatus = document.querySelector("#signupCurrencyLoadStatus");
-      const selectedCurrencies = new Set(["USD"]);
-      let currencyCatalogue = [["USD", "US Dollar"]];
+      const selectedCurrencies = new Set();
+      let currencyCatalogue = [];
+      let currencyCatalogueReady = false;
 
       function escapeHtml(value) {
         const node = document.createElement("span");
@@ -120,42 +134,69 @@
       }
 
       function renderSelectedCurrencies() {
-        const defaultCurrency = defaultCurrencySelect.value || "USD";
-        selectedCurrencies.add(defaultCurrency);
+        const defaultCurrency = defaultCurrencySelect.value;
         const sorted = [...selectedCurrencies].sort((left, right) =>
           left === defaultCurrency ? -1 : right === defaultCurrency ? 1 : left.localeCompare(right)
         );
         currencyCount.textContent = `${sorted.length} selected`;
-        currencyChips.innerHTML = sorted.map((code) => {
-          const name = currencyCatalogue.find(([itemCode]) => itemCode === code)?.[1] || code;
-          const isDefault = code === defaultCurrency;
-          return `<span class="currency-chip${isDefault ? " default" : ""}">
-            <strong>${escapeHtml(code)}</strong><span>${escapeHtml(name)}</span>
-            ${isDefault
-              ? `<em>Default</em>`
-              : `<button type="button" data-remove-signup-currency="${escapeHtml(code)}" aria-label="Remove ${escapeHtml(code)}">&times;</button>`}
-          </span>`;
-        }).join("");
+        currencyChips.innerHTML = sorted.length
+          ? sorted.map((code) => {
+              const name = currencyCatalogue.find(([itemCode]) => itemCode === code)?.[1] || code;
+              const isDefault = code === defaultCurrency;
+              return `<span class="currency-chip${isDefault ? " default" : ""}">
+                <strong>${escapeHtml(code)}</strong><span>${escapeHtml(name)}</span>
+                ${isDefault ? `<em>Default</em>` : ""}
+                <button type="button" data-remove-signup-currency="${escapeHtml(code)}" aria-label="Remove ${escapeHtml(code)}">&times;</button>
+              </span>`;
+            }).join("")
+          : `<span class="currency-selection-empty">No currencies selected yet.</span>`;
+      }
+
+      function renderDefaultCurrencyOptions() {
+        const previousDefault = selectedCurrencies.has(defaultCurrencySelect.value)
+          ? defaultCurrencySelect.value
+          : "";
+        const sorted = [...selectedCurrencies].sort();
+        defaultCurrencySelect.innerHTML = `
+          <option value="">${sorted.length ? "Select your default currency" : "Choose currencies first"}</option>
+          ${sorted.map((code) => {
+            const name = currencyCatalogue.find(([itemCode]) => itemCode === code)?.[1] || code;
+            return `<option value="${escapeHtml(code)}">${escapeHtml(code)} — ${escapeHtml(name)}</option>`;
+          }).join("")}
+        `;
+        defaultCurrencySelect.disabled = !sorted.length;
+        defaultCurrencySelect.value = previousDefault;
+      }
+
+      function updateSignupAvailability() {
+        const defaultCurrency = defaultCurrencySelect.value;
+        submitButton.disabled = !currencyCatalogueReady || !defaultCurrency || !selectedCurrencies.has(defaultCurrency);
       }
 
       function renderCurrencyOptions() {
         const term = currencySearch.value.trim().toLowerCase();
-        const defaultCurrency = defaultCurrencySelect.value || "USD";
+        const defaultCurrency = defaultCurrencySelect.value;
         const matches = currencyCatalogue.filter(([code, name]) =>
           !term || code.toLowerCase().includes(term) || name.toLowerCase().includes(term)
         );
         currencyOptions.innerHTML = matches.length
           ? matches.map(([code, name]) => {
               const isDefault = code === defaultCurrency;
-              const checked = selectedCurrencies.has(code) || isDefault;
+              const checked = selectedCurrencies.has(code);
               return `<label class="currency-option${checked ? " selected" : ""}">
-                <input type="checkbox" value="${escapeHtml(code)}" ${checked ? "checked" : ""} ${isDefault ? "disabled" : ""} />
+                <input type="checkbox" value="${escapeHtml(code)}" ${checked ? "checked" : ""} />
                 <span><strong>${escapeHtml(code)}</strong><small>${escapeHtml(name)}</small></span>
                 ${isDefault ? `<em>Default</em>` : ""}
               </label>`;
             }).join("")
           : `<p class="currency-picker-empty">No currencies match your search.</p>`;
+      }
+
+      function renderCurrencyInterface() {
+        renderDefaultCurrencyOptions();
         renderSelectedCurrencies();
+        renderCurrencyOptions();
+        updateSignupAvailability();
       }
 
       async function loadCurrencyCatalogue(supabase) {
@@ -167,15 +208,10 @@
           .map((item) => [item.code, item.name]);
         if (!rows.length) throw new Error("No currencies are currently available.");
         currencyCatalogue = rows;
-        defaultCurrencySelect.innerHTML = rows
-          .map(([code, name]) => `<option value="${escapeHtml(code)}">${escapeHtml(code)} — ${escapeHtml(name)}</option>`)
-          .join("");
-        defaultCurrencySelect.value = rows.some(([code]) => code === "USD") ? "USD" : rows[0][0];
         selectedCurrencies.clear();
-        selectedCurrencies.add(defaultCurrencySelect.value);
-        currencyLoadStatus.textContent = "Your default currency is always included.";
-        submitButton.disabled = false;
-        renderCurrencyOptions();
+        currencyCatalogueReady = true;
+        currencyLoadStatus.textContent = "Select at least one currency, then choose its default.";
+        renderCurrencyInterface();
       }
 
       function showMessage(message) {
@@ -193,14 +229,17 @@
         const supabase = createClient(config.supabaseUrl, config.supabasePublishableKey);
 
         loadCurrencyCatalogue(supabase).catch((error) => {
-          currencyLoadStatus.textContent = "Currencies could not be loaded. Please refresh before creating your account.";
+          console.error("Signup currency catalogue unavailable", error);
+          currencyCatalogueReady = false;
+          currencyLoadStatus.textContent = "Currency choices are temporarily unavailable. Please try again shortly.";
           submitButton.disabled = true;
-          showMessage(error.message || "Currencies could not be loaded.");
+          showMessage("Currency choices could not be loaded. Please try again.");
         });
 
         defaultCurrencySelect.addEventListener("change", () => {
-          selectedCurrencies.add(defaultCurrencySelect.value);
+          renderSelectedCurrencies();
           renderCurrencyOptions();
+          updateSignupAvailability();
         });
         currencySearch.addEventListener("input", renderCurrencyOptions);
         currencyOptions.addEventListener("change", (event) => {
@@ -208,13 +247,13 @@
           if (!checkbox) return;
           if (checkbox.checked) selectedCurrencies.add(checkbox.value);
           else selectedCurrencies.delete(checkbox.value);
-          renderCurrencyOptions();
+          renderCurrencyInterface();
         });
         currencyChips.addEventListener("click", (event) => {
           const button = event.target.closest("[data-remove-signup-currency]");
           if (!button) return;
           selectedCurrencies.delete(button.dataset.removeSignupCurrency);
-          renderCurrencyOptions();
+          renderCurrencyInterface();
         });
 
         form.addEventListener("submit", async (event) => {
@@ -225,10 +264,12 @@
           const confirmation = document.querySelector("#signupPasswordConfirm").value;
           const defaultCurrency = defaultCurrencySelect.value;
 
-          selectedCurrencies.add(defaultCurrency);
-
           if (password !== confirmation) {
             showMessage("Passwords do not match.");
+            return;
+          }
+          if (!defaultCurrency || !selectedCurrencies.has(defaultCurrency)) {
+            showMessage("Choose at least one currency and select your default.");
             return;
           }
 

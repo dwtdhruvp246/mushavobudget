@@ -17,14 +17,14 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="styles.css?v=50" />
+    <link rel="stylesheet" href="styles.css?v=51" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
-    <script src="/pwa.js?v=15" defer></script>
+    <script src="/pwa.js?v=16" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=64"></script>
+    <script type="module" src="app.js?v=65"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -153,7 +153,7 @@
             <div class="sidebar-footer">
               <button type="button">Contact support</button>
               <button id="adminSignOutButton" type="button">Sign out</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.4.6</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.4.7</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -476,7 +476,7 @@
             </div>
             <div class="sidebar-footer">
               <button type="button">Contact support</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.4.6</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.4.7</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -643,8 +643,16 @@
               </dl>
             </section>
             <section id="subscriptionAccessNotice" class="notice hidden"></section>
-            <section class="ledger-panel">
-              <div class="panel-heading"><p class="eyebrow">Compare plans</p><h3>Personal and family plans</h3><p class="muted-copy">Compare every available Personal and Household plan. A plan can only be selected for a matching workspace.</p></div>
+            <section class="ledger-panel workspace-plans-panel">
+              <div class="panel-heading"><p class="eyebrow">Compare plans</p><h3 id="workspacePlansTitle">Plans for this workspace</h3><p id="workspacePlansDescription" class="muted-copy">Compare the plans available for the selected workspace.</p></div>
+              <div class="workspace-plan-controls" aria-label="Plan pricing options">
+                <div class="workspace-billing-toggle" role="group" aria-label="Billing period">
+                  <button class="active" type="button" data-workspace-plan-period="monthly" aria-pressed="true">Monthly</button>
+                  <button type="button" data-workspace-plan-period="annual" aria-pressed="false">Annual</button>
+                </div>
+                <label for="workspacePlanCurrency">Currency<select id="workspacePlanCurrency" aria-label="Plan price currency"></select></label>
+                <small id="workspacePlanPricingNote">Prices are loaded from the live Mushavo Budget catalogue.</small>
+              </div>
               <div id="workspacePlanList" class="plan-card-grid"></div>
             </section>
             <section class="content-grid subscription-history-grid">

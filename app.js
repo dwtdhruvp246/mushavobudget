@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 61
+// Mushavo Budget authenticated application — release 62
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -53,6 +53,7 @@ const state = {
   memberUsage: null,
   plans: [],
   planPrices: [],
+  planFeatures: [],
   planLimits: [],
   renewalRequests: [],
   subscriptionInvoices: [],
@@ -94,7 +95,10 @@ const state = {
   filterStatus: "all",
   reportCurrencyFilter: "all",
   reportViewMode: "original",
-  reportReportingCurrency: null
+  reportReportingCurrency: null,
+  workspacePlanBillingPeriod: "monthly",
+  workspacePlanCurrency: null,
+  workspacePlanWorkspaceId: null
 };
 
 const realtime = {
@@ -117,6 +121,18 @@ const PAYMENT_PROOF_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "a
 const QUERY_TIMEOUT_MS = 15000;
 const PUSH_READY_TIMEOUT_MS = 12000;
 const pushSupport = window.MushavoPushSupport || null;
+
+const PLAN_FEATURE_LABELS = {
+  "finance.analytics": "Finance analytics",
+  "payments.recurring": "Recurring payment schedules",
+  "receipts.upload": "Receipt and proof uploads",
+  "reports.advanced": "Advanced reports",
+  "export.csv": "CSV export",
+  "export.pdf": "Print and PDF reports",
+  "members.invite": "Member invitations",
+  "approvals.enabled": "Approval controls",
+  "audit.full_history": "Full audit history"
+};
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -966,6 +982,7 @@ function resetState() {
   state.memberUsage = null;
   state.plans = [];
   state.planPrices = [];
+  state.planFeatures = [];
   state.planLimits = [];
   state.renewalRequests = [];
   state.subscriptionInvoices = [];
@@ -1006,6 +1023,9 @@ function resetState() {
   state.reportCurrencyFilter = "all";
   state.reportViewMode = "original";
   state.reportReportingCurrency = null;
+  state.workspacePlanBillingPeriod = "monthly";
+  state.workspacePlanCurrency = null;
+  state.workspacePlanWorkspaceId = null;
 }
 
 async function loadApp() {
@@ -1263,11 +1283,12 @@ function currentWorkspaceIsOwned() {
 
 async function loadWorkspaceSubscriptionData() {
   await query("personal workspace provision", supabase.rpc("provision_my_budget_workspace"));
-  const [workspaces, members, plans, prices, limits, supportedCurrencies] = await Promise.all([
+  const [workspaces, members, plans, prices, features, limits, supportedCurrencies] = await Promise.all([
     query("workspace load", supabase.from("budget_workspaces").select("*").order("created_at", { ascending: true })),
     query("workspace membership load", supabase.from("workspace_members").select("*").order("created_at", { ascending: true })),
     query("plan catalogue load", supabase.from("plans").select("*").eq("is_active", true).order("sort_order", { ascending: true })),
     query("plan prices load", supabase.from("plan_prices").select("*").eq("is_active", true).order("effective_from", { ascending: false })),
+    query("plan features load", supabase.from("plan_features").select("*").eq("enabled", true)),
     query("plan limits load", supabase.from("plan_limits").select("*")),
     query("supported currencies load", supabase.from("supported_currencies").select("*").eq("is_active", true).order("code"))
   ]);
@@ -1275,6 +1296,7 @@ async function loadWorkspaceSubscriptionData() {
   state.workspaceMembers = members;
   state.plans = plans;
   state.planPrices = prices;
+  state.planFeatures = features;
   state.planLimits = limits;
   state.supportedCurrencies = supportedCurrencies;
   populateWorkspaceCreationCurrencySelects();
@@ -1314,6 +1336,11 @@ async function loadWorkspaceSubscriptionData() {
   state.exchangeRates = rates;
   state.exchangeRateStatus = rateStatus;
   state.paymentConversions = conversions;
+  if (state.workspacePlanWorkspaceId !== workspace.id) {
+    state.workspacePlanWorkspaceId = workspace.id;
+    state.workspacePlanBillingPeriod = subscriptions[0]?.billing_period === "annual" ? "annual" : "monthly";
+    state.workspacePlanCurrency = settings?.default_payment_currency || workspace.currency || null;
+  }
 }
 
 async function loadAdminData(tab = state.adminTab) {
@@ -2897,6 +2924,58 @@ function includedMemberSeats(plan) {
   return plan?.code === "household" ? 4 : plan?.code === "business" ? 6 : 1;
 }
 
+function activePaymentLimitForPlan(plan) {
+  const configured = state.planLimits.find((limit) =>
+    limit.plan_id === plan?.id && limit.limit_code === "active_planned_payments"
+  );
+  return configured?.limit_value == null ? null : Number(configured.limit_value);
+}
+
+function featureLabelsForPlan(plan) {
+  return state.planFeatures
+    .filter((feature) => feature.plan_id === plan?.id && feature.enabled)
+    .map((feature) => PLAN_FEATURE_LABELS[feature.feature_code] || titleCase(feature.feature_code));
+}
+
+function workspaceComparablePlans() {
+  const workspaceType = currentBudgetWorkspace()?.workspace_type;
+  return state.plans.filter((plan) => workspaceType === "personal"
+    ? plan.workspace_type === "personal" || plan.workspace_type === "household"
+    : plan.workspace_type === workspaceType
+  );
+}
+
+function workspacePlanCurrencies(plans) {
+  return [...new Set(state.planPrices
+    .filter((price) => price.is_active && plans.some((plan) => plan.id === price.plan_id))
+    .map((price) => price.currency)
+    .filter(Boolean)
+  )].sort();
+}
+
+function syncWorkspacePlanControls(plans) {
+  const currencies = workspacePlanCurrencies(plans);
+  const currencySelect = $("#workspacePlanCurrency");
+  if (!currencies.includes(state.workspacePlanCurrency)) {
+    const preferred = state.workspaceSettings?.default_payment_currency || currentBudgetWorkspace()?.currency;
+    state.workspacePlanCurrency = currencies.includes(preferred)
+      ? preferred
+      : currencies.includes("USD")
+        ? "USD"
+        : currencies[0] || null;
+  }
+  currencySelect.innerHTML = currencies.length
+    ? currencies.map((currency) => `<option value="${escapeHtml(currency)}">${escapeHtml(currency)}</option>`).join("")
+    : '<option value="">No configured currency</option>';
+  currencySelect.value = state.workspacePlanCurrency || "";
+  currencySelect.disabled = !currencies.length;
+  document.querySelectorAll("[data-workspace-plan-period]").forEach((button) => {
+    const active = button.dataset.workspacePlanPeriod === state.workspacePlanBillingPeriod;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
+
 function extraMemberBillingMonths(price) {
   return price?.billing_period === "annual" ? 12 : 1;
 }
@@ -2961,39 +3040,67 @@ function renderSubscription() {
 function renderWorkspacePlans() {
   const list = $("#workspacePlanList");
   const workspace = currentBudgetWorkspace();
-  const comparableWorkspaceTypes = workspace?.workspace_type === "business"
-    ? new Set(["business"])
-    : new Set(["personal", "household"]);
-  const plans = state.plans.filter((plan) => comparableWorkspaceTypes.has(plan.workspace_type));
-  list.innerHTML = "";
-  plans.forEach((plan) => {
-    const monthly = activePriceFor(plan.id, "monthly");
-    const annual = activePriceFor(plan.id, "annual", monthly?.currency) || activePriceFor(plan.id, "annual");
+  const plans = workspaceComparablePlans();
+  syncWorkspacePlanControls(plans);
+  const workspaceTypeLabel = workspace?.workspace_type === "household" ? "Family" : titleCase(workspace?.workspace_type);
+  $("#workspacePlansTitle").textContent = workspace?.workspace_type === "personal"
+    ? "Personal and Family plans"
+    : `${workspaceTypeLabel} plans`;
+  $("#workspacePlansDescription").textContent = workspace?.workspace_type === "personal"
+    ? "Compare Personal access or start a separate Family workspace. Each workspace keeps its own plan."
+    : `Compare plans available for this ${workspaceTypeLabel.toLowerCase()} workspace.`;
+  $("#workspacePlanPricingNote").textContent = state.workspacePlanCurrency
+    ? `Showing ${titleCase(state.workspacePlanBillingPeriod)} prices in ${state.workspacePlanCurrency}.`
+    : "No active price currency is configured for these plans.";
+  if (!plans.length) {
+    list.innerHTML = emptyState("No plans available", "An administrator must publish a plan for this workspace type.");
+    return;
+  }
+  const cards = plans.map((plan) => {
+    const price = activePriceFor(plan.id, state.workspacePlanBillingPeriod, state.workspacePlanCurrency);
     const appliesToSelectedWorkspace = plan.workspace_type === workspace?.workspace_type;
     const current = appliesToSelectedWorkspace && plan.code === state.workspaceEntitlement?.plan_code;
     const startsNewFamily = workspace?.workspace_type === "personal" && plan.workspace_type === "household";
-    const familyPlanPending = startsNewFamily && state.renewalRequests.some((request) =>
-      request.provision_workspace_on_approval && request.status === "pending_review"
+    const pending = state.renewalRequests.some((request) =>
+      request.requested_plan_id === plan.id && request.status === "pending_review"
     );
     const canSelect = currentWorkspaceIsOwned() && plan.code !== "free" && (appliesToSelectedWorkspace || startsNewFamily);
-    const workspaceTypeLabel = plan.workspace_type === "household" ? "Family" : titleCase(plan.workspace_type);
-    const availabilityMessage = plan.workspace_type === "household"
-      ? "Select a Family workspace to choose this plan."
-      : "Select Personal budget to choose this plan.";
-    const card = document.createElement("article");
-    card.className = `plan-card${current ? " current" : ""}`;
-    card.innerHTML = `
-      <div class="plan-card-heading"><span class="mini-badge ${current ? "active" : ""}">${current ? "Current" : workspaceTypeLabel}</span><h4>${escapeHtml(plan.display_name)}</h4></div>
-      <p>${escapeHtml(plan.description)}</p>
-      <dl>
-        <div><dt>Monthly</dt><dd>${monthly ? money(planInvoiceTotal(plan, monthly), monthly.currency) : plan.code === "free" ? "Free" : "Not configured"}</dd></div>
-        <div><dt>Annual</dt><dd>${annual ? money(planInvoiceTotal(plan, annual), annual.currency) : plan.code === "free" ? "Free" : "Not configured"}</dd></div>
-      </dl>
-      ${canSelect ? `<button type="button" data-select-renewal-plan="${plan.code}" ${(monthly || annual) && !familyPlanPending ? "" : "disabled"}>${familyPlanPending ? "Awaiting approval" : current ? "Renew plan" : startsNewFamily ? "Choose Family plan" : "Choose plan"}</button>` : ""}
-      ${!appliesToSelectedWorkspace && !startsNewFamily ? `<small class="plan-availability-note">${availabilityMessage}</small>` : ""}
-    `;
-    list.append(card);
-  });
+    const planWorkspaceLabel = plan.workspace_type === "household" ? "Family" : titleCase(plan.workspace_type);
+    const includedSeats = includedMemberSeats(plan);
+    const paymentLimit = activePaymentLimitForPlan(plan);
+    const features = featureLabelsForPlan(plan);
+    const total = price ? planInvoiceTotal(plan, price) : 0;
+    const periodLabel = state.workspacePlanBillingPeriod === "annual" ? "year" : "month";
+    const priceText = price ? money(total, price.currency) : plan.code === "free" ? "Free" : "Not configured";
+    const extraMember = price && Number(price.extra_member_amount) > 0
+      ? `<span>Additional person: ${money(price.extra_member_amount, price.currency)} per month</span>`
+      : "";
+    const stateBadge = current
+      ? '<span class="workspace-plan-state current">Current plan</span>'
+      : pending
+        ? '<span class="workspace-plan-state pending">Awaiting approval</span>'
+        : plan.is_featured
+          ? '<span class="workspace-plan-state recommended">Recommended</span>'
+          : "";
+    const action = current && plan.code === "free"
+      ? '<button type="button" disabled>Current plan</button>'
+      : canSelect
+        ? `<button class="${plan.is_featured && !current ? "primary" : ""}" type="button" data-select-renewal-plan="${escapeHtml(plan.code)}" ${price && !pending ? "" : "disabled"}>${pending ? "Awaiting approval" : current ? "Renew plan" : startsNewFamily ? "Start Family plan" : "Choose plan"}</button>`
+        : currentWorkspaceIsOwned()
+          ? ""
+          : '<small class="workspace-plan-owner-note">Only the workspace owner can change this plan.</small>';
+    return `<article class="plan-card workspace-plan-card${current ? " current" : ""}${pending ? " pending" : ""}">
+      <div class="workspace-plan-top"><span class="workspace-plan-type">${escapeHtml(planWorkspaceLabel)}</span>${stateBadge}</div>
+      <h4>${escapeHtml(plan.display_name)}</h4>
+      <p>${escapeHtml(plan.marketing_summary || plan.description)}</p>
+      <div class="workspace-plan-price"><strong>${escapeHtml(priceText)}</strong>${price || plan.code === "free" ? `<span> / ${periodLabel}</span>` : ""}</div>
+      <div class="workspace-plan-meta"><span>${includedSeats} ${includedSeats === 1 ? "person" : "people"} included</span><span>${paymentLimit == null ? "Unlimited payment items" : `${paymentLimit} active personal payments`}</span>${extraMember}</div>
+      <ul class="workspace-plan-features">${features.slice(0, 8).map((feature) => `<li>${escapeHtml(feature)}</li>`).join("")}</ul>
+      ${startsNewFamily ? '<small class="workspace-plan-separate-note">Creates a separate Family workspace with its own plan.</small>' : ""}
+      ${action}
+    </article>`;
+  }).join("");
+  list.innerHTML = `<div class="workspace-plan-grid">${cards}</div>`;
 }
 
 function renderRenewalHistory() {
@@ -3174,6 +3281,11 @@ function openRenewalDialog(planCode = null) {
     : plans.some((plan) => plan.code === state.workspaceEntitlement?.plan_code)
       ? state.workspaceEntitlement.plan_code
       : plans[0].code;
+  $("#renewalPeriod").value = state.workspacePlanBillingPeriod;
+  if (state.workspacePlanCurrency) {
+    $("#renewalCurrency").innerHTML = `<option value="${escapeHtml(state.workspacePlanCurrency)}">${escapeHtml(state.workspacePlanCurrency)}</option>`;
+    $("#renewalCurrency").value = state.workspacePlanCurrency;
+  }
   const selectedPlan = plans.find((plan) => plan.code === select.value);
   const selectedWorkspace = currentBudgetWorkspace();
   const startsNewFamily = selectedWorkspace?.workspace_type === "personal" && selectedPlan?.workspace_type === "household";
@@ -6234,6 +6346,16 @@ $("#renewalForm").addEventListener("submit", submitSubscriptionRenewal);
 $("#renewalPlan").addEventListener("change", updateRenewalQuote);
 $("#renewalPeriod").addEventListener("change", updateRenewalQuote);
 $("#renewalCurrency").addEventListener("change", updateRenewalQuote);
+document.querySelectorAll("[data-workspace-plan-period]").forEach((button) => {
+  button.addEventListener("click", () => {
+    state.workspacePlanBillingPeriod = button.dataset.workspacePlanPeriod;
+    renderWorkspacePlans();
+  });
+});
+$("#workspacePlanCurrency").addEventListener("change", (event) => {
+  state.workspacePlanCurrency = event.target.value;
+  renderWorkspacePlans();
+});
 $("#renewalFamilyMemberCount").addEventListener("change", updateRenewalQuote);
 $("#renewalFamilyMemberCount").addEventListener("input", (event) => {
   const count = Number(event.target.value);

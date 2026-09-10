@@ -3792,8 +3792,9 @@ input[type="file"] {
 
 .signup-currency-section {
   display: grid;
-  gap: 16px;
+  gap: 12px;
   margin-top: 2px;
+  padding: 14px;
 }
 
 .signup-panel {
@@ -3829,6 +3830,105 @@ input[type="file"] {
 .signup-currency-heading > div {
   display: grid;
   gap: 4px;
+}
+
+.signup-currency-step {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
+  padding: 11px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.signup-currency-step-heading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.signup-currency-step-heading > span {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.14);
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.signup-currency-step-heading > div {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.signup-currency-step-heading strong {
+  color: var(--ink);
+  font-size: 0.82rem;
+}
+
+.signup-currency-step-heading small {
+  font-size: 0.69rem;
+  line-height: 1.25;
+}
+
+.signup-currency-step > label {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  font-size: 0.76rem;
+}
+
+.signup-currency-step input,
+.signup-currency-step select {
+  min-height: 42px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.signup-currency-section .currency-option-list {
+  max-height: 12rem;
+  gap: 6px;
+  padding: 6px;
+}
+
+.signup-currency-section .currency-option {
+  gap: 6px;
+  border-radius: 11px;
+  padding: 7px;
+}
+
+.signup-currency-section .currency-option input {
+  min-height: 17px;
+}
+
+.signup-currency-default-step {
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 0.75fr);
+  align-items: end;
+}
+
+.signup-currency-default-step .signup-currency-step-heading {
+  grid-column: 1 / -1;
+}
+
+.signup-currency-default-step .signup-selected-currencies {
+  align-self: center;
+}
+
+.signup-currency-default-step .currency-chip-list {
+  margin: 0;
+}
+
+.currency-selection-empty {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 650;
 }
 
 .currency-selection-count {
@@ -4163,17 +4263,45 @@ input[type="file"] {
   .currency-selection-panel,
   .signup-currency-section {
     border-radius: 18px;
-    padding: 14px;
+    padding: 10px;
   }
 
   .currency-selection-heading,
   .signup-currency-heading {
-    align-items: stretch;
-    flex-direction: column;
+    align-items: center;
   }
 
   .currency-selection-count {
-    align-self: flex-start;
+    padding: 5px 8px;
+    font-size: 0.67rem;
+  }
+
+  .signup-currency-heading small {
+    font-size: 0.69rem;
+  }
+
+  .signup-currency-step {
+    gap: 7px;
+    border-radius: 14px;
+    padding: 9px;
+  }
+
+  .signup-currency-default-step {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .signup-currency-section .currency-option-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-height: 10.5rem;
+  }
+
+  .signup-currency-section .currency-option {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 6px;
+  }
+
+  .signup-currency-section .currency-option em {
+    grid-column: 2;
   }
 
   .currency-chip span {

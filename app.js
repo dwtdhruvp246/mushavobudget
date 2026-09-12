@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 62
+// Mushavo Budget authenticated application — release 63
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -59,6 +59,8 @@ const state = {
   subscriptionInvoices: [],
   subscriptionPayments: [],
   entitlementHistory: [],
+  supportTickets: [],
+  supportTicketMessages: [],
   heads: [],
   adminProfiles: [],
   adminFamilies: [],
@@ -84,6 +86,9 @@ const state = {
   adminFinanceSettings: null,
   adminPaymentConversions: [],
   adminRateStatus: null,
+  adminSupportTickets: [],
+  adminSupportMessages: [],
+  adminStaff: [],
   adminTab: "dashboard",
   familyTab: "dashboard",
   editingObligationId: null,
@@ -148,7 +153,7 @@ const views = {
 };
 
 const adminTabs = new Set(["dashboard", "households", "users", "plans", "finance", "enquiries", "support"]);
-const familyTabs = new Set(["dashboard", "payments", "reports", "members", "subscription", "settings"]);
+const familyTabs = new Set(["dashboard", "payments", "reports", "members", "subscription", "settings", "support"]);
 const currencyNames = {
   USD: "en-US",
   ZAR: "en-ZA",
@@ -749,7 +754,8 @@ function realtimeTablesForCurrentView() {
     "profiles", "family_heads", "families", "family_members", "payment_items", "payment_records",
     "family_invitations", "notifications", "budget_workspaces", "workspace_members",
     "workspace_invitations", "workspace_subscriptions", "subscription_renewal_requests",
-    "subscription_invoices", "subscription_payments", "subscription_entitlement_history"
+    "subscription_invoices", "subscription_payments", "subscription_entitlement_history",
+    "support_tickets", "support_ticket_messages"
   ];
   if (!state.isAdmin) return sharedTables;
   return [...sharedTables, "plans", "plan_prices", "plan_features", "plan_limits", "payments", "enquiries", "admin_support_notes"];
@@ -813,6 +819,7 @@ async function refreshVisibleData() {
     await Promise.all([loadAccess(), loadFamily()]);
     await loadFamilyData();
     await loadWorkspaceSubscriptionData();
+    if (state.familyTab === "support") await loadUserSupportData();
     if (state.session?.user?.id !== sessionId) return;
     renderFamilyApp();
   } finally {
@@ -988,6 +995,8 @@ function resetState() {
   state.subscriptionInvoices = [];
   state.subscriptionPayments = [];
   state.entitlementHistory = [];
+  state.supportTickets = [];
+  state.supportTicketMessages = [];
   state.heads = [];
   state.adminProfiles = [];
   state.adminFamilies = [];
@@ -1013,6 +1022,9 @@ function resetState() {
   state.adminFinanceSettings = null;
   state.adminPaymentConversions = [];
   state.adminRateStatus = null;
+  state.adminSupportTickets = [];
+  state.adminSupportMessages = [];
+  state.adminStaff = [];
   state.paymentSearch = "";
   state.paymentSort = "due_soonest";
   state.paymentHistoryItemId = null;
@@ -1072,6 +1084,7 @@ async function loadApp() {
 
   await loadFamilyFinancialData();
   syncRouteForWorkspace("family");
+  if (state.familyTab === "support") await loadUserSupportData();
   setView("app");
   renderFamilyApp();
   handleNotificationDeepLink();
@@ -1270,6 +1283,15 @@ async function loadNotifications() {
   );
 }
 
+async function loadUserSupportData() {
+  const [tickets, messages] = await Promise.all([
+    query("support tickets load", supabase.from("support_tickets").select("*").order("updated_at", { ascending: false })),
+    query("support ticket messages load", supabase.from("support_ticket_messages").select("*").order("created_at", { ascending: true }))
+  ]);
+  state.supportTickets = tickets;
+  state.supportTicketMessages = messages;
+}
+
 function currentBudgetWorkspace() {
   if (state.family) {
     return state.workspaces.find((workspace) => workspace.legacy_family_id === state.family.id) || null;
@@ -1357,6 +1379,10 @@ async function loadAdminData(tab = state.adminTab) {
   }
   if (tab === "dashboard") {
     add("adminWorkspaces", "admin workspace summary load", supabase.from("budget_workspaces").select("*").order("created_at", { ascending: false }));
+    add("adminProfiles", "admin registered users load", supabase.from("profiles").select("*").order("created_at", { ascending: false }));
+    add("adminSubscriptions", "admin subscriptions load", supabase.from("workspace_subscriptions").select("*").order("updated_at", { ascending: false }));
+    add("adminPlans", "admin plans load", supabase.from("plans").select("*").order("sort_order", { ascending: true }));
+    add("adminSubscriptionMonitor", "admin subscription monitor load", supabase.rpc("admin_subscription_monitor"));
   }
   if (["households", "users", "finance"].includes(tab)) {
     add("heads", "heads load", supabase.from("family_heads").select("*").order("created_at", { ascending: false }));
@@ -1378,7 +1404,7 @@ async function loadAdminData(tab = state.adminTab) {
     add("adminSubscriptions", "workspace subscription directory load", supabase.from("workspace_subscriptions").select("*").order("updated_at", { ascending: false }));
     add("adminPlans", "workspace plan directory load", supabase.from("plans").select("*").order("sort_order", { ascending: true }));
   }
-  if (["dashboard", "households"].includes(tab)) {
+  if (tab === "households") {
     add("adminPaymentItems", "admin payment items load", supabase.from("payment_items").select("*").order("created_at", { ascending: false }));
     add("adminPaymentRecords", "admin payment records load", supabase.from("payment_records").select("*").order("payment_date", { ascending: false }));
   }
@@ -1395,6 +1421,11 @@ async function loadAdminData(tab = state.adminTab) {
   }
   if (tab === "support") {
     add("adminNotes", "admin notes load", supabase.from("admin_support_notes").select("*").order("created_at", { ascending: false }));
+    add("adminProfiles", "support profiles load", supabase.from("profiles").select("*").order("created_at", { ascending: false }));
+    add("adminWorkspaces", "support workspaces load", supabase.from("budget_workspaces").select("*").order("created_at", { ascending: false }));
+    add("adminSupportTickets", "support tickets load", supabase.from("support_tickets").select("*").order("updated_at", { ascending: false }));
+    add("adminSupportMessages", "support messages load", supabase.from("support_ticket_messages").select("*").order("created_at", { ascending: true }));
+    add("adminStaff", "support staff load", supabase.from("app_admins").select("*").order("created_at", { ascending: true }));
   }
   if (["dashboard", "enquiries"].includes(tab)) {
     add("adminEnquiries", "public enquiries load", supabase.from("enquiries").select("*").order("created_at", { ascending: false }));
@@ -1455,6 +1486,7 @@ function renderFamilyApp() {
   if (state.familyTab === "settings") renderSettings();
   if (state.familyTab === "reports") renderReports();
   if (state.familyTab === "subscription") renderSubscription();
+  if (state.familyTab === "support") renderUserSupport();
 }
 
 function renderFamilyTabs() {
@@ -3791,6 +3823,7 @@ function renderAdmin() {
   if (state.adminTab === "support") {
     renderAdminNoteOptions();
     renderAdminNotes();
+    renderAdminSupport();
   }
 }
 
@@ -4021,6 +4054,8 @@ function editPlanDefinition(planId) {
   $("#planDefinitionTitle").textContent = `Edit ${plan.display_name}`;
   $("#planDefinitionSubmit").textContent = "Save plan changes";
   $("#cancelPlanEditButton").classList.remove("hidden");
+  const disclosure = document.querySelector(".plan-definition-panel");
+  if (disclosure) disclosure.open = true;
   $("#planDefinitionForm").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -4076,7 +4111,7 @@ function renderSubscriptionReviews() {
     const proof = state.adminSubscriptionProofs.find((item) => item.payment_id === payment.id);
     const canReview = ["super_admin", "admin_staff", "finance_staff"].includes(state.adminRole);
     const article = document.createElement("article");
-    article.className = "record-card subscription-review-card";
+    article.className = "record-card subscription-review-card subscription-payment-row";
     article.innerHTML = `
       <div class="record-main"><strong>${escapeHtml(request?.provision_workspace_on_approval ? request.requested_workspace_name || "New Family workspace" : workspace?.name || "Workspace")}</strong><span>${escapeHtml(invoice?.plan_name || "Plan")} &middot; ${titleCase(invoice?.billing_period)} &middot; reference ${escapeHtml(payment.reference_number)}</span><small>${request?.provision_workspace_on_approval ? `Creates a new Family workspace for ${Number(invoice?.billable_member_count || 1)} people after approval.` : "Renews or changes the selected workspace plan."} Submitted ${new Date(payment.created_at).toLocaleString()} by an authenticated workspace owner.</small><div class="badge-row">${statusBadge(payment.status)}${request?.provision_workspace_on_approval ? '<span class="mini-badge">new family</span>' : ""}${proof ? '<span class="mini-badge">proof attached</span>' : ""}</div></div>
       <div class="record-side"><strong>${money(payment.amount, payment.currency)}</strong><div class="row-actions"><button type="button" data-view-subscription-payment="${payment.id}">View details</button>${proof ? `<button type="button" data-open-subscription-proof="${proof.id}">View proof</button>` : ""}${canReview ? `<button class="primary" type="button" data-review-subscription="${payment.id}" data-review-decision="approved">Approve</button><button type="button" data-review-subscription="${payment.id}" data-review-decision="rejected">Reject</button>` : '<span class="mini-badge">Read only</span>'}</div></div>
@@ -4104,7 +4139,7 @@ function renderSubscriptionPaymentHistory() {
     const proof = state.adminSubscriptionProofs.find((item) => item.payment_id === payment.id);
     const locked = lockedConversionFor("subscription_payment", payment.id, adminReportingCurrency());
     const article = document.createElement("article");
-    article.className = "record-card";
+    article.className = "record-card subscription-payment-row";
     article.innerHTML = `
       <div class="record-main">
         <strong>${escapeHtml(workspace?.name || request?.requested_workspace_name || "Subscription")}</strong>
@@ -4394,6 +4429,9 @@ function renderAdminTabs() {
     if (button.dataset.adminTab === "enquiries") {
       button.classList.toggle("hidden", !["super_admin", "admin_staff", "support_staff"].includes(state.adminRole));
     }
+    if (button.dataset.adminTab === "support") {
+      button.classList.toggle("hidden", !["super_admin", "admin_staff", "support_staff"].includes(state.adminRole));
+    }
     button.classList.toggle("active", button.dataset.adminTab === state.adminTab);
   });
   document.querySelectorAll("[data-admin-panel]").forEach((panel) => {
@@ -4410,44 +4448,49 @@ function renderAdminEnquiryBadge() {
 }
 
 function renderAdminSummary() {
-  const occurrences = generateOccurrences(state.adminPaymentItems, state.adminPaymentRecords, state.filterMonth);
   $("#adminEmail").textContent = state.session.user.email || "-";
-  $("#adminFamilyCount").textContent = state.adminWorkspaces.length;
-  $("#adminOverdueCount").textContent = occurrences.filter((item) => item.status === "overdue").length;
-  $("#adminDueTotal").textContent = formatOccurrenceCurrencyTotals(occurrences);
+  const now = new Date();
+  const expiryLimit = new Date(now);
+  expiryLimit.setUTCDate(expiryLimit.getUTCDate() + 30);
+  const paidPlanIds = new Set(state.adminPlans.filter((plan) => plan.code !== "free").map((plan) => plan.id));
+  const activePaidSubscriptions = state.adminSubscriptions.filter((subscription) =>
+    ["active", "grace"].includes(subscription.status) && paidPlanIds.has(subscription.plan_id)
+  );
+  const expiringSubscriptions = state.adminSubscriptionMonitor.filter((row) => {
+    if (!["active", "grace"].includes(row.subscription_status) || !row.paid_through_at) return false;
+    const paidThrough = new Date(row.paid_through_at);
+    return paidThrough >= now && paidThrough <= expiryLimit;
+  });
+  const pendingReviews = state.adminSubscriptionPayments.filter((payment) => payment.status === "pending_review");
+  $("#adminRegisteredUsers").textContent = state.adminProfiles.length;
+  $("#adminActiveSubscriptions").textContent = activePaidSubscriptions.length;
+  $("#adminExpiringSubscriptions").textContent = expiringSubscriptions.length;
+  $("#adminPendingReviews").textContent = pendingReviews.length;
+  $("#adminFamilyCount").textContent = state.adminWorkspaces.filter((workspace) => workspace.status === "active").length;
   const approvedSubscriptionPayments = state.adminSubscriptionPayments.filter((payment) => payment.status === "approved");
   $("#adminRevenueTotal").textContent = formatCurrencyTotals([...state.payments, ...approvedSubscriptionPayments]);
-  $("#adminPaymentCount").textContent = `${state.payments.length + approvedSubscriptionPayments.length} payments`;
-  renderAdminAttention(occurrences);
+  $("#adminPaymentCount").textContent = `${state.payments.length + approvedSubscriptionPayments.length} approved payments`;
+  renderAdminAttention(expiringSubscriptions, pendingReviews);
   renderRecentPlatformPayments();
 }
 
-function renderAdminAttention(occurrences) {
+function renderAdminAttention(expiringSubscriptions, pendingReviews) {
   const list = $("#adminAttentionList");
-  const rows = state.adminFamilies.map((family) => {
-    const familyOccurrences = occurrences.filter((occurrence) => occurrence.item.family_id === family.id);
-    return {
-      family,
-      overdue: familyOccurrences.filter((occurrence) => occurrence.status === "overdue").length,
-      partial: familyOccurrences.filter((occurrence) => occurrence.status === "partial").length,
-      outstanding: familyOccurrences.reduce((sum, occurrence) => sum + occurrence.outstanding, 0)
-    };
-  }).filter((row) => row.overdue || row.partial);
-
+  const rows = [
+    ...pendingReviews.map((payment) => ({ kind: "payment", payment, at: payment.created_at })),
+    ...expiringSubscriptions.map((subscription) => ({ kind: "expiry", subscription, at: subscription.paid_through_at }))
+  ].sort((left, right) => new Date(left.at || 0) - new Date(right.at || 0)).slice(0, 8);
   if (!rows.length) {
-    list.innerHTML = emptyState("No urgent household issues", "Overdue and partially paid dues will appear here.");
+    list.innerHTML = emptyState("No urgent subscription issues", "Expiring subscriptions and pending payment reviews will appear here.");
     return;
   }
-  list.innerHTML = "";
-  rows.forEach((row) => {
-    const article = document.createElement("article");
-    article.className = "record-card";
-    article.innerHTML = `
-      <div class="record-main"><strong>${escapeHtml(row.family.name)}</strong><span>${escapeHtml(row.family.owner_email || "No owner email")} &middot; ${row.overdue} overdue &middot; ${row.partial} partial</span></div>
-      <div class="record-side"><strong>${money(row.outstanding, row.family.currency)}</strong><button type="button" data-admin-open-family="${row.family.id}">Open</button></div>
-    `;
-    list.append(article);
-  });
+  list.innerHTML = rows.map((row) => {
+    if (row.kind === "payment") {
+      const workspace = state.adminWorkspaces.find((item) => item.id === row.payment.workspace_id);
+      return `<article class="compact-activity-row"><div><strong>${escapeHtml(workspace?.name || "Subscription payment")}</strong><small>Payment proof awaiting review</small></div><span class="mini-badge pending_review">Pending review</span></article>`;
+    }
+    return `<article class="compact-activity-row"><div><strong>${escapeHtml(row.subscription.workspace_name || "Workspace")}</strong><small>Paid through ${new Date(row.subscription.paid_through_at).toLocaleDateString()}</small></div><span class="mini-badge">Expires soon</span></article>`;
+  }).join("");
 }
 
 function adminWorkspaceTypeLabel(type) {
@@ -4570,6 +4613,28 @@ function syncAdminWorkspacePlanFilter(rows) {
   select.value = plans.some(([code]) => code === previousValue) ? previousValue : "all";
 }
 
+function adminWorkspaceDetailCard(row) {
+  const isShared = row.type !== "personal";
+  const usagePercent = isShared ? Math.min(100, Math.round((row.usedMembers / Math.max(1, row.memberLimit)) * 100)) : 0;
+  const workspaceStatus = row.workspace.status || "active";
+  const planStatus = row.statusKey === "free" ? "free" : row.subscriptionStatus;
+  const billingCopy = row.billingPeriod
+    ? `${titleCase(row.billingPeriod)} billing${row.paidThroughAt ? ` &middot; Paid through ${new Date(row.paidThroughAt).toLocaleDateString()}` : ""}`
+    : row.statusKey === "free" ? "No paid subscription required" : "Billing not configured";
+  const usageHtml = isShared
+    ? `<strong>${row.usedMembers} of ${row.memberLimit} places used</strong><small>${row.activeMembers} active${row.pendingInvitations ? ` &middot; ${row.pendingInvitations} pending` : ""}</small><div class="admin-workspace-meter" aria-label="${usagePercent}% of paid places used"><span style="width:${usagePercent}%"></span></div>`
+    : `<strong>${row.itemCount} active ${row.itemCount === 1 ? "payment" : "payments"}</strong><small>Personal workspace usage</small>`;
+  const action = row.id
+    ? `<button type="button" data-view-admin-workspace="${row.id}">View details</button>`
+    : `<button type="button" data-view-admin-legacy-family="${row.family.id}">View details</button>`;
+  return `<article class="admin-workspace-child workspace-type-${row.type}">
+    <div><strong>${escapeHtml(row.name)}</strong><div class="badge-row">${statusBadge(workspaceStatus)}${statusBadge(planStatus)}</div></div>
+    <div><span class="admin-workspace-field-label">Plan</span><strong>${escapeHtml(row.planName)}</strong><small>${billingCopy}</small></div>
+    <div><span class="admin-workspace-field-label">Usage</span>${usageHtml}</div>
+    <div class="admin-workspace-child-action"><small>Created ${row.createdAt ? new Date(row.createdAt).toLocaleDateString() : "date unavailable"}</small>${action}</div>
+  </article>`;
+}
+
 function renderAdminFamilies() {
   const list = $("#adminFamiliesList");
   const allRows = adminWorkspaceDirectoryRows();
@@ -4606,47 +4671,24 @@ function renderAdminFamilies() {
     return;
   }
 
-  list.innerHTML = rows.map((row) => {
-    const isShared = row.type !== "personal";
-    const usagePercent = isShared ? Math.min(100, Math.round((row.usedMembers / row.memberLimit) * 100)) : 0;
-    const workspaceStatus = row.workspace.status || "active";
-    const planStatus = row.statusKey === "free" ? "free" : row.subscriptionStatus;
-    const billingCopy = row.billingPeriod
-      ? `${titleCase(row.billingPeriod)} billing${row.paidThroughAt ? ` &middot; Paid through ${new Date(row.paidThroughAt).toLocaleDateString()}` : ""}`
-      : row.statusKey === "free" ? "No paid subscription required" : "Billing not configured";
-    const typeInitial = row.type === "personal" ? "P" : row.type === "household" ? "F" : "B";
-    const ownerWorkspaceCopy = `${row.ownerWorkspaceCount} ${row.ownerWorkspaceCount === 1 ? "workspace" : "workspaces"} on this account`;
-    const usageHtml = isShared
-      ? `<strong>${row.usedMembers} of ${row.memberLimit} places used</strong><small>${row.activeMembers} active${row.pendingInvitations ? ` &middot; ${row.pendingInvitations} pending` : ""}</small><div class="admin-workspace-meter" aria-label="${usagePercent}% of paid places used"><span style="width:${usagePercent}%"></span></div>`
-      : `<strong>${row.itemCount} active ${row.itemCount === 1 ? "payment" : "payments"}</strong><small>Personal workspace usage</small>`;
-    const action = row.id
-      ? `<button type="button" data-view-admin-workspace="${row.id}">View details</button>`
-      : `<button type="button" data-view-admin-legacy-family="${row.family.id}">View details</button>`;
-    return `<article class="admin-workspace-row workspace-type-${row.type}">
-      <div class="admin-workspace-identity">
-        <span class="admin-workspace-type-mark" aria-hidden="true">${typeInitial}</span>
-        <div><span class="admin-workspace-field-label">${escapeHtml(row.typeLabel)} workspace</span><strong>${escapeHtml(row.name)}</strong><div class="badge-row">${statusBadge(workspaceStatus)}${statusBadge(planStatus)}</div></div>
-      </div>
-      <div class="admin-workspace-owner">
-        <span class="admin-workspace-field-label">Owner</span>
-        <strong>${escapeHtml(row.ownerName)}</strong>
-        <small>${escapeHtml(row.ownerEmail)}</small>
-        <small>${escapeHtml(ownerWorkspaceCopy)}</small>
-      </div>
-      <div class="admin-workspace-plan">
-        <span class="admin-workspace-field-label">Plan</span>
-        <strong>${escapeHtml(row.planName)}</strong>
-        <small>${billingCopy}</small>
-      </div>
-      <div class="admin-workspace-usage">
-        <span class="admin-workspace-field-label">Usage</span>
-        ${usageHtml}
-      </div>
-      <div class="admin-workspace-row-action">
-        <small>Created ${row.createdAt ? new Date(row.createdAt).toLocaleDateString() : "date unavailable"}</small>
-        ${action}
-      </div>
-    </article>`;
+  const ownerGroups = new Map();
+  rows.forEach((row) => {
+    const key = row.ownerId || row.ownerEmail || row.ownerName;
+    if (!ownerGroups.has(key)) ownerGroups.set(key, { ownerName: row.ownerName, ownerEmail: row.ownerEmail, rows: [] });
+    ownerGroups.get(key).rows.push(row);
+  });
+  const typeOrder = ["personal", "household", "business"];
+  list.innerHTML = [...ownerGroups.values()].map((group) => {
+    const typeSections = typeOrder.map((type) => {
+      const typeRows = group.rows.filter((row) => row.type === type);
+      if (!typeRows.length) return "";
+      const label = type === "household" ? "Family" : titleCase(type);
+      return `<details class="admin-workspace-type-group"${group.rows.length === 1 ? " open" : ""}>
+        <summary><span><strong>${label} workspace${typeRows.length === 1 ? "" : "s"}</strong><small>${typeRows.length} ${typeRows.length === 1 ? "entry" : "entries"}</small></span><span class="mini-badge">${typeRows.length}</span></summary>
+        <div class="admin-workspace-children">${typeRows.map(adminWorkspaceDetailCard).join("")}</div>
+      </details>`;
+    }).join("");
+    return `<article class="admin-owner-group"><header><div><strong>${escapeHtml(group.ownerName)}</strong><small>${escapeHtml(group.ownerEmail)}</small></div><span class="mini-badge">${group.rows.length} workspace${group.rows.length === 1 ? "" : "s"}</span></header>${typeSections}</article>`;
   }).join("");
 }
 
@@ -4677,22 +4719,16 @@ function renderHeads() {
     const familySeatUsage = ownedMonitors
       .filter((row) => row.workspace_type === "household")
       .reduce((totals, row) => ({ used: totals.used + Number(row.used_member_count || 0), limit: totals.limit + Number(row.member_limit || 0) }), { used: 0, limit: 0 });
-    const article = document.createElement("article");
-    article.className = "record-card";
+    const article = document.createElement("details");
+    article.className = "admin-user-row";
     article.innerHTML = `
-      <div class="record-main">
-        <strong>${escapeHtml(fullName)}</strong>
-        <span>${escapeHtml(email)}${profile?.created_at ? ` &middot; registered ${new Date(profile.created_at).toLocaleDateString()}` : " &middot; login not registered yet"}</span>
-        ${profile ? `<small>${ownedWorkspaces.length} owned workspace${ownedWorkspaces.length === 1 ? "" : "s"} &middot; ${joinedCount} joined${planNames.length ? ` &middot; ${escapeHtml(planNames.join("; "))}` : ""}</small>` : ""}
-        <div class="badge-row">
-          ${statusBadge(profile ? "registered" : "not registered")}
-          ${statusBadge(head?.status || "free signup")}
-          ${head ? statusBadge(head.can_add_members ? "members unlocked" : "members locked") : ""}
-          <span class="mini-badge">${ownedCount}/${Number(head?.family_limit ?? 0)} families</span>
-          ${familySeatUsage.limit ? `<span class="mini-badge">${familySeatUsage.used}/${familySeatUsage.limit} family places</span>` : ""}
+      <summary><div class="record-main"><strong>${escapeHtml(fullName)}</strong><span>${escapeHtml(email)}</span></div><div class="admin-user-summary-counts"><span>${ownedWorkspaces.length} owned</span><span>${joinedCount} joined</span>${statusBadge(head?.status || (profile ? "registered" : "not registered"))}</div></summary>
+      <div class="admin-user-details">
+        <div class="record-main">
+          <small>${profile?.created_at ? `Registered ${new Date(profile.created_at).toLocaleDateString()}` : "Login not registered yet"}${planNames.length ? ` &middot; ${escapeHtml(planNames.join("; "))}` : ""}</small>
+          <div class="badge-row">${statusBadge(profile ? "registered" : "not registered")}${head ? statusBadge(head.can_add_members ? "members unlocked" : "members locked") : ""}<span class="mini-badge">${ownedCount}/${Number(head?.family_limit ?? 0)} families</span>${familySeatUsage.limit ? `<span class="mini-badge">${familySeatUsage.used}/${familySeatUsage.limit} family places</span>` : ""}</div>
         </div>
-      </div>
-      <div class="record-side">
+        <div class="record-side">
         <button type="button" data-view-admin-user="${profile?.id || ""}" data-view-admin-user-email="${escapeHtml(email)}">View details</button>
         ${head ? `<div class="row-actions">
           <label class="inline-number-control">Family limit<input data-family-limit-input="${head.id}" type="number" min="0" max="100" step="1" value="${Number(head.family_limit ?? 1)}" /></label>
@@ -4701,6 +4737,7 @@ function renderHeads() {
           <button type="button" data-toggle-head="${head.id}" data-next-status="${head.status === "active" ? "suspended" : "active"}">${head.status === "active" ? "Suspend" : "Reactivate"}</button>
           <button type="button" data-delete-head="${head.id}">Revoke access</button>
         </div>` : `<button type="button" data-configure-profile="${profile.id}">Configure access</button>`}
+        </div>
       </div>
     `;
     list.append(article);
@@ -4756,13 +4793,21 @@ function renderPaymentHeadOptions() {
 
 function renderRecentPlatformPayments() {
   const list = $("#recentPaymentsList");
-  const recent = state.payments.slice(0, 5);
+  const recent = [
+    ...state.adminSubscriptionPayments.map((payment) => ({ type: "subscription", payment, at: payment.reviewed_at || payment.created_at })),
+    ...state.payments.map((payment) => ({ type: "legacy", payment, at: payment.payment_date || payment.created_at }))
+  ].sort((left, right) => new Date(right.at || 0) - new Date(left.at || 0)).slice(0, 5);
   if (!recent.length) {
     list.innerHTML = emptyState("No platform payments", "Record subscription payments in Finance.");
     return;
   }
-  list.innerHTML = "";
-  recent.forEach((payment) => list.append(renderPlatformPayment(payment)));
+  list.innerHTML = recent.map((entry) => {
+    if (entry.type === "legacy") return renderPlatformPayment(entry.payment).outerHTML;
+    const payment = entry.payment;
+    const workspace = state.adminWorkspaces.find((item) => item.id === payment.workspace_id);
+    const owner = state.adminProfiles.find((profile) => profile.id === workspace?.owner_id);
+    return `<article class="compact-activity-row finance-activity-row"><div><strong>${escapeHtml(workspace?.name || "Subscription")}</strong><small>${escapeHtml(owner?.email || "Owner unavailable")} &middot; ${escapeHtml(payment.reference_number || "No reference")}</small></div><div><strong>${money(payment.amount, payment.currency)}</strong>${statusBadge(payment.status)}</div></article>`;
+  }).join("");
 }
 
 function renderPlatformPayments() {
@@ -4818,6 +4863,208 @@ function renderAdminNotes() {
   });
 }
 
+function supportTicketCode(ticket) {
+  return `MB-${String(ticket.id || "").replace(/-/g, "").slice(0, 8).toUpperCase()}`;
+}
+
+function supportCategoryLabel(value) {
+  const labels = {
+    account_access: "Account or access",
+    subscription_payment: "Subscription or payment",
+    notifications: "Notifications",
+    technical: "Technical problem",
+    other: "Other",
+    waiting_customer: "Waiting for customer"
+  };
+  return labels[value] || titleCase(value || "other");
+}
+
+function supportMessagesFor(ticketId, adminView = false) {
+  const source = adminView ? state.adminSupportMessages : state.supportTicketMessages;
+  return source.filter((message) => message.ticket_id === ticketId && (adminView || !message.is_internal));
+}
+
+function supportMessageTimeline(ticket, adminView = false) {
+  const messages = supportMessagesFor(ticket.id, adminView);
+  if (!messages.length) return '<p class="muted-copy support-no-replies">No replies yet.</p>';
+  return `<div class="support-message-timeline">${messages.map((message) => {
+    const isCustomer = message.author_id === ticket.customer_id;
+    return `<article class="support-message ${isCustomer ? "customer" : "staff"}${message.is_internal ? " internal" : ""}"><header><strong>${message.is_internal ? "Internal note" : isCustomer ? "Customer" : "Mushavo Support"}</strong><small>${new Date(message.created_at).toLocaleString()}</small></header><p>${escapeHtml(message.body).replace(/\n/g, "<br />")}</p></article>`;
+  }).join("")}</div>`;
+}
+
+async function createUserSupportTicket(event) {
+  event.preventDefault();
+  const button = event.submitter;
+  const workspace = currentBudgetWorkspace();
+  try {
+    setSubmitting(button, true, "Submitting...");
+    await query("support ticket create", supabase.from("support_tickets").insert({
+      customer_id: state.session.user.id,
+      workspace_id: workspace?.id || null,
+      created_by: state.session.user.id,
+      subject: $("#supportSubject").value.trim(),
+      description: $("#supportDescription").value.trim(),
+      category: $("#supportCategory").value,
+      priority: $("#supportPriority").value
+    }));
+    event.currentTarget.reset();
+    await loadUserSupportData();
+    renderUserSupport();
+    showToast("Support ticket submitted.");
+  } catch (error) {
+    showToast(friendlyMessage(error.message));
+  } finally {
+    setSubmitting(button, false, "Submit support ticket");
+  }
+}
+
+async function saveSupportReply(event, ticketId, adminView) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const button = event.submitter;
+  const body = form.querySelector("textarea").value.trim();
+  const internal = adminView && Boolean(form.querySelector('[name="internal"]')?.checked);
+  if (!body) return;
+  try {
+    setSubmitting(button, true, "Sending...");
+    await query("support reply create", supabase.from("support_ticket_messages").insert({
+      ticket_id: ticketId,
+      author_id: state.session.user.id,
+      body,
+      is_internal: internal
+    }));
+    if (adminView && !internal) {
+      await query("support ticket waiting update", supabase.from("support_tickets").update({ status: "waiting_customer" }).eq("id", ticketId));
+      await loadAdminData("support");
+      renderAdminSupport();
+    } else if (adminView) {
+      await loadAdminData("support");
+      renderAdminSupport();
+    } else {
+      await loadUserSupportData();
+      renderUserSupport();
+    }
+    showToast(internal ? "Internal note saved." : "Reply sent.");
+  } catch (error) {
+    showToast(friendlyMessage(error.message));
+  } finally {
+    setSubmitting(button, false, internal ? "Save internal note" : "Send reply");
+  }
+}
+
+function renderUserSupport() {
+  const list = $("#supportTicketList");
+  if (!list) return;
+  $("#supportTicketMeta").textContent = `${state.supportTickets.length} ${state.supportTickets.length === 1 ? "ticket" : "tickets"}`;
+  if (!state.supportTickets.length) {
+    list.innerHTML = emptyState("No support tickets", "Your submitted requests and replies will appear here.");
+    return;
+  }
+  list.innerHTML = state.supportTickets.map((ticket) => `<details class="support-ticket-card priority-${ticket.priority}">
+    <summary><div><span class="support-ticket-code">${supportTicketCode(ticket)}</span><strong>${escapeHtml(ticket.subject)}</strong><small>${supportCategoryLabel(ticket.category)} &middot; Updated ${new Date(ticket.updated_at).toLocaleString()}</small></div><div class="badge-row">${statusBadge(ticket.priority)}<span class="mini-badge ${badgeClass(ticket.status)}">${escapeHtml(supportCategoryLabel(ticket.status))}</span></div></summary>
+    <div class="support-ticket-body"><p>${escapeHtml(ticket.description).replace(/\n/g, "<br />")}</p>${supportMessageTimeline(ticket)}${ticket.status === "closed" ? '<p class="notice">This ticket is closed.</p>' : `<form class="support-reply-form" data-user-support-reply="${ticket.id}"><label>Reply<textarea maxlength="4000" required placeholder="Add more information or answer Support"></textarea></label><button class="primary" type="submit">Send reply</button></form>`}</div>
+  </details>`).join("");
+  list.querySelectorAll("[data-user-support-reply]").forEach((form) => form.addEventListener("submit", (event) => saveSupportReply(event, form.dataset.userSupportReply, false)));
+}
+
+function renderAdminSupportWorkspaceOptions() {
+  const select = $("#adminSupportWorkspace");
+  const selected = select.value;
+  select.innerHTML = '<option value="">Choose workspace</option>' + state.adminWorkspaces.map((workspace) => {
+    const owner = state.adminProfiles.find((profile) => profile.id === workspace.owner_id);
+    return `<option value="${workspace.id}" data-owner-id="${workspace.owner_id}">${escapeHtml(workspace.name)} — ${escapeHtml(owner?.email || "Owner unavailable")}</option>`;
+  }).join("");
+  if ([...select.options].some((option) => option.value === selected)) select.value = selected;
+}
+
+function filteredAdminSupportTickets() {
+  const search = ($("#adminSupportSearch")?.value || "").trim().toLowerCase();
+  const status = $("#adminSupportStatus")?.value || "all";
+  const priority = $("#adminSupportPriority")?.value || "all";
+  return state.adminSupportTickets.filter((ticket) => {
+    const workspace = state.adminWorkspaces.find((item) => item.id === ticket.workspace_id);
+    const customer = state.adminProfiles.find((profile) => profile.id === ticket.customer_id);
+    const haystack = `${supportTicketCode(ticket)} ${ticket.subject} ${ticket.description} ${workspace?.name || ""} ${customer?.full_name || ""} ${customer?.email || ""}`.toLowerCase();
+    return (!search || haystack.includes(search)) && (status === "all" || ticket.status === status) && (priority === "all" || ticket.priority === priority);
+  });
+}
+
+async function createAdminSupportTicket(event) {
+  event.preventDefault();
+  const button = event.submitter;
+  const option = $("#adminSupportWorkspace").selectedOptions[0];
+  try {
+    setSubmitting(button, true, "Creating...");
+    await query("admin support ticket create", supabase.from("support_tickets").insert({
+      customer_id: option.dataset.ownerId,
+      workspace_id: option.value,
+      created_by: state.session.user.id,
+      assigned_admin_id: state.session.user.id,
+      subject: $("#adminSupportSubject").value.trim(),
+      description: $("#adminSupportDescription").value.trim(),
+      category: $("#adminSupportCategory").value,
+      priority: $("#adminSupportTicketPriority").value,
+      status: "in_progress"
+    }));
+    event.currentTarget.reset();
+    await loadAdminData("support");
+    renderAdminSupport();
+    showToast("Support ticket created.");
+  } catch (error) {
+    showToast(friendlyMessage(error.message));
+  } finally {
+    setSubmitting(button, false, "Create ticket");
+  }
+}
+
+async function saveAdminSupportTicket(ticketId, button) {
+  const card = button.closest(".support-ticket-card");
+  try {
+    setSubmitting(button, true, "Saving...");
+    await query("support ticket update", supabase.from("support_tickets").update({
+      status: card.querySelector("[data-support-status]").value,
+      priority: card.querySelector("[data-support-priority]").value,
+      assigned_admin_id: card.querySelector("[data-support-assignee]").value || null
+    }).eq("id", ticketId));
+    await loadAdminData("support");
+    renderAdminSupport();
+    showToast("Support ticket updated.");
+  } catch (error) {
+    showToast(friendlyMessage(error.message));
+  } finally {
+    setSubmitting(button, false, "Save changes");
+  }
+}
+
+function renderAdminSupport() {
+  renderAdminSupportWorkspaceOptions();
+  $("#adminSupportOpen").textContent = state.adminSupportTickets.filter((ticket) => ticket.status === "open").length;
+  $("#adminSupportProgress").textContent = state.adminSupportTickets.filter((ticket) => ticket.status === "in_progress").length;
+  $("#adminSupportWaiting").textContent = state.adminSupportTickets.filter((ticket) => ticket.status === "waiting_customer").length;
+  $("#adminSupportResolved").textContent = state.adminSupportTickets.filter((ticket) => ["resolved", "closed"].includes(ticket.status)).length;
+  const tickets = filteredAdminSupportTickets();
+  $("#adminSupportMeta").textContent = `${tickets.length} of ${state.adminSupportTickets.length} tickets`;
+  const list = $("#adminSupportList");
+  if (!tickets.length) {
+    list.innerHTML = emptyState("No matching support tickets", "New customer requests will appear here.");
+    return;
+  }
+  const staffOptions = (selected) => '<option value="">Unassigned</option>' + state.adminStaff.map((staff) => {
+    const profile = state.adminProfiles.find((item) => item.id === staff.user_id);
+    return `<option value="${staff.user_id}"${staff.user_id === selected ? " selected" : ""}>${escapeHtml(profile?.full_name || staff.email || staff.role)} (${supportCategoryLabel(staff.role)})</option>`;
+  }).join("");
+  list.innerHTML = tickets.map((ticket) => {
+    const workspace = state.adminWorkspaces.find((item) => item.id === ticket.workspace_id);
+    const customer = state.adminProfiles.find((profile) => profile.id === ticket.customer_id);
+    return `<details class="support-ticket-card priority-${ticket.priority}"><summary><div><span class="support-ticket-code">${supportTicketCode(ticket)}</span><strong>${escapeHtml(ticket.subject)}</strong><small>${escapeHtml(customer?.full_name || "Customer")} &middot; ${escapeHtml(customer?.email || "Email unavailable")} &middot; ${escapeHtml(workspace?.name || "No workspace")}</small></div><div class="badge-row">${statusBadge(ticket.priority)}<span class="mini-badge ${badgeClass(ticket.status)}">${escapeHtml(supportCategoryLabel(ticket.status))}</span></div></summary>
+      <div class="support-ticket-body"><p>${escapeHtml(ticket.description).replace(/\n/g, "<br />")}</p><div class="support-ticket-controls"><label>Status<select data-support-status>${["open", "in_progress", "waiting_customer", "resolved", "closed"].map((value) => `<option value="${value}"${ticket.status === value ? " selected" : ""}>${supportCategoryLabel(value)}</option>`).join("")}</select></label><label>Priority<select data-support-priority>${["low", "normal", "high", "urgent"].map((value) => `<option value="${value}"${ticket.priority === value ? " selected" : ""}>${titleCase(value)}</option>`).join("")}</select></label><label>Assigned to<select data-support-assignee>${staffOptions(ticket.assigned_admin_id)}</select></label><button type="button" data-save-support-ticket="${ticket.id}">Save changes</button></div>${supportMessageTimeline(ticket, true)}<form class="support-reply-form" data-admin-support-reply="${ticket.id}"><label>Reply or note<textarea maxlength="4000" required placeholder="Write a customer reply or internal note"></textarea></label><label class="checkbox-label"><input type="checkbox" name="internal" /> Internal note only</label><button class="primary" type="submit">Send reply</button></form></div>
+    </details>`;
+  }).join("");
+  list.querySelectorAll("[data-save-support-ticket]").forEach((button) => button.addEventListener("click", () => saveAdminSupportTicket(button.dataset.saveSupportTicket, button)));
+  list.querySelectorAll("[data-admin-support-reply]").forEach((form) => form.addEventListener("submit", (event) => saveSupportReply(event, form.dataset.adminSupportReply, true)));
+}
+
 function enquiryLabel(value) {
   const labels = {
     subscription_renewal: "Subscription renewal", setup_help: "Setup help",
@@ -4865,25 +5112,19 @@ function renderAdminEnquiries() {
   }
   list.innerHTML = "";
   rows.forEach((enquiry) => {
-    const article = document.createElement("article");
+    const article = document.createElement("details");
     article.className = "record-card enquiry-card";
     const replySubject = encodeURIComponent(`Mushavo Budget ${enquiryLabel(enquiry.enquiry_type)} enquiry`);
     const safeMessage = escapeHtml(enquiry.message).replace(/\n/g, "<br />");
     article.innerHTML = `
-      <div class="record-main">
-        <div class="badge-row"><span class="mini-badge ${badgeClass(enquiry.status)}">${escapeHtml(enquiryLabel(enquiry.status))}</span><span class="mini-badge">${escapeHtml(enquiryLabel(enquiry.enquiry_type))}</span></div>
-        <strong>${escapeHtml(enquiry.full_name)}</strong>
-        <a class="enquiry-email" href="mailto:${encodeURIComponent(enquiry.email)}?subject=${replySubject}">${escapeHtml(enquiry.email)}</a>
-        <span>${escapeHtml(enquiry.country_name || "Country not provided")}</span>
-        <p class="enquiry-message">${safeMessage}</p>
-        <small>Submitted ${escapeHtml(formatAdminDate(enquiry.created_at))}</small>
-      </div>
+      <summary><div class="record-main"><strong>${escapeHtml(enquiry.full_name)}</strong><span>${escapeHtml(enquiry.email)} &middot; ${escapeHtml(enquiry.country_name || "Country not provided")}</span><small class="enquiry-preview">${escapeHtml(enquiry.message)}</small></div><div class="badge-row"><span class="mini-badge ${badgeClass(enquiry.status)}">${escapeHtml(enquiryLabel(enquiry.status))}</span><span class="mini-badge">${escapeHtml(enquiryLabel(enquiry.enquiry_type))}</span></div></summary>
+      <div class="enquiry-detail-body"><div class="record-main"><a class="enquiry-email" href="mailto:${encodeURIComponent(enquiry.email)}?subject=${replySubject}">${escapeHtml(enquiry.email)}</a><p class="enquiry-message">${safeMessage}</p><small>Submitted ${escapeHtml(formatAdminDate(enquiry.created_at))}</small></div>
       <div class="record-side enquiry-actions">
         <div class="enquiry-status-actions" aria-label="Update enquiry status">
           ${[["new", "Mark New"], ["in_progress", "In Progress"], ["resolved", "Resolved"], ["archived", "Archive"]].map(([value, label]) => `<button type="button" data-enquiry-status="${enquiry.id}" data-status="${value}"${enquiry.status === value ? ' class="active" disabled aria-current="true"' : ""}>${label}</button>`).join("")}
         </div>
         <a class="button-link" href="mailto:${encodeURIComponent(enquiry.email)}?subject=${replySubject}">Reply by email</a>
-      </div>`;
+      </div></div>`;
     article.querySelectorAll("[data-enquiry-status]").forEach((button) => button.addEventListener("click", () => updateEnquiry(enquiry.id, { status: button.dataset.status })));
     list.append(article);
   });
@@ -6020,6 +6261,21 @@ function escapeHtml(value) {
 }
 
 document.addEventListener("click", async (event) => {
+  const dashboardBrand = event.target.closest("[data-go-dashboard]");
+  if (dashboardBrand) {
+    if (state.isAdmin) {
+      state.adminTab = "dashboard";
+      setRoute("admin", "dashboard");
+      await loadAdminData("dashboard");
+      renderAdmin();
+    } else {
+      state.familyTab = "dashboard";
+      setRoute("family", "dashboard");
+      renderFamilyApp();
+      scheduleDashboardTextFit();
+    }
+    closeDrawer();
+  }
   if (event.target.dataset.closePaymentDialog !== undefined) $("#recordPaymentDialog").close();
   if (event.target.closest("[data-close-payment-history]")) $("#paymentHistoryDialog").close();
   if (event.target.closest("[data-open-payment-item-dialog]")) openPaymentItemDialog();
@@ -6130,6 +6386,13 @@ document.addEventListener("click", async (event) => {
   if (familyTab) {
     state.familyTab = familyTab;
     setRoute("family", familyTab);
+    if (familyTab === "support") {
+      try {
+        await loadUserSupportData();
+      } catch (error) {
+        showToast(`Support could not load: ${friendlyMessage(error.message)}`);
+      }
+    }
     renderFamilyApp();
     scheduleDashboardTextFit();
     closeDrawer();
@@ -6311,6 +6574,8 @@ $("#recordPaymentType").addEventListener("change", (event) => {
 $("#headForm").addEventListener("submit", addHead);
 $("#paymentForm").addEventListener("submit", addPlatformPayment);
 $("#adminNoteForm").addEventListener("submit", saveAdminNote);
+$("#adminSupportTicketForm").addEventListener("submit", createAdminSupportTicket);
+$("#supportTicketForm").addEventListener("submit", createUserSupportTicket);
 $("#planDefinitionForm").addEventListener("submit", savePlanDefinition);
 $("#cancelPlanEditButton").addEventListener("click", resetPlanDefinitionForm);
 $("#planPriceForm").addEventListener("submit", savePlanPrice);
@@ -6336,6 +6601,9 @@ document.querySelectorAll("#adminFinanceCurrencyFilter, #adminFinanceStatusFilte
 });
 document.querySelectorAll("#adminEnquirySearch, #adminEnquiryStatus, #adminEnquiryCountry").forEach((field) => {
   field.addEventListener(field.type === "search" ? "input" : "change", renderAdminEnquiries);
+});
+document.querySelectorAll("#adminSupportSearch, #adminSupportStatus, #adminSupportPriority").forEach((field) => {
+  field.addEventListener(field.type === "search" ? "input" : "change", renderAdminSupport);
 });
 $("#syncExchangeRatesButton").addEventListener("click", syncExchangeRates);
 $("#exportReportCsvButton").addEventListener("click", exportReportCsv);

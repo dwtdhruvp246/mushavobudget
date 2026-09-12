@@ -1147,6 +1147,12 @@ code {
   align-items: start;
 }
 
+@media (min-width: 1181px) {
+  [data-family-panel="dashboard"] > .content-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .admin-users-layout {
   grid-template-columns: minmax(0, 1fr);
 }
@@ -1397,6 +1403,97 @@ code {
   justify-content: space-between;
   gap: 12px;
   min-width: 0;
+}
+
+/* A wide browser can still leave the dashboard ledger narrow beside the sidebar
+   and workload panel. Adapt to the ledger itself without changing phone rules. */
+@media (min-width: 681px) {
+  @container record-list (max-width: 620px) {
+    .due-month-header {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .due-month-summary {
+      width: 100%;
+      max-width: 100%;
+      justify-content: space-between;
+    }
+
+    .due-month-header small {
+      max-width: 100%;
+      text-align: left;
+    }
+
+    .occurrence-summary-button {
+      grid-template-columns: 50px minmax(0, 1fr) 26px;
+      grid-template-areas:
+        "date copy chevron"
+        "date amount chevron";
+      gap: 4px 11px;
+    }
+
+    .occurrence-summary-button > * {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .occurrence-summary-button > .date-chip {
+      grid-area: date;
+    }
+
+    .occurrence-summary-copy {
+      grid-area: copy;
+    }
+
+    .occurrence-summary-button .occurrence-amount {
+      grid-area: amount;
+      justify-self: start;
+      max-width: 100%;
+      text-align: left;
+    }
+
+    .occurrence-summary-button > .accordion-chevron {
+      grid-area: chevron;
+    }
+
+    .occurrence-facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .occurrence-facts dd {
+      overflow: visible;
+      line-height: 1.3;
+      text-overflow: clip;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .occurrence-detail-footer {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .occurrence-detail-footer .badge-row {
+      flex-wrap: wrap;
+    }
+
+    .occurrence-detail-footer .mini-badge {
+      max-width: 100%;
+      white-space: normal;
+    }
+
+    .occurrence-detail-footer .row-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      width: 100%;
+    }
+
+    .occurrence-detail-footer .row-actions button {
+      width: 100%;
+    }
+  }
 }
 
 .record-card,

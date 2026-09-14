@@ -35,6 +35,16 @@ test("customers can create tickets and follow non-internal replies", () => {
   assert.match(source, /adminView \? state\.adminSupportMessages : state\.supportTicketMessages/);
 });
 
+test("async ticket creation keeps a stable form reference before resetting", () => {
+  const customerHandler = source.slice(source.indexOf("async function createUserSupportTicket"), source.indexOf("async function saveSupportReply"));
+  const adminHandler = source.slice(source.indexOf("async function createAdminSupportTicket"), source.indexOf("async function saveAdminSupportTicket"));
+  for (const handler of [customerHandler, adminHandler]) {
+    assert.match(handler, /const form = event\.currentTarget;/);
+    assert.match(handler, /form\.reset\(\);/);
+    assert.doesNotMatch(handler, /event\.currentTarget\.reset\(\)/);
+  }
+});
+
 test("authorized admins receive filters, assignment, status, priority, replies, and internal notes", () => {
   assert.match(html, /id="adminSupportSearch"/);
   assert.match(html, /id="adminSupportStatus"/);

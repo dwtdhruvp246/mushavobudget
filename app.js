@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 63
+// Mushavo Budget authenticated application — release 64
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -4895,6 +4895,7 @@ function supportMessageTimeline(ticket, adminView = false) {
 
 async function createUserSupportTicket(event) {
   event.preventDefault();
+  const form = event.currentTarget;
   const button = event.submitter;
   const workspace = currentBudgetWorkspace();
   try {
@@ -4908,7 +4909,7 @@ async function createUserSupportTicket(event) {
       category: $("#supportCategory").value,
       priority: $("#supportPriority").value
     }));
-    event.currentTarget.reset();
+    form.reset();
     await loadUserSupportData();
     renderUserSupport();
     showToast("Support ticket submitted.");
@@ -4992,6 +4993,7 @@ function filteredAdminSupportTickets() {
 
 async function createAdminSupportTicket(event) {
   event.preventDefault();
+  const form = event.currentTarget;
   const button = event.submitter;
   const option = $("#adminSupportWorkspace").selectedOptions[0];
   try {
@@ -5007,7 +5009,7 @@ async function createAdminSupportTicket(event) {
       priority: $("#adminSupportTicketPriority").value,
       status: "in_progress"
     }));
-    event.currentTarget.reset();
+    form.reset();
     await loadAdminData("support");
     renderAdminSupport();
     showToast("Support ticket created.");

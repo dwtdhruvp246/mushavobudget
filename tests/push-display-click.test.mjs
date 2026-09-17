@@ -156,3 +156,23 @@ test("notification clicks navigate and focus an existing Mushavo app window", as
   assert.equal(calls.focused, 1);
   assert.deepEqual(harness.calls.opened, []);
 });
+
+test("admin alerts open only an approved admin queue and preserve notification identity", async () => {
+  const harness = createWorkerHarness();
+  const notificationId = "123e4567-e89b-42d3-a456-426614174000";
+  await harness.fire("push", {
+    data: {
+      json: () => ({
+        type: "subscription_payment_submitted",
+        title: "Subscription payment needs review",
+        body: "A workspace owner submitted a subscription payment for review.",
+        target_url: `/app.html?source=push&notification_id=${notificationId}#admin/finance`
+      })
+    }
+  });
+
+  assert.equal(
+    harness.calls.notifications[0].options.data.targetUrl,
+    `https://mushavobudget.com/app.html?source=push&notification_id=${notificationId}#admin/finance`
+  );
+});

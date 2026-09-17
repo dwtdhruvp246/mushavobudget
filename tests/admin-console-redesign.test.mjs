@@ -51,7 +51,24 @@ test("admin cards retain dense responsive two-column minimum where space allows"
   assert.match(styles, /\.admin-dashboard-stats[\s\S]*grid-template-columns: repeat\(3,/);
   assert.match(styles, /@media \(max-width: 1180px\)[\s\S]*\.admin-dashboard-stats[\s\S]*repeat\(2,/);
   assert.match(styles, /\.enquiry-stats,[\s\S]*\.support-stats[\s\S]*repeat\(2,/);
-  assert.match(styles, /@media \(max-width: 380px\)[\s\S]*grid-template-columns: minmax\(0, 1fr\)/);
+  assert.match(styles, /@media \(max-width: 380px\)[\s\S]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+});
+
+test("workspace type summaries separate active totals from paid access", () => {
+  for (const id of [
+    "adminWorkspaceAll", "adminWorkspacePersonalPaid", "adminWorkspaceFamilyPaid", "adminWorkspaceBusinessPaid"
+  ]) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  const summary = source.slice(
+    source.indexOf("function renderAdminWorkspaceSummary"),
+    source.indexOf("function syncAdminWorkspacePlanFilter")
+  );
+  assert.match(summary, /workspace\?\.status === "active"/);
+  assert.match(summary, /free\/unpaid/);
+  assert.match(summary, /function adminWorkspaceIsPaid/);
+  assert.match(summary, /row\.statusKey === "active"/);
+  assert.match(summary, /\["free", "unconfigured", "legacy"\]/);
 });
 
 test("admin plan catalogue remains complete and precedes collapsed editors", () => {

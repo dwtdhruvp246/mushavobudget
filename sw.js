@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "mushavo-budget-";
-const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v23`;
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v24`;
 const APP_ENTRY_URL = "/app-entry.html";
 const OFFLINE_URL = "/offline.html";
 const OFFLINE_ENTRY_CACHE_KEY = "/__mushavo-budget-offline/app-entry";
@@ -13,7 +13,11 @@ const ALLOWED_NOTIFICATION_PATHS = new Set(["/app.html"]);
 const ALLOWED_NOTIFICATION_HASHES = new Set([
   "#family/dashboard",
   "#family/payments",
-  "#family/settings"
+  "#family/settings",
+  "#admin/dashboard",
+  "#admin/finance",
+  "#admin/enquiries",
+  "#admin/support"
 ]);
 const APP_ENTRY_PATHS = new Set(["/app-entry", "/app-entry.html"]);
 const APP_WINDOW_PATHS = new Set(["/app", "/app.html", "/app-entry", "/app-entry.html"]);

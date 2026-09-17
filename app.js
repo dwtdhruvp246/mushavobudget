@@ -811,7 +811,7 @@ async function refreshVisibleData() {
   realtime.refreshInFlight = true;
   try {
     if (state.isAdmin) {
-      await loadAdminData();
+      await Promise.all([loadAdminData(), loadNotifications()]);
       if (state.session?.user?.id !== sessionId) return;
       renderAdmin();
       return;
@@ -1056,10 +1056,13 @@ async function loadApp() {
   await loadAccess();
 
   if (state.isAdmin) {
+    const loadedNotifications = await notificationResult;
+    if (!loadedNotifications.ok) throw loadedNotifications.error;
     await loadAdminData();
     syncRouteForWorkspace("admin");
     setView("admin");
     renderAdmin();
+    await handleNotificationDeepLink();
     startRealtime();
     profileResult.then((result) => {
       if (!result.ok) console.warn("Profile load was deferred", result.error);
@@ -1087,7 +1090,7 @@ async function loadApp() {
   if (state.familyTab === "support") await loadUserSupportData();
   setView("app");
   renderFamilyApp();
-  handleNotificationDeepLink();
+  await handleNotificationDeepLink();
   startRealtime();
   Promise.all([profileResult, invitationResult, notificationResult]).then((results) => {
     const labels = ["Profile", "Invitations", "Notifications"];
@@ -2133,8 +2136,22 @@ function renderObligationCard(item, occurrenceChoices = []) {
   return article;
 }
 
-function handleNotificationDeepLink() {
+async function handleNotificationDeepLink() {
   const url = new URL(window.location.href);
+  const notificationId = url.searchParams.get("notification_id");
+  if (notificationId && state.notifications.some((item) => item.id === notificationId)) {
+    await query(
+      "notification deep link read",
+      supabase.from("notifications").update({ read_at: new Date().toISOString() }).eq("id", notificationId)
+    );
+    state.notifications = state.notifications.map((item) => item.id === notificationId
+      ? { ...item, read_at: new Date().toISOString() }
+      : item);
+    url.searchParams.delete("notification_id");
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+    renderNotifications();
+  }
+
   const paymentItemId = url.searchParams.get("payment_item");
   if (!paymentItemId) return;
 
@@ -2455,6 +2472,84 @@ function renderPushNotificationSettings() {
   panel.dataset.level = level;
   title.textContent = titleText;
   message.textContent = messageText;
+  renderAdminPushNotificationSettings();
+}
+
+function renderAdminPushNotificationSettings() {
+  const panel = $("#adminPushNotificationControls");
+  if (!panel) return;
+  panel.classList.toggle("hidden", !state.isAdmin);
+  if (!state.isAdmin) return;
+
+  const permission = currentPushPermission();
+  const support = currentPushSupportStatus();
+  const enabled = Boolean(state.pushDevice.subscription && state.pushDevice.record);
+  const hasBrowserSubscription = Boolean(state.pushDevice.subscription);
+  const badge = $("#adminPushPermissionBadge");
+  const title = $("#adminPushDeviceTitle");
+  const message = $("#adminPushDeviceMessage");
+  const enableButton = $("#adminEnablePushNotificationsButton");
+  const testButton = $("#adminSendTestPushButton");
+  const disableButton = $("#adminDisablePushNotificationsButton");
+
+  enableButton.hidden = true;
+  testButton.hidden = true;
+  disableButton.hidden = !hasBrowserSubscription;
+  enableButton.disabled = state.pushDevice.busy || state.pushDevice.testBusy;
+  testButton.disabled = state.pushDevice.busy || state.pushDevice.testBusy;
+  disableButton.disabled = state.pushDevice.busy || state.pushDevice.testBusy;
+
+  let level = "ready";
+  let badgeText = "Ready";
+  let titleText = "Admin alerts are ready to enable";
+  let messageText = "Enable protected platform alerts on this device.";
+
+  if (!support.supported) {
+    const copy = pushSupportCopy(support.code);
+    level = "unavailable";
+    badgeText = support.code === "ios-install-required" ? "Install required" : "Unavailable";
+    titleText = copy.title;
+    messageText = copy.message;
+  } else if (state.pushDevice.error) {
+    level = "error";
+    badgeText = "Needs attention";
+    titleText = "This admin device could not be checked";
+    messageText = friendlyMessage(state.pushDevice.error);
+    enableButton.hidden = permission === "denied";
+  } else if (state.pushDevice.busy || state.pushDevice.testBusy || !state.pushDevice.checked) {
+    level = "checking";
+    badgeText = "Checking";
+    titleText = state.pushDevice.testBusy ? "Sending a protected test" : "Checking this admin device";
+    messageText = "Please keep this page open for a moment.";
+    testButton.hidden = !state.pushDevice.testBusy;
+  } else if (permission === "denied") {
+    level = "blocked";
+    badgeText = "Blocked";
+    titleText = "Notifications are blocked";
+    messageText = "Allow notifications in this browser's site settings, then reload Mushavo Budget.";
+  } else if (enabled) {
+    level = "enabled";
+    badgeText = "Enabled";
+    titleText = "Admin notifications enabled on this device";
+    messageText = "Subscription reviews, support tickets, and enquiries can reach this signed-in admin account.";
+    testButton.hidden = false;
+    disableButton.hidden = false;
+  } else if (permission === "granted" && hasBrowserSubscription) {
+    badgeText = "Link required";
+    titleText = "Finish linking this admin device";
+    messageText = "The browser has permission, but its subscription is not linked to this admin account.";
+    enableButton.textContent = "Finish enabling";
+    enableButton.hidden = false;
+    disableButton.hidden = false;
+  } else {
+    enableButton.textContent = "Enable notifications";
+    enableButton.hidden = false;
+  }
+
+  badge.textContent = badgeText;
+  badge.dataset.level = level;
+  title.textContent = titleText;
+  message.textContent = messageText;
 }
 
 function withPushTimeout(promise) {
@@ -2549,7 +2644,7 @@ async function refreshPushNotificationSettings() {
 
 function schedulePushNotificationRefresh(force = false) {
   const userId = state.session?.user?.id;
-  if (!userId || state.isAdmin) return;
+  if (!userId) return;
   if (!force && state.pushDevice.checked && state.pushDevice.userId === userId) return;
   if (pushRefreshPromise) return;
   pushRefreshPromise = refreshPushNotificationSettings()
@@ -3183,6 +3278,9 @@ function renderNotifications() {
   document.querySelectorAll("[data-open-notifications]").forEach((button) => {
     button.setAttribute("aria-label", alertCount ? `Open notifications, ${alertCount} alerts` : "Open notifications");
   });
+  if ($("#notificationDialogTitle")) {
+    $("#notificationDialogTitle").textContent = state.isAdmin ? "Admin notifications" : "Notifications";
+  }
 
   renderNotificationList($("#notificationsList"));
   renderNotificationList($("#notificationDialogList"), true);
@@ -3205,9 +3303,11 @@ function syncApplicationBadge(alertCount) {
 
 function renderNotificationList(list, compact = false) {
   if (!list) return;
-  const dueReminders = notificationDueOccurrences();
+  const dueReminders = state.isAdmin ? [] : notificationDueOccurrences();
   if (!state.notifications.length && !dueReminders.length) {
-    list.innerHTML = emptyState("No notifications", "Invites and payment reminders will appear here.");
+    list.innerHTML = state.isAdmin
+      ? emptyState("No admin notifications", "Subscription reviews, support tickets, and public enquiries will appear here.")
+      : emptyState("No notifications", "Invites and payment reminders will appear here.");
     return;
   }
   list.innerHTML = "";
@@ -3282,6 +3382,10 @@ function openInviteMemberDialog() {
 
 function openNotificationDialog() {
   renderNotifications();
+  if (state.isAdmin) {
+    renderAdminPushNotificationSettings();
+    schedulePushNotificationRefresh();
+  }
   const dialog = $("#notificationDialog");
   if (dialog && !dialog.open) dialog.showModal();
 }
@@ -3808,6 +3912,7 @@ function renderFamilyPaymentRecord(record) {
 function renderAdmin() {
   renderAdminTabs();
   renderAdminEnquiryBadge();
+  renderNotifications();
   if (state.adminTab === "dashboard") renderAdminSummary();
   if (state.adminTab === "households") renderAdminFamilies();
   if (state.adminTab === "users") renderHeads();
@@ -4593,13 +4698,27 @@ function adminWorkspaceDirectoryRows() {
 }
 
 function renderAdminWorkspaceSummary(rows) {
-  $("#adminWorkspaceTotal").textContent = rows.length;
-  $("#adminWorkspacePersonal").textContent = rows.filter((row) => row.type === "personal").length;
-  $("#adminWorkspaceFamily").textContent = rows.filter((row) => row.type === "household").length;
-  $("#adminWorkspaceBusiness").textContent = rows.filter((row) => row.type === "business").length;
-  $("#adminWorkspacePaid").textContent = rows.filter((row) =>
-    row.statusKey === "active" && !["free", "unconfigured", "legacy"].includes(row.planCode)
-  ).length;
+  const activeRows = rows.filter((row) => row.workspace?.status === "active");
+  const paidRows = activeRows.filter(adminWorkspaceIsPaid);
+  const updateType = (type, countSelector, paidSelector) => {
+    const typeRows = activeRows.filter((row) => row.type === type);
+    const paidCount = typeRows.filter(adminWorkspaceIsPaid).length;
+    $(countSelector).textContent = typeRows.length;
+    $(paidSelector).textContent = `${paidCount} paid · ${typeRows.length - paidCount} free/unpaid`;
+  };
+
+  $("#adminWorkspaceTotal").textContent = activeRows.length;
+  $("#adminWorkspaceAll").textContent = `${rows.length} total ${rows.length === 1 ? "record" : "records"}`;
+  updateType("personal", "#adminWorkspacePersonal", "#adminWorkspacePersonalPaid");
+  updateType("household", "#adminWorkspaceFamily", "#adminWorkspaceFamilyPaid");
+  updateType("business", "#adminWorkspaceBusiness", "#adminWorkspaceBusinessPaid");
+  $("#adminWorkspacePaid").textContent = paidRows.length;
+}
+
+function adminWorkspaceIsPaid(row) {
+  return row.workspace?.status === "active"
+    && row.statusKey === "active"
+    && !["free", "unconfigured", "legacy"].includes(row.planCode);
 }
 
 function syncAdminWorkspacePlanFilter(rows) {
@@ -6529,7 +6648,8 @@ document.addEventListener("click", async (event) => {
   if (readNotificationId) {
     await query("notification read", supabase.from("notifications").update({ read_at: new Date().toISOString() }).eq("id", readNotificationId));
     await loadNotifications();
-    renderFamilyApp();
+    if (state.isAdmin) renderAdmin();
+    else renderFamilyApp();
   }
 
   const openNotificationId = event.target.dataset.openNotification;
@@ -6645,6 +6765,9 @@ $("#inviteMemberDialog").addEventListener("close", () => {
 $("#enablePushNotificationsButton").addEventListener("click", enablePushNotifications);
 $("#sendTestPushButton").addEventListener("click", sendTestPushNotification);
 $("#disablePushNotificationsButton").addEventListener("click", disablePushNotifications);
+$("#adminEnablePushNotificationsButton").addEventListener("click", enablePushNotifications);
+$("#adminSendTestPushButton").addEventListener("click", sendTestPushNotification);
+$("#adminDisablePushNotificationsButton").addEventListener("click", disablePushNotifications);
 $("#signOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
 $("#adminSignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
 $("#suspendedSignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));

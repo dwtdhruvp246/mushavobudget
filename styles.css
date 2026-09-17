@@ -1,4 +1,4 @@
-/* Mushavo Budget authenticated application stylesheet — release 63 */
+/* Mushavo Budget authenticated application stylesheet — release 64 */
 :root {
   --ink: #0f172a;
   --muted: #64748b;
@@ -381,7 +381,40 @@
 @media (max-width: 380px) {
   .admin-dashboard-stats,
   .enquiry-stats,
-  .support-stats { grid-template-columns: minmax(0, 1fr); }
+  .support-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .admin-dashboard-stats .stat-card,
+  .enquiry-stats .stat-card,
+  .support-stats .stat-card {
+    min-width: 0;
+    min-height: 88px;
+    padding: 9px;
+  }
+
+  .admin-dashboard-stats .stat-label,
+  .enquiry-stats .stat-label,
+  .support-stats .stat-label {
+    overflow-wrap: anywhere;
+    font-size: 0.72rem;
+    line-height: 1.25;
+  }
+
+  .admin-dashboard-stats .stat-card strong,
+  .enquiry-stats .stat-card strong,
+  .support-stats .stat-card strong {
+    font-size: 1.12rem;
+  }
+
+  .admin-dashboard-stats .stat-card small,
+  .enquiry-stats .stat-card small,
+  .support-stats .stat-card small {
+    overflow-wrap: anywhere;
+    font-size: 0.68rem;
+    line-height: 1.3;
+  }
 }
 
 /* Payments management: search, sort, record actions, and item history. */
@@ -5610,5 +5643,33 @@ input[type="file"] {
 @media (max-width: 380px) {
   .admin-dashboard-stats,
   .enquiry-stats,
-  .support-stats { grid-template-columns: minmax(0, 1fr); }
+  .support-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.admin-push-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 10px 14px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 16px;
+  padding: 12px;
+  background: rgba(236, 253, 245, 0.72);
+}
+
+.admin-push-controls.hidden { display: none; }
+.admin-push-controls > div:first-child { display: grid; gap: 4px; min-width: 0; }
+.admin-push-controls > div:first-child p,
+.admin-push-controls > div:first-child small { margin: 0; }
+.admin-push-actions {
+  display: flex;
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 420px) {
+  .admin-push-controls { grid-template-columns: minmax(0, 1fr); }
+  .admin-push-controls > .push-status-badge { justify-self: start; }
 }

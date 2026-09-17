@@ -10,3 +10,8 @@ verify_jwt = false
 # This administrative function rejects requests unless its dedicated cron
 # secret header matches the protected Edge Function environment value.
 verify_jwt = false
+
+[functions.dispatch-admin-notifications]
+# Admin alert delivery uses the same protected server-side Cron secret. Browser
+# requests without that secret are rejected before any queue row is claimed.
+verify_jwt = false

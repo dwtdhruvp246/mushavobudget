@@ -169,6 +169,32 @@ test("account switching discards a browser subscription not owned by the current
   assert.deepEqual(retainedCalls, []);
 });
 
+test("permanently disabled device records are removed before Android reconnects", async () => {
+  const bodyStart = applicationSource.indexOf("async function findOwnPushSubscriptionRecord");
+  const bodyEnd = applicationSource.indexOf("async function refreshPushNotificationSettings", bodyStart);
+  const body = applicationSource.slice(bodyStart, bodyEnd);
+  assert.match(body, /disabled_at, failure_count, last_success_at/);
+  assert.match(body, /record && !record\.disabled_at/);
+
+  const calls = [];
+  const reconcile = loadSubscriptionReconciler("granted", calls);
+  const result = await reconcile({
+    async unsubscribe() { calls.push("unsubscribe"); }
+  }, { id: "disabled-record", disabled_at: "2026-09-20T14:18:33Z" });
+  assert.deepEqual({ ...result }, { subscription: null, record: null });
+  assert.deepEqual(calls, ["delete-record", "unsubscribe", "clear-badge"]);
+
+  const enableStart = applicationSource.indexOf("async function enablePushNotifications()");
+  const enableEnd = applicationSource.indexOf("async function deleteOwnPushRecord", enableStart);
+  const enableBody = applicationSource.slice(enableStart, enableEnd);
+  assert.match(enableBody, /findOwnPushSubscriptionRecord\(subscription\.endpoint\)/);
+  assert.match(enableBody, /reconcileCurrentPushSubscription\(subscription, existingRecord\)/);
+  assert.ok(
+    enableBody.indexOf("reconcileCurrentPushSubscription(subscription, existingRecord)") <
+      enableBody.indexOf("pushManager.subscribe")
+  );
+});
+
 test("revoked permission removes the current account's server row before unsubscribing", async () => {
   const start = applicationSource.indexOf("async function reconcileCurrentPushSubscription");
   const end = applicationSource.indexOf("async function refreshPushNotificationSettings", start);

@@ -2575,7 +2575,7 @@ async function activeServiceWorkerRegistration() {
 async function findOwnPushSubscriptionRecord(endpoint) {
   const { data, error } = await supabase
     .from("push_subscriptions")
-    .select("id, endpoint, device_label, updated_at")
+    .select("id, endpoint, device_label, updated_at, disabled_at, failure_count, last_success_at")
     .eq("endpoint", endpoint)
     .maybeSingle();
   if (error) throw error;
@@ -2586,12 +2586,11 @@ async function reconcileCurrentPushSubscription(subscription, record) {
   if (!subscription) return { subscription: null, record: null };
 
   const permissionGranted = currentPushPermission() === "granted";
-  if (permissionGranted && record) return { subscription, record };
+  if (permissionGranted && record && !record.disabled_at) return { subscription, record };
 
-  // A browser subscription with no row visible to the signed-in user belongs
-  // to another account or was left behind by an interrupted setup. Unsubscribe
-  // it before this account can enable notifications so private reminders can
-  // never cross an account switch on the same device.
+  // A missing record can belong to another account. A disabled record points
+  // at an endpoint the push provider has permanently rejected. Remove either
+  // stale browser subscription before creating a fresh, private device link.
   if (record) await deleteOwnPushRecord(subscription, record);
   await subscription.unsubscribe();
   await clearApplicationBadge();
@@ -2671,13 +2670,13 @@ async function saveCurrentPushSubscription(subscription) {
       .from("push_subscriptions")
       .update(metadata)
       .eq("id", existing.id)
-      .select("id, endpoint, device_label, updated_at")
+      .select("id, endpoint, device_label, updated_at, disabled_at, failure_count, last_success_at")
       .single();
   } else {
     response = await supabase
       .from("push_subscriptions")
       .insert({ user_id: userId, endpoint: keys.endpoint, ...metadata })
-      .select("id, endpoint, device_label, updated_at")
+      .select("id, endpoint, device_label, updated_at, disabled_at, failure_count, last_success_at")
       .single();
   }
   if (response.error) {
@@ -2688,7 +2687,7 @@ async function saveCurrentPushSubscription(subscription) {
         .from("push_subscriptions")
         .update(metadata)
         .eq("id", concurrentOwnRecord.id)
-        .select("id, endpoint, device_label, updated_at")
+        .select("id, endpoint, device_label, updated_at, disabled_at, failure_count, last_success_at")
         .single();
       if (response.error) throw response.error;
     } else {
@@ -2721,6 +2720,11 @@ async function enablePushNotifications() {
 
     const registration = await activeServiceWorkerRegistration();
     subscription = await registration.pushManager.getSubscription();
+    if (subscription) {
+      const existingRecord = await findOwnPushSubscriptionRecord(subscription.endpoint);
+      const reconciled = await reconcileCurrentPushSubscription(subscription, existingRecord);
+      subscription = reconciled.subscription;
+    }
     if (!subscription) {
       subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,

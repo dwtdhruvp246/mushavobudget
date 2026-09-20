@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 64
+// Mushavo Budget authenticated application — release 65
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -2829,6 +2829,16 @@ async function pushFunctionErrorCode(error) {
   }
 }
 
+async function refreshSessionForProtectedFunction() {
+  const { data, error } = await supabase.auth.refreshSession();
+  const session = data?.session;
+  if (error || !session?.access_token) {
+    throw new Error("EDGE_FUNCTION_AUTHENTICATION_FAILED");
+  }
+  state.session = session;
+  return session.access_token;
+}
+
 async function sendTestPushNotification() {
   if (state.pushDevice.busy || state.pushDevice.testBusy || !state.session) return;
   if (!state.pushDevice.subscription || !state.pushDevice.record) {
@@ -2840,8 +2850,10 @@ async function sendTestPushNotification() {
   state.pushDevice.error = null;
   renderPushNotificationSettings();
   try {
+    const accessToken = await refreshSessionForProtectedFunction();
     const { data, error } = await supabase.functions.invoke("send-test-push", {
       body: {},
+      headers: { Authorization: `Bearer ${accessToken}` }
     });
     if (error) throw new Error(await pushFunctionErrorCode(error));
     if (data?.error) throw new Error(data.error);

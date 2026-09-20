@@ -195,6 +195,20 @@ test("permanently disabled device records are removed before Android reconnects"
   );
 });
 
+test("test push refreshes the mobile session and sends its fresh access token", () => {
+  const start = applicationSource.indexOf("async function refreshSessionForProtectedFunction");
+  const end = applicationSource.indexOf("async function signOutSafely", start);
+  const body = applicationSource.slice(start, end);
+  assert.ok(start >= 0 && end > start);
+  assert.match(body, /supabase\.auth\.refreshSession\(\)/);
+  assert.match(body, /state\.session = session/);
+  assert.match(body, /headers: \{ Authorization: `Bearer \$\{accessToken\}` \}/);
+  assert.ok(
+    body.indexOf("await refreshSessionForProtectedFunction()") <
+      body.indexOf('supabase.functions.invoke("send-test-push"')
+  );
+});
+
 test("revoked permission removes the current account's server row before unsubscribing", async () => {
   const start = applicationSource.indexOf("async function reconcileCurrentPushSubscription");
   const end = applicationSource.indexOf("async function refreshPushNotificationSettings", start);

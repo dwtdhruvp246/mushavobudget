@@ -1,173 +1,99 @@
 (() => {
   "use strict";
 
-  const RELEASE = "4.6.3";
-  const WORKER_URL = "/sw.js?v=26";
+  const RELEASE = "4.6.4";
+  const WORKER_URL = "/sw.js?v=27";
   const UPDATE_CHECK_INTERVAL_MS = 15000;
-  const RELOAD_FALLBACK_MS = 5000;
   const dirtyForms = new Set();
+  const operations = new Set();
   let registration = null;
   let pendingWorker = null;
-  let dismissedWorker = null;
-  let banner = null;
-  let updateButton = null;
-  let laterButton = null;
-  let bannerMessage = null;
-  let discardConfirmed = false;
-  let reloadRequested = false;
+  let activationRequested = false;
+  let controllerChanged = false;
   let reloadStarted = false;
-  let reloadFallbackTimer = null;
+  let retryTimer = null;
   let lastUpdateCheck = 0;
+  let hadController = Boolean(navigator.serviceWorker?.controller);
 
   function closestForm(target) {
-    if (!target || typeof target.closest !== "function") return null;
-    return target.closest("form");
+    return target?.closest?.("form") || null;
   }
-
   function formIsActive(form) {
-    if (!form || form.dataset?.pwaIgnoreDirty === "true") return false;
-    if (form.isConnected === false) return false;
-    if (typeof form.closest === "function" && form.closest("[hidden], .hidden")) return false;
-    const dialog = typeof form.closest === "function" ? form.closest("dialog") : null;
+    if (!form || form.dataset?.pwaIgnoreDirty === "true" || form.isConnected === false) return false;
+    if (form.closest?.("[hidden], .hidden")) return false;
+    const dialog = form.closest?.("dialog");
     return !dialog || Boolean(dialog.open);
   }
-
   function markDirty(event) {
     const form = closestForm(event.target);
     if (form && formIsActive(form)) dirtyForms.add(form);
   }
-
   function markFormClean(formOrSelector) {
-    const form = typeof formOrSelector === "string"
-      ? document.querySelector(formOrSelector)
-      : formOrSelector;
+    const form = typeof formOrSelector === "string" ? document.querySelector(formOrSelector) : formOrSelector;
     if (form) dirtyForms.delete(form);
+    scheduleUpdate();
   }
-
   function hasUnsavedChanges() {
-    for (const form of dirtyForms) {
-      if (formIsActive(form)) return true;
+    return [...dirtyForms].some(formIsActive);
+  }
+  function beginOperation() {
+    const token = {};
+    operations.add(token);
+    return () => {
+      operations.delete(token);
+      scheduleUpdate();
+    };
+  }
+  function safeToReload() {
+    return navigator.onLine && document.visibilityState === "visible" &&
+      !hasUnsavedChanges() && operations.size === 0 &&
+      !document.querySelector('button[disabled][type="submit"], [aria-busy="true"]');
+  }
+  function scheduleUpdate() {
+    if (retryTimer || reloadStarted || (!pendingWorker && !controllerChanged)) return;
+    retryTimer = window.setTimeout(() => {
+      retryTimer = null;
+      applyUpdateWhenSafe();
+    }, 1000);
+  }
+  function applyUpdateWhenSafe() {
+    if (reloadStarted || (!pendingWorker && !controllerChanged)) return;
+    if (!safeToReload()) {
+      scheduleUpdate();
+      return;
     }
-    return false;
+    // Recheck safety after activation, including activation by another tab.
+    if (controllerChanged) {
+      reloadStarted = true;
+      window.location.reload();
+      return;
+    }
+    if (!activationRequested && pendingWorker) {
+      activationRequested = true;
+      try {
+        pendingWorker.postMessage({ type: "SKIP_WAITING" });
+      } catch (_error) {
+        activationRequested = false;
+      }
+    }
+    // A timer must never force a reload before the new worker controls this page.
+    scheduleUpdate();
   }
-
-  function createElement(tag, className, text) {
-    const element = document.createElement(tag);
-    if (className) element.className = className;
-    if (text) element.textContent = text;
-    return element;
-  }
-
-  function announceUiState(name) {
-    if (typeof window.CustomEvent !== "function" || typeof window.dispatchEvent !== "function") return;
-    window.dispatchEvent(new window.CustomEvent(name));
-  }
-
-  function ensureBanner() {
-    if (banner) return banner;
-
-    banner = createElement("aside", "pwa-update-banner pwa-update-hidden");
-    banner.setAttribute("role", "status");
-    banner.setAttribute("aria-live", "polite");
-    banner.setAttribute("aria-label", "Mushavo Budget update");
-
-    const copy = createElement("div", "pwa-update-copy");
-    copy.append(createElement("strong", "", "New Mushavo Budget update available"));
-    bannerMessage = createElement("p", "", "Reload the page to use the latest version.");
-    copy.append(bannerMessage);
-
-    const actions = createElement("div", "pwa-update-actions");
-    updateButton = createElement("button", "pwa-update-primary", "Reload page");
-    updateButton.type = "button";
-    laterButton = createElement("button", "pwa-update-secondary", "Later");
-    laterButton.type = "button";
-    actions.append(updateButton, laterButton);
-    banner.append(copy, actions);
-    document.body.append(banner);
-
-    updateButton.addEventListener("click", handleUpdateRequest);
-    laterButton.addEventListener("click", dismissUpdate);
-    return banner;
-  }
-
-  function resetBannerCopy() {
-    discardConfirmed = false;
-    if (!bannerMessage || !updateButton || !laterButton) return;
-    bannerMessage.textContent = "Reload the page to use the latest version.";
-    updateButton.textContent = "Reload page";
-    updateButton.disabled = false;
-    laterButton.textContent = "Later";
-    laterButton.disabled = false;
-  }
-
   function showUpdate(worker) {
-    if (!worker || worker === dismissedWorker) return;
-    pendingWorker = worker;
-    ensureBanner();
-    resetBannerCopy();
-    banner.classList.remove("pwa-update-hidden");
-    announceUiState("mushavo:pwa-update-visible");
-  }
-
-  function dismissUpdate() {
-    if (discardConfirmed) {
-      resetBannerCopy();
-      return;
-    }
-    dismissedWorker = pendingWorker;
-    banner?.classList.add("pwa-update-hidden");
-    announceUiState("mushavo:pwa-update-hidden");
-  }
-
-  function reloadPageOnce() {
-    if (!reloadRequested || reloadStarted) return;
-    reloadStarted = true;
-    if (reloadFallbackTimer) window.clearTimeout(reloadFallbackTimer);
-    window.location.reload();
-  }
-
-  function beginUpdate() {
-    if (!pendingWorker) return;
-    reloadRequested = true;
-    updateButton.disabled = true;
-    laterButton.disabled = true;
-    updateButton.textContent = "Reloading…";
-    bannerMessage.textContent = "Applying the update and reloading Mushavo Budget.";
-    pendingWorker.addEventListener("statechange", () => {
-      if (pendingWorker?.state === "activated") reloadPageOnce();
-    });
-    try {
-      pendingWorker.postMessage({ type: "SKIP_WAITING" });
-    } finally {
-      reloadFallbackTimer = window.setTimeout(reloadPageOnce, RELOAD_FALLBACK_MS);
-    }
-  }
-
-  function handleUpdateRequest() {
-    if (hasUnsavedChanges() && !discardConfirmed) {
-      discardConfirmed = true;
-      bannerMessage.textContent = "You have unsaved changes. Updating will discard them.";
-      updateButton.textContent = "Update and discard changes";
-      laterButton.textContent = "Keep editing";
-      return;
-    }
-    beginUpdate();
-  }
-
-  function observeInstallingWorker(worker) {
     if (!worker) return;
-    worker.addEventListener("statechange", () => {
-      if (worker.state === "installed" && navigator.serviceWorker.controller) showUpdate(worker);
-    });
+    if (pendingWorker !== worker) activationRequested = false;
+    pendingWorker = worker;
+    scheduleUpdate();
   }
-
   function watchRegistration(activeRegistration) {
     if (activeRegistration.waiting) showUpdate(activeRegistration.waiting);
     activeRegistration.addEventListener("updatefound", () => {
-      observeInstallingWorker(activeRegistration.installing);
+      const worker = activeRegistration.installing;
+      worker?.addEventListener("statechange", () => {
+        if (worker.state === "installed" && navigator.serviceWorker.controller) showUpdate(worker);
+      });
     });
   }
-
   async function checkForUpdate(force = false) {
     if (!registration || !navigator.onLine) return;
     const now = Date.now();
@@ -177,58 +103,52 @@
       await registration.update();
       if (registration.waiting) showUpdate(registration.waiting);
     } catch (_error) {
-      // A failed update check must not interrupt the online app.
+      // Failed checks must not clear the user's saved session.
     }
   }
-
   async function registerServiceWorker() {
-    const register = typeof window.__MUSHAVO_PWA_REGISTER__ === "function"
-      ? window.__MUSHAVO_PWA_REGISTER__
-      : navigator.serviceWorker.register.bind(navigator.serviceWorker);
-    registration = await register(WORKER_URL, {
-      scope: "/",
-      updateViaCache: "none"
-    });
+    const register = window.__MUSHAVO_PWA_REGISTER__ || navigator.serviceWorker.register.bind(navigator.serviceWorker);
+    registration = await register(WORKER_URL, { scope: "/", updateViaCache: "none" });
     watchRegistration(registration);
     await checkForUpdate(true);
     return registration;
   }
-
   document.addEventListener("input", markDirty, true);
   document.addEventListener("change", markDirty, true);
   document.addEventListener("reset", (event) => {
-    const form = closestForm(event.target) || event.target;
-    window.setTimeout(() => markFormClean(form), 0);
+    window.setTimeout(() => markFormClean(closestForm(event.target) || event.target), 0);
   }, true);
+  document.addEventListener("close", scheduleUpdate, true);
   window.addEventListener("beforeunload", (event) => {
-    if (reloadRequested || !hasUnsavedChanges()) return;
+    if (reloadStarted || (!hasUnsavedChanges() && operations.size === 0)) return;
     event.preventDefault();
     event.returnValue = "";
   });
-
-  const api = {
+  window.MushavoPWA = Object.freeze({
     release: RELEASE,
     checkForUpdate: () => checkForUpdate(true),
     hasUnsavedChanges,
-    markFormClean
-  };
-  window.MushavoPWA = Object.freeze(api);
-
+    markFormClean,
+    beginOperation
+  });
   document.querySelectorAll("[data-pwa-release]").forEach((element) => {
     element.textContent = `Version ${RELEASE}`;
   });
-
   if (!("serviceWorker" in navigator) || window.location.protocol === "file:") return;
-
   navigator.serviceWorker.addEventListener("controllerchange", () => {
-    reloadPageOnce();
+    if (hadController) {
+      controllerChanged = true;
+      scheduleUpdate();
+    }
+    hadController = Boolean(navigator.serviceWorker.controller);
   });
-
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") checkForUpdate();
+    if (document.visibilityState === "visible") {
+      checkForUpdate();
+      scheduleUpdate();
+    }
   });
-
-  window.addEventListener("online", () => checkForUpdate(true));
+  window.addEventListener("online", () => { checkForUpdate(true); scheduleUpdate(); });
   window.addEventListener("load", () => {
     window.__MUSHAVO_PWA_READY__ = registerServiceWorker().catch(() => null);
   }, { once: true });

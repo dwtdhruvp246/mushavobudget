@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 66
+// Mushavo Budget authenticated application — release 67
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -432,8 +432,25 @@ function showLoading(title = "Opening your workspace", message = "Loading your l
 
 function setSubmitting(button, isSubmitting, label) {
   if (!button) return;
+  if (isSubmitting && !button.finishPwaOperation) {
+    button.finishPwaOperation = window.MushavoPWA?.beginOperation();
+  } else if (!isSubmitting) {
+    button.finishPwaOperation?.();
+    button.finishPwaOperation = null;
+  }
   button.disabled = isSubmitting;
   button.textContent = label;
+}
+
+function protectSubmission(handler) {
+  return async function(event) {
+    const finish = window.MushavoPWA?.beginOperation();
+    try {
+      return await handler.call(this, event);
+    } finally {
+      finish?.();
+    }
+  };
 }
 
 function showSignupSuccessMessage() {
@@ -698,7 +715,7 @@ function confirmAction({ title = "Are you sure?", message = "", action = "Confir
       form.removeEventListener("submit", handleSubmit);
       dialog.removeEventListener("close", handleClose);
     };
-    form.addEventListener("submit", handleSubmit);
+    form.addEventListener("submit", protectSubmission(handleSubmit));
     dialog.addEventListener("close", handleClose);
   });
 }
@@ -856,7 +873,8 @@ async function init() {
   }
 
   applyRouteFromHash();
-  const { data } = await supabase.auth.getSession();
+  const { data, error } = await supabase.auth.getSession();
+  if (error) throw error;
   state.session = data.session;
 
   supabase.auth.onAuthStateChange((event, session) => {
@@ -910,9 +928,26 @@ function removeStoredSupabaseSession() {
   }
 }
 
-async function handleLoadFailure(error) {
+function isUnrecoverableSessionError(error) {
+  return ["refresh_token_not_found", "refresh_token_already_used", "session_not_found", "session_expired", "user_not_found", "user_banned"].includes(error?.code) ||
+    /invalid refresh token|refresh token not found|session not found/i.test(error?.message || "");
+}
+
+async function handleLoadFailure(error, mayRefresh = true) {
   console.error(error);
-  if (state.session && isInvalidStoredSessionError(error)) {
+  if (state.session && mayRefresh && isInvalidStoredSessionError(error)) {
+    try {
+      const refreshed = await supabase.auth.refreshSession();
+      if (refreshed.error) throw refreshed.error;
+      if (!refreshed.data?.session) throw { code: "session_not_found", message: "Session not found" };
+      state.session = refreshed.data.session;
+      await openAuthenticatedSession(state.session);
+      return;
+    } catch (refreshError) {
+      return handleLoadFailure(refreshError, false);
+    }
+  }
+  if (isUnrecoverableSessionError(error)) {
     try {
       await supabase.auth.signOut({ scope: "local" });
     } catch (_signOutError) {
@@ -5107,7 +5142,7 @@ function renderUserSupport() {
     <summary><div><span class="support-ticket-code">${supportTicketCode(ticket)}</span><strong>${escapeHtml(ticket.subject)}</strong><small>${supportCategoryLabel(ticket.category)} &middot; Updated ${new Date(ticket.updated_at).toLocaleString()}</small></div><div class="badge-row">${statusBadge(ticket.priority)}<span class="mini-badge ${badgeClass(ticket.status)}">${escapeHtml(supportCategoryLabel(ticket.status))}</span></div></summary>
     <div class="support-ticket-body"><p>${escapeHtml(ticket.description).replace(/\n/g, "<br />")}</p>${supportMessageTimeline(ticket)}${ticket.status === "closed" ? '<p class="notice">This ticket is closed.</p>' : `<form class="support-reply-form" data-user-support-reply="${ticket.id}"><label>Reply<textarea maxlength="4000" required placeholder="Add more information or answer Support"></textarea></label><button class="primary" type="submit">Send reply</button></form>`}</div>
   </details>`).join("");
-  list.querySelectorAll("[data-user-support-reply]").forEach((form) => form.addEventListener("submit", (event) => saveSupportReply(event, form.dataset.userSupportReply, false)));
+  list.querySelectorAll("[data-user-support-reply]").forEach((form) => form.addEventListener("submit", protectSubmission((event) => saveSupportReply(event, form.dataset.userSupportReply, false))));
 }
 
 function renderAdminSupportWorkspaceOptions() {
@@ -5205,7 +5240,7 @@ function renderAdminSupport() {
     </details>`;
   }).join("");
   list.querySelectorAll("[data-save-support-ticket]").forEach((button) => button.addEventListener("click", () => saveAdminSupportTicket(button.dataset.saveSupportTicket, button)));
-  list.querySelectorAll("[data-admin-support-reply]").forEach((form) => form.addEventListener("submit", (event) => saveSupportReply(event, form.dataset.adminSupportReply, true)));
+  list.querySelectorAll("[data-admin-support-reply]").forEach((form) => form.addEventListener("submit", protectSubmission((event) => saveSupportReply(event, form.dataset.adminSupportReply, true))));
 }
 
 function enquiryLabel(value) {
@@ -6684,17 +6719,17 @@ document.addEventListener("click", async (event) => {
   }
 });
 
-$("#authForm").addEventListener("submit", signIn);
-$("#familyForm").addEventListener("submit", createFamily);
-$("#memberFamilyForm").addEventListener("submit", createFamilyFromMembers);
-$("#familyNameForm").addEventListener("submit", saveFamilyName);
-$("#inviteForm").addEventListener("submit", inviteMember);
-$("#obligationForm").addEventListener("submit", saveObligation);
+$("#authForm").addEventListener("submit", protectSubmission(signIn));
+$("#familyForm").addEventListener("submit", protectSubmission(createFamily));
+$("#memberFamilyForm").addEventListener("submit", protectSubmission(createFamilyFromMembers));
+$("#familyNameForm").addEventListener("submit", protectSubmission(saveFamilyName));
+$("#inviteForm").addEventListener("submit", protectSubmission(inviteMember));
+$("#obligationForm").addEventListener("submit", protectSubmission(saveObligation));
 $("#recurrenceType").addEventListener("change", updateRecurrenceControls);
 [$("#dueDay"), $("#startMonth"), $("#startYear")].forEach((field) => {
   field.addEventListener("change", syncPaymentStartDate);
 });
-$("#recordPaymentForm").addEventListener("submit", savePaymentRecord);
+$("#recordPaymentForm").addEventListener("submit", protectSubmission(savePaymentRecord));
 $("#recordPaymentPeriod").addEventListener("change", (event) => {
   const occurrence = state.recordPaymentOccurrenceChoices.find((choice) => choice.key === event.target.value);
   applyRecordPaymentOccurrence(occurrence);
@@ -6715,15 +6750,15 @@ $("#recordPaymentType").addEventListener("change", (event) => {
   amountInput.value = isFullPayment ? `${Number(outstanding.toFixed(4))}` : "";
   if (!isFullPayment) amountInput.focus();
 });
-$("#headForm").addEventListener("submit", addHead);
-$("#paymentForm").addEventListener("submit", addPlatformPayment);
-$("#adminNoteForm").addEventListener("submit", saveAdminNote);
-$("#adminSupportTicketForm").addEventListener("submit", createAdminSupportTicket);
-$("#supportTicketForm").addEventListener("submit", createUserSupportTicket);
-$("#planDefinitionForm").addEventListener("submit", savePlanDefinition);
+$("#headForm").addEventListener("submit", protectSubmission(addHead));
+$("#paymentForm").addEventListener("submit", protectSubmission(addPlatformPayment));
+$("#adminNoteForm").addEventListener("submit", protectSubmission(saveAdminNote));
+$("#adminSupportTicketForm").addEventListener("submit", protectSubmission(createAdminSupportTicket));
+$("#supportTicketForm").addEventListener("submit", protectSubmission(createUserSupportTicket));
+$("#planDefinitionForm").addEventListener("submit", protectSubmission(savePlanDefinition));
 $("#cancelPlanEditButton").addEventListener("click", resetPlanDefinitionForm);
-$("#planPriceForm").addEventListener("submit", savePlanPrice);
-$("#workspaceCurrencySettingsForm").addEventListener("submit", saveWorkspaceCurrencySettings);
+$("#planPriceForm").addEventListener("submit", protectSubmission(savePlanPrice));
+$("#workspaceCurrencySettingsForm").addEventListener("submit", protectSubmission(saveWorkspaceCurrencySettings));
 $("#workspaceEnabledCurrencies").addEventListener("change", refreshWorkspaceCurrencyDependentOptions);
 $("#workspaceCurrencySearch").addEventListener("input", renderWorkspaceCurrencyPicker);
 $("#workspaceCurrencyOptions").addEventListener("change", (event) => {
@@ -6733,7 +6768,7 @@ $("#workspaceCurrencyOptions").addEventListener("change", (event) => {
 [$("#workspaceDefaultCurrency"), $("#workspaceReportingCurrency")].forEach((select) => {
   select.addEventListener("change", renderWorkspaceCurrencyPicker);
 });
-$("#adminCurrencySettingsForm").addEventListener("submit", saveAdminFinanceCurrencySettings);
+$("#adminCurrencySettingsForm").addEventListener("submit", protectSubmission(saveAdminFinanceCurrencySettings));
 $("#adminEnabledCurrencies").addEventListener("change", refreshAdminCurrencyDependentOptions);
 document.querySelectorAll("#adminFinanceCurrencyFilter, #adminFinanceStatusFilter, #adminFinanceTypeFilter, #adminFinanceFromDate, #adminFinanceToDate, #adminFinanceSearch").forEach((field) => {
   field.addEventListener(field.type === "search" ? "input" : "change", () => {
@@ -6754,7 +6789,7 @@ $("#exportReportCsvButton").addEventListener("click", exportReportCsv);
 $("#printReportButton").addEventListener("click", () => printCurrentView("reports"));
 $("#exportAdminFinanceCsvButton").addEventListener("click", exportAdminFinanceCsv);
 $("#printAdminFinanceButton").addEventListener("click", () => printCurrentView("admin-finance"));
-$("#renewalForm").addEventListener("submit", submitSubscriptionRenewal);
+$("#renewalForm").addEventListener("submit", protectSubmission(submitSubscriptionRenewal));
 $("#renewalPlan").addEventListener("change", updateRenewalQuote);
 $("#renewalPeriod").addEventListener("change", updateRenewalQuote);
 $("#renewalCurrency").addEventListener("change", updateRenewalQuote);

@@ -28,7 +28,7 @@ function createElement() {
   };
 }
 
-async function runScenario({ online = true, getSession, getUser }) {
+async function runScenario({ online = true, getSession, getUser, refreshSession }) {
   const elements = Object.fromEntries([
     "entryShell", "entryEyebrow", "entryTitle", "entryCopy",
     "entryProgress", "entryActions", "entryRetry", "entrySignIn"
@@ -36,6 +36,9 @@ async function runScenario({ online = true, getSession, getUser }) {
   const calls = { createClient: 0, getSession: 0, getUser: 0, signOut: 0, redirects: [], reloads: 0 };
   const client = {
     auth: {
+      async refreshSession() {
+        return refreshSession ? refreshSession() : { data: { session: null }, error: { code: "refresh_token_not_found", message: "Refresh token not found" } };
+      },
       async getSession() {
         calls.getSession += 1;
         return getSession ? getSession() : { data: { session: null }, error: null };
@@ -137,6 +140,33 @@ test("network failure shows the offline state instead of redirecting", async () 
   assert.equal(elements.entryTitle.textContent, "Connect to open your workspace");
 });
 
+test("expired access token refreshes without signing out or deleting saved login", async () => {
+  let checks = 0;
+  const { calls, localStorage } = await runScenario({
+    getSession: () => ({ data: { session: { access_token: "old" } } }),
+    getUser: () => ++checks === 1
+      ? { error: { status: 401, message: "JWT expired" } }
+      : { data: { user: { id: "user-1" } } },
+    refreshSession: () => ({ data: { session: { access_token: "new" } } })
+  });
+  assert.equal(checks, 2);
+  assert.equal(calls.signOut, 0);
+  assert.equal(localStorage['sb-testproject-auth-token'], 'saved-session');
+  assert.match(calls.redirects[0], /app\.html\?source=pwa$/);
+});
+
+test("temporary refresh failure preserves saved login and offers retry", async () => {
+  const { calls, localStorage, elements } = await runScenario({
+    getSession: () => ({ data: { session: { access_token: "old" } } }),
+    getUser: () => ({ error: { status: 401, message: "JWT expired" } }),
+    refreshSession: () => { throw new TypeError('Failed to fetch'); }
+  });
+  assert.equal(calls.signOut, 0);
+  assert.equal(calls.redirects.length, 0);
+  assert.equal(localStorage['sb-testproject-auth-token'], 'saved-session');
+  assert.equal(elements.entryTitle.textContent, 'Connect to open your workspace');
+});
+
 test("installed app starts at the canonical session-aware entry while the public homepage stays public", () => {
   assert.equal(manifest.start_url, "/app-entry?source=pwa");
   assert.equal(manifest.shortcuts[0].url, "/app-entry?source=shortcut");
@@ -147,8 +177,8 @@ test("service worker caches only the safe launcher shell", () => {
   const shellStart = serviceWorkerSource.indexOf("const SAFE_SHELL = [");
   const shellEnd = serviceWorkerSource.indexOf("];", shellStart);
   const safeShellSource = serviceWorkerSource.slice(shellStart, shellEnd);
-  assert.match(serviceWorkerSource, /pwa-shell-v27/);
-  assert.match(serviceWorkerSource, /"\/app-entry\.js\?v=1"/);
+  assert.match(serviceWorkerSource, /pwa-shell-v28/);
+  assert.match(serviceWorkerSource, /"\/app-entry\.js\?v=2"/);
   assert.doesNotMatch(safeShellSource, /"\/app\.html/);
   assert.doesNotMatch(safeShellSource, /"\/config\.js/);
   assert.doesNotMatch(safeShellSource, /"\/manifest\.webmanifest/);
@@ -168,7 +198,7 @@ function createOfflineWorkerHarness() {
   };
   const caches = {
     async open() { return cache; },
-    async keys() { return ["mushavo-budget-pwa-shell-v25", "mushavo-budget-pwa-shell-v27"]; },
+    async keys() { return ["mushavo-budget-pwa-shell-v25", "mushavo-budget-pwa-shell-v28"]; },
     async delete(key) { stored.delete(key); return true; }
   };
   const self = {

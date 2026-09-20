@@ -175,58 +175,82 @@ function activeFormAndInput() {
 
 test("registers with service-worker HTTP caching disabled and checks immediately", async () => {
   const harness = await createHarness();
-  assert.equal(harness.calls.register[0].url, "/sw.js?v=26");
+  assert.equal(harness.calls.register[0].url, "/sw.js?v=27");
   assert.equal(harness.calls.register[0].options.scope, "/");
   assert.equal(harness.calls.register[0].options.updateViaCache, "none");
   assert.equal(harness.calls.update, 1);
-  assert.equal(harness.window.MushavoPWA.release, "4.6.3");
+  assert.equal(harness.window.MushavoPWA.release, "4.6.4");
 });
 
-test("waiting worker displays an update banner without reloading", async () => {
-  const harness = await createHarness();
-  assert.ok(harness.banner());
-  assert.equal(harness.banner().classList.contains("pwa-update-hidden"), false);
-  assert.equal(harness.calls.reload, 0);
-  assert.equal(harness.calls.postMessage.length, 0);
+test("waiting update activates automatically without a reload prompt", async () => {
+  const h = await createHarness();
+  assert.equal(h.banner(), null);
+  h.runTimers();
+  assert.equal(h.calls.postMessage[0].type, "SKIP_WAITING");
+  assert.equal(h.calls.reload, 0);
+  h.workerEvents.fire("controllerchange");
+  h.runTimers();
+  assert.equal(h.calls.reload, 1);
+  h.workerEvents.fire("controllerchange");
+  h.runTimers();
+  assert.equal(h.calls.reload, 1);
 });
 
-test("reload page activates the waiting worker and reloads on controller change", async () => {
-  const harness = await createHarness();
-  harness.updateButton().dispatch("click");
-  assert.equal(harness.calls.postMessage[0].type, "SKIP_WAITING");
-  assert.equal(harness.calls.reload, 0);
-  harness.workerEvents.fire("controllerchange");
-  assert.equal(harness.calls.reload, 1);
-  harness.workerEvents.fire("controllerchange");
-  assert.equal(harness.calls.reload, 1);
+test("timer never reloads before the new worker controls the page", async () => {
+  const h = await createHarness();
+  h.runTimers();
+  h.runTimers();
+  assert.equal(h.calls.reload, 0);
 });
 
-test("reload fallback prevents the interface remaining stuck on reloading", async () => {
-  const harness = await createHarness();
-  harness.updateButton().dispatch("click");
-  assert.equal(harness.calls.reload, 0);
-  harness.runTimers();
-  assert.equal(harness.calls.reload, 1);
-  harness.runTimers();
-  assert.equal(harness.calls.reload, 1);
+test("unsaved work delays activation and refresh until saved", async () => {
+  const h = await createHarness();
+  const {form, input} = activeFormAndInput();
+  h.documentEvents.fire("input", {target: input});
+  h.runTimers();
+  assert.equal(h.calls.postMessage.length, 0);
+  h.window.MushavoPWA.markFormClean(form);
+  h.runTimers();
+  assert.equal(h.calls.postMessage.length, 1);
+  // Editing can begin again between activation request and controller change.
+  h.documentEvents.fire("input", {target: input});
+  h.workerEvents.fire("controllerchange");
+  h.runTimers();
+  assert.equal(h.calls.reload, 0);
+  h.window.MushavoPWA.markFormClean(form);
+  h.runTimers();
+  assert.equal(h.calls.reload, 1);
 });
 
-test("unsaved form requires a separate destructive confirmation", async () => {
-  const harness = await createHarness();
-  const { input } = activeFormAndInput();
-  harness.documentEvents.fire("input", { target: input });
-  assert.equal(harness.window.MushavoPWA.hasUnsavedChanges(), true);
+test("other-tab activation waits for all in-flight submissions", async () => {
+  const h = await createHarness({waiting: false});
+  const endA = h.window.MushavoPWA.beginOperation();
+  const endB = h.window.MushavoPWA.beginOperation();
+  h.workerEvents.fire("controllerchange");
+  endA();
+  h.runTimers();
+  assert.equal(h.calls.reload, 0);
+  endB();
+  h.runTimers();
+  assert.equal(h.calls.reload, 1);
+});
 
-  harness.updateButton().dispatch("click");
-  assert.equal(harness.calls.postMessage.length, 0);
-  assert.equal(harness.updateButton().textContent, "Update and discard changes");
-  assert.equal(harness.laterButton().textContent, "Keep editing");
-
-  harness.updateButton().dispatch("click");
-  assert.equal(harness.calls.postMessage[0].type, "SKIP_WAITING");
-  let prevented = false;
-  harness.windowEvents.fire("beforeunload", { preventDefault() { prevented = true; } });
-  assert.equal(prevented, false);
+test("hidden or offline tabs postpone refresh and canceled forms release it", async () => {
+  const h = await createHarness({waiting: false});
+  const {form,input} = activeFormAndInput();
+  h.documentEvents.fire("change", {target: input});
+  h.workerEvents.fire("controllerchange");
+  form.isConnected = false;
+  h.document.visibilityState = "hidden";
+  h.runTimers();
+  assert.equal(h.calls.reload, 0);
+  h.document.visibilityState = "visible";
+  h.window.navigator.onLine = false;
+  h.runTimers();
+  assert.equal(h.calls.reload, 0);
+  h.window.navigator.onLine = true;
+  h.runTimers();
+  assert.equal(h.calls.reload, 1);
 });
 
 test("beforeunload protects active dirty forms and markFormClean releases them", async () => {
@@ -258,7 +282,7 @@ test("service worker uses explicit activation and revalidation without caching p
   const shellStart = workerSource.indexOf("const SAFE_SHELL = [");
   const shellEnd = workerSource.indexOf("];", shellStart);
   const safeShellSource = workerSource.slice(shellStart, shellEnd);
-  assert.match(workerSource, /pwa-shell-v27/);
+  assert.match(workerSource, /pwa-shell-v28/);
   assert.match(workerSource, /await self\.skipWaiting\(\)/);
   assert.match(workerSource, /X-Mushavo-Offline/);
   assert.match(workerSource, /event\.waitUntil\(self\.skipWaiting\(\)\)/);

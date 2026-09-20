@@ -43,12 +43,10 @@
   }
 
   function isInvalidSessionError(error) {
-    const status = Number(error?.status || error?.statusCode || 0);
     const message = String(error?.message || "").toLowerCase();
-    return status === 401 || status === 403 ||
+    return ["refresh_token_not_found", "refresh_token_already_used", "session_not_found", "session_expired", "user_not_found", "user_banned"].includes(error?.code) ||
       message.includes("invalid refresh token") ||
       message.includes("refresh token not found") ||
-      message.includes("jwt") ||
       message.includes("session not found");
   }
 
@@ -138,7 +136,14 @@
         return;
       }
 
-      const userResult = await withTimeout(client.auth.getUser(), CHECK_TIMEOUT_MS);
+      let userResult = await withTimeout(client.auth.getUser(), CHECK_TIMEOUT_MS);
+      if (userResult.error && !isNetworkError(userResult.error) &&
+          (userResult.error.status === 401 || /jwt|token.*expired/i.test(userResult.error.message || ""))) {
+        const refreshed = await withTimeout(client.auth.refreshSession(), CHECK_TIMEOUT_MS);
+        if (refreshed.error) throw refreshed.error;
+        if (!refreshed.data?.session) throw { code: "session_not_found", message: "Session not found" };
+        userResult = await withTimeout(client.auth.getUser(), CHECK_TIMEOUT_MS);
+      }
       if (userResult.error) throw userResult.error;
       if (!userResult.data?.user) {
         await clearInvalidSession(client, config.supabaseUrl);

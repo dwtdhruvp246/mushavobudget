@@ -2,6 +2,28 @@ export const PROVIDER_NAME = "currencyapi";
 export const PROVIDER_BASE_CURRENCY = "USD";
 export const RATE_SCALE = 12;
 
+export function currencyApiUrl(historicalDate: string | null = null): URL {
+  // USD is the provider default. Filter the returned catalogue locally so
+  // optional query filters cannot reject the entire latest-rate request.
+  const url = new URL(`https://api.currencyapi.com/v3/${historicalDate ? "historical" : "latest"}`);
+  if (historicalDate) url.searchParams.set("date", historicalDate);
+  return url;
+}
+
+export function providerFailure(status: number, payload: unknown): string {
+  // Never echo provider text: validation messages can contain request values.
+  const errors = payload && typeof payload === "object"
+    ? (payload as { errors?: unknown }).errors : null;
+  const fields = errors && typeof errors === "object"
+    ? Object.keys(errors).filter((key) => ["apikey", "base_currency", "currencies", "type", "date"].includes(key)) : [];
+  const detail = status === 422 ? `Request validation failed${fields.length ? ` (${fields.join(", ")})` : ""}.`
+    : status === 401 ? "Check the server-side CurrencyAPI key."
+    : status === 403 ? "Check CurrencyAPI account and endpoint access."
+    : status === 429 ? "CurrencyAPI request quota or rate limit reached."
+    : "CurrencyAPI is unavailable; try again later.";
+  return `CurrencyAPI HTTP ${status}: ${detail} Existing cached rates were retained.`;
+}
+
 export type CurrencyApiPayload = {
   meta?: { last_updated_at?: unknown };
   data?: Record<string, { code?: unknown; value?: unknown }>;

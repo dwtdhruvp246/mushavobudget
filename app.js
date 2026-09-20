@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 65
+// Mushavo Budget authenticated application — release 66
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -348,13 +348,12 @@ function updateRecurrenceControls() {
 
 function money(amount, currency = "USD") {
   try {
-    const digits = state.supportedCurrencies.find((item) => item.code === currency)?.decimal_digits;
     return new Intl.NumberFormat(currencyNames[currency] || "en-US", {
       style: "currency",
       currency,
       currencyDisplay: "code",
-      minimumFractionDigits: Number.isInteger(digits) ? digits : undefined,
-      maximumFractionDigits: Number.isInteger(digits) ? digits : 4
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
     }).format(Number(amount || 0));
   } catch (_error) {
     return `${currency} ${Number(amount || 0).toFixed(2)}`;
@@ -614,7 +613,7 @@ function friendlyMessage(message = "") {
     return "The server notification keys are invalid. Check the protected VAPID settings.";
   }
   if (text.includes("EDGE_FUNCTION_AUTHENTICATION")) {
-    return "Your secure session has ended. Sign in again before sending a test notification.";
+    return "Your secure session has ended. Sign in again before trying this action.";
   }
   if (text.includes("ORIGIN_NOT_ALLOWED")) {
     return "Test notifications can only be sent from the official Mushavo Budget website.";
@@ -4093,8 +4092,15 @@ async function syncExchangeRates() {
   const button = $("#syncExchangeRatesButton");
   try {
     setSubmitting(button, true, "Syncing...");
-    const { data, error } = await supabase.functions.invoke("sync-exchange-rates", { body: { source: "admin_manual" } });
-    if (error) throw error;
+    const accessToken = await refreshSessionForProtectedFunction();
+    const { data, error } = await supabase.functions.invoke("sync-exchange-rates", {
+      body: { source: "admin_manual" },
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+    if (error) {
+      const payload = await error.context?.json?.().catch(() => null);
+      throw new Error(payload?.error || error.message || "RATE_SYNC_FAILED");
+    }
     if (!data || !["success", "partial_failure"].includes(data.status)) throw new Error(data?.error || "RATE_SYNC_FAILED");
     await loadAdminData("finance");
     renderAdmin();

@@ -4,6 +4,8 @@ import {
   PROVIDER_BASE_CURRENCY,
   PROVIDER_NAME,
   safeProviderError,
+  currencyApiUrl,
+  providerFailure,
 } from "../_shared/currencyapi.ts";
 
 const corsHeaders = {
@@ -55,11 +57,7 @@ async function fetchCurrencyApiSnapshot(
   currencies: string[],
   historicalDate: string | null = null,
 ) {
-  const endpoint = historicalDate ? "historical" : "latest";
-  const providerUrl = new URL(`https://api.currencyapi.com/v3/${endpoint}`);
-  providerUrl.searchParams.set("base_currency", PROVIDER_BASE_CURRENCY);
-  providerUrl.searchParams.set("type", "fiat");
-  if (historicalDate) providerUrl.searchParams.set("date", historicalDate);
+  const providerUrl = currencyApiUrl(historicalDate);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15_000);
   try {
@@ -68,7 +66,10 @@ async function fetchCurrencyApiSnapshot(
       headers: { apikey: providerKey, Accept: "application/json" },
       signal: controller.signal,
     });
-    if (!response.ok) throw new Error(`Provider rejected the ${endpoint} request with status ${response.status}.`);
+    if (!response.ok) {
+      const payload = await response.json().catch(() => null);
+      throw new Error(providerFailure(response.status, payload));
+    }
     return normalizeCurrencyApiPayload(await response.json(), currencies, { allowMissing: true });
   } finally {
     clearTimeout(timeout);
@@ -82,7 +83,7 @@ Deno.serve(async (request) => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
   const anonKey = Deno.env.get("SUPABASE_ANON_KEY") || "";
-  const providerKey = Deno.env.get("CURRENCYAPI_API_KEY") || "";
+  const providerKey = (Deno.env.get("CURRENCYAPI_API_KEY") || "").trim();
   const cronSecret = Deno.env.get("CURRENCY_SYNC_SECRET") || "";
   if (!supabaseUrl || !serviceRoleKey || !anonKey || !providerKey || !cronSecret) {
     return json({ error: "SERVER_CONFIGURATION_INCOMPLETE" }, 500);

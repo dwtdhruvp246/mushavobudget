@@ -66,6 +66,7 @@ function createWorkerHarness({ windowClients = [] } = {}) {
 test("push payloads use bounded display fields and an approved payment route", async () => {
   const harness = createWorkerHarness();
   const paymentId = "123e4567-e89b-42d3-a456-426614174000";
+  const workspaceId = "123e4567-e89b-42d3-a456-426614174001";
   await harness.fire("push", {
     data: {
       json: () => ({
@@ -74,7 +75,7 @@ test("push payloads use bounded display fields and an approved payment route", a
         body: " Electricity is due tomorrow. ",
         tag: "payment:due_tomorrow",
         sent_at: "2026-09-08T12:30:00.000Z",
-        target_url: `/app.html?payment_item=${paymentId}&plan=business#family/payments`
+        target_url: `/app.html?workspace=${workspaceId}&payment_item=${paymentId}&plan=business#family/payments`
       })
     }
   });
@@ -87,12 +88,13 @@ test("push payloads use bounded display fields and an approved payment route", a
   assert.equal(notification.options.timestamp, Date.parse("2026-09-08T12:30:00.000Z"));
   assert.equal(
     notification.options.data.targetUrl,
-    `https://mushavobudget.com/app.html?source=push&payment_item=${paymentId}#family/payments`
+    `https://mushavobudget.com/app.html?source=push&workspace=${workspaceId}&payment_item=${paymentId}#family/payments`
   );
   assert.deepEqual(harness.calls.badges, [1]);
 });
 
 test("payment clicks open Payments and highlight the matching payment item", () => {
+  assert.match(applicationSource, /selectNotificationWorkspace\(workspaceId\)/);
   assert.match(applicationSource, /state\.familyTab = "payments"/);
   assert.match(applicationSource, /setRoute\("family", "payments", true\)/);
   assert.match(applicationSource, /data-payment-item-id/);
@@ -174,5 +176,24 @@ test("admin alerts open only an approved admin queue and preserve notification i
   assert.equal(
     harness.calls.notifications[0].options.data.targetUrl,
     `https://mushavobudget.com/app.html?source=push&notification_id=${notificationId}#admin/finance`
+  );
+});
+
+test("admin subscription alerts preserve only validated workspace and payment identity", async () => {
+  const harness = createWorkerHarness();
+  const notificationId = "123e4567-e89b-42d3-a456-426614174000";
+  const workspaceId = "123e4567-e89b-42d3-a456-426614174001";
+  const subscriptionPaymentId = "123e4567-e89b-42d3-a456-426614174002";
+  await harness.fire("push", {
+    data: {
+      json: () => ({
+        target_url: `/app.html?source=push&notification_id=${notificationId}&workspace=${workspaceId}&subscription_payment=${subscriptionPaymentId}&unsafe=yes#admin/finance`
+      })
+    }
+  });
+
+  assert.equal(
+    harness.calls.notifications[0].options.data.targetUrl,
+    `https://mushavobudget.com/app.html?source=push&workspace=${workspaceId}&notification_id=${notificationId}&subscription_payment=${subscriptionPaymentId}#admin/finance`
   );
 });

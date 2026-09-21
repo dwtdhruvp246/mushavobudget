@@ -79,7 +79,7 @@ async function createHarness({ waiting = true } = {}) {
   const windowEvents = listenerStore();
   const workerEvents = listenerStore();
   const registrationEvents = listenerStore();
-  const calls = { register: [], update: 0, postMessage: [], reload: 0 };
+  const calls = { register: [], update: 0, postMessage: [], reload: 0, intervals: [] };
   let now = 1000;
   let nextTimerId = 1;
   const timers = new Map();
@@ -132,6 +132,10 @@ async function createHarness({ waiting = true } = {}) {
       timers.set(id, { callback, delay });
       return id;
     },
+    setInterval(callback, delay) {
+      calls.intervals.push({ callback, delay });
+      return calls.intervals.length;
+    },
     clearTimeout(id) { timers.delete(id); }
   };
   const context = { window, document, navigator, Date: HarnessDate, Set, Object, console };
@@ -175,11 +179,11 @@ function activeFormAndInput() {
 
 test("registers with service-worker HTTP caching disabled and checks immediately", async () => {
   const harness = await createHarness();
-  assert.equal(harness.calls.register[0].url, "/sw.js?v=31");
+  assert.equal(harness.calls.register[0].url, "/sw.js?v=32");
   assert.equal(harness.calls.register[0].options.scope, "/");
   assert.equal(harness.calls.register[0].options.updateViaCache, "none");
   assert.equal(harness.calls.update, 1);
-  assert.equal(harness.window.MushavoPWA.release, "4.6.8");
+  assert.equal(harness.window.MushavoPWA.release, "4.6.9");
 });
 
 test("waiting update activates automatically without a reload prompt", async () => {
@@ -278,11 +282,26 @@ test("returning to the foreground checks for updates again", async () => {
   assert.equal(harness.calls.update, 2);
 });
 
+test("a continuously visible desktop tab checks for updates periodically", async () => {
+  const harness = await createHarness({ waiting: false });
+  assert.equal(harness.calls.intervals.length, 1);
+  assert.equal(harness.calls.intervals[0].delay, 15000);
+
+  harness.setNow(20000);
+  await harness.calls.intervals[0].callback();
+  assert.equal(harness.calls.update, 2);
+
+  harness.document.visibilityState = "hidden";
+  harness.setNow(40000);
+  await harness.calls.intervals[0].callback();
+  assert.equal(harness.calls.update, 2);
+});
+
 test("service worker uses explicit activation and revalidation without caching private data", () => {
   const shellStart = workerSource.indexOf("const SAFE_SHELL = [");
   const shellEnd = workerSource.indexOf("];", shellStart);
   const safeShellSource = workerSource.slice(shellStart, shellEnd);
-  assert.match(workerSource, /pwa-shell-v32/);
+  assert.match(workerSource, /pwa-shell-v33/);
   assert.match(workerSource, /await self\.skipWaiting\(\)/);
   assert.match(workerSource, /X-Mushavo-Offline/);
   assert.match(workerSource, /event\.waitUntil\(self\.skipWaiting\(\)\)/);

@@ -1908,15 +1908,35 @@ code {
 }
 
 .record-card.payment-reminder-active {
+  background: rgba(254, 226, 226, 0.88);
+  color: #172033;
   box-shadow:
     inset 0 0 0 1px rgba(220, 38, 38, 0.72),
     0 10px 26px rgba(15, 23, 42, 0.055);
 }
 
 .record-card.payment-complete {
+  background: rgba(220, 252, 231, 0.88);
+  color: #172033;
   box-shadow:
     inset 0 0 0 1px rgba(16, 185, 129, 0.78),
     0 10px 26px rgba(15, 23, 42, 0.055);
+}
+
+.record-card.payment-reminder-active .occurrence-card-details {
+  background: rgba(254, 242, 242, 0.78);
+}
+
+.record-card.payment-complete .occurrence-card-details {
+  background: rgba(240, 253, 244, 0.8);
+}
+
+.record-card.payment-reminder-active .occurrence-summary-button:hover {
+  background: rgba(254, 202, 202, 0.42);
+}
+
+.record-card.payment-complete .occurrence-summary-button:hover {
+  background: rgba(187, 247, 208, 0.42);
 }
 
 .record-card:has(> .date-chip),

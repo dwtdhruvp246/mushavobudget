@@ -25,6 +25,16 @@ test("status accents are inset one-pixel shadows that do not consume card space"
   assert.doesNotMatch(styles, /\.record-card\.payment-(?:reminder-active|complete)\s*\{[^}]*border-width:/);
 });
 
+test("payment states use readable soft backgrounds in collapsed and expanded cards", () => {
+  assert.match(styles, /\.due-month-items \.record-card\s*\{[\s\S]*?background: rgba\(255, 255, 255, 0\.78\);/);
+  assert.match(styles, /\.record-card\.payment-reminder-active\s*\{[\s\S]*?background: rgba\(254, 226, 226, 0\.88\);[\s\S]*?color: #172033;/);
+  assert.match(styles, /\.record-card\.payment-complete\s*\{[\s\S]*?background: rgba\(220, 252, 231, 0\.88\);[\s\S]*?color: #172033;/);
+  assert.match(styles, /\.record-card\.payment-reminder-active \.occurrence-card-details\s*\{\s*background: rgba\(254, 242, 242, 0\.78\);/);
+  assert.match(styles, /\.record-card\.payment-complete \.occurrence-card-details\s*\{\s*background: rgba\(240, 253, 244, 0\.8\);/);
+  assert.match(source, /occurrence-summary-meta">Due \$\{escapeHtml\(occurrence\.dueDate\)\} · \$\{escapeHtml\(occurrence\.status\)\}/);
+  assert.match(source, /statusBadge\(occurrence\.status\)/);
+});
+
 test("desktop dashboard columns share the available content width", () => {
   assert.match(styles, /@media \(min-width: 1181px\)\s*\{\s*\[data-family-panel="dashboard"\] > \.content-grid\s*\{\s*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/);
   assert.match(styles, /@media \(max-width: 1180px\)[\s\S]*?\.content-grid\s*\{\s*grid-template-columns: 1fr;/);

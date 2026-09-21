@@ -109,7 +109,8 @@ const state = {
 const realtime = {
   channel: null,
   refreshTimer: null,
-  refreshInFlight: false
+  refreshInFlight: false,
+  refreshPending: false
 };
 
 let dashboardFitFrame = null;
@@ -786,6 +787,7 @@ function stopRealtime() {
     realtime.refreshTimer = null;
   }
   realtime.refreshInFlight = false;
+  realtime.refreshPending = false;
   if (!supabase || !realtime.channel) return;
   supabase.removeChannel(realtime.channel);
   realtime.channel = null;
@@ -807,16 +809,19 @@ function startRealtime() {
   });
 
   realtime.channel = channel.subscribe((status) => {
-    if (status === "CHANNEL_ERROR") {
+    if (status === "SUBSCRIBED") {
+      queueRealtimeRefresh({ table: "realtime", eventType: "SUBSCRIBED" });
+    } else if (status === "CHANNEL_ERROR") {
       console.warn("Realtime channel error. Check that tables are enabled in the supabase_realtime publication.");
     }
   });
 }
 
-function queueRealtimeRefresh(payload) {
-  console.debug("Realtime change received", payload.table, payload.eventType);
+function queueRealtimeRefresh(payload = {}) {
+  console.debug("Realtime refresh requested", payload.table || "app", payload.eventType || "REFRESH");
   if (realtime.refreshTimer) window.clearTimeout(realtime.refreshTimer);
   realtime.refreshTimer = window.setTimeout(() => {
+    realtime.refreshTimer = null;
     refreshVisibleData().catch((error) => {
       console.error("Realtime refresh failed", error);
       showToast(error.message);
@@ -825,7 +830,11 @@ function queueRealtimeRefresh(payload) {
 }
 
 async function refreshVisibleData() {
-  if (!state.session || realtime.refreshInFlight) return;
+  if (!state.session) return;
+  if (realtime.refreshInFlight) {
+    realtime.refreshPending = true;
+    return;
+  }
   const sessionId = state.session.user.id;
   realtime.refreshInFlight = true;
   try {
@@ -843,7 +852,16 @@ async function refreshVisibleData() {
     renderFamilyApp();
   } finally {
     realtime.refreshInFlight = false;
+    if (realtime.refreshPending && state.session?.user?.id === sessionId) {
+      realtime.refreshPending = false;
+      queueRealtimeRefresh({ table: "queued", eventType: "RETRY" });
+    }
   }
+}
+
+function refreshAfterAppResume(source) {
+  if (!state.session || document.visibilityState === "hidden") return;
+  queueRealtimeRefresh({ table: source, eventType: "RESUME" });
 }
 
 async function query(label, promise) {
@@ -1344,7 +1362,14 @@ function currentWorkspaceIsOwned() {
 }
 
 async function loadWorkspaceSubscriptionData() {
-  await query("personal workspace provision", supabase.rpc("provision_my_budget_workspace"));
+  const hasPersonalWorkspace = state.workspaces.some((workspace) =>
+    workspace.workspace_type === "personal" &&
+    workspace.owner_id === state.session.user.id &&
+    workspace.status !== "closed"
+  );
+  if (!hasPersonalWorkspace) {
+    await query("personal workspace provision", supabase.rpc("provision_my_budget_workspace"));
+  }
   const [workspaces, members, plans, prices, features, limits, supportedCurrencies] = await Promise.all([
     query("workspace load", supabase.from("budget_workspaces").select("*").order("created_at", { ascending: true })),
     query("workspace membership load", supabase.from("workspace_members").select("*").order("created_at", { ascending: true })),
@@ -6952,7 +6977,15 @@ window.addEventListener("hashchange", () => {
 
 window.addEventListener("beforeunload", stopRealtime);
 window.addEventListener("resize", scheduleDashboardTextFit);
+window.addEventListener("focus", () => refreshAfterAppResume("focus"));
+window.addEventListener("pageshow", () => refreshAfterAppResume("pageshow"));
+window.addEventListener("online", () => {
+  if (!state.session) return;
+  startRealtime();
+  refreshAfterAppResume("online");
+});
 document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") refreshAfterAppResume("visibility");
   if (document.visibilityState === "visible" && state.session && !state.isAdmin && state.familyTab === "settings") {
     schedulePushNotificationRefresh(true);
   }

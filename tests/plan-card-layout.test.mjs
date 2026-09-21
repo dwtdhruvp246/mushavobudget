@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import vm from "node:vm";
 
 const [appHtml, appSource, appStyles, pricingHtml, publicSource, publicStyles] = await Promise.all([
   readFile(new URL("../app.html", import.meta.url), "utf8"),
@@ -37,10 +38,39 @@ test("logged-in plan cards use live catalogue features, prices, and limits", () 
   assert.match(pricingHtml, /id="publicPlanCatalogue"/);
 });
 
-test("selected workspace controls which plan types are compared", () => {
-  assert.match(appSource, /workspaceType === "personal"[\s\S]*plan\.workspace_type === "personal" \|\| plan\.workspace_type === "household"/);
-  assert.match(appSource, /plan\.workspace_type === workspaceType/);
+test("all active plan types remain visible and only matching billing periods are current", () => {
+  const plans = [
+    {code:'free', workspace_type:'personal'},
+    {code:'personal', workspace_type:'personal'},
+    {code:'household', workspace_type:'household'},
+    {code:'business', workspace_type:'business'},
+    {code:'retired', workspace_type:'personal', is_active:false}
+  ];
+  let workspaceType = 'household';
+  const state = {plans, workspaceEntitlement:{plan_code:'household'}, workspaceSubscription:{billing_period:'annual'}, workspacePlanBillingPeriod:'monthly'};
+  const context = {state, currentBudgetWorkspace: () => ({workspace_type:workspaceType})};
+  vm.runInNewContext(appSource.slice(appSource.indexOf('function workspaceComparablePlans'),appSource.indexOf('function workspacePlanCurrencies')),context);
+  assert.equal(context.workspaceComparablePlans().length, 4);
+  assert.equal(context.isCurrentWorkspacePlan(plans[2]), false);
+  state.workspacePlanBillingPeriod = 'annual';
+  assert.equal(context.isCurrentWorkspacePlan(plans[2]), true);
+  assert.equal(context.isCurrentWorkspacePlan(plans[1]), false);
+  state.workspaceSubscription.billing_period = 'monthly';
+  assert.equal(context.isCurrentWorkspacePlan(plans[2]), false);
+  state.workspacePlanBillingPeriod = 'monthly';
+  assert.equal(context.isCurrentWorkspacePlan(plans[2]), true);
+  workspaceType = 'personal';
+  state.workspaceEntitlement.plan_code = 'free';
+  state.workspaceSubscription = null;
+  assert.equal(context.isCurrentWorkspacePlan(plans[0]), true);
+  assert.equal(context.workspaceComparablePlans().length, 4);
   assert.match(appSource, /Creates a separate Family workspace with its own plan/);
+});
+
+test("subscription histories are collapsed and billing remains visible in the summary", () => {
+  assert.match(appHtml, /id="subscriptionBillingPeriod"/);
+  assert.match(appHtml, /<details class="subscription-history"><summary>Payment review history/);
+  assert.match(appHtml, /<details class="subscription-history"><summary>Plan history/);
 });
 
 test("current and pending plans have distinct non-shifting states", () => {

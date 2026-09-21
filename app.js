@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 67
+// Mushavo Budget authenticated application — release 68
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -3115,11 +3115,15 @@ function featureLabelsForPlan(plan) {
 }
 
 function workspaceComparablePlans() {
-  const workspaceType = currentBudgetWorkspace()?.workspace_type;
-  return state.plans.filter((plan) => workspaceType === "personal"
-    ? plan.workspace_type === "personal" || plan.workspace_type === "household"
-    : plan.workspace_type === workspaceType
-  );
+  return state.plans.filter((plan) => plan.is_active !== false);
+}
+
+function isCurrentWorkspacePlan(plan) {
+  if (plan.workspace_type !== currentBudgetWorkspace()?.workspace_type ||
+      plan.code !== state.workspaceEntitlement?.plan_code) return false;
+  // Free access has no recurring billing period.
+  return plan.code === "free" ||
+    state.workspaceSubscription?.billing_period === state.workspacePlanBillingPeriod;
 }
 
 function workspacePlanCurrencies(plans) {
@@ -3191,6 +3195,11 @@ function renderSubscription() {
       : `${activeItems} / ${entitlement.active_payment_limit}`;
   $("#subscriptionPlanName").textContent = entitlement.plan_name;
   $("#subscriptionStatusText").textContent = titleCase(entitlement.effective_status);
+  $("#subscriptionBillingPeriod").textContent = entitlement.plan_code === "free"
+    ? "No recurring billing"
+    : state.workspaceSubscription?.billing_period
+      ? `${titleCase(state.workspaceSubscription.billing_period)} billing`
+      : "Billing period unavailable";
   $("#subscriptionWorkspaceName").textContent = workspace.name;
   $("#subscriptionWorkspaceType").textContent = titleCase(workspace.workspace_type);
   $("#subscriptionPaidThrough").textContent = entitlement.paid_through_at
@@ -3220,12 +3229,8 @@ function renderWorkspacePlans() {
   const plans = workspaceComparablePlans();
   syncWorkspacePlanControls(plans);
   const workspaceTypeLabel = workspace?.workspace_type === "household" ? "Family" : titleCase(workspace?.workspace_type);
-  $("#workspacePlansTitle").textContent = workspace?.workspace_type === "personal"
-    ? "Personal and Family plans"
-    : `${workspaceTypeLabel} plans`;
-  $("#workspacePlansDescription").textContent = workspace?.workspace_type === "personal"
-    ? "Compare Personal access or start a separate Family workspace. Each workspace keeps its own plan."
-    : `Compare plans available for this ${workspaceTypeLabel.toLowerCase()} workspace.`;
+  $("#workspacePlansTitle").textContent = "All available plans";
+  $("#workspacePlansDescription").textContent = `Viewing your ${workspaceTypeLabel.toLowerCase()} workspace. Each workspace has its own subscription.`;
   $("#workspacePlanPricingNote").textContent = state.workspacePlanCurrency
     ? `Showing ${titleCase(state.workspacePlanBillingPeriod)} prices in ${state.workspacePlanCurrency}.`
     : "No active price currency is configured for these plans.";
@@ -3236,19 +3241,20 @@ function renderWorkspacePlans() {
   const cards = plans.map((plan) => {
     const price = activePriceFor(plan.id, state.workspacePlanBillingPeriod, state.workspacePlanCurrency);
     const appliesToSelectedWorkspace = plan.workspace_type === workspace?.workspace_type;
-    const current = appliesToSelectedWorkspace && plan.code === state.workspaceEntitlement?.plan_code;
+    const current = isCurrentWorkspacePlan(plan);
     const startsNewFamily = workspace?.workspace_type === "personal" && plan.workspace_type === "household";
     const pending = state.renewalRequests.some((request) =>
-      request.requested_plan_id === plan.id && request.status === "pending_review"
+      request.requested_plan_id === plan.id && request.status === "pending_review" &&
+      state.subscriptionInvoices.some((invoice) => invoice.id === request.invoice_id && invoice.billing_period === state.workspacePlanBillingPeriod)
     );
-    const canSelect = currentWorkspaceIsOwned() && plan.code !== "free" && (appliesToSelectedWorkspace || startsNewFamily);
+    const canSelect = currentWorkspaceIsOwned() && plan.code !== "free" && plan.available_for_purchase !== false && (appliesToSelectedWorkspace || startsNewFamily);
     const planWorkspaceLabel = plan.workspace_type === "household" ? "Family" : titleCase(plan.workspace_type);
     const includedSeats = includedMemberSeats(plan);
     const paymentLimit = activePaymentLimitForPlan(plan);
     const features = featureLabelsForPlan(plan);
     const total = price ? planInvoiceTotal(plan, price) : 0;
     const periodLabel = state.workspacePlanBillingPeriod === "annual" ? "year" : "month";
-    const priceText = price ? money(total, price.currency) : plan.code === "free" ? "Free" : "Not configured";
+    const priceText = plan.code === "free" ? "Free" : price ? money(total, price.currency) : "Price unavailable";
     const extraMember = price && Number(price.extra_member_amount) > 0
       ? `<span>Additional person: ${money(price.extra_member_amount, price.currency)} per month</span>`
       : "";
@@ -3264,13 +3270,13 @@ function renderWorkspacePlans() {
       : canSelect
         ? `<button class="${plan.is_featured && !current ? "primary" : ""}" type="button" data-select-renewal-plan="${escapeHtml(plan.code)}" ${price && !pending ? "" : "disabled"}>${pending ? "Awaiting approval" : current ? "Renew plan" : startsNewFamily ? "Start Family plan" : "Choose plan"}</button>`
         : currentWorkspaceIsOwned()
-          ? ""
+          ? `<small class="workspace-plan-owner-note">${!appliesToSelectedWorkspace ? `Select a ${escapeHtml(planWorkspaceLabel)} workspace to manage this plan.` : plan.code === "free" ? "Included with a free Personal workspace." : "This plan is not currently available for purchase."}</small>`
           : '<small class="workspace-plan-owner-note">Only the workspace owner can change this plan.</small>';
     return `<article class="plan-card workspace-plan-card${current ? " current" : ""}${pending ? " pending" : ""}">
       <div class="workspace-plan-top"><span class="workspace-plan-type">${escapeHtml(planWorkspaceLabel)}</span>${stateBadge}</div>
       <h4>${escapeHtml(plan.display_name)}</h4>
       <p>${escapeHtml(plan.marketing_summary || plan.description)}</p>
-      <div class="workspace-plan-price"><strong>${escapeHtml(priceText)}</strong>${price || plan.code === "free" ? `<span> / ${periodLabel}</span>` : ""}</div>
+      <div class="workspace-plan-price"><strong>${escapeHtml(priceText)}</strong>${price && plan.code !== "free" ? `<span> / ${periodLabel}</span>` : ""}</div>
       <div class="workspace-plan-meta"><span>${includedSeats} ${includedSeats === 1 ? "person" : "people"} included</span><span>${paymentLimit == null ? "Unlimited payment items" : `${paymentLimit} active personal payments`}</span>${extraMember}</div>
       <ul class="workspace-plan-features">${features.slice(0, 8).map((feature) => `<li>${escapeHtml(feature)}</li>`).join("")}</ul>
       ${startsNewFamily ? '<small class="workspace-plan-separate-note">Creates a separate Family workspace with its own plan.</small>' : ""}

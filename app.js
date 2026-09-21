@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 69
+// Mushavo Budget authenticated application — release 70
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -1357,6 +1357,49 @@ function currentBudgetWorkspace() {
   return state.workspaces.find((workspace) => workspace.workspace_type === "personal") || null;
 }
 
+function workspaceNotificationType(workspace) {
+  if (workspace?.workspace_type === "household") return "Family";
+  if (workspace?.workspace_type === "business") return "Business";
+  return "Personal";
+}
+
+function workspaceNotificationLabel(workspace) {
+  if (!workspace) return null;
+  return `${workspaceNotificationType(workspace)} · ${workspace.name || "Workspace"}`;
+}
+
+function notificationWorkspace(notification) {
+  const workspace = [...state.workspaces, ...state.adminWorkspaces]
+    .find((item) => item.id === notification?.workspace_id);
+  if (workspace) return workspace;
+
+  const familyId = notification?.family_id;
+  if (!familyId) return null;
+  const family = state.families.find((item) => item.id === familyId)
+    || state.adminFamilies.find((item) => item.id === familyId)
+    || state.familyInvitations.find((item) => item.family_id === familyId)?.families;
+  return family ? { workspace_type: "household", name: family.name } : null;
+}
+
+async function selectNotificationWorkspace(workspaceId) {
+  if (!workspaceId || state.isAdmin) return true;
+  const workspace = state.workspaces.find((item) =>
+    item.id === workspaceId && item.status !== "closed"
+  );
+  if (!workspace) return false;
+  if (currentBudgetWorkspace()?.id === workspace.id) return true;
+
+  if (workspace.workspace_type === "personal") {
+    await selectFamily("__personal__");
+  } else if (workspace.workspace_type === "household" && workspace.legacy_family_id) {
+    if (!state.families.some((family) => family.id === workspace.legacy_family_id)) return false;
+    await selectFamily(workspace.legacy_family_id);
+  } else {
+    return false;
+  }
+  return currentBudgetWorkspace()?.id === workspace.id;
+}
+
 function currentWorkspaceIsOwned() {
   return currentBudgetWorkspace()?.owner_id === state.session?.user?.id;
 }
@@ -2216,8 +2259,34 @@ async function handleNotificationDeepLink() {
     renderNotifications();
   }
 
+  const workspaceId = url.searchParams.get("workspace");
+  if (workspaceId && !await selectNotificationWorkspace(workspaceId)) {
+    showToast("This notification belongs to a workspace you cannot currently open.");
+    return;
+  }
+
+  const subscriptionPaymentId = url.searchParams.get("subscription_payment");
+  if (subscriptionPaymentId && state.isAdmin) {
+    const payment = state.adminSubscriptionPayments.find((item) => item.id === subscriptionPaymentId);
+    if (!payment || (workspaceId && payment.workspace_id !== workspaceId)) {
+      showToast("This subscription payment is no longer available to your account.");
+      return;
+    }
+    state.adminTab = "finance";
+    setRoute("admin", "finance", true);
+    renderAdmin();
+    requestAnimationFrame(() => openSubscriptionPaymentDetails(subscriptionPaymentId));
+    return;
+  }
+
   const paymentItemId = url.searchParams.get("payment_item");
   if (!paymentItemId) return;
+
+  const paymentItem = state.paymentItems.find((item) => item.id === paymentItemId);
+  if (!paymentItem || (workspaceId && paymentItem.workspace_id !== workspaceId)) {
+    showToast("This payment is no longer available in that workspace.");
+    return;
+  }
 
   if (state.familyTab !== "payments") {
     state.familyTab = "payments";
@@ -3398,6 +3467,9 @@ function renderNotificationList(list, compact = false) {
   }
   list.innerHTML = "";
   dueReminders.forEach((occurrence) => {
+    const workspace = state.workspaces.find((item) => item.id === occurrence.item.workspace_id)
+      || currentBudgetWorkspace();
+    const workspaceLabel = workspaceNotificationLabel(workspace);
     const article = document.createElement("article");
     article.className = `record-card${compact ? " notification-card" : ""}`;
     article.dataset.notificationPaymentItemId = occurrence.item.id;
@@ -3406,7 +3478,7 @@ function renderNotificationList(list, compact = false) {
       <div class="record-main">
         <strong>${escapeHtml(occurrence.item.name)}</strong>
         <span>${money(occurrence.outstanding, occurrence.item.currency)} outstanding &middot; due ${occurrence.dueDate}</span>
-        <div class="badge-row">${statusBadge(occurrence.status)}<span class="mini-badge">Payment reminder</span></div>
+        <div class="badge-row">${workspaceLabel ? `<span class="mini-badge">${escapeHtml(workspaceLabel)}</span>` : ""}${statusBadge(occurrence.status)}<span class="mini-badge">Payment reminder</span></div>
       </div>
       <div class="record-side"><button class="primary" type="button" data-record-payment="${occurrence.key}">Record payment</button></div>
     `;
@@ -3419,6 +3491,7 @@ function renderNotificationList(list, compact = false) {
     const isPendingInvite = invitation
       && invitation.status === "pending"
       && invitation.invitee_email?.toLowerCase() === state.session.user.email?.toLowerCase();
+    const workspaceLabel = workspaceNotificationLabel(notificationWorkspace(notification));
     const article = document.createElement("article");
     article.className = `record-card${compact ? " notification-card" : ""}`;
     article.innerHTML = `
@@ -3426,7 +3499,7 @@ function renderNotificationList(list, compact = false) {
         <strong>${escapeHtml(notification.title)}</strong>
         <span>${escapeHtml(notification.body)}</span>
         <small>${new Date(notification.created_at).toLocaleString()}</small>
-        <div class="badge-row">${statusBadge(notification.read_at ? "read" : "new")}</div>
+        <div class="badge-row">${workspaceLabel ? `<span class="mini-badge">${escapeHtml(workspaceLabel)}</span>` : ""}${statusBadge(notification.read_at ? "read" : "new")}</div>
       </div>
       <div class="record-side">
         ${isPendingInvite ? `<div class="row-actions"><button class="primary" type="button" data-accept-invite="${invitation.id}">Accept</button><button type="button" data-reject-invite="${invitation.id}">Reject</button></div>` : ""}
@@ -6781,7 +6854,12 @@ document.addEventListener("click", async (event) => {
     const notification = state.notifications.find((item) => item.id === openNotificationId);
     if (notification?.url) {
       const target = new URL(notification.url, window.location.href);
-      if (target.origin === window.location.origin) window.location.assign(target.href);
+      if (target.origin === window.location.origin && target.pathname === "/app.html") {
+        if (!notification.read_at) {
+          await query("notification open read", supabase.from("notifications").update({ read_at: new Date().toISOString() }).eq("id", notification.id));
+        }
+        window.location.assign(target.href);
+      }
     }
   }
 });

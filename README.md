@@ -113,9 +113,9 @@ Deleting a family is different from removing a member. Only the family owner can
 10. Open a due item and record either a partial or full payment. Optionally attach a JPG, PNG, WebP, or PDF receipt up to 10 MB, or add payment details.
 11. Use `Reports` to review paid rate, outstanding dues, category totals, and history.
 
-## In-App Reminders
+## Notifications
 
-The notification bell and Settings inbox show invitations and payment reminders while the user is signed in. Web Push subscriptions, background delivery, VAPID keys, the reminder Edge Function, and the one-minute Cron job are not part of this version.
+The notification bell shows invitations, payment reminders, subscription reviews, and authorized admin events. Workspace-aware notifications identify Personal, Family, and Business workspaces and validate access before opening the relevant payment. Optional Web Push uses the existing detailed-preview setting so workspace names and payment details appear on a phone lock screen only when the user enables them. See `NOTIFICATION_WORKSPACE_CONTEXT_DEPLOYMENT.md` for the Version 4.6.8 deployment and verification order.
 
 ## Admin Workflow
 

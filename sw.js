@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "mushavo-budget-";
-const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v31`;
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v32`;
 const APP_ENTRY_URL = "/app-entry.html";
 const OFFLINE_URL = "/offline.html";
 const OFFLINE_ENTRY_CACHE_KEY = "/__mushavo-budget-offline/app-entry";
@@ -29,7 +29,7 @@ const SAFE_SHELL = [
   "/pwa-update.css?v=1",
   "/pwa-install.css?v=1",
   "/pwa-install.js?v=1",
-  "/pwa.js?v=24",
+  "/pwa.js?v=25",
   "/assets/mushavo-budget-logo.png",
   "/assets/pwa-icon-192.png",
   "/assets/pwa-icon-512.png",
@@ -92,6 +92,11 @@ function safeNotificationTarget(value) {
     const target = new URL(requested.pathname, self.location.origin);
     target.searchParams.set("source", "push");
 
+    const workspaceId = requested.searchParams.get("workspace");
+    if (workspaceId && UUID_PATTERN.test(workspaceId)) {
+      target.searchParams.set("workspace", workspaceId);
+    }
+
     const paymentItemId = requested.searchParams.get("payment_item");
     const isPaymentReminder = paymentItemId && UUID_PATTERN.test(paymentItemId);
     if (isPaymentReminder) {
@@ -105,6 +110,16 @@ function safeNotificationTarget(value) {
     const notificationId = requested.searchParams.get("notification_id");
     if (notificationId && UUID_PATTERN.test(notificationId)) {
       target.searchParams.set("notification_id", notificationId);
+    }
+
+    const subscriptionPaymentId = requested.searchParams.get("subscription_payment");
+    if (
+      subscriptionPaymentId && UUID_PATTERN.test(subscriptionPaymentId) &&
+      workspaceId && UUID_PATTERN.test(workspaceId) &&
+      notificationId && UUID_PATTERN.test(notificationId) &&
+      requested.hash === "#admin/finance"
+    ) {
+      target.searchParams.set("subscription_payment", subscriptionPaymentId);
     }
 
     target.hash = isPaymentReminder

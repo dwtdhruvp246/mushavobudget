@@ -1,8 +1,8 @@
 (() => {
   "use strict";
 
-  const RELEASE = "4.6.8";
-  const WORKER_URL = "/sw.js?v=31";
+  const RELEASE = "4.6.9";
+  const WORKER_URL = "/sw.js?v=32";
   const UPDATE_CHECK_INTERVAL_MS = 15000;
   const dirtyForms = new Set();
   const operations = new Set();
@@ -151,5 +151,8 @@
   window.addEventListener("online", () => { checkForUpdate(true); scheduleUpdate(); });
   window.addEventListener("load", () => {
     window.__MUSHAVO_PWA_READY__ = registerServiceWorker().catch(() => null);
+    window.setInterval(() => {
+      if (document.visibilityState === "visible") checkForUpdate();
+    }, UPDATE_CHECK_INTERVAL_MS);
   }, { once: true });
 })();

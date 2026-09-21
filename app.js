@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 68
+// Mushavo Budget authenticated application — release 69
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -498,7 +498,10 @@ function friendlyMessage(message = "") {
     return "An active Mushavo Budget membership is required for this action.";
   }
   if (text.includes("FAMILY_LIMIT_REACHED")) {
-    return "You have reached your family limit. Ask the Mushavo Budget admin to increase it.";
+    return "Family limit reached. Purchase another Family subscription from Family & Members to add a separate family.";
+  }
+  if (text.includes("FAMILY_ACCOUNT_CAP_REACHED")) {
+    return "Your account has reached the maximum of 100 families. Contact support for help.";
   }
   if (text.includes("FAMILY_PLAN_REQUEST_ALREADY_PENDING")) {
     return "A Family plan request is already waiting for review. The family will be created after it is approved.";
@@ -1606,14 +1609,16 @@ function renderMemberAccess() {
   const familyCount = owned.length;
   const limit = familyLimit();
   const creationNotice = $("#familyCreationNotice");
+  $("#purchaseFamilySubscription").textContent = familyCount > 0
+    ? "Purchase another Family subscription" : "Purchase Family subscription";
   creationNotice.classList.toggle("hidden", allowedToCreate);
   if (!allowedToCreate) {
     if (!hasActiveMembership()) {
       $("#familyCreationNoticeTitle").textContent = "Active subscription required.";
-      $("#familyCreationNoticeText").textContent = "The Mushavo Budget admin must activate your membership before you can create a family. You can still join a family by invitation.";
+      $("#familyCreationNoticeText").textContent = "Purchase a Family subscription to create a family after payment approval. You can still join a family by invitation.";
     } else {
       $("#familyCreationNoticeTitle").textContent = "Family limit reached.";
-      $("#familyCreationNoticeText").textContent = `You currently own ${familyCount} of ${limit} allowed families. Ask the admin to increase your family limit.`;
+      $("#familyCreationNoticeText").textContent = `You currently own ${familyCount} of ${limit} allowed families. Purchase another Family subscription to add a separate family. It will be created after payment approval.`;
     }
   }
   const createTitle = $("#createFamilyTitle");
@@ -3455,6 +3460,36 @@ function eligibleRenewalPlans() {
   });
 }
 
+async function startAdditionalFamilyPurchase() {
+  const endOperation = window.MushavoPWA?.beginOperation?.();
+  const button = $("#purchaseFamilySubscription");
+  button.disabled = true;
+  try {
+    // New families are purchased from the owner's Personal workspace, never by
+    // renewing the currently selected family's subscription.
+    await selectFamily("__personal__");
+    await loadWorkspaceSubscriptionData();
+    state.familyTab = "subscription";
+    window.location.hash = "family/subscription";
+    renderFamilyApp();
+    const pending = state.renewalRequests.some((request) =>
+      request.provision_workspace_on_approval && request.status === "pending_review");
+    if (pending) {
+      showToast("A Family plan request is already waiting for review. View it in Payment review history.");
+      $("#renewalHistoryList").closest("details").open = true;
+      return;
+    }
+    const plan = eligibleRenewalPlans().find((item) => item.workspace_type === "household");
+    if (!plan) throw new Error("No Family plan is available for purchase yet.");
+    openRenewalDialog(plan.code);
+  } catch (error) {
+    showToast(friendlyMessage(error.message));
+  } finally {
+    button.disabled = false;
+    endOperation?.();
+  }
+}
+
 function openRenewalDialog(planCode = null) {
   if (!currentWorkspaceIsOwned()) {
     showToast("Only the workspace owner can submit a subscription payment.");
@@ -3711,7 +3746,7 @@ async function respondToInvitation(invitationId, status) {
 async function createFamilyWorkspace(name, monthlyBudget, currency) {
   if (!canCreateFamily()) {
     showToast(hasActiveMembership()
-      ? "You have reached your family limit. Ask the admin to increase it."
+      ? "Family limit reached. Purchase another Family subscription from Family & Members."
       : "An active subscription is required to create a family.");
     return null;
   }
@@ -6472,6 +6507,7 @@ document.addEventListener("click", async (event) => {
   if (event.target.dataset.closeDrawer !== undefined) closeDrawer();
   if (event.target.closest("[data-open-notifications]")) openNotificationDialog();
   if (event.target.closest("[data-open-renewal-dialog]")) openRenewalDialog();
+  if (event.target.closest("#purchaseFamilySubscription")) startAdditionalFamilyPurchase();
   if (event.target.closest("[data-close-renewal-dialog]")) $("#renewalDialog").close();
   if (event.target.closest("[data-edit-family-name]")) openFamilyNameDialog();
   if (event.target.closest("[data-close-family-name-dialog]")) $("#familyNameDialog").close();

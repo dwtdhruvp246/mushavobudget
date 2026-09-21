@@ -3072,6 +3072,14 @@ code {
 
 .family-creation-notice {
   margin-bottom: 12px;
+  display: grid;
+  gap: 0.6rem;
+  justify-items: start;
+}
+.family-creation-notice button {
+  max-width: 100%;
+  white-space: normal;
+  min-height: 44px;
 }
 
 .family-management-grid.single-action {

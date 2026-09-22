@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 70
+// Mushavo Budget authenticated application — release 71
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -111,6 +111,12 @@ const realtime = {
   refreshTimer: null,
   refreshInFlight: false,
   refreshPending: false
+};
+
+const dashboardDisclosureState = {
+  months: new Set(),
+  occurrences: new Set(),
+  workloads: new Set()
 };
 
 let dashboardFitFrame = null;
@@ -1016,6 +1022,7 @@ function openAuthenticatedSession(session) {
 
 function resetState() {
   stopRealtime();
+  resetDashboardDisclosureState();
   state.session = null;
   state.profile = null;
   state.isAdmin = false;
@@ -1274,8 +1281,15 @@ function resetPaymentListView() {
   state.paymentSearch = "";
   state.paymentHistoryItemId = null;
   state.recordPaymentOccurrenceChoices = [];
+  resetDashboardDisclosureState();
   if ($("#paymentHistoryDialog")?.open) $("#paymentHistoryDialog").close();
   if ($("#recordPaymentDialog")?.open) $("#recordPaymentDialog").close();
+}
+
+function resetDashboardDisclosureState() {
+  dashboardDisclosureState.months.clear();
+  dashboardDisclosureState.occurrences.clear();
+  dashboardDisclosureState.workloads.clear();
 }
 
 async function loadFamilyData() {
@@ -1366,6 +1380,38 @@ function workspaceNotificationType(workspace) {
 function workspaceNotificationLabel(workspace) {
   if (!workspace) return null;
   return `${workspaceNotificationType(workspace)} · ${workspace.name || "Workspace"}`;
+}
+
+function paymentItemWorkspace(item) {
+  const directWorkspace = state.workspaces.find((workspace) => workspace.id === item?.workspace_id);
+  if (directWorkspace) return directWorkspace;
+
+  if (item?.visibility === "family" || item?.family_id) {
+    const family = state.families.find((entry) => entry.id === item.family_id)
+      || (state.family?.id === item.family_id ? state.family : null);
+    const workspace = state.workspaces.find((entry) => entry.legacy_family_id === item.family_id);
+    return workspace || (family ? { workspace_type: "household", name: family.name } : null);
+  }
+
+  return state.workspaces.find((workspace) =>
+    workspace.workspace_type === "personal" &&
+    (!item?.owner_id || workspace.owner_id === item.owner_id)
+  ) || {
+    workspace_type: "personal",
+    name: state.profile?.full_name ? `${state.profile.full_name}'s workspace` : "My workspace"
+  };
+}
+
+function paymentWorkspaceLabel(item) {
+  return workspaceNotificationLabel(paymentItemWorkspace(item))
+    || (item?.visibility === "family" ? "Family workspace" : "Personal workspace");
+}
+
+function paymentWorkspaceClass(item) {
+  const workspaceType = paymentItemWorkspace(item)?.workspace_type;
+  if (workspaceType === "household") return "family";
+  if (workspaceType === "business") return "business";
+  return "personal";
 }
 
 function notificationWorkspace(notification) {
@@ -1962,7 +2008,8 @@ function renderPriorityDueList(occurrences) {
   monthGroups.forEach((group, groupIndex) => {
     const section = document.createElement("section");
     const isCurrentMonth = group.monthOffset === 0;
-    section.className = `due-month-group month-accent-${groupIndex % 4}${isCurrentMonth ? " expanded" : " collapsed"}`;
+    const isExpanded = isCurrentMonth || dashboardDisclosureState.months.has(group.monthValue);
+    section.className = `due-month-group month-accent-${groupIndex % 4}${isExpanded ? " expanded" : " collapsed"}`;
     section.dataset.month = group.monthValue;
     const monthTitle = parseDate(monthStart(group.monthValue)).toLocaleString("en", {
       month: "long",
@@ -1976,14 +2023,14 @@ function renderPriorityDueList(occurrences) {
       ? `${group.occurrences.length} payment${group.occurrences.length === 1 ? "" : "s"} · ${totalOutstanding} outstanding`
       : "No payments scheduled";
     section.innerHTML = `
-      <button class="due-month-header" type="button" ${isCurrentMonth ? "disabled" : "data-toggle-due-month"} aria-expanded="${isCurrentMonth ? "true" : "false"}" aria-controls="due-month-${group.monthValue}">
+      <button class="due-month-header" type="button" ${isCurrentMonth ? "disabled" : "data-toggle-due-month"} aria-expanded="${isExpanded}" aria-controls="due-month-${group.monthValue}">
         <div>
           <span>${group.monthOffset === 0 ? "Selected month" : "Upcoming month"}</span>
           <h4>${escapeHtml(monthTitle)}</h4>
         </div>
         <span class="due-month-summary"><small title="${escapeHtml(summary)}">${escapeHtml(summary)}</small>${isCurrentMonth ? "" : '<span class="accordion-chevron" aria-hidden="true">⌄</span>'}</span>
       </button>
-      <div id="due-month-${group.monthValue}" class="due-month-items" ${isCurrentMonth ? "" : "hidden"}></div>
+      <div id="due-month-${group.monthValue}" class="due-month-items" ${isExpanded ? "" : "hidden"}></div>
     `;
     const items = section.querySelector(".due-month-items");
     if (group.occurrences.length) {
@@ -2076,6 +2123,7 @@ function renderMemberResponsibility(occurrences) {
     const item = document.createElement("article");
     item.className = "workload-card";
     const detailsId = `workload-details-${row.key}`;
+    const isExpanded = dashboardDisclosureState.workloads.has(row.key);
     item.innerHTML = `
       <div class="workload-header">
         <div class="avatar" style="background:${escapeHtml(row.member?.avatar_color || "#0F766E")}">${memberInitials(row.name)}</div>
@@ -2100,9 +2148,9 @@ function renderMemberResponsibility(occurrences) {
         <span>${nextDue ? `${escapeHtml(nextDue.item.name)} &middot; ${nextDue.dueDate}` : "All assigned payments are paid"}</span>
       </div>
       <div class="workload-actions">
-        <button type="button" data-toggle-workload="${row.key}" aria-expanded="false" aria-controls="${detailsId}">View payments</button>
+        <button type="button" data-toggle-workload="${row.key}" aria-expanded="${isExpanded}" aria-controls="${detailsId}">${isExpanded ? "Hide payments" : "View payments"}</button>
       </div>
-      <div id="${detailsId}" class="workload-details hidden">
+      <div id="${detailsId}" class="workload-details${isExpanded ? "" : " hidden"}">
         ${row.assigned
           .sort((a, b) => a.dueDate.localeCompare(b.dueDate))
           .map((occurrence) => `
@@ -2194,6 +2242,8 @@ function comparePaymentItems(left, right, occurrenceChoices) {
 
 function renderObligationCard(item, occurrenceChoices = []) {
   const member = effectiveResponsibleMember(item);
+  const workspaceLabel = paymentWorkspaceLabel(item);
+  const workspaceClass = paymentWorkspaceClass(item);
   const occurrence = preferredRecordOccurrence(occurrenceChoices);
   const workspaceReadOnly = Boolean(state.workspaceEntitlement?.read_only || state.workspaceEntitlement?.effective_status === "suspended");
   const isPaused = item.status === "inactive";
@@ -2214,7 +2264,7 @@ function renderObligationCard(item, occurrenceChoices = []) {
       <span>${escapeHtml(item.category)} &middot; ${recurrenceLabel(item)} &middot; ${paymentScheduleLabel(item)}</span>
       <div class="badge-row">
         ${statusBadge(item.status || "active")}
-        <span class="mini-badge">${escapeHtml(item.visibility === "family" ? "Family" : "Personal")}</span>
+        <span class="mini-badge payment-workspace-badge ${workspaceClass}">${escapeHtml(workspaceLabel)}</span>
         <span class="mini-badge">${escapeHtml(member?.name || "No assigned member")}</span>
         <span class="mini-badge reminder-badge">Daily reminder · ${item.reminder_days_before ?? 0} day${Number(item.reminder_days_before ?? 0) === 1 ? "" : "s"} before</span>
       </div>
@@ -2336,27 +2386,33 @@ function myOccurrences(occurrences) {
 
 function renderOccurrenceCard(occurrence, withAction = false, collapsible = false) {
   const member = effectiveResponsibleMember(occurrence.item);
+  const workspaceLabel = paymentWorkspaceLabel(occurrence.item);
+  const workspaceClass = paymentWorkspaceClass(occurrence.item);
+  const responsibleLabel = member?.name || (workspaceClass === "personal" ? "Personal account" : "Household account");
   const article = document.createElement("article");
   const stateClass = occurrenceCardStateClass(occurrence);
   if (collapsible) {
     const detailsId = `occurrence-details-${occurrence.key.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
-    article.className = `record-card occurrence-card${stateClass ? ` ${stateClass}` : ""}`;
+    const isExpanded = dashboardDisclosureState.occurrences.has(occurrence.key);
+    article.className = `record-card occurrence-card${stateClass ? ` ${stateClass}` : ""}${isExpanded ? " expanded" : ""}`;
+    article.dataset.occurrenceKey = occurrence.key;
     article.innerHTML = `
-      <button class="occurrence-summary-button" type="button" data-toggle-occurrence-details aria-expanded="false" aria-controls="${detailsId}">
+      <button class="occurrence-summary-button" type="button" data-toggle-occurrence-details aria-expanded="${isExpanded}" aria-controls="${detailsId}">
         <span class="date-chip">
           <strong>${parseDate(occurrence.dueDate).getDate()}</strong>
           <span>${parseDate(occurrence.dueDate).toLocaleString("en", { month: "short" })}</span>
         </span>
         <span class="occurrence-summary-copy">
           <strong class="occurrence-name" title="${escapeHtml(occurrence.item.name)}">${escapeHtml(occurrence.item.name)}</strong>
+          <span class="payment-workspace-badge ${workspaceClass}" title="${escapeHtml(workspaceLabel)}">${escapeHtml(workspaceLabel)}</span>
           <span class="occurrence-summary-meta">Due ${escapeHtml(occurrence.dueDate)} · ${escapeHtml(occurrence.status)}</span>
         </span>
         <strong class="occurrence-amount" data-fit-text data-fit-min="10">${money(occurrence.amount, occurrence.item.currency)}</strong>
         <span class="accordion-chevron" aria-hidden="true">⌄</span>
       </button>
-      <div id="${detailsId}" class="occurrence-card-details" hidden>
+      <div id="${detailsId}" class="occurrence-card-details" ${isExpanded ? "" : "hidden"}>
         <dl class="occurrence-facts">
-          <div><dt>Responsible</dt><dd>${escapeHtml(member?.name || "Household account")}</dd></div>
+          <div><dt>Responsible</dt><dd>${escapeHtml(responsibleLabel)}</dd></div>
           <div><dt>Category</dt><dd>${escapeHtml(occurrence.item.category)}</dd></div>
           <div><dt>Paid</dt><dd>${money(occurrence.paid, occurrence.item.currency)}</dd></div>
           <div><dt>Outstanding</dt><dd>${money(occurrence.outstanding, occurrence.item.currency)}</dd></div>
@@ -2377,8 +2433,9 @@ function renderOccurrenceCard(occurrence, withAction = false, collapsible = fals
     </div>
     <div class="record-main">
       <strong class="occurrence-name" title="${escapeHtml(occurrence.item.name)}">${escapeHtml(occurrence.item.name)}</strong>
-      <span class="occurrence-meta" title="${escapeHtml(member?.name || "Household account")} · ${escapeHtml(occurrence.item.category)} · ${money(occurrence.outstanding, occurrence.item.currency)} outstanding">${escapeHtml(member?.name || "Household account")} &middot; ${escapeHtml(occurrence.item.category)} &middot; ${money(occurrence.outstanding, occurrence.item.currency)} outstanding</span>
+      <span class="occurrence-meta" title="${escapeHtml(responsibleLabel)} · ${escapeHtml(occurrence.item.category)} · ${money(occurrence.outstanding, occurrence.item.currency)} outstanding">${escapeHtml(responsibleLabel)} &middot; ${escapeHtml(occurrence.item.category)} &middot; ${money(occurrence.outstanding, occurrence.item.currency)} outstanding</span>
       <div class="badge-row">
+        <span class="mini-badge payment-workspace-badge ${workspaceClass}">${escapeHtml(workspaceLabel)}</span>
         ${statusBadge(occurrence.status)}
         <span class="mini-badge">${money(occurrence.paid, occurrence.item.currency)} paid</span>
       </div>
@@ -6653,6 +6710,8 @@ document.addEventListener("click", async (event) => {
     const items = section?.querySelector(".due-month-items");
     if (section && items) {
       const expanded = dueMonthToggle.getAttribute("aria-expanded") === "true";
+      if (expanded) dashboardDisclosureState.months.delete(section.dataset.month);
+      else dashboardDisclosureState.months.add(section.dataset.month);
       dueMonthToggle.setAttribute("aria-expanded", `${!expanded}`);
       items.hidden = expanded;
       section.classList.toggle("expanded", !expanded);
@@ -6666,6 +6725,11 @@ document.addEventListener("click", async (event) => {
     const details = document.getElementById(occurrenceToggle.getAttribute("aria-controls"));
     if (details) {
       const expanded = occurrenceToggle.getAttribute("aria-expanded") === "true";
+      const occurrenceKey = occurrenceToggle.closest(".occurrence-card")?.dataset.occurrenceKey;
+      if (occurrenceKey) {
+        if (expanded) dashboardDisclosureState.occurrences.delete(occurrenceKey);
+        else dashboardDisclosureState.occurrences.add(occurrenceKey);
+      }
       occurrenceToggle.setAttribute("aria-expanded", `${!expanded}`);
       details.hidden = expanded;
       occurrenceToggle.closest(".occurrence-card")?.classList.toggle("expanded", !expanded);
@@ -6736,6 +6800,8 @@ document.addEventListener("click", async (event) => {
     const details = $(`#workload-details-${workloadToggle.dataset.toggleWorkload}`);
     if (details) {
       const expanded = workloadToggle.getAttribute("aria-expanded") === "true";
+      if (expanded) dashboardDisclosureState.workloads.delete(workloadToggle.dataset.toggleWorkload);
+      else dashboardDisclosureState.workloads.add(workloadToggle.dataset.toggleWorkload);
       workloadToggle.setAttribute("aria-expanded", `${!expanded}`);
       workloadToggle.textContent = expanded ? "View payments" : "Hide payments";
       details.classList.toggle("hidden", expanded);
@@ -7004,10 +7070,12 @@ $("#paymentHead").addEventListener("change", (event) => {
 });
 $("#monthFilter").addEventListener("change", (event) => {
   state.filterMonth = event.target.value;
+  resetDashboardDisclosureState();
   renderFamilyApp();
 });
 $("#reportMonthFilter").addEventListener("change", (event) => {
   state.filterMonth = event.target.value;
+  resetDashboardDisclosureState();
   $("#monthFilter").value = state.filterMonth;
   renderReports();
 });
@@ -7025,6 +7093,7 @@ $("#reportReportingCurrency").addEventListener("change", (event) => {
 });
 $("#statusFilter").addEventListener("change", (event) => {
   state.filterStatus = event.target.value;
+  resetDashboardDisclosureState();
   renderFamilyApp();
 });
 $("#adminHouseholdSearch").addEventListener("input", renderAdminFamilies);

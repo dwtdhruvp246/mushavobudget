@@ -61,6 +61,15 @@ function loadSubscriptionReconciler(permission, calls) {
   return context.reconcile;
 }
 
+function loadAutomaticRecoveryDecision() {
+  const start = applicationSource.indexOf("function shouldAutomaticallyRecoverPushSubscription");
+  const end = applicationSource.indexOf("async function reconcileCurrentPushSubscription", start);
+  const source = applicationSource.slice(start, end);
+  const context = { Boolean };
+  vm.runInNewContext(`${source}\nglobalThis.shouldRecover = shouldAutomaticallyRecoverPushSubscription;`, context);
+  return context.shouldRecover;
+}
+
 test("support checks require secure Web Push APIs", () => {
   assert.equal(loadHelper().supportStatus().supported, true);
   assert.equal(loadHelper({ secure: false }).supportStatus().code, "insecure");
@@ -169,7 +178,7 @@ test("account switching discards a browser subscription not owned by the current
   assert.deepEqual(retainedCalls, []);
 });
 
-test("permanently disabled device records are removed before Android reconnects", async () => {
+test("permanently disabled device records are removed before reconnecting", async () => {
   const bodyStart = applicationSource.indexOf("async function findOwnPushSubscriptionRecord");
   const bodyEnd = applicationSource.indexOf("async function refreshPushNotificationSettings", bodyStart);
   const body = applicationSource.slice(bodyStart, bodyEnd);
@@ -193,6 +202,46 @@ test("permanently disabled device records are removed before Android reconnects"
     enableBody.indexOf("reconcileCurrentPushSubscription(subscription, existingRecord)") <
       enableBody.indexOf("pushManager.subscribe")
   );
+});
+
+test("automatic recovery requires prior account ownership and existing browser permission", () => {
+  const shouldRecover = loadAutomaticRecoveryDecision();
+  assert.equal(shouldRecover(true, "granted", { id: "disabled-record" }, false), true);
+  assert.equal(shouldRecover(true, "granted", null, true), true);
+  assert.equal(shouldRecover(true, "granted", null, false), false);
+  assert.equal(shouldRecover(true, "default", { id: "disabled-record" }, true), false);
+  assert.equal(shouldRecover(false, "granted", { id: "disabled-record" }, true), false);
+});
+
+test("signed-in devices repair expired push endpoints on startup and resume", () => {
+  const refreshStart = applicationSource.indexOf("async function refreshPushNotificationSettings");
+  const refreshEnd = applicationSource.indexOf("function schedulePushNotificationRefresh", refreshStart);
+  const refreshBody = applicationSource.slice(refreshStart, refreshEnd);
+  assert.match(refreshBody, /hasRememberedPushOptIn\(userId\)/);
+  assert.match(refreshBody, /replaceCurrentPushSubscription/);
+
+  const replacementStart = applicationSource.indexOf("async function replaceCurrentPushSubscription");
+  const replacementEnd = applicationSource.indexOf("async function refreshPushNotificationSettings", replacementStart);
+  const replacementBody = applicationSource.slice(replacementStart, replacementEnd);
+  assert.ok(replacementBody.indexOf("await browserSubscription.unsubscribe()") < replacementBody.indexOf("pushManager.subscribe"));
+  assert.match(replacementBody, /saveCurrentPushSubscription\(subscription\)/);
+  assert.match(replacementBody, /rememberPushOptIn\(userId\)/);
+
+  assert.match(applicationSource, /startRealtime\(\);\s*schedulePushNotificationRefresh\(true, true\);/);
+  assert.match(applicationSource, /refreshAfterAppResume\("focus"\);\s*schedulePushNotificationRefresh\(false, true\);/);
+  assert.match(applicationSource, /refreshAfterAppResume\("pageshow"\);\s*schedulePushNotificationRefresh\(false, true\);/);
+  assert.match(applicationSource, /refreshAfterAppResume\("online"\);\s*schedulePushNotificationRefresh\(true, true\);/);
+  assert.match(applicationSource, /setInterval\([\s\S]{0,160}schedulePushNotificationRefresh\(false, true\)[\s\S]{0,80}PUSH_REFRESH_INTERVAL_MS/);
+});
+
+test("explicit enable and disable persist the user's device choice", () => {
+  const enableStart = applicationSource.indexOf("async function enablePushNotifications()");
+  const enableEnd = applicationSource.indexOf("async function deleteOwnPushRecord", enableStart);
+  assert.match(applicationSource.slice(enableStart, enableEnd), /rememberPushOptIn\(state\.session\.user\.id\)/);
+
+  const disableStart = applicationSource.indexOf("async function disablePushNotifications()");
+  const disableEnd = applicationSource.indexOf("async function pushFunctionErrorCode", disableStart);
+  assert.match(applicationSource.slice(disableStart, disableEnd), /forgetPushOptIn\(state\.session\.user\.id\)/);
 });
 
 test("test push refreshes the mobile session and sends its fresh access token", () => {

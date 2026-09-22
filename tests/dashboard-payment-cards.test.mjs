@@ -52,3 +52,23 @@ test("expanded narrow desktop cards wrap facts and keep both actions inside", ()
   assert.match(styles, /@container record-list \(max-width: 620px\)[\s\S]*?\.occurrence-facts dd\s*\{[\s\S]*?white-space: normal;[\s\S]*?overflow-wrap: anywhere;/);
   assert.match(styles, /@container record-list \(max-width: 620px\)[\s\S]*?\.occurrence-detail-footer \.row-actions\s*\{[\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);[\s\S]*?width: 100%;/);
 });
+
+test("dashboard payment cards identify their source workspace", () => {
+  assert.match(source, /function paymentItemWorkspace\(item\)/);
+  assert.match(source, /function paymentWorkspaceLabel\(item\)/);
+  assert.match(source, /workspaceNotificationLabel\(paymentItemWorkspace\(item\)\)/);
+  assert.match(source, /payment-workspace-badge \$\{workspaceClass\}/);
+  assert.match(source, /workspaceClass === "personal" \? "Personal account" : "Household account"/);
+  assert.match(styles, /\.payment-workspace-badge\s*\{[\s\S]*?text-transform: none;/);
+  assert.match(styles, /\.payment-workspace-badge\.family\s*\{/);
+});
+
+test("dashboard disclosures survive automatic data re-renders", () => {
+  assert.match(source, /const dashboardDisclosureState = \{[\s\S]*?months: new Set\(\),[\s\S]*?occurrences: new Set\(\),[\s\S]*?workloads: new Set\(\)/);
+  assert.match(source, /dashboardDisclosureState\.occurrences\.has\(occurrence\.key\)/);
+  assert.match(source, /article\.dataset\.occurrenceKey = occurrence\.key/);
+  assert.match(source, /dashboardDisclosureState\.occurrences\.add\(occurrenceKey\)/);
+  assert.match(source, /dashboardDisclosureState\.occurrences\.delete\(occurrenceKey\)/);
+  assert.match(source, /dashboardDisclosureState\.months\.has\(group\.monthValue\)/);
+  assert.match(source, /dashboardDisclosureState\.workloads\.has\(row\.key\)/);
+});

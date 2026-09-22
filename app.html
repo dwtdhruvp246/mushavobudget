@@ -17,14 +17,14 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="styles.css?v=59" />
+    <link rel="stylesheet" href="styles.css?v=60" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
-    <script src="/pwa.js?v=31" defer></script>
+    <script src="/pwa.js?v=32" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=79"></script>
+    <script type="module" src="app.js?v=80"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -174,7 +174,7 @@
             <div class="sidebar-footer">
               <button type="button" data-admin-tab="support">Contact support</button>
               <button id="adminSignOutButton" type="button">Sign out</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.4</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.5</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -337,16 +337,52 @@
             <header class="topbar"><div><p class="eyebrow">Access</p><h2>Users and member access</h2></div></header>
             <section class="admin-users-layout">
               <details class="admin-disclosure">
-                <summary><span><strong>Manual user settings</strong><small>Add an access record or configure a user without keeping the full form open.</small></span></summary>
+                <summary><span><strong>Manual user settings</strong><small>Choose the plan, currencies, and any payment received, then send a secure setup invitation.</small></span></summary>
+                <section id="adminInvitationPanel" class="tool-panel admin-invitation-panel" aria-labelledby="adminInvitationTitle">
+                  <div class="panel-heading"><p class="eyebrow">Secure invitation</p><h3 id="adminInvitationTitle">Invite a new user</h3><p class="muted-copy">The user receives a Supabase Auth email. Their workspace and subscription remain inactive until they complete setup in Stage 5.</p></div>
+                  <form id="adminInvitationForm" class="form-grid admin-invitation-form">
+                    <label for="adminInviteName">Full name<input id="adminInviteName" required maxlength="120" autocomplete="name" placeholder="Jordan Lee" /></label>
+                    <label for="adminInviteEmail">Email<input id="adminInviteEmail" type="email" required maxlength="320" autocomplete="email" placeholder="jordan@example.com" /></label>
+                    <label for="adminInviteCountry">Country code <small>Optional, two letters</small><input id="adminInviteCountry" maxlength="2" pattern="[A-Za-z]{2}" autocomplete="off" placeholder="ZW" /></label>
+                    <label for="adminInvitePlan">Plan<select id="adminInvitePlan" required></select></label>
+                    <label for="adminInviteWorkspaceName">Workspace name<input id="adminInviteWorkspaceName" required maxlength="100" placeholder="Jordan's workspace" /></label>
+                    <label for="adminInviteBillingPeriod">Billing period<select id="adminInviteBillingPeriod" required><option value="monthly">Monthly</option><option value="annual">Annual</option></select></label>
+                    <label for="adminInviteSubscriptionCurrency">Subscription currency<select id="adminInviteSubscriptionCurrency" required></select></label>
+                    <label for="adminInviteStartDate">Plan start date<input id="adminInviteStartDate" type="date" required /></label>
+                    <label for="adminInvitePaidThrough">Paid through / expiry date<input id="adminInvitePaidThrough" type="date" /></label>
+                    <label for="adminInviteEnabledCurrencies">Workspace currencies <small>Optional; use Ctrl/Cmd to select several</small><select id="adminInviteEnabledCurrencies" multiple size="5"></select></label>
+                    <label for="adminInviteDefaultCurrency">Default workspace currency<select id="adminInviteDefaultCurrency"><option value="">No default yet</option></select></label>
+                    <label for="adminInviteFamilyLimit">Maximum families<input id="adminInviteFamilyLimit" type="number" min="0" max="100" step="1" value="0" required /></label>
+                    <label class="checkbox-label"><input id="adminInviteCanAddMembers" type="checkbox" /> Allow this user to add family members</label>
+                    <label class="checkbox-label full"><input id="adminInvitePaymentReceived" type="checkbox" /> Record a payment already received</label>
+                    <div id="adminInvitePaymentFields" class="admin-invitation-payment-fields full" hidden>
+                      <label for="adminInvitePaymentAmount">Amount<input id="adminInvitePaymentAmount" type="number" min="0.01" step="0.01" /></label>
+                      <label for="adminInvitePaymentCurrency">Payment currency<select id="adminInvitePaymentCurrency"></select></label>
+                      <label for="adminInvitePaymentDate">Payment date<input id="adminInvitePaymentDate" type="date" /></label>
+                      <label for="adminInvitePaymentMethod">Payment method<input id="adminInvitePaymentMethod" maxlength="80" placeholder="Bank transfer" /></label>
+                      <label for="adminInvitePaymentReference">Reference <small>Optional</small><input id="adminInvitePaymentReference" maxlength="120" /></label>
+                      <label for="adminInvitePaymentNotes">Notes <small>Optional</small><textarea id="adminInvitePaymentNotes" maxlength="500" rows="3"></textarea></label>
+                    </div>
+                    <div class="notice full">Production invitations require Custom SMTP in Supabase. Plan activation, invoice creation, and the recorded payment will be finalized only after the Stage 5 setup flow is implemented.</div>
+                    <button id="adminInvitationSubmit" class="primary full" type="submit">Send secure invitation</button>
+                  </form>
+                </section>
+              </details>
+              <section class="ledger-panel admin-invitation-list-panel" aria-labelledby="adminInvitationListTitle">
+                <div class="panel-heading"><p class="eyebrow">Invitations</p><h3 id="adminInvitationListTitle">Recent manual invitations</h3><p id="adminInvitationMeta" class="muted-copy" aria-live="polite">0 invitations</p></div>
+                <div id="adminInvitationList" class="record-list"></div>
+              </section>
+              <details class="admin-disclosure">
+                <summary><span><strong>Registered user access</strong><small>Maintain the legacy family limit and member permission for an existing account.</small></span></summary>
                 <section class="tool-panel" aria-labelledby="headTitle">
-                <div class="panel-heading"><p class="eyebrow">Manual settings</p><h3 id="headTitle">Save user access</h3></div>
-                <form id="headForm" class="form-grid">
-                  <label for="headName">Full name<input id="headName" required placeholder="Jordan Lee" /></label>
-                  <label for="headEmail">Email<input id="headEmail" type="email" required placeholder="head@example.com" /></label>
-                  <label for="headFamilyLimit">Maximum families<input id="headFamilyLimit" type="number" min="0" max="100" step="1" value="1" required /></label>
-                  <label class="checkbox-label full"><input id="headCanAddMembers" type="checkbox" /> Allow this user to add family members</label>
-                  <button class="primary full" type="submit">Save user access</button>
-                </form>
+                  <div class="panel-heading"><p class="eyebrow">Existing account</p><h3 id="headTitle">Save user access</h3></div>
+                  <form id="headForm" class="form-grid">
+                    <label for="headName">Full name<input id="headName" required placeholder="Jordan Lee" /></label>
+                    <label for="headEmail">Email<input id="headEmail" type="email" required placeholder="head@example.com" /></label>
+                    <label for="headFamilyLimit">Maximum families<input id="headFamilyLimit" type="number" min="0" max="100" step="1" value="1" required /></label>
+                    <label class="checkbox-label full"><input id="headCanAddMembers" type="checkbox" /> Allow this user to add family members</label>
+                    <button class="primary full" type="submit">Save user access</button>
+                  </form>
                 </section>
               </details>
               <section class="ledger-panel">
@@ -553,7 +589,7 @@
             </div>
             <div class="sidebar-footer">
               <button type="button" data-family-tab="support">Contact support</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.4</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.5</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>

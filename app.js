@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 72
+// Mushavo Budget authenticated application — release 73
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -74,6 +74,7 @@ const state = {
   adminSubscriptions: [],
   adminPlans: [],
   adminPlanPrices: [],
+  adminUserInvitations: [],
   adminPlanFeatures: [],
   adminPlanLimits: [],
   adminEnquiries: [],
@@ -504,6 +505,48 @@ function showAppError(error) {
 
 function friendlyMessage(message = "") {
   const text = `${message}`;
+  if (text.includes("ADMIN_USER_INVITATION_ACCESS_REQUIRED")) {
+    return "Only a super administrator or admin staff member can send user invitations.";
+  }
+  if (text.includes("USER_ALREADY_REGISTERED")) {
+    return "This email already belongs to a registered account. Use Registered user access instead.";
+  }
+  if (text.includes("ADMIN_INVITATION_ALREADY_ACTIVE")) {
+    return "A setup invitation is already active for this email address.";
+  }
+  if (text.includes("ADMIN_INVITATION_RATE_LIMITED")) {
+    return "Too many invitations were created recently. Wait before trying again.";
+  }
+  if (text.includes("INVITATION_EMAIL_RATE_LIMITED")) {
+    return "Supabase has temporarily limited invitation emails. Configure Custom SMTP or wait before trying again.";
+  }
+  if (text.includes("INVITATION_EMAIL_SEND_FAILED")) {
+    return "The invitation record was saved, but the email could not be sent. Check Supabase Auth email and SMTP logs.";
+  }
+  if (text.includes("INVITATION_SERVER_CONFIGURATION_INCOMPLETE")) {
+    return "The secure invitation function is not fully configured in Supabase.";
+  }
+  if (text.includes("INVALID_INVITATION_EMAIL") || text.includes("INVALID_INVITATION_REQUEST")) {
+    return "Check the invitation name, email, plan, dates, and limits, then try again.";
+  }
+  if (text.includes("INVALID_COUNTRY_CODE")) {
+    return "Use a two-letter country code, such as ZW, ZA, or GB.";
+  }
+  if (text.includes("SUBSCRIPTION_EXPIRY_REQUIRED")) {
+    return "Add a paid-through or expiry date for a paid plan.";
+  }
+  if (text.includes("INVALID_SUBSCRIPTION_DATE_RANGE")) {
+    return "The paid-through date cannot be earlier than the plan start date.";
+  }
+  if (text.includes("DEFAULT_CURRENCY_MUST_BE_ENABLED")) {
+    return "Choose a default currency from the workspace currencies you enabled.";
+  }
+  if (text.includes("INCOMPLETE_INVITATION_PAYMENT")) {
+    return "Enter the payment amount, currency, date, and method.";
+  }
+  if (text.includes("FREE_PLAN_REQUIRES_NO_PAYMENT")) {
+    return "The Free plan cannot include a subscription payment.";
+  }
   if (text.includes("ACTIVE_FAMILY_MEMBERSHIP_REQUIRED")) {
     return "An active Mushavo Budget membership is required for this action.";
   }
@@ -1076,6 +1119,7 @@ function resetState() {
   state.adminSubscriptions = [];
   state.adminPlans = [];
   state.adminPlanPrices = [];
+  state.adminUserInvitations = [];
   state.adminPlanFeatures = [];
   state.adminPlanLimits = [];
   state.adminEnquiries = [];
@@ -1559,6 +1603,11 @@ async function loadAdminData(tab = state.adminTab) {
     add("adminWorkspaceMembers", "user workspace membership load", supabase.from("workspace_members").select("*").order("created_at", { ascending: false }));
     add("adminSubscriptions", "user subscriptions load", supabase.from("workspace_subscriptions").select("*").order("updated_at", { ascending: false }));
     add("adminPlans", "user plans load", supabase.from("plans").select("*").order("sort_order", { ascending: true }));
+    add("adminPlanPrices", "user plan prices load", supabase.from("plan_prices").select("*").eq("is_active", true).order("effective_from", { ascending: false }));
+    add("supportedCurrencies", "user supported currencies load", supabase.from("supported_currencies").select("*").eq("is_active", true).order("code"));
+    if (["super_admin", "admin_staff"].includes(state.adminRole)) {
+      add("adminUserInvitations", "admin user invitations load", supabase.from("admin_user_invitations").select("*").order("created_at", { ascending: false }).limit(50));
+    }
   }
   if (tab === "households") {
     add("adminProfiles", "workspace owner profiles load", supabase.from("profiles").select("*").order("created_at", { ascending: false }));
@@ -5181,7 +5230,185 @@ function renderAdminFamilies() {
   }).join("");
 }
 
+function localDateValue(date = new Date()) {
+  const local = new Date(date.getTime() - (date.getTimezoneOffset() * 60 * 1000));
+  return local.toISOString().slice(0, 10);
+}
+
+function canSendAdminInvitations() {
+  return ["super_admin", "admin_staff"].includes(state.adminRole);
+}
+
+function refreshAdminInvitationDefaultCurrency() {
+  const enabledSelect = $("#adminInviteEnabledCurrencies");
+  const defaultSelect = $("#adminInviteDefaultCurrency");
+  if (!enabledSelect || !defaultSelect) return;
+  const enabled = selectedOptions(enabledSelect);
+  const current = defaultSelect.value;
+  defaultSelect.innerHTML = '<option value="">No default yet</option>';
+  currencyCatalogue().forEach(([code, name]) => {
+    if (!enabled.includes(code)) return;
+    defaultSelect.append(new Option(`${code} — ${name}`, code));
+  });
+  defaultSelect.value = enabled.includes(current) ? current : (enabled.length === 1 ? enabled[0] : "");
+}
+
+function refreshAdminInvitationPlanFields() {
+  const plan = state.adminPlans.find((item) => item.id === $("#adminInvitePlan")?.value);
+  const period = $("#adminInviteBillingPeriod")?.value || "monthly";
+  const subscriptionCurrency = $("#adminInviteSubscriptionCurrency");
+  if (!plan || !subscriptionCurrency) return;
+  const currentCurrency = subscriptionCurrency.value;
+  const pricedCurrencies = [...new Set(state.adminPlanPrices
+    .filter((price) => price.plan_id === plan.id && price.billing_period === period && price.is_active)
+    .map((price) => price.currency))];
+  const allowedCurrencies = pricedCurrencies.length ? pricedCurrencies : currencyCatalogue().map(([code]) => code);
+  populateCurrencySelect(subscriptionCurrency, allowedCurrencies.includes(currentCurrency) ? currentCurrency : (allowedCurrencies.includes("USD") ? "USD" : allowedCurrencies[0]), allowedCurrencies);
+  const paidThrough = $("#adminInvitePaidThrough");
+  paidThrough.required = plan.code !== "free";
+  paidThrough.closest("label").classList.toggle("required-field", plan.code !== "free");
+  const paymentReceived = $("#adminInvitePaymentReceived");
+  paymentReceived.disabled = plan.code === "free";
+  if (plan.code === "free") paymentReceived.checked = false;
+  toggleAdminInvitationPaymentFields();
+  if (plan.workspace_type === "household" && Number($("#adminInviteFamilyLimit").value || 0) === 0) {
+    $("#adminInviteFamilyLimit").value = "1";
+  }
+}
+
+function toggleAdminInvitationPaymentFields() {
+  const received = $("#adminInvitePaymentReceived")?.checked || false;
+  const fields = $("#adminInvitePaymentFields");
+  if (!fields) return;
+  fields.hidden = !received;
+  ["#adminInvitePaymentAmount", "#adminInvitePaymentCurrency", "#adminInvitePaymentDate", "#adminInvitePaymentMethod"].forEach((selector) => {
+    $(selector).required = received;
+  });
+}
+
+function renderAdminInvitationForm() {
+  const form = $("#adminInvitationForm");
+  const panel = $("#adminInvitationPanel")?.closest("details");
+  if (!form || !panel) return;
+  const canInvite = canSendAdminInvitations();
+  panel.classList.toggle("hidden", !canInvite);
+  if (!canInvite) return;
+
+  const planSelect = $("#adminInvitePlan");
+  const currentPlan = planSelect.value;
+  planSelect.innerHTML = state.adminPlans
+    .filter((plan) => plan.is_active)
+    .map((plan) => `<option value="${escapeHtml(plan.id)}">${escapeHtml(plan.display_name)} (${titleCase(plan.workspace_type)})</option>`)
+    .join("");
+  if ([...planSelect.options].some((option) => option.value === currentPlan)) planSelect.value = currentPlan;
+
+  if (!$("#adminInviteStartDate").value) $("#adminInviteStartDate").value = localDateValue();
+  if (!$("#adminInvitePaymentDate").value) $("#adminInvitePaymentDate").value = localDateValue();
+  const enabledValues = selectedOptions($("#adminInviteEnabledCurrencies"));
+  populateCurrencySelect($("#adminInviteEnabledCurrencies"), enabledValues);
+  populateCurrencySelect($("#adminInvitePaymentCurrency"), $("#adminInvitePaymentCurrency").value || "USD");
+  refreshAdminInvitationDefaultCurrency();
+  refreshAdminInvitationPlanFields();
+  toggleAdminInvitationPaymentFields();
+  $("#adminInvitationSubmit").disabled = !state.adminPlans.some((plan) => plan.is_active);
+}
+
+function renderAdminUserInvitations() {
+  const list = $("#adminInvitationList");
+  const meta = $("#adminInvitationMeta");
+  const panel = list?.closest(".admin-invitation-list-panel");
+  if (!list || !meta || !panel) return;
+  const canInvite = canSendAdminInvitations();
+  panel.classList.toggle("hidden", !canInvite);
+  if (!canInvite) return;
+  const invitations = state.adminUserInvitations || [];
+  meta.textContent = `${invitations.length} invitation${invitations.length === 1 ? "" : "s"}`;
+  if (!invitations.length) {
+    list.innerHTML = emptyState("No manual invitations yet", "New secure invitations will appear here with their delivery status.");
+    return;
+  }
+  list.innerHTML = invitations.map((invitation) => {
+    const payment = invitation.payment_received
+      ? `<span class="mini-badge active">Payment ${escapeHtml(money(invitation.payment_amount, invitation.payment_currency))}</span>`
+      : '<span class="mini-badge">No payment recorded</span>';
+    const deliveryNote = invitation.status === "failed" && invitation.last_error_code
+      ? `<small>${escapeHtml(friendlyMessage(invitation.last_error_code))}</small>`
+      : `<small>${invitation.sent_at ? `Sent ${escapeHtml(new Date(invitation.sent_at).toLocaleString())}` : `Created ${escapeHtml(new Date(invitation.created_at).toLocaleString())}`}</small>`;
+    return `<article class="record-row admin-invitation-row">
+      <div class="record-main"><strong>${escapeHtml(invitation.full_name)}</strong><span>${escapeHtml(invitation.email)}</span>${deliveryNote}</div>
+      <div class="record-side"><span>${escapeHtml(invitation.plan_name)} · ${titleCase(invitation.billing_period)}</span><small>${escapeHtml(invitation.workspace_name)} · ${escapeHtml(invitation.subscription_currency)}</small><div class="badge-row">${statusBadge(invitation.status)}${payment}</div></div>
+    </article>`;
+  }).join("");
+}
+
+async function adminInvitationFunctionErrorCode(error) {
+  try {
+    const payload = await error?.context?.json?.();
+    return payload?.error || error?.message || "INVITATION_EMAIL_SEND_FAILED";
+  } catch (_contextError) {
+    return error?.message || "INVITATION_EMAIL_SEND_FAILED";
+  }
+}
+
+async function sendAdminUserInvitation(event) {
+  event.preventDefault();
+  if (!canSendAdminInvitations()) {
+    showToast(friendlyMessage("ADMIN_USER_INVITATION_ACCESS_REQUIRED"));
+    return;
+  }
+  const form = event.currentTarget;
+  const submit = $("#adminInvitationSubmit");
+  const paymentReceived = $("#adminInvitePaymentReceived").checked;
+  const enabledCurrencies = selectedOptions($("#adminInviteEnabledCurrencies"));
+  const payload = {
+    full_name: $("#adminInviteName").value.trim(),
+    email: $("#adminInviteEmail").value.trim().toLowerCase(),
+    country_code: $("#adminInviteCountry").value.trim().toUpperCase() || null,
+    plan_id: $("#adminInvitePlan").value,
+    workspace_name: $("#adminInviteWorkspaceName").value.trim(),
+    billing_period: $("#adminInviteBillingPeriod").value,
+    subscription_currency: $("#adminInviteSubscriptionCurrency").value,
+    entitlement_start_date: $("#adminInviteStartDate").value,
+    paid_through_date: $("#adminInvitePaidThrough").value || null,
+    enabled_currencies: enabledCurrencies,
+    default_currency: $("#adminInviteDefaultCurrency").value || null,
+    family_limit: Number($("#adminInviteFamilyLimit").value || 0),
+    can_add_members: $("#adminInviteCanAddMembers").checked,
+    payment_received: paymentReceived,
+    payment_amount: paymentReceived ? Number($("#adminInvitePaymentAmount").value) : null,
+    payment_currency: paymentReceived ? $("#adminInvitePaymentCurrency").value : null,
+    payment_date: paymentReceived ? $("#adminInvitePaymentDate").value : null,
+    payment_method: paymentReceived ? $("#adminInvitePaymentMethod").value.trim() : null,
+    payment_reference: paymentReceived ? $("#adminInvitePaymentReference").value.trim() : null,
+    payment_notes: paymentReceived ? $("#adminInvitePaymentNotes").value.trim() : null
+  };
+  if (enabledCurrencies.length && !payload.default_currency) {
+    showToast("Choose a default workspace currency or clear the optional workspace currency selection.");
+    return;
+  }
+  setSubmitting(submit, true, "Sending invitation…");
+  try {
+    const accessToken = await refreshSessionForProtectedFunction();
+    const { data, error } = await supabase.functions.invoke("invite-admin-user", {
+      body: payload,
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+    if (error) throw new Error(await adminInvitationFunctionErrorCode(error));
+    if (data?.error) throw new Error(data.error);
+    form.reset();
+    await loadAdminData("users");
+    renderAdmin();
+    showToast(`Secure invitation sent to ${payload.email}.`);
+  } catch (error) {
+    showToast(friendlyMessage(error?.message));
+  } finally {
+    setSubmitting(submit, false, "Send secure invitation");
+  }
+}
+
 function renderHeads() {
+  renderAdminInvitationForm();
+  renderAdminUserInvitations();
   const list = $("#headsList");
   const allDirectoryUsers = adminDirectoryUsers();
   const search = ($("#adminUserSearch")?.value || "").trim().toLowerCase();
@@ -7122,6 +7349,17 @@ $("#recordPaymentType").addEventListener("change", (event) => {
   if (!isFullPayment) amountInput.focus();
 });
 $("#headForm").addEventListener("submit", protectSubmission(addHead));
+$("#adminInvitationForm").addEventListener("submit", protectSubmission(sendAdminUserInvitation));
+$("#adminInvitePlan").addEventListener("change", refreshAdminInvitationPlanFields);
+$("#adminInviteBillingPeriod").addEventListener("change", refreshAdminInvitationPlanFields);
+$("#adminInviteEnabledCurrencies").addEventListener("change", refreshAdminInvitationDefaultCurrency);
+$("#adminInvitePaymentReceived").addEventListener("change", toggleAdminInvitationPaymentFields);
+$("#adminInviteName").addEventListener("blur", () => {
+  const name = $("#adminInviteName").value.trim();
+  if (name && !$("#adminInviteWorkspaceName").value.trim()) {
+    $("#adminInviteWorkspaceName").value = `${name}'s workspace`;
+  }
+});
 $("#paymentForm").addEventListener("submit", protectSubmission(addPlatformPayment));
 $("#adminNoteForm").addEventListener("submit", protectSubmission(saveAdminNote));
 $("#adminSupportTicketForm").addEventListener("submit", protectSubmission(createAdminSupportTicket));

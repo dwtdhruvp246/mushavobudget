@@ -1540,12 +1540,16 @@ async function loadAdminData(tab = state.adminTab) {
   if (tab === "dashboard") {
     add("adminWorkspaces", "admin workspace summary load", supabase.from("budget_workspaces").select("*").order("created_at", { ascending: false }));
     add("adminProfiles", "admin registered users load", supabase.from("profiles").select("*").order("created_at", { ascending: false }));
+    add("adminMembers", "dashboard family members load", supabase.from("family_members").select("*").order("created_at", { ascending: true }));
+    add("adminWorkspaceMembers", "dashboard workspace members load", supabase.from("workspace_members").select("*").order("created_at", { ascending: true }));
     add("adminSubscriptions", "admin subscriptions load", supabase.from("workspace_subscriptions").select("*").order("updated_at", { ascending: false }));
     add("adminPlans", "admin plans load", supabase.from("plans").select("*").order("sort_order", { ascending: true }));
     add("adminSubscriptionMonitor", "admin subscription monitor load", supabase.rpc("admin_subscription_monitor"));
   }
-  if (["households", "users", "finance"].includes(tab)) {
+  if (["dashboard", "households", "users", "finance"].includes(tab)) {
     add("heads", "heads load", supabase.from("family_heads").select("*").order("created_at", { ascending: false }));
+  }
+  if (["households", "users", "finance"].includes(tab)) {
     add("adminSubscriptionMonitor", "subscription monitor load", supabase.rpc("admin_subscription_monitor"));
   }
   if (tab === "users") {
@@ -1601,7 +1605,7 @@ async function loadAdminData(tab = state.adminTab) {
   if (["dashboard", "households", "users", "finance"].includes(tab)) {
     add("adminSubscriptionPayments", "admin subscription payments load", supabase.from("subscription_payments").select("*").order("created_at", { ascending: false }));
   }
-  if (["households", "users", "finance"].includes(tab)) {
+  if (["dashboard", "households", "users", "finance"].includes(tab)) {
     if (tab === "finance") {
       add("adminProfiles", "finance user profiles load", supabase.from("profiles").select("*").order("created_at", { ascending: false }));
       add("adminWorkspaces", "admin workspaces load", supabase.from("budget_workspaces").select("*").order("created_at", { ascending: false }));
@@ -4672,7 +4676,7 @@ function openAdminUserDetails(profileId, emailValue = "") {
   const payments = state.adminSubscriptionPayments.filter((payment) => workspaceIds.has(payment.workspace_id));
   const fullName = profile?.full_name || head?.full_name || ownerEmail.split("@")[0] || "Mushavo user";
   const workspaceHtml = monitors.length
-    ? monitors.map((row) => `<article class="admin-detail-card"><div><strong>${escapeHtml(row.workspace_name)}</strong><span>${escapeHtml(row.plan_name || "Plan not set")} &middot; ${titleCase(row.subscription_status || "not set")}</span>${row.workspace_type === "household" ? `<small>${Number(row.active_member_count || 0)} active + ${Number(row.pending_invitation_count || 0)} pending / ${Number(row.member_limit || 1)} paid places &middot; ${Number(row.available_member_count || 0)} available</small>` : ""}</div><button type="button" data-view-admin-workspace="${row.workspace_id}">View workspace</button></article>`).join("")
+    ? monitors.map((row) => `<article class="admin-detail-card"><div><strong>${escapeHtml(row.workspace_name)}</strong><span>${escapeHtml(row.plan_name || "Plan not set")} &middot; ${titleCase(row.subscription_status || "not set")}</span>${row.paid_through_at ? `<small>Paid through ${new Date(row.paid_through_at).toLocaleDateString()} &middot; ${escapeHtml(adminExpiryCountdown(row.paid_through_at))}</small>` : ""}${row.workspace_type === "household" ? `<small>${Number(row.active_member_count || 0)} active + ${Number(row.pending_invitation_count || 0)} pending / ${Number(row.member_limit || 1)} paid places &middot; ${Number(row.available_member_count || 0)} available</small>` : ""}</div><button type="button" data-view-admin-workspace="${row.workspace_id}">View workspace</button></article>`).join("")
     : emptyState("No workspaces", "This user does not currently own a workspace visible to the subscription monitor.");
   const paymentsHtml = payments.length
     ? payments.slice(0, 10).map((payment) => `<article class="admin-detail-card"><div><strong>${money(payment.amount, payment.currency)}</strong><span>${titleCase(payment.status)} &middot; ${escapeHtml(payment.reference_number || "No reference")}</span><small>${formatAdminDate(payment.created_at)}</small></div><button type="button" data-view-subscription-payment="${payment.id}">View payment</button></article>`).join("")
@@ -4682,7 +4686,11 @@ function openAdminUserDetails(profileId, emailValue = "") {
     title: fullName,
     subtitle: ownerEmail,
     body: `<section class="admin-detail-section"><h4>Account and access</h4>${adminDetailRows([
+      ["Account ID", `<code>${escapeHtml(profile?.id || head?.user_id || "Not registered")}</code>`],
+      ["Email", escapeHtml(ownerEmail)],
       ["Registered", escapeHtml(formatAdminDate(profile?.created_at, profile ? "Registered" : "Login not registered"))],
+      ["Last active", escapeHtml(formatAdminDate(profile?.last_active_at))],
+      ["Timezone", escapeHtml(profile?.timezone || "Not set")],
       ["Account status", statusBadge(head?.status || "free signup")],
       ["Family workspaces", `<strong>${ownedFamilyRows.length} / ${Number(head?.family_limit ?? 0)}</strong>`],
       ["Member management", statusBadge(head?.can_add_members ? "unlocked" : "locked")]
@@ -4936,10 +4944,28 @@ function renderAdminAttention(expiringSubscriptions, pendingReviews) {
   list.innerHTML = rows.map((row) => {
     if (row.kind === "payment") {
       const workspace = state.adminWorkspaces.find((item) => item.id === row.payment.workspace_id);
-      return `<article class="compact-activity-row"><div><strong>${escapeHtml(workspace?.name || "Subscription payment")}</strong><small>Payment proof awaiting review</small></div><span class="mini-badge pending_review">Pending review</span></article>`;
+      const owner = state.adminProfiles.find((profile) => profile.id === workspace?.owner_id);
+      const ownerEmail = owner?.email || "Owner unavailable";
+      return `<article class="compact-activity-row admin-attention-row"><div><strong>${escapeHtml(owner?.full_name || ownerEmail.split("@")[0] || "Account owner")}</strong><span>${escapeHtml(workspace?.name || "Subscription payment")}</span><small>${escapeHtml(ownerEmail)} &middot; Payment proof awaiting review</small></div><div class="admin-activity-actions"><span class="mini-badge pending_review">Pending review</span><button type="button" data-view-admin-user="${owner?.id || workspace?.owner_id || ""}" data-view-admin-user-email="${escapeHtml(ownerEmail === "Owner unavailable" ? "" : ownerEmail)}">View</button></div></article>`;
     }
-    return `<article class="compact-activity-row"><div><strong>${escapeHtml(row.subscription.workspace_name || "Workspace")}</strong><small>Paid through ${new Date(row.subscription.paid_through_at).toLocaleDateString()}</small></div><span class="mini-badge">Expires soon</span></article>`;
+    const owner = state.adminProfiles.find((profile) => profile.id === row.subscription.owner_id)
+      || state.adminProfiles.find((profile) => (profile.email || "").toLowerCase() === (row.subscription.owner_email || "").toLowerCase());
+    const ownerEmail = owner?.email || row.subscription.owner_email || "Owner unavailable";
+    return `<article class="compact-activity-row admin-attention-row"><div><strong>${escapeHtml(owner?.full_name || ownerEmail.split("@")[0] || "Account owner")}</strong><span>${escapeHtml(row.subscription.workspace_name || "Workspace")}</span><small>${escapeHtml(ownerEmail)} &middot; Paid through ${new Date(row.subscription.paid_through_at).toLocaleDateString()}</small></div><div class="admin-activity-actions"><span class="mini-badge expiry-countdown">${escapeHtml(adminExpiryCountdown(row.subscription.paid_through_at))}</span><button type="button" data-view-admin-user="${owner?.id || row.subscription.owner_id || ""}" data-view-admin-user-email="${escapeHtml(ownerEmail === "Owner unavailable" ? "" : ownerEmail)}">View</button></div></article>`;
   }).join("");
+}
+
+function adminExpiryCountdown(value, referenceDate = new Date()) {
+  const expiry = new Date(value);
+  if (Number.isNaN(expiry.getTime())) return "Expiry unavailable";
+  const referenceDay = Date.UTC(referenceDate.getUTCFullYear(), referenceDate.getUTCMonth(), referenceDate.getUTCDate());
+  const expiryDay = Date.UTC(expiry.getUTCFullYear(), expiry.getUTCMonth(), expiry.getUTCDate());
+  const days = Math.round((expiryDay - referenceDay) / 86400000);
+  if (days > 1) return `${days} days left`;
+  if (days === 1) return "1 day left";
+  if (days === 0) return "Expires today";
+  if (days === -1) return "1 day overdue";
+  return `${Math.abs(days)} days overdue`;
 }
 
 function adminWorkspaceTypeLabel(type) {
@@ -5146,7 +5172,7 @@ function renderAdminFamilies() {
       const typeRows = group.rows.filter((row) => row.type === type);
       if (!typeRows.length) return "";
       const label = type === "household" ? "Family" : titleCase(type);
-      return `<details class="admin-workspace-type-group"${group.rows.length === 1 ? " open" : ""}>
+      return `<details class="admin-workspace-type-group">
         <summary><span><strong>${label} workspace${typeRows.length === 1 ? "" : "s"}</strong><small>${typeRows.length} ${typeRows.length === 1 ? "entry" : "entries"}</small></span><span class="mini-badge">${typeRows.length}</span></summary>
         <div class="admin-workspace-children">${typeRows.map(adminWorkspaceDetailCard).join("")}</div>
       </details>`;
@@ -5157,10 +5183,45 @@ function renderAdminFamilies() {
 
 function renderHeads() {
   const list = $("#headsList");
-  const directoryUsers = adminDirectoryUsers();
-  $("#adminUserDirectoryMeta").textContent = `${directoryUsers.length} total · ${state.adminProfiles.length} registered`;
+  const allDirectoryUsers = adminDirectoryUsers();
+  const search = ($("#adminUserSearch")?.value || "").trim().toLowerCase();
+  const directoryUsers = allDirectoryUsers.filter(({ profile, head, fullName, email }) => {
+    if (!search) return true;
+    const ownedWorkspaceIds = new Set(
+      profile ? state.adminWorkspaces.filter((workspace) => workspace.owner_id === profile.id).map((workspace) => workspace.id) : []
+    );
+    const joinedWorkspaceIds = new Set(
+      profile ? state.adminWorkspaceMembers.filter((member) => member.user_id === profile.id).map((member) => member.workspace_id) : []
+    );
+    const workspaces = state.adminWorkspaces.filter((workspace) => ownedWorkspaceIds.has(workspace.id) || joinedWorkspaceIds.has(workspace.id));
+    const monitors = state.adminSubscriptionMonitor.filter((row) =>
+      ownedWorkspaceIds.has(row.workspace_id)
+      || joinedWorkspaceIds.has(row.workspace_id)
+      || row.owner_id === profile?.id
+      || (row.owner_email || "").toLowerCase() === email.toLowerCase()
+    );
+    const legacyFamilies = state.adminFamilies.filter((family) =>
+      (family.owner_email || "").toLowerCase() === email.toLowerCase()
+    );
+    const searchText = [
+      fullName,
+      email,
+      head?.status,
+      head?.billing_status,
+      head?.can_add_members ? "members unlocked" : "members locked",
+      ...workspaces.flatMap((workspace) => [workspace.name, workspace.workspace_type, workspace.status]),
+      ...legacyFamilies.flatMap((family) => [family.name, "family", "household"]),
+      ...monitors.flatMap((row) => [row.workspace_name, row.workspace_type, row.plan_name, row.plan_code, row.subscription_status, row.billing_period])
+    ].filter(Boolean).join(" ").toLowerCase();
+    return searchText.includes(search);
+  });
+  $("#adminUserDirectoryMeta").textContent = search
+    ? `${directoryUsers.length} of ${allDirectoryUsers.length} users · ${state.adminProfiles.length} registered`
+    : `${allDirectoryUsers.length} total · ${state.adminProfiles.length} registered`;
   if (!directoryUsers.length) {
-    list.innerHTML = emptyState("No users yet", "Registered accounts and users added by an administrator will appear here.");
+    list.innerHTML = search
+      ? emptyState("No matching users", "Try a different name, email, workspace, plan, or status.")
+      : emptyState("No users yet", "Registered accounts and users added by an administrator will appear here.");
     return;
   }
   list.innerHTML = "";
@@ -5265,11 +5326,19 @@ function renderRecentPlatformPayments() {
     return;
   }
   list.innerHTML = recent.map((entry) => {
-    if (entry.type === "legacy") return renderPlatformPayment(entry.payment).outerHTML;
+    if (entry.type === "legacy") {
+      const payment = entry.payment;
+      const head = state.heads.find((item) => item.id === payment.family_head_id);
+      const ownerEmail = head?.email || payment.family_heads?.email || "Owner unavailable";
+      const owner = state.adminProfiles.find((profile) => profile.id === head?.user_id)
+        || state.adminProfiles.find((profile) => (profile.email || "").toLowerCase() === ownerEmail.toLowerCase());
+      return `<article class="compact-activity-row finance-activity-row"><div><strong>${escapeHtml(owner?.full_name || head?.full_name || payment.family_heads?.full_name || "Unknown user")}</strong><span>${escapeHtml(ownerEmail)}</span><small>${escapeHtml(payment.payment_method || "Method not set")} &middot; ${escapeHtml(payment.reference_number || "No reference")}</small></div><div class="admin-activity-actions"><strong>${money(payment.amount, payment.currency)}</strong>${statusBadge("approved")}<button type="button" data-view-admin-user="${owner?.id || head?.user_id || ""}" data-view-admin-user-email="${escapeHtml(ownerEmail === "Owner unavailable" ? "" : ownerEmail)}">View</button></div></article>`;
+    }
     const payment = entry.payment;
     const workspace = state.adminWorkspaces.find((item) => item.id === payment.workspace_id);
     const owner = state.adminProfiles.find((profile) => profile.id === workspace?.owner_id);
-    return `<article class="compact-activity-row finance-activity-row"><div><strong>${escapeHtml(workspace?.name || "Subscription")}</strong><small>${escapeHtml(owner?.email || "Owner unavailable")} &middot; ${escapeHtml(payment.reference_number || "No reference")}</small></div><div><strong>${money(payment.amount, payment.currency)}</strong>${statusBadge(payment.status)}</div></article>`;
+    const ownerEmail = owner?.email || "Owner unavailable";
+    return `<article class="compact-activity-row finance-activity-row"><div><strong>${escapeHtml(owner?.full_name || ownerEmail.split("@")[0] || "Account owner")}</strong><span>${escapeHtml(workspace?.name || "Subscription")}</span><small>${escapeHtml(ownerEmail)} &middot; ${escapeHtml(payment.reference_number || "No reference")}</small></div><div class="admin-activity-actions"><strong>${money(payment.amount, payment.currency)}</strong>${statusBadge(payment.status)}<button type="button" data-view-admin-user="${owner?.id || workspace?.owner_id || ""}" data-view-admin-user-email="${escapeHtml(ownerEmail === "Owner unavailable" ? "" : ownerEmail)}">View</button></div></article>`;
   }).join("");
 }
 
@@ -7198,6 +7267,12 @@ $("#adminWorkspaceReset").addEventListener("click", () => {
   $("#adminWorkspacePlanFilter").value = "all";
   $("#adminWorkspaceSort").value = "newest";
   renderAdminFamilies();
+});
+$("#adminUserSearch").addEventListener("input", renderHeads);
+$("#adminUserSearchReset").addEventListener("click", () => {
+  $("#adminUserSearch").value = "";
+  renderHeads();
+  $("#adminUserSearch").focus();
 });
 document.querySelectorAll("[data-family-selector]").forEach((select) => {
   select.addEventListener("change", (event) => {

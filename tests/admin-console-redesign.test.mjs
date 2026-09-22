@@ -30,6 +30,17 @@ test("recent platform finance combines subscription and legacy payment activity"
   assert.match(recent, /state\.adminSubscriptionPayments/);
   assert.match(recent, /state\.payments/);
   assert.match(recent, /sort\(\(left, right\) => new Date\(right\.at/);
+  assert.match(recent, /data-view-admin-user/);
+  assert.match(recent, /payment\.family_head_id/);
+});
+
+test("dashboard follow-up rows show user details and expiry countdowns", () => {
+  const attention = source.slice(source.indexOf("function renderAdminAttention"), source.indexOf("function adminWorkspaceTypeLabel"));
+  assert.match(attention, /data-view-admin-user/);
+  assert.match(attention, /function adminExpiryCountdown/);
+  assert.match(attention, /days left/);
+  assert.match(attention, /Expires today/);
+  assert.match(attention, /days overdue/);
 });
 
 test("workspaces are grouped by owner and expandable workspace type", () => {
@@ -37,6 +48,19 @@ test("workspaces are grouped by owner and expandable workspace type", () => {
   assert.match(source, /admin-owner-group/);
   assert.match(source, /admin-workspace-type-group/);
   assert.match(source, /const typeOrder = \["personal", "household", "business"\]/);
+  assert.doesNotMatch(source, /admin-workspace-type-group"\$\{group\.rows\.length === 1 \? " open"/);
+  assert.match(styles, /\.admin-owner-group > header[\s\S]*linear-gradient/);
+});
+
+test("admin users can be searched by identity, workspace, plan, and status", () => {
+  assert.match(html, /id="adminUserSearch"[^>]*placeholder="Name, email, workspace, plan, or status"/);
+  assert.match(html, /id="adminUserSearchReset"/);
+  const users = source.slice(source.indexOf("function renderHeads"), source.indexOf("function adminDirectoryUsers"));
+  assert.match(users, /adminUserSearch/);
+  assert.match(users, /workspace\.name/);
+  assert.match(users, /row\.plan_name/);
+  assert.match(users, /row\.subscription_status/);
+  assert.match(users, /No matching users/);
 });
 
 test("users, plan editors, finance settings, and enquiries are compact disclosures", () => {

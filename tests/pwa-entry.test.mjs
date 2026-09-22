@@ -177,7 +177,7 @@ test("service worker caches only the safe launcher shell", () => {
   const shellStart = serviceWorkerSource.indexOf("const SAFE_SHELL = [");
   const shellEnd = serviceWorkerSource.indexOf("];", shellStart);
   const safeShellSource = serviceWorkerSource.slice(shellStart, shellEnd);
-  assert.match(serviceWorkerSource, /pwa-shell-v37/);
+  assert.match(serviceWorkerSource, /pwa-shell-v38/);
   assert.match(serviceWorkerSource, /"\/app-entry\.js\?v=2"/);
   assert.doesNotMatch(safeShellSource, /"\/app\.html/);
   assert.doesNotMatch(safeShellSource, /"\/config\.js/);
@@ -198,7 +198,7 @@ function createOfflineWorkerHarness() {
   };
   const caches = {
     async open() { return cache; },
-    async keys() { return ["mushavo-budget-pwa-shell-v36", "mushavo-budget-pwa-shell-v37"]; },
+    async keys() { return ["mushavo-budget-pwa-shell-v37", "mushavo-budget-pwa-shell-v38"]; },
     async delete(key) { stored.delete(key); return true; }
   };
   const self = {

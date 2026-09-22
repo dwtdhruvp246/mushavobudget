@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 71
+// Mushavo Budget authenticated application — release 72
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -125,6 +125,7 @@ let appLoadUserId = null;
 let toastTimer = null;
 let pushRefreshPromise = null;
 let pushRefreshSequence = 0;
+let pushRefreshLastCheckedAt = 0;
 
 const PAYMENT_PROOF_BUCKET = "payment-proofs";
 const SUBSCRIPTION_PROOF_BUCKET = "subscription-proofs";
@@ -132,6 +133,8 @@ const PAYMENT_PROOF_MAX_BYTES = 10 * 1024 * 1024;
 const PAYMENT_PROOF_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "application/pdf"]);
 const QUERY_TIMEOUT_MS = 15000;
 const PUSH_READY_TIMEOUT_MS = 12000;
+const PUSH_REFRESH_INTERVAL_MS = 5 * 60 * 1000;
+const PUSH_OPT_IN_STORAGE_PREFIX = "mushavo-budget:push-enabled:";
 const pushSupport = window.MushavoPushSupport || null;
 
 const PLAN_FEATURE_LABELS = {
@@ -1043,6 +1046,7 @@ function resetState() {
   state.pushDevice = createPushDeviceState();
   pushRefreshSequence += 1;
   pushRefreshPromise = null;
+  pushRefreshLastCheckedAt = 0;
   state.supportedCurrencies = [];
   state.exchangeRates = [];
   state.exchangeRateStatus = null;
@@ -1126,6 +1130,7 @@ async function loadApp() {
     renderAdmin();
     await handleNotificationDeepLink();
     startRealtime();
+    schedulePushNotificationRefresh(true, true);
     profileResult.then((result) => {
       if (!result.ok) console.warn("Profile load was deferred", result.error);
     });
@@ -1154,6 +1159,7 @@ async function loadApp() {
   renderFamilyApp();
   await handleNotificationDeepLink();
   startRealtime();
+  schedulePushNotificationRefresh(true, true);
   Promise.all([profileResult, invitationResult, notificationResult]).then((results) => {
     const labels = ["Profile", "Invitations", "Notifications"];
     results.forEach((result, index) => {
@@ -2520,7 +2526,7 @@ function renderSettings() {
   $("#settingsMemberAccess").textContent = canManageAnyFamily ? "Can invite family members" : "Can join invited families";
   $("#settingsEmail").textContent = state.session.user.email || "-";
   renderPushNotificationSettings();
-  schedulePushNotificationRefresh();
+  schedulePushNotificationRefresh(false, true);
   renderWorkspaceCurrencySettings();
 }
 
@@ -2772,6 +2778,41 @@ async function findOwnPushSubscriptionRecord(endpoint) {
   return data;
 }
 
+function pushOptInStorageKey(userId) {
+  return `${PUSH_OPT_IN_STORAGE_PREFIX}${userId}`;
+}
+
+function hasRememberedPushOptIn(userId) {
+  if (!userId) return false;
+  try {
+    return window.localStorage.getItem(pushOptInStorageKey(userId)) === "true";
+  } catch (_error) {
+    return false;
+  }
+}
+
+function rememberPushOptIn(userId) {
+  if (!userId) return;
+  try {
+    window.localStorage.setItem(pushOptInStorageKey(userId), "true");
+  } catch (_error) {
+    // Private browsing can block storage. The current device still works.
+  }
+}
+
+function forgetPushOptIn(userId) {
+  if (!userId) return;
+  try {
+    window.localStorage.removeItem(pushOptInStorageKey(userId));
+  } catch (_error) {
+    // A blocked storage cleanup must not prevent an explicit disable or sign-out.
+  }
+}
+
+function shouldAutomaticallyRecoverPushSubscription(autoRecover, permission, record, rememberedOptIn) {
+  return Boolean(autoRecover && permission === "granted" && (record || rememberedOptIn));
+}
+
 async function reconcileCurrentPushSubscription(subscription, record) {
   if (!subscription) return { subscription: null, record: null };
 
@@ -2787,7 +2828,31 @@ async function reconcileCurrentPushSubscription(subscription, record) {
   return { subscription: null, record: null };
 }
 
-async function refreshPushNotificationSettings() {
+async function replaceCurrentPushSubscription(registration, browserSubscription, ownRecord, userId) {
+  if (ownRecord) await deleteOwnPushRecord(browserSubscription, ownRecord);
+  if (browserSubscription) await browserSubscription.unsubscribe();
+  await clearApplicationBadge();
+  if (state.session?.user?.id !== userId) throw new Error("PUSH_ACCOUNT_CHANGED");
+
+  const subscription = await registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: pushSupport.base64UrlToUint8Array(config.vapidPublicKey)
+  });
+  try {
+    const record = await saveCurrentPushSubscription(subscription);
+    rememberPushOptIn(userId);
+    return { subscription, record };
+  } catch (error) {
+    try {
+      await subscription.unsubscribe();
+    } catch (_unsubscribeError) {
+      // The unlinked subscription can be removed during the next recovery check.
+    }
+    throw error;
+  }
+}
+
+async function refreshPushNotificationSettings({ autoRecover = false } = {}) {
   const userId = state.session?.user?.id;
   if (!userId) return;
   const sequence = ++pushRefreshSequence;
@@ -2806,10 +2871,31 @@ async function refreshPushNotificationSettings() {
     const ownRecord = browserSubscription
       ? await findOwnPushSubscriptionRecord(browserSubscription.endpoint)
       : null;
-    const { subscription, record } = await reconcileCurrentPushSubscription(
-      browserSubscription,
-      ownRecord
-    );
+    const permission = currentPushPermission();
+    let subscription;
+    let record;
+    if (permission === "granted" && ownRecord && !ownRecord.disabled_at) {
+      subscription = browserSubscription;
+      record = ownRecord;
+      rememberPushOptIn(userId);
+    } else if (shouldAutomaticallyRecoverPushSubscription(
+      autoRecover,
+      permission,
+      ownRecord,
+      hasRememberedPushOptIn(userId)
+    )) {
+      ({ subscription, record } = await replaceCurrentPushSubscription(
+        registration,
+        browserSubscription,
+        ownRecord,
+        userId
+      ));
+    } else {
+      ({ subscription, record } = await reconcileCurrentPushSubscription(
+        browserSubscription,
+        ownRecord
+      ));
+    }
     if (sequence !== pushRefreshSequence || state.session?.user?.id !== userId) return;
     state.pushDevice = {
       busy: false,
@@ -2831,12 +2917,14 @@ async function refreshPushNotificationSettings() {
   renderPushNotificationSettings();
 }
 
-function schedulePushNotificationRefresh(force = false) {
+function schedulePushNotificationRefresh(force = false, autoRecover = false) {
   const userId = state.session?.user?.id;
   if (!userId) return;
-  if (!force && state.pushDevice.checked && state.pushDevice.userId === userId) return;
+  const recentlyChecked = Date.now() - pushRefreshLastCheckedAt < PUSH_REFRESH_INTERVAL_MS;
+  if (!force && recentlyChecked && state.pushDevice.checked && state.pushDevice.userId === userId) return;
   if (pushRefreshPromise) return;
-  pushRefreshPromise = refreshPushNotificationSettings()
+  pushRefreshLastCheckedAt = Date.now();
+  pushRefreshPromise = refreshPushNotificationSettings({ autoRecover })
     .catch((error) => console.warn("Push subscription check failed", friendlyMessage(error?.message)))
     .finally(() => {
       pushRefreshPromise = null;
@@ -2932,6 +3020,7 @@ async function enablePushNotifications() {
       record,
       error: null
     };
+    rememberPushOptIn(state.session.user.id);
     showToast("Notifications enabled on this device.");
   } catch (error) {
     if (createdSubscription && subscription) {
@@ -2994,6 +3083,7 @@ async function disablePushNotifications() {
   renderPushNotificationSettings();
   try {
     await removeCurrentDevicePush();
+    forgetPushOptIn(state.session.user.id);
     state.pushDevice = {
       ...createPushDeviceState(),
       checked: true,
@@ -3065,6 +3155,7 @@ async function signOutSafely(button = null) {
   setSubmitting(button, true, "Signing out…");
   try {
     await removeCurrentDevicePush();
+    forgetPushOptIn(state.session.user.id);
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   } catch (error) {
@@ -3600,7 +3691,7 @@ function openNotificationDialog() {
   renderNotifications();
   if (state.isAdmin) {
     renderAdminPushNotificationSettings();
-    schedulePushNotificationRefresh();
+    schedulePushNotificationRefresh(false, true);
   }
   const dialog = $("#notificationDialog");
   if (dialog && !dialog.open) dialog.showModal();
@@ -7124,18 +7215,28 @@ window.addEventListener("hashchange", () => {
 
 window.addEventListener("beforeunload", stopRealtime);
 window.addEventListener("resize", scheduleDashboardTextFit);
-window.addEventListener("focus", () => refreshAfterAppResume("focus"));
-window.addEventListener("pageshow", () => refreshAfterAppResume("pageshow"));
+window.addEventListener("focus", () => {
+  refreshAfterAppResume("focus");
+  schedulePushNotificationRefresh(false, true);
+});
+window.addEventListener("pageshow", () => {
+  refreshAfterAppResume("pageshow");
+  schedulePushNotificationRefresh(false, true);
+});
 window.addEventListener("online", () => {
   if (!state.session) return;
   startRealtime();
   refreshAfterAppResume("online");
+  schedulePushNotificationRefresh(true, true);
 });
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible") refreshAfterAppResume("visibility");
-  if (document.visibilityState === "visible" && state.session && !state.isAdmin && state.familyTab === "settings") {
-    schedulePushNotificationRefresh(true);
+  if (document.visibilityState === "visible") {
+    refreshAfterAppResume("visibility");
+    schedulePushNotificationRefresh(false, true);
   }
 });
+window.setInterval(() => {
+  if (document.visibilityState === "visible") schedulePushNotificationRefresh(false, true);
+}, PUSH_REFRESH_INTERVAL_MS);
 
 init().catch(handleLoadFailure);

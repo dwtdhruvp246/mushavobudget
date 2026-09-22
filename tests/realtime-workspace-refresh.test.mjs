@@ -100,8 +100,8 @@ test("changes received during a refresh are replayed instead of discarded", asyn
 });
 
 test("returning to a suspended app refreshes data without reloading the page", () => {
-  assert.match(app, /window\.addEventListener\("focus", \(\) => refreshAfterAppResume\("focus"\)\)/);
-  assert.match(app, /window\.addEventListener\("pageshow", \(\) => refreshAfterAppResume\("pageshow"\)\)/);
+  assert.match(app, /window\.addEventListener\("focus",[\s\S]{0,120}refreshAfterAppResume\("focus"\)/);
+  assert.match(app, /window\.addEventListener\("pageshow",[\s\S]{0,120}refreshAfterAppResume\("pageshow"\)/);
   assert.match(app, /refreshAfterAppResume\("online"\)/);
   assert.match(app, /refreshAfterAppResume\("visibility"\)/);
   assert.doesNotMatch(app, /refreshAfterAppResume[\s\S]{0,300}window\.location\.reload/);

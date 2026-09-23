@@ -69,7 +69,7 @@ test("the invite setup page verifies the server session before accepting a passw
 });
 
 test("admin messaging and app completion confirmation describe the live flow", () => {
-  assert.match(appPage, /workspace, plan, and any recorded payment are provisioned/);
+  assert.match(appPage, /workspace is created in their name[\s\S]*when they complete signup/);
   assert.doesNotMatch(appPage, /after the Stage 5 setup flow is implemented/);
   assert.match(application, /Your account, workspace, and subscription are ready/);
   assert.match(schema, /Complete an admin-created user invitation only after Supabase Auth has/);

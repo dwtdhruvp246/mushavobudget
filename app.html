@@ -21,10 +21,10 @@
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
-    <script src="/pwa.js?v=34" defer></script>
+    <script src="/pwa.js?v=35" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=82"></script>
+    <script type="module" src="app.js?v=83"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -174,7 +174,7 @@
             <div class="sidebar-footer">
               <button type="button" data-admin-tab="support">Contact support</button>
               <button id="adminSignOutButton" type="button">Sign out</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.7</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.8</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -339,13 +339,12 @@
               <details class="admin-disclosure">
                 <summary><span><strong>Manual user settings</strong><small>Choose the plan, currencies, and any payment received, then send a secure setup invitation.</small></span></summary>
                 <section id="adminInvitationPanel" class="tool-panel admin-invitation-panel" aria-labelledby="adminInvitationTitle">
-                  <div class="panel-heading"><p class="eyebrow">Secure invitation</p><h3 id="adminInvitationTitle">Invite a new user</h3><p class="muted-copy">The user receives a secure Supabase Auth email. Their workspace, plan, and any recorded payment are provisioned after they create a password and confirm their currencies.</p></div>
+                  <div class="panel-heading"><p class="eyebrow">Secure invitation</p><h3 id="adminInvitationTitle">Invite a new user</h3><p class="muted-copy">The user receives a secure Supabase Auth email. Their workspace is created in their name, with the selected plan and any recorded payment, when they complete signup.</p></div>
                   <form id="adminInvitationForm" class="form-grid admin-invitation-form">
                     <label for="adminInviteName">Full name<input id="adminInviteName" required maxlength="120" autocomplete="name" placeholder="Jordan Lee" /></label>
                     <label for="adminInviteEmail">Email<input id="adminInviteEmail" type="email" required maxlength="320" autocomplete="email" placeholder="jordan@example.com" /></label>
                     <label for="adminInviteCountry">Country code <small>Optional, two letters</small><input id="adminInviteCountry" maxlength="2" pattern="[A-Za-z]{2}" autocomplete="off" placeholder="ZW" /></label>
                     <label for="adminInvitePlan">Plan<select id="adminInvitePlan" required></select></label>
-                    <label for="adminInviteWorkspaceName">Workspace name<input id="adminInviteWorkspaceName" required maxlength="100" placeholder="Jordan's workspace" /></label>
                     <label for="adminInviteBillingPeriod">Billing period<select id="adminInviteBillingPeriod" required><option value="monthly">Monthly</option><option value="annual">Annual</option></select></label>
                     <label for="adminInviteSubscriptionCurrency">Subscription currency<select id="adminInviteSubscriptionCurrency" required></select></label>
                     <label for="adminInviteStartDate">Plan start date<input id="adminInviteStartDate" type="date" required /></label>
@@ -590,7 +589,7 @@
             </div>
             <div class="sidebar-footer">
               <button type="button" data-family-tab="support">Contact support</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.7</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.8</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>

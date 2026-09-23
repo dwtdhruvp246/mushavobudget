@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <link rel="stylesheet" href="styles.css?v=61" />
     <script src="config.js?v=26"></script>
-    <script src="/pwa.js?v=34" defer></script>
+    <script src="/pwa.js?v=35" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
   </head>
   <body>
@@ -188,7 +188,7 @@
 
       function renderInviteSummary() {
         inviteSummary.innerHTML = `
-          <div><span>Workspace</span><strong>${escapeHtml(titleCase(invitation.workspace_type))} · ${escapeHtml(invitation.workspace_name)}</strong></div>
+          <div><span>Workspace to create</span><strong>${escapeHtml(titleCase(invitation.workspace_type))} · ${escapeHtml(invitation.workspace_name)}</strong></div>
           <div><span>Plan</span><strong>${escapeHtml(invitation.plan_name)} · ${escapeHtml(titleCase(invitation.billing_period))}</strong></div>
           <div><span>Plan currency</span><strong>${escapeHtml(invitation.subscription_currency)}</strong></div>
           <div><span>Plan expiry</span><strong>${escapeHtml(formatDate(invitation.paid_through_date))}</strong></div>
@@ -306,6 +306,14 @@
         return message || "The invitation could not be verified. Ask an administrator to send a new invitation.";
       }
 
+      async function saveInvitedPassword(supabase, password, metadata) {
+        const { error } = await supabase.auth.updateUser({ password, data: metadata });
+        // The password can have been saved on a previous attempt while the
+        // workspace completion RPC failed. Retry that RPC with the verified
+        // invited identity rather than asking for a different password.
+        if (error && error.code !== "same_password") throw error;
+      }
+
       async function offerVerifiedSelfSignup(supabase, email) {
         const selfSignupUrl = new URL("./signup.html?mode=self-signup", window.location.href);
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -319,7 +327,7 @@
       async function initialiseAdminInvite(supabase, currencyPromise) {
         document.querySelector("#signupEyebrow").textContent = "Secure invitation";
         document.querySelector("#signupTitle").textContent = "Finish setting up your account";
-        document.querySelector("#signupSubtitle").textContent = "Your administrator has already added your name, workspace, and plan. Create your password and confirm the currencies you want to use.";
+        document.querySelector("#signupSubtitle").textContent = "Your administrator has selected your plan. Create your password and confirm your currencies to create your workspace.";
         submitButton.textContent = "Verifying invitation...";
         submitButton.disabled = true;
 
@@ -477,17 +485,13 @@
             const enabledCurrencies = [...selectedCurrencies].sort();
             if (isAdminInvite) {
               if (!invitationReady || !invitation) throw new Error("ADMIN_INVITATION_NOT_AVAILABLE");
-              const { error: passwordError } = await supabase.auth.updateUser({
-                password,
-                data: {
-                  full_name: fullName,
-                  default_currency: defaultCurrency,
-                  enabled_currencies: enabledCurrencies,
-                  signup_source: "admin_invitation",
-                  admin_invitation_id: invitationId
-                }
+              await saveInvitedPassword(supabase, password, {
+                full_name: fullName,
+                default_currency: defaultCurrency,
+                enabled_currencies: enabledCurrencies,
+                signup_source: "admin_invitation",
+                admin_invitation_id: invitationId
               });
-              if (passwordError) throw passwordError;
               const { error: completionError } = await supabase.rpc("complete_admin_user_invitation", {
                 p_invitation_id: invitationId,
                 p_enabled_currencies: enabledCurrencies,
@@ -503,12 +507,10 @@
 
             if (isSelfSignupFromInvite) {
               if (!invitationReady) throw new Error("ADMIN_INVITATION_NOT_AVAILABLE");
-              const { error: passwordError } = await supabase.auth.updateUser({
-                password,
-                data: { full_name: fullName, default_currency: defaultCurrency,
-                  enabled_currencies: enabledCurrencies, signup_source: "self_signup", admin_invitation_id: null }
+              await saveInvitedPassword(supabase, password, {
+                full_name: fullName, default_currency: defaultCurrency,
+                enabled_currencies: enabledCurrencies, signup_source: "self_signup", admin_invitation_id: null
               });
-              if (passwordError) throw passwordError;
               const { error: completionError } = await supabase.rpc("complete_self_signup_from_admin_invitation", {
                 p_full_name: fullName, p_enabled_currencies: enabledCurrencies, p_default_currency: defaultCurrency
               });

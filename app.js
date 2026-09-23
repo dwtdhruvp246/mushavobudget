@@ -5394,7 +5394,6 @@ async function sendAdminUserInvitation(event) {
     email: $("#adminInviteEmail").value.trim().toLowerCase(),
     country_code: $("#adminInviteCountry").value.trim().toUpperCase() || null,
     plan_id: $("#adminInvitePlan").value,
-    workspace_name: $("#adminInviteWorkspaceName").value.trim(),
     billing_period: $("#adminInviteBillingPeriod").value,
     subscription_currency: $("#adminInviteSubscriptionCurrency").value,
     entitlement_start_date: $("#adminInviteStartDate").value,
@@ -7402,12 +7401,6 @@ $("#adminInviteBillingPeriod").addEventListener("change", refreshAdminInvitation
 $("#adminInviteSubscriptionCurrency").addEventListener("change", refreshAdminInvitationQuote);
 $("#adminInviteEnabledCurrencies").addEventListener("change", refreshAdminInvitationDefaultCurrency);
 $("#adminInvitePaymentReceived").addEventListener("change", toggleAdminInvitationPaymentFields);
-$("#adminInviteName").addEventListener("blur", () => {
-  const name = $("#adminInviteName").value.trim();
-  if (name && !$("#adminInviteWorkspaceName").value.trim()) {
-    $("#adminInviteWorkspaceName").value = `${name}'s workspace`;
-  }
-});
 $("#paymentForm").addEventListener("submit", protectSubmission(addPlatformPayment));
 $("#adminNoteForm").addEventListener("submit", protectSubmission(saveAdminNote));
 $("#adminSupportTicketForm").addEventListener("submit", protectSubmission(createAdminSupportTicket));

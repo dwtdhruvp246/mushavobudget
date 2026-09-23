@@ -11,6 +11,17 @@ in** signs out the temporary invite session. To complete setup after that,
 an administrator must send a fresh invitation and the recipient must open
 that fresh email link. Reopening the older email does not restore the session.
 
+## Keep a fresh invitation separate from an open admin tab
+
+The signup page now stores the temporary invitation session in the current
+browser tab under its own Auth storage key. An open admin or user app tab can
+otherwise receive the unfinished invitee's sign-in and sign it out before
+**Complete setup** is pressed. The signup page transfers the invitee session
+to the normal app session only after the completion RPC creates the workspace.
+This browser change needs the latest site release; it does not require new
+SQL or an Edge Function deployment. After an earlier **Setup unavailable**
+error, send a fresh invitation once the latest site release is visible.
+
 ## Deploy the workspace guard
 
 Apply `supabase/migrations/20260923200000_hold_invited_workspace_until_setup.sql`

@@ -4514,6 +4514,55 @@ input[type="file"] {
   max-width: 860px;
 }
 
+.admin-invite-status {
+  margin: 0 0 18px;
+}
+
+.admin-invite-status[data-level="success"] {
+  border-color: rgba(5, 150, 105, 0.28);
+  background: rgba(236, 253, 245, 0.92);
+  color: #065f46;
+}
+
+.admin-invite-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 18px;
+  border: 1px solid rgba(15, 118, 110, 0.2);
+  border-radius: 18px;
+  padding: 14px;
+  background: linear-gradient(135deg, rgba(204, 251, 241, 0.64), rgba(236, 254, 255, 0.82));
+}
+
+.admin-invite-summary > div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.admin-invite-summary span {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.admin-invite-summary strong {
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.signup-panel input[readonly] {
+  border-color: rgba(15, 118, 110, 0.2);
+  background: rgba(240, 253, 250, 0.82);
+  color: var(--muted-strong);
+  cursor: not-allowed;
+}
+
 .currency-selection-heading,
 .signup-currency-heading {
   display: flex;
@@ -4997,6 +5046,11 @@ input[type="file"] {
     gap: 7px;
     border-radius: 14px;
     padding: 9px;
+  }
+
+  .admin-invite-summary {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 10px;
   }
 
   .signup-currency-default-step {

@@ -17,14 +17,14 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="styles.css?v=60" />
+    <link rel="stylesheet" href="styles.css?v=61" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
-    <script src="/pwa.js?v=32" defer></script>
+    <script src="/pwa.js?v=33" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=80"></script>
+    <script type="module" src="app.js?v=81"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -174,7 +174,7 @@
             <div class="sidebar-footer">
               <button type="button" data-admin-tab="support">Contact support</button>
               <button id="adminSignOutButton" type="button">Sign out</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.5</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.6</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -339,7 +339,7 @@
               <details class="admin-disclosure">
                 <summary><span><strong>Manual user settings</strong><small>Choose the plan, currencies, and any payment received, then send a secure setup invitation.</small></span></summary>
                 <section id="adminInvitationPanel" class="tool-panel admin-invitation-panel" aria-labelledby="adminInvitationTitle">
-                  <div class="panel-heading"><p class="eyebrow">Secure invitation</p><h3 id="adminInvitationTitle">Invite a new user</h3><p class="muted-copy">The user receives a Supabase Auth email. Their workspace and subscription remain inactive until they complete setup in Stage 5.</p></div>
+                  <div class="panel-heading"><p class="eyebrow">Secure invitation</p><h3 id="adminInvitationTitle">Invite a new user</h3><p class="muted-copy">The user receives a secure Supabase Auth email. Their workspace, plan, and any recorded payment are provisioned after they create a password and confirm their currencies.</p></div>
                   <form id="adminInvitationForm" class="form-grid admin-invitation-form">
                     <label for="adminInviteName">Full name<input id="adminInviteName" required maxlength="120" autocomplete="name" placeholder="Jordan Lee" /></label>
                     <label for="adminInviteEmail">Email<input id="adminInviteEmail" type="email" required maxlength="320" autocomplete="email" placeholder="jordan@example.com" /></label>
@@ -355,6 +355,7 @@
                     <label for="adminInviteFamilyLimit">Maximum families<input id="adminInviteFamilyLimit" type="number" min="0" max="100" step="1" value="0" required /></label>
                     <label class="checkbox-label"><input id="adminInviteCanAddMembers" type="checkbox" /> Allow this user to add family members</label>
                     <label class="checkbox-label full"><input id="adminInvitePaymentReceived" type="checkbox" /> Record a payment already received</label>
+                    <p id="adminInvitePriceHint" class="muted-copy full" aria-live="polite">Choose a plan to see its quoted price.</p>
                     <div id="adminInvitePaymentFields" class="admin-invitation-payment-fields full" hidden>
                       <label for="adminInvitePaymentAmount">Amount<input id="adminInvitePaymentAmount" type="number" min="0.01" step="0.01" /></label>
                       <label for="adminInvitePaymentCurrency">Payment currency<select id="adminInvitePaymentCurrency"></select></label>
@@ -363,7 +364,7 @@
                       <label for="adminInvitePaymentReference">Reference <small>Optional</small><input id="adminInvitePaymentReference" maxlength="120" /></label>
                       <label for="adminInvitePaymentNotes">Notes <small>Optional</small><textarea id="adminInvitePaymentNotes" maxlength="500" rows="3"></textarea></label>
                     </div>
-                    <div class="notice full">Production invitations require Custom SMTP in Supabase. Plan activation, invoice creation, and the recorded payment will be finalized only after the Stage 5 setup flow is implemented.</div>
+                    <div class="notice full">Production invitations require Custom SMTP in Supabase. The setup link is single-use and only the invited Auth account can complete it.</div>
                     <button id="adminInvitationSubmit" class="primary full" type="submit">Send secure invitation</button>
                   </form>
                 </section>
@@ -589,7 +590,7 @@
             </div>
             <div class="sidebar-footer">
               <button type="button" data-family-tab="support">Contact support</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.5</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.6</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>

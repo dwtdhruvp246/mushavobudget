@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
     <meta name="description" content="Create a Mushavo Budget account." />
     <meta name="theme-color" content="#10b981" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -19,9 +20,9 @@
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
-    <link rel="stylesheet" href="styles.css?v=60" />
+    <link rel="stylesheet" href="styles.css?v=61" />
     <script src="config.js?v=26"></script>
-    <script src="/pwa.js?v=32" defer></script>
+    <script src="/pwa.js?v=33" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
   </head>
   <body>
@@ -34,10 +35,13 @@
       <section class="auth-panel signup-panel" aria-labelledby="signupTitle">
         <div class="panel-heading">
           <img class="brand-mark" src="assets/mushavo-budget-logo.png" alt="Mushavo Budget" width="178" height="120" />
-          <p class="eyebrow">Free account</p>
+          <p id="signupEyebrow" class="eyebrow">Free account</p>
           <h1 id="signupTitle">Create your Mushavo Budget login</h1>
-          <p class="muted-copy">Start free with up to 5 personal payments. Family payments are unlimited when you join a family.</p>
+          <p id="signupSubtitle" class="muted-copy">Start free with up to 5 personal payments. Family payments are unlimited when you join a family.</p>
         </div>
+
+        <section id="adminInviteStatus" class="notice admin-invite-status hidden" role="status" aria-live="polite"></section>
+        <section id="adminInviteSummary" class="admin-invite-summary hidden" aria-label="Invitation details"></section>
 
         <form id="signupForm" class="form-grid">
           <label class="full" for="signupName">
@@ -109,6 +113,10 @@
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
       const config = window.MUSHAVO_BUDGET_CONFIG || {};
+      const pageUrl = new URL(window.location.href);
+      const invitationId = pageUrl.searchParams.get("invitation") || "";
+      const isAdminInvite = pageUrl.searchParams.get("mode") === "admin-invite";
+      const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       const placeholders = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
       const isConfigured =
         config.supabaseUrl &&
@@ -123,14 +131,81 @@
       const currencyChips = document.querySelector("#signupCurrencyChips");
       const currencyCount = document.querySelector("#signupCurrencyCount");
       const currencyLoadStatus = document.querySelector("#signupCurrencyLoadStatus");
+      const nameInput = document.querySelector("#signupName");
+      const emailInput = document.querySelector("#signupEmail");
+      const passwordInput = document.querySelector("#signupPassword");
+      const passwordConfirmInput = document.querySelector("#signupPasswordConfirm");
+      const inviteStatus = document.querySelector("#adminInviteStatus");
+      const inviteSummary = document.querySelector("#adminInviteSummary");
       const selectedCurrencies = new Set();
       let currencyCatalogue = [];
       let currencyCatalogueReady = false;
+      let invitationReady = !isAdminInvite;
+      let invitation = null;
 
       function escapeHtml(value) {
         const node = document.createElement("span");
         node.textContent = `${value ?? ""}`;
         return node.innerHTML;
+      }
+
+      function titleCase(value) {
+        return `${value || ""}`.replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+      }
+
+      function formatDate(value) {
+        if (!value) return "Not applicable";
+        const parsed = new Date(`${value}T00:00:00`);
+        return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleDateString(undefined, {
+          year: "numeric", month: "short", day: "numeric"
+        });
+      }
+
+      function showInviteStatus(message, level = "warning") {
+        inviteStatus.textContent = message;
+        inviteStatus.dataset.level = level;
+        inviteStatus.classList.remove("hidden");
+      }
+
+      function lockInviteForm(message) {
+        invitationReady = false;
+        form.querySelectorAll("input, select, button").forEach((field) => {
+          field.disabled = true;
+        });
+        submitButton.textContent = "Setup unavailable";
+        showInviteStatus(message, "danger");
+      }
+
+      function sanitizeInviteUrl() {
+        const safeUrl = new URL(window.location.href);
+        ["code", "token", "token_hash", "type", "error", "error_code", "error_description"].forEach((key) => {
+          safeUrl.searchParams.delete(key);
+        });
+        safeUrl.hash = "";
+        window.history.replaceState(null, "", `${safeUrl.pathname}${safeUrl.search}`);
+      }
+
+      function renderInviteSummary() {
+        inviteSummary.innerHTML = `
+          <div><span>Workspace</span><strong>${escapeHtml(titleCase(invitation.workspace_type))} · ${escapeHtml(invitation.workspace_name)}</strong></div>
+          <div><span>Plan</span><strong>${escapeHtml(invitation.plan_name)} · ${escapeHtml(titleCase(invitation.billing_period))}</strong></div>
+          <div><span>Plan currency</span><strong>${escapeHtml(invitation.subscription_currency)}</strong></div>
+          <div><span>Plan expiry</span><strong>${escapeHtml(formatDate(invitation.paid_through_date))}</strong></div>
+        `;
+        inviteSummary.classList.remove("hidden");
+      }
+
+      function applyInvitationCurrencies() {
+        selectedCurrencies.clear();
+        const available = new Set(currencyCatalogue.map(([code]) => code));
+        (invitation?.enabled_currencies || []).forEach((code) => {
+          if (available.has(code)) selectedCurrencies.add(code);
+        });
+        renderCurrencyInterface();
+        if (invitation?.default_currency && selectedCurrencies.has(invitation.default_currency)) {
+          defaultCurrencySelect.value = invitation.default_currency;
+          renderCurrencyInterface();
+        }
       }
 
       function renderSelectedCurrencies() {
@@ -170,7 +245,7 @@
 
       function updateSignupAvailability() {
         const defaultCurrency = defaultCurrencySelect.value;
-        submitButton.disabled = !currencyCatalogueReady || !defaultCurrency || !selectedCurrencies.has(defaultCurrency);
+        submitButton.disabled = !currencyCatalogueReady || !invitationReady || !defaultCurrency || !selectedCurrencies.has(defaultCurrency);
       }
 
       function renderCurrencyOptions() {
@@ -220,21 +295,96 @@
         window.setTimeout(() => toast.classList.add("hidden"), 4200);
       }
 
+      function inviteErrorMessage(error) {
+        const message = `${error?.message || error || ""}`;
+        if (message.includes("ADMIN_INVITATION_EXPIRED")) return "This invitation has expired. Ask an administrator to send a new invitation.";
+        if (message.includes("ADMIN_INVITATION_IDENTITY_MISMATCH")) return "This invitation belongs to a different account. Open the original invitation email in a private browser window.";
+        if (message.includes("ADMIN_INVITATION_ACCOUNT_ALREADY_PROVISIONED")) return "This account already owns a workspace. Ask an administrator to review the invitation.";
+        if (message.includes("ADMIN_INVITATION_NOT_AVAILABLE")) return "This invitation is invalid, expired, cancelled, or has already been used.";
+        if (message.includes("INVALID_ENABLED_CURRENCIES") || message.includes("DEFAULT_CURRENCY_MUST_BE_ENABLED")) return "Choose at least one supported currency and select one of them as your default.";
+        return message || "The invitation could not be verified. Ask an administrator to send a new invitation.";
+      }
+
+      async function initialiseAdminInvite(supabase, currencyPromise) {
+        document.querySelector("#signupEyebrow").textContent = "Secure invitation";
+        document.querySelector("#signupTitle").textContent = "Finish setting up your account";
+        document.querySelector("#signupSubtitle").textContent = "Your administrator has already added your name, workspace, and plan. Create your password and confirm the currencies you want to use.";
+        submitButton.textContent = "Verifying invitation...";
+        submitButton.disabled = true;
+
+        if (!UUID_PATTERN.test(invitationId)) {
+          lockInviteForm("This invitation link is incomplete. Open the latest invitation email or ask an administrator to send a new one.");
+          return;
+        }
+
+        try {
+          const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+          if (sessionError) throw sessionError;
+          const { data: userData, error: userError } = await supabase.auth.getUser();
+          if (userError || !sessionData.session || !userData.user) {
+            throw new Error("ADMIN_INVITATION_NOT_AVAILABLE");
+          }
+          sanitizeInviteUrl();
+
+          const { data, error } = await supabase.rpc("get_my_admin_user_invitation", {
+            p_invitation_id: invitationId
+          });
+          if (error) throw error;
+          invitation = Array.isArray(data) ? data[0] : data;
+          if (!invitation) throw new Error("ADMIN_INVITATION_NOT_AVAILABLE");
+          if (`${userData.user.email || ""}`.toLowerCase() !== `${invitation.email || ""}`.toLowerCase()) {
+            throw new Error("ADMIN_INVITATION_IDENTITY_MISMATCH");
+          }
+          if (invitation.invitation_status === "provisioned" && invitation.provisioned_workspace_id) {
+            const next = new URL("./app.html", window.location.href);
+            next.searchParams.set("signup", "invited");
+            window.location.replace(next.href);
+            return;
+          }
+
+          await currencyPromise;
+          nameInput.value = invitation.full_name;
+          emailInput.value = invitation.email;
+          nameInput.readOnly = true;
+          emailInput.readOnly = true;
+          nameInput.setAttribute("aria-readonly", "true");
+          emailInput.setAttribute("aria-readonly", "true");
+          renderInviteSummary();
+          applyInvitationCurrencies();
+          invitationReady = true;
+          submitButton.textContent = "Complete setup";
+          showInviteStatus("Invitation verified. Create your password and confirm your workspace currencies.", "success");
+          updateSignupAvailability();
+        } catch (error) {
+          console.error("Admin invitation verification failed", error);
+          sanitizeInviteUrl();
+          lockInviteForm(inviteErrorMessage(error));
+        }
+      }
+
       if (!isConfigured) {
         document.querySelector("#configWarning").classList.remove("hidden");
         form.querySelectorAll("input, select, button").forEach((field) => {
           field.disabled = true;
         });
       } else {
-        const supabase = createClient(config.supabaseUrl, config.supabasePublishableKey);
+        const supabase = createClient(config.supabaseUrl, config.supabasePublishableKey, {
+          auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
+        });
 
-        loadCurrencyCatalogue(supabase).catch((error) => {
+        const currencyPromise = loadCurrencyCatalogue(supabase).catch((error) => {
           console.error("Signup currency catalogue unavailable", error);
           currencyCatalogueReady = false;
           currencyLoadStatus.textContent = "Currency choices are temporarily unavailable. Please try again shortly.";
           submitButton.disabled = true;
           showMessage("Currency choices could not be loaded. Please try again.");
+          throw error;
         });
+        currencyPromise.catch(() => {});
+
+        if (isAdminInvite) {
+          initialiseAdminInvite(supabase, currencyPromise);
+        }
 
         defaultCurrencySelect.addEventListener("change", () => {
           renderSelectedCurrencies();
@@ -258,10 +408,10 @@
 
         form.addEventListener("submit", async (event) => {
           event.preventDefault();
-          const fullName = document.querySelector("#signupName").value.trim();
-          const email = document.querySelector("#signupEmail").value.trim().toLowerCase();
-          const password = document.querySelector("#signupPassword").value;
-          const confirmation = document.querySelector("#signupPasswordConfirm").value;
+          const fullName = nameInput.value.trim();
+          const email = emailInput.value.trim().toLowerCase();
+          const password = passwordInput.value;
+          const confirmation = passwordConfirmInput.value;
           const defaultCurrency = defaultCurrencySelect.value;
 
           if (password !== confirmation) {
@@ -274,9 +424,36 @@
           }
 
           submitButton.disabled = true;
-          submitButton.textContent = "Creating account...";
+          submitButton.textContent = isAdminInvite ? "Completing setup..." : "Creating account...";
 
           try {
+            const enabledCurrencies = [...selectedCurrencies].sort();
+            if (isAdminInvite) {
+              if (!invitationReady || !invitation) throw new Error("ADMIN_INVITATION_NOT_AVAILABLE");
+              const { error: passwordError } = await supabase.auth.updateUser({
+                password,
+                data: {
+                  full_name: fullName,
+                  default_currency: defaultCurrency,
+                  enabled_currencies: enabledCurrencies,
+                  signup_source: "admin_invitation",
+                  admin_invitation_id: invitationId
+                }
+              });
+              if (passwordError) throw passwordError;
+              const { error: completionError } = await supabase.rpc("complete_admin_user_invitation", {
+                p_invitation_id: invitationId,
+                p_enabled_currencies: enabledCurrencies,
+                p_default_currency: defaultCurrency
+              });
+              if (completionError) throw completionError;
+              const next = new URL("./app.html", window.location.href);
+              next.searchParams.set("signup", "invited");
+              window.MushavoPWA?.markFormClean(form);
+              window.location.replace(next.href);
+              return;
+            }
+
             const { data, error } = await supabase.auth.signUp({
               email,
               password,
@@ -284,7 +461,7 @@
                 data: {
                   full_name: fullName,
                   default_currency: defaultCurrency,
-                  enabled_currencies: [...selectedCurrencies].sort()
+                  enabled_currencies: enabledCurrencies
                 }
               }
             });
@@ -294,11 +471,12 @@
             const next = new URL("./app.html", window.location.href);
             next.searchParams.set("signup", "success");
             if (selectedPlan) next.searchParams.set("plan", selectedPlan);
+            window.MushavoPWA?.markFormClean(form);
             window.location.replace(next.href);
           } catch (error) {
-            showMessage(error.message || "The account could not be created. Please try again.");
+            showMessage(isAdminInvite ? inviteErrorMessage(error) : (error.message || "The account could not be created. Please try again."));
             submitButton.disabled = false;
-            submitButton.textContent = "Sign up";
+            submitButton.textContent = isAdminInvite ? "Complete setup" : "Sign up";
           }
         });
       }

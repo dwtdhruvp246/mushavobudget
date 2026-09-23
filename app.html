@@ -21,10 +21,10 @@
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
-    <script src="/pwa.js?v=33" defer></script>
+    <script src="/pwa.js?v=34" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=81"></script>
+    <script type="module" src="app.js?v=82"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -174,7 +174,7 @@
             <div class="sidebar-footer">
               <button type="button" data-admin-tab="support">Contact support</button>
               <button id="adminSignOutButton" type="button">Sign out</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.6</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.7</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -364,7 +364,7 @@
                       <label for="adminInvitePaymentReference">Reference <small>Optional</small><input id="adminInvitePaymentReference" maxlength="120" /></label>
                       <label for="adminInvitePaymentNotes">Notes <small>Optional</small><textarea id="adminInvitePaymentNotes" maxlength="500" rows="3"></textarea></label>
                     </div>
-                    <div class="notice full">Production invitations require Custom SMTP in Supabase. The setup link is single-use and only the invited Auth account can complete it.</div>
+                    <div class="notice full">Supabase sends test emails until you connect your company email. Sending another invitation replaces the earlier setup link.</div>
                     <button id="adminInvitationSubmit" class="primary full" type="submit">Send secure invitation</button>
                   </form>
                 </section>
@@ -590,7 +590,7 @@
             </div>
             <div class="sidebar-footer">
               <button type="button" data-family-tab="support">Contact support</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.6</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.7.7</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>

@@ -68,7 +68,7 @@ function errorCode(error: unknown, fallback: string): string {
     "INVALID_COUNTRY_CODE", "INVALID_BILLING_PERIOD", "INVALID_WORKSPACE_NAME", "INVALID_FAMILY_LIMIT",
     "PLAN_NOT_AVAILABLE", "UNSUPPORTED_CURRENCY", "INVALID_ENABLED_CURRENCIES", "TOO_MANY_ENABLED_CURRENCIES",
     "DEFAULT_CURRENCY_MUST_BE_ENABLED", "SUBSCRIPTION_EXPIRY_REQUIRED", "INVALID_SUBSCRIPTION_DATE_RANGE",
-    "INCOMPLETE_INVITATION_PAYMENT", "USER_ALREADY_REGISTERED", "ADMIN_INVITATION_ALREADY_ACTIVE",
+    "INCOMPLETE_INVITATION_PAYMENT", "USER_ALREADY_REGISTERED", "ADMIN_INVITATION_DELIVERY_IN_PROGRESS",
     "ADMIN_INVITATION_RATE_LIMITED", "FREE_PLAN_REQUIRES_NO_PAYMENT",
   ].find((code) => message.includes(code));
   return known || (typeof candidate.code === "string" && candidate.code.length <= 100 ? candidate.code : fallback);
@@ -208,19 +208,48 @@ Deno.serve(async (request) => {
   }
 
   const redirectTo = `${appOrigin}/signup.html?mode=admin-invite&invitation=${encodeURIComponent(invitationId)}`;
-  const { data: inviteData, error: inviteError } = await serviceClient.auth.admin.inviteUserByEmail(email, {
-    redirectTo,
-    data: {
-      full_name: fullName,
-      country_code: countryCode,
-      signup_source: "admin_invitation",
-      admin_invitation_id: invitationId,
-      enabled_currencies: enabledCurrencies,
-      default_currency: defaultCurrency,
-    },
-  });
+  const { data: reservation, error: lookupError } = await serviceClient.from("admin_user_invitations")
+    .select("auth_user_id").eq("id", invitationId).single();
+  if (lookupError || !reservation) return json({ error: "ADMIN_INVITATION_RESERVATION_FAILED" }, 500, responseOrigin);
 
-  if (inviteError || !inviteData.user) {
+  const metadata = {
+    full_name: fullName,
+    country_code: countryCode,
+    signup_source: "admin_invitation",
+    admin_invitation_id: invitationId,
+    enabled_currencies: enabledCurrencies,
+    default_currency: defaultCurrency,
+  };
+  let invitedUserId: string | null = null;
+  let inviteError: unknown = null;
+  if (reservation.auth_user_id) {
+    // A confirmed Auth identity can no longer receive a new Supabase invite.
+    // A magic link signs the same unfinished identity into the new invitation.
+    const { error: metadataError } = await serviceClient.auth.admin.updateUserById(
+      reservation.auth_user_id, { user_metadata: metadata }
+    );
+    if (metadataError) {
+      inviteError = metadataError;
+    } else {
+      const mailClient = createClient(supabaseUrl, anonKey, {
+        auth: { persistSession: false, autoRefreshToken: false },
+      });
+      const { error: mailError } = await mailClient.auth.signInWithOtp({
+        email,
+        options: { shouldCreateUser: false, emailRedirectTo: redirectTo },
+      });
+      inviteError = mailError;
+      invitedUserId = reservation.auth_user_id;
+    }
+  } else {
+    const { data, error } = await serviceClient.auth.admin.inviteUserByEmail(email, {
+      redirectTo, data: metadata,
+    });
+    inviteError = error;
+    invitedUserId = data?.user?.id || null;
+  }
+
+  if (inviteError || !invitedUserId) {
     const delivery = inviteDeliveryError(inviteError);
     const { error: recordError } = await serviceClient.rpc("record_admin_user_invitation_delivery", {
       p_invitation_id: invitationId,
@@ -235,7 +264,7 @@ Deno.serve(async (request) => {
 
   const { error: recordError } = await serviceClient.rpc("record_admin_user_invitation_delivery", {
     p_invitation_id: invitationId,
-    p_auth_user_id: inviteData.user.id,
+    p_auth_user_id: invitedUserId,
     p_succeeded: true,
     p_error_code: null,
   });
@@ -244,5 +273,5 @@ Deno.serve(async (request) => {
     return json({ error: "ADMIN_INVITATION_DELIVERY_RECORD_FAILED" }, 500, responseOrigin);
   }
 
-  return json({ status: "sent", invitation_id: invitationId, email }, 200, responseOrigin);
+  return json({ status: reservation.auth_user_id ? "replaced" : "sent", invitation_id: invitationId, email }, 200, responseOrigin);
 });

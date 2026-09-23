@@ -5796,6 +5796,29 @@ declare
   v_default_currency text := 'USD';
   v_enabled_currencies text[] := array[]::text[];
 begin
+  -- An invitee has an Auth identity before completing setup. Never create a
+  -- Free workspace for that identity, including while a replacement email is
+  -- pending or after a failed/expired invitation. The explicit self-signup
+  -- completion RPC changes the profile only after cancelling the invitation.
+  if exists (
+    select 1 from public.admin_user_invitations as invitations
+    where invitations.auth_user_id = p_user_id
+      and invitations.status in ('pending_delivery', 'sent')
+  ) or exists (
+    select 1 from public.profiles as profiles
+    where profiles.id = p_user_id
+      and profiles.signup_source = 'admin_invitation'
+      and not exists (
+        select 1 from public.admin_user_invitations as invitations
+        where invitations.id = profiles.admin_invitation_id
+          and invitations.auth_user_id = p_user_id
+          and invitations.status = 'provisioned'
+          and invitations.provisioned_workspace_id is not null
+      )
+  ) then
+    raise exception 'ADMIN_INVITATION_SETUP_REQUIRED';
+  end if;
+
   select
     coalesce(nullif(btrim(profiles.full_name), ''), 'Personal budget'),
     coalesce(users.raw_user_meta_data, '{}'::jsonb)
@@ -8660,7 +8683,18 @@ begin
   if exists (
     select 1 from public.admin_user_invitations as invitations
     where invitations.auth_user_id = v_user_id
-      and invitations.status = 'sent'
+      and invitations.status in ('pending_delivery', 'sent')
+  ) or exists (
+    select 1 from public.profiles as profiles
+    where profiles.id = v_user_id
+      and profiles.signup_source = 'admin_invitation'
+      and not exists (
+        select 1 from public.admin_user_invitations as invitations
+        where invitations.id = profiles.admin_invitation_id
+          and invitations.auth_user_id = v_user_id
+          and invitations.status = 'provisioned'
+          and invitations.provisioned_workspace_id is not null
+      )
   ) then
     raise exception 'ADMIN_INVITATION_SETUP_REQUIRED';
   end if;

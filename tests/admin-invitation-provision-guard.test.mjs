@@ -4,7 +4,12 @@ import test from "node:test";
 import vm from "node:vm";
 
 const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
-const migration = await readFile(new URL("../supabase/migrations/20260923190000_guard_pending_admin_invitation_workspace.sql", import.meta.url), "utf8");
+const migration = await readFile(new URL("../supabase/migrations/20260923200000_hold_invited_workspace_until_setup.sql", import.meta.url), "utf8");
+const replacement = await readFile(new URL("../supabase/migrations/20260923143000_replace_pending_admin_invitations.sql", import.meta.url), "utf8");
+const setupPage = await readFile(new URL("../signup.html", import.meta.url), "utf8");
+const repair = await readFile(new URL("../supabase/repair-empty-pending-invite-workspace.sql", import.meta.url), "utf8");
+const delivery = await readFile(new URL("../supabase/functions/invite-admin-user/index.ts", import.meta.url), "utf8");
+const deployment = await readFile(new URL("../ADMIN_INVITATION_RESEND_DEPLOYMENT.md", import.meta.url), "utf8");
 const schema = await readFile(new URL("../supabase/schema.sql", import.meta.url), "utf8");
 const guardSource = app.slice(
   app.indexOf("async function blockUnfinishedAdminInvitationSession()"),
@@ -63,11 +68,31 @@ test("expired or unavailable invitations fail closed", async () => {
   assert.ok(result.calls.includes("signout:local"));
 });
 
-test("the database refuses premature Free provisioning even if another tab tries it", () => {
+test("every Free provisioning path refuses pending, replaced, and failed invite setup", () => {
   for (const source of [migration, schema]) {
-    const guard = source.slice(source.lastIndexOf("create or replace function public.provision_my_budget_workspace()"));
-    assert.match(guard, /invitations\.auth_user_id = v_user_id/);
-    assert.match(guard, /invitations\.status = 'sent'/);
-    assert.ok(guard.indexOf("ADMIN_INVITATION_SETUP_REQUIRED") < guard.indexOf("return public.provision_budget_user(v_user_id)"));
+    const direct = source.slice(source.lastIndexOf("create or replace function public.provision_budget_user(p_user_id uuid)"));
+    const wrapper = source.slice(source.lastIndexOf("create or replace function public.provision_my_budget_workspace()"));
+    for (const [guard, userId] of [[direct, "p_user_id"], [wrapper, "v_user_id"]]) {
+      assert.match(guard, new RegExp(`invitations\\.auth_user_id = ${userId}`));
+      assert.match(guard, /invitations\.status in \('pending_delivery', 'sent'\)/);
+      assert.match(guard, /profiles\.signup_source = 'admin_invitation'/);
+      assert.match(guard, /invitations\.status = 'provisioned'/);
+      assert.match(guard, /invitations\.provisioned_workspace_id is not null/);
+      assert.match(guard, /raise exception 'ADMIN_INVITATION_SETUP_REQUIRED'/);
+    }
+    assert.ok(direct.indexOf("ADMIN_INVITATION_SETUP_REQUIRED") < direct.indexOf("insert into public.budget_workspaces"));
+    assert.ok(wrapper.indexOf("ADMIN_INVITATION_SETUP_REQUIRED") < wrapper.indexOf("return public.provision_budget_user(v_user_id)"));
   }
+  assert.match(replacement, /set status = 'cancelled'[^]*?status = 'sent'/);
+  assert.match(replacement, /set full_name = btrim\(p_full_name\), signup_source = 'self_signup'[^]*?v_workspace_id := public.provision_budget_user\(v_user_id\)/);
+  assert.match(setupPage, /await saveInvitedPassword\([^]*?supabase\.rpc\("complete_admin_user_invitation"/);
+});
+
+test("resends target setup and an old empty workspace can be repaired safely", () => {
+  assert.match(delivery, /signup\.html\?mode=admin-invite&invitation=/);
+  assert.match(delivery, /signInWithOtp\([\s\S]*?shouldCreateUser: false, emailRedirectTo: redirectTo/);
+  assert.match(deployment, /Magic Link[\s\S]*?\.Data\.signup_source[\s\S]*?Complete account setup/);
+  assert.match(repair, /invitations\.status in \('pending_delivery', 'sent'\)/);
+  assert.match(repair, /constraint_row\.confrelid = 'public\.budget_workspaces'::regclass/);
+  assert.ok(repair.indexOf("raise exception 'Workspace data in %") < repair.indexOf("delete from public.budget_workspaces"));
 });

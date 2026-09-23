@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <link rel="stylesheet" href="styles.css?v=61" />
     <script src="config.js?v=26"></script>
-    <script src="/pwa.js?v=38" defer></script>
+    <script src="/pwa.js?v=39" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
   </head>
   <body>
@@ -334,6 +334,48 @@
         if (error && error.code !== "same_password") throw error;
       }
 
+      function createInvitationClient(createSupabaseClient, settings) {
+        // An admin may have the app open in another tab. Its Auth client
+        // signs out unfinished invitations, so the invite must not share its
+        // localStorage key or its cross-tab Auth broadcast channel.
+        const projectRef = new URL(settings.supabaseUrl).hostname.split(".")[0];
+        return createSupabaseClient(settings.supabaseUrl, settings.supabasePublishableKey, {
+          auth: {
+            storage: window.sessionStorage,
+            storageKey: `mushavo-invitation-${projectRef}`,
+            detectSessionInUrl: true,
+            persistSession: true,
+            autoRefreshToken: true
+          }
+        });
+      }
+
+      async function openCompletedInvitation(supabase, createSupabaseClient, settings) {
+        // Move the verified session to the app's normal storage only after the
+        // database has committed the workspace. Never publish a pending invite
+        // to other app tabs.
+        const { data, error } = await supabase.auth.getSession();
+        if (error) throw error;
+        if (!data?.session?.access_token || !data.session.refresh_token) {
+          throw new Error("INVITATION_SESSION_MISSING");
+        }
+        const appClient = createSupabaseClient(settings.supabaseUrl, settings.supabasePublishableKey, {
+          auth: { detectSessionInUrl: false, persistSession: true, autoRefreshToken: true }
+        });
+        const { data: adopted, error: adoptionError } = await appClient.auth.setSession({
+          access_token: data.session.access_token,
+          refresh_token: data.session.refresh_token
+        });
+        if (adoptionError) throw adoptionError;
+        if (adopted?.user?.id !== data.session.user.id) {
+          throw new Error("ADMIN_INVITATION_IDENTITY_MISMATCH");
+        }
+        window.MushavoPWA?.markFormClean(form);
+        const next = new URL("./app.html", window.location.href);
+        next.searchParams.set("signup", isAdminInvite ? "invited" : "success");
+        window.location.replace(next.href);
+      }
+
       async function leaveInvitationSetup(supabase) {
         if (backToSignIn.getAttribute("aria-disabled") === "true") return;
         backToSignIn.setAttribute("aria-disabled", "true");
@@ -388,9 +430,7 @@
             throw new Error("ADMIN_INVITATION_IDENTITY_MISMATCH");
           }
           if (invitation.invitation_status === "provisioned" && invitation.provisioned_workspace_id) {
-            const next = new URL("./app.html", window.location.href);
-            next.searchParams.set("signup", "invited");
-            window.location.replace(next.href);
+            await openCompletedInvitation(supabase, createClient, config);
             return;
           }
 
@@ -429,9 +469,7 @@
           const { data: hasInvite, error: inviteError } = await supabase.rpc("has_my_unfinished_admin_invitation");
           if (inviteError) throw inviteError;
           if (!hasInvite) {
-            const next = new URL("./app.html", window.location.href);
-            next.searchParams.set("signup", "success");
-            window.location.replace(next.href);
+            await openCompletedInvitation(supabase, createClient, config);
             return;
           }
           nameInput.value = userData.user.user_metadata?.full_name || "";
@@ -454,9 +492,11 @@
           field.disabled = true;
         });
       } else {
-        const supabase = createClient(config.supabaseUrl, config.supabasePublishableKey, {
-          auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
-        });
+        const supabase = isAdminInvite || isSelfSignupFromInvite
+          ? createInvitationClient(createClient, config)
+          : createClient(config.supabaseUrl, config.supabasePublishableKey, {
+              auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
+            });
 
         if (isAdminInvite || isSelfSignupFromInvite) {
           backToSignIn.addEventListener("click", async (event) => {
@@ -539,10 +579,7 @@
                 p_default_currency: defaultCurrency
               });
               if (completionError) throw completionError;
-              const next = new URL("./app.html", window.location.href);
-              next.searchParams.set("signup", "invited");
-              window.MushavoPWA?.markFormClean(form);
-              window.location.replace(next.href);
+              await openCompletedInvitation(supabase, createClient, config);
               return;
             }
 
@@ -556,10 +593,7 @@
                 p_full_name: fullName, p_enabled_currencies: enabledCurrencies, p_default_currency: defaultCurrency
               });
               if (completionError) throw completionError;
-              const next = new URL("./app.html", window.location.href);
-              next.searchParams.set("signup", "success");
-              window.MushavoPWA?.markFormClean(form);
-              window.location.replace(next.href);
+              await openCompletedInvitation(supabase, createClient, config);
               return;
             }
 

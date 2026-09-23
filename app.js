@@ -1156,10 +1156,31 @@ function resetState() {
   state.workspacePlanWorkspaceId = null;
 }
 
+async function redirectUnfinishedAdminInvitation() {
+  const profile = await query(
+    "pending invitation profile load",
+    supabase.from("profiles").select("signup_source, admin_invitation_id")
+      .eq("id", state.session.user.id).maybeSingle()
+  );
+  if (profile?.signup_source !== "admin_invitation" || !profile.admin_invitation_id) return false;
+  const hasPendingInvite = await query(
+    "pending invitation status load", supabase.rpc("has_my_unfinished_admin_invitation")
+  );
+  if (!hasPendingInvite) return false;
+  const url = new URL("./signup.html", window.location.href);
+  url.searchParams.set("mode", "admin-invite");
+  url.searchParams.set("invitation", profile.admin_invitation_id);
+  window.location.replace(url.href);
+  return true;
+}
+
 async function loadApp() {
   assertSupabase();
   const startedAt = performance.now();
   const loadingUserId = state.session.user.id;
+  // Opening an invitation signs its recipient into Supabase Auth. Keep the
+  // application bootstrap from provisioning a Free workspace before setup.
+  if (await redirectUnfinishedAdminInvitation()) return;
   const settled = (promise) => promise.then(
     () => ({ ok: true }),
     (error) => ({ ok: false, error })

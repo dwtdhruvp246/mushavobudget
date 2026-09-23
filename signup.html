@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <link rel="stylesheet" href="styles.css?v=61" />
     <script src="config.js?v=26"></script>
-    <script src="/pwa.js?v=37" defer></script>
+    <script src="/pwa.js?v=38" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
   </head>
   <body>
@@ -299,12 +299,31 @@
 
       function inviteErrorMessage(error) {
         const message = `${error?.message || error || ""}`;
+        if (isMissingInviteSession(error)) return "This setup link no longer has an active sign-in. Ask your administrator for a new invitation, then open its link once and complete setup.";
         if (message.includes("ADMIN_INVITATION_EXPIRED")) return "This invitation has expired. Ask an administrator to send a new invitation.";
         if (message.includes("ADMIN_INVITATION_IDENTITY_MISMATCH")) return "This invitation belongs to a different account. Open the original invitation email in a private browser window.";
         if (message.includes("ADMIN_INVITATION_ACCOUNT_ALREADY_PROVISIONED")) return "This account already owns a workspace. Ask an administrator to review the invitation.";
         if (message.includes("ADMIN_INVITATION_NOT_AVAILABLE")) return "This invitation is invalid, expired, cancelled, or has already been used.";
         if (message.includes("INVALID_ENABLED_CURRENCIES") || message.includes("DEFAULT_CURRENCY_MUST_BE_ENABLED")) return "Choose at least one supported currency and select one of them as your default.";
         return message || "The invitation could not be verified. Ask an administrator to send a new invitation.";
+      }
+
+      function isMissingInviteSession(error) {
+        const message = `${error?.message || error || ""}`.toLowerCase();
+        return error?.code === "session_not_found" || error?.code === "refresh_token_not_found"
+          || message.includes("invitation_session_missing") || message.includes("auth session missing")
+          || message.includes("invalid refresh token");
+      }
+
+      async function requireInvitedSession(supabase, expectedEmail) {
+        const { data, error } = await supabase.auth.getSession();
+        if (error) throw error;
+        if (!data?.session) throw new Error("INVITATION_SESSION_MISSING");
+        const { data: userData, error: userError } = await supabase.auth.getUser();
+        if (userError) throw userError;
+        if (`${userData?.user?.email || ""}`.toLowerCase() !== expectedEmail.toLowerCase()) {
+          throw new Error("ADMIN_INVITATION_IDENTITY_MISMATCH");
+        }
       }
 
       async function saveInvitedPassword(supabase, password, metadata) {
@@ -320,7 +339,7 @@
         backToSignIn.setAttribute("aria-disabled", "true");
         try {
           const { error } = await supabase.auth.signOut({ scope: "local" });
-          if (error) throw error;
+          if (error && !isMissingInviteSession(error)) throw error;
           window.MushavoPWA?.markFormClean(form);
           window.location.replace(new URL("./app.html?auth=manual", window.location.href).href);
         } catch (_error) {
@@ -355,9 +374,8 @@
           const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
           if (sessionError) throw sessionError;
           const { data: userData, error: userError } = await supabase.auth.getUser();
-          if (userError || !sessionData.session || !userData.user) {
-            throw new Error("ADMIN_INVITATION_NOT_AVAILABLE");
-          }
+          if (userError) throw userError;
+          if (!sessionData.session || !userData.user) throw new Error("INVITATION_SESSION_MISSING");
           sanitizeInviteUrl();
 
           const { data, error } = await supabase.rpc("get_my_admin_user_invitation", {
@@ -507,6 +525,7 @@
             const enabledCurrencies = [...selectedCurrencies].sort();
             if (isAdminInvite) {
               if (!invitationReady || !invitation) throw new Error("ADMIN_INVITATION_NOT_AVAILABLE");
+              await requireInvitedSession(supabase, invitation.email);
               await saveInvitedPassword(supabase, password, {
                 full_name: fullName,
                 default_currency: defaultCurrency,
@@ -578,6 +597,10 @@
             window.location.replace(next.href);
           } catch (error) {
             showMessage(isAdminInvite ? inviteErrorMessage(error) : (error.message || "The account could not be created. Please try again."));
+            if (isAdminInvite && isMissingInviteSession(error)) {
+              lockInviteForm(inviteErrorMessage(error));
+              return;
+            }
             submitButton.disabled = false;
             submitButton.textContent = isAdminInvite ? "Complete setup" : isSelfSignupFromInvite ? "Create personal account" : "Sign up";
           }

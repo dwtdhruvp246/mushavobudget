@@ -11,8 +11,11 @@ const invitationMigration = await readFile(new URL("../supabase/migrations/20260
 const completionMigration = await readFile(new URL("../supabase/migrations/20260923100000_complete_admin_user_invitations.sql", import.meta.url), "utf8");
 
 const helper = signup.match(/      async function saveInvitedPassword\([\s\S]*?\n      }/)?.[0];
+const sessionHelper = signup.match(/      async function requireInvitedSession\([\s\S]*?\n      }/)?.[0];
 assert.ok(helper, "invited signup needs a retryable password save");
+assert.ok(sessionHelper);
 const saveInvitedPassword = vm.runInNewContext(`${helper}\nsaveInvitedPassword`);
+const requireInvitedSession = vm.runInNewContext(`${sessionHelper}\nrequireInvitedSession`);
 
 test("a saved password permits retrying workspace setup, while other auth errors stop it", async () => {
   const password = "test-password";
@@ -28,6 +31,32 @@ test("a saved password permits retrying workspace setup, while other auth errors
     { code: "invalid_credentials" }
   );
   assert.match(signup, /await saveInvitedPassword\([\s\S]*?supabase\.rpc\("complete_admin_user_invitation"/);
+});
+
+test("setup requires the invited session before saving a password", async () => {
+  const missing = {
+    auth: {
+      async getSession() { return { data: { session: null }, error: null }; },
+      async getUser() { throw new Error("Should not verify a signed-out user"); }
+    }
+  };
+  await assert.rejects(requireInvitedSession(missing, "invitee@example.com"), /INVITATION_SESSION_MISSING/);
+  const wrongAccount = {
+    auth: {
+      async getSession() { return { data: { session: { user: { id: "user-1" } } }, error: null }; },
+      async getUser() { return { data: { user: { email: "other@example.com" } }, error: null }; }
+    }
+  };
+  await assert.rejects(requireInvitedSession(wrongAccount, "invitee@example.com"), /ADMIN_INVITATION_IDENTITY_MISMATCH/);
+  const correct = {
+    auth: {
+      async getSession() { return { data: { session: { user: { id: "user-1" } } }, error: null }; },
+      async getUser() { return { data: { user: { email: "Invitee@Example.com" } }, error: null }; }
+    }
+  };
+  await requireInvitedSession(correct, "invitee@example.com");
+  assert.match(signup, /await requireInvitedSession\(supabase, invitation\.email\);\s+await saveInvitedPassword/);
+  assert.match(signup, /if \(isAdminInvite && isMissingInviteSession\(error\)\) \{\s+lockInviteForm/);
 });
 
 test("the admin cannot name or create the workspace before the invited user completes signup", () => {

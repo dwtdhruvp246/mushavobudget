@@ -6,6 +6,10 @@ leave setup without choosing a password. Supabase cannot send its **Invite
 user** email to that confirmed identity again. The existing resend flow sends a
 one-time authentication link to the **new** setup URL; that email uses the
 **Magic Link** template. The newest invitation replaces the old database row.
+Each emailed Auth link is for one use. Opening it and selecting **Back to sign
+in** signs out the temporary invite session. To complete setup after that,
+an administrator must send a fresh invitation and the recipient must open
+that fresh email link. Reopening the older email does not restore the session.
 
 ## Deploy the workspace guard
 

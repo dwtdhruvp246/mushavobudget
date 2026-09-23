@@ -5,7 +5,9 @@ import vm from "node:vm";
 
 const signup = await readFile(new URL("../signup.html", import.meta.url), "utf8");
 const helper = signup.match(/      async function leaveInvitationSetup\([\s\S]*?\n      }/)?.[0];
+const sessionHelper = signup.match(/      function isMissingInviteSession\([\s\S]*?\n      }/)?.[0];
 assert.ok(helper, "invited setup needs an explicit local sign-out on exit");
+assert.ok(sessionHelper);
 
 function exitHarness(error = null) {
   const events = [];
@@ -24,7 +26,7 @@ function exitHarness(error = null) {
     }
   };
   const supabase = { auth: { async signOut(options) { events.push(`signout:${options.scope}`); return { error }; } } };
-  vm.runInNewContext(`${helper}\nglobalThis.exitInvitation = leaveInvitationSetup;`, context);
+  vm.runInNewContext(`${sessionHelper}\n${helper}\nglobalThis.exitInvitation = leaveInvitationSetup;`, context);
   return { exit: () => context.exitInvitation(supabase), events, backToSignIn };
 }
 
@@ -44,4 +46,11 @@ test("a failed sign-out keeps the visitor on the setup page", async () => {
   assert.deepEqual(events.slice(0, 1), ["signout:local"]);
   assert.ok(!events.some((event) => event.startsWith("navigate:")));
   assert.equal(backToSignIn.getAttribute("aria-disabled"), undefined);
+});
+
+test("an already missing session still permits leaving setup", async () => {
+  const { exit, events } = exitHarness({ message: "Auth session missing!" });
+  await exit();
+  assert.equal(events[0], "signout:local");
+  assert.ok(events.some((event) => event.startsWith("navigate:")));
 });

@@ -75,11 +75,11 @@ test("the manual matrix covers mobile, authentication, privacy, updates and offl
 });
 
 test("all current web release markers agree", () => {
-  assert.match(pwaSource, /const RELEASE = "4\.8\.0"/);
-  assert.match(appPage, /app\.js\?v=86/);
-  assert.match(appPage, /styles\.css\?v=61/);
-  assert.match(appPage, /pwa\.js\?v=40/);
-  assert.match(appPage, /Version 4\.8\.0/g);
-  assert.match(workerSource, /pwa-shell-v47/);
-  assert.match(workerSource, /"\/pwa\.js\?v=40"/);
+  assert.match(pwaSource, /const RELEASE = "4\.9\.0"/);
+  assert.match(appPage, /app\.js\?v=87/);
+  assert.match(appPage, /styles\.css\?v=62/);
+  assert.match(appPage, /pwa\.js\?v=41/);
+  assert.match(appPage, /Version 4\.9\.0/g);
+  assert.match(workerSource, /pwa-shell-v48/);
+  assert.match(workerSource, /"\/pwa\.js\?v=41"/);
 });

@@ -87,6 +87,7 @@ const state = {
   adminFinanceSettings: null,
   adminPaymentConversions: [],
   adminRateStatus: null,
+  adminAnalytics: null,
   adminSupportTickets: [],
   adminSupportMessages: [],
   adminStaff: [],
@@ -151,6 +152,7 @@ let toastTimer = null;
 let pushRefreshPromise = null;
 let pushRefreshSequence = 0;
 let pushRefreshLastCheckedAt = 0;
+let analyticsRequestId = 0;
 
 const PAYMENT_PROOF_BUCKET = "payment-proofs";
 const SUBSCRIPTION_PROOF_BUCKET = "subscription-proofs";
@@ -187,7 +189,7 @@ const views = {
   app: $("#appView")
 };
 
-const adminTabs = new Set(["dashboard", "households", "users", "plans", "finance", "enquiries", "support"]);
+const adminTabs = new Set(["dashboard", "analytics", "households", "users", "plans", "finance", "enquiries", "support"]);
 const familyTabs = new Set(["dashboard", "payments", "reports", "members", "subscription", "settings", "support"]);
 const currencyNames = {
   USD: "en-US",
@@ -1164,6 +1166,8 @@ function resetState() {
   state.adminFinanceSettings = null;
   state.adminPaymentConversions = [];
   state.adminRateStatus = null;
+  state.adminAnalytics = null;
+  analyticsRequestId += 1;
   state.adminSupportTickets = [];
   state.adminSupportMessages = [];
   state.adminStaff = [];
@@ -1633,6 +1637,7 @@ async function loadWorkspaceSubscriptionData() {
 }
 
 async function loadAdminData(tab = state.adminTab) {
+  if (tab === "analytics") return loadAdminAnalytics();
   const tasks = [];
   const assign = [];
 
@@ -4362,11 +4367,141 @@ function renderFamilyPaymentRecord(record) {
   return article;
 }
 
+function analyticsFilterValues() {
+  const today = new Date().toISOString().slice(0, 10);
+  const period = $("#analyticsPeriod").value;
+  const start = new Date(`${today}T00:00:00Z`);
+  start.setUTCDate(start.getUTCDate() - Number(period === "all" ? 1 : period || 30) + 1);
+  return {
+    p_from: period === "all" ? "2020-01-01" : start.toISOString().slice(0, 10), p_to: today,
+    p_country: $("#analyticsCountry").value || null,
+    p_plan: $("#analyticsPlan").value || null,
+    p_workspace_type: $("#analyticsWorkspace").value || null,
+    p_subscription_status: $("#analyticsStatus").value || null,
+    p_billing_period: $("#analyticsBilling").value || null,
+    p_currency: $("#analyticsCurrency").value || null
+  };
+}
+
+async function loadAdminAnalytics() {
+  const requestId = ++analyticsRequestId;
+  $("#analyticsMessage").textContent = "Loading analytics…";
+  $("#analyticsResults").classList.add("hidden");
+  try {
+    const report = await query("admin analytics load", supabase.rpc("admin_analytics_page", analyticsFilterValues()));
+    if (requestId === analyticsRequestId && state.isAdmin) state.adminAnalytics = report;
+  } catch (error) {
+    if (requestId === analyticsRequestId) {
+      state.adminAnalytics = null;
+      $("#analyticsMessage").textContent = `Analytics could not load: ${friendlyMessage(error.message)}`;
+    }
+    throw error;
+  }
+}
+
+function analyticsCountryName(code) {
+  if (!code || code === "unknown") return "Country not supplied";
+  try { return new Intl.DisplayNames(["en"], { type: "region" }).of(code) || code; }
+  catch (_error) { return code; }
+}
+
+function updateAnalyticsSelect(selector, rows) {
+  const element = $(selector);
+  const previous = element.value;
+  element.innerHTML = `<option value="">${escapeHtml(element.options[0].textContent)}</option>` + rows.map(([code, label]) =>
+    `<option value="${escapeHtml(code)}">${escapeHtml(label)}</option>`).join("");
+  element.value = previous;
+}
+
+function analyticsDataTable(title, headers, rows) {
+  if (!rows.length) return "";
+  return `<details class="analytics-data"><summary>View data: ${escapeHtml(title)}</summary><div class="analytics-table-scroll"><table><thead><tr>${headers.map((header) => `<th scope="col">${escapeHtml(header)}</th>`).join("")}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${escapeHtml(cell)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></details>`;
+}
+
+function analyticsBars(rows, labelKey, numberKey, valueLabel = (value) => String(value), limit = 12, groupKey = null) {
+  const shown = rows.slice(-limit);
+  const maximum = Math.max(1, ...shown.map((row) => Number(row[numberKey] || 0)));
+  if (!shown.length) return `<p class="muted-copy">No results for these filters.</p>`;
+  return `<div class="analytics-bars" aria-hidden="true">${shown.map((row) => {
+    const value = Number(row[numberKey] || 0);
+    const scale = groupKey ? Math.max(1, ...shown.filter((other) => other[groupKey] === row[groupKey]).map((other) => Number(other[numberKey] || 0))) : maximum;
+    return `<div class="analytics-bar-row"><span>${escapeHtml(row[labelKey])}</span><div class="analytics-track"><span style="width:${Math.max(0, Math.min(100, value / scale * 100))}%"></span></div><strong>${escapeHtml(valueLabel(value, row))}</strong></div>`;
+  }).join("")}</div>`;
+}
+
+function analyticsTrendChart(rows) {
+  if (!rows.length) return `<p class="muted-copy">Activity history will appear here after users open the app.</p>`;
+  const maximum = Math.max(1, ...rows.map((row) => Number(row.active || 0)), ...rows.map((row) => Number(row.signups || 0)));
+  const points = (key) => rows.map((row, index) =>
+    `${10 + index * 540 / Math.max(1, rows.length - 1)},${105 - Number(row[key] || 0) / maximum * 90}`).join(" ");
+  return `<div class="analytics-trend"><svg viewBox="0 0 560 120" preserveAspectRatio="none" role="img" aria-label="Active users in teal and new registrations in blue over the selected period"><path d="M10 105H550" stroke="#cbd5e1" fill="none"/><polyline points="${points("active")}" stroke="#0f766e" stroke-width="3" fill="none" vector-effect="non-scaling-stroke"/><polyline points="${points("signups")}" stroke="#2563eb" stroke-width="2.5" fill="none" vector-effect="non-scaling-stroke"/></svg><div class="analytics-legend"><span>● Active users</span><span>● New registrations</span></div></div>`;
+}
+
+function analyticsPanel(title, content, table = "", target = null, note = "") {
+  return `<section class="ledger-panel analytics-panel"><div class="panel-heading"><div><h3>${escapeHtml(title)}</h3>${note ? `<p class="muted-copy">${escapeHtml(note)}</p>` : ""}</div>${target ? `<button type="button" data-admin-tab="${target}">View details</button>` : ""}</div>${content}${table}</section>`;
+}
+
+function renderAdminAnalytics() {
+  const report = state.adminAnalytics;
+  if (!report) return;
+  const filters = report.filters || {};
+  updateAnalyticsSelect("#analyticsCountry", (filters.countries || []).map((code) => [code, analyticsCountryName(code)]));
+  updateAnalyticsSelect("#analyticsPlan", (filters.plans || []).map((plan) => [plan.code, plan.name]));
+  updateAnalyticsSelect("#analyticsCurrency", (filters.currencies || []).map((code) => [code, code]));
+  const count = (value) => Number(value || 0).toLocaleString();
+  const users = report.users || {};
+  const planName = (code) => (filters.plans || []).find((plan) => plan.code === code)?.name || code;
+  const cards = [
+    ["Registered users", users.total, "Completed accounts in scope"],
+    ["New users", users.new, "Joined during this period"],
+    ["Active users", users.active, "Visible sessions during this period"],
+    ["Paying customers", report.paid_customers, "Owners with active paid workspaces"],
+    ["Active workspaces", report.active_workspaces, "Personal, Family, and Business"],
+    ["Paid conversion", report.owner_users ? `${(Number(report.paid_customers || 0) / Number(report.owner_users) * 100).toFixed(1)}%` : "0%", "Paying owners / registered owners"],
+    ["Renewals due", report.renewals_due, "Active paid workspaces due in 30 days"],
+    ["Pending reviews", report.pending_reviews, "Payments needing approval"]
+  ];
+  const overview = `<section class="stats-grid analytics-stats" aria-label="Analytics overview">${cards.map(([label, value, detail]) => `<article class="stat-card"><span class="stat-label">${escapeHtml(label)}</span><strong>${typeof value === "number" ? count(value) : escapeHtml(value)}</strong><small>${escapeHtml(detail)}</small></article>`).join("")}</section>`;
+  const trend = report.trend || [];
+  const countries = report.countries || [];
+  const plans = report.plans || [];
+  const statuses = report.subscription_statuses || [];
+  const billing = report.billing_periods || [];
+  const revenue = report.revenue_by_currency || [];
+  const monthly = report.revenue_by_month || [];
+  const runRate = report.run_rate_by_currency || [];
+  const currencies = report.workspace_currencies || [];
+  const engagement = report.workspace_engagement || {};
+  const ops = report.operations || {};
+  const panels = [
+    analyticsPanel("Users and activity", `<p class="analytics-summary">Never active: <strong>${count(users.never_active)}</strong> · Active in 7 / 30 / 90 days: <strong>${count(users.active_last_7_days)} / ${count(users.active_last_30_days)} / ${count(users.active_last_90_days)}</strong></p>${analyticsTrendChart(trend)}`, analyticsDataTable("user trend", ["Period", "New users", "Active users"], trend.map((row) => [row.date, count(row.signups), count(row.active)])), "users", "Activity history starts with Version 4.8.0."),
+    analyticsPanel("Countries", analyticsBars(countries.slice(0, 10).map((row) => ({ ...row, label: analyticsCountryName(row.code) })), "label", "users", count), analyticsDataTable("countries", ["Country", "Users", "New", "Paying owners"], countries.map((row) => [analyticsCountryName(row.code), count(row.users), count(row.new), count(row.paying)])), "users", "Accounts without a country are shown separately."),
+    analyticsPanel("Plans and subscriptions", `${analyticsBars(plans.map((row) => ({ ...row, label: planName(row.code) })), "label", "count", count)}<p class="analytics-summary">${statuses.map((row) => `${escapeHtml(titleCase(row.status))} ${count(row.count)}`).join(" · ") || "No subscriptions"}</p>`, analyticsDataTable("plans and billing", ["Group", "Name", "Workspaces"], [...plans.map((row) => ["Plan", planName(row.code), count(row.count)]), ...statuses.map((row) => ["Status", titleCase(row.status), count(row.count)]), ...billing.map((row) => ["Billing", titleCase(row.period || "None"), count(row.count)])]), "households"),
+    analyticsPanel("Collected revenue", `${analyticsBars(revenue.map((row) => ({ ...row, label: row.currency })), "label", "amount", (value, row) => money(value, row.currency))}<p class="analytics-summary">Locked reporting total: <strong>${escapeHtml(money(report.reporting_total, report.reporting_currency))}</strong>${Number(report.reporting_missing) ? ` · ${count(report.reporting_missing)} payments lack a locked conversion` : ""}</p>`, analyticsDataTable("collected payments", ["Currency", "Amount", "Approved payments"], revenue.map((row) => [row.currency, money(row.amount, row.currency), count(row.payments)])), "finance", "Approved subscription payments. Mixed currencies use locked conversions only."),
+    analyticsPanel("Revenue by month", analyticsBars(monthly.map((row) => ({ ...row, label: `${row.date} · ${row.currency}` })), "label", "amount", (value, row) => money(value, row.currency), 18, "currency"), analyticsDataTable("monthly revenue", ["UTC month", "Currency", "Collected"], monthly.map((row) => [row.date, row.currency, money(row.amount, row.currency)])), "finance", "Each currency uses its own chart scale."),
+    analyticsPanel("Monthly run rate", runRate.length ? `<div class="analytics-amounts">${runRate.map((row) => `<span>${escapeHtml(money(row.amount, row.currency))} / month</span>`).join("")}</div>` : `<p class="muted-copy">No active paid workspaces with paid invoices.</p>`, analyticsDataTable("monthly run rate", ["Currency", "Estimate per month"], runRate.map((row) => [row.currency, money(row.amount, row.currency)])), "finance", "Latest paid invoice per active workspace; annual invoices divided by 12."),
+    analyticsPanel("Workspace currencies", analyticsBars(currencies.map((row) => ({ ...row, label: row.currency })), "label", "workspaces", count), analyticsDataTable("default currencies", ["Default currency", "Workspaces"], currencies.map((row) => [row.currency, count(row.workspaces)])) + analyticsDataTable("enabled currencies", ["Enabled currency", "Workspaces"], (report.enabled_currencies || []).map((row) => [row.currency, count(row.workspaces)])), "households", `Active workspace types: ${(report.workspace_types || []).map((row) => `${adminWorkspaceTypeLabel(row.type)} ${count(row.count)}`).join(" · ") || "None"}.`),
+    analyticsPanel("Workspace engagement", `<div class="analytics-operations"><span>Payment schedules <strong>${count(engagement.payment_items)}</strong></span><span>Active members, including owners <strong>${count(engagement.active_members)}</strong></span><span>Workspaces without payments <strong>${count(engagement.without_payments)}</strong></span></div>`, "", "households", "Current totals for workspaces matching these filters."),
+    analyticsPanel("Operational health", `<div class="analytics-operations"><span>Invitations awaiting setup <strong>${count(ops.invitations_waiting)}</strong></span><span>Failed invitations <strong>${count(ops.invitations_failed)}</strong></span><span>Pending reviews <strong>${count(ops.pending_reviews_global)}</strong></span><span>Open support tickets <strong>${count(ops.support_open)}</strong></span><span>Open enquiries <strong>${count(ops.enquiries_open)}</strong></span><span>Latest currency sync <strong>${ops.last_exchange_rate_success_at ? escapeHtml(new Date(ops.last_exchange_rate_success_at).toLocaleString()) : "No successful sync yet"}</strong></span></div>`, "", "dashboard", "Current platform totals; filters do not change these figures.")
+  ];
+  const extra = [
+    analyticsDataTable("signup sources", ["Source", "Users"], (report.signup_sources || []).map((row) => [titleCase(String(row.source).replace(/_/g, " ")), count(row.users)])),
+    analyticsDataTable("revenue by plan", ["Plan", "Currency", "Collected"], (report.revenue_by_plan || []).map((row) => [planName(row.plan), row.currency, money(row.amount, row.currency)])),
+    analyticsDataTable("revenue by country", ["Country", "Currency", "Collected"], (report.revenue_by_country || []).map((row) => [analyticsCountryName(row.country), row.currency, money(row.amount, row.currency)])),
+    analyticsDataTable("payment statuses", ["Status", "Payments"], (report.payment_statuses || []).map((row) => [titleCase(row.status), count(row.count)])),
+    analyticsDataTable("invitation funnel (platform-wide)", ["Step", "Invitations"], [["Sent", count(ops.invitations_sent)], ["Accepted", count(ops.invitations_accepted)]])
+  ].join("");
+  $("#analyticsResults").innerHTML = overview + `<div class="analytics-grid">${panels.join("")}</div><section class="ledger-panel analytics-extra"><h3>More breakdowns</h3>${extra || "No breakdowns yet."}</section>`;
+  $("#analyticsResults").classList.remove("hidden");
+  $("#analyticsMessage").textContent = `Showing ${report.from} to ${report.to} (UTC). Updated ${new Date(report.generated_at).toLocaleString()}.`;
+}
+
 function renderAdmin() {
   renderAdminTabs();
   renderAdminEnquiryBadge();
   renderNotifications();
   if (state.adminTab === "dashboard") renderAdminSummary();
+  if (state.adminTab === "analytics") renderAdminAnalytics();
   if (state.adminTab === "households") renderAdminFamilies();
   if (state.adminTab === "users") renderHeads();
   if (state.adminTab === "plans") renderAdminPlans();
@@ -7622,6 +7757,26 @@ window.addEventListener("hashchange", () => {
     loadAdminData().then(renderAdmin).catch((error) => showToast(friendlyMessage(error?.message)));
   }
   if (state.session && !state.isAdmin) renderFamilyApp();
+});
+
+async function refreshAdminAnalytics() {
+  if (!state.isAdmin || state.adminTab !== "analytics") return;
+  try {
+    await loadAdminData("analytics");
+    renderAdminAnalytics();
+  } catch (error) {
+    console.warn("Admin analytics unavailable", error);
+  }
+}
+
+document.querySelectorAll(".analytics-filters select").forEach((filter) => {
+  filter.addEventListener("change", refreshAdminAnalytics);
+});
+$("#analyticsReset").addEventListener("click", () => {
+  $("#analyticsPeriod").value = "30";
+  ["#analyticsCountry", "#analyticsPlan", "#analyticsWorkspace", "#analyticsStatus", "#analyticsBilling", "#analyticsCurrency"]
+    .forEach((selector) => { $(selector).value = ""; });
+  refreshAdminAnalytics();
 });
 
 window.addEventListener("beforeunload", stopRealtime);

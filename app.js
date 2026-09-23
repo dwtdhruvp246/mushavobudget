@@ -1156,21 +1156,29 @@ function resetState() {
   state.workspacePlanWorkspaceId = null;
 }
 
-async function redirectUnfinishedAdminInvitation() {
+async function blockUnfinishedAdminInvitationSession() {
   const profile = await query(
-    "pending invitation profile load",
+    "invitation profile load",
     supabase.from("profiles").select("signup_source, admin_invitation_id")
       .eq("id", state.session.user.id).maybeSingle()
   );
-  if (profile?.signup_source !== "admin_invitation" || !profile.admin_invitation_id) return false;
-  const hasPendingInvite = await query(
-    "pending invitation status load", supabase.rpc("has_my_unfinished_admin_invitation")
-  );
-  if (!hasPendingInvite) return false;
-  const url = new URL("./signup.html", window.location.href);
-  url.searchParams.set("mode", "admin-invite");
-  url.searchParams.set("invitation", profile.admin_invitation_id);
-  window.location.replace(url.href);
+  if (profile?.signup_source !== "admin_invitation") return false;
+  if (profile.admin_invitation_id) {
+    const { data, error } = await supabase.rpc("get_my_admin_user_invitation", {
+      p_invitation_id: profile.admin_invitation_id
+    });
+    const invitation = Array.isArray(data) ? data[0] : data;
+    if (!error && invitation?.invitation_status === "provisioned" && invitation.provisioned_workspace_id) {
+      return false;
+    }
+  }
+  // Supabase Auth signs the recipient in as soon as they open the email link.
+  // This identity cannot access the app until invitation setup commits.
+  const { error: signOutError } = await supabase.auth.signOut({ scope: "local" });
+  if (signOutError) throw signOutError;
+  state.session = null;
+  setView("auth");
+  showToast("Finish setup using your invitation email before signing in.");
   return true;
 }
 
@@ -1178,9 +1186,9 @@ async function loadApp() {
   assertSupabase();
   const startedAt = performance.now();
   const loadingUserId = state.session.user.id;
-  // Opening an invitation signs its recipient into Supabase Auth. Keep the
-  // application bootstrap from provisioning a Free workspace before setup.
-  if (await redirectUnfinishedAdminInvitation()) return;
+  // Opening an invitation signs its recipient into Supabase Auth. Only the
+  // completed invitation may enter the app or provision any workspace.
+  if (await blockUnfinishedAdminInvitationSession()) return;
   const settled = (promise) => promise.then(
     () => ({ ok: true }),
     (error) => ({ ok: false, error })

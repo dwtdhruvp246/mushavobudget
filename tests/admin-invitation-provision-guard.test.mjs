@@ -6,51 +6,61 @@ import vm from "node:vm";
 const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
 const migration = await readFile(new URL("../supabase/migrations/20260923190000_guard_pending_admin_invitation_workspace.sql", import.meta.url), "utf8");
 const schema = await readFile(new URL("../supabase/schema.sql", import.meta.url), "utf8");
-const redirectSource = app.slice(
-  app.indexOf("async function redirectUnfinishedAdminInvitation()"),
+const guardSource = app.slice(
+  app.indexOf("async function blockUnfinishedAdminInvitationSession()"),
   app.indexOf("async function loadApp()")
 );
 
-function runRedirect(profile, pending) {
+function runGuard(profile, invitation, rpcError = null) {
   const calls = [];
   const supabase = {
     from() {
       return { select() { return this; }, eq() { return this; }, maybeSingle() { return { data: profile, error: null }; } };
     },
-    rpc(name) { calls.push(name); return { data: pending, error: null }; }
+    rpc(name) { calls.push(name); return { data: invitation, error: rpcError }; },
+    auth: { async signOut(options) { calls.push(`signout:${options.scope}`); return { error: null }; } }
   };
   const context = {
     state: { session: { user: { id: "user-1" } } }, supabase,
     query: async (_label, result) => result.data,
-    URL,
-    window: {
-      location: { href: "https://mushavobudget.com/app.html" },
-      locationRedirects: [],
-    }
+    setView: (view) => calls.push(`view:${view}`),
+    showToast: (message) => calls.push(message)
   };
-  context.window.location.replace = (url) => context.window.locationRedirects.push(url);
-  vm.runInNewContext(redirectSource, context);
-  return context.redirectUnfinishedAdminInvitation().then((redirected) => ({ calls, redirected, destinations: context.window.locationRedirects }));
+  vm.runInNewContext(guardSource, context);
+  return context.blockUnfinishedAdminInvitationSession().then((blocked) => ({ calls, blocked, session: context.state.session }));
 }
 
-test("an invited Auth session goes to signup before the app provisions a workspace", async () => {
-  const { calls, redirected, destinations } = await runRedirect(
-    { signup_source: "admin_invitation", admin_invitation_id: "invitation-1" }, true
+test("an unfinished invited Auth session is signed out before the app loads data", async () => {
+  const { calls, blocked, session } = await runGuard(
+    { signup_source: "admin_invitation", admin_invitation_id: "invitation-1" },
+    { invitation_status: "sent", provisioned_workspace_id: null }
   );
-  assert.equal(redirected, true);
-  assert.deepEqual(calls, ["has_my_unfinished_admin_invitation"]);
-  assert.equal(destinations.length, 1);
-  assert.equal(new URL(destinations[0]).searchParams.get("mode"), "admin-invite");
-  assert.equal(new URL(destinations[0]).searchParams.get("invitation"), "invitation-1");
+  assert.equal(blocked, true);
+  assert.equal(session, null);
+  assert.deepEqual(calls.slice(0, 3), ["get_my_admin_user_invitation", "signout:local", "view:auth"]);
   const appLoad = app.slice(app.indexOf("async function loadApp()"), app.indexOf("async function ensureProfile()"));
-  assert.ok(appLoad.indexOf("await redirectUnfinishedAdminInvitation()") < appLoad.indexOf("loadWorkspaceSubscriptionData()"));
+  assert.ok(appLoad.indexOf("await blockUnfinishedAdminInvitationSession()") < appLoad.indexOf("loadWorkspaceSubscriptionData()"));
 });
 
-test("a normally registered account continues into the app", async () => {
-  const result = await runRedirect({ signup_source: "self_signup", admin_invitation_id: null }, false);
-  assert.equal(result.redirected, false);
+test("normally registered and fully completed invited accounts can enter the app", async () => {
+  const result = await runGuard({ signup_source: "self_signup", admin_invitation_id: null }, null);
+  assert.equal(result.blocked, false);
   assert.deepEqual(result.calls, []);
-  assert.deepEqual(result.destinations, []);
+  const completed = await runGuard(
+    { signup_source: "admin_invitation", admin_invitation_id: "invitation-1" },
+    { invitation_status: "provisioned", provisioned_workspace_id: "workspace-1" }
+  );
+  assert.equal(completed.blocked, false);
+  assert.deepEqual(completed.calls, ["get_my_admin_user_invitation"]);
+});
+
+test("expired or unavailable invitations fail closed", async () => {
+  const result = await runGuard(
+    { signup_source: "admin_invitation", admin_invitation_id: "invitation-1" },
+    null, { message: "ADMIN_INVITATION_NOT_AVAILABLE" }
+  );
+  assert.equal(result.blocked, true);
+  assert.ok(result.calls.includes("signout:local"));
 });
 
 test("the database refuses premature Free provisioning even if another tab tries it", () => {

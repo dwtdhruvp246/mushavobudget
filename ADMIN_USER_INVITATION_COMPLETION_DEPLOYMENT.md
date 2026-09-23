@@ -4,6 +4,12 @@ Stage 5 lets the invited Auth account create a password, confirm its currencies,
 and atomically provision the administrator-selected workspace, plan, invoice, and
 optional payment record.
 
+For a payment already received, the entered amount and currency must match the
+selected plan's full quoted price. The current invitation flow does not support
+partial or discounted subscription payments. The selected plan's included
+member seats are available immediately after setup (four for the default Family
+plan, subject to plan configuration).
+
 ## 1. Apply the migration
 
 In Supabase SQL Editor, run the complete contents of:

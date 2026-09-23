@@ -5277,6 +5277,28 @@ function refreshAdminInvitationPlanFields() {
   if (plan.workspace_type === "household" && Number($("#adminInviteFamilyLimit").value || 0) === 0) {
     $("#adminInviteFamilyLimit").value = "1";
   }
+  refreshAdminInvitationQuote();
+}
+
+function refreshAdminInvitationQuote() {
+  const plan = state.adminPlans.find((item) => item.id === $("#adminInvitePlan")?.value);
+  const period = $("#adminInviteBillingPeriod")?.value;
+  const currency = $("#adminInviteSubscriptionCurrency")?.value;
+  const hint = $("#adminInvitePriceHint");
+  if (!hint) return;
+  const now = new Date().toISOString();
+  const price = state.adminPlanPrices.find((item) =>
+    item.plan_id === plan?.id && item.billing_period === period && item.currency === currency
+    && item.is_active && item.effective_from <= now
+    && (!item.effective_until || item.effective_until > now)
+  );
+  hint.textContent = price
+    ? `Plan quote: ${money(price.amount, currency)} for ${period}. A recorded payment must match this full amount and currency; partial or discounted payments cannot be recorded here.`
+    : "No current plan price is configured for this billing period and currency.";
+  if (price && $("#adminInvitePaymentReceived").checked) {
+    $("#adminInvitePaymentAmount").value = Number(price.amount).toFixed(2);
+    $("#adminInvitePaymentCurrency").value = currency;
+  }
 }
 
 function toggleAdminInvitationPaymentFields() {
@@ -5287,6 +5309,7 @@ function toggleAdminInvitationPaymentFields() {
   ["#adminInvitePaymentAmount", "#adminInvitePaymentCurrency", "#adminInvitePaymentDate", "#adminInvitePaymentMethod"].forEach((selector) => {
     $(selector).required = received;
   });
+  if (received) refreshAdminInvitationQuote();
 }
 
 function renderAdminInvitationForm() {
@@ -5388,6 +5411,22 @@ async function sendAdminUserInvitation(event) {
   if (enabledCurrencies.length && !payload.default_currency) {
     showToast("Choose a default workspace currency or clear the optional workspace currency selection.");
     return;
+  }
+  if (paymentReceived) {
+    const now = new Date().toISOString();
+    const price = state.adminPlanPrices.find((item) =>
+      item.plan_id === payload.plan_id
+      && item.billing_period === payload.billing_period
+      && item.currency === payload.subscription_currency
+      && item.is_active
+      && item.effective_from <= now
+      && (!item.effective_until || item.effective_until > now)
+    );
+    if (!price || payload.payment_currency !== payload.subscription_currency
+      || Math.round(payload.payment_amount * 100) !== Math.round(Number(price.amount) * 100)) {
+      showToast("A recorded payment must match the selected plan's full quoted price and currency.");
+      return;
+    }
   }
   setSubmitting(submit, true, "Sending invitation…");
   try {
@@ -7355,6 +7394,7 @@ $("#headForm").addEventListener("submit", protectSubmission(addHead));
 $("#adminInvitationForm").addEventListener("submit", protectSubmission(sendAdminUserInvitation));
 $("#adminInvitePlan").addEventListener("change", refreshAdminInvitationPlanFields);
 $("#adminInviteBillingPeriod").addEventListener("change", refreshAdminInvitationPlanFields);
+$("#adminInviteSubscriptionCurrency").addEventListener("change", refreshAdminInvitationQuote);
 $("#adminInviteEnabledCurrencies").addEventListener("change", refreshAdminInvitationDefaultCurrency);
 $("#adminInvitePaymentReceived").addEventListener("change", toggleAdminInvitationPaymentFields);
 $("#adminInviteName").addEventListener("blur", () => {

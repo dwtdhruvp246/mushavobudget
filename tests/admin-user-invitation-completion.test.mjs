@@ -11,7 +11,7 @@ const application = await readFile(new URL("../app.js", import.meta.url), "utf8"
 test("only the authenticated invited identity can read or complete its invitation", () => {
   assert.match(migration, /invitations\.auth_user_id = v_user_id/);
   assert.match(migration, /lower\(invitations\.email\) = v_user_email/);
-  assert.match(migration, /v_invitation\.auth_user_id <> v_user_id/);
+  assert.match(migration, /v_invitation\.auth_user_id is distinct from v_user_id/);
   assert.match(migration, /v_profile_invitation_id is distinct from v_invitation\.id/);
   assert.match(migration, /revoke all on function public\.get_my_admin_user_invitation\(uuid\)[\s\S]*from public, anon, authenticated/);
   assert.match(migration, /grant execute on function public\.complete_admin_user_invitation\(uuid, text\[\], text\)[\s\S]*to authenticated/);
@@ -29,6 +29,23 @@ test("completion is locked, idempotent, and provisions related records transacti
   assert.match(migration, /insert into public\.subscription_payments/);
   assert.match(migration, /set status = 'provisioned'/);
   assert.match(migration, /commit;\s*$/);
+});
+
+test("household and business invitations retain included paid member capacity", () => {
+  assert.match(migration, /limit_code = 'included_member_seats'/);
+  assert.match(migration, /entitlement_start_at, paid_through_at, member_limit/);
+  assert.match(migration, /member_limit = excluded\.member_limit/);
+  assert.match(migration, /v_base_amount, v_extra_member_amount, 1, v_included_member_count, 0, v_total_amount/);
+  assert.match(schema, /entitlement_start_at, paid_through_at, member_limit/);
+});
+
+test("a recorded payment cannot mark an unmatched invoice fully paid", () => {
+  assert.match(migration, /before insert or update of plan_id, billing_period, subscription_currency/);
+  assert.match(migration, /new\.payment_currency is distinct from new\.subscription_currency/);
+  assert.match(migration, /round\(v_invitation\.payment_amount, 2\) is distinct from v_total_amount/);
+  assert.match(migration, /v_invitation\.auth_user_id is distinct from v_user_id/);
+  assert.match(application, /A recorded payment must match the selected plan's full quoted price and currency/);
+  assert.match(appPage, /id="adminInvitePriceHint"/);
 });
 
 test("currency choices are server-validated and saved to workspace settings", () => {

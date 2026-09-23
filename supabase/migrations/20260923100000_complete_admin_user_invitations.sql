@@ -46,6 +46,12 @@ begin
   new.quoted_base_amount := v_price.amount;
   new.quoted_extra_member_amount := v_price.extra_member_amount;
   new.quoted_total_amount := v_price.amount;
+  if new.payment_received and (
+    new.payment_currency is distinct from new.subscription_currency
+    or round(new.payment_amount, 2) is distinct from v_price.amount
+  ) then
+    raise exception 'ADMIN_INVITATION_PAYMENT_MUST_MATCH_PLAN_PRICE';
+  end if;
   return new;
 end;
 $$;
@@ -177,6 +183,7 @@ declare
   v_base_amount numeric(12, 2);
   v_extra_member_amount numeric(12, 2);
   v_total_amount numeric(12, 2);
+  v_included_member_count integer := 1;
   v_family_head_rows integer := 0;
   v_invoice_number text;
   v_receipt_number text;
@@ -193,7 +200,9 @@ begin
   where invitations.id = p_invitation_id
   for update;
   if v_invitation.id is null then raise exception 'ADMIN_INVITATION_NOT_AVAILABLE'; end if;
-  if v_invitation.auth_user_id <> v_user_id or lower(v_invitation.email) <> v_user_email then
+  if v_invitation.auth_user_id is distinct from v_user_id
+     or lower(v_invitation.email) is distinct from v_user_email
+  then
     raise exception 'ADMIN_INVITATION_IDENTITY_MISMATCH';
   end if;
   if v_invitation.status = 'provisioned' and v_invitation.provisioned_workspace_id is not null then
@@ -241,6 +250,13 @@ begin
     and plans.workspace_type = v_invitation.workspace_type;
   if v_plan.id is null then raise exception 'ADMIN_INVITATION_PLAN_CHANGED'; end if;
 
+  select greatest(1, coalesce(limits.limit_value, 1))
+  into v_included_member_count
+  from public.plan_limits as limits
+  where limits.plan_id = v_plan.id
+    and limits.limit_code = 'included_member_seats';
+  v_included_member_count := coalesce(v_included_member_count, 1);
+
   select workspaces.id into v_existing_workspace_id
   from public.budget_workspaces as workspaces
   where workspaces.owner_id = v_user_id
@@ -268,6 +284,12 @@ begin
       limit 1;
     end if;
     if v_total_amount is null then raise exception 'ADMIN_INVITATION_PRICE_UNAVAILABLE'; end if;
+    if v_invitation.payment_received and (
+      v_invitation.payment_currency is distinct from v_invitation.subscription_currency
+      or round(v_invitation.payment_amount, 2) is distinct from v_total_amount
+    ) then
+      raise exception 'ADMIN_INVITATION_PAYMENT_MUST_MATCH_PLAN_PRICE';
+    end if;
   end if;
 
   update public.profiles
@@ -362,12 +384,13 @@ begin
 
   insert into public.workspace_subscriptions (
     workspace_id, plan_id, status, billing_period,
-    entitlement_start_at, paid_through_at
+    entitlement_start_at, paid_through_at, member_limit
   ) values (
     v_workspace_id, v_plan.id, 'active',
     case when v_plan.code = 'free' then null else v_invitation.billing_period end,
     v_invitation.entitlement_start_date::timestamptz,
-    case when v_plan.code = 'free' then null else v_invitation.paid_through_date::timestamptz end
+    case when v_plan.code = 'free' then null else v_invitation.paid_through_date::timestamptz end,
+    v_included_member_count
   )
   on conflict (workspace_id) do update
   set plan_id = excluded.plan_id,
@@ -375,6 +398,7 @@ begin
       billing_period = excluded.billing_period,
       entitlement_start_at = excluded.entitlement_start_at,
       paid_through_at = excluded.paid_through_at,
+      member_limit = excluded.member_limit,
       suspended_at = null,
       suspension_reason = null,
       version = public.workspace_subscriptions.version + 1,
@@ -402,7 +426,7 @@ begin
     ) values (
       v_workspace_id, v_invoice_number, v_plan.code, v_plan.display_name,
       v_invitation.billing_period, v_invitation.subscription_currency,
-      v_base_amount, v_extra_member_amount, 1, 1, 0, v_total_amount,
+      v_base_amount, v_extra_member_amount, 1, v_included_member_count, 0, v_total_amount,
       case when v_invitation.payment_received then 'paid' else 'pending' end,
       now(), case when v_invitation.payment_received then now() else null end,
       v_invitation.invited_by

@@ -114,6 +114,30 @@ const realtime = {
   refreshPending: false
 };
 
+const analyticsActivity = { userId: null, lastSentAt: 0, inFlight: false };
+const ANALYTICS_ACTIVITY_INTERVAL_MS = 50 * 60 * 1000;
+
+async function recordVisibleActivity() {
+  const userId = state.session?.user?.id;
+  if (!userId || document.visibilityState === "hidden" || !navigator.onLine || analyticsActivity.inFlight) return;
+  if (analyticsActivity.userId !== userId) {
+    analyticsActivity.userId = userId;
+    analyticsActivity.lastSentAt = 0;
+  }
+  if (analyticsActivity.lastSentAt > 0 && Date.now() - analyticsActivity.lastSentAt < ANALYTICS_ACTIVITY_INTERVAL_MS) return;
+  analyticsActivity.inFlight = true;
+  try {
+    const { error } = await supabase.rpc("record_my_analytics_activity");
+    if (error) throw error;
+    if (state.session?.user?.id === userId) analyticsActivity.lastSentAt = Date.now();
+  } catch (error) {
+    // Analytics must never interrupt access to payments or an offline session.
+    console.warn("Activity recording unavailable", error);
+  } finally {
+    analyticsActivity.inFlight = false;
+  }
+}
+
 const dashboardDisclosureState = {
   months: new Set(),
   occurrences: new Set(),
@@ -1074,6 +1098,8 @@ function openAuthenticatedSession(session) {
 
 function resetState() {
   stopRealtime();
+  analyticsActivity.userId = null;
+  analyticsActivity.lastSentAt = 0;
   resetDashboardDisclosureState();
   state.session = null;
   state.profile = null;
@@ -1210,6 +1236,7 @@ async function loadApp() {
     await handleNotificationDeepLink();
     startRealtime();
     schedulePushNotificationRefresh(true, true);
+    void recordVisibleActivity();
     profileResult.then((result) => {
       if (!result.ok) console.warn("Profile load was deferred", result.error);
     });
@@ -1239,6 +1266,7 @@ async function loadApp() {
   await handleNotificationDeepLink();
   startRealtime();
   schedulePushNotificationRefresh(true, true);
+  void recordVisibleActivity();
   Promise.all([profileResult, invitationResult, notificationResult]).then((results) => {
     const labels = ["Profile", "Invitations", "Notifications"];
     results.forEach((result, index) => {
@@ -7601,25 +7629,32 @@ window.addEventListener("resize", scheduleDashboardTextFit);
 window.addEventListener("focus", () => {
   refreshAfterAppResume("focus");
   schedulePushNotificationRefresh(false, true);
+  void recordVisibleActivity();
 });
 window.addEventListener("pageshow", () => {
   refreshAfterAppResume("pageshow");
   schedulePushNotificationRefresh(false, true);
+  void recordVisibleActivity();
 });
 window.addEventListener("online", () => {
   if (!state.session) return;
   startRealtime();
   refreshAfterAppResume("online");
   schedulePushNotificationRefresh(true, true);
+  void recordVisibleActivity();
 });
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
     refreshAfterAppResume("visibility");
+    void recordVisibleActivity();
     schedulePushNotificationRefresh(false, true);
   }
 });
 window.setInterval(() => {
-  if (document.visibilityState === "visible") schedulePushNotificationRefresh(false, true);
+  if (document.visibilityState === "visible") {
+    schedulePushNotificationRefresh(false, true);
+    void recordVisibleActivity();
+  }
 }, PUSH_REFRESH_INTERVAL_MS);
 
 init().catch(handleLoadFailure);

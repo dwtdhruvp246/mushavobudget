@@ -40,6 +40,7 @@ A public website and authenticated personal, family, and business payment tracke
 - Original-currency and converted reporting views plus CSV/print exports
 - Admin Finance currency controls, rate diagnostics, locked conversions, and manual actual-rate fallback
 - Secure admin-created user invitations with preassigned workspace, plan, optional payment, and invitee-selected currencies
+- First-party analytics foundation with hourly active-user counts, admin-only aggregate queries, and currency-separated subscription revenue (`ANALYTICS_STAGE_6_DEPLOYMENT.md`)
 
 ### Deferred invitation email wording
 

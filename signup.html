@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <link rel="stylesheet" href="styles.css?v=61" />
     <script src="config.js?v=26"></script>
-    <script src="/pwa.js?v=33" defer></script>
+    <script src="/pwa.js?v=34" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
   </head>
   <body>
@@ -116,6 +116,7 @@
       const pageUrl = new URL(window.location.href);
       const invitationId = pageUrl.searchParams.get("invitation") || "";
       const isAdminInvite = pageUrl.searchParams.get("mode") === "admin-invite";
+      const isSelfSignupFromInvite = pageUrl.searchParams.get("mode") === "self-signup";
       const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       const placeholders = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
       const isConfigured =
@@ -140,7 +141,7 @@
       const selectedCurrencies = new Set();
       let currencyCatalogue = [];
       let currencyCatalogueReady = false;
-      let invitationReady = !isAdminInvite;
+      let invitationReady = !isAdminInvite && !isSelfSignupFromInvite;
       let invitation = null;
 
       function escapeHtml(value) {
@@ -305,6 +306,16 @@
         return message || "The invitation could not be verified. Ask an administrator to send a new invitation.";
       }
 
+      async function offerVerifiedSelfSignup(supabase, email) {
+        const selfSignupUrl = new URL("./signup.html?mode=self-signup", window.location.href);
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: selfSignupUrl.href
+        });
+        if (error) throw error;
+        showInviteStatus("If an unfinished invitation belongs to this email, check your inbox for a link to finish a personal signup. Existing account holders can sign in instead.", "success");
+        submitButton.textContent = "Sign up";
+      }
+
       async function initialiseAdminInvite(supabase, currencyPromise) {
         document.querySelector("#signupEyebrow").textContent = "Secure invitation";
         document.querySelector("#signupTitle").textContent = "Finish setting up your account";
@@ -362,6 +373,40 @@
         }
       }
 
+      async function initialiseSelfSignupFromInvite(supabase) {
+        document.querySelector("#signupEyebrow").textContent = "Choose your own account";
+        document.querySelector("#signupTitle").textContent = "Finish your personal signup";
+        document.querySelector("#signupSubtitle").textContent = "Choose a password and currencies to create your Free personal workspace. The admin invitation will be cancelled.";
+        submitButton.disabled = true;
+        submitButton.textContent = "Verifying email...";
+        try {
+          const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+          if (sessionError) throw sessionError;
+          const { data: userData, error: userError } = await supabase.auth.getUser();
+          sanitizeInviteUrl();
+          if (userError || !sessionData.session || !userData.user) throw new Error("EMAIL_VERIFICATION_REQUIRED");
+          const { data: hasInvite, error: inviteError } = await supabase.rpc("has_my_unfinished_admin_invitation");
+          if (inviteError) throw inviteError;
+          if (!hasInvite) {
+            const next = new URL("./app.html", window.location.href);
+            next.searchParams.set("signup", "success");
+            window.location.replace(next.href);
+            return;
+          }
+          nameInput.value = userData.user.user_metadata?.full_name || "";
+          emailInput.value = userData.user.email || "";
+          emailInput.readOnly = true;
+          emailInput.setAttribute("aria-readonly", "true");
+          invitationReady = true;
+          submitButton.textContent = "Create personal account";
+          updateSignupAvailability();
+          showInviteStatus("Email verified. Completing signup will cancel your admin invitation.", "success");
+        } catch (error) {
+          sanitizeInviteUrl();
+          lockInviteForm("Open the newest email link to verify your address and continue signup.");
+        }
+      }
+
       if (!isConfigured) {
         document.querySelector("#configWarning").classList.remove("hidden");
         form.querySelectorAll("input, select, button").forEach((field) => {
@@ -384,6 +429,8 @@
 
         if (isAdminInvite) {
           initialiseAdminInvite(supabase, currencyPromise);
+        } else if (isSelfSignupFromInvite) {
+          initialiseSelfSignupFromInvite(supabase);
         }
 
         defaultCurrencySelect.addEventListener("change", () => {
@@ -454,10 +501,30 @@
               return;
             }
 
+            if (isSelfSignupFromInvite) {
+              if (!invitationReady) throw new Error("ADMIN_INVITATION_NOT_AVAILABLE");
+              const { error: passwordError } = await supabase.auth.updateUser({
+                password,
+                data: { full_name: fullName, default_currency: defaultCurrency,
+                  enabled_currencies: enabledCurrencies, signup_source: "self_signup", admin_invitation_id: null }
+              });
+              if (passwordError) throw passwordError;
+              const { error: completionError } = await supabase.rpc("complete_self_signup_from_admin_invitation", {
+                p_full_name: fullName, p_enabled_currencies: enabledCurrencies, p_default_currency: defaultCurrency
+              });
+              if (completionError) throw completionError;
+              const next = new URL("./app.html", window.location.href);
+              next.searchParams.set("signup", "success");
+              window.MushavoPWA?.markFormClean(form);
+              window.location.replace(next.href);
+              return;
+            }
+
             const { data, error } = await supabase.auth.signUp({
               email,
               password,
               options: {
+                emailRedirectTo: new URL("./signup.html?mode=self-signup", window.location.href).href,
                 data: {
                   full_name: fullName,
                   default_currency: defaultCurrency,
@@ -465,7 +532,19 @@
                 }
               }
             });
-            if (error) throw error;
+            if (error) {
+              const existingAccount = ["user_already_exists", "email_exists"].includes(error.code)
+                || /already registered|already exists/i.test(error.message || "");
+              if (existingAccount) {
+                await offerVerifiedSelfSignup(supabase, email);
+                return;
+              }
+              throw error;
+            }
+            if (!data.session && data.user?.identities?.length === 0) {
+              await offerVerifiedSelfSignup(supabase, email);
+              return;
+            }
             if (data.session) await supabase.auth.signOut();
             const selectedPlan = new URLSearchParams(window.location.search).get("plan");
             const next = new URL("./app.html", window.location.href);
@@ -476,7 +555,7 @@
           } catch (error) {
             showMessage(isAdminInvite ? inviteErrorMessage(error) : (error.message || "The account could not be created. Please try again."));
             submitButton.disabled = false;
-            submitButton.textContent = isAdminInvite ? "Complete setup" : "Sign up";
+            submitButton.textContent = isAdminInvite ? "Complete setup" : isSelfSignupFromInvite ? "Create personal account" : "Sign up";
           }
         });
       }

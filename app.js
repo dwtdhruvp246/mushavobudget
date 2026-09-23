@@ -512,7 +512,10 @@ function friendlyMessage(message = "") {
     return "Only a super administrator or admin staff member can send user invitations.";
   }
   if (text.includes("USER_ALREADY_REGISTERED")) {
-    return "This email already belongs to a registered account. Use Registered user access instead.";
+    return "This account has completed signup. Use Registered user access instead.";
+  }
+  if (text.includes("ADMIN_INVITATION_DELIVERY_IN_PROGRESS")) {
+    return "An invitation is being sent to this email. Wait a moment before replacing it.";
   }
   if (text.includes("ADMIN_INVITATION_ALREADY_ACTIVE")) {
     return "A setup invitation is already active for this email address.";
@@ -5440,7 +5443,9 @@ async function sendAdminUserInvitation(event) {
     form.reset();
     await loadAdminData("users");
     renderAdmin();
-    showToast(`Secure invitation sent to ${payload.email}.`);
+    showToast(data?.status === "replaced"
+      ? `A new setup link was sent to ${payload.email}. The previous invitation is no longer valid.`
+      : `Secure invitation sent to ${payload.email}.`);
   } catch (error) {
     showToast(friendlyMessage(error?.message));
   } finally {

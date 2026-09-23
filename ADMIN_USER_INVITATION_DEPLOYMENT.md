@@ -6,9 +6,9 @@ choose the plan, billing period, subscription dates, optional workspace
 currencies, family access, and an optional payment already received.
 
 The invitation creates a Supabase Auth user so Supabase can send its secure
-invite link. It does **not** create a workspace, activate a plan, create an
-invoice, or post the declared payment. Those actions remain deferred until the
-invitee finishes the Stage 5 password/currency setup flow.
+invite link. Workspace, plan, invoice, and optional payment provisioning is
+deferred until the invitee finishes the separately deployed Stage 5
+password/currency setup flow.
 
 ## Prerequisites
 
@@ -64,7 +64,7 @@ admin_user_invitation_foundation_ready | true
   exposing payment details in function logs.
 - A newly invited Auth user has no workspace or subscription yet.
 
-Do not send production invitations to users until Stage 5 is deployed. Stage 5
-will consume the invite session, collect the password and final currency
-choices, then provision the reserved workspace, subscription, invoice, and
-payment atomically.
+After this foundation is healthy, deploy
+`20260923100000_complete_admin_user_invitations.sql` by following
+`ADMIN_USER_INVITATION_COMPLETION_DEPLOYMENT.md` before sending production
+invitations.

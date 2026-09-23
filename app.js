@@ -466,10 +466,13 @@ function protectSubmission(handler) {
 
 function showSignupSuccessMessage() {
   const url = new URL(window.location.href);
-  if (url.searchParams.get("signup") !== "success") return;
+  const signupResult = url.searchParams.get("signup");
+  if (!["success", "invited"].includes(signupResult)) return;
   url.searchParams.delete("signup");
   window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
-  showToast("Account created successfully. Sign in with your new account.");
+  showToast(signupResult === "invited"
+    ? "Your account, workspace, and subscription are ready."
+    : "Account created successfully. Sign in with your new account.");
 }
 
 function showToast(message) {

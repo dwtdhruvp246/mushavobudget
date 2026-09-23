@@ -39,6 +39,7 @@ A public website and authenticated personal, family, and business payment tracke
 - A 154-currency global payment catalogue with server-side CurrencyAPI rate synchronization twice daily and historical, immutable payment conversions
 - Original-currency and converted reporting views plus CSV/print exports
 - Admin Finance currency controls, rate diagnostics, locked conversions, and manual actual-rate fallback
+- Secure admin-created user invitations with preassigned workspace, plan, optional payment, and invitee-selected currencies
 
 ## Supabase Setup
 

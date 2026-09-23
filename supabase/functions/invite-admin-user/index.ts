@@ -11,7 +11,6 @@ type InvitePayload = {
   email?: unknown;
   country_code?: unknown;
   plan_id?: unknown;
-  workspace_name?: unknown;
   billing_period?: unknown;
   subscription_currency?: unknown;
   entitlement_start_date?: unknown;
@@ -138,7 +137,9 @@ Deno.serve(async (request) => {
   const email = cleanText(body.email, 320).toLowerCase();
   const countryCode = cleanText(body.country_code, 2).toUpperCase() || null;
   const planId = cleanText(body.plan_id, 36);
-  const workspaceName = cleanText(body.workspace_name, 100);
+  // This is a proposed name only. The workspace is created by the completion
+  // RPC after the invited user sets their password and confirms currencies.
+  const workspaceName = `${fullName.slice(0, 88)}'s workspace`;
   const billingPeriod = cleanText(body.billing_period, 10);
   const subscriptionCurrency = cleanText(body.subscription_currency, 3).toUpperCase();
   const entitlementStartDate = cleanText(body.entitlement_start_date, 10);

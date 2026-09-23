@@ -16,7 +16,17 @@ applied, run it first. The new guard protects both normal Free provisioning
 paths, including replacement delivery, cancellation, and expiry. It does not
 remove existing data.
 
-## Label replacement emails as setup links
+## Deferred: label replacement emails as setup links
+
+This is optional and is **not required** for the workspace guard or for
+completing an invitation. The current Supabase Free setup cannot edit the
+Magic Link template, so leave the email wording as it is for now. A resend
+still goes through Supabase's one-time sign-in link, but its redirect leads to
+the newest invitation's signup page. The invitee must select **Complete
+setup** before a workspace is created. Revisit the wording when editable Auth
+email templates or a custom email provider are available.
+
+Future template configuration:
 
 In Supabase Dashboard → Authentication → Email Templates → **Magic Link**, use
 the neutral subject `Your Mushavo Budget secure link`. Replace the HTML body

@@ -41,6 +41,16 @@ A public website and authenticated personal, family, and business payment tracke
 - Admin Finance currency controls, rate diagnostics, locked conversions, and manual actual-rate fallback
 - Secure admin-created user invitations with preassigned workspace, plan, optional payment, and invitee-selected currencies
 
+### Deferred invitation email wording
+
+On the current Supabase Free setup, a resent unfinished admin invitation is
+delivered using Supabase's Magic Link email, whose wording may say “sign in.”
+The link still opens the newest signup invitation, and the workspace is held
+until **Complete setup**. When editable Auth email templates or a custom
+email provider become available, apply the conditional setup message in
+`ADMIN_INVITATION_RESEND_DEPLOYMENT.md`. This wording change is optional;
+the database guard migration in that file is required now.
+
 ## Supabase Setup
 
 1. Create a Supabase project.

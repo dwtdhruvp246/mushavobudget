@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 75
+// Mushavo Budget authenticated application — release 76
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -652,6 +652,12 @@ function friendlyMessage(message = "") {
   }
   if (text.includes("PERSONAL_PAYMENT_LIMIT_REACHED")) {
     return "Free accounts can keep up to 5 active personal payments. Family payments remain unlimited.";
+  }
+  if (
+    text.includes("payment_items_recurrence_type_check") ||
+    text.includes("payment_items_recurrence_interval_check")
+  ) {
+    return "The selected repeat schedule could not be saved. Apply the latest database update, then try again.";
   }
   if (text.includes("WORKSPACE_READ_ONLY")) {
     return "This shared workspace is read-only because its subscription is expired or suspended. The owner can renew it from Subscription.";

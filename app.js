@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 74
+// Mushavo Budget authenticated application — release 75
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -484,6 +484,13 @@ function setSubmitting(button, isSubmitting, label) {
   }
   button.disabled = isSubmitting;
   button.textContent = label;
+}
+
+function resetSignOutButtons() {
+  ["#signOutButton", "#adminSignOutButton", "#suspendedSignOutButton"].forEach((selector) => {
+    const button = $(selector);
+    if (button) setSubmitting(button, false, "Sign out");
+  });
 }
 
 function protectSubmission(handler) {
@@ -1161,6 +1168,7 @@ function openAuthenticatedSession(session) {
 }
 
 function resetState() {
+  resetSignOutButtons();
   stopRealtime();
   realtime.lastConnectedUserId = null;
   analyticsActivity.userId = null;
@@ -3364,7 +3372,6 @@ async function sendTestPushNotification() {
 
 async function signOutSafely(button = null) {
   if (!supabase || !state.session) return;
-  const originalLabel = button?.textContent || "Sign out";
   setSubmitting(button, true, "Signing out…");
   try {
     await removeCurrentDevicePush();
@@ -3373,7 +3380,9 @@ async function signOutSafely(button = null) {
     if (error) throw error;
   } catch (error) {
     showToast(`Sign-out stopped: ${friendlyMessage(error?.message)}`);
-    setSubmitting(button, false, originalLabel);
+  } finally {
+    // This DOM button survives sign-out and is reused after the next sign-in.
+    setSubmitting(button, false, "Sign out");
   }
 }
 

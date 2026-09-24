@@ -17,14 +17,14 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="styles.css?v=61" />
+    <link rel="stylesheet" href="styles.css?v=62" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
-    <script src="/pwa.js?v=40" defer></script>
+    <script src="/pwa.js?v=41" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=86"></script>
+    <script type="module" src="app.js?v=87"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -154,6 +154,7 @@
             </div>
             <nav class="tabs" aria-label="Admin sections">
               <button class="tab-button active" type="button" data-admin-tab="dashboard">Dashboard</button>
+              <button class="tab-button" type="button" data-admin-tab="analytics">Analytics</button>
               <button class="tab-button" type="button" data-admin-tab="households">Workspaces</button>
               <button class="tab-button" type="button" data-admin-tab="users">Users</button>
               <button class="tab-button" type="button" data-admin-tab="plans">Plans</button>
@@ -174,7 +175,7 @@
             <div class="sidebar-footer">
               <button type="button" data-admin-tab="support">Contact support</button>
               <button id="adminSignOutButton" type="button">Sign out</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.8.0</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.0</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -205,6 +206,22 @@
                 <div id="recentPaymentsList" class="record-list"></div>
               </section>
             </section>
+          </section>
+
+          <section class="screen-panel hidden" data-admin-panel="analytics">
+            <header class="topbar"><div><p class="eyebrow">First-party insights</p><h2>Platform analytics</h2><p class="muted-copy">Aggregated accounts, activity, subscriptions, and collected payments. Dates use UTC.</p></div></header>
+            <section class="ledger-panel analytics-filters" aria-label="Analytics filters">
+              <label>Period<select id="analyticsPeriod"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option><option value="all">All time</option></select></label>
+              <label>Country<select id="analyticsCountry"><option value="">All countries</option></select></label>
+              <label>Plan<select id="analyticsPlan"><option value="">All plans</option></select></label>
+              <label>Workspace<select id="analyticsWorkspace"><option value="">All types</option><option value="personal">Personal</option><option value="household">Family</option><option value="business">Business</option></select></label>
+              <label>Subscription<select id="analyticsStatus"><option value="">All statuses</option><option value="active">Active</option><option value="suspended">Suspended</option><option value="expired">Expired</option></select></label>
+              <label>Billing<select id="analyticsBilling"><option value="">All periods</option><option value="monthly">Monthly</option><option value="annual">Annual</option></select></label>
+              <label>Currency<select id="analyticsCurrency"><option value="">All currencies</option></select></label>
+              <button id="analyticsReset" type="button">Reset filters</button>
+            </section>
+            <p id="analyticsMessage" class="muted-copy" role="status" aria-live="polite">Loading analytics…</p>
+            <div id="analyticsResults" class="hidden"></div>
           </section>
 
           <section class="screen-panel hidden" data-admin-panel="plans">
@@ -589,7 +606,7 @@
             </div>
             <div class="sidebar-footer">
               <button type="button" data-family-tab="support">Contact support</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.8.0</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.0</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>

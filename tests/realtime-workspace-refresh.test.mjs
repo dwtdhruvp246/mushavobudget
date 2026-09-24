@@ -13,11 +13,12 @@ const realtimeSource = [
 function harness({ delayFirstAccess = false } = {}) {
   const timers = [];
   const calls = [];
+  const handlers = new Map();
   let statusCallback = null;
   let releaseFirstAccess = null;
   let accessCalls = 0;
   const channel = {
-    on() { return channel; },
+    on(_kind, filter, callback) { handlers.set(filter.table, callback); return channel; },
     subscribe(callback) {
       statusCallback = callback;
       return channel;
@@ -43,7 +44,8 @@ function harness({ delayFirstAccess = false } = {}) {
     },
     document: { visibilityState: "visible" },
     console: { debug: () => {}, warn: () => {}, error: () => {} },
-    realtimeTablesForCurrentView: () => ["families", "budget_workspaces", "notifications"],
+    navigator: { onLine: true },
+    realtimeTablesForCurrentView: () => ["families", "budget_workspaces"],
     loadAccess() {
       accessCalls += 1;
       if (delayFirstAccess && accessCalls === 1) {
@@ -56,7 +58,10 @@ function harness({ delayFirstAccess = false } = {}) {
     loadWorkspaceSubscriptionData: async () => calls.push("subscriptions"),
     loadUserSupportData: async () => {},
     loadAdminData: async () => {},
-    loadNotifications: async () => {},
+    loadNotifications: async () => calls.push("notifications"),
+    loadInvitations: async () => calls.push("invitations"),
+    renderNotifications: () => calls.push("notification-rendered"),
+    renderInvitations: () => calls.push("invitation-rendered"),
     renderAdmin: () => {},
     renderFamilyApp: () => calls.push("rendered"),
     showToast: (message) => calls.push(message)
@@ -67,6 +72,7 @@ function harness({ delayFirstAccess = false } = {}) {
     calls,
     timers,
     getStatusCallback: () => statusCallback,
+    getHandler: (table) => handlers.get(table),
     getAccessCalls: () => accessCalls,
     releaseFirstAccess: () => releaseFirstAccess()
   };
@@ -76,12 +82,34 @@ test("a realtime reconnect requests a fresh workspace snapshot", async () => {
   const h = harness();
   h.api.startRealtime();
   h.getStatusCallback()("SUBSCRIBED");
-  assert.equal(h.timers.length, 1);
+  assert.equal(h.timers.length, 2);
+  h.timers.shift()();
   h.timers.shift()();
   await new Promise((resolve) => setImmediate(resolve));
+  assert.ok(h.calls.includes("notification-rendered"));
   assert.ok(h.calls.includes("families"));
   assert.ok(h.calls.includes("subscriptions"));
   assert.ok(h.calls.includes("rendered"));
+});
+
+test("a new invitation refreshes the recipient's notification without a page reload", async () => {
+  const h = harness();
+  h.api.startRealtime();
+  h.getHandler("notifications")({ eventType: "INSERT" });
+  assert.equal(h.timers.length, 1);
+  await h.timers.shift()();
+  assert.ok(h.calls.includes("notifications"));
+  assert.ok(h.calls.includes("notification-rendered"));
+  assert.equal(h.getAccessCalls(), 0);
+});
+
+test("a disconnected realtime channel reconnects without refreshing the page", () => {
+  const h = harness();
+  h.api.startRealtime();
+  h.getStatusCallback()("CHANNEL_ERROR");
+  assert.equal(h.timers.length, 1);
+  h.timers.shift()();
+  assert.ok(h.calls.includes("removed"));
 });
 
 test("changes received during a refresh are replayed instead of discarded", async () => {

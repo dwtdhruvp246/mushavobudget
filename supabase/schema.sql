@@ -9177,5 +9177,32 @@ revoke all on function public.admin_analytics_page(date,date,text,text,text,text
 grant execute on function public.admin_analytics_page(date,date,text,text,text,text,text,text)
   to authenticated;
 
+-- A payer must be an active member of the same Family as the payment.
+create or replace function public.guard_payment_record_payer()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+begin
+  if new.visibility = 'family' and new.paid_by_member_id is not null
+    and not exists (
+      select 1 from public.family_members as members
+      where members.id = new.paid_by_member_id
+        and members.family_id = new.family_id
+        and members.status = 'active'
+    ) then
+    raise exception 'PAID_BY_MEMBER_NOT_IN_FAMILY';
+  end if;
+  return new;
+end;
+$$;
+
+revoke all on function public.guard_payment_record_payer() from public, anon, authenticated;
+drop trigger if exists guard_payment_record_payer_trigger on public.payment_records;
+create trigger guard_payment_record_payer_trigger
+before insert or update of family_id, paid_by_member_id on public.payment_records
+for each row execute function public.guard_payment_record_payer();
+
 notify pgrst, 'reload schema';
 commit;

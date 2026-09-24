@@ -17,14 +17,14 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="styles.css?v=63" />
+    <link rel="stylesheet" href="styles.css?v=64" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
-    <script src="/pwa.js?v=42" defer></script>
+    <script src="/pwa.js?v=43" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=88"></script>
+    <script type="module" src="app.js?v=89"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -175,7 +175,7 @@
             <div class="sidebar-footer">
               <button type="button" data-admin-tab="support">Contact support</button>
               <button id="adminSignOutButton" type="button">Sign out</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.1</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.2</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -606,7 +606,7 @@
             </div>
             <div class="sidebar-footer">
               <button type="button" data-family-tab="support">Contact support</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.1</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.2</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -761,19 +761,25 @@
 
           <section class="screen-panel hidden" data-family-panel="subscription">
             <header class="topbar subscription-topbar">
-              <div><p class="eyebrow">Subscription</p><h2>Plan and billing</h2><p class="muted-copy">The plan belongs to this workspace. Invited members inherit its access and never need a separate subscription.</p></div>
+              <div><p class="eyebrow">Subscription</p><h2>Plan and billing</h2><p class="muted-copy">Your own plans and access to families you joined are shown separately.</p></div>
               <button id="openRenewalButton" class="primary" type="button" data-open-renewal-dialog>Submit payment</button>
             </header>
-            <section class="subscription-details-panel" aria-label="Current subscription">
+            <section class="subscription-ownership-grid" aria-label="Your plans and family access">
+              <article class="subscription-ownership-card"><span>Your Personal plan</span><strong id="ownedPersonalPlanName">Free</strong><small id="ownedPersonalPlanDetail">Your own Personal workspace</small></article>
+              <article class="subscription-ownership-card"><span>Your Family plan</span><strong id="ownedFamilyPlanName">Free</strong><small id="ownedFamilyPlanDetail">No Family workspace purchased by you.</small><div id="ownedFamilyPlanList" class="owned-family-plan-list"></div><button id="startOwnFamilyPlan" type="button">Start your own Family plan</button></article>
+              <article id="joinedFamilyAccessCard" class="subscription-ownership-card" hidden><span>Family access through membership</span><strong id="joinedFamilyAccessName"></strong><small id="joinedFamilyAccessDetail"></small></article>
+            </section>
+            <section class="subscription-details-panel" aria-label="Selected workspace subscription">
+              <p id="subscriptionWorkspaceOwnershipCaption" class="muted-copy"></p>
               <dl class="subscription-details-list">
-                <div><dt>Current plan</dt><dd><strong id="subscriptionPlanName">Free</strong><small id="subscriptionStatusText">Active</small><small id="subscriptionBillingPeriod">No recurring billing</small></dd></div>
+                <div><dt>Selected workspace plan</dt><dd><strong id="subscriptionPlanName">Free</strong><small id="subscriptionStatusText">Active</small><small id="subscriptionBillingPeriod">No recurring billing</small></dd></div>
                 <div><dt>Workspace</dt><dd><strong id="subscriptionWorkspaceName">Personal budget</strong><small id="subscriptionWorkspaceType">Personal</small></dd></div>
                 <div><dt>Paid through</dt><dd><strong id="subscriptionPaidThrough">No expiry</strong></dd></div>
                 <div><dt>Usage</dt><dd><strong id="subscriptionUsage">0 / 5</strong><small id="subscriptionUsageCaption">Active payment items</small></dd></div>
               </dl>
             </section>
             <section id="subscriptionAccessNotice" class="notice hidden"></section>
-            <section class="ledger-panel workspace-plans-panel">
+            <section id="ownedWorkspacePlansPanel" class="ledger-panel workspace-plans-panel">
               <div class="panel-heading"><p class="eyebrow">Compare plans</p><h3 id="workspacePlansTitle">Plans for this workspace</h3><p id="workspacePlansDescription" class="muted-copy">Compare the plans available for the selected workspace.</p></div>
               <div class="workspace-plan-controls" aria-label="Plan pricing options">
                 <div class="workspace-billing-toggle" role="group" aria-label="Billing period">
@@ -785,7 +791,7 @@
               </div>
               <div id="workspacePlanList" class="plan-card-grid"></div>
             </section>
-            <section class="content-grid subscription-history-grid">
+            <section id="ownedWorkspaceBillingHistory" class="content-grid subscription-history-grid">
               <details class="subscription-history"><summary>Payment review history</summary><div id="renewalHistoryList" class="record-list"></div></details>
               <details class="subscription-history"><summary>Plan history</summary><div id="entitlementHistoryList" class="record-list"></div></details>
             </section>
@@ -796,7 +802,7 @@
             <section class="account-details-panel" aria-labelledby="accountDetailsTitle">
               <div class="panel-heading"><p class="eyebrow">Account details</p><h3 id="accountDetailsTitle">Your account</h3></div>
               <dl class="account-details-list">
-                <div class="account-detail-row"><dt>Plan</dt><dd><span id="settingsPlanBadge" class="mini-badge">Active - Free</span><small id="settingsPaymentLimit">0/5 free payments used</small></dd></div>
+                <div class="account-detail-row"><dt>Your Personal plan</dt><dd><span id="settingsPlanBadge" class="mini-badge">Active - Free</span><small id="settingsPaymentLimit">0/5 free payments used</small></dd></div>
                 <div class="account-detail-row"><dt>Family access</dt><dd><strong id="settingsMemberAccess">Locked</strong><small>Admin-managed access</small></dd></div>
                 <div class="account-detail-row"><dt>Signed in as</dt><dd><strong id="settingsEmail">-</strong><small>Your login email</small></dd></div>
                 <div class="account-detail-row"><dt>Alerts</dt><dd><strong id="notificationCount">0</strong><small>Unread messages and due reminders</small></dd></div>
@@ -953,7 +959,7 @@
         <label for="recordPaymentType">Payment type<select id="recordPaymentType"><option value="full">Pay in full</option><option value="partial">Partial payment</option></select></label>
         <label for="recordAmount">Amount paid<input id="recordAmount" type="number" min="0.0001" step="0.0001" required /></label>
         <label for="recordCurrency">Currency<input id="recordCurrency" readonly aria-readonly="true" /></label>
-        <label for="recordPaidBy">Paid by<select id="recordPaidBy"></select></label>
+        <label id="recordPaidByField" for="recordPaidBy">Paid by<select id="recordPaidBy"></select></label>
         <label for="recordPaymentDate">Payment date<input id="recordPaymentDate" type="date" required /></label>
         <label for="recordMethod">Method<select id="recordMethod"><option value="Cash">Cash</option><option value="EFT">EFT</option><option value="Card">Card</option><option value="Bank deposit">Bank deposit</option><option value="Other">Other</option></select></label>
         <label class="full" for="recordReference">Reference<input id="recordReference" placeholder="Receipt, EFT, account ref..." /></label>

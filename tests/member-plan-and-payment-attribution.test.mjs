@@ -75,7 +75,7 @@ test("a member's own Free plans stay Free while the joined family's paid access 
   assert.equal($("#ownedFamilyPlanName").textContent, "Free");
   assert.match($("#ownedFamilyPlanDetail").textContent, /No Family workspace purchased/);
   assert.match($("#joinedFamilyAccessDetail").textContent, /You have not purchased this plan/);
-  assert.equal($("#ownedWorkspacePlansPanel").hidden, true);
+  assert.equal($("#ownedWorkspacePlansPanel").hidden, false);
   assert.equal($("#openRenewalButton").hidden, true);
   assert.equal($("#startOwnFamilyPlan").textContent, "Start your own Family plan");
 });

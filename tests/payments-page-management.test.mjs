@@ -32,7 +32,7 @@ test("record payment selects a real outstanding occurrence", () => {
   assert.match(source, /function recordableOccurrencesForItem\(item\)/);
   assert.match(source, /occurrence\.outstanding > 0\.00005/);
   assert.match(source, /function preferredRecordOccurrence\(choices\)/);
-  assert.match(source, /function applyRecordPaymentOccurrence\(occurrence\)/);
+  assert.match(source, /function applyRecordPaymentOccurrence\(occurrence, preservePayer = false\)/);
   assert.match(source, /state\.recordPaymentOccurrenceChoices\.find/);
 });
 

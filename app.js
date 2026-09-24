@@ -43,6 +43,8 @@ const state = {
   workspaceMembers: [],
   workspaceSubscription: null,
   workspaceEntitlement: null,
+  personalWorkspaceEntitlement: null,
+  ownedFamilySubscriptions: [],
   workspaceSettings: null,
   pushDevice: createPushDeviceState(),
   supportedCurrencies: [],
@@ -111,6 +113,9 @@ const state = {
 const realtime = {
   channel: null,
   refreshTimer: null,
+  notificationTimer: null,
+  reconnectTimer: null,
+  reconnectAttempts: 0,
   refreshInFlight: false,
   refreshPending: false
 };
@@ -856,7 +861,7 @@ function isSameAuthUser(previousSession, nextSession) {
 function realtimeTablesForCurrentView() {
   const sharedTables = [
     "profiles", "family_heads", "families", "family_members", "payment_items", "payment_records",
-    "family_invitations", "notifications", "budget_workspaces", "workspace_members",
+    "family_invitations", "budget_workspaces", "workspace_members",
     "workspace_invitations", "workspace_subscriptions", "subscription_renewal_requests",
     "subscription_invoices", "subscription_payments", "subscription_entitlement_history",
     "support_tickets", "support_ticket_messages"
@@ -872,9 +877,14 @@ function stopRealtime() {
   }
   realtime.refreshInFlight = false;
   realtime.refreshPending = false;
+  if (realtime.notificationTimer) window.clearTimeout(realtime.notificationTimer);
+  realtime.notificationTimer = null;
+  if (realtime.reconnectTimer) window.clearTimeout(realtime.reconnectTimer);
+  realtime.reconnectTimer = null;
   if (!supabase || !realtime.channel) return;
-  supabase.removeChannel(realtime.channel);
+  const channel = realtime.channel;
   realtime.channel = null;
+  supabase.removeChannel(channel);
 }
 
 function startRealtime() {
@@ -888,17 +898,54 @@ function startRealtime() {
     channel.on(
       "postgres_changes",
       { event: "*", schema: "public", table },
-      (payload) => queueRealtimeRefresh(payload)
+      (payload) => {
+        if (table === "family_invitations") queueNotificationRefresh();
+        queueRealtimeRefresh(payload);
+      }
     );
   });
+  // Notifications have a small dedicated refresh, so an unrelated workspace
+  // query cannot delay the recipient's new invitation or unread count.
+  channel.on("postgres_changes", { event: "*", schema: "public", table: "notifications" },
+    () => queueNotificationRefresh());
 
   realtime.channel = channel.subscribe((status) => {
+    if (realtime.channel !== channel) return;
     if (status === "SUBSCRIBED") {
+      realtime.reconnectAttempts = 0;
+      queueNotificationRefresh();
       queueRealtimeRefresh({ table: "realtime", eventType: "SUBSCRIBED" });
-    } else if (status === "CHANNEL_ERROR") {
-      console.warn("Realtime channel error. Check that tables are enabled in the supabase_realtime publication.");
+    } else if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
+      console.warn("Realtime disconnected; reconnecting while the app is open.", status);
+      if (!realtime.reconnectTimer && state.session) {
+        const delay = Math.min(30000, 1000 * 2 ** Math.min(realtime.reconnectAttempts++, 5));
+        realtime.reconnectTimer = window.setTimeout(() => {
+          realtime.reconnectTimer = null;
+          if (state.session && navigator.onLine) startRealtime();
+        }, delay);
+      }
     }
   });
+}
+
+function queueNotificationRefresh() {
+  if (!state.session) return;
+  if (realtime.notificationTimer) window.clearTimeout(realtime.notificationTimer);
+  const userId = state.session.user.id;
+  realtime.notificationTimer = window.setTimeout(async () => {
+    realtime.notificationTimer = null;
+    try {
+      await loadNotifications();
+      if (state.session?.user?.id !== userId) return;
+      renderNotifications();
+      if (!state.isAdmin && state.familyTab === "members") {
+        await loadInvitations();
+        if (state.session?.user?.id === userId) renderInvitations();
+      }
+    } catch (error) {
+      console.warn("Notification refresh failed; retrying on reconnect or resume.", error);
+    }
+  }, 100);
 }
 
 function queueRealtimeRefresh(payload = {}) {
@@ -945,6 +992,8 @@ async function refreshVisibleData() {
 
 function refreshAfterAppResume(source) {
   if (!state.session || document.visibilityState === "hidden") return;
+  if (!realtime.channel || realtime.reconnectTimer) startRealtime();
+  queueNotificationRefresh();
   queueRealtimeRefresh({ table: source, eventType: "RESUME" });
 }
 
@@ -1119,6 +1168,8 @@ function resetState() {
   state.workspaceMembers = [];
   state.workspaceSubscription = null;
   state.workspaceEntitlement = null;
+  state.personalWorkspaceEntitlement = null;
+  state.ownedFamilySubscriptions = [];
   state.workspaceSettings = null;
   state.pushDevice = createPushDeviceState();
   pushRefreshSequence += 1;
@@ -1597,7 +1648,13 @@ async function loadWorkspaceSubscriptionData() {
   const workspace = currentBudgetWorkspace();
   if (!workspace) throw new Error("Your subscription workspace could not be reconciled. Run the complete Supabase schema again.");
 
-  const [subscriptions, entitlements, billableMemberCount, memberUsage, requests, invoices, payments, history, settings, rates, rateStatus, conversions] = await Promise.all([
+  const personalWorkspace = workspaces.find((item) =>
+    item.workspace_type === "personal" && item.owner_id === state.session.user.id && item.status !== "closed");
+  const ownedFamilyIds = workspaces.filter((item) =>
+    item.workspace_type === "household" && item.owner_id === state.session.user.id && item.status !== "closed")
+    .map((item) => item.id);
+
+  const [subscriptions, entitlements, billableMemberCount, memberUsage, requests, invoices, payments, history, settings, rates, rateStatus, conversions, ownPersonalEntitlement, ownedFamilySubscriptions] = await Promise.all([
     query("workspace subscription load", supabase.from("workspace_subscriptions").select("*").eq("workspace_id", workspace.id).limit(1)),
     query("workspace entitlement load", supabase.rpc("effective_workspace_entitlement", { p_workspace_id: workspace.id })),
     query("workspace seat usage load", supabase.rpc("workspace_billable_member_count", { p_workspace_id: workspace.id })),
@@ -1609,10 +1666,19 @@ async function loadWorkspaceSubscriptionData() {
     query("workspace currency settings load", supabase.from("workspace_settings").select("*").eq("workspace_id", workspace.id).single()),
     query("exchange rates load", supabase.from("exchange_rate_snapshots").select("quote_currency, rate, provider_effective_at, fetched_at, provider").eq("base_currency", "USD").order("provider_effective_at", { ascending: false }).limit(500)),
     query("exchange rate status load", supabase.rpc("exchange_rate_status", { p_include_admin_details: false })),
-    query("payment conversions load", supabase.from("payment_conversions").select("*").eq("workspace_id", workspace.id).order("rate_effective_at", { ascending: false }))
+    query("payment conversions load", supabase.from("payment_conversions").select("*").eq("workspace_id", workspace.id).order("rate_effective_at", { ascending: false })),
+    personalWorkspace && workspace.id !== personalWorkspace.id
+      ? query("own personal plan load", supabase.rpc("effective_workspace_entitlement", { p_workspace_id: personalWorkspace.id }))
+      : Promise.resolve([]),
+    ownedFamilyIds.length
+      ? query("owned family plans load", supabase.from("workspace_subscriptions").select("*").in("workspace_id", ownedFamilyIds))
+      : Promise.resolve([])
   ]);
   state.workspaceSubscription = subscriptions[0] || null;
   state.workspaceEntitlement = entitlements[0] || null;
+  state.personalWorkspaceEntitlement = workspace.id === personalWorkspace?.id
+    ? entitlements[0] || null : ownPersonalEntitlement[0] || null;
+  state.ownedFamilySubscriptions = ownedFamilySubscriptions;
   state.billableMemberCount = Number(billableMemberCount || 1);
   state.memberUsage = memberUsage[0] || {
     active_member_count: 1,
@@ -1915,8 +1981,9 @@ function renderMemberAccess() {
 function renderMemberOptions() {
   const obligationMember = $("#obligationMember");
   const recordPaidBy = $("#recordPaidBy");
+  const previousPayer = recordPaidBy.value;
   obligationMember.innerHTML = `<option value="">Select responsible member</option>`;
-  recordPaidBy.innerHTML = `<option value="">Personal account</option>`;
+  recordPaidBy.innerHTML = `<option value="">Select the family member who paid</option>`;
 
   activeMembers().forEach((member) => {
     const option = document.createElement("option");
@@ -1929,6 +1996,9 @@ function renderMemberOptions() {
     payer.textContent = `${member.name} (${member.role})`;
     recordPaidBy.append(payer);
   });
+  if ($("#recordPaymentDialog")?.open && activeMembers().some((member) => member.id === previousPayer)) {
+    recordPaidBy.value = previousPayer;
+  }
 }
 
 function renderPaymentScope() {
@@ -2633,7 +2703,7 @@ function renderInvitations() {
 }
 
 function renderSettings() {
-  const entitlement = state.workspaceEntitlement;
+  const entitlement = state.personalWorkspaceEntitlement;
   const plan = entitlement
     ? `${entitlement.plan_name} - ${titleCase(entitlement.effective_status)}`
     : hasJoinableFamilyInvitation() ? "Family member - Free" : "Active - Free";
@@ -2642,7 +2712,7 @@ function renderSettings() {
   $("#settingsPlanBadge").textContent = plan;
   $("#settingsPlanBadge").className = `mini-badge ${badgeClass(plan)}`;
   $("#settingsPaymentLimit").textContent = entitlement?.active_payment_limit == null
-    ? "Unlimited payments in this workspace"
+    ? "Unlimited Personal payments"
     : `${paymentCount}/${entitlement.active_payment_limit} active personal payments used`;
   $("#settingsMemberAccess").textContent = canManageAnyFamily ? "Can invite family members" : "Can join invited families";
   $("#settingsEmail").textContent = state.session.user.email || "-";
@@ -3552,6 +3622,38 @@ function renderSubscription() {
   const workspace = currentBudgetWorkspace();
   const entitlement = state.workspaceEntitlement;
   if (!workspace || !entitlement) return;
+  const ownedFamilyPlans = state.workspaces
+    .filter((item) => item.workspace_type === "household" && item.owner_id === state.session.user.id && item.status !== "closed")
+    .map((item) => {
+      const subscription = state.ownedFamilySubscriptions.find((entry) => entry.workspace_id === item.id);
+      const plan = state.plans.find((entry) => entry.id === subscription?.plan_id);
+      const status = subscription?.paid_through_at && new Date(subscription.paid_through_at) < new Date()
+        ? "Expired" : titleCase(subscription?.status || "Unavailable");
+      return { workspace: item, plan, status };
+    });
+  const personalPlan = state.personalWorkspaceEntitlement;
+  $("#ownedPersonalPlanName").textContent = personalPlan?.plan_name || "Free";
+  $("#ownedPersonalPlanDetail").textContent = `Your own Personal workspace · ${titleCase(personalPlan?.effective_status || "active")}`;
+  $("#ownedFamilyPlanName").textContent = ownedFamilyPlans.length
+    ? ownedFamilyPlans.length === 1 ? ownedFamilyPlans[0].plan?.display_name || "Family" : `${ownedFamilyPlans.length} Family workspaces`
+    : "Free";
+  $("#ownedFamilyPlanDetail").textContent = ownedFamilyPlans.length
+    ? "Family workspace subscriptions you own and manage."
+    : "No Family workspace purchased by you. Joining another family does not change your plan.";
+  $("#ownedFamilyPlanList").innerHTML = ownedFamilyPlans.map(({ workspace: owned, plan, status }) =>
+    `<span>${escapeHtml(owned.name)} · ${escapeHtml(plan?.display_name || "Family plan")} · ${escapeHtml(status)}</span>`).join("");
+  $("#startOwnFamilyPlan").textContent = ownedFamilyPlans.length ? "Start another Family plan" : "Start your own Family plan";
+  const joinedFamily = workspace.workspace_type === "household" && !currentWorkspaceIsOwned();
+  $("#joinedFamilyAccessCard").hidden = !joinedFamily;
+  if (joinedFamily) {
+    $("#joinedFamilyAccessName").textContent = workspace.name;
+    $("#joinedFamilyAccessDetail").textContent = `${entitlement.plan_name} workspace access · ${titleCase(entitlement.effective_status)} · Plan managed by the family owner. You have not purchased this plan.`;
+  }
+  $("#subscriptionWorkspaceOwnershipCaption").textContent = joinedFamily
+    ? "Selected Family workspace · Plan managed and paid for by its owner."
+    : `Selected ${workspace.workspace_type === "household" ? "Family" : "Personal"} workspace · Your subscription.`;
+  $("#ownedWorkspacePlansPanel").hidden = joinedFamily;
+  $("#ownedWorkspaceBillingHistory").hidden = joinedFamily;
   const activeItems = state.paymentItems.filter((item) => item.workspace_id === workspace.id && item.status !== "inactive").length;
   const tracksMemberPlaces = ["household", "business"].includes(workspace.workspace_type);
   const memberLimit = Math.max(1, Number(state.memberUsage?.member_limit || state.workspaceSubscription?.member_limit || 1));
@@ -3577,7 +3679,7 @@ function renderSubscription() {
   $("#subscriptionUsageCaption").textContent = tracksMemberPlaces
     ? `${Number(state.memberUsage?.active_member_count || 1)} active · ${Number(state.memberUsage?.pending_invitation_count || 0)} pending · ${Number(state.memberUsage?.available_member_count || 0)} available`
     : "Active payment items";
-  $("#openRenewalButton").disabled = !currentWorkspaceIsOwned();
+  $("#openRenewalButton").hidden = !currentWorkspaceIsOwned();
 
   const notice = $("#subscriptionAccessNotice");
   notice.classList.toggle("hidden", entitlement.effective_status === "active" && !entitlement.read_only);
@@ -4342,7 +4444,6 @@ function renderPaymentRecordList(reportRecords) {
 
 function renderFamilyPaymentRecord(record) {
   const item = state.paymentItems.find((paymentItem) => paymentItem.id === record.payment_item_id);
-  const member = memberById(record.paid_by_member_id);
   const article = document.createElement("article");
   const recordCurrency = record.currency || item?.currency || familyCurrency();
   const locked = lockedConversionFor("payment_record", record.id, reportReportingCurrency());
@@ -4351,7 +4452,7 @@ function renderFamilyPaymentRecord(record) {
     <div class="date-chip"><strong>${parseDate(record.payment_date).getDate()}</strong><span>${parseDate(record.payment_date).toLocaleString("en", { month: "short" })}</span></div>
     <div class="record-main">
       <strong>${escapeHtml(item?.name || "Payment")}</strong>
-      <span>${escapeHtml(member?.name || "Household account")} &middot; ${escapeHtml(record.payment_method || "Method not set")} &middot; ${escapeHtml(record.reference_number || "No reference")}</span>
+      <span>${escapeHtml(paymentRecordAttribution(record))} &middot; ${escapeHtml(record.payment_method || "Method not set")} &middot; ${escapeHtml(record.reference_number || "No reference")}</span>
       ${record.notes ? `<small>${escapeHtml(record.notes)}</small>` : ""}
       ${record.proof_name ? `<small>Proof: ${escapeHtml(record.proof_name)}${record.proof_size_bytes ? ` &middot; ${formatFileSize(record.proof_size_bytes)}` : ""}</small>` : ""}
     </div>
@@ -6473,8 +6574,9 @@ function populateRecordPaymentPeriods(choices, selectedKey) {
   field.hidden = choices.length <= 1;
 }
 
-function applyRecordPaymentOccurrence(occurrence) {
+function applyRecordPaymentOccurrence(occurrence, preservePayer = false) {
   if (!occurrence) return;
+  const selectedPayer = preservePayer ? $("#recordPaidBy").value : null;
   $("#recordItemId").value = occurrence.item.id;
   $("#recordPeriodStart").value = occurrence.periodStart;
   $("#recordDueDate").value = occurrence.dueDate;
@@ -6486,7 +6588,13 @@ function applyRecordPaymentOccurrence(occurrence) {
   $("#recordAmount").value = `${Number(occurrence.outstanding.toFixed(4))}`;
   $("#recordAmount").max = occurrence.outstanding.toFixed(4);
   $("#recordAmount").readOnly = true;
-  $("#recordPaidBy").value = occurrence.item.responsible_member_id || "";
+  const isFamilyPayment = occurrence.item.visibility === "family" || Boolean(occurrence.item.family_id);
+  $("#recordPaidByField").hidden = !isFamilyPayment;
+  $("#recordPaidBy").required = isFamilyPayment;
+  $("#recordPaidBy").value = isFamilyPayment
+    ? (selectedPayer && activeMembers().some((member) => member.id === selectedPayer)
+        ? selectedPayer : currentFamilyMember()?.id || "")
+    : "";
 }
 
 function showRecordPaymentDialog(choices, selectedOccurrence) {
@@ -6547,7 +6655,6 @@ function paymentHistoryRecordStatus(record, item) {
 }
 
 function renderPaymentHistoryRecord(record, item) {
-  const member = memberById(record.paid_by_member_id);
   const recordCurrency = record.currency || item.currency;
   const status = paymentHistoryRecordStatus(record, item);
   const workspaceReadOnly = Boolean(state.workspaceEntitlement?.read_only || state.workspaceEntitlement?.effective_status === "suspended");
@@ -6563,7 +6670,7 @@ function renderPaymentHistoryRecord(record, item) {
         <strong>${money(record.amount, recordCurrency)}</strong>
         <span class="mini-badge ${status === "Paid in full" ? "paid" : "partial"}">${status}</span>
       </div>
-      <span>Due ${escapeHtml(record.due_date || record.period_start)} &middot; ${escapeHtml(member?.name || "Household account")}</span>
+      <span>Due ${escapeHtml(record.due_date || record.period_start)} &middot; ${escapeHtml(paymentRecordAttribution(record))}</span>
       <span>${escapeHtml(record.payment_method || "Method not set")} &middot; ${escapeHtml(record.reference_number || "No reference")}</span>
       ${record.notes ? `<small>${escapeHtml(record.notes)}</small>` : ""}
       ${record.proof_name ? `<small>Proof: ${escapeHtml(record.proof_name)}${record.proof_size_bytes ? ` &middot; ${formatFileSize(record.proof_size_bytes)}` : ""}</small>` : ""}
@@ -6623,6 +6730,11 @@ async function savePaymentRecord(event) {
     showToast(`The payment cannot be more than the ${money(outstanding, item.currency)} outstanding balance.`);
     return;
   }
+  if ((item.visibility === "family" || item.family_id) && !activeMembers().some((member) =>
+    member.id === $("#recordPaidBy").value && member.family_id === item.family_id)) {
+    showToast("Choose an active member of this family who paid.");
+    return;
+  }
   if (proofFile && !PAYMENT_PROOF_TYPES.has(proofFile.type)) {
     showToast("Proof must be a JPG, PNG, WebP, or PDF file.");
     return;
@@ -6644,7 +6756,7 @@ async function savePaymentRecord(event) {
         payment_item_id: item.id,
         period_start: $("#recordPeriodStart").value,
         due_date: $("#recordDueDate").value,
-        paid_by_member_id: item.visibility === "family" ? $("#recordPaidBy").value || null : null,
+        paid_by_member_id: item.visibility === "family" || item.family_id ? $("#recordPaidBy").value || null : null,
         amount,
         currency: item.currency,
         payment_date: $("#recordPaymentDate").value,
@@ -6999,6 +7111,21 @@ function memberById(id) {
   return state.members.find((member) => member.id === id);
 }
 
+function paymentRecordPeople(record) {
+  const recorder = state.members.find((member) => member.user_id === record.recorded_by);
+  const recorderName = recorder?.name || (record.recorded_by === state.session?.user?.id
+    ? state.profile?.full_name || state.session?.user?.email || "You" : "Member unavailable");
+  const payerName = record.visibility === "family" || record.family_id
+    ? memberById(record.paid_by_member_id)?.name || "Member not recorded" : "";
+  return { payerName, recorderName };
+}
+
+function paymentRecordAttribution(record) {
+  const { payerName, recorderName } = paymentRecordPeople(record);
+  if (!payerName) return `Recorded by ${recorderName}`;
+  return `Paid by ${payerName} · Recorded by ${recorderName}`;
+}
+
 function currentFamilyMember() {
   const userId = state.session?.user?.id;
   const email = state.session?.user?.email?.toLowerCase();
@@ -7178,16 +7305,18 @@ function exportReportCsv() {
     const item = items.find((candidate) => candidate.id === record.payment_item_id);
     const source = record.currency || item?.currency || "USD";
     const locked = lockedConversionFor("payment_record", record.id, target);
+    const people = paymentRecordPeople(record);
     return [
       record.payment_date, item?.name || "Payment", record.amount, source,
       locked?.converted_amount || "", locked?.reporting_currency || "",
       locked?.exchange_rate || "", locked?.rate_effective_at || "",
-      locked?.rate_source || "", record.payment_method || "", record.reference_number || ""
+      locked?.rate_source || "", people.payerName, people.recorderName,
+      record.payment_method || "", record.reference_number || ""
     ];
   });
   downloadCsv(`mushavo-report-${state.filterMonth}.csv`, [
     "Payment date", "Payment", "Original amount", "Original currency", "Converted amount",
-    "Reporting currency", "Exchange rate", "Rate effective at (UTC)", "Rate source", "Method", "Reference"
+    "Reporting currency", "Exchange rate", "Rate effective at (UTC)", "Rate source", "Paid by", "Recorded by", "Method", "Reference"
   ], rows);
 }
 
@@ -7567,9 +7696,17 @@ $("#recurrenceType").addEventListener("change", updateRecurrenceControls);
   field.addEventListener("change", syncPaymentStartDate);
 });
 $("#recordPaymentForm").addEventListener("submit", protectSubmission(savePaymentRecord));
+$("#startOwnFamilyPlan").addEventListener("click", async () => {
+  try {
+    if (state.family) await selectFamily("__personal__");
+    $("#workspacePlansTitle").scrollIntoView({ block: "start", behavior: "smooth" });
+  } catch (error) {
+    showToast(error.message);
+  }
+});
 $("#recordPaymentPeriod").addEventListener("change", (event) => {
   const occurrence = state.recordPaymentOccurrenceChoices.find((choice) => choice.key === event.target.value);
-  applyRecordPaymentOccurrence(occurrence);
+  applyRecordPaymentOccurrence(occurrence, true);
 });
 $("#recordPaymentDialog").addEventListener("close", () => {
   state.recordPaymentOccurrenceChoices = [];

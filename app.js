@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 73
+// Mushavo Budget authenticated application — release 74
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -112,6 +112,7 @@ const state = {
 
 const realtime = {
   channel: null,
+  lastConnectedUserId: null,
   refreshTimer: null,
   notificationTimer: null,
   reconnectTimer: null,
@@ -153,6 +154,7 @@ const dashboardDisclosureState = {
 let dashboardFitFrame = null;
 let appLoadPromise = null;
 let appLoadUserId = null;
+let signInInProgress = false;
 let toastTimer = null;
 let pushRefreshPromise = null;
 let pushRefreshSequence = 0;
@@ -913,8 +915,12 @@ function startRealtime() {
     if (realtime.channel !== channel) return;
     if (status === "SUBSCRIBED") {
       realtime.reconnectAttempts = 0;
+      const reconnect = realtime.lastConnectedUserId === state.session?.user?.id;
+      realtime.lastConnectedUserId = state.session.user.id;
       queueNotificationRefresh();
-      queueRealtimeRefresh({ table: "realtime", eventType: "SUBSCRIBED" });
+      // The first connection follows a complete startup load. Only a real
+      // reconnection needs another full snapshot.
+      if (reconnect) queueRealtimeRefresh({ table: "realtime", eventType: "SUBSCRIBED" });
     } else if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
       console.warn("Realtime disconnected; reconnecting while the app is open.", status);
       if (!realtime.reconnectTimer && state.session) {
@@ -949,19 +955,20 @@ function queueNotificationRefresh() {
 }
 
 function queueRealtimeRefresh(payload = {}) {
+  if (!state.session || appLoadPromise || document.visibilityState === "hidden" || !navigator.onLine) return;
   console.debug("Realtime refresh requested", payload.table || "app", payload.eventType || "REFRESH");
   if (realtime.refreshTimer) window.clearTimeout(realtime.refreshTimer);
   realtime.refreshTimer = window.setTimeout(() => {
     realtime.refreshTimer = null;
     refreshVisibleData().catch((error) => {
-      console.error("Realtime refresh failed", error);
-      showToast(error.message);
+      // A background sync must not replace or obscure an already usable workspace.
+      console.warn("Realtime refresh failed; the next reconnect or resume will retry.", error);
     });
   }, 180);
 }
 
 async function refreshVisibleData() {
-  if (!state.session) return;
+  if (!state.session || appLoadPromise || !navigator.onLine) return;
   if (realtime.refreshInFlight) {
     realtime.refreshPending = true;
     return;
@@ -991,7 +998,7 @@ async function refreshVisibleData() {
 }
 
 function refreshAfterAppResume(source) {
-  if (!state.session || document.visibilityState === "hidden") return;
+  if (!state.session || appLoadPromise || document.visibilityState === "hidden" || !navigator.onLine) return;
   if (!realtime.channel || realtime.reconnectTimer) startRealtime();
   queueNotificationRefresh();
   queueRealtimeRefresh({ table: source, eventType: "RESUME" });
@@ -1004,7 +1011,10 @@ async function query(label, promise) {
       promise,
       new Promise((_, reject) => {
         timeoutId = window.setTimeout(
-          () => reject(new Error("The request took too long. Check your connection and try again.")),
+          () => {
+            console.warn(`Request timed out: ${label}`);
+            reject(new Error("The request took too long. Check your connection and try again."));
+          },
           QUERY_TIMEOUT_MS
         );
       })
@@ -1035,6 +1045,9 @@ async function init() {
     if (event === "INITIAL_SESSION") return;
     const previousSession = state.session;
     state.session = session;
+    // Password sign-in owns its first workspace load. Auth also emits
+    // SIGNED_IN during that request; handling both would race two loaders.
+    if (signInInProgress && event === "SIGNED_IN") return;
 
     if (session && isSameAuthUser(previousSession, session)) {
       if (session.access_token) supabase.realtime.setAuth(session.access_token);
@@ -1149,6 +1162,7 @@ function openAuthenticatedSession(session) {
 
 function resetState() {
   stopRealtime();
+  realtime.lastConnectedUserId = null;
   analyticsActivity.userId = null;
   analyticsActivity.lastSentAt = 0;
   resetDashboardDisclosureState();
@@ -1302,6 +1316,10 @@ async function loadApp() {
   const loadedFamily = await familyResult;
   if (!loadedFamily.ok) throw loadedFamily.error;
 
+  // Finance data can load alongside workspace plans instead of adding another
+  // network round trip before the dashboard is shown.
+  const financialFamilyId = state.family?.id;
+  const financialResult = settled(loadFamilyFinancialData());
   await loadWorkspaceSubscriptionData();
 
   if (state.headApproval?.status === "suspended") {
@@ -1313,7 +1331,9 @@ async function loadApp() {
     showToast("A shared workspace is suspended. Your Personal workspace remains available.");
   }
 
-  await loadFamilyFinancialData();
+  const loadedFinances = await financialResult;
+  if (!loadedFinances.ok) throw loadedFinances.error;
+  if (financialFamilyId !== state.family?.id) await loadFamilyFinancialData();
   syncRouteForWorkspace("family");
   if (state.familyTab === "support") await loadUserSupportData();
   setView("app");
@@ -1619,15 +1639,7 @@ function currentWorkspaceIsOwned() {
 }
 
 async function loadWorkspaceSubscriptionData() {
-  const hasPersonalWorkspace = state.workspaces.some((workspace) =>
-    workspace.workspace_type === "personal" &&
-    workspace.owner_id === state.session.user.id &&
-    workspace.status !== "closed"
-  );
-  if (!hasPersonalWorkspace) {
-    await query("personal workspace provision", supabase.rpc("provision_my_budget_workspace"));
-  }
-  const [workspaces, members, plans, prices, features, limits, supportedCurrencies] = await Promise.all([
+  let [workspaces, members, plans, prices, features, limits, supportedCurrencies] = await Promise.all([
     query("workspace load", supabase.from("budget_workspaces").select("*").order("created_at", { ascending: true })),
     query("workspace membership load", supabase.from("workspace_members").select("*").order("created_at", { ascending: true })),
     query("plan catalogue load", supabase.from("plans").select("*").eq("is_active", true).order("sort_order", { ascending: true })),
@@ -1636,6 +1648,16 @@ async function loadWorkspaceSubscriptionData() {
     query("plan limits load", supabase.from("plan_limits").select("*")),
     query("supported currencies load", supabase.from("supported_currencies").select("*").eq("is_active", true).order("code"))
   ]);
+  // Existing accounts already have a Personal workspace. Only provision a
+  // missing one, avoiding an extra RPC round trip on every sign-in.
+  if (!workspaces.some((workspace) => workspace.workspace_type === "personal" &&
+    workspace.owner_id === state.session.user.id && workspace.status !== "closed")) {
+    await query("personal workspace provision", supabase.rpc("provision_my_budget_workspace"));
+    [workspaces, members] = await Promise.all([
+      query("workspace load after provision", supabase.from("budget_workspaces").select("*").order("created_at", { ascending: true })),
+      query("workspace membership load after provision", supabase.from("workspace_members").select("*").order("created_at", { ascending: true }))
+    ]);
+  }
   state.workspaces = workspaces;
   state.workspaceMembers = members;
   state.plans = plans;
@@ -6252,7 +6274,9 @@ async function signIn(event) {
     return;
   }
   const submitButton = event.submitter || event.currentTarget.querySelector('button[type="submit"]');
+  let signedInSession = null;
   try {
+    signInInProgress = true;
     if (submitButton) {
       submitButton.disabled = true;
       submitButton.textContent = "Signing in...";
@@ -6260,12 +6284,17 @@ async function signIn(event) {
     showLoading("Signing you in", "Verifying your account...");
     const authData = await query("sign in", supabase.auth.signInWithPassword({ email, password }));
     if (!authData.session) throw new Error("Sign-in completed without a session. Please try again.");
-    await openAuthenticatedSession(authData.session);
+    signedInSession = authData.session;
+    await openAuthenticatedSession(signedInSession);
     showToast("Signed in.");
   } catch (error) {
-    setView("auth");
-    showToast(error.message);
+    if (signedInSession) await handleLoadFailure(error);
+    else {
+      setView("auth");
+      showToast(error.message);
+    }
   } finally {
+    signInInProgress = false;
     if (submitButton) {
       submitButton.disabled = false;
       submitButton.textContent = "Sign in";
@@ -7492,12 +7521,22 @@ document.addEventListener("click", async (event) => {
     }
   }
   if (event.target.dataset.retryLoad !== undefined) {
-    setView("loading");
-    await loadApp().catch((error) => {
-      console.error(error);
-      showToast(error.message);
-      showAppError(error);
-    });
+    showLoading("Opening your workspace", "Checking your secure session...");
+    try {
+      const { session } = await query("session retry", supabase.auth.getSession());
+      if (!session) {
+        handleSignedOut();
+        return;
+      }
+      const expiresSoon = session.expires_at && session.expires_at * 1000 < Date.now() + 60000;
+      const freshSession = expiresSoon
+        ? (await query("session refresh", supabase.auth.refreshSession())).session
+        : session;
+      if (!freshSession) throw new Error("Your session could not be restored. Please sign in again.");
+      await openAuthenticatedSession(freshSession);
+    } catch (error) {
+      await handleLoadFailure(error);
+    }
   }
   if (event.target.dataset.signOutError !== undefined) {
     await signOutSafely(event.target);

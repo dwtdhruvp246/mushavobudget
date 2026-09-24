@@ -25,6 +25,7 @@ function harness({ delayFirstAccess = false } = {}) {
     }
   };
   const context = {
+    appLoadPromise: null,
     state: {
       session: { user: { id: "user-1" }, access_token: "token" },
       isAdmin: false,
@@ -71,6 +72,8 @@ function harness({ delayFirstAccess = false } = {}) {
     api: context.realtimeApi,
     calls,
     timers,
+    setStartup(value) { context.appLoadPromise = value ? Promise.resolve() : null; },
+    setOnline(value) { context.navigator.onLine = value; },
     getStatusCallback: () => statusCallback,
     getHandler: (table) => handlers.get(table),
     getAccessCalls: () => accessCalls,
@@ -78,15 +81,22 @@ function harness({ delayFirstAccess = false } = {}) {
   };
 }
 
-test("a realtime reconnect requests a fresh workspace snapshot", async () => {
+test("the first realtime subscription reuses the completed startup snapshot", async () => {
   const h = harness();
+  h.api.startRealtime();
+  h.getStatusCallback()("SUBSCRIBED");
+  assert.equal(h.timers.length, 1);
+  h.timers.shift()();
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.ok(h.calls.includes("notification-rendered"));
+  assert.equal(h.getAccessCalls(), 0);
+
   h.api.startRealtime();
   h.getStatusCallback()("SUBSCRIBED");
   assert.equal(h.timers.length, 2);
   h.timers.shift()();
   h.timers.shift()();
   await new Promise((resolve) => setImmediate(resolve));
-  assert.ok(h.calls.includes("notification-rendered"));
   assert.ok(h.calls.includes("families"));
   assert.ok(h.calls.includes("subscriptions"));
   assert.ok(h.calls.includes("rendered"));
@@ -140,6 +150,18 @@ test("routine refreshes do not rewrite an existing Personal workspace", () => {
     app.indexOf("async function loadWorkspaceSubscriptionData"),
     app.indexOf("async function loadAdminData")
   );
-  assert.match(loadWorkspaceData, /const hasPersonalWorkspace = state\.workspaces\.some/);
-  assert.match(loadWorkspaceData, /if \(!hasPersonalWorkspace\) \{\s+await query\("personal workspace provision"/);
+  assert.match(loadWorkspaceData, /if \(!workspaces\.some\([\s\S]+?\)\) \{\s+await query\("personal workspace provision"/);
+});
+
+test("background refreshes stay quiet when startup is running or connectivity is gone", () => {
+  const h = harness();
+  h.setStartup(true);
+  h.api.startRealtime();
+  h.getStatusCallback()("SUBSCRIBED");
+  h.api.refreshAfterAppResume("focus");
+  assert.equal(h.timers.length, 1); // Notification badge only.
+  h.setStartup(false);
+  h.setOnline(false);
+  h.api.refreshAfterAppResume("focus");
+  assert.equal(h.timers.length, 1);
 });

@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 76
+// Mushavo Budget authenticated application — release 77
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -43,6 +43,7 @@ const state = {
   workspaceMembers: [],
   workspaceSubscription: null,
   workspaceEntitlement: null,
+  personalWorkspaceSubscription: null,
   personalWorkspaceEntitlement: null,
   ownedFamilySubscriptions: [],
   workspaceSettings: null,
@@ -1196,6 +1197,7 @@ function resetState() {
   state.workspaceMembers = [];
   state.workspaceSubscription = null;
   state.workspaceEntitlement = null;
+  state.personalWorkspaceSubscription = null;
   state.personalWorkspaceEntitlement = null;
   state.ownedFamilySubscriptions = [];
   state.workspaceSettings = null;
@@ -1690,7 +1692,7 @@ async function loadWorkspaceSubscriptionData() {
     item.workspace_type === "household" && item.owner_id === state.session.user.id && item.status !== "closed")
     .map((item) => item.id);
 
-  const [subscriptions, entitlements, billableMemberCount, memberUsage, requests, invoices, payments, history, settings, rates, rateStatus, conversions, ownPersonalEntitlement, ownedFamilySubscriptions] = await Promise.all([
+  const [subscriptions, entitlements, billableMemberCount, memberUsage, requests, invoices, payments, history, settings, rates, rateStatus, conversions, ownPersonalSubscription, ownPersonalEntitlement, ownedFamilySubscriptions] = await Promise.all([
     query("workspace subscription load", supabase.from("workspace_subscriptions").select("*").eq("workspace_id", workspace.id).limit(1)),
     query("workspace entitlement load", supabase.rpc("effective_workspace_entitlement", { p_workspace_id: workspace.id })),
     query("workspace seat usage load", supabase.rpc("workspace_billable_member_count", { p_workspace_id: workspace.id })),
@@ -1704,6 +1706,9 @@ async function loadWorkspaceSubscriptionData() {
     query("exchange rate status load", supabase.rpc("exchange_rate_status", { p_include_admin_details: false })),
     query("payment conversions load", supabase.from("payment_conversions").select("*").eq("workspace_id", workspace.id).order("rate_effective_at", { ascending: false })),
     personalWorkspace && workspace.id !== personalWorkspace.id
+      ? query("own personal subscription load", supabase.from("workspace_subscriptions").select("*").eq("workspace_id", personalWorkspace.id).limit(1))
+      : Promise.resolve([]),
+    personalWorkspace && workspace.id !== personalWorkspace.id
       ? query("own personal plan load", supabase.rpc("effective_workspace_entitlement", { p_workspace_id: personalWorkspace.id }))
       : Promise.resolve([]),
     ownedFamilyIds.length
@@ -1712,6 +1717,8 @@ async function loadWorkspaceSubscriptionData() {
   ]);
   state.workspaceSubscription = subscriptions[0] || null;
   state.workspaceEntitlement = entitlements[0] || null;
+  state.personalWorkspaceSubscription = workspace.id === personalWorkspace?.id
+    ? subscriptions[0] || null : ownPersonalSubscription[0] || null;
   state.personalWorkspaceEntitlement = workspace.id === personalWorkspace?.id
     ? entitlements[0] || null : ownPersonalEntitlement[0] || null;
   state.ownedFamilySubscriptions = ownedFamilySubscriptions;
@@ -1731,10 +1738,18 @@ async function loadWorkspaceSubscriptionData() {
   state.exchangeRates = rates;
   state.exchangeRateStatus = rateStatus;
   state.paymentConversions = conversions;
-  if (state.workspacePlanWorkspaceId !== workspace.id) {
-    state.workspacePlanWorkspaceId = workspace.id;
-    state.workspacePlanBillingPeriod = subscriptions[0]?.billing_period === "annual" ? "annual" : "monthly";
-    state.workspacePlanCurrency = settings?.default_payment_currency || workspace.currency || null;
+  const planWorkspace = workspace.owner_id === state.session.user.id
+    ? workspace
+    : personalWorkspace || workspace;
+  const planSubscription = planWorkspace.id === workspace.id
+    ? subscriptions[0]
+    : ownPersonalSubscription[0];
+  if (state.workspacePlanWorkspaceId !== planWorkspace.id) {
+    state.workspacePlanWorkspaceId = planWorkspace.id;
+    state.workspacePlanBillingPeriod = planSubscription?.billing_period === "annual" ? "annual" : "monthly";
+    state.workspacePlanCurrency = planWorkspace.id === workspace.id
+      ? settings?.default_payment_currency || planWorkspace.currency || null
+      : planWorkspace.currency || null;
   }
 }
 
@@ -3593,12 +3608,34 @@ function workspaceComparablePlans() {
   return state.plans.filter((plan) => plan.is_active !== false);
 }
 
-function isCurrentWorkspacePlan(plan) {
-  if (plan.workspace_type !== currentBudgetWorkspace()?.workspace_type ||
-      plan.code !== state.workspaceEntitlement?.plan_code) return false;
+function workspacePlanWorkspace() {
+  const selectedWorkspace = currentBudgetWorkspace();
+  if (selectedWorkspace?.owner_id === state.session?.user?.id) return selectedWorkspace;
+  return state.workspaces?.find((workspace) =>
+    workspace.workspace_type === "personal" && workspace.owner_id === state.session?.user?.id && workspace.status !== "closed"
+  ) || selectedWorkspace;
+}
+
+function workspacePlanSubscription(workspace = workspacePlanWorkspace()) {
+  return workspace?.id === currentBudgetWorkspace()?.id
+    ? state.workspaceSubscription
+    : state.personalWorkspaceSubscription;
+}
+
+function workspacePlanEntitlement(workspace = workspacePlanWorkspace()) {
+  return workspace?.id === currentBudgetWorkspace()?.id
+    ? state.workspaceEntitlement
+    : state.personalWorkspaceEntitlement;
+}
+
+function isCurrentWorkspacePlan(plan, workspace = workspacePlanWorkspace()) {
+  const entitlement = workspacePlanEntitlement(workspace);
+  const subscription = workspacePlanSubscription(workspace);
+  if (plan.workspace_type !== workspace?.workspace_type ||
+      plan.code !== entitlement?.plan_code) return false;
   // Free access has no recurring billing period.
   return plan.code === "free" ||
-    state.workspaceSubscription?.billing_period === state.workspacePlanBillingPeriod;
+    subscription?.billing_period === state.workspacePlanBillingPeriod;
 }
 
 function workspacePlanCurrencies(plans) {
@@ -3609,11 +3646,13 @@ function workspacePlanCurrencies(plans) {
   )].sort();
 }
 
-function syncWorkspacePlanControls(plans) {
+function syncWorkspacePlanControls(plans, workspace = workspacePlanWorkspace()) {
   const currencies = workspacePlanCurrencies(plans);
   const currencySelect = $("#workspacePlanCurrency");
   if (!currencies.includes(state.workspacePlanCurrency)) {
-    const preferred = state.workspaceSettings?.default_payment_currency || currentBudgetWorkspace()?.currency;
+    const preferred = workspace?.id === currentBudgetWorkspace()?.id
+      ? state.workspaceSettings?.default_payment_currency || workspace?.currency
+      : workspace?.currency;
     state.workspacePlanCurrency = currencies.includes(preferred)
       ? preferred
       : currencies.includes("USD")
@@ -3636,12 +3675,11 @@ function extraMemberBillingMonths(price) {
   return price?.billing_period === "annual" ? 12 : 1;
 }
 
-function planInvoiceTotal(plan, price, memberCountOverride = null) {
+function planInvoiceTotal(plan, price, memberCountOverride = null, workspace = currentBudgetWorkspace()) {
   if (!plan || !price) return 0;
   const includedSeats = includedMemberSeats(plan);
-  const selectedWorkspace = currentBudgetWorkspace();
   const relevantMemberCount = memberCountOverride == null
-    ? selectedWorkspace?.workspace_type === plan.workspace_type
+    ? workspace?.id === currentBudgetWorkspace()?.id && workspace?.workspace_type === plan.workspace_type
       ? Math.max(
         Number(state.billableMemberCount || 1),
         Number(state.memberUsage?.member_limit || state.workspaceSubscription?.member_limit || 1)
@@ -3689,7 +3727,7 @@ function renderSubscription() {
   $("#subscriptionWorkspaceOwnershipCaption").textContent = joinedFamily
     ? "Selected Family workspace · Plan managed and paid for by its owner."
     : `Selected ${workspace.workspace_type === "household" ? "Family" : "Personal"} workspace · Your subscription.`;
-  $("#ownedWorkspacePlansPanel").hidden = joinedFamily;
+  $("#ownedWorkspacePlansPanel").hidden = false;
   $("#ownedWorkspaceBillingHistory").hidden = joinedFamily;
   const activeItems = state.paymentItems.filter((item) => item.workspace_id === workspace.id && item.status !== "inactive").length;
   const tracksMemberPlaces = ["household", "business"].includes(workspace.workspace_type);
@@ -3732,9 +3770,11 @@ function renderSubscription() {
 
 function renderWorkspacePlans() {
   const list = $("#workspacePlanList");
-  const workspace = currentBudgetWorkspace();
+  const workspace = workspacePlanWorkspace();
+  const selectedWorkspace = currentBudgetWorkspace();
+  const usesSelectedWorkspace = workspace?.id === selectedWorkspace?.id;
   const plans = workspaceComparablePlans();
-  syncWorkspacePlanControls(plans);
+  syncWorkspacePlanControls(plans, workspace);
   const workspaceTypeLabel = workspace?.workspace_type === "household" ? "Family" : titleCase(workspace?.workspace_type);
   $("#workspacePlansTitle").textContent = "All available plans";
   $("#workspacePlansDescription").textContent = `Viewing your ${workspaceTypeLabel.toLowerCase()} workspace. Each workspace has its own subscription.`;
@@ -3748,18 +3788,18 @@ function renderWorkspacePlans() {
   const cards = plans.map((plan) => {
     const price = activePriceFor(plan.id, state.workspacePlanBillingPeriod, state.workspacePlanCurrency);
     const appliesToSelectedWorkspace = plan.workspace_type === workspace?.workspace_type;
-    const current = isCurrentWorkspacePlan(plan);
+    const current = isCurrentWorkspacePlan(plan, workspace);
     const startsNewFamily = workspace?.workspace_type === "personal" && plan.workspace_type === "household";
-    const pending = state.renewalRequests.some((request) =>
+    const pending = usesSelectedWorkspace && state.renewalRequests.some((request) =>
       request.requested_plan_id === plan.id && request.status === "pending_review" &&
       state.subscriptionInvoices.some((invoice) => invoice.id === request.invoice_id && invoice.billing_period === state.workspacePlanBillingPeriod)
     );
-    const canSelect = currentWorkspaceIsOwned() && plan.code !== "free" && plan.available_for_purchase !== false && (appliesToSelectedWorkspace || startsNewFamily);
+    const canSelect = workspace?.owner_id === state.session?.user?.id && plan.code !== "free" && plan.available_for_purchase !== false && (appliesToSelectedWorkspace || startsNewFamily);
     const planWorkspaceLabel = plan.workspace_type === "household" ? "Family" : titleCase(plan.workspace_type);
     const includedSeats = includedMemberSeats(plan);
     const paymentLimit = activePaymentLimitForPlan(plan);
     const features = featureLabelsForPlan(plan);
-    const total = price ? planInvoiceTotal(plan, price) : 0;
+    const total = price ? planInvoiceTotal(plan, price, null, workspace) : 0;
     const periodLabel = state.workspacePlanBillingPeriod === "annual" ? "year" : "month";
     const priceText = plan.code === "free" ? "Free" : price ? money(total, price.currency) : "Price unavailable";
     const extraMember = price && Number(price.extra_member_amount) > 0
@@ -3776,7 +3816,7 @@ function renderWorkspacePlans() {
       ? '<button type="button" disabled>Current plan</button>'
       : canSelect
         ? `<button class="${plan.is_featured && !current ? "primary" : ""}" type="button" data-select-renewal-plan="${escapeHtml(plan.code)}" ${price && !pending ? "" : "disabled"}>${pending ? "Awaiting approval" : current ? "Renew plan" : startsNewFamily ? "Start Family plan" : "Choose plan"}</button>`
-        : currentWorkspaceIsOwned()
+        : workspace?.owner_id === state.session?.user?.id
           ? `<small class="workspace-plan-owner-note">${!appliesToSelectedWorkspace ? `Select a ${escapeHtml(planWorkspaceLabel)} workspace to manage this plan.` : plan.code === "free" ? "Included with a free Personal workspace." : "This plan is not currently available for purchase."}</small>`
           : '<small class="workspace-plan-owner-note">Only the workspace owner can change this plan.</small>';
     return `<article class="plan-card workspace-plan-card${current ? " current" : ""}${pending ? " pending" : ""}">
@@ -3791,6 +3831,15 @@ function renderWorkspacePlans() {
     </article>`;
   }).join("");
   list.innerHTML = `<div class="workspace-plan-grid">${cards}</div>`;
+}
+
+async function openWorkspacePlanSelection(planCode) {
+  const workspace = workspacePlanWorkspace();
+  if (workspace?.id !== currentBudgetWorkspace()?.id) {
+    const selected = await selectNotificationWorkspace(workspace?.id);
+    if (!selected) throw new Error("Your Personal workspace could not be selected.");
+  }
+  openRenewalDialog(planCode);
 }
 
 function renderRenewalHistory() {
@@ -7489,7 +7538,13 @@ document.addEventListener("click", async (event) => {
   if (subscriptionPaymentDetails) openSubscriptionPaymentDetails(subscriptionPaymentDetails.dataset.viewSubscriptionPayment);
 
   const selectedRenewalPlan = event.target.closest("[data-select-renewal-plan]");
-  if (selectedRenewalPlan) openRenewalDialog(selectedRenewalPlan.dataset.selectRenewalPlan);
+  if (selectedRenewalPlan) {
+    try {
+      await openWorkspacePlanSelection(selectedRenewalPlan.dataset.selectRenewalPlan);
+    } catch (error) {
+      showToast(error.message);
+    }
+  }
 
   const subscriptionReview = event.target.closest("[data-review-subscription]");
   if (subscriptionReview) await reviewSubscriptionPayment(subscriptionReview.dataset.reviewSubscription, subscriptionReview.dataset.reviewDecision);
@@ -7752,7 +7807,6 @@ $("#recurrenceType").addEventListener("change", updateRecurrenceControls);
 $("#recordPaymentForm").addEventListener("submit", protectSubmission(savePaymentRecord));
 $("#startOwnFamilyPlan").addEventListener("click", async () => {
   try {
-    if (state.family) await selectFamily("__personal__");
     $("#workspacePlansTitle").scrollIntoView({ block: "start", behavior: "smooth" });
   } catch (error) {
     showToast(error.message);

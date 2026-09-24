@@ -67,6 +67,27 @@ test("all active plan types remain visible and only matching billing periods are
   assert.match(appSource, /Creates a separate Family workspace with its own plan/);
 });
 
+test("a joined Family workspace always shows plans for the member's own Personal workspace", () => {
+  const state = {
+    session: {user: {id: 'member'}},
+    workspaces: [
+      {id: 'personal', workspace_type: 'personal', owner_id: 'member', status: 'active'},
+      {id: 'joined', workspace_type: 'household', owner_id: 'owner', status: 'active'}
+    ],
+    workspaceEntitlement: {plan_code: 'household'},
+    workspaceSubscription: {billing_period: 'annual'},
+    personalWorkspaceEntitlement: {plan_code: 'free'},
+    personalWorkspaceSubscription: null,
+    workspacePlanBillingPeriod: 'monthly'
+  };
+  const context = {state, currentBudgetWorkspace: () => state.workspaces[1]};
+  vm.runInNewContext(appSource.slice(appSource.indexOf('function workspacePlanWorkspace'), appSource.indexOf('function workspacePlanCurrencies')), context);
+  assert.equal(context.workspacePlanWorkspace().id, 'personal');
+  assert.equal(context.isCurrentWorkspacePlan({code: 'free', workspace_type: 'personal'}), true);
+  assert.equal(context.isCurrentWorkspacePlan({code: 'household', workspace_type: 'household'}), false);
+  assert.match(appSource, /await openWorkspacePlanSelection\(selectedRenewalPlan\.dataset\.selectRenewalPlan\)/);
+});
+
 test("subscription histories are collapsed and billing remains visible in the summary", () => {
   assert.match(appHtml, /id="subscriptionBillingPeriod"/);
   assert.match(appHtml, /<details class="subscription-history"><summary>Payment review history/);

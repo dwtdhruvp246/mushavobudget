@@ -5557,7 +5557,8 @@ function renderAdminUserInvitations() {
       : `<small>${invitation.sent_at ? `Sent ${escapeHtml(new Date(invitation.sent_at).toLocaleString())}` : `Created ${escapeHtml(new Date(invitation.created_at).toLocaleString())}`}</small>`;
     return `<article class="record-row admin-invitation-row">
       <div class="record-main"><strong>${escapeHtml(invitation.full_name)}</strong><span>${escapeHtml(invitation.email)}</span>${deliveryNote}</div>
-      <div class="record-side"><span>${escapeHtml(invitation.plan_name)} · ${titleCase(invitation.billing_period)}</span><small>${escapeHtml(invitation.workspace_name)} · ${escapeHtml(invitation.subscription_currency)}</small><div class="badge-row">${statusBadge(invitation.status)}${payment}</div></div>
+      <div class="record-side"><span>${escapeHtml(invitation.plan_name)} · ${titleCase(invitation.billing_period)}</span><small>${escapeHtml(invitation.workspace_name)} · ${escapeHtml(invitation.subscription_currency)}</small></div>
+      <div class="admin-invitation-status badge-row">${statusBadge(invitation.status)}${payment}</div>
     </article>`;
   }).join("");
 }

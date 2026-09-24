@@ -57,3 +57,46 @@ test('submission protection spans the entire async handler and releases on failu
   await assert.rejects(wrapped({}), /save failed/);
   assert.equal(active, 0);
 });
+
+test('sign-out button is reusable after success and after signing in again', async () => {
+  const button = { textContent: 'Sign out', disabled: false, finishPwaOperation: null };
+  let activeOperations = 0;
+  let signOutCalls = 0;
+  const context = {
+    state: { session: { user: { id: 'first-user' } } },
+    window: { MushavoPWA: { beginOperation() { activeOperations++; return () => activeOperations--; } } },
+    $: (selector) => selector === '#signOutButton' ? button : null,
+    supabase: { auth: { async signOut() {
+      signOutCalls++;
+      context.state.session = null;
+      return { error: null };
+    } } },
+    async removeCurrentDevicePush() {}, forgetPushOptIn() {},
+    showToast() {}, friendlyMessage: (message) => message
+  };
+  vm.runInNewContext(source.slice(source.indexOf('function setSubmitting'), source.indexOf('function protectSubmission')), context);
+  vm.runInNewContext(source.slice(source.indexOf('async function signOutSafely'), source.indexOf('function currencyCatalogue')), context);
+
+  await context.signOutSafely(button);
+  assert.equal(signOutCalls, 1);
+  assert.equal(button.textContent, 'Sign out');
+  assert.equal(button.disabled, false);
+  assert.equal(activeOperations, 0);
+
+  context.state.session = { user: { id: 'second-user' } };
+  await context.signOutSafely(button);
+  assert.equal(signOutCalls, 2);
+  assert.equal(button.textContent, 'Sign out');
+  assert.equal(button.disabled, false);
+  assert.equal(activeOperations, 0);
+});
+
+test('a session reset repairs a button left mid sign-out', () => {
+  const button = { textContent: 'Signing out…', disabled: true, finishPwaOperation: null };
+  const context = { window: {}, $: (selector) => selector === '#adminSignOutButton' ? button : null };
+  vm.runInNewContext(source.slice(source.indexOf('function setSubmitting'), source.indexOf('function protectSubmission')), context);
+  context.resetSignOutButtons();
+  assert.equal(button.textContent, 'Sign out');
+  assert.equal(button.disabled, false);
+  assert.match(source, /function resetState\(\) \{\s+resetSignOutButtons\(\)/);
+});

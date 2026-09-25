@@ -36,6 +36,7 @@ declare
   v_month_index integer := 0;
   v_month_start timestamptz;
   v_next_month timestamptz;
+  v_full_month_end timestamptz;
   v_full_months integer := 0;
   v_first_half boolean;
   v_amount numeric(12,2);
@@ -68,10 +69,15 @@ begin
   end loop;
   if v_next_month <= now() then raise exception 'INVALID_FAMILY_BILLING_ANCHOR'; end if;
   v_first_half := now() < v_month_start + ((v_next_month - v_month_start) / 2);
-  while v_month_index < 1200 and v_next_month <= v_subscription.paid_through_at loop
+  -- v_next_month starts the first complete billing month after the current
+  -- partial month. Count that month only when its end is within this term.
+  -- Counting v_next_month itself would incorrectly include the renewal-date
+  -- boundary and overcharge every quote by one full month.
+  while v_month_index < 1199 loop
+    v_full_month_end := v_anchor + make_interval(months => v_month_index + 2);
+    exit when v_full_month_end > v_subscription.paid_through_at;
     v_full_months := v_full_months + 1;
     v_month_index := v_month_index + 1;
-    v_next_month := v_anchor + make_interval(months => v_month_index + 1);
   end loop;
 
   select invoices.currency into v_currency

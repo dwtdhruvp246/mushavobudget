@@ -17,14 +17,14 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="styles.css?v=66" />
+    <link rel="stylesheet" href="styles.css?v=67" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
-    <script src="/pwa.js?v=50" defer></script>
+    <script src="/pwa.js?v=51" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=96"></script>
+    <script type="module" src="app.js?v=97"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -175,7 +175,7 @@
             <div class="sidebar-footer">
               <button type="button" data-admin-tab="support">Contact support</button>
               <button id="adminSignOutButton" type="button">Sign out</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.9</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.10</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -606,7 +606,7 @@
             </div>
             <div class="sidebar-footer">
               <button type="button" data-family-tab="support">Contact support</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.9</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.10</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -692,7 +692,7 @@
           <section class="screen-panel hidden" data-family-panel="members">
             <header class="topbar"><div><p class="eyebrow">Family workspace</p><h2>Family &amp; Members</h2><p class="muted-copy">Manage the selected family, its people, and invitations.</p></div><button id="inviteMemberButton" class="primary" type="button" data-open-invite-dialog>Invite member</button></header>
             <section id="selectedFamilyPanel" class="family-overview hidden" aria-labelledby="selectedFamilyTitle">
-              <div class="family-overview-copy"><p class="eyebrow">Selected family</p><h3 id="selectedFamilyTitle">Family details</h3><p id="selectedFamilyMeta" class="muted-copy"></p></div>
+              <div class="family-overview-copy"><p class="eyebrow">Selected family</p><h3 id="selectedFamilyTitle">Family details</h3><p id="selectedFamilyMeta" class="muted-copy"></p><dl class="family-subscription-dates"><div><dt>Subscription started</dt><dd id="selectedFamilySubscribedAt">—</dd></div><div><dt>Paid through</dt><dd id="selectedFamilyPaidThrough">—</dd></div></dl></div>
               <div class="family-overview-stats" aria-label="Selected family summary">
                 <div><strong id="selectedFamilyMemberCount">0</strong><span>Active members</span></div>
                 <div><strong id="selectedFamilyMemberLimit">0</strong><span>Paid places</span></div>
@@ -762,24 +762,29 @@
 
           <section class="screen-panel hidden" data-family-panel="subscription">
             <header class="topbar subscription-topbar">
-              <div><p class="eyebrow">Subscription</p><h2>Plan and billing</h2><p class="muted-copy">Your own plans and access to families you joined are shown separately.</p></div>
+              <div><p class="eyebrow">Subscription</p><h2>Plan and billing</h2><p class="muted-copy">Your selected workspace, billing dates and other plans.</p></div>
               <button id="openRenewalButton" class="primary" type="button" data-open-renewal-dialog>Submit payment</button>
             </header>
-            <section class="subscription-ownership-grid" aria-label="Your plans and family access">
-              <article class="subscription-ownership-card"><span>Your Personal plan</span><strong id="ownedPersonalPlanName">Free</strong><small id="ownedPersonalPlanDetail">Your own Personal workspace</small></article>
-              <article class="subscription-ownership-card"><span>Your Family plan</span><strong id="ownedFamilyPlanName">Free</strong><small id="ownedFamilyPlanDetail">No Family workspace purchased by you.</small><div id="ownedFamilyPlanList" class="owned-family-plan-list"></div><button id="startOwnFamilyPlan" type="button">Start your own Family plan</button></article>
-              <article id="joinedFamilyAccessCard" class="subscription-ownership-card" hidden><span>Family access through membership</span><strong id="joinedFamilyAccessName"></strong><small id="joinedFamilyAccessDetail"></small></article>
-            </section>
             <section class="subscription-details-panel" aria-label="Selected workspace subscription">
-              <p id="subscriptionWorkspaceOwnershipCaption" class="muted-copy"></p>
-              <dl class="subscription-details-list">
-                <div><dt>Selected workspace plan</dt><dd><strong id="subscriptionPlanName">Free</strong><small id="subscriptionStatusText">Active</small><small id="subscriptionBillingPeriod">No recurring billing</small></dd></div>
-                <div><dt>Workspace</dt><dd><strong id="subscriptionWorkspaceName">Personal budget</strong><small id="subscriptionWorkspaceType">Personal</small></dd></div>
-                <div><dt>Paid through</dt><dd><strong id="subscriptionPaidThrough">No expiry</strong></dd></div>
-                <div><dt>Usage</dt><dd><strong id="subscriptionUsage">0 / 5</strong><small id="subscriptionUsageCaption">Active payment items</small></dd></div>
-              </dl>
+              <div class="subscription-current-heading"><div><p class="eyebrow">Selected workspace</p><h3 id="subscriptionWorkspaceName">Personal budget</h3><p id="subscriptionWorkspaceOwnershipCaption" class="muted-copy"></p></div><div class="subscription-plan-badge"><strong id="subscriptionPlanName">Free</strong><span id="subscriptionStatusText">Active</span></div></div>
+              <div class="subscription-term-grid">
+                <div class="subscription-expiry-highlight"><span>Time until plan expires</span><strong id="subscriptionCountdown" aria-live="off">No expiry</strong><small id="subscriptionExpiryHint">Free plan</small></div>
+                <dl class="subscription-details-list">
+                  <div><dt>Subscription started</dt><dd><strong id="subscriptionStartedAt">Not applicable</strong><small id="subscriptionWorkspaceType">Personal workspace</small></dd></div>
+                  <div><dt>Paid through</dt><dd><strong id="subscriptionPaidThrough">No expiry</strong><small id="subscriptionPaidThroughHint">End of the current paid period</small></dd></div>
+                  <div><dt>Billing period</dt><dd><strong id="subscriptionBillingPeriod">No recurring billing</strong><small>Selected plan frequency</small></dd></div>
+                  <div><dt>Plan usage</dt><dd><strong id="subscriptionUsage">0 / 5</strong><small id="subscriptionUsageCaption">Active payment items</small></dd></div>
+                </dl>
+              </div>
             </section>
             <section id="subscriptionAccessNotice" class="notice hidden"></section>
+            <section class="subscription-other-plans" aria-label="Your plans and family access"><div class="subscription-section-heading"><h3>Your plans and family access</h3><p class="muted-copy">Choose a workspace from the workspace selector to view its subscription.</p></div>
+              <div class="subscription-ownership-grid">
+                <article class="subscription-ownership-card"><span>Personal workspace</span><strong id="ownedPersonalPlanName">Free</strong><small id="ownedPersonalPlanDetail">Your own Personal workspace</small></article>
+                <article class="subscription-ownership-card"><span>Family workspaces you own</span><strong id="ownedFamilyPlanName">None</strong><small id="ownedFamilyPlanDetail">No Family workspace purchased by you.</small><div id="ownedFamilyPlanList" class="owned-family-plan-list"></div><button id="startOwnFamilyPlan" type="button">Start your own Family plan</button></article>
+                <article id="joinedFamilyAccessCard" class="subscription-ownership-card" hidden><span>Family access through membership</span><strong id="joinedFamilyAccessName"></strong><small id="joinedFamilyAccessDetail"></small></article>
+              </div>
+            </section>
             <section id="freePaymentSelection" class="ledger-panel hidden" aria-labelledby="freePaymentSelectionTitle">
               <div class="panel-heading"><h3 id="freePaymentSelectionTitle">Choose your five Free payments</h3><p class="muted-copy">Choose the payments to keep active if Personal expires. Extra payments stay visible but pause automatically. You can delete paused payments.</p></div>
               <div id="freePaymentChoices" class="record-list"></div>

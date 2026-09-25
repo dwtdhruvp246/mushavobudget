@@ -2070,7 +2070,9 @@ function renderMemberAccess() {
   selectedFamilyPanel.classList.toggle("hidden", !ownsSelectedFamily);
   if (ownsSelectedFamily) {
     $("#selectedFamilyTitle").textContent = state.family.name;
-    $("#selectedFamilyMeta").textContent = `${money(state.family.monthly_budget, state.family.currency)} monthly · ${selectedActiveMembers + selectedPendingInvites}/${selectedMemberLimit} places reserved · ${familyCount}/${limit} family workspaces used`;
+    $("#selectedFamilyMeta").textContent = `${selectedActiveMembers + selectedPendingInvites} of ${selectedMemberLimit} places reserved · ${familyCount} of ${limit} family workspaces used`;
+    $("#selectedFamilySubscribedAt").textContent = formatSubscriptionDate(subscriptionStartDate(state.workspaceSubscription));
+    $("#selectedFamilyPaidThrough").textContent = formatSubscriptionDate(state.workspaceSubscription?.paid_through_at);
     $("#selectedFamilyMemberCount").textContent = selectedActiveMembers;
     $("#selectedFamilyMemberLimit").textContent = selectedMemberLimit;
     $("#selectedFamilyAvailableCount").textContent = selectedAvailablePlaces;
@@ -3752,6 +3754,49 @@ function planInvoiceTotal(plan, price, memberCountOverride = null, workspace = c
     + extraSeats * Number(price.extra_member_amount || 0) * extraMemberBillingMonths(price);
 }
 
+function formatSubscriptionDate(value, fallback = "Unavailable") {
+  if (!value) return fallback;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? fallback
+    : date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+}
+
+function subscriptionStartDate(subscription) {
+  if (!subscription?.billing_period) return null;
+  // A Personal workspace can predate its paid plan. The first approved
+  // entitlement is the actual purchase date, even after later renewals.
+  const approvedStarts = state.entitlementHistory
+    .filter((entry) => entry.workspace_id === subscription.workspace_id && entry.reason?.startsWith("Approved subscription payment "))
+    .map((entry) => entry.effective_from)
+    .filter(Boolean).sort();
+  return approvedStarts[0] || subscription.billing_anchor_at || subscription.entitlement_start_at || null;
+}
+
+function subscriptionTimeRemaining(paidThrough, referenceDate = new Date()) {
+  if (!paidThrough) return "No expiry";
+  const expiry = new Date(paidThrough).getTime();
+  if (!Number.isFinite(expiry)) return "Expiry unavailable";
+  const remaining = expiry - referenceDate.getTime();
+  if (remaining <= 0) return "Expired";
+  if (remaining < 86400000) return "Less than 1 day left";
+  const days = Math.ceil(remaining / 86400000);
+  return `${days} ${days === 1 ? "day" : "days"} left`;
+}
+
+function renderSubscriptionTimeRemaining() {
+  const subscription = state.workspaceSubscription;
+  const paidThrough = subscription?.billing_period ? subscription.paid_through_at : null;
+  const countdown = $("#subscriptionCountdown");
+  countdown.textContent = subscriptionTimeRemaining(paidThrough);
+  const expired = Boolean(paidThrough && new Date(paidThrough).getTime() <= Date.now());
+  const endingSoon = Boolean(paidThrough && !expired && new Date(paidThrough).getTime() - Date.now() <= 7 * 86400000);
+  countdown.closest(".subscription-expiry-highlight").classList.toggle("is-expired", expired);
+  countdown.closest(".subscription-expiry-highlight").classList.toggle("is-ending", endingSoon);
+  $("#subscriptionExpiryHint").textContent = !paidThrough
+    ? "Free plan has no expiry date"
+    : expired ? "The paid period has ended" : "Until the paid-through date below";
+}
+
 function renderSubscription() {
   const workspace = currentBudgetWorkspace();
   const entitlement = state.workspaceEntitlement;
@@ -3763,19 +3808,19 @@ function renderSubscription() {
       const plan = state.plans.find((entry) => entry.id === subscription?.plan_id);
       const status = subscription?.paid_through_at && new Date(subscription.paid_through_at) < new Date()
         ? "Expired" : titleCase(subscription?.status || "Unavailable");
-      return { workspace: item, plan, status };
+      return { workspace: item, plan, status, subscription };
     });
   const personalPlan = state.personalWorkspaceEntitlement;
   $("#ownedPersonalPlanName").textContent = personalPlan?.plan_name || "Free";
-  $("#ownedPersonalPlanDetail").textContent = `Your own Personal workspace · ${titleCase(personalPlan?.effective_status || "active")}`;
+  $("#ownedPersonalPlanDetail").textContent = `Your own Personal workspace · ${titleCase(personalPlan?.effective_status || "active")}${state.personalWorkspaceSubscription?.paid_through_at && state.personalWorkspaceSubscription?.billing_period ? ` · Paid through ${formatSubscriptionDate(state.personalWorkspaceSubscription.paid_through_at)}` : " · No expiry"}`;
   $("#ownedFamilyPlanName").textContent = ownedFamilyPlans.length
     ? ownedFamilyPlans.length === 1 ? ownedFamilyPlans[0].plan?.display_name || "Family" : `${ownedFamilyPlans.length} Family workspaces`
-    : "Free";
+    : "None";
   $("#ownedFamilyPlanDetail").textContent = ownedFamilyPlans.length
-    ? "Family workspace subscriptions you own and manage."
+    ? "Subscriptions you own and manage."
     : "No Family workspace purchased by you. Joining another family does not change your plan.";
-  $("#ownedFamilyPlanList").innerHTML = ownedFamilyPlans.map(({ workspace: owned, plan, status }) =>
-    `<span>${escapeHtml(owned.name)} · ${escapeHtml(plan?.display_name || "Family plan")} · ${escapeHtml(status)}</span>`).join("");
+  $("#ownedFamilyPlanList").innerHTML = ownedFamilyPlans.map(({ workspace: owned, plan, status, subscription }) =>
+    `<div class="owned-family-plan-row"><strong>${escapeHtml(owned.name)}</strong><small>${escapeHtml(plan?.display_name || "Family plan")} · ${escapeHtml(status)}${subscription?.billing_period ? ` · ${escapeHtml(titleCase(subscription.billing_period))}` : ""}${subscription?.paid_through_at ? ` · Paid through ${escapeHtml(formatSubscriptionDate(subscription.paid_through_at))}` : ""}</small></div>`).join("");
   $("#startOwnFamilyPlan").textContent = ownedFamilyPlans.length ? "Start another Family plan" : "Start your own Family plan";
   const joinedFamily = workspace.workspace_type === "household" && !currentWorkspaceIsOwned();
   $("#joinedFamilyAccessCard").hidden = !joinedFamily;
@@ -3784,8 +3829,8 @@ function renderSubscription() {
     $("#joinedFamilyAccessDetail").textContent = `${entitlement.plan_name} workspace access · ${titleCase(entitlement.effective_status)} · Plan managed by the family owner. You have not purchased this plan.`;
   }
   $("#subscriptionWorkspaceOwnershipCaption").textContent = joinedFamily
-    ? "Selected Family workspace · Plan managed and paid for by its owner."
-    : `Selected ${workspace.workspace_type === "household" ? "Family" : "Personal"} workspace · Your subscription.`;
+    ? "Family workspace · Plan managed and paid for by the family owner"
+    : `${workspace.workspace_type === "household" ? "Family" : "Personal"} workspace · Your subscription`;
   $("#ownedWorkspacePlansPanel").hidden = false;
   $("#ownedWorkspaceBillingHistory").hidden = joinedFamily;
   const activeItems = state.paymentItems.filter((item) => item.workspace_id === workspace.id && isPaymentActive(item)).length;
@@ -3799,16 +3844,22 @@ function renderSubscription() {
       : `${activeItems} / ${entitlement.active_payment_limit}`;
   $("#subscriptionPlanName").textContent = entitlement.plan_name;
   $("#subscriptionStatusText").textContent = titleCase(entitlement.effective_status);
+  $("#subscriptionStatusText").className = `subscription-status ${entitlement.effective_status === "active" ? "is-active" : "is-inactive"}`;
   $("#subscriptionBillingPeriod").textContent = entitlement.plan_code === "free"
     ? "No recurring billing"
     : state.workspaceSubscription?.billing_period
       ? `${titleCase(state.workspaceSubscription.billing_period)} billing`
       : "Billing period unavailable";
   $("#subscriptionWorkspaceName").textContent = workspace.name;
-  $("#subscriptionWorkspaceType").textContent = titleCase(workspace.workspace_type);
-  $("#subscriptionPaidThrough").textContent = entitlement.paid_through_at
-    ? new Date(entitlement.paid_through_at).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })
+  $("#subscriptionWorkspaceType").textContent = `${workspace.workspace_type === "household" ? "Family" : "Personal"} workspace`;
+  $("#subscriptionStartedAt").textContent = formatSubscriptionDate(subscriptionStartDate(state.workspaceSubscription), "No paid subscription");
+  const paidThrough = state.workspaceSubscription?.billing_period ? state.workspaceSubscription.paid_through_at : null;
+  $("#subscriptionPaidThrough").textContent = paidThrough
+    ? formatSubscriptionDate(paidThrough)
     : "No expiry";
+  $("#subscriptionPaidThroughHint").textContent = paidThrough
+    ? "End of the current paid period" : "Free plan has no expiry date";
+  renderSubscriptionTimeRemaining();
   $("#subscriptionUsage").textContent = limitText;
   $("#subscriptionUsageCaption").textContent = tracksMemberPlaces
     ? `${Number(state.memberUsage?.active_member_count || 1)} active · ${Number(state.memberUsage?.pending_invitation_count || 0)} pending · ${Number(state.memberUsage?.available_member_count || 0)} available`
@@ -8331,6 +8382,7 @@ window.addEventListener("online", () => {
 });
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
+    if (state.session && !state.isAdmin) renderSubscriptionTimeRemaining();
     refreshAfterAppResume("visibility");
     void recordVisibleActivity();
     schedulePushNotificationRefresh(false, true);
@@ -8338,6 +8390,7 @@ document.addEventListener("visibilitychange", () => {
 });
 window.setInterval(() => {
   if (document.visibilityState === "visible") {
+    if (state.session && !state.isAdmin) renderSubscriptionTimeRemaining();
     schedulePushNotificationRefresh(false, true);
     void recordVisibleActivity();
   }

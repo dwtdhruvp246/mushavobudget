@@ -46,19 +46,20 @@ test("payment history distinguishes the payer from the signed-in recorder", () =
 });
 
 test("a member's own Free plans stay Free while the joined family's paid access is separate", () => {
-  const source = app.slice(app.indexOf("function renderSubscription"), app.indexOf("function renderWorkspacePlans"));
+  const source = app.slice(app.indexOf("function formatSubscriptionDate("), app.indexOf("function renderWorkspacePlans"));
   const elements = new Map();
   const $ = (selector) => {
     if (!elements.has(selector)) elements.set(selector, {
       hidden: false, textContent: "", innerHTML: "",
-      classList: { toggle(_name, hidden) { this.hidden = hidden; }, contains() { return true; } }
+      classList: { toggle(_name, hidden) { this.hidden = hidden; }, contains() { return true; } },
+      closest: () => ({ classList: { toggle() {} } })
     });
     return elements.get(selector);
   };
   const state = {
     session: { user: { id: "person2" } },
     workspaces: [{ id: "personal", workspace_type: "personal", owner_id: "person2" }, { id: "joined", name: "Person 1 family", workspace_type: "household", owner_id: "person1" }],
-    ownedFamilySubscriptions: [], plans: [], paymentItems: [],
+    ownedFamilySubscriptions: [], entitlementHistory: [], plans: [], paymentItems: [],
     personalWorkspaceEntitlement: { plan_name: "Free", effective_status: "active" },
     workspaceEntitlement: { plan_name: "Family", effective_status: "active", plan_code: "household", paid_through_at: null },
     workspaceSubscription: { billing_period: "annual", member_limit: 4 },
@@ -72,7 +73,7 @@ test("a member's own Free plans stay Free while the joined family's paid access 
   vm.runInNewContext(`${source}\nglobalThis.render = renderSubscription;`, context);
   context.render();
   assert.equal($("#ownedPersonalPlanName").textContent, "Free");
-  assert.equal($("#ownedFamilyPlanName").textContent, "Free");
+  assert.equal($("#ownedFamilyPlanName").textContent, "None");
   assert.match($("#ownedFamilyPlanDetail").textContent, /No Family workspace purchased/);
   assert.match($("#joinedFamilyAccessDetail").textContent, /You have not purchased this plan/);
   assert.equal($("#ownedWorkspacePlansPanel").hidden, false);

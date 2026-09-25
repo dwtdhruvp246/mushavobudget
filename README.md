@@ -149,6 +149,7 @@ The complete schema now adds a compatibility workspace layer around the existing
 - Free is limited to five active Personal payment items. Completed or inactive items remain in history and do not consume a slot.
 - Household and Business plans use workspace-level subscriptions. Invited members inherit access and do not buy separate subscriptions.
 - Household includes four people total. Business includes the owner plus five team members. Active pending invitations count toward billing.
+- A Family head may buy extra places for one active Family workspace from Family & Members. Billing months follow that workspace's activation anniversary: the current month's first half costs half the monthly extra-place rate, its second half costs zero, and each remaining full month costs the full monthly rate. The finance review increases the place limit without moving the subscription expiry; renewals include all retained places.
 - Personal expiry falls back to Free without changing or deleting payment records.
 - Expired or suspended Household and Business workspaces remain stored and become read-only.
 - Reports stay visible on Free but open a locked upgrade state; plan limits are also checked by database functions.

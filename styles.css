@@ -3145,6 +3145,16 @@ code {
   margin: 0;
 }
 
+.family-subscription-dates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 8px 0 0;
+}
+
+.family-subscription-dates dt { color: var(--muted-strong); font-size: 0.72rem; font-weight: 700; }
+.family-subscription-dates dd { margin: 3px 0 0; font-size: 0.86rem; font-weight: 750; }
+
 .family-overview-actions {
   justify-items: end;
   text-align: right;
@@ -5960,22 +5970,101 @@ input[type="file"] {
   .admin-push-controls > .push-status-badge { justify-self: start; }
 }
 
-/* Compact subscription overview, scoped to the user account. */
+/* Subscription summary, scoped to the selected workspace. */
 [data-family-panel="subscription"] { padding: clamp(1rem, 2vw, 1.5rem); }
-[data-family-panel="subscription"] .subscription-topbar { margin-bottom: 0.85rem; gap: 0.75rem; }
+[data-family-panel="subscription"] .subscription-topbar { margin-bottom: 1rem; gap: 0.75rem; }
 [data-family-panel="subscription"] .muted-copy { margin: 0.35rem 0 0; line-height: 1.4; }
+[data-family-panel="subscription"] .subscription-details-panel {
+  margin: 0 0 1rem;
+  padding: clamp(1rem, 2vw, 1.45rem);
+  border: 1px solid var(--line-strong);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.04);
+}
+[data-family-panel="subscription"] .subscription-current-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+[data-family-panel="subscription"] .subscription-current-heading .eyebrow { margin: 0; }
+[data-family-panel="subscription"] .subscription-current-heading h3 { margin: 0.25rem 0 0; font-size: clamp(1.3rem, 2vw, 1.7rem); }
+[data-family-panel="subscription"] .subscription-current-heading .muted-copy { font-size: 0.85rem; }
+[data-family-panel="subscription"] .subscription-plan-badge {
+  display: grid;
+  gap: 0.35rem;
+  justify-items: end;
+  flex: none;
+  text-align: right;
+  font-size: 0.87rem;
+}
+[data-family-panel="subscription"] .subscription-plan-badge strong { font-size: 1rem; }
+[data-family-panel="subscription"] .subscription-status { font-weight: 750; }
+[data-family-panel="subscription"] .subscription-status.is-active { color: #047857; }
+[data-family-panel="subscription"] .subscription-status.is-inactive { color: #b45309; }
+[data-family-panel="subscription"] .subscription-term-grid {
+  display: grid;
+  grid-template-columns: minmax(215px, 0.7fr) minmax(0, 2fr);
+  align-items: stretch;
+  gap: 1.25rem;
+  margin-top: 1.1rem;
+}
+[data-family-panel="subscription"] .subscription-expiry-highlight {
+  display: grid;
+  align-content: center;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 1.1rem;
+  border: 1px solid #bde9d8;
+  border-radius: 16px;
+  background: #f0fdf7;
+}
+[data-family-panel="subscription"] .subscription-expiry-highlight > span { color: var(--muted-strong); font-size: 0.8rem; font-weight: 700; }
+[data-family-panel="subscription"] .subscription-expiry-highlight > strong { color: #065f46; font-size: clamp(1.2rem, 2vw, 1.65rem); line-height: 1.2; overflow-wrap: anywhere; }
+[data-family-panel="subscription"] .subscription-expiry-highlight > small { color: var(--muted-strong); line-height: 1.4; }
+[data-family-panel="subscription"] .subscription-expiry-highlight.is-ending { border-color: #fcd9a1; background: #fffaf0; }
+[data-family-panel="subscription"] .subscription-expiry-highlight.is-ending > strong { color: #92400e; }
+[data-family-panel="subscription"] .subscription-expiry-highlight.is-expired { border-color: #fecaca; background: #fff6f6; }
+[data-family-panel="subscription"] .subscription-expiry-highlight.is-expired > strong { color: #b91c1c; }
+[data-family-panel="subscription"] .subscription-details-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+}
+[data-family-panel="subscription"] .subscription-details-list > div {
+  display: block;
+  min-width: 0;
+  padding: 0.35rem 1.1rem 0.7rem;
+  border: 0;
+  border-left: 1px solid #e2e8f0;
+  background: transparent;
+  overflow-wrap: anywhere;
+}
+[data-family-panel="subscription"] .subscription-details-list > div:nth-child(-n + 2) { border-bottom: 1px solid #e2e8f0; }
+[data-family-panel="subscription"] .subscription-details-list > div:nth-child(n + 3) { padding-top: 0.75rem; }
+[data-family-panel="subscription"] .subscription-details-list dt { font-size: 0.77rem; margin-bottom: 0.3rem; }
+[data-family-panel="subscription"] .subscription-details-list dd { margin: 0; }
+[data-family-panel="subscription"] .subscription-details-list strong { font-size: 1rem; }
+[data-family-panel="subscription"] .subscription-details-list small { font-size: 0.75rem; }
+[data-family-panel="subscription"] .subscription-other-plans { margin: 1.1rem 0 1.25rem; }
+[data-family-panel="subscription"] .subscription-section-heading { margin-bottom: 0.75rem; }
+[data-family-panel="subscription"] .subscription-section-heading h3 { margin: 0; font-size: 1.05rem; }
+[data-family-panel="subscription"] .subscription-section-heading .muted-copy { font-size: 0.81rem; }
 [data-family-panel="subscription"] .subscription-ownership-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 255px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr));
+  align-items: start;
   gap: 0.75rem;
-  margin-bottom: 0.85rem;
 }
 [data-family-panel="subscription"] .subscription-ownership-card {
   display: grid;
   align-content: start;
   gap: 0.4rem;
   min-width: 0;
-  padding: 0.95rem;
+  padding: 1rem;
   border: 1px solid var(--line);
   border-radius: 16px;
   background: #fff;
@@ -5985,27 +6074,11 @@ input[type="file"] {
 [data-family-panel="subscription"] .subscription-ownership-card > strong { font-size: 1.2rem; line-height: 1.2; }
 [data-family-panel="subscription"] .subscription-ownership-card > small,
 [data-family-panel="subscription"] .owned-family-plan-list { color: var(--muted-strong); line-height: 1.35; }
-[data-family-panel="subscription"] .owned-family-plan-list { display: grid; gap: 0.3rem; }
+[data-family-panel="subscription"] .owned-family-plan-list { display: grid; gap: 0.5rem; }
+[data-family-panel="subscription"] .owned-family-plan-row { display: grid; gap: 0.2rem; padding-top: 0.55rem; border-top: 1px solid #e2e8f0; }
+[data-family-panel="subscription"] .owned-family-plan-row strong { color: var(--ink); font-size: 0.85rem; }
+[data-family-panel="subscription"] .owned-family-plan-row small { font-size: 0.76rem; }
 [data-family-panel="subscription"] #startOwnFamilyPlan { justify-self: start; margin-top: 0.3rem; }
-[data-family-panel="subscription"] #subscriptionWorkspaceOwnershipCaption { margin: 0 0 0.7rem; }
-[data-family-panel="subscription"] .subscription-details-panel { margin-bottom: 1rem; border-top: 0; }
-[data-family-panel="subscription"] .subscription-details-list {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.65rem;
-}
-[data-family-panel="subscription"] .subscription-details-list > div {
-  display: block;
-  min-width: 0;
-  padding: 0.75rem;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: #f8fafc;
-  overflow-wrap: anywhere;
-}
-[data-family-panel="subscription"] .subscription-details-list dt { font-size: 0.78rem; margin-bottom: 0.3rem; }
-[data-family-panel="subscription"] .subscription-details-list dd { margin: 0; }
-[data-family-panel="subscription"] .subscription-details-list strong { font-size: 1rem; }
 [data-family-panel="subscription"] .workspace-plans-panel { padding: 1rem; box-shadow: none; }
 [data-family-panel="subscription"] .panel-heading { margin-bottom: 0.5rem; }
 [data-family-panel="subscription"] .workspace-plan-controls { margin: 0.65rem 0; padding: 0.55rem; flex-wrap: wrap; }
@@ -6024,13 +6097,17 @@ input[type="file"] {
 .subscription-history .record-list { padding: 0 0.75rem 0.75rem; }
 .subscription-history .record-card { padding: 0.75rem; gap: 0.65rem; flex-wrap: wrap; }
 .subscription-history .record-main, .subscription-history .record-side { min-width: 0; overflow-wrap: anywhere; }
-@media (max-width: 1100px) {
-  [data-family-panel="subscription"] .subscription-details-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 850px) {
+  [data-family-panel="subscription"] .subscription-term-grid { grid-template-columns: minmax(0, 1fr); }
+  [data-family-panel="subscription"] .subscription-details-list > div { border-left: 0; }
+  [data-family-panel="subscription"] .subscription-details-list > div:nth-child(odd) { padding-left: 0; }
 }
 @media (max-width: 570px) {
   [data-family-panel="subscription"] .subscription-history-grid { grid-template-columns: minmax(0, 1fr); }
   [data-family-panel="subscription"] .workspace-plans-panel { padding: 0.65rem; }
-  [data-family-panel="subscription"] .subscription-details-list > div { padding: 0.6rem; }
+  [data-family-panel="subscription"] .subscription-current-heading { flex-wrap: wrap; }
+  [data-family-panel="subscription"] .subscription-plan-badge { justify-items: start; text-align: left; }
+  [data-family-panel="subscription"] .subscription-details-list > div { padding: 0.65rem 0.5rem; }
   [data-family-panel="subscription"] .workspace-plan-controls { gap: 0.5rem; }
 }
 .free-payment-choice {

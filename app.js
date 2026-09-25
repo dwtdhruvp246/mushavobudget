@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 79
+// Mushavo Budget authenticated application — release 80
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -61,6 +61,7 @@ const state = {
   planFeatures: [],
   planLimits: [],
   renewalRequests: [],
+  familySeatQuote: null,
   subscriptionInvoices: [],
   subscriptionPayments: [],
   entitlementHistory: [],
@@ -626,6 +627,9 @@ function friendlyMessage(message = "") {
   if (text.includes("ACTIVE_FAMILY_SUBSCRIPTION_REQUIRED")) {
     return "An active Family subscription is required before inviting members.";
   }
+  if (text.includes("SEAT_QUOTE_CHANGED")) return "The places price changed. Refresh the quote before submitting payment.";
+  if (text.includes("FAMILY_SEAT_PURCHASE_CHANGED")) return "The Family plan or available places changed before review. Reject this request and submit a new quote.";
+  if (text.includes("INVALID_EXTRA_PLACE_COUNT")) return "Choose between 1 and the remaining available places.";
   if (text.includes("PARTIAL_PAYMENT_CURRENCY_MISMATCH")) {
     return "A partial payment must use the same currency as its payment item.";
   }
@@ -1218,6 +1222,7 @@ function resetState() {
   state.paymentConversions = [];
   state.billableMemberCount = 1;
   state.memberUsage = null;
+  state.familySeatQuote = null;
   state.plans = [];
   state.planPrices = [];
   state.planFeatures = [];
@@ -2054,7 +2059,7 @@ function renderMemberAccess() {
   memberNotice.classList.toggle("hidden", allowedToInvite);
   if (!allowedToInvite) {
     memberNotice.innerHTML = selectedFamilyIsManageable && selectedAvailablePlaces === 0
-      ? `<strong>All ${selectedMemberLimit} paid places are in use.</strong> Active members and pending invitations reserve places. Purchase another place from Subscription before inviting someone else.`
+      ? `<strong>All ${selectedMemberLimit} paid places are in use.</strong> Active members and pending invitations reserve places. Use Buy more places above before inviting someone else.`
       : owned.length
         ? "<strong>Member management is locked.</strong> The subscription must be active before you can invite or remove family members."
         : "<strong>Only a family owner can manage members.</strong> You can participate in families you joined, but only their owner can invite or remove members.";
@@ -2071,6 +2076,12 @@ function renderMemberAccess() {
     $("#selectedFamilyAvailableCount").textContent = selectedAvailablePlaces;
     $("#selectedFamilyPaymentCount").textContent = state.paymentItems.filter((item) => item.family_id === state.family.id && item.status !== "inactive").length;
     $("#selectedFamilyInviteCount").textContent = selectedPendingInvites;
+    const placesButton = $("#purchaseFamilyPlaces");
+    const pendingPurchase = state.renewalRequests.some((request) => request.status === "pending_review");
+    placesButton.disabled = pendingPurchase || selectedMemberLimit >= 100
+      || !canManageMembersForFamily(state.family.id);
+    placesButton.textContent = pendingPurchase ? "Payment awaiting review"
+      : selectedMemberLimit >= 100 ? "Place limit reached" : "Buy more places";
   }
 }
 
@@ -3944,12 +3955,14 @@ function renderRenewalHistory() {
   state.renewalRequests.forEach((request) => {
     const invoice = state.subscriptionInvoices.find((item) => item.id === request.invoice_id);
     const payment = state.subscriptionPayments.find((item) => item.renewal_request_id === request.id);
-    const memberLimitSummary = ["household", "business"].includes(invoice?.plan_code)
+    const memberLimitSummary = request.purchase_kind === "extra_places"
+      ? `<small>${Number(request.seat_count || 0)} extra place(s) · ${Number(invoice?.billable_member_count || 1)} places total · plan ends ${escapeHtml(new Date(request.seat_expiry_at).toLocaleDateString())}</small>`
+      : ["household", "business"].includes(invoice?.plan_code)
       ? `<small>${request.provision_workspace_on_approval ? `New family: ${escapeHtml(request.requested_workspace_name || "Family workspace")} &middot; ` : ""}${Number(invoice?.billable_member_count || 1)} total paid place${Number(invoice?.billable_member_count || 1) === 1 ? "" : "s"}</small>`
       : "";
     const article = document.createElement("article");
     article.className = "record-card";
-    article.innerHTML = `<div class="record-main"><strong>${escapeHtml(invoice?.plan_name || "Subscription")}</strong><span>${escapeHtml(invoice?.invoice_number || "Invoice pending")} &middot; ${titleCase(invoice?.billing_period)} &middot; ${new Date(request.created_at).toLocaleDateString()}</span>${memberLimitSummary}${request.rejection_reason ? `<small>${escapeHtml(request.rejection_reason)}</small>` : ""}<div class="badge-row">${statusBadge(request.status)}</div></div><div class="record-side"><strong>${invoice ? money(invoice.total_amount, invoice.currency) : ""}</strong>${payment?.receipt_number ? `<small>Receipt ${escapeHtml(payment.receipt_number)}</small>` : ""}</div>`;
+    article.innerHTML = `<div class="record-main"><strong>${request.purchase_kind === "extra_places" ? "Additional Family places" : escapeHtml(invoice?.plan_name || "Subscription")}</strong><span>${escapeHtml(invoice?.invoice_number || "Invoice pending")} &middot; ${titleCase(invoice?.billing_period)} &middot; ${new Date(request.created_at).toLocaleDateString()}</span>${memberLimitSummary}${request.rejection_reason ? `<small>${escapeHtml(request.rejection_reason)}</small>` : ""}<div class="badge-row">${statusBadge(request.status)}</div></div><div class="record-side"><strong>${invoice ? money(invoice.total_amount, invoice.currency) : ""}</strong>${payment?.receipt_number ? `<small>Receipt ${escapeHtml(payment.receipt_number)}</small>` : ""}</div>`;
     list.append(article);
   });
 }
@@ -4134,6 +4147,105 @@ async function startAdditionalFamilyPurchase() {
   } finally {
     button.disabled = false;
     endOperation?.();
+  }
+}
+
+async function refreshFamilySeatQuote(forSubmission = false) {
+  const count = Number($("#familySeatsCount").value);
+  const workspaceId = currentBudgetWorkspace()?.id;
+  if (!Number.isInteger(count) || count < 1 || count > 100 || !workspaceId) {
+    state.familySeatQuote = null;
+    $("#familySeatsQuote").textContent = "Enter a valid number of additional places.";
+    $("#familySeatsSubmit").disabled = true;
+    return null;
+  }
+  $("#familySeatsSubmit").disabled = true;
+  const quote = await query("Family places quote", supabase.rpc("family_extra_place_quote", {
+    p_workspace_id: workspaceId, p_count: count
+  }));
+  if (workspaceId !== currentBudgetWorkspace()?.id || count !== Number($("#familySeatsCount").value)) return null;
+  state.familySeatQuote = quote;
+  $("#familySeatsCount").max = `${Math.max(1, 100 - Number(quote.current_limit))}`;
+  $("#familySeatsQuote").innerHTML = `
+    <div><span>Family plan</span><strong>${escapeHtml(titleCase(quote.billing_period))}</strong></div>
+    <div><span>Current places → after approval</span><strong>${Number(quote.current_limit)} → ${Number(quote.target_limit)}</strong></div>
+    <div><span>Current billing month</span><strong>${quote.current_half_charge ? money(Number(quote.monthly_price) * count / 2, quote.currency) : money(0, quote.currency)}</strong></div>
+    <div><span>Full months remaining</span><strong>${Number(quote.full_months_remaining)} × ${money(Number(quote.monthly_price) * count, quote.currency)}</strong></div>
+    <div><span>Existing renewal date</span><strong>${escapeHtml(new Date(quote.paid_through_at).toLocaleDateString())}</strong></div>
+    <div class="invoice-total"><span>Due now</span><strong>${money(quote.amount, quote.currency)}</strong></div>`;
+  const free = Number(quote.amount) === 0;
+  $("#familySeatsPaymentFields").classList.toggle("hidden", free);
+  for (const field of ["#familySeatsMethod", "#familySeatsPaymentDate", "#familySeatsReference", "#familySeatsProof"]) {
+    $(field).disabled = free;
+  }
+  $("#familySeatsPaymentDate").required = !free;
+  $("#familySeatsReference").required = !free;
+  $("#familySeatsSubmit").textContent = free ? "Request free remaining days" : "Submit payment for review";
+  if (!forSubmission) $("#familySeatsSubmit").disabled = false;
+  return quote;
+}
+
+async function openFamilySeatsDialog() {
+  if (!state.family || !canManageMembersForFamily(state.family.id)
+      || state.renewalRequests.some((request) => request.status === "pending_review")) {
+    showToast("An active Family workspace without a pending payment is required.");
+    return;
+  }
+  $("#familySeatsCount").value = "1";
+  $("#familySeatsPaymentDate").value = toDateValue(new Date());
+  $("#familySeatsDialog").showModal();
+  try {
+    await refreshFamilySeatQuote();
+  } catch (error) {
+    $("#familySeatsQuote").textContent = friendlyMessage(error.message);
+  }
+}
+
+async function submitFamilySeats(event) {
+  event.preventDefault();
+  const button = $("#familySeatsSubmit");
+  const workspaceId = currentBudgetWorkspace()?.id;
+  const displayed = state.familySeatQuote;
+  let proofPath = null;
+  let submitted = false;
+  try {
+    setSubmitting(button, true, "Submitting...");
+    const quote = await refreshFamilySeatQuote(true);
+    if (!quote || !displayed || quote.workspace_id !== displayed.workspace_id
+      || quote.amount !== displayed.amount
+      || quote.paid_through_at !== displayed.paid_through_at
+      || quote.current_limit !== displayed.current_limit
+      || quote.monthly_price !== displayed.monthly_price
+      || quote.current_half_charge !== displayed.current_half_charge
+      || quote.full_months_remaining !== displayed.full_months_remaining) {
+      showToast("The quote changed. Please review the new amount before submitting.");
+      return;
+    }
+    const proof = Number(quote.amount) > 0 ? $("#familySeatsProof").files[0] || null : null;
+    if (proof) proofPath = await uploadSubscriptionProof(proof, workspaceId);
+    await query("Family places request", supabase.rpc("submit_family_extra_places", {
+      p_workspace_id: workspaceId,
+      p_count: Number(quote.additional_count),
+      p_expected_amount: Number(quote.amount),
+      p_payment_method: Number(quote.amount) > 0 ? $("#familySeatsMethod").value : null,
+      p_payment_date: Number(quote.amount) > 0 ? $("#familySeatsPaymentDate").value : null,
+      p_reference_number: Number(quote.amount) > 0 ? $("#familySeatsReference").value.trim() : null,
+      p_notes: $("#familySeatsNotes").value.trim() || null,
+      p_proof_path: proofPath,
+      p_proof_name: proof?.name || null,
+      p_proof_mime_type: proof?.type || null,
+      p_proof_size_bytes: proof?.size || null
+    }));
+    submitted = true;
+    $("#familySeatsDialog").close();
+    await loadWorkspaceSubscriptionData();
+    renderFamilyApp();
+    showToast("Extra places requested. You can invite more members after approval.");
+  } catch (error) {
+    if (proofPath && !submitted) await supabase.storage.from(SUBSCRIPTION_PROOF_BUCKET).remove([proofPath]).catch(() => {});
+    showToast(friendlyMessage(error.message));
+  } finally {
+    setSubmitting(button, false, "Submit payment for review");
   }
 }
 
@@ -5107,7 +5219,7 @@ function renderSubscriptionReviews() {
     const article = document.createElement("article");
     article.className = "record-card subscription-review-card subscription-payment-row";
     article.innerHTML = `
-      <div class="record-main"><strong>${escapeHtml(request?.provision_workspace_on_approval ? request.requested_workspace_name || "New Family workspace" : workspace?.name || "Workspace")}</strong><span>${escapeHtml(invoice?.plan_name || "Plan")} &middot; ${titleCase(invoice?.billing_period)} &middot; reference ${escapeHtml(payment.reference_number)}</span><small>${request?.provision_workspace_on_approval ? `Creates a new Family workspace for ${Number(invoice?.billable_member_count || 1)} people after approval.` : "Renews or changes the selected workspace plan."} Submitted ${new Date(payment.created_at).toLocaleString()} by an authenticated workspace owner.</small><div class="badge-row">${statusBadge(payment.status)}${request?.provision_workspace_on_approval ? '<span class="mini-badge">new family</span>' : ""}${proof ? '<span class="mini-badge">proof attached</span>' : ""}</div></div>
+      <div class="record-main"><strong>${escapeHtml(request?.provision_workspace_on_approval ? request.requested_workspace_name || "New Family workspace" : workspace?.name || "Workspace")}</strong><span>${request?.purchase_kind === "extra_places" ? "Additional Family places" : escapeHtml(invoice?.plan_name || "Plan")} &middot; ${titleCase(invoice?.billing_period)} &middot; reference ${escapeHtml(payment.reference_number)}</span><small>${request?.purchase_kind === "extra_places" ? `Adds ${Number(request.seat_count)} place(s) without extending the existing renewal date.` : request?.provision_workspace_on_approval ? `Creates a new Family workspace for ${Number(invoice?.billable_member_count || 1)} people after approval.` : "Renews or changes the selected workspace plan."} Submitted ${new Date(payment.created_at).toLocaleString()} by an authenticated workspace owner.</small><div class="badge-row">${statusBadge(payment.status)}${request?.purchase_kind === "extra_places" ? '<span class="mini-badge">extra places</span>' : ""}${request?.provision_workspace_on_approval ? '<span class="mini-badge">new family</span>' : ""}${proof ? '<span class="mini-badge">proof attached</span>' : ""}</div></div>
       <div class="record-side"><strong>${money(payment.amount, payment.currency)}</strong><div class="row-actions"><button type="button" data-view-subscription-payment="${payment.id}">View details</button>${proof ? `<button type="button" data-open-subscription-proof="${proof.id}">View proof</button>` : ""}${canReview ? `<button class="primary" type="button" data-review-subscription="${payment.id}" data-review-decision="approved">Approve</button><button type="button" data-review-subscription="${payment.id}" data-review-decision="rejected">Reject</button>` : '<span class="mini-badge">Read only</span>'}</div></div>
     `;
     list.append(article);
@@ -5335,8 +5447,9 @@ function openSubscriptionPaymentDetails(paymentId) {
     title: invoice?.invoice_number || "Payment details",
     subtitle: `${workspace?.name || request?.requested_workspace_name || "Workspace"} · ${owner?.email || "Owner unavailable"}`,
     body: `<section class="admin-detail-section"><h4>Invoice</h4>${adminDetailRows([
-      ["Plan", escapeHtml(invoice?.plan_name || "Not set")],
+      ["Purchase", request?.purchase_kind === "extra_places" ? "Additional Family places" : escapeHtml(invoice?.plan_name || "Not set")],
       ["Billing period", escapeHtml(titleCase(invoice?.billing_period || "not set"))],
+      ...(request?.purchase_kind === "extra_places" ? [["Existing expiry", escapeHtml(formatAdminDate(request.seat_expiry_at))]] : []),
       ["Base amount", invoice ? `<strong>${money(invoice.base_amount, invoice.currency)}</strong>` : "Not available"],
       ["Paid places", `<strong>${Number(invoice?.billable_member_count || 1)}</strong>`],
       ["Included places", `<strong>${Number(invoice?.included_member_count || 1)}</strong>`],
@@ -7643,6 +7756,8 @@ document.addEventListener("click", async (event) => {
   if (event.target.closest("[data-open-notifications]")) openNotificationDialog();
   if (event.target.closest("[data-open-renewal-dialog]")) openRenewalDialog();
   if (event.target.closest("#purchaseFamilySubscription")) startAdditionalFamilyPurchase();
+  if (event.target.closest("#purchaseFamilyPlaces")) openFamilySeatsDialog();
+  if (event.target.closest("[data-close-family-seats-dialog]")) $("#familySeatsDialog").close();
   if (event.target.closest("[data-close-renewal-dialog]")) $("#renewalDialog").close();
   if (event.target.closest("[data-edit-family-name]")) openFamilyNameDialog();
   if (event.target.closest("[data-close-family-name-dialog]")) $("#familyNameDialog").close();
@@ -7945,6 +8060,18 @@ document.addEventListener("click", async (event) => {
 $("#authForm").addEventListener("submit", protectSubmission(signIn));
 $("#familyForm").addEventListener("submit", protectSubmission(createFamily));
 $("#memberFamilyForm").addEventListener("submit", protectSubmission(createFamilyFromMembers));
+$("#familySeatsForm").addEventListener("submit", protectSubmission(submitFamilySeats));
+$("#familySeatsDialog").addEventListener("close", () => {
+  state.familySeatQuote = null;
+  $("#familySeatsForm").reset();
+  $("#familySeatsQuote").textContent = "";
+});
+$("#familySeatsCount").addEventListener("change", () => {
+  refreshFamilySeatQuote().catch((error) => {
+    $("#familySeatsQuote").textContent = friendlyMessage(error.message);
+    $("#familySeatsSubmit").disabled = true;
+  });
+});
 $("#familyNameForm").addEventListener("submit", protectSubmission(saveFamilyName));
 $("#inviteForm").addEventListener("submit", protectSubmission(inviteMember));
 $("#obligationForm").addEventListener("submit", protectSubmission(saveObligation));

@@ -6033,3 +6033,16 @@ input[type="file"] {
   [data-family-panel="subscription"] .subscription-details-list > div { padding: 0.6rem; }
   [data-family-panel="subscription"] .workspace-plan-controls { gap: 0.5rem; }
 }
+.free-payment-choice {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line, #d7e1e6);
+  border-radius: 0.85rem;
+  background: #fff;
+}
+
+.free-payment-choice input { width: 1.1rem; height: 1.1rem; flex: none; }
+.free-payment-choice span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.free-payment-choice small { color: #536579; }

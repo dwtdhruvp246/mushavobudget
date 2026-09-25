@@ -95,6 +95,12 @@ async function validatePaymentJob(
     return { valid: false, reason: "Payment is no longer active." };
   }
 
+  const { data: reminderAllowed, error: accessError } = await serviceClient.rpc(
+    "payment_reminder_allowed", { p_payment_item_id: item.id },
+  );
+  if (accessError) throw new Error(`payment_plan_access:${accessError.code || "database_error"}`);
+  if (!reminderAllowed) return { valid: false, reason: "Payment or workspace is paused." };
+
   const { data: settings, error: settingsError } = await serviceClient
     .from("workspace_settings")
     .select("reminder_enabled")
@@ -129,6 +135,13 @@ async function validatePaymentJob(
   }
   if (!assignedUserId || assignedUserId !== job.user_id) {
     return { valid: false, reason: "Payment assignment has changed." };
+  }
+
+  const { data: recipient, error: recipientError } = await serviceClient
+    .from("profiles").select("account_status").eq("id", job.user_id).maybeSingle();
+  if (recipientError) throw new Error(`recipient_status:${recipientError.code || "database_error"}`);
+  if (!recipient || recipient.account_status !== "active") {
+    return { valid: false, reason: "Recipient account is suspended." };
   }
 
   const { data: membership, error: membershipError } = await serviceClient

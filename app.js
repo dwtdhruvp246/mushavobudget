@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 77
+// Mushavo Budget authenticated application — release 79
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -36,6 +36,8 @@ const state = {
   family: null,
   members: [],
   paymentItems: [],
+  personalPlanAccess: [],
+  freePaymentDraft: null,
   paymentRecords: [],
   familyInvitations: [],
   notifications: [],
@@ -654,6 +656,8 @@ function friendlyMessage(message = "") {
   if (text.includes("PERSONAL_PAYMENT_LIMIT_REACHED")) {
     return "Free accounts can keep up to 5 active personal payments. Family payments remain unlimited.";
   }
+  if (text.includes("PAYMENT_PAUSED_BY_PLAN")) return "This payment is paused by the Free plan limit. Choose it among your five, renew Personal, or delete it.";
+  if (text.includes("ACCOUNT_SUSPENDED")) return "Your account is suspended. Contact Mushavo Budget support.";
   if (
     text.includes("payment_items_recurrence_type_check") ||
     text.includes("payment_items_recurrence_interval_check")
@@ -996,7 +1000,8 @@ async function refreshVisibleData() {
       renderAdmin();
       return;
     }
-    await Promise.all([loadAccess(), loadFamily()]);
+    if (await loadAccess() === false) return;
+    await loadFamily();
     await loadFamilyData();
     await loadWorkspaceSubscriptionData();
     if (state.familyTab === "support") await loadUserSupportData();
@@ -1190,6 +1195,8 @@ function resetState() {
   state.family = null;
   state.members = [];
   state.paymentItems = [];
+  state.personalPlanAccess = [];
+  state.freePaymentDraft = null;
   state.paymentRecords = [];
   state.familyInvitations = [];
   state.notifications = [];
@@ -1300,6 +1307,10 @@ async function loadApp() {
   // Opening an invitation signs its recipient into Supabase Auth. Only the
   // completed invitation may enter the app or provision any workspace.
   if (await blockUnfinishedAdminInvitationSession()) return;
+  if (await query("account status load", supabase.rpc("my_account_suspended"))) {
+    setView("suspended");
+    return;
+  }
   const settled = (promise) => promise.then(
     () => ({ ok: true }),
     (error) => ({ ok: false, error })
@@ -1309,7 +1320,7 @@ async function loadApp() {
   const invitationResult = settled(loadInvitations());
   const notificationResult = settled(loadNotifications());
 
-  await loadAccess();
+  if (await loadAccess({ skipAccountCheck: true }) === false) return;
 
   if (state.isAdmin) {
     const loadedNotifications = await notificationResult;
@@ -1350,6 +1361,7 @@ async function loadApp() {
   const loadedFinances = await financialResult;
   if (!loadedFinances.ok) throw loadedFinances.error;
   if (financialFamilyId !== state.family?.id) await loadFamilyFinancialData();
+  await loadPersonalPlanAccess();
   syncRouteForWorkspace("family");
   if (state.familyTab === "support") await loadUserSupportData();
   setView("app");
@@ -1401,7 +1413,12 @@ async function ensureProfile() {
   );
 }
 
-async function loadAccess() {
+async function loadAccess({ skipAccountCheck = false } = {}) {
+  if (!skipAccountCheck && await query("account status refresh", supabase.rpc("my_account_suspended"))) {
+    stopRealtime();
+    setView("suspended");
+    return false;
+  }
   const userEmail = state.session.user.email?.toLowerCase();
   const [adminRows, headRows] = await Promise.all([
     query(
@@ -1416,6 +1433,7 @@ async function loadAccess() {
   state.isAdmin = adminRows.length > 0;
   state.adminRole = adminRows[0]?.role || (state.isAdmin ? "super_admin" : null);
   state.headApproval = headRows[0] || null;
+  return true;
 }
 
 async function loadFamily() {
@@ -1525,6 +1543,26 @@ async function loadPaymentItems() {
     ? request.or(`visibility.eq.personal,family_id.eq.${state.family.id}`)
     : request.eq("visibility", "personal");
   state.paymentItems = await query("payment items load", request.order("created_at", { ascending: false }));
+  await loadPersonalPlanAccess();
+}
+
+async function loadPersonalPlanAccess() {
+  const personalWorkspace = state.workspaces.find((workspace) =>
+    workspace.workspace_type === "personal" && workspace.owner_id === state.session.user.id && workspace.status !== "closed"
+  );
+  state.personalPlanAccess = personalWorkspace
+    ? await query("personal payment plan access", supabase.rpc("personal_payment_plan_access", { p_workspace_id: personalWorkspace.id }))
+    : [];
+}
+
+function isPlanPaused(item) {
+  return item.visibility === "personal" && state.personalPlanAccess.some((access) =>
+    access.payment_item_id === item.id && access.plan_paused
+  );
+}
+
+function isPaymentActive(item) {
+  return item.status === "active" && !isPlanPaused(item);
 }
 
 async function loadPaymentRecords() {
@@ -1869,6 +1907,13 @@ function renderFamilyApp() {
   renderPaymentScope();
   renderNotifications();
   const workspaceReadOnly = Boolean(state.workspaceEntitlement?.read_only || state.workspaceEntitlement?.effective_status === "suspended");
+  const banner = $("#workspaceAccessBanner");
+  banner.classList.toggle("hidden", !workspaceReadOnly);
+  if (workspaceReadOnly) {
+    banner.innerHTML = state.workspaceEntitlement?.effective_status === "suspended"
+      ? "<strong>Family workspace suspended.</strong> An administrator must restore access. Your Personal workspace remains available."
+      : `<strong>Family subscription expired.</strong> This workspace is read-only. ${currentWorkspaceIsOwned() ? "Renew it from Subscription." : "Ask the family head to renew it."}`;
+  }
   document.querySelectorAll("[data-open-payment-item-dialog]").forEach((button) => {
     button.disabled = workspaceReadOnly;
     button.title = workspaceReadOnly ? "Renew this workspace to change payments" : "";
@@ -2080,7 +2125,7 @@ function selectedOccurrences(items = state.paymentItems, records = state.payment
 function generateOccurrences(items, records, monthValue) {
   const targetDate = parseDate(monthStart(monthValue));
   return items
-    .filter((item) => item.status !== "inactive")
+    .filter(isPaymentActive)
     .flatMap((item) => {
       if (item.recurrence_type === "custom_days") {
         return dailyOccurrenceDatesInMonth(item, monthValue)
@@ -2494,12 +2539,13 @@ function renderObligationCard(item, occurrenceChoices = []) {
   const workspaceClass = paymentWorkspaceClass(item);
   const occurrence = preferredRecordOccurrence(occurrenceChoices);
   const workspaceReadOnly = Boolean(state.workspaceEntitlement?.read_only || state.workspaceEntitlement?.effective_status === "suspended");
-  const isPaused = item.status === "inactive";
+  const planPaused = isPlanPaused(item);
+  const isPaused = item.status === "inactive" || planPaused;
   const recordDisabled = workspaceReadOnly || isPaused || !occurrence;
   const recordReason = workspaceReadOnly
     ? "Renew this workspace to record payments"
     : isPaused
-      ? "Reactivate this payment before recording it"
+      ? planPaused ? "Renew Personal or select this among your five Free payments" : "Reactivate this payment before recording it"
       : !occurrence
         ? "No outstanding payment period is available"
         : "";
@@ -2511,7 +2557,7 @@ function renderObligationCard(item, occurrenceChoices = []) {
       <strong>${escapeHtml(item.name)}</strong>
       <span>${escapeHtml(item.category)} &middot; ${recurrenceLabel(item)} &middot; ${paymentScheduleLabel(item)}</span>
       <div class="badge-row">
-        ${statusBadge(item.status || "active")}
+        ${statusBadge(planPaused ? "paused by plan limit" : item.status || "active")}
         <span class="mini-badge payment-workspace-badge ${workspaceClass}">${escapeHtml(workspaceLabel)}</span>
         <span class="mini-badge">${escapeHtml(member?.name || "No assigned member")}</span>
         <span class="mini-badge reminder-badge">Daily reminder · ${item.reminder_days_before ?? 0} day${Number(item.reminder_days_before ?? 0) === 1 ? "" : "s"} before</span>
@@ -2525,12 +2571,12 @@ function renderObligationCard(item, occurrenceChoices = []) {
       <div class="row-actions payment-card-actions">
         <button class="primary payment-record-action" type="button" data-record-payment-item="${item.id}" ${recordDisabled ? "disabled" : ""} title="${escapeHtml(recordReason)}">Record payment</button>
         <button type="button" data-open-payment-history="${item.id}">History</button>
-        <button type="button" data-edit-obligation="${item.id}" ${workspaceReadOnly ? "disabled" : ""}>Edit</button>
+        <button type="button" data-edit-obligation="${item.id}" ${workspaceReadOnly || planPaused ? "disabled" : ""}>Edit</button>
         <details class="payment-more-menu">
           <summary role="button">More</summary>
           <div class="payment-more-menu-list">
-            <button type="button" data-toggle-obligation="${item.id}" data-next-status="${isPaused ? "active" : "inactive"}" ${workspaceReadOnly ? "disabled" : ""}>
-              ${isPaused ? "Reactivate" : "Pause"}
+            <button type="button" data-toggle-obligation="${item.id}" data-next-status="${item.status === "inactive" ? "active" : "inactive"}" ${workspaceReadOnly || planPaused ? "disabled" : ""}>
+              ${item.status === "inactive" ? "Reactivate" : "Pause"}
             </button>
             <button class="danger-text" type="button" data-delete-obligation="${item.id}" ${workspaceReadOnly ? "disabled" : ""}>Delete</button>
           </div>
@@ -2737,6 +2783,7 @@ function renderInvitations() {
   list.innerHTML = "";
   state.familyInvitations.forEach((invite) => {
     const incoming = invite.invitee_email?.toLowerCase() === state.session.user.email?.toLowerCase();
+    const canCancel = invite.status === "pending" && canManageMembersForFamily(invite.family_id);
     const article = document.createElement("article");
     article.className = "record-card";
     article.innerHTML = `
@@ -2747,6 +2794,7 @@ function renderInvitations() {
       </div>
       <div class="record-side">
         ${incoming && invite.status === "pending" ? `<div class="row-actions"><button class="primary" type="button" data-accept-invite="${invite.id}">Accept</button><button type="button" data-reject-invite="${invite.id}">Reject</button></div>` : ""}
+        ${canCancel ? `<button type="button" data-cancel-family-invite="${escapeHtml(invite.id)}">Cancel invitation</button>` : ""}
       </div>
     `;
     list.append(article);
@@ -2758,7 +2806,7 @@ function renderSettings() {
   const plan = entitlement
     ? `${entitlement.plan_name} - ${titleCase(entitlement.effective_status)}`
     : hasJoinableFamilyInvitation() ? "Family member - Free" : "Active - Free";
-  const paymentCount = userCreatedPersonalPaymentCount();
+  const paymentCount = state.paymentItems.filter((item) => item.visibility === "personal" && isPaymentActive(item)).length;
   const canManageAnyFamily = ownedFamilies().some((family) => canManageMembersForFamily(family.id));
   $("#settingsPlanBadge").textContent = plan;
   $("#settingsPlanBadge").className = `mini-badge ${badgeClass(plan)}`;
@@ -3729,7 +3777,7 @@ function renderSubscription() {
     : `Selected ${workspace.workspace_type === "household" ? "Family" : "Personal"} workspace · Your subscription.`;
   $("#ownedWorkspacePlansPanel").hidden = false;
   $("#ownedWorkspaceBillingHistory").hidden = joinedFamily;
-  const activeItems = state.paymentItems.filter((item) => item.workspace_id === workspace.id && item.status !== "inactive").length;
+  const activeItems = state.paymentItems.filter((item) => item.workspace_id === workspace.id && isPaymentActive(item)).length;
   const tracksMemberPlaces = ["household", "business"].includes(workspace.workspace_type);
   const memberLimit = Math.max(1, Number(state.memberUsage?.member_limit || state.workspaceSubscription?.member_limit || 1));
   const memberUsage = Number(state.memberUsage?.used_member_count || state.billableMemberCount || 1);
@@ -3757,15 +3805,59 @@ function renderSubscription() {
   $("#openRenewalButton").hidden = !currentWorkspaceIsOwned();
 
   const notice = $("#subscriptionAccessNotice");
-  notice.classList.toggle("hidden", entitlement.effective_status === "active" && !entitlement.read_only);
+  const expiredPersonal = workspace.workspace_type === "personal" && entitlement.plan_code === "free"
+    && state.workspaceSubscription?.plan_id !== state.plans.find((plan) => plan.code === "free")?.id;
+  notice.classList.toggle("hidden", entitlement.effective_status === "active" && !entitlement.read_only && !expiredPersonal);
   if (!notice.classList.contains("hidden")) {
-    notice.innerHTML = entitlement.effective_status === "suspended"
+    notice.innerHTML = expiredPersonal
+      ? "<strong>Personal plan expired.</strong><span>Your five chosen payments remain active. Extra payments are paused, cannot be edited or recorded, and send no reminders. You can delete them or renew Personal.</span>"
+      : entitlement.effective_status === "suspended"
       ? "<strong>Workspace suspended.</strong><span>Access can only be restored by an authorized Mushavo Budget administrator. A payment submission does not automatically remove a suspension.</span>"
-      : "<strong>Subscription expired.</strong><span>Your data remains stored. This shared workspace is read-only until its owner renews it.</span>";
+      : `<strong>Subscription expired.</strong><span>Your data remains stored. This Family workspace is read-only until its owner renews it${currentWorkspaceIsOwned() ? "." : ". Ask the family head to renew."}</span>`;
   }
+  renderFreePaymentSelection();
   renderWorkspacePlans();
   renderRenewalHistory();
   renderEntitlementHistory();
+}
+
+function renderFreePaymentSelection() {
+  const panel = $("#freePaymentSelection");
+  const entitlement = state.personalWorkspaceEntitlement;
+  const items = state.paymentItems.filter((item) => item.visibility === "personal" && item.status === "active")
+    .sort((a, b) => `${a.created_at}`.localeCompare(`${b.created_at}`) || a.id.localeCompare(b.id));
+  const limit = Number(entitlement?.active_payment_limit ?? 5);
+  const show = items.length > limit && entitlement?.effective_status === "active";
+  panel.classList.toggle("hidden", !show);
+  if (!show) { state.freePaymentDraft = null; return; }
+  if (!state.freePaymentDraft) {
+    const selected = state.personalPlanAccess.filter((row) => row.selected_for_free)
+      .map((row) => row.payment_item_id);
+    const choices = [...new Set([...selected, ...items.map((item) => item.id)])].slice(0, limit);
+    state.freePaymentDraft = new Set(choices);
+  }
+  $("#freePaymentChoices").innerHTML = items.map((item) => `
+    <label class="free-payment-choice"><input type="checkbox" data-free-payment-id="${item.id}" ${state.freePaymentDraft.has(item.id) ? "checked" : ""} />
+      <span>${escapeHtml(item.name)}</span><small>${isPlanPaused(item) ? "Paused by plan limit" : "Active"}</small></label>
+  `).join("");
+  $("#freePaymentSelectionCount").textContent = `${state.freePaymentDraft.size} of ${limit} selected`;
+  $("#saveFreePaymentSelection").disabled = state.freePaymentDraft.size !== limit;
+}
+
+async function saveFreePaymentSelection() {
+  const personalWorkspace = state.workspaces.find((workspace) =>
+    workspace.workspace_type === "personal" && workspace.owner_id === state.session.user.id && workspace.status === "active"
+  );
+  if (!personalWorkspace || state.freePaymentDraft?.size !== Number(state.personalWorkspaceEntitlement?.active_payment_limit ?? 5)) return;
+  try {
+    await query("free payment selection", supabase.rpc("set_personal_free_payment_selection", {
+      p_workspace_id: personalWorkspace.id, p_payment_ids: [...state.freePaymentDraft]
+    }));
+    state.freePaymentDraft = null;
+    await loadPersonalPlanAccess();
+    renderFamilyApp();
+    showToast("Your five Free payments were saved.");
+  } catch (error) { showToast(friendlyMessage(error.message)); }
 }
 
 function renderWorkspacePlans() {
@@ -4298,6 +4390,21 @@ async function respondToInvitation(invitationId, status) {
   }
 }
 
+async function cancelFamilyInvitation(invitationId) {
+  const invitation = state.familyInvitations.find((item) => item.id === invitationId);
+  if (!invitation || invitation.status !== "pending") return;
+  try {
+    await query("family invitation cancel", supabase.rpc("cancel_family_invitation", {
+      p_invitation_id: invitationId
+    }));
+    await Promise.all([loadInvitations(), loadNotifications(), loadWorkspaceSubscriptionData()]);
+    renderFamilyApp();
+    showToast("Invitation cancelled. You can invite this person again.");
+  } catch (error) {
+    showToast(error.message);
+  }
+}
+
 async function createFamilyWorkspace(name, monthlyBudget, currency) {
   if (!canCreateFamily()) {
     showToast(hasActiveMembership()
@@ -4547,7 +4654,7 @@ function renderFamilyPaymentRecord(record) {
       ${locked ? `<small>${money(locked.converted_amount, locked.reporting_currency)} at locked rate ${escapeHtml(locked.exchange_rate)}</small>` : ""}
       <div class="row-actions">
         ${record.proof_path ? `<button type="button" data-open-proof="${record.id}">View proof</button>` : ""}
-        <button type="button" data-delete-record="${record.id}">Delete</button>
+        <button type="button" data-delete-record="${record.id}" ${item && (isPlanPaused(item) || state.workspaceEntitlement?.read_only) ? "disabled" : ""}>Delete</button>
       </div>
     </div>
   `;
@@ -5899,7 +6006,7 @@ function renderHeads() {
     const article = document.createElement("details");
     article.className = "admin-user-row";
     article.innerHTML = `
-      <summary><div class="record-main"><strong>${escapeHtml(fullName)}</strong><span>${escapeHtml(email)}</span></div><div class="admin-user-summary-counts"><span>${ownedWorkspaces.length} owned</span><span>${joinedCount} joined</span>${statusBadge(head?.status || (profile ? "registered" : "not registered"))}</div></summary>
+      <summary><div class="record-main"><strong>${escapeHtml(fullName)}</strong><span>${escapeHtml(email)}</span></div><div class="admin-user-summary-counts"><span>${ownedWorkspaces.length} owned</span><span>${joinedCount} joined</span>${statusBadge(profile?.account_status === "suspended" ? "account suspended" : head?.status || (profile ? "registered" : "not registered"))}</div></summary>
       <div class="admin-user-details">
         <div class="record-main">
           <small>${profile?.created_at ? `Registered ${new Date(profile.created_at).toLocaleDateString()}` : "Login not registered yet"}${planNames.length ? ` &middot; ${escapeHtml(planNames.join("; "))}` : ""}</small>
@@ -5911,9 +6018,10 @@ function renderHeads() {
           <label class="inline-number-control">Family limit<input data-family-limit-input="${head.id}" type="number" min="0" max="100" step="1" value="${Number(head.family_limit ?? 1)}" /></label>
           <button type="button" data-save-family-limit="${head.id}">Save limit</button>
           <button type="button" data-toggle-member-access="${head.id}" data-next-member-access="${head.can_add_members ? "false" : "true"}">${head.can_add_members ? "Lock members" : "Unlock members"}</button>
-          <button type="button" data-toggle-head="${head.id}" data-next-status="${head.status === "active" ? "suspended" : "active"}">${head.status === "active" ? "Suspend" : "Reactivate"}</button>
+          <button type="button" data-toggle-head="${head.id}" data-next-status="${head.status === "active" ? "suspended" : "active"}">${head.status === "active" ? "Suspend owned families" : "Reactivate owned families"}</button>
           <button type="button" data-delete-head="${head.id}">Revoke access</button>
         </div>` : `<button type="button" data-configure-profile="${profile.id}">Configure access</button>`}
+        ${profile && profile.id !== state.session.user.id ? `<button type="button" data-toggle-account="${profile.id}" data-next-account-status="${profile.account_status === "suspended" ? "active" : "suspended"}">${profile.account_status === "suspended" ? "Reactivate account" : "Suspend account"}</button>` : ""}
         </div>
       </div>
     `;
@@ -6480,7 +6588,7 @@ async function saveObligation(event) {
   const usesNewPersonalSlot = scope === "personal" && (
     !editingItem || editingItem.visibility !== "personal" || editingItem.status === "inactive"
   );
-  if (!hasPaidPlan() && usesNewPersonalSlot && userCreatedPersonalPaymentCount() >= 5) {
+  if (usesNewPersonalSlot && state.personalWorkspaceEntitlement?.plan_code === "free" && userCreatedPersonalPaymentCount() >= 5) {
     showToast("Free accounts can keep up to 5 active personal payments. Family payments remain unlimited.");
     return;
   }
@@ -6538,6 +6646,10 @@ function openPaymentItemDialog() {
 function startEditObligation(itemId) {
   const item = state.paymentItems.find((paymentItem) => paymentItem.id === itemId);
   if (!item) return;
+  if (isPlanPaused(item)) {
+    showToast("This payment is paused by the Free plan limit. You can delete it or select it among your five.");
+    return;
+  }
   state.editingObligationId = item.id;
   state.familyTab = "payments";
   setRoute("family", "payments");
@@ -6596,7 +6708,7 @@ function userCreatedPersonalPaymentCount() {
 }
 
 function recordableOccurrencesForItem(item) {
-  if (!item || item.status === "inactive") return [];
+  if (!item || !isPaymentActive(item)) return [];
   const todayValue = toDateValue(new Date());
   const currentMonth = toMonthValue(new Date());
   const byKey = new Map();
@@ -6711,6 +6823,10 @@ function openRecordPaymentForItem(itemId) {
     showToast("Reactivate this payment before recording it.");
     return;
   }
+  if (isPlanPaused(item)) {
+    showToast("This payment is paused by the Free plan limit. Select it among your five or renew Personal.");
+    return;
+  }
   const choices = recordableOccurrencesForItem(item);
   const selectedOccurrence = preferredRecordOccurrence(choices);
   if (!selectedOccurrence) {
@@ -6770,7 +6886,7 @@ function renderPaymentHistoryRecord(record, item) {
     </div>
     <div class="payment-history-record-actions">
       ${record.proof_path ? `<button type="button" data-open-proof="${record.id}">View proof</button>` : ""}
-      <button class="danger-text" type="button" data-delete-record="${record.id}" ${workspaceReadOnly ? "disabled" : ""}>Delete</button>
+      <button class="danger-text" type="button" data-delete-record="${record.id}" ${workspaceReadOnly || isPlanPaused(item) ? "disabled" : ""}>Delete</button>
     </div>
   `;
   return article;
@@ -6938,6 +7054,8 @@ async function deletePaymentItem(itemId) {
       proofCleanupFailed = Boolean(error);
     }
     await loadFamilyData();
+    await loadWorkspaceSubscriptionData();
+    state.freePaymentDraft = null;
     renderFamilyApp();
     showToast(proofCleanupFailed
       ? "Payment deleted. Some receipt files still need admin cleanup."
@@ -7051,10 +7169,21 @@ async function updateHeadStatus(headId, nextStatus) {
     await query("head status update", supabase.from("family_heads").update({ status: nextStatus }).eq("id", headId));
     await loadAdminData();
     renderAdmin();
-    showToast(nextStatus === "active" ? "User reactivated." : "User suspended.");
+    showToast(nextStatus === "active" ? "Owned Family workspaces reactivated." : "Owned Family workspaces suspended. The user's Personal workspace remains available.");
   } catch (error) {
     showToast(error.message);
   }
+}
+
+async function updateAccountStatus(userId, nextStatus) {
+  try {
+    await query("account status update", supabase.rpc("set_user_account_status", {
+      p_user_id: userId, p_status: nextStatus
+    }));
+    await loadAdminData();
+    renderAdmin();
+    showToast(nextStatus === "active" ? "Account reactivated." : "Account suspended across all workspaces.");
+  } catch (error) { showToast(friendlyMessage(error.message)); }
 }
 
 async function updateHeadMemberAccess(headId, nextValue) {
@@ -7181,8 +7310,11 @@ async function deleteSelectedFamily() {
 
 async function updateObligationStatus(itemId, nextStatus) {
   try {
+    const item = state.paymentItems.find((payment) => payment.id === itemId);
+    if (!item || isPlanPaused(item)) throw new Error("Payments paused by the plan limit cannot be changed. You can delete one or choose it among your five.");
     await query("payment item status update", supabase.from("payment_items").update({ status: nextStatus }).eq("id", itemId));
     await loadPaymentItems();
+    state.freePaymentDraft = null;
     renderFamilyApp();
     showToast(nextStatus === "active" ? "Obligation reactivated." : "Obligation paused.");
   } catch (error) {
@@ -7676,6 +7808,13 @@ document.addEventListener("click", async (event) => {
   const editObligationId = event.target.dataset.editObligation;
   if (editObligationId) startEditObligation(editObligationId);
 
+  const accountId = event.target.dataset.toggleAccount;
+  if (accountId && await confirmAction({
+    title: event.target.dataset.nextAccountStatus === "suspended" ? "Suspend this account?" : "Reactivate this account?",
+    message: "Suspension blocks the user from accessing their Personal and Family workspaces. Their data stays stored.",
+    action: event.target.dataset.nextAccountStatus === "suspended" ? "Suspend" : "Reactivate"
+  })) await updateAccountStatus(accountId, event.target.dataset.nextAccountStatus);
+
   const toggleObligationId = event.target.dataset.toggleObligation;
   if (toggleObligationId) await updateObligationStatus(toggleObligationId, event.target.dataset.nextStatus);
 
@@ -7695,6 +7834,15 @@ document.addEventListener("click", async (event) => {
     action: "Remove"
   })) {
     await removeFamilyMember(removeMemberId);
+  }
+
+  const cancelFamilyInviteId = event.target.dataset.cancelFamilyInvite;
+  if (cancelFamilyInviteId && await confirmAction({
+    title: "Cancel this invitation?",
+    message: "The invitation will stop working and its reserved family place will become available. You can invite this person again.",
+    action: "Cancel invitation"
+  })) {
+    await cancelFamilyInvitation(cancelFamilyInviteId);
   }
 
   if (event.target.dataset.deleteFamily !== undefined && state.family && await confirmAction({
@@ -7923,6 +8071,16 @@ $("#paymentSearch").addEventListener("input", (event) => {
   state.paymentSearch = event.target.value;
   renderObligations();
 });
+$("#freePaymentChoices").addEventListener("change", (event) => {
+  const input = event.target.closest("[data-free-payment-id]");
+  if (!input || !state.freePaymentDraft) return;
+  if (input.checked) state.freePaymentDraft.add(input.dataset.freePaymentId);
+  else state.freePaymentDraft.delete(input.dataset.freePaymentId);
+  const limit = Number(state.personalWorkspaceEntitlement?.active_payment_limit ?? 5);
+  $("#freePaymentSelectionCount").textContent = `${state.freePaymentDraft.size} of ${limit} selected`;
+  $("#saveFreePaymentSelection").disabled = state.freePaymentDraft.size !== limit;
+});
+$("#saveFreePaymentSelection").addEventListener("click", saveFreePaymentSelection);
 $("#clearPaymentSearch").addEventListener("click", () => {
   state.paymentSearch = "";
   renderObligations();

@@ -17,14 +17,14 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="styles.css?v=64" />
+    <link rel="stylesheet" href="styles.css?v=65" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
-    <script src="/pwa.js?v=47" defer></script>
+    <script src="/pwa.js?v=49" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=93"></script>
+    <script type="module" src="app.js?v=95"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -112,9 +112,9 @@
       <section id="suspendedView" class="setup-panel hidden" aria-labelledby="suspendedTitle">
         <div class="panel-heading">
           <p class="eyebrow">Account suspended</p>
-          <h1 id="suspendedTitle">Your household access is currently paused</h1>
+          <h1 id="suspendedTitle">Your account is suspended</h1>
         </div>
-        <p class="muted-copy">Contact the app admin to reactivate your household account.</p>
+        <p class="muted-copy">You cannot use your Personal or Family workspaces while your account is suspended. Your payments remain stored. Contact Mushavo Budget support for help.</p>
         <button id="suspendedSignOutButton" type="button">Sign out</button>
       </section>
 
@@ -175,7 +175,7 @@
             <div class="sidebar-footer">
               <button type="button" data-admin-tab="support">Contact support</button>
               <button id="adminSignOutButton" type="button">Sign out</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.6</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.8</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -606,11 +606,12 @@
             </div>
             <div class="sidebar-footer">
               <button type="button" data-family-tab="support">Contact support</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.6</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.8</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
 
+          <section id="workspaceAccessBanner" class="notice hidden" role="status"></section>
           <section class="screen-panel" data-family-panel="dashboard">
             <header class="topbar">
               <div><p class="eyebrow">Command center</p><h2 id="dashboardMonthTitle">This month</h2></div>
@@ -779,6 +780,12 @@
               </dl>
             </section>
             <section id="subscriptionAccessNotice" class="notice hidden"></section>
+            <section id="freePaymentSelection" class="ledger-panel hidden" aria-labelledby="freePaymentSelectionTitle">
+              <div class="panel-heading"><h3 id="freePaymentSelectionTitle">Choose your five Free payments</h3><p class="muted-copy">Choose the payments to keep active if Personal expires. Extra payments stay visible but pause automatically. You can delete paused payments.</p></div>
+              <div id="freePaymentChoices" class="record-list"></div>
+              <p id="freePaymentSelectionCount" class="muted-copy" aria-live="polite"></p>
+              <button id="saveFreePaymentSelection" class="primary" type="button">Save my five payments</button>
+            </section>
             <section id="ownedWorkspacePlansPanel" class="ledger-panel workspace-plans-panel">
               <div class="panel-heading"><p class="eyebrow">Compare plans</p><h3 id="workspacePlansTitle">Plans for this workspace</h3><p id="workspacePlansDescription" class="muted-copy">Compare the plans available for the selected workspace.</p></div>
               <div class="workspace-plan-controls" aria-label="Plan pricing options">

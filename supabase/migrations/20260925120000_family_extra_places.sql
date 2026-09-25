@@ -192,7 +192,7 @@ $$;
 revoke all on function public.family_extra_place_quote(uuid, integer) from public, anon, authenticated;
 revoke all on function public.submit_family_extra_places(uuid, integer, numeric, text, date, text, text, text, text, text, bigint) from public, anon, authenticated;
 grant execute on function public.family_extra_place_quote(uuid, integer) to authenticated;
-grant execute on function public.submit_family_extra_places(uuid, integer, numeric, text, date, text, text, text, text, text, text, bigint) to authenticated;
+grant execute on function public.submit_family_extra_places(uuid, integer, numeric, text, date, text, text, text, text, text, bigint) to authenticated;
 
 create or replace function public.review_subscription_payment(
   p_payment_id uuid,

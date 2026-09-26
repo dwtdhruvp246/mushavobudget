@@ -1521,6 +1521,13 @@ code {
   color: #047857;
 }
 
+.mini-badge.paid-by-badge {
+  border-color: rgba(16, 185, 129, 0.24);
+  background: rgba(236, 253, 245, 0.9);
+  color: #065f46;
+  text-transform: none;
+}
+
 .mini-badge.partial,
 .mini-badge.due-soon,
 .mini-badge.unpaid,
@@ -3333,20 +3340,39 @@ code {
   margin-top: 22px;
 }
 
+#membersList .record-card,
+#invitationsList .record-card {
+  border: 2px solid rgba(100, 116, 139, 0.34);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+}
+
 .compact-form-grid {
   align-items: end;
 }
 
 .report-topbar {
-  align-items: flex-end;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: 1rem;
   margin-bottom: 22px;
+  padding: 1.15rem;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(240, 253, 250, 0.8), rgba(248, 250, 252, 0.9));
+}
+
+.report-heading {
+  display: grid;
+  gap: 0.35rem;
 }
 
 .report-filter-controls {
   display: grid;
-  grid-template-columns: minmax(190px, 1fr) minmax(190px, 1fr);
+  grid-template-columns: repeat(5, minmax(145px, 1fr));
   gap: 0.75rem;
-  width: min(470px, 100%);
+  width: 100%;
 }
 
 .report-workspace-control,
@@ -3370,6 +3396,7 @@ code {
   padding: 17px;
   background: rgba(255, 255, 255, 0.72);
   box-shadow: 0 9px 22px rgba(15, 23, 42, 0.055);
+  min-height: 132px;
 }
 
 .report-kpi::before {
@@ -3383,22 +3410,20 @@ code {
 .report-kpi span,
 .report-kpi small {
   display: block;
-  overflow: hidden;
   color: var(--muted);
   font-size: 0.76rem;
   font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .report-kpi strong {
   display: block;
   margin: 9px 0 7px;
-  overflow: hidden;
-  font-size: clamp(1.05rem, 2vw, 1.6rem);
+  font-size: clamp(1rem, 1.65vw, 1.5rem);
   font-variant-numeric: tabular-nums;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.22;
+  overflow-wrap: anywhere;
 }
 
 .report-analysis-grid {
@@ -3754,6 +3779,10 @@ input[type="file"] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .report-filter-controls {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .admin-workspace-summary {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -3872,7 +3901,12 @@ input[type="file"] {
   }
 
   .report-filter-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
+  }
+
+  .report-filter-controls label:last-child {
+    grid-column: 1 / -1;
   }
 
   .report-summary-grid {
@@ -3882,6 +3916,7 @@ input[type="file"] {
 
   .report-kpi {
     padding: 13px;
+    min-height: 126px;
   }
 
   .report-kpi strong {
@@ -3890,7 +3925,7 @@ input[type="file"] {
 
   .report-kpi span,
   .report-kpi small {
-    font-size: 0.66rem;
+    font-size: 0.72rem;
   }
 
   .collection-progress {
@@ -4416,11 +4451,14 @@ input[type="file"] {
 .workspace-plan-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  align-items: stretch;
   gap: 1rem;
 }
 
 .workspace-plan-card {
   gap: 0.72rem;
+  height: 100%;
   padding: 1.15rem;
   border-radius: 20px;
 }
@@ -4487,8 +4525,11 @@ input[type="file"] {
 .workspace-plan-owner-note { color: var(--muted); }
 
 .workspace-plan-meta { display: grid; gap: 0.3rem; font-size: 0.82rem; }
-.workspace-plan-features { margin: 0.25rem 0 0.5rem; padding: 0; display: grid; gap: 0.42rem; list-style: none; color: #334155; font-size: 0.86rem; }
-.workspace-plan-features li::before { margin-right: 0.42rem; color: #10b981; content: "✓"; font-weight: 900; }
+.workspace-plan-features { flex: 1 1 auto; margin: 0.25rem 0 0.5rem; padding: 0; display: grid; align-content: start; gap: 0.42rem; list-style: none; color: #334155; font-size: 0.86rem; }
+.workspace-plan-features li { display: grid; grid-template-columns: 1rem minmax(0, 1fr); gap: 0.25rem; align-items: start; }
+.workspace-plan-features li::before { color: #10b981; content: "✓"; font-weight: 900; }
+.workspace-plan-features li.unavailable { color: #64748b; }
+.workspace-plan-features li.unavailable::before { color: #dc2626; content: "×"; font-size: 1.05em; }
 .workspace-plan-separate-note,
 .workspace-plan-owner-note { display: block; font-size: 0.76rem; line-height: 1.4; }
 .workspace-plan-card > button { width: 100%; margin-top: auto; }
@@ -5083,6 +5124,18 @@ input[type="file"] {
   min-width: 0;
 }
 
+.report-export-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.report-export-actions button {
+  min-height: 42px;
+  white-space: nowrap;
+}
+
 .report-rate-panel[data-level="warning"],
 .notice[data-level="warning"] {
   border-color: rgba(217, 119, 6, 0.35);
@@ -5116,9 +5169,21 @@ input[type="file"] {
     flex-direction: column;
   }
 
-  .report-rate-panel .button-row,
-  .report-rate-panel button {
+  .report-export-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
+  }
+
+  .report-export-actions button {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 430px) {
+  .report-export-actions {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -6055,14 +6120,14 @@ input[type="file"] {
 [data-family-panel="subscription"] .subscription-section-heading .muted-copy { font-size: 0.81rem; }
 [data-family-panel="subscription"] .subscription-ownership-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr));
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.75rem;
 }
 [data-family-panel="subscription"] .subscription-ownership-card {
   display: grid;
-  align-content: start;
-  gap: 0.4rem;
+  grid-template-columns: minmax(190px, 0.7fr) minmax(0, 1.3fr) auto;
+  align-items: center;
+  gap: 1rem;
   min-width: 0;
   padding: 1rem;
   border: 1px solid var(--line);
@@ -6070,19 +6135,22 @@ input[type="file"] {
   background: #fff;
   overflow-wrap: anywhere;
 }
-[data-family-panel="subscription"] .subscription-ownership-card > span { color: var(--muted); font-size: 0.78rem; font-weight: 750; }
-[data-family-panel="subscription"] .subscription-ownership-card > strong { font-size: 1.2rem; line-height: 1.2; }
-[data-family-panel="subscription"] .subscription-ownership-card > small,
+[data-family-panel="subscription"] .subscription-ownership-heading { display: grid; gap: 0.35rem; min-width: 0; }
+[data-family-panel="subscription"] .subscription-ownership-heading > span { color: var(--muted); font-size: 0.78rem; font-weight: 750; }
+[data-family-panel="subscription"] .subscription-ownership-heading > strong { font-size: 1.2rem; line-height: 1.2; }
+[data-family-panel="subscription"] .subscription-ownership-heading > small,
 [data-family-panel="subscription"] .owned-family-plan-list { color: var(--muted-strong); line-height: 1.35; }
-[data-family-panel="subscription"] .owned-family-plan-list { display: grid; gap: 0.5rem; }
-[data-family-panel="subscription"] .owned-family-plan-row { display: grid; gap: 0.2rem; padding-top: 0.55rem; border-top: 1px solid #e2e8f0; }
+[data-family-panel="subscription"] .personal-plan-card .subscription-ownership-heading,
+[data-family-panel="subscription"] .joined-plan-card .subscription-ownership-heading { grid-column: 1 / -1; }
+[data-family-panel="subscription"] .owned-family-plan-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.5rem; }
+[data-family-panel="subscription"] .owned-family-plan-row { display: grid; gap: 0.2rem; padding: 0.65rem 0.75rem; border: 1px solid #e2e8f0; border-radius: 12px; background: #f8fafc; }
 [data-family-panel="subscription"] .owned-family-plan-row strong { color: var(--ink); font-size: 0.85rem; }
 [data-family-panel="subscription"] .owned-family-plan-row small { font-size: 0.76rem; }
-[data-family-panel="subscription"] #startOwnFamilyPlan { justify-self: start; margin-top: 0.3rem; }
+[data-family-panel="subscription"] #startOwnFamilyPlan { justify-self: end; margin-top: 0; white-space: nowrap; }
 [data-family-panel="subscription"] .workspace-plans-panel { padding: 1rem; box-shadow: none; }
 [data-family-panel="subscription"] .panel-heading { margin-bottom: 0.5rem; }
 [data-family-panel="subscription"] .workspace-plan-controls { margin: 0.65rem 0; padding: 0.55rem; flex-wrap: wrap; }
-[data-family-panel="subscription"] .workspace-plan-grid { gap: 0.75rem; align-items: start; }
+[data-family-panel="subscription"] .workspace-plan-grid { gap: 0.75rem; align-items: stretch; }
 [data-family-panel="subscription"] .workspace-plan-card { padding: 0.9rem; gap: 0.5rem; border-radius: 16px; overflow-wrap: anywhere; }
 [data-family-panel="subscription"] .workspace-plan-card h4 { font-size: 1.2rem; }
 [data-family-panel="subscription"] .workspace-plan-card > p { font-size: 0.85rem; }
@@ -6101,6 +6169,10 @@ input[type="file"] {
   [data-family-panel="subscription"] .subscription-term-grid { grid-template-columns: minmax(0, 1fr); }
   [data-family-panel="subscription"] .subscription-details-list > div { border-left: 0; }
   [data-family-panel="subscription"] .subscription-details-list > div:nth-child(odd) { padding-left: 0; }
+  [data-family-panel="subscription"] .subscription-ownership-card { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; align-items: start; }
+  [data-family-panel="subscription"] .personal-plan-card .subscription-ownership-heading,
+  [data-family-panel="subscription"] .joined-plan-card .subscription-ownership-heading { grid-column: auto; }
+  [data-family-panel="subscription"] #startOwnFamilyPlan { justify-self: start; white-space: normal; }
 }
 @media (max-width: 570px) {
   [data-family-panel="subscription"] .subscription-history-grid { grid-template-columns: minmax(0, 1fr); }

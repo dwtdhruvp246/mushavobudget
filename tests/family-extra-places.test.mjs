@@ -5,6 +5,7 @@ import vm from 'node:vm';
 
 const app = readFileSync(new URL('../app.js', import.meta.url), 'utf8');
 const sql = readFileSync(new URL('../supabase/migrations/20260925120000_family_extra_places.sql', import.meta.url), 'utf8');
+const correction = readFileSync(new URL('../supabase/migrations/20260925134000_correct_family_extra_place_month_count.sql', import.meta.url), 'utf8');
 const source = app.slice(app.indexOf('async function refreshFamilySeatQuote'), app.indexOf('function openRenewalDialog'));
 
 function harness(quotes) {
@@ -84,4 +85,47 @@ test('approval of extra places keeps the original subscription expiry',()=>{
   assert.doesNotMatch(branch,/set paid_through_at/);
   assert.match(sql,/v_first_half := now\(\) < v_month_start/);
   assert.match(sql,/v_next_month := v_anchor \+ make_interval\(months => v_month_index \+ 1\)/);
+});
+
+function addUtcMonths(value, months) {
+  const date = new Date(value);
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + months, date.getUTCDate(), date.getUTCHours()));
+}
+
+function seatQuote(anchorValue, expiryValue, purchaseValue, monthlyPrice = 5) {
+  const anchor = new Date(anchorValue);
+  const expiry = new Date(expiryValue);
+  const purchase = new Date(purchaseValue);
+  let monthIndex = 0;
+  let monthStart = anchor;
+  let nextMonth = addUtcMonths(anchor, 1);
+  while (nextMonth <= purchase) {
+    monthIndex += 1;
+    monthStart = nextMonth;
+    nextMonth = addUtcMonths(anchor, monthIndex + 1);
+  }
+  const firstHalf = purchase < new Date((monthStart.getTime() + nextMonth.getTime()) / 2);
+  let fullMonths = 0;
+  while (addUtcMonths(anchor, monthIndex + 2) <= expiry) {
+    fullMonths += 1;
+    monthIndex += 1;
+  }
+  return { firstHalf, fullMonths, amount: monthlyPrice * (fullMonths + (firstHalf ? 0.5 : 0)) };
+}
+
+test('proration excludes the current second half and never counts the renewal boundary as a month', () => {
+  assert.deepEqual(seatQuote('2026-09-03T12:00:00Z', '2027-09-03T12:00:00Z', '2026-09-25T12:00:00Z'),
+    { firstHalf: false, fullMonths: 11, amount: 55 });
+  assert.match(correction, /v_full_month_end := v_anchor \+ make_interval\(months => v_month_index \+ 2\)/);
+  assert.match(correction, /exit when v_full_month_end > v_subscription\.paid_through_at/);
+  assert.doesNotMatch(correction, /v_next_month <= v_subscription\.paid_through_at/);
+});
+
+test('purchase-day billing matches the four agreed annual examples', () => {
+  const anchor = '2026-05-20T12:00:00Z';
+  const expiry = '2027-05-20T12:00:00Z';
+  assert.deepEqual(seatQuote(anchor, expiry, '2026-05-30T12:00:00Z'), { firstHalf: true, fullMonths: 11, amount: 57.5 });
+  assert.deepEqual(seatQuote(anchor, expiry, '2026-06-10T12:00:00Z'), { firstHalf: false, fullMonths: 11, amount: 55 });
+  assert.deepEqual(seatQuote(anchor, expiry, '2026-07-02T12:00:00Z'), { firstHalf: true, fullMonths: 10, amount: 52.5 });
+  assert.deepEqual(seatQuote(anchor, expiry, '2026-08-13T12:00:00Z'), { firstHalf: false, fullMonths: 9, amount: 45 });
 });

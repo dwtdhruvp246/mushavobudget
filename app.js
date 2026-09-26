@@ -105,6 +105,7 @@ const state = {
   paymentHistoryItemId: null,
   recordPaymentOccurrenceChoices: [],
   filterMonth: toMonthValue(new Date()),
+  reportMonth: toMonthValue(new Date()),
   filterStatus: "all",
   reportCurrencyFilter: "all",
   reportViewMode: "original",
@@ -269,7 +270,7 @@ const PAYMENT_CURRENCIES = [
 const today = new Date();
 $("#paymentDate").value = toDateValue(today);
 $("#monthFilter").value = state.filterMonth;
-$("#reportMonthFilter").value = state.filterMonth;
+$("#reportMonthFilter").value = state.reportMonth;
 populatePaymentScheduleControls(today);
 $("#recordPaymentDate").value = toDateValue(today);
 $("#renewalPaymentDate").value = toDateValue(today);
@@ -2135,6 +2136,24 @@ function selectedOccurrences(items = state.paymentItems, records = state.payment
   });
 }
 
+function previousUnpaidOccurrences(items = state.paymentItems, records = state.paymentRecords) {
+  const activeItems = items.filter(isPaymentActive);
+  const selectedMonth = parseDate(monthStart(state.filterMonth));
+  const validStartDates = activeItems
+    .map((item) => parseDate(item.start_date))
+    .filter((date) => !Number.isNaN(date.getTime()) && date < selectedMonth);
+  if (!validStartDates.length) return [];
+  const earliestStart = validStartDates.reduce((earliest, date) => date < earliest ? date : earliest);
+  const previousMonthCount = monthDiff(earliestStart, selectedMonth);
+  const earliestMonth = toMonthValue(earliestStart);
+  const unpaid = [];
+  for (let offset = 0; offset < previousMonthCount; offset += 1) {
+    unpaid.push(...generateOccurrences(activeItems, records, offsetMonthValue(earliestMonth, offset))
+      .filter((occurrence) => occurrence.status !== "paid" && occurrence.outstanding > 0.00005));
+  }
+  return unpaid.sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+}
+
 function generateOccurrences(items, records, monthValue) {
   const targetDate = parseDate(monthStart(monthValue));
   return items
@@ -2237,11 +2256,13 @@ function occurrenceCardStateClass(occurrence) {
 
 function renderDashboard() {
   const occurrences = selectedOccurrences();
+  const previousUnpaid = previousUnpaidOccurrences();
+  const attentionOccurrences = [...previousUnpaid, ...occurrences];
   const dueRows = occurrences.map((item) => ({ amount: item.amount, currency: item.item.currency }));
   const paidRows = occurrences.map((item) => ({ amount: item.paid, currency: item.item.currency }));
-  const outstandingRows = occurrences.map((item) => ({ amount: item.outstanding, currency: item.item.currency }));
-  const overdue = occurrences.filter((item) => item.status === "overdue");
-  const myDue = myOccurrences(occurrences).filter((item) => item.status !== "paid");
+  const outstandingRows = attentionOccurrences.map((item) => ({ amount: item.outstanding, currency: item.item.currency }));
+  const overdue = attentionOccurrences.filter((item) => item.status === "overdue");
+  const myDue = myOccurrences(attentionOccurrences).filter((item) => item.status !== "paid");
   const dueSummary = dashboardAmountSummary(dueRows);
   const paidSummary = dashboardAmountSummary(paidRows);
   const outstandingSummary = dashboardAmountSummary(outstandingRows);
@@ -2258,7 +2279,7 @@ function renderDashboard() {
 
   $("#dueAmount").textContent = dueSummary.text;
   $("#outstandingAmount").textContent = outstandingSummary.text;
-  $("#outstandingText").textContent = occurrences.some((item) => item.outstanding > 0)
+  $("#outstandingText").textContent = attentionOccurrences.some((item) => item.outstanding > 0)
     ? outstandingSummary.converted
       ? `Converted to ${outstandingSummary.currency}`
       : outstandingSummary.scaled == null
@@ -2271,8 +2292,8 @@ function renderDashboard() {
   $("#paidMeter").style.width = `${percentage}%`;
   $("#paidProgressText").textContent = occurrences.length ? `${Math.round(percentage)}% paid this month` : "No dues yet";
 
-  renderPriorityDueList(occurrences);
-  renderMemberResponsibility(occurrences);
+  renderPriorityDueList(occurrences, previousUnpaid);
+  renderMemberResponsibility(attentionOccurrences);
   scheduleDashboardTextFit();
 }
 
@@ -2294,10 +2315,21 @@ function scheduleDashboardTextFit() {
   });
 }
 
-function renderPriorityDueList(occurrences) {
+function renderPriorityDueList(occurrences, previousUnpaid = []) {
   const list = $("#priorityDueList");
   const statusPriority = { overdue: 0, partial: 1, "due-soon": 2, upcoming: 3, paid: 4 };
   const monthGroups = [];
+
+  if (previousUnpaid.length) {
+    monthGroups.push({
+      monthOffset: -1,
+      monthValue: "previous-unpaid",
+      label: "Earlier months",
+      title: "Previous unpaid",
+      occurrences: previousUnpaid,
+      alwaysExpanded: true
+    });
+  }
 
   for (let monthOffset = 0; monthOffset <= 6; monthOffset += 1) {
     const monthValue = offsetMonthValue(state.filterMonth, monthOffset);
@@ -2314,10 +2346,10 @@ function renderPriorityDueList(occurrences) {
   monthGroups.forEach((group, groupIndex) => {
     const section = document.createElement("section");
     const isCurrentMonth = group.monthOffset === 0;
-    const isExpanded = isCurrentMonth || dashboardDisclosureState.months.has(group.monthValue);
+    const isExpanded = group.alwaysExpanded || isCurrentMonth || dashboardDisclosureState.months.has(group.monthValue);
     section.className = `due-month-group month-accent-${groupIndex % 4}${isExpanded ? " expanded" : " collapsed"}`;
     section.dataset.month = group.monthValue;
-    const monthTitle = parseDate(monthStart(group.monthValue)).toLocaleString("en", {
+    const monthTitle = group.title || parseDate(monthStart(group.monthValue)).toLocaleString("en", {
       month: "long",
       year: "numeric"
     });
@@ -2329,12 +2361,12 @@ function renderPriorityDueList(occurrences) {
       ? `${group.occurrences.length} payment${group.occurrences.length === 1 ? "" : "s"} · ${totalOutstanding} outstanding`
       : "No payments scheduled";
     section.innerHTML = `
-      <button class="due-month-header" type="button" ${isCurrentMonth ? "disabled" : "data-toggle-due-month"} aria-expanded="${isExpanded}" aria-controls="due-month-${group.monthValue}">
+      <button class="due-month-header" type="button" ${group.alwaysExpanded || isCurrentMonth ? "disabled" : "data-toggle-due-month"} aria-expanded="${isExpanded}" aria-controls="due-month-${group.monthValue}">
         <div>
-          <span>${group.monthOffset === 0 ? "Selected month" : "Upcoming month"}</span>
+          <span>${group.label || (group.monthOffset === 0 ? "Selected month" : "Upcoming month")}</span>
           <h4>${escapeHtml(monthTitle)}</h4>
         </div>
-        <span class="due-month-summary"><small title="${escapeHtml(summary)}">${escapeHtml(summary)}</small>${isCurrentMonth ? "" : '<span class="accordion-chevron" aria-hidden="true">⌄</span>'}</span>
+        <span class="due-month-summary"><small title="${escapeHtml(summary)}">${escapeHtml(summary)}</small>${group.alwaysExpanded || isCurrentMonth ? "" : '<span class="accordion-chevron" aria-hidden="true">⌄</span>'}</span>
       </button>
       <div id="due-month-${group.monthValue}" class="due-month-items" ${isExpanded ? "" : "hidden"}></div>
     `;
@@ -2696,6 +2728,7 @@ function renderOccurrenceCard(occurrence, withAction = false, collapsible = fals
   const workspaceLabel = paymentWorkspaceLabel(occurrence.item);
   const workspaceClass = paymentWorkspaceClass(occurrence.item);
   const responsibleLabel = member?.name || (workspaceClass === "personal" ? "Personal account" : "Household account");
+  const payerLabel = occurrence.status === "paid" ? occurrencePayerLabel(occurrence) : "";
   const article = document.createElement("article");
   const stateClass = occurrenceCardStateClass(occurrence);
   if (collapsible) {
@@ -2712,7 +2745,7 @@ function renderOccurrenceCard(occurrence, withAction = false, collapsible = fals
         <span class="occurrence-summary-copy">
           <strong class="occurrence-name" title="${escapeHtml(occurrence.item.name)}">${escapeHtml(occurrence.item.name)}</strong>
           <span class="payment-workspace-badge ${workspaceClass}" title="${escapeHtml(workspaceLabel)}">${escapeHtml(workspaceLabel)}</span>
-          <span class="occurrence-summary-meta">Due ${escapeHtml(occurrence.dueDate)} · ${escapeHtml(occurrence.status)}</span>
+          <span class="occurrence-summary-meta">Due ${escapeHtml(occurrence.dueDate)} · ${escapeHtml(occurrence.status)}${payerLabel ? ` · ${escapeHtml(payerLabel)}` : ""}</span>
         </span>
         <strong class="occurrence-amount" data-fit-text data-fit-min="10">${money(occurrence.amount, occurrence.item.currency)}</strong>
         <span class="accordion-chevron" aria-hidden="true">⌄</span>
@@ -2725,7 +2758,7 @@ function renderOccurrenceCard(occurrence, withAction = false, collapsible = fals
           <div><dt>Outstanding</dt><dd>${money(occurrence.outstanding, occurrence.item.currency)}</dd></div>
         </dl>
         <div class="occurrence-detail-footer">
-          <div class="badge-row">${statusBadge(occurrence.status)}<span class="mini-badge">Daily reminder from ${occurrence.item.reminder_days_before ?? 3} day${Number(occurrence.item.reminder_days_before ?? 3) === 1 ? "" : "s"} before</span></div>
+          <div class="badge-row">${statusBadge(occurrence.status)}${payerLabel ? `<span class="mini-badge paid-by-badge">${escapeHtml(payerLabel)}</span>` : ""}<span class="mini-badge">Daily reminder from ${occurrence.item.reminder_days_before ?? 3} day${Number(occurrence.item.reminder_days_before ?? 3) === 1 ? "" : "s"} before</span></div>
           ${withAction ? `<div class="row-actions"><button type="button" data-edit-obligation="${occurrence.item.id}">Edit</button>${occurrence.status !== "paid" ? `<button class="primary" type="button" data-record-payment="${occurrence.key}">Record payment</button>` : '<span class="paid-label">Paid in full</span>'}</div>` : ""}
         </div>
       </div>
@@ -2744,6 +2777,7 @@ function renderOccurrenceCard(occurrence, withAction = false, collapsible = fals
       <div class="badge-row">
         <span class="mini-badge payment-workspace-badge ${workspaceClass}">${escapeHtml(workspaceLabel)}</span>
         ${statusBadge(occurrence.status)}
+        ${payerLabel ? `<span class="mini-badge paid-by-badge">${escapeHtml(payerLabel)}</span>` : ""}
         <span class="mini-badge">${money(occurrence.paid, occurrence.item.currency)} paid</span>
       </div>
     </div>
@@ -2753,6 +2787,20 @@ function renderOccurrenceCard(occurrence, withAction = false, collapsible = fals
     </div>
   `;
   return article;
+}
+
+function occurrencePayerLabel(occurrence) {
+  const names = state.paymentRecords
+    .filter((record) => record.payment_item_id === occurrence.item.id && record.period_start === occurrence.periodStart)
+    .map((record) => {
+      const people = paymentRecordPeople(record);
+      return people.payerName && people.payerName !== "Member not recorded"
+        ? people.payerName
+        : !record.family_id && record.visibility !== "family" ? people.recorderName : "";
+    })
+    .filter(Boolean);
+  const uniqueNames = [...new Set(names)];
+  return uniqueNames.length ? `Paid by ${uniqueNames.join(", ")}` : "";
 }
 
 function renderMembers() {
@@ -3665,6 +3713,16 @@ function featureLabelsForPlan(plan) {
     .map((feature) => PLAN_FEATURE_LABELS[feature.feature_code] || titleCase(feature.feature_code));
 }
 
+function featureDisplayForPlan(plan) {
+  const configured = state.planFeatures.filter((feature) => feature.plan_id === plan?.id);
+  const configuredByCode = new Map(configured.map((feature) => [feature.feature_code, feature.enabled]));
+  const featureCodes = [...new Set([...Object.keys(PLAN_FEATURE_LABELS), ...configured.map((feature) => feature.feature_code)])];
+  return featureCodes.map((featureCode) => ({
+    label: PLAN_FEATURE_LABELS[featureCode] || titleCase(featureCode),
+    enabled: configuredByCode.get(featureCode) === true
+  }));
+}
+
 function workspaceComparablePlans() {
   return state.plans.filter((plan) => plan.is_active !== false);
 }
@@ -3952,7 +4010,7 @@ function renderWorkspacePlans() {
     const planWorkspaceLabel = plan.workspace_type === "household" ? "Family" : titleCase(plan.workspace_type);
     const includedSeats = includedMemberSeats(plan);
     const paymentLimit = activePaymentLimitForPlan(plan);
-    const features = featureLabelsForPlan(plan);
+    const features = featureDisplayForPlan(plan);
     const total = price ? planInvoiceTotal(plan, price, null, workspace) : 0;
     const periodLabel = state.workspacePlanBillingPeriod === "annual" ? "year" : "month";
     const priceText = plan.code === "free" ? "Free" : price ? money(total, price.currency) : "Price unavailable";
@@ -3979,7 +4037,7 @@ function renderWorkspacePlans() {
       <p>${escapeHtml(plan.marketing_summary || plan.description)}</p>
       <div class="workspace-plan-price"><strong>${escapeHtml(priceText)}</strong>${price && plan.code !== "free" ? `<span> / ${periodLabel}</span>` : ""}</div>
       <div class="workspace-plan-meta"><span>${includedSeats} ${includedSeats === 1 ? "person" : "people"} included</span><span>${paymentLimit == null ? "Unlimited payment items" : `${paymentLimit} active personal payments`}</span>${extraMember}</div>
-      <ul class="workspace-plan-features">${features.slice(0, 8).map((feature) => `<li>${escapeHtml(feature)}</li>`).join("")}</ul>
+      <ul class="workspace-plan-features">${features.map((feature) => `<li class="${feature.enabled ? "available" : "unavailable"}">${escapeHtml(feature.label)}</li>`).join("")}</ul>
       ${startsNewFamily ? '<small class="workspace-plan-separate-note">Creates a separate Family workspace with its own plan.</small>' : ""}
       ${action}
     </article>`;
@@ -4618,8 +4676,8 @@ function renderReports() {
   );
   const workspaceLabel = workspace?.name || (state.family ? state.family.name : "Personal budget");
   const workspaceTypeLabel = workspace?.workspace_type === "household" ? "Family" : titleCase(workspace?.workspace_type || "personal");
-  const periodLabel = parseDate(monthStart(state.filterMonth)).toLocaleString("en", { month: "long", year: "numeric" });
-  $("#reportMonthFilter").value = state.filterMonth;
+  const periodLabel = parseDate(monthStart(state.reportMonth)).toLocaleString("en", { month: "long", year: "numeric" });
+  $("#reportMonthFilter").value = state.reportMonth;
   $("#reportPeriodLabel").textContent = hasAnalytics
     ? `${workspaceLabel} payment performance for ${periodLabel}.`
     : `${workspaceLabel} report access for ${periodLabel}.`;
@@ -4652,7 +4710,7 @@ function renderReports() {
   $("#reportReportingCurrency").disabled = !conversionAvailable || state.reportViewMode !== "converted";
   const reportItems = allReportItems.filter((item) => currentFilter === "all" || item.currency === currentFilter);
   const reportRecords = paymentRecordsForReportWorkspace(reportItems);
-  const occurrences = generateOccurrences(reportItems, reportRecords, state.filterMonth);
+  const occurrences = generateOccurrences(reportItems, reportRecords, state.reportMonth);
   const paid = occurrences.filter((item) => item.status === "paid").length;
   const partial = occurrences.filter((item) => item.status === "partial").length;
   const overdue = occurrences.filter((item) => item.status === "overdue").length;
@@ -4725,7 +4783,7 @@ function renderStatusAnalysis(occurrences) {
 
 function renderReportTrend(reportItems, reportRecords) {
   const list = $("#reportTrendList");
-  const months = Array.from({ length: 6 }, (_, index) => offsetMonthValue(state.filterMonth, index - 5));
+  const months = Array.from({ length: 6 }, (_, index) => offsetMonthValue(state.reportMonth, index - 5));
   list.innerHTML = months.map((monthValue) => {
     const occurrences = generateOccurrences(reportItems, reportRecords, monthValue);
     const completed = occurrences.filter((item) => item.status === "paid").length;
@@ -7703,7 +7761,7 @@ function exportReportCsv() {
       record.payment_method || "", record.reference_number || ""
     ];
   });
-  downloadCsv(`mushavo-report-${state.filterMonth}.csv`, [
+  downloadCsv(`mushavo-report-${state.reportMonth}.csv`, [
     "Payment date", "Payment", "Original amount", "Original currency", "Converted amount",
     "Reporting currency", "Exchange rate", "Rate effective at (UTC)", "Rate source", "Paid by", "Recorded by", "Method", "Reference"
   ], rows);
@@ -7940,6 +7998,7 @@ document.addEventListener("click", async (event) => {
     renderFamilyApp();
     scheduleDashboardTextFit();
     closeDrawer();
+    window.scrollTo({ top: 0, behavior: "auto" });
   }
 
   const recordPaymentKey = event.target.dataset.recordPayment;
@@ -8287,9 +8346,7 @@ $("#monthFilter").addEventListener("change", (event) => {
   renderFamilyApp();
 });
 $("#reportMonthFilter").addEventListener("change", (event) => {
-  state.filterMonth = event.target.value;
-  resetDashboardDisclosureState();
-  $("#monthFilter").value = state.filterMonth;
+  state.reportMonth = event.target.value;
   renderReports();
 });
 $("#reportCurrencyFilter").addEventListener("change", (event) => {

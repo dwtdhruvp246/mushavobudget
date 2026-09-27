@@ -1,4 +1,4 @@
--- Hidden Personal Cashbook test. This deliberately does not add plan pricing,
+-- Personal Cashbook foundation. This deliberately does not add plan pricing,
 -- navigation, Family access, or Business access.
 begin;
 

@@ -9,16 +9,17 @@ const migration = readFileSync(new URL("../supabase/migrations/20260927103000_pe
 const schema = readFileSync(new URL("../supabase/schema.sql", import.meta.url), "utf8");
 const pwa = readFileSync(new URL("../pwa.js", import.meta.url), "utf8");
 
-test("Cashbook is a hidden Personal route and does not change the release number", () => {
+test("Cashbook is a published Personal-only navigation route", () => {
   assert.match(app, /familyTabs = new Set\([^)]*"cashbook"/);
   assert.match(app, /tab === "cashbook" && area !== "personal" \? "dashboard" : tab/);
   assert.match(app, /requestedArea === "personal"/);
   assert.match(app, /rawTab\?\.replace\(\/\\\.\+\$\/, ""\)/);
   assert.match(html, /data-family-panel="cashbook"/);
-  assert.doesNotMatch(html, /data-family-tab="cashbook"/);
-  assert.match(pwa, /const RELEASE = "4\.9\.12"/);
-  assert.match(html, /app\.js\?v=101/);
-  assert.match(html, /styles\.css\?v=70/);
+  assert.match(html, /data-family-tab="cashbook" data-personal-only/);
+  assert.match(app, /element\.hidden = !personalWorkspace/);
+  assert.match(pwa, /const RELEASE = "4\.9\.13"/);
+  assert.match(html, /app\.js\?v=102/);
+  assert.match(html, /styles\.css\?v=71/);
 });
 
 test("Cashbook tables and reads are isolated to an active Personal owner", () => {
@@ -66,10 +67,12 @@ test("Cashbook provides responsive accounts, entries, reports, and reversal cont
   assert.match(app, /function cashbookBalanceAfterEntry\(/);
   assert.match(app, /function runCashbookReport\(/);
   assert.match(app, /function openCashbookReversal\(/);
+  assert.doesNotMatch(html, /Manual entry/);
+  assert.match(app, /const linked = \$\("#cashbookEntryDirection"\)\.value === "cash_out"/);
 });
 
-test("the consolidated schema includes the private Cashbook migration", () => {
-  assert.match(schema, /Hidden Personal Cashbook test/);
+test("the consolidated schema includes the Personal Cashbook foundation", () => {
+  assert.match(schema, /Personal Cashbook foundation/);
   assert.match(schema, /create or replace function public\.create_cashbook_payment_entry/);
   assert.match(schema, /notify pgrst, 'reload schema';\s*commit;\s*$/);
 });

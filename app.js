@@ -676,9 +676,13 @@ function friendlyMessage(message = "") {
   if (text.includes("PERSONAL_PAYMENT_LIMIT_REACHED")) {
     return "Free accounts can keep up to 5 active personal payments. Family payments remain unlimited.";
   }
+  if (text.includes("COMPLETED_PAYMENT_WORKSPACE_REQUIRED")) return "Choose an active Personal or Family workspace before recording this payment.";
+  if (text.includes("COMPLETED_PAYMENT_DETAILS_INVALID")) return "Enter a payment name, amount, currency, and valid payment date.";
+  if (text.includes("COMPLETED_PAYMENT_METHOD_INVALID")) return "Choose a valid payment method.";
+  if (text.includes("PAID_BY_MEMBER_REQUIRED")) return "Choose the active family member who paid.";
   if (text.includes("PAYMENT_PAUSED_BY_PLAN")) return "This payment is paused by the Free plan limit. Choose it among your five, renew Personal, or delete it.";
   if (text.includes("ACCOUNT_SUSPENDED")) return "Your account is suspended. Contact Mushavo Budget support.";
-  if (text.includes("PERSONAL_CASHBOOK_ACCESS_REQUIRED")) return "Cashbook testing is available only in your active Personal workspace.";
+  if (text.includes("PERSONAL_CASHBOOK_ACCESS_REQUIRED")) return "Cashbook is available only in your active Personal workspace.";
   if (text.includes("CASHBOOK_ACCOUNT_NAME_ALREADY_EXISTS")) return "An active Cashbook account already uses that name.";
   if (text.includes("ACTIVE_CASHBOOK_ACCOUNT_REQUIRED")) return "Choose an active Cashbook account.";
   if (text.includes("ACTIVE_CASHBOOK_ACCOUNTS_REQUIRED")) return "Choose two active Cashbook accounts.";
@@ -1997,7 +2001,7 @@ function renderFamilyApp() {
       ? "<strong>Family workspace suspended.</strong> An administrator must restore access. Your Personal workspace remains available."
       : `<strong>Family subscription expired.</strong> This workspace is read-only. ${currentWorkspaceIsOwned() ? "Renew it from Subscription." : "Ask the family head to renew it."}`;
   }
-  document.querySelectorAll("[data-open-payment-item-dialog]").forEach((button) => {
+  document.querySelectorAll("[data-open-payment-item-dialog], [data-open-dashboard-payment]").forEach((button) => {
     button.disabled = workspaceReadOnly;
     button.title = workspaceReadOnly ? "Renew this workspace to change payments" : "";
   });
@@ -2017,8 +2021,13 @@ function renderFamilyApp() {
 }
 
 function renderFamilyTabs() {
+  const personalWorkspace = !state.family;
   document.querySelectorAll("[data-family-tab]").forEach((button) => {
     button.classList.toggle("active", button.dataset.familyTab === state.familyTab);
+  });
+  document.querySelectorAll("[data-personal-only]").forEach((element) => {
+    element.classList.toggle("hidden", !personalWorkspace);
+    element.hidden = !personalWorkspace;
   });
   document.querySelectorAll("[data-family-panel]").forEach((panel) => {
     panel.classList.toggle("hidden", panel.dataset.familyPanel !== state.familyTab);
@@ -2169,9 +2178,12 @@ function renderMemberAccess() {
 function renderMemberOptions() {
   const obligationMember = $("#obligationMember");
   const recordPaidBy = $("#recordPaidBy");
+  const completedPaidBy = $("#completedPaymentPaidBy");
   const previousPayer = recordPaidBy.value;
+  const previousCompletedPayer = completedPaidBy.value;
   obligationMember.innerHTML = `<option value="">Select responsible member</option>`;
   recordPaidBy.innerHTML = `<option value="">Select the family member who paid</option>`;
+  completedPaidBy.innerHTML = `<option value="">Select the family member who paid</option>`;
 
   activeMembers().forEach((member) => {
     const option = document.createElement("option");
@@ -2183,9 +2195,17 @@ function renderMemberOptions() {
     payer.value = member.id;
     payer.textContent = `${member.name} (${member.role})`;
     recordPaidBy.append(payer);
+
+    const completedPayer = document.createElement("option");
+    completedPayer.value = member.id;
+    completedPayer.textContent = `${member.name} (${member.role})`;
+    completedPaidBy.append(completedPayer);
   });
   if ($("#recordPaymentDialog")?.open && activeMembers().some((member) => member.id === previousPayer)) {
     recordPaidBy.value = previousPayer;
+  }
+  if ($("#completedPaymentDialog")?.open && activeMembers().some((member) => member.id === previousCompletedPayer)) {
+    completedPaidBy.value = previousCompletedPayer;
   }
 }
 
@@ -2205,7 +2225,7 @@ function renderPaymentScope() {
 }
 
 function activeMembers() {
-  return state.members.filter((member) => member.status !== "inactive");
+  return state.members.filter((member) => member.status === "active");
 }
 
 function selectedOccurrences(items = state.paymentItems, records = state.paymentRecords) {
@@ -2656,6 +2676,15 @@ function comparePaymentItems(left, right, occurrenceChoices) {
   return inactiveOrder || leftDue.localeCompare(rightDue) || byName;
 }
 
+function completedOneTimePaymentRecord(item) {
+  if (item.recurrence_type !== "once") return null;
+  const records = state.paymentRecords
+    .filter((record) => record.payment_item_id === item.id)
+    .sort((left, right) => `${right.payment_date || ""}:${right.created_at || ""}`.localeCompare(`${left.payment_date || ""}:${left.created_at || ""}`));
+  const paid = records.reduce((total, record) => total + Number(record.amount || 0), 0);
+  return paid + 0.00005 >= Number(item.amount || 0) ? records[0] || null : null;
+}
+
 function renderObligationCard(item, occurrenceChoices = []) {
   const member = effectiveResponsibleMember(item);
   const workspaceLabel = paymentWorkspaceLabel(item);
@@ -2664,7 +2693,9 @@ function renderObligationCard(item, occurrenceChoices = []) {
   const workspaceReadOnly = Boolean(state.workspaceEntitlement?.read_only || state.workspaceEntitlement?.effective_status === "suspended");
   const planPaused = isPlanPaused(item);
   const isPaused = item.status === "inactive" || planPaused;
-  const recordDisabled = workspaceReadOnly || isPaused || !occurrence;
+  const completedRecord = completedOneTimePaymentRecord(item);
+  const completedPayer = memberById(completedRecord?.paid_by_member_id);
+  const recordDisabled = workspaceReadOnly || isPaused || !occurrence || Boolean(completedRecord);
   const recordReason = workspaceReadOnly
     ? "Renew this workspace to record payments"
     : isPaused
@@ -2680,27 +2711,27 @@ function renderObligationCard(item, occurrenceChoices = []) {
       <strong>${escapeHtml(item.name)}</strong>
       <span>${escapeHtml(item.category)} &middot; ${recurrenceLabel(item)} &middot; ${paymentScheduleLabel(item)}</span>
       <div class="badge-row">
-        ${statusBadge(planPaused ? "paused by plan limit" : item.status || "active")}
+        ${statusBadge(completedRecord ? "paid" : planPaused ? "paused by plan limit" : item.status || "active")}
         <span class="mini-badge payment-workspace-badge ${workspaceClass}">${escapeHtml(workspaceLabel)}</span>
-        <span class="mini-badge">${escapeHtml(member?.name || "No assigned member")}</span>
-        <span class="mini-badge reminder-badge">Daily reminder · ${item.reminder_days_before ?? 0} day${Number(item.reminder_days_before ?? 0) === 1 ? "" : "s"} before</span>
+        <span class="mini-badge">${escapeHtml(completedRecord ? completedPayer ? `Paid by ${completedPayer.name}` : `Paid ${completedRecord.payment_date}` : member?.name || "No assigned member")}</span>
+        <span class="mini-badge reminder-badge">${completedRecord ? "Completed one-time payment · No reminders" : `Daily reminder · ${item.reminder_days_before ?? 0} day${Number(item.reminder_days_before ?? 0) === 1 ? "" : "s"} before`}</span>
       </div>
     </div>
     <div class="record-side">
       <div class="payment-card-amount">
         <strong>${money(item.amount, item.currency)}</strong>
-        ${occurrence && !isPaused ? `<small>${occurrence.status === "overdue" ? "Overdue" : occurrence.status === "partial" ? "Part-paid period" : "Next due"}: ${escapeHtml(occurrence.dueDate)}</small>` : ""}
+        ${completedRecord ? `<small>Paid on ${escapeHtml(completedRecord.payment_date)}</small>` : occurrence && !isPaused ? `<small>${occurrence.status === "overdue" ? "Overdue" : occurrence.status === "partial" ? "Part-paid period" : "Next due"}: ${escapeHtml(occurrence.dueDate)}</small>` : ""}
       </div>
       <div class="row-actions payment-card-actions">
-        <button class="primary payment-record-action" type="button" data-record-payment-item="${item.id}" ${recordDisabled ? "disabled" : ""} title="${escapeHtml(recordReason)}">Record payment</button>
+        ${completedRecord ? '<span class="paid-label">Paid in full</span>' : `<button class="primary payment-record-action" type="button" data-record-payment-item="${item.id}" ${recordDisabled ? "disabled" : ""} title="${escapeHtml(recordReason)}">Record payment</button>`}
         <button type="button" data-open-payment-history="${item.id}">History</button>
-        <button type="button" data-edit-obligation="${item.id}" ${workspaceReadOnly || planPaused ? "disabled" : ""}>Edit</button>
+        ${completedRecord ? "" : `<button type="button" data-edit-obligation="${item.id}" ${workspaceReadOnly || planPaused ? "disabled" : ""}>Edit</button>`}
         <details class="payment-more-menu">
           <summary role="button">More</summary>
           <div class="payment-more-menu-list">
-            <button type="button" data-toggle-obligation="${item.id}" data-next-status="${item.status === "inactive" ? "active" : "inactive"}" ${workspaceReadOnly || planPaused ? "disabled" : ""}>
+            ${completedRecord ? "" : `<button type="button" data-toggle-obligation="${item.id}" data-next-status="${item.status === "inactive" ? "active" : "inactive"}" ${workspaceReadOnly || planPaused ? "disabled" : ""}>
               ${item.status === "inactive" ? "Reactivate" : "Pause"}
-            </button>
+            </button>`}
             <button class="danger-text" type="button" data-delete-obligation="${item.id}" ${workspaceReadOnly ? "disabled" : ""}>Delete</button>
           </div>
         </details>
@@ -4793,7 +4824,7 @@ function renderCashbook() {
     setRoute("family", "dashboard", true);
     renderFamilyTabs();
     renderDashboard();
-    showToast("Cashbook testing is available only in your Personal workspace.");
+    showToast("Cashbook is available only in your Personal workspace.");
     return;
   }
   if (state.cashbookSection === "entries") state.cashbookSection = "overview";
@@ -5021,7 +5052,6 @@ function openCashbookEntryDialog(direction) {
 function setCashbookEntryDirection(direction) {
   const nextDirection = direction === "cash_out" ? "cash_out" : "cash_in";
   $("#cashbookEntryDirection").value = nextDirection;
-  $("#cashbookEntrySourceField").classList.toggle("hidden", nextDirection !== "cash_out");
   $("#cashbookEntryDialogTitle").textContent = nextDirection === "cash_out" ? "Add Cash Out" : "Add Cash In";
   $("#cashbookEntrySubmit").textContent = nextDirection === "cash_out" ? "Save Cash Out" : "Save Cash In";
   document.querySelectorAll("[data-cashbook-direction]").forEach((button) => button.classList.toggle("active", button.dataset.cashbookDirection === nextDirection));
@@ -5029,7 +5059,7 @@ function setCashbookEntryDirection(direction) {
 }
 
 function updateCashbookEntrySource() {
-  const linked = $("#cashbookEntryDirection").value === "cash_out" && $("#cashbookEntrySource").value === "payment";
+  const linked = $("#cashbookEntryDirection").value === "cash_out";
   $("#cashbookLinkedPaymentFields").classList.toggle("hidden", !linked);
   $("#cashbookManualEntryFields").classList.toggle("hidden", linked);
   ["#cashbookEntryAmount", "#cashbookEntryDate", "#cashbookEntryDescription"].forEach((selector) => {
@@ -5110,7 +5140,7 @@ async function saveCashbookEntry(event) {
   event.preventDefault();
   const workspace = currentBudgetWorkspace();
   if (workspace?.workspace_type !== "personal") throw new Error("Personal Cashbook access required.");
-  const linked = $("#cashbookEntryDirection").value === "cash_out" && $("#cashbookEntrySource").value === "payment";
+  const linked = $("#cashbookEntryDirection").value === "cash_out";
   if (linked) {
     await query("Paid payment Cashbook link", supabase.rpc("create_cashbook_payment_entry", {
       p_workspace_id: workspace.id,
@@ -7404,6 +7434,112 @@ async function saveObligation(event) {
   }
 }
 
+function openDashboardPaymentChoice() {
+  if (state.workspaceEntitlement?.read_only || state.workspaceEntitlement?.effective_status === "suspended") {
+    showToast("This shared workspace is read-only. The owner must renew it before payments can be changed.");
+    return;
+  }
+  const dialog = $("#paymentEntryChoiceDialog");
+  if (!dialog.open) dialog.showModal();
+}
+
+function openCompletedPaymentDialog() {
+  const workspace = currentBudgetWorkspace();
+  if (!workspace || !["personal", "household"].includes(workspace.workspace_type)) {
+    showToast("Choose an active Personal or Family workspace before recording this payment.");
+    return;
+  }
+  const isFamily = workspace.workspace_type === "household";
+  $("#completedPaymentForm").reset();
+  populateCurrencySelect(
+    $("#completedPaymentCurrency"),
+    state.workspaceSettings?.default_payment_currency || state.family?.currency || "USD",
+    state.workspaceSettings?.enabled_currencies
+  );
+  $("#completedPaymentDate").value = toDateValue(new Date());
+  $("#completedPaymentDate").max = toDateValue(new Date());
+  $("#completedPaymentWorkspace").textContent = isFamily
+    ? `This will be recorded as paid in ${state.family?.name || "the selected Family workspace"}.`
+    : "This will be recorded as paid in your Personal workspace and can be selected in Cashbook.";
+  $("#completedPaymentPaidByField").hidden = !isFamily;
+  $("#completedPaymentPaidBy").required = isFamily;
+  $("#completedPaymentPaidBy").value = isFamily
+    ? currentFamilyMember()?.id || familyOwnerMember()?.id || activeMembers()[0]?.id || ""
+    : "";
+  const dialog = $("#completedPaymentDialog");
+  if (!dialog.open) dialog.showModal();
+  window.setTimeout(() => $("#completedPaymentName").focus(), 0);
+}
+
+async function saveCompletedPayment(event) {
+  event.preventDefault();
+  const workspace = currentBudgetWorkspace();
+  const isFamily = workspace?.workspace_type === "household";
+  const amount = Number($("#completedPaymentAmount").value || 0);
+  const proofFile = $("#completedPaymentProof").files?.[0] || null;
+  const paidByMemberId = isFamily ? $("#completedPaymentPaidBy").value : null;
+  const submitButton = $("#completedPaymentSubmit");
+  if (!workspace || !["personal", "household"].includes(workspace.workspace_type)) {
+    showToast("Choose an active Personal or Family workspace before recording this payment.");
+    return;
+  }
+  if (!$("#completedPaymentName").value.trim() || amount <= 0 || !$("#completedPaymentDate").value) {
+    showToast("Enter the payment name, amount, and payment date.");
+    return;
+  }
+  if (isFamily && !activeMembers().some((member) => member.id === paidByMemberId)) {
+    showToast("Choose the active family member who paid.");
+    return;
+  }
+  if (proofFile && !PAYMENT_PROOF_TYPES.has(proofFile.type)) {
+    showToast("Proof must be a JPG, PNG, WebP, or PDF file.");
+    return;
+  }
+  if (proofFile && proofFile.size > PAYMENT_PROOF_MAX_BYTES) {
+    showToast("Proof of payment must be 10 MB or smaller.");
+    return;
+  }
+
+  let uploadedProof = null;
+  try {
+    setSubmitting(submitButton, true, "Saving...");
+    if (proofFile) {
+      uploadedProof = await uploadPaymentProof({
+        visibility: isFamily ? "family" : "personal",
+        family_id: isFamily ? state.family.id : null
+      }, proofFile);
+    }
+    await query("completed payment create", supabase.rpc("create_completed_one_time_payment", {
+      p_workspace_id: workspace.id,
+      p_name: $("#completedPaymentName").value.trim(),
+      p_category: $("#completedPaymentCategory").value,
+      p_amount: amount,
+      p_currency: $("#completedPaymentCurrency").value,
+      p_payment_date: $("#completedPaymentDate").value,
+      p_payment_method: $("#completedPaymentMethod").value,
+      p_paid_by_member_id: paidByMemberId || null,
+      p_reference_number: $("#completedPaymentReference").value.trim() || null,
+      p_notes: $("#completedPaymentNotes").value.trim() || null,
+      p_proof_path: uploadedProof?.path || null,
+      p_proof_name: uploadedProof?.name || null,
+      p_proof_mime_type: uploadedProof?.type || null,
+      p_proof_size_bytes: uploadedProof?.size || null
+    }));
+    $("#completedPaymentDialog").close();
+    $("#completedPaymentForm").reset();
+    await Promise.all([loadFamilyData(), loadWorkspaceSubscriptionData()]);
+    renderFamilyApp();
+    showToast("Completed payment saved. It now appears as paid in Payments.");
+  } catch (error) {
+    if (uploadedProof?.path) {
+      await supabase.storage.from(PAYMENT_PROOF_BUCKET).remove([uploadedProof.path]).catch(() => {});
+    }
+    showToast(error.message);
+  } finally {
+    setSubmitting(submitButton, false, "Save completed payment");
+  }
+}
+
 function openPaymentItemDialog() {
   if (state.workspaceEntitlement?.read_only || state.workspaceEntitlement?.effective_status === "suspended") {
     showToast("This shared workspace is read-only. The owner must renew it before payments can be changed.");
@@ -8404,6 +8540,15 @@ document.addEventListener("click", async (event) => {
   }
   if (event.target.dataset.closePaymentDialog !== undefined) $("#recordPaymentDialog").close();
   if (event.target.closest("[data-close-payment-history]")) $("#paymentHistoryDialog").close();
+  if (event.target.closest("[data-open-dashboard-payment]")) openDashboardPaymentChoice();
+  if (event.target.closest("[data-close-payment-entry-choice]")) $("#paymentEntryChoiceDialog").close();
+  if (event.target.closest("[data-close-completed-payment]")) $("#completedPaymentDialog").close();
+  const paymentEntryChoice = event.target.closest("[data-payment-entry-choice]")?.dataset.paymentEntryChoice;
+  if (paymentEntryChoice) {
+    $("#paymentEntryChoiceDialog").close();
+    if (paymentEntryChoice === "scheduled") openPaymentItemDialog();
+    if (paymentEntryChoice === "completed") openCompletedPaymentDialog();
+  }
   if (event.target.closest("[data-open-payment-item-dialog]")) openPaymentItemDialog();
   if (event.target.closest("[data-close-payment-item-dialog]")) $("#paymentItemDialog").close();
   if (event.target.closest("[data-open-invite-dialog]")) openInviteMemberDialog();
@@ -8564,6 +8709,13 @@ document.addEventListener("click", async (event) => {
   if (familyTab) {
     state.familyTab = familyTab;
     setRoute("family", familyTab);
+    if (familyTab === "cashbook") {
+      try {
+        await loadCashbookData();
+      } catch (error) {
+        showToast(`Cashbook could not load: ${friendlyMessage(error.message)}`);
+      }
+    }
     if (familyTab === "support") {
       try {
         await loadUserSupportData();
@@ -8771,7 +8923,6 @@ $("#cashbookTransferForm").addEventListener("submit", protectSubmission(async (e
 $("#cashbookReverseForm").addEventListener("submit", protectSubmission(async (event) => {
   try { await saveCashbookReversal(event); } catch (error) { showToast(error.message); }
 }));
-$("#cashbookEntrySource").addEventListener("change", updateCashbookEntrySource);
 $("#cashbookPaymentRecord").addEventListener("change", updateCashbookPaymentPreview);
 $("#cashbookEntryAccount").addEventListener("change", updateCashbookPaymentPreview);
 [$("#cashbookTransferSource"), $("#cashbookTransferDestination"), $("#cashbookTransferSourceAmount")].forEach((field) => field.addEventListener("change", updateCashbookTransferHint));
@@ -8785,6 +8936,7 @@ $("#cashbookLedgerAccount").addEventListener("change", (event) => {
 $("#cashbookRunReport").addEventListener("click", () => runCashbookReport().catch((error) => showToast(error.message)));
 $("#inviteForm").addEventListener("submit", protectSubmission(inviteMember));
 $("#obligationForm").addEventListener("submit", protectSubmission(saveObligation));
+$("#completedPaymentForm").addEventListener("submit", protectSubmission(saveCompletedPayment));
 $("#recurrenceType").addEventListener("change", updateRecurrenceControls);
 [$("#dueDay"), $("#startMonth"), $("#startYear")].forEach((field) => {
   field.addEventListener("change", syncPaymentStartDate);

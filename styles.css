@@ -6196,13 +6196,13 @@ input[type="file"] {
 .free-payment-choice span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .free-payment-choice small { color: #536579; }
 
-/* Hidden Personal Cashbook test route. */
+/* Personal Cashbook. */
 .cashbook-page { display: grid; gap: 1rem; }
 .cashbook-topbar { align-items: center; }
 .cashbook-topbar-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 0.55rem; }
 .cashbook-topbar-actions .danger-solid { border-color: #dc2626; background: #dc2626; color: #fff; }
 .cashbook-topbar-actions .danger-solid:hover { background: #b91c1c; }
-.cashbook-test-notice { display: flex; flex-wrap: wrap; gap: 0.4rem 0.65rem; align-items: baseline; }
+.cashbook-ledger-notice { display: flex; flex-wrap: wrap; gap: 0.4rem 0.65rem; align-items: baseline; }
 .cashbook-section-tabs { display: flex; gap: 0.45rem; padding: 0.4rem; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.76); overflow-x: auto; }
 .cashbook-section-tabs button { min-width: max-content; flex: 1 0 auto; border-color: transparent; background: transparent; }
 .cashbook-section-tabs button.active { border-color: rgba(16,185,129,.28); background: #d1fae5; color: #065f46; box-shadow: 0 6px 16px rgba(5,150,105,.1); }
@@ -6288,7 +6288,7 @@ input[type="file"] {
   .cashbook-report-card dl { grid-template-columns: minmax(0,1fr); }
 }
 
-/* Private Cashbook ledger redesign: release number intentionally unchanged. */
+/* Cashbook ledger layout. */
 .cashbook-page { max-width: 1180px; margin: 0 auto; gap: .8rem; padding-bottom: 1.5rem; border-radius: 24px; background: #eef4f3; overflow: hidden; }
 .cashbook-appbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.15rem 1.25rem; color: #fff; background: linear-gradient(135deg,#087f78,#0f9f86); box-shadow: 0 12px 28px rgba(15,118,110,.2); }
 .cashbook-appbar-title { display: grid; gap: .16rem; min-width: 0; }
@@ -6298,8 +6298,8 @@ input[type="file"] {
 .cashbook-appbar-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem; }
 .cashbook-appbar-actions button { border-color: rgba(255,255,255,.4); color: #fff; background: rgba(255,255,255,.13); box-shadow: none; }
 .cashbook-appbar-actions button:hover { background: rgba(255,255,255,.23); }
-.cashbook-test-notice { display: flex; gap: .45rem .7rem; align-items: baseline; margin: 0 .9rem; padding: .65rem .8rem; border: 1px solid rgba(15,118,110,.16); border-radius: 12px; background: rgba(255,255,255,.82); color: var(--muted); font-size: .76rem; }
-.cashbook-test-notice strong { color: #0f766e; white-space: nowrap; }
+.cashbook-ledger-notice { display: flex; gap: .45rem .7rem; align-items: baseline; margin: 0 .9rem; padding: .65rem .8rem; border: 1px solid rgba(15,118,110,.16); border-radius: 12px; background: rgba(255,255,255,.82); color: var(--muted); font-size: .76rem; }
+.cashbook-ledger-notice strong { color: #0f766e; white-space: nowrap; }
 .cashbook-section-tabs { margin: 0 .9rem; padding: .3rem; border: 0; border-radius: 14px; background: #dfeae8; }
 .cashbook-section-tabs button { padding: .68rem 1rem; border: 0; border-radius: 11px; color: #536866; background: transparent; box-shadow: none; }
 .cashbook-section-tabs button.active { border: 0; color: #075f58; background: #fff; box-shadow: 0 5px 14px rgba(15,23,42,.08); }
@@ -6379,7 +6379,7 @@ input[type="file"] {
 @media (max-width: 480px) {
   .cashbook-appbar { display: grid; }
   .cashbook-appbar-actions { max-width: none; }
-  .cashbook-test-notice { align-items: flex-start; flex-direction: column; }
+  .cashbook-ledger-notice { align-items: flex-start; flex-direction: column; }
   .cashbook-period-tabs { gap: .35rem; padding: .65rem; }
   .cashbook-period-tabs button { min-width: 66px; padding: .5rem .68rem; }
   .cashbook-ledger-tools { grid-template-columns: minmax(0,1fr); }
@@ -6389,4 +6389,35 @@ input[type="file"] {
   .cashbook-entry-actions button { padding: .2rem .38rem; }
   .cashbook-period-summary > div { padding-inline: .28rem; }
   .cashbook-period-summary > div strong { font-size: .82rem; }
+}
+
+/* Dashboard payment entry and completed-payment flow. */
+.dashboard-topbar-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: .65rem; }
+.dashboard-add-payment { min-height: 46px; white-space: nowrap; }
+.payment-choice-dialog { width: min(760px,calc(100vw - 1rem)); padding: 0; overflow: hidden; }
+.payment-choice-shell { display: grid; gap: 1rem; padding: 1.1rem; background: linear-gradient(145deg,#f4fbf9,#fff); }
+.payment-choice-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .85rem; }
+.payment-choice-card { display: grid; grid-template-columns: 46px minmax(0,1fr); gap: .35rem .75rem; align-items: start; min-height: 205px; padding: 1.05rem; border: 1.5px solid rgba(15,118,110,.2); border-radius: 18px; color: var(--ink); background: #fff; box-shadow: 0 10px 24px rgba(15,23,42,.06); text-align: left; }
+.payment-choice-card:hover,.payment-choice-card:focus-visible { border-color: #10b981; background: #f0fdf9; transform: translateY(-1px); }
+.payment-choice-icon { display: grid; place-items: center; grid-row: span 3; width: 46px; height: 46px; border-radius: 14px; color: #075f58; background: #ccfbf1; font-size: 1.45rem; font-weight: 900; }
+.payment-choice-icon.completed { color: #166534; background: #dcfce7; }
+.payment-choice-card strong { align-self: end; font-size: 1rem; }
+.payment-choice-card small { color: var(--muted); line-height: 1.55; }
+.payment-choice-action { align-self: end; color: #087f6d; font-size: .78rem; font-weight: 850; }
+.completed-payment-note { display: flex; flex-wrap: wrap; gap: .4rem .65rem; align-items: baseline; }
+.completed-payment-note strong { color: #047857; }
+
+@media (max-width: 760px) {
+  .dashboard-topbar { align-items: stretch; }
+  .dashboard-topbar-actions { width: 100%; justify-content: stretch; }
+  .dashboard-add-payment { flex: 1 1 100%; }
+  .dashboard-topbar-actions .filters { flex: 1 1 100%; }
+  .payment-choice-grid { grid-template-columns: minmax(0,1fr); }
+  .payment-choice-card { min-height: 160px; }
+}
+
+@media (max-width: 480px) {
+  .payment-choice-shell { padding: .85rem; }
+  .payment-choice-card { grid-template-columns: 40px minmax(0,1fr); padding: .85rem; }
+  .payment-choice-icon { width: 40px; height: 40px; }
 }

@@ -11060,6 +11060,30 @@ create trigger enforce_business_member_invitation_launch_control_trigger
 before insert or update of workspace_id on public.workspace_invitations
 for each row execute function public.enforce_business_member_invitation_launch_control();
 
+create or replace function public.enforce_business_member_provision_launch_control()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+begin
+  if exists (
+    select 1 from public.budget_workspaces as workspaces
+    where workspaces.id = new.workspace_id and workspaces.workspace_type = 'business'
+  ) and not public.product_customer_workspace_creation_enabled('business')
+  then
+    raise exception 'BUSINESS_COMING_SOON';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists enforce_business_member_provision_launch_control_trigger
+on public.workspace_members;
+create trigger enforce_business_member_provision_launch_control_trigger
+before insert or update of workspace_id on public.workspace_members
+for each row execute function public.enforce_business_member_provision_launch_control();
+
 -- Unpublished plans remain visible, but public visitors must not receive an
 -- unapproved seat number or historical price through the catalogue RPC.
 create or replace function public.get_public_plan_catalogue(p_currency text default 'USD')
@@ -11147,6 +11171,7 @@ revoke all on function public.enforce_business_subscription_request_launch_contr
 revoke all on function public.enforce_business_admin_invitation_launch_control() from public, anon, authenticated;
 revoke all on function public.enforce_business_payment_approval_launch_control() from public, anon, authenticated;
 revoke all on function public.enforce_business_member_invitation_launch_control() from public, anon, authenticated;
+revoke all on function public.enforce_business_member_provision_launch_control() from public, anon, authenticated;
 
 notify pgrst, 'reload schema';
 commit;

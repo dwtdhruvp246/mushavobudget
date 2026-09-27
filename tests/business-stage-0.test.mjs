@@ -25,12 +25,14 @@ test("the database blocks every existing Business provisioning path", () => {
     "enforce_business_subscription_request_launch_control_trigger",
     "enforce_business_admin_invitation_launch_control_trigger",
     "enforce_business_payment_approval_launch_control_trigger",
-    "enforce_business_member_invitation_launch_control_trigger"
+    "enforce_business_member_invitation_launch_control_trigger",
+    "enforce_business_member_provision_launch_control_trigger"
   ]) assert.match(migration, new RegExp(guard));
 
   assert.match(migration, /before insert or update of workspace_type on public\.budget_workspaces/);
   assert.match(migration, /before insert or update of requested_plan_id on public\.subscription_renewal_requests/);
   assert.match(migration, /before update of status on public\.subscription_payments/);
+  assert.match(migration, /before insert or update of workspace_id on public\.workspace_members/);
   assert.match(migration, /raise exception 'BUSINESS_COMING_SOON'/);
 });
 

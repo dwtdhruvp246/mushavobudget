@@ -6355,7 +6355,8 @@ input[type="file"] {
 .cashbook-period-summary > p strong { overflow-wrap: anywhere; text-align: right; }
 .cashbook-period-summary .negative { color: #b91c1c; }
 .cashbook-entry-dialog { width: min(680px,calc(100vw - 1rem)); padding: 0; overflow: hidden; border-radius: 22px; background: #f3f7f6; }
-.cashbook-entry-form { gap: .8rem; padding: 1rem; }
+.cashbook-entry-form { max-height: inherit; gap: .8rem; padding: 1rem; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; -webkit-overflow-scrolling: touch; }
+.cashbook-entry-form > .panel-heading { position: sticky; z-index: 3; top: -1rem; margin: -1rem -1rem 0; padding: 1rem; border-bottom: 1px solid #dce6e4; background: rgba(243,247,246,.97); backdrop-filter: blur(10px); }
 .cashbook-direction-switch { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .65rem; padding: .32rem; border-radius: 999px; background: #e2e8e7; }
 .cashbook-direction-switch button { border: 0; border-radius: 999px; background: transparent; box-shadow: none; }
 .cashbook-direction-switch .cash_in.active { color: #fff; background: #22a447; }
@@ -6389,6 +6390,8 @@ input[type="file"] {
   .cashbook-entry-actions button { padding: .2rem .38rem; }
   .cashbook-period-summary > div { padding-inline: .28rem; }
   .cashbook-period-summary > div strong { font-size: .82rem; }
+  .cashbook-entry-dialog { width: calc(100vw - .5rem); max-height: calc(100dvh - .5rem); border-radius: 18px; }
+  .cashbook-entry-dialog .panel-heading.inline { align-items: flex-start; flex-direction: row; }
 }
 
 /* Dashboard payment entry and completed-payment flow. */

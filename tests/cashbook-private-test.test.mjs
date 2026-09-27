@@ -17,7 +17,8 @@ test("Cashbook is a hidden Personal route and does not change the release number
   assert.match(html, /data-family-panel="cashbook"/);
   assert.doesNotMatch(html, /data-family-tab="cashbook"/);
   assert.match(pwa, /const RELEASE = "4\.9\.12"/);
-  assert.match(html, /app\.js\?v=100/);
+  assert.match(html, /app\.js\?v=101/);
+  assert.match(html, /styles\.css\?v=70/);
 });
 
 test("Cashbook tables and reads are isolated to an active Personal owner", () => {
@@ -40,7 +41,7 @@ test("a paid-history event is copied exactly once without changing Payments", ()
   assert.doesNotMatch(migration, /linked_payment_record_id uuid references public\.payment_records/);
   assert.match(migration, /Converted to linked paid payment/);
   assert.match(app, /p_replace_manual_entry_id/);
-  assert.match(app, /Linked paid-payment history is no longer available/);
+  assert.match(app, /Linked payment history is no longer available/);
 });
 
 test("transfers, balances, reports, and reversals preserve accounting rules", () => {
@@ -56,9 +57,13 @@ test("Cashbook provides responsive accounts, entries, reports, and reversal cont
   for (const id of ["cashbookBalanceSummary", "cashbookEntriesList", "cashbookAccountsList", "cashbookReportSummary", "cashbookReverseDialog"]) {
     assert.match(html, new RegExp(`id="${id}"`));
   }
-  assert.match(styles, /\.cashbook-overview-grid/);
-  assert.match(styles, /@media \(max-width: 620px\)[\s\S]*\.cashbook-entry-card/);
+  assert.match(html, /data-cashbook-period="daily"/);
+  assert.match(html, /data-cashbook-direction="cash_in"/);
+  assert.match(styles, /\.cashbook-ledger-head/);
+  assert.match(styles, /@media \(max-width: 480px\)[\s\S]*\.cashbook-ledger-entry/);
   assert.match(app, /function renderCashbook\(/);
+  assert.match(app, /function renderCashbookLedger\(/);
+  assert.match(app, /function cashbookBalanceAfterEntry\(/);
   assert.match(app, /function runCashbookReport\(/);
   assert.match(app, /function openCashbookReversal\(/);
 });

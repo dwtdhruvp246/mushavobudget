@@ -17,14 +17,14 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="styles.css?v=69" />
+    <link rel="stylesheet" href="styles.css?v=70" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
     <script src="/pwa.js?v=53" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=100"></script>
+    <script type="module" src="app.js?v=101"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -761,37 +761,36 @@
           </section>
 
           <section class="screen-panel hidden cashbook-page" data-family-panel="cashbook">
-            <header class="topbar cashbook-topbar">
-              <div><p class="eyebrow">Private test</p><h2>Cashbook</h2><p class="muted-copy">Track the money held in your manually maintained Personal accounts.</p></div>
-              <div class="cashbook-topbar-actions"><span id="cashbookWorkspaceBadge" class="mini-badge personal">Personal workspace</span><button type="button" class="primary" data-open-cashbook-entry="cash_in">Cash In</button><button type="button" class="danger-solid" data-open-cashbook-entry="cash_out">Cash Out</button><button type="button" data-open-cashbook-transfer>Transfer</button></div>
+            <header class="cashbook-appbar">
+              <div class="cashbook-appbar-title"><p class="eyebrow">Private test · Personal</p><h2>Cashbook</h2><span id="cashbookWorkspaceBadge">Personal workspace</span></div>
+              <div class="cashbook-appbar-actions"><button type="button" data-open-cashbook-transfer>Transfer</button><button type="button" data-open-cashbook-account>Add account</button></div>
             </header>
-            <section class="notice cashbook-test-notice"><strong>Cashbook test page.</strong><span>This page is hidden from the menu. Balances are manually maintained and may differ from your bank, cash, or mobile-money balance if entries are missing.</span></section>
+            <section class="cashbook-test-notice"><strong>Private Cashbook test</strong><span>Balances are manually maintained and may differ from your real accounts when entries are missing.</span></section>
             <nav class="cashbook-section-tabs" aria-label="Cashbook sections">
-              <button type="button" class="active" data-cashbook-section="overview">Overview</button>
-              <button type="button" data-cashbook-section="entries">Entries</button>
+              <button type="button" class="active" data-cashbook-section="overview">Ledger</button>
               <button type="button" data-cashbook-section="accounts">Accounts</button>
               <button type="button" data-cashbook-section="reports">Reports</button>
             </nav>
 
-            <section data-cashbook-panel="overview">
-              <div id="cashbookBalanceSummary" class="cashbook-balance-grid"></div>
-              <div class="cashbook-overview-grid">
-                <section class="ledger-panel"><div class="panel-heading"><p class="eyebrow">Accounts</p><h3>Tracked balances</h3><p class="muted-copy">Each account keeps one currency and its own running balance.</p></div><div id="cashbookOverviewAccounts" class="record-list"></div></section>
-                <section class="ledger-panel"><div class="panel-heading"><p class="eyebrow">Latest activity</p><h3>Recent movements</h3><p class="muted-copy">Transfers are shown separately from money in and money out.</p></div><div id="cashbookRecentEntries" class="record-list"></div></section>
-              </div>
-            </section>
-
-            <section class="hidden" data-cashbook-panel="entries">
-              <section class="ledger-panel cashbook-filter-panel">
-                <div class="panel-heading inline"><div><p class="eyebrow">Ledger</p><h3>Cashbook entries</h3></div><span id="cashbookEntryCount" class="mini-badge">0 entries</span></div>
-                <div class="cashbook-entry-filters">
-                  <label>Search<input id="cashbookEntrySearch" type="search" placeholder="Description, category or notes" /></label>
-                  <label>Account<select id="cashbookEntryAccountFilter"><option value="all">All accounts</option></select></label>
-                  <label>Type<select id="cashbookEntryTypeFilter"><option value="all">All movements</option><option value="cash_in">Cash In</option><option value="cash_out">Cash Out</option><option value="transfer">Transfers</option><option value="reversed">Reversed</option></select></label>
-                  <label>From<input id="cashbookEntryFrom" type="date" /></label>
-                  <label>To<input id="cashbookEntryTo" type="date" /></label>
+            <section class="cashbook-ledger-shell" data-cashbook-panel="overview">
+              <section class="cashbook-account-switcher">
+                <label><span>Cashbook account</span><select id="cashbookLedgerAccount"></select></label>
+                <div id="cashbookSelectedBalance" class="cashbook-selected-balance"><span>Tracked balance</span><strong>—</strong><small>Choose an account</small></div>
+              </section>
+              <section class="cashbook-ledger-panel">
+                <div class="cashbook-period-tabs" aria-label="Cashbook period">
+                  <button type="button" class="active" data-cashbook-period="all">All</button>
+                  <button type="button" data-cashbook-period="daily">Daily</button>
+                  <button type="button" data-cashbook-period="weekly">Weekly</button>
+                  <button type="button" data-cashbook-period="monthly">Monthly</button>
+                  <button type="button" data-cashbook-period="yearly">Yearly</button>
                 </div>
-                <div id="cashbookEntriesList" class="record-list cashbook-entry-list"></div>
+                <div class="cashbook-period-nav"><button type="button" data-cashbook-period-step="-1" aria-label="Previous period">‹</button><strong id="cashbookPeriodLabel">All entries</strong><button type="button" data-cashbook-period-step="1" aria-label="Next period">›</button></div>
+                <div class="cashbook-ledger-tools"><label><span class="sr-only">Search Cashbook</span><input id="cashbookEntrySearch" type="search" placeholder="Search entries" /></label><label><span class="sr-only">Movement type</span><select id="cashbookEntryTypeFilter"><option value="all">All movements</option><option value="cash_in">Cash In</option><option value="cash_out">Cash Out</option><option value="transfer">Transfers</option><option value="reversed">Reversed</option></select></label><span id="cashbookEntryCount">0 entries</span></div>
+                <div class="cashbook-ledger-head"><span>Date and details</span><strong>Cash In</strong><strong>Cash Out</strong></div>
+                <div id="cashbookEntriesList" class="cashbook-ledger-list"></div>
+                <div class="cashbook-quick-actions"><button type="button" class="cashbook-in-button" data-open-cashbook-entry="cash_in">+ Cash In</button><button type="button" class="cashbook-out-button" data-open-cashbook-entry="cash_out">− Cash Out</button></div>
+                <div id="cashbookBalanceSummary" class="cashbook-period-summary"></div>
               </section>
             </section>
 
@@ -979,10 +978,11 @@
       </form>
     </dialog>
 
-    <dialog id="cashbookEntryDialog" class="payment-dialog" aria-labelledby="cashbookEntryDialogTitle">
-      <form id="cashbookEntryForm" class="form-grid">
+    <dialog id="cashbookEntryDialog" class="payment-dialog cashbook-entry-dialog" aria-labelledby="cashbookEntryDialogTitle">
+      <form id="cashbookEntryForm" class="form-grid cashbook-entry-form">
         <div class="panel-heading inline full"><div><p id="cashbookEntryEyebrow" class="eyebrow">Cashbook entry</p><h3 id="cashbookEntryDialogTitle">Add Cash In</h3></div><button class="icon-button" type="button" data-close-cashbook-entry aria-label="Close entry form">Close</button></div>
         <input id="cashbookEntryDirection" type="hidden" value="cash_in" />
+        <div class="cashbook-direction-switch full" aria-label="Entry direction"><button type="button" class="active cash_in" data-cashbook-direction="cash_in">Cash In</button><button type="button" class="cash_out" data-cashbook-direction="cash_out">Cash Out</button></div>
         <label id="cashbookEntrySourceField" class="full hidden">Cash Out source<select id="cashbookEntrySource"><option value="manual">Manual entry</option><option value="payment">From a paid payment</option></select></label>
         <label class="full">Account<select id="cashbookEntryAccount" required></select></label>
         <div id="cashbookLinkedPaymentFields" class="full hidden cashbook-linked-payment-fields">
@@ -991,8 +991,8 @@
           <label id="cashbookConvertManualField" class="checkbox-label hidden"><input id="cashbookConvertManual" type="checkbox" /><span>Convert the matching manual Cash Out into this linked payment instead of counting both.</span></label>
           <p class="muted-copy">The saved Cashbook movement uses the paid-history amount and date exactly. It does not create or change a payment record.</p>
         </div>
-        <div id="cashbookManualEntryFields" class="form-grid full">
-          <label>Amount<input id="cashbookEntryAmount" type="number" min="0.01" step="0.01" required /></label>
+        <div id="cashbookManualEntryFields" class="form-grid full cashbook-manual-fields">
+          <label class="cashbook-amount-field">Amount<input id="cashbookEntryAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00" required /></label>
           <label>Date<input id="cashbookEntryDate" type="date" required /></label>
           <label class="full">Description<input id="cashbookEntryDescription" maxlength="160" required placeholder="Customer payment, groceries, fuel..." /></label>
           <label>Category<input id="cashbookEntryCategory" maxlength="80" placeholder="Optional" /></label>

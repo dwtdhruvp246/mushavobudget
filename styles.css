@@ -4474,6 +4474,12 @@ input[type="file"] {
   background: linear-gradient(145deg, rgba(255, 251, 235, 0.92), rgba(255, 255, 255, 0.96));
 }
 
+.workspace-plan-card.coming-soon {
+  border-style: dashed;
+  border-color: rgba(100, 116, 139, 0.42);
+  background: linear-gradient(145deg, rgba(248, 250, 252, 0.98), rgba(240, 253, 250, 0.82));
+}
+
 .workspace-plan-top {
   min-height: 26px;
   display: flex;
@@ -4502,6 +4508,8 @@ input[type="file"] {
 .workspace-plan-state.current,
 .workspace-plan-state.recommended { color: #047857; background: #d1fae5; }
 .workspace-plan-state.pending { color: #9a5800; background: #fef3c7; }
+.workspace-plan-state.coming-soon,
+.mini-badge.coming-soon { color: #475569; background: #e2e8f0; }
 
 .workspace-plan-card h4 { font-size: 1.45rem; }
 .workspace-plan-card > p { min-height: 0; color: var(--muted); line-height: 1.45; }
@@ -4532,6 +4540,7 @@ input[type="file"] {
 .workspace-plan-features li.unavailable::before { color: #dc2626; content: "×"; font-size: 1.05em; }
 .workspace-plan-separate-note,
 .workspace-plan-owner-note { display: block; font-size: 0.76rem; line-height: 1.4; }
+.workspace-plan-owner-note.coming-soon-note { margin-top: auto; padding: 0.75rem; border-radius: 12px; color: #334155; background: rgba(226, 232, 240, 0.7); font-weight: 700; }
 .workspace-plan-card > button { width: 100%; margin-top: auto; }
 
 @container workspace-plan-list (min-width: 921px) {

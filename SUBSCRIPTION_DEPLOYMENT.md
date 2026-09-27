@@ -6,8 +6,8 @@
 - Monthly and annual billing are supported as separate effective-dated prices.
 - Users submit payment details and optional private proof for manual review.
 - Finance approval activates or extends an entitlement exactly once.
-- Personal expiry falls back to Free. Household and Business expiry becomes read-only.
-- Household includes four people total. Business includes the owner plus five team members.
+- Personal expiry falls back to Free. Household expiry becomes read-only.
+- Household includes four people total. Business is at Stage 0: pricing and seats are not approved, and customer purchase and provisioning remain locked.
 - An additional Household member may be invited, but acceptance beyond the included seats requires an approved invoice that covers the additional seat.
 - In-app notifications remain enabled. Web Push remains intentionally excluded.
 
@@ -45,7 +45,7 @@ For each paid plan, save a monthly and annual price for every platform billing c
 | --- | --- | --- |
 | Personal | Required | Keep at zero |
 | Household | Required | Price per person from the fifth total person |
-| Business | Required | Price per team member after the owner plus five included members |
+| Business | Do not publish during Stage 0 | Seats and additional-seat pricing remain admin-configurable until approved for launch |
 
 The annual additional-member amount is the full annual extra-seat price. Saving a new price deactivates the previous current price but does not alter existing invoices.
 

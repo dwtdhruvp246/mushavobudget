@@ -17,14 +17,14 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="styles.css?v=72" />
+    <link rel="stylesheet" href="styles.css?v=73" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
-    <script src="/pwa.js?v=55" defer></script>
+    <script src="/pwa.js?v=56" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=102"></script>
+    <script type="module" src="app.js?v=103"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -175,7 +175,7 @@
             <div class="sidebar-footer">
               <button type="button" data-admin-tab="support">Contact support</button>
               <button id="adminSignOutButton" type="button">Sign out</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.14</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.15</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -241,7 +241,7 @@
                 <label for="planDefinitionName">Plan name<input id="planDefinitionName" maxlength="80" required placeholder="Household Plus" /></label>
                 <label for="planDefinitionCode">Permanent plan code<input id="planDefinitionCode" maxlength="40" pattern="[a-z][a-z0-9_]*" required placeholder="household_plus" /></label>
                 <label for="planDefinitionType">Workspace type<select id="planDefinitionType" required><option value="personal">Personal</option><option value="household">Family</option><option value="business">Business</option></select></label>
-                <label for="planDefinitionSeats">People included<input id="planDefinitionSeats" type="number" min="1" max="100" step="1" value="1" required /></label>
+                <label for="planDefinitionSeats">People included<input id="planDefinitionSeats" type="number" min="1" max="100" step="1" value="1" required /><small>Required before a plan can be made available for purchase.</small></label>
                 <label for="planDefinitionPaymentLimit">Active payment limit<input id="planDefinitionPaymentLimit" type="number" min="1" max="100000" step="1" placeholder="Leave blank for unlimited" /></label>
                 <label for="planDefinitionSort">Display order<input id="planDefinitionSort" type="number" min="0" max="10000" step="1" value="0" required /></label>
                 <label class="full" for="planDefinitionDescription">Application description<textarea id="planDefinitionDescription" maxlength="500" required placeholder="Describe the access this plan provides inside the application."></textarea></label>
@@ -277,7 +277,7 @@
                   <label for="planPricePeriod">Billing period<select id="planPricePeriod" required><option value="monthly">Monthly</option><option value="annual">Annual</option></select></label>
                   <label for="planPriceCurrency">Currency<input id="planPriceCurrency" maxlength="3" value="USD" required /></label>
                   <label for="planPriceAmount">Base price<input id="planPriceAmount" type="number" min="0.01" step="0.01" required /></label>
-                  <label class="full" for="planPriceExtra">Additional member price per month<input id="planPriceExtra" type="number" min="0" step="0.01" value="0" required /><small>For annual plans, this monthly amount is multiplied by 12. Household charges from the 5th total person; Business charges after the owner plus five team members.</small></label>
+                  <label class="full" for="planPriceExtra">Additional member price per month<input id="planPriceExtra" type="number" min="0" step="0.01" value="0" required /><small>For annual plans, this monthly amount is multiplied by 12. Household charges from the 5th total person. Business included seats and additional-seat pricing remain configurable until launch.</small></label>
                   <button class="primary full" type="submit">Save active price</button>
                 </form>
               </section>
@@ -607,7 +607,7 @@
             </div>
             <div class="sidebar-footer">
               <button type="button" data-family-tab="support">Contact support</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.14</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.15</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>

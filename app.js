@@ -568,6 +568,9 @@ function showAppError(error) {
 
 function friendlyMessage(message = "") {
   const text = `${message}`;
+  if (text.includes("BUSINESS_COMING_SOON")) {
+    return "Mushavo Budget Business is coming soon. Purchases, workspace creation, and invitations are not open yet.";
+  }
   if (text.includes("ADMIN_USER_INVITATION_ACCESS_REQUIRED")) {
     return "Only a super administrator or admin staff member can send user invitations.";
   }
@@ -3806,7 +3809,11 @@ function includedMemberSeats(plan) {
     limit.plan_id === plan?.id && limit.limit_code === "included_member_seats"
   );
   if (configured?.limit_value != null) return Math.max(1, Number(configured.limit_value));
-  return plan?.code === "household" ? 4 : plan?.code === "business" ? 6 : 1;
+  return plan?.code === "household" ? 4 : 1;
+}
+
+function isBusinessComingSoon(plan) {
+  return plan?.workspace_type === "business" && plan.available_for_purchase === false;
 }
 
 function activePaymentLimitForPlan(plan) {
@@ -4107,7 +4114,8 @@ function renderWorkspacePlans() {
     return;
   }
   const cards = plans.map((plan) => {
-    const price = activePriceFor(plan.id, state.workspacePlanBillingPeriod, state.workspacePlanCurrency);
+    const comingSoon = isBusinessComingSoon(plan);
+    const price = comingSoon ? null : activePriceFor(plan.id, state.workspacePlanBillingPeriod, state.workspacePlanCurrency);
     const appliesToSelectedWorkspace = plan.workspace_type === workspace?.workspace_type;
     const current = isCurrentWorkspacePlan(plan, workspace);
     const startsNewFamily = workspace?.workspace_type === "personal" && plan.workspace_type === "household";
@@ -4115,37 +4123,44 @@ function renderWorkspacePlans() {
       request.requested_plan_id === plan.id && request.status === "pending_review" &&
       state.subscriptionInvoices.some((invoice) => invoice.id === request.invoice_id && invoice.billing_period === state.workspacePlanBillingPeriod)
     );
-    const canSelect = workspace?.owner_id === state.session?.user?.id && plan.code !== "free" && plan.available_for_purchase !== false && (appliesToSelectedWorkspace || startsNewFamily);
+    const canSelect = !comingSoon && workspace?.owner_id === state.session?.user?.id && plan.code !== "free" && plan.available_for_purchase !== false && (appliesToSelectedWorkspace || startsNewFamily);
     const planWorkspaceLabel = plan.workspace_type === "household" ? "Family" : titleCase(plan.workspace_type);
     const includedSeats = includedMemberSeats(plan);
     const paymentLimit = activePaymentLimitForPlan(plan);
     const features = featureDisplayForPlan(plan);
     const total = price ? planInvoiceTotal(plan, price, null, workspace) : 0;
     const periodLabel = state.workspacePlanBillingPeriod === "annual" ? "year" : "month";
-    const priceText = plan.code === "free" ? "Free" : price ? money(total, price.currency) : "Price unavailable";
+    const priceText = comingSoon ? "Coming soon" : plan.code === "free" ? "Free" : price ? money(total, price.currency) : "Price unavailable";
     const extraMember = price && Number(price.extra_member_amount) > 0
       ? `<span>Additional person: ${money(price.extra_member_amount, price.currency)} per month</span>`
       : "";
-    const stateBadge = current
+    const stateBadge = comingSoon
+      ? '<span class="workspace-plan-state coming-soon">Coming soon</span>'
+      : current
       ? '<span class="workspace-plan-state current">Current plan</span>'
       : pending
         ? '<span class="workspace-plan-state pending">Awaiting approval</span>'
         : plan.is_featured
           ? '<span class="workspace-plan-state recommended">Recommended</span>'
           : "";
-    const action = current && plan.code === "free"
+    const action = comingSoon
+      ? '<small class="workspace-plan-owner-note coming-soon-note">Business is coming soon. Pricing and included seats will be announced before launch.</small>'
+      : current && plan.code === "free"
       ? '<button type="button" disabled>Current plan</button>'
       : canSelect
         ? `<button class="${plan.is_featured && !current ? "primary" : ""}" type="button" data-select-renewal-plan="${escapeHtml(plan.code)}" ${price && !pending ? "" : "disabled"}>${pending ? "Awaiting approval" : current ? "Renew plan" : startsNewFamily ? "Start Family plan" : "Choose plan"}</button>`
         : workspace?.owner_id === state.session?.user?.id
           ? `<small class="workspace-plan-owner-note">${!appliesToSelectedWorkspace ? `Select a ${escapeHtml(planWorkspaceLabel)} workspace to manage this plan.` : plan.code === "free" ? "Included with a free Personal workspace." : "This plan is not currently available for purchase."}</small>`
           : '<small class="workspace-plan-owner-note">Only the workspace owner can change this plan.</small>';
-    return `<article class="plan-card workspace-plan-card${current ? " current" : ""}${pending ? " pending" : ""}">
+    const planMeta = comingSoon
+      ? '<span>Seats to be announced</span><span>Launch access is currently closed</span>'
+      : `<span>${includedSeats} ${includedSeats === 1 ? "person" : "people"} included</span><span>${paymentLimit == null ? "Unlimited payment items" : `${paymentLimit} active personal payments`}</span>${extraMember}`;
+    return `<article class="plan-card workspace-plan-card${current ? " current" : ""}${pending ? " pending" : ""}${comingSoon ? " coming-soon" : ""}">
       <div class="workspace-plan-top"><span class="workspace-plan-type">${escapeHtml(planWorkspaceLabel)}</span>${stateBadge}</div>
       <h4>${escapeHtml(plan.display_name)}</h4>
       <p>${escapeHtml(plan.marketing_summary || plan.description)}</p>
       <div class="workspace-plan-price"><strong>${escapeHtml(priceText)}</strong>${price && plan.code !== "free" ? `<span> / ${periodLabel}</span>` : ""}</div>
-      <div class="workspace-plan-meta"><span>${includedSeats} ${includedSeats === 1 ? "person" : "people"} included</span><span>${paymentLimit == null ? "Unlimited payment items" : `${paymentLimit} active personal payments`}</span>${extraMember}</div>
+      <div class="workspace-plan-meta">${planMeta}</div>
       <ul class="workspace-plan-features">${features.map((feature) => `<li class="${feature.enabled ? "available" : "unavailable"}">${escapeHtml(feature.label)}</li>`).join("")}</ul>
       ${startsNewFamily ? '<small class="workspace-plan-separate-note">Creates a separate Family workspace with its own plan.</small>' : ""}
       ${action}
@@ -5792,14 +5807,18 @@ function renderAdminPlans() {
   list.innerHTML = "";
   state.adminPlans.forEach((plan) => {
     const activePrices = state.adminPlanPrices.filter((price) => price.plan_id === plan.id && price.is_active);
-    const includedSeats = state.adminPlanLimits.find((limit) => limit.plan_id === plan.id && limit.limit_code === "included_member_seats")?.limit_value || 1;
+    const includedSeats = state.adminPlanLimits.find((limit) => limit.plan_id === plan.id && limit.limit_code === "included_member_seats")?.limit_value;
+    const seatSummary = includedSeats == null
+      ? "Seats not set"
+      : `${Number(includedSeats)} ${Number(includedSeats) === 1 ? "person" : "people"} included`;
+    const comingSoon = isBusinessComingSoon(plan);
     const enabledFeatures = state.adminPlanFeatures.filter((feature) => feature.plan_id === plan.id && feature.enabled).length;
     const card = document.createElement("article");
     card.className = "plan-card";
     card.innerHTML = `
-      <div class="plan-card-heading"><div><span class="mini-badge">${titleCase(plan.workspace_type)}</span>${plan.is_public ? '<span class="mini-badge active">Public</span>' : '<span class="mini-badge">Hidden</span>'}${plan.is_featured ? '<span class="mini-badge active">Recommended</span>' : ""}</div><h4>${escapeHtml(plan.display_name)}</h4></div>
+      <div class="plan-card-heading"><div><span class="mini-badge">${titleCase(plan.workspace_type)}</span>${plan.is_public ? '<span class="mini-badge active">Public</span>' : '<span class="mini-badge">Hidden</span>'}${comingSoon ? '<span class="mini-badge coming-soon">Coming soon</span>' : plan.is_featured ? '<span class="mini-badge active">Recommended</span>' : ""}</div><h4>${escapeHtml(plan.display_name)}</h4></div>
       <p>${escapeHtml(plan.marketing_summary || plan.description)}</p>
-      <small>${Number(includedSeats)} ${Number(includedSeats) === 1 ? "person" : "people"} included &middot; ${enabledFeatures} enabled features &middot; ${plan.is_active ? "Active" : "Archived"}</small>
+      <small>${seatSummary} &middot; ${enabledFeatures} enabled features &middot; ${plan.is_active ? "Active" : "Archived"}</small>
       <div class="plan-price-list">
         ${activePrices.length ? activePrices.map((price) => `<div><strong>${titleCase(price.billing_period)}</strong><span>${money(price.amount, price.currency)} base${Number(price.extra_member_amount) ? ` &middot; ${money(price.extra_member_amount, price.currency)} per extra member/month` : ""}</span></div>`).join("") : "<span>No active prices configured.</span>"}
       </div>
@@ -5827,7 +5846,7 @@ function resetPlanDefinitionForm() {
 function editPlanDefinition(planId) {
   const plan = state.adminPlans.find((item) => item.id === planId);
   if (!plan) return;
-  const includedSeats = state.adminPlanLimits.find((limit) => limit.plan_id === plan.id && limit.limit_code === "included_member_seats")?.limit_value || 1;
+  const includedSeats = state.adminPlanLimits.find((limit) => limit.plan_id === plan.id && limit.limit_code === "included_member_seats")?.limit_value;
   const paymentLimit = state.adminPlanLimits.find((limit) => limit.plan_id === plan.id && limit.limit_code === "active_planned_payments")?.limit_value;
   const features = new Set(state.adminPlanFeatures.filter((feature) => feature.plan_id === plan.id && feature.enabled).map((feature) => feature.feature_code));
   $("#planDefinitionId").value = plan.id;
@@ -5835,7 +5854,7 @@ function editPlanDefinition(planId) {
   $("#planDefinitionCode").value = plan.code || "";
   $("#planDefinitionCode").readOnly = true;
   $("#planDefinitionType").value = plan.workspace_type;
-  $("#planDefinitionSeats").value = String(includedSeats);
+  $("#planDefinitionSeats").value = includedSeats == null ? "" : String(includedSeats);
   $("#planDefinitionPaymentLimit").value = paymentLimit == null ? "" : String(paymentLimit);
   $("#planDefinitionSort").value = String(plan.sort_order || 0);
   $("#planDefinitionDescription").value = plan.description || "";
@@ -6613,8 +6632,9 @@ function renderAdminInvitationForm() {
 
   const planSelect = $("#adminInvitePlan");
   const currentPlan = planSelect.value;
+  const eligiblePlans = state.adminPlans.filter((plan) => plan.is_active && plan.available_for_purchase !== false);
   planSelect.innerHTML = state.adminPlans
-    .filter((plan) => plan.is_active)
+    .filter((plan) => plan.is_active && plan.available_for_purchase !== false)
     .map((plan) => `<option value="${escapeHtml(plan.id)}">${escapeHtml(plan.display_name)} (${titleCase(plan.workspace_type)})</option>`)
     .join("");
   if ([...planSelect.options].some((option) => option.value === currentPlan)) planSelect.value = currentPlan;
@@ -6627,7 +6647,7 @@ function renderAdminInvitationForm() {
   refreshAdminInvitationDefaultCurrency();
   refreshAdminInvitationPlanFields();
   toggleAdminInvitationPaymentFields();
-  $("#adminInvitationSubmit").disabled = !state.adminPlans.some((plan) => plan.is_active);
+  $("#adminInvitationSubmit").disabled = eligiblePlans.length === 0;
 }
 
 function renderAdminUserInvitations() {

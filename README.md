@@ -147,11 +147,11 @@ The complete schema now adds a compatibility workspace layer around the existing
 - Existing families are backfilled as Household workspaces without deleting or renaming family data.
 - Existing family members and invitations are linked to workspace membership and seat usage.
 - Free is limited to five active Personal payment items. Completed or inactive items remain in history and do not consume a slot.
-- Household and Business plans use workspace-level subscriptions. Invited members inherit access and do not buy separate subscriptions.
-- Household includes four people total. Business includes the owner plus five team members. Active pending invitations count toward billing.
+- Household plans use workspace-level subscriptions. Invited members inherit access and do not buy separate subscriptions. Business will use the same workspace-level foundation after its dedicated product launches.
+- Household includes four people total, and active pending invitations count toward billing. Business is marked Coming soon; its pricing and included seats are deliberately unset and customer purchase and provisioning are database-locked.
 - A Family head may buy extra places for one active Family workspace from Family & Members. Billing months follow that workspace's activation anniversary: the current month's first half costs half the monthly extra-place rate, its second half costs zero, and each remaining full month costs the full monthly rate. The finance review increases the place limit without moving the subscription expiry; renewals include all retained places.
 - Personal expiry falls back to Free without changing or deleting payment records.
-- Expired or suspended Household and Business workspaces remain stored and become read-only.
+- Expired or suspended Household workspaces remain stored and become read-only. The approved future Business expiry flow locks operational access, gives only the Owner a renewal screen, and preserves all records.
 - Reports stay visible on Free but open a locked upgrade state; plan limits are also checked by database functions.
 - Subscription invoices snapshot plan name, billing period, currency, base price, extra-seat price, member count, and total.
 - User payment proof is stored in the private `subscription-proofs` bucket. The browser never receives a service-role key.

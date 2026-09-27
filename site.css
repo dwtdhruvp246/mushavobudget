@@ -203,6 +203,8 @@ p { margin-top: 0; }
 .pricing-preview-section { padding: clamp(40px, 6vw, 70px); border: 1px solid var(--line); border-radius: 40px; background: white; }
 .public-plan-preview { margin: 36px 0 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .preview-plan { padding: 22px; border-radius: 22px; background: #f3f8f8; }
+.preview-plan.coming-soon { border: 1px dashed #b7c9cf; background: linear-gradient(145deg, #f5f8f9, #eef7f4); }
+.preview-plan.coming-soon small { color: var(--green-dark); font-weight: 850; }
 .preview-plan span, .preview-plan small { display: block; color: var(--muted); }
 .preview-plan strong { display: block; margin: 6px 0; font-size: 1.7rem; }
 .site-loading, .site-error { grid-column: 1 / -1; padding: 28px; border-radius: 18px; color: var(--muted); background: #f5f8f9; text-align: center; }
@@ -264,6 +266,7 @@ p { margin-top: 0; }
 .public-plan-catalogue { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
 .public-plan-card { position: relative; min-width: 0; padding: 26px; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 28px; background: white; }
 .public-plan-card.featured { border-color: var(--green); box-shadow: 0 20px 45px rgba(8, 169, 121, 0.11); }
+.public-plan-card.coming-soon { border-style: dashed; background: linear-gradient(145deg, #fff, #f4f8f7); }
 .public-plan-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
 .public-plan-type { color: var(--green-dark); font-size: 0.76rem; font-weight: 850; letter-spacing: 0.08em; text-transform: uppercase; }
 .public-plan-card h2 { margin: 10px 0 9px; font-size: clamp(1.55rem, 2.2vw, 1.9rem); }
@@ -275,6 +278,8 @@ p { margin-top: 0; }
 .public-plan-features { margin: 0 0 20px; padding: 0; display: grid; gap: 7px; list-style: none; color: var(--ink-soft); font-size: 0.92rem; }
 .public-plan-features li::before { content: "✓"; margin-right: 8px; color: var(--green); font-weight: 900; }
 .public-plan-card .site-button, .public-plan-card .secondary-button { margin-top: auto; width: 100%; }
+.public-plan-badge.coming-soon { color: #475569; background: #e2e8f0; }
+.public-plan-coming-soon { margin-top: auto; width: 100%; padding: 12px 18px; display: block; border: 1px solid #cbd5e1; border-radius: 999px; color: #475569; background: #f8fafc; font-weight: 850; text-align: center; }
 .pricing-explainer { margin-top: 85px; }
 
 @media (min-width: 981px) {

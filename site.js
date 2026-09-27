@@ -80,6 +80,10 @@ function publicFeatureLabels(plan) {
   return features.filter((feature) => feature.enabled).map((feature) => featureLabels[feature.code] || titleCase(feature.code));
 }
 
+function isBusinessComingSoon(plan) {
+  return plan?.workspace_type === "business" && plan.available_for_purchase === false;
+}
+
 function renderHomePlanPreview() {
   const container = document.querySelector("#homePlanPreview");
   if (!container) return;
@@ -90,8 +94,9 @@ function renderHomePlanPreview() {
   const preferred = ["free", "household", "business"].map((code) => state.catalogue.find((plan) => plan.code === code)).filter(Boolean);
   const plans = (preferred.length ? preferred : state.catalogue).slice(0, 3);
   container.innerHTML = plans.map((plan) => {
-    const price = priceFor(plan, "monthly") || (plan.prices || [])[0];
-    return `<article class="preview-plan"><span>${escapeHtml(titleCase(plan.workspace_type))}</span><strong>${escapeHtml(plan.display_name)}</strong><small>${price ? `${money(price.amount, price.currency)} / ${price.billing_period === "annual" ? "year" : "month"}` : "Contact us for pricing"}</small></article>`;
+    const comingSoon = isBusinessComingSoon(plan);
+    const price = comingSoon ? null : priceFor(plan, "monthly") || (plan.prices || [])[0];
+    return `<article class="preview-plan${comingSoon ? " coming-soon" : ""}"><span>${escapeHtml(titleCase(plan.workspace_type))}</span><strong>${escapeHtml(plan.display_name)}</strong><small>${comingSoon ? "Coming soon" : price ? `${money(price.amount, price.currency)} / ${price.billing_period === "annual" ? "year" : "month"}` : "Contact us for pricing"}</small></article>`;
   }).join("");
 }
 
@@ -105,29 +110,36 @@ function renderPricing() {
 
   const seenTypes = new Set();
   container.innerHTML = state.catalogue.map((plan) => {
-    const price = priceFor(plan);
+    const comingSoon = isBusinessComingSoon(plan);
+    const price = comingSoon ? null : priceFor(plan);
     const features = publicFeatureLabels(plan);
     const periodLabel = state.billingPeriod === "annual" ? "year" : "month";
-    const seatText = Number(plan.included_member_seats) > 1
+    const seatText = comingSoon
+      ? "Seats to be announced"
+      : Number(plan.included_member_seats) > 1
       ? `${Number(plan.included_member_seats)} people included`
       : "1 person included";
-    const limitText = Number.isFinite(Number(plan.active_payment_limit))
+    const limitText = comingSoon
+      ? "Launch access is currently closed"
+      : Number.isFinite(Number(plan.active_payment_limit))
       ? `${Number(plan.active_payment_limit)} active personal payments`
       : "Unlimited payment items";
     const extra = price && Number(price.extra_member_amount) > 0
       ? `<span>Additional person: ${money(price.extra_member_amount, price.currency)} per month</span>`
       : "";
-    const action = plan.available_for_purchase === false || !price
+    const action = comingSoon
+      ? '<span class="public-plan-coming-soon" aria-label="Business plan coming soon">Coming soon</span>'
+      : plan.available_for_purchase === false || !price
       ? `<a class="secondary-button" href="contact.html?category=${encodeURIComponent(plan.workspace_type + "_plan")}">Contact us</a>`
       : `<a class="${plan.is_featured ? "site-button" : "secondary-button"}" href="signup.html?plan=${encodeURIComponent(plan.code)}">${escapeHtml(plan.cta_label || "Choose plan")}</a>`;
 
     const sectionId = seenTypes.has(plan.workspace_type) ? "" : ` id="${escapeHtml(plan.workspace_type)}-plans"`;
     seenTypes.add(plan.workspace_type);
-    return `<article${sectionId} class="public-plan-card${plan.is_featured ? " featured" : ""}">
-      <div class="public-plan-top"><span class="public-plan-type">${escapeHtml(titleCase(plan.workspace_type))}</span>${plan.is_featured ? '<span class="public-plan-badge">Recommended</span>' : ""}</div>
+    return `<article${sectionId} class="public-plan-card${plan.is_featured ? " featured" : ""}${comingSoon ? " coming-soon" : ""}">
+      <div class="public-plan-top"><span class="public-plan-type">${escapeHtml(titleCase(plan.workspace_type))}</span>${comingSoon ? '<span class="public-plan-badge coming-soon">Coming soon</span>' : plan.is_featured ? '<span class="public-plan-badge">Recommended</span>' : ""}</div>
       <h2>${escapeHtml(plan.display_name)}</h2>
       <p class="public-plan-summary">${escapeHtml(plan.marketing_summary || plan.description)}</p>
-      <div class="public-plan-price">${price ? `<strong>${money(price.amount, price.currency)}</strong><span> / ${periodLabel}</span>` : "<strong>Contact us</strong>"}</div>
+      <div class="public-plan-price">${comingSoon ? "<strong>Coming soon</strong>" : price ? `<strong>${money(price.amount, price.currency)}</strong><span> / ${periodLabel}</span>` : "<strong>Contact us</strong>"}</div>
       <div class="public-plan-meta"><span>${seatText}</span><span>${limitText}</span>${extra}</div>
       <ul class="public-plan-features">${features.slice(0, 8).map((feature) => `<li>${escapeHtml(feature)}</li>`).join("")}</ul>
       ${action}

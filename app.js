@@ -118,6 +118,9 @@ const state = {
   cashbookEntries: [],
   cashbookReport: [],
   cashbookSection: "overview",
+  cashbookLedgerAccountId: null,
+  cashbookPeriod: "all",
+  cashbookPeriodAnchor: null,
   cashbookLoadedWorkspaceId: null
 };
 
@@ -209,7 +212,7 @@ const views = {
 
 const adminTabs = new Set(["dashboard", "analytics", "households", "users", "plans", "finance", "enquiries", "support"]);
 const familyTabs = new Set(["dashboard", "payments", "reports", "members", "subscription", "settings", "support", "cashbook"]);
-const cashbookSections = new Set(["overview", "entries", "accounts", "reports"]);
+const cashbookSections = new Set(["overview", "accounts", "reports"]);
 const currencyNames = {
   USD: "en-US",
   ZAR: "en-ZA",
@@ -4793,6 +4796,7 @@ function renderCashbook() {
     showToast("Cashbook testing is available only in your Personal workspace.");
     return;
   }
+  if (state.cashbookSection === "entries") state.cashbookSection = "overview";
   $("#cashbookWorkspaceBadge").textContent = `Personal · ${workspace.name || "Personal budget"}`;
   document.querySelectorAll("[data-cashbook-section]").forEach((button) => {
     button.classList.toggle("active", button.dataset.cashbookSection === state.cashbookSection);
@@ -4800,68 +4804,159 @@ function renderCashbook() {
   document.querySelectorAll("[data-cashbook-panel]").forEach((panel) => {
     panel.classList.toggle("hidden", panel.dataset.cashbookPanel !== state.cashbookSection);
   });
-  renderCashbookOverview();
+  renderCashbookLedger();
   renderCashbookAccounts();
-  renderCashbookEntries();
   renderCashbookReport();
 }
 
-function renderCashbookOverview() {
-  const activeBalances = state.cashbookBalances.filter((account) => account.status === "active");
-  const currencyTotals = new Map();
-  activeBalances.forEach((account) => currencyTotals.set(
-    account.currency,
-    (currencyTotals.get(account.currency) || 0) + Number(account.current_balance || 0)
-  ));
-  $("#cashbookBalanceSummary").innerHTML = currencyTotals.size
-    ? [...currencyTotals.entries()].map(([currency, amount]) => `<article class="cashbook-balance-card${amount < 0 ? " negative" : ""}"><span>Total tracked · ${escapeHtml(currency)}</span><strong>${money(amount, currency)}</strong><small>${activeBalances.filter((account) => account.currency === currency).length} active account${activeBalances.filter((account) => account.currency === currency).length === 1 ? "" : "s"}</small></article>`).join("")
-    : emptyState("No Cashbook accounts", "Add an account to begin tracking money in and money out.");
-
-  $("#cashbookOverviewAccounts").innerHTML = activeBalances.length
-    ? activeBalances.map((account) => `<article class="record-card cashbook-compact-account"><div><strong>${escapeHtml(account.name)}</strong><span>${escapeHtml(titleCase(account.account_type))} · ${escapeHtml(account.currency)}</span></div><strong class="cashbook-account-balance${Number(account.current_balance) < 0 ? " negative" : ""}">${money(account.current_balance, account.currency)}</strong></article>`).join("")
-    : emptyState("No active accounts", "Use Add account in the Accounts section.");
-
-  const recent = state.cashbookEntries.slice(0, 6);
-  $("#cashbookRecentEntries").innerHTML = recent.length
-    ? recent.map(cashbookEntryCard).join("")
-    : emptyState("No movements yet", "Add Cash In, Cash Out, or a transfer.");
+function cashbookDate(value) {
+  return new Date(`${value}T12:00:00`);
 }
 
-function cashbookEntryCard(entry) {
-  const account = cashbookAccountById(entry.account_id);
+function cashbookEntryEffect(entry) {
+  return ["cash_in", "transfer_in"].includes(entry.entry_type) ? Number(entry.amount) : -Number(entry.amount);
+}
+
+function cashbookEntryOrder(left, right) {
+  return `${left.transaction_date}|${left.created_at}|${left.id}`.localeCompare(`${right.transaction_date}|${right.created_at}|${right.id}`);
+}
+
+function cashbookPeriodRange() {
+  if (state.cashbookPeriod === "all") return { start: null, end: null, label: "All entries" };
+  const anchor = cashbookDate(state.cashbookPeriodAnchor || toDateValue(new Date()));
+  let start = new Date(anchor);
+  let end = new Date(anchor);
+  if (state.cashbookPeriod === "weekly") {
+    start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
+    end = new Date(start);
+    end.setDate(end.getDate() + 6);
+  }
+  if (state.cashbookPeriod === "monthly") {
+    start = new Date(anchor.getFullYear(), anchor.getMonth(), 1, 12);
+    end = new Date(anchor.getFullYear(), anchor.getMonth() + 1, 0, 12);
+  }
+  if (state.cashbookPeriod === "yearly") {
+    start = new Date(anchor.getFullYear(), 0, 1, 12);
+    end = new Date(anchor.getFullYear(), 11, 31, 12);
+  }
+  const startValue = toDateValue(start);
+  const endValue = toDateValue(end);
+  const format = (date, options) => date.toLocaleDateString("en", options);
+  let label = format(start, { day: "numeric", month: "short", year: "numeric" });
+  if (state.cashbookPeriod === "weekly") label = `${format(start, { day: "numeric", month: "short" })} – ${format(end, { day: "numeric", month: "short", year: "numeric" })}`;
+  if (state.cashbookPeriod === "monthly") label = format(start, { month: "long", year: "numeric" });
+  if (state.cashbookPeriod === "yearly") label = `${start.getFullYear()}`;
+  return { start: startValue, end: endValue, label };
+}
+
+function cashbookBalanceThroughDate(account, date) {
+  if (!account) return 0;
+  const opening = account.opening_balance_date <= date ? Number(account.opening_balance || 0) : 0;
+  return opening + state.cashbookEntries
+    .filter((entry) => entry.account_id === account.id && !entry.reversed_at && entry.transaction_date <= date)
+    .reduce((total, entry) => total + cashbookEntryEffect(entry), 0);
+}
+
+function cashbookBalanceAfterEntry(account, target) {
+  const opening = account.opening_balance_date <= target.transaction_date ? Number(account.opening_balance || 0) : 0;
+  return opening + state.cashbookEntries
+    .filter((entry) => entry.account_id === account.id && !entry.reversed_at && cashbookEntryOrder(entry, target) <= 0)
+    .reduce((total, entry) => total + cashbookEntryEffect(entry), 0);
+}
+
+function selectedCashbookLedgerAccount() {
+  return cashbookAccountById(state.cashbookLedgerAccountId) || state.cashbookAccounts.find((account) => account.status === "active") || state.cashbookAccounts[0] || null;
+}
+
+function cashbookLedgerEntryCard(entry, account) {
   const linked = cashbookLinkedPayment(entry);
   const missingLinkedPayment = entry.linked_payment_record_id && !linked;
   const reversed = Boolean(entry.reversed_at);
-  return `<article class="record-card cashbook-entry-card ${escapeHtml(entry.entry_type)}${reversed ? " reversed" : ""}">
-    <div class="cashbook-entry-main"><div class="cashbook-entry-heading"><strong>${escapeHtml(entry.description)}</strong><span class="mini-badge ${reversed ? "inactive" : entry.entry_type}">${reversed ? "Reversed" : cashbookEntryTypeLabel(entry)}</span></div><span>${escapeHtml(account?.name || "Account unavailable")} · ${escapeHtml(entry.transaction_date)}${entry.category ? ` · ${escapeHtml(entry.category)}` : ""}</span>${entry.notes ? `<small>${escapeHtml(entry.notes)}</small>` : ""}${linked ? `<small>Linked to ${escapeHtml(linked.item.name)} payment · due period ${escapeHtml(linked.record.period_start)}</small>` : ""}${missingLinkedPayment ? "<small>Linked paid-payment history is no longer available. This Cashbook movement remains unchanged.</small>" : ""}${reversed ? `<small>Reversal: ${escapeHtml(entry.reversal_reason || "Reason unavailable")}</small>` : ""}</div>
-    <div class="cashbook-entry-side"><strong class="cashbook-entry-amount">${cashbookEntryAmount(entry)}</strong><div class="row-actions">${linked ? `<button type="button" data-open-cashbook-payment-history="${linked.item.id}">Payment history</button>` : ""}${reversed ? "" : `<button type="button" class="danger" data-reverse-cashbook-entry="${entry.id}">Reverse</button>`}</div></div>
+  const incoming = ["cash_in", "transfer_in"].includes(entry.entry_type);
+  const time = entry.created_at ? new Date(entry.created_at).toLocaleTimeString("en", { hour: "numeric", minute: "2-digit" }) : "";
+  const balance = cashbookBalanceAfterEntry(account, entry);
+  return `<article class="cashbook-ledger-entry ${escapeHtml(entry.entry_type)}${reversed ? " reversed" : ""}">
+    <div class="cashbook-ledger-entry-copy"><div><strong>${escapeHtml(entry.description)}</strong><span class="mini-badge ${reversed ? "inactive" : entry.entry_type}">${reversed ? "Reversed" : cashbookEntryTypeLabel(entry)}</span></div><span>${escapeHtml(time)}${entry.category ? ` · ${escapeHtml(entry.category)}` : ""}</span>${entry.notes ? `<small>${escapeHtml(entry.notes)}</small>` : ""}${linked ? `<small>Linked to ${escapeHtml(linked.item.name)} · due period ${escapeHtml(linked.record.period_start)}</small>` : ""}${missingLinkedPayment ? "<small>Linked payment history is no longer available; this movement is unchanged.</small>" : ""}${reversed ? `<small>Reversal: ${escapeHtml(entry.reversal_reason || "Reason unavailable")}</small>` : ""}<div class="cashbook-entry-actions">${linked ? `<button type="button" data-open-cashbook-payment-history="${linked.item.id}">Payment history</button>` : ""}${reversed ? "" : `<button type="button" data-reverse-cashbook-entry="${entry.id}">Reverse</button>`}</div></div>
+    <strong class="cashbook-ledger-value cash-in-value">${incoming && !reversed ? money(entry.amount, entry.currency) : "—"}</strong>
+    <div class="cashbook-ledger-out"><strong class="cashbook-ledger-value cash-out-value">${!incoming && !reversed ? money(entry.amount, entry.currency) : "—"}</strong><small>Balance ${money(balance, entry.currency)}</small></div>
   </article>`;
 }
 
-function renderCashbookEntries() {
-  const accountFilter = $("#cashbookEntryAccountFilter");
-  const existing = accountFilter.value || "all";
-  accountFilter.innerHTML = `<option value="all">All accounts</option>${cashbookAccountOptions(existing, true)}`;
-  accountFilter.value = [...accountFilter.options].some((option) => option.value === existing) ? existing : "all";
+function renderCashbookLedger() {
+  const accountSelect = $("#cashbookLedgerAccount");
+  const accounts = state.cashbookAccounts;
+  if (!accounts.length) {
+    state.cashbookLedgerAccountId = null;
+    accountSelect.innerHTML = '<option value="">No accounts yet</option>';
+    $("#cashbookSelectedBalance").innerHTML = '<span>Tracked balance</span><strong>—</strong><small>Add your first account</small>';
+    $("#cashbookEntriesList").innerHTML = emptyState("No Cashbook account", "Add an account to start your ledger.");
+    $("#cashbookBalanceSummary").innerHTML = "";
+    $("#cashbookEntryCount").textContent = "0 entries";
+    return;
+  }
+  const account = selectedCashbookLedgerAccount();
+  state.cashbookLedgerAccountId = account.id;
+  accountSelect.innerHTML = cashbookAccountOptions(account.id, true);
+  accountSelect.value = account.id;
+  const balance = cashbookBalanceByAccount(account.id);
+  $("#cashbookSelectedBalance").innerHTML = `<span>Tracked balance</span><strong class="${Number(balance?.current_balance || 0) < 0 ? "negative" : ""}">${money(balance?.current_balance || 0, account.currency)}</strong><small>${escapeHtml(titleCase(account.account_type))} · ${escapeHtml(account.currency)}${account.status === "archived" ? " · Archived" : ""}</small>`;
+  document.querySelectorAll("[data-cashbook-period]").forEach((button) => button.classList.toggle("active", button.dataset.cashbookPeriod === state.cashbookPeriod));
+  const range = cashbookPeriodRange();
+  $("#cashbookPeriodLabel").textContent = range.label;
+  document.querySelectorAll("[data-cashbook-period-step]").forEach((button) => { button.disabled = state.cashbookPeriod === "all"; });
   const search = $("#cashbookEntrySearch").value.trim().toLowerCase();
   const type = $("#cashbookEntryTypeFilter").value;
-  const from = $("#cashbookEntryFrom").value;
-  const to = $("#cashbookEntryTo").value;
-  const rows = state.cashbookEntries.filter((entry) => {
-    if (accountFilter.value !== "all" && entry.account_id !== accountFilter.value) return false;
+  const periodEntries = state.cashbookEntries.filter((entry) => entry.account_id === account.id
+    && (!range.start || entry.transaction_date >= range.start)
+    && (!range.end || entry.transaction_date <= range.end));
+  const rows = periodEntries.filter((entry) => {
     if (type === "transfer" && !entry.entry_type.startsWith("transfer_")) return false;
     if (type === "reversed" && !entry.reversed_at) return false;
     if (!["all", "transfer", "reversed"].includes(type) && entry.entry_type !== type) return false;
-    if (from && entry.transaction_date < from) return false;
-    if (to && entry.transaction_date > to) return false;
-    if (search && ![entry.description, entry.category, entry.notes, cashbookAccountById(entry.account_id)?.name]
+    if (search && ![entry.description, entry.category, entry.notes]
       .some((value) => `${value || ""}`.toLowerCase().includes(search))) return false;
     return true;
-  });
+  }).sort((left, right) => cashbookEntryOrder(right, left));
   $("#cashbookEntryCount").textContent = `${rows.length} entr${rows.length === 1 ? "y" : "ies"}`;
-  $("#cashbookEntriesList").innerHTML = rows.length
-    ? rows.map(cashbookEntryCard).join("")
-    : emptyState("No matching entries", "Change the filters or add a Cashbook movement.");
+  if (!rows.length) {
+    $("#cashbookEntriesList").innerHTML = emptyState("No matching entries", "Change the period or add a Cashbook movement.");
+  } else {
+    const groups = new Map();
+    rows.forEach((entry) => {
+      if (!groups.has(entry.transaction_date)) groups.set(entry.transaction_date, []);
+      groups.get(entry.transaction_date).push(entry);
+    });
+    $("#cashbookEntriesList").innerHTML = [...groups.entries()].map(([date, entries]) => `<section class="cashbook-day-group"><header><strong>${cashbookDate(date).toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short", year: "numeric" })}</strong><span>${entries.length} entr${entries.length === 1 ? "y" : "ies"}</span></header>${entries.map((entry) => cashbookLedgerEntryCard(entry, account)).join("")}</section>`).join("");
+  }
+  const activePeriodEntries = periodEntries.filter((entry) => !entry.reversed_at);
+  const cashIn = activePeriodEntries.filter((entry) => entry.entry_type === "cash_in").reduce((sum, entry) => sum + Number(entry.amount), 0);
+  const cashOut = activePeriodEntries.filter((entry) => entry.entry_type === "cash_out").reduce((sum, entry) => sum + Number(entry.amount), 0);
+  const transferIn = activePeriodEntries.filter((entry) => entry.entry_type === "transfer_in").reduce((sum, entry) => sum + Number(entry.amount), 0);
+  const transferOut = activePeriodEntries.filter((entry) => entry.entry_type === "transfer_out").reduce((sum, entry) => sum + Number(entry.amount), 0);
+  const prior = range.start ? cashbookDate(range.start) : null;
+  if (prior) prior.setDate(prior.getDate() - 1);
+  const priorDate = prior ? toDateValue(prior) : null;
+  const previousBalance = priorDate ? cashbookBalanceThroughDate(account, priorDate) : Number(account.opening_balance || 0);
+  const closingBalance = range.end ? cashbookBalanceThroughDate(account, range.end) : Number(account.opening_balance || 0) + activePeriodEntries.reduce((sum, entry) => sum + cashbookEntryEffect(entry), 0);
+  $("#cashbookBalanceSummary").innerHTML = `<div><span>Cash In</span><strong class="cash-in-value">${money(cashIn, account.currency)}</strong></div><div><span>Cash Out</span><strong class="cash-out-value">${money(cashOut, account.currency)}</strong></div><div><span>Balance</span><strong class="${closingBalance < 0 ? "negative" : ""}">${money(closingBalance, account.currency)}</strong></div><p><span>${range.start ? "Previous balance" : "Starting balance"}</span><strong>${money(previousBalance, account.currency)}</strong></p>${transferIn || transferOut ? `<p><span>Transfers in / out</span><strong>${money(transferIn, account.currency)} / ${money(transferOut, account.currency)}</strong></p>` : ""}`;
+}
+
+function setCashbookPeriod(period) {
+  if (!["all", "daily", "weekly", "monthly", "yearly"].includes(period)) return;
+  state.cashbookPeriod = period;
+  if (period !== "all" && !state.cashbookPeriodAnchor) state.cashbookPeriodAnchor = toDateValue(new Date());
+  renderCashbookLedger();
+}
+
+function stepCashbookPeriod(direction) {
+  if (state.cashbookPeriod === "all") return;
+  const anchor = cashbookDate(state.cashbookPeriodAnchor || toDateValue(new Date()));
+  if (state.cashbookPeriod === "daily") anchor.setDate(anchor.getDate() + direction);
+  if (state.cashbookPeriod === "weekly") anchor.setDate(anchor.getDate() + (7 * direction));
+  if (state.cashbookPeriod === "monthly") anchor.setMonth(anchor.getMonth() + direction);
+  if (state.cashbookPeriod === "yearly") anchor.setFullYear(anchor.getFullYear() + direction);
+  state.cashbookPeriodAnchor = toDateValue(anchor);
+  renderCashbookLedger();
 }
 
 function renderCashbookAccounts() {
@@ -4889,7 +4984,7 @@ function openCashbookAccountDialog() {
   window.setTimeout(() => $("#cashbookAccountName").focus(), 0);
 }
 
-function populateCashbookEntryAccounts(selected = "") {
+function populateCashbookEntryAccounts(selected = state.cashbookLedgerAccountId || "") {
   const active = state.cashbookAccounts.filter((account) => account.status === "active");
   $("#cashbookEntryAccount").innerHTML = active.length ? cashbookAccountOptions(selected) : '<option value="">Add an account first</option>';
   $("#cashbookTransferSource").innerHTML = active.length ? cashbookAccountOptions() : '<option value="">Add an account first</option>';
@@ -4916,15 +5011,21 @@ function openCashbookEntryDialog(direction) {
     return;
   }
   $("#cashbookEntryForm").reset();
-  $("#cashbookEntryDirection").value = direction;
   $("#cashbookEntryDate").value = toDateValue(new Date());
-  $("#cashbookEntrySourceField").classList.toggle("hidden", direction !== "cash_out");
-  $("#cashbookEntryDialogTitle").textContent = direction === "cash_out" ? "Add Cash Out" : "Add Cash In";
-  $("#cashbookEntrySubmit").textContent = direction === "cash_out" ? "Save Cash Out" : "Save Cash In";
-  populateCashbookEntryAccounts();
+  populateCashbookEntryAccounts(state.cashbookLedgerAccountId || "");
   renderCashbookPaymentOptions();
-  updateCashbookEntrySource();
+  setCashbookEntryDirection(direction);
   $("#cashbookEntryDialog").showModal();
+}
+
+function setCashbookEntryDirection(direction) {
+  const nextDirection = direction === "cash_out" ? "cash_out" : "cash_in";
+  $("#cashbookEntryDirection").value = nextDirection;
+  $("#cashbookEntrySourceField").classList.toggle("hidden", nextDirection !== "cash_out");
+  $("#cashbookEntryDialogTitle").textContent = nextDirection === "cash_out" ? "Add Cash Out" : "Add Cash In";
+  $("#cashbookEntrySubmit").textContent = nextDirection === "cash_out" ? "Save Cash Out" : "Save Cash In";
+  document.querySelectorAll("[data-cashbook-direction]").forEach((button) => button.classList.toggle("active", button.dataset.cashbookDirection === nextDirection));
+  updateCashbookEntrySource();
 }
 
 function updateCashbookEntrySource() {
@@ -4989,7 +5090,7 @@ async function saveCashbookAccount(event) {
   event.preventDefault();
   const workspace = currentBudgetWorkspace();
   if (workspace?.workspace_type !== "personal") throw new Error("Personal Cashbook access required.");
-  await query("Cashbook account create", supabase.rpc("create_cashbook_account", {
+  const created = await query("Cashbook account create", supabase.rpc("create_cashbook_account", {
     p_workspace_id: workspace.id,
     p_name: $("#cashbookAccountName").value.trim(),
     p_account_type: $("#cashbookAccountType").value,
@@ -4997,6 +5098,7 @@ async function saveCashbookAccount(event) {
     p_opening_balance: Number($("#cashbookOpeningBalance").value || 0),
     p_opening_balance_date: $("#cashbookOpeningDate").value
   }));
+  state.cashbookLedgerAccountId = (Array.isArray(created) ? created[0]?.id : created?.id) || state.cashbookLedgerAccountId;
   $("#cashbookAccountDialog").close();
   $("#cashbookAccountForm").reset();
   await loadCashbookData(true);
@@ -8330,6 +8432,12 @@ document.addEventListener("click", async (event) => {
     state.cashbookSection = cashbookSection;
     renderCashbook();
   }
+  const cashbookPeriod = event.target.closest("[data-cashbook-period]")?.dataset.cashbookPeriod;
+  if (cashbookPeriod) setCashbookPeriod(cashbookPeriod);
+  const cashbookPeriodStep = event.target.closest("[data-cashbook-period-step]")?.dataset.cashbookPeriodStep;
+  if (cashbookPeriodStep) stepCashbookPeriod(Number(cashbookPeriodStep));
+  const cashbookDirection = event.target.closest("[data-cashbook-direction]")?.dataset.cashbookDirection;
+  if (cashbookDirection) setCashbookEntryDirection(cashbookDirection);
   const cashbookEntry = event.target.closest("[data-open-cashbook-entry]");
   if (cashbookEntry) openCashbookEntryDialog(cashbookEntry.dataset.openCashbookEntry);
   const cashbookReverse = event.target.closest("[data-reverse-cashbook-entry]");
@@ -8667,8 +8775,12 @@ $("#cashbookEntrySource").addEventListener("change", updateCashbookEntrySource);
 $("#cashbookPaymentRecord").addEventListener("change", updateCashbookPaymentPreview);
 $("#cashbookEntryAccount").addEventListener("change", updateCashbookPaymentPreview);
 [$("#cashbookTransferSource"), $("#cashbookTransferDestination"), $("#cashbookTransferSourceAmount")].forEach((field) => field.addEventListener("change", updateCashbookTransferHint));
-[$("#cashbookEntrySearch"), $("#cashbookEntryAccountFilter"), $("#cashbookEntryTypeFilter"), $("#cashbookEntryFrom"), $("#cashbookEntryTo")].forEach((field) => {
-  field.addEventListener(field.type === "search" ? "input" : "change", renderCashbookEntries);
+[$("#cashbookEntrySearch"), $("#cashbookEntryTypeFilter")].forEach((field) => {
+  field.addEventListener(field.type === "search" ? "input" : "change", renderCashbookLedger);
+});
+$("#cashbookLedgerAccount").addEventListener("change", (event) => {
+  state.cashbookLedgerAccountId = event.target.value;
+  renderCashbookLedger();
 });
 $("#cashbookRunReport").addEventListener("click", () => runCashbookReport().catch((error) => showToast(error.message)));
 $("#inviteForm").addEventListener("submit", protectSubmission(inviteMember));

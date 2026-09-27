@@ -6287,3 +6287,106 @@ input[type="file"] {
   .cashbook-balance-grid { grid-template-columns: minmax(0,1fr); }
   .cashbook-report-card dl { grid-template-columns: minmax(0,1fr); }
 }
+
+/* Private Cashbook ledger redesign: release number intentionally unchanged. */
+.cashbook-page { max-width: 1180px; margin: 0 auto; gap: .8rem; padding-bottom: 1.5rem; border-radius: 24px; background: #eef4f3; overflow: hidden; }
+.cashbook-appbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.15rem 1.25rem; color: #fff; background: linear-gradient(135deg,#087f78,#0f9f86); box-shadow: 0 12px 28px rgba(15,118,110,.2); }
+.cashbook-appbar-title { display: grid; gap: .16rem; min-width: 0; }
+.cashbook-appbar-title .eyebrow { margin: 0; color: rgba(255,255,255,.72); }
+.cashbook-appbar-title h2 { margin: 0; color: #fff; font-size: clamp(1.65rem,3.5vw,2.35rem); }
+.cashbook-appbar-title span { color: rgba(255,255,255,.84); font-size: .78rem; font-weight: 750; overflow-wrap: anywhere; }
+.cashbook-appbar-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem; }
+.cashbook-appbar-actions button { border-color: rgba(255,255,255,.4); color: #fff; background: rgba(255,255,255,.13); box-shadow: none; }
+.cashbook-appbar-actions button:hover { background: rgba(255,255,255,.23); }
+.cashbook-test-notice { display: flex; gap: .45rem .7rem; align-items: baseline; margin: 0 .9rem; padding: .65rem .8rem; border: 1px solid rgba(15,118,110,.16); border-radius: 12px; background: rgba(255,255,255,.82); color: var(--muted); font-size: .76rem; }
+.cashbook-test-notice strong { color: #0f766e; white-space: nowrap; }
+.cashbook-section-tabs { margin: 0 .9rem; padding: .3rem; border: 0; border-radius: 14px; background: #dfeae8; }
+.cashbook-section-tabs button { padding: .68rem 1rem; border: 0; border-radius: 11px; color: #536866; background: transparent; box-shadow: none; }
+.cashbook-section-tabs button.active { border: 0; color: #075f58; background: #fff; box-shadow: 0 5px 14px rgba(15,23,42,.08); }
+.cashbook-ledger-shell { display: grid; gap: .75rem; margin: 0 .9rem; }
+.cashbook-account-switcher { display: grid; grid-template-columns: minmax(0,1fr) minmax(210px,.42fr); gap: .75rem; align-items: stretch; }
+.cashbook-account-switcher > label { display: grid; gap: .42rem; padding: .85rem 1rem; border: 1px solid rgba(15,118,110,.16); border-radius: 16px; background: #fff; color: #526765; font-size: .74rem; font-weight: 800; }
+.cashbook-account-switcher select { min-height: 48px; border-color: rgba(15,118,110,.24); background: #f8fbfa; color: #102a27; font-size: 1rem; font-weight: 800; }
+.cashbook-selected-balance { display: grid; align-content: center; justify-items: end; gap: .18rem; padding: .85rem 1rem; border-radius: 16px; color: #fff; text-align: right; background: linear-gradient(145deg,#115e59,#0f766e); box-shadow: 0 10px 22px rgba(15,118,110,.17); }
+.cashbook-selected-balance span,.cashbook-selected-balance small { color: rgba(255,255,255,.77); font-size: .72rem; font-weight: 750; }
+.cashbook-selected-balance strong { font-size: clamp(1.35rem,3vw,2rem); line-height: 1; overflow-wrap: anywhere; }
+.cashbook-selected-balance strong.negative { color: #fecaca; }
+.cashbook-ledger-panel { overflow: hidden; border: 1px solid rgba(100,116,139,.17); border-radius: 18px; background: #fff; box-shadow: 0 14px 32px rgba(15,23,42,.07); }
+.cashbook-period-tabs { display: flex; gap: .45rem; padding: .8rem; overflow-x: auto; background: #f5f8f8; }
+.cashbook-period-tabs button { flex: 1 0 auto; min-width: 80px; padding: .58rem .85rem; border: 1px solid #d8e3e1; border-radius: 999px; color: #49615e; background: #fff; box-shadow: none; }
+.cashbook-period-tabs button.active { border-color: #0f8b78; color: #fff; background: #0f8b78; }
+.cashbook-period-nav { display: grid; grid-template-columns: 48px minmax(0,1fr) 48px; align-items: center; border-top: 1px solid #e6eeec; border-bottom: 1px solid #dfe8e6; color: #fff; background: #148f80; text-align: center; }
+.cashbook-period-nav strong { padding: .72rem .4rem; font-size: .94rem; }
+.cashbook-period-nav button { height: 100%; border: 0; border-radius: 0; color: #fff; background: transparent; font-size: 1.75rem; box-shadow: none; }
+.cashbook-period-nav button:disabled { opacity: .22; }
+.cashbook-ledger-tools { display: grid; grid-template-columns: minmax(180px,1fr) minmax(150px,.35fr) auto; gap: .55rem; align-items: center; padding: .7rem .8rem; border-bottom: 1px solid #e5eceb; background: #fff; }
+.cashbook-ledger-tools input,.cashbook-ledger-tools select { min-height: 42px; background: #f8faf9; }
+.cashbook-ledger-tools > span { color: var(--muted); font-size: .73rem; font-weight: 800; white-space: nowrap; }
+.cashbook-ledger-head { display: grid; grid-template-columns: minmax(0,1fr) minmax(105px,.25fr) minmax(125px,.28fr); gap: .65rem; padding: .62rem .85rem; color: #1f3d39; background: #e9efee; font-size: .78rem; font-weight: 850; }
+.cashbook-ledger-head strong:nth-child(2) { color: #15803d; text-align: right; }
+.cashbook-ledger-head strong:last-child { color: #dc2626; text-align: right; }
+.cashbook-ledger-list { min-height: 220px; background: #eef2f2; }
+.cashbook-ledger-list .empty-ledger { margin: .8rem; background: #fff; }
+.cashbook-day-group > header { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .62rem .85rem; border-top: 1px solid #dde5e4; border-bottom: 1px solid #e2e8e7; background: #f7f9f9; }
+.cashbook-day-group > header strong { font-size: .82rem; }
+.cashbook-day-group > header span { color: var(--muted); font-size: .7rem; font-weight: 700; }
+.cashbook-ledger-entry { display: grid; grid-template-columns: minmax(0,1fr) minmax(105px,.25fr) minmax(125px,.28fr); gap: .65rem; align-items: start; padding: .85rem; border-bottom: 5px solid #eef2f2; background: #fff; }
+.cashbook-ledger-entry.reversed { opacity: .66; background: #f8fafc; }
+.cashbook-ledger-entry-copy { display: grid; min-width: 0; gap: .25rem; }
+.cashbook-ledger-entry-copy > div:first-child { display: flex; flex-wrap: wrap; gap: .42rem; align-items: center; }
+.cashbook-ledger-entry-copy > span,.cashbook-ledger-entry-copy > small { color: var(--muted); font-size: .72rem; overflow-wrap: anywhere; }
+.cashbook-ledger-value { align-self: start; padding-top: .12rem; text-align: right; white-space: nowrap; }
+.cashbook-ledger-out { display: grid; justify-items: end; gap: .3rem; }
+.cashbook-ledger-out small { color: var(--muted); font-size: .7rem; text-align: right; }
+.cash-in-value { color: #15803d; }
+.cash-out-value { color: #dc2626; }
+.cashbook-entry-actions { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .2rem; }
+.cashbook-entry-actions button { min-height: 28px; padding: .24rem .48rem; border-color: #d7e0df; color: #64748b; background: #fff; font-size: .65rem; box-shadow: none; }
+.cashbook-quick-actions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .7rem; padding: .8rem; border-top: 1px solid #e1e9e7; background: #fff; }
+.cashbook-quick-actions button { min-height: 54px; border: 0; border-radius: 13px; color: #fff; font-size: 1rem; font-weight: 850; }
+.cashbook-in-button { background: #22a447; }
+.cashbook-out-button { background: #ef4444; }
+.cashbook-period-summary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); border-top: 1px solid #dbe4e2; background: #f9fbfa; }
+.cashbook-period-summary > div { display: grid; justify-items: center; gap: .25rem; padding: .8rem .45rem; border-right: 1px solid #dbe4e2; text-align: center; }
+.cashbook-period-summary > div:last-of-type { border-right: 0; }
+.cashbook-period-summary span { color: var(--muted); font-size: .72rem; font-weight: 760; }
+.cashbook-period-summary > div strong { font-size: clamp(.95rem,2.5vw,1.25rem); overflow-wrap: anywhere; }
+.cashbook-period-summary > p { display: flex; justify-content: space-between; gap: .8rem; grid-column: 1 / -1; margin: 0; padding: .62rem .85rem; border-top: 1px solid #dbe4e2; }
+.cashbook-period-summary > p strong { overflow-wrap: anywhere; text-align: right; }
+.cashbook-period-summary .negative { color: #b91c1c; }
+.cashbook-entry-dialog { width: min(680px,calc(100vw - 1rem)); padding: 0; overflow: hidden; border-radius: 22px; background: #f3f7f6; }
+.cashbook-entry-form { gap: .8rem; padding: 1rem; }
+.cashbook-direction-switch { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .65rem; padding: .32rem; border-radius: 999px; background: #e2e8e7; }
+.cashbook-direction-switch button { border: 0; border-radius: 999px; background: transparent; box-shadow: none; }
+.cashbook-direction-switch .cash_in.active { color: #fff; background: #22a447; }
+.cashbook-direction-switch .cash_out.active { color: #fff; background: #ef4444; }
+.cashbook-manual-fields { padding: .8rem; border: 1px solid #dce6e4; border-radius: 16px; background: #fff; }
+.cashbook-amount-field { grid-column: 1 / -1; }
+.cashbook-amount-field input { min-height: 72px; border-color: #91c8bf; color: #0f766e; font-size: 1.75rem; font-weight: 850; text-align: right; }
+
+@media (max-width: 720px) {
+  .cashbook-page { margin: -.75rem; border-radius: 0; }
+  .cashbook-appbar { align-items: flex-start; padding: 1rem; }
+  .cashbook-appbar-actions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); width: 100%; max-width: 240px; }
+  .cashbook-appbar-actions button { padding-inline: .55rem; }
+  .cashbook-account-switcher { grid-template-columns: minmax(0,1fr); }
+  .cashbook-selected-balance { justify-items: start; text-align: left; }
+  .cashbook-ledger-tools { grid-template-columns: minmax(0,1fr) minmax(130px,.45fr); }
+  .cashbook-ledger-tools > span { grid-column: 1 / -1; }
+  .cashbook-ledger-head,.cashbook-ledger-entry { grid-template-columns: minmax(0,1fr) minmax(82px,.28fr) minmax(98px,.32fr); gap: .38rem; }
+  .cashbook-ledger-entry { padding: .72rem .65rem; }
+}
+@media (max-width: 480px) {
+  .cashbook-appbar { display: grid; }
+  .cashbook-appbar-actions { max-width: none; }
+  .cashbook-test-notice { align-items: flex-start; flex-direction: column; }
+  .cashbook-period-tabs { gap: .35rem; padding: .65rem; }
+  .cashbook-period-tabs button { min-width: 66px; padding: .5rem .68rem; }
+  .cashbook-ledger-tools { grid-template-columns: minmax(0,1fr); }
+  .cashbook-ledger-head,.cashbook-ledger-entry { grid-template-columns: minmax(0,1fr) 78px 88px; font-size: .7rem; }
+  .cashbook-ledger-value { font-size: .78rem; white-space: normal; overflow-wrap: anywhere; }
+  .cashbook-ledger-out small { font-size: .62rem; }
+  .cashbook-entry-actions button { padding: .2rem .38rem; }
+  .cashbook-period-summary > div { padding-inline: .28rem; }
+  .cashbook-period-summary > div strong { font-size: .82rem; }
+}

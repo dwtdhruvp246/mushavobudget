@@ -112,7 +112,13 @@ const state = {
   reportReportingCurrency: null,
   workspacePlanBillingPeriod: "monthly",
   workspacePlanCurrency: null,
-  workspacePlanWorkspaceId: null
+  workspacePlanWorkspaceId: null,
+  cashbookAccounts: [],
+  cashbookBalances: [],
+  cashbookEntries: [],
+  cashbookReport: [],
+  cashbookSection: "overview",
+  cashbookLoadedWorkspaceId: null
 };
 
 const realtime = {
@@ -202,7 +208,8 @@ const views = {
 };
 
 const adminTabs = new Set(["dashboard", "analytics", "households", "users", "plans", "finance", "enquiries", "support"]);
-const familyTabs = new Set(["dashboard", "payments", "reports", "members", "subscription", "settings", "support"]);
+const familyTabs = new Set(["dashboard", "payments", "reports", "members", "subscription", "settings", "support", "cashbook"]);
+const cashbookSections = new Set(["overview", "entries", "accounts", "reports"]);
 const currencyNames = {
   USD: "en-US",
   ZAR: "en-ZA",
@@ -271,6 +278,11 @@ const today = new Date();
 $("#paymentDate").value = toDateValue(today);
 $("#monthFilter").value = state.filterMonth;
 $("#reportMonthFilter").value = state.reportMonth;
+$("#cashbookOpeningDate").value = toDateValue(today);
+$("#cashbookEntryDate").value = toDateValue(today);
+$("#cashbookTransferDate").value = toDateValue(today);
+$("#cashbookReportStart").value = monthStart(toMonthValue(today));
+$("#cashbookReportEnd").value = toDateValue(today);
 populatePaymentScheduleControls(today);
 $("#recordPaymentDate").value = toDateValue(today);
 $("#renewalPaymentDate").value = toDateValue(today);
@@ -663,6 +675,18 @@ function friendlyMessage(message = "") {
   }
   if (text.includes("PAYMENT_PAUSED_BY_PLAN")) return "This payment is paused by the Free plan limit. Choose it among your five, renew Personal, or delete it.";
   if (text.includes("ACCOUNT_SUSPENDED")) return "Your account is suspended. Contact Mushavo Budget support.";
+  if (text.includes("PERSONAL_CASHBOOK_ACCESS_REQUIRED")) return "Cashbook testing is available only in your active Personal workspace.";
+  if (text.includes("CASHBOOK_ACCOUNT_NAME_ALREADY_EXISTS")) return "An active Cashbook account already uses that name.";
+  if (text.includes("ACTIVE_CASHBOOK_ACCOUNT_REQUIRED")) return "Choose an active Cashbook account.";
+  if (text.includes("ACTIVE_CASHBOOK_ACCOUNTS_REQUIRED")) return "Choose two active Cashbook accounts.";
+  if (text.includes("CASHBOOK_ACCOUNT_CURRENCY_MISMATCH")) return "The selected account must use the same currency as the paid payment.";
+  if (text.includes("PAYMENT_ALREADY_LINKED_TO_CASHBOOK")) return "That paid payment is already linked to an active Cashbook entry.";
+  if (text.includes("MATCHING_MANUAL_CASH_OUT_REQUIRED")) return "The matching manual Cash Out changed. Reopen the form and review it again.";
+  if (text.includes("TRANSFER_ACCOUNTS_MUST_DIFFER")) return "Choose different source and destination accounts.";
+  if (text.includes("SAME_CURRENCY_TRANSFER_AMOUNTS_MUST_MATCH")) return "The sent and received amounts must match for a same-currency transfer.";
+  if (text.includes("CASHBOOK_REVERSAL_REASON_REQUIRED")) return "Enter at least three characters explaining the reversal.";
+  if (text.includes("CASHBOOK_ENTRY_ALREADY_REVERSED")) return "That Cashbook entry was already reversed.";
+  if (text.includes("INVALID_CASHBOOK_REPORT_RANGE")) return "Choose a valid Cashbook report date range.";
   if (
     text.includes("payment_items_recurrence_type_check") ||
     text.includes("payment_items_recurrence_interval_check")
@@ -840,8 +864,8 @@ function confirmAction({ title = "Are you sure?", message = "", action = "Confir
 
 function routeFromHash() {
   const route = window.location.hash.replace(/^#\/?/, "");
-  const [area, tab] = route.split("/");
-  return { area, tab };
+  const [area, rawTab] = route.split("/");
+  return { area, tab: rawTab?.replace(/\.+$/, "") };
 }
 
 function budgetRouteArea() {
@@ -853,7 +877,9 @@ function applyRouteFromHash() {
   if (area === "admin" && adminTabs.has(tab)) state.adminTab = tab;
   // Keep legacy #family links working, while allowing Personal workspaces to
   // expose an accurate #personal route in the browser.
-  if (["family", "personal"].includes(area) && familyTabs.has(tab)) state.familyTab = tab;
+  if (["family", "personal"].includes(area) && familyTabs.has(tab)) {
+    state.familyTab = tab === "cashbook" && area !== "personal" ? "dashboard" : tab;
+  }
 }
 
 function setRoute(area, tab, replace = false) {
@@ -1016,6 +1042,7 @@ async function refreshVisibleData() {
     await loadFamily();
     await loadFamilyData();
     await loadWorkspaceSubscriptionData();
+    if (state.familyTab === "cashbook") await loadCashbookData(true);
     if (state.familyTab === "support") await loadUserSupportData();
     if (state.session?.user?.id !== sessionId) return;
     renderFamilyApp();
@@ -1376,6 +1403,7 @@ async function loadApp() {
   if (financialFamilyId !== state.family?.id) await loadFamilyFinancialData();
   await loadPersonalPlanAccess();
   syncRouteForWorkspace("family");
+  if (state.familyTab === "cashbook") await loadCashbookData();
   if (state.familyTab === "support") await loadUserSupportData();
   setView("app");
   renderFamilyApp();
@@ -1472,7 +1500,8 @@ async function loadFamily() {
   );
   state.families = families.filter((family) => family.owner_id === userId || joinedFamilyIds.has(family.id));
   const storedFamilyId = window.localStorage.getItem(selectedFamilyStorageKey());
-  state.family = storedFamilyId === "__personal__"
+  const requestedArea = routeFromHash().area;
+  state.family = requestedArea === "personal" || (storedFamilyId === "__personal__" && requestedArea !== "family")
     ? null
     : state.families.find((family) => family.id === storedFamilyId) ||
       state.families.find((family) => family.id === state.family?.id) ||
@@ -1494,14 +1523,17 @@ function persistSelectedFamily() {
 async function selectFamily(familyId) {
   if (familyId === "__personal__") {
     if (!state.family) {
+      if (state.familyTab === "cashbook") await loadCashbookData();
       setRoute("personal", state.familyTab, true);
       return;
     }
     state.family = null;
+    state.cashbookLoadedWorkspaceId = null;
     state.editingObligationId = null;
     resetPaymentListView();
     persistSelectedFamily();
     await Promise.all([loadFamilyFinancialData(), loadWorkspaceSubscriptionData()]);
+    if (state.familyTab === "cashbook") await loadCashbookData();
     setRoute("personal", state.familyTab, true);
     renderFamilyApp();
     return;
@@ -1513,6 +1545,8 @@ async function selectFamily(familyId) {
     return;
   }
   state.family = family;
+  if (state.familyTab === "cashbook") state.familyTab = "dashboard";
+  state.cashbookLoadedWorkspaceId = null;
   state.editingObligationId = null;
   resetPaymentListView();
   persistSelectedFamily();
@@ -1538,6 +1572,30 @@ function resetDashboardDisclosureState() {
 
 async function loadFamilyData() {
   await Promise.all([loadFamilyFinancialData(), loadInvitations(), loadNotifications()]);
+}
+
+async function loadCashbookData(force = false) {
+  const workspace = currentBudgetWorkspace();
+  if (!workspace || workspace.workspace_type !== "personal") {
+    state.cashbookAccounts = [];
+    state.cashbookBalances = [];
+    state.cashbookEntries = [];
+    state.cashbookReport = [];
+    state.cashbookLoadedWorkspaceId = null;
+    return;
+  }
+  if (!force && state.cashbookLoadedWorkspaceId === workspace.id) return;
+  const workspaceId = workspace.id;
+  const [accounts, balances, entries] = await Promise.all([
+    query("Cashbook accounts load", supabase.from("cashbook_accounts").select("*").eq("workspace_id", workspaceId).order("created_at", { ascending: true })),
+    query("Cashbook balances load", supabase.from("cashbook_account_balances").select("*").eq("workspace_id", workspaceId).order("created_at", { ascending: true })),
+    query("Cashbook entries load", supabase.from("cashbook_entries").select("*").eq("workspace_id", workspaceId).order("transaction_date", { ascending: false }).order("created_at", { ascending: false }))
+  ]);
+  if (currentBudgetWorkspace()?.id !== workspaceId) return;
+  state.cashbookAccounts = accounts;
+  state.cashbookBalances = balances;
+  state.cashbookEntries = entries;
+  state.cashbookLoadedWorkspaceId = workspaceId;
 }
 
 async function loadFamilyFinancialData() {
@@ -1950,6 +2008,7 @@ function renderFamilyApp() {
   }
   if (state.familyTab === "settings") renderSettings();
   if (state.familyTab === "reports") renderReports();
+  if (state.familyTab === "cashbook") renderCashbook();
   if (state.familyTab === "subscription") renderSubscription();
   if (state.familyTab === "support") renderUserSupport();
 }
@@ -4681,6 +4740,379 @@ function paymentRecordsForReportWorkspace(items) {
     if (record.workspace_id) return record.workspace_id === workspace.id;
     return paymentItemIds.has(record.payment_item_id);
   });
+}
+
+function cashbookAccountById(accountId) {
+  return state.cashbookAccounts.find((account) => account.id === accountId) || null;
+}
+
+function cashbookBalanceByAccount(accountId) {
+  return state.cashbookBalances.find((account) => account.account_id === accountId) || null;
+}
+
+function cashbookEntryTypeLabel(entry) {
+  const labels = { cash_in: "Cash In", cash_out: "Cash Out", transfer_in: "Transfer In", transfer_out: "Transfer Out" };
+  return labels[entry.entry_type] || titleCase(entry.entry_type);
+}
+
+function cashbookEntryAmount(entry) {
+  const incoming = ["cash_in", "transfer_in"].includes(entry.entry_type);
+  return `${incoming ? "+" : "−"}${money(entry.amount, entry.currency)}`;
+}
+
+function cashbookLinkedPayment(entry) {
+  if (!entry.linked_payment_record_id) return null;
+  const record = state.paymentRecords.find((item) => item.id === entry.linked_payment_record_id);
+  const item = state.paymentItems.find((payment) => payment.id === record?.payment_item_id);
+  return record && item ? { record, item } : null;
+}
+
+function eligibleCashbookPaymentRecords() {
+  const linked = new Set(state.cashbookEntries
+    .filter((entry) => entry.linked_payment_record_id && !entry.reversed_at)
+    .map((entry) => entry.linked_payment_record_id));
+  return state.paymentRecords
+    .filter((record) => record.visibility === "personal" && !linked.has(record.id))
+    .sort((a, b) => `${b.payment_date}${b.created_at}`.localeCompare(`${a.payment_date}${a.created_at}`));
+}
+
+function cashbookAccountOptions(selected = "", includeArchived = false) {
+  return state.cashbookAccounts
+    .filter((account) => includeArchived || account.status === "active")
+    .map((account) => `<option value="${account.id}"${account.id === selected ? " selected" : ""}>${escapeHtml(account.name)} · ${escapeHtml(account.currency)}${account.status === "archived" ? " · Archived" : ""}</option>`)
+    .join("");
+}
+
+function renderCashbook() {
+  const workspace = currentBudgetWorkspace();
+  if (!workspace || workspace.workspace_type !== "personal") {
+    state.familyTab = "dashboard";
+    setRoute("family", "dashboard", true);
+    renderFamilyTabs();
+    renderDashboard();
+    showToast("Cashbook testing is available only in your Personal workspace.");
+    return;
+  }
+  $("#cashbookWorkspaceBadge").textContent = `Personal · ${workspace.name || "Personal budget"}`;
+  document.querySelectorAll("[data-cashbook-section]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.cashbookSection === state.cashbookSection);
+  });
+  document.querySelectorAll("[data-cashbook-panel]").forEach((panel) => {
+    panel.classList.toggle("hidden", panel.dataset.cashbookPanel !== state.cashbookSection);
+  });
+  renderCashbookOverview();
+  renderCashbookAccounts();
+  renderCashbookEntries();
+  renderCashbookReport();
+}
+
+function renderCashbookOverview() {
+  const activeBalances = state.cashbookBalances.filter((account) => account.status === "active");
+  const currencyTotals = new Map();
+  activeBalances.forEach((account) => currencyTotals.set(
+    account.currency,
+    (currencyTotals.get(account.currency) || 0) + Number(account.current_balance || 0)
+  ));
+  $("#cashbookBalanceSummary").innerHTML = currencyTotals.size
+    ? [...currencyTotals.entries()].map(([currency, amount]) => `<article class="cashbook-balance-card${amount < 0 ? " negative" : ""}"><span>Total tracked · ${escapeHtml(currency)}</span><strong>${money(amount, currency)}</strong><small>${activeBalances.filter((account) => account.currency === currency).length} active account${activeBalances.filter((account) => account.currency === currency).length === 1 ? "" : "s"}</small></article>`).join("")
+    : emptyState("No Cashbook accounts", "Add an account to begin tracking money in and money out.");
+
+  $("#cashbookOverviewAccounts").innerHTML = activeBalances.length
+    ? activeBalances.map((account) => `<article class="record-card cashbook-compact-account"><div><strong>${escapeHtml(account.name)}</strong><span>${escapeHtml(titleCase(account.account_type))} · ${escapeHtml(account.currency)}</span></div><strong class="cashbook-account-balance${Number(account.current_balance) < 0 ? " negative" : ""}">${money(account.current_balance, account.currency)}</strong></article>`).join("")
+    : emptyState("No active accounts", "Use Add account in the Accounts section.");
+
+  const recent = state.cashbookEntries.slice(0, 6);
+  $("#cashbookRecentEntries").innerHTML = recent.length
+    ? recent.map(cashbookEntryCard).join("")
+    : emptyState("No movements yet", "Add Cash In, Cash Out, or a transfer.");
+}
+
+function cashbookEntryCard(entry) {
+  const account = cashbookAccountById(entry.account_id);
+  const linked = cashbookLinkedPayment(entry);
+  const missingLinkedPayment = entry.linked_payment_record_id && !linked;
+  const reversed = Boolean(entry.reversed_at);
+  return `<article class="record-card cashbook-entry-card ${escapeHtml(entry.entry_type)}${reversed ? " reversed" : ""}">
+    <div class="cashbook-entry-main"><div class="cashbook-entry-heading"><strong>${escapeHtml(entry.description)}</strong><span class="mini-badge ${reversed ? "inactive" : entry.entry_type}">${reversed ? "Reversed" : cashbookEntryTypeLabel(entry)}</span></div><span>${escapeHtml(account?.name || "Account unavailable")} · ${escapeHtml(entry.transaction_date)}${entry.category ? ` · ${escapeHtml(entry.category)}` : ""}</span>${entry.notes ? `<small>${escapeHtml(entry.notes)}</small>` : ""}${linked ? `<small>Linked to ${escapeHtml(linked.item.name)} payment · due period ${escapeHtml(linked.record.period_start)}</small>` : ""}${missingLinkedPayment ? "<small>Linked paid-payment history is no longer available. This Cashbook movement remains unchanged.</small>" : ""}${reversed ? `<small>Reversal: ${escapeHtml(entry.reversal_reason || "Reason unavailable")}</small>` : ""}</div>
+    <div class="cashbook-entry-side"><strong class="cashbook-entry-amount">${cashbookEntryAmount(entry)}</strong><div class="row-actions">${linked ? `<button type="button" data-open-cashbook-payment-history="${linked.item.id}">Payment history</button>` : ""}${reversed ? "" : `<button type="button" class="danger" data-reverse-cashbook-entry="${entry.id}">Reverse</button>`}</div></div>
+  </article>`;
+}
+
+function renderCashbookEntries() {
+  const accountFilter = $("#cashbookEntryAccountFilter");
+  const existing = accountFilter.value || "all";
+  accountFilter.innerHTML = `<option value="all">All accounts</option>${cashbookAccountOptions(existing, true)}`;
+  accountFilter.value = [...accountFilter.options].some((option) => option.value === existing) ? existing : "all";
+  const search = $("#cashbookEntrySearch").value.trim().toLowerCase();
+  const type = $("#cashbookEntryTypeFilter").value;
+  const from = $("#cashbookEntryFrom").value;
+  const to = $("#cashbookEntryTo").value;
+  const rows = state.cashbookEntries.filter((entry) => {
+    if (accountFilter.value !== "all" && entry.account_id !== accountFilter.value) return false;
+    if (type === "transfer" && !entry.entry_type.startsWith("transfer_")) return false;
+    if (type === "reversed" && !entry.reversed_at) return false;
+    if (!["all", "transfer", "reversed"].includes(type) && entry.entry_type !== type) return false;
+    if (from && entry.transaction_date < from) return false;
+    if (to && entry.transaction_date > to) return false;
+    if (search && ![entry.description, entry.category, entry.notes, cashbookAccountById(entry.account_id)?.name]
+      .some((value) => `${value || ""}`.toLowerCase().includes(search))) return false;
+    return true;
+  });
+  $("#cashbookEntryCount").textContent = `${rows.length} entr${rows.length === 1 ? "y" : "ies"}`;
+  $("#cashbookEntriesList").innerHTML = rows.length
+    ? rows.map(cashbookEntryCard).join("")
+    : emptyState("No matching entries", "Change the filters or add a Cashbook movement.");
+}
+
+function renderCashbookAccounts() {
+  $("#cashbookAccountsList").innerHTML = state.cashbookAccounts.length
+    ? state.cashbookAccounts.map((account) => {
+      const balance = cashbookBalanceByAccount(account.id);
+      return `<article class="cashbook-account-card${account.status === "archived" ? " archived" : ""}"><div><span class="mini-badge ${account.status === "active" ? "active" : "inactive"}">${titleCase(account.status)}</span><h4>${escapeHtml(account.name)}</h4><p>${escapeHtml(titleCase(account.account_type))} · ${escapeHtml(account.currency)}</p><small>Starting ${money(account.opening_balance, account.currency)} on ${escapeHtml(account.opening_balance_date)}</small></div><div class="cashbook-account-total"><span>Tracked balance</span><strong class="${Number(balance?.current_balance || 0) < 0 ? "negative" : ""}">${money(balance?.current_balance || 0, account.currency)}</strong>${account.status === "active" ? `<button type="button" class="danger" data-archive-cashbook-account="${account.id}">Archive</button>` : ""}</div></article>`;
+    }).join("")
+    : emptyState("No accounts created", "Add a cash, bank, mobile-money, or other manual account.");
+}
+
+function renderCashbookReport() {
+  const list = $("#cashbookReportSummary");
+  if (!state.cashbookReport.length) {
+    list.innerHTML = emptyState("Choose a report period", "Run the report to calculate carried-forward and closing balances.");
+    return;
+  }
+  list.innerHTML = state.cashbookReport.map((row) => `<article class="cashbook-report-card"><div class="cashbook-report-heading"><div><span>${escapeHtml(row.currency)}</span><h4>${escapeHtml(row.account_name)}</h4></div><strong>${money(row.closing_balance, row.currency)}</strong></div><dl><div><dt>Opening</dt><dd>${money(row.opening_balance, row.currency)}</dd></div>${Number(row.opening_adjustment) ? `<div><dt>Starting balance added</dt><dd>${money(row.opening_adjustment, row.currency)}</dd></div>` : ""}<div><dt>Cash In</dt><dd>${money(row.cash_in, row.currency)}</dd></div><div><dt>Cash Out</dt><dd>${money(row.cash_out, row.currency)}</dd></div><div><dt>Transfers In</dt><dd>${money(row.transfer_in, row.currency)}</dd></div><div><dt>Transfers Out</dt><dd>${money(row.transfer_out, row.currency)}</dd></div><div class="cashbook-report-closing"><dt>Closing</dt><dd>${money(row.closing_balance, row.currency)}</dd></div></dl></article>`).join("");
+}
+
+function openCashbookAccountDialog() {
+  populateCurrencySelect($("#cashbookAccountCurrency"), state.workspaceSettings?.default_payment_currency || "USD", state.workspaceSettings?.enabled_currencies);
+  $("#cashbookOpeningDate").value = toDateValue(new Date());
+  $("#cashbookAccountDialog").showModal();
+  window.setTimeout(() => $("#cashbookAccountName").focus(), 0);
+}
+
+function populateCashbookEntryAccounts(selected = "") {
+  const active = state.cashbookAccounts.filter((account) => account.status === "active");
+  $("#cashbookEntryAccount").innerHTML = active.length ? cashbookAccountOptions(selected) : '<option value="">Add an account first</option>';
+  $("#cashbookTransferSource").innerHTML = active.length ? cashbookAccountOptions() : '<option value="">Add an account first</option>';
+  $("#cashbookTransferDestination").innerHTML = active.length ? cashbookAccountOptions(active[1]?.id || active[0].id) : '<option value="">Add an account first</option>';
+}
+
+function renderCashbookPaymentOptions() {
+  const select = $("#cashbookPaymentRecord");
+  const selected = select.value;
+  const options = eligibleCashbookPaymentRecords();
+  select.innerHTML = '<option value="">Choose a paid payment</option>' + options.map((record) => {
+    const item = state.paymentItems.find((payment) => payment.id === record.payment_item_id);
+    return `<option value="${record.id}">${escapeHtml(item?.name || "Payment")} · ${escapeHtml(record.payment_date)} · ${money(record.amount, record.currency)} · period ${escapeHtml(record.period_start)}</option>`;
+  }).join("");
+  if (options.some((record) => record.id === selected)) select.value = selected;
+}
+
+function openCashbookEntryDialog(direction) {
+  if (!state.cashbookAccounts.some((account) => account.status === "active")) {
+    showToast("Add a Cashbook account before recording money movements.");
+    state.cashbookSection = "accounts";
+    renderCashbook();
+    openCashbookAccountDialog();
+    return;
+  }
+  $("#cashbookEntryForm").reset();
+  $("#cashbookEntryDirection").value = direction;
+  $("#cashbookEntryDate").value = toDateValue(new Date());
+  $("#cashbookEntrySourceField").classList.toggle("hidden", direction !== "cash_out");
+  $("#cashbookEntryDialogTitle").textContent = direction === "cash_out" ? "Add Cash Out" : "Add Cash In";
+  $("#cashbookEntrySubmit").textContent = direction === "cash_out" ? "Save Cash Out" : "Save Cash In";
+  populateCashbookEntryAccounts();
+  renderCashbookPaymentOptions();
+  updateCashbookEntrySource();
+  $("#cashbookEntryDialog").showModal();
+}
+
+function updateCashbookEntrySource() {
+  const linked = $("#cashbookEntryDirection").value === "cash_out" && $("#cashbookEntrySource").value === "payment";
+  $("#cashbookLinkedPaymentFields").classList.toggle("hidden", !linked);
+  $("#cashbookManualEntryFields").classList.toggle("hidden", linked);
+  ["#cashbookEntryAmount", "#cashbookEntryDate", "#cashbookEntryDescription"].forEach((selector) => {
+    $(selector).required = !linked;
+  });
+  $("#cashbookPaymentRecord").required = linked;
+  updateCashbookPaymentPreview();
+}
+
+function updateCashbookPaymentPreview() {
+  const record = state.paymentRecords.find((item) => item.id === $("#cashbookPaymentRecord").value);
+  const item = state.paymentItems.find((payment) => payment.id === record?.payment_item_id);
+  if (!record || !item) {
+    $("#cashbookPaymentPreview").textContent = "Choose a paid payment to review its exact amount, currency, and paid date.";
+    $("#cashbookConvertManualField").classList.add("hidden");
+    $("#cashbookConvertManual").checked = false;
+    $("#cashbookConvertManual").value = "";
+    return;
+  }
+  const account = cashbookAccountById($("#cashbookEntryAccount").value);
+  const similar = state.cashbookEntries.find((entry) => !entry.reversed_at && !entry.linked_payment_record_id
+    && entry.entry_type === "cash_out" && entry.account_id === account?.id
+    && entry.currency === record.currency && Number(entry.amount) === Number(record.amount)
+    && entry.transaction_date === record.payment_date);
+  $("#cashbookPaymentPreview").innerHTML = `<strong>${escapeHtml(item.name)} · ${money(record.amount, record.currency)}</strong><span>Paid ${escapeHtml(record.payment_date)} · due period ${escapeHtml(record.period_start)}${account ? ` · from ${escapeHtml(account.name)}` : ""}</span>${account && account.currency !== record.currency ? `<span class="cashbook-warning">Choose a ${escapeHtml(record.currency)} account.</span>` : ""}${similar ? '<span class="cashbook-warning">Possible duplicate: a matching manual Cash Out already exists on this account and date.</span>' : ""}`;
+  $("#cashbookConvertManualField").classList.toggle("hidden", !similar);
+  $("#cashbookConvertManual").checked = false;
+  $("#cashbookConvertManual").value = similar?.id || "";
+}
+
+function openCashbookTransferDialog() {
+  if (state.cashbookAccounts.filter((account) => account.status === "active").length < 2) {
+    showToast("Add at least two active Cashbook accounts before making a transfer.");
+    return;
+  }
+  $("#cashbookTransferForm").reset();
+  $("#cashbookTransferDate").value = toDateValue(new Date());
+  $("#cashbookTransferDescription").value = "Account transfer";
+  populateCashbookEntryAccounts();
+  updateCashbookTransferHint();
+  $("#cashbookTransferDialog").showModal();
+}
+
+function updateCashbookTransferHint() {
+  const source = cashbookAccountById($("#cashbookTransferSource").value);
+  const destination = cashbookAccountById($("#cashbookTransferDestination").value);
+  const same = source && destination && source.currency === destination.currency;
+  $("#cashbookTransferHint").textContent = same
+    ? `Same-currency transfer: both amounts must match in ${source.currency}.`
+    : source && destination ? `Cross-currency transfer: enter the exact ${source.currency} sent and ${destination.currency} received.`
+      : "Choose two different accounts.";
+  if (same && $("#cashbookTransferSourceAmount").value) {
+    $("#cashbookTransferDestinationAmount").value = $("#cashbookTransferSourceAmount").value;
+  }
+}
+
+async function saveCashbookAccount(event) {
+  event.preventDefault();
+  const workspace = currentBudgetWorkspace();
+  if (workspace?.workspace_type !== "personal") throw new Error("Personal Cashbook access required.");
+  await query("Cashbook account create", supabase.rpc("create_cashbook_account", {
+    p_workspace_id: workspace.id,
+    p_name: $("#cashbookAccountName").value.trim(),
+    p_account_type: $("#cashbookAccountType").value,
+    p_currency: $("#cashbookAccountCurrency").value,
+    p_opening_balance: Number($("#cashbookOpeningBalance").value || 0),
+    p_opening_balance_date: $("#cashbookOpeningDate").value
+  }));
+  $("#cashbookAccountDialog").close();
+  $("#cashbookAccountForm").reset();
+  await loadCashbookData(true);
+  renderCashbook();
+  showToast("Cashbook account added.");
+}
+
+async function saveCashbookEntry(event) {
+  event.preventDefault();
+  const workspace = currentBudgetWorkspace();
+  if (workspace?.workspace_type !== "personal") throw new Error("Personal Cashbook access required.");
+  const linked = $("#cashbookEntryDirection").value === "cash_out" && $("#cashbookEntrySource").value === "payment";
+  if (linked) {
+    await query("Paid payment Cashbook link", supabase.rpc("create_cashbook_payment_entry", {
+      p_workspace_id: workspace.id,
+      p_account_id: $("#cashbookEntryAccount").value,
+      p_payment_record_id: $("#cashbookPaymentRecord").value,
+      p_notes: $("#cashbookEntryNotes").value.trim() || null,
+      p_replace_manual_entry_id: $("#cashbookConvertManual").checked ? $("#cashbookConvertManual").value : null
+    }));
+  } else {
+    await query("Cashbook entry create", supabase.rpc("create_cashbook_entry", {
+      p_workspace_id: workspace.id,
+      p_account_id: $("#cashbookEntryAccount").value,
+      p_direction: $("#cashbookEntryDirection").value,
+      p_amount: Number($("#cashbookEntryAmount").value),
+      p_transaction_date: $("#cashbookEntryDate").value,
+      p_description: $("#cashbookEntryDescription").value.trim(),
+      p_category: $("#cashbookEntryCategory").value.trim() || null,
+      p_notes: $("#cashbookEntryNotes").value.trim() || null
+    }));
+  }
+  $("#cashbookEntryDialog").close();
+  await loadCashbookData(true);
+  renderCashbook();
+  showToast(linked ? "Paid payment added to Cashbook." : "Cashbook entry saved.");
+}
+
+async function saveCashbookTransfer(event) {
+  event.preventDefault();
+  const workspace = currentBudgetWorkspace();
+  if (workspace?.workspace_type !== "personal") throw new Error("Personal Cashbook access required.");
+  await query("Cashbook transfer create", supabase.rpc("create_cashbook_transfer", {
+    p_workspace_id: workspace.id,
+    p_source_account_id: $("#cashbookTransferSource").value,
+    p_destination_account_id: $("#cashbookTransferDestination").value,
+    p_source_amount: Number($("#cashbookTransferSourceAmount").value),
+    p_destination_amount: Number($("#cashbookTransferDestinationAmount").value),
+    p_transaction_date: $("#cashbookTransferDate").value,
+    p_description: $("#cashbookTransferDescription").value.trim(),
+    p_notes: $("#cashbookTransferNotes").value.trim() || null
+  }));
+  $("#cashbookTransferDialog").close();
+  await loadCashbookData(true);
+  renderCashbook();
+  showToast("Cashbook transfer saved.");
+}
+
+async function runCashbookReport() {
+  const workspace = currentBudgetWorkspace();
+  if (workspace?.workspace_type !== "personal") return;
+  state.cashbookReport = await query("Cashbook report load", supabase.rpc("cashbook_report", {
+    p_workspace_id: workspace.id,
+    p_start_date: $("#cashbookReportStart").value,
+    p_end_date: $("#cashbookReportEnd").value
+  }));
+  renderCashbookReport();
+}
+
+function openCashbookReversal(entryId) {
+  const entry = state.cashbookEntries.find((item) => item.id === entryId && !item.reversed_at);
+  if (!entry) return;
+  $("#cashbookReverseEntryId").value = entry.id;
+  $("#cashbookReverseReason").value = "";
+  $("#cashbookReverseSummary").textContent = `${entry.description} · ${cashbookEntryAmount(entry)} · ${entry.transaction_date}${entry.transfer_group_id ? " · both sides of the transfer will be reversed" : ""}`;
+  $("#cashbookReverseDialog").showModal();
+}
+
+async function saveCashbookReversal(event) {
+  event.preventDefault();
+  const count = await query("Cashbook entry reverse", supabase.rpc("reverse_cashbook_entry", {
+    p_entry_id: $("#cashbookReverseEntryId").value,
+    p_reason: $("#cashbookReverseReason").value.trim()
+  }));
+  $("#cashbookReverseDialog").close();
+  await loadCashbookData(true);
+  renderCashbook();
+  showToast(Number(count) > 1 ? "Both sides of the transfer were reversed." : "Cashbook entry reversed.");
+}
+
+async function archiveCashbookAccount(accountId) {
+  try {
+    const account = cashbookAccountById(accountId);
+    if (!account || account.status !== "active") return;
+    const confirmed = await confirmAction({
+      title: "Archive Cashbook account?",
+      message: `${account.name} and its history will remain in reports, but the account cannot receive new entries.`,
+      action: "Archive account"
+    });
+    if (!confirmed) return;
+    await query("Cashbook account archive", supabase.rpc("archive_cashbook_account", { p_account_id: account.id }));
+    await loadCashbookData(true);
+    renderCashbook();
+    showToast("Cashbook account archived.");
+  } catch (error) {
+    showToast(error.message);
+  }
+}
+
+function openCashbookLinkedPaymentHistory(itemId) {
+  const item = state.paymentItems.find((payment) => payment.id === itemId);
+  if (!item) return;
+  state.familyTab = "payments";
+  setRoute("personal", "payments");
+  renderFamilyApp();
+  openPaymentHistory(itemId);
 }
 
 function renderReports() {
@@ -7886,6 +8318,26 @@ document.addEventListener("click", async (event) => {
   if (event.target.closest("[data-close-renewal-dialog]")) $("#renewalDialog").close();
   if (event.target.closest("[data-edit-family-name]")) openFamilyNameDialog();
   if (event.target.closest("[data-close-family-name-dialog]")) $("#familyNameDialog").close();
+  if (event.target.closest("[data-open-cashbook-account]")) openCashbookAccountDialog();
+  if (event.target.closest("[data-close-cashbook-account]")) $("#cashbookAccountDialog").close();
+  if (event.target.closest("[data-close-cashbook-entry]")) $("#cashbookEntryDialog").close();
+  if (event.target.closest("[data-open-cashbook-transfer]")) openCashbookTransferDialog();
+  if (event.target.closest("[data-close-cashbook-transfer]")) $("#cashbookTransferDialog").close();
+  if (event.target.closest("[data-close-cashbook-reverse]")) $("#cashbookReverseDialog").close();
+
+  const cashbookSection = event.target.closest("[data-cashbook-section]")?.dataset.cashbookSection;
+  if (cashbookSection && cashbookSections.has(cashbookSection)) {
+    state.cashbookSection = cashbookSection;
+    renderCashbook();
+  }
+  const cashbookEntry = event.target.closest("[data-open-cashbook-entry]");
+  if (cashbookEntry) openCashbookEntryDialog(cashbookEntry.dataset.openCashbookEntry);
+  const cashbookReverse = event.target.closest("[data-reverse-cashbook-entry]");
+  if (cashbookReverse) openCashbookReversal(cashbookReverse.dataset.reverseCashbookEntry);
+  const cashbookArchive = event.target.closest("[data-archive-cashbook-account]");
+  if (cashbookArchive) await archiveCashbookAccount(cashbookArchive.dataset.archiveCashbookAccount);
+  const cashbookPaymentHistory = event.target.closest("[data-open-cashbook-payment-history]");
+  if (cashbookPaymentHistory) openCashbookLinkedPaymentHistory(cashbookPaymentHistory.dataset.openCashbookPaymentHistory);
   if (event.target.closest("[data-close-admin-details]")) $("#adminDetailsDialog").close();
 
   const removeWorkspaceCurrency = event.target.closest("[data-remove-workspace-currency]");
@@ -8199,6 +8651,26 @@ $("#familySeatsCount").addEventListener("change", () => {
   });
 });
 $("#familyNameForm").addEventListener("submit", protectSubmission(saveFamilyName));
+$("#cashbookAccountForm").addEventListener("submit", protectSubmission(async (event) => {
+  try { await saveCashbookAccount(event); } catch (error) { showToast(error.message); }
+}));
+$("#cashbookEntryForm").addEventListener("submit", protectSubmission(async (event) => {
+  try { await saveCashbookEntry(event); } catch (error) { showToast(error.message); }
+}));
+$("#cashbookTransferForm").addEventListener("submit", protectSubmission(async (event) => {
+  try { await saveCashbookTransfer(event); } catch (error) { showToast(error.message); }
+}));
+$("#cashbookReverseForm").addEventListener("submit", protectSubmission(async (event) => {
+  try { await saveCashbookReversal(event); } catch (error) { showToast(error.message); }
+}));
+$("#cashbookEntrySource").addEventListener("change", updateCashbookEntrySource);
+$("#cashbookPaymentRecord").addEventListener("change", updateCashbookPaymentPreview);
+$("#cashbookEntryAccount").addEventListener("change", updateCashbookPaymentPreview);
+[$("#cashbookTransferSource"), $("#cashbookTransferDestination"), $("#cashbookTransferSourceAmount")].forEach((field) => field.addEventListener("change", updateCashbookTransferHint));
+[$("#cashbookEntrySearch"), $("#cashbookEntryAccountFilter"), $("#cashbookEntryTypeFilter"), $("#cashbookEntryFrom"), $("#cashbookEntryTo")].forEach((field) => {
+  field.addEventListener(field.type === "search" ? "input" : "change", renderCashbookEntries);
+});
+$("#cashbookRunReport").addEventListener("click", () => runCashbookReport().catch((error) => showToast(error.message)));
 $("#inviteForm").addEventListener("submit", protectSubmission(inviteMember));
 $("#obligationForm").addEventListener("submit", protectSubmission(saveObligation));
 $("#recurrenceType").addEventListener("change", updateRecurrenceControls);
@@ -8406,14 +8878,21 @@ document.querySelectorAll("[data-family-selector]").forEach((select) => {
   });
 });
 
-window.addEventListener("hashchange", () => {
+window.addEventListener("hashchange", async () => {
+  const requested = routeFromHash();
   applyRouteFromHash();
   if (state.isAdmin) {
     loadAdminData().then(renderAdmin).catch((error) => showToast(friendlyMessage(error?.message)));
+    return;
   }
-  if (state.session && !state.isAdmin) {
+  if (!state.session) return;
+  try {
+    if (requested.area === "personal" && state.family) await selectFamily("__personal__");
+    if (state.familyTab === "cashbook") await loadCashbookData();
     setRoute("family", state.familyTab, true);
     renderFamilyApp();
+  } catch (error) {
+    showToast(friendlyMessage(error?.message));
   }
 });
 

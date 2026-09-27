@@ -17,14 +17,14 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="styles.css?v=68" />
+    <link rel="stylesheet" href="styles.css?v=69" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
     <script src="/pwa.js?v=53" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=99"></script>
+    <script type="module" src="app.js?v=100"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -760,6 +760,50 @@
             </section>
           </section>
 
+          <section class="screen-panel hidden cashbook-page" data-family-panel="cashbook">
+            <header class="topbar cashbook-topbar">
+              <div><p class="eyebrow">Private test</p><h2>Cashbook</h2><p class="muted-copy">Track the money held in your manually maintained Personal accounts.</p></div>
+              <div class="cashbook-topbar-actions"><span id="cashbookWorkspaceBadge" class="mini-badge personal">Personal workspace</span><button type="button" class="primary" data-open-cashbook-entry="cash_in">Cash In</button><button type="button" class="danger-solid" data-open-cashbook-entry="cash_out">Cash Out</button><button type="button" data-open-cashbook-transfer>Transfer</button></div>
+            </header>
+            <section class="notice cashbook-test-notice"><strong>Cashbook test page.</strong><span>This page is hidden from the menu. Balances are manually maintained and may differ from your bank, cash, or mobile-money balance if entries are missing.</span></section>
+            <nav class="cashbook-section-tabs" aria-label="Cashbook sections">
+              <button type="button" class="active" data-cashbook-section="overview">Overview</button>
+              <button type="button" data-cashbook-section="entries">Entries</button>
+              <button type="button" data-cashbook-section="accounts">Accounts</button>
+              <button type="button" data-cashbook-section="reports">Reports</button>
+            </nav>
+
+            <section data-cashbook-panel="overview">
+              <div id="cashbookBalanceSummary" class="cashbook-balance-grid"></div>
+              <div class="cashbook-overview-grid">
+                <section class="ledger-panel"><div class="panel-heading"><p class="eyebrow">Accounts</p><h3>Tracked balances</h3><p class="muted-copy">Each account keeps one currency and its own running balance.</p></div><div id="cashbookOverviewAccounts" class="record-list"></div></section>
+                <section class="ledger-panel"><div class="panel-heading"><p class="eyebrow">Latest activity</p><h3>Recent movements</h3><p class="muted-copy">Transfers are shown separately from money in and money out.</p></div><div id="cashbookRecentEntries" class="record-list"></div></section>
+              </div>
+            </section>
+
+            <section class="hidden" data-cashbook-panel="entries">
+              <section class="ledger-panel cashbook-filter-panel">
+                <div class="panel-heading inline"><div><p class="eyebrow">Ledger</p><h3>Cashbook entries</h3></div><span id="cashbookEntryCount" class="mini-badge">0 entries</span></div>
+                <div class="cashbook-entry-filters">
+                  <label>Search<input id="cashbookEntrySearch" type="search" placeholder="Description, category or notes" /></label>
+                  <label>Account<select id="cashbookEntryAccountFilter"><option value="all">All accounts</option></select></label>
+                  <label>Type<select id="cashbookEntryTypeFilter"><option value="all">All movements</option><option value="cash_in">Cash In</option><option value="cash_out">Cash Out</option><option value="transfer">Transfers</option><option value="reversed">Reversed</option></select></label>
+                  <label>From<input id="cashbookEntryFrom" type="date" /></label>
+                  <label>To<input id="cashbookEntryTo" type="date" /></label>
+                </div>
+                <div id="cashbookEntriesList" class="record-list cashbook-entry-list"></div>
+              </section>
+            </section>
+
+            <section class="hidden" data-cashbook-panel="accounts">
+              <section class="ledger-panel"><div class="panel-heading inline"><div><p class="eyebrow">Money locations</p><h3>Cashbook accounts</h3><p class="muted-copy">These are manual tracking accounts, not connected bank accounts.</p></div><button type="button" class="primary" data-open-cashbook-account>Add account</button></div><div id="cashbookAccountsList" class="cashbook-account-list"></div></section>
+            </section>
+
+            <section class="hidden" data-cashbook-panel="reports">
+              <section class="ledger-panel"><div class="panel-heading"><p class="eyebrow">Period report</p><h3>Cash flow by account</h3><p class="muted-copy">Unlike currencies stay separate. Transfers do not count as income or spending.</p></div><div class="cashbook-report-controls"><label>From<input id="cashbookReportStart" type="date" /></label><label>To<input id="cashbookReportEnd" type="date" /></label><button id="cashbookRunReport" class="primary" type="button">Run report</button></div><div id="cashbookReportSummary" class="cashbook-report-summary"></div></section>
+            </section>
+          </section>
+
           <section class="screen-panel hidden" data-family-panel="subscription">
             <header class="topbar subscription-topbar">
               <div><p class="eyebrow">Subscription</p><h2>Plan and billing</h2><p class="muted-copy">Your selected workspace, billing dates and other plans.</p></div>
@@ -919,6 +963,67 @@
         <div class="panel-heading inline full"><div><p class="eyebrow">Family details</p><h3 id="familyNameDialogTitle">Edit family name</h3></div><button class="icon-button" type="button" data-close-family-name-dialog aria-label="Close family name form">Close</button></div>
         <label class="full" for="editableFamilyName">Family name<input id="editableFamilyName" maxlength="100" required /></label>
         <button class="primary full" type="submit">Save family name</button>
+      </form>
+    </dialog>
+
+    <dialog id="cashbookAccountDialog" class="payment-dialog compact-dialog" aria-labelledby="cashbookAccountDialogTitle">
+      <form id="cashbookAccountForm" class="form-grid">
+        <div class="panel-heading inline full"><div><p class="eyebrow">Cashbook account</p><h3 id="cashbookAccountDialogTitle">Add an account</h3></div><button class="icon-button" type="button" data-close-cashbook-account aria-label="Close account form">Close</button></div>
+        <label class="full">Account name<input id="cashbookAccountName" maxlength="80" required placeholder="Bank USD, Wallet, EcoCash..." /></label>
+        <label>Account type<select id="cashbookAccountType" required><option value="cash">Cash</option><option value="bank">Bank</option><option value="mobile_money">Mobile money</option><option value="other">Other</option></select></label>
+        <label>Currency<select id="cashbookAccountCurrency" required></select></label>
+        <label>Starting balance<input id="cashbookOpeningBalance" type="number" step="0.01" value="0" required /></label>
+        <label>Balance date<input id="cashbookOpeningDate" type="date" required /></label>
+        <p class="muted-copy full">The starting balance is applied on this date. Negative balances are allowed and remain clearly visible.</p>
+        <button class="primary full" type="submit">Save account</button>
+      </form>
+    </dialog>
+
+    <dialog id="cashbookEntryDialog" class="payment-dialog" aria-labelledby="cashbookEntryDialogTitle">
+      <form id="cashbookEntryForm" class="form-grid">
+        <div class="panel-heading inline full"><div><p id="cashbookEntryEyebrow" class="eyebrow">Cashbook entry</p><h3 id="cashbookEntryDialogTitle">Add Cash In</h3></div><button class="icon-button" type="button" data-close-cashbook-entry aria-label="Close entry form">Close</button></div>
+        <input id="cashbookEntryDirection" type="hidden" value="cash_in" />
+        <label id="cashbookEntrySourceField" class="full hidden">Cash Out source<select id="cashbookEntrySource"><option value="manual">Manual entry</option><option value="payment">From a paid payment</option></select></label>
+        <label class="full">Account<select id="cashbookEntryAccount" required></select></label>
+        <div id="cashbookLinkedPaymentFields" class="full hidden cashbook-linked-payment-fields">
+          <label>Paid payment<select id="cashbookPaymentRecord"><option value="">Choose a paid payment</option></select></label>
+          <div id="cashbookPaymentPreview" class="notice">Choose a paid payment to review its exact amount, currency, and paid date.</div>
+          <label id="cashbookConvertManualField" class="checkbox-label hidden"><input id="cashbookConvertManual" type="checkbox" /><span>Convert the matching manual Cash Out into this linked payment instead of counting both.</span></label>
+          <p class="muted-copy">The saved Cashbook movement uses the paid-history amount and date exactly. It does not create or change a payment record.</p>
+        </div>
+        <div id="cashbookManualEntryFields" class="form-grid full">
+          <label>Amount<input id="cashbookEntryAmount" type="number" min="0.01" step="0.01" required /></label>
+          <label>Date<input id="cashbookEntryDate" type="date" required /></label>
+          <label class="full">Description<input id="cashbookEntryDescription" maxlength="160" required placeholder="Customer payment, groceries, fuel..." /></label>
+          <label>Category<input id="cashbookEntryCategory" maxlength="80" placeholder="Optional" /></label>
+        </div>
+        <label class="full">Notes<textarea id="cashbookEntryNotes" maxlength="1000" placeholder="Optional details"></textarea></label>
+        <button id="cashbookEntrySubmit" class="primary full" type="submit">Save Cash In</button>
+      </form>
+    </dialog>
+
+    <dialog id="cashbookTransferDialog" class="payment-dialog" aria-labelledby="cashbookTransferDialogTitle">
+      <form id="cashbookTransferForm" class="form-grid">
+        <div class="panel-heading inline full"><div><p class="eyebrow">Internal movement</p><h3 id="cashbookTransferDialogTitle">Transfer between accounts</h3></div><button class="icon-button" type="button" data-close-cashbook-transfer aria-label="Close transfer form">Close</button></div>
+        <label>From account<select id="cashbookTransferSource" required></select></label>
+        <label>To account<select id="cashbookTransferDestination" required></select></label>
+        <label>Amount sent<input id="cashbookTransferSourceAmount" type="number" min="0.01" step="0.01" required /></label>
+        <label>Amount received<input id="cashbookTransferDestinationAmount" type="number" min="0.01" step="0.01" required /></label>
+        <label>Date<input id="cashbookTransferDate" type="date" required /></label>
+        <label>Description<input id="cashbookTransferDescription" maxlength="160" value="Account transfer" required /></label>
+        <label class="full">Notes<textarea id="cashbookTransferNotes" maxlength="1000" placeholder="Optional exchange rate or transfer reference"></textarea></label>
+        <p id="cashbookTransferHint" class="muted-copy full">For the same currency, the sent and received amounts must match.</p>
+        <button class="primary full" type="submit">Save transfer</button>
+      </form>
+    </dialog>
+
+    <dialog id="cashbookReverseDialog" class="payment-dialog compact-dialog" aria-labelledby="cashbookReverseDialogTitle">
+      <form id="cashbookReverseForm" class="form-grid">
+        <div class="panel-heading inline full"><div><p class="eyebrow">Preserve history</p><h3 id="cashbookReverseDialogTitle">Reverse Cashbook entry</h3></div><button class="icon-button" type="button" data-close-cashbook-reverse aria-label="Close reversal form">Close</button></div>
+        <input id="cashbookReverseEntryId" type="hidden" />
+        <p id="cashbookReverseSummary" class="notice full"></p>
+        <label class="full">Reason<textarea id="cashbookReverseReason" minlength="3" maxlength="500" required placeholder="Why is this entry being reversed?"></textarea></label>
+        <button class="danger full" type="submit">Reverse entry</button>
       </form>
     </dialog>
 

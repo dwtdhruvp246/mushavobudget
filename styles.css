@@ -6195,3 +6195,95 @@ input[type="file"] {
 .free-payment-choice input { width: 1.1rem; height: 1.1rem; flex: none; }
 .free-payment-choice span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .free-payment-choice small { color: #536579; }
+
+/* Hidden Personal Cashbook test route. */
+.cashbook-page { display: grid; gap: 1rem; }
+.cashbook-topbar { align-items: center; }
+.cashbook-topbar-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 0.55rem; }
+.cashbook-topbar-actions .danger-solid { border-color: #dc2626; background: #dc2626; color: #fff; }
+.cashbook-topbar-actions .danger-solid:hover { background: #b91c1c; }
+.cashbook-test-notice { display: flex; flex-wrap: wrap; gap: 0.4rem 0.65rem; align-items: baseline; }
+.cashbook-section-tabs { display: flex; gap: 0.45rem; padding: 0.4rem; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.76); overflow-x: auto; }
+.cashbook-section-tabs button { min-width: max-content; flex: 1 0 auto; border-color: transparent; background: transparent; }
+.cashbook-section-tabs button.active { border-color: rgba(16,185,129,.28); background: #d1fae5; color: #065f46; box-shadow: 0 6px 16px rgba(5,150,105,.1); }
+.cashbook-balance-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 0.8rem; }
+.cashbook-balance-grid > .empty-ledger { grid-column: 1 / -1; }
+.cashbook-balance-card { min-width: 0; padding: 1.1rem; border: 1px solid rgba(13,148,136,.22); border-radius: 18px; background: linear-gradient(145deg,#f0fdfa,#fff); box-shadow: 0 10px 24px rgba(15,118,110,.07); }
+.cashbook-balance-card span,.cashbook-balance-card small { display: block; color: var(--muted); font-size: .76rem; font-weight: 700; }
+.cashbook-balance-card strong { display: block; margin: .48rem 0; font-size: clamp(1.35rem,2.4vw,2rem); line-height: 1.05; overflow-wrap: anywhere; }
+.cashbook-balance-card.negative { border-color: rgba(220,38,38,.28); background: linear-gradient(145deg,#fef2f2,#fff); }
+.cashbook-balance-card.negative strong,.cashbook-account-balance.negative,.cashbook-account-total strong.negative { color: #b91c1c; }
+.cashbook-overview-grid { display: grid; grid-template-columns: minmax(0,.8fr) minmax(0,1.2fr); gap: 1rem; }
+.cashbook-compact-account { grid-template-columns: minmax(0,1fr) auto; align-items: center; }
+.cashbook-compact-account > div { display: grid; min-width: 0; gap: .2rem; }
+.cashbook-compact-account > div span { color: var(--muted); font-size: .78rem; }
+.cashbook-account-balance { font-size: 1rem; white-space: nowrap; }
+.cashbook-entry-filters { display: grid; grid-template-columns: minmax(200px,1.4fr) repeat(4,minmax(135px,1fr)); gap: .65rem; margin-bottom: 1rem; }
+.cashbook-entry-filters label,.cashbook-report-controls label { display: grid; gap: .32rem; color: var(--muted-strong); font-size: .74rem; font-weight: 750; }
+.cashbook-entry-list { gap: .7rem; }
+.cashbook-entry-card { grid-template-columns: minmax(0,1fr) auto; align-items: center; border-left: 4px solid #94a3b8; }
+.cashbook-entry-card.cash_in { border-left-color: #10b981; }
+.cashbook-entry-card.cash_out { border-left-color: #ef4444; }
+.cashbook-entry-card.transfer_in,.cashbook-entry-card.transfer_out { border-left-color: #3b82f6; }
+.cashbook-entry-card.reversed { opacity: .68; border-left-color: #94a3b8; background: #f8fafc; }
+.cashbook-entry-main { display: grid; min-width: 0; gap: .28rem; }
+.cashbook-entry-main > span,.cashbook-entry-main > small { color: var(--muted); overflow-wrap: anywhere; }
+.cashbook-entry-main > span { font-size: .8rem; }
+.cashbook-entry-main > small { font-size: .74rem; }
+.cashbook-entry-heading { display: flex; flex-wrap: wrap; gap: .45rem; align-items: center; }
+.cashbook-entry-side { display: grid; justify-items: end; gap: .55rem; text-align: right; }
+.cashbook-entry-amount { font-size: 1.02rem; white-space: nowrap; }
+.mini-badge.cash_in { border-color: rgba(16,185,129,.28); background: #ecfdf5; color: #047857; }
+.mini-badge.cash_out { border-color: rgba(239,68,68,.25); background: #fef2f2; color: #b91c1c; }
+.mini-badge.transfer_in,.mini-badge.transfer_out { border-color: rgba(59,130,246,.24); background: #eff6ff; color: #1d4ed8; }
+.cashbook-account-list,.cashbook-report-summary { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .8rem; }
+.cashbook-account-card { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 1rem; padding: 1rem; border: 1.5px solid rgba(100,116,139,.28); border-radius: 17px; background: #fff; box-shadow: 0 8px 20px rgba(15,23,42,.045); }
+.cashbook-account-card.archived { opacity: .72; background: #f8fafc; }
+.cashbook-account-card h4 { margin: .45rem 0 .25rem; }
+.cashbook-account-card p,.cashbook-account-card small { margin: 0; color: var(--muted); }
+.cashbook-account-total { display: grid; align-content: center; justify-items: end; gap: .4rem; text-align: right; }
+.cashbook-account-total span { color: var(--muted); font-size: .72rem; font-weight: 700; }
+.cashbook-account-total strong { font-size: 1.15rem; }
+.cashbook-linked-payment-fields { display: grid; gap: .65rem; padding: .8rem; border: 1px solid rgba(59,130,246,.18); border-radius: 15px; background: #f8fbff; }
+.cashbook-linked-payment-fields label { display: grid; gap: .35rem; }
+.cashbook-payment-preview { display: grid; gap: .25rem; }
+.cashbook-payment-preview span { display: block; }
+.cashbook-warning { color: #b45309; font-weight: 750; }
+.cashbook-report-controls { display: grid; grid-template-columns: repeat(2,minmax(150px,220px)) auto; align-items: end; gap: .65rem; margin-bottom: 1rem; }
+.cashbook-report-card { padding: 1rem; border: 1px solid rgba(15,118,110,.2); border-radius: 17px; background: #fff; }
+.cashbook-report-heading { display: flex; justify-content: space-between; gap: .75rem; align-items: start; padding-bottom: .7rem; border-bottom: 1px solid var(--line); }
+.cashbook-report-heading span { color: var(--muted); font-size: .72rem; font-weight: 800; }
+.cashbook-report-heading h4 { margin: .2rem 0 0; }
+.cashbook-report-heading > strong { white-space: nowrap; }
+.cashbook-report-card dl { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .5rem; margin: .75rem 0 0; }
+.cashbook-report-card dl > div { display: flex; justify-content: space-between; gap: .5rem; padding: .45rem .55rem; border-radius: 9px; background: #f8fafc; }
+.cashbook-report-card dt { color: var(--muted); font-size: .72rem; }
+.cashbook-report-card dd { margin: 0; font-size: .78rem; font-weight: 800; }
+.cashbook-report-card .cashbook-report-closing { grid-column: 1 / -1; background: #ecfdf5; color: #065f46; }
+
+@media (max-width: 1100px) {
+  .cashbook-entry-filters { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .cashbook-entry-filters label:first-child { grid-column: span 2; }
+}
+@media (max-width: 850px) {
+  .cashbook-topbar-actions { justify-content: flex-start; }
+  .cashbook-balance-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .cashbook-overview-grid,.cashbook-account-list,.cashbook-report-summary { grid-template-columns: minmax(0,1fr); }
+}
+@media (max-width: 620px) {
+  .cashbook-topbar-actions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); width: 100%; }
+  .cashbook-topbar-actions .mini-badge { grid-column: 1 / -1; justify-self: start; }
+  .cashbook-topbar-actions button:last-child { grid-column: 1 / -1; }
+  .cashbook-balance-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: .55rem; }
+  .cashbook-balance-card { padding: .8rem; }
+  .cashbook-entry-filters { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .cashbook-entry-filters label:first-child { grid-column: 1 / -1; }
+  .cashbook-entry-card,.cashbook-account-card { grid-template-columns: minmax(0,1fr); }
+  .cashbook-entry-side,.cashbook-account-total { justify-items: start; text-align: left; }
+  .cashbook-report-controls { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .cashbook-report-controls button { grid-column: 1 / -1; }
+}
+@media (max-width: 400px) {
+  .cashbook-balance-grid { grid-template-columns: minmax(0,1fr); }
+  .cashbook-report-card dl { grid-template-columns: minmax(0,1fr); }
+}

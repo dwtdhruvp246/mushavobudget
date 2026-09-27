@@ -844,14 +844,21 @@ function routeFromHash() {
   return { area, tab };
 }
 
+function budgetRouteArea() {
+  return state.family ? "family" : "personal";
+}
+
 function applyRouteFromHash() {
   const { area, tab } = routeFromHash();
   if (area === "admin" && adminTabs.has(tab)) state.adminTab = tab;
-  if (area === "family" && familyTabs.has(tab)) state.familyTab = tab;
+  // Keep legacy #family links working, while allowing Personal workspaces to
+  // expose an accurate #personal route in the browser.
+  if (["family", "personal"].includes(area) && familyTabs.has(tab)) state.familyTab = tab;
 }
 
 function setRoute(area, tab, replace = false) {
-  const nextHash = `#${area}/${tab}`;
+  const routeArea = ["family", "personal"].includes(area) ? budgetRouteArea() : area;
+  const nextHash = `#${routeArea}/${tab}`;
   if (window.location.hash === nextHash) return;
   if (replace) {
     window.history.replaceState(null, "", nextHash);
@@ -1486,22 +1493,31 @@ function persistSelectedFamily() {
 
 async function selectFamily(familyId) {
   if (familyId === "__personal__") {
-    if (!state.family) return;
+    if (!state.family) {
+      setRoute("personal", state.familyTab, true);
+      return;
+    }
     state.family = null;
     state.editingObligationId = null;
     resetPaymentListView();
     persistSelectedFamily();
     await Promise.all([loadFamilyFinancialData(), loadWorkspaceSubscriptionData()]);
+    setRoute("personal", state.familyTab, true);
     renderFamilyApp();
     return;
   }
   const family = state.families.find((item) => item.id === familyId);
-  if (!family || family.id === state.family?.id) return;
+  if (!family) return;
+  if (family.id === state.family?.id) {
+    setRoute("family", state.familyTab, true);
+    return;
+  }
   state.family = family;
   state.editingObligationId = null;
   resetPaymentListView();
   persistSelectedFamily();
   await Promise.all([loadFamilyFinancialData(), loadWorkspaceSubscriptionData()]);
+  setRoute("family", state.familyTab, true);
   renderFamilyApp();
 }
 
@@ -4239,7 +4255,7 @@ async function startAdditionalFamilyPurchase() {
     await selectFamily("__personal__");
     await loadWorkspaceSubscriptionData();
     state.familyTab = "subscription";
-    window.location.hash = "family/subscription";
+    setRoute("personal", "subscription", true);
     renderFamilyApp();
     const pending = state.renewalRequests.some((request) =>
       request.provision_workspace_on_approval && request.status === "pending_review");
@@ -8395,7 +8411,10 @@ window.addEventListener("hashchange", () => {
   if (state.isAdmin) {
     loadAdminData().then(renderAdmin).catch((error) => showToast(friendlyMessage(error?.message)));
   }
-  if (state.session && !state.isAdmin) renderFamilyApp();
+  if (state.session && !state.isAdmin) {
+    setRoute("family", state.familyTab, true);
+    renderFamilyApp();
+  }
 });
 
 async function refreshAdminAnalytics() {

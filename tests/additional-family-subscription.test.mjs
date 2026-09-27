@@ -10,12 +10,14 @@ function harness({pending = false, fail = false, plans = [{code:'family-plus', w
   const calls = [];
   const button = {disabled:false};
   const details = {open:false};
+  const window = {location:{hash:''},MushavoPWA:{beginOperation:()=>()=>calls.push('finished')}};
   const context = {
     state:{renewalRequests:pending ? [{provision_workspace_on_approval:true,status:'pending_review'}] : []},
-    window:{location:{hash:''},MushavoPWA:{beginOperation:()=>()=>calls.push('finished')}},
+    window,
     $:id=>id === '#purchaseFamilySubscription' ? button : {closest:()=>details},
     selectFamily:async id=>{calls.push(id); if(fail) throw new Error('Connection unavailable');},
     loadWorkspaceSubscriptionData:async()=>calls.push('loaded'),
+    setRoute:(area, tab)=>{window.location.hash=`#${area}/${tab}`;},
     renderFamilyApp:()=>calls.push('rendered'),
     eligibleRenewalPlans:()=>plans,
     openRenewalDialog:code=>calls.push(`purchase:${code}`),
@@ -27,7 +29,7 @@ function harness({pending = false, fail = false, plans = [{code:'family-plus', w
 test('additional purchase switches to Personal before opening the selected Family plan', async()=>{
   const h=harness(); await h.context.startAdditionalFamilyPurchase();
   assert.deepEqual(h.calls,['__personal__','loaded','rendered','purchase:family-plus','finished']);
-  assert.equal(h.context.window.location.hash,'family/subscription');
+  assert.equal(h.context.window.location.hash,'#personal/subscription');
   assert.equal(h.button.disabled,false);
 });
 test('pending new-family payment opens history rather than another checkout', async()=>{

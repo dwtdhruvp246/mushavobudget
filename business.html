@@ -14,11 +14,11 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="/business.css?v=2" />
+    <link rel="stylesheet" href="/business.css?v=3" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <script src="/config.js?v=27"></script>
     <script src="/pwa.js?v=59" defer></script>
-    <script type="module" src="/business.js?v=2"></script>
+    <script type="module" src="/business.js?v=3"></script>
   </head>
   <body>
     <a class="skip-link" href="#businessMain">Skip to Business content</a>
@@ -59,6 +59,16 @@
           <a class="button primary" href="/app.html#personal/dashboard">Return to Personal &amp; Family</a>
           <a class="button secondary" href="/contact.html">Contact support</a>
         </div>
+      </section>
+    </main>
+
+    <main id="businessInvitations" class="gate-view hidden">
+      <section class="gate-card invitation-gate-card">
+        <p class="eyebrow">Business invitation</p>
+        <h1>You have been invited</h1>
+        <p>Accept an invitation to add the Business workspace to this account. Your Personal and Family workspaces stay separate.</p>
+        <div id="incomingBusinessInvitations" class="incoming-invitations"></div>
+        <div class="gate-actions"><a class="button secondary" href="/app.html#personal/dashboard">Personal &amp; Family</a><button class="button secondary" type="button" data-sign-out>Sign out</button></div>
       </section>
     </main>
 
@@ -114,7 +124,7 @@
         <footer class="sidebar-footer">
           <a href="/app.html#personal/dashboard" data-leave-business>Personal &amp; Family</a>
           <button type="button" data-sign-out>Sign out</button>
-          <small>Version 4.9.18</small>
+          <small>Version 4.9.19</small>
         </footer>
       </aside>
 
@@ -133,7 +143,7 @@
 
         <aside class="stage-banner" aria-label="Business release status">
           <span>Business preview</span>
-          <p>Set up your business now. New subscriptions, team invitations and live financial recording open in later stages.</p>
+          <p>Team invitations and access controls are ready for testing. Public subscriptions and live financial recording remain closed during the staged release.</p>
         </aside>
 
         <section id="businessLock" class="lock-panel hidden" aria-live="polite">
@@ -260,8 +270,10 @@
           </section>
 
           <section class="business-panel hidden" data-business-panel="team">
-            <div class="section-heading"><div><p class="eyebrow">People &amp; access</p><h2>Team</h2><p>See who can access this Business workspace and the role assigned to each person.</p></div><button class="button primary" type="button" disabled>+ Invite member</button></div>
-            <article class="content-card"><div class="card-heading"><div><h3>Active members</h3><p id="businessTeamCount">0 people</p></div></div><div id="businessTeamList" class="team-list"></div></article>
+            <div class="section-heading"><div><p class="eyebrow">People &amp; access</p><h2>Team</h2><p>Manage members, roles, access scopes, invitations and workspace ownership.</p></div><button id="inviteBusinessMember" class="button primary hidden" type="button">+ Invite member</button></div>
+            <div class="seat-grid" aria-label="Business seat use"><article><span>Seat limit</span><strong id="businessSeatLimit">—</strong></article><article><span>Active members</span><strong id="businessActiveSeats">—</strong></article><article><span>Pending invites</span><strong id="businessPendingSeats">—</strong></article><article><span>Available</span><strong id="businessAvailableSeats">—</strong></article></div>
+            <p id="businessTeamMessage" class="team-message hidden" role="status" aria-live="polite"></p>
+            <div class="team-columns"><article class="content-card"><div class="card-heading"><div><h3>Active members</h3><p id="businessTeamCount">0 people</p></div></div><div id="businessTeamList" class="team-list"></div></article><article id="businessPendingCard" class="content-card hidden"><div class="card-heading"><div><h3>Invitations</h3><p>Pending invitations reserve a seat.</p></div></div><div id="businessInvitationList" class="team-list"></div></article></div>
           </section>
 
           <section class="business-panel hidden" data-business-panel="settings">
@@ -284,6 +296,30 @@
         <button type="button" data-open-more><span aria-hidden="true">•••</span><small>More</small></button>
       </nav>
     </div>
+
+    <dialog id="businessInviteDialog" class="business-dialog">
+      <form id="businessInviteForm">
+        <div class="dialog-heading"><div><p class="eyebrow">Business access</p><h2 id="businessInviteTitle">Invite a team member</h2><p id="businessInviteIntro">Existing and new Mushavo users can join with their verified email.</p></div><button class="dialog-close" type="button" data-close-team-dialog aria-label="Close">×</button></div>
+        <input id="businessInvitationId" type="hidden" />
+        <input id="businessInvitationVersion" type="hidden" />
+        <div class="team-form">
+          <label id="businessInviteEmailField">Email<input id="businessInviteEmail" type="email" maxlength="320" autocomplete="email" required /></label>
+          <label>Role<select id="businessInviteRole" required><option value="business_admin">Admin</option><option value="finance_manager">Finance Manager</option><option value="team_manager">Team Manager</option><option value="staff">Staff</option><option value="contributor">Contributor</option><option value="viewer">Viewer</option></select></label>
+          <fieldset><legend>Optional project, branch or department scope</legend><p>No selection gives the role workspace-wide access. Choose tags to limit later financial activity to those scopes.</p><div id="businessInviteScopes" class="scope-choices"></div></fieldset>
+        </div>
+        <div class="seat-impact"><strong id="businessInviteSeatImpact">Uses 1 available seat</strong><span>Pending invitations reserve capacity immediately.</span></div>
+        <div class="dialog-actions"><button class="button secondary" type="button" data-close-team-dialog>Cancel</button><button id="saveBusinessInvitation" class="button primary" type="submit">Send invitation</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="businessOwnershipDialog" class="business-dialog">
+      <form id="businessOwnershipForm">
+        <div class="dialog-heading"><div><p class="eyebrow">Protected action</p><h2>Transfer ownership</h2><p>The new Owner receives billing and workspace authority. You become a Business Admin.</p></div><button class="dialog-close" type="button" data-close-ownership-dialog aria-label="Close">×</button></div>
+        <input id="ownershipMemberId" type="hidden" />
+        <label class="confirmation-field">Type <strong id="ownershipBusinessName"></strong> to confirm<input id="ownershipConfirmation" type="text" required autocomplete="off" /></label>
+        <div class="dialog-actions"><button class="button secondary" type="button" data-close-ownership-dialog>Cancel</button><button class="button danger" type="submit">Transfer ownership</button></div>
+      </form>
+    </dialog>
 
     <dialog id="businessAddDialog" class="business-dialog">
       <form method="dialog">

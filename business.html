@@ -14,11 +14,11 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="/business.css?v=3" />
+    <link rel="stylesheet" href="/business.css?v=4" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <script src="/config.js?v=27"></script>
-    <script src="/pwa.js?v=59" defer></script>
-    <script type="module" src="/business.js?v=3"></script>
+    <script src="/pwa.js?v=60" defer></script>
+    <script type="module" src="/business.js?v=4"></script>
   </head>
   <body>
     <a class="skip-link" href="#businessMain">Skip to Business content</a>
@@ -124,7 +124,7 @@
         <footer class="sidebar-footer">
           <a href="/app.html#personal/dashboard" data-leave-business>Personal &amp; Family</a>
           <button type="button" data-sign-out>Sign out</button>
-          <small>Version 4.9.19</small>
+          <small>Version 4.9.20</small>
         </footer>
       </aside>
 
@@ -220,21 +220,21 @@
         <div id="businessPanels">
           <section class="business-panel" data-business-panel="overview">
             <div class="metric-grid" aria-label="Business financial summary">
-              <article class="metric-card featured"><span>Cash position</span><strong>—</strong><small>Connected in a later stage</small></article>
+              <article class="metric-card featured"><span>Paid expenses</span><strong id="businessPaidTotal">—</strong><small>Recorded company payments and reimbursements</small></article>
               <article class="metric-card"><span>Income</span><strong>—</strong><small>For the selected period</small></article>
-              <article class="metric-card"><span>Paid spending</span><strong>—</strong><small>Recorded company payments</small></article>
-              <article class="metric-card"><span>Commitments</span><strong>—</strong><small>Approved and unpaid</small></article>
+              <article class="metric-card"><span>Claims paid</span><strong id="businessPaidCount">—</strong><small>Stage 5 expense workflow</small></article>
+              <article class="metric-card"><span>Approved, unpaid</span><strong id="businessCommitmentTotal">—</strong><small>Awaiting payment or reimbursement</small></article>
             </div>
             <div class="overview-grid">
               <article class="content-card activity-card">
                 <div class="card-heading"><div><p class="eyebrow">Company activity</p><h2>Recent transactions</h2></div><a href="#business/activity">View activity</a></div>
                 <p id="businessOverviewDraft" class="draft-summary hidden"></p>
-                <div class="empty-state"><span aria-hidden="true">↕</span><h3>Financial records arrive in later stages</h3><p>Your first setup item is kept as a draft until live financial workflows are ready.</p></div>
+                <div id="businessOverviewClaims" class="claim-list"></div>
               </article>
               <article class="content-card attention-card">
                 <div class="card-heading"><div><p class="eyebrow">Attention</p><h2>Needs action</h2></div></div>
                 <ul class="attention-list">
-                  <li><span>Approvals waiting</span><strong>—</strong></li>
+                  <li><span>Approvals waiting</span><strong id="businessReviewCount">—</strong></li>
                   <li><span>Bills due soon</span><strong>—</strong></li>
                   <li><span>Budget warnings</span><strong>—</strong></li>
                 </ul>
@@ -244,8 +244,8 @@
           </section>
 
           <section class="business-panel hidden" data-business-panel="activity">
-            <div class="section-heading"><div><p class="eyebrow">Ledger</p><h2>Activity &amp; Transactions</h2><p>One ordered company record for income, expenses, bills, reimbursements, and status changes.</p></div><button class="button primary" type="button" data-open-add>+ Add transaction</button></div>
-            <article class="content-card"><div class="filter-preview"><button class="active" type="button">All activity</button><button type="button" disabled>Income</button><button type="button" disabled>Expenses</button><button type="button" disabled>Bills</button></div><div id="businessSetupDraftActivity" class="hidden"></div><div class="empty-state"><span aria-hidden="true">↕</span><h3>No Business transactions connected yet</h3><p>Setup drafts are shown separately and are not counted as live financial records.</p></div></article>
+            <div class="section-heading"><div><p class="eyebrow">Ledger</p><h2>Activity &amp; Transactions</h2><p>Expenses and claims, with payment status and receipt history.</p></div><button class="button primary" type="button" data-open-add>+ Add expense</button></div>
+            <article class="content-card"><div class="filter-preview"><button class="active" type="button">Expenses &amp; claims</button><button type="button" disabled>Income</button><button type="button" disabled>Bills</button></div><div id="businessSetupDraftActivity" class="hidden"></div><div id="businessClaimActivity" class="claim-list"></div><small>Showing the 500 most recent claims. Summary totals include all records.</small></article>
           </section>
 
           <section class="business-panel hidden" data-business-panel="bills">
@@ -255,8 +255,8 @@
           </section>
 
           <section class="business-panel hidden" data-business-panel="approvals">
-            <div class="section-heading"><div><p class="eyebrow">Controls</p><h2>Requests &amp; Approvals</h2><p>Review spending requests and claims with clear ownership and separation of duties.</p></div><button class="button primary" type="button" data-open-add>+ New request</button></div>
-            <article class="content-card"><div class="approval-tabs"><button class="active" type="button">Needs my approval <span>0</span></button><button type="button" disabled>My requests</button><button type="button" disabled>All requests</button></div><div class="empty-state"><span aria-hidden="true">✓</span><h3>No requests need your action</h3><p>Approval workflows will enforce the Business permissions and prevent self-approval.</p></div></article>
+            <div class="section-heading"><div><p class="eyebrow">Controls</p><h2>Requests &amp; Approvals</h2><p>Review expense claims. Submitters cannot approve their own claims.</p></div><button class="button primary" type="button" data-open-claim="reimbursement">+ New claim</button></div>
+            <article class="content-card"><div class="approval-tabs"><button class="active" type="button">Claims needing review <span id="businessApprovalTabCount">0</span></button></div><div id="businessClaimApprovals" class="claim-list"></div></article>
           </section>
 
           <section class="business-panel hidden" data-business-panel="budgets">
@@ -266,7 +266,7 @@
 
           <section class="business-panel hidden" data-business-panel="reports">
             <div class="section-heading"><div><p class="eyebrow">Analysis</p><h2>Reports</h2><p>Understand actual income, paid spending, and committed spending without duplicate counting.</p></div><button class="button secondary" type="button" disabled>Export report</button></div>
-            <div class="report-preview"><article class="content-card"><h3>Income and spending</h3><div class="chart-placeholder" aria-label="Report preview placeholder"><i></i><i></i><i></i><i></i><i></i><i></i></div></article><article class="content-card"><h3>Reporting currency</h3><p id="businessReportingCurrency" class="large-value">—</p><small>Workspace default</small></article></div>
+            <div class="report-preview"><article class="content-card"><h3>Expense workflow</h3><dl class="detail-list"><div><dt>Paid expenses</dt><dd id="businessReportPaid">—</dd></div><div><dt>Approved and unpaid</dt><dd id="businessReportCommitted">—</dd></div><div><dt>Submitted for review</dt><dd id="businessReportPending">—</dd></div></dl><small>Only recorded payments count as paid spending. Each claim is counted once.</small></article><article class="content-card"><h3>Reporting currency</h3><p id="businessReportingCurrency" class="large-value">—</p><small>Conversions are locked when a claim is created.</small></article></div>
           </section>
 
           <section class="business-panel hidden" data-business-panel="team">
@@ -323,17 +323,53 @@
 
     <dialog id="businessAddDialog" class="business-dialog">
       <form method="dialog">
-        <div class="dialog-heading"><div><p class="eyebrow">New Business record</p><h2>What would you like to add?</h2><p>Live financial recording is coming in the next Business stages. The Owner can prepare one setup draft now.</p></div><button class="dialog-close" value="cancel" aria-label="Close">×</button></div>
+        <div class="dialog-heading"><div><p class="eyebrow">New Business record</p><h2>What would you like to add?</h2><p>Record a company expense or submit a reimbursement claim with a receipt.</p></div><button class="dialog-close" value="cancel" aria-label="Close">×</button></div>
         <div class="quick-add-grid">
           <button type="button" data-open-setup-draft class="hidden"><span>✎</span><strong>Setup draft</strong><small>Owner can edit the first draft</small></button>
           <button type="button" disabled><span>＋</span><strong>Income</strong><small>Record money received</small></button>
-          <button type="button" disabled><span>−</span><strong>Company expense</strong><small>Record paid spending</small></button>
+          <button type="button" data-open-claim="company_expense"><span>−</span><strong>Company expense</strong><small>Attach receipt, submit, then record payment</small></button>
           <button type="button" disabled><span>▤</span><strong>Supplier bill</strong><small>Track an amount due</small></button>
           <button type="button" disabled><span>✓</span><strong>Spending request</strong><small>Request approval first</small></button>
-          <button type="button" disabled><span>◎</span><strong>Employee claim</strong><small>Submit a reimbursement</small></button>
+          <button type="button" data-open-claim="reimbursement"><span>◎</span><strong>Employee claim</strong><small>Attach a receipt and request reimbursement</small></button>
         </div>
-        <p class="dialog-note">Setup drafts are separate from payments, balances and reports. Business purchasing remains closed.</p>
+        <p class="dialog-note">A draft is excluded from totals. An approved claim becomes a commitment; recording payment moves it to paid spending.</p>
       </form>
+    </dialog>
+
+    <dialog id="businessClaimDialog" class="business-dialog">
+      <form id="businessClaimForm" class="claim-form">
+        <div class="dialog-heading"><div><p class="eyebrow">Expense workflow</p><h2 id="businessClaimDialogTitle">New claim</h2><p>Save a draft, attach a receipt, then submit for review.</p></div><button class="dialog-close" type="button" data-close-claim aria-label="Close">×</button></div>
+        <input id="businessClaimKind" type="hidden" />
+        <input id="businessClaimId" type="hidden" />
+        <input id="businessClaimVersion" type="hidden" />
+        <div class="claim-fields">
+          <label>Title<input id="businessClaimTitle" type="text" maxlength="160" required /></label>
+          <label>Amount<input id="businessClaimAmount" type="number" min="0.01" step="0.0001" required /></label>
+          <label>Currency<select id="businessClaimCurrency" required></select></label>
+          <label>Expense date<input id="businessClaimDate" type="date" required /></label>
+          <label>Expense category<select id="businessClaimCategory" required></select></label>
+          <label>Project, branch or team<select id="businessClaimDimension"></select></label>
+          <label class="field-wide">Details<textarea id="businessClaimDescription" rows="3" maxlength="2000"></textarea></label>
+        </div>
+        <p id="businessClaimFormMessage" class="team-message hidden" role="status"></p>
+        <div class="dialog-actions"><button class="button secondary" type="button" data-close-claim>Cancel</button><button class="button primary" type="submit">Save draft</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="businessClaimDetailDialog" class="business-dialog claim-detail-dialog">
+      <div class="claim-detail-content">
+        <div class="dialog-heading"><div><p class="eyebrow">Expense record</p><h2 id="claimDetailTitle">Claim</h2><p id="claimDetailMeta"></p></div><button class="dialog-close" type="button" data-close-claim-detail aria-label="Close">×</button></div>
+        <p id="claimDetailMessage" class="team-message hidden" role="status"></p>
+        <dl id="claimDetailFields" class="detail-list"></dl>
+        <section class="claim-receipts"><h3>Receipt or proof</h3><div id="claimReceiptList"></div><label id="claimUploadField" class="claim-upload">Attach receipt (JPG, PNG, WebP or PDF, up to 10 MB)<input id="claimReceiptFile" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" /></label></section>
+        <section class="claim-history"><h3>History</h3><div id="claimHistoryList"></div></section>
+        <div id="claimDecisionPanel" class="claim-decision hidden">
+          <label id="claimDecisionLabel" for="claimDecisionInput">Reason</label>
+          <input id="claimDecisionInput" type="text" maxlength="1000" />
+          <div class="dialog-actions"><button class="button secondary" type="button" data-cancel-claim-decision>Cancel</button><button class="button primary" type="button" data-confirm-claim-decision>Confirm</button></div>
+        </div>
+        <div id="claimDetailActions" class="dialog-actions"></div>
+      </div>
     </dialog>
 
     <dialog id="businessMoreDialog" class="more-dialog">

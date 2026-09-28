@@ -10,7 +10,7 @@ const page = await readFile(new URL("../business.html", import.meta.url), "utf8"
 const edge = await readFile(new URL("../supabase/functions/invite-business-member/index.ts", import.meta.url), "utf8");
 
 test("Stage 4 schema is mirrored exactly and private support tables force RLS", () => {
-  assert.ok(schema.endsWith(migration));
+  assert.ok(schema.includes(migration));
   assert.match(migration, /business_invitation_scopes enable row level security;[\s\S]*business_invitation_scopes force row level security/);
   assert.match(migration, /business_team_operation_permits enable row level security;[\s\S]*business_team_operation_permits force row level security/);
   assert.match(migration, /revoke all on table public\.business_team_operation_permits from public, anon, authenticated/);

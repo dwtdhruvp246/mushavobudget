@@ -81,6 +81,7 @@ const state = {
   adminPlans: [],
   adminPlanPrices: [],
   adminUserInvitations: [],
+  adminManualGrants: [],
   adminPlanFeatures: [],
   adminPlanLimits: [],
   adminEnquiries: [],
@@ -568,6 +569,13 @@ function showAppError(error) {
 
 function friendlyMessage(message = "") {
   const text = `${message}`;
+  if (text.includes("SUPER_ADMIN_REQUIRED")) return "Only a super administrator can grant manual subscriptions.";
+  if (text.includes("REGISTERED_ACTIVE_OWNER_REQUIRED")) return "Choose a registered, active account that has completed setup.";
+  if (text.includes("OWNED_ACTIVE_WORKSPACE_PLAN_REQUIRED")) return "Choose an active workspace owned by this user and a matching plan.";
+  if (text.includes("BUSINESS_TEST_WORKSPACE_REQUIRED")) return "Create a Business test workspace for this registered owner, or select one previously created for testing.";
+  if (text.includes("PERSONAL_WORKSPACE_SETTINGS_REQUIRED")) return "The owner needs an active Personal workspace with currency settings before Business test access can be granted.";
+  if (text.includes("PENDING_SUBSCRIPTION_REVIEW")) return "This workspace has a payment awaiting review. Review it before changing the subscription manually.";
+  if (text.includes("INVALID_MANUAL_GRANT")) return "Check the dates and reason. The start cannot be in the future; expiry must be after today and within 366 days of the start.";
   if (text.includes("BUSINESS_COMING_SOON")) {
     return "Mushavo Budget Business is coming soon. Purchases, workspace creation, and invitations are not open yet.";
   }
@@ -1292,6 +1300,7 @@ function resetState() {
   state.adminPlans = [];
   state.adminPlanPrices = [];
   state.adminUserInvitations = [];
+  state.adminManualGrants = [];
   state.adminPlanFeatures = [];
   state.adminPlanLimits = [];
   state.adminEnquiries = [];
@@ -1990,6 +1999,9 @@ async function loadAdminData(tab = state.adminTab) {
     add("supportedCurrencies", "user supported currencies load", supabase.from("supported_currencies").select("*").eq("is_active", true).order("code"));
     if (["super_admin", "admin_staff"].includes(state.adminRole)) {
       add("adminUserInvitations", "admin user invitations load", supabase.from("admin_user_invitations").select("*").order("created_at", { ascending: false }).limit(50));
+    }
+    if (state.adminRole === "super_admin") {
+      add("adminManualGrants", "admin manual grants load", supabase.from("admin_subscription_grants").select("*").order("created_at", { ascending: false }));
     }
   }
   if (tab === "households") {
@@ -6627,6 +6639,137 @@ function canSendAdminInvitations() {
   return ["super_admin", "admin_staff"].includes(state.adminRole);
 }
 
+function manualGrantDateAfter(start, period) {
+  const date = new Date(`${start}T12:00:00Z`);
+  if (!Number.isFinite(date.getTime())) return "";
+  const month = date.getUTCMonth() + (period === "annual" ? 12 : 1);
+  const nextMonth = new Date(Date.UTC(date.getUTCFullYear(), month, 1));
+  const lastDay = new Date(Date.UTC(date.getUTCFullYear(), month + 1, 0)).getUTCDate();
+  nextMonth.setUTCDate(Math.min(date.getUTCDate(), lastDay) - 1);
+  return nextMonth.toISOString().slice(0, 10);
+}
+
+function refreshAdminManualGrantPlans() {
+  const workspaceValue = $("#adminManualGrantWorkspace").value;
+  const workspace = state.adminWorkspaces.find((row) => row.id === workspaceValue);
+  const workspaceType = workspaceValue === "__new_business__" ? "business" : workspace?.workspace_type;
+  const select = $("#adminManualGrantPlan");
+  const previous = select.value;
+  select.replaceChildren();
+  state.adminPlans.filter((plan) =>
+    plan.is_active && plan.code !== "free" && plan.workspace_type === workspaceType
+  ).forEach((plan) => select.append(new Option(
+    `${plan.display_name}${plan.workspace_type === "business" ? " · test access" : ""}`, plan.id
+  )));
+  if ([...select.options].some((option) => option.value === previous)) select.value = previous;
+  const nameField = $("#adminManualBusinessNameField");
+  const nameInput = $("#adminManualBusinessName");
+  const creatingBusiness = workspaceValue === "__new_business__";
+  nameField.classList.toggle("hidden", !creatingBusiness);
+  nameInput.required = creatingBusiness;
+  $("#adminManualGrantNotice").textContent = creatingBusiness
+    ? "A separate Business test workspace will be created. Public Business purchases remain closed. No payment, invoice, or receipt is recorded."
+    : "The selected workspace's current subscription will be replaced. This manual grant creates no payment, invoice, or receipt.";
+  $("#adminManualGrantSubmit").disabled = !select.options.length;
+}
+
+function refreshAdminManualGrantWorkspaces() {
+  const ownerId = $("#adminManualGrantUser").value;
+  const select = $("#adminManualGrantWorkspace");
+  const previous = select.value;
+  select.replaceChildren(new Option("Choose workspace", ""));
+  if (ownerId) {
+    const owned = state.adminWorkspaces.filter((workspace) =>
+      workspace.owner_id === ownerId && workspace.status === "active"
+      && (workspace.workspace_type !== "business" || state.adminManualGrants.some((grant) =>
+        grant.workspace_id === workspace.id && grant.grant_kind === "business_test"
+      ))
+    );
+    owned.forEach((workspace) => select.append(new Option(
+      `${adminWorkspaceTypeLabel(workspace.workspace_type)} · ${workspace.name}`, workspace.id
+    )));
+    if (!owned.some((workspace) => workspace.workspace_type === "business")
+        && owned.some((workspace) => workspace.workspace_type === "personal")) {
+      select.append(new Option("Create a Business test workspace", "__new_business__"));
+    }
+  }
+  if ([...select.options].some((option) => option.value === previous)) select.value = previous;
+  refreshAdminManualGrantPlans();
+}
+
+function renderAdminManualGrantForm() {
+  const panel = $("#adminManualGrantPanel");
+  if (!panel) return;
+  panel.classList.toggle("hidden", state.adminRole !== "super_admin");
+  if (state.adminRole !== "super_admin") return;
+  const select = $("#adminManualGrantUser");
+  const previous = select.value;
+  select.replaceChildren(new Option("Choose registered owner", ""));
+  state.adminProfiles.filter((profile) =>
+    profile.account_status === "active" && state.adminWorkspaces.some((workspace) =>
+      workspace.owner_id === profile.id && workspace.workspace_type === "personal" && workspace.status === "active"
+    )
+  ).forEach((profile) => select.append(new Option(
+    `${profile.full_name || "Registered user"} · ${profile.email || "Email unavailable"}`, profile.id
+  )));
+  if ([...select.options].some((option) => option.value === previous)) select.value = previous;
+  if (!$("#adminManualGrantStart").value) $("#adminManualGrantStart").value = localDateValue();
+  if (!$("#adminManualGrantEnd").value) {
+    $("#adminManualGrantEnd").value = manualGrantDateAfter($("#adminManualGrantStart").value, $("#adminManualGrantPeriod").value);
+  }
+  refreshAdminManualGrantWorkspaces();
+}
+
+async function submitAdminManualGrant(event) {
+  event.preventDefault();
+  if (state.adminRole !== "super_admin") {
+    showToast(friendlyMessage("SUPER_ADMIN_REQUIRED"));
+    return;
+  }
+  const ownerId = $("#adminManualGrantUser").value;
+  const workspaceValue = $("#adminManualGrantWorkspace").value;
+  const planId = $("#adminManualGrantPlan").value;
+  const owner = state.adminProfiles.find((profile) => profile.id === ownerId);
+  const workspace = state.adminWorkspaces.find((item) => item.id === workspaceValue);
+  const plan = state.adminPlans.find((item) => item.id === planId);
+  const startsOn = $("#adminManualGrantStart").value;
+  const endsOn = $("#adminManualGrantEnd").value;
+  const newBusiness = workspaceValue === "__new_business__";
+  const businessName = $("#adminManualBusinessName").value.trim();
+  const reason = $("#adminManualGrantReason").value.trim();
+  const submitted = $("#adminManualGrantSubmit");
+  if (!owner || !plan || (!workspace && !newBusiness) || !startsOn || !endsOn || reason.length < 8
+      || (newBusiness && businessName.length < 2)) {
+    showToast("Choose a registered owner, matching plan, workspace, dates, and reason.");
+    return;
+  }
+  const destination = newBusiness ? `a new Business test workspace named ${businessName}` : workspace.name;
+  if (!window.confirm(`Grant ${plan.display_name} access to ${owner.email} for ${destination} through ${endsOn}? This replaces the current subscription and records no payment.`)) return;
+
+  setSubmitting(submitted, true, "Granting subscription…");
+  try {
+    const grantedWorkspaceId = await query("manual subscription grant", supabase.rpc("admin_grant_manual_subscription", {
+      p_owner_id: ownerId,
+      p_workspace_id: newBusiness ? null : workspaceValue,
+      p_plan_id: planId,
+      p_billing_period: $("#adminManualGrantPeriod").value,
+      p_starts_on: startsOn,
+      p_ends_on: endsOn,
+      p_reason: reason,
+      p_new_business_name: newBusiness ? businessName : null
+    }));
+    event.currentTarget.reset();
+    window.MushavoPWA?.markFormClean("#adminManualGrantForm");
+    await loadAdminData("users");
+    renderAdmin();
+    showToast(`Manual ${plan.display_name} access granted to ${owner.email}. Workspace: ${grantedWorkspaceId}.`);
+  } catch (error) {
+    showToast(friendlyMessage(error?.message));
+  } finally {
+    setSubmitting(submitted, false, "Grant subscription");
+  }
+}
+
 function refreshAdminInvitationDefaultCurrency() {
   const enabledSelect = $("#adminInviteEnabledCurrencies");
   const defaultSelect = $("#adminInviteDefaultCurrency");
@@ -6837,6 +6980,7 @@ async function sendAdminUserInvitation(event) {
 }
 
 function renderHeads() {
+  renderAdminManualGrantForm();
   renderAdminInvitationForm();
   renderAdminUserInvitations();
   const list = $("#headsList");
@@ -6911,6 +7055,7 @@ function renderHeads() {
         </div>
         <div class="record-side">
         <button type="button" data-view-admin-user="${profile?.id || ""}" data-view-admin-user-email="${escapeHtml(email)}">View details</button>
+        ${profile && profile.account_status === "active" && state.adminRole === "super_admin" ? `<button type="button" data-manual-grant-user="${profile.id}">Grant subscription</button>` : ""}
         ${head ? `<div class="row-actions">
           <label class="inline-number-control">Family limit<input data-family-limit-input="${head.id}" type="number" min="0" max="100" step="1" value="${Number(head.family_limit ?? 1)}" /></label>
           <button type="button" data-save-family-limit="${head.id}">Save limit</button>
@@ -8700,6 +8845,15 @@ document.addEventListener("click", async (event) => {
   const adminUserDetails = event.target.closest("[data-view-admin-user]");
   if (adminUserDetails) openAdminUserDetails(adminUserDetails.dataset.viewAdminUser, adminUserDetails.dataset.viewAdminUserEmail);
 
+  const manualGrantUser = event.target.closest("[data-manual-grant-user]");
+  if (manualGrantUser) {
+    const panel = $("#adminManualGrantPanel");
+    panel.open = true;
+    $("#adminManualGrantUser").value = manualGrantUser.dataset.manualGrantUser;
+    refreshAdminManualGrantWorkspaces();
+    panel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   const adminWorkspaceDetails = event.target.closest("[data-view-admin-workspace]");
   if (adminWorkspaceDetails) openAdminWorkspaceDetails(adminWorkspaceDetails.dataset.viewAdminWorkspace);
 
@@ -9065,6 +9219,15 @@ $("#recordPaymentType").addEventListener("change", (event) => {
   if (!isFullPayment) amountInput.focus();
 });
 $("#headForm").addEventListener("submit", protectSubmission(addHead));
+$("#adminManualGrantForm").addEventListener("submit", protectSubmission(submitAdminManualGrant));
+$("#adminManualGrantUser").addEventListener("change", refreshAdminManualGrantWorkspaces);
+$("#adminManualGrantWorkspace").addEventListener("change", refreshAdminManualGrantPlans);
+$("#adminManualGrantPeriod").addEventListener("change", () => {
+  $("#adminManualGrantEnd").value = manualGrantDateAfter($("#adminManualGrantStart").value, $("#adminManualGrantPeriod").value);
+});
+$("#adminManualGrantStart").addEventListener("change", () => {
+  $("#adminManualGrantEnd").value = manualGrantDateAfter($("#adminManualGrantStart").value, $("#adminManualGrantPeriod").value);
+});
 $("#adminInvitationForm").addEventListener("submit", protectSubmission(sendAdminUserInvitation));
 $("#adminInvitePlan").addEventListener("change", refreshAdminInvitationPlanFields);
 $("#adminInviteBillingPeriod").addEventListener("change", refreshAdminInvitationPlanFields);

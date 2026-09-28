@@ -21,10 +21,10 @@
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
-    <script src="/pwa.js?v=57" defer></script>
+    <script src="/pwa.js?v=58" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=104"></script>
+    <script type="module" src="app.js?v=105"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -175,7 +175,7 @@
             <div class="sidebar-footer">
               <button type="button" data-admin-tab="support">Contact support</button>
               <button id="adminSignOutButton" type="button">Sign out</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.16</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.17</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -353,6 +353,24 @@
           <section class="screen-panel hidden" data-admin-panel="users">
             <header class="topbar"><div><p class="eyebrow">Access</p><h2>Users and member access</h2></div></header>
             <section class="admin-users-layout">
+              <details id="adminManualGrantPanel" class="admin-disclosure hidden">
+                <summary><span><strong>Grant a manual subscription</strong><small>Assign a plan to a registered workspace or create a Business workspace for testing.</small></span></summary>
+                <section class="tool-panel" aria-labelledby="adminManualGrantTitle">
+                  <div class="panel-heading"><p class="eyebrow">Super-admin only</p><h3 id="adminManualGrantTitle">Manual plan access</h3><p class="muted-copy">Choose the registered owner and their workspace. A Business test workspace can be created here even while public Business purchases remain closed. This grant creates no invoice, receipt, or recorded payment.</p></div>
+                  <form id="adminManualGrantForm" class="form-grid">
+                    <label for="adminManualGrantUser">Registered owner<select id="adminManualGrantUser" required></select></label>
+                    <label for="adminManualGrantWorkspace">Workspace<select id="adminManualGrantWorkspace" required></select></label>
+                    <label for="adminManualGrantPlan">Plan<select id="adminManualGrantPlan" required></select></label>
+                    <label for="adminManualGrantPeriod">Billing period<select id="adminManualGrantPeriod" required><option value="monthly">Monthly</option><option value="annual">Annual</option></select></label>
+                    <label for="adminManualGrantStart">Access begins<input id="adminManualGrantStart" type="date" required /></label>
+                    <label for="adminManualGrantEnd">Access through (inclusive)<input id="adminManualGrantEnd" type="date" required /></label>
+                    <label id="adminManualBusinessNameField" class="full hidden" for="adminManualBusinessName">Business name<input id="adminManualBusinessName" maxlength="120" placeholder="Test business name" /></label>
+                    <label class="full" for="adminManualGrantReason">Reason for the grant<textarea id="adminManualGrantReason" minlength="8" maxlength="500" rows="2" required placeholder="For internal Business testing"></textarea></label>
+                    <p id="adminManualGrantNotice" class="notice full">The chosen workspace's current subscription will be replaced. This is a manual entitlement, not a payment or sale.</p>
+                    <button id="adminManualGrantSubmit" class="primary full" type="submit">Grant subscription</button>
+                  </form>
+                </section>
+              </details>
               <details class="admin-disclosure">
                 <summary><span><strong>Manual user settings</strong><small>Choose the plan, currencies, and any payment received, then send a secure setup invitation.</small></span></summary>
                 <section id="adminInvitationPanel" class="tool-panel admin-invitation-panel" aria-labelledby="adminInvitationTitle">
@@ -607,7 +625,7 @@
             </div>
             <div class="sidebar-footer">
               <button type="button" data-family-tab="support">Contact support</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.16</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.17</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>

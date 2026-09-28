@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 80
+// Mushavo Budget authenticated application — release 81
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -1399,6 +1399,16 @@ async function loadApp() {
   const financialResult = settled(loadFamilyFinancialData());
   await loadWorkspaceSubscriptionData();
 
+  if (routeFromHash().area === "business") {
+    const requestedWorkspaceId = new URL(window.location.href).searchParams.get("workspace") || "";
+    const businessWorkspace = state.workspaces.find((workspace) =>
+      workspace.workspace_type === "business" && workspace.status !== "closed" &&
+      (!requestedWorkspaceId || workspace.id === requestedWorkspaceId)
+    );
+    openBusinessWorkspace(businessWorkspace?.id || "", routeFromHash().tab || "overview");
+    return;
+  }
+
   if (state.headApproval?.status === "suspended") {
     if (state.family?.owner_id === state.session.user.id) {
       state.family = null;
@@ -1530,7 +1540,65 @@ function persistSelectedFamily() {
   else window.localStorage.setItem(key, "__personal__");
 }
 
+function businessWorkspaceUrl(workspaceId = "", tab = "overview") {
+  const url = new URL("business.html", window.location.href);
+  if (workspaceId) url.searchParams.set("workspace", workspaceId);
+  url.hash = `business/${tab}`;
+  return `${url.pathname}${url.search}${url.hash}`;
+}
+
+function clearBudgetDataBeforeBusinessNavigation() {
+  // The Business application has an independent data boundary. Clear every
+  // Personal and Family financial collection before leaving this application
+  // so a delayed render or request cannot expose the previous workspace.
+  stopRealtime();
+  state.family = null;
+  state.members = [];
+  state.paymentItems = [];
+  state.personalPlanAccess = [];
+  state.freePaymentDraft = null;
+  state.paymentRecords = [];
+  state.familyInvitations = [];
+  state.notifications = [];
+  state.workspaceSubscription = null;
+  state.workspaceEntitlement = null;
+  state.personalWorkspaceSubscription = null;
+  state.personalWorkspaceEntitlement = null;
+  state.ownedFamilySubscriptions = [];
+  state.workspaceSettings = null;
+  state.exchangeRates = [];
+  state.exchangeRateStatus = null;
+  state.paymentConversions = [];
+  state.renewalRequests = [];
+  state.subscriptionInvoices = [];
+  state.subscriptionPayments = [];
+  state.entitlementHistory = [];
+  state.cashbookAccounts = [];
+  state.cashbookBalances = [];
+  state.cashbookEntries = [];
+  state.cashbookReport = [];
+  state.cashbookLoadedWorkspaceId = null;
+  resetPaymentListView();
+  closeDrawer();
+}
+
+function openBusinessWorkspace(workspaceId = "", tab = "overview") {
+  if (workspaceId) {
+    const workspace = state.workspaces.find((item) =>
+      item.id === workspaceId && item.workspace_type === "business" && item.status !== "closed"
+    );
+    if (!workspace) return false;
+  }
+  clearBudgetDataBeforeBusinessNavigation();
+  window.location.assign(businessWorkspaceUrl(workspaceId, tab));
+  return true;
+}
+
 async function selectFamily(familyId) {
+  if (familyId.startsWith("business:")) {
+    openBusinessWorkspace(familyId.slice("business:".length));
+    return;
+  }
   if (familyId === "__personal__") {
     if (!state.family) {
       if (state.familyTab === "cashbook") await loadCashbookData();
@@ -1772,6 +1840,8 @@ async function selectNotificationWorkspace(workspaceId) {
   } else if (workspace.workspace_type === "household" && workspace.legacy_family_id) {
     if (!state.families.some((family) => family.id === workspace.legacy_family_id)) return false;
     await selectFamily(workspace.legacy_family_id);
+  } else if (workspace.workspace_type === "business") {
+    return openBusinessWorkspace(workspace.id);
   } else {
     return false;
   }
@@ -2091,8 +2161,13 @@ function renderFamilySelectors() {
     select.innerHTML = "";
     select.append(new Option("Personal budget", "__personal__"));
     state.families.forEach((family) => select.append(new Option(family.name, family.id)));
+    state.workspaces
+      .filter((workspace) => workspace.workspace_type === "business" && workspace.status !== "closed")
+      .forEach((workspace) => select.append(new Option(`Business · ${workspace.name || "Workspace"}`, `business:${workspace.id}`)));
     select.value = state.family?.id || "__personal__";
-    select.disabled = state.families.length === 0;
+    select.disabled = state.families.length === 0 && !state.workspaces.some((workspace) =>
+      workspace.workspace_type === "business" && workspace.status !== "closed"
+    );
   });
 }
 
@@ -9171,6 +9246,15 @@ window.addEventListener("hashchange", async () => {
   }
   if (!state.session) return;
   try {
+    if (requested.area === "business") {
+      const requestedWorkspaceId = new URL(window.location.href).searchParams.get("workspace") || "";
+      const businessWorkspace = state.workspaces.find((workspace) =>
+        workspace.workspace_type === "business" && workspace.status !== "closed" &&
+        (!requestedWorkspaceId || workspace.id === requestedWorkspaceId)
+      );
+      openBusinessWorkspace(businessWorkspace?.id || "", requested.tab || "overview");
+      return;
+    }
     if (requested.area === "personal" && state.family) await selectFamily("__personal__");
     if (state.familyTab === "cashbook") await loadCashbookData();
     setRoute("family", state.familyTab, true);

@@ -14,11 +14,11 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="/business.css?v=1" />
+    <link rel="stylesheet" href="/business.css?v=2" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <script src="/config.js?v=27"></script>
-    <script src="/pwa.js?v=58" defer></script>
-    <script type="module" src="/business.js?v=1"></script>
+    <script src="/pwa.js?v=59" defer></script>
+    <script type="module" src="/business.js?v=2"></script>
   </head>
   <body>
     <a class="skip-link" href="#businessMain">Skip to Business content</a>
@@ -114,7 +114,7 @@
         <footer class="sidebar-footer">
           <a href="/app.html#personal/dashboard" data-leave-business>Personal &amp; Family</a>
           <button type="button" data-sign-out>Sign out</button>
-          <small>Version 4.9.17</small>
+          <small>Version 4.9.18</small>
         </footer>
       </aside>
 
@@ -132,14 +132,79 @@
         </header>
 
         <aside class="stage-banner" aria-label="Business release status">
-          <span>Stage 1 preview</span>
-          <p>The Business workspace shell is active. Purchases and financial recording remain closed until their release stages.</p>
+          <span>Business preview</span>
+          <p>Set up your business now. New subscriptions, team invitations and live financial recording open in later stages.</p>
         </aside>
 
         <section id="businessLock" class="lock-panel hidden" aria-live="polite">
           <span class="lock-icon" aria-hidden="true">🔒</span>
           <div><p class="eyebrow">Workspace locked</p><h2 id="businessLockTitle">Subscription renewal required</h2><p id="businessLockMessage"></p></div>
           <button id="businessRenewalButton" class="button primary hidden" type="button">Renewal coming soon</button>
+        </section>
+
+        <section id="businessOnboarding" class="business-onboarding hidden" aria-labelledby="onboardingTitle">
+          <header class="onboarding-heading">
+            <div><p class="eyebrow">Owner setup</p><h2 id="onboardingTitle">Make this workspace yours</h2><p>Set up a business that works for you alone. You can invite other people later.</p></div>
+            <span id="onboardingProgress" class="onboarding-progress">Step 1 of 4</span>
+          </header>
+          <nav class="onboarding-steps" aria-label="Business setup steps">
+            <button type="button" data-setup-step="basics">1. Details</button>
+            <button type="button" data-setup-step="categories">2. Categories</button>
+            <button type="button" data-setup-step="tags">3. Optional tags</button>
+            <button type="button" data-setup-step="first">4. First draft</button>
+          </nav>
+          <p id="onboardingMessage" class="onboarding-message hidden" role="status" aria-live="polite"></p>
+
+          <article class="content-card onboarding-pane" data-setup-pane="basics">
+            <div class="card-heading"><div><p class="eyebrow">Step 1</p><h3>Business details &amp; working currency</h3><p>Choose the currency for reports and any other currencies you will record.</p></div></div>
+            <form id="businessBasicsForm" class="onboarding-form">
+              <label class="field-wide">Business name<input id="setupBusinessName" type="text" maxlength="120" minlength="2" required autocomplete="organization" placeholder="For example, Mushavo Trading" /></label>
+              <div class="field-wide"><label for="setupCurrencySearch">Available currencies</label><input id="setupCurrencySearch" type="search" placeholder="Search currency or code" /><div id="setupCurrencies" class="currency-choices" aria-label="Enabled business currencies"></div><small>Select at least one; your base currency must be among those selected.</small></div>
+              <label>Base and reporting currency<select id="setupBaseCurrency" required></select></label>
+              <label>Timezone<input id="setupTimezone" type="text" list="setupTimezones" required placeholder="Africa/Harare" /><datalist id="setupTimezones"></datalist></label>
+              <label>Financial year starts in<select id="setupFinancialMonth" required></select></label>
+              <label>Period starts on day<input id="setupPeriodDay" type="number" min="1" max="28" step="1" required value="1" /><small>Days 1–28 work in every month.</small></label>
+              <div class="onboarding-actions field-wide"><button class="button primary" type="submit">Save and continue</button></div>
+            </form>
+          </article>
+
+          <article class="content-card onboarding-pane hidden" data-setup-pane="categories">
+            <div class="card-heading"><div><p class="eyebrow">Step 2</p><h3>Choose your categories</h3><p>We added useful starting categories. Keep the ones you need and create your own.</p></div></div>
+            <div id="setupCategoryList" class="setup-list"></div>
+            <form id="businessCategoryForm" class="onboarding-inline-form">
+              <label>New category name<input id="setupCategoryName" maxlength="120" required placeholder="For example, Consulting fees" /></label>
+              <label>Used for<select id="setupCategoryType"><option value="expense">Expenses and bills</option><option value="income">Income</option><option value="both">Both</option></select></label>
+              <button class="button secondary" type="submit">Add category</button>
+            </form>
+            <div class="onboarding-actions"><button class="button secondary" type="button" data-setup-step="basics">Back</button><button class="button primary" type="button" data-setup-next="tags">Continue</button></div>
+          </article>
+
+          <article class="content-card onboarding-pane hidden" data-setup-pane="tags">
+            <div class="card-heading"><div><p class="eyebrow">Step 3 · Optional</p><h3>Organise by project, branch or team</h3><p>Add a tag if it helps you separate work. You can run the business without any tags.</p></div></div>
+            <div id="setupTagList" class="setup-list"></div>
+            <form id="businessTagForm" class="onboarding-inline-form">
+              <label>Name<input id="setupTagName" maxlength="120" required placeholder="For example, Harare branch" /></label>
+              <label>Type<select id="setupTagType"><option value="project">Project</option><option value="branch">Branch</option><option value="team">Team / department</option><option value="cost_centre">Cost centre</option></select></label>
+              <button class="button secondary" type="submit">Add tag</button>
+            </form>
+            <div class="onboarding-actions"><button class="button secondary" type="button" data-setup-step="categories">Back</button><button class="button primary" type="button" data-setup-next="first">Continue or skip</button></div>
+          </article>
+
+          <article class="content-card onboarding-pane hidden" data-setup-pane="first">
+            <div class="card-heading"><div><p class="eyebrow">Step 4 · Optional</p><h3>Prepare your first item</h3><p>You can save one draft income, expense or bill. It is not paid, does not send reminders and is not included in financial totals yet.</p></div></div>
+            <form id="businessDraftForm" class="onboarding-form">
+              <label>Type<select id="setupDraftKind"><option value="income">Income</option><option value="expense">Company expense</option><option value="bill">Supplier bill</option></select></label>
+              <label>Description<input id="setupDraftDescription" maxlength="240" minlength="2" required placeholder="For example, Office rent" /></label>
+              <label>Amount<input id="setupDraftAmount" type="number" min="0.01" max="999999999999.99" step="0.01" required /></label>
+              <label>Currency<select id="setupDraftCurrency" required></select></label>
+              <label>Record date<input id="setupDraftDate" type="date" required /></label>
+              <label id="setupDraftDueField" class="hidden">Due date<input id="setupDraftDue" type="date" /></label>
+              <label>Category<select id="setupDraftCategory" required></select></label>
+              <label>Project / branch / team (optional)<select id="setupDraftTag"></select></label>
+              <div class="onboarding-actions field-wide"><button class="button secondary" type="button" data-setup-step="tags">Back</button><button class="button secondary" type="submit">Save draft</button><button id="finishBusinessSetup" class="button primary" type="button">Finish setup</button></div>
+            </form>
+            <p id="setupDraftSummary" class="draft-summary hidden"></p>
+          </article>
         </section>
 
         <div id="businessPanels">
@@ -153,7 +218,8 @@
             <div class="overview-grid">
               <article class="content-card activity-card">
                 <div class="card-heading"><div><p class="eyebrow">Company activity</p><h2>Recent transactions</h2></div><a href="#business/activity">View activity</a></div>
-                <div class="empty-state"><span aria-hidden="true">↕</span><h3>Financial records arrive in Stage 2</h3><p>This area will combine income, expenses, bills, claims, and their approval status without mixing Personal or Family data.</p></div>
+                <p id="businessOverviewDraft" class="draft-summary hidden"></p>
+                <div class="empty-state"><span aria-hidden="true">↕</span><h3>Financial records arrive in later stages</h3><p>Your first setup item is kept as a draft until live financial workflows are ready.</p></div>
               </article>
               <article class="content-card attention-card">
                 <div class="card-heading"><div><p class="eyebrow">Attention</p><h2>Needs action</h2></div></div>
@@ -169,13 +235,13 @@
 
           <section class="business-panel hidden" data-business-panel="activity">
             <div class="section-heading"><div><p class="eyebrow">Ledger</p><h2>Activity &amp; Transactions</h2><p>One ordered company record for income, expenses, bills, reimbursements, and status changes.</p></div><button class="button primary" type="button" data-open-add>+ Add transaction</button></div>
-            <article class="content-card"><div class="filter-preview"><button class="active" type="button">All activity</button><button type="button" disabled>Income</button><button type="button" disabled>Expenses</button><button type="button" disabled>Bills</button></div><div class="empty-state"><span aria-hidden="true">↕</span><h3>No Business transactions connected yet</h3><p>The Stage 2 data model will power this ledger. This preview intentionally reads no Personal or Family payment records.</p></div></article>
+            <article class="content-card"><div class="filter-preview"><button class="active" type="button">All activity</button><button type="button" disabled>Income</button><button type="button" disabled>Expenses</button><button type="button" disabled>Bills</button></div><div id="businessSetupDraftActivity" class="hidden"></div><div class="empty-state"><span aria-hidden="true">↕</span><h3>No Business transactions connected yet</h3><p>Setup drafts are shown separately and are not counted as live financial records.</p></div></article>
           </section>
 
           <section class="business-panel hidden" data-business-panel="bills">
             <div class="section-heading"><div><p class="eyebrow">Commitments</p><h2>Bills &amp; Recurring</h2><p>Track supplier bills, recurring company costs, due dates, and payment status.</p></div><button class="button primary" type="button" data-open-add>+ Add bill</button></div>
             <div class="metric-grid compact"><article class="metric-card"><span>Due this month</span><strong>—</strong></article><article class="metric-card"><span>Overdue</span><strong>—</strong></article><article class="metric-card"><span>Recurring</span><strong>—</strong></article></div>
-            <article class="content-card"><div class="empty-state"><span aria-hidden="true">▤</span><h3>Business bills are not connected yet</h3><p>Supplier and recurring bill workflows will be introduced after the Business data model is in place.</p></div></article>
+            <article class="content-card"><div class="empty-state"><span aria-hidden="true">▤</span><h3>Business bills are not connected yet</h3><p>Supplier bills, payment history and reminders arrive in the planned bills stage. Your setup draft remains separate until then.</p></div></article>
           </section>
 
           <section class="business-panel hidden" data-business-panel="approvals">
@@ -199,8 +265,8 @@
           </section>
 
           <section class="business-panel hidden" data-business-panel="settings">
-            <div class="section-heading"><div><p class="eyebrow">Workspace setup</p><h2>Settings</h2><p>Business identity, reporting preferences, notifications, and security.</p></div><button class="button primary" type="button" disabled>Save changes</button></div>
-            <div class="settings-grid"><article class="content-card"><h3>Business details</h3><dl class="detail-list"><div><dt>Workspace</dt><dd id="settingsWorkspaceName">—</dd></div><div><dt>Your role</dt><dd id="settingsUserRole">—</dd></div><div><dt>Status</dt><dd id="settingsWorkspaceStatus">—</dd></div></dl></article><article class="content-card"><h3>Regional settings</h3><dl class="detail-list"><div><dt>Base currency</dt><dd id="settingsCurrency">—</dd></div><div><dt>Locale</dt><dd id="settingsLocale">—</dd></div><div><dt>Timezone</dt><dd id="settingsTimezone">—</dd></div></dl></article></div>
+            <div class="section-heading"><div><p class="eyebrow">Workspace setup</p><h2>Settings</h2><p>Business identity, reporting preferences, notifications, and security.</p></div><button id="editBusinessSetup" class="button primary hidden" type="button">Edit business setup</button></div>
+            <div class="settings-grid"><article class="content-card"><h3>Business details</h3><dl class="detail-list"><div><dt>Workspace</dt><dd id="settingsWorkspaceName">—</dd></div><div><dt>Your role</dt><dd id="settingsUserRole">—</dd></div><div><dt>Status</dt><dd id="settingsWorkspaceStatus">—</dd></div></dl></article><article class="content-card"><h3>Regional settings</h3><dl class="detail-list"><div><dt>Base currency</dt><dd id="settingsCurrency">—</dd></div><div><dt>Enabled currencies</dt><dd id="settingsEnabledCurrencies">—</dd></div><div><dt>Locale</dt><dd id="settingsLocale">—</dd></div><div><dt>Timezone</dt><dd id="settingsTimezone">—</dd></div><div><dt>Financial year starts</dt><dd id="settingsFinancialMonth">—</dd></div><div><dt>Period starts on</dt><dd id="settingsPeriodDay">—</dd></div></dl></article></div>
           </section>
 
           <section class="business-panel hidden" data-business-panel="subscription">
@@ -221,15 +287,16 @@
 
     <dialog id="businessAddDialog" class="business-dialog">
       <form method="dialog">
-        <div class="dialog-heading"><div><p class="eyebrow">New Business record</p><h2>What would you like to add?</h2><p>These workflows will become available in the next Business stages.</p></div><button class="dialog-close" value="cancel" aria-label="Close">×</button></div>
+        <div class="dialog-heading"><div><p class="eyebrow">New Business record</p><h2>What would you like to add?</h2><p>Live financial recording is coming in the next Business stages. The Owner can prepare one setup draft now.</p></div><button class="dialog-close" value="cancel" aria-label="Close">×</button></div>
         <div class="quick-add-grid">
+          <button type="button" data-open-setup-draft class="hidden"><span>✎</span><strong>Setup draft</strong><small>Owner can edit the first draft</small></button>
           <button type="button" disabled><span>＋</span><strong>Income</strong><small>Record money received</small></button>
           <button type="button" disabled><span>−</span><strong>Company expense</strong><small>Record paid spending</small></button>
           <button type="button" disabled><span>▤</span><strong>Supplier bill</strong><small>Track an amount due</small></button>
           <button type="button" disabled><span>✓</span><strong>Spending request</strong><small>Request approval first</small></button>
           <button type="button" disabled><span>◎</span><strong>Employee claim</strong><small>Submit a reimbursement</small></button>
         </div>
-        <p class="dialog-note">Stage 1 establishes navigation, access checks, and workspace isolation. It does not write financial records.</p>
+        <p class="dialog-note">Setup drafts are separate from payments, balances and reports. Business purchasing remains closed.</p>
       </form>
     </dialog>
 

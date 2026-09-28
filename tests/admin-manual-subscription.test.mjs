@@ -8,8 +8,8 @@ const schema = readFileSync(new URL("../supabase/schema.sql", import.meta.url), 
 const html = readFileSync(new URL("../app.html", import.meta.url), "utf8");
 const app = readFileSync(new URL("../app.js", import.meta.url), "utf8");
 
-test("new migration is the final schema block so it retains the Business launch exception", () => {
-  assert.ok(schema.endsWith(migration));
+test("admin migration precedes Stage 3 while retaining the scoped Business launch exception", () => {
+  assert.ok(schema.includes(migration));
   assert.match(migration, /create or replace function public\.enforce_business_workspace_launch_control/);
   assert.match(migration, /create or replace function public\.enforce_business_member_provision_launch_control/);
 });

@@ -1,8 +1,8 @@
 (() => {
   "use strict";
 
-  const RELEASE = "4.9.17";
-  const WORKER_URL = "/sw.js?v=60";
+  const RELEASE = "4.9.18";
+  const WORKER_URL = "/sw.js?v=61";
   const UPDATE_CHECK_INTERVAL_MS = 15000;
   const dirtyForms = new Set();
   const operations = new Set();

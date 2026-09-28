@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import vm from "node:vm";
 
 const migration = readFileSync(new URL("../supabase/migrations/20260928213000_business_stage_6_bills.sql", import.meta.url), "utf8");
+const compatibility = readFileSync(new URL("../supabase/migrations/20260928222000_stage_6_reminder_url_compatibility.sql", import.meta.url), "utf8");
 const schema = readFileSync(new URL("../supabase/schema.sql", import.meta.url), "utf8");
 const diagnostic = readFileSync(new URL("../supabase/diagnostics/business_stage_6_bills_diagnostic.sql", import.meta.url), "utf8");
 const app = readFileSync(new URL("../business.js", import.meta.url), "utf8");
@@ -12,7 +13,8 @@ const dispatcher = readFileSync(new URL("../supabase/functions/dispatch-push-rem
 const worker = readFileSync(new URL("../sw.js", import.meta.url), "utf8");
 
 test("Stage 6 has scoped, read-only tables with guarded writes and payment history", () => {
-  assert.ok(schema.endsWith(migration));
+  assert.ok(schema.includes(migration));
+  assert.ok(schema.endsWith(compatibility));
   for (const table of ["business_suppliers", "business_bill_schedules", "business_bills", "business_bill_payments"]) {
     assert.match(migration, new RegExp(`alter table public\\.${table} force row level security`));
     assert.match(migration, new RegExp(`grant select on public\\.%I to authenticated`));
@@ -69,4 +71,6 @@ test("bill reminders use the protected outbox, current bill state, and Business 
   assert.match(dispatcher, /bill\.status !== "open"/);
   assert.match(dispatcher, /enqueue_due_business_bill_reminders/);
   assert.match(worker, /requested\.hash !== "#business\/bills"/);
+  assert.match(compatibility, /workspace=\[0-9a-fA-F-\]\{36\}&payment_item=/);
+  assert.match(compatibility, /business\[\.\]html/);
 });

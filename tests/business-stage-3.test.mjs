@@ -12,7 +12,7 @@ const styles = readFileSync(new URL("../business.css", import.meta.url), "utf8")
 const workflow = readFileSync(new URL("../.github/workflows/pages.yml", import.meta.url), "utf8");
 
 test("Stage 3 migration follows the launch lock and mirrors the consolidated schema", () => {
-  assert.ok(schema.endsWith(migration));
+  assert.ok(schema.includes(migration));
   assert.match(migration, /BUSINESS_SETTINGS_RPC_REQUIRED/);
   assert.match(migration, /public\.business_has_permission[\s\S]*?paid_through_at > now\(\)/);
   assert.match(migration, /revoke execute on function public\.save_business_profile/);

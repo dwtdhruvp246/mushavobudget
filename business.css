@@ -155,6 +155,38 @@ a { color: inherit; }
 .team-member strong, .team-member small { display: block; }
 .team-member small { margin-top: 3px; color: var(--muted); }
 .team-member .role-badge { color: var(--brand-dark); background: var(--brand-soft); }
+.seat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+.seat-grid article { padding: 15px; border: 1px solid var(--line); border-radius: 13px; background: #fff; }
+.seat-grid span, .seat-grid strong { display: block; }
+.seat-grid span { color: var(--muted); font-size: .74rem; font-weight: 720; }
+.seat-grid strong { margin-top: 7px; font-size: 1.35rem; }
+.team-columns { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr); gap: 16px; align-items: start; }
+.team-member { position: relative; }
+.team-member-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.team-member-actions button { min-height: 34px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 8px; color: var(--brand-dark); background: #fff; font-size: .7rem; font-weight: 760; cursor: pointer; }
+.team-member-actions button.danger { color: var(--danger); }
+.team-scope { margin-top: 4px; color: var(--muted); font-size: .72rem; }
+.team-message { margin: 0 0 15px; padding: 11px 13px; border: 1px solid #bce4d7; border-radius: 10px; color: #176c55; background: #f1fbf7; }
+.team-message.error { border-color: #eac4bb; color: #9b4232; background: #fff5f2; }
+.team-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+.team-form label, .confirmation-field { display: grid; gap: 7px; color: #345057; font-size: .82rem; font-weight: 750; }
+.team-form input, .team-form select, .confirmation-field input { min-height: 46px; padding: 10px 12px; border: 1px solid #cbdcda; border-radius: 10px; background: #fff; }
+.team-form fieldset { grid-column: 1 / -1; margin: 0; padding: 14px; border: 1px solid var(--line); border-radius: 11px; }
+.team-form legend { padding: 0 5px; font-weight: 780; }
+.team-form fieldset p { margin: 2px 0 12px; color: var(--muted); font-size: .76rem; }
+.scope-choices { display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px; max-height: 190px; overflow-y: auto; }
+.scope-choices label { display: flex; align-items: center; gap: 7px; min-height: 34px; font-weight: 620; }
+.scope-choices input { width: 17px; min-height: 17px; }
+.seat-impact { display: grid; gap: 3px; margin-top: 15px; padding: 12px; border-radius: 10px; color: #31595a; background: #f2faf7; }
+.seat-impact span { color: var(--muted); font-size: .74rem; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 20px; }
+.button.danger { color: #fff; border-color: var(--danger); background: var(--danger); }
+.confirmation-field { margin-top: 20px; }
+.invitation-gate-card { width: min(680px, calc(100% - 30px)); }
+.incoming-invitations { display: grid; gap: 10px; margin: 20px 0; text-align: left; }
+.incoming-invitation { padding: 15px; border: 1px solid var(--line); border-radius: 13px; }
+.incoming-invitation h3 { margin: 0; }
+.incoming-invitation p { margin: 6px 0 12px; }
 .detail-list { display: grid; gap: 0; margin: 18px 0 0; }
 .detail-list div { display: flex; justify-content: space-between; gap: 18px; padding: 13px 0; border-bottom: 1px solid var(--line); }
 .detail-list div:last-child { border-bottom: 0; }
@@ -190,6 +222,7 @@ dialog::backdrop { background: rgba(7, 24, 29, .58); backdrop-filter: blur(3px);
 @media (max-width: 1050px) {
   .metric-grid { grid-template-columns: repeat(2, 1fr); }
   .overview-grid, .report-preview, .settings-grid, .subscription-grid { grid-template-columns: 1fr; }
+  .team-columns { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 760px) {
@@ -232,6 +265,10 @@ dialog::backdrop { background: rgba(7, 24, 29, .58); backdrop-filter: blur(3px);
   .onboarding-inline-form label:first-child { grid-column: 1 / -1; }
   .onboarding-inline-form button { grid-column: 1 / -1; }
   .onboarding-actions .button { flex: 1; }
+  .seat-grid { grid-template-columns: repeat(2, 1fr); }
+  .team-form { grid-template-columns: 1fr; }
+  .scope-choices { grid-template-columns: 1fr; }
+  .team-form fieldset { grid-column: auto; }
 }
 
 @media (max-width: 430px) {
@@ -241,6 +278,7 @@ dialog::backdrop { background: rgba(7, 24, 29, .58); backdrop-filter: blur(3px);
   .gate-actions .button { width: 100%; }
   .team-member { grid-template-columns: auto 1fr; }
   .team-member .role-badge { grid-column: 2; justify-self: start; }
+  .team-member-actions { grid-column: 1 / -1; justify-content: flex-start; }
 }
 
 @media (prefers-reduced-motion: reduce) {

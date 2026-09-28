@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Manage a Mushavo Budget Business workspace." />
+    <meta name="theme-color" content="#12222a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Mushavo Business" />
+    <title>Business workspace | Mushavo Budget</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="preconnect" href="https://kttkospkblwvguuwnhjj.supabase.co" crossorigin />
+    <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest?v=5" />
+    <link rel="stylesheet" href="/business.css?v=1" />
+    <link rel="stylesheet" href="/pwa-update.css?v=1" />
+    <script src="/config.js?v=27"></script>
+    <script src="/pwa.js?v=57" defer></script>
+    <script type="module" src="/business.js?v=1"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#businessMain">Skip to Business content</a>
+
+    <main id="businessLoading" class="gate-view" aria-live="polite">
+      <section class="gate-card loading-card">
+        <img src="/assets/mushavo-budget-logo.png" alt="Mushavo Budget" width="178" height="120" />
+        <span class="spinner" aria-hidden="true"></span>
+        <h1>Opening Business</h1>
+        <p>Verifying your session and workspace access…</p>
+      </section>
+    </main>
+
+    <main id="businessConfig" class="gate-view hidden">
+      <section class="gate-card">
+        <p class="eyebrow">Configuration needed</p>
+        <h1>Business cannot connect</h1>
+        <p>Connect the Mushavo Budget Supabase project in <code>config.js</code>, then refresh this page.</p>
+      </section>
+    </main>
+
+    <main id="businessSuspended" class="gate-view hidden">
+      <section class="gate-card">
+        <p class="eyebrow">Account suspended</p>
+        <h1>Your account is suspended</h1>
+        <p>Your Business information remains stored, but this account cannot open a workspace. Contact Mushavo Budget support for help.</p>
+        <button class="button secondary" type="button" data-sign-out>Sign out</button>
+      </section>
+    </main>
+
+    <main id="businessNoAccess" class="gate-view hidden">
+      <section class="gate-card coming-soon-card">
+        <span class="business-symbol" aria-hidden="true">MB</span>
+        <p class="eyebrow">Mushavo Budget Business</p>
+        <h1>Business is coming soon</h1>
+        <p>The secure Business workspace foundation is ready. New Business subscriptions and workspace creation remain closed during the staged release.</p>
+        <div class="gate-actions">
+          <a class="button primary" href="/app.html#personal/dashboard">Return to Personal &amp; Family</a>
+          <a class="button secondary" href="/contact.html">Contact support</a>
+        </div>
+      </section>
+    </main>
+
+    <main id="businessError" class="gate-view hidden">
+      <section class="gate-card">
+        <p class="eyebrow">Loading stopped</p>
+        <h1>Business could not open</h1>
+        <p id="businessErrorMessage">A database or permission error stopped the workspace from loading.</p>
+        <div class="gate-actions">
+          <button class="button primary" type="button" data-retry>Try again</button>
+          <a class="button secondary" href="/app.html#personal/dashboard">Return to Personal &amp; Family</a>
+        </div>
+      </section>
+    </main>
+
+    <div id="businessApp" class="business-shell hidden">
+      <header class="mobile-header">
+        <a class="mobile-brand" href="#business/overview" aria-label="Business overview">
+          <span class="brand-icon" aria-hidden="true">MB</span>
+          <span><strong>Mushavo</strong><small>Business</small></span>
+        </a>
+        <button class="profile-button" type="button" data-open-more aria-label="Open Business menu">
+          <span data-user-initials>MB</span>
+        </button>
+      </header>
+
+      <aside class="business-sidebar" aria-label="Business workspace navigation">
+        <a class="sidebar-brand" href="#business/overview" aria-label="Mushavo Budget Business overview">
+          <img src="/assets/mushavo-budget-logo.png" alt="" width="112" height="76" />
+          <span><strong>Mushavo</strong><small>Business workspace</small></span>
+        </a>
+
+        <div class="workspace-switcher">
+          <label for="businessWorkspaceSelector">Selected business</label>
+          <select id="businessWorkspaceSelector" data-workspace-selector aria-label="Selected Business workspace"></select>
+          <div class="workspace-meta"><span id="businessRoleBadge" class="role-badge">Member</span><span id="businessStatusBadge" class="status-badge">Active</span></div>
+        </div>
+
+        <nav class="desktop-nav" aria-label="Business sections">
+          <p class="nav-label">Workspace</p>
+          <a href="#business/overview" data-business-nav="overview"><span aria-hidden="true">⌂</span>Overview</a>
+          <a href="#business/activity" data-business-nav="activity"><span aria-hidden="true">↕</span>Activity &amp; Transactions</a>
+          <a href="#business/bills" data-business-nav="bills"><span aria-hidden="true">▤</span>Bills &amp; Recurring</a>
+          <a href="#business/approvals" data-business-nav="approvals"><span aria-hidden="true">✓</span>Requests &amp; Approvals</a>
+          <a href="#business/budgets" data-business-nav="budgets"><span aria-hidden="true">◫</span>Budgets</a>
+          <a href="#business/reports" data-business-nav="reports"><span aria-hidden="true">⌁</span>Reports</a>
+          <p class="nav-label">Management</p>
+          <a href="#business/team" data-business-nav="team"><span aria-hidden="true">◎</span>Team</a>
+          <a href="#business/settings" data-business-nav="settings"><span aria-hidden="true">⚙</span>Settings</a>
+          <a href="#business/subscription" data-business-nav="subscription"><span aria-hidden="true">◇</span>Subscription &amp; Billing</a>
+        </nav>
+
+        <footer class="sidebar-footer">
+          <a href="/app.html#personal/dashboard" data-leave-business>Personal &amp; Family</a>
+          <button type="button" data-sign-out>Sign out</button>
+          <small>Version 4.9.16</small>
+        </footer>
+      </aside>
+
+      <main id="businessMain" class="business-main" tabindex="-1">
+        <header class="page-header">
+          <div>
+            <p id="businessBreadcrumb" class="eyebrow">Business overview</p>
+            <h1 id="businessPageTitle">Good morning</h1>
+            <p id="businessPageIntro" class="page-intro">A clear view of your company’s financial activity.</p>
+          </div>
+          <div class="header-actions">
+            <span id="businessToday" class="today-label"></span>
+            <button class="button primary add-desktop" type="button" data-open-add>+ Add</button>
+          </div>
+        </header>
+
+        <aside class="stage-banner" aria-label="Business release status">
+          <span>Stage 1 preview</span>
+          <p>The Business workspace shell is active. Purchases and financial recording remain closed until their release stages.</p>
+        </aside>
+
+        <section id="businessLock" class="lock-panel hidden" aria-live="polite">
+          <span class="lock-icon" aria-hidden="true">🔒</span>
+          <div><p class="eyebrow">Workspace locked</p><h2 id="businessLockTitle">Subscription renewal required</h2><p id="businessLockMessage"></p></div>
+          <button id="businessRenewalButton" class="button primary hidden" type="button">Renewal coming soon</button>
+        </section>
+
+        <div id="businessPanels">
+          <section class="business-panel" data-business-panel="overview">
+            <div class="metric-grid" aria-label="Business financial summary">
+              <article class="metric-card featured"><span>Cash position</span><strong>—</strong><small>Connected in a later stage</small></article>
+              <article class="metric-card"><span>Income</span><strong>—</strong><small>For the selected period</small></article>
+              <article class="metric-card"><span>Paid spending</span><strong>—</strong><small>Recorded company payments</small></article>
+              <article class="metric-card"><span>Commitments</span><strong>—</strong><small>Approved and unpaid</small></article>
+            </div>
+            <div class="overview-grid">
+              <article class="content-card activity-card">
+                <div class="card-heading"><div><p class="eyebrow">Company activity</p><h2>Recent transactions</h2></div><a href="#business/activity">View activity</a></div>
+                <div class="empty-state"><span aria-hidden="true">↕</span><h3>Financial records arrive in Stage 2</h3><p>This area will combine income, expenses, bills, claims, and their approval status without mixing Personal or Family data.</p></div>
+              </article>
+              <article class="content-card attention-card">
+                <div class="card-heading"><div><p class="eyebrow">Attention</p><h2>Needs action</h2></div></div>
+                <ul class="attention-list">
+                  <li><span>Approvals waiting</span><strong>—</strong></li>
+                  <li><span>Bills due soon</span><strong>—</strong></li>
+                  <li><span>Budget warnings</span><strong>—</strong></li>
+                </ul>
+                <a class="text-link" href="#business/approvals">Open requests &amp; approvals →</a>
+              </article>
+            </div>
+          </section>
+
+          <section class="business-panel hidden" data-business-panel="activity">
+            <div class="section-heading"><div><p class="eyebrow">Ledger</p><h2>Activity &amp; Transactions</h2><p>One ordered company record for income, expenses, bills, reimbursements, and status changes.</p></div><button class="button primary" type="button" data-open-add>+ Add transaction</button></div>
+            <article class="content-card"><div class="filter-preview"><button class="active" type="button">All activity</button><button type="button" disabled>Income</button><button type="button" disabled>Expenses</button><button type="button" disabled>Bills</button></div><div class="empty-state"><span aria-hidden="true">↕</span><h3>No Business transactions connected yet</h3><p>The Stage 2 data model will power this ledger. This preview intentionally reads no Personal or Family payment records.</p></div></article>
+          </section>
+
+          <section class="business-panel hidden" data-business-panel="bills">
+            <div class="section-heading"><div><p class="eyebrow">Commitments</p><h2>Bills &amp; Recurring</h2><p>Track supplier bills, recurring company costs, due dates, and payment status.</p></div><button class="button primary" type="button" data-open-add>+ Add bill</button></div>
+            <div class="metric-grid compact"><article class="metric-card"><span>Due this month</span><strong>—</strong></article><article class="metric-card"><span>Overdue</span><strong>—</strong></article><article class="metric-card"><span>Recurring</span><strong>—</strong></article></div>
+            <article class="content-card"><div class="empty-state"><span aria-hidden="true">▤</span><h3>Business bills are not connected yet</h3><p>Supplier and recurring bill workflows will be introduced after the Business data model is in place.</p></div></article>
+          </section>
+
+          <section class="business-panel hidden" data-business-panel="approvals">
+            <div class="section-heading"><div><p class="eyebrow">Controls</p><h2>Requests &amp; Approvals</h2><p>Review spending requests and claims with clear ownership and separation of duties.</p></div><button class="button primary" type="button" data-open-add>+ New request</button></div>
+            <article class="content-card"><div class="approval-tabs"><button class="active" type="button">Needs my approval <span>0</span></button><button type="button" disabled>My requests</button><button type="button" disabled>All requests</button></div><div class="empty-state"><span aria-hidden="true">✓</span><h3>No requests need your action</h3><p>Approval workflows will enforce the Business permissions and prevent self-approval.</p></div></article>
+          </section>
+
+          <section class="business-panel hidden" data-business-panel="budgets">
+            <div class="section-heading"><div><p class="eyebrow">Planning</p><h2>Budgets</h2><p>Set company and category limits, then compare commitments and actual spending.</p></div><button class="button primary" type="button" disabled>+ Create budget</button></div>
+            <article class="content-card"><div class="empty-state"><span aria-hidden="true">◫</span><h3>Budget controls arrive in a later stage</h3><p>Budgets will remain separate from household targets and will use Business-only categories.</p></div></article>
+          </section>
+
+          <section class="business-panel hidden" data-business-panel="reports">
+            <div class="section-heading"><div><p class="eyebrow">Analysis</p><h2>Reports</h2><p>Understand actual income, paid spending, and committed spending without duplicate counting.</p></div><button class="button secondary" type="button" disabled>Export report</button></div>
+            <div class="report-preview"><article class="content-card"><h3>Income and spending</h3><div class="chart-placeholder" aria-label="Report preview placeholder"><i></i><i></i><i></i><i></i><i></i><i></i></div></article><article class="content-card"><h3>Reporting currency</h3><p id="businessReportingCurrency" class="large-value">—</p><small>Workspace default</small></article></div>
+          </section>
+
+          <section class="business-panel hidden" data-business-panel="team">
+            <div class="section-heading"><div><p class="eyebrow">People &amp; access</p><h2>Team</h2><p>See who can access this Business workspace and the role assigned to each person.</p></div><button class="button primary" type="button" disabled>+ Invite member</button></div>
+            <article class="content-card"><div class="card-heading"><div><h3>Active members</h3><p id="businessTeamCount">0 people</p></div></div><div id="businessTeamList" class="team-list"></div></article>
+          </section>
+
+          <section class="business-panel hidden" data-business-panel="settings">
+            <div class="section-heading"><div><p class="eyebrow">Workspace setup</p><h2>Settings</h2><p>Business identity, reporting preferences, notifications, and security.</p></div><button class="button primary" type="button" disabled>Save changes</button></div>
+            <div class="settings-grid"><article class="content-card"><h3>Business details</h3><dl class="detail-list"><div><dt>Workspace</dt><dd id="settingsWorkspaceName">—</dd></div><div><dt>Your role</dt><dd id="settingsUserRole">—</dd></div><div><dt>Status</dt><dd id="settingsWorkspaceStatus">—</dd></div></dl></article><article class="content-card"><h3>Regional settings</h3><dl class="detail-list"><div><dt>Base currency</dt><dd id="settingsCurrency">—</dd></div><div><dt>Locale</dt><dd id="settingsLocale">—</dd></div><div><dt>Timezone</dt><dd id="settingsTimezone">—</dd></div></dl></article></div>
+          </section>
+
+          <section class="business-panel hidden" data-business-panel="subscription">
+            <div class="section-heading"><div><p class="eyebrow">Plan &amp; access</p><h2>Subscription &amp; Billing</h2><p>Business subscription ownership, billing cycle, access state, and renewal date.</p></div></div>
+            <div class="subscription-grid"><article class="subscription-card"><div><p class="eyebrow">Current plan</p><h3 id="subscriptionPlanName">Business preview</h3><span id="subscriptionState" class="status-badge">Coming soon</span></div><dl class="detail-list"><div><dt>Started</dt><dd id="subscriptionStart">—</dd></div><div><dt>Billing cycle</dt><dd id="subscriptionBilling">—</dd></div><div><dt>Paid through</dt><dd id="subscriptionExpiry">—</dd></div><div><dt>Time remaining</dt><dd id="subscriptionCountdown">—</dd></div></dl></article><article class="content-card release-card"><p class="eyebrow">Release status</p><h3>Purchases remain closed</h3><p>Business pricing, included seats, and renewal payment controls will be enabled only after the staged product is ready.</p><button class="button secondary" type="button" disabled>Manage subscription</button></article></div>
+          </section>
+        </div>
+      </main>
+
+      <nav class="mobile-bottom-nav" aria-label="Business mobile navigation">
+        <a href="#business/overview" data-business-nav="overview"><span aria-hidden="true">⌂</span><small>Overview</small></a>
+        <a href="#business/activity" data-business-nav="activity"><span aria-hidden="true">↕</span><small>Activity</small></a>
+        <button class="mobile-add" type="button" data-open-add><span aria-hidden="true">+</span><small>Add</small></button>
+        <a href="#business/approvals" data-business-nav="approvals"><span aria-hidden="true">✓</span><small>Approvals</small></a>
+        <button type="button" data-open-more><span aria-hidden="true">•••</span><small>More</small></button>
+      </nav>
+    </div>
+
+    <dialog id="businessAddDialog" class="business-dialog">
+      <form method="dialog">
+        <div class="dialog-heading"><div><p class="eyebrow">New Business record</p><h2>What would you like to add?</h2><p>These workflows will become available in the next Business stages.</p></div><button class="dialog-close" value="cancel" aria-label="Close">×</button></div>
+        <div class="quick-add-grid">
+          <button type="button" disabled><span>＋</span><strong>Income</strong><small>Record money received</small></button>
+          <button type="button" disabled><span>−</span><strong>Company expense</strong><small>Record paid spending</small></button>
+          <button type="button" disabled><span>▤</span><strong>Supplier bill</strong><small>Track an amount due</small></button>
+          <button type="button" disabled><span>✓</span><strong>Spending request</strong><small>Request approval first</small></button>
+          <button type="button" disabled><span>◎</span><strong>Employee claim</strong><small>Submit a reimbursement</small></button>
+        </div>
+        <p class="dialog-note">Stage 1 establishes navigation, access checks, and workspace isolation. It does not write financial records.</p>
+      </form>
+    </dialog>
+
+    <dialog id="businessMoreDialog" class="more-dialog">
+      <form method="dialog">
+        <div class="dialog-heading"><div><p class="eyebrow">Business menu</p><h2>More</h2></div><button class="dialog-close" value="cancel" aria-label="Close">×</button></div>
+        <label for="businessWorkspaceSelectorMobile">Selected business</label>
+        <select id="businessWorkspaceSelectorMobile" data-workspace-selector></select>
+        <nav aria-label="More Business sections">
+          <a href="#business/bills" data-dialog-route="bills">Bills &amp; Recurring <span>→</span></a>
+          <a href="#business/budgets" data-dialog-route="budgets">Budgets <span>→</span></a>
+          <a href="#business/reports" data-dialog-route="reports">Reports <span>→</span></a>
+          <a href="#business/team" data-dialog-route="team">Team <span>→</span></a>
+          <a href="#business/settings" data-dialog-route="settings">Settings <span>→</span></a>
+          <a href="#business/subscription" data-dialog-route="subscription">Subscription &amp; Billing <span>→</span></a>
+        </nav>
+        <div class="more-actions"><a href="/app.html#personal/dashboard" data-leave-business>Personal &amp; Family</a><button type="button" data-sign-out>Sign out</button></div>
+      </form>
+    </dialog>
+  </body>
+</html>

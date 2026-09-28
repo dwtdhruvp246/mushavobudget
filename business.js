@@ -1,4 +1,4 @@
-// Mushavo Budget Business application — Stage 4 team and invitations
+// Mushavo Budget Business application — Stage 5 expense claims
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -55,6 +55,11 @@ const state = {
   budgets: [],
   documents: [],
   auditEvents: [],
+  permissions: new Set(),
+  claims: [],
+  claimReceipts: [],
+  memberScopes: [],
+  claimSummary: null,
   tab: "overview",
   locked: false,
   lockOwner: false
@@ -66,6 +71,8 @@ let setupOpen = false;
 let setupBusy = false;
 let chosenCurrencies = new Set();
 let teamBusy = false;
+let claimBusy = false;
+let openedClaimId = null;
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -91,6 +98,13 @@ function friendlyMessage(error) {
   if (/BUSINESS_INVITATION_CHANGED/.test(message)) return "This invitation changed while you were editing. Reload the team list and try again.";
   if (/OWNERSHIP_CONFIRMATION_MISMATCH/.test(message)) return "Type the exact business name to confirm the ownership transfer.";
   if (/BUSINESS_TEAM_ACCESS_REQUIRED/.test(message)) return "You do not have permission to manage this Business team.";
+  if (/BUSINESS_CLAIM_CHANGED/.test(message)) return "This claim changed. Open it again to see the latest status.";
+  if (/BUSINESS_RECEIPT_REQUIRED/.test(message)) return "Attach a receipt or proof before submitting.";
+  if (/BUSINESS_EXCHANGE_RATE_UNAVAILABLE/.test(message)) return "No exchange rate is available for this currency. Try the reporting currency or wait for rates to sync.";
+  if (/BUSINESS_REPORTING_CURRENCY_LOCKED/.test(message)) return "This Business reporting currency is locked after the first expense claim so historical totals remain consistent.";
+  if (/BUSINESS_SELF_APPROVAL_FORBIDDEN/.test(message)) return "Another authorized member must review your claim.";
+  if (/BUSINESS_SCOPE_ACCESS_REQUIRED/.test(message)) return "This claim is outside your assigned project, branch or team.";
+  if (/BUSINESS_CLAIM_ACCESS_REQUIRED|BUSINESS_REVIEW_ACCESS_REQUIRED|BUSINESS_PAYMENT_ACCESS_REQUIRED/.test(message)) return "Your role or subscription does not allow this action.";
   if (/business_categories_active_(name|code)_idx/i.test(message)) return "That category is already active. Choose another name.";
   if (/business_dimensions_active_(name|code)_idx/i.test(message)) return "That tag is already active. Choose another name.";
   if (/jwt|session|refresh token/i.test(message)) return "Your session could not be verified. Please sign in again.";
@@ -132,6 +146,13 @@ function clearBusinessWorkspaceState() {
   state.budgets = [];
   state.documents = [];
   state.auditEvents = [];
+  state.permissions = new Set();
+  state.claims = [];
+  state.claimReceipts = [];
+  state.memberScopes = [];
+  state.claimSummary = null;
+  openedClaimId = null;
+  claimBusy = false;
   state.locked = false;
   state.lockOwner = false;
   setupStep = "basics";
@@ -200,6 +221,14 @@ function formatDate(value) {
   return Number.isNaN(date.getTime()) ? "—" : date.toLocaleDateString("en", { day: "numeric", month: "short", year: "numeric" });
 }
 
+function formatDateTime(value) {
+  if (!value) return "—";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "—" : date.toLocaleString("en", {
+    day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit"
+  });
+}
+
 function countdown(value) {
   if (!value) return "Not scheduled";
   const expiry = new Date(value).getTime();
@@ -208,6 +237,298 @@ function countdown(value) {
   if (days < 0) return `Expired ${Math.abs(days)} day${Math.abs(days) === 1 ? "" : "s"} ago`;
   if (days === 0) return "Expires today";
   return `${days} day${days === 1 ? "" : "s"} remaining`;
+}
+
+function money(value, currency) {
+  try {
+    return new Intl.NumberFormat("en", { style: "currency", currency, maximumFractionDigits: 2 }).format(Number(value));
+  } catch {
+    return `${Number(value).toFixed(2)} ${currency || ""}`;
+  }
+}
+
+function claimPermission(code) {
+  return !state.locked && state.permissions.has(code);
+}
+
+function claimNode(tag, className, value) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (value != null) node.textContent = value;
+  return node;
+}
+
+function setClaimMessage(selector, message = "", error = false) {
+  const node = $(selector);
+  node.textContent = message;
+  node.classList.toggle("hidden", !message);
+  node.classList.toggle("error", error);
+}
+
+function claimCard(claim) {
+  const card = claimNode("article", "claim-row");
+  const body = claimNode("div", "claim-row-body");
+  body.append(
+    claimNode("strong", "", claim.title),
+    claimNode("small", "", `${claim.kind === "reimbursement" ? "Reimbursement" : "Company expense"} · ${formatDate(claim.expense_date)} · ${claim.status.replaceAll("_", " ")}`)
+  );
+  const amount = claimNode("strong", "claim-row-amount", money(claim.amount, claim.currency));
+  const button = claimNode("button", "button secondary", "View");
+  button.type = "button";
+  button.dataset.claimId = claim.id;
+  card.append(body, amount, button);
+  return card;
+}
+
+function renderClaims() {
+  const claims = [...state.claims].sort((a, b) => b.created_at.localeCompare(a.created_at));
+  const ownId = state.session?.user?.id;
+  const reviewable = claims.filter((item) => item.status === "submitted" && item.submitted_by !== ownId && claimPermission("approvals.review"));
+  const summary = state.claimSummary;
+  const finance = claimPermission("finance.view_all") && summary?.finance_visible;
+  const currency = summary?.reporting_currency || state.workspaceSettings?.reporting_currency || "USD";
+  $("#businessPaidTotal").textContent = finance ? money(summary.paid_amount, currency) : "Private";
+  $("#businessCommitmentTotal").textContent = finance ? money(summary.committed_amount, currency) : "Private";
+  $("#businessPaidCount").textContent = finance ? String(summary.paid_count) : "—";
+  $("#businessReportPaid").textContent = finance ? money(summary.paid_amount, currency) : "Available to finance roles";
+  $("#businessReportCommitted").textContent = finance ? money(summary.committed_amount, currency) : "Available to finance roles";
+  $("#businessReportPending").textContent = finance ? String(summary.pending_count) : "—";
+  $("#businessReviewCount").textContent = String(summary?.review_count || 0);
+  $("#businessApprovalTabCount").textContent = String(summary?.review_count || 0);
+  for (const [selector, items, empty] of [
+    ["#businessOverviewClaims", claims.slice(0, 4), "No expense claims recorded yet."],
+    ["#businessClaimActivity", claims, "No expense claims recorded yet."],
+    ["#businessClaimApprovals", reviewable, "No claims need your review."]
+  ]) {
+    const container = $(selector);
+    container.replaceChildren(...(items.length ? items.map(claimCard) : [claimNode("p", "claim-empty", empty)]));
+  }
+  $$("[data-open-add], [data-open-claim]").forEach((button) => button.classList.toggle("hidden", !claimPermission("finance.create")));
+}
+
+async function refreshClaims() {
+  const workspaceId = state.workspace?.id;
+  if (!workspaceId || state.locked) return;
+  const sequence = workspaceLoadSequence;
+  const [claims, receipts, summary] = await Promise.all([
+    query("Business claims load", supabase.from("business_expense_claims").select("*").eq("workspace_id", workspaceId).order("created_at", { ascending: false }).limit(500)),
+    query("Business receipts load", supabase.from("business_documents").select("*").eq("workspace_id", workspaceId).eq("parent_type", "expense_claim").eq("status", "active").limit(500)),
+    query("Business claim summary", supabase.rpc("business_claim_summary", { p_workspace_id: workspaceId }))
+  ]);
+  if (sequence !== workspaceLoadSequence || state.workspace?.id !== workspaceId) return;
+  state.claims = claims;
+  state.claimReceipts = receipts;
+  state.claimSummary = summary;
+  renderClaims();
+  if (openedClaimId && $("#businessClaimDetailDialog").open) renderClaimDetail();
+}
+
+function openClaimForm(kind, existing = null) {
+  if (!claimPermission("finance.create")) return;
+  if ($("#businessAddDialog").open) $("#businessAddDialog").close();
+  if ($("#businessClaimDetailDialog").open) $("#businessClaimDetailDialog").close();
+  $("#businessClaimForm").reset();
+  $("#businessClaimId").value = existing?.id || "";
+  $("#businessClaimVersion").value = existing?.version || "";
+  $("#businessClaimKind").value = kind;
+  $("#businessClaimDialogTitle").textContent = existing ? "Edit draft" : kind === "reimbursement" ? "New reimbursement claim" : "New company expense";
+  const today = new Date();
+  $("#businessClaimDate").value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  $("#businessClaimCurrency").replaceChildren(...(state.workspaceSettings?.enabled_currencies || []).map((code) => new Option(code, code)));
+  $("#businessClaimCurrency").value = state.workspaceSettings?.default_payment_currency || state.workspaceSettings?.reporting_currency;
+  $("#businessClaimCategory").replaceChildren(...state.businessCategories
+    .filter((item) => item.status === "active" && ["expense", "both"].includes(item.category_type))
+    .map((item) => new Option(item.name, item.id)));
+  const scopedIds = new Set(state.memberScopes.map((item) => item.dimension_id));
+  $("#businessClaimDimension").replaceChildren(new Option(scopedIds.size ? "Choose assigned tag" : "None", ""), ...state.businessDimensions
+    .filter((item) => item.status === "active" && (!scopedIds.size || scopedIds.has(item.id)))
+    .map((item) => new Option(item.name, item.id)));
+  $("#businessClaimDimension").required = scopedIds.size > 0;
+  if (existing) {
+    $("#businessClaimTitle").value = existing.title;
+    $("#businessClaimAmount").value = existing.amount;
+    $("#businessClaimCurrency").value = existing.currency;
+    $("#businessClaimDate").value = existing.expense_date;
+    $("#businessClaimCategory").value = existing.category_id;
+    $("#businessClaimDimension").value = existing.dimension_id || "";
+    $("#businessClaimDescription").value = existing.description || "";
+  }
+  setClaimMessage("#businessClaimFormMessage");
+  $("#businessClaimDialog").showModal();
+}
+
+async function createClaim(event) {
+  event.preventDefault();
+  if (claimBusy) return;
+  claimBusy = true;
+  const workspaceId = state.workspace.id;
+  const existingId = $("#businessClaimId").value;
+  try {
+    const payload = {
+      p_workspace_id: workspaceId,
+      p_title: $("#businessClaimTitle").value,
+      p_description: $("#businessClaimDescription").value,
+      p_category_id: $("#businessClaimCategory").value,
+      p_dimension_id: $("#businessClaimDimension").value || null,
+      p_amount: Number($("#businessClaimAmount").value),
+      p_currency: $("#businessClaimCurrency").value,
+      p_expense_date: $("#businessClaimDate").value
+    };
+    const claim = existingId
+      ? await query("Save Business draft", supabase.rpc("save_business_claim_draft", {
+        ...payload, p_claim_id: existingId, p_expected_version: Number($("#businessClaimVersion").value)
+      }))
+      : await query("Create Business claim", supabase.rpc("create_business_claim", {
+        ...payload, p_kind: $("#businessClaimKind").value
+      }));
+    $("#businessClaimDialog").close();
+    await refreshClaims();
+    if (state.workspace?.id === workspaceId) openClaimDetail(claim.id);
+  } catch (error) {
+    setClaimMessage("#businessClaimFormMessage", friendlyMessage(error), true);
+  } finally { claimBusy = false; }
+}
+
+function detailLine(key, value) {
+  const row = document.createElement("div");
+  row.append(claimNode("dt", "", key), claimNode("dd", "", value));
+  return row;
+}
+
+function actionButton(text, action) {
+  const button = claimNode("button", "button secondary", text);
+  button.type = "button";
+  button.dataset.claimAction = action;
+  return button;
+}
+
+async function renderClaimDetail() {
+  const claim = state.claims.find((item) => item.id === openedClaimId);
+  if (!claim || !$("#businessClaimDetailDialog").open) return;
+  const own = claim.submitted_by === state.session.user.id;
+  $("#claimDetailTitle").textContent = claim.title;
+  $("#claimDetailMeta").textContent = `${claim.kind === "reimbursement" ? "Reimbursement claim" : "Company expense"} · ${claim.status.replaceAll("_", " ")}`;
+  $("#claimDetailFields").replaceChildren(
+    detailLine("Amount", money(claim.amount, claim.currency)),
+    detailLine("Reporting amount", money(claim.reporting_amount, claim.reporting_currency)),
+    detailLine("Expense date", formatDate(claim.expense_date)),
+    detailLine("Category", state.businessCategories.find((item) => item.id === claim.category_id)?.name || "Archived category"),
+    detailLine("Details", claim.description || "—"),
+    detailLine("Review", claim.review_reason || "—"),
+    detailLine("Payment", claim.paid_at ? `${formatDate(claim.paid_at)} · ${claim.payment_reference}` : "Not recorded")
+  );
+  const receipts = state.claimReceipts.filter((item) => item.parent_id === claim.id);
+  const receiptList = $("#claimReceiptList");
+  receiptList.replaceChildren();
+  for (const receipt of receipts) {
+    const link = claimNode("button", "button secondary", receipt.original_name);
+    link.type = "button";
+    link.dataset.receiptPath = receipt.storage_path;
+    receiptList.append(link);
+  }
+  if (!receipts.length) receiptList.append(claimNode("p", "claim-empty", "No receipt attached."));
+  $("#claimUploadField").classList.toggle("hidden", !(own && ["draft", "changes_requested"].includes(claim.status)));
+  $("#claimDecisionPanel").classList.add("hidden");
+  const actions = $("#claimDetailActions");
+  actions.replaceChildren();
+  if (own && ["draft", "changes_requested"].includes(claim.status)) {
+    const direct = claim.kind === "company_expense" && roleForWorkspace(state.workspace) === "business_owner";
+    actions.append(actionButton("Edit draft", "edit"),
+      actionButton(direct ? "Ready for payment" : "Submit for review", "submit"));
+  }
+  if (!own && claim.status === "submitted" && claimPermission("approvals.review")) {
+    actions.append(actionButton("Approve", "approved"), actionButton("Request changes", "changes_requested"), actionButton("Reject", "rejected"));
+  }
+  if (claim.status === "approved" && claimPermission("finance.record_payment")) actions.append(actionButton("Record payment", "paid"));
+  try {
+    const history = await query("Claim history load", supabase.rpc("business_claim_history", {
+      p_workspace_id: claim.workspace_id, p_claim_id: claim.id
+    }));
+    if (openedClaimId !== claim.id) return;
+    $("#claimHistoryList").replaceChildren(...history.map((event) => {
+      const line = claimNode("p", "claim-history-entry");
+      line.append(claimNode("strong", "", event.action.replaceAll(".", " ").replaceAll("_", " ")),
+        document.createTextNode(` · ${formatDateTime(event.created_at)}${event.reason ? ` · ${event.reason}` : ""}`));
+      return line;
+    }));
+  } catch (error) { setClaimMessage("#claimDetailMessage", friendlyMessage(error), true); }
+}
+
+function openClaimDetail(id) {
+  if (!state.claims.some((item) => item.id === id)) return;
+  openedClaimId = id;
+  setClaimMessage("#claimDetailMessage");
+  $("#businessClaimDetailDialog").showModal();
+  renderClaimDetail();
+}
+
+async function uploadClaimReceipt() {
+  const file = $("#claimReceiptFile").files[0];
+  const claim = state.claims.find((item) => item.id === openedClaimId);
+  if (!file || !claim || claimBusy) return;
+  if (!["image/jpeg", "image/png", "image/webp", "application/pdf"].includes(file.type) || !file.size || file.size > 10485760) {
+    setClaimMessage("#claimDetailMessage", "Choose a JPG, PNG, WebP or PDF file up to 10 MB.", true);
+    return;
+  }
+  claimBusy = true;
+  const documentId = crypto.randomUUID();
+  const cleanName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 120) || "receipt";
+  const path = `workspaces/${claim.workspace_id}/${state.session.user.id}/${documentId}/${cleanName}`;
+  let uploaded = false;
+  try {
+    await query("Upload receipt", supabase.storage.from("business-documents").upload(path, file, { contentType: file.type, upsert: false }));
+    uploaded = true;
+    await query("Register receipt", supabase.rpc("register_business_document", {
+      p_document_id: documentId, p_workspace_id: claim.workspace_id,
+      p_parent_type: "expense_claim", p_parent_id: claim.id,
+      p_storage_path: path, p_original_name: file.name,
+      p_mime_type: file.type, p_size_bytes: file.size
+    }));
+    $("#claimReceiptFile").value = "";
+    await refreshClaims();
+    setClaimMessage("#claimDetailMessage", "Receipt attached.");
+  } catch (error) {
+    if (uploaded) await supabase.storage.from("business-documents").remove([path]);
+    setClaimMessage("#claimDetailMessage", friendlyMessage(error), true);
+  } finally { claimBusy = false; }
+}
+
+async function claimAction(action, confirmed = false) {
+  if (claimBusy) return;
+  const claim = state.claims.find((item) => item.id === openedClaimId);
+  if (!claim) return;
+  if (action === "edit") {
+    openClaimForm(claim.kind, claim);
+    return;
+  }
+  if (["rejected", "changes_requested", "paid"].includes(action) && !confirmed) {
+    $("#claimDecisionPanel").dataset.action = action;
+    $("#claimDecisionLabel").textContent = action === "paid" ? "Payment reference" : action === "rejected" ? "Reason for rejection" : "What needs to change?";
+    $("#claimDecisionInput").value = "";
+    $("#claimDecisionInput").maxLength = action === "paid" ? 160 : 1000;
+    $("#claimDecisionPanel").classList.remove("hidden");
+    $("#claimDecisionInput").focus();
+    return;
+  }
+  const reason = confirmed && action !== "paid" ? $("#claimDecisionInput").value.trim() : null;
+  const reference = confirmed && action === "paid" ? $("#claimDecisionInput").value.trim() : null;
+  if (confirmed && (!reason && !reference)) {
+    setClaimMessage("#claimDetailMessage", "Enter a reason or payment reference.", true);
+    return;
+  }
+  claimBusy = true;
+  try {
+    const args = { p_workspace_id: claim.workspace_id, p_claim_id: claim.id, p_expected_version: claim.version };
+    if (action === "submit") await query("Submit claim", supabase.rpc("submit_business_claim", args));
+    else if (action === "paid") await query("Record payment", supabase.rpc("record_business_claim_payment", {
+      ...args, p_paid_at: new Date().toISOString(), p_payment_reference: reference
+    }));
+    else await query("Review claim", supabase.rpc("review_business_claim", { ...args, p_decision: action, p_reason: reason }));
+    await refreshClaims();
+    setClaimMessage("#claimDetailMessage", "Claim updated.");
+  } catch (error) {
+    setClaimMessage("#claimDetailMessage", friendlyMessage(error), true);
+  } finally { claimBusy = false; }
 }
 
 function businessOwnerCanSetUp() {
@@ -859,6 +1180,7 @@ function renderBusinessWorkspace() {
   renderTeam();
   renderSubscription();
   resolveWorkspaceLock();
+  renderClaims();
   if (!state.locked) renderBusinessSetup();
   $('[data-open-setup-draft]')?.classList.toggle("hidden", !businessOwnerCanSetUp());
   renderRoute();
@@ -872,6 +1194,8 @@ async function selectBusinessWorkspace(workspaceId) {
   clearBusinessWorkspaceState();
   if ($("#businessAddDialog")?.open) $("#businessAddDialog").close();
   if ($("#businessMoreDialog")?.open) $("#businessMoreDialog").close();
+  if ($("#businessClaimDialog")?.open) $("#businessClaimDialog").close();
+  if ($("#businessClaimDetailDialog")?.open) $("#businessClaimDetailDialog").close();
   showOnly("businessLoading");
   const requestSequence = workspaceLoadSequence;
   state.workspace = workspace;
@@ -880,9 +1204,10 @@ async function selectBusinessWorkspace(workspaceId) {
   setWorkspaceUrl(workspace.id);
   renderWorkspaceSelectors();
 
-  let subscriptions, entitlements, settings, team, profiles, categories, dimensions, drafts;
+  let subscriptions, entitlements, settings, team, profiles, categories, dimensions, drafts, permissions, memberScopes;
   try {
-    [subscriptions, entitlements, settings, team, profiles, categories, dimensions, drafts] = await Promise.all([
+    const memberId = state.memberships.find((item) => item.workspace_id === workspace.id && item.user_id === state.session.user.id)?.id;
+    [subscriptions, entitlements, settings, team, profiles, categories, dimensions, drafts, permissions, memberScopes] = await Promise.all([
     query("Business subscription load", supabase.from("workspace_subscriptions").select("*").eq("workspace_id", workspace.id).limit(1)),
     query("Business entitlement load", supabase.rpc("effective_workspace_entitlement", { p_workspace_id: workspace.id })),
     query("Business settings load", supabase.from("workspace_settings").select("*").eq("workspace_id", workspace.id).maybeSingle()),
@@ -890,7 +1215,9 @@ async function selectBusinessWorkspace(workspaceId) {
     query("Business identity load", supabase.from("business_profiles").select("*").eq("workspace_id", workspace.id).maybeSingle()),
     query("Business category load", supabase.from("business_categories").select("*").eq("workspace_id", workspace.id).order("name")),
     query("Business tag load", supabase.from("business_dimensions").select("*").eq("workspace_id", workspace.id).order("name")),
-    query("Business first draft load", supabase.from("business_setup_drafts").select("*").eq("workspace_id", workspace.id).maybeSingle())
+    query("Business first draft load", supabase.from("business_setup_drafts").select("*").eq("workspace_id", workspace.id).maybeSingle()),
+    query("Business permissions load", supabase.rpc("business_effective_permissions", { p_workspace_id: workspace.id })),
+    memberId ? query("Business assigned scope load", supabase.from("business_member_scopes").select("dimension_id").eq("workspace_id", workspace.id).eq("member_id", memberId)) : Promise.resolve([])
     ]);
   } catch (error) {
     if (requestSequence !== workspaceLoadSequence) return;
@@ -909,7 +1236,10 @@ async function selectBusinessWorkspace(workspaceId) {
   state.businessCategories = categories;
   state.businessDimensions = dimensions;
   state.setupDraft = drafts || null;
+  state.permissions = new Set((permissions || []).filter((item) => item.allowed).map((item) => item.permission_code));
+  state.memberScopes = memberScopes || [];
   renderBusinessWorkspace();
+  if (!state.locked) await refreshClaims();
 }
 
 async function loadBusinessAccess() {
@@ -999,6 +1329,34 @@ $$('[data-workspace-selector]').forEach((select) => {
   });
 });
 $$('[data-open-add]').forEach((button) => button.addEventListener("click", () => $("#businessAddDialog").showModal()));
+$$('[data-open-claim]').forEach((button) => button.addEventListener("click", () => openClaimForm(button.dataset.openClaim)));
+$("#businessClaimForm").addEventListener("submit", createClaim);
+$$("[data-close-claim]").forEach((button) => button.addEventListener("click", () => $("#businessClaimDialog").close()));
+$$("[data-close-claim-detail]").forEach((button) => button.addEventListener("click", () => $("#businessClaimDetailDialog").close()));
+$("#businessClaimDetailDialog").addEventListener("close", () => { openedClaimId = null; });
+$("#claimReceiptFile").addEventListener("change", uploadClaimReceipt);
+$("#claimDetailActions").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-claim-action]");
+  if (button) claimAction(button.dataset.claimAction);
+});
+$("#claimDecisionPanel").addEventListener("click", (event) => {
+  if (event.target.closest("[data-cancel-claim-decision]")) $("#claimDecisionPanel").classList.add("hidden");
+  if (event.target.closest("[data-confirm-claim-decision]")) claimAction($("#claimDecisionPanel").dataset.action, true);
+});
+$("#claimReceiptList").addEventListener("click", async (event) => {
+  const button = event.target.closest("[data-receipt-path]");
+  if (!button) return;
+  try {
+    const signed = await query("Open receipt", supabase.storage.from("business-documents").createSignedUrl(button.dataset.receiptPath, 60));
+    window.open(signed.signedUrl, "_blank", "noopener,noreferrer");
+  } catch (error) { setClaimMessage("#claimDetailMessage", friendlyMessage(error), true); }
+});
+["#businessOverviewClaims", "#businessClaimActivity", "#businessClaimApprovals"].forEach((selector) => {
+  $(selector).addEventListener("click", (event) => {
+    const button = event.target.closest("[data-claim-id]");
+    if (button) openClaimDetail(button.dataset.claimId);
+  });
+});
 $("[data-open-setup-draft]").addEventListener("click", () => {
   $("#businessAddDialog").close();
   if (!businessOwnerCanSetUp()) return;

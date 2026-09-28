@@ -61,6 +61,7 @@ test("report combines actual bill payments with claims while linked claims are e
 });
 
 test("bill reminders use the protected outbox, current bill state, and Business deep link", () => {
+  assert.match(migration, /source=push&workspace=\[0-9a-fA-F-\]\{36\}&payment_item=/);
   assert.match(migration, /revoke all on function public\.enqueue_due_business_bill_reminders\(timestamptz\) from public,anon,authenticated/);
   assert.match(migration, /business_bill_reminder_allowed/);
   assert.match(migration, /on conflict\(idempotency_key\) do nothing/);

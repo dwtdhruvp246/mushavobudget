@@ -603,7 +603,7 @@ using(bucket_id='business-documents' and exists(select 1 from public.business_do
 alter table public.notification_outbox drop constraint notification_outbox_target_url_check;
 alter table public.notification_outbox add constraint notification_outbox_target_url_check
 check(char_length(target_url) between 1 and 500 and (
-  target_url ~ '^/app[.]html[?]source=push&payment_item=[0-9a-fA-F-]{36}#family/payments$'
+  target_url ~ '^/app[.]html[?]source=push&workspace=[0-9a-fA-F-]{36}&payment_item=[0-9a-fA-F-]{36}#family/payments$'
   or target_url ~ '^/business[.]html[?]source=push&workspace=[0-9a-fA-F-]{36}&bill=[0-9a-fA-F-]{36}#business/bills$'
 ));
 

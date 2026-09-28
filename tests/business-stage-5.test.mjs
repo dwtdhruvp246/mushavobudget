@@ -10,7 +10,7 @@ const app = readFileSync(new URL("../business.js", import.meta.url), "utf8");
 const html = readFileSync(new URL("../business.html", import.meta.url), "utf8");
 
 test("Stage 5 migration is mirrored and claims are protected by RLS and atomic RPCs", () => {
-  assert.ok(schema.endsWith(migration));
+  assert.ok(schema.includes(migration));
   assert.match(migration, /business_expense_claims force row level security/);
   assert.match(migration, /revoke all on public\.business_expense_claims from public, anon, authenticated/);
   assert.match(migration, /grant select on public\.business_expense_claims to authenticated/);

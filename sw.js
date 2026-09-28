@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "mushavo-budget-";
-const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v68`;
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v69`;
 const APP_ENTRY_URL = "/app-entry.html";
 const OFFLINE_URL = "/offline.html";
 const OFFLINE_ENTRY_CACHE_KEY = "/__mushavo-budget-offline/app-entry";
@@ -9,7 +9,7 @@ const DEFAULT_NOTIFICATION_BODY = "You have a new Mushavo Budget notification.";
 const DEFAULT_NOTIFICATION_TARGET = "/app.html?source=push#family/payments";
 const NOTIFICATION_ICON = "/assets/pwa-icon-192.png";
 const NOTIFICATION_BADGE = "/assets/pwa-icon-192.png";
-const ALLOWED_NOTIFICATION_PATHS = new Set(["/app.html"]);
+const ALLOWED_NOTIFICATION_PATHS = new Set(["/app.html", "/business.html"]);
 const ALLOWED_NOTIFICATION_HASHES = new Set([
   "#family/dashboard",
   "#family/payments",
@@ -20,7 +20,7 @@ const ALLOWED_NOTIFICATION_HASHES = new Set([
   "#admin/support"
 ]);
 const APP_ENTRY_PATHS = new Set(["/app-entry", "/app-entry.html"]);
-const APP_WINDOW_PATHS = new Set(["/app", "/app.html", "/app-entry", "/app-entry.html"]);
+const APP_WINDOW_PATHS = new Set(["/app", "/app.html", "/app-entry", "/app-entry.html", "/business.html"]);
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const SAFE_SHELL = [
@@ -29,7 +29,7 @@ const SAFE_SHELL = [
   "/pwa-update.css?v=1",
   "/pwa-install.css?v=1",
   "/pwa-install.js?v=1",
-  "/pwa.js?v=60",
+  "/pwa.js?v=61",
   "/assets/mushavo-budget-logo.png",
   "/assets/pwa-icon-192.png",
   "/assets/pwa-icon-512.png",
@@ -93,6 +93,15 @@ function safeNotificationTarget(value) {
     target.searchParams.set("source", "push");
 
     const workspaceId = requested.searchParams.get("workspace");
+    if (requested.pathname === "/business.html") {
+      const billId = requested.searchParams.get("bill");
+      if (!workspaceId || !UUID_PATTERN.test(workspaceId) || !billId || !UUID_PATTERN.test(billId)
+        || requested.hash !== "#business/bills") return fallback.href;
+      target.searchParams.set("workspace", workspaceId);
+      target.searchParams.set("bill", billId);
+      target.hash = "#business/bills";
+      return target.href;
+    }
     if (workspaceId && UUID_PATTERN.test(workspaceId)) {
       target.searchParams.set("workspace", workspaceId);
     }

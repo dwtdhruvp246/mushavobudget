@@ -1,4 +1,4 @@
-// Mushavo Budget Business application — Stage 5 expense claims
+// Mushavo Budget Business application — Stage 6 bills and recurring
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -60,6 +60,11 @@ const state = {
   claimReceipts: [],
   memberScopes: [],
   claimSummary: null,
+  billSuppliers: [],
+  billSchedules: [],
+  billPayments: [],
+  billDocuments: [],
+  billSummary: null,
   tab: "overview",
   locked: false,
   lockOwner: false
@@ -73,6 +78,8 @@ let chosenCurrencies = new Set();
 let teamBusy = false;
 let claimBusy = false;
 let openedClaimId = null;
+let openedBillId = null;
+let billBusy = false;
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -105,6 +112,11 @@ function friendlyMessage(error) {
   if (/BUSINESS_SELF_APPROVAL_FORBIDDEN/.test(message)) return "Another authorized member must review your claim.";
   if (/BUSINESS_SCOPE_ACCESS_REQUIRED/.test(message)) return "This claim is outside your assigned project, branch or team.";
   if (/BUSINESS_CLAIM_ACCESS_REQUIRED|BUSINESS_REVIEW_ACCESS_REQUIRED|BUSINESS_PAYMENT_ACCESS_REQUIRED/.test(message)) return "Your role or subscription does not allow this action.";
+  if (/BUSINESS_BILL_POSSIBLE_DUPLICATE/.test(message)) return "A bill for this supplier, amount and due date already exists. Check it before creating another.";
+  if (/business_bill_supplier_reference_idx/.test(message)) return "This supplier invoice reference already exists.";
+  if (/BUSINESS_BILL_CLAIM_LINK_INVALID/.test(message)) return "Choose an approved company expense with the same amount, currency and project that has no linked bill.";
+  if (/BUSINESS_CLAIM_LINKED_TO_BILL/.test(message)) return "Record payment on the linked supplier bill so the expense is counted once.";
+  if (/BUSINESS_BILL_PAYMENT_INVALID|BUSINESS_BILL_NOT_OPEN/.test(message)) return "Check the outstanding amount, date and payment reference. This bill may already be paid.";
   if (/business_categories_active_(name|code)_idx/i.test(message)) return "That category is already active. Choose another name.";
   if (/business_dimensions_active_(name|code)_idx/i.test(message)) return "That tag is already active. Choose another name.";
   if (/jwt|session|refresh token/i.test(message)) return "Your session could not be verified. Please sign in again.";
@@ -151,8 +163,15 @@ function clearBusinessWorkspaceState() {
   state.claimReceipts = [];
   state.memberScopes = [];
   state.claimSummary = null;
+  state.billSuppliers = [];
+  state.billSchedules = [];
+  state.billPayments = [];
+  state.billDocuments = [];
+  state.billSummary = null;
   openedClaimId = null;
+  openedBillId = null;
   claimBusy = false;
+  billBusy = false;
   state.locked = false;
   state.lockOwner = false;
   setupStep = "basics";
@@ -287,11 +306,14 @@ function renderClaims() {
   const summary = state.claimSummary;
   const finance = claimPermission("finance.view_all") && summary?.finance_visible;
   const currency = summary?.reporting_currency || state.workspaceSettings?.reporting_currency || "USD";
-  $("#businessPaidTotal").textContent = finance ? money(summary.paid_amount, currency) : "Private";
-  $("#businessCommitmentTotal").textContent = finance ? money(summary.committed_amount, currency) : "Private";
+  const billSummary = state.billSummary;
+  const paidAmount = Number(summary?.paid_amount || 0) + Number(billSummary?.paid_amount || 0);
+  const commitment = Number(summary?.committed_amount || 0) + Number(billSummary?.outstanding || 0);
+  $("#businessPaidTotal").textContent = finance && billSummary ? money(paidAmount, currency) : finance ? money(summary.paid_amount, currency) : "Private";
+  $("#businessCommitmentTotal").textContent = finance && billSummary ? money(commitment, currency) : finance ? money(summary.committed_amount, currency) : "Private";
   $("#businessPaidCount").textContent = finance ? String(summary.paid_count) : "—";
-  $("#businessReportPaid").textContent = finance ? money(summary.paid_amount, currency) : "Available to finance roles";
-  $("#businessReportCommitted").textContent = finance ? money(summary.committed_amount, currency) : "Available to finance roles";
+  $("#businessReportPaid").textContent = finance && billSummary ? money(paidAmount, currency) : finance ? money(summary.paid_amount, currency) : "Available to finance roles";
+  $("#businessReportCommitted").textContent = finance && billSummary ? money(commitment, currency) : finance ? money(summary.committed_amount, currency) : "Available to finance roles";
   $("#businessReportPending").textContent = finance ? String(summary.pending_count) : "—";
   $("#businessReviewCount").textContent = String(summary?.review_count || 0);
   $("#businessApprovalTabCount").textContent = String(summary?.review_count || 0);
@@ -529,6 +551,289 @@ async function claimAction(action, confirmed = false) {
   } catch (error) {
     setClaimMessage("#claimDetailMessage", friendlyMessage(error), true);
   } finally { claimBusy = false; }
+}
+
+function billAccess() {
+  return claimPermission("finance.view_all");
+}
+
+function billCard(bill) {
+  const card = claimNode("article", "claim-row");
+  const remaining = Math.max(0, Number(bill.amount) - Number(bill.paid_amount));
+  const body = claimNode("div", "claim-row-body");
+  body.append(claimNode("strong", "", bill.title),
+    claimNode("small", "", `${state.billSuppliers.find((item) => item.id === bill.supplier_id)?.name || "Supplier"} · Due ${formatDate(bill.due_on)} · ${bill.status === "open" && new Date(bill.due_on + "T23:59:59") < new Date() ? "Overdue" : bill.status}`));
+  const button = actionButton("View", "bill-view");
+  button.dataset.billId = bill.id;
+  card.append(body, claimNode("strong", "claim-row-amount", `${money(remaining, bill.currency)} left`), button);
+  return card;
+}
+
+function renderBills() {
+  const allowed = billAccess();
+  $("#addBusinessBill").classList.toggle("hidden", !allowed || !claimPermission("finance.create"));
+  $("#addBusinessSupplier").classList.toggle("hidden", !allowed || !claimPermission("finance.create"));
+  $$("[data-open-bill]").forEach((button) => button.classList.toggle("hidden", !allowed || !claimPermission("finance.create")));
+  const summary = state.billSummary;
+  const currency = summary?.reporting_currency || state.workspaceSettings?.reporting_currency || "USD";
+  $("#businessBillsDue").textContent = allowed && summary ? String(summary.due_count) : "—";
+  $("#businessBillsOverdue").textContent = allowed && summary ? String(summary.overdue_count) : "—";
+  $("#businessBillsOutstanding").textContent = allowed && summary ? money(summary.outstanding, currency) : "—";
+  $("#businessOverviewBillsDue").textContent = allowed && summary ? String(Number(summary.due_count) + Number(summary.overdue_count)) : "—";
+  $("#businessBillList").replaceChildren(...(allowed && state.bills.length
+    ? state.bills.map(billCard)
+    : [claimNode("p", "claim-empty", allowed ? "No bills yet. Add a supplier, then a bill." : "Your role does not include company bills.")]));
+  $("#businessSupplierList").replaceChildren(...(allowed && state.billSuppliers.length
+    ? state.billSuppliers.map((supplier) => {
+      const row = claimNode("div", "claim-row");
+      row.append(claimNode("strong", "", supplier.name));
+      const button = actionButton("Edit", "supplier-edit");
+      button.dataset.supplierId = supplier.id;
+      row.append(button);
+      return row;
+    }) : [claimNode("p", "claim-empty", "No suppliers yet.")]));
+  $("#businessScheduleList").replaceChildren(...(allowed && state.billSchedules.length
+    ? state.billSchedules.map((schedule) => {
+      const row = claimNode("div", "claim-row");
+      const info = claimNode("div", "claim-row-body");
+      info.append(claimNode("strong", "", schedule.title),
+        claimNode("small", "", `${schedule.frequency} · every ${schedule.interval_count} · ${schedule.status}`));
+      row.append(info);
+      if (schedule.status === "active" && claimPermission("finance.create")) {
+        const stop = actionButton("Stop", "schedule-stop");
+        stop.dataset.scheduleId = schedule.id;
+        row.append(stop);
+      }
+      return row;
+    }) : [claimNode("p", "claim-empty", "No recurring schedules yet.")]));
+}
+
+async function refreshBills() {
+  const workspaceId = state.workspace?.id;
+  if (!workspaceId || state.locked || !billAccess()) { renderBills(); return; }
+  const sequence = workspaceLoadSequence;
+  const [suppliers, schedules, bills, payments, documents, summary] = await Promise.all([
+    query("Supplier load", supabase.from("business_suppliers").select("*").eq("workspace_id", workspaceId).eq("status", "active").order("name").limit(500)),
+    query("Bill schedule load", supabase.from("business_bill_schedules").select("*").eq("workspace_id", workspaceId).order("created_at", { ascending: false }).limit(500)),
+    query("Bill load", supabase.from("business_bills").select("*").eq("workspace_id", workspaceId).order("due_on", { ascending: false }).limit(500)),
+    query("Bill payment load", supabase.from("business_bill_payments").select("*").eq("workspace_id", workspaceId).order("paid_at", { ascending: false }).limit(500)),
+    query("Bill document load", supabase.from("business_documents").select("*").eq("workspace_id", workspaceId).in("parent_type", ["business_bill", "business_bill_payment"]).eq("status", "active").limit(500)),
+    query("Bill summary", supabase.rpc("business_bill_summary", { p_workspace_id: workspaceId }))
+  ]);
+  if (sequence !== workspaceLoadSequence || state.workspace?.id !== workspaceId) return;
+  Object.assign(state, { billSuppliers: suppliers, billSchedules: schedules, bills, billPayments: payments, billDocuments: documents, billSummary: summary });
+  renderBills();
+  renderClaims();
+  if (openedBillId && $("#businessBillDetailDialog").open) renderBillDetail();
+  const targetId = new URL(window.location.href).searchParams.get("bill");
+  if (targetId && state.bills.some((item) => item.id === targetId)) {
+    const url = new URL(window.location.href);
+    url.searchParams.delete("bill");
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+    openBillDetail(targetId);
+  }
+}
+
+function openSupplierForm(supplier = null) {
+  if (!billAccess() || !claimPermission("finance.create")) return;
+  $("#businessSupplierForm").reset();
+  $("#businessSupplierTitle").textContent = supplier ? "Edit supplier" : "Add supplier";
+  $("#businessSupplierId").value = supplier?.id || "";
+  $("#businessSupplierVersion").value = supplier?.version || "";
+  $("#supplierName").value = supplier?.name || "";
+  $("#supplierEmail").value = supplier?.email || "";
+  $("#supplierNotes").value = supplier?.notes || "";
+  setClaimMessage("#supplierFormMessage");
+  $("#businessSupplierDialog").showModal();
+}
+
+async function saveSupplier(event) {
+  event.preventDefault();
+  if (billBusy) return;
+  billBusy = true;
+  try {
+    await query("Save supplier", supabase.rpc("save_business_supplier", {
+      p_workspace_id: state.workspace.id,
+      p_supplier_id: $("#businessSupplierId").value || null,
+      p_name: $("#supplierName").value,
+      p_email: $("#supplierEmail").value,
+      p_notes: $("#supplierNotes").value,
+      p_expected_version: Number($("#businessSupplierVersion").value) || null
+    }));
+    $("#businessSupplierDialog").close();
+    await refreshBills();
+  } catch (error) { setClaimMessage("#supplierFormMessage", friendlyMessage(error), true); }
+  finally { billBusy = false; }
+}
+
+function renderBillType() {
+  const recurring = $("#billType").value !== "once";
+  $("#billIntervalField").classList.toggle("hidden", !recurring);
+  $("#billReferenceField").classList.toggle("hidden", recurring);
+  $("#billClaimField").classList.toggle("hidden", recurring);
+}
+
+function openBillForm() {
+  if (!billAccess() || !claimPermission("finance.create")) return;
+  if ($("#businessAddDialog").open) $("#businessAddDialog").close();
+  $("#businessBillForm").reset();
+  $("#billSupplier").replaceChildren(new Option("Choose supplier", ""), ...state.billSuppliers.map((item) => new Option(item.name, item.id)));
+  $("#billCategory").replaceChildren(...state.businessCategories
+    .filter((item) => item.status === "active" && ["expense", "both"].includes(item.category_type))
+    .map((item) => new Option(item.name, item.id)));
+  $("#billCurrency").replaceChildren(...(state.workspaceSettings?.enabled_currencies || []).map((code) => new Option(code, code)));
+  $("#billCurrency").value = state.workspaceSettings?.default_payment_currency || state.workspaceSettings?.reporting_currency;
+  const scopes = new Set(state.memberScopes.map((item) => item.dimension_id));
+  $("#billDimension").replaceChildren(new Option(scopes.size ? "Choose assigned tag" : "None", ""), ...state.businessDimensions
+    .filter((item) => item.status === "active" && (!scopes.size || scopes.has(item.id)))
+    .map((item) => new Option(item.name, item.id)));
+  $("#billDimension").required = scopes.size > 0;
+  $("#billSourceClaim").replaceChildren(new Option("No linked expense", ""), ...state.claims
+    .filter((item) => item.kind === "company_expense" && item.status === "approved"
+      && !state.bills.some((bill) => bill.source_claim_id === item.id))
+    .map((item) => new Option(`${item.title} · ${money(item.amount, item.currency)}`, item.id)));
+  const today = new Date();
+  $("#billDue").value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  $("#billRemindDays").value = 3;
+  $("#billCreateAnyway").classList.add("hidden");
+  setClaimMessage("#billFormMessage");
+  renderBillType();
+  $("#businessBillDialog").showModal();
+}
+
+async function saveBill(event, allowDuplicate = false) {
+  event?.preventDefault();
+  if (billBusy) return;
+  billBusy = true;
+  try {
+    const common = {
+      p_workspace_id: state.workspace.id,
+      p_supplier_id: $("#billSupplier").value,
+      p_title: $("#billTitle").value,
+      p_category_id: $("#billCategory").value,
+      p_dimension_id: $("#billDimension").value || null,
+      p_amount: Number($("#billAmount").value),
+      p_currency: $("#billCurrency").value,
+      p_remind_days_before: Number($("#billRemindDays").value)
+    };
+    const frequency = $("#billType").value;
+    if (frequency === "once") {
+      await query("Create bill", supabase.rpc("create_business_bill", {
+        ...common, p_reference: $("#billReference").value,
+        p_due_on: $("#billDue").value, p_source_claim_id: $("#billSourceClaim").value || null,
+        p_allow_duplicate: allowDuplicate
+      }));
+    } else {
+      await query("Create recurring schedule", supabase.rpc("create_business_bill_schedule", {
+        ...common, p_frequency: frequency, p_interval_count: Number($("#billInterval").value),
+        p_starts_on: $("#billDue").value, p_ends_on: null
+      }));
+    }
+    $("#businessBillDialog").close();
+    await refreshBills();
+    await refreshClaims();
+  } catch (error) {
+    setClaimMessage("#billFormMessage", friendlyMessage(error), true);
+    $("#billCreateAnyway").classList.toggle("hidden", !/BUSINESS_BILL_POSSIBLE_DUPLICATE/.test(String(error?.message)));
+  } finally { billBusy = false; }
+}
+
+function renderBillDetail() {
+  const bill = state.bills.find((item) => item.id === openedBillId);
+  if (!bill) return;
+  const payments = state.billPayments.filter((item) => item.bill_id === bill.id);
+  $("#billDetailTitle").textContent = bill.title;
+  $("#billDetailMeta").textContent = `${state.billSuppliers.find((item) => item.id === bill.supplier_id)?.name || "Supplier"} · ${bill.status}`;
+  $("#billDetailFields").replaceChildren(
+    detailLine("Total", money(bill.amount, bill.currency)),
+    detailLine("Paid", money(bill.paid_amount, bill.currency)),
+    detailLine("Outstanding", money(Number(bill.amount) - Number(bill.paid_amount), bill.currency)),
+    detailLine("Due", formatDate(bill.due_on)),
+    detailLine("Supplier reference", bill.reference || "—"),
+    detailLine("Linked expense", bill.source_claim_id ? "Linked to an approved company expense" : "—")
+  );
+  $("#billPaymentList").replaceChildren(...(payments.length ? payments.map((item) => {
+    const row = claimNode("div", "claim-row");
+    row.append(claimNode("strong", "", money(item.amount, item.currency)),
+      claimNode("small", "", `${formatDateTime(item.paid_at)} · ${item.reference}`));
+    return row;
+  }) : [claimNode("p", "claim-empty", "No payments recorded.")]));
+  $("#billPaymentForm").classList.toggle("hidden", bill.status !== "open" || !claimPermission("finance.record_payment"));
+  $("#cancelBusinessBill").classList.toggle("hidden", bill.status !== "open" || Number(bill.paid_amount) > 0 || !claimPermission("finance.create"));
+  $("#billPaymentAmount").max = String(Number(bill.amount) - Number(bill.paid_amount));
+  $("#billPaymentAmount").value = String(Number(bill.amount) - Number(bill.paid_amount));
+  $("#billProofList").replaceChildren(...(state.billDocuments.filter((doc) => doc.parent_id === bill.id
+    || payments.some((item) => item.id === doc.parent_id)).map((doc) => {
+    const button = actionButton(doc.original_name, "bill-proof");
+    button.dataset.proofPath = doc.storage_path;
+    return button;
+  })));
+  $("#billProofParent").replaceChildren(new Option("Invoice / bill", bill.id), ...payments.map((item) =>
+    new Option(`Payment ${money(item.amount, item.currency)} · ${formatDateTime(item.paid_at)}`, item.id)));
+}
+
+function openBillDetail(id) {
+  if (!state.bills.some((item) => item.id === id)) return;
+  openedBillId = id;
+  setClaimMessage("#billDetailMessage");
+  renderBillDetail();
+  $("#businessBillDetailDialog").showModal();
+}
+
+async function saveBillPayment(event) {
+  event.preventDefault();
+  if (billBusy) return;
+  const bill = state.bills.find((item) => item.id === openedBillId);
+  if (!bill) return;
+  billBusy = true;
+  try {
+    const paymentId = $("#billPaymentForm").dataset.requestId || crypto.randomUUID();
+    $("#billPaymentForm").dataset.requestId = paymentId;
+    await query("Record bill payment", supabase.rpc("record_business_bill_payment", {
+      p_workspace_id: bill.workspace_id, p_bill_id: bill.id,
+      p_payment_id: paymentId, p_amount: Number($("#billPaymentAmount").value),
+      p_paid_at: new Date().toISOString(), p_reference: $("#billPaymentReference").value
+    }));
+    delete $("#billPaymentForm").dataset.requestId;
+    $("#billPaymentForm").reset();
+    await refreshBills();
+    await refreshClaims();
+    setClaimMessage("#billDetailMessage", "Payment recorded.");
+  } catch (error) { setClaimMessage("#billDetailMessage", friendlyMessage(error), true); }
+  finally { billBusy = false; }
+}
+
+async function uploadBillProof() {
+  const bill = state.bills.find((item) => item.id === openedBillId);
+  const file = $("#billProofFile").files[0];
+  if (!bill || !file || billBusy) return;
+  if (!["image/jpeg", "image/png", "image/webp", "application/pdf"].includes(file.type)
+    || !file.size || file.size > 10485760) {
+    setClaimMessage("#billDetailMessage", "Choose a JPG, PNG, WebP or PDF up to 10 MB.", true);
+    return;
+  }
+  billBusy = true;
+  const documentId = crypto.randomUUID();
+  const path = `workspaces/${bill.workspace_id}/${state.session.user.id}/${documentId}/${(file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 120) || "proof")}`;
+  const parentId = $("#billProofParent").value;
+  const parentType = parentId === bill.id ? "business_bill" : "business_bill_payment";
+  let uploaded = false;
+  try {
+    await query("Upload bill proof", supabase.storage.from("business-documents").upload(path, file, { contentType: file.type, upsert: false }));
+    uploaded = true;
+    await query("Register bill proof", supabase.rpc("register_business_document", {
+      p_document_id: documentId, p_workspace_id: bill.workspace_id,
+      p_parent_type: parentType, p_parent_id: parentId,
+      p_storage_path: path, p_original_name: file.name,
+      p_mime_type: file.type, p_size_bytes: file.size
+    }));
+    $("#billProofFile").value = "";
+    await refreshBills();
+    setClaimMessage("#billDetailMessage", "Proof attached.");
+  } catch (error) {
+    if (uploaded) await supabase.storage.from("business-documents").remove([path]);
+    setClaimMessage("#billDetailMessage", friendlyMessage(error), true);
+  } finally { billBusy = false; }
 }
 
 function businessOwnerCanSetUp() {
@@ -1181,6 +1486,7 @@ function renderBusinessWorkspace() {
   renderSubscription();
   resolveWorkspaceLock();
   renderClaims();
+  renderBills();
   if (!state.locked) renderBusinessSetup();
   $('[data-open-setup-draft]')?.classList.toggle("hidden", !businessOwnerCanSetUp());
   renderRoute();
@@ -1196,6 +1502,9 @@ async function selectBusinessWorkspace(workspaceId) {
   if ($("#businessMoreDialog")?.open) $("#businessMoreDialog").close();
   if ($("#businessClaimDialog")?.open) $("#businessClaimDialog").close();
   if ($("#businessClaimDetailDialog")?.open) $("#businessClaimDetailDialog").close();
+  for (const selector of ["#businessSupplierDialog", "#businessBillDialog", "#businessBillDetailDialog"]) {
+    if ($(selector)?.open) $(selector).close();
+  }
   showOnly("businessLoading");
   const requestSequence = workspaceLoadSequence;
   state.workspace = workspace;
@@ -1239,7 +1548,10 @@ async function selectBusinessWorkspace(workspaceId) {
   state.permissions = new Set((permissions || []).filter((item) => item.allowed).map((item) => item.permission_code));
   state.memberScopes = memberScopes || [];
   renderBusinessWorkspace();
-  if (!state.locked) await refreshClaims();
+  if (!state.locked) {
+    await refreshClaims();
+    await refreshBills();
+  }
 }
 
 async function loadBusinessAccess() {
@@ -1330,6 +1642,60 @@ $$('[data-workspace-selector]').forEach((select) => {
 });
 $$('[data-open-add]').forEach((button) => button.addEventListener("click", () => $("#businessAddDialog").showModal()));
 $$('[data-open-claim]').forEach((button) => button.addEventListener("click", () => openClaimForm(button.dataset.openClaim)));
+$$('[data-open-bill]').forEach((button) => button.addEventListener("click", openBillForm));
+$("#addBusinessBill").addEventListener("click", openBillForm);
+$("#addBusinessSupplier").addEventListener("click", () => openSupplierForm());
+$("#businessSupplierForm").addEventListener("submit", saveSupplier);
+$$('[data-close-supplier]').forEach((button) => button.addEventListener("click", () => $("#businessSupplierDialog").close()));
+$("#businessSupplierList").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-supplier-id]");
+  if (button) openSupplierForm(state.billSuppliers.find((item) => item.id === button.dataset.supplierId));
+});
+$("#businessBillForm").addEventListener("submit", saveBill);
+$("#billType").addEventListener("change", renderBillType);
+$("#billCreateAnyway").addEventListener("click", () => saveBill(null, true));
+$$('[data-close-bill-form]').forEach((button) => button.addEventListener("click", () => $("#businessBillDialog").close()));
+$("#businessBillList").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-bill-id]");
+  if (button) openBillDetail(button.dataset.billId);
+});
+$("#businessScheduleList").addEventListener("click", async (event) => {
+  const button = event.target.closest("[data-schedule-id]");
+  if (!button || billBusy || !window.confirm("Stop this schedule? Bills already created will stay payable.")) return;
+  billBusy = true;
+  try {
+    await query("Stop recurring schedule", supabase.rpc("stop_business_bill_schedule", {
+      p_workspace_id: state.workspace.id, p_schedule_id: button.dataset.scheduleId
+    }));
+    await refreshBills();
+  } catch (error) { setClaimMessage("#businessBillMessage", friendlyMessage(error), true); }
+  finally { billBusy = false; }
+});
+$$('[data-close-bill-detail]').forEach((button) => button.addEventListener("click", () => $("#businessBillDetailDialog").close()));
+$("#businessBillDetailDialog").addEventListener("close", () => { openedBillId = null; delete $("#billPaymentForm").dataset.requestId; });
+$("#billPaymentForm").addEventListener("submit", saveBillPayment);
+$("#cancelBusinessBill").addEventListener("click", async () => {
+  const bill = state.bills.find((item) => item.id === openedBillId);
+  if (!bill || billBusy || !window.confirm("Cancel this unpaid bill? This keeps its history and stops its reminders.")) return;
+  billBusy = true;
+  try {
+    await query("Cancel bill", supabase.rpc("cancel_business_bill", { p_workspace_id: bill.workspace_id, p_bill_id: bill.id }));
+    await refreshBills();
+    await refreshClaims();
+    setClaimMessage("#billDetailMessage", "Bill cancelled.");
+  } catch (error) { setClaimMessage("#billDetailMessage", friendlyMessage(error), true); }
+  finally { billBusy = false; }
+});
+$("#billPaymentForm").addEventListener("input", () => { delete $("#billPaymentForm").dataset.requestId; });
+$("#billProofFile").addEventListener("change", uploadBillProof);
+$("#billProofList").addEventListener("click", async (event) => {
+  const button = event.target.closest("[data-proof-path]");
+  if (!button) return;
+  try {
+    const signed = await query("Open bill proof", supabase.storage.from("business-documents").createSignedUrl(button.dataset.proofPath, 60));
+    window.open(signed.signedUrl, "_blank", "noopener,noreferrer");
+  } catch (error) { setClaimMessage("#billDetailMessage", friendlyMessage(error), true); }
+});
 $("#businessClaimForm").addEventListener("submit", createClaim);
 $$("[data-close-claim]").forEach((button) => button.addEventListener("click", () => $("#businessClaimDialog").close()));
 $$("[data-close-claim-detail]").forEach((button) => button.addEventListener("click", () => $("#businessClaimDetailDialog").close()));

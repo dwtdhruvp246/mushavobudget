@@ -171,6 +171,34 @@ async function validatePaymentJob(
   return { valid: true };
 }
 
+async function validateBusinessBillJob(
+  serviceClient: SupabaseClient,
+  job: OutboxJob,
+): Promise<ValidationResult> {
+  const match = job.idempotency_key.match(
+    /^business_bill:([0-9a-f-]{36}):due:(\d{4}-\d{2}-\d{2}):reminder:(\d{4}-\d{2}-\d{2})$/i,
+  );
+  if (!match || match[1].toLowerCase() !== job.source_id.toLowerCase()) {
+    return { valid: false, reason: "Business bill reminder occurrence is invalid." };
+  }
+  const { data: bill, error: billError } = await serviceClient
+    .from("business_bills")
+    .select("id, workspace_id, due_on, status, amount, paid_amount")
+    .eq("id", job.source_id)
+    .maybeSingle();
+  if (billError) throw new Error(`business_bill_lookup:${billError.code || "database_error"}`);
+  if (!bill || bill.workspace_id !== job.workspace_id || bill.due_on !== match[2]
+    || bill.status !== "open" || Number(bill.paid_amount) >= Number(bill.amount)) {
+    return { valid: false, reason: "Business bill is paid, cancelled, or changed." };
+  }
+  const { data: allowed, error: allowedError } = await serviceClient.rpc(
+    "business_bill_reminder_allowed",
+    { p_bill_id: bill.id, p_recipient: job.user_id },
+  );
+  if (allowedError) throw new Error(`business_bill_access:${allowedError.code || "database_error"}`);
+  return allowed ? { valid: true } : { valid: false, reason: "Business reminder access ended." };
+}
+
 async function cancelJob(
   serviceClient: SupabaseClient,
   jobId: string,
@@ -254,6 +282,23 @@ Deno.serve(async (request) => {
   } else {
     enqueued = Number(enqueueCount || 0);
   }
+  const { error: generationError } = await serviceClient.rpc("generate_business_bill_occurrences", {
+    p_reference_date: referenceTime.slice(0, 10),
+    p_workspace_id: null,
+  });
+  if (generationError) {
+    enqueueFailed = true;
+    console.error("Business bill generation failed", generationError.code || "database_error");
+  }
+  const { data: businessEnqueued, error: businessEnqueueError } = await serviceClient.rpc(
+    "enqueue_due_business_bill_reminders", { p_reference_time: referenceTime },
+  );
+  if (businessEnqueueError) {
+    enqueueFailed = true;
+    console.error("Business reminder enqueue failed", businessEnqueueError.code || "database_error");
+  } else {
+    enqueued += Number(businessEnqueued || 0);
+  }
 
   const { data: claimedRows, error: claimError } = await serviceClient.rpc(
     "claim_notification_outbox",
@@ -283,7 +328,9 @@ Deno.serve(async (request) => {
 
   for (const job of jobs) {
     try {
-      const validation = await validatePaymentJob(serviceClient, job);
+      const validation = job.source_type === "business_bill"
+        ? await validateBusinessBillJob(serviceClient, job)
+        : await validatePaymentJob(serviceClient, job);
       if (!validation.valid) {
         await cancelJob(serviceClient, job.id, validation.reason);
         totals.cancelled += 1;
@@ -310,7 +357,7 @@ Deno.serve(async (request) => {
         type: job.notification_type,
         title: job.title,
         body: job.body,
-        tag: `payment:${job.source_id}:${job.notification_type}`,
+        tag: `${job.source_type}:${job.source_id}:${job.notification_type}`,
         sent_at: sentAt,
         target_url: job.target_url,
       });

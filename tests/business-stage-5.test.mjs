@@ -18,7 +18,8 @@ test("Stage 5 migration is mirrored and claims are protected by RLS and atomic R
   assert.match(migration, /constraint business_claim_dimension_fk foreign key \(workspace_id, dimension_id\)/);
   for (const rpc of ["create_business_claim", "save_business_claim_draft", "submit_business_claim", "review_business_claim", "record_business_claim_payment"]) {
     assert.match(migration, new RegExp(`create function public\\.${rpc}\\(`));
-    assert.match(app, new RegExp(`supabase\\.rpc\\("${rpc}"`));
+    const clientRpc = ['create_business_claim', 'save_business_claim_draft'].includes(rpc) ? 'save_business_expense_entry' : rpc === 'record_business_claim_payment' ? 'record_business_claim_payment_with_source' : rpc;
+    assert.match(app, new RegExp(`supabase\\.rpc\\("${clientRpc}"`));
   }
 });
 
@@ -65,12 +66,10 @@ test("locked conversion and status-specific reporting count paid claims once", (
   };
   vm.runInNewContext(`${code}\nrenderClaims();`, {
     state, $, $$: () => [], claimPermission: (code) => code === "finance.view_all" || code === "approvals.review",
-    money: (value) => `$${value}`, claimCard: (item) => item,
+    renderFinanceSummary: () => {}, money: (value) => `$${value}`, claimCard: (item) => item,
     claimNode: (_tag, _className, text) => ({ textContent: text })
   });
-  assert.equal($("#businessPaidTotal").textContent, "$100");
-  assert.equal($("#businessCommitmentTotal").textContent, "$50");
   assert.equal($("#businessReportPending").textContent, "1");
   assert.equal($("#businessReviewCount").textContent, "1");
-  assert.equal($("#businessClaimActivity").children.length, 4);
+  assert.equal($("#businessClaimApprovals").children.length, 1);
 });

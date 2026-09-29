@@ -14,11 +14,11 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="/business.css?v=5" />
+    <link rel="stylesheet" href="/business.css?v=6" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <script src="/config.js?v=27"></script>
-    <script src="/pwa.js?v=61" defer></script>
-    <script type="module" src="/business.js?v=5"></script>
+    <script src="/pwa.js?v=62" defer></script>
+    <script type="module" src="/business.js?v=6"></script>
   </head>
   <body>
     <a class="skip-link" href="#businessMain">Skip to Business content</a>
@@ -124,7 +124,7 @@
         <footer class="sidebar-footer">
           <a href="/app.html#personal/dashboard" data-leave-business>Personal &amp; Family</a>
           <button type="button" data-sign-out>Sign out</button>
-          <small>Version 4.9.21</small>
+          <small>Version 4.9.22</small>
         </footer>
       </aside>
 
@@ -221,8 +221,8 @@
           <section class="business-panel" data-business-panel="overview">
             <div class="metric-grid" aria-label="Business financial summary">
               <article class="metric-card featured"><span>Paid expenses</span><strong id="businessPaidTotal">—</strong><small>Recorded company payments and reimbursements</small></article>
-              <article class="metric-card"><span>Income</span><strong>—</strong><small>For the selected period</small></article>
-              <article class="metric-card"><span>Claims paid</span><strong id="businessPaidCount">—</strong><small>Stage 5 expense workflow</small></article>
+              <article class="metric-card"><span>Income received</span><strong id="businessIncomeTotal">—</strong><small>All recorded dates · excludes voided income</small></article>
+              <article class="metric-card"><span>Payments recorded</span><strong id="businessPaidCount">—</strong><small>Company expenses, bill payments and reimbursements</small></article>
               <article class="metric-card"><span>Approved, unpaid</span><strong id="businessCommitmentTotal">—</strong><small>Awaiting payment or reimbursement</small></article>
             </div>
             <div class="overview-grid">
@@ -244,8 +244,22 @@
           </section>
 
           <section class="business-panel hidden" data-business-panel="activity">
-            <div class="section-heading"><div><p class="eyebrow">Ledger</p><h2>Activity &amp; Transactions</h2><p>Expenses and claims, with payment status and receipt history.</p></div><button class="button primary" type="button" data-open-add>+ Add expense</button></div>
-            <article class="content-card"><div class="filter-preview"><button class="active" type="button">Expenses &amp; claims</button><button type="button" disabled>Income</button><button type="button" disabled>Bills</button></div><div id="businessSetupDraftActivity" class="hidden"></div><div id="businessClaimActivity" class="claim-list"></div><small>Showing the 500 most recent claims. Summary totals include all records.</small></article>
+            <div class="section-heading"><div><p class="eyebrow">Ledger</p><h2>Activity &amp; Transactions</h2><p>Received income, expenses, employee costs, reimbursements and supplier payments.</p></div><button class="button primary" type="button" data-open-add>+ Add record</button></div>
+            <article class="content-card">
+              <form id="businessActivityFilters" class="activity-filters">
+                <label class="activity-search">Search<input name="search" type="search" maxlength="160" placeholder="Title, reference or person" /></label>
+                <label>Type<select name="kind"><option value="">All types</option><option value="income">Income received</option><option value="company_expense">Company expense</option><option value="employee_cost">Employee-paid cost</option><option value="reimbursement">Reimbursement paid</option><option value="bill">Unpaid / cancelled bill</option><option value="bill_payment">Bill payment</option></select></label>
+                <label>Status<select name="status"><option value="">All statuses</option><option value="received">Received</option><option value="paid">Paid</option><option value="approved">Approved, unpaid</option><option value="open">Bill outstanding</option><option value="draft">Draft</option><option value="submitted">Submitted</option><option value="changes_requested">Changes requested</option><option value="rejected">Rejected</option><option value="cancelled">Cancelled</option><option value="voided">Voided</option></select></label>
+                <label>Currency<select name="currency"></select></label><label>Category<select name="category_id"></select></label><label>Project, branch or team<select name="dimension_id"></select></label>
+                <label>From<input name="from" type="date" /></label><label>To<input name="to" type="date" /></label><label>Payment source<select name="payment_source" data-payment-sources data-source-all></select></label>
+                <div class="dialog-actions"><button type="button" id="businessActivityReset" class="button secondary">Reset</button><button type="submit" class="button primary">Apply filters</button></div>
+              </form>
+              <p id="businessActivityMessage" class="team-message hidden" role="status"></p>
+              <p id="businessActivityTotals" class="activity-summary" aria-live="polite"></p>
+              <div id="businessSetupDraftActivity" class="hidden"></div><div id="businessClaimActivity" class="claim-list"></div>
+              <div class="activity-pagination"><button id="businessActivityPrevious" class="button secondary" type="button">Previous</button><span id="businessActivityPage" aria-live="polite"></span><button id="businessActivityNext" class="button secondary" type="button">Next</button></div>
+              <small>Dates follow the workspace timezone. Totals cover all matching records, not just this page. Employee-paid costs count as company spending only when reimbursed.</small>
+            </article>
           </section>
 
           <section class="business-panel hidden" data-business-panel="bills">
@@ -267,7 +281,7 @@
 
           <section class="business-panel hidden" data-business-panel="reports">
             <div class="section-heading"><div><p class="eyebrow">Analysis</p><h2>Reports</h2><p>Understand actual income, paid spending, and committed spending without duplicate counting.</p></div><button class="button secondary" type="button" disabled>Export report</button></div>
-            <div class="report-preview"><article class="content-card"><h3>Expense workflow</h3><dl class="detail-list"><div><dt>Paid expenses</dt><dd id="businessReportPaid">—</dd></div><div><dt>Approved and unpaid</dt><dd id="businessReportCommitted">—</dd></div><div><dt>Submitted for review</dt><dd id="businessReportPending">—</dd></div></dl><small>Only recorded payments count as paid spending. Each claim is counted once.</small></article><article class="content-card"><h3>Reporting currency</h3><p id="businessReportingCurrency" class="large-value">—</p><small>Conversions are locked when a claim is created.</small></article></div>
+            <div class="report-preview"><article class="content-card"><h3>Recorded activity · all dates</h3><dl class="detail-list"><div><dt>Income received</dt><dd id="businessReportIncome">—</dd></div><div><dt>Business payments</dt><dd id="businessReportPaid">—</dd></div><div><dt>Approved expenses / bills unpaid</dt><dd id="businessReportCommitted">—</dd></div><div><dt>Claims submitted for review</dt><dd id="businessReportPending">—</dd></div></dl><small>Actuals exclude voided income and unreimbursed employee costs. Linked claims and bills count once. Use Activity filters for date-specific totals.</small></article><article class="content-card"><h3>Reporting currency</h3><p id="businessReportingCurrency" class="large-value">—</p><small>Historical conversions are locked with each financial record. These are recorded totals, not an account balance or profit report.</small></article></div>
           </section>
 
           <section class="business-panel hidden" data-business-panel="team">
@@ -327,7 +341,7 @@
         <div class="dialog-heading"><div><p class="eyebrow">New Business record</p><h2>What would you like to add?</h2><p>Record a company expense or submit a reimbursement claim with a receipt.</p></div><button class="dialog-close" value="cancel" aria-label="Close">×</button></div>
         <div class="quick-add-grid">
           <button type="button" data-open-setup-draft class="hidden"><span>✎</span><strong>Setup draft</strong><small>Owner can edit the first draft</small></button>
-          <button type="button" disabled><span>＋</span><strong>Income</strong><small>Record money received</small></button>
+          <button type="button" data-open-income><span>＋</span><strong>Income received</strong><small>Record money already received, not expected income</small></button>
           <button type="button" data-open-claim="company_expense"><span>−</span><strong>Company expense</strong><small>Attach receipt, submit, then record payment</small></button>
           <button type="button" data-open-bill><span>▤</span><strong>Supplier bill</strong><small>Track due dates and payments</small></button>
           <button type="button" disabled><span>✓</span><strong>Spending request</strong><small>Request approval first</small></button>
@@ -350,6 +364,7 @@
           <label>Expense date<input id="businessClaimDate" type="date" required /></label>
           <label>Expense category<select id="businessClaimCategory" required></select></label>
           <label>Project, branch or team<select id="businessClaimDimension"></select></label>
+          <label id="businessEmployeeSourceField">How did you pay personally?<select id="businessEmployeeSource" data-payment-sources required></select><small>Paid by you. Company spending is recorded only after reimbursement.</small></label>
           <label class="field-wide">Details<textarea id="businessClaimDescription" rows="3" maxlength="2000"></textarea></label>
         </div>
         <p id="businessClaimFormMessage" class="team-message hidden" role="status"></p>
@@ -367,12 +382,33 @@
         <div id="claimDecisionPanel" class="claim-decision hidden">
           <label id="claimDecisionLabel" for="claimDecisionInput">Reason</label>
           <input id="claimDecisionInput" type="text" maxlength="1000" />
+          <label id="claimPaymentSourceField" class="hidden">Company payment source<select id="claimPaymentSource" data-payment-sources></select></label>
           <div class="dialog-actions"><button class="button secondary" type="button" data-cancel-claim-decision>Cancel</button><button class="button primary" type="button" data-confirm-claim-decision>Confirm</button></div>
         </div>
         <div id="claimDetailActions" class="dialog-actions"></div>
       </div>
     </dialog>
 
+    <dialog id="businessIncomeDialog" class="business-dialog claim-detail-dialog">
+      <form id="businessIncomeForm" class="claim-form">
+        <div class="dialog-heading"><div><p class="eyebrow">Received income</p><h2>Record income</h2><p>Record money already received. Expected income is not included in actual totals.</p></div><button type="button" class="dialog-close" data-close-income aria-label="Close">×</button></div>
+        <div class="claim-fields">
+          <label>Title<input id="incomeTitle" required minlength="2" maxlength="160" /></label><label>Received from<input id="incomeFrom" maxlength="160" /></label>
+          <label>Amount<input id="incomeAmount" type="number" min="0.01" step="0.0001" required /></label><label>Currency<select id="incomeCurrency" required></select></label>
+          <label>Date received<input id="incomeDate" type="date" required /></label><label>Payment source<select id="incomeSource" data-payment-sources required></select></label>
+          <label>Income category<select id="incomeCategory" required></select></label><label>Project, branch or team<select id="incomeDimension"></select></label>
+          <label class="field-wide">Receipt / payment reference<input id="incomeReference" required minlength="2" maxlength="160" /></label><label class="field-wide">Notes<textarea id="incomeDescription" maxlength="2000" rows="3"></textarea></label>
+        </div><p id="incomeFormMessage" class="team-message hidden" role="status"></p><div class="dialog-actions"><button type="button" class="button secondary" data-close-income>Cancel</button><button type="submit" class="button primary">Record received income</button></div>
+      </form>
+    </dialog>
+    <dialog id="businessIncomeDetailDialog" class="business-dialog claim-detail-dialog">
+      <div class="claim-detail-content">
+        <div class="dialog-heading"><div><p class="eyebrow">Income record</p><h2 id="incomeDetailTitle"></h2></div><button type="button" class="dialog-close" data-close-income-detail aria-label="Close">×</button></div>
+        <dl id="incomeDetailFields" class="detail-list"></dl><p>Recorded amounts and conversion rates are permanent. Void an incorrect entry with a reason, then record its replacement.</p>
+        <form id="incomeVoidForm" class="claim-fields"><label class="field-wide">Reason for voiding<input id="incomeVoidReason" minlength="2" maxlength="1000" required /></label><button type="submit" class="button danger">Void income</button></form>
+        <p id="incomeDetailMessage" class="team-message hidden" role="status"></p>
+      </div>
+    </dialog>
     <dialog id="businessSupplierDialog" class="business-dialog">
       <form id="businessSupplierForm" class="claim-form">
         <div class="dialog-heading"><div><p class="eyebrow">Supplier</p><h2 id="businessSupplierTitle">Add supplier</h2></div><button class="dialog-close" type="button" data-close-supplier aria-label="Close">×</button></div>
@@ -406,7 +442,7 @@
         <p id="billDetailMessage" class="team-message hidden" role="status"></p><dl id="billDetailFields" class="detail-list"></dl><button id="cancelBusinessBill" class="button secondary hidden" type="button">Cancel unpaid bill</button>
         <section><h3>Invoice and payment proof</h3><div id="billProofList" class="claim-list"></div><label>Attach proof to<select id="billProofParent"></select></label><label class="claim-upload">Choose JPG, PNG, WebP or PDF, up to 10 MB<input id="billProofFile" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" /></label></section>
         <section><h3>Payment history</h3><div id="billPaymentList" class="claim-list"></div></section>
-        <form id="billPaymentForm" class="claim-fields"><label>Amount to record<input id="billPaymentAmount" type="number" min="0.01" step="0.0001" required /></label><label>Payment reference<input id="billPaymentReference" maxlength="160" required /></label><div class="field-wide dialog-actions"><button class="button primary" type="submit">Record partial or full payment</button></div></form>
+        <form id="billPaymentForm" class="claim-fields"><label>Amount to record<input id="billPaymentAmount" type="number" min="0.01" step="0.0001" required /></label><label>Payment reference<input id="billPaymentReference" maxlength="160" required /></label><label>Company payment source<select id="billPaymentSource" data-payment-sources required></select></label><div class="field-wide dialog-actions"><button class="button primary" type="submit">Record partial or full payment</button></div></form>
       </div>
     </dialog>
 

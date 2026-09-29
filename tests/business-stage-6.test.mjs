@@ -14,7 +14,7 @@ const worker = readFileSync(new URL("../sw.js", import.meta.url), "utf8");
 
 test("Stage 6 has scoped, read-only tables with guarded writes and payment history", () => {
   assert.ok(schema.includes(migration));
-  assert.ok(schema.endsWith(compatibility));
+  assert.ok(schema.includes(compatibility));
   for (const table of ["business_suppliers", "business_bill_schedules", "business_bills", "business_bill_payments"]) {
     assert.match(migration, new RegExp(`alter table public\\.${table} force row level security`));
     assert.match(migration, new RegExp(`grant select on public\\.%I to authenticated`));
@@ -43,7 +43,7 @@ test("supplier bills are usable from desktop and phone, with one request ID per 
 });
 
 test("report combines actual bill payments with claims while linked claims are excluded in SQL", () => {
-  const code = app.slice(app.indexOf("function renderClaims() {"), app.indexOf("\nasync function refreshClaims()"));
+  const code = app.slice(app.indexOf("function renderFinanceSummary() {"), app.indexOf("\nfunction renderTransactions()"));
   const nodes = new Map();
   const $ = (selector) => {
     if (!nodes.has(selector)) nodes.set(selector, { textContent: "", replaceChildren() {} });
@@ -52,9 +52,10 @@ test("report combines actual bill payments with claims while linked claims are e
   const state = {
     claims: [], session: { user: { id: "owner" } },
     claimSummary: { finance_visible: true, reporting_currency: "USD", paid_amount: 20, committed_amount: 40, paid_count: 1, pending_count: 0, review_count: 0 },
-    billSummary: { paid_amount: 15, outstanding: 25 }
+    billSummary: { paid_amount: 15, outstanding: 25 },
+    financeSummary: { finance_visible: true, reporting_currency: 'USD', income: 10, paid: 35, committed: 65, paid_count: 2 }
   };
-  vm.runInNewContext(`${code}\nrenderClaims();`, {
+  vm.runInNewContext(`${code}\nrenderFinanceSummary();`, {
     state, $, $$: () => [], claimPermission: () => true,
     money: (amount) => `$${amount}`, claimNode: () => ({})
   });

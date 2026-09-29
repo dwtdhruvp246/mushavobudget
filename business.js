@@ -1,4 +1,4 @@
-// Mushavo Budget Business application — Stage 6 bills and recurring
+// Mushavo Budget Business application — Stage 7 income and transactions
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -80,6 +80,11 @@ let claimBusy = false;
 let openedClaimId = null;
 let openedBillId = null;
 let billBusy = false;
+let incomeBusy = false;
+let openedIncome = null;
+let activitySequence = 0;
+let activityOffset = 0;
+let activityFilters = {};
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -108,7 +113,12 @@ function friendlyMessage(error) {
   if (/BUSINESS_CLAIM_CHANGED/.test(message)) return "This claim changed. Open it again to see the latest status.";
   if (/BUSINESS_RECEIPT_REQUIRED/.test(message)) return "Attach a receipt or proof before submitting.";
   if (/BUSINESS_EXCHANGE_RATE_UNAVAILABLE/.test(message)) return "No exchange rate is available for this currency. Try the reporting currency or wait for rates to sync.";
-  if (/BUSINESS_REPORTING_CURRENCY_LOCKED/.test(message)) return "This Business reporting currency is locked after the first expense claim so historical totals remain consistent.";
+  if (/BUSINESS_REPORTING_CURRENCY_LOCKED/.test(message)) return "The reporting currency is locked after the first financial record so historical totals remain consistent.";
+  if (/INVALID_BUSINESS_INCOME|BUSINESS_INCOME_CATEGORY_REQUIRED/.test(message)) return "Check the received amount, income category, date, reference and payment source.";
+  if (/BUSINESS_INCOME_ACCESS_REQUIRED/.test(message)) return "Your role, assigned scope or subscription does not allow this income action.";
+  if (/BUSINESS_PAYMENT_SOURCE_REQUIRED/.test(message)) return "Choose how the payment was made.";
+  if (/INVALID_BUSINESS_ACTIVITY_FILTER/.test(message)) return "Check the date range. The start date must not be after the end date.";
+  if (/BUSINESS_CURRENCY_NOT_ENABLED/.test(message)) return "Choose a currency enabled for this workspace.";
   if (/BUSINESS_SELF_APPROVAL_FORBIDDEN/.test(message)) return "Another authorized member must review your claim.";
   if (/BUSINESS_SCOPE_ACCESS_REQUIRED/.test(message)) return "This claim is outside your assigned project, branch or team.";
   if (/BUSINESS_CLAIM_ACCESS_REQUIRED|BUSINESS_REVIEW_ACCESS_REQUIRED|BUSINESS_PAYMENT_ACCESS_REQUIRED/.test(message)) return "Your role or subscription does not allow this action.";
@@ -153,6 +163,19 @@ function clearBusinessWorkspaceState() {
   state.businessDimensions = [];
   state.setupDraft = null;
   state.transactions = [];
+  state.financeSummary = null;
+  state.activitySummary = null;
+  state.recentTransactions = [];
+  // Clear rendered activity as well as models before another company opens.
+  ['#businessOverviewClaims', '#businessClaimActivity'].forEach((selector) => $(selector)?.replaceChildren());
+  ['#businessActivityTotals', '#businessActivityPage', '#businessActivityMessage'].forEach((selector) => { if ($(selector)) $(selector).textContent = ''; });
+  activitySequence += 1;
+  activityOffset = 0;
+  activityFilters = {};
+  incomeBusy = false;
+  openedIncome = null;
+  $$('dialog[open]').forEach((dialog) => dialog.close());
+  $('#businessActivityFilters')?.reset();
   state.bills = [];
   state.requests = [];
   state.budgets = [];
@@ -270,6 +293,170 @@ function claimPermission(code) {
   return !state.locked && state.permissions.has(code);
 }
 
+const PAYMENT_SOURCES = { cash: 'Cash', bank_transfer: 'Bank transfer', mobile_money: 'Mobile money', card: 'Card', other: 'Other', unspecified: 'Not recorded (legacy)' };
+const TRANSACTION_TYPES = { income: 'Income received', company_expense: 'Company expense', employee_cost: 'Employee-paid cost', reimbursement: 'Reimbursement paid', bill: 'Supplier bill', bill_payment: 'Bill payment' };
+function sourceLabel(value) { return PAYMENT_SOURCES[value] || 'Not recorded'; }
+function workspaceToday() {
+  const parts = new Intl.DateTimeFormat('en', { timeZone: state.workspaceSettings?.timezone || 'UTC', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+  const get = (type) => parts.find((part) => part.type === type).value;
+  return `${get('year')}-${get('month')}-${get('day')}`;
+}
+function populateActivityFilters() {
+  const form = $('#businessActivityFilters');
+  const fill = (name, label, items) => form.elements.namedItem(name).replaceChildren(new Option(label, ''), ...items.map(([value, text]) => new Option(text, value)));
+  fill('currency', 'All currencies', (state.workspaceSettings?.enabled_currencies || []).map((code) => [code, code]));
+  fill('category_id', 'All categories', state.businessCategories.map((item) => [item.id, item.name]));
+  fill('dimension_id', 'All tags', state.businessDimensions.map((item) => [item.id, item.name]));
+}
+function transactionCard(item) {
+  const card = claimNode('article', 'claim-row');
+  const body = claimNode('div', 'claim-row-body');
+  const status = item.record_type === 'reimbursement' ? 'reimbursed' : item.status.replaceAll('_', ' ');
+  body.append(claimNode('strong', '', item.title), claimNode('small', '', `${TRANSACTION_TYPES[item.record_type]} · ${formatDate(item.event_date + 'T12:00:00')} · ${status}`),
+    claimNode('small', '', `${sourceLabel(item.payment_source)}${item.payer_name ? ` · ${item.record_type === 'income' ? 'From' : item.record_type === 'bill' || item.record_type === 'bill_payment' ? 'Supplier' : 'Recorded for'} ${item.payer_name}` : ''}${item.reference ? ` · ${item.reference}` : ''}`));
+  const button = claimNode('button', 'button secondary', 'View');
+  button.type = 'button'; button.dataset.transactionKey = item.entry_key;
+  card.append(body, claimNode('strong', 'claim-row-amount', money(item.amount, item.currency)), button);
+  return card;
+}
+function renderFinanceSummary() {
+  const summary = state.financeSummary;
+  const finance = claimPermission('finance.view_all') && summary?.finance_visible;
+  const currency = summary?.reporting_currency || state.workspaceSettings?.reporting_currency || 'USD';
+  for (const [selector, key] of [['#businessIncomeTotal', 'income'], ['#businessPaidTotal', 'paid'], ['#businessCommitmentTotal', 'committed'], ['#businessReportIncome', 'income'], ['#businessReportPaid', 'paid'], ['#businessReportCommitted', 'committed']]) {
+    $(selector).textContent = finance ? money(summary[key], currency) : 'Private';
+  }
+  $('#businessPaidCount').textContent = finance ? String(summary.paid_count) : '—';
+  $('#businessReportingCurrency').textContent = currency;
+}
+function renderTransactions() {
+  const summary = state.activitySummary;
+  $('#businessClaimActivity').replaceChildren(...(state.transactions.length ? state.transactions.map(transactionCard) : [claimNode('p', 'claim-empty', 'No transactions match these filters.')]));
+  const total = Number(summary?.total_count || 0);
+  $('#businessActivityPage').textContent = total ? `${activityOffset + 1}–${Math.min(activityOffset + 50, total)} of ${total}` : '0 records';
+  $('#businessActivityPrevious').disabled = activityOffset === 0;
+  $('#businessActivityNext').disabled = activityOffset + 50 >= total;
+  $('#businessActivityTotals').textContent = summary?.finance_visible ? `Matching records · Income received: ${money(summary.income, summary.reporting_currency)} · Business paid: ${money(summary.paid, summary.reporting_currency)} · Approved / bills unpaid: ${money(summary.committed, summary.reporting_currency)}` : 'Only records allowed by your role and assigned scope are shown. Company totals are private.';
+  renderFinanceSummary();
+}
+async function refreshTransactions(summaryToo = true) {
+  const workspaceId = state.workspace?.id;
+  if (!workspaceId || state.locked) return;
+  const sequence = workspaceLoadSequence;
+  const request = ++activitySequence;
+  setClaimMessage('#businessActivityMessage');
+  try {
+    const requests = [query('Business activity', supabase.rpc('business_transaction_feed', { p_workspace_id: workspaceId, ...activityFilters, p_offset: activityOffset, p_limit: 50 }))];
+    if (summaryToo) requests.push(query('Business recorded totals', supabase.rpc('business_transaction_feed', { p_workspace_id: workspaceId, p_limit: 5 })));
+    const [activity, summary] = await Promise.all(requests);
+    if (sequence !== workspaceLoadSequence || request !== activitySequence || state.workspace?.id !== workspaceId) return;
+    state.transactions = activity.items || [];
+    state.activitySummary = activity;
+    if (summary) {
+      state.financeSummary = summary;
+      state.recentTransactions = summary.items || [];
+      $('#businessOverviewClaims').replaceChildren(...(state.recentTransactions.length ? state.recentTransactions.map(transactionCard) : [claimNode('p', 'claim-empty', 'No financial activity yet.')]));
+    }
+    renderTransactions();
+  } catch (error) {
+    if (sequence !== workspaceLoadSequence || request !== activitySequence) return;
+    setClaimMessage('#businessActivityMessage', friendlyMessage(error), true);
+  }
+}
+function openIncomeForm() {
+  if (!claimPermission('finance.view_all') || !claimPermission('finance.create')) return;
+  $('#businessAddDialog').close();
+  $('#businessIncomeForm').reset();
+  $('#businessIncomeForm button[type="submit"]').disabled = false;
+  $('#businessIncomeForm').dataset.requestId = crypto.randomUUID();
+  $('#incomeDate').value = workspaceToday(); $('#incomeDate').max = workspaceToday();
+  $('#incomeCurrency').replaceChildren(...(state.workspaceSettings?.enabled_currencies || []).map((code) => new Option(code, code)));
+  $('#incomeCurrency').value = state.workspaceSettings?.default_payment_currency || state.workspaceSettings?.reporting_currency;
+  $('#incomeCategory').replaceChildren(new Option('Choose income category', ''), ...state.businessCategories.filter((item) => item.status === 'active' && ['income', 'both'].includes(item.category_type)).map((item) => new Option(item.name, item.id)));
+  const scopes = new Set(state.memberScopes.map((item) => item.dimension_id));
+  $('#incomeDimension').replaceChildren(new Option(scopes.size ? 'Choose assigned tag' : 'None', ''), ...state.businessDimensions.filter((item) => item.status === 'active' && (!scopes.size || scopes.has(item.id))).map((item) => new Option(item.name, item.id)));
+  $('#incomeDimension').required = scopes.size > 0;
+  setClaimMessage('#incomeFormMessage');
+  $('#businessIncomeDialog').showModal();
+}
+async function saveIncome(event) {
+  event.preventDefault();
+  if (incomeBusy || !state.workspace || state.locked) return;
+  incomeBusy = true;
+  const workspaceId = state.workspace.id, sequence = workspaceLoadSequence;
+  $('#businessIncomeForm button[type="submit"]').disabled = true;
+  try {
+    const receipt = await query('Record received income', supabase.rpc('record_business_income', {
+      p_workspace_id: workspaceId, p_income_id: $('#businessIncomeForm').dataset.requestId,
+      p_title: $('#incomeTitle').value, p_received_from: $('#incomeFrom').value,
+      p_reference: $('#incomeReference').value, p_description: $('#incomeDescription').value,
+      p_category_id: $('#incomeCategory').value, p_dimension_id: $('#incomeDimension').value || null,
+      p_amount: Number($('#incomeAmount').value), p_currency: $('#incomeCurrency').value,
+      p_received_on: $('#incomeDate').value, p_payment_source: $('#incomeSource').value
+    }));
+    if (sequence !== workspaceLoadSequence) return;
+    $('#businessIncomeDialog').close();
+    await refreshTransactions();
+    if (sequence === workspaceLoadSequence) showIncomeDetail(receipt);
+  } catch (error) { if (sequence === workspaceLoadSequence) setClaimMessage('#incomeFormMessage', friendlyMessage(error), true); }
+  finally { if (sequence === workspaceLoadSequence) { incomeBusy = false; $('#businessIncomeForm button[type="submit"]').disabled = false; } }
+}
+function showIncomeDetail(receipt) {
+  openedIncome = receipt;
+  $('#incomeDetailTitle').textContent = receipt.title;
+  $('#incomeDetailFields').replaceChildren(detailLine('Status', receipt.status), detailLine('Received', formatDate(receipt.received_on + 'T12:00:00')),
+    detailLine('Amount', money(receipt.amount, receipt.currency)), detailLine('Locked reporting amount', money(receipt.reporting_amount, receipt.reporting_currency)),
+    detailLine('Conversion', `${receipt.exchange_rate} · ${receipt.rate_provider} · ${formatDateTime(receipt.rate_effective_at)}`),
+    detailLine('From', receipt.received_from || '—'), detailLine('Reference', receipt.reference), detailLine('Payment source', sourceLabel(receipt.payment_source)),
+    detailLine('Category', state.businessCategories.find((item) => item.id === receipt.category_id)?.name || 'Archived category'),
+    detailLine('Project, branch or team', state.businessDimensions.find((item) => item.id === receipt.dimension_id)?.name || 'None'),
+    detailLine('Notes', receipt.description || '—'), detailLine('Recorded', formatDateTime(receipt.created_at)), detailLine('Void reason', receipt.void_reason || '—'), detailLine('Voided', formatDateTime(receipt.voided_at)));
+  $('#incomeVoidForm').classList.toggle('hidden', receipt.status !== 'received' || !claimPermission('finance.record_payment'));
+  $('#incomeVoidForm').reset(); setClaimMessage('#incomeDetailMessage');
+  if (!$('#businessIncomeDetailDialog').open) $('#businessIncomeDetailDialog').showModal();
+}
+async function voidIncome(event) {
+  event.preventDefault();
+  if (!openedIncome || incomeBusy || !window.confirm('Void this income? It remains in history but is excluded from received totals.')) return;
+  incomeBusy = true;
+  const sequence = workspaceLoadSequence, receiptId = openedIncome.id;
+  try {
+    const receipt = await query('Void received income', supabase.rpc('void_business_income', { p_workspace_id: state.workspace.id, p_income_id: receiptId, p_reason: $('#incomeVoidReason').value }));
+    if (sequence !== workspaceLoadSequence) return;
+    await refreshTransactions();
+    if (sequence === workspaceLoadSequence && openedIncome?.id === receiptId) showIncomeDetail(receipt);
+  } catch (error) { if (sequence === workspaceLoadSequence) setClaimMessage('#incomeDetailMessage', friendlyMessage(error), true); }
+  finally { if (sequence === workspaceLoadSequence) incomeBusy = false; }
+}
+async function openTransactionRecord(key) {
+  const row = [...state.transactions, ...(state.recentTransactions || [])].find((item) => item.entry_key === key);
+  if (!row || state.locked) return;
+  const sequence = workspaceLoadSequence, workspaceId = state.workspace.id;
+  try {
+    if (row.record_type === 'income') {
+      const receipt = await query('Income record', supabase.from('business_income_receipts').select('*').eq('workspace_id', workspaceId).eq('id', row.record_id).single());
+      if (sequence === workspaceLoadSequence) showIncomeDetail(receipt);
+    } else if (['bill', 'bill_payment'].includes(row.record_type)) {
+      const id = row.parent_id || row.record_id;
+      const bill = await query('Bill record', supabase.from('business_bills').select('*').eq('workspace_id', workspaceId).eq('id', id).single());
+      const payments = await query('Bill payment history', supabase.from('business_bill_payments').select('*').eq('workspace_id', workspaceId).eq('bill_id', id));
+      const documents = await query('Bill proof', supabase.from('business_documents').select('*').eq('workspace_id', workspaceId).eq('status', 'active').in('parent_type', ['business_bill', 'business_bill_payment']).in('parent_id', [id, ...payments.map((item) => item.id)]));
+      if (sequence !== workspaceLoadSequence) return;
+      state.bills = [...state.bills.filter((item) => item.id !== id), bill];
+      state.billPayments = [...state.billPayments.filter((item) => item.bill_id !== id), ...payments];
+      const parentIds = new Set([id, ...payments.map((item) => item.id)]);
+      state.billDocuments = [...state.billDocuments.filter((item) => !parentIds.has(item.parent_id)), ...documents];
+      openBillDetail(id);
+    } else {
+      const claim = await query('Expense record', supabase.from('business_expense_claims').select('*').eq('workspace_id', workspaceId).eq('id', row.record_id).single());
+      const receipts = await query('Expense proof', supabase.from('business_documents').select('*').eq('workspace_id', workspaceId).eq('parent_type', 'expense_claim').eq('parent_id', claim.id).eq('status', 'active'));
+      if (sequence !== workspaceLoadSequence) return;
+      state.claims = [...state.claims.filter((item) => item.id !== claim.id), claim];
+      state.claimReceipts = [...state.claimReceipts.filter((item) => item.parent_id !== claim.id), ...receipts]; openClaimDetail(claim.id);
+    }
+  } catch (error) { if (sequence === workspaceLoadSequence) setClaimMessage('#businessActivityMessage', friendlyMessage(error), true); }
+}
+
 function claimNode(tag, className, value) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -305,27 +492,18 @@ function renderClaims() {
   const reviewable = claims.filter((item) => item.status === "submitted" && item.submitted_by !== ownId && claimPermission("approvals.review"));
   const summary = state.claimSummary;
   const finance = claimPermission("finance.view_all") && summary?.finance_visible;
-  const currency = summary?.reporting_currency || state.workspaceSettings?.reporting_currency || "USD";
-  const billSummary = state.billSummary;
-  const paidAmount = Number(summary?.paid_amount || 0) + Number(billSummary?.paid_amount || 0);
-  const commitment = Number(summary?.committed_amount || 0) + Number(billSummary?.outstanding || 0);
-  $("#businessPaidTotal").textContent = finance && billSummary ? money(paidAmount, currency) : finance ? money(summary.paid_amount, currency) : "Private";
-  $("#businessCommitmentTotal").textContent = finance && billSummary ? money(commitment, currency) : finance ? money(summary.committed_amount, currency) : "Private";
-  $("#businessPaidCount").textContent = finance ? String(summary.paid_count) : "—";
-  $("#businessReportPaid").textContent = finance && billSummary ? money(paidAmount, currency) : finance ? money(summary.paid_amount, currency) : "Available to finance roles";
-  $("#businessReportCommitted").textContent = finance && billSummary ? money(commitment, currency) : finance ? money(summary.committed_amount, currency) : "Available to finance roles";
   $("#businessReportPending").textContent = finance ? String(summary.pending_count) : "—";
   $("#businessReviewCount").textContent = String(summary?.review_count || 0);
   $("#businessApprovalTabCount").textContent = String(summary?.review_count || 0);
   for (const [selector, items, empty] of [
-    ["#businessOverviewClaims", claims.slice(0, 4), "No expense claims recorded yet."],
-    ["#businessClaimActivity", claims, "No expense claims recorded yet."],
     ["#businessClaimApprovals", reviewable, "No claims need your review."]
   ]) {
     const container = $(selector);
     container.replaceChildren(...(items.length ? items.map(claimCard) : [claimNode("p", "claim-empty", empty)]));
   }
   $$("[data-open-add], [data-open-claim]").forEach((button) => button.classList.toggle("hidden", !claimPermission("finance.create")));
+  $$('[data-open-income]').forEach((button) => button.classList.toggle('hidden', !claimPermission('finance.view_all') || !claimPermission('finance.create')));
+  renderFinanceSummary();
 }
 
 async function refreshClaims() {
@@ -343,6 +521,7 @@ async function refreshClaims() {
   state.claimSummary = summary;
   renderClaims();
   if (openedClaimId && $("#businessClaimDetailDialog").open) renderClaimDetail();
+  await refreshTransactions();
 }
 
 function openClaimForm(kind, existing = null) {
@@ -353,9 +532,11 @@ function openClaimForm(kind, existing = null) {
   $("#businessClaimId").value = existing?.id || "";
   $("#businessClaimVersion").value = existing?.version || "";
   $("#businessClaimKind").value = kind;
+  $('#businessEmployeeSourceField').classList.toggle('hidden', kind !== 'reimbursement');
+  $('#businessEmployeeSource').required = kind === 'reimbursement';
+  $('#businessEmployeeSource').value = existing?.employee_payment_source === 'unspecified' ? '' : existing?.employee_payment_source || '';
   $("#businessClaimDialogTitle").textContent = existing ? "Edit draft" : kind === "reimbursement" ? "New reimbursement claim" : "New company expense";
-  const today = new Date();
-  $("#businessClaimDate").value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  $("#businessClaimDate").value = workspaceToday();
   $("#businessClaimCurrency").replaceChildren(...(state.workspaceSettings?.enabled_currencies || []).map((code) => new Option(code, code)));
   $("#businessClaimCurrency").value = state.workspaceSettings?.default_payment_currency || state.workspaceSettings?.reporting_currency;
   $("#businessClaimCategory").replaceChildren(...state.businessCategories
@@ -396,13 +577,12 @@ async function createClaim(event) {
       p_currency: $("#businessClaimCurrency").value,
       p_expense_date: $("#businessClaimDate").value
     };
-    const claim = existingId
-      ? await query("Save Business draft", supabase.rpc("save_business_claim_draft", {
-        ...payload, p_claim_id: existingId, p_expected_version: Number($("#businessClaimVersion").value)
-      }))
-      : await query("Create Business claim", supabase.rpc("create_business_claim", {
-        ...payload, p_kind: $("#businessClaimKind").value
-      }));
+    const claim = await query("Save Business expense", supabase.rpc("save_business_expense_entry", {
+      ...payload, p_claim_id: existingId || null,
+      p_expected_version: existingId ? Number($("#businessClaimVersion").value) : null,
+      p_kind: $("#businessClaimKind").value,
+      p_employee_payment_source: $("#businessClaimKind").value === 'reimbursement' ? $('#businessEmployeeSource').value : 'unspecified'
+    }));
     $("#businessClaimDialog").close();
     await refreshClaims();
     if (state.workspace?.id === workspaceId) openClaimDetail(claim.id);
@@ -436,8 +616,9 @@ async function renderClaimDetail() {
     detailLine("Expense date", formatDate(claim.expense_date)),
     detailLine("Category", state.businessCategories.find((item) => item.id === claim.category_id)?.name || "Archived category"),
     detailLine("Details", claim.description || "—"),
+    detailLine("Employee paid by", claim.kind === 'reimbursement' ? `${state.workspaceMembers.find((member) => member.user_id === claim.submitted_by)?.full_name || (own ? 'You' : 'Submitting member')} · ${sourceLabel(claim.employee_payment_source)}` : 'Not an employee reimbursement'),
     detailLine("Review", claim.review_reason || "—"),
-    detailLine("Payment", claim.paid_at ? `${formatDate(claim.paid_at)} · ${claim.payment_reference}` : "Not recorded")
+    detailLine("Payment", claim.paid_at ? `${formatDate(claim.paid_at)} · ${claim.payment_reference} · ${sourceLabel(claim.payment_source)}` : "Not recorded")
   );
   const receipts = state.claimReceipts.filter((item) => item.parent_id === claim.id);
   const receiptList = $("#claimReceiptList");
@@ -525,6 +706,8 @@ async function claimAction(action, confirmed = false) {
   }
   if (["rejected", "changes_requested", "paid"].includes(action) && !confirmed) {
     $("#claimDecisionPanel").dataset.action = action;
+    $('#claimPaymentSourceField').classList.toggle('hidden', action !== 'paid');
+    $('#claimPaymentSource').value = '';
     $("#claimDecisionLabel").textContent = action === "paid" ? "Payment reference" : action === "rejected" ? "Reason for rejection" : "What needs to change?";
     $("#claimDecisionInput").value = "";
     $("#claimDecisionInput").maxLength = action === "paid" ? 160 : 1000;
@@ -534,6 +717,9 @@ async function claimAction(action, confirmed = false) {
   }
   const reason = confirmed && action !== "paid" ? $("#claimDecisionInput").value.trim() : null;
   const reference = confirmed && action === "paid" ? $("#claimDecisionInput").value.trim() : null;
+  if (action === 'paid' && confirmed && !$('#claimPaymentSource').value) {
+    setClaimMessage('#claimDetailMessage', 'Choose the company payment source.', true); return;
+  }
   if (confirmed && (!reason && !reference)) {
     setClaimMessage("#claimDetailMessage", "Enter a reason or payment reference.", true);
     return;
@@ -542,8 +728,8 @@ async function claimAction(action, confirmed = false) {
   try {
     const args = { p_workspace_id: claim.workspace_id, p_claim_id: claim.id, p_expected_version: claim.version };
     if (action === "submit") await query("Submit claim", supabase.rpc("submit_business_claim", args));
-    else if (action === "paid") await query("Record payment", supabase.rpc("record_business_claim_payment", {
-      ...args, p_paid_at: new Date().toISOString(), p_payment_reference: reference
+    else if (action === "paid") await query("Record payment", supabase.rpc("record_business_claim_payment_with_source", {
+      ...args, p_paid_at: new Date().toISOString(), p_payment_reference: reference, p_payment_source: $('#claimPaymentSource').value
     }));
     else await query("Review claim", supabase.rpc("review_business_claim", { ...args, p_decision: action, p_reason: reason }));
     await refreshClaims();
@@ -632,6 +818,7 @@ async function refreshBills() {
     window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
     openBillDetail(targetId);
   }
+  await refreshTransactions();
 }
 
 function openSupplierForm(supplier = null) {
@@ -755,7 +942,7 @@ function renderBillDetail() {
   $("#billPaymentList").replaceChildren(...(payments.length ? payments.map((item) => {
     const row = claimNode("div", "claim-row");
     row.append(claimNode("strong", "", money(item.amount, item.currency)),
-      claimNode("small", "", `${formatDateTime(item.paid_at)} · ${item.reference}`));
+      claimNode("small", "", `${formatDateTime(item.paid_at)} · ${item.reference} · ${sourceLabel(item.payment_source)}`));
     return row;
   }) : [claimNode("p", "claim-empty", "No payments recorded.")]));
   $("#billPaymentForm").classList.toggle("hidden", bill.status !== "open" || !claimPermission("finance.record_payment"));
@@ -789,10 +976,10 @@ async function saveBillPayment(event) {
   try {
     const paymentId = $("#billPaymentForm").dataset.requestId || crypto.randomUUID();
     $("#billPaymentForm").dataset.requestId = paymentId;
-    await query("Record bill payment", supabase.rpc("record_business_bill_payment", {
+    await query("Record bill payment", supabase.rpc("record_business_bill_payment_with_source", {
       p_workspace_id: bill.workspace_id, p_bill_id: bill.id,
       p_payment_id: paymentId, p_amount: Number($("#billPaymentAmount").value),
-      p_paid_at: new Date().toISOString(), p_reference: $("#billPaymentReference").value
+      p_paid_at: new Date().toISOString(), p_reference: $("#billPaymentReference").value, p_payment_source: $('#billPaymentSource').value
     }));
     delete $("#billPaymentForm").dataset.requestId;
     $("#billPaymentForm").reset();
@@ -1195,7 +1382,7 @@ function renderIdentity() {
     : "—";
   $("#settingsPeriodDay").textContent = state.businessProfile?.period_start_day
     ? `Day ${state.businessProfile.period_start_day}` : "—";
-  $("#businessReportingCurrency").textContent = state.workspaceSettings?.base_currency || "—";
+  $("#businessReportingCurrency").textContent = state.workspaceSettings?.reporting_currency || "—";
 }
 
 function renderTeam() {
@@ -1548,6 +1735,7 @@ async function selectBusinessWorkspace(workspaceId) {
   state.permissions = new Set((permissions || []).filter((item) => item.allowed).map((item) => item.permission_code));
   state.memberScopes = memberScopes || [];
   renderBusinessWorkspace();
+  populateActivityFilters();
   if (!state.locked) {
     await refreshClaims();
     await refreshBills();
@@ -1698,6 +1886,26 @@ $("#billProofList").addEventListener("click", async (event) => {
 });
 $("#businessClaimForm").addEventListener("submit", createClaim);
 $$("[data-close-claim]").forEach((button) => button.addEventListener("click", () => $("#businessClaimDialog").close()));
+$$('[data-payment-sources]').forEach((select) => {
+  select.replaceChildren(new Option(select.hasAttribute('data-source-all') ? 'All sources' : 'Choose payment source', ''), ...Object.entries(PAYMENT_SOURCES).filter(([value]) => value !== 'unspecified' || select.hasAttribute('data-source-all')).map(([value, label]) => new Option(label, value)));
+});
+$$('[data-open-income]').forEach((button) => button.addEventListener('click', openIncomeForm));
+$$('[data-close-income]').forEach((button) => button.addEventListener('click', () => $('#businessIncomeDialog').close()));
+$$('[data-close-income-detail]').forEach((button) => button.addEventListener('click', () => $('#businessIncomeDetailDialog').close()));
+$('#businessIncomeDetailDialog').addEventListener('close', () => { openedIncome = null; });
+$('#businessIncomeForm').addEventListener('submit', saveIncome);
+$('#incomeVoidForm').addEventListener('submit', voidIncome);
+$('#businessActivityFilters').addEventListener('submit', (event) => {
+  event.preventDefault(); activityOffset = 0;
+  activityFilters = Object.fromEntries([...new FormData(event.currentTarget)].map(([key, value]) => [`p_${key}`, ['category_id', 'dimension_id', 'from', 'to'].includes(key) ? value || null : value]));
+  refreshTransactions(false);
+});
+$('#businessActivityReset').addEventListener('click', () => { $('#businessActivityFilters').reset(); activityFilters = {}; activityOffset = 0; refreshTransactions(false); });
+$('#businessActivityPrevious').addEventListener('click', () => { activityOffset = Math.max(0, activityOffset - 50); refreshTransactions(false); });
+$('#businessActivityNext').addEventListener('click', () => { activityOffset += 50; refreshTransactions(false); });
+['#businessOverviewClaims', '#businessClaimActivity'].forEach((selector) => $(selector).addEventListener('click', (event) => {
+  const button = event.target.closest('[data-transaction-key]'); if (button) openTransactionRecord(button.dataset.transactionKey);
+}));
 $$("[data-close-claim-detail]").forEach((button) => button.addEventListener("click", () => $("#businessClaimDetailDialog").close()));
 $("#businessClaimDetailDialog").addEventListener("close", () => { openedClaimId = null; });
 $("#claimReceiptFile").addEventListener("change", uploadClaimReceipt);

@@ -1,4 +1,4 @@
-// Mushavo Budget Business application — Stage 8 budgets and spending approvals
+// Mushavo Budget Business application — Stage 9 reports and export
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -53,6 +53,9 @@ const state = {
   bills: [],
   requests: [],
   budgets: [],
+  reportSnapshot: null,
+  reportSources: null,
+  reportStale: false,
   documents: [],
   auditEvents: [],
   permissions: new Set(),
@@ -93,6 +96,16 @@ let requestFilters = {};
 let openedRequest = null;
 let openedBudget = null;
 let workflowBusy = false;
+let reportSequence = 0;
+let reportSourceSequence = 0;
+let reportLoading = false;
+let reportAttempted = false;
+let reportFilters = {};
+let reportSelection = null;
+let reportSourceOffset = 0;
+let openedReportRecord = null;
+let reportExportBusy = false;
+let reportPrintWindow = null;
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -123,6 +136,11 @@ function friendlyMessage(error) {
   if (/BUSINESS_REQUEST_ACCESS_REQUIRED|BUSINESS_BUDGET_ACCESS_REQUIRED/.test(message)) return "Your role, subscription or assigned scope does not permit this action.";
   if (/BUSINESS_BUDGET_PERIOD_OVERLAP/.test(message)) return "An active budget already covers this category and tag during these dates. Close it or choose another period.";
   if (/BUSINESS_BUDGET_SCOPE_INACTIVE/.test(message)) return "This budget uses an archived category or organisation tag. Edit the draft and select an active scope before activating it.";
+  if (/BUSINESS_REPORT_CHANGED/.test(message)) return "The report data or access changed. Refresh the report, then open the figure or export again.";
+  if (/BUSINESS_REPORT_EXPORT_TOO_LARGE/.test(message)) return "This export contains more than 10,000 records. Narrow the dates or scope and try again.";
+  if (/BUSINESS_REPORT_EXPORT_REQUIRED/.test(message)) return "Your role can view this report but does not have export or print access.";
+  if (/BUSINESS_REPORT_ACCESS_REQUIRED/.test(message)) return "Report access is not enabled for your role. Contact the Business Owner.";
+  if (/INVALID_BUSINESS_REPORT_FILTER/.test(message)) return "Check the report dates, scope and currency. Original-currency views require one currency.";
   if (/BUSINESS_MONTHLY_PERIOD_REQUIRED/.test(message)) return "Monthly dates must follow the workspace's period start day. Choose a month or use custom dates.";
   if (/BUSINESS_DECISION_REASON_REQUIRED/.test(message)) return "Enter a reason between 2 and 1,000 characters.";
   if (/BUSINESS_REQUEST_LINKED_TO_BILL|BUSINESS_REQUEST_CANNOT_CANCEL/.test(message)) return "This request cannot be cancelled while its bill is outstanding or paid. Manage the linked bill first.";
@@ -204,6 +222,17 @@ function clearBusinessWorkspaceState() {
   requestOffset = 0; budgetOffset = 0; budgetSourceOffset = 0;
   requestFilters = {};
   openedRequest = null; openedBudget = null; workflowBusy = false;
+  state.reportSnapshot = null; state.reportSources = null; state.reportStale = false;
+  reportSequence += 1; reportSourceSequence += 1;
+  reportLoading = false; reportAttempted = false; reportFilters = {}; reportSelection = null;
+  reportSourceOffset = 0; openedReportRecord = null; reportExportBusy = false;
+  if (reportPrintWindow && !reportPrintWindow.closed) reportPrintWindow.close();
+  reportPrintWindow = null;
+  ['#businessReportMetrics','#businessReportHealth','#reportCategoryGroups','#reportDimensionGroups','#reportBudgetComparisons','#reportSourceList','#reportRecordFields','#reportSourcesTotals'].forEach(selector=>$(selector)?.replaceChildren());
+  $('#businessReportFilters')?.reset();
+  $('#businessReportContent')?.classList.add('hidden');
+  if ($('#businessReportContext')) $('#businessReportContext').textContent = '';
+  setClaimMessage('#businessReportMessage'); setClaimMessage('#reportSourcesMessage');
   ['#businessRequestList', '#businessBudgetList', '#budgetSourceList', '#requestHistory'].forEach((selector) => $(selector)?.replaceChildren());
   $('#businessRequestFilters')?.reset();
   if ($('#businessBudgetStatus')) $('#businessBudgetStatus').value = '';
@@ -324,6 +353,9 @@ function claimPermission(code) {
 
 const PAYMENT_SOURCES = { cash: 'Cash', bank_transfer: 'Bank transfer', mobile_money: 'Mobile money', card: 'Card', other: 'Other', unspecified: 'Not recorded (legacy)' };
 const TRANSACTION_TYPES = { income: 'Income received', company_expense: 'Company expense', employee_cost: 'Employee-paid cost', reimbursement: 'Reimbursement paid', bill: 'Supplier bill', bill_payment: 'Bill payment', spending_request: 'Spending request' };
+const REPORT_SECTIONS = { ledger: 'Actuals and commitments', actuals: 'Received income and company payments', income: 'Income received', paid: 'Company payments', committed: 'Unpaid commitments', bills: 'Unpaid supplier bills', due: 'Bills due', overdue: 'Overdue bills', missing: 'Missing receipts and proofs', employee_claims: 'Employee claim register', reimbursements: 'Employee reimbursements paid', approved_reimbursements: 'Approved reimbursements unpaid', budget_paid: 'Budget payments', budget_committed: 'Budget commitments', budget_activity: 'Budget payments and commitments', budget_plan: 'Planned budget target' };
+const REPORT_TYPES = { ...TRANSACTION_TYPES, employee_claim: 'Employee claim record', bill_invoice: 'Supplier invoice check', budget: 'Budget target' };
+const REPORT_ACCESS = { workspace: 'Permitted workspace records', assigned_scopes: 'Assigned scopes and your own submissions', own_records: 'Your own records only' };
 function sourceLabel(value) { return PAYMENT_SOURCES[value] || 'Not recorded'; }
 function workspaceToday() {
   const parts = new Intl.DateTimeFormat('en', { timeZone: state.workspaceSettings?.timezone || 'UTC', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
@@ -352,7 +384,7 @@ function renderFinanceSummary() {
   const summary = state.financeSummary;
   const finance = claimPermission('finance.view_all') && summary?.finance_visible;
   const currency = summary?.reporting_currency || state.workspaceSettings?.reporting_currency || 'USD';
-  for (const [selector, key] of [['#businessIncomeTotal', 'income'], ['#businessPaidTotal', 'paid'], ['#businessCommitmentTotal', 'committed'], ['#businessReportIncome', 'income'], ['#businessReportPaid', 'paid'], ['#businessReportCommitted', 'committed']]) {
+  for (const [selector, key] of [['#businessIncomeTotal', 'income'], ['#businessPaidTotal', 'paid'], ['#businessCommitmentTotal', 'committed']]) {
     $(selector).textContent = finance ? money(summary[key], currency) : 'Private';
   }
   $('#businessPaidCount').textContent = finance ? String(summary.paid_count) : '—';
@@ -387,7 +419,10 @@ async function refreshTransactions(summaryToo = true) {
       $('#businessOverviewClaims').replaceChildren(...(state.recentTransactions.length ? state.recentTransactions.map(transactionCard) : [claimNode('p', 'claim-empty', 'No financial activity yet.')]));
     }
     renderTransactions();
-    if (summaryToo) await refreshPlanning();
+    if (summaryToo) {
+      await refreshPlanning();
+      if (sequence === workspaceLoadSequence && state.tab === 'reports' && reportAttempted) await refreshBusinessReports();
+    }
   } catch (error) {
     if (sequence !== workspaceLoadSequence || request !== activitySequence) return;
     setClaimMessage('#businessActivityMessage', friendlyMessage(error), true);
@@ -460,15 +495,20 @@ async function voidIncome(event) {
 }
 async function openTransactionRecord(key) {
   const row = [...state.transactions, ...(state.recentTransactions || [])].find((item) => item.entry_key === key);
+  await openBusinessSource(row);
+}
+async function openBusinessSource(row, messageSelector = '#businessActivityMessage') {
   if (!row || state.locked) return;
   const sequence = workspaceLoadSequence, workspaceId = state.workspace.id;
   try {
-    if (row.record_type === 'spending_request') {
+    if (row.record_type === 'budget') {
+      await openBudgetDetail(row.record_id);
+    } else if (row.record_type === 'spending_request') {
       await openRequestDetail(row.record_id);
     } else if (row.record_type === 'income') {
       const receipt = await query('Income record', supabase.from('business_income_receipts').select('*').eq('workspace_id', workspaceId).eq('id', row.record_id).single());
       if (sequence === workspaceLoadSequence) showIncomeDetail(receipt);
-    } else if (['bill', 'bill_payment'].includes(row.record_type)) {
+    } else if (['bill', 'bill_payment','bill_invoice'].includes(row.record_type)) {
       const id = row.parent_id || row.record_id;
       const bill = await query('Bill record', supabase.from('business_bills').select('*').eq('workspace_id', workspaceId).eq('id', id).single());
       const payments = await query('Bill payment history', supabase.from('business_bill_payments').select('*').eq('workspace_id', workspaceId).eq('bill_id', id));
@@ -486,7 +526,7 @@ async function openTransactionRecord(key) {
       state.claims = [...state.claims.filter((item) => item.id !== claim.id), claim];
       state.claimReceipts = [...state.claimReceipts.filter((item) => item.parent_id !== claim.id), ...receipts]; openClaimDetail(claim.id);
     }
-  } catch (error) { if (sequence === workspaceLoadSequence) setClaimMessage('#businessActivityMessage', friendlyMessage(error), true); }
+  } catch (error) { if (sequence === workspaceLoadSequence) setClaimMessage(messageSelector, friendlyMessage(error), true); }
 }
 
 function claimNode(tag, className, value) {
@@ -524,7 +564,6 @@ function renderClaims() {
   const reviewable = claims.filter((item) => item.status === "submitted" && item.submitted_by !== ownId && claimPermission("approvals.review"));
   const summary = state.claimSummary;
   const finance = claimPermission("finance.view_all") && summary?.finance_visible;
-  $("#businessReportPending").textContent = finance ? String(summary.pending_count) : "—";
   $("#businessReviewCount").textContent = String(Number(summary?.review_count || 0) + Number(state.requestSummary?.review_count || 0));
   $("#businessApprovalTabCount").textContent = String(summary?.review_count || 0);
   for (const [selector, items, empty] of [
@@ -600,7 +639,7 @@ async function refreshPlanning() {
     const [requests, budgets, permissions] = await Promise.all([
       query('Spending requests', supabase.rpc('business_request_feed', { p_workspace_id: workspaceId, ...requestFilters, p_offset: requestOffset })),
       query('Business budgets', supabase.rpc('business_budget_feed', { p_workspace_id: workspaceId, p_status: $('#businessBudgetStatus').value, p_offset: budgetOffset })),
-      businessOwnerCanSetUp() ? query('Workflow role permissions', supabase.from('business_role_permissions').select('role,permission_code,enabled').eq('workspace_id', workspaceId).in('permission_code', ['approvals.view','approvals.review','budgets.view','budgets.manage'])) : Promise.resolve([])
+      businessOwnerCanSetUp() ? query('Workflow role permissions', supabase.from('business_role_permissions').select('role,permission_code,enabled').eq('workspace_id', workspaceId).in('permission_code', ['approvals.view','approvals.review','budgets.view','budgets.manage','reports.view','reports.export'])) : Promise.resolve([])
     ]);
     if (sequence !== workspaceLoadSequence || request !== planningSequence) return;
     state.requests = requests.items || []; state.requestSummary = requests;
@@ -698,9 +737,7 @@ async function requestAction(action, confirmed = false) {
   });
 }
 async function openTransactionRecordForBill(id) {
-  const key = `bill:${id}`;
-  state.transactions = [...state.transactions.filter((item) => item.entry_key !== key), { entry_key: key, record_type: 'bill', record_id: id }];
-  await openTransactionRecord(key);
+  await openBusinessSource({ record_type: 'bill', record_id: id });
 }
 async function createRequestBill(event) {
   event.preventDefault(); const item = openedRequest; if (!item) return;
@@ -799,6 +836,201 @@ async function saveWorkflowPermission(event) {
     await refreshPlanning();
     if (sequence === workspaceLoadSequence) setClaimMessage('#workflowPermissionMessage','Role permission saved. Individual overrides and assigned scopes still apply.');
   });
+}
+
+function businessReportDates(preset, today, day = 1, financialMonth = 1) {
+  const date = new Date(today + 'T12:00:00Z');
+  let year = date.getUTCFullYear(), month = date.getUTCMonth();
+  if (preset === 'financial_year') {
+    const start = new Date(Date.UTC(year, financialMonth - 1, day));
+    if (date < start) year--;
+    return [new Date(Date.UTC(year, financialMonth - 1, day)).toISOString().slice(0,10),new Date(Date.UTC(year+1,financialMonth-1,day-1)).toISOString().slice(0,10)];
+  }
+  if (date.getUTCDate() < day) month--;
+  if (preset === 'previous') month--;
+  const start = new Date(Date.UTC(year,month,day));
+  return monthBudgetDates(start.toISOString().slice(0,7),day);
+}
+function renderReportPeriod() {
+  const preset = $('#reportPeriod').value, all = preset === 'all';
+  $('#reportFrom').disabled = all; $('#reportTo').disabled = all;
+  $('#reportFrom').required = !all; $('#reportTo').required = !all;
+  if (!all && preset !== 'custom') {
+    const dates = businessReportDates(preset,workspaceToday(),state.businessProfile?.period_start_day || 1,state.businessProfile?.financial_year_start_month || 1);
+    $('#reportFrom').value = dates[0]; $('#reportTo').value = dates[1];
+  }
+}
+function renderReportCurrency() {
+  const select = $('#reportOriginalCurrency'), current = select.value;
+  const currencies = [...new Set([...(state.workspaceSettings?.enabled_currencies || []),...(state.reportSnapshot?.currencies || []),current].filter(Boolean))].sort();
+  const original = $('#reportCurrencyMode').value === 'original';
+  select.replaceChildren(new Option(original ? 'Choose currency' : 'All currencies',''),...currencies.map(code=>new Option(code,code)));
+  select.required = original;
+  select.value = current || (original ? state.workspaceSettings?.reporting_currency : '');
+}
+function prepareBusinessReports() {
+  $('#businessReportFilters').reset(); renderReportPeriod(); renderReportCurrency();
+  $('#reportCategory').replaceChildren(new Option('All categories',''),...state.businessCategories.map(item=>new Option(item.name+(item.status==='active'?'':' (archived)'),item.id)));
+  $('#reportDimension').replaceChildren(new Option('All tags',''),...state.businessDimensions.map(item=>new Option(item.name+(item.status==='active'?'':' (archived)'),item.id)));
+  reportFilters = readBusinessReportFilters(); renderReportAccess();
+}
+function readBusinessReportFilters() {
+  return { p_from: $('#reportFrom').disabled ? null : $('#reportFrom').value || null,p_to: $('#reportTo').disabled ? null : $('#reportTo').value || null,
+    p_mode: $('#reportCurrencyMode').value,p_currency: $('#reportOriginalCurrency').value,p_category_id: $('#reportCategory').value || null,p_dimension_id: $('#reportDimension').value || null };
+}
+function renderReportAccess() {
+  const allowed = claimPermission('reports.view');
+  $('#businessReportControls').classList.toggle('hidden',!allowed);
+  $('#refreshBusinessReports').disabled = !allowed || reportLoading;
+  if (!allowed) setClaimMessage('#businessReportMessage','Report access is not enabled for your role. Contact the Business Owner.');
+  const canExport = allowed && claimPermission('reports.export') && state.reportSnapshot?.metadata?.can_export && !state.reportStale && !reportExportBusy && !reportLoading;
+  ['#exportBusinessReportCSV','#printBusinessReport','#exportReportSourcesCSV','#printReportSources'].forEach(selector=>$(selector).disabled=!canExport);
+}
+function reportMetric(label, value, section, detail = '') {
+  const button = claimNode('button','report-metric'); button.type = 'button'; button.dataset.reportSection = section;
+  button.append(claimNode('span','',label),claimNode('strong','',value),claimNode('small','',detail || 'View exact records'));
+  return button;
+}
+function reportFigure(value, section, options = {}) {
+  const button = claimNode('button','report-figure',value); button.type = 'button'; button.dataset.reportSection = section;
+  if (options.groupType) { button.dataset.reportGroupType = options.groupType; button.dataset.reportGroupId = options.groupId || ''; }
+  if (options.budgetId) button.dataset.reportBudgetId = options.budgetId;
+  button.setAttribute('aria-label',`${REPORT_SECTIONS[section]}: ${value}. View exact records.`); return button;
+}
+function renderReportGroups(selector, groups, groupType, currency) {
+  const nodes = (groups || []).map(group=>{
+    const row = claimNode('article','report-group'), values = claimNode('div','report-group-values');
+    for (const [label,key,section] of [['Paid','paid','paid'],['Committed','committed','committed']]) {
+      const field = claimNode('div','');field.append(claimNode('span','',label),reportFigure(money(group[key],currency),section,{groupType,groupId:group.id}));values.append(field);
+    }
+    row.append(claimNode('strong','',group.name),values); return row;
+  });
+  $(selector).replaceChildren(...(nodes.length ? nodes : [claimNode('p','claim-empty','No paid or committed spending matches these filters.')]));
+}
+function renderBusinessReports() {
+  renderReportAccess();
+  const snapshot = state.reportSnapshot; $('#businessReportContent').classList.toggle('hidden',!snapshot);
+  if (!snapshot) return;
+  const { summary:s, metadata:m } = snapshot, currency = m.currency;
+  $('#businessReportContext').textContent = `${REPORT_ACCESS[m.access]} · ${m.from || 'First recorded date'} – ${m.to || 'Latest recorded date'} · ${m.mode==='original'?'Original':'Stored reporting'} currency ${currency} · ${m.timezone} · Generated ${formatDateTime(m.generated_at)}`;
+  $('#businessReportMetrics').replaceChildren(reportMetric('Income received',money(s.income,currency),'income'),reportMetric('Company payments',money(s.paid,currency),'paid'),reportMetric('Unpaid commitments',money(s.committed,currency),'committed'),reportMetric('Recorded difference',money(Number(s.income)-Number(s.paid),currency),'actuals','Received income less company payments'));
+  $('#businessReportHealth').replaceChildren(reportMetric('Bills due',String(s.due_count),'due',`${money(s.due_amount,currency)} currently unpaid`),reportMetric('Overdue bills',String(s.overdue_count),'overdue',`${money(s.overdue_amount,currency)} currently unpaid`),reportMetric('Missing receipts / proofs',String(s.missing_count),'missing','Expense receipts, invoices and payment proofs'),reportMetric('Employee claim records',String(s.claim_count),'employee_claims',`${money(s.claimed,currency)} · includes all statuses`),reportMetric('Reimbursements paid',money(s.reimbursed,currency),'reimbursements'),reportMetric('Approved reimbursements',money(s.approved_reimbursements,currency),'approved_reimbursements','Approved and still unpaid'));
+  renderReportGroups('#reportCategoryGroups',snapshot.categories,'category',currency);renderReportGroups('#reportDimensionGroups',snapshot.dimensions,'dimension',currency);
+  const budgets = (snapshot.budgets || []).map(budget=>{
+    const card = claimNode('article','budget-card'), values = budgetNumbers(budget,budget), list = claimNode('dl','detail-list');
+    card.append(claimNode('h3','',budget.name),claimNode('p','',`Target ${budget.starts_on} – ${budget.ends_on} · Activity ${budget.activity_from} – ${budget.activity_to}`));
+    for (const [label,value,section] of [['Full planned target',values.planned,'budget_plan'],['Actual paid',values.paid,'budget_paid'],['Unpaid commitments',values.committed,'budget_committed'],['Available after commitments',values.remaining,'budget_activity']]) {
+      const line = claimNode('div','');line.append(claimNode('dt','',label));const cell = claimNode('dd','');cell.append(reportFigure(money(value,currency),section,{budgetId:budget.id}));line.append(cell);list.append(line);
+    }
+    card.append(list); return card;
+  });
+  $('#reportBudgetComparisons').replaceChildren(...(budgets.length ? budgets : [claimNode('p','claim-empty',m.mode==='original' ? 'Budget targets use the reporting currency. Switch to the reporting view to compare them.' : 'No active or closed budgets match this period and permitted scope. Budget-view permission is also required.')]));
+  $('#reportExportAccess').textContent = m.can_export ? 'Export all matching records, including every page. Print opens a summary you can save as PDF. Larger than 10,000 records requires narrower filters.' : 'Your role has view access. The Business Owner can grant export and print permission.';
+  renderReportCurrency();
+}
+async function refreshBusinessReports() {
+  if (!state.workspace || state.locked || !claimPermission('reports.view')) { renderReportAccess(); return; }
+  const workspaceId = state.workspace.id, sequence = workspaceLoadSequence, request = ++reportSequence;
+  reportLoading = true; reportAttempted = true;
+  reportSelection = null; state.reportSources = null; openedReportRecord = null; reportSourceSequence++;
+  ['#businessReportSourcesDialog','#businessReportRecordDialog'].forEach(selector=>{if($(selector).open)$(selector).close()});
+  state.reportSnapshot = null; $('#businessReportContent').classList.add('hidden');
+  setClaimMessage('#businessReportMessage','Loading report…'); renderReportAccess();
+  try {
+    const snapshot = await query('Business report',supabase.rpc('business_report_summary',{p_workspace_id:workspaceId,...reportFilters}));
+    if (sequence!==workspaceLoadSequence || request!==reportSequence) return;
+    state.reportSnapshot = snapshot; state.reportStale = false; setClaimMessage('#businessReportMessage');
+  } catch(error) { if(sequence===workspaceLoadSequence && request===reportSequence)setClaimMessage('#businessReportMessage',friendlyMessage(error),true); }
+  finally { if(sequence===workspaceLoadSequence && request===reportSequence){reportLoading=false;renderBusinessReports();} }
+}
+function reportSelectionArgs(selection) {
+  return {p_section:selection.section,p_group_type:selection.groupType || '',p_group_id:selection.groupId || null,p_budget_id:selection.budgetId || null};
+}
+function markBusinessReportStale(error) {
+  if (/BUSINESS_REPORT_CHANGED/.test(error.message || '')) { state.reportStale = true; renderReportAccess(); setClaimMessage('#businessReportMessage',friendlyMessage(error),true); }
+}
+async function openBusinessReportSources(selection, reset = true) {
+  if (!state.reportSnapshot || state.reportStale || state.locked || !claimPermission('reports.view')) return;
+  if (reset) reportSourceOffset = 0;
+  reportSelection = { ...selection }; const selected = reportSelection;
+  const workspaceId = state.workspace.id, sequence = workspaceLoadSequence, request = ++reportSourceSequence;
+  const snapshot = state.reportSnapshot, offset = reportSourceOffset;
+  setClaimMessage('#reportSourcesMessage');
+  try {
+    const result = await query('Report source records',supabase.rpc('business_report_records',{p_workspace_id:workspaceId,...reportFilters,...reportSelectionArgs(selected),p_expected_fingerprint:snapshot.fingerprint,p_offset:offset}));
+    if (sequence!==workspaceLoadSequence || request!==reportSourceSequence || state.reportSnapshot!==snapshot) return;
+    state.reportSources = result;
+    $('#reportSourcesTitle').textContent = REPORT_SECTIONS[selected.section];
+    $('#reportSourcesContext').textContent = `${REPORT_ACCESS[result.metadata.access]} · ${result.metadata.from || 'First record'} – ${result.metadata.to || 'Latest record'} · ${result.metadata.currency} · ${result.total_count} matching records`;
+    const budget = selected.budgetId ? snapshot.budgets.find(item=>item.id===selected.budgetId) : null;
+    $('#reportSourcesBudget').classList.toggle('hidden',!budget);
+    $('#reportSourcesBudget').textContent = budget ? `${budget.name} · Full target ${money(budget.planned_amount,budget.reporting_currency)} for ${budget.starts_on} – ${budget.ends_on}. Activity is restricted to ${budget.activity_from} – ${budget.activity_to}.` : '';
+    $('#reportSourcesTotals').replaceChildren(...[['Received income',result.totals.income],['Company payments',result.totals.paid],['Unpaid commitments',result.totals.committed],['Claim-register value',result.totals.claimed]].map(([label,value])=>detailLine(label,money(value,result.metadata.currency))));
+    if(selected.section==='budget_plan')$('#reportSourcesTotals').replaceChildren(detailLine('Planned target',money(budget.planned_amount,budget.reporting_currency)));
+    $('#reportSourceList').replaceChildren(...(result.items.length ? result.items.map(row=>{
+      const card = claimNode('article','claim-row'), body = claimNode('div','claim-row-body');
+      body.append(claimNode('strong','',row.title),claimNode('small','',`${REPORT_TYPES[row.record_type]} · ${row.event_date} · ${row.status.replaceAll('_',' ')} · ${row.category_name || 'Budget scope'} · ${row.dimension_name || 'Workspace'}`),claimNode('small','',`Record ${row.record_id}`));
+      const amount = result.metadata.mode==='original' ? row.original_amount : row.reporting_amount;
+      const button = claimNode('button','button secondary','View record');button.type='button';button.dataset.reportEntryKey=row.entry_key;
+      card.append(body,claimNode('strong','claim-row-amount',money(amount,result.metadata.currency)),button);return card;
+    }) : [claimNode('p','claim-empty','No records contribute to this figure.')]));
+    pagination('reportSource',offset,Number(result.total_count));renderReportAccess();
+    if(!$('#businessReportSourcesDialog').open)$('#businessReportSourcesDialog').showModal();
+  } catch(error) {
+    if(sequence!==workspaceLoadSequence || request!==reportSourceSequence)return;
+    markBusinessReportStale(error);setClaimMessage('#reportSourcesMessage',friendlyMessage(error),true);setClaimMessage('#businessReportMessage',friendlyMessage(error),true);
+  }
+}
+function showBusinessReportRecord(key) {
+  if (state.locked || state.reportStale) return;
+  const row = state.reportSources?.items.find(item=>item.entry_key===key);if(!row)return;
+  openedReportRecord = row;
+  $('#reportRecordTitle').textContent = row.title;
+  $('#reportRecordFields').replaceChildren(detailLine('Record ID',row.record_id),detailLine('Record type',REPORT_TYPES[row.record_type]),detailLine('Date',row.event_date),detailLine('Status',row.status.replaceAll('_',' ')),detailLine('Original amount',money(row.original_amount,row.currency)),detailLine('Stored reporting amount',money(row.reporting_amount,row.reporting_currency)),detailLine('Conversion snapshot',`${row.exchange_rate} · ${row.rate_provider} · ${formatDateTime(row.rate_effective_at)}`),detailLine('Category',row.category_name || 'Budget scope'),detailLine('Organisation tag',row.dimension_name || 'Workspace'),detailLine('Person / supplier',row.person_name || '—'),detailLine('Payment source',sourceLabel(row.payment_source)),detailLine('Reference',row.reference || '—'),detailLine('Receipt / proof',row.receipt_state.replaceAll('_',' ')),detailLine('Parent record',row.parent_id || '—'));
+  if(row.period_end)$('#reportRecordFields').append(detailLine('Target ends',row.period_end));
+  $('#openReportOriginal').classList.toggle('hidden',!row.can_open);
+  setClaimMessage('#reportRecordMessage',row.can_open ? 'The original record opens with your existing financial and document permissions.' : 'This report record is read-only within your assigned scope.');
+  $('#businessReportRecordDialog').showModal();
+}
+async function exportBusinessReport(format, selection = null) {
+  const snapshot = state.reportSnapshot;
+  if (!snapshot || state.reportStale || state.locked || reportLoading || reportExportBusy || !snapshot.metadata.can_export || !claimPermission('reports.export')) return;
+  const selected = selection || {section:$('#reportExportSection').value};
+  const sequence = workspaceLoadSequence, request = reportSequence, args = {...reportFilters}, workspaceId = state.workspace.id;
+  const message = selection ? '#reportSourcesMessage' : '#businessReportMessage';
+  const popup = format==='print' ? window.open('about:blank','_blank') : null;
+  if (format==='print' && !popup) { setClaimMessage(message,'Allow a popup to open the printable summary.',true); return; }
+  if(popup){popup.opener=null;popup.document.body.textContent='Preparing the verified report…';reportPrintWindow=popup;}
+  reportExportBusy=true;renderReportAccess();setClaimMessage(message,'Preparing all matching records…');
+  const finish = window.MushavoPWA?.beginOperation('business-report-export');
+  try {
+    const result = await query('Export business report',supabase.rpc('business_report_export',{p_workspace_id:workspaceId,...args,...reportSelectionArgs(selected),p_expected_fingerprint:snapshot.fingerprint,p_export_id:crypto.randomUUID(),p_format:format}));
+    if(sequence!==workspaceLoadSequence || request!==reportSequence || state.reportSnapshot!==snapshot){if(popup&&!popup.closed)popup.close();return;}
+    if(format==='csv'){
+      const url = URL.createObjectURL(new Blob(['\ufeff',result.csv],{type:'text/csv;charset=utf-8'}));
+      const link = document.createElement('a');link.href=url;link.download=`mushavo-business-${selected.section}-${result.metadata.from || 'all'}-${result.metadata.to || 'dates'}.csv`;document.body.append(link);link.click();link.remove();window.setTimeout(()=>URL.revokeObjectURL(url),1000);
+    } else { if(popup.closed)throw new Error('The print window was closed. Open the report again.'); renderBusinessReportPrint(popup,result);reportPrintWindow=null; }
+    setClaimMessage(message,`${result.total_count} source records ${format==='csv'?'exported':'ready to print or save as PDF'}.`);
+  } catch(error){if(popup&&!popup.closed)popup.close();if(sequence===workspaceLoadSequence){markBusinessReportStale(error);setClaimMessage(message,friendlyMessage(error),true);}}
+  finally { finish?.();if(sequence===workspaceLoadSequence){reportExportBusy=false;reportPrintWindow=null;renderReportAccess();} }
+}
+function renderBusinessReportPrint(popup, report) {
+  const doc = popup.document, m = report.metadata, s = report.summary;
+  doc.title = `${m.workspace_name} — Business report`;
+  doc.head.replaceChildren();doc.body.replaceChildren();
+  const style=doc.createElement('style');style.textContent='@page{size:A4 landscape;margin:12mm}*{box-sizing:border-box}body{font-family:system-ui,sans-serif;color:#183438;margin:24px;font-size:12px}h1{font-size:24px;margin-bottom:8px}h2{font-size:16px;margin-top:26px}p{line-height:1.6}table{border-collapse:collapse;width:100%;margin:12px 0;table-layout:fixed}th,td{border:1px solid #b9ccca;padding:7px;text-align:left;vertical-align:top;overflow-wrap:anywhere}th{background:#eaf5f1}thead{display:table-header-group}tr{break-inside:avoid}button{padding:12px 20px;background:#087f6d;color:white;border:0;border-radius:8px;font:inherit}small{display:block;color:#49666a}@media print{body{margin:0;font-size:9px}.print-toolbar{display:none}}';doc.head.append(style);
+  const node=(tag,text)=>{const item=doc.createElement(tag);if(text!=null)item.textContent=text;return item};
+  const toolbar=node('div');toolbar.className='print-toolbar';const button=node('button','Print / Save PDF');button.addEventListener('click',()=>popup.print());toolbar.append(button,node('p','Choose Save as PDF in your browser print dialog to download a PDF.'));doc.body.append(toolbar);
+  doc.body.append(node('h1',m.workspace_name+' — Business report'),node('p',`${REPORT_ACCESS[m.access]} · ${m.from || 'First recorded date'} – ${m.to || 'Latest recorded date'} · ${m.mode==='original'?'Original':'Stored reporting'} currency ${m.currency} · ${m.timezone} · Generated ${formatDateTime(m.generated_at)}`));
+  const table=(headers,rows)=>{const t=node('table'),head=node('thead'),tr=node('tr');headers.forEach(value=>tr.append(node('th',value)));head.append(tr);t.append(head);const body=node('tbody');rows.forEach(values=>{const r=node('tr');values.forEach(value=>r.append(node('td',value??'—')));body.append(r)});t.append(body);doc.body.append(t)};
+  table(['Income received','Company payments','Unpaid commitments','Recorded difference'],[[money(s.income,m.currency),money(s.paid,m.currency),money(s.committed,m.currency),money(Number(s.income)-Number(s.paid),m.currency)]]);
+  table(['Bills due','Overdue bills','Missing documents','Claim records (all statuses)','Reimbursements paid','Approved reimbursements unpaid'],[[`${s.due_count} · ${money(s.due_amount,m.currency)}`,`${s.overdue_count} · ${money(s.overdue_amount,m.currency)}`,s.missing_count,`${s.claim_count} · ${money(s.claimed,m.currency)}`,money(s.reimbursed,m.currency),money(s.approved_reimbursements,m.currency)]]);
+  for(const [label,groups] of [['Spending by category',report.categories],['Spending by organisation tag',report.dimensions]]){doc.body.append(node('h2',label));table(['Scope','Actual paid','Unpaid commitments'],groups.map(group=>[group.name,money(group.paid,m.currency),money(group.committed,m.currency)]));}
+  if(report.budgets.length){doc.body.append(node('h2','Budget versus filtered activity'));table(['Budget / target period / activity period','Full planned target','Actual paid','Unpaid commitments','Available after commitments'],report.budgets.map(b=>[`${b.name} · Target ${b.starts_on}–${b.ends_on} · Activity ${b.activity_from}–${b.activity_to}`,money(b.planned_amount,m.currency),money(b.paid,m.currency),money(b.committed,m.currency),money(Number(b.planned_amount)-Number(b.paid)-Number(b.committed),m.currency)]));}
+  doc.body.append(node('p','Actuals exclude voided income and unpaid employee costs. Linked claims and requests are replaced by their bills and individual payments. Unpaid commitments and bills show current balances scheduled within the selected dates. Budget targets are full amounts and are not prorated or added together. Claim-register values include every status and are informational. Figures are not profit or a bank balance.'));
+  doc.body.append(node('h2',`${REPORT_SECTIONS[report.section]} — ${report.total_count} exact source records`));
+  table(['Date / type / status','Record / title','Original amount','Stored reporting amount','Category / tag','Income / paid / committed contribution','Claim-register value','Receipt / proof'],report.items.map(row=>[`${row.event_date}\n${REPORT_TYPES[row.record_type]}\n${row.status}`,`${row.title}\n${row.record_id}${row.parent_id?'\nParent '+row.parent_id:''}`,money(row.original_amount,row.currency),money(row.reporting_amount,row.reporting_currency),`${row.category_name || 'Budget scope'}\n${row.dimension_name || 'Workspace'}`,`${money(row.income_value,m.currency)} / ${money(row.paid_value,m.currency)} / ${money(row.commitment_value,m.currency)}`,money(row.claim_value,m.currency),row.receipt_state.replaceAll('_',' ')]));
+  doc.body.append(node('small',`Snapshot ${report.fingerprint} · Private Business report. Exported records reflect the permissions and data verified at generation time.`));
 }
 
 async function refreshClaims() {
@@ -1959,6 +2191,7 @@ function renderRoute() {
   $$("[data-business-nav]").forEach((link) => link.classList.toggle("active", link.dataset.businessNav === tab));
   if (window.location.hash !== `#business/${tab}`) setWorkspaceUrl(state.workspace.id);
   document.title = `${title} | Mushavo Budget Business`;
+  if (tab==='reports' && !reportAttempted && !reportLoading && claimPermission('reports.view')) refreshBusinessReports();
 }
 
 function renderBusinessWorkspace() {
@@ -1969,6 +2202,7 @@ function renderBusinessWorkspace() {
   resolveWorkspaceLock();
   renderClaims();
   renderBills();
+  renderReportAccess();
   renderPlanning();
   if (!state.locked) renderBusinessSetup();
   $('[data-open-setup-draft]')?.classList.toggle("hidden", !businessOwnerCanSetUp());
@@ -2030,6 +2264,7 @@ async function selectBusinessWorkspace(workspaceId) {
   state.setupDraft = drafts || null;
   state.permissions = new Set((permissions || []).filter((item) => item.allowed).map((item) => item.permission_code));
   state.memberScopes = memberScopes || [];
+  prepareBusinessReports();
   renderBusinessWorkspace();
   populateActivityFilters();
   if (!state.locked) {
@@ -2222,6 +2457,22 @@ $('#budgetSourceNext').addEventListener('click', () => { budgetSourceOffset += 5
 $('#businessWorkflowPermissionForm').addEventListener('submit', saveWorkflowPermission);
 $('#workflowPermissionRole').addEventListener('change', renderWorkflowPermission);
 $('#workflowPermissionCode').addEventListener('change', renderWorkflowPermission);
+$('#reportPeriod').addEventListener('change',renderReportPeriod);
+$('#reportCurrencyMode').addEventListener('change',renderReportCurrency);
+['#reportFrom','#reportTo'].forEach(selector=>$(selector).addEventListener('change',()=>{$('#reportPeriod').value='custom';}));
+$('#businessReportFilters').addEventListener('submit',event=>{event.preventDefault();reportFilters=readBusinessReportFilters();refreshBusinessReports();});
+$('#refreshBusinessReports').addEventListener('click',refreshBusinessReports);
+$('#businessReportContent').addEventListener('click',event=>{const button=event.target.closest('[data-report-section]');if(button)openBusinessReportSources({section:button.dataset.reportSection,groupType:button.dataset.reportGroupType,groupId:button.dataset.reportGroupId,budgetId:button.dataset.reportBudgetId});});
+$$('[data-close-report-sources]').forEach(button=>button.addEventListener('click',()=>$('#businessReportSourcesDialog').close()));
+$$('[data-close-report-record]').forEach(button=>button.addEventListener('click',()=>$('#businessReportRecordDialog').close()));
+$('#reportSourceList').addEventListener('click',event=>{const button=event.target.closest('[data-report-entry-key]');if(button)showBusinessReportRecord(button.dataset.reportEntryKey);});
+$('#reportSourcePrevious').addEventListener('click',()=>{reportSourceOffset=Math.max(0,reportSourceOffset-50);if(reportSelection)openBusinessReportSources(reportSelection,false);});
+$('#reportSourceNext').addEventListener('click',()=>{reportSourceOffset+=50;if(reportSelection)openBusinessReportSources(reportSelection,false);});
+$('#openReportOriginal').addEventListener('click',()=>{const row=openedReportRecord;if(row?.can_open&&!state.locked&&!state.reportStale){$('#businessReportRecordDialog').close();$('#businessReportSourcesDialog').close();openBusinessSource(row,'#businessReportMessage');}});
+$('#exportBusinessReportCSV').addEventListener('click',()=>exportBusinessReport('csv'));
+$('#printBusinessReport').addEventListener('click',()=>exportBusinessReport('print'));
+$('#exportReportSourcesCSV').addEventListener('click',()=>{if(reportSelection)exportBusinessReport('csv',reportSelection)});
+$('#printReportSources').addEventListener('click',()=>{if(reportSelection)exportBusinessReport('print',reportSelection)});
 $('#businessActivityFilters').addEventListener('submit', (event) => {
   event.preventDefault(); activityOffset = 0;
   activityFilters = Object.fromEntries([...new FormData(event.currentTarget)].map(([key, value]) => [`p_${key}`, ['category_id', 'dimension_id', 'from', 'to'].includes(key) ? value || null : value]));

@@ -69,7 +69,8 @@ test("locked conversion and status-specific reporting count paid claims once", (
     renderFinanceSummary: () => {}, money: (value) => `$${value}`, claimCard: (item) => item,
     claimNode: (_tag, _className, text) => ({ textContent: text })
   });
-  assert.equal($("#businessReportPending").textContent, "1");
+  // Reports have independent filters and no longer consume the overview counter.
+  assert.equal($("#businessApprovalTabCount").textContent, "1");
   assert.equal($("#businessReviewCount").textContent, "1");
   assert.equal($("#businessClaimApprovals").children.length, 1);
 });

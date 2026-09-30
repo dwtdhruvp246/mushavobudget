@@ -9,9 +9,9 @@ const app = readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const launchLock = readFileSync(new URL("../supabase/migrations/20260927183000_business_stage_0_launch_lock.sql", import.meta.url), "utf8");
 
 test("Stage 1 has a dedicated Business application and all approved sections", () => {
-  assert.match(page, /business\.css\?v=7/);
-  assert.match(page, /business\.js\?v=7/);
-  assert.match(page, /Version 4\.9\.23/);
+  assert.match(page, /business\.css\?v=8/);
+  assert.match(page, /business\.js\?v=8/);
+  assert.match(page, /Version 4\.9\.24/);
   for (const section of [
     "overview", "activity", "bills", "approvals", "budgets", "reports", "team", "settings", "subscription"
   ]) {

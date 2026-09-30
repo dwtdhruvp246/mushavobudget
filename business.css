@@ -373,3 +373,15 @@ dialog::backdrop { background: rgba(7, 24, 29, .58); backdrop-filter: blur(3px);
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* Stage 10 Owner billing */
+.billing-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:16px 0}.billing-instructions{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65}.billing-history{display:grid;gap:14px}.billing-history article{border:1.5px solid var(--line);border-radius:16px;padding:18px;min-width:0}.billing-history strong,.billing-history small{display:block;overflow-wrap:anywhere}.billing-history small{margin:8px 0;color:var(--muted);line-height:1.6}#businessBillingDialog .dialog-heading>div{min-width:0;overflow-wrap:anywhere}#businessBillingQuoteDetails dt,#businessBillingQuoteDetails dd{min-width:0;overflow-wrap:anywhere}#businessBillingQuoteCard{margin-top:20px}#businessBillingHistoryCard,#businessBillingOwnerContent{margin-top:20px}@media(max-width:600px){.billing-actions>.button{flex:1 1 140px}#businessBillingDialog .form-grid{grid-template-columns:1fr}.billing-history article{padding:14px}}
+
+#businessBillingDialog { padding: 24px; max-height: calc(100dvh - 32px); overflow-y: auto; }
+#businessBillingDialog form { padding: 0; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; margin-top: 20px; }
+#businessBillingDialog label { display: grid; gap: 8px; min-width: 0; font-size: .86rem; font-weight: 700; }
+#businessBillingDialog label small { color: var(--muted); font-weight: 400; line-height: 1.6; }
+#businessBillingDialog input,#businessBillingDialog select,#businessBillingDialog textarea { width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; border: 1px solid #cbdcda; border-radius: 10px; background: #fff; color: var(--ink); }
+#businessBillingDialog .full { grid-column: 1/-1; }
+#businessBillingDialog .dialog-heading>button { border: 0; background: var(--brand-soft); border-radius: 50%; width: 36px; height: 36px; flex: 0 0 auto; font-size: 24px; }
+@media(max-width:600px) { #businessBillingDialog { padding: 18px; } #businessBillingDialog form { grid-template-columns: minmax(0,1fr); } #businessBillingDialog h2 { font-size: 1.3rem; } }

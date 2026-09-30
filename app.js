@@ -83,6 +83,7 @@ const state = {
   adminUserInvitations: [],
   adminManualGrants: [],
   adminPlanFeatures: [],
+  adminBusinessBillingSettings: [],
   adminPlanLimits: [],
   adminEnquiries: [],
   adminRenewalRequests: [],
@@ -1296,6 +1297,7 @@ function resetState() {
   state.adminNotes = [];
   state.adminWorkspaces = [];
   state.adminWorkspaceMembers = [];
+  state.adminBusinessBillingSettings = [];
   state.adminSubscriptions = [];
   state.adminPlans = [];
   state.adminPlanPrices = [];
@@ -2043,6 +2045,7 @@ async function loadAdminData(tab = state.adminTab) {
     add("adminPlanPrices", "admin plan prices load", supabase.from("plan_prices").select("*").order("effective_from", { ascending: false }));
   }
   if (tab === "plans") {
+    if(["super_admin","admin_staff"].includes(state.adminRole))add("adminBusinessBillingSettings","Business pilot billing settings",supabase.rpc("admin_business_billing_settings"));
     add("adminPlanFeatures", "admin plan features load", supabase.from("plan_features").select("*").order("feature_code"));
     add("adminPlanLimits", "admin plan limits load", supabase.from("plan_limits").select("*").order("limit_code"));
   }
@@ -5883,11 +5886,12 @@ async function syncExchangeRates() {
 }
 
 function renderAdminPlans() {
+  renderBusinessBillingAdmin();
   const list = $("#adminPlanList");
   const priceSelect = $("#planPricePlan");
   const selectedPricePlan = priceSelect.value;
   priceSelect.innerHTML = state.adminPlans
-    .filter((plan) => plan.code !== "free")
+    .filter((plan) => plan.code !== "free" && plan.workspace_type !== "business")
     .map((plan) => `<option value="${escapeHtml(plan.code)}">${escapeHtml(plan.display_name)} (${titleCase(plan.workspace_type)})</option>`)
     .join("");
   if ([...priceSelect.options].some((option) => option.value === selectedPricePlan)) priceSelect.value = selectedPricePlan;
@@ -5907,12 +5911,40 @@ function renderAdminPlans() {
       <p>${escapeHtml(plan.marketing_summary || plan.description)}</p>
       <small>${seatSummary} &middot; ${enabledFeatures} enabled features &middot; ${plan.is_active ? "Active" : "Archived"}</small>
       <div class="plan-price-list">
-        ${activePrices.length ? activePrices.map((price) => `<div><strong>${titleCase(price.billing_period)}</strong><span>${money(price.amount, price.currency)} base${Number(price.extra_member_amount) ? ` &middot; ${money(price.extra_member_amount, price.currency)} per extra member/month` : ""}</span></div>`).join("") : "<span>No active prices configured.</span>"}
+        ${plan.workspace_type === "business" ? "<span>Private pilot billing settings are configured separately below.</span>" : activePrices.length ? activePrices.map((price) => `<div><strong>${titleCase(price.billing_period)}</strong><span>${money(price.amount, price.currency)} base${Number(price.extra_member_amount) ? ` &middot; ${money(price.extra_member_amount, price.currency)} per extra member/month` : ""}</span></div>`).join("") : "<span>No active prices configured.</span>"}
       </div>
       <button type="button" data-edit-plan-definition="${plan.id}">Edit plan</button>
     `;
     list.append(card);
   });
+}
+
+function renderBusinessBillingAdmin() {
+  const panel=$('#businessBillingAdminPanel');if(!panel)return;
+  const allowed=['super_admin','admin_staff'].includes(state.adminRole);panel.classList.toggle('hidden',!allowed);if(!allowed)return;
+  const select=$('#businessBillingAdminPlan'),selected=select.value;
+  select.replaceChildren(...(state.adminBusinessBillingSettings || []).map(item=>new Option(item.plan_name,item.plan_id)));
+  if([...select.options].some(option=>option.value===selected))select.value=selected;
+  fillBusinessBillingAdmin();
+}
+function fillBusinessBillingAdmin() {
+  const item=(state.adminBusinessBillingSettings || []).find(row=>row.plan_id===$('#businessBillingAdminPlan').value);
+  const fields={Currency:'currency',Seats:'included_seats',MonthlyBase:'monthly_base',AnnualBase:'annual_base',MonthlySeat:'monthly_seat',AnnualSeat:'annual_seat',Instructions:'payment_instructions'};
+  for(const [suffix,key] of Object.entries(fields))$('#businessBillingAdmin'+suffix).value=item?.[key] ?? '';
+  $('#businessBillingAdminEnabled').checked=Boolean(item?.pilot_enabled);
+  $('#businessBillingAdminMessage').textContent=item?`Settings version ${item.version}. Public Business purchase remains closed.`:'No Business billing settings are available.';
+}
+async function saveBusinessBillingAdmin(event) {
+  event.preventDefault();const item=(state.adminBusinessBillingSettings || []).find(row=>row.plan_id===$('#businessBillingAdminPlan').value);if(!item)return;
+  const number=suffix=>$('#businessBillingAdmin'+suffix).value===''?null:Number($('#businessBillingAdmin'+suffix).value);
+  const button=event.submitter || event.currentTarget.querySelector('button[type="submit"]');
+  try{setSubmitting(button,true,'Saving…');await query('Business pilot billing save',supabase.rpc('save_business_billing_settings',{
+    p_plan_id:item.plan_id,p_expected_version:item.version,p_pilot_enabled:$('#businessBillingAdminEnabled').checked,
+    p_included_seats:number('Seats'),p_currency:$('#businessBillingAdminCurrency').value.trim().toUpperCase(),
+    p_monthly_base:number('MonthlyBase'),p_annual_base:number('AnnualBase'),p_monthly_seat:number('MonthlySeat'),p_annual_seat:number('AnnualSeat'),p_payment_instructions:$('#businessBillingAdminInstructions').value
+  }));await loadAdminData('plans');renderAdminPlans();showToast('Private Business billing settings saved. Public purchase remains closed.');}
+  catch(error){showToast(error.message);$('#businessBillingAdminMessage').textContent=error.message;}
+  finally{setSubmitting(button,false,'Save pilot billing settings');}
 }
 
 function resetPlanDefinitionForm() {
@@ -6014,7 +6046,7 @@ function renderSubscriptionReviews() {
     const article = document.createElement("article");
     article.className = "record-card subscription-review-card subscription-payment-row";
     article.innerHTML = `
-      <div class="record-main"><strong>${escapeHtml(request?.provision_workspace_on_approval ? request.requested_workspace_name || "New Family workspace" : workspace?.name || "Workspace")}</strong><span>${request?.purchase_kind === "extra_places" ? "Additional Family places" : escapeHtml(invoice?.plan_name || "Plan")} &middot; ${titleCase(invoice?.billing_period)} &middot; reference ${escapeHtml(payment.reference_number)}</span><small>${request?.purchase_kind === "extra_places" ? `Adds ${Number(request.seat_count)} place(s) without extending the existing renewal date.` : request?.provision_workspace_on_approval ? `Creates a new Family workspace for ${Number(invoice?.billable_member_count || 1)} people after approval.` : "Renews or changes the selected workspace plan."} Submitted ${new Date(payment.created_at).toLocaleString()} by an authenticated workspace owner.</small><div class="badge-row">${statusBadge(payment.status)}${request?.purchase_kind === "extra_places" ? '<span class="mini-badge">extra places</span>' : ""}${request?.provision_workspace_on_approval ? '<span class="mini-badge">new family</span>' : ""}${proof ? '<span class="mini-badge">proof attached</span>' : ""}</div></div>
+      <div class="record-main"><strong>${escapeHtml(request?.provision_workspace_on_approval ? request.requested_workspace_name || "New Family workspace" : workspace?.name || "Workspace")}</strong><span>${request?.business_quote_id ? "Business subscription / capacity" : request?.purchase_kind === "extra_places" ? "Additional Family places" : escapeHtml(invoice?.plan_name || "Plan")} &middot; ${titleCase(invoice?.billing_period)} &middot; reference ${escapeHtml(payment.reference_number)}</span><small>${request?.business_quote_id ? "Applies the protected Business quote; suspension and capacity are checked again at approval." : request?.purchase_kind === "extra_places" ? `Adds ${Number(request.seat_count)} place(s) without extending the existing renewal date.` : request?.provision_workspace_on_approval ? `Creates a new Family workspace for ${Number(invoice?.billable_member_count || 1)} people after approval.` : "Renews or changes the selected workspace plan."} Submitted ${new Date(payment.created_at).toLocaleString()} by an authenticated workspace owner.</small><div class="badge-row">${statusBadge(payment.status)}${request?.purchase_kind === "extra_places" ? '<span class="mini-badge">extra places</span>' : ""}${request?.provision_workspace_on_approval ? '<span class="mini-badge">new family</span>' : ""}${proof ? '<span class="mini-badge">proof attached</span>' : ""}</div></div>
       <div class="record-side"><strong>${money(payment.amount, payment.currency)}</strong><div class="row-actions"><button type="button" data-view-subscription-payment="${payment.id}">View details</button>${proof ? `<button type="button" data-open-subscription-proof="${proof.id}">View proof</button>` : ""}${canReview ? `<button class="primary" type="button" data-review-subscription="${payment.id}" data-review-decision="approved">Approve</button><button type="button" data-review-subscription="${payment.id}" data-review-decision="rejected">Reject</button>` : '<span class="mini-badge">Read only</span>'}</div></div>
     `;
     list.append(article);
@@ -6227,7 +6259,7 @@ function openAdminLegacyFamilyDetails(familyId) {
   });
 }
 
-function openSubscriptionPaymentDetails(paymentId) {
+async function openSubscriptionPaymentDetails(paymentId) {
   const payment = state.adminSubscriptionPayments.find((item) => item.id === paymentId);
   if (!payment) return;
   const request = state.adminRenewalRequests.find((item) => item.id === payment.renewal_request_id);
@@ -6237,6 +6269,14 @@ function openSubscriptionPaymentDetails(paymentId) {
   const proof = state.adminSubscriptionProofs.find((item) => item.payment_id === payment.id);
   const review = state.adminSubscriptionReviews.find((item) => item.payment_id === payment.id);
   const reviewer = state.adminProfiles.find((profile) => profile.id === review?.reviewer_id);
+  let businessQuote=null;
+  if(request?.business_quote_id){
+    const userId=state.session?.user?.id;
+    try{businessQuote=await query('Business subscription quote detail',supabase.rpc('admin_business_subscription_payment_detail',{p_payment_id:paymentId}));}
+    catch(error){showToast(error.message);return;}
+    if(state.session?.user?.id!==userId)return;
+  }
+
   showAdminDetails({
     eyebrow: "Subscription payment",
     title: invoice?.invoice_number || "Payment details",
@@ -6244,6 +6284,15 @@ function openSubscriptionPaymentDetails(paymentId) {
     body: `<section class="admin-detail-section"><h4>Invoice</h4>${adminDetailRows([
       ["Purchase", request?.purchase_kind === "extra_places" ? "Additional Family places" : escapeHtml(invoice?.plan_name || "Not set")],
       ["Billing period", escapeHtml(titleCase(invoice?.billing_period || "not set"))],
+      ...(businessQuote ? [
+        ['Business request',escapeHtml(businessQuote.kind==='extra_seats'?'Additional seats, same expiry':'Subscription renewal')],
+        ['Quote time',escapeHtml(formatAdminDate(businessQuote.quoted_at))],
+        ['Full-cycle extra-seat price',money(businessQuote.seat_price,businessQuote.currency)],
+        ['Chargeable fraction',`${(Number(businessQuote.fraction)*100).toFixed(4)}%`],
+        ['Term starts',escapeHtml(formatAdminDate(businessQuote.term_start_at))],
+        ['Term ends',escapeHtml(formatAdminDate(businessQuote.term_end_at))],
+        ['Original capacity',String(businessQuote.original_limit)]
+      ] : []),
       ...(request?.purchase_kind === "extra_places" ? [["Existing expiry", escapeHtml(formatAdminDate(request.seat_expiry_at))]] : []),
       ["Base amount", invoice ? `<strong>${money(invoice.base_amount, invoice.currency)}</strong>` : "Not available"],
       ["Paid places", `<strong>${Number(invoice?.billable_member_count || 1)}</strong>`],
@@ -9240,6 +9289,8 @@ $("#adminSupportTicketForm").addEventListener("submit", protectSubmission(create
 $("#supportTicketForm").addEventListener("submit", protectSubmission(createUserSupportTicket));
 $("#planDefinitionForm").addEventListener("submit", protectSubmission(savePlanDefinition));
 $("#cancelPlanEditButton").addEventListener("click", resetPlanDefinitionForm);
+$('#businessBillingAdminPlan').addEventListener('change',fillBusinessBillingAdmin);
+$('#businessBillingAdminForm').addEventListener('submit',protectSubmission(saveBusinessBillingAdmin));
 $("#planPriceForm").addEventListener("submit", protectSubmission(savePlanPrice));
 $("#workspaceCurrencySettingsForm").addEventListener("submit", protectSubmission(saveWorkspaceCurrencySettings));
 $("#workspaceEnabledCurrencies").addEventListener("change", refreshWorkspaceCurrencyDependentOptions);

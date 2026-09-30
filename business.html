@@ -14,11 +14,11 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="/business.css?v=8" />
+    <link rel="stylesheet" href="/business.css?v=9" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <script src="/config.js?v=27"></script>
-    <script src="/pwa.js?v=64" defer></script>
-    <script type="module" src="/business.js?v=8"></script>
+    <script src="/pwa.js?v=65" defer></script>
+    <script type="module" src="/business.js?v=9"></script>
   </head>
   <body>
     <a class="skip-link" href="#businessMain">Skip to Business content</a>
@@ -124,7 +124,7 @@
         <footer class="sidebar-footer">
           <a href="/app.html#personal/dashboard" data-leave-business>Personal &amp; Family</a>
           <button type="button" data-sign-out>Sign out</button>
-          <small>Version 4.9.24</small>
+          <small>Version 4.9.25</small>
         </footer>
       </aside>
 
@@ -149,7 +149,7 @@
         <section id="businessLock" class="lock-panel hidden" aria-live="polite">
           <span class="lock-icon" aria-hidden="true">🔒</span>
           <div><p class="eyebrow">Workspace locked</p><h2 id="businessLockTitle">Subscription renewal required</h2><p id="businessLockMessage"></p></div>
-          <button id="businessRenewalButton" class="button primary hidden" type="button">Renewal coming soon</button>
+          <button id="businessRenewalButton" class="button primary hidden" type="button">View renewal and billing</button>
         </section>
 
         <section id="businessOnboarding" class="business-onboarding hidden" aria-labelledby="onboardingTitle">
@@ -331,7 +331,13 @@
 
           <section class="business-panel hidden" data-business-panel="subscription">
             <div class="section-heading"><div><p class="eyebrow">Plan &amp; access</p><h2>Subscription &amp; Billing</h2><p>Business subscription ownership, billing cycle, access state, and renewal date.</p></div></div>
-            <div class="subscription-grid"><article class="subscription-card"><div><p class="eyebrow">Current plan</p><h3 id="subscriptionPlanName">Business preview</h3><span id="subscriptionState" class="status-badge">Coming soon</span></div><dl class="detail-list"><div><dt>Started</dt><dd id="subscriptionStart">—</dd></div><div><dt>Billing cycle</dt><dd id="subscriptionBilling">—</dd></div><div><dt>Paid through</dt><dd id="subscriptionExpiry">—</dd></div><div><dt>Time remaining</dt><dd id="subscriptionCountdown">—</dd></div></dl></article><article class="content-card release-card"><p class="eyebrow">Release status</p><h3>Purchases remain closed</h3><p>Business pricing, included seats, and renewal payment controls will be enabled only after the staged product is ready.</p><button class="button secondary" type="button" disabled>Manage subscription</button></article></div>
+            <p id="businessBillingMessage" class="notice hidden" role="status"></p>
+            <div class="subscription-grid">
+              <article class="subscription-card"><div><p class="eyebrow">Current access</p><h3 id="subscriptionPlanName">Business</h3><span id="subscriptionState" class="status-badge">—</span></div><dl class="detail-list"><div><dt>Activation date</dt><dd id="subscriptionStart">—</dd></div><div><dt>Billing cycle</dt><dd id="subscriptionBilling">—</dd></div><div><dt>Paid through</dt><dd id="subscriptionExpiry">—</dd></div><div><dt>Time remaining</dt><dd id="subscriptionCountdown">—</dd></div><div><dt>Current seats</dt><dd id="subscriptionSeats">—</dd></div></dl><p id="businessNextCapacity" class="muted-copy"></p></article>
+              <article class="content-card"><p class="eyebrow">Owner billing</p><h3>Plan and capacity</h3><p id="businessBillingAvailability">Only the Business Owner manages subscription payments.</p><div class="billing-actions"><button id="businessRenewSubscription" class="button primary" type="button" disabled>Renew subscription</button><button id="businessBuySeats" class="button secondary" type="button" disabled>Purchase more seats</button><button id="refreshBusinessBilling" class="button secondary" type="button">Refresh status</button></div><p class="muted-copy">Monthly and annual prices are configured privately for pilot workspaces. Purchases remain closed to the public. Removing a member releases a seat and does not create a refund.</p></article>
+            </div>
+            <article id="businessBillingOwnerContent" class="content-card hidden"><p class="eyebrow">Payment instructions</p><h3>Manual payment and review</h3><p id="businessBillingInstructions" class="billing-instructions"></p><p class="muted-copy">Get a quote before paying. Submit your payment details and optional proof for admin review. Access and capacity change only after approval. Suspension requires an administrator to restore access.</p></article>
+            <article id="businessBillingHistoryCard" class="content-card hidden"><div class="section-heading"><div><p class="eyebrow">Invoices and receipts</p><h3>Billing history</h3></div></div><div id="businessBillingHistory" class="billing-history"></div><div class="billing-actions"><button id="businessBillingPrevious" class="button secondary" type="button">Previous</button><span id="businessBillingPage"></span><button id="businessBillingNext" class="button secondary" type="button">Next</button></div></article>
           </section>
         </div>
       </main>
@@ -511,6 +517,16 @@
         <section><h3>Payment history</h3><div id="billPaymentList" class="claim-list"></div></section>
         <form id="billPaymentForm" class="claim-fields"><label>Amount to record<input id="billPaymentAmount" type="number" min="0.01" step="0.0001" required /></label><label>Payment reference<input id="billPaymentReference" maxlength="160" required /></label><label>Company payment source<select id="billPaymentSource" data-payment-sources required></select></label><div class="field-wide dialog-actions"><button class="button primary" type="submit">Record partial or full payment</button></div></form>
       </div>
+    </dialog>
+
+    <dialog id="businessBillingDialog" class="business-dialog report-sources-dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">Subscription quote</p><h2 id="businessBillingDialogTitle">Renew subscription</h2></div><button type="button" data-close-billing-dialog aria-label="Close billing">×</button></div>
+      <p id="businessBillingDialogIntro" class="muted-copy"></p>
+      <form id="businessBillingQuoteForm" class="form-grid"><label>Billing cycle<select id="businessBillingPeriod"><option value="monthly">Monthly</option><option value="annual">Annual</option></select></label><label><span id="businessBillingQuantityLabel">Total seats for next term</span><input id="businessBillingQuantity" type="number" min="1" max="100" value="1" required /></label><button id="getBusinessBillingQuote" class="button primary full" type="submit">Get exact quote</button></form>
+      <p id="businessBillingQuoteMessage" class="notice hidden" role="status"></p>
+      <section id="businessBillingQuoteCard" class="content-card hidden"><h3>Review your quote</h3><dl id="businessBillingQuoteDetails" class="detail-list"></dl><p id="businessBillingQuoteInstructions" class="billing-instructions"></p><p id="businessBillingQuoteExpiry" class="muted-copy"></p>
+        <form id="businessBillingPaymentForm" class="form-grid"><label>Payment method<input id="businessBillingPaymentMethod" maxlength="100" required placeholder="Bank transfer, cash or mobile money" /></label><label>Payment date<input id="businessBillingPaymentDate" type="date" required /></label><label class="full">Payment reference<input id="businessBillingPaymentReference" maxlength="160" required /></label><label class="full">Notes<textarea id="businessBillingPaymentNotes" maxlength="2000"></textarea></label><label class="full">Payment proof (optional)<input id="businessBillingPaymentProof" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" /><small>JPG, PNG, WEBP or PDF, up to 10 MB.</small></label><button id="submitBusinessBillingPayment" class="button primary full" type="submit">Submit for admin review</button></form>
+      </section>
     </dialog>
 
     <dialog id="businessMoreDialog" class="more-dialog">

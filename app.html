@@ -21,10 +21,10 @@
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
-    <script src="/pwa.js?v=64" defer></script>
+    <script src="/pwa.js?v=65" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=105"></script>
+    <script type="module" src="app.js?v=106"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -175,7 +175,7 @@
             <div class="sidebar-footer">
               <button type="button" data-admin-tab="support">Contact support</button>
               <button id="adminSignOutButton" type="button">Sign out</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.24</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.25</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -282,6 +282,7 @@
                 </form>
               </section>
             </details>
+            <details class="admin-disclosure" id="businessBillingAdminPanel"><summary><span><strong>Business pilot billing</strong><small>Configure private prices and seats for existing Business workspaces. Public purchase stays closed.</small></span></summary><section class="ledger-panel"><p id="businessBillingAdminMessage" class="muted-copy"></p><form id="businessBillingAdminForm" class="form-grid"><label>Business plan<select id="businessBillingAdminPlan" required></select></label><label>Currency<input id="businessBillingAdminCurrency" maxlength="3" value="USD" required /></label><label>Included seats<input id="businessBillingAdminSeats" type="number" min="1" max="100" /></label><label>Monthly base price<input id="businessBillingAdminMonthlyBase" type="number" min="0" step="0.01" /></label><label>Annual base price<input id="businessBillingAdminAnnualBase" type="number" min="0" step="0.01" /></label><label>Monthly price per extra seat<input id="businessBillingAdminMonthlySeat" type="number" min="0" step="0.01" /></label><label>Annual price per extra seat<input id="businessBillingAdminAnnualSeat" type="number" min="0" step="0.01" /></label><label class="full">Payment instructions<textarea id="businessBillingAdminInstructions" maxlength="4000"></textarea></label><label class="full"><input id="businessBillingAdminEnabled" type="checkbox" /> Enable billing for existing pilot Business workspaces</label><p class="muted-copy full">Leave undecided prices blank. Enter a full-cycle additional-seat price separately for monthly and annual plans. Mid-term seats use exact-date proration. Saving settings does not grant seats or enable public Business purchases.</p><button class="primary full" type="submit">Save pilot billing settings</button></form></section></details>
           </section>
 
           <section class="screen-panel hidden" data-admin-panel="households">
@@ -625,7 +626,7 @@
             </div>
             <div class="sidebar-footer">
               <button type="button" data-family-tab="support">Contact support</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.24</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.25</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>

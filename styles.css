@@ -6433,3 +6433,20 @@ input[type="file"] {
   .payment-choice-card { grid-template-columns: 40px minmax(0,1fr); padding: .85rem; }
   .payment-choice-icon { width: 40px; height: 40px; }
 }
+
+/* Platform Business support: bounded forms and safe, wrapped audit references. */
+.admin-business-support { min-width: 0; }
+.admin-business-support .admin-detail-section,
+.admin-business-support .admin-detail-stack,
+.admin-business-support form,
+.admin-business-support label { min-width: 0; }
+.admin-business-support p,
+.admin-business-support small,
+.admin-business-support span { overflow-wrap: anywhere; }
+.admin-business-support input,
+.admin-business-support select,
+.admin-business-support textarea { min-width: 0; max-width: 100%; }
+@media (max-width: 520px) {
+  .admin-business-support .admin-detail-section { padding: 12px; }
+  .admin-business-support .admin-detail-list > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}

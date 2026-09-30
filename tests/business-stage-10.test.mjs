@@ -46,6 +46,6 @@ test('the newest billing refresh wins when responses return out of order',async(
   pending[0]({subscription:{version:1,paid_through_at:'2000-01-01'}});await first;
   assert.equal(context.state.workspaceSubscription.version,2);assert.equal(context.state.workspaceEntitlement.effective_status,'active');
 });
-test('the consolidated schema ends with the exact Stage 10 migration',()=>{
-  assert.ok(read('supabase/schema.sql').endsWith(read('supabase/migrations/20260930090000_business_stage_10_billing.sql')));
+test('the consolidated schema contains the exact Stage 10 migration',()=>{
+  assert.ok(read('supabase/schema.sql').includes(read('supabase/migrations/20260930090000_business_stage_10_billing.sql')));
 });

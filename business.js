@@ -1,4 +1,4 @@
-// Mushavo Budget Business application — Stage 9 reports and export
+// Mushavo Budget Business application — Stage 10 billing and capacity
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -53,6 +53,7 @@ const state = {
   bills: [],
   requests: [],
   budgets: [],
+  billingSnapshot: null,
   reportSnapshot: null,
   reportSources: null,
   reportStale: false,
@@ -72,6 +73,7 @@ const state = {
   locked: false,
   lockOwner: false
 };
+let billingSequence = 0, billingOffset = 0, billingBusy = false, billingQuote = null, billingAction = 'renewal', billingSubmissionId = null, billingPrintWindow = null;
 let workspaceLoadSequence = 0;
 let appOpening = false;
 let setupStep = "basics";
@@ -117,6 +119,14 @@ function showOnly(viewId) {
 
 function friendlyMessage(error) {
   const message = String(error?.message || error || "The Business workspace could not be opened.");
+  if(/BUSINESS_BILLING_OWNER_REQUIRED/.test(message))return 'Only the Business Owner can view billing or submit a payment.';
+  if(/BUSINESS_BILLING_SUSPENDED/.test(message))return 'This Business workspace or Owner account is suspended. An administrator must restore access; payment cannot remove suspension.';
+  if(/BUSINESS_BILLING_NOT_CONFIGURED/.test(message))return 'Billing prices, seats or payment instructions are not configured for this cycle. Contact the administrator.';
+  if(/BUSINESS_SUBSCRIPTION_QUOTE_CHANGED/.test(message))return 'This quote has expired or the subscription changed. Refresh billing and get a new quote.';
+  if(/BUSINESS_CAPACITY_BELOW_USAGE/.test(message))return 'Seats must cover the Owner, active members and pending invitations. Remove or cancel unused places before requesting a lower renewal quantity.';
+  if(/BUSINESS_RENEWAL_ALREADY_SCHEDULED/.test(message))return 'Your next term is already paid. Seat changes will be available when that term starts.';
+  if(/SUBSCRIPTION_REVIEW_ALREADY_PENDING/.test(message))return 'A subscription payment is already awaiting admin review.';
+  if(/SUBSCRIPTION_PROOF_NOT_FOUND|INVALID_SUBSCRIPTION_PROOF_PATH/.test(message))return 'Upload a valid payment proof again before submitting.';
   if (/BUSINESS_SETUP_CHANGED|BUSINESS_CATEGORY_CHANGED|BUSINESS_DIMENSION_CHANGED|BUSINESS_SETUP_DRAFT_CHANGED/.test(message)) return "Someone updated this business while you were editing. Reload this workspace and try again.";
   if (/BUSINESS_ACTIVE_OWNER_REQUIRED/.test(message)) return "Only the Owner of an active Business subscription can change setup.";
   if (/INVALID_BUSINESS_CURRENCIES|INVALID_BUSINESS_SETUP/.test(message)) return "Check the business name, selected currencies, timezone and financial period.";
@@ -190,6 +200,11 @@ function clearBusinessWorkspaceState() {
   state.workspace = null;
   state.workspaceMembers = [];
   state.teamSnapshot = null;
+  state.billingSnapshot=null;billingSequence++;billingOffset=0;billingBusy=false;billingQuote=null;billingSubmissionId=null;
+  if(billingPrintWindow&&!billingPrintWindow.closed)billingPrintWindow.close();billingPrintWindow=null;
+  ['#businessBillingHistory','#businessBillingQuoteDetails'].forEach(selector=>$(selector)?.replaceChildren());
+  $('#businessBillingQuoteCard')?.classList.add('hidden');
+  setClaimMessage('#businessBillingMessage');setClaimMessage('#businessBillingQuoteMessage');
   state.workspaceSubscription = null;
   state.workspaceEntitlement = null;
   state.workspaceSettings = null;
@@ -2130,11 +2145,155 @@ async function respondToBusinessInvitation(id, accept) {
   }
 }
 
+function businessBillingOwner() {
+  return state.workspace?.owner_id === state.session?.user?.id && roleForWorkspace(state.workspace) === 'business_owner';
+}
+function renderBusinessBilling() {
+  const owner = businessBillingOwner(), snapshot = owner ? state.billingSnapshot : null, config = snapshot?.settings;
+  $('#businessBillingOwnerContent').classList.toggle('hidden',!snapshot);
+  $('#businessBillingHistoryCard').classList.toggle('hidden',!snapshot);
+  $('#subscriptionSeats').textContent = snapshot ? `${snapshot.current_limit} purchased · ${snapshot.usage} used or reserved` : 'Owner manages seats';
+  const scheduled = snapshot?.renewal_scheduled;
+  $('#businessNextCapacity').textContent = scheduled ? `${snapshot.subscription.business_next_member_limit} seats take effect ${formatDateTime(snapshot.subscription.business_next_effective_at)}. Invitations reserve the lower current/next capacity (${snapshot.invitation_limit}).` : '';
+  const ready = owner && config?.pilot_enabled && config?.included_seats && !snapshot.suspended && !snapshot.pending && !scheduled;
+  const hasPrice = period => config?.[period === 'annual' ? 'annual_base' : 'monthly_base'] != null && config?.[period === 'annual' ? 'annual_seat' : 'monthly_seat'] != null;
+  $('#businessRenewSubscription').disabled = !ready || billingBusy || !['monthly','annual'].some(hasPrice);
+  $('#businessBuySeats').disabled = !ready || billingBusy || state.locked || !hasPrice(state.workspaceSubscription?.billing_period) || snapshot?.current_limit>=100;
+  $('#refreshBusinessBilling').disabled = !owner || billingBusy;
+  $('#businessBillingAvailability').textContent = !owner ? 'Only the Business Owner can view billing and submit subscription payments.' : snapshot?.suspended ? 'This Business workspace is suspended. Contact the platform administrator. Payment cannot remove suspension.' : snapshot?.pending ? 'A payment is awaiting admin review. Access and capacity stay as currently approved until the review is complete.' : scheduled ? 'Your next term is already paid. Further changes will be available when that term starts.' : !config?.pilot_enabled || !['monthly','annual'].some(hasPrice) ? 'Pilot billing has not been configured. Contact the platform administrator; prices and included seats are not assumed.' : 'Get a quote to renew or purchase more seats. Extra seats use the current cycle and keep the same expiry date.';
+  $('#businessBillingInstructions').textContent = config?.payment_instructions || 'Payment instructions are not configured yet.';
+  const list = $('#businessBillingHistory');list.replaceChildren();
+  for(const payment of snapshot?.history || []) {
+    const card=claimNode('article',''),title=claimNode('strong','',`${payment.invoice_number} · ${payment.status.replaceAll('_',' ')}`);
+    card.append(title,claimNode('strong','',money(payment.amount,payment.currency)),claimNode('small','',`${payment.kind==='extra_seats'?'Additional seats':payment.kind==='renewal'?'Subscription renewal':'Subscription payment'} · ${payment.total_seats || payment.billable_member_count} total seats · ${payment.billing_period} · Submitted ${formatDateTime(payment.created_at)}`),claimNode('small','',`Payment ${formatDate(payment.payment_date)} · ${payment.payment_method} · Reference ${payment.reference_number}`));
+    if(payment.term_start_at)card.append(claimNode('small','',`Term ${formatDateTime(payment.term_start_at)} – ${formatDateTime(payment.term_end_at)}`));
+    if(payment.rejection_reason)card.append(claimNode('small','',`Review reason: ${payment.rejection_reason}`));
+    if(payment.receipt_number){card.append(claimNode('small','',`Receipt ${payment.receipt_number} · Approved ${formatDateTime(payment.reviewed_at)}`));const print=claimNode('button','button secondary','Print / Save receipt PDF');print.type='button';print.dataset.billingReceipt=payment.id;card.append(print);}
+    for(const proof of payment.proofs || []){const button=claimNode('button','button secondary',`View proof: ${proof.name}`);button.type='button';button.dataset.billingProof=proof.path;card.append(button);}
+    list.append(card);
+  }
+  if(snapshot && !snapshot.history?.length)list.append(claimNode('p','muted-copy','No subscription payments submitted yet. Admin test grants do not create payment receipts.'));
+  const total=snapshot?.history_count || 0;
+  $('#businessBillingPage').textContent = total ? `${billingOffset+1}–${Math.min(billingOffset+20,total)} of ${total}` : '0 payments';
+  $('#businessBillingPrevious').disabled = billingBusy || billingOffset===0;
+  $('#businessBillingNext').disabled = billingBusy || billingOffset+20>=total;
+}
+async function refreshBusinessBilling() {
+  if(!businessBillingOwner()) { state.billingSnapshot=null;renderBusinessBilling();return; }
+  const workspaceId=state.workspace.id,sequence=workspaceLoadSequence,request=++billingSequence;
+  try {
+    const snapshot=await query('Business billing',supabase.rpc('business_billing_snapshot',{p_workspace_id:workspaceId,p_offset:billingOffset,p_limit:20}));
+    if(sequence!==workspaceLoadSequence || request!==billingSequence)return;
+    state.billingSnapshot=snapshot;state.workspaceSubscription=snapshot.subscription;
+    // The latest subscription read is authoritative; do not retain an old entitlement expiry.
+    if(state.workspaceEntitlement)state.workspaceEntitlement={...state.workspaceEntitlement,paid_through_at:snapshot.subscription.paid_through_at,effective_status:snapshot.suspended?'suspended':Date.parse(snapshot.subscription.paid_through_at)>Date.now()?'active':'expired'};
+    const wasLocked=state.locked;renderSubscription();resolveWorkspaceLock();
+    if(wasLocked&&!state.locked){await selectBusinessWorkspace(workspaceId);return;}
+    renderRoute();setClaimMessage('#businessBillingMessage');
+  } catch(error){if(sequence===workspaceLoadSequence && request===billingSequence){state.billingSnapshot=null;renderBusinessBilling();setClaimMessage('#businessBillingMessage',friendlyMessage(error),true);}}
+}
+function invalidateBusinessBillingQuote() {
+  billingQuote=null;billingSubmissionId=null;$('#businessBillingQuoteCard').classList.add('hidden');setClaimMessage('#businessBillingQuoteMessage');
+}
+function openBusinessBillingDialog(kind) {
+  if(!businessBillingOwner() || billingBusy || (kind==='extra_seats' ? $('#businessBuySeats').disabled : $('#businessRenewSubscription').disabled))return;
+  billingAction=kind;invalidateBusinessBillingQuote();$('#businessBillingQuoteForm').reset();$('#businessBillingPaymentForm').reset();
+  $('#businessBillingDialogTitle').textContent=kind==='extra_seats'?'Purchase more Business seats':'Renew Business subscription';
+  $('#businessBillingDialogIntro').textContent=kind==='extra_seats'?'Additional seats are charged for the exact remaining portion of the current term. The expiry date stays the same.':'The next term starts at your current expiry, or at approval if your subscription has already expired. Seat quantity changes take effect when that next term starts.';
+  $('#businessBillingQuantityLabel').textContent=kind==='extra_seats'?'Additional seats':'Total seats for next term';
+  const config=state.billingSnapshot.settings,period=state.workspaceSubscription.billing_period || 'monthly';
+  [...$('#businessBillingPeriod').options].forEach(option=>option.disabled=config[option.value==='annual'?'annual_base':'monthly_base']==null || config[option.value==='annual'?'annual_seat':'monthly_seat']==null);
+  $('#businessBillingPeriod').value=[...$('#businessBillingPeriod').options].find(option=>option.value===period&&!option.disabled)?.value || [...$('#businessBillingPeriod').options].find(option=>!option.disabled)?.value;
+  $('#businessBillingPeriod').disabled=kind==='extra_seats';
+  $('#businessBillingQuantity').min=kind==='extra_seats'?1:Math.max(config.included_seats,state.billingSnapshot.usage);
+  $('#businessBillingQuantity').max=kind==='extra_seats'?100-state.billingSnapshot.current_limit:100;
+  $('#businessBillingQuantity').value=kind==='extra_seats'?1:Math.max(config.included_seats,state.billingSnapshot.current_limit,state.billingSnapshot.usage);
+  $('#businessBillingPaymentDate').value=new Date().toISOString().slice(0,10);$('#businessBillingPaymentDate').max=new Date().toISOString().slice(0,10);
+  $('#businessBillingDialog').showModal();
+}
+async function withBusinessBillingBusy(action) {
+  if(billingBusy)return;
+  const sequence=workspaceLoadSequence;billingBusy=true;renderBusinessBilling();
+  $('#businessBillingDialog').querySelectorAll('button,input,select,textarea').forEach(node=>node.disabled=true);
+  const finish=window.MushavoPWA?.beginOperation('business-subscription-payment');
+  try{await action();}catch(error){if(sequence===workspaceLoadSequence)setClaimMessage('#businessBillingQuoteMessage',friendlyMessage(error),true);}
+  finally{finish?.();if(sequence===workspaceLoadSequence){billingBusy=false;$('#businessBillingDialog').querySelectorAll('button,input,select,textarea').forEach(node=>node.disabled=false);$('#businessBillingPeriod').disabled=billingAction==='extra_seats';renderBusinessBilling();renderBusinessBillingQuote();}}
+}
+function renderBusinessBillingQuote() {
+  const q=billingQuote;if(!q)return;
+  const details=$('#businessBillingQuoteDetails');details.replaceChildren();
+  const fields=[['Billing cycle',q.billing_period],['Total seats',q.total_seats],['Included seats',q.included_seats],['Base term price',money(q.base_amount,q.currency)],['Additional-seat price for full cycle',money(q.seat_price,q.currency)]];
+  if(q.kind==='extra_seats')fields.push(['Adding seats',q.additional_seats],['Remaining term',`${(Number(q.remaining_seconds)/86400).toFixed(2)} of ${(Number(q.term_seconds)/86400).toFixed(2)} days (${(Number(q.fraction)*100).toFixed(4)}%)`],['Same expiry date',formatDateTime(q.term_end_at)]);
+  else fields.push(['Next term (estimated)',`${formatDateTime(q.term_start_at)} – ${formatDateTime(q.term_end_at)}`]);
+  fields.push(['Total to pay',money(q.amount,q.currency)]);
+  for(const [label,value] of fields){const line=claimNode('div','');line.append(claimNode('dt','',label),claimNode('dd','',String(value)));details.append(line);}
+  $('#businessBillingQuoteInstructions').textContent=q.payment_instructions;
+  const expired=Date.parse(q.expires_at)<=Date.now();
+  $('#businessBillingQuoteExpiry').textContent=expired?'This quote has expired. Get a fresh quote before submitting.':`Quote valid until ${formatDateTime(q.expires_at)}. Amounts are locked for 30 minutes; admin review is required.`;
+  const noCharge=Number(q.amount)===0;
+  ['#businessBillingPaymentMethod','#businessBillingPaymentDate','#businessBillingPaymentReference'].forEach(selector=>{$(selector).required=!noCharge;$(selector).disabled=noCharge||billingBusy;});
+  $('#businessBillingPaymentProof').disabled=noCharge||billingBusy;
+  $('#submitBusinessBillingPayment').disabled=expired||billingBusy;
+  $('#submitBusinessBillingPayment').textContent=noCharge?'Request no-charge admin approval':'Submit for admin review';
+  $('#businessBillingQuoteCard').classList.remove('hidden');
+}
+async function getBusinessBillingQuote(event) {
+  event.preventDefault();const workspaceId=state.workspace.id,sequence=workspaceLoadSequence;
+  const args={p_workspace_id:workspaceId,p_kind:billingAction,p_billing_period:$('#businessBillingPeriod').value,p_quantity:Number($('#businessBillingQuantity').value)};
+  await withBusinessBillingBusy(async()=>{
+    const quote=await query('Business subscription quote',supabase.rpc('business_subscription_quote',args));
+    if(sequence!==workspaceLoadSequence)return;
+    billingQuote=quote;billingSubmissionId=crypto.randomUUID();$('#businessBillingPaymentForm').reset();$('#businessBillingPaymentDate').value=new Date().toISOString().slice(0,10);setClaimMessage('#businessBillingQuoteMessage');renderBusinessBillingQuote();
+  });
+}
+async function submitBusinessBillingPayment(event) {
+  event.preventDefault();if(!billingQuote || Date.parse(billingQuote.expires_at)<=Date.now())return;
+  const quote=billingQuote,workspaceId=state.workspace.id,sequence=workspaceLoadSequence,submissionId=billingSubmissionId;
+  const proof=$('#businessBillingPaymentProof').files[0];
+  const args={p_workspace_id:workspaceId,p_quote_id:quote.id,p_payment_id:submissionId,p_payment_method:$('#businessBillingPaymentMethod').value,p_payment_date:$('#businessBillingPaymentDate').value || null,p_reference_number:$('#businessBillingPaymentReference').value,p_notes:$('#businessBillingPaymentNotes').value};
+  await withBusinessBillingBusy(async()=>{
+    let path=null,submitted=false;
+    try{
+      if(proof){if(!['image/jpeg','image/png','image/webp','application/pdf'].includes(proof.type) || proof.size<1 || proof.size>10485760)throw new Error('Use a JPG, PNG, WEBP or PDF payment proof up to 10 MB.');
+        path=`workspaces/${workspaceId}/${state.session.user.id}/${crypto.randomUUID()}.${proof.type==='application/pdf'?'pdf':proof.type.split('/')[1]}`;
+        await query('Business payment proof upload',supabase.storage.from('subscription-proofs').upload(path,proof,{contentType:proof.type,upsert:false}));
+        args.p_proof_path=path;args.p_proof_name=proof.name;args.p_proof_mime_type=proof.type;args.p_proof_size_bytes=proof.size;
+      }
+      if(sequence!==workspaceLoadSequence)return;
+      await query('Business subscription payment',supabase.rpc('submit_business_subscription_payment',args));submitted=true;
+      if(sequence!==workspaceLoadSequence)return;
+      $('#businessBillingDialog').close();invalidateBusinessBillingQuote();billingOffset=0;await refreshBusinessBilling();setClaimMessage('#businessBillingMessage','Submitted for admin review. Your existing access and seats remain unchanged until approval.');
+    }finally{if(path&&!submitted)await supabase.storage.from('subscription-proofs').remove([path]).catch(()=>{});}
+  });
+}
+async function openBusinessBillingProof(path) {
+  if(!businessBillingOwner() || !(state.billingSnapshot?.history || []).some(row=>(row.proofs || []).some(proof=>proof.path===path)))return;
+  const sequence=workspaceLoadSequence;
+  try{const signed=await query('Subscription proof',supabase.storage.from('subscription-proofs').createSignedUrl(path,60));if(sequence===workspaceLoadSequence)window.open(signed.signedUrl,'_blank','noopener,noreferrer');}
+  catch(error){if(sequence===workspaceLoadSequence)setClaimMessage('#businessBillingMessage',friendlyMessage(error),true);}
+}
+async function printBusinessBillingReceipt(id) {
+  if(!businessBillingOwner())return;
+  const sequence=workspaceLoadSequence,workspaceId=state.workspace.id,popup=window.open('about:blank','_blank');
+  if(!popup){setClaimMessage('#businessBillingMessage','Allow a popup to print the receipt.',true);return;}
+  popup.opener=null;billingPrintWindow=popup;popup.document.body.textContent='Verifying receipt…';
+  try{
+    const snapshot=await query('Subscription receipt',supabase.rpc('business_billing_snapshot',{p_workspace_id:workspaceId,p_offset:billingOffset,p_limit:20}));
+    if(sequence!==workspaceLoadSequence){popup.close();return;}
+    const receipt=snapshot.history.find(row=>row.id===id && row.status==='approved');if(!receipt)throw new Error('Refresh billing history and select the approved receipt again.');
+    const doc=popup.document,node=(tag,text)=>{const item=doc.createElement(tag);item.textContent=text;return item};doc.title=receipt.receipt_number;doc.body.replaceChildren();
+    const style=doc.createElement('style');style.textContent='body{font:16px system-ui;color:#183438;margin:40px}p{line-height:1.7;overflow-wrap:anywhere}button{padding:12px}@media print{button{display:none}}';doc.head.append(style);
+    const print=node('button','Print / Save PDF');print.addEventListener('click',()=>popup.print());doc.body.append(print,node('h1','Mushavo Business subscription receipt'),node('h2',receipt.receipt_number));
+    for(const text of [state.workspace.name,`Invoice ${receipt.invoice_number}`,`${money(receipt.amount,receipt.currency)} · ${receipt.payment_method}`,`Payment ${formatDate(receipt.payment_date)} · Reference ${receipt.reference_number}`,`${receipt.kind==='extra_seats'?'Additional capacity':'Renewal'} · ${receipt.total_seats || receipt.billable_member_count} seats · ${receipt.billing_period}`,`Approved term ${formatDateTime(receipt.term_start_at)} – ${formatDateTime(receipt.term_end_at)}`])doc.body.append(node('p',text));
+  }catch(error){popup.close();if(sequence===workspaceLoadSequence)setClaimMessage('#businessBillingMessage',friendlyMessage(error),true);}
+  finally{if(sequence===workspaceLoadSequence)billingPrintWindow=null;}
+}
+
 function renderSubscription() {
   const subscription = state.workspaceSubscription;
   const entitlement = state.workspaceEntitlement;
   const status = entitlement?.effective_status || subscription?.status || "coming soon";
-  $("#subscriptionPlanName").textContent = entitlement?.plan_name || "Business preview";
+  $("#subscriptionPlanName").textContent = entitlement?.plan_name || state.billingSnapshot?.plan_name || "Business";
   $("#subscriptionState").textContent = status.replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
   $("#subscriptionStart").textContent = formatDate(subscription?.entitlement_start_at);
   $("#subscriptionBilling").textContent = subscription?.billing_period
@@ -2142,24 +2301,26 @@ function renderSubscription() {
     : "Not available";
   $("#subscriptionExpiry").textContent = formatDate(subscription?.paid_through_at || entitlement?.paid_through_at);
   $("#subscriptionCountdown").textContent = subscription ? countdown(subscription.paid_through_at || entitlement?.paid_through_at) : "Launch pending";
+  renderBusinessBilling();
 }
 
 function resolveWorkspaceLock() {
-  const status = state.workspaceEntitlement?.effective_status || state.workspaceSubscription?.status;
-  state.locked = state.workspace?.status === "suspended" || ["expired", "suspended"].includes(status);
-  state.lockOwner = roleForWorkspace(state.workspace) === "business_owner";
-  const panel = $("#businessLock");
-  panel.classList.toggle("hidden", !state.locked);
-  if (!state.locked) return;
-  if (state.lockOwner) {
-    $("#businessLockTitle").textContent = "Renew your Business subscription";
-    $("#businessLockMessage").textContent = "Only the Business Owner can access renewal. Other members remain locked until the subscription is active again.";
-    $("#businessRenewalButton").classList.remove("hidden");
-    state.tab = "subscription";
-  } else {
-    $("#businessLockTitle").textContent = "This Business workspace is locked";
-    $("#businessLockMessage").textContent = "The Business subscription has ended or been suspended. Contact the Business Owner to restore access.";
-    $("#businessRenewalButton").classList.add("hidden");
+  const subscription=state.workspaceSubscription;
+  const status=state.workspaceEntitlement?.effective_status || subscription?.status;
+  const suspended=state.workspace?.status==='suspended' || subscription?.status==='suspended' || status==='suspended';
+  state.locked=suspended || !subscription?.paid_through_at || !Number.isFinite(Date.parse(subscription.paid_through_at)) || Date.parse(subscription.paid_through_at)<=Date.now() || status==='expired';
+  state.lockOwner=businessBillingOwner();
+  $('#businessLock').classList.toggle('hidden',!state.locked);
+  $$('[data-open-add]').forEach(button=>button.disabled=state.locked);
+  if(!state.locked)return;
+  if(state.lockOwner){
+    $('#businessLockTitle').textContent=suspended?'Business workspace suspended':'Renew your Business subscription';
+    $('#businessLockMessage').textContent=suspended?'An administrator must restore this workspace. Submitting or approving a payment cannot remove suspension.':'Your Business subscription has expired. You can view billing and submit renewal; operational finance remains locked until approval.';
+    $('#businessRenewalButton').classList.toggle('hidden',suspended);state.tab='subscription';
+  }else{
+    $('#businessLockTitle').textContent=suspended?'Business workspace suspended':'Business subscription expired';
+    $('#businessLockMessage').textContent=suspended?'This Business workspace has been suspended. Contact the Business Owner.':'This Business subscription has expired. Contact the Business Owner.';
+    $('#businessRenewalButton').classList.add('hidden');
   }
 }
 
@@ -2231,24 +2392,26 @@ async function selectBusinessWorkspace(workspaceId) {
   renderWorkspaceSelectors();
 
   let subscriptions, entitlements, settings, team, profiles, categories, dimensions, drafts, permissions, memberScopes;
+  [subscriptions,entitlements]=await Promise.all([
+    query('Business subscription load',supabase.from('workspace_subscriptions').select('*').eq('workspace_id',workspace.id).limit(1)),
+    query('Business entitlement load',supabase.rpc('effective_workspace_entitlement',{p_workspace_id:workspace.id}))
+  ]);
+  if(requestSequence!==workspaceLoadSequence)return;
+  state.workspaceSubscription=subscriptions[0] || null;state.workspaceEntitlement=entitlements[0] || null;resolveWorkspaceLock();
+  if(state.locked){renderBusinessWorkspace();if(state.lockOwner)await refreshBusinessBilling();return;}
   try {
-    const memberId = state.memberships.find((item) => item.workspace_id === workspace.id && item.user_id === state.session.user.id)?.id;
-    [subscriptions, entitlements, settings, team, profiles, categories, dimensions, drafts, permissions, memberScopes] = await Promise.all([
-    query("Business subscription load", supabase.from("workspace_subscriptions").select("*").eq("workspace_id", workspace.id).limit(1)),
-    query("Business entitlement load", supabase.rpc("effective_workspace_entitlement", { p_workspace_id: workspace.id })),
-    query("Business settings load", supabase.from("workspace_settings").select("*").eq("workspace_id", workspace.id).maybeSingle()),
-    query("Business team load", supabase.rpc("business_team_snapshot", { p_workspace_id: workspace.id })),
-    query("Business identity load", supabase.from("business_profiles").select("*").eq("workspace_id", workspace.id).maybeSingle()),
-    query("Business category load", supabase.from("business_categories").select("*").eq("workspace_id", workspace.id).order("name")),
-    query("Business tag load", supabase.from("business_dimensions").select("*").eq("workspace_id", workspace.id).order("name")),
-    query("Business first draft load", supabase.from("business_setup_drafts").select("*").eq("workspace_id", workspace.id).maybeSingle()),
-    query("Business permissions load", supabase.rpc("business_effective_permissions", { p_workspace_id: workspace.id })),
-    memberId ? query("Business assigned scope load", supabase.from("business_member_scopes").select("dimension_id").eq("workspace_id", workspace.id).eq("member_id", memberId)) : Promise.resolve([])
+    const memberId=state.memberships.find(item=>item.workspace_id===workspace.id && item.user_id===state.session.user.id)?.id;
+    [settings,team,profiles,categories,dimensions,drafts,permissions,memberScopes]=await Promise.all([
+      query('Business settings load',supabase.from('workspace_settings').select('*').eq('workspace_id',workspace.id).maybeSingle()),
+      query('Business team load',supabase.rpc('business_team_snapshot',{p_workspace_id:workspace.id})),
+      query('Business identity load',supabase.from('business_profiles').select('*').eq('workspace_id',workspace.id).maybeSingle()),
+      query('Business category load',supabase.from('business_categories').select('*').eq('workspace_id',workspace.id).order('name')),
+      query('Business tag load',supabase.from('business_dimensions').select('*').eq('workspace_id',workspace.id).order('name')),
+      query('Business first draft load',supabase.from('business_setup_drafts').select('*').eq('workspace_id',workspace.id).maybeSingle()),
+      query('Business permissions load',supabase.rpc('business_effective_permissions',{p_workspace_id:workspace.id})),
+      memberId?query('Business assigned scope load',supabase.from('business_member_scopes').select('dimension_id').eq('workspace_id',workspace.id).eq('member_id',memberId)):Promise.resolve([])
     ]);
-  } catch (error) {
-    if (requestSequence !== workspaceLoadSequence) return;
-    throw error;
-  }
+  }catch(error){if(requestSequence!==workspaceLoadSequence)return;throw error;}
 
   // A slower response from a previously selected company must never overwrite
   // the newly selected Business workspace.
@@ -2267,6 +2430,8 @@ async function selectBusinessWorkspace(workspaceId) {
   prepareBusinessReports();
   renderBusinessWorkspace();
   populateActivityFilters();
+  if(businessBillingOwner())await refreshBusinessBilling();
+  if(requestSequence!==workspaceLoadSequence)return;
   if (!state.locked) {
     await refreshClaims();
     await refreshBills();
@@ -2359,7 +2524,7 @@ $$('[data-workspace-selector]').forEach((select) => {
     });
   });
 });
-$$('[data-open-add]').forEach((button) => button.addEventListener("click", () => $("#businessAddDialog").showModal()));
+$$('[data-open-add]').forEach((button) => button.addEventListener("click", () => { if(!state.locked)$("#businessAddDialog").showModal(); }));
 $$('[data-open-claim]').forEach((button) => button.addEventListener("click", () => openClaimForm(button.dataset.openClaim)));
 $$('[data-open-bill]').forEach((button) => button.addEventListener("click", openBillForm));
 $("#addBusinessBill").addEventListener("click", openBillForm);
@@ -2604,6 +2769,61 @@ window.addEventListener("hashchange", () => {
   $("#businessMoreDialog")?.close();
   $("#businessMain")?.focus({ preventScroll: true });
 });
+
+$('#businessRenewSubscription').addEventListener('click',()=>openBusinessBillingDialog('renewal'));
+$('#businessBuySeats').addEventListener('click',()=>openBusinessBillingDialog('extra_seats'));
+$('#businessRenewalButton').addEventListener('click',()=>{window.location.hash='#business/subscription';$('#businessMain')?.focus({preventScroll:true});});
+$('#refreshBusinessBilling').addEventListener('click',refreshBusinessBilling);
+$('#businessBillingQuoteForm').addEventListener('submit',getBusinessBillingQuote);
+$('#businessBillingQuoteForm').addEventListener('change',invalidateBusinessBillingQuote);
+$('#businessBillingPaymentForm').addEventListener('submit',submitBusinessBillingPayment);
+$$('[data-close-billing-dialog]').forEach(button=>button.addEventListener('click',()=>$('#businessBillingDialog').close()));
+$('#businessBillingPrevious').addEventListener('click',()=>{billingOffset=Math.max(0,billingOffset-20);refreshBusinessBilling();});
+$('#businessBillingNext').addEventListener('click',()=>{billingOffset+=20;refreshBusinessBilling();});
+$('#businessBillingHistory').addEventListener('click',event=>{const proof=event.target.closest('[data-billing-proof]'),receipt=event.target.closest('[data-billing-receipt]');if(proof)openBusinessBillingProof(proof.dataset.billingProof);if(receipt)printBusinessBillingReceipt(receipt.dataset.billingReceipt);});
+function enforceBusinessExpiry() {
+  if(!state.workspace)return;
+  const wasLocked=state.locked;resolveWorkspaceLock();
+  if(!wasLocked&&state.locked){
+    const workspaceId=state.workspace.id,subscription=state.workspaceSubscription,entitlement=state.workspaceEntitlement,workspace=state.workspace;
+    clearBusinessWorkspaceState();state.workspace=workspace;state.workspaceSubscription=subscription;state.workspaceEntitlement=entitlement;resolveWorkspaceLock();renderBusinessWorkspace();
+    if(state.lockOwner)refreshBusinessBilling();
+  }
+  if(billingQuote)renderBusinessBillingQuote();
+  if(state.workspaceSubscription)$('#subscriptionCountdown').textContent=countdown(state.workspaceSubscription.paid_through_at);
+}
+let businessAccessCheckBusy=false;
+async function refreshBusinessAccessState() {
+  if(!state.workspace || businessAccessCheckBusy)return;
+  const workspaceId=state.workspace.id,sequence=workspaceLoadSequence,wasLocked=state.locked;businessAccessCheckBusy=true;
+  try{
+    const suspended=await query('Account access check',supabase.rpc('my_account_suspended'));
+    if(sequence!==workspaceLoadSequence)return;
+    if(suspended){clearBusinessWorkspaceState();showOnly('businessSuspended');return;}
+    const [subscriptions,entitlements,workspace,membership]=await Promise.all([
+      query('Business access subscription',supabase.from('workspace_subscriptions').select('*').eq('workspace_id',workspaceId).limit(1)),
+      query('Business access entitlement',supabase.rpc('effective_workspace_entitlement',{p_workspace_id:workspaceId})),
+      query('Business workspace access',supabase.from('budget_workspaces').select('*').eq('id',workspaceId).maybeSingle()),
+      query('Business membership access',supabase.from('workspace_members').select('*').eq('workspace_id',workspaceId).eq('user_id',state.session.user.id).eq('status','active').maybeSingle())
+    ]);
+    if(sequence!==workspaceLoadSequence)return;
+    if(!subscriptions[0] || !entitlements[0] || !workspace || !membership || workspace.status==='closed'){
+      state.workspaces=state.workspaces.filter(item=>item.id!==workspaceId);clearBusinessWorkspaceState();showOnly('businessEmpty');return;
+    }
+    const previousRole=roleForWorkspace(state.workspace);
+    state.memberships=state.memberships.filter(item=>!(item.workspace_id===workspaceId&&item.user_id===state.session.user.id));state.memberships.push(membership);
+    state.workspaceSubscription=subscriptions[0];state.workspaceEntitlement=entitlements[0];state.workspace=workspace;
+    if(previousRole!==membership.role){await selectBusinessWorkspace(workspaceId);return;}
+    if(!businessBillingOwner()){state.billingSnapshot=null;invalidateBusinessBillingQuote();if($('#businessBillingDialog').open)$('#businessBillingDialog').close();renderBusinessBilling();}
+    enforceBusinessExpiry();
+    if(wasLocked&&!state.locked){await selectBusinessWorkspace(workspaceId);return;}
+    if(businessBillingOwner()&&state.tab==='subscription')await refreshBusinessBilling();
+  }catch(error){ /* Server permissions still apply during a failed or offline access refresh. */ }
+  finally{businessAccessCheckBusy=false;}
+}
+window.setInterval(refreshBusinessAccessState,60000);
+window.setInterval(enforceBusinessExpiry,15000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){enforceBusinessExpiry();refreshBusinessAccessState();}});
 
 $("#businessToday").textContent = new Date().toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
 loadBusinessAccess();

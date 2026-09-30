@@ -27,7 +27,7 @@ test('report controls read their own filters without changing Activity filters',
   nodes.reportFrom.disabled=true;nodes.reportTo.disabled=true;result=context.readBusinessReportFilters();assert.equal(result.p_from,null);assert.equal(result.p_to,null);
 });
 test('public report RPCs and private helpers retain the database permission boundary',()=>{
-  assert.ok(read('supabase/schema.sql').endsWith(sql));
+  assert.ok(read('supabase/schema.sql').includes(sql));
   assert.match(sql,/BUSINESS_REPORT_ACCESS_REQUIRED/);assert.match(sql,/BUSINESS_REPORT_EXPORT_REQUIRED/);
   assert.match(sql,/role in \('staff','contributor'\)/);assert.match(sql,/role not in \('staff','contributor'\)/);
   assert.match(sql,/revoke all on function public.business_report_rows/);

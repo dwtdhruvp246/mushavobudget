@@ -9,9 +9,9 @@ const app = readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const launchLock = readFileSync(new URL("../supabase/migrations/20260927183000_business_stage_0_launch_lock.sql", import.meta.url), "utf8");
 
 test("Stage 1 has a dedicated Business application and all approved sections", () => {
-  assert.match(page, /business\.css\?v=8/);
-  assert.match(page, /business\.js\?v=8/);
-  assert.match(page, /Version 4\.9\.24/);
+  assert.match(page, /business\.css\?v=9/);
+  assert.match(page, /business\.js\?v=9/);
+  assert.match(page, /Version 4\.9\.25/);
   for (const section of [
     "overview", "activity", "bills", "approvals", "budgets", "reports", "team", "settings", "subscription"
   ]) {
@@ -84,10 +84,10 @@ test("Personal and Family app clears financial state before opening Business", (
 });
 
 test("expired Business access follows Owner-only renewal rule", () => {
-  assert.match(business, /state\.lockOwner = roleForWorkspace\(state\.workspace\) === "business_owner"/);
-  assert.match(business, /Only the Business Owner can access renewal/);
-  assert.match(business, /Contact the Business Owner to restore access/);
-  assert.match(business, /state\.tab = "subscription"/);
+  assert.match(business, /state\.lockOwner=businessBillingOwner\(\)/);
+  assert.match(business, /Only the Business Owner can view billing/);
+  assert.match(business, /This Business subscription has expired. Contact the Business Owner./);
+  assert.match(business, /state\.tab='subscription'/);
 });
 
 test("Stage 1 preserves the Stage 0 purchase and provisioning lock", () => {

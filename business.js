@@ -1,4 +1,4 @@
-// Mushavo Budget Business application — Stage 10 billing and capacity
+// Mushavo Budget Business application — Stage 12 pilot and realtime
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -193,6 +193,7 @@ function selectedWorkspaceStorageKey() {
 }
 
 function clearBusinessWorkspaceState() {
+  stopBusinessRealtime();
   // Clear before every Business workspace load. Stage 2 data collections are
   // already represented here so future requests cannot retain another
   // company's results while a new workspace is opening.
@@ -1106,7 +1107,7 @@ async function createClaim(event) {
   event.preventDefault();
   if (claimBusy) return;
   claimBusy = true;
-  const workspaceId = state.workspace.id;
+  const workspaceId = state.workspace.id, sequence=workspaceLoadSequence;
   const existingId = $("#businessClaimId").value;
   try {
     const payload = {
@@ -1125,12 +1126,13 @@ async function createClaim(event) {
       p_kind: $("#businessClaimKind").value,
       p_employee_payment_source: $("#businessClaimKind").value === 'reimbursement' ? $('#businessEmployeeSource').value : 'unspecified'
     }));
+    if(sequence!==workspaceLoadSequence||state.workspace?.id!==workspaceId)return;
     $("#businessClaimDialog").close();
     await refreshClaims();
-    if (state.workspace?.id === workspaceId) openClaimDetail(claim.id);
+    if (sequence===workspaceLoadSequence&&state.workspace?.id === workspaceId) openClaimDetail(claim.id);
   } catch (error) {
-    setClaimMessage("#businessClaimFormMessage", friendlyMessage(error), true);
-  } finally { claimBusy = false; }
+    if(sequence===workspaceLoadSequence)setClaimMessage("#businessClaimFormMessage", friendlyMessage(error), true);
+  } finally { if(sequence===workspaceLoadSequence)claimBusy = false; }
 }
 
 function detailLine(key, value) {
@@ -2056,7 +2058,10 @@ function openBusinessInvitationDialog(invitation = null, member = null) {
 }
 
 async function refreshBusinessTeam() {
-  state.teamSnapshot = await query("Business team", supabase.rpc("business_team_snapshot", { p_workspace_id: state.workspace.id }));
+  const workspaceId=state.workspace?.id,sequence=workspaceLoadSequence;if(!workspaceId||state.locked)return;
+  const snapshot = await query("Business team", supabase.rpc("business_team_snapshot", { p_workspace_id: workspaceId }));
+  if(sequence!==workspaceLoadSequence||state.workspace?.id!==workspaceId)return;
+  state.teamSnapshot=snapshot;
   state.workspaceMembers = state.teamSnapshot?.members || [];
   renderTeam();
 }
@@ -2398,7 +2403,7 @@ async function selectBusinessWorkspace(workspaceId) {
   ]);
   if(requestSequence!==workspaceLoadSequence)return;
   state.workspaceSubscription=subscriptions[0] || null;state.workspaceEntitlement=entitlements[0] || null;resolveWorkspaceLock();
-  if(state.locked){renderBusinessWorkspace();if(state.lockOwner)await refreshBusinessBilling();return;}
+  if(state.locked){renderBusinessWorkspace();if(state.lockOwner)await refreshBusinessBilling();if(requestSequence===workspaceLoadSequence)startBusinessRealtime();return;}
   try {
     const memberId=state.memberships.find(item=>item.workspace_id===workspace.id && item.user_id===state.session.user.id)?.id;
     [settings,team,profiles,categories,dimensions,drafts,permissions,memberScopes]=await Promise.all([
@@ -2436,6 +2441,7 @@ async function selectBusinessWorkspace(workspaceId) {
     await refreshClaims();
     await refreshBills();
   }
+  if(requestSequence===workspaceLoadSequence)startBusinessRealtime();
 }
 
 async function loadBusinessAccess() {
@@ -2788,10 +2794,96 @@ function enforceBusinessExpiry() {
     const workspaceId=state.workspace.id,subscription=state.workspaceSubscription,entitlement=state.workspaceEntitlement,workspace=state.workspace;
     clearBusinessWorkspaceState();state.workspace=workspace;state.workspaceSubscription=subscription;state.workspaceEntitlement=entitlement;resolveWorkspaceLock();renderBusinessWorkspace();
     if(state.lockOwner)refreshBusinessBilling();
+    startBusinessRealtime();
   }
   if(billingQuote)renderBusinessBillingQuote();
   if(state.workspaceSubscription)$('#subscriptionCountdown').textContent=countdown(state.workspaceSubscription.paid_through_at);
 }
+let businessLiveChannel=null,businessLiveEpoch=0,businessLiveTimer=null,businessLivePending=false,businessLiveAccess=false,businessLiveBusy=false,businessLiveWorkspace=null,businessLiveAccessVersion=null;
+function stopBusinessRealtime() {
+  businessLiveEpoch++;clearTimeout(businessLiveTimer);businessLiveTimer=null;
+  const channel=businessLiveChannel;businessLiveChannel=null;businessLiveWorkspace=null;businessLiveAccessVersion=null;
+  businessLivePending=false;businessLiveAccess=false;businessLiveBusy=false;
+  if(channel&&supabase?.removeChannel)Promise.resolve(supabase.removeChannel(channel)).catch(()=>{});
+  $('#businessLiveBanner')?.classList.add('hidden');
+}
+function businessLiveEditing() {
+  return setupBusy||teamBusy||claimBusy||billBusy||incomeBusy||workflowBusy||billingBusy||reportExportBusy||setupOpen
+    ||Boolean($$('dialog[open]').length)||Boolean(window.MushavoPWA?.hasUnsavedChanges?.());
+}
+function queueBusinessLiveRefresh(access=false) {
+  if(!state.workspace)return;
+  businessLivePending=true;businessLiveAccess=businessLiveAccess||access;
+  if(state.reportSnapshot){state.reportStale=true;renderReportAccess();}
+  $('#businessLiveBanner')?.classList.remove('hidden');
+  $('#businessLiveMessage').textContent=access?'Business access changed. Checking permissions…':'Business updates are available. Open forms are kept until you finish.';
+  clearTimeout(businessLiveTimer);businessLiveTimer=setTimeout(flushBusinessLiveRefresh,750);
+}
+async function flushBusinessLiveRefresh() {
+  businessLiveTimer=null;
+  if(!businessLivePending||!state.workspace||document.hidden||!navigator.onLine)return;
+  if(businessLiveBusy||businessAccessCheckBusy||(!businessLiveAccess&&businessLiveEditing())){
+    businessLiveTimer=setTimeout(flushBusinessLiveRefresh,1500);return;
+  }
+  const epoch=businessLiveEpoch,workspaceId=state.workspace.id,sequence=workspaceLoadSequence,access=businessLiveAccess;
+  businessLivePending=false;businessLiveAccess=false;businessLiveBusy=true;
+  try {
+    await refreshBusinessAccessState();
+    if(epoch!==businessLiveEpoch||sequence!==workspaceLoadSequence||state.workspace?.id!==workspaceId)return;
+    if(access){try{await selectBusinessWorkspace(workspaceId);}catch(error){if(state.workspace?.id===workspaceId){$('#businessErrorMessage').textContent=friendlyMessage(error);showOnly('businessError');}}return;}
+    if(state.locked){if(businessBillingOwner())await refreshBusinessBilling();}
+    else {
+      const [categories,dimensions]=await Promise.all([query('Live categories',supabase.from('business_categories').select('*').eq('workspace_id',workspaceId).order('name')),query('Live organisation tags',supabase.from('business_dimensions').select('*').eq('workspace_id',workspaceId).order('name'))]);
+      if(epoch!==businessLiveEpoch||sequence!==workspaceLoadSequence)return;
+      state.businessCategories=categories;state.businessDimensions=dimensions;
+      await refreshClaims();
+      if(epoch!==businessLiveEpoch||sequence!==workspaceLoadSequence)return;
+      await refreshBills();
+      if(epoch!==businessLiveEpoch||sequence!==workspaceLoadSequence)return;
+      await refreshBusinessTeam();
+      if(businessBillingOwner())await refreshBusinessBilling();
+    }
+    if(epoch===businessLiveEpoch&&!businessLivePending)$('#businessLiveBanner')?.classList.add('hidden');
+  }catch(error){
+    if(epoch===businessLiveEpoch){businessLivePending=true;$('#businessLiveMessage').textContent='Live refresh failed. Your changes are kept. Try Refresh when connected.';}
+  }finally{
+    if(epoch===businessLiveEpoch){businessLiveBusy=false;if(businessLivePending&&!businessLiveTimer)businessLiveTimer=setTimeout(flushBusinessLiveRefresh,5000);}
+  }
+}
+function startBusinessRealtime() {
+  if(!state.workspace||!state.session||!supabase?.channel)return;
+  const workspaceId=state.workspace.id;
+  if(businessLiveWorkspace===workspaceId&&businessLiveChannel)return;
+  stopBusinessRealtime();businessLiveWorkspace=workspaceId;
+  const epoch=businessLiveEpoch,sequence=workspaceLoadSequence;
+  const valid=()=>epoch===businessLiveEpoch&&sequence===workspaceLoadSequence&&state.workspace?.id===workspaceId;
+  const changed=payload=>{
+    if(!valid())return;
+    // Use counters only. Operational data is always fetched through normal RLS/RPCs.
+    const version=payload.new?.access_version;
+    const access=businessLiveAccessVersion===null||version!==businessLiveAccessVersion;
+    businessLiveAccessVersion=version;queueBusinessLiveRefresh(access);
+  };
+  const channel=supabase.channel(`business:${state.session.user.id}:${workspaceId}:${epoch}`);
+  businessLiveChannel=channel;
+  channel.on('postgres_changes',{event:'INSERT',schema:'public',table:'business_change_signals',filter:`workspace_id=eq.${workspaceId}`},changed)
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'business_change_signals',filter:`workspace_id=eq.${workspaceId}`},changed)
+    .subscribe(status=>{
+      if(!valid())return;
+      if(status==='SUBSCRIBED'){
+        // Always catch up after connecting/reconnecting, including missed changes.
+        queueBusinessLiveRefresh(false);
+        query('Business change version',supabase.from('business_change_signals').select('access_version').eq('workspace_id',workspaceId).maybeSingle())
+          .then(row=>{if(valid()&&businessLiveAccessVersion===null)businessLiveAccessVersion=row?.access_version??null;}).catch(()=>{});
+      }else if(['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(status)){
+        $('#businessLiveBanner')?.classList.remove('hidden');$('#businessLiveMessage').textContent='Live connection interrupted. Access checks continue; use Refresh to catch up.';
+      }
+    });
+}
+$('#refreshBusinessLive').addEventListener('click',()=>{queueBusinessLiveRefresh(false);flushBusinessLiveRefresh();});
+window.addEventListener('online',()=>{if(state.workspace){startBusinessRealtime();queueBusinessLiveRefresh(false);}});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&businessLivePending)flushBusinessLiveRefresh();});
+
 let businessAccessCheckBusy=false;
 async function refreshBusinessAccessState() {
   if(!state.workspace || businessAccessCheckBusy)return;
@@ -2811,6 +2903,7 @@ async function refreshBusinessAccessState() {
       state.workspaces=state.workspaces.filter(item=>item.id!==workspaceId);clearBusinessWorkspaceState();showOnly('businessEmpty');return;
     }
     const previousRole=roleForWorkspace(state.workspace);
+    state.workspaces=state.workspaces.map(item=>item.id===workspaceId?workspace:item);
     state.memberships=state.memberships.filter(item=>!(item.workspace_id===workspaceId&&item.user_id===state.session.user.id));state.memberships.push(membership);
     state.workspaceSubscription=subscriptions[0];state.workspaceEntitlement=entitlements[0];state.workspace=workspace;
     if(previousRole!==membership.role){await selectBusinessWorkspace(workspaceId);return;}

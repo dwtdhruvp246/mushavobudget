@@ -7,7 +7,7 @@ const root = path.join(__dirname, '..');
 const html = readFileSync(path.join(root, 'business.html'), 'utf8').replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '').replace(/<link\b[^>]*>/g, '');
 const source = readFileSync(path.join(root, 'business.js'), 'utf8').replace(/^import .*;$/m, '').replace(/loadBusinessAccess\(\);\s*$/, '');
 (async () => {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, executablePath: process.env.MUSHAVO_CHROMIUM_EXECUTABLE || undefined, args: ["--no-sandbox"] });
   try {
     for (const width of [1366, 390, 320]) {
       const page = await browser.newPage({ viewport: { width, height: 720 } });

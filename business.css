@@ -385,3 +385,10 @@ dialog::backdrop { background: rgba(7, 24, 29, .58); backdrop-filter: blur(3px);
 #businessBillingDialog .full { grid-column: 1/-1; }
 #businessBillingDialog .dialog-heading>button { border: 0; background: var(--brand-soft); border-radius: 50%; width: 36px; height: 36px; flex: 0 0 auto; font-size: 24px; }
 @media(max-width:600px) { #businessBillingDialog { padding: 18px; } #businessBillingDialog form { grid-template-columns: minmax(0,1fr); } #businessBillingDialog h2 { font-size: 1.3rem; } }
+
+.live-update-banner { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 16px; margin-bottom:16px; border:1px solid var(--line); border-radius:16px; background:var(--surface); }
+.live-update-banner p { margin:0; overflow-wrap:anywhere; }
+@media(max-width:520px){.live-update-banner{align-items:stretch;flex-direction:column;}}
+/* Long expense headings must leave room for the close button on narrow phones. */
+.business-dialog .dialog-heading > div { min-width: 0; overflow-wrap: anywhere; }
+.business-dialog .dialog-close { flex-shrink: 0; }

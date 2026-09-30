@@ -1,4 +1,4 @@
-// Mushavo Budget Business application — Stage 7 income and transactions
+// Mushavo Budget Business application — Stage 8 budgets and spending approvals
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -85,6 +85,14 @@ let openedIncome = null;
 let activitySequence = 0;
 let activityOffset = 0;
 let activityFilters = {};
+let planningSequence = 0;
+let requestOffset = 0;
+let budgetOffset = 0;
+let budgetSourceOffset = 0;
+let requestFilters = {};
+let openedRequest = null;
+let openedBudget = null;
+let workflowBusy = false;
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -111,6 +119,15 @@ function friendlyMessage(error) {
   if (/OWNERSHIP_CONFIRMATION_MISMATCH/.test(message)) return "Type the exact business name to confirm the ownership transfer.";
   if (/BUSINESS_TEAM_ACCESS_REQUIRED/.test(message)) return "You do not have permission to manage this Business team.";
   if (/BUSINESS_CLAIM_CHANGED/.test(message)) return "This claim changed. Open it again to see the latest status.";
+  if (/BUSINESS_REQUEST_CHANGED|BUSINESS_BUDGET_CHANGED/.test(message)) return "This record changed or no longer permits that action. Open it again for the latest status.";
+  if (/BUSINESS_REQUEST_ACCESS_REQUIRED|BUSINESS_BUDGET_ACCESS_REQUIRED/.test(message)) return "Your role, subscription or assigned scope does not permit this action.";
+  if (/BUSINESS_BUDGET_PERIOD_OVERLAP/.test(message)) return "An active budget already covers this category and tag during these dates. Close it or choose another period.";
+  if (/BUSINESS_BUDGET_SCOPE_INACTIVE/.test(message)) return "This budget uses an archived category or organisation tag. Edit the draft and select an active scope before activating it.";
+  if (/BUSINESS_MONTHLY_PERIOD_REQUIRED/.test(message)) return "Monthly dates must follow the workspace's period start day. Choose a month or use custom dates.";
+  if (/BUSINESS_DECISION_REASON_REQUIRED/.test(message)) return "Enter a reason between 2 and 1,000 characters.";
+  if (/BUSINESS_REQUEST_LINKED_TO_BILL|BUSINESS_REQUEST_CANNOT_CANCEL/.test(message)) return "This request cannot be cancelled while its bill is outstanding or paid. Manage the linked bill first.";
+  if (/BUSINESS_REQUEST_BILL_LINK_INVALID/.test(message)) return "The request must be approved and its amount, currency, category and tag must match the bill.";
+  if (/INVALID_BUSINESS_BUDGET|INVALID_BUSINESS_REQUEST/.test(message)) return "Check the name, amount, dates, category, tag and spending purpose.";
   if (/BUSINESS_RECEIPT_REQUIRED/.test(message)) return "Attach a receipt or proof before submitting.";
   if (/BUSINESS_EXCHANGE_RATE_UNAVAILABLE/.test(message)) return "No exchange rate is available for this currency. Try the reporting currency or wait for rates to sync.";
   if (/BUSINESS_REPORTING_CURRENCY_LOCKED/.test(message)) return "The reporting currency is locked after the first financial record so historical totals remain consistent.";
@@ -119,7 +136,7 @@ function friendlyMessage(error) {
   if (/BUSINESS_PAYMENT_SOURCE_REQUIRED/.test(message)) return "Choose how the payment was made.";
   if (/INVALID_BUSINESS_ACTIVITY_FILTER/.test(message)) return "Check the date range. The start date must not be after the end date.";
   if (/BUSINESS_CURRENCY_NOT_ENABLED/.test(message)) return "Choose a currency enabled for this workspace.";
-  if (/BUSINESS_SELF_APPROVAL_FORBIDDEN/.test(message)) return "Another authorized member must review your claim.";
+  if (/BUSINESS_SELF_APPROVAL_FORBIDDEN/.test(message)) return "Another authorized member must review your claim or spending request.";
   if (/BUSINESS_SCOPE_ACCESS_REQUIRED/.test(message)) return "This claim is outside your assigned project, branch or team.";
   if (/BUSINESS_CLAIM_ACCESS_REQUIRED|BUSINESS_REVIEW_ACCESS_REQUIRED|BUSINESS_PAYMENT_ACCESS_REQUIRED/.test(message)) return "Your role or subscription does not allow this action.";
   if (/BUSINESS_BILL_POSSIBLE_DUPLICATE/.test(message)) return "A bill for this supplier, amount and due date already exists. Check it before creating another.";
@@ -179,6 +196,18 @@ function clearBusinessWorkspaceState() {
   state.bills = [];
   state.requests = [];
   state.budgets = [];
+  state.requestSummary = null;
+  state.budgetSummary = null;
+  state.workflowRolePermissions = [];
+  state.workflowPermissionsLoaded = false;
+  planningSequence += 1;
+  requestOffset = 0; budgetOffset = 0; budgetSourceOffset = 0;
+  requestFilters = {};
+  openedRequest = null; openedBudget = null; workflowBusy = false;
+  ['#businessRequestList', '#businessBudgetList', '#budgetSourceList', '#requestHistory'].forEach((selector) => $(selector)?.replaceChildren());
+  $('#businessRequestFilters')?.reset();
+  if ($('#businessBudgetStatus')) $('#businessBudgetStatus').value = '';
+  if ($('#businessWorkflowPermissions')) $('#businessWorkflowPermissions').classList.add('hidden');
   state.documents = [];
   state.auditEvents = [];
   state.permissions = new Set();
@@ -294,7 +323,7 @@ function claimPermission(code) {
 }
 
 const PAYMENT_SOURCES = { cash: 'Cash', bank_transfer: 'Bank transfer', mobile_money: 'Mobile money', card: 'Card', other: 'Other', unspecified: 'Not recorded (legacy)' };
-const TRANSACTION_TYPES = { income: 'Income received', company_expense: 'Company expense', employee_cost: 'Employee-paid cost', reimbursement: 'Reimbursement paid', bill: 'Supplier bill', bill_payment: 'Bill payment' };
+const TRANSACTION_TYPES = { income: 'Income received', company_expense: 'Company expense', employee_cost: 'Employee-paid cost', reimbursement: 'Reimbursement paid', bill: 'Supplier bill', bill_payment: 'Bill payment', spending_request: 'Spending request' };
 function sourceLabel(value) { return PAYMENT_SOURCES[value] || 'Not recorded'; }
 function workspaceToday() {
   const parts = new Intl.DateTimeFormat('en', { timeZone: state.workspaceSettings?.timezone || 'UTC', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
@@ -358,6 +387,7 @@ async function refreshTransactions(summaryToo = true) {
       $('#businessOverviewClaims').replaceChildren(...(state.recentTransactions.length ? state.recentTransactions.map(transactionCard) : [claimNode('p', 'claim-empty', 'No financial activity yet.')]));
     }
     renderTransactions();
+    if (summaryToo) await refreshPlanning();
   } catch (error) {
     if (sequence !== workspaceLoadSequence || request !== activitySequence) return;
     setClaimMessage('#businessActivityMessage', friendlyMessage(error), true);
@@ -433,7 +463,9 @@ async function openTransactionRecord(key) {
   if (!row || state.locked) return;
   const sequence = workspaceLoadSequence, workspaceId = state.workspace.id;
   try {
-    if (row.record_type === 'income') {
+    if (row.record_type === 'spending_request') {
+      await openRequestDetail(row.record_id);
+    } else if (row.record_type === 'income') {
       const receipt = await query('Income record', supabase.from('business_income_receipts').select('*').eq('workspace_id', workspaceId).eq('id', row.record_id).single());
       if (sequence === workspaceLoadSequence) showIncomeDetail(receipt);
     } else if (['bill', 'bill_payment'].includes(row.record_type)) {
@@ -493,7 +525,7 @@ function renderClaims() {
   const summary = state.claimSummary;
   const finance = claimPermission("finance.view_all") && summary?.finance_visible;
   $("#businessReportPending").textContent = finance ? String(summary.pending_count) : "—";
-  $("#businessReviewCount").textContent = String(summary?.review_count || 0);
+  $("#businessReviewCount").textContent = String(Number(summary?.review_count || 0) + Number(state.requestSummary?.review_count || 0));
   $("#businessApprovalTabCount").textContent = String(summary?.review_count || 0);
   for (const [selector, items, empty] of [
     ["#businessClaimApprovals", reviewable, "No claims need your review."]
@@ -504,6 +536,269 @@ function renderClaims() {
   $$("[data-open-add], [data-open-claim]").forEach((button) => button.classList.toggle("hidden", !claimPermission("finance.create")));
   $$('[data-open-income]').forEach((button) => button.classList.toggle('hidden', !claimPermission('finance.view_all') || !claimPermission('finance.create')));
   renderFinanceSummary();
+}
+
+function monthBudgetDates(month, day = 1) {
+  const [year, number] = month.split('-').map(Number);
+  const start = new Date(Date.UTC(year, number - 1, day));
+  const end = new Date(Date.UTC(year, number, day - 1));
+  return [start.toISOString().slice(0, 10), end.toISOString().slice(0, 10)];
+}
+function budgetNumbers(budget, totals) {
+  const planned = Number(budget.planned_amount), paid = Number(totals?.paid || 0), committed = Number(totals?.committed || 0);
+  return { planned, paid, committed, remaining: planned - paid - committed, paidRemaining: planned - paid,
+    percent: planned > 0 ? (paid + committed) / planned * 100 : 0 };
+}
+function scopedOptions(select, categories = false, whole = false) {
+  const scopes = new Set(state.memberScopes.map((item) => item.dimension_id));
+  const scopedBudget = whole && (!claimPermission('finance.view_all') || scopes.size > 0);
+  const list = categories ? state.businessCategories.filter((item) => item.status === 'active' && ['expense', 'both'].includes(item.category_type))
+    : state.businessDimensions.filter((item) => item.status === 'active' && (!scopes.size || scopes.has(item.id)) && (!whole || claimPermission('finance.view_all') || scopes.has(item.id)));
+  select.replaceChildren(new Option(categories ? whole ? 'All expense categories' : 'Choose expense category' : scopedBudget || scopes.size ? 'Choose assigned tag' : whole ? 'Whole workspace' : 'None', ''), ...list.map((item) => new Option(item.name, item.id)));
+  select.required = categories ? !whole : scopedBudget || scopes.size > 0;
+}
+function pagination(prefix, offset, count) {
+  $(`#${prefix}Page`).textContent = count ? `${offset + 1}–${Math.min(offset + 50, count)} of ${count}` : '0 records';
+  $(`#${prefix}Previous`).disabled = offset === 0;
+  $(`#${prefix}Next`).disabled = offset + 50 >= count;
+}
+function planningAction(label, action, record = 'request') {
+  const button = claimNode('button', 'button secondary', label); button.type = 'button';
+  button.dataset[`${record}Action`] = action; return button;
+}
+function renderPlanning() {
+  const canCreate = claimPermission('finance.create');
+  $$('[data-open-request]').forEach((button) => button.classList.toggle('hidden', !canCreate));
+  $('#createBusinessBudget').classList.toggle('hidden', !claimPermission('budgets.manage') || !claimPermission('budgets.view') || (!claimPermission('finance.view_all') && !state.memberScopes.length));
+  $('#businessBudgetWarningCount').textContent = claimPermission('budgets.view') ? String(state.budgetSummary?.warning_count || 0) : 'Private';
+  $('#businessReviewCount').textContent = String(Number(state.claimSummary?.review_count || 0) + Number(state.requestSummary?.review_count || 0));
+  $('#businessRequestList').replaceChildren(...(state.requests.length ? state.requests.map((item) => {
+    const card = claimNode('article', 'claim-row'), body = claimNode('div', 'claim-row-body');
+    body.append(claimNode('strong', '', item.title), claimNode('small', '', `${item.submitter_name || 'Member'} · ${item.status.replaceAll('_', ' ')} · Planned ${formatDate(item.planned_on + 'T12:00:00')}`));
+    const button = planningAction('View', 'view'); button.dataset.requestId = item.id;
+    card.append(body, claimNode('strong', 'claim-row-amount', money(item.amount, item.currency)), button); return card;
+  }) : [claimNode('p', 'claim-empty', 'No spending requests match this view.')]));
+  $('#businessBudgetList').replaceChildren(...(state.budgets.length ? state.budgets.map((budget) => {
+    const values = budgetNumbers(budget, budget.totals), card = claimNode('article', `budget-card${budget.status === 'active' && values.percent > 100 ? ' over' : budget.status === 'active' && values.percent >= 80 ? ' warning' : ''}`);
+    const scope = [budget.category_id ? state.businessCategories.find((item) => item.id === budget.category_id)?.name || 'Archived category' : 'All categories', budget.dimension_id ? state.businessDimensions.find((item) => item.id === budget.dimension_id)?.name || 'Archived tag' : 'Workspace'].join(' · ');
+    card.append(claimNode('h3', '', budget.name), claimNode('p', '', `${scope} · ${budget.status}\n${formatDate(budget.starts_on + 'T12:00:00')} – ${formatDate(budget.ends_on + 'T12:00:00')}`));
+    const list = claimNode('dl', 'detail-list');
+    for (const [key, value] of [['Planned', values.planned], ['Actual paid', values.paid], ['Unpaid commitments', values.committed], ['Available after commitments', values.remaining]]) list.append(detailLine(key, money(value, budget.reporting_currency)));
+    const progress = claimNode('progress', ''); progress.max = 100; progress.value = Math.min(100, values.percent); progress.setAttribute('aria-label', `${values.percent.toFixed(1)}% paid or reserved`);
+    const button = planningAction('View budget & sources', 'view', 'budget'); button.dataset.budgetId = budget.id;
+    card.append(list, progress, claimNode('p', '', `${values.percent.toFixed(1)}% paid or reserved${values.remaining < 0 ? ' · Over target' : ''}`), button); return card;
+  }) : [claimNode('p', 'claim-empty', claimPermission('budgets.view') ? 'No budgets match this view. Scope-limited members need an assigned organisation tag.' : 'Budget access is not enabled for your role.')]));
+  pagination('businessRequest', requestOffset, Number(state.requestSummary?.total_count || 0));
+  pagination('businessBudget', budgetOffset, Number(state.budgetSummary?.total_count || 0));
+  $('#businessWorkflowPermissions').classList.toggle('hidden', !businessOwnerCanSetUp() || !state.workflowPermissionsLoaded);
+  renderWorkflowPermission();
+}
+async function refreshPlanning() {
+  const workspaceId = state.workspace?.id, sequence = workspaceLoadSequence, request = ++planningSequence;
+  if (!workspaceId || state.locked) return;
+  try {
+    const [requests, budgets, permissions] = await Promise.all([
+      query('Spending requests', supabase.rpc('business_request_feed', { p_workspace_id: workspaceId, ...requestFilters, p_offset: requestOffset })),
+      query('Business budgets', supabase.rpc('business_budget_feed', { p_workspace_id: workspaceId, p_status: $('#businessBudgetStatus').value, p_offset: budgetOffset })),
+      businessOwnerCanSetUp() ? query('Workflow role permissions', supabase.from('business_role_permissions').select('role,permission_code,enabled').eq('workspace_id', workspaceId).in('permission_code', ['approvals.view','approvals.review','budgets.view','budgets.manage'])) : Promise.resolve([])
+    ]);
+    if (sequence !== workspaceLoadSequence || request !== planningSequence) return;
+    state.requests = requests.items || []; state.requestSummary = requests;
+    state.budgets = budgets.items || []; state.budgetSummary = budgets; state.workflowRolePermissions = permissions; state.workflowPermissionsLoaded = true;
+    renderPlanning();
+  } catch (error) {
+    if (sequence !== workspaceLoadSequence || request !== planningSequence) return;
+    setClaimMessage('#businessWorkflowMessage', friendlyMessage(error), true); setClaimMessage('#businessBudgetMessage', friendlyMessage(error), true);
+  }
+}
+function openRequestForm(existing = null) {
+  if (!claimPermission('finance.create')) return;
+  if ($('#businessAddDialog').open) $('#businessAddDialog').close();
+  if ($('#businessRequestDetailDialog').open) $('#businessRequestDetailDialog').close();
+  const form = $('#businessRequestForm'); form.reset(); form.dataset.recordId = existing?.id || crypto.randomUUID(); form.dataset.version = existing?.version || '';
+  $('#businessRequestTitle').textContent = existing ? 'Edit spending request' : 'New spending request';
+  $('#requestCurrency').replaceChildren(...(state.workspaceSettings?.enabled_currencies || []).map((code) => new Option(code, code)));
+  $('#requestCurrency').value = existing?.currency || state.workspaceSettings?.default_payment_currency || state.workspaceSettings?.reporting_currency;
+  scopedOptions($('#requestCategory'), true); scopedOptions($('#requestDimension'));
+  $('#requestTitle').value = existing?.title || ''; $('#requestDescription').value = existing?.description || '';
+  $('#requestAmount').value = existing?.amount || ''; $('#requestDate').value = existing?.planned_on || workspaceToday();
+  if (existing) { $('#requestCategory').value = existing.category_id; $('#requestDimension').value = existing.dimension_id || ''; }
+  setClaimMessage('#requestFormMessage'); form.querySelector('button[type="submit"]').disabled = false;
+  $('#businessRequestDialog').showModal();
+}
+async function withWorkflowAction(message, action) {
+  if (workflowBusy || state.locked) return;
+  const sequence = workspaceLoadSequence; workflowBusy = true;
+  const buttons = $$('#businessRequestForm button[type="submit"], #businessBudgetForm button[type="submit"], #requestDetailActions button, #budgetDetailActions button, #requestDecisionForm button, #budgetDecisionForm button, #requestBillForm button, #businessWorkflowPermissionForm button');
+  buttons.forEach((button) => { button.disabled = true; });
+  try { await action(sequence); }
+  catch (error) { if (sequence === workspaceLoadSequence) setClaimMessage(message, friendlyMessage(error), true); }
+  finally { if (sequence === workspaceLoadSequence) { workflowBusy = false; buttons.forEach((button) => { button.disabled = false; }); } }
+}
+async function saveRequest(event) {
+  event.preventDefault();
+  await withWorkflowAction('#requestFormMessage', async (sequence) => {
+    const form = $('#businessRequestForm');
+    const record = await query('Save spending request', supabase.rpc('save_business_spending_request', {
+      p_workspace_id: state.workspace.id, p_request_id: form.dataset.recordId, p_expected_version: form.dataset.version ? Number(form.dataset.version) : null,
+      p_title: $('#requestTitle').value, p_description: $('#requestDescription').value, p_amount: Number($('#requestAmount').value),
+      p_currency: $('#requestCurrency').value, p_category_id: $('#requestCategory').value, p_dimension_id: $('#requestDimension').value || null, p_planned_on: $('#requestDate').value
+    }));
+    if (sequence !== workspaceLoadSequence) return;
+    $('#businessRequestDialog').close(); await refreshTransactions();
+    if (sequence === workspaceLoadSequence) await openRequestDetail(record.id);
+  });
+}
+async function openRequestDetail(id) {
+  const workspaceId = state.workspace?.id, sequence = workspaceLoadSequence;
+  if (!workspaceId || state.locked) return;
+  openedRequest = { id, loading: true };
+  setClaimMessage('#requestDetailMessage');
+  try {
+    const result = await query('Spending request detail', supabase.rpc('business_request_detail', { p_workspace_id: workspaceId, p_request_id: id }));
+    if (sequence !== workspaceLoadSequence || openedRequest?.id !== id) return;
+    openedRequest = { ...result.request, bill_id: result.bill_id };
+    const item = openedRequest, own = item.submitted_by === state.session.user.id;
+    $('#requestDetailTitle').textContent = item.title;
+    $('#requestDetailFields').replaceChildren(detailLine('Status', item.status.replaceAll('_', ' ')), detailLine('Planned purchase', formatDate(item.planned_on + 'T12:00:00')),
+      detailLine('Requested', money(item.amount, item.currency)), detailLine('Locked reporting amount', money(item.reporting_amount, item.reporting_currency)),
+      detailLine('Purpose', item.description), detailLine('Category', state.businessCategories.find((value) => value.id === item.category_id)?.name || 'Archived category'),
+      detailLine('Organisation tag', state.businessDimensions.find((value) => value.id === item.dimension_id)?.name || 'None'),
+      detailLine('Review reason', item.review_reason || '—'), detailLine('Cancellation reason', item.cancel_reason || '—'),
+      detailLine('Linked supplier bill', item.bill_id || 'Not yet created'));
+    const actions = $('#requestDetailActions'); actions.replaceChildren();
+    if (own && ['draft','changes_requested'].includes(item.status) && claimPermission('finance.create')) actions.append(planningAction('Edit draft','edit'), planningAction('Submit for review','submit'));
+    if (!own && item.status === 'submitted' && claimPermission('approvals.review')) actions.append(planningAction('Approve','approved'), planningAction('Request changes','changes_requested'), planningAction('Reject','rejected'));
+    if (['draft','submitted','changes_requested','approved'].includes(item.status) && (own || claimPermission('approvals.review'))) actions.append(planningAction('Cancel request','cancel'));
+    if (item.bill_id && billAccess()) actions.append(planningAction('Open linked bill','bill'));
+    $('#requestDecisionForm').classList.add('hidden');
+    const canBill = item.status === 'approved' && billAccess() && claimPermission('finance.create');
+    $('#requestBillForm').classList.toggle('hidden', !canBill); $('#requestBillForm').reset();
+    $('#requestBillSupplier').replaceChildren(new Option('Choose supplier', ''), ...state.billSuppliers.map((supplier) => new Option(supplier.name, supplier.id)));
+    $('#requestBillDate').value = item.planned_on;
+    $('#requestHistory').replaceChildren(...(result.history || []).map((event) => claimNode('p','claim-history-entry', `${event.action.replaceAll('.', ' ').replaceAll('_',' ')} · ${formatDateTime(event.created_at)}${event.reason ? ` · ${event.reason}` : ''}`)));
+    if (!$('#businessRequestDetailDialog').open) $('#businessRequestDetailDialog').showModal();
+  } catch (error) { if (sequence === workspaceLoadSequence) setClaimMessage('#businessWorkflowMessage', friendlyMessage(error), true); }
+}
+async function requestAction(action, confirmed = false) {
+  const item = openedRequest;
+  if (!item || item.loading || workflowBusy) return;
+  if (action === 'edit') return openRequestForm(item);
+  if (action === 'bill') {
+    $('#businessRequestDetailDialog').close(); return openTransactionRecordForBill(item.bill_id);
+  }
+  if (['changes_requested','rejected','cancel'].includes(action) && !confirmed) {
+    $('#requestDecisionForm').dataset.action = action; $('#requestDecisionForm').reset(); $('#requestDecisionForm').classList.remove('hidden'); $('#requestDecisionReason').focus(); return;
+  }
+  await withWorkflowAction('#requestDetailMessage', async (sequence) => {
+    await query('Update spending request', supabase.rpc('transition_business_request', { p_workspace_id: state.workspace.id, p_request_id: item.id, p_expected_version: item.version,
+      p_action: action, p_reason: confirmed ? $('#requestDecisionReason').value : null }));
+    if (sequence !== workspaceLoadSequence) return;
+    await refreshTransactions(); if (sequence === workspaceLoadSequence) await openRequestDetail(item.id);
+  });
+}
+async function openTransactionRecordForBill(id) {
+  const key = `bill:${id}`;
+  state.transactions = [...state.transactions.filter((item) => item.entry_key !== key), { entry_key: key, record_type: 'bill', record_id: id }];
+  await openTransactionRecord(key);
+}
+async function createRequestBill(event) {
+  event.preventDefault(); const item = openedRequest; if (!item) return;
+  await withWorkflowAction('#requestDetailMessage', async (sequence) => {
+    const bill = await query('Create request bill', supabase.rpc('create_business_bill_from_request', { p_workspace_id: state.workspace.id, p_request_id: item.id,
+      p_supplier_id: $('#requestBillSupplier').value, p_reference: $('#requestBillReference').value, p_due_on: $('#requestBillDate').value, p_remind_days_before: Number($('#requestBillReminder').value) }));
+    if (sequence !== workspaceLoadSequence) return;
+    await refreshBills(); if (sequence !== workspaceLoadSequence) return;
+    $('#businessRequestDetailDialog').close(); await openTransactionRecordForBill(bill.id);
+  });
+}
+function renderBudgetPeriod() {
+  const monthly = $('#budgetPeriodType').value === 'monthly';
+  $('#budgetMonthField').classList.toggle('hidden', !monthly); $('#budgetMonth').required = monthly;
+  $('#budgetStart').readOnly = monthly; $('#budgetEnd').readOnly = monthly;
+  if (monthly && $('#budgetMonth').value) {
+    const [start, end] = monthBudgetDates($('#budgetMonth').value, state.businessProfile?.period_start_day || 1);
+    $('#budgetStart').value = start; $('#budgetEnd').value = end;
+  }
+}
+function openBudgetForm(existing = null) {
+  if (!claimPermission('budgets.manage') || !claimPermission('budgets.view')) return;
+  if ($('#businessBudgetDetailDialog').open) $('#businessBudgetDetailDialog').close();
+  const form = $('#businessBudgetForm'); form.reset(); form.dataset.recordId = existing?.id || crypto.randomUUID(); form.dataset.version = existing?.version || '';
+  $('#budgetFormTitle').textContent = existing ? 'Edit draft budget' : 'Create budget';
+  $('#budgetCurrencyHint').textContent = `Planned amounts use ${state.workspaceSettings?.reporting_currency}. Monthly periods start on day ${state.businessProfile?.period_start_day || 1}.`;
+  scopedOptions($('#budgetCategory'), true, true); scopedOptions($('#budgetDimension'), false, true);
+  $('#budgetName').value = existing?.name || ''; $('#budgetAmount').value = existing?.planned_amount || '';
+  $('#budgetPeriodType').value = existing?.period_type || 'monthly';
+  $('#budgetMonth').value = (existing?.starts_on || workspaceToday()).slice(0, 7);
+  if (existing) { $('#budgetCategory').value = existing.category_id || ''; $('#budgetDimension').value = existing.dimension_id || ''; $('#budgetStart').value = existing.starts_on; $('#budgetEnd').value = existing.ends_on; }
+  renderBudgetPeriod(); setClaimMessage('#budgetFormMessage'); form.querySelector('button[type="submit"]').disabled = false; $('#businessBudgetDialog').showModal();
+}
+async function saveBudget(event) {
+  event.preventDefault();
+  await withWorkflowAction('#budgetFormMessage', async (sequence) => {
+    const form = $('#businessBudgetForm');
+    const budget = await query('Save draft budget', supabase.rpc('save_business_budget', { p_workspace_id: state.workspace.id, p_budget_id: form.dataset.recordId,
+      p_expected_version: form.dataset.version ? Number(form.dataset.version) : null, p_name: $('#budgetName').value, p_planned_amount: Number($('#budgetAmount').value),
+      p_category_id: $('#budgetCategory').value || null, p_dimension_id: $('#budgetDimension').value || null, p_period_type: $('#budgetPeriodType').value,
+      p_starts_on: $('#budgetStart').value, p_ends_on: $('#budgetEnd').value }));
+    if (sequence !== workspaceLoadSequence) return;
+    $('#businessBudgetDialog').close(); await refreshPlanning(); if (sequence === workspaceLoadSequence) await openBudgetDetail(budget.id);
+  });
+}
+async function openBudgetDetail(id, reset = true) {
+  const workspaceId = state.workspace?.id, sequence = workspaceLoadSequence;
+  if (!workspaceId || state.locked) return;
+  if (reset) budgetSourceOffset = 0;
+  const offset = budgetSourceOffset; openedBudget = { id, loading: true };
+  try {
+    const result = await query('Budget detail', supabase.rpc('business_budget_detail', { p_workspace_id: workspaceId, p_budget_id: id, p_offset: offset }));
+    if (sequence !== workspaceLoadSequence || openedBudget?.id !== id || offset !== budgetSourceOffset) return;
+    openedBudget = result.budget; const budget = result.budget, values = budgetNumbers(budget, result.totals);
+    $('#budgetDetailTitle').textContent = budget.name;
+    $('#budgetDetailFields').replaceChildren(detailLine('Status', budget.status), detailLine('Period', `${formatDate(budget.starts_on+'T12:00:00')} – ${formatDate(budget.ends_on+'T12:00:00')}`),
+      ...[['Planned',values.planned],['Actual paid',values.paid],['Unpaid commitments',values.committed],['Remaining before commitments',values.paidRemaining],['Available after commitments',values.remaining]].map(([label, amount]) => detailLine(label, money(amount,budget.reporting_currency))),
+      detailLine('Status-change reason',budget.transition_reason || '—'));
+    const actions = $('#budgetDetailActions'); actions.replaceChildren();
+    if (claimPermission('budgets.manage')) {
+      if (budget.status === 'draft') actions.append(planningAction('Edit draft','edit','budget'),planningAction('Activate','active','budget'),planningAction('Archive draft','archived','budget'));
+      if (budget.status === 'active') actions.append(planningAction('Close budget','closed','budget'));
+      if (budget.status === 'closed') actions.append(planningAction('Archive','archived','budget'));
+    }
+    $('#budgetDecisionForm').classList.add('hidden');
+    $('#budgetSourceList').replaceChildren(...(result.items?.length ? result.items.map((item) => {
+      const row = claimNode('article','claim-row'), body = claimNode('div','claim-row-body');
+      body.append(claimNode('strong','',item.title),claimNode('small','',`${TRANSACTION_TYPES[item.record_type]} · ${formatDate(item.event_date+'T12:00:00')} · ${item.paid_value>0 ? 'Paid' : 'Committed'}`),claimNode('small','',`Original: ${money(item.amount,item.currency)} · Record ${item.record_id}`));
+      row.append(body,claimNode('strong','claim-row-amount',money(item.reporting_amount,budget.reporting_currency)));
+      return row;
+    }) : [claimNode('p','claim-empty','No paid or committed records in this budget scope and period.')]));
+    pagination('budgetSource',offset,Number(result.totals?.source_count || 0)); setClaimMessage('#budgetDetailMessage');
+    if (!$('#businessBudgetDetailDialog').open) $('#businessBudgetDetailDialog').showModal();
+  } catch (error) { if (sequence === workspaceLoadSequence) setClaimMessage('#businessBudgetMessage',friendlyMessage(error),true); }
+}
+async function budgetAction(status, confirmed = false) {
+  const budget = openedBudget; if (!budget || budget.loading || workflowBusy) return;
+  if (status === 'edit') return openBudgetForm(budget);
+  if (status !== 'active' && !confirmed) { $('#budgetDecisionForm').dataset.status = status; $('#budgetDecisionForm').reset(); $('#budgetDecisionForm').classList.remove('hidden'); $('#budgetDecisionReason').focus(); return; }
+  await withWorkflowAction('#budgetDetailMessage',async(sequence) => {
+    await query('Update budget status',supabase.rpc('transition_business_budget',{p_workspace_id:state.workspace.id,p_budget_id:budget.id,p_expected_version:budget.version,p_status:status,p_reason:confirmed ? $('#budgetDecisionReason').value : null}));
+    if (sequence !== workspaceLoadSequence) return;
+    await refreshPlanning(); if (sequence === workspaceLoadSequence) await openBudgetDetail(budget.id);
+  });
+}
+function renderWorkflowPermission() {
+  if (!businessOwnerCanSetUp()) return;
+  const setting = (state.workflowRolePermissions || []).find((item) => item.role === $('#workflowPermissionRole').value && item.permission_code === $('#workflowPermissionCode').value);
+  $('#workflowPermissionEnabled').value = String(Boolean(setting?.enabled));
+}
+async function saveWorkflowPermission(event) {
+  event.preventDefault();
+  await withWorkflowAction('#workflowPermissionMessage',async(sequence) => {
+    await query('Save workflow permission',supabase.rpc('set_business_workflow_permission',{p_workspace_id:state.workspace.id,p_role:$('#workflowPermissionRole').value,p_permission_code:$('#workflowPermissionCode').value,p_enabled:$('#workflowPermissionEnabled').value==='true'}));
+    if (sequence !== workspaceLoadSequence) return;
+    await refreshPlanning();
+    if (sequence === workspaceLoadSequence) setClaimMessage('#workflowPermissionMessage','Role permission saved. Individual overrides and assigned scopes still apply.');
+  });
 }
 
 async function refreshClaims() {
@@ -1674,6 +1969,7 @@ function renderBusinessWorkspace() {
   resolveWorkspaceLock();
   renderClaims();
   renderBills();
+  renderPlanning();
   if (!state.locked) renderBusinessSetup();
   $('[data-open-setup-draft]')?.classList.toggle("hidden", !businessOwnerCanSetUp());
   renderRoute();
@@ -1895,6 +2191,37 @@ $$('[data-close-income-detail]').forEach((button) => button.addEventListener('cl
 $('#businessIncomeDetailDialog').addEventListener('close', () => { openedIncome = null; });
 $('#businessIncomeForm').addEventListener('submit', saveIncome);
 $('#incomeVoidForm').addEventListener('submit', voidIncome);
+$$('[data-open-request]').forEach((button) => button.addEventListener('click', () => openRequestForm()));
+$$('[data-close-request]').forEach((button) => button.addEventListener('click', () => $('#businessRequestDialog').close()));
+$$('[data-close-request-detail]').forEach((button) => button.addEventListener('click', () => $('#businessRequestDetailDialog').close()));
+$('#businessRequestDetailDialog').addEventListener('close', () => { if (!$('#businessRequestDetailDialog').open && !openedRequest?.loading) openedRequest = null; });
+$('#businessRequestForm').addEventListener('submit', saveRequest);
+$('#businessRequestList').addEventListener('click', (event) => { const button = event.target.closest('[data-request-id]'); if (button) openRequestDetail(button.dataset.requestId); });
+$('#requestDetailActions').addEventListener('click', (event) => { const button = event.target.closest('[data-request-action]'); if (button) requestAction(button.dataset.requestAction); });
+$('#requestDecisionForm').addEventListener('submit', (event) => { event.preventDefault(); requestAction(event.currentTarget.dataset.action, true); });
+$('#requestBillForm').addEventListener('submit', createRequestBill);
+$('#businessRequestFilters').addEventListener('submit', (event) => { event.preventDefault(); requestOffset = 0; requestFilters = Object.fromEntries([...new FormData(event.currentTarget)].map(([key,value]) => [`p_${key}`, value])); refreshPlanning(); });
+$('#businessRequestReset').addEventListener('click', () => { $('#businessRequestFilters').reset(); requestFilters = {}; requestOffset = 0; refreshPlanning(); });
+$('#businessRequestPrevious').addEventListener('click', () => { requestOffset = Math.max(0, requestOffset-50); refreshPlanning(); });
+$('#businessRequestNext').addEventListener('click', () => { requestOffset += 50; refreshPlanning(); });
+$('#createBusinessBudget').addEventListener('click', () => openBudgetForm());
+$$('[data-close-budget]').forEach((button) => button.addEventListener('click', () => $('#businessBudgetDialog').close()));
+$$('[data-close-budget-detail]').forEach((button) => button.addEventListener('click', () => $('#businessBudgetDetailDialog').close()));
+$('#businessBudgetDetailDialog').addEventListener('close', () => { if (!$('#businessBudgetDetailDialog').open && !openedBudget?.loading) openedBudget = null; });
+$('#businessBudgetForm').addEventListener('submit', saveBudget);
+$('#budgetPeriodType').addEventListener('change', renderBudgetPeriod);
+$('#budgetMonth').addEventListener('change', renderBudgetPeriod);
+$('#businessBudgetList').addEventListener('click', (event) => { const button = event.target.closest('[data-budget-id]'); if (button) openBudgetDetail(button.dataset.budgetId); });
+$('#budgetDetailActions').addEventListener('click', (event) => { const button = event.target.closest('[data-budget-action]'); if (button) budgetAction(button.dataset.budgetAction); });
+$('#budgetDecisionForm').addEventListener('submit', (event) => { event.preventDefault(); budgetAction(event.currentTarget.dataset.status, true); });
+$('#businessBudgetStatus').addEventListener('change', () => { budgetOffset = 0; refreshPlanning(); });
+$('#businessBudgetPrevious').addEventListener('click', () => { budgetOffset = Math.max(0,budgetOffset-50); refreshPlanning(); });
+$('#businessBudgetNext').addEventListener('click', () => { budgetOffset += 50; refreshPlanning(); });
+$('#budgetSourcePrevious').addEventListener('click', () => { budgetSourceOffset = Math.max(0,budgetSourceOffset-50); if (openedBudget) openBudgetDetail(openedBudget.id,false); });
+$('#budgetSourceNext').addEventListener('click', () => { budgetSourceOffset += 50; if (openedBudget) openBudgetDetail(openedBudget.id,false); });
+$('#businessWorkflowPermissionForm').addEventListener('submit', saveWorkflowPermission);
+$('#workflowPermissionRole').addEventListener('change', renderWorkflowPermission);
+$('#workflowPermissionCode').addEventListener('change', renderWorkflowPermission);
 $('#businessActivityFilters').addEventListener('submit', (event) => {
   event.preventDefault(); activityOffset = 0;
   activityFilters = Object.fromEntries([...new FormData(event.currentTarget)].map(([key, value]) => [`p_${key}`, ['category_id', 'dimension_id', 'from', 'to'].includes(key) ? value || null : value]));

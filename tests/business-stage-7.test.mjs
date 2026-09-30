@@ -8,7 +8,7 @@ const app = read('business.js'), html = read('business.html');
 const extract = (start, end) => app.slice(app.indexOf(start), app.indexOf(end, app.indexOf(start)));
 
 test('Stage 7 is mirrored with forced RLS, isolated category/tag foreign keys and RPC-only writes', () => {
-  assert.ok(read('supabase/schema.sql').endsWith(sql));
+  assert.ok(read('supabase/schema.sql').includes(sql));
   assert.match(sql, /business_income_receipts force row level security/);
   assert.match(sql, /revoke all on public.business_income_receipts from public,anon,authenticated/);
   assert.match(sql, /grant select on public.business_income_receipts to authenticated/);

@@ -14,11 +14,11 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="/business.css?v=6" />
+    <link rel="stylesheet" href="/business.css?v=7" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <script src="/config.js?v=27"></script>
-    <script src="/pwa.js?v=62" defer></script>
-    <script type="module" src="/business.js?v=6"></script>
+    <script src="/pwa.js?v=63" defer></script>
+    <script type="module" src="/business.js?v=7"></script>
   </head>
   <body>
     <a class="skip-link" href="#businessMain">Skip to Business content</a>
@@ -124,7 +124,7 @@
         <footer class="sidebar-footer">
           <a href="/app.html#personal/dashboard" data-leave-business>Personal &amp; Family</a>
           <button type="button" data-sign-out>Sign out</button>
-          <small>Version 4.9.22</small>
+          <small>Version 4.9.23</small>
         </footer>
       </aside>
 
@@ -143,7 +143,7 @@
 
         <aside class="stage-banner" aria-label="Business release status">
           <span>Business preview</span>
-          <p>Expense claims and supplier bills are ready for Business testing. Public subscriptions remain closed during the staged release.</p>
+          <p>Income, bills, spending approvals and budgets are ready for Business testing. Public subscriptions remain closed during the staged release.</p>
         </aside>
 
         <section id="businessLock" class="lock-panel hidden" aria-live="polite">
@@ -223,7 +223,7 @@
               <article class="metric-card featured"><span>Paid expenses</span><strong id="businessPaidTotal">—</strong><small>Recorded company payments and reimbursements</small></article>
               <article class="metric-card"><span>Income received</span><strong id="businessIncomeTotal">—</strong><small>All recorded dates · excludes voided income</small></article>
               <article class="metric-card"><span>Payments recorded</span><strong id="businessPaidCount">—</strong><small>Company expenses, bill payments and reimbursements</small></article>
-              <article class="metric-card"><span>Approved, unpaid</span><strong id="businessCommitmentTotal">—</strong><small>Awaiting payment or reimbursement</small></article>
+              <article class="metric-card"><span>Committed, unpaid</span><strong id="businessCommitmentTotal">—</strong><small>Approved requests, expenses and outstanding bills</small></article>
             </div>
             <div class="overview-grid">
               <article class="content-card activity-card">
@@ -236,7 +236,7 @@
                 <ul class="attention-list">
                   <li><span>Approvals waiting</span><strong id="businessReviewCount">—</strong></li>
                   <li><span>Bills due soon or overdue</span><strong id="businessOverviewBillsDue">—</strong></li>
-                  <li><span>Budget warnings</span><strong>—</strong></li>
+                  <li><a href="#business/budgets">Budget warnings</a><strong id="businessBudgetWarningCount">—</strong></li>
                 </ul>
                 <a class="text-link" href="#business/approvals">Open requests &amp; approvals →</a>
               </article>
@@ -248,8 +248,8 @@
             <article class="content-card">
               <form id="businessActivityFilters" class="activity-filters">
                 <label class="activity-search">Search<input name="search" type="search" maxlength="160" placeholder="Title, reference or person" /></label>
-                <label>Type<select name="kind"><option value="">All types</option><option value="income">Income received</option><option value="company_expense">Company expense</option><option value="employee_cost">Employee-paid cost</option><option value="reimbursement">Reimbursement paid</option><option value="bill">Unpaid / cancelled bill</option><option value="bill_payment">Bill payment</option></select></label>
-                <label>Status<select name="status"><option value="">All statuses</option><option value="received">Received</option><option value="paid">Paid</option><option value="approved">Approved, unpaid</option><option value="open">Bill outstanding</option><option value="draft">Draft</option><option value="submitted">Submitted</option><option value="changes_requested">Changes requested</option><option value="rejected">Rejected</option><option value="cancelled">Cancelled</option><option value="voided">Voided</option></select></label>
+                <label>Type<select name="kind"><option value="">All types</option><option value="income">Income received</option><option value="company_expense">Company expense</option><option value="employee_cost">Employee-paid cost</option><option value="reimbursement">Reimbursement paid</option><option value="bill">Unpaid / cancelled bill</option><option value="bill_payment">Bill payment</option><option value="spending_request">Spending request</option></select></label>
+                <label>Status<select name="status"><option value="">All statuses</option><option value="received">Received</option><option value="paid">Paid</option><option value="approved">Approved, unpaid</option><option value="open">Bill outstanding</option><option value="committed">Request linked to bill</option><option value="fulfilled">Request bill fully paid</option><option value="draft">Draft</option><option value="submitted">Submitted</option><option value="changes_requested">Changes requested</option><option value="rejected">Rejected</option><option value="cancelled">Cancelled</option><option value="voided">Voided</option></select></label>
                 <label>Currency<select name="currency"></select></label><label>Category<select name="category_id"></select></label><label>Project, branch or team<select name="dimension_id"></select></label>
                 <label>From<input name="from" type="date" /></label><label>To<input name="to" type="date" /></label><label>Payment source<select name="payment_source" data-payment-sources data-source-all></select></label>
                 <div class="dialog-actions"><button type="button" id="businessActivityReset" class="button secondary">Reset</button><button type="submit" class="button primary">Apply filters</button></div>
@@ -270,18 +270,26 @@
           </section>
 
           <section class="business-panel hidden" data-business-panel="approvals">
-            <div class="section-heading"><div><p class="eyebrow">Controls</p><h2>Requests &amp; Approvals</h2><p>Review expense claims. Submitters cannot approve their own claims.</p></div><button class="button primary" type="button" data-open-claim="reimbursement">+ New claim</button></div>
+            <div class="section-heading"><div><p class="eyebrow">Controls</p><h2>Requests &amp; Approvals</h2><p>Request spending before purchase. Approval reserves an unpaid commitment; it does not record a payment.</p></div><button class="button primary" type="button" data-open-request>+ Spending request</button></div>
+            <article class="content-card"><div class="card-heading"><div><h3>Spending requests</h3><p>No one can approve their own request. An Owner working alone can record a company expense directly.</p></div></div>
+              <form id="businessRequestFilters" class="activity-filters"><label>Search<input name="search" type="search" maxlength="160" placeholder="Title or purpose" /></label><label>Status<select name="status"><option value="">All statuses</option><option value="submitted">Awaiting review</option><option value="draft">Draft</option><option value="changes_requested">Changes requested</option><option value="approved">Approved, awaiting bill</option><option value="committed">Linked bill outstanding</option><option value="fulfilled">Bill fully paid</option><option value="rejected">Rejected</option><option value="cancelled">Cancelled</option></select></label><button class="button primary" type="submit">Apply</button><button id="businessRequestReset" class="button secondary" type="button">Reset</button></form>
+              <p id="businessWorkflowMessage" class="team-message hidden" role="status"></p><div id="businessRequestList" class="claim-list"></div>
+              <div class="activity-pagination"><button id="businessRequestPrevious" class="button secondary" type="button">Previous</button><span id="businessRequestPage"></span><button id="businessRequestNext" class="button secondary" type="button">Next</button></div>
+            </article>
             <article class="content-card"><div class="approval-tabs"><button class="active" type="button">Claims needing review <span id="businessApprovalTabCount">0</span></button></div><div id="businessClaimApprovals" class="claim-list"></div></article>
           </section>
 
           <section class="business-panel hidden" data-business-panel="budgets">
-            <div class="section-heading"><div><p class="eyebrow">Planning</p><h2>Budgets</h2><p>Set company and category limits, then compare commitments and actual spending.</p></div><button class="button primary" type="button" disabled>+ Create budget</button></div>
-            <article class="content-card"><div class="empty-state"><span aria-hidden="true">◫</span><h3>Budget controls arrive in a later stage</h3><p>Budgets will remain separate from household targets and will use Business-only categories.</p></div></article>
+            <div class="section-heading"><div><p class="eyebrow">Planning</p><h2>Budgets</h2><p>Monthly or custom targets for a category, project, branch, department or the permitted workspace.</p></div><button id="createBusinessBudget" class="button primary" type="button">+ Create budget</button></div>
+            <article class="content-card"><div class="card-heading budget-toolbar"><div><h3>Spending targets</h3><p>Warnings begin at 80% of planned spending. Targets do not block payments. Budgets can overlap across different scopes; their amounts should not be added together.</p></div><label class="budget-status-filter">Status<select id="businessBudgetStatus"><option value="">All statuses</option><option value="active">Active</option><option value="draft">Draft</option><option value="closed">Closed</option><option value="archived">Archived</option></select></label></div>
+              <p id="businessBudgetMessage" class="team-message hidden" role="status"></p><div id="businessBudgetList" class="budget-list"></div>
+              <div class="activity-pagination"><button id="businessBudgetPrevious" class="button secondary" type="button">Previous</button><span id="businessBudgetPage"></span><button id="businessBudgetNext" class="button secondary" type="button">Next</button></div>
+            </article>
           </section>
 
           <section class="business-panel hidden" data-business-panel="reports">
             <div class="section-heading"><div><p class="eyebrow">Analysis</p><h2>Reports</h2><p>Understand actual income, paid spending, and committed spending without duplicate counting.</p></div><button class="button secondary" type="button" disabled>Export report</button></div>
-            <div class="report-preview"><article class="content-card"><h3>Recorded activity · all dates</h3><dl class="detail-list"><div><dt>Income received</dt><dd id="businessReportIncome">—</dd></div><div><dt>Business payments</dt><dd id="businessReportPaid">—</dd></div><div><dt>Approved expenses / bills unpaid</dt><dd id="businessReportCommitted">—</dd></div><div><dt>Claims submitted for review</dt><dd id="businessReportPending">—</dd></div></dl><small>Actuals exclude voided income and unreimbursed employee costs. Linked claims and bills count once. Use Activity filters for date-specific totals.</small></article><article class="content-card"><h3>Reporting currency</h3><p id="businessReportingCurrency" class="large-value">—</p><small>Historical conversions are locked with each financial record. These are recorded totals, not an account balance or profit report.</small></article></div>
+            <div class="report-preview"><article class="content-card"><h3>Recorded activity · all dates</h3><dl class="detail-list"><div><dt>Income received</dt><dd id="businessReportIncome">—</dd></div><div><dt>Business payments</dt><dd id="businessReportPaid">—</dd></div><div><dt>Approved requests, expenses & bills unpaid</dt><dd id="businessReportCommitted">—</dd></div><div><dt>Claims submitted for review</dt><dd id="businessReportPending">—</dd></div></dl><small>Actuals exclude voided income and unreimbursed employee costs. Linked requests, claims and bills count once. Use Activity filters for date-specific totals.</small></article><article class="content-card"><h3>Reporting currency</h3><p id="businessReportingCurrency" class="large-value">—</p><small>Historical conversions are locked with each financial record. These are recorded totals, not an account balance or profit report.</small></article></div>
           </section>
 
           <section class="business-panel hidden" data-business-panel="team">
@@ -289,6 +297,10 @@
             <div class="seat-grid" aria-label="Business seat use"><article><span>Seat limit</span><strong id="businessSeatLimit">—</strong></article><article><span>Active members</span><strong id="businessActiveSeats">—</strong></article><article><span>Pending invites</span><strong id="businessPendingSeats">—</strong></article><article><span>Available</span><strong id="businessAvailableSeats">—</strong></article></div>
             <p id="businessTeamMessage" class="team-message hidden" role="status" aria-live="polite"></p>
             <div class="team-columns"><article class="content-card"><div class="card-heading"><div><h3>Active members</h3><p id="businessTeamCount">0 people</p></div></div><div id="businessTeamList" class="team-list"></div></article><article id="businessPendingCard" class="content-card hidden"><div class="card-heading"><div><h3>Invitations</h3><p>Pending invitations reserve a seat.</p></div></div><div id="businessInvitationList" class="team-list"></div></article></div>
+            <article id="businessWorkflowPermissions" class="content-card hidden"><div class="card-heading"><div><h3>Approval &amp; budget permissions</h3><p>Owner only. Role changes apply to current and future members; individual overrides and assigned scopes still apply.</p></div></div>
+              <form id="businessWorkflowPermissionForm" class="claim-fields"><label>Role<select id="workflowPermissionRole"><option value="business_admin">Business Admin</option><option value="finance_manager">Finance Manager</option><option value="team_manager">Team Manager</option><option value="staff">Staff</option><option value="contributor">Contributor</option><option value="viewer">Viewer / Auditor</option></select></label><label>Permission<select id="workflowPermissionCode"><option value="approvals.view">View scoped requests</option><option value="approvals.review">Review scoped requests and claims</option><option value="budgets.view">View permitted budgets</option><option value="budgets.manage">Manage permitted budgets</option></select></label><label>Role setting<select id="workflowPermissionEnabled"><option value="true">Allowed</option><option value="false">Not allowed</option></select></label><button type="submit" class="button primary">Save role permission</button></form>
+              <p>Budget management also needs budget-view access. Staff and Team Managers need an assigned organisation tag to view budget figures. Self-approval remains blocked.</p><p id="workflowPermissionMessage" class="team-message hidden" role="status"></p>
+            </article>
           </section>
 
           <section class="business-panel hidden" data-business-panel="settings">
@@ -344,7 +356,7 @@
           <button type="button" data-open-income><span>＋</span><strong>Income received</strong><small>Record money already received, not expected income</small></button>
           <button type="button" data-open-claim="company_expense"><span>−</span><strong>Company expense</strong><small>Attach receipt, submit, then record payment</small></button>
           <button type="button" data-open-bill><span>▤</span><strong>Supplier bill</strong><small>Track due dates and payments</small></button>
-          <button type="button" disabled><span>✓</span><strong>Spending request</strong><small>Request approval first</small></button>
+          <button type="button" data-open-request><span>✓</span><strong>Spending request</strong><small>Ask before spending; approval reserves an unpaid commitment</small></button>
           <button type="button" data-open-claim="reimbursement"><span>◎</span><strong>Employee claim</strong><small>Attach a receipt and request reimbursement</small></button>
         </div>
         <p class="dialog-note">A draft is excluded from totals. An approved claim becomes a commitment; recording payment moves it to paid spending.</p>
@@ -389,6 +401,29 @@
       </div>
     </dialog>
 
+    <dialog id="businessRequestDialog" class="business-dialog claim-detail-dialog">
+      <form id="businessRequestForm" class="claim-form"><div class="dialog-heading"><div><p class="eyebrow">Before purchase</p><h2 id="businessRequestTitle">Spending request</h2><p>Explain the planned purchase. Save a draft, then submit for someone else to review.</p></div><button type="button" class="dialog-close" data-close-request aria-label="Close">×</button></div>
+        <div class="claim-fields"><label>Title<input id="requestTitle" minlength="2" maxlength="160" required /></label><label>Amount<input id="requestAmount" type="number" step="0.0001" min="0.01" required /></label><label>Currency<select id="requestCurrency" required></select></label><label>Planned spending date<input id="requestDate" type="date" required /></label><label>Expense category<select id="requestCategory" required></select></label><label>Project, branch or department<select id="requestDimension"></select></label><label class="field-wide">Purpose / justification<textarea id="requestDescription" minlength="2" maxlength="2000" rows="3" required></textarea></label></div>
+        <p id="requestFormMessage" class="team-message hidden" role="status"></p><div class="dialog-actions"><button type="button" class="button secondary" data-close-request>Cancel</button><button type="submit" class="button primary">Save draft</button></div>
+      </form>
+    </dialog>
+    <dialog id="businessRequestDetailDialog" class="business-dialog claim-detail-dialog"><div class="claim-detail-content">
+      <div class="dialog-heading"><div><p class="eyebrow">Spending request</p><h2 id="requestDetailTitle"></h2></div><button type="button" class="dialog-close" data-close-request-detail aria-label="Close">×</button></div>
+      <dl id="requestDetailFields" class="detail-list"></dl><div id="requestDetailActions" class="dialog-actions"></div>
+      <form id="requestDecisionForm" class="claim-fields hidden"><label class="field-wide">Decision reason<input id="requestDecisionReason" minlength="2" maxlength="1000" required /></label><button type="submit" class="button primary">Confirm decision</button></form>
+      <form id="requestBillForm" class="claim-fields hidden"><label>Supplier<select id="requestBillSupplier" required></select></label><label>Due date<input id="requestBillDate" type="date" required /></label><label>Supplier reference (optional)<input id="requestBillReference" maxlength="160" /></label><label>Remind days before<input id="requestBillReminder" type="number" min="0" max="30" value="3" required /></label><button type="submit" class="button primary">Create linked supplier bill</button><small>The approved amount, currency, category and tag carry over unchanged. The bill replaces the request's unpaid commitment.</small></form>
+      <p id="requestDetailMessage" class="team-message hidden" role="status"></p><section><h3>History</h3><div id="requestHistory"></div></section>
+    </div></dialog>
+    <dialog id="businessBudgetDialog" class="business-dialog claim-detail-dialog"><form id="businessBudgetForm" class="claim-form">
+      <div class="dialog-heading"><div><p class="eyebrow">Spending target</p><h2 id="budgetFormTitle">Create budget</h2><p id="budgetCurrencyHint"></p></div><button type="button" class="dialog-close" data-close-budget aria-label="Close">×</button></div>
+      <div class="claim-fields"><label>Name<input id="budgetName" minlength="2" maxlength="160" required /></label><label>Planned amount<input id="budgetAmount" type="number" min="0.01" step="0.0001" required /></label><label>Expense category<select id="budgetCategory"></select></label><label>Project, branch or department<select id="budgetDimension"></select></label><label>Period type<select id="budgetPeriodType"><option value="monthly">Monthly</option><option value="custom">Custom dates</option></select></label><label id="budgetMonthField">Starting month<input id="budgetMonth" type="month" required /></label><label>From<input id="budgetStart" type="date" required /></label><label>Through (inclusive)<input id="budgetEnd" type="date" required /></label></div>
+      <p id="budgetFormMessage" class="team-message hidden" role="status"></p><div class="dialog-actions"><button type="button" class="button secondary" data-close-budget>Cancel</button><button type="submit" class="button primary">Save draft budget</button></div>
+    </form></dialog>
+    <dialog id="businessBudgetDetailDialog" class="business-dialog claim-detail-dialog"><div class="claim-detail-content">
+      <div class="dialog-heading"><div><p class="eyebrow">Budget &amp; sources</p><h2 id="budgetDetailTitle"></h2></div><button type="button" class="dialog-close" data-close-budget-detail aria-label="Close">×</button></div>
+      <dl id="budgetDetailFields" class="detail-list"></dl><div id="budgetDetailActions" class="dialog-actions"></div><form id="budgetDecisionForm" class="claim-fields hidden"><label class="field-wide">Reason<input id="budgetDecisionReason" minlength="2" maxlength="1000" required /></label><button type="submit" class="button primary">Confirm status change</button></form>
+      <p id="budgetDetailMessage" class="team-message hidden" role="status"></p><h3>Paid and committed source records</h3><p>Company payments use their payment date. Unpaid requests, claims and bills use their planned, expense or due date, in the workspace timezone.</p><div id="budgetSourceList" class="claim-list"></div><div class="activity-pagination"><button id="budgetSourcePrevious" class="button secondary" type="button">Previous</button><span id="budgetSourcePage"></span><button id="budgetSourceNext" class="button secondary" type="button">Next</button></div>
+    </div></dialog>
     <dialog id="businessIncomeDialog" class="business-dialog claim-detail-dialog">
       <form id="businessIncomeForm" class="claim-form">
         <div class="dialog-heading"><div><p class="eyebrow">Received income</p><h2>Record income</h2><p>Record money already received. Expected income is not included in actual totals.</p></div><button type="button" class="dialog-close" data-close-income aria-label="Close">×</button></div>

@@ -186,6 +186,23 @@ a { color: inherit; }
 .activity-filters input, .activity-filters select { width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbdcda; border-radius: 10px; background: white; color: var(--ink); }
 .activity-pagination { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
 .activity-summary { line-height: 1.7; padding: 12px 16px; border-radius: 12px; background: #edf6f3; }
+.budget-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr)); gap: 16px; }
+.budget-card { border: 2px solid #c6dcd5; border-radius: 15px; padding: 18px; min-width: 0; }
+.budget-card.warning { border-color: #d0a345; background: #fffaf0; }
+.budget-card.over { border-color: #ca7070; background: #fff6f4; }
+.budget-card h3 { margin: 0 0 5px; overflow-wrap: anywhere; }
+.budget-card p { font-size: .82rem; color: var(--muted); line-height: 1.6; }
+.budget-card .detail-list { margin: 12px 0; }
+.budget-card progress { display: block; width: 100%; height: 12px; margin: 12px 0; accent-color: var(--brand); }
+.budget-card .dialog-actions { justify-content: flex-start; }
+.budget-toolbar { margin-bottom: 18px; }
+.budget-status-filter { display: grid; gap: 7px; flex: 0 0 170px; color: #345057; font-size: .82rem; font-weight: 750; }
+.budget-status-filter select { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #cbdcda; border-radius: 10px; background: #fff; color: var(--ink); }
+#createBusinessBudget { flex-shrink: 0; white-space: nowrap; }
+@media (max-width: 600px) {
+  .budget-toolbar { flex-direction: column; }
+  .budget-status-filter { flex-basis: auto; width: 100%; }
+}
 .claim-row-body small { overflow-wrap: anywhere; }
 .claim-detail-content .team-message { margin-top: 14px; }
 .claim-detail-content h3 { margin: 21px 0 9px; font-size: .98rem; }

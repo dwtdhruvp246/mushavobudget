@@ -14,11 +14,11 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="/business.css?v=9" />
+    <link rel="stylesheet" href="/business.css?v=10" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <script src="/config.js?v=27"></script>
-    <script src="/pwa.js?v=66" defer></script>
-    <script type="module" src="/business.js?v=9"></script>
+    <script src="/pwa.js?v=67" defer></script>
+    <script type="module" src="/business.js?v=10"></script>
   </head>
   <body>
     <a class="skip-link" href="#businessMain">Skip to Business content</a>
@@ -124,7 +124,7 @@
         <footer class="sidebar-footer">
           <a href="/app.html#personal/dashboard" data-leave-business>Personal &amp; Family</a>
           <button type="button" data-sign-out>Sign out</button>
-          <small>Version 4.9.26</small>
+          <small>Version 4.9.27</small>
         </footer>
       </aside>
 
@@ -142,9 +142,11 @@
         </header>
 
         <aside class="stage-banner" aria-label="Business release status">
-          <span>Business preview</span>
-          <p>Finance, budgets, approvals and reports are ready for Business testing. Public subscriptions remain closed during the staged release.</p>
+          <span>Business pilot</span>
+          <p>Business pilot testing is underway. Public subscriptions remain closed until the pilot checks are complete.</p>
         </aside>
+
+        <aside id="businessLiveBanner" class="live-update-banner hidden" role="status"><p id="businessLiveMessage"></p><button id="refreshBusinessLive" class="button secondary" type="button">Refresh updates</button></aside>
 
         <section id="businessLock" class="lock-panel hidden" aria-live="polite">
           <span class="lock-icon" aria-hidden="true">🔒</span>
@@ -246,7 +248,7 @@
           <section class="business-panel hidden" data-business-panel="activity">
             <div class="section-heading"><div><p class="eyebrow">Ledger</p><h2>Activity &amp; Transactions</h2><p>Received income, expenses, employee costs, reimbursements and supplier payments.</p></div><button class="button primary" type="button" data-open-add>+ Add record</button></div>
             <article class="content-card">
-              <form id="businessActivityFilters" class="activity-filters">
+              <form id="businessActivityFilters" data-pwa-ignore-dirty="true" class="activity-filters">
                 <label class="activity-search">Search<input name="search" type="search" maxlength="160" placeholder="Title, reference or person" /></label>
                 <label>Type<select name="kind"><option value="">All types</option><option value="income">Income received</option><option value="company_expense">Company expense</option><option value="employee_cost">Employee-paid cost</option><option value="reimbursement">Reimbursement paid</option><option value="bill">Unpaid / cancelled bill</option><option value="bill_payment">Bill payment</option><option value="spending_request">Spending request</option></select></label>
                 <label>Status<select name="status"><option value="">All statuses</option><option value="received">Received</option><option value="paid">Paid</option><option value="approved">Approved, unpaid</option><option value="open">Bill outstanding</option><option value="committed">Request linked to bill</option><option value="fulfilled">Request bill fully paid</option><option value="draft">Draft</option><option value="submitted">Submitted</option><option value="changes_requested">Changes requested</option><option value="rejected">Rejected</option><option value="cancelled">Cancelled</option><option value="voided">Voided</option></select></label>
@@ -272,7 +274,7 @@
           <section class="business-panel hidden" data-business-panel="approvals">
             <div class="section-heading"><div><p class="eyebrow">Controls</p><h2>Requests &amp; Approvals</h2><p>Request spending before purchase. Approval reserves an unpaid commitment; it does not record a payment.</p></div><button class="button primary" type="button" data-open-request>+ Spending request</button></div>
             <article class="content-card"><div class="card-heading"><div><h3>Spending requests</h3><p>No one can approve their own request. An Owner working alone can record a company expense directly.</p></div></div>
-              <form id="businessRequestFilters" class="activity-filters"><label>Search<input name="search" type="search" maxlength="160" placeholder="Title or purpose" /></label><label>Status<select name="status"><option value="">All statuses</option><option value="submitted">Awaiting review</option><option value="draft">Draft</option><option value="changes_requested">Changes requested</option><option value="approved">Approved, awaiting bill</option><option value="committed">Linked bill outstanding</option><option value="fulfilled">Bill fully paid</option><option value="rejected">Rejected</option><option value="cancelled">Cancelled</option></select></label><button class="button primary" type="submit">Apply</button><button id="businessRequestReset" class="button secondary" type="button">Reset</button></form>
+              <form id="businessRequestFilters" data-pwa-ignore-dirty="true" class="activity-filters"><label>Search<input name="search" type="search" maxlength="160" placeholder="Title or purpose" /></label><label>Status<select name="status"><option value="">All statuses</option><option value="submitted">Awaiting review</option><option value="draft">Draft</option><option value="changes_requested">Changes requested</option><option value="approved">Approved, awaiting bill</option><option value="committed">Linked bill outstanding</option><option value="fulfilled">Bill fully paid</option><option value="rejected">Rejected</option><option value="cancelled">Cancelled</option></select></label><button class="button primary" type="submit">Apply</button><button id="businessRequestReset" class="button secondary" type="button">Reset</button></form>
               <p id="businessWorkflowMessage" class="team-message hidden" role="status"></p><div id="businessRequestList" class="claim-list"></div>
               <div class="activity-pagination"><button id="businessRequestPrevious" class="button secondary" type="button">Previous</button><span id="businessRequestPage"></span><button id="businessRequestNext" class="button secondary" type="button">Next</button></div>
             </article>
@@ -291,7 +293,7 @@
             <div class="section-heading"><div><p class="eyebrow">Analysis</p><h2>Business reports</h2><p>Choose a period and scope. Select any figure to see its exact source records.</p></div><button id="refreshBusinessReports" class="button secondary" type="button">Refresh report</button></div>
             <p id="businessReportMessage" class="team-message hidden" role="status" aria-live="polite"></p>
             <div id="businessReportControls">
-              <form id="businessReportFilters" class="content-card report-filters">
+              <form id="businessReportFilters" data-pwa-ignore-dirty="true" class="content-card report-filters">
                 <label>Period<select id="reportPeriod"><option value="current">Current period</option><option value="previous">Previous period</option><option value="financial_year">Financial year</option><option value="custom">Custom dates</option><option value="all">All dates</option></select></label>
                 <label>From<input id="reportFrom" type="date" /></label><label>Through (inclusive)<input id="reportTo" type="date" /></label>
                 <label>Currency view<select id="reportCurrencyMode"><option value="reporting">Reporting currency</option><option value="original">Original currency</option></select></label>

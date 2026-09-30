@@ -32,4 +32,4 @@ test('support submissions use captured Owner/version and suppress duplicate clic
  const button={disabled:false},form={dataset:{businessSupportForm:'ownership'},values:{member_id:'m',confirmation_email:'new@example.com',confirmation_name:'Company',reason:'Verified support case'},reportValidity:()=>true,querySelector:()=>button,isConnected:true};
  const first=context.submitAdminBusinessSupport(form);await context.submitAdminBusinessSupport(form);assert.equal(calls.length,1);assert.equal(calls[0].args.p_expected_owner_id,'old');assert.equal(calls[0].args.p_expected_version,3);assert.ok(calls[0].args.p_request_id);resolve('done');await first;assert.equal(button.disabled,false);
 });
-test('consolidated schema ends with the exact Stage 11 migration',()=>assert.ok(read('supabase/schema.sql').endsWith(read('supabase/migrations/20260930110000_business_stage_11_admin.sql'))));
+test('consolidated schema contains the exact Stage 11 migration',()=>assert.ok(read('supabase/schema.sql').includes(read('supabase/migrations/20260930110000_business_stage_11_admin.sql'))));

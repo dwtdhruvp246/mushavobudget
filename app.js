@@ -1295,6 +1295,9 @@ function resetState() {
   state.adminPaymentRecords = [];
   state.payments = [];
   state.adminNotes = [];
+  adminDetailsSequence++;
+  adminBusinessSupport=null;
+  $("#adminDetailsDialog")?.close();
   state.adminWorkspaces = [];
   state.adminWorkspaceMembers = [];
   state.adminBusinessBillingSettings = [];
@@ -6129,7 +6132,85 @@ function adminDetailRows(rows) {
   return `<dl class="admin-detail-list">${rows.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${value}</dd></div>`).join("")}</dl>`;
 }
 
+let adminDetailsSequence = 0;
+let adminBusinessSupport = null;
+let adminBusinessSupportBusy = false;
+
+async function openAdminBusinessSupport(workspaceId, offset = 0) {
+  const userId = state.session?.user?.id;
+  if (!state.isAdmin || !userId) return;
+  showAdminDetails({eyebrow:'Business support',title:'Loading Business workspace',body:'<p class="muted-copy">Loading access, subscription and support history…</p>'});
+  const sequence = adminDetailsSequence;
+  try {
+    const snapshot = await query('Business support',supabase.rpc('admin_business_support_snapshot',{p_workspace_id:workspaceId,p_offset:offset}));
+    if (sequence !== adminDetailsSequence || state.session?.user?.id !== userId || !state.isAdmin || !$('#adminDetailsDialog').open) return;
+    renderAdminBusinessSupport(snapshot, offset);
+  } catch (error) {
+    if (sequence === adminDetailsSequence && state.session?.user?.id === userId) $('#adminDetailsBody').textContent = error.message;
+  }
+}
+
+function renderAdminBusinessSupport(snapshot, offset = 0) {
+  const w=snapshot.workspace,s=snapshot.subscription || {},owner=snapshot.owner || {};
+  const canStatus=snapshot.can_suspend && ['super_admin','admin_staff'].includes(state.adminRole) && ['active','suspended'].includes(w.status);
+  const canTransfer=snapshot.can_transfer && state.adminRole==='super_admin' && w.status!=='closed';
+  const eligible=(snapshot.members || []).filter(m=>m.user_id!==w.owner_id && m.role!=='business_owner' && m.account_status==='active' && !m.platform_staff);
+  const effective = w.status==='suspended' || s.status==='suspended' ? 'suspended' : w.status==='closed' ? 'closed' : s.status==='active' && new Date(s.paid_through_at)>new Date() ? 'active' : 'expired';
+  const field = (label,value)=>[label,escapeHtml(value ?? 'Not set')];
+  const confirmation = '<label class="full">Type the workspace name<input name="confirmation_name" required autocomplete="off" /></label><label class="full">Reason / verified support reference<textarea name="reason" required minlength="8" maxlength="1000" rows="3"></textarea></label>';
+  const statusForm=canStatus?`<section class="admin-detail-section"><h4>${w.status==='suspended'?'Restore workspace access':'Suspend workspace access'}</h4><p class="muted-copy">${w.status==='suspended'?'Restoration keeps account suspensions and subscription expiry in force.':'Suspension locks Business activity for every member. Records are retained.'}</p><form data-business-support-form="status" class="form-grid">${confirmation}<button class="${w.status==='suspended'?'primary':'danger'} full" type="submit">${w.status==='suspended'?'Restore workspace':'Suspend workspace'}</button></form></section>`:'';
+  const transferForm=canTransfer?`<section class="admin-detail-section"><h4>Recover or transfer ownership</h4><p class="muted-copy">Verify the request before proceeding. Choose an existing active member. The previous Owner becomes a Viewer and loses member permission overrides. This changes neither the subscription nor the number of seats. Suspensions remain in force.</p>${snapshot.pending_payment?'<p role="status">Resolve the pending subscription payment in Finance before transferring ownership.</p>':eligible.length?`<form data-business-support-form="ownership" class="form-grid"><label class="full">New Owner<select name="member_id" required><option value="">Choose an existing member</option>${eligible.map(m=>`<option value="${escapeHtml(m.id)}">${escapeHtml(m.name || m.email)} — ${escapeHtml(m.email)}</option>`).join('')}</select></label><label class="full">Type the new Owner’s email<input name="confirmation_email" type="email" required autocomplete="off" /></label>${confirmation}<button class="primary full" type="submit">Confirm ownership change</button></form>`:'<p>No eligible member. Ask a registered active member to join through the existing invitation process first.</p>'}</section>`:'';
+  const history=(snapshot.actions || []).map(a=>`<article class="admin-detail-card"><div><strong>${escapeHtml(titleCase(a.action))}</strong><span>${escapeHtml(a.actor_email || a.actor_id)} · ${escapeHtml(formatAdminDate(a.created_at))}</span><p>${escapeHtml(a.reason)}</p><small>${escapeHtml(a.before_summary?.status || a.before_summary?.owner_id || '')} → ${escapeHtml(a.after_summary?.status || a.after_summary?.owner_id || '')}</small></div></article>`).join('') || '<p class="muted-copy">No platform support actions recorded.</p>';
+  showAdminDetails({eyebrow:'Business support',title:w.name,subtitle:owner.email || 'Owner unavailable',body:
+    `<section class="admin-detail-section"><h4>Access and subscription</h4>${adminDetailRows([
+      field('Owner',owner.name || owner.email || w.owner_id),field('Owner email',owner.email),field('Owner account',owner.account_status),field('Workspace status',w.status),field('Effective access',effective),field('Suspension reason',w.suspension_reason),field('Plan',snapshot.plan_name),field('Billing period',s.billing_period),field('Activation',formatAdminDate(s.entitlement_start_at)),field('Paid through',formatAdminDate(s.paid_through_at)),field('Time remaining',adminExpiryCountdown(s.paid_through_at)),field('Current seats',snapshot.current_limit),field('Members and live reservations',snapshot.usage),field('Invitation capacity',snapshot.invitation_limit),field('Next term seats',s.business_next_member_limit),field('Next term starts',s.business_next_effective_at?formatAdminDate(s.business_next_effective_at):'Not scheduled')
+    ])}<p class="muted-copy">Plan configuration is under Plans. Subscription payments and paid seat approvals are under Finance. These support controls do not grant membership or edit Business finance records.</p><button type="button" data-business-support-refresh>Refresh details</button></section>${statusForm}${transferForm}<section class="admin-detail-section"><h4>Platform support history</h4><div class="admin-detail-stack">${history}</div><div class="row-actions"><button type="button" data-business-support-page="${Math.max(0,offset-20)}" ${offset===0?'disabled':''}>Previous</button><span>${Number(snapshot.action_count)?offset+1:0}–${Math.min(offset+20,Number(snapshot.action_count))} of ${Number(snapshot.action_count)} actions</span><button type="button" data-business-support-page="${offset+20}" ${offset+20>=snapshot.action_count?'disabled':''}>Next</button></div></section>`});
+  $("#adminDetailsBody").classList.add("admin-business-support");
+  adminBusinessSupport={snapshot,offset,userId:state.session?.user?.id,sequence:adminDetailsSequence,requests:{status:crypto.randomUUID(),ownership:crypto.randomUUID()}};
+  // Keep the directory behind the support dialog consistent with its fresh snapshot.
+  const cachedWorkspace=state.adminWorkspaces?.find(row=>row.id===w.id);
+  if(cachedWorkspace)Object.assign(cachedWorkspace,{owner_id:w.owner_id,status:w.status,suspension_reason:w.suspension_reason});
+  const cachedMonitor=state.adminSubscriptionMonitor?.find(row=>row.workspace_id===w.id);
+  if(cachedMonitor)Object.assign(cachedMonitor,{owner_id:w.owner_id,owner_email:owner.email,subscription_status:s.status==='active'&&new Date(s.paid_through_at)<=new Date()?'expired':s.status,member_limit:snapshot.current_limit,used_member_count:snapshot.usage});
+  if(state.adminWorkspaces && state.adminTab==='households')renderAdminFamilies();
+}
+
+async function submitAdminBusinessSupport(form) {
+  const context=adminBusinessSupport;
+  if (!context || adminBusinessSupportBusy || context.userId!==state.session?.user?.id || !state.isAdmin) return;
+  const kind=form.dataset.businessSupportForm,data=new FormData(form),w=context.snapshot.workspace;
+  if (!form.reportValidity()) return;
+  const args={p_workspace_id:w.id,p_expected_version:w.version,p_confirmation_name:data.get('confirmation_name'),p_reason:data.get('reason'),p_request_id:context.requests[kind]};
+  if (kind==='ownership') Object.assign(args,{p_new_owner_member_id:data.get('member_id'),p_expected_owner_id:w.owner_id,p_confirmation_email:data.get('confirmation_email')});
+  else if (kind==='status') args.p_status=w.status==='suspended'?'active':'suspended';
+  else return;
+  adminBusinessSupportBusy=true;form.querySelector('button[type="submit"]').disabled=true;
+  try {
+    await query('Business support action',supabase.rpc(kind==='ownership'?'admin_business_transfer_owner':'admin_business_set_status',args));
+    if (context.sequence!==adminDetailsSequence || context.userId!==state.session?.user?.id || !$('#adminDetailsDialog').open) return;
+    showToast('Business support action recorded.');
+    await openAdminBusinessSupport(w.id,0);
+  } catch(error) {
+    if (context.sequence===adminDetailsSequence && context.userId===state.session?.user?.id) showToast(error.message);
+  } finally {
+    adminBusinessSupportBusy=false;
+    if (form.isConnected) form.querySelector('button[type="submit"]').disabled=false;
+  }
+}
+
+document.addEventListener('submit',event=>{
+  if (event.target.matches('[data-business-support-form]')) {event.preventDefault();void submitAdminBusinessSupport(event.target);}
+});
+document.addEventListener('click',event=>{
+  const page=event.target.closest('[data-business-support-page]');
+  if (adminBusinessSupport && (page || event.target.closest('[data-business-support-refresh]')) && !adminBusinessSupportBusy)
+    void openAdminBusinessSupport(adminBusinessSupport.snapshot.workspace.id,page?Number(page.dataset.businessSupportPage):adminBusinessSupport.offset);
+});
+
 function showAdminDetails({ eyebrow, title, subtitle = "", body }) {
+  adminDetailsSequence++;
+  adminBusinessSupport=null;
+  $("#adminDetailsBody").classList.remove("admin-business-support");
   $("#adminDetailsEyebrow").textContent = eyebrow;
   $("#adminDetailsDialogTitle").textContent = title;
   $("#adminDetailsSubtitle").textContent = subtitle;
@@ -6182,6 +6263,7 @@ function openAdminWorkspaceDetails(workspaceId) {
   const workspace = state.adminWorkspaces.find((item) => item.id === workspaceId);
   const monitor = adminMonitorForWorkspace(workspaceId);
   if (!workspace && !monitor) return;
+  if ((workspace?.workspace_type || monitor?.workspace_type) === "business") return openAdminBusinessSupport(workspaceId);
   const familyId = workspace?.legacy_family_id || monitor?.family_id;
   const workspaceType = monitor?.workspace_type || workspace?.workspace_type || "personal";
   const owner = state.adminProfiles.find((profile) => profile.id === (workspace?.owner_id || monitor?.owner_id));
@@ -8880,7 +8962,7 @@ document.addEventListener("click", async (event) => {
   if (cashbookArchive) await archiveCashbookAccount(cashbookArchive.dataset.archiveCashbookAccount);
   const cashbookPaymentHistory = event.target.closest("[data-open-cashbook-payment-history]");
   if (cashbookPaymentHistory) openCashbookLinkedPaymentHistory(cashbookPaymentHistory.dataset.openCashbookPaymentHistory);
-  if (event.target.closest("[data-close-admin-details]")) $("#adminDetailsDialog").close();
+  if (event.target.closest("[data-close-admin-details]")) { adminDetailsSequence++;adminBusinessSupport=null;$("#adminDetailsDialog").close(); }
 
   const removeWorkspaceCurrency = event.target.closest("[data-remove-workspace-currency]");
   if (removeWorkspaceCurrency) {
@@ -9534,3 +9616,5 @@ window.setInterval(() => {
 }, PUSH_REFRESH_INTERVAL_MS);
 
 init().catch(handleLoadFailure);
+
+$("#adminDetailsDialog").addEventListener("close",()=>{adminDetailsSequence++;adminBusinessSupport=null;});

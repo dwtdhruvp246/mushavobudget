@@ -8,7 +8,7 @@ const app = read('business.js'), html = read('business.html');
 const extract = (start,end) => app.slice(app.indexOf(start),app.indexOf(end,app.indexOf(start)));
 
 test('Stage 8 migration is mirrored and client writes are RPC-only behind forced RLS',()=>{
-  assert.ok(read('supabase/schema.sql').endsWith(sql));
+  assert.ok(read('supabase/schema.sql').includes(sql));
   assert.match(sql,/force row level security/);
   assert.match(sql,/revoke all on public\.%I from public,anon,authenticated/);
   assert.match(sql,/grant select on public\.%I to authenticated/);

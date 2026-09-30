@@ -14,11 +14,11 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="/business.css?v=7" />
+    <link rel="stylesheet" href="/business.css?v=8" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <script src="/config.js?v=27"></script>
-    <script src="/pwa.js?v=63" defer></script>
-    <script type="module" src="/business.js?v=7"></script>
+    <script src="/pwa.js?v=64" defer></script>
+    <script type="module" src="/business.js?v=8"></script>
   </head>
   <body>
     <a class="skip-link" href="#businessMain">Skip to Business content</a>
@@ -124,7 +124,7 @@
         <footer class="sidebar-footer">
           <a href="/app.html#personal/dashboard" data-leave-business>Personal &amp; Family</a>
           <button type="button" data-sign-out>Sign out</button>
-          <small>Version 4.9.23</small>
+          <small>Version 4.9.24</small>
         </footer>
       </aside>
 
@@ -143,7 +143,7 @@
 
         <aside class="stage-banner" aria-label="Business release status">
           <span>Business preview</span>
-          <p>Income, bills, spending approvals and budgets are ready for Business testing. Public subscriptions remain closed during the staged release.</p>
+          <p>Finance, budgets, approvals and reports are ready for Business testing. Public subscriptions remain closed during the staged release.</p>
         </aside>
 
         <section id="businessLock" class="lock-panel hidden" aria-live="polite">
@@ -288,8 +288,29 @@
           </section>
 
           <section class="business-panel hidden" data-business-panel="reports">
-            <div class="section-heading"><div><p class="eyebrow">Analysis</p><h2>Reports</h2><p>Understand actual income, paid spending, and committed spending without duplicate counting.</p></div><button class="button secondary" type="button" disabled>Export report</button></div>
-            <div class="report-preview"><article class="content-card"><h3>Recorded activity · all dates</h3><dl class="detail-list"><div><dt>Income received</dt><dd id="businessReportIncome">—</dd></div><div><dt>Business payments</dt><dd id="businessReportPaid">—</dd></div><div><dt>Approved requests, expenses & bills unpaid</dt><dd id="businessReportCommitted">—</dd></div><div><dt>Claims submitted for review</dt><dd id="businessReportPending">—</dd></div></dl><small>Actuals exclude voided income and unreimbursed employee costs. Linked requests, claims and bills count once. Use Activity filters for date-specific totals.</small></article><article class="content-card"><h3>Reporting currency</h3><p id="businessReportingCurrency" class="large-value">—</p><small>Historical conversions are locked with each financial record. These are recorded totals, not an account balance or profit report.</small></article></div>
+            <div class="section-heading"><div><p class="eyebrow">Analysis</p><h2>Business reports</h2><p>Choose a period and scope. Select any figure to see its exact source records.</p></div><button id="refreshBusinessReports" class="button secondary" type="button">Refresh report</button></div>
+            <p id="businessReportMessage" class="team-message hidden" role="status" aria-live="polite"></p>
+            <div id="businessReportControls">
+              <form id="businessReportFilters" class="content-card report-filters">
+                <label>Period<select id="reportPeriod"><option value="current">Current period</option><option value="previous">Previous period</option><option value="financial_year">Financial year</option><option value="custom">Custom dates</option><option value="all">All dates</option></select></label>
+                <label>From<input id="reportFrom" type="date" /></label><label>Through (inclusive)<input id="reportTo" type="date" /></label>
+                <label>Currency view<select id="reportCurrencyMode"><option value="reporting">Reporting currency</option><option value="original">Original currency</option></select></label>
+                <label>Original currency<select id="reportOriginalCurrency"><option value="">All currencies</option></select></label>
+                <label>Category<select id="reportCategory"><option value="">All categories</option></select></label><label>Organisation tag<select id="reportDimension"><option value="">All tags</option></select></label>
+                <button type="submit" class="button primary">Apply filters</button>
+              </form>
+              <p id="businessReportContext" class="report-context"></p>
+              <div id="businessReportContent" class="hidden">
+                <div id="businessReportMetrics" class="report-metrics"></div><div id="businessReportHealth" class="report-health"></div>
+                <div class="report-section-grid">
+                  <article class="content-card"><div class="card-heading"><div><h3>Spending by category</h3><p>Company payments and unpaid commitments, shown separately.</p></div></div><div id="reportCategoryGroups" class="report-groups"></div></article>
+                  <article class="content-card"><div class="card-heading"><div><h3>Spending by organisation tag</h3><p>Projects, branches, departments and untagged spending.</p></div></div><div id="reportDimensionGroups" class="report-groups"></div></article>
+                </div>
+                <article class="content-card"><div class="card-heading"><div><h3>Budget versus actual</h3><p>Full planned targets with activity inside the selected dates and budget period. Targets are not prorated or added together.</p></div></div><div id="reportBudgetComparisons" class="budget-list"></div></article>
+                <article class="content-card report-export"><div><h3>Export or print</h3><p id="reportExportAccess"></p></div><label>Source records<select id="reportExportSection"><option value="ledger">Actuals and commitments</option><option value="bills">Unpaid supplier bills</option><option value="employee_claims">Employee claim register</option><option value="missing">Missing receipts and proofs</option></select></label><div class="dialog-actions"><button id="exportBusinessReportCSV" class="button secondary" type="button">Download CSV</button><button id="printBusinessReport" class="button primary" type="button">Print / Save PDF</button></div></article>
+              </div>
+              <p class="report-method">Original currencies are never added together. Reporting values use stored conversion snapshots in <strong id="businessReportingCurrency">—</strong>. Actuals use income and company-payment dates in the workspace timezone. Unpaid commitments use expense, planned-purchase or bill-due dates and show current balances. Claim-register values include every status and are separate from company payments. Missing-document checks cover expense receipts, supplier invoices and individual payment proofs. These are recorded figures, not profit or a bank balance.</p>
+            </div>
           </section>
 
           <section class="business-panel hidden" data-business-panel="team">
@@ -297,9 +318,9 @@
             <div class="seat-grid" aria-label="Business seat use"><article><span>Seat limit</span><strong id="businessSeatLimit">—</strong></article><article><span>Active members</span><strong id="businessActiveSeats">—</strong></article><article><span>Pending invites</span><strong id="businessPendingSeats">—</strong></article><article><span>Available</span><strong id="businessAvailableSeats">—</strong></article></div>
             <p id="businessTeamMessage" class="team-message hidden" role="status" aria-live="polite"></p>
             <div class="team-columns"><article class="content-card"><div class="card-heading"><div><h3>Active members</h3><p id="businessTeamCount">0 people</p></div></div><div id="businessTeamList" class="team-list"></div></article><article id="businessPendingCard" class="content-card hidden"><div class="card-heading"><div><h3>Invitations</h3><p>Pending invitations reserve a seat.</p></div></div><div id="businessInvitationList" class="team-list"></div></article></div>
-            <article id="businessWorkflowPermissions" class="content-card hidden"><div class="card-heading"><div><h3>Approval &amp; budget permissions</h3><p>Owner only. Role changes apply to current and future members; individual overrides and assigned scopes still apply.</p></div></div>
-              <form id="businessWorkflowPermissionForm" class="claim-fields"><label>Role<select id="workflowPermissionRole"><option value="business_admin">Business Admin</option><option value="finance_manager">Finance Manager</option><option value="team_manager">Team Manager</option><option value="staff">Staff</option><option value="contributor">Contributor</option><option value="viewer">Viewer / Auditor</option></select></label><label>Permission<select id="workflowPermissionCode"><option value="approvals.view">View scoped requests</option><option value="approvals.review">Review scoped requests and claims</option><option value="budgets.view">View permitted budgets</option><option value="budgets.manage">Manage permitted budgets</option></select></label><label>Role setting<select id="workflowPermissionEnabled"><option value="true">Allowed</option><option value="false">Not allowed</option></select></label><button type="submit" class="button primary">Save role permission</button></form>
-              <p>Budget management also needs budget-view access. Staff and Team Managers need an assigned organisation tag to view budget figures. Self-approval remains blocked.</p><p id="workflowPermissionMessage" class="team-message hidden" role="status"></p>
+            <article id="businessWorkflowPermissions" class="content-card hidden"><div class="card-heading"><div><h3>Approval, budget &amp; report permissions</h3><p>Owner only. Role changes apply to current and future members; individual overrides and assigned scopes still apply.</p></div></div>
+              <form id="businessWorkflowPermissionForm" class="claim-fields"><label>Role<select id="workflowPermissionRole"><option value="business_admin">Business Admin</option><option value="finance_manager">Finance Manager</option><option value="team_manager">Team Manager</option><option value="staff">Staff</option><option value="contributor">Contributor</option><option value="viewer">Viewer / Auditor</option></select></label><label>Permission<select id="workflowPermissionCode"><option value="approvals.view">View scoped requests</option><option value="approvals.review">Review scoped requests and claims</option><option value="budgets.view">View permitted budgets</option><option value="budgets.manage">Manage permitted budgets</option><option value="reports.view">View permitted reports</option><option value="reports.export">Export and print permitted reports</option></select></label><label>Role setting<select id="workflowPermissionEnabled"><option value="true">Allowed</option><option value="false">Not allowed</option></select></label><button type="submit" class="button primary">Save role permission</button></form>
+              <p>Budget management also needs budget-view access. Export and print also need report-view access. Non-finance managers and auditors need assigned tags for scope totals; Staff report access covers only their own records. Self-approval remains blocked.</p><p id="workflowPermissionMessage" class="team-message hidden" role="status"></p>
             </article>
           </section>
 
@@ -401,6 +422,17 @@
       </div>
     </dialog>
 
+    <dialog id="businessReportSourcesDialog" class="business-dialog claim-detail-dialog report-sources-dialog"><div class="claim-detail-content">
+      <div class="dialog-heading"><div><p class="eyebrow">Report source records</p><h2 id="reportSourcesTitle"></h2><p id="reportSourcesContext"></p></div><button type="button" class="dialog-close" data-close-report-sources aria-label="Close">×</button></div>
+      <p id="reportSourcesBudget" class="report-context hidden"></p><dl id="reportSourcesTotals" class="detail-list"></dl>
+      <p id="reportSourcesMessage" class="team-message hidden" role="status"></p><div id="reportSourceList" class="claim-list"></div>
+      <div class="activity-pagination"><button id="reportSourcePrevious" class="button secondary" type="button">Previous</button><span id="reportSourcePage"></span><button id="reportSourceNext" class="button secondary" type="button">Next</button></div>
+      <div class="dialog-actions"><button id="exportReportSourcesCSV" class="button secondary" type="button">Export these records</button><button id="printReportSources" class="button primary" type="button">Print / Save PDF</button></div>
+    </div></dialog>
+    <dialog id="businessReportRecordDialog" class="business-dialog claim-detail-dialog"><div class="claim-detail-content">
+      <div class="dialog-heading"><div><p class="eyebrow">Exact report record</p><h2 id="reportRecordTitle"></h2></div><button type="button" class="dialog-close" data-close-report-record aria-label="Close">×</button></div>
+      <dl id="reportRecordFields" class="detail-list"></dl><p id="reportRecordMessage" class="team-message hidden" role="status"></p><button id="openReportOriginal" class="button secondary hidden" type="button">Open original record</button>
+    </div></dialog>
     <dialog id="businessRequestDialog" class="business-dialog claim-detail-dialog">
       <form id="businessRequestForm" class="claim-form"><div class="dialog-heading"><div><p class="eyebrow">Before purchase</p><h2 id="businessRequestTitle">Spending request</h2><p>Explain the planned purchase. Save a draft, then submit for someone else to review.</p></div><button type="button" class="dialog-close" data-close-request aria-label="Close">×</button></div>
         <div class="claim-fields"><label>Title<input id="requestTitle" minlength="2" maxlength="160" required /></label><label>Amount<input id="requestAmount" type="number" step="0.0001" min="0.01" required /></label><label>Currency<select id="requestCurrency" required></select></label><label>Planned spending date<input id="requestDate" type="date" required /></label><label>Expense category<select id="requestCategory" required></select></label><label>Project, branch or department<select id="requestDimension"></select></label><label class="field-wide">Purpose / justification<textarea id="requestDescription" minlength="2" maxlength="2000" rows="3" required></textarea></label></div>

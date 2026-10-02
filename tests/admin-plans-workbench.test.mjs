@@ -11,9 +11,11 @@ test('Business validation matches required billing fields and retains zero versu
  const bad=validatePlanDraft({definition,business:{...business,included_seats:null,payment_instructions:'',monthly_seat:null},price:null},currencies);
  assert.match(bad.bseats,/included seats/);assert.match(bad.instructions,/instructions/);assert.match(bad.monthly_base,/both/);
 });
-test('unsupported currencies, nonfinite prices and public Business launch are rejected locally',()=>{
+test('unsupported currencies and nonfinite Business prices are rejected locally',()=>{
  const bad=validatePlanDraft({definition:{...definition,available_for_purchase:true},business:{...business,currency:'XYZ',monthly_base:Infinity},price:null},currencies);
- assert(bad.purchasable&&bad.bcurrency&&bad.monthly_base);
+ assert(bad.bcurrency&&bad.monthly_base);
+ assert.deepEqual(validatePlanDraft({definition:{...definition,available_for_purchase:true},business,price:null},currencies),{});
+ assert(validatePlanDraft({definition:{...definition,available_for_purchase:true},business:{...business,pilot_enabled:false},price:null},currencies).pilot);
 });
 test('Free limits and existing workspace types remain protected',()=>{
  const bad=validatePlanDraft({definition:{...definition,code:'free',workspace_type:'personal',active_payment_limit:null},business:null,price:null},currencies,{plan:{workspace_type:'household'}});
@@ -40,7 +42,9 @@ test('consolidated schema contains the exact workbench deployment',async()=>{
  const [schema,migration]=await Promise.all([readFile(new URL('../supabase/schema.sql',import.meta.url),'utf8'),readFile(new URL('../supabase/migrations/20261001190000_admin_plans_workbench.sql',import.meta.url),'utf8')]);
  assert(schema.includes(migration));
  const repair=await readFile(new URL('../supabase/migrations/20261002042500_reconcile_business_plan_seats.sql',import.meta.url),'utf8');
- assert(schema.endsWith(repair));
+ assert(schema.includes(repair));
+ const release=await readFile(new URL('../supabase/migrations/20261002060000_business_public_availability.sql',import.meta.url),'utf8');
+ assert(schema.endsWith(release));
 });
 test('customer cards and renewal price selection exclude future and previous versions',async()=>{
  const source=await readFile(new URL('../app.js',import.meta.url),'utf8');

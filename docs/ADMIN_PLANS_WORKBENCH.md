@@ -15,13 +15,13 @@ screens stack controls without horizontal scrolling.
 | Features | `plan_features` | Customer plan comparison; `finance.analytics` also controls Personal/Family finance access |
 | Active payment limit | `plan_limits` | Personal payment access rules; Free remains five active payments |
 | Included people | `plan_limits` | Catalogue and new subscription quotes; purchased workspace capacity remains recorded separately |
-| Pilot cycles, currency, base/seat prices, instructions and included seats | `business_billing_settings` | Existing Business Owner billing page and its protected quote/payment workflow |
+| Business cycles, currency, base/seat prices, instructions and included seats | `business_billing_settings` | Existing Business Owner billing page and its protected quote/payment workflow |
 | Public visibility / purchase availability | `plans` plus existing release gates | Public catalogue and purchase controls |
 | Price cancellation / audit history | Price versions and `subscription_audit_events` | Selected plan → History |
 
 Other feature flags describe available product tools. They do not create new
 authorization controls for every module. Business operating permissions remain
-under Team. Public Business purchase and workspace creation remain closed.
+under Team. Business public availability is controlled by the published checkbox once the [public availability migration](BUSINESS_PUBLIC_AVAILABILITY.md) is applied; approval still protects workspace creation.
 
 The editor uses four role-checked RPCs: snapshot, atomic save, future-price
 cancellation and calculation preview. Super Admin and Admin Staff can use them;

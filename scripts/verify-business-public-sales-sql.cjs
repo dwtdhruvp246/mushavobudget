@@ -1,0 +1,157 @@
+// Disposable PostgreSQL integration checks; never connects to the live Supabase project.
+const {PGlite}=require(process.env.MUSHAVO_PGLITE_MODULE || '@electric-sql/pglite');
+const {readFileSync}=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const root=path.join(__dirname,'..'),schema=readFileSync(path.join(root,'supabase/schema.sql'),'utf8');
+const migration=readFileSync(path.join(root,'supabase/migrations/20260930090000_business_stage_10_billing.sql'),'utf8');
+const stage4=readFileSync(path.join(root,'supabase/migrations/20260928170000_business_stage_4_team.sql'),'utf8');
+function table(name){const start=schema.indexOf('create table if not exists public.'+name+' (');return schema.slice(start,schema.indexOf('\n);',start)+3);}
+function fn(sql,name){const found=[...sql.matchAll(new RegExp('create(?: or replace)? function public\\.'+name+'\\(','g'))].at(-1);assert.ok(found,name);return sql.slice(found.index,sql.indexOf('$$;',found.index)+3);}
+const id=n=>`00000000-0000-0000-0000-${String(n).padStart(12,'0')}`,ws=id(1),other=id(2),personal=id(3),owner=id(10),admin=id(11),staff=id(12),reviewer=id(13),outsider=id(14),plan=id(20);
+(async()=>{const db=new PGlite();try{
+  await db.exec("set timezone='UTC';");
+  await db.exec(`create role authenticated;create role anon;create schema auth;create schema storage;
+    create table auth.users(id uuid primary key);
+    create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('fixture.uid',true),'')::uuid$$;
+    create table profiles(id uuid primary key,account_status text default 'active',full_name text,email text,admin_role text);
+    create function auth.jwt() returns jsonb language sql stable security definer as $$select jsonb_build_object('email',(select email from profiles where id=auth.uid()))$$;
+    create table budget_workspaces(id uuid primary key,owner_id uuid,workspace_type text,status text default 'active',name text);
+    create table workspace_members(id uuid primary key default gen_random_uuid(),workspace_id uuid,user_id uuid,role text,status text default 'active',joined_at timestamptz default now());
+    create table workspace_invitations(id uuid primary key default gen_random_uuid(),workspace_id uuid,invitee_email text,invitee_user_id uuid,invited_by uuid,role text,status text default 'pending',expires_at timestamptz default now()+interval '7 days',version integer default 1,
+      created_at timestamptz default now(),last_sent_at timestamptz,delivery_status text default 'pending',accepted_at timestamptz,accepted_by uuid,responded_at timestamptz,updated_at timestamptz default now());
+    create table business_member_scopes(workspace_id uuid,member_id uuid,dimension_id uuid);
+    create table business_invitation_scopes(invitation_id uuid,workspace_id uuid,dimension_id uuid);
+    create table business_dimensions(id uuid primary key,workspace_id uuid,status text);
+    create table business_team_operation_permits(transaction_id bigint,workspace_id uuid,actor_id uuid,operation text,primary key(transaction_id,workspace_id,actor_id,operation));
+    create table business_invitation_audit_events(id uuid default gen_random_uuid(),workspace_id uuid,invitation_id uuid,action text,actor_id uuid,safe_details jsonb);
+    create table notifications(id uuid default gen_random_uuid(),user_id uuid,created_by uuid,type text,title text,body text,url text);
+    create table supported_currencies(code text primary key,is_active boolean);insert into supported_currencies values('USD',true),('ZAR',true);
+    create table storage.objects(id uuid primary key default gen_random_uuid(),bucket_id text,name text,metadata jsonb);alter table storage.objects enable row level security;
+    create policy fixture_storage on storage.objects for all to authenticated using(true) with check(true);grant all on storage.objects to authenticated;grant usage on schema storage to authenticated;
+    create function my_account_suspended() returns boolean language sql stable security definer as $$select coalesce((select account_status<>'active' from profiles where id=auth.uid()),false)$$;
+    create function is_platform_staff(text[]) returns boolean language sql stable security definer as $$select exists(select 1 from profiles where id=auth.uid() and admin_role=any($1) and account_status='active')$$;
+    create function is_business_workspace_member(uuid) returns boolean language sql stable security definer as $$select not my_account_suspended() and exists(select 1 from workspace_members m join budget_workspaces w on w.id=m.workspace_id where m.workspace_id=$1 and m.user_id=auth.uid() and m.status='active' and w.status='active' and w.workspace_type='business')$$;
+    create function business_claims_active(uuid) returns boolean language sql stable security definer as $$select is_business_workspace_member($1) and exists(select 1 from workspace_subscriptions where workspace_id=$1 and status='active' and paid_through_at>now())$$;
+  `.replace(/    create function business_claims_active[\s\S]*$/,''));
+  for(const name of ['plans','plan_limits','workspace_subscriptions','subscription_entitlement_history','subscription_invoices','subscription_renewal_requests','subscription_payments','subscription_payment_proofs','subscription_payment_reviews','subscription_audit_events']){
+    await db.exec(table(name).replace('check (amount > 0)','check (amount >= 0)'));
+  }
+  await db.exec(`alter table workspace_subscriptions add column member_limit integer default 10,add column billing_anchor_at timestamptz;
+    alter table subscription_renewal_requests add column provision_workspace_on_approval boolean default false;
+    create table admin_subscription_grants(id uuid default gen_random_uuid(),workspace_id uuid,plan_id uuid default '00000000-0000-0000-0000-000000000020',grant_kind text);
+    create function business_claims_active(uuid) returns boolean language sql stable security definer as $$select is_business_workspace_member($1) and exists(select 1 from workspace_subscriptions where workspace_id=$1 and status='active' and paid_through_at>now())$$;
+    create function business_has_permission(uuid,text) returns boolean language sql stable as $$select is_business_workspace_member($1) and exists(select 1 from workspace_members where workspace_id=$1 and user_id=auth.uid() and role='business_owner' and status='active')$$;
+    create function business_record_audit_event(uuid,text,text,uuid,jsonb default '{}',jsonb default '{}',text default null,uuid default null,uuid default null) returns uuid language sql as $$select gen_random_uuid()$$;
+    create function review_subscription_payment(uuid,text,text default null) returns text language sql security definer as $$select 'legacy_'||$2$$;
+    create function product_customer_purchase_enabled(text) returns boolean language sql as $$select false$$;
+    create function product_customer_workspace_creation_enabled(text) returns boolean language sql as $$select false$$;
+  `);
+  await db.exec(fn(stage4,'business_team_permit'));await db.exec(fn(stage4,'business_team_can_manage'));await db.exec(fn(stage4,'expire_business_invitations'));
+  for(const name of ['subscription_invoices','subscription_renewal_requests','subscription_payments','subscription_entitlement_history','subscription_audit_events']){
+    await db.exec(`alter table ${name} enable row level security;create policy fixture_all on ${name} for all to authenticated using(true) with check(true);grant all on ${name} to authenticated;`);
+  }
+  await db.exec(`insert into auth.users values('${owner}'),('${admin}'),('${staff}'),('${reviewer}'),('${outsider}');
+    insert into profiles values('${owner}','active','Owner','owner@example.com',null),('${admin}','active','Admin','admin@example.com','super_admin'),('${staff}','active','Staff','staff@example.com',null),('${reviewer}','active','Reviewer','reviewer@example.com','finance_staff'),('${outsider}','active','Other owner','other@example.com',null);
+    insert into budget_workspaces values('${ws}','${owner}','business','active','Test Company'),('${other}','${outsider}','business','active','Other Company'),('${personal}','${owner}','personal','active','Personal');
+    insert into workspace_members(workspace_id,user_id,role) values('${ws}','${owner}','business_owner'),('${ws}','${staff}','staff'),('${other}','${outsider}','business_owner');
+    insert into plans(id,code,display_name,workspace_type) values('${plan}','business','Business','business'),('${id(21)}','personal','Personal','personal');
+    insert into workspace_subscriptions(workspace_id,plan_id,billing_period,entitlement_start_at,billing_anchor_at,paid_through_at,member_limit) values
+      ('${ws}','${plan}','monthly',now()-interval '10 days',now()-interval '10 days',now()+interval '20 days',4),
+      ('${other}','${plan}','annual',now()-interval '20 days',now()-interval '20 days',now()+interval '345 days',2),
+      ('${personal}','${id(21)}','monthly',now()-interval '10 days',now()-interval '10 days',now()+interval '20 days',1);
+    grant select on budget_workspaces to authenticated;grant usage on schema auth to authenticated;
+  `);
+  await db.exec(migration);
+  // Production triggers already exist; install their actual replacements in the fixture.
+  await db.exec(`create trigger launch_request before insert or update of requested_plan_id on subscription_renewal_requests for each row execute function enforce_business_subscription_request_launch_control();
+    create trigger launch_payment before update of status on subscription_payments for each row execute function enforce_business_payment_approval_launch_control();
+    create trigger member_limit after update of status on subscription_payments for each row execute function apply_approved_subscription_member_limit();`);
+
+  const launch=readFileSync(path.join(root,'supabase/migrations/20261002060000_business_public_availability.sql'),'utf8');
+  await db.exec(`alter table plans add column marketing_summary text default '',add column is_public boolean default true,add column is_featured boolean default false,add column available_for_purchase boolean default false,add column cta_label text default 'Coming soon';
+    alter table subscription_renewal_requests add column requested_workspace_name text,add column provisioned_workspace_id uuid;
+    create table product_release_controls(product_code text primary key,release_stage text,customer_purchase_enabled boolean,customer_workspace_creation_enabled boolean,updated_at timestamptz default now());
+    insert into product_release_controls values('business','stage_12',false,false,now());
+    create or replace function product_customer_purchase_enabled(text) returns boolean language sql security definer as $$select customer_purchase_enabled from product_release_controls where product_code=$1$$;
+    create or replace function product_customer_workspace_creation_enabled(text) returns boolean language sql security definer as $$select customer_workspace_creation_enabled from product_release_controls where product_code=$1$$;
+    create function business_admin_test_permit(uuid,uuid) returns boolean language sql as $$select false$$;
+  `);
+  for(const name of ['plan_prices','plan_features','workspace_settings'])await db.exec(table(name));
+  await db.exec(`alter table workspace_settings add column default_payment_currency text,add column enabled_currencies text[],add column reporting_currency text,add column conversion_enabled boolean;
+    insert into workspace_settings(workspace_id,base_currency,locale,timezone) values('${personal}','USD','en','Africa/Harare');
+    create table business_profiles(workspace_id uuid primary key,trading_name text,created_by uuid);
+    create table business_role_permissions(workspace_id uuid,role text,permission_code text,enabled boolean,granted_by uuid,primary key(workspace_id,role,permission_code));
+    create table business_categories(workspace_id uuid,category_type text,name text,code text,is_system_default boolean,created_by uuid);
+    create table business_audit_events(workspace_id uuid,action text,target_id uuid);
+  `);
+  for(const name of ['seed_business_workspace_foundation','initialize_business_workspace_foundation','get_public_plan_catalogue','save_plan_definition'])await db.exec(fn(schema,name));
+  await db.exec(`create trigger business_foundation after insert or update of workspace_type on budget_workspaces for each row execute function initialize_business_workspace_foundation();`);
+  await db.exec(`create function business_support_permitted(uuid,text) returns boolean language sql as $$select false$$;alter table business_role_permissions add column updated_at timestamptz default now();create table business_change_signals(workspace_id uuid primary key,data_version bigint default 1,access_version bigint default 1,updated_at timestamptz default now());`);
+  for(const name of ['guard_business_owner_membership','enforce_business_member_role_compatibility','seed_business_stage_4_team_permissions','align_workspace_currency_defaults','emit_business_change_signal','signal_business_row_change'])await db.exec(fn(schema,name));
+  await db.exec(`create trigger guard_owner before insert or update or delete on workspace_members for each row execute function guard_business_owner_membership();create trigger guard_role before insert or update of role,workspace_id on workspace_members for each row execute function enforce_business_member_role_compatibility();create trigger seed_team after insert on business_profiles for each row execute function seed_business_stage_4_team_permissions();create trigger currency_defaults before insert on workspace_settings for each row execute function align_workspace_currency_defaults();create trigger workspace_signal after insert or update or delete on budget_workspaces for each row execute function signal_business_row_change('access');`);
+  await db.exec(launch);
+  await db.exec(`create trigger launch_workspace before insert or update of workspace_type on budget_workspaces for each row execute function enforce_business_workspace_launch_control();
+    create trigger launch_members before insert or update on workspace_members for each row execute function enforce_business_member_provision_launch_control();
+    create trigger launch_plan before insert or update on plans for each row execute function enforce_business_plan_launch_control();`);
+  const workbench=readFileSync(path.join(root,'supabase/migrations/20261001190000_admin_plans_workbench.sql'),'utf8');
+  for(const name of ['admin_plan_workbench_snapshot','admin_save_plan_workbench'])await db.exec(fn(workbench,name));
+  const asUser=uid=>db.query("select set_config('fixture.uid',$1,false)",[uid]);
+  const rpc=async(name,args=[])=> (await db.query(`select to_jsonb(public.${name}(${args.map((_,i)=>'$'+(i+1)).join(',')})) as result`,args)).rows[0].result;
+  const denied=(name,args,error)=>assert.rejects(rpc(name,args),new RegExp(error));
+  const snap=()=>rpc('admin_plan_workbench_snapshot',[plan]);
+  const setAvailable=async available=>{const s=await snap();const d={code:s.plan.code,display_name:s.plan.display_name,description:s.plan.description,marketing_summary:s.plan.marketing_summary,workspace_type:'business',sort_order:0,included_member_seats:s.business.included_seats,is_active:true,is_public:true,is_featured:false,available_for_purchase:available,cta_label:'Coming soon',active_payment_limit:null,feature_codes:[]};return rpc('admin_save_plan_workbench',[plan,s.edit_token,d,null,null]);};
+  const catalogue=async()=> (await db.query("select * from get_public_plan_catalogue('USD')")).rows.find(x=>x.plan_id===plan);
+  const request=(n=100,period='annual',amount=150,version=2,extra=[])=>rpc('submit_business_plan_request',[personal,'Test New Company',3,'business',period,'USD',amount,version,'Bank transfer','2026-09-30','PAY-'+n,'Notes',... (extra.length?extra:[null,null,null,null]),id(n)]);
+  await asUser(owner);assert.deepEqual(await rpc('public_business_checkout_terms'),[]);assert.equal((await catalogue()).available_for_purchase,false);assert.deepEqual((await catalogue()).prices,[]);
+  await denied('submit_business_plan_request',[personal,'New Co',3,'business','annual','USD',150,1,'Bank','2026-09-30','REF'],'BUSINESS_COMING_SOON');
+  await asUser(admin);await assert.rejects(setAvailable(true),/BUSINESS_PUBLIC_PRICING_REQUIRED/);assert.equal((await snap()).plan.available_for_purchase,false);
+  await rpc('save_business_billing_settings',[plan,1,true,2,'USD',10,100,5,50,'Pay by bank transfer. Include the invoice reference.']);
+  await setAvailable(true);assert.equal((await snap()).plan.cta_label,'Choose plan');assert.equal((await catalogue()).prices.length,2);assert.equal((await catalogue()).prices.find(p=>p.billing_period==='annual').extra_member_amount,50);
+  await assert.rejects(db.query('update business_billing_settings set annual_seat=null where plan_id=$1',[plan]),/BUSINESS_PUBLIC_PRICING_REQUIRED/);
+  await asUser(owner);assert.equal((await rpc('public_business_checkout_terms'))[0].settings_version,2);
+  await denied('submit_business_plan_request',[personal,'New Co',3,'business','annual','USD',700,2,'Bank','2026-09-30','REF'],'PAYMENT_AMOUNT_DOES_NOT_MATCH_INVOICE');
+  await denied('submit_business_plan_request',[personal,'New Co',3,'business','annual','USD',150,1,'Bank','2026-09-30','REF'],'BUSINESS_BILLING_SETTINGS_CHANGED');
+  await denied('submit_business_plan_request',[personal,'New Co',101,'business','annual','USD',150,2,'Bank','2026-09-30','REF'],'INVALID_BUSINESS_MEMBER_COUNT');
+  await asUser(outsider);await denied('submit_business_plan_request',[personal,'New Co',3,'business','annual','USD',150,2,'Bank','2026-09-30','REF'],'PERSONAL_WORKSPACE_OWNER_REQUIRED');
+  await asUser(owner);const proofPath=`workspaces/${personal}/${owner}/purchase.pdf`;
+  await assert.rejects(request(100,'annual',150,2,[proofPath,'purchase.pdf','application/pdf',30]),/SUBSCRIPTION_PROOF_NOT_FOUND/);
+  await assert.rejects(request(100,'annual',150,2,[`workspaces/${other}/${owner}/purchase.pdf`,'purchase.pdf','application/pdf',30]),/INVALID_SUBSCRIPTION_PROOF_PATH/);
+  await db.query('insert into storage.objects(bucket_id,name,metadata) values($1,$2,$3)',['subscription-proofs',proofPath,{mimetype:'application/pdf',size:30}]);
+  assert.equal(await request(100,'annual',150,2,[proofPath,'purchase.pdf','application/pdf',30]),id(100));assert.equal(await request(),id(100));
+  const count=async()=> (await db.query("select count(*)::integer n from budget_workspaces where workspace_type='business'")).rows[0].n;
+  assert.equal(await count(),2);await assert.rejects(request(101),/BUSINESS_PLAN_REQUEST_ALREADY_PENDING/);
+  await asUser(staff);await denied('review_subscription_payment',[id(100),'approved'],'FINANCE_REVIEW_ACCESS_REQUIRED');
+  await db.query("update profiles set admin_role='super_admin' where id=$1",[owner]);await asUser(owner);await denied('review_subscription_payment',[id(100),'approved'],'BUSINESS_BILLING_SELF_REVIEW_FORBIDDEN');await db.query('update profiles set admin_role=null where id=$1',[owner]);
+  await asUser(admin);const beforeExisting=(await db.query('select * from workspace_subscriptions where workspace_id=$1',[ws])).rows[0];
+  await setAvailable(false);assert.deepEqual((await catalogue()).prices,[]);assert.equal((await catalogue()).available_for_purchase,false);assert.deepEqual((await db.query('select * from workspace_subscriptions where workspace_id=$1',[ws])).rows[0],beforeExisting);
+  await rpc('save_business_billing_settings',[plan,2,true,2,'USD',12,120,6,60,'Changed instructions. Accepted invoices keep their prices.']);
+  await asUser(owner);assert.equal(await request(),id(100),'retry works even after prices change and sales close');await assert.rejects(request(101,'annual',180,3),/BUSINESS_PLAN_REQUEST_ALREADY_PENDING/);
+  await db.query("update profiles set account_status='suspended' where id=$1",[owner]);await asUser(reviewer);await denied('review_subscription_payment',[id(100),'approved'],'BUSINESS_BILLING_SUSPENDED');assert.equal(await count(),2);await db.query("update profiles set account_status='active' where id=$1",[owner]);
+  await db.query("update budget_workspaces set status='suspended' where id=$1",[personal]);await denied('review_subscription_payment',[id(100),'approved'],'BUSINESS_BILLING_SUSPENDED');await db.query("update budget_workspaces set status='active' where id=$1",[personal]);
+  assert.equal(await rpc('review_subscription_payment',[id(100),'approved']),'approved');assert.equal(await rpc('review_subscription_payment',[id(100),'approved']),'already_reviewed');assert.equal(await count(),3);
+  const approved=(await db.query('select * from business_public_purchases where payment_id=$1',[id(100)])).rows[0],created=approved.provisioned_workspace_id;
+  const subscription=(await db.query('select * from workspace_subscriptions where workspace_id=$1',[created])).rows[0];assert.equal(subscription.member_limit,3);assert.equal(subscription.billing_period,'annual');assert.equal(subscription.billing_anchor_at.getTime(),subscription.entitlement_start_at.getTime());
+  assert.ok(subscription.paid_through_at.getTime()-subscription.entitlement_start_at.getTime()>=365*86400000);
+  assert.equal((await db.query("select role from workspace_members where workspace_id=$1 and user_id=$2",[created,owner])).rows[0].role,'business_owner');
+  assert.equal((await db.query('select trading_name from business_profiles where workspace_id=$1',[created])).rows[0].trading_name,'Test New Company');assert.equal((await db.query('select count(*)::integer n from business_categories where workspace_id=$1',[created])).rows[0].n,10);
+  for(const name of ['subscription_payments','subscription_invoices','subscription_renewal_requests'])assert.equal((await db.query(`select workspace_id from ${name} where workspace_id=$1`,[created])).rows.length,1);
+  assert.equal((await db.query('select base_currency from workspace_settings where workspace_id=$1',[created])).rows[0].base_currency,'USD');
+  await asUser(owner);const history=(await rpc('business_billing_snapshot',[created])).history;assert.equal(history[0].kind,'purchase');assert.equal(Number(history[0].amount),150);assert.equal(history[0].proofs[0].path,proofPath);assert.ok(history[0].receipt_number.startsWith('MBR-B-'));
+  await assert.rejects(request(101,'annual',180,3),/BUSINESS_COMING_SOON/);
+  const quote=await rpc('business_subscription_quote',[created,'extra_seats','annual',1]);assert.ok(Number(quote.amount)>0,'existing subscribers can still quote while new sales are closed');
+  const privatePayment=await rpc('submit_business_subscription_payment',[created,quote.id,id(300),'Bank transfer','2026-09-30','PRIVATE-RENEWAL']);await asUser(reviewer);assert.equal(await rpc('review_subscription_payment',[privatePayment,'approved']),'approved');await asUser(owner);
+  await assert.rejects(db.query("insert into budget_workspaces values($1,$2,'business','active','Bypass')",[id(900),owner]),/BUSINESS_SUBSCRIPTION_APPROVAL_REQUIRED/);
+  await asUser(admin);await setAvailable(true);await asUser(owner);assert.equal(await request(101,'monthly',18,3),id(101));await asUser(reviewer);assert.equal(await rpc('review_subscription_payment',[id(101),'rejected','Payment not received']),'rejected');assert.equal(await count(),3);
+  await asUser(owner);assert.equal(await request(102,'monthly',18,3),id(102));await asUser(reviewer);await rpc('review_subscription_payment',[id(102),'approved']);assert.equal(await count(),4);
+  const monthly=(await db.query("select s.* from workspace_subscriptions s join business_public_purchases p on p.provisioned_workspace_id=s.workspace_id where p.payment_id=$1",[id(102)])).rows[0];assert.equal(monthly.billing_period,'monthly');assert.equal(monthly.member_limit,3);assert.ok(monthly.paid_through_at-monthly.entitlement_start_at>=28*86400000);
+  assert.equal((await db.query('select count(*)::integer n from business_public_provision_permits')).rows[0].n,0);
+  await db.exec('set role authenticated');for(const name of ['business_public_purchases','business_public_provision_permits'])await assert.rejects(db.query(`select * from ${name}`),/permission denied/);
+  await denied('business_public_provision_permit',[created,owner],'permission denied');await denied('review_subscription_payment_before_business_public',[id(100),'approved'],'permission denied');await db.exec('reset role');
+  await assert.rejects(db.query("insert into workspace_members(workspace_id,user_id,role) values($1,$2,'business_owner')",[created,owner]),/BUSINESS_OWNERSHIP_PROCEDURE_REQUIRED/);
+  await db.query("insert into subscription_invoices(id,workspace_id,invoice_number,plan_code,plan_name,billing_period,currency,base_amount,total_amount,created_by) values($1,$2,'P-1','personal','Personal','monthly','USD',10,10,$3)",[id(200),personal,owner]);
+  await db.query('insert into subscription_renewal_requests(id,workspace_id,invoice_id,requested_plan_id,requested_by) values($1,$2,$3,$4,$5)',[id(201),personal,id(200),id(21),owner]);
+  await db.query("insert into subscription_payments(id,workspace_id,renewal_request_id,submitted_by,amount,currency,payment_method,payment_date,reference_number) values($1,$2,$3,$4,10,'USD','Bank',current_date,'P-1')",[id(202),personal,id(201),owner]);
+  await asUser(reviewer);assert.equal(await rpc('review_subscription_payment',[id(202),'approved']),'legacy_approved');
+  const diagnostic=(await db.query(readFileSync(path.join(root,'supabase/diagnostics/business_public_availability_diagnostic.sql'),'utf8'))).rows;assert.equal(diagnostic.length,25);for(const row of diagnostic)assert.equal(row.result,'PASS',row.check_name);
+  console.log('PASS all 25 public availability diagnostic checks.');
+  console.log('PASS: Business availability toggles actual public catalogue, rejects incomplete config, uses canonical monthly/annual rates, protected idempotent purchase, verified proofs, finance review, rollback on suspension, approved provisioning/foundation/receipt, closure after submission, existing renewals and private launch guards.');
+}finally{await db.close();}})().catch(error=>{console.error(error.message,error.detail || '',error.hint || '');process.exitCode=1;});

@@ -96,7 +96,7 @@ test("reopening saved setup shows the actual stored base currency", () => {
   const start = script.indexOf("function renderBusinessSetup()");
   const end = script.indexOf("function showSetupStep(", start);
   const nodes = Object.fromEntries(
-    ["setupBusinessName", "setupTimezone", "setupPeriodDay", "setupFinancialMonth",
+    ["brandingBusinessName", "setupBusinessName", "setupTimezone", "setupPeriodDay", "setupFinancialMonth",
       "setupDraftKind", "setupDraftDescription", "setupDraftAmount", "setupDraftDate",
       "setupDraftDue", "setupBaseCurrency", "editBusinessSetup"].map((id) => [
       `#${id}`, { value: "USD", classList: { toggle() {} } }
@@ -113,6 +113,7 @@ test("reopening saved setup shows the actual stored base currency", () => {
     chosenCurrencies: new Set(),
     renderCurrencyChoices() {},
     renderBaseCurrencyChoice() { nodes["#setupBaseCurrency"].value = "USD"; },
+    renderBusinessBranding() {},
     renderSetupLists() {},
     renderDraftSelectors() {},
     renderSetupDraft() {},

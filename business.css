@@ -295,13 +295,6 @@ dialog::backdrop { background: rgba(7, 24, 29, .58); backdrop-filter: blur(3px);
 .quick-add-grid button > span { grid-row: 1 / 3; display: grid; width: 36px; height: 36px; place-items: center; border-radius: 10px; color: var(--brand-dark); background: var(--brand-soft); }
 .quick-add-grid small, .dialog-note { color: var(--muted); }
 .dialog-note { margin: 0; padding: 12px; border-radius: 10px; background: var(--canvas); font-size: .78rem; line-height: 1.5; }
-.more-dialog { max-width: 430px; }
-.more-dialog label { display: block; margin: 22px 0 7px; color: var(--muted); font-size: .75rem; font-weight: 760; }
-.more-dialog select { width: 100%; min-height: 46px; padding: 0 12px; border: 1px solid var(--line); border-radius: 11px; background: #fff; }
-.more-dialog nav { display: grid; margin-top: 16px; }
-.more-dialog nav a { display: flex; justify-content: space-between; padding: 14px 2px; border-bottom: 1px solid var(--line); font-weight: 710; text-decoration: none; }
-.more-actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; }
-.more-actions a, .more-actions button { border: 0; color: var(--brand-dark); background: transparent; font-weight: 750; text-decoration: none; cursor: pointer; }
 
 @media (max-width: 1050px) {
   .metric-grid { grid-template-columns: repeat(2, 1fr); }
@@ -392,3 +385,53 @@ dialog::backdrop { background: rgba(7, 24, 29, .58); backdrop-filter: blur(3px);
 /* Long expense headings must leave room for the close button on narrow phones. */
 .business-dialog .dialog-heading > div { min-width: 0; overflow-wrap: anywhere; }
 .business-dialog .dialog-close { flex-shrink: 0; }
+
+/* Company identity and a scrollable navigation drawer at compact widths. */
+.company-mark { flex: 0 0 auto; display: grid; place-items: center; width: 48px; height: 48px; overflow: hidden; border-radius: 13px; background: #e8f8f3; color: #06725a; font-weight: 850; font-size: 1rem; }
+.company-mark img { display: block; width: 100%; height: 100%; padding: 4px; object-fit: contain; filter: none; background: #fff; }
+.company-label { display: grid; gap: 3px; min-width: 0; }
+.company-label strong { overflow-wrap: anywhere; line-height: 1.25; font-size: 1rem; }
+.company-label small { font-size: .68rem; font-weight: 500; }
+.company-label .powered-by { font-size: .59rem; opacity: .8; }
+.sidebar-brand { gap: 10px; align-items: flex-start; }
+.sidebar-brand .company-mark { display: grid; }
+.mobile-brand { min-width: 0; flex: 1; margin-right: 12px; }
+.mobile-brand .company-label strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mobile-brand .company-mark { width: 40px; height: 40px; border-radius: 11px; }
+.profile-button { flex-shrink: 0; }
+.more-dialog { position: fixed; inset: 0 0 0 auto; width: min(390px,100vw); max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0 0 0 auto; border-radius: 22px 0 0 22px; overflow: hidden; background: #f7faf9; }
+.more-dialog[open] { display: flex; }
+.more-dialog .business-menu-shell { display: flex; flex-direction: column; width: 100%; height: 100%; min-height: 0; padding: 0; }
+.menu-top { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: max(18px,env(safe-area-inset-top)) 20px 16px; border-bottom: 1px solid var(--line); background: #fff; }
+.menu-top h2 { margin: 0; font-size: .92rem; letter-spacing: -.02em; }
+.menu-top .dialog-close { border: 0; background: #eef4f2; }
+.menu-scroll { min-height: 0; flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 20px; scrollbar-width: thin; }
+.menu-identity { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.menu-identity .company-mark { width: 54px; height: 54px; }
+.menu-identity .company-label small { color: var(--muted); }
+.menu-workspace { padding: 14px; border: 1px solid #d7e4df; border-radius: 14px; background: #fff; }
+.menu-workspace label { display: block; margin-bottom: 7px; font-size: .7rem; font-weight: 750; color: var(--muted); }
+.menu-workspace select { width: 100%; min-height: 36px; border: 0; background: #fff; color: var(--ink); font: inherit; font-size: .88rem; font-weight: 700; text-overflow: ellipsis; }
+.menu-workspace .role-badge { color: #076348; background: #e6f6ee; }
+.menu-workspace .status-badge { color: #425b62; background: #edf2f4; }
+.more-dialog nav { display: grid; gap: 4px; }
+.menu-group-label { margin: 22px 10px 5px; color: #71837e; font-size: .62rem; letter-spacing: .13em; text-transform: uppercase; font-weight: 800; }
+.more-dialog nav a { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 11px 12px; border: 1px solid transparent; border-radius: 11px; color: #314f50; font-size: .85rem; font-weight: 650; text-decoration: none; }
+.more-dialog nav svg { width: 20px; height: 20px; flex: 0 0 auto; color: #718b87; }
+.more-dialog nav a:hover { background: #edf4f1; }
+.more-dialog nav a.active { background: #e1f3eb; border-color: #bfe4d3; color: #07684d; font-weight: 800; }
+.more-dialog nav a.active svg { color: #087556; }
+.more-actions { flex: 0 0 auto; display: flex; align-items: center; gap: 12px; justify-content: space-between; padding: 14px 20px max(14px,env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: #fff; }
+.more-actions a,.more-actions button { min-height: 42px; display: inline-flex; align-items: center; border: 0; background: transparent; font-size: .78rem; font-weight: 700; text-decoration: none; color: #41635a; cursor: pointer; }
+.more-actions button { padding: 8px 12px; color: #93534b; border-radius: 9px; background: #fbf1ee; }
+body:has(#businessMoreDialog[open]) { overflow: hidden; }
+.branding-form { margin: 16px 0 24px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.branding-upload { display: grid; grid-template-columns: 72px minmax(0,1fr); align-items: start; gap: 14px; }
+.branding-preview { width: 72px; height: 72px; border: 1px solid #cfe3da; border-radius: 16px; }
+.branding-upload label { display: block; margin-bottom: 8px; font-size: .8rem; font-weight: 750; }
+.branding-upload input[type=file] { min-height: 44px; padding: 7px; font-size: .72rem; }
+.branding-upload input::file-selector-button { border: 0; border-radius: 6px; padding: 7px 8px; margin-right: 6px; color: #146a50; background: #e9f6ef; font: inherit; font-weight: 700; cursor: pointer; }
+.branding-upload small,.branding-caption { display: block; margin: 7px 0; color: var(--muted); line-height: 1.5; font-size: .73rem; }
+.branding-upload .branding-remove { min-height: 34px; margin-top: 6px; padding: 5px 9px; font-size: .72rem; }
+@media(max-width:760px) { .mobile-header { height: 74px; } }
+@media(max-width:360px) { .more-dialog { border-radius: 0; } .menu-scroll { padding: 16px; } .branding-upload { grid-template-columns: 56px minmax(0,1fr); gap: 10px; } .branding-preview { width: 56px; height: 56px; } }

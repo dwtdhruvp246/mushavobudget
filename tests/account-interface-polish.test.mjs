@@ -25,7 +25,7 @@ test("dashboard includes earlier unpaid occurrences and paid-by attribution", ()
 test("reports, family rows, and subscription plans use the revised responsive layout", () => {
   assert.match(appHtml, /class="report-export-actions"/);
   assert.match(appStyles, /\.report-filter-controls\s*\{[^}]*repeat\(5,/s);
-  assert.match(appStyles, /#membersList \.record-card,[\s\S]*?#invitationsList \.record-card\s*\{[^}]*border:\s*2px/s);
+  assert.match(appStyles, /#membersList \.record-card,[\s\S]*?#invitationsList \.record-card\s*\{[^}]*border:\s*1px/s);
   assert.match(appHtml, /class="subscription-ownership-card personal-plan-card"/);
   assert.match(appStyles, /\.subscription-ownership-grid\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\)/s);
   assert.match(appSource, /class="\$\{feature\.enabled \? "available" : "unavailable"\}"/);

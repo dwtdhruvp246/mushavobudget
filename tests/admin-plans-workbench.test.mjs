@@ -38,7 +38,9 @@ test('editor saves only through the atomic RPC and fences late reads by user and
 });
 test('consolidated schema contains the exact workbench deployment',async()=>{
  const [schema,migration]=await Promise.all([readFile(new URL('../supabase/schema.sql',import.meta.url),'utf8'),readFile(new URL('../supabase/migrations/20261001190000_admin_plans_workbench.sql',import.meta.url),'utf8')]);
- assert(schema.endsWith(migration));
+ assert(schema.includes(migration));
+ const repair=await readFile(new URL('../supabase/migrations/20261002042500_reconcile_business_plan_seats.sql',import.meta.url),'utf8');
+ assert(schema.endsWith(repair));
 });
 test('customer cards and renewal price selection exclude future and previous versions',async()=>{
  const source=await readFile(new URL('../app.js',import.meta.url),'utf8');

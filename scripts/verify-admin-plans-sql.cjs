@@ -3,6 +3,7 @@ const {PGlite}=require(process.env.MUSHAVO_PGLITE_MODULE||'@electric-sql/pglite'
 const {readFileSync}=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.join(__dirname,'..'),schema=readFileSync(path.join(root,'supabase/schema.sql'),'utf8');
 const migration=readFileSync(path.join(root,'supabase/migrations/20261001190000_admin_plans_workbench.sql'),'utf8');
+const reconciliation=readFileSync(path.join(root,'supabase/migrations/20261002042500_reconcile_business_plan_seats.sql'),'utf8');
 const billing=readFileSync(path.join(root,'supabase/migrations/20260930090000_business_stage_10_billing.sql'),'utf8');
 function fn(sql,name){const matches=[...sql.matchAll(new RegExp('create(?: or replace)? function public\\.'+name+'\\(','g'))];const m=matches.at(-1);assert(m,name);return sql.slice(m.index,sql.indexOf('$$;',m.index)+3);}
 const id=n=>`00000000-0000-0000-0000-${String(n).padStart(12,'0')}`,admin=id(1),staff=id(2),finance=id(3),owner=id(4),free=id(10),personal=id(11),family=id(12),business=id(13),ws=id(20);
@@ -45,7 +46,19 @@ const id=n=>`00000000-0000-0000-0000-${String(n).padStart(12,'0')}`,admin=id(1),
  await db.exec(fn(schema,'emit_business_change_signal'));
  await db.exec(`insert into budget_workspaces values('${id(21)}','business','${owner}','active',null),('${id(22)}','personal','${owner}','active',null);
  insert into workspace_subscriptions(workspace_id,plan_id,member_limit,billing_period,entitlement_start_at,paid_through_at,billing_anchor_at) values('${id(21)}','${business}',4,'monthly',now()-interval '10 days',now()+interval '20 days',now()-interval '10 days'),('${id(22)}','${personal}',1,'monthly',now()-interval '10 days',now()+interval '20 days',now()-interval '10 days');`);
+ await db.exec(`insert into plan_limits(plan_id,limit_code,limit_value) values('${business}','included_member_seats',7);`);
  await db.exec(migration);
+ // Reproduce the production diagnostic failure with legacy catalogue seats.
+ const beforeRepair=(await db.query(readFileSync(path.join(root,'supabase/diagnostics/admin_plans_workbench_diagnostic.sql'),'utf8'))).rows;
+ assert.deepEqual(beforeRepair.filter(r=>r.result==='FAIL').map(r=>r.check_name),['Business seats match their billing configuration']);
+ const settingsBefore=(await db.query('select * from business_billing_settings order by plan_id')).rows;
+ const subscribersBefore=(await db.query('select * from workspace_subscriptions order by workspace_id')).rows;
+ await db.exec(reconciliation);
+ assert.equal((await db.query('select limit_value from plan_limits where plan_id=$1::uuid and limit_code=$2',[business,'included_member_seats'])).rows[0].limit_value,null,'unset billing seats remain unset');
+ assert.deepEqual((await db.query('select * from business_billing_settings order by plan_id')).rows,settingsBefore);
+ assert.deepEqual((await db.query('select * from workspace_subscriptions order by workspace_id')).rows,subscribersBefore);
+ const auditCount=async()=>(await db.query("select count(*)::integer n from subscription_audit_events where action='plan.business_seats_reconciled'")).rows[0].n;
+ assert.equal(await auditCount(),1);await db.exec(reconciliation);assert.equal(await auditCount(),1,'repair is idempotent');
  const uid=async x=>{await db.query("select set_config('fixture.uid',$1,false)",[x]);};
  const snap=async p=>(await db.query('select admin_plan_workbench_snapshot($1::uuid) as x',[p])).rows[0].x;
  const definition=s=>({code:s.plan.code,display_name:s.plan.display_name,description:'Application description',marketing_summary:'Customer summary',workspace_type:s.plan.workspace_type,included_member_seats:s.limits.find(x=>x.limit_code==='included_member_seats')?.limit_value??1,active_payment_limit:s.limits.find(x=>x.limit_code==='active_planned_payments')?.limit_value??null,is_active:s.plan.is_active,is_public:s.plan.is_public,is_featured:s.plan.is_featured,available_for_purchase:s.plan.available_for_purchase,cta_label:'Choose plan',sort_order:0,feature_codes:s.features.filter(x=>x.enabled).map(x=>x.feature_code)});
@@ -63,6 +76,12 @@ const id=n=>`00000000-0000-0000-0000-${String(n).padStart(12,'0')}`,admin=id(1),
  saved=await save(saved,definition(saved),null,{billing_period:'monthly',currency:'USD',amount:12,extra_member_amount:0});catalogue=(await db.query("select * from get_public_plan_catalogue('USD')")).rows;assert.equal(catalogue.find(x=>x.plan_id===personal).prices.length,1);assert.equal(catalogue.find(x=>x.plan_id===personal).prices[0].amount,12);
  s=await snap(business);const beforeToken=s.edit_token;await assert.rejects(save(s,definition(s),{pilot_enabled:true,currency:'USD',included_seats:4,monthly_base:20,monthly_seat:5,annual_base:null,annual_seat:null,payment_instructions:''}),/INVALID_BUSINESS_BILLING_SETTINGS/);assert.equal((await snap(business)).edit_token,beforeToken,'failed bundle rolls all definition changes back');
  const b={pilot_enabled:true,currency:'USD',included_seats:4,monthly_base:20,monthly_seat:0,annual_base:null,annual_seat:null,payment_instructions:'Internal test instructions'};s=await save(s,definition(s),b);assert.equal(s.business.monthly_seat,0);assert.equal(s.business.annual_base,null);assert.equal(s.plan.available_for_purchase,false);assert.equal(s.limits.find(x=>x.limit_code==='included_member_seats').limit_value,4);assert.equal((await db.query('select count(*)::integer n from business_change_signals')).rows[0].n,1,'Business Owner refresh signal emitted');
+ // A configured billing count also wins over stale/missing catalogue values.
+ await db.query('update plan_limits set limit_value=9 where plan_id=$1::uuid and limit_code=$2',[business,'included_member_seats']);await db.exec(reconciliation);
+ assert.equal((await db.query('select limit_value from plan_limits where plan_id=$1::uuid and limit_code=$2',[business,'included_member_seats'])).rows[0].limit_value,4);
+ await db.query('delete from plan_limits where plan_id=$1::uuid and limit_code=$2',[business,'included_member_seats']);await db.exec(reconciliation);
+ assert.equal((await db.query('select limit_value from plan_limits where plan_id=$1::uuid and limit_code=$2',[business,'included_member_seats'])).rows[0].limit_value,4);
+ s=await snap(business);
  await assert.rejects(save(s,{...definition(s),available_for_purchase:true}),/BUSINESS_PUBLIC_PURCHASE_CLOSED/);await assert.rejects(save(s,{...definition(s),workspace_type:'personal'}),/PLAN_WORKSPACE_TYPE_CANNOT_CHANGE/);
  const current=(await db.query('select * from workspace_subscriptions where workspace_id=$1::uuid',[ws])).rows[0];s=await snap(family);d=definition(s);d.included_member_seats=2;await save(s,d);assert.deepEqual((await db.query('select * from workspace_subscriptions where workspace_id=$1::uuid',[ws])).rows[0],current);assert.equal((await db.query('select amount from subscription_invoices')).rows[0].amount,'110');
  for(const [at,factor] of [['2026-05-30',11.5],['2026-06-10',11],['2026-07-02',10.5],['2026-08-13',9]]){const x=(await db.query("select family_extra_place_proration('2026-05-20Z','2027-05-20Z',$1::timestamptz) x",[at+'T00:00:00Z'])).rows[0].x;assert.equal(x.factor,factor);}
@@ -75,6 +94,7 @@ const id=n=>`00000000-0000-0000-0000-${String(n).padStart(12,'0')}`,admin=id(1),
  const expected=(await db.query('select family_extra_place_proration($1::timestamptz,$2::timestamptz,now()) x',[current.billing_anchor_at,current.paid_through_at])).rows[0].x;assert.equal(real.amount,Number((5*expected.factor).toFixed(2)));assert.equal(real.full_months_remaining,expected.full_months_remaining);
  await db.exec("set timezone='America/New_York'");assert.equal((await db.query("select family_extra_place_proration('2026-05-20Z','2027-05-20Z','2026-06-10Z') x")).rows[0].x.factor,11);await db.exec("set timezone='UTC'");
  await uid(admin);await db.query("update profiles set account_status='suspended' where id=$1::uuid",[admin]);await assert.rejects(snap(personal),/PLAN_MANAGEMENT_ACCESS_REQUIRED/);await db.query("update profiles set account_status='active' where id=$1::uuid",[admin]);
- const diagnostic=(await db.query(readFileSync(path.join(root,'supabase/diagnostics/admin_plans_workbench_diagnostic.sql'),'utf8'))).rows;assert.equal(diagnostic.length,22);for(const row of diagnostic)assert.equal(row.result,'PASS',row.check_name);console.log('PASS all 22 deployment diagnostic rows, suspended-admin guard, customer finance access, legacy scheduling guard and Business realtime refresh');
+ const diagnostic=(await db.query(readFileSync(path.join(root,'supabase/diagnostics/admin_plans_workbench_diagnostic.sql'),'utf8'))).rows;assert.equal(diagnostic.length,22);for(const row of diagnostic)assert.equal(row.result,'PASS',row.check_name);console.log('PASS legacy Business seat mismatch reproduced and repaired, null/configured/missing limits, idempotence and untouched billing settings/subscriptions');
+ console.log('PASS all 22 deployment diagnostic rows, suspended-admin guard, customer finance access, legacy scheduling guard and Business realtime refresh');
  console.log('PASS snapshot roles, stale saves, atomic rollback, public catalogue propagation, scheduled/current prices, cancellation, Business zero/unset prices, launch locks, immutable workspace dates/seats/invoices, Family examples and Business proration');
  }finally{await db.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

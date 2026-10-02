@@ -58,11 +58,14 @@ annual term starting May 20, the four agreed examples yield factors 11.5, 11,
 1. Fetch `feature/admin-plans-workbench`.
 2. Run `supabase/migrations/20261001190000_admin_plans_workbench.sql` in the
    project's SQL editor. This is transactional and includes schema reload.
-3. Run `supabase/diagnostics/admin_plans_workbench_diagnostic.sql`. All 22 rows
+3. Run `supabase/migrations/20261002042500_reconcile_business_plan_seats.sql`
+   to align legacy Business catalogue seats with their private billing settings.
+   This preserves configured/unset settings and purchased workspace seats.
+4. Run `supabase/diagnostics/admin_plans_workbench_diagnostic.sql`. All 22 rows
    should say PASS. Resolve any failure before merging the frontend.
-4. Merge the PR after the diagnostic passes. GitHub Pages includes
+5. Merge the PR after the diagnostic passes. GitHub Pages includes
    `admin-plans.js`; release/cache references advance to 4.9.28.
-5. Refresh the app and open Admin → Plans. No Edge Function deployment is needed.
+6. Refresh the app and open Admin → Plans. No Edge Function deployment is needed.
 
 ## Verification and live acceptance
 

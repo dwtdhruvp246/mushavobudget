@@ -125,7 +125,7 @@ function renderPricing() {
       ? `${Number(plan.active_payment_limit)} active personal payments`
       : "Unlimited payment items";
     const extra = price && Number(price.extra_member_amount) > 0
-      ? `<span>Additional person: ${money(price.extra_member_amount, price.currency)} per month</span>`
+      ? `<span>Additional person: ${money(price.extra_member_amount, price.currency)} per ${plan.workspace_type === "business" && state.billingPeriod === "annual" ? "year" : "month"}</span>`
       : "";
     const action = comingSoon
       ? '<span class="public-plan-coming-soon" aria-label="Business plan coming soon">Coming soon</span>'

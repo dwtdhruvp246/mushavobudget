@@ -1,5 +1,5 @@
 // Mushavo Budget authenticated application — release 81
-import { createAdminPlans } from "./admin-plans.js?v=1";
+import { createAdminPlans } from "./admin-plans.js?v=2";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -61,6 +61,7 @@ const state = {
   planPrices: [],
   planFeatures: [],
   planLimits: [],
+  businessCheckoutTerms: [],
   renewalRequests: [],
   familySeatQuote: null,
   subscriptionInvoices: [],
@@ -578,8 +579,14 @@ function friendlyMessage(message = "") {
   if (text.includes("PERSONAL_WORKSPACE_SETTINGS_REQUIRED")) return "The owner needs an active Personal workspace with currency settings before Business test access can be granted.";
   if (text.includes("PENDING_SUBSCRIPTION_REVIEW")) return "This workspace has a payment awaiting review. Review it before changing the subscription manually.";
   if (text.includes("INVALID_MANUAL_GRANT")) return "Check the dates and reason. The start cannot be in the future; expiry must be after today and within 366 days of the start.";
+  if (text.includes("BUSINESS_PLAN_REQUEST_ALREADY_PENDING")) return "A Business plan payment is already awaiting review. View it in Payment review history.";
+  if (text.includes("BUSINESS_BILLING_SETTINGS_CHANGED")) return "Business pricing changed. Refresh Subscription and review the updated total before submitting.";
+  if (text.includes("BUSINESS_PUBLIC_PRICING_REQUIRED")) return "Configure Business billing, included seats, a complete price, and payment instructions before making this plan available.";
+  if (text.includes("BUSINESS_MANUAL_GRANT_REQUIRED")) return "For Business, grant a subscription to a registered account or ask the customer to purchase through Subscription.";
+  if (text.includes("BUSINESS_NAME_REQUIRED")) return "Enter a Business name between 2 and 120 characters.";
+  if (text.includes("INVALID_BUSINESS_MEMBER_COUNT")) return "Choose a whole number of Business seats between the included seats and 100.";
   if (text.includes("BUSINESS_COMING_SOON")) {
-    return "Mushavo Budget Business is coming soon. Purchases, workspace creation, and invitations are not open yet.";
+    return "This Business plan is coming soon and is unavailable for new purchases.";
   }
   if (text.includes("ADMIN_USER_INVITATION_ACCESS_REQUIRED")) {
     return "Only a super administrator or admin staff member can send user invitations.";
@@ -1218,13 +1225,14 @@ function openAuthenticatedSession(session) {
   state.session = session;
   appLoadUserId = userId;
   showLoading("Opening your workspace", "Loading your latest budget...");
-  appLoadPromise = loadApp().then(() => {
+  appLoadPromise = loadApp().then(async () => {
     const url = new URL(window.location.href);
     const requestedPlan = url.searchParams.get("plan");
     if (!state.isAdmin && requestedPlan && state.plans.some((plan) => plan.code === requestedPlan)) {
       state.familyTab = "subscription";
       setRoute("family", "subscription", true);
       renderFamilyApp();
+      if(state.plans.find(p=>p.code===requestedPlan)?.workspace_type=== "business")await selectFamily("__personal__");
       openRenewalDialog(requestedPlan);
       url.searchParams.delete("plan");
       window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
@@ -1282,6 +1290,8 @@ function resetState() {
   state.planPrices = [];
   state.planFeatures = [];
   state.planLimits = [];
+  state.businessCheckoutTerms = [];
+  businessPurchaseSubmissionId = null;
   state.renewalRequests = [];
   state.subscriptionInvoices = [];
   state.subscriptionPayments = [];
@@ -1869,14 +1879,15 @@ function currentWorkspaceIsOwned() {
 }
 
 async function loadWorkspaceSubscriptionData() {
-  let [workspaces, members, plans, prices, features, limits, supportedCurrencies] = await Promise.all([
+  let [workspaces, members, plans, prices, features, limits, supportedCurrencies, businessCheckoutTerms] = await Promise.all([
     query("workspace load", supabase.from("budget_workspaces").select("*").order("created_at", { ascending: true })),
     query("workspace membership load", supabase.from("workspace_members").select("*").order("created_at", { ascending: true })),
     query("plan catalogue load", supabase.from("plans").select("*").eq("is_active", true).order("sort_order", { ascending: true })),
     query("plan prices load", supabase.from("plan_prices").select("*").eq("is_active", true).order("effective_from", { ascending: false })),
     query("plan features load", supabase.from("plan_features").select("*").eq("enabled", true)),
     query("plan limits load", supabase.from("plan_limits").select("*")),
-    query("supported currencies load", supabase.from("supported_currencies").select("*").eq("is_active", true).order("code"))
+    query("supported currencies load", supabase.from("supported_currencies").select("*").eq("is_active", true).order("code")),
+    query("Business checkout terms", supabase.rpc("public_business_checkout_terms"))
   ]);
   // Existing accounts already have a Personal workspace. Only provision a
   // missing one, avoiding an extra RPC round trip on every sign-in.
@@ -1894,6 +1905,7 @@ async function loadWorkspaceSubscriptionData() {
   state.planPrices = prices;
   state.planFeatures = features;
   state.planLimits = limits;
+  state.businessCheckoutTerms = businessCheckoutTerms || [];
   state.supportedCurrencies = supportedCurrencies;
   populateWorkspaceCreationCurrencySelects();
 
@@ -4022,11 +4034,11 @@ function planInvoiceTotal(plan, price, memberCountOverride = null, workspace = c
       )
       : includedSeats
     : Math.max(includedSeats, Number(memberCountOverride || includedSeats));
-  const extraSeats = ["household", "business"].includes(plan.code)
+  const extraSeats = ["household", "business"].includes(plan.workspace_type)
     ? Math.max(0, relevantMemberCount - includedSeats)
     : 0;
   return Number(price.amount || 0)
-    + extraSeats * Number(price.extra_member_amount || 0) * extraMemberBillingMonths(price);
+    + extraSeats * Number(price.extra_member_amount || 0) * (plan.workspace_type === "business" ? 1 : extraMemberBillingMonths(price));
 }
 
 function formatSubscriptionDate(value, fallback = "Unavailable") {
@@ -4219,12 +4231,13 @@ function renderWorkspacePlans() {
     const price = comingSoon ? null : activePriceFor(plan.id, state.workspacePlanBillingPeriod, state.workspacePlanCurrency);
     const appliesToSelectedWorkspace = plan.workspace_type === workspace?.workspace_type;
     const current = isCurrentWorkspacePlan(plan, workspace);
+    const startsNewBusiness = workspace?.workspace_type !== "business" && plan.workspace_type === "business" && state.workspaces.some(item => item.workspace_type === "personal" && item.owner_id === state.session?.user?.id && item.status === "active");
     const startsNewFamily = workspace?.workspace_type === "personal" && plan.workspace_type === "household";
     const pending = usesSelectedWorkspace && state.renewalRequests.some((request) =>
       request.requested_plan_id === plan.id && request.status === "pending_review" &&
       state.subscriptionInvoices.some((invoice) => invoice.id === request.invoice_id && invoice.billing_period === state.workspacePlanBillingPeriod)
     );
-    const canSelect = !comingSoon && workspace?.owner_id === state.session?.user?.id && plan.code !== "free" && plan.available_for_purchase !== false && (appliesToSelectedWorkspace || startsNewFamily);
+    const canSelect = !comingSoon && workspace?.owner_id === state.session?.user?.id && plan.code !== "free" && plan.available_for_purchase !== false && (appliesToSelectedWorkspace || startsNewFamily || startsNewBusiness);
     const planWorkspaceLabel = plan.workspace_type === "household" ? "Family" : titleCase(plan.workspace_type);
     const includedSeats = includedMemberSeats(plan);
     const paymentLimit = activePaymentLimitForPlan(plan);
@@ -4233,7 +4246,7 @@ function renderWorkspacePlans() {
     const periodLabel = state.workspacePlanBillingPeriod === "annual" ? "year" : "month";
     const priceText = comingSoon ? "Coming soon" : plan.code === "free" ? "Free" : price ? money(total, price.currency) : "Price unavailable";
     const extraMember = price && Number(price.extra_member_amount) > 0
-      ? `<span>Additional person: ${money(price.extra_member_amount, price.currency)} per month</span>`
+      ? `<span>Additional person: ${money(price.extra_member_amount, price.currency)} per ${plan.workspace_type === "business" && price.billing_period === "annual" ? "year" : "month"}</span>`
       : "";
     const stateBadge = comingSoon
       ? '<span class="workspace-plan-state coming-soon">Coming soon</span>'
@@ -4249,7 +4262,7 @@ function renderWorkspacePlans() {
       : current && plan.code === "free"
       ? '<button type="button" disabled>Current plan</button>'
       : canSelect
-        ? `<button class="${plan.is_featured && !current ? "primary" : ""}" type="button" data-select-renewal-plan="${escapeHtml(plan.code)}" ${price && !pending ? "" : "disabled"}>${pending ? "Awaiting approval" : current ? "Renew plan" : startsNewFamily ? "Start Family plan" : "Choose plan"}</button>`
+        ? `<button class="${plan.is_featured && !current ? "primary" : ""}" type="button" data-select-renewal-plan="${escapeHtml(plan.code)}" ${price && !pending ? "" : "disabled"}>${pending ? "Awaiting approval" : current ? "Renew plan" : startsNewFamily ? "Start Family plan" : startsNewBusiness ? "Start Business plan" : "Choose plan"}</button>`
         : workspace?.owner_id === state.session?.user?.id
           ? `<small class="workspace-plan-owner-note">${!appliesToSelectedWorkspace ? `Select a ${escapeHtml(planWorkspaceLabel)} workspace to manage this plan.` : plan.code === "free" ? "Included with a free Personal workspace." : "This plan is not currently available for purchase."}</small>`
           : '<small class="workspace-plan-owner-note">Only the workspace owner can change this plan.</small>';
@@ -4263,7 +4276,7 @@ function renderWorkspacePlans() {
       <div class="workspace-plan-price"><strong>${escapeHtml(priceText)}</strong>${price && plan.code !== "free" ? `<span> / ${periodLabel}</span>` : ""}</div>
       <div class="workspace-plan-meta">${planMeta}</div>
       <ul class="workspace-plan-features">${features.map((feature) => `<li class="${feature.enabled ? "available" : "unavailable"}">${escapeHtml(feature.label)}</li>`).join("")}</ul>
-      ${startsNewFamily ? '<small class="workspace-plan-separate-note">Creates a separate Family workspace with its own plan.</small>' : ""}
+      ${startsNewFamily || startsNewBusiness ? `<small class="workspace-plan-separate-note">Creates a separate ${startsNewBusiness ? "Business" : "Family"} workspace after payment approval.</small>` : ""}
       ${action}
     </article>`;
   }).join("");
@@ -4271,7 +4284,8 @@ function renderWorkspacePlans() {
 }
 
 async function openWorkspacePlanSelection(planCode) {
-  const workspace = workspacePlanWorkspace();
+  const plan = state.plans.find(item => item.code === planCode);
+  const workspace = plan?.workspace_type === "business" ? state.workspaces.find(item => item.workspace_type === "personal" && item.owner_id === state.session?.user?.id && item.status === "active") : workspacePlanWorkspace();
   if (workspace?.id !== currentBudgetWorkspace()?.id) {
     const selected = await selectNotificationWorkspace(workspace?.id);
     if (!selected) throw new Error("Your Personal workspace could not be selected.");
@@ -4292,7 +4306,7 @@ function renderRenewalHistory() {
     const memberLimitSummary = request.purchase_kind === "extra_places"
       ? `<small>${Number(request.seat_count || 0)} extra place(s) · ${Number(invoice?.billable_member_count || 1)} places total · plan ends ${escapeHtml(new Date(request.seat_expiry_at).toLocaleDateString())}</small>`
       : ["household", "business"].includes(invoice?.plan_code)
-      ? `<small>${request.provision_workspace_on_approval ? `New family: ${escapeHtml(request.requested_workspace_name || "Family workspace")} &middot; ` : ""}${Number(invoice?.billable_member_count || 1)} total paid place${Number(invoice?.billable_member_count || 1) === 1 ? "" : "s"}</small>`
+      ? `<small>${request.provision_workspace_on_approval ? `New ${invoice?.plan_code === "business" ? "Business" : "Family"}: ${escapeHtml(request.requested_workspace_name || "Workspace")} &middot; ` : ""}${Number(invoice?.billable_member_count || 1)} total paid place${Number(invoice?.billable_member_count || 1) === 1 ? "" : "s"}</small>`
       : "";
     const article = document.createElement("article");
     article.className = "record-card";
@@ -4445,12 +4459,13 @@ function openNotificationDialog() {
   if (dialog && !dialog.open) dialog.showModal();
 }
 
+let businessPurchaseSubmissionId = null;
 function eligibleRenewalPlans() {
   const workspace = currentBudgetWorkspace();
   return state.plans.filter((plan) => {
-    if (plan.code === "free" || plan.available_for_purchase === false) return false;
+    if (plan.is_active === false || plan.code === "free" || plan.available_for_purchase === false) return false;
     if (plan.workspace_type === workspace?.workspace_type) return true;
-    return workspace?.workspace_type === "personal" && plan.workspace_type === "household";
+    return workspace?.workspace_type === "personal" && ["household", "business"].includes(plan.workspace_type);
   });
 }
 
@@ -4593,6 +4608,7 @@ function openRenewalDialog(planCode = null) {
     showToast("No paid plan is available for this workspace yet.");
     return;
   }
+  businessPurchaseSubmissionId = crypto.randomUUID();
   const select = $("#renewalPlan");
   select.innerHTML = "";
   plans.forEach((plan) => select.append(new Option(plan.display_name, plan.code)));
@@ -4608,10 +4624,11 @@ function openRenewalDialog(planCode = null) {
   }
   const selectedPlan = plans.find((plan) => plan.code === select.value);
   const selectedWorkspace = currentBudgetWorkspace();
+  const startsNewBusiness = selectedWorkspace?.workspace_type === "personal" && selectedPlan?.workspace_type === "business";
   const startsNewFamily = selectedWorkspace?.workspace_type === "personal" && selectedPlan?.workspace_type === "household";
-  const managesMemberLimit = startsNewFamily || selectedWorkspace?.workspace_type === selectedPlan?.workspace_type && ["household", "business"].includes(selectedPlan?.workspace_type);
+  const managesMemberLimit = startsNewFamily || startsNewBusiness || selectedWorkspace?.workspace_type === selectedPlan?.workspace_type && ["household", "business"].includes(selectedPlan?.workspace_type);
   if (managesMemberLimit) {
-    $("#renewalFamilyMemberCount").value = `${startsNewFamily
+    $("#renewalFamilyMemberCount").value = `${startsNewFamily || startsNewBusiness
       ? includedMemberSeats(selectedPlan)
       : Math.max(
         includedMemberSeats(selectedPlan),
@@ -4627,8 +4644,9 @@ function openRenewalDialog(planCode = null) {
 function updateRenewalQuote() {
   const plan = state.plans.find((item) => item.code === $("#renewalPlan").value);
   const workspace = currentBudgetWorkspace();
+  const startsNewBusiness = workspace?.workspace_type === "personal" && plan?.workspace_type === "business";
   const startsNewFamily = workspace?.workspace_type === "personal" && plan?.workspace_type === "household";
-  const managesMemberLimit = startsNewFamily || (
+  const managesMemberLimit = startsNewFamily || startsNewBusiness || (
     workspace?.workspace_type === plan?.workspace_type && ["household", "business"].includes(plan?.workspace_type)
   );
   const period = $("#renewalPeriod").value;
@@ -4642,7 +4660,7 @@ function updateRenewalQuote() {
   if (price) currencySelect.value = price.currency;
   const includedSeats = includedMemberSeats(plan);
   const memberCountInput = $("#renewalFamilyMemberCount");
-  const minimumMemberCount = startsNewFamily
+  const minimumMemberCount = startsNewFamily || startsNewBusiness
     ? includedSeats
     : Math.max(includedSeats, Number(state.memberUsage?.used_member_count || state.billableMemberCount || 1));
   memberCountInput.min = `${minimumMemberCount}`;
@@ -4653,23 +4671,31 @@ function updateRenewalQuote() {
     ? Math.max(minimumMemberCount, Number(memberCountInput.value || minimumMemberCount))
     : null;
   const total = planInvoiceTotal(plan, price, requestedMemberCount);
-  $("#renewalFamilyNameField").classList.toggle("hidden", !startsNewFamily);
+  $("#renewalFamilyNameField").classList.toggle("hidden", !(startsNewFamily || startsNewBusiness));
   $("#renewalFamilyMembersField").classList.toggle("hidden", !managesMemberLimit);
-  $("#renewalFamilyName").required = startsNewFamily;
+  $("#renewalFamilyName").required = startsNewFamily || startsNewBusiness;
+  $("#renewalFamilyNameField").childNodes[0].textContent=startsNewBusiness ? "Business name" : "Family name";
+  $("#renewalFamilyNameField small").textContent=`This ${startsNewBusiness ? "Business workspace" : "family"} will be created only after payment approval.`;
+  $("#renewalFamilyName").maxLength=startsNewBusiness ? 120 : 100;
+  $("#renewalFamilyName").minLength=startsNewBusiness ? 2 : 0;
+  $("#renewalFamilyMembersField").childNodes[0].textContent=startsNewBusiness ? "Total people, including the Business Owner" : "Total people on this Family plan";
+  const businessTerms=state.businessCheckoutTerms.find(x=>x.plan_id===plan?.id);
+  $("#renewalBusinessInstructions").classList.toggle("hidden",!startsNewBusiness);
+  $("#renewalBusinessInstructions").textContent=startsNewBusiness ? businessTerms?.payment_instructions || "Business payment instructions are unavailable. Refresh before submitting." : "";
   memberCountInput.required = managesMemberLimit;
-  $("#renewalDialogTitle").textContent = startsNewFamily ? "Start a Family plan" : "Submit payment for review";
-  $("#renewalDialogDescription").textContent = startsNewFamily
+  $("#renewalDialogTitle").textContent = startsNewBusiness ? "Start a Business plan" : startsNewFamily ? "Start a Family plan" : "Submit payment for review";
+  $("#renewalDialogDescription").textContent = startsNewBusiness ? `Enter your Business name and total seats. The plan includes ${includedSeats} people, counting the Owner. Your separate workspace opens after payment approval.` : startsNewFamily
     ? `Enter the family name and the total number of people. The base plan includes ${includedSeats} people, including the Family Head.`
     : managesMemberLimit
       ? "Choose the total number of paid places for this workspace. Active members and pending invitations cannot be removed from the calculation."
       : "Submitting payment does not activate access automatically. Authorized finance staff will review it.";
   $("#renewalAmount").value = price ? total.toFixed(2) : "";
-  $("#renewalSubmitButton").disabled = !price;
+  $("#renewalSubmitButton").disabled = !price || startsNewBusiness && !businessTerms;
   const extraSeats = managesMemberLimit
     ? Math.max(0, requestedMemberCount - includedSeats)
     : Math.max(0, Number(state.billableMemberCount || 1) - includedSeats);
-  const extraMemberPeriodPrice = Number(price?.extra_member_amount || 0) * extraMemberBillingMonths(price);
-  $("#renewalFamilyMembersHelp").textContent = price
+  const extraMemberPeriodPrice = Number(price?.extra_member_amount || 0) * (plan?.workspace_type === "business" ? 1 : extraMemberBillingMonths(price));
+  $("#renewalFamilyMembersHelp").textContent = startsNewBusiness && price ? `The base price includes ${includedSeats} people, counting the Business Owner. Each additional person costs ${money(price.extra_member_amount, price.currency)} per ${period === "annual" ? "year" : "month"}.` : price
     ? period === "annual"
       ? `The base price includes ${includedSeats} people: 1 Family Head and ${Math.max(0, includedSeats - 1)} other members. Each additional person costs ${money(price.extra_member_amount, price.currency)} per month, which is ${money(extraMemberPeriodPrice, price.currency)} for one year.`
       : `The base price includes ${includedSeats} people: 1 Family Head and ${Math.max(0, includedSeats - 1)} other members. Each additional person costs ${money(price.extra_member_amount, price.currency)} per month.`
@@ -4703,13 +4729,14 @@ async function submitSubscriptionRenewal(event) {
   const price = activePriceFor(plan?.id, period, currency);
   const proof = $("#renewalProof").files[0] || null;
   const submitButton = $("#renewalSubmitButton");
+  const startsNewBusiness = workspace?.workspace_type === "personal" && plan?.workspace_type === "business";
   const startsNewFamily = workspace?.workspace_type === "personal" && plan?.workspace_type === "household";
-  const managesMemberLimit = startsNewFamily || (
+  const managesMemberLimit = startsNewFamily || startsNewBusiness || (
     workspace?.workspace_type === plan?.workspace_type && ["household", "business"].includes(plan?.code)
   );
   const includedSeats = includedMemberSeats(plan);
   const requestedMemberCount = Number($("#renewalFamilyMemberCount").value || includedSeats);
-  const minimumMemberCount = startsNewFamily
+  const minimumMemberCount = startsNewFamily || startsNewBusiness
     ? includedSeats
     : Math.max(includedSeats, Number(state.memberUsage?.used_member_count || state.billableMemberCount || 1));
   const amount = planInvoiceTotal(plan, price, managesMemberLimit ? requestedMemberCount : null);
@@ -4717,13 +4744,23 @@ async function submitSubscriptionRenewal(event) {
   let proofPath = null;
   try {
     if (!workspace || !plan || !price) throw new Error("Choose a plan with an active price.");
+    if (startsNewBusiness && familyName.length < 2) throw new Error("Enter a Business name with at least two characters.");
     if (startsNewFamily && !familyName) throw new Error("FAMILY_NAME_REQUIRED");
     if (managesMemberLimit && (!Number.isInteger(requestedMemberCount) || requestedMemberCount < minimumMemberCount || requestedMemberCount > 100)) {
       throw new Error("INVALID_FAMILY_MEMBER_COUNT");
     }
     setSubmitting(submitButton, true, "Submitting...");
     if (proof) proofPath = await uploadSubscriptionProof(proof, workspace.id);
-    const request = startsNewFamily
+    const request = startsNewBusiness
+      ? supabase.rpc("submit_business_plan_request", {
+        p_personal_workspace_id: workspace.id,p_business_name:familyName,p_total_member_count:requestedMemberCount,
+        p_plan_code:plan.code,p_billing_period:period,p_currency:currency,p_amount:amount,
+        p_expected_settings_version:state.businessCheckoutTerms.find(x=>x.plan_id===plan.id)?.settings_version,
+        p_payment_method:$("#renewalMethod").value,p_payment_date:$("#renewalPaymentDate").value,
+        p_reference_number:$("#renewalReference").value.trim(),p_notes:$("#renewalNotes").value.trim()||null,
+        p_proof_path:proofPath,p_proof_name:proof?.name||null,p_proof_mime_type:proof?.type||null,p_proof_size_bytes:proof?.size||null,
+        p_submission_id:businessPurchaseSubmissionId || (businessPurchaseSubmissionId=crypto.randomUUID())
+      }) : startsNewFamily
       ? supabase.rpc("submit_family_plan_request", {
         p_personal_workspace_id: workspace.id,
         p_family_name: familyName,
@@ -4762,11 +4799,11 @@ async function submitSubscriptionRenewal(event) {
     $("#renewalDialog").close();
     await loadWorkspaceSubscriptionData();
     renderSubscription();
-    showToast(startsNewFamily
+    showToast(startsNewBusiness ? "Business plan submitted for review. Your workspace will be created after approval." : startsNewFamily
       ? "Family plan submitted for review. The family will be created after approval."
       : "Payment submitted for review. Access changes only after approval.");
   } catch (error) {
-    if (proofPath) await supabase.storage.from(SUBSCRIPTION_PROOF_BUCKET).remove([proofPath]).catch(() => {});
+    if (proofPath && !startsNewBusiness) await supabase.storage.from(SUBSCRIPTION_PROOF_BUCKET).remove([proofPath]).catch(() => {});
     showToast(error.message);
   } finally {
     setSubmitting(submitButton, false, "Submit for review");
@@ -5925,11 +5962,12 @@ function renderSubscriptionReviews() {
     const invoice = state.adminSubscriptionInvoices.find((item) => item.id === request?.invoice_id);
     const workspace = state.adminWorkspaces.find((item) => item.id === payment.workspace_id);
     const proof = state.adminSubscriptionProofs.find((item) => item.payment_id === payment.id);
+    const newWorkspaceType = state.adminPlans.find(p=>p.id===request?.requested_plan_id)?.workspace_type === "business" ? "Business" : "Family";
     const canReview = ["super_admin", "admin_staff", "finance_staff"].includes(state.adminRole);
     const article = document.createElement("article");
     article.className = "record-card subscription-review-card subscription-payment-row";
     article.innerHTML = `
-      <div class="record-main"><strong>${escapeHtml(request?.provision_workspace_on_approval ? request.requested_workspace_name || "New Family workspace" : workspace?.name || "Workspace")}</strong><span>${request?.business_quote_id ? "Business subscription / capacity" : request?.purchase_kind === "extra_places" ? "Additional Family places" : escapeHtml(invoice?.plan_name || "Plan")} &middot; ${titleCase(invoice?.billing_period)} &middot; reference ${escapeHtml(payment.reference_number)}</span><small>${request?.business_quote_id ? "Applies the protected Business quote; suspension and capacity are checked again at approval." : request?.purchase_kind === "extra_places" ? `Adds ${Number(request.seat_count)} place(s) without extending the existing renewal date.` : request?.provision_workspace_on_approval ? `Creates a new Family workspace for ${Number(invoice?.billable_member_count || 1)} people after approval.` : "Renews or changes the selected workspace plan."} Submitted ${new Date(payment.created_at).toLocaleString()} by an authenticated workspace owner.</small><div class="badge-row">${statusBadge(payment.status)}${request?.purchase_kind === "extra_places" ? '<span class="mini-badge">extra places</span>' : ""}${request?.provision_workspace_on_approval ? '<span class="mini-badge">new family</span>' : ""}${proof ? '<span class="mini-badge">proof attached</span>' : ""}</div></div>
+      <div class="record-main"><strong>${escapeHtml(request?.provision_workspace_on_approval ? request.requested_workspace_name || "New Family workspace" : workspace?.name || "Workspace")}</strong><span>${request?.business_quote_id ? "Business subscription / capacity" : request?.purchase_kind === "extra_places" ? "Additional Family places" : escapeHtml(invoice?.plan_name || "Plan")} &middot; ${titleCase(invoice?.billing_period)} &middot; reference ${escapeHtml(payment.reference_number)}</span><small>${request?.business_quote_id ? "Applies the protected Business quote; suspension and capacity are checked again at approval." : request?.purchase_kind === "extra_places" ? `Adds ${Number(request.seat_count)} place(s) without extending the existing renewal date.` : request?.provision_workspace_on_approval ? `Creates a new ${newWorkspaceType} workspace for ${Number(invoice?.billable_member_count || 1)} people after approval.` : "Renews or changes the selected workspace plan."} Submitted ${new Date(payment.created_at).toLocaleString()} by an authenticated workspace owner.</small><div class="badge-row">${statusBadge(payment.status)}${request?.purchase_kind === "extra_places" ? '<span class="mini-badge">extra places</span>' : ""}${request?.provision_workspace_on_approval ? `<span class="mini-badge">new ${newWorkspaceType.toLowerCase()}</span>` : ""}${proof ? '<span class="mini-badge">proof attached</span>' : ""}</div></div>
       <div class="record-side"><strong>${money(payment.amount, payment.currency)}</strong><div class="row-actions"><button type="button" data-view-subscription-payment="${payment.id}">View details</button>${proof ? `<button type="button" data-open-subscription-proof="${proof.id}">View proof</button>` : ""}${canReview ? `<button class="primary" type="button" data-review-subscription="${payment.id}" data-review-decision="approved">Approve</button><button type="button" data-review-subscription="${payment.id}" data-review-decision="rejected">Reject</button>` : '<span class="mini-badge">Read only</span>'}</div></div>
     `;
     list.append(article);
@@ -6247,7 +6285,7 @@ async function openSubscriptionPaymentDetails(paymentId) {
       ["Purchase", request?.purchase_kind === "extra_places" ? "Additional Family places" : escapeHtml(invoice?.plan_name || "Not set")],
       ["Billing period", escapeHtml(titleCase(invoice?.billing_period || "not set"))],
       ...(businessQuote ? [
-        ['Business request',escapeHtml(businessQuote.kind==='extra_seats'?'Additional seats, same expiry':'Subscription renewal')],
+        ['Business request',escapeHtml(businessQuote.kind==='extra_seats'?'Additional seats, same expiry':businessQuote.kind==='purchase'?'Subscription purchase':'Subscription renewal')],
         ['Quote time',escapeHtml(formatAdminDate(businessQuote.quoted_at))],
         ['Full-cycle extra-seat price',money(businessQuote.seat_price,businessQuote.currency)],
         ['Chargeable fraction',`${(Number(businessQuote.fraction)*100).toFixed(4)}%`],
@@ -6649,7 +6687,7 @@ function refreshAdminManualGrantPlans() {
   nameField.classList.toggle("hidden", !creatingBusiness);
   nameInput.required = creatingBusiness;
   $("#adminManualGrantNotice").textContent = creatingBusiness
-    ? "A separate Business test workspace will be created. Public Business purchases remain closed. No payment, invoice, or receipt is recorded."
+    ? "A separate Business workspace will be created through this manual grant. No payment, invoice, or receipt is recorded."
     : "The selected workspace's current subscription will be replaced. This manual grant creates no payment, invoice, or receipt.";
   $("#adminManualGrantSubmit").disabled = !select.options.length;
 }
@@ -6831,9 +6869,9 @@ function renderAdminInvitationForm() {
 
   const planSelect = $("#adminInvitePlan");
   const currentPlan = planSelect.value;
-  const eligiblePlans = state.adminPlans.filter((plan) => plan.is_active && plan.available_for_purchase !== false);
+  const eligiblePlans = state.adminPlans.filter((plan) => plan.is_active && plan.available_for_purchase !== false && plan.workspace_type !== "business");
   planSelect.innerHTML = state.adminPlans
-    .filter((plan) => plan.is_active && plan.available_for_purchase !== false)
+    .filter((plan) => plan.is_active && plan.available_for_purchase !== false && plan.workspace_type !== "business")
     .map((plan) => `<option value="${escapeHtml(plan.id)}">${escapeHtml(plan.display_name)} (${titleCase(plan.workspace_type)})</option>`)
     .join("");
   if ([...planSelect.options].some((option) => option.value === currentPlan)) planSelect.value = currentPlan;

@@ -64,7 +64,7 @@ test("all active plan types remain visible and only matching billing periods are
   state.workspaceSubscription = null;
   assert.equal(context.isCurrentWorkspacePlan(plans[0]), true);
   assert.equal(context.workspaceComparablePlans().length, 4);
-  assert.match(appSource, /Creates a separate Family workspace with its own plan/);
+  assert.match(appSource, /Creates a separate.*workspace after payment approval/);
 });
 
 test("a joined Family workspace always shows plans for the member's own Personal workspace", () => {

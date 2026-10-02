@@ -18,3 +18,5 @@ wrangler.jsonc
 .env*
 .git*
 .assetsignore
+www/
+scripts/

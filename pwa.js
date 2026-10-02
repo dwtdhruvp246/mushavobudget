@@ -1,8 +1,8 @@
 (() => {
   "use strict";
 
-  const RELEASE = "4.9.32";
-  const WORKER_URL = "/sw.js?v=74";
+  const RELEASE = "4.9.33";
+  const WORKER_URL = "/sw.js?v=75";
   const UPDATE_CHECK_INTERVAL_MS = 15000;
   const dirtyForms = new Set();
   const operations = new Set();
@@ -144,7 +144,7 @@
   document.querySelectorAll("[data-pwa-release]").forEach((element) => {
     element.textContent = `Version ${RELEASE}`;
   });
-  if (!("serviceWorker" in navigator) || window.location.protocol === "file:") return;
+  if (!("serviceWorker" in navigator) || window.location.protocol === "file:" || window.Capacitor?.isNativePlatform?.()) return;
   navigator.serviceWorker.addEventListener("controllerchange", () => {
     if (hadController) {
       controllerChanged = true;

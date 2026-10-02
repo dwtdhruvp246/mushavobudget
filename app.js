@@ -1,4 +1,5 @@
 // Mushavo Budget authenticated application — release 81
+import { createAdminPlans } from "./admin-plans.js?v=1";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -941,10 +942,10 @@ function realtimeTablesForCurrentView() {
     "family_invitations", "budget_workspaces", "workspace_members",
     "workspace_invitations", "workspace_subscriptions", "subscription_renewal_requests",
     "subscription_invoices", "subscription_payments", "subscription_entitlement_history",
-    "support_tickets", "support_ticket_messages"
+    "support_tickets", "support_ticket_messages", "plans", "plan_prices", "plan_features", "plan_limits"
   ];
   if (!state.isAdmin) return sharedTables;
-  return [...sharedTables, "plans", "plan_prices", "plan_features", "plan_limits", "payments", "enquiries", "admin_support_notes"];
+  return [...sharedTables, "payments", "enquiries", "admin_support_notes"];
 }
 
 function stopRealtime() {
@@ -1301,6 +1302,7 @@ function resetState() {
   state.adminWorkspaces = [];
   state.adminWorkspaceMembers = [];
   state.adminBusinessBillingSettings = [];
+  adminPlansWorkbench.reset();
   state.adminSubscriptions = [];
   state.adminPlans = [];
   state.adminPlanPrices = [];
@@ -2049,6 +2051,7 @@ async function loadAdminData(tab = state.adminTab) {
   }
   if (tab === "plans") {
     if(["super_admin","admin_staff"].includes(state.adminRole))add("adminBusinessBillingSettings","Business pilot billing settings",supabase.rpc("admin_business_billing_settings"));
+    add("supportedCurrencies", "plan supported currencies load", supabase.from("supported_currencies").select("*").eq("is_active", true).order("code"));
     add("adminPlanFeatures", "admin plan features load", supabase.from("plan_features").select("*").order("feature_code"));
     add("adminPlanLimits", "admin plan limits load", supabase.from("plan_limits").select("*").order("limit_code"));
   }
@@ -3888,11 +3891,16 @@ function titleCase(value) {
   return `${value || ""}`.replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
+function isCurrentPlanPrice(price, at = Date.now()) {
+  return Boolean(price.is_active && new Date(price.effective_from).getTime() <= at &&
+    (!price.effective_until || new Date(price.effective_until).getTime() > at));
+}
+
 function activePriceFor(planId, billingPeriod, currency = null) {
   return state.planPrices.find((price) =>
     price.plan_id === planId &&
     price.billing_period === billingPeriod &&
-    price.is_active &&
+    isCurrentPlanPrice(price) &&
     (!currency || price.currency === currency)
   ) || null;
 }
@@ -3968,7 +3976,7 @@ function isCurrentWorkspacePlan(plan, workspace = workspacePlanWorkspace()) {
 
 function workspacePlanCurrencies(plans) {
   return [...new Set(state.planPrices
-    .filter((price) => price.is_active && plans.some((plan) => plan.id === price.plan_id))
+    .filter((price) => isCurrentPlanPrice(price) && plans.some((plan) => plan.id === price.plan_id))
     .map((price) => price.currency)
     .filter(Boolean)
   )].sort();
@@ -4624,7 +4632,7 @@ function updateRenewalQuote() {
     workspace?.workspace_type === plan?.workspace_type && ["household", "business"].includes(plan?.workspace_type)
   );
   const period = $("#renewalPeriod").value;
-  const availablePrices = state.planPrices.filter((price) => price.plan_id === plan?.id && price.billing_period === period && price.is_active);
+  const availablePrices = state.planPrices.filter((price) => price.plan_id === plan?.id && price.billing_period === period && isCurrentPlanPrice(price));
   const currencySelect = $("#renewalCurrency");
   const previousCurrency = currencySelect.value;
   currencySelect.innerHTML = "";
@@ -5888,147 +5896,19 @@ async function syncExchangeRates() {
   }
 }
 
-function renderAdminPlans() {
-  renderBusinessBillingAdmin();
-  const list = $("#adminPlanList");
-  const priceSelect = $("#planPricePlan");
-  const selectedPricePlan = priceSelect.value;
-  priceSelect.innerHTML = state.adminPlans
-    .filter((plan) => plan.code !== "free" && plan.workspace_type !== "business")
-    .map((plan) => `<option value="${escapeHtml(plan.code)}">${escapeHtml(plan.display_name)} (${titleCase(plan.workspace_type)})</option>`)
-    .join("");
-  if ([...priceSelect.options].some((option) => option.value === selectedPricePlan)) priceSelect.value = selectedPricePlan;
-  list.innerHTML = "";
-  state.adminPlans.forEach((plan) => {
-    const activePrices = state.adminPlanPrices.filter((price) => price.plan_id === plan.id && price.is_active);
-    const includedSeats = state.adminPlanLimits.find((limit) => limit.plan_id === plan.id && limit.limit_code === "included_member_seats")?.limit_value;
-    const seatSummary = includedSeats == null
-      ? "Seats not set"
-      : `${Number(includedSeats)} ${Number(includedSeats) === 1 ? "person" : "people"} included`;
-    const comingSoon = isBusinessComingSoon(plan);
-    const enabledFeatures = state.adminPlanFeatures.filter((feature) => feature.plan_id === plan.id && feature.enabled).length;
-    const card = document.createElement("article");
-    card.className = "plan-card";
-    card.innerHTML = `
-      <div class="plan-card-heading"><div><span class="mini-badge">${titleCase(plan.workspace_type)}</span>${plan.is_public ? '<span class="mini-badge active">Public</span>' : '<span class="mini-badge">Hidden</span>'}${comingSoon ? '<span class="mini-badge coming-soon">Coming soon</span>' : plan.is_featured ? '<span class="mini-badge active">Recommended</span>' : ""}</div><h4>${escapeHtml(plan.display_name)}</h4></div>
-      <p>${escapeHtml(plan.marketing_summary || plan.description)}</p>
-      <small>${seatSummary} &middot; ${enabledFeatures} enabled features &middot; ${plan.is_active ? "Active" : "Archived"}</small>
-      <div class="plan-price-list">
-        ${plan.workspace_type === "business" ? "<span>Private pilot billing settings are configured separately below.</span>" : activePrices.length ? activePrices.map((price) => `<div><strong>${titleCase(price.billing_period)}</strong><span>${money(price.amount, price.currency)} base${Number(price.extra_member_amount) ? ` &middot; ${money(price.extra_member_amount, price.currency)} per extra member/month` : ""}</span></div>`).join("") : "<span>No active prices configured.</span>"}
-      </div>
-      <button type="button" data-edit-plan-definition="${plan.id}">Edit plan</button>
-    `;
-    list.append(card);
-  });
-}
-
-function renderBusinessBillingAdmin() {
-  const panel=$('#businessBillingAdminPanel');if(!panel)return;
-  const allowed=['super_admin','admin_staff'].includes(state.adminRole);panel.classList.toggle('hidden',!allowed);if(!allowed)return;
-  const select=$('#businessBillingAdminPlan'),selected=select.value;
-  select.replaceChildren(...(state.adminBusinessBillingSettings || []).map(item=>new Option(item.plan_name,item.plan_id)));
-  if([...select.options].some(option=>option.value===selected))select.value=selected;
-  fillBusinessBillingAdmin();
-}
-function fillBusinessBillingAdmin() {
-  const item=(state.adminBusinessBillingSettings || []).find(row=>row.plan_id===$('#businessBillingAdminPlan').value);
-  const fields={Currency:'currency',Seats:'included_seats',MonthlyBase:'monthly_base',AnnualBase:'annual_base',MonthlySeat:'monthly_seat',AnnualSeat:'annual_seat',Instructions:'payment_instructions'};
-  for(const [suffix,key] of Object.entries(fields))$('#businessBillingAdmin'+suffix).value=item?.[key] ?? '';
-  $('#businessBillingAdminEnabled').checked=Boolean(item?.pilot_enabled);
-  $('#businessBillingAdminMessage').textContent=item?`Settings version ${item.version}. Public Business purchase remains closed.`:'No Business billing settings are available.';
-}
-async function saveBusinessBillingAdmin(event) {
-  event.preventDefault();const item=(state.adminBusinessBillingSettings || []).find(row=>row.plan_id===$('#businessBillingAdminPlan').value);if(!item)return;
-  const number=suffix=>$('#businessBillingAdmin'+suffix).value===''?null:Number($('#businessBillingAdmin'+suffix).value);
-  const button=event.submitter || event.currentTarget.querySelector('button[type="submit"]');
-  try{setSubmitting(button,true,'Saving…');await query('Business pilot billing save',supabase.rpc('save_business_billing_settings',{
-    p_plan_id:item.plan_id,p_expected_version:item.version,p_pilot_enabled:$('#businessBillingAdminEnabled').checked,
-    p_included_seats:number('Seats'),p_currency:$('#businessBillingAdminCurrency').value.trim().toUpperCase(),
-    p_monthly_base:number('MonthlyBase'),p_annual_base:number('AnnualBase'),p_monthly_seat:number('MonthlySeat'),p_annual_seat:number('AnnualSeat'),p_payment_instructions:$('#businessBillingAdminInstructions').value
-  }));await loadAdminData('plans');renderAdminPlans();showToast('Private Business billing settings saved. Public purchase remains closed.');}
-  catch(error){showToast(error.message);$('#businessBillingAdminMessage').textContent=error.message;}
-  finally{setSubmitting(button,false,'Save pilot billing settings');}
-}
-
-function resetPlanDefinitionForm() {
-  const form = $("#planDefinitionForm");
-  form.reset();
-  $("#planDefinitionId").value = "";
-  $("#planDefinitionCode").readOnly = false;
-  $("#planDefinitionSeats").value = "1";
-  $("#planDefinitionSort").value = "0";
-  $("#planDefinitionCta").value = "Choose plan";
-  $("#planDefinitionActive").checked = true;
-  $("#planDefinitionPurchasable").checked = true;
-  $("#planDefinitionTitle").textContent = "Add a plan";
-  $("#planDefinitionSubmit").textContent = "Save plan";
-  $("#cancelPlanEditButton").classList.add("hidden");
-}
-
-function editPlanDefinition(planId) {
-  const plan = state.adminPlans.find((item) => item.id === planId);
-  if (!plan) return;
-  const includedSeats = state.adminPlanLimits.find((limit) => limit.plan_id === plan.id && limit.limit_code === "included_member_seats")?.limit_value;
-  const paymentLimit = state.adminPlanLimits.find((limit) => limit.plan_id === plan.id && limit.limit_code === "active_planned_payments")?.limit_value;
-  const features = new Set(state.adminPlanFeatures.filter((feature) => feature.plan_id === plan.id && feature.enabled).map((feature) => feature.feature_code));
-  $("#planDefinitionId").value = plan.id;
-  $("#planDefinitionName").value = plan.display_name || "";
-  $("#planDefinitionCode").value = plan.code || "";
-  $("#planDefinitionCode").readOnly = true;
-  $("#planDefinitionType").value = plan.workspace_type;
-  $("#planDefinitionSeats").value = includedSeats == null ? "" : String(includedSeats);
-  $("#planDefinitionPaymentLimit").value = paymentLimit == null ? "" : String(paymentLimit);
-  $("#planDefinitionSort").value = String(plan.sort_order || 0);
-  $("#planDefinitionDescription").value = plan.description || "";
-  $("#planDefinitionMarketing").value = plan.marketing_summary || plan.description || "";
-  $("#planDefinitionCta").value = plan.cta_label || "Choose plan";
-  $("#planDefinitionActive").checked = Boolean(plan.is_active);
-  $("#planDefinitionPublic").checked = Boolean(plan.is_public);
-  $("#planDefinitionFeatured").checked = Boolean(plan.is_featured);
-  $("#planDefinitionPurchasable").checked = plan.available_for_purchase !== false;
-  document.querySelectorAll('[name="planFeature"]').forEach((input) => { input.checked = features.has(input.value); });
-  $("#planDefinitionTitle").textContent = `Edit ${plan.display_name}`;
-  $("#planDefinitionSubmit").textContent = "Save plan changes";
-  $("#cancelPlanEditButton").classList.remove("hidden");
-  const disclosure = document.querySelector(".plan-definition-panel");
-  if (disclosure) disclosure.open = true;
-  $("#planDefinitionForm").scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
-async function savePlanDefinition(event) {
-  event.preventDefault();
-  const button = event.submitter || $("#planDefinitionSubmit");
-  const paymentLimitValue = $("#planDefinitionPaymentLimit").value.trim();
-  const featureCodes = [...document.querySelectorAll('[name="planFeature"]:checked')].map((input) => input.value);
-  try {
-    setSubmitting(button, true, "Saving...");
-    await query("plan definition save", supabase.rpc("save_plan_definition", {
-      p_plan_id: $("#planDefinitionId").value || null,
-      p_code: $("#planDefinitionCode").value.trim().toLowerCase(),
-      p_display_name: $("#planDefinitionName").value.trim(),
-      p_description: $("#planDefinitionDescription").value.trim(),
-      p_marketing_summary: $("#planDefinitionMarketing").value.trim(),
-      p_workspace_type: $("#planDefinitionType").value,
-      p_included_member_seats: Number($("#planDefinitionSeats").value),
-      p_active_payment_limit: paymentLimitValue ? Number(paymentLimitValue) : null,
-      p_is_active: $("#planDefinitionActive").checked,
-      p_is_public: $("#planDefinitionPublic").checked,
-      p_is_featured: $("#planDefinitionFeatured").checked,
-      p_available_for_purchase: $("#planDefinitionPurchasable").checked,
-      p_cta_label: $("#planDefinitionCta").value.trim(),
-      p_sort_order: Number($("#planDefinitionSort").value || 0),
-      p_feature_codes: featureCodes
-    }));
-    resetPlanDefinitionForm();
-    await loadAdminData("plans");
-    renderAdminPlans();
-    showToast("Plan saved. Published changes now appear on the public Pricing page.");
-  } catch (error) {
-    showToast(friendlyMessage(error.message));
-  } finally {
-    setSubmitting(button, false, $("#planDefinitionId").value ? "Save plan changes" : "Save plan");
-  }
-}
+const adminPlansWorkbench = createAdminPlans($("#adminPlansWorkbench"), {
+  userId: () => state.session?.user?.id,
+  role: () => state.adminRole,
+  plans: () => state.adminPlans,
+  currencies: () => state.supportedCurrencies,
+  rpc: (name, args) => query("Admin Plans & Pricing", supabase.rpc(name, args)),
+  reload: () => loadAdminData("plans"),
+  confirm: confirmAction,
+  beginOperation: () => window.MushavoPWA?.beginOperation?.(),
+  markClean: () => window.MushavoPWA?.markFormClean?.("#ap-form"),
+  toast: showToast
+});
+function renderAdminPlans() { adminPlansWorkbench.render(); }
 
 function renderSubscriptionReviews() {
   const list = $("#subscriptionReviewList");
@@ -6393,36 +6273,6 @@ async function openSubscriptionPaymentDetails(paymentId) {
       ["Decision reason", escapeHtml(review?.reason || request?.rejection_reason || "No reason recorded")]
     ])}${payment.notes ? `<p class="admin-detail-note"><strong>Notes</strong><span>${escapeHtml(payment.notes)}</span></p>` : ""}${proof ? `<div class="admin-detail-actions"><button type="button" data-open-subscription-proof="${proof.id}">View payment proof</button></div>` : ""}</section>`
   });
-}
-
-async function savePlanPrice(event) {
-  event.preventDefault();
-  const submitButton = event.submitter || event.currentTarget.querySelector('button[type="submit"]');
-  const currency = $("#planPriceCurrency").value.trim().toUpperCase();
-  if (!/^[A-Z]{3}$/.test(currency)) {
-    showToast("Enter a three-letter ISO currency code, such as USD, ZAR, or ZWG.");
-    return;
-  }
-  try {
-    setSubmitting(submitButton, true, "Saving...");
-    await query("plan price save", supabase.rpc("save_plan_price", {
-      p_plan_code: $("#planPricePlan").value,
-      p_billing_period: $("#planPricePeriod").value,
-      p_currency: currency,
-      p_amount: Number($("#planPriceAmount").value),
-      p_extra_member_amount: Number($("#planPriceExtra").value || 0)
-    }));
-    $("#planPriceForm").reset();
-    $("#planPriceCurrency").value = currency;
-    $("#planPriceExtra").value = "0";
-    await loadAdminData("plans");
-    renderAdminPlans();
-    showToast("Plan price published. Earlier invoices keep their original price snapshots.");
-  } catch (error) {
-    showToast(error.message);
-  } finally {
-    setSubmitting(submitButton, false, "Save active price");
-  }
 }
 
 async function reviewSubscriptionPayment(paymentId, decision) {
@@ -6922,7 +6772,7 @@ function refreshAdminInvitationPlanFields() {
   if (!plan || !subscriptionCurrency) return;
   const currentCurrency = subscriptionCurrency.value;
   const pricedCurrencies = [...new Set(state.adminPlanPrices
-    .filter((price) => price.plan_id === plan.id && price.billing_period === period && price.is_active)
+    .filter((price) => price.plan_id === plan.id && price.billing_period === period && isCurrentPlanPrice(price))
     .map((price) => price.currency))];
   const allowedCurrencies = pricedCurrencies.length ? pricedCurrencies : currencyCatalogue().map(([code]) => code);
   populateCurrencySelect(subscriptionCurrency, allowedCurrencies.includes(currentCurrency) ? currentCurrency : (allowedCurrencies.includes("USD") ? "USD" : allowedCurrencies[0]), allowedCurrencies);
@@ -8969,8 +8819,6 @@ document.addEventListener("click", async (event) => {
     setWorkspaceCurrencySelected(removeWorkspaceCurrency.dataset.removeWorkspaceCurrency, false);
   }
 
-  const planDefinitionEdit = event.target.closest("[data-edit-plan-definition]");
-  if (planDefinitionEdit) editPlanDefinition(planDefinitionEdit.dataset.editPlanDefinition);
 
 
   const adminUserDetails = event.target.closest("[data-view-admin-user]");
@@ -9369,11 +9217,6 @@ $("#paymentForm").addEventListener("submit", protectSubmission(addPlatformPaymen
 $("#adminNoteForm").addEventListener("submit", protectSubmission(saveAdminNote));
 $("#adminSupportTicketForm").addEventListener("submit", protectSubmission(createAdminSupportTicket));
 $("#supportTicketForm").addEventListener("submit", protectSubmission(createUserSupportTicket));
-$("#planDefinitionForm").addEventListener("submit", protectSubmission(savePlanDefinition));
-$("#cancelPlanEditButton").addEventListener("click", resetPlanDefinitionForm);
-$('#businessBillingAdminPlan').addEventListener('change',fillBusinessBillingAdmin);
-$('#businessBillingAdminForm').addEventListener('submit',protectSubmission(saveBusinessBillingAdmin));
-$("#planPriceForm").addEventListener("submit", protectSubmission(savePlanPrice));
 $("#workspaceCurrencySettingsForm").addEventListener("submit", protectSubmission(saveWorkspaceCurrencySettings));
 $("#workspaceEnabledCurrencies").addEventListener("change", refreshWorkspaceCurrencyDependentOptions);
 $("#workspaceCurrencySearch").addEventListener("input", renderWorkspaceCurrencyPicker);

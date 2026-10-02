@@ -17,9 +17,9 @@ test("Cashbook is a published Personal-only navigation route", () => {
   assert.match(html, /data-family-panel="cashbook"/);
   assert.match(html, /data-family-tab="cashbook" data-personal-only/);
   assert.match(app, /element\.hidden = !personalWorkspace/);
-  assert.match(pwa, /const RELEASE = "4\.9\.27"/);
-  assert.match(html, /app\.js\?v=107/);
-  assert.match(html, /styles\.css\?v=74/);
+  assert.match(pwa, /const RELEASE = "4\.9\.28"/);
+  assert.match(html, /app\.js\?v=108/);
+  assert.match(html, /styles\.css\?v=75/);
 });
 
 test("Cashbook tables and reads are isolated to an active Personal owner", () => {

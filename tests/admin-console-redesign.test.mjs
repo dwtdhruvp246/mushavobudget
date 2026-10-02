@@ -65,7 +65,7 @@ test("admin users can be searched by identity, workspace, plan, and status", () 
 
 test("users, plan editors, finance settings, and enquiries are compact disclosures", () => {
   assert.match(source, /document\.createElement\("details"\)[\s\S]*article\.className = "admin-user-row"/);
-  assert.match(html, /class="admin-disclosure plan-definition-panel"/);
+  assert.match(html, /id="adminPlansWorkbench"/);
   assert.match(html, /class="admin-disclosure admin-finance-settings"/);
   assert.match(html, /class="record-list enquiry-list"/);
   assert.match(source, /article\.className = "record-card enquiry-card"/);
@@ -95,10 +95,9 @@ test("workspace type summaries separate active totals from paid access", () => {
   assert.match(summary, /\["free", "unconfigured", "legacy"\]/);
 });
 
-test("admin plan catalogue remains complete and precedes collapsed editors", () => {
-  const catalogueAt = html.indexOf('id="adminPlanList"');
-  const editorAt = html.indexOf('id="planDefinitionForm"');
-  assert.ok(catalogueAt > 0 && editorAt > catalogueAt);
-  assert.match(source, /state\.adminPlans\.forEach\(\(plan\) =>/);
-  assert.match(styles, /\.admin-plan-grid \{ grid-template-columns: repeat\(3,/);
+test("admin plans use a selected-plan workbench connected to protected RPCs", () => {
+  assert.match(html, /id="adminPlansWorkbench"/);
+  assert.match(source, /createAdminPlans/);
+  assert.match(source, /loadAdminData\("plans"\)/);
+  assert.match(styles, /#adminPlansWorkbench \.ap-layout/);
 });

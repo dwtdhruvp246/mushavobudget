@@ -9,9 +9,9 @@ const app = readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const launchLock = readFileSync(new URL("../supabase/migrations/20260927183000_business_stage_0_launch_lock.sql", import.meta.url), "utf8");
 
 test("Stage 1 has a dedicated Business application and all approved sections", () => {
-  assert.match(page, /business\.css\?v=10/);
-  assert.match(page, /business\.js\?v=11/);
-  assert.match(page, /Version 4\.9\.29/);
+  assert.match(page, /business\.css\?v=11/);
+  assert.match(page, /business\.js\?v=12/);
+  assert.match(page, /Version 4\.9\.30/);
   for (const section of [
     "overview", "activity", "bills", "approvals", "budgets", "reports", "team", "settings", "subscription"
   ]) {
@@ -26,9 +26,9 @@ test("Stage 1 has a dedicated Business application and all approved sections", (
   assert.match(styles, /@media \(max-width: 760px\)/);
 });
 
-test("mobile Business navigation is Overview, Activity, Add, Approvals, and More", () => {
+test("mobile Business navigation is Overview, Activity, Add, Approvals, and Menu", () => {
   const mobileNav = page.slice(page.indexOf('<nav class="mobile-bottom-nav"'), page.indexOf("</nav>", page.indexOf('<nav class="mobile-bottom-nav"')));
-  for (const label of ["Overview", "Activity", "Add", "Approvals", "More"]) {
+  for (const label of ["Overview", "Activity", "Add", "Approvals", "Menu"]) {
     assert.match(mobileNav, new RegExp(`>${label}<`));
   }
   assert.equal((mobileNav.match(/<small>/g) || []).length, 5);

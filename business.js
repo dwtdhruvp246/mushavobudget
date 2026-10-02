@@ -119,6 +119,8 @@ function showOnly(viewId) {
 
 function friendlyMessage(error) {
   const message = String(error?.message || error || "The Business workspace could not be opened.");
+  if (/INVALID_BUSINESS_LOGO/.test(message)) return "Upload a PNG, JPG or WebP logo up to 2 MB for this business.";
+  if (/INVALID_BUSINESS_BRANDING_NAME/.test(message)) return "Enter a business name between 2 and 120 characters.";
   if(/BUSINESS_BILLING_OWNER_REQUIRED/.test(message))return 'Only the Business Owner can view billing or submit a payment.';
   if(/BUSINESS_BILLING_SUSPENDED/.test(message))return 'This Business workspace or Owner account is suspended. An administrator must restore access; payment cannot remove suspension.';
   if(/BUSINESS_BILLING_NOT_CONFIGURED/.test(message))return 'Billing prices, seats or payment instructions are not configured for this cycle. Contact the administrator.';
@@ -210,6 +212,7 @@ function clearBusinessWorkspaceState() {
   state.workspaceEntitlement = null;
   state.workspaceSettings = null;
   state.businessProfile = null;
+  clearBusinessBranding();
   state.businessCategories = [];
   state.businessDimensions = [];
   state.setupDraft = null;
@@ -1704,6 +1707,8 @@ function renderBusinessSetup() {
   const profile = state.businessProfile;
   const settings = state.workspaceSettings;
   $("#setupBusinessName").value = profile?.trading_name || state.workspace?.name || "";
+  $("#brandingBusinessName").value = profile?.trading_name || state.workspace?.name || "";
+  renderBusinessBranding();
   $("#setupTimezone").value = settings?.timezone || "Africa/Harare";
   $("#setupPeriodDay").value = profile?.period_start_day || 1;
   $("#setupFinancialMonth").value = String(profile?.financial_year_start_month || 1);
@@ -1742,15 +1747,16 @@ async function withSetupBusy(action) {
   if (setupBusy || !businessOwnerCanSetUp()) return;
   const sequence = workspaceLoadSequence;
   setupBusy = true;
-  $("#businessOnboarding").querySelectorAll("button").forEach((button) => { button.disabled = true; });
+  const endOperation = window.MushavoPWA?.beginOperation?.();
+  $("#businessOnboarding").querySelectorAll("button,input,select").forEach((button) => { button.disabled = true; });
   $$("[data-workspace-selector]").forEach((select) => { select.disabled = true; });
   try { await action(); }
   catch (error) {
     if (sequence === workspaceLoadSequence) setSetupMessage(friendlyMessage(error), true);
   }
   finally {
-    setupBusy = false;
-    $("#businessOnboarding").querySelectorAll("button").forEach((button) => { button.disabled = false; });
+    setupBusy = false; endOperation?.();
+    $("#businessOnboarding").querySelectorAll("button,input,select").forEach((button) => { button.disabled = false; });
     renderWorkspaceSelectors();
   }
 }
@@ -1761,7 +1767,9 @@ async function saveBusinessBasics(event) {
     if (!chosenCurrencies.size) throw new Error("Select at least one currency.");
     const workspaceId = state.workspace.id;
     const sequence = workspaceLoadSequence;
-    const saved = await query("Business setup", supabase.rpc("save_business_setup", {
+    const logoPath = await uploadBrandingDraft("setup");
+    const saved = await query("Business setup", supabase.rpc("save_business_setup_with_branding", {
+      p_logo_path: logoPath,
       p_workspace_id: workspaceId,
       p_trading_name: $("#setupBusinessName").value.trim(),
       p_base_currency: $("#setupBaseCurrency").value,
@@ -1773,7 +1781,7 @@ async function saveBusinessBasics(event) {
       p_expected_settings_updated_at: state.workspaceSettings?.updated_at ?? null
     }));
     if (sequence !== workspaceLoadSequence || state.workspace?.id !== workspaceId) return;
-    state.businessProfile = saved.profile;
+    applySavedBusinessBranding(saved.profile, "setup");
     state.workspaceSettings = saved.settings;
     state.workspace.name = saved.profile.trading_name;
     renderBusinessSetup();
@@ -1907,7 +1915,145 @@ async function finishBusinessSetup() {
   });
 }
 
+const BUSINESS_LOGO_BUCKET = 'business-logos';
+let brandingBusy = false;
+let brandingLoadKey = null;
+const brandingDrafts = { setup: { token: 0 }, settings: { token: 0 } };
+
+function businessInitials(name) {
+  return String(name || 'Business').trim().split(/\s+/u).slice(0, 2).map(word => Array.from(word)[0] || '').join('').toLocaleUpperCase();
+}
+function paintBusinessMark(node, name, url) {
+  node.replaceChildren();
+  if (!url) { node.textContent = businessInitials(name); return; }
+  const img = document.createElement('img'); img.alt = ''; img.src = url;
+  img.addEventListener('error', () => { if (node.contains(img)) node.textContent = businessInitials(name); }, { once: true });
+  node.append(img);
+}
+function resetBrandingDraft(scope) {
+  const previous = brandingDrafts[scope];
+  if (previous.preview) URL.revokeObjectURL(previous.preview);
+  brandingDrafts[scope] = { token: previous.token + 1 };
+  const input = $(`[data-logo-input="${scope}"]`); if (input) input.value = '';
+}
+function clearBusinessBranding() {
+  resetBrandingDraft('setup'); resetBrandingDraft('settings');
+  state.businessLogo = null; brandingLoadKey = null;
+  setClaimMessage('#brandingMessage');
+  for (const scope of ['setup','settings']) setClaimMessage(`[data-logo-message="${scope}"]`);
+  $$('[data-business-name]').forEach(node => { node.textContent = 'Business'; });
+  $$('[data-business-mark],[data-logo-preview]').forEach(node => node.replaceChildren());
+}
+function renderBusinessBranding() {
+  const name = state.businessProfile?.trading_name || state.workspace?.name || 'Business';
+  const path = !state.locked && state.businessProfile?.logo_storage_path;
+  const cached = state.businessLogo;
+  const url = cached?.workspaceId === state.workspace?.id && cached.path === path ? cached.url : null;
+  $$('[data-business-name]').forEach(node => { node.textContent = name; node.title = name; });
+  $$('[data-business-mark]').forEach(node => paintBusinessMark(node, name, url));
+  for (const scope of ['setup', 'settings']) {
+    const draft = brandingDrafts[scope];
+    const node = $(`[data-logo-preview="${scope}"]`);
+    if (node) paintBusinessMark(node, name, draft.remove ? null : draft.preview || url);
+    const remove = $(`[data-logo-remove="${scope}"]`);
+    if (remove) remove.disabled = brandingBusy || setupBusy || !(draft.file || path) || draft.remove;
+  }
+  $('#businessBrandingForm')?.classList.toggle('hidden', !businessOwnerCanSetUp());
+  $$('[data-menu-role]').forEach(node => { node.textContent = formatRole(roleForWorkspace(state.workspace)); });
+  $$('[data-menu-status]').forEach(node => { node.textContent = state.locked ? 'Access limited' : 'Active'; });
+  if (path && (!url || cached.expiresAt < Date.now()) && (cached?.failedPath !== path || cached.expiresAt < Date.now())) void refreshBusinessLogo(path);
+}
+async function refreshBusinessLogo(path) {
+  const workspaceId = state.workspace?.id, sequence = workspaceLoadSequence, userId = state.session?.user?.id;
+  const key = `${userId}:${sequence}:${workspaceId}:${path}`;
+  if (brandingLoadKey === key) return;
+  brandingLoadKey = key;
+  try {
+    const signed = await query('Business logo', supabase.storage.from(BUSINESS_LOGO_BUCKET).createSignedUrl(path, 600));
+    if (sequence !== workspaceLoadSequence || userId !== state.session?.user?.id || state.workspace?.id !== workspaceId || state.businessProfile?.logo_storage_path !== path) return;
+    state.businessLogo = { workspaceId, path, url: signed.signedUrl, expiresAt: Date.now() + 540000 };
+  } catch {
+    if (sequence !== workspaceLoadSequence || state.workspace?.id !== workspaceId) return;
+    state.businessLogo = { workspaceId, path, url: null, failedPath: path, expiresAt: Date.now() + 60000 };
+  } finally { if (brandingLoadKey === key) brandingLoadKey = null; }
+  if (sequence === workspaceLoadSequence && state.workspace?.id === workspaceId) renderBusinessBranding();
+}
+async function chooseBusinessLogo(scope) {
+  const input = $(`[data-logo-input="${scope}"]`), file = input.files?.[0];
+  if (!file) return;
+  const sequence = workspaceLoadSequence, token = ++brandingDrafts[scope].token;
+  try {
+    if (!businessOwnerCanSetUp()) throw new Error('BUSINESS_ACTIVE_OWNER_REQUIRED');
+    if (!['image/png','image/jpeg','image/webp'].includes(file.type) || file.size < 1 || file.size > 2097152) throw new Error('Choose a PNG, JPG or WebP image up to 2 MB.');
+    const bitmap = await createImageBitmap(file);
+    const valid = bitmap.width > 0 && bitmap.height > 0 && bitmap.width <= 4096 && bitmap.height <= 4096;
+    bitmap.close();
+    if (!valid) throw new Error('Use a logo no larger than 4096 × 4096 pixels.');
+    if (sequence !== workspaceLoadSequence || token !== brandingDrafts[scope].token) return;
+    resetBrandingDraft(scope);
+    brandingDrafts[scope].file = file; brandingDrafts[scope].preview = URL.createObjectURL(file);
+    setClaimMessage(`[data-logo-message="${scope}"]`, 'Logo selected. Save your business details to apply it.');
+    renderBusinessBranding();
+  } catch (error) {
+    if (sequence !== workspaceLoadSequence || token !== brandingDrafts[scope].token) return;
+    input.value = ''; setClaimMessage(`[data-logo-message="${scope}"]`, friendlyMessage(error), true);
+  }
+}
+async function uploadBrandingDraft(scope) {
+  const draft = brandingDrafts[scope], workspaceId = state.workspace.id, userId = state.session.user.id, sequence = workspaceLoadSequence;
+  if (draft.remove) return null;
+  if (!draft.file) return state.businessProfile?.logo_storage_path || null;
+  if (draft.uploadedPath) return draft.uploadedPath;
+  const extension = { 'image/png':'png','image/jpeg':'jpg','image/webp':'webp' }[draft.file.type];
+  const path = `${workspaceId}/${userId}/${crypto.randomUUID()}.${extension}`;
+  await query('Upload Business logo', supabase.storage.from(BUSINESS_LOGO_BUCKET).upload(path, draft.file, { contentType: draft.file.type, upsert: false }));
+  if (sequence !== workspaceLoadSequence || state.workspace?.id !== workspaceId || state.session?.user?.id !== userId) throw new Error('The workspace changed. Open its settings and try again.');
+  draft.uploadedPath = path;
+  return path;
+}
+function applySavedBusinessBranding(profile, scope) {
+  const previousPath = state.businessProfile?.logo_storage_path;
+  state.businessProfile = profile; state.workspace.name = profile.trading_name;
+  state.workspaces = state.workspaces.map(workspace => workspace.id === profile.workspace_id ? { ...workspace, name: profile.trading_name } : workspace);
+  state.businessLogo = null; resetBrandingDraft(scope);
+  window.MushavoPWA?.markFormClean?.(scope === 'setup' ? '#businessBasicsForm' : '#businessBrandingForm');
+  setClaimMessage(`[data-logo-message="${scope}"]`);
+  renderIdentity(); renderWorkspaceSelectors();
+  if (previousPath && previousPath !== profile.logo_storage_path) {
+    // Never remove a newly uploaded file after an ambiguous submission response.
+    // Only clean the old, unlinked file after a confirmed successful save.
+    void supabase.storage.from(BUSINESS_LOGO_BUCKET).remove([previousPath]).catch(() => {});
+  }
+}
+async function saveBusinessIdentity(event) {
+  event.preventDefault();
+  if (brandingBusy || !businessOwnerCanSetUp()) return;
+  const sequence = workspaceLoadSequence, workspaceId = state.workspace.id, userId = state.session.user.id;
+  brandingBusy = true; const endOperation = window.MushavoPWA?.beginOperation?.();
+  $('#businessBrandingForm').querySelectorAll('button,input').forEach(node => { node.disabled = true; });
+  try {
+    const expectedVersion = state.businessProfile.version, name = $('#brandingBusinessName').value.trim();
+    const path = await uploadBrandingDraft('settings');
+    const saved = await query('Save Business identity', supabase.rpc('save_business_branding', { p_workspace_id: workspaceId, p_trading_name: name, p_logo_path: path, p_expected_version: expectedVersion }));
+    if (sequence !== workspaceLoadSequence || state.workspace?.id !== workspaceId || state.session?.user?.id !== userId) return;
+    applySavedBusinessBranding(saved, 'settings');
+    setClaimMessage('#brandingMessage', 'Business name and logo saved.');
+  } catch (error) { if (sequence === workspaceLoadSequence) setClaimMessage('#brandingMessage', friendlyMessage(error), true); }
+  finally {
+    brandingBusy = false; endOperation?.();
+    $('#businessBrandingForm').querySelectorAll('button,input').forEach(node => { node.disabled = false; });
+    if (sequence === workspaceLoadSequence) renderBusinessBranding();
+  }
+}
+function openBusinessMenu() {
+  renderBusinessBranding();
+  const dialog = $('#businessMoreDialog');
+  $$('[data-open-more]').forEach(button => button.setAttribute('aria-expanded','true'));
+  if (!dialog.open) { dialog.showModal(); dialog.querySelector('.menu-scroll').scrollTop = 0; }
+}
+
 function renderIdentity() {
+  renderBusinessBranding();
   const role = roleForWorkspace(state.workspace);
   const fullName = state.profile?.full_name || state.session?.user?.user_metadata?.full_name || state.session?.user?.email || "Business member";
   const initials = fullName.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "MB";
@@ -2354,9 +2500,9 @@ function renderRoute() {
   $$("[data-business-panel]").forEach((panel) => {
     panel.classList.toggle("hidden", state.locked && !state.lockOwner ? true : panel.dataset.businessPanel !== tab);
   });
-  $$("[data-business-nav]").forEach((link) => link.classList.toggle("active", link.dataset.businessNav === tab));
+  $$("[data-business-nav]").forEach((link) => { link.classList.toggle("active", link.dataset.businessNav === tab); if (link.dataset.businessNav === tab) link.setAttribute("aria-current", "page"); else link.removeAttribute("aria-current"); });
   if (window.location.hash !== `#business/${tab}`) setWorkspaceUrl(state.workspace.id);
-  document.title = `${title} | Mushavo Budget Business`;
+  document.title = `${title} | ${state.businessProfile?.trading_name || state.workspace?.name || "Business"} · Mushavo Budget`;
   if (tab==='reports' && !reportAttempted && !reportLoading && claimPermission('reports.view')) refreshBusinessReports();
 }
 
@@ -2687,7 +2833,19 @@ $("[data-open-setup-draft]").addEventListener("click", () => {
   renderRoute();
   showSetupStep("first");
 });
-$$('[data-open-more]').forEach((button) => button.addEventListener("click", () => $("#businessMoreDialog").showModal()));
+$$('[data-open-more]').forEach((button) => button.addEventListener("click", () => openBusinessMenu()));
+$('#businessBrandingForm').addEventListener('submit', saveBusinessIdentity);
+$$('[data-logo-input]').forEach(input => input.addEventListener('change', () => chooseBusinessLogo(input.dataset.logoInput)));
+$$('[data-logo-remove]').forEach(button => button.addEventListener('click', () => {
+  const scope = button.dataset.logoRemove;
+  if (!businessOwnerCanSetUp() || brandingBusy || setupBusy) return;
+  $(`[data-logo-input="${scope}"]`).dispatchEvent(new Event('change', { bubbles: true }));
+  resetBrandingDraft(scope); brandingDrafts[scope].remove = true;
+  setClaimMessage(`[data-logo-message="${scope}"]`, 'Logo will be removed when you save.'); renderBusinessBranding();
+}));
+$$('[data-open-more]').forEach(button => { button.setAttribute('aria-controls','businessMoreDialog'); button.setAttribute('aria-expanded','false'); button.setAttribute('aria-haspopup','dialog'); });
+$('#businessMoreDialog').addEventListener('close', () => $$('[data-open-more]').forEach(button => button.setAttribute('aria-expanded','false')));
+$('#businessMoreDialog').addEventListener('click', event => { const box = event.currentTarget.getBoundingClientRect(); if (event.target === event.currentTarget && (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom)) event.currentTarget.close(); });
 $$('[data-dialog-route]').forEach((link) => link.addEventListener("click", () => $("#businessMoreDialog").close()));
 $$('[data-sign-out]').forEach((button) => button.addEventListener("click", signOut));
 $$('[data-leave-business]').forEach((link) => link.addEventListener("click", leaveBusiness));
@@ -2808,7 +2966,7 @@ function stopBusinessRealtime() {
   $('#businessLiveBanner')?.classList.add('hidden');
 }
 function businessLiveEditing() {
-  return setupBusy||teamBusy||claimBusy||billBusy||incomeBusy||workflowBusy||billingBusy||reportExportBusy||setupOpen
+  return brandingBusy||setupBusy||teamBusy||claimBusy||billBusy||incomeBusy||workflowBusy||billingBusy||reportExportBusy||setupOpen
     ||Boolean($$('dialog[open]').length)||Boolean(window.MushavoPWA?.hasUnsavedChanges?.());
 }
 function queueBusinessLiveRefresh(access=false) {
@@ -2909,6 +3067,7 @@ async function refreshBusinessAccessState() {
     if(previousRole!==membership.role){await selectBusinessWorkspace(workspaceId);return;}
     if(!businessBillingOwner()){state.billingSnapshot=null;invalidateBusinessBillingQuote();if($('#businessBillingDialog').open)$('#businessBillingDialog').close();renderBusinessBilling();}
     enforceBusinessExpiry();
+    renderBusinessBranding();
     if(wasLocked&&!state.locked){await selectBusinessWorkspace(workspaceId);return;}
     if(businessBillingOwner()&&state.tab==='subscription')await refreshBusinessBilling();
   }catch(error){ /* Server permissions still apply during a failed or offline access refresh. */ }

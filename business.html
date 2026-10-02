@@ -14,11 +14,11 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="/business.css?v=10" />
+    <link rel="stylesheet" href="/business.css?v=11" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <script src="/config.js?v=27"></script>
-    <script src="/pwa.js?v=69" defer></script>
-    <script type="module" src="/business.js?v=11"></script>
+    <script src="/pwa.js?v=70" defer></script>
+    <script type="module" src="/business.js?v=12"></script>
   </head>
   <body>
     <a class="skip-link" href="#businessMain">Skip to Business content</a>
@@ -87,18 +87,16 @@
     <div id="businessApp" class="business-shell hidden">
       <header class="mobile-header">
         <a class="mobile-brand" href="#business/overview" aria-label="Business overview">
-          <span class="brand-icon" aria-hidden="true">MB</span>
-          <span><strong>Mushavo</strong><small>Business</small></span>
+          <span class="company-mark" data-business-mark aria-hidden="true">B</span><span class="company-label"><strong data-business-name>Business</strong><small>Business workspace</small><small class="powered-by">Powered by Mushavo Budget</small></span>
         </a>
         <button class="profile-button" type="button" data-open-more aria-label="Open Business menu">
-          <span data-user-initials>MB</span>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </header>
 
       <aside class="business-sidebar" aria-label="Business workspace navigation">
-        <a class="sidebar-brand" href="#business/overview" aria-label="Mushavo Budget Business overview">
-          <img src="/assets/mushavo-budget-logo.png" alt="" width="112" height="76" />
-          <span><strong>Mushavo</strong><small>Business workspace</small></span>
+        <a class="sidebar-brand" href="#business/overview" aria-label="Business overview">
+          <span class="company-mark" data-business-mark aria-hidden="true">B</span><span class="company-label"><strong data-business-name>Business</strong><small>Business workspace</small><small class="powered-by">Powered by Mushavo Budget</small></span>
         </a>
 
         <div class="workspace-switcher">
@@ -124,7 +122,7 @@
         <footer class="sidebar-footer">
           <a href="/app.html#personal/dashboard" data-leave-business>Personal &amp; Family</a>
           <button type="button" data-sign-out>Sign out</button>
-          <small>Version 4.9.29</small>
+          <small>Version 4.9.30</small>
         </footer>
       </aside>
 
@@ -141,10 +139,7 @@
           </div>
         </header>
 
-        <aside class="stage-banner" aria-label="Business release status">
-          <span>Business pilot</span>
-          <p>Business pilot testing is underway. Public subscriptions remain closed until the pilot checks are complete.</p>
-        </aside>
+
 
         <aside id="businessLiveBanner" class="live-update-banner hidden" role="status"><p id="businessLiveMessage"></p><button id="refreshBusinessLive" class="button secondary" type="button">Refresh updates</button></aside>
 
@@ -171,6 +166,7 @@
             <div class="card-heading"><div><p class="eyebrow">Step 1</p><h3>Business details &amp; working currency</h3><p>Choose the currency for reports and any other currencies you will record.</p></div></div>
             <form id="businessBasicsForm" class="onboarding-form">
               <label class="field-wide">Business name<input id="setupBusinessName" type="text" maxlength="120" minlength="2" required autocomplete="organization" placeholder="For example, Mushavo Trading" /></label>
+              <div class="field-wide branding-upload"><div class="branding-preview company-mark" data-logo-preview="setup" aria-hidden="true">B</div><div><label for="setupBusinessLogo">Business logo <small>(optional)</small></label><input id="setupBusinessLogo" data-logo-input="setup" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="setupLogoHelp" /><small id="setupLogoHelp">PNG, JPG or WebP · up to 2 MB. A square logo works best.</small><button class="button secondary branding-remove" type="button" data-logo-remove="setup">Remove logo</button><p class="team-message hidden" role="status" data-logo-message="setup"></p></div></div>
               <div class="field-wide"><label for="setupCurrencySearch">Available currencies</label><input id="setupCurrencySearch" type="search" placeholder="Search currency or code" /><div id="setupCurrencies" class="currency-choices" aria-label="Enabled business currencies"></div><small>Select at least one; your base currency must be among those selected.</small></div>
               <label>Base and reporting currency<select id="setupBaseCurrency" required></select></label>
               <label>Timezone<input id="setupTimezone" type="text" list="setupTimezones" required placeholder="Africa/Harare" /><datalist id="setupTimezones"></datalist></label>
@@ -328,7 +324,7 @@
 
           <section class="business-panel hidden" data-business-panel="settings">
             <div class="section-heading"><div><p class="eyebrow">Workspace setup</p><h2>Settings</h2><p>Business identity, reporting preferences, notifications, and security.</p></div><button id="editBusinessSetup" class="button primary hidden" type="button">Edit business setup</button></div>
-            <div class="settings-grid"><article class="content-card"><h3>Business details</h3><dl class="detail-list"><div><dt>Workspace</dt><dd id="settingsWorkspaceName">—</dd></div><div><dt>Your role</dt><dd id="settingsUserRole">—</dd></div><div><dt>Status</dt><dd id="settingsWorkspaceStatus">—</dd></div></dl></article><article class="content-card"><h3>Regional settings</h3><dl class="detail-list"><div><dt>Base currency</dt><dd id="settingsCurrency">—</dd></div><div><dt>Enabled currencies</dt><dd id="settingsEnabledCurrencies">—</dd></div><div><dt>Locale</dt><dd id="settingsLocale">—</dd></div><div><dt>Timezone</dt><dd id="settingsTimezone">—</dd></div><div><dt>Financial year starts</dt><dd id="settingsFinancialMonth">—</dd></div><div><dt>Period starts on</dt><dd id="settingsPeriodDay">—</dd></div></dl></article></div>
+            <div class="settings-grid"><article class="content-card"><h3>Business details</h3><form id="businessBrandingForm" class="onboarding-form branding-form hidden"><label class="field-wide">Business name<input id="brandingBusinessName" minlength="2" maxlength="120" required autocomplete="organization" /></label><div class="field-wide branding-upload"><div class="branding-preview company-mark" data-logo-preview="settings" aria-hidden="true">B</div><div><label for="settingsBusinessLogo">Business logo <small>(optional)</small></label><input id="settingsBusinessLogo" data-logo-input="settings" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="settingsLogoHelp" /><small id="settingsLogoHelp">PNG, JPG or WebP · up to 2 MB. A square logo works best.</small><button class="button secondary branding-remove" type="button" data-logo-remove="settings">Remove logo</button><p class="team-message hidden" role="status" data-logo-message="settings"></p></div></div><p class="branding-caption field-wide">Your business identity appears across this workspace for all members.</p><div class="field-wide"><button class="button primary" type="submit">Save business identity</button></div><p id="brandingMessage" class="team-message field-wide hidden" role="status"></p></form><dl class="detail-list"><div><dt>Workspace</dt><dd id="settingsWorkspaceName">—</dd></div><div><dt>Your role</dt><dd id="settingsUserRole">—</dd></div><div><dt>Status</dt><dd id="settingsWorkspaceStatus">—</dd></div></dl></article><article class="content-card"><h3>Regional settings</h3><dl class="detail-list"><div><dt>Base currency</dt><dd id="settingsCurrency">—</dd></div><div><dt>Enabled currencies</dt><dd id="settingsEnabledCurrencies">—</dd></div><div><dt>Locale</dt><dd id="settingsLocale">—</dd></div><div><dt>Timezone</dt><dd id="settingsTimezone">—</dd></div><div><dt>Financial year starts</dt><dd id="settingsFinancialMonth">—</dd></div><div><dt>Period starts on</dt><dd id="settingsPeriodDay">—</dd></div></dl></article></div>
           </section>
 
           <section class="business-panel hidden" data-business-panel="subscription">
@@ -349,7 +345,7 @@
         <a href="#business/activity" data-business-nav="activity"><span aria-hidden="true">↕</span><small>Activity</small></a>
         <button class="mobile-add" type="button" data-open-add><span aria-hidden="true">+</span><small>Add</small></button>
         <a href="#business/approvals" data-business-nav="approvals"><span aria-hidden="true">✓</span><small>Approvals</small></a>
-        <button type="button" data-open-more><span aria-hidden="true">•••</span><small>More</small></button>
+        <button type="button" data-open-more><span aria-hidden="true">•••</span><small>Menu</small></button>
       </nav>
     </div>
 
@@ -531,20 +527,13 @@
       </section>
     </dialog>
 
-    <dialog id="businessMoreDialog" class="more-dialog">
-      <form method="dialog">
-        <div class="dialog-heading"><div><p class="eyebrow">Business menu</p><h2>More</h2></div><button class="dialog-close" value="cancel" aria-label="Close">×</button></div>
-        <label for="businessWorkspaceSelectorMobile">Selected business</label>
-        <select id="businessWorkspaceSelectorMobile" data-workspace-selector></select>
-        <nav aria-label="More Business sections">
-          <a href="#business/bills" data-dialog-route="bills">Bills &amp; Recurring <span>→</span></a>
-          <a href="#business/budgets" data-dialog-route="budgets">Budgets <span>→</span></a>
-          <a href="#business/reports" data-dialog-route="reports">Reports <span>→</span></a>
-          <a href="#business/team" data-dialog-route="team">Team <span>→</span></a>
-          <a href="#business/settings" data-dialog-route="settings">Settings <span>→</span></a>
-          <a href="#business/subscription" data-dialog-route="subscription">Subscription &amp; Billing <span>→</span></a>
-        </nav>
-        <div class="more-actions"><a href="/app.html#personal/dashboard" data-leave-business>Personal &amp; Family</a><button type="button" data-sign-out>Sign out</button></div>
+    <dialog id="businessMoreDialog" class="more-dialog" aria-labelledby="businessMenuTitle">
+      <form method="dialog" class="business-menu-shell">
+        <div class="menu-top"><h2 id="businessMenuTitle">Workspace menu</h2><button class="dialog-close" value="cancel" aria-label="Close menu" autofocus>×</button></div>
+        <div class="menu-scroll"><div class="menu-identity"><span class="company-mark" data-business-mark aria-hidden="true">B</span><span class="company-label"><strong data-business-name>Business</strong><small>Business workspace</small><small class="powered-by">Powered by Mushavo Budget</small></span></div>
+          <div class="menu-workspace"><label for="businessWorkspaceSelectorMobile">Switch business</label><select id="businessWorkspaceSelectorMobile" data-workspace-selector></select><div class="workspace-meta"><span class="role-badge" data-menu-role>Member</span><span class="status-badge" data-menu-status>Active</span></div></div>
+          <nav aria-label="Business sections"><p class="menu-group-label">Workspace</p><a href="#business/overview" data-dialog-route="overview" data-business-nav="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 3l9 8M5 10v10h5v-6h4v6h5V10"/></svg><span>Overview</span></a><a href="#business/activity" data-dialog-route="activity" data-business-nav="activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5h14M5 12h14M5 19h14"/></svg><span>Activity & transactions</span></a><a href="#business/bills" data-dialog-route="bills" data-business-nav="bills"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3M9 7h6M9 11h6"/></svg><span>Bills & recurring</span></a><a href="#business/approvals" data-dialog-route="approvals" data-business-nav="approvals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>Requests & approvals</span></a><a href="#business/budgets" data-dialog-route="budgets" data-business-nav="budgets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10h4v10M10 20V4h4v16M16 20v-7h4v7"/></svg><span>Budgets</span></a><a href="#business/reports" data-dialog-route="reports" data-business-nav="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3v17h17M7 15l4-5 4 2 5-7"/></svg><span>Reports</span></a><p class="menu-group-label">Management</p><a href="#business/team" data-dialog-route="team" data-business-nav="team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-3a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v3M15 4a4 4 0 0 1 0 8M22 21v-3a4 4 0 0 0-3-4M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0"/></svg><span>Team</span></a><a href="#business/settings" data-dialog-route="settings" data-business-nav="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg><span>Settings</span></a><a href="#business/subscription" data-dialog-route="subscription" data-business-nav="subscription"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18v13H3V6M3 10h18M6 15h4"/></svg><span>Subscription & billing</span></a></nav></div>
+        <footer class="more-actions"><a href="/app.html#personal/dashboard" data-leave-business>← Personal &amp; Family</a><button type="button" data-sign-out>Sign out</button></footer>
       </form>
     </dialog>
   </body>

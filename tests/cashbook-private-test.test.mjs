@@ -17,7 +17,7 @@ test("Cashbook is a published Personal-only navigation route", () => {
   assert.match(html, /data-family-panel="cashbook"/);
   assert.match(html, /data-family-tab="cashbook" data-personal-only/);
   assert.match(app, /element\.hidden = !personalWorkspace/);
-  assert.match(pwa, /const RELEASE = "4\.9\.29"/);
+  assert.match(pwa, /const RELEASE = "4\.9\.30"/);
   assert.match(html, /app\.js\?v=109/);
   assert.match(html, /styles\.css\?v=75/);
 });

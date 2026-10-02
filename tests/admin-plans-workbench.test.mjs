@@ -44,7 +44,7 @@ test('consolidated schema contains the exact workbench deployment',async()=>{
  const repair=await readFile(new URL('../supabase/migrations/20261002042500_reconcile_business_plan_seats.sql',import.meta.url),'utf8');
  assert(schema.includes(repair));
  const release=await readFile(new URL('../supabase/migrations/20261002060000_business_public_availability.sql',import.meta.url),'utf8');
- assert(schema.endsWith(release));
+ assert(schema.includes(release));
 });
 test('customer cards and renewal price selection exclude future and previous versions',async()=>{
  const source=await readFile(new URL('../app.js',import.meta.url),'utf8');

@@ -17,14 +17,14 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="styles.css?v=74" />
+    <link rel="stylesheet" href="styles.css?v=75" />
     <link rel="stylesheet" href="/pwa-update.css?v=1" />
     <link rel="stylesheet" href="/pwa-install.css?v=1" />
     <script src="config.js?v=27"></script>
-    <script src="/pwa.js?v=67" defer></script>
+    <script src="/pwa.js?v=68" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=107"></script>
+    <script type="module" src="app.js?v=108"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -175,7 +175,7 @@
             <div class="sidebar-footer">
               <button type="button" data-admin-tab="support">Contact support</button>
               <button id="adminSignOutButton" type="button">Sign out</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.27</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.28</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>
@@ -225,64 +225,7 @@
           </section>
 
           <section class="screen-panel hidden" data-admin-panel="plans">
-            <header class="topbar">
-              <div><p class="eyebrow">Plan catalogue</p><h2>Public plans, access, and prices</h2><p class="muted-copy">Manage what appears on the public Pricing page and in workspace subscriptions. Earlier invoices keep their original price snapshots.</p></div>
-            </header>
-            <section class="ledger-panel admin-plan-catalogue-panel">
-              <div class="panel-heading"><p class="eyebrow">Current catalogue</p><h3>All available plans</h3><p class="muted-copy">Every Personal, Family, and Business plan remains visible. Publication and availability states are shown on each card.</p></div>
-              <div id="adminPlanList" class="plan-card-grid admin-plan-grid"></div>
-            </section>
-            <details class="admin-disclosure plan-definition-panel">
-              <summary><span><strong>Plan editor</strong><small>Add a plan or edit its features and publication settings.</small></span></summary>
-              <section class="ledger-panel">
-              <div class="panel-heading inline"><div><p class="eyebrow">Plan editor</p><h3 id="planDefinitionTitle">Add a plan</h3><p class="muted-copy">Plan codes become permanent after saving because subscriptions and invoices use them.</p></div><button id="cancelPlanEditButton" class="hidden" type="button">Cancel edit</button></div>
-              <form id="planDefinitionForm" class="form-grid plan-definition-form">
-                <input id="planDefinitionId" type="hidden" />
-                <label for="planDefinitionName">Plan name<input id="planDefinitionName" maxlength="80" required placeholder="Household Plus" /></label>
-                <label for="planDefinitionCode">Permanent plan code<input id="planDefinitionCode" maxlength="40" pattern="[a-z][a-z0-9_]*" required placeholder="household_plus" /></label>
-                <label for="planDefinitionType">Workspace type<select id="planDefinitionType" required><option value="personal">Personal</option><option value="household">Family</option><option value="business">Business</option></select></label>
-                <label for="planDefinitionSeats">People included<input id="planDefinitionSeats" type="number" min="1" max="100" step="1" value="1" required /><small>Required before a plan can be made available for purchase.</small></label>
-                <label for="planDefinitionPaymentLimit">Active payment limit<input id="planDefinitionPaymentLimit" type="number" min="1" max="100000" step="1" placeholder="Leave blank for unlimited" /></label>
-                <label for="planDefinitionSort">Display order<input id="planDefinitionSort" type="number" min="0" max="10000" step="1" value="0" required /></label>
-                <label class="full" for="planDefinitionDescription">Application description<textarea id="planDefinitionDescription" maxlength="500" required placeholder="Describe the access this plan provides inside the application."></textarea></label>
-                <label class="full" for="planDefinitionMarketing">Public pricing summary<textarea id="planDefinitionMarketing" maxlength="500" required placeholder="A short, clear description for visitors comparing plans."></textarea></label>
-                <label class="full" for="planDefinitionCta">Public button text<input id="planDefinitionCta" maxlength="60" value="Choose plan" required /></label>
-                <fieldset class="full plan-feature-fieldset"><legend>Included features</legend><div class="plan-feature-options">
-                  <label><input type="checkbox" name="planFeature" value="payments.recurring" /> Recurring payments</label>
-                  <label><input type="checkbox" name="planFeature" value="receipts.upload" /> Receipt uploads</label>
-                  <label><input type="checkbox" name="planFeature" value="finance.analytics" /> Finance analytics</label>
-                  <label><input type="checkbox" name="planFeature" value="reports.advanced" /> Advanced reports</label>
-                  <label><input type="checkbox" name="planFeature" value="export.csv" /> CSV export</label>
-                  <label><input type="checkbox" name="planFeature" value="export.pdf" /> Print / PDF</label>
-                  <label><input type="checkbox" name="planFeature" value="members.invite" /> Member invitations</label>
-                  <label><input type="checkbox" name="planFeature" value="approvals.enabled" /> Approval controls</label>
-                  <label><input type="checkbox" name="planFeature" value="audit.full_history" /> Full audit history</label>
-                </div></fieldset>
-                <div class="full plan-publication-options">
-                  <label class="checkbox-label"><input id="planDefinitionActive" type="checkbox" checked /> Active in the application</label>
-                  <label class="checkbox-label"><input id="planDefinitionPublic" type="checkbox" /> Show on public Pricing page</label>
-                  <label class="checkbox-label"><input id="planDefinitionFeatured" type="checkbox" /> Mark as recommended</label>
-                  <label class="checkbox-label"><input id="planDefinitionPurchasable" type="checkbox" checked /> Available for purchase</label>
-                </div>
-                <button id="planDefinitionSubmit" class="primary full" type="submit">Save plan</button>
-              </form>
-              </section>
-            </details>
-            <details class="admin-disclosure">
-              <summary><span><strong>Price editor</strong><small>Publish a new effective monthly or annual price.</small></span></summary>
-              <section class="tool-panel" aria-labelledby="planPriceTitle">
-                <div class="panel-heading"><p class="eyebrow">Price editor</p><h3 id="planPriceTitle">Publish a plan price</h3></div>
-                <form id="planPriceForm" class="form-grid">
-                  <label for="planPricePlan">Plan<select id="planPricePlan" required><option value="personal">Personal</option><option value="household">Household</option><option value="business">Business</option></select></label>
-                  <label for="planPricePeriod">Billing period<select id="planPricePeriod" required><option value="monthly">Monthly</option><option value="annual">Annual</option></select></label>
-                  <label for="planPriceCurrency">Currency<input id="planPriceCurrency" maxlength="3" value="USD" required /></label>
-                  <label for="planPriceAmount">Base price<input id="planPriceAmount" type="number" min="0.01" step="0.01" required /></label>
-                  <label class="full" for="planPriceExtra">Additional member price per month<input id="planPriceExtra" type="number" min="0" step="0.01" value="0" required /><small>For annual plans, this monthly amount is multiplied by 12. Household charges from the 5th total person. Business included seats and additional-seat pricing remain configurable until launch.</small></label>
-                  <button class="primary full" type="submit">Save active price</button>
-                </form>
-              </section>
-            </details>
-            <details class="admin-disclosure" id="businessBillingAdminPanel"><summary><span><strong>Business pilot billing</strong><small>Configure private prices and seats for existing Business workspaces. Public purchase stays closed.</small></span></summary><section class="ledger-panel"><p id="businessBillingAdminMessage" class="muted-copy"></p><form id="businessBillingAdminForm" class="form-grid"><label>Business plan<select id="businessBillingAdminPlan" required></select></label><label>Currency<input id="businessBillingAdminCurrency" maxlength="3" value="USD" required /></label><label>Included seats<input id="businessBillingAdminSeats" type="number" min="1" max="100" /></label><label>Monthly base price<input id="businessBillingAdminMonthlyBase" type="number" min="0" step="0.01" /></label><label>Annual base price<input id="businessBillingAdminAnnualBase" type="number" min="0" step="0.01" /></label><label>Monthly price per extra seat<input id="businessBillingAdminMonthlySeat" type="number" min="0" step="0.01" /></label><label>Annual price per extra seat<input id="businessBillingAdminAnnualSeat" type="number" min="0" step="0.01" /></label><label class="full">Payment instructions<textarea id="businessBillingAdminInstructions" maxlength="4000"></textarea></label><label class="full"><input id="businessBillingAdminEnabled" type="checkbox" /> Enable billing for existing pilot Business workspaces</label><p class="muted-copy full">Leave undecided prices blank. Enter a full-cycle additional-seat price separately for monthly and annual plans. Mid-term seats use exact-date proration. Saving settings does not grant seats or enable public Business purchases.</p><button class="primary full" type="submit">Save pilot billing settings</button></form></section></details>
+            <div id="adminPlansWorkbench"></div>
           </section>
 
           <section class="screen-panel hidden" data-admin-panel="households">
@@ -626,7 +569,7 @@
             </div>
             <div class="sidebar-footer">
               <button type="button" data-family-tab="support">Contact support</button>
-              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.27</span></small>
+              <small>2026 Mushavo Budget · <span data-pwa-release>Version 4.9.28</span></small>
             </div>
           </header>
           <button class="drawer-backdrop hidden" type="button" aria-label="Close menu" data-close-drawer></button>

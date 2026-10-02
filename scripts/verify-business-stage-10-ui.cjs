@@ -51,24 +51,5 @@ const source=readFileSync(path.join(root,'business.js'),'utf8').replace(/^import
     console.log(`PASS ${width}px: Owner quotes/payment/proof, unchanged pending capacity, receipt PDF and safe text, expiry lock and metadata-only load, Staff billing privacy, suspension, scrolling and workspace clearing`);await page.close();
   }
 
-  // Admin configuration uses the actual Plans form and its client functions.
-  const adminHtml=readFileSync(path.join(root,'app.html'),'utf8'),adminSource=readFileSync(path.join(root,'app.js'),'utf8');
-  const start=adminHtml.indexOf('<details class="admin-disclosure" id="businessBillingAdminPanel"'),fragment=adminHtml.slice(start,adminHtml.indexOf('</details>',start)+10);
-  const adminFunctions=adminSource.slice(adminSource.indexOf('function renderBusinessBillingAdmin()'),adminSource.indexOf('function resetPlanDefinitionForm()'));
-  for(const width of [1366,390,320]){
-    const page=await browser.newPage({viewport:{width,height:720}});await page.setContent('<main style="padding:16px;max-width:1000px;margin:auto">'+fragment+'</main>');
-    await page.addStyleTag({content:readFileSync(path.join(root,'styles.css'),'utf8')});
-    await page.addScriptTag({content:`const $=selector=>document.querySelector(selector);window.savedBilling=null;
-      const state={adminRole:'super_admin',adminBusinessBillingSettings:[{plan_id:'business',plan_name:'Business',version:1,currency:'USD',pilot_enabled:false,included_seats:null,monthly_base:null,annual_base:null,monthly_seat:null,annual_seat:null,payment_instructions:''}]};
-      const supabase={rpc:(name,args)=>{savedBilling={name,args};return Promise.resolve({data:{},error:null})}};
-      const query=async(label,result)=>(await result).data,setSubmitting=()=>{},loadAdminData=async()=>{},renderAdminPlans=()=>{},showToast=()=>{};
-      ${adminFunctions}
-      renderBusinessBillingAdmin();document.querySelector('details').open=true;$('#businessBillingAdminForm').addEventListener('submit',saveBusinessBillingAdmin);`});
-    assert.equal(await page.locator('#businessBillingAdminMonthlyBase').inputValue(),'');assert.equal(await page.locator('#businessBillingAdminAnnualSeat').inputValue(),'');
-    await page.locator('#businessBillingAdminSeats').fill('2');await page.locator('#businessBillingAdminMonthlyBase').fill('10');await page.locator('#businessBillingAdminMonthlySeat').fill('0');await page.locator('#businessBillingAdminInstructions').fill('Pilot bank transfer instructions');await page.locator('#businessBillingAdminEnabled').check();await page.locator('#businessBillingAdminForm button').click();
-    const saved=await page.evaluate(()=>savedBilling);assert.equal(saved.name,'save_business_billing_settings');assert.equal(saved.args.p_monthly_seat,0);assert.equal(saved.args.p_annual_base,null);assert.equal(saved.args.p_annual_seat,null);assert.equal(saved.args.p_expected_version,1);assert.equal(saved.args.p_pilot_enabled,true);
-    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'admin billing form overflow');
-    await page.evaluate(()=>{state.adminRole='finance_staff';renderBusinessBillingAdmin();});assert.equal(await page.locator('#businessBillingAdminPanel').isVisible(),false);
-    console.log(`PASS ${width}px: actual admin billing form, unset versus zero prices, versioned settings, Finance role restriction and layout`);await page.close();
-  }
+  // Admin billing configuration is now exercised by verify-admin-plans-ui.cjs.
 }finally{await browser.close();}})().catch(error=>{console.error(error);process.exitCode=1;});

@@ -82,7 +82,7 @@ test("workspace switch hides old Business data before asynchronous loads", () =>
   assert.match(select, /requestSequence !== workspaceLoadSequence/);
   assert.match(select, /state\.workspace\?\.id !== workspace\.id/);
   assert.match(workflow, /cp about\.html app-entry\.html app\.html business\.html/);
-  assert.match(workflow, /cp app-entry\.js app\.js business\.js/);
+  assert.match(workflow, /cp app-entry\.js app\.js admin-plans\.js business\.js/);
   assert.match(workflow, /cp business\.css/);
 });
 

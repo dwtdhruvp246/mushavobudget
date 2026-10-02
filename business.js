@@ -2522,6 +2522,10 @@ function renderBusinessWorkspace() {
   showOnly("businessApp");
 }
 
+function rememberBusinessWorkspace(workspace) {
+  window.MushavoWorkspace?.remember(state.session?.user?.id, workspace);
+}
+
 async function selectBusinessWorkspace(workspaceId) {
   const workspace = state.workspaces.find((item) => item.id === workspaceId);
   if (!workspace) throw new Error("That Business workspace is not available to this account.");
@@ -2538,7 +2542,7 @@ async function selectBusinessWorkspace(workspaceId) {
   const requestSequence = workspaceLoadSequence;
   state.workspace = workspace;
   state.tab = currentTab();
-  window.localStorage.setItem(selectedWorkspaceStorageKey(), workspace.id);
+  try { window.localStorage.setItem(selectedWorkspaceStorageKey(), workspace.id); } catch (_) {}
   setWorkspaceUrl(workspace.id);
   renderWorkspaceSelectors();
 
@@ -2549,7 +2553,7 @@ async function selectBusinessWorkspace(workspaceId) {
   ]);
   if(requestSequence!==workspaceLoadSequence)return;
   state.workspaceSubscription=subscriptions[0] || null;state.workspaceEntitlement=entitlements[0] || null;resolveWorkspaceLock();
-  if(state.locked){renderBusinessWorkspace();if(state.lockOwner)await refreshBusinessBilling();if(requestSequence===workspaceLoadSequence)startBusinessRealtime();return;}
+  if(state.locked){rememberBusinessWorkspace(workspace);renderBusinessWorkspace();if(state.lockOwner)await refreshBusinessBilling();if(requestSequence===workspaceLoadSequence)startBusinessRealtime();return;}
   try {
     const memberId=state.memberships.find(item=>item.workspace_id===workspace.id && item.user_id===state.session.user.id)?.id;
     [settings,team,profiles,categories,dimensions,drafts,permissions,memberScopes]=await Promise.all([
@@ -2579,6 +2583,7 @@ async function selectBusinessWorkspace(workspaceId) {
   state.permissions = new Set((permissions || []).filter((item) => item.allowed).map((item) => item.permission_code));
   state.memberScopes = memberScopes || [];
   prepareBusinessReports();
+  rememberBusinessWorkspace(workspace);
   renderBusinessWorkspace();
   populateActivityFilters();
   if(businessBillingOwner())await refreshBusinessBilling();
@@ -2602,10 +2607,15 @@ async function loadBusinessAccess() {
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
     if (sessionError) throw sessionError;
     if (!session) {
-      window.location.replace("/app.html#personal/dashboard");
+      const url = new URL("./app.html", window.location.href);
+      // Preserve an intended notification/invitation route through sign-in.
+      url.search = window.location.search;
+      url.hash = window.location.hash || "business/overview";
+      window.location.replace(url.href);
       return;
     }
     state.session = session;
+    await window.MushavoWorkspace?.hydrate(session.user.id);
     const suspended = await query("account status load", supabase.rpc("my_account_suspended"));
     if (suspended) {
       showOnly("businessSuspended");
@@ -2624,7 +2634,15 @@ async function loadBusinessAccess() {
     state.supportedCurrencies = currencies;
     state.incomingInvitations = incomingInvitations || [];
     state.workspaces = authorizedBusinessWorkspaces(workspaces, memberships);
-    if (state.incomingInvitations.length) {
+    const restoring = new URL(window.location.href).searchParams.get("restore_workspace") === "1";
+    const requested = requestedWorkspaceId();
+    if (restoring && !state.workspaces.some(workspace => workspace.id === requested)) {
+      clearBusinessWorkspaceState();
+      window.location.replace(window.MushavoWorkspace.personalFallbackUrl());
+      return;
+    }
+    const invitationLink = new URL(window.location.href).searchParams.has("invitation");
+    if (state.incomingInvitations.length && !restoring && (invitationLink || !requested)) {
       clearBusinessWorkspaceState();
       renderIncomingInvitations();
       showOnly("businessInvitations");
@@ -2636,13 +2654,21 @@ async function loadBusinessAccess() {
       return;
     }
 
-    const requested = requestedWorkspaceId();
-    const stored = window.localStorage.getItem(selectedWorkspaceStorageKey());
+    let stored;
+    try { stored = window.localStorage.getItem(selectedWorkspaceStorageKey()); } catch (_) {}
+    if (requested && !state.workspaces.some(workspace => workspace.id === requested)) {
+      clearBusinessWorkspaceState();
+      showOnly("businessNoAccess");
+      return;
+    }
     const selected = state.workspaces.find((workspace) => workspace.id === requested)
       || state.workspaces.find((workspace) => workspace.id === stored)
       || state.workspaces[0];
     state.tab = currentTab();
     await selectBusinessWorkspace(selected.id);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("restore_workspace");
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   } catch (error) {
     console.error(error);
     $("#businessErrorMessage").textContent = friendlyMessage(error);
@@ -3076,6 +3102,7 @@ async function refreshBusinessAccessState() {
 window.setInterval(refreshBusinessAccessState,60000);
 window.setInterval(enforceBusinessExpiry,15000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){enforceBusinessExpiry();refreshBusinessAccessState();}});
+window.MushavoWorkspace?.onResume(() => { enforceBusinessExpiry(); refreshBusinessAccessState(); });
 
 $("#businessToday").textContent = new Date().toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
 loadBusinessAccess();

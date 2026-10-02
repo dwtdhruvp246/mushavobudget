@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 81
+// Mushavo Budget authenticated application — release 82
 import { createAdminPlans } from "./admin-plans.js?v=2";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
@@ -173,6 +173,9 @@ let dashboardFitFrame = null;
 let appLoadPromise = null;
 let appLoadUserId = null;
 let signInInProgress = false;
+let preserveSignInDestination = false;
+let startupWorkspacePreference = null;
+let startupWorkspaceUnavailable = false;
 let toastTimer = null;
 let pushRefreshPromise = null;
 let pushRefreshSequence = 0;
@@ -1158,7 +1161,7 @@ async function init() {
 
 function handleSignedOut() {
   resetState();
-  window.history.replaceState(null, "", window.location.pathname + window.location.search);
+  if (!preserveSignInDestination) window.history.replaceState(null, "", window.location.pathname);
   setView("auth");
 }
 
@@ -1200,6 +1203,7 @@ async function handleLoadFailure(error, mayRefresh = true) {
     }
   }
   if (isUnrecoverableSessionError(error)) {
+    preserveSignInDestination = true;
     try {
       await supabase.auth.signOut({ scope: "local" });
     } catch (_signOutError) {
@@ -1222,6 +1226,7 @@ function openAuthenticatedSession(session) {
   if (appLoadPromise && appLoadUserId === userId) return appLoadPromise;
 
   resetState();
+  preserveSignInDestination = false;
   state.session = session;
   appLoadUserId = userId;
   showLoading("Opening your workspace", "Loading your latest budget...");
@@ -1253,6 +1258,8 @@ function resetState() {
   analyticsActivity.userId = null;
   analyticsActivity.lastSentAt = 0;
   resetDashboardDisclosureState();
+  startupWorkspacePreference = null;
+  startupWorkspaceUnavailable = false;
   state.session = null;
   state.profile = null;
   state.isAdmin = false;
@@ -1387,12 +1394,14 @@ async function loadApp() {
     setView("suspended");
     return;
   }
+  await window.MushavoWorkspace?.hydrate(loadingUserId);
+  if (state.session?.user?.id !== loadingUserId) return;
+  startupWorkspacePreference = window.MushavoWorkspace?.startup(loadingUserId) || null;
   const settled = (promise) => promise.then(
     () => ({ ok: true }),
     (error) => ({ ok: false, error })
   );
   const profileResult = settled(ensureProfile());
-  const familyResult = settled(loadFamily());
   const invitationResult = settled(loadInvitations());
   const notificationResult = settled(loadNotifications());
 
@@ -1416,6 +1425,15 @@ async function loadApp() {
     return;
   }
 
+  if (!state.isAdmin && startupWorkspacePreference?.kind === "business") {
+    // Business validates current ownership/membership and entitlement itself.
+    // Never render a Personal/Family screen on the way to a restored Business.
+    clearBudgetDataBeforeBusinessNavigation();
+    window.location.replace(window.MushavoWorkspace.restoredBusinessUrl(startupWorkspacePreference.id));
+    return;
+  }
+
+  const familyResult = settled(loadFamily());
   const loadedFamily = await familyResult;
   if (!loadedFamily.ok) throw loadedFamily.error;
 
@@ -1431,7 +1449,8 @@ async function loadApp() {
       workspace.workspace_type === "business" && workspace.status !== "closed" &&
       (!requestedWorkspaceId || workspace.id === requestedWorkspaceId)
     );
-    openBusinessWorkspace(businessWorkspace?.id || "", routeFromHash().tab || "overview");
+    clearBudgetDataBeforeBusinessNavigation();
+    window.location.assign(businessWorkspaceUrl(requestedWorkspaceId || businessWorkspace?.id || "", routeFromHash().tab || "overview"));
     return;
   }
 
@@ -1454,6 +1473,15 @@ async function loadApp() {
   setView("app");
   renderFamilyApp();
   await handleNotificationDeepLink();
+  rememberBudgetWorkspace();
+  startupWorkspacePreference = null;
+  if (startupWorkspaceUnavailable || new URL(window.location.href).searchParams.has("workspace_unavailable")) {
+    showToast("Your previous workspace is unavailable. Your Personal workspace has been opened.");
+    const url = new URL(window.location.href);
+    url.searchParams.delete("workspace_unavailable");
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+    startupWorkspaceUnavailable = false;
+  }
   startRealtime();
   schedulePushNotificationRefresh(true, true);
   void recordVisibleActivity();
@@ -1545,14 +1573,22 @@ async function loadFamily() {
       .map((member) => member.family_id)
   );
   state.families = families.filter((family) => family.owner_id === userId || joinedFamilyIds.has(family.id));
-  const storedFamilyId = window.localStorage.getItem(selectedFamilyStorageKey());
+  let storedFamilyId;
+  try { storedFamilyId = window.localStorage.getItem(selectedFamilyStorageKey()); } catch (_) {}
   const requestedArea = routeFromHash().area;
-  state.family = requestedArea === "personal" || (storedFamilyId === "__personal__" && requestedArea !== "family")
-    ? null
-    : state.families.find((family) => family.id === storedFamilyId) ||
-      state.families.find((family) => family.id === state.family?.id) ||
-      state.families[0] ||
-      null;
+  if (startupWorkspacePreference) {
+    state.family = startupWorkspacePreference.kind === "family"
+      ? state.families.find((family) => family.id === startupWorkspacePreference.familyId) || null
+      : null;
+    startupWorkspaceUnavailable = startupWorkspacePreference.kind === "family" && !state.family;
+  } else {
+    state.family = requestedArea === "personal" || (storedFamilyId === "__personal__" && requestedArea !== "family")
+      ? null
+      : state.families.find((family) => family.id === storedFamilyId) ||
+        state.families.find((family) => family.id === state.family?.id) ||
+        state.families[0] ||
+        null;
+  }
   persistSelectedFamily();
 }
 
@@ -1562,13 +1598,25 @@ function selectedFamilyStorageKey() {
 
 function persistSelectedFamily() {
   const key = selectedFamilyStorageKey();
-  if (state.family?.id) window.localStorage.setItem(key, state.family.id);
-  else window.localStorage.setItem(key, "__personal__");
+  try {
+    if (state.family?.id) window.localStorage.setItem(key, state.family.id);
+    else window.localStorage.setItem(key, "__personal__");
+  } catch (_) { /* Shared preference still works when legacy storage is unavailable. */ }
+}
+
+function rememberBudgetWorkspace() {
+  if (!state.isAdmin && state.session) window.MushavoWorkspace?.remember(state.session.user.id, currentBudgetWorkspace());
 }
 
 function businessWorkspaceUrl(workspaceId = "", tab = "overview") {
   const url = new URL("business.html", window.location.href);
   if (workspaceId) url.searchParams.set("workspace", workspaceId);
+  if (routeFromHash().area === "business") {
+    const source = new URL(window.location.href);
+    for (const name of ["source", "bill", "notification_id", "invitation", "invitation_id", "restore_workspace"]) {
+      if (source.searchParams.has(name)) url.searchParams.set(name, source.searchParams.get(name));
+    }
+  }
   url.hash = `business/${tab}`;
   return `${url.pathname}${url.search}${url.hash}`;
 }
@@ -1628,6 +1676,7 @@ async function selectFamily(familyId) {
   if (familyId === "__personal__") {
     if (!state.family) {
       if (state.familyTab === "cashbook") await loadCashbookData();
+      rememberBudgetWorkspace();
       setRoute("personal", state.familyTab, true);
       return;
     }
@@ -1640,11 +1689,13 @@ async function selectFamily(familyId) {
     if (state.familyTab === "cashbook") await loadCashbookData();
     setRoute("personal", state.familyTab, true);
     renderFamilyApp();
+    rememberBudgetWorkspace();
     return;
   }
   const family = state.families.find((item) => item.id === familyId);
   if (!family) return;
   if (family.id === state.family?.id) {
+    rememberBudgetWorkspace();
     setRoute("family", state.familyTab, true);
     return;
   }
@@ -1657,6 +1708,7 @@ async function selectFamily(familyId) {
   await Promise.all([loadFamilyFinancialData(), loadWorkspaceSubscriptionData()]);
   setRoute("family", state.familyTab, true);
   renderFamilyApp();
+  rememberBudgetWorkspace();
 }
 
 function resetPaymentListView() {
@@ -2124,6 +2176,7 @@ function renderFamilyApp() {
   if (state.familyTab === "cashbook") renderCashbook();
   if (state.familyTab === "subscription") renderSubscription();
   if (state.familyTab === "support") renderUserSupport();
+  rememberBudgetWorkspace();
 }
 
 function renderFamilyTabs() {
@@ -3726,6 +3779,7 @@ async function signOutSafely(button = null) {
   try {
     await removeCurrentDevicePush();
     forgetPushOptIn(state.session.user.id);
+    preserveSignInDestination = false;
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   } catch (error) {
@@ -9461,6 +9515,7 @@ $("#analyticsReset").addEventListener("click", () => {
   refreshAdminAnalytics();
 });
 
+window.MushavoWorkspace?.onResume(() => refreshAfterAppResume("native"));
 window.addEventListener("beforeunload", stopRealtime);
 window.addEventListener("resize", scheduleDashboardTextFit);
 window.addEventListener("focus", () => {

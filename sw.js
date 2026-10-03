@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "mushavo-budget-";
-const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v84`;
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v85`;
 const APP_ENTRY_URL = "/app-entry.html";
 const OFFLINE_URL = "/offline.html";
 const OFFLINE_ENTRY_CACHE_KEY = "/__mushavo-budget-offline/app-entry";
@@ -30,7 +30,7 @@ const SAFE_SHELL = [
   "/pwa-update.css?v=2",
   "/pwa-install.css?v=2",
   "/pwa-install.js?v=1",
-  "/pwa.js?v=76",
+  "/pwa.js?v=77",
   "/assets/mushavo-budget-logo.png",
   "/assets/pwa-icon-192.png",
   "/assets/pwa-icon-512.png",

@@ -433,6 +433,19 @@
 .subscription-review-panel .record-card,
 .subscription-history-panel .record-card { border-radius: 14px; padding: 12px; }
 .subscription-review-card .record-side { min-width: min(100%, 250px); }
+.subscription-payment-row .record-main > *,
+.subscription-payment-row .record-side > * {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.subscription-payment-row .mini-badge {
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
 .admin-finance-settings .exchange-rate-panel { margin-bottom: 0; }
 
 .enquiry-card.record-card,

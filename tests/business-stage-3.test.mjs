@@ -114,6 +114,7 @@ test("reopening saved setup shows the actual stored base currency", () => {
     renderCurrencyChoices() {},
     renderBaseCurrencyChoice() { nodes["#setupBaseCurrency"].value = "USD"; },
     renderBusinessBranding() {},
+    renderBusinessTimezones(zone) { nodes["#setupTimezone"].value = zone; },
     renderSetupLists() {},
     renderDraftSelectors() {},
     renderSetupDraft() {},

@@ -1703,13 +1703,51 @@ function renderSetupDraft() {
   }
 }
 
+function businessTimezoneLabel(zone, referenceDate = new Date()) {
+  try {
+    const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", {
+      timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, hourCycle: "h23"
+    }).formatToParts(referenceDate).map((part) => [part.type, part.value]));
+    const localAsUtc = Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day),
+      Number(parts.hour) % 24, Number(parts.minute), Number(parts.second));
+    const minutes = Math.round((localAsUtc - Math.floor(referenceDate.getTime() / 1000) * 1000) / 60000);
+    const absolute = Math.abs(minutes);
+    const offset = `${minutes < 0 ? "-" : "+"}${String(Math.floor(absolute / 60)).padStart(2, "0")}:${String(absolute % 60).padStart(2, "0")}`;
+    return `${zone.replaceAll("_", " ")} (UTC${offset})`;
+  } catch (_) {
+    return `${zone} (UTC offset unavailable)`;
+  }
+}
+
+function businessTimezones(selectedZone = "Africa/Harare") {
+  const fallback = ["UTC", "Africa/Harare", "Africa/Johannesburg", "Africa/Nairobi", "Africa/Lagos",
+    "Africa/Cairo", "Asia/Kolkata", "Asia/Kathmandu", "Asia/Dubai", "Asia/Singapore", "Asia/Tokyo",
+    "Asia/Hong_Kong", "Asia/Shanghai", "Asia/Bangkok", "Asia/Jakarta", "Asia/Karachi", "Asia/Dhaka",
+    "Europe/London", "Europe/Paris", "Europe/Berlin", "Europe/Moscow", "America/New_York",
+    "America/Chicago", "America/Denver", "America/Los_Angeles", "America/Phoenix", "America/Toronto",
+    "America/Vancouver", "America/Sao_Paulo", "America/St_Johns", "Pacific/Honolulu", "Pacific/Auckland",
+    "Pacific/Chatham", "Australia/Sydney", "Australia/Perth", "Australia/Adelaide"];
+  let supported = [];
+  try { supported = Intl.supportedValuesOf?.("timeZone") || []; } catch (_) { /* Older WebViews use the fallback list. */ }
+  return [...new Set([...fallback, ...supported, selectedZone])].sort();
+}
+
+function renderBusinessTimezones(selectedZone = "Africa/Harare") {
+  const referenceDate = new Date();
+  const select = $("#setupTimezone");
+  select.replaceChildren(...businessTimezones(selectedZone).map((zone) =>
+    new Option(businessTimezoneLabel(zone, referenceDate), zone)));
+  select.value = selectedZone;
+}
+
 function renderBusinessSetup() {
   const profile = state.businessProfile;
   const settings = state.workspaceSettings;
   $("#setupBusinessName").value = profile?.trading_name || state.workspace?.name || "";
   $("#brandingBusinessName").value = profile?.trading_name || state.workspace?.name || "";
   renderBusinessBranding();
-  $("#setupTimezone").value = settings?.timezone || "Africa/Harare";
+  renderBusinessTimezones(settings?.timezone || "Africa/Harare");
   $("#setupPeriodDay").value = profile?.period_start_day || 1;
   $("#setupFinancialMonth").value = String(profile?.financial_year_start_month || 1);
   chosenCurrencies = new Set(settings?.enabled_currencies?.length
@@ -2066,7 +2104,8 @@ function renderIdentity() {
   $("#settingsCurrency").textContent = state.workspaceSettings?.base_currency || "—";
   $("#settingsEnabledCurrencies").textContent = state.workspaceSettings?.enabled_currencies?.join(", ") || "—";
   $("#settingsLocale").textContent = state.workspaceSettings?.locale || "—";
-  $("#settingsTimezone").textContent = state.workspaceSettings?.timezone || "—";
+  $("#settingsTimezone").textContent = state.workspaceSettings?.timezone
+    ? businessTimezoneLabel(state.workspaceSettings.timezone) : "—";
   $("#settingsFinancialMonth").textContent = state.businessProfile?.financial_year_start_month
     ? new Date(2026, state.businessProfile.financial_year_start_month - 1, 1).toLocaleString("en", { month: "long" })
     : "—";
@@ -2881,9 +2920,7 @@ const financialMonths = Array.from({ length: 12 }, (_, month) =>
   new Option(new Date(2026, month, 1).toLocaleString("en", { month: "long" }), String(month + 1))
 );
 $("#setupFinancialMonth").replaceChildren(...financialMonths);
-const timezones = [...new Set(["Africa/Harare", "UTC", "Africa/Johannesburg",
-  ...(Intl.supportedValuesOf?.("timeZone") || [])])].sort();
-$("#setupTimezones").replaceChildren(...timezones.map((zone) => new Option(zone, zone)));
+renderBusinessTimezones();
 $("#setupCurrencySearch").addEventListener("input", renderCurrencyChoices);
 $("#setupDraftKind").addEventListener("change", renderDraftSelectors);
 $("#businessBasicsForm").addEventListener("submit", saveBusinessBasics);

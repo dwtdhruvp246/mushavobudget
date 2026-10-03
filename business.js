@@ -1703,7 +1703,7 @@ function renderSetupDraft() {
   }
 }
 
-function businessTimezoneLabel(zone, referenceDate = new Date()) {
+function businessTimezoneOffsetMinutes(zone, referenceDate = new Date()) {
   try {
     const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", {
       timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit",
@@ -1711,32 +1711,63 @@ function businessTimezoneLabel(zone, referenceDate = new Date()) {
     }).formatToParts(referenceDate).map((part) => [part.type, part.value]));
     const localAsUtc = Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day),
       Number(parts.hour) % 24, Number(parts.minute), Number(parts.second));
-    const minutes = Math.round((localAsUtc - Math.floor(referenceDate.getTime() / 1000) * 1000) / 60000);
-    const absolute = Math.abs(minutes);
-    const offset = `${minutes < 0 ? "-" : "+"}${String(Math.floor(absolute / 60)).padStart(2, "0")}:${String(absolute % 60).padStart(2, "0")}`;
-    return `${zone.replaceAll("_", " ")} (UTC${offset})`;
-  } catch (_) {
-    return `${zone} (UTC offset unavailable)`;
-  }
+    return Math.round((localAsUtc - Math.floor(referenceDate.getTime() / 1000) * 1000) / 60000);
+  } catch (_) { return null; }
 }
 
-function businessTimezones(selectedZone = "Africa/Harare") {
-  const fallback = ["UTC", "Africa/Harare", "Africa/Johannesburg", "Africa/Nairobi", "Africa/Lagos",
-    "Africa/Cairo", "Asia/Kolkata", "Asia/Kathmandu", "Asia/Dubai", "Asia/Singapore", "Asia/Tokyo",
-    "Asia/Hong_Kong", "Asia/Shanghai", "Asia/Bangkok", "Asia/Jakarta", "Asia/Karachi", "Asia/Dhaka",
-    "Europe/London", "Europe/Paris", "Europe/Berlin", "Europe/Moscow", "America/New_York",
-    "America/Chicago", "America/Denver", "America/Los_Angeles", "America/Phoenix", "America/Toronto",
-    "America/Vancouver", "America/Sao_Paulo", "America/St_Johns", "Pacific/Honolulu", "Pacific/Auckland",
-    "Pacific/Chatham", "Australia/Sydney", "Australia/Perth", "Australia/Adelaide"];
-  let supported = [];
-  try { supported = Intl.supportedValuesOf?.("timeZone") || []; } catch (_) { /* Older WebViews use the fallback list. */ }
-  return [...new Set([...fallback, ...supported, selectedZone])].sort();
+function businessTimezoneChoices() {
+  return [
+    ["Etc/GMT+12", "International date line west"], ["Pacific/Niue", "Niue"],
+    ["Pacific/Honolulu", "Honolulu, Hawaii"], ["Pacific/Marquesas", "Marquesas Islands"],
+    ["America/Anchorage", "Anchorage, Alaska"], ["America/Los_Angeles", "Los Angeles, USA"],
+    ["America/Phoenix", "Phoenix, USA"], ["America/Mexico_City", "Mexico City, Mexico"],
+    ["America/Chicago", "Chicago, USA"], ["America/Bogota", "Bogota, Colombia"],
+    ["America/New_York", "New York, USA"], ["America/Toronto", "Toronto, Canada"],
+    ["America/Caracas", "Caracas, Venezuela"], ["America/Halifax", "Halifax, Canada"],
+    ["America/St_Johns", "St. John's, Canada"], ["America/Sao_Paulo", "Sao Paulo, Brazil"],
+    ["Atlantic/South_Georgia", "South Georgia"], ["Atlantic/Azores", "Azores, Portugal"],
+    ["Atlantic/Cape_Verde", "Cape Verde"], ["UTC", "Coordinated Universal Time"],
+    ["Europe/London", "London, UK"], ["Africa/Lagos", "Lagos, Nigeria"],
+    ["Europe/Paris", "Paris, France"], ["Europe/Berlin", "Berlin, Germany"],
+    ["Africa/Harare", "Harare, Zimbabwe"], ["Africa/Johannesburg", "Johannesburg, South Africa"],
+    ["Africa/Cairo", "Cairo, Egypt"], ["Africa/Nairobi", "Nairobi, Kenya"],
+    ["Europe/Moscow", "Moscow, Russia"], ["Asia/Tehran", "Tehran, Iran"],
+    ["Asia/Dubai", "Dubai, UAE"], ["Asia/Kabul", "Kabul, Afghanistan"],
+    ["Asia/Karachi", "Karachi, Pakistan"], ["Asia/Kolkata", "Kolkata, India"],
+    ["Asia/Kathmandu", "Kathmandu, Nepal"], ["Asia/Dhaka", "Dhaka, Bangladesh"],
+    ["Asia/Yangon", "Yangon, Myanmar"], ["Asia/Bangkok", "Bangkok, Thailand"],
+    ["Asia/Singapore", "Singapore"], ["Asia/Hong_Kong", "Hong Kong"],
+    ["Asia/Shanghai", "Shanghai, China"], ["Australia/Perth", "Perth, Australia"],
+    ["Australia/Eucla", "Eucla, Australia"], ["Asia/Tokyo", "Tokyo, Japan"],
+    ["Australia/Darwin", "Darwin, Australia"], ["Australia/Adelaide", "Adelaide, Australia"],
+    ["Australia/Brisbane", "Brisbane, Australia"], ["Australia/Sydney", "Sydney, Australia"],
+    ["Australia/Lord_Howe", "Lord Howe Island, Australia"], ["Pacific/Guadalcanal", "Solomon Islands"],
+    ["Pacific/Fiji", "Fiji"], ["Pacific/Auckland", "Auckland, New Zealand"],
+    ["Pacific/Chatham", "Chatham Islands, New Zealand"], ["Pacific/Tongatapu", "Tonga"],
+    ["Pacific/Kiritimati", "Kiritimati, Kiribati"]
+  ];
+}
+
+function businessTimezoneLabel(zone, referenceDate = new Date()) {
+  const name = businessTimezoneChoices().find(([value]) => value === zone)?.[1] || zone.replaceAll("_", " ");
+  const minutes = businessTimezoneOffsetMinutes(zone, referenceDate);
+  if (minutes == null) return `UTC offset unavailable — ${name}`;
+  const absolute = Math.abs(minutes);
+  const offset = `${minutes < 0 ? "-" : "+"}${String(Math.floor(absolute / 60)).padStart(2, "0")}:${String(absolute % 60).padStart(2, "0")}`;
+  return `UTC${offset} — ${name}`;
+}
+
+function businessTimezones(selectedZone = "Africa/Harare", referenceDate = new Date()) {
+  return [...new Set([...businessTimezoneChoices().map(([zone]) => zone), selectedZone])]
+    .map((zone) => ({ zone, offset: businessTimezoneOffsetMinutes(zone, referenceDate) ?? Infinity }))
+    .sort((a, b) => a.offset - b.offset || businessTimezoneLabel(a.zone, referenceDate).localeCompare(businessTimezoneLabel(b.zone, referenceDate)))
+    .map(({ zone }) => zone);
 }
 
 function renderBusinessTimezones(selectedZone = "Africa/Harare") {
   const referenceDate = new Date();
   const select = $("#setupTimezone");
-  select.replaceChildren(...businessTimezones(selectedZone).map((zone) =>
+  select.replaceChildren(...businessTimezones(selectedZone, referenceDate).map((zone) =>
     new Option(businessTimezoneLabel(zone, referenceDate), zone)));
   select.value = selectedZone;
 }

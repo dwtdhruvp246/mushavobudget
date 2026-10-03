@@ -1,4 +1,4 @@
-// Mushavo Budget authenticated application — release 82
+// Mushavo Budget authenticated application — release 83
 import { createAdminPlans } from "./admin-plans.js?v=2";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
@@ -49,6 +49,7 @@ const state = {
   personalWorkspaceSubscription: null,
   personalWorkspaceEntitlement: null,
   ownedFamilySubscriptions: [],
+  ownedBusinessSubscriptions: [],
   workspaceSettings: null,
   pushDevice: createPushDeviceState(),
   supportedCurrencies: [],
@@ -1281,6 +1282,7 @@ function resetState() {
   state.personalWorkspaceSubscription = null;
   state.personalWorkspaceEntitlement = null;
   state.ownedFamilySubscriptions = [];
+  state.ownedBusinessSubscriptions = [];
   state.workspaceSettings = null;
   state.pushDevice = createPushDeviceState();
   pushRefreshSequence += 1;
@@ -1639,6 +1641,7 @@ function clearBudgetDataBeforeBusinessNavigation() {
   state.personalWorkspaceSubscription = null;
   state.personalWorkspaceEntitlement = null;
   state.ownedFamilySubscriptions = [];
+  state.ownedBusinessSubscriptions = [];
   state.workspaceSettings = null;
   state.exchangeRates = [];
   state.exchangeRateStatus = null;
@@ -1970,7 +1973,11 @@ async function loadWorkspaceSubscriptionData() {
     item.workspace_type === "household" && item.owner_id === state.session.user.id && item.status !== "closed")
     .map((item) => item.id);
 
-  const [subscriptions, entitlements, billableMemberCount, memberUsage, requests, invoices, payments, history, settings, rates, rateStatus, conversions, ownPersonalSubscription, ownPersonalEntitlement, ownedFamilySubscriptions] = await Promise.all([
+  const ownedBusinessIds = workspaces.filter((item) =>
+    item.workspace_type === "business" && item.owner_id === state.session.user.id && item.status === "active")
+    .map((item) => item.id);
+
+  const [subscriptions, entitlements, billableMemberCount, memberUsage, requests, invoices, payments, history, settings, rates, rateStatus, conversions, ownPersonalSubscription, ownPersonalEntitlement, ownedFamilySubscriptions, ownedBusinessSubscriptions] = await Promise.all([
     query("workspace subscription load", supabase.from("workspace_subscriptions").select("*").eq("workspace_id", workspace.id).limit(1)),
     query("workspace entitlement load", supabase.rpc("effective_workspace_entitlement", { p_workspace_id: workspace.id })),
     query("workspace seat usage load", supabase.rpc("workspace_billable_member_count", { p_workspace_id: workspace.id })),
@@ -1991,6 +1998,9 @@ async function loadWorkspaceSubscriptionData() {
       : Promise.resolve([]),
     ownedFamilyIds.length
       ? query("owned family plans load", supabase.from("workspace_subscriptions").select("*").in("workspace_id", ownedFamilyIds))
+      : Promise.resolve([]),
+    ownedBusinessIds.length
+      ? query("owned business plans load", supabase.from("workspace_subscriptions").select("workspace_id, status, paid_through_at, entitlement_start_at").in("workspace_id", ownedBusinessIds))
       : Promise.resolve([])
   ]);
   state.workspaceSubscription = subscriptions[0] || null;
@@ -2000,6 +2010,7 @@ async function loadWorkspaceSubscriptionData() {
   state.personalWorkspaceEntitlement = workspace.id === personalWorkspace?.id
     ? entitlements[0] || null : ownPersonalEntitlement[0] || null;
   state.ownedFamilySubscriptions = ownedFamilySubscriptions;
+  state.ownedBusinessSubscriptions = ownedBusinessSubscriptions;
   state.billableMemberCount = Number(billableMemberCount || 1);
   state.memberUsage = memberUsage[0] || {
     active_member_count: 1,
@@ -4263,6 +4274,18 @@ async function saveFreePaymentSelection() {
   } catch (error) { showToast(friendlyMessage(error.message)); }
 }
 
+function activeOwnedBusinessWorkspaces(referenceTime = Date.now()) {
+  const userId = state.session?.user?.id;
+  if (!userId) return [];
+  return state.workspaces.filter((workspace) => {
+    if (workspace.workspace_type !== "business" || workspace.owner_id !== userId || workspace.status !== "active") return false;
+    const subscription = state.ownedBusinessSubscriptions.find((item) => item.workspace_id === workspace.id);
+    const startsAt = subscription?.entitlement_start_at ? new Date(subscription.entitlement_start_at).getTime() : 0;
+    const endsAt = new Date(subscription?.paid_through_at || "").getTime();
+    return subscription?.status === "active" && startsAt <= referenceTime && endsAt > referenceTime;
+  });
+}
+
 function renderWorkspacePlans() {
   const list = $("#workspacePlanList");
   const workspace = workspacePlanWorkspace();
@@ -4280,7 +4303,9 @@ function renderWorkspacePlans() {
     list.innerHTML = emptyState("No plans available", "An administrator must publish a plan for this workspace type.");
     return;
   }
+  const activeBusinesses = activeOwnedBusinessWorkspaces();
   const cards = plans.map((plan) => {
+    const ownedBusinesses = plan.workspace_type === "business" ? activeBusinesses : [];
     const comingSoon = isBusinessComingSoon(plan);
     const price = comingSoon ? null : activePriceFor(plan.id, state.workspacePlanBillingPeriod, state.workspacePlanCurrency);
     const appliesToSelectedWorkspace = plan.workspace_type === workspace?.workspace_type;
@@ -4316,10 +4341,15 @@ function renderWorkspacePlans() {
       : current && plan.code === "free"
       ? '<button type="button" disabled>Current plan</button>'
       : canSelect
-        ? `<button class="${plan.is_featured && !current ? "primary" : ""}" type="button" data-select-renewal-plan="${escapeHtml(plan.code)}" ${price && !pending ? "" : "disabled"}>${pending ? "Awaiting approval" : current ? "Renew plan" : startsNewFamily ? "Start Family plan" : startsNewBusiness ? "Start Business plan" : "Choose plan"}</button>`
+        ? `<button class="${plan.is_featured && !current ? "primary" : ""}" type="button" data-select-renewal-plan="${escapeHtml(plan.code)}" ${price && !pending ? "" : "disabled"}>${pending ? "Awaiting approval" : current ? "Renew plan" : startsNewFamily ? "Start Family plan" : startsNewBusiness ? ownedBusinesses.length ? "Start another business plan" : "Start Business plan" : "Choose plan"}</button>`
         : workspace?.owner_id === state.session?.user?.id
           ? `<small class="workspace-plan-owner-note">${!appliesToSelectedWorkspace ? `Select a ${escapeHtml(planWorkspaceLabel)} workspace to manage this plan.` : plan.code === "free" ? "Included with a free Personal workspace." : "This plan is not currently available for purchase."}</small>`
           : '<small class="workspace-plan-owner-note">Only the workspace owner can change this plan.</small>';
+    const businessAccess = ownedBusinesses.length
+      ? `<div class="workspace-plan-business-access"><strong>Active Business ${ownedBusinesses.length === 1 ? "workspace" : "workspaces"}</strong>${ownedBusinesses.length === 1
+        ? `<span>${escapeHtml(ownedBusinesses[0].name || "Business workspace")}</span>`
+        : `<label>Business workspace<select data-business-plan-workspace>${ownedBusinesses.map((item) => `<option value="${escapeHtml(item.id)}">${escapeHtml(item.name || "Business workspace")}</option>`).join("")}</select></label>`}<button class="primary" type="button" data-open-active-business="${escapeHtml(ownedBusinesses[0].id)}">Go to active business workspace</button></div>`
+      : "";
     const planMeta = comingSoon
       ? '<span>Seats to be announced</span><span>Launch access is currently closed</span>'
       : `<span>${includedSeats} ${includedSeats === 1 ? "person" : "people"} included</span><span>${paymentLimit == null ? "Unlimited payment items" : `${paymentLimit} active personal payments`}</span>${extraMember}`;
@@ -4331,7 +4361,7 @@ function renderWorkspacePlans() {
       <div class="workspace-plan-meta">${planMeta}</div>
       <ul class="workspace-plan-features">${features.map((feature) => `<li class="${feature.enabled ? "available" : "unavailable"}">${escapeHtml(feature.label)}</li>`).join("")}</ul>
       ${startsNewFamily || startsNewBusiness ? `<small class="workspace-plan-separate-note">Creates a separate ${startsNewBusiness ? "Business" : "Family"} workspace after payment approval.</small>` : ""}
-      ${action}
+      <div class="workspace-plan-actions">${businessAccess}${action}</div>
     </article>`;
   }).join("");
   list.innerHTML = `<div class="workspace-plan-grid">${cards}</div>`;
@@ -8933,6 +8963,18 @@ document.addEventListener("click", async (event) => {
 
   const subscriptionPaymentDetails = event.target.closest("[data-view-subscription-payment]");
   if (subscriptionPaymentDetails) openSubscriptionPaymentDetails(subscriptionPaymentDetails.dataset.viewSubscriptionPayment);
+
+  const activeBusinessButton = event.target.closest("[data-open-active-business]");
+  if (activeBusinessButton) {
+    const selector = activeBusinessButton.closest(".workspace-plan-business-access")?.querySelector("[data-business-plan-workspace]");
+    const workspaceId = selector?.value || activeBusinessButton.dataset.openActiveBusiness;
+    if (activeOwnedBusinessWorkspaces().some((workspace) => workspace.id === workspaceId)) {
+      openBusinessWorkspace(workspaceId);
+    } else {
+      showToast("This Business workspace is no longer active. Refresh the page to check its subscription.");
+    }
+    return;
+  }
 
   const selectedRenewalPlan = event.target.closest("[data-select-renewal-plan]");
   if (selectedRenewalPlan) {

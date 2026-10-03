@@ -4564,6 +4564,23 @@ input[type="file"] {
 .workspace-plan-owner-note { display: block; font-size: 0.76rem; line-height: 1.4; }
 .workspace-plan-owner-note.coming-soon-note { margin-top: auto; padding: 0.75rem; border-radius: 12px; color: #334155; background: rgba(226, 232, 240, 0.7); font-weight: 700; }
 .workspace-plan-card > button { width: 100%; margin-top: auto; }
+.workspace-plan-actions,
+.workspace-plan-business-access {
+  display: grid;
+  min-width: 0;
+  gap: 10px;
+  overflow-wrap: anywhere;
+}
+.workspace-plan-actions { margin-top: auto; }
+.workspace-plan-business-access {
+  padding: 12px;
+  border: 1px solid var(--box-border, #000000);
+  border-radius: 14px;
+  background: rgba(236, 253, 245, 0.8);
+}
+.workspace-plan-business-access > span { color: var(--muted); font-size: 0.85rem; }
+.workspace-plan-business-access select { min-width: 0; max-width: 100%; }
+.workspace-plan-actions button { width: 100%; min-height: 44px; white-space: normal; }
 
 @container workspace-plan-list (min-width: 921px) {
   .workspace-plan-grid > .workspace-plan-card:last-child:nth-child(3n + 1) { grid-column: 2; }

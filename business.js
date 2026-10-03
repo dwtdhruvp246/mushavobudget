@@ -2596,10 +2596,12 @@ function rememberBusinessWorkspace(workspace) {
   window.MushavoWorkspace?.remember(state.session?.user?.id, workspace);
 }
 
-async function selectBusinessWorkspace(workspaceId) {
+async function selectBusinessWorkspace(workspaceId, { preserveSetup = false } = {}) {
   const workspace = state.workspaces.find((item) => item.id === workspaceId);
   if (!workspace) throw new Error("That Business workspace is not available to this account.");
 
+  const setupProgress = preserveSetup && state.workspace?.id === workspaceId
+    ? { step: setupStep, open: setupOpen } : null;
   clearBusinessWorkspaceState();
   if ($("#businessAddDialog")?.open) $("#businessAddDialog").close();
   if ($("#businessMoreDialog")?.open) $("#businessMoreDialog").close();
@@ -2652,6 +2654,10 @@ async function selectBusinessWorkspace(workspaceId) {
   state.setupDraft = drafts || null;
   state.permissions = new Set((permissions || []).filter((item) => item.allowed).map((item) => item.permission_code));
   state.memberScopes = memberScopes || [];
+  if (setupProgress && businessOwnerCanSetUp()) {
+    setupStep = setupProgress.step;
+    setupOpen = setupProgress.open;
+  }
   prepareBusinessReports();
   rememberBusinessWorkspace(workspace);
   renderBusinessWorkspace();
@@ -3082,7 +3088,12 @@ async function flushBusinessLiveRefresh() {
   try {
     await refreshBusinessAccessState();
     if(epoch!==businessLiveEpoch||sequence!==workspaceLoadSequence||state.workspace?.id!==workspaceId)return;
-    if(access){try{await selectBusinessWorkspace(workspaceId);}catch(error){if(state.workspace?.id===workspaceId){$('#businessErrorMessage').textContent=friendlyMessage(error);showOnly('businessError');}}return;}
+    if(access){
+      // Access checks still run immediately, but the save response must finish
+      // before a workspace reload can invalidate it or reset setup progress.
+      if(setupBusy){businessLivePending=true;businessLiveAccess=true;businessLiveTimer=setTimeout(flushBusinessLiveRefresh,1500);return;}
+      try{await selectBusinessWorkspace(workspaceId,{preserveSetup:true});}catch(error){if(state.workspace?.id===workspaceId){$('#businessErrorMessage').textContent=friendlyMessage(error);showOnly('businessError');}}return;
+    }
     if(state.locked){if(businessBillingOwner())await refreshBusinessBilling();}
     else {
       const [categories,dimensions]=await Promise.all([query('Live categories',supabase.from('business_categories').select('*').eq('workspace_id',workspaceId).order('name')),query('Live organisation tags',supabase.from('business_dimensions').select('*').eq('workspace_id',workspaceId).order('name'))]);

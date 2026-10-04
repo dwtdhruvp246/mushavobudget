@@ -441,3 +441,23 @@ body:has(#businessMoreDialog[open]) { overflow: hidden; }
 .business-dialog, .more-dialog, .activity-summary, .dialog-note { border: 1px solid var(--box-border, #000000); }
 
 .seat-impact { border: 1px solid var(--box-border, #000000); }
+/* Role controls wrap within mobile cards and use the existing modal scroll area. */
+.role-row-copy { min-width: 0; flex: 1; overflow-wrap: anywhere; }
+.role-row-copy strong, .role-row-copy small { display: block; }
+.role-row { flex-wrap: wrap; }
+.role-permission-groups { display: grid; gap: 1rem; margin-block: 1rem; min-width: 0; }
+.role-permission-groups fieldset { border: 1px solid #111; border-radius: 12px; padding: 1rem; min-width: 0; }
+.role-permission-groups label { display: flex; align-items: flex-start; gap: .7rem; padding-block: .5rem; min-width: 0; }
+.role-permission-groups input[type=checkbox] { flex: 0 0 auto; width: 20px; height: 20px; margin-top: .2rem; }
+.role-permission-groups span { min-width: 0; overflow-wrap: anywhere; }
+.role-permission-groups small { display: block; font-weight: 400; margin-top: .2rem; }
+#businessMemberPermissionChoices label { display: grid; grid-template-columns: minmax(0, 1fr); }
+#businessRoleForm textarea { width: 100%; max-width: 100%; }
+#businessRolesCard .card-heading { flex-wrap: wrap; }
+
+#businessRoleDialog { max-height: calc(100dvh - 28px); overflow-y: auto; }
+#businessRoleForm .team-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+#businessRoleForm .team-form label, #businessRoleForm .team-form p { min-width: 0; overflow-wrap: anywhere; }
+#businessRoleForm input, #businessRoleForm select, #businessMemberPermissionChoices select { min-width: 0; width: 100%; max-width: 100%; }
+#businessRolePermissionChoices input[type=checkbox] { width: 20px; }
+@media (max-width: 600px) { #businessRoleForm .team-form { grid-template-columns: minmax(0, 1fr); } }

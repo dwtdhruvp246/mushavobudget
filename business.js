@@ -40,6 +40,9 @@ const state = {
   workspace: null,
   workspaceMembers: [],
   teamSnapshot: null,
+  roleSnapshot: null,
+  rolesAttempted: false,
+  rolesError: '',
   incomingInvitations: [],
   workspaceSubscription: null,
   workspaceEntitlement: null,
@@ -81,6 +84,7 @@ let setupOpen = false;
 let setupBusy = false;
 let chosenCurrencies = new Set();
 let teamBusy = false;
+let roleBusy = false, roleEditingCode = null, roleEditingVersion = null;
 let claimBusy = false;
 let openedClaimId = null;
 let openedBillId = null;
@@ -129,6 +133,13 @@ function friendlyMessage(error) {
   if(/BUSINESS_RENEWAL_ALREADY_SCHEDULED/.test(message))return 'Your next term is already paid. Seat changes will be available when that term starts.';
   if(/SUBSCRIPTION_REVIEW_ALREADY_PENDING/.test(message))return 'A subscription payment is already awaiting admin review.';
   if(/SUBSCRIPTION_PROOF_NOT_FOUND|INVALID_SUBSCRIPTION_PROOF_PATH/.test(message))return 'Upload a valid payment proof again before submitting.';
+  if (/BUSINESS_ROLE_CHANGED/.test(message)) return 'This role changed while you were editing. Close this form and open the role again.';
+  if (/BUSINESS_ROLE_IN_USE|BUSINESS_ROLE_SCOPE_IN_USE/.test(message)) return 'Reassign active members and pending invitations before archiving this role or changing its data access.';
+  if (/BUSINESS_ASSIGNED_SCOPE_REQUIRED/.test(message)) return 'Select at least one branch, project or team for this role.';
+  if (/BUSINESS_PRIVILEGE_ESCALATION_BLOCKED|BUSINESS_SCOPE_ESCALATION_BLOCKED|BUSINESS_SELF_ACCESS_CHANGE_BLOCKED/.test(message)) return 'Only the Owner can grant access beyond your permissions or assigned scope.';
+  if (/BUSINESS_PERMISSION_DEPENDENCY_REQUIRED/.test(message)) return 'Enable View reports for export, View budgets for budget management, and View team for team management.';
+  if (/BUSINESS_OWN_RECORDS_PERMISSION_CONFLICT/.test(message)) return 'Own-record roles cannot view company finances, review other people’s requests or manage budgets and team access.';
+  if (/business_roles_name_unique/.test(message)) return 'A role with this name already exists in this business.';
   if (/BUSINESS_SETUP_CHANGED|BUSINESS_CATEGORY_CHANGED|BUSINESS_DIMENSION_CHANGED|BUSINESS_SETUP_DRAFT_CHANGED/.test(message)) return "Someone updated this business while you were editing. Reload this workspace and try again.";
   if (/BUSINESS_ACTIVE_OWNER_REQUIRED/.test(message)) return "Only the Owner of an active Business subscription can change setup.";
   if (/INVALID_BUSINESS_CURRENCIES|INVALID_BUSINESS_SETUP/.test(message)) return "Check the business name, selected currencies, timezone and financial period.";
@@ -140,6 +151,7 @@ function friendlyMessage(error) {
   if (/ALREADY_BUSINESS_MEMBER/.test(message)) return "This person is already an active member of this Business workspace.";
   if (/CANNOT_INVITE_YOURSELF/.test(message)) return "You are already a member of this Business workspace.";
   if (/BUSINESS_INVITATION_RATE_LIMITED/.test(message)) return "Wait one minute before resending this invitation.";
+  if (/CUSTOM_ROLE_INVITATION_DELIVERY_FAILED/.test(message)) return 'The invitation was saved, but email delivery failed. Use Resend in the pending invitations list.';
   if (/BUSINESS_INVITATION_CHANGED/.test(message)) return "This invitation changed while you were editing. Reload the team list and try again.";
   if (/OWNERSHIP_CONFIRMATION_MISMATCH/.test(message)) return "Type the exact business name to confirm the ownership transfer.";
   if (/BUSINESS_TEAM_ACCESS_REQUIRED/.test(message)) return "You do not have permission to manage this Business team.";
@@ -203,6 +215,8 @@ function clearBusinessWorkspaceState() {
   state.workspace = null;
   state.workspaceMembers = [];
   state.teamSnapshot = null;
+  state.roleSnapshot = null; state.rolesAttempted = false; state.rolesError = '';
+  roleEditingCode = null; roleEditingVersion = null; roleBusy = false;
   state.billingSnapshot=null;billingSequence++;billingOffset=0;billingBusy=false;billingQuote=null;billingSubmissionId=null;
   if(billingPrintWindow&&!billingPrintWindow.closed)billingPrintWindow.close();billingPrintWindow=null;
   ['#businessBillingHistory','#businessBillingQuoteDetails'].forEach(selector=>$(selector)?.replaceChildren());
@@ -331,7 +345,7 @@ function renderWorkspaceSelectors() {
 }
 
 function formatRole(role) {
-  return ROLE_LABELS[role] || String(role || "Member").replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+  return state.roleSnapshot?.roles?.find(item => item.code === role)?.name || ROLE_LABELS[role] || (String(role).startsWith('custom_') ? 'Custom role' : String(role || "Member").replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase()));
 }
 
 function formatDate(value) {
@@ -648,7 +662,7 @@ function renderPlanning() {
   }) : [claimNode('p', 'claim-empty', claimPermission('budgets.view') ? 'No budgets match this view. Scope-limited members need an assigned organisation tag.' : 'Budget access is not enabled for your role.')]));
   pagination('businessRequest', requestOffset, Number(state.requestSummary?.total_count || 0));
   pagination('businessBudget', budgetOffset, Number(state.budgetSummary?.total_count || 0));
-  $('#businessWorkflowPermissions').classList.toggle('hidden', !businessOwnerCanSetUp() || !state.workflowPermissionsLoaded);
+  $('#businessWorkflowPermissions').classList.toggle('hidden', Boolean(state.roleSnapshot) || !businessOwnerCanSetUp() || !state.workflowPermissionsLoaded);
   renderWorkflowPermission();
 }
 async function refreshPlanning() {
@@ -2145,7 +2159,160 @@ function renderIdentity() {
   $("#businessReportingCurrency").textContent = state.workspaceSettings?.reporting_currency || "—";
 }
 
+const ROLE_OWN_BLOCKED = new Set(['finance.view_all','finance.record_payment','approvals.view','approvals.review','budgets.view','budgets.manage','team.manage','documents.manage']);
+const ROLE_DEPENDENCIES = {'finance.record_payment':'finance.view_all','approvals.review':'approvals.view','documents.manage':'documents.view','reports.export':'reports.view','budgets.manage':'budgets.view','team.manage':'team.view'};
+function rolePermissionAllowed(permission, permissions, overrides, mode) {
+  if (mode === 'own' && ROLE_OWN_BLOCKED.has(permission)) return false;
+  const effect = overrides.find(item => item.permission_code === permission)?.effect;
+  const allowed = effect === 'deny' ? false : effect === 'allow' ? true : permissions.includes(permission);
+  const dependency = ROLE_DEPENDENCIES[permission];
+  return allowed && (!dependency || rolePermissionAllowed(dependency, permissions, overrides, mode));
+}
+async function refreshBusinessRoles() {
+  const workspaceId = state.workspace?.id, sequence = workspaceLoadSequence;
+  if (!workspaceId || state.locked) return;
+  state.rolesAttempted = true;
+  try {
+    const snapshot = await query('Business roles', supabase.rpc('business_roles_snapshot', {p_workspace_id: workspaceId}));
+    if (sequence !== workspaceLoadSequence || state.workspace?.id !== workspaceId) return;
+    if (!Array.isArray(snapshot?.roles)) throw new Error('BUSINESS_ROLES_MIGRATION_REQUIRED');
+    state.roleSnapshot = snapshot; state.rolesError = '';
+  } catch (error) {
+    if (sequence !== workspaceLoadSequence || state.workspace?.id !== workspaceId) return;
+    state.roleSnapshot = null;
+    state.rolesError = /PGRST202|Could not find.*business_roles_snapshot|BUSINESS_ROLES_MIGRATION_REQUIRED/.test(error.message || '')
+      ? 'Custom roles will be available after the database update is applied.' : friendlyMessage(error);
+  }
+  renderBusinessRoles();
+  renderIdentity();
+  if (state.teamSnapshot) renderTeam();
+}
+function renderBusinessRoles() {
+  const snapshot = state.roleSnapshot, owner = businessOwnerCanSetUp();
+  $('#businessRolesCard').classList.toggle('hidden', !owner);
+  $('#addBusinessRole').disabled = !snapshot?.can_manage || roleBusy;
+  $('#businessRolesMessage').textContent = state.rolesError || (snapshot ? 'Changes apply to current and future members. Save the role to apply your edits.' : 'Loading role settings…');
+  $('#businessRolesList').replaceChildren();
+  if (snapshot) {
+    $('#businessWorkflowPermissions').classList.add('hidden');
+    const inviteRole = $('#businessInviteRole'), selected = inviteRole.value;
+    inviteRole.replaceChildren(...snapshot.roles.filter(role => role.status === 'active').map(role => new Option(role.name, role.code)));
+    inviteRole.value = snapshot.roles.some(role => role.code === selected && role.status === 'active') ? selected : 'staff';
+    for (const role of snapshot.roles.filter(role => role.status === 'active')) {
+      const row = claimNode('article', 'team-member role-row'), copy = claimNode('div', 'role-row-copy');
+      copy.append(claimNode('strong', '', role.name), claimNode('small', '', `${role.is_system ? 'Built-in' : 'Custom'} · ${role.members} members · ${role.invitations} pending invitations`));
+      if (role.description) copy.append(claimNode('p', '', role.description));
+      copy.append(claimNode('small', '', role.scope_mode === 'own' ? 'Own records' : role.scope_mode === 'assigned' ? 'Assigned branches, projects or teams' : role.scope_mode === 'all' ? 'Entire business, narrowed by member scopes' : 'Existing built-in access rules'));
+      row.append(copy);
+      if (owner) {
+        const actions = claimNode('div', 'team-member-actions'), edit = claimNode('button', '', 'Edit permissions');
+        edit.type = 'button'; edit.dataset.editBusinessRole = role.code; actions.append(edit);
+        if (!role.is_system) {const archive = claimNode('button', 'danger', 'Archive'); archive.type = 'button'; archive.dataset.archiveBusinessRole = role.code; actions.append(archive);}
+        row.append(actions);
+      }
+      $('#businessRolesList').append(row);
+    }
+  }
+}
+function renderRolePermissionChoices(selected = []) {
+  const container = $('#businessRolePermissionChoices'); container.replaceChildren();
+  const mode = $('#businessRoleScope').value, groups = new Map();
+  $('#businessRoleScopeHelp').textContent = mode === 'own' ? 'Own-record roles cannot review other people’s spending, view company finances or manage budgets.'
+    : mode === 'assigned' ? 'Members must have assigned tags. All permitted financial actions stay within those tags.'
+    : mode === 'all' ? 'Permissions can apply throughout this business. Individual assigned tags can restrict a member further.'
+    : 'Existing built-in scope rules are preserved.';
+  for (const definition of state.roleSnapshot?.permissions || []) {
+    if (!definition.editable) continue;
+    if (!groups.has(definition.permission_group)) {
+      const group = document.createElement('fieldset'); group.append(claimNode('legend', '', definition.permission_group.replace(/\b\w/g, letter => letter.toUpperCase())));
+      groups.set(definition.permission_group, group); container.append(group);
+    }
+    const label = document.createElement('label'), input = document.createElement('input'), copy = document.createElement('span');
+    input.type = 'checkbox'; input.value = definition.permission_code;
+    input.disabled = definition.permission_code === 'workspace.view' || (mode === 'own' && ROLE_OWN_BLOCKED.has(definition.permission_code));
+    input.checked = definition.permission_code === 'workspace.view' || (!input.disabled && selected.includes(definition.permission_code));
+    copy.append(claimNode('strong', '', definition.display_name), claimNode('small', '', definition.description)); label.append(input, copy); groups.get(definition.permission_group).append(label);
+  }
+}
+function openBusinessRole(code = null) {
+  if (!state.roleSnapshot?.can_manage || !businessOwnerCanSetUp() || roleBusy) return;
+  const role = state.roleSnapshot.roles.find(item => item.code === code);
+  if (code && !role) return;
+  roleEditingCode = role?.code || null; roleEditingVersion = role?.version || null;
+  $('#businessRoleTitle').textContent = role ? `Edit ${role.name}` : 'Add role';
+  $('#businessRoleName').value = role?.name || ''; $('#businessRoleName').disabled = Boolean(role?.is_system);
+  $('#businessRoleDescription').value = role?.description || '';
+  $('#businessRoleScope').value = role?.scope_mode || 'own';
+  $('#businessRoleScope').disabled = Boolean(role?.is_system || role?.members || role?.invitations);
+  $('#businessRoleCopyField').classList.toggle('hidden', Boolean(role));
+  $('#businessRoleCopy').replaceChildren(new Option('No optional permissions',''), ...state.roleSnapshot.roles.filter(item => item.status === 'active').map(item => new Option(item.name,item.code)));
+  $('#businessRoleImpact').textContent = role ? `Saving affects ${role.members} members and ${role.invitations} pending invitations. Individual exceptions still apply.` : 'Create an independent role for this business.';
+  setClaimMessage('#businessRoleFormMessage'); renderRolePermissionChoices(role?.permissions || []);
+  $('#businessRoleDialog').showModal();
+}
+async function saveBusinessRole(event) {
+  event.preventDefault();
+  if (roleBusy || !state.roleSnapshot?.can_manage || !businessOwnerCanSetUp()) return;
+  const workspaceId = state.workspace.id, sequence = workspaceLoadSequence;
+  const permissions = $$('#businessRolePermissionChoices input:checked').map(input => input.value);
+  const payload = {p_workspace_id: workspaceId, p_code: roleEditingCode,
+    p_name: $('#businessRoleName').value.trim(), p_description: $('#businessRoleDescription').value.trim(),
+    p_scope_mode: $('#businessRoleScope').value, p_permissions: permissions, p_expected_version: roleEditingVersion};
+  const controls = [...$('#businessRoleForm').querySelectorAll('button,input,select,textarea')].map(node => ({node, disabled:node.disabled}));
+  roleBusy = true; const endOperation = window.MushavoPWA?.beginOperation?.();
+  controls.forEach(({node}) => {node.disabled = true;});
+  try {
+    await query('Save business role', supabase.rpc('save_business_role', payload));
+    if (sequence !== workspaceLoadSequence || state.workspace?.id !== workspaceId) return;
+    window.MushavoPWA?.markFormClean?.('#businessRoleForm'); $('#businessRoleDialog').close();
+    await refreshBusinessRoles(); if (sequence !== workspaceLoadSequence || state.workspace?.id !== workspaceId) return;
+    setTeamMessage('Role and permissions saved. Assigned members now use these settings.');
+  } catch (error) {if (sequence === workspaceLoadSequence) setClaimMessage('#businessRoleFormMessage',friendlyMessage(error),true);}
+  finally {endOperation?.(); roleBusy = false; controls.forEach(({node,disabled}) => {node.disabled = disabled;});}
+}
+async function archiveBusinessRole(code) {
+  const role = state.roleSnapshot?.roles.find(item => item.code === code);
+  if (!role || !businessOwnerCanSetUp() || roleBusy) return;
+  if (role.members || role.invitations) {setTeamMessage('Reassign this role’s members and pending invitations before archiving it.',true);return;}
+  if (!window.confirm(`Archive ${role.name}? It will no longer be available for new assignments.`)) return;
+  const sequence = workspaceLoadSequence; roleBusy = true;
+  try {await query('Archive business role',supabase.rpc('archive_business_role',{p_workspace_id:state.workspace.id,p_code:code,p_expected_version:role.version}));
+    if (sequence !== workspaceLoadSequence) return;await refreshBusinessRoles();if(sequence!==workspaceLoadSequence)return;setTeamMessage('Role archived.');
+  } catch (error) {if(sequence===workspaceLoadSequence)setTeamMessage(friendlyMessage(error),true);}finally {roleBusy=false;}
+}
+function updateBusinessInviteScopeHelp() {
+  const role = state.roleSnapshot?.roles.find(item => item.code === $('#businessInviteRole').value);
+  $('#businessInviteScopeHelp').textContent = role?.scope_mode === 'assigned' ? 'Select at least one branch, project or team. No selection grants no scoped access.'
+    : role?.scope_mode === 'own' ? 'This person can access their own records. Selected tags restrict where they can work.'
+    : 'Selected tags restrict access. With no tags, this role uses its configured business-wide or built-in access rules.';
+  updateMemberPermissionPreview();
+}
+function renderMemberPermissionChoices(member) {
+  const enabled = Boolean(member && state.roleSnapshot?.can_manage);
+  $('#businessMemberOverrides').classList.toggle('hidden', !enabled);
+  const container = $('#businessMemberPermissionChoices'); container.replaceChildren();
+  if (!enabled) return;
+  for (const definition of state.roleSnapshot.permissions.filter(item => item.editable)) {
+    const label = document.createElement('label'), select = document.createElement('select');
+    select.dataset.permission = definition.permission_code;
+    select.append(new Option('Use role setting',''),new Option('Allow','allow'),new Option('Deny','deny'));
+    select.disabled = definition.permission_code === 'workspace.view';
+    select.value = state.roleSnapshot.overrides.find(item => item.member_id === member.id && item.permission_code === definition.permission_code)?.effect || '';
+    const status = claimNode('small',''); status.dataset.permissionStatus = definition.permission_code;
+    label.append(claimNode('strong','',definition.display_name),select,status); container.append(label);
+  }
+}
+function updateMemberPermissionPreview() {
+  const role = state.roleSnapshot?.roles.find(item => item.code === $('#businessInviteRole').value);
+  if (!role) return;
+  const overrides = $$('#businessMemberPermissionChoices select').map(select => ({permission_code:select.dataset.permission,effect:select.value}));
+  $$('#businessMemberPermissionChoices [data-permission-status]').forEach(node => {
+    const code = node.dataset.permissionStatus, effect = overrides.find(item=>item.permission_code===code)?.effect;
+    node.textContent = `${rolePermissionAllowed(code,role.permissions,overrides,role.scope_mode) ? 'Allowed' : 'Not allowed'} · ${effect ? 'Individual exception' : 'Role setting'} · Scope rules apply`;
+  });
+}
 function renderTeam() {
+  renderBusinessRoles();
   const list = $("#businessTeamList");
   const snapshot = state.teamSnapshot || { members: state.workspaceMembers, invitations: [], capacity: {} };
   const activeMembers = snapshot.members || [];
@@ -2174,7 +2341,8 @@ function renderTeam() {
     const scope = document.createElement("small");
     scope.className = "team-scope";
     const names = (member.scope_ids || []).map((id) => state.businessDimensions.find((item) => item.id === id)?.name).filter(Boolean);
-    scope.textContent = names.length ? `Scope: ${names.join(", ")}` : "Scope: Entire workspace";
+    const mode = state.roleSnapshot?.roles?.find(item => item.code === member.role)?.scope_mode;
+    scope.textContent = mode === 'own' ? `Scope: Own records${names.length ? ' · ' + names.join(', ') : ''}` : names.length ? `Scope: ${names.join(", ")}` : mode === 'assigned' ? 'Scope: No tags assigned — scoped access unavailable' : "Scope: Entire workspace";
     copy.append(name, joined, scope);
     const role = document.createElement("span");
     role.className = "role-badge";
@@ -2264,6 +2432,8 @@ function openBusinessInvitationDialog(invitation = null, member = null) {
   $("#businessInviteEmail").disabled = Boolean(editing);
   $("#businessInviteEmailField").classList.toggle("hidden", Boolean(member));
   $("#businessInviteRole").value = invitation?.role || member?.role || "staff";
+  renderMemberPermissionChoices(member);
+  updateBusinessInviteScopeHelp();
   $("#businessInviteTitle").textContent = member ? "Edit member access" : invitation ? "Edit invitation" : "Invite a team member";
   $("#businessInviteIntro").textContent = member ? "Changes apply immediately." : invitation ? "Update the role or optional access scope." : "Existing and new Mushavo users can join with their verified email.";
   $("#saveBusinessInvitation").textContent = editing ? "Save changes" : "Send invitation";
@@ -2279,6 +2449,8 @@ async function refreshBusinessTeam() {
   if(sequence!==workspaceLoadSequence||state.workspace?.id!==workspaceId)return;
   state.teamSnapshot=snapshot;
   state.workspaceMembers = state.teamSnapshot?.members || [];
+  await refreshBusinessRoles();
+  if(sequence!==workspaceLoadSequence||state.workspace?.id!==workspaceId)return;
   renderTeam();
 }
 
@@ -2302,14 +2474,27 @@ async function saveBusinessInvitation(event) {
     const role = $("#businessInviteRole").value;
     const scopes = selectedTeamScopes();
     if (mode === "member") {
-      await query("Member access", supabase.rpc("update_business_member_access", { p_workspace_id: state.workspace.id, p_member_id: id, p_role: role, p_scope_ids: scopes }));
+      if (state.roleSnapshot?.can_manage) {
+        const overrides = $$('#businessMemberPermissionChoices select').map(select => ({permission_code: select.dataset.permission, effect: select.value || null}));
+        await query("Member access", supabase.rpc("update_business_member_role_access", {p_workspace_id: state.workspace.id, p_member_id: id, p_role: role, p_scope_ids: scopes, p_overrides: overrides}));
+      } else await query("Member access", supabase.rpc("update_business_member_access", { p_workspace_id: state.workspace.id, p_member_id: id, p_role: role, p_scope_ids: scopes }));
       setTeamMessage("Member access updated.");
     } else if (mode === "invitation") {
       await query("Invitation access", supabase.rpc("edit_business_invitation", { p_invitation_id: id, p_role: role, p_scope_ids: scopes, p_expected_version: Number($("#businessInvitationVersion").value) }));
       setTeamMessage("Invitation updated.");
     } else {
-      const { data, error } = await supabase.functions.invoke("invite-business-member", { body: { action: "create", workspace_id: state.workspace.id, email: $("#businessInviteEmail").value.trim(), role, scope_ids: scopes } });
-      if (error || data?.error) throw new Error(data?.error || error?.message || "BUSINESS_INVITATION_EMAIL_FAILED");
+      // Existing deployed mail functions can deliver a database-created custom
+      // invitation through their resend path; SQL remains the authority for roles.
+      let body = {action: 'create', workspace_id: state.workspace.id, email: $('#businessInviteEmail').value.trim(), role, scope_ids: scopes};
+      if (role.startsWith('custom_')) {
+        const invitation = await query('Create custom-role invitation',supabase.rpc('create_business_invitation', {p_workspace_id:state.workspace.id,p_email:body.email,p_role:role,p_scope_ids:scopes}));
+        body = {action:'resend',invitation_id:invitation.invitation_id};
+      }
+      const { data, error } = await supabase.functions.invoke("invite-business-member", { body });
+      if (error || data?.error) {
+        if (role.startsWith('custom_')) {$('#businessInviteDialog').close();await refreshBusinessTeam();throw new Error('CUSTOM_ROLE_INVITATION_DELIVERY_FAILED');}
+        throw new Error(data?.error || error?.message || "BUSINESS_INVITATION_EMAIL_FAILED");
+      }
       setTeamMessage(`Invitation sent to ${data.email}.`);
     }
     $("#businessInviteDialog").close();
@@ -2563,6 +2748,7 @@ function renderRoute() {
   }
   $("#businessOnboarding").classList.add("hidden");
   state.tab = tab;
+  if (tab === 'team' && !state.locked && !state.rolesAttempted) refreshBusinessRoles();
   const [breadcrumb, title, intro] = TAB_COPY[tab];
   $("#businessBreadcrumb").textContent = breadcrumb;
   $("#businessPageTitle").textContent = title;
@@ -2577,6 +2763,7 @@ function renderRoute() {
 }
 
 function renderBusinessWorkspace() {
+  if (!state.rolesAttempted && roleForWorkspace(state.workspace)?.startsWith('custom_') && !state.locked) refreshBusinessRoles();
   renderWorkspaceSelectors();
   renderIdentity();
   renderTeam();
@@ -2937,6 +3124,28 @@ $("[data-open-setup-draft]").addEventListener("click", () => {
 });
 $$('[data-open-more]').forEach((button) => button.addEventListener("click", () => openBusinessMenu()));
 $('#businessBrandingForm').addEventListener('submit', saveBusinessIdentity);
+$('#addBusinessRole').addEventListener('click',()=>openBusinessRole());
+$('#businessRoleForm').addEventListener('submit',saveBusinessRole);
+$('#businessRoleDialog').addEventListener('cancel',event=>{if(roleBusy)event.preventDefault();});
+$$('[data-close-role]').forEach(button=>button.addEventListener('click',()=>{if(!roleBusy)$('#businessRoleDialog').close();}));
+$('#businessRoleCopy').addEventListener('change',()=>{
+  const role=state.roleSnapshot?.roles.find(item=>item.code===$('#businessRoleCopy').value);
+  $('#businessRoleScope').value = role?.scope_mode === 'legacy' ? ['staff','contributor'].includes(role.code) ? 'own' : ['finance_manager','business_admin'].includes(role.code) ? 'all' : 'assigned' : role?.scope_mode || 'own';
+  renderRolePermissionChoices(role?.permissions || []);
+});
+$('#businessRoleScope').addEventListener('change',()=>renderRolePermissionChoices($$('#businessRolePermissionChoices input:checked').map(input=>input.value)));
+$('#businessRolePermissionChoices').addEventListener('change',event=>{
+  const input=event.target;if(!input.matches('input[type=checkbox]'))return;
+  const dependency=ROLE_DEPENDENCIES[input.value];
+  if(input.checked&&dependency){const required=$$('#businessRolePermissionChoices input').find(item=>item.value===dependency);if(required)required.checked=true;}
+  if(!input.checked)for(const [permission,required] of Object.entries(ROLE_DEPENDENCIES))if(required===input.value){const dependent=$$('#businessRolePermissionChoices input').find(item=>item.value===permission);if(dependent)dependent.checked=false;}
+});
+$('#businessRolesList').addEventListener('click',event=>{
+  const edit=event.target.closest('[data-edit-business-role]'),archive=event.target.closest('[data-archive-business-role]');
+  if(edit)openBusinessRole(edit.dataset.editBusinessRole);if(archive)archiveBusinessRole(archive.dataset.archiveBusinessRole);
+});
+$('#businessInviteRole').addEventListener('change',updateBusinessInviteScopeHelp);
+$('#businessMemberPermissionChoices').addEventListener('change',updateMemberPermissionPreview);
 $$('[data-logo-input]').forEach(input => input.addEventListener('change', () => chooseBusinessLogo(input.dataset.logoInput)));
 $$('[data-logo-remove]').forEach(button => button.addEventListener('click', () => {
   const scope = button.dataset.logoRemove;
@@ -3066,7 +3275,7 @@ function stopBusinessRealtime() {
   $('#businessLiveBanner')?.classList.add('hidden');
 }
 function businessLiveEditing() {
-  return brandingBusy||setupBusy||teamBusy||claimBusy||billBusy||incomeBusy||workflowBusy||billingBusy||reportExportBusy||setupOpen
+  return brandingBusy||setupBusy||teamBusy||roleBusy||claimBusy||billBusy||incomeBusy||workflowBusy||billingBusy||reportExportBusy||setupOpen
     ||Boolean($$('dialog[open]').length)||Boolean(window.MushavoPWA?.hasUnsavedChanges?.());
 }
 function queueBusinessLiveRefresh(access=false) {
@@ -3091,7 +3300,7 @@ async function flushBusinessLiveRefresh() {
     if(access){
       // Access checks still run immediately, but the save response must finish
       // before a workspace reload can invalidate it or reset setup progress.
-      if(setupBusy){businessLivePending=true;businessLiveAccess=true;businessLiveTimer=setTimeout(flushBusinessLiveRefresh,1500);return;}
+      if(setupBusy||roleBusy||teamBusy||$('#businessRoleDialog').open||$('#businessInviteDialog').open){businessLivePending=true;businessLiveAccess=true;businessLiveTimer=setTimeout(flushBusinessLiveRefresh,1500);return;}
       try{await selectBusinessWorkspace(workspaceId,{preserveSetup:true});}catch(error){if(state.workspace?.id===workspaceId){$('#businessErrorMessage').textContent=friendlyMessage(error);showOnly('businessError');}}return;
     }
     if(state.locked){if(businessBillingOwner())await refreshBusinessBilling();}

@@ -14,12 +14,12 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="/business.css?v=12" />
+    <link rel="stylesheet" href="/business.css?v=13" />
     <link rel="stylesheet" href="/pwa-update.css?v=2" />
     <script src="/workspace-preference.js?v=1"></script>
     <script src="/config.js?v=27"></script>
-    <script src="/pwa.js?v=78" defer></script>
-    <script type="module" src="/business.js?v=16"></script>
+    <script src="/pwa.js?v=79" defer></script>
+    <script type="module" src="/business.js?v=17"></script>
   </head>
   <body>
     <a class="skip-link" href="#businessMain">Skip to Business content</a>
@@ -123,7 +123,7 @@
         <footer class="sidebar-footer">
           <a href="/app.html#personal/dashboard" data-leave-business>Personal &amp; Family</a>
           <button type="button" data-sign-out>Sign out</button>
-          <small>Version 4.9.38</small>
+          <small>Version 4.9.39</small>
         </footer>
       </aside>
 
@@ -317,6 +317,12 @@
             <div class="seat-grid" aria-label="Business seat use"><article><span>Seat limit</span><strong id="businessSeatLimit">—</strong></article><article><span>Active members</span><strong id="businessActiveSeats">—</strong></article><article><span>Pending invites</span><strong id="businessPendingSeats">—</strong></article><article><span>Available</span><strong id="businessAvailableSeats">—</strong></article></div>
             <p id="businessTeamMessage" class="team-message hidden" role="status" aria-live="polite"></p>
             <div class="team-columns"><article class="content-card"><div class="card-heading"><div><h3>Active members</h3><p id="businessTeamCount">0 people</p></div></div><div id="businessTeamList" class="team-list"></div></article><article id="businessPendingCard" class="content-card hidden"><div class="card-heading"><div><h3>Invitations</h3><p>Pending invitations reserve a seat.</p></div></div><div id="businessInvitationList" class="team-list"></div></article></div>
+            <article id="businessRolesCard" class="content-card hidden">
+              <div class="card-heading"><div><h3>Roles &amp; permissions</h3><p>Create roles for this business and control what each role can do.</p></div><button id="addBusinessRole" type="button" class="button primary">Add role</button></div>
+              <p id="businessRolesMessage" class="team-message" role="status" aria-live="polite"></p>
+              <div id="businessRolesList" class="team-list"></div>
+              <p>Ownership, billing and business setup remain Owner-only. Individual exceptions and assigned scopes still apply.</p>
+            </article>
             <article id="businessWorkflowPermissions" class="content-card hidden"><div class="card-heading"><div><h3>Approval, budget &amp; report permissions</h3><p>Owner only. Role changes apply to current and future members; individual overrides and assigned scopes still apply.</p></div></div>
               <form id="businessWorkflowPermissionForm" class="claim-fields"><label>Role<select id="workflowPermissionRole"><option value="business_admin">Business Admin</option><option value="finance_manager">Finance Manager</option><option value="team_manager">Team Manager</option><option value="staff">Staff</option><option value="contributor">Contributor</option><option value="viewer">Viewer / Auditor</option></select></label><label>Permission<select id="workflowPermissionCode"><option value="approvals.view">View scoped requests</option><option value="approvals.review">Review scoped requests and claims</option><option value="budgets.view">View permitted budgets</option><option value="budgets.manage">Manage permitted budgets</option><option value="reports.view">View permitted reports</option><option value="reports.export">Export and print permitted reports</option></select></label><label>Role setting<select id="workflowPermissionEnabled"><option value="true">Allowed</option><option value="false">Not allowed</option></select></label><button type="submit" class="button primary">Save role permission</button></form>
               <p>Budget management also needs budget-view access. Export and print also need report-view access. Non-finance managers and auditors need assigned tags for scope totals; Staff report access covers only their own records. Self-approval remains blocked.</p><p id="workflowPermissionMessage" class="team-message hidden" role="status"></p>
@@ -358,10 +364,27 @@
         <div class="team-form">
           <label id="businessInviteEmailField">Email<input id="businessInviteEmail" type="email" maxlength="320" autocomplete="email" required /></label>
           <label>Role<select id="businessInviteRole" required><option value="business_admin">Admin</option><option value="finance_manager">Finance Manager</option><option value="team_manager">Team Manager</option><option value="staff">Staff</option><option value="contributor">Contributor</option><option value="viewer">Viewer</option></select></label>
-          <fieldset><legend>Optional project, branch or department scope</legend><p>No selection gives the role workspace-wide access. Choose tags to limit later financial activity to those scopes.</p><div id="businessInviteScopes" class="scope-choices"></div></fieldset>
+          <fieldset><legend>Project, branch or department scope</legend><p id="businessInviteScopeHelp">Choose tags to restrict access. Roles with assigned-scope access require at least one tag.</p><div id="businessInviteScopes" class="scope-choices"></div></fieldset>
+          <fieldset id="businessMemberOverrides" class="hidden"><legend>Individual permission exceptions</legend><p>Use the role setting, allow an extra action or deny an action for this person. Scope restrictions always apply.</p><div id="businessMemberPermissionChoices" class="role-permission-groups"></div></fieldset>
         </div>
         <div class="seat-impact"><strong id="businessInviteSeatImpact">Uses 1 available seat</strong><span>Pending invitations reserve capacity immediately.</span></div>
         <div class="dialog-actions"><button class="button secondary" type="button" data-close-team-dialog>Cancel</button><button id="saveBusinessInvitation" class="button primary" type="submit">Send invitation</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="businessRoleDialog" class="business-dialog">
+      <form id="businessRoleForm">
+        <div class="dialog-heading"><div><p class="eyebrow">Owner controls</p><h2 id="businessRoleTitle">Add role</h2><p id="businessRoleImpact">Choose the actions this role can use.</p></div><button type="button" class="dialog-close" data-close-role aria-label="Close">×</button></div>
+        <div class="team-form">
+          <label>Role name<input id="businessRoleName" required minlength="2" maxlength="80" /></label>
+          <label>Description<textarea id="businessRoleDescription" maxlength="500" rows="2"></textarea></label>
+          <label id="businessRoleCopyField">Start with<select id="businessRoleCopy"><option value="">No optional permissions</option></select></label>
+          <label>Data access<select id="businessRoleScope" required><option value="own">Own records</option><option value="assigned">Assigned branches, projects or teams</option><option value="all">Entire business</option><option value="legacy" hidden>Existing built-in access rules</option></select></label>
+          <p id="businessRoleScopeHelp">Own-record roles cannot review other people's spending, view company finances or manage budgets.</p>
+        </div>
+        <div id="businessRolePermissionChoices" class="role-permission-groups"></div>
+        <p id="businessRoleFormMessage" class="team-message hidden" role="status"></p>
+        <div class="dialog-actions"><button type="button" class="button secondary" data-close-role>Cancel</button><button type="submit" class="button primary">Save role</button></div>
       </form>
     </dialog>
 

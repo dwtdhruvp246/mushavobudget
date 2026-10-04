@@ -31,6 +31,11 @@ jobs:
       - name: Run automated checks
         run: node --test tests/*.test.mjs
 
+      - name: Verify custom roles in disposable PostgreSQL
+        run: |
+          npm install --prefix /tmp/mushavo-role-verification --no-save --package-lock=false @electric-sql/pglite@0.5.8
+          MUSHAVO_PGLITE_MODULE=/tmp/mushavo-role-verification/node_modules/@electric-sql/pglite node scripts/verify-business-custom-roles-sql.cjs
+
   deploy:
     needs: test
     if: github.event_name != 'pull_request'

@@ -33,7 +33,7 @@ This branch adds an evidence collector, a tested read-only SQL diagnostic, a cov
 
 `scripts/security-stage-0-check.mjs` uses built-in Node modules. It inventories declared/installed Capacitor packages and whitelisted native config fields without printing credentials. `--live` makes nine public HTTPS GET requests with timeouts; network failure remains CANNOT VERIFY. It does not install packages, sync native platforms, call the database or write configuration.
 
-`supabase/diagnostics/security_stage_0_diagnostic.sql` executes inside a read-only transaction and rolls back. Its 24 rows check catalog/configuration properties and identify remaining evidence. It avoids user rows, secrets, cron commands, storage-object paths and full function bodies. Missing application tables produce FAIL rows rather than aborting the query. The normal Supabase `storage.buckets` catalog is required.
+`supabase/diagnostics/security_stage_0_diagnostic.sql` is a single read-only metadata SELECT, verified inside a read-only transaction by its disposable test runner. Its 24 rows check catalog/configuration properties and identify remaining evidence. It avoids user rows, secrets, cron commands, storage-object paths and full function bodies. Missing application tables produce FAIL rows rather than aborting the query. The normal Supabase `storage.buckets` catalog is required. A single SELECT ensures SQL Editor displays the evidence rows directly.
 
 The new tests cover redaction, unavailable native files, network failure, 404 responses, absent headers and live source mismatch. The disposable SQL verifier exercises disabled RLS, missing tables, inherited PUBLIC/column grants, profile privilege escalation, callable internal helpers, a public bucket and the database's rejection of writes inside a read-only transaction. Successful metadata checks do not certify authorization.
 
@@ -79,8 +79,6 @@ git show "FETCH_HEAD:supabase/diagnostics/security_stage_0_diagnostic.sql" | Out
 ```
 
 Paste into **Supabase → SQL Editor** and run. This is a diagnostic, not a migration. Expect **24 rows** with a mixture of **PASS**, **REVIEW** and **CANNOT VERIFY**. Any **FAIL** needs investigation. Do not expect every row to be TRUE/PASS: for example, metadata cannot establish backup restoration or actual JWT isolation. Send the returned table or screenshots; no user details or secrets are requested.
-
-If the SQL Editor shows only the final ROLLBACK command, select the entire `WITH ... SELECT ... ORDER BY check_name;` statement and run that selection. It remains a single read-only SELECT.
 
 ## PowerShell — preserve and inventory the existing native setup
 

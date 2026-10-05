@@ -2,7 +2,8 @@
 -- Run in Supabase SQL Editor as its normal administrative connection.
 -- PASS certifies only the named catalog property, never end-to-end authorization.
 -- REVIEW and CANNOT VERIFY are expected: this baseline does not implement later stages.
-begin transaction read only;
+-- This single SELECT returns the rows directly in SQL Editor. It is also tested
+-- inside a read-only transaction in scripts/verify-security-stage-0-sql.cjs.
 
 with
 expected_tables(name) as (
@@ -166,5 +167,3 @@ checks(check_name,status,details) as (
     jsonb_build_object('findings','F05,F10,F11,F14,F17,F20','required','Actual native configuration, release artifacts, provider/console evidence and real-device checks')
 )
 select check_name, status, details from checks order by check_name;
-
-rollback;

@@ -23,7 +23,7 @@ const functions = [...sql.slice(sql.indexOf('required_rpc(signature)'), sql.inde
       alter table public.business_roles force row level security;`);
     for (const signature of functions) await db.exec(`create function public.${signature} returns void language sql security definer set search_path=public,pg_temp as $$select$$; revoke all on function public.${signature} from public,anon,authenticated;`);
     const run = async () => {
-      const result = await db.exec(sql);
+      const result = await db.exec('begin transaction read only;\n' + sql + '\nrollback;');
       return result.flatMap(item => item.rows || []).filter(row => row.check_name);
     };
     const status = (rows, number) => rows.find(row => row.check_name.startsWith(number + ' '))?.status;

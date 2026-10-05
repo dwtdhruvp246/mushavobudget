@@ -1,0 +1,400 @@
+{
+  "baseline_commit": "d2a32032b1c560bbae853de87837c3436ea44887",
+  "application_release": "4.9.39",
+  "local": {
+    "evidenceType": "LOCAL_INVENTORY_ONLY",
+    "collectedAt": "2026-10-05T19:31:48.680Z",
+    "commit": "d2a32032b1c560bbae853de87837c3436ea44887",
+    "branch": "security/stage-0-baseline",
+    "localChangesPresent": true,
+    "node": "v24.19.0",
+    "appRelease": "4.9.39",
+    "packages": {
+      "@capacitor/core": {
+        "declared": null,
+        "installed": null
+      },
+      "@capacitor/cli": {
+        "declared": null,
+        "installed": null
+      },
+      "@capacitor/android": {
+        "declared": null,
+        "installed": null
+      },
+      "@capacitor/ios": {
+        "declared": null,
+        "installed": null
+      },
+      "@capacitor/app": {
+        "declared": null,
+        "installed": null
+      },
+      "@capacitor/preferences": {
+        "declared": null,
+        "installed": null
+      },
+      "esbuild": {
+        "declared": null,
+        "installed": null
+      }
+    },
+    "nativeConfig": null,
+    "nativeFiles": {
+      "capacitor.config.ts": false,
+      "android": false,
+      "ios": false,
+      "android/app/src/main/AndroidManifest.xml": false,
+      "ios/App/PrivacyInfo.xcprivacy": false
+    },
+    "migrationFileCount": 48,
+    "schemaTableCount": 79,
+    "publicPages": [
+      {
+        "file": "privacy.html",
+        "present": false
+      },
+      {
+        "file": "terms.html",
+        "present": false
+      },
+      {
+        "file": "delete-account.html",
+        "present": false
+      }
+    ],
+    "hashes": {
+      "app.js": "67060fc4e9b924ed74b952ca80534ae8227258dde7d97c8c595ccff121e99e11",
+      "business.js": "be0f11c7ccf2b5fb82bc8555aba02910e6e19d3a4c3dd0ac0ed883f8dbdd6af0",
+      "app.html": "d3af231d544768d73798205da21eb7e75b960fbb636b3b81740be3cb998d1fdb",
+      "business.html": "c4bc6c2539cf3e5418c22e9edcaacfd4b80592ae74bd5eca09c7ccbfe4f95dd8",
+      "pwa.js": "3502532a6483f93e863dfc08d646712c4033afdc30cf2ca7260a5201471e3b6b",
+      "sw.js": "4602b4accde6a2a0c1cf3ca56726ecd97b2c55f285da66d51535c2ddd18c6312",
+      "package.json": "dae5a6f39ee49ddea977bef0b41fe729a802ee3baba6df2e86113bef43836d60",
+      "package-lock.json": "6a13bc6af50a831bcf7396515236207f33624b4ac53a57112aa3b9410cf9db02",
+      "scripts/build-capacitor.mjs": "1b899743267807b525b61bfde731827e942232fa60edd05d316e4503796fe811"
+    },
+    "limitations": [
+      "Installed dependencies/configuration are inventory, not a signed release build.",
+      "No live database policies, OAuth, store-console, MFA, backup or device checks are performed.",
+      "No secret-history, vulnerability, authorization, or store-compliance certification is implied."
+    ]
+  },
+  "live_public_gets": [
+    {
+      "path": "/",
+      "status": 200,
+      "url": "https://mushavobudget.com/",
+      "bytes": 10217,
+      "sha256": "c02a3c4d13db85ce15b015ddc67b43e8cd49f8d78c52c2a419775b2b32033431",
+      "headers": {
+        "server": "cloudflare",
+        "content-type": "text/html",
+        "strict-transport-security": null,
+        "content-security-policy": null,
+        "content-security-policy-report-only": null,
+        "x-content-type-options": null,
+        "x-frame-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null
+      },
+      "cloudflare_analytics": true
+    },
+    {
+      "path": "/app",
+      "status": 200,
+      "url": "https://mushavobudget.com/app",
+      "bytes": 111357,
+      "sha256": "b75dcaa2a7c10d3a9527dc7a728384b46eb713104ab9ccc2f5c52fb2e3814b8a",
+      "headers": {
+        "server": "cloudflare",
+        "content-type": "text/html",
+        "strict-transport-security": null,
+        "content-security-policy": null,
+        "content-security-policy-report-only": null,
+        "x-content-type-options": null,
+        "x-frame-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null
+      },
+      "cloudflare_analytics": true
+    },
+    {
+      "path": "/business",
+      "status": 200,
+      "url": "https://mushavobudget.com/business",
+      "bytes": 73112,
+      "sha256": "b5b2daaf21f49eb3cab3deada0745e928facf55b059c071622884d4b5e70c110",
+      "headers": {
+        "server": "cloudflare",
+        "content-type": "text/html",
+        "strict-transport-security": null,
+        "content-security-policy": null,
+        "content-security-policy-report-only": null,
+        "x-content-type-options": null,
+        "x-frame-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null
+      },
+      "cloudflare_analytics": true
+    },
+    {
+      "path": "/signup",
+      "status": 200,
+      "url": "https://mushavobudget.com/signup",
+      "bytes": 35873,
+      "sha256": "81799418ba48fada2ae63c0ecf0e7ff25fb62836422b091c71f9abe56913b834",
+      "headers": {
+        "server": "cloudflare",
+        "content-type": "text/html",
+        "strict-transport-security": null,
+        "content-security-policy": null,
+        "content-security-policy-report-only": null,
+        "x-content-type-options": null,
+        "x-frame-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null
+      },
+      "cloudflare_analytics": true
+    },
+    {
+      "path": "/app.js",
+      "status": 200,
+      "url": "https://mushavobudget.com/app.js",
+      "bytes": 494583,
+      "sha256": "67060fc4e9b924ed74b952ca80534ae8227258dde7d97c8c595ccff121e99e11",
+      "headers": {
+        "server": "cloudflare",
+        "content-type": "text/javascript",
+        "strict-transport-security": null,
+        "content-security-policy": null,
+        "content-security-policy-report-only": null,
+        "x-content-type-options": null,
+        "x-frame-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null
+      },
+      "cloudflare_analytics": false,
+      "matches_source": true
+    },
+    {
+      "path": "/business.js",
+      "status": 200,
+      "url": "https://mushavobudget.com/business.js",
+      "bytes": 236139,
+      "sha256": "be0f11c7ccf2b5fb82bc8555aba02910e6e19d3a4c3dd0ac0ed883f8dbdd6af0",
+      "headers": {
+        "server": "cloudflare",
+        "content-type": "text/javascript",
+        "strict-transport-security": null,
+        "content-security-policy": null,
+        "content-security-policy-report-only": null,
+        "x-content-type-options": null,
+        "x-frame-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null
+      },
+      "cloudflare_analytics": false,
+      "matches_source": true
+    },
+    {
+      "path": "/privacy",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "path": "/terms",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "path": "/delete-account",
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "test_evidence": {
+    "baseline_automated": {
+      "tests": 387,
+      "pass": 387,
+      "fail": 0,
+      "skipped": 0,
+      "node": "v24.19.0"
+    },
+    "final_automated": {
+      "tests": 390,
+      "pass": 390,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "node": "v24.19.0"
+    },
+    "disposable_postgres": {
+      "engine": "PGlite",
+      "version": "0.5.8",
+      "verifiers_passed": [
+        "business-custom-roles",
+        "business-stage-8",
+        "business-stage-9",
+        "business-stage-10",
+        "business-stage-12",
+        "security-stage-0-diagnostic"
+      ]
+    },
+    "native_asset_build": {
+      "status": "FAIL",
+      "reason": "Required esbuild/Capacitor dependency set absent in package.json/lockfile and clean checkout."
+    },
+    "custom_role_browser": {
+      "status": "NOT TESTED",
+      "reason": "Playwright Chromium executable absent."
+    }
+  },
+  "live_supabase_metadata": "PENDING OWNER RUN",
+  "live_authorization": "NOT TESTED",
+  "native_release_artifacts": "NOT AVAILABLE",
+  "targeted_secret_signature_checks": {
+    "current_tracked_text_matches": 0,
+    "available_history_signature_change_commits": 0,
+    "comprehensive_secret_or_advisory_scan": false
+  },
+  "live_recheck": {
+    "collectedAt": "2026-10-05T19:37:57.260Z",
+    "sample": [
+      {
+        "route": "/",
+        "httpStatus": 200,
+        "sha256": "cb343fde6e24185a6780fe2ebb9c51f97119dba3d96292864e0e44fea85007f0",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/app",
+        "httpStatus": 200,
+        "sha256": "d3af231d544768d73798205da21eb7e75b960fbb636b3b81740be3cb998d1fdb",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/business",
+        "httpStatus": 200,
+        "sha256": "c4bc6c2539cf3e5418c22e9edcaacfd4b80592ae74bd5eca09c7ccbfe4f95dd8",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/signup",
+        "httpStatus": 200,
+        "sha256": "378c23c8e08f2fcfd9db71e1e8adfd402c40e5913d6e8029cba7411866c82378",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/app.js",
+        "httpStatus": 200,
+        "sha256": "67060fc4e9b924ed74b952ca80534ae8227258dde7d97c8c595ccff121e99e11",
+        "cloudflareAnalytics": false,
+        "matchesLocalSource": true,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/business.js",
+        "httpStatus": 200,
+        "sha256": "be0f11c7ccf2b5fb82bc8555aba02910e6e19d3a4c3dd0ac0ed883f8dbdd6af0",
+        "cloudflareAnalytics": false,
+        "matchesLocalSource": true,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/privacy",
+        "httpStatus": 404,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/terms",
+        "httpStatus": 404,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/delete-account",
+        "httpStatus": 404,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      }
+    ]
+  }
+}

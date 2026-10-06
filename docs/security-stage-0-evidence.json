@@ -1,6 +1,33 @@
 {
   "baseline_commit": "d2a32032b1c560bbae853de87837c3436ea44887",
   "application_release": "4.9.39",
+  "owner_admin_invitation_smoke_test": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner confirms the previously specified three-step UI test; no independent trace",
+    "owner_statement": "done, passed",
+    "status": "OWNER-REPORTED PASS",
+    "requested_test_context": "Admin-created invitation to a fresh inbox controlled by the operator",
+    "results": {
+      "prefilled_name_and_email_correct": "PASS, owner-reported",
+      "back_to_signin_before_setup_did_not_grant_workspace_access": "PASS, owner-reported UI outcome",
+      "resent_fresh_invitation_and_completed_setup": "PASS, owner-reported",
+      "intended_workspace_plan_and_currencies_after_completion": "PASS, owner-reported"
+    },
+    "independently_executed_by_session": false,
+    "identifiers_email_links_device_browser_or_trace_supplied": false,
+    "not_established_by_this_smoke_test": [
+      "Absence of premature database workspace records",
+      "Direct API denial for every pending identity",
+      "Old/replaced/expired/used invitation-link invalidation and replay",
+      "Complete tenant and role authorization"
+    ],
+    "business_invitation_and_recovery": "REMAIN UNVERIFIED",
+    "business_callback_mismatch": "OPEN",
+    "next_controlled_check": "Reuse the now-registered owned test account for a Business invitation; check email destination, intended workspace and assigned role",
+    "earlier_evidence_snapshots_preserved": true,
+    "application_database_provider_or_apk_changed_by_followup": false,
+    "scope": "Three audit reports only; owner-reported UI behavior does not certify all backend or store requirements"
+  },
   "owner_email_confirmation_smoke_test": {
     "received_date": "2026-10-06",
     "evidence_type": "Owner explicitly confirms all three enumerated test outcomes; no independent trace",

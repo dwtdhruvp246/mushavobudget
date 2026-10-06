@@ -2,7 +2,7 @@
 
 Baseline: 5 October 2026, source `d2a32032b1c560bbae853de87837c3436ea44887`, web/PWA 4.9.39.
 
-**This is an applicability/evidence worklist, not 123 completed tests.** Each entry includes the current test scope and the next check. A source definition or disposable fixture PASS does not establish live authorization, native security, recovery or store acceptance. Stage 0 has initial live metadata and partial native identity; the table-grant recheck passes and a tested internal currency-helper fix awaits live application, while native packages, provider evidence and live behavior remain pending. Developer owns code/test work; Owner owns console/operator decisions; Both requires coordination.
+**This is an applicability/evidence worklist, not 123 completed tests.** Each entry includes the current test scope and the next check. A source definition or disposable fixture PASS does not establish live authorization, native security, recovery or store acceptance. Both targeted database permission repairs pass their owner-supplied live metadata rechecks. Native core/CLI/Android versions are known; missing builder packages, Android configuration, provider evidence and live behavior remain open. Developer owns code/test work; Owner owns console/operator decisions; Both requires coordination.
 
 Evidence references:
 
@@ -16,8 +16,8 @@ Evidence references:
 - **E8:** native asset builder reproduced dependency failure. Native source/configuration/release artifacts absent in checkout; browser UI fixture could not launch missing Chromium.
 - **E9:** metadata-only 24-row diagnostic verified in synthetic positive/negative catalog cases. Owner's initial 6 October live CSV had 12 PASS, 1 FAIL, 7 REVIEW, 4 CANNOT VERIFY. The post-fix CSV has 13 PASS, 7 REVIEW, 4 CANNOT VERIFY: diagnostic 08 now passes; all other rows are unchanged. Actual JWT/API behavior remains unverified.
 - **E10:** owner's earlier confirmation that all 20 custom-role deployment diagnostics passed; reported deployment evidence with limited scope.
-- **E12:** the 61 anonymous SECURITY DEFINER entries are classified in SECURITY_STAGE_0_FUNCTION_REVIEW.md. Two internal currency helpers have actual-source isolated misuse reproduction and a tested EXECUTE repair pending live application; public lookups and protected currency workflows pass the fixture. This is not production-body/incident evidence.
-- **E11:** owner reports Node 22.17.0 and native config `com.mushavo.budget` / Mushavo Budget / www. Local native edits must be preserved; installed package versions are pending npm.cmd after PowerShell blocked npm.ps1. No signed native build evidence yet.
+- **E11:** owner reports Node 22.17.0 and native config `com.mushavo.budget` / Mushavo Budget / www. `npm.cmd ls` confirms matching core/CLI/Android 8.5.2 and does not list App, Preferences, esbuild or iOS at depth 0. Preserve local native edits; the current repository builder requires the first three unreported packages. This output does not inspect transitive installs or execute the local builder. Android configuration/toolchain and signed artifacts remain unverified.
+- **E12:** the original 61 anonymous SECURITY DEFINER entries are classified in SECURITY_STAGE_0_FUNCTION_REVIEW.md. Two helpers have actual-source isolated misuse reproduction and a tested EXECUTE repair. The owner's dedicated live diagnostic returns 10 PASS, 1 REVIEW, 1 CANNOT VERIFY: both API roles deny direct helper execution and backend/protected/public execution metadata is retained. The remaining inventory is exactly 59 signatures. Public lookups and protected currency workflows pass the fixture; live behavior, bodies and historical integrity remain unverified.
 
 The technical details, original F01–F20 findings, staging design, PowerShell steps and remaining evidence list are in [SECURITY_STAGE_0_BASELINE.md](SECURITY_STAGE_0_BASELINE.md). No code-dependent requirement is deemed inapplicable solely because its evidence is unavailable.
 
@@ -28,7 +28,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 1. PROJECT DISCOVERY | Yes | PARTIAL | E1 inventories current source; native/platform/provider inputs pending. | F05,F20 | 0 | Both |
 | 2. PRESERVE EXISTING ARCHITECTURE | Yes | VERIFIED PROCESS | Stage 0 additions preserve application and financial architecture; review every later diff. | — | All | Developer |
 | 3. AUDIT CLASSIFICATION | Yes | VERIFIED PROCESS | This register separates local passes, gaps, decisions and unavailable evidence. | — | All | Developer |
-| 4. EVIDENCE REQUIREMENT | Yes | VERIFIED PROCESS | E1–E12 are scoped evidence; table-grant recheck PASS, internal helper repair pending, complete live behavior pending. | — | All | Both |
+| 4. EVIDENCE REQUIREMENT | Yes | VERIFIED PROCESS | E1–E12 are scoped evidence; both targeted permission rechecks PASS, installed native versions received, complete live behavior pending. | — | All | Both |
 | 5. NO FAKE DATA OR CLAIMS | Yes | VERIFIED PROCESS | No production data or invented claims used; fixture identities are explicitly synthetic. | — | All | Developer |
 | 6. SECRETS AND CREDENTIALS | Yes | PARTIAL | E6 found no targeted secret signatures; full historical/artifact/provider scan outstanding. | F18 | 1 | Both |
 | 7. PUBLIC ENVIRONMENT VARIABLE PREFIXES | Yes | CONDITIONAL | No VITE/NEXT-style build variables found; inspect actual native/web release assets and future tooling. | F18 | 1,5 | Developer |
@@ -48,7 +48,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 21. OTHER INJECTION RISKS | Yes | NEEDS VERIFICATION | No shell/LLM backend found; review URL/formula/content sinks and later native callbacks. | F12,F13 | 2,4,9 | Developer |
 | 22. CROSS-SITE SCRIPTING | Yes | PARTIAL | escapeHtml and DOM construction exist; no exploit established. Exercise stored/reflected inputs, URLs and exports plus tested CSP. | F07,F13 | 2,4,9 | Developer |
 | 23. INPUT VALIDATION | Yes | PARTIAL | E2/E3–E5 exercise selected SQL validation; review every ingress and malformed upload/large payload case. | F09,F13,F15 | 2,3,4,9 | Developer |
-| 24. EXCESSIVE DATA EXPOSURE | Yes | HELPER REPAIR PENDING / FURTHER VERIFICATION | E12 reproduces exposed internal conversion/date helper behavior in actual-source fixtures. Apply/recheck narrow EXECUTE grants; inspect other actual API/error/export/notification payloads. | F15,F20 | 3,8,9 | Developer |
+| 24. EXCESSIVE DATA EXPOSURE | Yes | HELPER GRANT RECHECK PASS / FURTHER VERIFICATION | E12 reproduces the original helper gap in fixtures and confirms post-repair live EXECUTE metadata PASS. Check live workflows/historical integrity and other actual API/error/export/notification payloads; remaining anonymous inventory is 59. | F15,F20 | 3,8,9 | Developer |
 | 25. RATE LIMITING | Yes | NEEDS WORK | Test-push cooldown and invite limits present; direct contact route lacks authoritative quotas/challenge evidence. | F09 | 2 | Developer |
 
 ## Sections 26–50
@@ -76,7 +76,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 44. ENVIRONMENT SEPARATION | Yes | CANNOT VERIFY | Disposable SQL is isolated; actual separate Supabase/preview/sandbox infrastructure unavailable. Define before negative tests. | F16,F19 | 0,1 | Both |
 | 45. FORGOTTEN ENVIRONMENT EXPOSURE | Yes | NEEDS VERIFICATION | Preview/old domains and environment inventories unavailable; enumerate owner consoles without probing unrelated services. | F18,F19 | 1 | Owner |
 | 46. PRODUCTION EXPOSURE SCAN | Yes | PARTIAL | Pages allowlist and assetsignore exist; inspect final deployed files, redirects, maps and unintended development exposure. | F18 | 1,2,9 | Developer |
-| 47. DEPENDENCIES | Yes | CONFIRMED GAP | E8 clean native asset build fails; no advisory assessment claimed. Preserve existing local major and pin compatible inputs. | F06,F18 | 1,5 | Both |
+| 47. DEPENDENCIES | Yes | CONFIRMED GAP | E8 clean native asset build fails; E11 confirms core/CLI/Android 8.5.2 but omits App/Preferences/esbuild needed by the builder. Reconcile local source and compatible pinned inputs; no advisory assessment claimed. | F06,F18 | 1,5 | Both |
 | 48. WEBHOOK SECURITY | Conditional | CONDITIONAL / NO CURRENT FLOW | No incoming payment-provider webhook integration found; apply signature/replay controls when native commerce is selected. | F03 | 7 | Developer |
 | 49. RAW WEBHOOK BODY VERIFICATION | Conditional | CONDITIONAL / NO CURRENT FLOW | No tracked raw-body payment webhook receiver; verify vendor protocol during Stage 7, not an invented current pass. | F03 | 7 | Developer |
 | 50. APIs | Yes | PARTIAL | RPC/Edge contracts present; live error/auth/filter/pagination abuse matrix and compatibility checks pending. | F15 | 2,3,9 | Developer |

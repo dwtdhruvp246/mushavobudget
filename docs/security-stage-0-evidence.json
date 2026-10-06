@@ -249,7 +249,7 @@
       "reason": "Playwright Chromium executable absent."
     }
   },
-  "live_supabase_metadata": "OWNER-SUPPLIED INITIAL AND POST-FIX CSV RECEIVED; 13 PASS, 7 REVIEW, 4 CANNOT VERIFY; NO FAIL",
+  "live_supabase_metadata": "OWNER-SUPPLIED POST-TABLE-FIX: 13 PASS, 7 REVIEW, 4 CANNOT VERIFY; POST-HELPER-FIX: 10 PASS, 1 REVIEW, 1 CANNOT VERIFY; NO FAIL IN EITHER RECHECK",
   "live_authorization": "NOT TESTED",
   "native_release_artifacts": "NOT AVAILABLE",
   "targeted_secret_signature_checks": {
@@ -435,8 +435,12 @@
       "appId": "com.mushavo.budget",
       "appName": "Mushavo Budget",
       "webDir": "www",
-      "installed_package_versions": null,
-      "inventory_blocker": "PowerShell blocked npm.ps1; rerun with npm.cmd",
+      "installed_package_versions": {
+        "@capacitor/core": "8.5.2",
+        "@capacitor/cli": "8.5.2",
+        "@capacitor/android": "8.5.2"
+      },
+      "inventory_blocker": "RESOLVED: owner supplied npm.cmd ls output",
       "preserve_local_changes": [
         ".gitignore",
         "package.json",
@@ -444,7 +448,24 @@
         "android/",
         "capacitor.config.json",
         "scripts/"
-      ]
+      ],
+      "package_inventory_received_date": "2026-10-06",
+      "not_listed_at_depth_0": [
+        "@capacitor/ios",
+        "@capacitor/app",
+        "@capacitor/preferences",
+        "esbuild"
+      ],
+      "existing_capacitor_major": 8,
+      "ios_not_installed_is_android_build_blocker": false,
+      "android_configuration_and_toolchain": "PENDING local builder, Gradle/SDK and manifest evidence",
+      "native_build_or_apk_changed": false,
+      "required_builder_packages_not_listed_at_depth_0": [
+        "@capacitor/app",
+        "@capacitor/preferences",
+        "esbuild"
+      ],
+      "package_inventory_limit": "Top-level npm.cmd ls only; transitive installs and local build execution were not checked"
     },
     "repair": {
       "migration": "20261006043000_security_stage_0_private_reads.sql",
@@ -485,8 +506,8 @@
       "signed_in_permission_currency_functions": 30,
       "source_absent": 4
     },
-    "live_helper_anon_execute": "CONFIRMED BY OWNER CSV",
-    "live_helper_authenticated_execute": "NOT SUPPLIED",
+    "live_helper_anon_execute": "CONFIRMED BEFORE REPAIR; DENIED BY POST-REPAIR OWNER CSV",
+    "live_helper_authenticated_execute": "BEFORE NOT SUPPLIED; DENIED BY POST-REPAIR OWNER CSV",
     "isolated_source_reproduction": "PASS: unauthorized supplied conversion insertion and historical-date read with matching source/default API-role grants",
     "protected_source_workflow_verification": "PASS in PGlite 0.5.8; synthetic Auth/ownership/payment surroundings",
     "production_records_or_bodies_read": false,
@@ -499,8 +520,174 @@
       "REVIEW": 1,
       "CANNOT VERIFY": 1
     },
-    "live_application": "PENDING",
-    "live_recheck": "PENDING",
+    "live_application": "TARGETED GRANT CHANGES CONFIRMED BY OWNER-SUPPLIED POST-REPAIR METADATA; NO DIRECT DEPLOYMENT ACCESS",
+    "live_recheck": {
+      "received_date": "2026-10-06",
+      "source": "Owner-supplied CSV pasted in chat",
+      "rows": 12,
+      "status_counts": {
+        "PASS": 10,
+        "REVIEW": 1,
+        "CANNOT VERIFY": 1,
+        "FAIL": 0
+      },
+      "checks": [
+        {
+          "check_name": "01 Internal helpers are installed",
+          "status": "PASS",
+          "details": {
+            "dates_present": true,
+            "writer_present": true
+          }
+        },
+        {
+          "check_name": "02 Internal helpers retain protected definitions",
+          "status": "PASS",
+          "details": {
+            "scope": "SECURITY DEFINER and pinned search path only; function body is not retrieved"
+          }
+        },
+        {
+          "check_name": "03 Anonymous direct conversion writes are disabled",
+          "status": "PASS",
+          "details": {
+            "scope": "Effective EXECUTE, including PUBLIC/inherited grants"
+          }
+        },
+        {
+          "check_name": "04 Signed-in direct conversion writes are disabled",
+          "status": "PASS",
+          "details": {
+            "scope": "Protected triggers and authorized RPCs perform legitimate conversion writes"
+          }
+        },
+        {
+          "check_name": "05 Anonymous historical payment dates are disabled",
+          "status": "PASS",
+          "details": {
+            "scope": "Effective EXECUTE only"
+          }
+        },
+        {
+          "check_name": "06 Signed-in direct historical backfill dates are disabled",
+          "status": "PASS",
+          "details": {
+            "scope": "Backend scheduler uses the service role"
+          }
+        },
+        {
+          "check_name": "07 Backend currency helper access is retained",
+          "status": "PASS",
+          "details": {
+            "scope": "Service EXECUTE grants only; actual scheduled execution needs separate evidence"
+          }
+        },
+        {
+          "check_name": "08 Protected trigger and backfill owners can still write conversions",
+          "status": "PASS",
+          "details": {
+            "scope": "Caller ownership/EXECUTE metadata only",
+            "caller_count": 5
+          }
+        },
+        {
+          "check_name": "09 Signed-in currency entry points remain executable",
+          "status": "PASS",
+          "details": {
+            "scope": "Existing function-body authorization remains required",
+            "expected_count": 6
+          }
+        },
+        {
+          "check_name": "10 Public signup and pricing entry points remain executable",
+          "status": "PASS",
+          "details": {
+            "expected_count": 2
+          }
+        },
+        {
+          "check_name": "11 Remaining anonymous SECURITY DEFINER inventory",
+          "status": "REVIEW",
+          "details": [
+            "admin_subscription_monitor()",
+            "apply_approved_subscription_member_limit()",
+            "backfill_currency_conversions()",
+            "backfill_workspace_currency_conversions(uuid)",
+            "business_team_can_manage(uuid)",
+            "can_manage_family_members(uuid)",
+            "create_family_workspace(text,numeric,text)",
+            "delete_family_workspace(uuid)",
+            "effective_workspace_entitlement(uuid)",
+            "enforce_approved_additional_seat()",
+            "enforce_business_member_role_compatibility()",
+            "enforce_personal_payment_limit()",
+            "exchange_rate_status(boolean)",
+            "get_public_plan_catalogue(text)",
+            "get_public_signup_currencies()",
+            "guard_account_status_change()",
+            "guard_suspended_account_write()",
+            "guard_workspace_finance_write()",
+            "handle_new_user_profile()",
+            "has_active_family_plan()",
+            "invite_family_member(uuid,text,text)",
+            "is_active_family_participant(uuid)",
+            "is_app_admin()",
+            "is_family_admin(uuid)",
+            "is_family_member(uuid)",
+            "is_platform_staff(text[])",
+            "is_workspace_member(uuid)",
+            "is_workspace_owner(uuid)",
+            "latest_exchange_rate(text,text,timestamp with time zone)",
+            "link_family_head_to_profile()",
+            "lock_payment_record_conversion()",
+            "lock_platform_payment_conversion()",
+            "lock_subscription_payment_conversion()",
+            "normalize_enquiry()",
+            "provision_my_budget_workspace()",
+            "record_public_enquiry_event()",
+            "remove_family_member(uuid,uuid)",
+            "respond_to_family_invitation(uuid,boolean)",
+            "rls_auto_enable()",
+            "save_admin_finance_currency_settings(text,text[],boolean)",
+            "save_manual_payment_conversion(text,uuid,text,numeric,numeric)",
+            "save_plan_definition(uuid,text,text,text,text,text,integer,integer,boolean,boolean,boolean,boolean,text,integer,text[])",
+            "save_plan_price(text,text,text,numeric,numeric)",
+            "save_workspace_currency_settings(uuid,text,text[],text,boolean)",
+            "seed_business_stage_4_team_permissions()",
+            "submit_family_plan_request(uuid,text,integer,text,text,text,numeric,text,date,text,text,text,text,text,bigint)",
+            "submit_subscription_renewal(uuid,text,integer,text,text,numeric,text,date,text,text,text,text,text,bigint)",
+            "sync_family_head_subscription_status()",
+            "sync_legacy_family_invitation()",
+            "sync_legacy_family_member()",
+            "sync_legacy_family_workspace()",
+            "sync_payment_record_workspace()",
+            "sync_payment_workspace()",
+            "validate_budget_expense_currency()",
+            "validate_payment_record_currency()",
+            "validate_workspace_transaction_currency()",
+            "workspace_billable_member_count(uuid)",
+            "workspace_has_feature(uuid,text)",
+            "workspace_member_usage(uuid)"
+          ]
+        },
+        {
+          "check_name": "12 Live conversion workflows and historical integrity",
+          "status": "CANNOT VERIFY",
+          "details": {
+            "required": "Controlled allowed/denied payment, settings and scheduler checks; existing conversion integrity needs authorized review"
+          }
+        }
+      ],
+      "remaining_anon_executable_functions": 59,
+      "removed_signatures": [
+        "currency_conversion_backfill_dates(integer)",
+        "store_api_payment_conversion(text,uuid,uuid,numeric,text,text,timestamp with time zone)"
+      ],
+      "remaining_matches_original_minus_two_helpers": true,
+      "live_workflows_tested": false,
+      "historical_integrity_verified": false,
+      "production_function_bodies_retrieved": false
+    },
     "native_or_apk_changes": false
   }
 }

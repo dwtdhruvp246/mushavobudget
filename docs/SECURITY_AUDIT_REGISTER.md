@@ -2,12 +2,12 @@
 
 Baseline: 5 October 2026, source `d2a32032b1c560bbae853de87837c3436ea44887`, web/PWA 4.9.39.
 
-**This is an applicability/evidence worklist, not 123 completed tests.** Each entry includes the current test scope and the next check. A source definition or disposable fixture PASS does not establish live authorization, native security, recovery or store acceptance. Both targeted database permission repairs pass their owner-supplied live metadata rechecks. Native core/CLI/Android versions are known; missing builder packages, Android configuration, provider evidence and live behavior remain open. Developer owns code/test work; Owner owns console/operator decisions; Both requires coordination.
+**This is an applicability/evidence worklist, not 123 completed tests.** Each entry includes the current test scope and the next check. A source definition or disposable fixture PASS does not establish live authorization, native security, recovery or store acceptance. Both targeted database permission repairs pass their owner-supplied live metadata rechecks. Android source values match the checked Capacitor 8 baseline and the locked repository asset build passes in isolation. Windows/device, native token/backup protection, provider evidence and live behavior remain open. Developer owns code/test work; Owner owns console/operator decisions; Both requires coordination.
 
 Evidence references:
 
 - **E1:** pinned source/configuration/build/workflow inventory; 48 migrations, 79 declared application tables.
-- **E2:** existing automated suite, 387/387 locally; three Stage 0 evidence tests bring the final suite to 390/390. Mixed unit/source/fixture coverage.
+- **E2:** existing automated suite, 387/387 locally; three Stage 0 evidence tests and five native build regressions bring the final suite to 395/395. Mixed unit/source/fixture coverage.
 - **E3:** custom-role migration and behavior in disposable PGlite 0.5.8; not live Supabase.
 - **E4:** existing budgets/approvals (8), reports (9), billing (10) SQL verifiers pass in disposable PGlite; selected behavior with fixture surroundings.
 - **E5:** existing realtime (12) SQL verifier passes in disposable PGlite; no live websocket/device check.
@@ -18,6 +18,7 @@ Evidence references:
 - **E10:** owner's earlier confirmation that all 20 custom-role deployment diagnostics passed; reported deployment evidence with limited scope.
 - **E11:** owner reports Node 22.17.0 and native config `com.mushavo.budget` / Mushavo Budget / www. `npm.cmd ls` confirms matching core/CLI/Android 8.5.2 and does not list App, Preferences, esbuild or iOS at depth 0. Preserve local native edits; the current repository builder requires the first three unreported packages. This output does not inspect transitive installs or execute the local builder. Android configuration/toolchain and signed artifacts remain unverified.
 - **E12:** the original 61 anonymous SECURITY DEFINER entries are classified in SECURITY_STAGE_0_FUNCTION_REVIEW.md. Two helpers have actual-source isolated misuse reproduction and a tested EXECUTE repair. The owner's dedicated live diagnostic returns 10 PASS, 1 REVIEW, 1 CANNOT VERIFY: both API roles deny direct helper execution and backend/protected/public execution metadata is retained. The remaining inventory is exactly 59 signatures. Public lookups and protected currency workflows pass the fixture; live behavior, bodies and historical integrity remain unverified.
+- **E13:** owner supplies older Windows builder and SDK 24/36/36, Gradle 8.14.3, AGP 8.13.0, matching namespace/app ID, native version 1/1.0 and selected manifest flags. Old builder omits Business/launcher/native bridge and skips missing copy inputs. Repository dependencies are pinned to established core/CLI/Android 8.5.2 with compatible App/Preferences/esbuild. Isolated Linux clean install and actual asset build pass: 9 pages, 85 local references, 26,500-byte bridge and unchanged web sources. Five filesystem regressions cover normal/repeated packaging and failure preservation/restoration. No APK, Android source or signing changes; Windows/device acceptance is pending. allowBackup=true without supplied explicit exclusions needs the Stage 5 token/cloud/device-transfer review; the selected lines do not certify a merged manifest.
 
 The technical details, original F01–F20 findings, staging design, PowerShell steps and remaining evidence list are in [SECURITY_STAGE_0_BASELINE.md](SECURITY_STAGE_0_BASELINE.md). No code-dependent requirement is deemed inapplicable solely because its evidence is unavailable.
 
@@ -28,7 +29,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 1. PROJECT DISCOVERY | Yes | PARTIAL | E1 inventories current source; native/platform/provider inputs pending. | F05,F20 | 0 | Both |
 | 2. PRESERVE EXISTING ARCHITECTURE | Yes | VERIFIED PROCESS | Stage 0 additions preserve application and financial architecture; review every later diff. | — | All | Developer |
 | 3. AUDIT CLASSIFICATION | Yes | VERIFIED PROCESS | This register separates local passes, gaps, decisions and unavailable evidence. | — | All | Developer |
-| 4. EVIDENCE REQUIREMENT | Yes | VERIFIED PROCESS | E1–E12 are scoped evidence; both targeted permission rechecks PASS, installed native versions received, complete live behavior pending. | — | All | Both |
+| 4. EVIDENCE REQUIREMENT | Yes | VERIFIED PROCESS | E1–E13 are scoped evidence; both targeted permission rechecks and isolated native asset build PASS, complete live/device behavior pending. | — | All | Both |
 | 5. NO FAKE DATA OR CLAIMS | Yes | VERIFIED PROCESS | No production data or invented claims used; fixture identities are explicitly synthetic. | — | All | Developer |
 | 6. SECRETS AND CREDENTIALS | Yes | PARTIAL | E6 found no targeted secret signatures; full historical/artifact/provider scan outstanding. | F18 | 1 | Both |
 | 7. PUBLIC ENVIRONMENT VARIABLE PREFIXES | Yes | CONDITIONAL | No VITE/NEXT-style build variables found; inspect actual native/web release assets and future tooling. | F18 | 1,5 | Developer |
@@ -38,7 +39,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 11. JWT / TOKEN VERIFICATION | Yes | SOURCE PRESENT | Custom cron checks coexist with verify_jwt=false; prove absent/wrong bearer and cron headers fail in staging. | F15 | 3 | Developer |
 | 12. AUTHENTICATION | Yes | NEEDS WORK | Email/password exists; social login and Admin step-up missing. Live confirmation, suspension and invite recovery cases pending. | F04,F08 | 3,6 | Both |
 | 13. PASSWORD SECURITY | Yes | CANNOT VERIFY | Auth password/confirmation/rate settings are external; inspect dashboard and controlled reset/login failures. | F08,F15 | 0,3 | Both |
-| 14. SESSION STORAGE | Yes | NEEDS EVIDENCE | Browser sessions exist; actual native credential and backup protection uninspected. | F14 | 5 | Both |
+| 14. SESSION STORAGE | Yes | NEEDS EVIDENCE | Browser sessions exist; E13 source reports allowBackup=true without supplied explicit backup rules. Inspect/test actual native token storage and cloud/device transfer exclusions. | F14 | 5 | Both |
 | 15. AUTHORIZATION | Yes | LOCAL PASS / LIVE UNKNOWN | E3 role/scope tests pass; repeat permitted/denied RPC, row, export and object operations with real staging JWTs. | F15 | 3 | Developer |
 | 16. PRIVILEGE ESCALATION | Yes | LOCAL PASS / LIVE UNKNOWN | E3 owner, override and assignment guards pass; verify direct field/role spoofing against deployed API. | F15 | 3 | Developer |
 | 17. ROW LEVEL SECURITY | Yes | LIVE FLAGS AND GRANT RECHECK PASS | E9 confirms RLS on 79 expected tables and post-fix absence of the checked private-table anonymous SELECT grants. Staging identities still need to test policies. | F15 | 0,3 | Both |
@@ -76,7 +77,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 44. ENVIRONMENT SEPARATION | Yes | CANNOT VERIFY | Disposable SQL is isolated; actual separate Supabase/preview/sandbox infrastructure unavailable. Define before negative tests. | F16,F19 | 0,1 | Both |
 | 45. FORGOTTEN ENVIRONMENT EXPOSURE | Yes | NEEDS VERIFICATION | Preview/old domains and environment inventories unavailable; enumerate owner consoles without probing unrelated services. | F18,F19 | 1 | Owner |
 | 46. PRODUCTION EXPOSURE SCAN | Yes | PARTIAL | Pages allowlist and assetsignore exist; inspect final deployed files, redirects, maps and unintended development exposure. | F18 | 1,2,9 | Developer |
-| 47. DEPENDENCIES | Yes | CONFIRMED GAP | E8 clean native asset build fails; E11 confirms core/CLI/Android 8.5.2 but omits App/Preferences/esbuild needed by the builder. Reconcile local source and compatible pinned inputs; no advisory assessment claimed. | F06,F18 | 1,5 | Both |
+| 47. DEPENDENCIES | Yes | NATIVE BUILD REPAIRED / FURTHER AUDIT | E13 locked clean install and native asset build pass with established core/CLI/Android 8.5.2 and compatible pinned plugins/esbuild. Existing locked versions remain unchanged. Windows reconciliation and a full advisory/artifact assessment remain open. | F06,F18 | 0,1,5 | Both |
 | 48. WEBHOOK SECURITY | Conditional | CONDITIONAL / NO CURRENT FLOW | No incoming payment-provider webhook integration found; apply signature/replay controls when native commerce is selected. | F03 | 7 | Developer |
 | 49. RAW WEBHOOK BODY VERIFICATION | Conditional | CONDITIONAL / NO CURRENT FLOW | No tracked raw-body payment webhook receiver; verify vendor protocol during Stage 7, not an invented current pass. | F03 | 7 | Developer |
 | 50. APIs | Yes | PARTIAL | RPC/Edge contracts present; live error/auth/filter/pagination abuse matrix and compatibility checks pending. | F15 | 2,3,9 | Developer |
@@ -124,7 +125,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 82. AI AGENTS | No | NOT APPLICABLE TO TRACKED APP | No runtime autonomous-agent/tool-execution feature found; development assistance is not an app agent. | — | Reassess | Developer |
 | 83. BUSINESS LOGIC | Yes | LOCAL PASS / LIVE UNKNOWN | E3–E5 cover selected creation/review/history/concurrency. Full role/workspace/event regression remains. | F15 | 3,9 | Developer |
 | 84. STATUS TRANSITIONS | Yes | LOCAL PASS / LIVE UNKNOWN | Selected claims/bills/budgets/subscriptions transitions tested; actual invalid transitions and replay require staging. | F03,F15 | 3,7,9 | Developer |
-| 85. MOBILE APPLICATION SECURITY | Yes | CANNOT VERIFY | Actual native source/signing/WebView/network/exported-component configuration absent. | F05 | 0,5 | Both |
+| 85. MOBILE APPLICATION SECURITY | Yes | PARTIAL SOURCE / RELEASE UNKNOWN | E13 includes selected source SDK/Gradle/manifest values. Full/merged components, WebView/network/backup protection and signing/device behavior remain unverified. | F05,F14 | 0,5 | Both |
 | 86. MOBILE BUNDLE SECRETS | Yes | CANNOT VERIFY | No final APK/AAB/iOS archive available; scan release assets and embedded configuration without exposing secrets. | F05,F18 | 5,9 | Developer |
 | 87. MOBILE SECURE TOKEN STORAGE | Yes | CANNOT VERIFY | No tracked secure native session adapter; inspect actual refresh-token storage and backup/access behavior. | F14 | 5 | Both |
 | 88. DEEP LINK SECURITY | Yes | PARTIAL / NATIVE UNKNOWN | Browser route precedence tested; native app links, scheme ownership, OAuth validation and revoked records require devices. | F10 | 5,6,8 | Developer |
@@ -148,7 +149,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 101. TESTING | Yes | PARTIAL | E2–E5 pass locally; E9 diagnostic verifier tested. Real API/storage/realtime/device/accessibility/restore cases outstanding. | F05,F15,F16 | All | Developer |
 | 102. ADVERSARIAL VERIFICATION PASS | Yes | NOT COMPLETE | Negative fixture cases passed; no full penetration test or staging adversarial sweep is claimed. | F15,F18 | 3,9 | Developer |
 | 103. SECURITY REPORT HANDLING | Yes | VERIFIED PROCESS / CONTINUE | This report avoids secret values/customer rows and does not publish exploit claims; handle future actionable vulnerabilities carefully. | — | All | Both |
-| 104. CLEANUP | Yes | VERIFIED PROCESS | No dependencies/native/generated website artifacts added; review branch for temporary files and unrelated edits before release. | — | All | Developer |
+| 104. CLEANUP | Yes | VERIFIED PROCESS | Only pinned dependency/lock/build tooling, tests, SQL and evidence are committed. Generated native assets/platforms/APKs remain outside the branch; review unrelated edits before release. | — | All | Developer |
 | 105. DOCUMENTATION | Yes | PARTIAL | This baseline/register adds scoped evidence and PowerShell instructions; later fixes need deployment/rollback/support runbooks. | F19 | All | Both |
 | 106. DISTRIBUTION CHANNELS, APP CLASSIFICATION & DEVELOPER IDENTITY | Yes | DECISION / OWNER EVIDENCE | Developer identity/account type/audience/territories and Android-first proposal remain unconfirmed. | F05,F20 | 0,9 | Owner |
 | 107. PUBLIC PRIVACY POLICY, TERMS, SUPPORT & USER NOTICES | Yes | CONFIRMED GAP | Source policy pages absent and sampled routes 404; factual operator/support/terms/notices needed. | F01 | 4 | Both |
@@ -158,7 +159,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 111. APPLE LOGIN OPTION & PRIVATE RELAY | Yes | SOURCE MISSING / DECISION | Apple login/relay not tracked; select qualifying iOS identity flow and test authenticated linking/invitation collisions. | F04 | 6 | Both |
 | 112. ACCOUNT DELETION, OWNERSHIP & RETENTION | Yes | CONFIRMED GAP / DECISION | Deletion, owner transfer/closure, per-table retention and provider revocation require explicit design. | F02 | 4 | Both |
 | 113. STORE BILLING & SEPARATION FROM RECORDED PAYMENTS | Yes | SOURCE MISSING / DECISION | Recorded expenses are separate from digital plan purchase; store-supported commerce/product/seat rules need design. | F03 | 7 | Both |
-| 114. NATIVE RELEASE BUILD & SECURITY CONFIGURATION | Yes | CONFIRMED BUILD GAP / NATIVE UNKNOWN | E8 native asset build fails; final signed artifact/toolchains/application identity unavailable. | F05,F06 | 0,1,5 | Both |
+| 114. NATIVE RELEASE BUILD & SECURITY CONFIGURATION | Yes | ASSET BUILD PASS / RELEASE UNKNOWN | E13 isolated locked asset build passes and owner source identity/SDK/Gradle values are known. Windows/toolchain/merged-manifest/backup/signing and final artifact evidence remain pending. | F05,F06,F14 | 0,1,5 | Both |
 | 115. APPLE PRIVACY MANIFESTS & THIRD-PARTY SDKS | Yes | DOCUMENTED / ARTIFACT UNKNOWN | Preferences privacy requirement documented; actual manifest/SDK signatures/Xcode archive report unavailable. | F17 | 5,9 | Both |
 | 116. NATIVE PUSH & PRIVATE NOTIFICATION CONTENT | Yes | NATIVE UNKNOWN / DECISION | Tracked transport is Web Push; physical-device delivery, token cleanup and lock-screen detail need evidence/design. | F11 | 8 | Both |
 | 117. BROWSER HEADERS, XSS & NATIVE ORIGIN COMPATIBILITY | Yes | CONFIRMED GAP / CONDITIONAL | E7 headers absent; native origins not known. Test headers/CSP/XSS and supported callbacks without breaking working routes. | F07,F10 | 2,5 | Both |

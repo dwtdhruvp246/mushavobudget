@@ -31,6 +31,11 @@ jobs:
       - name: Run automated checks
         run: node --test tests/*.test.mjs
 
+      - name: Verify locked native web asset build
+        run: |
+          npm ci
+          npm run build:capacitor
+
       - name: Verify custom roles in disposable PostgreSQL
         run: |
           npm install --prefix /tmp/mushavo-role-verification --no-save --package-lock=false @electric-sql/pglite@0.5.8

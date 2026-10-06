@@ -19,4 +19,5 @@ wrangler.jsonc
 .git*
 .assetsignore
 www/
+.capacitor-build-*/
 scripts/

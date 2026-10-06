@@ -7,8 +7,16 @@
     "build:capacitor": "node scripts/build-capacitor.mjs"
   },
   "devDependencies": {
+    "@capacitor/cli": "8.5.2",
+    "esbuild": "0.28.2",
     "supabase": "2.116.0",
     "web-push": "3.6.7"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.5.2",
+    "@capacitor/preferences": "8.0.1",
+    "@capacitor/android": "8.5.2"
+  }
 }

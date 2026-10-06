@@ -219,8 +219,8 @@
       "node": "v24.19.0"
     },
     "final_automated": {
-      "tests": 390,
-      "pass": 390,
+      "tests": 395,
+      "pass": 395,
       "fail": 0,
       "skipped": 0,
       "cancelled": 0,
@@ -241,8 +241,12 @@
       ]
     },
     "native_asset_build": {
-      "status": "FAIL",
-      "reason": "Required esbuild/Capacitor dependency set absent in package.json/lockfile and clean checkout."
+      "initial_status": "FAIL: dependencies undeclared in the baseline clean checkout",
+      "status": "PASS: clean locked install and actual native web asset bundle in isolated Linux checkout",
+      "platform": "linux",
+      "node": "v24.19.0",
+      "windows_or_device_test": false,
+      "source_web_pwa_unchanged": true
     },
     "custom_role_browser": {
       "status": "NOT TESTED",
@@ -458,14 +462,55 @@
       ],
       "existing_capacitor_major": 8,
       "ios_not_installed_is_android_build_blocker": false,
-      "android_configuration_and_toolchain": "PENDING local builder, Gradle/SDK and manifest evidence",
+      "android_configuration_and_toolchain": "Source values received and match checked Capacitor 8 baseline; actual Windows toolchain, merged manifest and release build remain unverified",
       "native_build_or_apk_changed": false,
       "required_builder_packages_not_listed_at_depth_0": [
         "@capacitor/app",
         "@capacitor/preferences",
         "esbuild"
       ],
-      "package_inventory_limit": "Top-level npm.cmd ls only; transitive installs and local build execution were not checked"
+      "package_inventory_limit": "Top-level npm.cmd ls only; transitive installs and local build execution were not checked",
+      "android_source_received_date": "2026-10-06",
+      "android_source_values": {
+        "namespace": "com.mushavo.budget",
+        "applicationId": "com.mushavo.budget",
+        "minSdkVersion": 24,
+        "compileSdkVersion": 36,
+        "targetSdkVersion": 36,
+        "gradle_wrapper": "8.14.3",
+        "android_gradle_plugin": "8.13.0",
+        "versionCode": 1,
+        "versionName": "1.0",
+        "configChanges_includes_density": true,
+        "allowBackup": true,
+        "exported_values_in_selected_lines": [
+          true,
+          false
+        ],
+        "grantUriPermissions": true,
+        "usesCleartextTraffic_in_selected_lines": false,
+        "fullBackupContent_in_selected_lines": false,
+        "dataExtractionRules_in_selected_lines": false,
+        "component_names_intent_filters_or_merged_manifest_supplied": false,
+        "signing_verified": false
+      },
+      "local_builder_review": {
+        "kind": "Older custom copy script supplied by owner",
+        "omits": [
+          "Business page/scripts/styles",
+          "Shared session-aware launcher",
+          "Native App/Preferences bridge",
+          "Workspace preference script"
+        ],
+        "deletes_www_before_validating_sources": true,
+        "ignores_missing_copied_files": true,
+        "intentional_native_behaviors_retained": [
+          "Browser install UI suppression",
+          "External public website link"
+        ],
+        "original_local_source_modified_in_session": false
+      },
+      "ios_mac_xcode_availability": "NOT ANSWERED"
     },
     "repair": {
       "migration": "20261006043000_security_stage_0_private_reads.sql",
@@ -689,5 +734,71 @@
       "production_function_bodies_retrieved": false
     },
     "native_or_apk_changes": false
+  },
+  "native_build_repair": {
+    "date": "2026-10-06",
+    "scope": "Repository dependencies/lockfile and native web asset builder only; no original Windows project or native platform/APK changes",
+    "pinned_packages": {
+      "@capacitor/core": "8.5.2",
+      "@capacitor/cli": "8.5.2",
+      "@capacitor/android": "8.5.2",
+      "@capacitor/app": "8.1.2",
+      "@capacitor/preferences": "8.0.1",
+      "esbuild": "0.28.2"
+    },
+    "package_metadata_source": "Official npm registry queried on 6 October 2026",
+    "existing_locked_package_versions_and_paths_preserved": true,
+    "actual_isolated_build": {
+      "date": "2026-10-06",
+      "platform": "linux",
+      "node": "v24.19.0",
+      "npm_ci": "PASS",
+      "actual_native_asset_build": "PASS",
+      "versions": {
+        "@capacitor/core": "8.5.2",
+        "@capacitor/cli": "8.5.2",
+        "@capacitor/android": "8.5.2",
+        "@capacitor/app": "8.1.2",
+        "@capacitor/preferences": "8.0.1",
+        "esbuild": "0.28.2"
+      },
+      "packaged_html_pages": 9,
+      "local_resource_references_verified": 85,
+      "native_bridge_bytes": 26500,
+      "source_hashes_unchanged": {
+        "app.html": "d3af231d544768d73798205da21eb7e75b960fbb636b3b81740be3cb998d1fdb",
+        "app.js": "67060fc4e9b924ed74b952ca80534ae8227258dde7d97c8c595ccff121e99e11",
+        "business.html": "c4bc6c2539cf3e5418c22e9edcaacfd4b80592ae74bd5eca09c7ccbfe4f95dd8",
+        "business.js": "be0f11c7ccf2b5fb82bc8555aba02910e6e19d3a4c3dd0ac0ed883f8dbdd6af0",
+        "app-entry.html": "65e28f7800f1f6a8ce00e365fcc5e7dac0268900477e8782b3e86790aee4fe2d",
+        "app-entry.js": "a2a15b461036cdf6b201ca6c9f022fb64c30b0b4f40f0f77e3d5169b91c081a7",
+        "workspace-preference.js": "913fa62e34cf16d6f6eb1791e3bb9dad0b37001d64ed408dac2773ebbb37ce56",
+        "signup.html": "378c23c8e08f2fcfd9db71e1e8adfd402c40e5913d6e8029cba7411866c82378",
+        "pwa-install.js": "6af08699d98b1f0e38ee6c2421cef46b0309ebc1b88642abe2f333284e67ffd4",
+        "pwa.js": "3502532a6483f93e863dfc08d646712c4033afdc30cf2ca7260a5201471e3b6b",
+        "styles.css": "ae8314094adb97dc0ec07023eb783570d1f952e994fb5f885b889c2227ce4eb6"
+      },
+      "apk_or_android_project_created": false,
+      "windows_or_device_test": false
+    },
+    "filesystem_regressions": {
+      "count": 5,
+      "status": "PASS",
+      "coverage": [
+        "complete resources/Business/launcher/native bridge loader",
+        "native-only install UI suppression and external website link",
+        "source preservation and repeat apply",
+        "dependency/source/bundler failure preserves previous build",
+        "promotion failure restores previous output"
+      ],
+      "limit": "Filesystem tests substitute bundler/plugins; separate successful build uses actual pinned packages"
+    },
+    "ci_asset_build_added": true,
+    "windows_recheck": "PENDING isolated worktree; original native project must be preserved",
+    "native_backup_session_review": "PENDING Stage 5; source allowBackup=true without supplied explicit exclusion rules is not proof of token disclosure",
+    "android_or_apk_created": false,
+    "android_gradle_or_manifest_changed": false,
+    "web_pwa_version_changed": false,
+    "dependency_advisory_assessment_complete": false
   }
 }

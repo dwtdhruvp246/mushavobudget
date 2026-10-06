@@ -2,7 +2,7 @@
 
 Baseline: 5 October 2026, source `d2a32032b1c560bbae853de87837c3436ea44887`, web/PWA 4.9.39.
 
-**This is an applicability/evidence worklist, not 123 completed tests.** Each entry includes the current test scope and the next check. A source definition or disposable fixture PASS does not establish live authorization, native security, recovery or store acceptance. Both targeted database permission repairs pass their owner-supplied live metadata rechecks. Android source values match the checked Capacitor 8 baseline and the locked repository asset build passes in isolation. The owner's isolated Windows asset build passes; Windows advisory/consumer/build checks and GitHub CI also pass at 2c4b570; original-project reconciliation, native toolchain/device/token/backup protection, provider evidence and live behavior remain open. The owner deferred APK updating. Developer owns code/test work; Owner owns console/operator decisions; Both requires coordination.
+**This is an applicability/evidence worklist, not 123 completed tests.** Each entry includes the current test scope and the next check. A source definition or disposable fixture PASS does not establish live authorization, native security, recovery or store acceptance. Both targeted database permission repairs pass their owner-supplied live metadata rechecks. Android source values match the checked Capacitor 8 baseline and locked asset/consumer checks pass locally, on owner Windows and in CI at 2c4b570. E17 identifies Workers hosting, independent audit-version uploads and partial Auth settings; production promotion, confirmation/social providers, original-project reconciliation, native device/token/backup protection and live behavior remain open. The owner deferred APK updating. Developer owns code/test work; Owner owns console/operator decisions; Both requires coordination.
 
 Evidence references:
 
@@ -25,16 +25,18 @@ Evidence references:
 
 - **E16:** GitHub pull-request CI run [37430712809](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/37430712809) succeeds at head 2c4b570. Automated checks, locked dependency consumer/asset build, custom-role SQL and Stage 0 SQL steps pass. Deployment is skipped. CI is configured for Ubuntu/Node 22; this evidence does not certify native compilation/devices or a production release.
 
+- **E17:** six owner screenshots on 6 October identify Cloudflare Workers Static Assets with main production builds, independent audit-branch version uploads and public production/version-preview URLs. Exact active production mapping remains unverified. Supabase crops show Email enabled, Phone disabled, secure email change on, minimum password length 6 and secure/current/leaked-password checks off. Site URL is the production domain; the sole signup redirect pattern does not cover the Business invitation callback in source. Project header, Confirm email, Google/Apple, deployed APP_ORIGIN, delivery, rate/session/MFA and isolated backend are not established. Redacted facts and original image hashes only are recorded; no images, account email or credentials are committed. No dashboard settings change.
+
 The technical details, original F01–F20 findings, staging design, PowerShell steps and remaining evidence list are in [SECURITY_STAGE_0_BASELINE.md](SECURITY_STAGE_0_BASELINE.md). No code-dependent requirement is deemed inapplicable solely because its evidence is unavailable.
 
 ## Sections 1–25
 
 | Section | Applies | Status / test result | Evidence and next verification | Finding | Stage | Owner |
 |---|---|---|---|---|---|---|
-| 1. PROJECT DISCOVERY | Yes | PARTIAL | E1 inventories current source; native/platform/provider inputs pending. | F05,F20 | 0 | Both |
+| 1. PROJECT DISCOVERY | Yes | PARTIAL | E1 inventories source; E17 identifies Workers hosting and partial Auth settings. Native/platform/remaining provider inputs pending. | F05,F20 | 0 | Both |
 | 2. PRESERVE EXISTING ARCHITECTURE | Yes | VERIFIED PROCESS | Stage 0 additions preserve application and financial architecture; review every later diff. | — | All | Developer |
 | 3. AUDIT CLASSIFICATION | Yes | VERIFIED PROCESS | This register separates local passes, gaps, decisions and unavailable evidence. | — | All | Developer |
-| 4. EVIDENCE REQUIREMENT | Yes | VERIFIED PROCESS | E1–E16 are scoped evidence; both targeted permission rechecks and local/owner Windows asset builds PASS, complete live/device behavior pending. | — | All | Both |
+| 4. EVIDENCE REQUIREMENT | Yes | VERIFIED PROCESS | E1–E17 are scoped evidence; both targeted permission rechecks and local/owner Windows asset builds PASS. Screenshot settings are not persisted/live behavior proof. | — | All | Both |
 | 5. NO FAKE DATA OR CLAIMS | Yes | VERIFIED PROCESS | No production data or invented claims used; fixture identities are explicitly synthetic. | — | All | Developer |
 | 6. SECRETS AND CREDENTIALS | Yes | PARTIAL | E6 found no targeted secret signatures; full historical/artifact/provider scan outstanding. | F18 | 1 | Both |
 | 7. PUBLIC ENVIRONMENT VARIABLE PREFIXES | Yes | CONDITIONAL | No VITE/NEXT-style build variables found; inspect actual native/web release assets and future tooling. | F18 | 1,5 | Developer |
@@ -43,7 +45,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 10. VERIFIED SERVER IDENTITY | Yes | SOURCE PRESENT | Invitation handlers use auth.getUser and protected RPCs; live edited-token/direct-call cases pending. | F15 | 3 | Developer |
 | 11. JWT / TOKEN VERIFICATION | Yes | SOURCE PRESENT | Custom cron checks coexist with verify_jwt=false; prove absent/wrong bearer and cron headers fail in staging. | F15 | 3 | Developer |
 | 12. AUTHENTICATION | Yes | NEEDS WORK | Email/password exists; social login and Admin step-up missing. Live confirmation, suspension and invite recovery cases pending. | F04,F08 | 3,6 | Both |
-| 13. PASSWORD SECURITY | Yes | CANNOT VERIFY | Auth password/confirmation/rate settings are external; inspect dashboard and controlled reset/login failures. | F08,F15 | 0,3 | Both |
+| 13. PASSWORD SECURITY | Yes | CONFIGURATION GAP / PARTIAL | E17 shows minimum length 6 and secure/current-password checks off, matching six-character signup inputs. Coordinate policy and invitation/recovery UI changes; confirmation/rate settings and actual allowed/denied cases remain unverified. | F08,F15 | 0,3 | Both |
 | 14. SESSION STORAGE | Yes | NEEDS EVIDENCE | Browser sessions exist; E13 source reports allowBackup=true without supplied explicit backup rules. Inspect/test actual native token storage and cloud/device transfer exclusions. | F14 | 5 | Both |
 | 15. AUTHORIZATION | Yes | LOCAL PASS / LIVE UNKNOWN | E3 role/scope tests pass; repeat permitted/denied RPC, row, export and object operations with real staging JWTs. | F15 | 3 | Developer |
 | 16. PRIVILEGE ESCALATION | Yes | LOCAL PASS / LIVE UNKNOWN | E3 owner, override and assignment guards pass; verify direct field/role spoofing against deployed API. | F15 | 3 | Developer |
@@ -69,7 +71,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 31. PRIVATE FILE STORAGE | Yes | SOURCE PRESENT / LIVE UNKNOWN | Short-lived signed URLs/private bucket policies present; E9 checks configuration, then cross-tenant object tests required. | F13,F15 | 3,4 | Both |
 | 32. SENSITIVE DATA ENCRYPTION | Yes | PARTIAL | E7 uses HTTPS; at-rest coverage, key management and native tokens require provider/artifact evidence. | F14,F16 | 1,5 | Both |
 | 33. CSRF | Yes | NEEDS VERIFICATION | Bearer API rather than custom cookie backend is tracked; inspect actual OAuth state/PKCE, session and future callbacks. | F04,F15 | 3,6 | Developer |
-| 34. SECURITY HEADERS | Yes | CONFIRMED GAP | E7 sample lacks seven security-header families. Determine serving layer, introduce compatible headers and verify live. | F07 | 2 | Both |
+| 34. SECURITY HEADERS | Yes | CONFIRMED GAP | E7 sample lacks seven security-header families; E17/source identify Workers assets from `.`. Introduce compatible asset headers and verify live in Stage 2. | F07 | 2 | Both |
 | 35. CORS | Yes | CONDITIONAL GAP | Explicit APP_ORIGIN checks exist; standard native origins may differ. Test actual origins without relaxing authorization. | F10 | 5 | Both |
 | 36. DATABASE INTEGRITY | Yes | LOCAL PASS / LIVE UNKNOWN | E3–E5 exercise selected constraints/relations. Inspect effective constraints and invalid cross-workspace relationships. | F15 | 3,9 | Developer |
 | 37. DATABASE PERFORMANCE | Yes | NEEDS VERIFICATION | Indexes/pagination exist in source; no production query-plan/load proof. Use synthetic staging sizes and safe plans. | F15 | 9 | Developer |
@@ -79,8 +81,8 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 41. DATABASE MIGRATIONS | Yes | PARTIAL | 48 tracked migrations plus accumulated schema; manually run SQL may bypass CLI ledger. Reconcile actual deployed objects. | F15 | 0,1 | Both |
 | 42. BACKUPS | Yes | CANNOT VERIFY | Database backup retention/PITR and independent Storage object-byte protection unknown; source schema is insufficient. | F16 | 1 | Owner |
 | 43. DISASTER RECOVERY | Yes | CANNOT VERIFY | No isolated database-plus-files restore result available. Agree recovery targets and execute a controlled drill. | F16,F19 | 1 | Both |
-| 44. ENVIRONMENT SEPARATION | Yes | CANNOT VERIFY | Disposable SQL is isolated; actual separate Supabase/preview/sandbox infrastructure unavailable. Define before negative tests. | F16,F19 | 0,1 | Both |
-| 45. FORGOTTEN ENVIRONMENT EXPOSURE | Yes | NEEDS VERIFICATION | Preview/old domains and environment inventories unavailable; enumerate owner consoles without probing unrelated services. | F18,F19 | 1 | Owner |
+| 44. ENVIRONMENT SEPARATION | Yes | CANNOT VERIFY | E17 public version previews are enabled, while source config fixes one backend URL. Separate Supabase/inboxes and deployed preview configuration remain unverified; version upload is not isolation. Define before negative tests. | F16,F19 | 0,1 | Both |
+| 45. FORGOTTEN ENVIRONMENT EXPOSURE | Yes | PARTIAL OWNER INVENTORY | E17 shows public production/version-preview workers.dev URLs and main custom domain. Inventory actual versions/old domains and backend isolation; no data exposure established. | F18,F19 | 1 | Owner |
 | 46. PRODUCTION EXPOSURE SCAN | Yes | PARTIAL | Pages allowlist and assetsignore exist; inspect final deployed files, redirects, maps and unintended development exposure. | F18 | 1,2,9 | Developer |
 | 47. DEPENDENCIES | Yes | SCOPED NPM REPAIR PASS / FURTHER AUDIT | E13–E16 locked asset builds and actual CommonJS/bounds consumer checks pass locally, on owner Windows and in CI; UUID 7.0.3 alone becomes 11.1.1 under xcode 3.0.1, with Capacitor pins unchanged. npm audit reports zero known findings locally and on owner Windows. Original-project reconciliation and broader supply-chain/artifact assessment remain open. | F06,F18 | 0,1,5 | Both |
 | 48. WEBHOOK SECURITY | Conditional | CONDITIONAL / NO CURRENT FLOW | No incoming payment-provider webhook integration found; apply signature/replay controls when native commerce is selected. | F03 | 7 | Developer |
@@ -122,7 +124,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | Section | Applies | Status / test result | Evidence and next verification | Finding | Stage | Owner |
 |---|---|---|---|---|---|---|
 | 76. TERMS / SUBSCRIPTIONS | Yes | NEEDS WORK / DECISION | Manual web subscriptions work in fixtures; terms, native channel model and plan/seat mapping outstanding. | F01,F03 | 4,7 | Both |
-| 77. EMAIL | Yes | SOURCE PRESENT / LIVE UNKNOWN | Invite/email auth source exists; provider sender/confirmation/relay/delivery/rate settings need controlled inbox evidence. | F04,F19 | 0,6 | Both |
+| 77. EMAIL | Yes | CONFIGURATION PARTIAL / LIVE UNKNOWN | E17 enables Email but its sole signup redirect does not cover source Business invitations. Check deployed APP_ORIGIN/templates and controlled delivery; confirmation, sender, relay and rates remain unverified. | F04,F15,F19 | 0,6 | Both |
 | 78. SMS / WHATSAPP / PUSH | Yes | PARTIAL / NATIVE UNKNOWN | Browser Web Push source and owner-reported tests exist; actual native transport/token/account-switch/privacy tests pending. | F11 | 8 | Both |
 | 79. ADMIN PANEL | Yes | NEEDS WORK | Protected admin RPCs exist; server-enforced Admin MFA/recovery missing source evidence. | F08 | 3 | Both |
 | 80. ROLE PERMISSION MATRIX | Yes | LOCAL PASS / LIVE UNKNOWN | E3 custom roles/overrides/scopes tested; real test-user allowed/denied matrix and browser editor acceptance pending. | F15 | 3,9 | Developer |
@@ -138,7 +140,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 90. PRINT / PDF OUTPUT | Yes | LOCAL PASS / DEVICE UNKNOWN | E4 checks report exports/snapshots/CSV formula escaping; actual print layouts and native share/download permissions pending. | F13,F15 | 5,9 | Developer |
 | 91. INTERNATIONALIZATION | Yes | PARTIAL | Currencies supported and fixtures cover mixed values; locale/number input/labels and timezone expectations need acceptance. | — | 9 | Developer |
 | 92. DATE AND TIME | Yes | LOCAL PASS / LIVE UNKNOWN | E2/E4 cover timezone/date/proration cases; run DST/UTC/month-end/recurrent reminder checks in staging. | — | 8,9 | Developer |
-| 93. DOMAIN AND INFRASTRUCTURE | Yes | PARTIAL / OWNER EVIDENCE | E7 HTTPS/Cloudflare front observed, GitHub Pages workflow also exists; clarify active origin, TLS/redirect/DNS administration. | F07,F19 | 0,2 | Owner |
+| 93. DOMAIN AND INFRASTRUCTURE | Yes | PARTIAL / OWNER EVIDENCE | E17 confirms Workers/main/custom domain and audit-version uploads. Exact active traffic/Git mapping, TLS/redirects, secondary GitHub Pages role and administration remain unverified. | F07,F19 | 0,2 | Owner |
 | 94. COOKIE / CONSENT | Conditional | DECISION / NEEDS EVIDENCE | Cloudflare analytics observed; actual tracking/cookie/territory behavior determines notices/consent/ATT requirements. | F20 | 4,9 | Both |
 | 95. SESSION EXPIRY UX | Yes | PARTIAL | E2 includes session/route behavior; late expiry during edits, upload, approval and native resume needs direct tests. | F14 | 5,6,8 | Developer |
 | 96. REALTIME | Yes | LOCAL PASS / LIVE UNKNOWN | E5 private signals/revocation pass; live subscribed-user removal, reconnect and stale-topic behavior still required. | F15 | 3,8,9 | Developer |
@@ -159,9 +161,9 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 106. DISTRIBUTION CHANNELS, APP CLASSIFICATION & DEVELOPER IDENTITY | Yes | DECISION / OWNER EVIDENCE | Developer identity/account type/audience/territories and Android-first proposal remain unconfirmed. | F05,F20 | 0,9 | Owner |
 | 107. PUBLIC PRIVACY POLICY, TERMS, SUPPORT & USER NOTICES | Yes | CONFIRMED GAP | Source policy pages absent and sampled routes 404; factual operator/support/terms/notices needed. | F01 | 4 | Both |
 | 108. DATA SAFETY, APP PRIVACY LABELS & PROCESSOR INVENTORY | Yes | NEEDS WORK | Actual SDK/processor/retention inventory incomplete; final Data safety/App Privacy/financial forms cannot be certified. | F20 | 0,4,9 | Both |
-| 109. GOOGLE OAUTH PRODUCTION CONFIGURATION | Yes | SOURCE MISSING / EXTERNAL UNKNOWN | Google login not tracked; verify provider clients/branding/domains/callbacks and login-only scopes. | F04 | 0,6 | Both |
+| 109. GOOGLE OAUTH PRODUCTION CONFIGURATION | Yes | SOURCE MISSING / EXTERNAL UNKNOWN | Google login not tracked; its provider row is outside E17's crop. Verify enabled state, then any configured clients/branding/domains/callbacks and login-only scopes. | F04 | 0,6 | Both |
 | 110. NATIVE AUTHORIZATION, CALLBACKS & ACCOUNT LINKING | Yes | SOURCE MISSING / NATIVE UNKNOWN | Native external authorization/PKCE or nonce/callback/account linking unimplemented or uninspected. | F04,F10 | 5,6 | Developer |
-| 111. APPLE LOGIN OPTION & PRIVATE RELAY | Yes | SOURCE MISSING / DECISION | Apple login/relay not tracked; select qualifying iOS identity flow and test authenticated linking/invitation collisions. | F04 | 6 | Both |
+| 111. APPLE LOGIN OPTION & PRIVATE RELAY | Yes | SOURCE MISSING / DECISION | Apple login/relay not tracked; its provider row is outside E17's crop. Verify enabled state, select qualifying iOS identity flow and test authenticated linking/invitation collisions. | F04 | 6 | Both |
 | 112. ACCOUNT DELETION, OWNERSHIP & RETENTION | Yes | CONFIRMED GAP / DECISION | Deletion, owner transfer/closure, per-table retention and provider revocation require explicit design. | F02 | 4 | Both |
 | 113. STORE BILLING & SEPARATION FROM RECORDED PAYMENTS | Yes | SOURCE MISSING / DECISION | Recorded expenses are separate from digital plan purchase; store-supported commerce/product/seat rules need design. | F03 | 7 | Both |
 | 114. NATIVE RELEASE BUILD & SECURITY CONFIGURATION | Yes | ASSET BUILD PASS / APK DEFERRED | E13–E16 local/owner Windows consumer and asset checks and remote CI pass; native compilation, merged-manifest/backup/signing/device and final artifact evidence remain pending. APK update explicitly deferred; no APK changed or produced. | F05,F06,F14 | 0,1,5 | Both |

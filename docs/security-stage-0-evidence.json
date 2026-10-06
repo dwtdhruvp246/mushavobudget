@@ -1,6 +1,146 @@
 {
   "baseline_commit": "d2a32032b1c560bbae853de87837c3436ea44887",
   "application_release": "4.9.39",
+  "owner_hosting_auth_screenshots": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner-supplied screenshots, visually reviewed; displayed settings only",
+    "raw_images_committed": false,
+    "account_email_token_names_or_credentials_recorded": false,
+    "auth_project_attribution": "Owner-supplied; project header is outside the Auth crops",
+    "saved_configuration_independently_verified": false,
+    "attachments": [
+      {
+        "name": "image(20261006-093811).png",
+        "scope": "Cloudflare Worker active deployment and version history",
+        "sha256": "c652d736d0135ff0247b14b668fba233674928478aa18ba30194dd4162600768"
+      },
+      {
+        "name": "image(20261006-093913).png",
+        "scope": "Cloudflare Worker Builds configuration",
+        "sha256": "b5a9aa9389620c322711ee6fce152d3627b109b021c8d50a131973c089bd9463"
+      },
+      {
+        "name": "image(20261006-093941).png",
+        "scope": "Cloudflare custom domain and public production/version-preview URLs",
+        "sha256": "ce3488449da41c64237d4038b2f0f56feeaf0234eb3dabfe923aad6f67cf84fb"
+      },
+      {
+        "name": "image(20261006-094057).png",
+        "scope": "Cropped Supabase provider list, Email and Phone only",
+        "sha256": "a1e2bd98c15c742946dfb166c9de6b3530c67d28350f696a0979f2943240dc57"
+      },
+      {
+        "name": "image(20261006-094119).png",
+        "scope": "Supabase Email provider and password policy",
+        "sha256": "b7fcf4e65121b99b91e559fffd9896ced79efb9a2e45f0d3502d46a79a16da12"
+      },
+      {
+        "name": "image(20261006-094140).png",
+        "scope": "Supabase site and redirect URL configuration",
+        "sha256": "6d2af87c90dcd6446dfd8a0c81ecfa2ca3fba9a96d14e20c9d6937f26e59bb09"
+      }
+    ],
+    "cloudflare": {
+      "service": "Workers Static Assets; not Cloudflare Pages",
+      "worker_name": "mushavobudget",
+      "git_repository": "dwtdhruvp246/mushavobudget",
+      "production_branch": "main",
+      "non_production_branch_builds_enabled": true,
+      "build_command_display": "None",
+      "deploy_command": "npx wrangler deploy --config ./wrangler.jsonc",
+      "version_command": "npx wrangler versions upload",
+      "root_directory": "/",
+      "source_assets_directory": ".",
+      "source_worker_script_declared": false,
+      "source_development_paths_excluded": true,
+      "include_watch_paths": ["*"],
+      "exclude_watch_paths": ["node_modules/**", ".git/"],
+      "production_custom_domain": "mushavobudget.com",
+      "workers_dev_production_url": "mushavobudget.dhruvp246.workers.dev",
+      "workers_dev_production_enabled": true,
+      "version_preview_url_pattern": "*-mushavobudget.dhruvp246.workers.dev",
+      "version_preview_enabled": true,
+      "production_and_version_preview_access_display": "Anyone with this URL can visit; Enable Access offered",
+      "separate_worker_previews_feature_display": "Set up Worker Previews",
+      "active_deployment_version_id_display": "50b48816",
+      "active_deployment_age_display": "1 day ago",
+      "traffic_percent_row_display": "0%",
+      "traffic_slider_endpoint_display": "100%",
+      "exact_active_traffic_and_git_mapping": "CANNOT VERIFY: ambiguous traffic display; deployment details not supplied",
+      "audit_branch_version_history": [
+        {
+          "cloudflare_version_id": "a1da38c7",
+          "branch": "security/stage-0-baseline",
+          "message": "Record passing Windows dependency recheck and pull-request CI"
+        },
+        {
+          "cloudflare_version_id": "f0e1a577",
+          "branch": "security/stage-0-baseline",
+          "message": "Repair native tooling UUID advisory and record Windows asset build"
+        },
+        {
+          "cloudflare_version_id": "6026c9d5",
+          "branch": "security/stage-0-baseline",
+          "message": "Pin established native dependencies and preserve complete asset builds"
+        }
+      ],
+      "cloudflare_ids_are_git_commit_shas": false,
+      "independent_cloudflare_audit_version_uploads": "CONFIRMED by owner screenshot; GitHub Actions deployment being skipped does not prevent these uploads",
+      "audit_version_production_promotion": "NOT ESTABLISHED",
+      "wrangler_locked_dependency": false,
+      "actual_cloudflare_build_wrangler_version": "NOT SUPPLIED",
+      "secondary_github_pages_role": "UNVERIFIED",
+      "source_preview_backend_assessment": "Source config.js fixes one Supabase URL with no per-preview substitution visible; actual deployed preview backend not checked",
+      "separate_backend_and_inboxes": "NOT ESTABLISHED",
+      "data_exposure_established": false
+    },
+    "supabase_auth": {
+      "email_enabled": true,
+      "phone_enabled": false,
+      "google_enabled": "NOT VISIBLE",
+      "apple_enabled": "NOT VISIBLE",
+      "confirm_email": "NOT VISIBLE",
+      "new_user_signup_anonymous_signin_manual_linking": "NOT VISIBLE",
+      "secure_email_change": true,
+      "secure_password_change": false,
+      "require_current_password_when_updating": false,
+      "prevent_leaked_passwords": false,
+      "leaked_password_feature_notice": "Only available on Pro plan and above; actual current plan not inferred",
+      "minimum_password_length": 6,
+      "password_requirements_display": "Select an option",
+      "email_otp_expiration_seconds": 3600,
+      "email_otp_length_digits": 8,
+      "site_url": "https://mushavobudget.com",
+      "redirect_url_count": 1,
+      "redirect_urls": ["https://mushavobudget.com/signup.html*"],
+      "rate_limits_sessions_mfa_email_templates": "NOT SUPPLIED",
+      "source_signup_and_admin_invite_callbacks": "signup.html with query parameters; individual matching and live delivery require verification",
+      "source_business_invite_callback": "${APP_ORIGIN}/business.html?invitation=<uuid>#business/team",
+      "displayed_redirect_covers_business_callback": false,
+      "deployed_app_origin": "NOT SUPPLIED",
+      "business_invite_delivery": "NOT TESTED; source-versus-displayed-configuration mismatch, not a proven live failure",
+      "source_password_policy": "signup.html advertises minlength=6; invitation setup updateUser supplies password/data without nonce or current_password",
+      "password_policy_followup": "Stage 3 coordinated UI/backend change and signup/invitation/recovery/password-change verification; no toggles changed",
+      "remaining_screenshots": [
+        "Authentication > Sign In / Providers > User Signups: Confirm email and adjacent general signup controls",
+        "Authentication > Sign In / Providers: Google and Apple enabled/disabled rows"
+      ]
+    },
+    "interpretation_sources": [
+      "https://developers.cloudflare.com/workers/versions-and-deployments/",
+      "https://developers.cloudflare.com/workers/ci-cd/builds/",
+      "https://developers.cloudflare.com/workers/static-assets/headers/",
+      "https://supabase.com/docs/guides/auth/redirect-urls",
+      "https://supabase.com/docs/guides/auth/password-security",
+      "https://github.com/supabase/supabase/blob/master/apps/studio/components/interfaces/Auth/BasicAuthSettingsForm.tsx",
+      "https://github.com/supabase/supabase/blob/master/apps/studio/pages/project/%5Bref%5D/auth/providers.tsx"
+    ],
+    "verification": "JSON parse, report coverage and evidence-preservation checks; screenshot hashes compared to original bytes",
+    "provider_settings_changed": false,
+    "production_version_promoted_by_session": false,
+    "apk_created_or_changed": false,
+    "scope": "Evidence reports only; previous implementation, database rechecks and native verification remain unchanged"
+  },
   "local": {
     "evidenceType": "LOCAL_INVENTORY_ONLY",
     "collectedAt": "2026-10-05T19:31:48.680Z",

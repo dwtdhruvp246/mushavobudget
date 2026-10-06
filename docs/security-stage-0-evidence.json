@@ -1,6 +1,41 @@
 {
   "baseline_commit": "d2a32032b1c560bbae853de87837c3436ea44887",
   "application_release": "4.9.39",
+  "owner_auth_smtp_template_blocker": {
+    "received_date": "2026-10-06",
+    "owner_statement": "i have not enabled Enable custom SMTP so i cannot change it",
+    "status": "OWNER-REPORTED CUSTOM SMTP DISABLED / TEMPLATE EDITING BLOCKED",
+    "independently_verified_dashboard_state": false,
+    "hosted_template_save_confirmed": false,
+    "provider_readiness": "UNCONFIRMED; prior Zoho Mail Lite/notifications@ choice is not installation or relay evidence",
+    "provider_documentation_checked": [
+      {
+        "url": "https://supabase.com/changelog/46599-changes-to-email-template-customisation-on-free-tier",
+        "scope": "From 3 June 2026, new Free projects using default SMTP cannot customize Auth templates; earlier Free projects and paid plans exempt",
+        "project_plan_and_creation_date_verified": false
+      },
+      {
+        "url": "https://supabase.com/docs/guides/auth/auth-smtp",
+        "scope": "Configure actual SMTP host, port, username, password and authorized sender; default relay is not intended for production"
+      },
+      {
+        "url": "https://www.zoho.com/mail/help/usage-policy.html",
+        "scope": "Mailbox service excludes automated/transactional emails and directs transactional sending to ZeptoMail"
+      }
+    ],
+    "next_checks": [
+      "Confirm the owner's available transactional sending provider before prescribing settings",
+      "Owner verifies the sender/domain and configures real SMTP credentials directly in Supabase",
+      "Save and recheck the conditional hosted Magic Link/Invite User templates",
+      "Recheck ordinary signup confirmation, recovery, Admin and Business invitation delivery after relay setup",
+      "Review website activation and in-app notification checks independently of email customization"
+    ],
+    "previous_notification_sql_pass_retained": true,
+    "settings_or_credentials_changed_by_session": false,
+    "apk_changed": false,
+    "followup_changes": "Audit reports and activation instructions only",
+    "earlier_evidence_snapshots_preserved": true
+  },
   "owner_business_invitation_sql_recheck": {
     "received_date": "2026-10-06",
     "owner_statement": "all eight rows passed",

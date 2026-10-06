@@ -1,6 +1,68 @@
 {
   "baseline_commit": "d2a32032b1c560bbae853de87837c3436ea44887",
   "application_release": "4.9.39",
+  "owner_business_notification_ui_gap": {
+    "received_date": "2026-10-06",
+    "owner_report": "Business notification appears, but Approve/Decline are missing and Open does not work",
+    "owner_app_url_version_and_client_not_supplied": true,
+    "status": "PUBLIC OLD-FRONTEND / NEW-NOTIFICATION GAP VERIFIED; OWNER CLIENT RECHECK PENDING",
+    "public_get_scope": "Anonymous GET of public static files with Cache-Control no-cache; sampled response only, no signed-in session or dashboard access",
+    "public_app_js": {
+      "url": "https://mushavobudget.com/app.js",
+      "status": 200,
+      "bytes": 494583,
+      "sha256": "67060fc4e9b924ed74b952ca80534ae8227258dde7d97c8c595ccff121e99e11",
+      "matches_original_baseline_app_js_exactly": true,
+      "business_accept_control": false,
+      "business_decline_control": false,
+      "open_handler_allowed_path": "/app.html",
+      "business_notification_path": "/business.html",
+      "open_handler_result_for_business_notification": "No navigation; route condition is false"
+    },
+    "public_pwa_js": {
+      "url": "https://mushavobudget.com/pwa.js",
+      "status": 200,
+      "sha256": "3502532a6483f93e863dfc08d646712c4033afdc30cf2ca7260a5201471e3b6b",
+      "declared_release": "4.9.39"
+    },
+    "public_app_html": "Two requests timed out; current HTML not independently established by these requests",
+    "github_main_app_html": "4.9.39 / app.js?v=111",
+    "prepared_candidate": {
+      "release": "4.9.40",
+      "runtime_source_commit": "3066246ac2054ac2c139a1a0a9d842f10b69e950",
+      "app_js_sha256": "3db774eb22115bd0b5ff6c4e0c2a93a4efd249e33360b3008a4391a3d8febbb2",
+      "pwa_js_sha256": "749b9898def77f6cb0c257bc036420b417770833afd96d120a31ed3d786c93e0",
+      "business_accept_and_decline_controls": true,
+      "matching_business_notification_open_handler": true,
+      "targeted_invitation_and_refresh_tests": { "pass": 18, "fail": 0, "skip": 0 },
+      "source_or_runtime_changes_in_this_recheck": false
+    },
+    "next": [
+      "Identify the 4.9.40 Cloudflare audit-version preview and verify served release/control markers",
+      "Controlled recipient Accept/Decline and Open checks on that verified version",
+      "Owner review/decision before production promotion",
+      "PWA cache refresh only after verifying the correct website version is served; APK rebuild/update remains deferred"
+    ],
+    "followup_changes": "Audit evidence and release-verification/activation instructions only",
+    "live_database_or_deployment_changed_by_session": false,
+    "apk_changed": false,
+    "earlier_evidence_snapshots_preserved": true
+  },
+  "owner_zoho_transactional_domain_evidence": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner screenshot",
+    "filename": "image(20261006-185824).png",
+    "sha256": "291c9807c03d8827954af89f7d4aa32288894e6482ac503c5bfa53139a85e594",
+    "service": "Zoho CPaaS (formerly ZeptoMail)",
+    "domain": "mushavobudget.com",
+    "displayed_status": { "domain": "Verified", "dkim_txt": "Verified", "return_path_cname": "Verified" },
+    "agent_visible": "agent_1",
+    "raw_screenshot_or_credentials_committed": false,
+    "scope": "Displayed domain/DNS status only; independent DNS lookup, account approval, permitted sender, SMTP credentials/settings, Supabase relay saving and actual delivery remain unconfirmed",
+    "next": "Owner obtains account-specific SMTP settings from agent_1 SMTP/API and verifies provider delivery before configuring Supabase",
+    "settings_changed_by_session": false,
+    "earlier_evidence_snapshots_preserved": true
+  },
   "owner_auth_smtp_template_blocker": {
     "received_date": "2026-10-06",
     "owner_statement": "i have not enabled Enable custom SMTP so i cannot change it",

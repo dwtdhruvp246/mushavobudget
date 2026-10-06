@@ -1,6 +1,20 @@
 {
   "baseline_commit": "d2a32032b1c560bbae853de87837c3436ea44887",
   "application_release": "4.9.39",
+  "owner_google_provider_followup": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner statement, not screenshot or API verification",
+    "owner_statement": "done. google is disabled",
+    "google_enabled_owner_reported": false,
+    "initial_provider_status_question": "COMPLETE at owner-report scope; Apple disabled screenshot retained in previous evidence",
+    "additional_google_screenshot_required": false,
+    "done_scope": "UNSPECIFIED: does not distinguish saved/reloaded toggle from individual email-confirmation test results",
+    "live_email_confirmation_workflow": "REMAINS UNVERIFIED pending individual delivery, pre-confirmation denial, link/identity and post-confirmation sign-in outcomes",
+    "google_apple_integration": "Not present in tracked source; future Stage 6 work",
+    "provider_settings_changed_by_session": false,
+    "application_or_apk_changed": false,
+    "scope": "Three audit evidence reports only; earlier snapshots retained unchanged"
+  },
   "owner_auth_confirmation_followup": {
     "received_date": "2026-10-06",
     "evidence_type": "Owner statement and two later screenshots, visually reviewed",

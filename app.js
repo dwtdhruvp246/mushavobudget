@@ -41,6 +41,7 @@ const state = {
   freePaymentDraft: null,
   paymentRecords: [],
   familyInvitations: [],
+  businessInvitations: [],
   notifications: [],
   workspaces: [],
   workspaceMembers: [],
@@ -988,7 +989,7 @@ function startRealtime() {
       "postgres_changes",
       { event: "*", schema: "public", table },
       (payload) => {
-        if (table === "family_invitations") queueNotificationRefresh();
+        if (["family_invitations", "workspace_invitations"].includes(table)) queueNotificationRefresh();
         queueRealtimeRefresh(payload);
       }
     );
@@ -1274,6 +1275,7 @@ function resetState() {
   state.freePaymentDraft = null;
   state.paymentRecords = [];
   state.familyInvitations = [];
+  state.businessInvitations = [];
   state.notifications = [];
   state.workspaces = [];
   state.workspaceMembers = [];
@@ -1635,6 +1637,7 @@ function clearBudgetDataBeforeBusinessNavigation() {
   state.freePaymentDraft = null;
   state.paymentRecords = [];
   state.familyInvitations = [];
+  state.businessInvitations = [];
   state.notifications = [];
   state.workspaceSubscription = null;
   state.workspaceEntitlement = null;
@@ -1826,14 +1829,15 @@ async function loadInvitations() {
 }
 
 async function loadNotifications() {
-  state.notifications = await query(
-    "notifications load",
-    supabase
-      .from("notifications")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(30)
-  );
+  const userId = state.session?.user?.id;
+  const [notifications, invitations] = await Promise.all([
+    query("notifications load", supabase.from("notifications").select("*")
+      .order("created_at", { ascending: false }).limit(30)),
+    query("Business notification invitations load", supabase.rpc("get_my_business_invitations"))
+  ]);
+  if (state.session?.user?.id !== userId) return;
+  state.notifications = notifications;
+  state.businessInvitations = invitations || [];
 }
 
 async function loadUserSupportData() {
@@ -1899,6 +1903,9 @@ function notificationWorkspace(notification) {
   const workspace = [...state.workspaces, ...state.adminWorkspaces]
     .find((item) => item.id === notification?.workspace_id);
   if (workspace) return workspace;
+
+  const businessInvitation = state.businessInvitations.find((item) => item.invitation_id === notification?.business_invitation_id);
+  if (businessInvitation) return { workspace_type: "business", name: businessInvitation.workspace_name };
 
   const familyId = notification?.family_id;
   if (!familyId) return null;
@@ -4485,6 +4492,7 @@ function renderNotificationList(list, compact = false) {
     const isPendingInvite = invitation
       && invitation.status === "pending"
       && invitation.invitee_email?.toLowerCase() === state.session.user.email?.toLowerCase();
+    const businessInvitation = state.businessInvitations.find((item) => item.invitation_id === notification.business_invitation_id);
     const workspaceLabel = workspaceNotificationLabel(notificationWorkspace(notification));
     const article = document.createElement("article");
     article.className = `record-card${compact ? " notification-card" : ""}`;
@@ -4497,12 +4505,25 @@ function renderNotificationList(list, compact = false) {
       </div>
       <div class="record-side">
         ${isPendingInvite ? `<div class="row-actions"><button class="primary" type="button" data-accept-invite="${invitation.id}">Accept</button><button type="button" data-reject-invite="${invitation.id}">Reject</button></div>` : ""}
+        ${businessInvitation ? `<div class="row-actions"><button class="primary" type="button" data-accept-business-invite="${escapeHtml(businessInvitation.invitation_id)}">Accept</button><button type="button" data-decline-business-invite="${escapeHtml(businessInvitation.invitation_id)}">Decline</button></div>` : ""}
         ${notification.url ? `<button type="button" data-open-notification="${notification.id}">Open</button>` : ""}
         ${notification.read_at ? "" : `<button type="button" data-read-notification="${notification.id}">Mark read</button>`}
       </div>
     `;
     list.append(article);
   });
+}
+
+function notificationTargetUrl(notification) {
+  if (!notification?.url) return null;
+  let target;
+  try { target = new URL(notification.url, window.location.href); } catch { return null; }
+  if (target.origin !== window.location.origin) return null;
+  const businessInvitationTarget = notification.business_invitation_id
+    && target.pathname === "/business.html"
+    && target.searchParams.get("invitation") === notification.business_invitation_id
+    && target.hash === "#business/team";
+  return target.pathname === "/app.html" || businessInvitationTarget ? target : null;
 }
 
 function notificationDueOccurrences() {
@@ -4954,6 +4975,30 @@ async function respondToInvitation(invitationId, status) {
     showToast(status === "accepted" ? "Family invitation accepted." : "Family invitation rejected.");
   } catch (error) {
     showToast(error.message);
+  }
+}
+
+async function respondToBusinessNotificationInvitation(invitationId, accept) {
+  if (!state.businessInvitations.some((item) => item.invitation_id === invitationId)) return;
+  const userId = state.session?.user?.id;
+  try {
+    const workspaceId = await query("Business invitation response", supabase.rpc("respond_business_invitation", {
+      p_invitation_id: invitationId, p_accept: accept
+    }));
+    if (state.session?.user?.id !== userId) return;
+    if (accept) {
+      const target = new URL("./business.html", window.location.href);
+      target.searchParams.set("workspace", workspaceId);
+      target.hash = "business/overview";
+      window.location.assign(target.href);
+      return;
+    }
+    await loadNotifications();
+    renderNotifications();
+    showToast("Business invitation declined.");
+  } catch (error) {
+    showToast(error.message);
+    await loadNotifications().then(renderNotifications).catch(() => {});
   }
 }
 
@@ -9234,6 +9279,11 @@ document.addEventListener("click", async (event) => {
   const rejectInviteId = event.target.dataset.rejectInvite;
   if (rejectInviteId) await respondToInvitation(rejectInviteId, "rejected");
 
+  const acceptBusinessInviteId = event.target.closest("[data-accept-business-invite]")?.dataset.acceptBusinessInvite;
+  if (acceptBusinessInviteId) await respondToBusinessNotificationInvitation(acceptBusinessInviteId, true);
+  const declineBusinessInviteId = event.target.closest("[data-decline-business-invite]")?.dataset.declineBusinessInvite;
+  if (declineBusinessInviteId) await respondToBusinessNotificationInvitation(declineBusinessInviteId, false);
+
   const readNotificationId = event.target.dataset.readNotification;
   if (readNotificationId) {
     await query("notification read", supabase.from("notifications").update({ read_at: new Date().toISOString() }).eq("id", readNotificationId));
@@ -9245,14 +9295,12 @@ document.addEventListener("click", async (event) => {
   const openNotificationId = event.target.dataset.openNotification;
   if (openNotificationId) {
     const notification = state.notifications.find((item) => item.id === openNotificationId);
-    if (notification?.url) {
-      const target = new URL(notification.url, window.location.href);
-      if (target.origin === window.location.origin && target.pathname === "/app.html") {
-        if (!notification.read_at) {
-          await query("notification open read", supabase.from("notifications").update({ read_at: new Date().toISOString() }).eq("id", notification.id));
-        }
-        window.location.assign(target.href);
+    const target = notificationTargetUrl(notification);
+    if (target) {
+      if (!notification.read_at) {
+        await query("notification open read", supabase.from("notifications").update({ read_at: new Date().toISOString() }).eq("id", notification.id));
       }
+      window.location.assign(target.href);
     }
   }
 });

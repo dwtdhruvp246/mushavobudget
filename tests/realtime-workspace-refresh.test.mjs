@@ -46,7 +46,7 @@ function harness({ delayFirstAccess = false } = {}) {
     document: { visibilityState: "visible" },
     console: { debug: () => {}, warn: () => {}, error: () => {} },
     navigator: { onLine: true },
-    realtimeTablesForCurrentView: () => ["families", "budget_workspaces"],
+    realtimeTablesForCurrentView: () => ["families", "budget_workspaces", "workspace_invitations"],
     loadAccess() {
       accessCalls += 1;
       if (delayFirstAccess && accessCalls === 1) {
@@ -107,6 +107,17 @@ test("a new invitation refreshes the recipient's notification without a page rel
   h.api.startRealtime();
   h.getHandler("notifications")({ eventType: "INSERT" });
   assert.equal(h.timers.length, 1);
+  await h.timers.shift()();
+  assert.ok(h.calls.includes("notifications"));
+  assert.ok(h.calls.includes("notification-rendered"));
+  assert.equal(h.getAccessCalls(), 0);
+});
+
+test("Business invitation changes refresh Notifications without waiting for workspace access", async () => {
+  const h = harness();
+  h.api.startRealtime();
+  h.getHandler("workspace_invitations")({ eventType: "INSERT" });
+  assert.equal(h.timers.length, 2); // Notification refresh plus shared workspace refresh.
   await h.timers.shift()();
   assert.ok(h.calls.includes("notifications"));
   assert.ok(h.calls.includes("notification-rendered"));

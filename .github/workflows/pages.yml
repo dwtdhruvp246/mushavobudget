@@ -49,6 +49,7 @@ jobs:
           node scripts/verify-security-stage-0-sql.cjs
           node scripts/verify-security-stage-0-private-reads-sql.cjs
           node scripts/verify-security-stage-0-currency-sql.cjs
+          node scripts/verify-business-invitation-notifications-sql.cjs
 
   deploy:
     needs: test

@@ -1,6 +1,60 @@
 {
   "baseline_commit": "d2a32032b1c560bbae853de87837c3436ea44887",
   "application_release": "4.9.39",
+  "owner_business_invitation_followup": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner-reported registered Viewer UI test plus email screenshot",
+    "owner_report": "it passes but with some things i dont like",
+    "test_scope": "Previous three steps: email invitation destination, acceptance, correct Business workspace and Viewer role",
+    "status": "OWNER-REPORTED PASS WITH TWO UX DEFECTS",
+    "defects": [
+      "Generic sign-in email does not identify Business join request",
+      "Request missing from main Notifications page"
+    ],
+    "screenshot": {
+      "filename": "image(20261006-175403).png",
+      "sha256": "0432fb4053acee2ff7fc1f819abe0ea39f17512fd329d13193c68a0dc995dede",
+      "observations": [
+        "Subject and heading: Your sign-in link",
+        "Supabase Auth default sender",
+        "Generic single-use sign-in instruction and Sign in button"
+      ],
+      "raw_image_committed": false,
+      "auth_link_or_token_recorded": false
+    },
+    "candidate_release": "4.9.40",
+    "repair_status": "PREPARED; HOSTED ACTIVATION AND RETEST PENDING",
+    "changes": [
+      "Server trigger, deduplicated recipient notifications and pending backfill",
+      "Client metadata guard retaining Mark read",
+      "Notifications Accept/Decline through existing authorized RPC",
+      "Realtime/badge refresh, safe invitation navigation and text rendering",
+      "Conditional hosted Magic Link/Invite User templates; scoped redirect and activation instructions"
+    ],
+    "validation": {
+      "automated_tests": 406,
+      "failures": 0,
+      "skipped": 0,
+      "sql": "PASS: actual migration, current RPCs and notification RLS; surrounding permission/billing helpers are fixture substitutes",
+      "existing_custom_role_verifier": "PASS",
+      "locked_native_asset_build": "PASS",
+      "native_dependency_consumer": "PASS",
+      "hosted_template_rendering_and_delivery": "NOT RUN",
+      "native_compile_or_device_test": false
+    },
+    "live_database_or_provider_changed": false,
+    "apk_changed": false,
+    "production_promoted": false,
+    "not_established": [
+      "Full authorization matrix",
+      "Live websocket delivery",
+      "Current saved redirect allowlist",
+      "Hosted revised template rendering",
+      "Historical link invalidation and all Auth flows"
+    ],
+    "earlier_evidence_snapshots_preserved": true,
+    "activation_guide": "docs/BUSINESS_INVITATION_NOTIFICATION_SETUP.md"
+  },
   "owner_admin_invitation_smoke_test": {
     "received_date": "2026-10-06",
     "evidence_type": "Owner confirms the previously specified three-step UI test; no independent trace",
@@ -194,8 +248,13 @@
       "source_assets_directory": ".",
       "source_worker_script_declared": false,
       "source_development_paths_excluded": true,
-      "include_watch_paths": ["*"],
-      "exclude_watch_paths": ["node_modules/**", ".git/"],
+      "include_watch_paths": [
+        "*"
+      ],
+      "exclude_watch_paths": [
+        "node_modules/**",
+        ".git/"
+      ],
       "production_custom_domain": "mushavobudget.com",
       "workers_dev_production_url": "mushavobudget.dhruvp246.workers.dev",
       "workers_dev_production_enabled": true,
@@ -253,7 +312,9 @@
       "email_otp_length_digits": 8,
       "site_url": "https://mushavobudget.com",
       "redirect_url_count": 1,
-      "redirect_urls": ["https://mushavobudget.com/signup.html*"],
+      "redirect_urls": [
+        "https://mushavobudget.com/signup.html*"
+      ],
       "rate_limits_sessions_mfa_email_templates": "NOT SUPPLIED",
       "source_signup_and_admin_invite_callbacks": "signup.html with query parameters; individual matching and live delivery require verification",
       "source_business_invite_callback": "${APP_ORIGIN}/business.html?invitation=<uuid>#business/team",

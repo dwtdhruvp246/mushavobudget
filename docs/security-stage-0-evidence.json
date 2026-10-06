@@ -1,6 +1,78 @@
 {
   "baseline_commit": "d2a32032b1c560bbae853de87837c3436ea44887",
   "application_release": "4.9.39",
+  "owner_auth_confirmation_followup": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner statement and two later screenshots, visually reviewed",
+    "owner_statement": "I have only now turned on the confirm email toggle",
+    "chronology": "After the initial six hosting/Auth screenshots; this does not establish the earlier setting from screenshot evidence",
+    "previous_confirm_email_state": "OFF, inferred from the owner's statement only; not shown in the earlier screenshots",
+    "current_confirm_email_display": true,
+    "change_performed_by": "Owner",
+    "saved_configuration_independently_verified": false,
+    "project_attribution": "Owner-supplied; project header outside the crops",
+    "raw_images_or_credentials_committed": false,
+    "attachments": [
+      {
+        "name": "image(20261006-102713).png",
+        "scope": "Supabase Sign In / Providers > User Signups",
+        "sha256": "c7a7e92c446d0288543b02f17d2550390f4b858f2aa70bb1902c83d9b78e6a12"
+      },
+      {
+        "name": "image(20261006-102751).png",
+        "scope": "Supabase provider list from Email through GitHub, including Apple",
+        "sha256": "0ebef153cf1ae7bbeb2e382db59297fb0d4689ce035f0ab96aec5fa2b321d274"
+      }
+    ],
+    "general_signup_settings_display": {
+      "allow_new_users_to_sign_up": true,
+      "allow_manual_linking": false,
+      "allow_anonymous_sign_ins": false,
+      "confirm_email": true
+    },
+    "provider_rows_display": {
+      "Email": "Enabled",
+      "Phone": "Disabled",
+      "SAML 2.0": "Disabled",
+      "Web3 Wallet": "Disabled",
+      "Apple": "Disabled",
+      "Azure": "Disabled",
+      "Bitbucket": "Disabled",
+      "Discord": "Disabled",
+      "Facebook": "Disabled",
+      "Figma": "Disabled",
+      "GitHub": "Disabled",
+      "Google": "NOT VISIBLE: below the crop"
+    },
+    "previous_auto_confirmed_accounts": "Supabase documents implicit confirmation when the setting is off; the new toggle does not prove historical inbox verification. No accounts or sessions modified by this session.",
+    "source_review": {
+      "ordinary_signup_result": "signup.html redirects to app.html?signup=success after a successful signUp, including when no session is returned",
+      "ordinary_signup_message": "Account created successfully. Sign in with your new account.",
+      "dedicated_email_not_confirmed_guidance": "NOT FOUND: sign-in failure uses generic returned-message/toast handling",
+      "confirmation_callback": "signup.html?mode=self-signup reads verified identity and pending Admin invitation; when no invite exists it adopts the session into the app",
+      "admin_invitation_guards": "Separate verified-session and completion flow retained; live behavior not tested",
+      "assessment": "Auth UX/message gap for newly enabled confirmation, not a proven backend bypass; coordinated Stage 3 follow-up",
+      "application_code_changed": false
+    },
+    "live_test_results": {
+      "save_reload_persistence": "NOT TESTED",
+      "new_signup_email_delivery": "NOT TESTED",
+      "password_signin_before_confirmation": "NOT TESTED; expected denial",
+      "newest_confirmation_link_and_correct_identity_workspace": "NOT TESTED",
+      "password_signin_after_confirmation": "NOT TESTED",
+      "admin_business_invitation_and_recovery": "NOT TESTED"
+    },
+    "business_redirect_mismatch_from_initial_screenshots": "UNRESOLVED",
+    "remaining_provider_screenshot": "Google enabled/disabled row below GitHub in the provider list",
+    "interpretation_sources": [
+      "https://supabase.com/docs/guides/auth/general-configuration",
+      "https://supabase.com/docs/guides/auth/passwords",
+      "https://supabase.com/docs/guides/auth/debugging/error-codes"
+    ],
+    "provider_settings_changed_by_session": false,
+    "apk_created_or_changed": false,
+    "scope": "Three evidence reports only; earlier evidence retained unchanged; no Auth configuration, application, database or APK mutation"
+  },
   "owner_hosting_auth_screenshots": {
     "received_date": "2026-10-06",
     "evidence_type": "Owner-supplied screenshots, visually reviewed; displayed settings only",

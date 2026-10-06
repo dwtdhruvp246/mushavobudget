@@ -2,7 +2,7 @@
 
 Baseline: 5 October 2026, source `d2a32032b1c560bbae853de87837c3436ea44887`, web/PWA 4.9.39.
 
-**This is an applicability/evidence worklist, not 123 completed tests.** Each entry includes the current test scope and the next check. A source definition or disposable fixture PASS does not establish live authorization, native security, recovery or store acceptance. Stage 0 has initial live metadata and partial native identity; grant recheck, native packages and provider evidence remain pending. Developer owns code/test work; Owner owns console/operator decisions; Both requires coordination.
+**This is an applicability/evidence worklist, not 123 completed tests.** Each entry includes the current test scope and the next check. A source definition or disposable fixture PASS does not establish live authorization, native security, recovery or store acceptance. Stage 0 has initial live metadata and partial native identity; the grant recheck passes, while native packages, provider evidence and live behavior remain pending. Developer owns code/test work; Owner owns console/operator decisions; Both requires coordination.
 
 Evidence references:
 
@@ -14,7 +14,7 @@ Evidence references:
 - **E6:** targeted tracked-text/available-history signature checks; no matched private-key/Supabase secret-key signatures, no current decoded service-role JWT literals. Not a comprehensive scanner/advisory assessment.
 - **E7:** public live GET samples and hashes; matching app/business JS, missing sampled headers, 404 policy/deletion routes and injected Cloudflare analytics.
 - **E8:** native asset builder reproduced dependency failure. Native source/configuration/release artifacts absent in checkout; browser UI fixture could not launch missing Chromium.
-- **E9:** metadata-only 24-row diagnostic verified in synthetic positive/negative catalog cases. Owner's 6 October live CSV has 12 PASS, 1 FAIL, 7 REVIEW, 4 CANNOT VERIFY; the seven anonymous private-table SELECT grants have a locally verified narrow migration awaiting live application/recheck.
+- **E9:** metadata-only 24-row diagnostic verified in synthetic positive/negative catalog cases. Owner's initial 6 October live CSV had 12 PASS, 1 FAIL, 7 REVIEW, 4 CANNOT VERIFY. The post-fix CSV has 13 PASS, 7 REVIEW, 4 CANNOT VERIFY: diagnostic 08 now passes; all other rows are unchanged. Actual JWT/API behavior remains unverified.
 - **E10:** owner's earlier confirmation that all 20 custom-role deployment diagnostics passed; reported deployment evidence with limited scope.
 - **E11:** owner reports Node 22.17.0 and native config `com.mushavo.budget` / Mushavo Budget / www. Local native edits must be preserved; installed package versions are pending npm.cmd after PowerShell blocked npm.ps1. No signed native build evidence yet.
 
@@ -27,7 +27,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 1. PROJECT DISCOVERY | Yes | PARTIAL | E1 inventories current source; native/platform/provider inputs pending. | F05,F20 | 0 | Both |
 | 2. PRESERVE EXISTING ARCHITECTURE | Yes | VERIFIED PROCESS | Stage 0 additions preserve application and financial architecture; review every later diff. | — | All | Developer |
 | 3. AUDIT CLASSIFICATION | Yes | VERIFIED PROCESS | This register separates local passes, gaps, decisions and unavailable evidence. | — | All | Developer |
-| 4. EVIDENCE REQUIREMENT | Yes | VERIFIED PROCESS | E1–E11 are scoped evidence; initial live metadata received, repair recheck and behavior pending. | — | All | Both |
+| 4. EVIDENCE REQUIREMENT | Yes | VERIFIED PROCESS | E1–E11 are scoped evidence; initial/post-fix live metadata received, grant recheck PASS, behavior pending. | — | All | Both |
 | 5. NO FAKE DATA OR CLAIMS | Yes | VERIFIED PROCESS | No production data or invented claims used; fixture identities are explicitly synthetic. | — | All | Developer |
 | 6. SECRETS AND CREDENTIALS | Yes | PARTIAL | E6 found no targeted secret signatures; full historical/artifact/provider scan outstanding. | F18 | 1 | Both |
 | 7. PUBLIC ENVIRONMENT VARIABLE PREFIXES | Yes | CONDITIONAL | No VITE/NEXT-style build variables found; inspect actual native/web release assets and future tooling. | F18 | 1,5 | Developer |
@@ -40,7 +40,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 14. SESSION STORAGE | Yes | NEEDS EVIDENCE | Browser sessions exist; actual native credential and backup protection uninspected. | F14 | 5 | Both |
 | 15. AUTHORIZATION | Yes | LOCAL PASS / LIVE UNKNOWN | E3 role/scope tests pass; repeat permitted/denied RPC, row, export and object operations with real staging JWTs. | F15 | 3 | Developer |
 | 16. PRIVILEGE ESCALATION | Yes | LOCAL PASS / LIVE UNKNOWN | E3 owner, override and assignment guards pass; verify direct field/role spoofing against deployed API. | F15 | 3 | Developer |
-| 17. ROW LEVEL SECURITY | Yes | LIVE FLAGS PASS / GRANT RECHECK PENDING | E9 confirms RLS on 79 expected tables; seven anonymous SELECT grants have a tested narrow repair awaiting live recheck. Staging identities still need to test policies. | F15 | 0,3 | Both |
+| 17. ROW LEVEL SECURITY | Yes | LIVE FLAGS AND GRANT RECHECK PASS | E9 confirms RLS on 79 expected tables and post-fix absence of the checked private-table anonymous SELECT grants. Staging identities still need to test policies. | F15 | 0,3 | Both |
 | 18. MULTI-TENANT ISOLATION | Yes | LOCAL PASS / LIVE UNKNOWN | E3–E5 test scopes/workspace isolation; verify Personal/Family/Business and former members directly. | F15 | 3 | Developer |
 | 19. MASS ASSIGNMENT | Yes | SOURCE PRESENT | Protected RPCs/column grants narrow updates; E9 checks profile column grants. Test unexpected ownership/role fields. | F15 | 3 | Developer |
 | 20. SQL AND QUERY INJECTION | Yes | NEEDS VERIFICATION | Client queries/RPC parameters exist; inspect all dynamic SQL and use controlled search/filter payloads in staging. | F15 | 3,9 | Developer |

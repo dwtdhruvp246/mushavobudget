@@ -235,7 +235,8 @@
         "business-stage-9",
         "business-stage-10",
         "business-stage-12",
-        "security-stage-0-diagnostic"
+        "security-stage-0-diagnostic",
+        "security-stage-0-private-reads"
       ]
     },
     "native_asset_build": {
@@ -247,7 +248,7 @@
       "reason": "Playwright Chromium executable absent."
     }
   },
-  "live_supabase_metadata": "PENDING OWNER RUN",
+  "live_supabase_metadata": "OWNER-SUPPLIED INITIAL AND POST-FIX CSV RECEIVED; 13 PASS, 7 REVIEW, 4 CANNOT VERIFY; NO FAIL",
   "live_authorization": "NOT TESTED",
   "native_release_artifacts": "NOT AVAILABLE",
   "targeted_secret_signature_checks": {
@@ -447,8 +448,30 @@
     "repair": {
       "migration": "20261006043000_security_stage_0_private_reads.sql",
       "isolated_behavior_tests": "PASS in PGlite 0.5.8",
-      "live_application": "PENDING",
-      "live_recheck": "PENDING"
+      "live_application": "Grant removal confirmed by owner-supplied metadata recheck; no direct deployment access in this session",
+      "live_recheck": "PASS: diagnostic 08; no live API/JWT behavior test implied"
+    },
+    "post_fix_recheck": {
+      "received_date": "2026-10-06",
+      "diagnostic_rows": 24,
+      "status_counts": {
+        "PASS": 13,
+        "REVIEW": 7,
+        "CANNOT VERIFY": 4
+      },
+      "changed_checks": [
+        {
+          "check_name": "08 Anonymous private-table SELECT privileges are absent",
+          "before": "FAIL",
+          "after": "PASS",
+          "details": {
+            "missing_or_granted": []
+          }
+        }
+      ],
+      "other_rows_unchanged": true,
+      "native_package_output_in_attachment": false,
+      "live_behavior_tested": false
     }
   }
 }

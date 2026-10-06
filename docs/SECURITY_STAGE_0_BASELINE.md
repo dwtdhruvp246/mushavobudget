@@ -1,8 +1,8 @@
 # Security and store release — Stage 0 baseline
 
-Prepared 5 October 2026. Baseline: `d2a32032b1c560bbae853de87837c3436ea44887`, web/PWA **4.9.39**.
+Prepared 5 October 2026; live/native evidence updated 6 October 2026. Baseline: `d2a32032b1c560bbae853de87837c3436ea44887`, web/PWA **4.9.39**.
 
-**Stage 0 is in progress. Repository verification is complete; live Supabase, native and provider evidence is pending. The app is not cleared for store submission.**
+**Stage 0 is in progress. The owner supplied live database metadata and partial Windows/Android evidence; the grant fix awaits application/recheck, and native package/provider evidence is pending. The app is not cleared for store submission.**
 
 The owner approved starting Stage 0 and clarified the working method: audit, fix confirmed failures within the approved stage, and recheck. The earlier document-only restriction no longer prevents this authorized work. Stages 1–10 and destructive/major production changes are not automatically approved by Stage 0.
 
@@ -25,11 +25,13 @@ The owner approved starting Stage 0 and clarified the working method: audit, fix
 | Live public policy routes | FAIL, sampled routes | `/privacy`, `/terms` and `/delete-account` return 404. Dedicated equivalents are also absent from tracked source. F01/F02 remain open. |
 | Hosting analytics | PRESENT | Cloudflare analytics is injected on the sampled HTML pages. The fronting server identifies as Cloudflare; the repo also contains a GitHub Pages workflow and Wrangler asset configuration. The current origin/deployment relationship needs dashboard evidence. |
 | Live custom-role deployment | OWNER-REPORTED PASS | Owner previously confirmed all 20 custom-role diagnostics passed. Preserve that result, but do not substitute it for current tenant/API/storage/realtime tests. |
-| Live database, Auth, backups and store consoles | CANNOT VERIFY | No authenticated service/admin connector or native project is available in this session. Owner-side metadata/settings evidence is required below. |
+| Live database metadata | OWNER-SUPPLIED EVIDENCE | 6 October CSV: **12 PASS, 1 FAIL, 7 REVIEW, 4 CANNOT VERIFY** across all 24 rows. All 79 expected tables have RLS; required buckets are private with type/size limits. Diagnostic 08 fails on seven private-table SELECT grants to anon. Policies on those seven tables target authenticated; no data exposure is established by this grant result. |
+| Windows/Android identity | OWNER-SUPPLIED, PARTIAL | Node **22.17.0**; `com.mushavo.budget`, **Mushavo Budget**, `www`. Local package/lock/gitignore edits and untracked Android/config/scripts must be preserved. npm.ps1 was blocked by PowerShell, so installed package versions remain unknown; use npm.cmd. No signed build has been verified. |
+| Live Auth, backups and store consoles | CANNOT VERIFY | No authenticated service/admin connector or native project is available in this session. Provider, recovery and release-artifact evidence remains required. |
 
 ## Stage 0 changes and verification
 
-This branch adds an evidence collector, a tested read-only SQL diagnostic, a coverage register for **all 123 master-audit sections**, this report and a redacted evidence snapshot. It fills the missing repeatable-baseline/evidence workflow. Application behavior, dependencies, package lock, database schema, RLS, financial rules, signing and provider configuration have not been changed by these additions.
+This branch adds an evidence collector, a tested read-only SQL diagnostic, a coverage register for **all 123 master-audit sections**, this report and a redacted evidence snapshot. After the owner's live results, it also adds one narrow migration to remove private-table anonymous SELECT grants, its isolated behavior verifier, the accumulated schema addition and CI execution of both Stage 0 SQL verifiers. Application code, dependencies, package lock, table structures, RLS, financial rules, signing and provider configuration are unchanged. Production grants are unchanged until the owner applies the migration.
 
 `scripts/security-stage-0-check.mjs` uses built-in Node modules. It inventories declared/installed Capacitor packages and whitelisted native config fields without printing credentials. `--live` makes nine public HTTPS GET requests with timeouts; network failure remains CANNOT VERIFY. It does not install packages, sync native platforms, call the database or write configuration.
 
@@ -37,7 +39,33 @@ This branch adds an evidence collector, a tested read-only SQL diagnostic, a cov
 
 The new tests cover redaction, unavailable native files, network failure, 404 responses, absent headers and live source mismatch. The disposable SQL verifier exercises disabled RLS, missing tables, inherited PUBLIC/column grants, profile privilege escalation, callable internal helpers, a public bucket and the database's rejection of writes inside a read-only transaction. Successful metadata checks do not certify authorization.
 
-After the additions: **390 automated tests pass**, and the new SQL diagnostic verifier passes. Existing production code hashes and web/PWA version remain the pinned baseline; no release/cache bump is required for these development-only files.
+After the additions: **390 automated tests pass**, and both Stage 0 SQL verifiers pass in PGlite 0.5.8. The grant verifier exercises actual anon permission-denied queries, authenticated own/other-user reads and updates, server reads, PUBLIC table/column grants, protected RPC execution, public pricing/contact compatibility, reapplication and atomic rollback for inherited access/missing tables/disabled RLS. These are synthetic fixtures, not live JWT/API tests. Existing application code hashes and web/PWA version remain the pinned baseline; the grant migration requires no web cache bump.
+
+## 6 October live result and narrow repair
+
+Diagnostic 08 lists `app_admins`, `payment_records`, `payments`, `profiles`, `workspace_invitations`, `workspace_members` and `workspace_subscriptions`. The live policy inventory assigns their policies to authenticated, so anonymous SELECT grants do not alone demonstrate readable customer rows. Remove the unnecessary privilege as defense in depth, then verify live.
+
+`20261006043000_security_stage_0_private_reads.sql` removes SELECT from anon and PUBLIC only on those seven tables. PostgreSQL table-level REVOKE also removes the corresponding column grants. Before revoking PUBLIC, the migration captures and preserves the existing effective authenticated/service_role table or column reads; it does not add readable columns. RLS and write grants stay in place. The transaction aborts if a table/RLS prerequisite is missing or anon retains inherited SELECT; it never changes membership or uses CASCADE. Other custom roles relying only on PUBLIC reads would lose that implicit access; no such role is required by the application source. Unexpected grant chains may produce an error and rollback rather than an automatic broad fix.
+
+The seven REVIEW rows remain open. In particular, 61 SECURITY DEFINER functions are executable by anon, including intended public lookups, helpers and trigger functions; this is an inventory to classify, not evidence that all 61 leak data. Do not blanket-revoke function execution before reviewing Auth/RLS/trigger dependencies and protected/public RPC contracts. The 263 function search paths include two legacy family helpers with `search_path=public`; caller-writable schemas and function behavior still need review. Cron metadata is present; a CLI migration ledger is absent, consistent with possible manual SQL use but not proof that every migration ran.
+
+Apply and recheck from the existing Windows folder; fetching/reading does not overwrite the local native edits:
+
+```powershell
+Set-Location "C:\Users\HP\Desktop\Mushavo Budget"
+git fetch origin security/stage-0-baseline
+git show "FETCH_HEAD:supabase/migrations/20261006043000_security_stage_0_private_reads.sql" | Out-String | Set-Clipboard
+```
+
+Run the clipboard SQL in Supabase SQL Editor. Expected: **Success. No rows returned**. If any error is returned, stop and send it; the transaction must not be treated as applied.
+
+Then copy the diagnostic separately and run it:
+
+```powershell
+git show "FETCH_HEAD:supabase/diagnostics/security_stage_0_diagnostic.sql" | Out-String | Set-Clipboard
+```
+
+Expected: diagnostic 08 becomes PASS; with unchanged other metadata, **13 PASS, 7 REVIEW, 4 CANNOT VERIFY**. Send the returned table. Smoke-test sign-in, Dashboard/Payments, Family membership, Business Teams and Admin subscription reads; the isolated fixture does not certify production workflows.
 
 ## Findings F01–F20
 
@@ -59,7 +87,7 @@ The dated master audit remains the original finding definition. No finding below
 | F12 | Source validation gap, exploit not proved | Stored Web Push endpoints are sent through web-push 3.6.7 without explicit destination/network controls in the reviewed senders. Controlled egress assessment and compatibility tests required. | 2 |
 | F13 | Needs improvement | Private buckets/type/size restrictions exist. Content-signature/normalization controls were not found. Add justified server validation and safe downloads. | 4 |
 | F14 | Cannot verify protected native sessions | Default Supabase browser clients are tracked; no native credential-storage adapter is visible. Workspace Preferences are metadata, not protected token storage. | 5 |
-| F15 | Local evidence improved; live unknown | Five disposable SQL verifiers pass; live catalog and JWT/API/storage/realtime denial cases remain required. | 0, 3, 9 |
+| F15 | Live catalog received; grant failure has tested repair pending | All expected table RLS and private buckets pass metadata checks. Seven anonymous private-table reads fail the privilege check; narrow migration is verified locally but awaits owner application/recheck. JWT/API/storage/realtime denial cases remain required. | 0, 3, 9 |
 | F16 | Cannot verify | Schema files are not record/object backups. Confirm plan, actual recovery coverage, retention and isolated restore drill. | 1 |
 | F17 | Documented; archive unknown | Preferences UserDefaults/CA92.1 is documented, but actual iOS privacy manifest and archive are unavailable. | 5, 9 |
 | F18 | Partial foundations; further work | Existing tests/SQL workflow and limited signature checks exist. Native CI, complete supply-chain/artifact scans and repository protection evidence remain. | 1 |
@@ -87,13 +115,13 @@ Before any pull/merge, inspect local changes. Do not stash/delete/reset the Andr
 ```powershell
 git status --short
 node --version
-npm ls @capacitor/core @capacitor/cli @capacitor/android @capacitor/ios @capacitor/app @capacitor/preferences esbuild --depth=0
+npm.cmd ls @capacitor/core @capacitor/cli @capacitor/android @capacitor/ios @capacitor/app @capacitor/preferences esbuild --depth=0
 if (Test-Path .\capacitor.config.json) {
   Get-Content .\capacitor.config.json | ConvertFrom-Json | Select-Object appId, appName, webDir
 }
 ```
 
-An npm missing-package/nonzero result is useful baseline evidence. These commands do not install or upgrade anything. Send this output. If the config is TypeScript instead, report that filename; do not paste credentials or whole signing/config files.
+An npm missing-package/nonzero result is useful baseline evidence. These commands do not install or upgrade anything. `npm.cmd` selects the Windows command launcher explicitly when PowerShell blocks npm.ps1; no execution-policy change is needed. Send this output. If the config is TypeScript instead, report that filename; do not paste credentials or whole signing/config files.
 
 For future local updates, after preserving local changes and when the branch is merged:
 
@@ -110,10 +138,10 @@ Stop and send the conflict/divergence message if the fast-forward is refused. Do
 |---|---|---|
 | Hosting | Active Cloudflare Pages/Workers project and GitHub Pages role; current domains/redirects and production branch. Configuration/screenshot, not API tokens. | Headers must be added to the layer actually serving the app. |
 | Supabase Auth/Edge | Email confirmation and password settings; enabled providers; site/callback URLs; MFA availability; deployed function names and deployment dates. Secret names/presence only, never values. | Avoid changing working invitations and define supported web/native callbacks. |
-| Supabase database | The 24-row diagnostic and existing role diagnostic if a failure needs narrowing. | Effective catalog/grant state can differ from accumulated source or manual migration history. |
+| Supabase database | Initial 24-row result received. Apply the grant migration and rerun diagnostic 08; follow up with behavior tests. | Effective catalog/grant state can differ from accumulated source or manual migration history. |
 | Recovery/operations | Plan/backup retention, PITR availability, object-byte backup method, any restore drill, alert/budget configuration, incident owner and support mailbox. | Establish recoverability and service costs; no restore of production. |
 | Staging | Existing separate Supabase project and deployment/controlled inboxes, or confirmation that these do not yet exist. | Negative tests and future deletion/billing work need synthetic isolated data. |
-| Native | Package/config output above; non-secret Android manifest/Gradle configuration when requested; whether iOS/Mac/Xcode access exists. Later inspect the actual signed artifacts. | Preserve current core major, app ID, platform source and signing identity. |
+| Native | Node/config identity received; installed package versions pending npm.cmd. Non-secret Android manifest/Gradle configuration when requested; whether iOS/Mac/Xcode access exists. Later inspect the actual signed artifacts. | Preserve current core major, app ID, platform source and signing identity. |
 | Stores/operator | Account type/status, intended countries/audience and actual operator/support identity. | Determines publishing/test obligations and factual policy declarations. |
 
 Do not send service-role keys, access/refresh tokens, MFA recovery codes/seeds, keystores, signing passwords, private keys, full customer records or backups with real financial data.
@@ -136,6 +164,6 @@ Estimated scope, pending these inputs: Stage 1 is moderate with external recover
 
 ## Rollback and release boundary
 
-This branch changes development diagnostics/documentation only. Revert its commit to remove them; no data rollback is required. Both the existing Pages allowlist and Cloudflare `.assetsignore` exclude the new development paths. The branch is not a production security rollout. No SQL migration or Edge deployment is required for Stage 0; the owner runs the read-only diagnostic. Native rebuilds, provider settings and store submissions are later work.
+The baseline diagnostics/documentation need no data rollback. The 6 October follow-up additionally includes a narrowly scoped grant migration for owner application; reverting a Git commit does not revert applied database grants. If an unexpected live workflow fails, inspect that operation and restore only justified authenticated/service access rather than regranting anonymous private-table reads. Failed prerequisites roll the entire transaction back. Both the existing Pages allowlist and Cloudflare `.assetsignore` exclude development paths. No Edge deployment or app release/cache bump is required. Native rebuilds, provider settings and store submissions are later work.
 
 Official technical references used for subsequent native choices: [Capacitor environment setup](https://capacitorjs.com/docs/getting-started/environment-setup), [Preferences](https://capacitorjs.com/docs/apis/preferences), [Supabase MFA](https://supabase.com/docs/guides/auth/auth-mfa), [Supabase backups](https://supabase.com/docs/guides/platform/backups). Recheck the documentation for the **actual existing core major**; current/latest documentation is not permission to upgrade it.

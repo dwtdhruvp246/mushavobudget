@@ -36,6 +36,13 @@ jobs:
           npm install --prefix /tmp/mushavo-role-verification --no-save --package-lock=false @electric-sql/pglite@0.5.8
           MUSHAVO_PGLITE_MODULE=/tmp/mushavo-role-verification/node_modules/@electric-sql/pglite node scripts/verify-business-custom-roles-sql.cjs
 
+      - name: Verify Stage 0 security metadata and private reads
+        env:
+          MUSHAVO_PGLITE_MODULE: /tmp/mushavo-role-verification/node_modules/@electric-sql/pglite
+        run: |
+          node scripts/verify-security-stage-0-sql.cjs
+          node scripts/verify-security-stage-0-private-reads-sql.cjs
+
   deploy:
     needs: test
     if: github.event_name != 'pull_request'

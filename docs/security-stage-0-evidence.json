@@ -396,5 +396,59 @@
         ]
       }
     ]
+  },
+  "owner_supplied_followup": {
+    "received_date": "2026-10-06",
+    "scope": "Owner-exported SQL metadata and PowerShell/config output; not live API/device tests",
+    "diagnostic_rows": 24,
+    "status_counts": {
+      "PASS": 12,
+      "FAIL": 1,
+      "REVIEW": 7,
+      "CANNOT VERIFY": 4
+    },
+    "failed_checks": [
+      {
+        "check_name": "08 Anonymous private-table SELECT privileges are absent",
+        "details": {
+          "missing_or_granted": [
+            "app_admins",
+            "payment_records",
+            "payments",
+            "profiles",
+            "workspace_invitations",
+            "workspace_members",
+            "workspace_subscriptions"
+          ]
+        }
+      }
+    ],
+    "all_expected_tables_rls": true,
+    "required_buckets_private_with_limits": true,
+    "security_definer_count": 263,
+    "anon_executable_security_definer_count": 61,
+    "function_execution_and_search_paths_review": "Pending classification and behavior tests; inventory alone does not establish a vulnerability",
+    "windows_native": {
+      "node": "v22.17.0",
+      "appId": "com.mushavo.budget",
+      "appName": "Mushavo Budget",
+      "webDir": "www",
+      "installed_package_versions": null,
+      "inventory_blocker": "PowerShell blocked npm.ps1; rerun with npm.cmd",
+      "preserve_local_changes": [
+        ".gitignore",
+        "package.json",
+        "package-lock.json",
+        "android/",
+        "capacitor.config.json",
+        "scripts/"
+      ]
+    },
+    "repair": {
+      "migration": "20261006043000_security_stage_0_private_reads.sql",
+      "isolated_behavior_tests": "PASS in PGlite 0.5.8",
+      "live_application": "PENDING",
+      "live_recheck": "PENDING"
+    }
   }
 }

@@ -1,6 +1,37 @@
 {
   "baseline_commit": "d2a32032b1c560bbae853de87837c3436ea44887",
   "application_release": "4.9.39",
+  "owner_business_invitation_sql_recheck": {
+    "received_date": "2026-10-06",
+    "owner_statement": "all eight rows passed",
+    "status": "OWNER-REPORTED LIVE DIAGNOSTIC PASS",
+    "pass_count": 8,
+    "fail_count": 0,
+    "diagnostic_path": "supabase/diagnostics/business_invitation_notifications_diagnostic.sql",
+    "migration_path": "supabase/migrations/20261006180000_business_invitation_notifications.sql",
+    "prescribed_source_commit": "3066246ac2054ac2c139a1a0a9d842f10b69e950",
+    "scope": [
+      "Foreign key and deduplicating index",
+      "Writer and guard definition metadata",
+      "Enabled triggers",
+      "Effective anonymous/authenticated helper execution",
+      "Pending recipient notification coverage",
+      "Resolved invitation link invariant"
+    ],
+    "raw_result_rows_or_screenshot_supplied": false,
+    "independently_executed_by_session": false,
+    "remaining": [
+      "Hosted email templates and their actual rendering/delivery",
+      "Current redirect allowlist saved/rechecked",
+      "Reviewed 4.9.40 website activation",
+      "Live notification/badge refresh and Accept/Decline checks",
+      "Wider Auth and authorization tests"
+    ],
+    "handoff_format": "PowerShell: git fetch then git show FETCH_HEAD:<path> | Out-String | Set-Clipboard; owner manually pastes into Supabase",
+    "followup_changes": "Audit reports and activation instructions only",
+    "apk_changed": false,
+    "earlier_evidence_snapshots_preserved": true
+  },
   "owner_business_invitation_followup": {
     "received_date": "2026-10-06",
     "evidence_type": "Owner-reported registered Viewer UI test plus email screenshot",

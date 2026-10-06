@@ -15,13 +15,15 @@ const workflowSource = await readFile(
   "utf8"
 );
 const workerSource = await readFile(new URL("../sw.js", import.meta.url), "utf8");
+const packageManifest = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'));
 const appPage = await readFile(new URL("../app.html", import.meta.url), "utf8");
 const pwaSource = await readFile(new URL("../pwa.js", import.meta.url), "utf8");
 
 test("production deployment waits for the complete automated release suite", () => {
   const globalPermissions = workflowSource.slice(0, workflowSource.indexOf("jobs:"));
   assert.match(workflowSource, /pull_request:\s*\n\s*branches: \["main"\]/);
-  assert.match(workflowSource, /test:\s*[\s\S]*node --test tests\/\*\.test\.mjs/);
+  assert.match(workflowSource, /test:\s*[\s\S]*run: npm test/);
+  assert.match(packageManifest.scripts.test, /node --experimental-strip-types --test tests\/\*\.test\.mjs/);
   assert.match(workflowSource, /deploy:\s*\n\s*needs: test/);
   assert.match(workflowSource, /if: github\.event_name != 'pull_request'/);
   assert.match(workflowSource, /deploy:[\s\S]*permissions:\s*\n\s*contents: read\s*\n\s*pages: write\s*\n\s*id-token: write/);

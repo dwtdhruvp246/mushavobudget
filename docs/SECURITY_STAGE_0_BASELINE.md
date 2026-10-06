@@ -2,7 +2,7 @@
 
 Prepared 5 October 2026; live/native evidence updated 6 October 2026. Baseline: `d2a32032b1c560bbae853de87837c3436ea44887`, web/PWA **4.9.39**.
 
-**Stage 0 is in progress. Both narrow database permission repairs pass the owner-supplied live metadata rechecks. The owner-supplied Android SDK/Gradle values match the Capacitor 8 baseline. The repository now pins compatible native build dependencies and its asset build passes in an isolated Linux checkout; the owner's older Windows builder needs reconciliation. Windows/device validation, native backup/session protection, provider evidence and live behavior remain pending. The app is not cleared for store submission.**
+**Stage 0 is in progress. Both narrow database permission repairs pass the owner-supplied live metadata rechecks. Android source values match the Capacitor 8 baseline. Locked web asset builds pass locally and in the owner's isolated Windows worktree. The reported npm findings have a scoped, locally verified UUID repair; its Windows recheck remains pending. Original-project reconciliation, native toolchain/device validation, backup/session protection, provider evidence and live behavior remain pending. The owner deferred the APK update; no APK was built or changed. The app is not cleared for store submission.**
 
 The owner approved starting Stage 0 and clarified the working method: audit, fix confirmed failures within the approved stage, and recheck. The earlier document-only restriction no longer prevents this authorized work. Stages 1–10 and destructive/major production changes are not automatically approved by Stage 0.
 
@@ -17,7 +17,8 @@ The owner approved starting Stage 0 and clarified the working method: audit, fix
 | Reports SQL | PASS, isolated | Existing Stage 9 SQL verifier: currencies, paid/commitment calculations, links, dates, scopes, export escaping, snapshots and expiry. |
 | Business billing SQL | PASS, isolated | Existing Stage 10 SQL verifier: quote/proof validation, proration, concurrency-related guards, idempotency, seats, expiry and Personal/Family delegation. |
 | Realtime SQL | PASS, isolated | Existing Stage 12 SQL verifier: private signals, transactional events, revocation/suspension, workspace isolation and its 20 metadata checks. This is not a live websocket test. |
-| Native web asset build | PASS, isolated; Windows pending | Initial clean-checkout build failed on undeclared dependencies. After the native follow-up, a clean `npm ci` and actual builder succeed in an isolated Linux/Node 24.19.0 checkout with pinned packages: 9 HTML pages, 85 local asset references resolved and a 26,500-byte native bridge. Five new filesystem regression checks pass. This is not an Android/Windows/device or signed-release build. |
+| Native web asset build | PASS, local and owner-supplied Windows | Initial clean-checkout build failed on undeclared dependencies. Repaired locked install/builder pass locally: 9 HTML pages, 85 local references and a 26,500-byte bridge. The owner independently ran `npm.cmd ci`, the actual builder and the six-package inventory at `86f2063` in an isolated Windows/Node 22.17.0 worktree; all expected versions match. Five filesystem regressions pass. This is web packaging, not native compilation/device/release evidence. |
+| Tracked npm dependency advisories | REPAIRED locally; Windows recheck pending | The owner's three moderate findings reproduce as one UUID advisory propagated through CLI → xcode → uuid. A version-scoped UUID 11.1.1 override keeps every other locked package version/path and the established Capacitor pins. Clean install, actual CommonJS Xcode template mutation and UUID bounds checks pass; `npm audit --json` reports zero known findings on 6 October. This covers the npm tree, not CDN/Edge/native SDKs, secrets or an existing APK. |
 | Custom-role browser fixture | NOT TESTED | Playwright is available, but its Chromium executable is absent here. The fixture could not launch; this is not evidence of a UI defect. PC/phone acceptance remains required. |
 | Current tracked-text secret signatures | LIMITED CHECK: no matches | Private-key headers, Supabase secret-key strings and decoded service-role JWT literals were checked without printing values. Available history was also searched for private-key/secret-key signature changes, with no matching commits. This is not a comprehensive historical-secret or dependency-advisory scan. |
 | Live assets | VERIFIED, public GET only | `/app.js` and `/business.js` bytes match the pinned source. SHA-256 evidence is in `security-stage-0-evidence.json`. |
@@ -32,7 +33,7 @@ The owner approved starting Stage 0 and clarified the working method: audit, fix
 
 ## Stage 0 changes and verification
 
-This branch adds an evidence collector, a tested read-only SQL diagnostic, a coverage register for **all 123 master-audit sections**, this report and a redacted evidence snapshot. After the owner's live results, it also adds narrow private-table SELECT and internal currency-helper EXECUTE migrations, their isolated behavior verifiers, accumulated schema additions and CI execution of all three Stage 0 SQL verifiers. The native follow-up pins dependencies/lockfile against the owner's established Capacitor version, preserves the previous asset bundle on build failure, retains the existing wrapper's install-UI suppression/public-site link, and adds five build regression tests plus a real CI asset-build step. Application web/PWA sources, table structures, RLS, financial rules, Android platform source, signing and provider configuration are unchanged. The owner's post-fix live diagnostics confirm the checked anonymous SELECT grants and direct anon/authenticated internal-helper EXECUTE grants are absent.
+This branch adds an evidence collector, a tested read-only SQL diagnostic, a coverage register for **all 123 master-audit sections**, this report and a redacted evidence snapshot. After the owner's live results, it also adds narrow private-table SELECT and internal currency-helper EXECUTE migrations, their isolated behavior verifiers, accumulated schema additions and CI execution of all three Stage 0 SQL verifiers. The native follow-up pins dependencies/lockfile against the owner's established Capacitor version, preserves the previous asset bundle on build failure, retains the existing wrapper's install-UI suppression/public-site link, and adds five build regression tests plus a real CI asset-build step. A follow-up scopes patched UUID 11.1.1 to xcode 3.0.1 and adds a real dependency consumer/bounds verifier to CI, keeping Capacitor versions unchanged. Application web/PWA sources, table structures, RLS, financial rules, Android platform source, signing and provider configuration are unchanged. The owner's post-fix live diagnostics confirm the checked anonymous SELECT grants and direct anon/authenticated internal-helper EXECUTE grants are absent.
 
 `scripts/security-stage-0-check.mjs` uses built-in Node modules. It inventories declared/installed Capacitor packages and whitelisted native config fields without printing credentials. `--live` makes nine public HTTPS GET requests with timeouts; network failure remains CANNOT VERIFY. It does not install packages, sync native platforms, call the database or write configuration.
 
@@ -40,7 +41,7 @@ This branch adds an evidence collector, a tested read-only SQL diagnostic, a cov
 
 The new tests cover redaction, unavailable native files, network failure, 404 responses, absent headers and live source mismatch. The disposable SQL verifier exercises disabled RLS, missing tables, inherited PUBLIC/column grants, profile privilege escalation, callable internal helpers, a public bucket and the database's rejection of writes inside a read-only transaction. Successful metadata checks do not certify authorization.
 
-After the additions: **395 automated tests pass**. All three Stage 0 SQL verifiers passed in PGlite 0.5.8 before the native-only follow-up; their implementation is unchanged. The grant verifier exercises actual anon permission-denied queries, authenticated own/other-user reads and updates, server reads, PUBLIC table/column grants, protected RPC execution, public pricing/contact compatibility, reapplication and atomic rollback for inherited access/missing tables/disabled RLS. These are synthetic fixtures, not live JWT/API tests. The five new build tests cover complete local resources/Business/launcher/native loader, unchanged source HTML, repeat builds and preservation on missing dependencies/assets or bundler/promotion failure. Those failure tests substitute the bundler/plugins; the separate successful bundle uses actual pinned packages. Existing application code hashes and web/PWA version remain the pinned baseline; no web cache bump is required.
+After the additions: **395 automated tests pass** on Linux with Node 24.19.0 and the owner's exact Node 22.17.0 version. The separate dependency verifier and actual asset build also pass on both Node versions; remote CI and native compilation remain unverified. All three Stage 0 SQL verifiers passed in PGlite 0.5.8 before the native-only follow-up; their implementation is unchanged. The grant verifier exercises actual anon permission-denied queries, authenticated own/other-user reads and updates, server reads, PUBLIC table/column grants, protected RPC execution, public pricing/contact compatibility, reapplication and atomic rollback for inherited access/missing tables/disabled RLS. These are synthetic fixtures, not live JWT/API tests. The five new build tests cover complete local resources/Business/launcher/native loader, unchanged source HTML, repeat builds and preservation on missing dependencies/assets or bundler/promotion failure. Those failure tests substitute the bundler/plugins; the separate successful bundle uses actual pinned packages. Existing application code hashes and web/PWA version remain the pinned baseline; no web cache bump is required.
 
 ## 6 October live result and narrow repair
 
@@ -107,7 +108,7 @@ The dated master audit remains the original finding definition. No finding below
 | F03 | Missing in source; product decision | Manual web proof/review workflows exist; no native store purchase integration is present. Decide approved channel and plan/seat mapping. | 7 |
 | F04 | Missing in source; provider settings unknown | No tracked Google/Apple login integration. Inspect production provider settings and preserve setup/invitation/account linking. | 6 |
 | F05 | Partial source evidence; release cannot verify | Owner supplied application ID, SDK/Gradle values and selected manifest flags. Android Studio/JDK execution, complete/merged manifest, signing identity, release artifact, iOS environment and store-console evidence remain unavailable. | 0, 5, 9 |
-| F06 | Repository asset build PASS; Windows/device pending | Core/CLI/Android pinned at the existing 8.5.2, App 8.1.2, Preferences 8.0.1, esbuild 0.28.2. Clean install and real asset build pass in an isolated Linux checkout. Old Windows builder omits required assets; test the repaired source in a separate worktree before reconciling the original project. | 0, 1, 5 |
+| F06 | Asset build PASS locally and on Windows; native/device pending | Core/CLI/Android remain 8.5.2, App 8.1.2, Preferences 8.0.1, esbuild 0.28.2. Owner's isolated Windows build passes at 86f2063. Scoped UUID repair passes local install/audit/consumer/build verification; Windows dependency recheck and original-project reconciliation remain. APK update is deferred. | 0, 1, 5 |
 | F07 | Reconfirmed live gap | Seven security-header families absent from sampled responses. Determine real hosting path, introduce compatible headers/CSP and recheck live. | 2 |
 | F08 | Source gap; external settings unknown | Admin checks exist; no tracked MFA/aal2 integration found. Infrastructure MFA and backend assurance/recovery require evidence. | 3 |
 | F09 | Reconfirmed source gap | `site.js` inserts directly into enquiries. Column validation exists; no authoritative challenge/quota path found for this submission. | 2 |
@@ -119,7 +120,7 @@ The dated master audit remains the original finding definition. No finding below
 | F15 | Both targeted grant rechecks PASS | Owner-supplied diagnostic 08 and all ten currency-helper property checks pass. The remaining 59 anonymous functions need review. JWT/API/storage/realtime, live scheduled execution, historical integrity and complete legitimate workflows remain required. | 0, 3, 9 |
 | F16 | Cannot verify | Schema files are not record/object backups. Confirm plan, actual recovery coverage, retention and isolated restore drill. | 1 |
 | F17 | Documented; archive unknown | Preferences UserDefaults/CA92.1 is documented, but actual iOS privacy manifest and archive are unavailable. | 5, 9 |
-| F18 | Partial foundations; further work | Existing tests/SQL workflow and limited signature checks exist. Native CI, complete supply-chain/artifact scans and repository protection evidence remain. | 1 |
+| F18 | Partial foundations; further work | Existing tests/SQL workflow and limited signature checks exist. Native asset CI and a scoped npm advisory repair are present; native compilation/device CI, complete supply-chain/artifact scans and repository protection evidence remain. | 1 |
 | F19 | Cannot verify operations | Observability configuration/error handling exist; alert routing, budgets, incident owner and recovery runbook are unverified. | 1, 10 |
 | F20 | Reconfirmed collection; incomplete disclosure | User-linked activity-hour data, push device/user-agent fields and injected Cloudflare analytics exist. Complete actual processor/retention/native SDK inventory. | 0, 4, 9 |
 
@@ -152,7 +153,7 @@ if (Test-Path .\capacitor.config.json) {
 
 An npm missing-package/nonzero result is useful baseline evidence. These commands do not install or upgrade anything. `npm.cmd` selects the Windows command launcher explicitly when PowerShell blocks npm.ps1; no execution-policy change is needed. Send this output. If the config is TypeScript instead, report that filename; do not paste credentials or whole signing/config files.
 
-**Package output received 6 October:** core, CLI and Android are all **8.5.2**. The repository builder imports App, Preferences and esbuild, which were absent from the supplied depth-0 list. iOS is also absent, which does not prevent an Android-only build. Node 22.17.0 meets the [Capacitor 8 Node minimum](https://capacitorjs.com/docs/updating/8-0); this is compatibility evidence, not a Node security/advisory assessment. The repair pins the three established core/platform/CLI versions without a major upgrade. App 8.1.2 and Preferences 8.0.1 both declare a compatible >=8.0.0 core peer; esbuild 0.28.2 supports Node >=18. Versions were checked against the official npm registry and used in the actual successful bundle. Existing locked package versions and paths were preserved; adding native dependencies does not constitute a full advisory assessment.
+**Package output received 6 October:** core, CLI and Android are all **8.5.2**. The repository builder imports App, Preferences and esbuild, which were absent from the supplied depth-0 list. iOS is also absent, which does not prevent an Android-only build. Node 22.17.0 meets the [Capacitor 8 Node minimum](https://capacitorjs.com/docs/updating/8-0); this is compatibility evidence, not a Node security/advisory assessment. The repair pins the three established core/platform/CLI versions without a major upgrade. App 8.1.2 and Preferences 8.0.1 both declare a compatible >=8.0.0 core peer; esbuild 0.28.2 supports Node >=18. Versions were checked against the official npm registry and used in the actual successful bundle. The initial native repair preserved all existing locked package versions and paths. The subsequent advisory repair changes only transitive UUID from 7.0.3 to 11.1.1; every other package version/path remains unchanged. The npm audit scope excludes CDN/Edge/native SDKs and existing release artifacts.
 
 Next, run these read-only local checks and send their output:
 
@@ -172,29 +173,42 @@ Also report whether a Mac with Xcode is available for iOS. These checks do not r
 
 The local builder is an older custom copy script. It does not include Business assets, the shared workspace launcher or native App/Preferences bridge, removes `www` before validation and ignores ENOENT on copied files. Its original install-UI suppression and external public-site link are intentional behaviors retained by the repaired repository builder. The new builder validates sources, builds in a sibling temporary directory and promotes the completed bundle with previous-output restoration if promotion fails. No Android project or APK was generated in this session.
 
-### Isolated Windows asset-build recheck
+### Windows asset result and dependency repair recheck
 
-Test the committed source/dependencies in a fresh worktree, leaving the owner's original package/lock/config/Android/scripts edits intact. Run each block only if the previous command succeeded; send any error. This is a web-asset packaging check, not an APK release or Gradle build.
+**Owner result received 6 October:** the isolated worktree at `C:\Users\HP\Desktop\Mushavo Budget Native Audit` is detached at `86f2063`. `npm.cmd ci` succeeded, the actual asset builder reported the session-aware launcher/workspace/resume integration, and all six top-level package versions matched the pins above. This closes the Windows asset-packaging prerequisite for that commit. The original native project was not reconciled or rebuilt. The owner explicitly deferred the APK update; no APK is available from this work.
+
+The install also reported a deprecated UUID 7.0.3 and three moderate npm findings. The reproduced audit traces all three entries to `@capacitor/cli@8.5.2 → xcode@3.0.1 → uuid@7.0.3`, with one underlying [GHSA-w5hq-g745-h8pq / CVE-2026-41907](https://github.com/advisories/GHSA-w5hq-g745-h8pq). It concerns invalid caller-provided output-buffer bounds in UUID v3/v5/v6 methods. Xcode's inspected UUID call uses v4, which the advisory excludes; this is not evidence of an exploited application or APK defect.
+
+The repair overrides UUID **only under xcode 3.0.1** to **11.1.1**, the [maintainer's CommonJS-compatible patched release](https://github.com/uuidjs/uuid/releases/tag/v11.1.1). CLI/core/Android remain 8.5.2; other locked versions and paths are retained. The [npm version-scoped override mechanism](https://docs.npmjs.com/cli/v11/configuring-npm/package-json/#overrides) records the decision reproducibly. `npm audit fix --force` was not used: its proposed CLI version was 8.4.3, a downgrade from the established 8.5.2.
+
+A fresh locked install passes. The actual consumer verifier resolves UUID from Xcode's CommonJS context, rejects nine invalid-buffer cases without partial writes, accepts valid buffers for all three methods, generates 256 project identifiers, and parses/edits/writes/reparses Capacitor's shipped CocoaPods Xcode template. The actual asset build and all 395 automated tests pass. Verification includes Linux Node **22.17.0** and **24.19.0**; the resulting npm audit has **zero known findings** as of 6 October. This does not certify macOS/Xcode compilation, devices, existing APKs or dependencies outside the npm lockfile.
+
+The full-suite check on Node 22.17.0 initially failed because an existing currency test imports TypeScript. `npm test` now explicitly enables [Node type stripping](https://nodejs.org/download/release/v22.17.0/docs/api/cli.html#--experimental-strip-types), and CI uses that command. The existing deployment-gate assertion follows the package command. The recheck passes all 395 tests; application code is unchanged.
+
+Reuse the already-created audit worktree for the Windows dependency recheck. These commands stop on local source changes or a failed fast-forward. They update web/build tooling and produce `www`, with no native sync or APK build:
 
 ```powershell
 & {
-  Set-Location "C:\Users\HP\Desktop\Mushavo Budget"
-  $nativeAuditPath = "C:\Users\HP\Desktop\Mushavo Budget Native Audit"
-  if (Test-Path $nativeAuditPath) { throw "Native Audit folder already exists; send this message before proceeding." }
+  Set-Location "C:\Users\HP\Desktop\Mushavo Budget Native Audit"
+  $nativeAuditChanges = git status --porcelain
+  if ($LASTEXITCODE -ne 0) { throw "Status check failed." }
+  if ($nativeAuditChanges) { throw "Audit worktree has local changes. Send git status --short." }
   git fetch origin security/stage-0-baseline
   if ($LASTEXITCODE -ne 0) { throw "Fetch failed." }
-  git worktree add --detach $nativeAuditPath FETCH_HEAD
-  if ($LASTEXITCODE -ne 0) { throw "Worktree creation failed." }
-  Set-Location $nativeAuditPath
+  git merge --ff-only FETCH_HEAD
+  if ($LASTEXITCODE -ne 0) { throw "Fast-forward failed." }
   npm.cmd ci
   if ($LASTEXITCODE -ne 0) { throw "Dependency install failed." }
+  node .\scripts\verify-native-build-dependencies.cjs
+  if ($LASTEXITCODE -ne 0) { throw "Dependency verification failed." }
+  npm.cmd audit
+  if ($LASTEXITCODE -ne 0) { throw "Audit still reports findings. Send this output." }
   npm.cmd run build:capacitor
   if ($LASTEXITCODE -ne 0) { throw "Asset build failed." }
-  npm.cmd ls @capacitor/core @capacitor/cli @capacitor/android @capacitor/app @capacitor/preferences esbuild --depth=0
 }
 ```
 
-Expected: the builder reports the session-aware launcher and native workspace integration; the package versions match those pinned above. Output is `C:\Users\HP\Desktop\Mushavo Budget Native Audit\www`. Send the install/build/package output. This worktree intentionally has no copied native platform/configuration, signing identity or production records; no `cap sync`, `cap add` or APK build is instructed here. A successful asset build closes this packaging check only. Preserve the original native project until the source/dependency reconciliation and backup/session review are complete.
+Expected: dependency verifier PASS, zero npm vulnerabilities and a successful asset build. Output is `C:\Users\HP\Desktop\Mushavo Budget Native Audit\www`, a web asset folder. The owner's original Android/config/signing files stay in the original project; its reconciliation and later APK release remain separate work.
 
 Android backup is a separate Stage 5 check. The [official backup guidance](https://developer.android.com/identity/data/autobackup) explains broad default inclusion and separate older/newer Android rules; allowBackup=false alone is insufficient to guarantee device-transfer exclusion on all manufacturers. Inspect and test actual token/WebView storage and both backup modes before certifying protection. No backup flags were changed here.
 
@@ -216,7 +230,7 @@ Stop and send the conflict/divergence message if the fast-forward is refused. Do
 | Supabase database | Initial/post-table-fix 24-row results and post-helper-fix 12-row results received; both narrow repairs pass their metadata checks. Complete legitimate workflows, scheduled execution and isolated authorization tests. | Effective catalog/grant state can differ from accumulated source or manual migration history. |
 | Recovery/operations | Plan/backup retention, PITR availability, object-byte backup method, any restore drill, alert/budget configuration, incident owner and support mailbox. | Establish recoverability and service costs; no restore of production. |
 | Staging | Existing separate Supabase project and deployment/controlled inboxes, or confirmation that these do not yet exist. | Negative tests and future deletion/billing work need synthetic isolated data. |
-| Native | Node/config identity, core/CLI/Android 8.5.2, local builder and selected Android manifest/Gradle values received. Repository asset build passes with locked dependencies. Next: isolated Windows asset recheck, Android Studio/JDK/merged-manifest/backup and signed-artifact evidence; Mac/Xcode availability still unanswered. | Preserve current core major, app ID, platform source and signing identity. |
+| Native | Node/config identity, core/CLI/Android 8.5.2, local builder and selected Android manifest/Gradle values received. Repository asset build passes with locked dependencies. The isolated Windows asset recheck passes at 86f2063. Next: Windows dependency repair recheck, original-project reconciliation, Android Studio/JDK/merged-manifest/backup and signed-artifact evidence; Mac/Xcode availability still unanswered. APK update is deferred by the owner. | Preserve current core major, app ID, platform source and signing identity. |
 | Stores/operator | Account type/status, intended countries/audience and actual operator/support identity. | Determines publishing/test obligations and factual policy declarations. |
 
 Do not send service-role keys, access/refresh tokens, MFA recovery codes/seeds, keystores, signing passwords, private keys, full customer records or backups with real financial data.

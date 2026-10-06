@@ -224,7 +224,12 @@
       "fail": 0,
       "skipped": 0,
       "cancelled": 0,
-      "node": "v24.19.0"
+      "node": "v24.19.0",
+      "rechecked_node_versions": [
+        "v22.17.0",
+        "v24.19.0"
+      ],
+      "command": "npm test: node --experimental-strip-types --test tests/*.test.mjs"
     },
     "disposable_postgres": {
       "engine": "PGlite",
@@ -242,15 +247,80 @@
     },
     "native_asset_build": {
       "initial_status": "FAIL: dependencies undeclared in the baseline clean checkout",
-      "status": "PASS: clean locked install and actual native web asset bundle in isolated Linux checkout",
+      "status": "PASS: actual locked Linux bundle plus owner Windows asset build at 86f2063; native compilation/devices unverified",
       "platform": "linux",
       "node": "v24.19.0",
       "windows_or_device_test": false,
-      "source_web_pwa_unchanged": true
+      "source_web_pwa_unchanged": true,
+      "owner_windows_recheck": {
+        "received_date": "2026-10-06",
+        "status": "PASS",
+        "evidence_type": "Owner-pasted terminal output",
+        "commit": "86f2063e20a929fa75848f09e79581e6683c6487",
+        "platform": "win32",
+        "node": "v22.17.0",
+        "path": "C:\\Users\\HP\\Desktop\\Mushavo Budget Native Audit",
+        "detached_isolated_worktree": true,
+        "npm_ci": "PASS",
+        "actual_native_asset_build": "PASS",
+        "installed_top_level_versions": {
+          "@capacitor/core": "8.5.2",
+          "@capacitor/cli": "8.5.2",
+          "@capacitor/android": "8.5.2",
+          "@capacitor/app": "8.1.2",
+          "@capacitor/preferences": "8.0.1",
+          "esbuild": "0.28.2"
+        },
+        "reported_npm_findings": {
+          "moderate": 3,
+          "total": 3
+        },
+        "deprecated_package": "uuid@7.0.3",
+        "original_project_reconciled": false,
+        "native_compile_or_device_test": false,
+        "apk_created_or_changed": false
+      }
     },
     "custom_role_browser": {
       "status": "NOT TESTED",
       "reason": "Playwright Chromium executable absent."
+    },
+    "native_dependency_consumer": [
+      {
+        "status": "PASS",
+        "node": "v24.19.0",
+        "capacitor_cli": "8.5.2",
+        "xcode": "3.0.1",
+        "uuid": "11.1.1",
+        "commonjs_consumer": "PASS",
+        "invalid_buffer_cases": 9,
+        "valid_buffer_methods": 3,
+        "generated_project_identifiers": 256,
+        "template_parse_edit_write_reparse": "PASS",
+        "native_compile_or_device_test": false
+      },
+      {
+        "status": "PASS",
+        "node": "v22.17.0",
+        "capacitor_cli": "8.5.2",
+        "xcode": "3.0.1",
+        "uuid": "11.1.1",
+        "commonjs_consumer": "PASS",
+        "invalid_buffer_cases": 9,
+        "valid_buffer_methods": 3,
+        "generated_project_identifiers": 256,
+        "template_parse_edit_write_reparse": "PASS",
+        "native_compile_or_device_test": false
+      }
+    ],
+    "node_22_test_command": {
+      "node": "v22.17.0",
+      "platform": "linux",
+      "initial_status": "FAIL: existing currency-recovery.test.mjs imports currencyapi.ts without type stripping",
+      "repair": "npm test explicitly uses --experimental-strip-types; CI uses npm test and its existing deployment-gate test follows the package command",
+      "recheck": "395 PASS, zero failed/skipped/cancelled",
+      "runtime_application_code_changed": false,
+      "reference": "https://nodejs.org/download/release/v22.17.0/docs/api/cli.html#--experimental-strip-types"
     }
   },
   "live_supabase_metadata": "OWNER-SUPPLIED POST-TABLE-FIX: 13 PASS, 7 REVIEW, 4 CANNOT VERIFY; POST-HELPER-FIX: 10 PASS, 1 REVIEW, 1 CANNOT VERIFY; NO FAIL IN EITHER RECHECK",
@@ -747,7 +817,7 @@
       "esbuild": "0.28.2"
     },
     "package_metadata_source": "Official npm registry queried on 6 October 2026",
-    "existing_locked_package_versions_and_paths_preserved": true,
+    "existing_locked_package_versions_and_paths_preserved": false,
     "actual_isolated_build": {
       "date": "2026-10-06",
       "platform": "linux",
@@ -794,11 +864,149 @@
       "limit": "Filesystem tests substitute bundler/plugins; separate successful build uses actual pinned packages"
     },
     "ci_asset_build_added": true,
-    "windows_recheck": "PENDING isolated worktree; original native project must be preserved",
+    "windows_recheck": {
+      "received_date": "2026-10-06",
+      "status": "PASS",
+      "evidence_type": "Owner-pasted terminal output",
+      "commit": "86f2063e20a929fa75848f09e79581e6683c6487",
+      "platform": "win32",
+      "node": "v22.17.0",
+      "path": "C:\\Users\\HP\\Desktop\\Mushavo Budget Native Audit",
+      "detached_isolated_worktree": true,
+      "npm_ci": "PASS",
+      "actual_native_asset_build": "PASS",
+      "installed_top_level_versions": {
+        "@capacitor/core": "8.5.2",
+        "@capacitor/cli": "8.5.2",
+        "@capacitor/android": "8.5.2",
+        "@capacitor/app": "8.1.2",
+        "@capacitor/preferences": "8.0.1",
+        "esbuild": "0.28.2"
+      },
+      "reported_npm_findings": {
+        "moderate": 3,
+        "total": 3
+      },
+      "deprecated_package": "uuid@7.0.3",
+      "original_project_reconciled": false,
+      "native_compile_or_device_test": false,
+      "apk_created_or_changed": false
+    },
     "native_backup_session_review": "PENDING Stage 5; source allowBackup=true without supplied explicit exclusion rules is not proof of token disclosure",
     "android_or_apk_created": false,
     "android_gradle_or_manifest_changed": false,
     "web_pwa_version_changed": false,
-    "dependency_advisory_assessment_complete": false
+    "dependency_advisory_assessment_complete": false,
+    "apk_update": {
+      "owner_decision": "DEFERRED: owner will update the app later",
+      "date": "2026-10-06",
+      "apk_created_or_changed_in_session": false
+    },
+    "initial_native_repair_preserved_all_existing_locked_packages": true,
+    "subsequent_locked_package_changes": [
+      {
+        "path": "node_modules/uuid",
+        "before": "7.0.3",
+        "after": "11.1.1",
+        "scope": "version-scoped xcode@3.0.1 override"
+      }
+    ],
+    "windows_dependency_repair_recheck": "PENDING; reuse existing isolated Native Audit worktree"
+  },
+  "npm_dependency_advisory_repair": {
+    "date": "2026-10-06",
+    "scope": "Tracked npm lockfile including dev dependencies; APK/CDN/Edge/native SDK inventory excluded",
+    "before_counts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 3,
+      "high": 0,
+      "critical": 0,
+      "total": 3
+    },
+    "underlying_advisory_count": 1,
+    "advisory": {
+      "id": "GHSA-w5hq-g745-h8pq",
+      "cve": "CVE-2026-41907",
+      "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+      "severity": "moderate",
+      "affected_methods": [
+        "v3",
+        "v5",
+        "v6"
+      ],
+      "inspected_xcode_use": "uuid.v4() only; advisory excludes this method",
+      "exploit_in_app_or_apk_established": false
+    },
+    "before_chain": [
+      "@capacitor/cli@8.5.2",
+      "xcode@3.0.1",
+      "uuid@7.0.3"
+    ],
+    "repair": {
+      "overrides": {
+        "xcode@3.0.1": {
+          "uuid": "11.1.1"
+        }
+      },
+      "capacitor_pins_changed": false,
+      "other_locked_versions_or_paths_changed": false,
+      "npm_audit_fix_force_used": false,
+      "npm_proposed_cli_version": "8.4.3"
+    },
+    "clean_locked_install": "PASS",
+    "after_counts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "actual_consumer_verification": [
+      {
+        "status": "PASS",
+        "node": "v24.19.0",
+        "capacitor_cli": "8.5.2",
+        "xcode": "3.0.1",
+        "uuid": "11.1.1",
+        "commonjs_consumer": "PASS",
+        "invalid_buffer_cases": 9,
+        "valid_buffer_methods": 3,
+        "generated_project_identifiers": 256,
+        "template_parse_edit_write_reparse": "PASS",
+        "native_compile_or_device_test": false
+      },
+      {
+        "status": "PASS",
+        "node": "v22.17.0",
+        "capacitor_cli": "8.5.2",
+        "xcode": "3.0.1",
+        "uuid": "11.1.1",
+        "commonjs_consumer": "PASS",
+        "invalid_buffer_cases": 9,
+        "valid_buffer_methods": 3,
+        "generated_project_identifiers": 256,
+        "template_parse_edit_write_reparse": "PASS",
+        "native_compile_or_device_test": false
+      }
+    ],
+    "actual_asset_builds": [
+      {
+        "platform": "linux",
+        "node": "v24.19.0",
+        "status": "PASS"
+      },
+      {
+        "platform": "linux",
+        "node": "v22.17.0",
+        "status": "PASS"
+      }
+    ],
+    "ci_consumer_verifier_added": true,
+    "remote_ci_result": "NOT VERIFIED",
+    "windows_repair_recheck": "PENDING",
+    "native_compile_or_device_test": false,
+    "production_deployment": false
   }
 }

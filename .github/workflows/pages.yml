@@ -29,11 +29,12 @@ jobs:
           node-version: 22
 
       - name: Run automated checks
-        run: node --test tests/*.test.mjs
+        run: npm test
 
       - name: Verify locked native web asset build
         run: |
           npm ci
+          node scripts/verify-native-build-dependencies.cjs
           npm run build:capacitor
 
       - name: Verify custom roles in disposable PostgreSQL

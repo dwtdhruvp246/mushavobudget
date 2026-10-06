@@ -247,7 +247,7 @@
     },
     "native_asset_build": {
       "initial_status": "FAIL: dependencies undeclared in the baseline clean checkout",
-      "status": "PASS: actual locked Linux bundle plus owner Windows asset build at 86f2063; native compilation/devices unverified",
+      "status": "PASS: actual locked Linux bundle and owner Windows asset build/consumer/advisory recheck at 2c4b570; native compilation/devices unverified",
       "platform": "linux",
       "node": "v24.19.0",
       "windows_or_device_test": false,
@@ -279,6 +279,43 @@
         "original_project_reconciled": false,
         "native_compile_or_device_test": false,
         "apk_created_or_changed": false
+      },
+      "owner_windows_dependency_recheck": {
+        "received_date": "2026-10-06",
+        "evidence_type": "Owner-pasted terminal output",
+        "status": "PASS",
+        "platform": "win32",
+        "node": "v22.17.0",
+        "commit": "2c4b570d91eca29d3edd22beb68b628a529e1081",
+        "previous_commit": "86f2063e20a929fa75848f09e79581e6683c6487",
+        "path": "C:\\Users\\HP\\Desktop\\Mushavo Budget Native Audit",
+        "status_guard": "PASS: no local changes reported",
+        "fast_forward": "PASS",
+        "npm_ci": "PASS",
+        "added_packages": 123,
+        "audited_packages": 124,
+        "install_known_vulnerability_count": 0,
+        "actual_consumer_verifier": {
+          "status": "PASS",
+          "node": "v22.17.0",
+          "capacitor_cli": "8.5.2",
+          "xcode": "3.0.1",
+          "uuid": "11.1.1",
+          "commonjs_consumer": "PASS",
+          "invalid_buffer_cases": 9,
+          "valid_buffer_methods": 3,
+          "generated_project_identifiers": 256,
+          "template_parse_edit_write_reparse": "PASS",
+          "native_compile_or_device_test": false
+        },
+        "npm_audit": "PASS",
+        "audit_known_vulnerability_count": 0,
+        "actual_native_asset_build": "PASS",
+        "builder_message": "Built www with the session-aware launcher, native workspace preferences and app-resume integration.",
+        "original_project_reconciled": false,
+        "native_compile_or_device_test": false,
+        "apk_created_or_changed": false,
+        "apk_update": "DEFERRED by owner"
       }
     },
     "custom_role_browser": {
@@ -321,6 +358,73 @@
       "recheck": "395 PASS, zero failed/skipped/cancelled",
       "runtime_application_code_changed": false,
       "reference": "https://nodejs.org/download/release/v22.17.0/docs/api/cli.html#--experimental-strip-types"
+    },
+    "github_pull_request_ci": {
+      "reviewed_date": "2026-10-06",
+      "status": "PASS",
+      "run_id": 37430712809,
+      "event": "pull_request",
+      "head_sha": "2c4b570d91eca29d3edd22beb68b628a529e1081",
+      "url": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/37430712809",
+      "configured_runner": "ubuntu-latest",
+      "configured_node_major": 22,
+      "jobs": [
+        {
+          "id": 112160659003,
+          "name": "Verify production release",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Set up Node.js",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run automated checks",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify locked native web asset build",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify custom roles in disposable PostgreSQL",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify Stage 0 security metadata and private reads",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Set up Node.js",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 112160807768,
+          "name": "deploy",
+          "conclusion": "skipped",
+          "steps": []
+        }
+      ],
+      "deployment": "SKIPPED",
+      "native_compile_or_device_test": false
     }
   },
   "live_supabase_metadata": "OWNER-SUPPLIED POST-TABLE-FIX: 13 PASS, 7 REVIEW, 4 CANNOT VERIFY; POST-HELPER-FIX: 10 PASS, 1 REVIEW, 1 CANNOT VERIFY; NO FAIL IN EITHER RECHECK",
@@ -911,7 +1015,43 @@
         "scope": "version-scoped xcode@3.0.1 override"
       }
     ],
-    "windows_dependency_repair_recheck": "PENDING; reuse existing isolated Native Audit worktree"
+    "windows_dependency_repair_recheck": {
+      "received_date": "2026-10-06",
+      "evidence_type": "Owner-pasted terminal output",
+      "status": "PASS",
+      "platform": "win32",
+      "node": "v22.17.0",
+      "commit": "2c4b570d91eca29d3edd22beb68b628a529e1081",
+      "previous_commit": "86f2063e20a929fa75848f09e79581e6683c6487",
+      "path": "C:\\Users\\HP\\Desktop\\Mushavo Budget Native Audit",
+      "status_guard": "PASS: no local changes reported",
+      "fast_forward": "PASS",
+      "npm_ci": "PASS",
+      "added_packages": 123,
+      "audited_packages": 124,
+      "install_known_vulnerability_count": 0,
+      "actual_consumer_verifier": {
+        "status": "PASS",
+        "node": "v22.17.0",
+        "capacitor_cli": "8.5.2",
+        "xcode": "3.0.1",
+        "uuid": "11.1.1",
+        "commonjs_consumer": "PASS",
+        "invalid_buffer_cases": 9,
+        "valid_buffer_methods": 3,
+        "generated_project_identifiers": 256,
+        "template_parse_edit_write_reparse": "PASS",
+        "native_compile_or_device_test": false
+      },
+      "npm_audit": "PASS",
+      "audit_known_vulnerability_count": 0,
+      "actual_native_asset_build": "PASS",
+      "builder_message": "Built www with the session-aware launcher, native workspace preferences and app-resume integration.",
+      "original_project_reconciled": false,
+      "native_compile_or_device_test": false,
+      "apk_created_or_changed": false,
+      "apk_update": "DEFERRED by owner"
+    }
   },
   "npm_dependency_advisory_repair": {
     "date": "2026-10-06",
@@ -1004,8 +1144,110 @@
       }
     ],
     "ci_consumer_verifier_added": true,
-    "remote_ci_result": "NOT VERIFIED",
-    "windows_repair_recheck": "PENDING",
+    "remote_ci_result": {
+      "reviewed_date": "2026-10-06",
+      "status": "PASS",
+      "run_id": 37430712809,
+      "event": "pull_request",
+      "head_sha": "2c4b570d91eca29d3edd22beb68b628a529e1081",
+      "url": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/37430712809",
+      "configured_runner": "ubuntu-latest",
+      "configured_node_major": 22,
+      "jobs": [
+        {
+          "id": 112160659003,
+          "name": "Verify production release",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Set up Node.js",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run automated checks",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify locked native web asset build",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify custom roles in disposable PostgreSQL",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify Stage 0 security metadata and private reads",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Set up Node.js",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 112160807768,
+          "name": "deploy",
+          "conclusion": "skipped",
+          "steps": []
+        }
+      ],
+      "deployment": "SKIPPED",
+      "native_compile_or_device_test": false
+    },
+    "windows_repair_recheck": {
+      "received_date": "2026-10-06",
+      "evidence_type": "Owner-pasted terminal output",
+      "status": "PASS",
+      "platform": "win32",
+      "node": "v22.17.0",
+      "commit": "2c4b570d91eca29d3edd22beb68b628a529e1081",
+      "previous_commit": "86f2063e20a929fa75848f09e79581e6683c6487",
+      "path": "C:\\Users\\HP\\Desktop\\Mushavo Budget Native Audit",
+      "status_guard": "PASS: no local changes reported",
+      "fast_forward": "PASS",
+      "npm_ci": "PASS",
+      "added_packages": 123,
+      "audited_packages": 124,
+      "install_known_vulnerability_count": 0,
+      "actual_consumer_verifier": {
+        "status": "PASS",
+        "node": "v22.17.0",
+        "capacitor_cli": "8.5.2",
+        "xcode": "3.0.1",
+        "uuid": "11.1.1",
+        "commonjs_consumer": "PASS",
+        "invalid_buffer_cases": 9,
+        "valid_buffer_methods": 3,
+        "generated_project_identifiers": 256,
+        "template_parse_edit_write_reparse": "PASS",
+        "native_compile_or_device_test": false
+      },
+      "npm_audit": "PASS",
+      "audit_known_vulnerability_count": 0,
+      "actual_native_asset_build": "PASS",
+      "builder_message": "Built www with the session-aware launcher, native workspace preferences and app-resume integration.",
+      "original_project_reconciled": false,
+      "native_compile_or_device_test": false,
+      "apk_created_or_changed": false,
+      "apk_update": "DEFERRED by owner"
+    },
     "native_compile_or_device_test": false,
     "production_deployment": false
   }

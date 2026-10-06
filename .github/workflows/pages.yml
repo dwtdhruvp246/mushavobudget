@@ -42,6 +42,7 @@ jobs:
         run: |
           node scripts/verify-security-stage-0-sql.cjs
           node scripts/verify-security-stage-0-private-reads-sql.cjs
+          node scripts/verify-security-stage-0-currency-sql.cjs
 
   deploy:
     needs: test

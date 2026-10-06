@@ -236,7 +236,8 @@
         "business-stage-10",
         "business-stage-12",
         "security-stage-0-diagnostic",
-        "security-stage-0-private-reads"
+        "security-stage-0-private-reads",
+        "security-stage-0-currency-helpers"
       ]
     },
     "native_asset_build": {
@@ -473,5 +474,33 @@
       "native_package_output_in_attachment": false,
       "live_behavior_tested": false
     }
+  },
+  "currency_helper_review": {
+    "reviewed_date": "2026-10-06",
+    "live_anon_executable_functions": 61,
+    "source_classification": {
+      "internal_helpers": 2,
+      "intended_public_lookups": 2,
+      "triggers": 23,
+      "signed_in_permission_currency_functions": 30,
+      "source_absent": 4
+    },
+    "live_helper_anon_execute": "CONFIRMED BY OWNER CSV",
+    "live_helper_authenticated_execute": "NOT SUPPLIED",
+    "isolated_source_reproduction": "PASS: unauthorized supplied conversion insertion and historical-date read with matching source/default API-role grants",
+    "protected_source_workflow_verification": "PASS in PGlite 0.5.8; synthetic Auth/ownership/payment surroundings",
+    "production_records_or_bodies_read": false,
+    "production_tampering_established": false,
+    "migration": "20261006050000_security_stage_0_currency_helpers.sql",
+    "diagnostic": "security_stage_0_currency_helpers_diagnostic.sql",
+    "expected_diagnostic": {
+      "rows": 12,
+      "PASS": 10,
+      "REVIEW": 1,
+      "CANNOT VERIFY": 1
+    },
+    "live_application": "PENDING",
+    "live_recheck": "PENDING",
+    "native_or_apk_changes": false
   }
 }

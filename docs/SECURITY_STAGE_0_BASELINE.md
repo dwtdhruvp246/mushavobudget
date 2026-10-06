@@ -2,7 +2,7 @@
 
 Prepared 5 October 2026; live/native evidence updated 6 October 2026. Baseline: `d2a32032b1c560bbae853de87837c3436ea44887`, web/PWA **4.9.39**.
 
-**Stage 0 is in progress. The owner supplied live database metadata and partial Windows/Android evidence; the grant fix has passed the owner-supplied live metadata recheck, and native package/provider evidence is pending. The app is not cleared for store submission.**
+**Stage 0 is in progress. The owner supplied live database metadata and partial Windows/Android evidence; the private-table grant fix has passed the owner-supplied live metadata recheck, an additional internal currency-helper fix awaits application/recheck, and native package/provider evidence is pending. The app is not cleared for store submission.**
 
 The owner approved starting Stage 0 and clarified the working method: audit, fix confirmed failures within the approved stage, and recheck. The earlier document-only restriction no longer prevents this authorized work. Stages 1–10 and destructive/major production changes are not automatically approved by Stage 0.
 
@@ -31,7 +31,7 @@ The owner approved starting Stage 0 and clarified the working method: audit, fix
 
 ## Stage 0 changes and verification
 
-This branch adds an evidence collector, a tested read-only SQL diagnostic, a coverage register for **all 123 master-audit sections**, this report and a redacted evidence snapshot. After the owner's live results, it also adds one narrow migration to remove private-table anonymous SELECT grants, its isolated behavior verifier, the accumulated schema addition and CI execution of both Stage 0 SQL verifiers. Application code, dependencies, package lock, table structures, RLS, financial rules, signing and provider configuration are unchanged. The owner's post-fix live diagnostic confirms the checked anonymous SELECT grants are absent.
+This branch adds an evidence collector, a tested read-only SQL diagnostic, a coverage register for **all 123 master-audit sections**, this report and a redacted evidence snapshot. After the owner's live results, it also adds narrow private-table SELECT and internal currency-helper EXECUTE migrations, their isolated behavior verifiers, accumulated schema additions and CI execution of all three Stage 0 SQL verifiers. Application code, dependencies, package lock, table structures, RLS, financial rules, signing and provider configuration are unchanged. The owner's post-fix live diagnostic confirms the checked anonymous SELECT grants are absent.
 
 `scripts/security-stage-0-check.mjs` uses built-in Node modules. It inventories declared/installed Capacitor packages and whitelisted native config fields without printing credentials. `--live` makes nine public HTTPS GET requests with timeouts; network failure remains CANNOT VERIFY. It does not install packages, sync native platforms, call the database or write configuration.
 
@@ -39,7 +39,7 @@ This branch adds an evidence collector, a tested read-only SQL diagnostic, a cov
 
 The new tests cover redaction, unavailable native files, network failure, 404 responses, absent headers and live source mismatch. The disposable SQL verifier exercises disabled RLS, missing tables, inherited PUBLIC/column grants, profile privilege escalation, callable internal helpers, a public bucket and the database's rejection of writes inside a read-only transaction. Successful metadata checks do not certify authorization.
 
-After the additions: **390 automated tests pass**, and both Stage 0 SQL verifiers pass in PGlite 0.5.8. The grant verifier exercises actual anon permission-denied queries, authenticated own/other-user reads and updates, server reads, PUBLIC table/column grants, protected RPC execution, public pricing/contact compatibility, reapplication and atomic rollback for inherited access/missing tables/disabled RLS. These are synthetic fixtures, not live JWT/API tests. Existing application code hashes and web/PWA version remain the pinned baseline; the grant migration requires no web cache bump.
+After the additions: **390 automated tests pass**, and all three Stage 0 SQL verifiers pass in PGlite 0.5.8. The grant verifier exercises actual anon permission-denied queries, authenticated own/other-user reads and updates, server reads, PUBLIC table/column grants, protected RPC execution, public pricing/contact compatibility, reapplication and atomic rollback for inherited access/missing tables/disabled RLS. These are synthetic fixtures, not live JWT/API tests. Existing application code hashes and web/PWA version remain the pinned baseline; the grant migration requires no web cache bump.
 
 ## 6 October live result and narrow repair
 
@@ -69,6 +69,30 @@ git show "FETCH_HEAD:supabase/diagnostics/security_stage_0_diagnostic.sql" | Out
 
 Expected: diagnostic 08 becomes PASS; with unchanged other metadata, **13 PASS, 7 REVIEW, 4 CANNOT VERIFY**. Send the returned table. Smoke-test sign-in, Dashboard/Payments, Family membership, Business Teams and Admin subscription reads; the isolated fixture does not certify production workflows.
 
+## Internal currency-helper follow-up
+
+The 61-function anonymous SECURITY DEFINER inventory has now been classified against source: 2 intended public lookups, 2 internal helpers, 23 triggers, 30 signed-in/permission/currency lookup functions and 4 live-only/provider definitions absent from source. The complete mapping and limits are in [SECURITY_STAGE_0_FUNCTION_REVIEW.md](SECURITY_STAGE_0_FUNCTION_REVIEW.md).
+
+The source internal writer `store_api_payment_conversion` accepts trusted conversion parameters without caller authorization. It and the cross-workspace `currency_conversion_backfill_dates` helper are anonymously executable in the owner's live catalog. The old PUBLIC-only revocations do not remove separate API-role grants. An isolated fixture using actual currency definitions/table DDL and Supabase-style direct grants reproduces an unauthorized supplied conversion amount and historical-date read. This is source-plus-grant evidence, not proof of a matching live function body or past production tampering. The live authenticated EXECUTE state was not supplied; the fixture explicitly covers default authenticated exposure too.
+
+`20261006050000_security_stage_0_currency_helpers.sql` removes PUBLIC/anon/authenticated EXECUTE on those two helpers, explicitly grants service execution, and preserves writer access for trusted owners of five protected triggers/backfills. It aborts if required functions/roles are missing, an API role inherits a protected caller owner, or forbidden helper execution remains inherited. It does not modify function bodies, records, calculations, frontend code, native projects or APKs. The actual-source fixture verifies denied direct calls, preserved trusted-owner payment triggers, owner and finance-staff backfills, service scheduler calls, settings/manual conversions, public lookups, idempotency and inherited-grant rollback. Auth claims and surrounding payment/ownership fixtures are synthetic; full JWT/RLS/approval workflows remain untested live.
+
+PowerShell apply step:
+
+```powershell
+Set-Location "C:\Users\HP\Desktop\Mushavo Budget"
+git fetch origin security/stage-0-baseline
+git show "FETCH_HEAD:supabase/migrations/20261006050000_security_stage_0_currency_helpers.sql" | Out-String | Set-Clipboard
+```
+
+Run in Supabase SQL Editor. Expected **Success. No rows returned**; stop and send any error.
+
+```powershell
+git show "FETCH_HEAD:supabase/diagnostics/security_stage_0_currency_helpers_diagnostic.sql" | Out-String | Set-Clipboard
+```
+
+Run separately. Expected **12 rows: 10 PASS, 1 REVIEW, 1 CANNOT VERIFY**. With all other grants unchanged, the remaining anonymous inventory should have 59 functions. Review/unknown rows remain open. Check legitimate payment conversion, owner settings/manual conversion and the next scheduled currency sync using normal controlled test workflows. Do not test the original helper misuse on real records or delete existing conversion data automatically.
+
 ## Findings F01–F20
 
 The dated master audit remains the original finding definition. No finding below is closed merely because this report exists. The original register has 17 P1 and 3 P2 items; these priorities mix store blockers, security work and evidence gaps.
@@ -89,7 +113,7 @@ The dated master audit remains the original finding definition. No finding below
 | F12 | Source validation gap, exploit not proved | Stored Web Push endpoints are sent through web-push 3.6.7 without explicit destination/network controls in the reviewed senders. Controlled egress assessment and compatibility tests required. | 2 |
 | F13 | Needs improvement | Private buckets/type/size restrictions exist. Content-signature/normalization controls were not found. Add justified server validation and safe downloads. | 4 |
 | F14 | Cannot verify protected native sessions | Default Supabase browser clients are tracked; no native credential-storage adapter is visible. Workspace Preferences are metadata, not protected token storage. | 5 |
-| F15 | Live catalog and grant repair recheck PASS; behavior tests pending | All expected table RLS and private buckets pass metadata checks. The owner-supplied post-fix diagnostic 08 confirms anonymous SELECT is absent on the checked private tables. JWT/API/storage/realtime denial cases and legitimate live workflow checks remain required. | 0, 3, 9 |
+| F15 | Private-table grant recheck PASS; internal helper repair pending | Owner-supplied diagnostic 08 passes. The anonymous function inventory reveals two exposed internal currency helpers; actual-source isolated reproduction/fix verification passes, and the narrow EXECUTE migration awaits live application/recheck. JWT/API/storage/realtime and complete legitimate workflows remain required. | 0, 3, 9 |
 | F16 | Cannot verify | Schema files are not record/object backups. Confirm plan, actual recovery coverage, retention and isolated restore drill. | 1 |
 | F17 | Documented; archive unknown | Preferences UserDefaults/CA92.1 is documented, but actual iOS privacy manifest and archive are unavailable. | 5, 9 |
 | F18 | Partial foundations; further work | Existing tests/SQL workflow and limited signature checks exist. Native CI, complete supply-chain/artifact scans and repository protection evidence remain. | 1 |
@@ -140,7 +164,7 @@ Stop and send the conflict/divergence message if the fast-forward is refused. Do
 |---|---|---|
 | Hosting | Active Cloudflare Pages/Workers project and GitHub Pages role; current domains/redirects and production branch. Configuration/screenshot, not API tokens. | Headers must be added to the layer actually serving the app. |
 | Supabase Auth/Edge | Email confirmation and password settings; enabled providers; site/callback URLs; MFA availability; deployed function names and deployment dates. Secret names/presence only, never values. | Avoid changing working invitations and define supported web/native callbacks. |
-| Supabase database | Initial and post-fix 24-row results received; diagnostic 08 now passes. Follow up with legitimate workflow checks and isolated authorization tests. | Effective catalog/grant state can differ from accumulated source or manual migration history. |
+| Supabase database | Initial/post-table-fix 24-row results received; diagnostic 08 passes. Apply/recheck the currency-helper repair using its 12-row diagnostic; complete legitimate workflows and isolated authorization tests. | Effective catalog/grant state can differ from accumulated source or manual migration history. |
 | Recovery/operations | Plan/backup retention, PITR availability, object-byte backup method, any restore drill, alert/budget configuration, incident owner and support mailbox. | Establish recoverability and service costs; no restore of production. |
 | Staging | Existing separate Supabase project and deployment/controlled inboxes, or confirmation that these do not yet exist. | Negative tests and future deletion/billing work need synthetic isolated data. |
 | Native | Node/config identity received; installed package versions pending npm.cmd. Non-secret Android manifest/Gradle configuration when requested; whether iOS/Mac/Xcode access exists. Later inspect the actual signed artifacts. | Preserve current core major, app ID, platform source and signing identity. |
@@ -166,6 +190,6 @@ Estimated scope, pending these inputs: Stage 1 is moderate with external recover
 
 ## Rollback and release boundary
 
-The baseline diagnostics/documentation need no data rollback. The 6 October follow-up additionally includes a narrowly scoped grant migration for owner application; reverting a Git commit does not revert applied database grants. If an unexpected live workflow fails, inspect that operation and restore only justified authenticated/service access rather than regranting anonymous private-table reads. Failed prerequisites roll the entire transaction back. Both the existing Pages allowlist and Cloudflare `.assetsignore` exclude development paths. No Edge deployment or app release/cache bump is required. Native rebuilds, provider settings and store submissions are later work.
+The baseline diagnostics/documentation need no data rollback. The 6 October follow-ups additionally include narrowly scoped table/function grant migrations for owner application; reverting a Git commit does not revert applied database grants. If an unexpected live workflow fails, inspect that operation and restore only justified authenticated/service access rather than regranting anonymous private-table reads. Failed prerequisites roll the entire transaction back. Both the existing Pages allowlist and Cloudflare `.assetsignore` exclude development paths. No Edge deployment or app release/cache bump is required. Native rebuilds, provider settings and store submissions are later work.
 
 Official technical references used for subsequent native choices: [Capacitor environment setup](https://capacitorjs.com/docs/getting-started/environment-setup), [Preferences](https://capacitorjs.com/docs/apis/preferences), [Supabase MFA](https://supabase.com/docs/guides/auth/auth-mfa), [Supabase backups](https://supabase.com/docs/guides/platform/backups). Recheck the documentation for the **actual existing core major**; current/latest documentation is not permission to upgrade it.

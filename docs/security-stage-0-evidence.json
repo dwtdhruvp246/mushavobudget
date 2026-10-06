@@ -1,6 +1,34 @@
 {
   "baseline_commit": "d2a32032b1c560bbae853de87837c3436ea44887",
   "application_release": "4.9.39",
+  "owner_email_confirmation_smoke_test": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner explicitly confirms all three enumerated test outcomes; no independent trace",
+    "owner_answer": "yes",
+    "status": "OWNER-REPORTED PASS",
+    "requested_test_context": "Normal signup email-confirmation checks with a new inbox controlled by the operator",
+    "results": {
+      "confirmation_email_arrived": "PASS, owner-reported",
+      "password_signin_blocked_before_clicking_confirmation_link": "PASS, owner-reported",
+      "correct_account_opened_after_confirmation": "PASS, owner-reported",
+      "normal_password_signin_worked_after_confirmation": "PASS, owner-reported"
+    },
+    "clarifies": "Earlier done statement did not specify test scope; the later yes explicitly answers the three-outcome question",
+    "email_identity_device_browser_smtp_or_trace_supplied": false,
+    "independently_executed_by_session": false,
+    "separate_dashboard_save_reload_check": "NOT SEPARATELY CONFIRMED",
+    "remaining_work": [
+      "Detailed workspace provisioning and pending-invitation completion guards",
+      "Admin-created and Business invitations",
+      "Password recovery, expired/resend/replay email links",
+      "Signup and unconfirmed-login message gap",
+      "Business redirect mismatch and deployed APP_ORIGIN/templates",
+      "Session/MFA/rate settings and wider tenant authorization"
+    ],
+    "earlier_evidence_snapshots_preserved": true,
+    "application_database_provider_or_apk_changed_by_followup": false,
+    "scope": "Three audit evidence reports only; normal confirmation outcomes do not certify every Auth flow or store readiness"
+  },
   "owner_google_provider_followup": {
     "received_date": "2026-10-06",
     "evidence_type": "Owner statement, not screenshot or API verification",

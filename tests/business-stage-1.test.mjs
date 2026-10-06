@@ -10,8 +10,8 @@ const launchLock = readFileSync(new URL("../supabase/migrations/20260927183000_b
 
 test("Stage 1 has a dedicated Business application and all approved sections", () => {
   assert.match(page, /business\.css\?v=13/);
-  assert.match(page, /business\.js\?v=17/);
-  assert.match(page, /Version 4\.9\.39/);
+  assert.match(page, /business\.js\?v=18/);
+  assert.match(page, /Version 4\.9\.40/);
   for (const section of [
     "overview", "activity", "bills", "approvals", "budgets", "reports", "team", "settings", "subscription"
   ]) {

@@ -2531,7 +2531,22 @@ function renderIncomingInvitations() {
     const card = document.createElement("article");
     card.className = "incoming-invitation";
     const scopes = invitation.scope_names?.length ? ` Scope: ${invitation.scope_names.join(", ")}.` : "";
-    card.innerHTML = `<h3>${invitation.workspace_name}</h3><p>${invitation.inviter_name} invited you as ${formatRole(invitation.role)}.${scopes} Expires ${formatDate(invitation.expires_at)}.</p><div class="team-member-actions"><button type="button" data-respond-business-invitation="${invitation.invitation_id}" data-accept="true">Accept</button><button type="button" class="danger" data-respond-business-invitation="${invitation.invitation_id}" data-accept="false">Decline</button></div>`;
+    const heading = document.createElement("h3");
+    heading.textContent = invitation.workspace_name;
+    const description = document.createElement("p");
+    description.textContent = `${invitation.inviter_name} invited you as ${formatRole(invitation.role)}.${scopes} Expires ${formatDate(invitation.expires_at)}.`;
+    const actions = document.createElement("div");
+    actions.className = "team-member-actions";
+    for (const accept of [true, false]) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = accept ? "Accept" : "Decline";
+      if (!accept) button.className = "danger";
+      button.dataset.respondBusinessInvitation = invitation.invitation_id;
+      button.dataset.accept = String(accept);
+      actions.append(button);
+    }
+    card.append(heading, description, actions);
     container.append(card);
   });
 }

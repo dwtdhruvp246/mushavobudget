@@ -1,0 +1,1 @@
+{{ $businessPrefix := print .SiteURL "/business.html?invitation=" }}{{ if and (ge (len .RedirectTo) (len $businessPrefix)) (eq (slice .RedirectTo 0 (len $businessPrefix)) $businessPrefix) }}Invitation to join a Business workspace | Mushavo Budget{{ else }}Your Mushavo Budget sign-in link{{ end }}

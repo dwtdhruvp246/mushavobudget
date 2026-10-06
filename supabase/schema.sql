@@ -19228,3 +19228,206 @@ update public.business_role_permissions p set enabled=false where p.enabled and 
 
 notify pgrst, 'reload schema';
 commit;
+
+
+-- Stage 0 private read grants — 6 October 2026.
+-- Stage 0 follow-up: owner-supplied diagnostic 08 found anonymous SELECT on
+-- these seven private tables. Run in SQL Editor as the administrative role.
+-- This changes only SELECT grants. Existing rows, RLS, RPCs, write privileges,
+-- public pricing/signup lookups and contact submission remain unchanged.
+-- Existing effective authenticated/service_role reads are preserved, including
+-- column-only grants. No new authenticated columns are made readable.
+begin;
+
+do $$
+declare
+  v_name text;
+  v_table oid;
+  v_saved jsonb;
+  v_access jsonb;
+begin
+  if not exists(select 1 from pg_roles where rolname='anon')
+    or not exists(select 1 from pg_roles where rolname='authenticated') then
+    raise exception 'SECURITY_STAGE_0_API_ROLES_MISSING';
+  end if;
+
+  foreach v_name in array array['app_admins','payment_records','payments','profiles',
+    'workspace_invitations','workspace_members','workspace_subscriptions'] loop
+    select oid into v_table from pg_class where relnamespace=to_regnamespace('public')
+      and relname=v_name and relkind in ('r','p') and relrowsecurity;
+    if v_table is null then
+      raise exception 'SECURITY_STAGE_0_TABLE_MISSING_OR_RLS_DISABLED: %',v_name;
+    end if;
+
+    -- PUBLIC may be the source of a valid signed-in/server read. Capture that
+    -- effective access before revoking it; never grant beyond this snapshot.
+    select jsonb_agg(jsonb_build_object('role',r.rolname,
+      'table_select',has_table_privilege(r.oid,v_table,'SELECT'),
+      'columns',(select string_agg(format('%I',a.attname),',' order by a.attnum)
+        from pg_attribute a where a.attrelid=v_table and a.attnum>0 and not a.attisdropped
+          and has_column_privilege(r.oid,v_table,a.attnum,'SELECT')))) into v_saved
+    from pg_roles r where r.rolname in ('authenticated','service_role');
+
+    -- RESTRICT (the default) avoids cascading into dependent grants. PostgreSQL
+    -- also removes column SELECT grants for these grantees on table REVOKE.
+    execute format('revoke select on table public.%I from public,anon restrict',v_name);
+    for v_access in select value from jsonb_array_elements(v_saved) loop
+      if (v_access->>'table_select')::boolean then
+        execute format('grant select on table public.%I to %I',v_name,v_access->>'role');
+      elsif v_access->>'columns' is not null then
+        execute format('grant select (%s) on table public.%I to %I',
+          v_access->>'columns',v_name,v_access->>'role');
+      end if;
+    end loop;
+
+    -- A separate inherited role can still grant access. Abort the entire
+    -- migration rather than changing role membership or claiming success.
+    if has_any_column_privilege('anon',v_table,'SELECT') then
+      raise exception 'SECURITY_STAGE_0_ANON_SELECT_STILL_INHERITED: %',v_name;
+    end if;
+  end loop;
+end;
+$$;
+
+notify pgrst, 'reload schema';
+commit;
+
+
+-- Stage 0 internal currency-helper execution — 6 October 2026.
+-- Stage 0: live inventory exposed two internal currency helpers to anon.
+-- The source conversion writer trusts its protected caller; users must reach
+-- it through payment triggers or authorized backfill/settings workflows.
+-- No rows, function bodies, currency calculations or native assets change.
+begin;
+
+do $$
+declare
+  v_store oid := to_regprocedure('public.store_api_payment_conversion(text,uuid,uuid,numeric,text,text,timestamp with time zone)');
+  v_dates oid := to_regprocedure('public.currency_conversion_backfill_dates(integer)');
+  v_name text;
+  v_owner record;
+begin
+  if v_store is null or v_dates is null
+    or not exists(select 1 from pg_roles where rolname='anon')
+    or not exists(select 1 from pg_roles where rolname='authenticated')
+    or not exists(select 1 from pg_roles where rolname='service_role') then
+    raise exception 'SECURITY_STAGE_0_CURRENCY_PREREQUISITE_MISSING';
+  end if;
+
+  foreach v_name in array array['lock_payment_record_conversion','lock_platform_payment_conversion',
+    'lock_subscription_payment_conversion','backfill_currency_conversions','backfill_workspace_currency_conversions'] loop
+    if not exists(select 1 from pg_proc where pronamespace=to_regnamespace('public')
+      and proname=v_name and prosecdef) then
+      raise exception 'SECURITY_STAGE_0_PROTECTED_CURRENCY_CALLER_MISSING: %',v_name;
+    end if;
+  end loop;
+
+  revoke execute on function public.store_api_payment_conversion(text,uuid,uuid,numeric,text,text,timestamptz)
+    from public,anon,authenticated restrict;
+  revoke execute on function public.currency_conversion_backfill_dates(integer)
+    from public,anon,authenticated restrict;
+  grant execute on function public.store_api_payment_conversion(text,uuid,uuid,numeric,text,text,timestamptz),
+    public.currency_conversion_backfill_dates(integer) to service_role;
+
+  -- SECURITY DEFINER callers run as their owners. Explicitly retain the
+  -- protected trigger/backfill path even if those functions use distinct owners.
+  for v_owner in select distinct r.oid,r.rolname from pg_proc p join pg_roles r on r.oid=p.proowner
+    where p.pronamespace=to_regnamespace('public') and p.prosecdef
+      and p.proname in ('lock_payment_record_conversion','lock_platform_payment_conversion',
+        'lock_subscription_payment_conversion','backfill_currency_conversions','backfill_workspace_currency_conversions') loop
+    if pg_has_role('anon',v_owner.oid,'USAGE') or pg_has_role('authenticated',v_owner.oid,'USAGE') then
+      raise exception 'SECURITY_STAGE_0_CURRENCY_CALLER_OWNER_UNTRUSTED';
+    end if;
+    execute format('grant execute on function public.store_api_payment_conversion(text,uuid,uuid,numeric,text,text,timestamptz) to %I',v_owner.rolname);
+  end loop;
+
+  if has_function_privilege('anon',v_store,'EXECUTE')
+    or has_function_privilege('authenticated',v_store,'EXECUTE')
+    or has_function_privilege('anon',v_dates,'EXECUTE')
+    or has_function_privilege('authenticated',v_dates,'EXECUTE') then
+    raise exception 'SECURITY_STAGE_0_CURRENCY_HELPER_EXECUTE_STILL_INHERITED';
+  end if;
+end;
+$$;
+
+notify pgrst, 'reload schema';
+commit;
+
+
+-- Business invitation notification follow-up.
+begin;
+
+alter table public.notifications add column if not exists business_invitation_id uuid
+  references public.workspace_invitations(id) on delete cascade;
+create unique index if not exists notifications_business_invitation_unique
+  on public.notifications(business_invitation_id) where business_invitation_id is not null;
+
+-- Server-created invitation metadata is immutable to clients; Mark read remains available.
+create or replace function public.guard_business_invitation_notification()
+returns trigger language plpgsql set search_path = public, pg_temp as $$
+begin
+  if current_user in ('anon', 'authenticated') then
+    if tg_op = 'INSERT' and new.business_invitation_id is not null then
+      raise exception 'BUSINESS_INVITATION_NOTIFICATION_SERVER_MANAGED';
+    elsif tg_op = 'UPDATE' then
+      if (old.business_invitation_id is not null or new.business_invitation_id is not null)
+        and (to_jsonb(new) - 'read_at') is distinct from (to_jsonb(old) - 'read_at') then
+        raise exception 'BUSINESS_INVITATION_NOTIFICATION_SERVER_MANAGED';
+      end if;
+    end if;
+  end if;
+  return new;
+end;
+$$;
+drop trigger if exists guard_business_invitation_notification_trigger on public.notifications;
+create trigger guard_business_invitation_notification_trigger before insert or update
+  on public.notifications for each row execute function public.guard_business_invitation_notification();
+
+create or replace function public.sync_business_invitation_notification()
+returns trigger language plpgsql security definer set search_path = public, pg_temp as $$
+declare v_name text; v_inviter text; v_role text; v_pending boolean;
+begin
+  select name into v_name from public.budget_workspaces
+    where id = new.workspace_id and workspace_type = 'business';
+  if not found then return new; end if;
+  select coalesce(nullif(full_name, ''), email) into v_inviter from public.profiles where id = new.invited_by;
+  select name into v_role from public.business_roles where workspace_id = new.workspace_id and code = new.role;
+  v_pending := new.status = 'pending' and (new.expires_at is null or new.expires_at > now());
+  insert into public.notifications(user_id, email, created_by, workspace_id, business_invitation_id, type, title, body, url, read_at)
+  values(new.invitee_user_id, lower(new.invitee_email), new.invited_by, new.workspace_id, new.id,
+    'business_invite', case when v_pending then 'Business workspace invitation' else 'Business invitation ' || case when new.status = 'pending' then 'expired' else new.status end end,
+    case when v_pending then coalesce(v_inviter, 'A Business owner') || ' invited you to join ' || v_name
+      || ' as ' || coalesce(v_role, initcap(replace(new.role, '_', ' '))) || '. Accept or decline this request.'
+      else 'Your invitation to join ' || v_name || ' is ' || case when new.status = 'pending' then 'expired' else new.status end || '.' end,
+    case when v_pending then format('/business.html?invitation=%s#business/team', new.id) else null end,
+    case when v_pending then null else now() end)
+  on conflict (business_invitation_id) where business_invitation_id is not null do update
+    set user_id = excluded.user_id, email = excluded.email, created_by = excluded.created_by,
+      workspace_id = excluded.workspace_id, type = excluded.type, title = excluded.title,
+      body = excluded.body, url = excluded.url, read_at = excluded.read_at;
+  return new;
+end;
+$$;
+revoke all on function public.guard_business_invitation_notification(), public.sync_business_invitation_notification()
+  from public, anon, authenticated;
+drop trigger if exists sync_business_invitation_notification_trigger on public.workspace_invitations;
+create trigger sync_business_invitation_notification_trigger
+  after insert or update of invitee_user_id, invitee_email, role, status, expires_at
+  on public.workspace_invitations for each row execute function public.sync_business_invitation_notification();
+
+-- Include existing pending requests without rewriting invitation rows or memberships.
+insert into public.notifications(user_id, email, created_by, workspace_id, business_invitation_id, type, title, body, url)
+select i.invitee_user_id, lower(i.invitee_email), i.invited_by, i.workspace_id, i.id,
+  'business_invite', 'Business workspace invitation',
+  coalesce(nullif(p.full_name, ''), p.email, 'A Business owner') || ' invited you to join ' || w.name
+    || ' as ' || coalesce(r.name, initcap(replace(i.role, '_', ' '))) || '. Accept or decline this request.',
+  format('/business.html?invitation=%s#business/team', i.id)
+from public.workspace_invitations i
+join public.budget_workspaces w on w.id = i.workspace_id and w.workspace_type = 'business'
+left join public.profiles p on p.id = i.invited_by
+left join public.business_roles r on r.workspace_id = i.workspace_id and r.code = i.role
+where i.status = 'pending' and (i.expires_at is null or i.expires_at > now())
+on conflict (business_invitation_id) where business_invitation_id is not null do nothing;
+
+notify pgrst, 'reload schema';
+commit;

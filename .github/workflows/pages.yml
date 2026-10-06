@@ -29,12 +29,27 @@ jobs:
           node-version: 22
 
       - name: Run automated checks
-        run: node --test tests/*.test.mjs
+        run: npm test
+
+      - name: Verify locked native web asset build
+        run: |
+          npm ci
+          node scripts/verify-native-build-dependencies.cjs
+          npm run build:capacitor
 
       - name: Verify custom roles in disposable PostgreSQL
         run: |
           npm install --prefix /tmp/mushavo-role-verification --no-save --package-lock=false @electric-sql/pglite@0.5.8
           MUSHAVO_PGLITE_MODULE=/tmp/mushavo-role-verification/node_modules/@electric-sql/pglite node scripts/verify-business-custom-roles-sql.cjs
+
+      - name: Verify Stage 0 security metadata and private reads
+        env:
+          MUSHAVO_PGLITE_MODULE: /tmp/mushavo-role-verification/node_modules/@electric-sql/pglite
+        run: |
+          node scripts/verify-security-stage-0-sql.cjs
+          node scripts/verify-security-stage-0-private-reads-sql.cjs
+          node scripts/verify-security-stage-0-currency-sql.cjs
+          node scripts/verify-business-invitation-notifications-sql.cjs
 
   deploy:
     needs: test

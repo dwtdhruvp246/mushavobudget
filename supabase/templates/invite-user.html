@@ -1,0 +1,17 @@
+<div style="font-family:Arial,sans-serif;color:#25312f;max-width:580px;margin:auto;padding:24px;border:1px solid #d3dedb;border-radius:10px;">
+<p style="font-weight:bold;letter-spacing:1px;">MUSHAVO BUDGET</p>
+{{ $businessPrefix := print .SiteURL "/business.html?invitation=" }}{{ if and (ge (len .RedirectTo) (len $businessPrefix)) (eq (slice .RedirectTo 0 (len $businessPrefix)) $businessPrefix) }}
+<h2 style="color:#173d38;">Invitation to join a Business workspace</h2>
+<p>You have been invited to join a Business workspace on <strong>Mushavo Budget</strong>.</p>
+<p>Review the Business name, your role and access before accepting. Opening this link signs you in; you join the Business only after you choose Accept.</p>
+<p><a style="display:inline-block;background:#173d38;color:white;padding:12px 20px;border-radius:6px;text-decoration:none;" href="{{ .ConfirmationURL }}">Review Business invitation</a></p>
+<p>You can also review this request on your Notifications page when signed in.</p>
+<p>If this invitation is unexpected, you can decline it or ignore this email.</p>
+{{ else }}
+<h2>You have been invited to Mushavo Budget</h2>
+<p>Follow the link below to complete your account setup.</p>
+<p><a href="{{ .ConfirmationURL }}">Complete account setup</a></p>
+<p>If this invitation is unexpected, you can ignore this email.</p>
+{{ end }}
+<p style="font-size:12px;color:#66736f;">This sign-in link expires shortly and can only be used once. Never forward it.</p>
+</div>

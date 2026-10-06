@@ -1,0 +1,1724 @@
+{
+  "baseline_commit": "d2a32032b1c560bbae853de87837c3436ea44887",
+  "application_release": "4.9.39",
+  "owner_business_notification_ui_gap": {
+    "received_date": "2026-10-06",
+    "owner_report": "Business notification appears, but Approve/Decline are missing and Open does not work",
+    "owner_app_url_version_and_client_not_supplied": true,
+    "status": "PUBLIC OLD-FRONTEND / NEW-NOTIFICATION GAP VERIFIED; OWNER CLIENT RECHECK PENDING",
+    "public_get_scope": "Anonymous GET of public static files with Cache-Control no-cache; sampled response only, no signed-in session or dashboard access",
+    "public_app_js": {
+      "url": "https://mushavobudget.com/app.js",
+      "status": 200,
+      "bytes": 494583,
+      "sha256": "67060fc4e9b924ed74b952ca80534ae8227258dde7d97c8c595ccff121e99e11",
+      "matches_original_baseline_app_js_exactly": true,
+      "business_accept_control": false,
+      "business_decline_control": false,
+      "open_handler_allowed_path": "/app.html",
+      "business_notification_path": "/business.html",
+      "open_handler_result_for_business_notification": "No navigation; route condition is false"
+    },
+    "public_pwa_js": {
+      "url": "https://mushavobudget.com/pwa.js",
+      "status": 200,
+      "sha256": "3502532a6483f93e863dfc08d646712c4033afdc30cf2ca7260a5201471e3b6b",
+      "declared_release": "4.9.39"
+    },
+    "public_app_html": "Two requests timed out; current HTML not independently established by these requests",
+    "github_main_app_html": "4.9.39 / app.js?v=111",
+    "prepared_candidate": {
+      "release": "4.9.40",
+      "runtime_source_commit": "3066246ac2054ac2c139a1a0a9d842f10b69e950",
+      "app_js_sha256": "3db774eb22115bd0b5ff6c4e0c2a93a4efd249e33360b3008a4391a3d8febbb2",
+      "pwa_js_sha256": "749b9898def77f6cb0c257bc036420b417770833afd96d120a31ed3d786c93e0",
+      "business_accept_and_decline_controls": true,
+      "matching_business_notification_open_handler": true,
+      "targeted_invitation_and_refresh_tests": { "pass": 18, "fail": 0, "skip": 0 },
+      "source_or_runtime_changes_in_this_recheck": false
+    },
+    "next": [
+      "Identify the 4.9.40 Cloudflare audit-version preview and verify served release/control markers",
+      "Controlled recipient Accept/Decline and Open checks on that verified version",
+      "Owner review/decision before production promotion",
+      "PWA cache refresh only after verifying the correct website version is served; APK rebuild/update remains deferred"
+    ],
+    "followup_changes": "Audit evidence and release-verification/activation instructions only",
+    "live_database_or_deployment_changed_by_session": false,
+    "apk_changed": false,
+    "earlier_evidence_snapshots_preserved": true
+  },
+  "owner_zoho_transactional_domain_evidence": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner screenshot",
+    "filename": "image(20261006-185824).png",
+    "sha256": "291c9807c03d8827954af89f7d4aa32288894e6482ac503c5bfa53139a85e594",
+    "service": "Zoho CPaaS (formerly ZeptoMail)",
+    "domain": "mushavobudget.com",
+    "displayed_status": { "domain": "Verified", "dkim_txt": "Verified", "return_path_cname": "Verified" },
+    "agent_visible": "agent_1",
+    "raw_screenshot_or_credentials_committed": false,
+    "scope": "Displayed domain/DNS status only; independent DNS lookup, account approval, permitted sender, SMTP credentials/settings, Supabase relay saving and actual delivery remain unconfirmed",
+    "next": "Owner obtains account-specific SMTP settings from agent_1 SMTP/API and verifies provider delivery before configuring Supabase",
+    "settings_changed_by_session": false,
+    "earlier_evidence_snapshots_preserved": true
+  },
+  "owner_auth_smtp_template_blocker": {
+    "received_date": "2026-10-06",
+    "owner_statement": "i have not enabled Enable custom SMTP so i cannot change it",
+    "status": "OWNER-REPORTED CUSTOM SMTP DISABLED / TEMPLATE EDITING BLOCKED",
+    "independently_verified_dashboard_state": false,
+    "hosted_template_save_confirmed": false,
+    "provider_readiness": "UNCONFIRMED; prior Zoho Mail Lite/notifications@ choice is not installation or relay evidence",
+    "provider_documentation_checked": [
+      {
+        "url": "https://supabase.com/changelog/46599-changes-to-email-template-customisation-on-free-tier",
+        "scope": "From 3 June 2026, new Free projects using default SMTP cannot customize Auth templates; earlier Free projects and paid plans exempt",
+        "project_plan_and_creation_date_verified": false
+      },
+      {
+        "url": "https://supabase.com/docs/guides/auth/auth-smtp",
+        "scope": "Configure actual SMTP host, port, username, password and authorized sender; default relay is not intended for production"
+      },
+      {
+        "url": "https://www.zoho.com/mail/help/usage-policy.html",
+        "scope": "Mailbox service excludes automated/transactional emails and directs transactional sending to ZeptoMail"
+      }
+    ],
+    "next_checks": [
+      "Confirm the owner's available transactional sending provider before prescribing settings",
+      "Owner verifies the sender/domain and configures real SMTP credentials directly in Supabase",
+      "Save and recheck the conditional hosted Magic Link/Invite User templates",
+      "Recheck ordinary signup confirmation, recovery, Admin and Business invitation delivery after relay setup",
+      "Review website activation and in-app notification checks independently of email customization"
+    ],
+    "previous_notification_sql_pass_retained": true,
+    "settings_or_credentials_changed_by_session": false,
+    "apk_changed": false,
+    "followup_changes": "Audit reports and activation instructions only",
+    "earlier_evidence_snapshots_preserved": true
+  },
+  "owner_business_invitation_sql_recheck": {
+    "received_date": "2026-10-06",
+    "owner_statement": "all eight rows passed",
+    "status": "OWNER-REPORTED LIVE DIAGNOSTIC PASS",
+    "pass_count": 8,
+    "fail_count": 0,
+    "diagnostic_path": "supabase/diagnostics/business_invitation_notifications_diagnostic.sql",
+    "migration_path": "supabase/migrations/20261006180000_business_invitation_notifications.sql",
+    "prescribed_source_commit": "3066246ac2054ac2c139a1a0a9d842f10b69e950",
+    "scope": [
+      "Foreign key and deduplicating index",
+      "Writer and guard definition metadata",
+      "Enabled triggers",
+      "Effective anonymous/authenticated helper execution",
+      "Pending recipient notification coverage",
+      "Resolved invitation link invariant"
+    ],
+    "raw_result_rows_or_screenshot_supplied": false,
+    "independently_executed_by_session": false,
+    "remaining": [
+      "Hosted email templates and their actual rendering/delivery",
+      "Current redirect allowlist saved/rechecked",
+      "Reviewed 4.9.40 website activation",
+      "Live notification/badge refresh and Accept/Decline checks",
+      "Wider Auth and authorization tests"
+    ],
+    "handoff_format": "PowerShell: git fetch then git show FETCH_HEAD:<path> | Out-String | Set-Clipboard; owner manually pastes into Supabase",
+    "followup_changes": "Audit reports and activation instructions only",
+    "apk_changed": false,
+    "earlier_evidence_snapshots_preserved": true
+  },
+  "owner_business_invitation_followup": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner-reported registered Viewer UI test plus email screenshot",
+    "owner_report": "it passes but with some things i dont like",
+    "test_scope": "Previous three steps: email invitation destination, acceptance, correct Business workspace and Viewer role",
+    "status": "OWNER-REPORTED PASS WITH TWO UX DEFECTS",
+    "defects": [
+      "Generic sign-in email does not identify Business join request",
+      "Request missing from main Notifications page"
+    ],
+    "screenshot": {
+      "filename": "image(20261006-175403).png",
+      "sha256": "0432fb4053acee2ff7fc1f819abe0ea39f17512fd329d13193c68a0dc995dede",
+      "observations": [
+        "Subject and heading: Your sign-in link",
+        "Supabase Auth default sender",
+        "Generic single-use sign-in instruction and Sign in button"
+      ],
+      "raw_image_committed": false,
+      "auth_link_or_token_recorded": false
+    },
+    "candidate_release": "4.9.40",
+    "repair_status": "PREPARED; HOSTED ACTIVATION AND RETEST PENDING",
+    "changes": [
+      "Server trigger, deduplicated recipient notifications and pending backfill",
+      "Client metadata guard retaining Mark read",
+      "Notifications Accept/Decline through existing authorized RPC",
+      "Realtime/badge refresh, safe invitation navigation and text rendering",
+      "Conditional hosted Magic Link/Invite User templates; scoped redirect and activation instructions"
+    ],
+    "validation": {
+      "automated_tests": 406,
+      "failures": 0,
+      "skipped": 0,
+      "sql": "PASS: actual migration, current RPCs and notification RLS; surrounding permission/billing helpers are fixture substitutes",
+      "existing_custom_role_verifier": "PASS",
+      "locked_native_asset_build": "PASS",
+      "native_dependency_consumer": "PASS",
+      "hosted_template_rendering_and_delivery": "NOT RUN",
+      "native_compile_or_device_test": false
+    },
+    "live_database_or_provider_changed": false,
+    "apk_changed": false,
+    "production_promoted": false,
+    "not_established": [
+      "Full authorization matrix",
+      "Live websocket delivery",
+      "Current saved redirect allowlist",
+      "Hosted revised template rendering",
+      "Historical link invalidation and all Auth flows"
+    ],
+    "earlier_evidence_snapshots_preserved": true,
+    "activation_guide": "docs/BUSINESS_INVITATION_NOTIFICATION_SETUP.md"
+  },
+  "owner_admin_invitation_smoke_test": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner confirms the previously specified three-step UI test; no independent trace",
+    "owner_statement": "done, passed",
+    "status": "OWNER-REPORTED PASS",
+    "requested_test_context": "Admin-created invitation to a fresh inbox controlled by the operator",
+    "results": {
+      "prefilled_name_and_email_correct": "PASS, owner-reported",
+      "back_to_signin_before_setup_did_not_grant_workspace_access": "PASS, owner-reported UI outcome",
+      "resent_fresh_invitation_and_completed_setup": "PASS, owner-reported",
+      "intended_workspace_plan_and_currencies_after_completion": "PASS, owner-reported"
+    },
+    "independently_executed_by_session": false,
+    "identifiers_email_links_device_browser_or_trace_supplied": false,
+    "not_established_by_this_smoke_test": [
+      "Absence of premature database workspace records",
+      "Direct API denial for every pending identity",
+      "Old/replaced/expired/used invitation-link invalidation and replay",
+      "Complete tenant and role authorization"
+    ],
+    "business_invitation_and_recovery": "REMAIN UNVERIFIED",
+    "business_callback_mismatch": "OPEN",
+    "next_controlled_check": "Reuse the now-registered owned test account for a Business invitation; check email destination, intended workspace and assigned role",
+    "earlier_evidence_snapshots_preserved": true,
+    "application_database_provider_or_apk_changed_by_followup": false,
+    "scope": "Three audit reports only; owner-reported UI behavior does not certify all backend or store requirements"
+  },
+  "owner_email_confirmation_smoke_test": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner explicitly confirms all three enumerated test outcomes; no independent trace",
+    "owner_answer": "yes",
+    "status": "OWNER-REPORTED PASS",
+    "requested_test_context": "Normal signup email-confirmation checks with a new inbox controlled by the operator",
+    "results": {
+      "confirmation_email_arrived": "PASS, owner-reported",
+      "password_signin_blocked_before_clicking_confirmation_link": "PASS, owner-reported",
+      "correct_account_opened_after_confirmation": "PASS, owner-reported",
+      "normal_password_signin_worked_after_confirmation": "PASS, owner-reported"
+    },
+    "clarifies": "Earlier done statement did not specify test scope; the later yes explicitly answers the three-outcome question",
+    "email_identity_device_browser_smtp_or_trace_supplied": false,
+    "independently_executed_by_session": false,
+    "separate_dashboard_save_reload_check": "NOT SEPARATELY CONFIRMED",
+    "remaining_work": [
+      "Detailed workspace provisioning and pending-invitation completion guards",
+      "Admin-created and Business invitations",
+      "Password recovery, expired/resend/replay email links",
+      "Signup and unconfirmed-login message gap",
+      "Business redirect mismatch and deployed APP_ORIGIN/templates",
+      "Session/MFA/rate settings and wider tenant authorization"
+    ],
+    "earlier_evidence_snapshots_preserved": true,
+    "application_database_provider_or_apk_changed_by_followup": false,
+    "scope": "Three audit evidence reports only; normal confirmation outcomes do not certify every Auth flow or store readiness"
+  },
+  "owner_google_provider_followup": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner statement, not screenshot or API verification",
+    "owner_statement": "done. google is disabled",
+    "google_enabled_owner_reported": false,
+    "initial_provider_status_question": "COMPLETE at owner-report scope; Apple disabled screenshot retained in previous evidence",
+    "additional_google_screenshot_required": false,
+    "done_scope": "UNSPECIFIED: does not distinguish saved/reloaded toggle from individual email-confirmation test results",
+    "live_email_confirmation_workflow": "REMAINS UNVERIFIED pending individual delivery, pre-confirmation denial, link/identity and post-confirmation sign-in outcomes",
+    "google_apple_integration": "Not present in tracked source; future Stage 6 work",
+    "provider_settings_changed_by_session": false,
+    "application_or_apk_changed": false,
+    "scope": "Three audit evidence reports only; earlier snapshots retained unchanged"
+  },
+  "owner_auth_confirmation_followup": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner statement and two later screenshots, visually reviewed",
+    "owner_statement": "I have only now turned on the confirm email toggle",
+    "chronology": "After the initial six hosting/Auth screenshots; this does not establish the earlier setting from screenshot evidence",
+    "previous_confirm_email_state": "OFF, inferred from the owner's statement only; not shown in the earlier screenshots",
+    "current_confirm_email_display": true,
+    "change_performed_by": "Owner",
+    "saved_configuration_independently_verified": false,
+    "project_attribution": "Owner-supplied; project header outside the crops",
+    "raw_images_or_credentials_committed": false,
+    "attachments": [
+      {
+        "name": "image(20261006-102713).png",
+        "scope": "Supabase Sign In / Providers > User Signups",
+        "sha256": "c7a7e92c446d0288543b02f17d2550390f4b858f2aa70bb1902c83d9b78e6a12"
+      },
+      {
+        "name": "image(20261006-102751).png",
+        "scope": "Supabase provider list from Email through GitHub, including Apple",
+        "sha256": "0ebef153cf1ae7bbeb2e382db59297fb0d4689ce035f0ab96aec5fa2b321d274"
+      }
+    ],
+    "general_signup_settings_display": {
+      "allow_new_users_to_sign_up": true,
+      "allow_manual_linking": false,
+      "allow_anonymous_sign_ins": false,
+      "confirm_email": true
+    },
+    "provider_rows_display": {
+      "Email": "Enabled",
+      "Phone": "Disabled",
+      "SAML 2.0": "Disabled",
+      "Web3 Wallet": "Disabled",
+      "Apple": "Disabled",
+      "Azure": "Disabled",
+      "Bitbucket": "Disabled",
+      "Discord": "Disabled",
+      "Facebook": "Disabled",
+      "Figma": "Disabled",
+      "GitHub": "Disabled",
+      "Google": "NOT VISIBLE: below the crop"
+    },
+    "previous_auto_confirmed_accounts": "Supabase documents implicit confirmation when the setting is off; the new toggle does not prove historical inbox verification. No accounts or sessions modified by this session.",
+    "source_review": {
+      "ordinary_signup_result": "signup.html redirects to app.html?signup=success after a successful signUp, including when no session is returned",
+      "ordinary_signup_message": "Account created successfully. Sign in with your new account.",
+      "dedicated_email_not_confirmed_guidance": "NOT FOUND: sign-in failure uses generic returned-message/toast handling",
+      "confirmation_callback": "signup.html?mode=self-signup reads verified identity and pending Admin invitation; when no invite exists it adopts the session into the app",
+      "admin_invitation_guards": "Separate verified-session and completion flow retained; live behavior not tested",
+      "assessment": "Auth UX/message gap for newly enabled confirmation, not a proven backend bypass; coordinated Stage 3 follow-up",
+      "application_code_changed": false
+    },
+    "live_test_results": {
+      "save_reload_persistence": "NOT TESTED",
+      "new_signup_email_delivery": "NOT TESTED",
+      "password_signin_before_confirmation": "NOT TESTED; expected denial",
+      "newest_confirmation_link_and_correct_identity_workspace": "NOT TESTED",
+      "password_signin_after_confirmation": "NOT TESTED",
+      "admin_business_invitation_and_recovery": "NOT TESTED"
+    },
+    "business_redirect_mismatch_from_initial_screenshots": "UNRESOLVED",
+    "remaining_provider_screenshot": "Google enabled/disabled row below GitHub in the provider list",
+    "interpretation_sources": [
+      "https://supabase.com/docs/guides/auth/general-configuration",
+      "https://supabase.com/docs/guides/auth/passwords",
+      "https://supabase.com/docs/guides/auth/debugging/error-codes"
+    ],
+    "provider_settings_changed_by_session": false,
+    "apk_created_or_changed": false,
+    "scope": "Three evidence reports only; earlier evidence retained unchanged; no Auth configuration, application, database or APK mutation"
+  },
+  "owner_hosting_auth_screenshots": {
+    "received_date": "2026-10-06",
+    "evidence_type": "Owner-supplied screenshots, visually reviewed; displayed settings only",
+    "raw_images_committed": false,
+    "account_email_token_names_or_credentials_recorded": false,
+    "auth_project_attribution": "Owner-supplied; project header is outside the Auth crops",
+    "saved_configuration_independently_verified": false,
+    "attachments": [
+      {
+        "name": "image(20261006-093811).png",
+        "scope": "Cloudflare Worker active deployment and version history",
+        "sha256": "c652d736d0135ff0247b14b668fba233674928478aa18ba30194dd4162600768"
+      },
+      {
+        "name": "image(20261006-093913).png",
+        "scope": "Cloudflare Worker Builds configuration",
+        "sha256": "b5a9aa9389620c322711ee6fce152d3627b109b021c8d50a131973c089bd9463"
+      },
+      {
+        "name": "image(20261006-093941).png",
+        "scope": "Cloudflare custom domain and public production/version-preview URLs",
+        "sha256": "ce3488449da41c64237d4038b2f0f56feeaf0234eb3dabfe923aad6f67cf84fb"
+      },
+      {
+        "name": "image(20261006-094057).png",
+        "scope": "Cropped Supabase provider list, Email and Phone only",
+        "sha256": "a1e2bd98c15c742946dfb166c9de6b3530c67d28350f696a0979f2943240dc57"
+      },
+      {
+        "name": "image(20261006-094119).png",
+        "scope": "Supabase Email provider and password policy",
+        "sha256": "b7fcf4e65121b99b91e559fffd9896ced79efb9a2e45f0d3502d46a79a16da12"
+      },
+      {
+        "name": "image(20261006-094140).png",
+        "scope": "Supabase site and redirect URL configuration",
+        "sha256": "6d2af87c90dcd6446dfd8a0c81ecfa2ca3fba9a96d14e20c9d6937f26e59bb09"
+      }
+    ],
+    "cloudflare": {
+      "service": "Workers Static Assets; not Cloudflare Pages",
+      "worker_name": "mushavobudget",
+      "git_repository": "dwtdhruvp246/mushavobudget",
+      "production_branch": "main",
+      "non_production_branch_builds_enabled": true,
+      "build_command_display": "None",
+      "deploy_command": "npx wrangler deploy --config ./wrangler.jsonc",
+      "version_command": "npx wrangler versions upload",
+      "root_directory": "/",
+      "source_assets_directory": ".",
+      "source_worker_script_declared": false,
+      "source_development_paths_excluded": true,
+      "include_watch_paths": [
+        "*"
+      ],
+      "exclude_watch_paths": [
+        "node_modules/**",
+        ".git/"
+      ],
+      "production_custom_domain": "mushavobudget.com",
+      "workers_dev_production_url": "mushavobudget.dhruvp246.workers.dev",
+      "workers_dev_production_enabled": true,
+      "version_preview_url_pattern": "*-mushavobudget.dhruvp246.workers.dev",
+      "version_preview_enabled": true,
+      "production_and_version_preview_access_display": "Anyone with this URL can visit; Enable Access offered",
+      "separate_worker_previews_feature_display": "Set up Worker Previews",
+      "active_deployment_version_id_display": "50b48816",
+      "active_deployment_age_display": "1 day ago",
+      "traffic_percent_row_display": "0%",
+      "traffic_slider_endpoint_display": "100%",
+      "exact_active_traffic_and_git_mapping": "CANNOT VERIFY: ambiguous traffic display; deployment details not supplied",
+      "audit_branch_version_history": [
+        {
+          "cloudflare_version_id": "a1da38c7",
+          "branch": "security/stage-0-baseline",
+          "message": "Record passing Windows dependency recheck and pull-request CI"
+        },
+        {
+          "cloudflare_version_id": "f0e1a577",
+          "branch": "security/stage-0-baseline",
+          "message": "Repair native tooling UUID advisory and record Windows asset build"
+        },
+        {
+          "cloudflare_version_id": "6026c9d5",
+          "branch": "security/stage-0-baseline",
+          "message": "Pin established native dependencies and preserve complete asset builds"
+        }
+      ],
+      "cloudflare_ids_are_git_commit_shas": false,
+      "independent_cloudflare_audit_version_uploads": "CONFIRMED by owner screenshot; GitHub Actions deployment being skipped does not prevent these uploads",
+      "audit_version_production_promotion": "NOT ESTABLISHED",
+      "wrangler_locked_dependency": false,
+      "actual_cloudflare_build_wrangler_version": "NOT SUPPLIED",
+      "secondary_github_pages_role": "UNVERIFIED",
+      "source_preview_backend_assessment": "Source config.js fixes one Supabase URL with no per-preview substitution visible; actual deployed preview backend not checked",
+      "separate_backend_and_inboxes": "NOT ESTABLISHED",
+      "data_exposure_established": false
+    },
+    "supabase_auth": {
+      "email_enabled": true,
+      "phone_enabled": false,
+      "google_enabled": "NOT VISIBLE",
+      "apple_enabled": "NOT VISIBLE",
+      "confirm_email": "NOT VISIBLE",
+      "new_user_signup_anonymous_signin_manual_linking": "NOT VISIBLE",
+      "secure_email_change": true,
+      "secure_password_change": false,
+      "require_current_password_when_updating": false,
+      "prevent_leaked_passwords": false,
+      "leaked_password_feature_notice": "Only available on Pro plan and above; actual current plan not inferred",
+      "minimum_password_length": 6,
+      "password_requirements_display": "Select an option",
+      "email_otp_expiration_seconds": 3600,
+      "email_otp_length_digits": 8,
+      "site_url": "https://mushavobudget.com",
+      "redirect_url_count": 1,
+      "redirect_urls": [
+        "https://mushavobudget.com/signup.html*"
+      ],
+      "rate_limits_sessions_mfa_email_templates": "NOT SUPPLIED",
+      "source_signup_and_admin_invite_callbacks": "signup.html with query parameters; individual matching and live delivery require verification",
+      "source_business_invite_callback": "${APP_ORIGIN}/business.html?invitation=<uuid>#business/team",
+      "displayed_redirect_covers_business_callback": false,
+      "deployed_app_origin": "NOT SUPPLIED",
+      "business_invite_delivery": "NOT TESTED; source-versus-displayed-configuration mismatch, not a proven live failure",
+      "source_password_policy": "signup.html advertises minlength=6; invitation setup updateUser supplies password/data without nonce or current_password",
+      "password_policy_followup": "Stage 3 coordinated UI/backend change and signup/invitation/recovery/password-change verification; no toggles changed",
+      "remaining_screenshots": [
+        "Authentication > Sign In / Providers > User Signups: Confirm email and adjacent general signup controls",
+        "Authentication > Sign In / Providers: Google and Apple enabled/disabled rows"
+      ]
+    },
+    "interpretation_sources": [
+      "https://developers.cloudflare.com/workers/versions-and-deployments/",
+      "https://developers.cloudflare.com/workers/ci-cd/builds/",
+      "https://developers.cloudflare.com/workers/static-assets/headers/",
+      "https://supabase.com/docs/guides/auth/redirect-urls",
+      "https://supabase.com/docs/guides/auth/password-security",
+      "https://github.com/supabase/supabase/blob/master/apps/studio/components/interfaces/Auth/BasicAuthSettingsForm.tsx",
+      "https://github.com/supabase/supabase/blob/master/apps/studio/pages/project/%5Bref%5D/auth/providers.tsx"
+    ],
+    "verification": "JSON parse, report coverage and evidence-preservation checks; screenshot hashes compared to original bytes",
+    "provider_settings_changed": false,
+    "production_version_promoted_by_session": false,
+    "apk_created_or_changed": false,
+    "scope": "Evidence reports only; previous implementation, database rechecks and native verification remain unchanged"
+  },
+  "local": {
+    "evidenceType": "LOCAL_INVENTORY_ONLY",
+    "collectedAt": "2026-10-05T19:31:48.680Z",
+    "commit": "d2a32032b1c560bbae853de87837c3436ea44887",
+    "branch": "security/stage-0-baseline",
+    "localChangesPresent": true,
+    "node": "v24.19.0",
+    "appRelease": "4.9.39",
+    "packages": {
+      "@capacitor/core": {
+        "declared": null,
+        "installed": null
+      },
+      "@capacitor/cli": {
+        "declared": null,
+        "installed": null
+      },
+      "@capacitor/android": {
+        "declared": null,
+        "installed": null
+      },
+      "@capacitor/ios": {
+        "declared": null,
+        "installed": null
+      },
+      "@capacitor/app": {
+        "declared": null,
+        "installed": null
+      },
+      "@capacitor/preferences": {
+        "declared": null,
+        "installed": null
+      },
+      "esbuild": {
+        "declared": null,
+        "installed": null
+      }
+    },
+    "nativeConfig": null,
+    "nativeFiles": {
+      "capacitor.config.ts": false,
+      "android": false,
+      "ios": false,
+      "android/app/src/main/AndroidManifest.xml": false,
+      "ios/App/PrivacyInfo.xcprivacy": false
+    },
+    "migrationFileCount": 48,
+    "schemaTableCount": 79,
+    "publicPages": [
+      {
+        "file": "privacy.html",
+        "present": false
+      },
+      {
+        "file": "terms.html",
+        "present": false
+      },
+      {
+        "file": "delete-account.html",
+        "present": false
+      }
+    ],
+    "hashes": {
+      "app.js": "67060fc4e9b924ed74b952ca80534ae8227258dde7d97c8c595ccff121e99e11",
+      "business.js": "be0f11c7ccf2b5fb82bc8555aba02910e6e19d3a4c3dd0ac0ed883f8dbdd6af0",
+      "app.html": "d3af231d544768d73798205da21eb7e75b960fbb636b3b81740be3cb998d1fdb",
+      "business.html": "c4bc6c2539cf3e5418c22e9edcaacfd4b80592ae74bd5eca09c7ccbfe4f95dd8",
+      "pwa.js": "3502532a6483f93e863dfc08d646712c4033afdc30cf2ca7260a5201471e3b6b",
+      "sw.js": "4602b4accde6a2a0c1cf3ca56726ecd97b2c55f285da66d51535c2ddd18c6312",
+      "package.json": "dae5a6f39ee49ddea977bef0b41fe729a802ee3baba6df2e86113bef43836d60",
+      "package-lock.json": "6a13bc6af50a831bcf7396515236207f33624b4ac53a57112aa3b9410cf9db02",
+      "scripts/build-capacitor.mjs": "1b899743267807b525b61bfde731827e942232fa60edd05d316e4503796fe811"
+    },
+    "limitations": [
+      "Installed dependencies/configuration are inventory, not a signed release build.",
+      "No live database policies, OAuth, store-console, MFA, backup or device checks are performed.",
+      "No secret-history, vulnerability, authorization, or store-compliance certification is implied."
+    ]
+  },
+  "live_public_gets": [
+    {
+      "path": "/",
+      "status": 200,
+      "url": "https://mushavobudget.com/",
+      "bytes": 10217,
+      "sha256": "c02a3c4d13db85ce15b015ddc67b43e8cd49f8d78c52c2a419775b2b32033431",
+      "headers": {
+        "server": "cloudflare",
+        "content-type": "text/html",
+        "strict-transport-security": null,
+        "content-security-policy": null,
+        "content-security-policy-report-only": null,
+        "x-content-type-options": null,
+        "x-frame-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null
+      },
+      "cloudflare_analytics": true
+    },
+    {
+      "path": "/app",
+      "status": 200,
+      "url": "https://mushavobudget.com/app",
+      "bytes": 111357,
+      "sha256": "b75dcaa2a7c10d3a9527dc7a728384b46eb713104ab9ccc2f5c52fb2e3814b8a",
+      "headers": {
+        "server": "cloudflare",
+        "content-type": "text/html",
+        "strict-transport-security": null,
+        "content-security-policy": null,
+        "content-security-policy-report-only": null,
+        "x-content-type-options": null,
+        "x-frame-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null
+      },
+      "cloudflare_analytics": true
+    },
+    {
+      "path": "/business",
+      "status": 200,
+      "url": "https://mushavobudget.com/business",
+      "bytes": 73112,
+      "sha256": "b5b2daaf21f49eb3cab3deada0745e928facf55b059c071622884d4b5e70c110",
+      "headers": {
+        "server": "cloudflare",
+        "content-type": "text/html",
+        "strict-transport-security": null,
+        "content-security-policy": null,
+        "content-security-policy-report-only": null,
+        "x-content-type-options": null,
+        "x-frame-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null
+      },
+      "cloudflare_analytics": true
+    },
+    {
+      "path": "/signup",
+      "status": 200,
+      "url": "https://mushavobudget.com/signup",
+      "bytes": 35873,
+      "sha256": "81799418ba48fada2ae63c0ecf0e7ff25fb62836422b091c71f9abe56913b834",
+      "headers": {
+        "server": "cloudflare",
+        "content-type": "text/html",
+        "strict-transport-security": null,
+        "content-security-policy": null,
+        "content-security-policy-report-only": null,
+        "x-content-type-options": null,
+        "x-frame-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null
+      },
+      "cloudflare_analytics": true
+    },
+    {
+      "path": "/app.js",
+      "status": 200,
+      "url": "https://mushavobudget.com/app.js",
+      "bytes": 494583,
+      "sha256": "67060fc4e9b924ed74b952ca80534ae8227258dde7d97c8c595ccff121e99e11",
+      "headers": {
+        "server": "cloudflare",
+        "content-type": "text/javascript",
+        "strict-transport-security": null,
+        "content-security-policy": null,
+        "content-security-policy-report-only": null,
+        "x-content-type-options": null,
+        "x-frame-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null
+      },
+      "cloudflare_analytics": false,
+      "matches_source": true
+    },
+    {
+      "path": "/business.js",
+      "status": 200,
+      "url": "https://mushavobudget.com/business.js",
+      "bytes": 236139,
+      "sha256": "be0f11c7ccf2b5fb82bc8555aba02910e6e19d3a4c3dd0ac0ed883f8dbdd6af0",
+      "headers": {
+        "server": "cloudflare",
+        "content-type": "text/javascript",
+        "strict-transport-security": null,
+        "content-security-policy": null,
+        "content-security-policy-report-only": null,
+        "x-content-type-options": null,
+        "x-frame-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null
+      },
+      "cloudflare_analytics": false,
+      "matches_source": true
+    },
+    {
+      "path": "/privacy",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "path": "/terms",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "path": "/delete-account",
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "test_evidence": {
+    "baseline_automated": {
+      "tests": 387,
+      "pass": 387,
+      "fail": 0,
+      "skipped": 0,
+      "node": "v24.19.0"
+    },
+    "final_automated": {
+      "tests": 395,
+      "pass": 395,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "node": "v24.19.0",
+      "rechecked_node_versions": [
+        "v22.17.0",
+        "v24.19.0"
+      ],
+      "command": "npm test: node --experimental-strip-types --test tests/*.test.mjs"
+    },
+    "disposable_postgres": {
+      "engine": "PGlite",
+      "version": "0.5.8",
+      "verifiers_passed": [
+        "business-custom-roles",
+        "business-stage-8",
+        "business-stage-9",
+        "business-stage-10",
+        "business-stage-12",
+        "security-stage-0-diagnostic",
+        "security-stage-0-private-reads",
+        "security-stage-0-currency-helpers"
+      ]
+    },
+    "native_asset_build": {
+      "initial_status": "FAIL: dependencies undeclared in the baseline clean checkout",
+      "status": "PASS: actual locked Linux bundle and owner Windows asset build/consumer/advisory recheck at 2c4b570; native compilation/devices unverified",
+      "platform": "linux",
+      "node": "v24.19.0",
+      "windows_or_device_test": false,
+      "source_web_pwa_unchanged": true,
+      "owner_windows_recheck": {
+        "received_date": "2026-10-06",
+        "status": "PASS",
+        "evidence_type": "Owner-pasted terminal output",
+        "commit": "86f2063e20a929fa75848f09e79581e6683c6487",
+        "platform": "win32",
+        "node": "v22.17.0",
+        "path": "C:\\Users\\HP\\Desktop\\Mushavo Budget Native Audit",
+        "detached_isolated_worktree": true,
+        "npm_ci": "PASS",
+        "actual_native_asset_build": "PASS",
+        "installed_top_level_versions": {
+          "@capacitor/core": "8.5.2",
+          "@capacitor/cli": "8.5.2",
+          "@capacitor/android": "8.5.2",
+          "@capacitor/app": "8.1.2",
+          "@capacitor/preferences": "8.0.1",
+          "esbuild": "0.28.2"
+        },
+        "reported_npm_findings": {
+          "moderate": 3,
+          "total": 3
+        },
+        "deprecated_package": "uuid@7.0.3",
+        "original_project_reconciled": false,
+        "native_compile_or_device_test": false,
+        "apk_created_or_changed": false
+      },
+      "owner_windows_dependency_recheck": {
+        "received_date": "2026-10-06",
+        "evidence_type": "Owner-pasted terminal output",
+        "status": "PASS",
+        "platform": "win32",
+        "node": "v22.17.0",
+        "commit": "2c4b570d91eca29d3edd22beb68b628a529e1081",
+        "previous_commit": "86f2063e20a929fa75848f09e79581e6683c6487",
+        "path": "C:\\Users\\HP\\Desktop\\Mushavo Budget Native Audit",
+        "status_guard": "PASS: no local changes reported",
+        "fast_forward": "PASS",
+        "npm_ci": "PASS",
+        "added_packages": 123,
+        "audited_packages": 124,
+        "install_known_vulnerability_count": 0,
+        "actual_consumer_verifier": {
+          "status": "PASS",
+          "node": "v22.17.0",
+          "capacitor_cli": "8.5.2",
+          "xcode": "3.0.1",
+          "uuid": "11.1.1",
+          "commonjs_consumer": "PASS",
+          "invalid_buffer_cases": 9,
+          "valid_buffer_methods": 3,
+          "generated_project_identifiers": 256,
+          "template_parse_edit_write_reparse": "PASS",
+          "native_compile_or_device_test": false
+        },
+        "npm_audit": "PASS",
+        "audit_known_vulnerability_count": 0,
+        "actual_native_asset_build": "PASS",
+        "builder_message": "Built www with the session-aware launcher, native workspace preferences and app-resume integration.",
+        "original_project_reconciled": false,
+        "native_compile_or_device_test": false,
+        "apk_created_or_changed": false,
+        "apk_update": "DEFERRED by owner"
+      }
+    },
+    "custom_role_browser": {
+      "status": "NOT TESTED",
+      "reason": "Playwright Chromium executable absent."
+    },
+    "native_dependency_consumer": [
+      {
+        "status": "PASS",
+        "node": "v24.19.0",
+        "capacitor_cli": "8.5.2",
+        "xcode": "3.0.1",
+        "uuid": "11.1.1",
+        "commonjs_consumer": "PASS",
+        "invalid_buffer_cases": 9,
+        "valid_buffer_methods": 3,
+        "generated_project_identifiers": 256,
+        "template_parse_edit_write_reparse": "PASS",
+        "native_compile_or_device_test": false
+      },
+      {
+        "status": "PASS",
+        "node": "v22.17.0",
+        "capacitor_cli": "8.5.2",
+        "xcode": "3.0.1",
+        "uuid": "11.1.1",
+        "commonjs_consumer": "PASS",
+        "invalid_buffer_cases": 9,
+        "valid_buffer_methods": 3,
+        "generated_project_identifiers": 256,
+        "template_parse_edit_write_reparse": "PASS",
+        "native_compile_or_device_test": false
+      }
+    ],
+    "node_22_test_command": {
+      "node": "v22.17.0",
+      "platform": "linux",
+      "initial_status": "FAIL: existing currency-recovery.test.mjs imports currencyapi.ts without type stripping",
+      "repair": "npm test explicitly uses --experimental-strip-types; CI uses npm test and its existing deployment-gate test follows the package command",
+      "recheck": "395 PASS, zero failed/skipped/cancelled",
+      "runtime_application_code_changed": false,
+      "reference": "https://nodejs.org/download/release/v22.17.0/docs/api/cli.html#--experimental-strip-types"
+    },
+    "github_pull_request_ci": {
+      "reviewed_date": "2026-10-06",
+      "status": "PASS",
+      "run_id": 37430712809,
+      "event": "pull_request",
+      "head_sha": "2c4b570d91eca29d3edd22beb68b628a529e1081",
+      "url": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/37430712809",
+      "configured_runner": "ubuntu-latest",
+      "configured_node_major": 22,
+      "jobs": [
+        {
+          "id": 112160659003,
+          "name": "Verify production release",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Set up Node.js",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run automated checks",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify locked native web asset build",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify custom roles in disposable PostgreSQL",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify Stage 0 security metadata and private reads",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Set up Node.js",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 112160807768,
+          "name": "deploy",
+          "conclusion": "skipped",
+          "steps": []
+        }
+      ],
+      "deployment": "SKIPPED",
+      "native_compile_or_device_test": false
+    }
+  },
+  "live_supabase_metadata": "OWNER-SUPPLIED POST-TABLE-FIX: 13 PASS, 7 REVIEW, 4 CANNOT VERIFY; POST-HELPER-FIX: 10 PASS, 1 REVIEW, 1 CANNOT VERIFY; NO FAIL IN EITHER RECHECK",
+  "live_authorization": "NOT TESTED",
+  "native_release_artifacts": "NOT AVAILABLE",
+  "targeted_secret_signature_checks": {
+    "current_tracked_text_matches": 0,
+    "available_history_signature_change_commits": 0,
+    "comprehensive_secret_or_advisory_scan": false
+  },
+  "live_recheck": {
+    "collectedAt": "2026-10-05T19:37:57.260Z",
+    "sample": [
+      {
+        "route": "/",
+        "httpStatus": 200,
+        "sha256": "cb343fde6e24185a6780fe2ebb9c51f97119dba3d96292864e0e44fea85007f0",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/app",
+        "httpStatus": 200,
+        "sha256": "d3af231d544768d73798205da21eb7e75b960fbb636b3b81740be3cb998d1fdb",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/business",
+        "httpStatus": 200,
+        "sha256": "c4bc6c2539cf3e5418c22e9edcaacfd4b80592ae74bd5eca09c7ccbfe4f95dd8",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/signup",
+        "httpStatus": 200,
+        "sha256": "378c23c8e08f2fcfd9db71e1e8adfd402c40e5913d6e8029cba7411866c82378",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/app.js",
+        "httpStatus": 200,
+        "sha256": "67060fc4e9b924ed74b952ca80534ae8227258dde7d97c8c595ccff121e99e11",
+        "cloudflareAnalytics": false,
+        "matchesLocalSource": true,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/business.js",
+        "httpStatus": 200,
+        "sha256": "be0f11c7ccf2b5fb82bc8555aba02910e6e19d3a4c3dd0ac0ed883f8dbdd6af0",
+        "cloudflareAnalytics": false,
+        "matchesLocalSource": true,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/privacy",
+        "httpStatus": 404,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/terms",
+        "httpStatus": 404,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      },
+      {
+        "route": "/delete-account",
+        "httpStatus": 404,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cloudflareAnalytics": false,
+        "missing_headers": [
+          "strict-transport-security",
+          "content-security-policy",
+          "content-security-policy-report-only",
+          "x-content-type-options",
+          "x-frame-options",
+          "referrer-policy",
+          "permissions-policy"
+        ]
+      }
+    ]
+  },
+  "owner_supplied_followup": {
+    "received_date": "2026-10-06",
+    "scope": "Owner-exported SQL metadata and PowerShell/config output; not live API/device tests",
+    "diagnostic_rows": 24,
+    "status_counts": {
+      "PASS": 12,
+      "FAIL": 1,
+      "REVIEW": 7,
+      "CANNOT VERIFY": 4
+    },
+    "failed_checks": [
+      {
+        "check_name": "08 Anonymous private-table SELECT privileges are absent",
+        "details": {
+          "missing_or_granted": [
+            "app_admins",
+            "payment_records",
+            "payments",
+            "profiles",
+            "workspace_invitations",
+            "workspace_members",
+            "workspace_subscriptions"
+          ]
+        }
+      }
+    ],
+    "all_expected_tables_rls": true,
+    "required_buckets_private_with_limits": true,
+    "security_definer_count": 263,
+    "anon_executable_security_definer_count": 61,
+    "function_execution_and_search_paths_review": "Pending classification and behavior tests; inventory alone does not establish a vulnerability",
+    "windows_native": {
+      "node": "v22.17.0",
+      "appId": "com.mushavo.budget",
+      "appName": "Mushavo Budget",
+      "webDir": "www",
+      "installed_package_versions": {
+        "@capacitor/core": "8.5.2",
+        "@capacitor/cli": "8.5.2",
+        "@capacitor/android": "8.5.2"
+      },
+      "inventory_blocker": "RESOLVED: owner supplied npm.cmd ls output",
+      "preserve_local_changes": [
+        ".gitignore",
+        "package.json",
+        "package-lock.json",
+        "android/",
+        "capacitor.config.json",
+        "scripts/"
+      ],
+      "package_inventory_received_date": "2026-10-06",
+      "not_listed_at_depth_0": [
+        "@capacitor/ios",
+        "@capacitor/app",
+        "@capacitor/preferences",
+        "esbuild"
+      ],
+      "existing_capacitor_major": 8,
+      "ios_not_installed_is_android_build_blocker": false,
+      "android_configuration_and_toolchain": "Source values received and match checked Capacitor 8 baseline; actual Windows toolchain, merged manifest and release build remain unverified",
+      "native_build_or_apk_changed": false,
+      "required_builder_packages_not_listed_at_depth_0": [
+        "@capacitor/app",
+        "@capacitor/preferences",
+        "esbuild"
+      ],
+      "package_inventory_limit": "Top-level npm.cmd ls only; transitive installs and local build execution were not checked",
+      "android_source_received_date": "2026-10-06",
+      "android_source_values": {
+        "namespace": "com.mushavo.budget",
+        "applicationId": "com.mushavo.budget",
+        "minSdkVersion": 24,
+        "compileSdkVersion": 36,
+        "targetSdkVersion": 36,
+        "gradle_wrapper": "8.14.3",
+        "android_gradle_plugin": "8.13.0",
+        "versionCode": 1,
+        "versionName": "1.0",
+        "configChanges_includes_density": true,
+        "allowBackup": true,
+        "exported_values_in_selected_lines": [
+          true,
+          false
+        ],
+        "grantUriPermissions": true,
+        "usesCleartextTraffic_in_selected_lines": false,
+        "fullBackupContent_in_selected_lines": false,
+        "dataExtractionRules_in_selected_lines": false,
+        "component_names_intent_filters_or_merged_manifest_supplied": false,
+        "signing_verified": false
+      },
+      "local_builder_review": {
+        "kind": "Older custom copy script supplied by owner",
+        "omits": [
+          "Business page/scripts/styles",
+          "Shared session-aware launcher",
+          "Native App/Preferences bridge",
+          "Workspace preference script"
+        ],
+        "deletes_www_before_validating_sources": true,
+        "ignores_missing_copied_files": true,
+        "intentional_native_behaviors_retained": [
+          "Browser install UI suppression",
+          "External public website link"
+        ],
+        "original_local_source_modified_in_session": false
+      },
+      "ios_mac_xcode_availability": "NOT ANSWERED"
+    },
+    "repair": {
+      "migration": "20261006043000_security_stage_0_private_reads.sql",
+      "isolated_behavior_tests": "PASS in PGlite 0.5.8",
+      "live_application": "Grant removal confirmed by owner-supplied metadata recheck; no direct deployment access in this session",
+      "live_recheck": "PASS: diagnostic 08; no live API/JWT behavior test implied"
+    },
+    "post_fix_recheck": {
+      "received_date": "2026-10-06",
+      "diagnostic_rows": 24,
+      "status_counts": {
+        "PASS": 13,
+        "REVIEW": 7,
+        "CANNOT VERIFY": 4
+      },
+      "changed_checks": [
+        {
+          "check_name": "08 Anonymous private-table SELECT privileges are absent",
+          "before": "FAIL",
+          "after": "PASS",
+          "details": {
+            "missing_or_granted": []
+          }
+        }
+      ],
+      "other_rows_unchanged": true,
+      "native_package_output_in_attachment": false,
+      "live_behavior_tested": false
+    }
+  },
+  "currency_helper_review": {
+    "reviewed_date": "2026-10-06",
+    "live_anon_executable_functions": 61,
+    "source_classification": {
+      "internal_helpers": 2,
+      "intended_public_lookups": 2,
+      "triggers": 23,
+      "signed_in_permission_currency_functions": 30,
+      "source_absent": 4
+    },
+    "live_helper_anon_execute": "CONFIRMED BEFORE REPAIR; DENIED BY POST-REPAIR OWNER CSV",
+    "live_helper_authenticated_execute": "BEFORE NOT SUPPLIED; DENIED BY POST-REPAIR OWNER CSV",
+    "isolated_source_reproduction": "PASS: unauthorized supplied conversion insertion and historical-date read with matching source/default API-role grants",
+    "protected_source_workflow_verification": "PASS in PGlite 0.5.8; synthetic Auth/ownership/payment surroundings",
+    "production_records_or_bodies_read": false,
+    "production_tampering_established": false,
+    "migration": "20261006050000_security_stage_0_currency_helpers.sql",
+    "diagnostic": "security_stage_0_currency_helpers_diagnostic.sql",
+    "expected_diagnostic": {
+      "rows": 12,
+      "PASS": 10,
+      "REVIEW": 1,
+      "CANNOT VERIFY": 1
+    },
+    "live_application": "TARGETED GRANT CHANGES CONFIRMED BY OWNER-SUPPLIED POST-REPAIR METADATA; NO DIRECT DEPLOYMENT ACCESS",
+    "live_recheck": {
+      "received_date": "2026-10-06",
+      "source": "Owner-supplied CSV pasted in chat",
+      "rows": 12,
+      "status_counts": {
+        "PASS": 10,
+        "REVIEW": 1,
+        "CANNOT VERIFY": 1,
+        "FAIL": 0
+      },
+      "checks": [
+        {
+          "check_name": "01 Internal helpers are installed",
+          "status": "PASS",
+          "details": {
+            "dates_present": true,
+            "writer_present": true
+          }
+        },
+        {
+          "check_name": "02 Internal helpers retain protected definitions",
+          "status": "PASS",
+          "details": {
+            "scope": "SECURITY DEFINER and pinned search path only; function body is not retrieved"
+          }
+        },
+        {
+          "check_name": "03 Anonymous direct conversion writes are disabled",
+          "status": "PASS",
+          "details": {
+            "scope": "Effective EXECUTE, including PUBLIC/inherited grants"
+          }
+        },
+        {
+          "check_name": "04 Signed-in direct conversion writes are disabled",
+          "status": "PASS",
+          "details": {
+            "scope": "Protected triggers and authorized RPCs perform legitimate conversion writes"
+          }
+        },
+        {
+          "check_name": "05 Anonymous historical payment dates are disabled",
+          "status": "PASS",
+          "details": {
+            "scope": "Effective EXECUTE only"
+          }
+        },
+        {
+          "check_name": "06 Signed-in direct historical backfill dates are disabled",
+          "status": "PASS",
+          "details": {
+            "scope": "Backend scheduler uses the service role"
+          }
+        },
+        {
+          "check_name": "07 Backend currency helper access is retained",
+          "status": "PASS",
+          "details": {
+            "scope": "Service EXECUTE grants only; actual scheduled execution needs separate evidence"
+          }
+        },
+        {
+          "check_name": "08 Protected trigger and backfill owners can still write conversions",
+          "status": "PASS",
+          "details": {
+            "scope": "Caller ownership/EXECUTE metadata only",
+            "caller_count": 5
+          }
+        },
+        {
+          "check_name": "09 Signed-in currency entry points remain executable",
+          "status": "PASS",
+          "details": {
+            "scope": "Existing function-body authorization remains required",
+            "expected_count": 6
+          }
+        },
+        {
+          "check_name": "10 Public signup and pricing entry points remain executable",
+          "status": "PASS",
+          "details": {
+            "expected_count": 2
+          }
+        },
+        {
+          "check_name": "11 Remaining anonymous SECURITY DEFINER inventory",
+          "status": "REVIEW",
+          "details": [
+            "admin_subscription_monitor()",
+            "apply_approved_subscription_member_limit()",
+            "backfill_currency_conversions()",
+            "backfill_workspace_currency_conversions(uuid)",
+            "business_team_can_manage(uuid)",
+            "can_manage_family_members(uuid)",
+            "create_family_workspace(text,numeric,text)",
+            "delete_family_workspace(uuid)",
+            "effective_workspace_entitlement(uuid)",
+            "enforce_approved_additional_seat()",
+            "enforce_business_member_role_compatibility()",
+            "enforce_personal_payment_limit()",
+            "exchange_rate_status(boolean)",
+            "get_public_plan_catalogue(text)",
+            "get_public_signup_currencies()",
+            "guard_account_status_change()",
+            "guard_suspended_account_write()",
+            "guard_workspace_finance_write()",
+            "handle_new_user_profile()",
+            "has_active_family_plan()",
+            "invite_family_member(uuid,text,text)",
+            "is_active_family_participant(uuid)",
+            "is_app_admin()",
+            "is_family_admin(uuid)",
+            "is_family_member(uuid)",
+            "is_platform_staff(text[])",
+            "is_workspace_member(uuid)",
+            "is_workspace_owner(uuid)",
+            "latest_exchange_rate(text,text,timestamp with time zone)",
+            "link_family_head_to_profile()",
+            "lock_payment_record_conversion()",
+            "lock_platform_payment_conversion()",
+            "lock_subscription_payment_conversion()",
+            "normalize_enquiry()",
+            "provision_my_budget_workspace()",
+            "record_public_enquiry_event()",
+            "remove_family_member(uuid,uuid)",
+            "respond_to_family_invitation(uuid,boolean)",
+            "rls_auto_enable()",
+            "save_admin_finance_currency_settings(text,text[],boolean)",
+            "save_manual_payment_conversion(text,uuid,text,numeric,numeric)",
+            "save_plan_definition(uuid,text,text,text,text,text,integer,integer,boolean,boolean,boolean,boolean,text,integer,text[])",
+            "save_plan_price(text,text,text,numeric,numeric)",
+            "save_workspace_currency_settings(uuid,text,text[],text,boolean)",
+            "seed_business_stage_4_team_permissions()",
+            "submit_family_plan_request(uuid,text,integer,text,text,text,numeric,text,date,text,text,text,text,text,bigint)",
+            "submit_subscription_renewal(uuid,text,integer,text,text,numeric,text,date,text,text,text,text,text,bigint)",
+            "sync_family_head_subscription_status()",
+            "sync_legacy_family_invitation()",
+            "sync_legacy_family_member()",
+            "sync_legacy_family_workspace()",
+            "sync_payment_record_workspace()",
+            "sync_payment_workspace()",
+            "validate_budget_expense_currency()",
+            "validate_payment_record_currency()",
+            "validate_workspace_transaction_currency()",
+            "workspace_billable_member_count(uuid)",
+            "workspace_has_feature(uuid,text)",
+            "workspace_member_usage(uuid)"
+          ]
+        },
+        {
+          "check_name": "12 Live conversion workflows and historical integrity",
+          "status": "CANNOT VERIFY",
+          "details": {
+            "required": "Controlled allowed/denied payment, settings and scheduler checks; existing conversion integrity needs authorized review"
+          }
+        }
+      ],
+      "remaining_anon_executable_functions": 59,
+      "removed_signatures": [
+        "currency_conversion_backfill_dates(integer)",
+        "store_api_payment_conversion(text,uuid,uuid,numeric,text,text,timestamp with time zone)"
+      ],
+      "remaining_matches_original_minus_two_helpers": true,
+      "live_workflows_tested": false,
+      "historical_integrity_verified": false,
+      "production_function_bodies_retrieved": false
+    },
+    "native_or_apk_changes": false
+  },
+  "native_build_repair": {
+    "date": "2026-10-06",
+    "scope": "Repository dependencies/lockfile and native web asset builder only; no original Windows project or native platform/APK changes",
+    "pinned_packages": {
+      "@capacitor/core": "8.5.2",
+      "@capacitor/cli": "8.5.2",
+      "@capacitor/android": "8.5.2",
+      "@capacitor/app": "8.1.2",
+      "@capacitor/preferences": "8.0.1",
+      "esbuild": "0.28.2"
+    },
+    "package_metadata_source": "Official npm registry queried on 6 October 2026",
+    "existing_locked_package_versions_and_paths_preserved": false,
+    "actual_isolated_build": {
+      "date": "2026-10-06",
+      "platform": "linux",
+      "node": "v24.19.0",
+      "npm_ci": "PASS",
+      "actual_native_asset_build": "PASS",
+      "versions": {
+        "@capacitor/core": "8.5.2",
+        "@capacitor/cli": "8.5.2",
+        "@capacitor/android": "8.5.2",
+        "@capacitor/app": "8.1.2",
+        "@capacitor/preferences": "8.0.1",
+        "esbuild": "0.28.2"
+      },
+      "packaged_html_pages": 9,
+      "local_resource_references_verified": 85,
+      "native_bridge_bytes": 26500,
+      "source_hashes_unchanged": {
+        "app.html": "d3af231d544768d73798205da21eb7e75b960fbb636b3b81740be3cb998d1fdb",
+        "app.js": "67060fc4e9b924ed74b952ca80534ae8227258dde7d97c8c595ccff121e99e11",
+        "business.html": "c4bc6c2539cf3e5418c22e9edcaacfd4b80592ae74bd5eca09c7ccbfe4f95dd8",
+        "business.js": "be0f11c7ccf2b5fb82bc8555aba02910e6e19d3a4c3dd0ac0ed883f8dbdd6af0",
+        "app-entry.html": "65e28f7800f1f6a8ce00e365fcc5e7dac0268900477e8782b3e86790aee4fe2d",
+        "app-entry.js": "a2a15b461036cdf6b201ca6c9f022fb64c30b0b4f40f0f77e3d5169b91c081a7",
+        "workspace-preference.js": "913fa62e34cf16d6f6eb1791e3bb9dad0b37001d64ed408dac2773ebbb37ce56",
+        "signup.html": "378c23c8e08f2fcfd9db71e1e8adfd402c40e5913d6e8029cba7411866c82378",
+        "pwa-install.js": "6af08699d98b1f0e38ee6c2421cef46b0309ebc1b88642abe2f333284e67ffd4",
+        "pwa.js": "3502532a6483f93e863dfc08d646712c4033afdc30cf2ca7260a5201471e3b6b",
+        "styles.css": "ae8314094adb97dc0ec07023eb783570d1f952e994fb5f885b889c2227ce4eb6"
+      },
+      "apk_or_android_project_created": false,
+      "windows_or_device_test": false
+    },
+    "filesystem_regressions": {
+      "count": 5,
+      "status": "PASS",
+      "coverage": [
+        "complete resources/Business/launcher/native bridge loader",
+        "native-only install UI suppression and external website link",
+        "source preservation and repeat apply",
+        "dependency/source/bundler failure preserves previous build",
+        "promotion failure restores previous output"
+      ],
+      "limit": "Filesystem tests substitute bundler/plugins; separate successful build uses actual pinned packages"
+    },
+    "ci_asset_build_added": true,
+    "windows_recheck": {
+      "received_date": "2026-10-06",
+      "status": "PASS",
+      "evidence_type": "Owner-pasted terminal output",
+      "commit": "86f2063e20a929fa75848f09e79581e6683c6487",
+      "platform": "win32",
+      "node": "v22.17.0",
+      "path": "C:\\Users\\HP\\Desktop\\Mushavo Budget Native Audit",
+      "detached_isolated_worktree": true,
+      "npm_ci": "PASS",
+      "actual_native_asset_build": "PASS",
+      "installed_top_level_versions": {
+        "@capacitor/core": "8.5.2",
+        "@capacitor/cli": "8.5.2",
+        "@capacitor/android": "8.5.2",
+        "@capacitor/app": "8.1.2",
+        "@capacitor/preferences": "8.0.1",
+        "esbuild": "0.28.2"
+      },
+      "reported_npm_findings": {
+        "moderate": 3,
+        "total": 3
+      },
+      "deprecated_package": "uuid@7.0.3",
+      "original_project_reconciled": false,
+      "native_compile_or_device_test": false,
+      "apk_created_or_changed": false
+    },
+    "native_backup_session_review": "PENDING Stage 5; source allowBackup=true without supplied explicit exclusion rules is not proof of token disclosure",
+    "android_or_apk_created": false,
+    "android_gradle_or_manifest_changed": false,
+    "web_pwa_version_changed": false,
+    "dependency_advisory_assessment_complete": false,
+    "apk_update": {
+      "owner_decision": "DEFERRED: owner will update the app later",
+      "date": "2026-10-06",
+      "apk_created_or_changed_in_session": false
+    },
+    "initial_native_repair_preserved_all_existing_locked_packages": true,
+    "subsequent_locked_package_changes": [
+      {
+        "path": "node_modules/uuid",
+        "before": "7.0.3",
+        "after": "11.1.1",
+        "scope": "version-scoped xcode@3.0.1 override"
+      }
+    ],
+    "windows_dependency_repair_recheck": {
+      "received_date": "2026-10-06",
+      "evidence_type": "Owner-pasted terminal output",
+      "status": "PASS",
+      "platform": "win32",
+      "node": "v22.17.0",
+      "commit": "2c4b570d91eca29d3edd22beb68b628a529e1081",
+      "previous_commit": "86f2063e20a929fa75848f09e79581e6683c6487",
+      "path": "C:\\Users\\HP\\Desktop\\Mushavo Budget Native Audit",
+      "status_guard": "PASS: no local changes reported",
+      "fast_forward": "PASS",
+      "npm_ci": "PASS",
+      "added_packages": 123,
+      "audited_packages": 124,
+      "install_known_vulnerability_count": 0,
+      "actual_consumer_verifier": {
+        "status": "PASS",
+        "node": "v22.17.0",
+        "capacitor_cli": "8.5.2",
+        "xcode": "3.0.1",
+        "uuid": "11.1.1",
+        "commonjs_consumer": "PASS",
+        "invalid_buffer_cases": 9,
+        "valid_buffer_methods": 3,
+        "generated_project_identifiers": 256,
+        "template_parse_edit_write_reparse": "PASS",
+        "native_compile_or_device_test": false
+      },
+      "npm_audit": "PASS",
+      "audit_known_vulnerability_count": 0,
+      "actual_native_asset_build": "PASS",
+      "builder_message": "Built www with the session-aware launcher, native workspace preferences and app-resume integration.",
+      "original_project_reconciled": false,
+      "native_compile_or_device_test": false,
+      "apk_created_or_changed": false,
+      "apk_update": "DEFERRED by owner"
+    }
+  },
+  "npm_dependency_advisory_repair": {
+    "date": "2026-10-06",
+    "scope": "Tracked npm lockfile including dev dependencies; APK/CDN/Edge/native SDK inventory excluded",
+    "before_counts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 3,
+      "high": 0,
+      "critical": 0,
+      "total": 3
+    },
+    "underlying_advisory_count": 1,
+    "advisory": {
+      "id": "GHSA-w5hq-g745-h8pq",
+      "cve": "CVE-2026-41907",
+      "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+      "severity": "moderate",
+      "affected_methods": [
+        "v3",
+        "v5",
+        "v6"
+      ],
+      "inspected_xcode_use": "uuid.v4() only; advisory excludes this method",
+      "exploit_in_app_or_apk_established": false
+    },
+    "before_chain": [
+      "@capacitor/cli@8.5.2",
+      "xcode@3.0.1",
+      "uuid@7.0.3"
+    ],
+    "repair": {
+      "overrides": {
+        "xcode@3.0.1": {
+          "uuid": "11.1.1"
+        }
+      },
+      "capacitor_pins_changed": false,
+      "other_locked_versions_or_paths_changed": false,
+      "npm_audit_fix_force_used": false,
+      "npm_proposed_cli_version": "8.4.3"
+    },
+    "clean_locked_install": "PASS",
+    "after_counts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "actual_consumer_verification": [
+      {
+        "status": "PASS",
+        "node": "v24.19.0",
+        "capacitor_cli": "8.5.2",
+        "xcode": "3.0.1",
+        "uuid": "11.1.1",
+        "commonjs_consumer": "PASS",
+        "invalid_buffer_cases": 9,
+        "valid_buffer_methods": 3,
+        "generated_project_identifiers": 256,
+        "template_parse_edit_write_reparse": "PASS",
+        "native_compile_or_device_test": false
+      },
+      {
+        "status": "PASS",
+        "node": "v22.17.0",
+        "capacitor_cli": "8.5.2",
+        "xcode": "3.0.1",
+        "uuid": "11.1.1",
+        "commonjs_consumer": "PASS",
+        "invalid_buffer_cases": 9,
+        "valid_buffer_methods": 3,
+        "generated_project_identifiers": 256,
+        "template_parse_edit_write_reparse": "PASS",
+        "native_compile_or_device_test": false
+      }
+    ],
+    "actual_asset_builds": [
+      {
+        "platform": "linux",
+        "node": "v24.19.0",
+        "status": "PASS"
+      },
+      {
+        "platform": "linux",
+        "node": "v22.17.0",
+        "status": "PASS"
+      }
+    ],
+    "ci_consumer_verifier_added": true,
+    "remote_ci_result": {
+      "reviewed_date": "2026-10-06",
+      "status": "PASS",
+      "run_id": 37430712809,
+      "event": "pull_request",
+      "head_sha": "2c4b570d91eca29d3edd22beb68b628a529e1081",
+      "url": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/37430712809",
+      "configured_runner": "ubuntu-latest",
+      "configured_node_major": 22,
+      "jobs": [
+        {
+          "id": 112160659003,
+          "name": "Verify production release",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Set up Node.js",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run automated checks",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify locked native web asset build",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify custom roles in disposable PostgreSQL",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify Stage 0 security metadata and private reads",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Set up Node.js",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 112160807768,
+          "name": "deploy",
+          "conclusion": "skipped",
+          "steps": []
+        }
+      ],
+      "deployment": "SKIPPED",
+      "native_compile_or_device_test": false
+    },
+    "windows_repair_recheck": {
+      "received_date": "2026-10-06",
+      "evidence_type": "Owner-pasted terminal output",
+      "status": "PASS",
+      "platform": "win32",
+      "node": "v22.17.0",
+      "commit": "2c4b570d91eca29d3edd22beb68b628a529e1081",
+      "previous_commit": "86f2063e20a929fa75848f09e79581e6683c6487",
+      "path": "C:\\Users\\HP\\Desktop\\Mushavo Budget Native Audit",
+      "status_guard": "PASS: no local changes reported",
+      "fast_forward": "PASS",
+      "npm_ci": "PASS",
+      "added_packages": 123,
+      "audited_packages": 124,
+      "install_known_vulnerability_count": 0,
+      "actual_consumer_verifier": {
+        "status": "PASS",
+        "node": "v22.17.0",
+        "capacitor_cli": "8.5.2",
+        "xcode": "3.0.1",
+        "uuid": "11.1.1",
+        "commonjs_consumer": "PASS",
+        "invalid_buffer_cases": 9,
+        "valid_buffer_methods": 3,
+        "generated_project_identifiers": 256,
+        "template_parse_edit_write_reparse": "PASS",
+        "native_compile_or_device_test": false
+      },
+      "npm_audit": "PASS",
+      "audit_known_vulnerability_count": 0,
+      "actual_native_asset_build": "PASS",
+      "builder_message": "Built www with the session-aware launcher, native workspace preferences and app-resume integration.",
+      "original_project_reconciled": false,
+      "native_compile_or_device_test": false,
+      "apk_created_or_changed": false,
+      "apk_update": "DEFERRED by owner"
+    },
+    "native_compile_or_device_test": false,
+    "production_deployment": false
+  }
+}

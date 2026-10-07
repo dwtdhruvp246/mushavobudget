@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_CONNECTION_CHECK_PREPARED_CERTIFICATE_AND_OWNER_EXECUTION_PENDING",
-        "latest_evidence": "S1E18",
+        "status": "IN_PROGRESS_CONNECTION_PASS_PROTECTED_DESTINATION_AND_EXPORT_COVERAGE_PENDING",
+        "latest_evidence": "S1E19",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -141,8 +141,8 @@
             "version": "17.11"
           }
         ],
-        "connection_preparation": "DASHBOARD_FIELDS_RECEIVED_S1E17; CERTIFICATE_VERIFIED_PSQL_CONNINFO_CHECK_PREPARED_S1E18_NOT_EXECUTED",
-        "hosted_connection_verified": false,
+        "connection_preparation": "OWNER_EXECUTED_S1E18_CHECK_PASS_S1E19",
+        "hosted_connection_verified": true,
         "connection_check_script": "scripts/security-stage-1-connection-check.ps1",
         "connection_endpoint": {
           "host": "aws-0-eu-central-1.pooler.supabase.com",
@@ -151,7 +151,14 @@
           "username": "postgres.kttkospkblwvguuwnhjj",
           "method": "Shared pooler session mode; owner screenshot"
         },
-        "ssl_certificate_and_verified_connection": "PENDING_OWNER_CERTIFICATE_DOWNLOAD_AND_EXECUTION"
+        "ssl_certificate_and_verified_connection": "OWNER_TESTED_VERIFY_FULL_CONNECTION_PASS_TLS_1_3",
+        "connection_tls": {
+          "protocol": "TLSv1.3",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "scope": "Owner client-to-session-pooler"
+        },
+        "protected_export_destination": "PENDING_OWNER_LOCAL_PROTECTION_AND_ENCRYPTED_OFFSITE_DESTINATION_CHOICE",
+        "precise_export_coverage": "PENDING_DATABASE_ROLES_MANAGED_ENCRYPTION_FILES_CONFIGURATION_RECONCILIATION"
       },
       {
         "id": "1.3",

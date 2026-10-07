@@ -1129,6 +1129,39 @@
       "restore_verified": false,
       "assistant_changed_production_sql_credentials_provider_settings_or_native_runtime": false,
       "scope": "Concrete owner-local connection check prepared only; no owner execution PASS, certificate trust result, precise export coverage, backup protection or F16 closure inferred"
+    },
+    {
+      "id": "S1E19",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner pasted completed Windows PowerShell/psql connection-check output",
+      "result": "OWNER_TESTED_CERTIFICATE_VERIFIED_CONNECTION_METADATA_PASS",
+      "executed_handoff": "S1E18 scripts/security-stage-1-connection-check.ps1; supplied full inline block includes sslmode=verify-full and downloaded sslrootcert",
+      "observed_connection": {
+        "database": "postgres",
+        "username": "postgres.kttkospkblwvguuwnhjj",
+        "host": "aws-0-eu-central-1.pooler.supabase.com",
+        "port": 5432,
+        "tls_protocol": "TLSv1.3",
+        "tls_cipher": "TLS_AES_256_GCM_SHA384",
+        "compression": "off",
+        "alpn": "none"
+      },
+      "certificate_evidence": "Owner supplied local prod-ca-2021.crt path; Test-Path/Resolve-Path did not block; certificate contents/fingerprint not retrieved",
+      "password_evidence": "Native Password prompt shown; no password value received or stored",
+      "completion": "Expected connection metadata and completed message; terminal returned to normal PS prompt without error",
+      "hosted_connection_verified": true,
+      "verification_scope": "Owner-executed TLS/authenticated connection through the displayed intended-project pooler username using verify-full; audit agent did not connect. Client-to-pooler TLS evidenced; provider-internal path not independently inspected. No authorization/grant/export-scope or recovery clearance inferred",
+      "backup_created": false,
+      "restore_verified": false,
+      "next_prerequisites": [
+        "Choose protected owner-held local export location outside project/served assets and encrypted off-site copy destination",
+        "Reconcile precise database/schema/data/global-role/privilege/managed/encryption coverage",
+        "Separately protect actual Storage object bytes and Auth/Edge/provider configuration",
+        "Prepare concrete exports with partial-run failure handling and artifact/integrity review; restore only in isolation"
+      ],
+      "assistant_changed_provider_credentials_production_sql_or_native_runtime": false,
+      "scope": "Scoped owner connection PASS only; F16 remains open until selected complete artifacts and isolated recovery are evidenced"
     }
   ]
 }

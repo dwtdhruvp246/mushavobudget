@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_LOCAL_COMPONENT_PASS_GOOGLE_DEFERRED_LOCAL_COVERAGE_CHECK_PREPARED",
-        "latest_evidence": "S1E41",
+        "status": "IN_PROGRESS_LOCAL_COMPONENT_HASH_PASS_TOC_REVIEW_SOURCE_DEPENDENCIES_PREPARED_GOOGLE_DEFERRED",
+        "latest_evidence": "S1E43",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -258,7 +258,7 @@
           {
             "id": "database_scope",
             "work": "Reconcile exact archive/database/managed/extension/foreign/Vault coverage and separately protect global roles, membership and grant dependencies.",
-            "status": "REVIEW_PENDING; local TOC indicator check prepared"
+            "status": "LOCAL_FILE_HASH_BINDING_PASS_AND_TOC_INDICATORS_RECEIVED_S1E42; SOURCE_ROLE_EXTENSION_FOREIGN_PUBLICATION_CLASSIFICATION_PENDING_S1E43"
           },
           {
             "id": "storage_bytes",
@@ -276,8 +276,124 @@
             "status": "OWNER_DECISIONS_PENDING; Google offsite work deferred"
           }
         ],
-        "local_coverage_handoff": "scripts/security-stage-1-local-coverage-check.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E41",
-        "local_toc_scope_review_verified": false
+        "local_coverage_handoff": "scripts/security-stage-1-local-coverage-check.ps1; OWNER_EXECUTED_S1E42_PRIOR_COUNTER; COUNTER_CORRECTED_S1E43_NO_REPEAT_REQUEST",
+        "local_toc_scope_review_verified": false,
+        "local_coverage_result": {
+          "evidence": "S1E42",
+          "summary": {
+            "stage_step": "1.2",
+            "result": "LOCAL_VERIFIED_COMPONENT_TOC_COVERAGE_REVIEW",
+            "project": "kttkospkblwvguuwnhjj",
+            "checked_utc": "2026-10-07T19:45:48.9791986Z",
+            "archive_and_three_sources_match_private_receipt": true,
+            "toc_entries": 2322,
+            "table_data_entries_total": 127,
+            "extension_definitions": 6,
+            "acl_entries": 527,
+            "default_acl_entries": 27,
+            "publication_definitions": 31,
+            "publication_table_entries": 29,
+            "foreign_table_definitions": 0,
+            "large_object_related_entries": 0,
+            "complete_platform_backup_verified": false,
+            "isolated_database_restore_verified": false,
+            "files_modified_or_uploaded": false
+          },
+          "schema_rows": [
+            {
+              "schema": "public",
+              "table_definitions": 80,
+              "table_data_entries": 80,
+              "routine_definitions": 281,
+              "policies": 151,
+              "triggers": 140
+            },
+            {
+              "schema": "auth",
+              "table_definitions": 27,
+              "table_data_entries": 27,
+              "routine_definitions": 4,
+              "policies": 0,
+              "triggers": 1
+            },
+            {
+              "schema": "storage",
+              "table_definitions": 8,
+              "table_data_entries": 8,
+              "routine_definitions": 19,
+              "policies": 15,
+              "triggers": 7
+            },
+            {
+              "schema": "realtime",
+              "table_definitions": 10,
+              "table_data_entries": 9,
+              "routine_definitions": 17,
+              "policies": 0,
+              "triggers": 1
+            },
+            {
+              "schema": "cron",
+              "table_definitions": 0,
+              "table_data_entries": 2,
+              "routine_definitions": 0,
+              "policies": 0,
+              "triggers": 0
+            },
+            {
+              "schema": "vault",
+              "table_definitions": 0,
+              "table_data_entries": 1,
+              "routine_definitions": 0,
+              "policies": 0,
+              "triggers": 0
+            },
+            {
+              "schema": "extensions",
+              "table_definitions": 0,
+              "table_data_entries": 0,
+              "routine_definitions": 6,
+              "policies": 0,
+              "triggers": 0
+            },
+            {
+              "schema": "graphql",
+              "table_definitions": 0,
+              "table_data_entries": 0,
+              "routine_definitions": 0,
+              "policies": 0,
+              "triggers": 0
+            },
+            {
+              "schema": "graphql_public",
+              "table_definitions": 0,
+              "table_data_entries": 0,
+              "routine_definitions": 1,
+              "policies": 0,
+              "triggers": 0
+            },
+            {
+              "schema": "net",
+              "table_definitions": 0,
+              "table_data_entries": 0,
+              "routine_definitions": 0,
+              "policies": 0,
+              "triggers": 0
+            },
+            {
+              "schema": "pgbouncer",
+              "table_definitions": 0,
+              "table_data_entries": 0,
+              "routine_definitions": 1,
+              "policies": 0,
+              "triggers": 0
+            }
+          ],
+          "exact_scope_reconciliation_complete": false,
+          "publication_counter_scope": "Reported 31 includes 29 table mappings; not 31 actual definitions. Corrected helper/current source counts not owner executed."
+        },
+        "local_component_receipt_recheck_verified": true,
+        "recovery_dependency_handoff": "supabase/diagnostics/security_stage_1_recovery_dependencies.sql; PREPARED_OWNER_SQL_EXECUTION_PENDING_S1E43"
       },
       {
         "id": "1.3",

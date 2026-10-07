@@ -1821,6 +1821,169 @@
       "restore_verified": false,
       "scope": "Preparation/remaining-scope explanation only. No database connection, SQL, file write/extraction/upload, settings/permission/credential change or deletion. Existing local/private evidence and full F16/final re-audit gaps remain open.",
       "validation": "Original S1E01–40 and audit tables preserved; JSON/local links/fences, exact source/inline equality and diff whitespace checked. Official PostgreSQL list format, one-database/global-role/foreign/extension coverage and Supabase Storage-byte distinction reviewed. Hash values/raw TOC/customer records are not emitted and no mutation/network/archive-extraction/password operation is invoked. No Windows/PowerShell runtime; owner execution pending."
+    },
+    {
+      "id": "S1E42",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner executes S1E41 inline local-component coverage check and supplies complete summary/schema table.",
+      "result": "OWNER_LOCAL_COMPONENT_HASH_BINDING_PASS_TOC_INDICATORS_RECEIVED_REVIEW",
+      "observed_summary": {
+        "stage_step": "1.2",
+        "result": "LOCAL_VERIFIED_COMPONENT_TOC_COVERAGE_REVIEW",
+        "project": "kttkospkblwvguuwnhjj",
+        "checked_utc": "2026-10-07T19:45:48.9791986Z",
+        "archive_and_three_sources_match_private_receipt": true,
+        "toc_entries": 2322,
+        "table_data_entries_total": 127,
+        "extension_definitions": 6,
+        "acl_entries": 527,
+        "default_acl_entries": 27,
+        "publication_definitions": 31,
+        "publication_table_entries": 29,
+        "foreign_table_definitions": 0,
+        "large_object_related_entries": 0,
+        "complete_platform_backup_verified": false,
+        "isolated_database_restore_verified": false,
+        "files_modified_or_uploaded": false
+      },
+      "observed_schema_rows": [
+        {
+          "schema": "public",
+          "table_definitions": 80,
+          "table_data_entries": 80,
+          "routine_definitions": 281,
+          "policies": 151,
+          "triggers": 140
+        },
+        {
+          "schema": "auth",
+          "table_definitions": 27,
+          "table_data_entries": 27,
+          "routine_definitions": 4,
+          "policies": 0,
+          "triggers": 1
+        },
+        {
+          "schema": "storage",
+          "table_definitions": 8,
+          "table_data_entries": 8,
+          "routine_definitions": 19,
+          "policies": 15,
+          "triggers": 7
+        },
+        {
+          "schema": "realtime",
+          "table_definitions": 10,
+          "table_data_entries": 9,
+          "routine_definitions": 17,
+          "policies": 0,
+          "triggers": 1
+        },
+        {
+          "schema": "cron",
+          "table_definitions": 0,
+          "table_data_entries": 2,
+          "routine_definitions": 0,
+          "policies": 0,
+          "triggers": 0
+        },
+        {
+          "schema": "vault",
+          "table_definitions": 0,
+          "table_data_entries": 1,
+          "routine_definitions": 0,
+          "policies": 0,
+          "triggers": 0
+        },
+        {
+          "schema": "extensions",
+          "table_definitions": 0,
+          "table_data_entries": 0,
+          "routine_definitions": 6,
+          "policies": 0,
+          "triggers": 0
+        },
+        {
+          "schema": "graphql",
+          "table_definitions": 0,
+          "table_data_entries": 0,
+          "routine_definitions": 0,
+          "policies": 0,
+          "triggers": 0
+        },
+        {
+          "schema": "graphql_public",
+          "table_definitions": 0,
+          "table_data_entries": 0,
+          "routine_definitions": 1,
+          "policies": 0,
+          "triggers": 0
+        },
+        {
+          "schema": "net",
+          "table_definitions": 0,
+          "table_data_entries": 0,
+          "routine_definitions": 0,
+          "policies": 0,
+          "triggers": 0
+        },
+        {
+          "schema": "pgbouncer",
+          "table_definitions": 0,
+          "table_data_entries": 0,
+          "routine_definitions": 1,
+          "policies": 0,
+          "triggers": 0
+        }
+      ],
+      "local_integrity_result": "OWNER-TESTED PASS: existing encrypted archive and three sources match the completed private receipt; saved TOC hash rechecked after reading. Actual hashes and files stay owner-held.",
+      "source_count_reconciliation": "127 table-data entries reconcile to the supplied schema totals. Public 80 table definitions/data and 281 routines, Auth 27/27/4, Storage 8/8/19 and Realtime 17 routines match earlier S1E13 aggregate source counts. Storage 15 policies and Auth/Storage/Realtime 1/7/1 triggers match the earlier managed metadata counts; default ACL entries 27 match the earlier 27 default-ACL records. Matching counts are indicators, not exact definitions, rows, effective access or restore proof.",
+      "publication_counter_correction": "Reported publication_definitions=31 is retained verbatim but is a NONEXCLUSIVE PUBLICATION-related TOC counter: the prior ^PUBLICATION pattern also includes all 29 reported PUBLICATION TABLE entries. It is not evidence of 31 definitions. Earlier source inventory listed 2 publications; corrected exact PUBLICATION - counter and new source-category query are prepared in S1E43. No corrected owner TOC count has been executed/reported, and unreported schema mappings cannot be inferred absent.",
+      "remaining_coverage": "Cron/Vault data entries without table definitions, six unnamed extension definition entries, Realtime 10 definitions versus 9 data entries, Net zero and other extension routine differences require ownership/configuration/partition/persistence classification, not an automatic missing-data failure. Zero foreign/large-object TOC entries are not independent current source absence proof. ACL counts do not establish exact grant/value recovery.",
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "offsite_upload_download_verified": false,
+      "restore_verified": false,
+      "scope": "Owner-held local file-integrity/count metadata only. No new files/export/upload or database restore. F16/global-role/managed/extension/foreign/Vault/file/configuration/private credential/recovery coverage remains open."
+    },
+    {
+      "id": "S1E43",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Root reviews S1E42 metadata against earlier source scope, corrects broad publication counter, and prepares owner read-only recovery dependency SQL.",
+      "result": "SOURCE_RECOVERY_DEPENDENCY_QUERY_AND_PUBLICATION_CORRECTION_PREPARED",
+      "diagnostic": "supabase/diagnostics/security_stage_1_recovery_dependencies.sql",
+      "owner_handoff": "PowerShell fetch/show/Out-String/Set-Clipboard, followed by owner paste into intended Supabase SQL Editor; no direct hosted SQL by root.",
+      "expected_contract": {
+        "INFO": 6,
+        "REVIEW": 1,
+        "total": 7
+      },
+      "checks_prepared": [
+        "Read-only repeatable-read context with timeouts and rollback",
+        "Role attributes, exact grantor/member/admin/inherit/set membership metadata, ownership totals and setting/parameter-ACL record counts; no password/setting values",
+        "Extension-owned/configuration table counts/names/persistence/filter-presence metadata; no configuration filter bodies or table data",
+        "Foreign-table/server/user-mapping and large-object source counts; no option values, object contents or credentials",
+        "Separate actual publication definitions/direct relation mappings/schema mappings/expanded table counts; no secret definitions"
+      ],
+      "corrected_helper": "scripts/security-stage-1-local-coverage-check.ps1 uses exact ^PUBLICATION - descriptor prefix; source/inline changed identically. No repeat owner export/encryption or full helper execution is requested now.",
+      "fixture_validation": "PASS on disposable PGlite 0.5.8 / PostgreSQL 18.3: 6 INFO + 1 REVIEW, read-only enforcement, role membership flags/ownership, direct/schema/expanded publication categories, empty publication arrays, zero/nonzero foreign/large-object counts, actual extension membership/config-table/unlogged metadata and omission of private role-setting/function-body/foreign-option/mapping-password/extension-filter sentinels. Synthetic catalog fixture changes are local only and not in owner SQL. Not a hosted PostgreSQL 17.6 execution or backup/restore test.",
+      "verifier": "scripts/verify-security-stage-1-recovery-dependencies.cjs",
+      "official_guidance": [
+        "https://www.postgresql.org/docs/17/catalog-pg-auth-members.html",
+        "https://www.postgresql.org/docs/17/catalog-pg-extension.html",
+        "https://www.postgresql.org/docs/17/catalog-pg-publication.html",
+        "https://www.postgresql.org/docs/17/catalog-pg-publication-rel.html",
+        "https://www.postgresql.org/docs/17/catalog-pg-publication-namespace.html",
+        "https://www.postgresql.org/docs/17/app-pg-dumpall.html",
+        "https://supabase.com/docs/guides/database/vault"
+      ],
+      "owner_execution": "PENDING; only previously supplied S1E42 local output is owner completed",
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "backup_created": false,
+      "restore_verified": false,
+      "scope": "Read-only source metadata preparation and honest counter correction, not new hosted PASS or F16 closure. Existing local integrity evidence stays PASS. Private selected role/configuration artifacts, Storage bytes and recovery requirements remain pending."
     }
   ]
 }

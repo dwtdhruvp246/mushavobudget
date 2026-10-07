@@ -77,7 +77,7 @@
         extension_definitions = @($mushavoEntries | Where-Object { $_ -match '^EXTENSION ' }).Count
         acl_entries = @($mushavoEntries | Where-Object { $_ -match '^ACL ' }).Count
         default_acl_entries = @($mushavoEntries | Where-Object { $_ -match '^DEFAULT ACL ' }).Count
-        publication_definitions = @($mushavoEntries | Where-Object { $_ -match '^PUBLICATION ' }).Count
+        publication_definitions = @($mushavoEntries | Where-Object { $_ -match '^PUBLICATION - ' }).Count
         publication_table_entries = @($mushavoEntries | Where-Object { $_ -match '^PUBLICATION TABLE ' }).Count
         foreign_table_definitions = @($mushavoEntries | Where-Object { $_ -match '^FOREIGN TABLE ' }).Count
         large_object_related_entries = @($mushavoEntries | Where-Object { $_ -match '^(BLOB|BLOBS|BLOB METADATA|LARGE OBJECT|LARGE OBJECT DATA) ' }).Count

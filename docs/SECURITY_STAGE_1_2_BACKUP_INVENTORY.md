@@ -1069,7 +1069,7 @@ The local single-database export/offline-read PASS (S1E30) and real encrypted-co
 
 Verified offsite protection remains **UNVERIFIED / Google work DEFERRED**. The unanswered earlier cloud upload scope/privacy and independent private passphrase retention are carried forward, not erased or converted to PASS. F16 stays open for the stage-end report and final remediation/re-audit: decide/resume a protected destination when that work is taken up, verify the correct component transfer/download integrity and reconcile any other cloud items. Separate exact local/global-role/managed/extension/foreign/Vault/Storage-byte/Auth/Edge/provider coverage still belongs to 1.2, and isolated synthetic restoration remains 1.4. Skipping Google does not skip those independent audit requirements or imply full backup completion.
 
-## Current local coverage handoff and remaining work — S1E41
+## Prior local coverage handoff and remaining work — S1E41; completed in S1E42
 
 The owner authorizes continuing and asks how much of 1.2 remains. The local database export/offline-read and real encrypted component/file-integrity checks are completed at their recorded scopes. **Four work groups remain**, excluding the currently deferred Google upload/download route; these groups are not equally sized tests/commands and do not justify an invented completion percentage.
 
@@ -1166,7 +1166,7 @@ PostgreSQL documents that pg_dump covers one database, with global role definiti
         extension_definitions = @($mushavoEntries | Where-Object { $_ -match '^EXTENSION ' }).Count
         acl_entries = @($mushavoEntries | Where-Object { $_ -match '^ACL ' }).Count
         default_acl_entries = @($mushavoEntries | Where-Object { $_ -match '^DEFAULT ACL ' }).Count
-        publication_definitions = @($mushavoEntries | Where-Object { $_ -match '^PUBLICATION ' }).Count
+        publication_definitions = @($mushavoEntries | Where-Object { $_ -match '^PUBLICATION - ' }).Count
         publication_table_entries = @($mushavoEntries | Where-Object { $_ -match '^PUBLICATION TABLE ' }).Count
         foreign_table_definitions = @($mushavoEntries | Where-Object { $_ -match '^FOREIGN TABLE ' }).Count
         large_object_related_entries = @($mushavoEntries | Where-Object { $_ -match '^(BLOB|BLOBS|BLOB METADATA|LARGE OBJECT|LARGE OBJECT DATA) ' }).Count
@@ -1182,7 +1182,51 @@ PostgreSQL documents that pg_dump covers one database, with global role definiti
 }
 ```
 
-Source: [security-stage-1-local-coverage-check.ps1](../scripts/security-stage-1-local-coverage-check.ps1). Prepared and source-reviewed only; Windows execution is pending. Send only the resulting summary/table and redacted warnings/errors. Do not send hashes, source files, TOC/receipt contents, real passwords or archives. A REVIEW result is expected: it supplies indicator metadata for the next reconciliation, not complete platform or restore PASS. Google remains deferred and no Google handoff is reactivated.
+Source: [security-stage-1-local-coverage-check.ps1](../scripts/security-stage-1-local-coverage-check.ps1). Owner execution of the original block is recorded in S1E42 below; S1E43 corrects the publication definition descriptor counter. No repeat full block or export is requested. Send only resulting summary/table and redacted warnings/errors. Do not send hashes, source files, TOC/receipt contents, real passwords or archives. A REVIEW result is expected: it supplies indicator metadata for the next reconciliation, not complete platform or restore PASS. Google remains deferred and no Google handoff is reactivated.
+
+## Completed local count result and current dependency handoff — S1E42–S1E43
+
+Owner S1E42 completes the S1E41 local check at **2026-10-07T19:45:48.9791986Z**. The encrypted archive and three source files match the private receipt; no hashes/files are supplied, no files changed/uploaded and no database restore occurred. **OWNER-TESTED local integrity PASS** is retained. The TOC supplies **2,322 entries**, **127 table-data entries**, **six extension entries**, **527 ACL entries**, **27 default ACL entries**, **29 publication-table entries**, zero foreign-table entries and zero large-object-related entries. Full platform backup and isolated restore are still false.
+
+| Schema | Table definitions | Table-data entries | Routines | Policies | Triggers |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| public | 80 | 80 | 281 | 151 | 140 |
+| auth | 27 | 27 | 4 | 0 | 1 |
+| storage | 8 | 8 | 19 | 15 | 7 |
+| realtime | 10 | 9 | 17 | 0 | 1 |
+| cron | 0 | 2 | 0 | 0 | 0 |
+| vault | 0 | 1 | 0 | 0 | 0 |
+| extensions | 0 | 0 | 6 | 0 | 0 |
+| graphql | 0 | 0 | 0 | 0 | 0 |
+| graphql_public | 0 | 0 | 1 | 0 | 0 |
+| net | 0 | 0 | 0 | 0 | 0 |
+| pgbouncer | 0 | 0 | 1 | 0 | 0 |
+
+The 127 data-entry total reconciles to this table. Public/Auth/Storage table and routine aggregates, Realtime routine aggregates, 15 Storage policies, managed 1/7/1 trigger counts and 27 default ACL records match the earlier source indicators. These are count matches, not exact-row/definition/effective-access or restore proof. Cron/Vault definition-vs-data differences, six unnamed extensions, Realtime 10 definitions/9 data entries and Net zero require extension ownership/config-table/partition/persistence classification; none is automatically declared a failed backup.
+
+**Counter correction:** the owner-reported `publication_definitions = 31` was calculated by a broad `^PUBLICATION ` prefix that also counted the 29 `PUBLICATION TABLE` entries. Preserve the raw owner result; label it a nonexclusive publication-related entry count, not 31 definitions. The helper/source-inline prefix is corrected to exact `^PUBLICATION - `, excluding mapping descriptors. Corrected owner TOC count is not reported; the earlier source inventory lists two publications. Do not assume schema mappings absent or infer exact restoration from subtracting aggregate counters. The query below independently reports actual source definition/direct mapping/schema mapping/expanded categories. No repeat export/encryption/full helper run is requested.
+
+The current handoff is a **seven-row read-only source catalog query**: expected **6 INFO + 1 REVIEW**. It reports role attributes and exact membership flags/grantors, ownership totals, extension-owned/configuration table metadata, foreign/large-object counts and distinct publication categories. Names returned are database role/extension/table metadata; it reads no customer data or Auth user rows. Passwords, role-setting values, routine bodies, extension filter text, scheduler commands, Vault values and foreign option credentials are omitted. Missing/unavailable query results are errors to report, not zero/PASS. The source query uses a current repeatable-read snapshot, which is not the earlier export's same snapshot.
+
+Run the following in the original Windows repository. It fetches the audit branch and copies only the intended SQL text, without checking out/merging or changing the dirty application/native files:
+
+```powershell
+& {
+    Set-Location "C:\Users\HP\Desktop\Mushavo Budget"
+    git fetch origin security/stage-1-foundations
+    if ($LASTEXITCODE -ne 0) { throw "Fetch failed." }
+    $mushavoRecoverySql = git show "FETCH_HEAD:supabase/diagnostics/security_stage_1_recovery_dependencies.sql" | Out-String
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($mushavoRecoverySql)) {
+        throw "SQL retrieval failed."
+    }
+    $mushavoRecoverySql | Set-Clipboard
+    Write-Output "Read-only 1.2 recovery dependency SQL copied. Paste into the intended Supabase SQL Editor."
+}
+```
+
+Verify Dashboard project **kttkospkblwvguuwnhjj**, paste into its SQL Editor and run. Send the seven metadata rows or redacted errors. The transaction is read-only/repeatable-read, bounded by 30-second statement and 3-second lock timeouts, then rolled back. This query creates no backup or restore and changes no roles, grants or configuration. Google remains deferred.
+
+The dedicated [recovery dependency fixture verifier](../scripts/verify-security-stage-1-recovery-dependencies.cjs) passes on disposable PGlite 0.5.8 / PostgreSQL 18.3. It exercises grant flags/ownership, direct/schema/expanded publication categories, zero/nonzero foreign/large-object counts, registered extension table/unlogged/filter metadata, empty publication inventories, private sentinel omission and rejected read-only writes. Its synthetic fixture setup mutates only the disposable test catalog, never hosted tables or the owner diagnostic. Owner PostgreSQL 17.6 execution remains pending. Source/member counts do not replace protected role/configuration artifacts or usable credential/key/Storage-byte recovery proof.
 
 ## Completed owner SQL handoff — retained for reproducibility
 
@@ -1218,7 +1262,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. Execute the S1E41 local-only coverage handoff and review its metadata against the source inventory, then continue separate role/managed/foreign/Vault/Storage-byte/Auth/Edge/provider recovery coverage and private credential handling. No repeat installation, connection test, encryption creation or Docker/CLI-help prerequisite is requested.
+1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. S1E42 records completed local receipt/hash/TOC indicators; execute the S1E43 read-only source dependency handoff and reconcile its metadata before continuing separate role/managed/foreign/Vault/Storage-byte/Auth/Edge/provider recovery coverage and private credential handling. No repeat installation, connection test, encryption creation or Docker/CLI-help prerequisite is requested.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Carry the unverified offsite copy and Google deferral into the stage report/final action plan. No replacement destination is chosen by this decision. Later reconcile protected destination, recovery targets, frequency/retention and completion/failure records using actual volume and owner preferences; a schema file or object metadata alone remains insufficient.
@@ -1278,3 +1322,10 @@ Only redacted outcome/size/date/completeness records enter the repository. Custo
 - [Microsoft Windows PowerShell path-text clipboard value](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-clipboard?view=powershell-5.1)
 
 - [PostgreSQL 17 extension member/configuration-data recovery rules](https://www.postgresql.org/docs/17/extend-extensions.html)
+
+- [PostgreSQL 17 exact role membership flags](https://www.postgresql.org/docs/17/catalog-pg-auth-members.html)
+- [PostgreSQL 17 extension configuration-table metadata](https://www.postgresql.org/docs/17/catalog-pg-extension.html)
+- [PostgreSQL 17 publication definitions](https://www.postgresql.org/docs/17/catalog-pg-publication.html)
+- [PostgreSQL 17 direct publication relation mappings](https://www.postgresql.org/docs/17/catalog-pg-publication-rel.html)
+- [PostgreSQL 17 publication schema mappings](https://www.postgresql.org/docs/17/catalog-pg-publication-namespace.html)
+- [Supabase Vault encrypted-backup behavior and secret recovery dependency](https://supabase.com/docs/guides/database/vault)

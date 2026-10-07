@@ -1907,5 +1907,53 @@
     "raw_image_or_credentials_committed": false,
     "earlier_evidence_values_preserved": true,
     "scope": "Four audit documents only; no runtime, SQL, provider, backup, staging or APK change"
+  },
+  "owner_stage_0_external_backups_mfa_store_accounts": {
+    "evidence_ref": "E31",
+    "received_date": "2026-10-07",
+    "evidence_type": "Owner numbered answers; no screenshot or account API verification",
+    "owner_answers": {
+      "external_database_uploaded_file_backups": "no",
+      "infrastructure_two_step_verification": "i think only for github",
+      "google_play_and_apple_developer_accounts": "no"
+    },
+    "external_database_backup_exists_owner_reported": false,
+    "external_uploaded_file_copy_exists_owner_reported": false,
+    "provider_internal_backup_behavior": "NOT ESTABLISHED by this statement",
+    "historical_restore_drill": "UNKNOWN",
+    "infrastructure_mfa": {
+      "GitHub": "BELIEVED ENABLED / UNVERIFIED",
+      "Cloudflare": "UNCONFIRMED",
+      "Supabase": "UNCONFIRMED",
+      "Zoho": "UNCONFIRMED"
+    },
+    "other_mfa_definitively_disabled_inferred": false,
+    "google_play_developer_account_exists_owner_reported": false,
+    "apple_developer_account_exists_owner_reported": false,
+    "assigned_followups": [
+      {
+        "stage": 1,
+        "owner": "Owner/Both",
+        "work": "Verify actual infrastructure security/recovery; establish external database-plus-file backups/recovery and isolated staging"
+      },
+      {
+        "stage": 9,
+        "owner": "Owner/Both",
+        "work": "Account enrollment/type/verification and required release testing; factual operator/channel/billing decisions retain earlier gates"
+      }
+    ],
+    "second_owner_bundle": "ACCOUNTED FOR at owner-report/uncertainty scope; gaps, not PASS controls",
+    "next_owner_bundle": [
+      "Individual/business operator and active support contact",
+      "Initial countries/audience or explicit undecided",
+      "Existing automatic error/outage/spending alerts and response owner"
+    ],
+    "remaining_unverified_properties": "Auth/deployment/workflow/restore/device limits retain assigned stages and must not be certified by these statements",
+    "stage_0_status": "IN PROGRESS",
+    "stage_1_started": false,
+    "raw_images_credentials_customer_logs_or_recovery_material_committed": false,
+    "account_settings_backup_project_or_paid_enrollment_changed": false,
+    "earlier_evidence_values_preserved": true,
+    "scope": "Four documentation files only; no runtime, SQL, provider, backup, staging or APK change"
   }
 }

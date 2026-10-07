@@ -1855,5 +1855,57 @@
     "closure_rule": "Account for evidence, known gaps, owners/stages and prerequisites; not all later-stage implementation or 123-control PASS",
     "earlier_top_level_evidence_values_preserved": true,
     "changes_this_followup": "Documentation only; no runtime, database, provider or APK mutation"
+  },
+  "owner_stage_0_staging_recovery_ios_prerequisites": {
+    "evidence_ref": "E30",
+    "received_date": "2026-10-07",
+    "evidence_type": "Owner numbered answers and visually reviewed Database Backups screenshot",
+    "separate_supabase_staging_project_exists_owner_reported": false,
+    "supabase_plan_owner_reported": "Free",
+    "mac_with_xcode_available_owner_reported": false,
+    "attachment": {
+      "name": "image(20261007-050012).png",
+      "sha256": "ba3fdf44ad559128dc92995954a0102aa258705c9c91ea1be1cd1e9a5547a9f7",
+      "scope": "Cropped Database Backups, Point in time tab"
+    },
+    "displayed_backup_settings": {
+      "selected_tab": "Point in time",
+      "notice": "Point in Time Recovery is a Pro Plan add-on",
+      "action": "Upgrade to Pro",
+      "active_recovery_window_displayed": false,
+      "project_header_or_plan_badge_visible": false,
+      "scheduled_backups_tab_contents_visible": false
+    },
+    "pitr_status": "NOT ENABLED at screenshot-display scope; no dashboard/API verification",
+    "manual_database_backup_method": "UNKNOWN",
+    "independent_storage_object_byte_backup_method": "UNKNOWN",
+    "restore_drill_history": "UNKNOWN",
+    "official_backup_documentation_checked_date": "2026-10-07",
+    "interpretation_source": "https://supabase.com/docs/guides/platform/backups",
+    "documented_plan_boundary": "Managed daily backups described for paid plans; Free projects should use off-site database exports. Database backups do not cover Storage object bytes.",
+    "assigned_prerequisites": [
+      {
+        "stage": 1,
+        "owner": "Both",
+        "task": "Establish isolated staging backend/preview/inboxes and feasible database-plus-file recovery controls"
+      },
+      {
+        "stage": 5,
+        "owner": "Owner/Both",
+        "task": "Resolve iOS build access before native validation; release artifact/device gates remain Stage 9"
+      }
+    ],
+    "first_owner_bundle": "ACCOUNTED FOR; gaps/prerequisites, not PASS controls",
+    "next_owner_bundle": [
+      "Existing manual database/Storage backups",
+      "Infrastructure account MFA statuses",
+      "Google Play/Apple developer account status"
+    ],
+    "stage_0_status": "IN PROGRESS",
+    "stage_1_started": false,
+    "paid_upgrade_project_creation_backup_restore_or_native_build_performed": false,
+    "raw_image_or_credentials_committed": false,
+    "earlier_evidence_values_preserved": true,
+    "scope": "Four audit documents only; no runtime, SQL, provider, backup, staging or APK change"
   }
 }

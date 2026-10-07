@@ -12,26 +12,34 @@ Updated 7 October 2026. **Stage 0 remains open; Stage 1 has not started.** Curre
 | Signup/Admin invitation | Owner normal smoke tests PASS | No full direct API/replay/expiry matrix inferred |
 | Business SQL/UI | Notification SQL owner 8/8 PASS; revised UI owner “now working” | Merge #90, successful deployment checks and dated 4.9.40 source evidence; full action/denial/realtime matrix outstanding |
 | SMTP | Owner corrected host and reports working | Normal sending blocker resolved at owner scope; current templates/redirects/recovery/all-email matrix not inferred |
+| Staging/iOS prerequisite | Owner reports no separate Supabase test project and no Mac/Xcode access | Isolation Stage 1 and iOS build access Stage 5 remain required before their full tests |
+| Recovery prerequisite | Owner reports Free; screenshot shows PITR Pro add-on/Upgrade screen | Manual database/Storage backups and restore history remain unknown; no upgrade requested |
 | APK/email boundary | APK update deferred; full email architecture deferred | No APK, new hook, application dispatcher or queue implemented by this reconciliation |
 
-Detailed snapshots and hashes remain in [the baseline](SECURITY_STAGE_0_BASELINE.md), [all-section register](SECURITY_AUDIT_REGISTER.md) and `security-stage-0-evidence.json`. E27–E29 supersede only the current-state outcomes covered by later evidence; old snapshots remain intact.
+Detailed snapshots and hashes remain in [the baseline](SECURITY_STAGE_0_BASELINE.md), [all-section register](SECURITY_AUDIT_REGISTER.md) and `security-stage-0-evidence.json`. E27–E30 supersede only the current-state outcomes covered by later evidence; old snapshots remain intact.
 
-## First owner evidence bundle
+## First bundle received (E30)
 
-Only these three items are requested first. A factual “not yet” is useful; no purchases, restores or settings changes are requested.
+The owner answered all three prerequisite questions on 7 October: **no** separate Supabase staging project, **Free** plan, **no** Mac/Xcode access. The screenshot shows the Point in time tab and Pro add-on/Upgrade screen. It does not display Scheduled backups, a manual export method or a restore result. These questions are accounted for; do not request the same screenshot or answers again.
 
-1. **Staging:** does a separate Supabase project for testing already exist? Answer **yes / not yet / unsure**. A Cloudflare version-preview URL alone does not establish a separate database/Auth/Storage backend. If yes, confirm whether its deployed preview and controlled inboxes actually use that project; public URL/project name is enough, no keys.
-2. **Recovery:** send the Supabase **Database → Backups** overview showing backup availability/retention and PITR status, plus the project plan name if it is not visible. Do not open/download a backup or use Restore. Crop account/billing details and exclude credentials. If the page is unavailable, state that. See [Supabase backups](https://supabase.com/docs/guides/platform/backups).
-3. **iOS prerequisite:** is a Mac with Xcode available to you or a collaborator? Answer **yes / no / later**. No iOS build or APK update is requested now.
+Current [Supabase backup documentation](https://supabase.com/docs/guides/platform/backups), checked 7 October, describes paid-plan daily backups and off-site database exports for Free projects. Storage object bytes need their own protection. Establish a feasible Stage 1 recovery method; no paid upgrade or restore is requested by this baseline step. Likewise, staging and iOS access remain explicit future prerequisites, not PASS results.
+
+## Next owner evidence bundle
+
+Status answers are enough; no settings change is requested.
+
+1. **Existing backups:** do you currently keep any manual database backups or copies of uploaded files outside Supabase? State **database yes/no/unsure; uploaded files yes/no/unsure**. If yes, give the method name and last approximate date, not the backup itself.
+2. **Account security:** is two-step verification/MFA enabled for **GitHub, Cloudflare, Supabase and Zoho**? Answer each **yes/no/unsure**; never share codes or recovery material.
+3. **Store prerequisites:** do you already have a **Google Play developer account** and an **Apple Developer account**? Answer each **yes/no**. If yes, state personal/organization and active/pending/unsure. No purchase or enrollment is requested now.
 
 ## Remaining baseline inputs to account for
 
-After that bundle, collect these in small groups. Do not keep Stage 0 open until every listed later repair is implemented. For unavailable evidence, record **UNKNOWN/NOT CONFIGURED**, owner, dependency and target stage; do not claim PASS. Product/operator decisions that determine later design need an explicit answer or deferral.
+After each bundle, collect remaining inputs in small groups. Do not keep Stage 0 open until every listed later repair is implemented. For unavailable evidence, record **UNKNOWN/NOT CONFIGURED**, owner, dependency and target stage; do not claim PASS. Product/operator decisions that determine later design need an explicit answer or deferral.
 
 | Baseline input | Evidence/question now | Implementation or full validation later | Owner |
 |---|---|---|---|
-| Staging isolation | Separate project/preview/inboxes exists or not; proposed synthetic test boundary | Build/reconcile isolated environment before risky negative tests: Stage 1; full tenant/event testing Stages 3/8/9 | Both |
-| Database recovery | Plan, visible backup availability/retention/PITR; whether a restore drill has ever been done | Recovery targets and isolated restore drill: Stage 1 | Owner/Both |
+| Staging isolation | E30: no separate Supabase project. Backend/preview/inbox isolation remains to be arranged | Establish isolation before risky negative tests: Stage 1; full tenant/event tests Stages 3/8/9 | Both |
+| Database recovery | E30: owner Free; PITR upgrade screen. Manual export/restore history unknown | Feasible backup method, recovery targets and isolated drill: Stage 1; no paid purchase requested now | Owner/Both |
 | Storage recovery | Whether independent Storage object-byte protection exists; name of method or “none/unknown” | Database-plus-file recovery validation: Stage 1 | Both |
 | Operations | Incident owner/support address; whether cost/error alerts and budgets exist | Thresholds, runbooks, alert tests and response drills: Stages 1/10 | Owner/Both |
 | Infrastructure access | GitHub, Cloudflare, Supabase, transactional mail and store MFA enabled/not enabled/unknown; recovery owner | Account hardening and recovery verification: Stage 1; Admin app MFA Stage 3 | Owner |
@@ -39,7 +47,7 @@ After that bundle, collect these in small groups. Do not keep Stage 0 open until
 | Deployed backend | Edge function names/update dates, APP_ORIGIN value without secrets, existing schedules and redacted last success/failure | Reconcile deployments/operational controls: Stage 1; scheduler/event reliability Stage 8 | Both |
 | Currency repair compatibility | Controlled legitimate payment/settings and scheduler outcomes if already available; otherwise record not tested | Fixture PASS and grant metadata do not establish live workflow/history. Verify safely before relying on those workflows; full tenant/finance matrix Stages 3/7/9 | Both |
 | Hosting mapping | Current Worker deployment/version/traffic details; whether GitHub Pages intentionally serves anything; TLS/redirect settings | Headers/contact/egress Stage 2; exposed-environment cleanup Stage 1 | Owner/Both |
-| Native prerequisite | Mac/Xcode status; Android Studio/JDK availability; original Windows edits and signing ownership known | Preserve identity; reconcile/build/device/token/backup controls Stage 5; artifacts Stage 9 | Owner/Both |
+| Native prerequisite | E30: no Mac/Xcode access. Android Studio/JDK/current signing ownership still to be accounted for; original local edits preserved | Resolve iOS access and reconcile/build/device/token/backup controls Stage 5; artifacts Stage 9 | Owner/Both |
 | Stores/operator | Play/Apple developer accounts: exists/type/status or not yet; intended platforms, countries, audience, legal operator and support address | Factual policies Stage 4; store/billing mapping Stage 7; console/review evidence Stages 9/10 | Owner |
 | Privacy/processor facts | Known services and actual data/support/retention decisions, with unknowns named | Public notices/deletion/retention Stage 4; SDK/native inventory Stages 5/9 | Both |
 

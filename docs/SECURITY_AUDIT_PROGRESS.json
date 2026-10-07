@@ -64,10 +64,53 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_TOOL_INVENTORY_PENDING",
-        "latest_evidence": "S1E08",
+        "status": "IN_PROGRESS_ENGINE_OPTIONS_HOSTED_SCOPE_PENDING",
+        "latest_evidence": "S1E10",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
-        "backups_created_or_restore_verified": false
+        "backups_created_or_restore_verified": false,
+        "executable_inventory": "OWNER_COMPLETED_S1E09",
+        "observed_tools": [
+          {
+            "tool": "node",
+            "status": "FOUND",
+            "version": "v22.17.0"
+          },
+          {
+            "tool": "npm.cmd",
+            "status": "FOUND",
+            "version": "10.9.2"
+          },
+          {
+            "tool": "git",
+            "status": "FOUND",
+            "version": "git version 2.55.0.windows.3"
+          },
+          {
+            "tool": "docker",
+            "status": "FOUND",
+            "version": "Docker version 29.6.2, build dfc4efb"
+          },
+          {
+            "tool": "pg_dump",
+            "status": "NOT ON PATH",
+            "version": null
+          },
+          {
+            "tool": "psql",
+            "status": "NOT ON PATH",
+            "version": null
+          },
+          {
+            "tool": "supabase",
+            "status": "FOUND",
+            "version": "2.106.0"
+          }
+        ],
+        "engine_target_readiness": "PENDING",
+        "installed_cli_dump_options": "PENDING",
+        "hosted_database_scope": "PENDING_OWNER_READ_ONLY_INVENTORY",
+        "sql_fixture_validation": "PASS_DISPOSABLE_POSTGRESQL_18_3_ONLY",
+        "diagnostic": "supabase/diagnostics/security_stage_1_backup_inventory.sql"
       },
       {
         "id": "1.3",

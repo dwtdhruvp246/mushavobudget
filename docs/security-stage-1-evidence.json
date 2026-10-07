@@ -225,6 +225,107 @@
       "database_export_restore_or_customer_bytes_retrieved": false,
       "tools_installed_services_started_settings_credentials_sql_apk_changed": false,
       "scope": "Version-inventory preparation and step transition only; no backup, restore or protection PASS inferred"
+    },
+    {
+      "id": "S1E09",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner pasted Windows PowerShell executable-version inventory output from the original Mushavo Budget checkout",
+      "result": "EXECUTABLE_INVENTORY_OWNER_COMPLETED",
+      "observed_tools": [
+        {
+          "tool": "node",
+          "status": "FOUND",
+          "version": "v22.17.0"
+        },
+        {
+          "tool": "npm.cmd",
+          "status": "FOUND",
+          "version": "10.9.2"
+        },
+        {
+          "tool": "git",
+          "status": "FOUND",
+          "version": "git version 2.55.0.windows.3"
+        },
+        {
+          "tool": "docker",
+          "status": "FOUND",
+          "version": "Docker version 29.6.2, build dfc4efb"
+        },
+        {
+          "tool": "pg_dump",
+          "status": "NOT ON PATH",
+          "version": null
+        },
+        {
+          "tool": "psql",
+          "status": "NOT ON PATH",
+          "version": null
+        },
+        {
+          "tool": "supabase",
+          "status": "FOUND",
+          "version": "2.106.0"
+        }
+      ],
+      "version_check_failures": 0,
+      "supabase_execution_scope": "Application executable resolved by Get-Command on PATH; absolute installation path/package provenance not printed or established",
+      "repository_cli_pin": "2.116.0; distinct from owner PATH executable 2.106.0, no automatic upgrade requested",
+      "docker_engine_target_and_readiness": "NOT VERIFIED by docker --version",
+      "postgres_tool_absence_scope": "NOT ON PATH only; non-PATH installations are not ruled out",
+      "deployed_postgresql_and_backup_scope": "PENDING",
+      "backups_created_or_restore_verified": false,
+      "assistant_installed_tools_or_changed_native_checkout": false,
+      "scope": "Owner-tested executable availability/version only; no export, database connection, isolated stack or protection PASS inferred"
+    },
+    {
+      "id": "S1E10",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Assistant prepares engine/help checks and read-only SQL scope handoff after S1E09",
+      "status": "ENGINE_OPTIONS_AND_HOSTED_SCOPE_PENDING",
+      "deliverables": [
+        "supabase/diagnostics/security_stage_1_backup_inventory.sql",
+        "scripts/verify-security-stage-1-backup-inventory.cjs",
+        "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md"
+      ],
+      "owner_checks": [
+        "docker context show",
+        "docker version with selected client/server OS/version/architecture fields",
+        "supabase db dump --help",
+        "Intended-project SQL Editor inventory using established fetch/show/clipboard handoff"
+      ],
+      "expected_dashboard_project": "kttkospkblwvguuwnhjj; owner must verify, SQL catalog metadata does not prove project reference",
+      "sql_safety_scope": "Repeatable-read read-only transaction; 30-second statement and 3-second lock timeouts; rollback; standard Supabase Auth/Storage tables required",
+      "sql_output_contract": {
+        "rows": 13,
+        "INFO": 12,
+        "REVIEW": 1,
+        "backup_or_restore_pass": false
+      },
+      "sql_metadata_scope": "PostgreSQL/database size, non-system schemas/extensions/role attributes, privilege/membership indicators, Auth count, bucket configuration and object metadata counts/sizes, managed trigger/policy and publication metadata, scheduler/encryption/migration dependency presence",
+      "private_values_returned": "No user emails/identifiers, object paths/contents, passwords, function bodies, cron commands, webhook URLs or decrypted Vault values",
+      "fixture_validation": {
+        "environment": "Disposable PGlite PostgreSQL 18.3; no hosted credentials/network",
+        "result": "PASS_AT_FIXTURE_SCOPE",
+        "checks": [
+          "13-row INFO/REVIEW contract",
+          "Read-only/repeatable-read context",
+          "Seeded counts and no data mutation",
+          "Empty inventories",
+          "Missing/invalid/negative/oversized recorded sizes remain unknown",
+          "Managed trigger/policy indicators",
+          "Seeded private-value omission",
+          "Database rejects write inside read-only transaction"
+        ]
+      },
+      "powershell_locally_executed": false,
+      "owner_engine_help_or_hosted_sql_result": "PENDING",
+      "exact_export_and_configuration_coverage": "Not established; defaults/managed customizations, exact grants, foreign/large objects, encryption keys, Auth/SMTP/Edge/provider settings and file bytes require separate coverage",
+      "database_export_restore_or_customer_bytes_retrieved": false,
+      "tools_installed_stack_started_provider_credentials_or_native_runtime_changed": false,
+      "scope": "Read-only diagnostic/tooling preparation and disposable fixture execution only; no production SQL executed by assistant and no backup/recovery protection PASS inferred"
     }
   ]
 }

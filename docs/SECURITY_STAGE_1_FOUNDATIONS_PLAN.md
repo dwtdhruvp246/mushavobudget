@@ -1,6 +1,6 @@
 # Stage 1 foundations worklist — authorized, in progress
 
-Authorized by the owner 7 October 2026 after Stage 0 baseline sign-off. **Stage 1 IN PROGRESS at 1.2; Windows tool inventory pending.** [Step 1.1 normal sign-in checks](SECURITY_STAGE_1_1_ACCOUNT_CHECKS.md) passed at owner-test scope with recovery gaps carried forward. Current instructions: [external protection inventory](SECURITY_STAGE_1_2_BACKUP_INVENTORY.md). No factor, backup, project or alert setting is changed by starting this inspection. Follow [the reporting workflow](SECURITY_AUDIT_WORKFLOW.md).
+Authorized by the owner 7 October 2026 after Stage 0 baseline sign-off. **Stage 1 IN PROGRESS at 1.2; Windows executable inventory owner-completed, engine/options/deployed scope pending.** [Step 1.1 normal sign-in checks](SECURITY_STAGE_1_1_ACCOUNT_CHECKS.md) passed at owner-test scope with recovery gaps carried forward. Current instructions: [external protection inventory](SECURITY_STAGE_1_2_BACKUP_INVENTORY.md). No factor, backup, project or alert setting is changed by starting this inspection. Follow [the reporting workflow](SECURITY_AUDIT_WORKFLOW.md).
 
 ## Inputs to preserve
 

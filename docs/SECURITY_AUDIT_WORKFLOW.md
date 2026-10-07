@@ -1,6 +1,6 @@
 # Audit workflow and stage reporting
 
-Owner instruction accepted 7 October 2026, E33. Current stage/step: **1.2**. Stage 0 baseline is owner-approved and closed; Stage 1 foundations is authorized and in progress. Stage 1.1 normal sign-in checks are owner-tested PASS with recovery/identity gaps carried forward; Stage 1.2 tool inventory is pending.
+Owner instruction accepted 7 October 2026, E33. Current stage/step: **1.2**. Stage 0 baseline is owner-approved and closed; Stage 1 foundations is authorized and in progress. Stage 1.1 normal sign-in checks are owner-tested PASS with recovery/identity gaps carried forward; Stage 1.2 executable versions are owner-reported, with engine/options and deployed backup scope pending.
 
 ## Message numbering
 

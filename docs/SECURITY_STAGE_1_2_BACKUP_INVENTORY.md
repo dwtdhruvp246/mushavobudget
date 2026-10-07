@@ -4,7 +4,7 @@ Started 7 October 2026 after owner-tested normal sign-ins completed in 1.1. Stag
 
 ## Current scope and starting facts
 
-Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. S1E17 supplies displayed Dashboard session-pooler connection fields. S1E18 prepares the certificate-verified connection check; S1E19 now records owner execution PASS with the intended endpoint and TLS 1.3. S1E20 records the owner choice of Google Drive for the encrypted off-site copy; S1E21 prepares the encryption-tool check; S1E22 records the prior 24.09 patch gap; S1E23 now records completed owner executable/library 26.04 recheck PASS. S1E24 prepares the dummy-file encryption/header-privacy/recovery check; S1E25 now records owner execution with all three PASS lines, scoped to public dummy data/passwords. S1E26 records owner confirmation of Google two-step verification and the Restricted owner-only Drive folder; S1E27 prepares the separate local folder/DACL/capacity handoff. S1E28 now records completed owner private local folder/DACL PASS, 28.12 GiB free, and owner reports of about 10 GB Drive space and enabled disk encryption. S1E29 prepares the first custom database archive and offline checks; S1E30 now records completed owner export/offline-read PASS. S1E31 prepares private database-component encryption and local extracted-file verification; S1E32 now records completed owner PASS for the real 566,080-byte, three-file encrypted package. S1E33 prepares manual Drive upload/download and private local archive checking; S1E34 records rejection of a selected folder-named ZIP before copying/testing. S1E35 clarifies that error and prepares uploaded-item scope inspection and the single-.7z correction. Private credential storage, actual cloud upload scope, offsite integrity and precise recovery coverage remain pending. No production connection/export/restore, local stack or account setting has been performed by the audit agent; client availability and the database component follow owner execution.
+Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. S1E17 supplies displayed Dashboard session-pooler connection fields. S1E18 prepares the certificate-verified connection check; S1E19 now records owner execution PASS with the intended endpoint and TLS 1.3. S1E20 records the owner choice of Google Drive for the encrypted off-site copy; S1E21 prepares the encryption-tool check; S1E22 records the prior 24.09 patch gap; S1E23 now records completed owner executable/library 26.04 recheck PASS. S1E24 prepares the dummy-file encryption/header-privacy/recovery check; S1E25 now records owner execution with all three PASS lines, scoped to public dummy data/passwords. S1E26 records owner confirmation of Google two-step verification and the Restricted owner-only Drive folder; S1E27 prepares the separate local folder/DACL/capacity handoff. S1E28 now records completed owner private local folder/DACL PASS, 28.12 GiB free, and owner reports of about 10 GB Drive space and enabled disk encryption. S1E29 prepares the first custom database archive and offline checks; S1E30 now records completed owner export/offline-read PASS. S1E31 prepares private database-component encryption and local extracted-file verification; S1E32 now records completed owner PASS for the real 566,080-byte, three-file encrypted package. S1E33 prepares manual Drive upload/download and private local archive checking; S1E34 records rejection of a selected folder-named ZIP before copying/testing. S1E35 clarifies that error and prepares uploaded-item scope inspection and the single-.7z correction. S1E36 records a repeated rejection for the same bundle basename now ending .7z; S1E37 prepares a small read-only size/format/candidate diagnostic. Private credential storage, actual cloud upload scope, offsite integrity and precise recovery coverage remain pending. No production connection/export/restore, local stack or account setting has been performed by the audit agent; client availability and the database component follow owner execution.
 
 For a recoverable backup we must account for database schema/data/roles and privileges, uploaded file bytes and their database metadata, and separately inventoried Auth/platform/Edge/provider configuration dependencies. Supabase's database-backup guidance distinguishes Storage metadata from actual object bytes and recommends off-site exports for Free projects. The earlier Supabase CLI route has defaults/managed-schema exclusions that differ from standalone PostgreSQL tools. The selected standalone export's actual schema/data/role/privilege/managed scope must be designed explicitly; no CLI flags/defaults are blindly copied. Actual PostgreSQL version and required Auth/Storage coverage must be reconciled before preparing exports.
 
@@ -922,13 +922,71 @@ Source: [security-stage-1-drive-download-check.ps1](../scripts/security-stage-1-
 
 Send only the metadata summary and redacted warnings/errors, plus the three owner confirmations above. Keep passphrase, hashes, archive, raw files and receipts private. Successful download/integrity establishes an offsite database-component copy at the stated owner-provenance scope; full global-role/managed/extension/foreign/Vault/Storage-byte/Auth/Edge/provider coverage, frequency/retention/recovery objectives and isolated synthetic recovery still need evidence. No complete-platform backup or F16 closure is claimed.
 
-## Current blocked download and upload-scope question — S1E34–S1E35
+## Prior blocked download and upload-scope question — S1E34–S1E35
 
 The owner runs the complete S1E33 block and selects `MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342-20261007T185032Z-1-001.zip` in Downloads. The expected `.7z` type/size guard rejects it. This happens before new private DriveCheck folder/copy, downloaded hash/7-Zip test or verification receipt; no offsite PASS follows. Original encrypted-component PASS from S1E32 remains intact. ZIP contents/size and actual Drive actions are unknown; this error does not establish damaged encryption or archive corruption.
 
 The ZIP basename matches the local private **working folder**, which also contains raw database/TOC/manifest/verification files. That suggests a folder or multi-item bundle, and raises a concrete missing fact: **was only the final encrypted `.7z` uploaded, or the entire private working folder?** Do not infer raw-file upload or a breach from the name alone. Owner first opens the actual uploaded Drive items and reports that scope using only filenames/types; no archive/customer bytes, keys or hashes enter chat. No deletion/extraction/new-upload instruction is given while that scope is unresolved. If unintended raw copies exist, their actual scope/privacy and handling must be addressed before encrypted-only cloud protection can be accepted.
 
 The local script now gives a specific `.zip` error before the unchanged guards (S1E35); the inline block above matches the refreshed source. Once correct upload scope is established, open the folder and select **the single** `20261007T180751Z-216304be49af48c4b889640c8ab9cef1.database-component-8135efd7cfce4f89b01da7296e864731.7z`, right-click **Download**, and use the fresh `.7z` path in the local check. A ZIP wrapper is a different input and is not renamed or accepted as the checked 566,080-byte archive. Google transfer/sharing, saved passphrase, offsite integrity and full recovery coverage remain pending; F16 stays open. This is missing factual evidence, not a new permission request.
+
+## Current repeated file rejection and read-only diagnosis — S1E36–S1E37
+
+The owner repeats the original S1E33 block and supplies the previous bundle basename with suffix `.7z`: `MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342-20261007T185032Z-1-001.7z`. The combined FileInfo/extension/length/reparse guard still rejects it before any private verification folder/copy/hash/archive test/receipt. The exact failing predicate, actual bytes and true format are unknown. The changed suffix suggests the ZIP may have been renamed, but that action/format is not established. Renaming an extension does not perform archive conversion, and converting a bundle would not produce a byte-identical copy of the original checked encrypted archive. Acceptance still requires the expected original private hash and integrity test; no size/type/hash guard is relaxed.
+
+Run the small read-only diagnostic below for that exact owner-supplied file. It reads at most six initial bytes and prints a format hint, size and expected-name candidate count/list only. It does not display raw header/data/hash bytes, request a password, parse/extract archives or write files. A known signature is not proof of integrity, encryption or offsite provenance; any candidate still needs the original local hash/test checker. Source: [security-stage-1-download-format-check.ps1](../scripts/security-stage-1-download-format-check.ps1). Source/inline equality, unchanged history/tables, JSON/links/fences/diff and bounded read/disposal/output are checked; signatures use official 7-Zip source. Windows execution remains owner pending.
+
+```powershell
+& {
+    $ErrorActionPreference = "Stop"
+    $mushavoSelectedPath = "C:\Users\HP\Downloads\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342-20261007T185032Z-1-001.7z"
+    $mushavoExpectedBase = "20261007T180751Z-216304be49af48c4b889640c8ab9cef1.database-component-8135efd7cfce4f89b01da7296e864731"
+    $mushavoFile = Get-Item -LiteralPath $mushavoSelectedPath -Force
+    if ($mushavoFile -isnot [IO.FileInfo] -or
+        ($mushavoFile.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+        throw "Expected an ordinary downloaded file at the supplied path."
+    }
+    $mushavoHeader = New-Object byte[] 6
+    $mushavoStream = [IO.File]::OpenRead($mushavoFile.FullName)
+    try {
+        $mushavoRead = $mushavoStream.Read($mushavoHeader, 0, 6)
+    } finally {
+        $mushavoStream.Dispose()
+    }
+    $mushavoFormat = "Unrecognized prefix; format and integrity unverified"
+    if ($mushavoRead -eq 6 -and
+        [BitConverter]::ToString($mushavoHeader) -eq "37-7A-BC-AF-27-1C") {
+        $mushavoFormat = "7z signature present; archive integrity not tested"
+    } elseif ($mushavoRead -ge 4 -and
+        [BitConverter]::ToString($mushavoHeader, 0, 4) -in @(
+            "50-4B-03-04", "50-4B-05-06", "50-4B-07-08"
+        )) {
+        $mushavoFormat = "ZIP signature present; filename extension does not convert the format"
+    }
+    $mushavoCandidates = @(Get-ChildItem -LiteralPath $mushavoFile.DirectoryName `
+        -File -Force -Filter "$mushavoExpectedBase*.7z")
+    [pscustomobject]@{
+        stage_step = "1.2"
+        result = "READ_ONLY_DOWNLOAD_FORMAT_AND_SIZE_DIAGNOSTIC"
+        selected_name = $mushavoFile.Name
+        actual_bytes = $mushavoFile.Length
+        expected_bytes = 566080
+        size_matches_expected = ($mushavoFile.Length -eq 566080)
+        format_hint = $mushavoFormat
+        expected_named_download_candidates = $mushavoCandidates.Count
+        files_modified_or_extracted = $false
+        offsite_integrity_verified = $false
+    } | Format-List
+    if ($mushavoCandidates.Count -gt 0) {
+        $mushavoCandidates | Select-Object Name, Length | Format-Table -Wrap -AutoSize
+    } else {
+        Write-Output "No download with the expected archive name was found in this Downloads directory."
+    }
+    Write-Output "Send only this metadata output. No password, hash or file contents are needed."
+}
+```
+
+Send only the metadata/candidate rows. Also answer the outstanding scope question: **was only the final encrypted `.7z` uploaded to Drive, or the entire private local working folder?** File/customer bytes, passphrase and hashes remain private. No root cloud/raw-copy/compromise or offsite success is inferred. Original encrypted-component PASS remains S1E32; F16 stays open until actual component coverage/privacy/integrity and separate recovery requirements are met.
 
 ## Completed owner SQL handoff — retained for reproducibility
 
@@ -964,7 +1022,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Dashboard fields and owner certificate-verified connection PASS are recorded. Google Drive is selected; the 26.04 update is owner-verified; the dummy-file encryption check is owner-tested PASS; Google two-step/Restricted owner-only folder is owner-confirmed. The owner local folder/DACL check now passes, with local capacity and Drive/disk-encryption reports received. The first custom database export/offline checks now pass at S1E30 component scope. The S1E31 private encryption/extracted-file checks now pass at S1E32. The S1E33 local download check is blocked by ZIP selection in S1E34. Clarify actual uploaded-item scope per S1E35 and retry the exact single-file .7z check, then reconcile separate role/managed/foreign/Vault/file/configuration coverage; no repeat connection test is requested. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
+1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Dashboard fields and owner certificate-verified connection PASS are recorded. Google Drive is selected; the 26.04 update is owner-verified; the dummy-file encryption check is owner-tested PASS; Google two-step/Restricted owner-only folder is owner-confirmed. The owner local folder/DACL check now passes, with local capacity and Drive/disk-encryption reports received. The first custom database export/offline checks now pass at S1E30 component scope. The S1E31 private encryption/extracted-file checks now pass at S1E32. The S1E33 local download check is blocked by ZIP selection in S1E34. The same-basename .7z retry is also rejected at S1E36. Run the S1E37 read-only format/size check, clarify actual uploaded-item scope and then select the genuine single-file .7z for the original hash/test check; next reconcile separate role/managed/foreign/Vault/file/configuration coverage; no repeat connection test is requested. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Agree owner-held protected off-site storage, recovery targets, frequency/retention and completion/failure records using actual size/volume. Prepare concrete commands only after these dependencies are known. A schema file or object metadata alone is insufficient.
@@ -1017,3 +1075,6 @@ Only redacted outcome/size/date/completeness records enter the repository. Custo
 
 - [Google Drive single-file browser download](https://support.google.com/drive/answer/2423534?hl=en)
 - [Google Drive uploaded-file sharing and parent permissions](https://support.google.com/drive/answer/2494822?hl=en)
+
+- [Official 7-Zip 7z signature constants](https://github.com/ip7z/7zip/blob/main/CPP/7zip/Archive/7z/7zHeader.cpp)
+- [Official 7-Zip ZIP marker constants](https://github.com/ip7z/7zip/blob/main/CPP/7zip/Archive/Zip/ZipHeader.h)

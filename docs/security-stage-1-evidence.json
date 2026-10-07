@@ -1648,6 +1648,52 @@
       "cloud_upload_scope_confirmed": false,
       "restore_verified": false,
       "scope": "Concrete input-error correction and missing factual upload-scope clarification; not an approval request, cloud-change instruction, claim of raw-data upload/breach or full recovery proof. F16 remains open."
+    },
+    {
+      "id": "S1E36",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner repeats original S1E33 block (without the later ZIP-specific message) and supplies a .7z path whose basename matches the previously rejected ZIP",
+      "result": "OWNER_REPEAT_DOWNLOAD_CHECK_BLOCKED_COMBINED_FILE_GUARD",
+      "owner_execution": {
+        "selected_file": "C:\\Users\\HP\\Downloads\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342-20261007T185032Z-1-001.7z",
+        "reported_error": "Expected the completed 566080-byte downloaded .7z file.",
+        "stopped_before_private_download_copy_and_hash_test": true
+      },
+      "known_and_unknown": "Owner-selected extension now .7z. The combined FileInfo/extension/length/reparse guard still rejects the selection; actual length/type/reparse state and header bytes are not supplied, so the exact failing predicate and archive format are unverified. No corruption diagnosis or guard relaxation follows.",
+      "rename_inference": "Same prior folder-bundle basename with only suffix changed suggests a renamed ZIP rather than the expected single downloaded archive; this is an inference, not owner-confirmed conversion/rename or verified format.",
+      "upload_scope_status": "Still unanswered: only encrypted .7z versus whole local private working folder uploaded. Prior S1E34 concern remains open; no raw upload/breach is proven.",
+      "prior_encrypted_component_pass_preserved": "S1E32",
+      "downloaded_archive_file_verification_verified": false,
+      "offsite_upload_download_verified": false,
+      "real_backup_passphrase_storage_confirmed": false,
+      "scope": "Owner input rejection remains blocked offsite work. No private download-copy, archive parser/test/extraction, receipt, hash/secret access or root Drive action is performed."
+    },
+    {
+      "id": "S1E37",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Prepared small read-only selected-download format/size diagnostic after S1E36",
+      "result": "PREPARED_READ_ONLY_DOWNLOAD_PREFIX_SIZE_AND_CANDIDATE_CHECK",
+      "script": "scripts/security-stage-1-download-format-check.ps1",
+      "planned_operations": [
+        "Read FileInfo size/name for exact owner-supplied downloaded path and reject reparse/non-file input",
+        "Read at most six initial bytes through OpenRead and close in finally",
+        "Classify known 7z signature or common ZIP signatures; otherwise leave format unverified",
+        "List only expected same-run encrypted archive filename candidates in the selected Downloads directory, without recursion",
+        "Report names/bytes/format hint/candidate count only; do not display bytes/hashes or request passphrase"
+      ],
+      "scope_limits": "Signature classification is a format hint, not payload/encryption/password/hash/integrity or cloud provenance proof. Candidate filename/size is not original-archive authenticity. Original full-file private-receipt hash comparison/test remains necessary after selecting the genuine downloaded .7z. Upload scope/privacy and saved passphrase still need owner reports.",
+      "validation": "PASS: immutable S1E01–35/original tables, JSON/local links/fences, exact source/inline equality and diff whitespace. Magic prefixes reviewed against official 7-Zip 7zHeader.cpp/ZipHeader.h; six-byte bounded read/finally disposal, metadata-only output and exact-name nonrecursive candidate scope reviewed. No Windows/PowerShell runtime; owner diagnostic execution pending.",
+      "documentation_sources": [
+        "https://github.com/ip7z/7zip/blob/main/CPP/7zip/Archive/7z/7zHeader.cpp",
+        "https://github.com/ip7z/7zip/blob/main/CPP/7zip/Archive/Zip/ZipHeader.h"
+      ],
+      "mutation_scope": "None: no renaming, conversion, hashing, extracting, copying, uploading, deleting or database action",
+      "downloaded_archive_file_verification_verified": false,
+      "offsite_upload_download_verified": false,
+      "cloud_upload_scope_confirmed": false,
+      "scope": "Concrete read-only diagnosis of the repeated wrong-file rejection; not a workaround for expected byte/hash guards, a breach assertion or full backup/recovery acceptance. F16 remains open."
     }
   ]
 }

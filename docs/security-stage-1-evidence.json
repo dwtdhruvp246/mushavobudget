@@ -1297,6 +1297,38 @@
       "backup_created": false,
       "restore_verified": false,
       "scope": "Prepare owner capability test only; published dummy passwords must never protect real backups. This does not verify real passphrase entry/recovery, local/Drive protection, complete backup coverage or isolated database restore. F16 remains open."
+    },
+    {
+      "id": "S1E25",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner pasted complete inline synthetic encryption-check execution and all three PASS lines",
+      "result": "OWNER_SYNTHETIC_ENCRYPTION_HEADER_PRIVACY_WRONG_PASSWORD_AND_RESTORED_HASH_PASS",
+      "script": "scripts/security-stage-1-encryption-synthetic-check.ps1",
+      "owner_output": [
+        "PASS: Dummy archive created; payload reports 7zAES/encrypted.",
+        "PASS: Wrong password cannot list dummy filename or test archive.",
+        "PASS: Correct password tests archive; restored SHA-256 matches."
+      ],
+      "synthetic_directory": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Audit-Test-b984d6c3ac374488b2913c195841341c",
+      "verified_at_owner_execution_scope": {
+        "dummy_archive_creation": true,
+        "reported_payload_7zAES_and_encrypted_metadata": true,
+        "wrong_password_listing_exit_2_without_dummy_filename": true,
+        "wrong_password_integrity_test_exit_2": true,
+        "correct_password_integrity_and_extraction_exit_0": true,
+        "restored_dummy_SHA256_matches_original": true
+      },
+      "supersedes": "S1E24 owner execution pending, at dummy-file encryption capability scope only",
+      "inputs": "Public dummy text and public distinct correct/wrong test passwords; no customer export or real recovery credential",
+      "synthetic_test_verified": true,
+      "synthetic_archive_created": true,
+      "synthetic_file_extraction_verified": true,
+      "real_backup_passphrase_handling_verified": false,
+      "backup_created": false,
+      "restore_verified": false,
+      "drive_account_and_folder_protection": "Still not reported; unconfirmed, not disabled/failed",
+      "scope": "Owner-tested synthetic file/tool behavior PASS only, based on complete pasted block and its checked output. Audit agent did not execute Windows commands or retrieve artifacts/hashes. No real backup/export/upload, protected local ACL/cloud account/folder, private passphrase recovery, full coverage or isolated database restore proof; F16 stays open."
     }
   ]
 }

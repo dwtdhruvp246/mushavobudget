@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_7ZIP_26_04_VERSION_PASS_SYNTHETIC_ENCRYPTION_AND_DESTINATION_PROTECTION_PENDING",
-        "latest_evidence": "S1E24",
+        "status": "IN_PROGRESS_SYNTHETIC_ENCRYPTION_PASS_REAL_DESTINATION_PROTECTION_AND_EXPORT_COVERAGE_PENDING",
+        "latest_evidence": "S1E25",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -176,8 +176,13 @@
         },
         "drive_account_two_step_verification": "NOT_REPORTED; UNCONFIRMED_NOT_DISABLED",
         "drive_folder_protection": "NOT_REPORTED; UNCONFIRMED",
-        "synthetic_encryption_check": "scripts/security-stage-1-encryption-synthetic-check.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E24",
-        "synthetic_encryption_verified": false
+        "synthetic_encryption_check": "OWNER_EXECUTED_S1E24_BLOCK_PASS_S1E25",
+        "synthetic_encryption_verified": true,
+        "synthetic_encryption_result": {
+          "evidence": "S1E25",
+          "scope": "Public dummy file/password only; encrypted metadata, hidden filename, wrong-password rejection, correct-password integrity/extraction and matching restored SHA-256",
+          "real_backup_passphrase_or_local_cloud_protection_verified": false
+        }
       },
       {
         "id": "1.3",

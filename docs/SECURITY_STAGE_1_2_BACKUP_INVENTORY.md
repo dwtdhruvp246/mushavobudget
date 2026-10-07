@@ -4,7 +4,7 @@ Started 7 October 2026 after owner-tested normal sign-ins completed in 1.1. Stag
 
 ## Current scope and starting facts
 
-Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. S1E17 supplies displayed Dashboard session-pooler connection fields. S1E18 prepares the certificate-verified connection check; S1E19 now records owner execution PASS with the intended endpoint and TLS 1.3. S1E20 records the owner choice of Google Drive for the encrypted off-site copy; S1E21 prepares the encryption-tool check; S1E22 records the prior 24.09 patch gap; S1E23 now records completed owner executable/library 26.04 recheck PASS. S1E24 prepares the dummy-file encryption/header-privacy/recovery check; S1E25 now records owner execution with all three PASS lines, scoped to public dummy data/passwords. Destination protection, actual encryption/export/upload and precise coverage remain pending. No export, restore, local stack, account setting or production write has been performed by this work; client availability follows the owner setup, not an assistant installation.
+Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. S1E17 supplies displayed Dashboard session-pooler connection fields. S1E18 prepares the certificate-verified connection check; S1E19 now records owner execution PASS with the intended endpoint and TLS 1.3. S1E20 records the owner choice of Google Drive for the encrypted off-site copy; S1E21 prepares the encryption-tool check; S1E22 records the prior 24.09 patch gap; S1E23 now records completed owner executable/library 26.04 recheck PASS. S1E24 prepares the dummy-file encryption/header-privacy/recovery check; S1E25 now records owner execution with all three PASS lines, scoped to public dummy data/passwords. S1E26 records owner confirmation of Google two-step verification and the Restricted owner-only Drive folder; S1E27 prepares the separate local folder/DACL/capacity handoff. Actual local protection/private-passphrase handling, real export/encryption/upload and precise coverage remain pending. No export, restore, local stack, account setting or production write has been performed by this work; client availability follows the owner setup, not an assistant installation.
 
 For a recoverable backup we must account for database schema/data/roles and privileges, uploaded file bytes and their database metadata, and separately inventoried Auth/platform/Edge/provider configuration dependencies. Supabase's database-backup guidance distinguishes Storage metadata from actual object bytes and recommends off-site exports for Free projects. The earlier Supabase CLI route has defaults/managed-schema exclusions that differ from standalone PostgreSQL tools. The selected standalone export's actual schema/data/role/privilege/managed scope must be designed explicitly; no CLI flags/defaults are blindly copied. Actual PostgreSQL version and required Auth/Storage coverage must be reconciled before preparing exports.
 
@@ -385,7 +385,98 @@ The check requires successful archive creation, correct-password technical listi
 
 **Completed owner result — S1E25:** all three PASS lines are returned, including 7zAES/encrypted payload metadata, wrong-password filename/integrity rejection and correct-password integrity/extraction with identical restored SHA-256. The retained synthetic directory is `C:\Users\HP\AppData\Local\MushavoBudget-Audit-Test-b984d6c3ac374488b2913c195841341c`. **OWNER-TESTED synthetic encryption/extraction PASS**; no repeat test is requested. The audit agent has no PowerShell or 7-Zip runtime and has not retrieved the files or raw hashes. This proves the checked owner dummy-file/tool behavior, not real backup completeness, private-passphrase recovery or database restore. Real packaging will use separate owner-held recovery credentials with safe entry, independently verified local/cloud protection and complete selected database/file/configuration coverage.
 
-Google account two-step verification and the Drive folder's Restricted access/capacity are still unreported. Do not assume they are disabled or completed; retain the destination follow-up. No real backup/encrypted upload or restore has been created/verified; F16 remains open.
+S1E26 below supersedes the unreported Google two-step/folder settings at owner-confirmation scope. Drive capacity and actual artifact/upload/download proof remain pending. No real backup/encrypted upload or restore has been created/verified; F16 remains open.
+
+## Current cloud settings confirmation and local working folder — S1E26–S1E27
+
+The owner answers **yes** to both explicit questions: the selected Google account has two-step verification enabled, and **Mushavo Budget Backups** exists with **General access: Restricted**, access limited to the owner. Record **OWNER-CONFIRMED protection settings**. No repeat question or screenshot is required merely to re-establish these reports. The audit agent has not accessed Google, inspected its account/folder via API, or performed a fresh sign-in/recovery drill. Capacity and real upload/download integrity remain unverified.
+
+Next paste [the local backup-folder block](../scripts/security-stage-1-local-backup-folder.ps1) into normal PowerShell. It resolves LOCALAPPDATA, requires a fixed NTFS drive and rejects reparse-point ancestors, then creates one new unique empty directory. It replaces only that new directory's DACL with protected inheritable FullControl rules for the current Windows user, SYSTEM and Administrators, re-reads the actual owner/rules, and reports the path and free GiB. Existing directories/permissions and the dirty Windows repository remain untouched; no administrator shell or execution-policy change is requested. If any filesystem/CIM/permission check fails, stop and report the exact error; no export is attempted into an unverified folder.
+
+```powershell
+& {
+    $ErrorActionPreference = "Stop"
+    $mushavoLocalBase = [Environment]::GetFolderPath("LocalApplicationData")
+    if ([string]::IsNullOrWhiteSpace($mushavoLocalBase)) {
+        throw "Local application-data directory was not found."
+    }
+    $mushavoDriveRoot = [IO.Path]::GetPathRoot($mushavoLocalBase)
+    if ($mushavoDriveRoot -notmatch "^[A-Za-z]:\\$") {
+        throw "Expected a local Windows drive. Send the error."
+    }
+    $mushavoDriveId = $mushavoDriveRoot.Substring(0, 2)
+    $mushavoDisk = Get-CimInstance -ClassName Win32_LogicalDisk `
+        -Filter "DeviceID='$mushavoDriveId'"
+    if (-not $mushavoDisk -or $mushavoDisk.DriveType -ne 3 -or
+        $mushavoDisk.FileSystem -ne "NTFS") {
+        throw "A fixed NTFS drive is required for this private folder."
+    }
+    $mushavoParent = Get-Item -LiteralPath $mushavoLocalBase -Force
+    while ($null -ne $mushavoParent) {
+        if ($mushavoParent.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+            throw "Local path has a redirected directory. Send the error."
+        }
+        $mushavoParent = $mushavoParent.Parent
+    }
+
+    $mushavoBackupRoot = Join-Path $mushavoLocalBase `
+        ("MushavoBudget-Private-Backup-" + [guid]::NewGuid().ToString("N"))
+    New-Item -ItemType Directory -Path $mushavoBackupRoot | Out-Null
+    Write-Output "Backup working folder: $mushavoBackupRoot"
+
+    $mushavoOwnerSid = [Security.Principal.WindowsIdentity]::GetCurrent().User
+    $mushavoAllowedSids = @(
+        $mushavoOwnerSid.Value,
+        "S-1-5-18",
+        "S-1-5-32-544"
+    )
+    $mushavoAcl = [Security.AccessControl.DirectorySecurity]::new()
+    $mushavoAcl.SetOwner($mushavoOwnerSid)
+    $mushavoAcl.SetAccessRuleProtection($true, $false)
+    foreach ($mushavoSidValue in $mushavoAllowedSids) {
+        $mushavoSid = [Security.Principal.SecurityIdentifier]::new($mushavoSidValue)
+        $mushavoRule = [Security.AccessControl.FileSystemAccessRule]::new(
+            $mushavoSid,
+            [Security.AccessControl.FileSystemRights]::FullControl,
+            [Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit",
+            [Security.AccessControl.PropagationFlags]::None,
+            [Security.AccessControl.AccessControlType]::Allow
+        )
+        $mushavoAcl.AddAccessRule($mushavoRule)
+    }
+    Set-Acl -LiteralPath $mushavoBackupRoot -AclObject $mushavoAcl
+
+    $mushavoCheck = Get-Acl -LiteralPath $mushavoBackupRoot
+    $mushavoRules = $mushavoCheck.GetAccessRules(
+        $true, $true, [Security.Principal.SecurityIdentifier]
+    )
+    if (-not $mushavoCheck.AreAccessRulesProtected -or
+        $mushavoCheck.GetOwner([Security.Principal.SecurityIdentifier]).Value -ne
+            $mushavoOwnerSid.Value -or $mushavoRules.Count -ne 3) {
+        throw "Folder owner or protected permission count did not match."
+    }
+    foreach ($mushavoRule in $mushavoRules) {
+        if ($mushavoRule.IdentityReference.Value -notin $mushavoAllowedSids -or
+            $mushavoRule.IsInherited -or
+            $mushavoRule.AccessControlType -ne "Allow" -or
+            $mushavoRule.FileSystemRights -ne "FullControl" -or
+            $mushavoRule.InheritanceFlags -ne
+                [Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit" -or
+            $mushavoRule.PropagationFlags -ne "None") {
+            throw "Unexpected backup-folder permission. Send the error."
+        }
+    }
+
+    Write-Output "PASS: New local NTFS folder; permissions limited to your user, SYSTEM and Administrators."
+    Write-Output ("Local free space (GiB): " +
+        [math]::Round([double]$mushavoDisk.FreeSpace / 1GB, 2))
+    Write-Output "Folder is empty. No database export or cloud upload was performed."
+}
+```
+
+Send the path, PASS/free-space lines or the exact error. Owner execution is pending; the audit workspace has no Windows/PowerShell runtime, so actual folder/ACL/space results cannot be claimed from this source review. A successful DACL check would limit normal filesystem access to the listed identities; administrators/SYSTEM remain authorized, and this does not prove at-rest encryption, endpoint security or exclusion from separately configured sync/backup software.
+
+Also report **available Google Drive storage** and whether **Windows device encryption/BitLocker is enabled on the displayed local drive** (yes/no/unsure), without sharing recovery keys. Keep raw working files local and upload only the separately verified encrypted package. Private backup-passphrase creation/entry/independent recovery, exact database/managed/role/Vault/file/configuration coverage, incomplete-run detection and actual export/upload/download/isolated restore remain pending. The folder is empty at preparation: F16 stays open and no real backup is created.
 
 ## Completed owner SQL handoff — retained for reproducibility
 
@@ -421,7 +512,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Dashboard fields and owner certificate-verified connection PASS are recorded. Google Drive is selected; the 26.04 update is owner-verified; the dummy-file encryption check is owner-tested PASS; verify actual local/cloud account/folder protection and safe private-passphrase handling, then prepare exports against the reconciled coverage; no repeat connection test is requested. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
+1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Dashboard fields and owner certificate-verified connection PASS are recorded. Google Drive is selected; the 26.04 update is owner-verified; the dummy-file encryption check is owner-tested PASS; Google two-step/Restricted owner-only folder is owner-confirmed. Run the prepared local folder/DACL check and report local/cloud capacity and disk encryption, then establish safe private-passphrase handling and prepare exports against the reconciled coverage; no repeat connection test is requested. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Agree owner-held protected off-site storage, recovery targets, frequency/retention and completion/failure records using actual size/volume. Prepare concrete commands only after these dependencies are known. A schema file or object metadata alone is insufficient.
@@ -460,3 +551,7 @@ Only redacted outcome/size/date/completeness records enter the repository. Custo
 - [7-Zip project-linked header-encryption method manual](https://7-zip.opensource.jp/chm/cmdline/switches/method.htm)
 - [7-Zip project-linked exit-code manual](https://7-zip.opensource.jp/chm/cmdline/exit_codes.htm)
 - [Official 7-Zip exit-code definitions](https://github.com/ip7z/7zip/blob/main/CPP/7zip/UI/Common/ExitCode.h)
+- [Microsoft Set-Acl for Windows PowerShell 5.1](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-acl?view=powershell-5.1)
+- [Microsoft FileSystemAccessRule constructors](https://learn.microsoft.com/en-us/dotnet/api/system.security.accesscontrol.filesystemaccessrule.-ctor)
+- [Microsoft inherited-access protection API](https://learn.microsoft.com/en-us/dotnet/api/system.security.accesscontrol.objectsecurity.setaccessruleprotection)
+- [Microsoft local disk type/filesystem/free-space metadata](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-logicaldisk)

@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_SYNTHETIC_ENCRYPTION_PASS_REAL_DESTINATION_PROTECTION_AND_EXPORT_COVERAGE_PENDING",
-        "latest_evidence": "S1E25",
+        "status": "IN_PROGRESS_GOOGLE_PROTECTION_OWNER_CONFIRMED_LOCAL_FOLDER_CAPACITY_ENCRYPTION_AND_EXPORT_COVERAGE_PENDING",
+        "latest_evidence": "S1E27",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -157,13 +157,16 @@
           "cipher": "TLS_AES_256_GCM_SHA384",
           "scope": "Owner client-to-session-pooler"
         },
-        "protected_export_destination": "GOOGLE_DRIVE_OWNER_ACCEPTED; PRIVATE_LOCAL_PATH_ACCOUNT_FOLDER_ENCRYPTION_AND_UPLOAD_PROOF_PENDING",
+        "protected_export_destination": "GOOGLE_TWO_STEP_AND_RESTRICTED_OWNER_ONLY_FOLDER_OWNER_CONFIRMED_S1E26; LOCAL_PATH_DACL_DISK_ENCRYPTION_CAPACITY_REAL_PASSPHRASE_AND_ARTIFACTS_PENDING",
         "precise_export_coverage": "PENDING_DATABASE_ROLES_MANAGED_ENCRYPTION_FILES_CONFIGURATION_RECONCILIATION",
         "offsite_destination_choice": {
           "destination": "Google Drive",
           "evidence": "S1E20",
-          "choice_only": true,
-          "account_mfa_sharing_upload_verified": false
+          "choice_only": false,
+          "account_mfa_sharing_upload_verified": false,
+          "protection_evidence": "S1E26; owner settings confirmation only",
+          "mfa_and_private_folder_owner_reported": true,
+          "actual_upload_and_download_integrity_verified": false
         },
         "encryption_tool_check": "OWNER_INFORMATION_RECHECK_PASS_26_04_EXECUTABLE_AND_LIBRARY_S1E23; S1E22_PATCH_GAP_SUPERSEDED",
         "encryption_archive_and_restore_verified": false,
@@ -174,15 +177,19 @@
           "architecture": "x64",
           "security_update_verified": true
         },
-        "drive_account_two_step_verification": "NOT_REPORTED; UNCONFIRMED_NOT_DISABLED",
-        "drive_folder_protection": "NOT_REPORTED; UNCONFIRMED",
+        "drive_account_two_step_verification": "OWNER_CONFIRMED_ENABLED_S1E26; SETTINGS_SCOPE_ONLY",
+        "drive_folder_protection": "OWNER_CONFIRMED_CREATED_RESTRICTED_ONLY_OWNER_S1E26; SETTINGS_SCOPE_ONLY",
         "synthetic_encryption_check": "OWNER_EXECUTED_S1E24_BLOCK_PASS_S1E25",
         "synthetic_encryption_verified": true,
         "synthetic_encryption_result": {
           "evidence": "S1E25",
           "scope": "Public dummy file/password only; encrypted metadata, hidden filename, wrong-password rejection, correct-password integrity/extraction and matching restored SHA-256",
           "real_backup_passphrase_or_local_cloud_protection_verified": false
-        }
+        },
+        "local_backup_folder_handoff": "scripts/security-stage-1-local-backup-folder.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E27",
+        "local_backup_folder_and_dacl_verified": false,
+        "local_disk_encryption": "NOT_REPORTED; UNCONFIRMED",
+        "drive_free_capacity": "NOT_REPORTED; UNCONFIRMED"
       },
       {
         "id": "1.3",

@@ -1329,6 +1329,58 @@
       "restore_verified": false,
       "drive_account_and_folder_protection": "Still not reported; unconfirmed, not disabled/failed",
       "scope": "Owner-tested synthetic file/tool behavior PASS only, based on complete pasted block and its checked output. Audit agent did not execute Windows commands or retrieve artifacts/hashes. No real backup/export/upload, protected local ACL/cloud account/folder, private passphrase recovery, full coverage or isolated database restore proof; F16 stays open."
+    },
+    {
+      "id": "S1E26",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner answers 1. yes / 2. yes to explicit Google two-step verification and restricted owner-only backup-folder questions",
+      "result": "OWNER_CONFIRMED_GOOGLE_TWO_STEP_AND_PRIVATE_DRIVE_FOLDER_SETTINGS",
+      "owner_confirmed": {
+        "google_account_two_step_verification_enabled": true,
+        "folder_name": "Mushavo Budget Backups",
+        "folder_created": true,
+        "general_access": "Restricted",
+        "access_limited_to_owner": true
+      },
+      "scope": "Owner-reported settings confirmation only. No screenshot/session/folder ACL API or Google account access by audit agent; factor type, fresh sign-in/recovery, capacity, upload/download integrity and archive recovery remain unverified.",
+      "supersedes": "S1E25 unreported Google two-step/folder evidence at owner settings-confirmation scope",
+      "offsite_capacity_verified": false,
+      "upload_verified": false,
+      "backup_created": false,
+      "restore_verified": false,
+      "assistant_accessed_drive_or_changed_provider_settings": false
+    },
+    {
+      "id": "S1E27",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Prepared inline owner Windows private local backup-folder handoff after S1E26",
+      "result": "PREPARED_LOCAL_FOLDER_AND_DACL_CHECK_OWNER_EXECUTION_PENDING",
+      "script": "scripts/security-stage-1-local-backup-folder.ps1",
+      "planned_operations": [
+        "Resolve actual LOCALAPPDATA and require fixed NTFS drive",
+        "Reject reparse-point directories in existing ancestor path",
+        "Create a fresh uniquely named empty directory, without modifying existing folder permissions",
+        "Set owner and protected inheritable FullControl DACL for current user, SYSTEM and Administrators only",
+        "Re-read and require exact three allowed SID/rule/rights/inheritance/owner checks",
+        "Report actual path and current local free GiB"
+      ],
+      "mutation_scope": "Owner command would create one empty folder and change its DACL only. No production connection, exports, file content, recursive permission changes, provider access, secrets or uploads.",
+      "remaining_owner_evidence": "Run prepared block; report path/PASS/free-space or error. Separately report Drive free capacity and whether device/BitLocker encryption is enabled on the displayed local drive. Capacity/at-rest encryption not inferred from NTFS/DACL.",
+      "validation": "PASS: exact source/inline handoff, JSON/local links/fences, preserved prior events/tables and diff whitespace checks; new-folder-only DACL mutation, SID/owner/rights/inheritance readback and ordering reviewed against official Microsoft documentation. No PowerShell or Windows runtime in audit workspace; owner execution pending.",
+      "documentation_sources": [
+        "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-acl?view=powershell-5.1",
+        "https://learn.microsoft.com/en-us/dotnet/api/system.security.accesscontrol.filesystemaccessrule.-ctor",
+        "https://learn.microsoft.com/en-us/dotnet/api/system.security.accesscontrol.objectsecurity.setaccessruleprotection",
+        "https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-logicaldisk"
+      ],
+      "local_folder_created_or_acl_verified": false,
+      "disk_encryption_verified": false,
+      "real_backup_passphrase_handling_verified": false,
+      "backup_created": false,
+      "restore_verified": false,
+      "scope": "Concrete local destination preparation only, owner execution pending; ACL scope does not exclude administrator/SYSTEM access or verify cloud-sync exclusion, disk encryption or real artifact recovery. F16 stays open."
     }
   ]
 }

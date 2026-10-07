@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_OWNER_DATABASE_EXPORT_OFFLINE_READ_PASS_PRIVATE_ENCRYPTED_PACKAGE_PREPARED",
-        "latest_evidence": "S1E31",
+        "status": "IN_PROGRESS_OWNER_ENCRYPTED_DATABASE_COMPONENT_PASS_DRIVE_DOWNLOAD_CHECK_PREPARED",
+        "latest_evidence": "S1E33",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -157,7 +157,7 @@
           "cipher": "TLS_AES_256_GCM_SHA384",
           "scope": "Owner client-to-session-pooler"
         },
-        "protected_export_destination": "OWNER_LOCAL_NTFS_DACL_PASS_S1E28; GOOGLE_RESTRICTED_FOLDER_TWO_STEP_CONFIRMED_S1E26; DISK_ENCRYPTION_CAPACITY_OWNER_REPORTED_S1E28; DATABASE_COMPONENT_CREATED_S1E30; ENCRYPTED_PACKAGE_OFFSITE_AND_FULL_COVERAGE_PENDING",
+        "protected_export_destination": "OWNER_LOCAL_NTFS_DACL_PASS_S1E28; GOOGLE_RESTRICTED_FOLDER_TWO_STEP_CONFIRMED_S1E26; DISK_ENCRYPTION_CAPACITY_OWNER_REPORTED_S1E28; ENCRYPTED_DATABASE_COMPONENT_CREATED_VERIFIED_S1E32; OFFSITE_FULL_COVERAGE_AND_CREDENTIAL_STORAGE_PENDING",
         "precise_export_coverage": "PENDING_DATABASE_ROLES_MANAGED_ENCRYPTION_FILES_CONFIGURATION_RECONCILIATION",
         "offsite_destination_choice": {
           "destination": "Google Drive",
@@ -198,7 +198,7 @@
         },
         "database_export_handoff": "scripts/security-stage-1-database-export.ps1; OWNER_EXECUTED_PASS_S1E30",
         "database_export_created": true,
-        "encrypted_package_created": false,
+        "encrypted_package_created": true,
         "database_archive_read_verified": true,
         "database_export_result": {
           "evidence": "S1E30",
@@ -210,9 +210,26 @@
           "warnings": "NOT_REPORTED",
           "scope": "One database component; offline archive reading is not SQL execution/restore or full platform completeness"
         },
-        "encrypted_package_handoff": "scripts/security-stage-1-database-encryption.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E31",
+        "encrypted_package_handoff": "scripts/security-stage-1-database-encryption.ps1; OWNER_EXECUTED_PASS_S1E32",
         "complete_platform_backup_created": false,
-        "backups_created_or_restore_verified_scope": "Complete selected database/roles/files/configuration and offsite/isolated recovery; first database component separately recorded in S1E30"
+        "backups_created_or_restore_verified_scope": "Complete selected database/roles/files/configuration and offsite/isolated recovery; first database component separately recorded in S1E30",
+        "encrypted_package_file_verification_verified": true,
+        "encrypted_package_result": {
+          "evidence": "S1E32",
+          "completed_utc": "2026-10-07T18:26:23.3604019Z",
+          "file": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342\\20261007T180751Z-216304be49af48c4b889640c8ab9cef1.database-component-8135efd7cfce4f89b01da7296e864731.7z",
+          "bytes": 566080,
+          "packaged_files": 3,
+          "method": "LZMA2:3m 7zAES",
+          "wrong_password_source_filename_denial_and_three_extracted_hashes": "OWNER_TESTED_PASS",
+          "hashes": "PRIVATE_LOCAL_ONLY",
+          "warnings": "NOT_REPORTED",
+          "scope": "Actual owner-held database component encryption/file integrity; no database restore or full platform/offsite clearance"
+        },
+        "real_backup_passphrase_storage": "NOT_REPORTED; OWNER_CONFIRMATION_PENDING",
+        "drive_download_check_handoff": "scripts/security-stage-1-drive-download-check.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E33",
+        "downloaded_archive_file_verification_verified": false,
+        "offsite_upload_download_verified": false
       },
       {
         "id": "1.3",

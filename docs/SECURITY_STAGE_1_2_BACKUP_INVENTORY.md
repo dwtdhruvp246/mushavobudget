@@ -4,7 +4,7 @@ Started 7 October 2026 after owner-tested normal sign-ins completed in 1.1. Stag
 
 ## Current scope and starting facts
 
-Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. S1E17 supplies displayed Dashboard session-pooler connection fields. S1E18 prepares the certificate-verified connection check; S1E19 now records owner execution PASS with the intended endpoint and TLS 1.3. S1E20 records the owner choice of Google Drive for the encrypted off-site copy; S1E21 prepares the encryption-tool check; S1E22 records the prior 24.09 patch gap; S1E23 now records completed owner executable/library 26.04 recheck PASS. S1E24 prepares the dummy-file encryption/header-privacy/recovery check; S1E25 now records owner execution with all three PASS lines, scoped to public dummy data/passwords. S1E26 records owner confirmation of Google two-step verification and the Restricted owner-only Drive folder; S1E27 prepares the separate local folder/DACL/capacity handoff. S1E28 now records completed owner private local folder/DACL PASS, 28.12 GiB free, and owner reports of about 10 GB Drive space and enabled disk encryption. S1E29 prepares the first custom database archive and offline checks; S1E30 now records completed owner export/offline-read PASS. S1E31 prepares private database-component encryption and local extracted-file verification. Private package/passphrase recovery, offsite upload/download and precise recovery coverage remain pending. No production connection/export/restore, local stack or account setting has been performed by the audit agent; client availability and the database component follow owner execution.
+Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. S1E17 supplies displayed Dashboard session-pooler connection fields. S1E18 prepares the certificate-verified connection check; S1E19 now records owner execution PASS with the intended endpoint and TLS 1.3. S1E20 records the owner choice of Google Drive for the encrypted off-site copy; S1E21 prepares the encryption-tool check; S1E22 records the prior 24.09 patch gap; S1E23 now records completed owner executable/library 26.04 recheck PASS. S1E24 prepares the dummy-file encryption/header-privacy/recovery check; S1E25 now records owner execution with all three PASS lines, scoped to public dummy data/passwords. S1E26 records owner confirmation of Google two-step verification and the Restricted owner-only Drive folder; S1E27 prepares the separate local folder/DACL/capacity handoff. S1E28 now records completed owner private local folder/DACL PASS, 28.12 GiB free, and owner reports of about 10 GB Drive space and enabled disk encryption. S1E29 prepares the first custom database archive and offline checks; S1E30 now records completed owner export/offline-read PASS. S1E31 prepares private database-component encryption and local extracted-file verification; S1E32 now records completed owner PASS for the real 566,080-byte, three-file encrypted package. S1E33 prepares manual Drive upload/download and private local archive checking. Private credential storage, offsite upload/download and precise recovery coverage remain pending. No production connection/export/restore, local stack or account setting has been performed by the audit agent; client availability and the database component follow owner execution.
 
 For a recoverable backup we must account for database schema/data/roles and privileges, uploaded file bytes and their database metadata, and separately inventoried Auth/platform/Edge/provider configuration dependencies. Supabase's database-backup guidance distinguishes Storage metadata from actual object bytes and recommends off-site exports for Free projects. The earlier Supabase CLI route has defaults/managed-schema exclusions that differ from standalone PostgreSQL tools. The selected standalone export's actual schema/data/role/privilege/managed scope must be designed explicitly; no CLI flags/defaults are blindly copied. Actual PostgreSQL version and required Auth/Storage coverage must be reconciled before preparing exports.
 
@@ -611,13 +611,13 @@ The owner supplies `DATABASE_EXPORT_AND_OFFLINE_ARCHIVE_READ_PASS` completed **2
 
 SHA-256 is intentionally **owner-withheld**, retained in the private local manifest and compared locally by the next block. No hash disclosure is requested. Warnings were **not reported**, which is not independent evidence that none occurred. Encryption=false, complete global-role/Storage-file/provider coverage=false and isolated restore=false remain explicit. Offline archive reading does not execute SQL or prove successful database restoration; entry counts are not full row/object/extension coverage.
 
-## Current database-component encryption handoff — S1E31
+## Completed database-component encryption handoff — S1E31–S1E32
 
 First generate a unique random backup passphrase of at least 20 characters and save it privately in a password manager or another protected recovery location separate from the Drive archive. Use that saved passphrase at each native 7-Zip prompt; do not leave it blank, reuse the database password, put it in the PowerShell block or send it here. Run directly in the normal interactive PowerShell terminal. Creation uses bare `-p`; testing/extraction omit that switch so encrypted-header reading asks for the password. Official console source distinguishes those modes and disables Windows console input echo. No real passphrase is stored in a PowerShell variable, command argument, environment or receipt.
 
 The block packages **only this run's three explicit dump/TOC/manifest files**, after comparing the private dump hash and exact metadata locally. It creates a unique encrypted-header 7z partial package, requires correct-password integrity success and a random wrong-password header-listing failure without source filenames, then extracts exactly three copies inside a new child of the private folder and compares all original/extracted hashes. Only after those checks does it rename the archive and write a private verification receipt with archive/file hashes. It retains originals, local verification copies and failures; it performs no raw cleanup, database reconnect/restore or Drive upload. This is the database component, with separate file/global-role/configuration coverage still pending. The original at-export manifest remains unchanged, including its historical encrypted=false value.
 
-Source: [security-stage-1-database-encryption.ps1](../scripts/security-stage-1-database-encryption.ps1). Windows execution is pending; the audit workspace has no native PowerShell/7-Zip runtime. Source/inline equality, preserved events/tables, JSON/local links/fences and diff whitespace are checked; native prompt/exit/header/hash/partial behavior is reviewed against official source/manual.
+Source: [security-stage-1-database-encryption.ps1](../scripts/security-stage-1-database-encryption.ps1). Execution was pending at preparation; S1E32 below supplies owner PASS. The audit workspace has no native PowerShell/7-Zip runtime. Source/inline equality, preserved events/tables, JSON/local links/fences and diff whitespace are checked; native prompt/exit/header/hash/partial behavior is reviewed against official source/manual.
 
 ```powershell
 & {
@@ -781,6 +781,144 @@ Source: [security-stage-1-database-encryption.ps1](../scripts/security-stage-1-d
 
 Send only the resulting metadata summary and any redacted warnings/errors, plus whether the backup passphrase is saved privately. Keep hashes, originals, verification receipt/copies, passwords and keys private. A successful file extraction is not an isolated database restore or complete platform backup. Upload instructions and offsite download/integrity checks follow the owner encryption result; F16 stays open.
 
+## Completed encrypted database component — S1E32
+
+The owner supplies `DATABASE_COMPONENT_ENCRYPTED_PACKAGE_AND_EXTRACTED_HASH_PASS`, completed **2026-10-07T18:26:23.3604019Z**, project `kttkospkblwvguuwnhjj`. The checked final archive is `20261007T180751Z-216304be49af48c4b889640c8ab9cef1.database-component-8135efd7cfce4f89b01da7296e864731.7z` in the verified private folder, **566,080 bytes**, **three files**. Native output reports `LZMA2:3m 7zAES`, 336 header bytes, one solid block, 2,320,648 uncompressed bytes and `Everything is Ok`. The `.partial.7z` name in native test output precedes the handoff's checked rename; the final summary identifies the completed `.7z`.
+
+| Owner-executed check | Result |
+|---|---|
+| Original dump matches its private manifest | PASS |
+| Wrong password cannot list source filenames | PASS |
+| Correct-password integrity and exactly three extracted files | PASS |
+| All three source/extracted SHA-256 comparisons, with source hashes unchanged | PASS |
+| Private recovery-passphrase storage | Not reported |
+| Drive upload/download; complete role/file/provider coverage; isolated database restore | Pending |
+
+This supersedes S1E31 owner execution pending at real component encryption/file verification scope. Artifact/hash/passphrase bytes remain owner-held. No warnings are reported; this does not independently establish that none occurred. File extraction is not SQL database restoration and this component is not complete platform backup evidence; F16 remains open.
+
+## Current Drive copy/download handoff — S1E33
+
+Keep the backup passphrase saved privately and separately from the Drive archive. In the existing **Mushavo Budget Backups** folder on [Google Drive](https://drive.google.com/), use **New → File upload** for **only the final `.7z` identified above**, and wait until the upload completes. Raw dumps, TOC/manifest/verification receipts, extracted files and credentials stay in the private local working folder. Inspect the uploaded file's Share dialog and confirm **Restricted**, with only your account listed. Select that single uploaded file, right-click **Download**, and wait for a fresh browser download; retain the local original. These are owner browser steps, not an automated connector transfer or new sharing request.
+
+Run the block below with the full path to that newly downloaded `.7z` (often in Downloads). It checks the original against its exact private receipt and rejects selecting the original path as the download. It retains an encrypted copy in a fresh private child directory, compares its hash locally, tests that downloaded archive with the saved passphrase at the native hidden-input prompt and writes a private receipt without printing hashes. It creates no plaintext extraction or database connection and deletes no original/download. A local path/hash cannot independently prove Google provenance or sharing: report explicit owner confirmation of the actual Drive upload/download, uploaded-file privacy and privately saved passphrase alongside the summary.
+
+Source: [security-stage-1-drive-download-check.ps1](../scripts/security-stage-1-drive-download-check.ps1). Exact source/inline handoff, immutable evidence/tables, JSON/local links/fences and diff whitespace are checked. Manual UI instructions use official Google guidance; receipt/size/hash, native prompt, distinct-file/private-copy and exit ordering are reviewed. Windows execution remains owner pending, with no local PowerShell/7-Zip runtime.
+
+```powershell
+& {
+    $ErrorActionPreference = "Stop"
+    $mushavo7Zip = "C:\Program Files\7-Zip\7z.exe"
+    $mushavoBackupRoot = "C:\Users\HP\AppData\Local\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342"
+    $mushavoPackageRun = "20261007T180751Z-216304be49af48c4b889640c8ab9cef1.database-component-8135efd7cfce4f89b01da7296e864731"
+    $mushavoOriginal = Join-Path $mushavoBackupRoot "$mushavoPackageRun.7z"
+    $mushavoReceipt = Join-Path $mushavoBackupRoot "$mushavoPackageRun.verification.json"
+    if (-not (Test-Path -LiteralPath $mushavo7Zip -PathType Leaf)) {
+        throw "Verified 7-Zip executable was not found."
+    }
+    $mushavoFolder = Get-Item -LiteralPath $mushavoBackupRoot -Force
+    if (-not $mushavoFolder.PSIsContainer -or
+        ($mushavoFolder.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+        throw "Expected the private local backup directory."
+    }
+    $mushavoOwnerSid = [Security.Principal.WindowsIdentity]::GetCurrent().User
+    $mushavoAllowedSids = @($mushavoOwnerSid.Value, "S-1-5-18", "S-1-5-32-544")
+    $mushavoAcl = Get-Acl -LiteralPath $mushavoBackupRoot
+    $mushavoRules = $mushavoAcl.GetAccessRules(
+        $true, $true, [Security.Principal.SecurityIdentifier]
+    )
+    if (-not $mushavoAcl.AreAccessRulesProtected -or $mushavoRules.Count -ne 3 -or
+        $mushavoAcl.GetOwner([Security.Principal.SecurityIdentifier]).Value -ne $mushavoOwnerSid.Value) {
+        throw "Backup-folder owner or protected permissions changed."
+    }
+    foreach ($mushavoRule in $mushavoRules) {
+        if ($mushavoRule.IdentityReference.Value -notin $mushavoAllowedSids -or
+            $mushavoRule.IsInherited -or $mushavoRule.AccessControlType -ne "Allow" -or
+            $mushavoRule.FileSystemRights -ne "FullControl" -or
+            $mushavoRule.InheritanceFlags -ne
+                [Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit" -or
+            $mushavoRule.PropagationFlags -ne "None") {
+            throw "Unexpected backup-folder permissions."
+        }
+    }
+    foreach ($mushavoPath in @($mushavoOriginal, $mushavoReceipt)) {
+        $mushavoItem = Get-Item -LiteralPath $mushavoPath -Force
+        if ($mushavoItem.PSIsContainer -or $mushavoItem.Length -le 0 -or
+            ($mushavoItem.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+            throw "Original archive or private verification receipt is missing, empty or redirected."
+        }
+    }
+    $mushavoPrivateRecord = Get-Content -LiteralPath $mushavoReceipt -Raw | ConvertFrom-Json
+    $mushavoOriginalHash = (Get-FileHash -LiteralPath $mushavoOriginal -Algorithm SHA256).Hash
+    if ($mushavoPrivateRecord.summary.stage_step -ne "1.2" -or
+        $mushavoPrivateRecord.summary.project -ne "kttkospkblwvguuwnhjj" -or
+        $mushavoPrivateRecord.summary.result -ne "DATABASE_COMPONENT_ENCRYPTED_PACKAGE_AND_EXTRACTED_HASH_PASS" -or
+        $mushavoPrivateRecord.summary.file -ne $mushavoOriginal -or
+        $mushavoPrivateRecord.summary.bytes -ne 566080 -or
+        (Get-Item -LiteralPath $mushavoOriginal).Length -ne 566080 -or
+        $mushavoPrivateRecord.summary.packaged_files -ne 3 -or
+        $mushavoPrivateRecord.summary.all_three_extracted_hashes_match -ne $true -or
+        $mushavoPrivateRecord.archive_sha256 -notmatch "^[0-9a-fA-F]{64}$" -or
+        $mushavoOriginalHash -ne $mushavoPrivateRecord.archive_sha256) {
+        throw "Original archive does not match its completed private receipt. Hashes stay private."
+    }
+
+    $mushavoDownloadInput = (Read-Host "Full path to the newly downloaded Google Drive .7z file").Trim().Trim('"')
+    $mushavoDownload = Get-Item -LiteralPath $mushavoDownloadInput -Force
+    if ($mushavoDownload -isnot [IO.FileInfo] -or $mushavoDownload.Extension -ne ".7z" -or
+        $mushavoDownload.Length -ne 566080 -or
+        ($mushavoDownload.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+        throw "Expected the completed 566080-byte downloaded .7z file."
+    }
+    if ($mushavoDownload.FullName -eq $mushavoOriginal) {
+        throw "Select the new browser download, not the original local archive."
+    }
+    $mushavoCheckRoot = Join-Path $mushavoBackupRoot ("DriveCheck-" + [guid]::NewGuid().ToString("N"))
+    New-Item -ItemType Directory -Path $mushavoCheckRoot | Out-Null
+    $mushavoPrivateCopy = Join-Path $mushavoCheckRoot "$mushavoPackageRun.7z"
+    Copy-Item -LiteralPath $mushavoDownload.FullName -Destination $mushavoPrivateCopy
+    $mushavoDownloadedHash = (Get-FileHash -LiteralPath $mushavoPrivateCopy -Algorithm SHA256).Hash
+    if ($mushavoDownloadedHash -ne $mushavoPrivateRecord.archive_sha256 -or
+        (Get-FileHash -LiteralPath $mushavoOriginal -Algorithm SHA256).Hash -ne $mushavoOriginalHash) {
+        throw "Downloaded bytes differ or the original changed. Keep files and report the error without hashes."
+    }
+    Write-Output "Enter your privately saved backup passphrase at the 7-Zip prompt."
+    $ErrorActionPreference = "Continue"
+    & $mushavo7Zip t $mushavoPrivateCopy
+    $mushavoTestExit = $LASTEXITCODE
+    $ErrorActionPreference = "Stop"
+    if ($mushavoTestExit -ne 0) {
+        throw "Downloaded archive/password integrity test failed (exit $mushavoTestExit). Keep all files."
+    }
+    if ((Get-FileHash -LiteralPath $mushavoPrivateCopy -Algorithm SHA256).Hash -ne $mushavoDownloadedHash) {
+        throw "Downloaded copy changed during checking."
+    }
+    $mushavoSummary = [pscustomobject]@{
+        stage_step = "1.2"
+        result = "DOWNLOADED_DATABASE_PACKAGE_HASH_AND_ARCHIVE_TEST_PASS"
+        project = "kttkospkblwvguuwnhjj"
+        completed_utc = [DateTime]::UtcNow.ToString("o")
+        file = $mushavoPrivateCopy
+        bytes = (Get-Item -LiteralPath $mushavoPrivateCopy).Length
+        matches_private_original_receipt = $true
+        downloaded_archive_password_test_passed = $true
+        cloud_upload_download_provenance = "OWNER_BROWSER_ACTION_CONFIRMATION_REQUIRED"
+        complete_platform_backup_created = $false
+        isolated_database_restore_verified = $false
+    }
+    [pscustomobject]@{
+        summary = $mushavoSummary
+        archive_sha256 = $mushavoDownloadedHash
+        owner_selected_download_path = $mushavoDownload.FullName
+    } | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath `
+        (Join-Path $mushavoCheckRoot "download-verification.json") -Encoding UTF8
+    $mushavoSummary | Format-List
+    Write-Output "Send only this summary and redacted warnings/errors; confirm actual Drive upload/download and privately saved passphrase."
+    Write-Output "Original files and the encrypted download remain retained. No database restore was performed."
+}
+```
+
+Send only the metadata summary and redacted warnings/errors, plus the three owner confirmations above. Keep passphrase, hashes, archive, raw files and receipts private. Successful download/integrity establishes an offsite database-component copy at the stated owner-provenance scope; full global-role/managed/extension/foreign/Vault/Storage-byte/Auth/Edge/provider coverage, frequency/retention/recovery objectives and isolated synthetic recovery still need evidence. No complete-platform backup or F16 closure is claimed.
+
 ## Completed owner SQL handoff — retained for reproducibility
 
 
@@ -815,7 +953,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Dashboard fields and owner certificate-verified connection PASS are recorded. Google Drive is selected; the 26.04 update is owner-verified; the dummy-file encryption check is owner-tested PASS; Google two-step/Restricted owner-only folder is owner-confirmed. The owner local folder/DACL check now passes, with local capacity and Drive/disk-encryption reports received. The first custom database export/offline checks now pass at S1E30 component scope. Execute the prepared S1E31 private encryption/extracted-file checks, then reconcile separate role/managed/foreign/Vault/file/configuration coverage and offsite download/integrity; no repeat connection test is requested. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
+1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Dashboard fields and owner certificate-verified connection PASS are recorded. Google Drive is selected; the 26.04 update is owner-verified; the dummy-file encryption check is owner-tested PASS; Google two-step/Restricted owner-only folder is owner-confirmed. The owner local folder/DACL check now passes, with local capacity and Drive/disk-encryption reports received. The first custom database export/offline checks now pass at S1E30 component scope. The S1E31 private encryption/extracted-file checks now pass at S1E32. Execute the S1E33 manual Drive copy/download and local integrity check, then reconcile separate role/managed/foreign/Vault/file/configuration coverage; no repeat connection test is requested. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Agree owner-held protected off-site storage, recovery targets, frequency/retention and completion/failure records using actual size/volume. Prepare concrete commands only after these dependencies are known. A schema file or object metadata alone is insufficient.
@@ -865,3 +1003,6 @@ Only redacted outcome/size/date/completeness records enter the repository. Custo
 - [Official 7-Zip creation password callback](https://github.com/ip7z/7zip/blob/main/CPP/7zip/UI/Console/UpdateCallbackConsole.cpp)
 - [Official 7-Zip hidden console-input implementation](https://github.com/ip7z/7zip/blob/main/CPP/7zip/UI/Console/UserInputUtils.cpp)
 - [Official 7-Zip extraction password callback](https://github.com/ip7z/7zip/blob/main/CPP/7zip/UI/Console/ExtractCallbackConsole.cpp)
+
+- [Google Drive single-file browser download](https://support.google.com/drive/answer/2423534?hl=en)
+- [Google Drive uploaded-file sharing and parent permissions](https://support.google.com/drive/answer/2494822?hl=en)

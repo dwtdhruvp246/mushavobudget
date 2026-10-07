@@ -1519,6 +1519,90 @@
       "complete_platform_backup_created": false,
       "restore_verified": false,
       "scope": "Concrete owner-held database-component package preparation only. Original export manifest remains immutable, including its at-export encrypted=false flag. File extraction/hash comparison is not a database restore. Global roles/managed/foreign/extension/Vault keys, Storage file bytes and Auth/Edge/provider configuration remain separate; F16 stays open."
+    },
+    {
+      "id": "S1E32",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner supplies 7-Zip successful archive output and completed S1E31 encrypted package/extracted-hash summary",
+      "result": "OWNER_DATABASE_COMPONENT_ENCRYPTED_PACKAGE_AND_EXTRACTED_HASH_PASS",
+      "owner_execution": {
+        "project": "kttkospkblwvguuwnhjj",
+        "completed_utc": "2026-10-07T18:26:23.3604019Z",
+        "file": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342\\20261007T180751Z-216304be49af48c4b889640c8ab9cef1.database-component-8135efd7cfce4f89b01da7296e864731.7z",
+        "bytes": 566080,
+        "packaged_files": 3,
+        "dump_matches_private_manifest": true,
+        "wrong_password_cannot_list_source_filenames": true,
+        "all_three_extracted_hashes_match": true
+      },
+      "native_archive_output": {
+        "tested_path_suffix": ".partial.7z before checked rename",
+        "type": "7z",
+        "physical_bytes": 566080,
+        "headers_bytes": 336,
+        "method": "LZMA2:3m 7zAES",
+        "solid": true,
+        "blocks": 1,
+        "uncompressed_bytes": 2320648,
+        "reported": "Everything is Ok; Files: 3"
+      },
+      "supersedes": "S1E31 encrypted package/file verification pending, at returned owner-test component scope only",
+      "checked_handoff_scope": "Exact same-run dump/TOC/manifest; private manifest metadata/hash comparison, native encrypted-header creation and correct-password integrity test, random wrong-password listing rejection/no source filenames, exactly three extraction copies and pre/post original/extracted hash equality, then checked rename/private receipt. Root receives only pasted outcome/native metadata.",
+      "warnings": "NOT_REPORTED; no independent claim that no warnings occurred",
+      "encrypted_package_created": true,
+      "encrypted_package_file_verification_verified": true,
+      "real_backup_passphrase_storage_confirmed": false,
+      "real_backup_passphrase_storage_status": "NOT_REPORTED; prior private-storage confirmation request remains open",
+      "offsite_upload_download_verified": false,
+      "global_roles_storage_file_bytes_provider_config_complete": false,
+      "restore_verified": false,
+      "scope": "Owner-tested real database-component encryption and file recovery/integrity PASS. Native AES method metadata and negative filename check support the artifact encryption scope. No root archive inspection/hash retrieval/secret receipt, credential-persistence proof, offsite copy, complete platform coverage or SQL database restore proof; F16 stays open."
+    },
+    {
+      "id": "S1E33",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Prepared owner manual Google Drive upload/download and private local file-verification handoff after S1E32; owner execution pending",
+      "result": "PREPARED_DRIVE_DATABASE_COMPONENT_COPY_AND_DOWNLOADED_ARCHIVE_CHECK",
+      "script": "scripts/security-stage-1-drive-download-check.ps1",
+      "upload_scope": {
+        "folder": "Mushavo Budget Backups; S1E26 owner-confirmed Restricted/owner-only",
+        "exact_final_archive": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342\\20261007T180751Z-216304be49af48c4b889640c8ab9cef1.database-component-8135efd7cfce4f89b01da7296e864731.7z",
+        "expected_bytes": 566080,
+        "only_this_encrypted_file": true,
+        "raw_dump_toc_receipts_verification_copies_passwords_or_keys_uploaded": false
+      },
+      "owner_steps": [
+        "Keep independently saved private backup passphrase available; do not share it",
+        "In existing private Drive folder use New / File upload for the checked final .7z and wait for completed upload",
+        "Inspect uploaded file sharing: Restricted and only owner; no added recipients/public link",
+        "Right-click that uploaded file / Download and wait for a fresh completed browser download",
+        "Run inline check with full path to the fresh download; send metadata/errors and confirm actual browser upload/download and private passphrase storage"
+      ],
+      "planned_local_checks": [
+        "Re-read private folder owner/protected inheritable DACL",
+        "Require exact original/receipt project/result/path/size/count/private SHA-256 consistency",
+        "Require distinct completed .7z download file of expected size, not the original local archive",
+        "Copy encrypted download into a fresh private child directory; compare SHA-256 with original private receipt and ensure original hash unchanged",
+        "Test downloaded archive with saved passphrase at native hidden-input prompt; require exit zero and unchanged post-test hash",
+        "Write private verification receipt with hash and source path; send summary without hashes"
+      ],
+      "cloud_provenance_limit": "Script reads local files only; a distinct selected path/hash cannot independently prove Google transfer or sharing. Actual upload/download and uploaded-file privacy require explicit owner confirmation. No agent/CLI/API Drive access or upload is performed.",
+      "validation": "PASS: immutable prior events/original tables, JSON/local links/fences, exact source/inline handoff and diff whitespace. Manual UI procedure checked against official Google guidance; private receipt/size/hash comparison, distinct file, private-copy retention, native saved-passphrase test and metadata-only output reviewed. No Windows/PowerShell/7-Zip runtime in audit workspace; execution pending.",
+      "documentation_sources": [
+        "https://support.google.com/drive/answer/2424368?hl=en",
+        "https://support.google.com/drive/answer/2423534?hl=en",
+        "https://support.google.com/drive/answer/2494822?hl=en",
+        "https://github.com/ip7z/7zip/blob/main/CPP/7zip/UI/Console/Main.cpp",
+        "https://github.com/ip7z/7zip/blob/main/CPP/7zip/UI/Console/UserInputUtils.cpp"
+      ],
+      "offsite_upload_download_verified": false,
+      "downloaded_archive_file_verification_verified": false,
+      "real_backup_passphrase_storage_confirmed": false,
+      "complete_platform_backup_created": false,
+      "restore_verified": false,
+      "scope": "Concrete single database-component offsite-copy preparation only. No root cloud transfer/settings change/secret access, raw cleanup or database restore. Roles/managed/extension/foreign/Vault/file/provider coverage, retention/frequency/recovery objectives and isolated synthetic recovery remain pending; F16 stays open."
     }
   ]
 }

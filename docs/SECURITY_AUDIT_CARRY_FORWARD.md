@@ -10,6 +10,8 @@ Current-stage work already authorized may address its planned areas. Remaining f
 
 **F08 account-access action:** owner enables a supported Cloudflare factor with verified account email and an independent recovery route, saves recovery material privately, then supplies active-settings evidence and completes a fresh MFA sign-in. Record this in final residual resolution/re-audit under the owner’s chosen workflow; no configuration change is performed or requested by the current inspection. GitHub saved-code confirmation is not a completed recovery drill.
 
+**S1E03 clarification:** Cloudflare sign-in uses Google; the owner’s own MFA setup attempt is blocked by a Cloudflare password prompt. Add the documented **Forgot Password for the existing profile email → set separate Cloudflare password → verify same-account access** prerequisite before local enrollment. Google MFA/recovery remains unverified; keep local 2FA Inactive and overall sign-in-path assessment distinct. Password/factor setup has not been evidenced as complete.
+
 | ID | Residual status | Scope | Action plan | Work stage(s) | Owner | Required final recheck |
 |---|---|---|---|---|---|---|
 | F01 | GAP / confirmed missing | Public policies and support notices: Source lacks dedicated policies; sampled privacy/terms routes returned 404. Operator is undecided, launch worldwide and age audience unspecified. | Resolve actual operator/age/territory/data/retention facts, then publish factual privacy/terms/support notices and functioning links. | 4,9 | Owner/Both | Public URLs return the intended notices; logged-in/signup/native/store surfaces link to the same factual versions; processor/retention facts match actual behavior. |

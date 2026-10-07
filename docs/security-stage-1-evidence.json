@@ -66,6 +66,28 @@
       "whole_finding_or_release_pass_inferred": false,
       "settings_runtime_sql_apk_changes_by_assistant": false,
       "scope": "Read-only screenshot/status recording; GitHub recovery storage is owner confirmation, not a performed recovery test; screenshot bytes/secrets not committed"
+    },
+    {
+      "id": "S1E03",
+      "stage_step": "1.1",
+      "received_date": "2026-10-07",
+      "source": "Owner clarifies Google sign-in to Cloudflare and MFA enrollment asks for a password",
+      "provider": "Cloudflare",
+      "sign_in_method": "Google social login — owner confirmed",
+      "enrollment_result": "BLOCKED at password prompt — owner report; no completed enrollment evidenced",
+      "local_2fa_status": "FAIL Inactive from S1E02; not superseded by Google sign-in clarification",
+      "google_account_mfa_and_recovery": "UNVERIFIED; do not infer protection from social login alone",
+      "cloudflare_password_presence": "Owner does not have a usable Cloudflare password for the setup; exact credential state not independently inspected",
+      "official_guidance": {
+        "url": "https://developers.cloudflare.com/fundamentals/user-profiles/login/",
+        "checked_date": "2026-10-07",
+        "summary": "Social-login users initially lack a Cloudflare password. MFA setup requires setting one using Forgot Password for the existing Cloudflare profile email."
+      },
+      "next_action": "Owner uses the supported password-setting route for the same account, verifies existing account access, then may complete Cloudflare factor setup and privately save recovery codes; no new account or Google credential entry requested",
+      "password_setting_or_mfa_completed": "NOT VERIFIED",
+      "stage_1_1_complete": false,
+      "settings_credentials_runtime_sql_apk_changed_by_assistant": false,
+      "scope": "Owner-reported sign-in/prerequisite clarification and supported manual guidance; no secrets, authentication links or reset email sent by assistant"
     }
   ]
 }

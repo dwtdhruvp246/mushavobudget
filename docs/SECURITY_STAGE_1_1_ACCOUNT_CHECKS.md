@@ -8,14 +8,20 @@ Evidence [S1E01](security-stage-1-evidence.json): the owner supplied the GitHub 
 
 Evidence [S1E02](security-stage-1-evidence.json): the owner confirms **GitHub recovery codes saved**. This supersedes the storage-unconfirmed outcome at owner-report scope; no fresh sign-in, storage-access test or recovery drill is inferred. The Cloudflare screenshot explicitly shows **Two-Factor Authentication — Inactive**, with Security Key/Mobile App **Add** and Email Authentication **Enable**. Record **FAIL — Cloudflare 2FA inactive** at displayed configuration scope, carried forward under F08. No factor setting is changed by this inspection.
 
+Evidence [S1E03](security-stage-1-evidence.json): the owner clarifies **Google sign-in to Cloudflare**, with enrollment blocked by the Cloudflare password prompt. The prior local 2FA **Inactive** observation remains; Google-account MFA/recovery is unverified. Cloudflare’s [official social-login guidance](https://developers.cloudflare.com/fundamentals/user-profiles/login/) documents that social-login profiles initially lack a Cloudflare password and some operations, including MFA enrollment, require setting one via **Forgot Password** for the existing profile email. This is a supported prerequisite, not proof enrollment succeeded or that Google protection is absent.
+
 | Provider | MFA inspection | Private recovery availability | Remaining evidence |
 |---|---|---|---|
 | GitHub | PASS — displayed configured methods | Owner confirms codes saved | Fresh sign-in/recovery evidence remains separate |
-| Cloudflare | FAIL — displayed 2FA Inactive | Not verified | Carry forward factor enrollment, private recovery storage, active settings and fresh MFA sign-in checks |
+| Cloudflare | FAIL — local 2FA Inactive; Google sign-in confirmed | Cloudflare/Google recovery unverified | Enrollment password prerequisite BLOCKED; supported password-setting guidance prepared; Google protection and subsequent factor/sign-in checks pending |
 | Supabase | Pending | Pending | Actual dashboard sign-in path and account MFA/recovery |
 | Zoho | Pending | Pending | Sender-administration account MFA/recovery |
 
 Next owner check: Supabase personal **Account settings → MFA**. Identify dashboard sign-in via GitHub/email-password/other and inspect account-level MFA; this is separate from project Authentication settings for app users. Status-only crops are sufficient. Cloudflare remediation remains in the final resolution register under the owner’s workflow; no enrollment is requested by this read-only check. Step 1.1 remains in progress.
+
+## Cloudflare Google-sign-in password prerequisite
+
+The owner encountered this during their own enrollment attempt. If resolving it now, keep the working session available and open Cloudflare’s **Forgot password** flow in another tab. Use the email already shown in the existing Cloudflare profile, follow the owner-held reset email and set a separate Cloudflare password. Verify email/password access to the existing account, then return to **My Profile → Authentication → Mobile App Authentication → Add**, complete the factor prompt and save recovery codes privately. Supply only active/inactive status and saved-code confirmation; no password, reset link, QR or recovery code is shared here. Cloudflare’s Google sign-in is recorded separately; successful password/factor setup remains unverified until owner results arrive.
 
 ## Check the actual provider accounts
 
@@ -50,6 +56,6 @@ After the actual sign-in paths/status are established, verify independent recove
 ## Primary instructions checked 7 October 2026
 
 - [GitHub 2FA settings](https://docs.github.com/en/authentication/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication)
-- [Cloudflare profile 2FA](https://developers.cloudflare.com/fundamentals/user-profiles/2fa/)
+- [Cloudflare profile 2FA](https://developers.cloudflare.com/fundamentals/user-profiles/2fa/) and [social-login/password prerequisite](https://developers.cloudflare.com/fundamentals/user-profiles/login/)
 - [Supabase dashboard-account MFA](https://supabase.com/docs/guides/platform/multi-factor-authentication) and [production sign-in guidance](https://supabase.com/docs/guides/deployment/going-into-prod)
 - [Zoho account MFA](https://help.zoho.com/portal/en/kb/accounts/faqs-troubleshooting/faqs/multi-factor-authentication/articles/how-do-i-enable-mfa-for-my-account)

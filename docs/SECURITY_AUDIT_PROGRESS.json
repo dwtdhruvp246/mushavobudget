@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_ENCRYPTED_COMPONENT_PASS_REPEAT_DOWNLOAD_REJECTED_FORMAT_DIAGNOSTIC_PREPARED",
-        "latest_evidence": "S1E37",
+        "status": "IN_PROGRESS_ENCRYPTED_COMPONENT_PASS_DIFFERENT_7Z_DOWNLOAD_CONFIRMED_EXACT_ORIGINAL_SELECTION_PREPARED",
+        "latest_evidence": "S1E39",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -226,7 +226,7 @@
           "warnings": "NOT_REPORTED",
           "scope": "Actual owner-held database component encryption/file integrity; no database restore or full platform/offsite clearance"
         },
-        "real_backup_passphrase_storage": "NOT_REPORTED; OWNER_CONFIRMATION_PENDING",
+        "real_backup_passphrase_storage": "STILL_UNREPORTED; YES_NO_UNSURE_OWNER_PROMPT_PREPARED_S1E39",
         "drive_download_check_handoff": "scripts/security-stage-1-drive-download-check.ps1; S1E34_OWNER_ZIP_SELECTION_BLOCKED; ZIP_GUIDANCE_CLARIFIED_S1E35",
         "downloaded_archive_file_verification_verified": false,
         "offsite_upload_download_verified": false,
@@ -238,8 +238,18 @@
           "rename_of_previous_zip": "INFERENCE_FROM_SAME_BASENAME_ONLY",
           "downloaded_artifact_corrupt": "NOT_ESTABLISHED"
         },
-        "cloud_upload_scope": "STILL_UNCONFIRMED; OWNER_DID_NOT_ANSWER_SINGLE_ARCHIVE_OR_WHOLE_PRIVATE_FOLDER; S1E34–S1E36",
-        "download_format_diagnostic_handoff": "scripts/security-stage-1-download-format-check.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E37"
+        "cloud_upload_scope": "STILL_UNREPORTED; CATEGORICAL_OWNER_PROMPT_PREPARED_S1E39",
+        "download_format_diagnostic_handoff": "scripts/security-stage-1-download-format-check.ps1; OWNER_EXECUTED_S1E38_METADATA_RESULT",
+        "download_format_result": {
+          "evidence": "S1E38",
+          "actual_bytes": 1212733,
+          "expected_bytes": 566080,
+          "format_hint": "7z signature; integrity not tested",
+          "expected_named_candidates": 0,
+          "size_matches_original": false,
+          "rename_zip_inference": "NOT_SUPPORTED_BY_CURRENT_7Z_PREFIX; CREATION_HISTORY_UNKNOWN"
+        },
+        "original_archive_selection_handoff": "scripts/security-stage-1-original-archive-selection.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E39"
       },
       {
         "id": "1.3",

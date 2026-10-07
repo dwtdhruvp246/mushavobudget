@@ -1694,6 +1694,58 @@
       "offsite_upload_download_verified": false,
       "cloud_upload_scope_confirmed": false,
       "scope": "Concrete read-only diagnosis of the repeated wrong-file rejection; not a workaround for expected byte/hash guards, a breach assertion or full backup/recovery acceptance. F16 remains open."
+    },
+    {
+      "id": "S1E38",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner pastes complete S1E37 read-only diagnostic and completed metadata output",
+      "result": "OWNER_DOWNLOAD_FORMAT_SIZE_DIAGNOSTIC_COMPLETED_DIFFERENT_ARCHIVE",
+      "owner_execution": {
+        "selected_name": "MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342-20261007T185032Z-1-001.7z",
+        "actual_bytes": 1212733,
+        "expected_bytes": 566080,
+        "size_matches_expected": false,
+        "format_hint": "7z signature present; archive integrity not tested",
+        "expected_named_download_candidates": 0,
+        "files_modified_or_extracted": false,
+        "offsite_integrity_verified": false
+      },
+      "supersedes": "S1E37 read-only execution pending and S1E36 selected size/format-prefix unknown at metadata scope. Current selected file has 7z marker, so a simple renamed ZIP interpretation is not supported; previous .zip format, any re-creation/conversion or archive contents are still unknown.",
+      "determined_reason": "Reported size mismatch makes the selected file different from the checked 566080-byte original and explains rejection by the size predicate; the helper found no expected-name candidate in that nonrecursive Downloads directory.",
+      "scope_limits": "Six-byte marker is not archive validity, payload/encryption/private-hash/cloud provenance proof. Actual original archive remains owner-tested PASS S1E32. No new copy, extraction, hash/secret receipt or root Drive access.",
+      "upload_scope_and_private_passphrase_storage": "Still unreported; repeated path/output does not answer those facts",
+      "downloaded_archive_file_verification_verified": false,
+      "offsite_upload_download_verified": false,
+      "scope": "Completed owner read-only metadata diagnosis only; offsite backup acceptance remains blocked by wrong artifact and missing cloud scope reports, not a database/encryption corruption finding. F16 stays open."
+    },
+    {
+      "id": "S1E39",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Prepared exact original archive selection/clipboard helper and single-file upload/download correction after S1E38",
+      "result": "PREPARED_ORIGINAL_ARCHIVE_PRIVATE_HASH_BINDING_AND_EXACT_PATH_SELECTION",
+      "script": "scripts/security-stage-1-original-archive-selection.ps1",
+      "planned_operations": [
+        "Require exact original regular archive/private receipt, expected project/result/path/566080 bytes/three-file record and private SHA-256 match",
+        "Collect only categorical owner reports of existing Drive upload scope and independently retained backup passphrase; unexpected/blank inputs remain UNSURE and raw responses are not printed",
+        "Set Windows clipboard with original archive path text only, using Set-Clipboard -Value",
+        "Report metadata/status values without hashes or secrets; no archive/write/cloud action by helper"
+      ],
+      "owner_correction": "After privately retaining the backup passphrase, use existing private Drive folder New / File upload; paste copied full original path into Windows File name dialog and click Open. Choose that exact named uploaded file after completion and download it individually; original private-receipt/hash/integrity checker still required. No folder repacking, renamed wrapper or new AES package is needed.",
+      "missing_cloud_scope_handling": "Helper owner reports classify earlier uploads; unknown/whole-folder/raw-copy privacy/contents require separate follow-up before full cloud protection acceptance. Preparing a copy of the known checked encrypted archive is within prior single-file upload authorization and does not clear unexpected existing cloud items. No deletion or other-file upload instruction.",
+      "validation": "PASS: immutable S1E01–37 and original tables, JSON/local links/fences, exact source/inline equality and diff whitespace. Expected original receipt/hash metadata, categorical unknown handling, path-only -Value clipboard selection and retained strict offsite checker reviewed against official Microsoft/Google guidance. No Windows/PowerShell runtime; owner selection helper/upload/download execution pending.",
+      "documentation_sources": [
+        "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-clipboard?view=powershell-5.1",
+        "https://support.google.com/drive/answer/2424368?hl=en",
+        "https://support.google.com/drive/answer/2423534?hl=en"
+      ],
+      "mutation_scope": "Owner command changes only clipboard text; reads original archive/receipt and prints metadata. Manual later owner upload is only the previously authorized checked encrypted component.",
+      "offsite_upload_download_verified": false,
+      "cloud_upload_scope_confirmed": false,
+      "real_backup_passphrase_storage_confirmed": false,
+      "restore_verified": false,
+      "scope": "Concrete wrong-artifact selection correction and collection of missing factual reports; no cloud transfer/settings/cleanup or secret access by root, and no full coverage/recovery/F16 clearance."
     }
   ]
 }

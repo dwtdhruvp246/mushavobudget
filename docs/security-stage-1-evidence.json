@@ -1033,6 +1033,48 @@
       "client_installation_or_export_or_restore_verified": false,
       "assistant_installed_tools_changed_provider_policy_credentials_production_sql_or_native_runtime": false,
       "scope": "Owner-tested standard-path absence only; backup remains pending and no protection PASS inferred"
+    },
+    {
+      "id": "S1E16",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner pasted full-path Windows PostgreSQL executable --version results",
+      "result": "OWNER_TESTED_ALL_FOUR_CLIENT_VERSION_CHECKS_PASS",
+      "checked_bin_directory": "C:\\Program Files\\PostgreSQL\\17\\bin",
+      "observed_tools": [
+        {
+          "tool": "pg_dump",
+          "status": "OWNER_TESTED_VERSION_PASS",
+          "version": "17.11"
+        },
+        {
+          "tool": "pg_dumpall",
+          "status": "OWNER_TESTED_VERSION_PASS",
+          "version": "17.11"
+        },
+        {
+          "tool": "pg_restore",
+          "status": "OWNER_TESTED_VERSION_PASS",
+          "version": "17.11"
+        },
+        {
+          "tool": "psql",
+          "status": "OWNER_TESTED_VERSION_PASS",
+          "version": "17.11"
+        }
+      ],
+      "version_executables_run": true,
+      "compatibility_scope": "Observed 17.11 client major matches deployed server 17.6; connection, installed options and actual export/restore behavior are not verified by --version",
+      "earlier_evidence": "S1E09 PATH absence and S1E15 checked-path absence retained as historical; current full-path availability supersedes the client setup blocker",
+      "next_owner_action": "Open intended project kttkospkblwvguuwnhjj Dashboard Connect; provide only the displayed host, port, database and username for session-pooler IPv4 connection preparation, with password omitted",
+      "next_connection_scope": "Session mode is the planned IPv4-compatible route; actual endpoint, SSL verification/credential handling and successful read-only connection remain pending; no guessed pooler host or transaction-mode dump",
+      "documentation_sources": [
+        "https://supabase.com/docs/guides/database/connecting-to-postgres"
+      ],
+      "backup_created": false,
+      "restore_verified": false,
+      "assistant_installed_tools_changed_provider_policy_credentials_production_sql_or_native_runtime": false,
+      "scope": "Owner-executed version-check PASS only; no hosted connection, exported artifact, recovery protection or F16 closure inferred"
     }
   ]
 }

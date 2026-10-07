@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_PG17_WINDOWS_CLIENT_SETUP_PENDING",
-        "latest_evidence": "S1E15",
+        "status": "IN_PROGRESS_CLIENT_VERSIONS_PASS_CONNECTION_PREPARATION_PENDING",
+        "latest_evidence": "S1E16",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -113,12 +113,36 @@
         "diagnostic": "supabase/diagnostics/security_stage_1_backup_inventory.sql",
         "engine_context": "desktop-linux",
         "export_method": "OWNER_SELECTED_STANDALONE_POSTGRESQL_CLIENTS",
-        "standalone_client_paths_versions": "OWNER_CHECKED_ALL_FOUR_MISSING_AT_STANDARD_PG17_BIN; CUSTOM_PATHS_NOT_RULED_OUT",
-        "client_installation": "OWNER_INSTALLATION_OR_COMPATIBLE_CUSTOM_PATH_PENDING",
+        "standalone_client_paths_versions": "OWNER_TESTED_ALL_FOUR_17_11_AT_STANDARD_PG17_BIN_PASS",
+        "client_installation": "FOUR_EXECUTABLES_OWNER_VERIFIED_AT_FULL_PATH; INSTALLER_COMPONENTS_NOT_INDEPENDENTLY_INSPECTED",
         "deployed_postgresql": "17.6",
         "deployed_database_bytes": 30559379,
         "selected_client_major": "17.x stable",
-        "inventory_result": "12 INFO + 1 REVIEW; NOT_BACKUP_OR_SECURITY_CLEARANCE"
+        "inventory_result": "12 INFO + 1 REVIEW; NOT_BACKUP_OR_SECURITY_CLEARANCE",
+        "client_version_results": [
+          {
+            "tool": "pg_dump",
+            "status": "OWNER_TESTED_VERSION_PASS",
+            "version": "17.11"
+          },
+          {
+            "tool": "pg_dumpall",
+            "status": "OWNER_TESTED_VERSION_PASS",
+            "version": "17.11"
+          },
+          {
+            "tool": "pg_restore",
+            "status": "OWNER_TESTED_VERSION_PASS",
+            "version": "17.11"
+          },
+          {
+            "tool": "psql",
+            "status": "OWNER_TESTED_VERSION_PASS",
+            "version": "17.11"
+          }
+        ],
+        "connection_preparation": "INTENDED_DASHBOARD_HOST_PORT_DATABASE_USERNAME_PENDING; PLANNED_SESSION_MODE_IPV4; SSL_AND_CREDENTIAL_HANDLING_NOT_YET_VERIFIED",
+        "hosted_connection_verified": false
       },
       {
         "id": "1.3",

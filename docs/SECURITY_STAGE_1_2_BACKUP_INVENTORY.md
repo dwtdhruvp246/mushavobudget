@@ -4,7 +4,7 @@ Started 7 October 2026 after owner-tested normal sign-ins completed in 1.1. Stag
 
 ## Current scope and starting facts
 
-Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; their actual availability and versions remain pending. No export, restore, package install, local stack, account setting or production write has been performed.
+Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. The next prerequisite is intended Dashboard connection fields, SSL/credential handling and a successful read-only connection. No export, restore, local stack, account setting or production write has been performed by this work; client availability follows the owner setup, not an assistant installation.
 
 For a recoverable backup we must account for database schema/data/roles and privileges, uploaded file bytes and their database metadata, and separately inventoried Auth/platform/Edge/provider configuration dependencies. Supabase's database-backup guidance distinguishes Storage metadata from actual object bytes and recommends off-site exports for Free projects. The earlier Supabase CLI route has defaults/managed-schema exclusions that differ from standalone PostgreSQL tools. The selected standalone export's actual schema/data/role/privilege/managed scope must be designed explicitly; no CLI flags/defaults are blindly copied. Actual PostgreSQL version and required Auth/Storage coverage must be reconciled before preparing exports.
 
@@ -77,7 +77,7 @@ Bare `supabase db dump --help` selected the npm `supabase.ps1` wrapper and was b
 
 Owner instruction on 7 October: **use PostgreSQL command**. Use Windows PostgreSQL client tools directly for database exports; Docker startup and Supabase CLI dump/help are no longer prerequisites for this selected export route. S1E11's engine failure and wrapper blocker remain historical evidence, not repaired PASS. Docker's role in any later optional local staging proposal is a separate decision; no container-based environment is assumed or started.
 
-The planned tools are `pg_dump` for selected database content, `pg_dumpall` for the selected global-role scope where permitted, `pg_restore` for archive inspection/isolated recovery and `psql` for read-only connection checks and selected script recovery. These are not yet verified as installed/compatible. The original probe found pg_dump/psql not on PATH, which does not rule out a non-PATH installation.
+The planned tools are `pg_dump` for selected database content, `pg_dumpall` for the selected global-role scope where permitted, `pg_restore` for archive inspection/isolated recovery and `psql` for read-only connection checks and selected script recovery. S1E16 verifies all four full-path executable versions as 17.11, matching the deployed 17.6 server major. Their connection/options/export/restore behavior is not established by --version. The original probe found pg_dump/psql not on PATH; that earlier PATH result is retained separately from current full-path availability.
 
 Prefer the deployed server's supported major version for the Windows clients and isolated recovery target. PostgreSQL documents that pg_dump refuses a server newer than its own major version; a newer client's output is also not guaranteed to restore to an older server. Establish the actual hosted version before selecting a client download/installation. PostgreSQL's official Windows download page links to supported EDB installers and binary archives; installing a local server is not required merely to run clients against Supabase. Exact available-client paths, versions and help/options must be checked before preparing exports. No automatic installation or change to the native project dependencies is performed by this decision.
 
@@ -102,7 +102,9 @@ Owner attachment `Pasted text(8).txt`, SHA-256 `10a2c41d21d6956d6c33aba32f1e0933
 
 These counts do not prove tenant authorization, file-byte integrity, exact grants, scheduler use or source/deployment parity. Platform trigger metadata is mixed with app customizations and requires classification. Empty object metadata in other buckets does not verify provider file-byte integrity. Vault presence requires explicit encrypted-secret/root-key recovery treatment; pgsodium absence does not establish that no encryption dependency exists. The absence of the queried migration-history table is not a failed application migration, but source/deployment parity remains to be reconciled in isolated staging. F16 remains open with no backup or restore result.
 
-## Next owner check — PostgreSQL 17.x Windows clients (S1E14)
+## Completed client discovery/setup handoff — S1E14–S1E16
+
+The original handoff below is retained for reproducibility; S1E16 supplies the successful owner results. No repeat check or installation is requested.
 
 Select the supported PostgreSQL **17.x** Windows client major to match the deployed 17.6 server; the latest available stable 17.x client patch need not equal the server patch. First paste the block below directly into PowerShell to check the four required executables at the standard 17 installation path. Full `.exe` paths avoid the blocked script wrappers and do not require persistent PATH changes. Each invocation is `--version` only; there is no database connection, installation, server startup or export.
 
@@ -133,7 +135,24 @@ If tools are missing and no compatible existing installation is known:
 
 **Owner result — S1E15:** all four executables were reported MISSING at `C:\Program Files\PostgreSQL\17\bin`; no version executable ran. This confirms absence at that checked path, not every installation location. No compatible custom installation was supplied. Continue the prepared Command Line Tools installation or use a known compatible custom bin path, then report all four actual versions. No client setup/export PASS is inferred.
 
-No local PowerShell runtime exists in the audit workspace, so these Windows instructions are reviewed/prepared, not locally executed. Owner client installation/version results remain pending. Before any export, still establish the actual Dashboard endpoint, SSL/credential handling, required schema/data/global-role/managed scope and owner-held protected off-site destination. Separate Storage file-byte and configuration exports remain required.
+No local PowerShell runtime exists in the audit workspace, so these Windows instructions are reviewed/prepared, not locally executed. S1E16 supplies the owner-executed version results below. Before any export, still establish the actual Dashboard endpoint, SSL/credential handling, required schema/data/global-role/managed scope and owner-held protected off-site destination. Separate Storage file-byte and configuration exports remain required.
+
+## Current client results and connection preparation — S1E16
+
+The owner reruns the full-path check at `C:\Program Files\PostgreSQL\17\bin` and reports:
+
+| Tool | Actual version | Result scope |
+|---|---|---|
+| pg_dump | 17.11 | OWNER-TESTED version PASS |
+| pg_dumpall | 17.11 | OWNER-TESTED version PASS |
+| pg_restore | 17.11 | OWNER-TESTED version PASS |
+| psql | 17.11 | OWNER-TESTED version PASS |
+
+All four clients are available at the checked path and their major matches the received server 17.6 inventory. S1E15's earlier missing-path observation remains historical. PATH registration, installer component selection, database authentication, SSL, actual supported options and exports/restores are not certified by version output. No repeat version or installation check is requested.
+
+**Next owner action:** open the intended Supabase project **kttkospkblwvguuwnhjj**, click **Connect** and select **Session pooler**. This is the planned IPv4-compatible session route; the owner's network capability and any direct endpoint connection have not been tested. Supabase recommends direct connections for native backup commands and documents session mode as the alternative for IPv4-only networks. Copy the actual host, port, database and username shown in that panel, or send a crop showing those fields. Keep `[YOUR-PASSWORD]` as a placeholder and omit any real password, API key or secret. Do not run the copied URI or change database/provider settings during this field collection. The pooler host must come from the panel; it cannot be guessed from the region. Transaction-pooler mode is not selected for this dump route.
+
+After the fields are received, prepare the read-only connection check with explicit SSL server verification and owner-local password entry. SSL certificate trust/hostname compatibility must be reconciled for the selected endpoint; `sslmode=require` alone is not server verification. No connection is attempted by this documentation update. Selected export completeness, protected owner-held off-site destination, separate Storage bytes and configuration recovery remain pending. F16 is still open.
 
 ## Completed owner SQL handoff — retained for reproducibility
 
@@ -169,7 +188,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Deployed version/aggregate scope is recorded; locate/verify compatible Windows pg_dump/pg_dumpall/pg_restore/psql clients using the prepared 17.x instructions. No dependency edits or Docker/CLI-help prerequisite is required for this selected route.
+1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Collect intended Dashboard connection fields and verify a read-only connection with explicit SSL/credential handling. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Agree owner-held protected off-site storage, recovery targets, frequency/retention and completion/failure records using actual size/volume. Prepare concrete commands only after these dependencies are known. A schema file or object metadata alone is insufficient.

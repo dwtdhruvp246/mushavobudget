@@ -131,6 +131,8 @@ If tools are missing and no compatible existing installation is known:
 4. Complete installation and skip any Stack Builder launch. Report unexpected installer blockers rather than changing server/provider settings.
 5. Rerun the same PowerShell block and send all four actual versions or the exact error. No password or connection string is needed for `--version` checks.
 
+**Owner result — S1E15:** all four executables were reported MISSING at `C:\Program Files\PostgreSQL\17\bin`; no version executable ran. This confirms absence at that checked path, not every installation location. No compatible custom installation was supplied. Continue the prepared Command Line Tools installation or use a known compatible custom bin path, then report all four actual versions. No client setup/export PASS is inferred.
+
 No local PowerShell runtime exists in the audit workspace, so these Windows instructions are reviewed/prepared, not locally executed. Owner client installation/version results remain pending. Before any export, still establish the actual Dashboard endpoint, SSL/credential handling, required schema/data/global-role/managed scope and owner-held protected off-site destination. Separate Storage file-byte and configuration exports remain required.
 
 ## Completed owner SQL handoff — retained for reproducibility

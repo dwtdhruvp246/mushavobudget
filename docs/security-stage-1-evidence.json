@@ -997,6 +997,42 @@
       "client_installation_export_restore_or_settings_changes_by_assistant": false,
       "required_before_export": "Actual client versions/options, intended Dashboard endpoint, SSL/credential handling, complete selected schema/data/roles/grants/managed/encryption/config scope and protected owner-held destination; file bytes separate",
       "scope": "Client discovery/installation/version instructions only; no installation, database connection, export or backup/recovery PASS inferred"
+    },
+    {
+      "id": "S1E15",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner pasted standard PostgreSQL 17 executable-path check output",
+      "result": "CLIENTS_MISSING_AT_CHECKED_STANDARD_PATH",
+      "checked_bin_directory": "C:\\Program Files\\PostgreSQL\\17\\bin",
+      "observed_tools": [
+        {
+          "tool": "pg_dump",
+          "status": "MISSING_AT_CHECKED_PATH",
+          "version": null
+        },
+        {
+          "tool": "pg_dumpall",
+          "status": "MISSING_AT_CHECKED_PATH",
+          "version": null
+        },
+        {
+          "tool": "pg_restore",
+          "status": "MISSING_AT_CHECKED_PATH",
+          "version": null
+        },
+        {
+          "tool": "psql",
+          "status": "MISSING_AT_CHECKED_PATH",
+          "version": null
+        }
+      ],
+      "version_executables_run": false,
+      "scope_limit": "No conclusion that clients are absent from every location; no known compatible custom installation supplied",
+      "next_owner_action": "Install compatible PostgreSQL 17.x Command Line Tools using prepared official Windows/EDB instructions, or use an existing compatible custom bin path, then report all four versions",
+      "client_installation_or_export_or_restore_verified": false,
+      "assistant_installed_tools_changed_provider_policy_credentials_production_sql_or_native_runtime": false,
+      "scope": "Owner-tested standard-path absence only; backup remains pending and no protection PASS inferred"
     }
   ]
 }

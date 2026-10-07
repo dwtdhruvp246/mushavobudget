@@ -1,6 +1,6 @@
 # 1.1 — Account security and recovery checks
 
-Started 7 October 2026 following owner approval of Stage 0 closure and Stage 1. These first checks **inspect current state**. No factor, password, API key, SMTP value, session or recovery configuration is changed by these instructions. Step 1.1 remains in progress pending observed/owner results.
+Started 7 October 2026 following owner approval of Stage 0 closure and Stage 1. The initial checks **inspect current state**. Owner-performed account changes and their verification are recorded separately; no provider setting or credential is changed by the assistant. Step 1.1 remains in progress pending observed/owner results.
 
 ## Current results — 7 October 2026
 
@@ -10,18 +10,20 @@ Evidence [S1E02](security-stage-1-evidence.json): the owner confirms **GitHub re
 
 Evidence [S1E03](security-stage-1-evidence.json): the owner clarifies **Google sign-in to Cloudflare**, with enrollment blocked by the Cloudflare password prompt. The prior local 2FA **Inactive** observation remains; Google-account MFA/recovery is unverified. Cloudflare’s [official social-login guidance](https://developers.cloudflare.com/fundamentals/user-profiles/login/) documents that social-login profiles initially lack a Cloudflare password and some operations, including MFA enrollment, require setting one via **Forgot Password** for the existing profile email. This is a supported prerequisite, not proof enrollment succeeded or that Google protection is absent.
 
+Evidence [S1E04](security-stage-1-evidence.json): the owner says Cloudflare **email authentication enabled** and **recovery codes obtained**. Record **OWNER-PASS at reported factor-configuration scope**, superseding the prior current Inactive/password-blocked state without deleting history. Secure persistent code storage, active-setting screenshot, fresh factor challenge and actual recovery remain unverified. No specific password-setting sequence is inferred. The owner chose a supported email factor; do not record an authenticator app or security key as configured.
+
 | Provider | MFA inspection | Private recovery availability | Remaining evidence |
 |---|---|---|---|
 | GitHub | PASS — displayed configured methods | Owner confirms codes saved | Fresh sign-in/recovery evidence remains separate |
-| Cloudflare | FAIL — local 2FA Inactive; Google sign-in confirmed | Cloudflare/Google recovery unverified | Enrollment password prerequisite BLOCKED; supported password-setting guidance prepared; Google protection and subsequent factor/sign-in checks pending |
+| Cloudflare | OWNER-PASS — email authentication enabled | Codes obtained; persistent storage not explicitly confirmed | Fresh factor/sign-in/recovery evidence and Google protection pending |
 | Supabase | Pending | Pending | Actual dashboard sign-in path and account MFA/recovery |
 | Zoho | Pending | Pending | Sender-administration account MFA/recovery |
 
-Next owner check: Supabase personal **Account settings → MFA**. Identify dashboard sign-in via GitHub/email-password/other and inspect account-level MFA; this is separate from project Authentication settings for app users. Status-only crops are sufficient. Cloudflare remediation remains in the final resolution register under the owner’s workflow; no enrollment is requested by this read-only check. Step 1.1 remains in progress.
+Next owner check: Supabase personal **Account settings → MFA**. Identify dashboard sign-in via GitHub/email-password/other and inspect account-level MFA; this is separate from project Authentication settings for app users. Status-only crops are sufficient. Cloudflare’s earlier disabled-setting result is superseded by S1E04; remaining proof/storage items stay in the final action register. No further enrollment is requested by this inspection. Step 1.1 remains in progress.
 
 ## Cloudflare Google-sign-in password prerequisite
 
-The owner encountered this during their own enrollment attempt. If resolving it now, keep the working session available and open Cloudflare’s **Forgot password** flow in another tab. Use the email already shown in the existing Cloudflare profile, follow the owner-held reset email and set a separate Cloudflare password. Verify email/password access to the existing account, then return to **My Profile → Authentication → Mobile App Authentication → Add**, complete the factor prompt and save recovery codes privately. Supply only active/inactive status and saved-code confirmation; no password, reset link, QR or recovery code is shared here. Cloudflare’s Google sign-in is recorded separately; successful password/factor setup remains unverified until owner results arrive.
+The owner encountered this during their own enrollment attempt. If resolving it now, keep the working session available and open Cloudflare’s **Forgot password** flow in another tab. Use the email already shown in the existing Cloudflare profile, follow the owner-held reset email and set a separate Cloudflare password. Verify email/password access to the existing account, then return to **My Profile → Authentication → Mobile App Authentication → Add**, complete the factor prompt and save recovery codes privately. Supply only active/inactive status and saved-code confirmation; no password, reset link, QR or recovery code is shared here. Cloudflare’s Google sign-in is recorded separately. S1E04 subsequently reports email-factor enablement; this earlier password guidance is retained as historical instruction, not a new request to repeat setup.
 
 ## Check the actual provider accounts
 

@@ -6,6 +6,8 @@ Current-stage work already authorized may address its planned areas. Remaining f
 
 ## Stage 1.1 superseding account evidence
 
+**Latest current result — S1E04:** Cloudflare email authentication **OWNER-PASS**, with recovery codes obtained. This supersedes the earlier inactive/enrollment-blocked current state at owner-report scope. Remaining actions are privately saved accessible recovery material, fresh MFA sign-in/recovery proof and actual Google-account protection verification; no repeat enrollment is requested. Supabase/Zoho inspection and the broader F08 app Admin controls remain open. Earlier dated observations/actions below are preserved as history.
+
 7 October 2026, [S1E01–S1E02](security-stage-1-evidence.json): GitHub displayed MFA configuration PASS; owner confirms recovery codes saved. Cloudflare displayed 2FA is **Inactive — FAIL**, replacing tentative/unconfirmed state for this account only. Supabase/Zoho and fresh sign-in/recovery proof remain pending. This does not close F08’s app Admin assurance/password/Auth work or alter the dated Stage 0 report.
 
 **F08 account-access action:** owner enables a supported Cloudflare factor with verified account email and an independent recovery route, saves recovery material privately, then supplies active-settings evidence and completes a fresh MFA sign-in. Record this in final residual resolution/re-audit under the owner’s chosen workflow; no configuration change is performed or requested by the current inspection. GitHub saved-code confirmation is not a completed recovery drill.

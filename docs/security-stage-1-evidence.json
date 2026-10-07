@@ -88,6 +88,27 @@
       "stage_1_1_complete": false,
       "settings_credentials_runtime_sql_apk_changed_by_assistant": false,
       "scope": "Owner-reported sign-in/prerequisite clarification and supported manual guidance; no secrets, authentication links or reset email sent by assistant"
+    },
+    {
+      "id": "S1E04",
+      "stage_step": "1.1",
+      "received_date": "2026-10-07",
+      "source": "Owner: done i have enabled email authentification and got my recovery codes.",
+      "provider": "Cloudflare",
+      "enabled_factor": "Email authentication — owner confirmed",
+      "configuration_result": "OWNER-PASS — email authentication enabled at owner-report scope",
+      "recovery_codes": "Owner confirms obtained; securely saved persistent copy not explicitly confirmed",
+      "supersedes": "S1E02 inactive local 2FA and S1E03 enrollment blocker as current owner-reported state; historical events preserved",
+      "password_setting_details": "Not independently verified or separately reported; do not infer a specific password-setting sequence",
+      "fresh_factor_challenge_signin": "NOT VERIFIED",
+      "recovery_drill": "NOT PERFORMED",
+      "google_account_mfa_and_recovery": "UNVERIFIED; prior Google sign-in remains recorded",
+      "owner_reported_setting_change": true,
+      "settings_credentials_runtime_sql_apk_changed_by_assistant": false,
+      "stage_1_1_complete": false,
+      "whole_finding_or_release_pass_inferred": false,
+      "remaining_checks": "Private recovery storage confirmation and fresh sign-in/recovery proof; Supabase/Zoho inspection pending",
+      "scope": "Owner-reported Cloudflare email-factor enablement and recovery-code acquisition; no screenshot, live challenge or actual recovery test supplied and no secret values recorded"
     }
   ]
 }

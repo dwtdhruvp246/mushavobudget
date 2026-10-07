@@ -32,6 +32,40 @@
       "whole_finding_or_release_pass_inferred": false,
       "settings_runtime_sql_apk_changes_by_assistant": false,
       "scope": "Read-only screenshot inspection and documentation; no secret values or screenshot bytes committed"
+    },
+    {
+      "id": "S1E02",
+      "stage_step": "1.1",
+      "received_date": "2026-10-07",
+      "source": "Owner states recovery codes saved and supplies Cloudflare Authentication screenshot",
+      "github_recovery_update": {
+        "owner_statement": "recovery codes saved.",
+        "result": "OWNER-CONFIRMED SAVED; follows GitHub recovery question",
+        "supersedes": "S1E01 private recovery storage unconfirmed only",
+        "independent_storage_access_or_recovery_drill": "NOT VERIFIED"
+      },
+      "provider": "Cloudflare",
+      "screenshot": {
+        "name": "image(20261007-084945).png",
+        "sha256": "f94bf4bc9c8fdb2c5ca6351be8e878990ef9d36d9583521ad683423c32ff1b61",
+        "private_codes_or_secrets_visible": false
+      },
+      "expected": "Account two-factor authentication active",
+      "observed_labels": {
+        "two_factor_authentication": "Inactive",
+        "security_key_authentication": "Add",
+        "mobile_app_authentication": "Add",
+        "email_authentication": "Enable"
+      },
+      "mfa_settings_result": "FAIL — displayed Cloudflare 2FA Inactive",
+      "recovery_storage": "NOT VERIFIED; no Cloudflare recovery code evidence supplied",
+      "sign_in_method_and_account_identity": "Not visible in crop; owner-supplied Cloudflare check context",
+      "remediation": "Carry forward under F08/Stage 1 account access: enable a supported factor with verified email and an independent recovery route, save recovery material privately, verify active status and a fresh MFA sign-in; no automatic setting change",
+      "other_provider_results": "Supabase and Zoho pending",
+      "stage_1_1_complete": false,
+      "whole_finding_or_release_pass_inferred": false,
+      "settings_runtime_sql_apk_changes_by_assistant": false,
+      "scope": "Read-only screenshot/status recording; GitHub recovery storage is owner confirmation, not a performed recovery test; screenshot bytes/secrets not committed"
     }
   ]
 }

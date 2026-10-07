@@ -22,10 +22,10 @@
         "id": "1.1",
         "title": "Account security and recovery",
         "status": "IN_PROGRESS_OWNER_EVIDENCE_PENDING",
-        "latest_evidence": "S1E01",
+        "latest_evidence": "S1E02",
         "provider_checks": {
-          "github": "MFA_SETTINGS_PASS_RECOVERY_STORAGE_UNCONFIRMED",
-          "cloudflare": "PENDING",
+          "github": "MFA_SETTINGS_PASS_RECOVERY_CODES_OWNER_CONFIRMED_SAVED",
+          "cloudflare": "FAIL_2FA_INACTIVE_CARRIED_FORWARD",
           "supabase": "PENDING",
           "zoho": "PENDING"
         }

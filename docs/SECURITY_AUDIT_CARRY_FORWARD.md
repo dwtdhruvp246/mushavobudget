@@ -4,6 +4,12 @@ Updated 7 October 2026 at **1.1**. Stage 0 baseline is owner-approved CLOSED; St
 
 Current-stage work already authorized may address its planned areas. Remaining failed/uncertain/blocked/decision items are retained for the final resolution pass and full re-audit requested by the owner. No row closes solely because its assigned stage ended. Preserve original IDs, append evidence/change/version/date and require the row's closure check. Stage assignments identify the natural work area, not a claim that work is complete.
 
+## Stage 1.1 superseding account evidence
+
+7 October 2026, [S1E01–S1E02](security-stage-1-evidence.json): GitHub displayed MFA configuration PASS; owner confirms recovery codes saved. Cloudflare displayed 2FA is **Inactive — FAIL**, replacing tentative/unconfirmed state for this account only. Supabase/Zoho and fresh sign-in/recovery proof remain pending. This does not close F08’s app Admin assurance/password/Auth work or alter the dated Stage 0 report.
+
+**F08 account-access action:** owner enables a supported Cloudflare factor with verified account email and an independent recovery route, saves recovery material privately, then supplies active-settings evidence and completes a fresh MFA sign-in. Record this in final residual resolution/re-audit under the owner’s chosen workflow; no configuration change is performed or requested by the current inspection. GitHub saved-code confirmation is not a completed recovery drill.
+
 | ID | Residual status | Scope | Action plan | Work stage(s) | Owner | Required final recheck |
 |---|---|---|---|---|---|---|
 | F01 | GAP / confirmed missing | Public policies and support notices: Source lacks dedicated policies; sampled privacy/terms routes returned 404. Operator is undecided, launch worldwide and age audience unspecified. | Resolve actual operator/age/territory/data/retention facts, then publish factual privacy/terms/support notices and functioning links. | 4,9 | Owner/Both | Public URLs return the intended notices; logged-in/signup/native/store surfaces link to the same factual versions; processor/retention facts match actual behavior. |

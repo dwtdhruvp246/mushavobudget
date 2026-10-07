@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_STANDALONE_POSTGRESQL_VERSION_SCOPE_PENDING",
-        "latest_evidence": "S1E12",
+        "status": "IN_PROGRESS_PG17_WINDOWS_CLIENT_SETUP_PENDING",
+        "latest_evidence": "S1E14",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -108,13 +108,17 @@
         ],
         "engine_target_readiness": "HISTORICAL_FAIL_DESKTOP_LINUX_PIPE; NOT_REQUIRED_FOR_SELECTED_EXPORT_METHOD",
         "installed_cli_dump_options": "HISTORICAL_PS1_BLOCKER; NOT_REQUIRED_FOR_SELECTED_EXPORT_METHOD",
-        "hosted_database_scope": "PENDING_OWNER_READ_ONLY_INVENTORY",
+        "hosted_database_scope": "OWNER_METADATA_RECEIVED_S1E13; PRECISE_EXPORT_COVERAGE_PENDING",
         "sql_fixture_validation": "PASS_DISPOSABLE_POSTGRESQL_18_3_ONLY",
         "diagnostic": "supabase/diagnostics/security_stage_1_backup_inventory.sql",
         "engine_context": "desktop-linux",
         "export_method": "OWNER_SELECTED_STANDALONE_POSTGRESQL_CLIENTS",
-        "standalone_client_paths_versions": "PENDING; PG_DUMP_PSQL_PREVIOUSLY_NOT_ON_PATH",
-        "client_installation": "NOT_PERFORMED; DEPLOYED_SERVER_VERSION_CHECK_FIRST"
+        "standalone_client_paths_versions": "PENDING_OWNER_STANDARD_OR_CUSTOM_PATH_CHECK",
+        "client_installation": "INSTRUCTIONS_PREPARED; OWNER_RESULT_PENDING",
+        "deployed_postgresql": "17.6",
+        "deployed_database_bytes": 30559379,
+        "selected_client_major": "17.x stable",
+        "inventory_result": "12 INFO + 1 REVIEW; NOT_BACKUP_OR_SECURITY_CLEARANCE"
       },
       {
         "id": "1.3",

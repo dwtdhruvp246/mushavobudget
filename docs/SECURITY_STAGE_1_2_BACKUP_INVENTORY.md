@@ -4,7 +4,7 @@ Started 7 October 2026 after owner-tested normal sign-ins completed in 1.1. Stag
 
 ## Current scope and starting facts
 
-Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. Next is the owner-run read-only SQL inventory to establish deployed version/scope, followed by existing-client discovery or compatible client installation. No export, restore, package install, local stack, account setting or production write has been performed.
+Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; their actual availability and versions remain pending. No export, restore, package install, local stack, account setting or production write has been performed.
 
 For a recoverable backup we must account for database schema/data/roles and privileges, uploaded file bytes and their database metadata, and separately inventoried Auth/platform/Edge/provider configuration dependencies. Supabase's database-backup guidance distinguishes Storage metadata from actual object bytes and recommends off-site exports for Free projects. The earlier Supabase CLI route has defaults/managed-schema exclusions that differ from standalone PostgreSQL tools. The selected standalone export's actual schema/data/role/privilege/managed scope must be designed explicitly; no CLI flags/defaults are blindly copied. Actual PostgreSQL version and required Auth/Storage coverage must be reconciled before preparing exports.
 
@@ -83,9 +83,60 @@ Prefer the deployed server's supported major version for the Windows clients and
 
 Database connection host/port/username will come from the intended project's Dashboard Connect panel. Prefer a supported direct connection, or reconcile session-pooler fallback for an IPv4-only owner network; do not guess the pooler host or use a transaction-pooler URL for a dump. Credentials, SSL certificate/verification settings, selected scope and owner-held protected destination remain export prerequisites. No connection string or password is requested in this inventory handoff.
 
-## Next owner check — deployed PostgreSQL and backup scope
+## Owner deployed inventory — S1E13
 
-The existing Dashboard SQL inventory works independently of Docker and local PostgreSQL client installation. Collect its results first; then discover any compatible existing Windows clients or give the version-specific client installation instructions. No engine startup or CLI help rerun is requested for this route.
+Owner attachment `Pasted text(8).txt`, SHA-256 `10a2c41d21d6956d6c33aba32f1e09338930a53f93b75c16d74bd34016a89aaa`, reports the expected **12 INFO + 1 REVIEW** at 2026-10-07 11:56:22.695585 UTC (13:56:22.695585 Africa/Johannesburg). It is an owner-run metadata inventory, not 13 security PASS results. The read-only/repeatable-read labels are present; intended project identity follows the owner's handoff context and is not independently proved by catalog output. Full parsed technical metadata is retained in Stage 1 evidence, without attachment/customer bytes or secrets.
+
+| Observed scope | Result |
+|---|---|
+| PostgreSQL | 17.6 / server_version_num 170006 |
+| Database disk size | 30,559,379 bytes, approximately 30.6 MB decimal; not export size |
+| Non-system schemas | 11; public has 80 tables, 1 view and 281 routines; 80 RLS-enabled relations reported |
+| Auth | 9 user records; no identities/credentials/session contents returned |
+| Storage | 4 private bucket configurations; 2 object metadata records, both business-logos; 771,059 recorded bytes, no unknown sizes in those two records |
+| Extensions | pg_cron, pg_net, pg_stat_statements, pgcrypto, plpgsql, supabase_vault, uuid-ossp with versions in evidence |
+| Role/privilege indicators | 16 non-pg_ roles; 24 memberships; 27 default ACL records, plus explicit schema/relation/column/routine ACL indicators |
+| Managed dependencies | 15 Storage object policy names; 9 non-internal trigger metadata records, including auth.users → public.handle_new_user_profile |
+| Publications | supabase_realtime lists 28 tables; supabase_realtime_messages_publication lists 7; exact table mapping not retrieved |
+| Scheduler/encryption/history | cron.job and vault.secrets present; pgsodium extension, queried migration-history table and supabase_functions schema absent in this metadata check |
+
+These counts do not prove tenant authorization, file-byte integrity, exact grants, scheduler use or source/deployment parity. Platform trigger metadata is mixed with app customizations and requires classification. Empty object metadata in other buckets does not verify provider file-byte integrity. Vault presence requires explicit encrypted-secret/root-key recovery treatment; pgsodium absence does not establish that no encryption dependency exists. The absence of the queried migration-history table is not a failed application migration, but source/deployment parity remains to be reconciled in isolated staging. F16 remains open with no backup or restore result.
+
+## Next owner check — PostgreSQL 17.x Windows clients (S1E14)
+
+Select the supported PostgreSQL **17.x** Windows client major to match the deployed 17.6 server; the latest available stable 17.x client patch need not equal the server patch. First paste the block below directly into PowerShell to check the four required executables at the standard 17 installation path. Full `.exe` paths avoid the blocked script wrappers and do not require persistent PATH changes. Each invocation is `--version` only; there is no database connection, installation, server startup or export.
+
+```powershell
+& {
+    $mushavoPgBin = "C:\Program Files\PostgreSQL\17\bin"
+    foreach ($mushavoPgTool in @("pg_dump", "pg_dumpall", "pg_restore", "psql")) {
+        $mushavoPgExe = Join-Path $mushavoPgBin "$mushavoPgTool.exe"
+        if (-not (Test-Path $mushavoPgExe -PathType Leaf)) {
+            Write-Output "MISSING: $mushavoPgExe"
+            continue
+        }
+        & $mushavoPgExe --version
+        if ($LASTEXITCODE -ne 0) { throw "$mushavoPgTool version check failed." }
+    }
+}
+```
+
+If all four print PostgreSQL 17.x versions, skip installation and send the output. `MISSING` means absent at the checked path, not absent everywhere; if a compatible installation is already in another location, set `mushavoPgBin` to its actual bin directory and rerun instead of reinstalling.
+
+If tools are missing and no compatible existing installation is known:
+
+1. Open [the official PostgreSQL Windows download page](https://www.postgresql.org/download/windows/) and follow its EDB installer link. Select the latest available stable **17.x** installer in the **Windows x86-64** column.
+2. Keep the installation directory `C:\Program Files\PostgreSQL\17` for the supplied commands.
+3. At **Select Components**, keep **Command Line Tools** selected and clear PostgreSQL Server, pgAdmin 4 and Stack Builder. EDB lists pg_dump, pg_dumpall, pg_restore and psql in this component. This is client setup for the existing hosted database; no local recovery server is configured here.
+4. Complete installation and skip any Stack Builder launch. Report unexpected installer blockers rather than changing server/provider settings.
+5. Rerun the same PowerShell block and send all four actual versions or the exact error. No password or connection string is needed for `--version` checks.
+
+No local PowerShell runtime exists in the audit workspace, so these Windows instructions are reviewed/prepared, not locally executed. Owner client installation/version results remain pending. Before any export, still establish the actual Dashboard endpoint, SSL/credential handling, required schema/data/global-role/managed scope and owner-held protected off-site destination. Separate Storage file-byte and configuration exports remain required.
+
+## Completed owner SQL handoff — retained for reproducibility
+
+
+The owner supplied its results in S1E13. The original Dashboard handoff below is retained for reproducibility, not a repeat request. No engine startup or CLI help rerun is requested for the selected route.
 
 The deployed SQL source is [security_stage_1_backup_inventory.sql](../supabase/diagnostics/security_stage_1_backup_inventory.sql). Copy it using the owner's established handoff below. Fetch/show does not merge, reset or change the original native checkout's tracked files.
 
@@ -112,12 +163,12 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Local validation — S1E10
 
-[verify-security-stage-1-backup-inventory.cjs](../scripts/verify-security-stage-1-backup-inventory.cjs) executes the diagnostic against disposable PGlite PostgreSQL fixtures, with no network or hosted credentials. It checks the 13-row INFO/REVIEW contract, read-only/repeatable-read context, counts, empty inventories, invalid/missing/negative/oversized size metadata, managed trigger/policy indicators, omission of seeded private values and rejection of writes in a read-only transaction. The fixture passed; S1E11 records the historical engine/wrapper blockers; S1E12 selects standalone PostgreSQL exports. Hosted execution remains pending. This is SQL preparation evidence, not a production backup or recovery test.
+[verify-security-stage-1-backup-inventory.cjs](../scripts/verify-security-stage-1-backup-inventory.cjs) executes the diagnostic against disposable PGlite PostgreSQL fixtures, with no network or hosted credentials. It checks the 13-row INFO/REVIEW contract, read-only/repeatable-read context, counts, empty inventories, invalid/missing/negative/oversized size metadata, managed trigger/policy indicators, omission of seeded private values and rejection of writes in a read-only transaction. The fixture passed; S1E11 records the historical engine/wrapper blockers; S1E12 selects standalone PostgreSQL exports. S1E13 separately records the owner-run deployed output; local fixture evidence remains its own scope. Neither result is a production backup or recovery test.
 
 ## Work after this inventory
 
-1. Establish the deployed PostgreSQL version/scope, then locate compatible existing Windows pg_dump/pg_dumpall/pg_restore/psql clients or prepare version-specific installation and executable-path instructions. No dependency edits or Docker/CLI-help prerequisite is required for this selected route.
-2. Obtain the deployed PostgreSQL version, selected schema/role scope and aggregate Storage/configuration inventory using the read-only diagnostic above. SQL handoffs remain PowerShell fetch → `git show "FETCH_HEAD:<path>" | Out-String | Set-Clipboard` → owner manual Supabase paste. Hosted results remain pending.
+1. Deployed version/aggregate scope is recorded; locate/verify compatible Windows pg_dump/pg_dumpall/pg_restore/psql clients using the prepared 17.x instructions. No dependency edits or Docker/CLI-help prerequisite is required for this selected route.
+2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Agree owner-held protected off-site storage, recovery targets, frequency/retention and completion/failure records using actual size/volume. Prepare concrete commands only after these dependencies are known. A schema file or object metadata alone is insufficient.
 5. Review owner-held artifact counts, scope/integrity and incomplete-run detection. Isolated restore proof is step 1.4; a live production restore is not part of this work.
@@ -136,3 +187,6 @@ Only redacted outcome/size/date/completeness records enter the repository. Custo
 - [PostgreSQL pg_dumpall and global-role scope](https://www.postgresql.org/docs/current/app-pg-dumpall.html)
 - [Official PostgreSQL Windows client distribution entry point](https://www.postgresql.org/download/windows/)
 - [Supabase database connection modes and SSL](https://supabase.com/docs/guides/database/connecting-to-postgres)
+
+- [EDB Windows component selection and command-line tools](https://www.enterprisedb.com/docs/supported-open-source/postgresql/installing/windows/)
+- [PostgreSQL 17 pg_dump scope/compatibility](https://www.postgresql.org/docs/17/app-pgdump.html)

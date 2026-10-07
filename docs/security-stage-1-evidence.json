@@ -384,6 +384,619 @@
       "backups_created_or_restore_verified": false,
       "provider_policy_credentials_native_runtime_or_production_sql_changed_by_assistant": false,
       "scope": "Owner-authorized route selection and instruction update only; no installation, hosted inventory result, connection, backup/recovery or finding-closure PASS inferred"
+    },
+    {
+      "id": "S1E13",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner attachment Pasted text(8).txt following Dashboard SQL inventory handoff",
+      "attachment_sha256": "10a2c41d21d6956d6c33aba32f1e09338930a53f93b75c16d74bd34016a89aaa",
+      "result": "OWNER_RUN_METADATA_INVENTORY_RECEIVED",
+      "contract": {
+        "INFO": 12,
+        "REVIEW": 1,
+        "total": 13
+      },
+      "observed_checks": [
+        {
+          "check_name": "01 Read-only execution context",
+          "status": "INFO",
+          "details": {
+            "checked_at": "2026-10-07T11:56:22.695585+00:00",
+            "transaction_isolation": "repeatable read",
+            "transaction_read_only": "on",
+            "dashboard_project_identity": "Owner must verify kttkospkblwvguuwnhjj; not proved by this SQL"
+          }
+        },
+        {
+          "check_name": "02 Deployed PostgreSQL and database size",
+          "status": "INFO",
+          "details": {
+            "scope": "Database disk size is not exported artifact size",
+            "database_bytes": 30559379,
+            "server_version": "17.6",
+            "server_version_num": "170006"
+          }
+        },
+        {
+          "check_name": "03 Non-system schema scope",
+          "status": "INFO",
+          "details": [
+            {
+              "view_count": 0,
+              "schema_name": "auth",
+              "table_count": 27,
+              "routine_count": 4,
+              "sequence_count": 1,
+              "rls_relation_count": 16,
+              "foreign_table_count": 0
+            },
+            {
+              "view_count": 0,
+              "schema_name": "cron",
+              "table_count": 2,
+              "routine_count": 7,
+              "sequence_count": 2,
+              "rls_relation_count": 2,
+              "foreign_table_count": 0
+            },
+            {
+              "view_count": 2,
+              "schema_name": "extensions",
+              "table_count": 0,
+              "routine_count": 55,
+              "sequence_count": 0,
+              "rls_relation_count": 0,
+              "foreign_table_count": 0
+            },
+            {
+              "view_count": 0,
+              "schema_name": "graphql",
+              "table_count": 0,
+              "routine_count": 0,
+              "sequence_count": 0,
+              "rls_relation_count": 0,
+              "foreign_table_count": 0
+            },
+            {
+              "view_count": 0,
+              "schema_name": "graphql_public",
+              "table_count": 0,
+              "routine_count": 1,
+              "sequence_count": 0,
+              "rls_relation_count": 0,
+              "foreign_table_count": 0
+            },
+            {
+              "view_count": 0,
+              "schema_name": "net",
+              "table_count": 2,
+              "routine_count": 12,
+              "sequence_count": 1,
+              "rls_relation_count": 0,
+              "foreign_table_count": 0
+            },
+            {
+              "view_count": 0,
+              "schema_name": "pgbouncer",
+              "table_count": 0,
+              "routine_count": 1,
+              "sequence_count": 0,
+              "rls_relation_count": 0,
+              "foreign_table_count": 0
+            },
+            {
+              "view_count": 1,
+              "schema_name": "public",
+              "table_count": 80,
+              "routine_count": 281,
+              "sequence_count": 0,
+              "rls_relation_count": 80,
+              "foreign_table_count": 0
+            },
+            {
+              "view_count": 0,
+              "schema_name": "realtime",
+              "table_count": 10,
+              "routine_count": 17,
+              "sequence_count": 1,
+              "rls_relation_count": 1,
+              "foreign_table_count": 0
+            },
+            {
+              "view_count": 0,
+              "schema_name": "storage",
+              "table_count": 8,
+              "routine_count": 19,
+              "sequence_count": 0,
+              "rls_relation_count": 8,
+              "foreign_table_count": 0
+            },
+            {
+              "view_count": 1,
+              "schema_name": "vault",
+              "table_count": 1,
+              "routine_count": 5,
+              "sequence_count": 0,
+              "rls_relation_count": 0,
+              "foreign_table_count": 0
+            }
+          ]
+        },
+        {
+          "check_name": "04 Installed extensions",
+          "status": "INFO",
+          "details": [
+            {
+              "name": "pg_cron",
+              "schema": "pg_catalog",
+              "version": "1.6.4"
+            },
+            {
+              "name": "pg_net",
+              "schema": "public",
+              "version": "0.20.4"
+            },
+            {
+              "name": "pg_stat_statements",
+              "schema": "extensions",
+              "version": "1.11"
+            },
+            {
+              "name": "pgcrypto",
+              "schema": "extensions",
+              "version": "1.3"
+            },
+            {
+              "name": "plpgsql",
+              "schema": "pg_catalog",
+              "version": "1.0"
+            },
+            {
+              "name": "supabase_vault",
+              "schema": "vault",
+              "version": "0.3.1"
+            },
+            {
+              "name": "uuid-ossp",
+              "schema": "extensions",
+              "version": "1.1"
+            }
+          ]
+        },
+        {
+          "check_name": "05 Role attributes without passwords",
+          "status": "INFO",
+          "details": [
+            {
+              "role": "anon",
+              "login": false,
+              "superuser": false,
+              "bypass_rls": false,
+              "create_role": false,
+              "create_database": false
+            },
+            {
+              "role": "authenticated",
+              "login": false,
+              "superuser": false,
+              "bypass_rls": false,
+              "create_role": false,
+              "create_database": false
+            },
+            {
+              "role": "authenticator",
+              "login": true,
+              "superuser": false,
+              "bypass_rls": false,
+              "create_role": false,
+              "create_database": false
+            },
+            {
+              "role": "dashboard_user",
+              "login": false,
+              "superuser": false,
+              "bypass_rls": false,
+              "create_role": true,
+              "create_database": true
+            },
+            {
+              "role": "pgbouncer",
+              "login": true,
+              "superuser": false,
+              "bypass_rls": false,
+              "create_role": false,
+              "create_database": false
+            },
+            {
+              "role": "postgres",
+              "login": true,
+              "superuser": false,
+              "bypass_rls": true,
+              "create_role": true,
+              "create_database": true
+            },
+            {
+              "role": "service_role",
+              "login": false,
+              "superuser": false,
+              "bypass_rls": true,
+              "create_role": false,
+              "create_database": false
+            },
+            {
+              "role": "supabase_admin",
+              "login": true,
+              "superuser": true,
+              "bypass_rls": true,
+              "create_role": true,
+              "create_database": true
+            },
+            {
+              "role": "supabase_auth_admin",
+              "login": true,
+              "superuser": false,
+              "bypass_rls": false,
+              "create_role": true,
+              "create_database": false
+            },
+            {
+              "role": "supabase_etl_admin",
+              "login": true,
+              "superuser": false,
+              "bypass_rls": true,
+              "create_role": false,
+              "create_database": false
+            },
+            {
+              "role": "supabase_functions_admin",
+              "login": true,
+              "superuser": false,
+              "bypass_rls": false,
+              "create_role": true,
+              "create_database": false
+            },
+            {
+              "role": "supabase_privileged_role",
+              "login": false,
+              "superuser": false,
+              "bypass_rls": false,
+              "create_role": false,
+              "create_database": false
+            },
+            {
+              "role": "supabase_read_only_user",
+              "login": true,
+              "superuser": false,
+              "bypass_rls": true,
+              "create_role": false,
+              "create_database": false
+            },
+            {
+              "role": "supabase_realtime_admin",
+              "login": false,
+              "superuser": false,
+              "bypass_rls": false,
+              "create_role": false,
+              "create_database": false
+            },
+            {
+              "role": "supabase_replication_admin",
+              "login": true,
+              "superuser": false,
+              "bypass_rls": false,
+              "create_role": false,
+              "create_database": false
+            },
+            {
+              "role": "supabase_storage_admin",
+              "login": true,
+              "superuser": false,
+              "bypass_rls": false,
+              "create_role": true,
+              "create_database": false
+            }
+          ]
+        },
+        {
+          "check_name": "06 Privilege and membership coverage indicators",
+          "status": "INFO",
+          "details": {
+            "scope": "Counts only; exact grants and restored effective access require later comparison",
+            "default_acl_count": 27,
+            "role_membership_count": 24,
+            "explicit_column_acl_count": 16,
+            "explicit_schema_acl_count": 10,
+            "explicit_routine_acl_count": 371,
+            "explicit_relation_acl_count": 136
+          }
+        },
+        {
+          "check_name": "07 Auth user count",
+          "status": "INFO",
+          "details": {
+            "scope": "Count only; credentials, identities, sessions and Auth configuration are not inventoried here",
+            "user_count": 9
+          }
+        },
+        {
+          "check_name": "08 Storage bucket configuration",
+          "status": "INFO",
+          "details": [
+            {
+              "bucket": "business-documents",
+              "public": false,
+              "file_size_limit": 10485760,
+              "allowed_mime_types": [
+                "image/jpeg",
+                "image/png",
+                "image/webp",
+                "application/pdf",
+                "text/csv",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              ]
+            },
+            {
+              "bucket": "business-logos",
+              "public": false,
+              "file_size_limit": 2097152,
+              "allowed_mime_types": [
+                "image/png",
+                "image/jpeg",
+                "image/webp"
+              ]
+            },
+            {
+              "bucket": "payment-proofs",
+              "public": false,
+              "file_size_limit": 10485760,
+              "allowed_mime_types": [
+                "image/jpeg",
+                "image/png",
+                "image/webp",
+                "application/pdf"
+              ]
+            },
+            {
+              "bucket": "subscription-proofs",
+              "public": false,
+              "file_size_limit": 10485760,
+              "allowed_mime_types": [
+                "image/jpeg",
+                "image/png",
+                "image/webp",
+                "application/pdf"
+              ]
+            }
+          ]
+        },
+        {
+          "check_name": "09 Storage object metadata totals",
+          "status": "INFO",
+          "details": {
+            "scope": "Recorded size metadata only; actual file bytes and integrity not checked",
+            "by_bucket": [
+              {
+                "bucket_id": "business-logos",
+                "object_count": 2,
+                "recorded_bytes": 771059,
+                "unknown_size_count": 0
+              }
+            ],
+            "empty_buckets": "Listed in check 08; only buckets containing object metadata appear here"
+          }
+        },
+        {
+          "check_name": "10 Managed schema trigger and policy dependencies",
+          "status": "INFO",
+          "details": {
+            "scope": "Metadata includes platform objects; classification/custom definitions require separate coverage",
+            "policies": [
+              {
+                "table": "objects",
+                "policy": "Business members can delete archived or unregistered private do",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "Business members can read registered private documents",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "Business members can upload private documents",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "Owners and finance staff can read subscription proofs",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "Owners can delete payment proofs",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "Owners can delete unsubmitted subscription proofs",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "Owners can upload subscription proofs",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "Users can read permitted payment proofs",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "Users can upload permitted payment proofs",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "business_logos_member_read",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "business_logos_owner_remove",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "business_logos_owner_upload",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "business_subscription_proof_delete_guard",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "business_subscription_proof_read_guard",
+                "schema": "storage"
+              },
+              {
+                "table": "objects",
+                "policy": "business_subscription_proof_upload_guard",
+                "schema": "storage"
+              }
+            ],
+            "triggers": [
+              {
+                "table": "users",
+                "schema": "auth",
+                "trigger": "on_auth_user_created_create_profile",
+                "function": "handle_new_user_profile",
+                "function_schema": "public"
+              },
+              {
+                "table": "subscription",
+                "schema": "realtime",
+                "trigger": "tr_check_filters",
+                "function": "subscription_check_filters",
+                "function_schema": "realtime"
+              },
+              {
+                "table": "buckets",
+                "schema": "storage",
+                "trigger": "enforce_bucket_name_length_trigger",
+                "function": "enforce_bucket_name_length",
+                "function_schema": "storage"
+              },
+              {
+                "table": "buckets",
+                "schema": "storage",
+                "trigger": "protect_bucket_control_insert",
+                "function": "protect_bucket_control_columns",
+                "function_schema": "storage"
+              },
+              {
+                "table": "buckets",
+                "schema": "storage",
+                "trigger": "protect_bucket_control_update",
+                "function": "protect_bucket_control_columns",
+                "function_schema": "storage"
+              },
+              {
+                "table": "buckets",
+                "schema": "storage",
+                "trigger": "protect_bucket_control_update_role",
+                "function": "enforce_bucket_lifecycle_service_role",
+                "function_schema": "storage"
+              },
+              {
+                "table": "buckets",
+                "schema": "storage",
+                "trigger": "protect_buckets_delete",
+                "function": "protect_delete",
+                "function_schema": "storage"
+              },
+              {
+                "table": "objects",
+                "schema": "storage",
+                "trigger": "protect_objects_delete",
+                "function": "protect_delete",
+                "function_schema": "storage"
+              },
+              {
+                "table": "objects",
+                "schema": "storage",
+                "trigger": "update_objects_updated_at",
+                "function": "update_updated_at_column",
+                "function_schema": "storage"
+              }
+            ]
+          }
+        },
+        {
+          "check_name": "11 Publication configuration indicators",
+          "status": "INFO",
+          "details": [
+            {
+              "all_tables": false,
+              "publication": "supabase_realtime",
+              "listed_table_count": 28
+            },
+            {
+              "all_tables": false,
+              "publication": "supabase_realtime_messages_publication",
+              "listed_table_count": 7
+            }
+          ]
+        },
+        {
+          "check_name": "12 Scheduler encryption and migration dependency presence",
+          "status": "INFO",
+          "details": {
+            "scope": "Presence only, not usage; no schedules, commands, secret values or key material retrieved",
+            "cron_jobs_table": true,
+            "pgsodium_extension": false,
+            "vault_secrets_table": true,
+            "migration_history_table": false,
+            "database_webhooks_schema": false
+          }
+        },
+        {
+          "check_name": "13 Backup and configuration completeness",
+          "status": "REVIEW",
+          "details": {
+            "remaining": "Exact export scope/grants/managed customizations, file bytes, foreign/large objects, encryption dependencies, Auth and SMTP settings, Edge Functions/dependencies/secrets, provider configuration, protected off-site storage and isolated recovery proof",
+            "backup_created_by_this_check": false,
+            "restore_verified_by_this_check": false
+          }
+        }
+      ],
+      "project_identity_scope": "Intended project kttkospkblwvguuwnhjj follows owner handoff context; catalog output does not independently establish Dashboard identity",
+      "limits": "Metadata/counts only; no exact grants/tenant behavior, object bytes, Vault key/secret use, schedule bodies, hosted settings or source parity verified",
+      "backup_or_restore_completed": false,
+      "production_sql_or_customer_row_file_bytes_accessed_by_assistant": false,
+      "scope": "Owner-supplied read-only output received/parsed; expected INFO/REVIEW contract is not an all-controls PASS"
+    },
+    {
+      "id": "S1E14",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Version-specific client setup preparation after S1E13",
+      "selected_client_major": "17.x stable Windows x86-64; match deployed major 17.6",
+      "owner_commands": "Full standard-path pg_dump.exe/pg_dumpall.exe/pg_restore.exe/psql.exe --version checks; custom existing bin path allowed; no PATH/policy change",
+      "installation_if_needed": "Official PostgreSQL Windows page → EDB latest available stable 17.x Windows installer; Command Line Tools only, standard PostgreSQL 17 directory; skip server/pgAdmin/Stack Builder",
+      "existing_installation_scope": "Earlier NOT ON PATH is not absence; check standard or known custom location before reinstalling",
+      "documentation_sources": [
+        "https://www.postgresql.org/download/windows/",
+        "https://www.enterprisedb.com/docs/supported-open-source/postgresql/installing/windows/",
+        "https://www.postgresql.org/docs/17/app-pgdump.html"
+      ],
+      "windows_execution": "PENDING_OWNER; no PowerShell runtime locally",
+      "client_installation_export_restore_or_settings_changes_by_assistant": false,
+      "required_before_export": "Actual client versions/options, intended Dashboard endpoint, SSL/credential handling, complete selected schema/data/roles/grants/managed/encryption/config scope and protected owner-held destination; file bytes separate",
+      "scope": "Client discovery/installation/version instructions only; no installation, database connection, export or backup/recovery PASS inferred"
     }
   ]
 }

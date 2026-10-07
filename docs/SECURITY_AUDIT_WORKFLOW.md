@@ -1,6 +1,6 @@
 # Audit workflow and stage reporting
 
-Owner instruction accepted 7 October 2026, E33. Current stage/step: **1.2**. Stage 0 baseline is owner-approved and closed; Stage 1 foundations is authorized and in progress. Stage 1.1 normal sign-in checks are owner-tested PASS with recovery/identity gaps carried forward; Stage 1.2 executable versions are owner-reported and the owner selects standalone PostgreSQL exports. Deployed scope and compatible Windows client setup remain pending; earlier Docker/CLI-wrapper blockers are historical and no longer prerequisites for that route.
+Owner instruction accepted 7 October 2026, E33. Current stage/step: **1.2**. Stage 0 baseline is owner-approved and closed; Stage 1 foundations is authorized and in progress. Stage 1.1 normal sign-in checks are owner-tested PASS with recovery/identity gaps carried forward; Stage 1.2 executable versions are owner-reported and the owner selects standalone PostgreSQL exports. Owner deployed inventory reports PostgreSQL 17.6 and aggregate scope; prepared 17.x Windows client setup/version results remain pending. Earlier Docker/CLI-wrapper blockers are historical and no longer prerequisites for that route.
 
 ## Message numbering
 

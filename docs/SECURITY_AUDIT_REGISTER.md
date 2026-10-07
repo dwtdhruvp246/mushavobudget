@@ -2,7 +2,7 @@
 
 Baseline: 5 October 2026, source `d2a32032b1c560bbae853de87837c3436ea44887`, web/PWA 4.9.39.
 
-**This is an applicability/evidence worklist, not 123 completed tests.** Stage 0 baseline is owner-approved CLOSED, with known gaps carried forward; Stage 1 is authorized and IN PROGRESS at 1.1. Runtime source remains reviewed 4.9.40; documentation PR #91 merged at `067cb5f00ad7f644647926c5fd1e82a5c754f058`. Scoped metadata/build/owner results and unverified authorization/recovery/native/store properties retain their limits. All original finding definitions remain; no residual item is closed by stage completion alone.
+**This is an applicability/evidence worklist, not 123 completed tests.** Stage 0 baseline is owner-approved CLOSED, with known gaps carried forward; Stage 1 is authorized and IN PROGRESS at 1.2. Runtime source remains reviewed 4.9.40; documentation PR #91 merged at `067cb5f00ad7f644647926c5fd1e82a5c754f058`. Scoped metadata/build/owner results and unverified authorization/recovery/native/store properties retain their limits. All original finding definitions remain; no residual item is closed by stage completion alone.
 
 Latest **E33** records owner acceptance, merge and the reporting/message-number/final re-audit rules. Use [the detailed Stage 0 report](SECURITY_STAGE_0_COMPLETION_REPORT.md), [carry-forward action plan](SECURITY_AUDIT_CARRY_FORWARD.md), [workflow](SECURITY_AUDIT_WORKFLOW.md) and [active 1.1 instructions](SECURITY_STAGE_1_1_ACCOUNT_CHECKS.md). Older proposal snapshots remain historical, not current stage status.
 
@@ -53,6 +53,8 @@ Evidence references:
 - **E32:** operator individual/business status undecided; support@mushavobudget.com designated, actual mailbox operation unverified; worldwide launch intent; no configured automatic error/outage/spending alerts. Age audience is not specified. Broad baseline bundles are accounted for; prepare scoped sign-off and Stage 1 foundations plan with unresolved matters assigned, not certified. Owner agreement remains pending and Stage 1 has not started. Documentation only; no mailbox test/message, settings/project/purchase/runtime/SQL/APK change.
 
 - **E33:** owner approves merge #91/Stage 0 baseline closure/Stage 1 start and requires numbered stage.step messages, stage-end reports and final resolution/full re-audit of residual FAIL/UNSURE. #91 merged at 05:51:06Z into 067cb5f. Pre-merge Workers/release checks PASS; PR deployment skipped by configured condition. Stage 0 closed with carry-forward; Stage 1.1 in progress, verification pending. Reports/process/progress/read-only instructions only; no account settings, credentials, runtime, SQL or APK change.
+
+**Stage 1 follow-up S1E01–S1E08:** configuration checks and owner-tested normal GitHub/Cloudflare/Supabase/Zoho sign-ins are recorded, with recovery/identity gaps carried forward. Current work is [1.2 Windows backup-tool inventory](SECURITY_STAGE_1_2_BACKUP_INVENTORY.md), with no export/restore result yet. The 123 baseline rows below retain their dated evidence; current step results are in [Stage 1 evidence](security-stage-1-evidence.json) and [progress](SECURITY_AUDIT_PROGRESS.json).
 
 The technical details, original F01–F20 findings, staging design, PowerShell steps and remaining evidence list are in [SECURITY_STAGE_0_BASELINE.md](SECURITY_STAGE_0_BASELINE.md). No code-dependent requirement is deemed inapplicable solely because its evidence is unavailable.
 

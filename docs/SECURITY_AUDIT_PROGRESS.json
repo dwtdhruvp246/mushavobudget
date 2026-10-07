@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-07",
   "current_stage": 1,
-  "current_step": "1.1",
-  "current_title": "Account security and recovery",
+  "current_step": "1.2",
+  "current_title": "External backups and recovery",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -15,19 +15,19 @@
   "stage_1": {
     "status": "IN_PROGRESS",
     "authorized": true,
-    "active_step": "1.1",
+    "active_step": "1.2",
     "plan": "docs/SECURITY_STAGE_1_FOUNDATIONS_PLAN.md",
     "steps": [
       {
         "id": "1.1",
         "title": "Account security and recovery",
-        "status": "IN_PROGRESS_OWNER_EVIDENCE_PENDING",
-        "latest_evidence": "S1E06",
+        "status": "NORMAL_SIGNIN_CHECKS_COMPLETE_WITH_CARRY_FORWARD",
+        "latest_evidence": "S1E07",
         "provider_checks": {
-          "github": "MFA_SETTINGS_PASS_RECOVERY_CODES_OWNER_CONFIRMED_SAVED",
-          "cloudflare": "OWNER_PASS_EMAIL_2FA_ENABLED_RECOVERY_CODES_OBTAINED_SIGNIN_PROOF_PENDING",
-          "supabase": "OWNER_PASS_AUTHENTICATOR_MFA_BACKUP_UNAVAILABLE_OWNER_REPORT",
-          "zoho": "OWNER_PASS_MAIL_MFA_ENABLED_METHOD_RECOVERY_SENDER_IDENTITY_UNCONFIRMED"
+          "github": "OWNER_TESTED_PASSKEY_SIGNIN_PASS",
+          "cloudflare": "OWNER_TESTED_EMAIL_CODE_SIGNIN_PASS",
+          "supabase": "OWNER_TESTED_AUTH_APP_SIGNIN_PASS_BACKUP_GAP",
+          "zoho": "OWNER_TESTED_MAIL_AUTH_APP_SIGNIN_PASS_BACKUP_SENDER_IDENTITY_UNCONFIRMED"
         },
         "provider_signin_methods": {
           "cloudflare": "GOOGLE_OWNER_CONFIRMED",
@@ -36,12 +36,38 @@
         "cloudflare_google_mfa_and_recovery": "UNVERIFIED",
         "cloudflare_recovery_code_storage": "OBTAINED_OWNER_CONFIRMED_PERSISTENT_STORAGE_UNCONFIRMED",
         "supabase_backup_authentication": "OWNER_REPORTED_NOT_AVAILABLE_CARRIED_FORWARD",
-        "fresh_signin_checks": "PENDING_FOR_ALL_FOUR_PROVIDERS"
+        "fresh_signin_checks": "OWNER_TESTED_PASS_FOR_ALL_FOUR_REPORTED_METHODS",
+        "fresh_signin_results": [
+          {
+            "provider": "Cloudflare",
+            "method": "Email verification code",
+            "result": "OWNER-TESTED PASS"
+          },
+          {
+            "provider": "GitHub",
+            "method": "Passkey",
+            "result": "OWNER-TESTED PASS"
+          },
+          {
+            "provider": "Supabase",
+            "method": "Authenticator app",
+            "result": "OWNER-TESTED PASS"
+          },
+          {
+            "provider": "Zoho Mail",
+            "method": "Authenticator app",
+            "result": "OWNER-TESTED PASS"
+          }
+        ],
+        "remaining_recovery_identity_evidence": "OPEN_IN_CARRY_FORWARD_REGISTER; no complete recovery/assurance/F08 closure"
       },
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "PENDING"
+        "status": "IN_PROGRESS_TOOL_INVENTORY_PENDING",
+        "latest_evidence": "S1E08",
+        "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
+        "backups_created_or_restore_verified": false
       },
       {
         "id": "1.3",

@@ -1,6 +1,6 @@
 # 1.1 — Account security and recovery checks
 
-Started 7 October 2026 following owner approval of Stage 0 closure and Stage 1. The initial checks **inspect current state**. Owner-performed account changes and their verification are recorded separately; no provider setting or credential is changed by the assistant. Step 1.1 remains in progress pending observed/owner results.
+Started 7 October 2026 following owner approval of Stage 0 closure and Stage 1. The initial checks **inspect current state**. Owner-performed account changes and their verification are recorded separately; no provider setting or credential is changed by the assistant. Normal sign-in checks completed with carry-forward on 7 October 2026; current work is [1.2 external protection](SECURITY_STAGE_1_2_BACKUP_INVENTORY.md). Recovery/identity gaps remain open.
 
 ## Current results — 7 October 2026
 
@@ -16,14 +16,18 @@ Evidence [S1E05](security-stage-1-evidence.json): the owner confirms **Supabase 
 
 Evidence [S1E06](security-stage-1-evidence.json): the owner replies **Supabase — no** to backup availability and confirms **Zoho Mail MFA enabled**. Record Supabase backup access as owner-reported unavailable and carry forward independent backup authentication under F08; do not interpret this as proof Supabase cannot support a backup TOTP factor. Zoho Mail MFA is **OWNER-PASS at enabled-setting scope**. Its factor type, backup route and whether the same account administers CPaaS/sending remain unconfirmed. All four providers have scoped configured/enabled evidence; no fresh sign-in/recovery results are yet supplied.
 
+Evidence [S1E07](security-stage-1-evidence.json): following the fresh-sign-in instructions, the owner reports Cloudflare **email verification PASS**, GitHub **passkey PASS**, Supabase **authenticator-app PASS** and Zoho **authenticator-app PASS**. Record **OWNER-TESTED PASS for the four reported normal methods**; Zoho’s factor type is now supplied. Private-window execution and assurance enforcement are not independently observed; no alternate-path denial, recovery drill or overall security/F08 clearance is inferred. Normal sign-in checks are complete with carry-forward, and [1.2](SECURITY_STAGE_1_2_BACKUP_INVENTORY.md) starts next.
+
 | Provider | MFA inspection | Private recovery availability | Remaining evidence |
 |---|---|---|---|
-| GitHub | PASS — displayed configured methods | Owner confirms codes saved | Fresh sign-in/recovery evidence remains separate |
-| Cloudflare | OWNER-PASS — email authentication enabled | Codes obtained; persistent storage not explicitly confirmed | Fresh factor/sign-in/recovery evidence and Google protection pending |
-| Supabase | OWNER-PASS — authenticator-app MFA; email sign-in confirmed | Owner reports no backup authentication available — GAP | Independent private backup authentication and fresh sign-in/recovery proof carried forward |
-| Zoho Mail | OWNER-PASS — MFA enabled; method not supplied | Unconfirmed | Factor type, fresh sign-in, backup access and CPaaS administering identity remain unverified |
+| GitHub | Configuration PASS; passkey sign-in OWNER-TESTED PASS | Owner confirms codes saved | Actual recovery and alternate-path/ownership proof remain separate |
+| Cloudflare | Email-factor configuration and sign-in OWNER-PASS | Codes obtained; persistent storage not explicitly confirmed | Actual recovery, saved-code confirmation and Google/alternate-path protection pending |
+| Supabase | Authenticator MFA/configuration and email-based sign-in OWNER-PASS | Owner reports no backup authentication available — GAP | Independent private backup authentication and actual recovery proof carried forward |
+| Zoho Mail | Authenticator MFA and normal sign-in OWNER-PASS | Unconfirmed | Backup access, actual recovery and CPaaS administering identity remain unverified |
 
-Next owner check: **fresh protected sign-in** to GitHub, Cloudflare, Supabase and Zoho Mail. Keep working sessions open and use a separate private browser window for each provider, closing that private window between providers. Sign in using the actual supported method and report whether access succeeded and what factor/method was used (passkey, authenticator, email, OneAuth or other). Do not require an extra OTP prompt when the provider satisfies authentication through another supported method; a successful login alone without the actual assurance/method does not prove MFA enforcement. Preserve failures/unexpected prompts rather than changing factors or retrying repeatedly to manufacture PASS. No recovery-code use or recovery drill is requested. Supabase backup and other uncertain recovery/identity items remain in the final action register. Step 1.1 remains in progress.
+## Handoff to 1.2
+
+The owner reports all requested normal sign-in outcomes PASS. Keep the historical instructions/results above and the recovery/identity gaps in the central register; no further factor enrollment or recovery-code use is requested to close this check. Current action is the [read-only Windows version inventory for 1.2](SECURITY_STAGE_1_2_BACKUP_INVENTORY.md). Support mailbox/incident-contact ownership remains a foundations operational follow-up, not a completed test.
 
 ## Cloudflare Google-sign-in password prerequisite
 
@@ -55,7 +59,7 @@ Status answers are sufficient for this inspection. Screenshots may show settings
 
 ## Result handling
 
-The previous owner statement “i think only for github” remains historical tentative evidence. S1E01 confirms the displayed GitHub MFA configuration; S1E02 adds owner-confirmed GitHub recovery-code storage and observed Cloudflare inactive 2FA. S1E04 reports Cloudflare email MFA enabled and S1E05 reports Supabase email sign-in/authenticator MFA. S1E06 records Zoho Mail MFA enabled and Supabase backup authentication unavailable at owner-report scope. Exact Zoho factor/sender identity, remaining recovery arrangements, fresh sign-in and actual recovery proof remain pending. Fresh sign-in/recovery evidence and any approved later hardening are separate steps. A disabled or unknown setting is recorded in the carry-forward register; it does not automatically become PASS or silently trigger factor replacement.
+The previous owner statement “i think only for github” remains historical tentative evidence. S1E01 confirms the displayed GitHub MFA configuration; S1E02 adds owner-confirmed GitHub recovery-code storage and observed Cloudflare inactive 2FA. S1E04 reports Cloudflare email MFA enabled and S1E05 reports Supabase email sign-in/authenticator MFA. S1E06 records Zoho Mail MFA enabled and Supabase backup authentication unavailable at owner-report scope. S1E07 supplies Zoho’s authenticator method and all four normal sign-in PASS results. Sender identity, remaining recovery/ownership arrangements and actual recovery proof remain pending. Fresh sign-in/recovery evidence and any approved later hardening are separate steps. A disabled or unknown setting is recorded in the carry-forward register; it does not automatically become PASS or silently trigger factor replacement.
 
 After the actual sign-in paths/status are established, verify independent recovery without sharing its contents and assess support/incident contact. Supabase's dashboard-account MFA guidance describes backup TOTP factors rather than downloadable recovery codes, so do not insist every provider must use the same recovery method. App Admin MFA remains the separate Stage 3 requirement.
 

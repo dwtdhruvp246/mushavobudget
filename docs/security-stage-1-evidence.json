@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 1,
   "updated_date": "2026-10-07",
-  "active_step": "1.1",
+  "active_step": "1.2",
   "events": [
     {
       "id": "S1E01",
@@ -160,6 +160,71 @@
       "whole_finding_or_release_pass_inferred": false,
       "settings_credentials_runtime_sql_apk_changed_by_assistant": false,
       "scope": "Owner-reported absence of available Supabase backup authentication and enabled Zoho Mail MFA; exact Zoho factor/recovery/sender identity and actual sign-in outcomes remain unverified; no secrets recorded"
+    },
+    {
+      "id": "S1E07",
+      "stage_step": "1.1",
+      "received_date": "2026-10-07",
+      "source": "Owner reports Cloudflare email verification PASS, GitHub passkey PASS, Supabase auth app PASS and Zoho auth app PASS after fresh-sign-in instructions",
+      "expected": "Fresh normal sign-in succeeds using the supported configured method",
+      "observed": [
+        {
+          "provider": "Cloudflare",
+          "method": "Email verification code",
+          "result": "OWNER-TESTED PASS"
+        },
+        {
+          "provider": "GitHub",
+          "method": "Passkey",
+          "result": "OWNER-TESTED PASS"
+        },
+        {
+          "provider": "Supabase",
+          "method": "Authenticator app",
+          "result": "OWNER-TESTED PASS"
+        },
+        {
+          "provider": "Zoho Mail",
+          "method": "Authenticator app",
+          "result": "OWNER-TESTED PASS"
+        }
+      ],
+      "zoho_factor_type": "Authenticator app — now owner confirmed, supersedes S1E06 factor unknown only",
+      "test_environment": "Owner fresh-sign-in response; private-window execution not independently observed",
+      "result": "NORMAL SIGN-IN CHECKS COMPLETE WITH CARRY-FORWARD",
+      "remaining": [
+        "Supabase independent backup authentication owner-reported unavailable",
+        "Cloudflare codes obtained, persistent saved storage unconfirmed",
+        "Zoho backup authentication and CPaaS administering identity unconfirmed",
+        "Google account MFA/recovery and alternate sign-in paths not established",
+        "Actual recovery drills and account/support ownership/contact verification remain open"
+      ],
+      "whole_f08_or_release_pass_inferred": false,
+      "settings_credentials_runtime_sql_apk_changed_by_assistant": false,
+      "scope": "Owner-tested normal supported sign-ins only; no forced negative assurance/session bypass, recovery drill, organization-wide enforcement or app Admin MFA tested"
+    },
+    {
+      "id": "S1E08",
+      "stage_step": "1.2",
+      "started_date": "2026-10-07",
+      "source": "Authorized Stage 1 foundations progression after S1E07; no new owner tool result yet",
+      "status": "IN_PROGRESS_TOOL_INVENTORY_PENDING",
+      "starting_facts": [
+        "Supabase Free",
+        "No owner-held external database or uploaded-file backups",
+        "No separate staging target in owner baseline"
+      ],
+      "deliverables": [
+        "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
+        "scripts/security-stage-1-tool-inventory.ps1"
+      ],
+      "first_owner_action": "Paste read-only Windows executable version checks; use npm.cmd and no package auto-fetch",
+      "tool_results": "PENDING",
+      "powershell_runtime_in_audit_workspace": "Not available; script prepared/reviewed, not executed on Windows locally",
+      "backup_scope": "Selected database schema/data/roles/privileges, Storage metadata and actual object bytes, plus separate Auth/platform/Edge/provider recovery dependencies",
+      "database_export_restore_or_customer_bytes_retrieved": false,
+      "tools_installed_services_started_settings_credentials_sql_apk_changed": false,
+      "scope": "Version-inventory preparation and step transition only; no backup, restore or protection PASS inferred"
     }
   ]
 }

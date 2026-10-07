@@ -2,7 +2,7 @@
 
 Mushavo Budget · 7 October 2026 · Owner-approved **CLOSED BASELINE WITH CARRY-FORWARD**.
 
-The owner approved the Stage 0 sign-off and Stage 1 start on 7 October. Documentation PR #91 merged at 05:51:06Z into `067cb5f00ad7f644647926c5fd1e82a5c754f058`. Current active work is **1.1 — Account security and recovery**, with provider verification pending. This report completes baseline collection and records unresolved work; it does not clear the app for stores or certify all controls/security/recovery/native behavior.
+The owner approved the Stage 0 sign-off and Stage 1 start on 7 October. Documentation PR #91 merged at 05:51:06Z into `067cb5f00ad7f644647926c5fd1e82a5c754f058`. At Stage 0 close, Stage 1 began at **1.1 — Account security and recovery**, with provider verification pending. Later current-step outcomes are tracked in [audit progress](SECURITY_AUDIT_PROGRESS.json) and [Stage 1 evidence](security-stage-1-evidence.json). This report completes baseline collection and records unresolved work; it does not clear the app for stores or certify all controls/security/recovery/native behavior.
 
 ## Result summary
 

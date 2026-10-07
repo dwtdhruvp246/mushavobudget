@@ -1720,5 +1720,140 @@
     },
     "native_compile_or_device_test": false,
     "production_deployment": false
+  },
+  "merged_business_invitation_release_reconciliation": {
+    "evidence_ref": "E27",
+    "reconciled_date": "2026-10-07",
+    "evidence_type": "Fresh GitHub metadata; prior dated public source check; owner statement",
+    "pull_request": "https://github.com/dwtdhruvp246/mushavobudget/pull/90",
+    "merged_at": "2026-10-06T19:20:07Z",
+    "main_commit": "464f52c39ff56cc57bf8dfd2b0e35bd3d51a4436",
+    "reviewed_source_commit": "227cc8ca8b849401e7b449e76acb793b60a38bf3",
+    "identical_tree_sha": "6c97d97a3cd23128cfd32c14e268fcb4441c7647",
+    "check_runs_re_read_date": "2026-10-07",
+    "merged_commit_check_runs": [
+      {
+        "name": "Workers Builds: mushavobudget",
+        "id": 112456698695,
+        "conclusion": "success",
+        "completed_at": "2026-10-06T19:20:49Z"
+      },
+      {
+        "name": "deploy",
+        "id": 112456680197,
+        "conclusion": "success",
+        "completed_at": "2026-10-06T19:21:05Z"
+      },
+      {
+        "name": "report-build-status",
+        "id": 112456649928,
+        "conclusion": "success",
+        "completed_at": "2026-10-06T19:20:51Z"
+      },
+      {
+        "name": "deploy",
+        "id": 112456649910,
+        "conclusion": "success",
+        "completed_at": "2026-10-06T19:20:59Z"
+      },
+      {
+        "name": "build",
+        "id": 112456424831,
+        "conclusion": "success",
+        "completed_at": "2026-10-06T19:20:41Z"
+      },
+      {
+        "name": "Verify production release",
+        "id": 112456423525,
+        "conclusion": "success",
+        "completed_at": "2026-10-06T19:20:46Z"
+      }
+    ],
+    "workflow_run_urls": [
+      "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/37518187986",
+      "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/37518186310"
+    ],
+    "public_source_evidence": {
+      "collected_date": "2026-10-06",
+      "web_pwa_release": "4.9.40",
+      "app_url": "https://mushavobudget.com/app.js?v=112",
+      "app_http_status": 200,
+      "app_sha256": "3db774eb22115bd0b5ff6c4e0c2a93a4efd249e33360b3008a4391a3d8febbb2",
+      "app_matches_reviewed_source": true,
+      "pwa_sha256": "749b9898def77f6cb0c257bc036420b417770833afd96d120a31ed3d786c93e0",
+      "accept_decline_business_open_markers": true,
+      "independent_public_recheck_2026_10_07": "UNAVAILABLE; no new source PASS or outage inferred",
+      "independent_public_recheck_http_status": 403
+    },
+    "owner_statement": "now working. continue",
+    "normal_revised_business_notification_ui": "OWNER-REPORTED PASS",
+    "individual_action_replay_denial_websocket_device_matrix": "NOT ESTABLISHED by the general working statement",
+    "earlier_E25_snapshot_preserved": true,
+    "apk_created_or_changed": false,
+    "scope": "Merged source/deployment checks and normal UI owner report; not native/store/full authorization certification"
+  },
+  "owner_auth_smtp_host_correction": {
+    "evidence_ref": "E28",
+    "received_date": "2026-10-07",
+    "evidence_type": "Owner-supplied Auth error log, subsequent response and correction statement",
+    "redacted_failure": {
+      "time": "2026-10-07T04:07:24Z",
+      "path": "/otp",
+      "status": 504,
+      "error_code": "request_timeout",
+      "error": "context deadline exceeded",
+      "context": "Business invitation Auth email request"
+    },
+    "subsequent_create_error": "INVITATION_ALREADY_PENDING",
+    "pending_request_followup": "Use existing pending invitation Resend; no repeated migration or duplicate Create needed",
+    "owner_statement": "The host value was wrong; used the SMTP host provided and it worked. The provider displayed cpaas.zoho.com as the API host.",
+    "normal_sending_blocker": "OWNER-REPORTED RESOLVED after host correction",
+    "actual_saved_smtp_values_independently_verified": false,
+    "hosted_template_save_rendering_current_redirects": "UNVERIFIED",
+    "all_auth_email_types_recovery_delivery_matrix": "NOT TESTED",
+    "raw_log_recipient_email_ips_ids_links_or_credentials_committed": false,
+    "provider_settings_changed_by_session": false,
+    "earlier_E24_E26_snapshots_preserved": true,
+    "scope": "Owner normal sending success, not a full email provider/configuration/flow audit"
+  },
+  "stage_0_closure_boundary_and_email_deferral": {
+    "evidence_ref": "E29",
+    "agreed_date": "2026-10-07",
+    "stage_0_status": "IN PROGRESS",
+    "stage_1_started": false,
+    "owner_direction": "Agrees to finish Stage 0 closure before full email architecture implementation",
+    "coverage_sections": 123,
+    "original_findings_retained": 20,
+    "closure_checklist": "docs/SECURITY_STAGE_0_CLOSURE_CHECKLIST.md",
+    "current_known_results": [
+      "Both narrow permission metadata rechecks PASS",
+      "Notification SQL owner-reported 8/8 PASS",
+      "Locked native asset/dependency checks PASS",
+      "4.9.40 merged deployment/source evidence",
+      "Normal revised notification UI owner-PASS",
+      "SMTP correction normal sending owner-PASS"
+    ],
+    "remaining_baseline_inputs": [
+      "Separate staging backend/inboxes status",
+      "Backup/PITR/Storage protection and restore-history status",
+      "Infrastructure MFA/recovery and incident/alert/budget ownership",
+      "Current Auth template/redirect/recovery/settings and deployed Edge/cron inventory",
+      "Hosting version/traffic/TLS/redirect/secondary Pages mapping",
+      "Mac/Xcode and native/store/operator prerequisites"
+    ],
+    "later_email_proposal": {
+      "stage": 6,
+      "coordination_stages": [
+        1,
+        8
+      ],
+      "auth_delivery": "Signed Supabase Send Email Hook using provider API and server-validated context",
+      "application_delivery": "Separate dispatcher/event queue with shared versioned templates",
+      "implementation_or_activation": "NONE"
+    },
+    "native_apk_update": "DEFERRED by owner",
+    "closure_rule": "Account for evidence, known gaps, owners/stages and prerequisites; not all later-stage implementation or 123-control PASS",
+    "earlier_top_level_evidence_values_preserved": true,
+    "changes_this_followup": "Documentation only; no runtime, database, provider or APK mutation"
   }
 }

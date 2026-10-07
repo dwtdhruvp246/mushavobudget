@@ -4,9 +4,9 @@ Started 7 October 2026 after owner-tested normal sign-ins completed in 1.1. Stag
 
 ## Current scope and starting facts
 
-Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. Next are Docker engine/CLI option checks and an owner-run read-only SQL inventory; no export, restore, package install, local stack, account setting or production write is requested.
+Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. Next is the owner-run read-only SQL inventory to establish deployed version/scope, followed by existing-client discovery or compatible client installation. No export, restore, package install, local stack, account setting or production write has been performed.
 
-For a recoverable backup we must account for database schema/data/roles and privileges, uploaded file bytes and their database metadata, and separately inventoried Auth/platform/Edge/provider configuration dependencies. Supabase's database-backup guidance distinguishes Storage metadata from actual object bytes and recommends off-site exports for Free projects. Its default CLI dump is not a complete data/role export and excludes managed schemas. Exact tool flags, actual PostgreSQL version and required Auth/Storage coverage must be reconciled before preparing exports.
+For a recoverable backup we must account for database schema/data/roles and privileges, uploaded file bytes and their database metadata, and separately inventoried Auth/platform/Edge/provider configuration dependencies. Supabase's database-backup guidance distinguishes Storage metadata from actual object bytes and recommends off-site exports for Free projects. The earlier Supabase CLI route has defaults/managed-schema exclusions that differ from standalone PostgreSQL tools. The selected standalone export's actual schema/data/role/privilege/managed scope must be designed explicitly; no CLI flags/defaults are blindly copied. Actual PostgreSQL version and required Auth/Storage coverage must be reconciled before preparing exports.
 
 ## First owner check — installed tool versions
 
@@ -67,29 +67,25 @@ The source is [scripts/security-stage-1-tool-inventory.ps1](../scripts/security-
 
 The executable inventory completed at owner-tested scope. No version check failed. The repository devDependency pins Supabase CLI 2.116.0; this is distinct from the owner's PATH-resolved 2.106.0. No automatic upgrade, dependency edit or assumption that the installed CLI supports every current documented flag follows. PostgreSQL executable absence on PATH is not a backup failure, and Docker's `--version` does not prove engine readiness. No backup/restore PASS is inferred.
 
-## Engine/help results — S1E11
+## Earlier engine/help results — S1E11 (historical)
 
 Owner output on 7 October selects `desktop-linux`, but `docker version` returns client 29.6.2, no server version and a missing `dockerDesktopLinuxEngine` named pipe. **FAIL at selected-engine readiness scope / container export path BLOCKED.** The cause is not established: Docker Desktop may be stopped, still starting or unable to initialize. CLI installation remains proven separately; a missing pipe is not a hosted Supabase database failure.
 
 Bare `supabase db dump --help` selected the npm `supabase.ps1` wrapper and was blocked by PowerShell's execution policy before the CLI help ran. **CLI options NOT VERIFIED / wrapper invocation BLOCKED**, not an absent executable or failed export. The assistant's original bare-command instruction was incorrect for the already known PowerShell policy. The corrected block resolves an Application executable exactly as the successful version inventory did, avoiding the `.ps1` wrapper; use this or an explicitly available `.cmd`/`.exe` for future CLI instructions. No policy weakening or automatic CLI upgrade is requested.
 
-## Next owner checks — engine recovery/options and deployed scope
+## Selected export route — S1E12
 
-Open **Docker Desktop** from the Windows Start menu and wait until its Linux engine is running, then run the block below. If Desktop cannot start or shows a WSL/virtualization error, report that exact message; no reset, reinstall, container removal or Windows feature change is requested from this observation alone. Starting Desktop is an owner startup action, separate from the read-only probes; no Supabase stack is started by these commands.
+Owner instruction on 7 October: **use PostgreSQL command**. Use Windows PostgreSQL client tools directly for database exports; Docker startup and Supabase CLI dump/help are no longer prerequisites for this selected export route. S1E11's engine failure and wrapper blocker remain historical evidence, not repaired PASS. Docker's role in any later optional local staging proposal is a separate decision; no container-based environment is assumed or started.
 
-`docker version` queries the selected engine; no context change, image pull or Supabase connection is requested. CLI help must come from the installed Application executable rather than a blocked PowerShell script or auto-fetching package runner. Its version is checked again to identify the executable used for help.
+The planned tools are `pg_dump` for selected database content, `pg_dumpall` for the selected global-role scope where permitted, `pg_restore` for archive inspection/isolated recovery and `psql` for read-only connection checks and selected script recovery. These are not yet verified as installed/compatible. The original probe found pg_dump/psql not on PATH, which does not rule out a non-PATH installation.
 
-```powershell
-docker context show
-docker version --format 'Client={{.Client.Version}}; Server={{.Server.Version}}; OS={{.Server.Os}}; Arch={{.Server.Arch}}'
+Prefer the deployed server's supported major version for the Windows clients and isolated recovery target. PostgreSQL documents that pg_dump refuses a server newer than its own major version; a newer client's output is also not guaranteed to restore to an older server. Establish the actual hosted version before selecting a client download/installation. PostgreSQL's official Windows download page links to supported EDB installers and binary archives; installing a local server is not required merely to run clients against Supabase. Exact available-client paths, versions and help/options must be checked before preparing exports. No automatic installation or change to the native project dependencies is performed by this decision.
 
-$mushavoSupabaseCommand = Get-Command -Name supabase -CommandType Application -ErrorAction Stop |
-    Select-Object -First 1
-& $mushavoSupabaseCommand.Source --version
-& $mushavoSupabaseCommand.Source db dump --help
-```
+Database connection host/port/username will come from the intended project's Dashboard Connect panel. Prefer a supported direct connection, or reconcile session-pooler fallback for an IPv4-only owner network; do not guess the pooler host or use a transaction-pooler URL for a dump. Credentials, SSL certificate/verification settings, selected scope and owner-held protected destination remain export prerequisites. No connection string or password is requested in this inventory handoff.
 
-Report all output, including any engine error. Help can be checked while engine recovery is unresolved. The Dashboard SQL inventory below is also independent of Docker and local PowerShell CLI wrappers; its owner result remains pending. Expected successful engine output includes a nonempty server version and `OS=linux`. This readiness result alone would not prove a complete export.
+## Next owner check — deployed PostgreSQL and backup scope
+
+The existing Dashboard SQL inventory works independently of Docker and local PostgreSQL client installation. Collect its results first; then discover any compatible existing Windows clients or give the version-specific client installation instructions. No engine startup or CLI help rerun is requested for this route.
 
 The deployed SQL source is [security_stage_1_backup_inventory.sql](../supabase/diagnostics/security_stage_1_backup_inventory.sql). Copy it using the owner's established handoff below. Fetch/show does not merge, reset or change the original native checkout's tracked files.
 
@@ -116,13 +112,13 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Local validation — S1E10
 
-[verify-security-stage-1-backup-inventory.cjs](../scripts/verify-security-stage-1-backup-inventory.cjs) executes the diagnostic against disposable PGlite PostgreSQL fixtures, with no network or hosted credentials. It checks the 13-row INFO/REVIEW contract, read-only/repeatable-read context, counts, empty inventories, invalid/missing/negative/oversized size metadata, managed trigger/policy indicators, omission of seeded private values and rejection of writes in a read-only transaction. The fixture passed; S1E11 records selected Docker engine readiness failure and the help-wrapper blocker, while hosted execution remains pending. This is SQL preparation evidence, not a production backup or recovery test.
+[verify-security-stage-1-backup-inventory.cjs](../scripts/verify-security-stage-1-backup-inventory.cjs) executes the diagnostic against disposable PGlite PostgreSQL fixtures, with no network or hosted credentials. It checks the 13-row INFO/REVIEW contract, read-only/repeatable-read context, counts, empty inventories, invalid/missing/negative/oversized size metadata, managed trigger/policy indicators, omission of seeded private values and rejection of writes in a read-only transaction. The fixture passed; S1E11 records the historical engine/wrapper blockers; S1E12 selects standalone PostgreSQL exports. Hosted execution remains pending. This is SQL preparation evidence, not a production backup or recovery test.
 
 ## Work after this inventory
 
-1. Establish exact tool versions and execution path; inspect any existing npm-local Supabase CLI without auto-fetching or altering the original native checkout. Check container runtime/target only if the selected method needs it.
+1. Establish the deployed PostgreSQL version/scope, then locate compatible existing Windows pg_dump/pg_dumpall/pg_restore/psql clients or prepare version-specific installation and executable-path instructions. No dependency edits or Docker/CLI-help prerequisite is required for this selected route.
 2. Obtain the deployed PostgreSQL version, selected schema/role scope and aggregate Storage/configuration inventory using the read-only diagnostic above. SQL handoffs remain PowerShell fetch → `git show "FETCH_HEAD:<path>" | Out-String | Set-Clipboard` → owner manual Supabase paste. Hosted results remain pending.
-3. Choose compatible database export and authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
+3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Agree owner-held protected off-site storage, recovery targets, frequency/retention and completion/failure records using actual size/volume. Prepare concrete commands only after these dependencies are known. A schema file or object metadata alone is insufficient.
 5. Review owner-held artifact counts, scope/integrity and incomplete-run detection. Isolated restore proof is step 1.4; a live production restore is not part of this work.
 
@@ -135,3 +131,8 @@ Only redacted outcome/size/date/completeness records enter the repository. Custo
 - [Supabase local CLI/container prerequisites](https://supabase.com/docs/guides/local-development)
 - [Supabase CLI backup/restore and separate managed-schema/Edge/file recovery](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore)
 - [Docker client/server version checks](https://docs.docker.com/reference/cli/docker/version/)
+
+- [PostgreSQL pg_dump and version compatibility](https://www.postgresql.org/docs/current/app-pgdump.html)
+- [PostgreSQL pg_dumpall and global-role scope](https://www.postgresql.org/docs/current/app-pg-dumpall.html)
+- [Official PostgreSQL Windows client distribution entry point](https://www.postgresql.org/download/windows/)
+- [Supabase database connection modes and SSL](https://supabase.com/docs/guides/database/connecting-to-postgres)

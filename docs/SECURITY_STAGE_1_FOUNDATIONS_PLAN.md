@@ -1,6 +1,6 @@
 # Stage 1 foundations worklist — authorized, in progress
 
-Authorized by the owner 7 October 2026 after Stage 0 baseline sign-off. **Stage 1 IN PROGRESS at 1.2; executable inventory owner-completed, selected engine unavailable and CLI help wrapper blocked; deployed scope pending.** Corrected executable/recheck instructions are prepared. [Step 1.1 normal sign-in checks](SECURITY_STAGE_1_1_ACCOUNT_CHECKS.md) passed at owner-test scope with recovery gaps carried forward. Current instructions: [external protection inventory](SECURITY_STAGE_1_2_BACKUP_INVENTORY.md). No factor, backup, project or alert setting is changed by starting this inspection. Follow [the reporting workflow](SECURITY_AUDIT_WORKFLOW.md).
+Authorized by the owner 7 October 2026 after Stage 0 baseline sign-off. **Stage 1 IN PROGRESS at 1.2; owner selects standalone PostgreSQL exports, deployed version/scope and compatible client setup pending.** Earlier Docker/CLI-wrapper blockers are preserved as historical evidence; engine startup/CLI dump help is not a prerequisite for the selected export route. [Step 1.1 normal sign-in checks](SECURITY_STAGE_1_1_ACCOUNT_CHECKS.md) passed at owner-test scope with recovery gaps carried forward. Current instructions: [external protection inventory](SECURITY_STAGE_1_2_BACKUP_INVENTORY.md). No factor, backup, project or alert setting is changed by starting this inspection. Follow [the reporting workflow](SECURITY_AUDIT_WORKFLOW.md).
 
 ## Inputs to preserve
 

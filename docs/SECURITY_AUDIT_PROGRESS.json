@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_CONTAINER_EXPORT_BLOCKED_SCOPE_PENDING",
-        "latest_evidence": "S1E11",
+        "status": "IN_PROGRESS_STANDALONE_POSTGRESQL_VERSION_SCOPE_PENDING",
+        "latest_evidence": "S1E12",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -106,12 +106,15 @@
             "version": "2.106.0"
           }
         ],
-        "engine_target_readiness": "FAIL_DESKTOP_LINUX_ENGINE_PIPE_UNAVAILABLE",
-        "installed_cli_dump_options": "BLOCKED_PS1_WRAPPER_NOT_EXECUTED; APPLICATION_EXECUTABLE_RECHECK_PENDING",
-        "hosted_database_scope": "PENDING_OWNER_READ_ONLY_INVENTORY; INDEPENDENT_OF_LOCAL_TOOL_BLOCKERS",
+        "engine_target_readiness": "HISTORICAL_FAIL_DESKTOP_LINUX_PIPE; NOT_REQUIRED_FOR_SELECTED_EXPORT_METHOD",
+        "installed_cli_dump_options": "HISTORICAL_PS1_BLOCKER; NOT_REQUIRED_FOR_SELECTED_EXPORT_METHOD",
+        "hosted_database_scope": "PENDING_OWNER_READ_ONLY_INVENTORY",
         "sql_fixture_validation": "PASS_DISPOSABLE_POSTGRESQL_18_3_ONLY",
         "diagnostic": "supabase/diagnostics/security_stage_1_backup_inventory.sql",
-        "engine_context": "desktop-linux"
+        "engine_context": "desktop-linux",
+        "export_method": "OWNER_SELECTED_STANDALONE_POSTGRESQL_CLIENTS",
+        "standalone_client_paths_versions": "PENDING; PG_DUMP_PSQL_PREVIOUSLY_NOT_ON_PATH",
+        "client_installation": "NOT_PERFORMED; DEPLOYED_SERVER_VERSION_CHECK_FIRST"
       },
       {
         "id": "1.3",

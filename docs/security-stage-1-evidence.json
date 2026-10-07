@@ -361,6 +361,29 @@
       "backup_created_or_export_failed_or_restore_verified": false,
       "settings_policy_credentials_native_runtime_or_production_sql_changed_by_assistant": false,
       "scope": "Owner-reported local engine readiness failure and invocation blocker; no hosted database defect, package absence, completed startup or backup/restore PASS inferred"
+    },
+    {
+      "id": "S1E12",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner: use PostgreSQL command",
+      "decision": "STANDALONE_POSTGRESQL_CLIENT_EXPORTS_SELECTED",
+      "planned_clients": [
+        "pg_dump",
+        "pg_dumpall for explicitly selected/permitted global roles",
+        "pg_restore",
+        "psql"
+      ],
+      "supersedes": "S1E11 Docker startup and Supabase CLI dump-help prerequisites for the selected export route only; original blockers/evidence remain historical, not repaired PASS",
+      "existing_client_scope": "S1E09 pg_dump/psql not on PATH; non-PATH installations and pg_restore/pg_dumpall presence not yet checked",
+      "next_owner_check": "Run already prepared Dashboard read-only backup inventory through established fetch/show/clipboard handoff; obtain deployed PostgreSQL version and actual metadata scope",
+      "client_selection": "Prefer deployed supported server major; pg_dump cannot export a newer major server and newer-client output is not guaranteed to restore to an older major target",
+      "connection_handling": "Actual endpoint/mode/SSL settings and credentials must be reconciled before exports; no guessed host, password or connection string requested here",
+      "later_staging_target": "Separate future choice; no Docker environment assumed by this export decision",
+      "tool_installation_export_or_restore_performed": false,
+      "backups_created_or_restore_verified": false,
+      "provider_policy_credentials_native_runtime_or_production_sql_changed_by_assistant": false,
+      "scope": "Owner-authorized route selection and instruction update only; no installation, hosted inventory result, connection, backup/recovery or finding-closure PASS inferred"
     }
   ]
 }

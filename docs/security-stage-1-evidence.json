@@ -135,6 +135,31 @@
       "whole_finding_or_release_pass_inferred": false,
       "remaining_checks": "Confirm independent private backup authentication; inspect Zoho sender-administration account; fresh sign-in/recovery proof retained for recheck",
       "scope": "Owner-reported Supabase dashboard account email sign-in and authenticator-app MFA, without screenshot/fresh challenge or actual recovery evidence; no secrets recorded"
+    },
+    {
+      "id": "S1E06",
+      "stage_step": "1.1",
+      "received_date": "2026-10-07",
+      "source": "Owner: supabase- no it doesnt. zoho mail- it's enabled",
+      "supabase_backup_update": {
+        "owner_reply": "no it doesnt",
+        "result": "OWNER-REPORTED NO BACKUP AUTHENTICATION AVAILABLE in response to backup-availability question",
+        "scope_limit": "No claim that Supabase lacks a supported backup-factor mechanism; no recovery codes is a separate provider property",
+        "supersedes": "S1E05 backup availability unconfirmed",
+        "action": "Carry forward independent private backup TOTP/secure setup-secret access and subsequent recovery proof under F08"
+      },
+      "provider": "Zoho Mail",
+      "mfa_configuration": "OWNER-PASS — enabled, method not supplied",
+      "zoho_mfa_method": "UNCONFIRMED",
+      "zoho_backup_authentication": "UNCONFIRMED",
+      "zoho_cpaas_sender_account_identity": "UNCONFIRMED; Mail account MFA does not establish that the transactional sender uses the same administering identity",
+      "fresh_signin_evidence": "NOT VERIFIED for all four providers",
+      "recovery_drill": "NOT PERFORMED",
+      "next_check": "Owner fresh sign-ins in separate private browser windows while retaining working sessions; report actual authentication method and successful access, with any failure preserved rather than forced",
+      "stage_1_1_complete": false,
+      "whole_finding_or_release_pass_inferred": false,
+      "settings_credentials_runtime_sql_apk_changed_by_assistant": false,
+      "scope": "Owner-reported absence of available Supabase backup authentication and enabled Zoho Mail MFA; exact Zoho factor/recovery/sender identity and actual sign-in outcomes remain unverified; no secrets recorded"
     }
   ]
 }

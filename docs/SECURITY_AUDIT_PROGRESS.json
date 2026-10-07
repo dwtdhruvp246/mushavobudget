@@ -22,12 +22,12 @@
         "id": "1.1",
         "title": "Account security and recovery",
         "status": "IN_PROGRESS_OWNER_EVIDENCE_PENDING",
-        "latest_evidence": "S1E05",
+        "latest_evidence": "S1E06",
         "provider_checks": {
           "github": "MFA_SETTINGS_PASS_RECOVERY_CODES_OWNER_CONFIRMED_SAVED",
           "cloudflare": "OWNER_PASS_EMAIL_2FA_ENABLED_RECOVERY_CODES_OBTAINED_SIGNIN_PROOF_PENDING",
-          "supabase": "OWNER_PASS_AUTHENTICATOR_APP_MFA_BACKUP_SIGNIN_PROOF_PENDING",
-          "zoho": "PENDING"
+          "supabase": "OWNER_PASS_AUTHENTICATOR_MFA_BACKUP_UNAVAILABLE_OWNER_REPORT",
+          "zoho": "OWNER_PASS_MAIL_MFA_ENABLED_METHOD_RECOVERY_SENDER_IDENTITY_UNCONFIRMED"
         },
         "provider_signin_methods": {
           "cloudflare": "GOOGLE_OWNER_CONFIRMED",
@@ -35,7 +35,8 @@
         },
         "cloudflare_google_mfa_and_recovery": "UNVERIFIED",
         "cloudflare_recovery_code_storage": "OBTAINED_OWNER_CONFIRMED_PERSISTENT_STORAGE_UNCONFIRMED",
-        "supabase_backup_authentication": "UNCONFIRMED"
+        "supabase_backup_authentication": "OWNER_REPORTED_NOT_AVAILABLE_CARRIED_FORWARD",
+        "fresh_signin_checks": "PENDING_FOR_ALL_FOUR_PROVIDERS"
       },
       {
         "id": "1.2",

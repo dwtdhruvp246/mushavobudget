@@ -1720,5 +1720,301 @@
     },
     "native_compile_or_device_test": false,
     "production_deployment": false
+  },
+  "merged_business_invitation_release_reconciliation": {
+    "evidence_ref": "E27",
+    "reconciled_date": "2026-10-07",
+    "evidence_type": "Fresh GitHub metadata; prior dated public source check; owner statement",
+    "pull_request": "https://github.com/dwtdhruvp246/mushavobudget/pull/90",
+    "merged_at": "2026-10-06T19:20:07Z",
+    "main_commit": "464f52c39ff56cc57bf8dfd2b0e35bd3d51a4436",
+    "reviewed_source_commit": "227cc8ca8b849401e7b449e76acb793b60a38bf3",
+    "identical_tree_sha": "6c97d97a3cd23128cfd32c14e268fcb4441c7647",
+    "check_runs_re_read_date": "2026-10-07",
+    "merged_commit_check_runs": [
+      {
+        "name": "Workers Builds: mushavobudget",
+        "id": 112456698695,
+        "conclusion": "success",
+        "completed_at": "2026-10-06T19:20:49Z"
+      },
+      {
+        "name": "deploy",
+        "id": 112456680197,
+        "conclusion": "success",
+        "completed_at": "2026-10-06T19:21:05Z"
+      },
+      {
+        "name": "report-build-status",
+        "id": 112456649928,
+        "conclusion": "success",
+        "completed_at": "2026-10-06T19:20:51Z"
+      },
+      {
+        "name": "deploy",
+        "id": 112456649910,
+        "conclusion": "success",
+        "completed_at": "2026-10-06T19:20:59Z"
+      },
+      {
+        "name": "build",
+        "id": 112456424831,
+        "conclusion": "success",
+        "completed_at": "2026-10-06T19:20:41Z"
+      },
+      {
+        "name": "Verify production release",
+        "id": 112456423525,
+        "conclusion": "success",
+        "completed_at": "2026-10-06T19:20:46Z"
+      }
+    ],
+    "workflow_run_urls": [
+      "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/37518187986",
+      "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/37518186310"
+    ],
+    "public_source_evidence": {
+      "collected_date": "2026-10-06",
+      "web_pwa_release": "4.9.40",
+      "app_url": "https://mushavobudget.com/app.js?v=112",
+      "app_http_status": 200,
+      "app_sha256": "3db774eb22115bd0b5ff6c4e0c2a93a4efd249e33360b3008a4391a3d8febbb2",
+      "app_matches_reviewed_source": true,
+      "pwa_sha256": "749b9898def77f6cb0c257bc036420b417770833afd96d120a31ed3d786c93e0",
+      "accept_decline_business_open_markers": true,
+      "independent_public_recheck_2026_10_07": "UNAVAILABLE; no new source PASS or outage inferred",
+      "independent_public_recheck_http_status": 403
+    },
+    "owner_statement": "now working. continue",
+    "normal_revised_business_notification_ui": "OWNER-REPORTED PASS",
+    "individual_action_replay_denial_websocket_device_matrix": "NOT ESTABLISHED by the general working statement",
+    "earlier_E25_snapshot_preserved": true,
+    "apk_created_or_changed": false,
+    "scope": "Merged source/deployment checks and normal UI owner report; not native/store/full authorization certification"
+  },
+  "owner_auth_smtp_host_correction": {
+    "evidence_ref": "E28",
+    "received_date": "2026-10-07",
+    "evidence_type": "Owner-supplied Auth error log, subsequent response and correction statement",
+    "redacted_failure": {
+      "time": "2026-10-07T04:07:24Z",
+      "path": "/otp",
+      "status": 504,
+      "error_code": "request_timeout",
+      "error": "context deadline exceeded",
+      "context": "Business invitation Auth email request"
+    },
+    "subsequent_create_error": "INVITATION_ALREADY_PENDING",
+    "pending_request_followup": "Use existing pending invitation Resend; no repeated migration or duplicate Create needed",
+    "owner_statement": "The host value was wrong; used the SMTP host provided and it worked. The provider displayed cpaas.zoho.com as the API host.",
+    "normal_sending_blocker": "OWNER-REPORTED RESOLVED after host correction",
+    "actual_saved_smtp_values_independently_verified": false,
+    "hosted_template_save_rendering_current_redirects": "UNVERIFIED",
+    "all_auth_email_types_recovery_delivery_matrix": "NOT TESTED",
+    "raw_log_recipient_email_ips_ids_links_or_credentials_committed": false,
+    "provider_settings_changed_by_session": false,
+    "earlier_E24_E26_snapshots_preserved": true,
+    "scope": "Owner normal sending success, not a full email provider/configuration/flow audit"
+  },
+  "stage_0_closure_boundary_and_email_deferral": {
+    "evidence_ref": "E29",
+    "agreed_date": "2026-10-07",
+    "stage_0_status": "IN PROGRESS",
+    "stage_1_started": false,
+    "owner_direction": "Agrees to finish Stage 0 closure before full email architecture implementation",
+    "coverage_sections": 123,
+    "original_findings_retained": 20,
+    "closure_checklist": "docs/SECURITY_STAGE_0_CLOSURE_CHECKLIST.md",
+    "current_known_results": [
+      "Both narrow permission metadata rechecks PASS",
+      "Notification SQL owner-reported 8/8 PASS",
+      "Locked native asset/dependency checks PASS",
+      "4.9.40 merged deployment/source evidence",
+      "Normal revised notification UI owner-PASS",
+      "SMTP correction normal sending owner-PASS"
+    ],
+    "remaining_baseline_inputs": [
+      "Separate staging backend/inboxes status",
+      "Backup/PITR/Storage protection and restore-history status",
+      "Infrastructure MFA/recovery and incident/alert/budget ownership",
+      "Current Auth template/redirect/recovery/settings and deployed Edge/cron inventory",
+      "Hosting version/traffic/TLS/redirect/secondary Pages mapping",
+      "Mac/Xcode and native/store/operator prerequisites"
+    ],
+    "later_email_proposal": {
+      "stage": 6,
+      "coordination_stages": [
+        1,
+        8
+      ],
+      "auth_delivery": "Signed Supabase Send Email Hook using provider API and server-validated context",
+      "application_delivery": "Separate dispatcher/event queue with shared versioned templates",
+      "implementation_or_activation": "NONE"
+    },
+    "native_apk_update": "DEFERRED by owner",
+    "closure_rule": "Account for evidence, known gaps, owners/stages and prerequisites; not all later-stage implementation or 123-control PASS",
+    "earlier_top_level_evidence_values_preserved": true,
+    "changes_this_followup": "Documentation only; no runtime, database, provider or APK mutation"
+  },
+  "owner_stage_0_staging_recovery_ios_prerequisites": {
+    "evidence_ref": "E30",
+    "received_date": "2026-10-07",
+    "evidence_type": "Owner numbered answers and visually reviewed Database Backups screenshot",
+    "separate_supabase_staging_project_exists_owner_reported": false,
+    "supabase_plan_owner_reported": "Free",
+    "mac_with_xcode_available_owner_reported": false,
+    "attachment": {
+      "name": "image(20261007-050012).png",
+      "sha256": "ba3fdf44ad559128dc92995954a0102aa258705c9c91ea1be1cd1e9a5547a9f7",
+      "scope": "Cropped Database Backups, Point in time tab"
+    },
+    "displayed_backup_settings": {
+      "selected_tab": "Point in time",
+      "notice": "Point in Time Recovery is a Pro Plan add-on",
+      "action": "Upgrade to Pro",
+      "active_recovery_window_displayed": false,
+      "project_header_or_plan_badge_visible": false,
+      "scheduled_backups_tab_contents_visible": false
+    },
+    "pitr_status": "NOT ENABLED at screenshot-display scope; no dashboard/API verification",
+    "manual_database_backup_method": "UNKNOWN",
+    "independent_storage_object_byte_backup_method": "UNKNOWN",
+    "restore_drill_history": "UNKNOWN",
+    "official_backup_documentation_checked_date": "2026-10-07",
+    "interpretation_source": "https://supabase.com/docs/guides/platform/backups",
+    "documented_plan_boundary": "Managed daily backups described for paid plans; Free projects should use off-site database exports. Database backups do not cover Storage object bytes.",
+    "assigned_prerequisites": [
+      {
+        "stage": 1,
+        "owner": "Both",
+        "task": "Establish isolated staging backend/preview/inboxes and feasible database-plus-file recovery controls"
+      },
+      {
+        "stage": 5,
+        "owner": "Owner/Both",
+        "task": "Resolve iOS build access before native validation; release artifact/device gates remain Stage 9"
+      }
+    ],
+    "first_owner_bundle": "ACCOUNTED FOR; gaps/prerequisites, not PASS controls",
+    "next_owner_bundle": [
+      "Existing manual database/Storage backups",
+      "Infrastructure account MFA statuses",
+      "Google Play/Apple developer account status"
+    ],
+    "stage_0_status": "IN PROGRESS",
+    "stage_1_started": false,
+    "paid_upgrade_project_creation_backup_restore_or_native_build_performed": false,
+    "raw_image_or_credentials_committed": false,
+    "earlier_evidence_values_preserved": true,
+    "scope": "Four audit documents only; no runtime, SQL, provider, backup, staging or APK change"
+  },
+  "owner_stage_0_external_backups_mfa_store_accounts": {
+    "evidence_ref": "E31",
+    "received_date": "2026-10-07",
+    "evidence_type": "Owner numbered answers; no screenshot or account API verification",
+    "owner_answers": {
+      "external_database_uploaded_file_backups": "no",
+      "infrastructure_two_step_verification": "i think only for github",
+      "google_play_and_apple_developer_accounts": "no"
+    },
+    "external_database_backup_exists_owner_reported": false,
+    "external_uploaded_file_copy_exists_owner_reported": false,
+    "provider_internal_backup_behavior": "NOT ESTABLISHED by this statement",
+    "historical_restore_drill": "UNKNOWN",
+    "infrastructure_mfa": {
+      "GitHub": "BELIEVED ENABLED / UNVERIFIED",
+      "Cloudflare": "UNCONFIRMED",
+      "Supabase": "UNCONFIRMED",
+      "Zoho": "UNCONFIRMED"
+    },
+    "other_mfa_definitively_disabled_inferred": false,
+    "google_play_developer_account_exists_owner_reported": false,
+    "apple_developer_account_exists_owner_reported": false,
+    "assigned_followups": [
+      {
+        "stage": 1,
+        "owner": "Owner/Both",
+        "work": "Verify actual infrastructure security/recovery; establish external database-plus-file backups/recovery and isolated staging"
+      },
+      {
+        "stage": 9,
+        "owner": "Owner/Both",
+        "work": "Account enrollment/type/verification and required release testing; factual operator/channel/billing decisions retain earlier gates"
+      }
+    ],
+    "second_owner_bundle": "ACCOUNTED FOR at owner-report/uncertainty scope; gaps, not PASS controls",
+    "next_owner_bundle": [
+      "Individual/business operator and active support contact",
+      "Initial countries/audience or explicit undecided",
+      "Existing automatic error/outage/spending alerts and response owner"
+    ],
+    "remaining_unverified_properties": "Auth/deployment/workflow/restore/device limits retain assigned stages and must not be certified by these statements",
+    "stage_0_status": "IN PROGRESS",
+    "stage_1_started": false,
+    "raw_images_credentials_customer_logs_or_recovery_material_committed": false,
+    "account_settings_backup_project_or_paid_enrollment_changed": false,
+    "earlier_evidence_values_preserved": true,
+    "scope": "Four documentation files only; no runtime, SQL, provider, backup, staging or APK change"
+  },
+  "owner_stage_0_operator_support_launch_alerts_and_signoff_proposal": {
+    "evidence_ref": "E32",
+    "received_date": "2026-10-07",
+    "evidence_type": "Owner numbered answers; prepared sign-off/next-stage documents",
+    "operator_individual_or_business": "UNDECIDED, owner explicitly deferred",
+    "support_contact_owner_designated": "support@mushavobudget.com",
+    "support_mailbox_existence_delivery_response_owner": "UNVERIFIED; no email sent/tested by session",
+    "launch_scope_owner_reported": "Worldwide",
+    "age_audience": "NOT SPECIFIED; decision prerequisite Stage 4/9, no inferred age suitability",
+    "automatic_error_outage_spending_alerts_configured_owner_reported": false,
+    "observability_analytics_or_ci_substituted_for_alert_delivery_test": false,
+    "operator_jurisdiction_store_or_age_compliance_certified": false,
+    "broad_owner_baseline_bundles": "ACCOUNTED FOR; explicit gaps/unknowns/prerequisites assigned",
+    "stage_0_status": "READY FOR OWNER SIGN-OFF; baseline inputs accounted for, known gaps assigned",
+    "stage_0_owner_signoff_received": false,
+    "stage_1_status": "PREPARED / NOT STARTED",
+    "stage_1_authorization_received": false,
+    "stage_0_signoff_document": "docs/SECURITY_STAGE_0_SIGNOFF.md",
+    "stage_1_foundations_document": "docs/SECURITY_STAGE_1_FOUNDATIONS_PLAN.md",
+    "prepared_stage_1_order": [
+      "Verify actual account MFA/sign-in and private recovery; verify support/incident contact",
+      "Establish feasible external database-plus-file protection",
+      "Build isolated backend/preview/inboxes and synthetic fixtures",
+      "Prove scoped isolated recovery",
+      "Reconcile deployed inventory and establish monitoring/budget/response evidence",
+      "Recheck affected controls and record Stage 1 limits"
+    ],
+    "later_decisions_assigned": [
+      {
+        "item": "Operator identity and age/privacy facts",
+        "stages": [
+          4,
+          9
+        ],
+        "owner": "Owner/Both"
+      },
+      {
+        "item": "Worldwide territory/billing/channel/store requirements",
+        "stages": [
+          4,
+          7,
+          9,
+          10
+        ],
+        "owner": "Owner/Both"
+      }
+    ],
+    "primary_docs_checked_date": "2026-10-07",
+    "primary_docs": [
+      "https://supabase.com/docs/guides/platform/backups",
+      "https://supabase.com/docs/guides/local-development",
+      "https://supabase.com/docs/guides/platform/multi-factor-authentication",
+      "https://supabase.com/docs/guides/deployment/going-into-prod"
+    ],
+    "remaining_auth_deployment_workflow_recovery_device_properties": "UNVERIFIED with owners/stages retained; not automatically passed by proposed baseline sign-off",
+    "full_email_architecture": "DEFERRED / proposal only",
+    "apk_update": "DEFERRED",
+    "stage1_implementation_console_mailbox_project_purchase_sql_apk_change_performed": false,
+    "earlier_evidence_values_preserved": true,
+    "scope": "Documentation only; final owner facts, proposed Stage 0 sign-off and bounded Stage 1 plan"
   }
 }

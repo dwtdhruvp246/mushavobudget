@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "stage": 1,
+  "updated_date": "2026-10-07",
+  "active_step": "1.1",
+  "events": [
+    {
+      "id": "S1E01",
+      "stage_step": "1.1",
+      "received_date": "2026-10-07",
+      "source": "Owner screenshot and statement: i have done this",
+      "screenshot": {
+        "name": "image(20261007-084251).png",
+        "sha256": "c55c76a49104199b4e2f74e6e97bb9906edc9564b37d72b14171fb03702f3310",
+        "private_codes_or_secrets_visible": false
+      },
+      "provider": "GitHub",
+      "observed_labels": {
+        "authenticator_app": "Configured",
+        "github_mobile": "Configured; 2 devices",
+        "preferred_2fa_method": "Passkeys",
+        "recovery_codes": "Viewed"
+      },
+      "mfa_settings_result": "PASS at displayed configuration scope",
+      "private_recovery_storage": "UNCONFIRMED; Viewed does not establish a securely saved accessible copy",
+      "fresh_signin_test": "NOT VERIFIED",
+      "recovery_drill": "NOT PERFORMED",
+      "passkey_or_security_key_inventory": "NOT VERIFIED; preferred method/Edit controls do not establish the inventory",
+      "account_identity_and_repository_ownership": "Not visible in screenshot; owner-supplied GitHub check context",
+      "other_provider_results": "Cloudflare, Supabase and Zoho still pending",
+      "stage_1_1_complete": false,
+      "whole_finding_or_release_pass_inferred": false,
+      "settings_runtime_sql_apk_changes_by_assistant": false,
+      "scope": "Read-only screenshot inspection and documentation; no secret values or screenshot bytes committed"
+    }
+  ]
+}

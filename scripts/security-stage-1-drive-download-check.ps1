@@ -57,6 +57,9 @@
 
     $mushavoDownloadInput = (Read-Host "Full path to the newly downloaded Google Drive .7z file").Trim().Trim('"')
     $mushavoDownload = Get-Item -LiteralPath $mushavoDownloadInput -Force
+    if ($mushavoDownload -is [IO.FileInfo] -and $mushavoDownload.Extension -eq ".zip") {
+        throw "Selected a ZIP bundle. In Drive, download the single final .7z file. If the whole private working folder was uploaded, report that first; upload scope is unverified."
+    }
     if ($mushavoDownload -isnot [IO.FileInfo] -or $mushavoDownload.Extension -ne ".7z" -or
         $mushavoDownload.Length -ne 566080 -or
         ($mushavoDownload.Attributes -band [IO.FileAttributes]::ReparsePoint)) {

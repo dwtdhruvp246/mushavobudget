@@ -1603,6 +1603,51 @@
       "complete_platform_backup_created": false,
       "restore_verified": false,
       "scope": "Concrete single database-component offsite-copy preparation only. No root cloud transfer/settings change/secret access, raw cleanup or database restore. Roles/managed/extension/foreign/Vault/file/provider coverage, retention/frequency/recovery objectives and isolated synthetic recovery remain pending; F16 stays open."
+    },
+    {
+      "id": "S1E34",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner pastes full S1E33 block and native PowerShell failure after selecting a .zip browser download",
+      "result": "OWNER_DOWNLOAD_CHECK_BLOCKED_ZIP_SELECTION",
+      "owner_execution": {
+        "selected_file": "C:\\Users\\HP\\Downloads\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342-20261007T185032Z-1-001.zip",
+        "reported_error": "Expected the completed 566080-byte downloaded .7z file.",
+        "returned_to_shell_with_OperationStopped": true
+      },
+      "ordering_evidence": "The original folder/DACL/archive/private-receipt checks precede the path prompt and no earlier error is pasted. The downloaded-file type/size guard throws before new DriveCheck directory, copy, downloaded hash, 7-Zip test or verification receipt. Actual ZIP size/contents are not retrieved.",
+      "downloaded_archive_file_verification_verified": false,
+      "offsite_upload_download_verified": false,
+      "download_check_copy_created": false,
+      "prior_encrypted_component_pass_preserved": "S1E32 remains PASS at original owner artifact/file scope; this error is not corruption evidence",
+      "upload_scope_question": "ZIP basename matches the owner private working folder name, which contains raw dump/TOC/manifest/receipts and verification files as well as the final encrypted archive. This suggests a folder/multi-item bundle; whole-folder upload and unencrypted cloud content are possible but not established. Explicit owner inspection/report is needed before cloud scope/transfer acceptance.",
+      "cloud_raw_upload_or_data_compromise_proven": false,
+      "real_backup_passphrase_storage_status": "Still not reported",
+      "scope": "Owner-executed input guard rejects wrong archive type, and the offsite check is blocked rather than PASS. No extraction, secret/hash receipt, Drive inspection or root cloud action occurs. F16 stays open."
+    },
+    {
+      "id": "S1E35",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Clarified download-type error and owner Drive scope inspection/single-file correction after S1E34",
+      "result": "PREPARED_ZIP_SELECTION_GUIDANCE_AND_UPLOAD_SCOPE_CLARIFICATION",
+      "script": "scripts/security-stage-1-drive-download-check.ps1",
+      "change": "Specific .zip error before the unchanged file/type/size/hash/test guards; original archive/receipt binding and private-copy behavior unchanged",
+      "owner_next_actions": [
+        "Open the actual uploaded items in the private Drive backup folder and establish whether only final .7z or the entire local working folder was uploaded",
+        "Report that scope using filenames/types only; keep raw/customer bytes, ZIP, hashes and passphrase private",
+        "Once correct encrypted-only upload scope is established, select the single exact final .7z file inside the folder, right-click Download and use its new .7z path in the same local check"
+      ],
+      "dependent_work_pending": "If raw working-folder contents were uploaded, establish actual item scope/privacy and handle the unintended extra cloud copy before accepting encrypted-only protection. No deletion, extraction or additional upload is instructed while scope is unknown.",
+      "validation": "PASS: prior S1E01–33 and original audit tables preserved; JSON/local links/fences, refreshed source/inline equality and diff whitespace checked. Direct Google single-file download procedure checked against official guidance; explicit early ZIP guard and unchanged bounded checks reviewed. Owner correction/Windows execution remains pending.",
+      "documentation_sources": [
+        "https://support.google.com/drive/answer/2423534?hl=en"
+      ],
+      "downloaded_archive_file_verification_verified": false,
+      "offsite_upload_download_verified": false,
+      "cloud_upload_scope_confirmed": false,
+      "restore_verified": false,
+      "scope": "Concrete input-error correction and missing factual upload-scope clarification; not an approval request, cloud-change instruction, claim of raw-data upload/breach or full recovery proof. F16 remains open."
     }
   ]
 }

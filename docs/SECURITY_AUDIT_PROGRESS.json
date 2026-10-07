@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_ENCRYPTED_COMPONENT_PASS_DIFFERENT_7Z_DOWNLOAD_CONFIRMED_EXACT_ORIGINAL_SELECTION_PREPARED",
-        "latest_evidence": "S1E39",
+        "status": "IN_PROGRESS_LOCAL_ENCRYPTED_COMPONENT_PASS_GOOGLE_OFFSITE_WORK_DEFERRED_OWNER_REQUEST",
+        "latest_evidence": "S1E40",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -157,7 +157,7 @@
           "cipher": "TLS_AES_256_GCM_SHA384",
           "scope": "Owner client-to-session-pooler"
         },
-        "protected_export_destination": "OWNER_LOCAL_NTFS_DACL_PASS_S1E28; GOOGLE_RESTRICTED_FOLDER_TWO_STEP_CONFIRMED_S1E26; DISK_ENCRYPTION_CAPACITY_OWNER_REPORTED_S1E28; ENCRYPTED_DATABASE_COMPONENT_CREATED_VERIFIED_S1E32; OFFSITE_FULL_COVERAGE_AND_CREDENTIAL_STORAGE_PENDING",
+        "protected_export_destination": "OWNER_LOCAL_NTFS_DACL_PASS_S1E28; ENCRYPTED_DATABASE_COMPONENT_CREATED_VERIFIED_S1E32; GOOGLE_COPY_WORK_DEFERRED_S1E40; OFFSITE_FULL_COVERAGE_AND_CREDENTIAL_RETENTION_UNVERIFIED",
         "precise_export_coverage": "PENDING_DATABASE_ROLES_MANAGED_ENCRYPTION_FILES_CONFIGURATION_RECONCILIATION",
         "offsite_destination_choice": {
           "destination": "Google Drive",
@@ -166,7 +166,8 @@
           "account_mfa_sharing_upload_verified": false,
           "protection_evidence": "S1E26; owner settings confirmation only",
           "mfa_and_private_folder_owner_reported": true,
-          "actual_upload_and_download_integrity_verified": false
+          "actual_upload_and_download_integrity_verified": false,
+          "current_status": "GOOGLE_DRIVE_DEFERRED_OWNER_REQUEST_S1E40"
         },
         "encryption_tool_check": "OWNER_INFORMATION_RECHECK_PASS_26_04_EXECUTABLE_AND_LIBRARY_S1E23; S1E22_PATCH_GAP_SUPERSEDED",
         "encryption_archive_and_restore_verified": false,
@@ -226,8 +227,8 @@
           "warnings": "NOT_REPORTED",
           "scope": "Actual owner-held database component encryption/file integrity; no database restore or full platform/offsite clearance"
         },
-        "real_backup_passphrase_storage": "STILL_UNREPORTED; YES_NO_UNSURE_OWNER_PROMPT_PREPARED_S1E39",
-        "drive_download_check_handoff": "scripts/security-stage-1-drive-download-check.ps1; S1E34_OWNER_ZIP_SELECTION_BLOCKED; ZIP_GUIDANCE_CLARIFIED_S1E35",
+        "real_backup_passphrase_storage": "UNCONFIRMED_CARRY_FORWARD; CATEGORICAL_PROMPT_NOT_EXECUTED_BEFORE_DEFERRAL",
+        "drive_download_check_handoff": "scripts/security-stage-1-drive-download-check.ps1; HISTORICAL_PREPARED_OWNER_ATTEMPTS_BLOCKED; NO_EXECUTION_REQUEST_AFTER_S1E40",
         "downloaded_archive_file_verification_verified": false,
         "offsite_upload_download_verified": false,
         "drive_download_attempt": {
@@ -238,7 +239,7 @@
           "rename_of_previous_zip": "INFERENCE_FROM_SAME_BASENAME_ONLY",
           "downloaded_artifact_corrupt": "NOT_ESTABLISHED"
         },
-        "cloud_upload_scope": "STILL_UNREPORTED; CATEGORICAL_OWNER_PROMPT_PREPARED_S1E39",
+        "cloud_upload_scope": "UNCONFIRMED_CARRY_FORWARD; NO_SCOPE_REPORT_RECEIVED_BEFORE_GOOGLE_DEFERRAL",
         "download_format_diagnostic_handoff": "scripts/security-stage-1-download-format-check.ps1; OWNER_EXECUTED_S1E38_METADATA_RESULT",
         "download_format_result": {
           "evidence": "S1E38",
@@ -249,7 +250,10 @@
           "size_matches_original": false,
           "rename_zip_inference": "NOT_SUPPORTED_BY_CURRENT_7Z_PREFIX; CREATION_HISTORY_UNKNOWN"
         },
-        "original_archive_selection_handoff": "scripts/security-stage-1-original-archive-selection.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E39"
+        "original_archive_selection_handoff": "scripts/security-stage-1-original-archive-selection.ps1; PREPARED_NOT_EXECUTED; DEFERRED_NOT_REQUESTED_S1E40",
+        "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+        "offsite_copy_status": "UNVERIFIED_CARRY_FORWARD; GOOGLE_ROUTE_DEFERRED; NO_ALTERNATIVE_SELECTED",
+        "remaining_current_step_work": "Selected local database/global-role/managed/extension/foreign/Vault/file/Auth/Edge/provider coverage and private credential handling; keep offsite gap for later remediation, with isolated synthetic restore still 1.4"
       },
       {
         "id": "1.3",

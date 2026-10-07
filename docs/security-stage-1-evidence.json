@@ -1746,6 +1746,29 @@
       "real_backup_passphrase_storage_confirmed": false,
       "restore_verified": false,
       "scope": "Concrete wrong-artifact selection correction and collection of missing factual reports; no cloud transfer/settings/cleanup or secret access by root, and no full coverage/recovery/F16 clearance."
+    },
+    {
+      "id": "S1E40",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner asks: can we skip the backing up in google",
+      "result": "OWNER_DEFERRED_GOOGLE_DRIVE_BACKUP_WORK",
+      "owner_decision": "Skip Google Drive upload/download/selection troubleshooting for now; preserve unresolved offsite verification in the final remediation/re-audit action plan. No substitute destination or schedule is selected.",
+      "supersedes": "S1E39 active Google original-selection/upload/download request; handoffs remain historical/prepared and are no longer current owner execution requests. Historical blocked attempts/metadata remain unchanged.",
+      "retained_pass_scope": [
+        "S1E30 owner local single-database export/core TOC/offline payload readability",
+        "S1E32 owner real local encrypted database-component creation, password/filename checks and three extracted-file hash comparisons"
+      ],
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST",
+      "offsite_upload_download_verified": false,
+      "complete_platform_backup_created": false,
+      "restore_verified": false,
+      "local_artifacts_deleted_or_changed": false,
+      "cloud_artifacts_deleted_or_changed": false,
+      "cloud_upload_scope_and_private_key_storage": "Remain unconfirmed; deferral does not establish earlier cloud contents/privacy or independently retained passphrase. No further Google prompts are required now; preserve these gaps for later resolution.",
+      "remaining_stage_scope": "1.2 local/selected database/global-role/managed/extension/foreign/Vault/file/Auth/Edge/provider coverage and private recovery credential handling remain separate; subsequent isolated synthetic recovery is 1.4. Google deferral is not completion of those requirements.",
+      "carry_forward": "F16: verified offsite copy remains missing/deferred; cloud upload scope/privacy and private credential retention unresolved. Later resolve/choose a protected destination, collect proper component transfer/integrity evidence and re-audit, alongside full local/platform/restore coverage.",
+      "scope": "Concrete owner-directed provider deferral, not a new failure/PASS or permission request. No root or owner cleanup/upload is performed by this decision. Existing artifacts remain owner-held; Stage 1 continues and F16/full release clearance stay open."
     }
   ]
 }

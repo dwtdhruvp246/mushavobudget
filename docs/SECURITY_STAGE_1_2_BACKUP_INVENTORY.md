@@ -4,7 +4,7 @@ Started 7 October 2026 after owner-tested normal sign-ins completed in 1.1. Stag
 
 ## Current scope and starting facts
 
-Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. S1E17 supplies displayed Dashboard session-pooler connection fields. S1E18 prepares the certificate-verified connection check; S1E19 now records owner execution PASS with the intended endpoint and TLS 1.3. Next establish protected local/off-site destination and precise export coverage. No export, restore, local stack, account setting or production write has been performed by this work; client availability follows the owner setup, not an assistant installation.
+Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. S1E17 supplies displayed Dashboard session-pooler connection fields. S1E18 prepares the certificate-verified connection check; S1E19 now records owner execution PASS with the intended endpoint and TLS 1.3. S1E20 records the owner choice of Google Drive for the encrypted off-site copy; S1E21 prepares the encryption-tool check. Destination protection, actual encryption/export/upload and precise coverage remain pending. No export, restore, local stack, account setting or production write has been performed by this work; client availability follows the owner setup, not an assistant installation.
 
 For a recoverable backup we must account for database schema/data/roles and privileges, uploaded file bytes and their database metadata, and separately inventoried Auth/platform/Edge/provider configuration dependencies. Supabase's database-backup guidance distinguishes Storage metadata from actual object bytes and recommends off-site exports for Free projects. The earlier Supabase CLI route has defaults/managed-schema exclusions that differ from standalone PostgreSQL tools. The selected standalone export's actual schema/data/role/privilege/managed scope must be designed explicitly; no CLI flags/defaults are blindly copied. Actual PostgreSQL version and required Auth/Storage coverage must be reconciled before preparing exports.
 
@@ -215,7 +215,7 @@ The owner pastes the complete prepared block and completed output. Local `prod-c
 
 This confirms the owner-local client-to-session-pooler connection at the supplied-command scope. The audit agent did not connect, the provider-internal pooler-to-database transport is not independently inspected, and SQL privileges/tenant authorization/dump completeness/recovery are not tested by connection metadata. No production SQL or export was run. The version and connection prerequisites now pass; no repeat setup/check is requested.
 
-**Next owner choice:** identify the existing off-site destination for an encrypted backup copy: owner-controlled cloud storage (for example Google Drive/OneDrive) with verified protected account access, or an external drive kept at a separate physical location. Also settle protected local export storage outside the repository/served assets, encryption/access and recovery-secret storage before customer backup bytes are written. A proposed path or successful connection is not an artifact-protection result.
+**Completed destination-choice handoff:** identify the existing off-site destination for an encrypted backup copy: owner-controlled cloud storage (for example Google Drive/OneDrive) with verified protected account access, or an external drive kept at a separate physical location. Also settle protected local export storage outside the repository/served assets, encryption/access and recovery-secret storage before customer backup bytes are written. A proposed path or successful connection is not an artifact-protection result.
 
 The selected export coverage still needs these separately reviewable components:
 
@@ -229,6 +229,51 @@ The selected export coverage still needs these separately reviewable components:
 | Auth/Edge/provider configuration | Source plus import maps/deno configuration, private secret/configuration recovery and actual deployed SMTP/Auth/hosting settings; database exports do not cover all provider settings. |
 
 Next prepare concrete PostgreSQL/file commands against that selected scope and protected destination, preserving failed/partial runs and final completeness records. Frequency, retention and acceptable data-loss/downtime targets remain owner decisions. Only redacted outcome/scope/size/date evidence enters git; real backup data stays owner-held. F16 and isolated restore proof remain open.
+
+## Current destination and encryption-tool prerequisite — S1E20–S1E21
+
+The owner accepts **Google Drive** for the encrypted off-site copy. This is a destination choice, not evidence of protected account access, private sharing, capacity, a complete upload or a recoverable artifact. No Drive account is accessed, folder created or file uploaded by the audit agent. The plan keeps raw working exports in a separately protected owner-local directory outside the repository/served assets and synced folders; a directory under LOCALAPPDATA is proposed, with actual path/ACL/space/disk protection to verify before writing backup bytes.
+
+Use 7-Zip's 7z AES-256 encryption for the planned portable package, with encrypted filenames and an owner-held strong recovery passphrase saved independently of the archive. First establish the actual Windows executable/version before preparing flags or customer data exports. The official Windows x64 installer currently lists **26.04 (5 October 2026)**; do not infer an installed version from the download page or automatically replace an existing tool. The probe source is [security-stage-1-encryption-tool-check.ps1](../scripts/security-stage-1-encryption-tool-check.ps1). Paste it directly into PowerShell; it reads executable information only and creates no export/archive or password prompt:
+
+```powershell
+& {
+    $mushavo7ZipCommand = Get-Command -Name "7z.exe" `
+        -CommandType Application -ErrorAction SilentlyContinue |
+        Select-Object -First 1
+
+    $mushavo7ZipCandidates = @(
+        "C:\Program Files\7-Zip\7z.exe"
+        "C:\Program Files (x86)\7-Zip\7z.exe"
+    )
+    if ($mushavo7ZipCommand) {
+        $mushavo7ZipCandidates += $mushavo7ZipCommand.Source
+    }
+
+    $mushavo7ZipPath = $mushavo7ZipCandidates |
+        Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } |
+        Select-Object -First 1
+
+    if (-not $mushavo7ZipPath) {
+        Write-Output "7-ZIP NOT FOUND at the checked paths or on PATH."
+        return
+    }
+
+    Write-Output "Executable: $mushavo7ZipPath"
+    $mushavo7ZipInfo = & $mushavo7ZipPath i 2>&1
+    $mushavo7ZipExitCode = $LASTEXITCODE
+    if ($mushavo7ZipExitCode -ne 0) {
+        throw "7-Zip information check failed with exit code $mushavo7ZipExitCode."
+    }
+    $mushavo7ZipInfo | Select-Object -First 6
+}
+```
+
+Send the executable/header output or exact error. Missing means absent at these checked paths/PATH, not every custom location. If no known existing installation is found, download the official **Windows x64 .exe** from [7-zip.org](https://www.7-zip.org/), install using its default directory, and rerun the same inline block. Do not invoke a blocked .ps1 wrapper or change execution policy. No PowerShell runtime is present in the audit workspace; this Windows probe is prepared/reviewed, not locally executed. Actual encryption/header privacy, correct/wrong-passphrase behavior and archive integrity need a synthetic check after tool/version results; a successful information probe alone is not encryption PASS.
+
+**Owner destination preparation:** create an owner-private **Mushavo Budget Backups** folder in Google Drive, verify General access is Restricted and unintended accounts/groups have no access. Report whether the actual Google account has two-step verification enabled, without sharing codes/keys/passphrases. Account/folder evidence remains pending; Google access is not inferred from earlier Cloudflare/Google sign-in. Confirm sufficient capacity before upload. The concrete upload procedure follows a verified encrypted archive, then a separately downloaded copy must match the recorded SHA-256 and decrypt/test successfully. Upload completion alone does not prove recovery; no real backup archive is attached to chat or git.
+
+Database/file/configuration completeness from S1E19 remains required; encryption does not fill missing coverage. Selected plaintext working artifacts/partial runs remain protected, and cleanup follows verified successful packaging/copy checks. Export scheduling, retention and recovery targets are still undecided. F16 remains open with no export, encrypted archive, upload or restore result.
 
 ## Completed owner SQL handoff — retained for reproducibility
 
@@ -264,7 +309,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Dashboard fields and owner certificate-verified connection PASS are recorded. Settle protected local/off-site destination and encryption/access, then prepare exports against the reconciled coverage; no repeat connection test is requested. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
+1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Dashboard fields and owner certificate-verified connection PASS are recorded. Google Drive is selected; verify encryption-tool availability and actual local/cloud account/folder protection, then prepare exports against the reconciled coverage; no repeat connection test is requested. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Agree owner-held protected off-site storage, recovery targets, frequency/retention and completion/failure records using actual size/volume. Prepare concrete commands only after these dependencies are known. A schema file or object metadata alone is insufficient.
@@ -292,3 +337,8 @@ Only redacted outcome/size/date/completeness records enter the repository. Custo
 - [Supabase SSL verification/enforcement distinction](https://supabase.com/docs/guides/platform/ssl-enforcement)
 - [PostgreSQL 17 psql options and connection metadata](https://www.postgresql.org/docs/17/app-psql.html)
 - [PostgreSQL 17 libpq connection-string and SSL parameters](https://www.postgresql.org/docs/17/libpq-connect.html)
+
+- [Official 7-Zip Windows distribution and encryption features](https://www.7-zip.org/)
+- [Official 7z format and AES-256 encryption](https://www.7-zip.org/7z.html)
+- [Google Drive computer upload procedure](https://support.google.com/drive/answer/2424368?hl=en)
+- [Google Drive restricted sharing controls](https://support.google.com/drive/answer/2494822?hl=en)

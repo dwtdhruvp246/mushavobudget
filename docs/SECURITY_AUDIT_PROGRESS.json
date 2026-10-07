@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_CONNECTION_PASS_PROTECTED_DESTINATION_AND_EXPORT_COVERAGE_PENDING",
-        "latest_evidence": "S1E19",
+        "status": "IN_PROGRESS_DRIVE_SELECTED_ENCRYPTION_TOOL_AND_PROTECTED_DESTINATION_PENDING",
+        "latest_evidence": "S1E21",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -157,8 +157,16 @@
           "cipher": "TLS_AES_256_GCM_SHA384",
           "scope": "Owner client-to-session-pooler"
         },
-        "protected_export_destination": "PENDING_OWNER_LOCAL_PROTECTION_AND_ENCRYPTED_OFFSITE_DESTINATION_CHOICE",
-        "precise_export_coverage": "PENDING_DATABASE_ROLES_MANAGED_ENCRYPTION_FILES_CONFIGURATION_RECONCILIATION"
+        "protected_export_destination": "GOOGLE_DRIVE_OWNER_ACCEPTED; PRIVATE_LOCAL_PATH_ACCOUNT_FOLDER_ENCRYPTION_AND_UPLOAD_PROOF_PENDING",
+        "precise_export_coverage": "PENDING_DATABASE_ROLES_MANAGED_ENCRYPTION_FILES_CONFIGURATION_RECONCILIATION",
+        "offsite_destination_choice": {
+          "destination": "Google Drive",
+          "evidence": "S1E20",
+          "choice_only": true,
+          "account_mfa_sharing_upload_verified": false
+        },
+        "encryption_tool_check": "scripts/security-stage-1-encryption-tool-check.ps1; OWNER_EXECUTION_PENDING_S1E21",
+        "encryption_archive_and_restore_verified": false
       },
       {
         "id": "1.3",

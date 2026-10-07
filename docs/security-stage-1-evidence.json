@@ -1162,6 +1162,49 @@
       ],
       "assistant_changed_provider_credentials_production_sql_or_native_runtime": false,
       "scope": "Scoped owner connection PASS only; F16 remains open until selected complete artifacts and isolated recovery are evidenced"
+    },
+    {
+      "id": "S1E20",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner says Google Drive is ok after offered off-site destinations",
+      "result": "OWNER_ACCEPTS_GOOGLE_DRIVE_FOR_ENCRYPTED_OFFSITE_COPY",
+      "offsite_destination": "Owner-controlled Google Drive; exact account/folder not supplied",
+      "protection_plan": "Encrypt a verified backup package locally before uploading; protected working exports outside repository/served assets and cloud sync",
+      "remaining_destination_evidence": [
+        "Actual owner account/folder, restricted sharing, access/two-step verification and recovery arrangements",
+        "Sufficient space, encryption tool and secret handling, local path/ACL/protection",
+        "Actual upload completion and independent downloaded-copy hash/decryption checks"
+      ],
+      "drive_accessed_or_folder_created_or_uploaded_by_assistant": false,
+      "backup_created": false,
+      "restore_verified": false,
+      "scope": "Destination choice only; no Drive MFA/sharing/encryption/upload/backup protection PASS inferred"
+    },
+    {
+      "id": "S1E21",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Encryption-tool prerequisite preparation following S1E20",
+      "result": "WINDOWS_7ZIP_INFORMATION_PROBE_PREPARED_NOT_EXECUTED",
+      "script": "scripts/security-stage-1-encryption-tool-check.ps1",
+      "command_scope": "Resolve actual 7z.exe on standard x64/x86 paths or Application PATH; run information command i and return executable plus first six header lines; preserve nonzero exit",
+      "missing_scope": "Missing at checked paths/PATH only, not absence from every possible custom location",
+      "installation_if_missing": "Official https://www.7-zip.org/ Windows x64 .exe installer; current official version 26.04 dated 2026-10-05 checked 7 October, then repeat same inline probe",
+      "encryption_plan": "7z AES-256 encrypted package with encrypted filenames and private independently stored recovery passphrase; actual supported options and encrypted synthetic package checks pending tool result",
+      "local_working_location_plan": "A separately protected directory under owner LOCALAPPDATA, outside repository and synced folders; actual path/ACL/disk protection still pending before exports",
+      "owner_console_followup": "Create private Mushavo Budget Backups folder in owner Google Drive and verify restricted sharing; report whether Google account two-step verification is enabled, without any codes/secret",
+      "documentation_sources": [
+        "https://www.7-zip.org/",
+        "https://www.7-zip.org/7z.html",
+        "https://support.google.com/drive/answer/2424368?hl=en",
+        "https://support.google.com/drive/answer/2494822?hl=en"
+      ],
+      "windows_execution": "PENDING_OWNER; no local PowerShell runtime",
+      "tools_installed_exports_encrypted_or_uploaded_by_assistant": false,
+      "backup_created": false,
+      "restore_verified": false,
+      "scope": "Concrete read-only tool probe and destination protection preparation only; no archive, uploaded copy, encryption capability proof or F16 closure"
     }
   ]
 }

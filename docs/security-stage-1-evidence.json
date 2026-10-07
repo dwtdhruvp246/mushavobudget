@@ -1447,6 +1447,78 @@
       "backup_created": false,
       "restore_verified": false,
       "scope": "Concrete owner-held logical database component preparation only. The agent executes no production command and receives no dump, SQL, customer bytes or secrets. Native SELECT/shared-lock export is not a production schema/data write. No restore is run; complete recovery and F16 remain open."
+    },
+    {
+      "id": "S1E30",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner supplies completed S1E29 database-export/offline-read summary, with SHA-256 explicitly hidden",
+      "result": "OWNER_DATABASE_EXPORT_AND_OFFLINE_ARCHIVE_READ_PASS",
+      "owner_execution": {
+        "project": "kttkospkblwvguuwnhjj",
+        "completed_utc": "2026-10-07T18:11:03.7896753Z",
+        "file": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342\\20261007T180751Z-216304be49af48c4b889640c8ab9cef1.database.dump",
+        "bytes": 2109566,
+        "sha256": "OWNER_WITHHELD; STORED_IN_OWNER_LOCAL_MANIFEST; NOT_REQUESTED",
+        "public_table_data_entries": 80,
+        "auth_users_and_storage_metadata_present": true
+      },
+      "checked_handoff_scope": "S1E29 unfiltered custom single-database archive; pg_dump zero exit/nonempty, offline pg_restore TOC/core public/Auth/Storage markers and complete SQL rendering into Windows NUL with no database connection. Owner-held TOC/manifest are outputs of that handoff; their contents/artifacts are not retrieved by the audit agent.",
+      "warnings": "NOT_REPORTED; absence of pasted warnings is not independent proof that no warning occurred",
+      "supersedes": "S1E29 actual owner export/archive-read pending, at returned component-check scope only",
+      "database_export_created": true,
+      "archive_read_verified": true,
+      "encrypted_package_created": false,
+      "global_roles_storage_file_bytes_provider_config_complete": false,
+      "offsite_upload_download_verified": false,
+      "restore_verified": false,
+      "scope": "Owner-tested database component export and offline archive readability PASS only. Public entry count is not row-level completeness, extension/global-role/foreign/Vault/file/configuration reconciliation or SQL restore proof. Hidden hash stays private and can be compared locally. No customer dump, TOC, SQL, passwords or keys received; F16 remains open."
+    },
+    {
+      "id": "S1E31",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Prepared private encryption and extracted-file verification handoff after S1E30; owner execution pending",
+      "result": "PREPARED_DATABASE_COMPONENT_ENCRYPTION_AND_LOCAL_FILE_VERIFICATION",
+      "script": "scripts/security-stage-1-database-encryption.ps1",
+      "inputs": {
+        "directory": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342",
+        "run_prefix": "20261007T180751Z-216304be49af48c4b889640c8ab9cef1",
+        "exact_files": [
+          "database.dump",
+          "toc.txt",
+          "manifest.json"
+        ],
+        "database_bytes": 2109566,
+        "hash_handling": "Compare current dump to owner local manifest; do not print or request hash"
+      },
+      "credential_handling": "Owner first generates and independently saves a long unique private backup passphrase; bare -p on creation invokes native 7-Zip hidden-input prompt. Test/extract omit -p so the encrypted archive triggers the native prompt. Real passphrase is not put in PowerShell variables, argv, environment, history, report, archive or repository. Random GUID negative-probe input is not the real passphrase. Retained credential/recovery storage is owner confirmation pending.",
+      "planned_checks": [
+        "Re-read private directory/ancestor/owner/protected inheritable DACL and require exact three nonempty unredirected input files",
+        "Compare exact project/result/dump path/bytes/core count/metadata and private SHA-256 with completed manifest",
+        "Create unique partial 7z with encrypted headers and only the three explicit filenames; require native zero exit",
+        "Prompt again for correct-password integrity test; require native zero exit",
+        "Require random wrong-password technical listing exit 2 with no source filenames exposed",
+        "Prompt again to extract into a fresh child directory inside the private working folder; require exactly three files and matching pre/post source/extracted SHA-256",
+        "Rename only after success and write a private archive-hash/file-hash verification receipt; send metadata summary only"
+      ],
+      "mutation_scope": "Create one owner-local encrypted database-component archive, private verification copies and receipt; preserve originals and failed partial output. No database reconnect/export/restore, raw cleanup, offsite upload or provider change.",
+      "validation": "PASS: prior events/original tables preserved, JSON/local links/fences, exact source/inline handoff and diff whitespace checks. Native creation versus read-prompt behavior, header encryption, negative-test exit handling, explicit input scope, source/extracted hash checks and partial-retention ordering reviewed against official 7-Zip source/manual. No Windows/PowerShell/7-Zip runtime in the audit workspace; owner execution pending.",
+      "documentation_sources": [
+        "https://www.7-zip.org/7z.html",
+        "https://7-zip.opensource.jp/chm/cmdline/switches/method.htm",
+        "https://7-zip.opensource.jp/chm/cmdline/exit_codes.htm",
+        "https://github.com/ip7z/7zip/blob/main/CPP/7zip/UI/Console/Main.cpp",
+        "https://github.com/ip7z/7zip/blob/main/CPP/7zip/UI/Console/UpdateCallbackConsole.cpp",
+        "https://github.com/ip7z/7zip/blob/main/CPP/7zip/UI/Console/UserInputUtils.cpp",
+        "https://github.com/ip7z/7zip/blob/main/CPP/7zip/UI/Console/ExtractCallbackConsole.cpp"
+      ],
+      "encrypted_package_created": false,
+      "real_backup_passphrase_storage_confirmed": false,
+      "offsite_upload_download_verified": false,
+      "complete_platform_backup_created": false,
+      "restore_verified": false,
+      "scope": "Concrete owner-held database-component package preparation only. Original export manifest remains immutable, including its at-export encrypted=false flag. File extraction/hash comparison is not a database restore. Global roles/managed/foreign/extension/Vault keys, Storage file bytes and Auth/Edge/provider configuration remain separate; F16 stays open."
     }
   ]
 }

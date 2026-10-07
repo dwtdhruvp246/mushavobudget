@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_LOCAL_FOLDER_PASS_OWNER_ENCRYPTION_CAPACITY_REPORTED_FIRST_DATABASE_EXPORT_PREPARED",
-        "latest_evidence": "S1E29",
+        "status": "IN_PROGRESS_OWNER_DATABASE_EXPORT_OFFLINE_READ_PASS_PRIVATE_ENCRYPTED_PACKAGE_PREPARED",
+        "latest_evidence": "S1E31",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -157,7 +157,7 @@
           "cipher": "TLS_AES_256_GCM_SHA384",
           "scope": "Owner client-to-session-pooler"
         },
-        "protected_export_destination": "OWNER_LOCAL_NTFS_DACL_PASS_S1E28; GOOGLE_RESTRICTED_FOLDER_TWO_STEP_CONFIRMED_S1E26; DISK_ENCRYPTION_CAPACITY_OWNER_REPORTED_S1E28; PRIVATE_PACKAGE_EXPORT_OFFSITE_AND_FULL_COVERAGE_PENDING",
+        "protected_export_destination": "OWNER_LOCAL_NTFS_DACL_PASS_S1E28; GOOGLE_RESTRICTED_FOLDER_TWO_STEP_CONFIRMED_S1E26; DISK_ENCRYPTION_CAPACITY_OWNER_REPORTED_S1E28; DATABASE_COMPONENT_CREATED_S1E30; ENCRYPTED_PACKAGE_OFFSITE_AND_FULL_COVERAGE_PENDING",
         "precise_export_coverage": "PENDING_DATABASE_ROLES_MANAGED_ENCRYPTION_FILES_CONFIGURATION_RECONCILIATION",
         "offsite_destination_choice": {
           "destination": "Google Drive",
@@ -196,9 +196,23 @@
           "local_free_gib": 28.12,
           "scope": "Owner-tested folder DACL/filesystem/readback; time-specific space"
         },
-        "database_export_handoff": "scripts/security-stage-1-database-export.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E29",
-        "database_export_created": false,
-        "encrypted_package_created": false
+        "database_export_handoff": "scripts/security-stage-1-database-export.ps1; OWNER_EXECUTED_PASS_S1E30",
+        "database_export_created": true,
+        "encrypted_package_created": false,
+        "database_archive_read_verified": true,
+        "database_export_result": {
+          "evidence": "S1E30",
+          "completed_utc": "2026-10-07T18:11:03.7896753Z",
+          "bytes": 2109566,
+          "public_table_data_entries": 80,
+          "auth_users_and_storage_metadata_present": true,
+          "sha256": "OWNER_WITHHELD; LOCAL_COMPARISON_ONLY",
+          "warnings": "NOT_REPORTED",
+          "scope": "One database component; offline archive reading is not SQL execution/restore or full platform completeness"
+        },
+        "encrypted_package_handoff": "scripts/security-stage-1-database-encryption.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E31",
+        "complete_platform_backup_created": false,
+        "backups_created_or_restore_verified_scope": "Complete selected database/roles/files/configuration and offsite/isolated recovery; first database component separately recorded in S1E30"
       },
       {
         "id": "1.3",

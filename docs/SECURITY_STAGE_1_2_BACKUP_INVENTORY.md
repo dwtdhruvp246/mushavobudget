@@ -67,15 +67,29 @@ The source is [scripts/security-stage-1-tool-inventory.ps1](../scripts/security-
 
 The executable inventory completed at owner-tested scope. No version check failed. The repository devDependency pins Supabase CLI 2.116.0; this is distinct from the owner's PATH-resolved 2.106.0. No automatic upgrade, dependency edit or assumption that the installed CLI supports every current documented flag follows. PostgreSQL executable absence on PATH is not a backup failure, and Docker's `--version` does not prove engine readiness. No backup/restore PASS is inferred.
 
-## Next owner checks — engine/options and deployed scope
+## Engine/help results — S1E11
 
-Run these read-only commands and report their output. `docker version` queries the selected Docker engine; context identifies the configured selection, not proof of its physical location. Neither command starts a stack, changes context, pulls an image or connects to Supabase. The CLI help must come from the installed executable rather than a package runner.
+Owner output on 7 October selects `desktop-linux`, but `docker version` returns client 29.6.2, no server version and a missing `dockerDesktopLinuxEngine` named pipe. **FAIL at selected-engine readiness scope / container export path BLOCKED.** The cause is not established: Docker Desktop may be stopped, still starting or unable to initialize. CLI installation remains proven separately; a missing pipe is not a hosted Supabase database failure.
+
+Bare `supabase db dump --help` selected the npm `supabase.ps1` wrapper and was blocked by PowerShell's execution policy before the CLI help ran. **CLI options NOT VERIFIED / wrapper invocation BLOCKED**, not an absent executable or failed export. The assistant's original bare-command instruction was incorrect for the already known PowerShell policy. The corrected block resolves an Application executable exactly as the successful version inventory did, avoiding the `.ps1` wrapper; use this or an explicitly available `.cmd`/`.exe` for future CLI instructions. No policy weakening or automatic CLI upgrade is requested.
+
+## Next owner checks — engine recovery/options and deployed scope
+
+Open **Docker Desktop** from the Windows Start menu and wait until its Linux engine is running, then run the block below. If Desktop cannot start or shows a WSL/virtualization error, report that exact message; no reset, reinstall, container removal or Windows feature change is requested from this observation alone. Starting Desktop is an owner startup action, separate from the read-only probes; no Supabase stack is started by these commands.
+
+`docker version` queries the selected engine; no context change, image pull or Supabase connection is requested. CLI help must come from the installed Application executable rather than a blocked PowerShell script or auto-fetching package runner. Its version is checked again to identify the executable used for help.
 
 ```powershell
 docker context show
 docker version --format 'Client={{.Client.Version}}; Server={{.Server.Version}}; OS={{.Server.Os}}; Arch={{.Server.Arch}}'
-supabase db dump --help
+
+$mushavoSupabaseCommand = Get-Command -Name supabase -CommandType Application -ErrorAction Stop |
+    Select-Object -First 1
+& $mushavoSupabaseCommand.Source --version
+& $mushavoSupabaseCommand.Source db dump --help
 ```
+
+Report all output, including any engine error. Help can be checked while engine recovery is unresolved. The Dashboard SQL inventory below is also independent of Docker and local PowerShell CLI wrappers; its owner result remains pending. Expected successful engine output includes a nonempty server version and `OS=linux`. This readiness result alone would not prove a complete export.
 
 The deployed SQL source is [security_stage_1_backup_inventory.sql](../supabase/diagnostics/security_stage_1_backup_inventory.sql). Copy it using the owner's established handoff below. Fetch/show does not merge, reset or change the original native checkout's tracked files.
 
@@ -102,12 +116,12 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Local validation — S1E10
 
-[verify-security-stage-1-backup-inventory.cjs](../scripts/verify-security-stage-1-backup-inventory.cjs) executes the diagnostic against disposable PGlite PostgreSQL fixtures, with no network or hosted credentials. It checks the 13-row INFO/REVIEW contract, read-only/repeatable-read context, counts, empty inventories, invalid/missing/negative/oversized size metadata, managed trigger/policy indicators, omission of seeded private values and rejection of writes in a read-only transaction. The fixture passed; hosted execution, selected Docker engine readiness and installed CLI option results remain pending. This is SQL preparation evidence, not a production backup or recovery test.
+[verify-security-stage-1-backup-inventory.cjs](../scripts/verify-security-stage-1-backup-inventory.cjs) executes the diagnostic against disposable PGlite PostgreSQL fixtures, with no network or hosted credentials. It checks the 13-row INFO/REVIEW contract, read-only/repeatable-read context, counts, empty inventories, invalid/missing/negative/oversized size metadata, managed trigger/policy indicators, omission of seeded private values and rejection of writes in a read-only transaction. The fixture passed; S1E11 records selected Docker engine readiness failure and the help-wrapper blocker, while hosted execution remains pending. This is SQL preparation evidence, not a production backup or recovery test.
 
 ## Work after this inventory
 
 1. Establish exact tool versions and execution path; inspect any existing npm-local Supabase CLI without auto-fetching or altering the original native checkout. Check container runtime/target only if the selected method needs it.
-2. Obtain the deployed PostgreSQL version, selected schema/role scope and aggregate Storage/configuration inventory through read-only owner checks. SQL handoffs remain PowerShell fetch → `git show "FETCH_HEAD:<path>" | Out-String | Set-Clipboard` → owner manual Supabase paste. No SQL is supplied in this first check.
+2. Obtain the deployed PostgreSQL version, selected schema/role scope and aggregate Storage/configuration inventory using the read-only diagnostic above. SQL handoffs remain PowerShell fetch → `git show "FETCH_HEAD:<path>" | Out-String | Set-Clipboard` → owner manual Supabase paste. Hosted results remain pending.
 3. Choose compatible database export and authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Agree owner-held protected off-site storage, recovery targets, frequency/retention and completion/failure records using actual size/volume. Prepare concrete commands only after these dependencies are known. A schema file or object metadata alone is insufficient.
 5. Review owner-held artifact counts, scope/integrity and incomplete-run detection. Isolated restore proof is step 1.4; a live production restore is not part of this work.

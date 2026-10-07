@@ -326,6 +326,41 @@
       "database_export_restore_or_customer_bytes_retrieved": false,
       "tools_installed_stack_started_provider_credentials_or_native_runtime_changed": false,
       "scope": "Read-only diagnostic/tooling preparation and disposable fixture execution only; no production SQL executed by assistant and no backup/recovery protection PASS inferred"
+    },
+    {
+      "id": "S1E11",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner Windows docker context/version and bare Supabase help output",
+      "docker": {
+        "context": "desktop-linux",
+        "client_version": "29.6.2",
+        "server_version": null,
+        "result": "FAIL_SELECTED_ENGINE_READINESS",
+        "error": "dockerDesktopLinuxEngine local named pipe not found; Docker API unreachable",
+        "cause": "NOT ESTABLISHED; stopped/starting/failed Desktop engine are possibilities, not confirmed diagnoses",
+        "container_export_path": "BLOCKED"
+      },
+      "supabase_help": {
+        "invocation": "supabase db dump --help",
+        "selected_wrapper": "npm supabase.ps1",
+        "result": "BLOCKED_POWERSHELL_EXECUTION_POLICY",
+        "actual_cli_help_ran": false,
+        "dump_options": "NOT VERIFIED",
+        "prior_application_version": "2.106.0 remains recorded from S1E09"
+      },
+      "instruction_correction": "Assistant original bare Supabase command failed to account for the known policy; use Get-Command Application executable as in the successful inventory, or explicit available .cmd/.exe, and recheck its version/help",
+      "next_owner_actions": [
+        "Open Docker Desktop and wait for Linux engine startup; report startup errors instead of resetting/reinstalling",
+        "Repeat selected Docker server probe",
+        "Resolve installed Supabase Application executable and run version/help without execution-policy change",
+        "Proceed independently with already prepared Dashboard read-only SQL inventory"
+      ],
+      "deployed_scope_sql": "PENDING; independent of local Docker/PowerShell wrappers",
+      "new_check_results_or_remediation_pass": "NOT YET SUPPLIED",
+      "backup_created_or_export_failed_or_restore_verified": false,
+      "settings_policy_credentials_native_runtime_or_production_sql_changed_by_assistant": false,
+      "scope": "Owner-reported local engine readiness failure and invocation blocker; no hosted database defect, package absence, completed startup or backup/restore PASS inferred"
     }
   ]
 }

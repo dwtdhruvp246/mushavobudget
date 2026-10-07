@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_ENGINE_OPTIONS_HOSTED_SCOPE_PENDING",
-        "latest_evidence": "S1E10",
+        "status": "IN_PROGRESS_CONTAINER_EXPORT_BLOCKED_SCOPE_PENDING",
+        "latest_evidence": "S1E11",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -106,11 +106,12 @@
             "version": "2.106.0"
           }
         ],
-        "engine_target_readiness": "PENDING",
-        "installed_cli_dump_options": "PENDING",
-        "hosted_database_scope": "PENDING_OWNER_READ_ONLY_INVENTORY",
+        "engine_target_readiness": "FAIL_DESKTOP_LINUX_ENGINE_PIPE_UNAVAILABLE",
+        "installed_cli_dump_options": "BLOCKED_PS1_WRAPPER_NOT_EXECUTED; APPLICATION_EXECUTABLE_RECHECK_PENDING",
+        "hosted_database_scope": "PENDING_OWNER_READ_ONLY_INVENTORY; INDEPENDENT_OF_LOCAL_TOOL_BLOCKERS",
         "sql_fixture_validation": "PASS_DISPOSABLE_POSTGRESQL_18_3_ONLY",
-        "diagnostic": "supabase/diagnostics/security_stage_1_backup_inventory.sql"
+        "diagnostic": "supabase/diagnostics/security_stage_1_backup_inventory.sql",
+        "engine_context": "desktop-linux"
       },
       {
         "id": "1.3",

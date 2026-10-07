@@ -109,6 +109,32 @@
       "whole_finding_or_release_pass_inferred": false,
       "remaining_checks": "Private recovery storage confirmation and fresh sign-in/recovery proof; Supabase/Zoho inspection pending",
       "scope": "Owner-reported Cloudflare email-factor enablement and recovery-code acquisition; no screenshot, live challenge or actual recovery test supplied and no secret values recorded"
+    },
+    {
+      "id": "S1E05",
+      "stage_step": "1.1",
+      "received_date": "2026-10-07",
+      "source": "Owner: i signed in with email. i have done MFA with auth app",
+      "provider": "Supabase",
+      "sign_in_method": "Email-based dashboard sign-in — owner confirmed; password/OTP mechanism not independently inspected",
+      "enabled_factor": "Authenticator app — owner confirmed",
+      "configuration_result": "OWNER-PASS at reported account MFA configuration scope",
+      "backup_factor_or_independent_recovery": "UNCONFIRMED; owner has not yet reported independent backup authentication",
+      "recovery_guidance": {
+        "url": "https://supabase.com/docs/guides/platform/multi-factor-authentication",
+        "checked_date": "2026-10-07",
+        "summary": "Dashboard-account MFA uses TOTP. Supabase provides no recovery codes and recommends a backup TOTP factor or separate secure storage of its secret."
+      },
+      "fresh_mfa_signin": "NOT VERIFIED; enrollment confirmation alone does not establish a subsequent MFA sign-in",
+      "recovery_drill": "NOT PERFORMED",
+      "organization_wide_enforcement": "NOT VERIFIED; personal MFA does not establish enforcement for all members",
+      "app_user_or_app_admin_mfa": "No change or pass inferred; separate later-stage control",
+      "owner_reported_setting_change": true,
+      "settings_credentials_runtime_sql_apk_changed_by_assistant": false,
+      "stage_1_1_complete": false,
+      "whole_finding_or_release_pass_inferred": false,
+      "remaining_checks": "Confirm independent private backup authentication; inspect Zoho sender-administration account; fresh sign-in/recovery proof retained for recheck",
+      "scope": "Owner-reported Supabase dashboard account email sign-in and authenticator-app MFA, without screenshot/fresh challenge or actual recovery evidence; no secrets recorded"
     }
   ]
 }

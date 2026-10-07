@@ -6,7 +6,9 @@ Current-stage work already authorized may address its planned areas. Remaining f
 
 ## Stage 1.1 superseding account evidence
 
-**Latest current result — S1E04:** Cloudflare email authentication **OWNER-PASS**, with recovery codes obtained. This supersedes the earlier inactive/enrollment-blocked current state at owner-report scope. Remaining actions are privately saved accessible recovery material, fresh MFA sign-in/recovery proof and actual Google-account protection verification; no repeat enrollment is requested. Supabase/Zoho inspection and the broader F08 app Admin controls remain open. Earlier dated observations/actions below are preserved as history.
+**Latest current result — S1E05:** Supabase email sign-in and authenticator-app MFA **OWNER-PASS at account configuration scope**. Independent backup authentication remains unconfirmed; retain the action to establish privately held backup TOTP/secret access and verify fresh sign-in/recovery. GitHub MFA and saved-code confirmation, and Cloudflare owner-reported email-factor enablement/code acquisition, remain recorded. Zoho inspection is next. No app Admin MFA, organization-wide enforcement or F08 closure is inferred.
+
+**Prior update — S1E04:** Cloudflare email authentication **OWNER-PASS**, with recovery codes obtained. This supersedes the earlier inactive/enrollment-blocked current state at owner-report scope. Remaining actions are privately saved accessible recovery material, fresh MFA sign-in/recovery proof and actual Google-account protection verification; no repeat enrollment is requested. Supabase/Zoho inspection and the broader F08 app Admin controls remain open. Earlier dated observations/actions below are preserved as history.
 
 7 October 2026, [S1E01–S1E02](security-stage-1-evidence.json): GitHub displayed MFA configuration PASS; owner confirms recovery codes saved. Cloudflare displayed 2FA is **Inactive — FAIL**, replacing tentative/unconfirmed state for this account only. Supabase/Zoho and fresh sign-in/recovery proof remain pending. This does not close F08’s app Admin assurance/password/Auth work or alter the dated Stage 0 report.
 

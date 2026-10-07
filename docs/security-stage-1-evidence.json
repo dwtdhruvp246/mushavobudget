@@ -1075,6 +1075,60 @@
       "restore_verified": false,
       "assistant_installed_tools_changed_provider_policy_credentials_production_sql_or_native_runtime": false,
       "scope": "Owner-executed version-check PASS only; no hosted connection, exported artifact, recovery protection or F16 closure inferred"
+    },
+    {
+      "id": "S1E17",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner Supabase Connect screenshot image(20261007-144256).png",
+      "attachment_sha256": "d8f3106092d391e38a0cbeaf2fbe26ba922e295c133703fa6c0c76d0eca768ed",
+      "result": "DISPLAYED_SESSION_POOLER_CONNECTION_PARAMETERS_RECEIVED",
+      "observed_connection": {
+        "host": "aws-0-eu-central-1.pooler.supabase.com",
+        "port": 5432,
+        "database": "postgres",
+        "username": "postgres.kttkospkblwvguuwnhjj",
+        "ui_labels": [
+          "Only use session pooler on an IPv4 network",
+          "Shared pooler"
+        ],
+        "password_display": "Placeholder only; no actual password received"
+      },
+      "identity_scope": "Displayed username contains intended project reference kttkospkblwvguuwnhjj; actual authenticated target/connectivity not independently proved",
+      "hosted_connection_verified": false,
+      "backup_created": false,
+      "restore_verified": false,
+      "scope": "Owner screenshot metadata only; raw image and credentials are not stored in git; no database connection or settings change occurred"
+    },
+    {
+      "id": "S1E18",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Connection handoff preparation using S1E17 and current official Supabase/PostgreSQL guidance",
+      "result": "CERTIFICATE_VERIFIED_CONNECTION_CHECK_PREPARED_NOT_EXECUTED",
+      "script": "scripts/security-stage-1-connection-check.ps1",
+      "owner_handoff": "Download server root certificate from intended project Database Settings SSL Configuration, then paste inline PowerShell block; supply certificate path locally and database password only at psql native prompt",
+      "command_scope": "Full-path psql.exe --no-psqlrc --password --set=ON_ERROR_STOP=1 --dbname <explicit endpoint/SSL parameters> --command \\conninfo; client connection metadata only, no application SQL or export",
+      "tls_parameters": {
+        "sslmode": "verify-full",
+        "sslrootcert": "Owner-downloaded certificate at resolved local path",
+        "gssencmode": "disable; use TLS for this check",
+        "connect_timeout": 15
+      },
+      "password_handling": "Not embedded in script, URI, environment or report; native psql password prompt on owner machine",
+      "validation": "Prepared/reviewed against official options and connection-string syntax; no local PowerShell, psql or libpq runtime available, so no local Windows/native connection execution is claimed",
+      "documentation_sources": [
+        "https://supabase.com/docs/guides/database/psql",
+        "https://supabase.com/docs/guides/platform/ssl-enforcement",
+        "https://www.postgresql.org/docs/17/app-psql.html",
+        "https://www.postgresql.org/docs/17/libpq-connect.html"
+      ],
+      "expected_owner_output": "Connected database/user/host/port and SSL connection details, or exact error without secrets; certificate availability and successful connection remain pending",
+      "hosted_connection_verified": false,
+      "backup_created": false,
+      "restore_verified": false,
+      "assistant_changed_production_sql_credentials_provider_settings_or_native_runtime": false,
+      "scope": "Concrete owner-local connection check prepared only; no owner execution PASS, certificate trust result, precise export coverage, backup protection or F16 closure inferred"
     }
   ]
 }

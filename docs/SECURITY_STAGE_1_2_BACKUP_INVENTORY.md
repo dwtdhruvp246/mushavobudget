@@ -4,7 +4,7 @@ Started 7 October 2026 after owner-tested normal sign-ins completed in 1.1. Stag
 
 ## Current scope and starting facts
 
-Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. The next prerequisite is intended Dashboard connection fields, SSL/credential handling and a successful read-only connection. No export, restore, local stack, account setting or production write has been performed by this work; client availability follows the owner setup, not an assistant installation.
+Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. S1E17 supplies displayed Dashboard session-pooler connection fields. S1E18 prepares the certificate-verified connection check; owner certificate download and actual execution remain pending. No export, restore, local stack, account setting or production write has been performed by this work; client availability follows the owner setup, not an assistant installation.
 
 For a recoverable backup we must account for database schema/data/roles and privileges, uploaded file bytes and their database metadata, and separately inventoried Auth/platform/Edge/provider configuration dependencies. Supabase's database-backup guidance distinguishes Storage metadata from actual object bytes and recommends off-site exports for Free projects. The earlier Supabase CLI route has defaults/managed-schema exclusions that differ from standalone PostgreSQL tools. The selected standalone export's actual schema/data/role/privilege/managed scope must be designed explicitly; no CLI flags/defaults are blindly copied. Actual PostgreSQL version and required Auth/Storage coverage must be reconciled before preparing exports.
 
@@ -150,9 +150,64 @@ The owner reruns the full-path check at `C:\Program Files\PostgreSQL\17\bin` and
 
 All four clients are available at the checked path and their major matches the received server 17.6 inventory. S1E15's earlier missing-path observation remains historical. PATH registration, installer component selection, database authentication, SSL, actual supported options and exports/restores are not certified by version output. No repeat version or installation check is requested.
 
-**Next owner action:** open the intended Supabase project **kttkospkblwvguuwnhjj**, click **Connect** and select **Session pooler**. This is the planned IPv4-compatible session route; the owner's network capability and any direct endpoint connection have not been tested. Supabase recommends direct connections for native backup commands and documents session mode as the alternative for IPv4-only networks. Copy the actual host, port, database and username shown in that panel, or send a crop showing those fields. Keep `[YOUR-PASSWORD]` as a placeholder and omit any real password, API key or secret. Do not run the copied URI or change database/provider settings during this field collection. The pooler host must come from the panel; it cannot be guessed from the region. Transaction-pooler mode is not selected for this dump route.
+**Completed field-collection handoff:** open the intended Supabase project **kttkospkblwvguuwnhjj**, click **Connect** and select **Session pooler**. This is the planned IPv4-compatible session route; the owner's network capability and any direct endpoint connection have not been tested. Supabase recommends direct connections for native backup commands and documents session mode as the alternative for IPv4-only networks. Copy the actual host, port, database and username shown in that panel, or send a crop showing those fields. Keep `[YOUR-PASSWORD]` as a placeholder and omit any real password, API key or secret. Do not run the copied URI or change database/provider settings during this field collection. The pooler host must come from the panel; it cannot be guessed from the region. Transaction-pooler mode is not selected for this dump route.
 
-After the fields are received, prepare the read-only connection check with explicit SSL server verification and owner-local password entry. SSL certificate trust/hostname compatibility must be reconciled for the selected endpoint; `sslmode=require` alone is not server verification. No connection is attempted by this documentation update. Selected export completeness, protected owner-held off-site destination, separate Storage bytes and configuration recovery remain pending. F16 is still open.
+S1E17 now supplies the fields and S1E18 prepares the connection check below with explicit SSL server verification and owner-local password entry. SSL certificate trust/hostname compatibility must be reconciled for the selected endpoint; `sslmode=require` alone is not server verification. No connection is attempted by this documentation update. Selected export completeness, protected owner-held off-site destination, separate Storage bytes and configuration recovery remain pending. F16 is still open.
+
+## Displayed endpoint and prepared connection check — S1E17–S1E18
+
+The owner screenshot displays a Shared pooler panel with the session-mode IPv4 banner and these fields:
+
+| Field | Displayed value |
+|---|---|
+| Host | aws-0-eu-central-1.pooler.supabase.com |
+| Port | 5432 |
+| Database | postgres |
+| Username | postgres.kttkospkblwvguuwnhjj |
+
+The username contains the intended project reference, but a screenshot is not authenticated connectivity/target proof. The password stays a placeholder. Only these non-secret metadata and the screenshot SHA-256 are retained; the raw image is excluded from git. No connection or provider change has occurred.
+
+**Current owner action:** in the intended project, open **Database Settings → SSL Configuration → Download certificate** and save the server root certificate locally. Supabase's official psql guide uses the downloaded root certificate with session-pooler `sslmode=verify-full`. This handoff does not enable/change SSL enforcement (a distinct provider setting). Paste the following block directly into the existing PowerShell terminal; it asks for the certificate's full local path, then psql prompts for the **database password** privately. The source is [security-stage-1-connection-check.ps1](../scripts/security-stage-1-connection-check.ps1); use the inline block to retain the owner's existing execution policy.
+
+```powershell
+& {
+    $mushavoPsql = "C:\Program Files\PostgreSQL\17\bin\psql.exe"
+    if (-not (Test-Path -LiteralPath $mushavoPsql -PathType Leaf)) {
+        throw "PostgreSQL psql.exe was not found at the verified path."
+    }
+
+    $mushavoCertInput = (Read-Host "Full path to the downloaded Supabase certificate").Trim().Trim('"')
+    if (-not (Test-Path -LiteralPath $mushavoCertInput -PathType Leaf)) {
+        throw "Certificate file was not found. Send the error and file path only."
+    }
+    $mushavoCertPath = (Resolve-Path -LiteralPath $mushavoCertInput -ErrorAction Stop).ProviderPath
+    $mushavoCertValue = $mushavoCertPath.Replace('\', '/').Replace("'", "\'")
+
+    $mushavoConnection = @(
+        "host=aws-0-eu-central-1.pooler.supabase.com"
+        "port=5432"
+        "dbname=postgres"
+        "user=postgres.kttkospkblwvguuwnhjj"
+        "sslmode=verify-full"
+        "sslrootcert='$mushavoCertValue'"
+        "gssencmode=disable"
+        "connect_timeout=15"
+        "application_name=mushavo_stage_1_2_connection"
+    ) -join " "
+
+    & $mushavoPsql --no-psqlrc --password --set=ON_ERROR_STOP=1 `
+        --dbname $mushavoConnection --command '\conninfo'
+    if ($LASTEXITCODE -ne 0) {
+        throw "Connection check failed. Send the error output without any password."
+    }
+
+    Write-Output "Connection check completed. Send the connection and TLS output."
+}
+```
+
+`\conninfo` is a psql client command that reports current connection metadata, including SSL details; it is not an application SQL query. `--no-psqlrc` skips user/system startup commands and `--command` makes psql exit after this one command. The actual Dashboard endpoint is explicit; the certificate is resolved as a local file, normalized/escaped as a quoted libpq value, and certificate-chain plus hostname verification is required. GSS encryption is disabled for this check so TLS is the selected transport. The 15-second value bounds connection setup, not an entire future export. No password is embedded in the command, environment or script. Nonzero psql exit is preserved as a failed check; no weaker SSL retry or database password reset is requested.
+
+Send only the connection/TLS output or exact error. Owner certificate availability, SSL/authentication/connectivity and actual Windows execution are **PENDING**, not PASS. The audit workspace has no PowerShell, psql or libpq runtime, so this block is prepared/reviewed against official documentation rather than locally executed. Future actual SQL retains the owner's fetch/show/clipboard/manual SQL Editor handoff. No backup artifact, app-table query/write, protected off-site storage result or restore follows from preparing this command. Precise database/role/managed/encryption coverage, separate Storage bytes and configuration recovery remain required before F16 can close.
 
 ## Completed owner SQL handoff — retained for reproducibility
 
@@ -188,7 +243,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Collect intended Dashboard connection fields and verify a read-only connection with explicit SSL/credential handling. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
+1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Dashboard fields are received; download the server root certificate and run the prepared one-command connection/TLS check locally. Record actual success/error before preparing exports. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Agree owner-held protected off-site storage, recovery targets, frequency/retention and completion/failure records using actual size/volume. Prepare concrete commands only after these dependencies are known. A schema file or object metadata alone is insufficient.
@@ -211,3 +266,8 @@ Only redacted outcome/size/date/completeness records enter the repository. Custo
 
 - [EDB Windows component selection and command-line tools](https://www.enterprisedb.com/docs/supported-open-source/postgresql/installing/windows/)
 - [PostgreSQL 17 pg_dump scope/compatibility](https://www.postgresql.org/docs/17/app-pgdump.html)
+
+- [Supabase psql certificate/session-pooler instructions](https://supabase.com/docs/guides/database/psql)
+- [Supabase SSL verification/enforcement distinction](https://supabase.com/docs/guides/platform/ssl-enforcement)
+- [PostgreSQL 17 psql options and connection metadata](https://www.postgresql.org/docs/17/app-psql.html)
+- [PostgreSQL 17 libpq connection-string and SSL parameters](https://www.postgresql.org/docs/17/libpq-connect.html)

@@ -1243,6 +1243,60 @@
       "restore_verified": false,
       "assistant_installed_updated_tools_changed_provider_settings_or_processed_archives": false,
       "scope": "Owner information-check PASS plus verified patch gap and update instructions only; no archive/encryption/upload/recovery PASS or F16 closure"
+    },
+    {
+      "id": "S1E23",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner pasted completed known-path Windows 7-Zip information recheck",
+      "result": "OWNER_UPDATED_EXECUTABLE_AND_LIBRARY_26_04_INFORMATION_PASS",
+      "observed_tool": {
+        "executable": "C:\\Program Files\\7-Zip\\7z.exe",
+        "version": "26.04",
+        "architecture": "x64",
+        "release_date": "2026-10-05",
+        "library_version": "26.04",
+        "library_path": "C:\\Program Files\\7-Zip\\7z.dll"
+      },
+      "supersedes": "S1E22 installed-version patch gap; official-current-version prerequisite now satisfied at owner information-output scope",
+      "scope": "Native information command completes without scripted error and returns normal PS prompt; executable/library version PASS only, not binary authenticity, encryption, artifact protection or recovery proof",
+      "security_update_information_verified": true,
+      "encryption_test_verified": false,
+      "drive_account_and_folder_protection": "Still unreported; no disabled/failed inference",
+      "backup_created": false,
+      "restore_verified": false,
+      "assistant_installed_tools_changed_provider_settings_or_processed_customer_archives": false
+    },
+    {
+      "id": "S1E24",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Prepared inline PowerShell synthetic encryption check after S1E23; owner execution pending",
+      "result": "PREPARED_REVIEWED_SYNTHETIC_CHECK_NOT_EXECUTED",
+      "script": "scripts/security-stage-1-encryption-synthetic-check.ps1",
+      "inputs": "Fixed public dummy text and distinct public dummy correct/wrong passwords; no production connection, customer files or real recovery secret",
+      "planned_checks": [
+        "Create fresh 7z archive with -mhe=on",
+        "Correct-password listing reports 7zAES and Encrypted = +",
+        "Wrong-password listing exits 2 and does not display dummy.txt",
+        "Wrong-password archive test exits 2",
+        "Correct-password test and extraction exit 0",
+        "Extracted dummy file SHA-256 equals original"
+      ],
+      "local_artifacts": "Unique owner LOCALAPPDATA directory; synthetic originals/archive/restored file retained for review, no shared/export/upload or recursive deletion",
+      "validation": "PASS: exact source/docs handoff, JSON, local links/fences, preserved prior events/tables and diff whitespace checks. Flags and exit-code semantics reviewed against official 7-Zip source and project-linked manual. No PowerShell/7-Zip runtime exists in audit workspace; owner execution pending.",
+      "documentation_sources": [
+        "https://www.7-zip.org/7z.html",
+        "https://7-zip.opensource.jp/chm/cmdline/switches/password.htm",
+        "https://7-zip.opensource.jp/chm/cmdline/switches/method.htm",
+        "https://7-zip.opensource.jp/chm/cmdline/exit_codes.htm",
+        "https://github.com/ip7z/7zip/blob/main/CPP/7zip/UI/Common/ExitCode.h"
+      ],
+      "synthetic_test_verified": false,
+      "real_backup_passphrase_handling_verified": false,
+      "backup_created": false,
+      "restore_verified": false,
+      "scope": "Prepare owner capability test only; published dummy passwords must never protect real backups. This does not verify real passphrase entry/recovery, local/Drive protection, complete backup coverage or isolated database restore. F16 remains open."
     }
   ]
 }

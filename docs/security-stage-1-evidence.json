@@ -1205,6 +1205,44 @@
       "backup_created": false,
       "restore_verified": false,
       "scope": "Concrete read-only tool probe and destination protection preparation only; no archive, uploaded copy, encryption capability proof or F16 closure"
+    },
+    {
+      "id": "S1E22",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner pasted Windows 7-Zip information-probe output; official release history/download checked",
+      "result": "OWNER_TOOL_INFORMATION_PASS_SECURITY_UPDATE_REQUIRED_BEFORE_BACKUP_ARCHIVE_WORK",
+      "observed_tool": {
+        "executable": "C:\\Program Files\\7-Zip\\7z.exe",
+        "version": "24.09",
+        "architecture": "x64",
+        "release_date": "2024-11-29",
+        "library_version": "24.09",
+        "library_path": "C:\\Program Files\\7-Zip\\7z.dll"
+      },
+      "probe_scope": "Information command completed with normal PS prompt and no error; version/path available, actual encryption and recovery behavior untested",
+      "security_review": {
+        "status": "PATCH_GAP",
+        "selected_update": "26.04 Windows x64 exe, released 2026-10-05, official current download checked 2026-10-07",
+        "primary_history_examples": [
+          "25.00 fixes symbolic-link extraction vulnerabilities CVE-2025-11001/CVE-2025-11002",
+          "25.01 hardens symbolic-link extraction for CVE-2025-55188",
+          "Later 26.x releases record further archive-handler/extraction security fixes"
+        ],
+        "scope": "Installed release predates listed fixes; no malicious archive was processed by the information probe and no compromise or AES encryption weakness is inferred"
+      },
+      "next_owner_action": "Close 7-Zip windows, download/install official current Windows x64 exe to the established directory, then rerun information/version check; report header/library output",
+      "remaining_drive_evidence": "Owner has not yet reported folder/privacy/capacity or Google account two-step verification; unconfirmed, not disabled/failed",
+      "documentation_sources": [
+        "https://www.7-zip.org/history.txt",
+        "https://www.7-zip.org/download.html",
+        "https://github.com/ip7z/7zip/releases/tag/25.01"
+      ],
+      "security_update_or_encryption_test_verified": false,
+      "backup_created": false,
+      "restore_verified": false,
+      "assistant_installed_updated_tools_changed_provider_settings_or_processed_archives": false,
+      "scope": "Owner information-check PASS plus verified patch gap and update instructions only; no archive/encryption/upload/recovery PASS or F16 closure"
     }
   ]
 }

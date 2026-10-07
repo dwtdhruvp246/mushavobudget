@@ -4,7 +4,7 @@ Started 7 October 2026 after owner-tested normal sign-ins completed in 1.1. Stag
 
 ## Current scope and starting facts
 
-Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. S1E17 supplies displayed Dashboard session-pooler connection fields. S1E18 prepares the certificate-verified connection check; S1E19 now records owner execution PASS with the intended endpoint and TLS 1.3. S1E20 records the owner choice of Google Drive for the encrypted off-site copy; S1E21 prepares the encryption-tool check. Destination protection, actual encryption/export/upload and precise coverage remain pending. No export, restore, local stack, account setting or production write has been performed by this work; client availability follows the owner setup, not an assistant installation.
+Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. S1E17 supplies displayed Dashboard session-pooler connection fields. S1E18 prepares the certificate-verified connection check; S1E19 now records owner execution PASS with the intended endpoint and TLS 1.3. S1E20 records the owner choice of Google Drive for the encrypted off-site copy; S1E21 prepares the encryption-tool check; S1E22 records actual 24.09 x64 information output and a verified security patch gap requiring the current official update. Destination protection, actual encryption/export/upload and precise coverage remain pending. No export, restore, local stack, account setting or production write has been performed by this work; client availability follows the owner setup, not an assistant installation.
 
 For a recoverable backup we must account for database schema/data/roles and privileges, uploaded file bytes and their database metadata, and separately inventoried Auth/platform/Edge/provider configuration dependencies. Supabase's database-backup guidance distinguishes Storage metadata from actual object bytes and recommends off-site exports for Free projects. The earlier Supabase CLI route has defaults/managed-schema exclusions that differ from standalone PostgreSQL tools. The selected standalone export's actual schema/data/role/privilege/managed scope must be designed explicitly; no CLI flags/defaults are blindly copied. Actual PostgreSQL version and required Auth/Storage coverage must be reconciled before preparing exports.
 
@@ -230,7 +230,7 @@ The selected export coverage still needs these separately reviewable components:
 
 Next prepare concrete PostgreSQL/file commands against that selected scope and protected destination, preserving failed/partial runs and final completeness records. Frequency, retention and acceptable data-loss/downtime targets remain owner decisions. Only redacted outcome/scope/size/date evidence enters git; real backup data stays owner-held. F16 and isolated restore proof remain open.
 
-## Current destination and encryption-tool prerequisite — S1E20–S1E21
+## Destination choice and completed tool-discovery handoff — S1E20–S1E22
 
 The owner accepts **Google Drive** for the encrypted off-site copy. This is a destination choice, not evidence of protected account access, private sharing, capacity, a complete upload or a recoverable artifact. No Drive account is accessed, folder created or file uploaded by the audit agent. The plan keeps raw working exports in a separately protected owner-local directory outside the repository/served assets and synced folders; a directory under LOCALAPPDATA is proposed, with actual path/ACL/space/disk protection to verify before writing backup bytes.
 
@@ -269,11 +269,33 @@ Use 7-Zip's 7z AES-256 encryption for the planned portable package, with encrypt
 }
 ```
 
-Send the executable/header output or exact error. Missing means absent at these checked paths/PATH, not every custom location. If no known existing installation is found, download the official **Windows x64 .exe** from [7-zip.org](https://www.7-zip.org/), install using its default directory, and rerun the same inline block. Do not invoke a blocked .ps1 wrapper or change execution policy. No PowerShell runtime is present in the audit workspace; this Windows probe is prepared/reviewed, not locally executed. Actual encryption/header privacy, correct/wrong-passphrase behavior and archive integrity need a synthetic check after tool/version results; a successful information probe alone is not encryption PASS.
+Send the executable/header output or exact error. Missing means absent at these checked paths/PATH, not every custom location. If no known existing installation is found, download the official **Windows x64 .exe** from [7-zip.org](https://www.7-zip.org/), install using its default directory, and rerun the same inline block. Do not invoke a blocked .ps1 wrapper or change execution policy. No PowerShell runtime is present in the audit workspace; this Windows probe is prepared/reviewed, not locally executed. S1E22 supplies the information result below; no repeat discovery is needed. Actual encryption/header privacy, correct/wrong-passphrase behavior and archive integrity need a synthetic check after the required security update; a successful information probe alone is not encryption PASS.
 
 **Owner destination preparation:** create an owner-private **Mushavo Budget Backups** folder in Google Drive, verify General access is Restricted and unintended accounts/groups have no access. Report whether the actual Google account has two-step verification enabled, without sharing codes/keys/passphrases. Account/folder evidence remains pending; Google access is not inferred from earlier Cloudflare/Google sign-in. Confirm sufficient capacity before upload. The concrete upload procedure follows a verified encrypted archive, then a separately downloaded copy must match the recorded SHA-256 and decrypt/test successfully. Upload completion alone does not prove recovery; no real backup archive is attached to chat or git.
 
 Database/file/configuration completeness from S1E19 remains required; encryption does not fill missing coverage. Selected plaintext working artifacts/partial runs remain protected, and cleanup follows verified successful packaging/copy checks. Export scheduling, retention and recovery targets are still undecided. F16 remains open with no export, encrypted archive, upload or restore result.
+
+## Current encryption-tool result and security update — S1E22
+
+The owner information probe returns **7-Zip 24.09 x64 (29 November 2024)** at `C:\Program Files\7-Zip\7z.exe`, with `7z.dll` also 24.09. The command completes without the scripted error. **OWNER-TESTED information/version PASS**, not an encryption-capability or recovery PASS.
+
+**Security update prerequisite:** official release history records symbolic-link extraction fixes in 25.00 (CVE-2025-11001/CVE-2025-11002), further hardening in 25.01 (CVE-2025-55188), and later 26.x archive-handler/extraction fixes. The installed 24.09 predates those fixes. The official current Windows x64 installer is **26.04, released 5 October 2026**, checked 7 October. Record this as a patch GAP and update before backup archive creation/test/recovery work. The information command processes no archive; this finding does not show compromise or a broken AES implementation.
+
+Owner closes any open 7-Zip windows, downloads the current **Windows x64 .exe** from [the official download page](https://www.7-zip.org/download.html), and installs to the established `C:\Program Files\7-Zip` directory. Then paste this short known-path information check and report its header/library output:
+
+```powershell
+& {
+    $mushavo7ZipInfo = & "C:\Program Files\7-Zip\7z.exe" i 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        throw "7-Zip information check failed. Send the error."
+    }
+    $mushavo7ZipInfo | Select-Object -First 6
+}
+```
+
+Expected current header is 26.04; verify the reported library version too rather than inferring update completion from installer UI. Unexpected installer/path/version errors stay explicit. No installation or archive processing occurs in the audit workspace, and no Windows runtime execution is claimed. The earlier script remains the reproducible discovery source; a full discovery or dependency reinstall is not requested.
+
+The user has not yet reported Google account two-step verification or the Drive backup folder's actual privacy/capacity. They remain **UNCONFIRMED**, not disabled/failed. Continue the already prepared private-folder/account checks without requesting codes or recovery secrets. Protected local work location, safe encryption/passphrase handling, synthetic encryption/integrity checks, selected complete database/file/configuration exports and real upload/download proof remain pending. F16 stays open with no backup or restore artifact.
 
 ## Completed owner SQL handoff — retained for reproducibility
 
@@ -309,7 +331,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Dashboard fields and owner certificate-verified connection PASS are recorded. Google Drive is selected; verify encryption-tool availability and actual local/cloud account/folder protection, then prepare exports against the reconciled coverage; no repeat connection test is requested. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
+1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Dashboard fields and owner certificate-verified connection PASS are recorded. Google Drive is selected; update the observed 7-Zip 24.09 security patch gap and verify actual local/cloud account/folder protection, then prepare exports against the reconciled coverage; no repeat connection test is requested. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Agree owner-held protected off-site storage, recovery targets, frequency/retention and completion/failure records using actual size/volume. Prepare concrete commands only after these dependencies are known. A schema file or object metadata alone is insufficient.
@@ -342,3 +364,5 @@ Only redacted outcome/size/date/completeness records enter the repository. Custo
 - [Official 7z format and AES-256 encryption](https://www.7-zip.org/7z.html)
 - [Google Drive computer upload procedure](https://support.google.com/drive/answer/2424368?hl=en)
 - [Google Drive restricted sharing controls](https://support.google.com/drive/answer/2494822?hl=en)
+- [Official 7-Zip release/security history](https://www.7-zip.org/history.txt)
+- [Official 7-Zip current Windows installer](https://www.7-zip.org/download.html)

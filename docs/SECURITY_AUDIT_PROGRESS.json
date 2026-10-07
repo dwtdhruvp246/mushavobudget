@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_DRIVE_SELECTED_ENCRYPTION_TOOL_AND_PROTECTED_DESTINATION_PENDING",
-        "latest_evidence": "S1E21",
+        "status": "IN_PROGRESS_7ZIP_24_09_UPDATE_AND_DESTINATION_PROTECTION_PENDING",
+        "latest_evidence": "S1E22",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -165,8 +165,17 @@
           "choice_only": true,
           "account_mfa_sharing_upload_verified": false
         },
-        "encryption_tool_check": "scripts/security-stage-1-encryption-tool-check.ps1; OWNER_EXECUTION_PENDING_S1E21",
-        "encryption_archive_and_restore_verified": false
+        "encryption_tool_check": "OWNER_INFORMATION_CHECK_PASS_24_09_X64; SECURITY_PATCH_GAP_UPDATE_TO_CURRENT_26_04_PENDING",
+        "encryption_archive_and_restore_verified": false,
+        "observed_encryption_tool": {
+          "executable": "C:\\Program Files\\7-Zip\\7z.exe",
+          "version": "24.09",
+          "library_version": "24.09",
+          "architecture": "x64",
+          "security_update_verified": false
+        },
+        "drive_account_two_step_verification": "NOT_REPORTED; UNCONFIRMED_NOT_DISABLED",
+        "drive_folder_protection": "NOT_REPORTED; UNCONFIRMED"
       },
       {
         "id": "1.3",

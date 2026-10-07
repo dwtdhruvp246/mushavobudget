@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_LOCAL_ENCRYPTED_COMPONENT_PASS_GOOGLE_OFFSITE_WORK_DEFERRED_OWNER_REQUEST",
-        "latest_evidence": "S1E40",
+        "status": "IN_PROGRESS_LOCAL_COMPONENT_PASS_GOOGLE_DEFERRED_LOCAL_COVERAGE_CHECK_PREPARED",
+        "latest_evidence": "S1E41",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -253,7 +253,31 @@
         "original_archive_selection_handoff": "scripts/security-stage-1-original-archive-selection.ps1; PREPARED_NOT_EXECUTED; DEFERRED_NOT_REQUESTED_S1E40",
         "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
         "offsite_copy_status": "UNVERIFIED_CARRY_FORWARD; GOOGLE_ROUTE_DEFERRED; NO_ALTERNATIVE_SELECTED",
-        "remaining_current_step_work": "Selected local database/global-role/managed/extension/foreign/Vault/file/Auth/Edge/provider coverage and private credential handling; keep offsite gap for later remediation, with isolated synthetic restore still 1.4"
+        "remaining_current_step_work": "Four groups: exact database/global-role/managed/extension/foreign/Vault recovery coverage, actual Storage file bytes, Auth/SMTP/Edge/provider configuration and private credential handling, and frequency/retention/recovery objectives/failure records. Google route remains deferred; isolated synthetic restore is 1.4.",
+        "remaining_work_groups": [
+          {
+            "id": "database_scope",
+            "work": "Reconcile exact archive/database/managed/extension/foreign/Vault coverage and separately protect global roles, membership and grant dependencies.",
+            "status": "REVIEW_PENDING; local TOC indicator check prepared"
+          },
+          {
+            "id": "storage_bytes",
+            "work": "Back up actual uploaded Storage files and verify counts, sizes and integrity against a consistent inventory.",
+            "status": "PENDING; earlier metadata reported two objects, not downloaded bytes"
+          },
+          {
+            "id": "configuration_and_credentials",
+            "work": "Inventory protected Auth/SMTP/Edge/provider recovery configuration and independently retained recovery credentials/key dependencies.",
+            "status": "PENDING; do not send secrets or raw configuration"
+          },
+          {
+            "id": "backup_operations",
+            "work": "Choose frequency, retention, acceptable data loss/recovery time and success/failure records.",
+            "status": "OWNER_DECISIONS_PENDING; Google offsite work deferred"
+          }
+        ],
+        "local_coverage_handoff": "scripts/security-stage-1-local-coverage-check.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E41",
+        "local_toc_scope_review_verified": false
       },
       {
         "id": "1.3",

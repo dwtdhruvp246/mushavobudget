@@ -2,7 +2,7 @@
 
 Started 7 October 2026 after owner-tested normal sign-ins completed in 1.1. Stage 1 remains in progress. Account recovery gaps are carried forward; no provider recovery test or full F08 closure is inferred.
 
-> **Current owner decision — S1E40:** Google Drive backup troubleshooting/upload/download is **DEFERRED**. Earlier Google commands below are historical and are not current execution requests. Keep existing local artifacts/private passphrase protected; no local/cloud cleanup is requested. Local export/encryption PASS remain, while verified offsite copy, earlier cloud scope/privacy and full coverage/recovery stay open for final remediation/re-audit. Stage 1.2 remains in progress.
+> **Standing owner decision — S1E40:** Google Drive backup troubleshooting/upload/download is **DEFERRED**. Earlier Google commands below are historical and are not current execution requests. Keep existing local artifacts/private passphrase protected; no local/cloud cleanup is requested. Local export/encryption PASS remain, while verified offsite copy, earlier cloud scope/privacy and full coverage/recovery stay open for final remediation/re-audit. Stage 1.2 remains in progress.
 
 ## Current scope and starting facts
 
@@ -1069,6 +1069,121 @@ The local single-database export/offline-read PASS (S1E30) and real encrypted-co
 
 Verified offsite protection remains **UNVERIFIED / Google work DEFERRED**. The unanswered earlier cloud upload scope/privacy and independent private passphrase retention are carried forward, not erased or converted to PASS. F16 stays open for the stage-end report and final remediation/re-audit: decide/resume a protected destination when that work is taken up, verify the correct component transfer/download integrity and reconcile any other cloud items. Separate exact local/global-role/managed/extension/foreign/Vault/Storage-byte/Auth/Edge/provider coverage still belongs to 1.2, and isolated synthetic restoration remains 1.4. Skipping Google does not skip those independent audit requirements or imply full backup completion.
 
+## Current local coverage handoff and remaining work — S1E41
+
+The owner authorizes continuing and asks how much of 1.2 remains. The local database export/offline-read and real encrypted component/file-integrity checks are completed at their recorded scopes. **Four work groups remain**, excluding the currently deferred Google upload/download route; these groups are not equally sized tests/commands and do not justify an invented completion percentage.
+
+| Remaining group | Needed evidence |
+| --- | --- |
+| Database and roles | Reconcile archive contents with source scope, managed customizations, extension/foreign/Vault dependencies; separately protect global role attributes/memberships and grant/ownership recovery dependencies. |
+| Uploaded files | Retrieve and verify actual Storage object bytes; the earlier inventory reported two object metadata records, not two completed file downloads. Reconcile a consistent inventory, count/size/hash and changes/incomplete transfers. |
+| Configuration and recovery credentials | Owner-held protected Auth/SMTP/Edge/provider recovery inventory, dependencies and separately retained credentials/key handling; no secrets or raw configuration sent to chat/git. |
+| Backup operating decisions | Frequency, retention, acceptable data loss/recovery time and completion/failure records, with deferred/unverified offsite protection carried into final remediation/re-audit. |
+
+The isolated synthetic database restore test is **1.4**, following isolated target preparation in **1.3**. It is not a new live production restore requirement at 1.2. Other provider/offsite/key-recovery gaps retain their existing carry-forward status and must not be silently cleared by moving steps.
+
+The next block uses the **existing checked local component**. It checks the exact encrypted archive and its three local source files against the completed private receipt, reads the saved TOC and prints only aggregate object-category/schema counts. No PostgreSQL password, new export, archive extraction, database connection, file write, upload, cleanup or permission change occurs. Hashes and raw TOC/receipt contents remain private. It does not repeat the 7-Zip password test or create another package.
+
+PostgreSQL documents that pg_dump covers one database, with global role definitions handled separately; extension members can be recreated by installing extensions, and foreign data requires explicit selection. Supabase distinguishes Storage metadata from actual object bytes. These are coverage dependencies to reconcile, not reasons to label every zero TOC category a failed backup. Listed table-data entries are not row counts; grant/publication/extension category counts do not prove exact definitions, effective access or working recovery.
+
+```powershell
+& {
+    $ErrorActionPreference = "Stop"
+    $mushavoRoot = "C:\Users\HP\AppData\Local\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342"
+    $mushavoRun = "20261007T180751Z-216304be49af48c4b889640c8ab9cef1"
+    $mushavoPackage = "$mushavoRun.database-component-8135efd7cfce4f89b01da7296e864731"
+    $mushavoFolder = Get-Item -LiteralPath $mushavoRoot -Force
+    if (-not $mushavoFolder.PSIsContainer) { throw "Private backup folder was not found." }
+    $mushavoParent = $mushavoFolder
+    while ($null -ne $mushavoParent) {
+        if ($mushavoParent.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+            throw "Backup path contains a redirected directory."
+        }
+        $mushavoParent = $mushavoParent.Parent
+    }
+    $mushavoNames = @("$mushavoRun.database.dump", "$mushavoRun.toc.txt", "$mushavoRun.manifest.json")
+    foreach ($mushavoName in ($mushavoNames + @("$mushavoPackage.7z", "$mushavoPackage.verification.json"))) {
+        $mushavoItem = Get-Item -LiteralPath (Join-Path $mushavoRoot $mushavoName) -Force
+        if ($mushavoItem -isnot [IO.FileInfo] -or $mushavoItem.Length -le 0 -or
+            ($mushavoItem.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+            throw "A required local component file is missing, empty or redirected."
+        }
+    }
+    $mushavoReceipt = Get-Content -LiteralPath (Join-Path $mushavoRoot "$mushavoPackage.verification.json") -Raw | ConvertFrom-Json
+    $mushavoArchive = Join-Path $mushavoRoot "$mushavoPackage.7z"
+    if ($mushavoReceipt.summary.stage_step -ne "1.2" -or
+        $mushavoReceipt.summary.project -ne "kttkospkblwvguuwnhjj" -or
+        $mushavoReceipt.summary.result -ne "DATABASE_COMPONENT_ENCRYPTED_PACKAGE_AND_EXTRACTED_HASH_PASS" -or
+        $mushavoReceipt.summary.file -ne $mushavoArchive -or
+        $mushavoReceipt.summary.bytes -ne 566080 -or
+        (Get-Item -LiteralPath $mushavoArchive).Length -ne 566080 -or
+        $mushavoReceipt.summary.all_three_extracted_hashes_match -ne $true -or
+        @($mushavoReceipt.source_files).Count -ne 3 -or
+        $mushavoReceipt.archive_sha256 -notmatch "^[0-9a-fA-F]{64}$" -or
+        (Get-FileHash -LiteralPath $mushavoArchive -Algorithm SHA256).Hash -ne $mushavoReceipt.archive_sha256) {
+        throw "Encrypted component does not match its private completed receipt. Hashes stay private."
+    }
+    foreach ($mushavoName in $mushavoNames) {
+        $mushavoRecord = @($mushavoReceipt.source_files | Where-Object { $_.name -eq $mushavoName })
+        $mushavoPath = Join-Path $mushavoRoot $mushavoName
+        if ($mushavoRecord.Count -ne 1 -or
+            $mushavoRecord[0].sha256 -notmatch "^[0-9a-fA-F]{64}$" -or
+            (Get-Item -LiteralPath $mushavoPath).Length -ne $mushavoRecord[0].bytes -or
+            (Get-FileHash -LiteralPath $mushavoPath -Algorithm SHA256).Hash -ne $mushavoRecord[0].sha256) {
+            throw "A local source file differs from the encrypted-component receipt. Hashes stay private."
+        }
+    }
+    $mushavoTocPath = Join-Path $mushavoRoot "$mushavoRun.toc.txt"
+    $mushavoEntries = @(foreach ($mushavoLine in (Get-Content -LiteralPath $mushavoTocPath)) {
+        if ($mushavoLine -match '^\d+;\s+\d+\s+\d+\s+(.+)$') { $Matches[1] }
+    })
+    if ($mushavoEntries.Count -eq 0) { throw "No recognizable PostgreSQL TOC entries were found." }
+    $mushavoPublicData = @($mushavoEntries | Where-Object { $_ -match '^TABLE DATA public ' }).Count
+    if ($mushavoPublicData -ne 80) { throw "TOC no longer matches the reported 80 public table-data entries." }
+    $mushavoSchemaRows = @(foreach ($mushavoSchema in @("public", "auth", "storage", "realtime", "cron", "vault", "extensions", "graphql", "graphql_public", "net", "pgbouncer")) {
+        $mushavoEscapedSchema = [regex]::Escape($mushavoSchema)
+        [pscustomobject]@{
+            schema = $mushavoSchema
+            table_definitions = @($mushavoEntries | Where-Object { $_ -match "^TABLE $mushavoEscapedSchema " }).Count
+            table_data_entries = @($mushavoEntries | Where-Object { $_ -match "^TABLE DATA $mushavoEscapedSchema " }).Count
+            routine_definitions = @($mushavoEntries | Where-Object { $_ -match "^(FUNCTION|PROCEDURE|AGGREGATE) $mushavoEscapedSchema " }).Count
+            policies = @($mushavoEntries | Where-Object { $_ -match "^POLICY $mushavoEscapedSchema " }).Count
+            triggers = @($mushavoEntries | Where-Object { $_ -match "^TRIGGER $mushavoEscapedSchema " }).Count
+        }
+    })
+    $mushavoTocRecord = @($mushavoReceipt.source_files | Where-Object { $_.name -eq "$mushavoRun.toc.txt" })
+    if ((Get-FileHash -LiteralPath $mushavoTocPath -Algorithm SHA256).Hash -ne $mushavoTocRecord[0].sha256) {
+        throw "TOC changed during reading."
+    }
+    [pscustomobject]@{
+        stage_step = "1.2"
+        result = "LOCAL_VERIFIED_COMPONENT_TOC_COVERAGE_REVIEW"
+        project = "kttkospkblwvguuwnhjj"
+        checked_utc = [DateTime]::UtcNow.ToString("o")
+        archive_and_three_sources_match_private_receipt = $true
+        toc_entries = $mushavoEntries.Count
+        table_data_entries_total = @($mushavoEntries | Where-Object { $_ -match '^TABLE DATA ' }).Count
+        extension_definitions = @($mushavoEntries | Where-Object { $_ -match '^EXTENSION ' }).Count
+        acl_entries = @($mushavoEntries | Where-Object { $_ -match '^ACL ' }).Count
+        default_acl_entries = @($mushavoEntries | Where-Object { $_ -match '^DEFAULT ACL ' }).Count
+        publication_definitions = @($mushavoEntries | Where-Object { $_ -match '^PUBLICATION ' }).Count
+        publication_table_entries = @($mushavoEntries | Where-Object { $_ -match '^PUBLICATION TABLE ' }).Count
+        foreign_table_definitions = @($mushavoEntries | Where-Object { $_ -match '^FOREIGN TABLE ' }).Count
+        large_object_related_entries = @($mushavoEntries | Where-Object { $_ -match '^(BLOB|BLOBS|BLOB METADATA|LARGE OBJECT|LARGE OBJECT DATA) ' }).Count
+        complete_platform_backup_verified = $false
+        isolated_database_restore_verified = $false
+        files_modified_or_uploaded = $false
+    } | Format-List
+    $mushavoSchemaRows | Format-Table -AutoSize
+    Write-Output "REVIEW: TOC counts are coverage indicators, not row counts or successful restore proof."
+    Write-Output "Zero entries do not prove a schema is unnecessary; extension-owned objects can be supplied by installed extensions."
+    Write-Output "Global role definitions, actual Storage file bytes and provider/key recovery still need separate coverage."
+    Write-Output "Send only this summary/table and errors. Do not send TOC contents, hashes, receipts, backups or passwords."
+}
+```
+
+Source: [security-stage-1-local-coverage-check.ps1](../scripts/security-stage-1-local-coverage-check.ps1). Prepared and source-reviewed only; Windows execution is pending. Send only the resulting summary/table and redacted warnings/errors. Do not send hashes, source files, TOC/receipt contents, real passwords or archives. A REVIEW result is expected: it supplies indicator metadata for the next reconciliation, not complete platform or restore PASS. Google remains deferred and no Google handoff is reactivated.
+
 ## Completed owner SQL handoff — retained for reproducibility
 
 
@@ -1103,7 +1218,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. Continue separate role/managed/foreign/Vault/Storage-byte/Auth/Edge/provider recovery coverage and private credential handling. No repeat installation, connection test, encryption creation or Docker/CLI-help prerequisite is requested.
+1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. Execute the S1E41 local-only coverage handoff and review its metadata against the source inventory, then continue separate role/managed/foreign/Vault/Storage-byte/Auth/Edge/provider recovery coverage and private credential handling. No repeat installation, connection test, encryption creation or Docker/CLI-help prerequisite is requested.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Carry the unverified offsite copy and Google deferral into the stage report/final action plan. No replacement destination is chosen by this decision. Later reconcile protected destination, recovery targets, frequency/retention and completion/failure records using actual volume and owner preferences; a schema file or object metadata alone remains insufficient.
@@ -1161,3 +1276,5 @@ Only redacted outcome/size/date/completeness records enter the repository. Custo
 - [Official 7-Zip ZIP marker constants](https://github.com/ip7z/7zip/blob/main/CPP/7zip/Archive/Zip/ZipHeader.h)
 
 - [Microsoft Windows PowerShell path-text clipboard value](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-clipboard?view=powershell-5.1)
+
+- [PostgreSQL 17 extension member/configuration-data recovery rules](https://www.postgresql.org/docs/17/extend-extensions.html)

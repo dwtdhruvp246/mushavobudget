@@ -1769,6 +1769,58 @@
       "remaining_stage_scope": "1.2 local/selected database/global-role/managed/extension/foreign/Vault/file/Auth/Edge/provider coverage and private recovery credential handling remain separate; subsequent isolated synthetic recovery is 1.4. Google deferral is not completion of those requirements.",
       "carry_forward": "F16: verified offsite copy remains missing/deferred; cloud upload scope/privacy and private credential retention unresolved. Later resolve/choose a protected destination, collect proper component transfer/integrity evidence and re-audit, alongside full local/platform/restore coverage.",
       "scope": "Concrete owner-directed provider deferral, not a new failure/PASS or permission request. No root or owner cleanup/upload is performed by this decision. Existing artifacts remain owner-held; Stage 1 continues and F16/full release clearance stay open."
+    },
+    {
+      "id": "S1E41",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Owner authorizes continuation and asks how much of 1.2 remains; root reviews existing component/scope evidence and prepares a local-only next handoff.",
+      "result": "REMAINING_WORK_GROUPED_LOCAL_TOC_COVERAGE_CHECK_PREPARED",
+      "retained_pass_scope": "S1E30 local single-database export/offline read and S1E32 encrypted component/password/extracted-file integrity remain PASS. No repeat export/encryption creation is requested.",
+      "remaining_work_groups": [
+        {
+          "id": "database_scope",
+          "work": "Reconcile exact archive/database/managed/extension/foreign/Vault coverage and separately protect global roles, membership and grant dependencies.",
+          "status": "REVIEW_PENDING; local TOC indicator check prepared"
+        },
+        {
+          "id": "storage_bytes",
+          "work": "Back up actual uploaded Storage files and verify counts, sizes and integrity against a consistent inventory.",
+          "status": "PENDING; earlier metadata reported two objects, not downloaded bytes"
+        },
+        {
+          "id": "configuration_and_credentials",
+          "work": "Inventory protected Auth/SMTP/Edge/provider recovery configuration and independently retained recovery credentials/key dependencies.",
+          "status": "PENDING; do not send secrets or raw configuration"
+        },
+        {
+          "id": "backup_operations",
+          "work": "Choose frequency, retention, acceptable data loss/recovery time and success/failure records.",
+          "status": "OWNER_DECISIONS_PENDING; Google offsite work deferred"
+        }
+      ],
+      "progress_estimate": "Four work groups remain; they are scope groups, not four equally sized commands/tests or a defensible completion percentage. Unknowns may require additional follow-up. Google route remains deferred in S1E40; isolated synthetic restore belongs to 1.4.",
+      "handoff": "scripts/security-stage-1-local-coverage-check.ps1; identical inline block in docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
+      "checks_prepared": [
+        "Exact private original encrypted-component receipt identity, size/hash and three source file size/hash comparisons without displaying hashes",
+        "Saved TOC parsed only for numeric-prefixed entry metadata; fixed known schemas and object-category counts returned, not object names, role names, function bodies, keys or customer rows",
+        "Public table-data entry count remains 80 and TOC hash stays unchanged after reading; zero category counts are indicators requiring classification, not absence/security/completeness PASS"
+      ],
+      "execution_status": "PREPARED_NOT_OWNER_EXECUTED; this workspace has no Windows/PowerShell runtime",
+      "next_dependency": "Review owner metadata result to compare listed schema/data/policy/trigger/grant/publication/foreign/large-object indicators with S1E13 source scope, then design separate selected role/managed/extension/Vault coverage. Counts alone cannot complete this reconciliation.",
+      "official_guidance": [
+        "https://www.postgresql.org/docs/17/app-pgdump.html",
+        "https://www.postgresql.org/docs/17/app-pg-dumpall.html",
+        "https://www.postgresql.org/docs/17/app-pgrestore.html",
+        "https://www.postgresql.org/docs/17/extend-extensions.html",
+        "https://supabase.com/docs/guides/platform/backups"
+      ],
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "offsite_upload_download_verified": false,
+      "restore_verified": false,
+      "scope": "Preparation/remaining-scope explanation only. No database connection, SQL, file write/extraction/upload, settings/permission/credential change or deletion. Existing local/private evidence and full F16/final re-audit gaps remain open.",
+      "validation": "Original S1E01–40 and audit tables preserved; JSON/local links/fences, exact source/inline equality and diff whitespace checked. Official PostgreSQL list format, one-database/global-role/foreign/extension coverage and Supabase Storage-byte distinction reviewed. Hash values/raw TOC/customer records are not emitted and no mutation/network/archive-extraction/password operation is invoked. No Windows/PowerShell runtime; owner execution pending."
     }
   ]
 }

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "updated_date": "2026-10-07",
+  "current_stage": 1,
+  "current_step": "1.1",
+  "current_title": "Account security and recovery",
+  "stage_0": {
+    "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
+    "owner_approved": true,
+    "approval_date": "2026-10-07",
+    "report": "docs/SECURITY_STAGE_0_COMPLETION_REPORT.md",
+    "documentation_merge_commit": "067cb5f00ad7f644647926c5fd1e82a5c754f058",
+    "all_controls_or_release_cleared": false
+  },
+  "stage_1": {
+    "status": "IN_PROGRESS",
+    "authorized": true,
+    "active_step": "1.1",
+    "plan": "docs/SECURITY_STAGE_1_FOUNDATIONS_PLAN.md",
+    "steps": [
+      {
+        "id": "1.1",
+        "title": "Account security and recovery",
+        "status": "IN_PROGRESS_OWNER_EVIDENCE_PENDING"
+      },
+      {
+        "id": "1.2",
+        "title": "External protection",
+        "status": "PENDING"
+      },
+      {
+        "id": "1.3",
+        "title": "Isolated staging",
+        "status": "PENDING"
+      },
+      {
+        "id": "1.4",
+        "title": "Recovery proof",
+        "status": "PENDING"
+      },
+      {
+        "id": "1.5",
+        "title": "Inventory/monitoring/response",
+        "status": "PENDING"
+      },
+      {
+        "id": "1.6",
+        "title": "Closure and report",
+        "status": "PENDING"
+      }
+    ]
+  },
+  "message_number_required": true,
+  "stage_end_report_required": true,
+  "carry_forward_register": "docs/SECURITY_AUDIT_CARRY_FORWARD.md",
+  "final_residual_resolution_and_full_reaudit_required": true,
+  "final_reaudit_status": "PLANNED_NOT_PERFORMED",
+  "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
+  "secrets_or_customer_records_stored": false
+}

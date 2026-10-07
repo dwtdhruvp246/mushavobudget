@@ -2,9 +2,9 @@
 
 Baseline: 5 October 2026, source `d2a32032b1c560bbae853de87837c3436ea44887`, web/PWA 4.9.39.
 
-**This is an applicability/evidence worklist, not 123 completed tests.** Current source reconciliation: 7 October 2026, reviewed main `464f52c39ff56cc57bf8dfd2b0e35bd3d51a4436`, web/PWA 4.9.40. Baseline inputs are accounted for and a sign-off proposal is prepared; owner agreement is pending and Stage 1 has not started. Scoped repair/build and owner smoke evidence remains distinct from full authorization/recovery/native/store guarantees. No staging, external backups, configured alerts, store accounts or Mac/Xcode are available at owner-report scope; infrastructure MFA remains tentative/unconfirmed. E32 records operator undecided, support contact selected and worldwide intent; age audience and actual mailbox operation remain unverified. Developer owns code/test work; Owner owns console/operator decisions; Both requires coordination.
+**This is an applicability/evidence worklist, not 123 completed tests.** Stage 0 baseline is owner-approved CLOSED, with known gaps carried forward; Stage 1 is authorized and IN PROGRESS at 1.1. Runtime source remains reviewed 4.9.40; documentation PR #91 merged at `067cb5f00ad7f644647926c5fd1e82a5c754f058`. Scoped metadata/build/owner results and unverified authorization/recovery/native/store properties retain their limits. All original finding definitions remain; no residual item is closed by stage completion alone.
 
-Latest **E27–E32** reconcile the merged repair/SMTP outcome and all three owner prerequisite bundles. Known gaps, deferred decisions and unverified properties have target stages/owners. Review [the sign-off proposal](SECURITY_STAGE_0_SIGNOFF.md), [closure checklist](SECURITY_STAGE_0_CLOSURE_CHECKLIST.md) and [bounded Stage 1 plan](SECURITY_STAGE_1_FOUNDATIONS_PLAN.md). Status: READY FOR OWNER SIGN-OFF; Stage 1 NOT STARTED. Historical evidence retains its original scope.
+Latest **E33** records owner acceptance, merge and the reporting/message-number/final re-audit rules. Use [the detailed Stage 0 report](SECURITY_STAGE_0_COMPLETION_REPORT.md), [carry-forward action plan](SECURITY_AUDIT_CARRY_FORWARD.md), [workflow](SECURITY_AUDIT_WORKFLOW.md) and [active 1.1 instructions](SECURITY_STAGE_1_1_ACCOUNT_CHECKS.md). Older proposal snapshots remain historical, not current stage status.
 
 Evidence references:
 
@@ -52,16 +52,18 @@ Evidence references:
 
 - **E32:** operator individual/business status undecided; support@mushavobudget.com designated, actual mailbox operation unverified; worldwide launch intent; no configured automatic error/outage/spending alerts. Age audience is not specified. Broad baseline bundles are accounted for; prepare scoped sign-off and Stage 1 foundations plan with unresolved matters assigned, not certified. Owner agreement remains pending and Stage 1 has not started. Documentation only; no mailbox test/message, settings/project/purchase/runtime/SQL/APK change.
 
+- **E33:** owner approves merge #91/Stage 0 baseline closure/Stage 1 start and requires numbered stage.step messages, stage-end reports and final resolution/full re-audit of residual FAIL/UNSURE. #91 merged at 05:51:06Z into 067cb5f. Pre-merge Workers/release checks PASS; PR deployment skipped by configured condition. Stage 0 closed with carry-forward; Stage 1.1 in progress, verification pending. Reports/process/progress/read-only instructions only; no account settings, credentials, runtime, SQL or APK change.
+
 The technical details, original F01–F20 findings, staging design, PowerShell steps and remaining evidence list are in [SECURITY_STAGE_0_BASELINE.md](SECURITY_STAGE_0_BASELINE.md). No code-dependent requirement is deemed inapplicable solely because its evidence is unavailable.
 
 ## Sections 1–25
 
 | Section | Applies | Status / test result | Evidence and next verification | Finding | Stage | Owner |
 |---|---|---|---|---|---|---|
-| 1. PROJECT DISCOVERY | Yes | BASELINE ACCOUNTED FOR / SIGN-OFF PREPARED | E1–E32 source/hosting/Auth/native and owner prerequisites are scoped or carried forward as known gaps. Sign-off proposal and bounded Stage 1 worklist prepared; owner agreement pending. No full deployment/security guarantee inferred. | F05,F20 | 0 | Both |
+| 1. PROJECT DISCOVERY | Yes | BASELINE CLOSED / STAGE 1.1 IN PROGRESS | E33 owner accepts collected baseline with known gaps and authorizes foundations. Actual account/recovery checks at 1.1 pending; no broader deployment/security clearance inferred. | F05,F20 | 0 | Both |
 | 2. PRESERVE EXISTING ARCHITECTURE | Yes | VERIFIED PROCESS | Stage 0 additions preserve application and financial architecture; review every later diff. | — | All | Developer |
 | 3. AUDIT CLASSIFICATION | Yes | VERIFIED PROCESS | This register separates local passes, gaps, decisions and unavailable evidence. | — | All | Developer |
-| 4. EVIDENCE REQUIREMENT | Yes | VERIFIED PROCESS | E1–E32 preserve dated scoped evidence, superseding outcomes and explicit unknowns. Proposed baseline sign-off assigns remaining work; it does not certify all 123 controls. | — | All | Both |
+| 4. EVIDENCE REQUIREMENT | Yes | VERIFIED PROCESS | E1–E33 retain chronology/scopes; owner mandates stage reports, message numbers and final residual resolution/full re-audit. Findings close only with observed recheck evidence. | — | All | Both |
 | 5. NO FAKE DATA OR CLAIMS | Yes | VERIFIED PROCESS | No production data or invented claims used; fixture identities are explicitly synthetic. | — | All | Developer |
 | 6. SECRETS AND CREDENTIALS | Yes | PARTIAL | E6 found no targeted secret signatures; full historical/artifact/provider scan outstanding. | F18 | 1 | Both |
 | 7. PUBLIC ENVIRONMENT VARIABLE PREFIXES | Yes | CONDITIONAL | No VITE/NEXT-style build variables found; inspect actual native/web release assets and future tooling. | F18 | 1,5 | Developer |
@@ -182,7 +184,7 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 | 102. ADVERSARIAL VERIFICATION PASS | Yes | NOT COMPLETE | Negative fixture cases passed; no full penetration test or staging adversarial sweep is claimed. | F15,F18 | 3,9 | Developer |
 | 103. SECURITY REPORT HANDLING | Yes | VERIFIED PROCESS / CONTINUE | This report avoids secret values/customer rows and does not publish exploit claims; handle future actionable vulnerabilities carefully. | — | All | Both |
 | 104. CLEANUP | Yes | VERIFIED PROCESS | Merged Stage 0 includes narrow grants, dependency/build tooling, Business notification SQL/runtime/tests and scoped evidence. This follow-up changes documentation only. Generated native assets/platforms/APKs remain outside the branch. | — | All | Developer |
-| 105. DOCUMENTATION | Yes | SIGN-OFF AND STAGE 1 PLAN PREPARED | E27–E32 reconcile source/normal UI/SMTP and owner prerequisites, preserving history. Scoped sign-off and concrete Stage 1 security/recovery/staging/monitoring plan prepared. Owner agreement pending; implementation not started. | F19 | All | Both |
+| 105. DOCUMENTATION | Yes | STAGE 0 REPORT COMPLETE / WORKFLOW ACTIVE | Detailed Stage 0 report, per-finding action plan, carry-forward register and numbered stage workflow published for review. Stage-end reports mandatory; Stage 1.1 account/security inspection started with owner evidence pending. | F19 | All | Both |
 | 106. DISTRIBUTION CHANNELS, APP CLASSIFICATION & DEVELOPER IDENTITY | Yes | NO STORE ACCOUNTS / WORLDWIDE INTENT / OPERATOR UNDECIDED | E31 absent Play/Apple accounts; E32 operator undecided, support@mushavobudget.com designated and worldwide launch intent. Age audience unanswered; actual identity, territories, enrollment type and support operation remain later decision/verification gates. | F05,F20 | 0,9 | Owner |
 | 107. PUBLIC PRIVACY POLICY, TERMS, SUPPORT & USER NOTICES | Yes | CONFIRMED GAP | Source policy pages absent and sampled routes 404; factual operator/support/terms/notices needed. | F01 | 4 | Both |
 | 108. DATA SAFETY, APP PRIVACY LABELS & PROCESSOR INVENTORY | Yes | PROCESSOR INVENTORY AND DECLARATIONS OUTSTANDING | E32 worldwide intent, operator undecided and age audience unspecified constrain later factual disclosures. Actual SDK/data/retention inventory and Data safety/App Privacy forms remain Stage 4/5/9 work, with no compliance certification. | F20 | 0,4,9 | Both |

@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_GOOGLE_PROTECTION_OWNER_CONFIRMED_LOCAL_FOLDER_CAPACITY_ENCRYPTION_AND_EXPORT_COVERAGE_PENDING",
-        "latest_evidence": "S1E27",
+        "status": "IN_PROGRESS_LOCAL_FOLDER_PASS_OWNER_ENCRYPTION_CAPACITY_REPORTED_FIRST_DATABASE_EXPORT_PREPARED",
+        "latest_evidence": "S1E29",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -157,7 +157,7 @@
           "cipher": "TLS_AES_256_GCM_SHA384",
           "scope": "Owner client-to-session-pooler"
         },
-        "protected_export_destination": "GOOGLE_TWO_STEP_AND_RESTRICTED_OWNER_ONLY_FOLDER_OWNER_CONFIRMED_S1E26; LOCAL_PATH_DACL_DISK_ENCRYPTION_CAPACITY_REAL_PASSPHRASE_AND_ARTIFACTS_PENDING",
+        "protected_export_destination": "OWNER_LOCAL_NTFS_DACL_PASS_S1E28; GOOGLE_RESTRICTED_FOLDER_TWO_STEP_CONFIRMED_S1E26; DISK_ENCRYPTION_CAPACITY_OWNER_REPORTED_S1E28; PRIVATE_PACKAGE_EXPORT_OFFSITE_AND_FULL_COVERAGE_PENDING",
         "precise_export_coverage": "PENDING_DATABASE_ROLES_MANAGED_ENCRYPTION_FILES_CONFIGURATION_RECONCILIATION",
         "offsite_destination_choice": {
           "destination": "Google Drive",
@@ -186,10 +186,19 @@
           "scope": "Public dummy file/password only; encrypted metadata, hidden filename, wrong-password rejection, correct-password integrity/extraction and matching restored SHA-256",
           "real_backup_passphrase_or_local_cloud_protection_verified": false
         },
-        "local_backup_folder_handoff": "scripts/security-stage-1-local-backup-folder.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E27",
-        "local_backup_folder_and_dacl_verified": false,
-        "local_disk_encryption": "NOT_REPORTED; UNCONFIRMED",
-        "drive_free_capacity": "NOT_REPORTED; UNCONFIRMED"
+        "local_backup_folder_handoff": "OWNER_EXECUTED_S1E27_BLOCK_PASS_S1E28",
+        "local_backup_folder_and_dacl_verified": true,
+        "local_disk_encryption": "OWNER_REPORTED_ENABLED_S1E28; NO_INDEPENDENT_CIPHER_KEY_RECOVERY_PROOF",
+        "drive_free_capacity": "OWNER_REPORTED_APPROXIMATELY_10_GB_S1E28",
+        "local_backup_destination": {
+          "directory": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342",
+          "evidence": "S1E28",
+          "local_free_gib": 28.12,
+          "scope": "Owner-tested folder DACL/filesystem/readback; time-specific space"
+        },
+        "database_export_handoff": "scripts/security-stage-1-database-export.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E29",
+        "database_export_created": false,
+        "encrypted_package_created": false
       },
       {
         "id": "1.3",

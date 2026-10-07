@@ -1381,6 +1381,72 @@
       "backup_created": false,
       "restore_verified": false,
       "scope": "Concrete local destination preparation only, owner execution pending; ACL scope does not exclude administrator/SYSTEM access or verify cloud-sync exclusion, disk encryption or real artifact recovery. F16 stays open."
+    },
+    {
+      "id": "S1E28",
+      "stage_step": "1.2",
+      "received_date": "2026-10-07",
+      "source": "Owner pastes completed local folder/DACL block and PASS/free-space output; replies about 10GB Drive capacity and yes to enabled device/BitLocker encryption",
+      "result": "OWNER_LOCAL_PRIVATE_FOLDER_DACL_PASS_CAPACITY_AND_DISK_ENCRYPTION_REPORTED",
+      "owner_execution": {
+        "directory": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342",
+        "fixed_ntfs_and_existing_ancestors_without_reparse_points": true,
+        "owner_current_user_and_three_protected_inheritable_FullControl_SID_rules": true,
+        "allowed_identities": [
+          "current Windows user",
+          "SYSTEM",
+          "Administrators"
+        ],
+        "local_free_gib": 28.12,
+        "empty_folder_no_export_or_upload_reported": true
+      },
+      "owner_reports": {
+        "drive_free_capacity_approximate_gb": 10,
+        "windows_device_or_bitlocker_encryption_enabled": true
+      },
+      "supersedes": "S1E27 local folder execution/capacity and disk-encryption report pending, at returned owner scopes",
+      "scope": "Owner block verifies folder/owner/DACL/filesystem and returns local free space; capacity is time-specific, not a complete export-size estimate. Drive space and enabled disk encryption are owner reports, not API/numerical quota, cipher/protection/key escrow or recovery evidence. Audit agent has not accessed folders, provider account or encryption settings.",
+      "real_backup_passphrase_handling_verified": false,
+      "backup_created": false,
+      "restore_verified": false,
+      "assistant_created_local_folder_or_changed_settings": false
+    },
+    {
+      "id": "S1E29",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-07",
+      "source": "Prepared first standalone PostgreSQL custom archive handoff after S1E28; owner execution pending",
+      "result": "PREPARED_UNFILTERED_DATABASE_EXPORT_AND_OFFLINE_ARCHIVE_CHECK",
+      "script": "scripts/security-stage-1-database-export.ps1",
+      "destination": "Owner verified private NTFS directory from S1E28; unique UTC/GUID filenames with partial suffix until checked",
+      "endpoint": "S1E19 same session-pooler host/5432/postgres/project username with resolved root certificate, sslmode=verify-full, gssencmode=disable and 15-second connection timeout",
+      "credential_handling": "Native pg_dump --password prompt; no password in command line, connection string, environment, report or repository",
+      "selected_scope": "One database; default all non-system schemas and data, accessible ownership/ACL/default grants/dependencies/publications and default large-object behavior, with no object filters or weakened row-security fallback. Extension-managed objects/data follow PostgreSQL extension rules; foreign-table data, global roles/tablespaces, Storage object bytes, external Vault keys and provider/Edge configuration are not certified by this export.",
+      "planned_checks": [
+        "Re-read exact folder owner/protected inheritable DACL before customer bytes",
+        "Require native pg_dump exit zero and nonempty custom archive; preserve failed/aborted partial output",
+        "Offline pg_restore --list with exit check, TOC kept privately",
+        "Require core public/auth.users/storage.buckets/storage.objects TABLE DATA markers",
+        "Offline pg_restore --file=NUL with no database arguments scans/decodes archive output into Windows null device; no SQL execution or restore",
+        "Rename checked partial to database.dump and record UTC/bytes/SHA256/core markers/public table-data count in local manifest"
+      ],
+      "warning_handling": "Owner reports any native warnings/errors without secrets; warnings and all broader completeness limitations remain review items, not erased by zero exit status",
+      "remaining_components": "Separate encrypted 7z package/private-passphrase recovery, global roles/grants review, managed/extension/foreign/Vault/scheduler/publication coverage, Storage bytes/hashes and Auth/Edge/provider configuration; actual offsite upload/download and isolated synthetic restore still required",
+      "validation": "PASS: prior events/original tables preserved, JSON/local links/fences and exact source/inline handoff. Credential/TLS, unfiltered scope, immediate native exit checks, core TOC markers, offline-only payload read, partial retention/rename and manifest ordering reviewed against official PostgreSQL 17 and Microsoft documentation. No PowerShell/PostgreSQL runtime in audit workspace; actual owner export pending.",
+      "documentation_sources": [
+        "https://www.postgresql.org/docs/17/app-pgdump.html",
+        "https://www.postgresql.org/docs/17/app-pgrestore.html",
+        "https://www.postgresql.org/docs/17/libpq-connect.html",
+        "https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file",
+        "https://supabase.com/docs/guides/platform/backups",
+        "https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore"
+      ],
+      "database_export_created": false,
+      "archive_read_verified": false,
+      "encrypted_package_created": false,
+      "backup_created": false,
+      "restore_verified": false,
+      "scope": "Concrete owner-held logical database component preparation only. The agent executes no production command and receives no dump, SQL, customer bytes or secrets. Native SELECT/shared-lock export is not a production schema/data write. No restore is run; complete recovery and F16 remain open."
     }
   ]
 }

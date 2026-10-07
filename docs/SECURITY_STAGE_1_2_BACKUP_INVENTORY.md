@@ -4,7 +4,7 @@ Started 7 October 2026 after owner-tested normal sign-ins completed in 1.1. Stag
 
 ## Current scope and starting facts
 
-Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. S1E17 supplies displayed Dashboard session-pooler connection fields. S1E18 prepares the certificate-verified connection check; S1E19 now records owner execution PASS with the intended endpoint and TLS 1.3. S1E20 records the owner choice of Google Drive for the encrypted off-site copy; S1E21 prepares the encryption-tool check; S1E22 records the prior 24.09 patch gap; S1E23 now records completed owner executable/library 26.04 recheck PASS. S1E24 prepares the dummy-file encryption/header-privacy/recovery check; S1E25 now records owner execution with all three PASS lines, scoped to public dummy data/passwords. S1E26 records owner confirmation of Google two-step verification and the Restricted owner-only Drive folder; S1E27 prepares the separate local folder/DACL/capacity handoff. Actual local protection/private-passphrase handling, real export/encryption/upload and precise coverage remain pending. No export, restore, local stack, account setting or production write has been performed by this work; client availability follows the owner setup, not an assistant installation.
+Owner baseline: Supabase Free, no owner-held external database/uploaded-file backups and no separate staging project. F16 remains open. S1E09 records the completed Windows executable-version check. S1E12 records the owner choice to use standalone PostgreSQL command-line tools for exports. S1E13 records the received 13-row owner inventory: deployed PostgreSQL 17.6 and aggregate scope are known. S1E14 prepares discovery/installation of compatible PostgreSQL 17.x Windows clients; S1E15 records earlier standard-path absence. S1E16 now records owner-executed PASS for all four full-path clients at 17.11. S1E17 supplies displayed Dashboard session-pooler connection fields. S1E18 prepares the certificate-verified connection check; S1E19 now records owner execution PASS with the intended endpoint and TLS 1.3. S1E20 records the owner choice of Google Drive for the encrypted off-site copy; S1E21 prepares the encryption-tool check; S1E22 records the prior 24.09 patch gap; S1E23 now records completed owner executable/library 26.04 recheck PASS. S1E24 prepares the dummy-file encryption/header-privacy/recovery check; S1E25 now records owner execution with all three PASS lines, scoped to public dummy data/passwords. S1E26 records owner confirmation of Google two-step verification and the Restricted owner-only Drive folder; S1E27 prepares the separate local folder/DACL/capacity handoff. S1E28 now records completed owner private local folder/DACL PASS, 28.12 GiB free, and owner reports of about 10 GB Drive space and enabled disk encryption. S1E29 prepares the first custom database archive and offline checks. Private package/passphrase recovery, actual export/encryption/upload and precise recovery coverage remain pending. No export, restore, local stack, account setting or production write has been performed by this work; client availability follows the owner setup, not an assistant installation.
 
 For a recoverable backup we must account for database schema/data/roles and privileges, uploaded file bytes and their database metadata, and separately inventoried Auth/platform/Edge/provider configuration dependencies. Supabase's database-backup guidance distinguishes Storage metadata from actual object bytes and recommends off-site exports for Free projects. The earlier Supabase CLI route has defaults/managed-schema exclusions that differ from standalone PostgreSQL tools. The selected standalone export's actual schema/data/role/privilege/managed scope must be designed explicitly; no CLI flags/defaults are blindly copied. Actual PostgreSQL version and required Auth/Storage coverage must be reconciled before preparing exports.
 
@@ -387,7 +387,7 @@ The check requires successful archive creation, correct-password technical listi
 
 S1E26 below supersedes the unreported Google two-step/folder settings at owner-confirmation scope. Drive capacity and actual artifact/upload/download proof remain pending. No real backup/encrypted upload or restore has been created/verified; F16 remains open.
 
-## Current cloud settings confirmation and local working folder — S1E26–S1E27
+## Completed cloud settings confirmation and local working folder — S1E26–S1E28
 
 The owner answers **yes** to both explicit questions: the selected Google account has two-step verification enabled, and **Mushavo Budget Backups** exists with **General access: Restricted**, access limited to the owner. Record **OWNER-CONFIRMED protection settings**. No repeat question or screenshot is required merely to re-establish these reports. The audit agent has not accessed Google, inspected its account/folder via API, or performed a fresh sign-in/recovery drill. Capacity and real upload/download integrity remain unverified.
 
@@ -474,9 +474,136 @@ Next paste [the local backup-folder block](../scripts/security-stage-1-local-bac
 }
 ```
 
-Send the path, PASS/free-space lines or the exact error. Owner execution is pending; the audit workspace has no Windows/PowerShell runtime, so actual folder/ACL/space results cannot be claimed from this source review. A successful DACL check would limit normal filesystem access to the listed identities; administrators/SYSTEM remain authorized, and this does not prove at-rest encryption, endpoint security or exclusion from separately configured sync/backup software.
+**Completed owner result — S1E28:** block returns private directory `C:\Users\HP\AppData\Local\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342`, the checked NTFS/owner/protected inheritable DACL PASS, **28.12 GiB free**, and empty-folder/no-export/no-upload output. Owner also reports approximately **10 GB free in Drive** and **yes** to Windows device/BitLocker encryption being enabled. No repeat folder creation or capacity/encryption question is requested. Space is time-specific and disk-encryption status is owner-reported, not a cipher/protection/key-recovery inspection. The audit workspace has no Windows/PowerShell runtime; the audit agent did not execute the block or access the folder. A successful DACL check would limit normal filesystem access to the listed identities; administrators/SYSTEM remain authorized, and this does not prove at-rest encryption, endpoint security or exclusion from separately configured sync/backup software.
 
-Also report **available Google Drive storage** and whether **Windows device encryption/BitLocker is enabled on the displayed local drive** (yes/no/unsure), without sharing recovery keys. Keep raw working files local and upload only the separately verified encrypted package. Private backup-passphrase creation/entry/independent recovery, exact database/managed/role/Vault/file/configuration coverage, incomplete-run detection and actual export/upload/download/isolated restore remain pending. The folder is empty at preparation: F16 stays open and no real backup is created.
+The requested Drive-space and enabled disk-encryption reports are now received in S1E28; independent encryption/recovery-key protection and actual artifact/upload results are not inferred. Keep raw working files local and upload only the separately verified encrypted package. Private backup-passphrase creation/entry/independent recovery, exact database/managed/role/Vault/file/configuration coverage, incomplete-run detection and actual export/upload/download/isolated restore remain pending. The folder is empty at preparation: F16 stays open and no real backup is created.
+
+## Current first database export handoff — S1E29
+
+The local folder/DACL, compatible clients and certificate-verified endpoint now have owner execution evidence; Google protection/disk encryption/capacity have the separately stated owner-report scopes. Prepare the **first logical database component** in that protected local directory. This is a raw custom PostgreSQL archive; owner-reported disk encryption and the rechecked DACL protect its local working location. It will be separately packaged with a private recovery passphrase before any Drive upload. No completed export or portable-encryption result exists yet.
+
+The selected `pg_dump` has **no schema/table/extension/data filters**, no no-owner/no-ACL flags, no weakened row-security option and no database restore command. It requests default non-system-schema/data/large-object and ownership/privilege/dependency scope for one database; extension-owned objects/configuration data follow PostgreSQL's rules. Global role definitions/tablespaces, foreign-table data not explicitly selected, actual Storage object bytes, Vault/root-key recovery and deployed Auth/SMTP/Edge/provider settings still require separate coverage. Catalog counts alone cannot certify all those contents. This first component is not labeled a complete platform backup.
+
+Paste [the database-export block](../scripts/security-stage-1-database-export.ps1) into the normal PowerShell window. It re-reads the existing exact owner/DACL, reuses the known client/certificate paths and endpoint with verify-full, and uses the native **database password prompt**. No password is added to the connection string, arguments, environment or files. UTC/GUID names prevent overwriting earlier runs. Dump failures/interruptions retain `.partial.dump`; no automatic exclusion or privileged-grant repair masks errors. The 30-second lock wait bounds initial shared-lock acquisition, not the total export duration. Report any native warnings as review evidence.
+
+After zero exit and a nonempty archive, `pg_restore --list` operates **offline**, keeps the TOC privately and requires core public/Auth/Storage data markers. A second **offline** `pg_restore --file=NUL` decodes/renders archive payload to the Windows null device with no database name/connection arguments. SQL is discarded, never shown in chat or run against a database. This is an archive-read check, not a restore, semantic integrity test or completeness proof. Only after checks pass is `.partial.dump` renamed `.database.dump`, with private TOC/manifest containing bytes, UTC, SHA-256 and public data-entry count.
+
+```powershell
+& {
+    $ErrorActionPreference = "Stop"
+    $mushavoBackupRoot = "C:\Users\HP\AppData\Local\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342"
+    $mushavoDump = "C:\Program Files\PostgreSQL\17\bin\pg_dump.exe"
+    $mushavoRestore = "C:\Program Files\PostgreSQL\17\bin\pg_restore.exe"
+    $mushavoCert = "C:\Users\HP\Desktop\Mushavo Budget\prod-ca-2021.crt"
+    foreach ($mushavoRequiredFile in @($mushavoDump, $mushavoRestore, $mushavoCert)) {
+        if (-not (Test-Path -LiteralPath $mushavoRequiredFile -PathType Leaf)) {
+            throw "Required local file missing: $mushavoRequiredFile"
+        }
+    }
+    $mushavoFolder = Get-Item -LiteralPath $mushavoBackupRoot -Force
+    if (-not $mushavoFolder.PSIsContainer -or
+        ($mushavoFolder.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+        throw "Expected the verified local backup directory."
+    }
+    $mushavoOwnerSid = [Security.Principal.WindowsIdentity]::GetCurrent().User
+    $mushavoAllowedSids = @($mushavoOwnerSid.Value, "S-1-5-18", "S-1-5-32-544")
+    $mushavoAcl = Get-Acl -LiteralPath $mushavoBackupRoot
+    $mushavoRules = $mushavoAcl.GetAccessRules(
+        $true, $true, [Security.Principal.SecurityIdentifier]
+    )
+    if (-not $mushavoAcl.AreAccessRulesProtected -or $mushavoRules.Count -ne 3 -or
+        $mushavoAcl.GetOwner([Security.Principal.SecurityIdentifier]).Value -ne $mushavoOwnerSid.Value) {
+        throw "Backup-folder owner or protected permissions changed."
+    }
+    foreach ($mushavoRule in $mushavoRules) {
+        if ($mushavoRule.IdentityReference.Value -notin $mushavoAllowedSids -or
+            $mushavoRule.IsInherited -or $mushavoRule.AccessControlType -ne "Allow" -or
+            $mushavoRule.FileSystemRights -ne "FullControl" -or
+            $mushavoRule.InheritanceFlags -ne
+                [Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit" -or
+            $mushavoRule.PropagationFlags -ne "None") {
+            throw "Unexpected backup-folder permissions."
+        }
+    }
+
+    $mushavoRun = [DateTime]::UtcNow.ToString("yyyyMMddTHHmmssZ") + "-" + [guid]::NewGuid().ToString("N")
+    $mushavoPartial = Join-Path $mushavoBackupRoot "$mushavoRun.partial.dump"
+    $mushavoFinal = Join-Path $mushavoBackupRoot "$mushavoRun.database.dump"
+    $mushavoTocFile = Join-Path $mushavoBackupRoot "$mushavoRun.toc.txt"
+    $mushavoManifest = Join-Path $mushavoBackupRoot "$mushavoRun.manifest.json"
+    $mushavoCertPath = (Resolve-Path -LiteralPath $mushavoCert).ProviderPath
+    $mushavoCertValue = $mushavoCertPath.Replace('\', '/').Replace("'", "\'")
+    $mushavoConnection = @(
+        "host=aws-0-eu-central-1.pooler.supabase.com"
+        "port=5432"
+        "dbname=postgres"
+        "user=postgres.kttkospkblwvguuwnhjj"
+        "sslmode=verify-full"
+        "sslrootcert='$mushavoCertValue'"
+        "gssencmode=disable"
+        "connect_timeout=15"
+        "application_name=mushavo_stage_1_2_export"
+    ) -join " "
+
+    Write-Output "Database password is entered only at pg_dump's password prompt."
+    Write-Output "Output remains partial until the local archive checks succeed."
+    Write-Output "Partial output path: $mushavoPartial"
+    $ErrorActionPreference = "Continue"
+    & $mushavoDump --format=custom --lock-wait-timeout=30000 --password `
+        --dbname $mushavoConnection --file $mushavoPartial
+    $mushavoDumpExit = $LASTEXITCODE
+    $ErrorActionPreference = "Stop"
+    if ($mushavoDumpExit -ne 0) {
+        throw "Database export failed (exit $mushavoDumpExit). Keep the partial file; send the error without secrets."
+    }
+    if ((Get-Item -LiteralPath $mushavoPartial).Length -le 0) {
+        throw "Database export file is empty."
+    }
+
+    $ErrorActionPreference = "Continue"
+    $mushavoToc = & $mushavoRestore --list $mushavoPartial
+    $mushavoListExit = $LASTEXITCODE
+    $ErrorActionPreference = "Stop"
+    if ($mushavoListExit -ne 0) { throw "Archive listing failed; file stays partial." }
+    $mushavoToc | Set-Content -LiteralPath $mushavoTocFile -Encoding UTF8
+    $mushavoTocText = $mushavoToc | Out-String
+    foreach ($mushavoExpected in @("TABLE DATA public ", "TABLE DATA auth users ",
+        "TABLE DATA storage buckets ", "TABLE DATA storage objects ")) {
+        if (-not $mushavoTocText.Contains($mushavoExpected)) {
+            throw "Expected archive entry missing: $mushavoExpected. File stays partial."
+        }
+    }
+    # Offline SQL rendering validates archive payload decoding. No database is connected.
+    $ErrorActionPreference = "Continue"
+    & $mushavoRestore --file=NUL $mushavoPartial
+    $mushavoReadExit = $LASTEXITCODE
+    $ErrorActionPreference = "Stop"
+    if ($mushavoReadExit -ne 0) { throw "Archive payload read failed; file stays partial." }
+
+    Move-Item -LiteralPath $mushavoPartial -Destination $mushavoFinal
+    $mushavoFile = Get-Item -LiteralPath $mushavoFinal
+    $mushavoHash = (Get-FileHash -LiteralPath $mushavoFinal -Algorithm SHA256).Hash
+    $mushavoSummary = [pscustomobject]@{
+        stage_step = "1.2"
+        result = "DATABASE_EXPORT_AND_OFFLINE_ARCHIVE_READ_PASS"
+        project = "kttkospkblwvguuwnhjj"
+        completed_utc = [DateTime]::UtcNow.ToString("o")
+        file = $mushavoFinal
+        bytes = $mushavoFile.Length
+        sha256 = $mushavoHash
+        public_table_data_entries = @($mushavoToc | Where-Object { $_ -match " TABLE DATA public " }).Count
+        auth_users_and_storage_metadata_present = $true
+        encrypted_7z_package_created = $false
+        global_roles_storage_file_bytes_provider_config_complete = $false
+        isolated_restore_verified = $false
+    }
+    $mushavoSummary | ConvertTo-Json | Set-Content -LiteralPath $mushavoManifest -Encoding UTF8
+    $mushavoSummary | Format-List
+    Write-Output "Keep these files in the private local folder. Send only this summary and any warnings."
+}
+```
+
+Send **only the final summary and any redacted warning/error**, never the dump/TOC/generated SQL, passwords, real row data or private keys. No warning is silently cleared because native exit is zero. Keep raw artifacts in the verified local working directory; only a later checked encrypted package may be uploaded. Do not run a production restore from the archive. The workspace lacks Windows/PostgreSQL runtime: source/flag/credential/scope handling is reviewed and prepared, not owner-executed yet. Remaining exact catalog/managed/role/foreign/encryption/file/configuration coverage and isolated synthetic recovery remain open; F16 stays open.
 
 ## Completed owner SQL handoff — retained for reproducibility
 
@@ -512,7 +639,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Dashboard fields and owner certificate-verified connection PASS are recorded. Google Drive is selected; the 26.04 update is owner-verified; the dummy-file encryption check is owner-tested PASS; Google two-step/Restricted owner-only folder is owner-confirmed. Run the prepared local folder/DACL check and report local/cloud capacity and disk encryption, then establish safe private-passphrase handling and prepare exports against the reconciled coverage; no repeat connection test is requested. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
+1. Deployed version/aggregate scope and owner-tested 17.11 client versions are recorded. Dashboard fields and owner certificate-verified connection PASS are recorded. Google Drive is selected; the 26.04 update is owner-verified; the dummy-file encryption check is owner-tested PASS; Google two-step/Restricted owner-only folder is owner-confirmed. The owner local folder/DACL check now passes, with local capacity and Drive/disk-encryption reports received. Execute the prepared first custom database export/offline checks, then reconcile separate role/managed/foreign/Vault/file/configuration coverage and create the separately verified private encrypted package; no repeat connection test is requested. No repeat installation, dependency edit or Docker/CLI-help prerequisite is required for this selected route.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Agree owner-held protected off-site storage, recovery targets, frequency/retention and completion/failure records using actual size/volume. Prepare concrete commands only after these dependencies are known. A schema file or object metadata alone is insufficient.
@@ -555,3 +682,5 @@ Only redacted outcome/size/date/completeness records enter the repository. Custo
 - [Microsoft FileSystemAccessRule constructors](https://learn.microsoft.com/en-us/dotnet/api/system.security.accesscontrol.filesystemaccessrule.-ctor)
 - [Microsoft inherited-access protection API](https://learn.microsoft.com/en-us/dotnet/api/system.security.accesscontrol.objectsecurity.setaccessruleprotection)
 - [Microsoft local disk type/filesystem/free-space metadata](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-logicaldisk)
+- [PostgreSQL 17 custom archive listing and offline script output](https://www.postgresql.org/docs/17/app-pgrestore.html)
+- [Microsoft Windows null-device name](https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file)

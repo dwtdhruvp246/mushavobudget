@@ -1955,5 +1955,66 @@
     "account_settings_backup_project_or_paid_enrollment_changed": false,
     "earlier_evidence_values_preserved": true,
     "scope": "Four documentation files only; no runtime, SQL, provider, backup, staging or APK change"
+  },
+  "owner_stage_0_operator_support_launch_alerts_and_signoff_proposal": {
+    "evidence_ref": "E32",
+    "received_date": "2026-10-07",
+    "evidence_type": "Owner numbered answers; prepared sign-off/next-stage documents",
+    "operator_individual_or_business": "UNDECIDED, owner explicitly deferred",
+    "support_contact_owner_designated": "support@mushavobudget.com",
+    "support_mailbox_existence_delivery_response_owner": "UNVERIFIED; no email sent/tested by session",
+    "launch_scope_owner_reported": "Worldwide",
+    "age_audience": "NOT SPECIFIED; decision prerequisite Stage 4/9, no inferred age suitability",
+    "automatic_error_outage_spending_alerts_configured_owner_reported": false,
+    "observability_analytics_or_ci_substituted_for_alert_delivery_test": false,
+    "operator_jurisdiction_store_or_age_compliance_certified": false,
+    "broad_owner_baseline_bundles": "ACCOUNTED FOR; explicit gaps/unknowns/prerequisites assigned",
+    "stage_0_status": "READY FOR OWNER SIGN-OFF; baseline inputs accounted for, known gaps assigned",
+    "stage_0_owner_signoff_received": false,
+    "stage_1_status": "PREPARED / NOT STARTED",
+    "stage_1_authorization_received": false,
+    "stage_0_signoff_document": "docs/SECURITY_STAGE_0_SIGNOFF.md",
+    "stage_1_foundations_document": "docs/SECURITY_STAGE_1_FOUNDATIONS_PLAN.md",
+    "prepared_stage_1_order": [
+      "Verify actual account MFA/sign-in and private recovery; verify support/incident contact",
+      "Establish feasible external database-plus-file protection",
+      "Build isolated backend/preview/inboxes and synthetic fixtures",
+      "Prove scoped isolated recovery",
+      "Reconcile deployed inventory and establish monitoring/budget/response evidence",
+      "Recheck affected controls and record Stage 1 limits"
+    ],
+    "later_decisions_assigned": [
+      {
+        "item": "Operator identity and age/privacy facts",
+        "stages": [
+          4,
+          9
+        ],
+        "owner": "Owner/Both"
+      },
+      {
+        "item": "Worldwide territory/billing/channel/store requirements",
+        "stages": [
+          4,
+          7,
+          9,
+          10
+        ],
+        "owner": "Owner/Both"
+      }
+    ],
+    "primary_docs_checked_date": "2026-10-07",
+    "primary_docs": [
+      "https://supabase.com/docs/guides/platform/backups",
+      "https://supabase.com/docs/guides/local-development",
+      "https://supabase.com/docs/guides/platform/multi-factor-authentication",
+      "https://supabase.com/docs/guides/deployment/going-into-prod"
+    ],
+    "remaining_auth_deployment_workflow_recovery_device_properties": "UNVERIFIED with owners/stages retained; not automatically passed by proposed baseline sign-off",
+    "full_email_architecture": "DEFERRED / proposal only",
+    "apk_update": "DEFERRED",
+    "stage1_implementation_console_mailbox_project_purchase_sql_apk_change_performed": false,
+    "earlier_evidence_values_preserved": true,
+    "scope": "Documentation only; final owner facts, proposed Stage 0 sign-off and bounded Stage 1 plan"
   }
 }

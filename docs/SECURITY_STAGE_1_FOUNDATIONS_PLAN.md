@@ -1,0 +1,46 @@
+# Stage 1 foundations worklist — prepared, not started
+
+Prepared 7 October 2026 for review after [Stage 0 baseline sign-off](SECURITY_STAGE_0_SIGNOFF.md). **No Stage 1 implementation or console change has occurred.** Prioritize account security, external database-plus-file protection, isolated staging and operational alerts. Stage 0 records the starting gaps; this plan defines concrete deliverables and checks.
+
+## Inputs to preserve
+
+The owner uses Supabase Free, has no external backups or separate staging project, believes only GitHub has two-step verification, and reports no automatic error/outage/spending alerts. Support is designated `support@mushavobudget.com`, with mailbox operation unverified. The individual/business operator is undecided; launch intent is worldwide and age audience unspecified. Store accounts and Mac/Xcode access are absent; APK updating and the full email architecture remain deferred.
+
+Keep the original Windows project's local native edits and app/signing identity intact. The public frontend is the merged 4.9.40 source; a preview must be verified against its actual backend, not inferred from its URL. Use synthetic test workspaces and owner-controlled inboxes. Paid services/enrollment are choices to review only if a concrete dependency requires them; this plan does not authorize purchases.
+
+## Ordered work and acceptance
+
+| Step | Concrete work/deliverables | Acceptance evidence | Owner |
+|---|---|---|---|
+| 1. Account access and recovery | Verify GitHub/Cloudflare/Supabase/Zoho sign-in methods and actual second-factor state; document project/account ownership and recovery method without secrets. Owner enables supported second factors where needed with an independent recovery route. Check support mailbox operation and designate incident contact. | Status evidence for each actual sign-in path; fresh successful sign-in and private recovery arrangement retained by owner. No seed/codes exported or sole working access removed. | Owner; Developer supplies scoped console instructions |
+| 2. External protection | Inventory database schemas/data/roles and Storage object-byte coverage, plus required Auth/Edge/provider configuration separately. Select an export tool/version compatible with the deployed PostgreSQL version and owner Windows setup. Prepare explicit database and authorized-file export instructions/tooling, secure off-site storage, verification, retention and failed/incomplete-run handling. | Owner-held protected database/file artifacts and configuration recovery checklist; counts/integrity/completeness checked without exporting customer records into chat/git. Capture size/date/outcome only. A schema file alone is insufficient. | Both |
+| 3. Isolated staging | Check existing account/project capacity and local prerequisites. Choose a separate hosted Supabase project if available within the accepted budget, or a compatible local stack. Configure its frontend/backend/Auth/Storage/Edge secrets separately; reconcile migration/source parity. Disable automatic dispatch/schedules initially; use synthetic seeds and controlled inboxes. | Target identity verified before any writes; staging requests/objects/Auth cannot use production configuration; test signals cannot dispatch production messages. Production row copies are not used as fixtures. | Both; Owner creates/chooses console resources |
+| 4. Recovery proof | Agree acceptable data-loss/downtime targets and document full recovery dependencies. Restore synthetic database and file exports into an isolated recovery target; validate relations, grants/RLS, object bytes and selected app workflows. Review owner-held production exports for completeness without putting customer data into the test workspace. | Redacted isolated restore report, elapsed time, data/file integrity and scope/grant behavior. A synthetic drill plus owner artifact completeness review is scoped evidence, not a full live disaster guarantee. No production overwrite. | Both |
+| 5. Inventory, monitoring and response | Reconcile deployed Edge function names/versions/configuration presence, cron status/last outcomes, current hosting mapping and actual dependency/tool provenance. Check configured usage limits/budget, establish feasible outage/error/backup/dispatch alerts and response ownership. Verify support/inbox routing with owner tests. Write incident, export/restore and operational runbooks. | Redacted deployed inventory; actual test alert/inbox receipt; backup/dispatch failure reported; budget/threshold limits documented; owner can follow the recovery/response steps. | Both |
+| 6. Closure/recheck | Re-run affected existing diagnostic/fixture/build checks after any relevant code/config change. Update evidence with normal/negative cases, actual environment and remaining limits. | Stage 1 results and outstanding dependencies reviewed; no inferred native/full tenant/store clearance. | Both |
+
+Account security and external protection lead. Staging setup can be prepared while owner export work proceeds; the restore test requires an isolated target. Deployment/secret/cron reconciliation starts read-only, and enabling schedules follows a verified target and scope. No new app/payment feature is required by this foundations stage.
+
+## Execution and handling rules
+
+Use isolated branches/worktrees for repository changes; do not reset or force-merge the original Windows native checkout. Use `npm.cmd` in Windows instructions. Any SQL handoff follows the owner's exact format: PowerShell fetch, `git show "FETCH_HEAD:<path>" | Out-String | Set-Clipboard`, then manual paste in the intended Supabase SQL Editor. No SQL execution is requested by this plan itself.
+
+Credentials, authentication links, recovery material and customer backup bytes stay in owner-controlled storage; evidence records presence/status/outcomes. Before exports or restore commands are supplied, validate the actual tool/version, target and scope. Restoration is confined to isolated targets. Backups must include the selected database scope and separate Storage bytes, with Auth/platform recovery requirements explicitly inventoried. Sensitive backup files must not be committed, served as web assets or attached here.
+
+Console settings and resource creation are owner steps with exact instructions after the relevant capability/settings are observed. Repository tooling and read-only checks can be prepared within the agreed Stage 1 scope. Major architecture, financial transitions, account deletion, production restoration, purchases, store enrollment and deployment beyond reviewed foundations work keep their separate boundaries.
+
+## Budget and external dependencies
+
+Use the current Free-plan baseline to design a feasible export/staging/monitoring approach. Check actual project capacity and available export/container tools before choosing a hosted versus local target; do not claim a free project slot exists. The official local Supabase setup requires a CLI and compatible container runtime on Windows. If neither an accepted hosted target nor local prerequisites are available, record that concrete blocker and review an alternative with the owner.
+
+Choose backup frequency/retention and monitoring thresholds using owner recovery/budget needs and observed data volume; they are not invented here. Exact paid prices, quota changes and feature availability must be rechecked when a paid option is considered. Mac access and store accounts are later release dependencies, not purchases requested for Stage 1.
+
+## Work assigned to later stages
+
+Stage 2 handles browser headers/contact abuse/egress. Stage 3 handles app Admin MFA, tenant authorization and coordinated Auth UX/security tests. Stage 4 resolves operator/audience/privacy/retention/deletion and public notices. Stage 5 handles native/session/backup/signing and iOS build access. Stage 6 handles social login, callbacks/linking and full Auth/application email routing. Stage 7 handles billing/entitlements/store commerce. Stage 8 handles events/push/device reliability. Stages 9/10 handle final quality, account/artifact/store submission gates. Worldwide distribution and age audience require factual later decisions and rechecks; no current compliance claim is made.
+
+## References checked 7 October 2026
+
+- [Supabase account MFA](https://supabase.com/docs/guides/platform/multi-factor-authentication) and [production checklist](https://supabase.com/docs/guides/deployment/going-into-prod): distinguish dashboard-account protection/sign-in provider from application-user MFA; preserve private recovery access when enabling factors.
+- [Supabase backups](https://supabase.com/docs/guides/platform/backups): Free-plan off-site database exports; database backups do not cover Storage object bytes; custom-role/platform recovery needs must be accounted for.
+- [Supabase local development](https://supabase.com/docs/guides/local-development): CLI and compatible container runtime prerequisites for an isolated local stack. Recheck exact commands when preparing tool-specific Windows execution steps.

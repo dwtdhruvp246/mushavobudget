@@ -1228,7 +1228,7 @@ Verify Dashboard project **kttkospkblwvguuwnhjj**, paste into its SQL Editor and
 
 The dedicated [recovery dependency fixture verifier](../scripts/verify-security-stage-1-recovery-dependencies.cjs) passes on disposable PGlite 0.5.8 / PostgreSQL 18.3. It exercises grant flags/ownership, direct/schema/expanded publication categories, zero/nonzero foreign/large-object counts, registered extension table/unlogged/filter metadata, empty publication inventories, private sentinel omission and rejected read-only writes. Its synthetic fixture setup mutates only the disposable test catalog, never hosted tables or the owner diagnostic. Owner PostgreSQL 17.6 execution was pending at S1E43 and is now received in S1E44 below. Source/member counts do not replace protected role/configuration artifacts or usable credential/key/Storage-byte recovery proof.
 
-## Current source result and private role export — S1E44–S1E45
+## Source result and prior private role-export handoff — S1E44–S1E45; completed in S1E46
 
 Owner attachment `Pasted text(9).txt` supplies all **7 rows: 6 INFO + 1 REVIEW**, checked **2026-10-08T04:04:45.322523Z** on PostgreSQL **17.6** in read-only/repeatable-read context. This is successful owner source metadata execution, not seven security/backup PASS results. Existing local export/encryption/file-integrity PASS remains. Project identity follows owner context and the Dashboard requirement, not a SQL-proven project identity.
 
@@ -1357,6 +1357,181 @@ The file can contain sensitive **role-setting values**, so it stays in the exist
 
 Source: [security-stage-1-role-export.ps1](../scripts/security-stage-1-role-export.ps1). Prepared/source-reviewed only; no Windows/PowerShell/native PostgreSQL runtime exists here. Send **only the metadata summary and redacted warnings/errors**. Keep SQL/setting values, password, hashes and manifest private. Next privately encrypt/verify the role component after its native result; do not upload raw files. No repeated original database export/encryption is requested. Google remains deferred. F16/exact managed/custom/extension/settings/key/file/configuration scope, source drift and isolated synthetic recovery remain open.
 
+## Current role-export result and private encryption — S1E46–S1E47
+
+Owner completes the role-export handoff at **2026-10-08T04:22:25.3745418Z**: **6,310 bytes**, **16 inventoried role definitions**, **21 membership GRANT statements** and **one parameter-ACL statement**, with role password export disabled. This is **OWNER-TESTED native/basic marker PASS**; no SQL/settings/hash contents are supplied. Exact membership flags/settings recovery, database-scoped settings, encrypted role package, full backup and isolated restore remain false. Warnings/errors were not supplied; that does not independently prove there were none.
+
+The earlier source has **24 membership records** while the artifact summary has **21 statement markers**. Counts of different representations/timestamps alone establish neither omission nor equivalence. Preserve exact grantor/ADMIN/INHERIT/SET comparison as an open recovery item; do not label missing grants as a failure or claim full grant fidelity from these counters. Source drift, managed/custom authority, independent login credentials, Vault/queue/settings coverage and broader F16 remain open.
+
+Next package **only this role SQL and its private manifest** in the existing protected local folder. The block binds source path/bytes/counters/private hash to the completed export, uses native passphrase prompts for a unique header-encrypted 7z, checks correct-password integrity and random wrong-password filename denial, then extracts exactly two verification files privately and compares both with the original hashes. All original/private verification files and receipts remain retained. It performs no hosted database connection, SQL execution, upload or deletion. Google stays deferred; the old database component is not re-created. This uses the existing owner-tested native 7-Zip packaging pattern; actual new Windows execution remains pending.
+
+```powershell
+& {
+    $ErrorActionPreference = "Stop"
+    $mushavo7Zip = "C:\Program Files\7-Zip\7z.exe"
+    $mushavoBackupRoot = "C:\Users\HP\AppData\Local\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342"
+    $mushavoRun = "20261008T042143Z-48bbd715d1b24cec870ee95e8113edb2"
+    if (-not (Test-Path -LiteralPath $mushavo7Zip -PathType Leaf)) {
+        throw "Verified 7-Zip executable was not found."
+    }
+    $mushavoFolder = Get-Item -LiteralPath $mushavoBackupRoot -Force
+    if (-not $mushavoFolder.PSIsContainer) { throw "Private backup folder was not found." }
+    $mushavoParent = $mushavoFolder
+    while ($null -ne $mushavoParent) {
+        if ($mushavoParent.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+            throw "Backup path contains a redirected directory."
+        }
+        $mushavoParent = $mushavoParent.Parent
+    }
+    $mushavoOwnerSid = [Security.Principal.WindowsIdentity]::GetCurrent().User
+    $mushavoAllowedSids = @($mushavoOwnerSid.Value, "S-1-5-18", "S-1-5-32-544")
+    $mushavoAcl = Get-Acl -LiteralPath $mushavoBackupRoot
+    $mushavoRules = $mushavoAcl.GetAccessRules(
+        $true, $true, [Security.Principal.SecurityIdentifier]
+    )
+    if (-not $mushavoAcl.AreAccessRulesProtected -or $mushavoRules.Count -ne 3 -or
+        $mushavoAcl.GetOwner([Security.Principal.SecurityIdentifier]).Value -ne $mushavoOwnerSid.Value) {
+        throw "Backup-folder owner or protected permissions changed."
+    }
+    foreach ($mushavoRule in $mushavoRules) {
+        if ($mushavoRule.IdentityReference.Value -notin $mushavoAllowedSids -or
+            $mushavoRule.IsInherited -or $mushavoRule.AccessControlType -ne "Allow" -or
+            $mushavoRule.FileSystemRights -ne "FullControl" -or
+            $mushavoRule.InheritanceFlags -ne
+                [Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit" -or
+            $mushavoRule.PropagationFlags -ne "None") {
+            throw "Unexpected backup-folder permissions."
+        }
+    }
+    $mushavoNames = @("$mushavoRun.roles.sql", "$mushavoRun.roles.manifest.json")
+    $mushavoFileRecords = @()
+    foreach ($mushavoName in $mushavoNames) {
+        $mushavoPath = Join-Path $mushavoBackupRoot $mushavoName
+        $mushavoItem = Get-Item -LiteralPath $mushavoPath -Force
+        if ($mushavoItem.PSIsContainer -or $mushavoItem.Length -le 0 -or
+            ($mushavoItem.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+            throw "Expected export file is missing, empty or redirected."
+        }
+        $mushavoFileRecords += [pscustomobject]@{
+            name = $mushavoName
+            bytes = $mushavoItem.Length
+            sha256 = (Get-FileHash -LiteralPath $mushavoPath -Algorithm SHA256).Hash
+        }
+    }
+    $mushavoManifestPath = Join-Path $mushavoBackupRoot "$mushavoRun.roles.manifest.json"
+    $mushavoPrivateRecord = Get-Content -LiteralPath $mushavoManifestPath -Raw | ConvertFrom-Json
+    $mushavoRolePath = Join-Path $mushavoBackupRoot "$mushavoRun.roles.sql"
+    $mushavoRoleSummary = $mushavoPrivateRecord.summary
+    if ($mushavoRoleSummary.stage_step -ne "1.2" -or
+        $mushavoRoleSummary.result -ne "ROLE_EXPORT_NATIVE_COMPLETION_AND_MARKERS_PASS" -or
+        $mushavoRoleSummary.project -ne "kttkospkblwvguuwnhjj" -or
+        $mushavoRoleSummary.file -ne $mushavoRolePath -or
+        $mushavoRoleSummary.bytes -ne 6310 -or $mushavoFileRecords[0].bytes -ne 6310 -or
+        $mushavoRoleSummary.inventoried_role_definitions -ne 16 -or
+        $mushavoRoleSummary.membership_grant_statements -ne 21 -or
+        $mushavoRoleSummary.parameter_acl_statements -ne 1 -or
+        $mushavoRoleSummary.role_password_export_disabled -ne $true -or
+        $mushavoPrivateRecord.file_sha256 -notmatch "^[0-9a-fA-F]{64}$" -or
+        $mushavoFileRecords[0].sha256 -ne $mushavoPrivateRecord.file_sha256) {
+        throw "Role file/manifest differs from the completed export. Hashes stay private."
+    }
+    $mushavoPackageRun = "$mushavoRun.roles-component-" + [guid]::NewGuid().ToString("N")
+    $mushavoPartial = Join-Path $mushavoBackupRoot "$mushavoPackageRun.partial.7z"
+    $mushavoFinal = Join-Path $mushavoBackupRoot "$mushavoPackageRun.7z"
+    $mushavoVerifiedFiles = Join-Path $mushavoBackupRoot "$mushavoPackageRun.verified-files"
+    $mushavoReceipt = Join-Path $mushavoBackupRoot "$mushavoPackageRun.verification.json"
+    Write-Output "Enter your saved, unique backup passphrase only at each 7-Zip prompt. Never enter a blank password."
+    Write-Output "Partial encrypted package: $mushavoPartial"
+    Push-Location -LiteralPath $mushavoBackupRoot
+    try {
+        # Bare -p invokes 7-Zip's native hidden-input prompt. No real password is in PowerShell.
+        $ErrorActionPreference = "Continue"
+        & $mushavo7Zip a -t7z -mhe=on -p $mushavoPartial @mushavoNames
+        $mushavoCreateExit = $LASTEXITCODE
+        $ErrorActionPreference = "Stop"
+        if ($mushavoCreateExit -ne 0) {
+            throw "Encryption failed (exit $mushavoCreateExit). Keep partial files and report the error."
+        }
+        if ((Get-Item -LiteralPath $mushavoPartial).Length -le 0) { throw "Encrypted package is empty." }
+        Write-Output "Enter the same saved passphrase to test the package."
+        $ErrorActionPreference = "Continue"
+        # Reading an encrypted archive without -p triggers the native password prompt.
+        & $mushavo7Zip t $mushavoPartial
+        $mushavoTestExit = $LASTEXITCODE
+        $ErrorActionPreference = "Stop"
+        if ($mushavoTestExit -ne 0) { throw "Package integrity/password test failed; package stays partial." }
+
+        # Random negative-test input only; this is never the real backup passphrase.
+        $mushavoWrongProbe = "-p" + [guid]::NewGuid().ToString("N")
+        $ErrorActionPreference = "Continue"
+        $mushavoDeniedListing = & $mushavo7Zip l -slt $mushavoWrongProbe $mushavoPartial 2>&1
+        $mushavoDeniedExit = $LASTEXITCODE
+        $ErrorActionPreference = "Stop"
+        if ($mushavoDeniedExit -ne 2) { throw "Wrong-password header check failed; package stays partial." }
+        $mushavoDeniedText = $mushavoDeniedListing | Out-String
+        foreach ($mushavoName in $mushavoNames) {
+            if ($mushavoDeniedText.Contains($mushavoName)) {
+                throw "Wrong-password listing exposed a source filename; package stays partial."
+            }
+        }
+        New-Item -ItemType Directory -Path $mushavoVerifiedFiles | Out-Null
+        Write-Output "Enter the same saved passphrase to extract verification copies inside the private folder."
+        $ErrorActionPreference = "Continue"
+        & $mushavo7Zip x "-o$mushavoVerifiedFiles" $mushavoPartial
+        $mushavoExtractExit = $LASTEXITCODE
+        $ErrorActionPreference = "Stop"
+        if ($mushavoExtractExit -ne 0) { throw "Verification extraction failed; package stays partial." }
+        if (@(Get-ChildItem -LiteralPath $mushavoVerifiedFiles -File -Recurse -Force).Count -ne 2) {
+            throw "Expected exactly two extracted files; package stays partial."
+        }
+        foreach ($mushavoRecord in $mushavoFileRecords) {
+            $mushavoOriginal = Join-Path $mushavoBackupRoot $mushavoRecord.name
+            $mushavoExtracted = Join-Path $mushavoVerifiedFiles $mushavoRecord.name
+            $mushavoOriginalHash = (Get-FileHash -LiteralPath $mushavoOriginal -Algorithm SHA256).Hash
+            $mushavoExtractedHash = (Get-FileHash -LiteralPath $mushavoExtracted -Algorithm SHA256).Hash
+            if ($mushavoOriginalHash -ne $mushavoRecord.sha256 -or
+                $mushavoExtractedHash -ne $mushavoRecord.sha256) {
+                throw "A source changed or an extracted file differs; package stays partial."
+            }
+        }
+        Move-Item -LiteralPath $mushavoPartial -Destination $mushavoFinal
+        $mushavoPackage = Get-Item -LiteralPath $mushavoFinal
+        $mushavoPackageHash = (Get-FileHash -LiteralPath $mushavoFinal -Algorithm SHA256).Hash
+        $mushavoSummary = [pscustomobject]@{
+            stage_step = "1.2"
+            result = "ROLES_COMPONENT_ENCRYPTED_PACKAGE_AND_EXTRACTED_HASH_PASS"
+            project = "kttkospkblwvguuwnhjj"
+            completed_utc = [DateTime]::UtcNow.ToString("o")
+            file = $mushavoFinal
+            bytes = $mushavoPackage.Length
+            packaged_files = 2
+            roles_match_private_manifest = $true
+            wrong_password_cannot_list_source_filenames = $true
+            both_extracted_hashes_match = $true
+            role_password_export_disabled = $true
+            exact_membership_flags_and_settings_recovery_verified = $false
+            database_scoped_role_settings_reconciled = $false
+            offsite_upload_download_verified = $false
+            complete_platform_backup_verified = $false
+            isolated_database_restore_verified = $false
+        }
+        [pscustomobject]@{
+            summary = $mushavoSummary
+            archive_sha256 = $mushavoPackageHash
+            source_files = $mushavoFileRecords
+            verified_files_directory = $mushavoVerifiedFiles
+        } | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $mushavoReceipt -Encoding UTF8
+        $mushavoSummary | Format-List
+        Write-Output "Keep originals, verification copies and receipt private. No upload or SQL restore was performed."
+        Write-Output "Send only this summary and any warnings/errors. Do not send passwords, files or hashes."
+    } finally {
+        Pop-Location
+    }
+}
+```
+
+Source: [security-stage-1-role-encryption.ps1](../scripts/security-stage-1-role-encryption.ps1). Use a privately saved unique nonblank backup passphrase only at the native prompts. Send **only the metadata summary and redacted warnings/errors**; SQL, manifest/receipt contents, settings values, passwords, archives and hashes stay private. The package/file checks do not verify exact memberships/settings or SQL recovery. No Google handoff is reactivated.
+
 ## Completed owner SQL handoff — retained for reproducibility
 
 
@@ -1391,7 +1566,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. S1E42 records completed local receipt/hash/TOC indicators; S1E44 completes source dependency metadata. Execute the S1E45 private role-export handoff, review native outcome and later privately encrypt/verify that component before continuing separate role/managed/foreign/Vault/Storage-byte/Auth/Edge/provider recovery coverage and private credential handling. No repeat installation, connection test, encryption creation or Docker/CLI-help prerequisite is requested.
+1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. S1E42 records completed local receipt/hash/TOC indicators; S1E44 completes source dependency metadata. S1E46 completes the private role-export native/basic checks. Execute S1E47 private role-component encryption/file verification, review native outcome, then continue exact role/membership/settings/managed/Vault/Storage-byte/Auth/Edge/provider recovery coverage and private credential handling. No repeat installation, connection test, database-component encryption or Docker/CLI-help prerequisite is requested.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Carry the unverified offsite copy and Google deferral into the stage report/final action plan. No replacement destination is chosen by this decision. Later reconcile protected destination, recovery targets, frequency/retention and completion/failure records using actual volume and owner preferences; a schema file or object metadata alone remains insufficient.

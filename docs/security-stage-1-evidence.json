@@ -2873,6 +2873,69 @@
       "complete_platform_backup_created": false,
       "restore_verified": false,
       "next_dependency": "Owner metadata/native warnings first; then private role-file encryption and file integrity before any external copy, followed by separate role/database-scoped settings, exact application/customization, Storage-byte and configuration/credential coverage."
+    },
+    {
+      "id": "S1E46",
+      "stage_step": "1.2",
+      "received_date": "2026-10-08",
+      "source": "Owner supplies the completed S1E45 native role-export metadata summary directly in chat; no role SQL, manifest contents, role setting values or private hashes supplied.",
+      "result": "OWNER_ROLE_EXPORT_NATIVE_COMPLETION_AND_MARKERS_PASS",
+      "observed_summary": {
+        "stage_step": "1.2",
+        "result": "ROLE_EXPORT_NATIVE_COMPLETION_AND_MARKERS_PASS",
+        "project": "kttkospkblwvguuwnhjj",
+        "completed_utc": "2026-10-08T04:22:25.3745418Z",
+        "file": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342\\20261008T042143Z-48bbd715d1b24cec870ee95e8113edb2.roles.sql",
+        "bytes": 6310,
+        "inventoried_role_definitions": 16,
+        "membership_grant_statements": 21,
+        "parameter_acl_statements": 1,
+        "role_password_export_disabled": true,
+        "exact_membership_flags_and_settings_recovery_verified": false,
+        "database_scoped_role_settings_reconciled": false,
+        "encrypted_roles_package_created": false,
+        "complete_platform_backup_verified": false,
+        "isolated_restore_verified": false
+      },
+      "scope": "Owner-reported native/basic marker PASS: nonempty 6,310-byte role artifact, 16 inventoried CREATE ROLE markers, 21 membership GRANT statements, 1 parameter ACL statement and no-role-passwords export. Original private hash manifest remains owner-held. This is not root inspection of the artifact, exact membership/settings/access comparison, complete backup or SQL restore proof.",
+      "membership_count_review": "Earlier S1E44 source supplies 24 membership records; S1E46 reports 21 statement markers. Different representations and timestamps require exact grantor/ADMIN/INHERIT/SET reconciliation. Counts alone do not prove omission or equivalence; do not call this a missing-grant FAIL or full grant coverage PASS.",
+      "warnings": "No native warnings/errors supplied with this summary; absence is not independently verified.",
+      "roles_export_created": true,
+      "roles_package_encrypted": false,
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "restore_verified": false,
+      "supersedes": "S1E45 owner export execution pending, at native/basic marker scope only; encryption, exact role/grant/settings fidelity and isolated recovery remain pending."
+    },
+    {
+      "id": "S1E47",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-08",
+      "source": "Root records S1E46 and prepares private encryption/file verification for the exact role SQL and manifest, reusing the existing owner-tested local database-component packaging pattern.",
+      "result": "PRIVATE_ROLES_COMPONENT_ENCRYPTION_HANDOFF_PREPARED",
+      "handoff": "scripts/security-stage-1-role-encryption.ps1; identical inline block in docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
+      "selected_source_run": "20261008T042143Z-48bbd715d1b24cec870ee95e8113edb2",
+      "selected_role_bytes": 6310,
+      "selected_files": 2,
+      "checks_prepared": [
+        "Recheck private folder owner/protected three-rule DACL and reject redirected parent/source paths",
+        "Bind exact role path/6,310 bytes/16 role/21 membership/1 parameter markers/password exclusion to owner-private role manifest and SHA-256 without exposing values",
+        "Unique partial 7z/header-encryption package of only role SQL and manifest; native hidden real-passphrase creation/test/extraction prompts",
+        "Zero-exit integrity test, random wrong-password exit-2/source-filename-denial check, exactly two private extracted files and both source/extracted SHA-256 comparisons",
+        "Finalize only after checks; retain originals, private verification copies and private receipt; print metadata without hashes; no upload/SQL execution/cleanup"
+      ],
+      "scope_limits": "Prepared Windows native execution only. File/password/header protection is separate from exact SQL/grant/role/database-scoped-setting/platform-key recovery. Password hashes remain excluded from the source and independent login credential recovery remains open. Private passphrase retention/quality and usable isolated SQL recovery are not established by creating/extracting a package. Full backup/offsite/restore flags remain false; Google remains deferred.",
+      "official_guidance": [
+        "https://7-zip.org/7z.html",
+        "https://www.postgresql.org/docs/17/app-pg-dumpall.html"
+      ],
+      "validation": "Source-reviewed existing owner-tested native prompt/DACL/manifest/header-denial/extracted-file pattern; source/inline equality, exact reported metadata, immutable prior evidence/audit rows, JSON/links/fences and diff checks pass. No Windows/PowerShell/7-Zip runtime here; new native owner execution pending. No mirrored tests or unchanged SQL/runtime test rerun.",
+      "owner_execution": "PENDING",
+      "roles_package_encrypted": false,
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "restore_verified": false,
+      "next_dependency": "Owner package result/warnings, then private exact role/membership/setting coverage and separate Storage bytes/configuration/credential/operating decisions. No Google action or repeated database export/encryption."
     }
   ]
 }

@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_SOURCE_DEPENDENCY_METADATA_RECEIVED_PRIVATE_ROLE_EXPORT_PREPARED_GOOGLE_DEFERRED",
-        "latest_evidence": "S1E45",
+        "status": "IN_PROGRESS_PRIVATE_ROLE_EXPORT_PASS_ROLES_ENCRYPTION_PREPARED_GOOGLE_DEFERRED",
+        "latest_evidence": "S1E47",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -258,7 +258,7 @@
           {
             "id": "database_scope",
             "work": "Reconcile exact archive/database/managed/extension/foreign/Vault coverage and separately protect global roles, membership and grant dependencies.",
-            "status": "LOCAL_COMPONENT_PASS; CURRENT_ROLE_EXTENSION_PARTITION_PUBLICATION_FOREIGN_METADATA_CLASSIFIED_S1E44; PRIVATE_ROLE_ARTIFACT_AND_EXACT_CUSTOM_SETTINGS_KEY_SCOPE_PENDING_S1E45"
+            "status": "LOCAL_DATABASE_COMPONENT_PASS_AND_PRIVATE_ROLE_EXPORT_NATIVE_MARKERS_PASS_S1E46; ROLE_PACKAGE_PREPARED_S1E47; EXACT_GRANT_SETTINGS_MANAGED_KEY_SCOPE_PENDING"
           },
           {
             "id": "storage_bytes",
@@ -416,10 +416,30 @@
           "large_objects": 0,
           "scope": "Current source snapshot; metadata classification only, not full artifact/restore coverage"
         },
-        "role_export_handoff": "scripts/security-stage-1-role-export.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E45",
-        "roles_export_created": false,
+        "role_export_handoff": "scripts/security-stage-1-role-export.ps1; OWNER_EXECUTED_NATIVE_MARKERS_PASS_S1E46",
+        "roles_export_created": true,
         "encrypted_roles_package_created": false,
-        "recovery_source_drift": "Realtime routines 18 in current S1E44 metadata versus 17 in older S1E13/S1E42; exact identity/change/update snapshot unresolved"
+        "recovery_source_drift": "Realtime routines 18 in current S1E44 metadata versus 17 in older S1E13/S1E42; exact identity/change/update snapshot unresolved",
+        "role_export_result": {
+          "evidence": "S1E46",
+          "stage_step": "1.2",
+          "result": "ROLE_EXPORT_NATIVE_COMPLETION_AND_MARKERS_PASS",
+          "project": "kttkospkblwvguuwnhjj",
+          "completed_utc": "2026-10-08T04:22:25.3745418Z",
+          "file": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342\\20261008T042143Z-48bbd715d1b24cec870ee95e8113edb2.roles.sql",
+          "bytes": 6310,
+          "inventoried_role_definitions": 16,
+          "membership_grant_statements": 21,
+          "parameter_acl_statements": 1,
+          "role_password_export_disabled": true,
+          "exact_membership_flags_and_settings_recovery_verified": false,
+          "database_scoped_role_settings_reconciled": false,
+          "encrypted_roles_package_created": false,
+          "complete_platform_backup_verified": false,
+          "isolated_restore_verified": false
+        },
+        "role_membership_count_review": "S1E44 source 24 membership records versus S1E46 21 statement markers; exact grantor/ADMIN/INHERIT/SET comparison unresolved, not count-based FAIL or coverage PASS",
+        "roles_encryption_handoff": "scripts/security-stage-1-role-encryption.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E47"
       },
       {
         "id": "1.3",

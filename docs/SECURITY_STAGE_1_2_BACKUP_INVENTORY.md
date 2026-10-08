@@ -1631,7 +1631,7 @@ Verify Dashboard project **kttkospkblwvguuwnhjj**, paste into its SQL Editor and
 
 The [setting-scope fixture verifier](../scripts/verify-security-stage-1-setting-scope.cjs) passes on disposable PostgreSQL for all four scope categories, key-only privacy with equals/malformed/null entries, parameter PUBLIC/grant-option/ALTER SYSTEM metadata and null ACLs, builtin category, empty inventories, rejected read-only writes and propagated catalog permission errors. Any fixture catalog mutation is fresh disposable setup only; the [owner diagnostic](../supabase/diagnostics/security_stage_1_setting_scope.sql) contains read queries/local transaction settings and rollback. Hosted 17.6 execution/value reconciliation/restore remain pending.
 
-## Current settings metadata and private archive coverage handoff — S1E52–S1E53
+## Prior settings metadata/private coverage handoff — S1E52–S1E53; owner REVIEW in S1E54, TOC correction in S1E55
 
 Owner supplies all five read-only rows at **2026-10-08T05:28:30.392498+00:00**, PostgreSQL **17.6**, database **postgres**, repeatable-read/read-only: **4 INFO + 1 REVIEW**. This completes source metadata collection, not a backup/security/recovery PASS. Intended project identity remains owner Dashboard context, not a SQL-proven identity.
 
@@ -1649,7 +1649,7 @@ Official PG17 `pg_dump` always enables database entries for non-plain custom arc
 
 The next block checks the **existing local components**. After owner/DACL/ancestor checks, it fetches two reviewed public helper blobs without checking out or changing the dirty working files. The unchanged role helper validates existing private role receipts and discards literal values. The new helper validates the exact database archive/dump/TOC/manifest against its completed private receipt, compares 15 archived role setting key identities with S1E52, checks the one extra parameter GRANT's target/privilege/no-grant-option shape, and counts exact intended postgres DATABASE / DATABASE PROPERTIES entries in the saved TOC. It rechecks bytes during the run and creates a unique private JSON receipt. No SQL is generated/executed; no connection, extraction, password prompt, new export/package, upload, cleanup or permission change occurs. Google stays deferred.
 
-**Native owner execution pending.** A PASS is only key/delta-shape/TOC presence, not exact archived values, the required database property's key/value content, bootstrap-owner mapping/effective ACL semantics, live source drift or destination recovery. Those remain explicit recovery/final remediation work; following this coverage check, proceed to actual Storage bytes and provider/credential configuration rather than repeat these inventories. Nine meaningful synthetic Node tests PASS, including altered same-size files, same-count privilege/key changes, malformed SQL, missing/duplicate/other-database TOC entries and private content/value/path omission. Synthetic buffers are not real archive-validation proof. Windows/private artifacts are unavailable to root.
+**Historical preparation: owner execution completed with REVIEW in S1E54; selected-TOC prerequisite corrected in S1E55.** The intended PASS was only key/delta-shape/TOC presence, not exact archived values, the required database property's key/value content, bootstrap-owner mapping/effective ACL semantics, live source drift or destination recovery. Those remain explicit recovery/final remediation work; following this coverage check, proceed to actual Storage bytes and provider/credential configuration rather than repeat these inventories. Nine meaningful synthetic Node tests PASS, including altered same-size files, same-count privilege/key changes, malformed SQL, missing/duplicate/other-database TOC entries and private content/value/path omission. Synthetic buffers are not real archive-validation proof. Windows/private artifacts are unavailable to root.
 
 ```powershell
 & {
@@ -1714,6 +1714,84 @@ The next block checks the **existing local components**. After owner/DACL/ancest
 
 Source: [security-stage-1-setting-coverage-check.ps1](../scripts/security-stage-1-setting-coverage-check.ps1), [new pinned helper](../scripts/security-stage-1-setting-coverage.cjs) and [nine synthetic tests](../tests/security-stage-1-setting-coverage.test.cjs). Send only the JSON summary and redacted errors/warnings. Never send SQL/TOC, receipts/manifests, actual setting values, passwords, archives or private hashes. A REVIEW retains the artifact and identifies a narrower unresolved check; it is not automatically corruption or a new export requirement. F16/full platform/offsite/isolated recovery remain open.
 
+## Current private coverage result and corrected full-TOC handoff — S1E54–S1E55
+
+Owner runs the pinned local checker at **2026-10-08T06:01:38.392Z**, returning **PRIVATE_SETTING_COVERAGE_REVIEW**. Preserve this overall result. Narrow owner-tested **PASS**: database/roles originals match private receipts; all **15 role setting key identities across nine roles** match S1E52; the **one added parameter GRANT shape** matches. Zero database-scoped setting commands in the roles file is retained. Exact values, bootstrap/default-owner association/effective ACL semantics, property key/value content, live drift and destination recovery remain false; no raw artifacts/values/hashes are supplied.
+
+The zero intended DATABASE / DATABASE PROPERTIES counters need a correction to the **audit tool**, not an invented missing-backup finding. S1E29 saved a **selected** TOC from plain `pg_restore --list`. Official PG17 `PrintTOCSummary` ordinarily prints entries with selected schema/data bits; `_tocEntryRequired` returns zero bits for DATABASE / DATABASE PROPERTIES when createDB mode is off. Thus that saved list legitimately hides those entries. The S1E53 checker mistakenly required them in this filtered TOC; its nine synthetic tests did not cover the native default selection behavior. S1E54 counts do not inspect the full archive catalog or prove absent/corrupt archive properties. Earlier records and the original selected TOC are preserved.
+
+The correction uses **`pg_restore --list --verbose --file <new private TOC> <original dump>`**. In PG17 source, verbose TOC listing prints all entries regardless of selection bits, and --list routes to `PrintTOCSummary` instead of `RestoreArchive` before any connection. No --create/--clean/connection flags or SQL are used. Sources: [pg_backup_archiver.c](https://raw.githubusercontent.com/postgres/postgres/REL_17_STABLE/src/bin/pg_dump/pg_backup_archiver.c) and [pg_restore.c](https://raw.githubusercontent.com/postgres/postgres/REL_17_STABLE/src/bin/pg_dump/pg_restore.c).
+
+The inline block below retains owner/DACL/ancestor checks, fetches three pinned public helper files without changing the dirty checkout, rebinds the exact original database archive/dump/selected-TOC/manifest to the private completed receipt, then runs only the native offline listing. Full TOC, native messages and a new private verification receipt are saved in a unique protected subdirectory. Only aggregate context/counts/presence are printed; all private hashes/messages stay local. The role setting/grant comparisons already completed in S1E54 are not repeated. Original archive/source/receipt bytes are rechecked and retained without edits, deletion, export, repackaging, SQL, connection or upload. Google remains deferred.
+
+**Seven targeted synthetic tests PASS**, including selected versus full TOC fixtures, missing/duplicate/wrong context, nonzero native completion/timeout despite complete-looking output, private native messages, changed original bytes and malformed/private input. The native runner is substituted and archive buffers are dummy bytes: those tests prove orchestration/binding/privacy, not real native PG/7z execution. Actual Windows PG17 full-archive execution is pending. If one database definition and one property entry appear, that proves only full-TOC presence; app.settings.jwt_exp and actual values/effective/restored behavior remain unverified. Any native message is retained privately and prevents unreviewed whole-check PASS.
+
+```powershell
+& {
+    $ErrorActionPreference = "Stop"
+    $mushavoBackupRoot = "C:\Users\HP\AppData\Local\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342"
+    $mushavoFolder = Get-Item -LiteralPath $mushavoBackupRoot -Force
+    if (-not $mushavoFolder.PSIsContainer) { throw "Private backup folder was not found." }
+    $mushavoParent = $mushavoFolder
+    while ($null -ne $mushavoParent) {
+        if ($mushavoParent.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+            throw "Backup path contains a redirected directory."
+        }
+        $mushavoParent = $mushavoParent.Parent
+    }
+    $mushavoOwnerSid = [Security.Principal.WindowsIdentity]::GetCurrent().User
+    $mushavoAllowedSids = @($mushavoOwnerSid.Value, "S-1-5-18", "S-1-5-32-544")
+    $mushavoAcl = Get-Acl -LiteralPath $mushavoBackupRoot
+    $mushavoRules = $mushavoAcl.GetAccessRules(
+        $true, $true, [Security.Principal.SecurityIdentifier]
+    )
+    if (-not $mushavoAcl.AreAccessRulesProtected -or $mushavoRules.Count -ne 3 -or
+        $mushavoAcl.GetOwner([Security.Principal.SecurityIdentifier]).Value -ne $mushavoOwnerSid.Value) {
+        throw "Backup-folder owner or protected permissions changed."
+    }
+    foreach ($mushavoRule in $mushavoRules) {
+        if ($mushavoRule.IdentityReference.Value -notin $mushavoAllowedSids -or
+            $mushavoRule.IsInherited -or $mushavoRule.AccessControlType -ne "Allow" -or
+            $mushavoRule.FileSystemRights -ne "FullControl" -or
+            $mushavoRule.InheritanceFlags -ne
+                [Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit" -or
+            $mushavoRule.PropagationFlags -ne "None") {
+            throw "Unexpected backup-folder permissions."
+        }
+    }
+    $mushavoRestore = "C:\Program Files\PostgreSQL\17\bin\pg_restore.exe"
+    if (-not (Test-Path -LiteralPath $mushavoRestore -PathType Leaf)) { throw "Verified pg_restore.exe path was not found." }
+    $mushavoProject = "C:\Users\HP\Desktop\Mushavo Budget"
+    $mushavoNode = Get-Command -Name "node.exe" -CommandType Application -ErrorAction Stop | Select-Object -First 1
+    $mushavoGit = Get-Command -Name "git.exe" -CommandType Application -ErrorAction Stop | Select-Object -First 1
+    & $mushavoGit.Source -C $mushavoProject fetch origin security/stage-1-foundations
+    if ($LASTEXITCODE -ne 0) { throw "Fetch failed." }
+    $mushavoToolRoot = Join-Path $mushavoBackupRoot ("DatabasePropertiesTool-" + [guid]::NewGuid().ToString("N"))
+    New-Item -ItemType Directory -Path $mushavoToolRoot | Out-Null
+    foreach ($mushavoTool in @(
+        @{ Name = "security-stage-1-role-coverage.cjs"; Blob = "7e7aa5f6cb1463fb5141939b2b847d9bcd880502" },
+        @{ Name = "security-stage-1-setting-coverage.cjs"; Blob = "18ee5bed07835aec0432f690bf5d6ede2dd1324c" },
+        @{ Name = "security-stage-1-database-properties-toc.cjs"; Blob = "2ddfa1ebb5ab13eeef37335700f6251654bf5ace" }
+    )) {
+        $mushavoObject = "FETCH_HEAD:scripts/" + $mushavoTool.Name
+        $mushavoBlob = & $mushavoGit.Source -C $mushavoProject rev-parse $mushavoObject
+        if ($LASTEXITCODE -ne 0 -or ($mushavoBlob | Out-String).Trim() -ne $mushavoTool.Blob) {
+            throw "Fetched checker differs from this reviewed version. Send the error only."
+        }
+        $mushavoCode = & $mushavoGit.Source -C $mushavoProject show $mushavoObject | Out-String
+        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($mushavoCode)) { throw "Checker read failed." }
+        [IO.File]::WriteAllText((Join-Path $mushavoToolRoot $mushavoTool.Name), $mushavoCode, [Text.UTF8Encoding]::new($false))
+    }
+    & $mushavoNode.Source (Join-Path $mushavoToolRoot "security-stage-1-database-properties-toc.cjs") $mushavoBackupRoot $mushavoRestore
+    $mushavoCheckExit = $LASTEXITCODE
+    if ($mushavoCheckExit -ne 0 -and $mushavoCheckExit -ne 2) { throw "Offline listing checker failed unexpectedly." }
+    Write-Output "Send only the JSON summary and redacted warnings/errors. Keep full TOC, native messages, receipts, hashes and values private."
+    Write-Output "Original backups remain retained. No SQL, database connection, new export or cloud upload; Google stays deferred."
+}
+```
+
+Source: [inline handoff](../scripts/security-stage-1-database-properties-toc-check.ps1), [new pinned listing helper](../scripts/security-stage-1-database-properties-toc.cjs), [seven targeted tests](../tests/security-stage-1-database-properties-toc.test.cjs). Send **only JSON summary and redacted errors/warnings**; never send full TOC, native-message files, receipts, archives, values or hashes. Do not rerun the superseded S1E53 selected-list check or infer that its zero counts require a new export. Review the new full-TOC result, then proceed to actual Storage bytes/provider configuration; exact settings/managed/key/source-drift/recovery dependencies stay carried into recovery/final remediation. F16/full platform/offsite/restore gates remain open.
+
 ## Completed owner SQL handoff — retained for reproducibility
 
 
@@ -1748,7 +1826,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. S1E42 records completed local receipt/hash/TOC indicators; S1E44 completes source dependency metadata. S1E46 completes the private role-export native/basic checks. S1E48 completes private role-component encryption/file checks. S1E50 completes exact private selected-role attributes and 21 expected memberships against S1E44, with 15 role-wide counts matching. S1E52 completes five setting-scope rows (4 INFO + 1 REVIEW): 9 role-wide/15 entries plus one database-wide app.settings.jwt_exp, a nonnull three-entry parameter ACL and the same three builtin omissions. Execute the S1E53 private setting-key/parameter-delta/TOC-entry coverage block, then proceed to actual Storage bytes and protected Auth/Edge/provider configuration. Exact values/database property content/bootstrap/default/managed/key/source-drift and recovery gaps remain explicit final remediation/recovery dependencies. No repeat installation, connection test, database-component encryption or Docker/CLI-help prerequisite is requested.
+1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. S1E42 records completed local receipt/hash/TOC indicators; S1E44 completes source dependency metadata. S1E46 completes the private role-export native/basic checks. S1E48 completes private role-component encryption/file checks. S1E50 completes exact private selected-role attributes and 21 expected memberships against S1E44, with 15 role-wide counts matching. S1E52 completes five setting-scope rows (4 INFO + 1 REVIEW): 9 role-wide/15 entries plus one database-wide app.settings.jwt_exp, a nonnull three-entry parameter ACL and the same three builtin omissions. S1E54 now completes local private receipts/15 setting key identities/one parameter delta shape at narrow PASS scope, with an overall REVIEW caused by zero database entries in a default selected TOC. The audit checker incorrectly required entries hidden by plain --list. Execute only the corrected S1E55 offline --list --verbose handoff against the same archive, then proceed to actual Storage bytes and protected Auth/Edge/provider configuration. Exact values/database property content/bootstrap/default/managed/key/source-drift and recovery gaps remain explicit final remediation/recovery dependencies. No repeat installation, connection test, database-component encryption or Docker/CLI-help prerequisite is requested.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Carry the unverified offsite copy and Google deferral into the stage report/final action plan. No replacement destination is chosen by this decision. Later reconcile protected destination, recovery targets, frequency/retention and completion/failure records using actual volume and owner preferences; a schema file or object metadata alone remains insufficient.

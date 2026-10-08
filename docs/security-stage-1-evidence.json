@@ -3423,6 +3423,72 @@
       "complete_platform_backup_created": false,
       "restore_verified": false,
       "next_dependency": "Owner private summary/review, then actual Storage bytes and protected provider/credential configuration. Exact settings values/bootstrap/managed/key/source-drift issues remain explicit recovery/final remediation dependencies; no additional Google work or repeat packaging."
+    },
+    {
+      "id": "S1E54",
+      "stage_step": "1.2",
+      "received_date": "2026-10-08",
+      "source": "Owner supplies complete private coverage-check JSON directly in chat; no SQL, TOC, native messages, values, private receipts, passwords or hashes supplied.",
+      "result": "OWNER_PRIVATE_SETTING_KEYS_AND_PARAMETER_DELTA_MATCH_WITH_SELECTED_TOC_REVIEW",
+      "observed_summary": {
+        "stage_step": "1.2",
+        "result": "PRIVATE_SETTING_COVERAGE_REVIEW",
+        "project": "kttkospkblwvguuwnhjj",
+        "checked_utc": "2026-10-08T06:01:38.392Z",
+        "source_metadata_checked_utc": "2026-10-08T05:28:30.392498+00:00",
+        "database_and_roles_originals_match_private_receipts": true,
+        "role_wide_setting_statement_count": 15,
+        "role_wide_setting_role_count": 9,
+        "role_wide_setting_key_names_match_s1e52": true,
+        "database_scoped_setting_statements_in_roles_file": 0,
+        "parameter_acl_statement_count": 1,
+        "parameter_grant_delta_shape_matches_s1e52": true,
+        "parameter_acl_bootstrap_owner_and_effective_semantics_verified": false,
+        "settings_values_and_database_scope_recovery_verified": false,
+        "intended_database_definition_toc_entries": 0,
+        "intended_database_properties_toc_entries": 0,
+        "intended_database_properties_entry_present": false,
+        "database_properties_contains_required_setting_verified": false,
+        "database_properties_values_or_recovered_behavior_verified": false,
+        "live_source_drift_or_destination_recovery_verified": false,
+        "complete_platform_backup_verified": false,
+        "isolated_database_restore_verified": false,
+        "raw_artifacts_uploaded": false
+      },
+      "scope": "Owner private receipt binding of database/roles remains PASS. All 15 role setting key identities across nine roles and the one added parameter GRANT shape match S1E52. Those checks do not prove exact values, bootstrap/default-owner mapping, effective ACL or restored behavior.",
+      "toc_scope": "Reported zero DATABASE and DATABASE PROPERTIES counts are from the saved selected TOC produced by plain pg_restore --list. Official PG17 source suppresses these entries without createDB mode unless verbose listing is requested. The checker mistakenly required these entries in that filtered list. This is an audit-tool coverage-design issue, not evidence that the custom archive lacks them or is corrupt. Actual full-archive entry presence/content remains unverified.",
+      "supersedes": "S1E53 owner key/delta/native private receipt execution pending at narrow match scope. Overall REVIEW remains; full TOC presence and all value/ACL/default/managed/source-drift/recovery limits retained.",
+      "private_setting_key_names_and_parameter_delta_shape_verified": true,
+      "warnings": "No additional native warnings/errors supplied. The overall REVIEW is recorded, not relabeled whole-check PASS.",
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "restore_verified": false
+    },
+    {
+      "id": "S1E55",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-08",
+      "source": "Root inspects official PG17 PrintTOCSummary/_tocEntryRequired and pg_restore main control flow, records the selected-list mistake, and prepares an offline full-list correction against the existing private archive.",
+      "result": "PINNED_OFFLINE_FULL_DATABASE_TOC_CORRECTION_HANDOFF_PREPARED",
+      "handoff": "scripts/security-stage-1-database-properties-toc-check.ps1; inline protected-folder PowerShell fetch/show of three pinned public helpers, native node.exe and verified PG17 pg_restore.exe path",
+      "public_helper_git_blobs": {
+        "scripts/security-stage-1-role-coverage.cjs": "7e7aa5f6cb1463fb5141939b2b847d9bcd880502",
+        "scripts/security-stage-1-setting-coverage.cjs": "18ee5bed07835aec0432f690bf5d6ede2dd1324c",
+        "scripts/security-stage-1-database-properties-toc.cjs": "2ddfa1ebb5ab13eeef37335700f6251654bf5ace"
+      },
+      "confirmed_source_behavior": "Plain PrintTOCSummary prints entries whose required schema/data bits are set; DATABASE and DATABASE PROPERTIES have zero required bits without createDB. Verbose TOC printing includes all entries regardless of those bits. pg_restore --list invokes PrintTOCSummary instead of RestoreArchive, with no initialized connection. Original S1E29 export saved plain --list output. Thus the S1E54 zero counts are expected at selected-list scope and cannot prove source archive omissions.",
+      "correction": "Use native pg_restore --list --verbose --file <new private unique TOC> <exact receipt-bound original dump>; never connection/SQL/create/clean flags. Read only aggregate full TOC/header/definition/property presence; preserve the old selected TOC and all original component files. Existing role/delta checks are not repeated.",
+      "scope_limits": "Actual owner Windows/full-archive execution pending. If one intended database definition/property entry appears, report only full-TOC presence, not app.settings.jwt_exp key/value content or effective/recovered behavior. Missing/duplicate/wrong-context entries, native failure/timeout, private input changes or native messages remain REVIEW. Native stdout/stderr are saved only in the new private directory; never surfaced in stdout. No SQL generation/execution, database connection, export, encryption, password entry, upload, cleanup, provider or original-checkout edits occur. New protected tool copies/full TOC/native-message/verification files are retained privately; hashes never printed.",
+      "validation": "Seven targeted synthetic Node tests PASS: full fixture entries hidden in a selected-list fixture are detected with list/verbose/file-only argument contract and no shell; exact missing/duplicate/wrong-database/header cases remain REVIEW; native nonzero/timeout cannot pass despite complete-looking output; native diagnostic content remains private and blocks unreviewed PASS; changed original TOC bytes are rejected; empty listing/redirected executable rejected; malformed private input CLI prints no contents/path/hash. Dummy buffers/substituted native runner prove orchestration/binding/privacy only, not actual PostgreSQL/7z validity. Official source control-flow independently reviewed. Previous 53 evidence events/original audit tables, exact observed fields, JSON/links/fences/inline handoff/pins/diff/published tree verified; existing helper tests, hosted SQL/runtime/APK unchanged and not redundantly rerun. Native Windows PG17 execution remains pending.",
+      "official_guidance": [
+        "https://raw.githubusercontent.com/postgres/postgres/REL_17_STABLE/src/bin/pg_dump/pg_backup_archiver.c",
+        "https://raw.githubusercontent.com/postgres/postgres/REL_17_STABLE/src/bin/pg_dump/pg_restore.c"
+      ],
+      "owner_execution": "PENDING",
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "restore_verified": false,
+      "next_dependency": "Owner corrected full-TOC summary, then actual Storage bytes and protected provider/credential configuration; exact property values/bootstrap/managed/key/source-drift/recovery dependencies remain in recovery/final remediation. Do not repeat S1E53 selected-list check or export/repackage based on zero filtered counts."
     }
   ]
 }

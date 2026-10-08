@@ -64,6 +64,8 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 
 **Current 1.2 full-TOC result and finite exit checklist — S1E56–S1E57:** owner native full listing passes at entry-presence scope: 2,329 entries, intended database header, one DATABASE/PROPERTIES each, private receipt binding, originals unchanged, native exit zero/no messages and no SQL/connection/upload. The old selected-list zero counts were an audit counter-scope mistake, not archive omission. Finish database/role component local checks here WITH CARRY-FORWARD; remaining 1.2 work is exactly three consolidated items: actual Storage bytes, protected provider configuration/recovery credentials, and operating decisions/checkpoint summary. Carry additional failed/uncertain/blocked/undecided items; then advance to 1.3. Required property/setting values/default/effective/managed/key/source-drift and recovery remain open; full backup/restore/F16/release not cleared, Google deferred.
 
+**S1E58 / 1.2.2 current handoff:** bounded owner-local actual Storage bytes/current metadata/download/hash/local encrypted-package verification prepared; ten targeted synthetic tests pass, actual owner Windows/Storage/native execution pending. File paths/customer bytes/keys/hashes stay private. One planned outcome then 1.2.3/1.2.4; failures/drift/unavailable prerequisites carried, no DB/role diagnostics or Google work. Full platform backup/isolated recovery/F16 remains open. Original 123 baseline rows unchanged.
+
 ## Sections 1–25
 
 | Section | Applies | Status / test result | Evidence and next verification | Finding | Stage | Owner |

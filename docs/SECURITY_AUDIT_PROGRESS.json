@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_DATABASE_ROLE_COMPONENT_CHECKPOINT_DONE_WITH_CARRY_FORWARD_THREE_WORK_ITEMS_REMAIN_GOOGLE_DEFERRED",
-        "latest_evidence": "S1E57",
+        "status": "IN_PROGRESS_FINITE_STORAGE_COMPONENT_PASS_PREPARED_OWNER_EXECUTION_PENDING_GOOGLE_DEFERRED",
+        "latest_evidence": "S1E58",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -593,8 +593,9 @@
             {
               "id": "1.2.2",
               "title": "Actual Storage file bytes",
-              "status": "NEXT_PENDING",
-              "scope": "One consolidated current inventory/download/verification pass for actual uploaded bytes and their metadata. Missing/changed/inaccessible/unverified files are recorded and carried; no diagnostic cascade."
+              "status": "PREPARED_OWNER_EXECUTION_PENDING",
+              "scope": "One consolidated current inventory/download/verification pass for actual uploaded bytes and their metadata. Missing/changed/inaccessible/unverified files are recorded and carried; no diagnostic cascade.",
+              "prepared_evidence": "S1E58"
             },
             {
               "id": "1.2.3",
@@ -612,7 +613,20 @@
           "stopping_rule": "Database/roles component export/local-check work stops here for 1.2 with detailed gaps carried. Each remaining work item receives one planned consolidated evidence/decision pass; record PASS/PARTIAL/REVIEW/BLOCKED/DECISION and carry additional unresolved issues instead of automatically spawning more diagnostic/repair loops in 1.2. These are work items, not an invented fixed number of terminal commands.",
           "finish_condition": "When the three remaining work-item outcomes and their carry-forward actions are recorded, issue the 1.2 checkpoint summary and advance to 1.3. Completing this audit checkpoint with gaps does not certify full external protection or close F16/release gates. Detailed Stage 1 report remains 1.6; isolated recovery is 1.4 and unresolved issues remain for final remediation/full re-audit.",
           "next_work_item": "1.2.2",
-          "new_owner_command_handoff_issued": false
+          "new_owner_command_handoff_issued": true,
+          "latest_evidence": "S1E58"
+        },
+        "storage_component_handoff": {
+          "evidence": "S1E58",
+          "helper": "scripts/security-stage-1-storage-backup.cjs",
+          "helper_git_blob": "1c6d1ca70be9d285b19042eb4f0ab3830fd8f156",
+          "inline_powershell_source": "scripts/security-stage-1-storage-backup-check.ps1",
+          "owner_execution": "PENDING",
+          "actual_storage_byte_download_verified": false,
+          "encrypted_storage_component_verified": false,
+          "one_planned_pass": true,
+          "next_after_outcome": "1.2.3",
+          "automatic_diagnostic_cascade": false
         }
       },
       {

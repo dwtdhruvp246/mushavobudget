@@ -3582,6 +3582,65 @@
       "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
       "complete_platform_backup_created": false,
       "restore_verified": false
+    },
+    {
+      "id": "S1E58",
+      "stage_step": "1.2",
+      "work_item": "1.2.2",
+      "prepared_date": "2026-10-08",
+      "source": "Owner says ok continue after the finite four-item checkpoint; root prepares the single consolidated actual-Storage-byte pass.",
+      "result": "BOUNDED_OWNER_LOCAL_STORAGE_DOWNLOAD_AND_ENCRYPTED_VERIFICATION_PREPARED",
+      "helper": "scripts/security-stage-1-storage-backup.cjs",
+      "helper_git_blob": "1c6d1ca70be9d285b19042eb4f0ab3830fd8f156",
+      "inline_powershell_source": "scripts/security-stage-1-storage-backup-check.ps1",
+      "source_baseline": {
+        "evidence": "S1E13",
+        "buckets": 4,
+        "private_buckets": 4,
+        "recorded_objects": 2,
+        "recorded_bytes": 771059,
+        "scope": "Historical Oct 7 metadata only, not actual bytes or a current/historical recovery guarantee."
+      },
+      "execution_scope": "Owner-local HTTPS bucket enumeration, recursive paginated read-only object-list POSTs and authenticated GET downloads; two inventories and size/local-SHA checks, private metadata/numbered files, native encrypted-header/extracted-hash package verification. Fixed intended Supabase endpoint only; no credentials/customer paths/hashes in shared summary.",
+      "credential_handling": "Owner enters an existing secret or legacy service_role key at a masked local prompt. Temporary uniquely named task environment variable, no command argument/file/log; helper deletes inherited variable before spawning native archive children and wrapper removes parent variable in finally. Transient plaintext process memory is required; no secure-memory-erasure guarantee. Wrong key role/project syntax/public key rejected, final authority authenticated by Supabase.",
+      "bounds": {
+        "requests": 1000,
+        "entries_including_folders": 2000,
+        "buckets": 100,
+        "file_bytes": 67108864,
+        "total_metadata_bytes_for_download": 1073741824,
+        "metadata_response_bytes": 2097152,
+        "request_timeout_seconds": 60,
+        "read_pass_timeout_minutes": 15,
+        "native_archive_call_timeout_minutes": 15,
+        "redirects": "REFUSED",
+        "automatic_retries": 0
+      },
+      "result_contract": "Local PASS only when complete before/after inventories match, all four baseline bucket identifiers remain present, all current listed bytes download with exact metadata size/local hash verification, and encrypted header plus all package extracted/source hashes verify. REVIEW/BLOCKED records safe aggregate codes and retains partial artifacts. Historical/atomic/same-point-in-time/offsite/platform/destination proof remain false.",
+      "checkpoint_stop_rule": "Record the owner summary as the single planned 1.2.2 outcome. Failures/changed/missing/unsupported/inaccessible files or absent prerequisites are carried; do not open more 1.2 troubleshooting or DB/role diagnostics. Next is the single 1.2.3 configuration/credential inventory, followed by 1.2.4 decisions/checkpoint summary.",
+      "validation": {
+        "targeted_synthetic_tests": 10,
+        "tests_passed": 10,
+        "live_storage_execution": false,
+        "windows_powershell_execution": false,
+        "native_7zip_execution": false,
+        "scope": "Synthetic request/stream/FS/CLI and injected archive-runner cases: nested pagination/duplicates, scope/credential/redirect restrictions, denied/drifting sources, wrong sizes/caps, package/extraction failure and redacted output. Fixtures are not native encryption or real backup evidence."
+      },
+      "owner_actual_execution": "PENDING_NO_STORAGE_BYTES_ACCESSED_BY_ASSISTANT",
+      "previous_57_events_unchanged": true,
+      "original_register_and_finding_rows_unchanged": true,
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "production_mutation": false,
+      "complete_platform_backup_verified": false,
+      "isolated_restore_verified": false,
+      "references": [
+        "https://supabase.com/docs/guides/platform/backups",
+        "https://supabase.com/docs/guides/getting-started/api-keys",
+        "https://github.com/supabase/storage/blob/master/src/http/routes/bucket/getAllBuckets.ts",
+        "https://github.com/supabase/storage/blob/master/src/http/routes/object/listObjects.ts",
+        "https://github.com/supabase/storage/blob/master/src/http/routes/object/getObject.ts",
+        "https://github.com/supabase/storage/blob/master/src/storage/schemas/object.ts"
+      ]
     }
   ]
 }

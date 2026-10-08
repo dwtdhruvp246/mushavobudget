@@ -11,13 +11,112 @@ The owner asks for a clear finish line after repeated small checks. **1.2 is now
 | Work item | Status / finite scope |
 |---|---|
 | 1.2.1 Database/roles component exports and local checks | **DONE WITH CARRY-FORWARD.** Owner local export/encryption/file binding and selected role/membership/key/grant checks retained; corrected full TOC entry presence now passes. Exact property/setting values, effective/default/managed/builtin/key/source-drift and recovered behavior stay open. |
-| 1.2.2 Actual Storage file bytes | **NEXT.** One consolidated current inventory/download/verification pass; record missing/changed/inaccessible/unverified bytes and carry them. |
+| 1.2.2 Actual Storage file bytes | **PREPARED; OWNER EXECUTION PENDING — S1E58.** One consolidated current inventory/download/local encryption verification pass. Record the outcome and carry missing/changed/inaccessible/unverified bytes; then move to 1.2.3. |
 | 1.2.3 Protected provider configuration and recovery credentials | **PENDING.** One consolidated owner-private Auth/SMTP/Edge/provider recovery inventory; only redacted presence/status shared, with unavailable/unknown dependencies carried. |
 | 1.2.4 Backup operating decisions and step checkpoint summary | **PENDING.** One consolidated frequency/retention/data-loss/recovery-time/completion-failure decision batch, then the 1.2 checkpoint summary. Undecided/unavailable choices stay recorded. |
 
 **S1E56 completed result:** `DATABASE_DEFINITION_AND_PROPERTIES_FULL_TOC_PRESENT` at **2026-10-08T09:56:42.880Z**. The original archive/three source files match the private receipt; native list/verbose exits **0**, messages **false**, intended database header **true**, full TOC **2,329** entries, intended DATABASE **1** and DATABASE PROPERTIES **1**. The old selected-list counts remain **0/0** by design. Original component files remain unchanged; SQL generated/executed=false, connection=false, raw artifacts uploaded=false. This completes the previously pending corrected listing at **entry-presence PASS only**. It confirms the audit counter's selected-list mistake; it does not establish a missing/corrupt backup.
 
 Required app.settings.jwt_exp key/value content, exact settings, default/bootstrap/effective ACL and managed/key recovery, source drift and isolated restoration remain unverified. **Complete platform backup=false; isolated restore=false; F16/release gates stay open.** Finish the step checkpoint after the three remaining outcomes/actions are recorded, then advance to **1.3**. The isolated recovery drill is **1.4**; the detailed Stage 1 completion report remains **1.6**. Closing an audit checkpoint with gaps does not meet full protection acceptance or erase them. Google remains deferred; no more 1.2 database/role diagnostics or repeat exports/packaging are currently requested. No new owner command is issued in the response explaining this checklist.
+
+## Current owner handoff — S1E58 / 1.2.2 actual Storage bytes
+
+**One planned pass, part 2 of 4.** The earlier S1E13 snapshot has four private buckets and two business-logo records totaling 771,059 metadata bytes. These are historical metadata totals, not downloaded files. The database/role work is closed for 1.2 with carry-forward; do not repeat it. The single run below inventories current Storage buckets/files, downloads current listed bytes into the protected local root, inventories again, checks local sizes/hashes and packages the component with native encrypted-header/extraction verification. Actual owner Windows/Storage/7-Zip execution is **pending**; ten synthetic fault/fixture tests pass, with no real Storage data or keys seen by the assistant.
+
+In the intended Supabase project **kttkospkblwvguuwnhjj**, open **Settings > API Keys** and copy an **existing secret key** (`sb_secret_…`) or legacy **service_role** key. The public/publishable/anon key, database password and account login password are not the credential for this pass. If no authorized existing key is available, report the categorical blocker; key creation/rotation is not requested. Paste the key only at the script's masked local prompt, never into chat or a command. It temporarily resides in owner process memory/task environment, is never passed as a command argument or saved in manifests/logs, is removed from the child environment before 7-Zip starts, and is cleared from the parent environment in `finally`. The clipboard is replaced with a harmless message after entry. This does not promise secure erasure of all process-memory copies. Enter the privately saved nonblank backup passphrase only at native 7-Zip prompts. No new passphrase is invented or shared.
+
+The helper uses only fixed-origin HTTPS GETs and the read-only Storage object-list POST; redirects are refused and HTTP/exception response text is suppressed. No policy/bucket/object writes or credential creation, database connection, upload, restore, cleanup, runtime/APK changes or Google work. Files have numbered local names; the original bucket/path/id/metadata mapping and local SHA-256 values stay in private JSON. Normal payload bytes may contain customer data and remain in the protected local directory. A completed encrypted archive includes those maps and both inventories; its final receipt/hashes also stay private.
+
+Limits: at most 100 buckets, 2,000 listed entries including folders, 1,000 read requests, 64 MiB per object, 1 GiB total recorded download bytes, 2 MiB per metadata response, 60 seconds per request and 15 minutes for the read pass; native archive calls each have a 15-minute bound. Free-space preflight allows four times recorded payload bytes plus 128 MiB. No automatic retries. Missing or invalid size metadata, repeated pages/unsupported bucket types, denied reads, limits/timeouts, inventory drift, wrong sizes or archive mismatch yield safe REVIEW/BLOCKED codes; partial artifacts stay private and retained.
+
+**PASS means only a current local Storage component:** complete before/after inventories match at observed times; all four earlier bucket identifiers are present; every current listed file downloads at the recorded size and reread hash; native header denial and all extracted/source/package hashes verify. Empty current buckets are permitted. Downloads may change last-access time, which is excluded from content drift comparison. No atomic snapshot, omitted historic version/deleted-object coverage, database-and-Storage same-time guarantee, upstream content-authenticity guarantee, offsite copy, full platform backup or isolated restore is inferred. The database snapshot and current file snapshot are from different times. Package bytes are not re-uploaded or served by the app.
+
+Paste this inline PowerShell directly; [the handoff source](../scripts/security-stage-1-storage-backup-check.ps1) and [the reviewed helper](../scripts/security-stage-1-storage-backup.cjs) are for provenance. Fetch updates remote refs only and copies the pinned helper into the private root; the original dirty Windows checkout is not switched or reset. The public helper blob pin is `1c6d1ca70be9d285b19042eb4f0ab3830fd8f156`; private backup hashes are never printed.
+
+```powershell
+& {
+    $ErrorActionPreference = "Stop"
+    $mushavoBackupRoot = "C:\Users\HP\AppData\Local\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342"
+    $mushavo7Zip = "C:\Program Files\7-Zip\7z.exe"
+    $mushavoFolder = Get-Item -LiteralPath $mushavoBackupRoot -Force
+    if (-not $mushavoFolder.PSIsContainer) { throw "Private backup folder was not found." }
+    $mushavoParent = $mushavoFolder
+    while ($null -ne $mushavoParent) {
+        if ($mushavoParent.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+            throw "Backup path contains a redirected directory."
+        }
+        $mushavoParent = $mushavoParent.Parent
+    }
+    $mushavoOwnerSid = [Security.Principal.WindowsIdentity]::GetCurrent().User
+    $mushavoAllowedSids = @($mushavoOwnerSid.Value, "S-1-5-18", "S-1-5-32-544")
+    $mushavoAcl = Get-Acl -LiteralPath $mushavoBackupRoot
+    $mushavoRules = $mushavoAcl.GetAccessRules(
+        $true, $true, [Security.Principal.SecurityIdentifier]
+    )
+    if (-not $mushavoAcl.AreAccessRulesProtected -or $mushavoRules.Count -ne 3 -or
+        $mushavoAcl.GetOwner([Security.Principal.SecurityIdentifier]).Value -ne $mushavoOwnerSid.Value) {
+        throw "Backup-folder owner or protected permissions changed."
+    }
+    foreach ($mushavoRule in $mushavoRules) {
+        if ($mushavoRule.IdentityReference.Value -notin $mushavoAllowedSids -or
+            $mushavoRule.IsInherited -or $mushavoRule.AccessControlType -ne "Allow" -or
+            $mushavoRule.FileSystemRights -ne "FullControl" -or
+            $mushavoRule.InheritanceFlags -ne
+                [Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit" -or
+            $mushavoRule.PropagationFlags -ne "None") {
+            throw "Unexpected backup-folder permissions."
+        }
+    }
+    if (-not (Test-Path -LiteralPath $mushavo7Zip -PathType Leaf)) { throw "Verified 7-Zip executable was not found." }
+    if (Test-Path Env:MUSHAVO_STORAGE_BACKUP_KEY) { throw "The task credential variable already exists. Keep its value private and send this error only." }
+    $mushavoProject = "C:\Users\HP\Desktop\Mushavo Budget"
+    $mushavoNode = Get-Command -Name "node.exe" -CommandType Application -ErrorAction Stop | Select-Object -First 1
+    $mushavoGit = Get-Command -Name "git.exe" -CommandType Application -ErrorAction Stop | Select-Object -First 1
+    & $mushavoGit.Source -C $mushavoProject fetch origin security/stage-1-foundations
+    if ($LASTEXITCODE -ne 0) { throw "Fetch failed." }
+    $mushavoObject = "FETCH_HEAD:scripts/security-stage-1-storage-backup.cjs"
+    $mushavoBlob = & $mushavoGit.Source -C $mushavoProject rev-parse $mushavoObject
+    if ($LASTEXITCODE -ne 0 -or ($mushavoBlob | Out-String).Trim() -ne "1c6d1ca70be9d285b19042eb4f0ab3830fd8f156") {
+        throw "Fetched helper differs from this reviewed version. Send the error only."
+    }
+    $mushavoCode = & $mushavoGit.Source -C $mushavoProject show $mushavoObject | Out-String
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($mushavoCode)) { throw "Helper read failed." }
+    $mushavoToolRoot = Join-Path $mushavoBackupRoot ("StorageTool-" + [guid]::NewGuid().ToString("N"))
+    New-Item -ItemType Directory -Path $mushavoToolRoot | Out-Null
+    $mushavoTool = Join-Path $mushavoToolRoot "storage-backup.cjs"
+    [IO.File]::WriteAllText($mushavoTool, $mushavoCode, [Text.UTF8Encoding]::new($false))
+
+    Write-Output "Copy an existing Supabase secret key (or legacy service_role key) from this project's Settings > API Keys."
+    Write-Output "Paste it ONLY at the masked local prompt below. This is not the database password or backup passphrase."
+    $mushavoSecret = Read-Host "Supabase secret key for kttkospkblwvguuwnhjj" -AsSecureString
+    $mushavoSecretPointer = [IntPtr]::Zero
+    try {
+        $mushavoSecretPointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($mushavoSecret)
+        $env:MUSHAVO_STORAGE_BACKUP_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($mushavoSecretPointer)
+        [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($mushavoSecretPointer)
+        $mushavoSecretPointer = [IntPtr]::Zero
+        Set-Clipboard -Value "Mushavo Budget: credential removed from clipboard."
+        Write-Output "Running one bounded Storage inventory/download pass, then native encrypted-package verification."
+        & $mushavoNode.Source $mushavoTool $mushavoBackupRoot $mushavo7Zip
+        $mushavoStorageExit = $LASTEXITCODE
+        if ($mushavoStorageExit -ne 0 -and $mushavoStorageExit -ne 2) {
+            throw "Storage helper failed unexpectedly. Send the redacted error only."
+        }
+    } finally {
+        Remove-Item Env:MUSHAVO_STORAGE_BACKUP_KEY -ErrorAction SilentlyContinue
+        if ($mushavoSecretPointer -ne [IntPtr]::Zero) {
+            [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($mushavoSecretPointer)
+        }
+        $mushavoSecret.Dispose()
+    }
+    Write-Output "Send only the final JSON summary or redacted error. Keep keys, passphrases, manifests, files and hashes private."
+    Write-Output "If REVIEW/BLOCKED, keep partial artifacts; we record the gap and move to configuration inventory."
+}
+```
+
+Send only the final redacted JSON summary or a redacted error. Do not send the credential, passphrase, private files/manifest/hash/filenames. Record this as the **one planned 1.2.2 outcome**, including REVIEW/BLOCKED when applicable, and move directly to **1.2.3** provider/configuration recovery inventory. Additional problems are carried into recovery/final remediation, not new 1.2 diagnostic branches. After this outcome is recorded, only configuration inventory and operating decisions/checkpoint summary remain. Google stays deferred; F16/full recovery/release gates remain open.
+
+References checked 8 October 2026: [Supabase database backups](https://supabase.com/docs/guides/platform/backups) (file bytes separate); [API key types/handling](https://supabase.com/docs/guides/getting-started/api-keys) (secret key elevated server-side backup use; new keys via apikey, legacy role key compatibility); official [bucket enumeration](https://github.com/supabase/storage/blob/master/src/http/routes/bucket/getAllBuckets.ts), [object listing](https://github.com/supabase/storage/blob/master/src/http/routes/object/listObjects.ts), [authenticated downloads](https://github.com/supabase/storage/blob/master/src/http/routes/object/getObject.ts) and [list schema](https://github.com/supabase/storage/blob/master/src/storage/schemas/object.ts). These source contracts guide the prepared tool; actual hosted compatibility remains owner-run evidence.
 
 ## Current scope and starting facts
 

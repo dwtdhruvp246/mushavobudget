@@ -3489,6 +3489,99 @@
       "complete_platform_backup_created": false,
       "restore_verified": false,
       "next_dependency": "Owner corrected full-TOC summary, then actual Storage bytes and protected provider/credential configuration; exact property values/bootstrap/managed/key/source-drift/recovery dependencies remain in recovery/final remediation. Do not repeat S1E53 selected-list check or export/repackage based on zero filtered counts."
+    },
+    {
+      "id": "S1E56",
+      "stage_step": "1.2",
+      "received_date": "2026-10-08",
+      "source": "Owner supplies git fetch through 7fc5b1a and complete corrected native full-TOC JSON directly in chat; no TOC, private receipts, values, passwords, hashes or archive bytes supplied.",
+      "result": "OWNER_OFFLINE_FULL_DATABASE_TOC_ENTRY_PRESENCE_PASS",
+      "observed_summary": {
+        "stage_step": "1.2",
+        "result": "DATABASE_DEFINITION_AND_PROPERTIES_FULL_TOC_PRESENT",
+        "project": "kttkospkblwvguuwnhjj",
+        "checked_utc": "2026-10-08T09:56:42.880Z",
+        "database_archive_and_three_sources_match_private_receipt": true,
+        "native_pg_restore_list_verbose_exit_code": 0,
+        "native_messages_present_kept_private": false,
+        "full_toc_database_header_matches_intended": true,
+        "full_toc_entries": 2329,
+        "original_selected_toc_database_definition_entries": 0,
+        "original_selected_toc_database_properties_entries": 0,
+        "intended_database_definition_toc_entries": 1,
+        "intended_database_properties_toc_entries": 1,
+        "intended_database_properties_entry_present": true,
+        "database_properties_contains_required_setting_verified": false,
+        "database_properties_values_or_recovered_behavior_verified": false,
+        "original_database_component_files_unchanged": true,
+        "sql_generated_or_executed": false,
+        "database_connection_performed": false,
+        "complete_platform_backup_verified": false,
+        "isolated_database_restore_verified": false,
+        "raw_artifacts_uploaded": false
+      },
+      "scope": "Owner-tested private receipt binding, native pg_restore list/verbose exit zero with no native messages, intended postgres header and exact one DATABASE plus one DATABASE PROPERTIES entry among 2,329 full TOC entries. Original files unchanged; no SQL generated/executed or database connection. This is full-TOC entry-presence PASS, not required property key/value content, full backup or destination/isolated recovery.",
+      "supersedes": "S1E55 native full-TOC execution pending and S1E54 selected-list counting REVIEW at database-entry presence scope only. Old selected list legitimately has zero matching entries; the audit counter-selection mistake is confirmed, not a missing/corrupt archive finding.",
+      "database_properties_toc_presence_verified": true,
+      "remaining_scope": "Required app.settings.jwt_exp/value content, exact archived settings, bootstrap/default/effective ACL semantics, managed/builtin/key/credential recovery, live drift and isolated recovery remain carried. Earlier role/key/grant and local encrypted-component passes remain narrow.",
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "restore_verified": false
+    },
+    {
+      "id": "S1E57",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-08",
+      "source": "Owner asks how many 1.2 steps remain and objects to the repeated small checks. Root applies the standing instruction to carry failed/uncertain items into final remediation/re-audit and records a finite checkpoint plan.",
+      "result": "FOUR_ITEM_1_2_EXIT_CHECKLIST_ONE_DONE_THREE_REMAIN",
+      "total_work_items": 4,
+      "work_items_done_with_carry_forward": 1,
+      "remaining_work_items": 3,
+      "work_items": [
+        {
+          "id": "1.2.1",
+          "title": "Database/roles component exports and local checks",
+          "status": "DONE_WITH_CARRY_FORWARD",
+          "evidence": [
+            "S1E30",
+            "S1E32",
+            "S1E42",
+            "S1E46",
+            "S1E48",
+            "S1E50",
+            "S1E54",
+            "S1E56"
+          ],
+          "completed_scope": "Owner-held database/role exports and local encryption/file checks, selected role/membership/key/grant comparisons and full database TOC entry presence.",
+          "remaining_scope": "Exact property/setting values, bootstrap/default/effective grant semantics, managed/builtin/key recovery, source drift and destination behavior remain recovery/final-remediation dependencies; no complete database/platform backup clearance."
+        },
+        {
+          "id": "1.2.2",
+          "title": "Actual Storage file bytes",
+          "status": "NEXT_PENDING",
+          "scope": "One consolidated current inventory/download/verification pass for actual uploaded bytes and their metadata. Missing/changed/inaccessible/unverified files are recorded and carried; no diagnostic cascade."
+        },
+        {
+          "id": "1.2.3",
+          "title": "Protected provider configuration and recovery credentials",
+          "status": "PENDING",
+          "scope": "One consolidated owner-private Auth/SMTP/Edge/provider configuration and credential/key recovery inventory. Only redacted presence/status evidence is shared. Missing/unknown dependencies are carried."
+        },
+        {
+          "id": "1.2.4",
+          "title": "Backup operating decisions and step checkpoint summary",
+          "status": "PENDING",
+          "scope": "One consolidated owner decision batch for frequency/retention/data-loss and recovery-time targets, record completion/failure handling and write the 1.2 checkpoint summary. Undecided/unavailable choices remain explicit carry-forward; no provider/schedule is enabled by documentation."
+        }
+      ],
+      "stopping_rule": "Database/roles component export/local-check work stops here for 1.2 with detailed gaps carried. Each remaining work item receives one planned consolidated evidence/decision pass; record PASS/PARTIAL/REVIEW/BLOCKED/DECISION and carry additional unresolved issues instead of automatically spawning more diagnostic/repair loops in 1.2. These are work items, not an invented fixed number of terminal commands.",
+      "finish_condition": "When the three remaining work-item outcomes and their carry-forward actions are recorded, issue the 1.2 checkpoint summary and advance to 1.3. Completing this audit checkpoint with gaps does not certify full external protection or close F16/release gates. Detailed Stage 1 report remains 1.6; isolated recovery is 1.4 and unresolved issues remain for final remediation/full re-audit.",
+      "next_work_item": "1.2.2 Actual Storage file bytes; no new PowerShell/SQL handoff issued with this count/finish-line response.",
+      "scope_limits": "No new source diagnostic, private value/grant recheck, export, provider configuration, schedule, purchase, upload, cleanup, restoration or runtime/APK change. Google remains deferred. Scope decisions and owner result recorded in the draft audit PR only; no merge authorization inferred.",
+      "validation": "Prior 55 events and original 123 audit/20 finding table rows unchanged; all 22 owner fields/counters/timestamp and full-TOC narrow scope reconciled with progress. Four ordered work items have one DONE_WITH_CARRY_FORWARD and three remaining; JSON/links/fences/diff/published tree checks pass. Documentation-only update: existing native helpers, tests, SQL, runtime and APK unchanged and not redundantly rerun.",
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "restore_verified": false
     }
   ]
 }

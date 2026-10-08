@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_PRIVATE_SETTING_KEYS_DELTA_MATCH_SELECTED_TOC_FILTER_CORRECTION_PREPARED_GOOGLE_DEFERRED",
-        "latest_evidence": "S1E55",
+        "status": "IN_PROGRESS_DATABASE_ROLE_COMPONENT_CHECKPOINT_DONE_WITH_CARRY_FORWARD_THREE_WORK_ITEMS_REMAIN_GOOGLE_DEFERRED",
+        "latest_evidence": "S1E57",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -512,7 +512,7 @@
           "exact_archived_values_or_recovery_verified": false
         },
         "setting_coverage_handoff": "scripts/security-stage-1-setting-coverage-check.ps1; OWNER_EXECUTED_PARTIAL_MATCH_REVIEW_S1E54; selected-TOC prerequisite superseded by S1E55",
-        "database_properties_toc_presence_verified": false,
+        "database_properties_toc_presence_verified": true,
         "private_setting_key_names_and_parameter_delta_shape_verified": true,
         "setting_coverage_result": {
           "evidence": "S1E54",
@@ -541,7 +541,79 @@
           "raw_artifacts_uploaded": false
         },
         "selected_toc_zero_counts_scope": "Plain pg_restore --list suppresses DATABASE/PROPERTIES by default; not proof of absent archive entries. Full native TOC execution pending.",
-        "database_properties_full_toc_handoff": "scripts/security-stage-1-database-properties-toc-check.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E55"
+        "database_properties_full_toc_handoff": "scripts/security-stage-1-database-properties-toc-check.ps1; OWNER_EXECUTED_NARROW_ENTRY_PRESENCE_PASS_S1E56",
+        "database_properties_full_toc_result": {
+          "evidence": "S1E56",
+          "stage_step": "1.2",
+          "result": "DATABASE_DEFINITION_AND_PROPERTIES_FULL_TOC_PRESENT",
+          "project": "kttkospkblwvguuwnhjj",
+          "checked_utc": "2026-10-08T09:56:42.880Z",
+          "database_archive_and_three_sources_match_private_receipt": true,
+          "native_pg_restore_list_verbose_exit_code": 0,
+          "native_messages_present_kept_private": false,
+          "full_toc_database_header_matches_intended": true,
+          "full_toc_entries": 2329,
+          "original_selected_toc_database_definition_entries": 0,
+          "original_selected_toc_database_properties_entries": 0,
+          "intended_database_definition_toc_entries": 1,
+          "intended_database_properties_toc_entries": 1,
+          "intended_database_properties_entry_present": true,
+          "database_properties_contains_required_setting_verified": false,
+          "database_properties_values_or_recovered_behavior_verified": false,
+          "original_database_component_files_unchanged": true,
+          "sql_generated_or_executed": false,
+          "database_connection_performed": false,
+          "complete_platform_backup_verified": false,
+          "isolated_database_restore_verified": false,
+          "raw_artifacts_uploaded": false
+        },
+        "bounded_worklist": {
+          "evidence": "S1E57",
+          "total_work_items": 4,
+          "done_with_carry_forward": 1,
+          "remaining_work_items": 3,
+          "items": [
+            {
+              "id": "1.2.1",
+              "title": "Database/roles component exports and local checks",
+              "status": "DONE_WITH_CARRY_FORWARD",
+              "evidence": [
+                "S1E30",
+                "S1E32",
+                "S1E42",
+                "S1E46",
+                "S1E48",
+                "S1E50",
+                "S1E54",
+                "S1E56"
+              ],
+              "completed_scope": "Owner-held database/role exports and local encryption/file checks, selected role/membership/key/grant comparisons and full database TOC entry presence.",
+              "remaining_scope": "Exact property/setting values, bootstrap/default/effective grant semantics, managed/builtin/key recovery, source drift and destination behavior remain recovery/final-remediation dependencies; no complete database/platform backup clearance."
+            },
+            {
+              "id": "1.2.2",
+              "title": "Actual Storage file bytes",
+              "status": "NEXT_PENDING",
+              "scope": "One consolidated current inventory/download/verification pass for actual uploaded bytes and their metadata. Missing/changed/inaccessible/unverified files are recorded and carried; no diagnostic cascade."
+            },
+            {
+              "id": "1.2.3",
+              "title": "Protected provider configuration and recovery credentials",
+              "status": "PENDING",
+              "scope": "One consolidated owner-private Auth/SMTP/Edge/provider configuration and credential/key recovery inventory. Only redacted presence/status evidence is shared. Missing/unknown dependencies are carried."
+            },
+            {
+              "id": "1.2.4",
+              "title": "Backup operating decisions and step checkpoint summary",
+              "status": "PENDING",
+              "scope": "One consolidated owner decision batch for frequency/retention/data-loss and recovery-time targets, record completion/failure handling and write the 1.2 checkpoint summary. Undecided/unavailable choices remain explicit carry-forward; no provider/schedule is enabled by documentation."
+            }
+          ],
+          "stopping_rule": "Database/roles component export/local-check work stops here for 1.2 with detailed gaps carried. Each remaining work item receives one planned consolidated evidence/decision pass; record PASS/PARTIAL/REVIEW/BLOCKED/DECISION and carry additional unresolved issues instead of automatically spawning more diagnostic/repair loops in 1.2. These are work items, not an invented fixed number of terminal commands.",
+          "finish_condition": "When the three remaining work-item outcomes and their carry-forward actions are recorded, issue the 1.2 checkpoint summary and advance to 1.3. Completing this audit checkpoint with gaps does not certify full external protection or close F16/release gates. Detailed Stage 1 report remains 1.6; isolated recovery is 1.4 and unresolved issues remain for final remediation/full re-audit.",
+          "next_work_item": "1.2.2",
+          "new_owner_command_handoff_issued": false
+        }
       },
       {
         "id": "1.3",

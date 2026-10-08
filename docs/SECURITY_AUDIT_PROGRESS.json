@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-08",
   "current_stage": 1,
-  "current_step": "1.2",
-  "current_title": "External backups and recovery",
+  "current_step": "1.3",
+  "current_title": "Isolated staging",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -15,7 +15,7 @@
   "stage_1": {
     "status": "IN_PROGRESS",
     "authorized": true,
-    "active_step": "1.2",
+    "active_step": "1.3",
     "plan": "docs/SECURITY_STAGE_1_FOUNDATIONS_PLAN.md",
     "steps": [
       {
@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_THREE_WORK_ITEMS_WITH_CARRY_FORWARD_FINAL_OPERATING_DECISION_BATCH_PENDING",
-        "latest_evidence": "S1E62",
+        "status": "CLOSED_CHECKPOINT_WITH_CARRY_FORWARD_FULL_EXTERNAL_PROTECTION_UNVERIFIED",
+        "latest_evidence": "S1E64",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -570,8 +570,8 @@
         "bounded_worklist": {
           "evidence": "S1E57",
           "total_work_items": 4,
-          "done_with_carry_forward": 3,
-          "remaining_work_items": 1,
+          "done_with_carry_forward": 4,
+          "remaining_work_items": 0,
           "items": [
             {
               "id": "1.2.1",
@@ -611,16 +611,19 @@
             {
               "id": "1.2.4",
               "title": "Backup operating decisions and step checkpoint summary",
-              "status": "PROPOSED_OWNER_DECISION_PENDING",
+              "status": "DONE_WITH_CARRY_FORWARD",
               "scope": "One consolidated owner decision batch for frequency/retention/data-loss and recovery-time targets, record completion/failure handling and write the 1.2 checkpoint summary. Undecided/unavailable choices remain explicit carry-forward; no provider/schedule is enabled by documentation.",
-              "prepared_evidence": "S1E62"
+              "prepared_evidence": "S1E62",
+              "outcome_evidence": "S1E63",
+              "remaining_scope": "Targets approved; reliable execution/retention/failure notification/data-loss/recovery-time achievement unverified."
             }
           ],
           "stopping_rule": "Database/roles component export/local-check work stops here for 1.2 with detailed gaps carried. Each remaining work item receives one planned consolidated evidence/decision pass; record PASS/PARTIAL/REVIEW/BLOCKED/DECISION and carry additional unresolved issues instead of automatically spawning more diagnostic/repair loops in 1.2. These are work items, not an invented fixed number of terminal commands.",
           "finish_condition": "When the three remaining work-item outcomes and their carry-forward actions are recorded, issue the 1.2 checkpoint summary and advance to 1.3. Completing this audit checkpoint with gaps does not certify full external protection or close F16/release gates. Detailed Stage 1 report remains 1.6; isolated recovery is 1.4 and unresolved issues remain for final remediation/full re-audit.",
-          "next_work_item": "1.2.4",
+          "next_work_item": "1.3",
           "new_owner_command_handoff_issued": true,
-          "latest_evidence": "S1E62"
+          "latest_evidence": "S1E64",
+          "checkpoint_complete": true
         },
         "storage_component_handoff": {
           "evidence": "S1E58",
@@ -778,7 +781,7 @@
         },
         "backup_operating_decision_batch": {
           "evidence": "S1E62",
-          "status": "PROPOSED_OWNER_DECISION_PENDING",
+          "status": "OWNER_APPROVED_TARGETS_S1E63",
           "targets": [
             {
               "id": "frequency",
@@ -807,13 +810,36 @@
             }
           ],
           "policy_or_automation_enabled": false,
+          "actual_recovery_time_verified": false,
+          "approval_evidence": "S1E63"
+        },
+        "checkpoint_report": "docs/SECURITY_STAGE_1_2_CHECKPOINT_REPORT.md",
+        "full_external_protection_acceptance_met": false,
+        "checkpoint_work_review_complete": true,
+        "approved_operating_targets": {
+          "evidence": "S1E63",
+          "frequency": "DAILY_PLUS_BEFORE_MAJOR_CHANGES",
+          "retention_days": 30,
+          "maximum_data_loss_hours_target": 24,
+          "recovery_time_hours_target": 24,
+          "owner": "OWNER",
+          "completion_failure": "Record each planned component/run date/outcome, same-day review of missed/incomplete/failed runs, preserve last verified copies.",
+          "automated_execution_verified": false,
+          "automatic_failure_alerts_verified": false,
+          "retention_execution_verified": false,
           "actual_recovery_time_verified": false
         }
       },
       {
         "id": "1.3",
         "title": "Isolated staging",
-        "status": "PENDING"
+        "status": "IN_PROGRESS_OWNER_CAPACITY_AND_TARGET_CHECK_PENDING",
+        "latest_evidence": "S1E65",
+        "instructions": "docs/SECURITY_STAGE_1_3_ISOLATED_STAGING.md",
+        "actual_account_capacity_verified": false,
+        "isolated_target_created": false,
+        "isolated_target_verified": false,
+        "production_data_imported": false
       },
       {
         "id": "1.4",

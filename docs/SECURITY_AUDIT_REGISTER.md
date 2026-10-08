@@ -70,6 +70,8 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 
 **Latest S1E61–S1E62 / 1.2:** one owner provider/configuration/credential batch received: six SAVED, Auth PARTIAL, Cron/Vault/integrations UNSURE; protected contents/completeness/independent recovery untested. Three of four work items DONE WITH CARRY-FORWARD; only operating decisions/checkpoint summary remains. Daily/30-day/24-hour loss/24-hour recovery targets and owner completion/failure handling are proposals pending choices, not schedules/policy/guarantees. Then advance 1.3 with gaps; no diagnostic cascade. Full backup/recovery/F16 open, Google deferred, original 123 rows unchanged.
 
+**Latest S1E63–S1E65:** owner approved operating targets; [1.2 checkpoint report](SECURITY_STAGE_1_2_CHECKPOINT_REPORT.md) issued, four work-item outcomes/zero remaining, CLOSED WITH CARRY-FORWARD. Stage 1 now active at [1.3 isolated staging](SECURITY_STAGE_1_3_ISOLATED_STAGING.md): read-only actual account capacity/existing target check pending. Targets not schedules/guarantees. Storage package/Auth/integration/exact database/offsite/restore/operational gaps remain; Google deferred; F16/release open. Original 123 baseline rows unchanged.
+
 ## Sections 1–25
 
 | Section | Applies | Status / test result | Evidence and next verification | Finding | Stage | Owner |

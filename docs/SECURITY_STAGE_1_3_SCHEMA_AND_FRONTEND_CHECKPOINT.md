@@ -23,3 +23,11 @@ The staging frontend builder reads reviewed commit e5b1936847e22a04a3f5fd63785ce
 Frontend hosting is not yet deployed; test hosting origin and Auth redirects remain pending. No custom SMTP/Zoho, production VAPID private keys, currency provider credentials, scheduled dispatch or production OAuth credentials are requested at this checkpoint. Dispatch functions must remain undeployed until separately reviewed test destinations and credentials are established. Use synthetic accounts only in later tests. Storage buckets/policies created by migrations still require API/role tests.
 
 Stage 1.2 remains closed with carry-forward, Google Drive deferred, full recovery and full isolation unproved. Stage 1.4 covers restore tests; Stage 1.6 the full Stage 1 report.
+
+## Owner frontend preparation result — 8 October 2026
+
+Owner supplied STAGING_FRONTEND_PREPARED for reviewed source e5b1936847e22a04a3f5fd63785ceed3b4d0f9da, staging dczlddwbtgvfdujgcitb, 34 public files in a new Desktop folder. Production-reference scan and production push-key removal passed. Supplied publishable-key project ownership, hosting, Auth redirects and full isolation remained false/unverified; no Edge functions/secrets copied. This is a local preparation result, not hosted network isolation proof.
+
+Next owner action: create a separate Cloudflare Pages Direct Upload project (suggested name mushavo-budget-staging), upload only the prepared public output folder, retain its pages.dev hostname, and report the actual resulting URL. No production project deployment, custom domain/DNS change, Git-connected build using production config or credentials is needed. A staging project's primary deployment may be labelled Production by Cloudflare; that label is scoped to the separate staging Pages project. Account/provider access, discoverability restrictions and actual deployment content remain separately unverified.
+
+Once the actual origin is known, configure staging Auth Site URL and exact redirect destinations; keep dispatch functions/secrets undeployed pending reviewed synthetic destinations. Do not create test accounts until those boundaries are prepared. Google Drive remains deferred.

@@ -1357,7 +1357,7 @@ The file can contain sensitive **role-setting values**, so it stays in the exist
 
 Source: [security-stage-1-role-export.ps1](../scripts/security-stage-1-role-export.ps1). Prepared/source-reviewed only; no Windows/PowerShell/native PostgreSQL runtime exists here. Send **only the metadata summary and redacted warnings/errors**. Keep SQL/setting values, password, hashes and manifest private. Next privately encrypt/verify the role component after its native result; do not upload raw files. No repeated original database export/encryption is requested. Google remains deferred. F16/exact managed/custom/extension/settings/key/file/configuration scope, source drift and isolated synthetic recovery remain open.
 
-## Current role-export result and private encryption — S1E46–S1E47
+## Role-export result and prior private encryption — S1E46–S1E47; completed in S1E48
 
 Owner completes the role-export handoff at **2026-10-08T04:22:25.3745418Z**: **6,310 bytes**, **16 inventoried role definitions**, **21 membership GRANT statements** and **one parameter-ACL statement**, with role password export disabled. This is **OWNER-TESTED native/basic marker PASS**; no SQL/settings/hash contents are supplied. Exact membership flags/settings recovery, database-scoped settings, encrypted role package, full backup and isolated restore remain false. Warnings/errors were not supplied; that does not independently prove there were none.
 
@@ -1532,6 +1532,72 @@ Next package **only this role SQL and its private manifest** in the existing pro
 
 Source: [security-stage-1-role-encryption.ps1](../scripts/security-stage-1-role-encryption.ps1). Use a privately saved unique nonblank backup passphrase only at the native prompts. Send **only the metadata summary and redacted warnings/errors**; SQL, manifest/receipt contents, settings values, passwords, archives and hashes stay private. The package/file checks do not verify exact memberships/settings or SQL recovery. No Google handoff is reactivated.
 
+## Current role-package result and private comparison — S1E48–S1E49
+
+Owner completes the role package at **2026-10-08T04:31:59.1197194Z**: **1,919 bytes**, **two files**, role/private-manifest binding, wrong-password source-filename denial and **both extracted hashes match**. Record **OWNER-TESTED local package/file PASS**. Password export remains disabled. Exact role/settings recovery, offsite, full platform and isolated restore remain false; no raw artifacts/hashes are supplied. Warnings/errors are not independently checked merely because none are supplied. Existing database component PASS stays retained and Google stays deferred.
+
+Official PostgreSQL 17 `dumpRoleMembership` excludes memberships when **both granted role and member begin `pg_`**. The S1E44 snapshot includes exactly three such records: `pg_read_all_settings`, `pg_read_all_stats` and `pg_stat_scan_tables` granted to `pg_monitor`. Thus **24 source records − 3 default builtin-to-builtin omissions = 21 expected export statements**. This source-backed classification explains the count difference; it does not prove the private 21 identities/options match or that omitted builtin membership state is recovered at a destination. Provider-managed/custom authority and actual destination behavior remain separate recovery requirements.
+
+The next local checker fetches a **pinned public helper** from the draft branch without changing the dirty checkout or installing dependencies. After the protected-folder check, native `node.exe` reads the exact role/private manifest and encrypted-package receipt, rechecks their private hashes, then parses selected quoted PostgreSQL 17 role-export forms **without executing SQL**. It compares the 16 role names and selected superuser/inherit/create-role/create-database/login/replication/bypass-RLS/connection-limit attributes, plus all expected 21 membership tuples including grantor/ADMIN/INHERIT/SET, against S1E44. SQL lookalikes inside literals/comments do not count as grants; unsupported forms fail into sanitized REVIEW.
+
+Role-wide setting statement counts are separate indicators: values and database-scoped coverage are not compared. Passwords, validity values, comments/security labels, parameter ACL semantics, omitted builtin grants, managed/custom authority and live/isolated recovery stay unverified. Results refer to the earlier metadata snapshot, not a fresh live catalog. The checker writes only its public code copy and a private verification receipt in the protected folder; original backups stay retained. No password prompt, database connection, extraction, SQL execution, raw upload or cleanup is requested.
+
+```powershell
+& {
+    $ErrorActionPreference = "Stop"
+    $mushavoBackupRoot = "C:\Users\HP\AppData\Local\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342"
+    $mushavoFolder = Get-Item -LiteralPath $mushavoBackupRoot -Force
+    if (-not $mushavoFolder.PSIsContainer) { throw "Private backup folder was not found." }
+    $mushavoParent = $mushavoFolder
+    while ($null -ne $mushavoParent) {
+        if ($mushavoParent.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+            throw "Backup path contains a redirected directory."
+        }
+        $mushavoParent = $mushavoParent.Parent
+    }
+    $mushavoOwnerSid = [Security.Principal.WindowsIdentity]::GetCurrent().User
+    $mushavoAllowedSids = @($mushavoOwnerSid.Value, "S-1-5-18", "S-1-5-32-544")
+    $mushavoAcl = Get-Acl -LiteralPath $mushavoBackupRoot
+    $mushavoRules = $mushavoAcl.GetAccessRules(
+        $true, $true, [Security.Principal.SecurityIdentifier]
+    )
+    if (-not $mushavoAcl.AreAccessRulesProtected -or $mushavoRules.Count -ne 3 -or
+        $mushavoAcl.GetOwner([Security.Principal.SecurityIdentifier]).Value -ne $mushavoOwnerSid.Value) {
+        throw "Backup-folder owner or protected permissions changed."
+    }
+    foreach ($mushavoRule in $mushavoRules) {
+        if ($mushavoRule.IdentityReference.Value -notin $mushavoAllowedSids -or
+            $mushavoRule.IsInherited -or $mushavoRule.AccessControlType -ne "Allow" -or
+            $mushavoRule.FileSystemRights -ne "FullControl" -or
+            $mushavoRule.InheritanceFlags -ne
+                [Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit" -or
+            $mushavoRule.PropagationFlags -ne "None") {
+            throw "Unexpected backup-folder permissions."
+        }
+    }
+    $mushavoProject = "C:\Users\HP\Desktop\Mushavo Budget"
+    $mushavoNode = Get-Command -Name "node.exe" -CommandType Application -ErrorAction Stop | Select-Object -First 1
+    $mushavoGit = Get-Command -Name "git.exe" -CommandType Application -ErrorAction Stop | Select-Object -First 1
+    & $mushavoGit.Source -C $mushavoProject fetch origin security/stage-1-foundations
+    if ($LASTEXITCODE -ne 0) { throw "Fetch failed." }
+    $mushavoBlob = & $mushavoGit.Source -C $mushavoProject rev-parse "FETCH_HEAD:scripts/security-stage-1-role-coverage.cjs"
+    if ($LASTEXITCODE -ne 0 -or ($mushavoBlob | Out-String).Trim() -ne "7e7aa5f6cb1463fb5141939b2b847d9bcd880502") {
+        throw "Fetched checker differs from this reviewed version. Send the error only."
+    }
+    $mushavoCode = & $mushavoGit.Source -C $mushavoProject show "FETCH_HEAD:scripts/security-stage-1-role-coverage.cjs" | Out-String
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($mushavoCode)) { throw "Checker read failed." }
+    $mushavoLocalTool = Join-Path $mushavoBackupRoot ("RoleCoverageTool-" + [guid]::NewGuid().ToString("N") + ".cjs")
+    [IO.File]::WriteAllText($mushavoLocalTool, $mushavoCode, [Text.UTF8Encoding]::new($false))
+    & $mushavoNode.Source $mushavoLocalTool $mushavoBackupRoot
+    $mushavoCheckExit = $LASTEXITCODE
+    if ($mushavoCheckExit -ne 0 -and $mushavoCheckExit -ne 2) { throw "Local checker failed unexpectedly." }
+    Write-Output "Send only the JSON summary and redacted warnings/errors. Keep SQL, manifests, receipts, hashes and values private."
+    Write-Output "No SQL was executed or uploaded. Existing backup files remain retained; Google stays deferred."
+}
+```
+
+Sources: [private role coverage handoff](../scripts/security-stage-1-role-coverage-check.ps1), [pinned Node checker](../scripts/security-stage-1-role-coverage.cjs) and [synthetic fixture tests](../tests/security-stage-1-role-coverage.test.cjs). Ten meaningful Node fixtures pass for changed flags/grantor/limits, duplicated/missing grants, literal/comment boundaries, unsupported syntax/password directives, setting-value scope and private-byte/sanitized-CLI guards. Dummy receipts/bytes test binding only; no real archive/native encryption proof is inferred. Windows/native owner execution remains pending. Send **only the JSON summary and redacted warnings/errors**. Keep SQL, settings, manifests, receipts, archives and hashes private. Google remains deferred.
+
 ## Completed owner SQL handoff — retained for reproducibility
 
 
@@ -1566,7 +1632,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. S1E42 records completed local receipt/hash/TOC indicators; S1E44 completes source dependency metadata. S1E46 completes the private role-export native/basic checks. Execute S1E47 private role-component encryption/file verification, review native outcome, then continue exact role/membership/settings/managed/Vault/Storage-byte/Auth/Edge/provider recovery coverage and private credential handling. No repeat installation, connection test, database-component encryption or Docker/CLI-help prerequisite is requested.
+1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. S1E42 records completed local receipt/hash/TOC indicators; S1E44 completes source dependency metadata. S1E46 completes the private role-export native/basic checks. S1E48 completes private role-component encryption/file checks. S1E49 classifies the three builtin membership omissions and prepares exact private selected-role/membership comparison; execute that pinned local checker, review its outcome, then continue settings/managed/Vault/Storage-byte/Auth/Edge/provider recovery coverage and private credential handling. No repeat installation, connection test, database-component encryption or Docker/CLI-help prerequisite is requested.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Carry the unverified offsite copy and Google deferral into the stage report/final action plan. No replacement destination is chosen by this decision. Later reconcile protected destination, recovery targets, frequency/retention and completion/failure records using actual volume and owner preferences; a schema file or object metadata alone remains insufficient.

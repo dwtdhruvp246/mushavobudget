@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_PRIVATE_ROLE_EXPORT_PASS_ROLES_ENCRYPTION_PREPARED_GOOGLE_DEFERRED",
-        "latest_evidence": "S1E47",
+        "status": "IN_PROGRESS_ROLE_PACKAGE_PASS_BUILTIN_MEMBERSHIP_DIFFERENCE_CLASSIFIED_PRIVATE_COMPARISON_PREPARED_GOOGLE_DEFERRED",
+        "latest_evidence": "S1E49",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -258,7 +258,7 @@
           {
             "id": "database_scope",
             "work": "Reconcile exact archive/database/managed/extension/foreign/Vault coverage and separately protect global roles, membership and grant dependencies.",
-            "status": "LOCAL_DATABASE_COMPONENT_PASS_AND_PRIVATE_ROLE_EXPORT_NATIVE_MARKERS_PASS_S1E46; ROLE_PACKAGE_PREPARED_S1E47; EXACT_GRANT_SETTINGS_MANAGED_KEY_SCOPE_PENDING"
+            "status": "LOCAL_DATABASE_AND_PRIVATE_ROLE_PACKAGE_FILE_PASS; BUILTIN_MEMBERSHIP_COUNT_CLASSIFIED_S1E49; PRIVATE_ATTRIBUTES_MEMBERSHIPS_COMPARISON_AND_SETTINGS_MANAGED_KEY_SCOPE_PENDING"
           },
           {
             "id": "storage_bytes",
@@ -418,7 +418,7 @@
         },
         "role_export_handoff": "scripts/security-stage-1-role-export.ps1; OWNER_EXECUTED_NATIVE_MARKERS_PASS_S1E46",
         "roles_export_created": true,
-        "encrypted_roles_package_created": false,
+        "encrypted_roles_package_created": true,
         "recovery_source_drift": "Realtime routines 18 in current S1E44 metadata versus 17 in older S1E13/S1E42; exact identity/change/update snapshot unresolved",
         "role_export_result": {
           "evidence": "S1E46",
@@ -438,8 +438,29 @@
           "complete_platform_backup_verified": false,
           "isolated_restore_verified": false
         },
-        "role_membership_count_review": "S1E44 source 24 membership records versus S1E46 21 statement markers; exact grantor/ADMIN/INHERIT/SET comparison unresolved, not count-based FAIL or coverage PASS",
-        "roles_encryption_handoff": "scripts/security-stage-1-role-encryption.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E47"
+        "role_membership_count_review": "PG17 source excludes exactly three S1E44 builtin-to-builtin records (pg_monitor memberships); expected exported 21 reconciles reported count. Exact private identities/grantor/ADMIN/INHERIT/SET comparison pending S1E49; omitted builtin/destination grants not recovered or approved.",
+        "roles_encryption_handoff": "scripts/security-stage-1-role-encryption.ps1; OWNER_EXECUTED_LOCAL_PACKAGE_FILE_PASS_S1E48",
+        "encrypted_roles_package_result": {
+          "evidence": "S1E48",
+          "stage_step": "1.2",
+          "result": "ROLES_COMPONENT_ENCRYPTED_PACKAGE_AND_EXTRACTED_HASH_PASS",
+          "project": "kttkospkblwvguuwnhjj",
+          "completed_utc": "2026-10-08T04:31:59.1197194Z",
+          "file": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342\\20261008T042143Z-48bbd715d1b24cec870ee95e8113edb2.roles-component-47e6cd53c0884338b318426926349d77.7z",
+          "bytes": 1919,
+          "packaged_files": 2,
+          "roles_match_private_manifest": true,
+          "wrong_password_cannot_list_source_filenames": true,
+          "both_extracted_hashes_match": true,
+          "role_password_export_disabled": true,
+          "exact_membership_flags_and_settings_recovery_verified": false,
+          "database_scoped_role_settings_reconciled": false,
+          "offsite_upload_download_verified": false,
+          "complete_platform_backup_verified": false,
+          "isolated_database_restore_verified": false
+        },
+        "role_coverage_handoff": "scripts/security-stage-1-role-coverage-check.ps1 and pinned security-stage-1-role-coverage.cjs; PREPARED_OWNER_EXECUTION_PENDING_S1E49",
+        "selected_role_attributes_and_exported_memberships_verified": false
       },
       {
         "id": "1.3",

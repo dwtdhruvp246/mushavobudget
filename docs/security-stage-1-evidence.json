@@ -2936,6 +2936,101 @@
       "complete_platform_backup_created": false,
       "restore_verified": false,
       "next_dependency": "Owner package result/warnings, then private exact role/membership/setting coverage and separate Storage bytes/configuration/credential/operating decisions. No Google action or repeated database export/encryption."
+    },
+    {
+      "id": "S1E48",
+      "stage_step": "1.2",
+      "received_date": "2026-10-08",
+      "source": "Owner supplies completed S1E47 role encryption/file-verification summary directly in chat. No real archives, SQL, settings values, receipts, passwords or private hashes supplied.",
+      "result": "OWNER_ROLES_COMPONENT_ENCRYPTED_PACKAGE_AND_EXTRACTED_HASH_PASS",
+      "observed_summary": {
+        "stage_step": "1.2",
+        "result": "ROLES_COMPONENT_ENCRYPTED_PACKAGE_AND_EXTRACTED_HASH_PASS",
+        "project": "kttkospkblwvguuwnhjj",
+        "completed_utc": "2026-10-08T04:31:59.1197194Z",
+        "file": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342\\20261008T042143Z-48bbd715d1b24cec870ee95e8113edb2.roles-component-47e6cd53c0884338b318426926349d77.7z",
+        "bytes": 1919,
+        "packaged_files": 2,
+        "roles_match_private_manifest": true,
+        "wrong_password_cannot_list_source_filenames": true,
+        "both_extracted_hashes_match": true,
+        "role_password_export_disabled": true,
+        "exact_membership_flags_and_settings_recovery_verified": false,
+        "database_scoped_role_settings_reconciled": false,
+        "offsite_upload_download_verified": false,
+        "complete_platform_backup_verified": false,
+        "isolated_database_restore_verified": false
+      },
+      "scope": "Owner-tested local role-package/header-password/extracted-file checks PASS: 1,919 bytes, exactly two selected files, role/private-manifest binding, wrong-password source-filename denial and both extracted hashes match. No root artifact/native inspection or SQL restore. Not exact memberships/settings/credentials/keys/platform/offsite recovery proof.",
+      "warnings": "No warnings/errors supplied with this summary; absence is not independently verified.",
+      "supersedes": "S1E47 new native encryption execution pending at local packaging/file scope only. Earlier single-database component checks and Google deferral retained.",
+      "roles_package_encrypted": true,
+      "roles_package_file_checks_verified": true,
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "restore_verified": false
+    },
+    {
+      "id": "S1E49",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-08",
+      "source": "Root reviews official PostgreSQL 17 dumpRoleMembership source and prepares owner-private comparison with the already supplied S1E44 catalog snapshot.",
+      "result": "BUILTIN_MEMBERSHIP_COUNT_DIFFERENCE_CLASSIFIED_PRIVATE_ROLE_COMPARISON_PREPARED",
+      "classification": {
+        "source_membership_records": 24,
+        "pg_dumpall_expected_exported_memberships": 21,
+        "pg_dumpall_excludes_builtin_to_builtin_memberships": 3,
+        "excluded_metadata": [
+          {
+            "member": "pg_monitor",
+            "grantor": "supabase_admin",
+            "set_option": true,
+            "admin_option": false,
+            "granted_role": "pg_read_all_settings",
+            "inherit_option": true
+          },
+          {
+            "member": "pg_monitor",
+            "grantor": "supabase_admin",
+            "set_option": true,
+            "admin_option": false,
+            "granted_role": "pg_read_all_stats",
+            "inherit_option": true
+          },
+          {
+            "member": "pg_monitor",
+            "grantor": "supabase_admin",
+            "set_option": true,
+            "admin_option": false,
+            "granted_role": "pg_stat_scan_tables",
+            "inherit_option": true
+          }
+        ],
+        "scope": "Official PG17 WHERE NOT (granted role matches ^pg_ AND member matches ^pg_) excludes exactly these three source records. This explains the count difference against S1E44; private exported identities/flags, new source drift, omitted builtin grants and destination behavior are not proved recovered by count alignment."
+      },
+      "handoff": "scripts/security-stage-1-role-coverage-check.ps1; identical inline block in docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md; pinned scripts/security-stage-1-role-coverage.cjs downloaded by git fetch/show without checkout or npm installation",
+      "reviewed_helper_git_blob": "7e7aa5f6cb1463fb5141939b2b847d9bcd880502",
+      "checks_prepared": [
+        "Recheck existing protected private folder; fetch draft branch and require reviewed public helper blob before native node.exe execution; no execution-policy change or dirty checkout mutation",
+        "Rebind role/private manifest and exact 1,919-byte encrypted package/receipt hashes privately; no repeated extraction/password/native encryption request",
+        "Tokenize selected quoted PG17 role-export forms locally without executing SQL; literals/comments cannot become fake GRANT statements; unsupported/malformed syntax yields sanitized REVIEW",
+        "Compare 16 role names and selected privilege/login/inheritance/connection-limit attributes, and exact 21 expected member/grantor/ADMIN/INHERIT/SET tuples with S1E44",
+        "Count role-wide setting statements and compare per-role counts with earlier metadata without retrieving/logging values; database scope, parameter ACL semantics and independent login credentials stay unverified",
+        "Keep private hash-bound verification receipt, print only metadata/counters/booleans; original files retained, no SQL/network/provider upload or cleanup"
+      ],
+      "scope_limits": "Selected native-export grammar and comparison against the older S1E44 snapshot only. Not a general SQL parser or complete role/configuration recovery verifier. Passwords, VALID UNTIL values, comments/security labels, setting values/database-scoped settings, parameter ACL semantics, omitted builtin grants and managed/custom restore authority remain separate. A selected attributes/membership match does not prove current live source or recovered execution/security behavior. The helper writes a public code copy and private receipt locally; it does not modify original backup artifacts. Root does not receive real customer/SQL/credential bytes.",
+      "official_guidance": [
+        "https://raw.githubusercontent.com/postgres/postgres/REL_17_STABLE/src/bin/pg_dump/pg_dumpall.c",
+        "https://www.postgresql.org/docs/17/sql-grant.html",
+        "https://www.postgresql.org/docs/17/app-pg-dumpall.html"
+      ],
+      "validation": "Ten meaningful synthetic Node tests PASS: exact membership omission/flags/role attributes; same-count grantor/ADMIN/INHERIT/SET and role privilege/limit mutations; duplicate/missing grants; SQL lookalikes within nested comments/escaped/dollar literals; malformed/unsupported directives/password/SQL shapes; setting-value non-equivalence scope; same-size altered role/archive private binding; sanitized CLI no-value/no-hash errors. Synthetic dummy files/receipts only, no native encryption/real role artifact claims. Prior 47 evidence events/original audit tables, JSON/links/fences, embedded S1E44 snapshot, helper blob pin/source-inline consistency and diff checks validated. Windows/native owner execution pending; unchanged SQL/runtime checks not rerun.",
+      "owner_execution": "PENDING",
+      "selected_role_attributes_and_exported_memberships_verified": false,
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "restore_verified": false,
+      "next_dependency": "Owner local comparison result, then role-wide value/database-specific settings and omitted builtin/managed/key coverage; actual Storage file bytes/configuration/operating decisions remain separate work groups."
     }
   ]
 }

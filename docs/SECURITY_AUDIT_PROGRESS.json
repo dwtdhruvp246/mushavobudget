@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_ROLE_PACKAGE_PASS_BUILTIN_MEMBERSHIP_DIFFERENCE_CLASSIFIED_PRIVATE_COMPARISON_PREPARED_GOOGLE_DEFERRED",
-        "latest_evidence": "S1E49",
+        "status": "IN_PROGRESS_SELECTED_ROLE_ATTRIBUTES_MEMBERSHIPS_MATCH_PRIVATE_SETTINGS_SCOPE_METADATA_PREPARED_GOOGLE_DEFERRED",
+        "latest_evidence": "S1E51",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -258,7 +258,7 @@
           {
             "id": "database_scope",
             "work": "Reconcile exact archive/database/managed/extension/foreign/Vault coverage and separately protect global roles, membership and grant dependencies.",
-            "status": "LOCAL_DATABASE_AND_PRIVATE_ROLE_PACKAGE_FILE_PASS; BUILTIN_MEMBERSHIP_COUNT_CLASSIFIED_S1E49; PRIVATE_ATTRIBUTES_MEMBERSHIPS_COMPARISON_AND_SETTINGS_MANAGED_KEY_SCOPE_PENDING"
+            "status": "LOCAL_DATABASE_ROLE_PACKAGE_PASS_AND_16_SELECTED_ROLE_ATTRIBUTES_21_MEMBERSHIPS_MATCH_S1E50; 15_ROLE_WIDE_COUNTS_MATCH; SETTINGS_VALUES_DATABASE_SCOPE_ACL_MANAGED_KEYS_PENDING_S1E51"
           },
           {
             "id": "storage_bytes",
@@ -438,7 +438,7 @@
           "complete_platform_backup_verified": false,
           "isolated_restore_verified": false
         },
-        "role_membership_count_review": "PG17 source excludes exactly three S1E44 builtin-to-builtin records (pg_monitor memberships); expected exported 21 reconciles reported count. Exact private identities/grantor/ADMIN/INHERIT/SET comparison pending S1E49; omitted builtin/destination grants not recovered or approved.",
+        "role_membership_count_review": "S1E50 owner private tuples now match all 21 expected S1E44 memberships including grantor/ADMIN/INHERIT/SET; three builtin-to-builtin omissions classified. Live source/omitted builtin/destination recovery still unverified.",
         "roles_encryption_handoff": "scripts/security-stage-1-role-encryption.ps1; OWNER_EXECUTED_LOCAL_PACKAGE_FILE_PASS_S1E48",
         "encrypted_roles_package_result": {
           "evidence": "S1E48",
@@ -459,8 +459,40 @@
           "complete_platform_backup_verified": false,
           "isolated_database_restore_verified": false
         },
-        "role_coverage_handoff": "scripts/security-stage-1-role-coverage-check.ps1 and pinned security-stage-1-role-coverage.cjs; PREPARED_OWNER_EXECUTION_PENDING_S1E49",
-        "selected_role_attributes_and_exported_memberships_verified": false
+        "role_coverage_handoff": "scripts/security-stage-1-role-coverage-check.ps1 and pinned security-stage-1-role-coverage.cjs; OWNER_EXECUTED_SELECTED_ATTRIBUTES_MEMBERSHIPS_MATCH_S1E50",
+        "selected_role_attributes_and_exported_memberships_verified": true,
+        "role_coverage_result": {
+          "evidence": "S1E50",
+          "stage_step": "1.2",
+          "result": "PRIVATE_ROLE_ATTRIBUTES_AND_EXPORTED_MEMBERSHIPS_MATCH_S1E44",
+          "project": "kttkospkblwvguuwnhjj",
+          "checked_utc": "2026-10-08T04:50:05.598Z",
+          "source_metadata_checked_utc": "2026-10-08T04:04:45.322523Z",
+          "archive_and_role_files_match_private_receipts": true,
+          "inventoried_role_definitions": 16,
+          "role_names_and_selected_attributes_match_s1e44": true,
+          "source_membership_records": 24,
+          "builtin_to_builtin_memberships_excluded_by_pg_dumpall": 3,
+          "expected_exported_memberships": 21,
+          "parsed_exported_memberships": 21,
+          "exported_grantor_admin_inherit_set_match_s1e44": true,
+          "role_wide_setting_statement_count": 15,
+          "role_wide_setting_counts_match_s1e44": true,
+          "database_scoped_setting_statements_in_role_file": 0,
+          "parameter_acl_statements": 1,
+          "unexamined_metadata_statements": 3,
+          "settings_values_and_database_scope_recovery_verified": false,
+          "parameter_acl_semantics_verified": false,
+          "omitted_builtin_memberships_recovered": false,
+          "independent_login_credentials_verified": false,
+          "live_source_or_isolated_restore_verified": false,
+          "complete_platform_backup_verified": false,
+          "isolated_database_restore_verified": false,
+          "raw_artifacts_uploaded": false
+        },
+        "setting_scope_handoff": "supabase/diagnostics/security_stage_1_setting_scope.sql; PREPARED_OWNER_EXECUTION_PENDING_S1E51",
+        "settings_values_and_database_scope_recovery_verified": false,
+        "parameter_acl_semantics_verified": false
       },
       {
         "id": "1.3",

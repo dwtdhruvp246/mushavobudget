@@ -3031,6 +3031,88 @@
       "complete_platform_backup_created": false,
       "restore_verified": false,
       "next_dependency": "Owner local comparison result, then role-wide value/database-specific settings and omitted builtin/managed/key coverage; actual Storage file bytes/configuration/operating decisions remain separate work groups."
+    },
+    {
+      "id": "S1E50",
+      "stage_step": "1.2",
+      "received_date": "2026-10-08",
+      "source": "Owner supplies git fetch through reviewed f776721 and completed pinned private checker JSON fields directly in chat; no role SQL, settings values, password, private receipt or hashes supplied.",
+      "result": "OWNER_PRIVATE_ROLE_ATTRIBUTES_AND_EXPORTED_MEMBERSHIPS_MATCH_S1E44",
+      "observed_summary": {
+        "stage_step": "1.2",
+        "result": "PRIVATE_ROLE_ATTRIBUTES_AND_EXPORTED_MEMBERSHIPS_MATCH_S1E44",
+        "project": "kttkospkblwvguuwnhjj",
+        "checked_utc": "2026-10-08T04:50:05.598Z",
+        "source_metadata_checked_utc": "2026-10-08T04:04:45.322523Z",
+        "archive_and_role_files_match_private_receipts": true,
+        "inventoried_role_definitions": 16,
+        "role_names_and_selected_attributes_match_s1e44": true,
+        "source_membership_records": 24,
+        "builtin_to_builtin_memberships_excluded_by_pg_dumpall": 3,
+        "expected_exported_memberships": 21,
+        "parsed_exported_memberships": 21,
+        "exported_grantor_admin_inherit_set_match_s1e44": true,
+        "role_wide_setting_statement_count": 15,
+        "role_wide_setting_counts_match_s1e44": true,
+        "database_scoped_setting_statements_in_role_file": 0,
+        "parameter_acl_statements": 1,
+        "unexamined_metadata_statements": 3,
+        "settings_values_and_database_scope_recovery_verified": false,
+        "parameter_acl_semantics_verified": false,
+        "omitted_builtin_memberships_recovered": false,
+        "independent_login_credentials_verified": false,
+        "live_source_or_isolated_restore_verified": false,
+        "complete_platform_backup_verified": false,
+        "isolated_database_restore_verified": false,
+        "raw_artifacts_uploaded": false
+      },
+      "scope": "Owner-tested local selected-role/membership match PASS against earlier S1E44 snapshot: 16 role names/selected superuser/inherit/create-role/create-database/login/replication/bypass-RLS/connection-limit attributes and 21 exact grantor/ADMIN/INHERIT/SET tuples. Private archive/source receipt binding rechecked. This is not root raw-artifact inspection, fresh live catalog/isolated destination proof or full role/configuration recovery.",
+      "settings_scope": "15 role-wide setting statement counts match S1E44 per-role counts, with 0 database-scoped statements in this role file. Counts do not compare values or prove no database-specific source settings. One parameter ACL statement and three unexamined metadata statements remain unverified at semantic/value scope.",
+      "warnings": "No warnings/errors supplied alongside the successful metadata; absence is not independently verified.",
+      "supersedes": "S1E49 native selected-role/exported-membership comparison pending, at older-snapshot selected attribute/tuple scope only. Builtin omissions are classified and 21 expected tuples now match; omitted builtin restoration and broader recovery remain unverified.",
+      "selected_role_attributes_and_exported_memberships_verified": true,
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "restore_verified": false
+    },
+    {
+      "id": "S1E51",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-08",
+      "source": "Root records S1E50 and prepares read-only hosted metadata to split the earlier 10 role/database-setting records and inspect nondefault parameter ACL/builtin omission category without returning values.",
+      "result": "READ_ONLY_SETTING_SCOPE_AND_PARAMETER_ACL_HANDOFF_PREPARED",
+      "handoff": "supabase/diagnostics/security_stage_1_setting_scope.sql; owner preferred PowerShell git fetch/show/Set-Clipboard then intended Supabase SQL Editor",
+      "contract": {
+        "rows": 5,
+        "expected_info_rows": 4,
+        "expected_review_rows": 1,
+        "repeatable_read": true,
+        "read_only": true,
+        "rollback": true,
+        "statement_timeout": "30s",
+        "lock_timeout": "3s",
+        "search_path": "pg_catalog"
+      },
+      "checks_prepared": [
+        "Context/database/version/read-only/isolation with Dashboard project identity requirement",
+        "Split role-wide/database-wide/role-in-database/all-roles-all-databases scopes; role/database identity, key names/counts and unknown/malformed metadata flags without settings values",
+        "Nondefault parameter ACL grantee/grantor/privilege/grant-option metadata, PUBLIC handling and explicit null/unresolved flags without parameter values",
+        "Current builtin-to-builtin membership identities/flags for the omission category, not restoration commands",
+        "REVIEW preserves private archived value/ACL/managed authority/key/Storage/configuration/operating decisions and live drift/isolated recovery gaps"
+      ],
+      "scope_limits": "Source metadata only, not a new backup, exact private value/ACL comparison or recovered target behavior. Keys/counts do not establish archived values. Database-scoped settings require private archive/recovery reconciliation; do not infer absence from role-file zero. Null ACL/config/malformed/unresolved metadata is explicitly flagged rather than treated as complete defaults/zero. Setting/password/customer/function/Vault/credential values are not returned; catalog errors propagate. SQL performs only local transaction settings/read queries and rollback, not role/grant/provider changes.",
+      "official_guidance": [
+        "https://www.postgresql.org/docs/17/catalog-pg-db-role-setting.html",
+        "https://www.postgresql.org/docs/17/catalog-pg-parameter-acl.html",
+        "https://www.postgresql.org/docs/17/functions-info.html",
+        "https://www.postgresql.org/docs/17/app-pg-dumpall.html"
+      ],
+      "validation": "Dedicated disposable PGlite/PostgreSQL fixture PASS: all four setting scopes, key-only omission of role/database/combined/default/private values including equals/malformed/null entries, parameter PUBLIC/grant-option/ALTER SYSTEM and null-ACL preservation, builtin category, empty inventories, denied read-only writes and unsuppressed catalog permission failures. Synthetic catalog mutations occur only in fresh disposable setup, never owner diagnostic. Prior 49 events/original audit rows, exact observed fields, JSON/links/fences and diff checks pass. Actual hosted PostgreSQL 17.6 owner execution pending; unchanged private checker tests/runtime/SQL not rerun.",
+      "owner_execution": "PENDING",
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "restore_verified": false,
+      "next_dependency": "Owner five-row scope/ACL metadata, then exact protected archived settings/ACL/managed/key reconciliation and remaining Storage-byte/configuration/operating decisions; no Google step or repeat local packaging."
     }
   ]
 }

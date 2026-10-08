@@ -1532,7 +1532,7 @@ Next package **only this role SQL and its private manifest** in the existing pro
 
 Source: [security-stage-1-role-encryption.ps1](../scripts/security-stage-1-role-encryption.ps1). Use a privately saved unique nonblank backup passphrase only at the native prompts. Send **only the metadata summary and redacted warnings/errors**; SQL, manifest/receipt contents, settings values, passwords, archives and hashes stay private. The package/file checks do not verify exact memberships/settings or SQL recovery. No Google handoff is reactivated.
 
-## Current role-package result and private comparison — S1E48–S1E49
+## Role-package result and prior private comparison — S1E48–S1E49; completed in S1E50
 
 Owner completes the role package at **2026-10-08T04:31:59.1197194Z**: **1,919 bytes**, **two files**, role/private-manifest binding, wrong-password source-filename denial and **both extracted hashes match**. Record **OWNER-TESTED local package/file PASS**. Password export remains disabled. Exact role/settings recovery, offsite, full platform and isolated restore remain false; no raw artifacts/hashes are supplied. Warnings/errors are not independently checked merely because none are supplied. Existing database component PASS stays retained and Google stays deferred.
 
@@ -1598,6 +1598,39 @@ Role-wide setting statement counts are separate indicators: values and database-
 
 Sources: [private role coverage handoff](../scripts/security-stage-1-role-coverage-check.ps1), [pinned Node checker](../scripts/security-stage-1-role-coverage.cjs) and [synthetic fixture tests](../tests/security-stage-1-role-coverage.test.cjs). Ten meaningful Node fixtures pass for changed flags/grantor/limits, duplicated/missing grants, literal/comment boundaries, unsupported syntax/password directives, setting-value scope and private-byte/sanitized-CLI guards. Dummy receipts/bytes test binding only; no real archive/native encryption proof is inferred. Windows/native owner execution remains pending. Send **only the JSON summary and redacted warnings/errors**. Keep SQL, settings, manifests, receipts, archives and hashes private. Google remains deferred.
 
+## Current private comparison and setting-scope handoff — S1E50–S1E51
+
+Owner completes the pinned checker at **2026-10-08T04:50:05.598Z**. **OWNER-TESTED selected comparison PASS:** role/package files match private receipts; all **16 role names/selected attributes** and all **21 expected exported grantor/ADMIN/INHERIT/SET tuples** match S1E44, after classifying the three builtin-to-builtin omissions. This closes the earlier private selected-role/tuple comparison pending at the **older source snapshot** scope, not root raw-file review, current source drift or isolated recovery.
+
+**15 role-wide setting statement counts match** the earlier per-role counts. The role file has **zero database-scoped setting statements**, **one parameter-ACL statement** and **three unexamined metadata statements**. Exact setting values/database scope, parameter ACL semantics, omitted builtin grants, independent login credentials, live/isolated restoration and full platform recovery remain false. A role-file zero does not prove the source has no database-scoped settings. No private values/hashes/artifacts are supplied and unreported warnings are not independent absence proof. Existing local database/role package checks remain retained; Google stays deferred.
+
+Next split the earlier **10 role/database-setting records** by role-wide, database-wide, role-in-database and any all-role/all-database scope. Return only role/database identities, setting **keys/counts**, incomplete-metadata indicators and exact nondefault parameter ACL grantor/grantee/privilege/grant-option metadata. Include current builtin omission-category memberships to preserve the source/destination distinction. This is **five read-only rows: 4 INFO + 1 REVIEW**, with repeatable-read context, catalog search path, timeouts and rollback. No setting values, customer records, role passwords, function bodies or Vault/credential material are returned. Catalog errors remain errors; null/unresolved/malformed metadata is not replaced by complete default/zero assumptions. This classifies recovery scope; it does not create another backup or execute role/configuration/grant changes.
+
+Use the owner's established SQL handoff:
+
+```powershell
+& {
+    $ErrorActionPreference = "Stop"
+    Set-Location "C:\Users\HP\Desktop\Mushavo Budget"
+    git.exe fetch origin security/stage-1-foundations
+    if ($LASTEXITCODE -ne 0) { throw "Fetch failed." }
+
+    $mushavoSql = git.exe show "FETCH_HEAD:supabase/diagnostics/security_stage_1_setting_scope.sql" | Out-String
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($mushavoSql)) {
+        throw "SQL read failed."
+    }
+
+    Set-Clipboard -Value $mushavoSql -ErrorAction Stop
+    Write-Output "Stage 1.2 setting-scope SQL copied to clipboard."
+    Write-Output "Verify Supabase project kttkospkblwvguuwnhjj, paste into SQL Editor and run once."
+    Write-Output "Send all five rows and redacted warnings/errors. Expected: 4 INFO + 1 REVIEW."
+}
+```
+
+Verify Dashboard project **kttkospkblwvguuwnhjj**, paste into its SQL Editor and run once. Send **all five rows and redacted warnings/errors**; INFO/REVIEW are expected metadata states, not five security PASS results. Keep archived SQL/settings values, credentials, manifests and hashes private. No repeat role export/encryption/private comparison or Google action is requested.
+
+The [setting-scope fixture verifier](../scripts/verify-security-stage-1-setting-scope.cjs) passes on disposable PostgreSQL for all four scope categories, key-only privacy with equals/malformed/null entries, parameter PUBLIC/grant-option/ALTER SYSTEM metadata and null ACLs, builtin category, empty inventories, rejected read-only writes and propagated catalog permission errors. Any fixture catalog mutation is fresh disposable setup only; the [owner diagnostic](../supabase/diagnostics/security_stage_1_setting_scope.sql) contains read queries/local transaction settings and rollback. Hosted 17.6 execution/value reconciliation/restore remain pending.
+
 ## Completed owner SQL handoff — retained for reproducibility
 
 
@@ -1632,7 +1665,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. S1E42 records completed local receipt/hash/TOC indicators; S1E44 completes source dependency metadata. S1E46 completes the private role-export native/basic checks. S1E48 completes private role-component encryption/file checks. S1E49 classifies the three builtin membership omissions and prepares exact private selected-role/membership comparison; execute that pinned local checker, review its outcome, then continue settings/managed/Vault/Storage-byte/Auth/Edge/provider recovery coverage and private credential handling. No repeat installation, connection test, database-component encryption or Docker/CLI-help prerequisite is requested.
+1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. S1E42 records completed local receipt/hash/TOC indicators; S1E44 completes source dependency metadata. S1E46 completes the private role-export native/basic checks. S1E48 completes private role-component encryption/file checks. S1E50 completes exact private selected-role attributes and 21 expected memberships against S1E44, with 15 role-wide counts matching. Execute the S1E51 read-only setting-scope/parameter ACL metadata handoff, review all five rows, then continue protected value/ACL/managed/Vault/Storage-byte/Auth/Edge/provider recovery coverage and private credential handling. No repeat installation, connection test, database-component encryption or Docker/CLI-help prerequisite is requested.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Carry the unverified offsite copy and Google deferral into the stage report/final action plan. No replacement destination is chosen by this decision. Later reconcile protected destination, recovery targets, frequency/retention and completion/failure records using actual volume and owner preferences; a schema file or object metadata alone remains insufficient.

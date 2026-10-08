@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_SELECTED_ROLE_ATTRIBUTES_MEMBERSHIPS_MATCH_PRIVATE_SETTINGS_SCOPE_METADATA_PREPARED_GOOGLE_DEFERRED",
-        "latest_evidence": "S1E51",
+        "status": "IN_PROGRESS_SETTING_SCOPE_METADATA_COMPLETE_PRIVATE_KEY_DELTA_TOC_CHECK_PREPARED_GOOGLE_DEFERRED",
+        "latest_evidence": "S1E53",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -490,9 +490,30 @@
           "isolated_database_restore_verified": false,
           "raw_artifacts_uploaded": false
         },
-        "setting_scope_handoff": "supabase/diagnostics/security_stage_1_setting_scope.sql; PREPARED_OWNER_EXECUTION_PENDING_S1E51",
+        "setting_scope_handoff": "supabase/diagnostics/security_stage_1_setting_scope.sql; OWNER_EXECUTED_METADATA_COMPLETE_S1E52",
         "settings_values_and_database_scope_recovery_verified": false,
-        "parameter_acl_semantics_verified": false
+        "parameter_acl_semantics_verified": false,
+        "setting_scope_result": {
+          "evidence": "S1E52",
+          "checked_utc": "2026-10-08T05:28:30.392498+00:00",
+          "rows": 5,
+          "info_rows": 4,
+          "review_rows": 1,
+          "role_wide_records": 9,
+          "role_wide_setting_entries": 15,
+          "database_wide_records": 1,
+          "database_wide_setting_keys": [
+            "app.settings.jwt_exp"
+          ],
+          "incomplete_metadata_records": 0,
+          "parameter_acl_records": 1,
+          "parameter_acl_entries": 3,
+          "builtin_membership_records": 3,
+          "exact_archived_values_or_recovery_verified": false
+        },
+        "setting_coverage_handoff": "scripts/security-stage-1-setting-coverage-check.ps1 and two pinned helpers; PREPARED_OWNER_EXECUTION_PENDING_S1E53",
+        "database_properties_toc_presence_verified": false,
+        "private_setting_key_names_and_parameter_delta_shape_verified": false
       },
       {
         "id": "1.3",

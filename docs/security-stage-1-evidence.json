@@ -3113,6 +3113,316 @@
       "complete_platform_backup_created": false,
       "restore_verified": false,
       "next_dependency": "Owner five-row scope/ACL metadata, then exact protected archived settings/ACL/managed/key reconciliation and remaining Storage-byte/configuration/operating decisions; no Google step or repeat local packaging."
+    },
+    {
+      "id": "S1E52",
+      "stage_step": "1.2",
+      "received_date": "2026-10-08",
+      "source": "Owner supplies all five hosted settings-scope diagnostic rows directly in chat; no settings values, parameter values, private SQL, backup files, receipts, passwords or hashes supplied.",
+      "result": "OWNER_READ_ONLY_SETTING_SCOPE_AND_PARAMETER_ACL_METADATA_COMPLETE",
+      "observed_rows": [
+        {
+          "check_name": "01 Read-only settings-scope context",
+          "status": "INFO",
+          "details": {
+            "checked_at": "2026-10-08T05:28:30.392498+00:00",
+            "server_version": "17.6",
+            "current_database": "postgres",
+            "transaction_isolation": "repeatable read",
+            "transaction_read_only": "on",
+            "dashboard_project_identity": "Owner verifies kttkospkblwvguuwnhjj; SQL does not prove project identity"
+          }
+        },
+        {
+          "check_name": "02 Role database and combined setting scope without values",
+          "status": "INFO",
+          "details": {
+            "scope": "Keys/counts/scope only. Roles-only exports role-wide non-pg-role settings; database scopes, exact archived values and any unresolved metadata require separate private reconciliation.",
+            "records": [
+              {
+                "role": null,
+                "scope": "database_wide",
+                "database": "postgres",
+                "setting_keys": [
+                  "app.settings.jwt_exp"
+                ],
+                "setting_count": 1,
+                "identities_resolved": true,
+                "config_array_present": true,
+                "unrecognized_entries": 0,
+                "role_wide_export_candidate": false,
+                "database_scoped_requires_reconciliation": true
+              },
+              {
+                "role": "anon",
+                "scope": "role_wide",
+                "database": null,
+                "setting_keys": [
+                  "statement_timeout"
+                ],
+                "setting_count": 1,
+                "identities_resolved": true,
+                "config_array_present": true,
+                "unrecognized_entries": 0,
+                "role_wide_export_candidate": true,
+                "database_scoped_requires_reconciliation": false
+              },
+              {
+                "role": "authenticated",
+                "scope": "role_wide",
+                "database": null,
+                "setting_keys": [
+                  "statement_timeout"
+                ],
+                "setting_count": 1,
+                "identities_resolved": true,
+                "config_array_present": true,
+                "unrecognized_entries": 0,
+                "role_wide_export_candidate": true,
+                "database_scoped_requires_reconciliation": false
+              },
+              {
+                "role": "authenticator",
+                "scope": "role_wide",
+                "database": null,
+                "setting_keys": [
+                  "session_preload_libraries",
+                  "statement_timeout",
+                  "lock_timeout"
+                ],
+                "setting_count": 3,
+                "identities_resolved": true,
+                "config_array_present": true,
+                "unrecognized_entries": 0,
+                "role_wide_export_candidate": true,
+                "database_scoped_requires_reconciliation": false
+              },
+              {
+                "role": "postgres",
+                "scope": "role_wide",
+                "database": null,
+                "setting_keys": [
+                  "search_path"
+                ],
+                "setting_count": 1,
+                "identities_resolved": true,
+                "config_array_present": true,
+                "unrecognized_entries": 0,
+                "role_wide_export_candidate": true,
+                "database_scoped_requires_reconciliation": false
+              },
+              {
+                "role": "supabase_admin",
+                "scope": "role_wide",
+                "database": null,
+                "setting_keys": [
+                  "search_path",
+                  "log_statement"
+                ],
+                "setting_count": 2,
+                "identities_resolved": true,
+                "config_array_present": true,
+                "unrecognized_entries": 0,
+                "role_wide_export_candidate": true,
+                "database_scoped_requires_reconciliation": false
+              },
+              {
+                "role": "supabase_auth_admin",
+                "scope": "role_wide",
+                "database": null,
+                "setting_keys": [
+                  "search_path",
+                  "idle_in_transaction_session_timeout",
+                  "log_statement"
+                ],
+                "setting_count": 3,
+                "identities_resolved": true,
+                "config_array_present": true,
+                "unrecognized_entries": 0,
+                "role_wide_export_candidate": true,
+                "database_scoped_requires_reconciliation": false
+              },
+              {
+                "role": "supabase_read_only_user",
+                "scope": "role_wide",
+                "database": null,
+                "setting_keys": [
+                  "default_transaction_read_only"
+                ],
+                "setting_count": 1,
+                "identities_resolved": true,
+                "config_array_present": true,
+                "unrecognized_entries": 0,
+                "role_wide_export_candidate": true,
+                "database_scoped_requires_reconciliation": false
+              },
+              {
+                "role": "supabase_realtime_admin",
+                "scope": "role_wide",
+                "database": null,
+                "setting_keys": [
+                  "search_path"
+                ],
+                "setting_count": 1,
+                "identities_resolved": true,
+                "config_array_present": true,
+                "unrecognized_entries": 0,
+                "role_wide_export_candidate": true,
+                "database_scoped_requires_reconciliation": false
+              },
+              {
+                "role": "supabase_storage_admin",
+                "scope": "role_wide",
+                "database": null,
+                "setting_keys": [
+                  "search_path",
+                  "log_statement"
+                ],
+                "setting_count": 2,
+                "identities_resolved": true,
+                "config_array_present": true,
+                "unrecognized_entries": 0,
+                "role_wide_export_candidate": true,
+                "database_scoped_requires_reconciliation": false
+              }
+            ],
+            "record_count": 10,
+            "records_by_scope": {
+              "role_wide": 9,
+              "database_wide": 1
+            },
+            "incomplete_metadata_records": 0,
+            "role_wide_export_candidate_records": 9,
+            "role_wide_export_candidate_known_setting_entries": 15
+          }
+        },
+        {
+          "check_name": "03 Nondefault parameter permissions without parameter values",
+          "status": "INFO",
+          "details": {
+            "scope": "Nondefault catalog permissions only; no parameter values. Null ACL is flagged and is not an empty/effective-default privilege proof. Exact exported ACL semantics and managed restore authority remain unverified.",
+            "parameters": [
+              {
+                "entries": [
+                  {
+                    "grantee": "supabase_admin",
+                    "grantor": "supabase_admin",
+                    "privilege": "ALTER SYSTEM",
+                    "grant_option": false,
+                    "grantee_resolved": true,
+                    "grantor_resolved": true
+                  },
+                  {
+                    "grantee": "supabase_admin",
+                    "grantor": "supabase_admin",
+                    "privilege": "SET",
+                    "grant_option": false,
+                    "grantee_resolved": true,
+                    "grantor_resolved": true
+                  },
+                  {
+                    "grantee": "supabase_realtime_admin",
+                    "grantor": "supabase_admin",
+                    "privilege": "SET",
+                    "grant_option": false,
+                    "grantee_resolved": true,
+                    "grantor_resolved": true
+                  }
+                ],
+                "parameter": "log_min_messages",
+                "acl_is_null": false
+              }
+            ],
+            "parameter_acl_records": 1
+          }
+        },
+        {
+          "check_name": "04 Current builtin-to-builtin membership metadata",
+          "status": "INFO",
+          "details": {
+            "scope": "Current metadata for the roles-only omission category; not a command to restore managed builtin grants and not recovered destination behavior.",
+            "memberships": [
+              {
+                "member": "pg_monitor",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "pg_read_all_settings",
+                "inherit_option": true,
+                "grantor_resolved": true
+              },
+              {
+                "member": "pg_monitor",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "pg_read_all_stats",
+                "inherit_option": true,
+                "grantor_resolved": true
+              },
+              {
+                "member": "pg_monitor",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "pg_stat_scan_tables",
+                "inherit_option": true,
+                "grantor_resolved": true
+              }
+            ]
+          }
+        },
+        {
+          "check_name": "05 Private settings and recovery proof still required",
+          "status": "REVIEW",
+          "details": {
+            "remaining": "Privately reconcile exact role-wide and database-scoped archived values, parameter ACL semantics, omitted builtin/managed authority, credentials/keys, Storage bytes and provider configuration; live source drift and isolated recovery remain open. Google stays deferred.",
+            "backup_created_by_this_check": false,
+            "restore_verified_by_this_check": false
+          }
+        }
+      ],
+      "scope": "Four INFO plus one REVIEW, not control/backup/recovery PASS. Current source snapshot splits 10 records into nine role-wide records with 15 known entries plus one database-wide postgres setting app.settings.jwt_exp. Identities/config arrays resolve and no malformed metadata is flagged; no role-in-database or all-role-all-database record appears in this snapshot. Exact archived key/value scope still requires private evidence.",
+      "parameter_scope": "One nonnull log_min_messages ACL: self-granted supabase_admin SET and ALTER SYSTEM plus supabase_admin-granted SET to supabase_realtime_admin, all without grant option. PostgreSQL 17 source dumps deltas from bootstrap-owner defaults; this source shape is consistent with that model but OID-10/default-owner identity, exact private exported delta and effective/recovered semantics are not verified by these rows.",
+      "builtin_scope": "The same three pg_monitor builtin memberships remain visible with supabase_admin grantor, ADMIN false, INHERIT/SET true. Current metadata is not recovered destination behavior or authorization to change builtin grants.",
+      "project_identity": "Intended project kttkospkblwvguuwnhjj is owner context. The SQL does not independently prove Dashboard project identity.",
+      "supersedes": "S1E51 hosted five-row execution pending, at read-only metadata scope only. S1E50 private key/value/ACL/database-scope/recovery limits are retained.",
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "restore_verified": false
+    },
+    {
+      "id": "S1E53",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-08",
+      "source": "Root records S1E52 and prepares a private offline check of the already retained role/database artifacts; no repeat export, encryption or hosted SQL requested.",
+      "result": "PINNED_PRIVATE_SETTING_KEY_PARAMETER_DELTA_AND_DATABASE_TOC_COVERAGE_HANDOFF_PREPARED",
+      "handoff": "scripts/security-stage-1-setting-coverage-check.ps1; inline PowerShell fetch/show of two pinned CJS files, native node.exe; no .ps1 invocation or policy change",
+      "public_helper_git_blobs": {
+        "scripts/security-stage-1-role-coverage.cjs": "7e7aa5f6cb1463fb5141939b2b847d9bcd880502",
+        "scripts/security-stage-1-setting-coverage.cjs": "18ee5bed07835aec0432f690bf5d6ede2dd1324c"
+      },
+      "checks_prepared": [
+        "Existing private NTFS owner/DACL and unredirected ancestor checks",
+        "Private receipt/hash binding of exact database archive/dump/TOC/manifest and existing role archive/SQL/manifest",
+        "All 15 role-wide setting key identities across nine roles compared with S1E52; literal values discarded, never evaluated or printed",
+        "Exact single added GRANT SET ON PARAMETER log_min_messages TO supabase_realtime_admin shape, without grant option or changed session authorization; not default-owner/effective ACL proof",
+        "Exact intended postgres DATABASE and DATABASE PROPERTIES TOC entry counts; entry presence alone never proves app.settings.jwt_exp/value content",
+        "Private files unchanged during check; unique private JSON receipt with withheld hashes; stdout summary or sanitized REVIEW only"
+      ],
+      "scope_limits": "All native owner execution pending. A PASS would be local key/delta-shape/TOC-entry coverage against S1E52, not archived values, source drift, database-property key/value content, bootstrap/default-owner association, effective ACL semantics, managed/builtin recovery or isolated restore. Known database-wide setting remains private value/content reconciliation and recovery scope. No SQL is executed/generated, no PostgreSQL connection/extraction/password/upload/cleanup occurs. Original dirty checkout preserved; tool copies and unique private receipt are the only local writes. Google remains deferred.",
+      "official_guidance": [
+        "https://raw.githubusercontent.com/postgres/postgres/REL_17_STABLE/src/bin/pg_dump/pg_dump.c",
+        "https://raw.githubusercontent.com/postgres/postgres/REL_17_STABLE/src/bin/pg_dump/pg_dumpall.c",
+        "https://raw.githubusercontent.com/postgres/postgres/REL_17_STABLE/src/bin/pg_dump/dumputils.c",
+        "https://raw.githubusercontent.com/postgres/postgres/REL_17_STABLE/src/backend/utils/adt/acl.c"
+      ],
+      "validation": "Nine meaningful synthetic Node tests PASS: exact role keys/parameter delta with full proof false; different values/list values/literal SQL lookalikes cannot become value proof or leak; same-count role/key/duplicate and scoped settings detected; changed privilege/recipient/parameter/grant option/session authorization plus extra/revoked grants denied delta match; malformed/incomplete SQL fails; exact database TOC identities distinguish missing/duplicate/other/comment entries with key/value proof false; same-size private TOC/dump changes fail synthetic receipt binding; CLI malformed private metadata prints no content/value/hash/path. Dummy byte buffers prove receipt binding, not real 7z/PostgreSQL validity. Prior 51 events/original audit tables/JSON/links/fences/exact inline handoff/diff checked. Existing role helper and hosted SQL remain unchanged and are not rerun. Windows/real artifacts not available to root; owner execution pending.",
+      "owner_execution": "PENDING",
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "restore_verified": false,
+      "next_dependency": "Owner private summary/review, then actual Storage bytes and protected provider/credential configuration. Exact settings values/bootstrap/managed/key/source-drift issues remain explicit recovery/final remediation dependencies; no additional Google work or repeat packaging."
     }
   ]
 }

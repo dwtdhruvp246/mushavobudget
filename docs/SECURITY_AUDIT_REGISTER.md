@@ -66,6 +66,8 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 
 **S1E58 / 1.2.2 current handoff:** bounded owner-local actual Storage bytes/current metadata/download/hash/local encrypted-package verification prepared; ten targeted synthetic tests pass, actual owner Windows/Storage/native execution pending. File paths/customer bytes/keys/hashes stay private. One planned outcome then 1.2.3/1.2.4; failures/drift/unavailable prerequisites carried, no DB/role diagnostics or Google work. Full platform backup/isolated recovery/F16 remains open. Original 123 baseline rows unchanged.
 
+**Latest S1E59–S1E60 / 1.2:** owner current Storage download/size-local-hash/inventory PASS (four buckets, two files, 771,059 bytes, zero download failures); encrypted archive extraction failed, cause unknown, packaging REVIEW carried. Stop the planned pass without rerun. Two of four work items DONE WITH CARRY-FORWARD; two remain. Current request: one protected provider/configuration/key recovery inventory, categorical statuses only, then operating decisions/checkpoint summary. Full backup/isolated restore/F16 stays open; Google deferred; original 123 rows unchanged.
+
 ## Sections 1–25
 
 | Section | Applies | Status / test result | Evidence and next verification | Finding | Stage | Owner |

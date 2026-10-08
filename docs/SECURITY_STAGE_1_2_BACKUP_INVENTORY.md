@@ -4,22 +4,51 @@ Started 7 October 2026 after owner-tested normal sign-ins completed in 1.1. Stag
 
 > **Standing owner decision — S1E40:** Google Drive backup troubleshooting/upload/download is **DEFERRED**. Earlier Google commands below are historical and are not current execution requests. Keep existing local artifacts/private passphrase protected; no local/cloud cleanup is requested. Local export/encryption PASS remain, while verified offsite copy, earlier cloud scope/privacy and full coverage/recovery stay open for final remediation/re-audit. Stage 1.2 remains in progress.
 
-## Current finite checklist — S1E59–S1E60: four work items, two done with carry-forward, two remaining
+## Current finite checklist — S1E61–S1E62: four work items, three done with carry-forward, one remaining
 
-The owner asks for a clear finish line after repeated small checks. **1.2 has four work items total. Database/roles and the planned Storage-byte pass are now DONE WITH CARRY-FORWARD. Two work items remain: configuration/credentials inventory and operating decisions/checkpoint summary.** Counts identify work items, not a guaranteed number of commands. Each remaining item gets one planned consolidated evidence/decision pass; record its actual outcome and carry new FAIL/UNSURE/BLOCKED/DECISION items rather than opening more diagnostic/repair branches automatically. This applies the owner's earlier instruction to resolve residuals at the end and then re-audit.
+The owner asks for a clear finish line after repeated small checks. **1.2 has four work items total. Database/roles, the planned Storage-byte pass and the configuration/credential inventory are DONE WITH CARRY-FORWARD. Only operating decisions/checkpoint summary remains.** Counts identify work items, not a guaranteed number of commands. Each remaining item gets one planned consolidated evidence/decision pass; record its actual outcome and carry new FAIL/UNSURE/BLOCKED/DECISION items rather than opening more diagnostic/repair branches automatically. This applies the owner's earlier instruction to resolve residuals at the end and then re-audit.
 
 | Work item | Status / finite scope |
 |---|---|
 | 1.2.1 Database/roles component exports and local checks | **DONE WITH CARRY-FORWARD.** Owner local export/encryption/file binding and selected role/membership/key/grant checks retained; corrected full TOC entry presence now passes. Exact property/setting values, effective/default/managed/builtin/key/source-drift and recovered behavior stay open. |
 | 1.2.2 Actual Storage file bytes | **DONE WITH CARRY-FORWARD — S1E59.** Four buckets/two downloads/771,059 bytes, matching inventories/sizes/local hashes. Package extraction failed; encrypted package proof remains REVIEW, cause unknown. No rerun requested. |
-| 1.2.3 Protected provider configuration and recovery credentials | **CURRENT OWNER BATCH — S1E60.** One consolidated private inventory below; only categorical statuses shared. Missing/partial/unknown dependencies carried. |
-| 1.2.4 Backup operating decisions and step checkpoint summary | **PENDING.** One consolidated frequency/retention/data-loss/recovery-time/completion-failure decision batch, then the 1.2 checkpoint summary. Undecided/unavailable choices stay recorded. |
+| 1.2.3 Protected provider configuration and recovery credentials | **DONE WITH CARRY-FORWARD — S1E61.** Six owner-reported SAVED, Auth PARTIAL, Cron/Vault/integrations UNSURE. Protected copy contents/independent recovery untested. |
+| 1.2.4 Backup operating decisions and step checkpoint summary | **CURRENT — S1E62.** One proposed operating-target batch below; owner chooses/changes/marks undecided, then issue checkpoint summary and advance 1.3 with gaps. |
 
 **S1E56 completed result:** `DATABASE_DEFINITION_AND_PROPERTIES_FULL_TOC_PRESENT` at **2026-10-08T09:56:42.880Z**. The original archive/three source files match the private receipt; native list/verbose exits **0**, messages **false**, intended database header **true**, full TOC **2,329** entries, intended DATABASE **1** and DATABASE PROPERTIES **1**. The old selected-list counts remain **0/0** by design. Original component files remain unchanged; SQL generated/executed=false, connection=false, raw artifacts uploaded=false. This completes the previously pending corrected listing at **entry-presence PASS only**. It confirms the audit counter's selected-list mistake; it does not establish a missing/corrupt backup.
 
-Required app.settings.jwt_exp key/value content, exact settings, default/bootstrap/effective ACL and managed/key recovery, source drift and isolated restoration remain unverified. **Complete platform backup=false; isolated restore=false; F16/release gates stay open.** Finish the step checkpoint after the remaining configuration-inventory and operating-decision outcomes/actions are recorded, then advance to **1.3**. The isolated recovery drill is **1.4**; the detailed Stage 1 completion report remains **1.6**. Closing an audit checkpoint with gaps does not meet full protection acceptance or erase them. Google remains deferred; no more 1.2 database/role diagnostics or repeat exports/packaging are currently requested. S1E57 was the original count-only decision; the current S1E60 categorical inventory below supersedes earlier execution handoffs.
+Required app.settings.jwt_exp key/value content, exact settings, default/bootstrap/effective ACL and managed/key recovery, source drift and isolated restoration remain unverified. **Complete platform backup=false; isolated restore=false; F16/release gates stay open.** Finish the step checkpoint after the final operating-decision outcome/actions and checkpoint summary are recorded, then advance to **1.3**. The isolated recovery drill is **1.4**; the detailed Stage 1 completion report remains **1.6**. Closing an audit checkpoint with gaps does not meet full protection acceptance or erase them. Google remains deferred; no more 1.2 database/role diagnostics or repeat exports/packaging are currently requested. S1E57 was the original count-only decision; the current S1E60 categorical inventory below supersedes earlier execution handoffs.
 
-## Current result and next owner batch — S1E59–S1E60 / 1.2.3
+## Current inventory outcome and final decision batch — S1E61–S1E62 / 1.2.4
+
+Owner replies to all eight categories: **six SAVED, one PARTIAL, one UNSURE**. `done` maps to the prior SAVED reply contract (owner-reported protected recovery copy only). The assistant does not inspect private files/credentials or verify completeness, independent access, source/deployment parity or restored behavior. Auth copy completion and Cron/Vault/integration uncertainty are carried without new diagnostic loops. Three work items now have outcomes; only **1.2.4 operating decisions/checkpoint summary remains**.
+
+| # | Category | Owner categorical status |
+|---|---|---|
+| 1 | Supabase database/API recovery | SAVED |
+| 2 | Supabase Auth configuration | PARTIAL |
+| 3 | Zoho SMTP | SAVED |
+| 4 | Edge Functions | SAVED |
+| 5 | Cron, Vault and integrations | UNSURE |
+| 6 | Cloudflare hosting/domain/DNS | SAVED |
+| 7 | GitHub deployment recovery | SAVED |
+| 8 | Account and backup access recovery | SAVED |
+
+**Proposed targets — owner decision pending, not an active policy or achieved guarantee:**
+
+| Decision | Proposed target |
+|---|---|
+| Frequency | Daily intended component backup; also before significant schema/configuration changes. |
+| Retention | 30 days of protected dated backup versions. No deletion/cleanup is authorized by this proposal. |
+| Maximum acceptable data loss | 24-hour target (recovery point objective). |
+| Recovery time | Working service within 24-hour target; unproved until the isolated recovery drill. |
+| Completion/failure handling | Owner responsible; record date/components/outcome after each planned run; flag missed/incomplete/failed components and review same day, preserving last verified copies. |
+
+Owner may use these targets, specify changes, or leave choices undecided. Frequency is an intended requirement, not a newly enabled schedule; automatic execution/alerts are not configured by this batch. Retention concerns backup artifacts, not a settled customer-data/legal retention policy. Daily timing cannot deliver a reliable 24-hour data-loss objective until complete scheduled verified backups and recovery dependencies are established. Current offsite/Storage package/Auth/integration and exact setting/managed/key gaps remain open.
+
+Once that single decision batch is recorded, issue the **1.2 checkpoint summary and move to 1.3** with gaps. No more automatic database/role/Storage/provider diagnostics in 1.2. Provisional checkpoint: DB/role components local scope PASS with recovery gaps; current Storage bytes local scope PASS, encrypted package REVIEW; six protected configuration categories owner-reported SAVED, Auth PARTIAL and integrations UNSURE; operating targets DECISION pending. Full platform backup/isolated restore/F16/release gates remain open; Google stays deferred; detailed Stage 1 report is still 1.6 and final remediation/full re-audit remains required.
+
+## Prior Storage result and configuration handoff — S1E59–S1E60; batch completed in S1E61
 
 **Storage result at 2026-10-08T10:48:13.621Z: PARTIAL overall.** The owner reports four buckets/two objects, both downloaded, **771,059 bytes**, zero failed objects, complete matching before/after inventories, baseline bucket scope present and matching recorded sizes/reread local hashes. This is actual owner-local current-byte/file-integrity evidence, not assistant access to customer files. `STORAGE_COMPONENT_REVIEW` retains `ARCHIVE_EXTRACT_FAILED`; encrypted-package/extracted-hash proof is false. The native message says it cannot open the encrypted archive and asks whether the password is wrong, with zero files/bytes from that failed archive operation. **The error does not establish the cause.** Do not claim archive corruption, a definitely wrong password or a verified final encrypted package. Existing source files/partial archive/receipts stay privately retained. No retry, password investigation, repackage, cleanup or Google action is currently requested.
 

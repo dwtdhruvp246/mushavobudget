@@ -3757,6 +3757,119 @@
       "complete_platform_backup_verified": false,
       "isolated_restore_verified": false,
       "validation": "Documentation-only owner-result/next-inventory update. Prior 58 events and original 123 audit/20 finding table rows unchanged; exact owner fields/timestamp and two-of-four counts reconciled. JSON/local links/fences/diff/published tree checks pass. Existing helpers/tests/SQL/runtime/native tooling unchanged and not redundantly rerun."
+    },
+    {
+      "id": "S1E61",
+      "stage_step": "1.2",
+      "work_item": "1.2.3",
+      "received_date": "2026-10-08",
+      "source": "Owner replies to all eight protected configuration/credential inventory categories.",
+      "result": "OWNER_CONFIGURATION_INVENTORY_SIX_SAVED_ONE_PARTIAL_ONE_UNSURE",
+      "observed_categories": [
+        {
+          "id": "1",
+          "area": "Supabase database/API recovery",
+          "owner_reply": "done",
+          "status": "SAVED"
+        },
+        {
+          "id": "2",
+          "area": "Supabase Auth configuration",
+          "owner_reply": "half done. need to still work on it.",
+          "status": "PARTIAL"
+        },
+        {
+          "id": "3",
+          "area": "Zoho SMTP",
+          "owner_reply": "done",
+          "status": "SAVED"
+        },
+        {
+          "id": "4",
+          "area": "Edge Functions",
+          "owner_reply": "done",
+          "status": "SAVED"
+        },
+        {
+          "id": "5",
+          "area": "Cron, Vault and integrations",
+          "owner_reply": "i dont know",
+          "status": "UNSURE"
+        },
+        {
+          "id": "6",
+          "area": "Cloudflare hosting/domain/DNS",
+          "owner_reply": "done",
+          "status": "SAVED"
+        },
+        {
+          "id": "7",
+          "area": "GitHub deployment recovery",
+          "owner_reply": "done",
+          "status": "SAVED"
+        },
+        {
+          "id": "8",
+          "area": "Account and backup access recovery",
+          "owner_reply": "done",
+          "status": "SAVED"
+        }
+      ],
+      "scope": "Owner categorical report: done maps to SAVED under S1E60 reply contract. Protected copy contents/completeness, secret availability, independent provider access and effective recovery are not inspected or tested.",
+      "saved_categories": 6,
+      "partial_categories": 1,
+      "unsure_categories": 1,
+      "carry_forward": [
+        "Supabase Auth configuration recovery copy remains PARTIAL; missing subsettings unspecified.",
+        "Cron/Vault/currency-provider/Web Push/VAPID integration recovery material remains UNSURE; presence/use/completeness not established."
+      ],
+      "work_item_status": "DONE_WITH_CARRY_FORWARD",
+      "remaining_work_items": 1,
+      "stopping_rule": "The one categorical batch has an outcome. Carry Auth/integration gaps rather than initiate a new settings/secret diagnostic loop. Move directly to 1.2.4 decisions/checkpoint summary.",
+      "complete_platform_backup_verified": false,
+      "isolated_restore_verified": false,
+      "private_values_or_artifacts_received": false
+    },
+    {
+      "id": "S1E62",
+      "stage_step": "1.2",
+      "work_item": "1.2.4",
+      "prepared_date": "2026-10-08",
+      "result": "FINAL_1_2_OPERATING_TARGET_BATCH_PROPOSED_OWNER_DECISION_PENDING",
+      "proposed_targets": [
+        {
+          "id": "frequency",
+          "proposal": "DAILY",
+          "scope": "Intended full database/roles, current Storage bytes and protected configuration components; additionally before significant schema/configuration changes."
+        },
+        {
+          "id": "retention",
+          "proposal": "30_DAYS",
+          "scope": "Protected dated backup versions for 30 days; no automated deletion/cleanup authorized. Separate customer-data retention/legal policy remains later work."
+        },
+        {
+          "id": "maximum_data_loss",
+          "proposal": "24_HOURS_TARGET",
+          "scope": "Proposed recovery point objective; no guarantee from current incomplete/offsite-deferred backups."
+        },
+        {
+          "id": "recovery_time",
+          "proposal": "24_HOURS_TARGET",
+          "scope": "Proposed time to restore working service; actual recoverability/time requires the isolated 1.4 drill."
+        },
+        {
+          "id": "completion_and_failure_owner",
+          "proposal": "OWNER_RESPONSIBLE",
+          "scope": "Maintain date/component/outcome record after each planned run; treat incomplete/missed/failed components as failures, preserve last verified copies and review same day. Automatic execution/alerts are not enabled by this proposal."
+        }
+      ],
+      "proposal_status": "NOT_OWNER_SELECTED_NOT_ACTIVE_POLICY",
+      "owner_reply_contract": "Owner can use these targets, specify changes, or leave items undecided. Record actual choices/decision gaps and issue 1.2 checkpoint summary; then advance to 1.3 with gaps.",
+      "remaining_work_items": 1,
+      "scope": "Operational recommendations only. No job/alert/retention cleanup/provider/resource is created or enabled; Google deferred. Data-loss/recovery-time values are objectives, not current achieved guarantees.",
+      "validation": "Documentation-only owner inventory/proposed final batch update: prior 60 events and original 123 audit/20 finding rows unchanged; exact eight replies/statuses and three-of-four work items reconciled. JSON/links/fences/diff/exact published tree checks; helper/tests/SQL/runtime/native unchanged, no redundant test run.",
+      "complete_platform_backup_verified": false,
+      "isolated_restore_verified": false
     }
   ]
 }

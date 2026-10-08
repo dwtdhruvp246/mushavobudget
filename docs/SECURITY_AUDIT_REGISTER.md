@@ -68,6 +68,8 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 
 **Latest S1E59–S1E60 / 1.2:** owner current Storage download/size-local-hash/inventory PASS (four buckets, two files, 771,059 bytes, zero download failures); encrypted archive extraction failed, cause unknown, packaging REVIEW carried. Stop the planned pass without rerun. Two of four work items DONE WITH CARRY-FORWARD; two remain. Current request: one protected provider/configuration/key recovery inventory, categorical statuses only, then operating decisions/checkpoint summary. Full backup/isolated restore/F16 stays open; Google deferred; original 123 rows unchanged.
 
+**Latest S1E61–S1E62 / 1.2:** one owner provider/configuration/credential batch received: six SAVED, Auth PARTIAL, Cron/Vault/integrations UNSURE; protected contents/completeness/independent recovery untested. Three of four work items DONE WITH CARRY-FORWARD; only operating decisions/checkpoint summary remains. Daily/30-day/24-hour loss/24-hour recovery targets and owner completion/failure handling are proposals pending choices, not schedules/policy/guarantees. Then advance 1.3 with gaps; no diagnostic cascade. Full backup/recovery/F16 open, Google deferred, original 123 rows unchanged.
+
 ## Sections 1–25
 
 | Section | Applies | Status / test result | Evidence and next verification | Finding | Stage | Owner |

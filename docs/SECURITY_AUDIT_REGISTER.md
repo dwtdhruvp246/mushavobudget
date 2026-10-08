@@ -72,6 +72,8 @@ The technical details, original F01–F20 findings, staging design, PowerShell s
 
 **Latest S1E63–S1E65:** owner approved operating targets; [1.2 checkpoint report](SECURITY_STAGE_1_2_CHECKPOINT_REPORT.md) issued, four work-item outcomes/zero remaining, CLOSED WITH CARRY-FORWARD. Stage 1 now active at [1.3 isolated staging](SECURITY_STAGE_1_3_ISOLATED_STAGING.md): read-only actual account capacity/existing target check pending. Targets not schedules/guarantees. Storage package/Auth/integration/exact database/offsite/restore/operational gaps remain; Google deferred; F16/release open. Original 123 baseline rows unchanged.
 
+**Latest S1E66–S1E67 / 1.3:** owner reports only one initial legitimate database/no staging, then separate project creation done and reference dczlddwbtgvfdujgcitb. Distinct from production string only, not independent hosted identity/isolation. One read-only four-row version/extensions/selected empty-count preflight prepared; seven meaningful disposable cases PASS, owner hosted execution pending. No application initialization/configuration/production import/dispatch/restore/cleanup; prior 1.2 checkpoint/gaps remain carried and original 123 rows unchanged.
+
 ## Sections 1–25
 
 | Section | Applies | Status / test result | Evidence and next verification | Finding | Stage | Owner |

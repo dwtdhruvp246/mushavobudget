@@ -3949,6 +3949,48 @@
       "scope": "Choose hosted versus local isolation only after capacity/identity/prerequisites; no new project/purchase/pause/delete/upgrade, provider configuration, production customer import, dispatch/schedule, restore or APK action. Synthetic data and controlled inboxes only; staging frontend/Auth/Storage/Edge secrets must not use production.",
       "complete_platform_backup_verified": false,
       "isolated_restore_verified": false
+    },
+    {
+      "id": "S1E66",
+      "stage_step": "1.3",
+      "received_date": "2026-10-08",
+      "source": "Owner clarifies there was no staging project and only one legitimate Supabase database called Mushavo Budget; after separate Free staging creation instructions replies done and provides dczlddwbtgvfdujgcitb.",
+      "result": "OWNER_REPORTED_SEPARATE_STAGING_PROJECT_CREATED_REFERENCE_RECEIVED",
+      "prior_capacity": {
+        "active_project_owner_report": "Only one legitimate database named Mushavo Budget",
+        "existing_staging": "NO",
+        "paused_count": "NOT_REPORTED"
+      },
+      "intended_staging_reference": "dczlddwbtgvfdujgcitb",
+      "production_reference": "kttkospkblwvguuwnhjj",
+      "references_differ": true,
+      "creation_status": "OWNER_REPORTED_DONE",
+      "hosted_project_identity_independently_verified": false,
+      "actual_database_version_or_empty_scope_verified": false,
+      "scope": "Reference provided by owner after creation handoff, not independent API/SQL/browser identity or isolation proof. Generic free quota/source guidance is not a verified current account count. Project creation is owner action; no production/frontend settings changed by assistant."
+    },
+    {
+      "id": "S1E67",
+      "stage_step": "1.3",
+      "prepared_date": "2026-10-08",
+      "result": "OWNER_STAGING_READ_ONLY_PREFLIGHT_PREPARED",
+      "diagnostic": "supabase/diagnostics/security_stage_1_staging_preflight.sql",
+      "fixture_verifier": "scripts/verify-security-stage-1-staging-preflight.cjs",
+      "intended_staging_reference": "dczlddwbtgvfdujgcitb",
+      "owner_handoff": "Inline PowerShell git fetch -> git show FETCH_HEAD diagnostic | Out-String -> Set-Clipboard; owner checks staging Dashboard URL and manually pastes into its SQL Editor.",
+      "result_contract": "Four rows: context INFO, PostgreSQL/extensions INFO, selected public-nonextension/Auth/Storage count-only PASS iff all five counts zero else REVIEW, isolation/initialization REVIEW. Missing table or permission errors are not silently zero/PASS. SQL label is not hosted project identity proof.",
+      "validation": {
+        "disposable_postgresql_cases": 7,
+        "result": "PASS",
+        "scope": "Empty/nonempty five aggregate counters, private-value omission, extension-owned exclusion, read-only write denial, unsuppressed permission and missing-table failures. Synthetic PGlite only; no hosted/customer credentials/data accessed."
+      },
+      "owner_execution": "PENDING",
+      "application_schema_initialized": false,
+      "frontend_backend_isolation_verified": false,
+      "dispatch_verified": false,
+      "scope": "Read-only repeatable-read transaction/30s statement/3s lock timeouts, catalogs and selected aggregate counts only. No user records/paths/function bodies/cron commands/secret values, mutation/import/configuration/restore/dispatch. Source migration initialization/parity and safety planning remain pending preflight results.",
+      "previous_65_events_unchanged": true,
+      "original_123_audit_and_20_finding_rows_unchanged": true
     }
   ]
 }

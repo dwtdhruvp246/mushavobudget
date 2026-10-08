@@ -833,13 +833,27 @@
       {
         "id": "1.3",
         "title": "Isolated staging",
-        "status": "IN_PROGRESS_OWNER_CAPACITY_AND_TARGET_CHECK_PENDING",
-        "latest_evidence": "S1E65",
+        "status": "IN_PROGRESS_OWNER_STAGING_CREATED_READ_ONLY_PREFLIGHT_PENDING",
+        "latest_evidence": "S1E67",
         "instructions": "docs/SECURITY_STAGE_1_3_ISOLATED_STAGING.md",
         "actual_account_capacity_verified": false,
-        "isolated_target_created": false,
+        "isolated_target_created": "OWNER_REPORTED_S1E66",
         "isolated_target_verified": false,
-        "production_data_imported": false
+        "production_data_imported": false,
+        "owner_reported_initial_project_count": 1,
+        "owner_reported_staging_created": true,
+        "intended_staging_reference": "dczlddwbtgvfdujgcitb",
+        "production_reference": "kttkospkblwvguuwnhjj",
+        "references_differ": true,
+        "database_version_and_selected_empty_counts_verified": false,
+        "application_schema_initialized": false,
+        "preflight": {
+          "evidence": "S1E67",
+          "diagnostic": "supabase/diagnostics/security_stage_1_staging_preflight.sql",
+          "owner_execution": "PENDING",
+          "fixture_cases_passed": 7,
+          "hosted_identity_verified_by_sql": false
+        }
       },
       {
         "id": "1.4",

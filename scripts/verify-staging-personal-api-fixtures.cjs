@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict');const {run,parseConfig,denied}=require('./verify-staging-personal-api.cjs');
+const config=JSON.stringify({supabaseUrl:'https://dczlddwbtgvfdujgcitb.supabase.co',supabasePublishableKey:'sb_publishable_FIXTURE_ONLY',vapidPublicKey:''});
+assert.throws(()=>parseConfig(config.replace('dczlddwbtgvfdujgcitb','kttkospkblwvguuwnhjj')));assert.throws(()=>parseConfig(config.replace('sb_publishable_FIXTURE_ONLY','sb_secret_NO')));
+assert.equal(denied({status:500,data:[]}),false);assert.equal(denied({status:401,data:{code:'invalid_jwt'}}),false);assert.equal(denied({status:200,data:[{id:'exposed'}]}),false);assert.equal(denied({status:200,data:[]}),true);assert.equal(denied({status:403,data:{code:'42501'}}),true);
+async function fixture(mode){let index=0;const tokens=[];const item={id:'item',name:'AUDIT-S135-OWNER-ONLY',owner_id:'owner',workspace_id:'workspace',visibility:'personal',amount:20,currency:'USD'};
+ const fetcher=async(url,opts={})=>{let status=200,data;const token=opts.headers?.Authorization?.replace('Bearer ','');if(url.endsWith('/config.js'))return {status:200,text:async()=>config};
+ if(url.includes('/token?')){const b=JSON.parse(opts.body);const id=b.email.startsWith('audit.owner')?'owner':'outsider';tokens.push(id);data={access_token:id,user:{id}};}
+ else if(url.endsWith('/user'))data={id:token};else if(url.includes('/logout')){status=204;data=null;}
+ else if(url.includes('budget_workspaces'))data=[{id:'workspace',owner_id:'owner',workspace_type:'personal'}];
+ else if(url.includes('payment_records'))data=token==='owner'?[{id:'record',owner_id:'owner',amount:20,currency:'USD'}]:[];
+ else if(url.includes('payment_items')){if(token==='owner'){data=mode==='missing_seed'&&url.includes('name=eq')?[]:[item];}else{data=mode==='exposed_read'&&opts.method==='GET'?[item]:mode==='allowed_write'&&opts.method==='PATCH'?[item]:[];if(mode==='server_error'){status=500;data=[];}}}
+ else throw Error('Unexpected fixture route');index++;return {status,text:async()=>data===null?'':JSON.stringify(data)};};
+ const result=await run({fetcher,ownerPassword:'PRIVATE_SENTINEL_OWNER',outsiderPassword:'PRIVATE_SENTINEL_OUTSIDER'});assert(!JSON.stringify(result).includes('PRIVATE_SENTINEL'));assert(!JSON.stringify(result).includes('"owner_id"'));return result;}
+(async()=>{const good=await fixture('good');assert.equal(good.result,'PERSONAL_API_READ_AND_NOOP_UPDATE_PASS');assert.equal(good.test_sessions_logged_out,true);assert.equal(good.checks.length,12);for(const m of ['missing_seed','exposed_read','allowed_write','server_error']){const r=await fixture(m);assert.equal(r.result,'PERSONAL_API_CHECK_REVIEW');assert(r.problem_code);assert.equal(r.test_sessions_logged_out,true);}console.log('PASS: seeded positive controls and 4 failure scenarios; denial semantics, config guards, logout and output privacy checked.');})().catch(e=>{console.error(e);process.exitCode=1});

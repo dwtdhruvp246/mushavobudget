@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_date": "2026-10-07",
+  "updated_date": "2026-10-08",
   "current_stage": 1,
   "current_step": "1.2",
   "current_title": "External backups and recovery",
@@ -64,8 +64,8 @@
       {
         "id": "1.2",
         "title": "External protection",
-        "status": "IN_PROGRESS_LOCAL_COMPONENT_HASH_PASS_TOC_REVIEW_SOURCE_DEPENDENCIES_PREPARED_GOOGLE_DEFERRED",
-        "latest_evidence": "S1E43",
+        "status": "IN_PROGRESS_SOURCE_DEPENDENCY_METADATA_RECEIVED_PRIVATE_ROLE_EXPORT_PREPARED_GOOGLE_DEFERRED",
+        "latest_evidence": "S1E45",
         "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
         "backups_created_or_restore_verified": false,
         "executable_inventory": "OWNER_COMPLETED_S1E09",
@@ -258,7 +258,7 @@
           {
             "id": "database_scope",
             "work": "Reconcile exact archive/database/managed/extension/foreign/Vault coverage and separately protect global roles, membership and grant dependencies.",
-            "status": "LOCAL_FILE_HASH_BINDING_PASS_AND_TOC_INDICATORS_RECEIVED_S1E42; SOURCE_ROLE_EXTENSION_FOREIGN_PUBLICATION_CLASSIFICATION_PENDING_S1E43"
+            "status": "LOCAL_COMPONENT_PASS; CURRENT_ROLE_EXTENSION_PARTITION_PUBLICATION_FOREIGN_METADATA_CLASSIFIED_S1E44; PRIVATE_ROLE_ARTIFACT_AND_EXACT_CUSTOM_SETTINGS_KEY_SCOPE_PENDING_S1E45"
           },
           {
             "id": "storage_bytes",
@@ -390,10 +390,36 @@
             }
           ],
           "exact_scope_reconciliation_complete": false,
-          "publication_counter_scope": "Reported 31 includes 29 table mappings; not 31 actual definitions. Corrected helper/current source counts not owner executed."
+          "publication_counter_scope": "S1E42 reported 31 includes 29 table mappings, not 31 actual definitions. Corrected local helper is not rerun; S1E44 now supplies 2 current source definitions, 29 direct mappings and 0 schema mappings."
         },
         "local_component_receipt_recheck_verified": true,
-        "recovery_dependency_handoff": "supabase/diagnostics/security_stage_1_recovery_dependencies.sql; PREPARED_OWNER_SQL_EXECUTION_PENDING_S1E43"
+        "recovery_dependency_handoff": "supabase/diagnostics/security_stage_1_recovery_dependencies.sql; OWNER_EXECUTED_COMPLETE_METADATA_S1E44",
+        "recovery_dependency_result": {
+          "evidence": "S1E44",
+          "checked_utc": "2026-10-08T04:04:45.322523+00:00",
+          "server_version": "17.6",
+          "status_counts": {
+            "INFO": 6,
+            "REVIEW": 1
+          },
+          "non_system_roles": 16,
+          "memberships": 24,
+          "role_database_setting_records": 10,
+          "parameter_acl_records": 1,
+          "publication_definitions": 2,
+          "direct_relation_mappings": 29,
+          "expanded_tables": 35,
+          "schema_mappings": 0,
+          "foreign_tables": 0,
+          "foreign_servers": 0,
+          "user_mappings": 0,
+          "large_objects": 0,
+          "scope": "Current source snapshot; metadata classification only, not full artifact/restore coverage"
+        },
+        "role_export_handoff": "scripts/security-stage-1-role-export.ps1; PREPARED_OWNER_EXECUTION_PENDING_S1E45",
+        "roles_export_created": false,
+        "encrypted_roles_package_created": false,
+        "recovery_source_drift": "Realtime routines 18 in current S1E44 metadata versus 17 in older S1E13/S1E42; exact identity/change/update snapshot unresolved"
       },
       {
         "id": "1.3",

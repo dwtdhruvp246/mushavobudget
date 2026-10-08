@@ -1184,7 +1184,7 @@ PostgreSQL documents that pg_dump covers one database, with global role definiti
 
 Source: [security-stage-1-local-coverage-check.ps1](../scripts/security-stage-1-local-coverage-check.ps1). Owner execution of the original block is recorded in S1E42 below; S1E43 corrects the publication definition descriptor counter. No repeat full block or export is requested. Send only resulting summary/table and redacted warnings/errors. Do not send hashes, source files, TOC/receipt contents, real passwords or archives. A REVIEW result is expected: it supplies indicator metadata for the next reconciliation, not complete platform or restore PASS. Google remains deferred and no Google handoff is reactivated.
 
-## Completed local count result and current dependency handoff — S1E42–S1E43
+## Completed local count result and prior dependency handoff — S1E42–S1E43; received in S1E44
 
 Owner S1E42 completes the S1E41 local check at **2026-10-07T19:45:48.9791986Z**. The encrypted archive and three source files match the private receipt; no hashes/files are supplied, no files changed/uploaded and no database restore occurred. **OWNER-TESTED local integrity PASS** is retained. The TOC supplies **2,322 entries**, **127 table-data entries**, **six extension entries**, **527 ACL entries**, **27 default ACL entries**, **29 publication-table entries**, zero foreign-table entries and zero large-object-related entries. Full platform backup and isolated restore are still false.
 
@@ -1226,7 +1226,136 @@ Run the following in the original Windows repository. It fetches the audit branc
 
 Verify Dashboard project **kttkospkblwvguuwnhjj**, paste into its SQL Editor and run. Send the seven metadata rows or redacted errors. The transaction is read-only/repeatable-read, bounded by 30-second statement and 3-second lock timeouts, then rolled back. This query creates no backup or restore and changes no roles, grants or configuration. Google remains deferred.
 
-The dedicated [recovery dependency fixture verifier](../scripts/verify-security-stage-1-recovery-dependencies.cjs) passes on disposable PGlite 0.5.8 / PostgreSQL 18.3. It exercises grant flags/ownership, direct/schema/expanded publication categories, zero/nonzero foreign/large-object counts, registered extension table/unlogged/filter metadata, empty publication inventories, private sentinel omission and rejected read-only writes. Its synthetic fixture setup mutates only the disposable test catalog, never hosted tables or the owner diagnostic. Owner PostgreSQL 17.6 execution remains pending. Source/member counts do not replace protected role/configuration artifacts or usable credential/key/Storage-byte recovery proof.
+The dedicated [recovery dependency fixture verifier](../scripts/verify-security-stage-1-recovery-dependencies.cjs) passes on disposable PGlite 0.5.8 / PostgreSQL 18.3. It exercises grant flags/ownership, direct/schema/expanded publication categories, zero/nonzero foreign/large-object counts, registered extension table/unlogged/filter metadata, empty publication inventories, private sentinel omission and rejected read-only writes. Its synthetic fixture setup mutates only the disposable test catalog, never hosted tables or the owner diagnostic. Owner PostgreSQL 17.6 execution was pending at S1E43 and is now received in S1E44 below. Source/member counts do not replace protected role/configuration artifacts or usable credential/key/Storage-byte recovery proof.
+
+## Current source result and private role export — S1E44–S1E45
+
+Owner attachment `Pasted text(9).txt` supplies all **7 rows: 6 INFO + 1 REVIEW**, checked **2026-10-08T04:04:45.322523Z** on PostgreSQL **17.6** in read-only/repeatable-read context. This is successful owner source metadata execution, not seven security/backup PASS results. Existing local export/encryption/file-integrity PASS remains. Project identity follows owner context and the Dashboard requirement, not a SQL-proven project identity.
+
+| Source result | Recovery implication |
+| --- | --- |
+| 16 non-pg roles; 24 memberships with exact grantor/admin/inherit/set flags | Role names match earlier inventory candidates; no additional non-pg role name appears. Preserve private role attributes/memberships, classify provider-managed authority/customizations and compare before any separate isolated restore. |
+| 10 role/database-setting records; 1 parameter-ACL record | Values/scope split remain unreturned. Need protected artifacts and independent login credential recovery; record counts do not prove role/database-specific setting coverage. |
+| Cron registers 4 relations: 2 tables + 2 sequences; Vault registers 1 secrets table; reported filters false | Extension ownership/configuration data explains why separate table definitions may be absent while data appears. Exact TOC entries/sequences/versions and Vault key usability remain unverified. |
+| pg_net owns 3 unlogged relations, including 2 tables, with no registered configuration tables | Earlier zero Net TOC entries fit extension classification. Do not declare in-flight HTTP request/response data unnecessary; queue/replay/recovery treatment stays open. |
+| Foreign tables/servers/user mappings/large objects all 0 | No extra foreign/large-object data component indicated in this current source snapshot; do not assert earlier exact snapshot or future absence. |
+| 2 publications, 29 direct relation mappings, 35 expanded tables, 0 schema mappings | Reconciles the older 29 TOC table mappings and the mistaken broad 31-related-entry counter. Corrected owner TOC definition counter is not rerun. |
+| Realtime has 1 partitioned + 9 ordinary relations | Consistent with 10 definitions/9 table-data entries; exact source/archive object correspondence and restore behavior remain unverified. |
+| Realtime now has 18 routines, compared with earlier 17 | Preserve source drift for exact identity/classification and a later updated release snapshot. Do not call the older archive corrupt or incomplete for its own timestamp solely from this later count. |
+
+The next concrete handoff creates the **separate owner-private role export**, outside the first single-database archive. It uses the verified Windows PostgreSQL 17 `pg_dumpall.exe`, native local database-password prompt, certificate/verify-full session-pooler endpoint and **roles-only** selection. It excludes role passwords, quotes identifiers, fixes UTF-8 output and retains ACLs. Official PostgreSQL 17 source confirms roles-only still invokes role membership and (PG15+) parameter-ACL export when ACLs are enabled, and omits database/tablespace exports. Per-role settings are exported where `setdatabase=0`; database-scoped settings among the source's 10 records remain to reconcile separately.
+
+The file can contain sensitive **role-setting values**, so it stays in the existing protected local folder. The block rechecks folder owner/DACL/no redirection, creates a unique partial file, requires native zero exit/nonempty/completion marker and exactly the latest 16 role definitions, then keeps a private hash manifest and prints aggregate metadata only. Failure retains partial output for review without weakened permissions or alternate privileged credentials. The output is an archival component; no generated SQL is run and no roles, grants or settings are restored/changed. Its basic statement markers/counts are not an SQL parser, exact membership/settings comparison or recovery proof. Owner export execution and subsequent private encryption are pending.
+
+```powershell
+& {
+    $ErrorActionPreference = "Stop"
+    $mushavoRoot = "C:\Users\HP\AppData\Local\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342"
+    $mushavoDumpAll = "C:\Program Files\PostgreSQL\17\bin\pg_dumpall.exe"
+    $mushavoCert = "C:\Users\HP\Desktop\Mushavo Budget\prod-ca-2021.crt"
+    foreach ($mushavoRequired in @($mushavoDumpAll, $mushavoCert)) {
+        if (-not (Test-Path -LiteralPath $mushavoRequired -PathType Leaf)) {
+            throw "A required verified PostgreSQL executable/certificate is missing."
+        }
+    }
+    $mushavoFolder = Get-Item -LiteralPath $mushavoRoot -Force
+    if (-not $mushavoFolder.PSIsContainer) { throw "Private backup folder was not found." }
+    $mushavoParent = $mushavoFolder
+    while ($null -ne $mushavoParent) {
+        if ($mushavoParent.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+            throw "Backup path contains a redirected directory."
+        }
+        $mushavoParent = $mushavoParent.Parent
+    }
+    $mushavoOwner = [Security.Principal.WindowsIdentity]::GetCurrent().User
+    $mushavoAllowed = @($mushavoOwner.Value, "S-1-5-18", "S-1-5-32-544")
+    $mushavoAcl = Get-Acl -LiteralPath $mushavoRoot
+    $mushavoRules = $mushavoAcl.GetAccessRules($true, $true, [Security.Principal.SecurityIdentifier])
+    if (-not $mushavoAcl.AreAccessRulesProtected -or $mushavoRules.Count -ne 3 -or
+        $mushavoAcl.GetOwner([Security.Principal.SecurityIdentifier]).Value -ne $mushavoOwner.Value) {
+        throw "Private folder owner or protected permissions changed."
+    }
+    foreach ($mushavoRule in $mushavoRules) {
+        if ($mushavoRule.IdentityReference.Value -notin $mushavoAllowed -or $mushavoRule.IsInherited -or
+            $mushavoRule.AccessControlType -ne "Allow" -or $mushavoRule.FileSystemRights -ne "FullControl" -or
+            $mushavoRule.InheritanceFlags -ne [Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit" -or
+            $mushavoRule.PropagationFlags -ne "None") {
+            throw "Unexpected private folder permission."
+        }
+    }
+    $mushavoRun = [DateTime]::UtcNow.ToString("yyyyMMddTHHmmssZ") + "-" + [guid]::NewGuid().ToString("N")
+    $mushavoPartial = Join-Path $mushavoRoot "$mushavoRun.partial.roles.sql"
+    $mushavoFinal = Join-Path $mushavoRoot "$mushavoRun.roles.sql"
+    $mushavoManifest = Join-Path $mushavoRoot "$mushavoRun.roles.manifest.json"
+    $mushavoCertValue = (Resolve-Path -LiteralPath $mushavoCert).ProviderPath.Replace('\', '/').Replace("'", "\'")
+    $mushavoConnection = @(
+        "host=aws-0-eu-central-1.pooler.supabase.com", "port=5432",
+        "user=postgres.kttkospkblwvguuwnhjj", "sslmode=verify-full",
+        "sslrootcert='$mushavoCertValue'", "gssencmode=disable", "connect_timeout=15",
+        "application_name=mushavo_stage_1_2_roles"
+    ) -join " "
+    Write-Output "Enter the database password only at pg_dumpall's native prompt."
+    Write-Output "Keep this role/settings export private in the existing local backup folder."
+    $ErrorActionPreference = "Continue"
+    & $mushavoDumpAll --roles-only --no-role-passwords --quote-all-identifiers --encoding=UTF8 --password `
+        --database=postgres --dbname $mushavoConnection --file $mushavoPartial
+    $mushavoExit = $LASTEXITCODE
+    $ErrorActionPreference = "Stop"
+    if ($mushavoExit -ne 0) {
+        throw "Role export failed (exit $mushavoExit). Keep the partial file; send only redacted errors."
+    }
+    $mushavoFile = Get-Item -LiteralPath $mushavoPartial -Force
+    if ($mushavoFile.Length -le 0) { throw "Role export is empty; file stays partial." }
+    $mushavoText = [IO.File]::ReadAllText($mushavoPartial, [Text.Encoding]::UTF8)
+    if ($mushavoText -notmatch '(?m)^-- PostgreSQL database cluster dump complete\r?$') {
+        throw "Native completion marker missing; file stays partial."
+    }
+    $mushavoRoles = @("anon", "authenticated", "authenticator", "dashboard_user", "pgbouncer", "postgres", "service_role",
+        "supabase_admin", "supabase_auth_admin", "supabase_etl_admin", "supabase_functions_admin", "supabase_privileged_role",
+        "supabase_read_only_user", "supabase_realtime_admin", "supabase_replication_admin", "supabase_storage_admin")
+    $mushavoCreateCount = [regex]::Matches($mushavoText, '(?m)^CREATE ROLE ').Count
+    if ($mushavoCreateCount -ne 16) { throw "Role count differs from the latest 16-role inventory; keep partial for review." }
+    foreach ($mushavoRole in $mushavoRoles) {
+        $mushavoPattern = '(?m)^CREATE ROLE "' + [regex]::Escape($mushavoRole) + '";\r?$'
+        if ([regex]::Matches($mushavoText, $mushavoPattern).Count -ne 1) {
+            throw "An expected inventoried role definition is missing/duplicated; file stays partial."
+        }
+    }
+    if ($mushavoText -match '(?m)^ALTER ROLE .* WITH .*\bPASSWORD\b') {
+        throw "Unexpected role-password clause; keep the file private and partial."
+    }
+    $mushavoMembershipCount = [regex]::Matches($mushavoText, '(?m)^GRANT (?![^\r\n]* ON )').Count
+    $mushavoParameterCount = [regex]::Matches($mushavoText, '(?m)^(GRANT|REVOKE) [^\r\n]* ON PARAMETER ').Count
+    Move-Item -LiteralPath $mushavoPartial -Destination $mushavoFinal
+    $mushavoSummary = [pscustomobject]@{
+        stage_step = "1.2"
+        result = "ROLE_EXPORT_NATIVE_COMPLETION_AND_MARKERS_PASS"
+        project = "kttkospkblwvguuwnhjj"
+        completed_utc = [DateTime]::UtcNow.ToString("o")
+        file = $mushavoFinal
+        bytes = (Get-Item -LiteralPath $mushavoFinal).Length
+        inventoried_role_definitions = $mushavoCreateCount
+        membership_grant_statements = $mushavoMembershipCount
+        parameter_acl_statements = $mushavoParameterCount
+        role_password_export_disabled = $true
+        exact_membership_flags_and_settings_recovery_verified = $false
+        database_scoped_role_settings_reconciled = $false
+        encrypted_roles_package_created = $false
+        complete_platform_backup_verified = $false
+        isolated_restore_verified = $false
+    }
+    [pscustomobject]@{
+        summary = $mushavoSummary
+        file_sha256 = (Get-FileHash -LiteralPath $mushavoFinal -Algorithm SHA256).Hash
+        source_metadata_checked_utc = "2026-10-08T04:04:45.322523Z"
+    } | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $mushavoManifest -Encoding UTF8
+    $mushavoSummary | Format-List
+    Write-Output "Send only this summary and redacted warnings/errors. Keep SQL, settings values and hashes private."
+    Write-Output "Next: private encryption/file verification. No roles/grants/settings were restored or changed."
+}
+```
+
+Source: [security-stage-1-role-export.ps1](../scripts/security-stage-1-role-export.ps1). Prepared/source-reviewed only; no Windows/PowerShell/native PostgreSQL runtime exists here. Send **only the metadata summary and redacted warnings/errors**. Keep SQL/setting values, password, hashes and manifest private. Next privately encrypt/verify the role component after its native result; do not upload raw files. No repeated original database export/encryption is requested. Google remains deferred. F16/exact managed/custom/extension/settings/key/file/configuration scope, source drift and isolated synthetic recovery remain open.
 
 ## Completed owner SQL handoff — retained for reproducibility
 
@@ -1262,7 +1391,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Work after this inventory
 
-1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. S1E42 records completed local receipt/hash/TOC indicators; execute the S1E43 read-only source dependency handoff and reconcile its metadata before continuing separate role/managed/foreign/Vault/Storage-byte/Auth/Edge/provider recovery coverage and private credential handling. No repeat installation, connection test, encryption creation or Docker/CLI-help prerequisite is requested.
+1. Retain the owner-tested local database component export/offline-read and encrypted package/password/extracted-file hash PASS (S1E30/S1E32), alongside recorded client/TLS/folder evidence. The owner defers Google Drive troubleshooting/upload/download in S1E40; do not execute the earlier Google handoffs now. S1E42 records completed local receipt/hash/TOC indicators; S1E44 completes source dependency metadata. Execute the S1E45 private role-export handoff, review native outcome and later privately encrypt/verify that component before continuing separate role/managed/foreign/Vault/Storage-byte/Auth/Edge/provider recovery coverage and private credential handling. No repeat installation, connection test, encryption creation or Docker/CLI-help prerequisite is requested.
 2. Reconcile exact export/grant/managed-object/encryption/configuration scope from the received metadata and separately needed owner checks. Future SQL handoffs retain the PowerShell fetch/show/clipboard format; do not infer complete coverage from this aggregate inventory.
 3. Prepare compatible standalone PostgreSQL database export and separately authorized file-byte export paths. Require explicit target identity, connection method, completeness scope and separate credentials handling; do not embed credentials in pasted history, git or reports.
 4. Carry the unverified offsite copy and Google deferral into the stage report/final action plan. No replacement destination is chosen by this decision. Later reconcile protected destination, recovery targets, frequency/retention and completion/failure records using actual volume and owner preferences; a schema file or object metadata alone remains insufficient.
@@ -1329,3 +1458,7 @@ Only redacted outcome/size/date/completeness records enter the repository. Custo
 - [PostgreSQL 17 direct publication relation mappings](https://www.postgresql.org/docs/17/catalog-pg-publication-rel.html)
 - [PostgreSQL 17 publication schema mappings](https://www.postgresql.org/docs/17/catalog-pg-publication-namespace.html)
 - [Supabase Vault encrypted-backup behavior and secret recovery dependency](https://supabase.com/docs/guides/database/vault)
+
+- [PostgreSQL 17 pg_dumpall role/membership/parameter-ACL source](https://raw.githubusercontent.com/postgres/postgres/REL_17_STABLE/src/bin/pg_dump/pg_dumpall.c)
+- [PostgreSQL 17 database-specific versus role-wide setting scope](https://www.postgresql.org/docs/17/catalog-pg-db-role-setting.html)
+- [Supabase provider-managed/default database role context](https://supabase.com/docs/guides/database/postgres/roles)

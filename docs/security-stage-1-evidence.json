@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage": 1,
-  "updated_date": "2026-10-07",
+  "updated_date": "2026-10-08",
   "active_step": "1.2",
   "events": [
     {
@@ -1984,6 +1984,895 @@
       "backup_created": false,
       "restore_verified": false,
       "scope": "Read-only source metadata preparation and honest counter correction, not new hosted PASS or F16 closure. Existing local integrity evidence stays PASS. Private selected role/configuration artifacts, Storage bytes and recovery requirements remain pending."
+    },
+    {
+      "id": "S1E44",
+      "stage_step": "1.2",
+      "received_date": "2026-10-08",
+      "source": "Owner attachment Pasted text(9).txt following S1E43 read-only source dependency handoff",
+      "attachment_sha256": "0a19e9ba45bf28b15755b643220c55b6ae9218673a67bc6ee92615e0f403ec96",
+      "result": "OWNER_SOURCE_RECOVERY_METADATA_RECEIVED_6_INFO_1_REVIEW",
+      "contract": {
+        "INFO": 6,
+        "REVIEW": 1,
+        "total": 7
+      },
+      "observed_checks": [
+        {
+          "check_name": "01 Read-only recovery dependency context",
+          "status": "INFO",
+          "details": {
+            "checked_at": "2026-10-08T04:04:45.322523+00:00",
+            "server_version": "17.6",
+            "transaction_isolation": "repeatable read",
+            "transaction_read_only": "on",
+            "dashboard_project_identity": "Owner must verify kttkospkblwvguuwnhjj; SQL does not prove project identity"
+          }
+        },
+        {
+          "check_name": "02 Role attributes and exact memberships without secrets",
+          "status": "INFO",
+          "details": {
+            "scope": "Role metadata only; no passwords/settings values. Managed-role classification and private recoverable export remain required; do not restore platform roles blindly.",
+            "memberships": [
+              {
+                "member": "authenticator",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "anon",
+                "inherit_option": false
+              },
+              {
+                "member": "postgres",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": true,
+                "granted_role": "anon",
+                "inherit_option": true
+              },
+              {
+                "member": "supabase_realtime_admin",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "anon",
+                "inherit_option": false
+              },
+              {
+                "member": "authenticator",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "authenticated",
+                "inherit_option": false
+              },
+              {
+                "member": "postgres",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": true,
+                "granted_role": "authenticated",
+                "inherit_option": true
+              },
+              {
+                "member": "supabase_realtime_admin",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "authenticated",
+                "inherit_option": false
+              },
+              {
+                "member": "postgres",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": true,
+                "granted_role": "authenticator",
+                "inherit_option": true
+              },
+              {
+                "member": "supabase_storage_admin",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "authenticator",
+                "inherit_option": false
+              },
+              {
+                "member": "postgres",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": true,
+                "granted_role": "pg_create_subscription",
+                "inherit_option": true
+              },
+              {
+                "member": "postgres",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": true,
+                "granted_role": "pg_monitor",
+                "inherit_option": true
+              },
+              {
+                "member": "supabase_etl_admin",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "pg_monitor",
+                "inherit_option": true
+              },
+              {
+                "member": "supabase_read_only_user",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "pg_monitor",
+                "inherit_option": true
+              },
+              {
+                "member": "postgres",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": true,
+                "granted_role": "pg_read_all_data",
+                "inherit_option": true
+              },
+              {
+                "member": "supabase_etl_admin",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "pg_read_all_data",
+                "inherit_option": true
+              },
+              {
+                "member": "supabase_read_only_user",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "pg_read_all_data",
+                "inherit_option": true
+              },
+              {
+                "member": "pg_monitor",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "pg_read_all_settings",
+                "inherit_option": true
+              },
+              {
+                "member": "pg_monitor",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "pg_read_all_stats",
+                "inherit_option": true
+              },
+              {
+                "member": "postgres",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": true,
+                "granted_role": "pg_signal_backend",
+                "inherit_option": true
+              },
+              {
+                "member": "pg_monitor",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "pg_stat_scan_tables",
+                "inherit_option": true
+              },
+              {
+                "member": "authenticator",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "service_role",
+                "inherit_option": false
+              },
+              {
+                "member": "postgres",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": true,
+                "granted_role": "service_role",
+                "inherit_option": true
+              },
+              {
+                "member": "supabase_realtime_admin",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "service_role",
+                "inherit_option": false
+              },
+              {
+                "member": "postgres",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "supabase_privileged_role",
+                "inherit_option": true
+              },
+              {
+                "member": "supabase_etl_admin",
+                "grantor": "supabase_admin",
+                "set_option": true,
+                "admin_option": false,
+                "granted_role": "supabase_privileged_role",
+                "inherit_option": true
+              }
+            ],
+            "non_system_roles": [
+              {
+                "role": "anon",
+                "login": false,
+                "inherit": true,
+                "superuser": false,
+                "bypass_rls": false,
+                "create_role": false,
+                "replication": false,
+                "setting_count": 1,
+                "create_database": false,
+                "connection_limit": -1
+              },
+              {
+                "role": "authenticated",
+                "login": false,
+                "inherit": true,
+                "superuser": false,
+                "bypass_rls": false,
+                "create_role": false,
+                "replication": false,
+                "setting_count": 1,
+                "create_database": false,
+                "connection_limit": -1
+              },
+              {
+                "role": "authenticator",
+                "login": true,
+                "inherit": false,
+                "superuser": false,
+                "bypass_rls": false,
+                "create_role": false,
+                "replication": false,
+                "setting_count": 3,
+                "create_database": false,
+                "connection_limit": -1
+              },
+              {
+                "role": "dashboard_user",
+                "login": false,
+                "inherit": true,
+                "superuser": false,
+                "bypass_rls": false,
+                "create_role": true,
+                "replication": true,
+                "setting_count": 0,
+                "create_database": true,
+                "connection_limit": -1
+              },
+              {
+                "role": "pgbouncer",
+                "login": true,
+                "inherit": true,
+                "superuser": false,
+                "bypass_rls": false,
+                "create_role": false,
+                "replication": false,
+                "setting_count": 0,
+                "create_database": false,
+                "connection_limit": -1
+              },
+              {
+                "role": "postgres",
+                "login": true,
+                "inherit": true,
+                "superuser": false,
+                "bypass_rls": true,
+                "create_role": true,
+                "replication": true,
+                "setting_count": 1,
+                "create_database": true,
+                "connection_limit": -1
+              },
+              {
+                "role": "service_role",
+                "login": false,
+                "inherit": true,
+                "superuser": false,
+                "bypass_rls": true,
+                "create_role": false,
+                "replication": false,
+                "setting_count": 0,
+                "create_database": false,
+                "connection_limit": -1
+              },
+              {
+                "role": "supabase_admin",
+                "login": true,
+                "inherit": true,
+                "superuser": true,
+                "bypass_rls": true,
+                "create_role": true,
+                "replication": true,
+                "setting_count": 2,
+                "create_database": true,
+                "connection_limit": -1
+              },
+              {
+                "role": "supabase_auth_admin",
+                "login": true,
+                "inherit": false,
+                "superuser": false,
+                "bypass_rls": false,
+                "create_role": true,
+                "replication": false,
+                "setting_count": 3,
+                "create_database": false,
+                "connection_limit": -1
+              },
+              {
+                "role": "supabase_etl_admin",
+                "login": true,
+                "inherit": true,
+                "superuser": false,
+                "bypass_rls": true,
+                "create_role": false,
+                "replication": true,
+                "setting_count": 0,
+                "create_database": false,
+                "connection_limit": -1
+              },
+              {
+                "role": "supabase_functions_admin",
+                "login": true,
+                "inherit": false,
+                "superuser": false,
+                "bypass_rls": false,
+                "create_role": true,
+                "replication": false,
+                "setting_count": 0,
+                "create_database": false,
+                "connection_limit": -1
+              },
+              {
+                "role": "supabase_privileged_role",
+                "login": false,
+                "inherit": true,
+                "superuser": false,
+                "bypass_rls": false,
+                "create_role": false,
+                "replication": false,
+                "setting_count": 0,
+                "create_database": false,
+                "connection_limit": -1
+              },
+              {
+                "role": "supabase_read_only_user",
+                "login": true,
+                "inherit": true,
+                "superuser": false,
+                "bypass_rls": true,
+                "create_role": false,
+                "replication": false,
+                "setting_count": 1,
+                "create_database": false,
+                "connection_limit": -1
+              },
+              {
+                "role": "supabase_realtime_admin",
+                "login": false,
+                "inherit": false,
+                "superuser": false,
+                "bypass_rls": false,
+                "create_role": false,
+                "replication": false,
+                "setting_count": 1,
+                "create_database": false,
+                "connection_limit": -1
+              },
+              {
+                "role": "supabase_replication_admin",
+                "login": true,
+                "inherit": true,
+                "superuser": false,
+                "bypass_rls": false,
+                "create_role": false,
+                "replication": true,
+                "setting_count": 0,
+                "create_database": false,
+                "connection_limit": -1
+              },
+              {
+                "role": "supabase_storage_admin",
+                "login": true,
+                "inherit": false,
+                "superuser": false,
+                "bypass_rls": false,
+                "create_role": true,
+                "replication": false,
+                "setting_count": 2,
+                "create_database": false,
+                "connection_limit": -1
+              }
+            ],
+            "role_database_setting_records": 10,
+            "configuration_parameter_acl_records": 1
+          }
+        },
+        {
+          "check_name": "03 Non-system schema object ownership totals",
+          "status": "INFO",
+          "details": [
+            {
+              "owner": "supabase_auth_admin",
+              "object_kind": "r",
+              "schema_name": "auth",
+              "object_count": 27
+            },
+            {
+              "owner": "supabase_auth_admin",
+              "object_kind": "routine",
+              "schema_name": "auth",
+              "object_count": 4
+            },
+            {
+              "owner": "supabase_auth_admin",
+              "object_kind": "S",
+              "schema_name": "auth",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "schema",
+              "schema_name": "auth",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "r",
+              "schema_name": "cron",
+              "object_count": 2
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "routine",
+              "schema_name": "cron",
+              "object_count": 7
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "S",
+              "schema_name": "cron",
+              "object_count": 2
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "schema",
+              "schema_name": "cron",
+              "object_count": 1
+            },
+            {
+              "owner": "postgres",
+              "object_kind": "routine",
+              "schema_name": "extensions",
+              "object_count": 49
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "routine",
+              "schema_name": "extensions",
+              "object_count": 6
+            },
+            {
+              "owner": "postgres",
+              "object_kind": "schema",
+              "schema_name": "extensions",
+              "object_count": 1
+            },
+            {
+              "owner": "postgres",
+              "object_kind": "v",
+              "schema_name": "extensions",
+              "object_count": 2
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "schema",
+              "schema_name": "graphql",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "routine",
+              "schema_name": "graphql_public",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "schema",
+              "schema_name": "graphql_public",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "r",
+              "schema_name": "net",
+              "object_count": 2
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "routine",
+              "schema_name": "net",
+              "object_count": 12
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "S",
+              "schema_name": "net",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "schema",
+              "schema_name": "net",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "routine",
+              "schema_name": "pgbouncer",
+              "object_count": 1
+            },
+            {
+              "owner": "pgbouncer",
+              "object_kind": "schema",
+              "schema_name": "pgbouncer",
+              "object_count": 1
+            },
+            {
+              "owner": "postgres",
+              "object_kind": "r",
+              "schema_name": "public",
+              "object_count": 80
+            },
+            {
+              "owner": "postgres",
+              "object_kind": "routine",
+              "schema_name": "public",
+              "object_count": 281
+            },
+            {
+              "owner": "pg_database_owner",
+              "object_kind": "schema",
+              "schema_name": "public",
+              "object_count": 1
+            },
+            {
+              "owner": "postgres",
+              "object_kind": "v",
+              "schema_name": "public",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_realtime_admin",
+              "object_kind": "p",
+              "schema_name": "realtime",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "r",
+              "schema_name": "realtime",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_realtime_admin",
+              "object_kind": "r",
+              "schema_name": "realtime",
+              "object_count": 8
+            },
+            {
+              "owner": "supabase_realtime_admin",
+              "object_kind": "routine",
+              "schema_name": "realtime",
+              "object_count": 18
+            },
+            {
+              "owner": "supabase_realtime_admin",
+              "object_kind": "S",
+              "schema_name": "realtime",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "schema",
+              "schema_name": "realtime",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_storage_admin",
+              "object_kind": "r",
+              "schema_name": "storage",
+              "object_count": 8
+            },
+            {
+              "owner": "supabase_storage_admin",
+              "object_kind": "routine",
+              "schema_name": "storage",
+              "object_count": 19
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "schema",
+              "schema_name": "storage",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "r",
+              "schema_name": "vault",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "routine",
+              "schema_name": "vault",
+              "object_count": 5
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "schema",
+              "schema_name": "vault",
+              "object_count": 1
+            },
+            {
+              "owner": "supabase_admin",
+              "object_kind": "v",
+              "schema_name": "vault",
+              "object_count": 1
+            }
+          ]
+        },
+        {
+          "check_name": "04 Extension members and registered configuration tables",
+          "status": "INFO",
+          "details": [
+            {
+              "version": "1.6.4",
+              "extension": "pg_cron",
+              "relation_member_count": 4,
+              "registered_config_tables": [
+                {
+                  "table": "job",
+                  "schema": "cron",
+                  "persistence": "p",
+                  "relation_kind": "r",
+                  "filter_present": false
+                },
+                {
+                  "table": "jobid_seq",
+                  "schema": "cron",
+                  "persistence": "p",
+                  "relation_kind": "S",
+                  "filter_present": false
+                },
+                {
+                  "table": "job_run_details",
+                  "schema": "cron",
+                  "persistence": "p",
+                  "relation_kind": "r",
+                  "filter_present": false
+                },
+                {
+                  "table": "runid_seq",
+                  "schema": "cron",
+                  "persistence": "p",
+                  "relation_kind": "S",
+                  "filter_present": false
+                }
+              ],
+              "registered_config_table_count": 4,
+              "unlogged_relation_member_count": 0
+            },
+            {
+              "version": "0.20.4",
+              "extension": "pg_net",
+              "relation_member_count": 3,
+              "registered_config_tables": [],
+              "registered_config_table_count": 0,
+              "unlogged_relation_member_count": 3
+            },
+            {
+              "version": "1.11",
+              "extension": "pg_stat_statements",
+              "relation_member_count": 2,
+              "registered_config_tables": [],
+              "registered_config_table_count": 0,
+              "unlogged_relation_member_count": 0
+            },
+            {
+              "version": "1.3",
+              "extension": "pgcrypto",
+              "relation_member_count": 0,
+              "registered_config_tables": [],
+              "registered_config_table_count": 0,
+              "unlogged_relation_member_count": 0
+            },
+            {
+              "version": "1.0",
+              "extension": "plpgsql",
+              "relation_member_count": 0,
+              "registered_config_tables": [],
+              "registered_config_table_count": 0,
+              "unlogged_relation_member_count": 0
+            },
+            {
+              "version": "0.3.1",
+              "extension": "supabase_vault",
+              "relation_member_count": 2,
+              "registered_config_tables": [
+                {
+                  "table": "secrets",
+                  "schema": "vault",
+                  "persistence": "p",
+                  "relation_kind": "r",
+                  "filter_present": false
+                }
+              ],
+              "registered_config_table_count": 1,
+              "unlogged_relation_member_count": 0
+            },
+            {
+              "version": "1.1",
+              "extension": "uuid-ossp",
+              "relation_member_count": 0,
+              "registered_config_tables": [],
+              "registered_config_table_count": 0,
+              "unlogged_relation_member_count": 0
+            }
+          ]
+        },
+        {
+          "check_name": "05 Foreign large-object and extension-table indicators",
+          "status": "INFO",
+          "details": {
+            "scope": "Source catalog counts at this time, not the earlier export snapshot. No object bytes or server/mapping options retrieved; extension-owned table absence from TOC definitions requires classification.",
+            "large_objects": 0,
+            "user_mappings": 0,
+            "foreign_tables": 0,
+            "foreign_servers": 0,
+            "extension_tables_in_non_system_schemas": [
+              {
+                "table": "job",
+                "schema": "cron",
+                "extension": "pg_cron",
+                "persistence": "p",
+                "relation_kind": "r",
+                "registered_config_table": true
+              },
+              {
+                "table": "job_run_details",
+                "schema": "cron",
+                "extension": "pg_cron",
+                "persistence": "p",
+                "relation_kind": "r",
+                "registered_config_table": true
+              },
+              {
+                "table": "_http_response",
+                "schema": "net",
+                "extension": "pg_net",
+                "persistence": "u",
+                "relation_kind": "r",
+                "registered_config_table": false
+              },
+              {
+                "table": "http_request_queue",
+                "schema": "net",
+                "extension": "pg_net",
+                "persistence": "u",
+                "relation_kind": "r",
+                "registered_config_table": false
+              },
+              {
+                "table": "secrets",
+                "schema": "vault",
+                "extension": "supabase_vault",
+                "persistence": "p",
+                "relation_kind": "r",
+                "registered_config_table": true
+              }
+            ]
+          }
+        },
+        {
+          "check_name": "06 Publication definitions and mapping types",
+          "status": "INFO",
+          "details": {
+            "scope": "Definitions, direct relation mappings and expanded partition/schema table counts are different categories. S1E42 reported broad TOC PUBLICATION count 31 includes its 29 TABLE entries; it is not 31 definitions.",
+            "publications": [
+              {
+                "all_tables": false,
+                "publication": "supabase_realtime",
+                "expanded_table_count": 28,
+                "schema_mapping_count": 0,
+                "publish_via_partition_root": false,
+                "direct_relation_mapping_count": 28
+              },
+              {
+                "all_tables": false,
+                "publication": "supabase_realtime_messages_publication",
+                "expanded_table_count": 7,
+                "schema_mapping_count": 0,
+                "publish_via_partition_root": false,
+                "direct_relation_mapping_count": 1
+              }
+            ],
+            "publication_count": 2
+          }
+        },
+        {
+          "check_name": "07 Recovery dependencies still require evidence",
+          "status": "REVIEW",
+          "details": {
+            "remaining": "Private selected global-role/grant/configuration recovery artifact, exact managed/extension/customization definitions and filters, scheduler/Vault/key dependencies, actual Storage file bytes, Auth/SMTP/Edge/provider recovery configuration and backup operating decisions; Google route remains deferred.",
+            "backup_created_by_this_check": false,
+            "restore_verified_by_this_check": false
+          }
+        }
+      ],
+      "classification": {
+        "roles": "16 non-pg role names match the previously inventoried platform-role candidates; 24 exact memberships with grantor/admin/inherit/set metadata. No additional non-pg role name appears in this snapshot; naming alone does not establish managed/custom modifications or valid restore authority.",
+        "settings": "10 role/database-setting records and 1 parameter-ACL record require coverage; values and database-specific split are not supplied.",
+        "extensions": "Cron registers 4 configuration relations (2 tables plus 2 sequences) without filters; Vault registers its secrets table without filter. This is consistent with data entries while extension-owned definitions are recreated by extension installation. Exact TOC names/sequences/versions/key usability still need private reconciliation.",
+        "net": "pg_net reports 3 unlogged members, including 2 unlogged tables not registered for configuration dumping. Earlier zero Net TOC entries fit that extension classification; pending HTTP queue/in-flight/replay treatment is not proved unnecessary or recovered.",
+        "foreign_large_objects": "Foreign tables/servers/user mappings/large objects all zero in this current source snapshot. No additional foreign/large-object data artifact indicated by this inventory; do not retroactively claim exact earlier dump-snapshot or future absence.",
+        "publications": "2 definitions; 28+1=29 direct mappings; 28+7=35 expanded tables; 0 schema mappings. Current source categories reconcile with the prior 29 TOC mapping entries and explain the broad 31 related-entry counter. Corrected owner TOC definition counter still not rerun.",
+        "realtime": "Current ownership metadata reports 1 partitioned relation plus 9 ordinary relations, consistent with 10 table definitions/9 table-data entries. Current Realtime routines total 18 versus 17 in the older inventory/TOC; preserve drift for exact classification/updated release snapshot, not an automatic corruption or missing-old-snapshot claim."
+      },
+      "project_identity_scope": "Intended project follows owner handoff context; SQL context explicitly requires Dashboard identity verification and does not independently prove it.",
+      "backup_created_by_check": false,
+      "restore_verified_by_check": false,
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "scope": "Read-only hosted PostgreSQL 17.6 metadata successfully supplied; no customer records/settings/passwords/function bodies/Vault values retrieved by root. Existing local file/export/encryption PASS stays narrow. Exact role/grant/managed/custom/extension/key/file/configuration coverage and recovery remain open; F16 not closed."
+    },
+    {
+      "id": "S1E45",
+      "stage_step": "1.2",
+      "prepared_date": "2026-10-08",
+      "source": "Root reconciles owner S1E44 source metadata and prepares the separate private role artifact required outside the single-database component.",
+      "result": "PRIVATE_ROLE_EXPORT_NATIVE_HANDOFF_PREPARED",
+      "handoff": "scripts/security-stage-1-role-export.ps1; identical inline block in docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
+      "selected_command": "Verified full-path PostgreSQL 17 pg_dumpall.exe --roles-only --no-role-passwords --quote-all-identifiers --encoding=UTF8 --password --database=postgres --dbname <explicit verified certificate/session-pooler parameters> --file <unique private partial file>",
+      "checks_prepared": [
+        "Recheck existing private folder owner/protected user/SYSTEM/Administrators DACL and reject redirected path",
+        "Native database-password prompt, SSL verify-full and explicit endpoint/initial postgres database; no real password stored in script or command argument",
+        "Retain partial output on nonzero/empty/incomplete/changed-role inventory; require native completion marker and each of 16 latest role definitions exactly once",
+        "No role password attribute clause; aggregate membership and parameter-ACL statement counts without showing SQL/settings values",
+        "Rename after native/basic marker checks, keep private SHA-256 manifest, print only metadata with encrypted/full-backup/restore flags false"
+      ],
+      "scope_limits": "This is a local archival component, not permission/role/configuration change or an executable restore instruction. Role-level setting values may be sensitive and stay private; login passwords are intentionally excluded and require independent recovery. PostgreSQL source exports role-wide settings where setdatabase=0; the 10 source settings records are not yet split/reconciled for database-specific coverage. Basic markers/counters are not SQL parsing, exact membership/grant/settings comparison or isolated restore proof. Native roles-only mode also calls parameter-ACL dumping on PG15+ if ACLs are retained, as reviewed in PG17 source. Tablespaces/databases are excluded; no production role/SQL execution, customer data export or upload.",
+      "official_guidance": [
+        "https://www.postgresql.org/docs/17/app-pg-dumpall.html",
+        "https://raw.githubusercontent.com/postgres/postgres/REL_17_STABLE/src/bin/pg_dump/pg_dumpall.c",
+        "https://www.postgresql.org/docs/17/catalog-pg-db-role-setting.html",
+        "https://supabase.com/docs/guides/database/postgres/roles"
+      ],
+      "validation": "Prepared/source-reviewed against official PostgreSQL 17 options and dumpRoles/dumpUserConfig/dumpRoleMembership/dumpRoleGUCPrivs control flow; reused owner-tested folder/TLS/native invocation patterns. Exact source/inline/docs/JSON/evidence preservation checked. Workspace has no Windows/PowerShell/PostgreSQL native runtime; actual owner export and later encryption/semantic recovery checks pending. No new mirrored tests or unchanged SQL fixture rerun.",
+      "owner_execution": "PENDING",
+      "roles_export_created": false,
+      "roles_package_encrypted": false,
+      "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+      "complete_platform_backup_created": false,
+      "restore_verified": false,
+      "next_dependency": "Owner metadata/native warnings first; then private role-file encryption and file integrity before any external copy, followed by separate role/database-scoped settings, exact application/customization, Storage-byte and configuration/credential coverage."
     }
   ]
 }

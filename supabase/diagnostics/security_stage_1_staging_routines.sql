@@ -20,14 +20,16 @@ AND NOT EXISTS (
  SELECT 1 FROM pg_catalog.pg_depend d
  WHERE d.classid = 'pg_catalog.pg_proc'::regclass
  AND d.objid = p.oid AND d.deptype = 'e'
-);
+)
+UNION ALL
 SELECT '02 Event trigger metadata' AS check_name, 'REVIEW' AS status,
  COALESCE(jsonb_agg(jsonb_build_object(
    'name', e.evtname, 'event', e.evtevent, 'enabled', e.evtenabled,
    'routine', e.evtfoid::regprocedure::text,
    'owner', pg_catalog.pg_get_userbyid(e.evtowner), 'tags', e.evttags
  ) ORDER BY e.evtname), '[]'::jsonb) AS details
-FROM pg_catalog.pg_event_trigger e;
+FROM pg_catalog.pg_event_trigger e
+UNION ALL
 SELECT '03 Review boundary' AS check_name, 'INFO' AS status,
  jsonb_build_object(
   'intended_staging_reference', 'dczlddwbtgvfdujgcitb',

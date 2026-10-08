@@ -1,5 +1,7 @@
 # 1.3 — Isolated staging
 
+**Current: CLOSED WITH SCOPED PASSES AND CARRY-FORWARD, S1E75.** Read the [checkpoint report](SECURITY_STAGE_1_3_CHECKPOINT_REPORT.md). Historical preparation instructions below are retained for traceability; do not repeat project creation or initialization. Active work advances to 1.4 synthetic recovery.
+
 Started 8 October 2026 after [1.2 checkpoint closure with carry-forward](SECURITY_STAGE_1_2_CHECKPOINT_REPORT.md), evidence S1E63–S1E65. Stage 1 remains in progress; no full backup/recovery or release acceptance is inferred. Approved operating targets remain objectives, and existing DB/Storage/configuration/offsite gaps remain carried rather than reopen 1.2.
 
 ## Current owner target and preflight — S1E66–S1E67

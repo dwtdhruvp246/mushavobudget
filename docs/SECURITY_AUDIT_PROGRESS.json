@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-08",
   "current_stage": 1,
-  "current_step": "1.3",
-  "current_title": "Isolated staging",
+  "current_step": "1.4",
+  "current_title": "Synthetic recovery proof",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -15,7 +15,7 @@
   "stage_1": {
     "status": "IN_PROGRESS",
     "authorized": true,
-    "active_step": "1.3",
+    "active_step": "1.4",
     "plan": "docs/SECURITY_STAGE_1_FOUNDATIONS_PLAN.md",
     "steps": [
       {
@@ -833,8 +833,8 @@
       {
         "id": "1.3",
         "title": "Isolated staging",
-        "status": "IN_PROGRESS_OWNER_STAGING_CREATED_READ_ONLY_PREFLIGHT_PENDING",
-        "latest_evidence": "S1E67",
+        "status": "CLOSED_SCOPED_PASSES_WITH_CARRY_FORWARD",
+        "latest_evidence": "S1E75",
         "instructions": "docs/SECURITY_STAGE_1_3_ISOLATED_STAGING.md",
         "actual_account_capacity_verified": false,
         "isolated_target_created": "OWNER_REPORTED_S1E66",
@@ -846,19 +846,37 @@
         "production_reference": "kttkospkblwvguuwnhjj",
         "references_differ": true,
         "database_version_and_selected_empty_counts_verified": false,
-        "application_schema_initialized": false,
+        "application_schema_initialized": true,
         "preflight": {
           "evidence": "S1E67",
           "diagnostic": "supabase/diagnostics/security_stage_1_staging_preflight.sql",
-          "owner_execution": "PENDING",
+          "owner_execution": "RECEIVED_WITH_REVIEW_S1E68",
           "fixture_cases_passed": 7,
-          "hosted_identity_verified_by_sql": false
-        }
+          "hosted_identity_verified_by_sql": false,
+          "routine_review": "IDENTIFIED_WITH_BEHAVIOR_LIMITATIONS_S1E69"
+        },
+        "report": "docs/SECURITY_STAGE_1_3_CHECKPOINT_REPORT.md",
+        "initial_metadata_review_completed": true,
+        "owner_reported_staging_server_version": "17.11",
+        "selected_initial_counts_scope": "S1E68: zero selected user/bucket/object/relation counts; one routine identified in S1E69; not all-schema emptiness",
+        "owner_reported_frontend_deployed": true,
+        "owner_reported_auth_configuration_confirmed": true,
+        "owner_reported_ui_checks_passed": 5,
+        "owner_reported_api_checks_passed": 12,
+        "complete_staging_isolation_verified": false,
+        "bounded_work_items": 5,
+        "remaining_work_items": 0
       },
       {
         "id": "1.4",
         "title": "Recovery proof",
-        "status": "PENDING"
+        "status": "IN_PROGRESS_SYNTHETIC_SCOPE_TARGET_PREREQUISITES",
+        "active_work_item": "1.4.1",
+        "bounded_work_items": 4,
+        "latest_evidence": "S1E75",
+        "synthetic_restore_verified": false,
+        "production_restore_requested": false,
+        "customer_rows_imported_into_staging": false
       },
       {
         "id": "1.5",

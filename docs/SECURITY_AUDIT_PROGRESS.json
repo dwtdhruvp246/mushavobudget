@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_date": "2026-10-08",
+  "updated_date": "2026-10-09",
   "current_stage": 1,
   "current_step": "1.4",
   "current_title": "Synthetic recovery proof",
@@ -870,13 +870,20 @@
       {
         "id": "1.4",
         "title": "Recovery proof",
-        "status": "IN_PROGRESS_SYNTHETIC_SCOPE_TARGET_PREREQUISITES",
+        "status": "IN_PROGRESS_LOCAL_TARGET_PREPARATION_PENDING_OWNER",
         "active_work_item": "1.4.1",
         "bounded_work_items": 4,
-        "latest_evidence": "S1E75",
+        "latest_evidence": "S1E77",
         "synthetic_restore_verified": false,
         "production_restore_requested": false,
-        "customer_rows_imported_into_staging": false
+        "customer_rows_imported_into_staging": false,
+        "instructions": "docs/SECURITY_STAGE_1_4_SYNTHETIC_RECOVERY.md",
+        "owner_server_tools_reported": {
+          "initdb": "17.11",
+          "pg_ctl": "17.11",
+          "postgres": "17.11"
+        },
+        "local_recovery_target_ready": false
       },
       {
         "id": "1.5",

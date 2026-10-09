@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage": 1,
-  "updated_date": "2026-10-08",
+  "updated_date": "2026-10-09",
   "active_step": "1.4",
   "events": [
     {
@@ -4130,6 +4130,35 @@
       "full_platform_recovery_verified": false,
       "google_drive": "DEFERRED",
       "previous_67_events_unchanged": true
+    },
+    {
+      "id": "S1E76",
+      "stage_step": "1.4.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_NATIVE_POSTGRESQL_SERVER_TOOLS_FOUND",
+      "tools": {
+        "initdb": "17.11",
+        "pg_ctl": "17.11",
+        "postgres": "17.11"
+      },
+      "scope": "Owner version output only; no server or database was initialized by the tool check",
+      "independent_root_windows_execution": false
+    },
+    {
+      "id": "S1E77",
+      "stage_step": "1.4.1",
+      "prepared_date": "2026-10-09",
+      "result": "NEW_LOCAL_RECOVERY_TARGET_PREPARATION_READY_FOR_OWNER",
+      "script": "scripts/prepare-local-recovery-target.ps1",
+      "probe": "supabase/diagnostics/security_stage_1_local_recovery_probe.sql",
+      "fixture_verifier": "scripts/verify-local-recovery-probe.cjs",
+      "instructions": "docs/SECURITY_STAGE_1_4_SYNTHETIC_RECOVERY.md",
+      "scope": "New protected LocalApplicationData NTFS directory; initdb native password prompt; SCRAM/loopback 55439; brief own-cluster startup/read-only metadata/verified shutdown. No existing service changed, no exports/restores or hosted connection.",
+      "validation": "Embedded SQL probe empty/nonempty scope, private-value omission and read-only write denial PASS; native Windows ACL/PowerShell/startup/shutdown requires owner evidence",
+      "owner_execution": "PENDING",
+      "synthetic_restore_verified": false,
+      "full_platform_recovery_verified": false,
+      "google_drive": "DEFERRED"
     }
   ]
 }

@@ -1,12 +1,33 @@
 # 1.5.1 — Production operations inventory
 
-Partial inventory recorded 9 October 2026 from three owner screenshots, S1E90. All three attachment copies were successfully viewed despite the earlier image-loading error text. Stage 1 remains at 1.5.1; the four finite 1.5 work items remain open. No provider setting, deployment, Cron job or dispatch destination was changed.
+Partial inventory recorded 9 October 2026 from five owner screenshots, S1E90–S1E91. All attachment copies were successfully viewed despite earlier image-loading error text. Stage 1 remains at 1.5.1; the four finite 1.5 work items remain open. No provider setting, deployment, Cron job or dispatch destination was changed.
 
 ## Hosting evidence
 
-The Cloudflare Workers & Pages screen displays project mushavobudget, environment Production, active version ID 162af658 deployed two days before the screenshot. Recent builds are Ready on security/stage-1-foundations; the latest visible build commit is 72b2f269. A Ready build and its audit-branch label do not establish which version/commit currently serves mushavobudget.com. Domains, production branch, build/output settings and active-version commit mapping are not visible. The traffic percentage label/bar is not used to infer actual routing from this screenshot.
+The Cloudflare Workers & Pages screen displays project mushavobudget, environment Production, active version ID 162af658 deployed two days before the screenshot. Recent builds are Ready on security/stage-1-foundations; the latest visible build commit is 72b2f269. A Ready build and its audit-branch label do not establish which version/commit currently serves mushavobudget.com. In the first screenshot, domains, production branch, build/output settings and active-version commit mapping were not visible; the next section records subsequently supplied configuration. The traffic percentage label/bar is not used to infer actual routing from this screenshot.
 
-Required remaining hosting confirmation: the Domains screen for this project, and Settings sections showing build/deployment configuration and production branch if present. Keep credential values out of screenshots. If the project UI uses another deployment method, record that displayed method instead of forcing a Pages/Git assumption. Existing staging frontend evidence remains separate; no production setting is changed to match the audit branch.
+S1E91 supplies the Domains and Builds settings. This production hosting resource is a Cloudflare Worker; the earlier general Pages wording is superseded for production. The separate staging pages.dev frontend remains its own recorded environment.
+
+| Configured field | Visible value |
+|---|---|
+| Custom domain | mushavobudget.com, type Production |
+| Production Worker URL | mushavobudget.dhruvp246.workers.dev, enabled |
+| Preview Worker URL | Wildcard preview URL, enabled |
+| Repository | dwtdhruvp246/mushavobudget |
+| Production branch | main |
+| Builds for non-production branches | Enabled |
+| Disable builds | Off |
+| Build command | None |
+| Deploy command | npx wrangler deploy --config ./wrangler.jsonc |
+| Version command | npx wrangler versions upload |
+| Root directory | / |
+
+The non-production build setting accounts for audit-branch builds appearing in the list; it does not establish promotion to the production custom domain. Active-version-to-commit/asset mapping is still unverified. No further hosting screenshot loop is required for this inventory; that mapping remains a review item.
+
+**Git integration REVIEW:** the Builds screen warns that the project is disconnected from its Git account and deployments may fail. This is a current Dashboard warning, not proof that the live Worker has stopped serving or that every deployment has failed. Action: review intended repository/account access, reconnect if necessary and verify a later approved deployment. No Disconnect/Manage action or deployment is performed by this audit review.
+
+**Preview isolation REVIEW:** the Set up Worker Previews banner remains visible while the configured version command is npx wrangler versions upload. Cloudflare documents a legacy preview model for existing Workers and an optional switch to new Worker Previews, with different settings/isolation. Do not treat a Ready audit-branch build as the separately configured staging frontend or proof of isolated secrets/bindings. No preview-model switch is requested. Reference: [Cloudflare build branches](https://developers.cloudflare.com/workers/ci-cd/builds/build-branches/).
+
 
 ## Production Edge Functions
 
@@ -37,6 +58,6 @@ Visible command prefixes use net.http_post and a Vault-derived URL. Raw command 
 
 ## Remaining evidence and carry-forward
 
-The next consolidated owner reply should confirm hosting domain/build mapping and state whether outage, application-error, backup-failure and dispatch-failure alerts are enabled, absent or unknown. Owner alert configuration has not yet been supplied. Support routing, plan/usage thresholds, deployed authentication settings/version parity and actual alert/dispatch delivery remain unverified. These areas retain explicit review status; later controlled checks belong to 1.5.2 and final unresolved issues carry to remediation/re-audit.
+Hosting domain, production branch and configured build/deployment method are now recorded. The remaining owner reply is whether outage, application-error, backup-failure and dispatch-failure alerts are enabled, absent or unknown. Owner alert configuration has not yet been supplied. Support routing, plan/usage thresholds, deployed authentication settings/version parity and actual alert/dispatch delivery remain unverified. These areas retain explicit review status; later controlled checks belong to 1.5.2 and final unresolved issues carry to remediation/re-audit.
 
 This inventory does not request another export/restore, force a deployment, merge the audit PR, enable schedules or send messages. The successful 1.4 synthetic target stays stopped and the closed 1.2/1.3/1.4 evidence remains unchanged.

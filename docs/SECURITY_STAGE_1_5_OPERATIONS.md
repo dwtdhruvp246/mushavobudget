@@ -11,13 +11,13 @@ Stage 1 continues at 1.5.1 after the [1.4 scoped native recovery checkpoint](SEC
 
 ## 1.5.1 — One consolidated read-only inventory
 
-S1E90 records the [partial production inventory](SECURITY_STAGE_1_5_INVENTORY.md): six production Edge Functions and three active Cron jobs with latest scheduler statuses Succeeded. Cloudflare displays active version 162af658 and Ready audit-branch builds; domain/active-commit/build mapping and owner alert status remain pending. These screenshots do not prove HTTP/delivery success, deployed authentication/source parity or complete operational coverage.
+S1E90 records the [partial production inventory](SECURITY_STAGE_1_5_INVENTORY.md): six production Edge Functions and three active Cron jobs with latest scheduler statuses Succeeded. Cloudflare displays active version 162af658 and Ready audit-branch builds. S1E91 identifies the production Worker domain mushavobudget.com, branch main and build/deploy settings, plus a disconnected Git-account warning. Active-commit/asset mapping, preview isolation and owner alert status remain unverified; no repeated hosting screenshot loop is required. These screenshots do not prove HTTP/delivery success, deployed authentication/source parity or complete operational coverage.
 
 Owner provider evidence is necessary because root has no signed-in Supabase/Cloudflare/Zoho session. Use production Mushavo Budget kttkospkblwvguuwnhjj when gathering production metadata; staging dczlddwbtgvfdujgcitb remains separate. Clearly label the environment. Do not copy service-role/JWT/SMTP/Edge secret values, customer rows or function bodies into chat.
 
 The consolidated inventory will cover:
 
-- Cloudflare production and staging Pages project names, deployed branch/commit or manual-upload method, build/output mapping, domain mapping and existing deployment/outage notifications.
+- Cloudflare production Worker and separate staging Pages project names, deployed branch/commit or manual-upload method, build/output mapping, domain mapping and existing deployment/outage notifications.
 - Supabase production deployed Edge function names and visible deployment/version/authentication metadata. Secret names/presence may be recorded separately from their private values; repository source does not prove deployed parity.
 - Scheduler job names/enabled state and latest safe status/time metadata. Command text and returned messages can contain credentials or customer content and must remain private.
 - Existing error, backup and dispatch failure alerts: enabled/disabled/unknown, owner recipient and whether receipt has actually been tested. Record who reviews failures when automated alerting is absent.

@@ -4505,6 +4505,40 @@
       "provider_settings_changed": false,
       "dispatch_or_messages_sent": false,
       "prior_89_events_unchanged": true
+    },
+    {
+      "id": "S1E91",
+      "stage_step": "1.5.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_PRODUCTION_WORKER_DOMAIN_AND_BUILD_CONFIGURATION_IDENTIFIED_WITH_GIT_WARNING",
+      "evidence_scope": "Two owner screenshots successfully viewed; configured domain/build metadata, not independently executed deployment or reachability test.",
+      "hosting_type": "CLOUDFLARE_WORKER",
+      "custom_domain": "mushavobudget.com",
+      "custom_domain_type": "Production",
+      "production_worker_url": "mushavobudget.dhruvp246.workers.dev",
+      "production_worker_url_enabled": true,
+      "preview_worker_url_enabled": true,
+      "git_repository": "dwtdhruvp246/mushavobudget",
+      "production_branch": "main",
+      "builds_for_nonproduction_branches": true,
+      "disable_builds": false,
+      "build_command": "None",
+      "deploy_command": "npx wrangler deploy --config ./wrangler.jsonc",
+      "version_command": "npx wrangler versions upload",
+      "root_directory": "/",
+      "git_account_disconnected_warning_visible": true,
+      "worker_previews_setup_banner_visible": true,
+      "isolated_preview_runtime_settings_verified": false,
+      "active_version_to_commit_mapping_verified": false,
+      "git_reconnection_or_next_deployment_verified": false,
+      "owner_alert_reply_received": false,
+      "provider_settings_changed": false,
+      "prior_90_events_unchanged": true,
+      "carry_forward": [
+        "Git integration warning: review/reconnect intended repository access and verify a later approved deployment",
+        "Active version/source/asset mapping and preview isolation remain unverified; do not equate audit-branch builds with isolated staging"
+      ],
+      "documentation_source": "https://developers.cloudflare.com/workers/ci-cd/builds/build-branches/"
     }
   ]
 }

@@ -1,6 +1,6 @@
 # 1.5 — Inventory, monitoring and response
 
-Stage 1 continues at 1.5.1 after the [1.4 scoped native recovery checkpoint](SECURITY_STAGE_1_4_CHECKPOINT_REPORT.md). Four finite work items; none is completed yet. This step establishes what actually runs, who notices failures and how the owner responds. A source repository, a successful synthetic restore or saved recovery codes alone do not establish deployed operational coverage.
+Stage 1 continues at 1.5.2 after the [1.4 scoped native recovery checkpoint](SECURITY_STAGE_1_4_CHECKPOINT_REPORT.md). Four finite work items; one completed with partial coverage/carry-forward, three remain. This step establishes what actually runs, who notices failures and how the owner responds. A source repository, a successful synthetic restore or saved recovery codes alone do not establish deployed operational coverage.
 
 | Work item | Work and purpose | Acceptance |
 |---|---|---|
@@ -11,7 +11,7 @@ Stage 1 continues at 1.5.1 after the [1.4 scoped native recovery checkpoint](SEC
 
 ## 1.5.1 — One consolidated read-only inventory
 
-S1E90 records the [partial production inventory](SECURITY_STAGE_1_5_INVENTORY.md): six production Edge Functions and three active Cron jobs with latest scheduler statuses Succeeded. Cloudflare displays active version 162af658 and Ready audit-branch builds. S1E91 identifies the production Worker domain mushavobudget.com, branch main and build/deploy settings, plus a disconnected Git-account warning. Active-commit/asset mapping, preview isolation and owner alert status remain unverified; no repeated hosting screenshot loop is required. These screenshots do not prove HTTP/delivery success, deployed authentication/source parity or complete operational coverage.
+S1E90 records the [partial production inventory](SECURITY_STAGE_1_5_INVENTORY.md): six production Edge Functions and three active Cron jobs with latest scheduler statuses Succeeded. Cloudflare displays active version 162af658 and Ready audit-branch builds. S1E91 identifies the production Worker domain mushavobudget.com, branch main and build/deploy settings, plus a disconnected Git-account warning. S1E92 records the owner alert reply unsure and closes 1.5.1 with carry-forward. Active-commit/asset mapping, preview isolation and alert coverage remain unverified; no repeated hosting screenshot loop is required. These screenshots do not prove HTTP/delivery success, deployed authentication/source parity or complete operational coverage.
 
 Owner provider evidence is necessary because root has no signed-in Supabase/Cloudflare/Zoho session. Use production Mushavo Budget kttkospkblwvguuwnhjj when gathering production metadata; staging dczlddwbtgvfdujgcitb remains separate. Clearly label the environment. Do not copy service-role/JWT/SMTP/Edge secret values, customer rows or function bodies into chat.
 
@@ -24,6 +24,10 @@ The consolidated inventory will cover:
 - Provider plans/usage thresholds or budget controls and support@mushavobudget.com mailbox/routing presence. Actual support receipt and alert delivery tests belong to 1.5.2 after their destinations and test messages are concrete.
 
 Read-only metadata/screenshot handoffs should consolidate these areas. Missing tables, unavailable dashboards or unconfigured alerts are outcomes to carry, not reasons for repeated speculative queries. This inventory enables no dispatch, changes no schedules and exports no customer data.
+
+## 1.5.2 — Monitoring and controlled checks
+
+S1E93 prepares the [one consolidated monitoring/usage/support check](SECURITY_STAGE_1_5_MONITORING_CHECK.md). Existing alert policies and usage scope are inspected before any new policy or plan change. Owner may test their own support mailbox with one plain dummy message if it exists. Root sends no communications; actual delivery remains pending owner evidence. Unavailable evidence is recorded explicitly and carried to final remediation.
 
 ## Stopping rule and retained scope
 

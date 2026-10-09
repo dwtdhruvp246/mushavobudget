@@ -1,6 +1,6 @@
 # 1.5.1 — Production operations inventory
 
-Partial inventory recorded 9 October 2026 from five owner screenshots, S1E90–S1E91. All attachment copies were successfully viewed despite earlier image-loading error text. Stage 1 remains at 1.5.1; the four finite 1.5 work items remain open. No provider setting, deployment, Cron job or dispatch destination was changed.
+Inventory closed 9 October 2026 with partial coverage and carry-forward, S1E92, following five owner screenshots S1E90–S1E91 and the owner alert reply unsure. All attachment copies were successfully viewed despite earlier image-loading error text. Stage 1 advances to 1.5.2. One of four finite 1.5 work items is complete; three remain. No provider setting, deployment, Cron job or dispatch destination was changed.
 
 ## Hosting evidence
 
@@ -58,6 +58,6 @@ Visible command prefixes use net.http_post and a Vault-derived URL. Raw command 
 
 ## Remaining evidence and carry-forward
 
-Hosting domain, production branch and configured build/deployment method are now recorded. The remaining owner reply is whether outage, application-error, backup-failure and dispatch-failure alerts are enabled, absent or unknown. Owner alert configuration has not yet been supplied. Support routing, plan/usage thresholds, deployed authentication settings/version parity and actual alert/dispatch delivery remain unverified. These areas retain explicit review status; later controlled checks belong to 1.5.2 and final unresolved issues carry to remediation/re-audit.
+Hosting domain, production branch and configured build/deployment method are now recorded. Owner replied unsure. All four alert categories are UNVERIFIED; this does not establish that they are absent or enabled. Inventory closes with these gaps carried. The [1.5.2 monitoring check](SECURITY_STAGE_1_5_MONITORING_CHECK.md) gathers the existing policy list, current usage scope and controlled support receipt evidence. Support routing, plan/usage thresholds, deployed authentication settings/version parity and actual alert/dispatch delivery remain unverified. These areas retain explicit review status; later controlled checks belong to 1.5.2 and final unresolved issues carry to remediation/re-audit.
 
 This inventory does not request another export/restore, force a deployment, merge the audit PR, enable schedules or send messages. The successful 1.4 synthetic target stays stopped and the closed 1.2/1.3/1.4 evidence remains unchanged.

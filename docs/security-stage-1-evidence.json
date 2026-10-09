@@ -4539,6 +4539,56 @@
         "Active version/source/asset mapping and preview isolation remain unverified; do not equate audit-branch builds with isolated staging"
       ],
       "documentation_source": "https://developers.cloudflare.com/workers/ci-cd/builds/build-branches/"
+    },
+    {
+      "id": "S1E92",
+      "stage_step": "1.5.1",
+      "recorded_date": "2026-10-09",
+      "result": "DEPLOYED_INVENTORY_CLOSED_PARTIAL_WITH_OWNER_ALERT_UNCERTAINTY",
+      "owner_reply": "unsure",
+      "owner_alert_status": {
+        "outage": "UNVERIFIED",
+        "application_error": "UNVERIFIED",
+        "backup_failure": "UNVERIFIED",
+        "dispatch_failure": "UNVERIFIED"
+      },
+      "alerts_proved_absent": false,
+      "alerts_or_delivery_proved_enabled": false,
+      "inventory": "docs/SECURITY_STAGE_1_5_INVENTORY.md",
+      "recorded_production_functions": 6,
+      "recorded_active_cron_jobs": 3,
+      "production_domain_branch_and_build_configuration_recorded": true,
+      "carry_forward": [
+        "Disconnected Cloudflare Git-account warning",
+        "Active version/source/asset mapping and preview isolation",
+        "Deployed Edge version/authentication/source parity",
+        "Asynchronous dispatch HTTP/business/delivery outcome",
+        "Unverified alert coverage, usage thresholds and support routing"
+      ],
+      "completed_work_items": 1,
+      "remaining_work_items": 3,
+      "next_step": "1.5.2",
+      "provider_settings_changed": false,
+      "prior_91_events_unchanged": true
+    },
+    {
+      "id": "S1E93",
+      "stage_step": "1.5.2",
+      "recorded_date": "2026-10-09",
+      "result": "CONSOLIDATED_MONITORING_USAGE_AND_SUPPORT_CHECK_PREPARED",
+      "instructions": "docs/SECURITY_STAGE_1_5_MONITORING_CHECK.md",
+      "owner_batch": [
+        "Cloudflare account Alerts/Notifications Overview existing policy list",
+        "Supabase organization current Usage with scope/project recorded",
+        "Owner-only support mailbox receipt test if the mailbox exists, otherwise report NOT_CREATED/UNAVAILABLE"
+      ],
+      "cloudflare_source": "https://developers.cloudflare.com/notifications/get-started/",
+      "supabase_source": "https://supabase.com/docs/guides/troubleshooting/understanding-the-usage-summary-on-the-dashboard-D7Gnle",
+      "controlled_alert_test": "Prepare after existing policy coverage and owner-controlled destination are known; no production outage or deliberate failure",
+      "support_test_scope": "One plain dummy message from an owner-controlled inbox to owner support@mushavobudget.com; owner executes manually, root sends no message",
+      "new_policy_or_paid_service_enabled": false,
+      "owner_execution": "PENDING",
+      "actual_alert_or_support_receipt_verified": false
     }
   ]
 }

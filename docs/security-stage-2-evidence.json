@@ -265,6 +265,359 @@
       ],
       "sql_or_secret_input_required": false,
       "google_backup_or_apk_update_requested": false
+    },
+    {
+      "id": "S2E05",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_WINDOWS_STAGING_HEADER_PREPARATION_PASS",
+      "helper_commit": "3aeb92bd0fb8529ae35bfa390c176dbe3d0f63c4",
+      "owner_report_result": "STAGING_HEADER_CANDIDATE_PREPARED",
+      "output_folder_name": "MushavoBudget-Staging-Headers-e86954edacbc4788b027093b3183f443",
+      "staging_reference": "dczlddwbtgvfdujgcitb",
+      "public_files": 35,
+      "production_reference_scan_passed": true,
+      "production_push_key_absent": true,
+      "source_files_modified": false,
+      "reviewed_file_allowlist_only": true,
+      "source_commit_or_key_project_ownership_independently_verified": false,
+      "owner_windows_execution_reported_pass": true,
+      "owner_node_version_rechecked_this_run": false,
+      "deployment_verified_by_preparation_only": false,
+      "native_bundle_changed": false
+    },
+    {
+      "id": "S2E06",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_STAGING_UPLOAD_AND_SAMPLED_LIVE_HEADERS_CONFIG_PASS",
+      "owner_reply": "staging deployed",
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "live_observations": {
+        "checked_utc": "2026-10-09T13:11:46.610777+00:00",
+        "origin": "https://mushavo-budget-staging.pages.dev",
+        "requests": [
+          {
+            "path": "/",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/app",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/business",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/signup",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/contact",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/pricing",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/app-entry",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/app.js",
+            "status": 200,
+            "location": null,
+            "content_type": "text/javascript; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/business.js",
+            "status": 200,
+            "location": null,
+            "content_type": "text/javascript; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/sw.js",
+            "status": 200,
+            "location": null,
+            "content_type": "text/javascript; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/site.css",
+            "status": 200,
+            "location": null,
+            "content_type": "text/css; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/app.html",
+            "status": 308,
+            "location": "/app",
+            "content_type": null,
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          }
+        ]
+      },
+      "baseline_header_checks": [
+        {
+          "path": "/",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/app",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/business",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/signup",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/contact",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/pricing",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/app-entry",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/app.js",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": true
+        },
+        {
+          "path": "/business.js",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": true
+        },
+        {
+          "path": "/sw.js",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": true
+        },
+        {
+          "path": "/site.css",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": true
+        },
+        {
+          "path": "/app.html",
+          "status": 308,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        }
+      ],
+      "sampled_responses": 12,
+      "successful_asset_document_responses": 11,
+      "canonical_suffix_redirect": {
+        "path": "/app.html",
+        "status": 308,
+        "location": "/app",
+        "seven_header_families_present": true
+      },
+      "all_twelve_samples_have_seven_header_families": true,
+      "all_twelve_baseline_values_match_candidate": true,
+      "js_css_mime_checks_pass": true,
+      "public_configuration_and_signup_hash_checks": {
+        "checked_utc": "2026-10-09T13:12:41.222404+00:00",
+        "public_config_staging_url_matches": true,
+        "public_publishable_key_format": true,
+        "public_push_key_empty": true,
+        "public_config_production_reference_absent": true,
+        "report_only_csp_production_reference_absent": true,
+        "report_only_staging_https_and_wss_listed": true,
+        "inline_signup_blocks": 1,
+        "all_live_signup_inline_hashes_listed": true,
+        "signup_content_production_reference_absent": true,
+        "credentials_tokens_or_raw_bodies_printed": false,
+        "authenticated_browser_workflow_verified": false
+      },
+      "resource_csp_scope": "REPORT_ONLY_NOT_ENFORCED",
+      "full_browser_injection_frame_auth_download_realtime_or_native_workflows_verified": false,
+      "all_routes_cache_states_or_deployment_source_parity_verified": false,
+      "production_header_repair_or_https_redirect_setting_verified": false,
+      "credentials_or_tokens_printed": false,
+      "provider_changes_performed_by_root": false
+    },
+    {
+      "id": "S2E07",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "ONE_BOUNDED_OWNER_BROWSER_CHECK_BATCH_PENDING",
+      "instructions": "docs/SECURITY_STAGE_2_1_BROWSER_HEADERS.md",
+      "owner_batch": [
+        "Public pages and app/signup/business shell render",
+        "First synthetic account login and selected payment persistence",
+        "Second synthetic account separate Personal workspace and first payment hidden",
+        "Available download/print/logo preview positive controls or UNAVAILABLE",
+        "Safe report-only/enforced CSP console observations"
+      ],
+      "production_always_use_https_setting": "PENDING_ON_OFF_UNAVAILABLE_OWNER_READ_ONLY_REPLY",
+      "completed_header_work_items": 2,
+      "remaining_header_work_items": 1,
+      "owner_staging_upload_complete": true,
+      "sampled_live_header_checks_complete": true,
+      "browser_batch_results_received": false,
+      "strict_resource_csp_and_final_f07_acceptance_verified": false,
+      "repeat_stage_1_export_restore_or_staging_setup_required": false
     }
   ]
 }

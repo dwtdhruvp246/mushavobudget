@@ -703,6 +703,75 @@
       "application_source_or_error_suppression_changes_performed": false,
       "provider_settings_database_or_native_bundle_changed": false,
       "stage_0_or_1_checkpoints_reopened": false
+    },
+    {
+      "id": "S2E10",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_PRODUCTION_ALWAYS_USE_HTTPS_OFF_REDIRECT_BEHAVIOR_REVIEW",
+      "owner_reply": "its off",
+      "preceding_owner_target_clarification": "Original Cloudflare account, production mushavobudget.com zone.",
+      "production_always_use_https_setting": "OWNER_REPORTED_OFF",
+      "owner_observed_setting_independently_verified": false,
+      "setting_off_proves_no_other_redirect": false,
+      "fresh_root_probes": {
+        "checked_utc": "2026-10-09T18:23:53.411868+00:00",
+        "requests": [
+          {
+            "url": "http://mushavobudget.com/",
+            "status": 403,
+            "location": null,
+            "execution_path_or_server_attribution_unverified": true
+          },
+          {
+            "url": "https://mushavobudget.com/",
+            "status": 403,
+            "location": null,
+            "execution_path_or_server_attribution_unverified": true
+          },
+          {
+            "url": "https://mushavobudget.com/app",
+            "status": 403,
+            "location": null,
+            "execution_path_or_server_attribution_unverified": true
+          },
+          {
+            "url": "https://mushavobudget.com/business",
+            "status": 403,
+            "location": null,
+            "execution_path_or_server_attribution_unverified": true
+          }
+        ],
+        "redirect_setting_or_origin_attribution_verified": false
+      },
+      "fresh_root_403_origin_or_execution_path_attribution_verified": false,
+      "actual_production_http_to_https_redirect_verified": false,
+      "primary_setting_reference": "https://developers.cloudflare.com/ssl/edge-certificates/additional-options/always-use-https/",
+      "correction_prepared": {
+        "status": "REVIEWABLE_HOSTNAME_SCOPED_CANDIDATE_NOT_DEPLOYED",
+        "rationale": "Zone-wide Always Use HTTPS affects all hosts/subdomains; only the live apex website has known scope here.",
+        "dashboard": "Production mushavobudget.com > Rules > Overview > Create rule > Redirect Rule",
+        "name": "Mushavo website HTTP to HTTPS",
+        "incoming_match": "Wildcard pattern",
+        "request_url": "http://mushavobudget.com/*",
+        "target_url": "https://mushavobudget.com/${1}",
+        "status_code": 301,
+        "preserve_query_string": true,
+        "rule_references": [
+          "https://developers.cloudflare.com/rules/url-forwarding/single-redirects/create-dashboard/",
+          "https://developers.cloudflare.com/rules/url-forwarding/examples/redirect-admin-https/"
+        ],
+        "provider_syntax_or_effective_rule_independently_deployed_tested": false,
+        "condition_for_owner_deployment": "Only if actual owner-path HTTP behavior confirms the redirect is missing, after checking overlapping existing rules; no zone-wide switch/DNS/TLS changes prescribed."
+      },
+      "remaining_bounded_check": "One owner-native curl GET batch without automatic redirect following: root/app-with-dummy-query/business HTTP and app HTTPS. Accept a matching HTTPS Location or explicitly carry unavailable/inconclusive behavior; do not add an endless screenshot loop.",
+      "completed_header_work_items": 2,
+      "remaining_header_work_items": 1,
+      "stage_0_or_1_checkpoints_reopened": false,
+      "root_provider_setting_or_application_database_native_changes_performed": false,
+      "credentials_tokens_customer_rows_or_raw_response_bodies_recorded": false,
+      "strict_resource_csp_enforced": false,
+      "complete_production_header_or_redirect_acceptance_verified": false
     }
   ]
 }

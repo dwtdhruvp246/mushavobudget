@@ -1,10 +1,10 @@
 # 2.1 — Browser header baseline, candidate and staging handoff
 
-**2.1 update — S2E09:** Owner reports that the selected Console error did not return in the requested follow-up check. Browser checks 1–4 remain owner-reported PASS. Nonrecurrence supports the browser-extension explanation without identifying a particular extension or proving all browser/CSP behavior. No further repeat of these checks is requested. Only the production mushavobudget.com Always Use HTTPS ON/OFF/UNAVAILABLE read-only reply remains in the third work item. Two of three items are complete; strict resource CSP, deliberate frame/injection checks and production acceptance remain open.
+**2.1 update — S2E10:** Owner reports the production mushavobudget.com Always Use HTTPS setting OFF. This identifies a disabled setting, not proof that every HTTP request lacks another redirect. Checks 1–4 and targeted Console nonrecurrence remain owner-reported scoped PASS. Fresh root HTTP/HTTPS probes received 403 through this execution path and cannot establish the live redirect. One bounded owner-native curl batch is the remaining behavior check. A path/query-preserving 301 candidate limited to the known apex website is prepared if a redirect is actually missing; no provider change is made. Two of three work items are complete. Strict CSP, deliberate blocking and full production acceptance remain open.
 
 **Prior live result — 9 October 2026, S2E05–S2E07:** Owner Windows preparation passed with 35 public files and original sources retained; owner then confirmed staging deployed. Root's fresh GET checks at 13:11–13:12 UTC (15:11–15:12 +0200) found all seven header families with matching baseline values on 11 successful canonical HTML/JS/CSS responses and the app.html → app 308 response. MIME checks passed. Public config uses dczlddwbtgvfdujgcitb with publishable-key format and empty push key; config/CSP/selected signup content contain no production reference. The one live inline signup block matches the declared CSP hash. No credentials, token values or raw bodies are recorded. This is a sampled served-header/configuration PASS, not browser execution, key-ownership/source-parity or production acceptance. One bounded owner browser batch and the production Always Use HTTPS setting reply remain pending; two of three work items remain complete. Preparation/upload instructions below are retained as history and need not be repeated.
 
-Prepared 9 October 2026. **Baseline/candidate and sampled staging headers complete; owner workflows 1–4 and targeted Console nonrecurrence report scoped PASS; HTTPS-setting reply pending.** F07 remains open. Candidate presence or local checks do not establish live repair or full XSS protection.
+Prepared 9 October 2026. **Baseline/candidate and sampled staging headers complete; owner workflows 1–4 and targeted Console nonrecurrence report scoped PASS; production HTTPS redirect behavior review pending.** F07 remains open. Candidate presence or local checks do not establish live repair or full XSS protection.
 
 ## Fresh observations
 
@@ -108,3 +108,45 @@ Primary references: [Chromium extension message port error](https://chromium.goo
 Owner reply: “error did not return”. Record the selected error's nonrecurrence as an owner-reported scoped PASS. The reply follows the requested Guest/extensions-disabled staging Support test; profile, extension state, elapsed time and full Console history are not independently observed. The result supports the extension explanation without identifying an extension or proving universal absence of browser errors. No application patch or error suppression is warranted by the current evidence, and no additional Console retest is requested for this bounded step.
 
 The production mushavobudget.com Always Use HTTPS read-only ON/OFF/UNAVAILABLE reply is the sole remaining owner item. Previously passed workflows stay passed. Strict resource CSP, deliberate frame/injection evidence, production deployment/acceptance and any unavailable settings evidence carry explicitly to the closing checkpoint/final remediation rather than restart earlier stages.
+
+
+## S2E10 production setting and one bounded behavior check
+
+Owner reports Always Use HTTPS OFF in the original account's production mushavobudget.com zone. Other existing redirect rules are not inventoried, so OFF alone is not a proof of an unprotected HTTP response. Cloudflare documents the switch as covering all hosts/subdomains; that wider website scope is not established here. Fresh root GETs on 9 October at 2026-10-09T18:23:53.411868+00:00 returned 403 for HTTP root and HTTPS root/app/business through this environment. Their origin/execution-path attribution is unresolved; do not treat them as proved application downtime or a validated HTTP redirect.
+
+Run this owner-side read-only batch. curl configuration files are ignored, redirects are not automatically followed, TLS verification is retained and response bodies are discarded. The URLs contain only public paths and a synthetic query marker. No login, database, local project/source modification or provider write occurs.
+
+```powershell
+& {
+    $mushavoCurl = Get-Command -Name "curl.exe" `
+        -CommandType Application -ErrorAction Stop |
+        Select-Object -First 1
+
+    foreach ($mushavoUrl in @(
+        "http://mushavobudget.com/",
+        "http://mushavobudget.com/app?audit_https=2.1",
+        "http://mushavobudget.com/business",
+        "https://mushavobudget.com/app"
+    )) {
+        $mushavoResult = & $mushavoCurl.Source --disable --silent `
+            --show-error --max-time 15 --output NUL `
+            --write-out 'status=%{http_code}; redirect=%{redirect_url}' `
+            --url $mushavoUrl
+        $mushavoExitCode = $LASTEXITCODE
+
+        [pscustomobject]@{
+            URL = $mushavoUrl
+            Result = ($mushavoResult -join "")
+            ExitCode = $mushavoExitCode
+        }
+    }
+} | Format-Table -Wrap -AutoSize
+```
+
+Expected protected behavior: HTTP paths return a redirect to HTTPS on the same hostname, retaining the selected path and dummy query; HTTPS app loads successfully. The root request may be 301 or another intentional HTTP-to-HTTPS redirect status under an existing rule. The three HTTP observations and HTTPS positive control establish only this sample, not all domain hosts/routes/cache states. Send the metadata table and safe errors. If the result is unavailable/inconclusive, explicitly carry the gap; do not reopen earlier stages or add an unlimited diagnostic sequence.
+
+### Prepared correction if the redirect is missing
+
+In production mushavobudget.com, review Rules > Overview for an overlapping existing redirect before creating this candidate. Use Create rule > Redirect Rule, name “Mushavo website HTTP to HTTPS”, match Wildcard pattern, Request URL `http://mushavobudget.com/*`, Target URL `https://mushavobudget.com/${1}`, Status code 301, Preserve query string enabled. This candidate matches HTTP for the known apex website, not HTTPS or other hostnames. It preserves navigation and query parameters and avoids an HTTPS self-redirect. It is not deployed or accepted by this evidence. Single Redirects require Cloudflare-proxied traffic; no DNS or TLS-mode change is requested.
+
+Deployment handoff will depend on the actual owner-path behavior. If an existing rule already protects these requests, do not duplicate it just to make the Always Use HTTPS switch ON. Provider validation and post-change behavior remain required for any implemented correction. See [Always Use HTTPS scope](https://developers.cloudflare.com/ssl/edge-certificates/additional-options/always-use-https/), [rule creation](https://developers.cloudflare.com/rules/url-forwarding/single-redirects/create-dashboard/) and [scoped HTTPS redirect example](https://developers.cloudflare.com/rules/url-forwarding/examples/redirect-admin-https/).

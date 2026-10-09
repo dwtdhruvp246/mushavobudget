@@ -1071,13 +1071,13 @@
       {
         "id": "2.1",
         "title": "Browser security headers",
-        "status": "STAGING_COMPATIBILITY_SCOPED_PASS_HTTPS_SETTING_PENDING",
+        "status": "STAGING_COMPATIBILITY_SCOPED_PASS_PRODUCTION_HTTPS_REDIRECT_REVIEW",
         "bounded_work_items": 3,
         "completed_work_items": 2,
         "remaining_work_items": 1,
-        "active_work_item": "PRODUCTION_HTTPS_SETTING_READ_ONLY_REPLY",
+        "active_work_item": "BOUNDED_OWNER_HTTP_REDIRECT_BEHAVIOR_CHECK",
         "instructions": "docs/SECURITY_STAGE_2_1_BROWSER_HEADERS.md",
-        "latest_evidence": "S2E09",
+        "latest_evidence": "S2E10",
         "local_selected_checks_passed": 15,
         "staging_served_candidate_verified": true,
         "browser_workflows_verified": false,
@@ -1095,7 +1095,12 @@
         "console_error_review": "OWNER_REPORTED_NONRECURRENCE_SUPPORTS_EXTENSION_EXPLANATION",
         "console_csp_or_error_free_acceptance_verified": false,
         "targeted_console_recheck_evidence": "S2E09",
-        "owner_reported_targeted_console_error_did_not_recur": true
+        "owner_reported_targeted_console_error_did_not_recur": true,
+        "production_always_use_https_setting": "OWNER_REPORTED_OFF",
+        "production_https_setting_evidence": "S2E10",
+        "http_redirect_behavior_verified": false,
+        "hostname_scoped_https_correction_prepared": true,
+        "hostname_scoped_https_correction_deployed": false
       },
       {
         "id": "2.2",

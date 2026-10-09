@@ -1071,13 +1071,13 @@
       {
         "id": "2.1",
         "title": "Browser security headers",
-        "status": "STAGING_LIVE_HEADERS_PASS_OWNER_BROWSER_CHECK_PENDING",
+        "status": "STAGING_HEADERS_AND_OWNER_WORKFLOWS_SCOPED_PASS_CONSOLE_REVIEW_PENDING",
         "bounded_work_items": 3,
         "completed_work_items": 2,
         "remaining_work_items": 1,
-        "active_work_item": "OWNER_BROWSER_COMPATIBILITY_AND_HTTPS_SETTING_REVIEW",
+        "active_work_item": "EXTENSIONS_DISABLED_CONSOLE_RECHECK_AND_HTTPS_SETTING_REVIEW",
         "instructions": "docs/SECURITY_STAGE_2_1_BROWSER_HEADERS.md",
-        "latest_evidence": "S2E07",
+        "latest_evidence": "S2E08",
         "local_selected_checks_passed": 15,
         "staging_served_candidate_verified": true,
         "browser_workflows_verified": false,
@@ -1089,7 +1089,11 @@
         "owner_preparation_evidence": "S2E05",
         "staging_live_header_evidence": "S2E06",
         "staging_sampled_response_count": 12,
-        "staging_public_config_and_signup_hash_checks_pass": true
+        "staging_public_config_and_signup_hash_checks_pass": true,
+        "owner_reported_browser_checks_1_to_4_passed": true,
+        "owner_browser_workflow_evidence": "S2E08",
+        "console_error_review": "EXTENSION_MESSAGING_LIKELY_EXTENSIONS_DISABLED_CONFIRMATION_PENDING",
+        "console_csp_or_error_free_acceptance_verified": false
       },
       {
         "id": "2.2",

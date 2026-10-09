@@ -618,6 +618,67 @@
       "browser_batch_results_received": false,
       "strict_resource_csp_and_final_f07_acceptance_verified": false,
       "repeat_stage_1_export_restore_or_staging_setup_required": false
+    },
+    {
+      "id": "S2E08",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_BROWSER_CHECKS_1_TO_4_PASS_CONSOLE_EXTENSION_CHANNEL_ERROR_REVIEW",
+      "owner_reported_checks": [
+        {
+          "number": 1,
+          "scope": "Home/pricing/signup/app/business sign-in pages render",
+          "status": "OWNER_REPORTED_PASS"
+        },
+        {
+          "number": 2,
+          "scope": "First synthetic account sign-in and selected payment persistence after reload",
+          "status": "OWNER_REPORTED_PASS"
+        },
+        {
+          "number": 3,
+          "scope": "Second synthetic account separate Personal workspace and first account payment hidden",
+          "status": "OWNER_REPORTED_PASS"
+        },
+        {
+          "number": 4,
+          "scope": "Available download/print/logo-preview flows in owner batch",
+          "status": "OWNER_REPORTED_PASS"
+        }
+      ],
+      "screenshot_review": {
+        "attachment_name": "image(20261009-165905).png",
+        "image_read_successfully": true,
+        "visible_page": "Personal support form and empty support history",
+        "visible_console_information": "Workspace ready in 2858ms",
+        "visible_grouped_error_count": 3,
+        "visible_error": "Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received",
+        "visible_error_link": "/app#personal/support:1",
+        "visible_csp_violation_in_shown_console": false,
+        "full_console_history_or_other_errors_verified": false,
+        "screenshot_host_or_project_identity_independently_verified": false
+      },
+      "diagnosis": {
+        "error_category": "CHROMIUM_EXTENSION_MESSAGING_RESPONSE_CHANNEL_CLOSED",
+        "likely_source": "BROWSER_EXTENSION_INFERENCE_NOT_IDENTIFIED_OR_RUNTIME_CONFIRMED",
+        "primary_source": "https://chromium.googlesource.com/chromium/src/+/9256bc8b668f61e755ab587f623e7da94d8a6f47/extensions/browser/api/messaging/extension_message_port.cc",
+        "extension_messaging_documentation": "https://developer.chrome.com/docs/extensions/develop/concepts/messaging",
+        "local_allowlisted_html_js_files_scanned": 20,
+        "local_extension_messaging_or_exact_error_matches": 0,
+        "local_scan_deployed_parity_or_external_dependency_behavior_verified": false,
+        "additional_deployed_source_scan": "HTTP_403_THROUGH_EXECUTION_PATH_NOT_COMPLETED_OR_USED_AS_APPLICATION_FAILURE_PROOF",
+        "specific_extension_or_application_impact_verified": false
+      },
+      "bounded_follow_up": "One extensions-disabled browser/profile check of staging Support for at least the previously observed delay; report whether this exact error returns and whether app actions still work. Incognito alone is insufficient if an extension is allowed there.",
+      "production_always_use_https_setting": "PENDING_OWNER_ON_OFF_UNAVAILABLE_READ_ONLY_REPLY",
+      "completed_header_work_items": 2,
+      "remaining_header_work_items": 1,
+      "strict_resource_csp_enforced": false,
+      "production_acceptance_verified": false,
+      "application_error_suppression_or_source_change_performed": false,
+      "authenticated_browser_execution_by_root": false,
+      "secrets_customer_rows_or_screenshot_bytes_committed": false,
+      "stage_0_or_1_checkpoints_reopened": false
     }
   ]
 }

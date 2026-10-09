@@ -1,6 +1,6 @@
 # 1.4 — Synthetic recovery testing
 
-Active 9 October 2026 at 1.4.3 after owner-reported native target readiness PASS at 1.4.1, synthetic export/offline-read PASS at 1.4.2 and the [1.3 checkpoint](SECURITY_STAGE_1_3_CHECKPOINT_REPORT.md). Four finite work items: local target/scope, synthetic exports, actual restore/validation, checkpoint report. Two completed with scope limits; two remain. Existing Stage 1.2 backup/completeness/encryption/offsite/operating gaps remain carried; Google Drive remains deferred. No production overwrite or customer-data import into staging.
+Closed 9 October 2026 with scoped native passes and carry-forward. Read the [1.4 checkpoint report](SECURITY_STAGE_1_4_CHECKPOINT_REPORT.md). S1E87 records the successful corrected native restore: thirteen effective role checks, selected relation/RLS/value comparisons, local dummy-file hash and unchanged source hashes, transaction committed and own server stopped. Four finite work items have outcomes; zero remain. Stage 1 continues at [1.5.1 operations inventory](SECURITY_STAGE_1_5_OPERATIONS.md). Existing 1.2 backup/completeness/encryption/offsite/operating gaps remain carried; Google stays deferred and full platform recovery remains unverified.
 
 ## 1.4.1 — Native local target preparation
 
@@ -65,13 +65,13 @@ Validation checks archived public relation names/kinds/RLS flags, selected payme
 
 After a committed validation, the script copies the dummy file, checks its hash and source receipt/component hashes, attempts verified shutdown of only its own cluster and records elapsed seconds including local prompts/preparation. Elapsed time is scoped drill duration, not full platform RTO. A success summary is SYNTHETIC_NATIVE_APPLICATION_RESTORE_SCOPED_PASS; otherwise REVIEW includes phase, problem code, database-commit/file/source/shutdown flags. Preserve all artifacts and send only that summary/redacted errors. Private SQL/source data/hashes/passwords must not enter chat/Git.
 
-The disposable PostgreSQL 18 fixture replays all 51 migrations, models missing hosted default table/function ACLs, creates synthetic users/payment through application routines and passes thirteen access checks plus exact selected values/columns and no-op rollback. Six negative application cases fail as intended: broad read policy, missing update grant, disabled RLS, altered paid amount, bypass-RLS role and added selected-table column. Private package fixtures reject source-byte changes and path escape. The embedded native target guard/pgcrypto differences are explicit adapters. None of these fixtures executes the owner's Windows lifecycle, actual pg_restore archive or original hosted ACLs. Native acceptance is pending owner output.
+The disposable PostgreSQL 18 fixture replays all 51 migrations, models missing hosted default table/function ACLs, creates synthetic users/payment through application routines and passes thirteen access checks plus exact selected values/columns and no-op rollback. Six negative application cases fail as intended: broad read policy, missing update grant, disabled RLS, altered paid amount, bypass-RLS role and added selected-table column. Private package fixtures reject source-byte changes and path escape. The embedded native target guard/pgcrypto differences are explicit adapters. None of these fixtures executes the owner's Windows lifecycle, actual pg_restore archive or original hosted ACLs. Owner native scoped acceptance is subsequently recorded in S1E87; fixtures remain separate evidence.
 
 ### First native attempt and corrected validation
 
 S1E84 records the owner native attempt at 2026-10-09T06:44:31.5662939Z: restore/validation transaction failed, commit false, zero completed access checks and own server stopped. The later error-only log output (S1E85) identifies `query would be affected by row-level security policy for table "payment_items"`. PostgreSQL dumps set row_security off for loading; the first validator inherited that setting when switching to a regular role. This is a validation-session defect, not evidence that the application policy needs weakening. The final source/dummy checks were not reached; their false summary flags do not establish source corruption.
 
-S1E86 corrects the validator with `SET LOCAL row_security = on;` after archived SQL and before access checks. The regression fixture now starts with the dump setting off, reproduces the exact reported error with the previous validator and passes all thirteen checks with the corrected validator. All six application and two private-package negative cases remain effective. No application policy, grant or archive bytes change. Owner native retry remains pending; existing guards require an empty target, use a new private run folder and retain prior artifacts. No reset/drop or repeat source export is required.
+S1E86 corrects the validator with `SET LOCAL row_security = on;` after archived SQL and before access checks. The regression fixture now starts with the dump setting off, reproduces the exact reported error with the previous validator and passes all thirteen checks with the corrected validator. All six application and two private-package negative cases remain effective. No application policy, grant or archive bytes change. At correction publication owner native retry remained pending; existing guards require an empty target, use a new private run folder and retain prior artifacts. No reset/drop or repeat source export is required.
 
 ## Preparation validation and limits
 
@@ -79,13 +79,13 @@ Disposable embedded PostgreSQL probe checks PASS: empty/nonempty public/Auth/Sto
 
 The owner handoff fetches the audit branch and reads pinned Git script/probe contents without checking out or changing the dirty Windows project. The nonsecret probe SQL is supplied temporarily through MUSHAVO_LOCAL_RECOVERY_PROBE_SQL and cleared afterward. Run in ordinary PowerShell. Initdb prompts for the new local password; psql prompts for it again. Send only the final metadata summary/redacted errors, not password or raw database/log content.
 
-## Remaining work
+## Checkpoint outcomes
 
 | Work item | Status / acceptance |
 |---|---|
 | 1.4.1 Target and scope | PASS with managed-service limits: owner native target ready and stopped; managed extensions absent |
 | 1.4.2 Synthetic exports | Scoped PASS: owner native public export/offline decode and selected source checks; 80 table-data/380 ACL entries |
-| 1.4.3 Restore and compare | First native attempt REVIEW; inherited dump row_security setting corrected and regression tested; owner retry pending |
-| 1.4.4 Checkpoint report | Pending: passes, failures, substituted/missing dependencies and limits; no full live-recovery guarantee |
+| 1.4.3 Restore and compare | Scoped native PASS S1E87: committed restore, 13 checks, selected metadata/values and file/source hashes; server stopped |
+| 1.4.4 Checkpoint report | Complete S1E88: detailed checkpoint report and carry-forward; no full live-recovery guarantee |
 
 Production private artifacts remain separate owner-held completeness evidence. Source setting/key/provider/full-platform behavior and operational 24-hour targets are not proved by this synthetic drill. No outbound scheduler/mail/push deployment or Google upload is authorized by preparation.

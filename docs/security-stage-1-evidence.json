@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 1,
   "updated_date": "2026-10-09",
-  "active_step": "1.4",
+  "active_step": "1.5",
   "events": [
     {
       "id": "S1E01",
@@ -4341,6 +4341,78 @@
       "native_archive_or_windows_execution_verified_by_root": false,
       "full_platform_recovery_verified": false,
       "google_drive": "DEFERRED"
+    },
+    {
+      "id": "S1E87",
+      "recorded_date": "2026-10-09",
+      "stage_step": "1.4.3",
+      "result": "SYNTHETIC_NATIVE_APPLICATION_RESTORE_SCOPED_PASS",
+      "completed_utc": "2026-10-09T08:17:46.8281144Z",
+      "phase": "completed",
+      "problem_code": null,
+      "elapsed_seconds": 11,
+      "database_restore_transaction_committed": true,
+      "effective_role_access_checks": 13,
+      "relation_and_rls_flags_match": true,
+      "selected_payment_and_workspace_values_match": true,
+      "dummy_file_restored_sha256_matches": true,
+      "source_component_hashes_unchanged": true,
+      "local_server_stopped": true,
+      "excluded_schema_or_provider_toc_entries": 1,
+      "auth_identity_adapter": "SQL_SETTINGS_WITH_MINIMAL_AUTH_TABLE",
+      "managed_roles_adapter": "NONLOGIN_NONPRIVILEGED_PLACEHOLDERS",
+      "original_hosted_ownership_or_global_role_authority_recovered": false,
+      "storage_service_or_file_backup_verified": false,
+      "hosted_auth_or_app_runtime_recovered": false,
+      "full_platform_recovery_verified": false,
+      "offsite_copy_verified": false,
+      "staging_or_production_connected": false,
+      "original_backup_files_modified": false,
+      "evidence_scope": "Owner native summary; private run directory/artifacts/hashes/passwords retained by owner, not independently inspected by root.",
+      "handoff_source_commit": "377b574f83787c5868697706a49fe295032daa31",
+      "elapsed_time_is_full_platform_rto": false,
+      "prior_failed_attempt_resolved_for_scoped_drill": true
+    },
+    {
+      "id": "S1E88",
+      "stage_step": "1.4.4",
+      "recorded_date": "2026-10-09",
+      "result": "SYNTHETIC_RECOVERY_CHECKPOINT_CLOSED_WITH_SCOPED_NATIVE_PASSES_AND_CARRY_FORWARD",
+      "report": "docs/SECURITY_STAGE_1_4_CHECKPOINT_REPORT.md",
+      "bounded_work_items": 4,
+      "completed_work_items": 4,
+      "remaining_work_items": 0,
+      "scoped_synthetic_restore_verified": true,
+      "full_platform_recovery_verified": false,
+      "carry_forward": [
+        "Production component completeness/settings/keys/managed authority",
+        "Earlier Storage encryption extraction failure and actual Storage service recovery",
+        "Hosted Auth/API/provider/dispatch recovery",
+        "Untested tenant/workflow access matrix",
+        "Offsite and reliable backup/retention/alert operations",
+        "Full-service RPO/RTO objectives and F16/release gates"
+      ],
+      "google_drive": "DEFERRED",
+      "next_step": "1.5.1",
+      "prior_86_events_unchanged": true
+    },
+    {
+      "id": "S1E89",
+      "stage_step": "1.5.1",
+      "recorded_date": "2026-10-09",
+      "result": "FINITE_OPERATIONS_SCOPE_PREPARED_INVENTORY_PENDING",
+      "instructions": "docs/SECURITY_STAGE_1_5_OPERATIONS.md",
+      "bounded_work_items": 4,
+      "work_items": [
+        "1.5.1 Consolidated deployed inventory",
+        "1.5.2 Monitoring and controlled checks",
+        "1.5.3 Operational runbooks",
+        "1.5.4 Checkpoint report"
+      ],
+      "owner_inventory_received": false,
+      "provider_settings_changed": false,
+      "dispatch_or_messages_sent": false,
+      "full_stage_1_report_step": "1.6"
     }
   ]
 }

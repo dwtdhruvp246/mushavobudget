@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-09",
   "current_stage": 1,
-  "current_step": "1.4",
-  "current_title": "Synthetic recovery proof",
+  "current_step": "1.5",
+  "current_title": "Inventory, monitoring and response",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -15,7 +15,7 @@
   "stage_1": {
     "status": "IN_PROGRESS",
     "authorized": true,
-    "active_step": "1.4",
+    "active_step": "1.5",
     "plan": "docs/SECURITY_STAGE_1_FOUNDATIONS_PLAN.md",
     "steps": [
       {
@@ -870,11 +870,11 @@
       {
         "id": "1.4",
         "title": "Recovery proof",
-        "status": "IN_PROGRESS_NATIVE_RESTORE_CORRECTION_PENDING_OWNER_RETRY",
-        "active_work_item": "1.4.3",
+        "status": "CLOSED_SCOPED_NATIVE_PASSES_WITH_CARRY_FORWARD",
+        "active_work_item": null,
         "bounded_work_items": 4,
-        "latest_evidence": "S1E86",
-        "synthetic_restore_verified": false,
+        "latest_evidence": "S1E88",
+        "synthetic_restore_verified": true,
         "production_restore_requested": false,
         "customer_rows_imported_into_staging": false,
         "instructions": "docs/SECURITY_STAGE_1_4_SYNTHETIC_RECOVERY.md",
@@ -884,8 +884,8 @@
           "postgres": "17.11"
         },
         "local_recovery_target_ready": true,
-        "completed_work_items": 2,
-        "remaining_work_items": 2,
+        "completed_work_items": 4,
+        "remaining_work_items": 0,
         "local_target_outcome": {
           "evidence": "S1E79",
           "owner_reported_result": "NEW_LOCAL_RECOVERY_TARGET_READY_AND_STOPPED",
@@ -923,7 +923,7 @@
           "evidence": "S1E83",
           "script": "scripts/restore-synthetic-recovery.ps1",
           "private_builder": "scripts/prepare-synthetic-restore.cjs",
-          "owner_execution": "FIRST_ATTEMPT_REVIEW_S1E84_RETRY_PENDING",
+          "owner_execution": "OWNER_SCOPED_NATIVE_PASS_S1E87",
           "expected_result": "SYNTHETIC_NATIVE_APPLICATION_RESTORE_SCOPED_PASS",
           "planned_effective_access_checks": 13,
           "managed_dependencies_and_original_ownership_substituted": true,
@@ -938,13 +938,51 @@
           "local_server_stopped": true,
           "problem_code": "LOCAL_RESTORE_OR_VALIDATION_TRANSACTION_FAILED",
           "cause": "Inherited dump row_security off; validator corrected in S1E86",
-          "native_retry_verified": false
-        }
+          "native_retry_verified": true
+        },
+        "checkpoint_complete": true,
+        "report": "docs/SECURITY_STAGE_1_4_CHECKPOINT_REPORT.md",
+        "full_platform_recovery_verified": false,
+        "restore_outcome": {
+          "evidence": "S1E87",
+          "stage_step": "1.4.3",
+          "result": "SYNTHETIC_NATIVE_APPLICATION_RESTORE_SCOPED_PASS",
+          "completed_utc": "2026-10-09T08:17:46.8281144Z",
+          "phase": "completed",
+          "problem_code": null,
+          "elapsed_seconds": 11,
+          "database_restore_transaction_committed": true,
+          "effective_role_access_checks": 13,
+          "relation_and_rls_flags_match": true,
+          "selected_payment_and_workspace_values_match": true,
+          "dummy_file_restored_sha256_matches": true,
+          "source_component_hashes_unchanged": true,
+          "local_server_stopped": true,
+          "excluded_schema_or_provider_toc_entries": 1,
+          "auth_identity_adapter": "SQL_SETTINGS_WITH_MINIMAL_AUTH_TABLE",
+          "managed_roles_adapter": "NONLOGIN_NONPRIVILEGED_PLACEHOLDERS",
+          "original_hosted_ownership_or_global_role_authority_recovered": false,
+          "storage_service_or_file_backup_verified": false,
+          "hosted_auth_or_app_runtime_recovered": false,
+          "full_platform_recovery_verified": false,
+          "offsite_copy_verified": false,
+          "staging_or_production_connected": false,
+          "original_backup_files_modified": false
+        },
+        "next_step": "1.5.1"
       },
       {
         "id": "1.5",
         "title": "Inventory/monitoring/response",
-        "status": "PENDING"
+        "status": "IN_PROGRESS_READ_ONLY_INVENTORY_PENDING_OWNER",
+        "active_work_item": "1.5.1",
+        "bounded_work_items": 4,
+        "completed_work_items": 0,
+        "remaining_work_items": 4,
+        "latest_evidence": "S1E89",
+        "instructions": "docs/SECURITY_STAGE_1_5_OPERATIONS.md",
+        "deployed_inventory_verified": false,
+        "monitoring_delivery_verified": false
       },
       {
         "id": "1.6",

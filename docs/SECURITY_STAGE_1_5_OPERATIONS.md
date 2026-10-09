@@ -1,5 +1,7 @@
 # 1.5 — Inventory, monitoring and response
 
+**Final status — 1.6:** 1.5 closed with four recorded outcomes and zero remaining work items, S1E97. See the [checkpoint report](SECURITY_STAGE_1_5_CHECKPOINT_REPORT.md) and [operational runbooks](SECURITY_STAGE_1_5_OPERATIONAL_RUNBOOKS.md). Support routing passed in owner scope; Cloudflare policies are missing in the shown view; usage and operational exercise remain partial/unverified. Earlier preparation text below is historical.
+
 Stage 1 continues at 1.5.2 after the [1.4 scoped native recovery checkpoint](SECURITY_STAGE_1_4_CHECKPOINT_REPORT.md). Four finite work items; one completed with partial coverage/carry-forward, three remain. This step establishes what actually runs, who notices failures and how the owner responds. A source repository, a successful synthetic restore or saved recovery codes alone do not establish deployed operational coverage.
 
 | Work item | Work and purpose | Acceptance |

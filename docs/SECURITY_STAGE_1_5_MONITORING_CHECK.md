@@ -1,5 +1,7 @@
 # 1.5.2 — Monitoring, usage and controlled support check
 
+**Completed — 9 October 2026, S1E94–S1E95:** Cloudflare shows no configured policies; no applicable existing sample policy to test. Owner Zoho support test received: scoped incoming-routing PASS. All six usage values are below shown quotas, with scope and cycle dates absent. Monitoring check closed partial with carry-forward; no further owner screenshot batch required for this checkpoint. See the [1.5 report](SECURITY_STAGE_1_5_CHECKPOINT_REPORT.md). The handoff below is historical and is not a request to repeat the test.
+
 Prepared 9 October 2026, S1E93. The owner replied unsure about outage, application-error, backup-failure and dispatch-failure alerts. They remain UNVERIFIED, not confirmed absent. 1.5.1 is closed with partial inventory/carry-forward. One of four 1.5 work items is complete; three remain.
 
 ## One consolidated owner batch

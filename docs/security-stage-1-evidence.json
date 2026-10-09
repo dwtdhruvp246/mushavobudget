@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 1,
   "updated_date": "2026-10-09",
-  "active_step": "1.5",
+  "active_step": "1.6",
   "events": [
     {
       "id": "S1E01",
@@ -57,7 +57,7 @@
         "mobile_app_authentication": "Add",
         "email_authentication": "Enable"
       },
-      "mfa_settings_result": "FAIL \u2014 displayed Cloudflare 2FA Inactive",
+      "mfa_settings_result": "FAIL — displayed Cloudflare 2FA Inactive",
       "recovery_storage": "NOT VERIFIED; no Cloudflare recovery code evidence supplied",
       "sign_in_method_and_account_identity": "Not visible in crop; owner-supplied Cloudflare check context",
       "remediation": "Carry forward under F08/Stage 1 account access: enable a supported factor with verified email and an independent recovery route, save recovery material privately, verify active status and a fresh MFA sign-in; no automatic setting change",
@@ -73,8 +73,8 @@
       "received_date": "2026-10-07",
       "source": "Owner clarifies Google sign-in to Cloudflare and MFA enrollment asks for a password",
       "provider": "Cloudflare",
-      "sign_in_method": "Google social login \u2014 owner confirmed",
-      "enrollment_result": "BLOCKED at password prompt \u2014 owner report; no completed enrollment evidenced",
+      "sign_in_method": "Google social login — owner confirmed",
+      "enrollment_result": "BLOCKED at password prompt — owner report; no completed enrollment evidenced",
       "local_2fa_status": "FAIL Inactive from S1E02; not superseded by Google sign-in clarification",
       "google_account_mfa_and_recovery": "UNVERIFIED; do not infer protection from social login alone",
       "cloudflare_password_presence": "Owner does not have a usable Cloudflare password for the setup; exact credential state not independently inspected",
@@ -95,8 +95,8 @@
       "received_date": "2026-10-07",
       "source": "Owner: done i have enabled email authentification and got my recovery codes.",
       "provider": "Cloudflare",
-      "enabled_factor": "Email authentication \u2014 owner confirmed",
-      "configuration_result": "OWNER-PASS \u2014 email authentication enabled at owner-report scope",
+      "enabled_factor": "Email authentication — owner confirmed",
+      "configuration_result": "OWNER-PASS — email authentication enabled at owner-report scope",
       "recovery_codes": "Owner confirms obtained; securely saved persistent copy not explicitly confirmed",
       "supersedes": "S1E02 inactive local 2FA and S1E03 enrollment blocker as current owner-reported state; historical events preserved",
       "password_setting_details": "Not independently verified or separately reported; do not infer a specific password-setting sequence",
@@ -116,8 +116,8 @@
       "received_date": "2026-10-07",
       "source": "Owner: i signed in with email. i have done MFA with auth app",
       "provider": "Supabase",
-      "sign_in_method": "Email-based dashboard sign-in \u2014 owner confirmed; password/OTP mechanism not independently inspected",
-      "enabled_factor": "Authenticator app \u2014 owner confirmed",
+      "sign_in_method": "Email-based dashboard sign-in — owner confirmed; password/OTP mechanism not independently inspected",
+      "enabled_factor": "Authenticator app — owner confirmed",
       "configuration_result": "OWNER-PASS at reported account MFA configuration scope",
       "backup_factor_or_independent_recovery": "UNCONFIRMED; owner has not yet reported independent backup authentication",
       "recovery_guidance": {
@@ -149,7 +149,7 @@
         "action": "Carry forward independent private backup TOTP/secure setup-secret access and subsequent recovery proof under F08"
       },
       "provider": "Zoho Mail",
-      "mfa_configuration": "OWNER-PASS \u2014 enabled, method not supplied",
+      "mfa_configuration": "OWNER-PASS — enabled, method not supplied",
       "zoho_mfa_method": "UNCONFIRMED",
       "zoho_backup_authentication": "UNCONFIRMED",
       "zoho_cpaas_sender_account_identity": "UNCONFIRMED; Mail account MFA does not establish that the transactional sender uses the same administering identity",
@@ -189,7 +189,7 @@
           "result": "OWNER-TESTED PASS"
         }
       ],
-      "zoho_factor_type": "Authenticator app \u2014 now owner confirmed, supersedes S1E06 factor unknown only",
+      "zoho_factor_type": "Authenticator app — now owner confirmed, supersedes S1E06 factor unknown only",
       "test_environment": "Owner fresh-sign-in response; private-window execution not independently observed",
       "result": "NORMAL SIGN-IN CHECKS COMPLETE WITH CARRY-FORWARD",
       "remaining": [
@@ -986,7 +986,7 @@
       "source": "Version-specific client setup preparation after S1E13",
       "selected_client_major": "17.x stable Windows x86-64; match deployed major 17.6",
       "owner_commands": "Full standard-path pg_dump.exe/pg_dumpall.exe/pg_restore.exe/psql.exe --version checks; custom existing bin path allowed; no PATH/policy change",
-      "installation_if_needed": "Official PostgreSQL Windows page \u2192 EDB latest available stable 17.x Windows installer; Command Line Tools only, standard PostgreSQL 17 directory; skip server/pgAdmin/Stack Builder",
+      "installation_if_needed": "Official PostgreSQL Windows page → EDB latest available stable 17.x Windows installer; Command Line Tools only, standard PostgreSQL 17 directory; skip server/pgAdmin/Stack Builder",
       "existing_installation_scope": "Earlier NOT ON PATH is not absence; check standard or known custom location before reinstalling",
       "documentation_sources": [
         "https://www.postgresql.org/download/windows/",
@@ -1639,7 +1639,7 @@
         "Once correct encrypted-only upload scope is established, select the single exact final .7z file inside the folder, right-click Download and use its new .7z path in the same local check"
       ],
       "dependent_work_pending": "If raw working-folder contents were uploaded, establish actual item scope/privacy and handle the unintended extra cloud copy before accepting encrypted-only protection. No deletion, extraction or additional upload is instructed while scope is unknown.",
-      "validation": "PASS: prior S1E01\u201333 and original audit tables preserved; JSON/local links/fences, refreshed source/inline equality and diff whitespace checked. Direct Google single-file download procedure checked against official guidance; explicit early ZIP guard and unchanged bounded checks reviewed. Owner correction/Windows execution remains pending.",
+      "validation": "PASS: prior S1E01–33 and original audit tables preserved; JSON/local links/fences, refreshed source/inline equality and diff whitespace checked. Direct Google single-file download procedure checked against official guidance; explicit early ZIP guard and unchanged bounded checks reviewed. Owner correction/Windows execution remains pending.",
       "documentation_sources": [
         "https://support.google.com/drive/answer/2423534?hl=en"
       ],
@@ -1684,7 +1684,7 @@
         "Report names/bytes/format hint/candidate count only; do not display bytes/hashes or request passphrase"
       ],
       "scope_limits": "Signature classification is a format hint, not payload/encryption/password/hash/integrity or cloud provenance proof. Candidate filename/size is not original-archive authenticity. Original full-file private-receipt hash comparison/test remains necessary after selecting the genuine downloaded .7z. Upload scope/privacy and saved passphrase still need owner reports.",
-      "validation": "PASS: immutable S1E01\u201335/original tables, JSON/local links/fences, exact source/inline equality and diff whitespace. Magic prefixes reviewed against official 7-Zip 7zHeader.cpp/ZipHeader.h; six-byte bounded read/finally disposal, metadata-only output and exact-name nonrecursive candidate scope reviewed. No Windows/PowerShell runtime; owner diagnostic execution pending.",
+      "validation": "PASS: immutable S1E01–35/original tables, JSON/local links/fences, exact source/inline equality and diff whitespace. Magic prefixes reviewed against official 7-Zip 7zHeader.cpp/ZipHeader.h; six-byte bounded read/finally disposal, metadata-only output and exact-name nonrecursive candidate scope reviewed. No Windows/PowerShell runtime; owner diagnostic execution pending.",
       "documentation_sources": [
         "https://github.com/ip7z/7zip/blob/main/CPP/7zip/Archive/7z/7zHeader.cpp",
         "https://github.com/ip7z/7zip/blob/main/CPP/7zip/Archive/Zip/ZipHeader.h"
@@ -1734,7 +1734,7 @@
       ],
       "owner_correction": "After privately retaining the backup passphrase, use existing private Drive folder New / File upload; paste copied full original path into Windows File name dialog and click Open. Choose that exact named uploaded file after completion and download it individually; original private-receipt/hash/integrity checker still required. No folder repacking, renamed wrapper or new AES package is needed.",
       "missing_cloud_scope_handling": "Helper owner reports classify earlier uploads; unknown/whole-folder/raw-copy privacy/contents require separate follow-up before full cloud protection acceptance. Preparing a copy of the known checked encrypted archive is within prior single-file upload authorization and does not clear unexpected existing cloud items. No deletion or other-file upload instruction.",
-      "validation": "PASS: immutable S1E01\u201337 and original tables, JSON/local links/fences, exact source/inline equality and diff whitespace. Expected original receipt/hash metadata, categorical unknown handling, path-only -Value clipboard selection and retained strict offsite checker reviewed against official Microsoft/Google guidance. No Windows/PowerShell runtime; owner selection helper/upload/download execution pending.",
+      "validation": "PASS: immutable S1E01–37 and original tables, JSON/local links/fences, exact source/inline equality and diff whitespace. Expected original receipt/hash metadata, categorical unknown handling, path-only -Value clipboard selection and retained strict offsite checker reviewed against official Microsoft/Google guidance. No Windows/PowerShell runtime; owner selection helper/upload/download execution pending.",
       "documentation_sources": [
         "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-clipboard?view=powershell-5.1",
         "https://support.google.com/drive/answer/2424368?hl=en",
@@ -1820,7 +1820,7 @@
       "offsite_upload_download_verified": false,
       "restore_verified": false,
       "scope": "Preparation/remaining-scope explanation only. No database connection, SQL, file write/extraction/upload, settings/permission/credential change or deletion. Existing local/private evidence and full F16/final re-audit gaps remain open.",
-      "validation": "Original S1E01\u201340 and audit tables preserved; JSON/local links/fences, exact source/inline equality and diff whitespace checked. Official PostgreSQL list format, one-database/global-role/foreign/extension coverage and Supabase Storage-byte distinction reviewed. Hash values/raw TOC/customer records are not emitted and no mutation/network/archive-extraction/password operation is invoked. No Windows/PowerShell runtime; owner execution pending."
+      "validation": "Original S1E01–40 and audit tables preserved; JSON/local links/fences, exact source/inline equality and diff whitespace checked. Official PostgreSQL list format, one-database/global-role/foreign/extension coverage and Supabase Storage-byte distinction reviewed. Hash values/raw TOC/customer records are not emitted and no mutation/network/archive-extraction/password operation is invoked. No Windows/PowerShell runtime; owner execution pending."
     },
     {
       "id": "S1E42",
@@ -4589,6 +4589,188 @@
       "new_policy_or_paid_service_enabled": false,
       "owner_execution": "PENDING",
       "actual_alert_or_support_receipt_verified": false
+    },
+    {
+      "id": "S1E94",
+      "stage_step": "1.5.2",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_MONITORING_USAGE_AND_SUPPORT_EVIDENCE_RECEIVED",
+      "owner_attachments_successfully_viewed": 3,
+      "cloudflare_alerts": {
+        "account_overview_message": "No alerts configured",
+        "configured_policy_count_in_shown_view": 0,
+        "existing_relevant_sample_policy_available": false,
+        "actual_alert_detection_or_delivery_verified": false,
+        "all_provider_alerts_proved_absent": false
+      },
+      "supabase_usage": {
+        "plan_label": "Free",
+        "period_label": "Current billing cycle",
+        "project_or_organization_scope": "NOT_VISIBLE_UNVERIFIED",
+        "cycle_dates_visible": false,
+        "displayed_metrics": [
+          {
+            "metric": "egress",
+            "used": 0.23,
+            "included": 5,
+            "unit": "GB"
+          },
+          {
+            "metric": "database_size",
+            "used": 46,
+            "included": 500,
+            "unit": "MB"
+          },
+          {
+            "metric": "monthly_active_users",
+            "used": 22,
+            "included": 50000,
+            "unit": "users"
+          },
+          {
+            "metric": "file_storage",
+            "used_display": 0.0,
+            "included": 1,
+            "unit": "GB",
+            "exact_bytes_verified": false
+          },
+          {
+            "metric": "log_ingestion",
+            "used": 0.31,
+            "included": 1,
+            "unit": "GB"
+          },
+          {
+            "metric": "log_query",
+            "used": 7.81,
+            "included": 100,
+            "unit": "GB"
+          }
+        ],
+        "all_six_displayed_values_below_displayed_limits": true,
+        "production_only_attribution_verified": false,
+        "edge_realtime_or_cloudflare_budget_coverage_verified": false
+      },
+      "support_test": {
+        "owner_reply": "ZOHO TEST MAIL-RECEIVED",
+        "subject": "Mushavo audit 1.5.2 support test",
+        "body": "Controlled owner test",
+        "visible_recipient_label": "support",
+        "full_recipient_address_visible": false,
+        "intended_owner_support_address": "support@mushavobudget.com",
+        "incoming_routing_result": "SCOPED_OWNER_CONFIRMED_PASS",
+        "supabase_smtp_customer_email_or_automated_alert_verified": false,
+        "owner_review_frequency_or_staffing_verified": false,
+        "personal_sender_details_recorded": false
+      },
+      "provider_settings_changed": false,
+      "root_messages_sent": false
+    },
+    {
+      "id": "S1E95",
+      "stage_step": "1.5.2",
+      "recorded_date": "2026-10-09",
+      "result": "MONITORING_CHECK_CLOSED_PARTIAL_WITH_CARRY_FORWARD",
+      "support_incoming_receipt": "SCOPED_PASS",
+      "cloudflare_policy_configuration": "MISSING_IN_SHOWN_ACCOUNT_VIEW",
+      "sample_alert_test": "UNAVAILABLE_NO_CONFIGURED_POLICY",
+      "usage_review": "PARTIAL_SCOPE_AND_MISSING_METRICS_UNVERIFIED",
+      "backup_application_and_dispatch_detection_or_delivery_verified": false,
+      "no_further_screenshot_loop_required_for_checkpoint": true,
+      "completed_work_items": 2,
+      "remaining_work_items": 2,
+      "next_step": "1.5.3",
+      "new_policy_paid_service_or_forced_failure_performed": false
+    },
+    {
+      "id": "S1E96",
+      "stage_step": "1.5.3",
+      "recorded_date": "2026-10-09",
+      "result": "OPERATIONAL_RUNBOOKS_DOCUMENTED_NOT_EXERCISED",
+      "runbooks": "docs/SECURITY_STAGE_1_5_OPERATIONAL_RUNBOOKS.md",
+      "coverage": [
+        "Target identity",
+        "Incident triage and private evidence",
+        "Monitoring and support limitations",
+        "Worker rollback prerequisites and procedure",
+        "Component export/retention objectives",
+        "Scoped synthetic recovery and full-platform gaps",
+        "Credential loss and independent recovery"
+      ],
+      "backup_completion_failure_owner_responsibility_previously_accepted": "S1E63",
+      "incident_support_review_coverage_confirmed": false,
+      "manual_review_bridge": "PROPOSED_NOT_VERIFIED_RUNNING",
+      "rollback_incident_or_full_platform_exercise_performed": false,
+      "completed_work_items": 3,
+      "remaining_work_items": 1,
+      "next_step": "1.5.4",
+      "local_successful_recovery_target_stays_stopped": true
+    },
+    {
+      "id": "S1E97",
+      "stage_step": "1.5.4",
+      "recorded_date": "2026-10-09",
+      "result": "OPERATIONS_CHECKPOINT_CLOSED_WITH_CARRY_FORWARD",
+      "report": "docs/SECURITY_STAGE_1_5_CHECKPOINT_REPORT.md",
+      "bounded_work_items": 4,
+      "completed_work_items": 4,
+      "remaining_work_items": 0,
+      "outcomes": {
+        "1.5.1": "PARTIAL_DEPLOYED_INVENTORY",
+        "1.5.2": "SUPPORT_SCOPED_PASS_ALERT_POLICIES_MISSING_USAGE_PARTIAL",
+        "1.5.3": "DOCUMENTED_NOT_EXERCISED",
+        "1.5.4": "CHECKPOINT_REPORT_COMPLETE"
+      },
+      "carry_forward_finding_ids": [
+        "F08",
+        "F16",
+        "F18",
+        "F19"
+      ],
+      "full_operational_acceptance_verified": false,
+      "next_step": "1.6"
+    },
+    {
+      "id": "S1E98",
+      "stage_step": "1.6",
+      "recorded_date": "2026-10-09",
+      "result": "STAGE_1_DOCUMENTATION_AND_EVIDENCE_CONSISTENCY_CHECK_PASS",
+      "scope": "Documentation/evidence only; prior runtime/native/API results retained in original scope",
+      "prior_93_events_unchanged": true,
+      "historical_1_1_through_1_4_progress_unchanged": true,
+      "original_coverage_rows_preserved": 123,
+      "original_finding_definitions_preserved": 20,
+      "json_structure_ids_links_counts_and_status_checked": true,
+      "runtime_changes_in_this_update": false,
+      "native_restore_or_unrelated_runtime_suite_repeated": false,
+      "report": "docs/SECURITY_STAGE_1_COMPLETION_REPORT.md"
+    },
+    {
+      "id": "S1E99",
+      "stage_step": "1.6",
+      "recorded_date": "2026-10-09",
+      "result": "STAGE_1_FOUNDATIONS_CHECKPOINT_CLOSED_WITH_CARRY_FORWARD",
+      "report": "docs/SECURITY_STAGE_1_COMPLETION_REPORT.md",
+      "completed_stage_1_steps": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6"
+      ],
+      "all_controls_or_release_cleared": false,
+      "full_platform_recovery_verified": false,
+      "offsite_copy_verified": false,
+      "configured_alert_detection_delivery_verified": false,
+      "final_remediation_and_full_reaudit_required": true,
+      "next_stage": 2,
+      "next_step": "2.1",
+      "next_scope": "Browser header baseline; Stage 2 covers browser headers, contact abuse and Web Push egress",
+      "production_deployment_provider_change_or_audit_pr_merge_performed": false,
+      "google_offsite_upload_stays_deferred": true
     }
-  ]
+  ],
+  "stage_status": "CLOSED_FOUNDATIONS_CHECKPOINT_WITH_CARRY_FORWARD",
+  "next_step": "2.1"
 }

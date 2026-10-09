@@ -1,5 +1,7 @@
 # 1.5.1 — Production operations inventory
 
+**Superseding 1.5.2 result — S1E94–S1E97:** The shown Cloudflare account policy list is empty; this supersedes the earlier unsure reply for that view. Support test received; six usage values below displayed limits with scope/dates unverified. Other detection/delivery and deployment parity remain open. 1.5 is closed with carry-forward; read its [report](SECURITY_STAGE_1_5_CHECKPOINT_REPORT.md). Earlier inventory observations remain in their original scope.
+
 Inventory closed 9 October 2026 with partial coverage and carry-forward, S1E92, following five owner screenshots S1E90–S1E91 and the owner alert reply unsure. All attachment copies were successfully viewed despite earlier image-loading error text. Stage 1 advances to 1.5.2. One of four finite 1.5 work items is complete; three remain. No provider setting, deployment, Cron job or dispatch destination was changed.
 
 ## Hosting evidence

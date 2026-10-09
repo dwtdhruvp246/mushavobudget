@@ -870,10 +870,10 @@
       {
         "id": "1.4",
         "title": "Recovery proof",
-        "status": "IN_PROGRESS_SYNTHETIC_EXPORT_PENDING_OWNER",
-        "active_work_item": "1.4.2",
+        "status": "IN_PROGRESS_NATIVE_SYNTHETIC_RESTORE_PENDING_OWNER",
+        "active_work_item": "1.4.3",
         "bounded_work_items": 4,
-        "latest_evidence": "S1E80",
+        "latest_evidence": "S1E83",
         "synthetic_restore_verified": false,
         "production_restore_requested": false,
         "customer_rows_imported_into_staging": false,
@@ -884,8 +884,8 @@
           "postgres": "17.11"
         },
         "local_recovery_target_ready": true,
-        "completed_work_items": 1,
-        "remaining_work_items": 3,
+        "completed_work_items": 2,
+        "remaining_work_items": 2,
         "local_target_outcome": {
           "evidence": "S1E79",
           "owner_reported_result": "NEW_LOCAL_RECOVERY_TARGET_READY_AND_STOPPED",
@@ -902,8 +902,32 @@
           "evidence": "S1E80",
           "script": "scripts/export-synthetic-recovery-source.ps1",
           "private_probe": "supabase/diagnostics/security_stage_1_synthetic_export.sql",
-          "owner_execution": "PENDING",
+          "owner_execution": "OWNER_SCOPED_PASS_S1E82",
           "scope": "Public staging schema/archive, Auth identity-only bootstrap and local dummy file; native ownership and managed dependency adaptation must be explicit before restore."
+        },
+        "synthetic_export_outcome": {
+          "evidence": "S1E82",
+          "archive_bytes": 1330785,
+          "public_table_data_entries": 80,
+          "public_acl_entries": 380,
+          "synthetic_auth_identities": 2,
+          "synthetic_payment_items": 1,
+          "synthetic_paid_records": 1,
+          "synthetic_personal_workspaces": 2,
+          "offline_archive_read_passed": true,
+          "selected_before_after_metadata_equal": true,
+          "all_public_data_drift_or_shared_snapshot_verified": false,
+          "full_platform_backup_verified": false
+        },
+        "restore_handoff": {
+          "evidence": "S1E83",
+          "script": "scripts/restore-synthetic-recovery.ps1",
+          "private_builder": "scripts/prepare-synthetic-restore.cjs",
+          "owner_execution": "PENDING",
+          "expected_result": "SYNTHETIC_NATIVE_APPLICATION_RESTORE_SCOPED_PASS",
+          "planned_effective_access_checks": 13,
+          "managed_dependencies_and_original_ownership_substituted": true,
+          "hosted_auth_storage_or_full_platform_recovery_verified": false
         }
       },
       {

@@ -1,6 +1,6 @@
 # 1.4 — Synthetic recovery testing
 
-Active 9 October 2026 at 1.4.2 after owner-reported native target readiness PASS at 1.4.1 and the [1.3 checkpoint](SECURITY_STAGE_1_3_CHECKPOINT_REPORT.md). Four finite work items: local target/scope, synthetic exports, actual restore/validation, checkpoint report. One completed with scope limits; three remain. Existing Stage 1.2 backup/completeness/encryption/offsite/operating gaps remain carried; Google Drive remains deferred. No production overwrite or customer-data import into staging.
+Active 9 October 2026 at 1.4.3 after owner-reported native target readiness PASS at 1.4.1, synthetic export/offline-read PASS at 1.4.2 and the [1.3 checkpoint](SECURITY_STAGE_1_3_CHECKPOINT_REPORT.md). Four finite work items: local target/scope, synthetic exports, actual restore/validation, checkpoint report. Two completed with scope limits; two remain. Existing Stage 1.2 backup/completeness/encryption/offsite/operating gaps remain carried; Google Drive remains deferred. No production overwrite or customer-data import into staging.
 
 ## 1.4.1 — Native local target preparation
 
@@ -36,6 +36,37 @@ Acceptance is SYNTHETIC_PUBLIC_EXPORT_AND_OFFLINE_READ_PASS. It proves archive c
 
 Disposable embedded PostgreSQL fixtures PASS for the valid seed, missing item, extra Auth user, wrong amount, wrong workspace owner, wrong paid-record owner and missing workspace; password-field/value omission, deterministic repeated metadata, wrong-database guard and read-only write rejection also pass. The fixture runtime uses PostgreSQL 18, so only its database/major predicates are adapted for fixture execution; published owner SQL still requires PostgreSQL 17. These tests do not establish Windows execution, TLS/project identity, pg_dump/pg_restore decoding or restore success.
 
+### Actual owner export outcome — 9 October
+
+The first connection failed database password authentication before the probe or export. After retry, owner reports SYNTHETIC_PUBLIC_EXPORT_AND_OFFLINE_READ_PASS at 2026-10-09T06:09:31.6792097Z: 1,330,785-byte archive, 80 public table-data entries, 380 public ACL entries, two Auth identity-only records, one payment item, one paid record and two personal workspaces. Offline payload decoding, private manifest creation, local dummy-file creation and repeated selected metadata match passed. No hosted writes/local startup/restore/offsite operation occurred. Separate probes still do not establish a shared snapshot or all-public-data drift absence. Owner-held files/hashes remain private; root independently accessing the actual archive is neither required nor claimed.
+
+## 1.4.3 — Native application restore and selected access checks
+
+Run the [native restore script](../scripts/restore-synthetic-recovery.ps1) and [private builder](../scripts/prepare-synthetic-restore.cjs) only through the pinned Git handoff in ordinary Windows PowerShell. Both native password prompts use the LOCAL mushavo_restore_admin password saved in 1.4.1. The script has only a 127.0.0.1:55439 connection; it contains no staging/production database connection or upload operation.
+
+Before startup, the script verifies private root ACL/identity, target receipt/data-directory non-redirection, stopped cluster status and free loopback port. The builder verifies the five component filenames, sizes and SHA-256 values, source receipt paths, repeated source JSON and selected synthetic row/identity shape. Source files are never rewritten. One new private SyntheticRestore child holds helper/SQL/TOC/logs/results. A copied TOC excludes only CREATE SCHEMA public (already present from initdb) and any provider publication/event-trigger entries. Unsupported database/extension/foreign/server/subscription entries stop preparation; non-public table data is rejected. Archived public table/routine/constraint/index/RLS/ACL definitions and data remain selected. Comments/security labels are not restored. Original ownership is adapted deliberately with pg_restore --no-owner; this is not original hosted ownership recovery.
+
+After offline SQL rendering, the script starts only its own data directory, rechecks live path/user/database/version/loopback/SCRAM/empty public/Auth/Storage scope, rechecks input hashes and then uses psql --single-transaction with ON_ERROR_STOP. Bootstrap, archived SQL and validation either commit together or roll back on a SQL error. An archive render/guard failure happens before database writes. Do not rerun against a committed target; no clean/reset/drop of an existing database is supplied. Later file-copy/shutdown failures can occur after database commit and must remain REVIEW with the explicit commit flag.
+
+### Explicit native dependency substitutions
+
+| Dependency | Local drill behavior | Remaining limitation |
+|---|---|---|
+| Hosted ownership | Objects owned by local recovery administrator | Original hosted owner/authority is not recreated |
+| Provider roles | Fixed names created NOLOGIN, NOSUPERUSER, NOINHERIT, NOBYPASSRLS, no replication or role/database creation | Source passwords, memberships, global settings and managed privileges not restored |
+| Auth identities | Minimal auth.users with two id/email bootstrap rows; no passwords | Hosted Auth schema/sign-in/token/provider recovery not tested |
+| auth.uid/role/jwt | SQL helpers read administrator-supplied request.jwt.claims test settings | Trusted SQL identity emulation, not token verification or PostgREST authentication |
+| Storage SQL dependencies | Minimal empty buckets/objects tables and foldername helper | No restored bucket/object metadata, Storage API authorization or file-service recovery |
+| pgcrypto | Native extension installed into extensions schema | Other managed extensions/providers remain absent |
+| Realtime/event triggers | Provider publication/event-trigger TOC entries excluded if present | Provider initialization/dispatch/replication not recovered |
+| Dummy attachment | Local source file copied to a new local destination and hash-compared | Demonstrates local file-byte copying only; not Storage/offsite recovery |
+
+Validation checks archived public relation names/kinds/RLS flags, selected payment/workspace column names and typed values, required authenticated read/update permissions and non-bypassing test roles. It switches to authenticated/anon roles with distinct owner/outsider/null identities and tests owner-item, paid-record and workspace reads plus same-name update boundaries. Only zero rows or SQL insufficient_privilege count as a denied access; other errors fail. Owner positive controls and outsider's own-workspace positive control are required. Each update attempt runs in a deliberate rolled-back subtransaction, including trigger/audit/timestamp effects. Thirteen effective access checks must pass; no application policy/grant is patched to manufacture a native pass. This does not test insert/delete/RPC/Family/Business/Storage/HTTP behavior or every recovered row/routine/constraint.
+
+After a committed validation, the script copies the dummy file, checks its hash and source receipt/component hashes, attempts verified shutdown of only its own cluster and records elapsed seconds including local prompts/preparation. Elapsed time is scoped drill duration, not full platform RTO. A success summary is SYNTHETIC_NATIVE_APPLICATION_RESTORE_SCOPED_PASS; otherwise REVIEW includes phase, problem code, database-commit/file/source/shutdown flags. Preserve all artifacts and send only that summary/redacted errors. Private SQL/source data/hashes/passwords must not enter chat/Git.
+
+The disposable PostgreSQL 18 fixture replays all 51 migrations, models missing hosted default table/function ACLs, creates synthetic users/payment through application routines and passes thirteen access checks plus exact selected values/columns and no-op rollback. Six negative application cases fail as intended: broad read policy, missing update grant, disabled RLS, altered paid amount, bypass-RLS role and added selected-table column. Private package fixtures reject source-byte changes and path escape. The embedded native target guard/pgcrypto differences are explicit adapters. None of these fixtures executes the owner's Windows lifecycle, actual pg_restore archive or original hosted ACLs. Native acceptance is pending owner output.
+
 ## Preparation validation and limits
 
 Disposable embedded PostgreSQL probe checks PASS: empty/nonempty public/Auth/Storage metadata, private sentinel-value omission and read-only write rejection. This does not validate Windows ACL enforcement, native initdb prompting, executable startup, pg_ctl lifecycle or hosted dependencies. No PowerShell runtime exists in the root executor; owner execution supplies actual Windows evidence. No hosted/staging/production connection or customer records were accessed by these fixtures.
@@ -47,8 +78,8 @@ The owner handoff fetches the audit branch and reads pinned Git script/probe con
 | Work item | Status / acceptance |
 |---|---|
 | 1.4.1 Target and scope | PASS with managed-service limits: owner native target ready and stopped; managed extensions absent |
-| 1.4.2 Synthetic exports | Script and SQL fixtures ready; owner export pending |
-| 1.4.3 Restore and compare | Pending: separate target, selected records/schema/grants/RLS/file-byte checks and elapsed time |
+| 1.4.2 Synthetic exports | Scoped PASS: owner native public export/offline decode and selected source checks; 80 table-data/380 ACL entries |
+| 1.4.3 Restore and compare | Script and failure fixtures ready; owner native restore pending |
 | 1.4.4 Checkpoint report | Pending: passes, failures, substituted/missing dependencies and limits; no full live-recovery guarantee |
 
 Production private artifacts remain separate owner-held completeness evidence. Source setting/key/provider/full-platform behavior and operational 24-hour targets are not proved by this synthetic drill. No outbound scheduler/mail/push deployment or Google upload is authorized by preparation.

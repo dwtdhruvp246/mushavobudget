@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 2,
   "updated_date": "2026-10-09",
-  "active_step": "2.1",
+  "active_step": "2.2",
   "source_audit_head": "8334bdae71e6f69fc726d8bfebf289caa4b4eaed",
   "events": [
     {
@@ -841,6 +841,76 @@
       "next_action": "One scoped owner redirect deployment and one post-change metadata recheck within the existing third work item; unavailable/failing outcomes carry to final remediation.",
       "raw_bodies_credentials_tokens_or_customer_rows_recorded": false,
       "stage_0_or_1_checkpoints_reopened": false
+    },
+    {
+      "id": "S2E12",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "BROWSER_HEADERS_CHECKPOINT_CLOSED_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
+      "owner_instruction_applied": "Failed/unsure controls are resolved at final remediation and the full re-audit; finite checkpoints should not block indefinitely.",
+      "bounded_work_items": 3,
+      "completed_work_items": 3,
+      "remaining_work_items": 0,
+      "scoped_passes": [
+        "15 selected local candidate/guard/handoff/asset checks",
+        "Owner Windows isolated staging preparation and deployment",
+        "12 sampled live staging header/config/hash responses",
+        "Owner browser checks 1–4",
+        "Owner targeted Console error nonrecurrence"
+      ],
+      "failed_control": "Production HTTP-to-HTTPS redirect: owner reports 200/no redirect for all three selected HTTP paths; Always Use HTTPS OFF.",
+      "failed_control_reference": "F07",
+      "correction": "Exact hostname-scoped 301 wildcard correction retained in the 2.1 document for final remediation; owner production deployment is not required now.",
+      "unverified_carry_forward": [
+        "Strict resource CSP enforcement",
+        "Deliberate frame/injection blocking",
+        "Production header deployment/source parity and acceptance",
+        "Broader host/route/cache/browser/native coverage"
+      ],
+      "overall_f07_or_release_acceptance_verified": false,
+      "next_stage_step": "2.2.1",
+      "earlier_checkpoints_or_owner_native_project_changed": false
+    },
+    {
+      "id": "S2E13",
+      "stage_step": "2.2.1",
+      "recorded_date": "2026-10-09",
+      "result": "PUBLIC_CONTACT_SOURCE_BASELINE_AND_STAGING_METADATA_HANDOFF",
+      "source_review_commit": "79866c0cacb57d4d709adc4d3a3d386d0fef057a",
+      "reviewed_files": [
+        "site.js",
+        "contact.html",
+        "supabase/migrations/20260903123000_direct_enquiry_submission.sql",
+        "supabase/migrations/20260903120000_align_enquiry_workflow.sql"
+      ],
+      "source_observations": {
+        "public_browser_path": "Supabase client.from('enquiries').insert(payload)",
+        "browser_honeypot_and_html_length_validation": true,
+        "direct_column_insert_granted_in_reviewed_migration": [
+          "anon",
+          "authenticated"
+        ],
+        "reviewed_insert_policy_validates_fields_and_default_workflow": true,
+        "challenge_or_durable_quota_found_in_selected_submission_path": false,
+        "complete_reachable_path_or_live_backend_state_verified": false
+      },
+      "risk_inference": "Direct API callers can bypass browser-only honeypot/HTML controls if the reviewed direct grants and policy path remain deployed. Server field validation and staff RLS are present in source; rate/challenge/runtime behavior needs separate evidence.",
+      "finding": "F09",
+      "bounded_work_items": 3,
+      "work_items": [
+        "2.2.1 Source and one staging metadata baseline",
+        "2.2.2 Justified candidate and local allowed/denied checks",
+        "2.2.3 One scoped staging acceptance batch and explicit carry-forward"
+      ],
+      "diagnostic": "supabase/diagnostics/security_stage_2_contact_metadata.sql",
+      "owner_execution_target": "STAGING_DCZLDDWBTGVFDUJGCITB",
+      "production_reference_to_avoid": "kttkospkblwvguuwnhjj",
+      "diagnostic_single_result_rows": 5,
+      "diagnostic_reads_customer_rows_or_function_bodies": false,
+      "diagnostic_writes_or_dispatches_requests": false,
+      "owner_execution_received": false,
+      "live_production_or_staging_grants_independently_verified": false,
+      "runtime_contact_or_edge_changes_made": false
     }
   ]
 }

@@ -1,10 +1,10 @@
 # 2.1 — Browser header baseline, candidate and staging handoff
 
-**2.1 update — S2E11:** Owner-native curl reports HTTP root, app with a dummy query and business all returning 200 without a redirect (three sampled failures); HTTPS app returns 200 (positive control PASS). Always Use HTTPS is owner-reported OFF. This identifies a sampled production HTTP redirect gap; full F07 acceptance remains open. A 301 Redirect Rule matching only `http://mushavobudget.com/*`, preserving the path and query, is handed off for owner deployment followed by the same four-request check. No provider change or production header deployment has been performed by root. Staging workflows 1–4 and targeted Console nonrecurrence remain scoped PASS. Two of three work items are complete; correction/recheck stays inside the existing third item.
+**2.1 closed checkpoint — S2E12:** All three finite work items have recorded outcomes. Selected local/staging header checks, owner workflows 1–4 and targeted Console nonrecurrence passed in their stated scope. Production HTTP-to-HTTPS redirection FAILED on the three owner samples. The exact correction is retained for final remediation, as requested; no production provider change is requested now. Strict CSP, deliberate blocking and full production acceptance remain unverified. F07 stays open. Current work is **2.2.1**, public contact source/grant review.
 
 **Prior live result — 9 October 2026, S2E05–S2E07:** Owner Windows preparation passed with 35 public files and original sources retained; owner then confirmed staging deployed. Root's fresh GET checks at 13:11–13:12 UTC (15:11–15:12 +0200) found all seven header families with matching baseline values on 11 successful canonical HTML/JS/CSS responses and the app.html → app 308 response. MIME checks passed. Public config uses dczlddwbtgvfdujgcitb with publishable-key format and empty push key; config/CSP/selected signup content contain no production reference. The one live inline signup block matches the declared CSP hash. No credentials, token values or raw bodies are recorded. This is a sampled served-header/configuration PASS, not browser execution, key-ownership/source-parity or production acceptance. One bounded owner browser batch and the production Always Use HTTPS setting reply remain pending; two of three work items remain complete. Preparation/upload instructions below are retained as history and need not be repeated.
 
-Prepared 9 October 2026. **Baseline/candidate and sampled staging headers complete; owner workflows 1–4 and targeted Console nonrecurrence report scoped PASS; production HTTP redirect sampled FAIL; scoped correction/recheck pending.** F07 remains open. Candidate presence or local checks do not establish live repair or full XSS protection.
+Prepared 9 October 2026. **Baseline/candidate and sampled staging headers complete; owner workflows 1–4 and targeted Console nonrecurrence report scoped PASS; checkpoint closed with production redirect failure and unverified controls carried to final remediation.** F07 remains open. Candidate presence or local checks do not establish live repair or full XSS protection.
 
 ## Fresh observations
 
@@ -152,7 +152,7 @@ In production mushavobudget.com, review Rules > Overview for an overlapping exis
 Deployment handoff will depend on the actual owner-path behavior. If an existing rule already protects these requests, do not duplicate it just to make the Always Use HTTPS switch ON. Provider validation and post-change behavior remain required for any implemented correction. See [Always Use HTTPS scope](https://developers.cloudflare.com/ssl/edge-certificates/additional-options/always-use-https/), [rule creation](https://developers.cloudflare.com/rules/url-forwarding/single-redirects/create-dashboard/) and [scoped HTTPS redirect example](https://developers.cloudflare.com/rules/url-forwarding/examples/redirect-admin-https/).
 
 
-## S2E11 sampled production HTTP failure and correction handoff
+## S2E11 sampled production HTTP failure and prepared correction — deferred by S2E12
 
 Owner-native curl reports:
 
@@ -176,8 +176,13 @@ In the original Cloudflare account, select the production **mushavobudget.com** 
 | Status code | 301 |
 | Preserve query string | Enabled |
 
-Select **Deploy**. The literal `${1}` is Cloudflare's first wildcard replacement, preserving the requested path. The known hostname and HTTP-only match keep the candidate scoped to the live apex website and avoid redirecting an already-HTTPS request back to itself. Leave unrelated rules, DNS, TLS mode and the zone-wide Always Use HTTPS setting unchanged for this handoff. No app/database/APK build or merge is part of this correction. Other hostnames remain a final-inventory/re-audit gap.
+When this correction is addressed during final remediation, select **Deploy** after the rule review. This is not a current deployment request. The literal `${1}` is Cloudflare's first wildcard replacement, preserving the requested path. The known hostname and HTTP-only match keep the candidate scoped to the live apex website and avoid redirecting an already-HTTPS request back to itself. Leave unrelated rules, DNS, TLS mode and the zone-wide Always Use HTTPS setting unchanged for this handoff. No app/database/APK build or merge is part of this correction. Other hostnames remain a final-inventory/re-audit gap.
 
 After deployment, run the same four-request owner PowerShell batch in S2E10 once. Expect the three HTTP requests to return 301 with corresponding HTTPS URLs, including `/app?audit_https=2.1`; HTTPS `/app` should remain 200. Record the actual metadata, not deployment alone, as acceptance. If deployment is unavailable or the bounded recheck fails, retain the exact outcome and carry the gap to final remediation instead of restarting prior work.
 
 Reference: [Cloudflare rule creation](https://developers.cloudflare.com/rules/url-forwarding/single-redirects/create-dashboard/), [scoped HTTPS wildcard example](https://developers.cloudflare.com/rules/url-forwarding/examples/redirect-admin-https/). This is an adaptation of documented settings, not an independently deployed provider rule test.
+
+
+## S2E12 closure and carry-forward
+
+The user requested failed/uncertain items be sorted at the end of the audit and retested. The finite 2.1 checkpoint is closed with the recorded sampled passes and the production redirect failure; it is not an overall F07 PASS. No additional owner Cloudflare change is required now. Retain the prepared scoped rule and its four-request acceptance criteria for final remediation/re-audit. Strict script/resource CSP, deliberate frame/injection checks, production header deployment/parity and broader hostname/cache/browser/native evidence remain open. Proceed to 2.2.1 without repeating earlier stage exports, restores, staging setup or passed browser checks. The detailed Stage 2 report is issued at 2.4.

@@ -1,6 +1,6 @@
 # Stage 2 — Browser, public submission and outbound-request hardening
 
-**2.1 update — S2E11:** Owner-native curl reports HTTP root, app with a dummy query and business all returning 200 without a redirect (three sampled failures); HTTPS app returns 200 (positive control PASS). Always Use HTTPS is owner-reported OFF. This identifies a sampled production HTTP redirect gap; full F07 acceptance remains open. A 301 Redirect Rule matching only `http://mushavobudget.com/*`, preserving the path and query, is handed off for owner deployment followed by the same four-request check. No provider change or production header deployment has been performed by root. Staging workflows 1–4 and targeted Console nonrecurrence remain scoped PASS. Two of three work items are complete; correction/recheck stays inside the existing third item.
+**2.1 closed checkpoint — S2E12:** All three finite work items have recorded outcomes. Selected local/staging header checks, owner workflows 1–4 and targeted Console nonrecurrence passed in their stated scope. Production HTTP-to-HTTPS redirection FAILED on the three owner samples. The exact correction is retained for final remediation, as requested; no production provider change is requested now. Strict CSP, deliberate blocking and full production acceptance remain unverified. F07 stays open. Current work is **2.2.1**, public contact source/grant review.
 
 Started 9 October 2026 at **2.1**, after the [Stage 1 report](SECURITY_STAGE_1_COMPLETION_REPORT.md). Four finite steps. Each receives a bounded evidence/change pass and explicit outcome; unresolved controls carry to final remediation and full re-audit. Stage 1 checkpoints remain closed with their limits. Broader tenant roles and application Admin MFA belong to Stage 3.
 
@@ -15,8 +15,17 @@ Started 9 October 2026 at **2.1**, after the [Stage 1 report](SECURITY_STAGE_1_C
 
 1. Baseline and dependency inventory — COMPLETE, scoped live/source evidence.
 2. Candidate and local checks — COMPLETE, 15 selected checks; native browser execution unavailable in this environment.
-3. Staging handoff and actual served/browser checks — LIVE HEADER/CONFIG CHECKS PASS; owner browser checks 1–4 and targeted Console nonrecurrence scoped PASS; production setting OFF and three HTTP samples FAIL; one scoped redirect deployment/post-change check pending. Resource CSP enforcement and production acceptance remain unverified.
+3. Staging handoff and actual served/browser checks — COMPLETE WITH CARRY-FORWARD: staging samples and owner flows scoped PASS; production HTTP redirect samples FAIL; strict CSP and full production acceptance unverified. Correction retained for final remediation.
 
-Two of three 2.1 items have completed outcomes; one remains. Do not add an unlimited screenshot/diagnostic cascade. Record unavailable workflows as carry-forward instead of manufacturing a pass. The [2.1 checkpoint and handoff](SECURITY_STAGE_2_1_BROWSER_HEADERS.md) give the concrete next action.
+All three 2.1 items have completed outcomes; none remains in this checkpoint. Do not add an unlimited screenshot/diagnostic cascade. Record unavailable workflows as carry-forward instead of manufacturing a pass. The [2.1 checkpoint and handoff](SECURITY_STAGE_2_1_BROWSER_HEADERS.md) give the concrete next action.
 
 Production Supabase remains kttkospkblwvguuwnhjj; staging remains dczlddwbtgvfdujgcitb at https://mushavo-budget-staging.pages.dev. Keep controlled synthetic accounts/destinations and private credentials separate. No production restore, APK update, paid service or Google backup upload is part of Stage 2. The new security/stage-2-web-hardening branch is based on the Stage 1 audit head; its draft PR is stacked on security/stage-1-foundations pending that PR's review/merge. No merge or provider deployment is performed by preparation.
+
+
+## 2.2 finite work items
+
+1. **2.2.1** Review the source submission path and one read-only staging grants/RLS metadata baseline.
+2. **2.2.2** Prepare justified server validation/challenge/quota and bypass-prevention candidates with meaningful local allowed/denied checks.
+3. **2.2.3** One controlled staging acceptance batch, then record passes/failures/unavailable evidence and carry gaps to final remediation.
+
+[Contact baseline and owner handoff](SECURITY_STAGE_2_2_PUBLIC_CONTACT.md). Production redirect failure from 2.1 remains in F07; resolving it is not a prerequisite for 2.2. The detailed Stage 2 report is still due at 2.4.

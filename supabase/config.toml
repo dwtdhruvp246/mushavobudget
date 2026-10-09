@@ -1,6 +1,11 @@
 [functions.sync-exchange-rates]
 verify_jwt = false
 
+[functions.submit-enquiry]
+# Public contact endpoint: exact origin + mandatory server Turnstile verification
+# + service-only transactional database quotas. Public keys are not authorization.
+verify_jwt = false
+
 [functions.send-test-push]
 # The function validates the bearer token with auth.getUser so it works with
 # the project's current publishable-key authentication flow.

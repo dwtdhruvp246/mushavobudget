@@ -3,7 +3,7 @@
   "stage": 2,
   "updated_date": "2026-10-09",
   "active_step": "2.2",
-  "source_audit_head": "8334bdae71e6f69fc726d8bfebf289caa4b4eaed",
+  "source_audit_head": "00bb53c7407e5dfac20b5592f43e53cdd9089463",
   "events": [
     {
       "id": "S2E01",
@@ -911,6 +911,172 @@
       "owner_execution_received": false,
       "live_production_or_staging_grants_independently_verified": false,
       "runtime_contact_or_edge_changes_made": false
+    },
+    {
+      "id": "S2E14",
+      "stage_step": "2.2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_STAGING_CONTACT_METADATA_BASELINE_RECEIVED",
+      "source_checked_at": "2026-10-09T18:41:45.158971+00:00",
+      "owner_execution_target": "dczlddwbtgvfdujgcitb",
+      "server_version": "17.11",
+      "single_result_rows_received": 5,
+      "hosted_identity_independently_established_by_sql": false,
+      "table": {
+        "schema": "public",
+        "name": "enquiries",
+        "owner": "postgres",
+        "rls_enabled": true,
+        "rls_forced": false
+      },
+      "effective_table_privileges": {
+        "anon": {
+          "select": false,
+          "insert": false,
+          "update": false,
+          "delete": false
+        },
+        "authenticated": {
+          "select": true,
+          "insert": false,
+          "update": true,
+          "delete": false
+        },
+        "service_role": {
+          "select": true,
+          "insert": true,
+          "update": true,
+          "delete": true
+        }
+      },
+      "effective_column_insert_roles": [
+        "anon",
+        "authenticated"
+      ],
+      "effective_insert_columns": [
+        "full_name",
+        "email",
+        "enquiry_type",
+        "message",
+        "country_name",
+        "country_code"
+      ],
+      "policies": [
+        {
+          "name": "Public can submit enquiries",
+          "command": "INSERT",
+          "roles": [
+            "anon",
+            "authenticated"
+          ]
+        },
+        {
+          "name": "Staff can read enquiries",
+          "command": "SELECT",
+          "roles": [
+            "authenticated"
+          ]
+        },
+        {
+          "name": "Staff can update enquiries",
+          "command": "UPDATE",
+          "roles": [
+            "authenticated"
+          ]
+        }
+      ],
+      "enabled_noninternal_trigger_count": 2,
+      "validated_constraint_count": 20,
+      "name_based_routine_count": 4,
+      "authenticated_table_select_update_is_not_proof_of_rls_row_access": true,
+      "policy_expressions_or_function_bodies_received": false,
+      "runtime_insert_challenge_quota_or_complete_reachable_paths_verified": false,
+      "schema_or_customer_rows_modified_by_diagnostic": false,
+      "enquiry_email_push_or_edge_request_sent": false,
+      "finding": "F09"
+    },
+    {
+      "id": "S2E15",
+      "stage_step": "2.2.2",
+      "recorded_date": "2026-10-09",
+      "result": "CONTACT_GATE_CANDIDATE_AND_SCOPED_LOCAL_CHECKS_PASS",
+      "source_parent_commit": "00bb53c7407e5dfac20b5592f43e53cdd9089463",
+      "finding": "F09",
+      "candidate": {
+        "browser": "Turnstile explicit widget; token required; public Edge POST; no direct enquiries insert; safe errors and retry reset; empty key fails closed",
+        "endpoint": "supabase/functions/submit-enquiry/index.ts",
+        "validation": "Exact bound origin/project; POST/OPTIONS; 32768 actual stream byte limit; strict fields/bounds/types; known country/type; server Siteverify success/hostname/action/time checks",
+        "challenge_action": "public_contact",
+        "new_runtime_secret_key_preferred": true,
+        "legacy_service_role_compatibility_fallback": true,
+        "database_rpc": "public.submit_verified_public_enquiry(jsonb,text)",
+        "rpc_privilege": "Service role only, pinned empty search_path",
+        "database_gate_migration": "supabase/migrations/20261009190000_public_enquiry_submission_gate.sql",
+        "direct_table_and_all_column_insert_revoked_from": [
+          "PUBLIC",
+          "anon",
+          "authenticated"
+        ],
+        "existing_staff_select_update_policies_retained": true,
+        "fixed_window_caps": {
+          "global_minute": 10,
+          "global_hour": 60,
+          "normalized_email_hour": 3
+        },
+        "quota_storage": "HMAC-SHA256 email subject plus counters; no raw IP; dedicated transaction lock serializes quota and insert",
+        "expired_counter_cleanup": "On submission, delete windows older than two hours; idle-time scheduled retention not verified",
+        "ip_rate_limit_verified": false,
+        "client_supplied_ip_headers_used": false,
+        "web_preparation": "New allowlisted staging web folder; source preserved; private Edge code outside public web output",
+        "csp_resource_allowance": "Exact challenges.cloudflare.com script/frame origin; resource CSP remains report-only"
+      },
+      "validation": {
+        "node": "v24.19.0",
+        "command": "node --test tests/security-stage-2-contact.test.mjs tests/security-stage-2-headers.test.mjs",
+        "checks": 32,
+        "passed": 32,
+        "failed": 0,
+        "contact_checks": 19,
+        "header_checks": 13,
+        "handler_tests_execute_actual_handler_with_mocked_upstreams": true,
+        "browser_tests": "Node VM DOM fixture; no actual Chromium execution",
+        "edge_entry_esbuild_bundle_pass": true,
+        "sql_ast_statement_count": 17,
+        "plpgsql_parsed_blocks": 3,
+        "sql_parser": "pglast 8.5, libpg_query PostgreSQL 18.6; syntax only",
+        "postgresql_17_live_sql_or_concurrency_executed": false,
+        "powershell_owner_preparation_executed": false,
+        "providers_or_hosted_databases_contacted_by_local_tests": false
+      },
+      "real_turnstile_or_hosted_gate_applied": false,
+      "staging_or_production_deployed": false,
+      "full_abuse_prevention_ddos_or_full_f09_verified": false,
+      "production_or_native_bundle_changed": false,
+      "production_cutover_requires_real_widget_and_backend_secrets_before_gate_and_frontend_promotion": true,
+      "privacy_processor_followup": "Record Turnstile in Stage 4/F20 provider and privacy review"
+    },
+    {
+      "id": "S2E16",
+      "stage_step": "2.2.2",
+      "recorded_date": "2026-10-09",
+      "result": "BOUNDED_STAGING_CONTACT_SETUP_HANDOFF",
+      "preparation_script": "scripts/prepare-stage-2-contact.ps1",
+      "web_builder": "scripts/prepare-stage-2-contact.cjs",
+      "next_owner_action": "Create one real Managed Turnstile widget for mushavo-budget-staging.pages.dev with pre-clearance off; keep its secret private; prepare the new candidate from pinned Git source",
+      "source_owner_checkout_reset_or_checkout_requested": false,
+      "staging_reference": "dczlddwbtgvfdujgcitb",
+      "planned_function_deploy": "submit-enquiry only, explicit staging project-ref, use-api (no Docker)",
+      "private_edge_secret_names": [
+        "MUSHAVO_CONTACT_TURNSTILE_SECRET",
+        "MUSHAVO_CONTACT_QUOTA_SECRET"
+      ],
+      "sql_handoff": "Pinned git show to clipboard; owner manually verifies staging SQL Editor; after endpoint preparation",
+      "owner_widget_setup_or_preparation_received": false,
+      "contact_work_items_completed": 2,
+      "contact_work_items_remaining": 1,
+      "remaining_work_item": "2.2.3 One controlled staging acceptance batch and closure with unavailable/failed cases carried forward",
+      "production_https_remediation_still_deferred": true,
+      "raw_secrets_or_customer_artifacts_uploaded": false
     }
   ]
 }

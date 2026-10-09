@@ -20,7 +20,7 @@
     <script src="config.js?v=26"></script>
     <script src="/pwa.js?v=80" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
-    <script type="module" src="site.js?v=6"></script>
+    <script type="module" src="site.js?v=7"></script>
   </head>
   <body data-page="contact">
     <a class="site-skip" href="#mainContent">Skip to main content</a>
@@ -51,15 +51,18 @@
           <form id="enquiryForm" novalidate>
             <div class="form-heading"><p class="site-eyebrow">ENQUIRY FORM</p><h2 id="enquiryHeading">How can we help?</h2><p>Fields marked with * are required.</p></div>
             <div class="public-form-grid">
-              <label for="enquiryName">Full name *<input id="enquiryName" name="full_name" autocomplete="name" maxlength="120" required /></label>
+              <label for="enquiryName">Full name *<input id="enquiryName" name="full_name" autocomplete="name" minlength="2" maxlength="120" required /></label>
               <label for="enquiryEmail">Email address *<input id="enquiryEmail" name="email" type="email" autocomplete="email" maxlength="254" required /></label>
               <label for="enquiryCountry">Country *<select id="enquiryCountry" name="country_code" autocomplete="country" required><option value="">Choose your country</option></select></label>
               <label for="enquiryCategory">Enquiry type *<select id="enquiryCategory" name="enquiry_type" required><option value="">Choose an enquiry type</option><option value="support">Support</option><option value="sales">Sales</option><option value="subscription_renewal">Subscription renewal</option><option value="setup_help">Setup help</option><option value="country_availability">Country availability</option><option value="partnership">Partnership</option></select></label>
               <label class="full" for="enquiryMessage">Message *<textarea id="enquiryMessage" name="message" rows="7" minlength="10" maxlength="5000" required></textarea><small><span id="enquiryMessageCount">0</span>/5000 characters</small></label>
               <label class="form-honeypot" aria-hidden="true">Leave this field empty<input id="enquiryWebsite" name="website" tabindex="-1" autocomplete="off" /></label>
             </div>
+            <div id="enquiryVerification" data-sitekey="" aria-describedby="enquiryVerificationStatus"></div>
+            <p id="enquiryVerificationStatus" role="status" aria-live="polite">The form is temporarily unavailable. Please email <a href="mailto:support@mushavobudget.com">support@mushavobudget.com</a>.</p>
+            <noscript><p>Enable JavaScript to use this form, or email support@mushavobudget.com.</p></noscript>
             <div id="enquiryError" class="form-error hidden" role="alert"></div>
-            <button id="enquirySubmit" class="site-button" type="submit">Send enquiry</button>
+            <button id="enquirySubmit" class="site-button" type="submit" disabled>Send enquiry</button>
           </form>
         </section>
       </section>

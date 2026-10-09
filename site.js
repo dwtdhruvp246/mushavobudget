@@ -5,7 +5,7 @@ const isConfigured = Boolean(
   !`${config.supabaseUrl} ${config.supabasePublishableKey}`.includes("YOUR-")
 );
 const state = { catalogue: [], billingPeriod: "monthly", currency: "USD" };
-let publicSupabaseClient = null;
+const contactVerification = { token: "", widgetId: null, submitting: false };
 
 const COUNTRY_CODES = (
   "AF AX AL DZ AS AD AO AI AQ AG AR AM AW AU AT AZ BS BH BD BB BY BE BZ BJ BM BT BO BQ BA BW BV BR IO BN BG BF BI CV KH CM CA KY CF TD CL CN CX CC CO KM CG CD CK CR CI HR CU CW CY CZ DK DJ DM DO EC EG SV GQ ER EE SZ ET FK FO FJ FI FR GF PF TF GA GM GE DE GH GI GR GL GD GP GU GT GG GN GW GY HT HM VA HN HK HU IS IN ID IR IQ IE IM IL IT JM JP JE JO KZ KE KI KP KR KW KG LA LV LB LS LR LY LI LT LU MO MG MW MY MV ML MT MH MQ MR MU YT MX FM MD MC MN ME MS MA MZ MM NA NR NP NL NC NZ NI NE NG NU NF MK MP NO OM PK PW PS PA PG PY PE PH PN PL PT PR QA RE RO RU RW BL SH KN LC MF PM VC WS SM ST SA SN RS SC SL SG SX SK SI SB SO ZA GS SS ES LK SD SR SJ SE CH SY TW TJ TZ TH TL TG TK TO TT TN TR TM TC TV UG UA AE GB US UM UY UZ VU VE VN VG VI WF EH YE ZM ZW"
@@ -186,31 +186,6 @@ async function initPricing() {
   }
 }
 
-async function getPublicSupabaseClient() {
-  if (publicSupabaseClient) return publicSupabaseClient;
-  if (!isConfigured) return null;
-  try {
-    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm");
-    publicSupabaseClient = createClient(
-      config.supabaseUrl,
-      config.supabasePublishableKey,
-      {
-        auth: {
-          persistSession: false,
-          autoRefreshToken: false,
-          detectSessionInUrl: false
-        }
-      }
-    );
-    return publicSupabaseClient;
-  } catch (error) {
-    console.error("[Mushavo] Public Supabase client failed to load", {
-      message: error?.message || "Client unavailable"
-    });
-    return null;
-  }
-}
-
 function contactCategoryFromQuery() {
   const requested = new URLSearchParams(window.location.search).get("category");
   const field = document.querySelector("#enquiryCategory");
@@ -251,25 +226,68 @@ function showEnquiryError(message) {
   errorBox.focus?.();
 }
 
+function setContactVerification(token, message) {
+  contactVerification.token = typeof token === "string" ? token : "";
+  const button = document.querySelector("#enquirySubmit");
+  if (button) button.disabled = contactVerification.submitting || !contactVerification.token;
+  const status = document.querySelector("#enquiryVerificationStatus");
+  if (status) status.textContent = message;
+}
+
+function resetContactVerification() {
+  setContactVerification("", "Please complete the verification to send your enquiry.");
+  if (contactVerification.widgetId !== null && window.turnstile) {
+    try { window.turnstile.reset(contactVerification.widgetId); }
+    catch { setContactVerification("", "Verification is unavailable. Refresh the page or email support@mushavobudget.com."); }
+  }
+}
+
+function initContactVerification() {
+  const container = document.querySelector("#enquiryVerification");
+  const sitekey = container?.dataset.sitekey || "";
+  if (!isConfigured || !/^0x[A-Za-z0-9_-]{10,100}$/.test(sitekey)) {
+    setContactVerification("", "The form is temporarily unavailable. Please email support@mushavobudget.com.");
+    return;
+  }
+  setContactVerification("", "Loading verification…");
+  const script = document.createElement("script");
+  script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+  script.async = true;
+  const failed = () => setContactVerification("", "Verification could not load. Refresh the page or email support@mushavobudget.com.");
+  const timeout = setTimeout(failed, 15000);
+  script.onerror = () => { clearTimeout(timeout); failed(); };
+  script.onload = () => {
+    clearTimeout(timeout);
+    try {
+      contactVerification.widgetId = window.turnstile.render(container, {
+        sitekey, action: "public_contact", theme: "auto", "response-field": false,
+        callback: token => setContactVerification(token, "Verification complete. You can send your enquiry."),
+        "expired-callback": () => setContactVerification("", "Verification expired. Please complete it again."),
+        "error-callback": () => { failed(); return true; },
+        "timeout-callback": () => setContactVerification("", "Verification timed out. Please try again.")
+      });
+    } catch { failed(); }
+  };
+  document.head.appendChild(script);
+}
+
 async function submitEnquiry(event) {
   event.preventDefault();
   const form = event.currentTarget;
   const button = document.querySelector("#enquirySubmit");
   const errorBox = document.querySelector("#enquiryError");
   errorBox.classList.add("hidden");
+  if (contactVerification.submitting) return;
   if (!form.reportValidity()) return;
   if (!isConfigured) return showEnquiryError("The enquiry service is not configured yet. Please try again later.");
   const values = Object.fromEntries(new FormData(form).entries());
   if (String(values.website || "").trim()) return;
-
+  if (!contactVerification.token) return showEnquiryError("Please complete the verification before sending.");
+  const token = contactVerification.token;
+  contactVerification.submitting = true;
+  contactVerification.token = "";
   button.disabled = true;
   button.textContent = "Sending…";
-  const client = await getPublicSupabaseClient();
-  if (!client) {
-    button.disabled = false;
-    button.textContent = "Send enquiry";
-    return showEnquiryError("The enquiry service could not start. Please refresh the page and try again.");
-  }
   const country = document.querySelector("#enquiryCountry");
   const payload = {
     full_name: String(values.full_name || "").trim(),
@@ -277,26 +295,40 @@ async function submitEnquiry(event) {
     country_code: String(values.country_code || "").trim().toUpperCase(),
     country_name: String(country?.selectedOptions?.[0]?.textContent || "").trim(),
     enquiry_type: String(values.enquiry_type || "").trim(),
-    message: String(values.message || "").trim()
+    message: String(values.message || "").trim(),
+    website: "", turnstile_token: token
   };
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20000);
   try {
-    const { error } = await client.from("enquiries").insert(payload);
-    if (error) throw error;
+    const response = await fetch(`${config.supabaseUrl}/functions/v1/submit-enquiry`, {
+      method: "POST", credentials: "omit", redirect: "error", signal: controller.signal,
+      headers: { "Content-Type": "application/json", apikey: config.supabasePublishableKey },
+      body: JSON.stringify(payload)
+    });
+    const receipt = await response.json().catch(() => null);
+    if (!response.ok || receipt?.accepted !== true) {
+      const message = response.status === 429
+        ? "The enquiry limit has been reached. Please wait before trying again, or email support@mushavobudget.com."
+        : response.status === 400
+        ? "Check your details and complete the new verification before trying again."
+        : "Your enquiry could not be sent. Please try again later or email support@mushavobudget.com.";
+      showEnquiryError(message);
+      return;
+    }
     form.classList.add("hidden");
     const success = document.querySelector("#enquirySuccess");
     success.classList.remove("hidden");
     success.focus();
     form.reset();
     document.querySelector("#enquiryMessageCount").textContent = "0";
-  } catch (error) {
-    console.error("[Mushavo] Enquiry submission failed", {
-      code: error?.code || "UNKNOWN",
-      message: error?.message || "Submission failed"
-    });
+  } catch {
     showEnquiryError("Your enquiry could not be sent. Check your connection and try again.");
   } finally {
-    button.disabled = false;
+    clearTimeout(timeout);
+    contactVerification.submitting = false;
     button.textContent = "Send enquiry";
+    resetContactVerification();
   }
 }
 
@@ -305,12 +337,14 @@ function initContact() {
   if (!form) return;
   populateCountries();
   contactCategoryFromQuery();
+  initContactVerification();
   form.addEventListener("submit", submitEnquiry);
   const message = document.querySelector("#enquiryMessage");
   message.addEventListener("input", () => { document.querySelector("#enquiryMessageCount").textContent = String(message.value.length); });
   document.querySelector("[data-new-enquiry]").addEventListener("click", () => {
     document.querySelector("#enquirySuccess").classList.add("hidden");
     form.classList.remove("hidden");
+    resetContactVerification();
     form.querySelector("input")?.focus();
   });
 }

@@ -37,13 +37,13 @@ function buildHeaders(reference, htmlSources) {
   const hashes = inlineHashes(htmlSources);
   const reportOnly = [
     "default-src 'self'",
-    ["script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com", ...hashes].join(' '),
+    ["script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com https://challenges.cloudflare.com", ...hashes].join(' '),
     "script-src-attr 'none'",
     "style-src 'self' 'unsafe-inline'",
     `connect-src 'self' ${api} ${socket} https://cloudflareinsights.com`,
     `img-src 'self' data: blob: ${api}`,
     "font-src 'self'", "media-src 'self' blob:", "worker-src 'self'",
-    "manifest-src 'self'", "frame-src 'none'", "object-src 'none'",
+    "manifest-src 'self'", "frame-src https://challenges.cloudflare.com", "object-src 'none'",
     "base-uri 'self'", "form-action 'self'", "frame-ancestors 'none'"
   ].join('; ');
   const text = [
@@ -64,7 +64,7 @@ function buildHeaders(reference, htmlSources) {
   return text;
 }
 
-function preparePreview(sourceInput, outputInput) {
+function preparePreview(sourceInput, outputInput, overrides = {}) {
   if (!sourceInput || !outputInput) throw Error('Supply the existing STAGING folder and a new output folder.');
   const source = path.resolve(sourceInput);
   const output = path.resolve(outputInput);
@@ -92,6 +92,11 @@ function preparePreview(sourceInput, outputInput) {
     const data = fs.readFileSync(full);
     if (!data.length) throw Error('Empty public asset: ' + name);
     if (data.includes(Buffer.from(PRODUCTION))) throw Error('Production reference found in public asset: ' + name);
+    files.set(name, data);
+  }
+  for (const [name, data] of Object.entries(overrides)) {
+    if (!['site.js', 'contact.html'].includes(name) || !Buffer.isBuffer(data) || !data.length ||
+        data.includes(Buffer.from(PRODUCTION))) throw Error('Unexpected or production-bearing contact override.');
     files.set(name, data);
   }
   const configMatch = files.get('config.js').toString('utf8').match(/^\s*window\.MUSHAVO_BUDGET_CONFIG\s*=\s*(\{[\s\S]*\})\s*;\s*$/);

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "updated_date": "2026-10-09",
-  "current_stage": 1,
-  "current_step": "1.6",
-  "current_title": "Stage 1 closure and detailed report",
+  "current_stage": 2,
+  "current_step": "2.1",
+  "current_title": "Browser security headers and phased CSP",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1058,13 +1058,48 @@
   "next_stage": 2,
   "next_step": "2.1",
   "stage_2": {
-    "status": "NEXT_PENDING",
-    "planned_first_step": "2.1",
-    "planned_scope": [
-      "Browser headers",
-      "Public contact abuse",
-      "Web Push outbound destinations"
-    ],
-    "started": false
+    "status": "IN_PROGRESS",
+    "started": true,
+    "started_date": "2026-10-09",
+    "active_step": "2.1",
+    "plan": "docs/SECURITY_STAGE_2_WEB_HARDENING_PLAN.md",
+    "evidence": "docs/security-stage-2-evidence.json",
+    "bounded_steps": 4,
+    "completed_steps": 0,
+    "remaining_steps": 4,
+    "steps": [
+      {
+        "id": "2.1",
+        "title": "Browser security headers",
+        "status": "CANDIDATE_CHECKED_OWNER_STAGING_HANDOFF_PENDING",
+        "bounded_work_items": 3,
+        "completed_work_items": 2,
+        "remaining_work_items": 1,
+        "active_work_item": "STAGING_DEPLOYMENT_AND_BROWSER_CHECK",
+        "instructions": "docs/SECURITY_STAGE_2_1_BROWSER_HEADERS.md",
+        "latest_evidence": "S2E04",
+        "local_selected_checks_passed": 15,
+        "staging_served_candidate_verified": false,
+        "browser_workflows_verified": false,
+        "strict_resource_csp_enforced": false,
+        "production_deployed": false,
+        "http_redirect_setting_verified": false
+      },
+      {
+        "id": "2.2",
+        "title": "Public contact abuse",
+        "status": "PENDING"
+      },
+      {
+        "id": "2.3",
+        "title": "Web Push outbound destinations",
+        "status": "PENDING"
+      },
+      {
+        "id": "2.4",
+        "title": "Closure and detailed report",
+        "status": "PENDING"
+      }
+    ]
   }
 }

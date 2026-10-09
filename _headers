@@ -1,0 +1,11 @@
+# 2.1 candidate: enforce baseline controls; observe resource CSP before promotion.
+# No remote report collector: inspect browser console; no violation URLs are uploaded.
+# Short initial HSTS lifetime; no includeSubDomains or preload commitment.
+/*
+  Strict-Transport-Security: max-age=86400
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(self), microphone=(), geolocation=(), payment=(), usb=()
+  Content-Security-Policy: object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://kttkospkblwvguuwnhjj.supabase.co wss://kttkospkblwvguuwnhjj.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://kttkospkblwvguuwnhjj.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'

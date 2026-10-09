@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "stage": 2,
+  "updated_date": "2026-10-09",
+  "active_step": "2.1",
+  "source_audit_head": "8334bdae71e6f69fc726d8bfebf289caa4b4eaed",
+  "events": [
+    {
+      "id": "S2E01",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "STAGE_2_STARTED_WITH_FOUR_FINITE_STEPS",
+      "owner_instruction": "continue",
+      "prior_stage_report": "docs/SECURITY_STAGE_1_COMPLETION_REPORT.md",
+      "plan": "docs/SECURITY_STAGE_2_WEB_HARDENING_PLAN.md",
+      "steps": {
+        "2.1": "Browser headers",
+        "2.2": "Public contact abuse",
+        "2.3": "Web Push egress",
+        "2.4": "Closure/report"
+      },
+      "prior_stage_1_closed_with_carry_forward": true,
+      "prior_checkpoint_reopened": false
+    },
+    {
+      "id": "S2E02",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "LIVE_HEADER_GAPS_RECONFIRMED_AND_HTTP_REDIRECT_REVIEW_REQUIRED",
+      "method": "Unauthenticated read-only GET; initial HTML suffix canonical redirects followed, extended requests use manual redirect handling",
+      "initial_observations": [
+        {
+          "requested": "https://mushavobudget.com/",
+          "final": "https://mushavobudget.com/",
+          "status": 200,
+          "headers": {
+            "Content-Security-Policy": null,
+            "Content-Security-Policy-Report-Only": null,
+            "Strict-Transport-Security": null,
+            "X-Content-Type-Options": null,
+            "X-Frame-Options": null,
+            "Referrer-Policy": null,
+            "Permissions-Policy": null,
+            "Cross-Origin-Opener-Policy": null,
+            "Cross-Origin-Embedder-Policy": null,
+            "Cross-Origin-Resource-Policy": null
+          },
+          "server": "cloudflare",
+          "content_type": "text/html"
+        },
+        {
+          "requested": "https://mushavobudget.com/app.html",
+          "final": "https://mushavobudget.com/app",
+          "status": 200,
+          "headers": {
+            "Content-Security-Policy": null,
+            "Content-Security-Policy-Report-Only": null,
+            "Strict-Transport-Security": null,
+            "X-Content-Type-Options": null,
+            "X-Frame-Options": null,
+            "Referrer-Policy": null,
+            "Permissions-Policy": null,
+            "Cross-Origin-Opener-Policy": null,
+            "Cross-Origin-Embedder-Policy": null,
+            "Cross-Origin-Resource-Policy": null
+          },
+          "server": "cloudflare",
+          "content_type": "text/html"
+        },
+        {
+          "requested": "https://mushavobudget.com/business.html",
+          "final": "https://mushavobudget.com/business",
+          "status": 200,
+          "headers": {
+            "Content-Security-Policy": null,
+            "Content-Security-Policy-Report-Only": null,
+            "Strict-Transport-Security": null,
+            "X-Content-Type-Options": null,
+            "X-Frame-Options": null,
+            "Referrer-Policy": null,
+            "Permissions-Policy": null,
+            "Cross-Origin-Opener-Policy": null,
+            "Cross-Origin-Embedder-Policy": null,
+            "Cross-Origin-Resource-Policy": null
+          },
+          "server": "cloudflare",
+          "content_type": "text/html"
+        },
+        {
+          "requested": "https://mushavo-budget-staging.pages.dev/",
+          "final": "https://mushavo-budget-staging.pages.dev/",
+          "status": 200,
+          "headers": {
+            "Content-Security-Policy": null,
+            "Content-Security-Policy-Report-Only": null,
+            "Strict-Transport-Security": null,
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": null,
+            "Referrer-Policy": "strict-origin-when-cross-origin",
+            "Permissions-Policy": null,
+            "Cross-Origin-Opener-Policy": null,
+            "Cross-Origin-Embedder-Policy": null,
+            "Cross-Origin-Resource-Policy": null
+          },
+          "server": "cloudflare",
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "extended_observations": {
+        "checked_utc": "2026-10-09T12:28:10.662717+00:00",
+        "results": [
+          {
+            "requested": "https://mushavobudget.com/signup",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html",
+            "headers": {
+              "Content-Security-Policy": null,
+              "Content-Security-Policy-Report-Only": null,
+              "Strict-Transport-Security": null,
+              "X-Content-Type-Options": null,
+              "X-Frame-Options": null,
+              "Referrer-Policy": null,
+              "Permissions-Policy": null
+            }
+          },
+          {
+            "requested": "https://mushavobudget.com/contact",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html",
+            "headers": {
+              "Content-Security-Policy": null,
+              "Content-Security-Policy-Report-Only": null,
+              "Strict-Transport-Security": null,
+              "X-Content-Type-Options": null,
+              "X-Frame-Options": null,
+              "Referrer-Policy": null,
+              "Permissions-Policy": null
+            }
+          },
+          {
+            "requested": "https://mushavobudget.com/app.js",
+            "status": 200,
+            "location": null,
+            "content_type": "text/javascript",
+            "headers": {
+              "Content-Security-Policy": null,
+              "Content-Security-Policy-Report-Only": null,
+              "Strict-Transport-Security": null,
+              "X-Content-Type-Options": null,
+              "X-Frame-Options": null,
+              "Referrer-Policy": null,
+              "Permissions-Policy": null
+            }
+          },
+          {
+            "requested": "https://mushavobudget.com/business.js",
+            "status": 200,
+            "location": null,
+            "content_type": "text/javascript",
+            "headers": {
+              "Content-Security-Policy": null,
+              "Content-Security-Policy-Report-Only": null,
+              "Strict-Transport-Security": null,
+              "X-Content-Type-Options": null,
+              "X-Frame-Options": null,
+              "Referrer-Policy": null,
+              "Permissions-Policy": null
+            }
+          },
+          {
+            "requested": "https://mushavobudget.com/sw.js",
+            "status": 200,
+            "location": null,
+            "content_type": "text/javascript",
+            "headers": {
+              "Content-Security-Policy": null,
+              "Content-Security-Policy-Report-Only": null,
+              "Strict-Transport-Security": null,
+              "X-Content-Type-Options": null,
+              "X-Frame-Options": null,
+              "Referrer-Policy": null,
+              "Permissions-Policy": null
+            }
+          },
+          {
+            "requested": "http://mushavobudget.com/",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html",
+            "headers": {
+              "Content-Security-Policy": null,
+              "Content-Security-Policy-Report-Only": null,
+              "Strict-Transport-Security": null,
+              "X-Content-Type-Options": null,
+              "X-Frame-Options": null,
+              "Referrer-Policy": null,
+              "Permissions-Policy": null
+            }
+          }
+        ]
+      },
+      "seven_header_families_absent_from_sampled_production_200_responses": true,
+      "staging_home_present_families": [
+        "X-Content-Type-Options",
+        "Referrer-Policy"
+      ],
+      "http_probe_scope": "Execution-path HTTP GET returned 200 without Location; actual zone setting and independent redirect behavior require owner review",
+      "all_routes_or_exploit_verified": false,
+      "credentials_or_authenticated_requests_used": false
+    },
+    {
+      "id": "S2E03",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "PHASED_HEADER_CANDIDATE_AND_STAGING_GUARDS_CHECKED",
+      "production_candidate": "_headers",
+      "helper": "scripts/prepare-stage-2-headers.cjs",
+      "tests": "tests/security-stage-2-headers.test.mjs",
+      "reviewed_source_head": "8334bdae71e6f69fc726d8bfebf289caa4b4eaed",
+      "wrangler_signup_and_stage_1_builder_match_remote_source": true,
+      "enforced_csp": "object-src none; base-uri self; form-action self; frame-ancestors none",
+      "script_connection_resource_csp": "REPORT_ONLY_NOT_ENFORCED",
+      "inline_signup_script_hashes_generated": true,
+      "script_unsafe_inline_or_eval_permission_added": false,
+      "dynamic_inline_styles_retained": true,
+      "third_party_dependency_integrity_verified": false,
+      "remote_csp_report_collector_created": false,
+      "hsts_initial_max_age_seconds": 86400,
+      "hsts_include_subdomains_or_preload": false,
+      "staging_backend_origin_explicit_and_production_reference_rejected": true,
+      "public_file_allowlist_count": 34,
+      "prepared_folder_file_count": 35,
+      "tests_command": "node --test tests/security-stage-2-headers.test.mjs tests/cloudflare-assets.test.mjs",
+      "local_node": "24.19.0",
+      "selected_tests_pass": 15,
+      "selected_tests_fail": 0,
+      "test_scope": "Local source/hash/guard/environment-handoff plus existing Cloudflare asset checks",
+      "chromium_executable_available": false,
+      "browser_workflows_or_deliberate_frame_xss_blocking_verified": false,
+      "native_windows_execution_verified": false,
+      "production_provider_deploy_or_native_build_performed": false
+    },
+    {
+      "id": "S2E04",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "STAGING_HANDOFF_PREPARED_PENDING_OWNER_EXECUTION",
+      "instructions": "docs/SECURITY_STAGE_2_1_BROWSER_HEADERS.md",
+      "input": "Owner existing 1.3 staging web folder; exact staging URL/publishable format/empty push key; no production bytes",
+      "output": "New ordinary staging public folder; original retained",
+      "hosting_target": "mushavo-budget-staging.pages.dev separate Pages project",
+      "owner_upload_or_browser_results_received": false,
+      "owner_production_always_use_https_setting_review": "PENDING_READ_ONLY",
+      "bounded_header_work_items": 3,
+      "completed_work_items": 2,
+      "remaining_work_items": 1,
+      "strict_csp_or_production_acceptance_verified": false,
+      "carry_forward_finding_ids": [
+        "F07",
+        "F10",
+        "F18",
+        "F19"
+      ],
+      "sql_or_secret_input_required": false,
+      "google_backup_or_apk_update_requested": false
+    }
+  ]
+}

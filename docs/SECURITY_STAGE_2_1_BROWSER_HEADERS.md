@@ -1,10 +1,10 @@
 # 2.1 — Browser header baseline, candidate and staging handoff
 
-**2.1 update — S2E08:** Owner reports browser checks 1–4 PASS. The readable Console screenshot shows a delayed Chromium extension-message channel error grouped three times; no CSP violation is visible in that shown group. The message is defined by Chromium's extension messaging implementation. An installed browser extension is the likely source, but the extension, impact and runtime origin remain unconfirmed. One extensions-disabled staging Support recheck and the outstanding production Always Use HTTPS read-only reply finish the third work item's review. Do not repeat the four passed workflows or suppress the error. Two of three items are complete; strict resource CSP and production acceptance remain open.
+**2.1 update — S2E09:** Owner reports that the selected Console error did not return in the requested follow-up check. Browser checks 1–4 remain owner-reported PASS. Nonrecurrence supports the browser-extension explanation without identifying a particular extension or proving all browser/CSP behavior. No further repeat of these checks is requested. Only the production mushavobudget.com Always Use HTTPS ON/OFF/UNAVAILABLE read-only reply remains in the third work item. Two of three items are complete; strict resource CSP, deliberate frame/injection checks and production acceptance remain open.
 
 **Prior live result — 9 October 2026, S2E05–S2E07:** Owner Windows preparation passed with 35 public files and original sources retained; owner then confirmed staging deployed. Root's fresh GET checks at 13:11–13:12 UTC (15:11–15:12 +0200) found all seven header families with matching baseline values on 11 successful canonical HTML/JS/CSS responses and the app.html → app 308 response. MIME checks passed. Public config uses dczlddwbtgvfdujgcitb with publishable-key format and empty push key; config/CSP/selected signup content contain no production reference. The one live inline signup block matches the declared CSP hash. No credentials, token values or raw bodies are recorded. This is a sampled served-header/configuration PASS, not browser execution, key-ownership/source-parity or production acceptance. One bounded owner browser batch and the production Always Use HTTPS setting reply remain pending; two of three work items remain complete. Preparation/upload instructions below are retained as history and need not be repeated.
 
-Prepared 9 October 2026. **Baseline/candidate and sampled staging headers complete; owner workflows 1–4 report PASS, Console/HTTPS review pending.** F07 remains open. Candidate presence or local checks do not establish live repair or full XSS protection.
+Prepared 9 October 2026. **Baseline/candidate and sampled staging headers complete; owner workflows 1–4 and targeted Console nonrecurrence report scoped PASS; HTTPS-setting reply pending.** F07 remains open. Candidate presence or local checks do not establish live repair or full XSS protection.
 
 ## Fresh observations
 
@@ -92,7 +92,7 @@ In the same bounded review, check the **production domain's** Cloudflare SSL/TLS
 If deployment or a workflow is unavailable, record the exact safe outcome and carry it rather than restart earlier audit checkpoints. Full browser/direct blocking checks, strict CSP promotion, production deployment and final re-audit remain separate acceptance evidence. SQL, credentials, Google backup and APK changes are not requested by this handoff.
 
 
-## S2E08 targeted Console follow-up
+## S2E08 targeted Console follow-up — historical instructions; answered in S2E09
 
 Checks 1–4 above are owner-reported PASS and do not need to be repeated. The screenshot was readable despite the attachment's earlier error text. It shows Chromium's asynchronous extension-message channel error, not a visible CSP directive violation. This is a likely extension issue, not proof that all Console errors or application behavior are harmless. The screenshot crops out the address bar; hosted identity and complete Console history are not independently established.
 
@@ -101,3 +101,10 @@ The 20 local allowlisted HTML/JS sources have no selected chrome/browser runtime
 Use one browser window/profile with extensions disabled, open the staging app, sign in with a synthetic account and open Support. Observe the Console for at least the delay that previously produced the error (at least five minutes if the delay is unknown), then perform a normal navigation. Report whether this exact error returns and whether the app still works. Do not submit a support ticket, invitation or email for this check. Incognito can still permit explicitly allowed extensions; Guest mode or a new profile is an alternative. Only this Console confirmation and the outstanding production Always Use HTTPS ON/OFF/UNAVAILABLE reply are requested. Remaining unavailable evidence will carry to final remediation rather than extend this step indefinitely.
 
 Primary references: [Chromium extension message port error](https://chromium.googlesource.com/chromium/src/+/9256bc8b668f61e755ab587f623e7da94d8a6f47/extensions/browser/api/messaging/extension_message_port.cc), [Chrome extension messaging](https://developer.chrome.com/docs/extensions/develop/concepts/messaging), [Chrome Guest mode](https://support.google.com/chrome/answer/6130773?hl=en).
+
+
+## S2E09 owner outcome and remaining item
+
+Owner reply: “error did not return”. Record the selected error's nonrecurrence as an owner-reported scoped PASS. The reply follows the requested Guest/extensions-disabled staging Support test; profile, extension state, elapsed time and full Console history are not independently observed. The result supports the extension explanation without identifying an extension or proving universal absence of browser errors. No application patch or error suppression is warranted by the current evidence, and no additional Console retest is requested for this bounded step.
+
+The production mushavobudget.com Always Use HTTPS read-only ON/OFF/UNAVAILABLE reply is the sole remaining owner item. Previously passed workflows stay passed. Strict resource CSP, deliberate frame/injection evidence, production deployment/acceptance and any unavailable settings evidence carry explicitly to the closing checkpoint/final remediation rather than restart earlier stages.

@@ -679,6 +679,30 @@
       "authenticated_browser_execution_by_root": false,
       "secrets_customer_rows_or_screenshot_bytes_committed": false,
       "stage_0_or_1_checkpoints_reopened": false
+    },
+    {
+      "id": "S2E09",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_TARGETED_CONSOLE_ERROR_NONRECURRENCE_SCOPED_PASS_HTTPS_SETTING_PENDING",
+      "owner_reply": "error did not return",
+      "follow_up_context": "Reply follows the requested Guest/extensions-disabled staging Support Console check.",
+      "exact_previously_reported_extension_channel_error_recurred": false,
+      "outcome_scope": "Owner-reported nonrecurrence of the selected message in the follow-up session only.",
+      "supports_browser_extension_explanation": true,
+      "specific_extension_or_complete_causal_attribution_verified": false,
+      "guest_profile_extensions_disabled_elapsed_time_or_complete_console_history_independently_verified": false,
+      "owner_reported_browser_checks_1_to_4_remain_pass": true,
+      "repeat_passed_workflows_or_additional_console_checks_requested": false,
+      "production_always_use_https_setting": "PENDING_OWNER_ON_OFF_UNAVAILABLE_READ_ONLY_REPLY",
+      "completed_header_work_items": 2,
+      "remaining_header_work_items": 1,
+      "remaining_owner_reply": "Production mushavobudget.com Always Use HTTPS setting only.",
+      "strict_resource_csp_enforced": false,
+      "complete_browser_error_free_csp_frame_injection_or_production_acceptance_verified": false,
+      "application_source_or_error_suppression_changes_performed": false,
+      "provider_settings_database_or_native_bundle_changed": false,
+      "stage_0_or_1_checkpoints_reopened": false
     }
   ]
 }

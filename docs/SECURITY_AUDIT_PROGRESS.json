@@ -1071,13 +1071,13 @@
       {
         "id": "2.1",
         "title": "Browser security headers",
-        "status": "STAGING_HEADERS_AND_OWNER_WORKFLOWS_SCOPED_PASS_CONSOLE_REVIEW_PENDING",
+        "status": "STAGING_COMPATIBILITY_SCOPED_PASS_HTTPS_SETTING_PENDING",
         "bounded_work_items": 3,
         "completed_work_items": 2,
         "remaining_work_items": 1,
-        "active_work_item": "EXTENSIONS_DISABLED_CONSOLE_RECHECK_AND_HTTPS_SETTING_REVIEW",
+        "active_work_item": "PRODUCTION_HTTPS_SETTING_READ_ONLY_REPLY",
         "instructions": "docs/SECURITY_STAGE_2_1_BROWSER_HEADERS.md",
-        "latest_evidence": "S2E08",
+        "latest_evidence": "S2E09",
         "local_selected_checks_passed": 15,
         "staging_served_candidate_verified": true,
         "browser_workflows_verified": false,
@@ -1092,8 +1092,10 @@
         "staging_public_config_and_signup_hash_checks_pass": true,
         "owner_reported_browser_checks_1_to_4_passed": true,
         "owner_browser_workflow_evidence": "S2E08",
-        "console_error_review": "EXTENSION_MESSAGING_LIKELY_EXTENSIONS_DISABLED_CONFIRMATION_PENDING",
-        "console_csp_or_error_free_acceptance_verified": false
+        "console_error_review": "OWNER_REPORTED_NONRECURRENCE_SUPPORTS_EXTENSION_EXPLANATION",
+        "console_csp_or_error_free_acceptance_verified": false,
+        "targeted_console_recheck_evidence": "S2E09",
+        "owner_reported_targeted_console_error_did_not_recur": true
       },
       {
         "id": "2.2",

@@ -29,7 +29,7 @@ Files: site.js, contact.html; supabase/functions/submit-enquiry/{index.ts,handle
 
 Edge TypeScript entry bundles successfully with esbuild. Migration parses as 17 SQL statements and 3 PL/pgSQL blocks using pglast 8.5 / libpg_query PostgreSQL 18.6. Parsing is not PostgreSQL 17 execution, actual effective-role enforcement, concurrency, transaction rollback, provider deploy or real widget proof. Windows PowerShell execution is owner-pending. No root local test contacted a hosted database, SMTP, push or challenge provider.
 
-## Owner staging setup — 2.2.3 / S2E16
+## Owner staging setup — 2.2.3 / S2E16–18
 
 Use **mushavo-budget-staging.pages.dev** and Supabase **dczlddwbtgvfdujgcitb**. Production **kttkospkblwvguuwnhjj** is not this handoff's execution target.
 
@@ -55,3 +55,16 @@ Turnstile is an additional processor dependency for Stage 4/F20 privacy/provider
 - https://www.postgresql.org/docs/17/sql-createpolicy.html
 
 Detailed Stage 2 reporting remains due at 2.4. Failed/unverified items remain in the final remediation and full re-audit.
+
+## Owner preparation receipt — S2E17
+
+The owner ran the pinned fbb70fe96d0ff5444cbfdb89888e4e0e49d17ca0 preparation. Reported result STAGING_CONTACT_CANDIDATE_PREPARED, 35 public files, staging reference dczlddwbtgvfdujgcitb, successful production-reference scan, absent production push key and unchanged source files. The preparation output labels its builder 2.2.2; the current owner work is 2.2.3.
+
+Web output: C:\Users\HP\Desktop\MushavoBudget-Staging-Contact-40496c9017e14aac85fc4be78b10bb24\web.
+Single-function deployment folder: C:\Users\HP\Desktop\MushavoBudget-Staging-Contact-40496c9017e14aac85fc4be78b10bb24.
+
+Public sitekey presence is a preparation pass, not proof of the real hostname/key pair. No Edge deploy, database gate, web upload or hosted challenge/permission/quota behavior is reported yet.
+
+Next handoff S2E18: owner opens staging Edge Functions > Secrets, saves the widget secret as MUSHAVO_CONTACT_TURNSTILE_SECRET and a privately generated 32-byte hex value as MUSHAVO_CONTACT_QUOTA_SECRET, then deploys only submit-enquiry with the explicit staging project-ref and --use-api. The PowerShell generator copies the quota secret to the owner's clipboard without printing it. No secret is sent to root or embedded in source/web files. Supabase CLI account login may be needed; this is separate from the database-password login used earlier.
+
+This handoff requests no Docker, function prune, database gate execution or web upload. The already-prepared gate/acceptance handoff follows the actual staging deployment result. Contact remains one bounded work item from completion; unverified cases stay explicit for final remediation.

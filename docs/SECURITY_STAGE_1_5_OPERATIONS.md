@@ -11,6 +11,8 @@ Stage 1 continues at 1.5.1 after the [1.4 scoped native recovery checkpoint](SEC
 
 ## 1.5.1 — One consolidated read-only inventory
 
+S1E90 records the [partial production inventory](SECURITY_STAGE_1_5_INVENTORY.md): six production Edge Functions and three active Cron jobs with latest scheduler statuses Succeeded. Cloudflare displays active version 162af658 and Ready audit-branch builds; domain/active-commit/build mapping and owner alert status remain pending. These screenshots do not prove HTTP/delivery success, deployed authentication/source parity or complete operational coverage.
+
 Owner provider evidence is necessary because root has no signed-in Supabase/Cloudflare/Zoho session. Use production Mushavo Budget kttkospkblwvguuwnhjj when gathering production metadata; staging dczlddwbtgvfdujgcitb remains separate. Clearly label the environment. Do not copy service-role/JWT/SMTP/Edge secret values, customer rows or function bodies into chat.
 
 The consolidated inventory will cover:

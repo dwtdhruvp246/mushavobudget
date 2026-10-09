@@ -974,15 +974,26 @@
       {
         "id": "1.5",
         "title": "Inventory/monitoring/response",
-        "status": "IN_PROGRESS_READ_ONLY_INVENTORY_PENDING_OWNER",
+        "status": "IN_PROGRESS_INVENTORY_PARTIAL_HOSTING_MAPPING_AND_ALERT_REPLY_PENDING",
         "active_work_item": "1.5.1",
         "bounded_work_items": 4,
         "completed_work_items": 0,
         "remaining_work_items": 4,
-        "latest_evidence": "S1E89",
+        "latest_evidence": "S1E90",
         "instructions": "docs/SECURITY_STAGE_1_5_OPERATIONS.md",
         "deployed_inventory_verified": false,
-        "monitoring_delivery_verified": false
+        "monitoring_delivery_verified": false,
+        "inventory": {
+          "evidence": "S1E90",
+          "report": "docs/SECURITY_STAGE_1_5_INVENTORY.md",
+          "production_functions_visible": 6,
+          "active_cron_jobs_visible": 3,
+          "latest_scheduler_sql_statuses": "ALL_THREE_SUCCEEDED_IN_SCREENSHOT",
+          "production_domain_active_commit_and_build_mapping_verified": false,
+          "deployed_function_authentication_or_source_parity_verified": false,
+          "actual_http_dispatch_or_recipient_delivery_verified": false,
+          "owner_alert_reply_received": false
+        }
       },
       {
         "id": "1.6",

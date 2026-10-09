@@ -29,14 +29,19 @@ const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'
   await db.query(`SELECT * FROM public.create_completed_one_time_payment($1,'AUDIT-S135-OWNER-ONLY','Other',20,'USD',current_date,'Cash',NULL,NULL,NULL,NULL,NULL,NULL,NULL)`,[workspace]);
   const source=fs.readFileSync(path.join(__dirname,'../supabase/diagnostics/security_stage_1_synthetic_export.sql'),'utf8').replace('::integer / 10000 <> 17','::integer / 10000 <> 18');
   expected=(await db.exec(source)).find(r=>r.rows?.[0]?.jsonb_build_object)?.rows[0].jsonb_build_object;assert.ok(expected);
-  async function check(mutation,code){
+  async function check(mutation,code,validation=helper.validation){
    await db.exec('BEGIN; CREATE TEMP TABLE mushavo_restore_expected(data jsonb) ON COMMIT DROP; CREATE TEMP TABLE mushavo_restore_result(data jsonb) ON COMMIT DROP;');
    await db.query('INSERT INTO mushavo_restore_expected VALUES($1::jsonb)',[JSON.stringify(expected)]);
    if(mutation)await db.exec(mutation);
-   let error,results;try{results=await db.exec(helper.validation);}catch(e){error=e;}
+   // Model the setting left by the rendered pg_dump before validation runs.
+   await db.exec('SET LOCAL row_security = off;');
+   let error,results;try{results=await db.exec(validation);}catch(e){error=e;}
    if(code){assert.equal(error?.message,code);}else{if(error)throw Error('valid restored state: '+error.message);const r=results.find(x=>x.rows?.[0]?.data)?.rows[0].data;assert.equal(r.result,'SELECTED_RESTORED_VALUES_AND_ROLE_BOUNDARIES_PASS');assert.equal(r.effective_access_checks,13);assert.equal(r.noop_updates_rolled_back,true);}
    await db.exec('ROLLBACK');
   }
+  // The previous validator must reproduce the owner-reported native error.
+  assert.ok(helper.validation.includes('SET LOCAL row_security = on;'));
+  await check('','query would be affected by row-level security policy for table "payment_items"',helper.validation.replace('SET LOCAL row_security = on;',''));
   await check('',null);
   // Demonstrate that a real broad policy fails, rather than treating a broken
   // positive control or invalid identity as denial evidence.
@@ -62,5 +67,5 @@ const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'
   fs.writeFileSync(path.join(source,'synthetic-attachment.txt'),'Public dummy only');
   manifest.files[0].name='../outside';fs.writeFileSync(receipt,JSON.stringify(manifest));assert.throws(()=>helper.inspect(source),/SOURCE_FILE_RECORD_INVALID/);
  }finally{fs.rmSync(root,{recursive:true,force:true});}
- console.log(JSON.stringify({stage_step:'1.4.3',result:'SYNTHETIC_RESTORE_FIXTURES_PASS',application_migrations_replayed:migrations,effective_access_checks_in_positive_fixture:13,application_failure_cases:6,private_source_hash_and_path_failure_cases:2,noop_effects_rolled_back:true,embedded_native_guard_and_extension_adapted:true,embedded_hosted_default_acl_adapted:true,native_archive_or_windows_execution_verified:false,hosted_connection:false}));
+ console.log(JSON.stringify({stage_step:'1.4.3',result:'SYNTHETIC_RESTORE_FIXTURES_PASS',application_migrations_replayed:migrations,inherited_dump_row_security_off_error_reproduced:true,validation_restores_row_security_on:true,effective_access_checks_in_positive_fixture:13,application_failure_cases:6,private_source_hash_and_path_failure_cases:2,noop_effects_rolled_back:true,embedded_native_guard_and_extension_adapted:true,embedded_hosted_default_acl_adapted:true,native_archive_or_windows_execution_verified:false,hosted_connection:false}));
 })().catch(e=>{console.error(e.message);process.exitCode=1;});

@@ -65,6 +65,8 @@ CREATE TEMP TABLE mushavo_restore_result(data jsonb) ON COMMIT DROP;
 `;
 const validation=`-- 1.4.3 selected restored-data and effective grant/RLS checks.
 SET LOCAL statement_timeout='120s'; SET LOCAL TIME ZONE 'UTC';
+-- pg_dump sets row_security=off for loading; apply policies during role checks.
+SET LOCAL row_security = on;
 DO $checks$
 DECLARE e jsonb; actual jsonb; owner_id uuid; outsider_id uuid; item_id uuid; record_id uuid; workspace_id uuid;
  label text; db_role text; uid uuid; mail text; n bigint; denied boolean; check_count int:=0;

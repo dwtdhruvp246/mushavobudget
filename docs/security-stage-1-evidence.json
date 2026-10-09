@@ -4290,6 +4290,57 @@
       "hosted_connection_by_restore_script": false,
       "hosted_auth_storage_provider_or_full_platform_recovery_verified": false,
       "google_drive": "DEFERRED"
+    },
+    {
+      "id": "S1E84",
+      "stage_step": "1.4.3",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_SYNTHETIC_NATIVE_RESTORE_TRANSACTION_REVIEW",
+      "completed_utc": "2026-10-09T06:44:31.5662939Z",
+      "executed_source_commit": "cbec390288ea363c47672dfdbe7d8b4de439b072",
+      "phase": "single_transaction_restore_and_validation",
+      "problem_code": "LOCAL_RESTORE_OR_VALIDATION_TRANSACTION_FAILED",
+      "elapsed_seconds": 65.37,
+      "database_restore_transaction_committed": false,
+      "effective_role_access_checks": 0,
+      "local_server_stopped": true,
+      "excluded_schema_or_provider_toc_entries": 1,
+      "staging_or_production_connected": false,
+      "original_backup_files_modified": false,
+      "final_source_hash_and_dummy_checks_reached": false,
+      "full_platform_recovery_verified": false,
+      "scope": "Owner summary only; incomplete later-check flags do not establish input corruption. Native restore acceptance remains open."
+    },
+    {
+      "id": "S1E85",
+      "stage_step": "1.4.3",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_ERROR_ONLY_LOG_IDENTIFIES_INHERITED_ROW_SECURITY_OFF",
+      "error_message": "query would be affected by row-level security policy for table \"payment_items\"",
+      "diagnostic_scope": "Owner error-only server log filter; no statement bodies, source rows, passwords or hash values returned.",
+      "cause": "Rendered pg_dump SQL sets row_security off; original validation did not turn policies back on before switching to authenticated role. Embedded regression reproduces the identical error.",
+      "application_policy_change_required": false,
+      "native_transaction_commit_verified": false
+    },
+    {
+      "id": "S1E86",
+      "stage_step": "1.4.3",
+      "recorded_date": "2026-10-09",
+      "result": "CORRECTED_RESTORE_VALIDATION_READY_FOR_OWNER_RETRY",
+      "private_builder": "scripts/prepare-synthetic-restore.cjs",
+      "fixture_verifier": "scripts/verify-synthetic-restore.cjs",
+      "correction": "SET LOCAL row_security = on after dump loading and before role access validation",
+      "inherited_dump_row_security_off_error_reproduced": true,
+      "corrected_positive_fixture_effective_access_checks": 13,
+      "application_migration_fixture_replay_count": 51,
+      "application_negative_fixture_cases": 6,
+      "private_hash_and_path_negative_fixture_cases": 2,
+      "application_policies_grants_or_source_archive_changed": false,
+      "owner_native_retry": "PENDING",
+      "retry_scope": "Existing prepared local target and verified synthetic source; unchanged empty-target/ACL/hash/live-identity guards; new private run folder, no reset/drop or new export.",
+      "native_archive_or_windows_execution_verified_by_root": false,
+      "full_platform_recovery_verified": false,
+      "google_drive": "DEFERRED"
     }
   ]
 }

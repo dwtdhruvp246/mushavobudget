@@ -67,6 +67,12 @@ After a committed validation, the script copies the dummy file, checks its hash 
 
 The disposable PostgreSQL 18 fixture replays all 51 migrations, models missing hosted default table/function ACLs, creates synthetic users/payment through application routines and passes thirteen access checks plus exact selected values/columns and no-op rollback. Six negative application cases fail as intended: broad read policy, missing update grant, disabled RLS, altered paid amount, bypass-RLS role and added selected-table column. Private package fixtures reject source-byte changes and path escape. The embedded native target guard/pgcrypto differences are explicit adapters. None of these fixtures executes the owner's Windows lifecycle, actual pg_restore archive or original hosted ACLs. Native acceptance is pending owner output.
 
+### First native attempt and corrected validation
+
+S1E84 records the owner native attempt at 2026-10-09T06:44:31.5662939Z: restore/validation transaction failed, commit false, zero completed access checks and own server stopped. The later error-only log output (S1E85) identifies `query would be affected by row-level security policy for table "payment_items"`. PostgreSQL dumps set row_security off for loading; the first validator inherited that setting when switching to a regular role. This is a validation-session defect, not evidence that the application policy needs weakening. The final source/dummy checks were not reached; their false summary flags do not establish source corruption.
+
+S1E86 corrects the validator with `SET LOCAL row_security = on;` after archived SQL and before access checks. The regression fixture now starts with the dump setting off, reproduces the exact reported error with the previous validator and passes all thirteen checks with the corrected validator. All six application and two private-package negative cases remain effective. No application policy, grant or archive bytes change. Owner native retry remains pending; existing guards require an empty target, use a new private run folder and retain prior artifacts. No reset/drop or repeat source export is required.
+
 ## Preparation validation and limits
 
 Disposable embedded PostgreSQL probe checks PASS: empty/nonempty public/Auth/Storage metadata, private sentinel-value omission and read-only write rejection. This does not validate Windows ACL enforcement, native initdb prompting, executable startup, pg_ctl lifecycle or hosted dependencies. No PowerShell runtime exists in the root executor; owner execution supplies actual Windows evidence. No hosted/staging/production connection or customer records were accessed by these fixtures.
@@ -79,7 +85,7 @@ The owner handoff fetches the audit branch and reads pinned Git script/probe con
 |---|---|
 | 1.4.1 Target and scope | PASS with managed-service limits: owner native target ready and stopped; managed extensions absent |
 | 1.4.2 Synthetic exports | Scoped PASS: owner native public export/offline decode and selected source checks; 80 table-data/380 ACL entries |
-| 1.4.3 Restore and compare | Script and failure fixtures ready; owner native restore pending |
+| 1.4.3 Restore and compare | First native attempt REVIEW; inherited dump row_security setting corrected and regression tested; owner retry pending |
 | 1.4.4 Checkpoint report | Pending: passes, failures, substituted/missing dependencies and limits; no full live-recovery guarantee |
 
 Production private artifacts remain separate owner-held completeness evidence. Source setting/key/provider/full-platform behavior and operational 24-hour targets are not proved by this synthetic drill. No outbound scheduler/mail/push deployment or Google upload is authorized by preparation.

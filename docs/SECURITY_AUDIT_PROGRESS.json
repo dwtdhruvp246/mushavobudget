@@ -870,10 +870,10 @@
       {
         "id": "1.4",
         "title": "Recovery proof",
-        "status": "IN_PROGRESS_NATIVE_SYNTHETIC_RESTORE_PENDING_OWNER",
+        "status": "IN_PROGRESS_NATIVE_RESTORE_CORRECTION_PENDING_OWNER_RETRY",
         "active_work_item": "1.4.3",
         "bounded_work_items": 4,
-        "latest_evidence": "S1E83",
+        "latest_evidence": "S1E86",
         "synthetic_restore_verified": false,
         "production_restore_requested": false,
         "customer_rows_imported_into_staging": false,
@@ -923,11 +923,22 @@
           "evidence": "S1E83",
           "script": "scripts/restore-synthetic-recovery.ps1",
           "private_builder": "scripts/prepare-synthetic-restore.cjs",
-          "owner_execution": "PENDING",
+          "owner_execution": "FIRST_ATTEMPT_REVIEW_S1E84_RETRY_PENDING",
           "expected_result": "SYNTHETIC_NATIVE_APPLICATION_RESTORE_SCOPED_PASS",
           "planned_effective_access_checks": 13,
           "managed_dependencies_and_original_ownership_substituted": true,
-          "hosted_auth_storage_or_full_platform_recovery_verified": false
+          "hosted_auth_storage_or_full_platform_recovery_verified": false,
+          "correction_evidence": "S1E86"
+        },
+        "restore_attempt_outcome": {
+          "evidence": "S1E84",
+          "diagnostic_evidence": "S1E85",
+          "database_restore_transaction_committed": false,
+          "effective_role_access_checks": 0,
+          "local_server_stopped": true,
+          "problem_code": "LOCAL_RESTORE_OR_VALIDATION_TRANSACTION_FAILED",
+          "cause": "Inherited dump row_security off; validator corrected in S1E86",
+          "native_retry_verified": false
         }
       },
       {

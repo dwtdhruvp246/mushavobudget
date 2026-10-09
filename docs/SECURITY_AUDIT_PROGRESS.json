@@ -1071,13 +1071,13 @@
       {
         "id": "2.1",
         "title": "Browser security headers",
-        "status": "STAGING_COMPATIBILITY_SCOPED_PASS_PRODUCTION_HTTPS_REDIRECT_REVIEW",
+        "status": "PRODUCTION_HTTP_REDIRECT_SAMPLED_FAIL_SCOPED_CORRECTION_HANDOFF",
         "bounded_work_items": 3,
         "completed_work_items": 2,
         "remaining_work_items": 1,
-        "active_work_item": "BOUNDED_OWNER_HTTP_REDIRECT_BEHAVIOR_CHECK",
+        "active_work_item": "OWNER_HOSTNAME_SCOPED_REDIRECT_DEPLOYMENT_AND_POST_CHANGE_CHECK",
         "instructions": "docs/SECURITY_STAGE_2_1_BROWSER_HEADERS.md",
-        "latest_evidence": "S2E10",
+        "latest_evidence": "S2E11",
         "local_selected_checks_passed": 15,
         "staging_served_candidate_verified": true,
         "browser_workflows_verified": false,
@@ -1100,7 +1100,11 @@
         "production_https_setting_evidence": "S2E10",
         "http_redirect_behavior_verified": false,
         "hostname_scoped_https_correction_prepared": true,
-        "hostname_scoped_https_correction_deployed": false
+        "hostname_scoped_https_correction_deployed": false,
+        "http_redirect_behavior_result": "OWNER_REPORTED_FAIL_THREE_HTTP_SAMPLES_200_NO_LOCATION",
+        "http_redirect_failure_evidence": "S2E11",
+        "https_app_positive_control_owner_reported_pass": true,
+        "hostname_scoped_https_correction_handoff_evidence": "S2E11"
       },
       {
         "id": "2.2",

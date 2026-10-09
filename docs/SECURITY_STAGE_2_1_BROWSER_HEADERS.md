@@ -1,10 +1,10 @@
 # 2.1 — Browser header baseline, candidate and staging handoff
 
-**2.1 update — S2E10:** Owner reports the production mushavobudget.com Always Use HTTPS setting OFF. This identifies a disabled setting, not proof that every HTTP request lacks another redirect. Checks 1–4 and targeted Console nonrecurrence remain owner-reported scoped PASS. Fresh root HTTP/HTTPS probes received 403 through this execution path and cannot establish the live redirect. One bounded owner-native curl batch is the remaining behavior check. A path/query-preserving 301 candidate limited to the known apex website is prepared if a redirect is actually missing; no provider change is made. Two of three work items are complete. Strict CSP, deliberate blocking and full production acceptance remain open.
+**2.1 update — S2E11:** Owner-native curl reports HTTP root, app with a dummy query and business all returning 200 without a redirect (three sampled failures); HTTPS app returns 200 (positive control PASS). Always Use HTTPS is owner-reported OFF. This identifies a sampled production HTTP redirect gap; full F07 acceptance remains open. A 301 Redirect Rule matching only `http://mushavobudget.com/*`, preserving the path and query, is handed off for owner deployment followed by the same four-request check. No provider change or production header deployment has been performed by root. Staging workflows 1–4 and targeted Console nonrecurrence remain scoped PASS. Two of three work items are complete; correction/recheck stays inside the existing third item.
 
 **Prior live result — 9 October 2026, S2E05–S2E07:** Owner Windows preparation passed with 35 public files and original sources retained; owner then confirmed staging deployed. Root's fresh GET checks at 13:11–13:12 UTC (15:11–15:12 +0200) found all seven header families with matching baseline values on 11 successful canonical HTML/JS/CSS responses and the app.html → app 308 response. MIME checks passed. Public config uses dczlddwbtgvfdujgcitb with publishable-key format and empty push key; config/CSP/selected signup content contain no production reference. The one live inline signup block matches the declared CSP hash. No credentials, token values or raw bodies are recorded. This is a sampled served-header/configuration PASS, not browser execution, key-ownership/source-parity or production acceptance. One bounded owner browser batch and the production Always Use HTTPS setting reply remain pending; two of three work items remain complete. Preparation/upload instructions below are retained as history and need not be repeated.
 
-Prepared 9 October 2026. **Baseline/candidate and sampled staging headers complete; owner workflows 1–4 and targeted Console nonrecurrence report scoped PASS; production HTTPS redirect behavior review pending.** F07 remains open. Candidate presence or local checks do not establish live repair or full XSS protection.
+Prepared 9 October 2026. **Baseline/candidate and sampled staging headers complete; owner workflows 1–4 and targeted Console nonrecurrence report scoped PASS; production HTTP redirect sampled FAIL; scoped correction/recheck pending.** F07 remains open. Candidate presence or local checks do not establish live repair or full XSS protection.
 
 ## Fresh observations
 
@@ -150,3 +150,34 @@ Expected protected behavior: HTTP paths return a redirect to HTTPS on the same h
 In production mushavobudget.com, review Rules > Overview for an overlapping existing redirect before creating this candidate. Use Create rule > Redirect Rule, name “Mushavo website HTTP to HTTPS”, match Wildcard pattern, Request URL `http://mushavobudget.com/*`, Target URL `https://mushavobudget.com/${1}`, Status code 301, Preserve query string enabled. This candidate matches HTTP for the known apex website, not HTTPS or other hostnames. It preserves navigation and query parameters and avoids an HTTPS self-redirect. It is not deployed or accepted by this evidence. Single Redirects require Cloudflare-proxied traffic; no DNS or TLS-mode change is requested.
 
 Deployment handoff will depend on the actual owner-path behavior. If an existing rule already protects these requests, do not duplicate it just to make the Always Use HTTPS switch ON. Provider validation and post-change behavior remain required for any implemented correction. See [Always Use HTTPS scope](https://developers.cloudflare.com/ssl/edge-certificates/additional-options/always-use-https/), [rule creation](https://developers.cloudflare.com/rules/url-forwarding/single-redirects/create-dashboard/) and [scoped HTTPS redirect example](https://developers.cloudflare.com/rules/url-forwarding/examples/redirect-admin-https/).
+
+
+## S2E11 sampled production HTTP failure and correction handoff
+
+Owner-native curl reports:
+
+| Request | Status | Redirect URL | Exit code | Outcome |
+|---|---|---|---|---|
+| HTTP root | 200 | empty | 0 | FAIL: no HTTPS redirect |
+| HTTP /app?audit_https=2.1 | 200 | empty | 0 | FAIL: no HTTPS redirect |
+| HTTP /business | 200 | empty | 0 | FAIL: no HTTPS redirect |
+| HTTPS /app | 200 | empty | 0 | PASS: HTTPS positive control |
+
+These results follow the supplied curl command with configuration files ignored, no automatic redirect following and no TLS-verification bypass. They are owner-reported metadata for the selected samples; root did not observe the owner's terminal/network or response bodies. They support a production redirect gap and supersede the earlier unavailable root behavior probes for these samples. Do not interpret the HTTPS positive control as protection of HTTP or complete site acceptance.
+
+In the original Cloudflare account, select the production **mushavobudget.com** zone, then **Rules > Overview > Create rule > Redirect Rule**. Configure:
+
+| Field | Exact value |
+|---|---|
+| Rule name | Mushavo website HTTP to HTTPS |
+| When incoming requests match | Wildcard pattern |
+| Request URL | `http://mushavobudget.com/*` |
+| Target URL | `https://mushavobudget.com/${1}` |
+| Status code | 301 |
+| Preserve query string | Enabled |
+
+Select **Deploy**. The literal `${1}` is Cloudflare's first wildcard replacement, preserving the requested path. The known hostname and HTTP-only match keep the candidate scoped to the live apex website and avoid redirecting an already-HTTPS request back to itself. Leave unrelated rules, DNS, TLS mode and the zone-wide Always Use HTTPS setting unchanged for this handoff. No app/database/APK build or merge is part of this correction. Other hostnames remain a final-inventory/re-audit gap.
+
+After deployment, run the same four-request owner PowerShell batch in S2E10 once. Expect the three HTTP requests to return 301 with corresponding HTTPS URLs, including `/app?audit_https=2.1`; HTTPS `/app` should remain 200. Record the actual metadata, not deployment alone, as acceptance. If deployment is unavailable or the bounded recheck fails, retain the exact outcome and carry the gap to final remediation instead of restarting prior work.
+
+Reference: [Cloudflare rule creation](https://developers.cloudflare.com/rules/url-forwarding/single-redirects/create-dashboard/), [scoped HTTPS wildcard example](https://developers.cloudflare.com/rules/url-forwarding/examples/redirect-admin-https/). This is an adaptation of documented settings, not an independently deployed provider rule test.

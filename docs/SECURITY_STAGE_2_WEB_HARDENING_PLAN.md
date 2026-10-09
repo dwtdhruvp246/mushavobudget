@@ -1,6 +1,6 @@
 # Stage 2 — Browser, public submission and outbound-request hardening
 
-**2.1 update — S2E10:** Owner reports the production mushavobudget.com Always Use HTTPS setting OFF. This identifies a disabled setting, not proof that every HTTP request lacks another redirect. Checks 1–4 and targeted Console nonrecurrence remain owner-reported scoped PASS. Fresh root HTTP/HTTPS probes received 403 through this execution path and cannot establish the live redirect. One bounded owner-native curl batch is the remaining behavior check. A path/query-preserving 301 candidate limited to the known apex website is prepared if a redirect is actually missing; no provider change is made. Two of three work items are complete. Strict CSP, deliberate blocking and full production acceptance remain open.
+**2.1 update — S2E11:** Owner-native curl reports HTTP root, app with a dummy query and business all returning 200 without a redirect (three sampled failures); HTTPS app returns 200 (positive control PASS). Always Use HTTPS is owner-reported OFF. This identifies a sampled production HTTP redirect gap; full F07 acceptance remains open. A 301 Redirect Rule matching only `http://mushavobudget.com/*`, preserving the path and query, is handed off for owner deployment followed by the same four-request check. No provider change or production header deployment has been performed by root. Staging workflows 1–4 and targeted Console nonrecurrence remain scoped PASS. Two of three work items are complete; correction/recheck stays inside the existing third item.
 
 Started 9 October 2026 at **2.1**, after the [Stage 1 report](SECURITY_STAGE_1_COMPLETION_REPORT.md). Four finite steps. Each receives a bounded evidence/change pass and explicit outcome; unresolved controls carry to final remediation and full re-audit. Stage 1 checkpoints remain closed with their limits. Broader tenant roles and application Admin MFA belong to Stage 3.
 
@@ -15,7 +15,7 @@ Started 9 October 2026 at **2.1**, after the [Stage 1 report](SECURITY_STAGE_1_C
 
 1. Baseline and dependency inventory — COMPLETE, scoped live/source evidence.
 2. Candidate and local checks — COMPLETE, 15 selected checks; native browser execution unavailable in this environment.
-3. Staging handoff and actual served/browser checks — LIVE HEADER/CONFIG CHECKS PASS; owner browser checks 1–4 and targeted Console nonrecurrence scoped PASS; production setting OFF; one bounded owner HTTP redirect behavior check pending. Resource CSP enforcement and production acceptance remain unverified.
+3. Staging handoff and actual served/browser checks — LIVE HEADER/CONFIG CHECKS PASS; owner browser checks 1–4 and targeted Console nonrecurrence scoped PASS; production setting OFF and three HTTP samples FAIL; one scoped redirect deployment/post-change check pending. Resource CSP enforcement and production acceptance remain unverified.
 
 Two of three 2.1 items have completed outcomes; one remains. Do not add an unlimited screenshot/diagnostic cascade. Record unavailable workflows as carry-forward instead of manufacturing a pass. The [2.1 checkpoint and handoff](SECURITY_STAGE_2_1_BROWSER_HEADERS.md) give the concrete next action.
 

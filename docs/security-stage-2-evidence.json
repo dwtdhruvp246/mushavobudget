@@ -772,6 +772,75 @@
       "credentials_tokens_customer_rows_or_raw_response_bodies_recorded": false,
       "strict_resource_csp_enforced": false,
       "complete_production_header_or_redirect_acceptance_verified": false
+    },
+    {
+      "id": "S2E11",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_NATIVE_SAMPLED_HTTP_REDIRECT_FAIL_HTTPS_APP_PASS_CORRECTION_HANDOFF",
+      "owner_observations": [
+        {
+          "url": "http://mushavobudget.com/",
+          "status": 200,
+          "redirect": "",
+          "exit_code": 0,
+          "check_result": "FAIL_NO_HTTP_TO_HTTPS_REDIRECT"
+        },
+        {
+          "url": "http://mushavobudget.com/app?audit_https=2.1",
+          "status": 200,
+          "redirect": "",
+          "exit_code": 0,
+          "check_result": "FAIL_NO_HTTP_TO_HTTPS_REDIRECT"
+        },
+        {
+          "url": "http://mushavobudget.com/business",
+          "status": 200,
+          "redirect": "",
+          "exit_code": 0,
+          "check_result": "FAIL_NO_HTTP_TO_HTTPS_REDIRECT"
+        },
+        {
+          "url": "https://mushavobudget.com/app",
+          "status": 200,
+          "redirect": "",
+          "exit_code": 0,
+          "check_result": "PASS_HTTPS_APP_RESPONSE"
+        }
+      ],
+      "native_redirect_following": false,
+      "curl_configuration_files_ignored": true,
+      "tls_verification_not_disabled": true,
+      "scope": "Owner-reported response metadata for three HTTP samples and one HTTPS positive control; not all routes/hosts/network intermediaries or response-body/source provenance.",
+      "production_always_use_https_setting": "OWNER_REPORTED_OFF_S2E10",
+      "http_redirect_failed_samples": 3,
+      "https_positive_control_passed_samples": 1,
+      "hostname_scoped_correction": {
+        "target": "PRODUCTION_CLOUDFLARE_ZONE_MUSHAVOBUDGET_COM",
+        "dashboard_path": "Rules > Overview > Create rule > Redirect Rule",
+        "rule_name": "Mushavo website HTTP to HTTPS",
+        "incoming_match": "Wildcard pattern",
+        "request_url": "http://mushavobudget.com/*",
+        "target_url": "https://mushavobudget.com/${1}",
+        "status_code": 301,
+        "preserve_query_string": true,
+        "deploy_action": "Deploy",
+        "existing_rule_or_dns_tls_mode_changes_requested": false,
+        "zone_wide_always_use_https_toggle_requested": false,
+        "other_hostname_coverage_verified": false,
+        "post_change_checks": "Same four owner-native curl requests; expect matching same-host HTTPS Location with path/query retained for the three HTTP URLs and HTTPS app 200."
+      },
+      "owner_deployment_or_post_change_acceptance_verified": false,
+      "root_provider_write_performed": false,
+      "header_candidate_production_deployed": false,
+      "failed_finding_reference": "F07_HTTPS_REDIRECT_PORTION",
+      "full_f07_strict_csp_or_production_header_acceptance_verified": false,
+      "owner_staging_workflows_and_targeted_console_pass_retained": true,
+      "completed_header_work_items": 2,
+      "remaining_header_work_items": 1,
+      "next_action": "One scoped owner redirect deployment and one post-change metadata recheck within the existing third work item; unavailable/failing outcomes carry to final remediation.",
+      "raw_bodies_credentials_tokens_or_customer_rows_recorded": false,
+      "stage_0_or_1_checkpoints_reopened": false
     }
   ]
 }

@@ -1,6 +1,6 @@
 # Mushavo Budget security audit — Start here
 
-All security audit documentation and evidence from Stage 0 onward is collected in this folder. Updated 10 October 2026. **Stages 0–2 have closed checkpoints with carry-forward; Stage 3 has completed its 3.1 permission baseline; 3.2.1 has a recorded owner result: 26 PASS and a paid-record workspace-binding REVIEW carried forward; Family 3.2.2 has all 33 owner API checks PASS; 3.2.3 currency settings is the final milestone in 3.2 and awaits its owner API result.** A closed checkpoint does not close an unresolved finding or approve a release.
+All security audit documentation and evidence from Stage 0 onward is collected in this folder. Updated 10 October 2026. **Stages 0–2 have closed checkpoints with carry-forward; Stage 3 has completed its 3.1 permission baseline; 3.2.1 has a recorded owner result: 26 PASS and a paid-record workspace-binding REVIEW carried forward; Family 3.2.2 has all 33 owner API checks PASS; 3.2.3 currency settings has all 23 owner API checks PASS. All three 3.2 milestones are closed with carry-forward; 3.3.1 Business source role/scope review is recorded, and 3.3.2 controlled test preparation is next.** A closed checkpoint does not close an unresolved finding or approve a release.
 
 ## Main documents
 
@@ -10,6 +10,8 @@ All security audit documentation and evidence from Stage 0 onward is collected i
 | [Action plan and carry-forward register](SECURITY_AUDIT_CARRY_FORWARD.md) | Outstanding failures, uncertain results, decisions and remediation history |
 | [Master audit coverage register](SECURITY_AUDIT_REGISTER.md) | All original 123 audit sections and their evidence/owner/stage assignments |
 | [Audit workflow](SECURITY_AUDIT_WORKFLOW.md) | Numbered messages, bounded work, stage-end reports and execution conventions |
+| [3.3 Business roles and scopes](SECURITY_STAGE_3_3_BUSINESS_ROLES.md) | Three bounded milestones, source contract and B01–B08 test groups |
+| [3.2 checkpoint report](SECURITY_STAGE_3_2_CHECKPOINT_REPORT.md) | Personal/Family/currency outcomes, remaining issues and concrete remediation actions |
 | [Current progress](SECURITY_AUDIT_PROGRESS.json) | Structured stage/step status; preserved prior-stage outcomes |
 | [SQL, scripts and tests](TOOL_INDEX.md) | Linked index of audit tools, migration files and relevant implementation locations |
 

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 3,
   "updated_date": "2026-10-10",
-  "active_step": "3.2.3",
+  "active_step": "3.3.2",
   "source_review_head": "e4f3b573bee2b9e344ec0b946c21e779449d8664",
   "events": [
     {
@@ -2388,6 +2388,239 @@
         "scripts/verify-stage-3-currency-source.mjs": "23c8aa7ff917cc400050879df0e80103545ba201fe75a40929c2232f52818fdd",
         "tests/stage-3-currency-api.test.cjs": "101bb2eb869dc685491725023ae9e4e4612f7ca37ecea0d1e03fef8e8f93e4dd"
       }
+    },
+    {
+      "id": "S3E13",
+      "stage_step": "3.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_CURRENCY_API_SCOPED_PASS",
+      "source_commit": "3e6ebe575a65eacbb1fc719ccf6fdf72cc1a007e",
+      "owner_receipt": {
+        "stage_step": "3.2.3",
+        "result": "STAGING_CURRENCY_API_SCOPED_PASS",
+        "project": "dczlddwbtgvfdujgcitb",
+        "checks": [
+          {
+            "check": "Deployed config uses staging with no production reference or push key",
+            "status": "PASS"
+          },
+          {
+            "check": "Two distinct verified staging sessions are ordinary active accounts",
+            "status": "PASS"
+          },
+          {
+            "check": "Own Personal workspaces and both retained USD 1 Family fixtures are scoped; former member remains inactive",
+            "status": "PASS"
+          },
+          {
+            "check": "USD and INR are active; the unsupported test code is absent",
+            "status": "PASS"
+          },
+          {
+            "check": "Both Personal owners can save existing currency values; selected settings remain unchanged",
+            "status": "PASS"
+          },
+          {
+            "check": "Family head 1 changes normalized currency settings and restores the original USD disabled-conversion values",
+            "status": "PASS"
+          },
+          {
+            "check": "Family head 2 changes normalized currency settings and restores the original USD disabled-conversion values",
+            "status": "PASS"
+          },
+          {
+            "check": "Personal settings remain hidden and unchanged after foreign/anonymous RPC and direct PATCH attempts",
+            "status": "PASS"
+          },
+          {
+            "check": "Family including removed member settings remain hidden and unchanged after foreign/anonymous RPC and direct PATCH attempts",
+            "status": "PASS"
+          },
+          {
+            "check": "Owner empty, unenabled and unsupported currency inputs are rejected without selected setting changes",
+            "status": "PASS"
+          },
+          {
+            "check": "Ordinary owner cannot bypass the protected conversion RPC with a direct table INSERT",
+            "status": "PASS"
+          },
+          {
+            "check": "Signed-in direct store_api_payment_conversion request is permission-denied; selected conversion/payment unchanged",
+            "status": "PASS"
+          },
+          {
+            "check": "Signed-in direct currency_conversion_backfill_dates request is permission-denied; selected conversion/payment unchanged",
+            "status": "PASS"
+          },
+          {
+            "check": "Anonymous direct store_api_payment_conversion request is permission-denied; selected conversion/payment unchanged",
+            "status": "PASS"
+          },
+          {
+            "check": "Anonymous direct currency_conversion_backfill_dates request is permission-denied; selected conversion/payment unchanged",
+            "status": "PASS"
+          },
+          {
+            "check": "Other head, removed member and anonymous cannot manually convert the known foreign Family paid records",
+            "status": "PASS"
+          },
+          {
+            "check": "Matching Family head 1 saves and reads an attributed locked USD 1 manual conversion",
+            "status": "PASS"
+          },
+          {
+            "check": "Matching Family head 2 saves and reads an attributed locked USD 1 manual conversion",
+            "status": "PASS"
+          },
+          {
+            "check": "Foreign/removed and anonymous conversion reads or direct mutations reveal no row and leave owner readbacks unchanged",
+            "status": "PASS"
+          },
+          {
+            "check": "Owner direct PATCH/DELETE cannot bypass the protected manual conversion path",
+            "status": "PASS"
+          },
+          {
+            "check": "Matching heads reach disabled backfill with zero changes; foreign/removed and anonymous backfill is denied",
+            "status": "PASS"
+          },
+          {
+            "check": "Original selected currency settings and Family payment values remain; only two new synthetic manual conversions are retained",
+            "status": "PASS"
+          },
+          {
+            "check": "Only the two generated API test sessions receive local logout",
+            "status": "PASS"
+          }
+        ],
+        "problem_code": null,
+        "test_sessions_logged_out": true,
+        "selected_settings_restored_and_finally_verified": true,
+        "manual_synthetic_conversion_rows_created": 2,
+        "manual_conversion_rows_retained": true,
+        "internal_helper_permission_denial_checks_passed": 4,
+        "incomplete_write_effects_may_remain": false,
+        "original_personal_payment_fixtures_targeted": false,
+        "automatic_conversion_enabled_by_batch": false,
+        "family_membership_or_invitation_changed": false,
+        "provider_rates_service_scheduler_or_historical_conversion_integrity_verified": false,
+        "global_finance_or_Business_currency_authority_verified": false,
+        "prior_personal_binding_failure_or_relink_delete_cases_resolved": false,
+        "full_f15_acceptance_verified": false,
+        "production_or_native_changed": false,
+        "credentials_tokens_keys_and_raw_rows_printed": false,
+        "completed_utc": "2026-10-10T19:16:06.687Z"
+      },
+      "owner_native_runner_exit_code": 0,
+      "reported_status_counts": {
+        "PASS": 23
+      },
+      "owner_API_execution_verified_in_reported_scope": true,
+      "selected_settings_restoration_verified_by_owner_checker": true,
+      "four_role_function_helper_boundaries_rechecked": true,
+      "original_stopped_Personal_exact_helper_payload_execution_claimed": false,
+      "prior_Personal_binding_relink_or_fixture_delete_cases_resolved": false,
+      "independent_hosted_body_or_production_parity_verified": false,
+      "provider_scheduler_historical_integrity_verified": false,
+      "finding_F15_closed": false,
+      "production_or_native_changed": false
+    },
+    {
+      "id": "S3E14",
+      "stage_step": "3.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "PERSONAL_FAMILY_CURRENCY_CHECKPOINT_CLOSED_WITH_CARRY_FORWARD",
+      "report": "docs/security-audit/SECURITY_STAGE_3_2_CHECKPOINT_REPORT.md",
+      "source_parent_commit": "3e6ebe575a65eacbb1fc719ccf6fdf72cc1a007e",
+      "bounded_3_2_milestones": 3,
+      "completed_3_2_milestones": 3,
+      "remaining_3_2_milestones": 0,
+      "owner_result_evidence": [
+        "S3E07",
+        "S3E11",
+        "S3E13"
+      ],
+      "owner_reported_PASS_check_group_total": 82,
+      "owner_reported_REVIEW_check_group_total": 1,
+      "PASS_total_is_unique_security_control_count": false,
+      "historical_Personal_unrun_groups": 6,
+      "later_helper_same_role_function_scope_PASS_rechecks": 4,
+      "Personal_specific_relink_delete_groups_still_unrun": 2,
+      "binding_problem_code": "FOREIGN_WORKSPACE_REBIND_NOT_PREVENTED",
+      "exact_hosted_failed_response_or_persisted_binding_independently_verified": false,
+      "final_remediation_actions": [
+        "PF-R01 Binding reachability/invariant and narrow guard/sync correction",
+        "PF-R02 Private mismatch/conversion/retained-fixture review before any historical repair",
+        "PF-R03 Affected Personal relink/delete/binding and permitted/denied/conversion rechecks",
+        "PF-R04 Automatic provider/service/scheduler/historical locked-conversion integrity",
+        "PF-R05 Hosted/production parity, rendered UI/transitive dispatch and remaining assigned surfaces"
+      ],
+      "selected_settings_restored": true,
+      "manual_synthetic_conversion_rows_retained": 2,
+      "incomplete_Personal_fixtures_retained": true,
+      "Family_head_fixtures_and_invitation_history_retained": true,
+      "Family_member_contribution_rows_removed": true,
+      "next_step": "3.3.1",
+      "next_scope": "Existing Business roles and scopes; source/request matrix review first",
+      "next_owner_action_requested": false,
+      "stage_3_completed_steps": 2,
+      "stage_3_remaining_steps": 4,
+      "stage_3_complete": false,
+      "findings_F08_F15_closed": false,
+      "runtime_or_Auth_settings_changed": false,
+      "production_promoted": false,
+      "native_or_APK_changed": false
+    },
+    {
+      "id": "S3E15",
+      "stage_step": "3.3.1",
+      "recorded_date": "2026-10-10",
+      "result": "BUSINESS_SOURCE_ROLE_SCOPE_MATRIX_REVIEW_COMPLETE_BEHAVIOR_PENDING",
+      "source_parent_commit": "3e6ebe575a65eacbb1fc719ccf6fdf72cc1a007e",
+      "instructions": "docs/security-audit/SECURITY_STAGE_3_3_BUSINESS_ROLES.md",
+      "bounded_3_3_work_items": 3,
+      "completed_3_3_work_items": 1,
+      "remaining_3_3_work_items": 2,
+      "frozen_groups": [
+        "B01 Existing role permission controls",
+        "B02 Legacy/custom own/assigned/all scopes",
+        "B03 Role definitions, exceptions and dependencies",
+        "B04 Team management, invitations and escalation",
+        "B05 Selected finance workflows",
+        "B06 Reports/export/receipts",
+        "B07 Removal and account/entitlement state",
+        "B08 Cross-business and direct API bypass"
+      ],
+      "current_source_contract": [
+        "Owner plus six built-in legacy roles; custom workspace-local own/assigned/all roles",
+        "Active account/member/entitlement and role validity; required view dependencies precede exceptions",
+        "Owner-gated role/override controls; manager self/privilege/scope escalation guards",
+        "Operation-specific claim/budget/report/document scopes, not a universal role-name rule",
+        "Protected export RPC checks export permission and snapshot fingerprint, beyond UI can_export",
+        "Current invitation/member custom-role replacements and in-app notification sync"
+      ],
+      "owner_target_for_later_acceptance": "dczlddwbtgvfdujgcitb",
+      "owner_action_requested": false,
+      "new_account_or_deployment_requested": false,
+      "local_executable_Business_acceptance_verified": false,
+      "hosted_Business_API_execution_verified": false,
+      "safe_transitive_dispatch_or_Storage_prerequisites_verified": false,
+      "review_does_not_close_F08_F15": true,
+      "next_work_item": "3.3.2",
+      "source_artifact_sha256": {
+        "supabase/migrations/20260928070000_business_stage_2_security_foundation.sql": "37b22be806048adaeecc3eacc667057420286b3de5c2067b5fa0b9b675d96ac1",
+        "supabase/migrations/20260928170000_business_stage_4_team.sql": "c95aee8239de7d0ff6feb4e4e02b4ccadfd29168ce14686d1e0fead3e7e24cab",
+        "supabase/migrations/20260928200000_business_stage_5_expense_claims.sql": "468950a85f4bb7250740c07f9090a6809260c8b655878339787a30f47578dc48",
+        "supabase/migrations/20260928213000_business_stage_6_bills.sql": "b4f99719e3eddb4123fca8c589d75c9be078745668dbc6a4305115f3566d28c4",
+        "supabase/migrations/20260929193000_business_stage_7_transactions.sql": "54b0b58d8c582f3cddc2643fdff17bbf0efcab5e5c9bc8456e77f382abbbfa02",
+        "supabase/migrations/20260930060000_business_stage_8_budgets_approvals.sql": "7842e395cc32fc991cfc6e37f6c612a2b9be49daef0a639be7d6469bd764bd48",
+        "supabase/migrations/20260930073000_business_stage_9_reports.sql": "b4a32106e3d7a81bafae5b1b11c26ee9e1828a1339f289a177d6e6d840ee6ce6",
+        "supabase/migrations/20261004153000_business_custom_roles.sql": "b8db2c387545729f9f5b6421b1ef9cf222027eefe03fdb96d22ba0bfc5d8433e",
+        "supabase/migrations/20261006180000_business_invitation_notifications.sql": "8efd199e9c480cbf33dea64a3d8daea3f5a81281896c38f1ca5348b7e94db9f0",
+        "business.js": "b5a742c6ed35811f078718a7033d5339fd0492a866bb0c430e11fd4ea6294f8b"
+      },
+      "runtime_or_RLS_or_Auth_settings_changed": false,
+      "production_or_native_changed": false
     }
   ],
   "source_reconciliation_head": "9388fc8c3e48ac3fd124d73b7f918785da957104"

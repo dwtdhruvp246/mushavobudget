@@ -131,3 +131,11 @@ Private exports, original backups, certificates, keys and passwords are owner-he
 - [run-stage-3-currency-acceptance.ps1](../../scripts/run-stage-3-currency-acceptance.ps1) — masked app-password runner from a pinned commit.
 - [verify-stage-3-currency-source.mjs](../../scripts/verify-stage-3-currency-source.mjs) — nine local source/checker cases with explicit provider/default-grant/HTTP adapters.
 - [stage-3-currency-api.test.cjs](../../tests/stage-3-currency-api.test.cjs) — eight target/error/redaction and runner-expression tests; native owner acceptance pending.
+
+## Stage 3.2 completed checkpoint
+
+- [3.2 checkpoint report and remediation actions](SECURITY_STAGE_3_2_CHECKPOINT_REPORT.md): Personal 26 PASS/one REVIEW, Family 33 PASS, currency 23 PASS; all three milestones recorded, remaining cases carried to final remediation/re-audit.
+
+## Stage 3.3 Business matrix
+
+- [Existing Business roles/scopes and bounded B01–B08 groups](SECURITY_STAGE_3_3_BUSINESS_ROLES.md): source review recorded; fixture/checker preparation and hosted acceptance pending.

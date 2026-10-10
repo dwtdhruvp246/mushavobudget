@@ -1,8 +1,10 @@
 # 3.2.3 — Selected currency settings and conversion boundaries
 
-**Last of the three 3.2 milestones — prepared, owner result pending (S3E12).** The Personal checkpoint is recorded with carry-forward (S3E07), and all 33 Family API checks passed in the owner receipt (S3E11). Two milestones are complete; this milestone requires **one API batch**, followed by reconciliation of its result and the 3.2 checkpoint summary. Failed, blocked and unverified cases go to final remediation and the fresh re-audit. The Stage 3 report remains at 3.6.
+**Complete with scoped owner PASS — 10 October 2026 (S3E13–14).** All 23 checks passed, runner exit 0 at `2026-10-10T19:16:06.687Z`. Selected settings were restored, two manual synthetic conversion rows remain and four internal-helper denials passed. This closes all three 3.2 milestones with carry-forward. Read the [checkpoint report](SECURITY_STAGE_3_2_CHECKPOINT_REPORT.md); the Personal binding/relink/delete and wider provider/history/parity cases remain open. The Stage 3 report remains at 3.6.
 
-## Owner action and exact target
+## Archived owner action and exact target — completed, do not repeat
+
+The owner has completed this batch. The instructions below document the executed handoff; no repeat is requested.
 
 Use **STAGING `dczlddwbtgvfdujgcitb`**, with config served at `https://mushavo-budget-staging.pages.dev/config.js`. Run the complete immutable-commit PowerShell block supplied in chat from `C:\Users\HP\Desktop\Mushavo Budget`. It fetches `security/stage-3-authorization` and reads the runner/checker from the full supplied commit without switching or overwriting the checkout.
 

@@ -1,14 +1,14 @@
 # 3.1 — Permission map and baseline
 
-**Started 10 October 2026 on owner instruction “ok lets start”.** The six-step Stage 3 plan is authorized. This checkpoint prepares a source permission map and one consolidated catalog-only STAGING inventory. Hosted results and application authorization tests are pending. F08/F15 remain open.
+**Checkpoint closed — 3.1.3, 10 October 2026.** All three finite baseline work items have outcomes. Owner supplied the complete eight-row STAGING inventory; source classification and the bounded follow-up matrix are recorded. Two narrow metadata checks pass, three rows require review, and three are informational. Application authorization tests and hosted body/production parity remain unverified. F08/F15 remain open. Next is 3.2.1.
 
 ## Three bounded work items
 
 | Work item | Work | Position |
 |---|---|---|
-| 3.1.1 | Review current source, define the permission matrix and prepare one eight-row staging metadata inventory | Source review and 12 disposable diagnostic fixture checks complete; owner staging SQL receipt pending |
-| 3.1.2 | Reconcile the received inventory with source; classify selected entrypoints and prioritize demonstrated gaps | Pending receipt; any justified candidate is checked at its actual scope. A grant alone is not a demonstrated authorization bypass |
-| 3.1.3 | Record the baseline outcome and freeze the controlled 3.2–3.5 acceptance groups | Pending reconciliation; unavailable cases receive explicit status and carry-forward |
+| 3.1.1 | Review current source, define the permission matrix and prepare one eight-row staging metadata inventory | Complete: source map, 12 local diagnostic fixture checks and owner PostgreSQL 17.11 eight-row receipt (S3E02–03) |
+| 3.1.2 | Reconcile the received inventory with source; classify selected entrypoints and prioritize demonstrated gaps | Complete: 57 anonymous-executable definers classified at source/metadata scope; direct behavior, actual grant origins and hosted body parity remain pending (S3E04). No new runtime candidate justified by metadata alone |
+| 3.1.3 | Record the baseline outcome and freeze the controlled 3.2–3.5 acceptance groups | Complete: 24 acceptance groups frozen, prioritized effects/rechecks recorded, no further baseline SQL requested (S3E05) |
 
 Do not reopen Stage 1/2 or repeat their successful batches. The later stage-end report consolidates outcomes. Missing prerequisites do not create an unlimited sequence of baseline diagnostics.
 
@@ -71,7 +71,7 @@ Send **all eight result rows** using Copy/export CSV in the results panel, plus 
 
 [verify-stage-3-permission-baseline.mjs](../../scripts/verify-stage-3-permission-baseline.mjs) passed **12 disposable catalog fixture checks** using externally installed PGlite 0.5.8 / PostgreSQL 18.3. Repository dependencies are unchanged. Checks cover eight-row/read-only output; no customer/body/setting-value disclosure or application routine invocation; column-only, inherited and PUBLIC SELECT leaks; inherited signed-in helper EXECUTE; default PUBLIC routine execution inventory; disabled RLS; view/restrictive-policy metadata; missing helper/table/API role. Missing prerequisites cannot silently produce a narrow PASS.
 
-This is local PostgreSQL-compatible diagnostic validation, **not native PostgreSQL 17.11 hosted execution**, verified application authorization, provider parity, or deployment evidence. The STAGING receipt remains pending. No grant, policy, function body, Auth setting or runtime implementation has been changed in this checkpoint.
+This is local PostgreSQL-compatible diagnostic validation, **not native PostgreSQL 17.11 hosted execution**, verified application authorization, provider parity, or deployment evidence. The owner STAGING PostgreSQL 17.11 receipt was subsequently received in S3E03; it validates hosted query execution at owner-reported scope, not application behavior or independent hosted identity. No grant, policy, function body, Auth setting or runtime implementation has been changed in this checkpoint.
 
 ## Source references
 
@@ -82,3 +82,43 @@ This is local PostgreSQL-compatible diagnostic validation, **not native PostgreS
 - [Admin invitation Edge function](../../supabase/functions/invite-admin-user/index.ts), [Business invitation Edge function](../../supabase/functions/invite-business-member/index.ts), [exchange-rate Edge authentication](../../supabase/functions/sync-exchange-rates/index.ts) and [function gateway config](../../supabase/config.toml): selected source authentication paths, not attestation of deployed versions.
 - PostgreSQL 17 primary references: [privilege inquiry functions](https://www.postgresql.org/docs/17/functions-info.html), [policy catalog](https://www.postgresql.org/docs/17/catalog-pg-policy.html) and [routine catalog](https://www.postgresql.org/docs/17/catalog-pg-proc.html), reviewed 10 October 2026.
 - [Six-step plan](SECURITY_STAGE_3_AUTHORIZATION_PLAN.md), [progress](SECURITY_AUDIT_PROGRESS.json), [Stage 3 evidence](security-stage-3-evidence.json) and [carry-forward](SECURITY_AUDIT_CARRY_FORWARD.md).
+
+
+## 3.1.3 — Received result and baseline closure
+
+Owner result timestamp: **2026-10-10T16:50:07.798355+00:00**, intended STAGING **dczlddwbtgvfdujgcitb**, PostgreSQL **17.11**, read-only repeatable-read. All eight rows received. Project identity still relies on the owner execution context; no hosted function/policy bodies or production parity were retrieved.
+
+| Observation | Result and limit |
+|---|---|
+| Prior seven-table anonymous read restriction | **PASS**, effective SELECT/column restriction retained on all seven named tables |
+| Two internal conversion/date helper restrictions | **PASS**, anon/authenticated cannot execute, service EXECUTE and expected definer/path metadata retained |
+| Public application tables | 81; none reported with RLS disabled. RLS being enabled is not correctness of every policy |
+| Selected objects | All 24 selected tables and all 20 selected routines present; all 20 have a search-path setting. Presence does not prove the path or function body is safe |
+| Cashbook balances view | `security_invoker=true` metadata present; selected cashbook behavior is not tested by this query |
+| Database API roles | anon/authenticated are non-superuser and do not bypass RLS; service_role has BYPASSRLS. Public schema USAGE is available and CREATE is false for all three |
+| Broad anonymous grants | INSERT, UPDATE and DELETE remain effectively granted on 15 of the 24 selected tables. RLS still applies; this is a least-privilege/behavior review target, not proof a write succeeded |
+| Elevated routines | 263 nonextension public SECURITY DEFINER routines total; 57 anon-executable, including 25 trigger/event-trigger return types; zero anon-executable entries lack a search-path setting |
+
+### Classification of the 57 anonymous-executable entries
+
+This partitions the received inventory at source/metadata scope, not into “safe” and “unsafe” verdicts. Matching migration symbols do not prove the hosted bodies are identical. The exact names/source locations are recorded in S3E04.
+
+| Category | Count | Source contract / follow-up |
+|---|---|---|
+| Application trigger functions | 24 | Conversion locks, validation, account/finance guards, synchronization, notification and seed triggers; preserve legitimate trigger execution. A function grant is not proof it is an ordinary callable HTTP RPC |
+| Provider event-trigger candidate | 1 | `rls_auto_enable` was previously present in fresh-target event-trigger metadata; application migration body not matched. Managed body/authority remains unverified |
+| Public signup/pricing lookups | 2 | Existing explicit public catalogue/currency flows; preserve legitimate access |
+| Shared currency information | 2 | Latest rates and status; source returns shared rate/status fields with Admin details gated. Review intended anonymous access and selected output scope; not a private-row write |
+| Identity, membership and entitlement helpers | 12 | Source evaluates caller identity/membership or guarded entitlement/usage; false/empty is a valid denial for these reads. Platform staff exceptions require role-specific review |
+| Signed-in owner/recipient/workspace operations | 10 | Family create/delete/invite/respond/remove, own provisioning/renewal/request, workspace currency settings/backfill; selected source guards exist. Test foreign identifiers, pending/replay/removal, account/entitlement and valid positive controls in 3.2 |
+| Protected finance/platform operations | 6 | Admin subscription monitor, global currency backfill, Admin finance settings, manual conversion, plan definition/price. Source uses staff/owner/backend checks; manual conversion has different workspace/platform/subscription branches. Exercise those distinctions in 3.2/3.4 |
+| **Total** | **57** | **No application routine was invoked in the baseline** |
+
+### Prioritized controls and decision
+
+1. **3.2:** verify ordinary/anonymous foreign-row reads and create/update/delete with legitimate positive controls. Include Family recipient/head/member/removal boundaries and owner/outsider currency/entitlement RPCs. An HTTP 200 alone cannot prove permission success or denial.
+2. **3.3:** apply the existing per-fixture Business permission/override/dependency/scope rules, then test cross-business substitution and management escalation.
+3. **3.4:** verify platform staff operation allowlists and direct protected actions at verified MFA assurance. Broad platform exceptions must be exercised separately from ordinary outsider accounts.
+4. **Final remediation:** retain actual grant-origin/hosted body/production parity, managed event-trigger authority and unavailable API/device cases at their real scope; no finding closes from this inventory.
+
+No new runtime migration is issued at the baseline: the two narrow restrictions are retained, while the broad grants require compatibility-aware direct testing. There is no blanket revoke, FORCE RLS change, secret/setup loop or further owner baseline SQL request. This finishes **3.1**, not Stage 3; five main steps remain. The frozen PF/B/A/AU acceptance groups above govern the next work.

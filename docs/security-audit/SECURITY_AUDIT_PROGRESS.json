@@ -3,7 +3,7 @@
   "updated_date": "2026-10-10",
   "current_stage": 3,
   "current_step": "3.1",
-  "current_title": "Stage 3 permission baseline prepared; staging metadata receipt pending",
+  "current_title": "Permission baseline closed with scoped metadata passes; Personal/Family tests next",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 3,
-  "next_step": "3.1.1",
+  "next_step": "3.2.1",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -1262,32 +1262,45 @@
     "full_security_or_release_acceptance_verified": false
   },
   "stage_3": {
-    "status": "ACTIVE_PERMISSION_BASELINE_AWAITING_OWNER_RECEIPT",
+    "status": "ACTIVE_BASELINE_CLOSED_PERSONAL_FAMILY_REVIEW_NEXT",
     "authorized": true,
     "started_date": "2026-10-10",
-    "active_step": "3.1",
+    "active_step": null,
     "plan": "docs/security-audit/SECURITY_STAGE_3_AUTHORIZATION_PLAN.md",
     "evidence": "docs/security-audit/security-stage-3-evidence.json",
     "bounded_steps": 6,
-    "completed_steps": 0,
-    "remaining_steps": 6,
+    "completed_steps": 1,
+    "remaining_steps": 5,
     "steps": [
       {
         "id": "3.1",
         "title": "Permission map and baseline",
-        "status": "SOURCE_MAP_AND_LOCAL_DIAGNOSTIC_CHECKS_COMPLETE_AWAITING_STAGING_METADATA",
+        "status": "CLOSED_PERMISSION_MAP_AND_METADATA_BASELINE_WITH_BEHAVIOR_TESTS_PENDING",
         "bounded_work_items": 3,
-        "completed_work_items": 0,
-        "remaining_work_items": 3,
-        "active_work_item": "3.1.1",
+        "completed_work_items": 3,
+        "remaining_work_items": 0,
+        "active_work_item": null,
         "instructions": "docs/security-audit/SECURITY_STAGE_3_1_PERMISSION_BASELINE.md",
         "metadata_diagnostic": "supabase/diagnostics/security_stage_3_permission_baseline.sql",
         "owner_execution_target": "dczlddwbtgvfdujgcitb",
-        "owner_metadata_received": false,
+        "owner_metadata_received": true,
         "local_diagnostic_fixture_checks_passed": 12,
         "local_fixture_engine": "PGlite 0.5.8 / PostgreSQL 18.3",
         "application_authorization_verified": false,
-        "latest_evidence": "S3E02"
+        "latest_evidence": "S3E05",
+        "owner_metadata_evidence": "S3E03",
+        "owner_metadata_checked_at": "2026-10-10T16:50:07.798355+00:00",
+        "owner_metadata_server_version": "17.11",
+        "owner_narrow_metadata_passes": 2,
+        "owner_review_rows": 3,
+        "owner_info_rows": 3,
+        "public_application_tables": 81,
+        "tables_without_rls": 0,
+        "selected_tables_present": 24,
+        "selected_routines_present": 20,
+        "anonymous_security_definers": 57,
+        "anonymous_trigger_or_event_trigger_definers": 25,
+        "source_classification_completed": true
       },
       {
         "id": "3.2",
@@ -1315,7 +1328,7 @@
         "status": "PENDING"
       }
     ],
-    "latest_evidence": "S3E02",
+    "latest_evidence": "S3E05",
     "production_promoted": false,
     "application_mfa_enforced": false,
     "full_security_or_release_acceptance_verified": false

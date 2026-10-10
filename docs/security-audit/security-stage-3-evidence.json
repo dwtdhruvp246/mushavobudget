@@ -65,6 +65,1698 @@
       "runtime_enforcement_or_auth_settings_changed": false,
       "production_or_native_changed": false,
       "full_security_or_release_acceptance_verified": false
+    },
+    {
+      "id": "S3E03",
+      "stage_step": "3.1.1",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_STAGING_EIGHT_ROW_PERMISSION_BASELINE_RECEIVED_TWO_NARROW_PASSES",
+      "owner_attachment": "Pasted text(20261010-165034).txt",
+      "owner_checked_at": "2026-10-10T16:50:07.798355+00:00",
+      "owner_intended_project": "dczlddwbtgvfdujgcitb",
+      "independent_hosted_identity_verified": false,
+      "server_version": "17.11",
+      "statuses": {
+        "PASS": 2,
+        "REVIEW": 3,
+        "INFO": 3,
+        "FAIL": 0
+      },
+      "owner_query_execution_scope": "Supplied complete result of pinned read-only catalog baseline; project labels are not independent hosted identity",
+      "result_rows": [
+        {
+          "check_name": "01 Read-only STAGING baseline context",
+          "status": "INFO",
+          "details": {
+            "checked_at": "2026-10-10T16:50:07.798355+00:00",
+            "stage_step": "3.1.1",
+            "server_version": "17.11",
+            "current_database": "postgres",
+            "project_identity": "Owner verifies Dashboard URL; SQL labels do not establish hosted identity",
+            "transaction_isolation": "repeatable read",
+            "transaction_read_only": "on",
+            "intended_staging_reference": "dczlddwbtgvfdujgcitb",
+            "production_reference_to_avoid": "kttkospkblwvguuwnhjj"
+          }
+        },
+        {
+          "check_name": "02 API roles and public schema access",
+          "status": "INFO",
+          "details": {
+            "roles": [
+              {
+                "name": "anon",
+                "present": true,
+                "superuser": false,
+                "bypass_rls": false,
+                "public_schema_usage": true,
+                "public_schema_create": false
+              },
+              {
+                "name": "authenticated",
+                "present": true,
+                "superuser": false,
+                "bypass_rls": false,
+                "public_schema_usage": true,
+                "public_schema_create": false
+              },
+              {
+                "name": "service_role",
+                "present": true,
+                "superuser": false,
+                "bypass_rls": true,
+                "public_schema_usage": true,
+                "public_schema_create": false
+              }
+            ],
+            "scope": "Database API role flags only; these are not customer roles or authorization tests"
+          }
+        },
+        {
+          "check_name": "03 Application relations and selected RLS metadata",
+          "status": "REVIEW",
+          "details": {
+            "scope": "Effective grants include PUBLIC/inheritance and column grants. RLS flags/counts do not prove policy behavior; views and foreign tables require separate review",
+            "selected_count": 24,
+            "selected_relations": [
+              {
+                "kind": "r",
+                "name": "admin_user_invitations",
+                "present": true,
+                "rls_forced": true,
+                "rls_enabled": true,
+                "policy_count": 1,
+                "effective_grants": {
+                  "anon": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": false,
+                    "update_any_column": false
+                  },
+                  "authenticated": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": true,
+                    "update_any_column": false
+                  }
+                },
+                "restrictive_policy_count": 0,
+                "enabled_user_trigger_count": 3
+              },
+              {
+                "kind": "r",
+                "name": "app_admins",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 1,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": false,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 0,
+                "enabled_user_trigger_count": 0
+              },
+              {
+                "kind": "r",
+                "name": "budget_workspaces",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 4,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 2,
+                "enabled_user_trigger_count": 5
+              },
+              {
+                "kind": "r",
+                "name": "business_bills",
+                "present": true,
+                "rls_forced": true,
+                "rls_enabled": true,
+                "policy_count": 2,
+                "effective_grants": {
+                  "anon": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": false,
+                    "update_any_column": false
+                  },
+                  "authenticated": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": true,
+                    "update_any_column": false
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 4
+              },
+              {
+                "kind": "r",
+                "name": "business_budgets",
+                "present": true,
+                "rls_forced": true,
+                "rls_enabled": true,
+                "policy_count": 2,
+                "effective_grants": {
+                  "anon": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": false,
+                    "update_any_column": false
+                  },
+                  "authenticated": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": true,
+                    "update_any_column": false
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 2
+              },
+              {
+                "kind": "r",
+                "name": "business_documents",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 2,
+                "effective_grants": {
+                  "anon": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": false,
+                    "update_any_column": false
+                  },
+                  "authenticated": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": true,
+                    "update_any_column": false
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 6
+              },
+              {
+                "kind": "r",
+                "name": "business_expense_claims",
+                "present": true,
+                "rls_forced": true,
+                "rls_enabled": true,
+                "policy_count": 2,
+                "effective_grants": {
+                  "anon": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": false,
+                    "update_any_column": false
+                  },
+                  "authenticated": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": true,
+                    "update_any_column": false
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 3
+              },
+              {
+                "kind": "r",
+                "name": "business_member_permissions",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 2,
+                "effective_grants": {
+                  "anon": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": false,
+                    "update_any_column": false
+                  },
+                  "authenticated": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": true,
+                    "update_any_column": false
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 4
+              },
+              {
+                "kind": "r",
+                "name": "business_member_scopes",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 2,
+                "effective_grants": {
+                  "anon": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": false,
+                    "update_any_column": false
+                  },
+                  "authenticated": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": true,
+                    "update_any_column": false
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 3
+              },
+              {
+                "kind": "r",
+                "name": "business_role_permissions",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 2,
+                "effective_grants": {
+                  "anon": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": false,
+                    "update_any_column": false
+                  },
+                  "authenticated": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": true,
+                    "update_any_column": false
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 4
+              },
+              {
+                "kind": "r",
+                "name": "business_roles",
+                "present": true,
+                "rls_forced": true,
+                "rls_enabled": true,
+                "policy_count": 1,
+                "effective_grants": {
+                  "anon": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": false,
+                    "update_any_column": false
+                  },
+                  "authenticated": {
+                    "delete": false,
+                    "insert_any_column": false,
+                    "select_any_column": true,
+                    "update_any_column": false
+                  }
+                },
+                "restrictive_policy_count": 0,
+                "enabled_user_trigger_count": 0
+              },
+              {
+                "kind": "r",
+                "name": "families",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 4,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 2
+              },
+              {
+                "kind": "r",
+                "name": "family_invitations",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 2,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": false,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 3
+              },
+              {
+                "kind": "r",
+                "name": "family_members",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 4,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 2
+              },
+              {
+                "kind": "r",
+                "name": "notifications",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 4,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 3
+              },
+              {
+                "kind": "r",
+                "name": "payment_conversions",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 1,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 0,
+                "enabled_user_trigger_count": 0
+              },
+              {
+                "kind": "r",
+                "name": "payment_items",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 5,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 6
+              },
+              {
+                "kind": "r",
+                "name": "payment_records",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 5,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": false,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 6
+              },
+              {
+                "kind": "r",
+                "name": "payments",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 4,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": false,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 0,
+                "enabled_user_trigger_count": 1
+              },
+              {
+                "kind": "r",
+                "name": "profiles",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 4,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": false,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": false,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 3
+              },
+              {
+                "kind": "r",
+                "name": "workspace_invitations",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 2,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": false,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 5
+              },
+              {
+                "kind": "r",
+                "name": "workspace_members",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 7,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": false,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 5,
+                "enabled_user_trigger_count": 5
+              },
+              {
+                "kind": "r",
+                "name": "workspace_settings",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 5,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 3,
+                "enabled_user_trigger_count": 4
+              },
+              {
+                "kind": "r",
+                "name": "workspace_subscriptions",
+                "present": true,
+                "rls_forced": false,
+                "rls_enabled": true,
+                "policy_count": 2,
+                "effective_grants": {
+                  "anon": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": false,
+                    "update_any_column": true
+                  },
+                  "authenticated": {
+                    "delete": true,
+                    "insert_any_column": true,
+                    "select_any_column": true,
+                    "update_any_column": true
+                  }
+                },
+                "restrictive_policy_count": 1,
+                "enabled_user_trigger_count": 2
+              }
+            ],
+            "tables_without_rls": [],
+            "view_like_relations": [
+              {
+                "kind": "v",
+                "name": "cashbook_account_balances",
+                "security_invoker_option": true
+              }
+            ],
+            "all_public_nonextension_tables": 81
+          }
+        },
+        {
+          "check_name": "04 Prior seven-table anonymous read restriction",
+          "status": "PASS",
+          "details": {
+            "scope": "Only installed table/RLS and effective anonymous SELECT metadata; no signed-in or cross-workspace authorization proof",
+            "records": [
+              {
+                "table": "app_admins",
+                "present": true,
+                "rls_enabled": true,
+                "anon_select_any_column": false
+              },
+              {
+                "table": "payment_records",
+                "present": true,
+                "rls_enabled": true,
+                "anon_select_any_column": false
+              },
+              {
+                "table": "payments",
+                "present": true,
+                "rls_enabled": true,
+                "anon_select_any_column": false
+              },
+              {
+                "table": "profiles",
+                "present": true,
+                "rls_enabled": true,
+                "anon_select_any_column": false
+              },
+              {
+                "table": "workspace_invitations",
+                "present": true,
+                "rls_enabled": true,
+                "anon_select_any_column": false
+              },
+              {
+                "table": "workspace_members",
+                "present": true,
+                "rls_enabled": true,
+                "anon_select_any_column": false
+              },
+              {
+                "table": "workspace_subscriptions",
+                "present": true,
+                "rls_enabled": true,
+                "anon_select_any_column": false
+              }
+            ],
+            "expected_tables": 7
+          }
+        },
+        {
+          "check_name": "05 Selected application entrypoint metadata",
+          "status": "REVIEW",
+          "details": {
+            "scope": "No function bodies or setting values returned and no application function invoked. A search-path setting being present is not proof it is safe. EXECUTE is not role/body authorization",
+            "records": [
+              {
+                "present": true,
+                "category": "account",
+                "signature": "my_account_suspended()",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": false,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "business",
+                "signature": "business_check_role_assignment(uuid,text,uuid[],uuid)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": false,
+                  "service_role": true,
+                  "authenticated": false
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "business",
+                "signature": "business_claim_in_scope(uuid,uuid)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": false,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "business",
+                "signature": "business_has_permission(uuid,text)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": false,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "business",
+                "signature": "remove_business_member(uuid,uuid)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": false,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "business",
+                "signature": "respond_business_invitation(uuid,boolean)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": false,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "business",
+                "signature": "save_business_role(uuid,text,text,text,text,text[],integer)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": false,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "business",
+                "signature": "update_business_member_role_access(uuid,uuid,text,uuid[],jsonb)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": false,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "currency",
+                "signature": "save_manual_payment_conversion(text,uuid,text,numeric,numeric)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": true,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "currency",
+                "signature": "save_workspace_currency_settings(uuid,text,text[],text,boolean)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": true,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "family",
+                "signature": "can_manage_family_members(uuid)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": true,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "family",
+                "signature": "is_active_family_participant(uuid)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": true,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "family",
+                "signature": "remove_family_member(uuid,uuid)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": true,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "family",
+                "signature": "respond_to_family_invitation(uuid,boolean)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": true,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "membership",
+                "signature": "is_workspace_member(uuid)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": true,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "membership",
+                "signature": "is_workspace_owner(uuid)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": true,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "platform",
+                "signature": "is_app_admin()",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": true,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "platform",
+                "signature": "is_platform_staff(text[])",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": true,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "public_lookup",
+                "signature": "get_public_plan_catalogue(text)",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": true,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              },
+              {
+                "present": true,
+                "category": "public_lookup",
+                "signature": "get_public_signup_currencies()",
+                "security_definer": true,
+                "effective_execute": {
+                  "anon": true,
+                  "service_role": true,
+                  "authenticated": true
+                },
+                "search_path_setting_present": true
+              }
+            ],
+            "selected_count": 20
+          }
+        },
+        {
+          "check_name": "06 Protected currency-helper grant baseline",
+          "status": "PASS",
+          "details": {
+            "scope": "Metadata only; legitimate protected callers, conversions, history and scheduled execution still need controlled behavior checks",
+            "records": [
+              {
+                "present": true,
+                "signature": "currency_conversion_backfill_dates(integer)",
+                "anon_execute": false,
+                "service_execute": true,
+                "security_definer": true,
+                "authenticated_execute": false,
+                "expected_search_path_metadata": true
+              },
+              {
+                "present": true,
+                "signature": "store_api_payment_conversion(text,uuid,uuid,numeric,text,text,timestamp with time zone)",
+                "anon_execute": false,
+                "service_execute": true,
+                "security_definer": true,
+                "authenticated_execute": false,
+                "expected_search_path_metadata": true
+              }
+            ],
+            "expected_helpers": 2
+          }
+        },
+        {
+          "check_name": "07 Remaining anonymous SECURITY DEFINER inventory",
+          "status": "REVIEW",
+          "details": {
+            "scope": "Inventory for classification. Trigger functions, public lookups and body-authorized functions are distinct; no blanket revokes or safety/HTTP exposure proof",
+            "anon_executable_count": 57,
+            "anon_executable_signatures": [
+              "public.admin_subscription_monitor()",
+              "public.apply_approved_subscription_member_limit()",
+              "public.backfill_currency_conversions()",
+              "public.backfill_workspace_currency_conversions(uuid)",
+              "public.business_team_can_manage(uuid)",
+              "public.can_manage_family_members(uuid)",
+              "public.create_family_workspace(text, numeric, text)",
+              "public.delete_family_workspace(uuid)",
+              "public.effective_workspace_entitlement(uuid)",
+              "public.enforce_approved_additional_seat()",
+              "public.enforce_business_member_role_compatibility()",
+              "public.enforce_personal_payment_limit()",
+              "public.exchange_rate_status(boolean)",
+              "public.get_public_plan_catalogue(text)",
+              "public.get_public_signup_currencies()",
+              "public.guard_account_status_change()",
+              "public.guard_suspended_account_write()",
+              "public.guard_workspace_finance_write()",
+              "public.handle_new_user_profile()",
+              "public.has_active_family_plan()",
+              "public.invite_family_member(uuid, text, text)",
+              "public.is_active_family_participant(uuid)",
+              "public.is_app_admin()",
+              "public.is_platform_staff(text[])",
+              "public.is_workspace_member(uuid)",
+              "public.is_workspace_owner(uuid)",
+              "public.latest_exchange_rate(text, text, timestamp with time zone)",
+              "public.link_family_head_to_profile()",
+              "public.lock_payment_record_conversion()",
+              "public.lock_platform_payment_conversion()",
+              "public.lock_subscription_payment_conversion()",
+              "public.normalize_enquiry()",
+              "public.provision_my_budget_workspace()",
+              "public.record_public_enquiry_event()",
+              "public.remove_family_member(uuid, uuid)",
+              "public.respond_to_family_invitation(uuid, boolean)",
+              "public.rls_auto_enable()",
+              "public.save_admin_finance_currency_settings(text, text[], boolean)",
+              "public.save_manual_payment_conversion(text, uuid, text, numeric, numeric)",
+              "public.save_plan_definition(uuid, text, text, text, text, text, integer, integer, boolean, boolean, boolean, boolean, text, integer, text[])",
+              "public.save_plan_price(text, text, text, numeric, numeric)",
+              "public.save_workspace_currency_settings(uuid, text, text[], text, boolean)",
+              "public.seed_business_stage_4_team_permissions()",
+              "public.submit_family_plan_request(uuid, text, integer, text, text, text, numeric, text, date, text, text, text, text, text, bigint)",
+              "public.submit_subscription_renewal(uuid, text, integer, text, text, numeric, text, date, text, text, text, text, text, bigint)",
+              "public.sync_family_head_subscription_status()",
+              "public.sync_legacy_family_invitation()",
+              "public.sync_legacy_family_member()",
+              "public.sync_legacy_family_workspace()",
+              "public.sync_payment_record_workspace()",
+              "public.sync_payment_workspace()",
+              "public.validate_budget_expense_currency()",
+              "public.validate_payment_record_currency()",
+              "public.validate_workspace_transaction_currency()",
+              "public.workspace_billable_member_count(uuid)",
+              "public.workspace_has_feature(uuid, text)",
+              "public.workspace_member_usage(uuid)"
+            ],
+            "all_public_nonextension_security_definers": 263,
+            "anon_executable_without_search_path_setting": 0,
+            "anon_executable_trigger_or_event_trigger_count": 25
+          }
+        },
+        {
+          "check_name": "08 Baseline review boundary and next tests",
+          "status": "INFO",
+          "details": {
+            "next": "Reconcile this staging metadata with the permission map; controlled synthetic Personal/Family, Business and privileged/Auth batches follow in 3.2-3.5",
+            "application_routines_invoked": false,
+            "mfa_or_auth_settings_changed": false,
+            "production_or_native_changed": false,
+            "schema_or_application_rows_modified": false,
+            "allowed_denied_api_workflows_verified": false,
+            "customer_rows_tokens_keys_or_private_identifiers_returned": false,
+            "function_bodies_policy_expressions_or_setting_values_returned": false
+          }
+        }
+      ],
+      "schema_or_rows_modified_by_query": false,
+      "application_behavior_verified": false,
+      "production_parity_verified": false
+    },
+    {
+      "id": "S3E04",
+      "stage_step": "3.1.2",
+      "recorded_date": "2026-10-10",
+      "result": "SOURCE_RECONCILIATION_AND_ANONYMOUS_ENTRYPOINT_CLASSIFICATION_COMPLETE_WITH_BEHAVIOR_PENDING",
+      "public_nonextension_tables": 81,
+      "tables_without_rls": [],
+      "selected_tables_present": 24,
+      "selected_routines_present": 20,
+      "selected_routines_with_search_path_setting": 20,
+      "prior_anonymous_read_restriction": "OWNER_METADATA_PASS_SEVEN_TABLES",
+      "protected_currency_helpers": "OWNER_METADATA_PASS_TWO_HELPERS",
+      "cashbook_view_security_invoker_option": true,
+      "selected_tables_with_anon_insert_update_delete_grants": 15,
+      "all_public_nonextension_security_definers": 263,
+      "anonymous_executable_security_definers": 57,
+      "anonymous_executable_trigger_or_event_trigger_count": 25,
+      "anonymous_executable_without_search_path_setting": 0,
+      "source_definition_symbols_matched": 56,
+      "source_application_trigger_functions": 24,
+      "unmatched_provider_event_trigger_candidate": "rls_auto_enable",
+      "classification_counts": {
+        "public_signup_and_pricing": 2,
+        "shared_currency_information": 2,
+        "identity_membership_and_entitlement": 12,
+        "signed_in_owner_recipient_and_workspace_operations": 10,
+        "protected_finance_and_platform_operations": 6,
+        "application_trigger_functions": 24,
+        "unmatched_provider_event_trigger_candidate": 1
+      },
+      "classifications": [
+        {
+          "name": "get_public_plan_catalogue",
+          "group": "public_signup_and_pricing",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260927183000_business_stage_0_launch_lock.sql",
+          "source_line": 253
+        },
+        {
+          "name": "get_public_signup_currencies",
+          "group": "public_signup_and_pricing",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260905120000_signup_currency_preferences.sql",
+          "source_line": 14
+        },
+        {
+          "name": "latest_exchange_rate",
+          "group": "shared_currency_information",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 4646
+        },
+        {
+          "name": "exchange_rate_status",
+          "group": "shared_currency_information",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 4808
+        },
+        {
+          "name": "business_team_can_manage",
+          "group": "identity_membership_and_entitlement",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260928170000_business_stage_4_team.sql",
+          "source_line": 160
+        },
+        {
+          "name": "can_manage_family_members",
+          "group": "identity_membership_and_entitlement",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 3213
+        },
+        {
+          "name": "effective_workspace_entitlement",
+          "group": "identity_membership_and_entitlement",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 2595
+        },
+        {
+          "name": "has_active_family_plan",
+          "group": "identity_membership_and_entitlement",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 499
+        },
+        {
+          "name": "is_active_family_participant",
+          "group": "identity_membership_and_entitlement",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 575
+        },
+        {
+          "name": "is_app_admin",
+          "group": "identity_membership_and_entitlement",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 481
+        },
+        {
+          "name": "is_platform_staff",
+          "group": "identity_membership_and_entitlement",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 2288
+        },
+        {
+          "name": "is_workspace_member",
+          "group": "identity_membership_and_entitlement",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 2302
+        },
+        {
+          "name": "is_workspace_owner",
+          "group": "identity_membership_and_entitlement",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 2320
+        },
+        {
+          "name": "workspace_billable_member_count",
+          "group": "identity_membership_and_entitlement",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 2723
+        },
+        {
+          "name": "workspace_has_feature",
+          "group": "identity_membership_and_entitlement",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 2650
+        },
+        {
+          "name": "workspace_member_usage",
+          "group": "identity_membership_and_entitlement",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 3965
+        },
+        {
+          "name": "create_family_workspace",
+          "group": "signed_in_owner_recipient_and_workspace_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 659
+        },
+        {
+          "name": "delete_family_workspace",
+          "group": "signed_in_owner_recipient_and_workspace_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 967
+        },
+        {
+          "name": "invite_family_member",
+          "group": "signed_in_owner_recipient_and_workspace_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 4081
+        },
+        {
+          "name": "remove_family_member",
+          "group": "signed_in_owner_recipient_and_workspace_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 926
+        },
+        {
+          "name": "respond_to_family_invitation",
+          "group": "signed_in_owner_recipient_and_workspace_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 840
+        },
+        {
+          "name": "provision_my_budget_workspace",
+          "group": "signed_in_owner_recipient_and_workspace_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260923200000_hold_invited_workspace_until_setup.sql",
+          "source_line": 127
+        },
+        {
+          "name": "submit_family_plan_request",
+          "group": "signed_in_owner_recipient_and_workspace_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260921090000_additional_family_subscriptions.sql",
+          "source_line": 5
+        },
+        {
+          "name": "submit_subscription_renewal",
+          "group": "signed_in_owner_recipient_and_workspace_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 4223
+        },
+        {
+          "name": "save_workspace_currency_settings",
+          "group": "signed_in_owner_recipient_and_workspace_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260928130000_business_stage_3_onboarding.sql",
+          "source_line": 68
+        },
+        {
+          "name": "backfill_workspace_currency_conversions",
+          "group": "signed_in_owner_recipient_and_workspace_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 5006
+        },
+        {
+          "name": "admin_subscription_monitor",
+          "group": "protected_finance_and_platform_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 4015
+        },
+        {
+          "name": "backfill_currency_conversions",
+          "group": "protected_finance_and_platform_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 4962
+        },
+        {
+          "name": "save_admin_finance_currency_settings",
+          "group": "protected_finance_and_platform_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 4768
+        },
+        {
+          "name": "save_manual_payment_conversion",
+          "group": "protected_finance_and_platform_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 5079
+        },
+        {
+          "name": "save_plan_definition",
+          "group": "protected_finance_and_platform_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260903090000_public_website_enquiries.sql",
+          "source_line": 39
+        },
+        {
+          "name": "save_plan_price",
+          "group": "protected_finance_and_platform_operations",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20261001190000_admin_plans_workbench.sql",
+          "source_line": 218
+        },
+        {
+          "name": "apply_approved_subscription_member_limit",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+          "source_line": 353
+        },
+        {
+          "name": "enforce_approved_additional_seat",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 4187
+        },
+        {
+          "name": "enforce_business_member_role_compatibility",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20261004153000_business_custom_roles.sql",
+          "source_line": 262
+        },
+        {
+          "name": "enforce_personal_payment_limit",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 2668
+        },
+        {
+          "name": "guard_account_status_change",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260925090000_expiry_and_account_suspension.sql",
+          "source_line": 82
+        },
+        {
+          "name": "guard_suspended_account_write",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260925090000_expiry_and_account_suspension.sql",
+          "source_line": 133
+        },
+        {
+          "name": "guard_workspace_finance_write",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260925090000_expiry_and_account_suspension.sql",
+          "source_line": 161
+        },
+        {
+          "name": "handle_new_user_profile",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260922113000_admin_user_invitations.sql",
+          "source_line": 139
+        },
+        {
+          "name": "link_family_head_to_profile",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 156
+        },
+        {
+          "name": "lock_payment_record_conversion",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 4892
+        },
+        {
+          "name": "lock_platform_payment_conversion",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 4915
+        },
+        {
+          "name": "lock_subscription_payment_conversion",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 4938
+        },
+        {
+          "name": "normalize_enquiry",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260903120000_align_enquiry_workflow.sql",
+          "source_line": 138
+        },
+        {
+          "name": "record_public_enquiry_event",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260903090000_public_website_enquiries.sql",
+          "source_line": 91
+        },
+        {
+          "name": "seed_business_stage_4_team_permissions",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260928170000_business_stage_4_team.sql",
+          "source_line": 72
+        },
+        {
+          "name": "sync_family_head_subscription_status",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 540
+        },
+        {
+          "name": "sync_legacy_family_invitation",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 3056
+        },
+        {
+          "name": "sync_legacy_family_member",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 3180
+        },
+        {
+          "name": "sync_legacy_family_workspace",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 3139
+        },
+        {
+          "name": "sync_payment_record_workspace",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 2538
+        },
+        {
+          "name": "sync_payment_workspace",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 2513
+        },
+        {
+          "name": "validate_budget_expense_currency",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 5230
+        },
+        {
+          "name": "validate_payment_record_currency",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 4839
+        },
+        {
+          "name": "validate_workspace_transaction_currency",
+          "group": "application_trigger_functions",
+          "source_definition_found": true,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false,
+          "source_path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+          "source_line": 5203
+        },
+        {
+          "name": "rls_auto_enable",
+          "group": "unmatched_provider_event_trigger_candidate",
+          "source_definition_found": false,
+          "hosted_body_parity_verified": false,
+          "behavior_tested_by_baseline": false
+        }
+      ],
+      "grant_origin_or_hosted_function_policy_body_parity_verified": false,
+      "direct_api_exposure_or_unauthorized_effect_verified": false,
+      "blanket_revokes_or_rls_changes_applied": false
+    },
+    {
+      "id": "S3E05",
+      "stage_step": "3.1.3",
+      "recorded_date": "2026-10-10",
+      "result": "PERMISSION_BASELINE_CHECKPOINT_CLOSED_SELECTED_TEST_GROUPS_FROZEN",
+      "work_items_completed": [
+        "3.1.1",
+        "3.1.2",
+        "3.1.3"
+      ],
+      "remaining_baseline_work_items": 0,
+      "acceptance_groups": {
+        "3.2": [
+          "PF01",
+          "PF02",
+          "PF03",
+          "PF04",
+          "PF05",
+          "PF06"
+        ],
+        "3.3": [
+          "B01",
+          "B02",
+          "B03",
+          "B04",
+          "B05",
+          "B06",
+          "B07",
+          "B08"
+        ],
+        "3.4": [
+          "A01",
+          "A02",
+          "A03",
+          "A04",
+          "A05"
+        ],
+        "3.5": [
+          "AU01",
+          "AU02",
+          "AU03",
+          "AU04",
+          "AU05"
+        ]
+      },
+      "next_step": "3.2.1",
+      "prioritized_cases": [
+        "Ordinary/anonymous foreign-row read and create/update/delete with positive controls",
+        "Family recipient, head/member, replay/cancel/removal boundaries",
+        "Owner/outsider/anonymous currency and entitlement RPCs with helper-denial controls",
+        "Business role/override/scope/escalation matrix",
+        "Platform role-specific operations and verified Admin MFA"
+      ],
+      "new_runtime_candidate_required_by_baseline": false,
+      "candidate_decision_scope": "Prior narrow restrictions retained; broader effective grants and source guards require controlled behavior tests before choosing compatibility-preserving changes",
+      "findings_remaining_open": [
+        "F08",
+        "F15"
+      ],
+      "application_authorization_verified": false,
+      "production_or_native_changed": false,
+      "stage_3_complete": false,
+      "additional_owner_baseline_sql_requested": false
     }
-  ]
+  ],
+  "source_reconciliation_head": "9388fc8c3e48ac3fd124d73b7f918785da957104"
 }

@@ -1,6 +1,6 @@
 # Stage 3 — Authorization, application Admin MFA and Auth flows
 
-**Started — 3.1, 10 October 2026.** Owner authorized the six-step stage with “ok lets start”. [3.1 permission map and baseline](SECURITY_STAGE_3_1_PERMISSION_BASELINE.md) and one read-only STAGING inventory are prepared; 12 disposable diagnostic fixtures passed. Hosted results and application permission/MFA/Auth behavior checks remain pending. Stage 2 remains closed with carry-forward. No runtime enforcement or Auth setting has changed.
+**Started — 3.1, 10 October 2026.** Owner authorized the six-step stage with “ok lets start”. [3.1 permission map and baseline](SECURITY_STAGE_3_1_PERMISSION_BASELINE.md) is now closed with two owner metadata passes, source classification and the frozen follow-up matrix. All three baseline work items have outcomes; 12 local diagnostic fixtures passed. Next is 3.2.1. Application permission/MFA/Auth behavior and hosted body parity remain pending. Stage 2 remains closed with carry-forward. No runtime enforcement or Auth setting has changed.
 
 ## What this stage means
 

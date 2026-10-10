@@ -11,8 +11,8 @@
       "recorded_date": "2026-10-09",
       "result": "STAGE_2_STARTED_WITH_FOUR_FINITE_STEPS",
       "owner_instruction": "continue",
-      "prior_stage_report": "docs/SECURITY_STAGE_1_COMPLETION_REPORT.md",
-      "plan": "docs/SECURITY_STAGE_2_WEB_HARDENING_PLAN.md",
+      "prior_stage_report": "docs/security-audit/SECURITY_STAGE_1_COMPLETION_REPORT.md",
+      "plan": "docs/security-audit/SECURITY_STAGE_2_WEB_HARDENING_PLAN.md",
       "steps": {
         "2.1": "Browser headers",
         "2.2": "Public contact abuse",
@@ -247,7 +247,7 @@
       "stage_step": "2.1",
       "recorded_date": "2026-10-09",
       "result": "STAGING_HANDOFF_PREPARED_PENDING_OWNER_EXECUTION",
-      "instructions": "docs/SECURITY_STAGE_2_1_BROWSER_HEADERS.md",
+      "instructions": "docs/security-audit/SECURITY_STAGE_2_1_BROWSER_HEADERS.md",
       "input": "Owner existing 1.3 staging web folder; exact staging URL/publishable format/empty push key; no production bytes",
       "output": "New ordinary staging public folder; original retained",
       "hosting_target": "mushavo-budget-staging.pages.dev separate Pages project",
@@ -602,7 +602,7 @@
       "stage_step": "2.1",
       "recorded_date": "2026-10-09",
       "result": "ONE_BOUNDED_OWNER_BROWSER_CHECK_BATCH_PENDING",
-      "instructions": "docs/SECURITY_STAGE_2_1_BROWSER_HEADERS.md",
+      "instructions": "docs/security-audit/SECURITY_STAGE_2_1_BROWSER_HEADERS.md",
       "owner_batch": [
         "Public pages and app/signup/business shell render",
         "First synthetic account login and selected payment persistence",
@@ -1666,7 +1666,7 @@
       "repeat_successful_form_batch_requested": false,
       "next_step": "2.3.1",
       "stage_2_report_due": "2.4",
-      "checkpoint_report": "docs/SECURITY_STAGE_2_2_CHECKPOINT_REPORT.md"
+      "checkpoint_report": "docs/security-audit/SECURITY_STAGE_2_2_CHECKPOINT_REPORT.md"
     },
     {
       "id": "S2E34",
@@ -1706,7 +1706,7 @@
       "notifications_http_or_hosted_writes_performed": false,
       "bounded_push_work_items": 3,
       "f12_closed": false,
-      "instructions": "docs/SECURITY_STAGE_2_3_WEB_PUSH.md"
+      "instructions": "docs/security-audit/SECURITY_STAGE_2_3_WEB_PUSH.md"
     },
     {
       "id": "S2E35",
@@ -1847,7 +1847,7 @@
       "stage_step": "2.4",
       "recorded_date": "2026-10-10",
       "result": "STAGE_2_CLOSED_WITH_SCOPED_PASSES_FAILED_AND_BLOCKED_CARRY_FORWARD",
-      "report": "docs/SECURITY_STAGE_2_COMPLETION_REPORT.md",
+      "report": "docs/security-audit/SECURITY_STAGE_2_COMPLETION_REPORT.md",
       "bounded_stage_steps": 4,
       "completed_stage_steps": 4,
       "remaining_stage_steps": 0,
@@ -1879,5 +1879,5 @@
     }
   ],
   "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_CARRY_FORWARD",
-  "report": "docs/SECURITY_STAGE_2_COMPLETION_REPORT.md"
+  "report": "docs/security-audit/SECURITY_STAGE_2_COMPLETION_REPORT.md"
 }

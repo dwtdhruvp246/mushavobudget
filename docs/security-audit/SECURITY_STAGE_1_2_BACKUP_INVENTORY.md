@@ -87,7 +87,7 @@ Limits: at most 100 buckets, 2,000 listed entries including folders, 1,000 read 
 
 **PASS means only a current local Storage component:** complete before/after inventories match at observed times; all four earlier bucket identifiers are present; every current listed file downloads at the recorded size and reread hash; native header denial and all extracted/source/package hashes verify. Empty current buckets are permitted. Downloads may change last-access time, which is excluded from content drift comparison. No atomic snapshot, omitted historic version/deleted-object coverage, database-and-Storage same-time guarantee, upstream content-authenticity guarantee, offsite copy, full platform backup or isolated restore is inferred. The database snapshot and current file snapshot are from different times. Package bytes are not re-uploaded or served by the app.
 
-Paste this inline PowerShell directly; [the handoff source](../scripts/security-stage-1-storage-backup-check.ps1) and [the reviewed helper](../scripts/security-stage-1-storage-backup.cjs) are for provenance. Fetch updates remote refs only and copies the pinned helper into the private root; the original dirty Windows checkout is not switched or reset. The public helper blob pin is `1c6d1ca70be9d285b19042eb4f0ab3830fd8f156`; private backup hashes are never printed.
+Paste this inline PowerShell directly; [the handoff source](../../scripts/security-stage-1-storage-backup-check.ps1) and [the reviewed helper](../../scripts/security-stage-1-storage-backup.cjs) are for provenance. Fetch updates remote refs only and copies the pinned helper into the private root; the original dirty Windows checkout is not switched or reset. The public helper blob pin is `1c6d1ca70be9d285b19042eb4f0ab3830fd8f156`; private backup hashes are never printed.
 
 ```powershell
 & {
@@ -184,7 +184,7 @@ For a recoverable backup we must account for database schema/data/roles and priv
 
 Paste the PowerShell block below directly in the existing terminal. It does not need a directory change and uses `npm.cmd` to avoid the blocked `npm.ps1` wrapper. Each discovered executable is called only with `--version`. The output contains tool status/version, not credentials or project data. Missing commands are recorded rather than automatically installed.
 
-The source is [scripts/security-stage-1-tool-inventory.ps1](../scripts/security-stage-1-tool-inventory.ps1). The owner supplied successful Windows execution results on 7 October (S1E09). No PowerShell runtime exists in the audit workspace; no local Windows execution is claimed. The original block is retained below for reproducibility, not as a repeat check request.
+The source is [scripts/security-stage-1-tool-inventory.ps1](../../scripts/security-stage-1-tool-inventory.ps1). The owner supplied successful Windows execution results on 7 October (S1E09). No PowerShell runtime exists in the audit workspace; no local Windows execution is claimed. The original block is retained below for reproducibility, not as a repeat check request.
 
 ```powershell
 & {
@@ -339,7 +339,7 @@ The owner screenshot displays a Shared pooler panel with the session-mode IPv4 b
 
 The username contains the intended project reference, but a screenshot is not authenticated connectivity/target proof. The password stays a placeholder. Only these non-secret metadata and the screenshot SHA-256 are retained; the raw image is excluded from git. No connection or provider change has occurred.
 
-**Completed certificate/connection handoff — retained for reproducibility:** in the intended project, open **Database Settings → SSL Configuration → Download certificate** and save the server root certificate locally. Supabase's official psql guide uses the downloaded root certificate with session-pooler `sslmode=verify-full`. This handoff does not enable/change SSL enforcement (a distinct provider setting). Paste the following block directly into the existing PowerShell terminal; it asks for the certificate's full local path, then psql prompts for the **database password** privately. The source is [security-stage-1-connection-check.ps1](../scripts/security-stage-1-connection-check.ps1); use the inline block to retain the owner's existing execution policy.
+**Completed certificate/connection handoff — retained for reproducibility:** in the intended project, open **Database Settings → SSL Configuration → Download certificate** and save the server root certificate locally. Supabase's official psql guide uses the downloaded root certificate with session-pooler `sslmode=verify-full`. This handoff does not enable/change SSL enforcement (a distinct provider setting). Paste the following block directly into the existing PowerShell terminal; it asks for the certificate's full local path, then psql prompts for the **database password** privately. The source is [security-stage-1-connection-check.ps1](../../scripts/security-stage-1-connection-check.ps1); use the inline block to retain the owner's existing execution policy.
 
 ```powershell
 & {
@@ -406,7 +406,7 @@ Next prepare concrete PostgreSQL/file commands against that selected scope and p
 
 The owner accepts **Google Drive** for the encrypted off-site copy. This is a destination choice, not evidence of protected account access, private sharing, capacity, a complete upload or a recoverable artifact. No Drive account is accessed, folder created or file uploaded by the audit agent. The plan keeps raw working exports in a separately protected owner-local directory outside the repository/served assets and synced folders; a directory under LOCALAPPDATA is proposed, with actual path/ACL/space/disk protection to verify before writing backup bytes.
 
-Use 7-Zip's 7z AES-256 encryption for the planned portable package, with encrypted filenames and an owner-held strong recovery passphrase saved independently of the archive. First establish the actual Windows executable/version before preparing flags or customer data exports. The official Windows x64 installer currently lists **26.04 (5 October 2026)**; do not infer an installed version from the download page or automatically replace an existing tool. The probe source is [security-stage-1-encryption-tool-check.ps1](../scripts/security-stage-1-encryption-tool-check.ps1). Paste it directly into PowerShell; it reads executable information only and creates no export/archive or password prompt:
+Use 7-Zip's 7z AES-256 encryption for the planned portable package, with encrypted filenames and an owner-held strong recovery passphrase saved independently of the archive. First establish the actual Windows executable/version before preparing flags or customer data exports. The official Windows x64 installer currently lists **26.04 (5 October 2026)**; do not infer an installed version from the download page or automatically replace an existing tool. The probe source is [security-stage-1-encryption-tool-check.ps1](../../scripts/security-stage-1-encryption-tool-check.ps1). Paste it directly into PowerShell; it reads executable information only and creates no export/archive or password prompt:
 
 ```powershell
 & {
@@ -473,7 +473,7 @@ The user has not yet reported Google account two-step verification or the Drive 
 
 The owner completed the short known-path recheck: **7-Zip 26.04 x64 (5 October 2026)** and its DLL both report **26.04**, with no scripted error and a normal PowerShell prompt. **OWNER-TESTED version/update information PASS**; S1E22's installed-version patch gap is superseded. No repeat installation or information check is requested. This is not binary-authenticity, encryption or recovery verification.
 
-The owner has now completed the [synthetic encryption check](../scripts/security-stage-1-encryption-synthetic-check.ps1) by pasting its inline block into PowerShell (S1E25). The reproducible source below creates a unique directory under the owner's LOCALAPPDATA, writes a fixed dummy text file, and uses explicitly public dummy correct/wrong passwords. **These passwords are test fixtures and must never protect real backups.** No production database, repository files, customer data, Google account or real recovery secret is accessed. Files are retained for review; no recursive cleanup or upload occurs.
+The owner has now completed the [synthetic encryption check](../../scripts/security-stage-1-encryption-synthetic-check.ps1) by pasting its inline block into PowerShell (S1E25). The reproducible source below creates a unique directory under the owner's LOCALAPPDATA, writes a fixed dummy text file, and uses explicitly public dummy correct/wrong passwords. **These passwords are test fixtures and must never protect real backups.** No production database, repository files, customer data, Google account or real recovery secret is accessed. Files are retained for review; no recursive cleanup or upload occurs.
 
 The check requires successful archive creation, correct-password technical listing with 7zAES/encrypted metadata, wrong-password listing failure without the dummy filename, wrong-password archive-test failure, correct-password integrity/extraction success, and an exact SHA-256 match with the original dummy file. Exit codes are checked immediately; native fatal code 2 is expected only for the two intentional wrong-password operations. Other outcomes remain failures. The block's local Continue preference permits inspection of those expected native errors; filesystem/hash operations use terminating error handling.
 
@@ -563,7 +563,7 @@ S1E26 below supersedes the unreported Google two-step/folder settings at owner-c
 
 The owner answers **yes** to both explicit questions: the selected Google account has two-step verification enabled, and **Mushavo Budget Backups** exists with **General access: Restricted**, access limited to the owner. Record **OWNER-CONFIRMED protection settings**. No repeat question or screenshot is required merely to re-establish these reports. The audit agent has not accessed Google, inspected its account/folder via API, or performed a fresh sign-in/recovery drill. Capacity and real upload/download integrity remain unverified.
 
-Next paste [the local backup-folder block](../scripts/security-stage-1-local-backup-folder.ps1) into normal PowerShell. It resolves LOCALAPPDATA, requires a fixed NTFS drive and rejects reparse-point ancestors, then creates one new unique empty directory. It replaces only that new directory's DACL with protected inheritable FullControl rules for the current Windows user, SYSTEM and Administrators, re-reads the actual owner/rules, and reports the path and free GiB. Existing directories/permissions and the dirty Windows repository remain untouched; no administrator shell or execution-policy change is requested. If any filesystem/CIM/permission check fails, stop and report the exact error; no export is attempted into an unverified folder.
+Next paste [the local backup-folder block](../../scripts/security-stage-1-local-backup-folder.ps1) into normal PowerShell. It resolves LOCALAPPDATA, requires a fixed NTFS drive and rejects reparse-point ancestors, then creates one new unique empty directory. It replaces only that new directory's DACL with protected inheritable FullControl rules for the current Windows user, SYSTEM and Administrators, re-reads the actual owner/rules, and reports the path and free GiB. Existing directories/permissions and the dirty Windows repository remain untouched; no administrator shell or execution-policy change is requested. If any filesystem/CIM/permission check fails, stop and report the exact error; no export is attempted into an unverified folder.
 
 ```powershell
 & {
@@ -656,7 +656,7 @@ The local folder/DACL, compatible clients and certificate-verified endpoint now 
 
 The selected `pg_dump` has **no schema/table/extension/data filters**, no no-owner/no-ACL flags, no weakened row-security option and no database restore command. It requests default non-system-schema/data/large-object and ownership/privilege/dependency scope for one database; extension-owned objects/configuration data follow PostgreSQL's rules. Global role definitions/tablespaces, foreign-table data not explicitly selected, actual Storage object bytes, Vault/root-key recovery and deployed Auth/SMTP/Edge/provider settings still require separate coverage. Catalog counts alone cannot certify all those contents. This first component is not labeled a complete platform backup.
 
-Paste [the database-export block](../scripts/security-stage-1-database-export.ps1) into the normal PowerShell window. It re-reads the existing exact owner/DACL, reuses the known client/certificate paths and endpoint with verify-full, and uses the native **database password prompt**. No password is added to the connection string, arguments, environment or files. UTC/GUID names prevent overwriting earlier runs. Dump failures/interruptions retain `.partial.dump`; no automatic exclusion or privileged-grant repair masks errors. The 30-second lock wait bounds initial shared-lock acquisition, not the total export duration. Report any native warnings as review evidence.
+Paste [the database-export block](../../scripts/security-stage-1-database-export.ps1) into the normal PowerShell window. It re-reads the existing exact owner/DACL, reuses the known client/certificate paths and endpoint with verify-full, and uses the native **database password prompt**. No password is added to the connection string, arguments, environment or files. UTC/GUID names prevent overwriting earlier runs. Dump failures/interruptions retain `.partial.dump`; no automatic exclusion or privileged-grant repair masks errors. The 30-second lock wait bounds initial shared-lock acquisition, not the total export duration. Report any native warnings as review evidence.
 
 After zero exit and a nonempty archive, `pg_restore --list` operates **offline**, keeps the TOC privately and requires core public/Auth/Storage data markers. A second **offline** `pg_restore --file=NUL` decodes/renders archive payload to the Windows null device with no database name/connection arguments. SQL is discarded, never shown in chat or run against a database. This is an archive-read check, not a restore, semantic integrity test or completeness proof. Only after checks pass is `.partial.dump` renamed `.database.dump`, with private TOC/manifest containing bytes, UTC, SHA-256 and public data-entry count.
 
@@ -789,7 +789,7 @@ First generate a unique random backup passphrase of at least 20 characters and s
 
 The block packages **only this run's three explicit dump/TOC/manifest files**, after comparing the private dump hash and exact metadata locally. It creates a unique encrypted-header 7z partial package, requires correct-password integrity success and a random wrong-password header-listing failure without source filenames, then extracts exactly three copies inside a new child of the private folder and compares all original/extracted hashes. Only after those checks does it rename the archive and write a private verification receipt with archive/file hashes. It retains originals, local verification copies and failures; it performs no raw cleanup, database reconnect/restore or Drive upload. This is the database component, with separate file/global-role/configuration coverage still pending. The original at-export manifest remains unchanged, including its historical encrypted=false value.
 
-Source: [security-stage-1-database-encryption.ps1](../scripts/security-stage-1-database-encryption.ps1). Execution was pending at preparation; S1E32 below supplies owner PASS. The audit workspace has no native PowerShell/7-Zip runtime. Source/inline equality, preserved events/tables, JSON/local links/fences and diff whitespace are checked; native prompt/exit/header/hash/partial behavior is reviewed against official source/manual.
+Source: [security-stage-1-database-encryption.ps1](../../scripts/security-stage-1-database-encryption.ps1). Execution was pending at preparation; S1E32 below supplies owner PASS. The audit workspace has no native PowerShell/7-Zip runtime. Source/inline equality, preserved events/tables, JSON/local links/fences and diff whitespace are checked; native prompt/exit/header/hash/partial behavior is reviewed against official source/manual.
 
 ```powershell
 & {
@@ -974,7 +974,7 @@ Keep the backup passphrase saved privately and separately from the Drive archive
 
 Run the block below with the full path to that newly downloaded `.7z` (often in Downloads). It checks the original against its exact private receipt and rejects selecting the original path as the download. It retains an encrypted copy in a fresh private child directory, compares its hash locally, tests that downloaded archive with the saved passphrase at the native hidden-input prompt and writes a private receipt without printing hashes. It creates no plaintext extraction or database connection and deletes no original/download. A local path/hash cannot independently prove Google provenance or sharing: report explicit owner confirmation of the actual Drive upload/download, uploaded-file privacy and privately saved passphrase alongside the summary.
 
-Source: [security-stage-1-drive-download-check.ps1](../scripts/security-stage-1-drive-download-check.ps1). Exact source/inline handoff, immutable evidence/tables, JSON/local links/fences and diff whitespace are checked. Manual UI instructions use official Google guidance; receipt/size/hash, native prompt, distinct-file/private-copy and exit ordering are reviewed. Windows execution remains owner pending, with no local PowerShell/7-Zip runtime.
+Source: [security-stage-1-drive-download-check.ps1](../../scripts/security-stage-1-drive-download-check.ps1). Exact source/inline handoff, immutable evidence/tables, JSON/local links/fences and diff whitespace are checked. Manual UI instructions use official Google guidance; receipt/size/hash, native prompt, distinct-file/private-copy and exit ordering are reviewed. Windows execution remains owner pending, with no local PowerShell/7-Zip runtime.
 
 ```powershell
 & {
@@ -1106,7 +1106,7 @@ The local script now gives a specific `.zip` error before the unchanged guards (
 
 The owner repeats the original S1E33 block and supplies the previous bundle basename with suffix `.7z`: `MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342-20261007T185032Z-1-001.7z`. The combined FileInfo/extension/length/reparse guard still rejects it before any private verification folder/copy/hash/archive test/receipt. The exact failing predicate, actual bytes and true format are unknown. The changed suffix suggests the ZIP may have been renamed, but that action/format is not established. Renaming an extension does not perform archive conversion, and converting a bundle would not produce a byte-identical copy of the original checked encrypted archive. Acceptance still requires the expected original private hash and integrity test; no size/type/hash guard is relaxed.
 
-Run the small read-only diagnostic below for that exact owner-supplied file. It reads at most six initial bytes and prints a format hint, size and expected-name candidate count/list only. It does not display raw header/data/hash bytes, request a password, parse/extract archives or write files. A known signature is not proof of integrity, encryption or offsite provenance; any candidate still needs the original local hash/test checker. Source: [security-stage-1-download-format-check.ps1](../scripts/security-stage-1-download-format-check.ps1). Source/inline equality, unchanged history/tables, JSON/links/fences/diff and bounded read/disposal/output are checked; signatures use official 7-Zip source. Windows execution remains owner pending.
+Run the small read-only diagnostic below for that exact owner-supplied file. It reads at most six initial bytes and prints a format hint, size and expected-name candidate count/list only. It does not display raw header/data/hash bytes, request a password, parse/extract archives or write files. A known signature is not proof of integrity, encryption or offsite provenance; any candidate still needs the original local hash/test checker. Source: [security-stage-1-download-format-check.ps1](../../scripts/security-stage-1-download-format-check.ps1). Source/inline equality, unchanged history/tables, JSON/links/fences/diff and bounded read/disposal/output are checked; signatures use official 7-Zip source. Windows execution remains owner pending.
 
 ```powershell
 & {
@@ -1170,7 +1170,7 @@ The next correction selects the previously checked **original encrypted componen
 
 After the helper succeeds, open the existing private **Mushavo Budget Backups** Drive folder, choose **New → File upload**, paste the copied path into the Windows **File name** field and click **Open**. Wait for upload completion, then select that exact named file and right-click **Download** individually. This known encrypted-file upload is already authorized; previous unknown/whole-folder/raw cloud items remain separate scope/privacy follow-up before cloud protection acceptance. No cloud cleanup or other file upload is instructed. The strict original receipt/hash/downloaded-archive test still follows; path/size alone is not offsite proof.
 
-Source: [security-stage-1-original-archive-selection.ps1](../scripts/security-stage-1-original-archive-selection.ps1). Exact source/inline equality, immutable events/original tables, JSON/local links/fences/diff and private-hash/categorical/path-only behavior are checked against Microsoft/Google guidance. Windows execution and actual selected-file transfer remain owner pending.
+Source: [security-stage-1-original-archive-selection.ps1](../../scripts/security-stage-1-original-archive-selection.ps1). Exact source/inline equality, immutable events/original tables, JSON/local links/fences/diff and private-hash/categorical/path-only behavior are checked against Microsoft/Google guidance. Windows execution and actual selected-file transfer remain owner pending.
 
 ```powershell
 & {
@@ -1352,7 +1352,7 @@ PostgreSQL documents that pg_dump covers one database, with global role definiti
 }
 ```
 
-Source: [security-stage-1-local-coverage-check.ps1](../scripts/security-stage-1-local-coverage-check.ps1). Owner execution of the original block is recorded in S1E42 below; S1E43 corrects the publication definition descriptor counter. No repeat full block or export is requested. Send only resulting summary/table and redacted warnings/errors. Do not send hashes, source files, TOC/receipt contents, real passwords or archives. A REVIEW result is expected: it supplies indicator metadata for the next reconciliation, not complete platform or restore PASS. Google remains deferred and no Google handoff is reactivated.
+Source: [security-stage-1-local-coverage-check.ps1](../../scripts/security-stage-1-local-coverage-check.ps1). Owner execution of the original block is recorded in S1E42 below; S1E43 corrects the publication definition descriptor counter. No repeat full block or export is requested. Send only resulting summary/table and redacted warnings/errors. Do not send hashes, source files, TOC/receipt contents, real passwords or archives. A REVIEW result is expected: it supplies indicator metadata for the next reconciliation, not complete platform or restore PASS. Google remains deferred and no Google handoff is reactivated.
 
 ## Completed local count result and prior dependency handoff — S1E42–S1E43; received in S1E44
 
@@ -1396,7 +1396,7 @@ Run the following in the original Windows repository. It fetches the audit branc
 
 Verify Dashboard project **kttkospkblwvguuwnhjj**, paste into its SQL Editor and run. Send the seven metadata rows or redacted errors. The transaction is read-only/repeatable-read, bounded by 30-second statement and 3-second lock timeouts, then rolled back. This query creates no backup or restore and changes no roles, grants or configuration. Google remains deferred.
 
-The dedicated [recovery dependency fixture verifier](../scripts/verify-security-stage-1-recovery-dependencies.cjs) passes on disposable PGlite 0.5.8 / PostgreSQL 18.3. It exercises grant flags/ownership, direct/schema/expanded publication categories, zero/nonzero foreign/large-object counts, registered extension table/unlogged/filter metadata, empty publication inventories, private sentinel omission and rejected read-only writes. Its synthetic fixture setup mutates only the disposable test catalog, never hosted tables or the owner diagnostic. Owner PostgreSQL 17.6 execution was pending at S1E43 and is now received in S1E44 below. Source/member counts do not replace protected role/configuration artifacts or usable credential/key/Storage-byte recovery proof.
+The dedicated [recovery dependency fixture verifier](../../scripts/verify-security-stage-1-recovery-dependencies.cjs) passes on disposable PGlite 0.5.8 / PostgreSQL 18.3. It exercises grant flags/ownership, direct/schema/expanded publication categories, zero/nonzero foreign/large-object counts, registered extension table/unlogged/filter metadata, empty publication inventories, private sentinel omission and rejected read-only writes. Its synthetic fixture setup mutates only the disposable test catalog, never hosted tables or the owner diagnostic. Owner PostgreSQL 17.6 execution was pending at S1E43 and is now received in S1E44 below. Source/member counts do not replace protected role/configuration artifacts or usable credential/key/Storage-byte recovery proof.
 
 ## Source result and prior private role-export handoff — S1E44–S1E45; completed in S1E46
 
@@ -1525,7 +1525,7 @@ The file can contain sensitive **role-setting values**, so it stays in the exist
 }
 ```
 
-Source: [security-stage-1-role-export.ps1](../scripts/security-stage-1-role-export.ps1). Prepared/source-reviewed only; no Windows/PowerShell/native PostgreSQL runtime exists here. Send **only the metadata summary and redacted warnings/errors**. Keep SQL/setting values, password, hashes and manifest private. Next privately encrypt/verify the role component after its native result; do not upload raw files. No repeated original database export/encryption is requested. Google remains deferred. F16/exact managed/custom/extension/settings/key/file/configuration scope, source drift and isolated synthetic recovery remain open.
+Source: [security-stage-1-role-export.ps1](../../scripts/security-stage-1-role-export.ps1). Prepared/source-reviewed only; no Windows/PowerShell/native PostgreSQL runtime exists here. Send **only the metadata summary and redacted warnings/errors**. Keep SQL/setting values, password, hashes and manifest private. Next privately encrypt/verify the role component after its native result; do not upload raw files. No repeated original database export/encryption is requested. Google remains deferred. F16/exact managed/custom/extension/settings/key/file/configuration scope, source drift and isolated synthetic recovery remain open.
 
 ## Role-export result and prior private encryption — S1E46–S1E47; completed in S1E48
 
@@ -1700,7 +1700,7 @@ Next package **only this role SQL and its private manifest** in the existing pro
 }
 ```
 
-Source: [security-stage-1-role-encryption.ps1](../scripts/security-stage-1-role-encryption.ps1). Use a privately saved unique nonblank backup passphrase only at the native prompts. Send **only the metadata summary and redacted warnings/errors**; SQL, manifest/receipt contents, settings values, passwords, archives and hashes stay private. The package/file checks do not verify exact memberships/settings or SQL recovery. No Google handoff is reactivated.
+Source: [security-stage-1-role-encryption.ps1](../../scripts/security-stage-1-role-encryption.ps1). Use a privately saved unique nonblank backup passphrase only at the native prompts. Send **only the metadata summary and redacted warnings/errors**; SQL, manifest/receipt contents, settings values, passwords, archives and hashes stay private. The package/file checks do not verify exact memberships/settings or SQL recovery. No Google handoff is reactivated.
 
 ## Role-package result and prior private comparison — S1E48–S1E49; completed in S1E50
 
@@ -1766,7 +1766,7 @@ Role-wide setting statement counts are separate indicators: values and database-
 }
 ```
 
-Sources: [private role coverage handoff](../scripts/security-stage-1-role-coverage-check.ps1), [pinned Node checker](../scripts/security-stage-1-role-coverage.cjs) and [synthetic fixture tests](../tests/security-stage-1-role-coverage.test.cjs). Ten meaningful Node fixtures pass for changed flags/grantor/limits, duplicated/missing grants, literal/comment boundaries, unsupported syntax/password directives, setting-value scope and private-byte/sanitized-CLI guards. Dummy receipts/bytes test binding only; no real archive/native encryption proof is inferred. Windows/native owner execution remains pending. Send **only the JSON summary and redacted warnings/errors**. Keep SQL, settings, manifests, receipts, archives and hashes private. Google remains deferred.
+Sources: [private role coverage handoff](../../scripts/security-stage-1-role-coverage-check.ps1), [pinned Node checker](../../scripts/security-stage-1-role-coverage.cjs) and [synthetic fixture tests](../../tests/security-stage-1-role-coverage.test.cjs). Ten meaningful Node fixtures pass for changed flags/grantor/limits, duplicated/missing grants, literal/comment boundaries, unsupported syntax/password directives, setting-value scope and private-byte/sanitized-CLI guards. Dummy receipts/bytes test binding only; no real archive/native encryption proof is inferred. Windows/native owner execution remains pending. Send **only the JSON summary and redacted warnings/errors**. Keep SQL, settings, manifests, receipts, archives and hashes private. Google remains deferred.
 
 ## Prior private comparison and setting-scope handoff — S1E50–S1E51; metadata completed in S1E52
 
@@ -1799,7 +1799,7 @@ Use the owner's established SQL handoff:
 
 Verify Dashboard project **kttkospkblwvguuwnhjj**, paste into its SQL Editor and run once. Send **all five rows and redacted warnings/errors**; INFO/REVIEW are expected metadata states, not five security PASS results. Keep archived SQL/settings values, credentials, manifests and hashes private. No repeat role export/encryption/private comparison or Google action is requested.
 
-The [setting-scope fixture verifier](../scripts/verify-security-stage-1-setting-scope.cjs) passes on disposable PostgreSQL for all four scope categories, key-only privacy with equals/malformed/null entries, parameter PUBLIC/grant-option/ALTER SYSTEM metadata and null ACLs, builtin category, empty inventories, rejected read-only writes and propagated catalog permission errors. Any fixture catalog mutation is fresh disposable setup only; the [owner diagnostic](../supabase/diagnostics/security_stage_1_setting_scope.sql) contains read queries/local transaction settings and rollback. Hosted 17.6 execution/value reconciliation/restore remain pending.
+The [setting-scope fixture verifier](../../scripts/verify-security-stage-1-setting-scope.cjs) passes on disposable PostgreSQL for all four scope categories, key-only privacy with equals/malformed/null entries, parameter PUBLIC/grant-option/ALTER SYSTEM metadata and null ACLs, builtin category, empty inventories, rejected read-only writes and propagated catalog permission errors. Any fixture catalog mutation is fresh disposable setup only; the [owner diagnostic](../../supabase/diagnostics/security_stage_1_setting_scope.sql) contains read queries/local transaction settings and rollback. Hosted 17.6 execution/value reconciliation/restore remain pending.
 
 ## Prior settings metadata/private coverage handoff — S1E52–S1E53; owner REVIEW in S1E54, TOC correction in S1E55
 
@@ -1882,7 +1882,7 @@ The next block checks the **existing local components**. After owner/DACL/ancest
 }
 ```
 
-Source: [security-stage-1-setting-coverage-check.ps1](../scripts/security-stage-1-setting-coverage-check.ps1), [new pinned helper](../scripts/security-stage-1-setting-coverage.cjs) and [nine synthetic tests](../tests/security-stage-1-setting-coverage.test.cjs). Send only the JSON summary and redacted errors/warnings. Never send SQL/TOC, receipts/manifests, actual setting values, passwords, archives or private hashes. A REVIEW retains the artifact and identifies a narrower unresolved check; it is not automatically corruption or a new export requirement. F16/full platform/offsite/isolated recovery remain open.
+Source: [security-stage-1-setting-coverage-check.ps1](../../scripts/security-stage-1-setting-coverage-check.ps1), [new pinned helper](../../scripts/security-stage-1-setting-coverage.cjs) and [nine synthetic tests](../../tests/security-stage-1-setting-coverage.test.cjs). Send only the JSON summary and redacted errors/warnings. Never send SQL/TOC, receipts/manifests, actual setting values, passwords, archives or private hashes. A REVIEW retains the artifact and identifies a narrower unresolved check; it is not automatically corruption or a new export requirement. F16/full platform/offsite/isolated recovery remain open.
 
 ## Prior private result/full-TOC handoff — S1E54–S1E55; native listing completed in S1E56
 
@@ -1962,14 +1962,14 @@ The inline block below retains owner/DACL/ancestor checks, fetches three pinned 
 }
 ```
 
-Source: [inline handoff](../scripts/security-stage-1-database-properties-toc-check.ps1), [new pinned listing helper](../scripts/security-stage-1-database-properties-toc.cjs), [seven targeted tests](../tests/security-stage-1-database-properties-toc.test.cjs). Send **only JSON summary and redacted errors/warnings**; never send full TOC, native-message files, receipts, archives, values or hashes. Do not rerun the superseded S1E53 selected-list check or infer that its zero counts require a new export. Review the new full-TOC result, then proceed to actual Storage bytes/provider configuration; exact settings/managed/key/source-drift/recovery dependencies stay carried into recovery/final remediation. F16/full platform/offsite/restore gates remain open.
+Source: [inline handoff](../../scripts/security-stage-1-database-properties-toc-check.ps1), [new pinned listing helper](../../scripts/security-stage-1-database-properties-toc.cjs), [seven targeted tests](../../tests/security-stage-1-database-properties-toc.test.cjs). Send **only JSON summary and redacted errors/warnings**; never send full TOC, native-message files, receipts, archives, values or hashes. Do not rerun the superseded S1E53 selected-list check or infer that its zero counts require a new export. Review the new full-TOC result, then proceed to actual Storage bytes/provider configuration; exact settings/managed/key/source-drift/recovery dependencies stay carried into recovery/final remediation. F16/full platform/offsite/restore gates remain open.
 
 ## Completed owner SQL handoff — retained for reproducibility
 
 
 The owner supplied its results in S1E13. The original Dashboard handoff below is retained for reproducibility, not a repeat request. No engine startup or CLI help rerun is requested for the selected route.
 
-The deployed SQL source is [security_stage_1_backup_inventory.sql](../supabase/diagnostics/security_stage_1_backup_inventory.sql). Copy it using the owner's established handoff below. Fetch/show does not merge, reset or change the original native checkout's tracked files.
+The deployed SQL source is [security_stage_1_backup_inventory.sql](../../supabase/diagnostics/security_stage_1_backup_inventory.sql). Copy it using the owner's established handoff below. Fetch/show does not merge, reset or change the original native checkout's tracked files.
 
 ```powershell
 & {
@@ -1994,7 +1994,7 @@ This metadata is not a full configuration inventory. Auth/SMTP/Edge/provider set
 
 ## Local validation — S1E10
 
-[verify-security-stage-1-backup-inventory.cjs](../scripts/verify-security-stage-1-backup-inventory.cjs) executes the diagnostic against disposable PGlite PostgreSQL fixtures, with no network or hosted credentials. It checks the 13-row INFO/REVIEW contract, read-only/repeatable-read context, counts, empty inventories, invalid/missing/negative/oversized size metadata, managed trigger/policy indicators, omission of seeded private values and rejection of writes in a read-only transaction. The fixture passed; S1E11 records the historical engine/wrapper blockers; S1E12 selects standalone PostgreSQL exports. S1E13 separately records the owner-run deployed output; local fixture evidence remains its own scope. Neither result is a production backup or recovery test.
+[verify-security-stage-1-backup-inventory.cjs](../../scripts/verify-security-stage-1-backup-inventory.cjs) executes the diagnostic against disposable PGlite PostgreSQL fixtures, with no network or hosted credentials. It checks the 13-row INFO/REVIEW contract, read-only/repeatable-read context, counts, empty inventories, invalid/missing/negative/oversized size metadata, managed trigger/policy indicators, omission of seeded private values and rejection of writes in a read-only transaction. The fixture passed; S1E11 records the historical engine/wrapper blockers; S1E12 selects standalone PostgreSQL exports. S1E13 separately records the owner-run deployed output; local fixture evidence remains its own scope. Neither result is a production backup or recovery test.
 
 ## Work after this inventory
 

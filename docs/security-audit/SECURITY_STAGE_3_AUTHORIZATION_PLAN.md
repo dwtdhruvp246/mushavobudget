@@ -1,6 +1,6 @@
 # Stage 3 — Authorization, application Admin MFA and Auth flows
 
-**Planning only — 3.1, 10 October 2026.** Prepared for owner review before implementation. Six finite main steps; no Stage 3 diagnostic, hosted test, code change, SQL migration, Auth setting or MFA enforcement has been executed by this plan. Stage 2 remains closed with carry-forward. The structured progress record is not advanced merely because this outline exists.
+**Started — 3.1, 10 October 2026.** Owner authorized the six-step stage with “ok lets start”. [3.1 permission map and baseline](SECURITY_STAGE_3_1_PERMISSION_BASELINE.md) and one read-only STAGING inventory are prepared; 12 disposable diagnostic fixtures passed. Hosted results and application permission/MFA/Auth behavior checks remain pending. Stage 2 remains closed with carry-forward. No runtime enforcement or Auth setting has changed.
 
 ## What this stage means
 

@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "stage": 3,
+  "updated_date": "2026-10-10",
+  "active_step": "3.1",
+  "source_review_head": "e4f3b573bee2b9e344ec0b946c21e779449d8664",
+  "events": [
+    {
+      "id": "S3E01",
+      "stage_step": "3.1",
+      "recorded_date": "2026-10-10",
+      "result": "STAGE_3_STARTED_WITH_SIX_FINITE_STEPS",
+      "owner_instruction": "ok lets start",
+      "plan": "docs/security-audit/SECURITY_STAGE_3_AUTHORIZATION_PLAN.md",
+      "prior_stage_report": "docs/security-audit/SECURITY_STAGE_2_COMPLETION_REPORT.md",
+      "prior_stage_reopened": false,
+      "findings": [
+        "F08",
+        "F15"
+      ],
+      "findings_closed": false
+    },
+    {
+      "id": "S3E02",
+      "stage_step": "3.1.1",
+      "recorded_date": "2026-10-10",
+      "result": "SOURCE_PERMISSION_MAP_AND_LOCAL_BASELINE_FIXTURES_PASS_OWNER_METADATA_PENDING",
+      "map": "docs/security-audit/SECURITY_STAGE_3_1_PERMISSION_BASELINE.md",
+      "diagnostic": "supabase/diagnostics/security_stage_3_permission_baseline.sql",
+      "diagnostic_sha256": "61932505de6dc1934e18e0bb41d60ed05f7efa28c6ab549cf5013a66225eed7e",
+      "local_validator": "scripts/verify-stage-3-permission-baseline.mjs",
+      "local_validator_sha256": "eb43299529cd87fff9395282c4ffd8f5288ca50da3a9e4cc90acae99a97257d9",
+      "scope": {
+        "selected_tables": 24,
+        "selected_routines": 20,
+        "protected_currency_helpers": 2,
+        "result_rows": 8,
+        "later_acceptance_groups": 24
+      },
+      "local_validation": {
+        "engine": "PGlite 0.5.8 / PostgreSQL 18.3",
+        "checks_passed": 12,
+        "cases": [
+          "eight-row/read-only transaction",
+          "redacted output and no application function invocation",
+          "column-only anonymous SELECT",
+          "inherited anonymous SELECT",
+          "PUBLIC SELECT",
+          "inherited signed-in helper EXECUTE",
+          "default PUBLIC function EXECUTE inventory",
+          "disabled RLS",
+          "view/restrictive-policy metadata",
+          "missing helper",
+          "missing private table",
+          "missing API role"
+        ]
+      },
+      "owner_metadata_target": "dczlddwbtgvfdujgcitb",
+      "owner_metadata_received": false,
+      "native_postgresql_17_hosted_execution_verified": false,
+      "application_authorization_verified": false,
+      "function_body_or_setting_value_returned": false,
+      "repository_dependencies_changed": false,
+      "hosted_connection_performed": false,
+      "runtime_enforcement_or_auth_settings_changed": false,
+      "production_or_native_changed": false,
+      "full_security_or_release_acceptance_verified": false
+    }
+  ]
+}

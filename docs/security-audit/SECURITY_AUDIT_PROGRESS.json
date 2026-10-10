@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "updated_date": "2026-10-10",
-  "current_stage": 2,
-  "current_step": "2.4",
-  "current_title": "Stage 2 closed with scoped passes and carry-forward",
+  "current_stage": 3,
+  "current_step": "3.1",
+  "current_title": "Stage 3 permission baseline prepared; staging metadata receipt pending",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 3,
-  "next_step": "3.1",
+  "next_step": "3.1.1",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -1259,6 +1259,65 @@
     "latest_evidence": "S2E38",
     "closed_date": "2026-10-10",
     "production_promoted": false,
+    "full_security_or_release_acceptance_verified": false
+  },
+  "stage_3": {
+    "status": "ACTIVE_PERMISSION_BASELINE_AWAITING_OWNER_RECEIPT",
+    "authorized": true,
+    "started_date": "2026-10-10",
+    "active_step": "3.1",
+    "plan": "docs/security-audit/SECURITY_STAGE_3_AUTHORIZATION_PLAN.md",
+    "evidence": "docs/security-audit/security-stage-3-evidence.json",
+    "bounded_steps": 6,
+    "completed_steps": 0,
+    "remaining_steps": 6,
+    "steps": [
+      {
+        "id": "3.1",
+        "title": "Permission map and baseline",
+        "status": "SOURCE_MAP_AND_LOCAL_DIAGNOSTIC_CHECKS_COMPLETE_AWAITING_STAGING_METADATA",
+        "bounded_work_items": 3,
+        "completed_work_items": 0,
+        "remaining_work_items": 3,
+        "active_work_item": "3.1.1",
+        "instructions": "docs/security-audit/SECURITY_STAGE_3_1_PERMISSION_BASELINE.md",
+        "metadata_diagnostic": "supabase/diagnostics/security_stage_3_permission_baseline.sql",
+        "owner_execution_target": "dczlddwbtgvfdujgcitb",
+        "owner_metadata_received": false,
+        "local_diagnostic_fixture_checks_passed": 12,
+        "local_fixture_engine": "PGlite 0.5.8 / PostgreSQL 18.3",
+        "application_authorization_verified": false,
+        "latest_evidence": "S3E02"
+      },
+      {
+        "id": "3.2",
+        "title": "Personal and Family isolation",
+        "status": "PENDING"
+      },
+      {
+        "id": "3.3",
+        "title": "Business roles and scopes",
+        "status": "PENDING"
+      },
+      {
+        "id": "3.4",
+        "title": "Privileged entrypoints and application Admin MFA",
+        "status": "PENDING"
+      },
+      {
+        "id": "3.5",
+        "title": "Sign-in, password, invitation and recovery flows",
+        "status": "PENDING"
+      },
+      {
+        "id": "3.6",
+        "title": "Recheck, report and handoff",
+        "status": "PENDING"
+      }
+    ],
+    "latest_evidence": "S3E02",
+    "production_promoted": false,
+    "application_mfa_enforced": false,
     "full_security_or_release_acceptance_verified": false
   }
 }

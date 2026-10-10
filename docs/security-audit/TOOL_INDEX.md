@@ -22,6 +22,8 @@ All audit reports, plans and redacted evidence are in this folder. [Start here](
 - [security_stage_2_contact_metadata.sql](../../supabase/diagnostics/security_stage_2_contact_metadata.sql)
 - [security_stage_2_push_destinations.sql](../../supabase/diagnostics/security_stage_2_push_destinations.sql)
 
+- [security_stage_3_permission_baseline.sql](../../supabase/diagnostics/security_stage_3_permission_baseline.sql) — eight-row read-only STAGING catalog baseline.
+
 ## Audit and staging/recovery scripts
 
 - [build-capacitor.mjs](../../scripts/build-capacitor.mjs)
@@ -103,3 +105,7 @@ All audit reports, plans and redacted evidence are in this folder. [Start here](
 - [Full application test directory](../../tests/), [migration directory](../../supabase/migrations/) and [deployment verification workflow](../../.github/workflows/pages.yml) contain supporting existing product regressions and integration history.
 
 Private exports, original backups, certificates, keys and passwords are owner-held artifacts and are not copied into the public audit folder. The index contains only tracked repository files.
+
+## Stage 3 diagnostic validation
+
+- [verify-stage-3-permission-baseline.mjs](../../scripts/verify-stage-3-permission-baseline.mjs) — disposable catalog fixtures using an externally supplied PGlite module; no hosted connection or application authorization proof.

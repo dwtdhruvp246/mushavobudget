@@ -99,7 +99,7 @@ All audit reports, plans and redacted evidence are in this folder. [Start here](
 - [Shared push destination guard](../../supabase/functions/_shared/push-destination.mjs).
 - [Test push sender](../../supabase/functions/send-test-push/index.ts), [reminder dispatcher](../../supabase/functions/dispatch-push-reminders/index.ts), and [Admin dispatcher](../../supabase/functions/dispatch-admin-notifications/index.ts).
 - [Header candidate](../../_headers) and [Contact frontend](../../site.js).
-- [Business invitation activation guide](../BUSINESS_INVITATION_NOTIFICATION_SETUP.md) and [Auth templates](../../supabase/templates/).
+- [Business invitation activation guide](BUSINESS_INVITATION_NOTIFICATION_SETUP.md) and [Auth templates](../../supabase/templates/).
 - [Full application test directory](../../tests/), [migration directory](../../supabase/migrations/) and [deployment verification workflow](../../.github/workflows/pages.yml) contain supporting existing product regressions and integration history.
 
 Private exports, original backups, certificates, keys and passwords are owner-held artifacts and are not copied into the public audit folder. The index contains only tracked repository files.

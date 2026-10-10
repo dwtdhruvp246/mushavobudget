@@ -23,10 +23,11 @@ All security audit documentation and evidence from Stage 0 onward is collected i
 
 ## All stage documents and evidence
 
-The 35 existing audit documents/evidence files were moved here from the parent docs folder; their report outcomes and historical receipts are retained. Earlier status paragraphs within a report are historical snapshots. Use its latest status and the progress record for current position.
+The 36 existing audit documents/evidence files were moved here from the parent docs folder; their report outcomes and historical receipts are retained. Earlier status paragraphs within a report are historical snapshots. Use its latest status and the progress record for current position.
 
 ### Stage 0 — Baseline
 
+- [Business invitation email and Notifications setup](BUSINESS_INVITATION_NOTIFICATION_SETUP.md)
 - [Security and store release — Stage 0 baseline](SECURITY_STAGE_0_BASELINE.md)
 - [Stage 0 closure checklist](SECURITY_STAGE_0_CLOSURE_CHECKLIST.md)
 - [0.6 — Stage 0 completion audit report and action plan](SECURITY_STAGE_0_COMPLETION_REPORT.md)

@@ -181,7 +181,7 @@
       "Historical link invalidation and all Auth flows"
     ],
     "earlier_evidence_snapshots_preserved": true,
-    "activation_guide": "docs/BUSINESS_INVITATION_NOTIFICATION_SETUP.md"
+    "activation_guide": "docs/security-audit/BUSINESS_INVITATION_NOTIFICATION_SETUP.md"
   },
   "owner_admin_invitation_smoke_test": {
     "received_date": "2026-10-06",

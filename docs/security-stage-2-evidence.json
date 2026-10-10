@@ -1209,6 +1209,77 @@
       "remaining_contact_work_items": 1,
       "remaining_sequence": "Prepared website upload, then existing single controlled staging acceptance batch; record unavailable cases rather than adding indefinite tasks",
       "f09_closed": false
+    },
+    {
+      "id": "S2E23",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_STAGING_CONTACT_FRONTEND_DEPLOYMENT_CONFIRMED",
+      "intended_pages_project": "mushavo-budget-staging",
+      "intended_website": "https://mushavo-budget-staging.pages.dev/",
+      "owner_report": "it was deployed",
+      "prepared_web_directory": "C:\\Users\\HP\\Desktop\\MushavoBudget-Staging-Contact-40496c9017e14aac85fc4be78b10bb24\\web",
+      "owner_upload_confirmed": true,
+      "live_candidate_content_independently_verified": false,
+      "root_public_asset_reads": {
+        "paths": [
+          "/contact.html",
+          "/site.js",
+          "/config.js"
+        ],
+        "native_http_statuses": [
+          403,
+          403,
+          403
+        ],
+        "web_retrieval": "Not accessible"
+      },
+      "root_retrieval_error_cause_established": false,
+      "real_widget_or_submission_quota_permissions_verified": false,
+      "production_or_native_deployment_requested": false
+    },
+    {
+      "id": "S2E24",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "BOUNDED_STAGING_CONTACT_ACCEPTANCE_BATCH_READY",
+      "checker": "scripts/check-staging-contact-api.cjs",
+      "owner_runner": "scripts/run-staging-contact-acceptance.ps1",
+      "read_only_review_sql": "supabase/diagnostics/security_stage_2_contact_acceptance.sql",
+      "execution_target": "dczlddwbtgvfdujgcitb",
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "source_parity": "Canonical SHA-256 of reviewed site.js and HTML with only public sitekey substitution/line-ending normalization",
+      "api_scope": [
+        "staging public config and candidate/header parity",
+        "browser preflight",
+        "missing origin",
+        "administrative fields",
+        "oversized body",
+        "missing and forged challenge token",
+        "anonymous direct INSERT/RPC and quota read denial",
+        "optional existing staging test-user sign-in positive control and matching signed-in denials",
+        "local test-session logout"
+      ],
+      "test_account": "audit.owner@example.com; owner-local app password optional, absence is UNVERIFIED",
+      "password_or_tokens_printed_or_sent_to_root": false,
+      "possible_unexpected_bypass_effect": "At most four clearly marked synthetic staging enquiry attempts through INSERT/RPC if protections fail; unexpected rows retained, not deleted",
+      "form_scope": "One batch: required fields, three same-email synthetic enquiries, fourth denial and retained values",
+      "form_message_prefix": "AUDIT-S223-FORM-20261010 enquiry ",
+      "review_sql_scope": "Single read-only three-row result set; expected 3 matching new website enquiries and 1 email; no raw fields/identifiers",
+      "local_checker_tests_passed": 5,
+      "local_validation": "Real handler rejection paths with mocked provider/role API receipts; failed grants and JWT 401 false-positive prevention; wrong-config/source guard; password skip and safe summaries",
+      "owner_invoker_javascript_extracted_compile_and_run": "PASS with wrong-project fixture; Windows PowerShell not executed by root",
+      "sql_parse": "PASS, 5 statements using PostgreSQL 18.6 parser; actual PostgreSQL 17 execution owner-pending",
+      "existing_32_candidate_checks_changed_or_repeated": false,
+      "actual_hosted_acceptance_executed_by_root": false,
+      "unverified_carry": [
+        "real challenge replay/wrong-host behavior",
+        "concurrent/global quota and rollback scenarios",
+        "staff app queue/update and dispatch access if no existing staging staff account"
+      ],
+      "remaining_contact_work_items": 1,
+      "f09_closed": false,
+      "owner_runner_sequence": "Guarded API checks first; REVIEW stops before browser writes; scoped PASS pauses for manual form tests; owner presses Enter afterward for read-only SQL clipboard handoff"
     }
   ]
 }

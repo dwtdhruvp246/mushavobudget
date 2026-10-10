@@ -1119,7 +1119,7 @@
         "bounded_work_items": 3,
         "completed_work_items": 2,
         "remaining_work_items": 1,
-        "latest_evidence": "S2E22",
+        "latest_evidence": "S2E24",
         "instructions": "docs/SECURITY_STAGE_2_2_PUBLIC_CONTACT.md",
         "metadata_diagnostic": "supabase/diagnostics/security_stage_2_contact_metadata.sql",
         "owner_execution_target": "dczlddwbtgvfdujgcitb",
@@ -1145,8 +1145,15 @@
         "database_gate_clipboard_handoff_evidence": "S2E20",
         "owner_database_gate_evidence": "S2E21",
         "owner_secret_confirmation_evidence": "S2E21",
-        "staging_frontend_upload_owner_confirmed": false,
-        "frontend_upload_handoff_evidence": "S2E22"
+        "staging_frontend_upload_owner_confirmed": true,
+        "frontend_upload_handoff_evidence": "S2E22",
+        "owner_frontend_upload_evidence": "S2E23",
+        "live_candidate_independently_verified": false,
+        "owner_acceptance_checker": "scripts/check-staging-contact-api.cjs",
+        "owner_acceptance_runner": "scripts/run-staging-contact-acceptance.ps1",
+        "owner_acceptance_review_sql": "supabase/diagnostics/security_stage_2_contact_acceptance.sql",
+        "owner_acceptance_checker_local_tests_passed": 5,
+        "owner_controlled_acceptance_result_received": false
       },
       {
         "id": "2.3",

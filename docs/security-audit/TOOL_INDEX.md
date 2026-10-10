@@ -109,3 +109,11 @@ Private exports, original backups, certificates, keys and passwords are owner-he
 ## Stage 3 diagnostic validation
 
 - [verify-stage-3-permission-baseline.mjs](../../scripts/verify-stage-3-permission-baseline.mjs) — disposable catalog fixtures using an externally supplied PGlite module; no hosted connection or application authorization proof.
+
+## Stage 3 Personal/Family controlled acceptance
+
+- [3.2 instructions and bounded matrix](SECURITY_STAGE_3_2_PERSONAL_FAMILY.md).
+- [check-stage-3-personal-api.cjs](../../scripts/check-stage-3-personal-api.cjs) — staging-only ordinary accounts, inactive synthetic Personal writes and owner effect verification.
+- [run-stage-3-personal-acceptance.ps1](../../scripts/run-stage-3-personal-acceptance.ps1) — complete masked-password owner runner from a pinned commit.
+- [stage-3-personal-api.test.cjs](../../tests/stage-3-personal-api.test.cjs) — 28 checker tests including hidden mutations/insert effects and non-authorization errors.
+- [verify-stage-3-personal-workspace-bindings.mjs](../../scripts/verify-stage-3-personal-workspace-bindings.mjs) — reduced-schema current-source binding probe; gap reproduced, hosted behavior unverified.

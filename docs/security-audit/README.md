@@ -1,6 +1,6 @@
 # Mushavo Budget security audit — Start here
 
-All security audit documentation and evidence from Stage 0 onward is collected in this folder. Updated 10 October 2026. **Stages 0–2 have closed checkpoints with carry-forward; Stage 3 has completed its 3.1 permission baseline; next is 3.2.1 Personal/Family isolation.** A closed checkpoint does not close an unresolved finding or approve a release.
+All security audit documentation and evidence from Stage 0 onward is collected in this folder. Updated 10 October 2026. **Stages 0–2 have closed checkpoints with carry-forward; Stage 3 has completed its 3.1 permission baseline; 3.2.1 Personal/Family review and the first controlled Personal API batch are prepared, owner result pending.** A closed checkpoint does not close an unresolved finding or approve a release.
 
 ## Main documents
 
@@ -70,6 +70,7 @@ The 36 existing audit documents/evidence files were moved here from the parent d
 
 - [Six-step Stage 3 breakdown](SECURITY_STAGE_3_AUTHORIZATION_PLAN.md).
 - [3.1 — Permission map, bounded acceptance groups and staging baseline](SECURITY_STAGE_3_1_PERMISSION_BASELINE.md) — baseline closed with owner scoped metadata passes and source classification; application behavior checks remain pending.
+- [3.2 — Personal/Family source review, finite phases and first controlled API batch](SECURITY_STAGE_3_2_PERSONAL_FAMILY.md).
 - [security-stage-3-evidence.json](security-stage-3-evidence.json).
 
 ## How to use the folder

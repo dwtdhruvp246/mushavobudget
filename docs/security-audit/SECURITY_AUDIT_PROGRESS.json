@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-10",
   "current_stage": 3,
-  "current_step": "3.1",
-  "current_title": "Permission baseline closed with scoped metadata passes; Personal/Family tests next",
+  "current_step": "3.2.1",
+  "current_title": "Personal/Family source review and first Personal CRUD API batch prepared; owner result pending",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1262,10 +1262,10 @@
     "full_security_or_release_acceptance_verified": false
   },
   "stage_3": {
-    "status": "ACTIVE_BASELINE_CLOSED_PERSONAL_FAMILY_REVIEW_NEXT",
+    "status": "ACTIVE_PERSONAL_FAMILY_CONTROLLED_ACCEPTANCE_PENDING",
     "authorized": true,
     "started_date": "2026-10-10",
-    "active_step": null,
+    "active_step": "3.2",
     "plan": "docs/security-audit/SECURITY_STAGE_3_AUTHORIZATION_PLAN.md",
     "evidence": "docs/security-audit/security-stage-3-evidence.json",
     "bounded_steps": 6,
@@ -1305,7 +1305,21 @@
       {
         "id": "3.2",
         "title": "Personal and Family isolation",
-        "status": "PENDING"
+        "status": "SOURCE_REVIEW_AND_PERSONAL_API_BATCH_PREPARED_OWNER_PENDING",
+        "bounded_work_items": 3,
+        "completed_work_items": 0,
+        "remaining_work_items": 3,
+        "active_work_item": "3.2.1",
+        "instructions": "docs/security-audit/SECURITY_STAGE_3_2_PERSONAL_FAMILY.md",
+        "owner_execution_target": "dczlddwbtgvfdujgcitb",
+        "owner_checker": "scripts/check-stage-3-personal-api.cjs",
+        "owner_runner": "scripts/run-stage-3-personal-acceptance.ps1",
+        "local_checker_tests_passed": 28,
+        "local_binding_probe_controls": 6,
+        "local_paid_record_workspace_gap_reproduced": true,
+        "owner_api_result_received": false,
+        "runtime_or_auth_changes_made": false,
+        "latest_evidence": "S3E06"
       },
       {
         "id": "3.3",
@@ -1328,7 +1342,7 @@
         "status": "PENDING"
       }
     ],
-    "latest_evidence": "S3E05",
+    "latest_evidence": "S3E06",
     "production_promoted": false,
     "application_mfa_enforced": false,
     "full_security_or_release_acceptance_verified": false

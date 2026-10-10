@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 3,
   "updated_date": "2026-10-10",
-  "active_step": "3.1",
+  "active_step": "3.2.1",
   "source_review_head": "e4f3b573bee2b9e344ec0b946c21e779449d8664",
   "events": [
     {
@@ -1756,6 +1756,51 @@
       "production_or_native_changed": false,
       "stage_3_complete": false,
       "additional_owner_baseline_sql_requested": false
+    },
+    {
+      "id": "S3E06",
+      "stage_step": "3.2.1",
+      "recorded_date": "2026-10-10",
+      "result": "PERSONAL_FAMILY_SOURCE_REVIEW_PERSONAL_API_CHECKER_PASS_BINDING_GAP_REPRODUCED_OWNER_PENDING",
+      "source_review_head": "27c5097bb95d08ca03ac2c1a5fe214b06e833935",
+      "instructions": "docs/security-audit/SECURITY_STAGE_3_2_PERSONAL_FAMILY.md",
+      "checker": "scripts/check-stage-3-personal-api.cjs",
+      "runner": "scripts/run-stage-3-personal-acceptance.ps1",
+      "local_tests": "tests/stage-3-personal-api.test.cjs",
+      "local_checker_tests_passed": 28,
+      "complete_personal_batch_expected_pass_checks": 33,
+      "reduced_schema_probe": {
+        "script": "scripts/verify-stage-3-personal-workspace-bindings.mjs",
+        "engine": "PGlite 0.5.8 / PostgreSQL 18.3",
+        "selected_controls_passed": 6,
+        "current_source_direct_paid_record_workspace_gap_reproduced": true,
+        "local_only_expanded_trigger_coverage_normalizes_workspace": true,
+        "dependency_adapters": "Minimal account/entitlement/Family helpers; actual selected migration policies/functions/triggers extracted",
+        "complete_schema_or_hosted_behavior_verified": false
+      },
+      "finding": "F15",
+      "new_followup": "Derived paid-record workspace may be directly changed to an existing foreign workspace without changing its parent item in the focused current-source fixture; hosted reachability/impact pending",
+      "owner_target": "dczlddwbtgvfdujgcitb",
+      "synthetic_accounts": [
+        "audit.owner@example.com",
+        "audit.outsider@example.com"
+      ],
+      "owner_api_result_received": false,
+      "fixtures": "One generated USD 1 inactive schedule and paid record per account; exact UUID requests; existing Stage 1 seed untouched; incomplete run retained on review",
+      "email_push_scheduler_or_service_requests_sent": false,
+      "native_powershell_runtime_verified": false,
+      "application_authorization_verified": false,
+      "runtime_guard_or_migration_changed": false,
+      "repository_dependencies_changed": false,
+      "production_or_native_changed": false,
+      "findings_closed": false,
+      "full_security_or_release_acceptance_verified": false,
+      "artifact_sha256": {
+        "scripts/check-stage-3-personal-api.cjs": "e157dd2ba70cfc8b45e25ea75536d5f96ace195d808e0ba97d6263adcc5fd5dd",
+        "scripts/run-stage-3-personal-acceptance.ps1": "a91bf6287f928ec3f7974e7deee6d718b7ee2af6f2afd2293a01972869416edc",
+        "scripts/verify-stage-3-personal-workspace-bindings.mjs": "ff42ae3c286d73774ee016e4bf99151249b783e353ef0f190e56d6cd5f1ab966",
+        "tests/stage-3-personal-api.test.cjs": "90983a0e7c13d0dd03c1d83467806666eb48bba3564ca2534ae5c31779ca1da6"
+      }
     }
   ],
   "source_reconciliation_head": "9388fc8c3e48ac3fd124d73b7f918785da957104"

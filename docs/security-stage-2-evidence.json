@@ -1335,6 +1335,79 @@
       "mismatch_cause_established": false,
       "remaining_contact_work_items": 1,
       "f09_closed": false
+    },
+    {
+      "id": "S2E27",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_LOCAL_AND_DEPLOYED_CONTACT_ENCODING_DIAGNOSTIC_RECEIVED",
+      "owner_completed_utc": "2026-10-10T09:37:00.449Z",
+      "diagnostic_source_commit": "66abef2c7e0a30519131477a3253b0c5c0db43c0",
+      "project": "dczlddwbtgvfdujgcitb",
+      "site_javascript": {
+        "local_available": true,
+        "local_utf8_bytes": 18241,
+        "local_exact_candidate_match": false,
+        "local_ascii_skeleton_match_diagnostic_only": true,
+        "replacement_characters": 0,
+        "leading_bom": false,
+        "endpoint_marker_present": true,
+        "cloudflare_rewrite_marker": false,
+        "live_http_status": 200,
+        "live_utf8_bytes": 18241,
+        "live_matches_local": true,
+        "live_exact_candidate_match": false,
+        "live_ascii_skeleton_match_diagnostic_only": true,
+        "cache_busted_matches_local_and_normal_live": true
+      },
+      "contact_html": {
+        "local_available": true,
+        "local_utf8_bytes": 6612,
+        "local_exact_candidate_match": false,
+        "local_ascii_skeleton_match_diagnostic_only": true,
+        "replacement_characters": 0,
+        "leading_bom": false,
+        "real_format_public_sitekey_count": 1,
+        "cloudflare_rewrite_marker": false,
+        "live_and_cache_busted_available": false,
+        "live_problem_code": "ASSET_READ_FAILED",
+        "actual_redirect_or_network_error_cause_observed": false
+      },
+      "mismatch_already_present_in_prepared_folder": true,
+      "likely_cause": "Original preparation used native git show through PowerShell text decoding/Out-String, then UTF-8 re-encoding; non-ASCII changes are supported by both diagnostic fingerprints",
+      "root_reproduction": "UTF-8 site.js decoded as CP437/CP850 and written with Windows CRLF produces 18241 bytes, matching reported size; actual owner bytes/code page not retrieved",
+      "encoding_conversion_proven_for_exact_owner_bytes": false,
+      "backend_auth_requests_or_files_modified_by_diagnostic": false,
+      "secret_values_received": false,
+      "f09_closed": false
+    },
+    {
+      "id": "S2E28",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "BYTE_PRESERVING_STAGING_CONTACT_REPAIR_AND_CANONICAL_HTML_READ_READY",
+      "preparation_script": "scripts/prepare-stage-2-contact.ps1",
+      "extraction": "Node execFileSync Git stdout Buffers written without PowerShell decoding; canonical reviewed hashes checked before and after public preparation",
+      "owner_mode": "Repair from existing prepared web folder; reuse its one real-format public widget sitekey; preserve config bytes and other allowlisted assets; create a new folder",
+      "staging_route_correction": "Public GET uses /contact, Cloudflare Pages documented extension-less HTML address; original diagnostic rejected redirects, actual owner's HTML failure remains unproven",
+      "acceptance_hashes_unchanged": true,
+      "changed_checkers": [
+        "scripts/check-staging-contact-api.cjs",
+        "scripts/diagnose-staging-contact-files.cjs"
+      ],
+      "local_validation": {
+        "total_passed": 45,
+        "new_byte_preparation_tests": 3,
+        "api_and_file_diagnostic_tests": 10,
+        "existing_contact_and_header_tests": 32,
+        "real_git_node_extractor_fixture": "PASS: damaged Unicode corrected, pinned native buffers preserved, existing key/config reused, source files unchanged; altered candidate and missing-key guards fail before web creation",
+        "native_windows_powershell_execution_verified_by_root": false
+      },
+      "owner_repair_or_redeployment_result_received": false,
+      "backend_sql_or_function_redeployment_requested": false,
+      "production_or_native_changes_requested": false,
+      "remaining_contact_work_items": 1,
+      "f09_closed": false
     }
   ]
 }

@@ -24,7 +24,7 @@ function fixture({ bypass = false, badDenial = false, productionConfig = false, 
     calls.push({ url, options });
     if (url === WEBSITE + '/config.js') return new Response('window.MUSHAVO_BUDGET_CONFIG = ' + JSON.stringify(config) + ';');
     if (url === WEBSITE + '/site.js') return new Response(site);
-    if (url === WEBSITE + '/contact.html') return new Response(html, { headers });
+    if (url === WEBSITE + '/contact') return new Response(html, { headers });
     if (url === STAGING + '/functions/v1/submit-enquiry') return handler(new Request(url, options));
     if (url === STAGING + '/auth/v1/token?grant_type=password') return Response.json({ access_token: token,
       user: { id: 'private_user_id', email: 'audit.owner@example.com' } });

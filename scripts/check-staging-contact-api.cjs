@@ -48,7 +48,8 @@ async function run({ fetcher = fetch, password = '', now = Date.now } = {}) {
     config = parseConfig((await getFile('/config.js')).text);
     record('Deployed config is staging only', true);
     const site = await getFile('/site.js');
-    const html = await getFile('/contact.html');
+    // Pages serves the canonical extension-less HTML route.
+    const html = await getFile('/contact');
     const siteMatches = hash(site.text) === SITE_HASH;
     const keyMatches = (html.text.match(/data-sitekey="0x[A-Za-z0-9_-]{10,100}"/g) || []).length === 1;
     const htmlMatches = keyMatches && hash(html.text.replace(/data-sitekey="0x[A-Za-z0-9_-]{10,100}"/, 'data-sitekey=""')) === HTML_HASH;

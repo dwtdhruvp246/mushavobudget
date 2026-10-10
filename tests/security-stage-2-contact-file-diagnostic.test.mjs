@@ -18,13 +18,16 @@ function fetchFixture(transform = (name, text) => text) {
     assert.equal(parsed.origin, WEBSITE); assert.equal(opts.method, 'GET'); assert.equal(opts.redirect, 'error');
     assert.deepEqual(Object.keys(opts).sort(), ['cache', 'method', 'redirect', 'signal']);
     calls.push(url);
-    return new Response(transform(parsed.pathname.slice(1), texts[parsed.pathname.slice(1)], parsed), { status: 200 });
+    const name = parsed.pathname === '/contact' ? 'contact.html' : parsed.pathname.slice(1);
+    return new Response(transform(name, texts[name], parsed), { status: 200 });
   };
   return { calls, fetcher };
 }
 test('compares prepared/live/cache-busted candidate using only four public GETs and safe metadata', async () => {
   const fixture = fetchFixture(); const result = await run({ ...options, fetcher: fixture.fetcher });
   assert.equal(fixture.calls.length, 4);
+  assert.ok(fixture.calls.some(url => new URL(url).pathname === '/contact'));
+  assert.ok(fixture.calls.every(url => !url.includes('/contact.html')));
   for (const file of result.files) {
     assert.equal(file.local.matches_reviewed_candidate, true);
     assert.equal(file.live.matches_local_prepared_file, true);

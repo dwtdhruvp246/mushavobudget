@@ -1114,12 +1114,12 @@
       {
         "id": "2.2",
         "title": "Public contact abuse",
-        "status": "STAGING_ACCEPTANCE_BLOCKED_CONTACT_ASSET_PARITY",
+        "status": "STAGING_ENCODING_REPAIR_READY_OWNER_UPLOAD_PENDING",
         "active_work_item": "2.2.3",
         "bounded_work_items": 3,
         "completed_work_items": 2,
         "remaining_work_items": 1,
-        "latest_evidence": "S2E26",
+        "latest_evidence": "S2E28",
         "instructions": "docs/SECURITY_STAGE_2_2_PUBLIC_CONTACT.md",
         "metadata_diagnostic": "supabase/diagnostics/security_stage_2_contact_metadata.sql",
         "owner_execution_target": "dczlddwbtgvfdujgcitb",
@@ -1161,7 +1161,15 @@
         "deployed_contact_candidate_parity": false,
         "candidate_mismatch_cause_established": false,
         "owner_file_comparison_diagnostic": "scripts/diagnose-staging-contact-files.cjs",
-        "owner_file_comparison_result_received": false
+        "owner_file_comparison_result_received": true,
+        "owner_file_comparison_evidence": "S2E27",
+        "candidate_mismatch_location": "PREPARED_LOCAL_FILES; SERVED_JAVASCRIPT_MATCHES_LOCAL_COPY",
+        "candidate_mismatch_likely_cause": "PowerShell text decoding of native Git UTF-8 output",
+        "byte_preserving_preparation_correction_ready": true,
+        "byte_preserving_preparation_correction_evidence": "S2E28",
+        "owner_repair_preparation_or_redeployment_result_received": false,
+        "canonical_html_read_path": "/contact",
+        "local_byte_preparation_tests_passed": 3
       },
       {
         "id": "2.3",

@@ -40,7 +40,8 @@ async function run({ webDirectory, fetcher = fetch, readText = readLocal, now = 
   const files = [];
   const stamp = String(now());
   for (const name of Object.keys(EXPECTED)) {
-    const entry = { file: name };
+    const route = name === 'contact.html' ? '/contact' : '/' + name;
+    const entry = { file: name, live_path: route };
     let local, live;
     if (typeof webDirectory === 'string' && path.isAbsolute(webDirectory)) {
       try {
@@ -50,12 +51,12 @@ async function run({ webDirectory, fetcher = fetch, readText = readLocal, now = 
     } else entry.local = { available: false, problem_code: 'UPLOAD_DIRECTORY_REQUIRED' };
     for (const [label, suffix] of [['live', ''], ['live_cache_busted', '?audit_contact_files=' + stamp]]) {
       try {
-        const response = await fetcher(WEBSITE + '/' + name + suffix, {
+        const response = await fetcher(WEBSITE + route + suffix, {
           method: 'GET', redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(15000),
         });
         entry[label] = { http_status: response.status, available: false };
         if (response.status !== 200) { entry[label].problem_code = 'ASSET_HTTP_STATUS'; await response.body?.cancel(); continue; }
-        const intended = new URL(WEBSITE + '/' + name);
+        const intended = new URL(WEBSITE + route);
         if (response.url) {
           const final = new URL(response.url);
           if (final.origin !== intended.origin || final.pathname !== intended.pathname) throw new Error('ASSET_ADDRESS_CHANGED');

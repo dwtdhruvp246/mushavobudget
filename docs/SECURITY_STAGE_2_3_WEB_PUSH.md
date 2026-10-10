@@ -1,5 +1,35 @@
 # Stage 2.3 — Web Push outbound destinations
 
+**Closed checkpoint — 2.3, 10 October 2026:** All three bounded work items have outcomes (S2E35–37). Inventory is complete in metadata scope; the guard is complete in source/local scope; hosted acceptance is BLOCKED/UNVERIFIED and carried forward. F12 remains open. Source commit: 4643482f1bcfc0751560f3562b85a344055ed78d. Read the [detailed Stage 2 report](SECURITY_STAGE_2_COMPLETION_REPORT.md). No further owner setup is requested for this checkpoint. The earlier baseline/handoff below is historical and must not be repeated.
+
+| Item | Recorded outcome | Limit |
+|---|---|---|
+| 2.3.1 | Owner read-only production inventory received at 2026-10-10T12:12:32.673918+00:00; zero subscriptions, RLS enabled/forced and effective grants recorded | Empty inventory does not establish safe future endpoints or provider compatibility |
+| 2.3.2 | Shared guard committed in all three senders; 45 selected Node checks, local Deno 2.9.6 transport checks and three entrypoint bundles pass | Source/local scope, not deployed Edge or device delivery |
+| 2.3.3 | BLOCKED/UNVERIFIED: read-only staging config GET at 2026-10-10T12:37:49.726Z has an empty vapidPublicKey | Missing registration prerequisite; actual delivery/runtime/retries carry to final remediation |
+
+## Implemented source candidate — S2E36
+
+supabase/functions/_shared/push-destination.mjs validates the raw bounded HTTPS URL before encryption/send: no credentials, fragments, whitespace/control/backslash, encoded/Unicode authority, private literals, lookalike host or nonstandard port. It admits specific Google/Mozilla hosts and bounded Apple/Microsoft subdomains; provider admission, especially a legacy address, is not a successful delivery claim. Opaque path/query bytes and subscription keys are preserved.
+
+A fresh per-send HTTPS Agent validates every DNS answer at actual connection lookup and rejects mixed public/private, invalid, mapped or special-use results. The same vetted address result is consumed by the connection. Environment proxies are explicitly disabled with proxyEnv: {}; certificate verification and provider servername are explicit. DNS/socket/whole-send bounds are 3/10/15 seconds; Agent disposal applies on success and failure. Caller options cannot replace the protected Agent or proxy settings.
+
+send-test-push, dispatch-push-reminders and dispatch-admin-notifications use the shared sender. Policy-blocked subscriptions are retired before network delivery. Provider 404/410 retirement and temporary/outbox result handling retain their previous meanings. No automatic retry is introduced. The pinned web-push 3.6.7 already rejects redirect responses without following Location; tests validate that behavior rather than claim an invented dependency fix.
+
+## Executed verification and scope
+
+Seventeen new guard/actual-entrypoint fixtures, sixteen selected existing regressions and twelve pinned full-package transport cases passed on Node 24.19.0 (45 total, none skipped). Real encryption/VAPID/request construction uses synthetic keys; positive provider/status/redirect cases use local request doubles. The native Agent private-DNS rejection runs without an external provider connection. Tests cover malformed/lookalike destinations, DNS family/mixed answers, repeated lookup changes, timeout/disposal, redirect refusal, option overrides and selected success/retirement/retry outcomes across all three actual entrypoints.
+
+scripts/verify-stage-2-push-transport.mjs provides the reproducible pinned-package transport probe. It validates the web-push version/source digest and emits only a safe summary. The same twelve grouped cases passed in local Deno 2.9.6 with network permission restricted to 127.0.0.1. Initial local Deno probing exposed automatic environment proxy use; explicit proxyEnv disabling corrected that route and the final probe passed. Local permission stops are not production incidents.
+
+Three Edge entrypoints bundle with npm imports external. Repository package manifest/lock and SDK pins are unchanged. Bundling/local Deno do not prove hosted dependency resolution, runtime version, DNS/TLS/proxy behavior or real device delivery.
+
+## Carry-forward and production boundary
+
+The production inventory contains no device sample. Fresh staging configuration has no public push key, so meaningful isolated hosted delivery is unavailable. No keys, cron configuration, device registration or riskier production send is requested merely to extend this bounded stage. F12 stays open until isolated hosted compatibility/network/delivery/retry tests and the approved production rollout pass in final remediation, followed by a full re-audit. No function deployment, production row change, PR merge, APK or native bundle change was performed.
+
+## Historical baseline and owner handoff
+
 Active **2.3.1**, 10 October 2026. Three finite work items. **F12 remains open**; reviewed source shows a destination-validation gap, not established exploitation. Stage 2.2 is [closed with scoped passes and carry-forward](SECURITY_STAGE_2_2_CHECKPOINT_REPORT.md); its successful form batch is not repeated.
 
 | Item | Work | Outcome boundary |

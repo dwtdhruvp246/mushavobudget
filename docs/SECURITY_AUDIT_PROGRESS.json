@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-10",
   "current_stage": 2,
-  "current_step": "2.3",
-  "current_title": "Web Push outbound destination review",
+  "current_step": "2.4",
+  "current_title": "Stage 2 closed with scoped passes and carry-forward",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1055,18 +1055,18 @@
   "final_reaudit_status": "PLANNED_NOT_PERFORMED",
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
-  "next_stage": 2,
-  "next_step": "2.3.3",
+  "next_stage": 3,
+  "next_step": "3.1",
   "stage_2": {
-    "status": "IN_PROGRESS",
+    "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
     "started_date": "2026-10-09",
-    "active_step": "2.3",
+    "active_step": null,
     "plan": "docs/SECURITY_STAGE_2_WEB_HARDENING_PLAN.md",
     "evidence": "docs/security-stage-2-evidence.json",
     "bounded_steps": 4,
-    "completed_steps": 2,
-    "remaining_steps": 2,
+    "completed_steps": 4,
+    "remaining_steps": 0,
     "steps": [
       {
         "id": "2.1",
@@ -1207,12 +1207,12 @@
       {
         "id": "2.3",
         "title": "Web Push outbound destinations",
-        "status": "SOURCE_INVENTORY_AND_LOCAL_DESTINATION_GUARD_COMPLETE_HOSTED_ACCEPTANCE_PENDING",
+        "status": "CLOSED_SOURCE_LOCAL_PASSES_WITH_BLOCKED_HOSTED_ACCEPTANCE_CARRY_FORWARD",
         "bounded_work_items": 3,
-        "completed_work_items": 2,
-        "remaining_work_items": 1,
-        "active_work_item": "2.3.3",
-        "latest_evidence": "S2E36",
+        "completed_work_items": 3,
+        "remaining_work_items": 0,
+        "active_work_item": null,
+        "latest_evidence": "S2E37",
         "instructions": "docs/SECURITY_STAGE_2_3_WEB_PUSH.md",
         "metadata_diagnostic": "supabase/diagnostics/security_stage_2_push_destinations.sql",
         "owner_metadata_target": "kttkospkblwvguuwnhjj",
@@ -1239,13 +1239,26 @@
         "local_deno_transport_scoped_pass": true,
         "local_deno_version": "2.9.6",
         "hosted_edge_runtime_verified": false,
-        "repository_dependencies_changed": false
+        "repository_dependencies_changed": false,
+        "checkpoint_complete": true,
+        "closure_evidence": "S2E37",
+        "destination_guard_source_commit": "4643482f1bcfc0751560f3562b85a344055ed78d",
+        "staging_public_push_key_empty": true,
+        "staging_push_readiness_checked_utc": "2026-10-10T12:37:49.726Z",
+        "hosted_acceptance_status": "BLOCKED_STAGING_PUBLIC_PUSH_KEY_EMPTY; no genuine production sample available"
       },
       {
         "id": "2.4",
         "title": "Closure and detailed report",
-        "status": "PENDING"
+        "status": "COMPLETED_DETAILED_REPORT_AND_CARRY_FORWARD",
+        "report": "docs/SECURITY_STAGE_2_COMPLETION_REPORT.md",
+        "latest_evidence": "S2E38"
       }
-    ]
+    ],
+    "report": "docs/SECURITY_STAGE_2_COMPLETION_REPORT.md",
+    "latest_evidence": "S2E38",
+    "closed_date": "2026-10-10",
+    "production_promoted": false,
+    "full_security_or_release_acceptance_verified": false
   }
 }

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 2,
   "updated_date": "2026-10-10",
-  "active_step": "2.3",
+  "active_step": null,
   "source_audit_head": "fbb70fe96d0ff5444cbfdb89888e4e0e49d17ca0",
   "events": [
     {
@@ -1804,6 +1804,80 @@
       "raw_keys_or_real_endpoints_printed": false,
       "f12_closed": false,
       "work_item_complete": true
+    },
+    {
+      "id": "S2E37",
+      "stage_step": "2.3.3",
+      "recorded_date": "2026-10-10",
+      "result": "HOSTED_PUSH_ACCEPTANCE_BLOCKED_STAGING_KEY_EMPTY_CARRIED_FORWARD",
+      "candidate_source_commit": "4643482f1bcfc0751560f3562b85a344055ed78d",
+      "staging_public_config_review": {
+        "stage_step": "2.3.3",
+        "http_status": 200,
+        "staging_reference_present": true,
+        "production_reference_absent": true,
+        "string_field_names": [
+          "supabaseUrl",
+          "supabasePublishableKey",
+          "vapidPublicKey"
+        ],
+        "push_key_field_present": true,
+        "push_key_empty": true,
+        "credentials_or_keys_printed": false,
+        "hosted_writes_or_notifications_sent": false,
+        "checked_utc": "2026-10-10T12:37:49.726Z"
+      },
+      "owner_production_inventory_reference": "S2E35; zero stored subscriptions",
+      "public_config_review_method": "Read-only GET with redirect disabled and ten-second timeout; extract string property metadata without evaluating code or printing values",
+      "staging_device_registration_prerequisite_missing": true,
+      "hosted_edge_code_runtime_parity_verified": false,
+      "legitimate_provider_delivery_or_hosted_retry_behavior_verified": false,
+      "production_push_send_used_as_substitute": false,
+      "new_vapid_or_cron_secret_setup_or_device_registration_requested": false,
+      "missing_prerequisites_carried_per_owner_finite_audit_workflow": true,
+      "bounded_work_item_outcome": "BLOCKED/UNVERIFIED; not PASS",
+      "remaining_push_work_items": 0,
+      "checkpoint_complete": true,
+      "f12_closed": false,
+      "production_or_staging_push_deployment_performed": false,
+      "next_step": "2.4"
+    },
+    {
+      "id": "S2E38",
+      "stage_step": "2.4",
+      "recorded_date": "2026-10-10",
+      "result": "STAGE_2_CLOSED_WITH_SCOPED_PASSES_FAILED_AND_BLOCKED_CARRY_FORWARD",
+      "report": "docs/SECURITY_STAGE_2_COMPLETION_REPORT.md",
+      "bounded_stage_steps": 4,
+      "completed_stage_steps": 4,
+      "remaining_stage_steps": 0,
+      "contact_candidate_source": "6ba621d718d1b989aaa84aa486d8f0b098b792a3",
+      "push_candidate_source": "4643482f1bcfc0751560f3562b85a344055ed78d",
+      "latest_scoped_results": [
+        "S2E06 staging sampled headers; S2E08–09 selected owner workflows/Console nonrecurrence",
+        "S2E31–33 contact API/form scope",
+        "S2E35 current read-only production empty push inventory",
+        "S2E36 local Node/Deno guard/transport scope"
+      ],
+      "failed_carry_forward": "F07: three latest owner HTTP samples returned 200 without HTTPS redirect",
+      "unverified_or_blocked_carry_forward": [
+        "F07 strict CSP/deliberate blocking/full production/browser coverage",
+        "F09 blank-field/concurrency/global-quota/rollback/replay/host-binding/staff-dispatch checks and coordinated production rollout",
+        "F12 hosted Edge parity/runtime/DNS/proxy/TLS handling, real provider delivery/retry/duplicate behavior and production promotion",
+        "F20 Turnstile processor/privacy review in Stage 4"
+      ],
+      "finding_ids_closed": [],
+      "full_stage_security_or_release_acceptance_verified": false,
+      "production_deployments_or_pr_merges_performed": false,
+      "native_bundle_or_apk_changed": false,
+      "prior_stage_0_and_1_evidence_preserved": true,
+      "original_123_coverage_definitions_and_20_findings_preserved": true,
+      "google_backup_work_remains_deferred": true,
+      "owner_process": "Resolve outstanding failures/uncertainties and production rollout in final remediation; perform full fresh re-audit before release",
+      "next_stage": 3,
+      "next_step": "3.1"
     }
-  ]
+  ],
+  "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_CARRY_FORWARD",
+  "report": "docs/SECURITY_STAGE_2_COMPLETION_REPORT.md"
 }

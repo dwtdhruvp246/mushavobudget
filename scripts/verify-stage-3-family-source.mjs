@@ -47,6 +47,11 @@ function adapter(fault) {
         const rows = (await db.query(query, entries.map(x => x[1]))).rows;
         response = result(200, isTable ? rows : rows[0].value);
         if (name === 'remove_family_member' && response.status === 200) removed = true;
+        if (!fired && fault === 'cancel_notice' && name === 'cancel_family_invitation' && rows[0].value === 'cancelled') {
+          // Simulate a broken cancellation effect: status mirrors change, recipient notice remains.
+          await db.exec('rollback to savepoint api_request'); await context('postgres', 0);
+          await db.query("update public.family_invitations set status='cancelled',responded_at=now() where id=$1", [body.p_invitation_id]); fired = true;
+        }
       } else {
         const table = url.pathname.slice('/rest/v1/'.length), params = [], cols = (url.searchParams.get('select') || '*').split(',').map(ident).join(',');
         const filters = [...url.searchParams].filter(([key]) => !['select', 'limit'].includes(key));
@@ -131,6 +136,7 @@ try {
   await batch('hidden_write', 'PROTECTED_ROW_CHANGED');
   await batch('false_denial', 'HEAD_FOREIGN_FAMILY_MANAGEMENT_NOT_DENIED');
   await batch('removed_read', 'REMOVED_MEMBER_FAMILY_READ_EXPOSED');
+  await batch('cancel_notice', 'CANCELLED_INVITATION_NOTIFICATION_RETAINED');
   await batch('logout', 'TEST_SESSION_LOGOUT_FAILED');
   console.log(JSON.stringify({ stage_step: '3.2.2', result: 'LOCAL_FAMILY_SOURCE_AND_CHECKER_PASS', migration_count: migrations.length, tests,
     provider_auth_storage_default_grant_and_http_adapters_used: true, native_PostgreSQL_or_hosted_PostgREST_verified: false,

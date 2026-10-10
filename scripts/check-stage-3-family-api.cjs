@@ -152,7 +152,7 @@ async function run({ fetcher = fetch, ownerPassword, outsiderPassword, uuid = ra
     const cancellation = await rpc('cancel_family_invitation', head, { p_invitation_id: cancelled });
     ensure(cancellation.status === 200 && cancellation.data === 'cancelled', 'HEAD_CANCEL_POSITIVE_CONTROL_FAILED');
     await invitation(f, cancelled, 'cancelled');
-    ensure(empty(await get('/rest/v1/notifications?select=id&invitation_id=eq.' + cancelled + '&type=eq.family_invite', head)), 'CANCELLED_INVITATION_NOTIFICATION_RETAINED');
+    ensure(empty(await get('/rest/v1/notifications?select=id&invitation_id=eq.' + cancelled + '&type=eq.family_invite', member)), 'CANCELLED_INVITATION_NOTIFICATION_RETAINED');
     await deniedResponse(f, cancelled, member); await noMember(f, member); await invitation(f, cancelled, 'cancelled');
     pass('Protected head cancellation removes its notification; cancelled replay creates no membership');
     phase = 'Recipient acceptance and shared access';

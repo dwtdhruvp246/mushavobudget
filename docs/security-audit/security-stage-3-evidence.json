@@ -2117,6 +2117,32 @@
       "finding_F15_closed": false,
       "production_or_native_changed_by_assistant": false,
       "full_security_or_release_acceptance_verified": false
+    },
+    {
+      "id": "S3E10",
+      "stage_step": "3.2.2",
+      "recorded_date": "2026-10-10",
+      "result": "FAMILY_CHECKER_RECIPIENT_CANCELLATION_EFFECT_CONTROL_PASS_OWNER_API_PENDING",
+      "source_parent_commit": "3ee3eb10a0cfab899cb0069b77f99a4e6ad0ef9f",
+      "supersedes_prepared_API_checker_commit": "1e3e187a62f1b4bcc359f1f44e68f3b5afbde506",
+      "change": "Check cancelled invitation notification absence from the recipient session that read its known pending notice, rather than a head session without that notice visibility positive control",
+      "product_cancellation_permissions_or_Auth_settings_changed": false,
+      "owner_fixture_repeat_required": false,
+      "additional_local_fault_case": "Cancelled invitation mirrors with recipient notice retained must stop with CANCELLED_INVITATION_NOTIFICATION_RETAINED",
+      "local_source_validation_cases_passed": 10,
+      "local_complete_family_flow_pass_checks": 33,
+      "local_complete_family_flow_fetches": 207,
+      "local_isolated_Family_tests_passed": 8,
+      "local_provider_auth_storage_default_grant_and_http_adapters_used": true,
+      "native_PowerShell_or_hosted_PostgREST_behavior_verified": false,
+      "owner_API_result_received": false,
+      "owner_fixture_evidence": "S3E09",
+      "prior_Personal_failure_or_unrun_cases_resolved": false,
+      "production_or_native_changed": false,
+      "artifact_sha256": {
+        "scripts/check-stage-3-family-api.cjs": "86e5e146d13f6821466376000022fb96c55ddaad05ba70c101843f2a60fece08",
+        "scripts/verify-stage-3-family-source.mjs": "eb29dd47d25524b01514a594be46087429fdfeffde7f55903ca2f4a0b9fb04d4"
+      }
     }
   ],
   "source_reconciliation_head": "9388fc8c3e48ac3fd124d73b7f918785da957104"

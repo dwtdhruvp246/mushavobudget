@@ -1,6 +1,6 @@
 # Stage 2 — Browser, public submission and outbound-request hardening
 
-**2.1 closed checkpoint — S2E12:** All three finite work items have recorded outcomes. Selected local/staging header checks, owner workflows 1–4 and targeted Console nonrecurrence passed in their stated scope. Production HTTP-to-HTTPS redirection FAILED on the three owner samples. The exact correction is retained for final remediation, as requested; no production provider change is requested now. Strict CSP, deliberate blocking and full production acceptance remain unverified. F07 stays open. Current work is **2.2.3**, staging setup and the single controlled contact acceptance batch. The source/metadata baseline and tested local candidate are complete in their scope (S2E14–16); F09 is not closed.
+**Current — 2.3.1, 10 October 2026:** Two of four stage steps are complete. 2.1 closed with scoped staging passes, failed production HTTP redirects and unverified strict CSP (F07 open). 2.2 closed with 18 owner API checks PASS plus three saved enquiries and fourth-attempt quota/field-retention evidence; unavailable contact checks carry to final re-audit (F09 open). The next step is the read-only Web Push inventory (F12). No production promotion is performed. The detailed Stage 2 report is due at 2.4.
 
 Started 9 October 2026 at **2.1**, after the [Stage 1 report](SECURITY_STAGE_1_COMPLETION_REPORT.md). Four finite steps. Each receives a bounded evidence/change pass and explicit outcome; unresolved controls carry to final remediation and full re-audit. Stage 1 checkpoints remain closed with their limits. Broader tenant roles and application Admin MFA belong to Stage 3.
 
@@ -26,6 +26,14 @@ Production Supabase remains kttkospkblwvguuwnhjj; staging remains dczlddwbtgvfdu
 
 1. **2.2.1 — COMPLETE:** Source review and five-row owner staging metadata received. Effective six-column inserts are available to anon/authenticated; RLS enabled. No runtime abuse-control proof.
 2. **2.2.2 — COMPLETE IN LOCAL SCOPE:** Edge validation + server Turnstile, transactional database quotas and direct grant revocation candidate; 32 selected tests, Edge bundle and SQL/PLpgSQL syntax pass. Providers and PostgreSQL runtime were not exercised.
-3. **2.2.3 — PENDING:** Configure the real staging widget, deploy only the new staging endpoint, then coordinate frontend/database gate cutover and one controlled acceptance batch. Record passes/failures/unavailable checks and close; no extra screenshot cascade.
+3. **2.2.3 — COMPLETE WITH CARRY-FORWARD:** Staging endpoint/gate/secrets and repaired frontend were owner-deployed. All 18 API checks pass; saved-row and fourth-limit/field-retention receipts have scoped passes. Blank fields, actual concurrency/global quotas/rollback, replay/host binding, staff/dispatch and full production acceptance remain unverified. No repeat successful form batch.
 
 [Contact baseline and owner handoff](SECURITY_STAGE_2_2_PUBLIC_CONTACT.md). Production redirect failure from 2.1 remains in F07; resolving it is not a prerequisite for 2.2. The detailed Stage 2 report is still due at 2.4.
+
+## 2.3 finite work items
+
+1. **2.3.1 — ACTIVE:** Review the three senders and obtain one production read-only aggregate subscription/permission inventory. No notifications or writes.
+2. **2.3.2 — PENDING:** Prepare justified destination restrictions and local positive/negative/transport/failure checks. Preserve reviewed provider compatibility and distinguish source/library guarantees from hosted behavior.
+3. **2.3.3 — PENDING:** One bounded isolated acceptance batch if a safe device/provider setup is available; otherwise record UNVERIFIED and carry it forward.
+
+[Web Push source and owner handoff](SECURITY_STAGE_2_3_WEB_PUSH.md). Two stage steps remain: 2.3 and the 2.4 closure/report. [Contact checkpoint report](SECURITY_STAGE_2_2_CHECKPOINT_REPORT.md).

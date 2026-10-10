@@ -1,5 +1,8 @@
 # 2.2 — Public contact-form abuse controls
 
+**Current outcome — 2.2.3 closed, S2E32–33:** All 18 pinned staging API checks PASS. Combined with S2E31, ordinary saves, fourth-attempt limit and retained fields have scoped owner evidence. All three finite contact work items are complete. Blank-required-field validation, concurrency/rollback/global quotas, replay/host binding and staff/dispatch remain unverified carry-forward; F09 stays open for production rollout/final acceptance. Read the [checkpoint report](SECURITY_STAGE_2_2_CHECKPOINT_REPORT.md). Next is [2.3.1 Web Push destination inventory](SECURITY_STAGE_2_3_WEB_PUSH.md). Earlier pending/mismatch paragraphs below are historical snapshots.
+
+
 Local candidate checkpoint completed 9 October 2026. Two of three contact work items complete; **2.2.3** is the remaining controlled staging acceptance item. F09 remains open. Stage 2.1 stays closed with its failed production HTTP redirect deferred to final remediation.
 
 ## Baseline — 2.2.1 / S2E13–14
@@ -154,3 +157,11 @@ The owner read-only SQL check at 2026-10-10T11:27:49.725825+00:00 reports PASS: 
 Root successfully read the attached image(20261010-112811).png from its supplied scratch path. The crop shows the real-format widget Success and verification-complete text, the enquiry 4 marker, the expected limit message and the retained full name, country, type and message. The populated test email is clipped. The crop does not show the browser address. Combined with the owner SQL receipt, record the ordinary three-row submission and fourth-attempt limit/field retention as scoped passes. Do not infer actual concurrency, rollback, token replay, provider key ownership, staff queue access or dispatch from this image.
 
 The PowerShell API JSON and blank-required-field result have not been supplied. The read-only SQL receipt does not establish exact API check outcomes, selected signed-in user coverage or logout. Request only the already generated API summary and the required-field outcome; no repeat of the successful form sends is requested. If those receipts are unavailable, record them unverified and carry to final remediation/re-audit instead of expanding the contact checkpoint. F09 is still open; one contact work item 2.2.3 remains pending that receipt review, and Stage 2 reporting is due at 2.4.
+
+## Contact checkpoint closed — S2E32–33
+
+The owner supplied the existing API receipt: STAGING_CONTACT_API_SCOPED_PASS, 18 checks PASS, exit 0, no problem code, completed 2026-10-10T11:01:44.974Z. Exact staging config/contact asset parity and selected headers pass. Preflight is 204; missing Origin is 403; administrative/missing/forged challenge requests are 400; oversized input is 413. Anonymous and verified signed-in direct INSERT, gate RPC and quota reads are permission-denied. The checker requires SQL permission error 42501, and only its test session is logged out.
+
+Combine this API scope with S2E31's separate saved-row and fourth-attempt evidence. The runner's browser/concurrency/staff booleans are false because that API batch does not verify them; they do not negate the separately received normal-form evidence. No blank-required-field outcome was supplied, so it is UNVERIFIED carry-forward. Do not request another successful form batch.
+
+All three finite contact work items now have recorded outcomes. Close 2.2 with scoped passes and explicit carry-forward, without closing F09. Production rollout, concurrency/global quota/rollback, replay/host binding, staff/dispatch and the blank-field result remain final remediation/re-audit actions. The [checkpoint report](SECURITY_STAGE_2_2_CHECKPOINT_REPORT.md) records the result and limits; the detailed Stage 2 report remains due at 2.4. Next is 2.3.1.

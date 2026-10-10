@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 2,
   "updated_date": "2026-10-10",
-  "active_step": "2.2",
+  "active_step": "2.3",
   "source_audit_head": "fbb70fe96d0ff5444cbfdb89888e4e0e49d17ca0",
   "events": [
     {
@@ -1519,6 +1519,194 @@
       "remaining_contact_work_items": 1,
       "f09_closed": false,
       "raw_secrets_or_customer_rows_received": false
+    },
+    {
+      "id": "S2E32",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_STAGING_CONTACT_API_SCOPED_PASS_RECEIVED",
+      "project": "dczlddwbtgvfdujgcitb",
+      "source_commit": "6ba621d718d1b989aaa84aa486d8f0b098b792a3",
+      "owner_completed_utc": "2026-10-10T11:01:44.974Z",
+      "owner_result": "STAGING_CONTACT_API_SCOPED_PASS",
+      "checks": [
+        {
+          "check": "Deployed config is staging only",
+          "status": "PASS"
+        },
+        {
+          "check": "Deployed contact JavaScript matches reviewed candidate",
+          "status": "PASS"
+        },
+        {
+          "check": "Deployed contact HTML matches candidate with real-format public sitekey",
+          "status": "PASS"
+        },
+        {
+          "check": "Served headers retain baseline CSP and Turnstile allowances",
+          "status": "PASS"
+        },
+        {
+          "check": "Staging browser preflight is allowed",
+          "status": "PASS",
+          "http_status": 204
+        },
+        {
+          "check": "Missing website origin is rejected",
+          "status": "PASS",
+          "http_status": 403
+        },
+        {
+          "check": "Unexpected administrative field is rejected",
+          "status": "PASS",
+          "http_status": 400
+        },
+        {
+          "check": "Oversized request is rejected",
+          "status": "PASS",
+          "http_status": 413
+        },
+        {
+          "check": "Missing verification token is rejected",
+          "status": "PASS",
+          "http_status": 400
+        },
+        {
+          "check": "Forged verification token is rejected by live validation",
+          "status": "PASS",
+          "http_status": 400
+        },
+        {
+          "check": "Anonymous direct enquiry INSERT is permission-denied",
+          "status": "PASS",
+          "http_status": 401
+        },
+        {
+          "check": "Anonymous direct submission RPC is permission-denied",
+          "status": "PASS",
+          "http_status": 401
+        },
+        {
+          "check": "Anonymous quota-counter read is permission-denied",
+          "status": "PASS",
+          "http_status": 401
+        },
+        {
+          "check": "Existing staging app-user session is verified",
+          "status": "PASS"
+        },
+        {
+          "check": "Signed-in direct enquiry INSERT is permission-denied",
+          "status": "PASS",
+          "http_status": 401
+        },
+        {
+          "check": "Signed-in direct submission RPC is permission-denied",
+          "status": "PASS",
+          "http_status": 401
+        },
+        {
+          "check": "Signed-in quota-counter read is permission-denied",
+          "status": "PASS",
+          "http_status": 401
+        },
+        {
+          "check": "Only the API test session is logged out",
+          "status": "PASS"
+        }
+      ],
+      "api_exit_code": 0,
+      "problem_code": null,
+      "test_session_logged_out": true,
+      "credentials_tokens_keys_and_raw_rows_printed": false,
+      "ordinary_client_bypass_denials_use_checked_permission_error_code": "42501",
+      "owner_api_runner_scope": "Owner executed pinned checker; exact file/header/isolation and selected live API/session results only",
+      "browser_and_sql_evidence_combined_separately": "S2E31",
+      "valid_browser_enquiry_or_real_key_pair_verified_by_api_batch": false,
+      "same_email_quota_concurrency_or_rollback_verified": false,
+      "staff_queue_access_or_dispatch_verified": false,
+      "full_f09_acceptance_verified": false,
+      "blank_required_field_result_received": false,
+      "unexpected_bypass_test_rows_if_any_retained": true,
+      "historic_asset_mismatch_superseded_in_latest_served_parity_scope": true,
+      "raw_credentials_or_customer_enquiries_received": false
+    },
+    {
+      "id": "S2E33",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "CONTACT_CHECKPOINT_CLOSED_SCOPED_PASSES_WITH_UNVERIFIED_CARRY_FORWARD",
+      "evidence_combined": [
+        "S2E29",
+        "S2E30",
+        "S2E31",
+        "S2E32"
+      ],
+      "bounded_work_items": 3,
+      "completed_work_items": 3,
+      "remaining_work_items": 0,
+      "contact_checkpoint_complete": true,
+      "scoped_passes": [
+        "Exact deployed staging config/contact assets/selected headers",
+        "Selected malformed, oversized, origin and challenge denials",
+        "Anonymous and verified signed-in direct INSERT/RPC/quota-read permission denials",
+        "Only API test session logged out",
+        "Three expected ordinary website enquiry rows; fourth-attempt limit and retained fields in combined owner scope"
+      ],
+      "unverified_carry_forward": [
+        "Blank-required-field browser outcome",
+        "Actual concurrent/global quota and rollback behavior",
+        "Consumed-token replay and wrong-host challenge binding",
+        "Independent widget key ownership/provider hostname coverage",
+        "Staff queue/access and email/push dispatch",
+        "Coordinated production rollout and final acceptance"
+      ],
+      "f09_closed": false,
+      "production_or_native_changed": false,
+      "repeat_successful_form_batch_requested": false,
+      "next_step": "2.3.1",
+      "stage_2_report_due": "2.4",
+      "checkpoint_report": "docs/SECURITY_STAGE_2_2_CHECKPOINT_REPORT.md"
+    },
+    {
+      "id": "S2E34",
+      "stage_step": "2.3.1",
+      "recorded_date": "2026-10-10",
+      "result": "WEB_PUSH_SOURCE_BASELINE_AND_READ_ONLY_DESTINATION_INVENTORY_PREPARED",
+      "reviewed_source_head": "60d84376bba7828a002f06db4dd2354f3ae2ff25",
+      "source_files": [
+        "supabase/functions/send-test-push/index.ts",
+        "supabase/functions/dispatch-push-reminders/index.ts",
+        "supabase/functions/dispatch-admin-notifications/index.ts",
+        "supabase/migrations/20260907150000_push_subscriptions.sql"
+      ],
+      "web_push_dependency": "npm:web-push@3.6.7",
+      "source_observation": "Three senders pass stored endpoint strings directly to webpush.sendNotification without an application destination guard; selected source table limits endpoint length, and ordinary signed-in users can insert their own endpoint.",
+      "existing_failure_semantics": "404/410 disable subscription; other delivery errors retain temporary-failure handling. Source behavior only, not hosted delivery.",
+      "dependency_redirect_or_dns_behavior_established": false,
+      "exploitation_or_private_network_reachability_established": false,
+      "diagnostic": "supabase/diagnostics/security_stage_2_push_destinations.sql",
+      "owner_target": "Actual Mushavo Budget project kttkospkblwvguuwnhjj; manually verify Dashboard identity",
+      "target_reason": "Inventory genuine registered production host-family counts; staging public push key was intentionally removed",
+      "diagnostic_read_only": true,
+      "diagnostic_result_rows": 4,
+      "full_endpoints_keys_or_user_identifiers_returned": false,
+      "fixed_host_family_counts_are_validation_or_allowlist_proof": false,
+      "local_validation": {
+        "result": "PASS",
+        "engine": "PGlite 0.5.8 / PostgreSQL 18.3",
+        "synthetic_endpoint_cases": 25,
+        "column_and_table_privileges": true,
+        "empty_inventory": true,
+        "redaction": true,
+        "fixture_rows_unchanged": true,
+        "hosted_postgresql_17_verified": false
+      },
+      "owner_metadata_result_received": false,
+      "notifications_http_or_hosted_writes_performed": false,
+      "bounded_push_work_items": 3,
+      "f12_closed": false,
+      "instructions": "docs/SECURITY_STAGE_2_3_WEB_PUSH.md"
     }
   ]
 }

@@ -50,7 +50,7 @@ test("CORS is restricted to the configured official application origin", () => {
 
 test("a durable service-role-only claim rate limits test sends", () => {
   const claimAt = functionSource.indexOf('"claim_push_test_rate_limit"');
-  const sendAt = functionSource.indexOf("webpush.sendNotification");
+  const sendAt = functionSource.indexOf("await sendGuardedPush(");
   assert.ok(claimAt >= 0 && sendAt > claimAt);
   assert.match(migrationSource, /force row level security/);
   assert.match(migrationSource, /revoke all on table public\.push_test_rate_limits from anon, authenticated/);

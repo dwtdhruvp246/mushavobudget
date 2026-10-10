@@ -1707,6 +1707,103 @@
       "bounded_push_work_items": 3,
       "f12_closed": false,
       "instructions": "docs/SECURITY_STAGE_2_3_WEB_PUSH.md"
+    },
+    {
+      "id": "S2E35",
+      "stage_step": "2.3.1",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_READ_ONLY_PRODUCTION_PUSH_INVENTORY_COMPLETE_ZERO_SUBSCRIPTIONS",
+      "project": "kttkospkblwvguuwnhjj",
+      "checked_at": "2026-10-10T12:12:32.673918+00:00",
+      "server_version": "17.11",
+      "transaction_read_only": "on",
+      "rls_enabled": true,
+      "rls_forced": true,
+      "anon_effective_endpoint_insert": false,
+      "authenticated_effective_endpoint_insert": true,
+      "authenticated_effective_endpoint_update": false,
+      "total_subscriptions": 0,
+      "active_subscriptions": 0,
+      "disabled_subscriptions": 0,
+      "host_family_counts": [],
+      "shape_counts": {
+        "fragment": 0,
+        "backslash": 0,
+        "encoded_authority": 0,
+        "authority_credentials": 0,
+        "whitespace_or_control": 0,
+        "missing_https_authority_shape": 0,
+        "outside_existing_length_bounds": 0,
+        "explicit_port_or_ipv6_authority": 0
+      },
+      "owner_result_statuses": [
+        "INFO",
+        "INFO",
+        "REVIEW",
+        "INFO"
+      ],
+      "scope": "Counts/current effective metadata only; zero rows are not provider compatibility, hosted sender parity, safe future destinations or delivery proof",
+      "schema_or_rows_modified": false,
+      "notifications_or_http_requests_sent": false,
+      "endpoint_urls_keys_user_or_device_identifiers_returned": false,
+      "f12_closed": false,
+      "work_item_complete": true
+    },
+    {
+      "id": "S2E36",
+      "stage_step": "2.3.2",
+      "recorded_date": "2026-10-10",
+      "result": "SHARED_PUSH_DESTINATION_CANDIDATE_LOCAL_SCOPED_PASS",
+      "source_review_head": "f3e86d147bde665ff1788cbe347bd6c1e634f4b2",
+      "runtime_files": [
+        "supabase/functions/_shared/push-destination.mjs",
+        "supabase/functions/send-test-push/index.ts",
+        "supabase/functions/dispatch-push-reminders/index.ts",
+        "supabase/functions/dispatch-admin-notifications/index.ts"
+      ],
+      "behavior": "Validate bounded HTTPS provider hostnames/raw authorities before crypto/send; veto private/special/invalid/mixed DNS answers at actual connection lookup, disable environment proxies, preserve TLS verification and opaque endpoint bytes, close per-send Agent; blocked endpoints are permanent without changing provider 404/410 or temporary-error handling",
+      "dns_timeout_ms": 3000,
+      "socket_timeout_ms": 10000,
+      "whole_send_timeout_ms": 15000,
+      "documented_provider_rules_not_actual_inventory_compatibility": true,
+      "local_tests": {
+        "node": "24.19.0",
+        "total": 45,
+        "new_guard_and_three_entrypoint_tests": 17,
+        "unchanged_selected_legacy_tests": 16,
+        "pinned_full_dependency_transport_cases": 12,
+        "all_passed": true,
+        "skipped": 0
+      },
+      "source_dependency": "web-push 3.6.7",
+      "dependency_source_sha256": "4a724b5452b0c51143808cdfd4e58efd3876fc5728af152635b8fcb340bbbff3",
+      "local_deno": {
+        "version": "2.9.6",
+        "node_compatibility_version": "26.3.0",
+        "pinned_full_dependency_transport_cases": 12,
+        "result": "PASS",
+        "net_permission_scope": "127.0.0.1 only; no external destination permission",
+        "supabase_edge_runtime_equivalence_verified": false
+      },
+      "transport_scope": "Actual pinned package encryption/VAPID/request creation with synthetic keys; positive/status/redirect/timeout HTTP boundary is a local request double. Native Agent negative DNS block runs on Node and local Deno.",
+      "redirect_codes_rejected_without_following": [
+        301,
+        302,
+        303,
+        307,
+        308
+      ],
+      "environment_proxy_bypass_found_in_local_deno_probe_and_disabled": true,
+      "probe_permission_stops_not_production_failure": true,
+      "edge_entrypoint_bundles": 3,
+      "npm_imports_external_in_bundle_check": true,
+      "repository_package_manifest_or_lock_changed": false,
+      "hosted_sender_deployment_or_real_delivery_verified": false,
+      "source_code_candidate_only": true,
+      "production_or_staging_function_deployments_performed": false,
+      "raw_keys_or_real_endpoints_printed": false,
+      "f12_closed": false,
+      "work_item_complete": true
     }
   ]
 }

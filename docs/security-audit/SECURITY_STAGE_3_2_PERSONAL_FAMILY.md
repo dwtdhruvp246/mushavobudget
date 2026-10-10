@@ -1,12 +1,12 @@
 # 3.2 — Personal and Family isolation
 
-**3.2.1 active — 10 October 2026.** Source review and the first controlled Personal API batch are prepared. The checker passes 28 local tests. A reduced-schema PostgreSQL-compatible probe reproduces a paid-record workspace-binding gap in current source. Hosted acceptance is pending; no runtime fix, migration, deployment, Auth setting, production or APK change has been made.
+**3.2.1 checkpoint recorded — 10 October 2026.** Owner staging batch returned **26 PASS and one REVIEW** at the paid-record workspace-binding control; six subsequent planned check groups were not run. Source/local reproduction supports the gap, but the receipt does not include the failed HTTP response or post-failure row state. F15 remains open and the failure/unrun groups are carried to final remediation/re-audit. Both generated test sessions received local logout; incomplete inactive synthetic fixtures remain. Next is 3.2.2, Family acceptance. The checker previously passed 28 local tests; no runtime correction has been deployed.
 
 ## Three bounded milestones
 
 | Work item | Selected work | Current position |
 |---|---|---|
-| 3.2.1 | Review the Personal/Family source contract; exercise new Personal create/update/delete, ownership/workspace substitution and restricted helper requests with the two existing staging accounts | Source/local work complete; one owner API batch pending |
+| 3.2.1 | Review the Personal/Family source contract; exercise new Personal create/update/delete, ownership/workspace substitution and restricted helper requests with the two existing staging accounts | Complete with carry-forward: 26 owner PASS, one workspace-binding REVIEW, six subsequent groups unrun (S3E07) |
 | 3.2.2 | One controlled Family fixture and acceptance phase: head, recipient before joining, active member and after removal; shared reads, attributed writes and recipient/state-bound invitation response/cancel/replay | Pending. Use synthetic staging identities; establish active entitlement and controlled notification destinations before fixture writes. No customer email/push |
 | 3.2.3 | Complete selected workspace currency-settings controls, record affected rechecks and close the checkpoint with failed/blocked/unverified cases carried forward | Pending. Service scheduler/history, broad Storage, Business and platform MFA keep their separate scopes |
 
@@ -32,11 +32,13 @@ The staging application was initialized from ordered migrations. Use current mig
 
 Six selected controls show: own paid-record update succeeds; another user cannot read/update that record; direct item workspace substitution is denied; an owner can directly set the paid record's workspace to an existing foreign workspace while its item remains in the original workspace; expanding only the local trigger's update-column coverage normalizes the record workspace back to its item. The local trigger change is a counterexample inside the disposable fixture, not a repository/runtime migration.
 
-**Result: source/local workspace-integrity gap reproduced; hosted reachability, broader impact, historical inconsistency and production parity remain unverified.** It is not evidence that another user's payment rows or identity were read. The next staging batch deliberately checks this same request using two real app sessions and known existing IDs; it must report REVIEW if the foreign binding persists.
+**Result: source/local workspace-integrity gap reproduced; hosted reachability, broader impact, historical inconsistency and production parity remain unverified.** It is not evidence that another user's payment rows or identity were read. The owner staging batch checked this same request using two real app sessions and known existing IDs and reported `FOREIGN_WORKSPACE_REBIND_NOT_PREVENTED`. This is owner-tested failure of the checker acceptance criterion, not independent post-failure row-state or broader impact proof. Raw failed HTTP response and post-failure readback were not included because the checker stops at the failed criterion.
 
 Final-remediation action: verify hosted reachability and intended derived-workspace invariant; prepare a narrowly reviewed guard/sync correction for direct INSERT/UPDATE, preserve legitimate writes and historical conversions, assess existing mismatch counts privately before any repair, then recheck owner, member, outsider and malformed-reference cases. No historical rewrite or production change is requested now.
 
-## First controlled owner batch — 3.2.1
+## Archived first owner handoff — 3.2.1 completed
+
+The owner has run this batch once. The instructions below document that execution; no repeat is requested now.
 
 **Target: STAGING `dczlddwbtgvfdujgcitb` only**, using the deployed staging config at `https://mushavo-budget-staging.pages.dev/config.js`. Two existing synthetic app accounts: `audit.owner@example.com` and `audit.outsider@example.com`. Supply their **app login passwords**, never the Supabase database password. The checker verifies both identities and that neither is platform staff or suspended before any payment write.
 
@@ -75,3 +77,17 @@ On full success, only this run's selected item/record rows are removed. Derived 
 - [Initial application migration](../../supabase/migrations/20260901061500_currencyapi_multicurrency.sql): Personal/Family policies, invitations, member management and payment/workspace sync triggers.
 - [Payer guard](../../supabase/migrations/20260924130000_guard_payment_record_payer.sql), [cancel invitation RPC](../../supabase/migrations/20260925080000_cancel_pending_family_invitation.sql), [suspension/finance guards](../../supabase/migrations/20260925090000_expiry_and_account_suspension.sql), [latest shared currency-settings replacement](../../supabase/migrations/20260928130000_business_stage_3_onboarding.sql).
 - [Frozen six-group Personal/Family matrix](SECURITY_STAGE_3_1_PERMISSION_BASELINE.md), [Stage 3 plan](SECURITY_STAGE_3_AUTHORIZATION_PLAN.md), [evidence](security-stage-3-evidence.json), [progress](SECURITY_AUDIT_PROGRESS.json) and [action plan](SECURITY_AUDIT_CARRY_FORWARD.md).
+
+## 3.2.1 owner result — S3E07
+
+Owner completion: **2026-10-10T17:19:17.688Z**, intended project **dczlddwbtgvfdujgcitb**, pinned checker **013b8b1ccf7e8a7536a4850b694d9b8ba43df12a**. The complete redacted JSON receipt is retained in Stage 3 evidence.
+
+| Outcome | Recorded scope |
+|---|---|
+| 26 PASS checks | Staging config; verified ordinary active identities and distinct Personal workspaces; both accounts' own create/read/update controls; selected outsider/anonymous read, PATCH, DELETE and forged-attribution INSERT denials with owner readback; item ownership/workspace and record ownership substitution controls; generated sessions' local logout |
+| One REVIEW / failed checker criterion | `FOREIGN_WORKSPACE_REBIND_NOT_PREVENTED` at direct foreign paid-record workspace substitution. Consistent with local source reproduction. The aggregate message does not include HTTP status, raw response or a post-failure owner readback; exact persisted state and broader impact require private final verification |
+| Six planned groups not run | Paid-record foreign item relink; four signed-in/anonymous helper-denial calls; own fixture DELETE/absence group. No PASS inferred from their earlier metadata or checker tests |
+| Retained fixtures | `selected_fixture_rows_removed=false`; new inactive `AUDIT-S321-` fixtures and linked paid records may remain. Existing Stage 1 seed was not targeted. Derived conversion cleanup and all-row integrity remain unverified |
+| Runner exit/error | Exit 1 and PowerShell `Review required` are the intentional stop after the non-pass outcome, not an installation or password error |
+
+This closes **one of three 3.2 milestones**, with the failure and six unrun groups retained for final remediation and fresh re-audit. Do not rerun the same batch or delete the retained evidence now. Two milestones remain: 3.2.2 Family fixture/requests, then 3.2.3 selected currency controls and checkpoint reconciliation. Stage 3 has still completed only one of its six main steps (3.1); 3.2 is active.

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 3,
   "updated_date": "2026-10-10",
-  "active_step": "3.2.1",
+  "active_step": "3.2.2",
   "source_review_head": "e4f3b573bee2b9e344ec0b946c21e779449d8664",
   "events": [
     {
@@ -1801,6 +1801,175 @@
         "scripts/verify-stage-3-personal-workspace-bindings.mjs": "ff42ae3c286d73774ee016e4bf99151249b783e353ef0f190e56d6cd5f1ab966",
         "tests/stage-3-personal-api.test.cjs": "90983a0e7c13d0dd03c1d83467806666eb48bba3564ca2534ae5c31779ca1da6"
       }
+    },
+    {
+      "id": "S3E07",
+      "stage_step": "3.2.1",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_STAGING_PERSONAL_API_26_PASS_WORKSPACE_BINDING_REVIEW_CARRY_FORWARD",
+      "owner_source_commit": "013b8b1ccf7e8a7536a4850b694d9b8ba43df12a",
+      "owner_completed_utc": "2026-10-10T17:19:17.688Z",
+      "owner_receipt": {
+        "stage_step": "3.2.1",
+        "result": "STAGING_PERSONAL_CRUD_REVIEW",
+        "project": "dczlddwbtgvfdujgcitb",
+        "checks": [
+          {
+            "check": "Deployed config uses the staging project and no push key",
+            "status": "PASS"
+          },
+          {
+            "check": "Two distinct verified staging sessions are ordinary active accounts",
+            "status": "PASS"
+          },
+          {
+            "check": "Each verified account reads its own distinct active Personal workspace",
+            "status": "PASS"
+          },
+          {
+            "check": "Both accounts create, read and change their own inactive item and paid record",
+            "status": "PASS"
+          },
+          {
+            "check": "Outsider cannot read the known owner payment_items row",
+            "status": "PASS"
+          },
+          {
+            "check": "Outsider PATCH affects no owner payment_items row; owner readback matches",
+            "status": "PASS"
+          },
+          {
+            "check": "Outsider DELETE affects no owner payment_items row; owner readback matches",
+            "status": "PASS"
+          },
+          {
+            "check": "Outsider cannot insert an attributed owner payment_items row; no visible effect for either account",
+            "status": "PASS"
+          },
+          {
+            "check": "Outsider cannot read the known owner payment_records row",
+            "status": "PASS"
+          },
+          {
+            "check": "Outsider PATCH affects no owner payment_records row; owner readback matches",
+            "status": "PASS"
+          },
+          {
+            "check": "Outsider DELETE affects no owner payment_records row; owner readback matches",
+            "status": "PASS"
+          },
+          {
+            "check": "Outsider cannot insert an attributed owner payment_records row; no visible effect for either account",
+            "status": "PASS"
+          },
+          {
+            "check": "Outsider cannot read the known owner workspace",
+            "status": "PASS"
+          },
+          {
+            "check": "Anonymous cannot read the known owner payment_items row",
+            "status": "PASS"
+          },
+          {
+            "check": "Anonymous PATCH affects no owner payment_items row; owner readback matches",
+            "status": "PASS"
+          },
+          {
+            "check": "Anonymous DELETE affects no owner payment_items row; owner readback matches",
+            "status": "PASS"
+          },
+          {
+            "check": "Anonymous cannot insert an attributed owner payment_items row; no visible effect for either account",
+            "status": "PASS"
+          },
+          {
+            "check": "Anonymous cannot read the known owner payment_records row",
+            "status": "PASS"
+          },
+          {
+            "check": "Anonymous PATCH affects no owner payment_records row; owner readback matches",
+            "status": "PASS"
+          },
+          {
+            "check": "Anonymous DELETE affects no owner payment_records row; owner readback matches",
+            "status": "PASS"
+          },
+          {
+            "check": "Anonymous cannot insert an attributed owner payment_records row; no visible effect for either account",
+            "status": "PASS"
+          },
+          {
+            "check": "Anonymous cannot read the known owner workspace",
+            "status": "PASS"
+          },
+          {
+            "check": "Owner cannot reassign payment_items ownership to the other account",
+            "status": "PASS"
+          },
+          {
+            "check": "Foreign workspace substitution is denied or normalized for payment_items",
+            "status": "PASS"
+          },
+          {
+            "check": "Owner cannot reassign payment_records ownership to the other account",
+            "status": "PASS"
+          },
+          {
+            "check": "Personal ownership and workspace substitution",
+            "status": "REVIEW",
+            "problem_code": "FOREIGN_WORKSPACE_REBIND_NOT_PREVENTED"
+          },
+          {
+            "check": "Only the two API test sessions are logged out",
+            "status": "PASS"
+          }
+        ],
+        "problem_code": "FOREIGN_WORKSPACE_REBIND_NOT_PREVENTED",
+        "test_sessions_logged_out": true,
+        "selected_fixture_rows_removed": false,
+        "incomplete_run_fixtures_may_remain": true,
+        "inactive_schedules_only": true,
+        "existing_stage_1_seed_targeted": false,
+        "derived_conversion_rows_cleanup_verified": false,
+        "family_invitation_removal_or_currency_settings_verified": false,
+        "service_scheduler_or_conversion_history_verified": false,
+        "full_f15_acceptance_verified": false,
+        "production_or_native_changed": false,
+        "credentials_tokens_keys_and_raw_rows_printed": false,
+        "completed_utc": "2026-10-10T17:19:17.688Z"
+      },
+      "owner_native_runner_exit_code": 1,
+      "owner_powershell_error": "Intentional runner stop after REVIEW; incomplete staging fixtures retained",
+      "reported_status_counts": {
+        "PASS": 26,
+        "REVIEW": 1
+      },
+      "owner_api_execution_verified_in_reported_scope": true,
+      "independent_hosted_body_or_project_attestation_verified": false,
+      "workspace_binding_outcome": "Owner-run checker did not verify denial or normalization of direct foreign payment_records.workspace_id substitution, consistent with S3E06 focused source reproduction",
+      "failed_control_reported": true,
+      "exact_failed_http_response_or_post_failure_row_state_returned": false,
+      "actual_persisted_foreign_binding_independently_verified": false,
+      "cross_user_row_read_or_write_bypass_demonstrated": false,
+      "unrun_personal_check_groups_count": 6,
+      "unrun_personal_check_groups": [
+        "Own paid-record foreign payment-item relink denial",
+        "Signed-in store_api_payment_conversion API denial",
+        "Signed-in currency_conversion_backfill_dates API denial",
+        "Anonymous store_api_payment_conversion API denial",
+        "Anonymous currency_conversion_backfill_dates API denial",
+        "Owned fixture DELETE/absence controls for both accounts"
+      ],
+      "family_or_selected_currency_settings_acceptance_verified": false,
+      "finding": "F15",
+      "finding_closed": false,
+      "checkpoint_milestone_closed_with_carry_forward": "3.2.1",
+      "next_work_item": "3.2.2",
+      "final_remediation_action": "Privately verify retained exact fixture response/state, enforce the derived item-to-record workspace invariant using a narrowly reviewed guard/sync correction, assess historical mismatch counts before any rewrite, then repeat affected owner/member/outsider/helper/delete controls during full re-audit",
+      "runtime_or_auth_candidate_changed": false,
+      "production_or_native_changed": false,
+      "repeat_personal_batch_requested_now": false,
+      "full_security_or_release_acceptance_verified": false
     }
   ],
   "source_reconciliation_head": "9388fc8c3e48ac3fd124d73b7f918785da957104"

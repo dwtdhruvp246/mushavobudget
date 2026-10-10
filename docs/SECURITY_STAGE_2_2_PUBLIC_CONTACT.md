@@ -29,7 +29,7 @@ Files: site.js, contact.html; supabase/functions/submit-enquiry/{index.ts,handle
 
 Edge TypeScript entry bundles successfully with esbuild. Migration parses as 17 SQL statements and 3 PL/pgSQL blocks using pglast 8.5 / libpg_query PostgreSQL 18.6. Parsing is not PostgreSQL 17 execution, actual effective-role enforcement, concurrency, transaction rollback, provider deploy or real widget proof. Windows PowerShell execution is owner-pending. No root local test contacted a hosted database, SMTP, push or challenge provider.
 
-## Owner staging setup — 2.2.3 / S2E16–20
+## Owner staging setup — 2.2.3 / S2E16–22
 
 Use **mushavo-budget-staging.pages.dev** and Supabase **dczlddwbtgvfdujgcitb**. Production **kttkospkblwvguuwnhjj** is not this handoff's execution target.
 
@@ -77,3 +77,12 @@ On 10 October 2026 the owner CLI reports submit-enquiry deployed successfully to
 The next handoff copies the unchanged gate migration from pinned commit fbb70fe96d0ff5444cbfdb89888e4e0e49d17ca0 through git show and Set-Clipboard. The owner verifies the staging Dashboard project reference, pastes the entire script into a new SQL Editor query and runs it once. It creates the service-only quota gate and revokes both table/column INSERT bypasses, with effective-permission assertions before transaction commit. Staff read/update is retained. Root does not execute hosted SQL or request whole-project db push.
 
 Expected SQL Editor completion is Success. No rows returned. Any error stops the frontend cutover until reviewed; this CREATE migration is not a command to rerun after success. The owner must also confirm that both custom secret names are saved, without sending values. After gate success, the prepared web directory is uploaded only to mushavo-budget-staging Pages, followed by the existing single controlled acceptance batch. Database gate, frontend deployment, real widget, quotas and staff/denial behavior remain unverified. F09 remains open; contact still has one bounded work item remaining.
+
+
+## Owner gate result, secrets and web upload — S2E21–22
+
+The owner reports Success. No rows returned for the supplied staging migration and confirms both custom secret names saved on 10 October 2026. Record the database gate and its in-script permission assertions as an owner-reported pass in this scope. This does not independently establish project identity, correct secret values/key pairing, allowed/denied API actions, actual quota/concurrency/rollback or staff queue behavior. Root received no secret values and performed no hosted SQL write. Previous pending statements above describe their earlier receipts.
+
+Next, use the Cloudflare account containing the existing Pages project mushavo-budget-staging. In Workers & Pages open that exact project and Create a new deployment. Select Production within this staging project to update its stable mushavo-budget-staging.pages.dev hostname; a hashed preview origin is not the endpoint's configured website origin. Upload only C:\\Users\\HP\\Desktop\\MushavoBudget-Staging-Contact-40496c9017e14aac85fc4be78b10bb24\\web. The parent directory contains private deployment code and is not the website upload. Wait for Save and Deploy success, then report the result. No new project, actual production-site deployment, native rebuild or secret reset is requested.
+
+After the owner upload receipt, perform the already planned single controlled staging acceptance batch. Do not repeatedly regenerate/redeploy or grow this bounded item for unavailable cases. F09 remains open and 2.2.3 remains the single contact work item left; detailed Stage 2 reporting remains due at 2.4.

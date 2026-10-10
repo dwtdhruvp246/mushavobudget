@@ -1119,7 +1119,7 @@
         "bounded_work_items": 3,
         "completed_work_items": 2,
         "remaining_work_items": 1,
-        "latest_evidence": "S2E20",
+        "latest_evidence": "S2E22",
         "instructions": "docs/SECURITY_STAGE_2_2_PUBLIC_CONTACT.md",
         "metadata_diagnostic": "supabase/diagnostics/security_stage_2_contact_metadata.sql",
         "owner_execution_target": "dczlddwbtgvfdujgcitb",
@@ -1128,7 +1128,7 @@
         "owner_metadata_evidence": "S2E14",
         "local_candidate_evidence": "S2E15",
         "local_selected_checks_passed": 32,
-        "hosted_contact_gate_applied": false,
+        "hosted_contact_gate_applied": true,
         "real_turnstile_verified": false,
         "postgresql_runtime_quota_and_concurrency_verified": false,
         "owner_preparation_script": "scripts/prepare-stage-2-contact.ps1",
@@ -1141,8 +1141,12 @@
         "staging_secrets_or_edge_deployment_owner_confirmed": true,
         "staging_edge_deployment_owner_confirmed": true,
         "owner_edge_deployment_evidence": "S2E19",
-        "staging_secrets_owner_confirmed": false,
-        "database_gate_clipboard_handoff_evidence": "S2E20"
+        "staging_secrets_owner_confirmed": true,
+        "database_gate_clipboard_handoff_evidence": "S2E20",
+        "owner_database_gate_evidence": "S2E21",
+        "owner_secret_confirmation_evidence": "S2E21",
+        "staging_frontend_upload_owner_confirmed": false,
+        "frontend_upload_handoff_evidence": "S2E22"
       },
       {
         "id": "2.3",

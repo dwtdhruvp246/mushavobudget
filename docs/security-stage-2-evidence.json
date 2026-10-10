@@ -1280,6 +1280,61 @@
       "remaining_contact_work_items": 1,
       "f09_closed": false,
       "owner_runner_sequence": "Guarded API checks first; REVIEW stops before browser writes; scoped PASS pauses for manual form tests; owner presses Enter afterward for read-only SQL clipboard handoff"
+    },
+    {
+      "id": "S2E25",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_STAGING_CONTACT_ACCEPTANCE_STOPPED_AT_CANDIDATE_PARITY",
+      "owner_completed_utc": "2026-10-10T09:20:41.457Z",
+      "checker_source_commit": "be0a37e83e412956d9e30cb7c3b930326f4afa17",
+      "project": "dczlddwbtgvfdujgcitb",
+      "owner_result": "STAGING_CONTACT_API_REVIEW",
+      "checks": [
+        {
+          "check": "Deployed config is staging only",
+          "status": "PASS"
+        },
+        {
+          "check": "Deployed contact JavaScript matches reviewed candidate",
+          "status": "FAIL"
+        },
+        {
+          "check": "Deployed contact HTML matches candidate with real-format public sitekey",
+          "status": "FAIL"
+        }
+      ],
+      "problem_code": "DEPLOYED_CONTACT_CANDIDATE_MISMATCH",
+      "owner_runner_exit_code": 1,
+      "backend_submission_or_sign_in_phase_reached": false,
+      "test_session_logged_out": null,
+      "browser_test_writes_requested_by_runner": false,
+      "credentials_tokens_keys_and_raw_rows_printed": false,
+      "mismatch_cause_established": false,
+      "real_browser_challenge_quota_staff_or_full_f09_acceptance_verified": false,
+      "remaining_contact_work_items": 1,
+      "production_or_native_changes_requested": false
+    },
+    {
+      "id": "S2E26",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "READ_ONLY_CONTACT_LOCAL_AND_HOSTED_FILE_COMPARISON_READY",
+      "diagnostic": "scripts/diagnose-staging-contact-files.cjs",
+      "local_directory": "C:\\Users\\HP\\Desktop\\MushavoBudget-Staging-Contact-40496c9017e14aac85fc4be78b10bb24\\web",
+      "scope": "Read only site.js and contact.html locally and by four GETs from the fixed staging website, including cache-busting variants; metadata only",
+      "comparison": "Exact reviewed normalized fingerprints, local/live equality, public sitekey-format count, replacement/BOM and Cloudflare marker flags; ASCII skeleton is diagnostic similarity only, never acceptance proof",
+      "network_timeout_per_request_seconds": 15,
+      "asset_size_limit_bytes": 524288,
+      "local_meaningful_tests_passed": 5,
+      "previous_api_guard_tests_passed": 5,
+      "no_acceptance_hashes_or_runtime_files_changed": true,
+      "passwords_or_backend_requests_required": false,
+      "files_modified_deployed_or_sql_executed_by_diagnostic": false,
+      "owner_diagnostic_result_received": false,
+      "mismatch_cause_established": false,
+      "remaining_contact_work_items": 1,
+      "f09_closed": false
     }
   ]
 }

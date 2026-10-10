@@ -1114,12 +1114,12 @@
       {
         "id": "2.2",
         "title": "Public contact abuse",
-        "status": "LOCAL_CANDIDATE_COMPLETE_STAGING_ACCEPTANCE_PENDING",
+        "status": "STAGING_ACCEPTANCE_BLOCKED_CONTACT_ASSET_PARITY",
         "active_work_item": "2.2.3",
         "bounded_work_items": 3,
         "completed_work_items": 2,
         "remaining_work_items": 1,
-        "latest_evidence": "S2E24",
+        "latest_evidence": "S2E26",
         "instructions": "docs/SECURITY_STAGE_2_2_PUBLIC_CONTACT.md",
         "metadata_diagnostic": "supabase/diagnostics/security_stage_2_contact_metadata.sql",
         "owner_execution_target": "dczlddwbtgvfdujgcitb",
@@ -1153,7 +1153,15 @@
         "owner_acceptance_runner": "scripts/run-staging-contact-acceptance.ps1",
         "owner_acceptance_review_sql": "supabase/diagnostics/security_stage_2_contact_acceptance.sql",
         "owner_acceptance_checker_local_tests_passed": 5,
-        "owner_controlled_acceptance_result_received": false
+        "owner_controlled_acceptance_result_received": true,
+        "owner_acceptance_result_scope": "GUARD_ONLY_NO_BACKEND_OR_BROWSER_SUBMISSION_PHASE",
+        "owner_acceptance_result_evidence": "S2E25",
+        "owner_acceptance_problem_code": "DEPLOYED_CONTACT_CANDIDATE_MISMATCH",
+        "deployed_staging_config_owner_api_pass": true,
+        "deployed_contact_candidate_parity": false,
+        "candidate_mismatch_cause_established": false,
+        "owner_file_comparison_diagnostic": "scripts/diagnose-staging-contact-files.cjs",
+        "owner_file_comparison_result_received": false
       },
       {
         "id": "2.3",

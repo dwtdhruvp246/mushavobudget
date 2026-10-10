@@ -1970,6 +1970,76 @@
       "production_or_native_changed": false,
       "repeat_personal_batch_requested_now": false,
       "full_security_or_release_acceptance_verified": false
+    },
+    {
+      "id": "S3E08",
+      "stage_step": "3.2.2",
+      "recorded_date": "2026-10-10",
+      "result": "FAMILY_FIXTURE_AND_API_HANDOFF_LOCAL_SOURCE_PASS_OWNER_PENDING",
+      "source_parent_commit": "3c5287ee29748480b0842cd15b72cb7438e2522f",
+      "instructions": "docs/security-audit/SECURITY_STAGE_3_2_PERSONAL_FAMILY.md",
+      "owner_target": "dczlddwbtgvfdujgcitb",
+      "owner_actions": [
+        "Once-only synthetic Family fixture transaction; one SELECT yields four receipt rows",
+        "Controlled Family lifecycle API batch after reviewed fixture receipt"
+      ],
+      "owner_fixture_receipt_received": false,
+      "owner_api_receipt_received": false,
+      "fixture_scope": "Two new synthetic Family heads/household workspaces; inactive USD 1 item and paid record per family; seven-day synthetic entitlement/four seats; new fixture reminders/conversions disabled",
+      "fixture_guards": [
+        "Exactly two named synthetic Auth users with ordinary active matching profiles",
+        "No existing family, push subscription, active cron job or unreviewed Notifications trigger"
+      ],
+      "local_validation": {
+        "script": "scripts/verify-stage-3-family-source.mjs",
+        "engine": "PGlite 0.5.8 / PostgreSQL 18.3",
+        "ordered_application_migrations_loaded": 52,
+        "provider_adapters": "Minimal Auth/Storage helpers, modeled broad default privileges and PostgREST-shaped HTTP adapter; unavailable pgcrypto CREATE omitted; real bootstrap/provider behavior unverified",
+        "selected_cases_passed": 9,
+        "complete_family_flow_pass_checks": 33,
+        "complete_local_flow_fetches": 207,
+        "negative_cases": [
+          "Unexpected Auth account",
+          "Suspended profile",
+          "Unreviewed notification trigger",
+          "Repeat fixture abort leaves original families unchanged",
+          "Hidden payment mutation behind denial detected",
+          "Non-authorization error cannot pass",
+          "Removed-member row exposure detected",
+          "Logout failure detected"
+        ],
+        "native_PostgreSQL_17_or_hosted_Supabase_behavior_verified": false
+      },
+      "isolated_checker_tests": {
+        "file": "tests/stage-3-family-api.test.cjs",
+        "passed": 8,
+        "runner_ascii_and_extracted_node_expression_checked": true,
+        "native_powershell_execution_verified": false,
+        "unchanged_personal_checker_tests_passed": 28
+      },
+      "covered_request_groups": [
+        "Matching/foreign head, outsider and anonymous known-row controls",
+        "Decline/cancel/accept recipient and mirror/notification controls; terminal replay denial",
+        "Active member shared reads, attributed writes, protected head rows and Family delete rules",
+        "Role escalation, head management and existing foreign/inactive payer controls",
+        "Removal using the same member token and independent secondary head access",
+        "Head deletes only newly generated member contributions on complete success"
+      ],
+      "existing_personal_fixtures_targeted": false,
+      "prior_binding_failure_or_unrun_groups_resolved": false,
+      "product_migration_RLS_grants_or_Auth_settings_changed": false,
+      "hosted_identity_body_or_provider_dispatch_independently_verified": false,
+      "email_push_scheduler_service_or_UI_acceptance_verified": false,
+      "finding_F15_closed": false,
+      "production_or_native_changed": false,
+      "repository_dependencies_changed": false,
+      "artifact_sha256": {
+        "supabase/diagnostics/security_stage_3_family_fixture.sql": "55fb94b238e4e5779ffe36a4c4555013ee7f23c91968514a6fca0fbf0130c20e",
+        "scripts/check-stage-3-family-api.cjs": "5b4cf3eaa589adec73935214cefe7a5bc34eebd7b331786e14aa1e41443c379c",
+        "scripts/run-stage-3-family-acceptance.ps1": "bf5d8b536fee03fbb55153d9f36b14205ab74e37cf6cd9f2ea225acf361d37bb",
+        "scripts/verify-stage-3-family-source.mjs": "64cea1f906f841a15c0d59938173f6c3298e573b8aa45bbd9ae71e93649f0734",
+        "tests/stage-3-family-api.test.cjs": "04a1b4886f9a754ce16b23914e4367781ac85dd356869a956a35a32dd4c6bf98"
+      }
     }
   ],
   "source_reconciliation_head": "9388fc8c3e48ac3fd124d73b7f918785da957104"

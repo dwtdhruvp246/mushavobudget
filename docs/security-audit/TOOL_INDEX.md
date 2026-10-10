@@ -117,3 +117,9 @@ Private exports, original backups, certificates, keys and passwords are owner-he
 - [run-stage-3-personal-acceptance.ps1](../../scripts/run-stage-3-personal-acceptance.ps1) — complete masked-password owner runner from a pinned commit.
 - [stage-3-personal-api.test.cjs](../../tests/stage-3-personal-api.test.cjs) — 28 checker tests including hidden mutations/insert effects and non-authorization errors.
 - [verify-stage-3-personal-workspace-bindings.mjs](../../scripts/verify-stage-3-personal-workspace-bindings.mjs) — reduced-schema current-source binding probe; gap reproduced, hosted behavior unverified.
+
+- [security_stage_3_family_fixture.sql](../../supabase/diagnostics/security_stage_3_family_fixture.sql) — once-only controlled synthetic STAGING Family fixture transaction with one four-row SELECT receipt.
+- [check-stage-3-family-api.cjs](../../scripts/check-stage-3-family-api.cjs) — head/recipient/member/removal requests with effect readbacks and local-scope test logout.
+- [run-stage-3-family-acceptance.ps1](../../scripts/run-stage-3-family-acceptance.ps1) — pinned, masked staging app-password runner.
+- [verify-stage-3-family-source.mjs](../../scripts/verify-stage-3-family-source.mjs) — migration-source Family lifecycle and checker fault cases using explicit local provider/default-grant/HTTP adapters.
+- [stage-3-family-api.test.cjs](../../tests/stage-3-family-api.test.cjs) — eight target/error/redaction and runner-expression tests; native PowerShell and hosted acceptance pending.

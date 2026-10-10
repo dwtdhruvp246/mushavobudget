@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-10",
   "current_stage": 3,
-  "current_step": "3.2.1",
-  "current_title": "Personal staging batch recorded: 26 PASS, paid-record workspace-binding REVIEW carried to remediation; Family next",
+  "current_step": "3.2.2",
+  "current_title": "Controlled Family fixture and API handoff prepared; owner staging receipts pending",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1262,7 +1262,7 @@
     "full_security_or_release_acceptance_verified": false
   },
   "stage_3": {
-    "status": "ACTIVE_PERSONAL_CHECKPOINT_RECORDED_FAMILY_NEXT",
+    "status": "ACTIVE_FAMILY_HANDOFF_PREPARED_OWNER_PENDING",
     "authorized": true,
     "started_date": "2026-10-10",
     "active_step": "3.2",
@@ -1305,7 +1305,7 @@
       {
         "id": "3.2",
         "title": "Personal and Family isolation",
-        "status": "PERSONAL_API_CHECKPOINT_COMPLETE_WITH_BINDING_REVIEW_FAMILY_NEXT",
+        "status": "PERSONAL_CHECKPOINT_CARRY_FORWARD_FAMILY_PREPARED_OWNER_PENDING",
         "bounded_work_items": 3,
         "completed_work_items": 1,
         "remaining_work_items": 2,
@@ -1319,7 +1319,7 @@
         "local_paid_record_workspace_gap_reproduced": true,
         "owner_api_result_received": true,
         "runtime_or_auth_changes_made": false,
-        "latest_evidence": "S3E07",
+        "latest_evidence": "S3E08",
         "owner_api_result_scope": "26_PASS_ONE_WORKSPACE_BINDING_REVIEW_SIX_PLANNED_GROUPS_UNRUN",
         "owner_api_result_evidence": "S3E07",
         "owner_api_completed_utc": "2026-10-10T17:19:17.688Z",
@@ -1332,7 +1332,15 @@
         "owner_fixture_retention_requires_final_review": true,
         "owner_reported_paid_record_binding_control_failed": true,
         "actual_persisted_foreign_binding_independently_verified": false,
-        "findings_closed": false
+        "findings_closed": false,
+        "family_fixture_sql": "supabase/diagnostics/security_stage_3_family_fixture.sql",
+        "family_checker": "scripts/check-stage-3-family-api.cjs",
+        "family_runner": "scripts/run-stage-3-family-acceptance.ps1",
+        "family_source_validation_cases_passed": 9,
+        "family_isolated_checker_tests_passed": 8,
+        "family_complete_selected_expected_pass_checks": 33,
+        "family_owner_fixture_result_received": false,
+        "family_owner_api_result_received": false
       },
       {
         "id": "3.3",
@@ -1355,7 +1363,7 @@
         "status": "PENDING"
       }
     ],
-    "latest_evidence": "S3E07",
+    "latest_evidence": "S3E08",
     "production_promoted": false,
     "application_mfa_enforced": false,
     "full_security_or_release_acceptance_verified": false

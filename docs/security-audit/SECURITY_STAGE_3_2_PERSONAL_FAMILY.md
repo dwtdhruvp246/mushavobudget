@@ -1,5 +1,7 @@
 # 3.2 — Personal and Family isolation
 
+**3.2.2 prepared — 10 October 2026.** One once-only staging fixture query and one Family API batch are ready. Local source validation loaded 52 migrations with explicit provider/default-grant adapters; the complete selected lifecycle returned 33 PASS checks. Hosted fixture and API receipts remain pending (S3E08).
+
 **3.2.1 checkpoint recorded — 10 October 2026.** Owner staging batch returned **26 PASS and one REVIEW** at the paid-record workspace-binding control; six subsequent planned check groups were not run. Source/local reproduction supports the gap, but the receipt does not include the failed HTTP response or post-failure row state. F15 remains open and the failure/unrun groups are carried to final remediation/re-audit. Both generated test sessions received local logout; incomplete inactive synthetic fixtures remain. Next is 3.2.2, Family acceptance. The checker previously passed 28 local tests; no runtime correction has been deployed.
 
 ## Three bounded milestones
@@ -7,7 +9,7 @@
 | Work item | Selected work | Current position |
 |---|---|---|
 | 3.2.1 | Review the Personal/Family source contract; exercise new Personal create/update/delete, ownership/workspace substitution and restricted helper requests with the two existing staging accounts | Complete with carry-forward: 26 owner PASS, one workspace-binding REVIEW, six subsequent groups unrun (S3E07) |
-| 3.2.2 | One controlled Family fixture and acceptance phase: head, recipient before joining, active member and after removal; shared reads, attributed writes and recipient/state-bound invitation response/cancel/replay | Pending. Use synthetic staging identities; establish active entitlement and controlled notification destinations before fixture writes. No customer email/push |
+| 3.2.2 | One controlled Family fixture and acceptance phase: head, recipient before joining, active member and after removal; shared reads, attributed writes and recipient/state-bound invitation response/cancel/replay | Prepared, owner receipts pending (S3E08). One fixture query then one API batch with the existing synthetic identities; no customer email/push |
 | 3.2.3 | Complete selected workspace currency-settings controls, record affected rechecks and close the checkpoint with failed/blocked/unverified cases carried forward | Pending. Service scheduler/history, broad Storage, Business and platform MFA keep their separate scopes |
 
 These are the operational phases of the frozen PF01–PF06 matrix, not new audit stages. Each includes necessary source/local checks and its controlled requests. Do not add repeated baseline inventories or turn a missing prerequisite into an unlimited setup sequence. The final Stage 3 report remains at 3.6. Demonstrated failures join final remediation and the full fresh re-audit according to the owner's standing process.
@@ -91,3 +93,52 @@ Owner completion: **2026-10-10T17:19:17.688Z**, intended project **dczlddwbtgvfd
 | Runner exit/error | Exit 1 and PowerShell `Review required` are the intentional stop after the non-pass outcome, not an installation or password error |
 
 This closes **one of three 3.2 milestones**, with the failure and six unrun groups retained for final remediation and fresh re-audit. Do not rerun the same batch or delete the retained evidence now. Two milestones remain: 3.2.2 Family fixture/requests, then 3.2.3 selected currency controls and checkpoint reconciliation. Stage 3 has still completed only one of its six main steps (3.1); 3.2 is active.
+
+## 3.2.2 owner handoff — Family lifecycle
+
+**Use STAGING `dczlddwbtgvfdujgcitb`, not the production project.** Two actions complete this milestone's selected requests: run the once-only fixture query, then run the supplied API runner after its fixture receipt is reviewed. Neither requires a Cloudflare upload or a new app account. Both actions use the immutable full commit supplied in chat; `git fetch` and `git show` do not switch or overwrite the owner's checkout.
+
+### Action 1: once-only synthetic fixture SQL
+
+The owner PowerShell block copies [security_stage_3_family_fixture.sql](../../supabase/diagnostics/security_stage_3_family_fixture.sql) to the clipboard. Open a new query at `https://supabase.com/dashboard/project/dczlddwbtgvfdujgcitb/sql/new`, verify the staging reference in the Dashboard URL, paste the entire clipboard and run it **once**.
+
+This is a controlled fixture write, not a read-only inventory. It creates two synthetic families, two matching household workspaces/head members, one inactive USD 1 schedule and matching paid record per family. `audit.owner@example.com` heads the primary family; `audit.outsider@example.com` heads the separate secondary family. Each new fixture gets a seven-day synthetic household entitlement with four seats so the legitimate invitation control can run; no real payment or customer subscription is processed. New workspace reminders and conversions are disabled.
+
+Before any fixture writes, the transaction requires exactly the two expected synthetic Auth accounts, ordinary active matching profiles, no existing family, no push subscription, no active cron job and no unreviewed enabled noninternal trigger on Notifications. It uses transaction-local claims for each existing fixture owner, not new Auth credentials or persisted project settings. The reviewed notification triggers set workspace context or enforce suspension/Business invitation fields. Source Family invitation routines insert in-app notifications and do not themselves send an Auth invitation email. Transitive hosted functions, provider/webhook bodies and external dispatch are not independently attested by this metadata guard.
+
+All four result rows come from **one final SELECT**:
+
+| Row | Expected | Meaning |
+|---|---|---|
+| 01 Intended staging fixture target | INFO | Owner must verify the actual Dashboard URL; a SQL label does not prove project identity |
+| 02 Synthetic Family fixtures created | PASS | Two fixture families and matching head/payment scopes committed |
+| 03 Dispatch and existing-data boundaries | INFO | Selected guards checked; reminder/conversion flags disabled on new fixtures |
+| 04 Family authorization acceptance pending | REVIEW | Expected at setup: the API test is still required; fixture creation is not an authorization PASS |
+
+Send the **four result rows or the error only**. A guard failure aborts the transaction; do not remove unrelated data, loosen permissions or rerun repeatedly. Existing Stage 1 and retained Stage 3 Personal fixtures are not selected or repaired.
+
+### Action 2: controlled Family API runner
+
+After the fixture receipt, use [run-stage-3-family-acceptance.ps1](../../scripts/run-stage-3-family-acceptance.ps1) through the full pinned PowerShell block supplied in chat. It asks for the two existing **staging app login passwords** using masked input, not a database password. Temporary environment variables and unmanaged password buffers are cleared in `finally`. Native PowerShell execution still requires the owner receipt; the extracted Node expression has local success/review/redaction tests.
+
+[check-stage-3-family-api.cjs](../../scripts/check-stage-3-family-api.cjs) verifies deployed staging config, two distinct ordinary active sessions, fresh exact head fixtures and active entitlements before invitation or payment writes. All mutations use known generated/fixture IDs; the secondary family supplies real existing foreign identifiers and a legitimate comparison head.
+
+| Selected request group | Positive control and denied/effect verification |
+|---|---|
+| Head and outsider scope | Matching head updates its own fixture; the other head and anonymous requests cannot read/mutate protected rows or administer the foreign family; head readbacks remain unchanged |
+| Invitation recipient/state | Three invitation lifecycles: decline, head cancellation and acceptance. Verify legacy/generalized mirrors and recipient in-app notice; wrong recipient, anonymous, direct status change and repeated/terminal responses cannot create membership |
+| Member access and attribution | Active member reads shared rows and creates/changes an attributed inactive USD 1 item and paid record; existing head-only Family DELETE authority remains protected, including member-owned contributions |
+| Role and payer scope | No direct legacy/generalized head promotion; member cannot invite/remove as head; an existing foreign-family payer cannot be assigned; head cannot remove another family's member or its own Owner |
+| Removal using the same login | Head removal makes both membership scopes inactive. Subsequent reads/PATCH/DELETE/INSERT and accepted-invitation replay from the same token cannot regain primary-family access; legitimate secondary head access remains |
+| Delete positive control | Head deletes only the two new member-contribution rows after successful removal checks; both original head fixtures and invitation history remain for 3.2.3 |
+
+A full selected run returns **33 PASS checks** and `STAGING_FAMILY_API_SCOPED_PASS`. The first unexpected response produces `STAGING_FAMILY_API_REVIEW`, stops subsequent test writes, retains incomplete fixtures and attempts local logout for generated sessions. Known permission codes/exact RPC authorization messages are required; FK, missing RPC, malformed response, token and server errors do not count as successful denials. Selected head readbacks detect hidden effects behind a denial. Direct UI buttons, email/Edge delivery, concurrency, comprehensive cleanup and complete hosted implementation parity are not proved by this API batch.
+
+Do not rerun the batch once it has changed membership state. Send its **JSON summary and redacted errors only**. Local-scope logout acceptance does not establish immediate invalidation of all issued JWTs. The prior paid-record workspace gap, retained Personal rows and six unrun Personal groups remain final-remediation cases; this Family batch does not fix them or close F15.
+
+### Local validation — S3E08
+
+- [verify-stage-3-family-source.mjs](../../scripts/verify-stage-3-family-source.mjs) loads all 52 ordered application migrations into external PGlite 0.5.8 / PostgreSQL 18.3. Minimal Auth/Storage helpers, broad modeled default grants and a PostgREST-shaped HTTP adapter are explicit local dependencies. The unavailable `CREATE EXTENSION pgcrypto` statement alone is omitted locally; built-in UUID generation is used. Managed provider role/bootstrap behavior is not recovered.
+- Nine selected cases pass: unexpected Auth/profile/notification-trigger fixture guards, once-only fixture rollback/four-row receipt, the full 33-check Family lifecycle, and detection of a hidden mutation, a non-authorization error, removed-member exposure and logout failure. The complete local flow uses 207 fetches, including config and logout, within the bounded request budget.
+- [stage-3-family-api.test.cjs](../../tests/stage-3-family-api.test.cjs): eight isolated target/password/error/redaction and extracted PowerShell Node-expression tests pass. The unchanged Personal checker suite also passes all 28 tests.
+- Local source/checker results are not owner-hosted authorization evidence. Native PostgreSQL 17.11, Supabase Auth/PostgREST, deployed function/policy/trigger bodies, UI/dispatch, all-field integrity and production parity remain unverified until their scoped receipts or later audit cases.

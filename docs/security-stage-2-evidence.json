@@ -1465,6 +1465,60 @@
       "production_or_native_changes_requested": false,
       "remaining_contact_work_items": 1,
       "f09_closed": false
+    },
+    {
+      "id": "S2E31",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_CONTROLLED_CONTACT_FORM_COUNTS_AND_FOURTH_LIMIT_SCOPED_PASS",
+      "project": "dczlddwbtgvfdujgcitb",
+      "owner_sql_checked_at": "2026-10-10T11:27:49.725825+00:00",
+      "sql_result": [
+        {
+          "check_name": "01 Read-only staging review context",
+          "status": "INFO",
+          "transaction_read_only": "on",
+          "hosted_identity_scope": "Owner Dashboard confirmation; SQL does not establish hosted identity"
+        },
+        {
+          "check_name": "02 Controlled form batch saved-row counts",
+          "status": "PASS",
+          "matching_test_enquiries": 3,
+          "distinct_test_emails": 1,
+          "expected_new_website_enquiries": 3
+        },
+        {
+          "check_name": "03 Test-review boundary",
+          "status": "INFO",
+          "schema_or_row_changes": false,
+          "raw_fields_or_identifiers_returned": false,
+          "production_changed": false
+        }
+      ],
+      "owner_screenshot": "image(20261010-112811).png",
+      "screenshot_read_successfully_by_root": true,
+      "visible_screenshot_scope": {
+        "verification_widget": "Success",
+        "verification_status": "Verification complete. You can send your enquiry.",
+        "attempt_message_marker": "AUDIT-S223-FORM-20261010 enquiry 4",
+        "limit_message_visible": true,
+        "limit_message": "The enquiry limit has been reached. Please wait before trying again, or email support@mushavobudget.com.",
+        "name_country_type_message_fields_retained": true,
+        "email_field_populated_with_test_prefix_but_clipped": true,
+        "browser_url_or_host_not_in_crop": true
+      },
+      "ordinary_three_row_submission_and_fourth_limit_supported_by_combined_owner_receipt": true,
+      "first_three_browser_success_screens_individually_observed": false,
+      "blank_required_fields_blocked_owner_confirmation_received": false,
+      "api_json_summary_received": false,
+      "api_source_header_input_and_client_bypass_checks_independently_receipted": false,
+      "signed_in_test_account_used_or_logout_outcome_receipted": false,
+      "concurrency_rollback_replay_staff_queue_or_dispatch_verified": false,
+      "sql_receipt_not_used_to_invent_api_check_statuses": true,
+      "next_receipt_request": "Existing PowerShell API JSON only, plus blank-required-field result; do not repeat successful form sends. If unavailable, carry as unverified.",
+      "remaining_contact_work_items": 1,
+      "f09_closed": false,
+      "raw_secrets_or_customer_rows_received": false
     }
   ]
 }

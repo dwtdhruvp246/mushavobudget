@@ -1,6 +1,6 @@
 # 3.2 — Personal and Family isolation
 
-**3.2.2 prepared — 10 October 2026.** One once-only staging fixture query and one Family API batch are ready. Local source validation loaded 52 migrations with explicit provider/default-grant adapters; the complete selected lifecycle returned 33 PASS checks. Hosted fixture and API receipts remain pending (S3E08).
+**3.2.2 fixture result recorded — 10 October 2026 (S3E09).** Owner receipt reports two synthetic families and matching fixture scopes created: one PASS, two INFO and the expected authorization-pending REVIEW. Selected dispatch guards are reported satisfied; reminders/conversions are disabled. **Do not rerun fixture SQL. Next is the already prepared Family API runner**, pinned to `1e3e187a62f1b4bcc359f1f44e68f3b5afbde506`. Its hosted result is still pending. Local preparation evidence S3E08 remains unchanged: 52 migrations with explicit adapters, nine source/checker cases and eight isolated tests; the complete local lifecycle returned 33 PASS checks.
 
 **3.2.1 checkpoint recorded — 10 October 2026.** Owner staging batch returned **26 PASS and one REVIEW** at the paid-record workspace-binding control; six subsequent planned check groups were not run. Source/local reproduction supports the gap, but the receipt does not include the failed HTTP response or post-failure row state. F15 remains open and the failure/unrun groups are carried to final remediation/re-audit. Both generated test sessions received local logout; incomplete inactive synthetic fixtures remain. Next is 3.2.2, Family acceptance. The checker previously passed 28 local tests; no runtime correction has been deployed.
 
@@ -9,7 +9,7 @@
 | Work item | Selected work | Current position |
 |---|---|---|
 | 3.2.1 | Review the Personal/Family source contract; exercise new Personal create/update/delete, ownership/workspace substitution and restricted helper requests with the two existing staging accounts | Complete with carry-forward: 26 owner PASS, one workspace-binding REVIEW, six subsequent groups unrun (S3E07) |
-| 3.2.2 | One controlled Family fixture and acceptance phase: head, recipient before joining, active member and after removal; shared reads, attributed writes and recipient/state-bound invitation response/cancel/replay | Prepared, owner receipts pending (S3E08). One fixture query then one API batch with the existing synthetic identities; no customer email/push |
+| 3.2.2 | One controlled Family fixture and acceptance phase: head, recipient before joining, active member and after removal; shared reads, attributed writes and recipient/state-bound invitation response/cancel/replay | Fixture owner PASS recorded (S3E09); API batch pending. Use the existing synthetic accounts and pinned runner; do not repeat fixture SQL |
 | 3.2.3 | Complete selected workspace currency-settings controls, record affected rechecks and close the checkpoint with failed/blocked/unverified cases carried forward | Pending. Service scheduler/history, broad Storage, Business and platform MFA keep their separate scopes |
 
 These are the operational phases of the frozen PF01–PF06 matrix, not new audit stages. Each includes necessary source/local checks and its controlled requests. Do not add repeated baseline inventories or turn a missing prerequisite into an unlimited setup sequence. The final Stage 3 report remains at 3.6. Demonstrated failures join final remediation and the full fresh re-audit according to the owner's standing process.
@@ -98,7 +98,7 @@ This closes **one of three 3.2 milestones**, with the failure and six unrun grou
 
 **Use STAGING `dczlddwbtgvfdujgcitb`, not the production project.** Two actions complete this milestone's selected requests: run the once-only fixture query, then run the supplied API runner after its fixture receipt is reviewed. Neither requires a Cloudflare upload or a new app account. Both actions use the immutable full commit supplied in chat; `git fetch` and `git show` do not switch or overwrite the owner's checkout.
 
-### Action 1: once-only synthetic fixture SQL
+### Action 1: once-only synthetic fixture SQL — completed, do not repeat
 
 The owner PowerShell block copies [security_stage_3_family_fixture.sql](../../supabase/diagnostics/security_stage_3_family_fixture.sql) to the clipboard. Open a new query at `https://supabase.com/dashboard/project/dczlddwbtgvfdujgcitb/sql/new`, verify the staging reference in the Dashboard URL, paste the entire clipboard and run it **once**.
 
@@ -142,3 +142,11 @@ Do not rerun the batch once it has changed membership state. Send its **JSON sum
 - Nine selected cases pass: unexpected Auth/profile/notification-trigger fixture guards, once-only fixture rollback/four-row receipt, the full 33-check Family lifecycle, and detection of a hidden mutation, a non-authorization error, removed-member exposure and logout failure. The complete local flow uses 207 fetches, including config and logout, within the bounded request budget.
 - [stage-3-family-api.test.cjs](../../tests/stage-3-family-api.test.cjs): eight isolated target/password/error/redaction and extracted PowerShell Node-expression tests pass. The unchanged Personal checker suite also passes all 28 tests.
 - Local source/checker results are not owner-hosted authorization evidence. Native PostgreSQL 17.11, Supabase Auth/PostgREST, deployed function/policy/trigger bodies, UI/dispatch, all-field integrity and production parity remain unverified until their scoped receipts or later audit cases.
+
+## 3.2.2 owner fixture receipt — S3E09
+
+Owner supplied all four expected SQL rows from the fixture at pinned commit `1e3e187a62f1b4bcc359f1f44e68f3b5afbde506`: **two INFO, one PASS and one REVIEW**. The full redacted receipt is preserved in Stage 3 evidence; no checked-at timestamp was supplied. The intended staging reference is `dczlddwbtgvfdujgcitb`; SQL labels alone do not independently establish hosted identity.
+
+The PASS reports two families/head members/household workspaces, two inactive USD 1 items and two paid records, four seats per family and seven-day synthetic entitlement. Reported guards show empty staging push subscriptions, no active cron jobs, reviewed selected Notifications triggers and disabled new-fixture reminders/conversions. Existing Personal fixtures were not targeted and product permissions/Auth settings were not changed. Transitive hosted/frontend/Edge/webhook dispatch remains independently unverified.
+
+Row 04 is the expected **API acceptance pending** marker, not a failed fixture setup or a Family permission pass. Next action is the prepared API runner once, using the two existing staging **app** passwords. Do not create more accounts, repeat fixture SQL or deploy Cloudflare changes. Send the API JSON/redacted errors only. The 3.2.2 milestone remains active until that result is recorded; 3.2 has still completed one of three milestones. The prior Personal failure and unrun cases remain for final remediation/re-audit.

@@ -1,6 +1,6 @@
 # Mushavo Budget security audit — Start here
 
-All security audit documentation and evidence from Stage 0 onward is collected in this folder. Updated 10 October 2026. **Stages 0–2 have closed checkpoints with carry-forward; Stage 3 has completed its 3.1 permission baseline; 3.2.1 has a recorded owner result: 26 PASS and a paid-record workspace-binding REVIEW carried forward; Family 3.2.2 has a locally validated fixture/API handoff; owner execution is pending.** A closed checkpoint does not close an unresolved finding or approve a release.
+All security audit documentation and evidence from Stage 0 onward is collected in this folder. Updated 10 October 2026. **Stages 0–2 have closed checkpoints with carry-forward; Stage 3 has completed its 3.1 permission baseline; 3.2.1 has a recorded owner result: 26 PASS and a paid-record workspace-binding REVIEW carried forward; Family 3.2.2 has an owner fixture PASS; the prepared API acceptance batch is next.** A closed checkpoint does not close an unresolved finding or approve a release.
 
 ## Main documents
 

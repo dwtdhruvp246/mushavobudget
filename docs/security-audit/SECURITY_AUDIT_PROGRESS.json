@@ -3,7 +3,7 @@
   "updated_date": "2026-10-10",
   "current_stage": 3,
   "current_step": "3.2.2",
-  "current_title": "Controlled Family fixture and API handoff prepared; owner staging receipts pending",
+  "current_title": "Family fixture owner PASS recorded; controlled Family API acceptance is next",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1262,7 +1262,7 @@
     "full_security_or_release_acceptance_verified": false
   },
   "stage_3": {
-    "status": "ACTIVE_FAMILY_HANDOFF_PREPARED_OWNER_PENDING",
+    "status": "ACTIVE_FAMILY_FIXTURE_OWNER_PASS_API_PENDING",
     "authorized": true,
     "started_date": "2026-10-10",
     "active_step": "3.2",
@@ -1305,7 +1305,7 @@
       {
         "id": "3.2",
         "title": "Personal and Family isolation",
-        "status": "PERSONAL_CHECKPOINT_CARRY_FORWARD_FAMILY_PREPARED_OWNER_PENDING",
+        "status": "PERSONAL_CARRY_FORWARD_FAMILY_FIXTURE_OWNER_PASS_API_PENDING",
         "bounded_work_items": 3,
         "completed_work_items": 1,
         "remaining_work_items": 2,
@@ -1319,7 +1319,7 @@
         "local_paid_record_workspace_gap_reproduced": true,
         "owner_api_result_received": true,
         "runtime_or_auth_changes_made": false,
-        "latest_evidence": "S3E08",
+        "latest_evidence": "S3E09",
         "owner_api_result_scope": "26_PASS_ONE_WORKSPACE_BINDING_REVIEW_SIX_PLANNED_GROUPS_UNRUN",
         "owner_api_result_evidence": "S3E07",
         "owner_api_completed_utc": "2026-10-10T17:19:17.688Z",
@@ -1339,8 +1339,17 @@
         "family_source_validation_cases_passed": 9,
         "family_isolated_checker_tests_passed": 8,
         "family_complete_selected_expected_pass_checks": 33,
-        "family_owner_fixture_result_received": false,
-        "family_owner_api_result_received": false
+        "family_owner_fixture_result_received": true,
+        "family_owner_api_result_received": false,
+        "family_owner_fixture_result_evidence": "S3E09",
+        "family_owner_fixture_source_commit": "1e3e187a62f1b4bcc359f1f44e68f3b5afbde506",
+        "family_owner_fixture_reported_status_counts": {
+          "INFO": 2,
+          "PASS": 1,
+          "REVIEW": 1
+        },
+        "family_owner_fixture_created_families": 2,
+        "family_owner_fixture_selected_dispatch_guards_pass": true
       },
       {
         "id": "3.3",
@@ -1363,7 +1372,7 @@
         "status": "PENDING"
       }
     ],
-    "latest_evidence": "S3E08",
+    "latest_evidence": "S3E09",
     "production_promoted": false,
     "application_mfa_enforced": false,
     "full_security_or_release_acceptance_verified": false

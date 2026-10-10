@@ -2,6 +2,10 @@
 
 A public website and authenticated personal, family, and business payment tracker powered by Supabase Auth and Postgres. It is designed for users who need to track what must be paid, who is responsible, when it is due, how much has been paid, and what is still outstanding.
 
+## Security audit
+
+The [security audit folder](docs/security-audit/README.md) contains the audit roadmap, action plan, all Stage 0–2 reports and evidence, and an index of the audit SQL/scripts/tests. Start there for current audit progress and unresolved actions.
+
 ## Current Features
 
 - Public Home, About, live Pricing, and Contact pages

@@ -181,7 +181,7 @@
       "Historical link invalidation and all Auth flows"
     ],
     "earlier_evidence_snapshots_preserved": true,
-    "activation_guide": "docs/BUSINESS_INVITATION_NOTIFICATION_SETUP.md"
+    "activation_guide": "docs/security-audit/BUSINESS_INVITATION_NOTIFICATION_SETUP.md"
   },
   "owner_admin_invitation_smoke_test": {
     "received_date": "2026-10-06",
@@ -1824,7 +1824,7 @@
     "owner_direction": "Agrees to finish Stage 0 closure before full email architecture implementation",
     "coverage_sections": 123,
     "original_findings_retained": 20,
-    "closure_checklist": "docs/SECURITY_STAGE_0_CLOSURE_CHECKLIST.md",
+    "closure_checklist": "docs/security-audit/SECURITY_STAGE_0_CLOSURE_CHECKLIST.md",
     "current_known_results": [
       "Both narrow permission metadata rechecks PASS",
       "Notification SQL owner-reported 8/8 PASS",
@@ -1973,8 +1973,8 @@
     "stage_0_owner_signoff_received": false,
     "stage_1_status": "PREPARED / NOT STARTED",
     "stage_1_authorization_received": false,
-    "stage_0_signoff_document": "docs/SECURITY_STAGE_0_SIGNOFF.md",
-    "stage_1_foundations_document": "docs/SECURITY_STAGE_1_FOUNDATIONS_PLAN.md",
+    "stage_0_signoff_document": "docs/security-audit/SECURITY_STAGE_0_SIGNOFF.md",
+    "stage_1_foundations_document": "docs/security-audit/SECURITY_STAGE_1_FOUNDATIONS_PLAN.md",
     "prepared_stage_1_order": [
       "Verify actual account MFA/sign-in and private recovery; verify support/incident contact",
       "Establish feasible external database-plus-file protection",
@@ -2053,11 +2053,11 @@
       "remaining_failed_unsure_items_resolved_at_end": true,
       "fresh_full_audit_after_resolution": true
     },
-    "report": "docs/SECURITY_STAGE_0_COMPLETION_REPORT.md",
-    "action_register": "docs/SECURITY_AUDIT_CARRY_FORWARD.md",
-    "workflow": "docs/SECURITY_AUDIT_WORKFLOW.md",
-    "progress": "docs/SECURITY_AUDIT_PROGRESS.json",
-    "initial_owner_instructions": "docs/SECURITY_STAGE_1_1_ACCOUNT_CHECKS.md",
+    "report": "docs/security-audit/SECURITY_STAGE_0_COMPLETION_REPORT.md",
+    "action_register": "docs/security-audit/SECURITY_AUDIT_CARRY_FORWARD.md",
+    "workflow": "docs/security-audit/SECURITY_AUDIT_WORKFLOW.md",
+    "progress": "docs/security-audit/SECURITY_AUDIT_PROGRESS.json",
+    "initial_owner_instructions": "docs/security-audit/SECURITY_STAGE_1_1_ACCOUNT_CHECKS.md",
     "coverage_sections_preserved": 123,
     "original_findings_preserved": 20,
     "earlier_evidence_values_preserved": true,

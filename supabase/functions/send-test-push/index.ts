@@ -1,6 +1,9 @@
 import { createClient } from "npm:@supabase/supabase-js@2.110.9";
 // @ts-types="npm:@types/web-push@3.6.4"
 import webpush from "npm:web-push@3.6.7";
+import { createGuardedPushSender, isBlockedPushDestination } from "../_shared/push-destination.mjs";
+
+const sendGuardedPush = createGuardedPushSender(webpush);
 
 const TEST_COOLDOWN_SECONDS = 60;
 const TEST_PAYLOAD = JSON.stringify({
@@ -139,7 +142,7 @@ Deno.serve(async (request) => {
 
   for (const subscription of subscriptions as PushSubscriptionRow[]) {
     try {
-      await webpush.sendNotification(
+      await sendGuardedPush(
         {
           endpoint: subscription.endpoint,
           keys: { p256dh: subscription.p256dh, auth: subscription.auth },
@@ -155,7 +158,7 @@ Deno.serve(async (request) => {
     } catch (error) {
       failed += 1;
       const statusCode = deliveryStatus(error);
-      const permanentlyGone = statusCode === 404 || statusCode === 410;
+      const permanentlyGone = statusCode === 404 || statusCode === 410 || isBlockedPushDestination(error);
       if (permanentlyGone) disabled += 1;
       await serviceClient.from("push_subscriptions").update({
         failure_count: Number(subscription.failure_count || 0) + 1,

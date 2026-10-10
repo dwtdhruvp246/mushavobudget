@@ -1,0 +1,1883 @@
+{
+  "schema_version": 1,
+  "stage": 2,
+  "updated_date": "2026-10-10",
+  "active_step": null,
+  "source_audit_head": "fbb70fe96d0ff5444cbfdb89888e4e0e49d17ca0",
+  "events": [
+    {
+      "id": "S2E01",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "STAGE_2_STARTED_WITH_FOUR_FINITE_STEPS",
+      "owner_instruction": "continue",
+      "prior_stage_report": "docs/security-audit/SECURITY_STAGE_1_COMPLETION_REPORT.md",
+      "plan": "docs/security-audit/SECURITY_STAGE_2_WEB_HARDENING_PLAN.md",
+      "steps": {
+        "2.1": "Browser headers",
+        "2.2": "Public contact abuse",
+        "2.3": "Web Push egress",
+        "2.4": "Closure/report"
+      },
+      "prior_stage_1_closed_with_carry_forward": true,
+      "prior_checkpoint_reopened": false
+    },
+    {
+      "id": "S2E02",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "LIVE_HEADER_GAPS_RECONFIRMED_AND_HTTP_REDIRECT_REVIEW_REQUIRED",
+      "method": "Unauthenticated read-only GET; initial HTML suffix canonical redirects followed, extended requests use manual redirect handling",
+      "initial_observations": [
+        {
+          "requested": "https://mushavobudget.com/",
+          "final": "https://mushavobudget.com/",
+          "status": 200,
+          "headers": {
+            "Content-Security-Policy": null,
+            "Content-Security-Policy-Report-Only": null,
+            "Strict-Transport-Security": null,
+            "X-Content-Type-Options": null,
+            "X-Frame-Options": null,
+            "Referrer-Policy": null,
+            "Permissions-Policy": null,
+            "Cross-Origin-Opener-Policy": null,
+            "Cross-Origin-Embedder-Policy": null,
+            "Cross-Origin-Resource-Policy": null
+          },
+          "server": "cloudflare",
+          "content_type": "text/html"
+        },
+        {
+          "requested": "https://mushavobudget.com/app.html",
+          "final": "https://mushavobudget.com/app",
+          "status": 200,
+          "headers": {
+            "Content-Security-Policy": null,
+            "Content-Security-Policy-Report-Only": null,
+            "Strict-Transport-Security": null,
+            "X-Content-Type-Options": null,
+            "X-Frame-Options": null,
+            "Referrer-Policy": null,
+            "Permissions-Policy": null,
+            "Cross-Origin-Opener-Policy": null,
+            "Cross-Origin-Embedder-Policy": null,
+            "Cross-Origin-Resource-Policy": null
+          },
+          "server": "cloudflare",
+          "content_type": "text/html"
+        },
+        {
+          "requested": "https://mushavobudget.com/business.html",
+          "final": "https://mushavobudget.com/business",
+          "status": 200,
+          "headers": {
+            "Content-Security-Policy": null,
+            "Content-Security-Policy-Report-Only": null,
+            "Strict-Transport-Security": null,
+            "X-Content-Type-Options": null,
+            "X-Frame-Options": null,
+            "Referrer-Policy": null,
+            "Permissions-Policy": null,
+            "Cross-Origin-Opener-Policy": null,
+            "Cross-Origin-Embedder-Policy": null,
+            "Cross-Origin-Resource-Policy": null
+          },
+          "server": "cloudflare",
+          "content_type": "text/html"
+        },
+        {
+          "requested": "https://mushavo-budget-staging.pages.dev/",
+          "final": "https://mushavo-budget-staging.pages.dev/",
+          "status": 200,
+          "headers": {
+            "Content-Security-Policy": null,
+            "Content-Security-Policy-Report-Only": null,
+            "Strict-Transport-Security": null,
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": null,
+            "Referrer-Policy": "strict-origin-when-cross-origin",
+            "Permissions-Policy": null,
+            "Cross-Origin-Opener-Policy": null,
+            "Cross-Origin-Embedder-Policy": null,
+            "Cross-Origin-Resource-Policy": null
+          },
+          "server": "cloudflare",
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "extended_observations": {
+        "checked_utc": "2026-10-09T12:28:10.662717+00:00",
+        "results": [
+          {
+            "requested": "https://mushavobudget.com/signup",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html",
+            "headers": {
+              "Content-Security-Policy": null,
+              "Content-Security-Policy-Report-Only": null,
+              "Strict-Transport-Security": null,
+              "X-Content-Type-Options": null,
+              "X-Frame-Options": null,
+              "Referrer-Policy": null,
+              "Permissions-Policy": null
+            }
+          },
+          {
+            "requested": "https://mushavobudget.com/contact",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html",
+            "headers": {
+              "Content-Security-Policy": null,
+              "Content-Security-Policy-Report-Only": null,
+              "Strict-Transport-Security": null,
+              "X-Content-Type-Options": null,
+              "X-Frame-Options": null,
+              "Referrer-Policy": null,
+              "Permissions-Policy": null
+            }
+          },
+          {
+            "requested": "https://mushavobudget.com/app.js",
+            "status": 200,
+            "location": null,
+            "content_type": "text/javascript",
+            "headers": {
+              "Content-Security-Policy": null,
+              "Content-Security-Policy-Report-Only": null,
+              "Strict-Transport-Security": null,
+              "X-Content-Type-Options": null,
+              "X-Frame-Options": null,
+              "Referrer-Policy": null,
+              "Permissions-Policy": null
+            }
+          },
+          {
+            "requested": "https://mushavobudget.com/business.js",
+            "status": 200,
+            "location": null,
+            "content_type": "text/javascript",
+            "headers": {
+              "Content-Security-Policy": null,
+              "Content-Security-Policy-Report-Only": null,
+              "Strict-Transport-Security": null,
+              "X-Content-Type-Options": null,
+              "X-Frame-Options": null,
+              "Referrer-Policy": null,
+              "Permissions-Policy": null
+            }
+          },
+          {
+            "requested": "https://mushavobudget.com/sw.js",
+            "status": 200,
+            "location": null,
+            "content_type": "text/javascript",
+            "headers": {
+              "Content-Security-Policy": null,
+              "Content-Security-Policy-Report-Only": null,
+              "Strict-Transport-Security": null,
+              "X-Content-Type-Options": null,
+              "X-Frame-Options": null,
+              "Referrer-Policy": null,
+              "Permissions-Policy": null
+            }
+          },
+          {
+            "requested": "http://mushavobudget.com/",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html",
+            "headers": {
+              "Content-Security-Policy": null,
+              "Content-Security-Policy-Report-Only": null,
+              "Strict-Transport-Security": null,
+              "X-Content-Type-Options": null,
+              "X-Frame-Options": null,
+              "Referrer-Policy": null,
+              "Permissions-Policy": null
+            }
+          }
+        ]
+      },
+      "seven_header_families_absent_from_sampled_production_200_responses": true,
+      "staging_home_present_families": [
+        "X-Content-Type-Options",
+        "Referrer-Policy"
+      ],
+      "http_probe_scope": "Execution-path HTTP GET returned 200 without Location; actual zone setting and independent redirect behavior require owner review",
+      "all_routes_or_exploit_verified": false,
+      "credentials_or_authenticated_requests_used": false
+    },
+    {
+      "id": "S2E03",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "PHASED_HEADER_CANDIDATE_AND_STAGING_GUARDS_CHECKED",
+      "production_candidate": "_headers",
+      "helper": "scripts/prepare-stage-2-headers.cjs",
+      "tests": "tests/security-stage-2-headers.test.mjs",
+      "reviewed_source_head": "8334bdae71e6f69fc726d8bfebf289caa4b4eaed",
+      "wrangler_signup_and_stage_1_builder_match_remote_source": true,
+      "enforced_csp": "object-src none; base-uri self; form-action self; frame-ancestors none",
+      "script_connection_resource_csp": "REPORT_ONLY_NOT_ENFORCED",
+      "inline_signup_script_hashes_generated": true,
+      "script_unsafe_inline_or_eval_permission_added": false,
+      "dynamic_inline_styles_retained": true,
+      "third_party_dependency_integrity_verified": false,
+      "remote_csp_report_collector_created": false,
+      "hsts_initial_max_age_seconds": 86400,
+      "hsts_include_subdomains_or_preload": false,
+      "staging_backend_origin_explicit_and_production_reference_rejected": true,
+      "public_file_allowlist_count": 34,
+      "prepared_folder_file_count": 35,
+      "tests_command": "node --test tests/security-stage-2-headers.test.mjs tests/cloudflare-assets.test.mjs",
+      "local_node": "24.19.0",
+      "selected_tests_pass": 15,
+      "selected_tests_fail": 0,
+      "test_scope": "Local source/hash/guard/environment-handoff plus existing Cloudflare asset checks",
+      "chromium_executable_available": false,
+      "browser_workflows_or_deliberate_frame_xss_blocking_verified": false,
+      "native_windows_execution_verified": false,
+      "production_provider_deploy_or_native_build_performed": false
+    },
+    {
+      "id": "S2E04",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "STAGING_HANDOFF_PREPARED_PENDING_OWNER_EXECUTION",
+      "instructions": "docs/security-audit/SECURITY_STAGE_2_1_BROWSER_HEADERS.md",
+      "input": "Owner existing 1.3 staging web folder; exact staging URL/publishable format/empty push key; no production bytes",
+      "output": "New ordinary staging public folder; original retained",
+      "hosting_target": "mushavo-budget-staging.pages.dev separate Pages project",
+      "owner_upload_or_browser_results_received": false,
+      "owner_production_always_use_https_setting_review": "PENDING_READ_ONLY",
+      "bounded_header_work_items": 3,
+      "completed_work_items": 2,
+      "remaining_work_items": 1,
+      "strict_csp_or_production_acceptance_verified": false,
+      "carry_forward_finding_ids": [
+        "F07",
+        "F10",
+        "F18",
+        "F19"
+      ],
+      "sql_or_secret_input_required": false,
+      "google_backup_or_apk_update_requested": false
+    },
+    {
+      "id": "S2E05",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_WINDOWS_STAGING_HEADER_PREPARATION_PASS",
+      "helper_commit": "3aeb92bd0fb8529ae35bfa390c176dbe3d0f63c4",
+      "owner_report_result": "STAGING_HEADER_CANDIDATE_PREPARED",
+      "output_folder_name": "MushavoBudget-Staging-Headers-e86954edacbc4788b027093b3183f443",
+      "staging_reference": "dczlddwbtgvfdujgcitb",
+      "public_files": 35,
+      "production_reference_scan_passed": true,
+      "production_push_key_absent": true,
+      "source_files_modified": false,
+      "reviewed_file_allowlist_only": true,
+      "source_commit_or_key_project_ownership_independently_verified": false,
+      "owner_windows_execution_reported_pass": true,
+      "owner_node_version_rechecked_this_run": false,
+      "deployment_verified_by_preparation_only": false,
+      "native_bundle_changed": false
+    },
+    {
+      "id": "S2E06",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_STAGING_UPLOAD_AND_SAMPLED_LIVE_HEADERS_CONFIG_PASS",
+      "owner_reply": "staging deployed",
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "live_observations": {
+        "checked_utc": "2026-10-09T13:11:46.610777+00:00",
+        "origin": "https://mushavo-budget-staging.pages.dev",
+        "requests": [
+          {
+            "path": "/",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/app",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/business",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/signup",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/contact",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/pricing",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/app-entry",
+            "status": 200,
+            "location": null,
+            "content_type": "text/html; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/app.js",
+            "status": 200,
+            "location": null,
+            "content_type": "text/javascript; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/business.js",
+            "status": 200,
+            "location": null,
+            "content_type": "text/javascript; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/sw.js",
+            "status": 200,
+            "location": null,
+            "content_type": "text/javascript; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/site.css",
+            "status": 200,
+            "location": null,
+            "content_type": "text/css; charset=utf-8",
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          },
+          {
+            "path": "/app.html",
+            "status": 308,
+            "location": "/app",
+            "content_type": null,
+            "headers": {
+              "Content-Security-Policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'sha256-SrFpHC3vG4x1Il/bAfl+OM1JZDOP7rc/idu+pg8jFJ8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://dczlddwbtgvfdujgcitb.supabase.co wss://dczlddwbtgvfdujgcitb.supabase.co https://cloudflareinsights.com; img-src 'self' data: blob: https://dczlddwbtgvfdujgcitb.supabase.co; font-src 'self'; media-src 'self' blob:; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "Strict-Transport-Security": "max-age=86400",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "Referrer-Policy": "strict-origin-when-cross-origin",
+              "Permissions-Policy": "camera=(self), microphone=(), geolocation=(), payment=(), usb=()"
+            }
+          }
+        ]
+      },
+      "baseline_header_checks": [
+        {
+          "path": "/",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/app",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/business",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/signup",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/contact",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/pricing",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/app-entry",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        },
+        {
+          "path": "/app.js",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": true
+        },
+        {
+          "path": "/business.js",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": true
+        },
+        {
+          "path": "/sw.js",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": true
+        },
+        {
+          "path": "/site.css",
+          "status": 200,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": true
+        },
+        {
+          "path": "/app.html",
+          "status": 308,
+          "baseline_headers_match": true,
+          "resource_csp_present": true,
+          "js_or_css_mime_correct": null
+        }
+      ],
+      "sampled_responses": 12,
+      "successful_asset_document_responses": 11,
+      "canonical_suffix_redirect": {
+        "path": "/app.html",
+        "status": 308,
+        "location": "/app",
+        "seven_header_families_present": true
+      },
+      "all_twelve_samples_have_seven_header_families": true,
+      "all_twelve_baseline_values_match_candidate": true,
+      "js_css_mime_checks_pass": true,
+      "public_configuration_and_signup_hash_checks": {
+        "checked_utc": "2026-10-09T13:12:41.222404+00:00",
+        "public_config_staging_url_matches": true,
+        "public_publishable_key_format": true,
+        "public_push_key_empty": true,
+        "public_config_production_reference_absent": true,
+        "report_only_csp_production_reference_absent": true,
+        "report_only_staging_https_and_wss_listed": true,
+        "inline_signup_blocks": 1,
+        "all_live_signup_inline_hashes_listed": true,
+        "signup_content_production_reference_absent": true,
+        "credentials_tokens_or_raw_bodies_printed": false,
+        "authenticated_browser_workflow_verified": false
+      },
+      "resource_csp_scope": "REPORT_ONLY_NOT_ENFORCED",
+      "full_browser_injection_frame_auth_download_realtime_or_native_workflows_verified": false,
+      "all_routes_cache_states_or_deployment_source_parity_verified": false,
+      "production_header_repair_or_https_redirect_setting_verified": false,
+      "credentials_or_tokens_printed": false,
+      "provider_changes_performed_by_root": false
+    },
+    {
+      "id": "S2E07",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "ONE_BOUNDED_OWNER_BROWSER_CHECK_BATCH_PENDING",
+      "instructions": "docs/security-audit/SECURITY_STAGE_2_1_BROWSER_HEADERS.md",
+      "owner_batch": [
+        "Public pages and app/signup/business shell render",
+        "First synthetic account login and selected payment persistence",
+        "Second synthetic account separate Personal workspace and first payment hidden",
+        "Available download/print/logo preview positive controls or UNAVAILABLE",
+        "Safe report-only/enforced CSP console observations"
+      ],
+      "production_always_use_https_setting": "PENDING_ON_OFF_UNAVAILABLE_OWNER_READ_ONLY_REPLY",
+      "completed_header_work_items": 2,
+      "remaining_header_work_items": 1,
+      "owner_staging_upload_complete": true,
+      "sampled_live_header_checks_complete": true,
+      "browser_batch_results_received": false,
+      "strict_resource_csp_and_final_f07_acceptance_verified": false,
+      "repeat_stage_1_export_restore_or_staging_setup_required": false
+    },
+    {
+      "id": "S2E08",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_BROWSER_CHECKS_1_TO_4_PASS_CONSOLE_EXTENSION_CHANNEL_ERROR_REVIEW",
+      "owner_reported_checks": [
+        {
+          "number": 1,
+          "scope": "Home/pricing/signup/app/business sign-in pages render",
+          "status": "OWNER_REPORTED_PASS"
+        },
+        {
+          "number": 2,
+          "scope": "First synthetic account sign-in and selected payment persistence after reload",
+          "status": "OWNER_REPORTED_PASS"
+        },
+        {
+          "number": 3,
+          "scope": "Second synthetic account separate Personal workspace and first account payment hidden",
+          "status": "OWNER_REPORTED_PASS"
+        },
+        {
+          "number": 4,
+          "scope": "Available download/print/logo-preview flows in owner batch",
+          "status": "OWNER_REPORTED_PASS"
+        }
+      ],
+      "screenshot_review": {
+        "attachment_name": "image(20261009-165905).png",
+        "image_read_successfully": true,
+        "visible_page": "Personal support form and empty support history",
+        "visible_console_information": "Workspace ready in 2858ms",
+        "visible_grouped_error_count": 3,
+        "visible_error": "Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received",
+        "visible_error_link": "/app#personal/support:1",
+        "visible_csp_violation_in_shown_console": false,
+        "full_console_history_or_other_errors_verified": false,
+        "screenshot_host_or_project_identity_independently_verified": false
+      },
+      "diagnosis": {
+        "error_category": "CHROMIUM_EXTENSION_MESSAGING_RESPONSE_CHANNEL_CLOSED",
+        "likely_source": "BROWSER_EXTENSION_INFERENCE_NOT_IDENTIFIED_OR_RUNTIME_CONFIRMED",
+        "primary_source": "https://chromium.googlesource.com/chromium/src/+/9256bc8b668f61e755ab587f623e7da94d8a6f47/extensions/browser/api/messaging/extension_message_port.cc",
+        "extension_messaging_documentation": "https://developer.chrome.com/docs/extensions/develop/concepts/messaging",
+        "local_allowlisted_html_js_files_scanned": 20,
+        "local_extension_messaging_or_exact_error_matches": 0,
+        "local_scan_deployed_parity_or_external_dependency_behavior_verified": false,
+        "additional_deployed_source_scan": "HTTP_403_THROUGH_EXECUTION_PATH_NOT_COMPLETED_OR_USED_AS_APPLICATION_FAILURE_PROOF",
+        "specific_extension_or_application_impact_verified": false
+      },
+      "bounded_follow_up": "One extensions-disabled browser/profile check of staging Support for at least the previously observed delay; report whether this exact error returns and whether app actions still work. Incognito alone is insufficient if an extension is allowed there.",
+      "production_always_use_https_setting": "PENDING_OWNER_ON_OFF_UNAVAILABLE_READ_ONLY_REPLY",
+      "completed_header_work_items": 2,
+      "remaining_header_work_items": 1,
+      "strict_resource_csp_enforced": false,
+      "production_acceptance_verified": false,
+      "application_error_suppression_or_source_change_performed": false,
+      "authenticated_browser_execution_by_root": false,
+      "secrets_customer_rows_or_screenshot_bytes_committed": false,
+      "stage_0_or_1_checkpoints_reopened": false
+    },
+    {
+      "id": "S2E09",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_TARGETED_CONSOLE_ERROR_NONRECURRENCE_SCOPED_PASS_HTTPS_SETTING_PENDING",
+      "owner_reply": "error did not return",
+      "follow_up_context": "Reply follows the requested Guest/extensions-disabled staging Support Console check.",
+      "exact_previously_reported_extension_channel_error_recurred": false,
+      "outcome_scope": "Owner-reported nonrecurrence of the selected message in the follow-up session only.",
+      "supports_browser_extension_explanation": true,
+      "specific_extension_or_complete_causal_attribution_verified": false,
+      "guest_profile_extensions_disabled_elapsed_time_or_complete_console_history_independently_verified": false,
+      "owner_reported_browser_checks_1_to_4_remain_pass": true,
+      "repeat_passed_workflows_or_additional_console_checks_requested": false,
+      "production_always_use_https_setting": "PENDING_OWNER_ON_OFF_UNAVAILABLE_READ_ONLY_REPLY",
+      "completed_header_work_items": 2,
+      "remaining_header_work_items": 1,
+      "remaining_owner_reply": "Production mushavobudget.com Always Use HTTPS setting only.",
+      "strict_resource_csp_enforced": false,
+      "complete_browser_error_free_csp_frame_injection_or_production_acceptance_verified": false,
+      "application_source_or_error_suppression_changes_performed": false,
+      "provider_settings_database_or_native_bundle_changed": false,
+      "stage_0_or_1_checkpoints_reopened": false
+    },
+    {
+      "id": "S2E10",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_PRODUCTION_ALWAYS_USE_HTTPS_OFF_REDIRECT_BEHAVIOR_REVIEW",
+      "owner_reply": "its off",
+      "preceding_owner_target_clarification": "Original Cloudflare account, production mushavobudget.com zone.",
+      "production_always_use_https_setting": "OWNER_REPORTED_OFF",
+      "owner_observed_setting_independently_verified": false,
+      "setting_off_proves_no_other_redirect": false,
+      "fresh_root_probes": {
+        "checked_utc": "2026-10-09T18:23:53.411868+00:00",
+        "requests": [
+          {
+            "url": "http://mushavobudget.com/",
+            "status": 403,
+            "location": null,
+            "execution_path_or_server_attribution_unverified": true
+          },
+          {
+            "url": "https://mushavobudget.com/",
+            "status": 403,
+            "location": null,
+            "execution_path_or_server_attribution_unverified": true
+          },
+          {
+            "url": "https://mushavobudget.com/app",
+            "status": 403,
+            "location": null,
+            "execution_path_or_server_attribution_unverified": true
+          },
+          {
+            "url": "https://mushavobudget.com/business",
+            "status": 403,
+            "location": null,
+            "execution_path_or_server_attribution_unverified": true
+          }
+        ],
+        "redirect_setting_or_origin_attribution_verified": false
+      },
+      "fresh_root_403_origin_or_execution_path_attribution_verified": false,
+      "actual_production_http_to_https_redirect_verified": false,
+      "primary_setting_reference": "https://developers.cloudflare.com/ssl/edge-certificates/additional-options/always-use-https/",
+      "correction_prepared": {
+        "status": "REVIEWABLE_HOSTNAME_SCOPED_CANDIDATE_NOT_DEPLOYED",
+        "rationale": "Zone-wide Always Use HTTPS affects all hosts/subdomains; only the live apex website has known scope here.",
+        "dashboard": "Production mushavobudget.com > Rules > Overview > Create rule > Redirect Rule",
+        "name": "Mushavo website HTTP to HTTPS",
+        "incoming_match": "Wildcard pattern",
+        "request_url": "http://mushavobudget.com/*",
+        "target_url": "https://mushavobudget.com/${1}",
+        "status_code": 301,
+        "preserve_query_string": true,
+        "rule_references": [
+          "https://developers.cloudflare.com/rules/url-forwarding/single-redirects/create-dashboard/",
+          "https://developers.cloudflare.com/rules/url-forwarding/examples/redirect-admin-https/"
+        ],
+        "provider_syntax_or_effective_rule_independently_deployed_tested": false,
+        "condition_for_owner_deployment": "Only if actual owner-path HTTP behavior confirms the redirect is missing, after checking overlapping existing rules; no zone-wide switch/DNS/TLS changes prescribed."
+      },
+      "remaining_bounded_check": "One owner-native curl GET batch without automatic redirect following: root/app-with-dummy-query/business HTTP and app HTTPS. Accept a matching HTTPS Location or explicitly carry unavailable/inconclusive behavior; do not add an endless screenshot loop.",
+      "completed_header_work_items": 2,
+      "remaining_header_work_items": 1,
+      "stage_0_or_1_checkpoints_reopened": false,
+      "root_provider_setting_or_application_database_native_changes_performed": false,
+      "credentials_tokens_customer_rows_or_raw_response_bodies_recorded": false,
+      "strict_resource_csp_enforced": false,
+      "complete_production_header_or_redirect_acceptance_verified": false
+    },
+    {
+      "id": "S2E11",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_NATIVE_SAMPLED_HTTP_REDIRECT_FAIL_HTTPS_APP_PASS_CORRECTION_HANDOFF",
+      "owner_observations": [
+        {
+          "url": "http://mushavobudget.com/",
+          "status": 200,
+          "redirect": "",
+          "exit_code": 0,
+          "check_result": "FAIL_NO_HTTP_TO_HTTPS_REDIRECT"
+        },
+        {
+          "url": "http://mushavobudget.com/app?audit_https=2.1",
+          "status": 200,
+          "redirect": "",
+          "exit_code": 0,
+          "check_result": "FAIL_NO_HTTP_TO_HTTPS_REDIRECT"
+        },
+        {
+          "url": "http://mushavobudget.com/business",
+          "status": 200,
+          "redirect": "",
+          "exit_code": 0,
+          "check_result": "FAIL_NO_HTTP_TO_HTTPS_REDIRECT"
+        },
+        {
+          "url": "https://mushavobudget.com/app",
+          "status": 200,
+          "redirect": "",
+          "exit_code": 0,
+          "check_result": "PASS_HTTPS_APP_RESPONSE"
+        }
+      ],
+      "native_redirect_following": false,
+      "curl_configuration_files_ignored": true,
+      "tls_verification_not_disabled": true,
+      "scope": "Owner-reported response metadata for three HTTP samples and one HTTPS positive control; not all routes/hosts/network intermediaries or response-body/source provenance.",
+      "production_always_use_https_setting": "OWNER_REPORTED_OFF_S2E10",
+      "http_redirect_failed_samples": 3,
+      "https_positive_control_passed_samples": 1,
+      "hostname_scoped_correction": {
+        "target": "PRODUCTION_CLOUDFLARE_ZONE_MUSHAVOBUDGET_COM",
+        "dashboard_path": "Rules > Overview > Create rule > Redirect Rule",
+        "rule_name": "Mushavo website HTTP to HTTPS",
+        "incoming_match": "Wildcard pattern",
+        "request_url": "http://mushavobudget.com/*",
+        "target_url": "https://mushavobudget.com/${1}",
+        "status_code": 301,
+        "preserve_query_string": true,
+        "deploy_action": "Deploy",
+        "existing_rule_or_dns_tls_mode_changes_requested": false,
+        "zone_wide_always_use_https_toggle_requested": false,
+        "other_hostname_coverage_verified": false,
+        "post_change_checks": "Same four owner-native curl requests; expect matching same-host HTTPS Location with path/query retained for the three HTTP URLs and HTTPS app 200."
+      },
+      "owner_deployment_or_post_change_acceptance_verified": false,
+      "root_provider_write_performed": false,
+      "header_candidate_production_deployed": false,
+      "failed_finding_reference": "F07_HTTPS_REDIRECT_PORTION",
+      "full_f07_strict_csp_or_production_header_acceptance_verified": false,
+      "owner_staging_workflows_and_targeted_console_pass_retained": true,
+      "completed_header_work_items": 2,
+      "remaining_header_work_items": 1,
+      "next_action": "One scoped owner redirect deployment and one post-change metadata recheck within the existing third work item; unavailable/failing outcomes carry to final remediation.",
+      "raw_bodies_credentials_tokens_or_customer_rows_recorded": false,
+      "stage_0_or_1_checkpoints_reopened": false
+    },
+    {
+      "id": "S2E12",
+      "stage_step": "2.1",
+      "recorded_date": "2026-10-09",
+      "result": "BROWSER_HEADERS_CHECKPOINT_CLOSED_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
+      "owner_instruction_applied": "Failed/unsure controls are resolved at final remediation and the full re-audit; finite checkpoints should not block indefinitely.",
+      "bounded_work_items": 3,
+      "completed_work_items": 3,
+      "remaining_work_items": 0,
+      "scoped_passes": [
+        "15 selected local candidate/guard/handoff/asset checks",
+        "Owner Windows isolated staging preparation and deployment",
+        "12 sampled live staging header/config/hash responses",
+        "Owner browser checks 1–4",
+        "Owner targeted Console error nonrecurrence"
+      ],
+      "failed_control": "Production HTTP-to-HTTPS redirect: owner reports 200/no redirect for all three selected HTTP paths; Always Use HTTPS OFF.",
+      "failed_control_reference": "F07",
+      "correction": "Exact hostname-scoped 301 wildcard correction retained in the 2.1 document for final remediation; owner production deployment is not required now.",
+      "unverified_carry_forward": [
+        "Strict resource CSP enforcement",
+        "Deliberate frame/injection blocking",
+        "Production header deployment/source parity and acceptance",
+        "Broader host/route/cache/browser/native coverage"
+      ],
+      "overall_f07_or_release_acceptance_verified": false,
+      "next_stage_step": "2.2.1",
+      "earlier_checkpoints_or_owner_native_project_changed": false
+    },
+    {
+      "id": "S2E13",
+      "stage_step": "2.2.1",
+      "recorded_date": "2026-10-09",
+      "result": "PUBLIC_CONTACT_SOURCE_BASELINE_AND_STAGING_METADATA_HANDOFF",
+      "source_review_commit": "79866c0cacb57d4d709adc4d3a3d386d0fef057a",
+      "reviewed_files": [
+        "site.js",
+        "contact.html",
+        "supabase/migrations/20260903123000_direct_enquiry_submission.sql",
+        "supabase/migrations/20260903120000_align_enquiry_workflow.sql"
+      ],
+      "source_observations": {
+        "public_browser_path": "Supabase client.from('enquiries').insert(payload)",
+        "browser_honeypot_and_html_length_validation": true,
+        "direct_column_insert_granted_in_reviewed_migration": [
+          "anon",
+          "authenticated"
+        ],
+        "reviewed_insert_policy_validates_fields_and_default_workflow": true,
+        "challenge_or_durable_quota_found_in_selected_submission_path": false,
+        "complete_reachable_path_or_live_backend_state_verified": false
+      },
+      "risk_inference": "Direct API callers can bypass browser-only honeypot/HTML controls if the reviewed direct grants and policy path remain deployed. Server field validation and staff RLS are present in source; rate/challenge/runtime behavior needs separate evidence.",
+      "finding": "F09",
+      "bounded_work_items": 3,
+      "work_items": [
+        "2.2.1 Source and one staging metadata baseline",
+        "2.2.2 Justified candidate and local allowed/denied checks",
+        "2.2.3 One scoped staging acceptance batch and explicit carry-forward"
+      ],
+      "diagnostic": "supabase/diagnostics/security_stage_2_contact_metadata.sql",
+      "owner_execution_target": "STAGING_DCZLDDWBTGVFDUJGCITB",
+      "production_reference_to_avoid": "kttkospkblwvguuwnhjj",
+      "diagnostic_single_result_rows": 5,
+      "diagnostic_reads_customer_rows_or_function_bodies": false,
+      "diagnostic_writes_or_dispatches_requests": false,
+      "owner_execution_received": false,
+      "live_production_or_staging_grants_independently_verified": false,
+      "runtime_contact_or_edge_changes_made": false
+    },
+    {
+      "id": "S2E14",
+      "stage_step": "2.2.1",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_STAGING_CONTACT_METADATA_BASELINE_RECEIVED",
+      "source_checked_at": "2026-10-09T18:41:45.158971+00:00",
+      "owner_execution_target": "dczlddwbtgvfdujgcitb",
+      "server_version": "17.11",
+      "single_result_rows_received": 5,
+      "hosted_identity_independently_established_by_sql": false,
+      "table": {
+        "schema": "public",
+        "name": "enquiries",
+        "owner": "postgres",
+        "rls_enabled": true,
+        "rls_forced": false
+      },
+      "effective_table_privileges": {
+        "anon": {
+          "select": false,
+          "insert": false,
+          "update": false,
+          "delete": false
+        },
+        "authenticated": {
+          "select": true,
+          "insert": false,
+          "update": true,
+          "delete": false
+        },
+        "service_role": {
+          "select": true,
+          "insert": true,
+          "update": true,
+          "delete": true
+        }
+      },
+      "effective_column_insert_roles": [
+        "anon",
+        "authenticated"
+      ],
+      "effective_insert_columns": [
+        "full_name",
+        "email",
+        "enquiry_type",
+        "message",
+        "country_name",
+        "country_code"
+      ],
+      "policies": [
+        {
+          "name": "Public can submit enquiries",
+          "command": "INSERT",
+          "roles": [
+            "anon",
+            "authenticated"
+          ]
+        },
+        {
+          "name": "Staff can read enquiries",
+          "command": "SELECT",
+          "roles": [
+            "authenticated"
+          ]
+        },
+        {
+          "name": "Staff can update enquiries",
+          "command": "UPDATE",
+          "roles": [
+            "authenticated"
+          ]
+        }
+      ],
+      "enabled_noninternal_trigger_count": 2,
+      "validated_constraint_count": 20,
+      "name_based_routine_count": 4,
+      "authenticated_table_select_update_is_not_proof_of_rls_row_access": true,
+      "policy_expressions_or_function_bodies_received": false,
+      "runtime_insert_challenge_quota_or_complete_reachable_paths_verified": false,
+      "schema_or_customer_rows_modified_by_diagnostic": false,
+      "enquiry_email_push_or_edge_request_sent": false,
+      "finding": "F09"
+    },
+    {
+      "id": "S2E15",
+      "stage_step": "2.2.2",
+      "recorded_date": "2026-10-09",
+      "result": "CONTACT_GATE_CANDIDATE_AND_SCOPED_LOCAL_CHECKS_PASS",
+      "source_parent_commit": "00bb53c7407e5dfac20b5592f43e53cdd9089463",
+      "finding": "F09",
+      "candidate": {
+        "browser": "Turnstile explicit widget; token required; public Edge POST; no direct enquiries insert; safe errors and retry reset; empty key fails closed",
+        "endpoint": "supabase/functions/submit-enquiry/index.ts",
+        "validation": "Exact bound origin/project; POST/OPTIONS; 32768 actual stream byte limit; strict fields/bounds/types; known country/type; server Siteverify success/hostname/action/time checks",
+        "challenge_action": "public_contact",
+        "new_runtime_secret_key_preferred": true,
+        "legacy_service_role_compatibility_fallback": true,
+        "database_rpc": "public.submit_verified_public_enquiry(jsonb,text)",
+        "rpc_privilege": "Service role only, pinned empty search_path",
+        "database_gate_migration": "supabase/migrations/20261009190000_public_enquiry_submission_gate.sql",
+        "direct_table_and_all_column_insert_revoked_from": [
+          "PUBLIC",
+          "anon",
+          "authenticated"
+        ],
+        "existing_staff_select_update_policies_retained": true,
+        "fixed_window_caps": {
+          "global_minute": 10,
+          "global_hour": 60,
+          "normalized_email_hour": 3
+        },
+        "quota_storage": "HMAC-SHA256 email subject plus counters; no raw IP; dedicated transaction lock serializes quota and insert",
+        "expired_counter_cleanup": "On submission, delete windows older than two hours; idle-time scheduled retention not verified",
+        "ip_rate_limit_verified": false,
+        "client_supplied_ip_headers_used": false,
+        "web_preparation": "New allowlisted staging web folder; source preserved; private Edge code outside public web output",
+        "csp_resource_allowance": "Exact challenges.cloudflare.com script/frame origin; resource CSP remains report-only"
+      },
+      "validation": {
+        "node": "v24.19.0",
+        "command": "node --test tests/security-stage-2-contact.test.mjs tests/security-stage-2-headers.test.mjs",
+        "checks": 32,
+        "passed": 32,
+        "failed": 0,
+        "contact_checks": 19,
+        "header_checks": 13,
+        "handler_tests_execute_actual_handler_with_mocked_upstreams": true,
+        "browser_tests": "Node VM DOM fixture; no actual Chromium execution",
+        "edge_entry_esbuild_bundle_pass": true,
+        "sql_ast_statement_count": 17,
+        "plpgsql_parsed_blocks": 3,
+        "sql_parser": "pglast 8.5, libpg_query PostgreSQL 18.6; syntax only",
+        "postgresql_17_live_sql_or_concurrency_executed": false,
+        "powershell_owner_preparation_executed": false,
+        "providers_or_hosted_databases_contacted_by_local_tests": false
+      },
+      "real_turnstile_or_hosted_gate_applied": false,
+      "staging_or_production_deployed": false,
+      "full_abuse_prevention_ddos_or_full_f09_verified": false,
+      "production_or_native_bundle_changed": false,
+      "production_cutover_requires_real_widget_and_backend_secrets_before_gate_and_frontend_promotion": true,
+      "privacy_processor_followup": "Record Turnstile in Stage 4/F20 provider and privacy review"
+    },
+    {
+      "id": "S2E16",
+      "stage_step": "2.2.2",
+      "recorded_date": "2026-10-09",
+      "result": "BOUNDED_STAGING_CONTACT_SETUP_HANDOFF",
+      "preparation_script": "scripts/prepare-stage-2-contact.ps1",
+      "web_builder": "scripts/prepare-stage-2-contact.cjs",
+      "next_owner_action": "Create one real Managed Turnstile widget for mushavo-budget-staging.pages.dev with pre-clearance off; keep its secret private; prepare the new candidate from pinned Git source",
+      "source_owner_checkout_reset_or_checkout_requested": false,
+      "staging_reference": "dczlddwbtgvfdujgcitb",
+      "planned_function_deploy": "submit-enquiry only, explicit staging project-ref, use-api (no Docker)",
+      "private_edge_secret_names": [
+        "MUSHAVO_CONTACT_TURNSTILE_SECRET",
+        "MUSHAVO_CONTACT_QUOTA_SECRET"
+      ],
+      "sql_handoff": "Pinned git show to clipboard; owner manually verifies staging SQL Editor; after endpoint preparation",
+      "owner_widget_setup_or_preparation_received": false,
+      "contact_work_items_completed": 2,
+      "contact_work_items_remaining": 1,
+      "remaining_work_item": "2.2.3 One controlled staging acceptance batch and closure with unavailable/failed cases carried forward",
+      "production_https_remediation_still_deferred": true,
+      "raw_secrets_or_customer_artifacts_uploaded": false
+    },
+    {
+      "id": "S2E17",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-09",
+      "result": "OWNER_STAGING_CONTACT_CANDIDATE_PREPARATION_PASS",
+      "preparation_output_stage_step": "2.2.2",
+      "source_commit": "fbb70fe96d0ff5444cbfdb89888e4e0e49d17ca0",
+      "staging_reference": "dczlddwbtgvfdujgcitb",
+      "web_output": "C:\\Users\\HP\\Desktop\\MushavoBudget-Staging-Contact-40496c9017e14aac85fc4be78b10bb24\\web",
+      "single_function_deployment_folder": "C:\\Users\\HP\\Desktop\\MushavoBudget-Staging-Contact-40496c9017e14aac85fc4be78b10bb24",
+      "public_files": 35,
+      "production_reference_scan_passed": true,
+      "production_push_key_absent": true,
+      "source_files_modified": false,
+      "reviewed_file_allowlist_only": true,
+      "direct_browser_insert_removed": true,
+      "public_sitekey_present": true,
+      "source_or_key_ownership_independently_verified": false,
+      "widget_hostname_or_key_pair_verified": false,
+      "edge_function_deployed": false,
+      "database_gate_applied": false,
+      "frontend_deployed": false,
+      "hosted_challenge_quota_or_permissions_verified": false,
+      "production_or_native_bundle_changed": false,
+      "owner_report_received": true
+    },
+    {
+      "id": "S2E18",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-09",
+      "result": "STAGING_PRIVATE_SECRETS_AND_SINGLE_FUNCTION_DEPLOY_HANDOFF",
+      "execution_target": "dczlddwbtgvfdujgcitb",
+      "secret_names": [
+        "MUSHAVO_CONTACT_TURNSTILE_SECRET",
+        "MUSHAVO_CONTACT_QUOTA_SECRET"
+      ],
+      "quota_secret_generation": "Owner-local cryptographic 32 random bytes encoded as 64 hex characters; clipboard only, not printed",
+      "secrets_handled_by_root": false,
+      "deployment": "Owner PowerShell; supabase.cmd functions deploy submit-enquiry --project-ref dczlddwbtgvfdujgcitb --use-api --no-verify-jwt",
+      "cli_login_if_needed": "Owner Supabase account login, not database password; credentials/tokens remain private",
+      "docker_required": false,
+      "all_function_deployment_or_prune_requested": false,
+      "database_gate_and_web_upload_requested_in_this_handoff": false,
+      "owner_secret_configuration_or_deploy_outcome_received": false,
+      "remaining_contact_work_items": 1,
+      "remaining_work_item": "2.2.3 Staging configuration, coordinated gate/frontend cutover and one controlled acceptance batch",
+      "production_https_remediation_still_deferred": true
+    },
+    {
+      "id": "S2E19",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_STAGING_SINGLE_CONTACT_FUNCTION_DEPLOY_PASS",
+      "execution_target": "dczlddwbtgvfdujgcitb",
+      "function": "submit-enquiry",
+      "uploaded_assets": [
+        "supabase/functions/submit-enquiry/index.ts",
+        "supabase/functions/submit-enquiry/handler.mjs"
+      ],
+      "owner_cli_report": "Deployed Functions on project dczlddwbtgvfdujgcitb: submit-enquiry",
+      "deployment_flags": [
+        "--project-ref dczlddwbtgvfdujgcitb",
+        "--use-api",
+        "--no-verify-jwt"
+      ],
+      "owner_cli_version": "2.106.0",
+      "cli_update_notice": "2.120.0 available; deployment succeeded",
+      "owner_secret_configuration_confirmed": false,
+      "database_gate_applied": false,
+      "frontend_candidate_uploaded": false,
+      "real_turnstile_quota_or_role_behavior_verified": false,
+      "production_or_native_deployment_requested": false,
+      "raw_credentials_or_tokens_received": false
+    },
+    {
+      "id": "S2E20",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "STAGING_CONTACT_DATABASE_GATE_CLIPBOARD_HANDOFF",
+      "execution_target": "dczlddwbtgvfdujgcitb",
+      "production_reference_to_avoid": "kttkospkblwvguuwnhjj",
+      "pinned_source_commit": "fbb70fe96d0ff5444cbfdb89888e4e0e49d17ca0",
+      "migration": "supabase/migrations/20261009190000_public_enquiry_submission_gate.sql",
+      "delivery": "Owner PowerShell git fetch then pinned git show to Set-Clipboard; manually paste and run entire SQL in owner-verified staging SQL Editor",
+      "scope": "Create service-only quota/insertion gate; revoke public client table and column INSERT; preserve staff read/update; assert effective permissions in transaction before commit",
+      "database_execution_by_root": false,
+      "owner_database_gate_result_received": false,
+      "owner_two_secret_name_confirmation_still_required": true,
+      "frontend_upload_sequence": "After gate success, upload only previously prepared web directory to staging Pages, then one bounded acceptance batch",
+      "checkout_reset_or_whole_project_database_push_requested": false,
+      "remaining_contact_work_items": 1,
+      "hosted_acceptance_or_f09_closure_verified": false
+    },
+    {
+      "id": "S2E21",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_STAGING_CONTACT_DATABASE_GATE_AND_SECRET_CONFIGURATION_PASS",
+      "intended_execution_target": "dczlddwbtgvfdujgcitb",
+      "pinned_gate_source_commit": "fbb70fe96d0ff5444cbfdb89888e4e0e49d17ca0",
+      "migration": "supabase/migrations/20261009190000_public_enquiry_submission_gate.sql",
+      "owner_sql_result": "Success. No rows returned",
+      "owner_secret_name_confirmations": {
+        "MUSHAVO_CONTACT_TURNSTILE_SECRET": true,
+        "MUSHAVO_CONTACT_QUOTA_SECRET": true
+      },
+      "database_gate_applied_owner_reported": true,
+      "effective_permission_assertions_passed_in_reported_full_script_scope": true,
+      "hosted_project_identity_independently_verified": false,
+      "secret_values_received_or_verified_by_root": false,
+      "real_challenge_and_key_pair_verified": false,
+      "live_submission_quota_concurrency_or_transaction_rollback_verified": false,
+      "ordinary_client_or_staff_runtime_behavior_verified": false,
+      "frontend_candidate_upload_report_received": false,
+      "production_or_native_deployment_requested": false
+    },
+    {
+      "id": "S2E22",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "EXISTING_STAGING_PAGES_FRONTEND_UPLOAD_HANDOFF",
+      "pages_project": "mushavo-budget-staging",
+      "website": "https://mushavo-budget-staging.pages.dev/",
+      "upload_directory": "C:\\Users\\HP\\Desktop\\MushavoBudget-Staging-Contact-40496c9017e14aac85fc4be78b10bb24\\web",
+      "delivery": "Owner Cloudflare account containing existing staging Pages project; Create a new deployment; select Production within staging project for stable pages.dev hostname; drag only web directory; Save and Deploy",
+      "new_project_or_production_site_deployment_requested": false,
+      "parent_directory_or_server_function_source_publication_requested": false,
+      "staging_frontend_deploy_outcome_received": false,
+      "remaining_contact_work_items": 1,
+      "remaining_sequence": "Prepared website upload, then existing single controlled staging acceptance batch; record unavailable cases rather than adding indefinite tasks",
+      "f09_closed": false
+    },
+    {
+      "id": "S2E23",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_STAGING_CONTACT_FRONTEND_DEPLOYMENT_CONFIRMED",
+      "intended_pages_project": "mushavo-budget-staging",
+      "intended_website": "https://mushavo-budget-staging.pages.dev/",
+      "owner_report": "it was deployed",
+      "prepared_web_directory": "C:\\Users\\HP\\Desktop\\MushavoBudget-Staging-Contact-40496c9017e14aac85fc4be78b10bb24\\web",
+      "owner_upload_confirmed": true,
+      "live_candidate_content_independently_verified": false,
+      "root_public_asset_reads": {
+        "paths": [
+          "/contact.html",
+          "/site.js",
+          "/config.js"
+        ],
+        "native_http_statuses": [
+          403,
+          403,
+          403
+        ],
+        "web_retrieval": "Not accessible"
+      },
+      "root_retrieval_error_cause_established": false,
+      "real_widget_or_submission_quota_permissions_verified": false,
+      "production_or_native_deployment_requested": false
+    },
+    {
+      "id": "S2E24",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "BOUNDED_STAGING_CONTACT_ACCEPTANCE_BATCH_READY",
+      "checker": "scripts/check-staging-contact-api.cjs",
+      "owner_runner": "scripts/run-staging-contact-acceptance.ps1",
+      "read_only_review_sql": "supabase/diagnostics/security_stage_2_contact_acceptance.sql",
+      "execution_target": "dczlddwbtgvfdujgcitb",
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "source_parity": "Canonical SHA-256 of reviewed site.js and HTML with only public sitekey substitution/line-ending normalization",
+      "api_scope": [
+        "staging public config and candidate/header parity",
+        "browser preflight",
+        "missing origin",
+        "administrative fields",
+        "oversized body",
+        "missing and forged challenge token",
+        "anonymous direct INSERT/RPC and quota read denial",
+        "optional existing staging test-user sign-in positive control and matching signed-in denials",
+        "local test-session logout"
+      ],
+      "test_account": "audit.owner@example.com; owner-local app password optional, absence is UNVERIFIED",
+      "password_or_tokens_printed_or_sent_to_root": false,
+      "possible_unexpected_bypass_effect": "At most four clearly marked synthetic staging enquiry attempts through INSERT/RPC if protections fail; unexpected rows retained, not deleted",
+      "form_scope": "One batch: required fields, three same-email synthetic enquiries, fourth denial and retained values",
+      "form_message_prefix": "AUDIT-S223-FORM-20261010 enquiry ",
+      "review_sql_scope": "Single read-only three-row result set; expected 3 matching new website enquiries and 1 email; no raw fields/identifiers",
+      "local_checker_tests_passed": 5,
+      "local_validation": "Real handler rejection paths with mocked provider/role API receipts; failed grants and JWT 401 false-positive prevention; wrong-config/source guard; password skip and safe summaries",
+      "owner_invoker_javascript_extracted_compile_and_run": "PASS with wrong-project fixture; Windows PowerShell not executed by root",
+      "sql_parse": "PASS, 5 statements using PostgreSQL 18.6 parser; actual PostgreSQL 17 execution owner-pending",
+      "existing_32_candidate_checks_changed_or_repeated": false,
+      "actual_hosted_acceptance_executed_by_root": false,
+      "unverified_carry": [
+        "real challenge replay/wrong-host behavior",
+        "concurrent/global quota and rollback scenarios",
+        "staff app queue/update and dispatch access if no existing staging staff account"
+      ],
+      "remaining_contact_work_items": 1,
+      "f09_closed": false,
+      "owner_runner_sequence": "Guarded API checks first; REVIEW stops before browser writes; scoped PASS pauses for manual form tests; owner presses Enter afterward for read-only SQL clipboard handoff"
+    },
+    {
+      "id": "S2E25",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_STAGING_CONTACT_ACCEPTANCE_STOPPED_AT_CANDIDATE_PARITY",
+      "owner_completed_utc": "2026-10-10T09:20:41.457Z",
+      "checker_source_commit": "be0a37e83e412956d9e30cb7c3b930326f4afa17",
+      "project": "dczlddwbtgvfdujgcitb",
+      "owner_result": "STAGING_CONTACT_API_REVIEW",
+      "checks": [
+        {
+          "check": "Deployed config is staging only",
+          "status": "PASS"
+        },
+        {
+          "check": "Deployed contact JavaScript matches reviewed candidate",
+          "status": "FAIL"
+        },
+        {
+          "check": "Deployed contact HTML matches candidate with real-format public sitekey",
+          "status": "FAIL"
+        }
+      ],
+      "problem_code": "DEPLOYED_CONTACT_CANDIDATE_MISMATCH",
+      "owner_runner_exit_code": 1,
+      "backend_submission_or_sign_in_phase_reached": false,
+      "test_session_logged_out": null,
+      "browser_test_writes_requested_by_runner": false,
+      "credentials_tokens_keys_and_raw_rows_printed": false,
+      "mismatch_cause_established": false,
+      "real_browser_challenge_quota_staff_or_full_f09_acceptance_verified": false,
+      "remaining_contact_work_items": 1,
+      "production_or_native_changes_requested": false
+    },
+    {
+      "id": "S2E26",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "READ_ONLY_CONTACT_LOCAL_AND_HOSTED_FILE_COMPARISON_READY",
+      "diagnostic": "scripts/diagnose-staging-contact-files.cjs",
+      "local_directory": "C:\\Users\\HP\\Desktop\\MushavoBudget-Staging-Contact-40496c9017e14aac85fc4be78b10bb24\\web",
+      "scope": "Read only site.js and contact.html locally and by four GETs from the fixed staging website, including cache-busting variants; metadata only",
+      "comparison": "Exact reviewed normalized fingerprints, local/live equality, public sitekey-format count, replacement/BOM and Cloudflare marker flags; ASCII skeleton is diagnostic similarity only, never acceptance proof",
+      "network_timeout_per_request_seconds": 15,
+      "asset_size_limit_bytes": 524288,
+      "local_meaningful_tests_passed": 5,
+      "previous_api_guard_tests_passed": 5,
+      "no_acceptance_hashes_or_runtime_files_changed": true,
+      "passwords_or_backend_requests_required": false,
+      "files_modified_deployed_or_sql_executed_by_diagnostic": false,
+      "owner_diagnostic_result_received": false,
+      "mismatch_cause_established": false,
+      "remaining_contact_work_items": 1,
+      "f09_closed": false
+    },
+    {
+      "id": "S2E27",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_LOCAL_AND_DEPLOYED_CONTACT_ENCODING_DIAGNOSTIC_RECEIVED",
+      "owner_completed_utc": "2026-10-10T09:37:00.449Z",
+      "diagnostic_source_commit": "66abef2c7e0a30519131477a3253b0c5c0db43c0",
+      "project": "dczlddwbtgvfdujgcitb",
+      "site_javascript": {
+        "local_available": true,
+        "local_utf8_bytes": 18241,
+        "local_exact_candidate_match": false,
+        "local_ascii_skeleton_match_diagnostic_only": true,
+        "replacement_characters": 0,
+        "leading_bom": false,
+        "endpoint_marker_present": true,
+        "cloudflare_rewrite_marker": false,
+        "live_http_status": 200,
+        "live_utf8_bytes": 18241,
+        "live_matches_local": true,
+        "live_exact_candidate_match": false,
+        "live_ascii_skeleton_match_diagnostic_only": true,
+        "cache_busted_matches_local_and_normal_live": true
+      },
+      "contact_html": {
+        "local_available": true,
+        "local_utf8_bytes": 6612,
+        "local_exact_candidate_match": false,
+        "local_ascii_skeleton_match_diagnostic_only": true,
+        "replacement_characters": 0,
+        "leading_bom": false,
+        "real_format_public_sitekey_count": 1,
+        "cloudflare_rewrite_marker": false,
+        "live_and_cache_busted_available": false,
+        "live_problem_code": "ASSET_READ_FAILED",
+        "actual_redirect_or_network_error_cause_observed": false
+      },
+      "mismatch_already_present_in_prepared_folder": true,
+      "likely_cause": "Original preparation used native git show through PowerShell text decoding/Out-String, then UTF-8 re-encoding; non-ASCII changes are supported by both diagnostic fingerprints",
+      "root_reproduction": "UTF-8 site.js decoded as CP437/CP850 and written with Windows CRLF produces 18241 bytes, matching reported size; actual owner bytes/code page not retrieved",
+      "encoding_conversion_proven_for_exact_owner_bytes": false,
+      "backend_auth_requests_or_files_modified_by_diagnostic": false,
+      "secret_values_received": false,
+      "f09_closed": false
+    },
+    {
+      "id": "S2E28",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "BYTE_PRESERVING_STAGING_CONTACT_REPAIR_AND_CANONICAL_HTML_READ_READY",
+      "preparation_script": "scripts/prepare-stage-2-contact.ps1",
+      "extraction": "Node execFileSync Git stdout Buffers written without PowerShell decoding; canonical reviewed hashes checked before and after public preparation",
+      "owner_mode": "Repair from existing prepared web folder; reuse its one real-format public widget sitekey; preserve config bytes and other allowlisted assets; create a new folder",
+      "staging_route_correction": "Public GET uses /contact, Cloudflare Pages documented extension-less HTML address; original diagnostic rejected redirects, actual owner's HTML failure remains unproven",
+      "acceptance_hashes_unchanged": true,
+      "changed_checkers": [
+        "scripts/check-staging-contact-api.cjs",
+        "scripts/diagnose-staging-contact-files.cjs"
+      ],
+      "local_validation": {
+        "total_passed": 45,
+        "new_byte_preparation_tests": 3,
+        "api_and_file_diagnostic_tests": 10,
+        "existing_contact_and_header_tests": 32,
+        "real_git_node_extractor_fixture": "PASS: damaged Unicode corrected, pinned native buffers preserved, existing key/config reused, source files unchanged; altered candidate and missing-key guards fail before web creation",
+        "native_windows_powershell_execution_verified_by_root": false
+      },
+      "owner_repair_or_redeployment_result_received": false,
+      "backend_sql_or_function_redeployment_requested": false,
+      "production_or_native_changes_requested": false,
+      "remaining_contact_work_items": 1,
+      "f09_closed": false
+    },
+    {
+      "id": "S2E29",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_BYTE_PRESERVING_STAGING_CONTACT_REPAIR_PREPARATION_PASS",
+      "source_commit": "6ba621d718d1b989aaa84aa486d8f0b098b792a3",
+      "staging_reference": "dczlddwbtgvfdujgcitb",
+      "web_output": "C:\\Users\\HP\\Desktop\\MushavoBudget-Staging-Contact-6cd6f3fd775242e18d89674fc14443e1\\web",
+      "owner_result": "STAGING_CONTACT_ENCODING_REPAIR_PREPARED",
+      "public_files": 35,
+      "binary_git_extraction_used": true,
+      "reviewed_contact_javascript_match": true,
+      "reviewed_contact_html_match": true,
+      "existing_public_sitekey_reused": true,
+      "existing_source_config_bytes_preserved": true,
+      "production_reference_scan_passed": true,
+      "production_push_key_absent": true,
+      "source_files_modified": false,
+      "reviewed_file_allowlist_only": true,
+      "owner_native_preparation_verified_in_reported_scope": true,
+      "widget_hostname_or_key_pair_verified": false,
+      "fresh_repaired_frontend_deployment_confirmed": false,
+      "live_repaired_candidate_or_browser_workflows_verified": false,
+      "new_edge_or_database_redeployment_performed": false,
+      "previous_owner_edge_database_and_secret_pass_receipts_retained": [
+        "S2E19",
+        "S2E21"
+      ],
+      "fresh_builder_edge_function_deployed_and_database_gate_applied_false_scope": "This preparation run makes no hosted writes; does not reverse earlier owner deployment/gate receipts",
+      "production_or_native_bundle_changed": false,
+      "remaining_contact_work_items": 1,
+      "f09_closed": false
+    },
+    {
+      "id": "S2E30",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_REPAIRED_STAGING_CONTACT_FRONTEND_DEPLOYMENT_CONFIRMED",
+      "owner_report": "staging redeployed",
+      "pages_project": "mushavo-budget-staging",
+      "website": "https://mushavo-budget-staging.pages.dev/",
+      "prepared_web_output": "C:\\Users\\HP\\Desktop\\MushavoBudget-Staging-Contact-6cd6f3fd775242e18d89674fc14443e1\\web",
+      "prepared_source_commit": "6ba621d718d1b989aaa84aa486d8f0b098b792a3",
+      "owner_repaired_upload_confirmed": true,
+      "live_repaired_candidate_independently_verified": false,
+      "acceptance_runner": "scripts/run-staging-contact-acceptance.ps1",
+      "acceptance_source_commit": "6ba621d718d1b989aaa84aa486d8f0b098b792a3",
+      "acceptance_checker_canonical_html_path": "/contact",
+      "acceptance_sequence": "Guarded API first; REVIEW stops; scoped PASS pauses for one same-hour browser batch; afterward owner presses Enter for single read-only SQL clipboard handoff",
+      "browser_message_prefix": "AUDIT-S223-FORM-20261010 enquiry ",
+      "valid_challenge_browser_quota_or_staff_access_verified": false,
+      "additional_setup_or_preparation_requested": false,
+      "previous_local_45_checks_unchanged": true,
+      "production_or_native_changes_requested": false,
+      "remaining_contact_work_items": 1,
+      "f09_closed": false
+    },
+    {
+      "id": "S2E31",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_CONTROLLED_CONTACT_FORM_COUNTS_AND_FOURTH_LIMIT_SCOPED_PASS",
+      "project": "dczlddwbtgvfdujgcitb",
+      "owner_sql_checked_at": "2026-10-10T11:27:49.725825+00:00",
+      "sql_result": [
+        {
+          "check_name": "01 Read-only staging review context",
+          "status": "INFO",
+          "transaction_read_only": "on",
+          "hosted_identity_scope": "Owner Dashboard confirmation; SQL does not establish hosted identity"
+        },
+        {
+          "check_name": "02 Controlled form batch saved-row counts",
+          "status": "PASS",
+          "matching_test_enquiries": 3,
+          "distinct_test_emails": 1,
+          "expected_new_website_enquiries": 3
+        },
+        {
+          "check_name": "03 Test-review boundary",
+          "status": "INFO",
+          "schema_or_row_changes": false,
+          "raw_fields_or_identifiers_returned": false,
+          "production_changed": false
+        }
+      ],
+      "owner_screenshot": "image(20261010-112811).png",
+      "screenshot_read_successfully_by_root": true,
+      "visible_screenshot_scope": {
+        "verification_widget": "Success",
+        "verification_status": "Verification complete. You can send your enquiry.",
+        "attempt_message_marker": "AUDIT-S223-FORM-20261010 enquiry 4",
+        "limit_message_visible": true,
+        "limit_message": "The enquiry limit has been reached. Please wait before trying again, or email support@mushavobudget.com.",
+        "name_country_type_message_fields_retained": true,
+        "email_field_populated_with_test_prefix_but_clipped": true,
+        "browser_url_or_host_not_in_crop": true
+      },
+      "ordinary_three_row_submission_and_fourth_limit_supported_by_combined_owner_receipt": true,
+      "first_three_browser_success_screens_individually_observed": false,
+      "blank_required_fields_blocked_owner_confirmation_received": false,
+      "api_json_summary_received": false,
+      "api_source_header_input_and_client_bypass_checks_independently_receipted": false,
+      "signed_in_test_account_used_or_logout_outcome_receipted": false,
+      "concurrency_rollback_replay_staff_queue_or_dispatch_verified": false,
+      "sql_receipt_not_used_to_invent_api_check_statuses": true,
+      "next_receipt_request": "Existing PowerShell API JSON only, plus blank-required-field result; do not repeat successful form sends. If unavailable, carry as unverified.",
+      "remaining_contact_work_items": 1,
+      "f09_closed": false,
+      "raw_secrets_or_customer_rows_received": false
+    },
+    {
+      "id": "S2E32",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_STAGING_CONTACT_API_SCOPED_PASS_RECEIVED",
+      "project": "dczlddwbtgvfdujgcitb",
+      "source_commit": "6ba621d718d1b989aaa84aa486d8f0b098b792a3",
+      "owner_completed_utc": "2026-10-10T11:01:44.974Z",
+      "owner_result": "STAGING_CONTACT_API_SCOPED_PASS",
+      "checks": [
+        {
+          "check": "Deployed config is staging only",
+          "status": "PASS"
+        },
+        {
+          "check": "Deployed contact JavaScript matches reviewed candidate",
+          "status": "PASS"
+        },
+        {
+          "check": "Deployed contact HTML matches candidate with real-format public sitekey",
+          "status": "PASS"
+        },
+        {
+          "check": "Served headers retain baseline CSP and Turnstile allowances",
+          "status": "PASS"
+        },
+        {
+          "check": "Staging browser preflight is allowed",
+          "status": "PASS",
+          "http_status": 204
+        },
+        {
+          "check": "Missing website origin is rejected",
+          "status": "PASS",
+          "http_status": 403
+        },
+        {
+          "check": "Unexpected administrative field is rejected",
+          "status": "PASS",
+          "http_status": 400
+        },
+        {
+          "check": "Oversized request is rejected",
+          "status": "PASS",
+          "http_status": 413
+        },
+        {
+          "check": "Missing verification token is rejected",
+          "status": "PASS",
+          "http_status": 400
+        },
+        {
+          "check": "Forged verification token is rejected by live validation",
+          "status": "PASS",
+          "http_status": 400
+        },
+        {
+          "check": "Anonymous direct enquiry INSERT is permission-denied",
+          "status": "PASS",
+          "http_status": 401
+        },
+        {
+          "check": "Anonymous direct submission RPC is permission-denied",
+          "status": "PASS",
+          "http_status": 401
+        },
+        {
+          "check": "Anonymous quota-counter read is permission-denied",
+          "status": "PASS",
+          "http_status": 401
+        },
+        {
+          "check": "Existing staging app-user session is verified",
+          "status": "PASS"
+        },
+        {
+          "check": "Signed-in direct enquiry INSERT is permission-denied",
+          "status": "PASS",
+          "http_status": 401
+        },
+        {
+          "check": "Signed-in direct submission RPC is permission-denied",
+          "status": "PASS",
+          "http_status": 401
+        },
+        {
+          "check": "Signed-in quota-counter read is permission-denied",
+          "status": "PASS",
+          "http_status": 401
+        },
+        {
+          "check": "Only the API test session is logged out",
+          "status": "PASS"
+        }
+      ],
+      "api_exit_code": 0,
+      "problem_code": null,
+      "test_session_logged_out": true,
+      "credentials_tokens_keys_and_raw_rows_printed": false,
+      "ordinary_client_bypass_denials_use_checked_permission_error_code": "42501",
+      "owner_api_runner_scope": "Owner executed pinned checker; exact file/header/isolation and selected live API/session results only",
+      "browser_and_sql_evidence_combined_separately": "S2E31",
+      "valid_browser_enquiry_or_real_key_pair_verified_by_api_batch": false,
+      "same_email_quota_concurrency_or_rollback_verified": false,
+      "staff_queue_access_or_dispatch_verified": false,
+      "full_f09_acceptance_verified": false,
+      "blank_required_field_result_received": false,
+      "unexpected_bypass_test_rows_if_any_retained": true,
+      "historic_asset_mismatch_superseded_in_latest_served_parity_scope": true,
+      "raw_credentials_or_customer_enquiries_received": false
+    },
+    {
+      "id": "S2E33",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "CONTACT_CHECKPOINT_CLOSED_SCOPED_PASSES_WITH_UNVERIFIED_CARRY_FORWARD",
+      "evidence_combined": [
+        "S2E29",
+        "S2E30",
+        "S2E31",
+        "S2E32"
+      ],
+      "bounded_work_items": 3,
+      "completed_work_items": 3,
+      "remaining_work_items": 0,
+      "contact_checkpoint_complete": true,
+      "scoped_passes": [
+        "Exact deployed staging config/contact assets/selected headers",
+        "Selected malformed, oversized, origin and challenge denials",
+        "Anonymous and verified signed-in direct INSERT/RPC/quota-read permission denials",
+        "Only API test session logged out",
+        "Three expected ordinary website enquiry rows; fourth-attempt limit and retained fields in combined owner scope"
+      ],
+      "unverified_carry_forward": [
+        "Blank-required-field browser outcome",
+        "Actual concurrent/global quota and rollback behavior",
+        "Consumed-token replay and wrong-host challenge binding",
+        "Independent widget key ownership/provider hostname coverage",
+        "Staff queue/access and email/push dispatch",
+        "Coordinated production rollout and final acceptance"
+      ],
+      "f09_closed": false,
+      "production_or_native_changed": false,
+      "repeat_successful_form_batch_requested": false,
+      "next_step": "2.3.1",
+      "stage_2_report_due": "2.4",
+      "checkpoint_report": "docs/security-audit/SECURITY_STAGE_2_2_CHECKPOINT_REPORT.md"
+    },
+    {
+      "id": "S2E34",
+      "stage_step": "2.3.1",
+      "recorded_date": "2026-10-10",
+      "result": "WEB_PUSH_SOURCE_BASELINE_AND_READ_ONLY_DESTINATION_INVENTORY_PREPARED",
+      "reviewed_source_head": "60d84376bba7828a002f06db4dd2354f3ae2ff25",
+      "source_files": [
+        "supabase/functions/send-test-push/index.ts",
+        "supabase/functions/dispatch-push-reminders/index.ts",
+        "supabase/functions/dispatch-admin-notifications/index.ts",
+        "supabase/migrations/20260907150000_push_subscriptions.sql"
+      ],
+      "web_push_dependency": "npm:web-push@3.6.7",
+      "source_observation": "Three senders pass stored endpoint strings directly to webpush.sendNotification without an application destination guard; selected source table limits endpoint length, and ordinary signed-in users can insert their own endpoint.",
+      "existing_failure_semantics": "404/410 disable subscription; other delivery errors retain temporary-failure handling. Source behavior only, not hosted delivery.",
+      "dependency_redirect_or_dns_behavior_established": false,
+      "exploitation_or_private_network_reachability_established": false,
+      "diagnostic": "supabase/diagnostics/security_stage_2_push_destinations.sql",
+      "owner_target": "Actual Mushavo Budget project kttkospkblwvguuwnhjj; manually verify Dashboard identity",
+      "target_reason": "Inventory genuine registered production host-family counts; staging public push key was intentionally removed",
+      "diagnostic_read_only": true,
+      "diagnostic_result_rows": 4,
+      "full_endpoints_keys_or_user_identifiers_returned": false,
+      "fixed_host_family_counts_are_validation_or_allowlist_proof": false,
+      "local_validation": {
+        "result": "PASS",
+        "engine": "PGlite 0.5.8 / PostgreSQL 18.3",
+        "synthetic_endpoint_cases": 25,
+        "column_and_table_privileges": true,
+        "empty_inventory": true,
+        "redaction": true,
+        "fixture_rows_unchanged": true,
+        "hosted_postgresql_17_verified": false
+      },
+      "owner_metadata_result_received": false,
+      "notifications_http_or_hosted_writes_performed": false,
+      "bounded_push_work_items": 3,
+      "f12_closed": false,
+      "instructions": "docs/security-audit/SECURITY_STAGE_2_3_WEB_PUSH.md"
+    },
+    {
+      "id": "S2E35",
+      "stage_step": "2.3.1",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_READ_ONLY_PRODUCTION_PUSH_INVENTORY_COMPLETE_ZERO_SUBSCRIPTIONS",
+      "project": "kttkospkblwvguuwnhjj",
+      "checked_at": "2026-10-10T12:12:32.673918+00:00",
+      "server_version": "17.11",
+      "transaction_read_only": "on",
+      "rls_enabled": true,
+      "rls_forced": true,
+      "anon_effective_endpoint_insert": false,
+      "authenticated_effective_endpoint_insert": true,
+      "authenticated_effective_endpoint_update": false,
+      "total_subscriptions": 0,
+      "active_subscriptions": 0,
+      "disabled_subscriptions": 0,
+      "host_family_counts": [],
+      "shape_counts": {
+        "fragment": 0,
+        "backslash": 0,
+        "encoded_authority": 0,
+        "authority_credentials": 0,
+        "whitespace_or_control": 0,
+        "missing_https_authority_shape": 0,
+        "outside_existing_length_bounds": 0,
+        "explicit_port_or_ipv6_authority": 0
+      },
+      "owner_result_statuses": [
+        "INFO",
+        "INFO",
+        "REVIEW",
+        "INFO"
+      ],
+      "scope": "Counts/current effective metadata only; zero rows are not provider compatibility, hosted sender parity, safe future destinations or delivery proof",
+      "schema_or_rows_modified": false,
+      "notifications_or_http_requests_sent": false,
+      "endpoint_urls_keys_user_or_device_identifiers_returned": false,
+      "f12_closed": false,
+      "work_item_complete": true
+    },
+    {
+      "id": "S2E36",
+      "stage_step": "2.3.2",
+      "recorded_date": "2026-10-10",
+      "result": "SHARED_PUSH_DESTINATION_CANDIDATE_LOCAL_SCOPED_PASS",
+      "source_review_head": "f3e86d147bde665ff1788cbe347bd6c1e634f4b2",
+      "runtime_files": [
+        "supabase/functions/_shared/push-destination.mjs",
+        "supabase/functions/send-test-push/index.ts",
+        "supabase/functions/dispatch-push-reminders/index.ts",
+        "supabase/functions/dispatch-admin-notifications/index.ts"
+      ],
+      "behavior": "Validate bounded HTTPS provider hostnames/raw authorities before crypto/send; veto private/special/invalid/mixed DNS answers at actual connection lookup, disable environment proxies, preserve TLS verification and opaque endpoint bytes, close per-send Agent; blocked endpoints are permanent without changing provider 404/410 or temporary-error handling",
+      "dns_timeout_ms": 3000,
+      "socket_timeout_ms": 10000,
+      "whole_send_timeout_ms": 15000,
+      "documented_provider_rules_not_actual_inventory_compatibility": true,
+      "local_tests": {
+        "node": "24.19.0",
+        "total": 45,
+        "new_guard_and_three_entrypoint_tests": 17,
+        "unchanged_selected_legacy_tests": 16,
+        "pinned_full_dependency_transport_cases": 12,
+        "all_passed": true,
+        "skipped": 0
+      },
+      "source_dependency": "web-push 3.6.7",
+      "dependency_source_sha256": "4a724b5452b0c51143808cdfd4e58efd3876fc5728af152635b8fcb340bbbff3",
+      "local_deno": {
+        "version": "2.9.6",
+        "node_compatibility_version": "26.3.0",
+        "pinned_full_dependency_transport_cases": 12,
+        "result": "PASS",
+        "net_permission_scope": "127.0.0.1 only; no external destination permission",
+        "supabase_edge_runtime_equivalence_verified": false
+      },
+      "transport_scope": "Actual pinned package encryption/VAPID/request creation with synthetic keys; positive/status/redirect/timeout HTTP boundary is a local request double. Native Agent negative DNS block runs on Node and local Deno.",
+      "redirect_codes_rejected_without_following": [
+        301,
+        302,
+        303,
+        307,
+        308
+      ],
+      "environment_proxy_bypass_found_in_local_deno_probe_and_disabled": true,
+      "probe_permission_stops_not_production_failure": true,
+      "edge_entrypoint_bundles": 3,
+      "npm_imports_external_in_bundle_check": true,
+      "repository_package_manifest_or_lock_changed": false,
+      "hosted_sender_deployment_or_real_delivery_verified": false,
+      "source_code_candidate_only": true,
+      "production_or_staging_function_deployments_performed": false,
+      "raw_keys_or_real_endpoints_printed": false,
+      "f12_closed": false,
+      "work_item_complete": true
+    },
+    {
+      "id": "S2E37",
+      "stage_step": "2.3.3",
+      "recorded_date": "2026-10-10",
+      "result": "HOSTED_PUSH_ACCEPTANCE_BLOCKED_STAGING_KEY_EMPTY_CARRIED_FORWARD",
+      "candidate_source_commit": "4643482f1bcfc0751560f3562b85a344055ed78d",
+      "staging_public_config_review": {
+        "stage_step": "2.3.3",
+        "http_status": 200,
+        "staging_reference_present": true,
+        "production_reference_absent": true,
+        "string_field_names": [
+          "supabaseUrl",
+          "supabasePublishableKey",
+          "vapidPublicKey"
+        ],
+        "push_key_field_present": true,
+        "push_key_empty": true,
+        "credentials_or_keys_printed": false,
+        "hosted_writes_or_notifications_sent": false,
+        "checked_utc": "2026-10-10T12:37:49.726Z"
+      },
+      "owner_production_inventory_reference": "S2E35; zero stored subscriptions",
+      "public_config_review_method": "Read-only GET with redirect disabled and ten-second timeout; extract string property metadata without evaluating code or printing values",
+      "staging_device_registration_prerequisite_missing": true,
+      "hosted_edge_code_runtime_parity_verified": false,
+      "legitimate_provider_delivery_or_hosted_retry_behavior_verified": false,
+      "production_push_send_used_as_substitute": false,
+      "new_vapid_or_cron_secret_setup_or_device_registration_requested": false,
+      "missing_prerequisites_carried_per_owner_finite_audit_workflow": true,
+      "bounded_work_item_outcome": "BLOCKED/UNVERIFIED; not PASS",
+      "remaining_push_work_items": 0,
+      "checkpoint_complete": true,
+      "f12_closed": false,
+      "production_or_staging_push_deployment_performed": false,
+      "next_step": "2.4"
+    },
+    {
+      "id": "S2E38",
+      "stage_step": "2.4",
+      "recorded_date": "2026-10-10",
+      "result": "STAGE_2_CLOSED_WITH_SCOPED_PASSES_FAILED_AND_BLOCKED_CARRY_FORWARD",
+      "report": "docs/security-audit/SECURITY_STAGE_2_COMPLETION_REPORT.md",
+      "bounded_stage_steps": 4,
+      "completed_stage_steps": 4,
+      "remaining_stage_steps": 0,
+      "contact_candidate_source": "6ba621d718d1b989aaa84aa486d8f0b098b792a3",
+      "push_candidate_source": "4643482f1bcfc0751560f3562b85a344055ed78d",
+      "latest_scoped_results": [
+        "S2E06 staging sampled headers; S2E08–09 selected owner workflows/Console nonrecurrence",
+        "S2E31–33 contact API/form scope",
+        "S2E35 current read-only production empty push inventory",
+        "S2E36 local Node/Deno guard/transport scope"
+      ],
+      "failed_carry_forward": "F07: three latest owner HTTP samples returned 200 without HTTPS redirect",
+      "unverified_or_blocked_carry_forward": [
+        "F07 strict CSP/deliberate blocking/full production/browser coverage",
+        "F09 blank-field/concurrency/global-quota/rollback/replay/host-binding/staff-dispatch checks and coordinated production rollout",
+        "F12 hosted Edge parity/runtime/DNS/proxy/TLS handling, real provider delivery/retry/duplicate behavior and production promotion",
+        "F20 Turnstile processor/privacy review in Stage 4"
+      ],
+      "finding_ids_closed": [],
+      "full_stage_security_or_release_acceptance_verified": false,
+      "production_deployments_or_pr_merges_performed": false,
+      "native_bundle_or_apk_changed": false,
+      "prior_stage_0_and_1_evidence_preserved": true,
+      "original_123_coverage_definitions_and_20_findings_preserved": true,
+      "google_backup_work_remains_deferred": true,
+      "owner_process": "Resolve outstanding failures/uncertainties and production rollout in final remediation; perform full fresh re-audit before release",
+      "next_stage": 3,
+      "next_step": "3.1"
+    }
+  ],
+  "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_CARRY_FORWARD",
+  "report": "docs/security-audit/SECURITY_STAGE_2_COMPLETION_REPORT.md"
+}

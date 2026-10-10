@@ -123,3 +123,11 @@ Private exports, original backups, certificates, keys and passwords are owner-he
 - [run-stage-3-family-acceptance.ps1](../../scripts/run-stage-3-family-acceptance.ps1) — pinned, masked staging app-password runner.
 - [verify-stage-3-family-source.mjs](../../scripts/verify-stage-3-family-source.mjs) — migration-source Family lifecycle and checker fault cases using explicit local provider/default-grant/HTTP adapters.
 - [stage-3-family-api.test.cjs](../../tests/stage-3-family-api.test.cjs) — eight target/error/redaction and runner-expression tests; native PowerShell and hosted acceptance pending.
+
+## Stage 3 selected currency acceptance
+
+- [3.2.3 instructions and frozen requests](SECURITY_STAGE_3_2_CURRENCY_SETTINGS.md).
+- [check-stage-3-currency-api.cjs](../../scripts/check-stage-3-currency-api.cjs) — existing synthetic fixtures, normalized/restored settings, ordinary/foreign/anonymous helper and conversion boundaries.
+- [run-stage-3-currency-acceptance.ps1](../../scripts/run-stage-3-currency-acceptance.ps1) — masked app-password runner from a pinned commit.
+- [verify-stage-3-currency-source.mjs](../../scripts/verify-stage-3-currency-source.mjs) — nine local source/checker cases with explicit provider/default-grant/HTTP adapters.
+- [stage-3-currency-api.test.cjs](../../tests/stage-3-currency-api.test.cjs) — eight target/error/redaction and runner-expression tests; native owner acceptance pending.

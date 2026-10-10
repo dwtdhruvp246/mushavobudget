@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 3,
   "updated_date": "2026-10-10",
-  "active_step": "3.2.2",
+  "active_step": "3.2.3",
   "source_review_head": "e4f3b573bee2b9e344ec0b946c21e779449d8664",
   "events": [
     {
@@ -2142,6 +2142,251 @@
       "artifact_sha256": {
         "scripts/check-stage-3-family-api.cjs": "86e5e146d13f6821466376000022fb96c55ddaad05ba70c101843f2a60fece08",
         "scripts/verify-stage-3-family-source.mjs": "eb29dd47d25524b01514a594be46087429fdfeffde7f55903ca2f4a0b9fb04d4"
+      }
+    },
+    {
+      "id": "S3E11",
+      "stage_step": "3.2.2",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_STAGING_FAMILY_API_33_SCOPED_PASS_MILESTONE_COMPLETE",
+      "owner_source_commit": "7ad98c550de34e78503120466b3bb3b782f51b12",
+      "owner_completed_utc": "2026-10-10T18:58:38.712Z",
+      "owner_receipt": {
+        "stage_step": "3.2.2",
+        "result": "STAGING_FAMILY_API_SCOPED_PASS",
+        "project": "dczlddwbtgvfdujgcitb",
+        "checks": [
+          {
+            "check": "Deployed config uses staging with no production reference or push key",
+            "status": "PASS"
+          },
+          {
+            "check": "Two distinct verified staging sessions are ordinary active accounts",
+            "status": "PASS"
+          },
+          {
+            "check": "Two separate Family heads have fresh exact fixtures and active entitlements",
+            "status": "PASS"
+          },
+          {
+            "check": "Matching head can update the known Family payment",
+            "status": "PASS"
+          },
+          {
+            "check": "Head powers do not read or administer the other Family",
+            "status": "PASS"
+          },
+          {
+            "check": "Before-join user cannot read or mutate the known protected Family payment rows or read its workspace",
+            "status": "PASS"
+          },
+          {
+            "check": "Anonymous cannot read or mutate the known protected Family payment rows or read its workspace",
+            "status": "PASS"
+          },
+          {
+            "check": "Head invite creates a pending mirrored invitation and recipient in-app notification",
+            "status": "PASS"
+          },
+          {
+            "check": "Wrong recipient and anonymous acceptance do not change the pending invitation or create membership",
+            "status": "PASS"
+          },
+          {
+            "check": "Recipient cannot cancel with head authority",
+            "status": "PASS"
+          },
+          {
+            "check": "Recipient decline is mirrored; replay cannot accept or create membership",
+            "status": "PASS"
+          },
+          {
+            "check": "Direct head invitation DELETE is permission-denied; pending row retained",
+            "status": "PASS"
+          },
+          {
+            "check": "Protected head cancellation removes its notification; cancelled replay creates no membership",
+            "status": "PASS"
+          },
+          {
+            "check": "Direct invitation status update cannot bypass the response RPC",
+            "status": "PASS"
+          },
+          {
+            "check": "Intended recipient joins as an active Family member without head authority",
+            "status": "PASS"
+          },
+          {
+            "check": "Active member reads the shared fixture; accepted invitation replay preserves the member state",
+            "status": "PASS"
+          },
+          {
+            "check": "Active member creates and updates own attributed inactive item and paid record; head reads matching effects",
+            "status": "PASS"
+          },
+          {
+            "check": "Member cannot change or delete the head-owned selected payment rows",
+            "status": "PASS"
+          },
+          {
+            "check": "Member contribution ownership does not grant the existing head-only Family DELETE authority",
+            "status": "PASS"
+          },
+          {
+            "check": "Member cannot promote their family_members role",
+            "status": "PASS"
+          },
+          {
+            "check": "Member cannot promote their workspace_members role",
+            "status": "PASS"
+          },
+          {
+            "check": "Existing payer from the other Family cannot be assigned to a primary Family paid record",
+            "status": "PASS"
+          },
+          {
+            "check": "Ordinary member cannot invite or remove with head authority",
+            "status": "PASS"
+          },
+          {
+            "check": "Head cannot remove an existing member ID belonging to the other Family",
+            "status": "PASS"
+          },
+          {
+            "check": "Head cannot remove the Family Owner",
+            "status": "PASS"
+          },
+          {
+            "check": "Head removal makes both legacy and generalized memberships inactive",
+            "status": "PASS"
+          },
+          {
+            "check": "Same member session loses protected primary Family reads and PATCH/DELETE access, including own prior contributions",
+            "status": "PASS"
+          },
+          {
+            "check": "Removed member cannot create new attributed primary Family payment rows",
+            "status": "PASS"
+          },
+          {
+            "check": "Replaying the previously accepted invitation cannot reactivate a removed member",
+            "status": "PASS"
+          },
+          {
+            "check": "Inactive removed payer cannot be assigned to a new paid-record write",
+            "status": "PASS"
+          },
+          {
+            "check": "Removal from primary Family preserves legitimate head access in the separate Family",
+            "status": "PASS"
+          },
+          {
+            "check": "Head deletes only this batch member contributions; both head fixture payments remain for currency tests",
+            "status": "PASS"
+          },
+          {
+            "check": "Only the two generated API test sessions receive local logout",
+            "status": "PASS"
+          }
+        ],
+        "problem_code": null,
+        "test_sessions_logged_out": true,
+        "member_contribution_rows_removed": true,
+        "family_fixtures_and_invitation_history_retained": true,
+        "incomplete_batch_rows_may_remain": false,
+        "original_personal_fixtures_targeted": false,
+        "same_member_session_used_after_removal": true,
+        "caller_controlled_email_push_or_scheduler_requests_sent": false,
+        "hosted_transitive_dispatch_or_UI_behavior_independently_verified": false,
+        "selected_currency_settings_or_historical_conversion_integrity_verified": false,
+        "prior_paid_record_workspace_gap_fixed": false,
+        "full_f15_acceptance_verified": false,
+        "production_or_native_changed": false,
+        "credentials_tokens_keys_and_raw_identifiers_printed": false,
+        "completed_utc": "2026-10-10T18:58:38.712Z"
+      },
+      "owner_native_runner_exit_code": 0,
+      "reported_status_counts": {
+        "PASS": 33
+      },
+      "owner_API_execution_verified_in_reported_scope": true,
+      "independent_hosted_project_body_or_transitive_dispatch_attestation_verified": false,
+      "recipient_notification_absence_is_physical_delete_or_rendered_UI_proof": false,
+      "local_logout_is_immediate_JWT_invalidation_proof": false,
+      "milestone_completed": "3.2.2",
+      "completed_3_2_milestones": 2,
+      "remaining_3_2_milestones": 1,
+      "next_work_item": "3.2.3",
+      "retained_for_next_phase": "Both head Family payment fixtures and invitation history; removed membership stays inactive",
+      "prior_Personal_workspace_binding_failure_or_unrun_groups_resolved": false,
+      "finding_F15_closed": false,
+      "production_or_native_changed": false,
+      "stage_3_complete": false
+    },
+    {
+      "id": "S3E12",
+      "stage_step": "3.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "CURRENCY_SETTINGS_AND_CONVERSION_BATCH_LOCAL_PASS_OWNER_PENDING",
+      "source_parent_commit": "7ad98c550de34e78503120466b3bb3b782f51b12",
+      "instructions": "docs/security-audit/SECURITY_STAGE_3_2_CURRENCY_SETTINGS.md",
+      "owner_target": "dczlddwbtgvfdujgcitb",
+      "owner_actions": "One masked-password API batch using the existing completed Family fixtures; no SQL, new account or deployment",
+      "checker": "scripts/check-stage-3-currency-api.cjs",
+      "runner": "scripts/run-stage-3-currency-acceptance.ps1",
+      "source_validation": {
+        "script": "scripts/verify-stage-3-currency-source.mjs",
+        "engine": "PGlite 0.5.8 / PostgreSQL 18.3",
+        "migrations_loaded": 52,
+        "completed_Family_API_fixture_setup_verified_locally": true,
+        "selected_cases_passed": 9,
+        "complete_currency_flow_pass_checks": 23,
+        "complete_local_flow_fetches": 197,
+        "dependency_adapters": "Minimal Auth/Storage/default-grant/HTTP adapters; unavailable pgcrypto CREATE omitted; composite settings RPC JSON and date response adaptation",
+        "negative_cases": [
+          "Hidden setting change detected by owner readback",
+          "Foreign settings exposure",
+          "FK error cannot count as authorization denial",
+          "Missing or unexpectedly executable internal helper",
+          "Manual conversion attributed to wrong actor",
+          "Disabled backfill changes a conversion despite zero result",
+          "Local logout failure"
+        ],
+        "native_PostgreSQL_or_hosted_Supabase_behavior_verified": false
+      },
+      "isolated_tests": {
+        "file": "tests/stage-3-currency-api.test.cjs",
+        "passed": 8,
+        "ASCII_and_extracted_Node_expression_checked": true,
+        "native_PowerShell_execution_verified": false
+      },
+      "frozen_operations": [
+        "Own Personal existing-value settings saves; original flags preserved",
+        "Two Family heads normalize USD/INR settings then restore original USD/disabled-conversion settings",
+        "Foreign, removed and anonymous settings read/RPC/PATCH denials plus valid owner input guards",
+        "Direct ordinary-owner conversion INSERT and four internal helper permission denials with selected readbacks",
+        "Matching heads create two locked USD 1 manual conversions; foreign/removed/anonymous manual conversion denied",
+        "Known conversion row isolation and protected direct PATCH/DELETE",
+        "Owner disabled backfill zero-effect positive; foreign/removed/anonymous backfill denial",
+        "Final selected settings/payment/conversion readbacks and local test logout"
+      ],
+      "temporary_setting_effects": "Only the new Family fixtures temporarily change currency fields; original selected values restored on full success. Personal existing values and conversion flags are saved unchanged; updated_at may advance. Review stops and retains incomplete effects.",
+      "two_synthetic_manual_conversion_rows_retained_on_success": true,
+      "original_Personal_payment_fixtures_targeted": false,
+      "automatic_Family_conversion_enabled_by_batch": false,
+      "provider_rates_service_scheduler_or_historical_conversion_integrity_verified": false,
+      "global_finance_or_Business_currency_authority_verified": false,
+      "owner_API_result_received": false,
+      "four_prior_helper_cases_rechecked_in_same_role_function_scope_if_owner_passes": true,
+      "prior_Personal_binding_relink_or_fixture_delete_cases_resolved": false,
+      "product_migration_RLS_grants_or_Auth_settings_changed": false,
+      "production_or_native_changed": false,
+      "repository_dependencies_changed": false,
+      "artifact_sha256": {
+        "scripts/check-stage-3-currency-api.cjs": "05f4cb31334223203841d81960d3b4e816ba20d7abdd3934e3ce349462f76bc0",
+        "scripts/run-stage-3-currency-acceptance.ps1": "e157ea511701d234e1a6393cc900fa20e3ca02130bac5cbc10ad8737e02b791a",
+        "scripts/verify-stage-3-currency-source.mjs": "23c8aa7ff917cc400050879df0e80103545ba201fe75a40929c2232f52818fdd",
+        "tests/stage-3-currency-api.test.cjs": "101bb2eb869dc685491725023ae9e4e4612f7ca37ecea0d1e03fef8e8f93e4dd"
       }
     }
   ],

@@ -1,6 +1,6 @@
 # Stage 3 — Authorization, application Admin MFA and Auth flows
 
-**Planning only — 3.1, 10 October 2026.** Prepared for owner review before implementation. Six finite main steps; no Stage 3 diagnostic, hosted test, code change, SQL migration, Auth setting or MFA enforcement has been executed by this plan. Stage 2 remains closed with carry-forward. The structured progress record is not advanced merely because this outline exists.
+**Started — 3.1, 10 October 2026.** Owner authorized the six-step stage with “ok lets start”. [3.1 permission map and baseline](SECURITY_STAGE_3_1_PERMISSION_BASELINE.md) is now closed with two owner metadata passes, source classification and the frozen follow-up matrix. All three baseline work items have outcomes; 12 local diagnostic fixtures passed. [3.2.1 Personal checkpoint](SECURITY_STAGE_3_2_PERSONAL_FAMILY.md) is recorded: 26 owner PASS, one workspace-binding REVIEW and six later groups unrun. Source/local reproduction supports the paid-record gap; exact failed response/persisted-state and wider impact remain unverified. The failure/unrun cases carry to final remediation. Next is 3.2.2 Family. Application permission/MFA/Auth behavior and hosted body parity remain pending. Stage 2 remains closed with carry-forward. No runtime enforcement or Auth setting has changed.
 
 ## What this stage means
 
@@ -19,7 +19,7 @@ The principal open findings are **F08** (application Admin MFA, password and Aut
 | 3.5 — Sign-in, password, invitation and recovery flows | Coordinate password rules and UI with actual supported project settings. Check confirmation/unconfirmed-email guidance, ordinary and invited setup, password recovery/change, session refresh/sign-out/account switching and selected failure/rate cases | One bounded Auth acceptance matrix and justified UX/control corrections |
 | 3.6 — Recheck, report and handoff | Recheck affected permitted/denied cases and relevant regressions. Publish detailed results, versions/evidence and the action plan | Stage 3 report; failures/blocked/uncertain results carry into final remediation and full re-audit |
 
-Each main step has three bounded work groups: **review/baseline**, **justified candidate and meaningful local checks**, and **one controlled staging acceptance batch with recorded unavailable outcomes**. Step 3.6 consolidates the affected rechecks and report. Several commands or test cases may be needed within a group; the six labels are not a promise of six messages. Define the exact selected cases at the start of the step rather than expanding it indefinitely.
+Each main step has three bounded work groups: **review/baseline**, **justified candidate and meaningful local checks**, and **one controlled staging acceptance batch with recorded unavailable outcomes**. Step 3.6 consolidates the affected rechecks and report. Several commands or test cases may be needed within a group; the six labels are not a promise of six messages. Define the exact selected cases at the start of the step rather than expanding it indefinitely. For 3.2, the single frozen acceptance matrix has three owner-facing phases: source/Personal CRUD, Family fixture/requests, then selected currency controls and checkpoint reconciliation; review/local work is included in those phases. See the [bounded 3.2 milestones](SECURITY_STAGE_3_2_PERSONAL_FAMILY.md).
 
 ## 3.1 — The permission map
 

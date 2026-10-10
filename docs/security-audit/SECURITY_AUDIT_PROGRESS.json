@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "updated_date": "2026-10-10",
-  "current_stage": 2,
-  "current_step": "2.4",
-  "current_title": "Stage 2 closed with scoped passes and carry-forward",
+  "current_stage": 3,
+  "current_step": "3.2.1",
+  "current_title": "Personal staging batch recorded: 26 PASS, paid-record workspace-binding REVIEW carried to remediation; Family next",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 3,
-  "next_step": "3.1",
+  "next_step": "3.2.2",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -1259,6 +1259,105 @@
     "latest_evidence": "S2E38",
     "closed_date": "2026-10-10",
     "production_promoted": false,
+    "full_security_or_release_acceptance_verified": false
+  },
+  "stage_3": {
+    "status": "ACTIVE_PERSONAL_CHECKPOINT_RECORDED_FAMILY_NEXT",
+    "authorized": true,
+    "started_date": "2026-10-10",
+    "active_step": "3.2",
+    "plan": "docs/security-audit/SECURITY_STAGE_3_AUTHORIZATION_PLAN.md",
+    "evidence": "docs/security-audit/security-stage-3-evidence.json",
+    "bounded_steps": 6,
+    "completed_steps": 1,
+    "remaining_steps": 5,
+    "steps": [
+      {
+        "id": "3.1",
+        "title": "Permission map and baseline",
+        "status": "CLOSED_PERMISSION_MAP_AND_METADATA_BASELINE_WITH_BEHAVIOR_TESTS_PENDING",
+        "bounded_work_items": 3,
+        "completed_work_items": 3,
+        "remaining_work_items": 0,
+        "active_work_item": null,
+        "instructions": "docs/security-audit/SECURITY_STAGE_3_1_PERMISSION_BASELINE.md",
+        "metadata_diagnostic": "supabase/diagnostics/security_stage_3_permission_baseline.sql",
+        "owner_execution_target": "dczlddwbtgvfdujgcitb",
+        "owner_metadata_received": true,
+        "local_diagnostic_fixture_checks_passed": 12,
+        "local_fixture_engine": "PGlite 0.5.8 / PostgreSQL 18.3",
+        "application_authorization_verified": false,
+        "latest_evidence": "S3E05",
+        "owner_metadata_evidence": "S3E03",
+        "owner_metadata_checked_at": "2026-10-10T16:50:07.798355+00:00",
+        "owner_metadata_server_version": "17.11",
+        "owner_narrow_metadata_passes": 2,
+        "owner_review_rows": 3,
+        "owner_info_rows": 3,
+        "public_application_tables": 81,
+        "tables_without_rls": 0,
+        "selected_tables_present": 24,
+        "selected_routines_present": 20,
+        "anonymous_security_definers": 57,
+        "anonymous_trigger_or_event_trigger_definers": 25,
+        "source_classification_completed": true
+      },
+      {
+        "id": "3.2",
+        "title": "Personal and Family isolation",
+        "status": "PERSONAL_API_CHECKPOINT_COMPLETE_WITH_BINDING_REVIEW_FAMILY_NEXT",
+        "bounded_work_items": 3,
+        "completed_work_items": 1,
+        "remaining_work_items": 2,
+        "active_work_item": "3.2.2",
+        "instructions": "docs/security-audit/SECURITY_STAGE_3_2_PERSONAL_FAMILY.md",
+        "owner_execution_target": "dczlddwbtgvfdujgcitb",
+        "owner_checker": "scripts/check-stage-3-personal-api.cjs",
+        "owner_runner": "scripts/run-stage-3-personal-acceptance.ps1",
+        "local_checker_tests_passed": 28,
+        "local_binding_probe_controls": 6,
+        "local_paid_record_workspace_gap_reproduced": true,
+        "owner_api_result_received": true,
+        "runtime_or_auth_changes_made": false,
+        "latest_evidence": "S3E07",
+        "owner_api_result_scope": "26_PASS_ONE_WORKSPACE_BINDING_REVIEW_SIX_PLANNED_GROUPS_UNRUN",
+        "owner_api_result_evidence": "S3E07",
+        "owner_api_completed_utc": "2026-10-10T17:19:17.688Z",
+        "owner_personal_pass_checks": 26,
+        "owner_personal_review_checks": 1,
+        "owner_personal_unrun_check_groups": 6,
+        "owner_personal_problem_code": "FOREIGN_WORKSPACE_REBIND_NOT_PREVENTED",
+        "owner_test_session_local_logout_pass": true,
+        "owner_fixture_rows_removed": false,
+        "owner_fixture_retention_requires_final_review": true,
+        "owner_reported_paid_record_binding_control_failed": true,
+        "actual_persisted_foreign_binding_independently_verified": false,
+        "findings_closed": false
+      },
+      {
+        "id": "3.3",
+        "title": "Business roles and scopes",
+        "status": "PENDING"
+      },
+      {
+        "id": "3.4",
+        "title": "Privileged entrypoints and application Admin MFA",
+        "status": "PENDING"
+      },
+      {
+        "id": "3.5",
+        "title": "Sign-in, password, invitation and recovery flows",
+        "status": "PENDING"
+      },
+      {
+        "id": "3.6",
+        "title": "Recheck, report and handoff",
+        "status": "PENDING"
+      }
+    ],
+    "latest_evidence": "S3E07",
+    "production_promoted": false,
+    "application_mfa_enforced": false,
     "full_security_or_release_acceptance_verified": false
   }
 }

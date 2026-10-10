@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage": 2,
-  "updated_date": "2026-10-09",
+  "updated_date": "2026-10-10",
   "active_step": "2.2",
   "source_audit_head": "fbb70fe96d0ff5444cbfdb89888e4e0e49d17ca0",
   "events": [
@@ -1125,6 +1125,51 @@
       "remaining_contact_work_items": 1,
       "remaining_work_item": "2.2.3 Staging configuration, coordinated gate/frontend cutover and one controlled acceptance batch",
       "production_https_remediation_still_deferred": true
+    },
+    {
+      "id": "S2E19",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "OWNER_STAGING_SINGLE_CONTACT_FUNCTION_DEPLOY_PASS",
+      "execution_target": "dczlddwbtgvfdujgcitb",
+      "function": "submit-enquiry",
+      "uploaded_assets": [
+        "supabase/functions/submit-enquiry/index.ts",
+        "supabase/functions/submit-enquiry/handler.mjs"
+      ],
+      "owner_cli_report": "Deployed Functions on project dczlddwbtgvfdujgcitb: submit-enquiry",
+      "deployment_flags": [
+        "--project-ref dczlddwbtgvfdujgcitb",
+        "--use-api",
+        "--no-verify-jwt"
+      ],
+      "owner_cli_version": "2.106.0",
+      "cli_update_notice": "2.120.0 available; deployment succeeded",
+      "owner_secret_configuration_confirmed": false,
+      "database_gate_applied": false,
+      "frontend_candidate_uploaded": false,
+      "real_turnstile_quota_or_role_behavior_verified": false,
+      "production_or_native_deployment_requested": false,
+      "raw_credentials_or_tokens_received": false
+    },
+    {
+      "id": "S2E20",
+      "stage_step": "2.2.3",
+      "recorded_date": "2026-10-10",
+      "result": "STAGING_CONTACT_DATABASE_GATE_CLIPBOARD_HANDOFF",
+      "execution_target": "dczlddwbtgvfdujgcitb",
+      "production_reference_to_avoid": "kttkospkblwvguuwnhjj",
+      "pinned_source_commit": "fbb70fe96d0ff5444cbfdb89888e4e0e49d17ca0",
+      "migration": "supabase/migrations/20261009190000_public_enquiry_submission_gate.sql",
+      "delivery": "Owner PowerShell git fetch then pinned git show to Set-Clipboard; manually paste and run entire SQL in owner-verified staging SQL Editor",
+      "scope": "Create service-only quota/insertion gate; revoke public client table and column INSERT; preserve staff read/update; assert effective permissions in transaction before commit",
+      "database_execution_by_root": false,
+      "owner_database_gate_result_received": false,
+      "owner_two_secret_name_confirmation_still_required": true,
+      "frontend_upload_sequence": "After gate success, upload only previously prepared web directory to staging Pages, then one bounded acceptance batch",
+      "checkout_reset_or_whole_project_database_push_requested": false,
+      "remaining_contact_work_items": 1,
+      "hosted_acceptance_or_f09_closure_verified": false
     }
   ]
 }

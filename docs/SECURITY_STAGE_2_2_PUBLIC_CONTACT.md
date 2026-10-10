@@ -29,7 +29,7 @@ Files: site.js, contact.html; supabase/functions/submit-enquiry/{index.ts,handle
 
 Edge TypeScript entry bundles successfully with esbuild. Migration parses as 17 SQL statements and 3 PL/pgSQL blocks using pglast 8.5 / libpg_query PostgreSQL 18.6. Parsing is not PostgreSQL 17 execution, actual effective-role enforcement, concurrency, transaction rollback, provider deploy or real widget proof. Windows PowerShell execution is owner-pending. No root local test contacted a hosted database, SMTP, push or challenge provider.
 
-## Owner staging setup — 2.2.3 / S2E16–18
+## Owner staging setup — 2.2.3 / S2E16–20
 
 Use **mushavo-budget-staging.pages.dev** and Supabase **dczlddwbtgvfdujgcitb**. Production **kttkospkblwvguuwnhjj** is not this handoff's execution target.
 
@@ -68,3 +68,12 @@ Public sitekey presence is a preparation pass, not proof of the real hostname/ke
 Next handoff S2E18: owner opens staging Edge Functions > Secrets, saves the widget secret as MUSHAVO_CONTACT_TURNSTILE_SECRET and a privately generated 32-byte hex value as MUSHAVO_CONTACT_QUOTA_SECRET, then deploys only submit-enquiry with the explicit staging project-ref and --use-api. The PowerShell generator copies the quota secret to the owner's clipboard without printing it. No secret is sent to root or embedded in source/web files. Supabase CLI account login may be needed; this is separate from the database-password login used earlier.
 
 This handoff requests no Docker, function prune, database gate execution or web upload. The already-prepared gate/acceptance handoff follows the actual staging deployment result. Contact remains one bounded work item from completion; unverified cases stay explicit for final remediation.
+
+
+## Owner function deployment and next gate — S2E19–20
+
+On 10 October 2026 the owner CLI reports submit-enquiry deployed successfully to staging dczlddwbtgvfdujgcitb. Both index.ts and handler.mjs were uploaded using --use-api and --no-verify-jwt. This is a deployment pass; it does not prove the two custom secrets, live Turnstile validation or database write behavior. The CLI's available-version notice did not fail deployment and no upgrade is required for this handoff.
+
+The next handoff copies the unchanged gate migration from pinned commit fbb70fe96d0ff5444cbfdb89888e4e0e49d17ca0 through git show and Set-Clipboard. The owner verifies the staging Dashboard project reference, pastes the entire script into a new SQL Editor query and runs it once. It creates the service-only quota gate and revokes both table/column INSERT bypasses, with effective-permission assertions before transaction commit. Staff read/update is retained. Root does not execute hosted SQL or request whole-project db push.
+
+Expected SQL Editor completion is Success. No rows returned. Any error stops the frontend cutover until reviewed; this CREATE migration is not a command to rerun after success. The owner must also confirm that both custom secret names are saved, without sending values. After gate success, the prepared web directory is uploaded only to mushavo-budget-staging Pages, followed by the existing single controlled acceptance batch. Database gate, frontend deployment, real widget, quotas and staff/denial behavior remain unverified. F09 remains open; contact still has one bounded work item remaining.

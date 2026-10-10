@@ -66,6 +66,10 @@ The 36 existing audit documents/evidence files were moved here from the parent d
 - [Stage 2 — Browser, public submission and outbound-request hardening](SECURITY_STAGE_2_WEB_HARDENING_PLAN.md)
 - [security-stage-2-evidence.json](security-stage-2-evidence.json)
 
+### Stage 3 — Authorization and Auth controls (planned)
+
+- [Six-step Stage 3 breakdown](SECURITY_STAGE_3_AUTHORIZATION_PLAN.md) — planning only; implementation and staging tests have not started.
+
 ## How to use the folder
 
 Start with the audit plan, then the latest stage report. Use the carry-forward action plan to see what still needs work. Later stage plans/reports/evidence belong in this same folder and must be linked here when created.

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "updated_date": "2026-10-11",
-  "current_stage": 4,
-  "current_step": "4.4",
-  "current_title": "Stage 4 closed with carry-forward; full report saved; next 5.1 native source/configuration inventory",
+  "current_stage": 5,
+  "current_step": "5.1",
+  "current_title": "Native source inventory complete; awaiting one owner read-only local metadata receipt; APK update deferred",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -2006,5 +2006,56 @@
     "next_scope": "EXISTING_NATIVE_SOURCE_CONFIGURATION_AND_BUILD_PREREQUISITE_INVENTORY",
     "APK_update_deferred": true,
     "owner_SQL_terminal_or_setup_action_requested": false
+  },
+  "stage_5": {
+    "status": "ACTIVE_NATIVE_SECURITY_AND_COMPATIBILITY",
+    "authorized": true,
+    "started_date": "2026-10-11",
+    "active_step": "5.1",
+    "bounded_steps": 5,
+    "completed_steps": 0,
+    "remaining_steps": 5,
+    "plan": "docs/security-audit/SECURITY_STAGE_5_NATIVE_PLAN.md",
+    "source_inventory": "docs/security-audit/security-stage-5-native-source-inventory.json",
+    "latest_evidence": "S5E01",
+    "finding_ids": [
+      "F05",
+      "F06",
+      "F10",
+      "F14",
+      "F17"
+    ],
+    "steps": [
+      {
+        "id": "5.1",
+        "status": "SOURCE_REVIEW_COMPLETE_OWNER_LOCAL_METADATA_PENDING",
+        "source_commit": "83f5dd2ac04be107e82baf992f796f47e24d7049",
+        "selected_source_blob_matches": 16,
+        "source_blob_mismatches": 0,
+        "owner_local_metadata_received": false
+      },
+      {
+        "id": "5.2",
+        "status": "PLANNED"
+      },
+      {
+        "id": "5.3",
+        "status": "PLANNED"
+      },
+      {
+        "id": "5.4",
+        "status": "PLANNED"
+      },
+      {
+        "id": "5.5",
+        "status": "PLANNED"
+      }
+    ],
+    "APK_update_deferred": true,
+    "native_security_acceptance": false,
+    "hosted_checks_run": 0,
+    "device_checks_run": 0,
+    "native_builds_run": 0,
+    "findings_closed": []
   }
 }

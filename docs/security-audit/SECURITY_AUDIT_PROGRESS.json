@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-11",
   "current_stage": 3,
-  "current_step": "3.5.1",
-  "current_title": "3.4 closed with BLOCKED hosted MFA acceptance and policy-parity carry-forward; next 3.5.1 Auth-flow source review.",
+  "current_step": "3.5.2",
+  "current_title": "3.5.1 Auth source review complete; next 3.5.2 compatibility candidates and local verification. Hosted Auth settings/mail acceptance remain unverified.",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1262,15 +1262,15 @@
     "full_security_or_release_acceptance_verified": false
   },
   "stage_3": {
-    "status": "ACTIVE_BUSINESS_STAGING_ACCEPTANCE_PENDING",
+    "status": "ACTIVE_AUTH_CANDIDATE_PREPARATION",
     "authorized": true,
     "started_date": "2026-10-10",
     "active_step": "3.5",
     "plan": "docs/security-audit/SECURITY_STAGE_3_AUTHORIZATION_PLAN.md",
     "evidence": "docs/security-audit/security-stage-3-evidence.json",
     "bounded_steps": 6,
-    "completed_steps": 3,
-    "remaining_steps": 3,
+    "completed_steps": 4,
+    "remaining_steps": 2,
     "steps": [
       {
         "id": "3.1",
@@ -1498,7 +1498,40 @@
       {
         "id": "3.5",
         "title": "Sign-in, password, invitation and recovery flows",
-        "status": "PENDING"
+        "status": "SOURCE_REVIEW_COMPLETE_CANDIDATE_AND_HOSTED_ACCEPTANCE_PENDING",
+        "bounded_work_items": 3,
+        "completed_work_items": 1,
+        "remaining_work_items": 2,
+        "current_milestone": "3.5.2",
+        "latest_evidence": "S3E22",
+        "source_review_head": "8ecc3a10a608053d33b434cce7f53d7c6fe0c9bf",
+        "source_review": "docs/security-audit/SECURITY_STAGE_3_5_AUTH_FLOWS.md",
+        "source_inventory": "docs/security-audit/security-stage-3-auth-source-inventory.json",
+        "selected_existing_regression_tests": 35,
+        "selected_existing_regression_pass": 34,
+        "selected_existing_regression_fail": 1,
+        "selected_existing_regression_exit_code": 1,
+        "regression_failure_classification": "BRITTLE_FIRST_STATEMENT_ASSERTION_REVIEW",
+        "acceptance_groups": [
+          "AU01",
+          "AU02",
+          "AU03",
+          "AU04",
+          "AU05"
+        ],
+        "planned_selected_hosted_cases": 31,
+        "hosted_Auth_checks_run": 0,
+        "auth_settings_verified": false,
+        "controlled_email_acceptance_verified": false,
+        "owner_action_requested": false,
+        "final_remediation_actions": [
+          "AU-R01",
+          "AU-R02",
+          "AU-R03",
+          "AU-R04",
+          "AU-R05",
+          "AU-R06"
+        ]
       },
       {
         "id": "3.6",
@@ -1506,7 +1539,7 @@
         "status": "PENDING"
       }
     ],
-    "latest_evidence": "S3E21",
+    "latest_evidence": "S3E22",
     "production_promoted": false,
     "application_mfa_enforced": false,
     "full_security_or_release_acceptance_verified": false

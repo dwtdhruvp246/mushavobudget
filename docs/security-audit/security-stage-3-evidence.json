@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 3,
   "updated_date": "2026-10-11",
-  "active_step": "3.5.1",
+  "active_step": "3.5.2",
   "source_review_head": "e4f3b573bee2b9e344ec0b946c21e779449d8664",
   "events": [
     {
@@ -2960,6 +2960,72 @@
         "security-stage-3-admin-mfa-owner-readiness.json": "ea438378268f690364c9d931c54093d0ed60b7aa032d3d1c8e9070079c158bdc",
         "SECURITY_STAGE_3_4_CHECKPOINT_REPORT.md": "8aa6052d56004233b3ecf2f877ecadfe5bce9718a6bb0c16173ce73022820d7c"
       }
+    },
+    {
+      "id": "S3E22",
+      "stage_step": "3.5.1",
+      "recorded_date": "2026-10-11",
+      "result": "AUTH_SOURCE_REVIEW_COMPLETE_34_LOCAL_PASS_1_TEST_COMPATIBILITY_REVIEW_HOSTED_UNVERIFIED",
+      "source_review_head": "8ecc3a10a608053d33b434cce7f53d7c6fe0c9bf",
+      "report": "docs/security-audit/SECURITY_STAGE_3_5_AUTH_FLOWS.md",
+      "source_inventory": "docs/security-audit/security-stage-3-auth-source-inventory.json",
+      "bounded_work_items": 3,
+      "completed_work_items": 1,
+      "remaining_work_items": 2,
+      "acceptance_groups": [
+        "AU01",
+        "AU02",
+        "AU03",
+        "AU04",
+        "AU05"
+      ],
+      "planned_selected_hosted_cases": 31,
+      "source_findings": [
+        "Six-character new-password hints; actual backend settings unverified",
+        "Ordinary recovery/change UI absent",
+        "Confirmation and verified unfinished-invitation fallback share mode=self-signup route",
+        "Business new-recipient first-password view absent",
+        "Application sign-out waits for protected push cleanup; Business logout redirects after errors",
+        "Business controller has no Auth-state callback; cross-account UI clearing needs bounded verification"
+      ],
+      "retained_controls": [
+        "Admin isolated invitation storage and server identity validation",
+        "Password-before-completion and retry/idempotence",
+        "SQL recipient/state/expiry/subscription/seat guards",
+        "Bounded session refresh and transient-network preservation"
+      ],
+      "regression_receipt": {
+        "command": "node --test tests/session-recovery.test.mjs tests/startup-recovery.test.mjs tests/admin-invitation-exit.test.mjs tests/admin-invitation-setup-retry.test.mjs tests/admin-user-invitation-completion.test.mjs tests/admin-user-invitations.test.mjs tests/admin-invitation-replacement.test.mjs tests/signup-currencies.test.mjs",
+        "tests": 35,
+        "pass": 34,
+        "fail": 1,
+        "exit_code": 1,
+        "scope": "EXISTING_SOURCE_ASSERTIONS_AND_VM_MOCKS",
+        "failed_test": "a session reset repairs a button left mid sign-out",
+        "failure_classification": "BRITTLE_FIRST_STATEMENT_ASSERTION_REVIEW",
+        "button_reset_helper_behavior_passed": true,
+        "runtime_signout_failure_demonstrated": false
+      },
+      "new_modeled_catalog_probe": "NOT_RUN_EXTERNAL_PGLITE_MODULE_UNAVAILABLE",
+      "hosted_Auth_API_or_email_checks_run": 0,
+      "auth_settings_verified": false,
+      "hosted_browser_or_recovery_verified": false,
+      "owner_action_requested": false,
+      "mail_dispatched": false,
+      "settings_or_existing_synthetic_accounts_changed": false,
+      "production_or_native_changed": false,
+      "findings_F08_F15_closed": false,
+      "full_stage_3_report_due_at": "3.6",
+      "next_step": "3.5.2",
+      "final_remediation_actions": [
+        "AU-R01",
+        "AU-R02",
+        "AU-R03",
+        "AU-R04",
+        "AU-R05",
+        "AU-R06"
+      ],
+      "progress_aggregate_reconciled": "Four recorded closed checkpoints (3.1–3.4), two remaining steps (3.5–3.6); historical events unchanged"
     }
   ],
   "source_reconciliation_head": "9388fc8c3e48ac3fd124d73b7f918785da957104"

@@ -1,6 +1,8 @@
 # Mushavo Budget security audit — Start here
 
-All security audit documentation and evidence from Stage 0 onward is collected in this folder. Updated 10 October 2026. **Stages 0–2 have closed checkpoints with carry-forward; Stage 3 has completed its 3.1 permission baseline; 3.2.1 has a recorded owner result: 26 PASS and a paid-record workspace-binding REVIEW carried forward; Family 3.2.2 has all 33 owner API checks PASS; 3.2.3 currency settings has all 23 owner API checks PASS. All three 3.2 milestones are closed with carry-forward; 3.3.1 Business source role/scope review is recorded, and 3.3.2 controlled test preparation is next.** A closed checkpoint does not close an unresolved finding or approve a release.
+All security audit documentation and evidence from Stage 0 onward is collected here on **`security/stage-3-authorization`**. Updated 11 October 2026. Stages 0–2 and Stage 3 checkpoints 3.1–3.4 have recorded outcomes with carry-forward. **3.5.1 Auth source review is complete; next is 3.5.2 candidate preparation/local verification.** The full Stage 3 report remains due at 3.6. A closed checkpoint does not close an unresolved finding or approve a release.
+
+To browse normally on GitHub, select the **`security/stage-3-authorization`** branch, then open **docs → security-audit**. The default main branch does not contain this audit folder. Direct commit links are pinned snapshots; use this branch for the latest progress.
 
 ## Main documents
 
@@ -10,6 +12,9 @@ All security audit documentation and evidence from Stage 0 onward is collected i
 | [Action plan and carry-forward register](SECURITY_AUDIT_CARRY_FORWARD.md) | Outstanding failures, uncertain results, decisions and remediation history |
 | [Master audit coverage register](SECURITY_AUDIT_REGISTER.md) | All original 123 audit sections and their evidence/owner/stage assignments |
 | [Audit workflow](SECURITY_AUDIT_WORKFLOW.md) | Numbered messages, bounded work, stage-end reports and execution conventions |
+| [3.5 Auth flows and bounded plan](SECURITY_STAGE_3_5_AUTH_FLOWS.md) | Source findings, AU01–AU05 cases, three milestones and candidate/hosted prerequisites |
+| [3.4 Admin MFA checkpoint](SECURITY_STAGE_3_4_CHECKPOINT_REPORT.md) | Local candidate evidence, owner readiness blocker and AM-R01–AM-R05 |
+| [3.3 Business checkpoint](SECURITY_STAGE_3_3_CHECKPOINT_REPORT.md) | Guard/source-parity blocker and zero hosted Business API checks |
 | [3.3 Business roles and scopes](SECURITY_STAGE_3_3_BUSINESS_ROLES.md) | Three bounded milestones, source contract and B01–B08 test groups |
 | [3.2 checkpoint report](SECURITY_STAGE_3_2_CHECKPOINT_REPORT.md) | Personal/Family/currency outcomes, remaining issues and concrete remediation actions |
 | [Current progress](SECURITY_AUDIT_PROGRESS.json) | Structured stage/step status; preserved prior-stage outcomes |
@@ -73,6 +78,11 @@ The 36 existing audit documents/evidence files were moved here from the parent d
 - [Six-step Stage 3 breakdown](SECURITY_STAGE_3_AUTHORIZATION_PLAN.md).
 - [3.1 — Permission map, bounded acceptance groups and staging baseline](SECURITY_STAGE_3_1_PERMISSION_BASELINE.md) — baseline closed with owner scoped metadata passes and source classification; application behavior checks remain pending.
 - [3.2 — Personal/Family phases and recorded Personal result](SECURITY_STAGE_3_2_PERSONAL_FAMILY.md).
+- [3.2 checkpoint report](SECURITY_STAGE_3_2_CHECKPOINT_REPORT.md).
+- [3.3 Business checkpoint report](SECURITY_STAGE_3_3_CHECKPOINT_REPORT.md).
+- [3.4 Admin MFA candidate](SECURITY_STAGE_3_4_ADMIN_MFA_CANDIDATE.md) and [checkpoint report](SECURITY_STAGE_3_4_CHECKPOINT_REPORT.md).
+- [3.5 Auth-flow source review and bounded acceptance plan](SECURITY_STAGE_3_5_AUTH_FLOWS.md).
+- [Pinned Auth source inventory and local regression receipt](security-stage-3-auth-source-inventory.json).
 - [security-stage-3-evidence.json](security-stage-3-evidence.json).
 
 ## How to use the folder

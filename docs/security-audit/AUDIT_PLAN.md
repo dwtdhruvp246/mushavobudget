@@ -1,5 +1,7 @@
 # Mushavo Budget security audit plan
 
+**Latest — 3.5.1 source review complete / next 3.5.2, 11 October 2026 (S3E22):** Auth source review and the existing AU01–AU05 groups are detailed in [the 3.5 plan](SECURITY_STAGE_3_5_AUTH_FLOWS.md). New-password UI currently advertises six characters; ordinary recovery/change and Business first-password UI are absent in the reviewed source, and confirmation shares an unfinished-invitation fallback route. The selected existing Node regressions return **34 PASS / 1 FAIL (35 tests, exit 1)**; the failure is a brittle first-statement assertion after MFA state cleanup, retained as test compatibility REVIEW. Hosted settings, links, passwords, browsers and API acceptance are unverified; zero hosted Auth checks ran. One of three 3.5 milestones is complete. Next is candidate preparation/local verification; no owner action, email dispatch, Auth setting toggle, SQL install, deployment or existing synthetic account change is requested. AU-R01–AU-R06 and all earlier checkpoint actions remain open; F08/F15 stay OPEN and the full Stage 3 report stays due at 3.6. Earlier summaries are historical.
+
 Updated 10 October 2026. This roadmap consolidates the stage assignments already recorded in the [baseline](SECURITY_STAGE_0_BASELINE.md), [123-section coverage register](SECURITY_AUDIT_REGISTER.md), stage plans and completion reports. It does not add new tests or claim that later stages have been performed.
 
 ## Current position

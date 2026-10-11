@@ -3,7 +3,7 @@
   "updated_date": "2026-10-11",
   "current_stage": 3,
   "current_step": "3.6",
-  "current_title": "3.5 Auth checkpoint closed: 111 local PASS; owner readiness received; 31 hosted cases BLOCKED. Next 3.6 evidence reconciliation and full Stage 3 report.",
+  "current_title": "Stage 3 CLOSED WITH CARRY-FORWARD: full report published, final 177 local PASS/12 syntax checks, F08/F15 OPEN; next 4.1 lifecycle source review.",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1055,8 +1055,8 @@
   "final_reaudit_status": "PLANNED_NOT_PERFORMED",
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
-  "next_stage": 3,
-  "next_step": "3.6",
+  "next_stage": 4,
+  "next_step": "4.1",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -1262,15 +1262,15 @@
     "full_security_or_release_acceptance_verified": false
   },
   "stage_3": {
-    "status": "ACTIVE_FINAL_STAGE_REPORT_PENDING",
+    "status": "CLOSED_AUTHORIZATION_AUTH_CHECKPOINT_WITH_CARRY_FORWARD",
     "authorized": true,
     "started_date": "2026-10-10",
-    "active_step": "3.6",
+    "active_step": null,
     "plan": "docs/security-audit/SECURITY_STAGE_3_AUTHORIZATION_PLAN.md",
     "evidence": "docs/security-audit/security-stage-3-evidence.json",
     "bounded_steps": 6,
-    "completed_steps": 5,
-    "remaining_steps": 1,
+    "completed_steps": 6,
+    "remaining_steps": 0,
     "steps": [
       {
         "id": "3.1",
@@ -1571,12 +1571,74 @@
       {
         "id": "3.6",
         "title": "Recheck, report and handoff",
-        "status": "PENDING"
+        "status": "CLOSED_RECHECK_REPORT_AND_HANDOFF_WITH_CARRY_FORWARD",
+        "bounded_work_items": 3,
+        "completed_work_items": 3,
+        "remaining_work_items": 0,
+        "active_work_item": null,
+        "latest_evidence": "S3E25",
+        "source_commit": "1eebdc58cb6a71268fa62f3e555dd07db3c0b346",
+        "final_local_tests": 177,
+        "final_local_pass": 177,
+        "final_local_fail": 0,
+        "final_local_exit_code": 0,
+        "final_syntax_pass": 12,
+        "final_local_test_files": 20,
+        "fresh_hosted_API_Auth_MFA_checks": 0,
+        "fresh_modeled_database_checks": 0,
+        "report": "docs/security-audit/SECURITY_STAGE_3_COMPLETION_REPORT.md",
+        "local_receipt": "docs/security-audit/security-stage-3-final-regression.json",
+        "consolidated_remaining_actions": [
+          "PF-R01",
+          "PF-R02",
+          "PF-R03",
+          "PF-R04",
+          "PF-R05",
+          "S3-B01",
+          "S3-B02",
+          "S3-B03",
+          "S3-B04",
+          "AM-R01",
+          "AM-R02",
+          "AM-R03",
+          "AM-R04",
+          "AM-R05",
+          "AU-R01",
+          "AU-R02",
+          "AU-R03",
+          "AU-R04",
+          "AU-R05",
+          "AU-R06"
+        ],
+        "owner_action_requested": false,
+        "next_step": "4.1"
       }
     ],
-    "latest_evidence": "S3E24",
+    "latest_evidence": "S3E25",
     "production_promoted": false,
     "application_mfa_enforced": false,
-    "full_security_or_release_acceptance_verified": false
+    "full_security_or_release_acceptance_verified": false,
+    "closed_date": "2026-10-11",
+    "report": "docs/security-audit/SECURITY_STAGE_3_COMPLETION_REPORT.md",
+    "final_regression_receipt": "docs/security-audit/security-stage-3-final-regression.json",
+    "owner_API_PASS_check_groups": 82,
+    "owner_API_REVIEW_check_groups": 1,
+    "owner_API_count_is_unique_control_count": false,
+    "findings_closed": [],
+    "findings_F08_F15_closed": false
+  },
+  "stage_4": {
+    "status": "PLANNED_NOT_STARTED",
+    "active_step": null,
+    "initial_step": "4.1",
+    "scope": "Account deletion/shared ownership/retention, uploads/download validation and factual privacy disclosures",
+    "finding_ids": [
+      "F01",
+      "F02",
+      "F13",
+      "F20"
+    ],
+    "finite_plan_required_before_execution": true,
+    "hosted_checks_run": 0
   }
 }

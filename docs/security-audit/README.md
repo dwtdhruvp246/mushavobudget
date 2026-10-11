@@ -1,6 +1,6 @@
 # Mushavo Budget security audit — Start here
 
-All security audit documentation and evidence from Stage 0 onward is collected here on **`security/stage-3-authorization`**. Updated 11 October 2026. Stages 0–2 and Stage 3 checkpoints 3.1–3.5 have recorded outcomes with carry-forward. **3.5 closes with 111 local PASS and BLOCKED hosted acceptance (zero of 31 cases run); the owner reports an eight-character server minimum against the twelve-character candidate and unavailable separate test identities. Next is 3.6, evidence reconciliation and the full Stage 3 report.** The full Stage 3 report remains due at 3.6. A closed checkpoint does not close an unresolved finding or approve a release.
+All security audit documentation and evidence from Stage 0 onward is collected here on **`security/stage-3-authorization`**. Updated 11 October 2026. **Stages 0–3 are CLOSED WITH CARRY-FORWARD.** The full Stage 3 report records 82 owner PASS check groups and one Personal binding REVIEW, blocked Business/Admin MFA/Auth hosted acceptance, and the final **177 local PASS / 12 syntax checks**. F08/F15 and release gates remain OPEN. **Next is 4.1**, account deletion, shared ownership and retention source review; Stage 4 has not executed.
 
 To browse normally on GitHub, select the **`security/stage-3-authorization`** branch, then open **docs → security-audit**. The default main branch does not contain this audit folder. Direct commit links are pinned snapshots; use this branch for the latest progress.
 
@@ -12,6 +12,7 @@ To browse normally on GitHub, select the **`security/stage-3-authorization`** br
 | [Action plan and carry-forward register](SECURITY_AUDIT_CARRY_FORWARD.md) | Outstanding failures, uncertain results, decisions and remediation history |
 | [Master audit coverage register](SECURITY_AUDIT_REGISTER.md) | All original 123 audit sections and their evidence/owner/stage assignments |
 | [Audit workflow](SECURITY_AUDIT_WORKFLOW.md) | Numbered messages, bounded work, stage-end reports and execution conventions |
+| [Full Stage 3 report and action plan](SECURITY_STAGE_3_COMPLETION_REPORT.md) | All six outcomes, exact evidence limits, final regression and 20 remaining actions |
 | [3.5 Auth checkpoint and actions](SECURITY_STAGE_3_5_CHECKPOINT_REPORT.md) | Owner readiness, password-rule mismatch, 31 blocked hosted cases and AU-R01–AU-R06 |
 | [3.5.2 Auth candidate and readiness handoff](SECURITY_STAGE_3_5_AUTH_CANDIDATE.md) | Candidate scope, 111 local checks and complete read-only staging commands |
 | [3.5 Auth flows and bounded plan](SECURITY_STAGE_3_5_AUTH_FLOWS.md) | Source findings, AU01–AU05 cases, three milestones and candidate/hosted prerequisites |
@@ -29,6 +30,7 @@ To browse normally on GitHub, select the **`security/stage-3-authorization`** br
 | 0 | [Baseline completion report and original F01–F20 actions](SECURITY_STAGE_0_COMPLETION_REPORT.md) | Closed with known gaps and prerequisites |
 | 1 | [Foundations completion report](SECURITY_STAGE_1_COMPLETION_REPORT.md) | Closed with scoped passes and failed/unverified carry-forward |
 | 2 | [Web hardening completion report](SECURITY_STAGE_2_COMPLETION_REPORT.md) | Closed with scoped passes, failed production HTTPS samples and blocked/unverified hosted checks |
+| 3 | [Authorization/Auth completion report](SECURITY_STAGE_3_COMPLETION_REPORT.md) | Closed with scoped API passes, Personal binding REVIEW, blocked hosted cases and 20 remaining actions |
 
 ## All stage documents and evidence
 
@@ -75,8 +77,9 @@ The 36 existing audit documents/evidence files were moved here from the parent d
 - [Stage 2 — Browser, public submission and outbound-request hardening](SECURITY_STAGE_2_WEB_HARDENING_PLAN.md)
 - [security-stage-2-evidence.json](security-stage-2-evidence.json)
 
-### Stage 3 — Authorization and Auth controls (active)
+### Stage 3 — Authorization and Auth controls (closed with carry-forward)
 
+- [Full Stage 3 report/action plan](SECURITY_STAGE_3_COMPLETION_REPORT.md) and [final local regression receipt](security-stage-3-final-regression.json).
 - [Six-step Stage 3 breakdown](SECURITY_STAGE_3_AUTHORIZATION_PLAN.md).
 - [3.1 — Permission map, bounded acceptance groups and staging baseline](SECURITY_STAGE_3_1_PERMISSION_BASELINE.md) — baseline closed with owner scoped metadata passes and source classification; application behavior checks remain pending.
 - [3.2 — Personal/Family phases and recorded Personal result](SECURITY_STAGE_3_2_PERSONAL_FAMILY.md).

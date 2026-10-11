@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 4,
   "updated_date": "2026-10-11",
-  "active_step": "4.2.3",
+  "active_step": "4.3.1",
   "source_review_head": "70b34a545a81db983e1030a90e3b26d3419621da",
   "plan": "docs/security-audit/SECURITY_STAGE_4_DATA_PRIVACY_PLAN.md",
   "events": [
@@ -314,6 +314,65 @@
         "UF-R06"
       ],
       "next_step": "4.2.3",
+      "stage_4_full_report_due_at": "4.4"
+    },
+    {
+      "id": "S4E07",
+      "stage_step": "4.2.3",
+      "recorded_date": "2026-10-11",
+      "result": "HOSTED_UPLOAD_DOWNLOAD_BLOCKED_STEP_4_2_CLOSED_WITH_CARRY_FORWARD",
+      "scope": "READ_ONLY_PINNED_GIT_SOURCE_AND_EXISTING_EVIDENCE_NOT_HOSTED_HTTP_CATALOG_OR_API",
+      "source_parent_commit": "8e4ccd63656ab1ea26c46daafec3b3b08effc42d",
+      "candidate_commit": "06d4ca99c798a04c83d8be5b353731975fff887c",
+      "checkpoint_report": "docs/security-audit/SECURITY_STAGE_4_2_CHECKPOINT_REPORT.md",
+      "readiness_receipt": "docs/security-audit/security-stage-4-upload-readiness.json",
+      "source_blob_matches": 67,
+      "source_blob_mismatches": 0,
+      "original_source_files_unchanged": 63,
+      "original_source_files_intentionally_updated": [
+        "app.js",
+        "business.js"
+      ],
+      "candidate_primary_sha256_matches": 4,
+      "prior_assistant_local_tests": 99,
+      "prior_assistant_pass": 99,
+      "prior_assistant_syntax_checks": 4,
+      "prior_owner_repeat_pass": 63,
+      "prior_owner_repeat_syntax_checks": 4,
+      "owner_repeat_is_same_primary_batch": true,
+      "fresh_local_tests_run": 0,
+      "hosted_acceptance": false,
+      "selected_planned_grouped_cases": 30,
+      "blocked_planned_grouped_cases": 30,
+      "fresh_hosted_HTTP_catalog_SQL_Auth_Storage_or_provider_checks_run": 0,
+      "prerequisite_groups": [
+        "UF-P01",
+        "UF-P02",
+        "UF-P03",
+        "UF-P04",
+        "UF-P05",
+        "UF-P06"
+      ],
+      "bounded_4_2_work_items": 3,
+      "recorded_4_2_work_item_outcomes": 3,
+      "remaining_4_2_work_items": 0,
+      "completed_stage_4_steps": 2,
+      "remaining_stage_4_steps": 2,
+      "owner_action_requested": false,
+      "upload_removal_signed_URL_download_or_processor_action_performed": false,
+      "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+      "provider_email_job_executed": false,
+      "production_or_native_changed": false,
+      "findings_closed": [],
+      "open_actions": [
+        "UF-R01",
+        "UF-R02",
+        "UF-R03",
+        "UF-R04",
+        "UF-R05",
+        "UF-R06"
+      ],
+      "next_step": "4.3.1",
       "stage_4_full_report_due_at": "4.4"
     }
   ]

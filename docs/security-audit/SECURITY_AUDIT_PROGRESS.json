@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-11",
   "current_stage": 4,
-  "current_step": "4.2.3",
-  "current_title": "4.2.2 client candidate/local checks complete and owner Windows 63-case repeat PASS; next 4.2.3",
+  "current_step": "4.3.1",
+  "current_title": "4.2 closed with carry-forward: hosted acceptance BLOCKED; next factual privacy source review",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 4,
-  "next_step": "4.2.3",
+  "next_step": "4.3.1",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -1628,17 +1628,17 @@
     "findings_F08_F15_closed": false
   },
   "stage_4": {
-    "status": "ACTIVE_UPLOAD_DOWNLOAD_CLIENT_CANDIDATE_LOCAL_CHECKS_COMPLETE",
+    "status": "ACTIVE_PRIVACY_SOURCE_REVIEW_NEXT_UPLOAD_CHECKPOINT_CLOSED",
     "authorized": true,
     "started_date": "2026-10-11",
-    "active_step": "4.2",
+    "active_step": "4.3",
     "initial_step": "4.1.1",
     "plan": "docs/security-audit/SECURITY_STAGE_4_DATA_PRIVACY_PLAN.md",
     "evidence": "docs/security-audit/security-stage-4-evidence.json",
     "bounded_steps": 4,
-    "completed_steps": 1,
-    "remaining_steps": 3,
-    "latest_evidence": "S4E06",
+    "completed_steps": 2,
+    "remaining_steps": 2,
+    "latest_evidence": "S4E07",
     "finding_ids": [
       "F01",
       "F02",
@@ -1726,11 +1726,11 @@
       {
         "id": "4.2",
         "title": "Uploads and downloads",
-        "status": "CLIENT_CANDIDATE_LOCAL_CHECKS_COMPLETE_HOSTED_UNVERIFIED",
+        "status": "CLOSED_WITH_CARRY_FORWARD_HOSTED_UPLOAD_DOWNLOAD_BLOCKED",
         "bounded_work_items": 3,
-        "completed_work_items": 2,
-        "remaining_work_items": 1,
-        "current_milestone": "4.2.3",
+        "completed_work_items": 3,
+        "remaining_work_items": 0,
+        "current_milestone": null,
         "milestones": [
           {
             "id": "4.2.1",
@@ -1745,10 +1745,10 @@
           {
             "id": "4.2.3",
             "scope": "one_controlled_hosted_outcome_or_BLOCKED",
-            "status": "NEXT"
+            "status": "RECORDED_BLOCKED_NO_HOSTED_CASES_RUN"
           }
         ],
-        "latest_evidence": "S4E06",
+        "latest_evidence": "S4E07",
         "source_commit": "9373887eeb70ac8285485f1fbd804f1cb4d9e541",
         "source_review": "docs/security-audit/SECURITY_STAGE_4_2_UPLOAD_DOWNLOAD_REVIEW.md",
         "source_inventory": "docs/security-audit/security-stage-4-upload-source-inventory.json",
@@ -1812,12 +1812,32 @@
         "owner_application_exact_hash_matches": 2,
         "owner_test_verifier_CRLF_variant_hash_matches": 2,
         "owner_unexplained_hash_mismatches": 0,
-        "owner_local_batch_repeats_existing_63_tests": true
+        "owner_local_batch_repeats_existing_63_tests": true,
+        "completed_milestone": "4.2.3",
+        "checkpoint_report": "docs/security-audit/SECURITY_STAGE_4_2_CHECKPOINT_REPORT.md",
+        "readiness_receipt": "docs/security-audit/security-stage-4-upload-readiness.json",
+        "checkpoint_source_commit": "8e4ccd63656ab1ea26c46daafec3b3b08effc42d",
+        "selected_current_source_blob_matches": 67,
+        "selected_current_source_blob_mismatches": 0,
+        "candidate_primary_hash_matches": 4,
+        "fresh_local_tests_run_at_4_2_3": 0,
+        "hosted_grouped_cases_blocked": 30,
+        "hosted_acceptance": false,
+        "candidate_deployment_status": "UNVERIFIED_NOT_PROBED_BY_OFFLINE_VERIFIER",
+        "prerequisite_groups": [
+          "UF-P01",
+          "UF-P02",
+          "UF-P03",
+          "UF-P04",
+          "UF-P05",
+          "UF-P06"
+        ]
       },
       {
         "id": "4.3",
         "title": "Factual privacy inventory and disclosures",
-        "status": "PENDING"
+        "status": "NEXT_SOURCE_REVIEW",
+        "current_milestone": "4.3.1"
       },
       {
         "id": "4.4",

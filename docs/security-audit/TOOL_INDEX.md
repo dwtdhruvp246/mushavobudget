@@ -158,3 +158,11 @@ Offline/source/local scope only; no deployment or deletion adapter. 46 local PAS
 - [Client tests](../../tests/stage-4-upload-client.test.mjs)
 - [Primary receipt](security-stage-4-upload-local-checks.json)
 - [Related regression receipt](security-stage-4-upload-regression.json) — 36 PASS across seven existing files
+
+## Stage 4.2.3 checkpoint
+
+- [Detailed checkpoint and action plan](SECURITY_STAGE_4_2_CHECKPOINT_REPORT.md)
+- [Readiness receipt](security-stage-4-upload-readiness.json) — 67 source blob matches/four candidate hash matches; zero fresh behavior or hosted checks; 30 grouped cases BLOCKED
+- [Owner Windows repeat](security-stage-4-upload-owner-local-checks.json) — 63 PASS/four syntax checks; exact LF/CRLF hash reconciliation
+
+No owner SQL/terminal action is requested by this checkpoint; next 4.3.1, full Stage 4 report due 4.4.

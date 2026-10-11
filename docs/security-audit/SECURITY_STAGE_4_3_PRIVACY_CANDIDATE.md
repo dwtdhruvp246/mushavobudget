@@ -1,5 +1,7 @@
 # Stage 4.3.2 — Privacy review candidate and offline checks
 
+**Latest — 4.3.2 owner Windows verification PASS / next 4.3.3, 11 October 2026 (S4E10):** Owner ran the pinned `ae3b5c2d18675c358862403d34c72c09dc764ca3` temporary export: **43 PASS / 0 FAIL, exit 0; three syntax checks PASS, Node v22.17.0**. Three data/draft artifacts exactly match published bytes; the three script hashes exactly match their published LF-to-CRLF variants, with **zero unexplained differences**. [Owner receipt and hash reconciliation](security-stage-4-privacy-owner-local-checks.json). This repeats the same 43 checks, not 86 distinct checks; no fresh assistant behavior tests ran. All 36 publication blockers under six PR actions remain, with **zero of 25 hosted privacy cases run**. Draft remains internal/not adopted/not published; actual app consent/retention/deletion/child safeguards and native/store declarations are unverified. No account/file/settings/SQL/provider/email/job/deployment/production/native action, no finding closure and no rerun or further owner SQL/terminal action required. Next **4.3.3**, one controlled owner/hosted outcome or BLOCKED; full Stage 4 report **4.4**. Earlier summaries are historical.
+
 Recorded 11 October 2026. Evidence **S4E09**. Candidate parent source pin: `2f1c033431b3880b28077ae664de50e10cfcb883`, branch `security/stage-3-authorization`.
 
 **Outcome: reviewable internal candidate complete at offline scope — 43 PASS, zero FAIL, three syntax checks, exit 0.** Two of three bounded 4.3 milestones now have outcomes. Next **4.3.3** records one controlled owner/hosted result or BLOCKED. The full Stage 4 report remains due at **4.4**.
@@ -81,3 +83,9 @@ No required SQL, Auth/provider dashboard change, email, account/fixture setup, r
 At **4.3.3**, record one controlled owner/hosted outcome if safe prerequisites exist; otherwise **BLOCKED**, with the five frozen PR groups and their unrun cases carried forward. Do not turn missing prerequisites into an endless owner setup sequence or enlarge Stage 4. Full report at **4.4**.
 
 No hosted HTTP/catalog/SQL/Auth/Storage/provider checks, messages/jobs, account/file/settings changes, deployment, production promotion or native build ran. Preserved synthetic accounts, Personal/Family fixtures, inactive former member and the two USD1 conversions remain unchanged. Production `kttkospkblwvguuwnhjj` remains excluded.
+
+## Owner Windows verification — 4.3.2 / S4E10
+
+The owner supplied a successful isolated export/run at `ae3b5c2d18675c358862403d34c72c09dc764ca3`: 43 PASS, zero FAIL, exit 0; three syntax checks, Node v22.17.0. [Owner receipt and exact hash reconciliation](security-stage-4-privacy-owner-local-checks.json) preserve the supplied summary. Decisions/inventory/draft hashes exactly match published bytes. Each of the contract/verifier/test script hashes exactly matches the published bytes after deterministic LF-to-CRLF conversion. There are zero unexplained differences; this identifies a line-ending variant without asserting the specific Git/Windows configuration that produced it.
+
+This repeats the same 43 checks. The earlier assistant receipt remains unchanged; do not report 86 distinct controls or count any hosted privacy acceptance case as executed. All 36 publication blockers and six PR actions remain OPEN. No fresh assistant behavior test, app/settings/provider/production/native mutation, policy adoption/publication or finding closure occurred. No rerun or further owner SQL/terminal action is requested. Next remains 4.3.3; full Stage 4 report 4.4.

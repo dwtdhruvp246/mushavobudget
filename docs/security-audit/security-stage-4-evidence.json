@@ -276,6 +276,45 @@
       ],
       "next_step": "4.2.3",
       "stage_4_full_report_due_at": "4.4"
+    },
+    {
+      "id": "S4E06",
+      "stage_step": "4.2.2",
+      "recorded_date": "2026-10-11",
+      "result": "OWNER_WINDOWS_OFFLINE_CLIENT_REPEAT_SCOPED_PASS_HASH_VARIANTS_RECONCILED",
+      "scope": "OWNER_REPORTED_VM_EXECUTION_OF_SELECTED_ACTUAL_CLIENT_FUNCTIONS_WITH_SYNTHETIC_STORAGE_RESPONSES",
+      "candidate_commit": "06d4ca99c798a04c83d8be5b353731975fff887c",
+      "owner_receipt": "docs/security-audit/security-stage-4-upload-owner-local-checks.json",
+      "owner_node_version": "v22.17.0",
+      "owner_local_tests": 63,
+      "owner_local_pass": 63,
+      "owner_local_fail": 0,
+      "owner_local_exit_code": 0,
+      "owner_local_syntax_checks": 4,
+      "application_exact_LF_hash_matches": 2,
+      "test_and_verifier_exact_CRLF_variant_hash_matches": 2,
+      "unexplained_hash_mismatches": 0,
+      "additional_unique_security_controls": 0,
+      "assistant_original_tests": 99,
+      "owner_related_36_case_regression_rerun": false,
+      "hosted_checks_run": 0,
+      "candidate_deployed": false,
+      "server_content_validation_verified": false,
+      "hosted_authorization_quota_cleanup_verified": false,
+      "owner_action_requested": false,
+      "existing_accounts_or_fixtures_Auth_Storage_SQL_settings_changed": false,
+      "production_or_native_changed": false,
+      "findings_closed": [],
+      "open_actions": [
+        "UF-R01",
+        "UF-R02",
+        "UF-R03",
+        "UF-R04",
+        "UF-R05",
+        "UF-R06"
+      ],
+      "next_step": "4.2.3",
+      "stage_4_full_report_due_at": "4.4"
     }
   ]
 }

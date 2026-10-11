@@ -27,6 +27,12 @@ The reproducible primary verifier is [verify-stage-4-files.mjs](../../scripts/ve
 
 There is **no required owner SQL or terminal action at 4.2.2**. An optional isolated verification command is supplied completely in the chat, pinned to the published candidate commit. The owner should return only its JSON result if they choose to run it. No owner rerun is necessary for the recorded assistant local result.
 
+## Owner Windows repeat, S4E06
+
+The owner ran the full optional PowerShell export against candidate commit `06d4ca99c798a04c83d8be5b353731975fff887c`. The pasted output reports **63 PASS, zero failures, exit 0 and four syntax checks PASS on Node v22.17.0**. [Owner receipt and reconciliation](security-stage-4-upload-owner-local-checks.json) preserves the exact JSON. Both application source hashes match the published LF files. The two `.mjs` hashes exactly match SHA-256 computed from the published source with every LF replaced by CRLF; there are zero unexplained differences. The repository explicitly requires LF for `.js` but has no separate `.mjs` EOL rule. The exact owner Git EOL setting and file bytes were not separately collected; the reported hashes are verified against these deterministic published variants. No code repair, execution-policy change or rerun is needed.
+
+This repeats the existing 63-case primary batch on Windows. It adds cross-environment evidence, not 63 additional unique security controls. The original assistant 99-test evidence and seven-file 36-test regression receipt remain unchanged; the owner did not rerun that regression package. Hosted checks remain zero, candidate deployment and server controls remain unverified, and 4.2.3 remains next.
+
 ## Server completion contract and carry-forward
 
 The [source contract](SECURITY_STAGE_4_2_UPLOAD_DOWNLOAD_REVIEW.md) retains all six OPEN actions and all 30 planned UF01–UF06 grouped cases. This client candidate addresses only selected UF-R01/UF-R04 usability and late-response behavior. No finding or server action closes.

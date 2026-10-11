@@ -1,6 +1,6 @@
 # Mushavo Budget security audit — Start here
 
-All security audit documentation and evidence from Stage 0 onward is collected here on **`security/stage-3-authorization`**. Updated 11 October 2026. **Stages 0–3 are CLOSED WITH CARRY-FORWARD.** The full Stage 3 report records 82 owner PASS check groups and one Personal binding REVIEW, blocked Business/Admin MFA/Auth hosted acceptance, and the final **177 local PASS / 12 syntax checks**. F08/F15 and release gates remain OPEN. **Next is 4.1**, account deletion, shared ownership and retention source review; Stage 4 has not executed.
+All security audit documentation and evidence is collected here on **`security/stage-3-authorization`**. Updated 11 October 2026. Stages 0–3 are **CLOSED WITH CARRY-FORWARD**; Stage 4 is active. **4.1.1 lifecycle source review is complete; next is 4.1.2, review-only candidate/preflight and local checks.** No hosted deletion or account/file change has run. Read the Stage 4 plan and lifecycle contract; full report remains due at 4.4. F01/F02/F13/F20 and earlier F08/F15/release gates remain OPEN.
 
 To browse normally on GitHub, select the **`security/stage-3-authorization`** branch, then open **docs → security-audit**. The default main branch does not contain this audit folder. Direct commit links are pinned snapshots; use this branch for the latest progress.
 
@@ -12,6 +12,8 @@ To browse normally on GitHub, select the **`security/stage-3-authorization`** br
 | [Action plan and carry-forward register](SECURITY_AUDIT_CARRY_FORWARD.md) | Outstanding failures, uncertain results, decisions and remediation history |
 | [Master audit coverage register](SECURITY_AUDIT_REGISTER.md) | All original 123 audit sections and their evidence/owner/stage assignments |
 | [Audit workflow](SECURITY_AUDIT_WORKFLOW.md) | Numbered messages, bounded work, stage-end reports and execution conventions |
+| [Stage 4 finite plan](SECURITY_STAGE_4_DATA_PRIVACY_PLAN.md) | Four steps, three lifecycle milestones and full report at 4.4 |
+| [4.1 lifecycle review and decision matrix](SECURITY_STAGE_4_1_ACCOUNT_LIFECYCLE.md) | Source gaps, dependencies, proposed data decisions, DL01–DL05 and DL-R01–DL-R06 |
 | [Full Stage 3 report and action plan](SECURITY_STAGE_3_COMPLETION_REPORT.md) | All six outcomes, exact evidence limits, final regression and 20 remaining actions |
 | [3.5 Auth checkpoint and actions](SECURITY_STAGE_3_5_CHECKPOINT_REPORT.md) | Owner readiness, password-rule mismatch, 31 blocked hosted cases and AU-R01–AU-R06 |
 | [3.5.2 Auth candidate and readiness handoff](SECURITY_STAGE_3_5_AUTH_CANDIDATE.md) | Candidate scope, 111 local checks and complete read-only staging commands |
@@ -92,6 +94,13 @@ The 36 existing audit documents/evidence files were moved here from the parent d
 - [Auth candidate local receipt](security-stage-3-auth-local-checks.json).
 - [Pinned Auth source inventory and local regression receipt](security-stage-3-auth-source-inventory.json).
 - [security-stage-3-evidence.json](security-stage-3-evidence.json).
+
+### Stage 4 — Data lifecycle, uploads and privacy (active)
+
+- [Four-step Stage 4 plan](SECURITY_STAGE_4_DATA_PRIVACY_PLAN.md).
+- [4.1 source review and lifecycle contract](SECURITY_STAGE_4_1_ACCOUNT_LIFECYCLE.md).
+- [Selected lifecycle source inventory](security-stage-4-lifecycle-source-inventory.json).
+- [Stage 4 evidence](security-stage-4-evidence.json).
 
 ## How to use the folder
 

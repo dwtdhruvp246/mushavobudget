@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "stage": 4,
+  "updated_date": "2026-10-11",
+  "active_step": "4.1.2",
+  "source_review_head": "70b34a545a81db983e1030a90e3b26d3419621da",
+  "plan": "docs/security-audit/SECURITY_STAGE_4_DATA_PRIVACY_PLAN.md",
+  "events": [
+    {
+      "id": "S4E01",
+      "stage_step": "4.1.1",
+      "recorded_date": "2026-10-11",
+      "result": "STAGE_4_STARTED_LIFECYCLE_SOURCE_REVIEW_COMPLETE_HOSTED_UNVERIFIED",
+      "source_parent_commit": "70b34a545a81db983e1030a90e3b26d3419621da",
+      "previous_stage_report": "docs/security-audit/SECURITY_STAGE_3_COMPLETION_REPORT.md",
+      "plan": "docs/security-audit/SECURITY_STAGE_4_DATA_PRIVACY_PLAN.md",
+      "source_review": "docs/security-audit/SECURITY_STAGE_4_1_ACCOUNT_LIFECYCLE.md",
+      "source_inventory": "docs/security-audit/security-stage-4-lifecycle-source-inventory.json",
+      "bounded_stage_4_steps": 4,
+      "completed_stage_4_steps": 0,
+      "remaining_stage_4_steps": 4,
+      "bounded_4_1_work_items": 3,
+      "completed_4_1_work_items": 1,
+      "remaining_4_1_work_items": 2,
+      "reviewed_pages": 8,
+      "reviewed_Edge_entrypoints": 7,
+      "migration_files_reviewed_for_selected_routines": 52,
+      "selected_SQL_source_files_hash_verified": 53,
+      "selected_tables": 24,
+      "selected_auth_reference_declarations": 38,
+      "selected_declaration_actions": {
+        "CASCADE": 10,
+        "NO ACTION (implicit)": 2,
+        "RESTRICT": 17,
+        "SET NULL": 9
+      },
+      "latest_selected_routines": 7,
+      "source_syntactic_inventory_not_final_catalog": true,
+      "tracked_deletion_workflow_identified": false,
+      "public_deletion_resource_filename_identified": false,
+      "business_ownership_transfer_source_exists": true,
+      "member_removal_retains_inactive_membership": true,
+      "retention_or_operator_decisions_approved": false,
+      "selected_planned_hosted_cases": 25,
+      "acceptance_groups": [
+        "DL01",
+        "DL02",
+        "DL03",
+        "DL04",
+        "DL05"
+      ],
+      "fresh_hosted_or_modeled_database_tests_run": 0,
+      "candidate_prepared_or_deployed": false,
+      "owner_action_requested": false,
+      "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+      "production_or_native_changed": false,
+      "provider_email_job_executed": false,
+      "findings_closed": [],
+      "finding_F02_closed": false,
+      "final_remediation_actions": [
+        "DL-R01",
+        "DL-R02",
+        "DL-R03",
+        "DL-R04",
+        "DL-R05",
+        "DL-R06"
+      ],
+      "primary_documents_checked": [
+        "https://developer.apple.com/help/app-review/guideline-reference/5-1-1-account-deletion",
+        "https://support.google.com/googleplay/android-developer/answer/13327111?hl=en",
+        "https://supabase.com/docs/reference/javascript/auth-admin-deleteuser",
+        "https://supabase.com/docs/guides/auth/managing-user-data",
+        "https://supabase.com/docs/guides/storage/management/delete-objects"
+      ],
+      "next_step": "4.1.2",
+      "stage_4_full_report_due_at": "4.4"
+    }
+  ]
+}

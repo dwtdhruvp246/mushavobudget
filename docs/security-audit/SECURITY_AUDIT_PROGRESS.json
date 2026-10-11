@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-11",
   "current_stage": 4,
-  "current_step": "4.3.2",
-  "current_title": "4.3.1 factual privacy source review complete; next reviewable candidate and local checks",
+  "current_step": "4.3.3",
+  "current_title": "4.3.2 internal privacy candidate/local checks complete; next one controlled owner/hosted outcome or BLOCKED",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 4,
-  "next_step": "4.3.2",
+  "next_step": "4.3.3",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -1628,7 +1628,7 @@
     "findings_F08_F15_closed": false
   },
   "stage_4": {
-    "status": "ACTIVE_PRIVACY_SOURCE_REVIEW_COMPLETE",
+    "status": "ACTIVE_PRIVACY_CANDIDATE_LOCAL_COMPLETE",
     "authorized": true,
     "started_date": "2026-10-11",
     "active_step": "4.3",
@@ -1638,7 +1638,7 @@
     "bounded_steps": 4,
     "completed_steps": 2,
     "remaining_steps": 2,
-    "latest_evidence": "S4E08",
+    "latest_evidence": "S4E09",
     "finding_ids": [
       "F01",
       "F02",
@@ -1836,12 +1836,12 @@
       {
         "id": "4.3",
         "title": "Factual privacy inventory and disclosures",
-        "status": "SOURCE_REVIEW_COMPLETE_CANDIDATE_NEXT",
-        "current_milestone": "4.3.2",
+        "status": "CANDIDATE_LOCAL_COMPLETE_OWNER_HOSTED_OUTCOME_NEXT",
+        "current_milestone": "4.3.3",
         "bounded_work_items": 3,
-        "completed_work_items": 1,
-        "remaining_work_items": 2,
-        "latest_evidence": "S4E08",
+        "completed_work_items": 2,
+        "remaining_work_items": 1,
+        "latest_evidence": "S4E09",
         "source_commit": "29b6c1cffeb4f9c38cad446c931fe1d1a9583ee2",
         "source_review": "docs/security-audit/SECURITY_STAGE_4_3_PRIVACY_SOURCE_REVIEW.md",
         "source_inventory": "docs/security-audit/security-stage-4-privacy-source-inventory.json",
@@ -1854,12 +1854,12 @@
           {
             "id": "4.3.2",
             "scope": "reviewable_candidate_and_local_checks",
-            "status": "NEXT"
+            "status": "COMPLETE_AT_OFFLINE_REVIEW_DRAFT_SCOPE"
           },
           {
             "id": "4.3.3",
             "scope": "one_controlled_owner_hosted_outcome_or_BLOCKED",
-            "status": "PENDING"
+            "status": "NEXT"
           }
         ],
         "selected_source_files_hash_verified": 96,
@@ -1875,14 +1875,14 @@
           "PR05"
         ],
         "selected_planned_grouped_cases": 25,
-        "fresh_local_behavior_tests_run": 0,
+        "fresh_local_behavior_tests_run": 43,
         "hosted_checks_run": 0,
-        "operator_legal_identity_confirmed": false,
+        "operator_legal_identity_confirmed": true,
         "minimum_age_and_minors_policy_confirmed": false,
-        "privacy_contact_duty_assignment_confirmed": false,
+        "privacy_contact_duty_assignment_confirmed": true,
         "retention_decisions_approved": false,
         "actual_provider_region_contract_log_retention_verified": false,
-        "candidate_prepared": false,
+        "candidate_prepared": true,
         "candidate_deployed": false,
         "public_notice_publication_performed": false,
         "owner_execution_action_requested": false,
@@ -1895,7 +1895,37 @@
           "PR-R05",
           "PR-R06"
         ],
-        "findings_closed": []
+        "findings_closed": [],
+        "completed_milestone": "4.3.2",
+        "candidate_scope": "OFFLINE_STRUCTURED_REVIEW_DRAFT_NOT_APP_PRIVACY_CONTROLS",
+        "candidate_source_parent": "2f1c033431b3880b28077ae664de50e10cfcb883",
+        "candidate_report": "docs/security-audit/SECURITY_STAGE_4_3_PRIVACY_CANDIDATE.md",
+        "owner_decision_record": "docs/security-audit/security-stage-4-privacy-decisions.json",
+        "internal_review_draft": "docs/security-audit/SECURITY_STAGE_4_3_PRIVACY_NOTICE_REVIEW_DRAFT.md",
+        "review_assessment": "docs/security-audit/security-stage-4-privacy-review-assessment.json",
+        "local_receipt": "docs/security-audit/security-stage-4-privacy-local-checks.json",
+        "local_tests": 43,
+        "local_pass": 43,
+        "local_fail": 0,
+        "local_exit_code": 0,
+        "local_syntax_checks": 3,
+        "node_version": "v24.19.0",
+        "publication_blockers": 36,
+        "publication_allowed": false,
+        "operator_identity_confirmation_scope": "OWNER_REPORTED_NOT_INDEPENDENTLY_VERIFIED",
+        "operator": {
+          "legal_name": "Dhruv Parekh",
+          "country": "Zimbabwe",
+          "entity_type": "INDIVIDUAL",
+          "registered_business": false
+        },
+        "privacy_contact": "support@mushavobudget.com",
+        "privacy_contact_delivery_and_fulfillment_verified": false,
+        "audience_intent_owner_reported": "NO_AGE_RESTRICTION",
+        "child_safeguards_verified": false,
+        "country_exclusions_confirmed": false,
+        "actual_app_consent_retention_deletion_or_child_controls_verified": false,
+        "hosted_acceptance": false
       },
       {
         "id": "4.4",

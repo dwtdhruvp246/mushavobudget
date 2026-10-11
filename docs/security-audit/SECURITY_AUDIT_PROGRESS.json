@@ -3,7 +3,7 @@
   "updated_date": "2026-10-11",
   "current_stage": 3,
   "current_step": "3.3.3",
-  "current_title": "3.3.2 controlled Business fixture/checker preparation complete; pinned staging setup and one acceptance batch pending.",
+  "current_title": "3.3.3 Business fixture guard REVIEW; one read-only trigger mismatch diagnosis pending.",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1384,7 +1384,7 @@
       {
         "id": "3.3",
         "title": "Business roles and scopes",
-        "status": "FIXTURE_CHECKER_PREPARED_LOCAL_SCOPED_PASS_OWNER_ACCEPTANCE_PENDING",
+        "status": "OWNER_FIXTURE_GUARD_REVIEW_READ_ONLY_DIAGNOSIS_PENDING",
         "bounded_work_items": 3,
         "completed_work_items": 2,
         "remaining_work_items": 1,
@@ -1406,12 +1406,21 @@
         "checker": "scripts/check-stage-3-business-api.cjs",
         "runner": "scripts/run-stage-3-business-acceptance.ps1",
         "acceptance_instructions": "docs/security-audit/SECURITY_STAGE_3_3_BUSINESS_ACCEPTANCE.md",
-        "local_source_scenarios_passed": 11,
+        "local_source_scenarios_passed": 15,
         "local_isolated_tests_passed": 8,
         "selected_expected_api_PASS_groups": 24,
         "selected_expected_api_BLOCKED_groups": 5,
-        "owner_fixture_result_received": false,
-        "preparation_source_parent_commit": "ebebb5e42fc0775d9098e4e1c701959304036012"
+        "owner_fixture_result_received": true,
+        "preparation_source_parent_commit": "ebebb5e42fc0775d9098e4e1c701959304036012",
+        "latest_evidence": "S3E17",
+        "owner_fixture_result_evidence": "S3E17",
+        "owner_fixture_source_commit": "f0a6776014965078cc66055a19ed5e2e1b978851",
+        "owner_fixture_problem_code": "UNREVIEWED_PUBLIC_TRIGGER_BODY",
+        "owner_fixture_success_received": false,
+        "owner_fixture_guard_before_application_inserts": true,
+        "owner_fixture_project_identity_independently_verified": false,
+        "trigger_diagnostic": "supabase/diagnostics/security_stage_3_business_trigger_review.sql",
+        "trigger_diagnostic_result_received": false
       },
       {
         "id": "3.4",
@@ -1429,7 +1438,7 @@
         "status": "PENDING"
       }
     ],
-    "latest_evidence": "S3E16",
+    "latest_evidence": "S3E17",
     "production_promoted": false,
     "application_mfa_enforced": false,
     "full_security_or_release_acceptance_verified": false

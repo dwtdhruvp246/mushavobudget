@@ -2,6 +2,14 @@
 
 Prepared 11 October 2026 from audit parent `ebebb5e42fc0775d9098e4e1c701959304036012` (S3E16). Preparation is complete. **Hosted Business acceptance has not run.** Stage 3 remains active; its full report is due at 3.6. This is the same existing permission model, with no runtime migration, Auth setting, launch switch, platform elevation, production promotion or native change.
 
+## 3.3.3 owner fixture guard receipt — 11 October 2026
+
+The owner screenshot shows `P0001: UNREVIEWED_PUBLIC_TRIGGER_BODY`, raised by the first guard before the fixture insert block. No fixture success receipt or hosted API acceptance is recorded. The screenshot does not show the Dashboard project URL; the staging identity remains an owner verification requirement. The failed setup adds no authorization PASS and does not establish which trigger differs.
+
+One bounded, read-only follow-up is prepared in `supabase/diagnostics/security_stage_3_business_trigger_review.sql`. It clears any failed fixture transaction on the SQL Editor connection, starts a read-only transaction, and uses the same reviewed body hashes, trigger associations and selected relations as the first guard. It returns aggregate counts plus at most 100 mismatching trigger/function names and exact-body, CRLF-normalized-body and association match flags. It reads no function bodies into the receipt and makes no application writes or outbound requests. CRLF flags help diagnosis only; the fixture guard is unchanged. This diagnostic does not inspect the later static call closure or attest all policy/grant/extension parity.
+
+Run the pinned diagnostic only in STAGING `dczlddwbtgvfdujgcitb` and share its result row, including `mismatch_details`. Do not rerun the fixture or start the API checker yet. If the receipt identifies a hosted difference requiring unapproved runtime changes, retain it as bounded BLOCKED/carry-forward instead of removing the guard or rebuilding the environment. Stage 3's full report remains due at 3.6.
+
 ## Frozen executable scope
 
 One fixture transaction creates two isolated Business workspaces for the existing `audit.owner@example.com` and `audit.outsider@example.com` accounts. Each has an ordinary Owner, seven-day synthetic entitlement with four seats, two active organisation dimensions, one synthetic expense category and two approved USD 1 owner claim seeds. Approved seed states are setup evidence, not a successful submit/review flow. Reminders and automatic conversion are disabled. The transaction uses the existing exact workspace/owner/actor provisioning permit and deletes it; no purchase, approval or platform-staff identity is fabricated.

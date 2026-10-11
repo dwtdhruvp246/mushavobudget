@@ -2729,6 +2729,36 @@
         "scripts/verify-stage-3-business-source.mjs": "a979ebf6113f383a4938377720751424f41a3bf8d835d5450805da42b8b5313a",
         "tests/stage-3-business-api.test.cjs": "cacea6875129187c22ccc61a711c041c3a67c9591c180f2e22184011459b00db"
       }
+    },
+    {
+      "id": "S3E17",
+      "stage_step": "3.3.3",
+      "recorded_date": "2026-10-11",
+      "result": "OWNER_BUSINESS_FIXTURE_GUARD_REVIEW_READ_ONLY_DIAGNOSIS_PREPARED",
+      "owner_source_commit": "f0a6776014965078cc66055a19ed5e2e1b978851",
+      "owner_evidence_type": "SQL_EDITOR_SCREENSHOT",
+      "owner_fixture_sqlstate": "P0001",
+      "owner_fixture_problem_code": "UNREVIEWED_PUBLIC_TRIGGER_BODY",
+      "source_guard_precedes_application_fixture_inserts": true,
+      "owner_success_receipt_received": false,
+      "owner_API_result_received": false,
+      "screenshot_dashboard_project_identity_verified": false,
+      "mismatching_trigger_identified": false,
+      "trigger_diagnostic": "supabase/diagnostics/security_stage_3_business_trigger_review.sql",
+      "trigger_diagnostic_receipt_received": false,
+      "diagnostic_scope": "READ_ONLY_SELECTED_ACTIVE_TRIGGER_BODY_AND_ASSOCIATION_MATCH_COUNTS_AND_NAMES",
+      "diagnostic_discloses_function_bodies_private_row_IDs_or_credentials": false,
+      "fixture_guard_or_runtime_enforcement_changed": false,
+      "local_source_scenarios_passed": 15,
+      "local_isolated_checker_tests_passed": 8,
+      "local_source_adapter_scope_only": true,
+      "owner_action": "One pinned read-only trigger diagnosis in manually verified STAGING; stop fixture/API until receipt review",
+      "stage_3_report_still_due_at": "3.6",
+      "findings_F08_F15_closed": false,
+      "source_artifact_sha256": {
+        "supabase/diagnostics/security_stage_3_business_trigger_review.sql": "765777ec6e2eb0c2c33abd95345db9585d0accc8322a3b0bfecc3cf9e8b5a117",
+        "scripts/verify-stage-3-business-source.mjs": "f8b04974b9b70786904513978dee52a8c05809a7d7e63ba314939e7520c86ff8"
+      }
     }
   ],
   "source_reconciliation_head": "9388fc8c3e48ac3fd124d73b7f918785da957104"

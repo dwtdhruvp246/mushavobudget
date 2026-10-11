@@ -143,12 +143,32 @@ END $guard$;
  }
  await db.query('insert into auth.users(id,email) values($1,$2),($3,$4)',[users[0],emails[0],users[1],emails[1]]);
  const fixture=await readFile(path.join(root,'supabase/diagnostics/security_stage_3_business_fixture.sql'),'utf8');
+ const diagnostic=await readFile(path.join(root,'supabase/diagnostics/security_stage_3_business_trigger_review.sql'),'utf8');
+ assert.match(diagnostic,/BEGIN READ ONLY;/);
+ await db.exec(diagnostic);
+ const diagnosticQuery=diagnostic.slice(diagnostic.indexOf('WITH reviewed_bodies'),diagnostic.lastIndexOf('COMMIT;')).trim();
+ const cleanDiagnostic=(await db.query(diagnosticQuery)).rows[0];
+ assert.equal(Number(cleanDiagnostic.mismatched_triggers),0);
+ assert.equal(Number(cleanDiagnostic.synthetic_business_fixture_count),0);
+ assert.deepEqual(cleanDiagnostic.mismatch_details,[]);
+ tests.push({test:'Read-only trigger diagnostic accepts ordered source and discloses no raw bodies',status:'PASS'});
  for(const [label,ddl] of [
   ['Unknown trigger rejected before fixture writes',"create function public.audit_unknown_trigger() returns trigger language plpgsql as $$begin return new;end$$;create trigger audit_unknown_trigger before insert on public.notifications for each row execute function public.audit_unknown_trigger();"],
   ['Reattached known function rejected before fixture writes',"create trigger audit_unknown_trigger before insert on public.notifications for each row execute function public.guard_suspended_account_write();"],
   ['Changed source trigger body rejected before fixture writes',"create or replace function public.sync_business_invitation_notification() returns trigger language plpgsql as $$begin return new;end$$;"]
  ]){
-  await db.exec('begin');try{await db.exec(ddl);await assert.rejects(db.exec(fixture),/UNREVIEWED_PUBLIC_TRIGGER_BODY/);tests.push({test:label,status:'PASS'});}finally{await db.exec('rollback');}
+  await db.exec('begin');try{
+   await db.exec(ddl);
+   const review=(await db.query(diagnosticQuery)).rows[0];
+   assert.equal(Number(review.mismatched_triggers),1);
+   const detail=review.mismatch_details[0];
+   if(label.startsWith('Unknown')) {assert.equal(detail.exact_body_match,false);assert.equal(detail.association_match,false);}
+   if(label.startsWith('Reattached')) {assert.equal(detail.exact_body_match,true);assert.equal(detail.association_match,false);}
+   if(label.startsWith('Changed')) {assert.equal(detail.exact_body_match,false);assert.equal(detail.association_match,true);}
+   assert.deepEqual(Object.keys(detail).sort(),['association_match','body_match_after_crlf_normalization','exact_body_match','function_name','function_schema','public_function','relation_name','trigger_name'].sort());
+   tests.push({test:'Read-only diagnostic identifies '+label,status:'PASS'});
+   await assert.rejects(db.exec(fixture),/UNREVIEWED_PUBLIC_TRIGGER_BODY/);tests.push({test:label,status:'PASS'});
+  }finally{await db.exec('rollback');}
  }
  // Preserve completed Family/member-removal/manual-conversion fixtures locally as well.
  await db.exec(await readFile(path.join(root,'supabase/diagnostics/security_stage_3_family_fixture.sql'),'utf8'));

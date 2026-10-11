@@ -150,3 +150,11 @@ Offline/source/local scope only; no deployment or deletion adapter. 46 local PAS
 - [Finite local verifier](../../scripts/verify-stage-4-lifecycle.mjs)
 - [Local receipt with file hashes](security-stage-4-lifecycle-local-checks.json)
 - [Unapproved eight-category decision template](security-stage-4-retention-decisions.json)
+
+## Stage 4.2.2 client candidate
+
+- [Candidate and server completion contract](SECURITY_STAGE_4_2_UPLOAD_DOWNLOAD_CANDIDATE.md)
+- [Offline primary verifier](../../scripts/verify-stage-4-files.mjs) — 63 actual-function VM checks and four syntax checks; no hosted actions
+- [Client tests](../../tests/stage-4-upload-client.test.mjs)
+- [Primary receipt](security-stage-4-upload-local-checks.json)
+- [Related regression receipt](security-stage-4-upload-regression.json) — 36 PASS across seven existing files

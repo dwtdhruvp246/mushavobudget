@@ -1,6 +1,6 @@
 # Mushavo Budget security audit — Start here
 
-All security audit documentation and evidence is collected here on **`security/stage-3-authorization`**. Updated 11 October 2026. Stages 0–3 are **CLOSED WITH CARRY-FORWARD**; Stage 4 is active. **4.1 account lifecycle is CLOSED WITH CARRY-FORWARD: source review, 46 offline model PASS/three syntax checks, and hosted readiness BLOCKED with zero of 25 planned cases run. 4.2.1 upload/download source review is complete; next is 4.2.2, reviewable control candidate/local checks.** No hosted deletion or account/file change has run. Read the Stage 4 plan and lifecycle contract; full report remains due at 4.4. F01/F02/F13/F20 and earlier F08/F15/release gates remain OPEN.
+All security audit documentation and evidence is collected here on **`security/stage-3-authorization`**. Updated 11 October 2026. Stages 0–3 are **CLOSED WITH CARRY-FORWARD**; Stage 4 is active. **4.1 account lifecycle is CLOSED WITH CARRY-FORWARD. 4.2.2 client candidate/local checks are complete: 63 new checks plus 36 related regressions PASS; four syntax checks PASS. Next is 4.2.3, one controlled hosted/owner outcome or BLOCKED.** No hosted deletion or account/file change has run. Read the Stage 4 plan and lifecycle contract; full report remains due at 4.4. F01/F02/F13/F20 and earlier F08/F15/release gates remain OPEN.
 
 To browse normally on GitHub, select the **`security/stage-3-authorization`** branch, then open **docs → security-audit**. The default main branch does not contain this audit folder. Direct commit links are pinned snapshots; use this branch for the latest progress.
 
@@ -13,6 +13,7 @@ To browse normally on GitHub, select the **`security/stage-3-authorization`** br
 | [Master audit coverage register](SECURITY_AUDIT_REGISTER.md) | All original 123 audit sections and their evidence/owner/stage assignments |
 | [Audit workflow](SECURITY_AUDIT_WORKFLOW.md) | Numbered messages, bounded work, stage-end reports and execution conventions |
 | [Stage 4 finite plan](SECURITY_STAGE_4_DATA_PRIVACY_PLAN.md) | Four steps, three lifecycle milestones and full report at 4.4 |
+| [4.2.2 client candidate and local results](SECURITY_STAGE_4_2_UPLOAD_DOWNLOAD_CANDIDATE.md) | Actual client changes, 99 local tests, limitations and server completion contract |
 | [4.2 upload/download source review and contract](SECURITY_STAGE_4_2_UPLOAD_DOWNLOAD_REVIEW.md) | Four bucket definitions, existing protections, gaps, 30 planned grouped cases and six actions |
 | [4.1 lifecycle checkpoint and carry-forward](SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md) | All three bounded outcomes, six prerequisite groups, zero hosted cases and DL-R01–DL-R06 |
 | [4.1.2 offline lifecycle candidate and local results](SECURITY_STAGE_4_1_LIFECYCLE_CANDIDATE.md) | Self-request/preflight/state model, 46 local cases, unapproved decisions and hosted prerequisites |

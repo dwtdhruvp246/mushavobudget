@@ -4865,9 +4865,8 @@ function updateRenewalQuote() {
 }
 
 async function uploadSubscriptionProof(file, workspaceId) {
-  validateProofFile(file);
-  const extension = (file.name.split(".").pop() || "bin").toLowerCase().replace(/[^a-z0-9]/g, "");
-  const path = `workspaces/${workspaceId}/${state.session.user.id}/${crypto.randomUUID()}.${extension || "bin"}`;
+  const extension = validateProofFile(file);
+  const path = `workspaces/${workspaceId}/${state.session.user.id}/${crypto.randomUUID()}.${extension}`;
   const { error } = await supabase.storage.from(SUBSCRIPTION_PROOF_BUCKET).upload(path, file, {
     contentType: file.type,
     upsert: false
@@ -8408,11 +8407,11 @@ async function savePaymentRecord(event) {
 }
 
 async function uploadPaymentProof(item, file) {
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "") || "receipt";
+  const extension = validateProofFile(file);
   const userId = state.session.user.id;
   const path = item.visibility === "family"
-    ? `families/${item.family_id}/${state.family.owner_id}/${userId}/${crypto.randomUUID()}-${safeName}`
-    : `personal/${userId}/${crypto.randomUUID()}-${safeName}`;
+    ? `families/${item.family_id}/${state.family.owner_id}/${userId}/${crypto.randomUUID()}.${extension}`
+    : `personal/${userId}/${crypto.randomUUID()}.${extension}`;
   const { error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).upload(path, file, {
     contentType: file.type,
     upsert: false
@@ -8423,9 +8422,16 @@ async function uploadPaymentProof(item, file) {
 
 async function openPaymentProof(recordId) {
   const record = state.paymentRecords.find((item) => item.id === recordId);
-  if (!record?.proof_path) return;
+  const userId = state.session?.user?.id;
+  const workspaceId = currentBudgetWorkspace()?.id;
+  if (!record?.proof_path || !userId || !workspaceId) return;
+  const epoch = authDataEpoch, familyId = state.family?.id || null, path = record.proof_path;
+  const isCurrent = () => authDataEpoch === epoch && state.session?.user?.id === userId
+    && currentBudgetWorkspace()?.id === workspaceId && (state.family?.id || null) === familyId
+    && state.paymentRecords.some((item) => item.id === recordId && item.proof_path === path);
   try {
-    const { data, error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).createSignedUrl(record.proof_path, 60);
+    const { data, error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).createSignedUrl(path, 60);
+    if (!isCurrent()) return;
     if (error) throw error;
     const link = document.createElement("a");
     link.href = data.signedUrl;
@@ -8433,7 +8439,7 @@ async function openPaymentProof(recordId) {
     link.rel = "noopener noreferrer";
     link.click();
   } catch (error) {
-    showToast(error.message);
+    if (isCurrent()) showToast(error.message);
   }
 }
 
@@ -8998,12 +9004,17 @@ function formatFileSize(bytes) {
 }
 
 function validateProofFile(file) {
-  if (!PAYMENT_PROOF_TYPES.has(file.type)) {
+  // Client metadata preflight only; Storage/server content validation is still required.
+  if (!file || !PAYMENT_PROOF_TYPES.has(file.type)) {
     throw new Error("Proof must be a JPG, PNG, WebP, or PDF file.");
+  }
+  if (!Number.isSafeInteger(file.size) || file.size < 1) {
+    throw new Error("Proof files must not be empty.");
   }
   if (file.size > PAYMENT_PROOF_MAX_BYTES) {
     throw new Error("Proof files must be 10 MB or smaller.");
   }
+  return { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "application/pdf": "pdf" }[file.type];
 }
 
 function statusBadge(status) {

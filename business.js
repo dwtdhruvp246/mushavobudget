@@ -2694,9 +2694,39 @@ async function submitBusinessBillingPayment(event) {
 }
 async function openBusinessBillingProof(path) {
   if(!businessBillingOwner() || !(state.billingSnapshot?.history || []).some(row=>(row.proofs || []).some(proof=>proof.path===path)))return;
-  const sequence=workspaceLoadSequence;
-  try{const signed=await query('Subscription proof',supabase.storage.from('subscription-proofs').createSignedUrl(path,60));if(sequence===workspaceLoadSequence)window.open(signed.signedUrl,'_blank','noopener,noreferrer');}
-  catch(error){if(sequence===workspaceLoadSequence)setClaimMessage('#businessBillingMessage',friendlyMessage(error),true);}
+  const isCurrent=captureBusinessFileContext();
+  const stillListed=()=>businessBillingOwner() && (state.billingSnapshot?.history || []).some(row=>(row.proofs || []).some(proof=>proof.path===path));
+  try{const signed=await query('Subscription proof',supabase.storage.from('subscription-proofs').createSignedUrl(path,60));if(isCurrent() && stillListed())window.open(signed.signedUrl,'_blank','noopener,noreferrer');}
+  catch(error){if(isCurrent() && stillListed())setClaimMessage('#businessBillingMessage',friendlyMessage(error),true);}
+}
+
+function captureBusinessFileContext() {
+  const sequence = workspaceLoadSequence, epoch = businessAuthEpoch;
+  const userId = state.session?.user?.id, workspaceId = state.workspace?.id;
+  return () => Boolean(userId && workspaceId) && sequence === workspaceLoadSequence
+    && epoch === businessAuthEpoch && state.session?.user?.id === userId
+    && state.workspace?.id === workspaceId;
+}
+
+async function openBusinessDocumentProof(path, kind) {
+  if (!["claim", "bill"].includes(kind)) return;
+  const isCurrent = captureBusinessFileContext();
+  const parentId = kind === "claim" ? openedClaimId : openedBillId;
+  const stillListed = () => {
+    if (!parentId || parentId !== (kind === "claim" ? openedClaimId : openedBillId)) return false;
+    if (kind === "claim") return state.claims.some((item) => item.id === parentId)
+      && state.claimReceipts.some((item) => item.parent_id === parentId && item.storage_path === path);
+    return state.bills.some((item) => item.id === parentId) && state.billDocuments.some((item) => item.storage_path === path
+      && (item.parent_id === parentId || state.billPayments.some((payment) => payment.bill_id === parentId && payment.id === item.parent_id)));
+  };
+  if (!isCurrent() || !stillListed()) return;
+  const message = kind === "claim" ? "#claimDetailMessage" : "#billDetailMessage";
+  try {
+    const signed = await query("Open business proof", supabase.storage.from("business-documents").createSignedUrl(path, 60));
+    if (isCurrent() && stillListed()) window.open(signed.signedUrl, "_blank", "noopener,noreferrer");
+  } catch (error) {
+    if (isCurrent() && stillListed()) setClaimMessage(message, friendlyMessage(error), true);
+  }
 }
 async function printBusinessBillingReceipt(id) {
   if(!businessBillingOwner())return;
@@ -3043,10 +3073,7 @@ $("#billProofFile").addEventListener("change", uploadBillProof);
 $("#billProofList").addEventListener("click", async (event) => {
   const button = event.target.closest("[data-proof-path]");
   if (!button) return;
-  try {
-    const signed = await query("Open bill proof", supabase.storage.from("business-documents").createSignedUrl(button.dataset.proofPath, 60));
-    window.open(signed.signedUrl, "_blank", "noopener,noreferrer");
-  } catch (error) { setClaimMessage("#billDetailMessage", friendlyMessage(error), true); }
+  await openBusinessDocumentProof(button.dataset.proofPath, "bill");
 });
 $("#businessClaimForm").addEventListener("submit", createClaim);
 $$("[data-close-claim]").forEach((button) => button.addEventListener("click", () => $("#businessClaimDialog").close()));
@@ -3131,10 +3158,7 @@ $("#claimDecisionPanel").addEventListener("click", (event) => {
 $("#claimReceiptList").addEventListener("click", async (event) => {
   const button = event.target.closest("[data-receipt-path]");
   if (!button) return;
-  try {
-    const signed = await query("Open receipt", supabase.storage.from("business-documents").createSignedUrl(button.dataset.receiptPath, 60));
-    window.open(signed.signedUrl, "_blank", "noopener,noreferrer");
-  } catch (error) { setClaimMessage("#claimDetailMessage", friendlyMessage(error), true); }
+  await openBusinessDocumentProof(button.dataset.receiptPath, "claim");
 });
 ["#businessOverviewClaims", "#businessClaimActivity", "#businessClaimApprovals"].forEach((selector) => {
   $(selector).addEventListener("click", (event) => {

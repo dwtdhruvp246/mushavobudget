@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-11",
   "current_stage": 4,
-  "current_step": "4.3.1",
-  "current_title": "4.2 closed with carry-forward: hosted acceptance BLOCKED; next factual privacy source review",
+  "current_step": "4.3.2",
+  "current_title": "4.3.1 factual privacy source review complete; next reviewable candidate and local checks",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 4,
-  "next_step": "4.3.1",
+  "next_step": "4.3.2",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -1628,7 +1628,7 @@
     "findings_F08_F15_closed": false
   },
   "stage_4": {
-    "status": "ACTIVE_PRIVACY_SOURCE_REVIEW_NEXT_UPLOAD_CHECKPOINT_CLOSED",
+    "status": "ACTIVE_PRIVACY_SOURCE_REVIEW_COMPLETE",
     "authorized": true,
     "started_date": "2026-10-11",
     "active_step": "4.3",
@@ -1638,7 +1638,7 @@
     "bounded_steps": 4,
     "completed_steps": 2,
     "remaining_steps": 2,
-    "latest_evidence": "S4E07",
+    "latest_evidence": "S4E08",
     "finding_ids": [
       "F01",
       "F02",
@@ -1836,8 +1836,66 @@
       {
         "id": "4.3",
         "title": "Factual privacy inventory and disclosures",
-        "status": "NEXT_SOURCE_REVIEW",
-        "current_milestone": "4.3.1"
+        "status": "SOURCE_REVIEW_COMPLETE_CANDIDATE_NEXT",
+        "current_milestone": "4.3.2",
+        "bounded_work_items": 3,
+        "completed_work_items": 1,
+        "remaining_work_items": 2,
+        "latest_evidence": "S4E08",
+        "source_commit": "29b6c1cffeb4f9c38cad446c931fe1d1a9583ee2",
+        "source_review": "docs/security-audit/SECURITY_STAGE_4_3_PRIVACY_SOURCE_REVIEW.md",
+        "source_inventory": "docs/security-audit/security-stage-4-privacy-source-inventory.json",
+        "milestones": [
+          {
+            "id": "4.3.1",
+            "scope": "source_and_bounded_contract",
+            "status": "COMPLETE_AT_SOURCE_SCOPE"
+          },
+          {
+            "id": "4.3.2",
+            "scope": "reviewable_candidate_and_local_checks",
+            "status": "NEXT"
+          },
+          {
+            "id": "4.3.3",
+            "scope": "one_controlled_owner_hosted_outcome_or_BLOCKED",
+            "status": "PENDING"
+          }
+        ],
+        "selected_source_files_hash_verified": 96,
+        "source_blob_mismatches": 0,
+        "data_flow_categories": 14,
+        "provider_service_components": 10,
+        "components_are_not_distinct_company_or_contract_count": true,
+        "acceptance_groups": [
+          "PR01",
+          "PR02",
+          "PR03",
+          "PR04",
+          "PR05"
+        ],
+        "selected_planned_grouped_cases": 25,
+        "fresh_local_behavior_tests_run": 0,
+        "hosted_checks_run": 0,
+        "operator_legal_identity_confirmed": false,
+        "minimum_age_and_minors_policy_confirmed": false,
+        "privacy_contact_duty_assignment_confirmed": false,
+        "retention_decisions_approved": false,
+        "actual_provider_region_contract_log_retention_verified": false,
+        "candidate_prepared": false,
+        "candidate_deployed": false,
+        "public_notice_publication_performed": false,
+        "owner_execution_action_requested": false,
+        "final_native_and_store_data_declarations_verified": false,
+        "final_remediation_actions": [
+          "PR-R01",
+          "PR-R02",
+          "PR-R03",
+          "PR-R04",
+          "PR-R05",
+          "PR-R06"
+        ],
+        "findings_closed": []
       },
       {
         "id": "4.4",

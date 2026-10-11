@@ -1,5 +1,7 @@
 # Audit SQL, scripts, tests and implementation index
 
+**Latest — 4.3.1 factual privacy/data-flow source review complete / next 4.3.2, 11 October 2026 (S4E08):** **96 exact source blob matches, zero mismatches; 14 data categories and ten provider/service components** are recorded. Ten components are not ten distinct vendors/contracts. First-party analytics is account-linked; contact/Turnstile/HMAC quotas, Business identity/contact/tax data, uploaded content, push/device fields and external copies require factual coverage. Current hosted analytics/settings and final native binaries were not inspected. Operator identity, monitored privacy contact, minimum age/minors treatment, territory exclusions, category retention and deployed provider contracts/regions/log handling remain unconfirmed. [Source review, 25 planned PR01–PR05 grouped cases and six OPEN actions](SECURITY_STAGE_4_3_PRIVACY_SOURCE_REVIEW.md), [source inventory](security-stage-4-privacy-source-inventory.json). Zero local behavioral or hosted checks ran; no public policy, email/job, account/file/settings/SQL/provider/deployment/production/native action. F01/F20 and all existing findings remain OPEN. One of three 4.3 milestones is complete; two of four main Stage 4 steps remain closed with carry-forward. No owner SQL/terminal action is needed. Next **4.3.2**, reviewable candidate/local checks with unresolved facts explicit; full Stage 4 report **4.4**. Earlier summaries are historical.
+
 This index links the operational audit files used from Stage 0 onward. Executable files stay in their normal scripts, tests and Supabase directories; commands and migration order are preserved. Listing a tool does not imply a hosted run or a PASS. Use the reports/evidence for actual results.
 
 ## Documentation and source history
@@ -166,3 +168,10 @@ Offline/source/local scope only; no deployment or deletion adapter. 46 local PAS
 - [Owner Windows repeat](security-stage-4-upload-owner-local-checks.json) — 63 PASS/four syntax checks; exact LF/CRLF hash reconciliation
 
 No owner SQL/terminal action is requested by this checkpoint; next 4.3.1, full Stage 4 report due 4.4.
+
+## Stage 4.3.1 privacy source review
+
+- [Factual source review and 25-case PR contract](SECURITY_STAGE_4_3_PRIVACY_SOURCE_REVIEW.md) — source facts, limits, unresolved owner decisions and six OPEN privacy actions.
+- [Source inventory](security-stage-4-privacy-source-inventory.json) — 96 verified Git blobs, 14 categories and ten service components; zero behavior/hosted tests.
+
+No SQL/terminal action is required; next 4.3.2, full Stage 4 report 4.4.

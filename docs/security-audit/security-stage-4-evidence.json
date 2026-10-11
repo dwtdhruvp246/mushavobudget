@@ -2,8 +2,8 @@
   "schema_version": 1,
   "stage": 4,
   "updated_date": "2026-10-11",
-  "active_step": "4.3.1",
-  "source_review_head": "70b34a545a81db983e1030a90e3b26d3419621da",
+  "active_step": "4.3.2",
+  "source_review_head": "29b6c1cffeb4f9c38cad446c931fe1d1a9583ee2",
   "plan": "docs/security-audit/SECURITY_STAGE_4_DATA_PRIVACY_PLAN.md",
   "events": [
     {
@@ -373,6 +373,62 @@
         "UF-R06"
       ],
       "next_step": "4.3.1",
+      "stage_4_full_report_due_at": "4.4"
+    },
+    {
+      "id": "S4E08",
+      "stage_step": "4.3.1",
+      "recorded_date": "2026-10-11",
+      "result": "FACTUAL_PRIVACY_DATA_FLOW_SOURCE_REVIEW_COMPLETE",
+      "scope": "PINNED_GIT_SOURCE_AND_EXISTING_EVIDENCE_WITH_PRIMARY_PLATFORM_PROVIDER_REQUIREMENTS_NOT_HOSTED_OR_DEVICE_ACCEPTANCE",
+      "source_parent_commit": "29b6c1cffeb4f9c38cad446c931fe1d1a9583ee2",
+      "source_review": "docs/security-audit/SECURITY_STAGE_4_3_PRIVACY_SOURCE_REVIEW.md",
+      "source_inventory": "docs/security-audit/security-stage-4-privacy-source-inventory.json",
+      "source_blob_matches": 96,
+      "source_blob_mismatches": 0,
+      "selected_SQL_source_files": 53,
+      "selected_HTML_pages": 11,
+      "selected_Edge_entrypoints": 7,
+      "data_flow_categories": 14,
+      "provider_service_components": 10,
+      "components_are_not_distinct_company_or_contract_count": true,
+      "acceptance_groups": [
+        "PR01",
+        "PR02",
+        "PR03",
+        "PR04",
+        "PR05"
+      ],
+      "selected_planned_grouped_cases": 25,
+      "privacy_grouped_cases_run": 0,
+      "fresh_local_behavior_tests_run": 0,
+      "hosted_HTTP_SQL_Auth_Storage_or_provider_checks_run": 0,
+      "source_page_native_absence_is_not_hosted_route_or_binary_proof": true,
+      "operator_legal_identity_confirmed": false,
+      "minimum_age_and_minors_policy_confirmed": false,
+      "privacy_contact_duty_assignment_confirmed": false,
+      "retention_periods_adopted": false,
+      "actual_provider_contract_region_log_retention_verified": false,
+      "bounded_4_3_work_items": 3,
+      "completed_4_3_work_items": 1,
+      "remaining_4_3_work_items": 2,
+      "completed_stage_4_steps": 2,
+      "remaining_stage_4_steps": 2,
+      "owner_execution_action_requested": false,
+      "public_notice_publication_performed": false,
+      "provider_email_job_executed": false,
+      "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+      "production_or_native_changed": false,
+      "findings_closed": [],
+      "open_actions": [
+        "PR-R01",
+        "PR-R02",
+        "PR-R03",
+        "PR-R04",
+        "PR-R05",
+        "PR-R06"
+      ],
+      "next_step": "4.3.2",
       "stage_4_full_report_due_at": "4.4"
     }
   ]

@@ -1,6 +1,8 @@
 # Stage 4 — Data lifecycle, uploads and privacy plan
 
-**Started 11 October 2026 at 4.1.1, S4E01; updated at 4.2.3, S4E07.** Stage 3 is [closed with carry-forward](SECURITY_STAGE_3_COMPLETION_REPORT.md). This stage preserves the original F01/F02/F13/F20 assignments and earlier F08/F15/backup/device dependencies.
+**Latest — 4.3.1 factual privacy/data-flow source review complete / next 4.3.2, 11 October 2026 (S4E08):** **96 exact source blob matches, zero mismatches; 14 data categories and ten provider/service components** are recorded. Ten components are not ten distinct vendors/contracts. First-party analytics is account-linked; contact/Turnstile/HMAC quotas, Business identity/contact/tax data, uploaded content, push/device fields and external copies require factual coverage. Current hosted analytics/settings and final native binaries were not inspected. Operator identity, monitored privacy contact, minimum age/minors treatment, territory exclusions, category retention and deployed provider contracts/regions/log handling remain unconfirmed. [Source review, 25 planned PR01–PR05 grouped cases and six OPEN actions](SECURITY_STAGE_4_3_PRIVACY_SOURCE_REVIEW.md), [source inventory](security-stage-4-privacy-source-inventory.json). Zero local behavioral or hosted checks ran; no public policy, email/job, account/file/settings/SQL/provider/deployment/production/native action. F01/F20 and all existing findings remain OPEN. One of three 4.3 milestones is complete; two of four main Stage 4 steps remain closed with carry-forward. No owner SQL/terminal action is needed. Next **4.3.2**, reviewable candidate/local checks with unresolved facts explicit; full Stage 4 report **4.4**. Earlier summaries are historical.
+
+**Started 11 October 2026 at 4.1.1, S4E01; updated at 4.3.1, S4E08.** Stage 3 is [closed with carry-forward](SECURITY_STAGE_3_COMPLETION_REPORT.md). This stage preserves the original F01/F02/F13/F20 assignments and earlier F08/F15/backup/device dependencies.
 
 Source/evidence baseline: `70b34a545a81db983e1030a90e3b26d3419621da`, branch `security/stage-3-authorization`. Staging is `dczlddwbtgvfdujgcitb` and `https://mushavo-budget-staging.pages.dev/`; production `kttkospkblwvguuwnhjj` is excluded from mutation. No deletion, upload, Auth/Storage change, provider message or deployment is requested by this plan.
 
@@ -23,7 +25,7 @@ Steps 4.1–4.3 each have three bounded groups: source/contract review, justifie
 | 4.1.2 | Prepare review-only data-decision/preflight and deletion workflow candidates with meaningful isolated checks; distinguish implementable controls from unresolved retention decisions | COMPLETE at offline review/model scope: 46 local PASS, three syntax checks; no live adapter or adopted policy |
 | 4.1.3 | One controlled acceptance phase only if approved semantics, recoverable disposable identities/files and safe provider boundaries exist; otherwise record BLOCKED and checkpoint carry-forward | RECORDED: BLOCKED / 0 of 25 planned hosted cases run; 4.1 closed with carry-forward |
 
-The [4.1 closure checkpoint](SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md) records all three outcomes and blockers; 4.2 is now closed with carry-forward and next is 4.3.1. The [4.1.2 candidate/local checkpoint](SECURITY_STAGE_4_1_LIFECYCLE_CANDIDATE.md) records local evidence, the unapproved decision template and actual integration limits. The [4.1 source review](SECURITY_STAGE_4_1_ACCOUNT_LIFECYCLE.md) defines the selected cases, proposed decision matrix and current blockers. A deletion design or request receipt is not a completed erasure result.
+The [4.1 closure checkpoint](SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md) records all three outcomes and blockers; 4.2 is now closed with carry-forward and next is 4.3.2. The [4.1.2 candidate/local checkpoint](SECURITY_STAGE_4_1_LIFECYCLE_CANDIDATE.md) records local evidence, the unapproved decision template and actual integration limits. The [4.1 source review](SECURITY_STAGE_4_1_ACCOUNT_LIFECYCLE.md) defines the selected cases, proposed decision matrix and current blockers. A deletion design or request receipt is not a completed erasure result.
 
 ## 4.2 milestones
 
@@ -34,6 +36,16 @@ The [4.1 closure checkpoint](SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md) records al
 | 4.2.3 | One controlled hosted/owner phase only with known objects, source parity and safe boundaries; otherwise BLOCKED and carry-forward | RECORDED: BLOCKED / 0 of 30 planned grouped cases run; 4.2 closed with carry-forward |
 
 [4.2 source review](SECURITY_STAGE_4_2_UPLOAD_DOWNLOAD_REVIEW.md) freezes six UF01–UF06 groups × five cases (30 grouped cases, none run), and six UF-R01–UF-R06 actions. Preserve JPG/PNG/WebP/PDF proof support and wider general Business CSV/XLSX metadata support. Missing trusted validation, exact deployed scope/actors/processor/limit/cleanup facts remain explicit prerequisites. This plan does not request upload, object removal, signed-link generation or deployment.
+
+## 4.3 milestones
+
+| Milestone | Work | Current outcome |
+| --- | --- | --- |
+| 4.3.1 | Factual source/processor inventory and frozen PR01–PR05 contract | COMPLETE at source scope: 96 blob matches, 14 data categories, ten service components, 25 planned cases; zero cases run |
+| 4.3.2 | Prepare reviewable factual candidate/decision structure and meaningful local checks | NEXT; unresolved operator/audience/contact/retention/provider facts remain explicit; no live publication |
+| 4.3.3 | One controlled owner/hosted outcome or BLOCKED | PENDING; no extended prerequisite loop |
+
+[Privacy source review](SECURITY_STAGE_4_3_PRIVACY_SOURCE_REVIEW.md) and [inventory](security-stage-4-privacy-source-inventory.json) define six OPEN PR-R01–PR-R06 actions. Components are not a distinct vendor count. Current provider/deployment and final native data disclosures remain unverified.
 
 ## Scope boundaries and dependencies
 
@@ -64,4 +76,4 @@ Record source/local/owner/hosted/device scopes, exact versions, expected/observe
 
 ## Latest checkpoint handoff
 
-[4.2 checkpoint and action plan](SECURITY_STAGE_4_2_CHECKPOINT_REPORT.md) and [readiness receipt](security-stage-4-upload-readiness.json) record all three outcomes without a repeated setup loop. Two of four main Stage 4 steps are closed with carry-forward. Next is 4.3.1, factual privacy/data-flow source review; the full report remains due at 4.4. No further 4.2 owner SQL or terminal action is required.
+[4.2 checkpoint and action plan](SECURITY_STAGE_4_2_CHECKPOINT_REPORT.md) and [readiness receipt](security-stage-4-upload-readiness.json) record all three outcomes without a repeated setup loop. Two of four main Stage 4 steps are closed with carry-forward. 4.3.1 source review is now complete; next is 4.3.2, factual reviewable candidate/local checks; the full report remains due at 4.4. No further 4.2 owner SQL or terminal action is required.

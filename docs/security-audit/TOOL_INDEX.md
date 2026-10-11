@@ -139,3 +139,14 @@ Private exports, original backups, certificates, keys and passwords are owner-he
 ## Stage 3.3 Business matrix
 
 - [Existing Business roles/scopes and bounded B01–B08 groups](SECURITY_STAGE_3_3_BUSINESS_ROLES.md): source review recorded; fixture/checker preparation and hosted acceptance pending.
+
+
+## Stage 4 lifecycle review candidate — 4.1.2
+
+Offline/source/local scope only; no deployment or deletion adapter. 46 local PASS, three syntax checks, 0 hosted checks. [Candidate report and reproduction](SECURITY_STAGE_4_1_LIFECYCLE_CANDIDATE.md).
+
+- [Review/preflight and pure state model](../../scripts/lib/stage-4-lifecycle-review.mjs)
+- [46 lifecycle tests](../../tests/stage-4-lifecycle-review.test.mjs)
+- [Finite local verifier](../../scripts/verify-stage-4-lifecycle.mjs)
+- [Local receipt with file hashes](security-stage-4-lifecycle-local-checks.json)
+- [Unapproved eight-category decision template](security-stage-4-retention-decisions.json)

@@ -1,6 +1,6 @@
 # Stage 4 — Data lifecycle, uploads and privacy plan
 
-**Started 11 October 2026 at 4.1.1, S4E01.** Stage 3 is [closed with carry-forward](SECURITY_STAGE_3_COMPLETION_REPORT.md). This stage preserves the original F01/F02/F13/F20 assignments and earlier F08/F15/backup/device dependencies.
+**Started 11 October 2026 at 4.1.1, S4E01; updated at 4.1.2, S4E02.** Stage 3 is [closed with carry-forward](SECURITY_STAGE_3_COMPLETION_REPORT.md). This stage preserves the original F01/F02/F13/F20 assignments and earlier F08/F15/backup/device dependencies.
 
 Source/evidence baseline: `70b34a545a81db983e1030a90e3b26d3419621da`, branch `security/stage-3-authorization`. Staging is `dczlddwbtgvfdujgcitb` and `https://mushavo-budget-staging.pages.dev/`; production `kttkospkblwvguuwnhjj` is excluded from mutation. No deletion, upload, Auth/Storage change, provider message or deployment is requested by this plan.
 
@@ -20,10 +20,10 @@ Steps 4.1–4.3 each have three bounded groups: source/contract review, justifie
 | Milestone | Work | Current outcome |
 |---|---|---|
 | 4.1.1 | Source review, selected identity/ownership dependencies, current official requirements and frozen DL01–DL05 contract | COMPLETE at source/documentation scope; no hosted deletion proof |
-| 4.1.2 | Prepare review-only data-decision/preflight and deletion workflow candidates with meaningful isolated checks; distinguish implementable controls from unresolved retention decisions | NEXT |
-| 4.1.3 | One controlled acceptance phase only if approved semantics, recoverable disposable identities/files and safe provider boundaries exist; otherwise record BLOCKED and checkpoint carry-forward | PENDING |
+| 4.1.2 | Prepare review-only data-decision/preflight and deletion workflow candidates with meaningful isolated checks; distinguish implementable controls from unresolved retention decisions | COMPLETE at offline review/model scope: 46 local PASS, three syntax checks; no live adapter or adopted policy |
+| 4.1.3 | One controlled acceptance phase only if approved semantics, recoverable disposable identities/files and safe provider boundaries exist; otherwise record BLOCKED and checkpoint carry-forward | NEXT; prerequisites unavailable as verified evidence, record BLOCKED if unchanged |
 
-The [4.1 source review](SECURITY_STAGE_4_1_ACCOUNT_LIFECYCLE.md) defines the selected cases, proposed decision matrix and current blockers. A deletion design or request receipt is not a completed erasure result.
+The [4.1.2 candidate/local checkpoint](SECURITY_STAGE_4_1_LIFECYCLE_CANDIDATE.md) records local evidence, the unapproved decision template and actual integration limits. The [4.1 source review](SECURITY_STAGE_4_1_ACCOUNT_LIFECYCLE.md) defines the selected cases, proposed decision matrix and current blockers. A deletion design or request receipt is not a completed erasure result.
 
 ## Scope boundaries and dependencies
 

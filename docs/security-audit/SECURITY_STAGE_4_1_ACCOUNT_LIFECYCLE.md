@@ -1,5 +1,7 @@
 # 4.1 — Account deletion, shared ownership and retention source review
 
+**Latest — 4.1.2 offline candidate/local verification complete, S4E02:** 46 local model cases PASS, exit 0, three syntax checks. Next 4.1.3 bounded acceptance/readiness. [Candidate report and prerequisites](SECURITY_STAGE_4_1_LIFECYCLE_CANDIDATE.md). No deletion endpoint, durable worker or adopted retention policy installed; zero hosted erasure tests. The 4.1.1 review below remains its dated source snapshot.
+
 **4.1.1 COMPLETE at source scope — 11 October 2026, S4E01.** Reviewed baseline `70b34a545a81db983e1030a90e3b26d3419621da`. No account deletion workflow or public deletion resource was identified in the selected tracked source. Existing Business ownership transfer, family deletion and inactive membership removal do not erase an Auth account.
 
 Next is **4.1.2**, review-only candidate/data-decision/preflight preparation and meaningful local checks. The full Stage 4 report stays at **4.4**. F02 remains OPEN; F01/F20 disclosure and F08/F15 identity/authorization dependencies remain.

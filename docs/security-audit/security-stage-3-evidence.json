@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 3,
   "updated_date": "2026-10-11",
-  "active_step": "3.4.1",
+  "active_step": "3.4.2",
   "source_review_head": "e4f3b573bee2b9e344ec0b946c21e779449d8664",
   "events": [
     {
@@ -2803,6 +2803,59 @@
       "findings_F08_F15_closed": false,
       "next_step": "3.4.1",
       "stage_3_report_still_due_at": "3.6"
+    },
+    {
+      "id": "S3E19",
+      "stage_step": "3.4.1",
+      "recorded_date": "2026-10-11",
+      "result": "ADMIN_PRIVILEGED_ENTRYPOINT_SOURCE_REVIEW_COMPLETE_HOSTED_UNVERIFIED",
+      "source_parent_commit": "cc75028f6434635ba9d33d56ea2aec7a7e26a20e",
+      "instructions": "docs/security-audit/SECURITY_STAGE_3_4_ADMIN_MFA.md",
+      "local_inventory": "docs/security-audit/security-stage-3-admin-source-inventory.json",
+      "local_inventory_engine": "PGlite 0.5.8 with minimal modeled Auth/Storage/default grants",
+      "ordered_migrations_compiled": 52,
+      "selected_direct_staff_reference_or_admin_named_public_routines": 36,
+      "selected_direct_staff_policies": 55,
+      "selected_direct_staff_policy_relations": 34,
+      "selected_routine_explicit_assurance_patterns_found": 0,
+      "selection_is_syntactic_not_complete_transitive_or_hosted_attestation": true,
+      "current_reviewed_frontend_MFA_enrollment_challenge_found": false,
+      "current_shared_staff_helpers_require_assurance": false,
+      "direct_app_admins_policy_branches_exist": true,
+      "reviewed_Edge_manual_staff_branches_check_assurance": false,
+      "raw_staff_identity_must_be_preserved_separately_from_privileged_authorization": true,
+      "proposed_MFA_staff_scope": [
+        "super_admin",
+        "admin_staff",
+        "finance_staff",
+        "support_staff"
+      ],
+      "existing_operation_role_allowlists_to_preserve": true,
+      "frozen_request_groups": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05"
+      ],
+      "candidate_implemented_or_deployed": false,
+      "hosted_factor_settings_controlled_staff_identity_or_recovery_verified": false,
+      "owner_SQL_Auth_setting_enrollment_staff_elevation_provider_job_or_email_requested": false,
+      "runtime_or_production_or_native_changed": false,
+      "completed_3_4_work_items": 1,
+      "remaining_3_4_work_items": 2,
+      "primary_documentation_checked": [
+        "https://supabase.com/docs/guides/auth/auth-mfa",
+        "https://supabase.com/docs/guides/auth/auth-mfa/totp",
+        "https://supabase.com/docs/reference/javascript/auth-mfa-getauthenticatorassurancelevel"
+      ],
+      "findings_F08_F15_closed": false,
+      "stage_3_report_still_due_at": "3.6",
+      "next_step": "3.4.2",
+      "source_artifact_sha256": {
+        "scripts/inspect-stage-3-admin-source.mjs": "f469d82f30125eec15e5d752e3c16ec619990f9bbeeb87fb8d1f14928f1f7aa6",
+        "docs/security-audit/security-stage-3-admin-source-inventory.json": "1960e1928b00da29bd8380a2a44b6219399d2f504e62e5dc767cb5d8a16ae481"
+      }
     }
   ],
   "source_reconciliation_head": "9388fc8c3e48ac3fd124d73b7f918785da957104"

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-11",
   "current_stage": 3,
-  "current_step": "3.4.1",
-  "current_title": "3.3 Business checkpoint BLOCKED with carry-forward; next 3.4.1 privileged-entrypoint/Admin-MFA source review.",
+  "current_step": "3.4.2",
+  "current_title": "3.4.1 privileged-entrypoint/Admin-MFA source review complete; next staged candidate and local verification.",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1439,7 +1439,27 @@
       {
         "id": "3.4",
         "title": "Privileged entrypoints and application Admin MFA",
-        "status": "PENDING"
+        "status": "SOURCE_REVIEW_COMPLETE_CANDIDATE_AND_HOSTED_ACCEPTANCE_PENDING",
+        "bounded_work_items": 3,
+        "completed_work_items": 1,
+        "remaining_work_items": 2,
+        "active_work_item": "3.4.2",
+        "latest_evidence": "S3E19",
+        "instructions": "docs/security-audit/SECURITY_STAGE_3_4_ADMIN_MFA.md",
+        "source_parent_commit": "cc75028f6434635ba9d33d56ea2aec7a7e26a20e",
+        "source_review_complete": true,
+        "source_inventory": "docs/security-audit/security-stage-3-admin-source-inventory.json",
+        "source_inventory_migrations": 52,
+        "source_inventory_selected_routines": 36,
+        "source_inventory_direct_staff_policies": 55,
+        "source_inventory_direct_staff_policy_relations": 34,
+        "current_source_Admin_MFA_flow_found": false,
+        "existing_staff_role_allowlists_preserved": true,
+        "frozen_request_groups": 5,
+        "owner_action_requested": false,
+        "candidate_implemented": false,
+        "hosted_MFA_or_privileged_API_verified": false,
+        "operator_recovery_verified": false
       },
       {
         "id": "3.5",
@@ -1452,7 +1472,7 @@
         "status": "PENDING"
       }
     ],
-    "latest_evidence": "S3E18",
+    "latest_evidence": "S3E19",
     "production_promoted": false,
     "application_mfa_enforced": false,
     "full_security_or_release_acceptance_verified": false

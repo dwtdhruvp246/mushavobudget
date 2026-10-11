@@ -1,6 +1,6 @@
 # 3.3.2 preparation / 3.3.3 controlled Business acceptance
 
-Prepared 11 October 2026 from audit parent `ebebb5e42fc0775d9098e4e1c701959304036012` (S3E16). Preparation is complete. **Hosted Business acceptance has not run.** Stage 3 remains active; its full report is due at 3.6. This is the same existing permission model, with no runtime migration, Auth setting, launch switch, platform elevation, production promotion or native change.
+Prepared 11 October 2026 from audit parent `ebebb5e42fc0775d9098e4e1c701959304036012` (S3E16). Preparation is complete. **Hosted Business acceptance is BLOCKED at the fixture source guard (S3E18); no API checks ran.** Stage 3 remains active; its full report is due at 3.6. This is the same existing permission model, with no runtime migration, Auth setting, launch switch, platform elevation, production promotion or native change.
 
 ## 3.3.3 owner fixture guard receipt — 11 October 2026
 
@@ -8,7 +8,7 @@ The owner screenshot shows `P0001: UNREVIEWED_PUBLIC_TRIGGER_BODY`, raised by th
 
 One bounded, read-only follow-up is prepared in `supabase/diagnostics/security_stage_3_business_trigger_review.sql`. It clears any failed fixture transaction on the SQL Editor connection, starts a read-only transaction, and uses the same reviewed body hashes, trigger associations and selected relations as the first guard. It returns aggregate counts plus at most 100 mismatching trigger/function names and exact-body, CRLF-normalized-body and association match flags. It reads no function bodies into the receipt and makes no application writes or outbound requests. CRLF flags help diagnosis only; the fixture guard is unchanged. This diagnostic does not inspect the later static call closure or attest all policy/grant/extension parity.
 
-Run the pinned diagnostic only in STAGING `dczlddwbtgvfdujgcitb` and share its result row, including `mismatch_details`. Do not rerun the fixture or start the API checker yet. If the receipt identifies a hosted difference requiring unapproved runtime changes, retain it as bounded BLOCKED/carry-forward instead of removing the guard or rebuilding the environment. Stage 3's full report remains due at 3.6.
+The diagnostic receipt is now received (S3E18): 78 selected triggers have matching associations; 77 body differences disappear after CRLF normalization, while `set_payment_outbox_workspace_context` remains unreviewed. Zero exact synthetic Business fixtures are reported. The bounded checkpoint is closed with blocked acceptance and carry-forward; see `SECURITY_STAGE_3_3_CHECKPOINT_REPORT.md`. Do not rerun the fixture or start the API checker during the next audit step. If the receipt identifies a hosted difference requiring unapproved runtime changes, retain it as bounded BLOCKED/carry-forward instead of removing the guard or rebuilding the environment. Stage 3's full report remains due at 3.6.
 
 ## Frozen executable scope
 
@@ -49,7 +49,7 @@ Before fixture writes, the SQL checks the two exact synthetic Auth/profile ident
 
 The SQL label cannot prove project identity. **Manually verify the Supabase Dashboard project is STAGING `dczlddwbtgvfdujgcitb` before pasting.** Production `kttkospkblwvguuwnhjj` is excluded. Keep all previously retained Personal/Family fixtures and two manual conversions.
 
-## Complete owner handoff
+## Frozen owner handoff — retained for final-remediation review
 
 Use the full pinned commit supplied in the chat handoff, not a moving branch head. Start in Windows PowerShell:
 
@@ -85,4 +85,4 @@ try {
 
 The runner prompts privately for the **staging app password** for `audit.owner@example.com`, then `audit.outsider@example.com`; neither is the database password. Both are passed only to the child process and cleaned up in `finally`, including secure buffers. The ASCII checker uses stdin to avoid Windows' single-environment-value length limit. Do not change execution policy. Expected result is `STAGING_BUSINESS_API_SCOPED_PASS_WITH_CARRY_FORWARD`, 24 PASS groups, five BLOCKED groups, no problem code and exit 0. A REVIEW produces exit 1 and retains incomplete synthetic effects. Share only the JSON summary and redacted error codes.
 
-The 3.3.3 receipt is still required before recording a Business checkpoint summary. Setup alone is not authorization acceptance; source/local results are not added to the owner PASS total.
+The 3.3.3 guard and diagnostic receipts are recorded as BLOCKED checkpoint evidence (S3E17–S3E18). A successful setup and API receipt are still required in final remediation. Source/local results are not added to the owner PASS total.

@@ -1,6 +1,6 @@
 # 3.3 — Business roles and scopes
 
-**3.3.2 preparation complete — 11 October 2026 (S3E16); hosted acceptance pending.** The [complete fixture/checker handoff](SECURITY_STAGE_3_3_BUSINESS_ACCEPTANCE.md) records 11 local source scenarios, eight isolated tests and the frozen 24-PASS/five-BLOCKED executable scope. Next is one 3.3.3 staging setup/acceptance phase. Production remains unchanged.
+**3.3 checkpoint closed with BLOCKED hosted acceptance — 11 October 2026 (S3E18).** The [checkpoint report](SECURITY_STAGE_3_3_CHECKPOINT_REPORT.md) records the fixture guard failure and one read-only diagnostic: 77 line-ending differences and one remaining unreviewed outbox function. No Business API checks ran. Preparation retains 11 original source scenarios and eight isolated tests; diagnostic validation extends the source scenarios to 15. Final remediation must resolve the prerequisites and rerun the frozen batch. Next is 3.4.1 source review. Production remains unchanged.
 
 **3.3.1 source review complete — 10 October 2026 (S3E15).** The existing B01–B08 groups from the permission baseline are mapped below to current source boundaries. This is source/request-matrix evidence, not a Business authorization PASS. The next milestone is **3.3.2**, controlled fixture/checker preparation and meaningful local validation. No owner SQL, account creation or deployment is requested yet.
 
@@ -12,7 +12,7 @@ Business testing checks that a member can perform the work permitted in the matc
 |---|---|---|
 | 3.3.1 | Review current role/permission/scope and operation guards; freeze B01–B08 requests and controlled-fixture prerequisites | Complete at source scope; hosted behavior unverified |
 | 3.3.2 | Prepare the controlled staging fixture and checker; validate positive paths, strict denials and hidden-effect detection locally | Complete: 11 source scenarios and eight isolated tests; pinned fixture/checker handoff ready |
-| 3.3.3 | One bounded staging acceptance phase, then record its checkpoint summary and any blocked/failed/unverified cases | Pending owner fixture receipt and API batch; five named carry-forward groups are frozen |
+| 3.3.3 | One bounded staging acceptance phase, then record its checkpoint summary and any blocked/failed/unverified cases | Closed with BLOCKED fixture/API acceptance: guard plus diagnostic receipts received; no Business API PASS; final-remediation actions recorded |
 
 The group count is eight, not the eventual number of API requests or assertions. Exact executable cases/counts are fixed during preparation before the owner run. The Stage 3 report remains at 3.6.
 

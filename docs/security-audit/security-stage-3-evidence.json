@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 3,
   "updated_date": "2026-10-11",
-  "active_step": "3.3.3",
+  "active_step": "3.4.1",
   "source_review_head": "e4f3b573bee2b9e344ec0b946c21e779449d8664",
   "events": [
     {
@@ -2759,6 +2759,50 @@
         "supabase/diagnostics/security_stage_3_business_trigger_review.sql": "765777ec6e2eb0c2c33abd95345db9585d0accc8322a3b0bfecc3cf9e8b5a117",
         "scripts/verify-stage-3-business-source.mjs": "f8b04974b9b70786904513978dee52a8c05809a7d7e63ba314939e7520c86ff8"
       }
+    },
+    {
+      "id": "S3E18",
+      "stage_step": "3.3.3",
+      "recorded_date": "2026-10-11",
+      "result": "BUSINESS_CHECKPOINT_CLOSED_BLOCKED_HOSTED_ACCEPTANCE_WITH_CARRY_FORWARD",
+      "owner_diagnostic_source_commit": "693b2d5d5625bc9540ff2830debca4d6d1e17ad8",
+      "owner_receipt_type": "CSV_EXPORT",
+      "owner_receipt_sha256": "cb1e30e66946de65bcaf479b43e9414d5dc89d20846bdfb73fa809dc00021013",
+      "owner_reported_result": "BUSINESS_TRIGGER_SOURCE_MISMATCH",
+      "selected_active_triggers": 78,
+      "exact_body_mismatches": 78,
+      "matching_trigger_associations": 78,
+      "CRLF_normalized_body_matches": 77,
+      "remaining_normalized_body_mismatches": 1,
+      "remaining_unreviewed_function": "public.set_payment_outbox_workspace_context()",
+      "remaining_trigger": "set_payment_outbox_workspace_context_trigger",
+      "remaining_relation": "notification_outbox",
+      "details_truncated": false,
+      "exact_synthetic_business_fixture_count": 0,
+      "owner_API_result_received": false,
+      "owner_API_PASS_groups": 0,
+      "frozen_selected_API_groups_unrun": 24,
+      "frozen_carryforward_groups": 5,
+      "guard_not_bypassed_or_changed": true,
+      "hosted_difference_cause_or_runtime_effect_verified": false,
+      "export_independently_attests_project_identity": false,
+      "hosted_prior_fixture_preservation_rechecked": false,
+      "source_precedes_application_fixture_inserts": true,
+      "diagnostic_read_only": true,
+      "checkpoint_report": "docs/security-audit/SECURITY_STAGE_3_3_CHECKPOINT_REPORT.md",
+      "bounded_3_3_work_items": 3,
+      "completed_3_3_work_items": 3,
+      "remaining_3_3_work_items": 0,
+      "final_remediation_required": [
+        "Reviewed LF/CRLF fingerprint compatibility preserving tamper/attachment denials",
+        "Controlled private comparison of remaining outbox function and dispatch review",
+        "Successful fixture setup and frozen API batch including preservation/logout",
+        "Five previously frozen receipt/bill/request/third-identity/suspension-expiry groups"
+      ],
+      "platform_roles_Auth_product_launch_runtime_enforcement_or_production_changed": false,
+      "findings_F08_F15_closed": false,
+      "next_step": "3.4.1",
+      "stage_3_report_still_due_at": "3.6"
     }
   ],
   "source_reconciliation_head": "9388fc8c3e48ac3fd124d73b7f918785da957104"

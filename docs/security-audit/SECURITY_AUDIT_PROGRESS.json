@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_date": "2026-10-10",
+  "updated_date": "2026-10-11",
   "current_stage": 3,
-  "current_step": "3.3.2",
-  "current_title": "3.2 closed with carry-forward; 3.3.1 Business source role/scope matrix recorded. Next: controlled fixture/checker preparation.",
+  "current_step": "3.3.3",
+  "current_title": "3.3.2 controlled Business fixture/checker preparation complete; pinned staging setup and one acceptance batch pending.",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1262,7 +1262,7 @@
     "full_security_or_release_acceptance_verified": false
   },
   "stage_3": {
-    "status": "ACTIVE_BUSINESS_FIXTURE_CHECKER_PREPARATION_NEXT",
+    "status": "ACTIVE_BUSINESS_STAGING_ACCEPTANCE_PENDING",
     "authorized": true,
     "started_date": "2026-10-10",
     "active_step": "3.3",
@@ -1384,13 +1384,13 @@
       {
         "id": "3.3",
         "title": "Business roles and scopes",
-        "status": "SOURCE_ROLE_SCOPE_REVIEW_RECORDED_PREPARATION_NEXT",
+        "status": "FIXTURE_CHECKER_PREPARED_LOCAL_SCOPED_PASS_OWNER_ACCEPTANCE_PENDING",
         "bounded_work_items": 3,
-        "completed_work_items": 1,
-        "remaining_work_items": 2,
-        "active_work_item": "3.3.2",
+        "completed_work_items": 2,
+        "remaining_work_items": 1,
+        "active_work_item": "3.3.3",
         "owner_execution_target": "dczlddwbtgvfdujgcitb",
-        "owner_action_requested": false,
+        "owner_action_requested": true,
         "existing_role_scope_rules_only": true,
         "source_review_or_API_result_received": true,
         "instructions": "docs/security-audit/SECURITY_STAGE_3_3_BUSINESS_ROLES.md",
@@ -1399,8 +1399,19 @@
         "source_review_evidence": "S3E15",
         "source_parent_commit": "3e6ebe575a65eacbb1fc719ccf6fdf72cc1a007e",
         "frozen_request_groups": 8,
-        "local_executable_acceptance_verified": false,
-        "hosted_authorization_verified": false
+        "local_executable_acceptance_verified": true,
+        "hosted_authorization_verified": false,
+        "preparation_evidence": "S3E16",
+        "fixture_sql": "supabase/diagnostics/security_stage_3_business_fixture.sql",
+        "checker": "scripts/check-stage-3-business-api.cjs",
+        "runner": "scripts/run-stage-3-business-acceptance.ps1",
+        "acceptance_instructions": "docs/security-audit/SECURITY_STAGE_3_3_BUSINESS_ACCEPTANCE.md",
+        "local_source_scenarios_passed": 11,
+        "local_isolated_tests_passed": 8,
+        "selected_expected_api_PASS_groups": 24,
+        "selected_expected_api_BLOCKED_groups": 5,
+        "owner_fixture_result_received": false,
+        "preparation_source_parent_commit": "ebebb5e42fc0775d9098e4e1c701959304036012"
       },
       {
         "id": "3.4",
@@ -1418,7 +1429,7 @@
         "status": "PENDING"
       }
     ],
-    "latest_evidence": "S3E15",
+    "latest_evidence": "S3E16",
     "production_promoted": false,
     "application_mfa_enforced": false,
     "full_security_or_release_acceptance_verified": false

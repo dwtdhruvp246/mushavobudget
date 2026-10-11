@@ -1,5 +1,7 @@
 # 3.3 — Business roles and scopes
 
+**3.3.2 preparation complete — 11 October 2026 (S3E16); hosted acceptance pending.** The [complete fixture/checker handoff](SECURITY_STAGE_3_3_BUSINESS_ACCEPTANCE.md) records 11 local source scenarios, eight isolated tests and the frozen 24-PASS/five-BLOCKED executable scope. Next is one 3.3.3 staging setup/acceptance phase. Production remains unchanged.
+
 **3.3.1 source review complete — 10 October 2026 (S3E15).** The existing B01–B08 groups from the permission baseline are mapped below to current source boundaries. This is source/request-matrix evidence, not a Business authorization PASS. The next milestone is **3.3.2**, controlled fixture/checker preparation and meaningful local validation. No owner SQL, account creation or deployment is requested yet.
 
 Business testing checks that a member can perform the work permitted in the matching business, while edited requests cannot escape the assigned organisation scope, promote a role or reach another business. It audits the permission model already built; it does not add product roles or change customer permission rules.
@@ -9,8 +11,8 @@ Business testing checks that a member can perform the work permitted in the matc
 | Milestone | Work | Current outcome |
 |---|---|---|
 | 3.3.1 | Review current role/permission/scope and operation guards; freeze B01–B08 requests and controlled-fixture prerequisites | Complete at source scope; hosted behavior unverified |
-| 3.3.2 | Prepare the controlled staging fixture and checker; validate positive paths, strict denials and hidden-effect detection locally | Next; no owner action required until the complete handoff is supplied |
-| 3.3.3 | One bounded staging acceptance phase, then record its checkpoint summary and any blocked/failed/unverified cases | Pending; outcomes carry to final remediation/re-audit rather than an unlimited setup loop |
+| 3.3.2 | Prepare the controlled staging fixture and checker; validate positive paths, strict denials and hidden-effect detection locally | Complete: 11 source scenarios and eight isolated tests; pinned fixture/checker handoff ready |
+| 3.3.3 | One bounded staging acceptance phase, then record its checkpoint summary and any blocked/failed/unverified cases | Pending owner fixture receipt and API batch; five named carry-forward groups are frozen |
 
 The group count is eight, not the eventual number of API requests or assertions. Exact executable cases/counts are fixed during preparation before the owner run. The Stage 3 report remains at 3.6.
 
@@ -60,3 +62,4 @@ Use exact known synthetic IDs and current versions; verify allowed operations an
 Review uses the current audit source parent `3e6ebe575a65eacbb1fc719ccf6fdf72cc1a007e` and ordered migration replacements, not a single obsolete function definition. No Business API execution, fresh owner inventory, local executable acceptance, runtime change, production promotion or APK change was performed in 3.3.1. Hosted body/configuration parity, broad file/realtime behavior, concurrency and safe actual dispatch remain unverified until their selected evidence exists. F08/F15 stay open.
 
 See the [3.1 permission baseline](SECURITY_STAGE_3_1_PERMISSION_BASELINE.md), [completed 3.2 checkpoint](SECURITY_STAGE_3_2_CHECKPOINT_REPORT.md), [Stage 3 plan](SECURITY_STAGE_3_AUTHORIZATION_PLAN.md) and [action register](SECURITY_AUDIT_CARRY_FORWARD.md).
+

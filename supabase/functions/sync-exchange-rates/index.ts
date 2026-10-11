@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.110.9";
+import { requireAdminAssurance } from "../_shared/admin-assurance.mjs";
 import {
   normalizeCurrencyApiPayload,
   PROVIDER_BASE_CURRENCY,
@@ -41,6 +42,7 @@ async function authorizeRequest(
   });
   const { data: userData, error: userError } = await userClient.auth.getUser();
   if (userError || !userData.user) throw new Error("EDGE_FUNCTION_AUTHENTICATION_FAILED");
+  await requireAdminAssurance(userClient);
 
   const { data: admin, error: adminError } = await serviceClient
     .from("app_admins")
@@ -193,6 +195,9 @@ Deno.serve(async (request) => {
     if (completeError) throw new Error("SYNC_RUN_COMPLETE_FAILED");
     return json({ status: finalStatus, rates_stored: ratesStored });
   } catch (error) {
+    if (error instanceof Error && error.message === "ADMIN_MFA_REQUIRED") {
+      return json({ error: "ADMIN_MFA_REQUIRED" }, 403);
+    }
     const safeError = safeProviderError(error);
     if (runId) {
       await serviceClient.from("exchange_rate_sync_runs").update({
@@ -205,3 +210,4 @@ Deno.serve(async (request) => {
     return json({ error: safeError }, authFailure ? 401 : 502);
   }
 });
+

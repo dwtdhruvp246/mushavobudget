@@ -1,5 +1,7 @@
 # 3.4 — Privileged entrypoints and application Admin MFA
 
+**Current — 3.4.2 complete at candidate/local scope, S3E20:** 90 local checks pass, exit 0. No hosted enforcement or genuine MFA acceptance. Two of three milestones have outcomes; next is 3.4.3 read-only readiness/one bounded hosted-or-BLOCKED checkpoint. Read [the candidate, receipts, recovery guidance and exact handoff](SECURITY_STAGE_3_4_ADMIN_MFA_CANDIDATE.md). F08/F15 remain open. The 3.4.1 findings below describe the unchanged baseline; the audit candidate is separate.
+
 **3.4.1 source review complete — 11 October 2026, S3E19.** Reviewed audit parent `cc75028f6434635ba9d33d56ea2aec7a7e26a20e`. This records source boundaries and a frozen request matrix; it does not record hosted authorization or MFA acceptance. Next is **3.4.2**, a staged candidate and meaningful local verification. Stage 3's full report remains due at 3.6. F08/F15 stay open.
 
 ## Three bounded milestones
@@ -7,8 +9,8 @@
 | Milestone | Work | Current outcome |
 |---|---|---|
 | 3.4.1 | Review platform privilege paths, current MFA/recovery evidence and the existing A01–A05 caller matrix | Complete at selected source scope; no hosted acceptance |
-| 3.4.2 | Prepare enrollment/challenge, protected backend/Edge candidate and recovery runbook; prove permitted/denied behavior and preservation locally | Next; candidate not implemented or deployed |
-| 3.4.3 | One controlled staging acceptance batch with genuine stepped-up staff sessions and safe service controls | Pending; unavailable prerequisites get explicit BLOCKED outcomes |
+| 3.4.2 | Prepare enrollment/challenge, protected backend/Edge candidate and recovery runbook; prove permitted/denied behavior and preservation locally | Candidate prepared; 90 local checks pass; not deployed |
+| 3.4.3 | One controlled staging acceptance batch with genuine stepped-up staff sessions and safe service controls | Next: read-only readiness and one bounded acceptance/BLOCKED result |
 
 ## What the source shows
 

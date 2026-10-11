@@ -25,7 +25,7 @@
     <script src="/pwa.js?v=80" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=112"></script>
+    <script type="module" src="app.js?v=113"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -53,6 +53,23 @@
         <div class="button-row">
           <button class="primary" type="button" data-retry-load>Try again</button>
           <button type="button" data-sign-out-error>Sign out</button>
+        </div>
+      </section>
+
+      <section id="adminMfaView" class="setup-panel hidden" aria-labelledby="adminMfaTitle">
+        <h1 id="adminMfaTitle">Verify Admin access</h1>
+        <p data-mfa-message role="status" aria-live="polite">Admin access requires an authenticator code.</p>
+        <p data-mfa-secret hidden aria-label="Authenticator setup key" style="overflow-wrap:anywhere"></p>
+        <form class="form-grid" hidden>
+          <label>Authenticator code<input data-mfa-code type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required /></label>
+          <button class="primary" type="submit">Verify</button>
+        </form>
+        <div data-mfa-factors></div>
+        <div class="button-row">
+          <button data-mfa-enroll type="button" hidden>Add authenticator</button>
+          <button data-mfa-cancel type="button">Cancel setup</button>
+          <button data-mfa-retry type="button">Try again</button>
+          <button data-mfa-signout type="button">Sign out</button>
         </div>
       </section>
 
@@ -120,6 +137,7 @@
       </section>
 
       <section id="adminView" class="hidden">
+        <button type="button" data-manage-admin-mfa>Authenticators</button>
         <div class="app-shell">
           <div class="mobile-bar">
             <div class="mobile-brand">
@@ -1168,3 +1186,4 @@
     <div id="toast" class="toast hidden" role="status" aria-live="polite" popover="manual"></div>
   </body>
 </html>
+

@@ -1,5 +1,6 @@
 // Mushavo Budget authenticated application — release 83
 import { createAdminPlans } from "./admin-plans.js?v=2";
+import { createAdminMfa, attachAdminMfaView } from "./admin-mfa.js?v=1";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -216,6 +217,7 @@ const views = {
   setup: $("#setupView"),
   suspended: $("#suspendedView"),
   admin: $("#adminView"),
+  adminMfa: $("#adminMfaView"),
   app: $("#appView")
 };
 
@@ -1029,6 +1031,7 @@ function queueNotificationRefresh() {
   realtime.notificationTimer = window.setTimeout(async () => {
     realtime.notificationTimer = null;
     try {
+      if (state.isAdmin && !await ensureAdminAssurance()) return;
       await loadNotifications();
       if (state.session?.user?.id !== userId) return;
       renderNotifications();
@@ -1065,7 +1068,9 @@ async function refreshVisibleData() {
   realtime.refreshInFlight = true;
   try {
     if (state.isAdmin) {
-      await Promise.all([loadAdminData(), loadNotifications()]);
+      if (!await ensureAdminAssurance()) return;
+      await loadAdminData();
+      await loadNotifications();
       if (state.session?.user?.id !== sessionId) return;
       renderAdmin();
       return;
@@ -1141,15 +1146,25 @@ async function init() {
 
     if (session && isSameAuthUser(previousSession, session)) {
       if (session.access_token) supabase.realtime.setAuth(session.access_token);
+      if (state.isAdmin && previousSession.access_token !== session.access_token) {
+        if (!adminMfa.busy) adminMfa.lock();
+        clearAdministrativeData();
+        setView("adminMfa");
+        if (!adminMfa.busy) window.setTimeout(() => resumeAdminAfterVerification().catch(handleLoadFailure), 0);
+      }
       return;
     }
 
     if (session) {
+      adminMfa.bind(session);
+      clearAdministrativeData();
       window.setTimeout(() => {
         openAuthenticatedSession(session).catch(handleLoadFailure);
       }, 0);
       return;
     }
+    adminMfa.bind(null);
+    clearAdministrativeData();
     window.setTimeout(handleSignedOut, 0);
   });
 
@@ -1254,6 +1269,8 @@ function openAuthenticatedSession(session) {
 }
 
 function resetState() {
+  adminMfa.bind(null);
+  clearAdministrativeData();
   resetSignOutButtons();
   stopRealtime();
   realtime.lastConnectedUserId = null;
@@ -1407,14 +1424,16 @@ async function loadApp() {
   );
   const profileResult = settled(ensureProfile());
   const invitationResult = settled(loadInvitations());
-  const notificationResult = settled(loadNotifications());
-
   if (await loadAccess({ skipAccountCheck: true }) === false) return;
+
+  if (state.isAdmin && !await ensureAdminAssurance()) return;
+  const notificationResult = settled(loadNotifications());
 
   if (state.isAdmin) {
     const loadedNotifications = await notificationResult;
     if (!loadedNotifications.ok) throw loadedNotifications.error;
     await loadAdminData();
+    if (!adminMfa.authorized || state.session?.user?.id !== loadingUserId) return;
     syncRouteForWorkspace("admin");
     setView("admin");
     renderAdmin();
@@ -1829,13 +1848,15 @@ async function loadInvitations() {
 }
 
 async function loadNotifications() {
+  if (state.isAdmin && !adminMfa.authorized) return;
+  const stillAuthorized = state.isAdmin ? adminMfa.ticket() : null;
   const userId = state.session?.user?.id;
   const [notifications, invitations] = await Promise.all([
     query("notifications load", supabase.from("notifications").select("*")
       .order("created_at", { ascending: false }).limit(30)),
     query("Business notification invitations load", supabase.rpc("get_my_business_invitations"))
   ]);
-  if (state.session?.user?.id !== userId) return;
+  if (state.session?.user?.id !== userId || (stillAuthorized && !stillAuthorized())) return;
   state.notifications = notifications;
   state.businessInvitations = invitations || [];
 }
@@ -2050,6 +2071,8 @@ async function loadWorkspaceSubscriptionData() {
 }
 
 async function loadAdminData(tab = state.adminTab) {
+  if (!await ensureAdminAssurance()) return;
+  const stillAuthorized = adminMfa.ticket();
   if (tab === "analytics") return loadAdminAnalytics();
   const tasks = [];
   const assign = [];
@@ -2158,6 +2181,7 @@ async function loadAdminData(tab = state.adminTab) {
   }
 
   const results = await Promise.all(tasks);
+  if (!stillAuthorized()) return;
   assign.forEach((target, index) => {
     state[target] = results[index];
   });
@@ -5761,12 +5785,14 @@ function analyticsFilterValues() {
 }
 
 async function loadAdminAnalytics() {
+  if (!await ensureAdminAssurance()) return;
+  const stillAuthorized = adminMfa.ticket();
   const requestId = ++analyticsRequestId;
   $("#analyticsMessage").textContent = "Loading analytics…";
   $("#analyticsResults").classList.add("hidden");
   try {
     const report = await query("admin analytics load", supabase.rpc("admin_analytics_page", analyticsFilterValues()));
-    if (requestId === analyticsRequestId && state.isAdmin) state.adminAnalytics = report;
+    if (requestId === analyticsRequestId && state.isAdmin && stillAuthorized()) state.adminAnalytics = report;
   } catch (error) {
     if (requestId === analyticsRequestId) {
       state.adminAnalytics = null;
@@ -5874,6 +5900,7 @@ function renderAdminAnalytics() {
 }
 
 function renderAdmin() {
+  if (!adminMfa.authorized) return;
   renderAdminTabs();
   renderAdminEnquiryBadge();
   renderNotifications();
@@ -6075,6 +6102,68 @@ const adminPlansWorkbench = createAdminPlans($("#adminPlansWorkbench"), {
   toast: showToast
 });
 function renderAdminPlans() { adminPlansWorkbench.render(); }
+
+// Restore initial DOM nodes (including their listeners), removing generated data,
+// form values and dialogs when assurance/session changes. Hidden data is also cleared.
+function snapshotPrivateDom(node) {
+  const children=[...node.childNodes].map(snapshotPrivateDom);
+  const originals=[...node.childNodes];
+  const attributes=node.nodeType===1?[...node.attributes].map(a=>[a.name,a.value]):null;
+  const text=node.nodeType===3?node.nodeValue:null;
+  return () => {
+    if(attributes) {
+      for(const a of [...node.attributes])node.removeAttribute(a.name);
+      for(const [name,value] of attributes)node.setAttribute(name,value);
+      if('value' in node)node.value=node.defaultValue||'';
+    }
+    if(text!==null)node.nodeValue=text;
+    node.replaceChildren?.(...originals);
+    for(const restore of children)restore();
+  };
+}
+const restorePrivateAdminDom=[...document.querySelectorAll('#adminView,dialog')].map(snapshotPrivateDom);
+let renderAdminMfaState=()=>{};
+const adminMfa=createAdminMfa({
+  client:supabase,getSession:()=>state.session,
+  onState:value=>renderAdminMfaState(value),
+  onUnlocked:()=>resumeAdminAfterVerification()
+});
+renderAdminMfaState=attachAdminMfaView({controller:adminMfa,document,
+  onSignOut:()=>supabase.auth.signOut({scope:'local'}),
+  onRetry:()=>resumeAdminAfterVerification().catch(handleLoadFailure)
+});
+document.querySelector('[data-manage-admin-mfa]').addEventListener('click',()=> {
+  adminMfa.lock();clearAdministrativeData();setView('adminMfa');void adminMfa.prepare();
+});
+function clearAdministrativeData() {
+  if(!state.isAdmin && !adminMfa.authorized)return;
+  stopRealtime();
+  for(const key of Object.keys(state))if(Array.isArray(state[key]))state[key]=[];
+  for(const key of ['adminAnalytics','adminFinanceSettings','adminRateStatus','exchangeRateStatus','memberUsage'])state[key]=null;
+  adminDetailsSequence++;analyticsRequestId++;adminBusinessSupport=null;adminPlansWorkbench.reset();
+  for(const dialog of document.querySelectorAll('dialog[open]'))dialog.close();
+  for(const restore of restorePrivateAdminDom)restore();
+  views.admin.classList.add('hidden');
+}
+async function ensureAdminAssurance() {
+  const userId=state.session?.user?.id;
+  adminMfa.bind(state.session);
+  if(await adminMfa.check())return true;
+  if(state.session?.user?.id!==userId)return false;
+  clearAdministrativeData();setView('adminMfa');
+  await adminMfa.prepare();
+  return false;
+}
+async function resumeAdminAfterVerification() {
+  if(!state.session || !state.isAdmin)return;
+  const userId=state.session.user.id;
+  if(!await ensureAdminAssurance())return;
+  await loadAdminData();
+  if(!adminMfa.authorized || state.session?.user?.id!==userId)return;
+  await loadNotifications();
+  if(!adminMfa.authorized || state.session?.user?.id!==userId)return;
+  syncRouteForWorkspace('admin');setView('admin');renderAdmin();startRealtime();
+}
 
 function renderSubscriptionReviews() {
   const list = $("#subscriptionReviewList");
@@ -9644,3 +9733,4 @@ window.setInterval(() => {
 init().catch(handleLoadFailure);
 
 $("#adminDetailsDialog").addEventListener("close",()=>{adminDetailsSequence++;adminBusinessSupport=null;});
+

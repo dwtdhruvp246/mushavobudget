@@ -1,6 +1,6 @@
 # Stage 4 — Data lifecycle, uploads and privacy plan
 
-**Started 11 October 2026 at 4.1.1, S4E01; updated at 4.1.2, S4E02.** Stage 3 is [closed with carry-forward](SECURITY_STAGE_3_COMPLETION_REPORT.md). This stage preserves the original F01/F02/F13/F20 assignments and earlier F08/F15/backup/device dependencies.
+**Started 11 October 2026 at 4.1.1, S4E01; updated at 4.1.3, S4E03.** Stage 3 is [closed with carry-forward](SECURITY_STAGE_3_COMPLETION_REPORT.md). This stage preserves the original F01/F02/F13/F20 assignments and earlier F08/F15/backup/device dependencies.
 
 Source/evidence baseline: `70b34a545a81db983e1030a90e3b26d3419621da`, branch `security/stage-3-authorization`. Staging is `dczlddwbtgvfdujgcitb` and `https://mushavo-budget-staging.pages.dev/`; production `kttkospkblwvguuwnhjj` is excluded from mutation. No deletion, upload, Auth/Storage change, provider message or deployment is requested by this plan.
 
@@ -8,7 +8,7 @@ Source/evidence baseline: `70b34a545a81db983e1030a90e3b26d3419621da`, branch `se
 
 | Step | Work | Outcome required |
 |---|---|---|
-| 4.1 — Account deletion, shared ownership and retention | Inspect source and identity/FK/file dependencies; prepare a justified candidate and one bounded acceptance outcome | Explicit data/ownership decisions, server-self identity controls and truthfully scoped deletion/retry/preservation evidence; blockers carried |
+| 4.1 — Account deletion, shared ownership and retention | CLOSED WITH CARRY-FORWARD: source review; 46 offline model PASS/three syntax checks; hosted readiness BLOCKED / 0 cases | All three milestones have outcomes; six DL actions and unapproved retention/dependency/provider requirements carried |
 | 4.2 — Uploads and downloads | Inspect payment/subscription/Business proofs and logos; validate supported types/content/size/quota and object authorization | Valid positive files plus malformed/mismatched/oversized/foreign/signed-URL behavior at actual scope; preserve accepted product file types |
 | 4.3 — Factual privacy and disclosures | Inventory operator/audience/territories, collected data, processors, SDKs, purposes, retention and support; prepare notices consistent with actual behavior | Factual approved notices/working links and unresolved decisions; native/store declarations retain later-stage prerequisites |
 | 4.4 — Recheck, full report and handoff | Relevant bounded regressions/effect rechecks; reconcile evidence/actions; publish dated detailed report | Four recorded outcomes, original findings preserved, remaining remediation and next-stage handoff |
@@ -21,9 +21,19 @@ Steps 4.1–4.3 each have three bounded groups: source/contract review, justifie
 |---|---|---|
 | 4.1.1 | Source review, selected identity/ownership dependencies, current official requirements and frozen DL01–DL05 contract | COMPLETE at source/documentation scope; no hosted deletion proof |
 | 4.1.2 | Prepare review-only data-decision/preflight and deletion workflow candidates with meaningful isolated checks; distinguish implementable controls from unresolved retention decisions | COMPLETE at offline review/model scope: 46 local PASS, three syntax checks; no live adapter or adopted policy |
-| 4.1.3 | One controlled acceptance phase only if approved semantics, recoverable disposable identities/files and safe provider boundaries exist; otherwise record BLOCKED and checkpoint carry-forward | NEXT; prerequisites unavailable as verified evidence, record BLOCKED if unchanged |
+| 4.1.3 | One controlled acceptance phase only if approved semantics, recoverable disposable identities/files and safe provider boundaries exist; otherwise record BLOCKED and checkpoint carry-forward | RECORDED: BLOCKED / 0 of 25 planned hosted cases run; 4.1 closed with carry-forward |
 
-The [4.1.2 candidate/local checkpoint](SECURITY_STAGE_4_1_LIFECYCLE_CANDIDATE.md) records local evidence, the unapproved decision template and actual integration limits. The [4.1 source review](SECURITY_STAGE_4_1_ACCOUNT_LIFECYCLE.md) defines the selected cases, proposed decision matrix and current blockers. A deletion design or request receipt is not a completed erasure result.
+The [4.1 closure checkpoint](SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md) records all three outcomes and blockers; next is 4.2.1. The [4.1.2 candidate/local checkpoint](SECURITY_STAGE_4_1_LIFECYCLE_CANDIDATE.md) records local evidence, the unapproved decision template and actual integration limits. The [4.1 source review](SECURITY_STAGE_4_1_ACCOUNT_LIFECYCLE.md) defines the selected cases, proposed decision matrix and current blockers. A deletion design or request receipt is not a completed erasure result.
+
+## Next 4.2 milestones
+
+| Milestone | Work | Current outcome |
+|---|---|---|
+| 4.2.1 | Review payment/subscription/Business proofs/logos, accepted types, content/size/quota, bucket/object authorization, signed links and cleanup; freeze a bounded contract | NEXT |
+| 4.2.2 | Prepare reviewable upload/download control candidate and meaningful isolated checks, preserving supported product file types | PENDING |
+| 4.2.3 | One controlled hosted/owner phase only with known objects, source parity and safe boundaries; otherwise BLOCKED and carry-forward | PENDING |
+
+This plan does not request upload, object removal, signed-link generation or deployment.
 
 ## Scope boundaries and dependencies
 

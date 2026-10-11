@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-11",
   "current_stage": 4,
-  "current_step": "4.1.3",
-  "current_title": "4.1.2 offline lifecycle candidate/local checks complete; next bounded 4.1.3 acceptance/readiness",
+  "current_step": "4.2.1",
+  "current_title": "4.1 account lifecycle closed with carry-forward; next 4.2.1 upload/download source review",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 4,
-  "next_step": "4.1.3",
+  "next_step": "4.2.1",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -1628,17 +1628,17 @@
     "findings_F08_F15_closed": false
   },
   "stage_4": {
-    "status": "ACTIVE_LIFECYCLE_CANDIDATE_LOCAL_COMPLETE_ACCEPTANCE_PENDING",
+    "status": "ACTIVE_UPLOADS_DOWNLOADS_SOURCE_REVIEW_PENDING",
     "authorized": true,
     "started_date": "2026-10-11",
-    "active_step": "4.1",
+    "active_step": "4.2",
     "initial_step": "4.1.1",
     "plan": "docs/security-audit/SECURITY_STAGE_4_DATA_PRIVACY_PLAN.md",
     "evidence": "docs/security-audit/security-stage-4-evidence.json",
     "bounded_steps": 4,
-    "completed_steps": 0,
-    "remaining_steps": 4,
-    "latest_evidence": "S4E02",
+    "completed_steps": 1,
+    "remaining_steps": 3,
+    "latest_evidence": "S4E03",
     "finding_ids": [
       "F01",
       "F02",
@@ -1649,12 +1649,12 @@
       {
         "id": "4.1",
         "title": "Account deletion, shared ownership and retention",
-        "status": "OFFLINE_CANDIDATE_LOCAL_COMPLETE_ACCEPTANCE_PENDING",
+        "status": "CLOSED_WITH_CARRY_FORWARD_HOSTED_DELETION_BLOCKED",
         "bounded_work_items": 3,
-        "completed_work_items": 2,
-        "remaining_work_items": 1,
-        "current_milestone": "4.1.3",
-        "latest_evidence": "S4E02",
+        "completed_work_items": 3,
+        "remaining_work_items": 0,
+        "current_milestone": null,
+        "latest_evidence": "S4E03",
         "source_commit": "70b34a545a81db983e1030a90e3b26d3419621da",
         "source_review": "docs/security-audit/SECURITY_STAGE_4_1_ACCOUNT_LIFECYCLE.md",
         "source_inventory": "docs/security-audit/security-stage-4-lifecycle-source-inventory.json",
@@ -1703,12 +1703,51 @@
         "product_deletion_endpoint_implemented": false,
         "public_deletion_resource_implemented": false,
         "final_or_hosted_dependency_inventory_verified": false,
-        "hosted_acceptance_prerequisites_verified": false
+        "hosted_acceptance_prerequisites_verified": false,
+        "completed_milestone": "4.1.3",
+        "checkpoint_report": "docs/security-audit/SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md",
+        "readiness_receipt": "docs/security-audit/security-stage-4-lifecycle-readiness.json",
+        "checkpoint_source_commit": "a777e6ec26c0ec495d512ba6c8b58e69a504e0d7",
+        "selected_source_blob_matches": 75,
+        "selected_source_blob_mismatches": 0,
+        "candidate_receipt_hashes_match": 4,
+        "fresh_local_tests_run_at_4_1_3": 0,
+        "hosted_cases_blocked": 25,
+        "hosted_acceptance": false,
+        "prerequisite_groups": [
+          "DL-P01",
+          "DL-P02",
+          "DL-P03",
+          "DL-P04",
+          "DL-P05",
+          "DL-P06"
+        ]
       },
       {
         "id": "4.2",
         "title": "Uploads and downloads",
-        "status": "PENDING"
+        "status": "SOURCE_AND_CONTRACT_REVIEW_PENDING",
+        "bounded_work_items": 3,
+        "completed_work_items": 0,
+        "remaining_work_items": 3,
+        "current_milestone": "4.2.1",
+        "milestones": [
+          {
+            "id": "4.2.1",
+            "scope": "source_and_bounded_contract",
+            "status": "NEXT"
+          },
+          {
+            "id": "4.2.2",
+            "scope": "reviewable_candidate_and_local_checks",
+            "status": "PENDING"
+          },
+          {
+            "id": "4.2.3",
+            "scope": "one_controlled_hosted_outcome_or_BLOCKED",
+            "status": "PENDING"
+          }
+        ]
       },
       {
         "id": "4.3",

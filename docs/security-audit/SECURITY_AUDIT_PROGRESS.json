@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-11",
   "current_stage": 4,
-  "current_step": "4.2.1",
-  "current_title": "4.1 account lifecycle closed with carry-forward; next 4.2.1 upload/download source review",
+  "current_step": "4.2.2",
+  "current_title": "4.2.1 upload/download source review complete; next reviewable candidate/local checks",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 4,
-  "next_step": "4.2.1",
+  "next_step": "4.2.2",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -1628,7 +1628,7 @@
     "findings_F08_F15_closed": false
   },
   "stage_4": {
-    "status": "ACTIVE_UPLOADS_DOWNLOADS_SOURCE_REVIEW_PENDING",
+    "status": "ACTIVE_UPLOAD_DOWNLOAD_SOURCE_REVIEW_COMPLETE",
     "authorized": true,
     "started_date": "2026-10-11",
     "active_step": "4.2",
@@ -1638,7 +1638,7 @@
     "bounded_steps": 4,
     "completed_steps": 1,
     "remaining_steps": 3,
-    "latest_evidence": "S4E03",
+    "latest_evidence": "S4E04",
     "finding_ids": [
       "F01",
       "F02",
@@ -1726,27 +1726,66 @@
       {
         "id": "4.2",
         "title": "Uploads and downloads",
-        "status": "SOURCE_AND_CONTRACT_REVIEW_PENDING",
+        "status": "SOURCE_REVIEW_COMPLETE_CANDIDATE_PENDING",
         "bounded_work_items": 3,
-        "completed_work_items": 0,
-        "remaining_work_items": 3,
-        "current_milestone": "4.2.1",
+        "completed_work_items": 1,
+        "remaining_work_items": 2,
+        "current_milestone": "4.2.2",
         "milestones": [
           {
             "id": "4.2.1",
             "scope": "source_and_bounded_contract",
-            "status": "NEXT"
+            "status": "COMPLETE_AT_SOURCE_SCOPE"
           },
           {
             "id": "4.2.2",
             "scope": "reviewable_candidate_and_local_checks",
-            "status": "PENDING"
+            "status": "NEXT"
           },
           {
             "id": "4.2.3",
             "scope": "one_controlled_hosted_outcome_or_BLOCKED",
             "status": "PENDING"
           }
+        ],
+        "latest_evidence": "S4E04",
+        "source_commit": "9373887eeb70ac8285485f1fbd804f1cb4d9e541",
+        "source_review": "docs/security-audit/SECURITY_STAGE_4_2_UPLOAD_DOWNLOAD_REVIEW.md",
+        "source_inventory": "docs/security-audit/security-stage-4-upload-source-inventory.json",
+        "selected_source_files_hash_verified": 65,
+        "selected_SQL_files": 53,
+        "source_bucket_definitions": 4,
+        "selected_HTML_file_inputs": 9,
+        "selected_client_functions": 14,
+        "selected_Storage_policy_declarations": 15,
+        "selected_permissive_Storage_policies": 12,
+        "selected_restrictive_Storage_policies": 3,
+        "latest_selected_routines": 22,
+        "inventory_is_source_syntactic_not_final_or_hosted_catalog": true,
+        "effective_hosted_bucket_policy_or_grants_verified": false,
+        "acceptance_groups": [
+          "UF01",
+          "UF02",
+          "UF03",
+          "UF04",
+          "UF05",
+          "UF06"
+        ],
+        "selected_planned_grouped_cases": 30,
+        "fresh_local_tests_run": 0,
+        "hosted_checks_run": 0,
+        "candidate_prepared": false,
+        "candidate_deployed": false,
+        "owner_action_requested": false,
+        "upload_removal_signed_URL_or_provider_action_performed": false,
+        "existing_accounts_or_retained_fixtures_changed": false,
+        "final_remediation_actions": [
+          "UF-R01",
+          "UF-R02",
+          "UF-R03",
+          "UF-R04",
+          "UF-R05",
+          "UF-R06"
         ]
       },
       {

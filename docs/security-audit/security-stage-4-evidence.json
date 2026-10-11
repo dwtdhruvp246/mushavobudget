@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 4,
   "updated_date": "2026-10-11",
-  "active_step": "4.2.1",
+  "active_step": "4.2.2",
   "source_review_head": "70b34a545a81db983e1030a90e3b26d3419621da",
   "plan": "docs/security-audit/SECURITY_STAGE_4_DATA_PRIVACY_PLAN.md",
   "events": [
@@ -167,6 +167,68 @@
         "DL-R06"
       ],
       "next_step": "4.2.1",
+      "stage_4_full_report_due_at": "4.4"
+    },
+    {
+      "id": "S4E04",
+      "stage_step": "4.2.1",
+      "recorded_date": "2026-10-11",
+      "result": "UPLOAD_DOWNLOAD_SOURCE_REVIEW_AND_BOUNDED_CONTRACT_COMPLETE_HOSTED_UNVERIFIED",
+      "source_parent_commit": "9373887eeb70ac8285485f1fbd804f1cb4d9e541",
+      "scope": "SELECTED_PINNED_CLIENT_SQL_EDGE_SOURCE_NOT_EFFECTIVE_HOSTED_CATALOG_OR_BYTES",
+      "source_review": "docs/security-audit/SECURITY_STAGE_4_2_UPLOAD_DOWNLOAD_REVIEW.md",
+      "source_inventory": "docs/security-audit/security-stage-4-upload-source-inventory.json",
+      "selected_source_files_hash_verified": 65,
+      "SQL_source_files": 53,
+      "client_page_SW_files": 5,
+      "Edge_entrypoints": 7,
+      "source_blob_mismatches": 0,
+      "private_bucket_definitions": 4,
+      "HTML_file_inputs": 9,
+      "selected_client_functions": 14,
+      "selected_Storage_policy_declarations": 15,
+      "selected_permissive_Storage_policies": 12,
+      "selected_restrictive_Storage_policies": 3,
+      "latest_selected_routines": 22,
+      "effective_hosted_catalog_or_bucket_settings_verified": false,
+      "acceptance_groups": [
+        "UF01",
+        "UF02",
+        "UF03",
+        "UF04",
+        "UF05",
+        "UF06"
+      ],
+      "selected_planned_grouped_cases": 30,
+      "fresh_local_tests_run": 0,
+      "hosted_checks_run": 0,
+      "bounded_4_2_work_items": 3,
+      "completed_4_2_work_items": 1,
+      "remaining_4_2_work_items": 2,
+      "candidate_prepared_or_deployed": false,
+      "owner_action_requested": false,
+      "upload_object_removal_signed_URL_or_processor_action_performed": false,
+      "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+      "provider_email_job_executed": false,
+      "production_or_native_changed": false,
+      "findings_closed": [],
+      "open_actions": [
+        "UF-R01",
+        "UF-R02",
+        "UF-R03",
+        "UF-R04",
+        "UF-R05",
+        "UF-R06"
+      ],
+      "primary_documents_checked": [
+        "https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html",
+        "https://supabase.com/docs/guides/storage/buckets/creating-buckets",
+        "https://supabase.com/docs/guides/storage/security/access-control",
+        "https://supabase.com/docs/guides/storage/serving/downloads",
+        "https://supabase.com/docs/guides/storage/management/delete-objects",
+        "https://www.postgresql.org/docs/17/ddl-rowsecurity.html"
+      ],
+      "next_step": "4.2.2",
       "stage_4_full_report_due_at": "4.4"
     }
   ]

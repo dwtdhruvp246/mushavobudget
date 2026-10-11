@@ -1,6 +1,6 @@
 # Stage 4 — Data lifecycle, uploads and privacy plan
 
-**Started 11 October 2026 at 4.1.1, S4E01; updated at 4.1.3, S4E03.** Stage 3 is [closed with carry-forward](SECURITY_STAGE_3_COMPLETION_REPORT.md). This stage preserves the original F01/F02/F13/F20 assignments and earlier F08/F15/backup/device dependencies.
+**Started 11 October 2026 at 4.1.1, S4E01; updated at 4.2.1, S4E04.** Stage 3 is [closed with carry-forward](SECURITY_STAGE_3_COMPLETION_REPORT.md). This stage preserves the original F01/F02/F13/F20 assignments and earlier F08/F15/backup/device dependencies.
 
 Source/evidence baseline: `70b34a545a81db983e1030a90e3b26d3419621da`, branch `security/stage-3-authorization`. Staging is `dczlddwbtgvfdujgcitb` and `https://mushavo-budget-staging.pages.dev/`; production `kttkospkblwvguuwnhjj` is excluded from mutation. No deletion, upload, Auth/Storage change, provider message or deployment is requested by this plan.
 
@@ -23,17 +23,17 @@ Steps 4.1–4.3 each have three bounded groups: source/contract review, justifie
 | 4.1.2 | Prepare review-only data-decision/preflight and deletion workflow candidates with meaningful isolated checks; distinguish implementable controls from unresolved retention decisions | COMPLETE at offline review/model scope: 46 local PASS, three syntax checks; no live adapter or adopted policy |
 | 4.1.3 | One controlled acceptance phase only if approved semantics, recoverable disposable identities/files and safe provider boundaries exist; otherwise record BLOCKED and checkpoint carry-forward | RECORDED: BLOCKED / 0 of 25 planned hosted cases run; 4.1 closed with carry-forward |
 
-The [4.1 closure checkpoint](SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md) records all three outcomes and blockers; next is 4.2.1. The [4.1.2 candidate/local checkpoint](SECURITY_STAGE_4_1_LIFECYCLE_CANDIDATE.md) records local evidence, the unapproved decision template and actual integration limits. The [4.1 source review](SECURITY_STAGE_4_1_ACCOUNT_LIFECYCLE.md) defines the selected cases, proposed decision matrix and current blockers. A deletion design or request receipt is not a completed erasure result.
+The [4.1 closure checkpoint](SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md) records all three outcomes and blockers; 4.2.1 source review is now complete and next is 4.2.2. The [4.1.2 candidate/local checkpoint](SECURITY_STAGE_4_1_LIFECYCLE_CANDIDATE.md) records local evidence, the unapproved decision template and actual integration limits. The [4.1 source review](SECURITY_STAGE_4_1_ACCOUNT_LIFECYCLE.md) defines the selected cases, proposed decision matrix and current blockers. A deletion design or request receipt is not a completed erasure result.
 
-## Next 4.2 milestones
+## 4.2 milestones
 
 | Milestone | Work | Current outcome |
 |---|---|---|
-| 4.2.1 | Review payment/subscription/Business proofs/logos, accepted types, content/size/quota, bucket/object authorization, signed links and cleanup; freeze a bounded contract | NEXT |
-| 4.2.2 | Prepare reviewable upload/download control candidate and meaningful isolated checks, preserving supported product file types | PENDING |
+| 4.2.1 | Review payment/subscription/Business proofs/logos, accepted types, content/size/quota, bucket/object authorization, signed links and cleanup; freeze a bounded contract | COMPLETE at source scope: four buckets, 15 policy declarations, 30 planned grouped cases; no hosted tests |
+| 4.2.2 | Prepare reviewable upload/download control candidate and meaningful isolated checks, preserving supported product file types | NEXT |
 | 4.2.3 | One controlled hosted/owner phase only with known objects, source parity and safe boundaries; otherwise BLOCKED and carry-forward | PENDING |
 
-This plan does not request upload, object removal, signed-link generation or deployment.
+[4.2 source review](SECURITY_STAGE_4_2_UPLOAD_DOWNLOAD_REVIEW.md) freezes six UF01–UF06 groups × five cases (30 grouped cases, none run), and six UF-R01–UF-R06 actions. Preserve JPG/PNG/WebP/PDF proof support and wider general Business CSV/XLSX metadata support. Missing trusted validation, exact deployed scope/actors/processor/limit/cleanup facts remain explicit prerequisites. This plan does not request upload, object removal, signed-link generation or deployment.
 
 ## Scope boundaries and dependencies
 

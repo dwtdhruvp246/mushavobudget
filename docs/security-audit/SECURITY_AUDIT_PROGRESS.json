@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-11",
   "current_stage": 4,
-  "current_step": "4.3.3",
-  "current_title": "4.3.2 owner Windows verification PASS; next one controlled privacy owner/hosted outcome or BLOCKED",
+  "current_step": "4.4",
+  "current_title": "4.3 privacy closed with carry-forward; hosted acceptance BLOCKED; next full Stage 4 report",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 4,
-  "next_step": "4.3.3",
+  "next_step": "4.4",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -1628,17 +1628,17 @@
     "findings_F08_F15_closed": false
   },
   "stage_4": {
-    "status": "ACTIVE_PRIVACY_CANDIDATE_LOCAL_COMPLETE",
+    "status": "ACTIVE_RECHECK_FULL_REPORT_NEXT_PRIVACY_CHECKPOINT_CLOSED",
     "authorized": true,
     "started_date": "2026-10-11",
-    "active_step": "4.3",
+    "active_step": "4.4",
     "initial_step": "4.1.1",
     "plan": "docs/security-audit/SECURITY_STAGE_4_DATA_PRIVACY_PLAN.md",
     "evidence": "docs/security-audit/security-stage-4-evidence.json",
     "bounded_steps": 4,
-    "completed_steps": 2,
-    "remaining_steps": 2,
-    "latest_evidence": "S4E10",
+    "completed_steps": 3,
+    "remaining_steps": 1,
+    "latest_evidence": "S4E11",
     "finding_ids": [
       "F01",
       "F02",
@@ -1836,12 +1836,12 @@
       {
         "id": "4.3",
         "title": "Factual privacy inventory and disclosures",
-        "status": "CANDIDATE_LOCAL_COMPLETE_OWNER_HOSTED_OUTCOME_NEXT",
-        "current_milestone": "4.3.3",
+        "status": "CLOSED_WITH_CARRY_FORWARD_HOSTED_PRIVACY_BLOCKED",
+        "current_milestone": null,
         "bounded_work_items": 3,
-        "completed_work_items": 2,
-        "remaining_work_items": 1,
-        "latest_evidence": "S4E10",
+        "completed_work_items": 3,
+        "remaining_work_items": 0,
+        "latest_evidence": "S4E11",
         "source_commit": "29b6c1cffeb4f9c38cad446c931fe1d1a9583ee2",
         "source_review": "docs/security-audit/SECURITY_STAGE_4_3_PRIVACY_SOURCE_REVIEW.md",
         "source_inventory": "docs/security-audit/security-stage-4-privacy-source-inventory.json",
@@ -1859,7 +1859,7 @@
           {
             "id": "4.3.3",
             "scope": "one_controlled_owner_hosted_outcome_or_BLOCKED",
-            "status": "NEXT"
+            "status": "RECORDED_BLOCKED_NO_HOSTED_CASES_RUN"
           }
         ],
         "selected_source_files_hash_verified": 96,
@@ -1896,7 +1896,7 @@
           "PR-R06"
         ],
         "findings_closed": [],
-        "completed_milestone": "4.3.2",
+        "completed_milestone": "4.3.3",
         "candidate_scope": "OFFLINE_STRUCTURED_REVIEW_DRAFT_NOT_APP_PRIVACY_CONTROLS",
         "candidate_source_parent": "2f1c033431b3880b28077ae664de50e10cfcb883",
         "candidate_report": "docs/security-audit/SECURITY_STAGE_4_3_PRIVACY_CANDIDATE.md",
@@ -1938,12 +1938,29 @@
         "owner_exact_script_CRLF_variant_hash_matches": 3,
         "owner_unexplained_hash_mismatches": 0,
         "owner_local_batch_repeats_existing_43_tests": true,
-        "owner_rerun_or_further_SQL_terminal_action_requested": false
+        "owner_rerun_or_further_SQL_terminal_action_requested": false,
+        "checkpoint_report": "docs/security-audit/SECURITY_STAGE_4_3_CHECKPOINT_REPORT.md",
+        "readiness_receipt": "docs/security-audit/security-stage-4-privacy-readiness.json",
+        "checkpoint_source_commit": "a1c17d7c89b59f88668bee8720d9e043af90d754",
+        "selected_current_source_blob_identity_matches": 96,
+        "selected_current_source_blob_mismatches": 0,
+        "candidate_primary_hash_matches": 6,
+        "fresh_local_behavior_tests_run_at_4_3_3": 0,
+        "hosted_grouped_cases_blocked": 25,
+        "prerequisite_groups": [
+          "PR-P01",
+          "PR-P02",
+          "PR-P03",
+          "PR-P04",
+          "PR-P05",
+          "PR-P06"
+        ],
+        "candidate_deployment_status": "UNVERIFIED_NOT_PROBED_BY_THIS_READ_ONLY_CHECKPOINT"
       },
       {
         "id": "4.4",
         "title": "Recheck, full report and handoff",
-        "status": "PENDING"
+        "status": "NEXT_RECHECK_FULL_REPORT"
       }
     ],
     "hosted_checks_run": 0,

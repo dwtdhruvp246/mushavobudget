@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-11",
   "current_stage": 3,
-  "current_step": "3.5.2",
-  "current_title": "3.5.1 Auth source review complete; next 3.5.2 compatibility candidates and local verification. Hosted Auth settings/mail acceptance remain unverified.",
+  "current_step": "3.5.3",
+  "current_title": "3.5.2 Auth candidate prepared with 111 local PASS; next 3.5.3 read-only staging readiness and bounded acceptance/blocker outcome.",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1262,7 +1262,7 @@
     "full_security_or_release_acceptance_verified": false
   },
   "stage_3": {
-    "status": "ACTIVE_AUTH_CANDIDATE_PREPARATION",
+    "status": "ACTIVE_AUTH_STAGING_READINESS_PENDING",
     "authorized": true,
     "started_date": "2026-10-10",
     "active_step": "3.5",
@@ -1498,12 +1498,12 @@
       {
         "id": "3.5",
         "title": "Sign-in, password, invitation and recovery flows",
-        "status": "SOURCE_REVIEW_COMPLETE_CANDIDATE_AND_HOSTED_ACCEPTANCE_PENDING",
+        "status": "CANDIDATE_LOCAL_PASS_HOSTED_READINESS_AND_ACCEPTANCE_PENDING",
         "bounded_work_items": 3,
-        "completed_work_items": 1,
-        "remaining_work_items": 2,
-        "current_milestone": "3.5.2",
-        "latest_evidence": "S3E22",
+        "completed_work_items": 2,
+        "remaining_work_items": 1,
+        "current_milestone": "3.5.3",
+        "latest_evidence": "S3E23",
         "source_review_head": "8ecc3a10a608053d33b434cce7f53d7c6fe0c9bf",
         "source_review": "docs/security-audit/SECURITY_STAGE_3_5_AUTH_FLOWS.md",
         "source_inventory": "docs/security-audit/security-stage-3-auth-source-inventory.json",
@@ -1523,7 +1523,7 @@
         "hosted_Auth_checks_run": 0,
         "auth_settings_verified": false,
         "controlled_email_acceptance_verified": false,
-        "owner_action_requested": false,
+        "owner_action_requested": "ONE_READ_ONLY_STAGING_DASHBOARD_SUMMARY",
         "final_remediation_actions": [
           "AU-R01",
           "AU-R02",
@@ -1531,7 +1531,19 @@
           "AU-R04",
           "AU-R05",
           "AU-R06"
-        ]
+        ],
+        "candidate_commit": "227264fddc59dc89d9c42b3778f481bab8e433e0",
+        "candidate_report": "docs/security-audit/SECURITY_STAGE_3_5_AUTH_CANDIDATE.md",
+        "local_receipt": "docs/security-audit/security-stage-3-auth-local-checks.json",
+        "candidate_local_tests": 111,
+        "candidate_local_pass": 111,
+        "candidate_local_fail": 0,
+        "candidate_local_exit_code": 0,
+        "candidate_syntax_checks": 6,
+        "initial_regression_failure_resolved_by_behavioral_test": true,
+        "owner_handoff": "scripts/run-stage-3-auth-readiness.ps1",
+        "Auth_settings_changed": false,
+        "frontend_or_Edge_deployed": false
       },
       {
         "id": "3.6",
@@ -1539,7 +1551,7 @@
         "status": "PENDING"
       }
     ],
-    "latest_evidence": "S3E22",
+    "latest_evidence": "S3E23",
     "production_promoted": false,
     "application_mfa_enforced": false,
     "full_security_or_release_acceptance_verified": false

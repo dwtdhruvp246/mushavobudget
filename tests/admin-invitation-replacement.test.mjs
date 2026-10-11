@@ -29,13 +29,13 @@ test("normal signup cancels only a verified unfinished invite and provisions Fre
   assert.match(migration, /grant execute on function public\.complete_self_signup_from_admin_invitation[\s\S]*to authenticated/);
   assert.doesNotMatch(migration, /grant execute on function public\.complete_self_signup_from_admin_invitation[\s\S]*to anon/);
   assert.match(schema, /complete_self_signup_from_admin_invitation/);
-  assert.match(signup, /resetPasswordForEmail\(email/);
-  assert.match(signup, /emailRedirectTo: new URL\("\.\/signup\.html\?mode=self-signup"/);
+  assert.doesNotMatch(signup, /resetPasswordForEmail\(email/);
+  assert.match(signup, /emailRedirectTo: callbackUrl\(window.location.href, "confirm"\)/);
   assert.match(signup, /complete_self_signup_from_admin_invitation/);
 });
 
 test("signup page inline JavaScript parses after both new branches", () => {
   const inlineScript = signup.match(/<script type="module">([\s\S]*?)<\/script>/)?.[1];
   assert.ok(inlineScript);
-  assert.doesNotThrow(() => new vm.Script(inlineScript.replace(/^\s*import .*;\s*$/m, "")));
+  assert.doesNotThrow(() => new vm.Script(inlineScript.replace(/^\s*import .*;\s*$/mg, "")));
 });

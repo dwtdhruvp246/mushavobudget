@@ -2,6 +2,7 @@
 import { createAdminPlans } from "./admin-plans.js?v=2";
 import { createAdminMfa, attachAdminMfaView } from "./admin-mfa.js?v=1";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
+import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
 const placeholderValues = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
@@ -12,7 +13,8 @@ const isConfigured =
     `${config.supabaseUrl} ${config.supabasePublishableKey}`.includes(value)
   );
 
-const supabase = isConfigured
+const authLinkRedirect = redirectLegacyAuthLink(window.location.href, "budget", href => window.location.replace(href));
+const supabase = isConfigured && !authLinkRedirect
   ? createClient(config.supabaseUrl, config.supabasePublishableKey)
   : null;
 
@@ -176,6 +178,8 @@ let dashboardFitFrame = null;
 let appLoadPromise = null;
 let appLoadUserId = null;
 let signInInProgress = false;
+let signInExpectedEmail = null;
+let authDataEpoch = 0;
 let preserveSignInDestination = false;
 let startupWorkspacePreference = null;
 let startupWorkspaceUnavailable = false;
@@ -538,10 +542,10 @@ function protectSubmission(handler) {
 function showSignupSuccessMessage() {
   const url = new URL(window.location.href);
   const signupResult = url.searchParams.get("signup");
-  if (!["success", "invited"].includes(signupResult)) return;
+  if (!["success", "invited", "pending"].includes(signupResult)) return;
   url.searchParams.delete("signup");
   window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
-  showToast(signupResult === "invited"
+  showToast(signupResult === "pending" ? "If an account can be created, check your inbox for confirmation before signing in. Existing account holders can sign in or use Forgot password. Use Resend confirmation if you need another link." : signupResult === "invited"
     ? "Your account, workspace, and subscription are ready."
     : "Account created successfully. Sign in with your new account.");
 }
@@ -1100,6 +1104,7 @@ function refreshAfterAppResume(source) {
 }
 
 async function query(label, promise) {
+  const epoch = authDataEpoch;
   let timeoutId;
   try {
     const { data, error } = await Promise.race([
@@ -1114,9 +1119,10 @@ async function query(label, promise) {
         );
       })
     ]);
+    if (epoch !== authDataEpoch) throw Object.assign(new Error("The active account changed."), { code: "session_changed" });
     if (error) {
-      console.error(label, error);
-      throw new Error(error.message);
+      console.warn(`Request failed: ${label}`);
+      throw Object.assign(new Error(error.message), { code: error.code, status: error.status });
     }
     return data;
   } finally {
@@ -1142,7 +1148,7 @@ async function init() {
     state.session = session;
     // Password sign-in owns its first workspace load. Auth also emits
     // SIGNED_IN during that request; handling both would race two loaders.
-    if (signInInProgress && event === "SIGNED_IN") return;
+    if (signInInProgress && event === "SIGNED_IN" && session?.user?.email?.toLowerCase() === signInExpectedEmail) return;
 
     if (session && isSameAuthUser(previousSession, session)) {
       if (session.access_token) supabase.realtime.setAuth(session.access_token);
@@ -1156,16 +1162,22 @@ async function init() {
     }
 
     if (session) {
+      resetState();
+      state.session = session;
       adminMfa.bind(session);
       clearAdministrativeData();
+      setView("loading");
+      const epoch = authDataEpoch;
       window.setTimeout(() => {
+        if (epoch !== authDataEpoch || state.session?.user?.id !== session.user.id) return;
         openAuthenticatedSession(session).catch(handleLoadFailure);
       }, 0);
       return;
     }
-    adminMfa.bind(null);
-    clearAdministrativeData();
-    window.setTimeout(handleSignedOut, 0);
+    resetState();
+    setView("auth");
+    const epoch = authDataEpoch;
+    window.setTimeout(() => { if (epoch === authDataEpoch && !state.session) handleSignedOut(); }, 0);
   });
 
   if (state.session) {
@@ -1206,6 +1218,7 @@ function isUnrecoverableSessionError(error) {
 }
 
 async function handleLoadFailure(error, mayRefresh = true) {
+  if (error?.code === "session_changed") return;
   console.error(error);
   if (state.session && mayRefresh && isInvalidStoredSessionError(error)) {
     try {
@@ -1246,8 +1259,10 @@ function openAuthenticatedSession(session) {
   preserveSignInDestination = false;
   state.session = session;
   appLoadUserId = userId;
+  const epoch = authDataEpoch;
   showLoading("Opening your workspace", "Loading your latest budget...");
   appLoadPromise = loadApp().then(async () => {
+    if (epoch !== authDataEpoch || state.session?.user?.id !== userId) return;
     const url = new URL(window.location.href);
     const requestedPlan = url.searchParams.get("plan");
     if (!state.isAdmin && requestedPlan && state.plans.some((plan) => plan.code === requestedPlan)) {
@@ -1260,7 +1275,7 @@ function openAuthenticatedSession(session) {
       window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
     }
   }).finally(() => {
-    if (appLoadUserId === userId) {
+    if (appLoadUserId === userId && epoch === authDataEpoch) {
       appLoadPromise = null;
       appLoadUserId = null;
     }
@@ -1269,6 +1284,9 @@ function openAuthenticatedSession(session) {
 }
 
 function resetState() {
+  authDataEpoch += 1;
+  appLoadPromise = null;
+  appLoadUserId = null;
   adminMfa.bind(null);
   clearAdministrativeData();
   resetSignOutButtons();
@@ -3725,10 +3743,12 @@ async function clearApplicationBadge() {
 }
 
 async function removeCurrentDevicePush({ requireDatabaseCleanup = true } = {}) {
+  const userId = state.session?.user?.id;
   if (!("serviceWorker" in navigator) || !("PushManager" in window)) return;
   const registration = await navigator.serviceWorker.getRegistration("/");
   if (!registration) return;
   const subscription = await registration.pushManager.getSubscription();
+  if (state.session?.user?.id !== userId) throw Object.assign(new Error("The active account changed."), {code:"session_changed"});
   const record = state.pushDevice.record;
   if (requireDatabaseCleanup) await deleteOwnPushRecord(subscription, record);
   if (subscription) {
@@ -3817,15 +3837,22 @@ async function sendTestPushNotification() {
 
 async function signOutSafely(button = null) {
   if (!supabase || !state.session) return;
+  const userId = state.session.user.id;
+  let cleanupFailed = false;
   setSubmitting(button, true, "Signing out…");
   try {
-    await removeCurrentDevicePush();
-    forgetPushOptIn(state.session.user.id);
+    try { await removeCurrentDevicePush(); }
+    catch (_cleanupError) { cleanupFailed = true; }
+    // A push cleanup outage must not prevent the requested Auth sign-out.
+    if (state.session?.user?.id !== userId) return;
     preserveSignInDestination = false;
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
+    if (!cleanupFailed) forgetPushOptIn(userId);
+    if (state.session?.user?.id === userId) handleSignedOut();
+    if (cleanupFailed) showToast("Signed out. Device notification cleanup could not finish; disable notifications in this browser if needed.");
   } catch (error) {
-    showToast(`Sign-out stopped: ${friendlyMessage(error?.message)}`);
+    showToast("Sign-out could not finish. Your session may still be active. Check your connection and try again.");
   } finally {
     // This DOM button survives sign-out and is reused after the next sign-in.
     setSubmitting(button, false, "Sign out");
@@ -7728,6 +7755,7 @@ async function signIn(event) {
   let signedInSession = null;
   try {
     signInInProgress = true;
+    signInExpectedEmail = email.toLowerCase();
     if (submitButton) {
       submitButton.disabled = true;
       submitButton.textContent = "Signing in...";
@@ -7739,13 +7767,15 @@ async function signIn(event) {
     await openAuthenticatedSession(signedInSession);
     showToast("Signed in.");
   } catch (error) {
+    if (error?.code === "session_changed") return;
     if (signedInSession) await handleLoadFailure(error);
     else {
       setView("auth");
-      showToast(error.message);
+      showToast(safeAuthMessage(error));
     }
   } finally {
     signInInProgress = false;
+    signInExpectedEmail = null;
     if (submitButton) {
       submitButton.disabled = false;
       submitButton.textContent = "Sign in";
@@ -9730,7 +9760,7 @@ window.setInterval(() => {
   }
 }, PUSH_REFRESH_INTERVAL_MS);
 
-init().catch(handleLoadFailure);
+if (!authLinkRedirect) init().catch(handleLoadFailure);
 
 $("#adminDetailsDialog").addEventListener("close",()=>{adminDetailsSequence++;adminBusinessSupport=null;});
 

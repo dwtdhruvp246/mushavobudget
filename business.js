@@ -1,5 +1,6 @@
 // Mushavo Budget Business application — Stage 12 pilot and realtime
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
+import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
 const placeholders = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
@@ -8,7 +9,8 @@ const isConfigured = Boolean(
   config.supabasePublishableKey &&
   !placeholders.some((value) => `${config.supabaseUrl} ${config.supabasePublishableKey}`.includes(value))
 );
-const supabase = isConfigured ? createClient(config.supabaseUrl, config.supabasePublishableKey) : null;
+const authLinkRedirect = redirectLegacyAuthLink(window.location.href, "business", href => window.location.replace(href));
+const supabase = isConfigured && !authLinkRedirect ? createClient(config.supabaseUrl, config.supabasePublishableKey) : null;
 const VALID_TABS = new Set(["overview", "activity", "bills", "approvals", "budgets", "reports", "team", "settings", "subscription"]);
 const TAB_COPY = {
   overview: ["Business overview", "Business overview", "A clear view of your company’s financial activity."],
@@ -79,6 +81,7 @@ const state = {
 let billingSequence = 0, billingOffset = 0, billingBusy = false, billingQuote = null, billingAction = 'renewal', billingSubmissionId = null, billingPrintWindow = null;
 let workspaceLoadSequence = 0;
 let appOpening = false;
+let businessAuthEpoch = 0;
 let setupStep = "basics";
 let setupOpen = false;
 let setupBusy = false;
@@ -194,7 +197,9 @@ function friendlyMessage(error) {
 }
 
 async function query(label, request) {
+  const epoch = businessAuthEpoch;
   const { data, error } = await request;
+  if (epoch !== businessAuthEpoch) throw Object.assign(new Error("The active account changed."), {code:"session_changed"});
   if (error) {
     error.message = `${label}: ${error.message}`;
     throw error;
@@ -2876,6 +2881,7 @@ async function selectBusinessWorkspace(workspaceId, { preserveSetup = false } = 
 async function loadBusinessAccess() {
   if (appOpening) return;
   appOpening = true;
+  const epoch = businessAuthEpoch;
   showOnly("businessLoading");
   try {
     if (!isConfigured) {
@@ -2883,6 +2889,7 @@ async function loadBusinessAccess() {
       return;
     }
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (epoch !== businessAuthEpoch) return;
     if (sessionError) throw sessionError;
     if (!session) {
       const url = new URL("./app.html", window.location.href);
@@ -2894,6 +2901,7 @@ async function loadBusinessAccess() {
     }
     state.session = session;
     await window.MushavoWorkspace?.hydrate(session.user.id);
+    if (epoch !== businessAuthEpoch) return;
     const suspended = await query("account status load", supabase.rpc("my_account_suspended"));
     if (suspended) {
       showOnly("businessSuspended");
@@ -2948,20 +2956,24 @@ async function loadBusinessAccess() {
     url.searchParams.delete("restore_workspace");
     window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   } catch (error) {
-    console.error(error);
+    if (epoch !== businessAuthEpoch || error?.code === "session_changed") return;
+    console.warn("Business access could not load.");
     $("#businessErrorMessage").textContent = friendlyMessage(error);
     showOnly("businessError");
   } finally {
-    appOpening = false;
+    if (epoch === businessAuthEpoch) appOpening = false;
   }
 }
 
 async function signOut() {
-  clearBusinessWorkspaceState();
   try {
-    await supabase?.auth.signOut({ scope: "local" });
-  } finally {
+    const {error} = await supabase.auth.signOut({ scope: "local" });
+    if (error) throw error;
+    clearBusinessWorkspaceState();
     window.location.replace("/app.html");
+  } catch (_error) {
+    $('#businessErrorMessage').textContent = 'Sign-out could not finish. Your session may still be active. Check your connection and try again.';
+    showOnly('businessError');
   }
 }
 
@@ -3408,4 +3420,20 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden){enforceBu
 window.MushavoWorkspace?.onResume(() => { enforceBusinessExpiry(); refreshBusinessAccessState(); });
 
 $("#businessToday").textContent = new Date().toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
-loadBusinessAccess();
+supabase?.auth.onAuthStateChange((event, session) => {
+  if (event === 'INITIAL_SESSION') return;
+  if (session?.user?.id && session.user.id === state.session?.user?.id) {
+    state.session = session;
+    if (session.access_token) supabase.realtime.setAuth(session.access_token);
+    return;
+  }
+  businessAuthEpoch += 1;
+  clearBusinessWorkspaceState();
+  state.profile = null; state.workspaces = []; state.memberships = []; state.incomingInvitations = []; state.supportedCurrencies = [];
+  state.session = session; appOpening = false;
+  showOnly('businessLoading');
+  const epoch = businessAuthEpoch;
+  // Auth callbacks must not await another SDK call while its lock is held.
+  window.setTimeout(() => { if (epoch === businessAuthEpoch) loadBusinessAccess(); }, 0);
+});
+if (!authLinkRedirect) loadBusinessAccess();

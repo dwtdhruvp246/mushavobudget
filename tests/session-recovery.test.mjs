@@ -93,10 +93,20 @@ test('sign-out button is reusable after success and after signing in again', asy
 
 test('a session reset repairs a button left mid sign-out', () => {
   const button = { textContent: 'Signing out…', disabled: true, finishPwaOperation: null };
-  const context = { window: {}, $: (selector) => selector === '#adminSignOutButton' ? button : null };
+  const context = {
+    window: {}, $: (selector) => selector === '#adminSignOutButton' ? button : null,
+    state: {session:{user:{id:'old'}}, paymentItems:[{id:'old-private-data'}]},
+    authDataEpoch:0, adminDetailsSequence:0, analyticsRequestId:0, pushRefreshSequence:0,
+    adminMfa:{bind(value){assert.equal(value,null);}}, clearAdministrativeData(){}, stopRealtime(){},
+    realtime:{}, analyticsActivity:{}, resetDashboardDisclosureState(){},
+    adminPlansWorkbench:{reset(){}}, createPushDeviceState(){return {};}
+  };
   vm.runInNewContext(source.slice(source.indexOf('function setSubmitting'), source.indexOf('function protectSubmission')), context);
-  context.resetSignOutButtons();
+  vm.runInNewContext(source.slice(source.indexOf('function resetState()'), source.indexOf('async function blockUnfinishedAdminInvitationSession')), context);
+  context.resetState();
   assert.equal(button.textContent, 'Sign out');
   assert.equal(button.disabled, false);
-  assert.match(source, /function resetState\(\) \{\s+resetSignOutButtons\(\)/);
+  assert.equal(context.state.session, null);
+  assert.equal(context.state.paymentItems.length, 0);
+  assert.equal(context.authDataEpoch, 1);
 });

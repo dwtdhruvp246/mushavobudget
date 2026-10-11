@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="referrer" content="no-referrer" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="referrer" content="no-referrer" />
     <meta name="description" content="Create a Mushavo Budget account." />
@@ -61,11 +62,11 @@
           </label>
           <label for="signupPassword">
             Password
-            <input id="signupPassword" type="password" autocomplete="new-password" minlength="6" required placeholder="At least 6 characters" />
+            <input id="signupPassword" type="password" autocomplete="new-password" minlength="12" required placeholder="At least 12 characters" />
           </label>
           <label class="full" for="signupPasswordConfirm">
             Confirm password
-            <input id="signupPasswordConfirm" type="password" autocomplete="new-password" minlength="6" required placeholder="Repeat your password" />
+            <input id="signupPasswordConfirm" type="password" autocomplete="new-password" minlength="12" required placeholder="Repeat your password" />
           </label>
           <section class="signup-currency-section full" aria-labelledby="signupCurrencyTitle">
             <div class="signup-currency-heading">
@@ -118,6 +119,7 @@
 
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
+      import { validateNewPassword, safeAuthMessage, callbackUrl } from "./auth-security.js?v=1";
 
       const config = window.MUSHAVO_BUDGET_CONFIG || {};
       const pageUrl = new URL(window.location.href);
@@ -330,7 +332,7 @@
         if (message.includes("ADMIN_INVITATION_ACCOUNT_ALREADY_PROVISIONED")) return "This account already owns a workspace. Ask an administrator to review the invitation.";
         if (message.includes("ADMIN_INVITATION_NOT_AVAILABLE")) return "This invitation is invalid, expired, cancelled, or has already been used.";
         if (message.includes("INVALID_ENABLED_CURRENCIES") || message.includes("DEFAULT_CURRENCY_MUST_BE_ENABLED")) return "Choose at least one supported currency and select one of them as your default.";
-        return message || "The invitation could not be verified. Ask an administrator to send a new invitation.";
+        return safeAuthMessage(error);
       }
 
       function isMissingInviteSession(error) {
@@ -416,13 +418,13 @@
       }
 
       async function offerVerifiedSelfSignup(supabase, email) {
-        const selfSignupUrl = new URL("./signup.html?mode=self-signup", window.location.href);
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: selfSignupUrl.href
-        });
-        if (error) throw error;
-        showInviteStatus("If an unfinished invitation belongs to this email, check your inbox for a link to finish a personal signup. Existing account holders can sign in instead.", "success");
-        submitButton.textContent = "Sign up";
+        // No extra reset email as a side effect of a duplicate signup attempt.
+        const next = new URL("./app.html", window.location.href);
+        next.searchParams.set("signup", "pending");
+        const selectedPlan = new URLSearchParams(window.location.search).get("plan");
+        if (selectedPlan) next.searchParams.set("plan", selectedPlan);
+        window.MushavoPWA?.markFormClean(form);
+        window.location.replace(next.href);
       }
 
       async function initialiseAdminInvite(supabase, currencyPromise) {
@@ -473,7 +475,7 @@
           showInviteStatus("Invitation verified. Create your password and confirm your workspace currencies.", "success");
           updateSignupAvailability();
         } catch (error) {
-          console.error("Admin invitation verification failed", error);
+          console.warn("Admin invitation verification failed.");
           sanitizeInviteUrl();
           lockInviteForm(inviteErrorMessage(error));
         }
@@ -482,7 +484,7 @@
       async function initialiseSelfSignupFromInvite(supabase) {
         document.querySelector("#signupEyebrow").textContent = "Choose your own account";
         document.querySelector("#signupTitle").textContent = "Finish your personal signup";
-        document.querySelector("#signupSubtitle").textContent = "Choose a password and currencies to create your Free personal workspace. The admin invitation will be cancelled.";
+        document.querySelector("#signupSubtitle").textContent = "Verify your email to choose your account setup.";
         submitButton.disabled = true;
         submitButton.textContent = "Verifying email...";
         try {
@@ -494,9 +496,10 @@
           const { data: hasInvite, error: inviteError } = await supabase.rpc("has_my_unfinished_admin_invitation");
           if (inviteError) throw inviteError;
           if (!hasInvite) {
-            await openCompletedInvitation(supabase, createClient, config);
+            lockInviteForm("Your email has been verified. Sign in to your existing account. To change your password, use Forgot password on the sign-in page.");
             return;
           }
+          document.querySelector("#signupSubtitle").textContent = "Choose a password and currencies to create your Free personal workspace. The admin invitation will be cancelled.";
           nameInput.value = userData.user.user_metadata?.full_name || "";
           emailInput.value = userData.user.email || "";
           emailInput.readOnly = true;
@@ -520,7 +523,7 @@
         const supabase = isAdminInvite || isSelfSignupFromInvite
           ? createInvitationClient(createClient, config)
           : createClient(config.supabaseUrl, config.supabasePublishableKey, {
-              auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
+              auth: { storage: window.sessionStorage, storageKey: "mushavo-signup-" + new URL(config.supabaseUrl).hostname.split(".")[0], detectSessionInUrl: false, persistSession: true, autoRefreshToken: true }
             });
 
         if (isAdminInvite || isSelfSignupFromInvite) {
@@ -531,7 +534,7 @@
         }
 
         const currencyPromise = loadCurrencyCatalogue(supabase).catch((error) => {
-          console.error("Signup currency catalogue unavailable", error);
+          console.warn("Signup currency catalogue unavailable.");
           currencyCatalogueReady = false;
           currencyLoadStatus.textContent = "Currency choices are temporarily unavailable. Please try again shortly.";
           submitButton.disabled = true;
@@ -579,6 +582,8 @@
             showMessage("Passwords do not match.");
             return;
           }
+          try { validateNewPassword(password, confirmation); }
+          catch (error) { showMessage(safeAuthMessage(error)); return; }
           if (!defaultCurrency || !selectedCurrencies.has(defaultCurrency)) {
             showMessage("Choose at least one currency and select your default.");
             return;
@@ -628,7 +633,7 @@
               email,
               password,
               options: {
-                emailRedirectTo: new URL("./signup.html?mode=self-signup", window.location.href).href,
+                emailRedirectTo: callbackUrl(window.location.href, "confirm"),
                 data: {
                   full_name: fullName,
                   country_code: countryCode,
@@ -650,15 +655,19 @@
               await offerVerifiedSelfSignup(supabase, email);
               return;
             }
-            if (data.session) await supabase.auth.signOut();
+            const confirmationPending = !data.session;
+            if (data.session) {
+              const { error: signOutError } = await supabase.auth.signOut({ scope: "local" });
+              if (signOutError) throw signOutError;
+            }
             const selectedPlan = new URLSearchParams(window.location.search).get("plan");
             const next = new URL("./app.html", window.location.href);
-            next.searchParams.set("signup", "success");
+            next.searchParams.set("signup", confirmationPending ? "pending" : "success");
             if (selectedPlan) next.searchParams.set("plan", selectedPlan);
             window.MushavoPWA?.markFormClean(form);
             window.location.replace(next.href);
           } catch (error) {
-            showMessage(isAdminInvite ? inviteErrorMessage(error) : (error.message || "The account could not be created. Please try again."));
+            showMessage(isAdminInvite ? inviteErrorMessage(error) : safeAuthMessage(error));
             if (isAdminInvite && isMissingInviteSession(error)) {
               lockInviteForm(inviteErrorMessage(error));
               return;
@@ -671,3 +680,4 @@
     </script>
   </body>
 </html>
+

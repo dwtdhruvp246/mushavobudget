@@ -60,7 +60,8 @@ Deno.serve(async (request) => {
   }
 
   const serviceClient = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
-  const redirectTo = `${appOrigin}/business.html?invitation=${encodeURIComponent(reservation.invitation_id)}#business/team`;
+  const linkFlow = reservation.invitee_user_id ? "business-existing" : "business-new";
+  const redirectTo = `${appOrigin}/auth.html?flow=${linkFlow}&invitation=${encodeURIComponent(reservation.invitation_id)}`;
   let invitedUserId = reservation.invitee_user_id || null;
   let mailError: unknown = null;
   if (invitedUserId) {
@@ -87,3 +88,4 @@ Deno.serve(async (request) => {
   if (!succeeded) return json({ error: "BUSINESS_INVITATION_EMAIL_FAILED", invitation_id: reservation.invitation_id }, 502, responseOrigin);
   return json({ status: action === "resend" ? "resent" : "sent", invitation_id: reservation.invitation_id, email: reservation.email }, 200, responseOrigin);
 });
+

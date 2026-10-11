@@ -1,6 +1,6 @@
 # Mushavo Budget security audit — Start here
 
-All security audit documentation and evidence from Stage 0 onward is collected here on **`security/stage-3-authorization`**. Updated 11 October 2026. Stages 0–2 and Stage 3 checkpoints 3.1–3.4 have recorded outcomes with carry-forward. **3.5.2 Auth candidate/local verification is complete (111 PASS, exit 0); next is 3.5.3 read-only staging readiness and bounded acceptance/blocker outcome.** The full Stage 3 report remains due at 3.6. A closed checkpoint does not close an unresolved finding or approve a release.
+All security audit documentation and evidence from Stage 0 onward is collected here on **`security/stage-3-authorization`**. Updated 11 October 2026. Stages 0–2 and Stage 3 checkpoints 3.1–3.5 have recorded outcomes with carry-forward. **3.5 closes with 111 local PASS and BLOCKED hosted acceptance (zero of 31 cases run); the owner reports an eight-character server minimum against the twelve-character candidate and unavailable separate test identities. Next is 3.6, evidence reconciliation and the full Stage 3 report.** The full Stage 3 report remains due at 3.6. A closed checkpoint does not close an unresolved finding or approve a release.
 
 To browse normally on GitHub, select the **`security/stage-3-authorization`** branch, then open **docs → security-audit**. The default main branch does not contain this audit folder. Direct commit links are pinned snapshots; use this branch for the latest progress.
 
@@ -12,6 +12,7 @@ To browse normally on GitHub, select the **`security/stage-3-authorization`** br
 | [Action plan and carry-forward register](SECURITY_AUDIT_CARRY_FORWARD.md) | Outstanding failures, uncertain results, decisions and remediation history |
 | [Master audit coverage register](SECURITY_AUDIT_REGISTER.md) | All original 123 audit sections and their evidence/owner/stage assignments |
 | [Audit workflow](SECURITY_AUDIT_WORKFLOW.md) | Numbered messages, bounded work, stage-end reports and execution conventions |
+| [3.5 Auth checkpoint and actions](SECURITY_STAGE_3_5_CHECKPOINT_REPORT.md) | Owner readiness, password-rule mismatch, 31 blocked hosted cases and AU-R01–AU-R06 |
 | [3.5.2 Auth candidate and readiness handoff](SECURITY_STAGE_3_5_AUTH_CANDIDATE.md) | Candidate scope, 111 local checks and complete read-only staging commands |
 | [3.5 Auth flows and bounded plan](SECURITY_STAGE_3_5_AUTH_FLOWS.md) | Source findings, AU01–AU05 cases, three milestones and candidate/hosted prerequisites |
 | [3.4 Admin MFA checkpoint](SECURITY_STAGE_3_4_CHECKPOINT_REPORT.md) | Local candidate evidence, owner readiness blocker and AM-R01–AM-R05 |
@@ -84,6 +85,7 @@ The 36 existing audit documents/evidence files were moved here from the parent d
 - [3.4 Admin MFA candidate](SECURITY_STAGE_3_4_ADMIN_MFA_CANDIDATE.md) and [checkpoint report](SECURITY_STAGE_3_4_CHECKPOINT_REPORT.md).
 - [3.5 Auth-flow source review and bounded acceptance plan](SECURITY_STAGE_3_5_AUTH_FLOWS.md).
 - [3.5.2 Auth candidate, local result and read-only staging handoff](SECURITY_STAGE_3_5_AUTH_CANDIDATE.md).
+- [3.5 Auth checkpoint report](SECURITY_STAGE_3_5_CHECKPOINT_REPORT.md) and [owner readiness receipt](security-stage-3-auth-owner-readiness.json).
 - [Auth candidate local receipt](security-stage-3-auth-local-checks.json).
 - [Pinned Auth source inventory and local regression receipt](security-stage-3-auth-source-inventory.json).
 - [security-stage-3-evidence.json](security-stage-3-evidence.json).

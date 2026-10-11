@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-11",
   "current_stage": 3,
-  "current_step": "3.5.3",
-  "current_title": "3.5.2 Auth candidate prepared with 111 local PASS; next 3.5.3 read-only staging readiness and bounded acceptance/blocker outcome.",
+  "current_step": "3.6",
+  "current_title": "3.5 Auth checkpoint closed: 111 local PASS; owner readiness received; 31 hosted cases BLOCKED. Next 3.6 evidence reconciliation and full Stage 3 report.",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 3,
-  "next_step": "3.2.3",
+  "next_step": "3.6",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -1262,15 +1262,15 @@
     "full_security_or_release_acceptance_verified": false
   },
   "stage_3": {
-    "status": "ACTIVE_AUTH_STAGING_READINESS_PENDING",
+    "status": "ACTIVE_FINAL_STAGE_REPORT_PENDING",
     "authorized": true,
     "started_date": "2026-10-10",
-    "active_step": "3.5",
+    "active_step": "3.6",
     "plan": "docs/security-audit/SECURITY_STAGE_3_AUTHORIZATION_PLAN.md",
     "evidence": "docs/security-audit/security-stage-3-evidence.json",
     "bounded_steps": 6,
-    "completed_steps": 4,
-    "remaining_steps": 2,
+    "completed_steps": 5,
+    "remaining_steps": 1,
     "steps": [
       {
         "id": "3.1",
@@ -1498,12 +1498,12 @@
       {
         "id": "3.5",
         "title": "Sign-in, password, invitation and recovery flows",
-        "status": "CANDIDATE_LOCAL_PASS_HOSTED_READINESS_AND_ACCEPTANCE_PENDING",
+        "status": "CLOSED_CHECKPOINT_WITH_BLOCKED_HOSTED_ACCEPTANCE_AND_CARRY_FORWARD",
         "bounded_work_items": 3,
-        "completed_work_items": 2,
-        "remaining_work_items": 1,
-        "current_milestone": "3.5.3",
-        "latest_evidence": "S3E23",
+        "completed_work_items": 3,
+        "remaining_work_items": 0,
+        "current_milestone": null,
+        "latest_evidence": "S3E24",
         "source_review_head": "8ecc3a10a608053d33b434cce7f53d7c6fe0c9bf",
         "source_review": "docs/security-audit/SECURITY_STAGE_3_5_AUTH_FLOWS.md",
         "source_inventory": "docs/security-audit/security-stage-3-auth-source-inventory.json",
@@ -1523,7 +1523,7 @@
         "hosted_Auth_checks_run": 0,
         "auth_settings_verified": false,
         "controlled_email_acceptance_verified": false,
-        "owner_action_requested": "ONE_READ_ONLY_STAGING_DASHBOARD_SUMMARY",
+        "owner_action_requested": false,
         "final_remediation_actions": [
           "AU-R01",
           "AU-R02",
@@ -1543,7 +1543,30 @@
         "initial_regression_failure_resolved_by_behavioral_test": true,
         "owner_handoff": "scripts/run-stage-3-auth-readiness.ps1",
         "Auth_settings_changed": false,
-        "frontend_or_Edge_deployed": false
+        "frontend_or_Edge_deployed": false,
+        "active_work_item": null,
+        "owner_readiness_received": true,
+        "owner_receipt": "docs/security-audit/security-stage-3-auth-owner-readiness.json",
+        "report": "docs/security-audit/SECURITY_STAGE_3_5_CHECKPOINT_REPORT.md",
+        "staging_selection_owner_confirmed": true,
+        "project_identity_independently_verified": false,
+        "email_confirmation_enabled_owner_reported": true,
+        "minimum_password_length_owner_reported": 8,
+        "candidate_minimum_password_length_proposal": 12,
+        "password_rule_parity": "REVIEW_OWNER_REPORTED_8_VS_CANDIDATE_12",
+        "required_password_characters_verified": false,
+        "secure_password_change_verified": false,
+        "current_password_requirement_verified": false,
+        "callback_paths_verified": false,
+        "site_url_is_staging_owner_reported": true,
+        "prior_mail_delivery_owner_reported": true,
+        "new_mail_delivery_test_run": false,
+        "isolated_controlled_Auth_test_identities_available": false,
+        "candidate_deployed_owner_reported": null,
+        "hosted_acceptance": false,
+        "hosted_Auth_cases_blocked": 31,
+        "interactive_readiness_commands_owner_completed": true,
+        "saved_ps1_execution_verified": false
       },
       {
         "id": "3.6",
@@ -1551,7 +1574,7 @@
         "status": "PENDING"
       }
     ],
-    "latest_evidence": "S3E23",
+    "latest_evidence": "S3E24",
     "production_promoted": false,
     "application_mfa_enforced": false,
     "full_security_or_release_acceptance_verified": false

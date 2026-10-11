@@ -2,8 +2,8 @@
   "schema_version": 1,
   "stage": 4,
   "updated_date": "2026-10-11",
-  "active_step": "4.4",
-  "source_review_head": "a1c17d7c89b59f88668bee8720d9e043af90d754",
+  "active_step": null,
+  "source_review_head": "fdd9ebdba2c0f8ba3b6c79528fcecb1c8db2ab27",
   "plan": "docs/security-audit/SECURITY_STAGE_4_DATA_PRIVACY_PLAN.md",
   "events": [
     {
@@ -595,6 +595,56 @@
       ],
       "next_step": "4.4",
       "stage_4_full_report_due_at": "4.4"
+    },
+    {
+      "id": "S4E12",
+      "stage_step": "4.4",
+      "recorded_date": "2026-10-11",
+      "result": "STAGE_4_FULL_REPORT_CLOSED_WITH_CARRY_FORWARD_HOSTED_ACCEPTANCE_BLOCKED",
+      "scope": "READ_ONLY_CURRENT_GIT_BYTE_IDENTITY_CANDIDATE_PRIOR_RECEIPT_DOCUMENT_AND_ACTION_RECONCILIATION",
+      "source_parent_commit": "fdd9ebdba2c0f8ba3b6c79528fcecb1c8db2ab27",
+      "report": "docs/security-audit/SECURITY_STAGE_4_COMPLETION_REPORT.md",
+      "final_recheck": "docs/security-audit/security-stage-4-final-recheck.json",
+      "remediation_action_index": "docs/security-audit/security-stage-4-remediation-actions.json",
+      "source_inventory_union_files": 96,
+      "current_git_blob_matches": 115,
+      "current_git_blob_mismatches": 0,
+      "candidate_receipt_SHA256_matches": 21,
+      "early_inventory_intentional_source_changes": [
+        "app.js",
+        "business.js"
+      ],
+      "intentional_changes_match_4_2_candidate": true,
+      "owner_exact_artifact_byte_matches": 5,
+      "owner_exact_CRLF_script_variant_matches": 5,
+      "unexplained_owner_hash_mismatches": 0,
+      "prior_assistant_local_test_case_executions": 188,
+      "prior_assistant_syntax_checks": 10,
+      "owner_repeated_file_checks": 63,
+      "owner_repeated_privacy_checks": 43,
+      "owner_repeats_add_distinct_primary_checks": false,
+      "fresh_local_behavior_tests_run": 0,
+      "fresh_hosted_HTTP_catalog_SQL_Auth_Storage_provider_device_checks_run": 0,
+      "planned_hosted_grouped_cases": 80,
+      "hosted_grouped_cases_run": 0,
+      "hosted_grouped_cases_blocked": 80,
+      "hosted_acceptance": false,
+      "completed_stage4_main_steps": 4,
+      "remaining_stage4_main_steps": 0,
+      "open_stage4_remediation_actions": 18,
+      "publication_blockers": 36,
+      "findings_closed": [],
+      "owner_SQL_terminal_or_setup_action_requested": false,
+      "public_notice_or_store_declaration_published": false,
+      "provider_email_job_executed": false,
+      "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+      "production_or_native_changed": false,
+      "next_stage": 5,
+      "next_step": "5.1",
+      "APK_update_deferred": true
     }
-  ]
+  ],
+  "stage_status": "CLOSED_DATA_LIFECYCLE_FILES_PRIVACY_CHECKPOINT_WITH_CARRY_FORWARD",
+  "next_stage": 5,
+  "next_step": "5.1"
 }

@@ -319,3 +319,7 @@ No new executable tool or behavior/sandbox/device test; existing eight test file
 ## Stage 8.2 owner Windows repeat
 
 [Owner receipt/pinned hash reconciliation](security-stage-8-notification-owner-local-checks.json): same 70 cases PASS/0 FAIL/exit 0, nine syntax checks on Node v22.17.0; 13 exact published hashes/eight exact CRLF variants, no mismatch. Non-failing TypeScript warning retained by actual scope. No new tool, source/runtime change or behavior rerun; no further SQL/terminal/setup action. Next 8.3; full report 8.4.
+
+## Stage 8.3 bounded notification/device readiness
+
+[Checkpoint](SECURITY_STAGE_8_3_READINESS_CHECKPOINT.md) and [per-case receipt](security-stage-8-notification-readiness.json): 60 current identities/21 consumed hashes/13 owner exact/eight CRLF variants reconcile, no drift. Six prerequisite groups and all 48 hosted/device cases BLOCKED / NOT RUN. No new executable tool or local behavior/syntax/provider/cron/device check, source/settings/notification/native action or owner SQL/terminal/setup command. Eight ND actions OPEN; next 8.4 full report, APK deferred.

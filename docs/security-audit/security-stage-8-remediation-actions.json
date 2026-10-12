@@ -128,8 +128,8 @@
   "total": 8,
   "open": 8,
   "findings_closed": [],
-  "latest_step": "8.2",
-  "latest_evidence": "S8E02",
+  "latest_step": "8.3",
+  "latest_evidence": "S8E04",
   "source_candidate": {
     "report": "docs/security-audit/SECURITY_STAGE_8_2_NOTIFICATION_CANDIDATE.md",
     "receipt": "docs/security-audit/security-stage-8-notification-local-checks.json",
@@ -142,5 +142,15 @@
     "local_cases": 70,
     "hosted_or_device_acceptance": false,
     "action_closures": 0
+  },
+  "bounded_readiness": {
+    "report": "docs/security-audit/SECURITY_STAGE_8_3_READINESS_CHECKPOINT.md",
+    "receipt": "docs/security-audit/security-stage-8-notification-readiness.json",
+    "result": "BLOCKED_NOT_RUN",
+    "prerequisite_groups": 6,
+    "planned_grouped_cases": 48,
+    "executed": 0,
+    "action_closures": 0,
+    "final_remediation_and_full_reaudit_required": true
   }
 }

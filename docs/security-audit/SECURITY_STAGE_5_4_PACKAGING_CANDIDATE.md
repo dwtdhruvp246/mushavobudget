@@ -1,5 +1,20 @@
 # 5.4 — Packaging compatibility candidate and native readiness
 
+## 5.4 corrected owner outcome — 12 October 2026 (S5E09)
+
+**Corrected Windows fixture recheck PASS: 9 PASS / 0 FAIL, exit 0; three syntax checks PASS; Node v22.17.0. 5.4 is complete at corrected source/local/owner fixture scope with actual native compile/device acceptance deferred and carry-forward. Four of five Stage 5 steps have outcomes. Next: 5.5, full report and evidence reconciliation.**
+
+The owner exported pin `a4cdfc98f36494b0e9313e47d2191a30e2c87a8b` into a fresh temporary directory and ran only the offline verifier. [Owner corrected receipt and hash reconciliation](security-stage-5-packaging-owner-recheck.json) records the complete summary. All three code hashes exactly match the published corrected Windows CRLF variants; zero unexplained differences. This is owner-run fixture evidence, not an assistant inspection of the owner native project.
+
+The corrected promotion-failure case now passes as part of the nine-case batch. The previous [8 PASS / 1 FAIL owner receipt](security-stage-5-packaging-owner-checks.json) remains unchanged; its Windows ESM-loader failure is not relabeled or removed. The [test-only correction/local rerun](security-stage-5-packaging-correction-local-checks.json) remains separately recorded. The repaired builder/verifier were unchanged by that correction.
+
+These repeat the same fixture cases, not new distinct controls. The actual builder runs only in temporary fixtures with mocked esbuild/Capacitor imports. Neither successful fixture rollback nor source packaging completeness proves native compile, encryption/backup exclusions, OS callback delivery, merged permission/transport/provider policy or iOS archive compliance. All earlier native concerns continue on final remediation, with no finding closure.
+
+No fresh assistant behavior tests were required for unchanged tested code. Zero hosted/device/native compile checks; no native sync, signing, install, upload, actual root www/project/settings/account/SQL/provider/production or installed APK change. APK update remains deferred.
+
+No rerun, further 5.4 SQL/terminal command or tool setup is needed. Stages 0–4, closed 5.1–5.3 objects, original 123 rows/20 definitions, earlier receipts and retained fixtures are preserved. The latest complete outcome supersedes the historical pending/reopened summaries below. The full Stage 5 report remains due at 5.5.
+
+
 ## 5.4 corrective check — 12 October 2026 (S5E08)
 
 **Owner Windows repeat: 8 PASS / 1 FAIL, exit 1; three syntax checks PASS, Node v22.17.0. The test harness is corrected; local rerun is 9 PASS / exit 0 with three syntax checks. Corrected Windows rerun is pending. 5.4's earlier completion summary is historical; the current checkpoint is reopened for this bounded corrective check. Full report stays at 5.5.**

@@ -1,5 +1,8 @@
 # Audit SQL, scripts, tests and implementation index
 
+**Latest — 5.4 / corrected owner Windows fixture PASS; checkpoint complete with carry-forward, 12 October 2026 (S5E09):** [Owner corrected receipt](security-stage-5-packaging-owner-recheck.json): 9 PASS/0 FAIL, exit 0, three syntax PASS, Node v22.17.0; all three hashes match published CRLF variants. [Detailed outcome](SECURITY_STAGE_5_4_PACKAGING_CANDIDATE.md). Earlier 8 PASS/1 FAIL receipt is preserved; same fixture case set, not new controls. No fresh assistant tests, real dependency/native compile, hosted/device/installed APK or settings/account changes; no finding closure or further 5.4 code/setup. **Four of five steps complete; next 5.5 full report; APK update deferred.** Earlier pending/reopened summaries are historical.
+
+
 **Latest — 5.4 / Windows fixture FAIL recorded and harness corrected; owner recheck pending, 12 October 2026 (S5E08):** [Owner receipt](security-stage-5-packaging-owner-checks.json): 8 PASS/1 FAIL, exit 1, three syntax PASS, Node v22.17.0; all three hashes match published CRLF variants. Raw Windows path in test --import failed ESM loading before rollback was exercised. Test now uses pathToFileURL(preload).href; [corrected local receipt](security-stage-5-packaging-correction-local-checks.json) reports 9 PASS/exit 0 and three syntax PASS on Node v24.19.0. [Correction details](SECURITY_STAGE_5_4_PACKAGING_CANDIDATE.md). Builder/verifier bytes and live/native project remain unchanged; original failure retained, no Windows PASS inferred. 5.4 reopens for one corrected Windows repeat from the complete chat block; full report remains 5.5. No SQL/native build/install/deployment or finding closure; APK update deferred. Earlier completion summaries are historical.
 
 

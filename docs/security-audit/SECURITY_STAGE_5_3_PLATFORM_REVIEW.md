@@ -1,5 +1,43 @@
 # 5.3 — Native origins, callbacks, permissions, transport and iOS privacy
 
+## 5.3 outcome — 12 October 2026 (S5E06)
+
+**5.3 is complete at selected tracked-source, local synthetic callback and owner-reported native-source configuration scope, with native acceptance unverified and carry-forward. Three of five Stage 5 steps have outcomes; next 5.4, packaging compatibility and one bounded build/device readiness outcome. Full report remains at 5.5; APK update stays deferred.**
+
+[Owner receipt/reconciliation](security-stage-5-platform-owner-summary.json) preserves the complete parsed owner summary and attachment SHA256. The owner reported config/main-manifest/file_paths hashes exactly match their three 5.1 hashes. That comparison links owner receipts; the assistant did not independently access those local file bytes.
+
+| Selected owner source field | Recorded result |
+|---|---|
+| Capacitor app ID | `com.mushavo.budget` — preserve this identity |
+| webDir | Owner summary confirms `www` |
+| Server hostname/schemes/remote URL | UNSET |
+| Cleartext/mixed content/WebView debugging/logging options | UNSET |
+| Main manifest cleartext/debug/networkSecurityConfig attributes | UNSET |
+| Main manifest requested permissions | INTERNET only |
+| Main activity | .MainActivity, exported=true; MAIN/LAUNCHER filter only |
+| FileProvider | exported=false, grantUriPermissions=true, bound to @xml/file_paths |
+| File-provider paths | external-path named my_images with path='.'; cache-path named my_cache_images with path='.' |
+| Plugin configuration block | Owner reports no block; this is not absence of installed plugins |
+
+**Callback registration gap:** the selected main manifest contains no VIEW/BROWSABLE callback intent filter or scheme/host/path data. The inspected activity filter is a launcher registration. Final merged/dependency registrations, native code, domain association and installed behavior remain unverified; no live email or OS link was tested. Existing F10 requires explicit validated native callbacks and exact supported origins while retaining the existing JWT/identity/role/MFA/tenant checks. Exporting the launcher activity is not by itself an exposure finding.
+
+**File-sharing scope gap:** FileProvider's non-exported declaration is retained, but both reported path rules use '.', so the path ranges are broad. The labels my_images/my_cache_images do not limit the actual directories to dedicated image subfolders. The [official Android FileProvider guidance](https://developer.android.com/privacy-and-security/risks/file-providers) recommends narrower paths and minimum URI grants, with special care for sensitive external storage. This does not prove that a file was disclosed or overwritten: actual URI creation, recipient/grant flags, reachable files, Android storage restrictions and release variants were not inspected. Record completion under existing F05/F06 native configuration and F13 file-handling dependencies; do not create a new finding definition.
+
+Native remediation must review the actual sharing/upload/download use sites, restrict provider roots to the dedicated app-owned temporary content needed by those features, preserve legitimate user-selected file flows, grant only necessary recipient access and validate grant lifetime/cleanup and hostile inputs on disposable device data. No untracked native file is rewritten by this receipt.
+
+**Transport/debug/origin remain unknown at effective scope:** UNSET is not false or an unsafe/secure verdict. Installed Capacitor versions, defaults, generated assets, target API, build type, merged resources and networking behavior still require final review. No broad CORS/origin/navigation relaxation, cleartext enablement or debugging setting is applied.
+
+The collector reported allow_navigation_entries=['UNSET']. Its null-pipeline behavior can produce that sentinel when a setting is unavailable. The receipt is preserved exactly; the sentinel is not accepted as a real allowed host or a confirmed enabled navigation rule. The summary cannot distinguish missing/null from a literal 'UNSET' element; no final navigation verdict is made and no rerun is needed for this bounded checkpoint.
+
+The earlier iOS root/project absence and uninspected archive/privacy declarations remain explicit. Current SDK documentation is not final archive evidence. Google/Apple identity integration, push and signed/store evidence retain their assigned later stages.
+
+The previous **11 local synthetic callback PASS / exit 0** retain their limited scope. No fresh local behavior tests were needed for this unchanged-code owner receipt. **Zero hosted/device/native build or privacy-archive checks ran.** No runtime source, native file, signing/app identity, settings/accounts/SQL/provider/production or installed APK changed. Existing findings remain open; no native security PASS is recorded.
+
+No further 5.3 SQL, terminal command, tool installation or setup loop is required. The source/local S5E05 receipt and handoff remain historical snapshots. Stages 0–4, closed 5.1/5.2 objects, original 123 coverage rows/20 definitions and retained fixtures are preserved.
+
+## Historical source/local review and initial handoff — S5E05
+
+
 **12 October 2026 / S5E05 — selected source and 11 existing local callback tests complete; one owner platform-configuration receipt pending.**
 Source pin: `14f5926d6301b961e86e9bfaf1680aff83007c30`. [Five-step Stage 5 plan](SECURITY_STAGE_5_NATIVE_PLAN.md). [Source/local evidence](security-stage-5-platform-review.json).
 

@@ -1,5 +1,10 @@
 # Stage 5 — Native security and compatibility
 
+## 5.3 complete with carry-forward — 12 October 2026 (S5E06)
+
+[Owner platform receipt](security-stage-5-platform-owner-summary.json) reports preserved app ID `com.mushavo.budget`, webDir=www, INTERNET only in the selected main manifest, a launcher-only activity and a non-exported FileProvider with broad external/cache '.' paths. Three source hashes match 5.1 owner evidence. [Detailed outcome](SECURITY_STAGE_5_3_PLATFORM_REVIEW.md): native callback registration/file-sharing scope need completion; unset transport/debug options and effective defaults/merged/iOS behavior remain unverified. Prior 11 synthetic callback PASS retained; zero fresh behavior/hosted/device/build/archive checks. **Three of five steps complete; next 5.4 packaging compatibility/readiness; full report 5.5.** No further 5.3 code or native mutation; APK update deferred. Earlier active/pending summaries are historical.
+
+
 ## 5.3 active — 12 October 2026 (S5E05)
 
 [Platform review](SECURITY_STAGE_5_3_PLATFORM_REVIEW.md) records exact-origin function guards/current-origin callback construction, absent inspected link dispatch in the selected bridge and unresolved local/native privacy/transport inputs. [Evidence](security-stage-5-platform-review.json): 12 exact source/test blobs; 11 existing synthetic callback cases PASS/exit 0, no real native/hosted checks. One complete read-only local config/main-manifest/resource handoff is supplied in chat. F10/F17 and F05/F06/F14 dependencies remain open. 5.1/5.2 outcomes are unchanged; report due 5.5; APK update deferred.

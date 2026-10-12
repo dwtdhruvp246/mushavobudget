@@ -3,7 +3,7 @@
   "updated_date": "2026-10-12",
   "current_stage": 5,
   "current_step": "5.3",
-  "current_title": "5.3 source review and 11 local callback tests complete; one read-only owner platform-config receipt pending",
+  "current_title": "5.3 source/configuration review complete with carry-forward; native callback and file-provider gaps recorded; next 5.4",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 5,
-  "next_step": "5.3",
+  "next_step": "5.4",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -2011,13 +2011,13 @@
     "status": "ACTIVE_NATIVE_SECURITY_AND_COMPATIBILITY",
     "authorized": true,
     "started_date": "2026-10-11",
-    "active_step": "5.3",
+    "active_step": "5.4",
     "bounded_steps": 5,
-    "completed_steps": 2,
-    "remaining_steps": 3,
+    "completed_steps": 3,
+    "remaining_steps": 2,
     "plan": "docs/security-audit/SECURITY_STAGE_5_NATIVE_PLAN.md",
     "source_inventory": "docs/security-audit/security-stage-5-native-source-inventory.json",
-    "latest_evidence": "S5E05",
+    "latest_evidence": "S5E06",
     "finding_ids": [
       "F05",
       "F06",
@@ -2085,8 +2085,8 @@
       },
       {
         "id": "5.3",
-        "status": "SOURCE_LOCAL_REVIEW_COMPLETE_OWNER_PLATFORM_CONFIG_PENDING",
-        "latest_evidence": "S5E05",
+        "status": "COMPLETE_SOURCE_LOCAL_OWNER_REVIEW_WITH_NATIVE_ACCEPTANCE_UNVERIFIED_CARRY_FORWARD",
+        "latest_evidence": "S5E06",
         "source_commit": "14f5926d6301b961e86e9bfaf1680aff83007c30",
         "source_review": "docs/security-audit/SECURITY_STAGE_5_3_PLATFORM_REVIEW.md",
         "source_local_receipt": "docs/security-audit/security-stage-5-platform-review.json",
@@ -2097,16 +2097,30 @@
         "local_fail": 0,
         "local_exit_code": 0,
         "local_scope": "EXISTING_SYNTHETIC_AUTH_CALLBACK_TEST_SUBSET_NOT_NATIVE_PERMISSIONS_TRANSPORT_OR_ARCHIVE_ACCEPTANCE",
-        "owner_platform_config_received": false,
+        "owner_platform_config_received": true,
         "owner_handoff": "scripts/read-stage-5-platform-config.ps1",
         "hosted_checks_run": 0,
         "device_checks_run": 0,
         "native_security_acceptance": false,
-        "findings_closed": []
+        "findings_closed": [],
+        "completed_date": "2026-10-12",
+        "owner_platform_receipt": "docs/security-audit/security-stage-5-platform-owner-summary.json",
+        "owner_source_hash_matches_prior_inventory": 3,
+        "owner_app_id": "com.mushavo.budget",
+        "owner_web_dir_is_www": true,
+        "owner_main_permission_names": [
+          "android.permission.INTERNET"
+        ],
+        "owner_main_VIEW_BROWSABLE_callback_filters_identified": false,
+        "owner_file_provider_exported": false,
+        "owner_file_provider_broad_external_cache_paths": true,
+        "effective_native_transport_debug_policy_verified": false,
+        "owner_rerun_required": false,
+        "next_step": "5.4"
       },
       {
         "id": "5.4",
-        "status": "PLANNED"
+        "status": "READY_FOR_BOUNDED_PACKAGING_COMPATIBILITY_AND_DEVICE_READINESS_WORK"
       },
       {
         "id": "5.5",
@@ -2120,6 +2134,7 @@
     "native_builds_run": 0,
     "findings_closed": [],
     "owner_metadata_receipt": "docs/security-audit/security-stage-5-native-owner-metadata.json",
-    "owner_backup_receipt": "docs/security-audit/security-stage-5-backup-owner-summary.json"
+    "owner_backup_receipt": "docs/security-audit/security-stage-5-backup-owner-summary.json",
+    "owner_platform_receipt": "docs/security-audit/security-stage-5-platform-owner-summary.json"
   }
 }

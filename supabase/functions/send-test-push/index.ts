@@ -2,6 +2,7 @@ import { createClient } from "npm:@supabase/supabase-js@2.110.9";
 // @ts-types="npm:@types/web-push@3.6.4"
 import webpush from "npm:web-push@3.6.7";
 import { createGuardedPushSender, isBlockedPushDestination } from "../_shared/push-destination.mjs";
+import { activeNotificationRecipient } from "../_shared/notification-recipient.mjs";
 
 const sendGuardedPush = createGuardedPushSender(webpush);
 
@@ -97,6 +98,13 @@ Deno.serve(async (request) => {
   const serviceClient = createClient(supabaseUrl, serviceRoleKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
+  try {
+    if (!await activeNotificationRecipient(serviceClient, userData.user.id)) {
+      return json({ error: "PUSH_RECIPIENT_INACTIVE" }, 403, responseOrigin);
+    }
+  } catch (_error) {
+    return json({ error: "PUSH_RECIPIENT_STATUS_CHECK_FAILED" }, 500, responseOrigin);
+  }
   try {
     webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
   } catch (_error) {

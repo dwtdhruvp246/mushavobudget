@@ -2995,15 +2995,71 @@ async function loadBusinessAccess() {
   }
 }
 
+let businessSignOutInProgress = false;
+
+async function removeBusinessDevicePush(userId, isCurrent) {
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) return;
+  const assertCurrent = () => {
+    if (!isCurrent()) throw Object.assign(new Error("The active account changed."), {code: "session_changed"});
+  };
+  assertCurrent();
+  const registration = await navigator.serviceWorker.getRegistration("/");
+  assertCurrent();
+  if (!registration) return;
+  const subscription = await registration.pushManager.getSubscription();
+  assertCurrent();
+  if (subscription) {
+    const {error} = await supabase.from("push_subscriptions").delete()
+      .eq("user_id", userId).eq("endpoint", subscription.endpoint);
+    if (error) throw error;
+    assertCurrent();
+    await subscription.unsubscribe();
+    assertCurrent();
+  }
+  try { await navigator.clearAppBadge?.(); } catch (_badgeError) { /* Optional. */ }
+  assertCurrent();
+}
+
 async function signOut() {
+  if (businessSignOutInProgress || !state.session?.user?.id) return;
+  businessSignOutInProgress = true;
+  const userId = state.session.user.id, epoch = businessAuthEpoch;
+  let expired = false, timeoutId, cleanupFailed = false;
+  const isCurrent = () => !expired && state.session?.user?.id === userId && businessAuthEpoch === epoch;
   try {
+    try {
+      await Promise.race([
+        removeBusinessDevicePush(userId, isCurrent),
+        new Promise((_, reject) => {
+          timeoutId = window.setTimeout(() => {
+            expired = true;
+            reject(new Error("Device notification cleanup timed out."));
+          }, 10000);
+        })
+      ]);
+    } catch (_cleanupError) { cleanupFailed = true; }
+    finally { window.clearTimeout(timeoutId); }
+    // Cleanup failure/timeout must not trap the requested Auth sign-out, and
+    // delayed cleanup must never retire a newly signed-in account's device.
+    if (state.session?.user?.id !== userId || businessAuthEpoch !== epoch) return;
     const {error} = await supabase.auth.signOut({ scope: "local" });
     if (error) throw error;
+    if (state.session?.user?.id && (state.session.user.id !== userId || businessAuthEpoch !== epoch)) return;
+    if (!cleanupFailed) {
+      try { window.localStorage.removeItem(`mushavo-budget:push-enabled:${userId}`); } catch (_storageError) { /* Optional. */ }
+    }
     clearBusinessWorkspaceState();
+    if (cleanupFailed && typeof window.alert === "function") {
+      window.alert("Signed out. Device notifications could not be disconnected. Turn off this site's notifications in your device settings if needed.");
+    }
     window.location.replace("/app.html");
   } catch (_error) {
     $('#businessErrorMessage').textContent = 'Sign-out could not finish. Your session may still be active. Check your connection and try again.';
     showOnly('businessError');
+  } finally {
+    expired = true;
+    window.clearTimeout(timeoutId);
+    businessSignOutInProgress = false;
   }
 }
 

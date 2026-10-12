@@ -127,5 +127,20 @@
   ],
   "total": 8,
   "open": 8,
-  "findings_closed": []
+  "findings_closed": [],
+  "latest_step": "8.2",
+  "latest_evidence": "S8E02",
+  "source_candidate": {
+    "report": "docs/security-audit/SECURITY_STAGE_8_2_NOTIFICATION_CANDIDATE.md",
+    "receipt": "docs/security-audit/security-stage-8-notification-local-checks.json",
+    "contract": "docs/security-audit/security-stage-8-notification-candidate-contract.json",
+    "partial_source_contribution": [
+      "ND-R02",
+      "ND-R03",
+      "ND-R04"
+    ],
+    "local_cases": 70,
+    "hosted_or_device_acceptance": false,
+    "action_closures": 0
+  }
 }

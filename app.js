@@ -797,6 +797,12 @@ function friendlyMessage(message = "") {
   if (text.includes("PUSH_TEST_RATE_LIMITED")) {
     return "A test was requested recently. Wait one minute before trying again.";
   }
+  if (text.includes("PUSH_RECIPIENT_INACTIVE")) {
+    return "Notifications are unavailable because your account is not active.";
+  }
+  if (text.includes("PUSH_RECIPIENT_STATUS_CHECK_FAILED")) {
+    return "Your account status could not be checked. Try again shortly.";
+  }
   if (text.includes("PUSH_TEST_DELIVERY_FAILED")) {
     return "The push service could not reach any active device. Re-enable notifications on the device and try again.";
   }

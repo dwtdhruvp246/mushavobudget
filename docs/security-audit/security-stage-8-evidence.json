@@ -2,8 +2,8 @@
   "schema_version": 1,
   "stage": 8,
   "date": "2026-10-12",
-  "stage_status": "IN_PROGRESS_SOURCE_EVENT_DEVICE_INVENTORY_COMPLETE",
-  "active_step": "8.2",
+  "stage_status": "IN_PROGRESS_SOURCE_CANDIDATE_AND_LOCAL_REGRESSION_COMPLETE",
+  "active_step": "8.3",
   "scope": "SOURCE_PRIMARY_API_AND_DECISION_INVENTORY_NOT_NOTIFICATION_DELIVERY_OR_NATIVE_ACCEPTANCE",
   "events": [
     {
@@ -36,6 +36,41 @@
       "production_or_native_changed": false,
       "findings_closed": [],
       "next_step": "8.2"
+    },
+    {
+      "id": "S8E02",
+      "stage_step": "8.2",
+      "date": "2026-10-12",
+      "source_parent_commit": "a51e29cb2b71182dc5373c3804ec5ebc4a3c2ce0",
+      "result": "COMPLETE_AT_SOURCE_CANDIDATE_AND_SELECTED_LOCAL_REGRESSION_SCOPE",
+      "candidate_report": "docs/security-audit/SECURITY_STAGE_8_2_NOTIFICATION_CANDIDATE.md",
+      "candidate_contract": "docs/security-audit/security-stage-8-notification-candidate-contract.json",
+      "local_receipt": "docs/security-audit/security-stage-8-notification-local-checks.json",
+      "primary_boundary_cases": 32,
+      "selected_existing_cases": 38,
+      "pass": 70,
+      "fail": 0,
+      "exit_code": 0,
+      "syntax_checks": 9,
+      "Node_JS_syntax_checks": 6,
+      "stripped_TS_Node_syntax_checks": 3,
+      "non_failing_TypeScript_experimental_warning": true,
+      "consumed_input_hashes": 21,
+      "unchanged_consumed_parent_blobs": 9,
+      "intentional_existing_non_document_replacements": 8,
+      "added_non_document_paths": 3,
+      "source_runtime_candidate_paths": 8,
+      "historical_case_executions": 172,
+      "historical_pass": 172,
+      "historical_fail": 0,
+      "open_actions": 8,
+      "hosted_provider_device_cases_run": 0,
+      "notification_dispatched": false,
+      "device_permission_registration_or_subscription_changed": false,
+      "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+      "production_or_native_changed": false,
+      "findings_closed": [],
+      "next_step": "8.3"
     }
   ],
   "prior_stage_records_unchanged": true,
@@ -44,5 +79,5 @@
   "notification_dispatched": false,
   "APK_update_deferred": true,
   "report_due_step": "8.4",
-  "next_step": "8.2"
+  "next_step": "8.3"
 }

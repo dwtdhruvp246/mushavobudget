@@ -23,7 +23,7 @@ test("production deployment waits for the complete automated release suite", () 
   const globalPermissions = workflowSource.slice(0, workflowSource.indexOf("jobs:"));
   assert.match(workflowSource, /pull_request:\s*\n\s*branches: \["main"\]/);
   assert.match(workflowSource, /test:\s*[\s\S]*run: npm test/);
-  assert.match(packageManifest.scripts.test, /node --experimental-strip-types --test tests\/\*\.test\.mjs/);
+  assert.equal(packageManifest.scripts.test, "node scripts/run-offline-tests.mjs");
   assert.match(workflowSource, /deploy:\s*\n\s*needs: test/);
   assert.match(workflowSource, /if: github\.event_name != 'pull_request'/);
   assert.match(workflowSource, /deploy:[\s\S]*permissions:\s*\n\s*contents: read\s*\n\s*pages: write\s*\n\s*id-token: write/);
@@ -78,7 +78,7 @@ test("the manual matrix covers mobile, authentication, privacy, updates and offl
 
 test("all current web release markers agree", () => {
   assert.match(pwaSource, /const RELEASE = "4\.9\.40"/);
-  assert.match(appPage, /app\.js\?v=112/);
+  assert.match(appPage, /app\.js\?v=115/);
   assert.match(appPage, /styles\.css\?v=79/);
   assert.match(appPage, /pwa\.js\?v=80/);
   assert.match(appPage, /Version 4\.9\.40/g);

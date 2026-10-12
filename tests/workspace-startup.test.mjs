@@ -29,6 +29,7 @@ async function launchApp({ saved, families = [], suspended = false, unfinished =
     query: async label => label === 'account status load' ? suspended : label === 'families load' ? families : [],
     assertSupabase() {}, blockUnfinishedAdminInvitationSession: async () => unfinished,
     ensureProfile: async () => {}, loadInvitations: async () => {}, loadNotifications: async () => {},
+    ensureAdminAssurance: async () => true, adminMfa: { authorized: true }, syncRouteForWorkspace() {},
     loadAccess: async () => true, loadAdminData: async () => {}, renderAdmin() { events.push('admin'); },
     loadFamilyFinancialData: async () => { events.push('finance'); }, loadWorkspaceSubscriptionData: async () => {},
     loadPersonalPlanAccess: async () => {}, syncRouteForWorkspace() {}, loadCashbookData: async () => {}, loadUserSupportData: async () => {},
@@ -82,7 +83,7 @@ test('Admin entry and explicit Personal destination take precedence over remembe
 async function launchBusiness({ requested = idA, restoring = true, available = true, incoming = [], signedIn = true, suspended = false } = {}) {
   const { window, redirects } = browser(`https://mushavobudget.com/business.html?workspace=${requested}${restoring ? '&restore_workspace=1' : ''}#business/overview`);
   const events = [], request = new Proxy({}, { get: () => () => request });
-  const context = { window, URL, console: { error() {} }, appOpening: false, isConfigured: true,
+  const context = { window, URL, console: { error() {} }, appOpening: false, isConfigured: true, businessAuthEpoch: 0,
     state: { session: null, workspaces: [], memberships: [] },
     supabase: { auth: { getSession: async () => ({ data: { session: signedIn ? { user: { id: 'owner' } } : null } }) }, from: () => request, rpc: () => request },
     query: async label => label === 'account status load' ? suspended : label === 'Business workspace load' ? available ? [company] : [{ ...company, id: idB }] : label === 'Business invitation load' ? incoming : [],

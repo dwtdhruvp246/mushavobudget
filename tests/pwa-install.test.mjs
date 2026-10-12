@@ -1,3 +1,4 @@
+import { PUBLIC_SITE_FILES } from '../scripts/build-public-site.mjs';
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
@@ -259,8 +260,9 @@ test("all user-facing pages and the deployment shell include Stage 4 assets", ()
   assert.match(workerSource, /pwa-shell-v88/);
   assert.match(workerSource, /"\/pwa-install\.js\?v=1"/);
   assert.match(workerSource, /"\/pwa-install\.css\?v=2"/);
-  assert.match(workflowSource, /pwa-install\.js/);
-  assert.match(workflowSource, /pwa-install\.css/);
+  assert.match(workflowSource, /node scripts\/build-public-site\.mjs/);
+  for (const asset of ["pwa-install.js", "pwa-install.css"]) assert.ok(PUBLIC_SITE_FILES.includes(asset), asset + " is shipped by the actual exporter");
+
   assert.match(installCss, /pwa-install-trigger\[hidden\]/);
   assert.match(installCss, /env\(safe-area-inset-bottom\)/);
 });

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "stage": 9,
   "date": "2026-10-12",
-  "stage_status": "IN_PROGRESS_SOURCE_REGRESSION_RELEASE_INVENTORY_COMPLETE",
-  "active_step": "9.2",
+  "stage_status": "IN_PROGRESS_LOCAL_REGRESSION_COMPLETE_WITH_CARRY_FORWARD",
+  "active_step": "9.3",
   "scope": "SOURCE_CATALOG_PRIMARY_REQUIREMENTS_NOT_BEHAVIOR_HOSTED_NATIVE_OR_STORE_ACCEPTANCE",
   "events": [
     {
@@ -46,6 +46,40 @@
       "APK_update_deferred": true,
       "findings_closed": [],
       "next_step": "9.2"
+    },
+    {
+      "id": "S9E02",
+      "stage_step": "9.2",
+      "date": "2026-10-12",
+      "source_parent_commit": "bf7d1ec1690a43b692d2164204ebbd7d21d051ae",
+      "result": "COMPLETE_AT_SOURCE_CANDIDATE_AND_OFFLINE_REGRESSION_SCOPE",
+      "candidate_report": "docs/security-audit/SECURITY_STAGE_9_2_REGRESSION_CANDIDATE.md",
+      "contract": "docs/security-audit/security-stage-9-regression-candidate-contract.json",
+      "receipt": "docs/security-audit/security-stage-9-regression-local-checks.json",
+      "pass": 882,
+      "fail": 0,
+      "exit_code": 0,
+      "test_files": 92,
+      "MJS_test_files": 85,
+      "CJS_test_files": 7,
+      "new_release_runner_cases": 6,
+      "syntax_checks": 17,
+      "consumed_candidate_hashes": 21,
+      "historical_case_executions": 3522,
+      "historical_PASS": 3501,
+      "historical_FAIL": 21,
+      "unique_final_suite_cases": 882,
+      "source_non_document_diff_paths": 20,
+      "open_actions": 8,
+      "hosted_device_store_or_performance_cases_run": 0,
+      "full_CI_execution_or_deployment_verified": false,
+      "actual_native_bundle_or_compile_run": false,
+      "source_application_JS_SQL_native_changed": false,
+      "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+      "production_or_native_changed": false,
+      "APK_update_deferred": true,
+      "findings_closed": [],
+      "next_step": "9.3"
     }
   ],
   "prior_stage_records_unchanged": true,
@@ -54,5 +88,5 @@
   "store_acceptance": false,
   "APK_update_deferred": true,
   "report_due_step": "9.4",
-  "next_step": "9.2"
+  "next_step": "9.3"
 }

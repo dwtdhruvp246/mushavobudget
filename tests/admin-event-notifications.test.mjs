@@ -78,7 +78,11 @@ test("admin shell exposes bell controls and optional per-device push settings", 
   assert.match(html, /id="adminEnablePushNotificationsButton"/);
   assert.match(application, /function renderAdminPushNotificationSettings/);
   assert.match(application, /Admin notifications enabled on this device/);
-  assert.match(application, /Promise\.all\(\[loadAdminData\(\), loadNotifications\(\)\]\)/);
+  const load = application.slice(application.indexOf("async function loadApp()"), application.indexOf("async function ensureProfile()"));
+  assert.ok(load.includes("ensureAdminAssurance()") && load.includes("settled(loadNotifications())"));
+  assert.ok(load.indexOf("ensureAdminAssurance()") < load.indexOf("settled(loadNotifications())"));
+  assert.match(load, /await loadAdminData\(\)/);
+  assert.match(load, /!adminMfa\.authorized/);
   assert.doesNotMatch(application, /if \(!userId \|\| state\.isAdmin\) return/);
 });
 

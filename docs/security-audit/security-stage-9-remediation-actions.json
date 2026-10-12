@@ -156,5 +156,19 @@
   "hosted_acceptance": false,
   "native_security_acceptance": false,
   "store_acceptance": false,
-  "final_remediation_and_full_reaudit_required": true
+  "final_remediation_and_full_reaudit_required": true,
+  "latest_step": "9.2",
+  "latest_evidence": "S9E02",
+  "source_candidate": {
+    "report": "docs/security-audit/SECURITY_STAGE_9_2_REGRESSION_CANDIDATE.md",
+    "receipt": "docs/security-audit/security-stage-9-regression-local-checks.json",
+    "contract": "docs/security-audit/security-stage-9-regression-candidate-contract.json",
+    "partial_source_contribution": [
+      "RG-R05"
+    ],
+    "local_unique_cases": 882,
+    "local_file_count": 92,
+    "hosted_native_store_acceptance": false,
+    "action_closures": 0
+  }
 }

@@ -186,7 +186,7 @@ test('Business query rejects delayed old-account data',async()=>{
   const request=context.query('synthetic',pending);context.businessAuthEpoch++;finish({data:['old']});await assert.rejects(request,{code:'session_changed'});
 });
 test('Business logout error does not navigate as if sign-out succeeded',async()=>{
-  const message={};let navigations=0,cleared=0;const context={supabase:{auth:{async signOut(){return {error:{code:'network_error'}};}}},window:{location:{replace(){navigations++;}}},$:()=>message,clearBusinessWorkspaceState(){cleared++;},showOnly(){}};
+  const message={};let navigations=0,cleared=0;const context={businessSignOutInProgress:false,businessAuthEpoch:0,state:{session:{user:{id}}},removeBusinessDevicePush:async()=>{},supabase:{auth:{async signOut(){return {error:{code:'network_error'}};}}},window:{setTimeout,clearTimeout,location:{replace(){navigations++;}}},$:()=>message,clearBusinessWorkspaceState(){cleared++;},showOnly(){}};
   vm.runInNewContext(businessSource.slice(businessSource.indexOf('async function signOut()'),businessSource.indexOf('function leaveBusiness(')),context);await context.signOut();assert.equal(navigations,0);assert.equal(cleared,0);assert.match(message.textContent,/session may still be active/);
 });
 test('Business Auth switch clears all access state before deferred reload',()=>{

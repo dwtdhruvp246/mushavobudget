@@ -37,3 +37,7 @@ Production Supabase `kttkospkblwvguuwnhjj` is excluded from mutations; isolated 
 **APK update is deferred.** Do not build/sync/install/sign/upload native projects or disturb owner signing identity to compensate for absent evidence. Final accepted remediation and a full fresh audit remain required.
 
 **No owner SQL, terminal, setup, rerun or file-opening action is required for 9.1.** Any later required PowerShell/SQL will be pasted completely in chat. Next is **9.2**.
+
+## 9.2 — Source-local regression/packaging outcome
+
+[Candidate/scope](SECURITY_STAGE_9_2_REGRESSION_CANDIDATE.md), [exact contract](security-stage-9-regression-candidate-contract.json) and [local receipt with full history](security-stage-9-regression-local-checks.json). The explicit offline runner covers MJS and CJS; actual public exporter includes Auth assets and is used by the source workflow. Final 882 cases PASS, all 92 files run, 17 syntax checks; earlier 15 + six failed executions retained. No new hosted/native/store/performance/CI deployment proof, eight actions OPEN and 48 real grouped cases unrun. Full optional Windows temp-export code is in chat; no SQL/dependency installation/native action. Next 9.3, full report 9.4; APK deferred.

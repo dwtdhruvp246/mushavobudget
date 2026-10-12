@@ -80,3 +80,13 @@ An optional complete PowerShell block is supplied in chat: fetch the audit branc
 The verifier starts local child Node processes with synthetic ports. No notification, permission request, subscription/account/fixture/SQL/Auth/Storage setting, provider/key/cron/Vault configuration, actual production or native action was performed. Retained fixtures/two conversions remain outside these checks. Offline `candidate_deployed=false` is not a fresh deployment probe.
 
 **8.2 is complete at source-candidate/selected-local-regression scope. Next 8.3 records one bounded readiness/delivery/device outcome; full Stage 8 report 8.4.** Actual native push SDK/transport/registration remains unimplemented in this candidate. APK update remains deferred; release gate remains OPEN_PENDING_REQUIRED_EVIDENCE and accepted remediation/full re-audit remain required.
+
+## Owner Windows repeat — 12 October 2026 (S8E03)
+
+The [owner receipt and pinned hash reconciliation](security-stage-8-notification-owner-local-checks.json) records exact candidate `d6a797536c277c59f351e0c44c71d4074c1b92c7`: Node v22.17.0, the same 32 boundary cases and 38 selected regressions, **70 PASS / 0 FAIL / exit 0**, nine Node syntax checks (six JS/three stripped TS). All 21 input bytes match their published Git identities and assistant hashes. Thirteen owner hashes are exact published-byte matches; eight are exact LF-to-CRLF variants, with zero unexplained differences.
+
+The owner parent process and primary batch emitted the non-failing TypeScript experimental warning; the owner selected-regression warning flag is false. The assistant regression flag was true. Each actual warning scope is preserved; this difference is not a failure or a source change.
+
+The owner adds 70 repeat executions to the retained 172 assistant executions: **242 historical executions/PASS, zero FAIL**, representing the same 70-case final suite rather than 242 unique controls. Explicit historical syntax target executions are 26 (17 assistant/nine owner). No new assistant behavior or syntax rerun occurred during this reconciliation. Original assistant receipt/history, completed earlier stages and 8.1 remain intact.
+
+This supplies no real Deno/runtime/RLS/provider/OS/native acceptance. Source/code/configuration/accounts/fixtures/SQL/native artifacts remain unchanged by reconciliation. No rerun or additional SQL/terminal/setup action is required. Next 8.3; full report remains due at 8.4, all eight ND actions OPEN and APK deferred.

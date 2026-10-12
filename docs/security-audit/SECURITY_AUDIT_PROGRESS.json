@@ -3,7 +3,7 @@
   "updated_date": "2026-10-12",
   "current_stage": 8,
   "current_step": "8.2",
-  "current_title": "Stage 8 source notification boundary candidate/local regression complete; next 8.3 bounded readiness",
+  "current_title": "Stage 8.2 owner Windows repeat/hash reconciliation complete; next 8.3 bounded readiness",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -2684,7 +2684,7 @@
     "test_matrix": "docs/security-audit/security-stage-8-notification-test-matrix.json",
     "remediation_action_index": "docs/security-audit/security-stage-8-remediation-actions.json",
     "evidence": "docs/security-audit/security-stage-8-evidence.json",
-    "latest_evidence": "S8E02",
+    "latest_evidence": "S8E03",
     "source_parent_commit": "5306aa19adc42654cde1a8f415aa4318a4289321",
     "primary_finding_id": "F11",
     "finding_ids": [
@@ -2744,7 +2744,8 @@
         "hosted_provider_device_cases_run": 0,
         "native_push_integration_implemented": false,
         "findings_closed": [],
-        "next_step": "8.3"
+        "next_step": "8.3",
+        "owner_repeat_receipt": "docs/security-audit/security-stage-8-notification-owner-local-checks.json"
       },
       {
         "id": "8.3",
@@ -2792,14 +2793,32 @@
     "candidate_contract": "docs/security-audit/security-stage-8-notification-candidate-contract.json",
     "local_receipt": "docs/security-audit/security-stage-8-notification-local-checks.json",
     "local_unique_final_suite_cases": 70,
-    "historical_local_case_executions": 172,
-    "historical_local_case_passes": 172,
+    "historical_local_case_executions": 242,
+    "historical_local_case_passes": 242,
     "historical_local_case_failures": 0,
     "source_runtime_candidate_paths": 8,
     "offline_changed_or_added_paths": 3,
     "intentional_existing_non_document_replacements": 8,
     "added_non_document_paths": 3,
     "hosted_or_device_cases_run": 0,
-    "optional_owner_terminal_repeat_supplied": true
+    "optional_owner_terminal_repeat_supplied": true,
+    "owner_local_receipt": "docs/security-audit/security-stage-8-notification-owner-local-checks.json",
+    "owner_repeat": {
+      "node_version": "v22.17.0",
+      "same_cases": 70,
+      "pass": 70,
+      "fail": 0,
+      "exit_code": 0,
+      "syntax_checks": 9,
+      "exact_published_hashes": 13,
+      "exact_CRLF_variants": 8,
+      "hash_mismatches": 0,
+      "parent_and_primary_TypeScript_warning_non_failing": true,
+      "selected_regression_TypeScript_warning_observed": false,
+      "hosted_acceptance": false
+    },
+    "assistant_historical_case_executions": 172,
+    "owner_repeat_case_executions": 70,
+    "historical_Node_syntax_target_executions": 26
   }
 }

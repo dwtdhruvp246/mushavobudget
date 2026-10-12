@@ -315,3 +315,7 @@ No new executable tool or behavior/sandbox/device test; existing eight test file
 ## Stage 8.2 notification boundary source candidate
 
 [Candidate/report](SECURITY_STAGE_8_2_NOTIFICATION_CANDIDATE.md), [contract](security-stage-8-notification-candidate-contract.json), [receipt/history](security-stage-8-notification-local-checks.json), [Node runner](../../scripts/verify-stage-8-notifications.mjs), [32 boundary cases](../../tests/stage-8-notification-boundaries.test.mjs) and [shared recipient/privacy helper](../../supabase/functions/_shared/notification-recipient.mjs). Final 70 PASS, nine Node syntax checks; warning retained. Actual Business/Edge/helper fixtures and 38 selected regressions, no real provider/SQL/device/native acceptance or SDK activation. Eight actions OPEN, zero of 48 hosted/device cases run. No required SQL/setup; optional exact temp-export PowerShell block supplied fully in chat. Next 8.3, full report 8.4.
+
+## Stage 8.2 owner Windows repeat
+
+[Owner receipt/pinned hash reconciliation](security-stage-8-notification-owner-local-checks.json): same 70 cases PASS/0 FAIL/exit 0, nine syntax checks on Node v22.17.0; 13 exact published hashes/eight exact CRLF variants, no mismatch. Non-failing TypeScript warning retained by actual scope. No new tool, source/runtime change or behavior rerun; no further SQL/terminal/setup action. Next 8.3; full report 8.4.

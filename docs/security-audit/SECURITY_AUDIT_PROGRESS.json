@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-12",
   "current_stage": 7,
-  "current_step": "7.3",
-  "current_title": "Stage 7.3 bounded readiness complete; hosted/store checks BLOCKED, next 7.4 full report",
+  "current_step": "7.4",
+  "current_title": "Stage 7 subscription commerce CLOSED WITH CARRY-FORWARD; next 8.1 notification/device inventory",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1055,8 +1055,8 @@
   "final_reaudit_status": "PLANNED_NOT_PERFORMED",
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
-  "next_stage": 7,
-  "next_step": "7.4",
+  "next_stage": 8,
+  "next_step": "8.1",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -2482,14 +2482,14 @@
     "full_security_or_release_acceptance_verified": false
   },
   "stage_7": {
-    "status": "IN_PROGRESS_BOUNDED_READINESS_BLOCKED_WITH_CARRY_FORWARD",
+    "status": "CLOSED_COMMERCE_CHECKPOINT_WITH_CARRY_FORWARD",
     "authorized": true,
     "started_date": "2026-10-12",
-    "active_step": "7.4",
+    "active_step": null,
     "initial_step": "7.1",
     "bounded_steps": 4,
-    "completed_steps": 3,
-    "remaining_steps": 1,
+    "completed_steps": 4,
+    "remaining_steps": 0,
     "plan": "docs/security-audit/SECURITY_STAGE_7_COMMERCE_PLAN.md",
     "source_review": "docs/security-audit/SECURITY_STAGE_7_1_COMMERCE_SOURCE_REVIEW.md",
     "source_inventory": "docs/security-audit/security-stage-7-commerce-source-inventory.json",
@@ -2497,7 +2497,7 @@
     "test_matrix": "docs/security-audit/security-stage-7-commerce-test-matrix.json",
     "remediation_action_index": "docs/security-audit/security-stage-7-remediation-actions.json",
     "evidence": "docs/security-audit/security-stage-7-evidence.json",
-    "latest_evidence": "S7E04",
+    "latest_evidence": "S7E05",
     "source_parent_commit": "bcb8f055f93cb9c145a0f74556e4bacb39847593",
     "primary_finding_id": "F03",
     "finding_ids": [
@@ -2580,7 +2580,25 @@
       {
         "id": "7.4",
         "title": "Reconciliation and full Stage 7 report",
-        "status": "PLANNED"
+        "status": "COMPLETE_WITH_CARRY_FORWARD",
+        "completed_date": "2026-10-12",
+        "latest_evidence": "S7E05",
+        "source_parent_commit": "2487b7c5b13abecb2be88a421483dc13b014b182",
+        "report": "docs/security-audit/SECURITY_STAGE_7_COMPLETION_REPORT.md",
+        "final_recheck": "docs/security-audit/security-stage-7-final-recheck.json",
+        "current_input_identity_matches": 56,
+        "consumed_input_SHA256_matches": 12,
+        "immutable_structured_records_preserved": 7,
+        "complete_non_document_diff_paths": 3,
+        "non_document_deletions": 0,
+        "owner_exact_published_hashes": 7,
+        "owner_exact_CRLF_variants": 5,
+        "unexpected_drift": 0,
+        "new_behavior_syntax_hosted_device_checks_run": 0,
+        "open_actions": 8,
+        "blocked_hosted_grouped_cases": 48,
+        "findings_closed": [],
+        "next_step": "8.1"
       }
     ],
     "planned_acceptance_groups": [
@@ -2614,7 +2632,7 @@
     "APK_update_deferred": true,
     "owner_SQL_terminal_or_setup_action_requested": false,
     "report_due_step": "7.4",
-    "next_step": "7.4",
+    "next_step": "8.1",
     "optional_owner_terminal_repeat_supplied": true,
     "candidate_contract": "docs/security-audit/security-stage-7-commerce-candidate-contract.json",
     "local_receipt": "docs/security-audit/security-stage-7-commerce-local-checks.json",
@@ -2637,6 +2655,17 @@
     "hosted_readiness": "BLOCKED_MISSING_REQUIRED_IMPLEMENTATION_DECISIONS_AND_EVIDENCE",
     "blocked_prerequisite_groups": 6,
     "blocked_hosted_grouped_cases": 48,
-    "owner_additional_action_required": false
+    "owner_additional_action_required": false,
+    "completed_date": "2026-10-12",
+    "report": "docs/security-audit/SECURITY_STAGE_7_COMPLETION_REPORT.md",
+    "final_recheck": "docs/security-audit/security-stage-7-final-recheck.json",
+    "final_reconciliation_source_commit": "2487b7c5b13abecb2be88a421483dc13b014b182",
+    "next_stage": 8,
+    "local_unique_cases": 30,
+    "historical_local_case_executions": 60,
+    "historical_local_case_passes": 60,
+    "historical_local_case_failures": 0,
+    "all_commerce_controls_or_store_release_cleared": false,
+    "final_residual_resolution_and_full_reaudit_required": true
   }
 }

@@ -303,3 +303,7 @@ No new executable tool or behavior/sandbox/device test; existing eight test file
 ## Stage 7.3 bounded readiness checkpoint
 
 [Checkpoint/carry-forward](SECURITY_STAGE_7_3_READINESS_CHECKPOINT.md) and [per-case receipt](security-stage-7-commerce-readiness.json): 56 current input identities/four candidate SHA256 matches/12 retained owner input references, no drift. Six prerequisite groups and all 48 hosted/store cases BLOCKED / NOT RUN. No new executable tool, local behavior/syntax/hosted/device check, source/runtime/provider/charge/settings/native action or owner SQL/terminal/setup command. Eight CO actions OPEN. Next 7.4 full report; APK deferred.
+
+## Stage 7.4 full report and integrity reconciliation
+
+[Full Stage 7 report/Stage 8 handoff](SECURITY_STAGE_7_COMPLETION_REPORT.md), [final recheck](security-stage-7-final-recheck.json) and [eight OPEN action entries](security-stage-7-remediation-actions.json). 56 current identities/12 consumed hashes/seven immutable structured records match; exact three-path offline non-document diff, no runtime/SQL/dependency/native change. No fresh behavior/syntax/hosted/device test or owner SQL/terminal/setup action. Stage 7 closed with carry-forward, 0 of 48 hosted/store cases run. Next 8.1 notification/event/device source inventory and finite plan; APK deferred.

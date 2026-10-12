@@ -2,8 +2,8 @@
   "schema_version": 1,
   "stage": 7,
   "date": "2026-10-12",
-  "stage_status": "IN_PROGRESS_BOUNDED_READINESS_BLOCKED_WITH_CARRY_FORWARD",
-  "active_step": "7.4",
+  "stage_status": "CLOSED_COMMERCE_CHECKPOINT_WITH_CARRY_FORWARD",
+  "active_step": null,
   "scope": "SOURCE_CURRENT_PRIMARY_POLICY_AND_DECISION_INVENTORY_NOT_PAYMENT_OR_STORE_ACCEPTANCE",
   "events": [
     {
@@ -104,6 +104,40 @@
       "production_or_native_changed": false,
       "findings_closed": [],
       "next_step": "7.4"
+    },
+    {
+      "id": "S7E05",
+      "stage_step": "7.4",
+      "date": "2026-10-12",
+      "source_parent_commit": "2487b7c5b13abecb2be88a421483dc13b014b182",
+      "result": "CLOSED_COMMERCE_CHECKPOINT_WITH_CARRY_FORWARD",
+      "completion_report": "docs/security-audit/SECURITY_STAGE_7_COMPLETION_REPORT.md",
+      "final_recheck": "docs/security-audit/security-stage-7-final-recheck.json",
+      "current_input_identity_matches": 56,
+      "consumed_input_SHA256_matches": 12,
+      "owner_exact_published_hashes": 7,
+      "owner_exact_CRLF_variants": 5,
+      "immutable_structured_records_preserved": 7,
+      "complete_non_document_diff_paths": 3,
+      "non_document_deletions": 0,
+      "unexpected_drift": 0,
+      "retained_unique_local_cases": 30,
+      "historical_local_executions": 60,
+      "historical_local_passes": 60,
+      "historical_local_failures": 0,
+      "new_behavior_syntax_hosted_device_checks_run": 0,
+      "planned_hosted_grouped_cases": 48,
+      "blocked_not_run": 48,
+      "open_actions": 8,
+      "unconfirmed_decisions": 8,
+      "owner_SQL_terminal_setup_action_required": false,
+      "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+      "production_or_native_changed": false,
+      "findings_closed": [],
+      "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
+      "APK_update_deferred": true,
+      "next_stage": 8,
+      "next_step": "8.1"
     }
   ],
   "prior_stage_records_unchanged": true,
@@ -111,5 +145,9 @@
   "real_charges_performed": false,
   "APK_update_deferred": true,
   "report_due_step": "7.4",
-  "next_step": "7.4"
+  "next_step": "8.1",
+  "completed_date": "2026-10-12",
+  "completion_report": "docs/security-audit/SECURITY_STAGE_7_COMPLETION_REPORT.md",
+  "final_recheck": "docs/security-audit/security-stage-7-final-recheck.json",
+  "next_stage": 8
 }

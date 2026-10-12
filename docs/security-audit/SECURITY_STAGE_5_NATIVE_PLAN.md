@@ -1,5 +1,10 @@
 # Stage 5 — Native security and compatibility
 
+## 5.3 active — 12 October 2026 (S5E05)
+
+[Platform review](SECURITY_STAGE_5_3_PLATFORM_REVIEW.md) records exact-origin function guards/current-origin callback construction, absent inspected link dispatch in the selected bridge and unresolved local/native privacy/transport inputs. [Evidence](security-stage-5-platform-review.json): 12 exact source/test blobs; 11 existing synthetic callback cases PASS/exit 0, no real native/hosted checks. One complete read-only local config/main-manifest/resource handoff is supplied in chat. F10/F17 and F05/F06/F14 dependencies remain open. 5.1/5.2 outcomes are unchanged; report due 5.5; APK update deferred.
+
+
 ## 5.2 complete with carry-forward — 12 October 2026 (S5E04)
 
 [Owner backup summary](security-stage-5-backup-owner-summary.json) reports `allowBackup=true`, `fullBackupContent`/`dataExtractionRules` unset, no custom BackupAgent declaration and zero referenced backup resources. Its main-manifest hash matches the prior owner receipt. [5.2 outcome and F14 completion contract](SECURITY_STAGE_5_2_STORAGE_BACKUP_REVIEW.md) distinguish this confirmed main-source gap from unverified merged/installed behavior. No actual token/backup payload or device test was accessed. The ten earlier local selection VM PASS remain scoped; no fresh behavior tests ran. **Two of five Stage 5 steps complete; next 5.3; full report 5.5.** No rerun or 5.2 code is required; APK update stays deferred. Earlier active/pending summaries below are historical.

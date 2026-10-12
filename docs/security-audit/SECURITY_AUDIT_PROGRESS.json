@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-12",
   "current_stage": 5,
-  "current_step": "5.2",
-  "current_title": "5.2 storage/backup review complete with carry-forward; main manifest enables backup without rule references; next 5.3",
+  "current_step": "5.3",
+  "current_title": "5.3 source review and 11 local callback tests complete; one read-only owner platform-config receipt pending",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -2017,7 +2017,7 @@
     "remaining_steps": 3,
     "plan": "docs/security-audit/SECURITY_STAGE_5_NATIVE_PLAN.md",
     "source_inventory": "docs/security-audit/security-stage-5-native-source-inventory.json",
-    "latest_evidence": "S5E04",
+    "latest_evidence": "S5E05",
     "finding_ids": [
       "F05",
       "F06",
@@ -2085,7 +2085,24 @@
       },
       {
         "id": "5.3",
-        "status": "READY_FOR_BOUNDED_ORIGIN_PERMISSION_TRANSPORT_AND_PRIVACY_SOURCE_REVIEW"
+        "status": "SOURCE_LOCAL_REVIEW_COMPLETE_OWNER_PLATFORM_CONFIG_PENDING",
+        "latest_evidence": "S5E05",
+        "source_commit": "14f5926d6301b961e86e9bfaf1680aff83007c30",
+        "source_review": "docs/security-audit/SECURITY_STAGE_5_3_PLATFORM_REVIEW.md",
+        "source_local_receipt": "docs/security-audit/security-stage-5-platform-review.json",
+        "selected_git_blob_matches": 12,
+        "source_blob_mismatches": 0,
+        "local_tests": 11,
+        "local_pass": 11,
+        "local_fail": 0,
+        "local_exit_code": 0,
+        "local_scope": "EXISTING_SYNTHETIC_AUTH_CALLBACK_TEST_SUBSET_NOT_NATIVE_PERMISSIONS_TRANSPORT_OR_ARCHIVE_ACCEPTANCE",
+        "owner_platform_config_received": false,
+        "owner_handoff": "scripts/read-stage-5-platform-config.ps1",
+        "hosted_checks_run": 0,
+        "device_checks_run": 0,
+        "native_security_acceptance": false,
+        "findings_closed": []
       },
       {
         "id": "5.4",

@@ -1,5 +1,24 @@
 # Stage 5 — Native security and compatibility
 
+## 5.1 owner receipt and inventory outcome — 12 October 2026 (S5E02)
+
+**5.1 is complete at tracked-source and owner-reported file-metadata scope. One of five Stage 5 steps is complete; four remain. Next: 5.2, Auth persistence/workspace preferences and OS/cloud/device backup review. Full report remains due at 5.5.**
+
+[Owner receipt and reconciliation](security-stage-5-native-owner-metadata.json) preserves all 24 selected path rows: 11 files, three directories, ten missing paths, no skipped links. The attachment SHA256 and exact owner JSON are recorded. This is successful metadata intake, not a native security PASS or an executed build/device test.
+
+The Windows checkout reports branch `main`, commit `2aa668451a8e743dafb3768261175c51a215205e`, not the audit source pin. The Android directory has zero tracked entries; `capacitor.config.json`, the local build script and six selected Android files exist but are untracked (eight untracked file rows total). The package manifest, lock and ignore file each have a tracked entry. This check did not inspect all local edits or prove the checkout matches HEAD.
+
+Four common files have different hashes and smaller sizes than the audited source: `package.json`, `package-lock.json`, `.gitignore`, and `scripts/build-capacitor.mjs`. These are source/baseline differences, not test failures. The local builder cannot be treated as the audited 4,490-byte builder: the reported local copy is 2,296 bytes and its contents are not yet reviewed. Later native integration must preserve the existing app ID, project and signing identity while reconciling baselines; no pull, checkout, reset, stash, native commit, replacement or merge is requested here.
+
+The selected root `ios/` path and four conventional iOS configuration paths are missing. Other checkout locations and devices were not searched. Three conventional Android XML resources (`backup_rules.xml`, `data_extraction_rules.xml`, `network_security_config.xml`) are missing at the tested paths. That does not establish whether backup is enabled, which exclusions apply or whether alternate resource names/configurations protect transport. Actual manifest attributes/resource references remain due at 5.2/5.3.
+
+Git/Node/npm are discoverable on PATH; Java/ADB are not. Android SDK environment variables and JAVA_HOME are not present. These are availability signals, not proof that Android Studio, a bundled JDK/SDK or tooling elsewhere is absent. Actual versions and Gradle compatibility remain unverified; no tool installation is requested.
+
+The prior S5E01 source inventory and metadata handoff remain immutable historical snapshots; their then-pending owner field is superseded by this receipt. Previous Stage 0–4 progress and original coverage/finding definitions remain unchanged. The source packaging gap remains assigned to 5.4. Zero behavior/build/hosted/device tests ran; no native sync/install/sign/upload, account/settings/SQL/provider/production change or finding closure occurred. APK update stays deferred. No rerun or further 5.1 SQL/terminal action is needed.
+
+## Historical 5.1 source review and initial handoff — S5E01
+
+
 **5.1 / 11 October 2026 — source review complete; owner local metadata pending (S5E01).**
 Source pin: `83f5dd2ac04be107e82baf992f796f47e24d7049`. This stage follows the [Stage 4 completion report](SECURITY_STAGE_4_COMPLETION_REPORT.md). APK update remains deferred. Stage completion reports document the available evidence and carry-forward; they do not certify device security or release readiness.
 

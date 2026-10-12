@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_date": "2026-10-11",
+  "updated_date": "2026-10-12",
   "current_stage": 5,
   "current_step": "5.1",
-  "current_title": "Native source inventory complete; awaiting one owner read-only local metadata receipt; APK update deferred",
+  "current_title": "5.1 inventory complete at source/owner metadata scope; next 5.2 storage and backup review; APK update deferred",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 5,
-  "next_step": "5.1",
+  "next_step": "5.2",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -2011,13 +2011,13 @@
     "status": "ACTIVE_NATIVE_SECURITY_AND_COMPATIBILITY",
     "authorized": true,
     "started_date": "2026-10-11",
-    "active_step": "5.1",
+    "active_step": "5.2",
     "bounded_steps": 5,
-    "completed_steps": 0,
-    "remaining_steps": 5,
+    "completed_steps": 1,
+    "remaining_steps": 4,
     "plan": "docs/security-audit/SECURITY_STAGE_5_NATIVE_PLAN.md",
     "source_inventory": "docs/security-audit/security-stage-5-native-source-inventory.json",
-    "latest_evidence": "S5E01",
+    "latest_evidence": "S5E02",
     "finding_ids": [
       "F05",
       "F06",
@@ -2028,15 +2028,29 @@
     "steps": [
       {
         "id": "5.1",
-        "status": "SOURCE_REVIEW_COMPLETE_OWNER_LOCAL_METADATA_PENDING",
+        "status": "COMPLETE_SOURCE_AND_OWNER_METADATA_INVENTORY_WITH_REVIEW_CARRY_FORWARD",
         "source_commit": "83f5dd2ac04be107e82baf992f796f47e24d7049",
         "selected_source_blob_matches": 16,
         "source_blob_mismatches": 0,
-        "owner_local_metadata_received": false
+        "owner_local_metadata_received": true,
+        "latest_evidence": "S5E02",
+        "completed_date": "2026-10-12",
+        "owner_metadata_receipt": "docs/security-audit/security-stage-5-native-owner-metadata.json",
+        "owner_checkout_commit": "2aa668451a8e743dafb3768261175c51a215205e",
+        "owner_checkout_branch": "main",
+        "owner_checkout_matches_audit_pin": false,
+        "owner_selected_paths": 24,
+        "owner_selected_files": 11,
+        "owner_common_file_hash_differences": 4,
+        "config_contents_reviewed": false,
+        "build_prerequisites_verified": false,
+        "native_security_acceptance": false,
+        "owner_rerun_required": false,
+        "next_step": "5.2"
       },
       {
         "id": "5.2",
-        "status": "PLANNED"
+        "status": "READY_FOR_BOUNDED_SOURCE_CONFIGURATION_REVIEW"
       },
       {
         "id": "5.3",
@@ -2056,6 +2070,7 @@
     "hosted_checks_run": 0,
     "device_checks_run": 0,
     "native_builds_run": 0,
-    "findings_closed": []
+    "findings_closed": [],
+    "owner_metadata_receipt": "docs/security-audit/security-stage-5-native-owner-metadata.json"
   }
 }

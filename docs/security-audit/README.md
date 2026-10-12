@@ -1,5 +1,8 @@
 # Mushavo Budget security audit — Start here
 
+**Latest — 6.3 / bounded identity-email readiness outcome RECORDED BLOCKED WITH CARRY-FORWARD, 12 October 2026 (S6E04):** [Checkpoint and six prerequisite groups](SECURITY_STAGE_6_3_READINESS_CHECKPOINT.md), [readiness/per-case receipt](security-stage-6-identity-email-readiness.json). 46 current selected Git identities and 11 candidate SHA256 values reconcile; owner five exact/six CRLF hash matches remain explained, four intentional template repairs recorded, zero unexpected drift. No fresh local behavior/syntax or hosted/provider/device cases; all 36 planned grouped cases remain BLOCKED / NOT RUN. Provider/linking/hook/application mailer implementation, deployed/template/renderer/origin parity and controlled actor/inbox/native evidence remain incomplete/unverified. This blocks acceptance, not user accounts or the app. Six IE actions and prior findings stay OPEN. No account/fixture/Auth/Storage/SQL/settings/provider/mail/deployment/production/native change or repeated owner setup. **Three of four Stage 6 steps complete; next 6.4 full report; APK update deferred.** Earlier summaries remain historical.
+
+
 **Latest — 6.2 / owner Windows repeat PASS, 12 October 2026 (S6E03):** [Owner receipt and hash reconciliation](security-stage-6-identity-email-owner-local-checks.json): 46 PASS/0 FAIL, exit 0, three syntax checks PASS, Node v22.17.0. All 11 inputs reconcile: five exact published bytes and six exact LF-to-CRLF variants; zero unexplained differences. This repeats the same 43 template-condition projections plus three mocked-handler cases, not new controls or Go/Supabase/provider/mail/device acceptance. Earlier assistant receipts and initial harness failure remain preserved. Zero fresh assistant behavior/hosted/device checks; no source/settings/SQL/account/provider/mail/deployment/production/native change or finding closure. Two of four Stage 6 steps remain complete; **next 6.3, full report 6.4, APK update deferred.** No rerun or further owner SQL/terminal action is needed. Earlier summaries remain historical.
 
 
@@ -61,7 +64,7 @@ To browse normally on GitHub, select the **`security/stage-3-authorization`** br
 
 | Open this | What it contains |
 |---|---|
-| [Stage 6 identity/email plan](SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md) | Four finite steps; 6.1/6.2 complete, next 6.3, full report 6.4 |
+| [Stage 6 identity/email plan](SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md) | Four finite steps; 6.1–6.3 outcomes recorded, next 6.4 full report |
 | [6.1 source review and decision inventory](SECURITY_STAGE_6_1_IDENTITY_EMAIL_REVIEW.md) | 41 matching selected source files, template mismatch, provider/linking/email dependencies and 36 unrun grouped cases |
 | [Audit plan](AUDIT_PLAN.md) | Complete stage roadmap, current position, stage workflow and final remediation/re-audit sequence |
 | [Action plan and carry-forward register](SECURITY_AUDIT_CARRY_FORWARD.md) | Outstanding failures, uncertain results, decisions and remediation history |
@@ -173,6 +176,8 @@ The 36 existing audit documents/evidence files were moved here from the parent d
 - [Stage 4 evidence](security-stage-4-evidence.json).
 
 ### Stage 6 — Identity and email workflows (in progress)
+
+- [6.3 readiness checkpoint](SECURITY_STAGE_6_3_READINESS_CHECKPOINT.md) and [per-case receipt](security-stage-6-identity-email-readiness.json): 0 of 36 hosted cases run; six prerequisite groups carried forward.
 
 - [6.2 owner Windows receipt/hash reconciliation](security-stage-6-identity-email-owner-local-checks.json): same 46 cases PASS, three syntax checks, all 11 hashes explained.
 

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "stage": 6,
   "date": "2026-10-12",
-  "stage_status": "IN_PROGRESS_TEMPLATE_SOURCE_CANDIDATE_LOCAL_COMPLETE",
-  "active_step": "6.3",
+  "stage_status": "IN_PROGRESS_BOUNDED_HOSTED_READINESS_OUTCOME_RECORDED",
+  "active_step": "6.4",
   "scope": "SOURCE_AND_DECISION_INVENTORY_NOT_HOSTED_PROVIDER_ACCEPTANCE",
   "events": [
     {
@@ -86,6 +86,31 @@
       "provider_mail_accounts_settings_SQL_production_native_changed": false,
       "findings_closed": [],
       "next_step": "6.3"
+    },
+    {
+      "id": "S6E04",
+      "stage_step": "6.3",
+      "date": "2026-10-12",
+      "source_parent_commit": "eb4583e6648320fbc993f1d45cd46d886b376807",
+      "result": "RECORDED_BLOCKED_NO_HOSTED_CASES_RUN_WITH_CARRY_FORWARD",
+      "checkpoint_report": "docs/security-audit/SECURITY_STAGE_6_3_READINESS_CHECKPOINT.md",
+      "readiness_receipt": "docs/security-audit/security-stage-6-identity-email-readiness.json",
+      "current_source_identity_matches": 46,
+      "current_candidate_SHA256_matches": 11,
+      "owner_hash_exact_byte_matches": 5,
+      "owner_hash_CRLF_matches": 6,
+      "known_intentional_template_changes": 4,
+      "unexpected_hash_mismatches": 0,
+      "planned_hosted_grouped_cases": 36,
+      "hosted_cases_run": 0,
+      "hosted_cases_blocked": 36,
+      "prerequisite_groups": 6,
+      "fresh_local_behavior_or_syntax_checks_run": 0,
+      "hosted_provider_or_device_requests_run": 0,
+      "settings_accounts_SQL_provider_email_production_native_changed": false,
+      "findings_closed": [],
+      "owner_setup_or_SQL_terminal_action_requested": false,
+      "next_step": "6.4"
     }
   ],
   "historical_receipts_unchanged": true,

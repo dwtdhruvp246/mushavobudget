@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-12",
   "current_stage": 6,
-  "current_step": "6.2",
-  "current_title": "Stage 6.2 candidate and owner Windows repeat PASS; next 6.3 bounded readiness",
+  "current_step": "6.3",
+  "current_title": "Stage 6.3 bounded readiness BLOCKED outcome recorded; next 6.4 full report",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 6,
-  "next_step": "6.3",
+  "next_step": "6.4",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -2242,14 +2242,14 @@
     "owner_SQL_terminal_or_setup_action_requested": false
   },
   "stage_6": {
-    "status": "IN_PROGRESS_TEMPLATE_SOURCE_CANDIDATE_LOCAL_COMPLETE",
+    "status": "IN_PROGRESS_BOUNDED_HOSTED_READINESS_OUTCOME_RECORDED",
     "authorized": true,
     "started_date": "2026-10-12",
-    "active_step": "6.3",
+    "active_step": "6.4",
     "initial_step": "6.1",
     "bounded_steps": 4,
-    "completed_steps": 2,
-    "remaining_steps": 2,
+    "completed_steps": 3,
+    "remaining_steps": 1,
     "plan": "docs/security-audit/SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md",
     "source_review": "docs/security-audit/SECURITY_STAGE_6_1_IDENTITY_EMAIL_REVIEW.md",
     "source_inventory": "docs/security-audit/security-stage-6-identity-email-source-inventory.json",
@@ -2257,7 +2257,7 @@
     "test_matrix": "docs/security-audit/security-stage-6-identity-email-test-matrix.json",
     "remediation_action_index": "docs/security-audit/security-stage-6-remediation-actions.json",
     "evidence": "docs/security-audit/security-stage-6-evidence.json",
-    "latest_evidence": "S6E03",
+    "latest_evidence": "S6E04",
     "finding_ids": [
       "F04",
       "F08",
@@ -2326,7 +2326,32 @@
       {
         "id": "6.3",
         "title": "One bounded acceptance/readiness outcome",
-        "status": "PLANNED"
+        "status": "RECORDED_BLOCKED_NO_HOSTED_CASES_RUN_WITH_CARRY_FORWARD",
+        "completed_date": "2026-10-12",
+        "latest_evidence": "S6E04",
+        "source_parent_commit": "eb4583e6648320fbc993f1d45cd46d886b376807",
+        "checkpoint_report": "docs/security-audit/SECURITY_STAGE_6_3_READINESS_CHECKPOINT.md",
+        "readiness_receipt": "docs/security-audit/security-stage-6-identity-email-readiness.json",
+        "current_source_identity_matches": 46,
+        "current_candidate_SHA256_matches": 11,
+        "source_hash_mismatches": 0,
+        "planned_grouped_cases": 36,
+        "hosted_grouped_cases_run": 0,
+        "hosted_grouped_cases_blocked": 36,
+        "device_cases_run": 0,
+        "fresh_local_behavior_or_syntax_checks_run": 0,
+        "hosted_acceptance": false,
+        "prerequisite_groups": [
+          "IE-P01",
+          "IE-P02",
+          "IE-P03",
+          "IE-P04",
+          "IE-P05",
+          "IE-P06"
+        ],
+        "owner_SQL_terminal_or_setup_action_requested": false,
+        "findings_closed": [],
+        "next_step": "6.4"
       },
       {
         "id": "6.4",
@@ -2362,7 +2387,7 @@
     "findings_closed": [],
     "APK_update_deferred": true,
     "report_due_step": "6.4",
-    "next_step": "6.3",
+    "next_step": "6.4",
     "owner_SQL_terminal_or_setup_action_requested": false,
     "candidate_report": "docs/security-audit/SECURITY_STAGE_6_2_IDENTITY_EMAIL_CANDIDATE.md",
     "candidate_contract": "docs/security-audit/security-stage-6-identity-email-candidate-contract.json",
@@ -2391,6 +2416,24 @@
     "owner_exact_CRLF_variant_matches": 6,
     "owner_unexplained_hash_mismatches": 0,
     "owner_repeat_adds_distinct_cases": false,
-    "owner_rerun_or_further_SQL_terminal_action_requested": false
+    "owner_rerun_or_further_SQL_terminal_action_requested": false,
+    "readiness_report": "docs/security-audit/SECURITY_STAGE_6_3_READINESS_CHECKPOINT.md",
+    "readiness_receipt": "docs/security-audit/security-stage-6-identity-email-readiness.json",
+    "checkpoint_source_commit": "eb4583e6648320fbc993f1d45cd46d886b376807",
+    "current_selected_source_identity_matches": 46,
+    "current_candidate_SHA256_matches": 11,
+    "known_intentional_template_changes": 4,
+    "unexplained_source_hash_mismatches": 0,
+    "hosted_grouped_cases_blocked": 36,
+    "prerequisite_groups": [
+      "IE-P01",
+      "IE-P02",
+      "IE-P03",
+      "IE-P04",
+      "IE-P05",
+      "IE-P06"
+    ],
+    "candidate_deployment_status": "UNVERIFIED_NOT_PROBED",
+    "fresh_local_behavior_tests_run_at_6_3": 0
   }
 }

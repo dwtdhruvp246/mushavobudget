@@ -1,0 +1,65 @@
+{
+  "stage_step": "5.4",
+  "result": "OFFLINE_NATIVE_PACKAGING_FIXTURE_SCOPED_PASS",
+  "scope": "ACTUAL_BUILDER_IN_TEMPORARY_FIXTURES_WITH_MOCK_ESBUILD_AND_CAPACITOR_MODULES",
+  "source_parent_commit": "82b30e4197a282c25c427c84052e65bdf0239378",
+  "node_version": "v24.19.0",
+  "tests": 9,
+  "pass": 9,
+  "fail": 0,
+  "exit_code": 0,
+  "syntax_checks": 3,
+  "syntax": [
+    {
+      "file": "scripts/build-capacitor.mjs",
+      "pass": true
+    },
+    {
+      "file": "tests/capacitor-build.test.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/verify-stage-5-packaging.mjs",
+      "pass": true
+    }
+  ],
+  "file_sha256": {
+    "scripts/build-capacitor.mjs": "86ac88ab42f1c21a0c13cbad69731bf4003e608d597a43321089c8fa5899aaa0",
+    "tests/capacitor-build.test.mjs": "802d161a011658f4e1c36ca9a9a54e2c0f788611a69cfc4b234d049102c55dfd",
+    "scripts/verify-stage-5-packaging.mjs": "39a3c5653b93350905c1fa0325a6bf80ca6e8bc2aad68a4cfb5d13c0c3834d4b"
+  },
+  "real_dependency_bundle_or_native_compile_verified": false,
+  "root_www_or_existing_native_project_changed": false,
+  "native_sync_install_sign_upload_run": false,
+  "hosted_or_device_checks_run": 0,
+  "native_security_acceptance": false,
+  "APK_update_deferred": true,
+  "production_or_accounts_settings_changed": false,
+  "findings_closed": [],
+  "evidence_id": "S5E08",
+  "date": "2026-10-12",
+  "correction_parent_commit": "c1c2c682421f081c47c723d88a23ed9eed19eb73",
+  "correction_scope": "TEST_ONLY_WINDOWS_ESM_PRELOAD_PATH_TO_FILE_URL",
+  "candidate_code_hashes": [
+    {
+      "path": "scripts/build-capacitor.mjs",
+      "sha256": "86ac88ab42f1c21a0c13cbad69731bf4003e608d597a43321089c8fa5899aaa0",
+      "git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+      "CRLF_sha256": "1dbba5ba4378ffee93863f0be418b9cf7b71d83fd23cc703c20923f52d56ef6e"
+    },
+    {
+      "path": "tests/capacitor-build.test.mjs",
+      "sha256": "802d161a011658f4e1c36ca9a9a54e2c0f788611a69cfc4b234d049102c55dfd",
+      "git_blob_sha": "24c7faf5f15533abc132c2e282278e2539b1635d",
+      "CRLF_sha256": "575bd7c12ab39e8b2bb365b3ca7be9c3835ea58cd5fff71b23bb6c59241e0b3e"
+    },
+    {
+      "path": "scripts/verify-stage-5-packaging.mjs",
+      "sha256": "39a3c5653b93350905c1fa0325a6bf80ca6e8bc2aad68a4cfb5d13c0c3834d4b",
+      "git_blob_sha": "58977dbdb957baf738a7893833166ada40dc1b32",
+      "CRLF_sha256": "c35ec2f1bc2603cbb00f9733056e3b9a576684efb7318bdc060e0486137a8fcf"
+    }
+  ],
+  "corrected_owner_windows_recheck_received": false,
+  "previous_owner_failure_receipt": "docs/security-audit/security-stage-5-packaging-owner-checks.json"
+}

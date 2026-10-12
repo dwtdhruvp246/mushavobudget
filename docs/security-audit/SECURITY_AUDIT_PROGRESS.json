@@ -3,7 +3,7 @@
   "updated_date": "2026-10-12",
   "current_stage": 5,
   "current_step": "5.4",
-  "current_title": "5.4 source packaging repaired; nine local fixture PASS/three syntax PASS; native compile/device acceptance deferred; next 5.5",
+  "current_title": "5.4 Windows fixture failure recorded; preload URL corrected; nine local PASS; corrected Windows recheck pending",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 5,
-  "next_step": "5.5",
+  "next_step": "5.4",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -2011,13 +2011,13 @@
     "status": "ACTIVE_NATIVE_SECURITY_AND_COMPATIBILITY",
     "authorized": true,
     "started_date": "2026-10-11",
-    "active_step": "5.5",
+    "active_step": "5.4",
     "bounded_steps": 5,
-    "completed_steps": 4,
-    "remaining_steps": 1,
+    "completed_steps": 3,
+    "remaining_steps": 2,
     "plan": "docs/security-audit/SECURITY_STAGE_5_NATIVE_PLAN.md",
     "source_inventory": "docs/security-audit/security-stage-5-native-source-inventory.json",
-    "latest_evidence": "S5E07",
+    "latest_evidence": "S5E08",
     "finding_ids": [
       "F05",
       "F06",
@@ -2120,8 +2120,8 @@
       },
       {
         "id": "5.4",
-        "status": "COMPLETE_SOURCE_PACKAGING_CANDIDATE_LOCAL_PASS_NATIVE_READINESS_DEFERRED_WITH_CARRY_FORWARD",
-        "latest_evidence": "S5E07",
+        "status": "CORRECTED_TEST_HARNESS_LOCAL_PASS_OWNER_WINDOWS_RECHECK_PENDING",
+        "latest_evidence": "S5E08",
         "completed_date": "2026-10-12",
         "source_parent_commit": "82b30e4197a282c25c427c84052e65bdf0239378",
         "candidate_report": "docs/security-audit/SECURITY_STAGE_5_4_PACKAGING_CANDIDATE.md",
@@ -2150,11 +2150,32 @@
         "native_security_acceptance": false,
         "optional_owner_repeat_is_not_required": true,
         "findings_closed": [],
-        "next_step": "5.5"
+        "next_step": "5.4_OWNER_CORRECTED_WINDOWS_RECHECK",
+        "owner_repeat_candidate_commit": "c1c2c682421f081c47c723d88a23ed9eed19eb73",
+        "owner_repeat_receipt": "docs/security-audit/security-stage-5-packaging-owner-checks.json",
+        "owner_repeat_tests": 9,
+        "owner_repeat_pass": 8,
+        "owner_repeat_fail": 1,
+        "owner_repeat_exit_code": 1,
+        "owner_repeat_syntax_pass": 3,
+        "owner_repeat_failure_classification": "TEST_ESM_PRELOAD_WINDOWS_PATH_NOT_BUILDER_ROLLBACK",
+        "owner_repeat_CRLF_hash_matches": 3,
+        "owner_unexplained_hash_mismatches": 0,
+        "corrected_local_receipt": "docs/security-audit/security-stage-5-packaging-correction-local-checks.json",
+        "corrected_local_tests": 9,
+        "corrected_local_pass": 9,
+        "corrected_local_fail": 0,
+        "corrected_local_exit_code": 0,
+        "corrected_local_syntax_checks": 3,
+        "corrected_owner_windows_recheck_received": false,
+        "code_correction_paths": [
+          "tests/capacitor-build.test.mjs"
+        ],
+        "build_script_changed_by_correction": false
       },
       {
         "id": "5.5",
-        "status": "READY_FOR_FULL_REPORT_AND_EVIDENCE_RECONCILIATION"
+        "status": "PLANNED_FULL_REPORT_AFTER_BOUNDED_5_4_CORRECTION_OUTCOME"
       }
     ],
     "APK_update_deferred": true,

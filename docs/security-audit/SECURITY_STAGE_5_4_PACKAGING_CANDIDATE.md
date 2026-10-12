@@ -1,5 +1,26 @@
 # 5.4 — Packaging compatibility candidate and native readiness
 
+## 5.4 corrective check — 12 October 2026 (S5E08)
+
+**Owner Windows repeat: 8 PASS / 1 FAIL, exit 1; three syntax checks PASS, Node v22.17.0. The test harness is corrected; local rerun is 9 PASS / exit 0 with three syntax checks. Corrected Windows rerun is pending. 5.4's earlier completion summary is historical; the current checkpoint is reopened for this bounded corrective check. Full report stays at 5.5.**
+
+[Original owner failure and hash reconciliation](security-stage-5-packaging-owner-checks.json) preserves the exact parsed receipt and attachment SHA256. All three owner code hashes exactly match the published Windows CRLF variants, with zero unexplained mismatches. Eight tests passed, including complete Auth/MFA packaging and local imports, missing-input/dependency preservation and bundler failure cleanup.
+
+The ninth test supplied a raw Windows absolute preload path to Node's `--import`. The ESM loader interpreted drive protocol `c:` and rejected it with ERR_UNSUPPORTED_ESM_URL_SCHEME. This stopped before the fault-injection module/build script ran. Thus the Windows result did not exercise promotion rollback; it is a harness compatibility failure, not observed evidence of failed builder rollback. It remains a FAIL in the historical owner receipt and is not relabeled PASS.
+
+The correction imports `pathToFileURL` from node:url and passes `pathToFileURL(preload).href` to `--import`. This is the standard native-path-to-file-URL conversion described in [Node v22.17.0 URL documentation](https://nodejs.org/download/release/v22.17.0/docs/api/url.html); [the same version's CLI documentation](https://nodejs.org/download/release/v22.17.0/docs/api/cli.html) specifies ESM resolution for `--import`. No manual drive/space escaping or Node/version/package-type change is required.
+
+**Only the test file changes.** The repaired builder and verifier bytes remain exact matches to their prior published LF hashes; the Auth/MFA packaging repair is retained. No application/native configuration, owner local builder/project/www/signing identity or installed APK is modified.
+
+[Corrected local receipt](security-stage-5-packaging-correction-local-checks.json): the actual verifier reran the nine temporary-fixture cases and three syntax checks on Node v24.19.0, all PASS. This is another execution of the same case set, not new distinct controls or native acceptance. It verifies file-URL loading/fault-injection/rollback in this Linux environment. Windows execution still requires one corrected owner receipt; no Windows PASS is inferred from the local run.
+
+The next chat block exports the corrected pinned Git snapshot into a fresh temporary directory and runs only the offline verifier. It does not switch/reset/merge the working checkout, install packages, execute SQL, call cap sync/Gradle, sign/install an APK or access actual device/session data. Prior failed receipts and source/readiness evidence remain intact. No live native build/device/hosted action; APK update stays deferred and existing findings stay open.
+
+Stage 0–4 and closed 5.1–5.3 outcomes, original coverage/finding definitions and retained fixtures remain preserved. Resolve this bounded Windows test invocation check before recording the final 5.4 outcome and issuing 5.5. The native compile/device/backup/origin/provider/privacy requirements continue as earlier carry-forward; this correction does not broaden their scope.
+
+## Historical original candidate and initial local outcome — S5E07
+
+
 **12 October 2026 / S5E07 — complete at candidate source/local fixture scope, with actual native compile/device acceptance deferred and carry-forward. Four of five Stage 5 steps have outcomes; next 5.5, full report/reconciliation. APK update remains deferred.**
 
 Source parent: `82b30e4197a282c25c427c84052e65bdf0239378`. [Local test receipt](security-stage-5-packaging-local-checks.json). [Source/readiness reconciliation](security-stage-5-packaging-readiness.json). [Finite plan](SECURITY_STAGE_5_NATIVE_PLAN.md).

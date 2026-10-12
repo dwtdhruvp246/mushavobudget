@@ -5,7 +5,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import path from "node:path";
 import os from "node:os";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const execute = promisify(execFile);
 const repository = fileURLToPath(new URL("../", import.meta.url));
@@ -142,7 +142,7 @@ fs.promises.rename = async (source, destination) => {
   return rename(source, destination);
 };
 syncBuiltinESMExports();`);
-  await assert.rejects(execute(process.execPath, ["--import", preload, path.join(root, "scripts/build-capacitor.mjs")], { cwd: root }),
+  await assert.rejects(execute(process.execPath, ["--import", pathToFileURL(preload).href, path.join(root, "scripts/build-capacitor.mjs")], { cwd: root }),
     error => /TEST_PROMOTION_DENIED/.test(error.stderr));
   await previousIsIntact(root);
 });

@@ -1,5 +1,10 @@
 # Stage 5 — Native security and compatibility
 
+## 5.4 bounded correction pending — 12 October 2026 (S5E08)
+
+[Original owner repeat](security-stage-5-packaging-owner-checks.json) has 8 PASS/1 FAIL (Windows --import raw-path loader error); three code hashes match CRLF variants. [Test-only correction and scope](SECURITY_STAGE_5_4_PACKAGING_CANDIDATE.md), [corrected local 9 PASS/three syntax PASS](security-stage-5-packaging-correction-local-checks.json). Earlier 5.4 source/local completion is historical while the bounded corrected Windows check is pending. 5.1–5.3 remain complete; native compile/device acceptance still deferred; full report 5.5 after the correction outcome. No APK update or live/native project changes.
+
+
 ## 5.4 complete with carry-forward — 12 October 2026 (S5E07)
 
 [Packaging candidate](SECURITY_STAGE_5_4_PACKAGING_CANDIDATE.md) includes the four missing Auth/MFA resources; nine actual-builder temporary-fixture cases PASS/exit 0, three syntax checks PASS. Direct and verifier runs are the same nine-case batch; mocked dependency modules are not a native compile. [Readiness](security-stage-5-packaging-readiness.json) records APK deferral and unverified original-project/toolchain/device/archive prerequisites without an owner setup loop. 41 required parent blobs matched. Existing F05/F06/F10/F13/F14/F17 remain open. **Four of five steps complete; next 5.5 full report.** Optional temporary owner repeat is supplied in chat; no SQL or APK update required.

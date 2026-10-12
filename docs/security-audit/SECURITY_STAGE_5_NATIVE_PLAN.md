@@ -1,5 +1,10 @@
 # Stage 5 — Native security and compatibility
 
+## 5.4 complete with carry-forward — 12 October 2026 (S5E07)
+
+[Packaging candidate](SECURITY_STAGE_5_4_PACKAGING_CANDIDATE.md) includes the four missing Auth/MFA resources; nine actual-builder temporary-fixture cases PASS/exit 0, three syntax checks PASS. Direct and verifier runs are the same nine-case batch; mocked dependency modules are not a native compile. [Readiness](security-stage-5-packaging-readiness.json) records APK deferral and unverified original-project/toolchain/device/archive prerequisites without an owner setup loop. 41 required parent blobs matched. Existing F05/F06/F10/F13/F14/F17 remain open. **Four of five steps complete; next 5.5 full report.** Optional temporary owner repeat is supplied in chat; no SQL or APK update required.
+
+
 ## 5.3 complete with carry-forward — 12 October 2026 (S5E06)
 
 [Owner platform receipt](security-stage-5-platform-owner-summary.json) reports preserved app ID `com.mushavo.budget`, webDir=www, INTERNET only in the selected main manifest, a launcher-only activity and a non-exported FileProvider with broad external/cache '.' paths. Three source hashes match 5.1 owner evidence. [Detailed outcome](SECURITY_STAGE_5_3_PLATFORM_REVIEW.md): native callback registration/file-sharing scope need completion; unset transport/debug options and effective defaults/merged/iOS behavior remain unverified. Prior 11 synthetic callback PASS retained; zero fresh behavior/hosted/device/build/archive checks. **Three of five steps complete; next 5.4 packaging compatibility/readiness; full report 5.5.** No further 5.3 code or native mutation; APK update deferred. Earlier active/pending summaries are historical.

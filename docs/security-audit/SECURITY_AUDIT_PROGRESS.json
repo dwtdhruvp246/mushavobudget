@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-12",
   "current_stage": 5,
-  "current_step": "5.3",
-  "current_title": "5.3 source/configuration review complete with carry-forward; native callback and file-provider gaps recorded; next 5.4",
+  "current_step": "5.4",
+  "current_title": "5.4 source packaging repaired; nine local fixture PASS/three syntax PASS; native compile/device acceptance deferred; next 5.5",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 5,
-  "next_step": "5.4",
+  "next_step": "5.5",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -2011,13 +2011,13 @@
     "status": "ACTIVE_NATIVE_SECURITY_AND_COMPATIBILITY",
     "authorized": true,
     "started_date": "2026-10-11",
-    "active_step": "5.4",
+    "active_step": "5.5",
     "bounded_steps": 5,
-    "completed_steps": 3,
-    "remaining_steps": 2,
+    "completed_steps": 4,
+    "remaining_steps": 1,
     "plan": "docs/security-audit/SECURITY_STAGE_5_NATIVE_PLAN.md",
     "source_inventory": "docs/security-audit/security-stage-5-native-source-inventory.json",
-    "latest_evidence": "S5E06",
+    "latest_evidence": "S5E07",
     "finding_ids": [
       "F05",
       "F06",
@@ -2120,11 +2120,41 @@
       },
       {
         "id": "5.4",
-        "status": "READY_FOR_BOUNDED_PACKAGING_COMPATIBILITY_AND_DEVICE_READINESS_WORK"
+        "status": "COMPLETE_SOURCE_PACKAGING_CANDIDATE_LOCAL_PASS_NATIVE_READINESS_DEFERRED_WITH_CARRY_FORWARD",
+        "latest_evidence": "S5E07",
+        "completed_date": "2026-10-12",
+        "source_parent_commit": "82b30e4197a282c25c427c84052e65bdf0239378",
+        "candidate_report": "docs/security-audit/SECURITY_STAGE_5_4_PACKAGING_CANDIDATE.md",
+        "local_receipt": "docs/security-audit/security-stage-5-packaging-local-checks.json",
+        "readiness_receipt": "docs/security-audit/security-stage-5-packaging-readiness.json",
+        "baseline_required_git_blob_matches": 41,
+        "source_blobs_unmatched": 0,
+        "local_tests": 9,
+        "local_pass": 9,
+        "local_fail": 0,
+        "local_exit_code": 0,
+        "local_syntax_checks": 3,
+        "assistant_same_batch_direct_pass": 9,
+        "local_same_batch_executions": 2,
+        "local_scope": "ACTUAL_BUILDER_IN_TEMPORARY_FIXTURES_WITH_MOCK_DEPENDENCIES",
+        "candidate_code_paths": [
+          "scripts/build-capacitor.mjs",
+          "tests/capacitor-build.test.mjs",
+          "scripts/verify-stage-5-packaging.mjs"
+        ],
+        "source_missing_resource_gap_addressed_at_candidate_local_scope": true,
+        "actual_native_compile_verified": false,
+        "device_checks_run": 0,
+        "hosted_checks_run": 0,
+        "native_readiness": "DEFERRED_UNVERIFIED_CARRY_FORWARD",
+        "native_security_acceptance": false,
+        "optional_owner_repeat_is_not_required": true,
+        "findings_closed": [],
+        "next_step": "5.5"
       },
       {
         "id": "5.5",
-        "status": "PLANNED"
+        "status": "READY_FOR_FULL_REPORT_AND_EVIDENCE_RECONCILIATION"
       }
     ],
     "APK_update_deferred": true,

@@ -49,12 +49,31 @@ async function previousIsIntact(root) {
   assert.deepEqual((await readdir(root)).filter(name => name.startsWith(".capacitor-build-")), []);
 }
 
+async function packagedImportsResolve(output) {
+  // Check the packaged modules' literal local imports, not the builder's list.
+  // Query versions are URL metadata and remote SDK imports stay out of scope.
+  for (const file of (await readdir(output)).filter(name => name.endsWith(".js"))) {
+    const source = await readFile(path.join(output, file), "utf8");
+    for (const match of source.matchAll(/(?:\bfrom\s*|\bimport\s*(?:\(\s*)?)["'](\.{1,2}\/[^"']+|\/[^"']+)["']/g)) {
+      const resource = match[1].split(/[?#]/)[0];
+      const target = resource.startsWith("/")
+        ? path.join(output, resource.slice(1))
+        : path.resolve(output, path.dirname(file), resource);
+      assert.ok(target.startsWith(output + path.sep), `${file}: import stays within packaged assets`);
+      await readFile(target);
+    }
+  }
+}
+
 test("native bundle includes Business and the workspace launcher, hides browser install UI, and leaves web sources intact", async t => {
   const root = await fixture(t);
   const source = await readFile(path.join(root, "app.html"), "utf8");
   await run(root);
   const output = path.join(root, "www");
   assert.match(await readFile(path.join(output, "index.html"), "utf8"), /Opening Mushavo Budget/);
+  const authHtml = await readFile(path.join(output, "auth.html"), "utf8");
+  assert.match(authHtml, /src=["']auth-flows\.js(?:\?[^"']*)?["']/);
+  await packagedImportsResolve(output);
   for (const file of ["app.html", "business.html", "app-entry.html", "index.html"]) {
     const html = await readFile(path.join(output, file), "utf8");
     assert.ok(html.indexOf("/native-workspace.js") >= 0);
@@ -93,6 +112,15 @@ test("native build rejects a missing Business asset without deleting the previou
   await assert.rejects(run(root), error => /business\.js/.test(error.stderr));
   await previousIsIntact(root);
 });
+
+for (const resource of ["auth.html", "auth-flows.js", "auth-security.js", "admin-mfa.js"]) {
+  test(`native build refuses an incomplete ${resource} release while retaining the previous bundle`, async t => {
+    const root = await fixture(t);
+    await rm(path.join(root, resource));
+    await assert.rejects(run(root), error => error.stderr.includes(resource));
+    await previousIsIntact(root);
+  });
+}
 
 test("native bundler failure preserves the previous bundle and cleans incomplete output", async t => {
   const root = await fixture(t, { bundleFails: true });

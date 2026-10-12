@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "stage_step": "9.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "2ea0a69b1bbe5ffedf7a3fc5c0d2179ff1b1f895",
+  "scope": "EIGHT_COORDINATING_ACTIONS_LINKED_TO_EXISTING_FINDINGS_NOT_NEW_FINDING_DEFINITIONS",
+  "actions": [
+    {
+      "id": "RG-R01",
+      "status": "OPEN",
+      "action": "Correctness across finance/workspaces",
+      "remediation": "Resolve Personal binding REVIEW and demonstrate relink/deletion, Business roles and automatic currency/history integrity on accepted isolated deployment.",
+      "owner": "Both",
+      "finding_ids": [
+        "F15",
+        "F10"
+      ],
+      "acceptance_groups": [
+        "RG01"
+      ],
+      "prerequisites": "Stage 3 PF/Business/AU and actual controlled finance callers.",
+      "recheck": "Personal record binding; Family membership and attribution; Business role and scope finance; Schedule and history integrity; Currency and rates; Cashbook and entitlements"
+    },
+    {
+      "id": "RG-R02",
+      "status": "OPEN",
+      "action": "Auth and effective privileges",
+      "remediation": "Complete deployed Auth, recovery/linking, Admin AAL2/recovery and direct caller/grant acceptance.",
+      "owner": "Both",
+      "finding_ids": [
+        "F08",
+        "F14",
+        "F15"
+      ],
+      "acceptance_groups": [
+        "RG02"
+      ],
+      "prerequisites": "Stage 3 AU/Admin operators, settings and installed enforcement.",
+      "recheck": "Signup and confirmation; Invitation and identity linking; Password and recovery; Session and account switching; Admin MFA and recovery; Direct caller and grants"
+    },
+    {
+      "id": "RG-R03",
+      "status": "OPEN",
+      "action": "Data, files and factual privacy",
+      "remediation": "Implement/verify trusted content limits, authorized objects, durable deletion, retention and final actual collection/disclosures.",
+      "owner": "Both",
+      "finding_ids": [
+        "F01",
+        "F02",
+        "F13",
+        "F20"
+      ],
+      "acceptance_groups": [
+        "RG03"
+      ],
+      "prerequisites": "Stage 4 DL/UF/PR implementation, approved decisions and recoverable fixtures.",
+      "recheck": "Trusted upload processing; Proof access and context; Account deletion and ownership; Cleanup and retry; Data inventory and declarations; Audience and retention"
+    },
+    {
+      "id": "RG-R04",
+      "status": "OPEN",
+      "action": "Measured quality and PWA behavior",
+      "remediation": "Choose representative devices/data/networks and budgets; measure startup/errors and verify responsive/accessibility/update/offline flows.",
+      "owner": "Both",
+      "finding_ids": [
+        "F07",
+        "F10",
+        "F14",
+        "F17"
+      ],
+      "acceptance_groups": [
+        "RG04"
+      ],
+      "prerequisites": "Accepted RG-D03/D04 and controlled browser/device sessions.",
+      "recheck": "Cold and warm startup; Responsive finance and input; Dashboard and reports; Realtime and repeated operations; Offline and account privacy; Update and interruption"
+    },
+    {
+      "id": "RG-R05",
+      "status": "OPEN",
+      "action": "Repeatable regression and deployment parity",
+      "remediation": "Include seven CJS suites explicitly, reconcile dedicated verifiers and CI/serving artifact asset closure; verify exact installed source/configuration.",
+      "owner": "Both",
+      "finding_ids": [
+        "F05",
+        "F07",
+        "F09",
+        "F15",
+        "F19"
+      ],
+      "acceptance_groups": [
+        "RG05",
+        "RG08"
+      ],
+      "prerequisites": "91-file catalog, package/CI candidates, deployment and operational evidence.",
+      "recheck": "Exact artifact references and explicit MJS/CJS results, genuine installed parity and bounded operational cases."
+    },
+    {
+      "id": "RG-R06",
+      "status": "OPEN",
+      "action": "Final native artifact security",
+      "remediation": "Preserve identity/signing; prove complete signed artifacts, Auth returns, backup/session behavior, SDK/privacy reasons and native push lifecycle.",
+      "owner": "Both",
+      "finding_ids": [
+        "F05",
+        "F11",
+        "F14",
+        "F17",
+        "F20"
+      ],
+      "acceptance_groups": [
+        "RG06"
+      ],
+      "prerequisites": "Stage 5/6/8 prerequisites; APK deferred until later authorized artifact work.",
+      "recheck": "Android identity and signing; iOS archive and privacy; Native Auth return; Backup and token persistence; Native push lifecycle; Device compatibility and recovery"
+    },
+    {
+      "id": "RG-R07",
+      "status": "OPEN",
+      "action": "Store accounts, declarations and external review",
+      "remediation": "Verify publisher account applicability, final truthful listings/data declarations/reviewer resources and required beta/closed-test outcomes.",
+      "owner": "Owner/Both",
+      "finding_ids": [
+        "F05",
+        "F17",
+        "F20",
+        "F02"
+      ],
+      "acceptance_groups": [
+        "RG07"
+      ],
+      "prerequisites": "Accepted source/artifacts, account-specific console evidence and Stage 4/6/7/8 controls.",
+      "recheck": "Publisher accounts and roles; Google required testing; TestFlight beta evidence; Reviewer access and listings; Commerce and availability; Privacy and account deletion"
+    },
+    {
+      "id": "RG-R08",
+      "status": "OPEN",
+      "action": "Traceable final evidence and release decision",
+      "remediation": "Reconcile all original findings/coverage and actions; demonstrate recovery/rollback, retain failures and complete fresh full re-audit before release.",
+      "owner": "Both",
+      "finding_ids": [
+        "F05",
+        "F15",
+        "F19",
+        "F20"
+      ],
+      "acceptance_groups": [
+        "RG08"
+      ],
+      "prerequisites": "Required final remediation and all accepted source/deployment/artifact evidence.",
+      "recheck": "Coverage traceability; Regression completeness; Backup and recovery proof; Release and rollback package; Known gaps and release decision; Full fresh re-audit"
+    }
+  ],
+  "total": 8,
+  "open": 8,
+  "findings_closed": [],
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "final_remediation_and_full_reaudit_required": true
+}

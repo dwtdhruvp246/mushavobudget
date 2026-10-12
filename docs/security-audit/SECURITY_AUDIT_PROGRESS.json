@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "updated_date": "2026-10-12",
-  "current_stage": 8,
-  "current_step": "8.4",
-  "current_title": "Stage 8 closed with carry-forward; next 9.1 broad regression and release-evidence inventory",
+  "current_stage": 9,
+  "current_step": "9.1",
+  "current_title": "Stage 9.1 regression and release-evidence inventory complete; next 9.2 local candidate and regression",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 9,
-  "next_step": "9.1",
+  "next_step": "9.2",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -2873,6 +2873,111 @@
     "final_reconciliation_source_commit": "d5f1081a2ae53e625490e0796c7ddd9eb19e15ee",
     "next_stage": 9,
     "all_controls_or_release_cleared": false,
+    "final_remediation_and_full_reaudit_required": true
+  },
+  "stage_9": {
+    "status": "IN_PROGRESS_SOURCE_REGRESSION_RELEASE_INVENTORY_COMPLETE",
+    "authorized": true,
+    "started_date": "2026-10-12",
+    "active_step": "9.2",
+    "initial_step": "9.1",
+    "bounded_steps": 4,
+    "completed_steps": 1,
+    "remaining_steps": 3,
+    "plan": "docs/security-audit/SECURITY_STAGE_9_REGRESSION_RELEASE_PLAN.md",
+    "source_review": "docs/security-audit/SECURITY_STAGE_9_1_REGRESSION_RELEASE_REVIEW.md",
+    "source_inventory": "docs/security-audit/security-stage-9-regression-source-inventory.json",
+    "regression_catalog": "docs/security-audit/security-stage-9-regression-catalog.json",
+    "decision_record": "docs/security-audit/security-stage-9-release-decisions.json",
+    "test_matrix": "docs/security-audit/security-stage-9-regression-test-matrix.json",
+    "remediation_action_index": "docs/security-audit/security-stage-9-remediation-actions.json",
+    "evidence": "docs/security-audit/security-stage-9-evidence.json",
+    "latest_evidence": "S9E01",
+    "source_parent_commit": "2ea0a69b1bbe5ffedf7a3fc5c0d2179ff1b1f895",
+    "primary_finding_ids": [
+      "F05",
+      "F17",
+      "F20"
+    ],
+    "finding_ids": [
+      "F01",
+      "F02",
+      "F05",
+      "F07",
+      "F08",
+      "F09",
+      "F10",
+      "F11",
+      "F12",
+      "F14",
+      "F15",
+      "F17",
+      "F19",
+      "F20"
+    ],
+    "steps": [
+      {
+        "id": "9.1",
+        "title": "Broad regression and release-evidence source inventory",
+        "status": "COMPLETE_AT_SOURCE_CATALOG_AND_PRIMARY_REQUIREMENT_SCOPE",
+        "completed_date": "2026-10-12",
+        "latest_evidence": "S9E01",
+        "source_parent_commit": "2ea0a69b1bbe5ffedf7a3fc5c0d2179ff1b1f895",
+        "selected_source_inputs_hash_verified": 45,
+        "source_blob_mismatches": 0,
+        "discovered_test_files": 91,
+        "selected_test_files_read_not_run": 12,
+        "public_primary_references": 4,
+        "local_behavior_or_syntax_tests_run": 0,
+        "hosted_device_store_or_performance_cases_run": 0,
+        "owner_SQL_terminal_or_setup_action_requested": false,
+        "next_step": "9.2"
+      },
+      {
+        "id": "9.2",
+        "title": "Reviewable local regression/packaging candidate and actual offline execution",
+        "status": "PLANNED"
+      },
+      {
+        "id": "9.3",
+        "title": "One bounded installed/device/store readiness or acceptance outcome",
+        "status": "PLANNED"
+      },
+      {
+        "id": "9.4",
+        "title": "Full report/reconciliation and Stage 10 handoff",
+        "status": "PLANNED"
+      }
+    ],
+    "planned_acceptance_groups": [
+      "RG01",
+      "RG02",
+      "RG03",
+      "RG04",
+      "RG05",
+      "RG06",
+      "RG07",
+      "RG08"
+    ],
+    "planned_grouped_cases": 48,
+    "overlap_with_prior_acceptance_requirements": true,
+    "open_remediation_actions": 8,
+    "decision_items": 8,
+    "local_behavior_or_syntax_tests_run": 0,
+    "hosted_or_device_cases_run": 0,
+    "performance_measurements_run": 0,
+    "latest_CI_or_installed_release_verified": false,
+    "hosted_acceptance": false,
+    "native_security_acceptance": false,
+    "store_acceptance": false,
+    "findings_closed": [],
+    "source_runtime_or_workflow_changed": false,
+    "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "owner_SQL_terminal_or_setup_action_requested": false,
+    "report_due_step": "9.4",
+    "next_step": "9.2",
     "final_remediation_and_full_reaudit_required": true
   }
 }

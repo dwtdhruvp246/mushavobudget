@@ -2,8 +2,8 @@
   "schema_version": 1,
   "stage": 6,
   "date": "2026-10-12",
-  "stage_status": "IN_PROGRESS_BOUNDED_HOSTED_READINESS_OUTCOME_RECORDED",
-  "active_step": "6.4",
+  "stage_status": "CLOSED_IDENTITY_EMAIL_CHECKPOINT_WITH_CARRY_FORWARD",
+  "active_step": null,
   "scope": "SOURCE_AND_DECISION_INVENTORY_NOT_HOSTED_PROVIDER_ACCEPTANCE",
   "events": [
     {
@@ -111,6 +111,36 @@
       "findings_closed": [],
       "owner_setup_or_SQL_terminal_action_requested": false,
       "next_step": "6.4"
+    },
+    {
+      "id": "S6E05",
+      "stage_step": "6.4",
+      "date": "2026-10-12",
+      "source_parent_commit": "2ad416006098df83c9e0a58300f38ef6cb56e911",
+      "result": "COMPLETE_FULL_REPORT_INTEGRITY_RECONCILIATION_WITH_CARRY_FORWARD",
+      "report": "docs/security-audit/SECURITY_STAGE_6_COMPLETION_REPORT.md",
+      "final_recheck": "docs/security-audit/security-stage-6-final-recheck.json",
+      "current_source_identity_matches": 46,
+      "candidate_SHA256_matches": 11,
+      "owner_exact_byte_matches": 5,
+      "owner_CRLF_matches": 6,
+      "preserved_structured_records": 7,
+      "unexpected_hash_mismatches": 0,
+      "complete_stage_non_document_diff_paths": 8,
+      "selected_local_case_set": 46,
+      "historical_assistant_case_executions": 92,
+      "historical_assistant_pass": 91,
+      "historical_assistant_fail": 1,
+      "owner_case_repeat_executions": 46,
+      "owner_case_repeat_pass": 46,
+      "fresh_behavior_syntax_hosted_provider_device_checks_run": 0,
+      "hosted_grouped_cases_blocked": 36,
+      "open_actions": 6,
+      "findings_closed": [],
+      "settings_accounts_SQL_provider_email_production_native_changed": false,
+      "owner_SQL_terminal_or_setup_action_requested": false,
+      "next_stage": 7,
+      "next_step": "7.1"
     }
   ],
   "historical_receipts_unchanged": true,
@@ -119,5 +149,10 @@
   "hosted_acceptance": false,
   "native_security_acceptance": false,
   "APK_update_deferred": true,
-  "report_due_step": "6.4"
+  "report_due_step": "6.4",
+  "report": "docs/security-audit/SECURITY_STAGE_6_COMPLETION_REPORT.md",
+  "final_recheck": "docs/security-audit/security-stage-6-final-recheck.json",
+  "next_stage": 7,
+  "next_step": "7.1",
+  "completed_date": "2026-10-12"
 }

@@ -1,5 +1,8 @@
 # Audit SQL, scripts, tests and implementation index
 
+**Latest — 6.4 / full Stage 6 report CLOSED WITH CARRY-FORWARD, 12 October 2026 (S6E05):** [Full identity/email report and Stage 7 handoff](SECURITY_STAGE_6_COMPLETION_REPORT.md), [final integrity reconciliation](security-stage-6-final-recheck.json) and [six OPEN action entries](security-stage-6-remediation-actions.json). All four finite outcomes recorded. Four template copy candidates/four offline files are the complete eight-path non-document diff; app/Edge/SQL/dependency/native code unchanged. Final assistant 46 local PASS/three Node syntax and owner same 46 PASS/three syntax remain scoped; initial harness failure retained. Historical 138 executions are repeats, not unique controls. 46 current source identities/11 candidate SHA256/five owner exact-six CRLF values and seven structured records reconcile, zero unexplained drift. All 36 hosted grouped cases remain BLOCKED / NOT RUN; provider/linking/hook/application mailer and actual renderer/deployment/inbox/native requirements remain incomplete/unverified. No fresh behavior/hosted/device checks, live/native change, finding closure or owner SQL/terminal/setup action. Prior stages, 123 rows/20 definitions and release gate remain preserved. **Next 7.1 subscription commerce source/product/channel decision inventory; APK update deferred.** Earlier summaries are historical.
+
+
 **Latest — 6.3 / bounded identity-email readiness outcome RECORDED BLOCKED WITH CARRY-FORWARD, 12 October 2026 (S6E04):** [Checkpoint and six prerequisite groups](SECURITY_STAGE_6_3_READINESS_CHECKPOINT.md), [readiness/per-case receipt](security-stage-6-identity-email-readiness.json). 46 current selected Git identities and 11 candidate SHA256 values reconcile; owner five exact/six CRLF hash matches remain explained, four intentional template repairs recorded, zero unexpected drift. No fresh local behavior/syntax or hosted/provider/device cases; all 36 planned grouped cases remain BLOCKED / NOT RUN. Provider/linking/hook/application mailer implementation, deployed/template/renderer/origin parity and controlled actor/inbox/native evidence remain incomplete/unverified. This blocks acceptance, not user accounts or the app. Six IE actions and prior findings stay OPEN. No account/fixture/Auth/Storage/SQL/settings/provider/mail/deployment/production/native change or repeated owner setup. **Three of four Stage 6 steps complete; next 6.4 full report; APK update deferred.** Earlier summaries remain historical.
 
 
@@ -271,3 +274,11 @@ Three selected existing mocked Business handler cases are included. No Go/Supaba
 ## Stage 6.3 bounded readiness checkpoint
 
 [Checkpoint](SECURITY_STAGE_6_3_READINESS_CHECKPOINT.md) and [readiness/per-case receipt](security-stage-6-identity-email-readiness.json): 46 current Git identities/11 candidate SHA256 matches, five owner exact/six CRLF matches, four known template changes; zero unexpected drift. Six IE-P prerequisite groups and all 36 hosted cases BLOCKED / NOT RUN. No new executable tool or behavior/hosted/device check. No owner SQL/terminal/setup action; next 6.4 full report.
+
+## Stage 6.4 full report and integrity reconciliation
+
+- [Full Stage 6 report and Stage 7 handoff](SECURITY_STAGE_6_COMPLETION_REPORT.md).
+- [Final recheck](security-stage-6-final-recheck.json): 46 current identities, 11 candidate SHA256 matches, five owner exact/six CRLF values, seven preserved structured records; exact eight-path non-document diff, no app/Edge/SQL/dependency/native change.
+- [Six OPEN action entries](security-stage-6-remediation-actions.json); original finding definitions unchanged.
+
+No fresh behavior/syntax/hosted/device test or owner SQL/terminal/setup action. Stage 6 closed with carry-forward; next 7.1 subscription commerce source/product/channel inventory; APK update deferred.

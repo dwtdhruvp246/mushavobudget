@@ -1,5 +1,8 @@
 # Mushavo Budget security audit — Start here
 
+**Latest — 6.4 / full Stage 6 report CLOSED WITH CARRY-FORWARD, 12 October 2026 (S6E05):** [Full identity/email report and Stage 7 handoff](SECURITY_STAGE_6_COMPLETION_REPORT.md), [final integrity reconciliation](security-stage-6-final-recheck.json) and [six OPEN action entries](security-stage-6-remediation-actions.json). All four finite outcomes recorded. Four template copy candidates/four offline files are the complete eight-path non-document diff; app/Edge/SQL/dependency/native code unchanged. Final assistant 46 local PASS/three Node syntax and owner same 46 PASS/three syntax remain scoped; initial harness failure retained. Historical 138 executions are repeats, not unique controls. 46 current source identities/11 candidate SHA256/five owner exact-six CRLF values and seven structured records reconcile, zero unexplained drift. All 36 hosted grouped cases remain BLOCKED / NOT RUN; provider/linking/hook/application mailer and actual renderer/deployment/inbox/native requirements remain incomplete/unverified. No fresh behavior/hosted/device checks, live/native change, finding closure or owner SQL/terminal/setup action. Prior stages, 123 rows/20 definitions and release gate remain preserved. **Next 7.1 subscription commerce source/product/channel decision inventory; APK update deferred.** Earlier summaries are historical.
+
+
 **Latest — 6.3 / bounded identity-email readiness outcome RECORDED BLOCKED WITH CARRY-FORWARD, 12 October 2026 (S6E04):** [Checkpoint and six prerequisite groups](SECURITY_STAGE_6_3_READINESS_CHECKPOINT.md), [readiness/per-case receipt](security-stage-6-identity-email-readiness.json). 46 current selected Git identities and 11 candidate SHA256 values reconcile; owner five exact/six CRLF hash matches remain explained, four intentional template repairs recorded, zero unexpected drift. No fresh local behavior/syntax or hosted/provider/device cases; all 36 planned grouped cases remain BLOCKED / NOT RUN. Provider/linking/hook/application mailer implementation, deployed/template/renderer/origin parity and controlled actor/inbox/native evidence remain incomplete/unverified. This blocks acceptance, not user accounts or the app. Six IE actions and prior findings stay OPEN. No account/fixture/Auth/Storage/SQL/settings/provider/mail/deployment/production/native change or repeated owner setup. **Three of four Stage 6 steps complete; next 6.4 full report; APK update deferred.** Earlier summaries remain historical.
 
 
@@ -64,7 +67,7 @@ To browse normally on GitHub, select the **`security/stage-3-authorization`** br
 
 | Open this | What it contains |
 |---|---|
-| [Stage 6 identity/email plan](SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md) | Four finite steps; 6.1–6.3 outcomes recorded, next 6.4 full report |
+| [Stage 6 identity/email plan](SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md) | Closed with carry-forward; full report saved, next 7.1 subscription commerce inventory |
 | [6.1 source review and decision inventory](SECURITY_STAGE_6_1_IDENTITY_EMAIL_REVIEW.md) | 41 matching selected source files, template mismatch, provider/linking/email dependencies and 36 unrun grouped cases |
 | [Audit plan](AUDIT_PLAN.md) | Complete stage roadmap, current position, stage workflow and final remediation/re-audit sequence |
 | [Action plan and carry-forward register](SECURITY_AUDIT_CARRY_FORWARD.md) | Outstanding failures, uncertain results, decisions and remediation history |
@@ -89,6 +92,8 @@ To browse normally on GitHub, select the **`security/stage-3-authorization`** br
 | [SQL, scripts and tests](TOOL_INDEX.md) | Linked index of audit tools, migration files and relevant implementation locations |
 
 ## Completion reports
+
+- [Stage 6 — Identity and email workflows](SECURITY_STAGE_6_COMPLETION_REPORT.md) — closed with carry-forward; six OPEN actions, 0/36 hosted cases; [final reconciliation](security-stage-6-final-recheck.json).
 
 - [Stage 5 — Native security and compatibility](SECURITY_STAGE_5_COMPLETION_REPORT.md) — closed with carry-forward; seven OPEN native action entries, actual native acceptance deferred/unverified.
 
@@ -175,7 +180,9 @@ The 36 existing audit documents/evidence files were moved here from the parent d
 - [Selected lifecycle source inventory](security-stage-4-lifecycle-source-inventory.json).
 - [Stage 4 evidence](security-stage-4-evidence.json).
 
-### Stage 6 — Identity and email workflows (in progress)
+### Stage 6 — Identity and email workflows (closed with carry-forward)
+
+- [Full report/handoff](SECURITY_STAGE_6_COMPLETION_REPORT.md), [final recheck](security-stage-6-final-recheck.json) and [six OPEN actions](security-stage-6-remediation-actions.json).
 
 - [6.3 readiness checkpoint](SECURITY_STAGE_6_3_READINESS_CHECKPOINT.md) and [per-case receipt](security-stage-6-identity-email-readiness.json): 0 of 36 hosted cases run; six prerequisite groups carried forward.
 

@@ -175,9 +175,13 @@
   "total": 6,
   "open": 6,
   "findings_closed": [],
-  "latest_evidence": "S6E04",
+  "latest_evidence": "S6E05",
   "last_updated_date": "2026-10-12",
   "candidate_report": "docs/security-audit/SECURITY_STAGE_6_2_IDENTITY_EMAIL_CANDIDATE.md",
   "readiness_receipt": "docs/security-audit/security-stage-6-identity-email-readiness.json",
-  "checkpoint_report": "docs/security-audit/SECURITY_STAGE_6_3_READINESS_CHECKPOINT.md"
+  "checkpoint_report": "docs/security-audit/SECURITY_STAGE_6_3_READINESS_CHECKPOINT.md",
+  "full_stage_report": "docs/security-audit/SECURITY_STAGE_6_COMPLETION_REPORT.md",
+  "final_recheck": "docs/security-audit/security-stage-6-final-recheck.json",
+  "stage_checkpoint_status": "CLOSED_IDENTITY_EMAIL_CHECKPOINT_WITH_CARRY_FORWARD",
+  "next_work_phase": "FINAL_REMEDIATION_ACCEPTED_ROLLOUT_AND_FRESH_FULL_REAUDIT"
 }

@@ -1,5 +1,8 @@
 # Mushavo Budget security audit — Start here
 
+**Latest — 6.2 / template-source candidate and offline verification COMPLETE, 12 October 2026 (S6E02):** [Candidate/outcome](SECURITY_STAGE_6_2_IDENTITY_EMAIL_CANDIDATE.md), [inert identity/email contract](security-stage-6-identity-email-candidate-contract.json) and [local receipt/history](security-stage-6-identity-email-local-checks.json). Four invitation subject/body templates now classify current/legacy Business and Admin setup routes while preserving generic copy and ConfirmationURL. Final 43 template-control projection plus three mocked-handler cases PASS (46/0, exit 0); three Node syntax PASS. Initial 42/1 harness assertion FAIL is preserved/corrected. This is not Go/Supabase rendering, installed-template/provider/linking/inbox/device acceptance; no runtime social login, hook or app mailer is implemented. Six actions and all prior findings remain OPEN; 36 hosted grouped cases remain unrun. No account/fixture/Auth/Storage/SQL/settings/mail/provider/deployment/production/native change. **Two of four Stage 6 steps complete; next 6.3 one bounded readiness/acceptance outcome; full report 6.4; APK update deferred.** No required owner SQL/terminal/setup; optional isolated Node repeat is fully supplied in chat. Earlier summaries remain historical.
+
+
 **Latest — 6.1 / identity-email source and decision inventory COMPLETE, 12 October 2026 (S6E01):** [Finite four-step Stage 6 plan](SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md), [source review](SECURITY_STAGE_6_1_IDENTITY_EMAIL_REVIEW.md), [41-file exact byte inventory](security-stage-6-identity-email-source-inventory.json), [known/unconfirmed decisions](security-stage-6-identity-email-decisions.json), [36 planned grouped cases](security-stage-6-identity-email-test-matrix.json) and [six OPEN existing-finding action entries](security-stage-6-remediation-actions.json). Selected source has no Google/Apple login integration; all four invitation subject/body templates recognize the legacy Business callback but not the current Auth callbacks. This is a source wording mismatch, not an observed hosted delivery failure. Google intent/password login/working SMTP are preserved; Apple, provider/native/email-route facts remain proposed/unconfirmed. Zero local behavior/hosted/provider/device cases or settings/accounts/SQL/mail/deployment/native/production changes; no finding closure. Stages 0–5 and original 123 rows/20 definitions remain intact. **Next 6.2 candidate/local checks; full report 6.4; APK update deferred.** Earlier summaries remain historical.
 
 
@@ -55,7 +58,7 @@ To browse normally on GitHub, select the **`security/stage-3-authorization`** br
 
 | Open this | What it contains |
 |---|---|
-| [Stage 6 identity/email plan](SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md) | Four finite steps; 6.1 complete, next 6.2, full report 6.4 |
+| [Stage 6 identity/email plan](SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md) | Four finite steps; 6.1/6.2 complete, next 6.3, full report 6.4 |
 | [6.1 source review and decision inventory](SECURITY_STAGE_6_1_IDENTITY_EMAIL_REVIEW.md) | 41 matching selected source files, template mismatch, provider/linking/email dependencies and 36 unrun grouped cases |
 | [Audit plan](AUDIT_PLAN.md) | Complete stage roadmap, current position, stage workflow and final remediation/re-audit sequence |
 | [Action plan and carry-forward register](SECURITY_AUDIT_CARRY_FORWARD.md) | Outstanding failures, uncertain results, decisions and remediation history |
@@ -167,6 +170,8 @@ The 36 existing audit documents/evidence files were moved here from the parent d
 - [Stage 4 evidence](security-stage-4-evidence.json).
 
 ### Stage 6 — Identity and email workflows (in progress)
+
+- [6.2 candidate/outcome](SECURITY_STAGE_6_2_IDENTITY_EMAIL_CANDIDATE.md), [inert contract](security-stage-6-identity-email-candidate-contract.json) and [local receipt/history](security-stage-6-identity-email-local-checks.json).
 
 - [Four-step plan](SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md) and [6.1 source review](SECURITY_STAGE_6_1_IDENTITY_EMAIL_REVIEW.md).
 - [Source inventory](security-stage-6-identity-email-source-inventory.json), [known/unconfirmed decisions](security-stage-6-identity-email-decisions.json) and [36 planned grouped cases](security-stage-6-identity-email-test-matrix.json).

@@ -1,5 +1,8 @@
 # Stage 6 — Identity and email workflows
 
+**Latest — 6.2 / template-source candidate and offline verification COMPLETE, 12 October 2026 (S6E02):** [Candidate/outcome](SECURITY_STAGE_6_2_IDENTITY_EMAIL_CANDIDATE.md), [inert identity/email contract](security-stage-6-identity-email-candidate-contract.json) and [local receipt/history](security-stage-6-identity-email-local-checks.json). Four invitation subject/body templates now classify current/legacy Business and Admin setup routes while preserving generic copy and ConfirmationURL. Final 43 template-control projection plus three mocked-handler cases PASS (46/0, exit 0); three Node syntax PASS. Initial 42/1 harness assertion FAIL is preserved/corrected. This is not Go/Supabase rendering, installed-template/provider/linking/inbox/device acceptance; no runtime social login, hook or app mailer is implemented. Six actions and all prior findings remain OPEN; 36 hosted grouped cases remain unrun. No account/fixture/Auth/Storage/SQL/settings/mail/provider/deployment/production/native change. **Two of four Stage 6 steps complete; next 6.3 one bounded readiness/acceptance outcome; full report 6.4; APK update deferred.** No required owner SQL/terminal/setup; optional isolated Node repeat is fully supplied in chat. Earlier summaries remain historical.
+
+
 **6.1 / 12 October 2026 — Source/decision inventory COMPLETE; Stage 6 IN PROGRESS.**
 Source pin: `fe2c281ce13e7d0d8cb49115fa1bd6c195579c4e`. Stage 5 is closed with carry-forward; its seven native actions remain OPEN. This stage addresses existing F04 and dependencies F08/F10/F14/F15/F19/F20. Original 123 coverage rows and 20 finding definitions are unchanged.
 
@@ -12,7 +15,7 @@ Source pin: `fe2c281ce13e7d0d8cb49115fa1bd6c195579c4e`. Stage 5 is closed with c
 | 6.3 | One bounded staging/provider/browser/native acceptance or readiness review | Run only cases with verified isolated prerequisites; otherwise record BLOCKED/UNVERIFIED and exact carry-forward. No recurring setup loop |
 | 6.4 | Reconcile outcomes and issue full Stage 6 report | Preserve receipts, consolidate OPEN actions, retain release gate and hand off 7.1 |
 
-**One of four steps is complete. Next 6.2; full report at 6.4.** Later decisions/prerequisites do not turn a source/model PASS into provider authentication, identity linking, inbox delivery or device acceptance.
+**Two of four steps are complete. Next 6.3; full report at 6.4.** [6.2 candidate and local outcome](SECURITY_STAGE_6_2_IDENTITY_EMAIL_CANDIDATE.md): four template-source repairs, 46 scoped local PASS/three Node syntax checks; actual Go rendering, provider/linking/mail and native acceptance remain unverified. Later decisions/prerequisites do not turn a source/model PASS into provider authentication, identity linking, inbox delivery or device acceptance.
 
 ## Scope and existing dependencies
 

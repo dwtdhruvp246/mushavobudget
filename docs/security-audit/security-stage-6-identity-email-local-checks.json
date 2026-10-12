@@ -1,0 +1,107 @@
+{
+  "stage_step": "6.2",
+  "result": "OFFLINE_EMAIL_TEMPLATE_CONTROL_FLOW_AND_SYNTHETIC_HANDLER_SCOPED_PASS",
+  "scope": "NODE_EVALUATION_OF_ACTUAL_TEMPLATE_CONTROL_FLOW_NOT_GO_SUPABASE_RENDERING_PLUS_THREE_MOCKED_EDGE_CASES",
+  "source_parent_commit": "87a1d302c0d490578dc0752fa7c0124ef0e4eda7",
+  "node_version": "v24.19.0",
+  "tests": 46,
+  "pass": 46,
+  "fail": 0,
+  "exit_code": 0,
+  "template_control_flow_cases": {
+    "tests_reported": 43,
+    "executed": 43,
+    "pass": 43,
+    "fail": 0,
+    "intentionally_filtered": 0,
+    "exit_code": 0,
+    "non_failing_TypeScript_experimental_warning": false
+  },
+  "selected_existing_handler_regression": {
+    "tests_reported": 3,
+    "executed": 3,
+    "pass": 3,
+    "fail": 0,
+    "intentionally_filtered": 0,
+    "exit_code": 0,
+    "non_failing_TypeScript_experimental_warning": false
+  },
+  "syntax_checks": 3,
+  "file_sha256": {
+    "supabase/templates/invite-user.html": "21c3060bdddfde0b94ebf9be697d30a9dc1b9e60a8206aac4eee45b47fb4aa80",
+    "supabase/templates/invite-user.subject.txt": "061aee5815feeeed4f3e6d815f9212a27ac45c4d663b348bfb6496dac6e872e7",
+    "supabase/templates/magic-link.html": "661e40f1ca32b44a48ed1113da8d638802b6d2a222477eab6de66d2b6613fc16",
+    "supabase/templates/magic-link.subject.txt": "96bf36dd932b5a2616c4b42d8fde8a6421d9ae8cd6ea701e4cf57896ce13cb3e",
+    "tests/helpers/auth-email-template-projection.mjs": "c76106e10fd652670b20034b326d575ac01d916b5167a16cd32b113b7bfdf440",
+    "tests/stage-6-email-templates.test.mjs": "e3e6e5b82e02505e1e4e28f1892a1ce3c70d00dc4402aca75a56528ee0bbcfd6",
+    "scripts/verify-stage-6-identity-email.mjs": "8bb0812081994f98d43cd8dc4f1ead87baeb4d83b6a41baa02aba39f7613aa6d",
+    "tests/fixtures/stage-6-email-template-baseline.json": "04c87cb13a7aa83ae5c88b778ea7e38e6fc9a05630478a40bcf803cc2244ea60",
+    "tests/stage-3-auth-edge-build.test.mjs": "82c6f63091147dcc1b463f839b5ce75c38ef255c4e0758bfe00a0163c894e73c",
+    "supabase/functions/invite-business-member/index.ts": "980e0911ffddfec984f41d952735734ea926566993f480cece36e90dcbf93a10",
+    "docs/security-audit/security-stage-6-identity-email-candidate-contract.json": "56c0b7737b16129fc38635861cf66a0d77d85cd3792b836bd3994c401fa0777b"
+  },
+  "Go_or_Supabase_template_renderer_verified": false,
+  "contextual_HTML_or_URL_escaping_verified": false,
+  "actual_provider_login_linking_or_email_delivery_verified": false,
+  "runtime_provider_login_or_hook_or_application_mailer_implemented": false,
+  "candidate_deployed": false,
+  "hosted_IE01_IE06_grouped_cases_run": 0,
+  "hosted_acceptance": false,
+  "actual_email_dispatched": false,
+  "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "evidence_record": {
+    "date": "2026-10-12",
+    "final_verifier_command": "node scripts/verify-stage-6-identity-email.mjs",
+    "first_primary_run": {
+      "stage_step": "6.2",
+      "scope": "FIRST_OFFLINE_TEMPLATE_CONTROL_FLOW_PROJECTION_RUN",
+      "tests": 43,
+      "pass": 42,
+      "fail": 1,
+      "exit_code": 1,
+      "cause": "Test assertion checked an incomplete href prefix for an empty redirect, which matched every link; not a template purpose-classification failure.",
+      "correction": "Compare the complete quoted href attribute instead.",
+      "deployed_or_hosted_failure": false,
+      "source_hashes_for_initial_harness_not_captured": true
+    },
+    "earlier_regression_run": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "exit_code": 0,
+      "scope": "THREE_EXISTING_ACTUAL_BUSINESS_EDGE_HANDLER_TESTS_WITH_SYNTHETIC_AUTH_RPC_MAIL_RESPONSES",
+      "warning": "Non-failing Node stripTypeScriptTypes ExperimentalWarning",
+      "adds_distinct_cases_on_repeat": false
+    },
+    "final_regression_repeats_earlier_same_three_cases": true,
+    "historical_case_executions": 92,
+    "historical_pass": 91,
+    "historical_fail": 1,
+    "distinct_selected_cases": 46,
+    "primary_cases_are_projected_template_branches_not_Go_rendering": true,
+    "final_verifier_receipt_matches_observed_counts": true,
+    "existing_handler_and_test_current_git_blob_matches": 2,
+    "original_template_bytes_retained_in_frozen_fixture": true,
+    "public_primary_references": [
+      {
+        "url": "https://pkg.go.dev/text/template",
+        "topic": "Built-in functions and control syntax",
+        "reviewed_date": "2026-10-12"
+      },
+      {
+        "url": "https://supabase.com/docs/guides/auth/auth-email-templates",
+        "topic": "Provider ConfirmationURL, purpose templates and separate hosted settings",
+        "reviewed_date": "2026-10-12"
+      },
+      {
+        "url": "https://supabase.com/docs/guides/auth/auth-hooks/send-email-hook",
+        "topic": "Hook replacement and sender/action/token boundary",
+        "reviewed_date": "2026-10-12"
+      }
+    ],
+    "frozen_original_template_git_blob_matches": 4
+  }
+}

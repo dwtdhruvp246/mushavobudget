@@ -59,7 +59,16 @@
       "title": "Auth purpose templates and deployed route parity",
       "work": "Repair tracked Business callback classification in the four subject/body templates; distinguish Admin setup from generic OTP and other Auth purposes. Keep escaped content and authentic link semantics; verify exact deployed templates/allowlist separately.",
       "recheck": "Actual template rendering/negative-route local checks, reviewed deployed parity and controlled inbox confirmation/recovery/new/existing invitations; IE03/IE05.",
-      "hosted_acceptance": false
+      "hosted_acceptance": false,
+      "source_candidate": {
+        "stage_step": "6.2",
+        "template_files_changed": 4,
+        "copy_repair_prepared": true,
+        "template_condition_projection_pass": 43,
+        "Go_Supabase_render_or_deployed_template_verified": false,
+        "actual_email_delivery_verified": false,
+        "remaining": "Exact canonical SiteURL and Go rendering, installed purpose template/redirect parity, real controlled inbox matrix."
+      }
     },
     {
       "id": "IE-R05",
@@ -95,5 +104,8 @@
   ],
   "total": 6,
   "open": 6,
-  "findings_closed": []
+  "findings_closed": [],
+  "latest_evidence": "S6E02",
+  "last_updated_date": "2026-10-12",
+  "candidate_report": "docs/security-audit/SECURITY_STAGE_6_2_IDENTITY_EMAIL_CANDIDATE.md"
 }

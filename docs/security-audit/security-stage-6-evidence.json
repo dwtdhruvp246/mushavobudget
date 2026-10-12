@@ -2,8 +2,8 @@
   "schema_version": 1,
   "stage": 6,
   "date": "2026-10-12",
-  "stage_status": "IN_PROGRESS_SOURCE_DECISION_INVENTORY_COMPLETE",
-  "active_step": "6.2",
+  "stage_status": "IN_PROGRESS_TEMPLATE_SOURCE_CANDIDATE_LOCAL_COMPLETE",
+  "active_step": "6.3",
   "scope": "SOURCE_AND_DECISION_INVENTORY_NOT_HOSTED_PROVIDER_ACCEPTANCE",
   "events": [
     {
@@ -30,6 +30,38 @@
       "production_or_native_changed": false,
       "findings_closed": [],
       "next_step": "6.2"
+    },
+    {
+      "id": "S6E02",
+      "stage_step": "6.2",
+      "date": "2026-10-12",
+      "source_parent_commit": "87a1d302c0d490578dc0752fa7c0124ef0e4eda7",
+      "result": "COMPLETE_AT_TEMPLATE_SOURCE_OFFLINE_PROJECTION_SCOPE",
+      "candidate_report": "docs/security-audit/SECURITY_STAGE_6_2_IDENTITY_EMAIL_CANDIDATE.md",
+      "candidate_contract": "docs/security-audit/security-stage-6-identity-email-candidate-contract.json",
+      "local_receipt": "docs/security-audit/security-stage-6-identity-email-local-checks.json",
+      "template_files_changed": 4,
+      "final_selected_local_cases": 46,
+      "final_local_pass": 46,
+      "final_local_fail": 0,
+      "local_exit_code": 0,
+      "Node_syntax_checks": 3,
+      "first_primary_run": {
+        "tests": 43,
+        "pass": 42,
+        "fail": 1,
+        "exit_code": 1,
+        "scope": "HARNESS_ASSERTION_FAILURE_CORRECTED_RETAINED"
+      },
+      "earlier_standalone_handler_cases": 3,
+      "final_handler_repeat_adds_distinct_cases": false,
+      "Go_Supabase_rendering_or_contextual_escaping_verified": false,
+      "provider_login_linking_email_delivery_verified": false,
+      "hosted_cases_run": 0,
+      "device_cases_run": 0,
+      "settings_accounts_mail_provider_production_native_changed": false,
+      "findings_closed": [],
+      "next_step": "6.3"
     }
   ],
   "historical_receipts_unchanged": true,

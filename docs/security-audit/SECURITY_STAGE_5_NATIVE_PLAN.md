@@ -1,5 +1,10 @@
 # Stage 5 — Native security and compatibility
 
+## 5.2 complete with carry-forward — 12 October 2026 (S5E04)
+
+[Owner backup summary](security-stage-5-backup-owner-summary.json) reports `allowBackup=true`, `fullBackupContent`/`dataExtractionRules` unset, no custom BackupAgent declaration and zero referenced backup resources. Its main-manifest hash matches the prior owner receipt. [5.2 outcome and F14 completion contract](SECURITY_STAGE_5_2_STORAGE_BACKUP_REVIEW.md) distinguish this confirmed main-source gap from unverified merged/installed behavior. No actual token/backup payload or device test was accessed. The ten earlier local selection VM PASS remain scoped; no fresh behavior tests ran. **Two of five Stage 5 steps complete; next 5.3; full report 5.5.** No rerun or 5.2 code is required; APK update stays deferred. Earlier active/pending summaries below are historical.
+
+
 ## 5.2 active — 12 October 2026 (S5E03)
 
 [Storage/backup source review](SECURITY_STAGE_5_2_STORAGE_BACKUP_REVIEW.md) and [source/local receipt](security-stage-5-storage-review.json) record ten exact source/test blob matches and **10 existing workspace-selection VM PASS, exit 0**. Normal clients have no inspected native encrypted Auth adapter; Preferences stores selection metadata. Native token protection, merged backup/transfer exclusions and actual payload/device behavior remain unverified under existing F14. The one read-only owner main-manifest/referenced-backup-XML handoff is provided completely in chat; no SQL or APK build/update is requested. 5.1 remains complete; 5.2 awaits that receipt. Native packaging work at 5.4 primarily belongs to existing F06, with F05 release/F14 Auth dependencies; the earlier 5.1 references remain historical dependency notes. Full report at 5.5; APK update deferred.

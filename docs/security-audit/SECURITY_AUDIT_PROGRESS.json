@@ -3,7 +3,7 @@
   "updated_date": "2026-10-12",
   "current_stage": 5,
   "current_step": "5.2",
-  "current_title": "5.2 session/storage source review and ten local VM checks complete; one read-only owner backup XML receipt pending",
+  "current_title": "5.2 storage/backup review complete with carry-forward; main manifest enables backup without rule references; next 5.3",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 5,
-  "next_step": "5.2",
+  "next_step": "5.3",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -2011,13 +2011,13 @@
     "status": "ACTIVE_NATIVE_SECURITY_AND_COMPATIBILITY",
     "authorized": true,
     "started_date": "2026-10-11",
-    "active_step": "5.2",
+    "active_step": "5.3",
     "bounded_steps": 5,
-    "completed_steps": 1,
-    "remaining_steps": 4,
+    "completed_steps": 2,
+    "remaining_steps": 3,
     "plan": "docs/security-audit/SECURITY_STAGE_5_NATIVE_PLAN.md",
     "source_inventory": "docs/security-audit/security-stage-5-native-source-inventory.json",
-    "latest_evidence": "S5E03",
+    "latest_evidence": "S5E04",
     "finding_ids": [
       "F05",
       "F06",
@@ -2050,8 +2050,8 @@
       },
       {
         "id": "5.2",
-        "status": "SOURCE_LOCAL_REVIEW_COMPLETE_OWNER_BACKUP_XML_PENDING",
-        "latest_evidence": "S5E03",
+        "status": "COMPLETE_SOURCE_LOCAL_OWNER_REVIEW_WITH_NATIVE_ACCEPTANCE_UNVERIFIED_CARRY_FORWARD",
+        "latest_evidence": "S5E04",
         "source_commit": "64bbd2695b004168b45235d96f2220862cede5cc",
         "source_review": "docs/security-audit/SECURITY_STAGE_5_2_STORAGE_BACKUP_REVIEW.md",
         "source_local_receipt": "docs/security-audit/security-stage-5-storage-review.json",
@@ -2062,17 +2062,30 @@
         "local_fail": 0,
         "local_exit_code": 0,
         "local_scope": "EXISTING_SELECTION_VM_TESTS_WITH_MOCKED_STORAGE_NOT_NATIVE_CREDENTIAL_OR_BACKUP_TESTS",
-        "owner_backup_XML_received": false,
+        "owner_backup_XML_received": true,
         "owner_handoff": "scripts/read-stage-5-backup-config.ps1",
         "actual_native_storage_or_backup_verified": false,
         "device_checks_run": 0,
         "hosted_checks_run": 0,
         "native_security_acceptance": false,
-        "findings_closed": []
+        "findings_closed": [],
+        "completed_date": "2026-10-12",
+        "owner_backup_receipt": "docs/security-audit/security-stage-5-backup-owner-summary.json",
+        "owner_main_manifest_hash": "b642d0f51d088301d0107c9b94c85994fbc612e0a7b6a9cb1754113ae1be90cd",
+        "owner_manifest_hash_matches_5_1": true,
+        "owner_main_manifest_allowBackup": true,
+        "owner_main_manifest_fullBackupContent": "UNSET",
+        "owner_main_manifest_dataExtractionRules": "UNSET",
+        "owner_main_manifest_custom_BackupAgent_declared": false,
+        "owner_referenced_backup_resources": 0,
+        "merged_release_backup_configuration_verified": false,
+        "source_backup_gap_confirmed": true,
+        "owner_rerun_required": false,
+        "next_step": "5.3"
       },
       {
         "id": "5.3",
-        "status": "PLANNED"
+        "status": "READY_FOR_BOUNDED_ORIGIN_PERMISSION_TRANSPORT_AND_PRIVACY_SOURCE_REVIEW"
       },
       {
         "id": "5.4",
@@ -2089,6 +2102,7 @@
     "device_checks_run": 0,
     "native_builds_run": 0,
     "findings_closed": [],
-    "owner_metadata_receipt": "docs/security-audit/security-stage-5-native-owner-metadata.json"
+    "owner_metadata_receipt": "docs/security-audit/security-stage-5-native-owner-metadata.json",
+    "owner_backup_receipt": "docs/security-audit/security-stage-5-backup-owner-summary.json"
   }
 }

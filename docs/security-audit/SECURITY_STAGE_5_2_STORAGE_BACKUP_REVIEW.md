@@ -1,5 +1,34 @@
 # 5.2 — Session storage and backup exposure
 
+## 5.2 outcome — 12 October 2026 (S5E04)
+
+**5.2 is complete at reviewed source, existing local VM and owner-reported main-manifest configuration scope, with native acceptance unverified and carry-forward. Two of five Stage 5 steps now have outcomes; next 5.3, origins/callbacks, permissions/transport and iOS privacy-source review. Full report remains due at 5.5.**
+
+[Owner summary and reconciliation](security-stage-5-backup-owner-summary.json) records the visible PowerShell result. All requested summary fields are present; the last JSON closing brace was not visible in the pasted message. No rerun is needed to assess those fields, and no process exit code is inferred.
+
+| Main Android source attribute | Owner-reported result |
+|---|---|
+| `allowBackup` | `true` |
+| `fullBackupContent` | UNSET |
+| `dataExtractionRules` | UNSET |
+| `fullBackupOnly` | UNSET |
+| `restoreAnyVersion` | UNSET |
+| Custom `backupAgent` declaration | None |
+| Referenced backup XML resources | Zero |
+
+The owner-reported main-manifest SHA256 is `b642d0f51d088301d0107c9b94c85994fbc612e0a7b6a9cb1754113ae1be90cd`, exactly equal to their 5.1 reported hash. This comparison links the two owner receipts; it is not an independent assistant read of the local manifest.
+
+**Confirmed source configuration gap:** this selected main manifest enables backup and declares neither legacy backup-content rules nor newer data-extraction rules. The handoff consequently had no referenced backup XML to inspect. This strengthens existing F14's unresolved backup-exclusion concern. It does not establish the final merged release configuration, whether a dependency/build variant changes settings, which data are copied on a particular OS/device, or whether a session has leaked.
+
+The prior tracked-client review identifies no native secure Auth storage adapter in its selected initialization. The owner checkout differs from the audit pin; its actual packaged/installed token implementation remains uninspected. Final remediation must reconcile that source baseline, implement/verify suitable native credential storage and migration, and establish sensitive-data exclusions for supported cloud/device-transfer behavior in the final artifact. The detailed six-item F14 contract below remains open.
+
+The earlier **10 local workspace-selection VM PASS / exit 0** retain their simulated storage scope. No new local behavior tests were needed for this unchanged-code receipt. There were **zero hosted, native build or device backup/restore/transfer checks**. No actual token store, credential value, backup payload, account/file/settings/SQL/provider/production or installed APK changed. No native security PASS or finding closure is recorded.
+
+No further 5.2 SQL/terminal/setup action is requested. Keep the existing untracked native project and signing identity intact; APK update remains deferred. Stages 0–4, the closed 5.1 outcome, S5E03 source/local evidence and original 123 rows/20 finding definitions remain preserved.
+
+## Historical 5.2 source/local review and initial handoff — S5E03
+
+
 **12 October 2026 / S5E03 — source review and ten existing local VM regressions complete; one owner backup XML receipt pending.**
 Source pin: `64bbd2695b004168b45235d96f2220862cede5cc`. [Stage 5 finite plan](SECURITY_STAGE_5_NATIVE_PLAN.md). [Source/local receipt](security-stage-5-storage-review.json).
 

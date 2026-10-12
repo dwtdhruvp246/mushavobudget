@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "stage": 6,
+  "date": "2026-10-12",
+  "stage_status": "IN_PROGRESS_SOURCE_DECISION_INVENTORY_COMPLETE",
+  "active_step": "6.2",
+  "scope": "SOURCE_AND_DECISION_INVENTORY_NOT_HOSTED_PROVIDER_ACCEPTANCE",
+  "events": [
+    {
+      "id": "S6E01",
+      "stage_step": "6.1",
+      "date": "2026-10-12",
+      "source_parent_commit": "fe2c281ce13e7d0d8cb49115fa1bd6c195579c4e",
+      "result": "COMPLETE_AT_SOURCE_DECISION_SCOPE",
+      "source_review": "docs/security-audit/SECURITY_STAGE_6_1_IDENTITY_EMAIL_REVIEW.md",
+      "source_inventory": "docs/security-audit/security-stage-6-identity-email-source-inventory.json",
+      "decisions": "docs/security-audit/security-stage-6-identity-email-decisions.json",
+      "test_matrix": "docs/security-audit/security-stage-6-identity-email-test-matrix.json",
+      "action_index": "docs/security-audit/security-stage-6-remediation-actions.json",
+      "source_files_byte_matches": 41,
+      "source_blob_mismatches": 0,
+      "public_primary_references": 9,
+      "tracked_template_mismatch_files": 4,
+      "local_behavior_tests_run": 0,
+      "hosted_cases_run": 0,
+      "device_cases_run": 0,
+      "providers_activated": false,
+      "email_dispatched": false,
+      "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+      "production_or_native_changed": false,
+      "findings_closed": [],
+      "next_step": "6.2"
+    }
+  ],
+  "historical_receipts_unchanged": true,
+  "planned_grouped_cases": 36,
+  "open_actions": 6,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "APK_update_deferred": true,
+  "report_due_step": "6.4"
+}

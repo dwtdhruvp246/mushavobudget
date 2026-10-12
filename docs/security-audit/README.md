@@ -1,5 +1,8 @@
 # Mushavo Budget security audit — Start here
 
+**Latest — 6.1 / identity-email source and decision inventory COMPLETE, 12 October 2026 (S6E01):** [Finite four-step Stage 6 plan](SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md), [source review](SECURITY_STAGE_6_1_IDENTITY_EMAIL_REVIEW.md), [41-file exact byte inventory](security-stage-6-identity-email-source-inventory.json), [known/unconfirmed decisions](security-stage-6-identity-email-decisions.json), [36 planned grouped cases](security-stage-6-identity-email-test-matrix.json) and [six OPEN existing-finding action entries](security-stage-6-remediation-actions.json). Selected source has no Google/Apple login integration; all four invitation subject/body templates recognize the legacy Business callback but not the current Auth callbacks. This is a source wording mismatch, not an observed hosted delivery failure. Google intent/password login/working SMTP are preserved; Apple, provider/native/email-route facts remain proposed/unconfirmed. Zero local behavior/hosted/provider/device cases or settings/accounts/SQL/mail/deployment/native/production changes; no finding closure. Stages 0–5 and original 123 rows/20 definitions remain intact. **Next 6.2 candidate/local checks; full report 6.4; APK update deferred.** Earlier summaries remain historical.
+
+
 **Latest — 5.5 / full Stage 5 report CLOSED WITH CARRY-FORWARD, 12 October 2026 (S5E10):** [Full native report and handoff](SECURITY_STAGE_5_COMPLETION_REPORT.md), [final integrity reconciliation](security-stage-5-final-recheck.json), [seven OPEN native action entries](security-stage-5-remediation-actions.json). All five finite steps have outcomes. Primary local batches are 10 selection/11 callback/9 packaging PASS (30 executions); assistant repeats total 48 PASS, not 48 controls. Owner initial 8 PASS/1 FAIL is preserved; corrected repeat 9 PASS/exit 0. Fifty current source identities/three candidate SHA256 targets and six owner CRLF code values reconcile, zero unexplained drift. Zero fresh behavior/hosted/device/native compile checks at closure. Native credentials/backup/origins/callbacks/permissions/provider/privacy/artifact requirements remain unverified; no finding closure, live/native/installed APK action or owner SQL/terminal/setup command. Original 123 rows/20 definitions and Stage 0–4/closed 5.1–5.4 outcomes remain preserved. Release gate stays OPEN_PENDING_REQUIRED_EVIDENCE. **Next 6.1 identity/email source/decision inventory; APK update remains deferred.** Earlier summaries are historical.
 
 
@@ -52,6 +55,8 @@ To browse normally on GitHub, select the **`security/stage-3-authorization`** br
 
 | Open this | What it contains |
 |---|---|
+| [Stage 6 identity/email plan](SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md) | Four finite steps; 6.1 complete, next 6.2, full report 6.4 |
+| [6.1 source review and decision inventory](SECURITY_STAGE_6_1_IDENTITY_EMAIL_REVIEW.md) | 41 matching selected source files, template mismatch, provider/linking/email dependencies and 36 unrun grouped cases |
 | [Audit plan](AUDIT_PLAN.md) | Complete stage roadmap, current position, stage workflow and final remediation/re-audit sequence |
 | [Action plan and carry-forward register](SECURITY_AUDIT_CARRY_FORWARD.md) | Outstanding failures, uncertain results, decisions and remediation history |
 | [Master audit coverage register](SECURITY_AUDIT_REGISTER.md) | All original 123 audit sections and their evidence/owner/stage assignments |
@@ -160,6 +165,12 @@ The 36 existing audit documents/evidence files were moved here from the parent d
 - [Lifecycle local receipt](security-stage-4-lifecycle-local-checks.json) and [unapproved retention template](security-stage-4-retention-decisions.json).
 - [Selected lifecycle source inventory](security-stage-4-lifecycle-source-inventory.json).
 - [Stage 4 evidence](security-stage-4-evidence.json).
+
+### Stage 6 — Identity and email workflows (in progress)
+
+- [Four-step plan](SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md) and [6.1 source review](SECURITY_STAGE_6_1_IDENTITY_EMAIL_REVIEW.md).
+- [Source inventory](security-stage-6-identity-email-source-inventory.json), [known/unconfirmed decisions](security-stage-6-identity-email-decisions.json) and [36 planned grouped cases](security-stage-6-identity-email-test-matrix.json).
+- [Six OPEN actions](security-stage-6-remediation-actions.json) and [Stage 6 evidence](security-stage-6-evidence.json).
 
 ## How to use the folder
 

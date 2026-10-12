@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "updated_date": "2026-10-12",
-  "current_stage": 5,
-  "current_step": "5.5",
-  "current_title": "Stage 5 closed with carry-forward; full report saved; next 6.1 identity/email source and decision inventory",
+  "current_stage": 6,
+  "current_step": "6.1",
+  "current_title": "Stage 6 identity/email source and decision inventory complete; next 6.2 candidate/local checks",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 6,
-  "next_step": "6.1",
+  "next_step": "6.2",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -2239,6 +2239,97 @@
     "real_native_compile_signed_artifact_verified": false,
     "next_stage": 6,
     "next_step": "6.1",
+    "owner_SQL_terminal_or_setup_action_requested": false
+  },
+  "stage_6": {
+    "status": "IN_PROGRESS_SOURCE_DECISION_INVENTORY_COMPLETE",
+    "authorized": true,
+    "started_date": "2026-10-12",
+    "active_step": "6.2",
+    "initial_step": "6.1",
+    "bounded_steps": 4,
+    "completed_steps": 1,
+    "remaining_steps": 3,
+    "plan": "docs/security-audit/SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md",
+    "source_review": "docs/security-audit/SECURITY_STAGE_6_1_IDENTITY_EMAIL_REVIEW.md",
+    "source_inventory": "docs/security-audit/security-stage-6-identity-email-source-inventory.json",
+    "decision_record": "docs/security-audit/security-stage-6-identity-email-decisions.json",
+    "test_matrix": "docs/security-audit/security-stage-6-identity-email-test-matrix.json",
+    "remediation_action_index": "docs/security-audit/security-stage-6-remediation-actions.json",
+    "evidence": "docs/security-audit/security-stage-6-evidence.json",
+    "latest_evidence": "S6E01",
+    "finding_ids": [
+      "F04",
+      "F08",
+      "F10",
+      "F14",
+      "F15",
+      "F19",
+      "F20"
+    ],
+    "steps": [
+      {
+        "id": "6.1",
+        "title": "Identity/email source and decision inventory",
+        "status": "COMPLETE_AT_SOURCE_DECISION_SCOPE",
+        "completed_date": "2026-10-12",
+        "source_parent_commit": "fe2c281ce13e7d0d8cb49115fa1bd6c195579c4e",
+        "latest_evidence": "S6E01",
+        "selected_source_files_hash_verified": 41,
+        "source_blob_mismatches": 0,
+        "template_subject_body_files_with_current_Business_route_mismatch": 4,
+        "local_behavior_tests_run": 0,
+        "hosted_checks_run": 0,
+        "device_checks_run": 0,
+        "provider_configuration_inspected": false,
+        "owner_SQL_terminal_or_setup_action_requested": false,
+        "next_step": "6.2"
+      },
+      {
+        "id": "6.2",
+        "title": "Reviewable candidate and local verification",
+        "status": "PLANNED"
+      },
+      {
+        "id": "6.3",
+        "title": "One bounded acceptance/readiness outcome",
+        "status": "PLANNED"
+      },
+      {
+        "id": "6.4",
+        "title": "Reconciliation and full Stage 6 report",
+        "status": "PLANNED"
+      }
+    ],
+    "source_parent_commit": "fe2c281ce13e7d0d8cb49115fa1bd6c195579c4e",
+    "planned_acceptance_groups": [
+      "IE01",
+      "IE02",
+      "IE03",
+      "IE04",
+      "IE05",
+      "IE06"
+    ],
+    "planned_grouped_cases": 36,
+    "overlap_with_prior_AU_AM_NR_cases": true,
+    "local_behavior_tests_run": 0,
+    "hosted_checks_run": 0,
+    "device_checks_run": 0,
+    "open_remediation_actions": 6,
+    "Google_login_owner_intent": true,
+    "Apple_login_proposed_not_newly_owner_confirmed": true,
+    "working_SMTP_preserved": true,
+    "providers_activated": false,
+    "email_dispatched": false,
+    "candidate_deployed": false,
+    "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+    "production_or_native_changed": false,
+    "hosted_acceptance": false,
+    "native_security_acceptance": false,
+    "findings_closed": [],
+    "APK_update_deferred": true,
+    "report_due_step": "6.4",
+    "next_step": "6.2",
     "owner_SQL_terminal_or_setup_action_requested": false
   }
 }

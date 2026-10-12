@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "stage_step": "6.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "fe2c281ce13e7d0d8cb49115fa1bd6c195579c4e",
+  "scope": "ACTION_ENTRIES_LINKED_TO_EXISTING_FINDINGS_NOT_NEW_FINDING_DEFINITIONS",
+  "actions": [
+    {
+      "id": "IE-R01",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F04",
+        "F20"
+      ],
+      "title": "Google/Apple configuration and product decision",
+      "work": "Preserve Google-login intent; choose supported web/PWA/native transport, exact environment clients/domains/scopes and qualifying iOS option. Verify provider readiness and required public policies.",
+      "recheck": "Verified configuration summaries, controlled provider sign-in/cancel/error and onboarding; IE01/IE04.",
+      "hosted_acceptance": false
+    },
+    {
+      "id": "IE-R02",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F04",
+        "F10",
+        "F14",
+        "F15"
+      ],
+      "title": "Purpose-bound OAuth callback and session transfer",
+      "work": "Design a separate provider/linking transaction that binds intent, state/nonce/verifier, environment and initiating identity; preserve existing email-link isolation, account-switch guards and precise native origins.",
+      "recheck": "Real web/PWA/native lifecycle, tamper/replay/expiry/wrong-account and storage/handoff proof; IE01/IE03 with AU/NR dependencies.",
+      "hosted_acceptance": false
+    },
+    {
+      "id": "IE-R03",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F04",
+        "F08",
+        "F15"
+      ],
+      "title": "Linking and invitations preserve identity and access",
+      "work": "Validate actual automatic/manual linking and relay collisions; retain immutable Auth UUID ownership and server membership/seat/role/expiry rules. Include unfinished Admin invitations and social onboarding currencies; no client email-based account merge.",
+      "recheck": "Actual controlled identities, direct RPC acceptance/denial and existing finance/plan/selection preservation; IE02/IE04.",
+      "hosted_acceptance": false
+    },
+    {
+      "id": "IE-R04",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F04",
+        "F15",
+        "F19"
+      ],
+      "title": "Auth purpose templates and deployed route parity",
+      "work": "Repair tracked Business callback classification in the four subject/body templates; distinguish Admin setup from generic OTP and other Auth purposes. Keep escaped content and authentic link semantics; verify exact deployed templates/allowlist separately.",
+      "recheck": "Actual template rendering/negative-route local checks, reviewed deployed parity and controlled inbox confirmation/recovery/new/existing invitations; IE03/IE05.",
+      "hosted_acceptance": false
+    },
+    {
+      "id": "IE-R05",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F04",
+        "F15",
+        "F19",
+        "F20"
+      ],
+      "title": "Bounded email architecture and delivery operations",
+      "work": "Keep working SMTP initially. Review a signed Auth Send Email Hook separately from a durable server-authorized application-email dispatcher/shared template layer. Define recipients/actions, dedup/retry/limits, privacy, monitoring and recovery before activation.",
+      "recheck": "Selected route approved/implemented, signature and token-mapping checks, durable queue/provider failure/recipient/revocation proof, rollback; IE05/IE06.",
+      "hosted_acceptance": false
+    },
+    {
+      "id": "IE-R06",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F04",
+        "F08",
+        "F10",
+        "F15",
+        "F19"
+      ],
+      "title": "Coordinated rollout and actual acceptance",
+      "work": "Bind exact source/settings/template/environment, provider credentials kept private, disposable recoverable accounts/inboxes and cleanup/rollback. Run the bounded 36-case matrix where ready; carry unavailable groups and dependencies to final remediation and full re-audit.",
+      "recheck": "Hosted/browser/device evidence with genuine Auth/provider identity/delivery, preservation and final declaration alignment; all IE groups and earlier AU/AM/NR actions.",
+      "hosted_acceptance": false
+    }
+  ],
+  "total": 6,
+  "open": 6,
+  "findings_closed": []
+}

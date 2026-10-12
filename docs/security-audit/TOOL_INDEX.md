@@ -307,3 +307,7 @@ No new executable tool or behavior/sandbox/device test; existing eight test file
 ## Stage 7.4 full report and integrity reconciliation
 
 [Full Stage 7 report/Stage 8 handoff](SECURITY_STAGE_7_COMPLETION_REPORT.md), [final recheck](security-stage-7-final-recheck.json) and [eight OPEN action entries](security-stage-7-remediation-actions.json). 56 current identities/12 consumed hashes/seven immutable structured records match; exact three-path offline non-document diff, no runtime/SQL/dependency/native change. No fresh behavior/syntax/hosted/device test or owner SQL/terminal/setup action. Stage 7 closed with carry-forward, 0 of 48 hosted/store cases run. Next 8.1 notification/event/device source inventory and finite plan; APK deferred.
+
+## Stage 8.1 notification/event/device source review
+
+[Finite plan](SECURITY_STAGE_8_NOTIFICATIONS_DEVICE_PLAN.md), [source review](SECURITY_STAGE_8_1_NOTIFICATION_DEVICE_REVIEW.md), [53-input inventory](security-stage-8-notification-source-inventory.json), [decisions](security-stage-8-notification-decisions.json), [48 planned cases](security-stage-8-notification-test-matrix.json), [eight OPEN actions](security-stage-8-remediation-actions.json) and [evidence](security-stage-8-evidence.json). Documentation only; 13 existing test files read, not run. No new executable tool or notification/permission/provider/cron/device/SDK/SQL/native action or owner command. Earlier push/native collectors retain their original scope and are not setup orders. Next 8.2; full report 8.4.

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "stage_step": "8.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "5306aa19adc42654cde1a8f415aa4318a4289321",
+  "scope": "KNOWN_EXISTING_REQUIREMENTS_AND_UNCONFIRMED_DEVICE_NOTIFICATION_DECISIONS_NOT_PERMISSION_OR_DELIVERY_APPROVAL",
+  "known_scope": {
+    "server_side_reminders_preserved": true,
+    "client_UI_refresh_and_update_checks_distinct_from_reminder_dispatch": true,
+    "Personal_Family_Business_Admin_contexts_retained": true,
+    "existing_web_push_and_user_opt_in_preserved": true,
+    "default_generic_and_existing_optional_detailed_preview_source_retained": true,
+    "last_workspace_preference_distinct_from_authentication": true,
+    "native_transport_not_identified_in_selected_source": true,
+    "prior_owner_PC_phone_smoke_not_fresh_device_matrix": true,
+    "actual_current_staging_key_provider_settings_or_devices_inspected": false
+  },
+  "decisions": [
+    {
+      "id": "ND-D01",
+      "topic": "Native transport/provider/SDK/app identity",
+      "status": "UNCONFIRMED",
+      "proposal": "Preserve browser Web Push; select a supported native transport/bridge and current provider registration protocol only after actual app identity/toolchain/provider prerequisites are verified."
+    },
+    {
+      "id": "ND-D02",
+      "topic": "Device ownership/opt-in/logout and retention",
+      "status": "UNCONFIRMED",
+      "proposal": "Bind current device association to authenticated immutable user, permit only own mutations and safe logout/account switch across all surfaces; explicit failure/recovery and retention rules remain to be accepted."
+    },
+    {
+      "id": "ND-D03",
+      "topic": "Detailed preview authority and queued privacy",
+      "status": "UNCONFIRMED",
+      "proposal": "Preserve existing preview-off default; define workspace versus recipient/device authority and revalidate/redact queued content at send/display boundaries, without inventing a new adopted policy."
+    },
+    {
+      "id": "ND-D04",
+      "topic": "Event categories/foreground display/badging",
+      "status": "UNCONFIRMED",
+      "proposal": "Map actual reminder/Admin/invitation in-app versus push paths, suppression/read behavior and badges; do not silently add invitation push or native notification guarantees."
+    },
+    {
+      "id": "ND-D05",
+      "topic": "Partial delivery/ambiguity/retry/claim policy",
+      "status": "UNCONFIRMED",
+      "proposal": "Choose observable at-least-once/partial-device/recovery semantics and durable claim ownership, without promising exactly-once OS display or changing retry limits blindly."
+    },
+    {
+      "id": "ND-D06",
+      "topic": "PWA activation/page refresh/offline policy",
+      "status": "UNCONFIRMED",
+      "proposal": "Retain current no-private-data offline fallback, manual page refresh and safe in-flight behavior; separately review immediate worker activation/multiple tabs/native update limits."
+    },
+    {
+      "id": "ND-D07",
+      "topic": "Click intent/account/workspace/Admin assurance",
+      "status": "UNCONFIRMED",
+      "proposal": "Reauthorize current user/workspace/source/role at open; reject foreign/stale/deleted targets, preserve legitimate sign-in intent and last-workspace behavior without conferring authority."
+    },
+    {
+      "id": "ND-D08",
+      "topic": "Physical matrix/operations/privacy/retention/rollback",
+      "status": "UNCONFIRMED",
+      "proposal": "Agree supported browser/PWA/native/device states and real provider/environment/retention/monitoring boundaries before isolated delivery and final release tests; no SDK/cloud credential setup is inferred."
+    }
+  ],
+  "native_SDK_provider_configuration_selected_or_activated": false,
+  "actual_device_OS_permission_or_registration_verified": false,
+  "hosted_acceptance": false,
+  "notification_dispatched": false,
+  "production_or_native_changed": false
+}

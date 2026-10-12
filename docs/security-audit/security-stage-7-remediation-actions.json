@@ -121,5 +121,15 @@
   ],
   "total": 8,
   "open": 8,
-  "findings_closed": []
+  "findings_closed": [],
+  "latest_step": "7.2",
+  "latest_evidence": "S7E02",
+  "offline_candidate": {
+    "report": "docs/security-audit/SECURITY_STAGE_7_2_COMMERCE_CANDIDATE.md",
+    "receipt": "docs/security-audit/security-stage-7-commerce-local-checks.json",
+    "contract": "docs/security-audit/security-stage-7-commerce-candidate-contract.json",
+    "scope": "SYNTHETIC_MODEL_AND_SELECTED_EXISTING_MANUAL_REGRESSION",
+    "runtime_provider_or_native_integration_implemented": false,
+    "action_closures": 0
+  }
 }

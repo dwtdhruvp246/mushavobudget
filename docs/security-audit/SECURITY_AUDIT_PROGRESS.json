@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-12",
   "current_stage": 7,
-  "current_step": "7.1",
-  "current_title": "Stage 7 commerce source/product/channel inventory complete; next 7.2 candidate/local review",
+  "current_step": "7.2",
+  "current_title": "Stage 7 commerce model/local regression complete; next 7.3 bounded readiness",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 7,
-  "next_step": "7.2",
+  "next_step": "7.3",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -2482,14 +2482,14 @@
     "full_security_or_release_acceptance_verified": false
   },
   "stage_7": {
-    "status": "IN_PROGRESS_SOURCE_PRODUCT_CHANNEL_INVENTORY_COMPLETE",
+    "status": "IN_PROGRESS_OFFLINE_CANDIDATE_AND_REGRESSION_COMPLETE",
     "authorized": true,
     "started_date": "2026-10-12",
-    "active_step": "7.2",
+    "active_step": "7.3",
     "initial_step": "7.1",
     "bounded_steps": 4,
-    "completed_steps": 1,
-    "remaining_steps": 3,
+    "completed_steps": 2,
+    "remaining_steps": 2,
     "plan": "docs/security-audit/SECURITY_STAGE_7_COMMERCE_PLAN.md",
     "source_review": "docs/security-audit/SECURITY_STAGE_7_1_COMMERCE_SOURCE_REVIEW.md",
     "source_inventory": "docs/security-audit/security-stage-7-commerce-source-inventory.json",
@@ -2497,7 +2497,7 @@
     "test_matrix": "docs/security-audit/security-stage-7-commerce-test-matrix.json",
     "remediation_action_index": "docs/security-audit/security-stage-7-remediation-actions.json",
     "evidence": "docs/security-audit/security-stage-7-evidence.json",
-    "latest_evidence": "S7E01",
+    "latest_evidence": "S7E02",
     "source_parent_commit": "bcb8f055f93cb9c145a0f74556e4bacb39847593",
     "primary_finding_id": "F03",
     "finding_ids": [
@@ -2537,7 +2537,22 @@
       {
         "id": "7.2",
         "title": "Reviewable commerce boundary candidate/local regression",
-        "status": "PLANNED"
+        "status": "COMPLETE_AT_OFFLINE_MODEL_AND_SELECTED_MANUAL_REGRESSION_SCOPE",
+        "completed_date": "2026-10-12",
+        "latest_evidence": "S7E02",
+        "source_parent_commit": "1153f77b612170612111b6b00ec82e620a78d749",
+        "synthetic_model_cases": 20,
+        "selected_existing_manual_regression_cases": 10,
+        "pass": 30,
+        "fail": 0,
+        "exit_code": 0,
+        "syntax_checks": 3,
+        "pinned_regression_input_blob_matches": 8,
+        "hosted_or_sandbox_cases_run": 0,
+        "device_cases_run": 0,
+        "runtime_purchase_integration_implemented": false,
+        "provider_verification_implemented": false,
+        "next_step": "7.3"
       },
       {
         "id": "7.3",
@@ -2568,7 +2583,7 @@
     "later_public_Business_availability_source_configurable": true,
     "current_hosted_price_product_availability_verified": false,
     "runtime_native_purchase_backend_verification_ledger_or_payment_receiver_identified": false,
-    "local_behavior_tests_run": 0,
+    "local_behavior_tests_run": 30,
     "hosted_or_store_sandbox_cases_run": 0,
     "device_cases_run": 0,
     "real_charges_refunds_restores_or_subscription_cancellations_run": false,
@@ -2581,6 +2596,10 @@
     "APK_update_deferred": true,
     "owner_SQL_terminal_or_setup_action_requested": false,
     "report_due_step": "7.4",
-    "next_step": "7.2"
+    "next_step": "7.3",
+    "optional_owner_terminal_repeat_supplied": true,
+    "candidate_contract": "docs/security-audit/security-stage-7-commerce-candidate-contract.json",
+    "local_receipt": "docs/security-audit/security-stage-7-commerce-local-checks.json",
+    "candidate_report": "docs/security-audit/SECURITY_STAGE_7_2_COMMERCE_CANDIDATE.md"
   }
 }

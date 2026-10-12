@@ -291,3 +291,7 @@ No fresh behavior/syntax/hosted/device test or owner SQL/terminal/setup action. 
 [Four-step plan](SECURITY_STAGE_7_COMMERCE_PLAN.md), [source review](SECURITY_STAGE_7_1_COMMERCE_SOURCE_REVIEW.md), [52-input inventory](security-stage-7-commerce-source-inventory.json), [decisions](security-stage-7-commerce-decisions.json), [48 planned cases](security-stage-7-commerce-test-matrix.json), [eight OPEN actions](security-stage-7-remediation-actions.json), [evidence](security-stage-7-evidence.json).
 
 No new executable tool or behavior/sandbox/device test; existing eight test files were read, not run. No price/product/provider/SQL/native action. No owner command; next 7.2 candidate/local review, full report 7.4.
+
+## Stage 7.2 offline commerce candidate
+
+[Checkpoint](SECURITY_STAGE_7_2_COMMERCE_CANDIDATE.md), [inert contract](security-stage-7-commerce-candidate-contract.json), [local receipt](security-stage-7-commerce-local-checks.json), [Node runner](../../scripts/verify-stage-7-commerce.mjs), [pure review model](../../scripts/lib/stage-7-commerce-model.mjs) and [20 synthetic cases](../../tests/stage-7-commerce-model.test.mjs). Includes ten unchanged Business/Admin manual source/VM regression cases. 30 PASS/three syntax checks; no provider verification, runtime purchase integration, durable ledger, real charge or hosted acceptance. No SQL/setup action; optional pinned owner PowerShell repeat supplied fully in chat. Next 7.3; full report 7.4.

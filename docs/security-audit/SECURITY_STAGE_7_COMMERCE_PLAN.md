@@ -39,3 +39,7 @@ Store account enrollment, price/product creation, gateway/SDK selection, public 
 Retain AU/AM/Business source/grant/MFA gaps, UF proof validation/cleanup, NR native identity/callback/artifact work and privacy/minors/retention/operations dependencies. Record missing facts at 7.3 and carry them into final remediation/full re-audit rather than substituting real production charges or unverified accounts.
 
 When owner execution is required, give the full SQL/PowerShell code in chat and ask for the result after completion. No owner SQL/terminal or file-opening action is needed for 7.1.
+
+## 7.2 recorded outcome — 12 October 2026
+
+[Offline candidate/checkpoint](SECURITY_STAGE_7_2_COMMERCE_CANDIDATE.md) and [receipt](security-stage-7-commerce-local-checks.json): 20 synthetic model cases plus ten unchanged manual source/VM regressions, 30 PASS/0 FAIL/exit 0, three syntax checks. No provider verifier, durable ledger/receiver, runtime/native purchase integration or hosted/device/charge check. Eight actions OPEN, eight decisions unconfirmed, 0 of 48 hosted cases run. Two of four steps complete at their recorded scopes; next 7.3 one bounded readiness/sandbox outcome, full report 7.4. Prior plan/outcome history preserved. No required SQL/setup action; optional owner pinned temp export repeat supplied in chat.

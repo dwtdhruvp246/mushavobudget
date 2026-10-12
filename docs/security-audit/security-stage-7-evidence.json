@@ -2,8 +2,8 @@
   "schema_version": 1,
   "stage": 7,
   "date": "2026-10-12",
-  "stage_status": "IN_PROGRESS_SOURCE_PRODUCT_CHANNEL_INVENTORY_COMPLETE",
-  "active_step": "7.2",
+  "stage_status": "IN_PROGRESS_OFFLINE_CANDIDATE_AND_REGRESSION_COMPLETE",
+  "active_step": "7.3",
   "scope": "SOURCE_CURRENT_PRIMARY_POLICY_AND_DECISION_INVENTORY_NOT_PAYMENT_OR_STORE_ACCEPTANCE",
   "events": [
     {
@@ -28,6 +28,30 @@
       "settings_accounts_SQL_production_native_changed": false,
       "findings_closed": [],
       "next_step": "7.2"
+    },
+    {
+      "id": "S7E02",
+      "stage_step": "7.2",
+      "date": "2026-10-12",
+      "source_parent_commit": "1153f77b612170612111b6b00ec82e620a78d749",
+      "result": "COMPLETE_AT_OFFLINE_MODEL_AND_SELECTED_MANUAL_REGRESSION_SCOPE",
+      "candidate_report": "docs/security-audit/SECURITY_STAGE_7_2_COMMERCE_CANDIDATE.md",
+      "candidate_contract": "docs/security-audit/security-stage-7-commerce-candidate-contract.json",
+      "local_receipt": "docs/security-audit/security-stage-7-commerce-local-checks.json",
+      "synthetic_model_cases": 20,
+      "selected_existing_manual_regression_cases": 10,
+      "pass": 30,
+      "fail": 0,
+      "exit_code": 0,
+      "syntax_checks": 3,
+      "pinned_regression_blob_matches": 8,
+      "runtime_provider_verification_or_store_integration_implemented": false,
+      "hosted_sandbox_device_cases_run": 0,
+      "real_charges_performed": false,
+      "accounts_fixtures_SQL_settings_production_native_changed": false,
+      "open_actions": 8,
+      "findings_closed": [],
+      "next_step": "7.3"
     }
   ],
   "prior_stage_records_unchanged": true,
@@ -35,5 +59,5 @@
   "real_charges_performed": false,
   "APK_update_deferred": true,
   "report_due_step": "7.4",
-  "next_step": "7.2"
+  "next_step": "7.3"
 }

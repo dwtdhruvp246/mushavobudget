@@ -1,0 +1,567 @@
+{
+  "schema_version": 1,
+  "stage_step": "7.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "bcb8f055f93cb9c145a0f74556e4bacb39847593",
+  "scope": "FRESH_SELECTED_SOURCE_DOCUMENT_TEST_BYTES_AND_CURRENT_PUBLIC_PRIMARY_DOCUMENTATION_NOT_HOSTED_CATALOG_OR_PURCHASE_ACCEPTANCE",
+  "source_files": [
+    {
+      "path": "app.js",
+      "bytes": 504595,
+      "sha256": "eb4222245c6d75bf3708335d6c5f24c942c62715d3ce0afdf7d79cb3777cb6f6",
+      "git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+      "expected_git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+      "match": true
+    },
+    {
+      "path": "app.html",
+      "bytes": 112549,
+      "sha256": "e1025272e36af37c2262a7ce260c06bf4e89f345a18cd9e23328698dab85db5a",
+      "git_blob_sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+      "expected_git_blob_sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+      "match": true
+    },
+    {
+      "path": "business.js",
+      "bytes": 239567,
+      "sha256": "6754f92c72399bf45ea849ef692318a6d88a227a413b552a6ca50ee9e1b98f6f",
+      "git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+      "expected_git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+      "match": true
+    },
+    {
+      "path": "business.html",
+      "bytes": 72858,
+      "sha256": "cd076bd8f8f2d6b49efa78b08ae5b97101fffcba3739090e093d103c0ec5504e",
+      "git_blob_sha": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+      "expected_git_blob_sha": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+      "match": true
+    },
+    {
+      "path": "admin-plans.js",
+      "bytes": 34738,
+      "sha256": "98c67c1a7bd248992daba21aad81a0c9c7130e6c5122fc095714e837f785efdd",
+      "git_blob_sha": "c6a7620703d83b9f5a3df9f62f69e4c4f41b32c2",
+      "expected_git_blob_sha": "c6a7620703d83b9f5a3df9f62f69e4c4f41b32c2",
+      "match": true
+    },
+    {
+      "path": "package.json",
+      "bytes": 883,
+      "sha256": "fe28c33c1a1c93b8f5efaf7b098b6884afca7b61f7910e767f8ce069ff1d8c6a",
+      "git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+      "expected_git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+      "match": true
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 70459,
+      "sha256": "cb476c5d8cebfa65f44edf0f54c8d1124d446f0cecef2c305e92f38dae13cd0f",
+      "git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+      "expected_git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+      "match": true
+    },
+    {
+      "path": "pricing.html",
+      "bytes": 5748,
+      "sha256": "bca3e62a344416899f2250303826f803d5e386e694f0dd000aea046e7269785f",
+      "git_blob_sha": "abb1db5130f943c4bbc761c6c93ced2abadcdc54",
+      "expected_git_blob_sha": "abb1db5130f943c4bbc761c6c93ced2abadcdc54",
+      "match": true
+    },
+    {
+      "path": "config.js",
+      "bytes": 279,
+      "sha256": "c14293e16fda6a6b0e483ea5141954b78832b175155cec0ab9f59d35e8b7b0cd",
+      "git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+      "expected_git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+      "match": true
+    },
+    {
+      "path": "supabase/schema.sql",
+      "bytes": 953717,
+      "sha256": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+      "git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "expected_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260928090000_admin_manual_subscription_grants.sql",
+      "bytes": 12426,
+      "sha256": "a5e965d072d34c8c48d55aba5d8f45e7047dc1b114f858e67e8ac6ee383fba25",
+      "git_blob_sha": "859b123f33f00b4bc7aa26fca4f9795a04244eaf",
+      "expected_git_blob_sha": "859b123f33f00b4bc7aa26fca4f9795a04244eaf",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+      "bytes": 50506,
+      "sha256": "150cdfc2b70521b4fc2f0b666adf4b772513a56ce43a39b7e912cdd00b3e6215",
+      "git_blob_sha": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+      "expected_git_blob_sha": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20261001190000_admin_plans_workbench.sql",
+      "bytes": 21233,
+      "sha256": "e8d566fc693c8060278e06e489deb6f1fec6337c5267d28775eba9dda85c0a7a",
+      "git_blob_sha": "2dc028ccd92314e6f6f92388fc2107142ea2ddf2",
+      "expected_git_blob_sha": "2dc028ccd92314e6f6f92388fc2107142ea2ddf2",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20261002042500_reconcile_business_plan_seats.sql",
+      "bytes": 1666,
+      "sha256": "184a0ec0179f29874951eabc2afc7037144e7390f25dc7d29768fa7f56b10465",
+      "git_blob_sha": "2bf290c33957d0c7cb85e7ea928355fcceb4b124",
+      "expected_git_blob_sha": "2bf290c33957d0c7cb85e7ea928355fcceb4b124",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260921090000_additional_family_subscriptions.sql",
+      "bytes": 17258,
+      "sha256": "5f16d5ca23d2fa50f261a86807aafa34b5866618f823e24f6175c738bbe895dc",
+      "git_blob_sha": "34addfdd2b4abef3e9a73bbe992f51a85464a505",
+      "expected_git_blob_sha": "34addfdd2b4abef3e9a73bbe992f51a85464a505",
+      "match": true
+    },
+    {
+      "path": "docs/BUSINESS_STAGE_10_BILLING.md",
+      "bytes": 9150,
+      "sha256": "a2e49696f99e79642b762fa83120605919e5fc7072fca3f694d2e8113f769720",
+      "git_blob_sha": "6400b419fdd53fd12b42fec4cfdd9c22d738a879",
+      "expected_git_blob_sha": "6400b419fdd53fd12b42fec4cfdd9c22d738a879",
+      "match": true
+    },
+    {
+      "path": "docs/ADMIN_PLANS_WORKBENCH.md",
+      "bytes": 6052,
+      "sha256": "80f8b916b884f2df476a890d1f647f6d35ff2b008b968f83a5c4fedf50c39931",
+      "git_blob_sha": "63ad9fc91697c1ed0dad2bba28993071af42a339",
+      "expected_git_blob_sha": "63ad9fc91697c1ed0dad2bba28993071af42a339",
+      "match": true
+    },
+    {
+      "path": "SUBSCRIPTION_DEPLOYMENT.md",
+      "bytes": 6401,
+      "sha256": "56e293231fb11a3171ceb1bbb1c495f894abcaa09f48729deb99cea62e5877cd",
+      "git_blob_sha": "d4e87662624bbe6fd6ef6f424c1eeece6e96b584",
+      "expected_git_blob_sha": "d4e87662624bbe6fd6ef6f424c1eeece6e96b584",
+      "match": true
+    },
+    {
+      "path": "STAGE_2_ADDITIONAL_FAMILY_SUBSCRIPTIONS.md",
+      "bytes": 2161,
+      "sha256": "61468613f080e285bb6bd1142d2b9e8048c88cd175ccf5cb362be669115eca08",
+      "git_blob_sha": "40181fcf15c11c468f2ace01391b165417fc825e",
+      "expected_git_blob_sha": "40181fcf15c11c468f2ace01391b165417fc825e",
+      "match": true
+    },
+    {
+      "path": "tests/admin-manual-subscription.test.mjs",
+      "bytes": 4047,
+      "sha256": "0d7057b3211392e4f4ce9a2e546d058162d65ed0ab75c2c70d3ac8297fc28eb4",
+      "git_blob_sha": "7d9f8d2895bc9e2bd06c772add0488579135a580",
+      "expected_git_blob_sha": "7d9f8d2895bc9e2bd06c772add0488579135a580",
+      "match": true
+    },
+    {
+      "path": "tests/admin-plans-workbench.test.mjs",
+      "bytes": 5344,
+      "sha256": "e622572423b166556743ae8022cb7309273ce9b02ba32da9d9cdaaf4f3f1a0b9",
+      "git_blob_sha": "31a981bb4d024a8c6946df62f4d0336818f7737b",
+      "expected_git_blob_sha": "31a981bb4d024a8c6946df62f4d0336818f7737b",
+      "match": true
+    },
+    {
+      "path": "tests/additional-family-subscription.test.mjs",
+      "bytes": 4034,
+      "sha256": "722cc25eee3f028bfb85578d84460506210ef73c1333c24aa9019e6c040802eb",
+      "git_blob_sha": "ee821c74749de37b4d8b2de81f7daac1796ebf2a",
+      "expected_git_blob_sha": "ee821c74749de37b4d8b2de81f7daac1796ebf2a",
+      "match": true
+    },
+    {
+      "path": "tests/subscription-expiry.test.mjs",
+      "bytes": 3314,
+      "sha256": "823f62a86361754e9b6050417303374fd29bc68ac4cf50629ac4bb03d4020108",
+      "git_blob_sha": "c5e48e64fd3faaeeaabbd31dc533f43b97e19b25",
+      "expected_git_blob_sha": "c5e48e64fd3faaeeaabbd31dc533f43b97e19b25",
+      "match": true
+    },
+    {
+      "path": "tests/subscription-overview.test.mjs",
+      "bytes": 2051,
+      "sha256": "88df72eaa82913b7f7e3c1ac202d44041811bc52b55e061aaaf465994fb0f578",
+      "git_blob_sha": "e0b488f6c30f25a45c4646b60fa411551c11ee25",
+      "expected_git_blob_sha": "e0b488f6c30f25a45c4646b60fa411551c11ee25",
+      "match": true
+    },
+    {
+      "path": "supabase/diagnostics/business_stage_10_billing_diagnostic.sql",
+      "bytes": 9089,
+      "sha256": "ca9c3030523065b633adea7596c0ed874ecd0dfa47739969a952fc0261709229",
+      "git_blob_sha": "9d7641d7ccebb737097b2001f45148cacf16523b",
+      "expected_git_blob_sha": "9d7641d7ccebb737097b2001f45148cacf16523b",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260925090000_expiry_and_account_suspension.sql",
+      "bytes": 20196,
+      "sha256": "773801fd17c53a6fbde92206db62383ee3e70a26d2ec7841fe7f91d5b8efe641",
+      "git_blob_sha": "ddf61a186a128a2a4ffe593560197440209e8328",
+      "expected_git_blob_sha": "ddf61a186a128a2a4ffe593560197440209e8328",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260925120000_family_extra_places.sql",
+      "bytes": 24699,
+      "sha256": "12b0b6c5b83d8d5f12ec89eee95897e5bffeb4af481867c3973ba6f5380ecee7",
+      "git_blob_sha": "8a63e75e94965c7d737d7a8194f3f37feeffea5d",
+      "expected_git_blob_sha": "8a63e75e94965c7d737d7a8194f3f37feeffea5d",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260903091000_dynamic_family_plan_selection.sql",
+      "bytes": 17529,
+      "sha256": "1baa17d0d7a81add1b3dd83b32de29aec17ca75d6ab2572753167ed5c8341c8c",
+      "git_blob_sha": "8e4abea4561de370232c7213d336c86b4bcc839c",
+      "expected_git_blob_sha": "8e4abea4561de370232c7213d336c86b4bcc839c",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260928070000_business_stage_2_security_foundation.sql",
+      "bytes": 68728,
+      "sha256": "37b22be806048adaeecc3eacc667057420286b3de5c2067b5fa0b9b675d96ac1",
+      "git_blob_sha": "4ec51d1c99311e29577b7c53283ef7fcc9fedf6b",
+      "expected_git_blob_sha": "4ec51d1c99311e29577b7c53283ef7fcc9fedf6b",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260928130000_business_stage_3_onboarding.sql",
+      "bytes": 18114,
+      "sha256": "e87a11df4c69160bc6c6dbf878b41c432201a7e46efd00fed5652b6d81ca0ee8",
+      "git_blob_sha": "a8fd4e1771255a13b5f32e6042bba75874b205d1",
+      "expected_git_blob_sha": "a8fd4e1771255a13b5f32e6042bba75874b205d1",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260928170000_business_stage_4_team.sql",
+      "bytes": 32451,
+      "sha256": "c95aee8239de7d0ff6feb4e4e02b4ccadfd29168ce14686d1e0fead3e7e24cab",
+      "git_blob_sha": "0d979bceddde1c4c122bf725efc632959dd23391",
+      "expected_git_blob_sha": "0d979bceddde1c4c122bf725efc632959dd23391",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260930110000_business_stage_11_admin.sql",
+      "bytes": 20281,
+      "sha256": "ad484062b7377cb0838ad9735292895149a7f609870e06399493d1de921637a4",
+      "git_blob_sha": "d505b0c16529147fea998d794a60c55d5ff38e84",
+      "expected_git_blob_sha": "d505b0c16529147fea998d794a60c55d5ff38e84",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20261002060000_business_public_availability.sql",
+      "bytes": 29689,
+      "sha256": "9ecee7a8e679b1044ba8d21f6be70f9319f2ac4fa284e50dc9d62ec1136bad96",
+      "git_blob_sha": "04577f4423d3473501f247621fa92a69616c13bd",
+      "expected_git_blob_sha": "04577f4423d3473501f247621fa92a69616c13bd",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20261004153000_business_custom_roles.sql",
+      "bytes": 47709,
+      "sha256": "b8db2c387545729f9f5b6421b1ef9cf222027eefe03fdb96d22ba0bfc5d8433e",
+      "git_blob_sha": "c943e03949affcf1ee326ae86198cc22af5090e5",
+      "expected_git_blob_sha": "c943e03949affcf1ee326ae86198cc22af5090e5",
+      "match": true
+    },
+    {
+      "path": "supabase/candidates/security_stage_3_admin_mfa.sql",
+      "bytes": 199979,
+      "sha256": "e5f8395bcdfe11a34ed24d783ba6487b4e87d0c11fd45ccbfc39c81594685c38",
+      "git_blob_sha": "db61ac7b478a7026c6313f6b741aa1722e6207b5",
+      "expected_git_blob_sha": "db61ac7b478a7026c6313f6b741aa1722e6207b5",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/_shared/admin-assurance.mjs",
+      "bytes": 630,
+      "sha256": "afd30ba055c453d85f6ad87f43d0ea8903e6ef31b5fe483d877f430076b41278",
+      "git_blob_sha": "63ed3c4547ff5c4464e57e757655b1f7b7225332",
+      "expected_git_blob_sha": "63ed3c4547ff5c4464e57e757655b1f7b7225332",
+      "match": true
+    },
+    {
+      "path": "supabase/config.toml",
+      "bytes": 867,
+      "sha256": "527c331d074845665dba4d79ea782cc3e22ff37473564f9b20280daa9b8de9fb",
+      "git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+      "expected_git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+      "match": true
+    },
+    {
+      "path": "tests/business-stage-10.test.mjs",
+      "bytes": 5446,
+      "sha256": "405bef6a89bd76a37afb54abcf75a73e97b55471d76ea0e709858dcf9baef7c5",
+      "git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+      "expected_git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+      "match": true
+    },
+    {
+      "path": "tests/business-stage-11.test.mjs",
+      "bytes": 4587,
+      "sha256": "12ba6eada142da2f5a089aa46e52f50261a0b7d56128ffd4ad325e2794e62a13",
+      "git_blob_sha": "c76723ee66752b2ed17950e85d694604d114cdab",
+      "expected_git_blob_sha": "c76723ee66752b2ed17950e85d694604d114cdab",
+      "match": true
+    },
+    {
+      "path": "tests/business-plan-workspace-actions.test.mjs",
+      "bytes": 2752,
+      "sha256": "fd11a5f32787edd45f6917fd5e228494a1cf7c0ef6a585fe02ede449ddab3b65",
+      "git_blob_sha": "73f83737a83fa13269a57ee5df811ff05cb32959",
+      "expected_git_blob_sha": "73f83737a83fa13269a57ee5df811ff05cb32959",
+      "match": true
+    },
+    {
+      "path": "supabase/diagnostics/admin_manual_subscription_diagnostic.sql",
+      "bytes": 2793,
+      "sha256": "35ab8c52e97c72c0dfcd08b812b4c84ddddabaa6dcc88c19afd833180e48ad4c",
+      "git_blob_sha": "568e189dd5952a6380f0e53b63eaec8ba6c8a247",
+      "expected_git_blob_sha": "568e189dd5952a6380f0e53b63eaec8ba6c8a247",
+      "match": true
+    },
+    {
+      "path": "supabase/diagnostics/admin_plans_workbench_diagnostic.sql",
+      "bytes": 5229,
+      "sha256": "234527bec8253d8cf7b77c0cc3c686b52f3d77a9d87784ef1cb6f5767917f7ac",
+      "git_blob_sha": "b2d700f9e68d80cb29ba4de285424f120960f236",
+      "expected_git_blob_sha": "b2d700f9e68d80cb29ba4de285424f120960f236",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+      "bytes": 11765,
+      "sha256": "cd7bb726bf20a51ebc6c95f946ce0e6a05737fa44ed2cbd9cc3a2d1ef6201214",
+      "git_blob_sha": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+      "expected_git_blob_sha": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/dispatch-push-reminders/index.ts",
+      "bytes": 16399,
+      "sha256": "b0307b200dbf2f3834deab1f584f19d130953c732ec819160301ed00bc653202",
+      "git_blob_sha": "ec9b1561cc20f16080099704ee6174044582d67f",
+      "expected_git_blob_sha": "ec9b1561cc20f16080099704ee6174044582d67f",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/invite-admin-user/index.ts",
+      "bytes": 13668,
+      "sha256": "c6ab833c9579f8e8559d7b54b3c0a84d85f8752edfc28eaa6c2438838e8fe3d9",
+      "git_blob_sha": "a26f1633237126a8a558d8e702ffaa1943173253",
+      "expected_git_blob_sha": "a26f1633237126a8a558d8e702ffaa1943173253",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/invite-business-member/index.ts",
+      "bytes": 6614,
+      "sha256": "980e0911ffddfec984f41d952735734ea926566993f480cece36e90dcbf93a10",
+      "git_blob_sha": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+      "expected_git_blob_sha": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/send-test-push/index.ts",
+      "bytes": 6535,
+      "sha256": "ab59e80c06a7e3c07131852597052b83fa15462637633131a50ae53eb46b9974",
+      "git_blob_sha": "ba209ea5a0a7e246e10be544fbfa4f7487dfbd5f",
+      "expected_git_blob_sha": "ba209ea5a0a7e246e10be544fbfa4f7487dfbd5f",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/submit-enquiry/index.ts",
+      "bytes": 357,
+      "sha256": "86f877cb8615432d962c6533a4c9620354a371c799cccfd05f9006dbfa47271f",
+      "git_blob_sha": "890f5a02eb01c6d3de4c68f6dd78534b6cbcc71a",
+      "expected_git_blob_sha": "890f5a02eb01c6d3de4c68f6dd78534b6cbcc71a",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/sync-exchange-rates/index.ts",
+      "bytes": 8927,
+      "sha256": "0614f2cba2d2de22157e4a5e1e7b96c2421c03d35cc233f6ac072aff409dfa0c",
+      "git_blob_sha": "0c5a1b60a1e15c103cfd9a05422f23f94eee2133",
+      "expected_git_blob_sha": "0c5a1b60a1e15c103cfd9a05422f23f94eee2133",
+      "match": true
+    },
+    {
+      "path": "scripts/build-capacitor.mjs",
+      "bytes": 4556,
+      "sha256": "86ac88ab42f1c21a0c13cbad69731bf4003e608d597a43321089c8fa5899aaa0",
+      "git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+      "expected_git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+      "match": true
+    },
+    {
+      "path": "site.js",
+      "bytes": 17878,
+      "sha256": "01c938fbda2469aea36cefc9b45fc6a7ab76202d049d758b2190ca6f5dd6ec02",
+      "git_blob_sha": "f3d5abb558476b2ae1701e4911c3d1b58a50f348",
+      "expected_git_blob_sha": "f3d5abb558476b2ae1701e4911c3d1b58a50f348",
+      "match": true
+    },
+    {
+      "path": "index.html",
+      "bytes": 9850,
+      "sha256": "dc4e56568aec303d43ae7565c209c781bdf5028d1610ab41cc569cd88e74bc61",
+      "git_blob_sha": "f6e71eb717aaf8071b827ff612ecff31c1e009e4",
+      "expected_git_blob_sha": "f6e71eb717aaf8071b827ff612ecff31c1e009e4",
+      "match": true
+    }
+  ],
+  "selected_source_inputs_hash_verified": 52,
+  "source_blob_mismatches": 0,
+  "selected_product_feature_documents": 4,
+  "selected_test_files_read_not_run": 8,
+  "selected_Edge_entrypoints": 7,
+  "observations": [
+    {
+      "id": "CO-O01",
+      "status": "SOURCE_PRESENT_HOSTED_UNVERIFIED",
+      "paths": [
+        "app.js",
+        "supabase/schema.sql",
+        "supabase/migrations/20260925120000_family_extra_places.sql"
+      ],
+      "description": "Manual subscription renewal/Family creation/extra places use server quotes/revalidated amounts, owner/plan/period/currency/usage checks, pending review and protected approval. Proof is user-supplied manual evidence, not a verified store purchase."
+    },
+    {
+      "id": "CO-O02",
+      "status": "SOURCE_PRESENT_HOSTED_UNVERIFIED",
+      "paths": [
+        "business.js",
+        "supabase/migrations/20260930090000_business_stage_10_billing.sql"
+      ],
+      "description": "Existing-owner Business billing has configured settings, 30-minute versioned quotes, same payment/quote retry, pending review, staff review and self-review protection; approval changes terms/capacity with audit/receipts and scheduled renewal behavior. No source price is adopted as current hosted configuration."
+    },
+    {
+      "id": "CO-O03",
+      "status": "LATER_SOURCE_SUPERSEDES_OLDER_FEATURE_DOCUMENT",
+      "paths": [
+        "docs/BUSINESS_STAGE_10_BILLING.md",
+        "supabase/migrations/20261002060000_business_public_availability.sql"
+      ],
+      "description": "Earlier feature document says public Business purchases closed. Later source allows configured complete-price availability, stable public purchase submission identity and staff-approved workspace provisioning; not a claim current hosted availability is enabled."
+    },
+    {
+      "id": "CO-O04",
+      "status": "SOURCE_PRESENT_ADMIN_MFA_HOSTED_DEPENDENCY",
+      "paths": [
+        "supabase/migrations/20260928090000_admin_manual_subscription_grants.sql",
+        "supabase/candidates/security_stage_3_admin_mfa.sql"
+      ],
+      "description": "Super-admin manual/test grants use bounded date/reason/registered owner/workspace checks and no provider payment receipt; the review candidate routes relevant staff operations through platform_admin_authorized. Effective deployed grants/MFA remain AM/Business prerequisites."
+    },
+    {
+      "id": "CO-O05",
+      "status": "SOURCE_PRESENT_MAPPING_DECISION_REQUIRED",
+      "paths": [
+        "admin-plans.js",
+        "supabase/migrations/20261001190000_admin_plans_workbench.sql",
+        "supabase/migrations/20261002042500_reconcile_business_plan_seats.sql"
+      ],
+      "description": "Admin workbench versions and schedules web prices/config; invoices preserve snapshots. Family anchored-month factors differ from Business remaining-term fractions, and capacity includes owners/reserved invitations. Store SKU pricing/proration/quantity mapping is unconfirmed."
+    },
+    {
+      "id": "CO-O06",
+      "status": "SOURCE_FEATURE_GAP_NOT_FAILED_PURCHASE",
+      "paths": [
+        "package.json",
+        "package-lock.json",
+        "app.js",
+        "business.js",
+        "supabase/config.toml",
+        "supabase/schema.sql"
+      ],
+      "description": "No identified store billing plugin/client calls, provider purchase/transaction ledger, backend purchase verification or incoming payment webhook in reviewed source and seven inspected Edge handlers. No native/sandbox purchase was attempted."
+    },
+    {
+      "id": "CO-O07",
+      "status": "SOURCE_PACKAGING_CHANNEL_GAP_NATIVE_ARTIFACT_UNVERIFIED",
+      "paths": [
+        "scripts/build-capacitor.mjs",
+        "app.html",
+        "business.html",
+        "app.js",
+        "business.js"
+      ],
+      "description": "Builder copies shared manual subscription UI into native web assets and bridges App/Preferences only; no inspected channel-specific purchase bridge/gate. Actual existing APK/storefront behavior and qualified route remain unverified."
+    },
+    {
+      "id": "CO-O08",
+      "status": "DIRECT_AUTHORIZATION_AND_STORAGE_EVIDENCE_PENDING",
+      "paths": [
+        "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+        "supabase/migrations/20261002060000_business_public_availability.sql",
+        "supabase/candidates/security_stage_3_admin_mfa.sql"
+      ],
+      "description": "Private billing proof access, restricted Business direct writes and staff review delegation are source controls. Effective RLS/helper/MFA, object-byte processing, cleanup and wider finance regressions remain assigned to prior AM/Business/UF plus commerce acceptance."
+    }
+  ],
+  "references": [
+    {
+      "id": "CO-P01",
+      "url": "https://support.google.com/googleplay/android-developer/answer/9858738",
+      "topic": "Digital functionality/financial-management subscriptions, default billing and eligible-program/link conditions",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_MUSHAVO_CONFIGURATION_OR_STORE_APPROVAL"
+    },
+    {
+      "id": "CO-P02",
+      "url": "https://developer.apple.com/app-store/review/guidelines/",
+      "topic": "3.1.1–3.1.3 digital features/subscriptions, storefront and qualifying exception conditions",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_MUSHAVO_CONFIGURATION_OR_STORE_APPROVAL"
+    },
+    {
+      "id": "CO-P03",
+      "url": "https://developer.android.com/google/play/billing/security",
+      "topic": "Backend purchase verification, ownership/eligibility and acknowledgment",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_MUSHAVO_CONFIGURATION_OR_STORE_APPROVAL"
+    },
+    {
+      "id": "CO-P04",
+      "url": "https://developer.android.com/google/play/billing/lifecycle/subscriptions",
+      "topic": "Authoritative subscription-state refresh and cancellation/hold/recovery lifecycle",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_MUSHAVO_CONFIGURATION_OR_STORE_APPROVAL"
+    },
+    {
+      "id": "CO-P05",
+      "url": "https://apple.github.io/app-store-server-library-node/classes/SignedDataVerifier.html",
+      "topic": "Apple signed transaction/renewal/notification validation with environment and app identity",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_MUSHAVO_CONFIGURATION_OR_STORE_APPROVAL"
+    },
+    {
+      "id": "CO-P06",
+      "url": "https://docs.cloud.google.com/pubsub/docs/authenticate-push-subscriptions",
+      "topic": "Authenticated Google Pub/Sub push JWT and expected audience/service-account claims",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_MUSHAVO_CONFIGURATION_OR_STORE_APPROVAL"
+    }
+  ],
+  "local_behavior_tests_run": 0,
+  "hosted_or_store_sandbox_cases_run": 0,
+  "device_cases_run": 0,
+  "price_product_or_provider_configuration_changed": false,
+  "purchase_refund_restore_or_webhook_request_run": false,
+  "real_charges_performed": false,
+  "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+  "production_or_native_changed": false,
+  "findings_closed": []
+}

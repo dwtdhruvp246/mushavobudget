@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "stage_step": "7.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "bcb8f055f93cb9c145a0f74556e4bacb39847593",
+  "scope": "EIGHT_ACTION_ENTRIES_LINKED_TO_EXISTING_FINDINGS_NOT_NEW_FINDING_DEFINITIONS",
+  "actions": [
+    {
+      "id": "CO-R01",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F03",
+        "F01",
+        "F20"
+      ],
+      "title": "Approve channel/product/price mapping",
+      "work": "Choose supported channel/storefront/program routes and exact plan/cycle/seat products, prices/offers/terms and operator/provider prerequisites. Keep web invoice settings separate from store product prices.",
+      "recheck": "Approved mapping/configuration and CO01; current policy and actual enrollment/eligibility evidence.",
+      "hosted_or_sandbox_acceptance": false
+    },
+    {
+      "id": "CO-R02",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F03",
+        "F15"
+      ],
+      "title": "Server purchase verification and purchase ownership",
+      "work": "Implement trusted provider-specific verification bound to environment/app/product and server account/workspace intent; reject client flags/receipts as authority and cross-account purchase reuse.",
+      "recheck": "Genuine sandbox allowed/denied purchase/ownership/chain proof; CO03.",
+      "hosted_or_sandbox_acceptance": false
+    },
+    {
+      "id": "CO-R03",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F03",
+        "F15",
+        "F19"
+      ],
+      "title": "Authenticated durable events and idempotency",
+      "work": "Implement protocol-specific receivers and durable purchase/event state, logical transaction dedup, concurrent claims, safe retries and acknowledgment/reconciliation. Google JWT/purchase refresh and Apple signed data are not generic interchangeable HMAC callbacks.",
+      "recheck": "Altered/replayed/reordered/concurrent/timeout/partial-failure tests with real provider authentication; CO04/CO08.",
+      "hosted_or_sandbox_acceptance": false
+    },
+    {
+      "id": "CO-R04",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F03",
+        "F02",
+        "F15"
+      ],
+      "title": "Lifecycle/refund/restore and entitlement projection",
+      "work": "Define and implement cancellation/expiry/grace/hold/restore/refund/revocation, account suspension and independent entitlement-source precedence; preserve finance data and legitimate ownership.",
+      "recheck": "Actual provider lifecycle and device restore plus server effects/no duplicate terms; CO05.",
+      "hosted_or_sandbox_acceptance": false
+    },
+    {
+      "id": "CO-R05",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F03",
+        "F15"
+      ],
+      "title": "Capacity/plan changes and cross-channel rules",
+      "work": "Map Family/Business owner-inclusive seats and reserved invitations; preserve web algorithms/accepted invoices, explicitly map native product changes and scheduled capacity/ownership transfer/overlapping purchases.",
+      "recheck": "Boundary/concurrency/effective-date/cross-channel cases with approved prices/products; CO06.",
+      "hosted_or_sandbox_acceptance": false
+    },
+    {
+      "id": "CO-R06",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F03",
+        "F05",
+        "F10",
+        "F17"
+      ],
+      "title": "Native commerce UX and channel separation",
+      "work": "Implement approved billing bridge or qualifying access-only flow and remove unsupported payment CTAs from affected native channel; query correct products, handle cancel/relaunch and manage/restore while preserving web proof flow.",
+      "recheck": "Actual signed-build/device/storefront purchase UX, safe routes and server-consistent display; CO07/CO08.",
+      "hosted_or_sandbox_acceptance": false
+    },
+    {
+      "id": "CO-R07",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F03",
+        "F08",
+        "F13",
+        "F15"
+      ],
+      "title": "Preserve and directly verify manual commerce guards",
+      "work": "Retain server quotes/owner/seat locks, private proof binding, submitted amounts, review delegation/self-review rules, exact staff/MFA assurance and bounded manual/test grants; do not bypass AU/AM/Business/UF source/parity prerequisites.",
+      "recheck": "Direct hosted own/foreign/anonymous/staff/MFA/proof/retry cases with genuine actors; CO02 and earlier dependencies.",
+      "hosted_or_sandbox_acceptance": false
+    },
+    {
+      "id": "CO-R08",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F03",
+        "F19",
+        "F20",
+        "F17"
+      ],
+      "title": "Controlled sandbox rollout/operations and final proof",
+      "work": "Bind exact implementation/catalog/products/provider credentials/private configuration, separate recoverable actors, durable processing budgets/log privacy/retention/recovery/rollback and final artifact/declarations. Run bounded genuine acceptance then final re-audit.",
+      "recheck": "CO08 plus all relevant CO groups, provider/device effects and preservation/cleanup/rollback evidence.",
+      "hosted_or_sandbox_acceptance": false
+    }
+  ],
+  "total": 8,
+  "open": 8,
+  "findings_closed": []
+}

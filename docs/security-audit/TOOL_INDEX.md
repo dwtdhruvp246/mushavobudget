@@ -1,5 +1,8 @@
 # Audit SQL, scripts, tests and implementation index
 
+**Latest — 7.1 / subscription-commerce source and product/channel inventory COMPLETE, 12 October 2026 (S7E01):** [Finite four-step Stage 7 plan](SECURITY_STAGE_7_COMMERCE_PLAN.md), [source review](SECURITY_STAGE_7_1_COMMERCE_SOURCE_REVIEW.md), [52 byte-matched inputs](security-stage-7-commerce-source-inventory.json), [unconfirmed decisions](security-stage-7-commerce-decisions.json), [48 planned grouped cases](security-stage-7-commerce-test-matrix.json) and [eight OPEN action entries](security-stage-7-remediation-actions.json). Existing manual quotes/proof reviews/grants and later configurable public Business sales are retained; older always-closed wording is historical. No inspected native store purchase/verification/ledger/payment callback integration; shared manual checkout lacks a selected native channel route. Current primary policy/verification sources reviewed, not project/store approval. Zero behavior/hosted/sandbox/device cases or price/product/account/SQL/provider/charge/refund/production/native changes; no finding closure. Prior Stage 0–6, receipts and original 123 rows/20 definitions preserved. **Next 7.2 candidate/local review; full report 7.4; APK update deferred.** No owner SQL/terminal/setup action. Earlier summaries are historical.
+
+
 **Latest — 6.4 / full Stage 6 report CLOSED WITH CARRY-FORWARD, 12 October 2026 (S6E05):** [Full identity/email report and Stage 7 handoff](SECURITY_STAGE_6_COMPLETION_REPORT.md), [final integrity reconciliation](security-stage-6-final-recheck.json) and [six OPEN action entries](security-stage-6-remediation-actions.json). All four finite outcomes recorded. Four template copy candidates/four offline files are the complete eight-path non-document diff; app/Edge/SQL/dependency/native code unchanged. Final assistant 46 local PASS/three Node syntax and owner same 46 PASS/three syntax remain scoped; initial harness failure retained. Historical 138 executions are repeats, not unique controls. 46 current source identities/11 candidate SHA256/five owner exact-six CRLF values and seven structured records reconcile, zero unexplained drift. All 36 hosted grouped cases remain BLOCKED / NOT RUN; provider/linking/hook/application mailer and actual renderer/deployment/inbox/native requirements remain incomplete/unverified. No fresh behavior/hosted/device checks, live/native change, finding closure or owner SQL/terminal/setup action. Prior stages, 123 rows/20 definitions and release gate remain preserved. **Next 7.1 subscription commerce source/product/channel decision inventory; APK update deferred.** Earlier summaries are historical.
 
 
@@ -282,3 +285,9 @@ Three selected existing mocked Business handler cases are included. No Go/Supaba
 - [Six OPEN action entries](security-stage-6-remediation-actions.json); original finding definitions unchanged.
 
 No fresh behavior/syntax/hosted/device test or owner SQL/terminal/setup action. Stage 6 closed with carry-forward; next 7.1 subscription commerce source/product/channel inventory; APK update deferred.
+
+## Stage 7.1 commerce source/product/channel review
+
+[Four-step plan](SECURITY_STAGE_7_COMMERCE_PLAN.md), [source review](SECURITY_STAGE_7_1_COMMERCE_SOURCE_REVIEW.md), [52-input inventory](security-stage-7-commerce-source-inventory.json), [decisions](security-stage-7-commerce-decisions.json), [48 planned cases](security-stage-7-commerce-test-matrix.json), [eight OPEN actions](security-stage-7-remediation-actions.json), [evidence](security-stage-7-evidence.json).
+
+No new executable tool or behavior/sandbox/device test; existing eight test files were read, not run. No price/product/provider/SQL/native action. No owner command; next 7.2 candidate/local review, full report 7.4.

@@ -1,5 +1,8 @@
 # Mushavo Budget security audit — Start here
 
+**Latest — 7.1 / subscription-commerce source and product/channel inventory COMPLETE, 12 October 2026 (S7E01):** [Finite four-step Stage 7 plan](SECURITY_STAGE_7_COMMERCE_PLAN.md), [source review](SECURITY_STAGE_7_1_COMMERCE_SOURCE_REVIEW.md), [52 byte-matched inputs](security-stage-7-commerce-source-inventory.json), [unconfirmed decisions](security-stage-7-commerce-decisions.json), [48 planned grouped cases](security-stage-7-commerce-test-matrix.json) and [eight OPEN action entries](security-stage-7-remediation-actions.json). Existing manual quotes/proof reviews/grants and later configurable public Business sales are retained; older always-closed wording is historical. No inspected native store purchase/verification/ledger/payment callback integration; shared manual checkout lacks a selected native channel route. Current primary policy/verification sources reviewed, not project/store approval. Zero behavior/hosted/sandbox/device cases or price/product/account/SQL/provider/charge/refund/production/native changes; no finding closure. Prior Stage 0–6, receipts and original 123 rows/20 definitions preserved. **Next 7.2 candidate/local review; full report 7.4; APK update deferred.** No owner SQL/terminal/setup action. Earlier summaries are historical.
+
+
 **Latest — 6.4 / full Stage 6 report CLOSED WITH CARRY-FORWARD, 12 October 2026 (S6E05):** [Full identity/email report and Stage 7 handoff](SECURITY_STAGE_6_COMPLETION_REPORT.md), [final integrity reconciliation](security-stage-6-final-recheck.json) and [six OPEN action entries](security-stage-6-remediation-actions.json). All four finite outcomes recorded. Four template copy candidates/four offline files are the complete eight-path non-document diff; app/Edge/SQL/dependency/native code unchanged. Final assistant 46 local PASS/three Node syntax and owner same 46 PASS/three syntax remain scoped; initial harness failure retained. Historical 138 executions are repeats, not unique controls. 46 current source identities/11 candidate SHA256/five owner exact-six CRLF values and seven structured records reconcile, zero unexplained drift. All 36 hosted grouped cases remain BLOCKED / NOT RUN; provider/linking/hook/application mailer and actual renderer/deployment/inbox/native requirements remain incomplete/unverified. No fresh behavior/hosted/device checks, live/native change, finding closure or owner SQL/terminal/setup action. Prior stages, 123 rows/20 definitions and release gate remain preserved. **Next 7.1 subscription commerce source/product/channel decision inventory; APK update deferred.** Earlier summaries are historical.
 
 
@@ -69,6 +72,8 @@ To browse normally on GitHub, select the **`security/stage-3-authorization`** br
 |---|---|
 | [Stage 6 identity/email plan](SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md) | Closed with carry-forward; full report saved, next 7.1 subscription commerce inventory |
 | [6.1 source review and decision inventory](SECURITY_STAGE_6_1_IDENTITY_EMAIL_REVIEW.md) | 41 matching selected source files, template mismatch, provider/linking/email dependencies and 36 unrun grouped cases |
+| [Stage 7 commerce plan](SECURITY_STAGE_7_COMMERCE_PLAN.md) | Four steps; 7.1 complete, next 7.2, full report 7.4 |
+| [7.1 commerce source/decisions](SECURITY_STAGE_7_1_COMMERCE_SOURCE_REVIEW.md) | Manual/store boundaries, 52 matching inputs, 48 unrun grouped cases and eight OPEN actions |
 | [Audit plan](AUDIT_PLAN.md) | Complete stage roadmap, current position, stage workflow and final remediation/re-audit sequence |
 | [Action plan and carry-forward register](SECURITY_AUDIT_CARRY_FORWARD.md) | Outstanding failures, uncertain results, decisions and remediation history |
 | [Master audit coverage register](SECURITY_AUDIT_REGISTER.md) | All original 123 audit sections and their evidence/owner/stage assignments |
@@ -193,6 +198,11 @@ The 36 existing audit documents/evidence files were moved here from the parent d
 - [Four-step plan](SECURITY_STAGE_6_IDENTITY_EMAIL_PLAN.md) and [6.1 source review](SECURITY_STAGE_6_1_IDENTITY_EMAIL_REVIEW.md).
 - [Source inventory](security-stage-6-identity-email-source-inventory.json), [known/unconfirmed decisions](security-stage-6-identity-email-decisions.json) and [36 planned grouped cases](security-stage-6-identity-email-test-matrix.json).
 - [Six OPEN actions](security-stage-6-remediation-actions.json) and [Stage 6 evidence](security-stage-6-evidence.json).
+
+### Stage 7 — Subscription commerce (in progress)
+
+- [Four-step plan](SECURITY_STAGE_7_COMMERCE_PLAN.md) and [7.1 source review](SECURITY_STAGE_7_1_COMMERCE_SOURCE_REVIEW.md).
+- [Source inventory](security-stage-7-commerce-source-inventory.json), [decisions](security-stage-7-commerce-decisions.json), [48 planned grouped cases](security-stage-7-commerce-test-matrix.json), [eight OPEN actions](security-stage-7-remediation-actions.json) and [evidence](security-stage-7-evidence.json).
 
 ## How to use the folder
 

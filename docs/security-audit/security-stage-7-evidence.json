@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "stage": 7,
+  "date": "2026-10-12",
+  "stage_status": "IN_PROGRESS_SOURCE_PRODUCT_CHANNEL_INVENTORY_COMPLETE",
+  "active_step": "7.2",
+  "scope": "SOURCE_CURRENT_PRIMARY_POLICY_AND_DECISION_INVENTORY_NOT_PAYMENT_OR_STORE_ACCEPTANCE",
+  "events": [
+    {
+      "id": "S7E01",
+      "stage_step": "7.1",
+      "date": "2026-10-12",
+      "source_parent_commit": "bcb8f055f93cb9c145a0f74556e4bacb39847593",
+      "result": "COMPLETE_AT_SOURCE_POLICY_DECISION_SCOPE",
+      "source_review": "docs/security-audit/SECURITY_STAGE_7_1_COMMERCE_SOURCE_REVIEW.md",
+      "source_inventory": "docs/security-audit/security-stage-7-commerce-source-inventory.json",
+      "decision_record": "docs/security-audit/security-stage-7-commerce-decisions.json",
+      "test_matrix": "docs/security-audit/security-stage-7-commerce-test-matrix.json",
+      "action_index": "docs/security-audit/security-stage-7-remediation-actions.json",
+      "source_input_git_blob_matches": 52,
+      "source_blob_mismatches": 0,
+      "public_primary_references": 6,
+      "planned_grouped_cases": 48,
+      "open_actions": 8,
+      "local_behavior_hosted_sandbox_device_cases_run": 0,
+      "price_product_or_gateway_activation_performed": false,
+      "actual_charge_refund_restore_cancellation_performed": false,
+      "settings_accounts_SQL_production_native_changed": false,
+      "findings_closed": [],
+      "next_step": "7.2"
+    }
+  ],
+  "prior_stage_records_unchanged": true,
+  "hosted_acceptance": false,
+  "real_charges_performed": false,
+  "APK_update_deferred": true,
+  "report_due_step": "7.4",
+  "next_step": "7.2"
+}

@@ -1,5 +1,10 @@
 # Stage 5 — Native security and compatibility
 
+## 5.2 active — 12 October 2026 (S5E03)
+
+[Storage/backup source review](SECURITY_STAGE_5_2_STORAGE_BACKUP_REVIEW.md) and [source/local receipt](security-stage-5-storage-review.json) record ten exact source/test blob matches and **10 existing workspace-selection VM PASS, exit 0**. Normal clients have no inspected native encrypted Auth adapter; Preferences stores selection metadata. Native token protection, merged backup/transfer exclusions and actual payload/device behavior remain unverified under existing F14. The one read-only owner main-manifest/referenced-backup-XML handoff is provided completely in chat; no SQL or APK build/update is requested. 5.1 remains complete; 5.2 awaits that receipt. Native packaging work at 5.4 primarily belongs to existing F06, with F05 release/F14 Auth dependencies; the earlier 5.1 references remain historical dependency notes. Full report at 5.5; APK update deferred.
+
+
 ## 5.1 owner receipt and inventory outcome — 12 October 2026 (S5E02)
 
 **5.1 is complete at tracked-source and owner-reported file-metadata scope. One of five Stage 5 steps is complete; four remain. Next: 5.2, Auth persistence/workspace preferences and OS/cloud/device backup review. Full report remains due at 5.5.**

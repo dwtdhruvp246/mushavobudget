@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-12",
   "current_stage": 5,
-  "current_step": "5.1",
-  "current_title": "5.1 inventory complete at source/owner metadata scope; next 5.2 storage and backup review; APK update deferred",
+  "current_step": "5.2",
+  "current_title": "5.2 session/storage source review and ten local VM checks complete; one read-only owner backup XML receipt pending",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -2017,7 +2017,7 @@
     "remaining_steps": 4,
     "plan": "docs/security-audit/SECURITY_STAGE_5_NATIVE_PLAN.md",
     "source_inventory": "docs/security-audit/security-stage-5-native-source-inventory.json",
-    "latest_evidence": "S5E02",
+    "latest_evidence": "S5E03",
     "finding_ids": [
       "F05",
       "F06",
@@ -2050,7 +2050,25 @@
       },
       {
         "id": "5.2",
-        "status": "READY_FOR_BOUNDED_SOURCE_CONFIGURATION_REVIEW"
+        "status": "SOURCE_LOCAL_REVIEW_COMPLETE_OWNER_BACKUP_XML_PENDING",
+        "latest_evidence": "S5E03",
+        "source_commit": "64bbd2695b004168b45235d96f2220862cede5cc",
+        "source_review": "docs/security-audit/SECURITY_STAGE_5_2_STORAGE_BACKUP_REVIEW.md",
+        "source_local_receipt": "docs/security-audit/security-stage-5-storage-review.json",
+        "source_blob_matches": 10,
+        "source_blob_mismatches": 0,
+        "local_tests": 10,
+        "local_pass": 10,
+        "local_fail": 0,
+        "local_exit_code": 0,
+        "local_scope": "EXISTING_SELECTION_VM_TESTS_WITH_MOCKED_STORAGE_NOT_NATIVE_CREDENTIAL_OR_BACKUP_TESTS",
+        "owner_backup_XML_received": false,
+        "owner_handoff": "scripts/read-stage-5-backup-config.ps1",
+        "actual_native_storage_or_backup_verified": false,
+        "device_checks_run": 0,
+        "hosted_checks_run": 0,
+        "native_security_acceptance": false,
+        "findings_closed": []
       },
       {
         "id": "5.3",

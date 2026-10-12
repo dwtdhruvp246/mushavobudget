@@ -1,5 +1,10 @@
 # Stage 5 — Native security and compatibility
 
+## Stage 5 closed — 5.5 / 12 October 2026 (S5E10)
+
+[Full Stage 5 report](SECURITY_STAGE_5_COMPLETION_REPORT.md) records all five outcomes and [seven OPEN native action entries](security-stage-5-remediation-actions.json). [Final reconciliation](security-stage-5-final-recheck.json): 50 current source identities, three current candidate SHA256 targets and six owner CRLF code values, no unexplained differences. Primary local batches total 30 case executions; repeats and the preserved Windows harness failure are separately counted. Zero fresh behavior or actual native/hosted/device acceptance checks at closure. Native release evidence remains deferred/unverified; no finding is closed and no owner command/setup is required. Next 6.1 under the established identity/email roadmap; APK update stays deferred. Earlier pending/active summaries are historical.
+
+
 ## 5.4 corrected Windows recheck complete — 12 October 2026 (S5E09)
 
 [Owner recheck](security-stage-5-packaging-owner-recheck.json) passes the corrected nine-case fixture batch/three syntax checks, exit 0, Node v22.17.0. Three code hashes match CRLF variants, zero unexplained differences. [Latest 5.4 outcome](SECURITY_STAGE_5_4_PACKAGING_CANDIDATE.md) restores checkpoint completion with native carry-forward; original owner FAIL remains retained. No rerun or additional 5.4 code. **Four of five steps complete; next 5.5 full report/reconciliation.** APK update and real native/device acceptance remain deferred. Earlier reopened/pending summaries are historical.

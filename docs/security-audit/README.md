@@ -1,5 +1,8 @@
 # Mushavo Budget security audit — Start here
 
+**Latest — 5.5 / full Stage 5 report CLOSED WITH CARRY-FORWARD, 12 October 2026 (S5E10):** [Full native report and handoff](SECURITY_STAGE_5_COMPLETION_REPORT.md), [final integrity reconciliation](security-stage-5-final-recheck.json), [seven OPEN native action entries](security-stage-5-remediation-actions.json). All five finite steps have outcomes. Primary local batches are 10 selection/11 callback/9 packaging PASS (30 executions); assistant repeats total 48 PASS, not 48 controls. Owner initial 8 PASS/1 FAIL is preserved; corrected repeat 9 PASS/exit 0. Fifty current source identities/three candidate SHA256 targets and six owner CRLF code values reconcile, zero unexplained drift. Zero fresh behavior/hosted/device/native compile checks at closure. Native credentials/backup/origins/callbacks/permissions/provider/privacy/artifact requirements remain unverified; no finding closure, live/native/installed APK action or owner SQL/terminal/setup command. Original 123 rows/20 definitions and Stage 0–4/closed 5.1–5.4 outcomes remain preserved. Release gate stays OPEN_PENDING_REQUIRED_EVIDENCE. **Next 6.1 identity/email source/decision inventory; APK update remains deferred.** Earlier summaries are historical.
+
+
 **Latest — 5.4 / corrected owner Windows fixture PASS; checkpoint complete with carry-forward, 12 October 2026 (S5E09):** [Owner corrected receipt](security-stage-5-packaging-owner-recheck.json): 9 PASS/0 FAIL, exit 0, three syntax PASS, Node v22.17.0; all three hashes match published CRLF variants. [Detailed outcome](SECURITY_STAGE_5_4_PACKAGING_CANDIDATE.md). Earlier 8 PASS/1 FAIL receipt is preserved; same fixture case set, not new controls. No fresh assistant tests, real dependency/native compile, hosted/device/installed APK or settings/account changes; no finding closure or further 5.4 code/setup. **Four of five steps complete; next 5.5 full report; APK update deferred.** Earlier pending/reopened summaries are historical.
 
 
@@ -41,7 +44,7 @@
 
 **Latest — 4.2.2 owner Windows verification PASS / next 4.2.3, 11 October 2026 (S4E06):** Owner independently ran the optional pinned `06d4ca99c798a04c83d8be5b353731975fff887c` export: **63 PASS / 0 FAIL, exit 0; four syntax checks PASS, Node v22.17.0.** Both application hashes exactly match; the test/verifier hashes exactly match the published Windows CRLF variants, with zero unexplained mismatches. [Owner receipt and reconciliation](security-stage-4-upload-owner-local-checks.json). This repeats the same 63 tests; the earlier 99-test assistant result and 36 related regressions remain separate evidence, not 162 unique checks. No rerun or further 4.2.2 SQL/terminal action is needed. Hosted UF01–UF06 acceptance remains unrun; no deployment, live Storage/SQL/settings/production/native action. All six UF actions and existing findings remain OPEN. Next **4.2.3**, one controlled hosted/owner outcome or BLOCKED; full report **4.4**. Earlier summaries are historical.
 
-All security audit documentation and evidence is collected here on **`security/stage-3-authorization`**. Updated 11 October 2026. Stages 0–3 are **CLOSED WITH CARRY-FORWARD**; Stage 4 is active. **4.1 and 4.2 are CLOSED WITH CARRY-FORWARD. 4.2 source/client/local checks are complete; hosted acceptance is BLOCKED with zero of 30 grouped cases run. Next is 4.3.1, factual privacy/data-flow source review.** No hosted deletion or account/file change has run. Read the Stage 4 plan and lifecycle contract; full report remains due at 4.4. F01/F02/F13/F20 and earlier F08/F15/release gates remain OPEN.
+All security audit documentation and evidence is collected here on **security/stage-3-authorization**. Updated 12 October 2026. **Stages 0–5 are closed with carry-forward.** Use the [full Stage 5 report](SECURITY_STAGE_5_COMPLETION_REPORT.md), action index and current progress for the latest outcome. Next is 6.1 identity/email source and decision inventory; actual native acceptance and release gates remain open. Earlier status paragraphs are historical.
 
 To browse normally on GitHub, select the **`security/stage-3-authorization`** branch, then open **docs → security-audit**. The default main branch does not contain this audit folder. Direct commit links are pinned snapshots; use this branch for the latest progress.
 
@@ -72,6 +75,8 @@ To browse normally on GitHub, select the **`security/stage-3-authorization`** br
 | [SQL, scripts and tests](TOOL_INDEX.md) | Linked index of audit tools, migration files and relevant implementation locations |
 
 ## Completion reports
+
+- [Stage 5 — Native security and compatibility](SECURITY_STAGE_5_COMPLETION_REPORT.md) — closed with carry-forward; seven OPEN native action entries, actual native acceptance deferred/unverified.
 
 - [Stage 4 — Data lifecycle, files and privacy](SECURITY_STAGE_4_COMPLETION_REPORT.md) — closed with carry-forward; 18 OPEN actions and zero of 80 hosted grouped cases run.
 

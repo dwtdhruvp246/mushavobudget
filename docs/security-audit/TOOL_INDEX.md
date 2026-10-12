@@ -299,3 +299,7 @@ No new executable tool or behavior/sandbox/device test; existing eight test file
 ## Stage 7.2 owner Windows repeat
 
 [Owner receipt and pinned byte reconciliation](security-stage-7-commerce-owner-local-checks.json): same 30 cases PASS/0 FAIL/exit 0, three syntax checks on Node v22.17.0; seven exact published hashes/five exact CRLF variants, no mismatch. No new tool or runtime change; no further SQL/terminal/setup action. Next 7.3; full report 7.4.
+
+## Stage 7.3 bounded readiness checkpoint
+
+[Checkpoint/carry-forward](SECURITY_STAGE_7_3_READINESS_CHECKPOINT.md) and [per-case receipt](security-stage-7-commerce-readiness.json): 56 current input identities/four candidate SHA256 matches/12 retained owner input references, no drift. Six prerequisite groups and all 48 hosted/store cases BLOCKED / NOT RUN. No new executable tool, local behavior/syntax/hosted/device check, source/runtime/provider/charge/settings/native action or owner SQL/terminal/setup command. Eight CO actions OPEN. Next 7.4 full report; APK deferred.

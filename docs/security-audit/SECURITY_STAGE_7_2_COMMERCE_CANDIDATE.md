@@ -61,3 +61,9 @@ No SQL, configuration, checkout, installation or execution-policy change is requ
 Original 123 coverage rows/20 finding definitions, Stage 0–6 progress objects, the completed 7.1 object, S7E01 and prior receipts are preserved. The central registers receive only an appended latest status; no definitions are removed or rewritten.
 
 **7.2 is complete at offline candidate/regression scope. Next 7.3 records one bounded readiness/sandbox outcome.** Missing genuine implementation/catalog/provider/device prerequisites will be reported as BLOCKED/NOT RUN and carried to final remediation rather than starting an indefinite setup loop. The full Stage 7 report is due at 7.4. Release gate remains OPEN_PENDING_REQUIRED_EVIDENCE.
+
+## Owner Windows repeat — 12 October 2026 (S7E03)
+
+The [owner receipt and byte reconciliation](security-stage-7-commerce-owner-local-checks.json) records the exact pinned export at `7f58fa2b8aa48becec4c8b3b611700ba2b71c078`: Node v22.17.0, the same 20 synthetic model cases and ten existing manual regressions, **30 PASS / 0 FAIL / exit 0**, three syntax checks. All 12 published inputs match the assistant receipt and current Git blob identities. Seven owner hashes match published bytes; the other five are exact LF-to-CRLF transformations, with no unexplained difference. No behavioral rerun was performed by the assistant during reconciliation.
+
+This repeat does not add unique cases: the local suite remains 30 cases. It supplies no actual provider, hosted, database, device or store acceptance. Original assistant receipt/history and prior outcomes remain intact. No code, configuration, accounts, SQL, payment or native artifact changed. No further SQL/terminal/setup action or rerun is required. Next 7.3; full Stage 7 report remains due at 7.4, all eight CO actions OPEN and APK update deferred.

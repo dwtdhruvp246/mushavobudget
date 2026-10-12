@@ -295,3 +295,7 @@ No new executable tool or behavior/sandbox/device test; existing eight test file
 ## Stage 7.2 offline commerce candidate
 
 [Checkpoint](SECURITY_STAGE_7_2_COMMERCE_CANDIDATE.md), [inert contract](security-stage-7-commerce-candidate-contract.json), [local receipt](security-stage-7-commerce-local-checks.json), [Node runner](../../scripts/verify-stage-7-commerce.mjs), [pure review model](../../scripts/lib/stage-7-commerce-model.mjs) and [20 synthetic cases](../../tests/stage-7-commerce-model.test.mjs). Includes ten unchanged Business/Admin manual source/VM regression cases. 30 PASS/three syntax checks; no provider verification, runtime purchase integration, durable ledger, real charge or hosted acceptance. No SQL/setup action; optional pinned owner PowerShell repeat supplied fully in chat. Next 7.3; full report 7.4.
+
+## Stage 7.2 owner Windows repeat
+
+[Owner receipt and pinned byte reconciliation](security-stage-7-commerce-owner-local-checks.json): same 30 cases PASS/0 FAIL/exit 0, three syntax checks on Node v22.17.0; seven exact published hashes/five exact CRLF variants, no mismatch. No new tool or runtime change; no further SQL/terminal/setup action. Next 7.3; full report 7.4.

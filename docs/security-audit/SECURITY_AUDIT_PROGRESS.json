@@ -3,7 +3,7 @@
   "updated_date": "2026-10-12",
   "current_stage": 7,
   "current_step": "7.2",
-  "current_title": "Stage 7 commerce model/local regression complete; next 7.3 bounded readiness",
+  "current_title": "Stage 7.2 owner Windows repeat reconciled; next 7.3 bounded readiness",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -2497,7 +2497,7 @@
     "test_matrix": "docs/security-audit/security-stage-7-commerce-test-matrix.json",
     "remediation_action_index": "docs/security-audit/security-stage-7-remediation-actions.json",
     "evidence": "docs/security-audit/security-stage-7-evidence.json",
-    "latest_evidence": "S7E02",
+    "latest_evidence": "S7E03",
     "source_parent_commit": "bcb8f055f93cb9c145a0f74556e4bacb39847593",
     "primary_finding_id": "F03",
     "finding_ids": [
@@ -2552,7 +2552,8 @@
         "device_cases_run": 0,
         "runtime_purchase_integration_implemented": false,
         "provider_verification_implemented": false,
-        "next_step": "7.3"
+        "next_step": "7.3",
+        "owner_repeat_receipt": "docs/security-audit/security-stage-7-commerce-owner-local-checks.json"
       },
       {
         "id": "7.3",
@@ -2600,6 +2601,19 @@
     "optional_owner_terminal_repeat_supplied": true,
     "candidate_contract": "docs/security-audit/security-stage-7-commerce-candidate-contract.json",
     "local_receipt": "docs/security-audit/security-stage-7-commerce-local-checks.json",
-    "candidate_report": "docs/security-audit/SECURITY_STAGE_7_2_COMMERCE_CANDIDATE.md"
+    "candidate_report": "docs/security-audit/SECURITY_STAGE_7_2_COMMERCE_CANDIDATE.md",
+    "owner_local_receipt": "docs/security-audit/security-stage-7-commerce-owner-local-checks.json",
+    "owner_repeat": {
+      "node_version": "v22.17.0",
+      "same_cases": 30,
+      "pass": 30,
+      "fail": 0,
+      "exit_code": 0,
+      "syntax_checks": 3,
+      "exact_published_hashes": 7,
+      "exact_CRLF_variants": 5,
+      "hash_mismatches": 0,
+      "hosted_acceptance": false
+    }
   }
 }

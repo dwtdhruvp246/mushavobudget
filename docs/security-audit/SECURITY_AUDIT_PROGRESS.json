@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-12",
   "current_stage": 8,
-  "current_step": "8.3",
-  "current_title": "Stage 8.3 bounded readiness complete; hosted/device checks BLOCKED, next 8.4 full report",
+  "current_step": "8.4",
+  "current_title": "Stage 8 closed with carry-forward; next 9.1 broad regression and release-evidence inventory",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1055,8 +1055,8 @@
   "final_reaudit_status": "PLANNED_NOT_PERFORMED",
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
-  "next_stage": 8,
-  "next_step": "8.4",
+  "next_stage": 9,
+  "next_step": "9.1",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -2669,14 +2669,14 @@
     "final_residual_resolution_and_full_reaudit_required": true
   },
   "stage_8": {
-    "status": "IN_PROGRESS_BOUNDED_READINESS_BLOCKED_WITH_CARRY_FORWARD",
+    "status": "CLOSED_NOTIFICATION_DEVICE_CHECKPOINT_WITH_CARRY_FORWARD",
     "authorized": true,
     "started_date": "2026-10-12",
-    "active_step": "8.4",
+    "active_step": null,
     "initial_step": "8.1",
     "bounded_steps": 4,
-    "completed_steps": 3,
-    "remaining_steps": 1,
+    "completed_steps": 4,
+    "remaining_steps": 0,
     "plan": "docs/security-audit/SECURITY_STAGE_8_NOTIFICATIONS_DEVICE_PLAN.md",
     "source_review": "docs/security-audit/SECURITY_STAGE_8_1_NOTIFICATION_DEVICE_REVIEW.md",
     "source_inventory": "docs/security-audit/security-stage-8-notification-source-inventory.json",
@@ -2684,7 +2684,7 @@
     "test_matrix": "docs/security-audit/security-stage-8-notification-test-matrix.json",
     "remediation_action_index": "docs/security-audit/security-stage-8-remediation-actions.json",
     "evidence": "docs/security-audit/security-stage-8-evidence.json",
-    "latest_evidence": "S8E04",
+    "latest_evidence": "S8E05",
     "source_parent_commit": "5306aa19adc42654cde1a8f415aa4318a4289321",
     "primary_finding_id": "F11",
     "finding_ids": [
@@ -2774,7 +2774,29 @@
       {
         "id": "8.4",
         "title": "Full report/reconciliation and Stage 9 handoff",
-        "status": "PLANNED"
+        "status": "COMPLETE_WITH_CARRY_FORWARD",
+        "completed_date": "2026-10-12",
+        "latest_evidence": "S8E05",
+        "source_parent_commit": "d5f1081a2ae53e625490e0796c7ddd9eb19e15ee",
+        "report": "docs/security-audit/SECURITY_STAGE_8_COMPLETION_REPORT.md",
+        "final_recheck": "docs/security-audit/security-stage-8-final-recheck.json",
+        "current_distinct_input_identities": 60,
+        "consumed_SHA256_matches": 21,
+        "immutable_structured_records": 7,
+        "unexpected_drift": 0,
+        "unique_final_suite_cases": 70,
+        "historical_local_case_PASS": 242,
+        "historical_local_case_FAIL": 0,
+        "new_behavior_or_syntax_tests_run": 0,
+        "hosted_provider_scheduler_or_device_cases_run": 0,
+        "blocked_hosted_device_grouped_cases": 48,
+        "open_remediation_actions": 8,
+        "hosted_acceptance": false,
+        "native_security_acceptance": false,
+        "findings_closed": [],
+        "owner_SQL_terminal_setup_action_required": false,
+        "next_stage": 9,
+        "next_step": "9.1"
       }
     ],
     "planned_acceptance_groups": [
@@ -2807,7 +2829,7 @@
     "APK_update_deferred": true,
     "owner_SQL_terminal_or_setup_action_requested": false,
     "report_due_step": "8.4",
-    "next_step": "8.4",
+    "next_step": "9.1",
     "candidate_report": "docs/security-audit/SECURITY_STAGE_8_2_NOTIFICATION_CANDIDATE.md",
     "candidate_contract": "docs/security-audit/security-stage-8-notification-candidate-contract.json",
     "local_receipt": "docs/security-audit/security-stage-8-notification-local-checks.json",
@@ -2844,6 +2866,13 @@
     "hosted_readiness": "BLOCKED_MISSING_INSTALLED_PARITY_NATIVE_DEVICES_POLICIES_AND_OPERATIONAL_EVIDENCE",
     "blocked_prerequisite_groups": 6,
     "blocked_hosted_device_grouped_cases": 48,
-    "owner_additional_action_required": false
+    "owner_additional_action_required": false,
+    "completed_date": "2026-10-12",
+    "report": "docs/security-audit/SECURITY_STAGE_8_COMPLETION_REPORT.md",
+    "final_recheck": "docs/security-audit/security-stage-8-final-recheck.json",
+    "final_reconciliation_source_commit": "d5f1081a2ae53e625490e0796c7ddd9eb19e15ee",
+    "next_stage": 9,
+    "all_controls_or_release_cleared": false,
+    "final_remediation_and_full_reaudit_required": true
   }
 }

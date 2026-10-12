@@ -3,7 +3,7 @@
   "updated_date": "2026-10-12",
   "current_stage": 6,
   "current_step": "6.2",
-  "current_title": "Stage 6 template-source candidate/offline checks complete; next 6.3 bounded readiness",
+  "current_title": "Stage 6.2 candidate and owner Windows repeat PASS; next 6.3 bounded readiness",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -2257,7 +2257,7 @@
     "test_matrix": "docs/security-audit/security-stage-6-identity-email-test-matrix.json",
     "remediation_action_index": "docs/security-audit/security-stage-6-remediation-actions.json",
     "evidence": "docs/security-audit/security-stage-6-evidence.json",
-    "latest_evidence": "S6E02",
+    "latest_evidence": "S6E03",
     "finding_ids": [
       "F04",
       "F08",
@@ -2290,7 +2290,7 @@
         "title": "Reviewable candidate and local verification",
         "status": "COMPLETE_AT_TEMPLATE_SOURCE_OFFLINE_PROJECTION_SCOPE",
         "completed_date": "2026-10-12",
-        "latest_evidence": "S6E02",
+        "latest_evidence": "S6E03",
         "source_parent_commit": "87a1d302c0d490578dc0752fa7c0124ef0e4eda7",
         "candidate_report": "docs/security-audit/SECURITY_STAGE_6_2_IDENTITY_EMAIL_CANDIDATE.md",
         "candidate_contract": "docs/security-audit/security-stage-6-identity-email-candidate-contract.json",
@@ -2308,7 +2308,20 @@
         "candidate_deployed": false,
         "owner_SQL_terminal_or_setup_action_required": false,
         "owner_local_repeat_optional": true,
-        "next_step": "6.3"
+        "next_step": "6.3",
+        "owner_local_receipt": "docs/security-audit/security-stage-6-identity-email-owner-local-checks.json",
+        "owner_candidate_commit": "bd0888f63a7f3f6e7493c4b81c1708a33cc2b1e0",
+        "owner_tests": 46,
+        "owner_pass": 46,
+        "owner_fail": 0,
+        "owner_exit_code": 0,
+        "owner_Node_syntax_checks": 3,
+        "owner_node_version": "v22.17.0",
+        "owner_exact_published_byte_matches": 5,
+        "owner_exact_CRLF_variant_matches": 6,
+        "owner_unexplained_hash_mismatches": 0,
+        "owner_repeat_adds_distinct_cases": false,
+        "no_further_owner_SQL_terminal_action_requested": true
       },
       {
         "id": "6.3",
@@ -2365,6 +2378,19 @@
     "local_Node_syntax_checks": 3,
     "initial_harness_case_fail_preserved": 1,
     "Go_or_Supabase_template_renderer_verified": false,
-    "runtime_provider_login_linking_hook_or_mailer_implemented": false
+    "runtime_provider_login_linking_hook_or_mailer_implemented": false,
+    "owner_local_receipt": "docs/security-audit/security-stage-6-identity-email-owner-local-checks.json",
+    "owner_local_candidate_commit": "bd0888f63a7f3f6e7493c4b81c1708a33cc2b1e0",
+    "owner_local_tests": 46,
+    "owner_local_pass": 46,
+    "owner_local_fail": 0,
+    "owner_local_exit_code": 0,
+    "owner_local_syntax_checks": 3,
+    "owner_node_version": "v22.17.0",
+    "owner_exact_published_byte_matches": 5,
+    "owner_exact_CRLF_variant_matches": 6,
+    "owner_unexplained_hash_mismatches": 0,
+    "owner_repeat_adds_distinct_cases": false,
+    "owner_rerun_or_further_SQL_terminal_action_requested": false
   }
 }

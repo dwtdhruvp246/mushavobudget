@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "stage_step": "6.2",
+  "date": "2026-10-12",
+  "scope": "OWNER_WINDOWS_OFFLINE_REPEAT_AND_ASSISTANT_READ_ONLY_PUBLISHED_BYTE_RECONCILIATION",
+  "candidate_commit": "bd0888f63a7f3f6e7493c4b81c1708a33cc2b1e0",
+  "owner_summary": {
+    "stage_step": "6.2",
+    "result": "OFFLINE_EMAIL_TEMPLATE_CONTROL_FLOW_AND_SYNTHETIC_HANDLER_SCOPED_PASS",
+    "scope": "NODE_EVALUATION_OF_ACTUAL_TEMPLATE_CONTROL_FLOW_NOT_GO_SUPABASE_RENDERING_PLUS_THREE_MOCKED_EDGE_CASES",
+    "source_parent_commit": "87a1d302c0d490578dc0752fa7c0124ef0e4eda7",
+    "node_version": "v22.17.0",
+    "tests": 46,
+    "pass": 46,
+    "fail": 0,
+    "exit_code": 0,
+    "template_control_flow_cases": {
+      "tests_reported": 43,
+      "executed": 43,
+      "pass": 43,
+      "fail": 0,
+      "intentionally_filtered": 0,
+      "exit_code": 0,
+      "non_failing_TypeScript_experimental_warning": false
+    },
+    "selected_existing_handler_regression": {
+      "tests_reported": 3,
+      "executed": 3,
+      "pass": 3,
+      "fail": 0,
+      "intentionally_filtered": 0,
+      "exit_code": 0,
+      "non_failing_TypeScript_experimental_warning": false
+    },
+    "syntax_checks": 3,
+    "file_sha256": {
+      "tests/helpers/auth-email-template-projection.mjs": "303c2ddca00b4ef90e02faca2ee6d2dee811e000b22c0b5d8439c01f0c7a0f5d",
+      "tests/stage-6-email-templates.test.mjs": "c55d43b16dbc26a69c0f602b5934b7f440991f3c24ab83c8e0de7845fe5b7ea7",
+      "scripts/verify-stage-6-identity-email.mjs": "0c104230abd85d92f964ec1acb90a85beaf0a273cf4504676cf5f8c80742a2a1",
+      "supabase/templates/invite-user.html": "21c3060bdddfde0b94ebf9be697d30a9dc1b9e60a8206aac4eee45b47fb4aa80",
+      "supabase/templates/invite-user.subject.txt": "ff48a6e983c5b2b475f2cb8411ae4afeb98e1d08567613a293f460898eba1932",
+      "supabase/templates/magic-link.html": "661e40f1ca32b44a48ed1113da8d638802b6d2a222477eab6de66d2b6613fc16",
+      "supabase/templates/magic-link.subject.txt": "5e91f81afaa4d97c61d951b48527b21e4698c95ce0e22ae1758de36dc129159a",
+      "tests/fixtures/stage-6-email-template-baseline.json": "04c87cb13a7aa83ae5c88b778ea7e38e6fc9a05630478a40bcf803cc2244ea60",
+      "tests/stage-3-auth-edge-build.test.mjs": "be874bd1f588262251a49b39e0950a62643d587dd572aaace2a01d87bf5107e7",
+      "supabase/functions/invite-business-member/index.ts": "980e0911ffddfec984f41d952735734ea926566993f480cece36e90dcbf93a10",
+      "docs/security-audit/security-stage-6-identity-email-candidate-contract.json": "56c0b7737b16129fc38635861cf66a0d77d85cd3792b836bd3994c401fa0777b"
+    },
+    "Go_or_Supabase_template_renderer_verified": false,
+    "contextual_HTML_or_URL_escaping_verified": false,
+    "actual_provider_login_linking_or_email_delivery_verified": false,
+    "runtime_provider_login_or_hook_or_application_mailer_implemented": false,
+    "candidate_deployed": false,
+    "hosted_IE01_IE06_grouped_cases_run": 0,
+    "hosted_acceptance": false,
+    "actual_email_dispatched": false,
+    "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": []
+  },
+  "hash_reconciliation": {
+    "source_commit": "bd0888f63a7f3f6e7493c4b81c1708a33cc2b1e0",
+    "files": [
+      {
+        "path": "tests/helpers/auth-email-template-projection.mjs",
+        "reported_sha256": "303c2ddca00b4ef90e02faca2ee6d2dee811e000b22c0b5d8439c01f0c7a0f5d",
+        "published_sha256": "c76106e10fd652670b20034b326d575ac01d916b5167a16cd32b113b7bfdf440",
+        "published_CRLF_sha256": "303c2ddca00b4ef90e02faca2ee6d2dee811e000b22c0b5d8439c01f0c7a0f5d",
+        "match": "EXACT_LF_TO_CRLF_VARIANT",
+        "git_blob_sha": "52b8ddc89cf971a8a64d684f05918c0f6c77c6ec",
+        "git_blob_matches": true
+      },
+      {
+        "path": "tests/stage-6-email-templates.test.mjs",
+        "reported_sha256": "c55d43b16dbc26a69c0f602b5934b7f440991f3c24ab83c8e0de7845fe5b7ea7",
+        "published_sha256": "e3e6e5b82e02505e1e4e28f1892a1ce3c70d00dc4402aca75a56528ee0bbcfd6",
+        "published_CRLF_sha256": "c55d43b16dbc26a69c0f602b5934b7f440991f3c24ab83c8e0de7845fe5b7ea7",
+        "match": "EXACT_LF_TO_CRLF_VARIANT",
+        "git_blob_sha": "6babdb6a6aa5aa68ae853921cb331052668d33a4",
+        "git_blob_matches": true
+      },
+      {
+        "path": "scripts/verify-stage-6-identity-email.mjs",
+        "reported_sha256": "0c104230abd85d92f964ec1acb90a85beaf0a273cf4504676cf5f8c80742a2a1",
+        "published_sha256": "8bb0812081994f98d43cd8dc4f1ead87baeb4d83b6a41baa02aba39f7613aa6d",
+        "published_CRLF_sha256": "0c104230abd85d92f964ec1acb90a85beaf0a273cf4504676cf5f8c80742a2a1",
+        "match": "EXACT_LF_TO_CRLF_VARIANT",
+        "git_blob_sha": "3aa1766ba94df638000cf80b6b6153eecf8b4f25",
+        "git_blob_matches": true
+      },
+      {
+        "path": "supabase/templates/invite-user.html",
+        "reported_sha256": "21c3060bdddfde0b94ebf9be697d30a9dc1b9e60a8206aac4eee45b47fb4aa80",
+        "published_sha256": "21c3060bdddfde0b94ebf9be697d30a9dc1b9e60a8206aac4eee45b47fb4aa80",
+        "published_CRLF_sha256": "a89a6a5173c21268179aa69f72c3e853dca7f2fc9bf7658156f8773e9ed4e4cc",
+        "match": "EXACT_PUBLISHED_BYTES",
+        "git_blob_sha": "5bac8a393bbcb70b9def70ffaf30c497de095417",
+        "git_blob_matches": true
+      },
+      {
+        "path": "supabase/templates/invite-user.subject.txt",
+        "reported_sha256": "ff48a6e983c5b2b475f2cb8411ae4afeb98e1d08567613a293f460898eba1932",
+        "published_sha256": "061aee5815feeeed4f3e6d815f9212a27ac45c4d663b348bfb6496dac6e872e7",
+        "published_CRLF_sha256": "ff48a6e983c5b2b475f2cb8411ae4afeb98e1d08567613a293f460898eba1932",
+        "match": "EXACT_LF_TO_CRLF_VARIANT",
+        "git_blob_sha": "b1a111149a2d5849582cb0dd25736df99b718ab7",
+        "git_blob_matches": true
+      },
+      {
+        "path": "supabase/templates/magic-link.html",
+        "reported_sha256": "661e40f1ca32b44a48ed1113da8d638802b6d2a222477eab6de66d2b6613fc16",
+        "published_sha256": "661e40f1ca32b44a48ed1113da8d638802b6d2a222477eab6de66d2b6613fc16",
+        "published_CRLF_sha256": "3a8572546d0f2196a13732a636d25dbbaf1fbe2c62094a089067661f78bf0905",
+        "match": "EXACT_PUBLISHED_BYTES",
+        "git_blob_sha": "2a84320c8e1fbeb6615c13132b9665f5b67f5d60",
+        "git_blob_matches": true
+      },
+      {
+        "path": "supabase/templates/magic-link.subject.txt",
+        "reported_sha256": "5e91f81afaa4d97c61d951b48527b21e4698c95ce0e22ae1758de36dc129159a",
+        "published_sha256": "96bf36dd932b5a2616c4b42d8fde8a6421d9ae8cd6ea701e4cf57896ce13cb3e",
+        "published_CRLF_sha256": "5e91f81afaa4d97c61d951b48527b21e4698c95ce0e22ae1758de36dc129159a",
+        "match": "EXACT_LF_TO_CRLF_VARIANT",
+        "git_blob_sha": "985be39b1e670cacd44b80b06d88ce468e95f6c8",
+        "git_blob_matches": true
+      },
+      {
+        "path": "tests/fixtures/stage-6-email-template-baseline.json",
+        "reported_sha256": "04c87cb13a7aa83ae5c88b778ea7e38e6fc9a05630478a40bcf803cc2244ea60",
+        "published_sha256": "04c87cb13a7aa83ae5c88b778ea7e38e6fc9a05630478a40bcf803cc2244ea60",
+        "published_CRLF_sha256": "f46589c5fecf2f3afb52c304898ece23a5c4d61be8485ed80a348c2e72140d8c",
+        "match": "EXACT_PUBLISHED_BYTES",
+        "git_blob_sha": "11b43275e639aac9f1f29e7458b8cd5d08373617",
+        "git_blob_matches": true
+      },
+      {
+        "path": "tests/stage-3-auth-edge-build.test.mjs",
+        "reported_sha256": "be874bd1f588262251a49b39e0950a62643d587dd572aaace2a01d87bf5107e7",
+        "published_sha256": "82c6f63091147dcc1b463f839b5ce75c38ef255c4e0758bfe00a0163c894e73c",
+        "published_CRLF_sha256": "be874bd1f588262251a49b39e0950a62643d587dd572aaace2a01d87bf5107e7",
+        "match": "EXACT_LF_TO_CRLF_VARIANT",
+        "git_blob_sha": "12ff24320f330d75fe46b1a9d41e0b7b101c6448",
+        "git_blob_matches": true
+      },
+      {
+        "path": "supabase/functions/invite-business-member/index.ts",
+        "reported_sha256": "980e0911ffddfec984f41d952735734ea926566993f480cece36e90dcbf93a10",
+        "published_sha256": "980e0911ffddfec984f41d952735734ea926566993f480cece36e90dcbf93a10",
+        "published_CRLF_sha256": "364dd91d343ad3137d2932374c4e70aaa9d8cc76f4436a3690bce3b889b3a792",
+        "match": "EXACT_PUBLISHED_BYTES",
+        "git_blob_sha": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+        "git_blob_matches": true
+      },
+      {
+        "path": "docs/security-audit/security-stage-6-identity-email-candidate-contract.json",
+        "reported_sha256": "56c0b7737b16129fc38635861cf66a0d77d85cd3792b836bd3994c401fa0777b",
+        "published_sha256": "56c0b7737b16129fc38635861cf66a0d77d85cd3792b836bd3994c401fa0777b",
+        "published_CRLF_sha256": "b2a44f2f6f1d27b018078bb0f0803b38dcb1fb7a3d4d86a0de0971a005d9a408",
+        "match": "EXACT_PUBLISHED_BYTES",
+        "git_blob_sha": "fb4b84a2ad312221f9ebdd487d32963147736a4e",
+        "git_blob_matches": true
+      }
+    ],
+    "published_git_blob_matches": 11,
+    "owner_exact_published_byte_matches": 5,
+    "owner_exact_LF_to_CRLF_variant_matches": 6,
+    "unexplained_mismatches": 0,
+    "hash_checks_are_not_security_behavior_tests": true
+  },
+  "owner_repeat_adds_distinct_cases": false,
+  "owner_repeats_existing_46_selected_cases": true,
+  "assistant_fresh_behavior_or_syntax_checks_run": 0,
+  "assistant_hosted_or_device_checks_run": 0,
+  "earlier_assistant_harness_failure_and_receipts_preserved": true,
+  "Go_Supabase_rendering_and_deployed_parity_unverified": true,
+  "provider_login_linking_inbox_native_acceptance_unverified": true,
+  "findings_closed": [],
+  "no_rerun_or_further_owner_SQL_terminal_action_requested": true,
+  "next_step": "6.3"
+}

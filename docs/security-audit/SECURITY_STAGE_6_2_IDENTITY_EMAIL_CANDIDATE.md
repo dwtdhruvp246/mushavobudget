@@ -1,5 +1,8 @@
 # 6.2 — Identity/email candidate and local verification
 
+**Latest — 6.2 / owner Windows repeat PASS, 12 October 2026 (S6E03):** [Owner receipt and hash reconciliation](security-stage-6-identity-email-owner-local-checks.json): 46 PASS/0 FAIL, exit 0, three syntax checks PASS, Node v22.17.0. All 11 inputs reconcile: five exact published bytes and six exact LF-to-CRLF variants; zero unexplained differences. This repeats the same 43 template-condition projections plus three mocked-handler cases, not new controls or Go/Supabase/provider/mail/device acceptance. Earlier assistant receipts and initial harness failure remain preserved. Zero fresh assistant behavior/hosted/device checks; no source/settings/SQL/account/provider/mail/deployment/production/native change or finding closure. Two of four Stage 6 steps remain complete; **next 6.3, full report 6.4, APK update deferred.** No rerun or further owner SQL/terminal action is needed. Earlier summaries remain historical.
+
+
 **12 October 2026 — COMPLETE AT TEMPLATE-SOURCE / OFFLINE PROJECTION SCOPE (S6E02).**
 Source parent: `87a1d302c0d490578dc0752fa7c0124ef0e4eda7`. **Final batch: 46 PASS / 0 FAIL, exit 0; three Node syntax checks PASS.** This is 43 actual-template control-flow projection cases plus three selected existing Business Edge-handler cases with synthetic Auth/RPC/mail responses. **Go/Supabase rendering, contextual HTML/URL escaping, provider login/linking and real inbox delivery remain unverified.**
 
@@ -70,3 +73,13 @@ An optional owner Windows repeat exports the pinned 11 inputs to a unique tempor
 - [Supabase Send Email Hook](https://supabase.com/docs/guides/auth/auth-hooks/send-email-hook) — replaces built-in/SMTP sending when enabled, hence remains inactive.
 
 These sources support the design boundaries; they do not verify Mushavo's project configuration.
+
+## Owner Windows repeat — 12 October 2026 (S6E03)
+
+Owner ran the pinned `bd0888f63a7f3f6e7493c4b81c1708a33cc2b1e0` 11-input temporary export on Node v22.17.0. Result: **46 PASS / 0 FAIL, exit 0; three Node syntax checks PASS**. Primary 43 template-control cases and three selected mocked Business-handler cases are the same existing case set; no extra distinct cases are added.
+
+[Owner receipt and exact byte comparison](security-stage-6-identity-email-owner-local-checks.json) preserves the returned summary. All 11 inputs were freshly fetched at the pin and their Git blob identities verified. Five owner hashes match published bytes (two HTML templates, frozen baseline JSON, Business handler and candidate contract); six match the exact LF-to-CRLF variants (three new .mjs files, two subject files and the existing regression test). **Zero unexplained differences.** Hash reconciliation is a read-only integrity check, not a new behavior or hosted test.
+
+No fresh assistant behavior/syntax checks ran. The earlier 42 PASS/one harness assertion FAIL, correction and final assistant 46 PASS remain unchanged. Actual Go/Supabase parse/render/escaping, installed template/configuration parity, Google/Apple login/linking, inbox delivery and native acceptance remain unverified. No setting, account, fixture, SQL, provider/mail, deployment/production/native change or finding closure is inferred from the owner summary.
+
+6.2 stays complete at its scoped source/local outcome. **No rerun or further owner SQL/terminal action is required. Next 6.3; full report 6.4; APK update deferred.**

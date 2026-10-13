@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "updated_date": "2026-10-13",
-  "current_stage": 9,
-  "current_step": "9.4",
-  "current_title": "Stage 9 complete with carry-forward; next 10.1 release and operations evidence inventory",
+  "current_stage": 10,
+  "current_step": "10.1",
+  "current_title": "Stage 10.1 release and operations evidence inventory complete; next 10.2",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": 10,
-  "next_step": "10.1",
+  "next_step": "10.2",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3122,5 +3122,106 @@
     "final_reconciliation_unexpected_drift": 0,
     "final_source_non_document_paths": 25,
     "closure_new_behavior_syntax_or_public_HTTP_checks_run": 0
+  },
+  "stage_10": {
+    "status": "IN_PROGRESS_SOURCE_OPERATIONS_INVENTORY_COMPLETE",
+    "authorized": true,
+    "started_date": "2026-10-13",
+    "active_step": "10.2",
+    "initial_step": "10.1",
+    "bounded_steps": 4,
+    "completed_steps": 1,
+    "remaining_steps": 3,
+    "plan": "docs/security-audit/SECURITY_STAGE_10_RELEASE_OPERATIONS_PLAN.md",
+    "source_review": "docs/security-audit/SECURITY_STAGE_10_1_OPERATIONS_REVIEW.md",
+    "source_inventory": "docs/security-audit/security-stage-10-operations-source-inventory.json",
+    "decision_record": "docs/security-audit/security-stage-10-operations-decisions.json",
+    "test_matrix": "docs/security-audit/security-stage-10-operations-test-matrix.json",
+    "remediation_action_index": "docs/security-audit/security-stage-10-remediation-actions.json",
+    "evidence": "docs/security-audit/security-stage-10-evidence.json",
+    "latest_evidence": "S10E01",
+    "source_parent_commit": "b51fe2e49d32ecf5f3ee5a1f9118d1bc88888719",
+    "primary_finding_ids": [
+      "F16",
+      "F18",
+      "F19"
+    ],
+    "finding_ids": [
+      "F05",
+      "F08",
+      "F12",
+      "F15",
+      "F16",
+      "F17",
+      "F18",
+      "F19",
+      "F20"
+    ],
+    "steps": [
+      {
+        "id": "10.1",
+        "title": "Release and operations evidence inventory with finite plan",
+        "status": "COMPLETE_AT_SELECTED_SOURCE_PRIOR_EVIDENCE_AND_PRIMARY_DOCS_SCOPE",
+        "completed_date": "2026-10-13",
+        "latest_evidence": "S10E01",
+        "selected_inputs_hash_verified": 64,
+        "source_inputs": 43,
+        "prior_audit_inputs": 21,
+        "source_blob_mismatches": 0,
+        "primary_references": 4,
+        "new_behavior_or_syntax_tests_run": 0,
+        "hosted_operations_cases_run": 0,
+        "owner_SQL_terminal_or_setup_action_requested": false,
+        "next_step": "10.2"
+      },
+      {
+        "id": "10.2",
+        "title": "Reviewable operational runbooks and bounded collection candidate",
+        "status": "PLANNED"
+      },
+      {
+        "id": "10.3",
+        "title": "One controlled staging operations/readiness outcome",
+        "status": "PLANNED"
+      },
+      {
+        "id": "10.4",
+        "title": "Full report/reconciliation and final-remediation handoff",
+        "status": "PLANNED"
+      }
+    ],
+    "planned_acceptance_groups": [
+      "OP01",
+      "OP02",
+      "OP03",
+      "OP04",
+      "OP05",
+      "OP06"
+    ],
+    "planned_grouped_cases": 24,
+    "overlap_with_prior_acceptance_requirements": true,
+    "open_remediation_actions": 6,
+    "decision_items": 6,
+    "inherited_RG_actions_OPEN": 8,
+    "inherited_RG_decisions_UNCONFIRMED": 8,
+    "inherited_RG_grouped_cases_blocked_not_run": 48,
+    "prior_positive_and_failure_receipts_preserved": true,
+    "new_local_behavior_or_syntax_tests_run": 0,
+    "hosted_operations_cases_run": 0,
+    "hosted_device_store_or_performance_cases_run": 0,
+    "current_installed_release_or_operational_acceptance_verified": false,
+    "hosted_operations_acceptance": false,
+    "hosted_acceptance": false,
+    "native_security_acceptance": false,
+    "store_acceptance": false,
+    "findings_closed": [],
+    "source_runtime_or_workflow_changed": false,
+    "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "owner_SQL_terminal_or_setup_action_requested": false,
+    "report_due_step": "10.4",
+    "next_step": "10.2",
+    "final_remediation_and_full_reaudit_required": true
   }
 }

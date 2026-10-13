@@ -49,3 +49,7 @@ Production Supabase `kttkospkblwvguuwnhjj` is excluded from mutations; isolated 
 ## 9.2 — Corrected owner repeat recorded
 
 [Passed Windows recheck](security-stage-9-regression-owner-recheck.json): same 882 cases PASS, zero failures/skips, exit 0, 21 syntax checks. All 26 pinned input identities/hashes reconcile; 25 exact published hashes and one CRLF variant. Initial 875 PASS/seven FAIL receipt and prior assistant history remain preserved. No rerun, SQL or setup needed; next 9.3 bounded readiness. No fresh behavioral/syntax/hosted/device check or source/runtime/settings/native change for this recording. Eight actions OPEN/48 real cases unrun; full report 9.4 and APK deferred.
+
+## 9.3 — Bounded installed/device/store readiness
+
+[Checkpoint](SECURITY_STAGE_9_3_READINESS_CHECKPOINT.md) and [readiness receipt](security-stage-9-regression-readiness.json): 215 current identities/202 catalog targets/26 candidate byte hashes/nine immutable records reconcile. Twelve public staging metadata GETs; config ref matches staging, selected static candidate parity is unestablished, and auth-flows.js serves HTML (explicit selected prerequisite FAIL). No authenticated API/SQL/provider/device request, new behavior/syntax suite, source/settings/deployment/native change or owner command. Six prerequisite groups and all 48 full grouped cases BLOCKED / NOT RUN; eight actions OPEN. Three of four outcomes recorded; next 9.4 full report. APK deferred; final remediation/full fresh re-audit required.

@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "stage_step": "FR.1.3_DELIVERY_CORRECTION",
+  "date": "2026-10-13",
+  "scope": "OWNER_REPORTED_WINDOWS_OFFLINE_VERIFIER_AND_ACTUAL_LOCAL_CORRECTED_CANDIDATE_ZIP_PREFLIGHT_NOT_DEPLOYMENT",
+  "candidate_tool_commit": "4571ca6ae5808b4962ea80642a3026c85ca09fd2",
+  "verifier": {
+    "stage_step": "FR.1.3_DELIVERY_CORRECTION",
+    "result": "OFFLINE_DELIVERY_CORRECTION_SCOPED_PASS",
+    "scope": "ACTUAL_CANDIDATE_VALIDATION_PREPARATION_AND_SERVING_CHECKER_WITH_TEMPORARY_FILES_SYNTHETIC_KEYS_AND_DISABLED_NETWORK_NOT_WINDOWS_ZIP_EXECUTION",
+    "source_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
+    "node_version": "v22.17.0",
+    "tests": 44,
+    "pass": 44,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "exit_code": 0,
+    "syntax_checks": 7,
+    "syntax": [
+      {
+        "file": "scripts/prepare-final-staging.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/check-final-staging-serving.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/prepare-final-staging-correction.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/verify-final-staging-correction.mjs",
+        "pass": true
+      },
+      {
+        "file": "tests/final-staging-preparation.test.mjs",
+        "pass": true
+      },
+      {
+        "file": "tests/final-staging-serving.test.mjs",
+        "pass": true
+      },
+      {
+        "file": "tests/final-staging-correction.test.mjs",
+        "pass": true
+      }
+    ],
+    "file_sha256": {
+      "scripts/prepare-final-staging.mjs": "3f58dae50896af7998f02291bf583e48b2192d690ac527956d68e37c4af83edf",
+      "scripts/check-final-staging-serving.mjs": "4a46daa64a6df04819c383b702c28dd61a670862024cc0f37475da3bf711f221",
+      "scripts/prepare-final-staging-correction.mjs": "b46199bb3c8c995202060f99a0bcabb759dddff1a7252ce5bb6158ef6b45ee84",
+      "scripts/verify-final-staging-correction.mjs": "f40b13f45f4c0682bf4a19f6dffddf1f929bf1bcf2a8f96b2b988351caca56b9",
+      "tests/final-staging-preparation.test.mjs": "6bcca517df7d7710588070ccd56695c723df8a92283527e5565c144b51bf56e7",
+      "tests/final-staging-serving.test.mjs": "4db7ebb693ac2a85defa5b02f5682b1ffe10ad761b146cdf26e726b8893e1f56",
+      "tests/final-staging-correction.test.mjs": "e81db73c68ddcfe9f42049de423e7e65c737173bc686ccbf93f28a6e995e34d2",
+      "scripts/package-final-staging-correction.ps1": "e2ec8f0524df87a3f5c954d3f840066eeaa360fdad97662db58d4382fe10908c",
+      "scripts/prepare-stage-2-headers.cjs": "f52d8c555acc55792e5d2dc941557116d32eda447ba7490aca19ffa25b0cb169",
+      "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+      "docs/security-audit/security-final-staging-source-contract.json": "c620d8cdfe23551d3bda5ab3c66e8508eec5b59e16aafe52f737c8d95ca4c2cb"
+    },
+    "failed_case_titles": [],
+    "Windows_PowerShell_ZIP_execution_verified": false,
+    "actual_public_staging_HTTP_responses": 0,
+    "Auth_API_SQL_jobs_provider_device_or_store_checks_run": 0,
+    "hosted_acceptance": false,
+    "candidate_deployed_by_this_verifier": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": []
+  },
+  "tool_identity_reconciliation": {
+    "reported_files": 11,
+    "exact_LF_SHA256_matches": 10,
+    "CRLF_only_SHA256_matches": 1,
+    "unexpected_mismatches": 0,
+    "CRLF_only_file": "scripts/package-final-staging-correction.ps1",
+    "published_LF_sha256": "2732f451bcf1e4ea5a82f66ab004414d10c88c84f34e8a3f8f1ef976aaf26da0",
+    "owner_CRLF_sha256": "e2ec8f0524df87a3f5c954d3f840066eeaa360fdad97662db58d4382fe10908c",
+    "line_endings_normalized_for_reconciliation_only": true
+  },
+  "preparation_summary": {
+    "stage_step": "FR.1.3_DELIVERY_CORRECTION",
+    "result": "CORRECTED_STATIC_CANDIDATE_PREPARED_NOT_DEPLOYED",
+    "source_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
+    "project": "dczlddwbtgvfdujgcitb",
+    "selected_source_inputs_verified": 39,
+    "public_files": 40,
+    "retained_non_header_file_bytes_matched": 39,
+    "manifest_content_type_rule_present": true,
+    "staging_configuration_reused_locally": true,
+    "key_ownership_independently_verified": false,
+    "configuration_key_body_or_hash_printed": false,
+    "previous_candidate_changed": false,
+    "deployed": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": []
+  },
+  "ZIP_preflight_summary": {
+    "stage_step": "FR.1.3_DELIVERY_CORRECTION",
+    "result": "CORRECTED_POSIX_ZIP_PREFLIGHT_PASS_NOT_DEPLOYED",
+    "source_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
+    "target_project": "mushavo-budget-staging",
+    "target_channel": "PRODUCTION_CHANNEL_OF_STAGING_PAGES_PROJECT",
+    "target_domain": "mushavo-budget-staging.pages.dev",
+    "ZIP_literal_forward_slash_paths_verified": true,
+    "manifest_content_type_rule_present": true,
+    "previous_candidate_and_ZIP_changed": false,
+    "public_files": 40,
+    "non_config_receipt_hashes_matched": 39,
+    "ZIP_content_hashes_matched": 40,
+    "staging_config_shape_verified": true,
+    "key_ownership_independently_verified": false,
+    "receipt_and_audit_files_excluded": true,
+    "zip_sha256": "361fce29717b117e77f9cb51397a7d9c9ba26a0771d81192643b4cacec499a62",
+    "zip_path": "C:\\Users\\HP\\Desktop\\Mushavo-Staging-Corrected-8b88f9465732442890ad06803e0513bc\\mushavo-staging-upload-f945c040abfc4d978b3c8e4d0c2b37f0.zip",
+    "deployed": false,
+    "production_application_or_native_changed": false,
+    "hosted_acceptance": false,
+    "APK_update_deferred": true
+  },
+  "Windows_ZIP_writer_and_readback_executed_owner_reported": true,
+  "corrected_live_recheck_run": false,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "findings_closed": []
+}

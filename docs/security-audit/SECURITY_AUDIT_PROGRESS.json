@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "updated_date": "2026-10-13",
-  "current_stage": 10,
-  "current_step": "10.4",
-  "current_title": "Stage 10 closure and final-remediation handoff",
+  "current_stage": null,
+  "current_step": "FR.1.1",
+  "current_title": "Isolated staging asset candidate preparation; owner result and mapping pending",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.1",
+  "next_step": "FR.1.1_OWNER_RESULT",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3358,14 +3358,28 @@
   },
   "next_phase": "FINAL_REMEDIATION",
   "final_remediation": {
-    "status": "NOT_STARTED_HANDOFF_PREPARED",
+    "status": "IN_PROGRESS_CONTROLLED_PREPARATION_AWAITING_OWNER_RESULT",
     "prepared_date": "2026-10-13",
     "handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
     "proposed_batches": 8,
     "original_findings_mapped": 20,
     "existing_open_action_entries": 61,
-    "next_step": "FR.1",
+    "next_step": "FR.1.1_OWNER_RESULT",
     "release_gate_unchanged": true,
-    "full_fresh_final_reaudit_required": true
-  }
+    "full_fresh_final_reaudit_required": true,
+    "started_date": "2026-10-13",
+    "active_batch": "FR.1",
+    "active_step": "FR.1.1",
+    "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
+    "progress": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PROGRESS.json",
+    "evidence": "docs/security-audit/security-final-remediation-evidence.json",
+    "latest_evidence": "FRE01",
+    "candidate_report": "docs/security-audit/SECURITY_FR_1_1_STAGING_CANDIDATE.md",
+    "local_receipt": "docs/security-audit/security-final-staging-local-checks.json",
+    "owner_terminal_action_required": true,
+    "owner_SQL_action_required": false,
+    "owner_result_status": "PENDING",
+    "findings_closed": []
+  },
+  "current_phase": "FINAL_REMEDIATION"
 }

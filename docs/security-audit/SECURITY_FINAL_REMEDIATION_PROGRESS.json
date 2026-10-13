@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "phase": "FINAL_REMEDIATION",
+  "status": "IN_PROGRESS_CONTROLLED_PREPARATION_AWAITING_OWNER_RESULT",
+  "active_batch": "FR.1",
+  "active_step": "FR.1.1",
+  "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
+  "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
+  "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
+  "evidence": "docs/security-audit/security-final-remediation-evidence.json",
+  "latest_evidence": "FRE01",
+  "batches": [
+    {
+      "id": "FR.1",
+      "title": "Accepted source, staging asset delivery and serving/deployment mapping",
+      "status": "IN_PROGRESS",
+      "finding_ids": [
+        "F05",
+        "F07",
+        "F09",
+        "F18",
+        "F19"
+      ],
+      "action_ids": [
+        "OP-R01",
+        "RG-R05",
+        "RG-R08"
+      ],
+      "steps": [
+        {
+          "id": "FR.1.1",
+          "title": "Prepare hash-verified isolated staging candidate",
+          "status": "PREPARED_AWAITING_OWNER_RESULTS",
+          "report": "docs/security-audit/SECURITY_FR_1_1_STAGING_CANDIDATE.md",
+          "offline_unique_cases": 18,
+          "offline_pass": 18,
+          "offline_fail": 0,
+          "offline_exit_code": 0,
+          "syntax_checks": 3,
+          "selected_source_inputs_verified": 39,
+          "candidate_public_files": 40,
+          "owner_Windows_repeat": "PENDING",
+          "owner_actual_key_candidate": "PENDING",
+          "owner_serving_metadata": "PENDING",
+          "deployed": false
+        },
+        {
+          "id": "FR.1.2",
+          "title": "Confirm actual target and prepare exact deployment handoff",
+          "status": "PLANNED_NOT_EXECUTED"
+        },
+        {
+          "id": "FR.1.3",
+          "title": "Recheck intended asset types/source, headers and callback serving",
+          "status": "PLANNED_NOT_EXECUTED"
+        }
+      ]
+    },
+    {
+      "id": "FR.2",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "definition": "Preserved in original final-remediation handoff"
+    },
+    {
+      "id": "FR.3",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "definition": "Preserved in original final-remediation handoff"
+    },
+    {
+      "id": "FR.4",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "definition": "Preserved in original final-remediation handoff"
+    },
+    {
+      "id": "FR.5",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "definition": "Preserved in original final-remediation handoff"
+    },
+    {
+      "id": "FR.6",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "definition": "Preserved in original final-remediation handoff"
+    },
+    {
+      "id": "FR.7",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "definition": "Preserved in original final-remediation handoff"
+    },
+    {
+      "id": "FR.8",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "definition": "Preserved in original final-remediation handoff"
+    }
+  ],
+  "original_coverage_rows_preserved": 123,
+  "original_finding_definitions_preserved": 20,
+  "existing_Stage_4_to_10_action_entries_OPEN": 61,
+  "OP_actions_OPEN": 6,
+  "OP_decisions_UNCONFIRMED": 6,
+  "full_OP_cases_BLOCKED_NOT_RUN": 24,
+  "original_completed_stage_0_to_10_progress_objects_preserved": true,
+  "owner_terminal_action_required": true,
+  "owner_SQL_action_required": false,
+  "actual_hosted_or_backend_rechecks_run": 0,
+  "findings_closed": [],
+  "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
+  "final_reaudit_status": "PLANNED_NOT_PERFORMED",
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "APK_update_deferred": true,
+  "next_step": "FR.1.1_OWNER_RESULT"
+}

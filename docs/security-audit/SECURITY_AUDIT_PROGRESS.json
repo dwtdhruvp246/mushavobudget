@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-13",
   "current_stage": 9,
-  "current_step": "9.3",
-  "current_title": "Stage 9.3 readiness complete with public asset gap and blocked hosted/device/store carry-forward; next 9.4",
+  "current_step": "9.4",
+  "current_title": "Stage 9 complete with carry-forward; next 10.1 release and operations evidence inventory",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1055,8 +1055,8 @@
   "final_reaudit_status": "PLANNED_NOT_PERFORMED",
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
-  "next_stage": 9,
-  "next_step": "9.4",
+  "next_stage": 10,
+  "next_step": "10.1",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -2876,14 +2876,14 @@
     "final_remediation_and_full_reaudit_required": true
   },
   "stage_9": {
-    "status": "IN_PROGRESS_BOUNDED_READINESS_BLOCKED_WITH_CARRY_FORWARD",
+    "status": "CLOSED_REGRESSION_RELEASE_CHECKPOINT_WITH_CARRY_FORWARD",
     "authorized": true,
     "started_date": "2026-10-12",
-    "active_step": "9.4",
+    "active_step": null,
     "initial_step": "9.1",
     "bounded_steps": 4,
-    "completed_steps": 3,
-    "remaining_steps": 1,
+    "completed_steps": 4,
+    "remaining_steps": 0,
     "plan": "docs/security-audit/SECURITY_STAGE_9_REGRESSION_RELEASE_PLAN.md",
     "source_review": "docs/security-audit/SECURITY_STAGE_9_1_REGRESSION_RELEASE_REVIEW.md",
     "source_inventory": "docs/security-audit/security-stage-9-regression-source-inventory.json",
@@ -2892,7 +2892,7 @@
     "test_matrix": "docs/security-audit/security-stage-9-regression-test-matrix.json",
     "remediation_action_index": "docs/security-audit/security-stage-9-remediation-actions.json",
     "evidence": "docs/security-audit/security-stage-9-evidence.json",
-    "latest_evidence": "S9E05",
+    "latest_evidence": "S9E06",
     "source_parent_commit": "2ea0a69b1bbe5ffedf7a3fc5c0d2179ff1b1f895",
     "primary_finding_ids": [
       "F05",
@@ -2995,7 +2995,20 @@
       {
         "id": "9.4",
         "title": "Full report/reconciliation and Stage 10 handoff",
-        "status": "PLANNED"
+        "status": "COMPLETE_WITH_CARRY_FORWARD",
+        "completed_date": "2026-10-13",
+        "latest_evidence": "S9E06",
+        "source_parent_commit": "bbb4086376c0885da95374ad753875cd1e26a389",
+        "report": "docs/security-audit/SECURITY_STAGE_9_COMPLETION_REPORT.md",
+        "receipt": "docs/security-audit/security-stage-9-final-recheck.json",
+        "current_input_identities": 215,
+        "current_candidate_byte_hash_matches": 26,
+        "immutable_structured_records": 10,
+        "unexpected_drift": 0,
+        "new_behavior_syntax_or_public_HTTP_checks_run": 0,
+        "owner_SQL_terminal_setup_action_required": false,
+        "findings_closed": [],
+        "next_step": "10.1"
       }
     ],
     "planned_acceptance_groups": [
@@ -3026,7 +3039,7 @@
     "APK_update_deferred": true,
     "owner_SQL_terminal_or_setup_action_requested": false,
     "report_due_step": "9.4",
-    "next_step": "9.4",
+    "next_step": "10.1",
     "final_remediation_and_full_reaudit_required": true,
     "candidate_report": "docs/security-audit/SECURITY_STAGE_9_2_REGRESSION_CANDIDATE.md",
     "candidate_contract": "docs/security-audit/security-stage-9-regression-candidate-contract.json",
@@ -3047,7 +3060,7 @@
     "source_workflow_and_header_candidate_changed": true,
     "source_application_JS_SQL_native_changed": false,
     "optional_owner_terminal_repeat_supplied": true,
-    "source_checkpoint_completed_steps": 2,
+    "source_checkpoint_completed_steps": 4,
     "owner_local_receipt": "docs/security-audit/security-stage-9-regression-owner-recheck.json",
     "windows_correction_report": "docs/security-audit/SECURITY_STAGE_9_2_WINDOWS_CORRECTION.md",
     "windows_correction_receipt": "docs/security-audit/security-stage-9-regression-windows-correction-checks.json",
@@ -3099,6 +3112,15 @@
     "readiness_catalog_targets": 202,
     "readiness_current_candidate_byte_hash_matches": 26,
     "readiness_immutable_records": 9,
-    "readiness_unexpected_drift": 0
+    "readiness_unexpected_drift": 0,
+    "completed_date": "2026-10-13",
+    "completion_report": "docs/security-audit/SECURITY_STAGE_9_COMPLETION_REPORT.md",
+    "final_recheck_receipt": "docs/security-audit/security-stage-9-final-recheck.json",
+    "final_reconciliation_current_input_identities": 215,
+    "final_reconciliation_current_candidate_byte_hash_matches": 26,
+    "final_reconciliation_immutable_records": 10,
+    "final_reconciliation_unexpected_drift": 0,
+    "final_source_non_document_paths": 25,
+    "closure_new_behavior_syntax_or_public_HTTP_checks_run": 0
   }
 }

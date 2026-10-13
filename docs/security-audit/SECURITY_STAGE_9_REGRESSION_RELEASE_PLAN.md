@@ -1,5 +1,7 @@
 # Stage 9 — Broad regression and release evidence
 
+**Latest — 9.4 / Stage 9 COMPLETE WITH CARRY-FORWARD, 13 October 2026 (S9E06):** [Full report/action plan](SECURITY_STAGE_9_COMPLETION_REPORT.md) and [final reconciliation](security-stage-9-final-recheck.json). All four bounded milestones complete. Corrected Windows 882 PASS / exit 0 / 21 syntax checks preserved alongside all earlier failures. Current 215 selected Git identities, 26 candidate byte hashes and ten immutable records reconcile; zero unexpected drift. All 48 full acceptance cases remain BLOCKED_NOT_RUN, six prerequisite groups blocked, eight actions OPEN and eight decisions UNCONFIRMED. The dated 9.3 selected public Auth asset-type FAIL remains explicit. Closure ran no fresh behavioral/syntax/public HTTP checks and changed documentation only. No finding closure, owner SQL/terminal/setup/file-opening/rerun action or hosted/native/store acceptance. Original 123 rows/20 definitions and all prior progress/evidence retained. **Next 10.1 — release and operations evidence inventory with finite Stage 10 plan. APK deferred; final remediation and fresh full re-audit required.** Earlier summaries are historical.
+
 **9.1 / 12 October 2026 — Source/evidence inventory COMPLETE; Stage 9 IN PROGRESS.**
 Source pin: `2ea0a69b1bbe5ffedf7a3fc5c0d2179ff1b1f895`. Stage 8 is closed with carry-forward. F05/F17/F20 and all earlier definitions remain unchanged. This stage coordinates regression and release evidence; it does not replace unresolved security, hosted or device acceptance.
 

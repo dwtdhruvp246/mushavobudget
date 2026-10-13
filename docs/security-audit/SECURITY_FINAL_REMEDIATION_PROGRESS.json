@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-13",
   "phase": "FINAL_REMEDIATION",
-  "status": "IN_PROGRESS_STAGING_DIRECT_UPLOAD_HANDOFF_PREPARED_AWAITING_OWNER_EXECUTION",
+  "status": "IN_PROGRESS_OWNER_ZIP_PREFLIGHT_PASS_AWAITING_STAGING_UPLOAD",
   "active_batch": "FR.1",
   "active_step": "FR.1.2",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE03",
+  "latest_evidence": "FRE04",
   "batches": [
     {
       "id": "FR.1",
@@ -50,7 +50,7 @@
         {
           "id": "FR.1.2",
           "title": "Confirm actual target and prepare exact deployment handoff",
-          "status": "HANDOFF_PREPARED_AWAITING_OWNER_PACKAGE_AND_DEPLOYMENT",
+          "status": "OWNER_ZIP_PREFLIGHT_PASS_AWAITING_STAGING_UPLOAD",
           "owner_required_fields": [],
           "deployment_handoff_prepared": true,
           "deployment_run": false,
@@ -59,8 +59,12 @@
           "method": "DIRECT_UPLOAD",
           "primary_staging_domain": "mushavo-budget-staging.pages.dev",
           "prior_deployment": "6d0326e1",
-          "owner_ZIP_preflight_run": false,
-          "report": "docs/security-audit/SECURITY_FR_1_2_DIRECT_UPLOAD_HANDOFF.md"
+          "owner_ZIP_preflight_run": true,
+          "report": "docs/security-audit/SECURITY_FR_1_2_DIRECT_UPLOAD_HANDOFF.md",
+          "owner_zip_preflight_pass": true,
+          "owner_non_config_hash_matches": 39,
+          "owner_ZIP_content_hash_matches": 40,
+          "owner_zip_receipt": "docs/security-audit/security-final-staging-owner-zip-preflight.json"
         },
         {
           "id": "FR.1.3",
@@ -112,7 +116,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 0,
   "findings_closed": [],
@@ -122,7 +126,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.1.2_OWNER_PACKAGE_AND_DEPLOYMENT_RESULT",
+  "next_step": "FR.1.2_OWNER_STAGING_UPLOAD_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -134,5 +138,9 @@
   "target_channel": "PRODUCTION_CHANNEL_OF_STAGING_PAGES_PROJECT",
   "deployment_mapping": "docs/security-audit/security-final-staging-deployment-mapping.json",
   "deployment_handoff": "docs/security-audit/SECURITY_FR_1_2_DIRECT_UPLOAD_HANDOFF.md",
-  "staging_deployment_receipt_received": false
+  "staging_deployment_receipt_received": false,
+  "owner_zip_preflight_receipt": "docs/security-audit/security-final-staging-owner-zip-preflight.json",
+  "owner_zip_preflight_status": "PASS_39_RECEIPT_HASHES_40_ZIP_HASHES",
+  "owner_zip_sha256": "c79819c4abb1cc8184d87ccfeb70c7d0e6b2cd7630e1f89072ea63415ba7707c",
+  "owner_zip_path": "C:\\Users\\HP\\Desktop\\Mushavo-Staging-Candidate-6205f79b476048a48edf4fe9e8a88cd0\\mushavo-staging-upload-beb642556710479b91dbfde0931744a2.zip"
 }

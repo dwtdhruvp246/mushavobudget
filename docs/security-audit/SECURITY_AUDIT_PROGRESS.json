@@ -3,7 +3,7 @@
   "updated_date": "2026-10-13",
   "current_stage": null,
   "current_step": "FR.1.2",
-  "current_title": "Staging Pages Direct Upload mapping recorded; checked package and upload handoff prepared",
+  "current_title": "Owner ZIP preflight passed; staging Pages Direct Upload pending",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.1.2_OWNER_PACKAGE_AND_DEPLOYMENT_RESULT",
+  "next_step": "FR.1.2_OWNER_STAGING_UPLOAD_RESULT",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3358,13 +3358,13 @@
   },
   "next_phase": "FINAL_REMEDIATION",
   "final_remediation": {
-    "status": "IN_PROGRESS_STAGING_DIRECT_UPLOAD_HANDOFF_PREPARED_AWAITING_OWNER_EXECUTION",
+    "status": "IN_PROGRESS_OWNER_ZIP_PREFLIGHT_PASS_AWAITING_STAGING_UPLOAD",
     "prepared_date": "2026-10-13",
     "handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
     "proposed_batches": 8,
     "original_findings_mapped": 20,
     "existing_open_action_entries": 61,
-    "next_step": "FR.1.2_OWNER_PACKAGE_AND_DEPLOYMENT_RESULT",
+    "next_step": "FR.1.2_OWNER_STAGING_UPLOAD_RESULT",
     "release_gate_unchanged": true,
     "full_fresh_final_reaudit_required": true,
     "started_date": "2026-10-13",
@@ -3373,10 +3373,10 @@
     "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
     "progress": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PROGRESS.json",
     "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-    "latest_evidence": "FRE03",
+    "latest_evidence": "FRE04",
     "candidate_report": "docs/security-audit/SECURITY_FR_1_1_STAGING_CANDIDATE.md",
     "local_receipt": "docs/security-audit/security-final-staging-local-checks.json",
-    "owner_terminal_action_required": true,
+    "owner_terminal_action_required": false,
     "owner_SQL_action_required": false,
     "owner_result_status": "PREPARATION_SUMMARY_RECEIVED_OFFLINE_JSON_NOT_SUPPLIED",
     "findings_closed": [],
@@ -3387,7 +3387,11 @@
     "serving_product": "CLOUDFLARE_PAGES",
     "deployment_method": "DIRECT_UPLOAD",
     "deployment_mapping": "docs/security-audit/security-final-staging-deployment-mapping.json",
-    "deployment_handoff": "docs/security-audit/SECURITY_FR_1_2_DIRECT_UPLOAD_HANDOFF.md"
+    "deployment_handoff": "docs/security-audit/SECURITY_FR_1_2_DIRECT_UPLOAD_HANDOFF.md",
+    "owner_zip_preflight_receipt": "docs/security-audit/security-final-staging-owner-zip-preflight.json",
+    "owner_zip_preflight_status": "PASS_39_RECEIPT_HASHES_40_ZIP_HASHES",
+    "owner_zip_sha256": "c79819c4abb1cc8184d87ccfeb70c7d0e6b2cd7630e1f89072ea63415ba7707c",
+    "owner_deployment_result_received": false
   },
   "current_phase": "FINAL_REMEDIATION"
 }

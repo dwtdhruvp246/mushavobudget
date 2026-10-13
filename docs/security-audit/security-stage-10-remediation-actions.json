@@ -149,5 +149,28 @@
   "hosted_acceptance": false,
   "native_security_acceptance": false,
   "store_acceptance": false,
-  "final_remediation_and_full_reaudit_required": true
+  "final_remediation_and_full_reaudit_required": true,
+  "latest_step": "10.2",
+  "latest_evidence": "S10E02",
+  "source_candidate": {
+    "report": "docs/security-audit/SECURITY_STAGE_10_2_OPERATIONS_CANDIDATE.md",
+    "runbooks": "docs/security-audit/SECURITY_STAGE_10_OPERATIONAL_RUNBOOKS.md",
+    "contract": "docs/security-audit/security-stage-10-operations-candidate-contract.json",
+    "receipt": "docs/security-audit/security-stage-10-operations-local-checks.json",
+    "partial_source_contribution": [
+      "OP-R01"
+    ],
+    "prepared_not_exercised_actions": [
+      "OP-R02",
+      "OP-R03",
+      "OP-R04",
+      "OP-R05",
+      "OP-R06"
+    ],
+    "local_unique_cases": 27,
+    "syntax_checks": 4,
+    "real_operations_cases_run": 0,
+    "action_closures": 0,
+    "owner_repeat_received": false
+  }
 }

@@ -3,7 +3,7 @@
   "updated_date": "2026-10-13",
   "current_stage": null,
   "current_step": "FR.1.3",
-  "current_title": "Owner upload filename/staging URL received; bounded public serving check pending",
+  "current_title": "Staging live recheck: 62 PASS, 3 SVG/manifest delivery failures; targeted details next",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.1.3_OWNER_SERVING_RESULT",
+  "next_step": "FR.1.3_TARGETED_DELIVERY_DETAILS",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3358,13 +3358,13 @@
   },
   "next_phase": "FINAL_REMEDIATION",
   "final_remediation": {
-    "status": "IN_PROGRESS_PUBLIC_SERVING_CHECK_HANDOFF_PREPARED_AWAITING_OWNER_RESULT",
+    "status": "IN_PROGRESS_LIVE_62_PASS_3_FAIL_TARGETED_DELIVERY_CORRECTION_REQUIRED",
     "prepared_date": "2026-10-13",
     "handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
     "proposed_batches": 8,
     "original_findings_mapped": 20,
     "existing_open_action_entries": 61,
-    "next_step": "FR.1.3_OWNER_SERVING_RESULT",
+    "next_step": "FR.1.3_TARGETED_DELIVERY_DETAILS",
     "release_gate_unchanged": true,
     "full_fresh_final_reaudit_required": true,
     "started_date": "2026-10-13",
@@ -3373,7 +3373,7 @@
     "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
     "progress": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PROGRESS.json",
     "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-    "latest_evidence": "FRE05",
+    "latest_evidence": "FRE06",
     "candidate_report": "docs/security-audit/SECURITY_FR_1_1_STAGING_CANDIDATE.md",
     "local_receipt": "docs/security-audit/security-final-staging-local-checks.json",
     "owner_terminal_action_required": true,
@@ -3394,9 +3394,14 @@
     "owner_deployment_result_received": false,
     "owner_new_upload_requested": false,
     "owner_canonical_URL_received": "https://mushavo-budget-staging.pages.dev/",
-    "owner_serving_result_status": "PENDING",
+    "owner_serving_result_status": "RECEIVED_REVIEW_62_PASS_3_FAIL_EXIT_1",
     "serving_check_handoff": "docs/security-audit/SECURITY_FR_1_3_SERVING_CHECK_HANDOFF.md",
-    "serving_check_local_receipt": "docs/security-audit/security-final-staging-serving-local-checks.json"
+    "serving_check_local_receipt": "docs/security-audit/security-final-staging-serving-local-checks.json",
+    "owner_serving_receipt": "docs/security-audit/security-final-staging-serving-owner-result.json",
+    "owner_live_metadata_cases": 65,
+    "owner_live_PASS": 62,
+    "owner_live_FAIL": 3,
+    "targeted_delivery_details_script": "scripts/inspect-final-staging-delivery.ps1"
   },
   "current_phase": "FINAL_REMEDIATION"
 }

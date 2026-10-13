@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-13",
   "phase": "FINAL_REMEDIATION",
-  "status": "IN_PROGRESS_PUBLIC_SERVING_CHECK_HANDOFF_PREPARED_AWAITING_OWNER_RESULT",
+  "status": "IN_PROGRESS_LIVE_62_PASS_3_FAIL_TARGETED_DELIVERY_CORRECTION_REQUIRED",
   "active_batch": "FR.1",
   "active_step": "FR.1.3",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE05",
+  "latest_evidence": "FRE06",
   "batches": [
     {
       "id": "FR.1",
@@ -74,7 +74,7 @@
         {
           "id": "FR.1.3",
           "title": "Recheck intended asset types/source, headers and callback serving",
-          "status": "CHECKER_PREPARED_AWAITING_OWNER_LIVE_SERVING_RESULT",
+          "status": "LIVE_OUTCOME_RECORDED_62_PASS_3_FAIL_CORRECTION_PENDING",
           "report": "docs/security-audit/SECURITY_FR_1_3_SERVING_CHECK_HANDOFF.md",
           "local_receipt": "docs/security-audit/security-final-staging-serving-local-checks.json",
           "local_unique_cases": 16,
@@ -83,12 +83,31 @@
           "local_syntax_checks": 3,
           "planned_metadata_cases": 65,
           "max_fixed_GETs": 69,
-          "owner_result_received": false,
+          "owner_result_received": true,
           "assistant_direct_static_GET_attempts": 1,
           "assistant_direct_HTTP_responses_received": 0,
           "assistant_web_reader_access": "UNAVAILABLE",
           "site_outage_inferred": false,
-          "new_upload_requested": false
+          "new_upload_requested": false,
+          "owner_metadata_cases": 65,
+          "owner_PASS": 62,
+          "owner_FAIL": 3,
+          "owner_BLOCKED": 0,
+          "owner_exit_code": 1,
+          "owner_HTTP_requests": 69,
+          "owner_HTTP_responses": 69,
+          "owner_offline_PASS": 16,
+          "owner_offline_FAIL": 0,
+          "owner_offline_syntax_checks": 3,
+          "owner_exact_tool_hash_matches": 7,
+          "owner_receipt": "docs/security-audit/security-final-staging-serving-owner-result.json",
+          "remaining_failures": [
+            "/assets/ledger-mark.svg",
+            "/assets/pwa-icon.svg",
+            "/manifest.webmanifest"
+          ],
+          "public_frontend_serving_scoped_acceptance": false,
+          "findings_closed": []
         }
       ]
     },
@@ -145,7 +164,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.1.3_OWNER_SERVING_RESULT",
+  "next_step": "FR.1.3_TARGETED_DELIVERY_DETAILS",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -168,5 +187,20 @@
   "unique_new_deployment_ID_or_provider_success_status_received": false,
   "serving_check_handoff": "docs/security-audit/SECURITY_FR_1_3_SERVING_CHECK_HANDOFF.md",
   "serving_check_local_receipt": "docs/security-audit/security-final-staging-serving-local-checks.json",
-  "owner_serving_result_status": "PENDING"
+  "owner_serving_result_status": "RECEIVED_REVIEW_62_PASS_3_FAIL_EXIT_1",
+  "owner_serving_receipt": "docs/security-audit/security-final-staging-serving-owner-result.json",
+  "owner_serving_checker_local_receipt": "docs/security-audit/security-final-staging-serving-owner-local-checks.json",
+  "owner_live_metadata_cases": 65,
+  "owner_live_PASS": 62,
+  "owner_live_FAIL": 3,
+  "owner_live_BLOCKED": 0,
+  "remaining_static_delivery_paths": [
+    "/assets/ledger-mark.svg",
+    "/assets/pwa-icon.svg",
+    "/manifest.webmanifest"
+  ],
+  "prior_three_Auth_MFA_asset_type_failures_corrected_at_current_owner_scope": true,
+  "prior_five_core_source_parity_reviews_currently_match": true,
+  "serving_outcome_report": "docs/security-audit/SECURITY_FR_1_3_SERVING_OUTCOME.md",
+  "targeted_delivery_details_script": "scripts/inspect-final-staging-delivery.ps1"
 }

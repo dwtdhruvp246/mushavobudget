@@ -12,7 +12,8 @@ const root = new URL('../', import.meta.url);
 const html = PUBLIC_FILES.filter(p => p.endsWith('.html')).map(p => fs.readFileSync(new URL(p, root), 'utf8'));
 
 test('tracked production policy matches reviewed HTML hashes and has no broad script permission', () => {
-  const candidate = fs.readFileSync(new URL('_headers', root), 'utf8');
+  // Header line separators do not change policy directives or inline hashes.
+  const candidate = fs.readFileSync(new URL('_headers', root), 'utf8').replace(/\r\n?/g, '\n');
   assert.equal(candidate, buildHeaders(PRODUCTION, html));
   const report = candidate.split('\n').find(l => l.includes('Content-Security-Policy-Report-Only:'));
   const script = report.split(';').find(l => l.trim().startsWith('script-src '));
@@ -91,14 +92,19 @@ test('preview refuses existing output and output within source', t => {
 });
 
 test('preview rejects redirected asset without creating output', t => {
-  const f = fixture(t), asset=path.join(f.source,'app.js'), other=path.join(f.tmp,'external.js');
-  fs.writeFileSync(other,'synthetic');fs.unlinkSync(asset);fs.symlinkSync(other,asset);
+  const f = fixture(t);
+  // A directory junction is a real reparse point and avoids privileged file
+  // symlink creation on Windows. The actual asset still resolves outside source.
+  const asset=path.join(f.source,'assets'), other=path.join(f.tmp,'external-assets');
+  fs.renameSync(asset,other);
+  fs.symlinkSync(other,asset,process.platform==='win32'?'junction':'dir');
   assert.throws(() => preparePreview(f.source,f.output), /redirected/);
   assert.equal(fs.existsSync(f.output),false);
 });
 
 test('preview rejects an output-parent alias into the source without modifying that source', t => {
-  const f=fixture(t), alias=path.join(f.tmp,'alias');fs.symlinkSync(f.source,alias,'dir');
+  const f=fixture(t), alias=path.join(f.tmp,'alias');
+  fs.symlinkSync(f.source,alias,process.platform==='win32'?'junction':'dir');
   assert.throws(()=>preparePreview(f.source,path.join(alias,'new-preview')),/redirected/);
   assert.equal(fs.existsSync(path.join(f.source,'new-preview')),false);
 });

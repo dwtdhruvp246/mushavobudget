@@ -6,6 +6,7 @@ import {readFile,mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {execFileSync,spawnSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
 
 const edge=await readFile(new URL('../supabase/functions/invite-business-member/index.ts',import.meta.url),'utf8');
 const runnable=stripTypeScriptTypes(edge.replace(/^import .*;\s*$/m,''));
@@ -32,7 +33,7 @@ test('actual Business Edge handler retains caller reservation denial before serv
   const h=await delivery(false,true);assert.equal(h.response.status,403);assert.equal(h.calls.filter(c=>c[0]==='invite'||c[0]==='otp').length,0);assert.equal(h.calls.filter(c=>c[0]==='client'&&c[1]==='synthetic-service').length,0);
 });
 
-const builder=path.resolve(new URL('../scripts/build-stage-3-auth-staging.cjs',import.meta.url).pathname);
+const builder=fileURLToPath(new URL('../scripts/build-stage-3-auth-staging.cjs',import.meta.url));
 async function fixture(action,missing=false) {
   const root=await mkdtemp(path.join(tmpdir(),'mushavo-auth-build-'));
   try {

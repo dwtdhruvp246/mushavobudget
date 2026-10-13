@@ -2,8 +2,8 @@
   "schema_version": 1,
   "stage": 9,
   "date": "2026-10-12",
-  "stage_status": "IN_PROGRESS_LOCAL_REGRESSION_COMPLETE_WITH_CARRY_FORWARD",
-  "active_step": "9.3",
+  "stage_status": "IN_PROGRESS_9_2_WINDOWS_CORRECTION_RECHECK_PENDING",
+  "active_step": "9.2",
   "scope": "SOURCE_CATALOG_PRIMARY_REQUIREMENTS_NOT_BEHAVIOR_HOSTED_NATIVE_OR_STORE_ACCEPTANCE",
   "events": [
     {
@@ -80,6 +80,38 @@
       "APK_update_deferred": true,
       "findings_closed": [],
       "next_step": "9.3"
+    },
+    {
+      "id": "S9E03",
+      "stage_step": "9.2",
+      "date": "2026-10-13",
+      "source_parent_commit": "f2c5d32de32b4c48cf3e1c3f25c4d9a2f6268783",
+      "result": "CORRECTED_LOCAL_PASS_OWNER_WINDOWS_RECHECK_PENDING",
+      "owner_receipt": "docs/security-audit/security-stage-9-regression-owner-local-checks.json",
+      "correction_report": "docs/security-audit/SECURITY_STAGE_9_2_WINDOWS_CORRECTION.md",
+      "correction_receipt": "docs/security-audit/security-stage-9-regression-windows-correction-checks.json",
+      "owner_tests": 882,
+      "owner_pass": 875,
+      "owner_fail": 7,
+      "owner_exit_code": 1,
+      "owner_syntax_checks": 17,
+      "owner_hashes_reconciled": 21,
+      "owner_exact_pinned_hashes": 3,
+      "owner_CRLF_variants": 18,
+      "hash_mismatches": 0,
+      "corrected_local_unique_cases": 882,
+      "corrected_local_pass": 882,
+      "corrected_local_fail": 0,
+      "corrected_local_syntax_checks": 21,
+      "corrected_candidate_hashes": 26,
+      "corrected_owner_recheck_received": false,
+      "actual_Windows_junction_execution_verified": false,
+      "correction_non_document_paths": 5,
+      "hosted_device_store_or_performance_cases_run": 0,
+      "open_actions": 8,
+      "findings_closed": [],
+      "APK_update_deferred": true,
+      "next_step": "9.2"
     }
   ],
   "prior_stage_records_unchanged": true,
@@ -88,5 +120,5 @@
   "store_acceptance": false,
   "APK_update_deferred": true,
   "report_due_step": "9.4",
-  "next_step": "9.3"
+  "next_step": "9.2"
 }

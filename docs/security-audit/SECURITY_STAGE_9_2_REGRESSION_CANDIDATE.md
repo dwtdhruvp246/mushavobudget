@@ -1,5 +1,7 @@
 # Stage 9.2 — Local regression and release-packaging candidate
 
+**Superseding 9.2 status — 13 October 2026:** The owner Windows repeat returned 875 PASS/seven FAIL/exit 1. [Correction](SECURITY_STAGE_9_2_WINDOWS_CORRECTION.md) and [original owner receipt](security-stage-9-regression-owner-local-checks.json) preserve this REVIEW. Corrected local checks pass, but actual corrected Windows acceptance is pending. Stay at 9.2; earlier Linux results below remain historical.
+
 **9.2 / 12 October 2026 — COMPLETE AT SOURCE CANDIDATE AND OFFLINE REGRESSION SCOPE.**
 Source parent: `bf7d1ec1690a43b692d2164204ebbd7d21d051ae`. Final verifier: **882 PASS, 0 FAIL, 0 skipped/cancelled/todo, exit 0 across 92 test files; 17 syntax checks PASS** on Node v24.19.0.
 

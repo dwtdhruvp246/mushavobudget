@@ -41,3 +41,7 @@ Production Supabase `kttkospkblwvguuwnhjj` is excluded from mutations; isolated 
 ## 9.2 — Source-local regression/packaging outcome
 
 [Candidate/scope](SECURITY_STAGE_9_2_REGRESSION_CANDIDATE.md), [exact contract](security-stage-9-regression-candidate-contract.json) and [local receipt with full history](security-stage-9-regression-local-checks.json). The explicit offline runner covers MJS and CJS; actual public exporter includes Auth assets and is used by the source workflow. Final 882 cases PASS, all 92 files run, 17 syntax checks; earlier 15 + six failed executions retained. No new hosted/native/store/performance/CI deployment proof, eight actions OPEN and 48 real grouped cases unrun. Full optional Windows temp-export code is in chat; no SQL/dependency installation/native action. Next 9.3, full report 9.4; APK deferred.
+
+## 9.2 — Windows repeat correction pending
+
+[Correction](SECURITY_STAGE_9_2_WINDOWS_CORRECTION.md), [original Windows REVIEW](security-stage-9-regression-owner-local-checks.json) and [corrected local receipt](security-stage-9-regression-windows-correction-checks.json). All 882 cases pass locally including CRLF/encoded-folder simulation; 21 syntax checks. Windows junction execution remains owner-recheck pending; no skips, privilege changes or permission weakening. Complete pinned temp-export PowerShell is supplied in chat. Stay at 9.2; next 9.3 only after the corrected repeat outcome is recorded. Hosted/native/store evidence remains separate and APK deferred.

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_step": "9.2",
-  "source_parent_commit": "bf7d1ec1690a43b692d2164204ebbd7d21d051ae",
+  "source_parent_commit": "f2c5d32de32b4c48cf3e1c3f25c4d9a2f6268783",
   "expected_test_files": [
     "tests/account-interface-polish.test.mjs",
     "tests/additional-family-subscription.test.mjs",
@@ -114,7 +114,11 @@
     "tests/pwa-update.test.mjs",
     "tests/stage-3-auth-flows.test.mjs",
     "tests/stage-9-regression-release.test.mjs",
-    "tests/workspace-startup.test.mjs"
+    "tests/workspace-startup.test.mjs",
+    "scripts/security-stage-1-database-properties-toc.cjs",
+    "tests/security-stage-1-database-properties-toc.test.cjs",
+    "tests/security-stage-2-headers.test.mjs",
+    "tests/stage-3-auth-edge-build.test.mjs"
   ],
   "hash_targets": [
     ".github/workflows/pages.yml",
@@ -136,11 +140,18 @@
     "tests/pwa-update.test.mjs",
     "tests/stage-3-auth-flows.test.mjs",
     "tests/stage-9-regression-release.test.mjs",
-    "tests/workspace-startup.test.mjs"
+    "tests/workspace-startup.test.mjs",
+    ".gitattributes",
+    "scripts/security-stage-1-database-properties-toc.cjs",
+    "tests/security-stage-1-database-properties-toc.test.cjs",
+    "tests/security-stage-2-headers.test.mjs",
+    "tests/stage-3-auth-edge-build.test.mjs"
   ],
   "candidate_deployed": false,
   "hosted_acceptance": false,
   "native_security_acceptance": false,
   "store_acceptance": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "original_9_2_source_parent_commit": "bf7d1ec1690a43b692d2164204ebbd7d21d051ae",
+  "correction": "WINDOWS_FILE_URL_HEADER_EOL_AND_REAL_DIRECTORY_REDIRECTION_FIXTURES"
 }

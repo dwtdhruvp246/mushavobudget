@@ -1,3 +1,9 @@
+# Current execution checkpoint — FR.2.2 preventive binding handoff
+
+13 October 2026, FRE13. [Candidate/report](SECURITY_FR_2_2_BINDING_CANDIDATE.md), [local 32-case receipt](security-fr-2-binding-local-checks.json), [source contract](security-fr-2-binding-candidate-contract.json). One guarded trigger-coverage correction is prepared/tested; full executable staging SQL is supplied in chat. No terminal/upload action or historical repair. Installation/hosted checks and eventual accepted canonical integration remain pending. Original findings/actions and full release gate remain open. Earlier checkpoints below are retained verbatim.
+
+---
+
 # Current execution checkpoint — FR.2.1 metadata recorded
 
 13 October 2026, FRE12. [Readiness outcome](SECURITY_FR_2_1_READINESS_OUTCOME.md) and [owner receipt](security-fr-2-readiness-owner-result.json) record selected source/trigger/consistency/operator dependencies. The scoped collection is complete with carry-forward, no authorization PASS/repair. Next **FR.2.2 Personal preventive binding candidate and meaningful local checks**, while keeping historical repair separately scoped and Business/Admin prerequisites intact. No new owner code/action is requested at this checkpoint. FR.1 public serving 65 PASS remains; full hosted/native/store acceptance and findings/actions remain open. Earlier checkpoint text below is retained as history.

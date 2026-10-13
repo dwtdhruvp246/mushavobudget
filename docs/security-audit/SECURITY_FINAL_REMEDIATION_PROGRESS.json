@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-13",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_READINESS_METADATA_RECORDED_PERSONAL_CORRECTION_PREPARATION_NEXT",
+  "status": "FR2_PERSONAL_BINDING_CANDIDATE_32_LOCAL_PASS_STAGING_INSTALL_PENDING",
   "active_batch": "FR.2",
-  "active_step": "FR.2.1",
+  "active_step": "FR.2.2",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE12",
+  "latest_evidence": "FRE13",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_READINESS_RECORDED_PERSONAL_CORRECTION_NEXT",
+      "status": "IN_PROGRESS_PERSONAL_BINDING_CANDIDATE_READY_STAGING_INSTALL_PENDING",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -179,8 +179,21 @@
         },
         {
           "id": "FR.2.2",
-          "status": "PLANNED_NOT_EXECUTED",
-          "title": "Personal workspace binding and legitimate finance"
+          "status": "CANDIDATE_32_LOCAL_PASS_GUARDED_STAGING_INSTALL_PENDING",
+          "title": "Personal workspace binding and legitimate finance",
+          "report": "docs/security-audit/SECURITY_FR_2_2_BINDING_CANDIDATE.md",
+          "local_receipt": "docs/security-audit/security-fr-2-binding-local-checks.json",
+          "contract": "docs/security-audit/security-fr-2-binding-candidate-contract.json",
+          "local_cases": 32,
+          "local_PASS": 32,
+          "local_FAIL": 0,
+          "local_exit_code": 0,
+          "source_inputs_verified": 55,
+          "source_migrations_compiled": 52,
+          "hosted_install_or_API_checks_run": 0,
+          "historical_repair_performed": false,
+          "canonical_schema_or_auto_migration_integration_performed": false,
+          "findings_closed": []
         },
         {
           "id": "FR.2.3",
@@ -251,7 +264,7 @@
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
   "owner_terminal_action_required": false,
-  "owner_SQL_action_required": false,
+  "owner_SQL_action_required": true,
   "actual_hosted_or_backend_rechecks_run": 0,
   "findings_closed": [],
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
@@ -260,7 +273,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.2_PERSONAL_BINDING_CANDIDATE_AND_MEANINGFUL_LOCAL_CHECKS",
+  "next_step": "FR.2.2_OWNER_GUARDED_STAGING_TRIGGER_INSTALL_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -319,5 +332,8 @@
   "FR2_source_inventory": "docs/security-audit/security-fr-2-source-inventory.json",
   "FR2_readiness_result_status": "RECEIVED_METADATA_REVIEW_BINDING_CONSISTENCY_OUTBOX_AND_OPERATOR_DEPENDENCIES",
   "FR2_readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
-  "FR2_readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md"
+  "FR2_readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
+  "FR2_binding_candidate_report": "docs/security-audit/SECURITY_FR_2_2_BINDING_CANDIDATE.md",
+  "FR2_binding_local_receipt": "docs/security-audit/security-fr-2-binding-local-checks.json",
+  "FR2_binding_contract": "docs/security-audit/security-fr-2-binding-candidate-contract.json"
 }

@@ -1,3 +1,9 @@
+# Current FR.2 checkpoint — preventive binding candidate ready
+
+13 October 2026, FRE13. [FR.2.2 candidate](SECURITY_FR_2_2_BINDING_CANDIDATE.md) passed 32 named database control groups in verified ordered source/PGlite with modeled Auth/Storage and no default network. Guarded staging-only installation handoff is prepared; installation/direct API acceptance/canonical integration remain pending. Existing historical mismatch rows and locked conversions will not be rewritten by this SQL. Historical repair and FR.3 cleanup/retention remain separate. Prior planning/checkpoint text below is retained.
+
+---
+
 # Current FR.2 checkpoint — readiness received, Personal correction preparation next
 
 13 October 2026, FRE12. FR.2.1 scoped read-only metadata collection is complete with carry-forward; [outcome](SECURITY_FR_2_1_READINESS_OUTCOME.md) and [owner receipt](security-fr-2-readiness-owner-result.json). Current two routine body matches/one outbox mismatch, missing record-sync workspace update coverage, one record-parent mismatch and one conversion-record mismatch, zero verified super operators/MFA helpers are recorded. No mutation or authorization acceptance. Next **FR.2.2 preventive Personal binding candidate and meaningful local checks**; historical repair and operator/Business drift remain separate prerequisites. Original six-step plan below is retained as its prepared snapshot.

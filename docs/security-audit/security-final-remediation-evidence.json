@@ -36,6 +36,28 @@
       "hosted_acceptance": false,
       "APK_update_deferred": true,
       "findings_closed": []
+    },
+    {
+      "id": "FRE02",
+      "stage_step": "FR.1.1",
+      "date": "2026-10-13",
+      "source_parent_commit": "360befd88bc747d2af309161840fe564a0e8ba9c",
+      "result": "OWNER_ISOLATED_CANDIDATE_PREPARATION_RECEIVED_NOT_DEPLOYED",
+      "owner_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
+      "owner_selected_source_inputs_verified": 39,
+      "owner_public_files": 40,
+      "owner_Auth_MFA_assets_and_dependency_checks_reported": true,
+      "owner_generated_headers_and_404_reported": true,
+      "owner_Windows_offline_verifier_JSON_supplied": false,
+      "owner_test_counts_asserted": false,
+      "full_public_artifact_hash_manifest_supplied": false,
+      "serving_metadata_received": false,
+      "assistant_new_tests_or_live_requests_run": 0,
+      "hosted_acceptance": false,
+      "production_or_native_changed": false,
+      "APK_update_deferred": true,
+      "findings_closed": [],
+      "next_step": "FR.1.2_OWNER_MAPPING"
     }
   ],
   "prior_stage_evidence_preserved": true,

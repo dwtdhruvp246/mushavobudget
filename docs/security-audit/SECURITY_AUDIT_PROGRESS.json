@@ -3,7 +3,7 @@
   "updated_date": "2026-10-13",
   "current_stage": 10,
   "current_step": "10.2",
-  "current_title": "Stage 10.2 operational instructions and public metadata collector offline PASS; owner Windows repeat supplied; next 10.3",
+  "current_title": "Stage 10.2 owner Windows offline PASS recorded; next 10.3 bounded operations/readiness",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -3124,7 +3124,7 @@
     "closure_new_behavior_syntax_or_public_HTTP_checks_run": 0
   },
   "stage_10": {
-    "status": "IN_PROGRESS_OPERATIONS_CANDIDATE_OFFLINE_CHECKED",
+    "status": "IN_PROGRESS_OPERATIONS_CANDIDATE_OWNER_OFFLINE_PASS_RECORDED",
     "authorized": true,
     "started_date": "2026-10-13",
     "active_step": "10.3",
@@ -3139,7 +3139,7 @@
     "test_matrix": "docs/security-audit/security-stage-10-operations-test-matrix.json",
     "remediation_action_index": "docs/security-audit/security-stage-10-remediation-actions.json",
     "evidence": "docs/security-audit/security-stage-10-evidence.json",
-    "latest_evidence": "S10E02",
+    "latest_evidence": "S10E03",
     "source_parent_commit": "b51fe2e49d32ecf5f3ee5a1f9118d1bc88888719",
     "primary_finding_ids": [
       "F16",
@@ -3177,9 +3177,9 @@
       {
         "id": "10.2",
         "title": "Reviewable operational runbooks and bounded collection candidate",
-        "status": "COMPLETE_AT_SOURCE_CANDIDATE_AND_ASSISTANT_OFFLINE_CHECK_SCOPE",
+        "status": "COMPLETE_AT_SOURCE_CANDIDATE_AND_OWNER_OFFLINE_CHECK_SCOPE",
         "completed_date": "2026-10-13",
-        "latest_evidence": "S10E02",
+        "latest_evidence": "S10E03",
         "source_parent_commit": "1b012fd9c47bfb1733596f64c470feee5d308341",
         "report": "docs/security-audit/SECURITY_STAGE_10_2_OPERATIONS_CANDIDATE.md",
         "pass": 27,
@@ -3190,9 +3190,16 @@
         "actual_public_staging_HTTP_requests": 0,
         "actual_operations_cases_run": 0,
         "owner_offline_terminal_repeat_supplied": true,
-        "owner_repeat_status": "REQUESTED_NOT_RECEIVED",
+        "owner_repeat_status": "PASS_27_EXIT_0",
         "findings_closed": [],
-        "next_step": "10.3"
+        "next_step": "10.3",
+        "owner_pass": 27,
+        "owner_fail": 0,
+        "owner_exit_code": 0,
+        "owner_syntax_checks": 4,
+        "owner_hashes_reconciled": 15,
+        "owner_receipt": "docs/security-audit/security-stage-10-operations-owner-local-checks.json",
+        "owner_additional_action_required": false
       },
       {
         "id": "10.3",
@@ -3243,8 +3250,8 @@
     "candidate_contract": "docs/security-audit/security-stage-10-operations-candidate-contract.json",
     "local_receipt": "docs/security-audit/security-stage-10-operations-local-checks.json",
     "local_unique_cases": 27,
-    "local_case_executions": 54,
-    "local_case_PASS": 54,
+    "local_case_executions": 81,
+    "local_case_PASS": 81,
     "local_case_FAIL": 0,
     "local_pass": 27,
     "local_fail": 0,
@@ -3254,8 +3261,18 @@
     "source_tool_candidate_added_paths": 4,
     "application_SQL_workflow_or_existing_guard_changed": false,
     "owner_offline_terminal_repeat_supplied": true,
-    "owner_offline_terminal_repeat_status": "REQUESTED_NOT_RECEIVED",
+    "owner_offline_terminal_repeat_status": "PASS_27_EXIT_0",
     "owner_corrected_recheck_received": false,
-    "new_public_application_GETs_run": 0
+    "new_public_application_GETs_run": 0,
+    "owner_offline_repeat_received": true,
+    "owner_repeat_receipt": "docs/security-audit/security-stage-10-operations-owner-local-checks.json",
+    "owner_pass": 27,
+    "owner_fail": 0,
+    "owner_exit_code": 0,
+    "owner_syntax_checks": 4,
+    "owner_exact_published_hashes": 15,
+    "owner_hash_mismatches": 0,
+    "owner_additional_action_required": false,
+    "new_assistant_behavior_or_syntax_tests_run_for_receipt": 0
   }
 }

@@ -1,5 +1,7 @@
 # 10.2 — Operational instructions and public metadata collection candidate
 
+**Latest — 10.2 / owner Windows offline PASS recorded, 13 October 2026 (S10E03):** [Owner receipt](security-stage-10-operations-owner-local-checks.json) and [candidate/report](SECURITY_STAGE_10_2_OPERATIONS_CANDIDATE.md). Node v22.17.0: all 27 cases PASS, zero fail/skip/cancel/todo, exit 0; four syntax PASS. All 15 hashes and current/pinned Git identities reconcile as exact published bytes, zero unexpected mismatch or CRLF variants. Windows junction fixtures passed at their owner-reported offline scope. Initial assistant 54 executions and owner 27 = 81 successful executions / 27 unique cases. No fresh assistant behavior/syntax/public/backend/provider/device check or source/settings/deployment/native change. All 24 real OP requirements remain unrun, six OP actions OPEN/six decisions UNCONFIRMED; prior scoped positives/failures, original 123 rows/20 definitions and Stage 0–9/completed 10.1 preserved. **Two of four Stage 10 milestones complete; next 10.3 bounded staging operations/readiness; full report 10.4.** No extra SQL/terminal/setup/rerun action; hosted/native/store acceptance remains false, APK deferred and final remediation/full fresh re-audit required. Earlier summaries are historical.
+
 **13 October 2026, S10E02 — source candidate and offline checks COMPLETE.**
 Source parent: `1b012fd9c47bfb1733596f64c470feee5d308341`.
 [Operational instructions](SECURITY_STAGE_10_OPERATIONAL_RUNBOOKS.md) · [Candidate contract](security-stage-10-operations-candidate-contract.json) · [Measured offline receipt](security-stage-10-operations-local-checks.json).
@@ -64,3 +66,9 @@ All six OP actions remain OPEN and six decisions UNCONFIRMED; inherited eight RG
 An exact-commit PowerShell export and offline Windows verification handoff is supplied in chat; it uses a new temporary directory and the standalone verifier. It does not check out files, install dependencies, run the live collector or change accounts/SQL/settings. **Owner repeat: REQUESTED_NOT_RECEIVED.** Return the JSON summary after it finishes; no SQL action is required for this preparation milestone.
 
 **Next: 10.3 — one bounded staging operations/readiness outcome**, after any supplied repeat result is reconciled. Use accepted prerequisites for actual cases or record BLOCKED_NOT_RUN once and carry forward. Full Stage 10 report remains due at 10.4. Release gate remains OPEN_PENDING_REQUIRED_EVIDENCE; final remediation and a fresh full audit remain required.
+
+## Owner Windows receipt recorded — S10E03 / 13 October
+
+Pinned candidate `88503798ebd381aac2d52ab5a7905774636a4afc`; owner Node v22.17.0 reported 27 PASS, zero fail/skip/cancel/todo, exit 0 and four syntax PASS. All 15 consumed hashes freshly reconcile against pinned/current Git blobs as exact published bytes. Zero CRLF variants or unexpected mismatch. [Full safe owner receipt](security-stage-10-operations-owner-local-checks.json). Windows junction fixtures reported PASS within the stated offline scope. No new assistant test or current public/backend/job/alert/recovery check was run to record it.
+
+Combined history is 81 successful executions of 27 unique cases (54 assistant plus 27 owner), not 81 unique controls. All earlier assistant source/receipts and unrelated prior failures remain unchanged. The preparation paragraphs above are historical; owner repeat is now PASS_27_EXIT_0. No additional owner action is required. All 24 full OP cases remain unrun and six actions OPEN. Next 10.3; full Stage 10 report 10.4; APK deferred.

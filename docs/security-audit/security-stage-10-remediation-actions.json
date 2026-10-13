@@ -151,7 +151,7 @@
   "store_acceptance": false,
   "final_remediation_and_full_reaudit_required": true,
   "latest_step": "10.2",
-  "latest_evidence": "S10E02",
+  "latest_evidence": "S10E03",
   "source_candidate": {
     "report": "docs/security-audit/SECURITY_STAGE_10_2_OPERATIONS_CANDIDATE.md",
     "runbooks": "docs/security-audit/SECURITY_STAGE_10_OPERATIONAL_RUNBOOKS.md",
@@ -171,6 +171,14 @@
     "syntax_checks": 4,
     "real_operations_cases_run": 0,
     "action_closures": 0,
-    "owner_repeat_received": false
+    "owner_repeat_received": true
+  },
+  "owner_offline_repeat": {
+    "receipt": "docs/security-audit/security-stage-10-operations-owner-local-checks.json",
+    "result": "PASS_27_EXIT_0",
+    "syntax_checks": 4,
+    "exact_published_hashes": 15,
+    "unexpected_mismatches": 0,
+    "action_closures": 0
   }
 }

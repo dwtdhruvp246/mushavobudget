@@ -10,6 +10,7 @@ const STAGING = 'dczlddwbtgvfdujgcitb';
 const PRODUCTION = 'kttkospkblwvguuwnhjj';
 const REQUIRED_AUTH = ['auth.html','auth-flows.js','auth-security.js','admin-mfa.js'];
 const NOT_FOUND = '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Page not found — Mushavo Budget</title></head><body><main><h1>Page not found</h1><p>The page you requested could not be found.</p><p><a href="/">Return to Mushavo Budget</a></p></main></body></html>\n';
+export const MANIFEST_HEADERS = '\n/manifest.webmanifest\n  Content-Type: application/manifest+json\n';
 const hash = data => createHash('sha256').update(data).digest('hex');
 const samePath = (a,b) => process.platform === 'win32' ? a.toLowerCase() === b.toLowerCase() : a === b;
 function ordinaryDirectory(input) {
@@ -98,7 +99,7 @@ export function prepareFinalStaging({source,output,receipt,sourcePin,project,pub
   const require = createRequire(import.meta.url);
   const {buildHeaders} = require(path.join(source,contract.header_generator.path));
   const finalHTML = [...files].filter(([name])=>name.endsWith('.html')).map(([,data])=>data.toString('utf8'));
-  files.set('_headers',Buffer.from(buildHeaders(STAGING,finalHTML)));
+  files.set('_headers',Buffer.from(buildHeaders(STAGING,finalHTML)+MANIFEST_HEADERS));
   if (files.get('_headers').includes(Buffer.from(PRODUCTION))) throw Error('Production reference remains in generated headers.');
   // All input, dependency and output-path checks precede creation.
   fs.mkdirSync(output);

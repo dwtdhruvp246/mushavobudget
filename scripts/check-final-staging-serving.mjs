@@ -36,7 +36,10 @@ export function loadExpected(root=scriptRoot) {
   const names=[...contract.public_inputs.map(r=>r.path),'404.html'];
   const assets=new Map(names.map(name=>[name,{name,path:canonical(name),data:fs.readFileSync(path.join(output,name))}]));
   const headers={};
-  for(const m of fs.readFileSync(path.join(output,'_headers'),'utf8').matchAll(/^  ([A-Za-z-]+): (.+)$/gm))headers[m[1].toLowerCase()]=m[2].trim();
+  const headerText=fs.readFileSync(path.join(output,'_headers'),'utf8');
+  const globalBlock=headerText.match(/^\/\*\r?\n((?:  [^\n]+\r?\n)+)/m)?.[1];
+  if(!globalBlock || !headerText.endsWith('\n/manifest.webmanifest\n  Content-Type: application/manifest+json\n'))throw Error('UNEXPECTED_HEADER_PROFILE');
+  for(const m of globalBlock.matchAll(/^  ([A-Za-z-]+): (.+)$/gm))headers[m[1].toLowerCase()]=m[2].trim();
   if(assets.size!==39 || Object.keys(headers).length!==7)throw Error('UNEXPECTED_EXPECTATION_SHAPE');
   return {assets,headers,sourceConfig:fs.readFileSync(path.join(root,'config.js')),source_inputs_verified:39};
  } finally {fs.rmSync(temp,{recursive:true,force:true});}

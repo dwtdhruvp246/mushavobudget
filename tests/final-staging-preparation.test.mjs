@@ -7,7 +7,7 @@ import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
-import {prepareFinalStaging} from '../scripts/prepare-final-staging.mjs';
+import {prepareFinalStaging,MANIFEST_HEADERS} from '../scripts/prepare-final-staging.mjs';
 
 const repo=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const contract=JSON.parse(fs.readFileSync(path.join(repo,'docs/security-audit/security-final-staging-source-contract.json'),'utf8'));
@@ -41,7 +41,7 @@ test('private sentinel and source contract never enter serving output; receipt s
 }));
 test('final HTML regenerates exact baseline/report-only CSP and includes scriptless 404 candidate',()=>fixture(f=>{
  prepareFinalStaging(f);const html=fs.readdirSync(f.output).filter(n=>n.endsWith('.html')).map(n=>fs.readFileSync(path.join(f.output,n),'utf8'));
- assert.equal(fs.readFileSync(path.join(f.output,'_headers'),'utf8'),headerHelper.buildHeaders(contract.staging_project,html));assert.doesNotMatch(fs.readFileSync(path.join(f.output,'404.html'),'utf8'),/<script/i);
+ assert.equal(fs.readFileSync(path.join(f.output,'_headers'),'utf8'),headerHelper.buildHeaders(contract.staging_project,html)+MANIFEST_HEADERS);assert.doesNotMatch(fs.readFileSync(path.join(f.output,'404.html'),'utf8'),/<script/i);
 }));
 test('source inputs are unchanged and reported artifact hashes match written files without key/config hash',()=>fixture(f=>{
  const before=contract.public_inputs.map(r=>sha(fs.readFileSync(path.join(f.source,r.path))));const r=prepareFinalStaging(f);

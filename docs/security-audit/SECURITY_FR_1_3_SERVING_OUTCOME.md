@@ -59,3 +59,10 @@ The Node snippet passed a syntax check and its sanitized error behavior was exer
 Cloudflare [static headers documentation](https://developers.cloudflare.com/pages/configuration/headers/), read 13 October 2026, supports per-path response header overrides through _headers. An explicit correct manifest Content-Type can therefore be prepared after the narrow result; it does not by itself fix missing SVG delivery. Microsoft [Compress-Archive documentation](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.archive/compress-archive), read 13 October 2026, describes wildcard root-content packaging. Neither document proves the current SVG failure cause. Do not claim a platform-wide SVG restriction.
 
 FR.1 remains in progress until the three delivery failures are corrected and genuinely rechecked. Current frontend scoped acceptance and full hosted/native/store acceptance remain false. Original F07/F18/F19 and all coordinating actions stay open at their complete requirements; all 24 full OP cases remain blocked and unrun. Release gate remains open, fresh final audit unperformed, APK update deferred.
+
+
+## Subsequent diagnostic and prepared correction — FRE07
+
+The owner diagnostic returned both literal ZIP SVG entry names with backslashes; their normal/query GETs each remain 404. The manifest returns the matching 926-byte artifact at 200 in both probes, classified OTHER_OR_UNSET. This classification did **not** identify its exact media type; the earlier proposed diagnostic wording overstated that capability. Cache classifications were also OTHER_OR_UNSET. No platform-wide SVG restriction or definitive causal link is established.
+
+The [new correction report](SECURITY_FR_1_3_DELIVERY_CORRECTION.md) records the diagnostic and prepares explicit forward-slash ZIP entry creation plus an explicit manifest content type. The unchanged old ZIP is retained. Owner corrected ZIP preflight, subsequent upload and actual serving recheck remain pending; the historical 62 PASS / three FAIL result above is preserved.

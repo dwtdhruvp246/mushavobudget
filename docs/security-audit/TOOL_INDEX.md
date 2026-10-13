@@ -406,3 +406,10 @@ No new executable tool or behavior/sandbox/device test; existing eight test file
 ## Stage 10 closure and next-phase index — 10.4 / S10E06
 
 [Completion report](SECURITY_STAGE_10_COMPLETION_REPORT.md), [identity/preservation reconciliation](security-stage-10-final-recheck.json), [final-remediation handoff](SECURITY_FINAL_REMEDIATION_HANDOFF.md). Current discovery: 93 tests (86 MJS/seven CJS), 113 script paths; 249 selected source identities reconcile. This catalog is not a current full regression run. The four Stage 10 tool additions and all earlier scripts/SQL remain at their existing paths. No SQL, terminal command, setup or rerun is required at closure. Future owner code must be supplied in full in chat for the concrete authorized task.
+
+
+## FR.1.3 delivery correction — diagnostic recorded, owner preflight pending
+
+[Correction report](SECURITY_FR_1_3_DELIVERY_CORRECTION.md), [six-request owner diagnostic](security-final-staging-delivery-owner-details.json), [44-case local verification](security-final-staging-correction-local-checks.json). Both ZIP SVG entries contain literal backslashes and both normal/query requests remain 404. This is a plausible packaging risk, not a proved cause. The manifest exact MIME remains unknown because the diagnostic returned OTHER_OR_UNSET.
+
+Correction tools: `scripts/prepare-final-staging-correction.mjs`, `scripts/package-final-staging-correction.ps1`, `scripts/verify-final-staging-correction.mjs`, `tests/final-staging-correction.test.mjs`. The current staging preparer adds only a manifest-specific MIME header; the serving checker separates global security headers from path-specific rules. Existing source contract/public bytes stay pinned; prior artifacts/evidence remain retained. New ordinary Desktop output reuses the validated staging config locally, writes explicit forward-slash ZIP entries, then checks all 40 raw names/content hashes. Assistant tests passed at offline scope; Windows ZIP execution, corrected deployment and 65-case live recheck are pending. No SQL/key entry or upload is required during preflight. Full acceptance remains false; original findings/actions stay open; APK deferred.

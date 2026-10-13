@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-13",
   "phase": "FINAL_REMEDIATION",
-  "status": "IN_PROGRESS_CORRECTED_ZIP_OWNER_PREFLIGHT_PASS_STAGING_UPLOAD_PENDING",
+  "status": "IN_PROGRESS_CORRECTED_DEPLOYMENT_OWNER_REPORTED_LIVE_RECHECK_PENDING",
   "active_batch": "FR.1",
   "active_step": "FR.1.3",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE08",
+  "latest_evidence": "FRE09",
   "batches": [
     {
       "id": "FR.1",
@@ -74,7 +74,7 @@
         {
           "id": "FR.1.3",
           "title": "Recheck intended asset types/source, headers and callback serving",
-          "status": "CORRECTED_OWNER_CANDIDATE_AND_ZIP_PREFLIGHT_PASS_UPLOAD_RECHECK_PENDING",
+          "status": "CORRECTED_DEPLOYMENT_SUCCESS_OWNER_REPORTED_LIVE_RECHECK_PENDING",
           "report": "docs/security-audit/SECURITY_FR_1_3_SERVING_CHECK_HANDOFF.md",
           "local_receipt": "docs/security-audit/security-final-staging-serving-local-checks.json",
           "local_unique_cases": 16,
@@ -88,7 +88,7 @@
           "assistant_direct_HTTP_responses_received": 0,
           "assistant_web_reader_access": "UNAVAILABLE",
           "site_outage_inferred": false,
-          "new_upload_requested": true,
+          "new_upload_requested": false,
           "owner_metadata_cases": 65,
           "owner_PASS": 62,
           "owner_FAIL": 3,
@@ -124,7 +124,12 @@
           "owner_correction_syntax_checks": 7,
           "owner_correction_exact_tool_hash_matches": 10,
           "owner_correction_CRLF_only_hash_matches": 1,
-          "owner_correction_unexpected_hash_mismatches": 0
+          "owner_correction_unexpected_hash_mismatches": 0,
+          "owner_corrected_deployment_report": "docs/security-audit/security-final-staging-corrected-deployment-owner-report.json",
+          "owner_corrected_deployment_ID": "1cfa6ef5",
+          "owner_corrected_deployment_URL": "https://1cfa6ef5.mushavo-budget-staging.pages.dev/",
+          "owner_corrected_deployment_success_reported": true,
+          "corrected_live_recheck_run": false
         }
       ]
     },
@@ -171,7 +176,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": false,
+  "owner_terminal_action_required": true,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 0,
   "findings_closed": [],
@@ -181,11 +186,11 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.1.3_CORRECTED_ZIP_STAGING_UPLOAD_THEN_LIVE_RECHECK",
+  "next_step": "FR.1.3_CORRECTED_PRIMARY_STAGING_65_CASE_SERVING_RECHECK",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
-  "owner_staging_direct_upload_action_required": true,
+  "owner_staging_direct_upload_action_required": false,
   "serving_product": "CLOUDFLARE_PAGES",
   "owner_deployment_method": "DIRECT_UPLOAD",
   "target_project": "mushavo-budget-staging",
@@ -198,7 +203,7 @@
   "owner_zip_preflight_status": "PASS_39_RECEIPT_HASHES_40_ZIP_HASHES",
   "owner_zip_sha256": "c79819c4abb1cc8184d87ccfeb70c7d0e6b2cd7630e1f89072ea63415ba7707c",
   "owner_zip_path": "C:\\Users\\HP\\Desktop\\Mushavo-Staging-Candidate-6205f79b476048a48edf4fe9e8a88cd0\\mushavo-staging-upload-beb642556710479b91dbfde0931744a2.zip",
-  "owner_new_upload_requested": true,
+  "owner_new_upload_requested": false,
   "owner_canonical_URL_received": "https://mushavo-budget-staging.pages.dev/",
   "owner_upload_filename_confirmed": "mushavo-staging-upload-beb642556710479b91dbfde0931744a2.zip",
   "unique_new_deployment_ID_or_provider_success_status_received": false,
@@ -226,5 +231,9 @@
   "owner_correction_preflight_status": "PASS_44_OFFLINE_40_POSIX_NAMES_40_ZIP_HASHES",
   "owner_correction_preflight_receipt": "docs/security-audit/security-final-staging-correction-owner-preflight.json",
   "owner_corrected_zip_sha256": "361fce29717b117e77f9cb51397a7d9c9ba26a0771d81192643b4cacec499a62",
-  "owner_corrected_zip_path": "C:\\Users\\HP\\Desktop\\Mushavo-Staging-Corrected-8b88f9465732442890ad06803e0513bc\\mushavo-staging-upload-f945c040abfc4d978b3c8e4d0c2b37f0.zip"
+  "owner_corrected_zip_path": "C:\\Users\\HP\\Desktop\\Mushavo-Staging-Corrected-8b88f9465732442890ad06803e0513bc\\mushavo-staging-upload-f945c040abfc4d978b3c8e4d0c2b37f0.zip",
+  "owner_corrected_deployment_report": "docs/security-audit/security-final-staging-corrected-deployment-owner-report.json",
+  "owner_corrected_deployment_ID": "1cfa6ef5",
+  "owner_corrected_deployment_URL": "https://1cfa6ef5.mushavo-budget-staging.pages.dev/",
+  "owner_corrected_deployment_success_reported": true
 }

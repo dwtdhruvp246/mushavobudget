@@ -418,3 +418,8 @@ Correction tools: `scripts/prepare-final-staging-correction.mjs`, `scripts/packa
 ## FR.1.3 corrected ZIP owner preflight — FRE08
 
 [Owner receipt](security-final-staging-correction-owner-preflight.json) and [updated correction report](SECURITY_FR_1_3_DELIVERY_CORRECTION.md): 44 PASS on Windows, seven syntax checks, 10 exact hashes/one CRLF-only PowerShell match, zero unexpected mismatch. Actual owner corrected ZIP readback: 40 literal forward-slash names/40 content hashes/39 sidecar hashes PASS. New corrected artifact prepared; staging upload now requested, live 65-case recheck pending. Earlier diagnostic/evidence is retained; full acceptance false; original findings/actions open; APK deferred.
+
+
+## FR.1.3 corrected deployment owner report — FRE09
+
+[Deployment report](security-final-staging-corrected-deployment-owner-report.json) and [updated correction handoff](SECURITY_FR_1_3_DELIVERY_CORRECTION.md): owner reports successful deployment 1cfa6ef5. Provider/artifact/primary mapping remains independently unverified. Next: same 65-case checker against primary staging origin using Windows-verified tool commit 4571ca6; full in-chat command supplied. No new upload/offline repeat/SQL/key entry. Live result pending; full acceptance false; findings/actions open; APK deferred.

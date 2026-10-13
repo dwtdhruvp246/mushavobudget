@@ -238,6 +238,27 @@
       "APK_update_deferred": true,
       "findings_closed": [],
       "next_step": "FR.1.3_CORRECTED_ZIP_STAGING_UPLOAD_THEN_LIVE_RECHECK"
+    },
+    {
+      "id": "FRE09",
+      "stage_step": "FR.1.3_CORRECTED_DEPLOYMENT",
+      "date": "2026-10-13",
+      "source_parent_commit": "6a60ab7da3ab6d518e40c2ad2790acddfb79b213",
+      "result": "CORRECTED_STAGING_DEPLOYMENT_SUCCESS_OWNER_REPORTED_LIVE_RECHECK_PENDING",
+      "owner_receipt": "docs/security-audit/security-final-staging-corrected-deployment-owner-report.json",
+      "owner_deployment_ID": "1cfa6ef5",
+      "owner_unique_URL": "https://1cfa6ef5.mushavo-budget-staging.pages.dev/",
+      "owner_reports_success": true,
+      "unique_provider_metadata_independently_verified": false,
+      "actual_corrected_primary_serving_checks_run": 0,
+      "planned_live_cases": 65,
+      "max_fixed_GETs": 69,
+      "checker_commit": "4571ca6ae5808b4962ea80642a3026c85ca09fd2",
+      "new_upload_requested": false,
+      "hosted_acceptance": false,
+      "APK_update_deferred": true,
+      "findings_closed": [],
+      "next_step": "FR.1.3_CORRECTED_PRIMARY_STAGING_65_CASE_SERVING_RECHECK"
     }
   ],
   "prior_stage_evidence_preserved": true,

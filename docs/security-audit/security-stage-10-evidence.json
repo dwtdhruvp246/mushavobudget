@@ -2,7 +2,7 @@
   "schema_version": 1,
   "stage": 10,
   "date": "2026-10-13",
-  "stage_status": "IN_PROGRESS_OPERATIONS_CANDIDATE_OWNER_OFFLINE_PASS_RECORDED",
+  "stage_status": "IN_PROGRESS_OWNER_PUBLIC_READINESS_COLLECTION_PENDING",
   "active_step": "10.3",
   "scope": "SELECTED_SOURCE_PRIOR_DATED_EVIDENCE_AND_PRIMARY_DOCS_NOT_CURRENT_INSTALLED_OPERATIONS_OR_RELEASE_ACCEPTANCE",
   "events": [
@@ -120,6 +120,36 @@
       "APK_update_deferred": true,
       "findings_closed": [],
       "next_step": "10.3"
+    },
+    {
+      "id": "S10E04",
+      "stage_step": "10.3",
+      "date": "2026-10-13",
+      "source_parent_commit": "5b8242ac92fbe2166f17557a5858712515d8cc9e",
+      "result": "BOUNDED_PUBLIC_STAGING_METADATA_HANDOFF_PREPARED_RESULT_PENDING",
+      "handoff": "docs/security-audit/SECURITY_STAGE_10_3_READINESS_HANDOFF.md",
+      "prerequisite_record": "docs/security-audit/security-stage-10-readiness-handoff.json",
+      "current_input_matches": 12,
+      "mismatches": 0,
+      "expected_public_GET_routes": 9,
+      "assistant_live_public_HTTP_requests": 0,
+      "assistant_new_behavior_or_syntax_tests_run": 0,
+      "owner_collection_result_received": false,
+      "prerequisite_groups_not_accepted": 6,
+      "full_grouped_cases_executed": 0,
+      "stage_10_3_outcome_complete": false,
+      "owner_public_metadata_terminal_handoff_supplied": true,
+      "owner_SQL_or_backend_setup_action_required": false,
+      "hosted_operations_acceptance": false,
+      "hosted_acceptance": false,
+      "native_security_acceptance": false,
+      "store_acceptance": false,
+      "source_runtime_SQL_cron_or_settings_changed": false,
+      "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+      "production_or_native_changed": false,
+      "APK_update_deferred": true,
+      "findings_closed": [],
+      "next_step": "10.3"
     }
   ],
   "prior_stage_records_unchanged": true,
@@ -130,5 +160,5 @@
   "APK_update_deferred": true,
   "report_due_step": "10.4",
   "next_step": "10.3",
-  "latest_evidence": "S10E03"
+  "latest_evidence": "S10E04"
 }

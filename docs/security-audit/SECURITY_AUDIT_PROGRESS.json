@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-13",
   "current_stage": 10,
-  "current_step": "10.2",
-  "current_title": "Stage 10.2 owner Windows offline PASS recorded; next 10.3 bounded operations/readiness",
+  "current_step": "10.3",
+  "current_title": "Stage 10.3 bounded public staging metadata handoff prepared; owner result pending",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -3124,7 +3124,7 @@
     "closure_new_behavior_syntax_or_public_HTTP_checks_run": 0
   },
   "stage_10": {
-    "status": "IN_PROGRESS_OPERATIONS_CANDIDATE_OWNER_OFFLINE_PASS_RECORDED",
+    "status": "IN_PROGRESS_OWNER_PUBLIC_READINESS_COLLECTION_PENDING",
     "authorized": true,
     "started_date": "2026-10-13",
     "active_step": "10.3",
@@ -3139,7 +3139,7 @@
     "test_matrix": "docs/security-audit/security-stage-10-operations-test-matrix.json",
     "remediation_action_index": "docs/security-audit/security-stage-10-remediation-actions.json",
     "evidence": "docs/security-audit/security-stage-10-evidence.json",
-    "latest_evidence": "S10E03",
+    "latest_evidence": "S10E04",
     "source_parent_commit": "b51fe2e49d32ecf5f3ee5a1f9118d1bc88888719",
     "primary_finding_ids": [
       "F16",
@@ -3204,7 +3204,18 @@
       {
         "id": "10.3",
         "title": "One controlled staging operations/readiness outcome",
-        "status": "PLANNED"
+        "status": "PREPARED_OWNER_PUBLIC_METADATA_COLLECTION_PENDING",
+        "latest_evidence": "S10E04",
+        "prepared_date": "2026-10-13",
+        "handoff": "docs/security-audit/SECURITY_STAGE_10_3_READINESS_HANDOFF.md",
+        "source_parent_commit": "5b8242ac92fbe2166f17557a5858712515d8cc9e",
+        "candidate_commit": "88503798ebd381aac2d52ab5a7905774636a4afc",
+        "current_input_matches": 12,
+        "current_input_mismatches": 0,
+        "expected_public_routes": 9,
+        "owner_collection_result_received": false,
+        "full_operations_cases_run": 0,
+        "next_step": "10.3"
       },
       {
         "id": "10.4",
@@ -3273,6 +3284,18 @@
     "owner_exact_published_hashes": 15,
     "owner_hash_mismatches": 0,
     "owner_additional_action_required": false,
-    "new_assistant_behavior_or_syntax_tests_run_for_receipt": 0
+    "new_assistant_behavior_or_syntax_tests_run_for_receipt": 0,
+    "readiness_handoff_report": "docs/security-audit/SECURITY_STAGE_10_3_READINESS_HANDOFF.md",
+    "readiness_handoff": "docs/security-audit/security-stage-10-readiness-handoff.json",
+    "readiness_handoff_current_input_matches": 12,
+    "readiness_source_mismatches": 0,
+    "source_review_blocked_prerequisite_groups": 6,
+    "public_metadata_collection_status": "REQUESTED_RESULT_PENDING",
+    "owner_current_step_action_required": true,
+    "owner_current_step_action_scope": "FIXED_PUBLIC_STAGING_METADATA_ONLY",
+    "owner_public_metadata_terminal_handoff_supplied": true,
+    "owner_SQL_or_backend_setup_action_required": false,
+    "assistant_live_public_HTTP_requests_in_10_3": 0,
+    "stage_10_3_outcome_complete": false
   }
 }

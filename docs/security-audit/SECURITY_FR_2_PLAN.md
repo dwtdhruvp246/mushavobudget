@@ -1,3 +1,9 @@
+# Current FR.2 checkpoint — readiness received, Personal correction preparation next
+
+13 October 2026, FRE12. FR.2.1 scoped read-only metadata collection is complete with carry-forward; [outcome](SECURITY_FR_2_1_READINESS_OUTCOME.md) and [owner receipt](security-fr-2-readiness-owner-result.json). Current two routine body matches/one outbox mismatch, missing record-sync workspace update coverage, one record-parent mismatch and one conversion-record mismatch, zero verified super operators/MFA helpers are recorded. No mutation or authorization acceptance. Next **FR.2.2 preventive Personal binding candidate and meaningful local checks**; historical repair and operator/Business drift remain separate prerequisites. Original six-step plan below is retained as its prepared snapshot.
+
+---
+
 # FR.2 — Permissions, Admin assurance, Auth and finance integrity
 
 13 October 2026. FR.2.1 is in progress; remaining steps are planned, not executed. Original finding scope: F08, F10, F15; coordinating RG-R01/RG-R02/OP-R01/OP-R02 remain OPEN. The unchanged original eight-batch handoff defines required closure evidence. FR.1's 65-case static serving PASS establishes a frontend prerequisite; it does not attest installed SQL/Edge routines, Auth settings or genuine operator sessions.

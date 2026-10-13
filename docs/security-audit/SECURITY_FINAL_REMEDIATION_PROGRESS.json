@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-13",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_IN_PROGRESS_SOURCE_REVIEW_COMPLETE_READINESS_RESULT_PENDING",
+  "status": "FR2_READINESS_METADATA_RECORDED_PERSONAL_CORRECTION_PREPARATION_NEXT",
   "active_batch": "FR.2",
   "active_step": "FR.2.1",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE11",
+  "latest_evidence": "FRE12",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_SOURCE_REVIEW_COMPLETE_READINESS_RESULT_PENDING",
+      "status": "IN_PROGRESS_READINESS_RECORDED_PERSONAL_CORRECTION_NEXT",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -162,8 +162,20 @@
       "steps": [
         {
           "id": "FR.2.1",
-          "status": "HANDOFF_PREPARED_OWNER_READ_ONLY_RESULT_PENDING",
-          "title": "Source and controlled staging readiness"
+          "status": "SCOPED_METADATA_CHECKPOINT_COMPLETE_WITH_CARRY_FORWARD",
+          "title": "Source and controlled staging readiness",
+          "owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
+          "report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
+          "selected_function_body_matches": 2,
+          "selected_function_body_reviews": 1,
+          "selected_triggers": 4,
+          "selected_RLS_relations": 9,
+          "selected_policy_fingerprint_rows": 30,
+          "record_workspace_mismatches": 1,
+          "conversion_workspace_mismatches": 1,
+          "active_verified_totp_super_operators": 0,
+          "hosted_acceptance": false,
+          "findings_closed": []
         },
         {
           "id": "FR.2.2",
@@ -196,7 +208,9 @@
       "selected_review_inputs": 19,
       "exact_review_input_matches": 19,
       "hosted_acceptance": false,
-      "findings_closed": []
+      "findings_closed": [],
+      "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
+      "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md"
     },
     {
       "id": "FR.3",
@@ -237,7 +251,7 @@
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
   "owner_terminal_action_required": false,
-  "owner_SQL_action_required": true,
+  "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 0,
   "findings_closed": [],
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
@@ -246,7 +260,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.1_OWNER_READ_ONLY_STAGING_METADATA_RESULT",
+  "next_step": "FR.2.2_PERSONAL_BINDING_CANDIDATE_AND_MEANINGFUL_LOCAL_CHECKS",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -303,5 +317,7 @@
   "FR2_plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
   "FR2_readiness_handoff": "docs/security-audit/SECURITY_FR_2_1_READINESS_HANDOFF.md",
   "FR2_source_inventory": "docs/security-audit/security-fr-2-source-inventory.json",
-  "FR2_readiness_result_status": "PENDING"
+  "FR2_readiness_result_status": "RECEIVED_METADATA_REVIEW_BINDING_CONSISTENCY_OUTBOX_AND_OPERATOR_DEPENDENCIES",
+  "FR2_readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
+  "FR2_readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md"
 }

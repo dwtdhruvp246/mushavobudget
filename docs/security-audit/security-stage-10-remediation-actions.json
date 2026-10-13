@@ -150,8 +150,8 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "final_remediation_and_full_reaudit_required": true,
-  "latest_step": "10.2",
-  "latest_evidence": "S10E03",
+  "latest_step": "10.3",
+  "latest_evidence": "S10E05",
   "source_candidate": {
     "report": "docs/security-audit/SECURITY_STAGE_10_2_OPERATIONS_CANDIDATE.md",
     "runbooks": "docs/security-audit/SECURITY_STAGE_10_OPERATIONAL_RUNBOOKS.md",
@@ -180,5 +180,19 @@
     "exact_published_hashes": 15,
     "unexpected_mismatches": 0,
     "action_closures": 0
+  },
+  "bounded_readiness": {
+    "report": "docs/security-audit/SECURITY_STAGE_10_3_READINESS_CHECKPOINT.md",
+    "receipt": "docs/security-audit/security-stage-10-operations-readiness.json",
+    "result": "BLOCKED_FULL_OPERATIONS_WITH_EXPLICIT_PUBLIC_PREREQUISITE_FAILURES",
+    "public_GETs": 9,
+    "selected_public_asset_type_FAILs": 3,
+    "selected_source_parity_REVIEWs": 5,
+    "blocked_prerequisite_groups": 6,
+    "planned_grouped_cases": 24,
+    "full_grouped_cases_executed": 0,
+    "installed_candidate_parity_verified": false,
+    "action_closures": 0,
+    "final_remediation_and_full_reaudit_required": true
   }
 }

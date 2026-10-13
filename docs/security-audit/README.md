@@ -302,3 +302,8 @@ Correction tools: `scripts/prepare-final-staging-correction.mjs`, `scripts/packa
 ## FR.1.3 corrected deployment owner report — FRE09
 
 [Deployment report](security-final-staging-corrected-deployment-owner-report.json) and [updated correction handoff](SECURITY_FR_1_3_DELIVERY_CORRECTION.md): owner reports successful deployment 1cfa6ef5. Provider/artifact/primary mapping remains independently unverified. Next: same 65-case checker against primary staging origin using Windows-verified tool commit 4571ca6; full in-chat command supplied. No new upload/offline repeat/SQL/key entry. Live result pending; full acceptance false; findings/actions open; APK deferred.
+
+
+## FR.1 bounded completion — FRE10 / 65-case serving PASS
+
+[FR.1 report](SECURITY_FR_1_COMPLETION_REPORT.md), [complete corrected serving receipt](security-final-staging-corrected-serving-owner-result.json): owner primary staging recheck 65 PASS/zero FAIL/BLOCKED/exit 0, 69 HTTP responses; all samples reconciled, both SVGs/manifest corrected. FR.1 static serving scope complete with carry-forward; original findings/actions and full hosted/native/store gates remain open. No rerun/upload/SQL required. Next FR.2.1 source and controlled staging readiness plan. Historical reports/events/Stage 0–10 objects unchanged; APK deferred.

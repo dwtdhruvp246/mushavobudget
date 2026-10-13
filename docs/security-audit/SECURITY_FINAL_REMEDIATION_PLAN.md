@@ -1,3 +1,13 @@
+# Current execution checkpoint — FR.1 static serving scope complete with carry-forward
+
+13 October 2026, FRE10. [FR.1 completion report](SECURITY_FR_1_COMPLETION_REPORT.md) and [complete corrected owner receipt](security-final-staging-corrected-serving-owner-result.json): 65 public primary staging cases PASS, zero FAIL/BLOCKED, exit 0; 69 HTTP responses. The public frontend serving prerequisite is accepted at this narrow scope. Independent key/provider/artifact mapping, backend/operator controls, resource CSP enforcement and final audit remain carry-forward. Full hosted/native/store acceptance is false; no finding/action closes.
+
+Next is **FR.2.1 — source and controlled staging readiness planning** for Personal binding/relink/deletion, Business roles/assigned scopes, Admin AAL2/recovery, Auth and legitimate finance integrity. Exact installed backend definitions and recoverable controlled actors are prerequisites to hosted enforcement/tests. Existing retained actors/manual USD 1 conversions and stopped successful recovery target remain preserved. No owner SQL/terminal/upload or account settings change is requested at this checkpoint.
+
+The original planning snapshot below is retained verbatim as history; its preparation/pending observations have been superseded by the completion report. The authoritative eight-batch scopes/finding mappings/exit requirements remain in the unchanged original handoff.
+
+---
+
 # Final-remediation execution plan
 
 **13 October 2026 — FR.1 controlled preparation is in progress.** The original [eight-batch handoff](SECURITY_FINAL_REMEDIATION_HANDOFF.md) remains the authoritative proposed scope, finding mapping and exit evidence. All original 123 rows/20 findings and 61 coordinating action entries remain preserved and OPEN at their recorded scope. No final re-audit or release approval is implied.

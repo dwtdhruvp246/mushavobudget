@@ -2,19 +2,19 @@
   "schema_version": 1,
   "date": "2026-10-13",
   "phase": "FINAL_REMEDIATION",
-  "status": "IN_PROGRESS_CORRECTED_DEPLOYMENT_OWNER_REPORTED_LIVE_RECHECK_PENDING",
+  "status": "FR1_STATIC_SERVING_SCOPED_COMPLETE_WITH_CARRY_FORWARD_FR2_PENDING",
   "active_batch": "FR.1",
   "active_step": "FR.1.3",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE09",
+  "latest_evidence": "FRE10",
   "batches": [
     {
       "id": "FR.1",
       "title": "Accepted source, staging asset delivery and serving/deployment mapping",
-      "status": "IN_PROGRESS",
+      "status": "SCOPED_COMPLETE_WITH_CARRY_FORWARD",
       "finding_ids": [
         "F05",
         "F07",
@@ -74,7 +74,7 @@
         {
           "id": "FR.1.3",
           "title": "Recheck intended asset types/source, headers and callback serving",
-          "status": "CORRECTED_DEPLOYMENT_SUCCESS_OWNER_REPORTED_LIVE_RECHECK_PENDING",
+          "status": "CORRECTED_PRIMARY_STATIC_SERVING_SCOPED_PASS_65_OF_65",
           "report": "docs/security-audit/SECURITY_FR_1_3_SERVING_CHECK_HANDOFF.md",
           "local_receipt": "docs/security-audit/security-final-staging-serving-local-checks.json",
           "local_unique_cases": 16,
@@ -101,12 +101,8 @@
           "owner_offline_syntax_checks": 3,
           "owner_exact_tool_hash_matches": 7,
           "owner_receipt": "docs/security-audit/security-final-staging-serving-owner-result.json",
-          "remaining_failures": [
-            "/assets/ledger-mark.svg",
-            "/assets/pwa-icon.svg",
-            "/manifest.webmanifest"
-          ],
-          "public_frontend_serving_scoped_acceptance": false,
+          "remaining_failures": [],
+          "public_frontend_serving_scoped_acceptance": true,
           "findings_closed": [],
           "delivery_details_receipt": "docs/security-audit/security-final-staging-delivery-owner-details.json",
           "delivery_correction_report": "docs/security-audit/SECURITY_FR_1_3_DELIVERY_CORRECTION.md",
@@ -116,7 +112,7 @@
           "correction_offline_FAIL": 0,
           "correction_offline_syntax_checks": 7,
           "corrected_owner_ZIP_execution_verified": true,
-          "corrected_deployment_or_live_recheck_run": false,
+          "corrected_deployment_or_live_recheck_run": true,
           "owner_correction_preflight_receipt": "docs/security-audit/security-final-staging-correction-owner-preflight.json",
           "owner_correction_offline_PASS": 44,
           "owner_correction_offline_FAIL": 0,
@@ -129,8 +125,22 @@
           "owner_corrected_deployment_ID": "1cfa6ef5",
           "owner_corrected_deployment_URL": "https://1cfa6ef5.mushavo-budget-staging.pages.dev/",
           "owner_corrected_deployment_success_reported": true,
-          "corrected_live_recheck_run": false
+          "corrected_live_recheck_run": true,
+          "owner_corrected_serving_receipt": "docs/security-audit/security-final-staging-corrected-serving-owner-result.json",
+          "owner_corrected_metadata_cases": 65,
+          "owner_corrected_PASS": 65,
+          "owner_corrected_FAIL": 0,
+          "owner_corrected_BLOCKED": 0,
+          "owner_corrected_exit_code": 0,
+          "owner_corrected_HTTP_requests": 69,
+          "owner_corrected_HTTP_responses": 69
         }
+      ],
+      "completion_report": "docs/security-audit/SECURITY_FR_1_COMPLETION_REPORT.md",
+      "carry_forward": [
+        "Independent staging publishable-key ownership and unique provider/ZIP/primary channel mapping",
+        "Full resource CSP enforcement, backend/operator/deployment source parity",
+        "Full OP/RG requirements and fresh final release audit; original findings remain OPEN"
       ]
     },
     {
@@ -176,7 +186,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 0,
   "findings_closed": [],
@@ -186,7 +196,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.1.3_CORRECTED_PRIMARY_STAGING_65_CASE_SERVING_RECHECK",
+  "next_step": "FR.2.1_SOURCE_AND_CONTROLLED_STAGING_READINESS_PLAN",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -216,11 +226,7 @@
   "owner_live_PASS": 62,
   "owner_live_FAIL": 3,
   "owner_live_BLOCKED": 0,
-  "remaining_static_delivery_paths": [
-    "/assets/ledger-mark.svg",
-    "/assets/pwa-icon.svg",
-    "/manifest.webmanifest"
-  ],
+  "remaining_static_delivery_paths": [],
   "prior_three_Auth_MFA_asset_type_failures_corrected_at_current_owner_scope": true,
   "prior_five_core_source_parity_reviews_currently_match": true,
   "serving_outcome_report": "docs/security-audit/SECURITY_FR_1_3_SERVING_OUTCOME.md",
@@ -235,5 +241,13 @@
   "owner_corrected_deployment_report": "docs/security-audit/security-final-staging-corrected-deployment-owner-report.json",
   "owner_corrected_deployment_ID": "1cfa6ef5",
   "owner_corrected_deployment_URL": "https://1cfa6ef5.mushavo-budget-staging.pages.dev/",
-  "owner_corrected_deployment_success_reported": true
+  "owner_corrected_deployment_success_reported": true,
+  "owner_corrected_serving_result_status": "PASS_65_FAIL_0_BLOCKED_0_EXIT_0",
+  "owner_corrected_serving_receipt": "docs/security-audit/security-final-staging-corrected-serving-owner-result.json",
+  "owner_corrected_live_metadata_cases": 65,
+  "owner_corrected_live_PASS": 65,
+  "owner_corrected_live_FAIL": 0,
+  "owner_corrected_live_BLOCKED": 0,
+  "public_frontend_serving_scoped_acceptance": true,
+  "FR1_completion_report": "docs/security-audit/SECURITY_FR_1_COMPLETION_REPORT.md"
 }

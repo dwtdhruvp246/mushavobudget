@@ -428,3 +428,8 @@ Correction tools: `scripts/prepare-final-staging-correction.mjs`, `scripts/packa
 ## FR.1 bounded completion — FRE10 / 65-case serving PASS
 
 [FR.1 report](SECURITY_FR_1_COMPLETION_REPORT.md), [complete corrected serving receipt](security-final-staging-corrected-serving-owner-result.json): owner primary staging recheck 65 PASS/zero FAIL/BLOCKED/exit 0, 69 HTTP responses; all samples reconciled, both SVGs/manifest corrected. FR.1 static serving scope complete with carry-forward; original findings/actions and full hosted/native/store gates remain open. No rerun/upload/SQL required. Next FR.2.1 source and controlled staging readiness plan. Historical reports/events/Stage 0–10 objects unchanged; APK deferred.
+
+
+## Current FR.2.1 source/readiness handoff — FRE11
+
+[Six-step FR.2 plan](SECURITY_FR_2_PLAN.md), [read-only SQL handoff](SECURITY_FR_2_1_READINESS_HANDOFF.md), [19 exact review inputs/fingerprints](security-fr-2-source-inventory.json). Current source binding gap and historical Business outbox/Admin operator-policy/Auth rule prerequisites reconciled. One `supabase/diagnostics/security_fr_2_readiness.sql` snapshot is supplied fully in chat: three routine fingerprints, four trigger rows, nine relation/policy metadata sets, aggregate record/conversion consistency and active-super/TOTP counts. Read-only transaction/ROLLBACK, no application routine invocation or raw rows/bodies/keys. SQL source/catalog review complete; local/hosted execution NOT performed and owner result PENDING. No new tests/PASS, repair, enrollment, fixtures, settings, dispatch or upload. FR.1 65-case static PASS retained; full acceptance false; original findings/actions open; APK deferred.

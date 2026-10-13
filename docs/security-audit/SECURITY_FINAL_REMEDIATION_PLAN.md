@@ -1,3 +1,11 @@
+# Current execution checkpoint — FR.2.1 source/readiness handoff prepared
+
+13 October 2026, FRE11. [FR.2 plan](SECURITY_FR_2_PLAN.md) freezes six bounded steps for permissions/Admin/Auth/finance integrity. [Readiness handoff](SECURITY_FR_2_1_READINESS_HANDOFF.md) and [19 exact current inputs](security-fr-2-source-inventory.json) record source review and one read-only staging SQL collection. Owner result is pending; no SQL runtime acceptance or mutations occurred. The full SQL is pasted in chat; no terminal/upload action is needed. FR.1 static serving PASS remains accepted at its scoped checkpoint; full original finding/action/backend/native/store/release closure remains pending.
+
+Earlier execution checkpoints below are retained verbatim as history.
+
+---
+
 # Current execution checkpoint — FR.1 static serving scope complete with carry-forward
 
 13 October 2026, FRE10. [FR.1 completion report](SECURITY_FR_1_COMPLETION_REPORT.md) and [complete corrected owner receipt](security-final-staging-corrected-serving-owner-result.json): 65 public primary staging cases PASS, zero FAIL/BLOCKED, exit 0; 69 HTTP responses. The public frontend serving prerequisite is accepted at this narrow scope. Independent key/provider/artifact mapping, backend/operator controls, resource CSP enforcement and final audit remain carry-forward. Full hosted/native/store acceptance is false; no finding/action closes.

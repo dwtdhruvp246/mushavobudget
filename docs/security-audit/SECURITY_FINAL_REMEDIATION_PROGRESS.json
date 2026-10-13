@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-13",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR1_STATIC_SERVING_SCOPED_COMPLETE_WITH_CARRY_FORWARD_FR2_PENDING",
-  "active_batch": "FR.1",
-  "active_step": "FR.1.3",
+  "status": "FR2_IN_PROGRESS_SOURCE_REVIEW_COMPLETE_READINESS_RESULT_PENDING",
+  "active_batch": "FR.2",
+  "active_step": "FR.2.1",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE10",
+  "latest_evidence": "FRE11",
   "batches": [
     {
       "id": "FR.1",
@@ -145,8 +145,58 @@
     },
     {
       "id": "FR.2",
-      "status": "PROPOSED_NOT_EXECUTED",
-      "definition": "Preserved in original final-remediation handoff"
+      "status": "IN_PROGRESS_SOURCE_REVIEW_COMPLETE_READINESS_RESULT_PENDING",
+      "definition": "Preserved in original final-remediation handoff",
+      "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
+      "finding_ids": [
+        "F08",
+        "F10",
+        "F15"
+      ],
+      "action_ids": [
+        "RG-R01",
+        "RG-R02",
+        "OP-R01",
+        "OP-R02"
+      ],
+      "steps": [
+        {
+          "id": "FR.2.1",
+          "status": "HANDOFF_PREPARED_OWNER_READ_ONLY_RESULT_PENDING",
+          "title": "Source and controlled staging readiness"
+        },
+        {
+          "id": "FR.2.2",
+          "status": "PLANNED_NOT_EXECUTED",
+          "title": "Personal workspace binding and legitimate finance"
+        },
+        {
+          "id": "FR.2.3",
+          "status": "PLANNED_NOT_EXECUTED",
+          "title": "Business roles/scopes and controlled fixtures"
+        },
+        {
+          "id": "FR.2.4",
+          "status": "PLANNED_NOT_EXECUTED",
+          "title": "Admin parity/operator/recovery and assurance"
+        },
+        {
+          "id": "FR.2.5",
+          "status": "PLANNED_NOT_EXECUTED",
+          "title": "Auth/finance/session hosted workflows"
+        },
+        {
+          "id": "FR.2.6",
+          "status": "PLANNED_NOT_EXECUTED",
+          "title": "Affected recheck and bounded completion report"
+        }
+      ],
+      "readiness_handoff": "docs/security-audit/SECURITY_FR_2_1_READINESS_HANDOFF.md",
+      "source_inventory": "docs/security-audit/security-fr-2-source-inventory.json",
+      "selected_review_inputs": 19,
+      "exact_review_input_matches": 19,
+      "hosted_acceptance": false,
+      "findings_closed": []
     },
     {
       "id": "FR.3",
@@ -187,7 +237,7 @@
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
   "owner_terminal_action_required": false,
-  "owner_SQL_action_required": false,
+  "owner_SQL_action_required": true,
   "actual_hosted_or_backend_rechecks_run": 0,
   "findings_closed": [],
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
@@ -196,7 +246,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.1_SOURCE_AND_CONTROLLED_STAGING_READINESS_PLAN",
+  "next_step": "FR.2.1_OWNER_READ_ONLY_STAGING_METADATA_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -249,5 +299,9 @@
   "owner_corrected_live_FAIL": 0,
   "owner_corrected_live_BLOCKED": 0,
   "public_frontend_serving_scoped_acceptance": true,
-  "FR1_completion_report": "docs/security-audit/SECURITY_FR_1_COMPLETION_REPORT.md"
+  "FR1_completion_report": "docs/security-audit/SECURITY_FR_1_COMPLETION_REPORT.md",
+  "FR2_plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
+  "FR2_readiness_handoff": "docs/security-audit/SECURITY_FR_2_1_READINESS_HANDOFF.md",
+  "FR2_source_inventory": "docs/security-audit/security-fr-2-source-inventory.json",
+  "FR2_readiness_result_status": "PENDING"
 }

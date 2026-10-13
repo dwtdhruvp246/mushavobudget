@@ -293,6 +293,28 @@
       "APK_update_deferred": true,
       "findings_closed": [],
       "next_step": "FR.2.1_SOURCE_AND_CONTROLLED_STAGING_READINESS_PLAN"
+    },
+    {
+      "id": "FRE11",
+      "stage_step": "FR.2.1",
+      "date": "2026-10-13",
+      "source_parent_commit": "12286dcbade07309bfb8ffe919224252f6cb8bff",
+      "result": "CURRENT_SOURCE_REVIEW_AND_READ_ONLY_STAGING_READINESS_HANDOFF_PREPARED_OWNER_RESULT_PENDING",
+      "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
+      "report": "docs/security-audit/SECURITY_FR_2_1_READINESS_HANDOFF.md",
+      "source_inventory": "docs/security-audit/security-fr-2-source-inventory.json",
+      "query": "supabase/diagnostics/security_fr_2_readiness.sql",
+      "selected_review_inputs": 19,
+      "exact_git_blob_matches": 19,
+      "source_last_function_body_fingerprints_reconciled": 3,
+      "local_or_hosted_SQL_execution_run": false,
+      "new_tests_run": 0,
+      "hosted_acceptance": false,
+      "rows_accounts_permissions_or_factors_changed": false,
+      "production_or_native_changed": false,
+      "APK_update_deferred": true,
+      "findings_closed": [],
+      "next_step": "FR.2.1_OWNER_READ_ONLY_STAGING_METADATA_RESULT"
     }
   ],
   "prior_stage_evidence_preserved": true,

@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-13",
   "phase": "FINAL_REMEDIATION",
-  "status": "IN_PROGRESS_OWNER_CANDIDATE_PREPARED_AWAITING_SERVING_MAPPING",
+  "status": "IN_PROGRESS_STAGING_DIRECT_UPLOAD_HANDOFF_PREPARED_AWAITING_OWNER_EXECUTION",
   "active_batch": "FR.1",
   "active_step": "FR.1.2",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE02",
+  "latest_evidence": "FRE03",
   "batches": [
     {
       "id": "FR.1",
@@ -50,15 +50,17 @@
         {
           "id": "FR.1.2",
           "title": "Confirm actual target and prepare exact deployment handoff",
-          "status": "AWAITING_OWNER_READ_ONLY_SERVING_METADATA",
-          "owner_required_fields": [
-            "serving_product",
-            "project_name",
-            "deployment_method",
-            "current_source_branch_build_command_output_directory"
-          ],
-          "deployment_handoff_prepared": false,
-          "deployment_run": false
+          "status": "HANDOFF_PREPARED_AWAITING_OWNER_PACKAGE_AND_DEPLOYMENT",
+          "owner_required_fields": [],
+          "deployment_handoff_prepared": true,
+          "deployment_run": false,
+          "owner_serving_metadata_received": true,
+          "product": "CLOUDFLARE_PAGES",
+          "method": "DIRECT_UPLOAD",
+          "primary_staging_domain": "mushavo-budget-staging.pages.dev",
+          "prior_deployment": "6d0326e1",
+          "owner_ZIP_preflight_run": false,
+          "report": "docs/security-audit/SECURITY_FR_1_2_DIRECT_UPLOAD_HANDOFF.md"
         },
         {
           "id": "FR.1.3",
@@ -110,7 +112,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": false,
+  "owner_terminal_action_required": true,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 0,
   "findings_closed": [],
@@ -120,8 +122,17 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.1.2_OWNER_MAPPING",
+  "next_step": "FR.1.2_OWNER_PACKAGE_AND_DEPLOYMENT_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
-  "owner_dashboard_metadata_required": true
+  "owner_dashboard_metadata_required": false,
+  "owner_staging_direct_upload_action_required": true,
+  "serving_product": "CLOUDFLARE_PAGES",
+  "owner_deployment_method": "DIRECT_UPLOAD",
+  "target_project": "mushavo-budget-staging",
+  "target_origin": "https://mushavo-budget-staging.pages.dev",
+  "target_channel": "PRODUCTION_CHANNEL_OF_STAGING_PAGES_PROJECT",
+  "deployment_mapping": "docs/security-audit/security-final-staging-deployment-mapping.json",
+  "deployment_handoff": "docs/security-audit/SECURITY_FR_1_2_DIRECT_UPLOAD_HANDOFF.md",
+  "staging_deployment_receipt_received": false
 }

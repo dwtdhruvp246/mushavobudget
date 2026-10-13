@@ -45,3 +45,7 @@ Production Supabase `kttkospkblwvguuwnhjj` is excluded from mutations; isolated 
 ## 9.2 — Windows repeat correction pending
 
 [Correction](SECURITY_STAGE_9_2_WINDOWS_CORRECTION.md), [original Windows REVIEW](security-stage-9-regression-owner-local-checks.json) and [corrected local receipt](security-stage-9-regression-windows-correction-checks.json). All 882 cases pass locally including CRLF/encoded-folder simulation; 21 syntax checks. Windows junction execution remains owner-recheck pending; no skips, privilege changes or permission weakening. Complete pinned temp-export PowerShell is supplied in chat. Stay at 9.2; next 9.3 only after the corrected repeat outcome is recorded. Hosted/native/store evidence remains separate and APK deferred.
+
+## 9.2 — Corrected owner repeat recorded
+
+[Passed Windows recheck](security-stage-9-regression-owner-recheck.json): same 882 cases PASS, zero failures/skips, exit 0, 21 syntax checks. All 26 pinned input identities/hashes reconcile; 25 exact published hashes and one CRLF variant. Initial 875 PASS/seven FAIL receipt and prior assistant history remain preserved. No rerun, SQL or setup needed; next 9.3 bounded readiness. No fresh behavioral/syntax/hosted/device check or source/runtime/settings/native change for this recording. Eight actions OPEN/48 real cases unrun; full report 9.4 and APK deferred.

@@ -158,7 +158,7 @@
   "store_acceptance": false,
   "final_remediation_and_full_reaudit_required": true,
   "latest_step": "9.2",
-  "latest_evidence": "S9E03",
+  "latest_evidence": "S9E04",
   "source_candidate": {
     "report": "docs/security-audit/SECURITY_STAGE_9_2_REGRESSION_CANDIDATE.md",
     "receipt": "docs/security-audit/security-stage-9-regression-local-checks.json",
@@ -177,7 +177,18 @@
     "owner_receipt": "docs/security-audit/security-stage-9-regression-owner-local-checks.json",
     "owner_result": "REVIEW_875_PASS_7_FAIL",
     "corrected_local_pass": 882,
-    "corrected_owner_recheck_received": false,
+    "corrected_owner_recheck_received": true,
+    "action_closures": 0,
+    "corrected_owner_receipt": "docs/security-audit/security-stage-9-regression-owner-recheck.json",
+    "corrected_owner_pass": 882
+  },
+  "owner_corrected_recheck": {
+    "receipt": "docs/security-audit/security-stage-9-regression-owner-recheck.json",
+    "result": "PASS_882_EXIT_0",
+    "syntax_checks": 21,
+    "pinned_hashes": 26,
+    "unexpected_mismatches": 0,
+    "earlier_owner_failed_result_preserved": true,
     "action_closures": 0
   }
 }

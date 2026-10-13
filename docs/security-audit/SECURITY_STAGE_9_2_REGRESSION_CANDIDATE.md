@@ -1,5 +1,7 @@
 # Stage 9.2 — Local regression and release-packaging candidate
 
+**Superseding owner recheck — 13 October 2026 (S9E04):** [Corrected Windows receipt](security-stage-9-regression-owner-recheck.json): 882 PASS/0 FAIL/exit 0 across all 92 files, 21 syntax checks. 26 pinned hashes reconcile (25 exact/one exact CRLF variant), no unexplained difference. The earlier seven-failure receipt remains unchanged; 9.2 is complete at corrected source/owner offline scope. No further owner action; next 9.3. Hosted/native/store acceptance remains unverified and APK deferred. Earlier pending-status text below is historical.
+
 **Superseding 9.2 status — 13 October 2026:** The owner Windows repeat returned 875 PASS/seven FAIL/exit 1. [Correction](SECURITY_STAGE_9_2_WINDOWS_CORRECTION.md) and [original owner receipt](security-stage-9-regression-owner-local-checks.json) preserve this REVIEW. Corrected local checks pass, but actual corrected Windows acceptance is pending. Stay at 9.2; earlier Linux results below remain historical.
 
 **9.2 / 12 October 2026 — COMPLETE AT SOURCE CANDIDATE AND OFFLINE REGRESSION SCOPE.**

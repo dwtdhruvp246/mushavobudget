@@ -1,5 +1,7 @@
 # Stage 9.2 — Windows repeat correction
 
+**Superseding owner recheck — 13 October 2026 (S9E04):** [Corrected Windows receipt](security-stage-9-regression-owner-recheck.json): 882 PASS/0 FAIL/exit 0 across all 92 files, 21 syntax checks. 26 pinned hashes reconcile (25 exact/one exact CRLF variant), no unexplained difference. The earlier seven-failure receipt remains unchanged; 9.2 is complete at corrected source/owner offline scope. No further owner action; next 9.3. Hosted/native/store acceptance remains unverified and APK deferred. Earlier pending-status text below is historical.
+
 **9.2 / 13 October 2026 — Corrected local candidate PASS; owner Windows recheck PENDING.**
 Source parent: `f2c5d32de32b4c48cf3e1c3f25c4d9a2f6268783`. The owner's original result remains **875 PASS / 7 FAIL / exit 1** across 882 cases on Node v22.17.0, with all 17 syntax checks passing. This is a REVIEW result, not a Windows pass. Stay at 9.2 until the corrected repeat is received.
 

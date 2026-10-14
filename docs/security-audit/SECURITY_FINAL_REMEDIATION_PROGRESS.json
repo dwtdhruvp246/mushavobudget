@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-14",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_PERSONAL_API_33_PASS_VALID_OWN_RELINK_AND_HISTORY_PENDING",
+  "status": "FR2_RELINK_CANDIDATE_21_LOCAL_PASS_OWNER_16_GROUP_API_BATCH_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.2",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE17",
+  "latest_evidence": "FRE18",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_PERSONAL_API_33_PASS_VALID_RELINK_AND_HISTORY_PENDING",
+      "status": "IN_PROGRESS_VALID_RELINK_BATCH_READY_WITH_HISTORY_CONVERSION_CARRY_FORWARD",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -179,7 +179,7 @@
         },
         {
           "id": "FR.2.2",
-          "status": "HOSTED_PERSONAL_RECHECK_33_PASS_WITH_VALID_RELINK_HISTORY_CANONICAL_CARRY_FORWARD",
+          "status": "HOSTED_PERSONAL_33_PASS_RELINK_CANDIDATE_READY_CONVERSION_HISTORY_OPEN",
           "title": "Personal workspace binding and legitimate finance",
           "report": "docs/security-audit/SECURITY_FR_2_2_BINDING_CANDIDATE.md",
           "local_receipt": "docs/security-audit/security-fr-2-binding-local-checks.json",
@@ -224,7 +224,22 @@
           "derived_conversion_cleanup_verified": false,
           "valid_own_parent_relink_hosted_verified": false,
           "historical_consistency_repaired": false,
-          "conversion_snapshot_handoff": "docs/security-audit/SECURITY_FR_2_2_CONVERSION_SNAPSHOT_HANDOFF.md"
+          "conversion_snapshot_handoff": "docs/security-audit/SECURITY_FR_2_2_CONVERSION_SNAPSHOT_HANDOFF.md",
+          "conversion_snapshot_owner_receipt": "docs/security-audit/security-fr-2-conversion-snapshot-owner-result.json",
+          "conversion_snapshot_unlinked_rows": 2,
+          "conversion_snapshot_parent_workspace_mismatches": 1,
+          "conversion_snapshot_record_workspace_mismatches": 1,
+          "retained_manual_full_scope_matches": 2,
+          "retained_manual_snapshot_sha256": "d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3",
+          "relink_candidate_report": "docs/security-audit/SECURITY_FR_2_2_RELINK_CANDIDATE.md",
+          "relink_contract": "docs/security-audit/security-fr-2-relink-candidate-contract.json",
+          "relink_local_receipt": "docs/security-audit/security-fr-2-relink-local-checks.json",
+          "relink_local_tests": 21,
+          "relink_local_PASS": 21,
+          "relink_local_FAIL": 0,
+          "relink_local_exit_code": 0,
+          "planned_relink_API_PASS_groups": 16,
+          "relink_owner_result_received": false
         },
         {
           "id": "FR.2.3",
@@ -294,8 +309,8 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": false,
-  "owner_SQL_action_required": true,
+  "owner_terminal_action_required": true,
+  "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 1,
   "findings_closed": [],
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
@@ -304,7 +319,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.2_OWNER_READ_ONLY_CONSISTENCY_AND_RETAINED_MANUAL_SNAPSHOT",
+  "next_step": "FR.2.2_OWNER_VALID_OWN_RELINK_AND_MISSING_PARENT_API_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -386,5 +401,10 @@
   "FR2_personal_API_scoped_acceptance": true,
   "FR2_conversion_snapshot_handoff": "docs/security-audit/SECURITY_FR_2_2_CONVERSION_SNAPSHOT_HANDOFF.md",
   "FR2_conversion_snapshot_diagnostic": "supabase/diagnostics/security_fr_2_2_conversion_snapshot.sql",
-  "FR2_conversion_snapshot_owner_result_received": false
+  "FR2_conversion_snapshot_owner_result_received": true,
+  "FR2_conversion_snapshot_owner_receipt": "docs/security-audit/security-fr-2-conversion-snapshot-owner-result.json",
+  "FR2_relink_candidate_report": "docs/security-audit/SECURITY_FR_2_2_RELINK_CANDIDATE.md",
+  "FR2_relink_contract": "docs/security-audit/security-fr-2-relink-candidate-contract.json",
+  "FR2_relink_local_receipt": "docs/security-audit/security-fr-2-relink-local-checks.json",
+  "FR2_relink_owner_result_received": false
 }

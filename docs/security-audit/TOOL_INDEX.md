@@ -1,3 +1,11 @@
+# Current execution checkpoint — FR.2.2 conversion baseline; valid-own-relink batch ready
+
+14 October 2026, FRE18. [New relink candidate and snapshot report](SECURITY_FR_2_2_RELINK_CANDIDATE.md), [owner snapshot](security-fr-2-conversion-snapshot-owner-result.json), [contract](security-fr-2-relink-candidate-contract.json), [21-PASS local result](security-fr-2-relink-local-checks.json). Two retained manual Family rows match; one record/one conversion mismatch and two unlinked conversion references remain. Exact provenance/disposition is unresolved. The next direct relink checker has 16 planned PASS groups; four new inactive items/two records will be retained with conversion rows for exact cleanup. Full terminal code is supplied in chat; owner result pending. Previous 33-PASS hosted result and all original stages/events/open findings remain preserved; APK deferred.
+
+Earlier checkpoints below are retained as history.
+
+---
+
 # Current execution checkpoint — FR.2.2 direct Personal recheck 33 PASS
 
 14 October 2026, FRE17. [Owner outcome](SECURITY_FR_2_2_PERSONAL_RECHECK_OUTCOME.md) and [complete receipt](security-fr-2-personal-api-owner-recheck.json): 33 PASS, exit 0; foreign workspace substitution prevented, foreign-parent relink denied, both owners' exact new record/item deletion and local test logout verified. This is fresh scoped evidence; the earlier failed result is preserved. Valid-own relinking, derived conversion disposition, retained/historical consistency and canonical integration remain pending. Next is the [read-only snapshot](SECURITY_FR_2_2_CONVERSION_SNAPSHOT_HANDOFF.md), full SQL pasted in chat. Full findings/actions and hosted/native/store acceptance remain open; APK deferred.

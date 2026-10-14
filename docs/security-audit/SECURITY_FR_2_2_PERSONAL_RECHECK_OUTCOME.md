@@ -17,3 +17,7 @@ Before creating more records, take the [read-only consistency/manual baseline](S
 Valid relinking between each owner's own parents and nonexistent-parent rejection still need genuine direct evidence, with this snapshot as a before/after reference. Separately inspect exact historical provenance before any bounded correction/disposition; no blanket cleanup or repair is requested now. Canonical schema/automatic migration integration remains pending. Business/outbox/Admin/Auth dependencies remain in their existing FR.2.3–FR.2.6 steps.
 
 All original stages/123 coverage rows/20 finding definitions, earlier events, open coordinating action/decision definitions and retained actors/manual conversions are preserved. FR.1 scoped serving acceptance remains; full hosted/native/store acceptance false, release gate OPEN_PENDING_REQUIRED_EVIDENCE, final audit PLANNED_NOT_PERFORMED, production excluded and APK deferred.
+
+## Subsequent conversion baseline and relink preparation — 14 October 2026
+
+FRE18: [snapshot/relink report](SECURITY_FR_2_2_RELINK_CANDIDATE.md) records the owner read-only baseline and next 16-group API checker with 21 local tests PASS. The pending-snapshot handoff above is superseded; earlier 33-PASS behavior evidence is unchanged. No historical repair, conversion deletion, full acceptance or original finding closure occurred.

@@ -1,3 +1,11 @@
+# Current execution checkpoint — conversion reference installed; live Personal deletion batch ready
+
+14 October 2026, FRE25. [Owner installation receipt](security-fr-2-conversion-reference-installation-owner-result.json) at 12:04:50 UTC confirms that original payment/conversion values and existing permission controls were preserved. Reference, cascade FK and private legacy-ID guard installed; old orphan/manual rows untouched. `constraint_validated=false` is expected pending historical disposition.
+
+[Personal deletion handoff](SECURITY_FR_2_2_PERSONAL_DELETION_CANDIDATE.md): 41 offline checker cases PASS, five JS syntax checks, 30 planned genuine API groups using only four new inactive USD1 item/record/conversion triples. Full original visible baselines/settings compared; other-account/anonymous denials and owner record/item cascades checked. Owner terminal action next; no new SQL/deployment. Full gate/final findings, old orphan disposition and canonical reference integration remain pending; APK deferred. Earlier checkpoints retained as history.
+
+---
+
 # Current execution checkpoint — deployed conversion delete gap confirmed; guarded reference candidate ready
 
 14 October 2026, FRE24. [Candidate/source review/owner handoff](SECURITY_FR_2_2_CONVERSION_REFERENCE_CANDIDATE.md), [complete owner delete catalog result](security-fr-2-deletion-lifecycle-owner-result.json), [38 source-catalog checks](security-fr-2-conversion-reference-local-checks.json), [three Family snapshot checks](security-fr-2-conversion-reference-snapshot-local-checks.json). Eight FKs/two record DELETE guards show no record→conversion link. Candidate adds generated reference/index/NOT VALID cascade FK plus private legacy-ID reservation guard. All original values/policies/table grants/existing triggers asserted unchanged; two old orphans preserved. New schema-aware checksum excludes only the added reference field. Full staging installer in chat, owner result pending; genuine API/concurrency/history/canonical integration still pending. Original stages/events/findings intact; APK deferred.

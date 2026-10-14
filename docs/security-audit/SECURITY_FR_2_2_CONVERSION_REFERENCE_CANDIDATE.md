@@ -41,3 +41,7 @@ PostgreSQL17 official docs reviewed: generated columns cannot be directly overri
 ## Owner handoff and preserved state
 
 Full installer SQL is pasted in chat for selected staging dczlddwbtgvfdujgcitb; no terminal/upload action. Return safe JSON or error, stop on guard failure. No actor/project permission is inferred beyond existing owner-authorized staging remediation. Owner install result pending. Then run the reduced genuine owner/outsider/anonymous deletion-and-conversion batch and schema-aware retained baseline snapshot; integrate accepted candidate into canonical source afterward. Old orphan provenance/disposition and full FK validation remain separate. Original Stage 0–10/123 coverage/20 findings/actions/decisions/FRE01–23 remain intact. Full gate OPEN_PENDING_REQUIRED_EVIDENCE, final audit PLANNED_NOT_PERFORMED, full hosted/native/store acceptance false, production excluded and APK deferred.
+
+## Subsequent owner installation — FRE25
+
+[Complete owner installer result](security-fr-2-conversion-reference-installation-owner-result.json), 12:04:50.103096 UTC, supersedes the owner-install-pending status above. Guarded installation asserts all original row values and existing permission controls unchanged, private helper installed, old orphans/manual rows untouched, FK intentionally unvalidated. [Reduced Personal genuine API deletion checker](SECURITY_FR_2_2_PERSONAL_DELETION_CANDIDATE.md) has 41 offline cases PASS and awaits its 30 hosted groups. Full acceptance/old orphan disposition/canonical integration remain pending.

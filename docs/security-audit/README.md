@@ -1,3 +1,11 @@
+# Current execution checkpoint — deployed conversion delete gap confirmed; guarded reference candidate ready
+
+14 October 2026, FRE24. [Candidate/source review/owner handoff](SECURITY_FR_2_2_CONVERSION_REFERENCE_CANDIDATE.md), [complete owner delete catalog result](security-fr-2-deletion-lifecycle-owner-result.json), [38 source-catalog checks](security-fr-2-conversion-reference-local-checks.json), [three Family snapshot checks](security-fr-2-conversion-reference-snapshot-local-checks.json). Eight FKs/two record DELETE guards show no record→conversion link. Candidate adds generated reference/index/NOT VALID cascade FK plus private legacy-ID reservation guard. All original values/policies/table grants/existing triggers asserted unchanged; two old orphans preserved. New schema-aware checksum excludes only the added reference field. Full staging installer in chat, owner result pending; genuine API/concurrency/history/canonical integration still pending. Original stages/events/findings intact; APK deferred.
+
+Earlier checkpoints below are retained as history.
+
+---
+
 # Current execution checkpoint — historical workspace repair accepted; canonical source integrated
 
 14 October 2026, FRE23. [Repair outcome/source integration/next lifecycle handoff](SECURITY_FR_2_2_REPAIR_OUTCOME_AND_CANONICAL_INTEGRATION.md), [full owner repair result](security-fr-2-historical-binding-repair-owner-result.json), [51-case local checks](security-fr-2-binding-integration-local-checks.json). One exact record workspace repaired; both joined mismatch counts asserted zero; all conversion rows unchanged. Canonical schema clause and new guarded idempotent migration now preserve accepted preventive coverage; old migrations/functions/policies/grants unchanged. Hosted new migration ledger registration not run/verified. Two old orphans remain preserved; deletion lifecycle remains pending. Next read-only catalog SQL is pasted in chat. Original stages/events/findings intact; APK deferred.

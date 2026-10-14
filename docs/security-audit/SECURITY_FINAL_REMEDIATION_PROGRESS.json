@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-14",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EXACT_HISTORICAL_BINDING_REPAIR_COMMITTED_CANONICAL_SOURCE_INTEGRATED_DELETION_LIFECYCLE_PENDING",
+  "status": "FR2_DEPLOYED_DELETE_GAP_CONFIRMED_GENERATED_FK_AND_RESERVED_IDS_35_LOCAL_PASS_OWNER_INSTALL_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.2",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE23",
+  "latest_evidence": "FRE24",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_BINDING_WORKSPACE_REPAIR_AND_SOURCE_INTEGRATION_DONE_DELETION_PENDING",
+      "status": "IN_PROGRESS_CONVERSION_REFERENCE_CANDIDATE_TESTED_OWNER_INSTALL_PENDING",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -179,7 +179,7 @@
         },
         {
           "id": "FR.2.2",
-          "status": "BINDING_RECHECKS_WORKSPACE_REPAIR_AND_CANONICAL_SOURCE_INTEGRATION_COMPLETE_DELETION_LIFECYCLE_PENDING",
+          "status": "BINDING_COMPLETE_CONVERSION_DELETION_GAP_CONFIRMED_REFERENCE_CANDIDATE_OWNER_PENDING",
           "title": "Personal workspace binding and legitimate finance",
           "report": "docs/security-audit/SECURITY_FR_2_2_BINDING_CANDIDATE.md",
           "local_receipt": "docs/security-audit/security-fr-2-binding-local-checks.json",
@@ -300,8 +300,17 @@
           "binding_integration_source_migrations_compiled": 53,
           "hosted_new_migration_history_registration_verified": false,
           "deletion_lifecycle_diagnostic": "supabase/diagnostics/security_fr_2_2_deletion_lifecycle.sql",
-          "deletion_lifecycle_owner_result_received": false,
-          "old_orphan_conversions_deleted": false
+          "deletion_lifecycle_owner_result_received": true,
+          "old_orphan_conversions_deleted": false,
+          "deletion_lifecycle_owner_receipt": "docs/security-audit/security-fr-2-deletion-lifecycle-owner-result.json",
+          "conversion_reference_candidate_report": "docs/security-audit/SECURITY_FR_2_2_CONVERSION_REFERENCE_CANDIDATE.md",
+          "conversion_reference_contract": "docs/security-audit/security-fr-2-conversion-reference-contract.json",
+          "conversion_reference_local_receipt": "docs/security-audit/security-fr-2-conversion-reference-local-checks.json",
+          "conversion_reference_local_PASS": 38,
+          "conversion_reference_snapshot_local_PASS": 3,
+          "conversion_reference_owner_install_result_received": false,
+          "generated_reference_canonical_integration_performed": false,
+          "hosted_conversion_deletion_acceptance": false
         },
         {
           "id": "FR.2.3",
@@ -381,7 +390,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.2_OWNER_READ_ONLY_DELETION_LIFECYCLE_METADATA",
+  "next_step": "FR.2.2_OWNER_GUARDED_CONVERSION_REFERENCE_INSTALLATION_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -507,5 +516,11 @@
   "FR2_binding_integration_local_receipt": "docs/security-audit/security-fr-2-binding-integration-local-checks.json",
   "FR2_hosted_new_migration_history_registration_verified": false,
   "FR2_deletion_lifecycle_diagnostic": "supabase/diagnostics/security_fr_2_2_deletion_lifecycle.sql",
-  "FR2_deletion_lifecycle_owner_result_received": false
+  "FR2_deletion_lifecycle_owner_result_received": true,
+  "FR2_deletion_lifecycle_owner_receipt": "docs/security-audit/security-fr-2-deletion-lifecycle-owner-result.json",
+  "FR2_conversion_reference_candidate_report": "docs/security-audit/SECURITY_FR_2_2_CONVERSION_REFERENCE_CANDIDATE.md",
+  "FR2_conversion_reference_contract": "docs/security-audit/security-fr-2-conversion-reference-contract.json",
+  "FR2_conversion_reference_local_receipt": "docs/security-audit/security-fr-2-conversion-reference-local-checks.json",
+  "FR2_conversion_reference_snapshot_diagnostic": "supabase/diagnostics/security_fr_2_2_conversion_reference_snapshot.sql",
+  "FR2_conversion_reference_owner_install_result_received": false
 }

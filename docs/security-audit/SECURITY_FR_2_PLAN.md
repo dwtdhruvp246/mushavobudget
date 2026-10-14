@@ -1,3 +1,11 @@
+# Current execution checkpoint — FR.2.2 installer stopped before replacement
+
+14 October 2026, FRE14. [Event-hook review](SECURITY_FR_2_2_EVENT_HOOK_REVIEW.md) and [owner attempt receipt](security-fr-2-binding-owner-install-attempt.json): the guard raised UNREVIEWED_TRIGGER_DDL_EVENT_HOOK before trigger replacement. No successful installation receipt is available. The installer/rollback remain unchanged; local 32/32 PASS evidence remains preserved. Next is the complete read-only event-hook/current trigger diagnostic pasted in chat, including transaction cleanup. Do not disable or bypass hooks or rerun installation before review. FR.1 serving evidence and prior stages remain intact; full hosted/native/store acceptance and original findings/actions remain open; APK deferred.
+
+Earlier checkpoints below are retained as history.
+
+---
+
 # Current FR.2 checkpoint — preventive binding candidate ready
 
 13 October 2026, FRE13. [FR.2.2 candidate](SECURITY_FR_2_2_BINDING_CANDIDATE.md) passed 32 named database control groups in verified ordered source/PGlite with modeled Auth/Storage and no default network. Guarded staging-only installation handoff is prepared; installation/direct API acceptance/canonical integration remain pending. Existing historical mismatch rows and locked conversions will not be rewritten by this SQL. Historical repair and FR.3 cleanup/retention remain separate. Prior planning/checkpoint text below is retained.

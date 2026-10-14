@@ -52,3 +52,7 @@ After the installation result, prepare the bounded direct Personal API tests and
 All original 123 coverage rows, 20 findings, Stage 0–10 objects, 12 preceding final-remediation events, earlier receipts/action/decision records and successful FR.1 frontend scope remain preserved. Staging accounts/rows/settings and the stopped successful recovery target have not been changed by preparation. Full hosted/native/store acceptance is false; release gate OPEN_PENDING_REQUIRED_EVIDENCE; fresh final audit PLANNED_NOT_PERFORMED; APK deferred.
 
 Primary reference read 13 October 2026: [PostgreSQL 17 CREATE TRIGGER](https://www.postgresql.org/docs/17/sql-createtrigger.html), including column-specific update firing and alphabetical same-kind trigger order. It does not attest the hosted project or authorize production execution.
+
+## Owner installation attempt — 14 October 2026
+
+FRE14 supersedes the pending installation handoff state: the SQL Editor screenshot reports UNREVIEWED_TRIGGER_DDL_EVENT_HOOK before replacement. No installation success receipt was returned. [Event-hook review](SECURITY_FR_2_2_EVENT_HOOK_REVIEW.md) records the one bounded read-only diagnostic and limits. Candidate/rollback SQL and 32-case local evidence are unchanged; do not disable or bypass the hook guard.

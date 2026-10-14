@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "phase": "FINAL_REMEDIATION",
-  "date": "2026-10-13",
+  "date": "2026-10-14",
   "events": [
     {
       "id": "FRE01",
@@ -378,6 +378,26 @@
       "APK_update_deferred": true,
       "findings_closed": [],
       "next_step": "FR.2.2_OWNER_GUARDED_STAGING_TRIGGER_INSTALL_RESULT"
+    },
+    {
+      "id": "FRE14",
+      "stage_step": "FR.2.2",
+      "date": "2026-10-14",
+      "source_parent_commit": "a5cdfdc09c91b8abd8ef9b2a87a62771e1fe19c2",
+      "result": "INSTALLER_STOPPED_AT_UNREVIEWED_TRIGGER_DDL_EVENT_HOOK_BEFORE_TRIGGER_REPLACEMENT",
+      "report": "docs/security-audit/SECURITY_FR_2_2_EVENT_HOOK_REVIEW.md",
+      "owner_attempt_receipt": "docs/security-audit/security-fr-2-binding-owner-install-attempt.json",
+      "diagnostic": "supabase/diagnostics/security_fr_2_2_event_hooks.sql",
+      "successful_staging_installation_receipt_received": false,
+      "guarded_installer_changed": false,
+      "hook_metadata_owner_result_received": false,
+      "diagnostic_catalog_fixture_execution": "PASS_PGLITE_18_3_NOT_HOSTED",
+      "new_hosted_authorization_API_cases_run": 0,
+      "hosted_acceptance": false,
+      "production_or_native_changed": false,
+      "APK_update_deferred": true,
+      "findings_closed": [],
+      "next_step": "FR.2.2_OWNER_READ_ONLY_EVENT_HOOK_METADATA_RESULT"
     }
   ],
   "prior_stage_evidence_preserved": true,

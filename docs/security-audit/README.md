@@ -1,3 +1,11 @@
+# Current execution checkpoint — FR.2.2 installer stopped before replacement
+
+14 October 2026, FRE14. [Event-hook review](SECURITY_FR_2_2_EVENT_HOOK_REVIEW.md) and [owner attempt receipt](security-fr-2-binding-owner-install-attempt.json): the guard raised UNREVIEWED_TRIGGER_DDL_EVENT_HOOK before trigger replacement. No successful installation receipt is available. The installer/rollback remain unchanged; local 32/32 PASS evidence remains preserved. Next is the complete read-only event-hook/current trigger diagnostic pasted in chat, including transaction cleanup. Do not disable or bypass hooks or rerun installation before review. FR.1 serving evidence and prior stages remain intact; full hosted/native/store acceptance and original findings/actions remain open; APK deferred.
+
+Earlier checkpoints below are retained as history.
+
+---
+
 # Mushavo Budget security audit — Start here
 
 **Latest — FR.1.3 / owner live serving result 62 PASS / 3 FAIL / 0 BLOCKED, 13 October 2026 (FRE06):** [Outcome](SECURITY_FR_1_3_SERVING_OUTCOME.md), [live summary](security-final-staging-serving-owner-result.json) and [Windows checker repeat](security-final-staging-serving-owner-local-checks.json). All 69 HTTP requests completed; exit 1. Original Auth/MFA HTML-module failures and five core source-parity reviews now pass at the checked static scope; selected core headers/config shape pass. Remaining: ledger-mark.svg and pwa-icon.svg return 404; manifest bytes match but MIME classification fails. Exact MIME/archive/delivery/cache details remain unverified; one six-GET/read-only ZIP metadata handoff is supplied, no new upload requested. Windows 16-case PASS/three syntax checks/seven exact tool hashes reconciled; original reports/stages/actions remain intact. Frontend scoped acceptance and full hosted/native/store acceptance stay false pending correction/recheck; release open, APK deferred. Earlier summaries below are historical.

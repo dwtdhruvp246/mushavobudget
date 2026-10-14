@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "date": "2026-10-13",
+  "date": "2026-10-14",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_PERSONAL_BINDING_CANDIDATE_32_LOCAL_PASS_STAGING_INSTALL_PENDING",
+  "status": "FR2_BINDING_INSTALL_STOPPED_EVENT_HOOK_REVIEW_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.2",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE13",
+  "latest_evidence": "FRE14",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_PERSONAL_BINDING_CANDIDATE_READY_STAGING_INSTALL_PENDING",
+      "status": "IN_PROGRESS_PERSONAL_BINDING_INSTALL_STOPPED_EVENT_HOOK_REVIEW_PENDING",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -179,7 +179,7 @@
         },
         {
           "id": "FR.2.2",
-          "status": "CANDIDATE_32_LOCAL_PASS_GUARDED_STAGING_INSTALL_PENDING",
+          "status": "LOCAL_32_PASS_OWNER_INSTALL_STOPPED_BEFORE_REPLACEMENT_EVENT_HOOK_REVIEW_PENDING",
           "title": "Personal workspace binding and legitimate finance",
           "report": "docs/security-audit/SECURITY_FR_2_2_BINDING_CANDIDATE.md",
           "local_receipt": "docs/security-audit/security-fr-2-binding-local-checks.json",
@@ -193,7 +193,13 @@
           "hosted_install_or_API_checks_run": 0,
           "historical_repair_performed": false,
           "canonical_schema_or_auto_migration_integration_performed": false,
-          "findings_closed": []
+          "findings_closed": [],
+          "owner_install_attempts_reported": 1,
+          "successful_installation_receipt_received": false,
+          "install_attempt_receipt": "docs/security-audit/security-fr-2-binding-owner-install-attempt.json",
+          "event_hook_review": "docs/security-audit/SECURITY_FR_2_2_EVENT_HOOK_REVIEW.md",
+          "event_hook_diagnostic": "supabase/diagnostics/security_fr_2_2_event_hooks.sql",
+          "guarded_installer_changed": false
         },
         {
           "id": "FR.2.3",
@@ -273,7 +279,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.2_OWNER_GUARDED_STAGING_TRIGGER_INSTALL_RESULT",
+  "next_step": "FR.2.2_OWNER_READ_ONLY_EVENT_HOOK_METADATA_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -335,5 +341,9 @@
   "FR2_readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
   "FR2_binding_candidate_report": "docs/security-audit/SECURITY_FR_2_2_BINDING_CANDIDATE.md",
   "FR2_binding_local_receipt": "docs/security-audit/security-fr-2-binding-local-checks.json",
-  "FR2_binding_contract": "docs/security-audit/security-fr-2-binding-candidate-contract.json"
+  "FR2_binding_contract": "docs/security-audit/security-fr-2-binding-candidate-contract.json",
+  "FR2_binding_install_attempt_receipt": "docs/security-audit/security-fr-2-binding-owner-install-attempt.json",
+  "FR2_event_hook_review_report": "docs/security-audit/SECURITY_FR_2_2_EVENT_HOOK_REVIEW.md",
+  "FR2_event_hook_diagnostic": "supabase/diagnostics/security_fr_2_2_event_hooks.sql",
+  "FR2_event_hook_metadata_owner_result_received": false
 }

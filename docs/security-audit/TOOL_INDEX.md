@@ -1,3 +1,11 @@
+# Current execution checkpoint — historical workspace repair accepted; canonical source integrated
+
+14 October 2026, FRE23. [Repair outcome/source integration/next lifecycle handoff](SECURITY_FR_2_2_REPAIR_OUTCOME_AND_CANONICAL_INTEGRATION.md), [full owner repair result](security-fr-2-historical-binding-repair-owner-result.json), [51-case local checks](security-fr-2-binding-integration-local-checks.json). One exact record workspace repaired; both joined mismatch counts asserted zero; all conversion rows unchanged. Canonical schema clause and new guarded idempotent migration now preserve accepted preventive coverage; old migrations/functions/policies/grants unchanged. Hosted new migration ledger registration not run/verified. Two old orphans remain preserved; deletion lifecycle remains pending. Next read-only catalog SQL is pasted in chat. Original stages/events/findings intact; APK deferred.
+
+Earlier checkpoints below are retained as history.
+
+---
+
 # Current execution checkpoint — paired historical mismatch measured; repair ready
 
 14 October 2026, FRE22. [Historical result and repair candidate](SECURITY_FR_2_2_HISTORICAL_REPAIR_CANDIDATE.md), [full owner historical review](security-fr-2-historical-review-owner-result.json), [12-case local repair checks](security-fr-2-historical-binding-repair-local-checks.json). Post-cleanup five/seven totals and retained Family checksum verified; zero latest marker items. Old record-parent/conversion-record mismatches share one exact record; conversion already matches parent workspace. Fingerprinted one-field repair is guarded/tested, full SQL in chat, owner result pending. Two old orphan identities correlate with the Personal recheck timestamps but exact deleted-record lineage remains unproved; preserved. Canonical integration and lifecycle/history disposition remain pending. Original stages/events/findings unchanged; APK deferred.

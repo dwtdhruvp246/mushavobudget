@@ -31,3 +31,7 @@ Final **12 PASS, zero FAIL, exit 0**, one Node syntax check: exact record/parent
 Two earlier local attempts retained in the local receipt: migrations leave the modeled session in UTC+04, causing before-captured row fingerprints/JSON timestamps to differ from candidate UTC representation. Model UTC now set BEFORE seeding/state/fingerprint capture. The candidate's SET LOCAL UTC and all guards remained unchanged. These failures led to fixing fixture setup, not broadening hosted predicates. Fifty-five shared selected source files are checked against current audit Git blobs before publication; no canonical source file changed in this commit.
 
 Run the full SQL pasted in chat only on staging dczlddwbtgvfdujgcitb. No terminal/install/upload action requested. Return safe JSON or error. Preserve the two unlinked conversions pending separate disposition. Full gate OPEN_PENDING_REQUIRED_EVIDENCE, final audit PLANNED_NOT_PERFORMED, hosted/native/store acceptance false, findings_closed empty.
+
+## Subsequent owner repair accepted — FRE23
+
+[Complete owner result](security-fr-2-historical-binding-repair-owner-result.json) reports COMMIT at 07:44:47 UTC: one exact workspace field repaired; both joined mismatch counts asserted zero; all other payment/conversion rows compared unchanged. The owner-repair-pending state above is superseded. [Canonical source integration and next deletion-lifecycle handoff](SECURITY_FR_2_2_REPAIR_OUTCOME_AND_CANONICAL_INTEGRATION.md) records 51 local PASS. Earlier orphan conversions remain preserved; lifecycle/full acceptance pending.

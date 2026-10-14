@@ -2557,7 +2557,7 @@ $$;
 
 drop trigger if exists sync_payment_record_workspace_trigger on public.payment_records;
 create trigger sync_payment_record_workspace_trigger
-before insert or update of payment_item_id on public.payment_records
+before insert or update of payment_item_id, workspace_id on public.payment_records
 for each row execute function public.sync_payment_record_workspace();
 
 create or replace function public.guard_workspace_finance_write()

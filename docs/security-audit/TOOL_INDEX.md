@@ -1,3 +1,11 @@
+# Current execution checkpoint — Personal scoped completion; Business outbox prerequisite next
+
+14 October 2026, FRE27. [Owner post-deletion snapshot](security-fr-2-post-deletion-snapshot-owner-result.json) confirms five records/seven conversions, zero joined workspace mismatches, two preserved old orphan identities and unchanged retained Family manual checksum d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3. [Personal reference integration/carry-forward](SECURITY_FR_2_2_REFERENCE_INTEGRATION_AND_CARRY_FORWARD.md): accepted transaction added as a new ordered migration and appended to canonical schema; all prior schema bytes preserved; 42 local cases PASS across 54 migrations/57 source inputs. Hosted migration ledger registration not performed.
+
+FR.2.2 scoped complete with old orphan provenance/disposition/FK validation and wider lifecycle carry-forward. [FR.2.3 read-only outbox drift handoff](SECURITY_FR_2_3_OUTBOX_DRIFT_REVIEW_HANDOFF.md), eight minimal query tests PASS, is next before Business fixtures. No function overwritten/guard bypassed/job dispatched. Full findings/hosted-native-store acceptance remain open; production excluded and APK deferred. Earlier checkpoints retained as history.
+
+---
+
 # Current execution checkpoint — Personal live deletion and cascades passed
 
 14 October 2026, FRE26. [Complete owner JSON](security-fr-2-personal-deletion-owner-result.json): **30 grouped checks PASS, exit 0**, completed 12:47:57 UTC; 190 staging requests. Both controlled actors tested record and item cascade paths. Four new inactive items/four records/four identity conversions absent; all old visible payment/conversion baselines and selected settings unchanged; test sessions logged out. [Outcome and snapshot handoff](SECURITY_FR_2_2_PERSONAL_DELETION_OUTCOME_AND_SNAPSHOT_HANDOFF.md).

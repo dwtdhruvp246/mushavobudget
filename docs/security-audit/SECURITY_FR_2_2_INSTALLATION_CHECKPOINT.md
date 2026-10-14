@@ -15,3 +15,7 @@ New fixtures have random UUIDs and AUDIT-S321 markers, inactive schedules and US
 On a REVIEW/failure, stop with the safe JSON; exact incomplete new fixtures may remain, and a retry or broad cleanup is not requested. Credentials are prompted as staging APP passwords on the owner's computer, temporarily passed to Node and cleared by the runner. Never paste passwords, tokens or raw rows. No service-role key, database password, UI settings, provider dispatch, production or native change is involved.
 
 After this bounded result, valid relinking between an owner's own parents, missing-parent rejection, retained/historical conversion integrity and separately scoped earlier fixture disposition still require genuine evidence. Business/outbox/Admin/Auth dependencies retain their FR.2.3–FR.2.6 order. FR.1 scoped serving PASS remains. All Stage 0–10 objects, earlier evidence events, original finding/action/decision definitions and owner-local native/recovery state remain preserved; release gate OPEN_PENDING_REQUIRED_EVIDENCE, fresh final audit PLANNED_NOT_PERFORMED and APK deferred.
+
+## Subsequent direct Personal recheck — 14 October 2026
+
+FRE17: [fresh outcome](SECURITY_FR_2_2_PERSONAL_RECHECK_OUTCOME.md) records 33 owner PASS checks and exit 0. The earlier pending-API handoff above is superseded at this bounded scope. Remaining valid-own relink/history/conversion disposition/canonical integration and original open requirements remain explicit.

@@ -1,3 +1,11 @@
+# Current execution checkpoint — FR.2.2 direct Personal recheck 33 PASS
+
+14 October 2026, FRE17. [Owner outcome](SECURITY_FR_2_2_PERSONAL_RECHECK_OUTCOME.md) and [complete receipt](security-fr-2-personal-api-owner-recheck.json): 33 PASS, exit 0; foreign workspace substitution prevented, foreign-parent relink denied, both owners' exact new record/item deletion and local test logout verified. This is fresh scoped evidence; the earlier failed result is preserved. Valid-own relinking, derived conversion disposition, retained/historical consistency and canonical integration remain pending. Next is the [read-only snapshot](SECURITY_FR_2_2_CONVERSION_SNAPSHOT_HANDOFF.md), full SQL pasted in chat. Full findings/actions and hosted/native/store acceptance remain open; APK deferred.
+
+Earlier checkpoints below are retained as history.
+
+---
+
 # Current execution checkpoint — FR.2.2 installation metadata received; API recheck next
 
 14 October 2026, FRE16. [Installation checkpoint](SECURITY_FR_2_2_INSTALLATION_CHECKPOINT.md) and [owner receipt](security-fr-2-binding-owner-installation.json): the revised installer's post-COMMIT catalog flag reports workspace_id update coverage present. This is installation metadata, not API acceptance or historical repair. Next is the [controlled Personal recheck](SECURITY_FR_2_2_PERSONAL_API_RECHECK_HANDOFF.md) using unchanged exact-pin checker/runner; 33 scoped PASS checks expected, owner result pending. Earlier retained fixtures/manual conversions are not targeted. No further SQL/upload is requested now. Earlier source/local/failed-attempt evidence and original open findings/actions remain preserved; APK deferred.

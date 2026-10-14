@@ -1,3 +1,11 @@
+# Current checkpoint — archived role confirmed; corrected API ready
+
+14 October 2026, FRE33. [Owner read-only role result](security-fr-2-business-archive-state-owner-result.json): archived/version3, two permissions, two save/one archive audit events, zero role usage; current5 payment records/7 conversions. [Guarded continuation](SECURITY_FR_2_3_ARCHIVED_ROLE_OUTCOME_AND_CORRECTED_API_HANDOFF.md): all three exact owner fingerprints checked before mutations and retained rows rechecked after;81 local tests PASS. Preserve old role/audit, no cleanup/archive retry; corrected owner API terminal run next. Prior void204 correction/history retained; hosted HTTP status from old failure remains unrecorded.
+
+Full gate/final audit pending, production excluded, APK deferred.
+
+---
+
 # Current checkpoint — first Business API review; void harness fixed
 
 14 October 2026, FRE32. [Owner API result](security-fr-2-business-api-first-owner-result.json):5 PASS/1 REVIEW,118 requests,exit1 at archive; both sessions logged out, fixtures retained. [Correction and read-only state handoff](SECURITY_FR_2_3_BUSINESS_VOID_RPC_CORRECTION_AND_ROLE_STATE_HANDOFF.md): original checker incorrectly required200 for void RPC; modern204 transport reproduces the same118-request stop with modeled role already archived/version3. Corrected checker50 local tests PASS; actual hosted role/HTTP outcome still requires owner read-only review. No API rerun/cleanup now.

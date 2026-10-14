@@ -1,5 +1,5 @@
 // 3.3.3 bounded staging-only acceptance. No email Edge, scheduler or provider call.
-const {randomUUID}=require('node:crypto');
+const {randomUUID,createHash}=require('node:crypto');
 const STAGING='https://dczlddwbtgvfdujgcitb.supabase.co';
 const FRONTEND='https://mushavo-budget-staging.pages.dev/config.js';
 const EMAILS=['audit.owner@example.com','audit.outsider@example.com'];
@@ -21,13 +21,38 @@ function rpcSucceeded(name,r){
  if(r.status===204)return r.body_empty&&r.data===null;
  return r.status===200&&(r.body_empty||r.body_json_ok)&&(r.data===null||r.data==='');
 }
+// PostgreSQL jsonb text for the bounded role/permission/audit projections.
+// Integer-only numbers: no numeric scale or floating-point guesses.
+function pgJsonb(value){
+ if(value===null||typeof value==='string'||typeof value==='boolean')return JSON.stringify(value);
+ if(typeof value==='number'){ensure(Number.isSafeInteger(value),'RETAINED_ARCHIVE_UNSUPPORTED_NUMBER');return String(value);}
+ if(Array.isArray(value))return '['+value.map(pgJsonb).join(', ')+']';
+ ensure(value&&typeof value==='object','RETAINED_ARCHIVE_UNSUPPORTED_VALUE');
+ const keys=Object.keys(value).sort((a,b)=>Buffer.byteLength(a)-Buffer.byteLength(b)||Buffer.compare(Buffer.from(a),Buffer.from(b)));
+ return '{'+keys.map(k=>JSON.stringify(k)+': '+pgJsonb(value[k])).join(', ')+'}';
+}
+function utcTimestamp(value){
+ ensure(typeof value==='string','RETAINED_ARCHIVE_TIMESTAMP_REQUIRED');
+ const m=/^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)(?:\.(\d{1,6}))?(Z|[+-]\d\d:\d\d)$/.exec(value);
+ ensure(m&&Number.isFinite(Date.parse(m[1]+m[3])),'RETAINED_ARCHIVE_TIMESTAMP_INVALID');
+ const fraction=(m[2]||'').replace(/0+$/,'');
+ return new Date(Date.parse(m[1]+m[3])).toISOString().slice(0,19)+(fraction?'.'+fraction:'')+'+00:00';
+}
+function retainedFingerprint(value,timeFields=[]){
+ const normalized=Array.isArray(value)?value.map(row=>Object.fromEntries(Object.entries(row).map(([k,v])=>[k,timeFields.includes(k)?utcTimestamp(v):v]))):value;
+ return createHash('sha256').update(pgJsonb(normalized),'utf8').digest('hex');
+}
+function validRetainedContract(contract){
+ ensure(contract&&equal(Object.keys(contract).sort(),['audit_sha256','permissions_sha256','role_sha256']),'RETAINED_ARCHIVE_CONTRACT_INVALID');
+ ensure(Object.values(contract).every(x=>typeof x==='string'&&/^[0-9a-f]{64}$/.test(x)),'RETAINED_ARCHIVE_CONTRACT_INVALID');
+}
 function parseConfig(text){
  let c;try{c=JSON.parse(text.replace(/^\s*window\.MUSHAVO_BUDGET_CONFIG\s*=\s*/,'').replace(/;\s*$/,''));}catch{throw new AuditError('CONFIG_PARSE_FAILED');}
  ensure(c.supabaseUrl===STAGING&&!text.includes('kttkospkblwvguuwnhjj')&&!c.vapidPublicKey,'CONFIG_NOT_ISOLATED_STAGING');
  ensure(/^sb_publishable_[A-Za-z0-9_-]+$/.test(c.supabasePublishableKey||''),'CONFIG_KEY_TYPE_REJECTED');return c;
 }
-async function run({fetcher=fetch,ownerPassword,outsiderPassword,uuid=randomUUID}={}){
- const checks=[],sessions=[],fixtures=[],permissions=[];let config,phase='Staging configuration',problem=null,requests=0,logoutOk=true,writes=false,removed=false,positiveRpcFailure=null;
+async function run({fetcher=fetch,ownerPassword,outsiderPassword,uuid=randomUUID,retainedArchive=null}={}){
+ const checks=[],sessions=[],fixtures=[],permissions=[];let config,phase='Staging configuration',problem=null,requests=0,logoutOk=true,writes=false,removed=false,positiveRpcFailure=null,retained=null,retainedUnchanged=false;
  const pass=check=>checks.push({check,status:'PASS'});
  const blocked=(check,code)=>checks.push({check,status:'BLOCKED',problem_code:code});
  async function request(route,{session,method='GET',body}={}){
@@ -90,7 +115,20 @@ async function run({fetcher=fetch,ownerPassword,outsiderPassword,uuid=randomUUID
    }
   }return saved;
  }
+ async function archiveCapture(f,code){
+  const role=await one('business_roles','workspace_id=eq.'+f.id+'&code=eq.'+code,f.session);
+  const perms=await rows('business_role_permissions','workspace_id=eq.'+f.id+'&role=eq.'+code,f.session);
+  perms.sort((a,b)=>a.permission_code.localeCompare(b.permission_code));
+  const allAudit=await rows('business_audit_events','workspace_id=eq.'+f.id,f.session);
+  ensure(allAudit.length<900,'RETAINED_ARCHIVE_AUDIT_BOUND_EXCEEDED');
+  const audit=allAudit.filter(x=>x.before_summary?.code===code||x.after_summary?.code===code).sort((a,b)=>a.id.localeCompare(b.id));
+  const rs=await rpc('business_roles_snapshot',f.session,{p_workspace_id:f.id});
+  ensure(rs.status===200&&Array.isArray(rs.data?.roles),'RETAINED_ARCHIVE_SNAPSHOT_FAILED');
+  const usage=rs.data.roles.filter(x=>x.code===code);ensure(usage.length===1,'RETAINED_ARCHIVE_SNAPSHOT_FAILED');
+  return {role,perms,audit,members:usage[0].members,invitations:usage[0].invitations};
+ }
  try{
+  if(retainedArchive!==null)validRetainedContract(retainedArchive);
   ensure(ownerPassword&&outsiderPassword,'TWO_STAGING_APP_PASSWORDS_REQUIRED');
   const c=await fetcher(FRONTEND,{redirect:'error',signal:AbortSignal.timeout(20000)});ensure(c.status===200,'CONFIG_FETCH_FAILED');config=parseConfig(await c.text());pass('Deployed config targets staging, with no production reference or push key');
   phase='Ordinary active caller controls';
@@ -115,7 +153,23 @@ async function run({fetcher=fetch,ownerPassword,outsiderPassword,uuid=randomUUID
    f.category=await one('business_categories','workspace_id=eq.'+f.id+'&name=eq.AUDIT-S332-EXPENSE',s);
    f.claims=await rows('business_expense_claims','workspace_id=eq.'+f.id,s);ensure(f.claims.length===2&&f.claims.every(x=>x.submitted_by===s.id&&x.status==='approved'&&Number(x.amount)===1&&x.currency==='USD'&&x.category_id===f.category.id&&f.dims.some(d=>d.id===x.dimension_id)),'EXACT_USD_1_OWNER_CLAIMS_REQUIRED');
    f.ownerMember=await one('workspace_members','workspace_id=eq.'+f.id+'&user_id=eq.'+s.id,s);ensure(f.ownerMember.role==='business_owner'&&f.ownerMember.status==='active','OWNER_MEMBER_REQUIRED');
-   const rs=await rpc('business_roles_snapshot',s,{p_workspace_id:f.id});ensure(rs.status===200&&rs.data?.can_manage===true&&rs.data.roles.length===6&&rs.data.overrides.length===0,'PRISTINE_BUILTIN_ROLES_REQUIRED');f.roles=rs.data.roles;
+   const rs=await rpc('business_roles_snapshot',s,{p_workspace_id:f.id});ensure(rs.status===200&&rs.data?.can_manage===true&&Array.isArray(rs.data.roles)&&rs.data.overrides.length===0,'PRISTINE_BUILTIN_ROLES_REQUIRED');f.roles=rs.data.roles;
+   if(retainedArchive!==null&&i===0){
+    ensure(f.roles.length===7,'EXACT_RETAINED_ARCHIVE_REQUIRED');
+    const custom=f.roles.filter(x=>!x.is_system);ensure(custom.length===1,'EXACT_RETAINED_ARCHIVE_REQUIRED');
+    const a=custom[0];
+    ensure(a.name==='AUDIT-S333-ROLE-EDITED'&&a.description==='Synthetic audit'&&a.status==='archived'&&a.version===3&&a.scope_mode==='all'&&/^custom_[0-9a-f]{32}$/.test(a.code)&&a.members===0&&a.invitations===0,'RETAINED_ARCHIVE_SHAPE_MISMATCH');
+    const captured=await archiveCapture(f,a.code);
+    ensure(equal(Object.keys(captured.role).sort(),['code','description','is_system','name','scope_mode','status','version','workspace_id']),'RETAINED_ARCHIVE_ROW_SHAPE_MISMATCH');
+    ensure(retainedFingerprint(captured.role)===retainedArchive.role_sha256,'RETAINED_ARCHIVE_ROW_HASH_MISMATCH');
+    ensure(captured.perms.length===2&&captured.perms.every(x=>x.enabled===true)&&equal(captured.perms.map(x=>x.permission_code),['reports.view','workspace.view']),'RETAINED_ARCHIVE_PERMISSION_SHAPE_MISMATCH');
+    ensure(retainedFingerprint(captured.perms,['created_at','updated_at'])===retainedArchive.permissions_sha256,'RETAINED_ARCHIVE_PERMISSION_HASH_MISMATCH');
+    ensure(captured.audit.length===3&&captured.audit.filter(x=>x.action==='business.role_saved').length===2&&captured.audit.filter(x=>x.action==='business.role_archived').length===1&&captured.audit.every(x=>x.actor_id===f.owner),'RETAINED_ARCHIVE_AUDIT_SHAPE_MISMATCH');
+    ensure(retainedFingerprint(captured.audit,['created_at'])===retainedArchive.audit_sha256,'RETAINED_ARCHIVE_AUDIT_HASH_MISMATCH');
+    const members=await rows('workspace_members','workspace_id=eq.'+f.id,s),invitations=await rows('workspace_invitations','workspace_id=eq.'+f.id,s);
+    ensure(members.length===1&&members[0].id===f.ownerMember.id&&invitations.length===0,'RETAINED_ARCHIVE_PRIMARY_TEAM_DRIFT');
+    retained={fixture:f,code:a.code,baseline:captured};f.roles=f.roles.filter(x=>x.is_system);
+   }else ensure(f.roles.length===6,'PRISTINE_BUILTIN_ROLES_REQUIRED');
    ensure(f.roles.every(x=>x.is_system&&x.scope_mode==='legacy'&&x.status==='active')&&equal(f.roles.map(x=>x.code).sort(),[...ROLES].sort()),'BUILTIN_ROLE_CONTRACT_MISMATCH');
    fixtures.push(f);
   }
@@ -264,12 +318,20 @@ async function run({fetcher=fetch,ownerPassword,outsiderPassword,uuid=randomUUID
   ensure(equal(await preservation(),preserved),'PREVIOUS_PERSONAL_FAMILY_OR_CONVERSIONS_CHANGED');
   pass('B08 Second Business selected state and previous Personal/Family/payment/conversion values remain unchanged');
  }catch(e){problem=e instanceof AuditError?e.message:'NETWORK_OR_LOCAL_ERROR';checks.push({check:phase,status:'REVIEW',problem_code:problem});}
- finally{if(config)for(const s of sessions){try{const r=await request('/auth/v1/logout?scope=local',{session:s,method:'POST'});if(![200,204].includes(r.status))logoutOk=false;}catch{logoutOk=false;}}}
+ finally{
+  if(retained){try{
+   retainedUnchanged=equal(await archiveCapture(retained.fixture,retained.code),retained.baseline);
+   ensure(retainedUnchanged,'RETAINED_ARCHIVE_CHANGED');
+  }catch(e){problem=e instanceof AuditError?e.message:'RETAINED_ARCHIVE_READBACK_FAILED';checks.push({check:'Exact retained archived role, permissions and audit preservation',status:'REVIEW',problem_code:problem});}}
+  if(config)for(const s of sessions){try{const r=await request('/auth/v1/logout?scope=local',{session:s,method:'POST'});if(![200,204].includes(r.status))logoutOk=false;}catch{logoutOk=false;}}
+ }
  if(!problem&&(!logoutOk||sessions.length!==2)){problem='TEST_SESSION_LOGOUT_FAILED';checks.push({check:'Local test-session logout',status:'REVIEW',problem_code:problem});}
  else if(logoutOk&&sessions.length===2)pass('Only the two generated API sessions receive local logout');
  return {stage_step:'3.3.3',result:problem?'STAGING_BUSINESS_API_REVIEW':'STAGING_BUSINESS_API_SCOPED_PASS_WITH_CARRY_FORWARD',project:'dczlddwbtgvfdujgcitb',checks,problem_code:problem,positive_rpc_failure:positiveRpcFailure,effective_permission_captures:permissions,
  request_count:requests,test_sessions_logged_out:logoutOk&&sessions.length===2,exact_primary_member_removed:removed,synthetic_business_fixtures_retained:true,
+ retained_archive_contract_required:retainedArchive!==null,retained_archive_three_owner_fingerprints_matched:!!retained,retained_archive_role_permissions_audit_and_usage_unchanged:retainedUnchanged,
+ post_batch_privileged_SQL_snapshot_rechecked:false,hosted_acceptance:false,findings_closed:[],
  incomplete_write_effects_may_remain:!!problem&&writes,private_original_download_or_actual_dispatch_verified:false,full_role_operation_matrix_or_F15_acceptance_verified:false,
  Auth_platform_roles_product_launch_production_or_native_changed:false,credentials_tokens_keys_private_identifiers_or_raw_rows_printed:false,completed_utc:new Date().toISOString()};
 }
-module.exports={run,parseConfig,rowDenied,rpcDenied,permissionDenied,AuditError,rpcSucceeded};
+module.exports={run,parseConfig,rowDenied,rpcDenied,permissionDenied,AuditError,rpcSucceeded,pgJsonb,utcTimestamp,retainedFingerprint,validRetainedContract};

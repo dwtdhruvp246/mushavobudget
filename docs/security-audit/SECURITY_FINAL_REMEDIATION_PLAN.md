@@ -1,3 +1,11 @@
+# Current checkpoint — Business fixtures committed; genuine API batch ready
+
+14 October 2026, FRE31. [Owner preparation](security-fr-2-business-fixture-owner-result.json):2 Business scopes/4 USD1 claims/4 dimensions,7-day4-seat test entitlement; existing5 payment records/7 conversions and prior rows/catalog/Auth metadata unchanged under assertions. [Pinned API handoff](SECURITY_FR_2_3_BUSINESS_FIXTURE_OUTCOME_AND_API_HANDOFF.md) uses the unchanged checker validated in26 prior local cases, with24 scoped checks/five unavailable groups. Owner genuine API result pending.
+
+Original stages/history/FR.2.2 carry-forward stay intact. Full gate/final audit pending, production excluded, APK deferred.
+
+---
+
 # Current checkpoint — selected Business catalog matches; controlled fixtures ready
 
 14 October 2026, FRE30. [Owner metadata](security-fr-2-business-current-closure-owner-result.json) and [comparison](security-fr-2-business-current-closure-comparison.json):78 trigger bindings/93 normalized function bodies and metadata/27 relations match reviewed source; raw byte differences exactly account for CRLF. [Guarded fixture handoff](SECURITY_FR_2_3_CURRENT_CATALOG_OUTCOME_AND_BUSINESS_FIXTURE_HANDOFF.md),26 local cases PASS, awaits owner preparation of two synthetic Business scopes. No hosted Business API/dispatch acceptance claimed.

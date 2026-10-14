@@ -1,3 +1,11 @@
+# Current execution checkpoint — Personal live deletion and cascades passed
+
+14 October 2026, FRE26. [Complete owner JSON](security-fr-2-personal-deletion-owner-result.json): **30 grouped checks PASS, exit 0**, completed 12:47:57 UTC; 190 staging requests. Both controlled actors tested record and item cascade paths. Four new inactive items/four records/four identity conversions absent; all old visible payment/conversion baselines and selected settings unchanged; test sessions logged out. [Outcome and snapshot handoff](SECURITY_FR_2_2_PERSONAL_DELETION_OUTCOME_AND_SNAPSHOT_HANDOFF.md).
+
+Next is the read-only schema-aware global snapshot, pasted in chat: expected five records/seven conversions, zero joined workspace mismatches, two retained old orphans and original-column Family checksum d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3. These are expectations until the new SQL result arrives. Canonical reference integration, old orphan disposition and full hosted/native/store/finding acceptance remain pending. Production excluded; APK deferred. Earlier checkpoints retained as history.
+
+---
+
 # Current execution checkpoint — conversion reference installed; live Personal deletion batch ready
 
 14 October 2026, FRE25. [Owner installation receipt](security-fr-2-conversion-reference-installation-owner-result.json) at 12:04:50 UTC confirms that original payment/conversion values and existing permission controls were preserved. Reference, cascade FK and private legacy-ID guard installed; old orphan/manual rows untouched. `constraint_validated=false` is expected pending historical disposition.

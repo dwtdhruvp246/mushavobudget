@@ -29,3 +29,7 @@ Requests capped at240, per-request20s timeout, redirects rejected, staging-only 
 ## Handoff and carry-forward
 
 Pinned terminal loader pasted in chat; owner runs once and returns complete safe JSON and exitcode. No new SQL/deployment/native action in this handoff. After scoped API success, run the schema-aware read-only snapshot to recheck joined mismatch counts, unchanged two old orphans and original-column Family checksum **d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3**, then integrate accepted reference into canonical source. All full findings remain open; full gate OPEN_PENDING_REQUIRED_EVIDENCE, final audit PLANNED_NOT_PERFORMED, full hosted/native/store acceptance false and APK deferred. Original Stage 0–10, 123 coverage rows/20 finding definitions, all prior FRE01–24, 61 actions/six OP actions/six unconfirmed OP decisions preserved. Business/outbox drift, Admin/MFA/Auth and scheduler/history carry-forward remain pending.
+
+## Subsequent genuine API result — FRE26
+
+[Complete owner result](security-fr-2-personal-deletion-owner-result.json) at 12:47:57.368 UTC supersedes the live-batch-pending state above: all30 groups PASS/exit0, exact four new item/record/conversion triples absent, old visible payment/conversion baselines and selected settings unchanged, local test sessions logged out. [Global read-only snapshot handoff](SECURITY_FR_2_2_PERSONAL_DELETION_OUTCOME_AND_SNAPSHOT_HANDOFF.md) is next. Full finding/hosted acceptance, canonical reference integration and historical orphan disposition remain pending.

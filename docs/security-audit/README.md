@@ -1,3 +1,11 @@
+# Current execution checkpoint — exact outbox drift identified; guarded correction ready
+
+14 October 2026, FRE28. [Owner metadata](security-fr-2-outbox-drift-owner-result.json) and [exact proof](security-fr-2-outbox-exact-drift-proof.json): 34/35 historical lines identical; line28 separator corrupted from U+00B7 to U+252C/U+2556. Reconstructed body matches every line and both whole deployed hashes. [Guarded ASCII correction](SECURITY_FR_2_3_OUTBOX_EXACT_DRIFT_AND_CORRECTION.md), 27 local cases PASS, aligns exact reviewed migration body while preserving existing rows/function object/permissions/trigger metadata. Owner installer result pending; no Business fixtures or dispatch yet.
+
+CRLF-only guard/current closure review follows before Business acceptance. FR.2.2 completion/history carry-forward and original stages/evidence/findings remain preserved; full acceptance/final audit pending and APK deferred. Earlier checkpoints retained as history.
+
+---
+
 # Current execution checkpoint — Personal scoped completion; Business outbox prerequisite next
 
 14 October 2026, FRE27. [Owner post-deletion snapshot](security-fr-2-post-deletion-snapshot-owner-result.json) confirms five records/seven conversions, zero joined workspace mismatches, two preserved old orphan identities and unchanged retained Family manual checksum d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3. [Personal reference integration/carry-forward](SECURITY_FR_2_2_REFERENCE_INTEGRATION_AND_CARRY_FORWARD.md): accepted transaction added as a new ordered migration and appended to canonical schema; all prior schema bytes preserved; 42 local cases PASS across 54 migrations/57 source inputs. Hosted migration ledger registration not performed.

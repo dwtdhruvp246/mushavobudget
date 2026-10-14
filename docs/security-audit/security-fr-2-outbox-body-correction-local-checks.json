@@ -1,0 +1,134 @@
+{
+  "stage_step": "FR.2.3_OUTBOX_BODY_CORRECTION_CANDIDATE",
+  "result": "OFFLINE_ACTUAL_OUTBOX_CORRECTION_AND_TRIGGER_SCOPED_PASS",
+  "scope": "ACTUAL_CORRECTION_ROLLBACK_AND_KNOWN_TRIGGER_BODIES_IN_MINIMAL_SYNTHETIC_PGLITE_CATALOG_NOT_FULL_MIGRATIONS_OR_GENUINE_AUTH_DISPATCH",
+  "engine": "PostgreSQL 18.3 (PGlite 0.5.8) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "node_version": "v24.19.0",
+  "tests": 27,
+  "pass": 27,
+  "fail": 0,
+  "exit_code": 0,
+  "cases": [
+    {
+      "title": "reconstructed body matches all35 line hashes and both owner whole hashes; only separator line differs from migration",
+      "result": "PASS"
+    },
+    {
+      "title": "actual correction compiles, aligns exact migration hash and preserves all existing outbox rows and target OID",
+      "result": "PASS"
+    },
+    {
+      "title": "exact repeated correction is idempotent with existing row preservation",
+      "result": "PASS"
+    },
+    {
+      "title": "anonymous/authenticated execute denial and service-role grant remain unchanged",
+      "result": "PASS"
+    },
+    {
+      "title": "detailed Personal Family Business titles use the intended separator and retain the exact source route",
+      "result": "PASS"
+    },
+    {
+      "title": "default privacy preview remains generic when detailed previews are disabled",
+      "result": "PASS"
+    },
+    {
+      "title": "existing non-payment events bypass the helper transformation",
+      "result": "PASS"
+    },
+    {
+      "title": "long detailed titles retain the existing80-character limit",
+      "result": "PASS"
+    },
+    {
+      "title": "reviewed rollback restores exact prior CRLF body and preserves CURRENT messages",
+      "result": "PASS"
+    },
+    {
+      "title": "correction reinstalls after exact rollback without rewriting messages",
+      "result": "PASS"
+    },
+    {
+      "title": "known canonical-schema body is aligned to reviewed migration formatting without permission or row changes",
+      "result": "PASS"
+    },
+    {
+      "title": "reviewed historical LF body is accepted directly",
+      "result": "PASS"
+    },
+    {
+      "title": "unknown literal/body drift is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "authenticated EXECUTE grant drift is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "revoked existing service-role EXECUTE grant is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "overload collision is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "changed search path is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "disabled trigger is rejected without enabling it",
+      "result": "PASS"
+    },
+    {
+      "title": "unexpected trigger UPDATE coverage is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "unexpected WHEN predicate is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "additional trigger association is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "non-origin replication mode is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "ordinary SQL role cannot install the correction",
+      "result": "PASS"
+    },
+    {
+      "title": "unknown relevant CREATE FUNCTION hook stops the correction",
+      "result": "PASS"
+    },
+    {
+      "title": "exact reviewed provider hooks remain enabled through rollback and correction",
+      "result": "PASS"
+    },
+    {
+      "title": "provider hook body drift is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "oversized outbox baseline stops before correction",
+      "result": "PASS"
+    }
+  ],
+  "file_sha256": {
+    "supabase/remediation/security_fr_2_3_outbox_body_correction.sql": "03d6f4e03c714d7f0330ba88dd6603a85b584c9e47182422d725807a129ce082",
+    "supabase/remediation/security_fr_2_3_outbox_body_rollback.sql": "0b6e0796687494764e8c7126ec76fbc0417e9713dde1a89bb91681d5bbbdc4f0",
+    "scripts/verify-fr-2-outbox-body-correction.mjs": "058327932607d010b08981f947f62178d4520ec5440900fab324b2b2b8965e92"
+  },
+  "hosted_SQL_or_API_calls_run": 0,
+  "Business_fixtures_created": 0,
+  "actual_provider_dispatch_run": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "syntax_checks": 1,
+  "uses_pinned_PGlite_version": "0.5.8",
+  "full_ordered_migrations_compiled": false
+}

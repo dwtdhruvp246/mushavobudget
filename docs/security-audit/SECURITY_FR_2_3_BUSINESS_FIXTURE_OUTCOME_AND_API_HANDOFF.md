@@ -101,3 +101,7 @@ finally {
 ## Carry-forward
 
 All original Stage0–10 objects/123 coverage rows/20 finding definitions/FRE01–30 receipts/events/actions/decisions and FR.2.2 completion/history retained. Existing two old orphan conversions and two locked manual Family USD1 conversions/checksum carry forward; no cleanup authorized by shape/correlation. Full gate OPEN_PENDING_REQUIRED_EVIDENCE; final audit PLANNED_NOT_PERFORMED, full hosted/native/store acceptance false, APK deferred. No finding is closed by fixture preparation.
+
+## Superseding first owner API outcome and paused rerun — FRE32
+
+[Owner result](security-fr-2-business-api-first-owner-result.json),18:50:25.365 UTC:5 PASS/1 REVIEW,118 requests,exit1 POSITIVE_ARCHIVE_BUSINESS_ROLE_FAILED; both sessions logged out. The prior checker/model assumed200 for void RPCs, although PostgREST documents204. [Corrected harness and read-only role state handoff](SECURITY_FR_2_3_BUSINESS_VOID_RPC_CORRECTION_AND_ROLE_STATE_HANDOFF.md) has50 local tests PASS and separately reproduces the same118-request stop with modeled role archived/version3. Actual hosted status/state pending. Previous pinned70bc terminal block above is retained as history and must not be rerun now; current terminal artifact is paused, use read-only SQL only. No archived role/audit cleanup or backend function replacement authorized by this result.

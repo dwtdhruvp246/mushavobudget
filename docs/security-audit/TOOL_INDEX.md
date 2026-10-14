@@ -1,3 +1,11 @@
+# Current checkpoint — first Business API review; void harness fixed
+
+14 October 2026, FRE32. [Owner API result](security-fr-2-business-api-first-owner-result.json):5 PASS/1 REVIEW,118 requests,exit1 at archive; both sessions logged out, fixtures retained. [Correction and read-only state handoff](SECURITY_FR_2_3_BUSINESS_VOID_RPC_CORRECTION_AND_ROLE_STATE_HANDOFF.md): original checker incorrectly required200 for void RPC; modern204 transport reproduces the same118-request stop with modeled role already archived/version3. Corrected checker50 local tests PASS; actual hosted role/HTTP outcome still requires owner read-only review. No API rerun/cleanup now.
+
+Earlier stage/history/FR.2.2 carry-forward retained. Full gate/final audit pending, production excluded, APK deferred.
+
+---
+
 # Current checkpoint — Business fixtures committed; genuine API batch ready
 
 14 October 2026, FRE31. [Owner preparation](security-fr-2-business-fixture-owner-result.json):2 Business scopes/4 USD1 claims/4 dimensions,7-day4-seat test entitlement; existing5 payment records/7 conversions and prior rows/catalog/Auth metadata unchanged under assertions. [Pinned API handoff](SECURITY_FR_2_3_BUSINESS_FIXTURE_OUTCOME_AND_API_HANDOFF.md) uses the unchanged checker validated in26 prior local cases, with24 scoped checks/five unavailable groups. Owner genuine API result pending.

@@ -36,10 +36,14 @@ function adapter(fault){
    if(url.pathname.startsWith('/rest/v1/rpc/')){
     const name=url.pathname.slice('/rest/v1/rpc/'.length),entries=Object.entries(body);
     const args=entries.map(([key],index)=>ident(key)+' => $'+(index+1)).join(',');
-    const meta=(await db.query('select p.proretset,t.typtype from pg_proc p join pg_type t on t.oid=p.prorettype join pg_namespace n on n.oid=p.pronamespace where n.nspname=$1 and p.proname=$2',['public',name])).rows[0];
+    const meta=(await db.query(`select p.proretset,t.typtype,p.prorettype='void'::regtype as is_void from pg_proc p join pg_type t on t.oid=p.prorettype join pg_namespace n on n.oid=p.pronamespace where n.nspname=$1 and p.proname=$2`,['public',name])).rows[0];
     if(!meta)throw Object.assign(new Error('missing function'),{code:'PGRST202'});
     const rows=(await db.query(meta.proretset?'select * from public.'+ident(name)+'('+args+')':'select to_jsonb(public.'+ident(name)+'('+args+')) as value',entries.map(x=>x[1]))).rows;
-    response=result(200,meta.proretset?rows:rows[0].value);
+    if(meta.is_void)response=result(204,'',true);else response=result(200,meta.proretset?rows:rows[0].value);
+    if(!fired&&fault==='legacy_void'&&meta.is_void)response=result(200,null);
+    if(!fired&&fault==='void_noeffect'&&name==='archive_business_role'){await db.exec('rollback to savepoint api_request');response=result(204,'',true);fired=true;}
+    if(!fired&&fault==='void_body'&&name==='archive_business_role'){response=result(204,{unexpected:true});fired=true;}
+    if(!fired&&fault==='nonvoid_204'&&name==='save_business_role'){response=result(204,'',true);fired=true;}
    }else{
     const table=url.pathname.slice('/rest/v1/'.length),params=[],cols=(url.searchParams.get('select')||'*').split(',').map(x=>x==='*'?'*':ident(x)).join(',');
     const filters=[...url.searchParams].filter(([key])=>!['select','limit','order'].includes(key));
@@ -178,10 +182,37 @@ try{
  await batch('hidden_write','PROTECTED_BUSINESS_CHANGED');
  await batch('foreign_read','FOREIGN_CLAIM_EXPOSED');
  await batch('logout','TEST_SESSION_LOGOUT_FAILED');
- const receipt={stage_step:'FR.2.3_BUSINESS_FIXTURE_PREPARATION',result:'LOCAL_BUSINESS_FIXTURE_AND_EXISTING_API_ADAPTER_SCOPED_PASS',migration_count:migrations.length,tests,provider_auth_storage_and_http_adapters_used:true,hosted_PostgREST_or_real_file_or_dispatch_verified:false,production_staging_or_native_changed:false};
+ await batch('legacy_void',null);
+ await batch('void_noeffect','ROLE_ARCHIVE_READBACK_FAILED');
+ await batch('void_body','POSITIVE_ARCHIVE_BUSINESS_ROLE_FAILED');
+ await batch('nonvoid_204','POSITIVE_SAVE_BUSINESS_ROLE_FAILED');
+ const stateSQL=await readFile(path.join(root,'supabase/diagnostics/security_fr_2_3_business_archive_state_review.sql'),'utf8');
+ const reviewState=async()=>{const result=await db.exec(stateSQL);return result.flatMap(x=>x.rows||[]).find(x=>x.business_archive_state_review)?.business_archive_state_review;};
+ await db.exec('begin');await context('authenticated',0);
+ const primary=(await db.query("select id from public.budget_workspaces where name='AUDIT-S332-BUSINESS-PRIMARY'")).rows[0].id;
+ const saved=(await db.query("select to_jsonb(public.save_business_role($1,null,'AUDIT-S333-ROLE','Synthetic audit','all',array['workspace.view','reports.view'],null)) as value",[primary])).rows[0].value;
+ await db.query("select public.save_business_role($1,$2,'AUDIT-S333-ROLE-EDITED','Synthetic audit','all',array['workspace.view','reports.view'],1)",[primary,saved.code]);
+ await db.exec('reset role;commit');
+ const beforeState=(await db.query('select jsonb_agg(to_jsonb(r) order by workspace_id,code) as rows from public.business_roles r')).rows[0].rows;
+ const activeState=await reviewState();
+ assert.equal(activeState.transaction_read_only,'on');assert.equal(activeState.target_custom_roles,1);
+ assert.equal(activeState.target_role_details[0].status,'active');assert.equal(activeState.target_role_details[0].version,2);
+ assert.equal(activeState.role_saved_audit_events,2);assert.equal(activeState.role_archived_audit_events,0);
+ assert.equal(activeState.routine_metadata[0].result_type,'void');assert.equal(activeState.routine_metadata[0].matches_reviewed_archive_body,true);
+ tests.push({test:'Read-only diagnostic distinguishes edited active role from completed archive',status:'PASS'});
+ assert.deepEqual((await db.query('select jsonb_agg(to_jsonb(r) order by workspace_id,code) as rows from public.business_roles r')).rows[0].rows,beforeState);
+ tests.push({test:'Read-only role state review preserves actual role rows',status:'PASS'});
+ await db.exec('begin');
+ const archived=await adapter(null).fetcher('https://dczlddwbtgvfdujgcitb.supabase.co/rest/v1/rpc/archive_business_role',{method:'POST',headers:{Authorization:'Bearer LOCAL_FAKE_TOKEN_0'},body:JSON.stringify({p_workspace_id:primary,p_code:saved.code,p_expected_version:2})});
+ assert.equal(archived.status,204);await db.exec('commit');
+ const archivedState=await reviewState();assert.equal(archivedState.target_role_details[0].status,'archived');assert.equal(archivedState.target_role_details[0].version,3);
+ assert.equal(archivedState.role_archived_audit_events,1);assert.equal(archivedState.target_role_details[0].permission_rows,2);
+ assert.equal(archivedState.target_role_details[0].active_members_using_role,0);assert.equal(archivedState.target_role_details[0].pending_valid_invitations_using_role,0);
+ tests.push({test:'Read-only diagnostic reports archived version3 and its exact audit/unused permission scope after modeled204',status:'PASS'});
+ const receipt={stage_step:'FR.2.3_BUSINESS_VOID_RPC_REVIEW',result:'LOCAL_BUSINESS_VOID_RPC_TRANSPORT_AND_READBACK_SCOPED_PASS',migration_count:migrations.length,tests,provider_auth_storage_and_http_adapters_used:true,hosted_PostgREST_or_real_file_or_dispatch_verified:false,production_staging_or_native_changed:false};
  receipt.local_tests=tests.length;receipt.local_PASS=tests.length;receipt.local_FAIL=0;receipt.exit_code=0;
  receipt.SQL_ASCII_only=!/[^\x00-\x7f]/.test(fixture);
  receipt.Business_fixture_rows_created_on_host=0;receipt.hosted_Business_API_checks_run=0;receipt.findings_closed=[];
- await writeFile(path.join(root,'docs/security-audit/security-fr-2-business-fixture-local-checks.json'),JSON.stringify(receipt,null,2)+'\n');
+ await writeFile(path.join(root,'docs/security-audit/security-fr-2-business-void-RPC-local-checks.json'),JSON.stringify(receipt,null,2)+'\n');
  console.log(JSON.stringify(receipt,null,2));
 }finally{await db.close();}

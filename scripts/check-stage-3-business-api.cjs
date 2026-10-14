@@ -13,13 +13,21 @@ const permissionDenied=r=>[401,403].includes(r.status)&&r.data?.code==='42501';
 const empty=r=>r.status===200&&Array.isArray(r.data)&&r.data.length===0;
 const rowDenied=r=>empty(r)||permissionDenied(r);
 const rpcDenied=(r,messages)=>permissionDenied(r)||(r.status===400&&r.data?.code==='P0001'&&messages.includes(r.data.message));
+// Exact reviewed RPCs whose PostgreSQL return type is void.
+const VOID_RPCS=new Set(['archive_business_role','set_business_member_permission']);
+function rpcSucceeded(name,r){
+ if(!r.body_read_ok)return false;
+ if(!VOID_RPCS.has(name))return r.status===200&&r.body_json_ok;
+ if(r.status===204)return r.body_empty&&r.data===null;
+ return r.status===200&&(r.body_empty||r.body_json_ok)&&(r.data===null||r.data==='');
+}
 function parseConfig(text){
  let c;try{c=JSON.parse(text.replace(/^\s*window\.MUSHAVO_BUDGET_CONFIG\s*=\s*/,'').replace(/;\s*$/,''));}catch{throw new AuditError('CONFIG_PARSE_FAILED');}
  ensure(c.supabaseUrl===STAGING&&!text.includes('kttkospkblwvguuwnhjj')&&!c.vapidPublicKey,'CONFIG_NOT_ISOLATED_STAGING');
  ensure(/^sb_publishable_[A-Za-z0-9_-]+$/.test(c.supabasePublishableKey||''),'CONFIG_KEY_TYPE_REJECTED');return c;
 }
 async function run({fetcher=fetch,ownerPassword,outsiderPassword,uuid=randomUUID}={}){
- const checks=[],sessions=[],fixtures=[],permissions=[];let config,phase='Staging configuration',problem=null,requests=0,logoutOk=true,writes=false,removed=false;
+ const checks=[],sessions=[],fixtures=[],permissions=[];let config,phase='Staging configuration',problem=null,requests=0,logoutOk=true,writes=false,removed=false,positiveRpcFailure=null;
  const pass=check=>checks.push({check,status:'PASS'});
  const blocked=(check,code)=>checks.push({check,status:'BLOCKED',problem_code:code});
  async function request(route,{session,method='GET',body}={}){
@@ -29,8 +37,9 @@ async function run({fetcher=fetch,ownerPassword,outsiderPassword,uuid=randomUUID
   if(method!=='GET')headers.Prefer='return=representation';
   if(body!==undefined)headers['Content-Type']='application/json';
   const r=await fetcher(STAGING+route,{method,headers,body:body===undefined?undefined:JSON.stringify(body),redirect:'error',signal:AbortSignal.timeout(20000)});
-  let data;try{const text=await r.text();data=text?JSON.parse(text):null;}catch{data=null;}
-  return {status:r.status,data};
+  let data=null,bodyReadOk=false,bodyEmpty=false,bodyJsonOk=false;
+  try{const text=await r.text();bodyReadOk=true;bodyEmpty=text.length===0;if(!bodyEmpty){data=JSON.parse(text);bodyJsonOk=true;}}catch{data=null;}
+  return {status:r.status,data,body_read_ok:bodyReadOk,body_empty:bodyEmpty,body_json_ok:bodyJsonOk};
  }
  const rpc=(name,session,body)=>request('/rest/v1/rpc/'+name,{session,method:'POST',body});
  const route=(table,filter,select='*')=>'/rest/v1/'+table+'?select='+select+'&'+filter;
@@ -41,7 +50,13 @@ async function run({fetcher=fetch,ownerPassword,outsiderPassword,uuid=randomUUID
  async function one(table,filter,session,select='*'){
   const r=await rows(table,filter,session,select);ensure(r.length===1,'KNOWN_ROW_MISSING_OR_AMBIGUOUS');return r[0];
  }
- async function ok(name,session,body){writes=true;const r=await rpc(name,session,body);ensure(r.status===200,'POSITIVE_'+name.toUpperCase()+'_FAILED');return r.data;}
+ async function ok(name,session,body){
+  writes=true;const r=await rpc(name,session,body);
+  if(!rpcSucceeded(name,r)){
+   positiveRpcFailure={rpc:name,http_status:r.status,body_kind:!r.body_read_ok?'UNREADABLE':r.body_empty?'EMPTY':r.body_json_ok?'JSON':'MALFORMED',error_code:/^(?:PGRST[0-9]{3}|[A-Z0-9]{5})$/.test(r.data?.code||'')?r.data.code:null};
+   throw new AuditError('POSITIVE_'+name.toUpperCase()+'_FAILED');
+  }return r.data;
+ }
  async function snapshot(f,tables){
   const value={};for(const t of tables){
    if(t==='business_invitation_scopes'){
@@ -252,9 +267,9 @@ async function run({fetcher=fetch,ownerPassword,outsiderPassword,uuid=randomUUID
  finally{if(config)for(const s of sessions){try{const r=await request('/auth/v1/logout?scope=local',{session:s,method:'POST'});if(![200,204].includes(r.status))logoutOk=false;}catch{logoutOk=false;}}}
  if(!problem&&(!logoutOk||sessions.length!==2)){problem='TEST_SESSION_LOGOUT_FAILED';checks.push({check:'Local test-session logout',status:'REVIEW',problem_code:problem});}
  else if(logoutOk&&sessions.length===2)pass('Only the two generated API sessions receive local logout');
- return {stage_step:'3.3.3',result:problem?'STAGING_BUSINESS_API_REVIEW':'STAGING_BUSINESS_API_SCOPED_PASS_WITH_CARRY_FORWARD',project:'dczlddwbtgvfdujgcitb',checks,problem_code:problem,effective_permission_captures:permissions,
+ return {stage_step:'3.3.3',result:problem?'STAGING_BUSINESS_API_REVIEW':'STAGING_BUSINESS_API_SCOPED_PASS_WITH_CARRY_FORWARD',project:'dczlddwbtgvfdujgcitb',checks,problem_code:problem,positive_rpc_failure:positiveRpcFailure,effective_permission_captures:permissions,
  request_count:requests,test_sessions_logged_out:logoutOk&&sessions.length===2,exact_primary_member_removed:removed,synthetic_business_fixtures_retained:true,
  incomplete_write_effects_may_remain:!!problem&&writes,private_original_download_or_actual_dispatch_verified:false,full_role_operation_matrix_or_F15_acceptance_verified:false,
  Auth_platform_roles_product_launch_production_or_native_changed:false,credentials_tokens_keys_private_identifiers_or_raw_rows_printed:false,completed_utc:new Date().toISOString()};
 }
-module.exports={run,parseConfig,rowDenied,rpcDenied,permissionDenied,AuditError};
+module.exports={run,parseConfig,rowDenied,rpcDenied,permissionDenied,AuditError,rpcSucceeded};

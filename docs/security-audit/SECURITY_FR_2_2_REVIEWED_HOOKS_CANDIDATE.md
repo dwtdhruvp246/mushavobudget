@@ -37,3 +37,7 @@ Primary source pins:
 - https://github.com/supabase/postgres/blob/f4c005d50608990033ab370f9b00fd1c693c99db/migrations/db/migrations/20220321174452_fix-postgrest-alter-type-event-trigger.sql
 - https://www.postgresql.org/docs/17/functions-binarystring.html
 - https://www.postgresql.org/docs/17/event-trigger-definition.html
+
+## Owner installation metadata — 14 October 2026
+
+FRE16: [owner receipt](security-fr-2-binding-owner-installation.json) reports post-COMMIT workspace update-column coverage present. [Installation checkpoint](SECURITY_FR_2_2_INSTALLATION_CHECKPOINT.md) records limits and the next controlled Personal API recheck. This supersedes the pending-installation handoff state above without changing earlier evidence, reviewed SQL or local results. No hosted authorization/finding/history/canonical integration acceptance is claimed.

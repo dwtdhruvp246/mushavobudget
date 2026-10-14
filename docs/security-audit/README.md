@@ -1,3 +1,11 @@
+# Current execution checkpoint — FR.2.2 installation metadata received; API recheck next
+
+14 October 2026, FRE16. [Installation checkpoint](SECURITY_FR_2_2_INSTALLATION_CHECKPOINT.md) and [owner receipt](security-fr-2-binding-owner-installation.json): the revised installer's post-COMMIT catalog flag reports workspace_id update coverage present. This is installation metadata, not API acceptance or historical repair. Next is the [controlled Personal recheck](SECURITY_FR_2_2_PERSONAL_API_RECHECK_HANDOFF.md) using unchanged exact-pin checker/runner; 33 scoped PASS checks expected, owner result pending. Earlier retained fixtures/manual conversions are not targeted. No further SQL/upload is requested now. Earlier source/local/failed-attempt evidence and original open findings/actions remain preserved; APK deferred.
+
+Earlier checkpoints below are retained as history.
+
+---
+
 # Current execution checkpoint — FR.2.2 reviewed hooks; revised installer ready
 
 14 October 2026, FRE15. [Revised candidate report](SECURITY_FR_2_2_REVIEWED_HOOKS_CANDIDATE.md), [owner hook metadata](security-fr-2-event-hooks-owner-result.json), [contract](security-fr-2-reviewed-hooks-contract.json) and [48-case local result](security-fr-2-reviewed-hooks-local-checks.json). Both matching provider hook body fingerprints/lengths match pinned Supabase source. A separate revised installer checks exact SHA-256 and full reviewed hook shape, keeps hooks active and still rejects unknown drift. 48 local cases PASS; hosted installation remains pending. Full staging SQL is supplied in chat. Earlier stopped installer, 32-case evidence, Stage 0–10 objects and open findings/actions remain preserved; APK deferred.

@@ -1,3 +1,11 @@
+# Current execution checkpoint — FR.2.2 direct own-relink batch 16 PASS
+
+14 October 2026, FRE19. [Relink outcome](SECURITY_FR_2_2_RELINK_OUTCOME.md), [complete owner receipt](security-fr-2-relink-owner-result.json): 16 PASS, exit 0, both valid own-parent relinks/missing-parent rejection/restoration and private conversion/settings preservation verified at checker scope. Four new inactive items/two records remain with derived conversions for exact cleanup. Earlier separate 33-PASS batch and original failed evidence remain preserved. Next is the [post-relink read-only snapshot](SECURITY_FR_2_2_POST_RELINK_SNAPSHOT_HANDOFF.md), full unchanged SQL in chat. Exact fixture cleanup, historical provenance/disposition, canonical integration and original open requirements remain; APK deferred.
+
+Earlier checkpoints below are retained as history.
+
+---
+
 # Current execution checkpoint — FR.2.2 conversion baseline; valid-own-relink batch ready
 
 14 October 2026, FRE18. [New relink candidate and snapshot report](SECURITY_FR_2_2_RELINK_CANDIDATE.md), [owner snapshot](security-fr-2-conversion-snapshot-owner-result.json), [contract](security-fr-2-relink-candidate-contract.json), [21-PASS local result](security-fr-2-relink-local-checks.json). Two retained manual Family rows match; one record/one conversion mismatch and two unlinked conversion references remain. Exact provenance/disposition is unresolved. The next direct relink checker has 16 planned PASS groups; four new inactive items/two records will be retained with conversion rows for exact cleanup. Full terminal code is supplied in chat; owner result pending. Previous 33-PASS hosted result and all original stages/events/open findings remain preserved; APK deferred.

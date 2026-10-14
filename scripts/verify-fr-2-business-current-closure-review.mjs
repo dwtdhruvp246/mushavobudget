@@ -50,11 +50,15 @@ await db.exec(`create function public.audit_review_leaf() returns void language 
 create function public.audit_review_cycle() returns void language plpgsql as $$begin perform public.audit_review_leaf(); end$$;
 create function public.audit_review_leaf(integer) returns void language plpgsql as $$begin execute 'select 1'; end$$;
 create function public.audit_review_trigger() returns trigger language plpgsql as $$begin perform public.audit_review_leaf(); return new; end$$;
-create trigger audit_review_extra before insert on public.business_profiles for each row execute function public.audit_review_trigger();`);
+create trigger audit_review_extra before insert on public.business_profiles for each row execute function public.audit_review_trigger();
+create trigger audit_review_when before update on public.business_profiles for each row when(old.workspace_id is distinct from new.workspace_id) execute function public.audit_review_trigger();`);
 const cycle=await review();
 check('Extra trigger and static helper cycle are included without infinite recursion',()=>{
  assert.ok(cycle.trigger_metadata.find(x=>x.name==='audit_review_extra'));
  assert.ok(cycle.function_metadata.find(x=>x.name==='audit_review_cycle'));
+});
+check('WHEN predicate using OLD and NEW is safely fingerprinted without expression deparse',()=>{
+ const t=cycle.trigger_metadata.find(x=>x.name==='audit_review_when');assert.equal(t.when_clause_present,true);assert.notEqual(t.when_clause_md5,'d41d8cd98f00b204e9800998ecf8427e');
 });
 check('All named overloads retained for later exact source resolution',()=>assert.equal(cycle.function_metadata.filter(x=>x.name==='audit_review_leaf').length,2));
 check('Dynamic SQL marker prevents claims of complete dispatch closure',()=>{
@@ -67,7 +71,7 @@ check('Unresolved qualified call and outbound marker surfaced without invocation
  assert.ok(outbound.unresolved_qualified_call_candidates.includes('not_a_catalog_function'));
  assert.equal(outbound.function_metadata.find(x=>x.name==='audit_review_cycle').outbound_marker,true);
 });
-await db.exec('drop trigger audit_review_extra on public.business_profiles; drop function public.audit_review_trigger(); drop function public.audit_review_cycle(); drop function public.audit_review_leaf(); drop function public.audit_review_leaf(integer);');
+await db.exec('drop trigger audit_review_extra on public.business_profiles; drop trigger audit_review_when on public.business_profiles; drop function public.audit_review_trigger(); drop function public.audit_review_cycle(); drop function public.audit_review_leaf(); drop function public.audit_review_leaf(integer);');
 await db.exec('create or replace function public.set_payment_outbox_workspace_context() returns trigger language plpgsql security definer set search_path=public,pg_temp as $BODY$'+body+'$BODY$');
 const before=(await db.query("select jsonb_agg(to_jsonb(p) order by oid) as metadata from pg_proc p where pronamespace='public'::regnamespace")).rows[0].metadata;
 await review();const after=(await db.query("select jsonb_agg(to_jsonb(p) order by oid) as metadata from pg_proc p where pronamespace='public'::regnamespace")).rows[0].metadata;

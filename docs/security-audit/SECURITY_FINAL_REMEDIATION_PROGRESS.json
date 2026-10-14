@@ -390,7 +390,7 @@
           "current_catalog_review_SQL": "supabase/diagnostics/security_fr_2_3_business_current_closure_review.sql",
           "current_catalog_review_local_receipt": "docs/security-audit/security-fr-2-business-current-closure-local-checks.json",
           "current_catalog_review_source_model": "docs/security-audit/security-fr-2-business-current-closure-source-model.json",
-          "current_catalog_review_local_PASS": 17,
+          "current_catalog_review_local_PASS": 18,
           "current_catalog_owner_result_received": false
         },
         {

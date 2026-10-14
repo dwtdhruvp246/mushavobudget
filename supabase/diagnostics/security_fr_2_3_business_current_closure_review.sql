@@ -103,7 +103,7 @@ trigger_metadata AS (
       WITH ORDINALITY k(num,ord) JOIN pg_attribute a
       ON a.attrelid=t.tgrelid AND a.attnum=k.num ORDER BY k.ord) AS update_columns,
     t.tgqual IS NOT NULL AS when_clause_present,
-    md5(coalesce(pg_get_expr(t.tgqual,t.tgrelid),'')) AS when_clause_md5,
+    md5(coalesce(t.tgqual::text,'')) AS when_clause_md5,
     t.tgoldtable IS NOT NULL OR t.tgnewtable IS NOT NULL AS transition_tables_present
   FROM selected_triggers t JOIN pg_proc p ON p.oid=t.tgfoid
   JOIN pg_namespace n ON n.oid=p.pronamespace

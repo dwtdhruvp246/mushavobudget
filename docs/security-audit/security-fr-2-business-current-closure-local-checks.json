@@ -4,8 +4,8 @@
   "source_parent_commit": "9b01ac1c674a94be60a54b21bea0466e831f3013",
   "node_version": "v24.19.0",
   "ordered_migrations": 54,
-  "tests": 17,
-  "pass": 17,
+  "tests": 18,
+  "pass": 18,
   "fail": 0,
   "exit_code": 0,
   "selected_relations": 27,
@@ -16,7 +16,7 @@
   "dynamic_SQL_marker_names": [],
   "outbound_marker_names": [],
   "SQL_ASCII_only": true,
-  "SQL_SHA256": "2ec911847199d272698c106883d3c21de3c61fff4922236eb795e0ce9b72ebbd",
+  "SQL_SHA256": "b1bf5d304e9f3c428fd161245d36718daf4b3a105dbb99ab5cf94c2742c9d3b7",
   "cases": [
     {
       "name": "All 54 ordered source migrations compile",
@@ -63,6 +63,10 @@
       "status": "PASS"
     },
     {
+      "name": "WHEN predicate using OLD and NEW is safely fingerprinted without expression deparse",
+      "status": "PASS"
+    },
+    {
       "name": "All named overloads retained for later exact source resolution",
       "status": "PASS"
     },
@@ -106,5 +110,6 @@
       "reason": "Verifier expected mixed-case dynamic_SQL_marker property but unquoted SQL alias is lowercase; corrected verifier property access."
     }
   ],
-  "final_local_attempt_passed": true
+  "final_local_attempt_passed": true,
+  "supplemental_WHEN_review": "PostgreSQL pg_get_expr rejects OLD/NEW multi-relation trigger predicates; hash stored tgqual node text instead, verify nonempty predicate hash without invoking trigger."
 }

@@ -8,12 +8,12 @@
   "observed_LF_body_MD5": "097128330dee61398b475cf244293e30",
   "diagnostic_SQL": "supabase/diagnostics/security_fr_2_3_business_current_closure_review.sql",
   "diagnostic_SQL_ASCII_only": true,
-  "diagnostic_SQL_SHA256": "2ec911847199d272698c106883d3c21de3c61fff4922236eb795e0ce9b72ebbd",
+  "diagnostic_SQL_SHA256": "b1bf5d304e9f3c428fd161245d36718daf4b3a105dbb99ab5cf94c2742c9d3b7",
   "source_model": "docs/security-audit/security-fr-2-business-current-closure-source-model.json",
   "local_receipt": "docs/security-audit/security-fr-2-business-current-closure-local-checks.json",
   "ordered_source_migrations": 54,
   "verified_source_blob_identities": 56,
-  "local_PASS": 17,
+  "local_PASS": 18,
   "local_FAIL": 0,
   "local_exit_code": 0,
   "source_selected_relations": 27,
@@ -49,5 +49,6 @@
   "hosted_acceptance": false,
   "production_or_native_changed": false,
   "APK_update_deferred": true,
-  "findings_closed": []
+  "findings_closed": [],
+  "trigger_WHEN_fingerprint": "MD5_OF_STORED_TGQUAL_NODE_TEXT_NOT_PG_GET_EXPR"
 }

@@ -1,6 +1,6 @@
 # FR.2.3 — owner outbox correction passed; current catalog review ready
 
-14 October 2026, FRE29. [Owner correction result](security-fr-2-outbox-body-correction-owner-result.json), [read-only review contract](security-fr-2-business-current-closure-review-contract.json), [17 local checks](security-fr-2-business-current-closure-local-checks.json), [ordered-source metadata model](security-fr-2-business-current-closure-source-model.json).
+14 October 2026, FRE29. [Owner correction result](security-fr-2-outbox-body-correction-owner-result.json), [read-only review contract](security-fr-2-business-current-closure-review-contract.json), [18 local checks](security-fr-2-business-current-closure-local-checks.json), [ordered-source metadata model](security-fr-2-business-current-closure-source-model.json).
 
 ## Owner correction outcome
 
@@ -18,9 +18,9 @@ Static literal matching is deliberately limited: public relation column lists/ty
 
 ## Local evidence
 
-**17 PASS, exit0**, one Node syntax check, PGlite0.5.8/PostgreSQL18.3, all **54 ordered migrations** compiled with the existing modeled Auth/Storage/default grants helper. Exact Git blob identities verified for54 migrations plus helper and checker (56 source inputs). Source model:27 selected relations,26 roots,**78 user triggers /93 reachable public functions /13 policy dependency roots**, no output truncation, no unresolved qualified candidates and no dynamic SQL/outbound marker in this selected source graph. This is modeled source metadata, not hosted grants or acceptance.
+**18 PASS, exit0**, one Node syntax check, PGlite0.5.8/PostgreSQL18.3, all **54 ordered migrations** compiled with the existing modeled Auth/Storage/default grants helper. Exact Git blob identities verified for54 migrations plus helper and checker (56 source inputs). Source model:27 selected relations,26 roots,**78 user triggers /93 reachable public functions /13 policy dependency roots**, no output truncation, no unresolved qualified candidates and no dynamic SQL/outbound marker in this selected source graph. This is modeled source metadata, not hosted grants or acceptance.
 
-Actual diagnostic tested against ordered catalog; CRLF preserves clean hash while the known separator corruption still changes it; disabled/extra trigger surfaced; recursive helper cycle terminates; all overloads retained; synthetic dynamic/outbound/unresolved calls flagged without invocation; complete public function catalog unchanged by review; ordinary SQL role and non-origin session rejected. First local attempts caught false unresolved relation-column-list matches and a verifier mixed-case property mismatch. Query distinguishes catalog relations/types; verifier uses PostgreSQL's lowercase alias. Final17-case run passed. No production/hosted operation occurred in local checks.
+Actual diagnostic tested against ordered catalog; CRLF preserves clean hash while the known separator corruption still changes it; disabled/extra trigger surfaced; recursive helper cycle terminates; all overloads retained; synthetic dynamic/outbound/unresolved calls flagged without invocation; OLD/NEW trigger WHEN predicates safely fingerprinted from stored catalog node text (pg_get_expr cannot deparse both relation references); complete public function catalog unchanged by review; ordinary SQL role and non-origin session rejected. First local attempts caught false unresolved relation-column-list matches and a verifier mixed-case property mismatch. Query distinguishes catalog relations/types; verifier uses PostgreSQL's lowercase alias. Final18-case run passed. No production/hosted operation occurred in local checks.
 
 ## Handoff
 

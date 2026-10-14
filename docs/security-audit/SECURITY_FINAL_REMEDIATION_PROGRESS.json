@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-14",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BUSINESS_OUTBOX_DRIFT_EXACTLY_RECONCILED_ASCII_CORRECTION_27_LOCAL_PASS_OWNER_PENDING",
+  "status": "FR2_BUSINESS_OUTBOX_BODY_ALIGNED_CURRENT_CATALOG_REVIEW_OWNER_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.2",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE28",
+  "latest_evidence": "FRE29",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_EXACT_OUTBOX_DRIFT_RECONCILED_CORRECTION_OWNER_PENDING",
+      "status": "IN_PROGRESS_OUTBOX_BODY_ALIGNED_CURRENT_BUSINESS_CATALOG_OWNER_REVIEW_PENDING",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -359,7 +359,7 @@
         },
         {
           "id": "FR.2.3",
-          "status": "EXACT_ENCODING_DRIFT_RECONCILED_GUARDED_BODY_CORRECTION_OWNER_PENDING",
+          "status": "OUTBOX_BODY_CORRECTED_CURRENT_CATALOG_OWNER_REVIEW_PENDING",
           "title": "Business roles/scopes and controlled fixtures",
           "outbox_drift_review_handoff": "docs/security-audit/SECURITY_FR_2_3_OUTBOX_DRIFT_REVIEW_HANDOFF.md",
           "outbox_drift_review_diagnostic": "supabase/diagnostics/security_fr_2_3_outbox_drift_review.sql",
@@ -380,8 +380,18 @@
           "outbox_correction_rollback_SQL": "supabase/remediation/security_fr_2_3_outbox_body_rollback.sql",
           "outbox_correction_local_receipt": "docs/security-audit/security-fr-2-outbox-body-correction-local-checks.json",
           "outbox_correction_local_PASS": 27,
-          "outbox_correction_owner_result_received": false,
-          "source_guard_CRLF_and_current_closure_recheck_pending": true
+          "outbox_correction_owner_result_received": true,
+          "source_guard_CRLF_and_current_closure_recheck_pending": true,
+          "outbox_correction_owner_receipt": "docs/security-audit/security-fr-2-outbox-body-correction-owner-result.json",
+          "outbox_correction_owner_checked_UTC": "2026-10-14T17:49:33.84635+00:00",
+          "outbox_correction_reviewed_body_matches": true,
+          "current_catalog_review_report": "docs/security-audit/SECURITY_FR_2_3_OUTBOX_CORRECTION_OUTCOME_AND_CURRENT_CLOSURE_HANDOFF.md",
+          "current_catalog_review_contract": "docs/security-audit/security-fr-2-business-current-closure-review-contract.json",
+          "current_catalog_review_SQL": "supabase/diagnostics/security_fr_2_3_business_current_closure_review.sql",
+          "current_catalog_review_local_receipt": "docs/security-audit/security-fr-2-business-current-closure-local-checks.json",
+          "current_catalog_review_source_model": "docs/security-audit/security-fr-2-business-current-closure-source-model.json",
+          "current_catalog_review_local_PASS": 17,
+          "current_catalog_owner_result_received": false
         },
         {
           "id": "FR.2.4",
@@ -456,7 +466,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.3_OWNER_GUARDED_OUTBOX_BODY_CORRECTION_RESULT",
+  "next_step": "FR.2.3_OWNER_READ_ONLY_CURRENT_BUSINESS_CATALOG_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -627,5 +637,15 @@
   "FR2_outbox_body_correction_report": "docs/security-audit/SECURITY_FR_2_3_OUTBOX_EXACT_DRIFT_AND_CORRECTION.md",
   "FR2_outbox_body_correction_contract": "docs/security-audit/security-fr-2-outbox-body-correction-contract.json",
   "FR2_outbox_body_correction_local_receipt": "docs/security-audit/security-fr-2-outbox-body-correction-local-checks.json",
-  "FR2_outbox_body_correction_owner_result_received": false
+  "FR2_outbox_body_correction_owner_result_received": true,
+  "FR2_outbox_body_correction_owner_receipt": "docs/security-audit/security-fr-2-outbox-body-correction-owner-result.json",
+  "FR2_outbox_body_correction_owner_checked_UTC": "2026-10-14T17:49:33.84635+00:00",
+  "FR2_outbox_body_correction_reviewed_target_matches": true,
+  "FR2_outbox_body_correction_observed_LF_MD5": "097128330dee61398b475cf244293e30",
+  "FR2_current_Business_catalog_review_report": "docs/security-audit/SECURITY_FR_2_3_OUTBOX_CORRECTION_OUTCOME_AND_CURRENT_CLOSURE_HANDOFF.md",
+  "FR2_current_Business_catalog_review_contract": "docs/security-audit/security-fr-2-business-current-closure-review-contract.json",
+  "FR2_current_Business_catalog_review_diagnostic": "supabase/diagnostics/security_fr_2_3_business_current_closure_review.sql",
+  "FR2_current_Business_catalog_review_local_receipt": "docs/security-audit/security-fr-2-business-current-closure-local-checks.json",
+  "FR2_current_Business_catalog_review_source_model": "docs/security-audit/security-fr-2-business-current-closure-source-model.json",
+  "FR2_current_Business_catalog_owner_result_received": false
 }

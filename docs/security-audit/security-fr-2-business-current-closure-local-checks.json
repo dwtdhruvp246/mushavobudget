@@ -1,0 +1,110 @@
+{
+  "stage_step": "FR.2.3_BUSINESS_CURRENT_CLOSURE_REVIEW",
+  "result": "LOCAL_ORDERED_SOURCE_CATALOG_AND_READ_ONLY_DIAGNOSTIC_SCOPED_PASS",
+  "source_parent_commit": "9b01ac1c674a94be60a54b21bea0466e831f3013",
+  "node_version": "v24.19.0",
+  "ordered_migrations": 54,
+  "tests": 17,
+  "pass": 17,
+  "fail": 0,
+  "exit_code": 0,
+  "selected_relations": 27,
+  "API_roots": 26,
+  "selected_user_triggers": 78,
+  "reachable_public_functions": 93,
+  "policy_dependency_roots": 13,
+  "dynamic_SQL_marker_names": [],
+  "outbound_marker_names": [],
+  "SQL_ASCII_only": true,
+  "SQL_SHA256": "2ec911847199d272698c106883d3c21de3c61fff4922236eb795e0ce9b72ebbd",
+  "cases": [
+    {
+      "name": "All 54 ordered source migrations compile",
+      "status": "PASS"
+    },
+    {
+      "name": "All 27 selected relations and 26 API roots are present",
+      "status": "PASS"
+    },
+    {
+      "name": "Complete bounded metadata, no truncation",
+      "status": "PASS"
+    },
+    {
+      "name": "Outbox exact reviewed ordered-migration body",
+      "status": "PASS"
+    },
+    {
+      "name": "Policy dependency roots included",
+      "status": "PASS"
+    },
+    {
+      "name": "Read-only review reports no application invocation or acceptance",
+      "status": "PASS"
+    },
+    {
+      "name": "Relation column lists do not become unresolved call candidates in source model",
+      "status": "PASS"
+    },
+    {
+      "name": "CRLF-only normalization retains exact LF hash and exposes raw byte difference",
+      "status": "PASS"
+    },
+    {
+      "name": "Actual separator corruption stays distinguishable from CRLF formatting",
+      "status": "PASS"
+    },
+    {
+      "name": "Disabled expected trigger remains visible in inventory",
+      "status": "PASS"
+    },
+    {
+      "name": "Extra trigger and static helper cycle are included without infinite recursion",
+      "status": "PASS"
+    },
+    {
+      "name": "All named overloads retained for later exact source resolution",
+      "status": "PASS"
+    },
+    {
+      "name": "Dynamic SQL marker prevents claims of complete dispatch closure",
+      "status": "PASS"
+    },
+    {
+      "name": "Unresolved qualified call and outbound marker surfaced without invocation",
+      "status": "PASS"
+    },
+    {
+      "name": "Review preserves full public function catalog",
+      "status": "PASS"
+    },
+    {
+      "name": "Ordinary role rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "Non-origin session rejected",
+      "status": "PASS"
+    }
+  ],
+  "hosted_catalog_or_auth_verified": false,
+  "hosted_Business_API_checks_run": 0,
+  "Business_fixture_rows_created": 0,
+  "dispatch_jobs_or_provider_calls_run": 0,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "syntax_checks": 1,
+  "PGlite_version": "0.5.8",
+  "source_blob_identities_verified": 56,
+  "initial_local_attempts": [
+    {
+      "result": "FAIL",
+      "reason": "Static qualified-call regex initially treated INSERT relation column lists as unresolved function calls; distinguish existing public relations/types from unresolved candidates."
+    },
+    {
+      "result": "FAIL",
+      "reason": "Verifier expected mixed-case dynamic_SQL_marker property but unquoted SQL alias is lowercase; corrected verifier property access."
+    }
+  ],
+  "final_local_attempt_passed": true
+}

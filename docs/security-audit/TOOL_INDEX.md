@@ -1,3 +1,11 @@
+# Current execution checkpoint — outbox correction passed; catalog review ready
+
+14 October 2026, FRE29. [Owner correction receipt](security-fr-2-outbox-body-correction-owner-result.json): reviewed migration hash097128330dee61398b475cf244293e30, existing outbox rows and public controls unchanged under installer assertions. [Current Business catalog review](SECURITY_FR_2_3_OUTBOX_CORRECTION_OUTCOME_AND_CURRENT_CLOSURE_HANDOFF.md) is read-only;17 local cases PASS against54 ordered migrations,78 selected user triggers/93 reachable source functions. Owner metadata comparison pending before controlled fixtures; no Business/API/dispatch acceptance claimed.
+
+Earlier checkpoints/evidence and FR.2.2 completion/history remain intact. Full release/final audit pending; production excluded, APK deferred.
+
+---
+
 # Current execution checkpoint — exact outbox drift identified; guarded correction ready
 
 14 October 2026, FRE28. [Owner metadata](security-fr-2-outbox-drift-owner-result.json) and [exact proof](security-fr-2-outbox-exact-drift-proof.json): 34/35 historical lines identical; line28 separator corrupted from U+00B7 to U+252C/U+2556. Reconstructed body matches every line and both whole deployed hashes. [Guarded ASCII correction](SECURITY_FR_2_3_OUTBOX_EXACT_DRIFT_AND_CORRECTION.md), 27 local cases PASS, aligns exact reviewed migration body while preserving existing rows/function object/permissions/trigger metadata. Owner installer result pending; no Business fixtures or dispatch yet.

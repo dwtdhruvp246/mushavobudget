@@ -3,7 +3,7 @@
   "updated_date": "2026-10-14",
   "current_stage": null,
   "current_step": "FR.2.2",
-  "current_title": "FR.2.3 \u2014 outbox separator corruption exactly reconciled; guarded ASCII correction ready",
+  "current_title": "FR.2.3 \u2014 outbox body correction reported successful; current Business catalog review ready",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.3_OWNER_GUARDED_OUTBOX_BODY_CORRECTION_RESULT",
+  "next_step": "FR.2.3_OWNER_READ_ONLY_CURRENT_BUSINESS_CATALOG_RESULT",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3358,13 +3358,13 @@
   },
   "next_phase": "FINAL_REMEDIATION",
   "final_remediation": {
-    "status": "FR2_BUSINESS_OUTBOX_DRIFT_EXACTLY_RECONCILED_ASCII_CORRECTION_27_LOCAL_PASS_OWNER_PENDING",
+    "status": "FR2_BUSINESS_OUTBOX_BODY_ALIGNED_CURRENT_CATALOG_REVIEW_OWNER_PENDING",
     "prepared_date": "2026-10-13",
     "handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
     "proposed_batches": 8,
     "original_findings_mapped": 20,
     "existing_open_action_entries": 61,
-    "next_step": "FR.2.3_OWNER_GUARDED_OUTBOX_BODY_CORRECTION_RESULT",
+    "next_step": "FR.2.3_OWNER_READ_ONLY_CURRENT_BUSINESS_CATALOG_RESULT",
     "release_gate_unchanged": true,
     "full_fresh_final_reaudit_required": true,
     "started_date": "2026-10-13",
@@ -3373,7 +3373,7 @@
     "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
     "progress": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PROGRESS.json",
     "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-    "latest_evidence": "FRE28",
+    "latest_evidence": "FRE29",
     "candidate_report": "docs/security-audit/SECURITY_FR_1_1_STAGING_CANDIDATE.md",
     "local_receipt": "docs/security-audit/security-final-staging-local-checks.json",
     "owner_terminal_action_required": false,
@@ -3542,7 +3542,17 @@
     "FR2_outbox_body_correction_report": "docs/security-audit/SECURITY_FR_2_3_OUTBOX_EXACT_DRIFT_AND_CORRECTION.md",
     "FR2_outbox_body_correction_contract": "docs/security-audit/security-fr-2-outbox-body-correction-contract.json",
     "FR2_outbox_body_correction_local_receipt": "docs/security-audit/security-fr-2-outbox-body-correction-local-checks.json",
-    "FR2_outbox_body_correction_owner_result_received": false
+    "FR2_outbox_body_correction_owner_result_received": true,
+    "FR2_outbox_body_correction_owner_receipt": "docs/security-audit/security-fr-2-outbox-body-correction-owner-result.json",
+    "FR2_outbox_body_correction_owner_checked_UTC": "2026-10-14T17:49:33.84635+00:00",
+    "FR2_outbox_body_correction_reviewed_target_matches": true,
+    "FR2_outbox_body_correction_observed_LF_MD5": "097128330dee61398b475cf244293e30",
+    "FR2_current_Business_catalog_review_report": "docs/security-audit/SECURITY_FR_2_3_OUTBOX_CORRECTION_OUTCOME_AND_CURRENT_CLOSURE_HANDOFF.md",
+    "FR2_current_Business_catalog_review_contract": "docs/security-audit/security-fr-2-business-current-closure-review-contract.json",
+    "FR2_current_Business_catalog_review_diagnostic": "supabase/diagnostics/security_fr_2_3_business_current_closure_review.sql",
+    "FR2_current_Business_catalog_review_local_receipt": "docs/security-audit/security-fr-2-business-current-closure-local-checks.json",
+    "FR2_current_Business_catalog_review_source_model": "docs/security-audit/security-fr-2-business-current-closure-source-model.json",
+    "FR2_current_Business_catalog_owner_result_received": false
   },
   "current_phase": "FINAL_REMEDIATION"
 }

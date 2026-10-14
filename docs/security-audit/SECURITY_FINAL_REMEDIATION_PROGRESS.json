@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-14",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_POST_RELINK_SNAPSHOT_MATCHED_EXACT_CLEANUP_14_LOCAL_PASS_OWNER_PENDING",
+  "status": "FR2_EXACT_RELINK_RUN_CLEANUP_COMMITTED_HISTORICAL_PROVENANCE_AND_CANONICAL_INTEGRATION_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.2",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE20",
+  "latest_evidence": "FRE21",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_PERSONAL_RECHECKS_POST_SNAPSHOT_MATCH_EXACT_CLEANUP_PENDING",
+      "status": "IN_PROGRESS_EXACT_RELINK_CLEANUP_COMMITTED_HISTORICAL_REVIEW_PENDING",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -179,7 +179,7 @@
         },
         {
           "id": "FR.2.2",
-          "status": "HOSTED_PERSONAL_RELINK_POST_SNAPSHOT_MATCH_EXACT_CLEANUP_AND_HISTORY_INTEGRATION_PENDING",
+          "status": "HOSTED_PERSONAL_RECHECKS_EXACT_RELINK_CLEANUP_ACCEPTED_HISTORY_AND_INTEGRATION_PENDING",
           "title": "Personal workspace binding and legitimate finance",
           "report": "docs/security-audit/SECURITY_FR_2_2_BINDING_CANDIDATE.md",
           "local_receipt": "docs/security-audit/security-fr-2-binding-local-checks.json",
@@ -246,8 +246,8 @@
           "relink_owner_exit_code": 0,
           "relink_owner_completed_UTC": "2026-10-14T05:28:27.362Z",
           "relink_run_marker": "AUDIT-FR22-RELINK-5f93bfbe-5830-457d-b3a4-c1088d4711fd",
-          "new_relink_inactive_items_retained": 4,
-          "new_relink_paid_records_retained": 2,
+          "new_relink_inactive_items_retained": 0,
+          "new_relink_paid_records_retained": 0,
           "generated_missing_parent_rejection_hosted_verified": true,
           "preexisting_visible_conversions_privately_compared_unchanged": true,
           "post_relink_snapshot_handoff": "docs/security-audit/SECURITY_FR_2_2_POST_RELINK_SNAPSHOT_HANDOFF.md",
@@ -261,7 +261,18 @@
           "exact_relink_cleanup_contract": "docs/security-audit/security-fr-2-relink-cleanup-contract.json",
           "exact_relink_cleanup_local_receipt": "docs/security-audit/security-fr-2-relink-cleanup-local-checks.json",
           "exact_relink_cleanup_local_PASS": 14,
-          "exact_relink_cleanup_owner_result_received": false
+          "exact_relink_cleanup_owner_result_received": true,
+          "exact_relink_cleanup_owner_receipt": "docs/security-audit/security-fr-2-relink-cleanup-owner-result.json",
+          "exact_relink_cleanup_committed_owner_reported": true,
+          "exact_relink_cleanup_outcome_report": "docs/security-audit/SECURITY_FR_2_2_CLEANUP_OUTCOME_AND_HISTORY_HANDOFF.md",
+          "exact_relink_cleanup_items_deleted": 4,
+          "exact_relink_cleanup_records_deleted": 2,
+          "exact_relink_cleanup_linked_identity_conversions_deleted": 2,
+          "exact_relink_cleanup_non_target_rows_unchanged": true,
+          "new_relink_derived_conversion_cleanup_verified": true,
+          "historical_review_diagnostic": "supabase/diagnostics/security_fr_2_2_historical_review.sql",
+          "historical_review_local_receipt": "docs/security-audit/security-fr-2-historical-review-local-checks.json",
+          "historical_review_owner_result_received": false
         },
         {
           "id": "FR.2.3",
@@ -341,7 +352,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.2_OWNER_EXACT_RELINK_RUN_CLEANUP_RESULT",
+  "next_step": "FR.2.2_OWNER_READ_ONLY_HISTORICAL_LINKAGE_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -441,5 +452,12 @@
   "FR2_exact_relink_cleanup_report": "docs/security-audit/SECURITY_FR_2_2_EXACT_RELINK_CLEANUP.md",
   "FR2_exact_relink_cleanup_contract": "docs/security-audit/security-fr-2-relink-cleanup-contract.json",
   "FR2_exact_relink_cleanup_local_receipt": "docs/security-audit/security-fr-2-relink-cleanup-local-checks.json",
-  "FR2_exact_relink_cleanup_owner_result_received": false
+  "FR2_exact_relink_cleanup_owner_result_received": true,
+  "FR2_exact_relink_cleanup_owner_receipt": "docs/security-audit/security-fr-2-relink-cleanup-owner-result.json",
+  "FR2_exact_relink_cleanup_outcome_report": "docs/security-audit/SECURITY_FR_2_2_CLEANUP_OUTCOME_AND_HISTORY_HANDOFF.md",
+  "FR2_exact_relink_cleanup_committed_owner_reported": true,
+  "FR2_exact_relink_cleanup_non_target_rows_unchanged_owner_reported": true,
+  "FR2_historical_review_diagnostic": "supabase/diagnostics/security_fr_2_2_historical_review.sql",
+  "FR2_historical_review_local_receipt": "docs/security-audit/security-fr-2-historical-review-local-checks.json",
+  "FR2_historical_review_owner_result_received": false
 }

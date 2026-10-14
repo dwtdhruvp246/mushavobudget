@@ -23,3 +23,7 @@ After reconciliation, prepare exact current-run fixture cleanup and separately r
 ## Subsequent post-snapshot and exact cleanup preparation — 14 October 2026
 
 FRE20: [post-snapshot/cleanup report](SECURITY_FR_2_2_EXACT_RELINK_CLEANUP.md) records matching retained-manual checksum and expected two/two deltas with old inconsistencies unchanged. The post-snapshot-pending state above is superseded. Exact completed-run cleanup has 14 local checks PASS and awaits owner execution; no historical repair/canonical integration/full finding acceptance occurred.
+
+## Subsequent exact cleanup accepted — FRE21, 14 October 2026
+
+[Owner cleanup result](security-fr-2-relink-cleanup-owner-result.json) reports COMMIT at 06:29:20 UTC for the exact four/two/two current-run scope, with all non-target payment rows asserted unchanged. Current-run fixture retention/cleanup-pending statements above are superseded; historical mismatch/orphan disposition and canonical integration remain pending. [Outcome and next read-only handoff](SECURITY_FR_2_2_CLEANUP_OUTCOME_AND_HISTORY_HANDOFF.md).

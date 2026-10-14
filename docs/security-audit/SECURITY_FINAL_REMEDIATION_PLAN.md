@@ -1,3 +1,11 @@
+# Current execution checkpoint — exact relink cleanup committed
+
+14 October 2026, FRE21. [Cleanup outcome and next history handoff](SECURITY_FR_2_2_CLEANUP_OUTCOME_AND_HISTORY_HANDOFF.md), [complete owner cleanup result](security-fr-2-relink-cleanup-owner-result.json), [six-case local historical query checks](security-fr-2-historical-review-local-checks.json). Owner committed exact four items/two records/two linked identity conversion cleanup with every non-target payment row asserted unchanged. Historical mismatches and earlier two orphans remain preserved. Next SQL in chat combines post-cleanup counts/manual checksum with bounded mismatch linkage and orphan fingerprints/timestamps; read only, no provenance/deletion authorization inferred. History disposition and canonical trigger integration remain pending. Original stages/events/open findings remain intact; APK deferred.
+
+Earlier checkpoints below are retained as history.
+
+---
+
 # Current execution checkpoint — FR.2.2 post-snapshot match; exact cleanup ready
 
 14 October 2026, FRE20. [Post-snapshot/cleanup report](SECURITY_FR_2_2_EXACT_RELINK_CLEANUP.md), [owner post-snapshot](security-fr-2-post-relink-snapshot-owner-result.json), [contract](security-fr-2-relink-cleanup-contract.json), [14-case local SQL result](security-fr-2-relink-cleanup-local-checks.json). Retained manual checksum matches before; totals rise by exactly two records/two conversions, with old one/one mismatch and two unlinked references unchanged. The exact completed relink marker's four items/two records/two identity conversions have a guarded atomic cleanup candidate, full SQL in chat, owner result pending. Old fixtures/manual conversions are preserved; historical provenance/disposition and canonical integration remain separate. Original stages/events/open findings remain intact; APK deferred.

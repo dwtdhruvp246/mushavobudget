@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-14",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BUSINESS_OUTBOX_BODY_ALIGNED_CURRENT_CATALOG_REVIEW_OWNER_PENDING",
+  "status": "FR2_BUSINESS_SELECTED_CATALOG_MATCH_TWO_CONTROLLED_FIXTURES_26_LOCAL_PASS_OWNER_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.2",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE29",
+  "latest_evidence": "FRE30",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_OUTBOX_BODY_ALIGNED_CURRENT_BUSINESS_CATALOG_OWNER_REVIEW_PENDING",
+      "status": "IN_PROGRESS_BUSINESS_CATALOG_MATCH_FIXTURE_OWNER_PREPARATION_PENDING",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -359,7 +359,7 @@
         },
         {
           "id": "FR.2.3",
-          "status": "OUTBOX_BODY_CORRECTED_CURRENT_CATALOG_OWNER_REVIEW_PENDING",
+          "status": "SELECTED_CATALOG_MATCH_FIXTURE_OWNER_RESULT_PENDING",
           "title": "Business roles/scopes and controlled fixtures",
           "outbox_drift_review_handoff": "docs/security-audit/SECURITY_FR_2_3_OUTBOX_DRIFT_REVIEW_HANDOFF.md",
           "outbox_drift_review_diagnostic": "supabase/diagnostics/security_fr_2_3_outbox_drift_review.sql",
@@ -391,7 +391,18 @@
           "current_catalog_review_local_receipt": "docs/security-audit/security-fr-2-business-current-closure-local-checks.json",
           "current_catalog_review_source_model": "docs/security-audit/security-fr-2-business-current-closure-source-model.json",
           "current_catalog_review_local_PASS": 18,
-          "current_catalog_owner_result_received": false
+          "current_catalog_owner_result_received": true,
+          "current_catalog_owner_receipt": "docs/security-audit/security-fr-2-business-current-closure-owner-result.json",
+          "current_catalog_owner_checked_UTC": "2026-10-14T18:11:29.904796+00:00",
+          "current_catalog_comparison": "docs/security-audit/security-fr-2-business-current-closure-comparison.json",
+          "current_catalog_selected_triggers_matched": 78,
+          "current_catalog_selected_functions_matched": 93,
+          "Business_fixture_handoff_report": "docs/security-audit/SECURITY_FR_2_3_CURRENT_CATALOG_OUTCOME_AND_BUSINESS_FIXTURE_HANDOFF.md",
+          "Business_fixture_contract": "docs/security-audit/security-fr-2-business-fixture-contract.json",
+          "Business_fixture_SQL": "supabase/diagnostics/security_fr_2_3_business_fixture.sql",
+          "Business_fixture_local_receipt": "docs/security-audit/security-fr-2-business-fixture-local-checks.json",
+          "Business_fixture_local_PASS": 26,
+          "Business_fixture_owner_result_received": false
         },
         {
           "id": "FR.2.4",
@@ -466,7 +477,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.3_OWNER_READ_ONLY_CURRENT_BUSINESS_CATALOG_RESULT",
+  "next_step": "FR.2.3_OWNER_CONTROLLED_BUSINESS_FIXTURE_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -647,5 +658,15 @@
   "FR2_current_Business_catalog_review_diagnostic": "supabase/diagnostics/security_fr_2_3_business_current_closure_review.sql",
   "FR2_current_Business_catalog_review_local_receipt": "docs/security-audit/security-fr-2-business-current-closure-local-checks.json",
   "FR2_current_Business_catalog_review_source_model": "docs/security-audit/security-fr-2-business-current-closure-source-model.json",
-  "FR2_current_Business_catalog_owner_result_received": false
+  "FR2_current_Business_catalog_owner_result_received": true,
+  "FR2_current_Business_catalog_owner_receipt": "docs/security-audit/security-fr-2-business-current-closure-owner-result.json",
+  "FR2_current_Business_catalog_owner_checked_UTC": "2026-10-14T18:11:29.904796+00:00",
+  "FR2_current_Business_catalog_comparison": "docs/security-audit/security-fr-2-business-current-closure-comparison.json",
+  "FR2_current_Business_catalog_selected_triggers_matched": 78,
+  "FR2_current_Business_catalog_selected_functions_matched": 93,
+  "FR2_Business_fixture_handoff_report": "docs/security-audit/SECURITY_FR_2_3_CURRENT_CATALOG_OUTCOME_AND_BUSINESS_FIXTURE_HANDOFF.md",
+  "FR2_Business_fixture_contract": "docs/security-audit/security-fr-2-business-fixture-contract.json",
+  "FR2_Business_fixture_SQL": "supabase/diagnostics/security_fr_2_3_business_fixture.sql",
+  "FR2_Business_fixture_local_receipt": "docs/security-audit/security-fr-2-business-fixture-local-checks.json",
+  "FR2_Business_fixture_owner_result_received": false
 }

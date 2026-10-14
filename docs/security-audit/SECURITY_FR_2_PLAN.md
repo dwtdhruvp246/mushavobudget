@@ -1,3 +1,11 @@
+# Current checkpoint — selected Business catalog matches; controlled fixtures ready
+
+14 October 2026, FRE30. [Owner metadata](security-fr-2-business-current-closure-owner-result.json) and [comparison](security-fr-2-business-current-closure-comparison.json):78 trigger bindings/93 normalized function bodies and metadata/27 relations match reviewed source; raw byte differences exactly account for CRLF. [Guarded fixture handoff](SECURITY_FR_2_3_CURRENT_CATALOG_OUTCOME_AND_BUSINESS_FIXTURE_HANDOFF.md),26 local cases PASS, awaits owner preparation of two synthetic Business scopes. No hosted Business API/dispatch acceptance claimed.
+
+Earlier checkpoints/evidence and FR.2.2 history stay intact; full gate/final audit pending, production excluded, APK deferred.
+
+---
+
 # Current execution checkpoint — outbox correction passed; catalog review ready
 
 14 October 2026, FRE29. [Owner correction receipt](security-fr-2-outbox-body-correction-owner-result.json): reviewed migration hash097128330dee61398b475cf244293e30, existing outbox rows and public controls unchanged under installer assertions. [Current Business catalog review](SECURITY_FR_2_3_OUTBOX_CORRECTION_OUTCOME_AND_CURRENT_CLOSURE_HANDOFF.md) is read-only;18 local cases PASS against54 ordered migrations,78 selected user triggers/93 reachable source functions. Owner metadata comparison pending before controlled fixtures; no Business/API/dispatch acceptance claimed.

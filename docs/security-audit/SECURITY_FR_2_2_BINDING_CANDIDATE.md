@@ -56,3 +56,7 @@ Primary reference read 13 October 2026: [PostgreSQL 17 CREATE TRIGGER](https://w
 ## Owner installation attempt — 14 October 2026
 
 FRE14 supersedes the pending installation handoff state: the SQL Editor screenshot reports UNREVIEWED_TRIGGER_DDL_EVENT_HOOK before replacement. No installation success receipt was returned. [Event-hook review](SECURITY_FR_2_2_EVENT_HOOK_REVIEW.md) records the one bounded read-only diagnostic and limits. Candidate/rollback SQL and 32-case local evidence are unchanged; do not disable or bypass the hook guard.
+
+## Reviewed provider hooks — 14 October 2026
+
+FRE15 records the subsequent owner catalog result and exact pinned Supabase body reconciliation. A separate [reviewed-hooks revision](SECURITY_FR_2_2_REVIEWED_HOOKS_CANDIDATE.md) passed 48 local cases and is the current staging installer handoff. This original installer/rollback, receipt/contract and earlier evidence remain unchanged. Installation and genuine hosted authorization remain pending.

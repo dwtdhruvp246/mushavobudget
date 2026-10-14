@@ -1,3 +1,11 @@
+# Current execution checkpoint — FR.2.2 reviewed hooks; revised installer ready
+
+14 October 2026, FRE15. [Revised candidate report](SECURITY_FR_2_2_REVIEWED_HOOKS_CANDIDATE.md), [owner hook metadata](security-fr-2-event-hooks-owner-result.json), [contract](security-fr-2-reviewed-hooks-contract.json) and [48-case local result](security-fr-2-reviewed-hooks-local-checks.json). Both matching provider hook body fingerprints/lengths match pinned Supabase source. A separate revised installer checks exact SHA-256 and full reviewed hook shape, keeps hooks active and still rejects unknown drift. 48 local cases PASS; hosted installation remains pending. Full staging SQL is supplied in chat. Earlier stopped installer, 32-case evidence, Stage 0–10 objects and open findings/actions remain preserved; APK deferred.
+
+Earlier checkpoints below are retained as history.
+
+---
+
 # Current execution checkpoint — FR.2.2 installer stopped before replacement
 
 14 October 2026, FRE14. [Event-hook review](SECURITY_FR_2_2_EVENT_HOOK_REVIEW.md) and [owner attempt receipt](security-fr-2-binding-owner-install-attempt.json): the guard raised UNREVIEWED_TRIGGER_DDL_EVENT_HOOK before trigger replacement. No successful installation receipt is available. The installer/rollback remain unchanged; local 32/32 PASS evidence remains preserved. Next is the complete read-only event-hook/current trigger diagnostic pasted in chat, including transaction cleanup. Do not disable or bypass hooks or rerun installation before review. FR.1 serving evidence and prior stages remain intact; full hosted/native/store acceptance and original findings/actions remain open; APK deferred.

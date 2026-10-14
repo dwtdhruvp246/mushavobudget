@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-14",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_PERSONAL_API_33_AND_RELINK_16_PASS_POST_SNAPSHOT_CLEANUP_HISTORY_INTEGRATION_PENDING",
+  "status": "FR2_POST_RELINK_SNAPSHOT_MATCHED_EXACT_CLEANUP_14_LOCAL_PASS_OWNER_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.2",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE19",
+  "latest_evidence": "FRE20",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_PERSONAL_RELINK_SCOPED_PASS_POST_SNAPSHOT_HISTORY_INTEGRATION_PENDING",
+      "status": "IN_PROGRESS_PERSONAL_RECHECKS_POST_SNAPSHOT_MATCH_EXACT_CLEANUP_PENDING",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -179,7 +179,7 @@
         },
         {
           "id": "FR.2.2",
-          "status": "HOSTED_PERSONAL_33_AND_RELINK_16_PASS_POST_SNAPSHOT_CLEANUP_HISTORY_INTEGRATION_PENDING",
+          "status": "HOSTED_PERSONAL_RELINK_POST_SNAPSHOT_MATCH_EXACT_CLEANUP_AND_HISTORY_INTEGRATION_PENDING",
           "title": "Personal workspace binding and legitimate finance",
           "report": "docs/security-audit/SECURITY_FR_2_2_BINDING_CANDIDATE.md",
           "local_receipt": "docs/security-audit/security-fr-2-binding-local-checks.json",
@@ -251,7 +251,17 @@
           "generated_missing_parent_rejection_hosted_verified": true,
           "preexisting_visible_conversions_privately_compared_unchanged": true,
           "post_relink_snapshot_handoff": "docs/security-audit/SECURITY_FR_2_2_POST_RELINK_SNAPSHOT_HANDOFF.md",
-          "post_relink_snapshot_owner_result_received": false
+          "post_relink_snapshot_owner_result_received": true,
+          "post_relink_snapshot_owner_receipt": "docs/security-audit/security-fr-2-post-relink-snapshot-owner-result.json",
+          "post_relink_records_total": 7,
+          "post_relink_conversions_total": 9,
+          "retained_manual_before_after_checksum_matches": true,
+          "post_relink_orphan_count_increased": false,
+          "exact_relink_cleanup_report": "docs/security-audit/SECURITY_FR_2_2_EXACT_RELINK_CLEANUP.md",
+          "exact_relink_cleanup_contract": "docs/security-audit/security-fr-2-relink-cleanup-contract.json",
+          "exact_relink_cleanup_local_receipt": "docs/security-audit/security-fr-2-relink-cleanup-local-checks.json",
+          "exact_relink_cleanup_local_PASS": 14,
+          "exact_relink_cleanup_owner_result_received": false
         },
         {
           "id": "FR.2.3",
@@ -331,7 +341,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.2_OWNER_POST_RELINK_READ_ONLY_SNAPSHOT_RESULT",
+  "next_step": "FR.2.2_OWNER_EXACT_RELINK_RUN_CLEANUP_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -425,5 +435,11 @@
   "FR2_relink_API_exit_code": 0,
   "FR2_relink_run_marker": "AUDIT-FR22-RELINK-5f93bfbe-5830-457d-b3a4-c1088d4711fd",
   "FR2_post_relink_snapshot_handoff": "docs/security-audit/SECURITY_FR_2_2_POST_RELINK_SNAPSHOT_HANDOFF.md",
-  "FR2_post_relink_snapshot_owner_result_received": false
+  "FR2_post_relink_snapshot_owner_result_received": true,
+  "FR2_post_relink_snapshot_owner_receipt": "docs/security-audit/security-fr-2-post-relink-snapshot-owner-result.json",
+  "FR2_retained_manual_before_after_checksum_matches": true,
+  "FR2_exact_relink_cleanup_report": "docs/security-audit/SECURITY_FR_2_2_EXACT_RELINK_CLEANUP.md",
+  "FR2_exact_relink_cleanup_contract": "docs/security-audit/security-fr-2-relink-cleanup-contract.json",
+  "FR2_exact_relink_cleanup_local_receipt": "docs/security-audit/security-fr-2-relink-cleanup-local-checks.json",
+  "FR2_exact_relink_cleanup_owner_result_received": false
 }

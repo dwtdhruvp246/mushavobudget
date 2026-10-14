@@ -30,3 +30,7 @@ The remaining one/one mismatch might refer to the same record with its conversio
 Actual query executed in a minimal synthetic PGlite 0.5.8 / PostgreSQL 18.3 catalog: **six checks PASS, exit 0**, one Node syntax check. Cases cover paired mismatch/parent ownership, missing-record fingerprint classification without provenance claims, two full scoped Family manual rows and changed value detection, manual orphan/out-of-window classification, twenty-row cap versus complete orphan counters, and read-only table preservation with raw ID/email omission. This is a narrow query validation, not compiling all source migrations, hosted PostgreSQL17/API/JWT validation or an actual hosted result. No new hosted requests were run by the assistant.
 
 Full final-remediation gate OPEN_PENDING_REQUIRED_EVIDENCE; fresh final audit PLANNED_NOT_PERFORMED; hosted/native/store acceptance false and findings_closed empty. Return the safe JSON after SQL finishes.
+
+## Subsequent owner historical result — FRE22
+
+[Complete historical review](security-fr-2-historical-review-owner-result.json) measures five/seven totals, zero latest marker items and matching retained Family checksum at 07:32:43 UTC. The history-query-pending state above is superseded. One exact paired record/parent/conversion mismatch is identified; [guarded workspace repair candidate](SECURITY_FR_2_2_HISTORICAL_REPAIR_CANDIDATE.md) has 12 local PASS and awaits owner result. Two orphan rows remain preserved without proven deleted-record lineage.

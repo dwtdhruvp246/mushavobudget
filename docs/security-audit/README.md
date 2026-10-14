@@ -1,3 +1,11 @@
+# Current execution checkpoint — paired historical mismatch measured; repair ready
+
+14 October 2026, FRE22. [Historical result and repair candidate](SECURITY_FR_2_2_HISTORICAL_REPAIR_CANDIDATE.md), [full owner historical review](security-fr-2-historical-review-owner-result.json), [12-case local repair checks](security-fr-2-historical-binding-repair-local-checks.json). Post-cleanup five/seven totals and retained Family checksum verified; zero latest marker items. Old record-parent/conversion-record mismatches share one exact record; conversion already matches parent workspace. Fingerprinted one-field repair is guarded/tested, full SQL in chat, owner result pending. Two old orphan identities correlate with the Personal recheck timestamps but exact deleted-record lineage remains unproved; preserved. Canonical integration and lifecycle/history disposition remain pending. Original stages/events/findings unchanged; APK deferred.
+
+Earlier checkpoints below are retained as history.
+
+---
+
 # Current execution checkpoint — exact relink cleanup committed
 
 14 October 2026, FRE21. [Cleanup outcome and next history handoff](SECURITY_FR_2_2_CLEANUP_OUTCOME_AND_HISTORY_HANDOFF.md), [complete owner cleanup result](security-fr-2-relink-cleanup-owner-result.json), [six-case local historical query checks](security-fr-2-historical-review-local-checks.json). Owner committed exact four items/two records/two linked identity conversion cleanup with every non-target payment row asserted unchanged. Historical mismatches and earlier two orphans remain preserved. Next SQL in chat combines post-cleanup counts/manual checksum with bounded mismatch linkage and orphan fingerprints/timestamps; read only, no provenance/deletion authorization inferred. History disposition and canonical trigger integration remain pending. Original stages/events/open findings remain intact; APK deferred.

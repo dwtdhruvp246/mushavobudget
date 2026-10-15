@@ -1,3 +1,9 @@
+# Current checkpoint — corrected Windows preflight passed; private Zoho setup next
+
+15 October2026,FRE54. [Owner corrected preflight](security-fr-2-zoho-corrected-preflight-owner-result.json):30PASS,8hashes,PowerShell5.1,COMPLETE,real synthetic DPAPI/private pipe passed,all launch paths present,empty probe removed and exit0. No credentials or provider requests yet. [Private setup handoff](SECURITY_FR_2_4_ZOHO_PREFLIGHT_PASS_AND_PRIVATE_SETUP.md) resumes the unchanged69c963a source with the running Node path and hidden prompts, fresh scoped code only when prompted, at most3OAuth/account requests, DPAPI-only output and no email. No routine offline rerun or SQL needed. Full private result/E4 integration/hosted acceptance remain pending; production excluded,APK deferred and no finding closure.
+
+---
+
 # Current checkpoint — invalid Node launch path identified; corrected runtime path preflight ready
 
 15 October2026,FRE53. [Owner result](security-fr-2-zoho-node-path-owner-result.json): Windows error2, selected Node file absent, entry file/directory present,29PASS and zero provider requests. [Node path correction](SECURITY_FR_2_4_ZOHO_NODE_EXECUTABLE_CORRECTION.md) captures the working runtime's process.execPath privately, validates it and passes it explicitly; fallback uses one ApplicationInfo.Path rather than Source.30portable utility cases and6real archive checks pass. Next Windows run remains -PreflightOnly, with no credentials/code/email/SQL. Full setup and E4 integration remain pending; no full finding closure, production excluded and APK deferred.

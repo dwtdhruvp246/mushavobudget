@@ -1,3 +1,9 @@
+# Current checkpoint — owner gateway63PASS; real bundle/local runtime/shared limiter31PASS
+
+15October2026,FRE46. [Bundle/limiter source and Windows handoff](SECURITY_FR_2_4_EMAIL_WORKER_BUNDLE_LIMITER_AND_OFFLINE_HANDOFF.md), [contract](security-fr-2-email-workers-candidate-contract.json), [31localPASS](security-fr-2-email-workers-local-checks.json), [16source hashes/locked tools](security-fr-2-email-workers-source-manifest.json), [owner gateway63PASS](security-fr-2-email-gateway-owner-Windows-result.json). Actual esbuild produces two bundles;local workerd executes real persistent SQLite Durable Objects,120simultaneous requests and runtime restart checks. Next: new temporary Windows tools install and local-only31check batch in chat. No SQL,upload or email now. Hosted bindings/ingress,Zoho sender/data centre/delivery,all app guards/UI and hosted acceptance remain pending. No full finding closure,production excluded,APK deferred.
+
+---
+
 # Current checkpoint — E2 owner checks complete; E3.1gateway/Zoho source63PASS
 
 15October2026,FRE45. [Actual gateway/mail adapter and Windows handoff](SECURITY_FR_2_4_EMAIL_GATEWAY_SOURCE_AND_OFFLINE_HANDOFF.md), [contract](security-fr-2-email-gateway-candidate-contract.json), [63local checks](security-fr-2-email-gateway-local-checks.json), [64source hashes](security-fr-2-email-gateway-source-manifest.json), [owner dependencyPASS](security-fr-2-email-backend-owner-dependency-recheck.json). Previous46backend tests and59source/dependency metadata checks passed on owner Node22.17.0. New50actual handler/transport tests plus13actual SQL integration checks pass locally; full54source unchanged. Next: dependency-reusing offline Windows gateway recheck in chat. No SQL or email now; real bundle/Cloudflare/shared limiter/Zoho sender-region delivery,all app guards/UI and hosted acceptance pending. No finding closure,production excluded,APK deferred.

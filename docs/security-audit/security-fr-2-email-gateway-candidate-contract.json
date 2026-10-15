@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E3.1",
-  "status": "GATEWAY_AND_ZOHO_ADAPTER_SOURCE63_LOCAL_PASS_OWNER_WINDOWS_RECHECK_PENDING",
+  "status": "OWNER_WINDOWS63_GATEWAY_SQL_CHECKPOINT_COMPLETE_E3_2_REAL_LOCAL_BUNDLE_LIMITER_READY",
   "source_parent_commit": "6e4963df553eced6946250a5aec812152b84004f",
   "policy_scope": "ALL_CUSTOMER_AND_PLATFORM_ADMIN_USERS",
   "report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_GATEWAY_SOURCE_AND_OFFLINE_HANDOFF.md",
@@ -44,12 +44,17 @@
   "real_parallel_DB_races_verified": false,
   "existing_app_data_guards_UI_Storage_Edge_or_Admin_integration_installed": false,
   "owner_SQL_action_required": false,
-  "owner_terminal_action": "EXPORT_PINNED64_FILES_TO_NEW_TEMP_FOLDER_REUSE_PREVIOUS_PINNED_PGLITE_AND_RUN_OFFLINE_VERIFIER",
-  "owner_Windows_gateway_result_received": false,
+  "owner_terminal_action": "CONTINUE_E3_2_LOCKED_LOCAL_WORKER_BUNDLE_VERIFIER_NO_E3_1_RETEST",
+  "owner_Windows_gateway_result_received": true,
   "hosted_installation_or_email_dispatch_authorized_by_this_handoff": false,
   "source_guarded_implementation_only": true,
   "hosted_acceptance": false,
   "production_or_native_changed": false,
   "findings_closed": [],
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "owner_Windows_gateway_PASS": 63,
+  "owner_Windows_gateway_exit_code": 0,
+  "owner_Windows_gateway_receipt": "docs/security-audit/security-fr-2-email-gateway-owner-Windows-result.json",
+  "subsequent_E3_2_local_real_bundles_and_workerd_verified": true,
+  "subsequent_E3_2_contract": "docs/security-audit/security-fr-2-email-workers-candidate-contract.json"
 }

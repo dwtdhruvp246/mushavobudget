@@ -1,3 +1,9 @@
+# Current checkpoint — Windows bundles/shared limiter31PASS; actual setup details next
+
+15October2026,FRE47. [Read-only Zoho/Cloudflare owner handoff](SECURITY_FR_2_4_EMAIL_HOSTED_READINESS_OWNER_HANDOFF.md), [contract](security-fr-2-email-hosted-readiness-contract.json), [owner Windows31PASS](security-fr-2-email-workers-owner-Windows-result.json).16source hashes/full tools-lock/two output hashes match;12syntax checks and native workerd/SQLite concurrency/restart cases pass;cleanup complete. E2/E3.1/E3.2local checkpoints complete. Next: hostname-only Zoho region,notification-mailbox access and staging Durable Object binding-option visibility. No SQL,terminal rerun,email or configuration change requested. Actual login/global data guards/canonical integration,hosted acceptance and final merge/deployment remain pending;no full finding closure,production excluded,APK deferred.
+
+---
+
 # FR.2.4.E3.2 — actual bundles/local Workers runtime/shared limiter; Windows handoff
 
 15October2026,FRE46. [Candidate contract](security-fr-2-email-workers-candidate-contract.json), [31localPASS](security-fr-2-email-workers-local-checks.json), [16source hashes/locked tools](security-fr-2-email-workers-source-manifest.json), [owner E3.1result](security-fr-2-email-gateway-owner-Windows-result.json). Source parent413e8388cbfbd75b3d959b663a0be4e70aa748b9.

@@ -1,0 +1,32 @@
+{
+  "stage_step": "FR.2.4.E3.3",
+  "status": "READ_ONLY_OWNER_SETUP_DETAILS_REQUIRED_BEFORE_PRIVATE_HOSTED_CONFIGURATION",
+  "source_parent_commit": "d89d8ca49b738fb29a4812fcd30b1ee26e9c3a87",
+  "report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_HOSTED_READINESS_OWNER_HANDOFF.md",
+  "owner_E3_2_receipt": "docs/security-audit/security-fr-2-email-workers-owner-Windows-result.json",
+  "policy_scope": "ALL_CUSTOMER_AND_PLATFORM_ADMIN_USERS",
+  "requested_nonsecret_fields": [
+    "Zoho_inbox_hostname_only",
+    "existing_notification_sender_mailbox_accessible_without_sending",
+    "staging_Pages_Add_Binding_lists_Durable_Object"
+  ],
+  "Zoho_inbox_hostname_owner_reported": null,
+  "notification_sender_mailbox_accessible_owner_reported": null,
+  "staging_Pages_Durable_Object_option_visible_owner_reported": null,
+  "owner_SQL_action_required": false,
+  "owner_terminal_action_required": false,
+  "owner_dashboard_read_only_action_required": true,
+  "settings_or_resources_to_create_or_save_in_this_step": false,
+  "email_to_send_in_this_step": false,
+  "passwords_API_keys_tokens_refresh_secrets_account_IDs_full_signin_links_or_inbox_contents_requested": false,
+  "actual_sender_address_data_centre_OAuth_grant_eligibility_account_control_or_secret_ownership_verified": false,
+  "actual_Cloudflare_account_features_resources_bindings_limits_costs_or_ingress_verified": false,
+  "candidate_US_endpoint_pair_only": true,
+  "live_Zoho_or_Cloudflare_configuration_changed": false,
+  "E4_canonical_schema_migrations_existing_application_UI_and_all_entrypoint_guard_integration_required": true,
+  "current_local_working_files_main_merge_and_production_deployment_completed": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "findings_closed": [],
+  "APK_update_deferred": true
+}

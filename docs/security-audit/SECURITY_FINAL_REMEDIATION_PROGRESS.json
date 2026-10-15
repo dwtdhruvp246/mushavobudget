@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-15",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E3_1_OWNER_COMPLETE_E3_2_BUNDLE_LIMITER31_LOCAL_PASS_WINDOWS_PENDING",
+  "status": "FR2_EMAIL_E3_2_OWNER_WINDOWS31_PASS_E3_3_READ_ONLY_SETUP_DETAILS_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE46",
+  "latest_evidence": "FRE47",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_EMAIL_WORKER_BUNDLE_LIMITER_WINDOWS_RECHECK",
+      "status": "IN_PROGRESS_EMAIL_HOSTED_READINESS_OWNER_DETAILS",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "EMAIL_E3_1_OWNER63_PASS_E3_2_LOCAL_BUNDLE_LIMITER31PASS_WINDOWS_PENDING",
+          "status": "EMAIL_E3_2_OWNER31_PASS_E3_3_NONSECRET_SETUP_DETAILS_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -572,7 +572,14 @@
           "email_workers_contract": "docs/security-audit/security-fr-2-email-workers-candidate-contract.json",
           "email_workers_report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_WORKER_BUNDLE_LIMITER_AND_OFFLINE_HANDOFF.md",
           "email_workers_local_PASS": 31,
-          "email_workers_hosted_deployed": false
+          "email_workers_hosted_deployed": false,
+          "email_workers_owner_Windows_result_received": true,
+          "email_workers_owner_Windows_PASS": 31,
+          "email_workers_owner_Windows_exit_code": 0,
+          "email_workers_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-workers-owner-Windows-result.json",
+          "email_hosted_readiness_contract": "docs/security-audit/security-fr-2-email-hosted-readiness-contract.json",
+          "email_hosted_readiness_report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_HOSTED_READINESS_OWNER_HANDOFF.md",
+          "email_code_policy_hosted_implemented": false
         },
         {
           "id": "FR.2.5",
@@ -632,7 +639,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
@@ -642,7 +649,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E3.2_OWNER_WINDOWS_BUNDLE_AND_DURABLE_LIMITER_RECEIPT",
+  "next_step": "FR.2.4.E3.3_READ_ONLY_ZOHO_AND_CLOUDFLARE_READINESS_DETAILS",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -1020,6 +1027,15 @@
   "FR2_email_workers_local_PASS": 31,
   "FR2_email_workers_local_exit_code": 0,
   "FR2_email_workers_real_local_bundles_and_SQLite_limiters_verified": true,
-  "FR2_email_workers_owner_Windows_result_received": false,
-  "FR2_email_workers_hosted_deployed": false
+  "FR2_email_workers_owner_Windows_result_received": true,
+  "FR2_email_workers_hosted_deployed": false,
+  "FR2_email_workers_owner_Windows_PASS": 31,
+  "FR2_email_workers_owner_Windows_exit_code": 0,
+  "FR2_email_workers_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-workers-owner-Windows-result.json",
+  "FR2_email_workers_owner_Windows_bundle_hashes_match": true,
+  "FR2_email_workers_owner_Windows_runtime_cleanup_complete": true,
+  "FR2_email_workers_offline_checkpoint_complete": true,
+  "FR2_email_hosted_readiness_contract": "docs/security-audit/security-fr-2-email-hosted-readiness-contract.json",
+  "FR2_email_hosted_readiness_report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_HOSTED_READINESS_OWNER_HANDOFF.md",
+  "owner_dashboard_read_only_information_required": true
 }

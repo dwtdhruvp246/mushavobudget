@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E3.2",
-  "status": "REAL_LOCAL_WORKER_BUNDLE_AND_SQLITE_LIMITER31_PASS_OWNER_WINDOWS_RECHECK_PENDING",
+  "status": "OWNER_WINDOWS31_BUNDLE_AND_LOCAL_DURABLE_LIMITER_CHECKPOINT_COMPLETE_HOSTED_READINESS_PENDING",
   "source_parent_commit": "413e8388cbfbd75b3d959b663a0be4e70aa748b9",
   "report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_WORKER_BUNDLE_LIMITER_AND_OFFLINE_HANDOFF.md",
   "source_manifest": "docs/security-audit/security-fr-2-email-workers-source-manifest.json",
@@ -44,9 +44,9 @@
   "quota_persists_across_local_runtime_restart": true,
   "real_elapsed_hour_ceiling_expiry_alarm_cleanup_or_PITR_erase_acceptance_verified": false,
   "tools_download_action": "NPM_CI_IN_NEW_TEMP_TOOLS_DIRECTORY_WITH_PINNED_PACKAGE_LOCK_AND_IGNORE_SCRIPTS",
-  "owner_terminal_action": "EXPORT_PINNED_SOURCE_INSTALL_LOCKED_TEMP_TOOLS_RUN_LOCAL_ONLY_WORKER_VERIFIER",
+  "owner_terminal_action": "NO_FURTHER_E3_2_RETEST_REQUIRED_READ_ONLY_ZOHO_AND_CLOUDFLARE_DETAILS_NEXT",
   "owner_SQL_action_required": false,
-  "owner_Windows_bundle_runtime_result_received": false,
+  "owner_Windows_bundle_runtime_result_received": true,
   "Cloudflare_account_feature_availability_resources_binding_configuration_costs_or_secret_ownership_verified": false,
   "real_Cloudflare_ingress_IP_or_multiPOP_behavior_verified": false,
   "Zoho_sender_data_centre_scope_credentials_or_delivery_verified": false,
@@ -59,5 +59,11 @@
   "production_or_native_changed": false,
   "findings_closed": [],
   "APK_update_deferred": true,
-  "fresh_locked_NPM_CI_and_full_verifier31PASS_confirmed_locally": true
+  "fresh_locked_NPM_CI_and_full_verifier31PASS_confirmed_locally": true,
+  "owner_Windows_bundle_runtime_PASS": 31,
+  "owner_Windows_bundle_runtime_exit_code": 0,
+  "owner_Windows_bundle_runtime_receipt": "docs/security-audit/security-fr-2-email-workers-owner-Windows-result.json",
+  "owner_Windows_generated_bundle_hashes_match": true,
+  "owner_Windows_local_runtime_state_cleanup_complete": true,
+  "hosted_readiness_contract": "docs/security-audit/security-fr-2-email-hosted-readiness-contract.json"
 }

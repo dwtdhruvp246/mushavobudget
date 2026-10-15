@@ -1,3 +1,9 @@
+# Current checkpoint — Windows bundles/shared limiter31PASS; actual setup details next
+
+15October2026,FRE47. [Read-only Zoho/Cloudflare owner handoff](SECURITY_FR_2_4_EMAIL_HOSTED_READINESS_OWNER_HANDOFF.md), [contract](security-fr-2-email-hosted-readiness-contract.json), [owner Windows31PASS](security-fr-2-email-workers-owner-Windows-result.json).16source hashes/full tools-lock/two output hashes match;12syntax checks and native workerd/SQLite concurrency/restart cases pass;cleanup complete. E2/E3.1/E3.2local checkpoints complete. Next: hostname-only Zoho region,notification-mailbox access and staging Durable Object binding-option visibility. No SQL,terminal rerun,email or configuration change requested. Actual login/global data guards/canonical integration,hosted acceptance and final merge/deployment remain pending;no full finding closure,production excluded,APK deferred.
+
+---
+
 # Current checkpoint — owner gateway63PASS; real bundle/local runtime/shared limiter31PASS
 
 15October2026,FRE46. [Bundle/limiter source and Windows handoff](SECURITY_FR_2_4_EMAIL_WORKER_BUNDLE_LIMITER_AND_OFFLINE_HANDOFF.md), [contract](security-fr-2-email-workers-candidate-contract.json), [31localPASS](security-fr-2-email-workers-local-checks.json), [16source hashes/locked tools](security-fr-2-email-workers-source-manifest.json), [owner gateway63PASS](security-fr-2-email-gateway-owner-Windows-result.json). Actual esbuild produces two bundles;local workerd executes real persistent SQLite Durable Objects,120simultaneous requests and runtime restart checks. Next: new temporary Windows tools install and local-only31check batch in chat. No SQL,upload or email now. Hosted bindings/ingress,Zoho sender/data centre/delivery,all app guards/UI and hosted acceptance remain pending. No full finding closure,production excluded,APK deferred.

@@ -26,7 +26,7 @@ try {
     cwd:root, encoding:'utf8',timeout:15000,maxBuffer:1024*1024});
   const number = key => Number(c.stdout.match(new RegExp('^# '+key+' (\\d+)$','m'))?.[1] || 0);
   run = {tests:number('tests'),pass:number('pass'),fail:number('fail'),exit_code:c.status};
-  if (run.tests !== 27 || run.pass !== 27 || run.fail !== 0 || c.status !== 0) throw Error();
+  if (run.tests !== 29 || run.pass !== 29 || run.fail !== 0 || c.status !== 0) throw Error();
 } catch { problem = 'OFFLINE_SOURCE_OR_CHECK_REVIEW_REQUIRED'; }
 const good = !problem;
 console.log(JSON.stringify({stage_step:'FR.2.4.E3.3_PRIVATE_ZOHO_SETUP_OFFLINE',

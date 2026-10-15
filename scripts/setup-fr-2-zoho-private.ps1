@@ -1,6 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$SnapshotRoot,
-    [Parameter(Mandatory=$true)][string]$ExpectedSender
+    [Parameter(Mandatory=$true)][string]$ExpectedSender,
+    [switch]$PreflightOnly
 )
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
@@ -34,6 +35,7 @@ function Assert-PrivateUnlinkedPath([string]$Value) {
 
 function Invoke-PrivateZohoChild([string]$Node, [string]$Entry, [string]$Payload) {
     $Child = $null
+    $PipeStage = 'PRIVATE_PIPE_CONFIGURATION_FAILED'
     try {
         $Start = New-Object Diagnostics.ProcessStartInfo
         $Start.FileName = $Node
@@ -53,23 +55,32 @@ function Invoke-PrivateZohoChild([string]$Node, [string]$Entry, [string]$Payload
         }
         $Child = New-Object Diagnostics.Process
         $Child.StartInfo = $Start
+        $PipeStage = 'PRIVATE_PIPE_START_FAILED'
         if (-not $Child.Start()) { throw 'PRIVATE_PROCESS_FAILED_OR_TIMED_OUT' }
+        $PipeStage = 'PRIVATE_PIPE_STREAM_SETUP_FAILED'
         $ReadOutput = $Child.StandardOutput.ReadToEndAsync()
         $ReadErrors = $Child.StandardError.ReadToEndAsync()
         # BaseStream supports UTF-8 on Windows PowerShell 5.1 without the newer
         # ProcessStartInfo.StandardInputEncoding property.
+        $PipeStage = 'PRIVATE_PIPE_WRITE_FAILED'
         $InputBytes = $Encoding.GetBytes($Payload)
         try {
             $Child.StandardInput.BaseStream.Write($InputBytes, 0, $InputBytes.Length)
             $Child.StandardInput.BaseStream.Flush()
             $Child.StandardInput.BaseStream.Close()
         } finally { [Array]::Clear($InputBytes, 0, $InputBytes.Length) }
+        $PipeStage = 'PRIVATE_PIPE_WAIT_FAILED'
         if (-not $Child.WaitForExit(45000)) { $Child.Kill(); throw 'PRIVATE_PROCESS_FAILED_OR_TIMED_OUT' }
+        $PipeStage = 'PRIVATE_PIPE_READ_FAILED'
         $NodeText = $ReadOutput.GetAwaiter().GetResult()
         $NodeErrorText = $ReadErrors.GetAwaiter().GetResult()
         if ($NodeText.Length -gt 65536) { throw 'PRIVATE_PIPE_RESPONSE_INVALID' }
+        $PipeStage = 'PRIVATE_PIPE_JSON_FAILED'
         $Answer = $NodeText | ConvertFrom-Json
         return [pscustomobject]@{child_exit_code=$Child.ExitCode;answer=$Answer}
+    } catch {
+        # Fixed stage only; preserve the inner type for allowlisted classification.
+        throw [InvalidOperationException]::new($PipeStage, $_.Exception)
     } finally {
         if ($null -ne $Child) {
             try { if (-not $Child.HasExited) { $Child.Kill() } } catch {}
@@ -83,6 +94,12 @@ $Safe = [ordered]@{
     stage_step='FR.2.4.E3.3_PRIVATE_ZOHO_SETUP'
     result='LOCAL_PRIVATE_SETUP_REVIEW_REQUIRED'
     source_hashes_verified=0
+    preflight_only_requested=[bool]$PreflightOnly
+    preflight_probe_file_created=$false
+    preflight_probe_file_removed=$false
+    local_preflight_checkpoint='SOURCE_VALIDATION'
+    local_exception_category=$null
+    PowerShell_version=$PSVersionTable.PSVersion.ToString()
     Windows_DPAPI_and_private_pipe_preflight_passed=$false
     requests_attempted=0
     authorization_code_exchange_attempted=$false
@@ -129,30 +146,45 @@ try {
         }
         $Safe.source_hashes_verified++
     }
+    $Safe.local_preflight_checkpoint = 'NODE_EXECUTABLE'
     $Node = (Get-Command node.exe -CommandType Application -ErrorAction Stop).Source
+    $Safe.local_preflight_checkpoint = 'PRIVATE_DIRECTORY'
     $PrivateRoot = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'MushavoBudget/PrivateStaging'
     Assert-PrivateUnlinkedPath $PrivateRoot
     [IO.Directory]::CreateDirectory($PrivateRoot) | Out-Null
     Assert-PrivateUnlinkedPath $PrivateRoot
+    $Safe.local_preflight_checkpoint = 'PRIVATE_FILE_RESERVATION'
     $VaultPath = Join-Path $PrivateRoot ('zoho-sender-' + [guid]::NewGuid().ToString('N') + '.dpapi')
     $VaultStream = [IO.File]::Open($VaultPath, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::None)
+    $Safe.preflight_probe_file_created = $true
+    $Safe.local_preflight_checkpoint = 'DPAPI_SYNTHETIC_INPUT'
     $Probe = ConvertTo-SecureString 'mushavo-dpapi-preflight' -AsPlainText -Force
     try {
+        $Safe.local_preflight_checkpoint = 'DPAPI_ENCRYPT'
         $ProbeCipher = ConvertFrom-SecureString $Probe
+        $Safe.local_preflight_checkpoint = 'DPAPI_DECRYPT'
         $ProbeBack = ConvertTo-SecureString $ProbeCipher
         try {
+            $Safe.local_preflight_checkpoint = 'DPAPI_ROUNDTRIP'
             if ((Convert-PrivateSecureToText $ProbeBack) -ne 'mushavo-dpapi-preflight') { throw 'ENCRYPTION_PREFLIGHT_FAILED' }
         } finally { $ProbeBack.Dispose() }
     } finally { $Probe.Dispose() }
 
     $Encoding = New-Object Text.UTF8Encoding($false)
     $Entry = Join-Path $SnapshotRoot 'scripts/fr-2-zoho-private-setup.mjs'
+    $Safe.local_preflight_checkpoint = 'PRIVATE_PIPE'
     $LocalProbe = Invoke-PrivateZohoChild $Node $Entry '{"mode":"offline-preflight"}'
+    $Safe.local_preflight_checkpoint = 'PRIVATE_PIPE_RECEIPT_VALIDATION'
     if ($LocalProbe.child_exit_code -ne 1 -or $LocalProbe.answer.receipt.problem_code -ne 'LOCAL_INPUT_INVALID' -or
         $LocalProbe.answer.receipt.requests_attempted -ne 0 -or $null -ne $LocalProbe.answer.private_configuration) {
         throw 'PRIVATE_PIPE_PREFLIGHT_FAILED'
     }
     $Safe.Windows_DPAPI_and_private_pipe_preflight_passed = $true
+    $Safe.local_preflight_checkpoint = 'COMPLETE'
+    if ($PreflightOnly) {
+        $Safe.result = 'WINDOWS_LOCAL_SYNTHETIC_PREFLIGHT_SCOPED_PASS_NO_CREDENTIALS_OR_PROVIDER_REQUESTS'
+        $Safe.exit_code = 0
+    } else {
     Write-Host 'STAGING sender preparation only. No email, SQL or Cloudflare changes.'
     Write-Host 'Use the newly created Self Client for the notification sender Zoho account.'
     $ExpectedSender = $ExpectedSender.Trim().ToLowerInvariant()
@@ -220,12 +252,32 @@ try {
     } elseif ($PrivateAnswer.receipt.problem_code -in $Allowed) {
         $Safe.problem_code = [string]$PrivateAnswer.receipt.problem_code
     } else { $Safe.problem_code = $Phase }
+    }
 } catch {
     # Do not echo exception messages, stderr, provider bodies or private objects.
     if ($Phase -eq 'LOCAL_PREFLIGHT_FAILED' -and $_.Exception.Message -in @('WINDOWS_REQUIRED',
         'PRIVATE_PATH_LINKED','MANIFEST_INVALID','SOURCE_HASH_MISMATCH','ENCRYPTION_PREFLIGHT_FAILED',
         'SENDER_CONFIRMATION_REQUIRED','PRIVATE_PIPE_PREFLIGHT_FAILED')) { $Safe.problem_code = $_.Exception.Message }
     else { $Safe.problem_code = $Phase }
+    $PipeCodes = @('PRIVATE_PIPE_CONFIGURATION_FAILED','PRIVATE_PIPE_START_FAILED',
+        'PRIVATE_PIPE_STREAM_SETUP_FAILED','PRIVATE_PIPE_WRITE_FAILED','PRIVATE_PIPE_WAIT_FAILED',
+        'PRIVATE_PIPE_READ_FAILED','PRIVATE_PIPE_JSON_FAILED')
+    $LocalException = $_.Exception
+    for ($Depth = 0; $Depth -lt 8 -and $null -ne $LocalException; $Depth++) {
+        if ($LocalException.Message -in $PipeCodes) {
+            $Safe.local_preflight_checkpoint = $LocalException.Message
+        }
+        $TypeName = $LocalException.GetType().FullName
+        if ($TypeName -in @('System.UnauthorizedAccessException','System.Security.SecurityException',
+            'System.IO.IOException','System.IO.DirectoryNotFoundException','System.IO.FileNotFoundException',
+            'System.ObjectDisposedException','System.InvalidOperationException','System.ArgumentException',
+            'System.Security.Cryptography.CryptographicException','System.ComponentModel.Win32Exception',
+            'System.Management.Automation.CommandNotFoundException','System.Management.Automation.MethodException')) {
+            $Safe.local_exception_category = $TypeName
+        }
+        $LocalException = $LocalException.InnerException
+    }
+    if ($null -eq $Safe.local_exception_category) { $Safe.local_exception_category = 'OTHER_LOCAL_EXCEPTION' }
 } finally {
     if ($null -ne $Child) {
         try { if (-not $Child.HasExited) { $Child.Kill() } } catch {}
@@ -235,6 +287,14 @@ try {
     if (-not $VaultReady -and $VaultPath -and (Test-Path -LiteralPath $VaultPath)) {
         # No plaintext was written; remove only our own incomplete encrypted output.
         Remove-Item -LiteralPath $VaultPath -Force -ErrorAction SilentlyContinue
+    }
+    if ($PreflightOnly -and $VaultPath) {
+        $Safe.preflight_probe_file_removed = -not (Test-Path -LiteralPath $VaultPath)
+        if (-not $Safe.preflight_probe_file_removed) {
+            $Safe.result = 'LOCAL_PRIVATE_SETUP_REVIEW_REQUIRED'
+            $Safe.problem_code = 'LOCAL_PREFLIGHT_CLEANUP_FAILED'
+            $Safe.exit_code = 1
+        }
     }
     foreach ($Value in @($ClientSecure, $SecretSecure, $CodeSecure)) {
         if ($null -ne $Value) { $Value.Dispose() }

@@ -139,6 +139,21 @@ test('internal CLI offline default transport returns safe failure without secret
   assert.equal(c.status,1);assert.equal(c.stderr,'');const a=JSON.parse(c.stdout);safe(a);
   assert.equal(a.receipt.problem_code,'OAUTH_CODE_EXCHANGE_REJECTED_OR_UNAVAILABLE');
 });
+test('actual private child preflight payload refuses before even an injected provider fetch',async()=>{
+  let calls=0;
+  const a=await prepareZohoSender({mode:'offline-preflight'},async()=>{calls++;throw Error('unreachable');});
+  assert.equal(calls,0);assert.equal(a.receipt.requests_attempted,0);
+  assert.equal(a.receipt.problem_code,'LOCAL_INPUT_INVALID');assert.equal(a.private_configuration,null);
+});
+test('captured internal CLI emits the precise no-provider preflight contract',()=>{
+  const c=spawnSync(process.execPath,['--require','./scripts/offline-test-network.cjs',
+    'scripts/fr-2-zoho-private-setup.mjs','--private-parent-pipe'],{
+    encoding:'utf8',input:'{"mode":"offline-preflight"}',timeout:5000});
+  assert.equal(c.status,1);assert.equal(c.stderr,'');
+  const a=JSON.parse(c.stdout);
+  assert.equal(a.receipt.problem_code,'LOCAL_INPUT_INVALID');assert.equal(a.receipt.requests_attempted,0);
+  assert.equal(a.private_configuration,null);
+});
 test('PowerShell source keeps secrets in hidden prompts and private pipes with DPAPI current-user storage',()=>{
   const p=readFileSync('scripts/setup-fr-2-zoho-private.ps1','utf8');
   assert.equal((p.match(/Read-Host [^\n]+-AsSecureString/g)||[]).length,3);
@@ -147,4 +162,8 @@ test('PowerShell source keeps secrets in hidden prompts and private pipes with D
     "'LocalApplicationData'",'$VaultStream.Flush($true)',"'NODE_OPTIONS'",'$PrivateAnswer = $null'])assert(p.includes(text));
   assert(!/Write-Host\s+\$(?:Private|NodeText|NodeErrorText|Cipher)/.test(p));
   assert(!p.includes('Set-ExecutionPolicy'));assert(!p.includes('Invoke-RestMethod'));
+  assert(p.includes('[switch]$PreflightOnly'));
+  assert(p.indexOf('if ($PreflightOnly)') < p.indexOf("Read-Host 'Confirm"));
+  assert(p.includes("local_preflight_checkpoint='SOURCE_VALIDATION'"));
+  assert(!p.includes('Write-Host $_'));assert(!p.includes('local_exception_message='));
 });

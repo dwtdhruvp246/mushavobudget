@@ -1,3 +1,9 @@
+# Current checkpoint — Windows27PASS; local preflight stage diagnostic ready
+
+15 October2026,FRE51. [Owner result](security-fr-2-zoho-private-setup-preflight-owner-result.json) matches8hashes,7syntax checks and27PASS, then LOCAL_PREFLIGHT_FAILED before credential prompts/provider requests. [Preflight-only handoff](SECURITY_FR_2_4_ZOHO_LOCAL_PREFLIGHT_DIAGNOSTIC.md) adds fixed stage labels without printing private exception text. Updated utility29PASS and6real archive checks pass. Next owner command uses -PreflightOnly: no credentials, code generation, provider request, email or SQL. Exact Windows failing stage remains unknown; no unsupported cause or hosted acceptance claimed. Production excluded, APK deferred and no full finding closure.
+
+---
+
 # Current checkpoint — owner hash stop recorded; scoped archive correction ready
 
 15 October 2026, FRE50. [Archive correction](SECURITY_FR_2_4_ZOHO_ARCHIVE_CORRECTION.md), [owner result](security-fr-2-zoho-private-setup-first-owner-result.json), [real Git fixture checks](security-fr-2-zoho-archive-local-checks.json). Owner verifier stopped after two hashes, before credentials or provider calls. The missing PowerShell LF attribute reproduces the mismatch with core.autocrlf=true. One scoped LF attribute and a per-command archive override preserve bytes; six archive checks and the extracted 27-case verifier pass. Eight reviewed inputs/manifest are unchanged; hashes remain strict. Owner Windows/private result is pending; no email, hosted acceptance or finding closure, production excluded and APK deferred.

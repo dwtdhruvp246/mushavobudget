@@ -44,7 +44,7 @@ try {
        for(const[f,h]of Object.entries(m.file_sha256))assert.equal(hash(await readFile(path.join(out,f))),h);
        checks++;
        nested=JSON.parse(run(process.execPath,[path.join(out,'scripts/verify-fr-2-zoho-private-setup.mjs')],out));
-       assert.equal(nested.exit_code,0);assert.equal(nested.pass,27);checks++;
+       assert.equal(nested.exit_code,0);assert.equal(nested.pass,29);checks++;
      }
    }
  }

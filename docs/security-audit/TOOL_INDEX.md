@@ -1,3 +1,9 @@
+# Current checkpoint — email verification selected for ALL users, including platform Admin
+
+15 October2026,FRE42. [Owner scope decision](security-fr-2-email-code-all-users-owner-decision.json): all users including Admin. [Concrete implementation plan](SECURITY_FR_2_4_ALL_USER_EMAIL_VERIFICATION_IMPLEMENTATION_PLAN.md) replaces the customer-only recommendation: fixed7day account/device approval, short-lived email codes, server session proof and all data/RPC/Edge/Storage guards. Scope resolved; no reconfirmation needed. Next FR.2.4.E2 private backend candidate. No live changes, authenticator commands/unfinished-factor handoff on hold, no SQL/terminal action now. Full acceptance/findings remain open, production excluded, APK deferred.
+
+---
+
 # Current checkpoint — email-code/seven-day device proposal; scope decision next
 
 15 October2026,FRE41. Owner prefers email codes without a prompt on every login;7days proposed before a new code at subsequent sign-in. [Preference](security-fr-2-email-code-seven-day-owner-preference.json), [concrete device/session policy proposal](SECURITY_FR_2_4_EMAIL_CODE_SEVEN_DAY_POLICY_PROPOSAL.md). Clarify customer-only or platform Admin scope. Existing authenticator handoff and pending-factor SQL paused, no controls removed/no factor deletion/no role promotion. Email OTP is not Supabase AAL2; server enforcement and recovery design need scope review. No SQL/terminal action now, no implementation or acceptance/finding closure; production excluded, APK deferred.

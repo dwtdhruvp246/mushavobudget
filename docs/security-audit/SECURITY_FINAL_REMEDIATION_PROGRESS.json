@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-15",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_AUTH_POLICY_EMAIL_CODE_SEVEN_DAY_PROPOSAL_PENDING_PLATFORM_ADMIN_SCOPE",
+  "status": "FR2_EMAIL_VERIFICATION_ALL_USERS_ADMIN_SCOPE_CONFIRMED_BACKEND_CANDIDATE_NEXT",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE41",
+  "latest_evidence": "FRE42",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_AUTH_POLICY_SCOPE_REVIEW",
+      "status": "IN_PROGRESS_ALL_USER_EMAIL_VERIFICATION_BACKEND_CANDIDATE",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "EMAIL_CODE_SEVEN_DAY_POLICY_PROPOSED_SCOPE_UNCONFIRMED",
+          "status": "ALL_USER_AND_PLATFORM_ADMIN_EMAIL_POLICY_SELECTED_BACKEND_NEXT",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -539,10 +539,15 @@
           "pending_factor_review_owner_result_received": false,
           "email_code_policy_preference": "docs/security-audit/security-fr-2-email-code-seven-day-owner-preference.json",
           "email_code_policy_proposal": "docs/security-audit/SECURITY_FR_2_4_EMAIL_CODE_SEVEN_DAY_POLICY_PROPOSAL.md",
-          "email_code_policy_scope": "UNCONFIRMED",
+          "email_code_policy_scope": "ALL_CUSTOMER_AND_PLATFORM_ADMIN_USERS",
           "authenticator_and_factor_review_handoffs_paused": true,
           "existing_pending_factor_not_cleaned_or_verified": true,
-          "live_controls_removed_or_roles_promoted": false
+          "live_controls_removed_or_roles_promoted": false,
+          "email_code_policy_owner_decision": "docs/security-audit/security-fr-2-email-code-all-users-owner-decision.json",
+          "email_code_policy_implementation_plan": "docs/security-audit/SECURITY_FR_2_4_ALL_USER_EMAIL_VERIFICATION_IMPLEMENTATION_PLAN.md",
+          "email_code_policy_scope_confirmed": true,
+          "email_code_policy_implemented": false,
+          "current_controls_removed_or_roles_promoted": false
         },
         {
           "id": "FR.2.5",
@@ -612,7 +617,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4_OWNER_EMAIL_POLICY_SCOPE_CUSTOMERS_OR_PLATFORM_ADMINS",
+  "next_step": "FR.2.4.E2_EMAIL_VERIFICATION_PRIVATE_BACKEND_SOURCE_CANDIDATE",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -938,10 +943,16 @@
   "FR2_email_code_policy_owner_preference": "docs/security-audit/security-fr-2-email-code-seven-day-owner-preference.json",
   "FR2_email_code_policy_proposal": "docs/security-audit/SECURITY_FR_2_4_EMAIL_CODE_SEVEN_DAY_POLICY_PROPOSAL.md",
   "FR2_email_code_policy_interval_days_owner_proposed": 7,
-  "FR2_email_code_policy_scope": "UNCONFIRMED",
+  "FR2_email_code_policy_scope": "ALL_CUSTOMER_AND_PLATFORM_ADMIN_USERS",
   "FR2_email_code_policy_implemented": false,
   "FR2_Admin_authenticator_setup_paused_by_policy_discussion": true,
   "FR2_Admin_pending_factor_review_handoff_on_hold": true,
   "FR2_Admin_current_controls_removed": false,
-  "owner_auth_policy_scope_information_required": true
+  "owner_auth_policy_scope_information_required": false,
+  "FR2_email_code_policy_scope_owner_confirmed": true,
+  "FR2_email_code_policy_scope_owner_decision": "docs/security-audit/security-fr-2-email-code-all-users-owner-decision.json",
+  "FR2_email_code_policy_implementation_plan": "docs/security-audit/SECURITY_FR_2_4_ALL_USER_EMAIL_VERIFICATION_IMPLEMENTATION_PLAN.md",
+  "FR2_email_code_policy_seven_day_device_approval_seconds": 604800,
+  "FR2_email_code_policy_code_lifetime_seconds_design_default": 600,
+  "FR2_Admin_authenticator_required_by_selected_product_policy": false
 }

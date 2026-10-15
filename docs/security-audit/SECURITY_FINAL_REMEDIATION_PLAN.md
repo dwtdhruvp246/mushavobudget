@@ -1,3 +1,9 @@
+# Current checkpoint — email-code/seven-day device proposal; scope decision next
+
+15 October2026,FRE41. Owner prefers email codes without a prompt on every login;7days proposed before a new code at subsequent sign-in. [Preference](security-fr-2-email-code-seven-day-owner-preference.json), [concrete device/session policy proposal](SECURITY_FR_2_4_EMAIL_CODE_SEVEN_DAY_POLICY_PROPOSAL.md). Clarify customer-only or platform Admin scope. Existing authenticator handoff and pending-factor SQL paused, no controls removed/no factor deletion/no role promotion. Email OTP is not Supabase AAL2; server enforcement and recovery design need scope review. No SQL/terminal action now, no implementation or acceptance/finding closure; production excluded, APK deferred.
+
+---
+
 # Current checkpoint — incomplete MFA enrollment; read-only factor review next
 
 15 October2026,FRE40. [First owner MFA result](security-fr-2-operator-mfa-first-owner-result.json): PRIMARY password PASS, enrollment response exceeded old256KiB cap,5requests/exit1,no TOTP verification; pending factor possible. [Correction and read-only SQL handoff](SECURITY_FR_2_4_MFA_RESPONSE_LIMIT_AND_FACTOR_REVIEW.md): exact previous-core failure reproduced; enrollment-only2MiB limit and cleanup flags corrected,31 local tests PASS; metadata query12 local checks PASS. Return factor_setup_review JSON before any rerun/reset/deletion. No Admin promotion, full recovery/Admin acceptance or finding closure; production excluded, APK deferred.

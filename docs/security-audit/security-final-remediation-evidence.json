@@ -1258,6 +1258,27 @@
       "APK_update_deferred": true,
       "findings_closed": [],
       "next_step": "FR.2.4_OWNER_READ_ONLY_PENDING_FACTOR_REVIEW_RESULT"
+    },
+    {
+      "id": "FRE41",
+      "stage_step": "FR.2.4_EMAIL_CODE_SEVEN_DAY_POLICY_PROPOSAL",
+      "date": "2026-10-15",
+      "source_parent_commit": "b122bcdc53560ef66bfebc673eb3e80855a0efd1",
+      "result": "OWNER_EMAIL_CODE_PREFERENCE_RECORDED_DEVICE_TRUST_PLAN_SCOPE_PENDING",
+      "owner_preference": "docs/security-audit/security-fr-2-email-code-seven-day-owner-preference.json",
+      "report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_CODE_SEVEN_DAY_POLICY_PROPOSAL.md",
+      "owner_proposed_interval_days": 7,
+      "customer_vs_platform_Admin_scope_unconfirmed": true,
+      "authenticator_and_pending_factor_handoffs_paused": true,
+      "pending_factor_status_not_verified_or_deleted": true,
+      "Auth_SQL_RLS_roles_factors_templates_or_settings_changed": false,
+      "email_dispatched": false,
+      "new_tests_run": 0,
+      "hosted_acceptance": false,
+      "production_or_native_changed": false,
+      "APK_update_deferred": true,
+      "findings_closed": [],
+      "next_step": "FR.2.4_OWNER_EMAIL_POLICY_SCOPE_CUSTOMERS_OR_PLATFORM_ADMINS"
     }
   ],
   "prior_stage_evidence_preserved": true,

@@ -1,3 +1,9 @@
+# Current checkpoint — Windows email backend46PASS; dependency-only recheck
+
+15 October2026,FRE44. [Windows result and corrected command](SECURITY_FR_2_4_EMAIL_BACKEND_WINDOWS_RESULT_AND_DEPENDENCY_RECHECK.md), [sanitized owner receipt](security-fr-2-email-backend-owner-Windows-result.json). Owner Node22.17.0:46backendPASS,exit0,54migrations/59source hashes. Separate PowerShell lockfile JSON parsing failed; actual dependency mismatch is not established. Run only the corrected read-only Node metadata/source check in the same terminal; no reinstall or backend retest. Replacement checker3localPASS. Supabase installation, email delivery and hosted acceptance remain pending; no finding closure, production excluded, APK deferred.
+
+---
+
 # Current checkpoint — private email backend46 local PASS; Windows offline recheck ready
 
 15 October2026,FRE43. [Actual SQL/crypto candidate and handoff](SECURITY_FR_2_4_EMAIL_BACKEND_CANDIDATE_AND_OFFLINE_HANDOFF.md), [contract](security-fr-2-email-backend-candidate-contract.json), [46local PASS receipt](security-fr-2-email-backend-local-checks.json), [59-file source/dependency manifest](security-fr-2-email-backend-source-manifest.json). Five private forced-RLS tables/eight service-only RPCs; non-sliding7day approval, retained verified sessions, replay/expiry/revocation/rolling-budget guards. Full54source compiled; existing public functions/policies/original triggers preserved. Run only the pinned temporary local verifier in chat; no Supabase SQL or mail delivery yet. App-wide guards/UI/gateway/native/real races and hosted acceptance remain pending; no finding closure, production excluded, APK deferred.

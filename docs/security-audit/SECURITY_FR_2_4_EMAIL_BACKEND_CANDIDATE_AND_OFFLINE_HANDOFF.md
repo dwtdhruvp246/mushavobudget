@@ -1,3 +1,9 @@
+# Latest owner checkpoint — Windows46PASS; dependency parser recheck pending
+
+15 October2026,FRE44. The owner ran the exact source candidate on Node22.17.0:46/46PASS,exit0,54migrations/59source hashes. A separate PowerShell package-lock conversion failed before its integrity check; the following integrity-mismatch exception does not establish a real dependency mismatch. Use the [dependency-only correction and full command](SECURITY_FR_2_4_EMAIL_BACKEND_WINDOWS_RESULT_AND_DEPENDENCY_RECHECK.md), not the obsolete ConvertFrom-Json lockfile step below. No backend retest or reinstall is needed. [Sanitized owner evidence](security-fr-2-email-backend-owner-Windows-result.json). No Supabase SQL, email or hosted acceptance; source implementation unchanged.
+
+---
+
 # FR.2.4.E2 — actual private email backend candidate; offline Windows recheck
 
 15 October2026,FRE43. [Candidate contract](security-fr-2-email-backend-candidate-contract.json), [46 local checks](security-fr-2-email-backend-local-checks.json), [59-file source/dependency manifest](security-fr-2-email-backend-source-manifest.json). Owner-selected policy applies to all customers and platform Admins. Source parent172276bdd33e6489fae127d15c4b6f480b2a8ff9.

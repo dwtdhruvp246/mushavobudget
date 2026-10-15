@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-15",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_ADMIN_SELECTED_PARITY_36_58_MATCH_OPERATOR_RECOVERY_SETUP_PENDING",
+  "status": "FR2_ADMIN_ORDINARY_OPERATOR_AUTH_IDENTITIES_OWNER_CREATION_HANDOFF_READY",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE36",
+  "latest_evidence": "FRE37",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_ADMIN_PARITY_MATCHED_OPERATOR_RECOVERY_PREPARATION",
+      "status": "IN_PROGRESS_ORDINARY_OPERATOR_IDENTITY_PREPARATION",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "SELECTED_PARITY_MATCH_36_58_ISOLATED_OPERATOR_RECOVERY_PREREQUISITES_PENDING",
+          "status": "ORDINARY_OPERATOR_AUTH_USER_CREATION_AND_READ_ONLY_STATUS_HANDOFF_READY",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -500,7 +500,19 @@
           "operator_recovery_plan": "docs/security-audit/SECURITY_FR_2_4_OPERATOR_AND_RECOVERY_PREPARATION_PLAN.md",
           "operator_inbox_availability_received": false,
           "current_metadata_readiness": "BLOCKED_NO_VERIFIED_SUPER_OPERATOR",
-          "Auth_settings_or_recovery_verified": false
+          "Auth_settings_or_recovery_verified": false,
+          "owner_reports_no_staging_Admin_account": true,
+          "owner_clarification": "docs/security-audit/security-fr-2-operator-setup-owner-clarification.json",
+          "ordinary_identity_handoff": "docs/security-audit/SECURITY_FR_2_4_ORDINARY_IDENTITY_CREATION_HANDOFF.md",
+          "ordinary_identity_contract": "docs/security-audit/security-fr-2-operator-identity-contract.json",
+          "ordinary_identity_status_SQL": "supabase/diagnostics/security_fr_2_4_operator_identity_check.sql",
+          "ordinary_identity_local_receipt": "docs/security-audit/security-fr-2-operator-identity-local-checks.json",
+          "ordinary_identity_local_PASS": 10,
+          "ordinary_identity_owner_result_received": false,
+          "operator_mailbox_count_owner_reported": 3,
+          "operator_mailbox_independent_control_verified": false,
+          "operator_account_creation_performed_by_assistant": false,
+          "Admin_roles_or_factors_changed": false
         },
         {
           "id": "FR.2.5",
@@ -561,7 +573,7 @@
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
   "owner_terminal_action_required": false,
-  "owner_SQL_action_required": false,
+  "owner_SQL_action_required": true,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
@@ -570,7 +582,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4_OWNER_ISOLATED_OPERATOR_AND_RECOVERY_INBOX_AVAILABILITY",
+  "next_step": "FR.2.4_OWNER_ORDINARY_OPERATOR_IDENTITY_STATUS_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -846,5 +858,16 @@
   "FR2_Admin_outcome_report": "docs/security-audit/SECURITY_FR_2_4_ADMIN_PARITY_OUTCOME_AND_OPERATOR_HANDOFF.md",
   "FR2_Admin_operator_recovery_plan": "docs/security-audit/SECURITY_FR_2_4_OPERATOR_AND_RECOVERY_PREPARATION_PLAN.md",
   "FR2_Admin_operator_inbox_availability_received": false,
-  "owner_setup_information_required": true
+  "owner_setup_information_required": false,
+  "FR2_Admin_operator_setup_owner_clarification": "docs/security-audit/security-fr-2-operator-setup-owner-clarification.json",
+  "FR2_Admin_owner_reports_no_staging_Admin_account": true,
+  "FR2_Admin_owner_reported_mailbox_accounts": 3,
+  "FR2_Admin_mailbox_independent_credentials_verified": false,
+  "FR2_Admin_ordinary_identity_handoff": "docs/security-audit/SECURITY_FR_2_4_ORDINARY_IDENTITY_CREATION_HANDOFF.md",
+  "FR2_Admin_ordinary_identity_contract": "docs/security-audit/security-fr-2-operator-identity-contract.json",
+  "FR2_Admin_ordinary_identity_status_SQL": "supabase/diagnostics/security_fr_2_4_operator_identity_check.sql",
+  "FR2_Admin_ordinary_identity_local_receipt": "docs/security-audit/security-fr-2-operator-identity-local-checks.json",
+  "FR2_Admin_ordinary_identity_local_PASS": 10,
+  "FR2_Admin_ordinary_identity_owner_result_received": false,
+  "owner_dashboard_auth_user_creation_action_required": true
 }

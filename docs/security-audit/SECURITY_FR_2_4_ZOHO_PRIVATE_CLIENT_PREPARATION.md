@@ -1,3 +1,9 @@
+# Current checkpoint — client created; private token exchange prepared, owner result pending
+
+15 October 2026, FRE49. [Private exchange handoff](SECURITY_FR_2_4_ZOHO_PRIVATE_EXCHANGE_HANDOFF.md), [owner facts](security-fr-2-zoho-client-owner-result.json), [27-case local checks](security-fr-2-zoho-private-setup-local-checks.json). Corrected sender localpart is plural notifications; console hostname api-console.zoho.com and Self Client creation are owner reported. Eight source hashes/seven JS syntax checks pass. Windows encryption/private pipe runs before hidden credential/code prompts; then at most three OAuth/account-metadata requests, no email. Secrets stay in captured pipes and a current-user DPAPI file outside Git/public output. Actual Windows/provider result is pending. E4 full guard/canonical integration and hosted acceptance remain pending; no finding closure, production excluded, APK deferred.
+
+---
+
 # FR.2.4.E3.3 — private Zoho client preparation
 
 15 October 2026, FRE48. The three requested owner details have been received: the normal Zoho inbox host is reported as mail.zoho.com, the existing notification sender mailbox is accessible, and the staging Cloudflare Pages dashboard lists Durable Object as a binding option. The custom email domain is not the API host. These reports permit the next setup step; they do not prove an OAuth grant, account API eligibility, an authorized From address, a deployed namespace or email delivery. [Owner receipt](security-fr-2-email-hosted-readiness-owner-result.json).

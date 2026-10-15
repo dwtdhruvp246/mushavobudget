@@ -1,3 +1,9 @@
+# Current checkpoint — client created; private token exchange prepared, owner result pending
+
+15 October 2026, FRE49. [Private exchange handoff](SECURITY_FR_2_4_ZOHO_PRIVATE_EXCHANGE_HANDOFF.md), [owner facts](security-fr-2-zoho-client-owner-result.json), [27-case local checks](security-fr-2-zoho-private-setup-local-checks.json). Corrected sender localpart is plural notifications; console hostname api-console.zoho.com and Self Client creation are owner reported. Eight source hashes/seven JS syntax checks pass. Windows encryption/private pipe runs before hidden credential/code prompts; then at most three OAuth/account-metadata requests, no email. Secrets stay in captured pipes and a current-user DPAPI file outside Git/public output. Actual Windows/provider result is pending. E4 full guard/canonical integration and hosted acceptance remain pending; no finding closure, production excluded, APK deferred.
+
+---
+
 # Current checkpoint — three setup facts received; private Zoho client preparation next
 
 15 October 2026, FRE48. [Owner readiness receipt](security-fr-2-email-hosted-readiness-owner-result.json) records mail.zoho.com, notification-mailbox access YES and staging Durable Object option AVAILABLE, all owner reported. [Private Zoho client preparation](SECURITY_FR_2_4_ZOHO_PRIVATE_CLIENT_PREPARATION.md): select the notification Zoho account, create Self Client if absent or report an existing client without resetting it, and keep credentials private. No SQL, terminal, short-lived code, email, token exchange or Cloudflare upload requested at this step. E2/E3.1/E3.2 offline results remain preserved; hosted acceptance and E4 global guard/canonical integration remain pending. No finding closure; production excluded and APK deferred.

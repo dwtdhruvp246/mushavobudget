@@ -1,3 +1,9 @@
+# Current checkpoint — three setup facts received; private Zoho client preparation next
+
+15 October 2026, FRE48. [Owner readiness receipt](security-fr-2-email-hosted-readiness-owner-result.json) records mail.zoho.com, notification-mailbox access YES and staging Durable Object option AVAILABLE, all owner reported. [Private Zoho client preparation](SECURITY_FR_2_4_ZOHO_PRIVATE_CLIENT_PREPARATION.md): select the notification Zoho account, create Self Client if absent or report an existing client without resetting it, and keep credentials private. No SQL, terminal, short-lived code, email, token exchange or Cloudflare upload requested at this step. E2/E3.1/E3.2 offline results remain preserved; hosted acceptance and E4 global guard/canonical integration remain pending. No finding closure; production excluded and APK deferred.
+
+---
+
 # FR.2.4.E3.3 — actual setup readiness: three read-only owner details
 
 15October2026,FRE47. [Owner Windows31PASS](security-fr-2-email-workers-owner-Windows-result.json), [readiness contract](security-fr-2-email-hosted-readiness-contract.json). Source commitd89d8ca49b738fb29a4812fcd30b1ee26e9c3a87.

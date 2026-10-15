@@ -3,7 +3,7 @@
   "updated_date": "2026-10-15",
   "current_stage": null,
   "current_step": "FR.2.4.E3.3",
-  "current_title": "Owner Windows real Worker31PASS; read-only actual Zoho/Cloudflare setup details next",
+  "current_title": "Owner setup details received; private Zoho client preparation next",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.4.E3.3_READ_ONLY_ZOHO_AND_CLOUDFLARE_READINESS_DETAILS",
+  "next_step": "FR.2.4.E3.3_PRIVATE_ZOHO_CLIENT_PREPARATION",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3358,13 +3358,13 @@
   },
   "next_phase": "FINAL_REMEDIATION",
   "final_remediation": {
-    "status": "FR2_EMAIL_E3_2_OWNER_WINDOWS31_PASS_E3_3_READ_ONLY_SETUP_DETAILS_PENDING",
+    "status": "FR2_EMAIL_E3_3_OWNER_READINESS_DETAILS_RECEIVED_PRIVATE_ZOHO_CLIENT_PENDING",
     "prepared_date": "2026-10-13",
     "handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
     "proposed_batches": 8,
     "original_findings_mapped": 20,
     "existing_open_action_entries": 61,
-    "next_step": "FR.2.4.E3.3_READ_ONLY_ZOHO_AND_CLOUDFLARE_READINESS_DETAILS",
+    "next_step": "FR.2.4.E3.3_PRIVATE_ZOHO_CLIENT_PREPARATION",
     "release_gate_unchanged": true,
     "full_fresh_final_reaudit_required": true,
     "started_date": "2026-10-13",
@@ -3373,7 +3373,7 @@
     "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
     "progress": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PROGRESS.json",
     "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-    "latest_evidence": "FRE47",
+    "latest_evidence": "FRE48",
     "candidate_report": "docs/security-audit/SECURITY_FR_1_1_STAGING_CANDIDATE.md",
     "local_receipt": "docs/security-audit/security-final-staging-local-checks.json",
     "owner_terminal_action_required": false,
@@ -3759,7 +3759,13 @@
     "FR2_email_workers_offline_checkpoint_complete": true,
     "FR2_email_hosted_readiness_contract": "docs/security-audit/security-fr-2-email-hosted-readiness-contract.json",
     "FR2_email_hosted_readiness_report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_HOSTED_READINESS_OWNER_HANDOFF.md",
-    "owner_dashboard_read_only_information_required": true
+    "owner_dashboard_read_only_information_required": false,
+    "FR2_email_hosted_readiness_owner_result_received": true,
+    "FR2_email_hosted_readiness_owner_receipt": "docs/security-audit/security-fr-2-email-hosted-readiness-owner-result.json",
+    "FR2_email_private_Zoho_client_handoff": "docs/security-audit/SECURITY_FR_2_4_ZOHO_PRIVATE_CLIENT_PREPARATION.md",
+    "FR2_email_private_Zoho_client_owner_result_received": false,
+    "owner_private_Zoho_client_registration_action_required": true,
+    "owner_authorization_code_or_token_exchange_action_required": false
   },
   "current_phase": "FINAL_REMEDIATION"
 }

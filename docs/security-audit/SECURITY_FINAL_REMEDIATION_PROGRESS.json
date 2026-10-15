@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-15",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E3_2_OWNER_WINDOWS31_PASS_E3_3_READ_ONLY_SETUP_DETAILS_PENDING",
+  "status": "FR2_EMAIL_E3_3_OWNER_READINESS_DETAILS_RECEIVED_PRIVATE_ZOHO_CLIENT_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE47",
+  "latest_evidence": "FRE48",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_EMAIL_HOSTED_READINESS_OWNER_DETAILS",
+      "status": "IN_PROGRESS_EMAIL_PRIVATE_ZOHO_CLIENT_PREPARATION",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "EMAIL_E3_2_OWNER31_PASS_E3_3_NONSECRET_SETUP_DETAILS_PENDING",
+          "status": "EMAIL_E3_3_THREE_OWNER_DETAILS_RECEIVED_PRIVATE_CLIENT_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -579,7 +579,11 @@
           "email_workers_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-workers-owner-Windows-result.json",
           "email_hosted_readiness_contract": "docs/security-audit/security-fr-2-email-hosted-readiness-contract.json",
           "email_hosted_readiness_report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_HOSTED_READINESS_OWNER_HANDOFF.md",
-          "email_code_policy_hosted_implemented": false
+          "email_code_policy_hosted_implemented": false,
+          "email_hosted_readiness_owner_result_received": true,
+          "email_hosted_readiness_owner_receipt": "docs/security-audit/security-fr-2-email-hosted-readiness-owner-result.json",
+          "email_private_Zoho_client_handoff": "docs/security-audit/SECURITY_FR_2_4_ZOHO_PRIVATE_CLIENT_PREPARATION.md",
+          "email_private_Zoho_client_owner_result_received": false
         },
         {
           "id": "FR.2.5",
@@ -649,7 +653,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E3.3_READ_ONLY_ZOHO_AND_CLOUDFLARE_READINESS_DETAILS",
+  "next_step": "FR.2.4.E3.3_PRIVATE_ZOHO_CLIENT_PREPARATION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -1037,5 +1041,11 @@
   "FR2_email_workers_offline_checkpoint_complete": true,
   "FR2_email_hosted_readiness_contract": "docs/security-audit/security-fr-2-email-hosted-readiness-contract.json",
   "FR2_email_hosted_readiness_report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_HOSTED_READINESS_OWNER_HANDOFF.md",
-  "owner_dashboard_read_only_information_required": true
+  "owner_dashboard_read_only_information_required": false,
+  "FR2_email_hosted_readiness_owner_result_received": true,
+  "FR2_email_hosted_readiness_owner_receipt": "docs/security-audit/security-fr-2-email-hosted-readiness-owner-result.json",
+  "FR2_email_private_Zoho_client_handoff": "docs/security-audit/SECURITY_FR_2_4_ZOHO_PRIVATE_CLIENT_PREPARATION.md",
+  "FR2_email_private_Zoho_client_owner_result_received": false,
+  "owner_private_Zoho_client_registration_action_required": true,
+  "owner_authorization_code_or_token_exchange_action_required": false
 }

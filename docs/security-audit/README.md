@@ -1,3 +1,9 @@
+# Current checkpoint — three setup facts received; private Zoho client preparation next
+
+15 October 2026, FRE48. [Owner readiness receipt](security-fr-2-email-hosted-readiness-owner-result.json) records mail.zoho.com, notification-mailbox access YES and staging Durable Object option AVAILABLE, all owner reported. [Private Zoho client preparation](SECURITY_FR_2_4_ZOHO_PRIVATE_CLIENT_PREPARATION.md): select the notification Zoho account, create Self Client if absent or report an existing client without resetting it, and keep credentials private. No SQL, terminal, short-lived code, email, token exchange or Cloudflare upload requested at this step. E2/E3.1/E3.2 offline results remain preserved; hosted acceptance and E4 global guard/canonical integration remain pending. No finding closure; production excluded and APK deferred.
+
+---
+
 # Current checkpoint — Windows bundles/shared limiter31PASS; actual setup details next
 
 15October2026,FRE47. [Read-only Zoho/Cloudflare owner handoff](SECURITY_FR_2_4_EMAIL_HOSTED_READINESS_OWNER_HANDOFF.md), [contract](security-fr-2-email-hosted-readiness-contract.json), [owner Windows31PASS](security-fr-2-email-workers-owner-Windows-result.json).16source hashes/full tools-lock/two output hashes match;12syntax checks and native workerd/SQLite concurrency/restart cases pass;cleanup complete. E2/E3.1/E3.2local checkpoints complete. Next: hostname-only Zoho region,notification-mailbox access and staging Durable Object binding-option visibility. No SQL,terminal rerun,email or configuration change requested. Actual login/global data guards/canonical integration,hosted acceptance and final merge/deployment remain pending;no full finding closure,production excluded,APK deferred.

@@ -1,3 +1,9 @@
+# Current checkpoint — Worker deployment reported; read-only metadata review next
+
+15 October2026,FRE60. [Owner Wrangler exit0/Worker deployed, overall postcheck exit1](security-fr-2-limiter-deployment-owner-review.json),namespace API response review required. Public URL/final candidate checks were not reached. [Read-only inspection handoff](SECURITY_FR_2_4_LIMITER_POST_DEPLOY_READ_ONLY_REVIEW.md), [15local checks](security-fr-2-limiter-inspection-local-checks.json). Do not rerun deployment/delete/recreate. Next command reads bounded response shapes, numeric codes and selected metadata; no writes/npm/SQL/email/Zoho file. No full acceptance or finding closure; E4 remains pending, production excluded, APK deferred.
+
+---
+
 # Current checkpoint — authenticated account check passed; live limiter handoff ready
 
 15 October2026,FRE59. [Owner genuine3GET account/absence PASS](security-fr-2-cloudflare-account-owner-pass.json),exit0. [Live staging limiter deployment handoff](SECURITY_FR_2_4_LIMITER_LIVE_DEPLOYMENT_HANDOFF.md), [16new local checks and actual strict dry-run](security-fr-2-limiter-deployment-local-checks.json). The next pasted command validates locked tools/artifacts,rechecks account and absence,deploys the exact isolated limiter once and reads namespace/public-URL metadata. Nothing has yet been deployed. No Pages/email/SQL/Auth/application guard change; E4/global acceptance pending, production excluded, APK deferred, no finding closure.

@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E3.4_LIMITER_PACKAGE",
-  "status": "OWNER_WINDOWS_AND_AUTHENTICATED_ACCOUNT_PASS_LIVE_LIMITER_DEPLOYMENT_NEXT",
+  "status": "OWNER_WRANGLER_DEPLOY_EXIT0_POSTCHECK_REVIEW_REQUIRED",
   "source_parent_commit": "20b2648438cc21b70f23e2ea8ab183b81c269c4b",
   "owner_readiness": "docs/security-audit/security-fr-2-email-limiter-absence-owner-result.json",
   "report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_PACKAGE_AND_WINDOWS_HANDOFF.md",
@@ -44,7 +44,7 @@
   "owner_SQL_action_required": false,
   "owner_terminal_action_required": true,
   "owner_CLI_login_or_API_token_or_private_file_action_required": true,
-  "owner_Cloudflare_resource_creation_or_deployment_requested": true,
+  "owner_Cloudflare_resource_creation_or_deployment_requested": false,
   "owner_local_candidate_preparation_only": false,
   "actual_Cloudflare_resource_existence_account_selection_or_namespace_verified": false,
   "hosted_deployment_requires_later_account_and_remote_absence_checks": true,
@@ -52,7 +52,7 @@
   "existing_application_backend_SQL_Login_UI_or_global_guards_changed": false,
   "Zoho_DPAPI_file_accessed": false,
   "email_dispatched": false,
-  "deployed": false,
+  "deployed": true,
   "hosted_acceptance": false,
   "production_or_native_changed": false,
   "findings_closed": [],
@@ -68,5 +68,10 @@
   "selected_account_and_current_Worker_absence_owner_verified": true,
   "namespace_verified": false,
   "owner_authenticated_account_receipt": "docs/security-audit/security-fr-2-cloudflare-account-owner-pass.json",
-  "live_deployment_report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_LIVE_DEPLOYMENT_HANDOFF.md"
+  "live_deployment_report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_LIVE_DEPLOYMENT_HANDOFF.md",
+  "deployment_evidence_scope": "OWNER_RETURNED_WRANGLER_EXIT0_RECEIPT_NOT_INDEPENDENT_REMOTE_INVENTORY",
+  "public_URL_metadata_verified": false,
+  "post_deploy_final_candidate_reread_verified": false,
+  "owner_deployment_receipt": "docs/security-audit/security-fr-2-limiter-deployment-owner-review.json",
+  "post_deploy_read_only_report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_POST_DEPLOY_READ_ONLY_REVIEW.md"
 }

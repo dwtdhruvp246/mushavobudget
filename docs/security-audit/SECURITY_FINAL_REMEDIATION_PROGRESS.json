@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-15",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E3_3_PRIVATE_ZOHO_PASS_E3_4_CLOUDFLARE_READINESS_PENDING",
+  "status": "FR2_EMAIL_E3_4_WORKERS_FREE_REPORTED_EXACT_WORKER_NAME_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE55",
+  "latest_evidence": "FRE56",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_EMAIL_CLOUDFLARE_RESOURCE_READINESS",
+      "status": "IN_PROGRESS_EMAIL_CLOUDFLARE_EXACT_NAME_INVENTORY",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "EMAIL_E3_3_PRIVATE_ZOHO_PASS_E3_4_READ_ONLY_CLOUDFLARE_READY_PENDING",
+          "status": "EMAIL_E3_4_FREE_PLAN_REPORTED_EXACT_NAME_UNSURE",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -609,7 +609,11 @@
           "email_private_Zoho_full_provider_exit_code": 0,
           "email_private_Zoho_full_secret_ciphertext_save_verified": true,
           "email_Cloudflare_readiness_contract": "docs/security-audit/security-fr-2-email-cloudflare-readiness-contract.json",
-          "email_Cloudflare_readiness_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_SETUP_PASS_AND_CLOUDFLARE_READINESS.md"
+          "email_Cloudflare_readiness_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_SETUP_PASS_AND_CLOUDFLARE_READINESS.md",
+          "email_Cloudflare_plan_owner_result": "docs/security-audit/security-fr-2-email-cloudflare-plan-owner-result.json",
+          "email_Cloudflare_Workers_plan_owner_reported": "FREE",
+          "email_Cloudflare_exact_Worker_name_owner_reported": "UNSURE",
+          "email_Cloudflare_exact_Worker_existence_verified": null
         },
         {
           "id": "FR.2.5",
@@ -679,7 +683,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E3.4_READ_ONLY_CLOUDFLARE_PLAN_AND_EXISTING_WORKER_DETAILS",
+  "next_step": "FR.2.4.E3.4_READ_ONLY_EXACT_WORKER_NAME_INVENTORY",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -1122,5 +1126,9 @@
   "FR2_email_private_Zoho_scoped_setup_checkpoint_complete": true,
   "FR2_email_private_Zoho_actual_mail_delivery_verified": false,
   "FR2_email_Cloudflare_readiness_contract": "docs/security-audit/security-fr-2-email-cloudflare-readiness-contract.json",
-  "FR2_email_Cloudflare_readiness_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_SETUP_PASS_AND_CLOUDFLARE_READINESS.md"
+  "FR2_email_Cloudflare_readiness_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_SETUP_PASS_AND_CLOUDFLARE_READINESS.md",
+  "FR2_email_Cloudflare_plan_owner_result": "docs/security-audit/security-fr-2-email-cloudflare-plan-owner-result.json",
+  "FR2_email_Cloudflare_Workers_plan_owner_reported": "FREE",
+  "FR2_email_Cloudflare_exact_Worker_name_owner_reported": "UNSURE",
+  "FR2_email_Cloudflare_exact_Worker_existence_verified": null
 }

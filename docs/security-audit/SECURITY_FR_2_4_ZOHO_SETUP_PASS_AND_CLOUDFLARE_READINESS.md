@@ -1,3 +1,9 @@
+# Current checkpoint — Workers Free plan reported; exact Worker name still unconfirmed
+
+15 October2026,FRE56. [Owner plan/name result](security-fr-2-email-cloudflare-plan-owner-result.json):Workers plan FREE;existing Worker mushavo-email-rate-staging UNSURE. Unknown is not absence. The recorded workflow has not deployed that candidate,but this does not rule out an existing account resource. Only the name check remains;do not repeat the plan or Zoho setup. On the same account's Workers & Pages overview,return to the project list rather than staying inside the Pages project,clear type/status filters,then search the exact name across all projects/pages of results. An exact Worker result means YES;no exact result after a complete search in the correct account means NO at the owner-reported inventory scope. If the list cannot be confidently inspected,return the visible project names/types only,without account IDs,billing information or credentials. No public-URL probe can establish absence because the candidate disables public workers.dev routing. No creation,edit,delete,binding,upload,plan change,SQL or terminal action is requested. Zoho private setup remains passed;delivery/E4/global acceptance pending,production excluded and APK deferred.
+
+---
+
 # FR.2.4.E3.3 — private Zoho setup passed; E3.4 Cloudflare resource readiness
 
 15 October2026,FRE55. [Owner private setup result](security-fr-2-zoho-private-setup-owner-pass.json), [next read-only contract](security-fr-2-email-cloudflare-readiness-contract.json). Executable source pin69c963a628f883646917061cb73813d80532280e remains unchanged.

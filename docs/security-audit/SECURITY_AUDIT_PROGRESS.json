@@ -3,7 +3,7 @@
   "updated_date": "2026-10-15",
   "current_stage": null,
   "current_step": "FR.2.4.E3.4",
-  "current_title": "Private Zoho setup passed; read-only Cloudflare resource readiness next",
+  "current_title": "Workers Free plan reported; exact existing limiter Worker name remains uncertain",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.4.E3.4_READ_ONLY_CLOUDFLARE_PLAN_AND_EXISTING_WORKER_DETAILS",
+  "next_step": "FR.2.4.E3.4_READ_ONLY_EXACT_WORKER_NAME_INVENTORY",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3358,13 +3358,13 @@
   },
   "next_phase": "FINAL_REMEDIATION",
   "final_remediation": {
-    "status": "FR2_EMAIL_E3_3_PRIVATE_ZOHO_PASS_E3_4_CLOUDFLARE_READINESS_PENDING",
+    "status": "FR2_EMAIL_E3_4_WORKERS_FREE_REPORTED_EXACT_WORKER_NAME_PENDING",
     "prepared_date": "2026-10-13",
     "handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
     "proposed_batches": 8,
     "original_findings_mapped": 20,
     "existing_open_action_entries": 61,
-    "next_step": "FR.2.4.E3.4_READ_ONLY_CLOUDFLARE_PLAN_AND_EXISTING_WORKER_DETAILS",
+    "next_step": "FR.2.4.E3.4_READ_ONLY_EXACT_WORKER_NAME_INVENTORY",
     "release_gate_unchanged": true,
     "full_fresh_final_reaudit_required": true,
     "started_date": "2026-10-13",
@@ -3373,7 +3373,7 @@
     "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
     "progress": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PROGRESS.json",
     "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-    "latest_evidence": "FRE55",
+    "latest_evidence": "FRE56",
     "candidate_report": "docs/security-audit/SECURITY_FR_1_1_STAGING_CANDIDATE.md",
     "local_receipt": "docs/security-audit/security-final-staging-local-checks.json",
     "owner_terminal_action_required": false,
@@ -3814,7 +3814,11 @@
     "FR2_email_private_Zoho_scoped_setup_checkpoint_complete": true,
     "FR2_email_private_Zoho_actual_mail_delivery_verified": false,
     "FR2_email_Cloudflare_readiness_contract": "docs/security-audit/security-fr-2-email-cloudflare-readiness-contract.json",
-    "FR2_email_Cloudflare_readiness_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_SETUP_PASS_AND_CLOUDFLARE_READINESS.md"
+    "FR2_email_Cloudflare_readiness_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_SETUP_PASS_AND_CLOUDFLARE_READINESS.md",
+    "FR2_email_Cloudflare_plan_owner_result": "docs/security-audit/security-fr-2-email-cloudflare-plan-owner-result.json",
+    "FR2_email_Cloudflare_Workers_plan_owner_reported": "FREE",
+    "FR2_email_Cloudflare_exact_Worker_name_owner_reported": "UNSURE",
+    "FR2_email_Cloudflare_exact_Worker_existence_verified": null
   },
   "current_phase": "FINAL_REMEDIATION"
 }

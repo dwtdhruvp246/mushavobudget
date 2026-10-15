@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
+import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
 import {runOperatorMfa,AUTH,CONFIG,parseConfig,validateEmails,boundedBody} from '../scripts/lib/fr-2-operator-mfa.mjs';
 globalThis.fetch=()=>{throw Error('REAL_NETWORK_FORBIDDEN_IN_TEST');};
 const id=n=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
@@ -46,6 +48,7 @@ function fixture(options={}) {
     const bearer=init.headers.Authorization?.replace(/^Bearer /,'');const session=tokens.get(bearer);assert(session);
     if(url.endsWith('/user')){
       const user=structuredClone(session.actor);
+      if(options.oversizedUser)user.padding='x'.repeat(300000);
       if(options.wrongEmail)user.email='foreign@example.invalid';
       if(options.wrongRole)user.role='service_role';
       if(options.changedFactorAfterFresh&&signIns===2)user.factors[0].id=id(777);
@@ -56,7 +59,7 @@ function fixture(options={}) {
       const body=JSON.parse(init.body);assert.equal(body.factor_type,'totp');assert(!('phone' in body));
       const f={id:id(10+actors.indexOf(session.actor)),factor_type:'totp',status:'unverified'};session.actor.factors.push(f);
       if(options.lostEnrollment)throw Error('LOST RESPONSE '+SECRET);
-      return json({id:f.id,type:'totp',totp:{secret:SECRET,qr_code:'PRIVATE_QR',uri:'PRIVATE_URI'}});
+      return json({id:f.id,type:'totp',totp:{secret:SECRET,qr_code:options.oversizedEnrollment?'x'.repeat(2200000):options.largeEnrollment?'x'.repeat(400000):'PRIVATE_QR',uri:'PRIVATE_URI'}});
     }
     const match=url.match(/\/factors\/([^/]+)\/(challenge|verify)$/);assert(match);
     const factor=session.actor.factors.find(x=>x.id===match[1]);assert(factor);
@@ -131,4 +134,29 @@ test('CLI rejects missing staging acknowledgement and redirected input before HT
  for(const [args,code]of [[[],'EXACT_STAGING_ARGUMENT_REQUIRED'],[['--confirm-staging=dczlddwbtgvfdujgcitb'],'PRIVATE_INTERACTIVE_TERMINAL_REQUIRED']]){
   const p=spawnSync(process.execPath,[cli,...args],{encoding:'utf8',input:''});assert.equal(p.status,1);assert.equal(JSON.parse(p.stdout).problem_code,code);assert.equal(p.stderr,'');
  }
+});
+test('legacy 256KiB limit reproduces owner enrollment-size failure and leaves an unverified factor before private display',async()=>{
+ const original=readFileSync(new URL('./fixtures/fr-2-operator-mfa-pre-size-fix.txt',import.meta.url));
+ assert.equal(createHash('sha256').update(original).digest('hex'),'d8bd5ab559e3ed9fbde9a462bd397c147a2f77a15f01554774e6a9f75965a70a');
+ const legacy=await import('data:text/javascript;base64,'+original.toString('base64'));
+ const f=fixture({largeEnrollment:true});
+ const r=await legacy.runOperatorMfa({emails,io:f.io,fetcher:f.fetcher});
+ assert.equal(r.problem_code,'HTTP_RESPONSE_TOO_LARGE');
+ assert.equal(f.calls.length,5);assert.equal(f.displays.length,0);assert.equal(f.actors[0].factors[0].status,'unverified');
+ assert(r.enrollment_request_attempted&&r.factor_state_may_require_review&&r.all_created_sessions_local_logout_confirmed);
+ assert.equal(r.accounts[0].local_logout_confirmed,false);
+});
+test('400KiB enrollment SVG/JSON response is accepted within endpoint-specific 2MiB cap',async()=>{
+ const {r,f}=await run({largeEnrollment:true});assert.equal(r.problem_code,null);assert.equal(f.displays.length,2);assert.equal(r.response_size_review,null);
+});
+test('enrollment above 2MiB still stops before display without deleting the pending factor',async()=>{
+ const {r,f}=await run({oversizedEnrollment:true});assert.equal(r.problem_code,'HTTP_RESPONSE_TOO_LARGE');
+ assert.deepEqual(r.response_size_review,{endpoint_group:'TOTP_ENROLLMENT',limit_bytes:2097152});
+ assert.equal(f.displays.length,0);assert.equal(f.actors[0].factors.length,1);assert.equal(f.actors[0].factors[0].status,'unverified');
+ assert(r.all_created_sessions_local_logout_confirmed&&r.accounts[0].local_logout_confirmed);
+});
+test('other Auth responses retain the 256KiB cap and exact cleanup state on failure',async()=>{
+ const {r,f}=await run({oversizedUser:true});assert.equal(r.problem_code,'HTTP_RESPONSE_TOO_LARGE');
+ assert.deepEqual(r.response_size_review,{endpoint_group:'OTHER_AUTH',limit_bytes:262144});
+ assert(r.all_created_sessions_local_logout_confirmed&&r.accounts[0].local_logout_confirmed);assert.equal(f.displays.length,0);
 });

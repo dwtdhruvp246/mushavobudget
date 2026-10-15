@@ -61,6 +61,7 @@ export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch}) {
     result:'STAGING_OPERATOR_MFA_REVIEW_REQUIRED', accounts:[], problem_code:null,
     requests_attempted:0, all_created_sessions_local_logout_confirmed:true,
     password_session_creation_state_may_require_review:false,
+    response_size_review:null,
     enrollment_request_attempted:false, factor_state_may_require_review:false,
     fresh_password_and_TOTP_sessions_verified:false,
     roles_SQL_settings_payment_or_workspace_writes_performed:false,
@@ -72,7 +73,7 @@ export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch}) {
     hosted_Admin_authorization_acceptance:false, hosted_acceptance:false,
     production_or_native_changed:false, findings_closed:[]
   };
-  let key, currentToken, logoutNeeded=false;
+  let key, currentToken, logoutNeeded=false, currentAccount;
   async function http(url, {method='GET', body, token}={}) {
     need(url === CONFIG || (url.startsWith(AUTH+'/') && (
       (method === 'POST' && ['/token?grant_type=password','/logout?scope=local','/factors'].includes(url.slice(AUTH.length)))
@@ -91,9 +92,14 @@ export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch}) {
     need(!response.redirected && response.status >= 200 && response.status < 300
       || (!response.redirected && url.endsWith('/verify') && [400,422].includes(response.status)), 'HTTP_STATUS_REVIEW_REQUIRED');
     if (response.status === 204) return null;
+    const maxBody = url === CONFIG ? 8192 : url === AUTH+'/factors' ? 2097152 : 262144;
     let text;
-    try { text = await boundedBody(response, url === CONFIG ? 8192 : 262144); }
-    catch (e) { if (e instanceof SetupError) throw e; throw new SetupError('HTTP_BODY_REJECTED'); }
+    try { text = await boundedBody(response, maxBody); }
+    catch (e) {
+      if(e?.code === 'HTTP_RESPONSE_TOO_LARGE') receipt.response_size_review={
+        endpoint_group:url===CONFIG?'PUBLIC_CONFIG':url===AUTH+'/factors'?'TOTP_ENROLLMENT':'OTHER_AUTH',limit_bytes:maxBody};
+      if (e instanceof SetupError) throw e; throw new SetupError('HTTP_BODY_REJECTED');
+    }
     if (url === CONFIG) { need(response.status===200, 'CONFIG_HTTP_STATUS_REJECTED'); return text; }
     if (url.endsWith('/logout?scope=local') && text.trim()==='') return null;
     let data;
@@ -106,7 +112,10 @@ export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch}) {
   }
   async function logout() {
     if (!logoutNeeded) return;
-    try { await http(AUTH+'/logout?scope=local', {method:'POST',token:currentToken}); }
+    try {
+      await http(AUTH+'/logout?scope=local', {method:'POST',token:currentToken});
+      if(currentAccount)currentAccount.local_logout_confirmed=true;
+    }
     catch { receipt.all_created_sessions_local_logout_confirmed=false; throw new SetupError('LOCAL_LOGOUT_NOT_CONFIRMED'); }
     finally { currentToken=null; logoutNeeded=false; }
   }
@@ -127,6 +136,7 @@ export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch}) {
     finally { password=''; }
     need(typeof data?.access_token==='string', 'PASSWORD_SESSION_MISSING');
     currentToken=data.access_token; logoutNeeded=true;
+    if(currentAccount)currentAccount.local_logout_confirmed=false;
     receipt.password_session_creation_state_may_require_review=false;
     const checked=await authenticatedUser(email,'aal1',actor);
     return checked;
@@ -158,7 +168,7 @@ export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch}) {
       const state={slot,password_signin_verified:false,existing_verified_factor_reused:false,
         new_factor_enrollment_attempted:false,initial_TOTP_and_AAL2_verified:false,
         fresh_password_session_and_TOTP_AAL2_verified:false,local_logout_confirmed:false};
-      receipt.accounts.push(state); io.notice(slot+'_START');
+      receipt.accounts.push(state); currentAccount=state; io.notice(slot+'_START');
       const initial=await signIn(email,slot);
       need(!actorIds.includes(initial.user.id), 'DISTINCT_ACTORS_REQUIRED'); actorIds.push(initial.user.id);
       state.password_signin_verified=true;

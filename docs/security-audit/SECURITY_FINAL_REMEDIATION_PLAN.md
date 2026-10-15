@@ -1,3 +1,9 @@
+# Current checkpoint — incomplete MFA enrollment; read-only factor review next
+
+15 October2026,FRE40. [First owner MFA result](security-fr-2-operator-mfa-first-owner-result.json): PRIMARY password PASS, enrollment response exceeded old256KiB cap,5requests/exit1,no TOTP verification; pending factor possible. [Correction and read-only SQL handoff](SECURITY_FR_2_4_MFA_RESPONSE_LIMIT_AND_FACTOR_REVIEW.md): exact previous-core failure reproduced; enrollment-only2MiB limit and cleanup flags corrected,31 local tests PASS; metadata query12 local checks PASS. Return factor_setup_review JSON before any rerun/reset/deletion. No Admin promotion, full recovery/Admin acceptance or finding closure; production excluded, APK deferred.
+
+---
+
 # Current checkpoint — operator sign-ins passed; private MFA handoff ready
 
 15 October2026,FRE39. [Owner summary](security-fr-2-operator-signin-owner-result.json): PRIMARY/RECOVERY sign-ins and sign-outs PASS; separate inbox passwords/recovery credential access reported YES. [Pinned private TOTP terminal handoff](SECURITY_FR_2_4_OPERATOR_SIGNIN_OUTCOME_AND_MFA_HANDOFF.md) ready:27 local tests PASS/four syntax checks; Linux TTY input guard checked, Windows/hosted MFA pending. No Admin promotion/installer/SQL/factor deletion; safe slot-only result requested after enrollment/reuse and fresh password+TOTP session verification. Full recovery/Admin acceptance and findings remain open, production excluded, APK deferred.

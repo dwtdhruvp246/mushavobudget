@@ -4,16 +4,16 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 const root=fileURLToPath(new URL('../',import.meta.url));
-const files=['scripts/lib/fr-2-operator-mfa.mjs','scripts/setup-fr-2-operator-mfa.mjs','scripts/verify-fr-2-operator-mfa.mjs','tests/fr-2-operator-mfa.test.mjs'];
+const files=['scripts/lib/fr-2-operator-mfa.mjs','scripts/setup-fr-2-operator-mfa.mjs','scripts/verify-fr-2-operator-mfa.mjs','tests/fr-2-operator-mfa.test.mjs','tests/fixtures/fr-2-operator-mfa-pre-size-fix.txt'];
 let syntax=0;
-for(const file of files) {
-  const p=spawnSync(process.execPath,['--check',path.join(root,file)],{encoding:'utf8'});
+for(const file of files.filter(f=>f.endsWith('.mjs'))) {
+  const p=spawnSync(process.execPath,['--check',path.join(root,file)],{encoding:'utf8',timeout:10000});
   if(p.status!==0) {console.log(JSON.stringify({result:'LOCAL_SYNTAX_FAILED',file,exit_code:1}));process.exit(1);} syntax++;
 }
-const p=spawnSync(process.execPath,['--test','--test-reporter=tap',path.join(root,files[3])],{encoding:'utf8',maxBuffer:4*1024*1024});
+const p=spawnSync(process.execPath,['--test','--test-reporter=tap',path.join(root,files[3])],{encoding:'utf8',maxBuffer:4*1024*1024,timeout:60000});
 const count=name=>Number(p.stdout?.match(new RegExp('^# '+name+' (\\d+)$','m'))?.[1]??-1);
 const pass=count('pass'),fail=count('fail'),tests=count('tests');
-const ok=p.status===0&&tests===27&&pass===tests&&fail===0&&count('skipped')===0&&count('cancelled')===0;
+const ok=p.status===0&&tests===31&&pass===tests&&fail===0&&count('skipped')===0&&count('cancelled')===0;
 const result={stage_step:'FR.2.4_OPERATOR_MFA_PREPARATION',
  result:ok?'OFFLINE_ACTUAL_OPERATOR_MFA_FLOW_WITH_SYNTHETIC_AUTH_SCOPED_PASS':'OFFLINE_OPERATOR_MFA_REVIEW_REQUIRED',
  scope:'ACTUAL_NODE_CLIENT_CONTROL_FLOW_WITH_SYNTHETIC_AUTH_HTTP_STREAMS_AND_CLI_REJECTION_CASES',

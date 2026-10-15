@@ -1,3 +1,11 @@
+# Current checkpoint — genuine Business API scoped pass
+
+15 October 2026, FRE34. [Owner corrected result](security-fr-2-business-corrected-api-owner-result.json):24 PASS/five carried-forward BLOCKED,493 requests,exit0, both generated sessions logged out. Old archived role/permission/audit fingerprints matched and retained state unchanged; exact new primary member removed; prior Personal/Family/payment/conversion and secondary Business selected values unchanged. [Outcome and read-only SQL handoff](SECURITY_FR_2_3_BUSINESS_API_OUTCOME_AND_POST_BATCH_HANDOFF.md) includes10 local SQL checks PASS. Return owner post-batch SQL next; preserve fixtures and do not rerun completed API batch. Full role-operation/F15/private-file/third-actor/isolated suspension-expiry acceptance pending.
+
+Full gate/final audit pending, production excluded, APK deferred.
+
+---
+
 # Current checkpoint — archived role confirmed; corrected API ready
 
 14 October 2026, FRE33. [Owner read-only role result](security-fr-2-business-archive-state-owner-result.json): archived/version3, two permissions, two save/one archive audit events, zero role usage; current5 payment records/7 conversions. [Guarded continuation](SECURITY_FR_2_3_ARCHIVED_ROLE_OUTCOME_AND_CORRECTED_API_HANDOFF.md): all three exact owner fingerprints checked before mutations and retained rows rechecked after;81 local tests PASS. Preserve old role/audit, no cleanup/archive retry; corrected owner API terminal run next. Prior void204 correction/history retained; hosted HTTP status from old failure remains unrecorded.

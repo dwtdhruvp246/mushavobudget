@@ -21,3 +21,6 @@ _headers text eol=lf
 *.png binary
 *.webp binary
 *.zip binary
+
+# Preserve the reviewed setup wrapper bytes in Git archives on Windows.
+scripts/setup-fr-2-zoho-private.ps1 text eol=lf

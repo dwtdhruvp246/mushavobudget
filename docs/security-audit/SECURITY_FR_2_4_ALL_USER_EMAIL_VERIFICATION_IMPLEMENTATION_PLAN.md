@@ -1,3 +1,9 @@
+# Current checkpoint — owner hash stop recorded; scoped archive correction ready
+
+15 October 2026, FRE50. [Archive correction](SECURITY_FR_2_4_ZOHO_ARCHIVE_CORRECTION.md), [owner result](security-fr-2-zoho-private-setup-first-owner-result.json), [real Git fixture checks](security-fr-2-zoho-archive-local-checks.json). Owner verifier stopped after two hashes, before credentials or provider calls. The missing PowerShell LF attribute reproduces the mismatch with core.autocrlf=true. One scoped LF attribute and a per-command archive override preserve bytes; six archive checks and the extracted 27-case verifier pass. Eight reviewed inputs/manifest are unchanged; hashes remain strict. Owner Windows/private result is pending; no email, hosted acceptance or finding closure, production excluded and APK deferred.
+
+---
+
 # Current checkpoint — client created; private token exchange prepared, owner result pending
 
 15 October 2026, FRE49. [Private exchange handoff](SECURITY_FR_2_4_ZOHO_PRIVATE_EXCHANGE_HANDOFF.md), [owner facts](security-fr-2-zoho-client-owner-result.json), [27-case local checks](security-fr-2-zoho-private-setup-local-checks.json). Corrected sender localpart is plural notifications; console hostname api-console.zoho.com and Self Client creation are owner reported. Eight source hashes/seven JS syntax checks pass. Windows encryption/private pipe runs before hidden credential/code prompts; then at most three OAuth/account-metadata requests, no email. Secrets stay in captured pipes and a current-user DPAPI file outside Git/public output. Actual Windows/provider result is pending. E4 full guard/canonical integration and hosted acceptance remain pending; no finding closure, production excluded, APK deferred.

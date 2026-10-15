@@ -1,7 +1,7 @@
 {
   "stage_step": "FR.2.4.E3.3_PRIVATE_ZOHO_SETUP",
   "source_parent_commit": "1a0e90f0b020332194207c2abaf0c28046b35bc4",
-  "status": "SOURCE_AND_OFFLINE27_PASS_OWNER_WINDOWS_PRIVATE_EXCHANGE_PENDING",
+  "status": "FIRST_OWNER_OFFLINE_HASH_STOP_RECORDED_ARCHIVE_CORRECTION_RECHECK_PENDING",
   "owner_client_result": "docs/security-audit/security-fr-2-zoho-client-owner-result.json",
   "report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_PRIVATE_EXCHANGE_HANDOFF.md",
   "source_manifest": "docs/security-audit/security-fr-2-zoho-private-setup-source-manifest.json",
@@ -46,5 +46,19 @@
   "hosted_acceptance": false,
   "production_or_native_changed": false,
   "findings_closed": [],
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "first_owner_result_received": true,
+  "first_owner_receipt": "docs/security-audit/security-fr-2-zoho-private-setup-first-owner-result.json",
+  "first_owner_hashes_matched": 2,
+  "first_owner_test_cases_executed": 0,
+  "first_owner_exit_code": 1,
+  "first_owner_private_prompts_reached": false,
+  "archive_correction_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_ARCHIVE_CORRECTION.md",
+  "archive_correction_local_checks": "docs/security-audit/security-fr-2-zoho-archive-local-checks.json",
+  "archive_transport_checks_PASS": 6,
+  "corrected_extracted_verifier_PASS": 27,
+  "original_eight_reviewed_inputs_and_manifest_bytes_unchanged": true,
+  "owner_per_command_archive_option": "-c core.autocrlf=false",
+  "owner_Git_configuration_change_required": false,
+  "hash_comparison_bypassed_or_normalized": false
 }

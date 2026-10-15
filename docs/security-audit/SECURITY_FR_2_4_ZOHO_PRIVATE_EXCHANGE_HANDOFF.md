@@ -1,3 +1,9 @@
+# Current checkpoint — owner hash stop recorded; scoped archive correction ready
+
+15 October 2026, FRE50. [Archive correction](SECURITY_FR_2_4_ZOHO_ARCHIVE_CORRECTION.md), [owner result](security-fr-2-zoho-private-setup-first-owner-result.json), [real Git fixture checks](security-fr-2-zoho-archive-local-checks.json). Owner verifier stopped after two hashes, before credentials or provider calls. The missing PowerShell LF attribute reproduces the mismatch with core.autocrlf=true. One scoped LF attribute and a per-command archive override preserve bytes; six archive checks and the extracted 27-case verifier pass. Eight reviewed inputs/manifest are unchanged; hashes remain strict. Owner Windows/private result is pending; no email, hosted acceptance or finding closure, production excluded and APK deferred.
+
+---
+
 # FR.2.4.E3.3 — private Zoho token exchange and sender metadata handoff
 
 15 October 2026, FRE49. [Owner client result](security-fr-2-zoho-client-owner-result.json), [contract](security-fr-2-zoho-private-setup-contract.json), [source manifest](security-fr-2-zoho-private-setup-source-manifest.json), [local checks](security-fr-2-zoho-private-setup-local-checks.json).

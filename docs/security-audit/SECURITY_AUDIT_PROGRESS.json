@@ -3,7 +3,7 @@
   "updated_date": "2026-10-15",
   "current_stage": null,
   "current_step": "FR.2.4.E3.3",
-  "current_title": "Zoho Self Client created; private exchange and sender check prepared",
+  "current_title": "Zoho owner hash stop recorded; Git archive correction and recheck prepared",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.4.E3.3_OWNER_WINDOWS_PRIVATE_ZOHO_EXCHANGE_AND_SENDER_METADATA_RESULT",
+  "next_step": "FR.2.4.E3.3_CORRECTED_OWNER_ARCHIVE_AND_PRIVATE_ZOHO_RESULT",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3358,13 +3358,13 @@
   },
   "next_phase": "FINAL_REMEDIATION",
   "final_remediation": {
-    "status": "FR2_EMAIL_E3_3_PRIVATE_ZOHO_EXCHANGE_PREPARED_OWNER_RESULT_PENDING",
+    "status": "FR2_EMAIL_E3_3_ARCHIVE_CORRECTION_READY_OWNER_RECHECK_PENDING",
     "prepared_date": "2026-10-13",
     "handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
     "proposed_batches": 8,
     "original_findings_mapped": 20,
     "existing_open_action_entries": 61,
-    "next_step": "FR.2.4.E3.3_OWNER_WINDOWS_PRIVATE_ZOHO_EXCHANGE_AND_SENDER_METADATA_RESULT",
+    "next_step": "FR.2.4.E3.3_CORRECTED_OWNER_ARCHIVE_AND_PRIVATE_ZOHO_RESULT",
     "release_gate_unchanged": true,
     "full_fresh_final_reaudit_required": true,
     "started_date": "2026-10-13",
@@ -3373,7 +3373,7 @@
     "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
     "progress": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PROGRESS.json",
     "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-    "latest_evidence": "FRE49",
+    "latest_evidence": "FRE50",
     "candidate_report": "docs/security-audit/SECURITY_FR_1_1_STAGING_CANDIDATE.md",
     "local_receipt": "docs/security-audit/security-final-staging-local-checks.json",
     "owner_terminal_action_required": true,
@@ -3772,7 +3772,16 @@
     "FR2_email_private_Zoho_setup_manifest": "docs/security-audit/security-fr-2-zoho-private-setup-source-manifest.json",
     "FR2_email_private_Zoho_setup_local_receipt": "docs/security-audit/security-fr-2-zoho-private-setup-local-checks.json",
     "FR2_email_private_Zoho_setup_offline_PASS": 27,
-    "FR2_email_private_Zoho_setup_owner_result_received": false
+    "FR2_email_private_Zoho_setup_owner_result_received": false,
+    "FR2_email_private_Zoho_setup_first_owner_result_received": true,
+    "FR2_email_private_Zoho_setup_first_owner_receipt": "docs/security-audit/security-fr-2-zoho-private-setup-first-owner-result.json",
+    "FR2_email_private_Zoho_setup_first_owner_hashes_matched": 2,
+    "FR2_email_private_Zoho_setup_first_owner_tests": 0,
+    "FR2_email_private_Zoho_setup_first_owner_exit_code": 1,
+    "FR2_email_private_Zoho_archive_correction_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_ARCHIVE_CORRECTION.md",
+    "FR2_email_private_Zoho_archive_local_checks": "docs/security-audit/security-fr-2-zoho-archive-local-checks.json",
+    "FR2_email_private_Zoho_archive_checks_PASS": 6,
+    "FR2_email_private_Zoho_corrected_archive_nested_PASS": 27
   },
   "current_phase": "FINAL_REMEDIATION"
 }

@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E3.4",
-  "status": "OWNER_FREE_AND_NO_EXISTING_WORKER_REPORTED_LOCAL_PACKAGE_PREPARATION_NEXT",
+  "status": "OWNER_WINDOWS_PACKAGE_PASS_AUTHENTICATED_READ_ONLY_ACCOUNT_PRECHECK_NEXT",
   "source_parent_commit": "fdd6b06e578954122985734221ec8bad5faa5962",
   "report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_SETUP_PASS_AND_CLOUDFLARE_READINESS.md",
   "preceding_private_Zoho_owner_pass": "docs/security-audit/security-fr-2-zoho-private-setup-owner-pass.json",
@@ -38,8 +38,12 @@
   "public_Worker_URL_probe_not_used_as_existence_proof": true,
   "exact_Worker_absent_owner_reported": true,
   "owner_readiness_information_complete": true,
-  "owner_local_candidate_preparation_only": true,
+  "owner_local_candidate_preparation_only": false,
   "next_local_package_contract": "docs/security-audit/security-fr-2-email-limiter-package-contract.json",
   "next_local_package_report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_PACKAGE_AND_WINDOWS_HANDOFF.md",
-  "owner_Cloudflare_login_token_or_deployment_action_required": false
+  "owner_Cloudflare_login_token_or_deployment_action_required": true,
+  "owner_Cloudflare_token_entry_required": true,
+  "owner_Cloudflare_resource_deployment_requested": false,
+  "owner_Windows_package_receipt": "docs/security-audit/security-fr-2-email-limiter-package-owner-pass.json",
+  "next_read_only_account_handoff": "docs/security-audit/SECURITY_FR_2_4_LIMITER_WINDOWS_PASS_AND_ACCOUNT_CHECK.md"
 }

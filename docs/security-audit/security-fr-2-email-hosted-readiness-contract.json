@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E3.3",
-  "status": "OWNER_CLIENT_CREATED_HOST_CONFIRMED_PRIVATE_EXCHANGE_PENDING",
+  "status": "OWNER_PRIVATE_ZOHO_SETUP_SCOPED_PASS_CLOUDFLARE_PLAN_NAME_DETAILS_PENDING",
   "source_parent_commit": "d89d8ca49b738fb29a4812fcd30b1ee26e9c3a87",
   "report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_HOSTED_READINESS_OWNER_HANDOFF.md",
   "owner_E3_2_receipt": "docs/security-audit/security-fr-2-email-workers-owner-Windows-result.json",
@@ -14,8 +14,8 @@
   "notification_sender_mailbox_accessible_owner_reported": true,
   "staging_Pages_Durable_Object_option_visible_owner_reported": true,
   "owner_SQL_action_required": false,
-  "owner_terminal_action_required": true,
-  "owner_dashboard_read_only_action_required": false,
+  "owner_terminal_action_required": false,
+  "owner_dashboard_read_only_action_required": true,
   "settings_or_resources_to_create_or_save_in_this_step": false,
   "email_to_send_in_this_step": false,
   "passwords_API_keys_tokens_refresh_secrets_account_IDs_full_signin_links_or_inbox_contents_requested": false,
@@ -32,9 +32,9 @@
   "owner_readiness_result": "docs/security-audit/security-fr-2-email-hosted-readiness-owner-result.json",
   "next_private_setup_handoff": "docs/security-audit/SECURITY_FR_2_4_ZOHO_PRIVATE_EXCHANGE_HANDOFF.md",
   "initial_three_requested_details_received": true,
-  "next_owner_action": "OFFLINE_VERIFY_WINDOWS_PREFLIGHT_THEN_PRIVATE_OAUTH_AND_SENDER_METADATA",
+  "next_owner_action": "INSPECT_WORKERS_PLAN_AND_EXACT_EXISTING_WORKER_NAME_ONLY",
   "next_owner_action_creates_only_OAuth_client_registration": false,
-  "authorization_code_generation_or_token_exchange_requested_now": true,
+  "authorization_code_generation_or_token_exchange_requested_now": false,
   "credentials_to_return_in_chat": false,
   "OAuth_client_creation_owner_result_received": true,
   "API_console_hostname_owner_reported": "api-console.zoho.com",
@@ -42,5 +42,10 @@
   "private_client_owner_receipt": "docs/security-audit/security-fr-2-zoho-client-owner-result.json",
   "private_setup_contract": "docs/security-audit/security-fr-2-zoho-private-setup-contract.json",
   "live_configuration_change_scope": "OWNER_REPORTED_ZOHO_SELF_CLIENT_REGISTRATION_ONLY",
-  "private_token_exchange_owner_result_received": false
+  "private_token_exchange_owner_result_received": false,
+  "private_Zoho_owner_result": "docs/security-audit/security-fr-2-zoho-private-setup-owner-pass.json",
+  "private_Zoho_provider_requests": 3,
+  "private_Zoho_refresh_scopes_sender_metadata_and_encrypted_save_passed_owner_reported": true,
+  "next_read_only_Cloudflare_contract": "docs/security-audit/security-fr-2-email-cloudflare-readiness-contract.json",
+  "next_read_only_Cloudflare_handoff": "docs/security-audit/SECURITY_FR_2_4_ZOHO_SETUP_PASS_AND_CLOUDFLARE_READINESS.md"
 }

@@ -1,0 +1,32 @@
+{
+  "stage_step": "FR.2.4.E3.4",
+  "status": "READ_ONLY_ACCOUNT_PLAN_AND_EXISTING_WORKER_DETAILS_PENDING",
+  "source_parent_commit": "fdd6b06e578954122985734221ec8bad5faa5962",
+  "report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_SETUP_PASS_AND_CLOUDFLARE_READINESS.md",
+  "preceding_private_Zoho_owner_pass": "docs/security-audit/security-fr-2-zoho-private-setup-owner-pass.json",
+  "target_Pages_project": "mushavo-budget-staging",
+  "target_origin": "https://mushavo-budget-staging.pages.dev",
+  "candidate_limiter_Worker_name": "mushavo-email-rate-staging",
+  "candidate_class": "EmailGatewayRateLimiter",
+  "candidate_binding": "EMAIL_GATE_LIMITER_NS",
+  "requested_owner_fields": [
+    "Workers_plan_label_FREE_PAID_OR_UNSURE",
+    "existing_exact_Worker_name_YES_NO_OR_UNSURE"
+  ],
+  "Workers_plan_owner_reported": null,
+  "exact_Worker_name_exists_owner_reported": null,
+  "prior_Durable_Object_binding_option_available_owner_reported": true,
+  "owner_SQL_action_required": false,
+  "owner_terminal_action_required": false,
+  "owner_read_only_dashboard_information_required": true,
+  "Worker_namespace_binding_secret_upload_or_plan_change_requested": false,
+  "account_ID_API_token_credentials_billing_details_or_screenshots_requested": false,
+  "encrypted_Zoho_file_upload_or_decryption_requested": false,
+  "email_dispatched": false,
+  "actual_Cloudflare_resource_or_plan_verification_completed": false,
+  "coordinated_E4_schema_login_and_all_entrypoint_guards_required_before_feature_activation": true,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "findings_closed": [],
+  "APK_update_deferred": true
+}

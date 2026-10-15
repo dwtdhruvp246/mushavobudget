@@ -1,3 +1,9 @@
+# Current checkpoint — private Zoho OAuth/account/DPAPI setup passed; Cloudflare readiness next
+
+15 October2026,FRE55. [Owner private setup PASS](security-fr-2-zoho-private-setup-owner-pass.json):3provider requests,refresh check/exact scopes/sender metadata passed,current-user DPAPI file saved,exit0,no email. The retained encrypted file explains probe_removed=false;do not delete or upload it. [Read-only Cloudflare handoff](SECURITY_FR_2_4_ZOHO_SETUP_PASS_AND_CLOUDFLARE_READINESS.md) requests only Workers plan label and whether exact Worker mushavo-email-rate-staging already exists. No SQL,terminal,creation,upload,plan change or credential action now. E4 integration and delivery/global acceptance remain pending;production excluded,APK deferred,no finding closure.
+
+---
+
 # Current checkpoint — corrected Windows preflight passed; private Zoho setup next
 
 15 October2026,FRE54. [Owner corrected preflight](security-fr-2-zoho-corrected-preflight-owner-result.json):30PASS,8hashes,PowerShell5.1,COMPLETE,real synthetic DPAPI/private pipe passed,all launch paths present,empty probe removed and exit0. No credentials or provider requests yet. [Private setup handoff](SECURITY_FR_2_4_ZOHO_PREFLIGHT_PASS_AND_PRIVATE_SETUP.md) resumes the unchanged69c963a source with the running Node path and hidden prompts, fresh scoped code only when prompted, at most3OAuth/account requests, DPAPI-only output and no email. No routine offline rerun or SQL needed. Full private result/E4 integration/hosted acceptance remain pending; production excluded,APK deferred and no finding closure.

@@ -1,7 +1,7 @@
 {
   "stage_step": "FR.2.4.E3.3_PRIVATE_ZOHO_SETUP",
   "source_parent_commit": "1a0e90f0b020332194207c2abaf0c28046b35bc4",
-  "status": "OWNER_WINDOWS27_PASS_LOCAL_PREFLIGHT_STOP_DIAGNOSTIC_ONLY_RECHECK_PENDING",
+  "status": "OWNER_WINDOWS29_PASS_DPAPI_ROUNDTRIP_PASSED_PIPE_START_FAILED_NATIVE_CODE_PENDING",
   "owner_client_result": "docs/security-audit/security-fr-2-zoho-client-owner-result.json",
   "report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_PRIVATE_EXCHANGE_HANDOFF.md",
   "source_manifest": "docs/security-audit/security-fr-2-zoho-private-setup-source-manifest.json",
@@ -70,10 +70,21 @@
   "preflight_only_switch_available": true,
   "next_owner_invocation": "-PreflightOnly",
   "next_owner_secret_prompts_or_provider_requests": false,
-  "preflight_diagnostic_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_LOCAL_PREFLIGHT_DIAGNOSTIC.md",
-  "preflight_diagnostic_local_checks": "docs/security-audit/security-fr-2-zoho-preflight-diagnostic-local-checks.json",
+  "preflight_diagnostic_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_PIPE_START_DIAGNOSTIC.md",
+  "preflight_diagnostic_local_checks": "docs/security-audit/security-fr-2-zoho-native-error-local-checks.json",
   "updated_offline_PASS": 29,
   "updated_offline_exit_code": 0,
   "updated_actual_archive_checks_PASS": 6,
-  "owner_authorization_code_generation_paused": true
+  "owner_authorization_code_generation_paused": true,
+  "latest_owner_Windows_preflight_receipt": "docs/security-audit/security-fr-2-zoho-pipe-start-owner-result.json",
+  "latest_owner_Windows_offline_PASS": 29,
+  "latest_owner_Windows_checkpoint": "PRIVATE_PIPE_START_FAILED",
+  "latest_owner_Windows_exception_class": "System.ComponentModel.Win32Exception",
+  "owner_Windows_PowerShell_version": "5.1.26100.9711",
+  "owner_synthetic_DPAPI_roundtrip_pass_inferred": true,
+  "owner_probe_file_removed": true,
+  "owner_private_pipe_started": false,
+  "numeric_Windows_launch_cause_received": false,
+  "next_preflight_reports_native_code_and_path_existence_booleans": true,
+  "process_launcher_changed": false
 }

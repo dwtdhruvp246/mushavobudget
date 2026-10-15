@@ -1,3 +1,9 @@
+# Current checkpoint — Windows encryption path passed; Node process-start error needs its native code
+
+15 October2026,FRE52. [Owner result](security-fr-2-zoho-pipe-start-owner-result.json):29PASS,8hashes,PowerShell5.1; PRIVATE_PIPE_START_FAILED with Win32Exception, zero provider requests and empty probe removed. DPAPI synthetic roundtrip passed by control-flow inference; combined pipe flag is false. [Native-code diagnostic](SECURITY_FR_2_4_ZOHO_PIPE_START_DIAGNOSTIC.md) adds only an integer OS error and three existence booleans; no raw paths/messages. Launcher unchanged, exact native cause still unknown. Next owner run remains -PreflightOnly without credentials/code/email/SQL.29offline checks and6real archive checks pass. Production excluded, APK deferred, hosted acceptance false and no finding closure.
+
+---
+
 # Current checkpoint — Windows27PASS; local preflight stage diagnostic ready
 
 15 October2026,FRE51. [Owner result](security-fr-2-zoho-private-setup-preflight-owner-result.json) matches8hashes,7syntax checks and27PASS, then LOCAL_PREFLIGHT_FAILED before credential prompts/provider requests. [Preflight-only handoff](SECURITY_FR_2_4_ZOHO_LOCAL_PREFLIGHT_DIAGNOSTIC.md) adds fixed stage labels without printing private exception text. Updated utility29PASS and6real archive checks pass. Next owner command uses -PreflightOnly: no credentials, code generation, provider request, email or SQL. Exact Windows failing stage remains unknown; no unsupported cause or hosted acceptance claimed. Production excluded, APK deferred and no full finding closure.

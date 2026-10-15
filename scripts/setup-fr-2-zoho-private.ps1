@@ -99,6 +99,10 @@ $Safe = [ordered]@{
     preflight_probe_file_removed=$false
     local_preflight_checkpoint='SOURCE_VALIDATION'
     local_exception_category=$null
+    local_win32_native_error_code=$null
+    launch_node_file_exists=$null
+    launch_entry_file_exists=$null
+    launch_working_directory_exists=$null
     PowerShell_version=$PSVersionTable.PSVersion.ToString()
     Windows_DPAPI_and_private_pipe_preflight_passed=$false
     requests_attempted=0
@@ -172,6 +176,9 @@ try {
 
     $Encoding = New-Object Text.UTF8Encoding($false)
     $Entry = Join-Path $SnapshotRoot 'scripts/fr-2-zoho-private-setup.mjs'
+    $Safe.launch_node_file_exists = [IO.File]::Exists($Node)
+    $Safe.launch_entry_file_exists = [IO.File]::Exists($Entry)
+    $Safe.launch_working_directory_exists = [IO.Directory]::Exists([IO.Path]::GetDirectoryName($Entry))
     $Safe.local_preflight_checkpoint = 'PRIVATE_PIPE'
     $LocalProbe = Invoke-PrivateZohoChild $Node $Entry '{"mode":"offline-preflight"}'
     $Safe.local_preflight_checkpoint = 'PRIVATE_PIPE_RECEIPT_VALIDATION'
@@ -268,6 +275,9 @@ try {
             $Safe.local_preflight_checkpoint = $LocalException.Message
         }
         $TypeName = $LocalException.GetType().FullName
+        if ($LocalException -is [System.ComponentModel.Win32Exception]) {
+            $Safe.local_win32_native_error_code = [int]$LocalException.NativeErrorCode
+        }
         if ($TypeName -in @('System.UnauthorizedAccessException','System.Security.SecurityException',
             'System.IO.IOException','System.IO.DirectoryNotFoundException','System.IO.FileNotFoundException',
             'System.ObjectDisposedException','System.InvalidOperationException','System.ArgumentException',

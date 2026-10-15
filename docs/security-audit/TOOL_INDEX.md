@@ -1,3 +1,9 @@
+# Current checkpoint — private email backend46 local PASS; Windows offline recheck ready
+
+15 October2026,FRE43. [Actual SQL/crypto candidate and handoff](SECURITY_FR_2_4_EMAIL_BACKEND_CANDIDATE_AND_OFFLINE_HANDOFF.md), [contract](security-fr-2-email-backend-candidate-contract.json), [46local PASS receipt](security-fr-2-email-backend-local-checks.json), [59-file source/dependency manifest](security-fr-2-email-backend-source-manifest.json). Five private forced-RLS tables/eight service-only RPCs; non-sliding7day approval, retained verified sessions, replay/expiry/revocation/rolling-budget guards. Full54source compiled; existing public functions/policies/original triggers preserved. Run only the pinned temporary local verifier in chat; no Supabase SQL or mail delivery yet. App-wide guards/UI/gateway/native/real races and hosted acceptance remain pending; no finding closure, production excluded, APK deferred.
+
+---
+
 # Current checkpoint — email verification selected for ALL users, including platform Admin
 
 15 October2026,FRE42. [Owner scope decision](security-fr-2-email-code-all-users-owner-decision.json): all users including Admin. [Concrete implementation plan](SECURITY_FR_2_4_ALL_USER_EMAIL_VERIFICATION_IMPLEMENTATION_PLAN.md) replaces the customer-only recommendation: fixed7day account/device approval, short-lived email codes, server session proof and all data/RPC/Edge/Storage guards. Scope resolved; no reconfirmation needed. Next FR.2.4.E2 private backend candidate. No live changes, authenticator commands/unfinished-factor handoff on hold, no SQL/terminal action now. Full acceptance/findings remain open, production excluded, APK deferred.

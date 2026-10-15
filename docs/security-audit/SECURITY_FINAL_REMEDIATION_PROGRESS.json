@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-15",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_VERIFICATION_ALL_USERS_ADMIN_SCOPE_CONFIRMED_BACKEND_CANDIDATE_NEXT",
+  "status": "FR2_EMAIL_BACKEND_SOURCE_SCOPED_PASS_OWNER_WINDOWS_RECHECK_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE42",
+  "latest_evidence": "FRE43",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_ALL_USER_EMAIL_VERIFICATION_BACKEND_CANDIDATE",
+      "status": "IN_PROGRESS_EMAIL_BACKEND_OFFLINE_RECHECK",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "ALL_USER_AND_PLATFORM_ADMIN_EMAIL_POLICY_SELECTED_BACKEND_NEXT",
+          "status": "EMAIL_BACKEND_SOURCE46_SCOPED_PASS_OWNER_WINDOWS_RECHECK_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -547,7 +547,15 @@
           "email_code_policy_implementation_plan": "docs/security-audit/SECURITY_FR_2_4_ALL_USER_EMAIL_VERIFICATION_IMPLEMENTATION_PLAN.md",
           "email_code_policy_scope_confirmed": true,
           "email_code_policy_implemented": false,
-          "current_controls_removed_or_roles_promoted": false
+          "current_controls_removed_or_roles_promoted": false,
+          "email_backend_candidate": "supabase/candidates/security_fr_2_4_email_verification_backend.sql",
+          "email_backend_contract": "docs/security-audit/security-fr-2-email-backend-candidate-contract.json",
+          "email_backend_report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_BACKEND_CANDIDATE_AND_OFFLINE_HANDOFF.md",
+          "email_backend_local_receipt": "docs/security-audit/security-fr-2-email-backend-local-checks.json",
+          "email_backend_local_PASS": 46,
+          "email_backend_owner_Windows_result_received": false,
+          "email_backend_hosted_installed": false,
+          "application_email_gate_installed": false
         },
         {
           "id": "FR.2.5",
@@ -607,7 +615,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": false,
+  "owner_terminal_action_required": true,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
@@ -617,7 +625,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E2_EMAIL_VERIFICATION_PRIVATE_BACKEND_SOURCE_CANDIDATE",
+  "next_step": "FR.2.4.E2_OWNER_WINDOWS_OFFLINE_EMAIL_BACKEND_RECEIPT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -954,5 +962,19 @@
   "FR2_email_code_policy_implementation_plan": "docs/security-audit/SECURITY_FR_2_4_ALL_USER_EMAIL_VERIFICATION_IMPLEMENTATION_PLAN.md",
   "FR2_email_code_policy_seven_day_device_approval_seconds": 604800,
   "FR2_email_code_policy_code_lifetime_seconds_design_default": 600,
-  "FR2_Admin_authenticator_required_by_selected_product_policy": false
+  "FR2_Admin_authenticator_required_by_selected_product_policy": false,
+  "FR2_email_backend_candidate": "supabase/candidates/security_fr_2_4_email_verification_backend.sql",
+  "FR2_email_backend_crypto": "supabase/functions/_shared/email-verification-crypto.mjs",
+  "FR2_email_backend_verifier": "scripts/verify-fr-2-email-backend.mjs",
+  "FR2_email_backend_report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_BACKEND_CANDIDATE_AND_OFFLINE_HANDOFF.md",
+  "FR2_email_backend_contract": "docs/security-audit/security-fr-2-email-backend-candidate-contract.json",
+  "FR2_email_backend_manifest": "docs/security-audit/security-fr-2-email-backend-source-manifest.json",
+  "FR2_email_backend_local_receipt": "docs/security-audit/security-fr-2-email-backend-local-checks.json",
+  "FR2_email_backend_local_PASS": 46,
+  "FR2_email_backend_backend_checks": 39,
+  "FR2_email_backend_crypto_tests": 7,
+  "FR2_email_backend_local_exit_code": 0,
+  "FR2_email_backend_owner_Windows_result_received": false,
+  "FR2_email_backend_source_candidate_prepared": true,
+  "FR2_email_backend_hosted_installed": false
 }

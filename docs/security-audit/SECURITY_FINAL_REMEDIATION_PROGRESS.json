@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-15",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E3_3_DPAPI_PASSED_PIPE_START_NATIVE_CODE_PENDING",
+  "status": "FR2_EMAIL_E3_3_NODE_PATH_CORRECTION_READY_WINDOWS_PREFLIGHT_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE52",
+  "latest_evidence": "FRE53",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_EMAIL_WINDOWS_PIPE_START_NATIVE_ERROR",
+      "status": "IN_PROGRESS_EMAIL_VALIDATED_NODE_RUNTIME_PREFLIGHT",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "EMAIL_E3_3_DPAPI_PASS_PIPE_START_NATIVE_ERROR_PENDING",
+          "status": "EMAIL_E3_3_NODE_PATH_CORRECTION_WINDOWS_PREFLIGHT_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -594,10 +594,13 @@
           "email_private_Zoho_archive_checks_PASS": 6,
           "email_private_Zoho_setup_owner_receipt": "docs/security-audit/security-fr-2-zoho-private-setup-preflight-owner-result.json",
           "email_private_Zoho_preflight_diagnostic_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_LOCAL_PREFLIGHT_DIAGNOSTIC.md",
-          "email_private_Zoho_updated_offline_PASS": 29,
-          "email_private_Zoho_latest_preflight_owner_receipt": "docs/security-audit/security-fr-2-zoho-pipe-start-owner-result.json",
+          "email_private_Zoho_updated_offline_PASS": 30,
+          "email_private_Zoho_latest_preflight_owner_receipt": "docs/security-audit/security-fr-2-zoho-node-path-owner-result.json",
           "email_private_Zoho_owner_DPAPI_roundtrip_pass_inferred": true,
-          "email_private_Zoho_native_error_diagnostic_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_PIPE_START_DIAGNOSTIC.md"
+          "email_private_Zoho_native_error_diagnostic_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_PIPE_START_DIAGNOSTIC.md",
+          "email_private_Zoho_node_path_correction_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_NODE_EXECUTABLE_CORRECTION.md",
+          "email_private_Zoho_owner_native_error_code": 2,
+          "email_private_Zoho_corrected_launch_verified": false
         },
         {
           "id": "FR.2.5",
@@ -667,7 +670,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E3.3_WINDOWS_PIPE_START_NATIVE_ERROR_RESULT",
+  "next_step": "FR.2.4.E3.3_CORRECTED_RUNTIME_NODE_PATH_PREFLIGHT_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -1084,13 +1087,18 @@
   "FR2_email_private_Zoho_setup_owner_private_requests": 0,
   "FR2_email_private_Zoho_preflight_diagnostic_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_LOCAL_PREFLIGHT_DIAGNOSTIC.md",
   "FR2_email_private_Zoho_preflight_diagnostic_local_checks": "docs/security-audit/security-fr-2-zoho-preflight-diagnostic-local-checks.json",
-  "FR2_email_private_Zoho_updated_offline_PASS": 29,
+  "FR2_email_private_Zoho_updated_offline_PASS": 30,
   "owner_credential_entry_action_required": false,
-  "FR2_email_private_Zoho_latest_preflight_owner_receipt": "docs/security-audit/security-fr-2-zoho-pipe-start-owner-result.json",
+  "FR2_email_private_Zoho_latest_preflight_owner_receipt": "docs/security-audit/security-fr-2-zoho-node-path-owner-result.json",
   "FR2_email_private_Zoho_owner_DPAPI_roundtrip_pass_inferred": true,
   "FR2_email_private_Zoho_owner_probe_file_removed": true,
   "FR2_email_private_Zoho_owner_pipe_checkpoint": "PRIVATE_PIPE_START_FAILED",
   "FR2_email_private_Zoho_native_error_diagnostic_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_PIPE_START_DIAGNOSTIC.md",
   "FR2_email_private_Zoho_native_error_local_checks": "docs/security-audit/security-fr-2-zoho-native-error-local-checks.json",
-  "FR2_email_private_Zoho_exact_native_launch_cause_known": false
+  "FR2_email_private_Zoho_exact_native_launch_cause_known": true,
+  "FR2_email_private_Zoho_owner_native_error_code": 2,
+  "FR2_email_private_Zoho_selected_Node_path_invalid": true,
+  "FR2_email_private_Zoho_node_path_correction_report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_NODE_EXECUTABLE_CORRECTION.md",
+  "FR2_email_private_Zoho_node_path_local_checks": "docs/security-audit/security-fr-2-zoho-node-path-local-checks.json",
+  "FR2_email_private_Zoho_owner_corrected_launch_verified": false
 }

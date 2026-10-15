@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {readFileSync,copyFileSync,mkdirSync,mkdtempSync,rmSync,statSync} from 'node:fs';
 import {spawnSync} from 'node:child_process';
+import path from 'node:path';
+import {tmpdir} from 'node:os';
 import {prepareZohoSender} from '../scripts/lib/fr-2-zoho-private-setup.mjs';
 
 const sender = 'notifications@example.invalid';
@@ -153,6 +155,29 @@ test('captured internal CLI emits the precise no-provider preflight contract',()
   const a=JSON.parse(c.stdout);
   assert.equal(a.receipt.problem_code,'LOCAL_INPUT_INVALID');assert.equal(a.receipt.requests_attempted,0);
   assert.equal(a.private_configuration,null);
+});
+test('running runtime identity launches the actual private CLI from a temporary path containing spaces',()=>{
+  const identity=spawnSync(process.execPath,['-p',
+    'JSON.stringify({execPath:process.execPath,version:process.version})'],{
+    encoding:'utf8',timeout:5000});
+  assert.equal(identity.status,0);assert.equal(identity.stderr,'');
+  const runtime=JSON.parse(identity.stdout);
+  assert(path.isAbsolute(runtime.execPath));assert(statSync(runtime.execPath).isFile());
+  assert.equal(runtime.version,process.version);
+  const root=mkdtempSync(path.join(tmpdir(),'mushavo runtime path '));
+  try {
+    for(const file of ['scripts/fr-2-zoho-private-setup.mjs','scripts/lib/fr-2-zoho-private-setup.mjs',
+      'scripts/offline-test-network.cjs','supabase/functions/_shared/email-verification-http.mjs',
+      'supabase/functions/_shared/email-verification-zoho.mjs']) {
+      const target=path.join(root,file);mkdirSync(path.dirname(target),{recursive:true});copyFileSync(file,target);
+    }
+    const c=spawnSync(runtime.execPath,['--require',path.join(root,'scripts/offline-test-network.cjs'),
+      path.join(root,'scripts/fr-2-zoho-private-setup.mjs'),'--private-parent-pipe'],{
+      cwd:path.join(root,'scripts'),encoding:'utf8',input:'{"mode":"offline-preflight"}',timeout:5000});
+    assert.equal(c.status,1);assert.equal(c.stderr,'');const a=JSON.parse(c.stdout);
+    assert.equal(a.receipt.problem_code,'LOCAL_INPUT_INVALID');assert.equal(a.receipt.requests_attempted,0);
+    assert.equal(a.private_configuration,null);
+  } finally { rmSync(root,{recursive:true,force:true}); }
 });
 test('PowerShell source keeps secrets in hidden prompts and private pipes with DPAPI current-user storage',()=>{
   const p=readFileSync('scripts/setup-fr-2-zoho-private.ps1','utf8');

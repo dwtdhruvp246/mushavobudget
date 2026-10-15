@@ -1,6 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$SnapshotRoot,
     [Parameter(Mandatory=$true)][string]$ExpectedSender,
+    [string]$NodeExecutablePath,
     [switch]$PreflightOnly
 )
 $ErrorActionPreference = 'Stop'
@@ -103,6 +104,7 @@ $Safe = [ordered]@{
     launch_node_file_exists=$null
     launch_entry_file_exists=$null
     launch_working_directory_exists=$null
+    node_executable_source=$null
     PowerShell_version=$PSVersionTable.PSVersion.ToString()
     Windows_DPAPI_and_private_pipe_preflight_passed=$false
     requests_attempted=0
@@ -151,7 +153,24 @@ try {
         $Safe.source_hashes_verified++
     }
     $Safe.local_preflight_checkpoint = 'NODE_EXECUTABLE'
-    $Node = (Get-Command node.exe -CommandType Application -ErrorAction Stop).Source
+    if ([string]::IsNullOrWhiteSpace($NodeExecutablePath)) {
+        $NodeCommand = Get-Command node.exe -CommandType Application -ErrorAction Stop |
+            Select-Object -First 1
+        $Node = [string]$NodeCommand.Path
+        $Safe.node_executable_source = 'SINGLE_APPLICATION_PATH_PROPERTY'
+    } else {
+        # The chat handoff captures process.execPath from the Node runtime that
+        # successfully ran the verifier; it never prints this local path.
+        $Node = $NodeExecutablePath
+        $Safe.node_executable_source = 'CALLER_RUNNING_NODE_EXEC_PATH'
+    }
+    $Safe.launch_node_file_exists = [IO.File]::Exists($Node)
+    if ([string]::IsNullOrWhiteSpace($Node) -or -not [IO.Path]::IsPathRooted($Node) -or
+        $Node.Contains('"') -or -not $Safe.launch_node_file_exists -or
+        [IO.Path]::GetExtension($Node) -ine '.exe') {
+        throw 'NODE_EXECUTABLE_PATH_INVALID'
+    }
+    $Node = [IO.Path]::GetFullPath($Node)
     $Safe.local_preflight_checkpoint = 'PRIVATE_DIRECTORY'
     $PrivateRoot = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'MushavoBudget/PrivateStaging'
     Assert-PrivateUnlinkedPath $PrivateRoot
@@ -264,7 +283,8 @@ try {
     # Do not echo exception messages, stderr, provider bodies or private objects.
     if ($Phase -eq 'LOCAL_PREFLIGHT_FAILED' -and $_.Exception.Message -in @('WINDOWS_REQUIRED',
         'PRIVATE_PATH_LINKED','MANIFEST_INVALID','SOURCE_HASH_MISMATCH','ENCRYPTION_PREFLIGHT_FAILED',
-        'SENDER_CONFIRMATION_REQUIRED','PRIVATE_PIPE_PREFLIGHT_FAILED')) { $Safe.problem_code = $_.Exception.Message }
+        'SENDER_CONFIRMATION_REQUIRED','PRIVATE_PIPE_PREFLIGHT_FAILED',
+        'NODE_EXECUTABLE_PATH_INVALID')) { $Safe.problem_code = $_.Exception.Message }
     else { $Safe.problem_code = $Phase }
     $PipeCodes = @('PRIVATE_PIPE_CONFIGURATION_FAILED','PRIVATE_PIPE_START_FAILED',
         'PRIVATE_PIPE_STREAM_SETUP_FAILED','PRIVATE_PIPE_WRITE_FAILED','PRIVATE_PIPE_WAIT_FAILED',

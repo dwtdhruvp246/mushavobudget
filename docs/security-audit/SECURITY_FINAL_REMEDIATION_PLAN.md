@@ -1,3 +1,9 @@
+# Current checkpoint — invalid Node launch path identified; corrected runtime path preflight ready
+
+15 October2026,FRE53. [Owner result](security-fr-2-zoho-node-path-owner-result.json): Windows error2, selected Node file absent, entry file/directory present,29PASS and zero provider requests. [Node path correction](SECURITY_FR_2_4_ZOHO_NODE_EXECUTABLE_CORRECTION.md) captures the working runtime's process.execPath privately, validates it and passes it explicitly; fallback uses one ApplicationInfo.Path rather than Source.30portable utility cases and6real archive checks pass. Next Windows run remains -PreflightOnly, with no credentials/code/email/SQL. Full setup and E4 integration remain pending; no full finding closure, production excluded and APK deferred.
+
+---
+
 # Current checkpoint — Windows encryption path passed; Node process-start error needs its native code
 
 15 October2026,FRE52. [Owner result](security-fr-2-zoho-pipe-start-owner-result.json):29PASS,8hashes,PowerShell5.1; PRIVATE_PIPE_START_FAILED with Win32Exception, zero provider requests and empty probe removed. DPAPI synthetic roundtrip passed by control-flow inference; combined pipe flag is false. [Native-code diagnostic](SECURITY_FR_2_4_ZOHO_PIPE_START_DIAGNOSTIC.md) adds only an integer OS error and three existence booleans; no raw paths/messages. Launcher unchanged, exact native cause still unknown. Next owner run remains -PreflightOnly without credentials/code/email/SQL.29offline checks and6real archive checks pass. Production excluded, APK deferred, hosted acceptance false and no finding closure.

@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-15",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BUSINESS_API_24_PASS_5_CARRY_FORWARD_OWNER_POST_BATCH_SQL_PENDING",
+  "status": "FR2_BUSINESS_SCOPED_COMPLETE_ADMIN_READ_ONLY_READINESS_READY",
   "active_batch": "FR.2",
-  "active_step": "FR.2.3",
+  "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE34",
+  "latest_evidence": "FRE35",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_BUSINESS_API_SCOPED_PASS_POST_SQL_PENDING",
+      "status": "IN_PROGRESS_ADMIN_PARITY_OPERATOR_RECOVERY_READINESS",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -359,7 +359,7 @@
         },
         {
           "id": "FR.2.3",
-          "status": "API_24_PASS_5_CARRY_FORWARD_POST_SQL_PENDING",
+          "status": "SCOPED_COMPLETE_WITH_FIVE_GROUP_CARRY_FORWARD",
           "title": "Business roles/scopes and controlled fixtures",
           "outbox_drift_review_handoff": "docs/security-audit/SECURITY_FR_2_3_OUTBOX_DRIFT_REVIEW_HANDOFF.md",
           "outbox_drift_review_diagnostic": "supabase/diagnostics/security_fr_2_3_outbox_drift_review.sql",
@@ -381,7 +381,7 @@
           "outbox_correction_local_receipt": "docs/security-audit/security-fr-2-outbox-body-correction-local-checks.json",
           "outbox_correction_local_PASS": 27,
           "outbox_correction_owner_result_received": true,
-          "source_guard_CRLF_and_current_closure_recheck_pending": true,
+          "source_guard_CRLF_and_current_closure_recheck_pending": false,
           "outbox_correction_owner_receipt": "docs/security-audit/security-fr-2-outbox-body-correction-owner-result.json",
           "outbox_correction_owner_checked_UTC": "2026-10-14T17:49:33.84635+00:00",
           "outbox_correction_reviewed_body_matches": true,
@@ -458,13 +458,30 @@
           "Business_API_post_batch_contract": "docs/security-audit/security-fr-2-business-post-batch-contract.json",
           "Business_API_post_batch_local_receipt": "docs/security-audit/security-fr-2-business-post-batch-local-checks.json",
           "Business_API_post_batch_local_PASS": 10,
-          "Business_API_post_batch_owner_result_received": false,
-          "Business_API_already_completed_do_not_repeat": true
+          "Business_API_post_batch_owner_result_received": true,
+          "Business_API_already_completed_do_not_repeat": true,
+          "Business_API_post_batch_owner_receipt": "docs/security-audit/security-fr-2-business-post-batch-owner-result.json",
+          "Business_API_post_batch_checked_UTC": "2026-10-15T04:29:41.409915+00:00",
+          "Business_API_post_batch_comparison": "docs/security-audit/security-fr-2-business-post-batch-comparison.json",
+          "Business_API_post_batch_expected_state_matches": true,
+          "Business_API_post_batch_retained_archive_and_manual_baselines_match": true,
+          "scoped_completion": true,
+          "unavailable_group_carry_forward_count": 5,
+          "completion_report": "docs/security-audit/SECURITY_FR_2_3_COMPLETION_AND_ADMIN_READINESS_HANDOFF.md"
         },
         {
           "id": "FR.2.4",
-          "status": "PLANNED_NOT_EXECUTED",
-          "title": "Admin parity/operator/recovery and assurance"
+          "status": "READ_ONLY_SOURCE_OPERATOR_READINESS_READY_OWNER_RESULT_PENDING",
+          "title": "Admin parity/operator/recovery and assurance",
+          "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
+          "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
+          "readiness_source_model": "docs/security-audit/security-fr-2-admin-readiness-source-model.json",
+          "readiness_local_receipt": "docs/security-audit/security-fr-2-admin-readiness-local-checks.json",
+          "readiness_local_PASS": 14,
+          "readiness_owner_result_received": false,
+          "roles_factors_or_Auth_settings_changed": false,
+          "genuine_AAL1_AAL2_recovery_cases_run": 0,
+          "hosted_acceptance": false
         },
         {
           "id": "FR.2.5",
@@ -534,7 +551,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.3_OWNER_READ_ONLY_POST_BATCH_SQL_RESULT",
+  "next_step": "FR.2.4_OWNER_READ_ONLY_ADMIN_READINESS_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -780,5 +797,17 @@
   "FR2_Business_API_post_batch_contract": "docs/security-audit/security-fr-2-business-post-batch-contract.json",
   "FR2_Business_API_post_batch_local_receipt": "docs/security-audit/security-fr-2-business-post-batch-local-checks.json",
   "FR2_Business_API_post_batch_local_PASS": 10,
-  "FR2_Business_API_post_batch_owner_result_received": false
+  "FR2_Business_API_post_batch_owner_result_received": true,
+  "FR2_Business_API_post_batch_owner_receipt": "docs/security-audit/security-fr-2-business-post-batch-owner-result.json",
+  "FR2_Business_API_post_batch_checked_UTC": "2026-10-15T04:29:41.409915+00:00",
+  "FR2_Business_API_post_batch_comparison": "docs/security-audit/security-fr-2-business-post-batch-comparison.json",
+  "FR2_Business_scoped_completion": true,
+  "FR2_Business_carry_forward_group_count": 5,
+  "FR2_Business_complete_report": "docs/security-audit/SECURITY_FR_2_3_COMPLETION_AND_ADMIN_READINESS_HANDOFF.md",
+  "FR2_Admin_readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
+  "FR2_Admin_readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
+  "FR2_Admin_readiness_source_model": "docs/security-audit/security-fr-2-admin-readiness-source-model.json",
+  "FR2_Admin_readiness_local_receipt": "docs/security-audit/security-fr-2-admin-readiness-local-checks.json",
+  "FR2_Admin_readiness_local_PASS": 14,
+  "FR2_Admin_readiness_owner_result_received": false
 }

@@ -1,3 +1,9 @@
+# Current checkpoint — Business scoped complete; Admin readiness next
+
+15 October 2026, FRE35. [Owner post-batch result](security-fr-2-business-post-batch-owner-result.json) and [reconciliation](security-fr-2-business-post-batch-comparison.json): expected primary/secondary Business state, unchanged old role/permission/audit and two manual Family conversion baselines; five records/seven conversions, zero joined workspace mismatches, two old orphans preserved. FR.2.3 scoped complete with five group carry-forward after24 API PASS/exit0. [Completion/Admin handoff](SECURITY_FR_2_3_COMPLETION_AND_ADMIN_READINESS_HANDOFF.md): next FR.2.4 read-only metadata for36 routine names/58 policies and aggregate operators/helpers;14 local checks PASS. No role promotion, MFA enrollment or installer now. Full gate/final audit pending, production excluded, APK deferred.
+
+---
+
 # Current checkpoint — genuine Business API scoped pass
 
 15 October 2026, FRE34. [Owner corrected result](security-fr-2-business-corrected-api-owner-result.json):24 PASS/five carried-forward BLOCKED,493 requests,exit0, both generated sessions logged out. Old archived role/permission/audit fingerprints matched and retained state unchanged; exact new primary member removed; prior Personal/Family/payment/conversion and secondary Business selected values unchanged. [Outcome and read-only SQL handoff](SECURITY_FR_2_3_BUSINESS_API_OUTCOME_AND_POST_BATCH_HANDOFF.md) includes10 local SQL checks PASS. Return owner post-batch SQL next; preserve fixtures and do not rerun completed API batch. Full role-operation/F15/private-file/third-actor/isolated suspension-expiry acceptance pending.

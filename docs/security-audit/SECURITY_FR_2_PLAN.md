@@ -1,3 +1,9 @@
+# Current checkpoint — authenticated account check passed; live limiter handoff ready
+
+15 October2026,FRE59. [Owner genuine3GET account/absence PASS](security-fr-2-cloudflare-account-owner-pass.json),exit0. [Live staging limiter deployment handoff](SECURITY_FR_2_4_LIMITER_LIVE_DEPLOYMENT_HANDOFF.md), [16new local checks and actual strict dry-run](security-fr-2-limiter-deployment-local-checks.json). The next pasted command validates locked tools/artifacts,rechecks account and absence,deploys the exact isolated limiter once and reads namespace/public-URL metadata. Nothing has yet been deployed. No Pages/email/SQL/Auth/application guard change; E4/global acceptance pending, production excluded, APK deferred, no finding closure.
+
+---
+
 # Current checkpoint — Windows limiter package passed; account precheck next
 
 15 October2026,FRE58. [Owner Windows18PASS and retained preparation exit0](security-fr-2-email-limiter-package-owner-pass.json). [Read-only account handoff](SECURITY_FR_2_4_LIMITER_WINDOWS_PASS_AND_ACCOUNT_CHECK.md), [new checker15PASS](security-fr-2-cloudflare-account-local-checks.json). The exact Worker and config hashes match; nothing deployed. Next owner enters a narrowly scoped Cloudflare token privately and checks the selected account's staging Pages project and current Worker absence using three GETs. No SQL, mail, Zoho file, Pages change or deployment. E4/global acceptance pending, production excluded, APK deferred, no findings closed.

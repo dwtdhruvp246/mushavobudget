@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-15",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E3_4_WINDOWS_PACKAGE18PASS_ACCOUNT_PRECHECK_PENDING",
+  "status": "FR2_EMAIL_E3_4_ACCOUNT_CHECK_PASS_LIVE_LIMITER_DEPLOYMENT_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE58",
+  "latest_evidence": "FRE59",
   "batches": [
     {
       "id": "FR.1",
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "EMAIL_WINDOWS_LIMITER_PACKAGE_PASS_ACCOUNT_PRECHECK_PENDING",
+          "status": "EMAIL_AUTHENTICATED_ACCOUNT_PASS_LIMITER_DEPLOYMENT_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -620,7 +620,8 @@
           "email_limiter_package_owner_Windows_result_received": true,
           "email_limiter_Worker_deployed": false,
           "email_limiter_package_owner_Windows_PASS": 18,
-          "email_limiter_package_owner_Windows_exit_code": 0
+          "email_limiter_package_owner_Windows_exit_code": 0,
+          "email_authenticated_account_receipt": "docs/security-audit/security-fr-2-cloudflare-account-owner-pass.json"
         },
         {
           "id": "FR.2.5",
@@ -690,7 +691,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E3.4_CLOUDFLARE_ACCOUNT_CHECK",
+  "next_step": "FR.2.4.E3.4_LIMITER_DEPLOYMENT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -1137,7 +1138,7 @@
   "FR2_email_Cloudflare_plan_owner_result": "docs/security-audit/security-fr-2-email-cloudflare-plan-owner-result.json",
   "FR2_email_Cloudflare_Workers_plan_owner_reported": "FREE",
   "FR2_email_Cloudflare_exact_Worker_name_owner_reported": "NO",
-  "FR2_email_Cloudflare_exact_Worker_existence_verified": null,
+  "FR2_email_Cloudflare_exact_Worker_existence_verified": false,
   "FR2_email_Cloudflare_exact_Worker_absence_owner_result": "docs/security-audit/security-fr-2-email-limiter-absence-owner-result.json",
   "FR2_email_limiter_package_contract": "docs/security-audit/security-fr-2-email-limiter-package-contract.json",
   "FR2_email_limiter_package_report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_PACKAGE_AND_WINDOWS_HANDOFF.md",
@@ -1148,11 +1149,16 @@
   "FR2_email_limiter_package_owner_Windows_result_received": true,
   "FR2_email_limiter_Worker_deployed": false,
   "owner_Cloudflare_login_or_token_required": true,
-  "owner_Cloudflare_deployment_action_required": false,
+  "owner_Cloudflare_deployment_action_required": true,
   "FR2_email_limiter_package_owner_Windows_PASS": 18,
   "FR2_email_limiter_package_owner_Windows_exit_code": 0,
   "FR2_email_limiter_package_owner_retained_preparation_exit_code": 0,
   "FR2_email_limiter_package_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-limiter-package-owner-pass.json",
   "FR2_email_Cloudflare_account_check_report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_WINDOWS_PASS_AND_ACCOUNT_CHECK.md",
-  "FR2_email_Cloudflare_account_check_local_PASS": 15
+  "FR2_email_Cloudflare_account_check_local_PASS": 15,
+  "FR2_email_Cloudflare_account_owner_receipt": "docs/security-audit/security-fr-2-cloudflare-account-owner-pass.json",
+  "FR2_email_Cloudflare_account_owner_exit_code": 0,
+  "FR2_email_limiter_live_deployment_report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_LIVE_DEPLOYMENT_HANDOFF.md",
+  "FR2_email_limiter_deployment_local_PASS": 16,
+  "FR2_email_limiter_actual_strict_dry_run_exit_code": 0
 }

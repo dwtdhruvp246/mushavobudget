@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-15",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_ADMIN_ORDINARY_OPERATOR_METADATA_PASS_GENUINE_SIGNIN_CONTROL_PENDING",
+  "status": "FR2_ADMIN_OPERATOR_SIGNIN_OWNER_PASS_PRIVATE_TOTP_HANDOFF_READY",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE38",
+  "latest_evidence": "FRE39",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_ORDINARY_OPERATOR_SIGNIN_CONTROL_CHECK",
+      "status": "IN_PROGRESS_PRIVATE_OPERATOR_TOTP_PREPARATION",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "ORDINARY_IDENTITY_METADATA_SCOPED_PASS_SIGNIN_AND_PRIVATE_CONTROL_PENDING",
+          "status": "OPERATOR_SIGNIN_OWNER_PASS_PRIVATE_TOTP_HANDOFF_READY",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -517,7 +517,15 @@
           "ordinary_identity_metadata_ready": true,
           "ordinary_identity_confirmed_active_slots": 2,
           "ordinary_identity_outcome_report": "docs/security-audit/SECURITY_FR_2_4_IDENTITY_OUTCOME_AND_SIGNIN_HANDOFF.md",
-          "genuine_operator_signin_or_MFA_or_recovery_verified": false
+          "genuine_operator_signin_or_MFA_or_recovery_verified": false,
+          "genuine_operator_signin_owner_result_received": true,
+          "operator_signin_owner_receipt": "docs/security-audit/security-fr-2-operator-signin-owner-result.json",
+          "private_TOTP_handoff": "docs/security-audit/SECURITY_FR_2_4_OPERATOR_SIGNIN_OUTCOME_AND_MFA_HANDOFF.md",
+          "private_TOTP_contract": "docs/security-audit/security-fr-2-operator-mfa-contract.json",
+          "private_TOTP_local_receipt": "docs/security-audit/security-fr-2-operator-mfa-local-checks.json",
+          "private_TOTP_local_PASS": 27,
+          "private_TOTP_owner_result_received": false,
+          "MFA_or_full_recovery_or_Admin_authorization_verified": false
         },
         {
           "id": "FR.2.5",
@@ -577,7 +585,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": false,
+  "owner_terminal_action_required": true,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
@@ -587,7 +595,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4_OWNER_GENUINE_OPERATOR_SIGNIN_AND_PRIVATE_CONTROL_SUMMARY",
+  "next_step": "FR.2.4_OWNER_PRIVATE_TOTP_AND_FRESH_AUTH_SESSION_RESULT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -882,7 +890,17 @@
   "FR2_Admin_ordinary_identity_platform_roles": 0,
   "FR2_Admin_ordinary_identity_verified_TOTP_factors": 0,
   "FR2_Admin_ordinary_identity_outcome_report": "docs/security-audit/SECURITY_FR_2_4_IDENTITY_OUTCOME_AND_SIGNIN_HANDOFF.md",
-  "FR2_Admin_genuine_operator_signin_owner_result_received": false,
-  "owner_browser_signin_action_required": true,
-  "owner_private_control_summary_required": true
+  "FR2_Admin_genuine_operator_signin_owner_result_received": true,
+  "owner_browser_signin_action_required": false,
+  "owner_private_control_summary_required": false,
+  "FR2_Admin_operator_signin_owner_receipt": "docs/security-audit/security-fr-2-operator-signin-owner-result.json",
+  "FR2_Admin_primary_and_recovery_signin_owner_reported_PASS": true,
+  "FR2_Admin_operator_signouts_owner_reported_PASS": true,
+  "FR2_Admin_separate_inbox_passwords_owner_reported": true,
+  "FR2_Admin_recovery_credentials_independently_accessible_owner_reported": true,
+  "FR2_Admin_private_TOTP_handoff": "docs/security-audit/SECURITY_FR_2_4_OPERATOR_SIGNIN_OUTCOME_AND_MFA_HANDOFF.md",
+  "FR2_Admin_private_TOTP_contract": "docs/security-audit/security-fr-2-operator-mfa-contract.json",
+  "FR2_Admin_private_TOTP_local_receipt": "docs/security-audit/security-fr-2-operator-mfa-local-checks.json",
+  "FR2_Admin_private_TOTP_local_PASS": 27,
+  "FR2_Admin_private_TOTP_owner_result_received": false
 }

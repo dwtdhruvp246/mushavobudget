@@ -1,3 +1,9 @@
+# Current checkpoint — Admin selected source parity passes; operator setup next
+
+15 October 2026,FRE36. [Owner Admin result](security-fr-2-admin-readiness-owner-result.json)/[exact comparison](security-fr-2-admin-readiness-comparison.json):36 routine and58 policy fingerprints match source;14/31 effective execute counts, zero staff/verified super operators/helpers and shared audit actor platform roles. [Historical34-policy CRLF proof](security-fr-2-admin-historical-CRLF-proof.json): old diagnostic LF0 differences, Windows CRLF34 with exact historical name set, so no current policy repair indicated. [Outcome/guarded delivery16 local PASS](SECURITY_FR_2_4_ADMIN_PARITY_OUTCOME_AND_OPERATOR_HANDOFF.md) and [isolated operator/recovery plan](SECURITY_FR_2_4_OPERATOR_AND_RECOVERY_PREPARATION_PLAN.md). Next owner input: availability of two separately secured test inboxes (two/one/none); no SQL/terminal/account-role change now. Existing actors remain ordinary, Business scoped completion/carry-forward preserved. Full acceptance/gate/final audit pending, production excluded, APK deferred.
+
+---
+
 # Current checkpoint — Business scoped complete; Admin readiness next
 
 15 October 2026, FRE35. [Owner post-batch result](security-fr-2-business-post-batch-owner-result.json) and [reconciliation](security-fr-2-business-post-batch-comparison.json): expected primary/secondary Business state, unchanged old role/permission/audit and two manual Family conversion baselines; five records/seven conversions, zero joined workspace mismatches, two old orphans preserved. FR.2.3 scoped complete with five group carry-forward after24 API PASS/exit0. [Completion/Admin handoff](SECURITY_FR_2_3_COMPLETION_AND_ADMIN_READINESS_HANDOFF.md): next FR.2.4 read-only metadata for36 routine names/58 policies and aggregate operators/helpers;14 local checks PASS. No role promotion, MFA enrollment or installer now. Full gate/final audit pending, production excluded, APK deferred.

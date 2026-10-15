@@ -1,3 +1,9 @@
+# Current checkpoint — E2 owner checks complete; E3.1gateway/Zoho source63PASS
+
+15October2026,FRE45. [Actual gateway/mail adapter and Windows handoff](SECURITY_FR_2_4_EMAIL_GATEWAY_SOURCE_AND_OFFLINE_HANDOFF.md), [contract](security-fr-2-email-gateway-candidate-contract.json), [63local checks](security-fr-2-email-gateway-local-checks.json), [64source hashes](security-fr-2-email-gateway-source-manifest.json), [owner dependencyPASS](security-fr-2-email-backend-owner-dependency-recheck.json). Previous46backend tests and59source/dependency metadata checks passed on owner Node22.17.0. New50actual handler/transport tests plus13actual SQL integration checks pass locally; full54source unchanged. Next: dependency-reusing offline Windows gateway recheck in chat. No SQL or email now; real bundle/Cloudflare/shared limiter/Zoho sender-region delivery,all app guards/UI and hosted acceptance pending. No finding closure,production excluded,APK deferred.
+
+---
+
 # Current checkpoint — Windows email backend46PASS; dependency-only recheck
 
 15 October2026,FRE44. [Windows result and corrected command](SECURITY_FR_2_4_EMAIL_BACKEND_WINDOWS_RESULT_AND_DEPENDENCY_RECHECK.md), [sanitized owner receipt](security-fr-2-email-backend-owner-Windows-result.json). Owner Node22.17.0:46backendPASS,exit0,54migrations/59source hashes. Separate PowerShell lockfile JSON parsing failed; actual dependency mismatch is not established. Run only the corrected read-only Node metadata/source check in the same terminal; no reinstall or backend retest. Replacement checker3localPASS. Supabase installation, email delivery and hosted acceptance remain pending; no finding closure, production excluded, APK deferred.

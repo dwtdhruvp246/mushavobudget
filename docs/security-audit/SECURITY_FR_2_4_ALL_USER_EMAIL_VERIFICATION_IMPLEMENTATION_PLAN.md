@@ -1,3 +1,9 @@
+# Current checkpoint — E2 owner checks complete; E3.1gateway/Zoho source63PASS
+
+15October2026,FRE45. [Actual gateway/mail adapter and Windows handoff](SECURITY_FR_2_4_EMAIL_GATEWAY_SOURCE_AND_OFFLINE_HANDOFF.md), [contract](security-fr-2-email-gateway-candidate-contract.json), [63local checks](security-fr-2-email-gateway-local-checks.json), [64source hashes](security-fr-2-email-gateway-source-manifest.json), [owner dependencyPASS](security-fr-2-email-backend-owner-dependency-recheck.json). Previous46backend tests and59source/dependency metadata checks passed on owner Node22.17.0. New50actual handler/transport tests plus13actual SQL integration checks pass locally; full54source unchanged. Next: dependency-reusing offline Windows gateway recheck in chat. No SQL or email now; real bundle/Cloudflare/shared limiter/Zoho sender-region delivery,all app guards/UI and hosted acceptance pending. No finding closure,production excluded,APK deferred.
+
+---
+
 # FR.2.4 — selected policy: email verification for every account, including platform Admin
 
 15 October2026, FRE42. [Owner decision](security-fr-2-email-code-all-users-owner-decision.json): “for all users including admin”. This resolves the scope question from FRE41. Continue under that scope without asking again whether Admins are included. This is a selected product policy and concrete implementation plan, not a deployed feature or permission to claim former TOTP/AAL2 acceptance. No hosted Auth/SQL/RLS/role/factor/template/setting was changed and no email was dispatched.

@@ -1,7 +1,7 @@
 {
   "stage_step": "FR.2.4.E2",
   "source_parent_commit": "172276bdd33e6489fae127d15c4b6f480b2a8ff9",
-  "status": "OWNER_WINDOWS46_BACKEND_PASS_DEPENDENCY_LOCK_RECHECK_PENDING",
+  "status": "OWNER_WINDOWS46_BACKEND_AND59_SOURCE_DEPENDENCY_METADATA_CHECKPOINT_COMPLETE_NOT_HOSTED_ACCEPTANCE",
   "policy_scope": "ALL_CUSTOMER_AND_PLATFORM_ADMIN_USERS",
   "report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_BACKEND_CANDIDATE_AND_OFFLINE_HANDOFF.md",
   "candidate_SQL": "supabase/candidates/security_fr_2_4_email_verification_backend.sql",
@@ -39,7 +39,7 @@
   "actual_Auth_email_delivery_Worker_cookie_or_native_verified": false,
   "public_application_data_guards_installed": false,
   "hosted_SQL_installation_authorized_by_this_handoff": false,
-  "owner_terminal_action": "READ_ONLY_EXISTING_TEMPORARY_SOURCE_AND_DEPENDENCY_METADATA_RECHECK_NO_REINSTALL_NO_BACKEND_RETEST",
+  "owner_terminal_action": "NO_FURTHER_E2_RETEST_REQUIRED_CONTINUE_E3_1_SOURCE_GATEWAY_RECHECK",
   "test_dependency": {
     "package": "@electric-sql/pglite",
     "version": "0.5.8",
@@ -59,7 +59,10 @@
   "owner_Windows_Node_version": "v22.17.0",
   "owner_result": "docs/security-audit/security-fr-2-email-backend-owner-Windows-result.json",
   "dependency_recheck_report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_BACKEND_WINDOWS_RESULT_AND_DEPENDENCY_RECHECK.md",
-  "owner_dependency_lock_integrity_verified": false,
+  "owner_dependency_lock_integrity_verified": true,
   "owner_PowerShell_JSON_parser_error_recorded": true,
-  "actual_dependency_integrity_mismatch_established": false
+  "actual_dependency_integrity_mismatch_established": false,
+  "owner_dependency_recheck_receipt": "docs/security-audit/security-fr-2-email-backend-owner-dependency-recheck.json",
+  "owner_dependency_installed_package_bytes_independently_hashed": false,
+  "next_step": "FR.2.4.E3.1_OWNER_WINDOWS_GATEWAY_SOURCE_RECEIPT"
 }

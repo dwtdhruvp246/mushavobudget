@@ -1,3 +1,9 @@
+# Current checkpoint — E2 owner checks complete; E3.1gateway/Zoho source63PASS
+
+15October2026,FRE45. [Actual gateway/mail adapter and Windows handoff](SECURITY_FR_2_4_EMAIL_GATEWAY_SOURCE_AND_OFFLINE_HANDOFF.md), [contract](security-fr-2-email-gateway-candidate-contract.json), [63local checks](security-fr-2-email-gateway-local-checks.json), [64source hashes](security-fr-2-email-gateway-source-manifest.json), [owner dependencyPASS](security-fr-2-email-backend-owner-dependency-recheck.json). Previous46backend tests and59source/dependency metadata checks passed on owner Node22.17.0. New50actual handler/transport tests plus13actual SQL integration checks pass locally; full54source unchanged. Next: dependency-reusing offline Windows gateway recheck in chat. No SQL or email now; real bundle/Cloudflare/shared limiter/Zoho sender-region delivery,all app guards/UI and hosted acceptance pending. No finding closure,production excluded,APK deferred.
+
+---
+
 # Latest owner checkpoint — Windows46PASS; dependency parser recheck pending
 
 15 October2026,FRE44. The owner ran the exact source candidate on Node22.17.0:46/46PASS,exit0,54migrations/59source hashes. A separate PowerShell package-lock conversion failed before its integrity check; the following integrity-mismatch exception does not establish a real dependency mismatch. Use the [dependency-only correction and full command](SECURITY_FR_2_4_EMAIL_BACKEND_WINDOWS_RESULT_AND_DEPENDENCY_RECHECK.md), not the obsolete ConvertFrom-Json lockfile step below. No backend retest or reinstall is needed. [Sanitized owner evidence](security-fr-2-email-backend-owner-Windows-result.json). No Supabase SQL, email or hosted acceptance; source implementation unchanged.

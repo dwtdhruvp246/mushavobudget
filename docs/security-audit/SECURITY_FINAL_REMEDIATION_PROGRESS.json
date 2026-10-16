@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-16",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E4_1_BASELINE_RECEIVED_ROUTINE_RECONCILIATION_PENDING",
+  "status": "FR2_EMAIL_E4_1_EVENT_HOOK_IDENTIFIED_FUNCTION_FINGERPRINT_DIFF_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE62",
+  "latest_evidence": "FRE63",
   "batches": [
     {
       "id": "FR.1",
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "EMAIL_E4_1_BASELINE_RECEIVED_ROUTINE_RECONCILIATION_PENDING",
+          "status": "EMAIL_E4_1_EVENT_HOOK_IDENTIFIED_ROUTINE_FINGERPRINT_DIFF_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -628,7 +628,8 @@
           "email_limiter_metadata_owner_receipt": "docs/security-audit/security-fr-2-limiter-read-only-owner-pass.json",
           "email_enforcement_baseline_SQL": "supabase/diagnostics/security_fr_2_4_email_enforcement_readiness.sql",
           "email_enforcement_baseline_owner_receipt": "docs/security-audit/security-fr-2-email-enforcement-baseline-owner-result.json",
-          "email_enforcement_routine_parity_verified": false
+          "email_enforcement_routine_parity_verified": false,
+          "email_enforcement_routine_reconciliation_owner_receipt": "docs/security-audit/security-fr-2-email-routine-reconciliation-owner-result.json"
         },
         {
           "id": "FR.2.5",
@@ -698,7 +699,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E4.1_ROUTINE_RECONCILIATION",
+  "next_step": "FR.2.4.E4.1_ROUTINE_FINGERPRINTS",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -1198,5 +1199,13 @@
   "FR2_email_enforcement_routine_metadata_parity_verified": false,
   "FR2_email_enforcement_routine_reconciliation_SQL": "supabase/diagnostics/security_fr_2_4_email_routine_reconciliation.sql",
   "FR2_email_enforcement_routine_reconciliation_report": "docs/security-audit/SECURITY_FR_2_4_ENFORCEMENT_BASELINE_AND_ROUTINE_RECONCILIATION.md",
-  "FR2_email_enforcement_routine_reconciliation_SQL_local_scenarios_PASS": 3
+  "FR2_email_enforcement_routine_reconciliation_SQL_local_scenarios_PASS": 3,
+  "FR2_email_enforcement_routine_reconciliation_owner_receipt": "docs/security-audit/security-fr-2-email-routine-reconciliation-owner-result.json",
+  "FR2_email_enforcement_extra_function_identified": "public.rls_auto_enable() RETURNS event_trigger",
+  "FR2_email_enforcement_hosted_non_event_routines": 278,
+  "FR2_email_enforcement_hosted_non_event_metadata_md5": "1cdb447a3d442a4dfcf87459dea1a63f",
+  "FR2_email_enforcement_routine_fingerprint_SQL": "supabase/diagnostics/security_fr_2_4_email_routine_fingerprints.sql",
+  "FR2_email_enforcement_routine_fingerprint_report": "docs/security-audit/SECURITY_FR_2_4_ROUTINE_DELTA_AND_COMPACT_FINGERPRINT_HANDOFF.md",
+  "FR2_email_enforcement_routine_fingerprint_reference": "docs/security-audit/security-fr-2-email-routine-fingerprint-reference.json",
+  "FR2_email_enforcement_routine_fingerprint_SQL_local_scenarios_PASS": 4
 }

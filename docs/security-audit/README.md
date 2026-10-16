@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E4.1 event hook identified; exact routine fingerprints next
+
+16 October2026,FRE63. [Owner reconciliation](security-fr-2-email-routine-reconciliation-owner-result.json):extra rls_auto_enable event function identified;remaining278function digest still differs. [Compact fingerprint handoff](SECURITY_FR_2_4_ROUTINE_DELTA_AND_COMPACT_FINGERPRINT_HANDOFF.md), [278-entry source reference](security-fr-2-email-routine-fingerprint-reference.json), [4local SQL scenarios](security-fr-2-email-routine-fingerprint-local-checks.json). Next complete read-only SQL returns bounded per-function body/settings/flag fingerprints in one string;no bodies/customer rows/credentials/writes. We remain on FR.2.4.E4.1,not a new original audit stage. Enforcement installation remains pending;no full acceptance/finding closure,production excluded,APK deferred.
+
+---
+
 # Current checkpoint — FR.2.4.E4.1 baseline received; routine reconciliation next
 
 16 October2026,FRE62. [Owner baseline](security-fr-2-email-enforcement-baseline-owner-result.json):166policy/50restrictive fingerprint and81public RLS tables match;required Auth fields present;email backend absent. Public functions279versus modeled278 need reconciliation. [Full FR.2.4.E4.1 handoff](SECURITY_FR_2_4_ENFORCEMENT_BASELINE_AND_ROUTINE_RECONCILIATION.md), [3local SQL scenarios](security-fr-2-email-routine-reconciliation-local-checks.json). Next is the complete read-only event-function/catalog SQL pasted in chat;no installation/terminal/Cloudflare/email/factor action. No broad acceptance/finding closure;production excluded,APK deferred.

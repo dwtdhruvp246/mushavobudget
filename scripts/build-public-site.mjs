@@ -6,7 +6,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 export const PUBLIC_SITE_FILES = Object.freeze([
   '.nojekyll', 'about.html', 'app-entry.html', 'app.html', 'auth.html', 'business.html',
   'contact.html', 'index.html', 'offline.html', 'pricing.html', 'signup.html',
-  'app-entry.js', 'app.js', 'admin-plans.js', 'admin-mfa.js', 'auth-flows.js', 'auth-security.js',
+  'app-entry.js', 'app.js', 'admin-plans.js', 'admin-mfa.js', 'email-verification.js', 'session-entry.js', 'auth-flows.js', 'auth-security.js',
   'business.js', 'config.js', 'push-notifications.js', 'pwa-install.js', 'pwa.js', 'site.js',
   'sw.js', 'workspace-preference.js', 'business.css', 'pwa-install.css', 'pwa-shell.css',
   'pwa-update.css', 'site.css', 'styles.css', 'manifest.webmanifest', 'assets',

@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E4.5 Windows passed; FR.2.4.E4.6 actual app entry integrated
+
+16 October 2026, FRE69. [Owner screen result](security-fr-2-email-ui-owner-Windows-pass.json): 93 PASS, exit 0, 71 hashes/11 syntax checks matched. [Actual app/Business/Admin entry and exporter integration](SECURITY_FR_2_4_EMAIL_SCREEN_PASS_AND_APP_ENTRY.md): [127 local checks](security-fr-2-email-entry-local-checks.json), [89-file manifest](security-fr-2-email-entry-source-manifest.json), [contract](security-fr-2-email-entry-candidate-contract.json). Proof now precedes private startup; Admin uses the new role/status contract; token replacement and stale replies are checked. Next owner action is the complete temporary-folder Windows batch in chat. Auth callback/security-settings integration, canonical SQL, Pages/new artifact coordination and hosted acceptance remain pending. No hosted SQL, credentials, mail, configuration change or deployment. All findings open, production excluded, APK deferred; prior checkpoints remain below.
+
+---
+
 # Current checkpoint — FR.2.4.E4.4 Windows passed; FR.2.4.E4.5 email screen and Admin contract ready
 
 16 October 2026, FRE68. [Owner Edge result](security-fr-2-email-edge-owner-Windows-pass.json): 88 PASS, exit 0, 84 hashes/23 syntax checks matched on Windows. [Shared email screen and Admin contract](SECURITY_FR_2_4_EDGE_PASS_AND_EMAIL_SCREEN.md): [93 local checks](security-fr-2-email-ui-local-checks.json), [71-file manifest](security-fr-2-email-ui-source-manifest.json), [contract](security-fr-2-email-ui-candidate-contract.json). The actual controller/form, gateway and SQL enforce server proof, existing Admin role and fixed seven-day device behavior. App/Business startup and the current Admin page are not yet rewired; canonical schema/migration and Pages/hosted integration remain pending. Next owner action is the complete temporary-folder PowerShell batch in chat. No hosted SQL, credentials, mail, Cloudflare/Zoho change or deployment. All findings open, production excluded, APK deferred; historical checkpoints remain below.
@@ -166,7 +172,7 @@ Supabase email OTP remains conventional aal1; selected email verification must u
 | FR.2.4.E1 | All-user/Admin policy, clock/session rules and source/deployment impact plan | COMPLETE_POLICY_SELECTED_NOT_IMPLEMENTED |
 | FR.2.4.E2 | Private DB challenge/device/session schema and service-only functions; concurrency, grants and revocation tests | OFFLINE_SOURCE_AND_OWNER_CHECKS_PASSED_NOT_INSTALLED |
 | FR.2.4.E3 | Auth gateway/provider mail adapter, protected cookies and challenge handlers; source tests and real bundle checks | LOCAL_CHECKS_PASSED_ZOHO_PRIVATE_SETUP_AND_LIMITER_METADATA_PASSED_PAGES_INTEGRATION_PENDING |
-| FR.2.4.E4 | Login/email-code/remember-device UI plus all RLS/RPC/Edge/Storage/Admin guards and regression batch | E4_4_WINDOWS88PASS_E4_5_SCREEN_ADMIN_CONTRACT_LOCAL93PASS_WINDOWS_PENDING_APP_STARTUP_CANONICAL_PAGES_PENDING |
+| FR.2.4.E4 | Login/email-code/remember-device UI plus all RLS/RPC/Edge/Storage/Admin guards and regression batch | E4_5_WINDOWS93PASS_E4_6_APP_ENTRY_LOCAL127PASS_WINDOWS_PENDING_AUTH_CALLBACKS_SETTINGS_CANONICAL_PAGES_PENDING |
 | FR.2.4.E5 | Controlled staging configuration, real delivery, new/trusted/expired/revoked-device and direct-API acceptance; exact guarded Admin assignment after gates work | PENDING |
 | FR.2.4.E6 | Remaining native/session/recovery/provider regressions and final-re-audit evidence/carry-forward | PENDING_APK_DEFERRED |
 

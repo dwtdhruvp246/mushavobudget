@@ -48,10 +48,10 @@ async function fixture(action,missing=false) {
     await action({root,repo,sha,out,env});
   } finally {await rm(root,{recursive:true,force:true});}
 }
-test('staging builder includes new Auth and existing MFA assets, strips production references and disables push',async()=>fixture(async f=>{
+test('staging builder includes Auth, shared email entry and historical MFA assets, strips production references and disables push',async()=>fixture(async f=>{
   const result=spawnSync(process.execPath,[builder,f.sha,f.out],{cwd:f.repo,env:f.env,encoding:'utf8'});assert.equal(result.status,0,result.stderr);
   const receipt=JSON.parse(result.stdout);assert.equal(receipt.source_commit,f.sha);assert.equal(receipt.hosted_acceptance,false);
-  for(const name of ['auth.html','auth-security.js','auth-flows.js','admin-mfa.js'])assert.equal((await readFile(path.join(f.out,name),'utf8')).includes('kttkospkblwvguuwnhjj'),false);
+  for(const name of ['auth.html','auth-security.js','auth-flows.js','admin-mfa.js','email-verification.js','session-entry.js'])assert.equal((await readFile(path.join(f.out,name),'utf8')).includes('kttkospkblwvguuwnhjj'),false);
   const config=await readFile(path.join(f.out,'config.js'),'utf8');assert.match(config,/dczlddwbtgvfdujgcitb/);assert.match(config,/"vapidPublicKey": ""/);
 }));
 test('staging builder rejects secret keys, missing project confirmation and production config key',async()=>fixture(async f=>{

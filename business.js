@@ -1,5 +1,6 @@
 // Mushavo Budget Business application — Stage 12 pilot and realtime
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
+import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=1";
 import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -120,7 +121,7 @@ const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 
 function showOnly(viewId) {
-  ["businessLoading", "businessConfig", "businessSuspended", "businessNoAccess", "businessInvitations", "businessError", "businessApp"]
+  ["businessLoading", "businessEmailVerification", "businessConfig", "businessSuspended", "businessNoAccess", "businessInvitations", "businessError", "businessApp"]
     .forEach((id) => document.getElementById(id)?.classList.toggle("hidden", id !== viewId));
 }
 
@@ -197,9 +198,10 @@ function friendlyMessage(error) {
 }
 
 async function query(label, request) {
-  const epoch = businessAuthEpoch;
+  const epoch = businessAuthEpoch,proofTicket=businessEmailEntry.ticket();
   const { data, error } = await request;
-  if (epoch !== businessAuthEpoch) throw Object.assign(new Error("The active account changed."), {code:"session_changed"});
+  if (epoch !== businessAuthEpoch || !proofTicket()) throw Object.assign(new Error("The active account changed."), {code:"session_changed"});
+  if(error?.message?.includes("EMAIL_VERIFICATION_REQUIRED")){businessEmailEntry.lock();throw Object.assign(new Error("Verify this sign-in before continuing."),{code:"session_changed"});}
   if (error) {
     error.message = `${label}: ${error.message}`;
     throw error;
@@ -2930,6 +2932,8 @@ async function loadBusinessAccess() {
       return;
     }
     state.session = session;
+    if(!await businessEmailEntry.ensure())return;
+    if(epoch!==businessAuthEpoch)return;
     await window.MushavoWorkspace?.hydrate(session.user.id);
     if (epoch !== businessAuthEpoch) return;
     const suspended = await query("account status load", supabase.rpc("my_account_suspended"));
@@ -2945,6 +2949,7 @@ async function loadBusinessAccess() {
       query("Business supported currencies load", supabase.from("supported_currencies").select("code,name").eq("is_active", true).order("code")),
       query("Business invitation load", supabase.rpc("get_my_business_invitations"))
     ]);
+    if(epoch!==businessAuthEpoch||!businessEmailEntry.authorized)return;
     state.profile = profile;
     state.memberships = memberships;
     state.supportedCurrencies = currencies;
@@ -3430,7 +3435,7 @@ async function flushBusinessLiveRefresh() {
   }
 }
 function startBusinessRealtime() {
-  if(!state.workspace||!state.session||!supabase?.channel)return;
+  if(!businessEmailEntry.authorized||!state.workspace||!state.session||!supabase?.channel)return;
   const workspaceId=state.workspace.id;
   if(businessLiveWorkspace===workspaceId&&businessLiveChannel)return;
   stopBusinessRealtime();businessLiveWorkspace=workspaceId;
@@ -3465,7 +3470,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&businessL
 
 let businessAccessCheckBusy=false;
 async function refreshBusinessAccessState() {
-  if(!state.workspace || businessAccessCheckBusy)return;
+  if(!businessEmailEntry.authorized||!state.workspace || businessAccessCheckBusy)return;
   const workspaceId=state.workspace.id,sequence=workspaceLoadSequence,wasLocked=state.locked;businessAccessCheckBusy=true;
   try{
     const suspended=await query('Account access check',supabase.rpc('my_account_suspended'));
@@ -3499,18 +3504,24 @@ window.setInterval(enforceBusinessExpiry,15000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){enforceBusinessExpiry();refreshBusinessAccessState();}});
 window.MushavoWorkspace?.onResume(() => { enforceBusinessExpiry(); refreshBusinessAccessState(); });
 
+const restoreBusinessPrivateDom=[...document.querySelectorAll('#businessApp,#businessInvitations,dialog')].map(snapshotPrivateView);
+const businessEmailEntry=createSessionEntry({client:supabase,getSession:()=>state.session,root:$('#businessEmailVerificationContent'),
+  show:()=>showOnly('businessEmailVerification'),
+  onInvalidated:()=>{clearBusinessWorkspaceState();state.profile=null;state.workspaces=[];state.memberships=[];state.incomingInvitations=[];state.supportedCurrencies=[];for(const restore of restoreBusinessPrivateDom)restore();},
+  onUnlocked:async({ticket})=>{if(ticket())await loadBusinessAccess();},onSignOut:()=>signOut()
+});
 $("#businessToday").textContent = new Date().toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
 supabase?.auth.onAuthStateChange((event, session) => {
   if (event === 'INITIAL_SESSION') return;
-  if (session?.user?.id && session.user.id === state.session?.user?.id) {
-    state.session = session;
-    if (session.access_token) supabase.realtime.setAuth(session.access_token);
+  if (session?.user?.id && session.user.id === state.session?.user?.id && session.access_token===state.session.access_token) {
+    state.session=session;
+    if(businessEmailEntry.authorized&&session.access_token)supabase.realtime.setAuth(session.access_token);
     return;
   }
   businessAuthEpoch += 1;
   clearBusinessWorkspaceState();
   state.profile = null; state.workspaces = []; state.memberships = []; state.incomingInvitations = []; state.supportedCurrencies = [];
-  state.session = session; appOpening = false;
+  state.session = session;businessEmailEntry.bind(session);appOpening = false;
   showOnly('businessLoading');
   const epoch = businessAuthEpoch;
   // Auth callbacks must not await another SDK call while its lock is held.

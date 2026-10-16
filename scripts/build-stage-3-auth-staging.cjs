@@ -15,7 +15,7 @@ const git = args => execFileSync('git',args,{maxBuffer:16*1024*1024});
 if (git(['cat-file','-t',source]).toString().trim() !== 'commit') throw Error('The pin must identify a commit.');
 if (git(['show',`${source}:config.js`]).includes(Buffer.from(key))) throw Error('The supplied key matches source/production config.');
 const required = new Set(['about.html','app-entry.html','app.html','auth.html','business.html','contact.html','index.html','offline.html','pricing.html','signup.html',
-  'workspace-preference.js','app-entry.js','app.js','admin-mfa.js','admin-plans.js','auth-security.js','auth-flows.js','business.js','config.js','push-notifications.js','pwa-install.js','pwa.js','site.js','sw.js',
+  'workspace-preference.js','app-entry.js','app.js','admin-mfa.js', 'email-verification.js', 'session-entry.js','admin-plans.js','auth-security.js','auth-flows.js','business.js','config.js','push-notifications.js','pwa-install.js','pwa.js','site.js','sw.js',
   'business.css','pwa-install.css','pwa-shell.css','pwa-update.css','site.css','styles.css','manifest.webmanifest','_headers']);
 const allowed = new Set([...required,'_redirects']);
 const entries = git(['ls-tree','-r',source]).toString().trim().split(/\r?\n/).map(line => {

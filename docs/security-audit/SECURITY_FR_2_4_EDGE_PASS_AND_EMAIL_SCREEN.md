@@ -1,3 +1,9 @@
+# Windows result received — FR.2.4.E4.5: 93 PASS, exit 0
+
+16 October 2026, FRE69. [Owner receipt](security-fr-2-email-ui-owner-Windows-pass.json) records 93/93 PASS on Node v22.17.0/PGlite 0.5.8, with all 71 source hashes and 11 syntax checks matched. No warnings were reported in the three selected groups. This supersedes the Windows-pending action below. The next source checkpoint [connects the screen to actual app entry](SECURITY_FR_2_4_EMAIL_SCREEN_PASS_AND_APP_ENTRY.md); no hosted installation or full finding is accepted. Original FRE68 evidence is retained below.
+
+---
+
 # FR.2.4.E4.5 — Edge checks passed on Windows; shared email screen and Admin contract ready
 
 16 October 2026, FRE68. The [owner Edge receipt](security-fr-2-email-edge-owner-Windows-pass.json) records 88/88 PASS, zero FAIL, exit 0 on Node v22.17.0 and PGlite 0.5.8; 84 input hashes and 23 syntax checks matched. The stripTypeScriptTypes warning is non-failing. This completes the E4.4 Windows repeat, not deployment or full hosted acceptance.

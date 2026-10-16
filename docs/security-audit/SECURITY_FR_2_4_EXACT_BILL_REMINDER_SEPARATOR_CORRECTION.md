@@ -1,3 +1,9 @@
+# Update — owner correction passed
+
+16 October 2026, FRE65. [Owner receipt](security-fr-2-bill-reminder-separator-owner-pass.json) confirms the guarded correction committed and the selected 278-function source digest matched. No scheduler/provider call or email enforcement installation was performed. Do not rerun the correction or rollback. [Continue to FR.2.4.E4.2](SECURITY_FR_2_4_SEPARATOR_PASS_AND_SESSION_PREDICATE.md). The original preparation report follows as historical evidence.
+
+---
+
 # FR.2.4.E4.1 — exact Business bill reminder separator correction
 
 16 October2026,FRE64. The uploaded owner fingerprint receipt was read from its supplied local attachment,not through Library,and was not modified. [Owner receipt](security-fr-2-email-routine-fingerprints-owner-result.json), [exact comparison](security-fr-2-email-routine-exact-differences.json), [reconstruction](security-fr-2-bill-reminder-separator-reconstruction.json), [contract](security-fr-2-bill-reminder-separator-contract.json), [14local checks](security-fr-2-bill-reminder-separator-local-checks.json).

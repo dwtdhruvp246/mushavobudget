@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E3.4",
-  "status": "OWNER_WORKER_DEPLOYED_POSTCHECK_REVIEW_REQUIRED_READ_ONLY_INSPECTION_NEXT",
+  "status": "STAGING_LIMITER_SELECTED_METADATA_OWNER_PASS_E4_ENFORCEMENT_BASELINE_NEXT",
   "source_parent_commit": "fdd6b06e578954122985734221ec8bad5faa5962",
   "report": "docs/security-audit/SECURITY_FR_2_4_ZOHO_SETUP_PASS_AND_CLOUDFLARE_READINESS.md",
   "preceding_private_Zoho_owner_pass": "docs/security-audit/security-fr-2-zoho-private-setup-owner-pass.json",
@@ -30,7 +30,7 @@
   "findings_closed": [],
   "APK_update_deferred": true,
   "latest_owner_result": "docs/security-audit/security-fr-2-email-limiter-absence-owner-result.json",
-  "exact_Worker_exists_verified": null,
+  "exact_Worker_exists_verified": true,
   "remaining_requested_owner_fields": [],
   "owner_repeat_plan_or_Zoho_setup_required": false,
   "read_only_name_check_instructions": "SAME_ACCOUNT_WORKERS_AND_PAGES_OVERVIEW_ALL_PROJECT_TYPES_CLEAR_FILTERS_SEARCH_EXACT_NAME_INSPECT_ALL_RESULTS",
@@ -41,8 +41,8 @@
   "owner_local_candidate_preparation_only": false,
   "next_local_package_contract": "docs/security-audit/security-fr-2-email-limiter-package-contract.json",
   "next_local_package_report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_PACKAGE_AND_WINDOWS_HANDOFF.md",
-  "owner_Cloudflare_login_token_or_deployment_action_required": true,
-  "owner_Cloudflare_token_entry_required": true,
+  "owner_Cloudflare_login_token_or_deployment_action_required": false,
+  "owner_Cloudflare_token_entry_required": false,
   "owner_Cloudflare_resource_deployment_requested": false,
   "owner_Windows_package_receipt": "docs/security-audit/security-fr-2-email-limiter-package-owner-pass.json",
   "next_read_only_account_handoff": "docs/security-audit/SECURITY_FR_2_4_LIMITER_WINDOWS_PASS_AND_ACCOUNT_CHECK.md",
@@ -50,7 +50,11 @@
   "owner_authenticated_account_receipt": "docs/security-audit/security-fr-2-cloudflare-account-owner-pass.json",
   "live_limiter_handoff": "docs/security-audit/SECURITY_FR_2_4_LIMITER_LIVE_DEPLOYMENT_HANDOFF.md",
   "owner_Worker_deployed_reported": true,
-  "owner_read_only_metadata_inspection_required": true,
+  "owner_read_only_metadata_inspection_required": false,
   "owner_deployment_receipt": "docs/security-audit/security-fr-2-limiter-deployment-owner-review.json",
-  "post_deploy_read_only_report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_POST_DEPLOY_READ_ONLY_REVIEW.md"
+  "post_deploy_read_only_report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_POST_DEPLOY_READ_ONLY_REVIEW.md",
+  "owner_limiter_namespace_SQLite_verified": true,
+  "owner_limiter_public_URLs_disabled_verified": true,
+  "owner_limiter_metadata_pass": "docs/security-audit/security-fr-2-limiter-read-only-owner-pass.json",
+  "email_enforcement_baseline_report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_METADATA_PASS_AND_ENFORCEMENT_BASELINE.md"
 }

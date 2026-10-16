@@ -1,0 +1,145 @@
+{
+  "date": "2026-10-16",
+  "source_parent_commit": "ab85f8f6903f70e64bf6ff310ef91a64ca0623c2",
+  "corrected_deployer_tests": {
+    "tests": 18,
+    "pass_count": 18,
+    "fail": 0,
+    "exit_code": 0,
+    "scope": "ACTUAL_ORCHESTRATOR_WITH_SYNTHETIC_PORTS_NOT_NEW_DEPLOYMENT"
+  },
+  "metadata_SQL_scenarios": {
+    "scope": "ACTUAL_METADATA_SQL_ON_MODELED54_MIGRATIONS_BEFORE_AND_AFTER_OFFLINE_BACKEND_CANDIDATE",
+    "migration_count": 54,
+    "scenarios": 2,
+    "pass": 2,
+    "fail": 0,
+    "exit_code": 0,
+    "baseline": {
+      "scope": "READ_ONLY_CATALOG_COUNTS_AND_FINGERPRINTS_NOT_APP_ROWS_OR_GUARD_INSTALLATION",
+      "policies": {
+        "total": 166,
+        "restrictive": 50,
+        "metadata_md5": "c4d08b3911e268d7e133a8ed3d3d330e"
+      },
+      "stage_step": "FR.2.4.E4.1_ENFORCEMENT_BASELINE",
+      "checked_UTC": "2026-10-15T21:16:49.702-07:00",
+      "view_metadata": [
+        {
+          "rls": false,
+          "kind": "v",
+          "name": "cashbook_account_balances",
+          "options": [
+            "security_invoker=true"
+          ],
+          "force_rls": false,
+          "schema_name": "public"
+        }
+      ],
+      "findings_closed": [],
+      "public_routines": {
+        "total": 278,
+        "metadata_md5": "c4f0854e34bb2f8ba4c3a9b79d700fe7",
+        "anonymous_executable": 59,
+        "authenticated_executable": 180,
+        "authenticated_executable_definers": 175,
+        "authenticated_executable_trigger_functions": 27
+      },
+      "relation_counts": [
+        {
+          "total": 82,
+          "views": 1,
+          "tables": 81,
+          "schema_name": "public",
+          "tables_without_rls": 0
+        },
+        {
+          "total": 2,
+          "views": 0,
+          "tables": 2,
+          "schema_name": "storage",
+          "tables_without_rls": 1
+        }
+      ],
+      "intended_project": "dczlddwbtgvfdujgcitb",
+      "hosted_acceptance": false,
+      "transaction_read_only": "on",
+      "Auth_session_table_present": false,
+      "application_routines_invoked": 0,
+      "email_backend_schema_present": false,
+      "email_gate_public_function_count": 0,
+      "Auth_user_required_columns_present": false,
+      "Auth_session_required_columns_present": false,
+      "project_selection_independently_verified": false,
+      "email_enforcement_installed_by_this_script": false,
+      "application_rows_or_function_bodies_printed": false,
+      "functions_policies_grants_accounts_factors_or_settings_changed": false
+    },
+    "with_private_backend_candidate": {
+      "scope": "READ_ONLY_CATALOG_COUNTS_AND_FINGERPRINTS_NOT_APP_ROWS_OR_GUARD_INSTALLATION",
+      "policies": {
+        "total": 166,
+        "restrictive": 50,
+        "metadata_md5": "c4d08b3911e268d7e133a8ed3d3d330e"
+      },
+      "stage_step": "FR.2.4.E4.1_ENFORCEMENT_BASELINE",
+      "checked_UTC": "2026-10-15T21:16:49.762-07:00",
+      "view_metadata": [
+        {
+          "rls": false,
+          "kind": "v",
+          "name": "cashbook_account_balances",
+          "options": [
+            "security_invoker=true"
+          ],
+          "force_rls": false,
+          "schema_name": "public"
+        }
+      ],
+      "findings_closed": [],
+      "public_routines": {
+        "total": 286,
+        "metadata_md5": "3ce56af397ad83a8941ea6a9764cbc5d",
+        "anonymous_executable": 59,
+        "authenticated_executable": 180,
+        "authenticated_executable_definers": 175,
+        "authenticated_executable_trigger_functions": 27
+      },
+      "relation_counts": [
+        {
+          "total": 82,
+          "views": 1,
+          "tables": 81,
+          "schema_name": "public",
+          "tables_without_rls": 0
+        },
+        {
+          "total": 2,
+          "views": 0,
+          "tables": 2,
+          "schema_name": "storage",
+          "tables_without_rls": 1
+        }
+      ],
+      "intended_project": "dczlddwbtgvfdujgcitb",
+      "hosted_acceptance": false,
+      "transaction_read_only": "on",
+      "Auth_session_table_present": true,
+      "application_routines_invoked": 0,
+      "email_backend_schema_present": true,
+      "email_gate_public_function_count": 8,
+      "Auth_user_required_columns_present": true,
+      "Auth_session_required_columns_present": true,
+      "project_selection_independently_verified": false,
+      "email_enforcement_installed_by_this_script": false,
+      "application_rows_or_function_bodies_printed": false,
+      "functions_policies_grants_accounts_factors_or_settings_changed": false
+    },
+    "existing_policy_fingerprint_unchanged": true,
+    "hosted_SQL_run": false
+  },
+  "actual_Cloudflare_Auth_Zoho_or_hosted_SQL_requests": 0,
+  "actual_redeployment_performed": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

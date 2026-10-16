@@ -1,3 +1,9 @@
+# Current checkpoint — limiter metadata passed; E4.1 server baseline next
+
+16 October2026,FRE61. [Owner4GET PASS](security-fr-2-limiter-read-only-owner-pass.json),exit0: Worker/SQLite namespace verified,public+preview URLs disabled,candidate hashes match. Current namespace errors=null explains the array-only checker rejection; reusable source corrected and18regressions pass. No redeploy needed. [E4.1 handoff](SECURITY_FR_2_4_LIMITER_METADATA_PASS_AND_ENFORCEMENT_BASELINE.md), [65-source inventory](security-fr-2-email-enforcement-source-inventory.json), [2metadata-SQL scenarios](security-fr-2-email-enforcement-baseline-local-checks.json). Next owner action is the full read-only staging catalog SQL pasted in chat; no installation/email/token/terminal. Applicationwide guards/UI/Pages gateway remain pending; no full acceptance/finding closure,production excluded,APK deferred.
+
+---
+
 # Current checkpoint — Worker deployment reported; read-only metadata review next
 
 15 October2026,FRE60. [Owner Wrangler exit0/Worker deployed, overall postcheck exit1](security-fr-2-limiter-deployment-owner-review.json),namespace API response review required. Public URL/final candidate checks were not reached. [Read-only inspection handoff](SECURITY_FR_2_4_LIMITER_POST_DEPLOY_READ_ONLY_REVIEW.md), [15local checks](security-fr-2-limiter-inspection-local-checks.json). Do not rerun deployment/delete/recreate. Next command reads bounded response shapes, numeric codes and selected metadata; no writes/npm/SQL/email/Zoho file. No full acceptance or finding closure; E4 remains pending, production excluded, APK deferred.

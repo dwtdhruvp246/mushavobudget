@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "phase": "FINAL_REMEDIATION",
-  "date": "2026-10-14",
+  "date": "2026-10-16",
   "events": [
     {
       "id": "FRE01",
@@ -1819,6 +1819,35 @@
       "production_or_native_changed": false,
       "findings_closed": [],
       "next_step": "FR.2.4.E3.4_LIMITER_READ_ONLY_REVIEW"
+    },
+    {
+      "id": "FRE61",
+      "date": "2026-10-16",
+      "stage_step": "FR.2.4.E4.1_ENFORCEMENT_BASELINE",
+      "source_parent_commit": "ab85f8f6903f70e64bf6ff310ef91a64ca0623c2",
+      "result": "OWNER_LIMITER_SELECTED_METADATA_PASS_REUSABLE_CHECKER_CORRECTED_E4_BASELINE_READY",
+      "owner_receipt": "docs/security-audit/security-fr-2-limiter-read-only-owner-pass.json",
+      "report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_METADATA_PASS_AND_ENFORCEMENT_BASELINE.md",
+      "local_checks": "docs/security-audit/security-fr-2-email-enforcement-baseline-local-checks.json",
+      "source_inventory": "docs/security-audit/security-fr-2-email-enforcement-source-inventory.json",
+      "read_only_SQL": "supabase/diagnostics/security_fr_2_4_email_enforcement_readiness.sql",
+      "owner_authenticated_requests": 4,
+      "owner_exit_code": 0,
+      "current_namespace_success_true_errors_null": true,
+      "selected_Worker_namespace_public_URLs_and_candidate_verified": true,
+      "redeployment_performed": false,
+      "reusable_deployer_tests_PASS": 18,
+      "source_files_verified": 65,
+      "modeled_migration_count": 54,
+      "modeled_public_tables": 81,
+      "modeled_authenticated_executable_routines": 180,
+      "metadata_SQL_scenarios_PASS": 2,
+      "assistant_actual_Cloudflare_or_hosted_SQL_requests": 0,
+      "email_dispatched": false,
+      "hosted_acceptance": false,
+      "production_or_native_changed": false,
+      "findings_closed": [],
+      "next_step": "FR.2.4.E4.1_ENFORCEMENT_BASELINE"
     }
   ],
   "prior_stage_evidence_preserved": true,

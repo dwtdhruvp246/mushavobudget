@@ -37,7 +37,7 @@ async function metadata(transport,input,suffix){
  try{for(;;){const{done,value}=await reader.read();if(done)break;size+=value.length;need(size<=2097152,'POST_DEPLOY_RESPONSE_TOO_LARGE');parts.push(value);}}
  finally{await reader.cancel().catch(()=>{});reader.releaseLock();}
  let body;try{body=JSON.parse(Buffer.concat(parts).toString('utf8'));}catch{need(false,'POST_DEPLOY_INVALID_RESPONSE');}
- need(body.success===true&&Array.isArray(body.errors)&&body.errors.length===0,'POST_DEPLOY_API_REVIEW_REQUIRED');return body;
+ need(body.success===true&&(body.errors==null||(Array.isArray(body.errors)&&body.errors.length===0)),'POST_DEPLOY_API_REVIEW_REQUIRED');return body;
 }
 export async function deployLimiter(input,{sourceRoot=defaultSourceRoot,transport=fetch,
  candidateCheck=verifyAccountCandidate,toolsCheck=verifyLimiterSourcesAndTools,execute=runWrangler}={}){

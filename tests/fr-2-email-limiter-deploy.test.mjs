@@ -42,6 +42,12 @@ for(const[name,options]of[
  ['preview URLs enabled',{response:n=>n===5?payload({enabled:false,previews_enabled:true}):null}],
  ['post-check transport failure',{throwPost:true}]
 ])test(name+' preserves deployed-but-review-required state without retries',async()=>{const{receipt,executions}=await run(options);assert.equal(executions,1);assert.equal(receipt.Worker_deployed,true);assert.equal(receipt.exit_code,1);assert.equal(receipt.remote_state_may_require_review,true);});
+for(const errorShape of ['null','absent'])test('namespace success with '+errorShape+' errors passes without changing upload scope',async()=>{
+ const body={success:true,result:[{script:'mushavo-email-rate-staging',class:'EmailGatewayRateLimiter',use_sqlite:true,id:'synthetic-id'}]};
+ if(errorShape==='null')body.errors=null;
+ const{receipt,executions,requests}=await run({response:n=>n===4?new Response(JSON.stringify(body),{headers:{'Content-Type':'application/json'}}):null});
+ assert.equal(receipt.exit_code,0);assert.equal(executions,1);assert.equal(requests,5);
+});
 test('child environment uses explicit account/token and disables inherited Node preload and default secret config',()=>{
  const old=process.env.NODE_OPTIONS;process.env.NODE_OPTIONS='synthetic-preload';
  try{const env=deploymentEnvironment({account,token},root);assert.equal(env.NODE_OPTIONS,undefined);assert.equal(env.CLOUDFLARE_ACCOUNT_ID,account);assert.equal(env.CLOUDFLARE_API_TOKEN,token);assert.equal(env.CLOUDFLARE_LOAD_DEV_VARS_FROM_DOT_ENV,'false');assert.equal(env.WRANGLER_SEND_METRICS,'false');assert.equal(env.WRANGLER_HIDE_BANNER,'true');}

@@ -1,3 +1,9 @@
+# Windows result received — FR.2.4.E4.3: 32 PASS, exit 0
+
+16 October 2026, FRE67. [Owner receipt](security-fr-2-email-data-guard-owner-Windows-pass.json) records 32/32 PASS on Node v22.17.0/PGlite 0.5.8, with all 63 source hashes and 54 migrations matched. This supersedes the Windows-pending action below. No hosted installation or full finding is accepted. Continue with the [Edge guard batch](SECURITY_FR_2_4_DATABASE_PASS_AND_EDGE_GUARDS.md). The original FRE66 checkpoint is retained below.
+
+---
+
 # FR.2.4.E4.3 — shared session check passed on Windows; database integration ready
 
 16 October 2026, FRE66. [Owner Windows receipt](security-fr-2-email-session-owner-Windows-pass.json): 24 PASS, zero FAIL, exit 0 on Node v22.17.0 and PGlite 0.5.8; all 61 source hashes and 54 ordered migrations matched. The isolated locked npm installation added one package and the terminal guard completed. This closes that component's Windows check, not hosted enforcement or a full finding.

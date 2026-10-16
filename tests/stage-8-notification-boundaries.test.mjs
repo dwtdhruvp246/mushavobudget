@@ -4,6 +4,7 @@ import {readFile} from 'node:fs/promises';
 import {stripTypeScriptTypes} from 'node:module';
 import vm from 'node:vm';
 import {activeNotificationRecipient, prepareReminderPayload} from '../supabase/functions/_shared/notification-recipient.mjs';
+import {requireEmailVerifiedSession,emailVerificationFailure} from '../supabase/functions/_shared/email-session-assurance.mjs';
 
 const user = 'actor-A', workspace = 'workspace-A', sourceId = '11111111-1111-4111-8111-111111111111';
 const job = {id:'job-A', user_id:user, workspace_id:workspace, source_id:sourceId, source_type:'payment',
@@ -29,7 +30,7 @@ function database(patch = {}, errors = {}) {
       return q;
     },
     async rpc(name, params) {rpcs.push({name,params});return {data:name.startsWith('claim_')&&name.includes('outbox') ? [this.job] :
-      ['payment_reminder_allowed','business_bill_reminder_allowed','claim_push_test_rate_limit'].includes(name) ? true : 0,error:null};}
+      ['email_gate_current_session_verified','payment_reminder_allowed','business_bill_reminder_allowed','claim_push_test_rate_limit'].includes(name) ? true : 0,error:null};}
   };
 }
 async function handler(name, {patch={},errors={},row=job,body={source:'cron'}} = {}) {
@@ -41,9 +42,9 @@ async function handler(name, {patch={},errors={},row=job,body={source:'cron'}} =
     SUPABASE_SERVICE_ROLE_KEY:'synthetic-service',VAPID_PUBLIC_KEY:'synthetic-public',VAPID_PRIVATE_KEY:'synthetic-private',
     VAPID_SUBJECT:'mailto:synthetic@example.com',CRON_SECRET:'synthetic-cron'};
   const execute = new Function('createClient','webpush','createGuardedPushSender','isBlockedPushDestination',
-    'activeNotificationRecipient','prepareReminderPayload','Deno','console',js);
+    'activeNotificationRecipient','prepareReminderPayload','requireEmailVerifiedSession','emailVerificationFailure','Deno','console',js);
   execute(()=>db,{setVapidDetails(){}},()=>async(subscription,payload)=>{deliveries.push({subscription,payload:JSON.parse(payload)});},
-    ()=>false,activeNotificationRecipient,prepareReminderPayload,{env:{get:k=>env[k]},serve:f=>{serve=f;}},
+    ()=>false,activeNotificationRecipient,prepareReminderPayload,requireEmailVerifiedSession,emailVerificationFailure,{env:{get:k=>env[k]},serve:f=>{serve=f;}},
     {warn:(...a)=>logs.push(a),error:(...a)=>logs.push(a)});
   const response = await serve(new Request('https://synthetic.invalid/send',{method:'POST',
     headers:{Origin:env.APP_ORIGIN,Authorization:'Bearer synthetic-session','x-mushavo-cron-secret':env.CRON_SECRET,'Content-Type':'application/json'},
@@ -140,7 +141,7 @@ test('actual active reminder with detailed preference retains payload',async()=>
 test('actual test sender denies inactive/missing profiles before subscriptions or cooldown',async()=>{
   for(const profile of [null,{account_status:'suspended'}]){
     const r=await handler('send-test-push',{patch:{profiles:profile}});assert.equal(r.status,403);assert.equal(r.deliveries.length,0);
-    assert.equal(r.db.rpcs.length,0);assert.equal(r.db.calls.some(c=>c.table==='push_subscriptions'),false);
+    assert.deepEqual(r.db.rpcs.map(c=>c.name),['email_gate_current_session_verified']);assert.equal(r.db.calls.some(c=>c.table==='push_subscriptions'),false);
   }
 });
 test('actual test sender lookup error fails closed with safe status',async()=>{
@@ -163,7 +164,7 @@ test('actual inadequate Admin role cancels before recipient lookup',async()=>{
 });
 test('actual active test sender ignores caller recipient/settings and preserves cooldown',async()=>{
   const r=await handler('send-test-push',{body:{user_id:'actor-B',verified:true,detailed_notification_previews:true}});
-  assert.equal(r.status,200);assert.equal(r.deliveries.length,1);assert.equal(r.db.rpcs[0].params.p_user_id,user);
+  assert.equal(r.status,200);assert.equal(r.deliveries.length,1);assert.equal(r.db.rpcs.find(c=>c.name==='claim_push_test_rate_limit').params.p_user_id,user);
   assert.deepEqual(r.db.calls.find(c=>c.table==='profiles').filters,[['id',user]]);
 });
 test('actual Admin sender preserves valid alerts and rejects read/foreign/closed source',async()=>{

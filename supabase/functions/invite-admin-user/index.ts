@@ -1,5 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2.110.9";
-import { requireAdminAssurance } from "../_shared/admin-assurance.mjs";
+import { requireEmailVerifiedSession, emailVerificationFailure } from "../_shared/email-session-assurance.mjs";
 
 const ADMIN_ROLES = new Set(["super_admin", "admin_staff"]);
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -111,9 +111,10 @@ Deno.serve(async (request) => {
   const { data: userData, error: userError } = await userClient.auth.getUser();
   if (userError || !userData.user) return json({ error: "EDGE_FUNCTION_AUTHENTICATION_FAILED" }, 401, responseOrigin);
   try {
-    await requireAdminAssurance(userClient);
-  } catch (_) {
-    return json({ error: "ADMIN_MFA_REQUIRED" }, 403, responseOrigin);
+    await requireEmailVerifiedSession(userClient);
+  } catch (error) {
+    const failure = emailVerificationFailure(error);
+    return json({ error: failure?.code || "EMAIL_VERIFICATION_UNAVAILABLE" }, failure?.status || 503, responseOrigin);
   }
 
   const serviceClient = createClient(supabaseUrl, serviceRoleKey, {

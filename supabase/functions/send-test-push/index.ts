@@ -3,6 +3,7 @@ import { createClient } from "npm:@supabase/supabase-js@2.110.9";
 import webpush from "npm:web-push@3.6.7";
 import { createGuardedPushSender, isBlockedPushDestination } from "../_shared/push-destination.mjs";
 import { activeNotificationRecipient } from "../_shared/notification-recipient.mjs";
+import { requireEmailVerifiedSession, emailVerificationFailure } from "../_shared/email-session-assurance.mjs";
 
 const sendGuardedPush = createGuardedPushSender(webpush);
 
@@ -93,6 +94,13 @@ Deno.serve(async (request) => {
   const { data: userData, error: userError } = await userClient.auth.getUser();
   if (userError || !userData.user) {
     return json({ error: "EDGE_FUNCTION_AUTHENTICATION_FAILED" }, 401, responseOrigin);
+  }
+
+  try {
+    await requireEmailVerifiedSession(userClient);
+  } catch (error) {
+    const failure = emailVerificationFailure(error);
+    return json({ error: failure?.code || "EMAIL_VERIFICATION_UNAVAILABLE" }, failure?.status || 503, responseOrigin);
   }
 
   const serviceClient = createClient(supabaseUrl, serviceRoleKey, {

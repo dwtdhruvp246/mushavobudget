@@ -7,18 +7,19 @@ import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {execFileSync,spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
+import {requireEmailVerifiedSession,emailVerificationFailure} from '../supabase/functions/_shared/email-session-assurance.mjs';
 
 const edge=await readFile(new URL('../supabase/functions/invite-business-member/index.ts',import.meta.url),'utf8');
-const runnable=stripTypeScriptTypes(edge.replace(/^import .*;\s*$/m,''));
+const runnable=stripTypeScriptTypes(edge.replace(/^import[^;]*;\s*/gm,''));
 async function delivery(existing=false,reserveDenied=false) {
   const calls=[];let handler;const invitation='cccccccc-cccc-4ccc-8ccc-cccccccccccc';
   const settings={APP_ORIGIN:'https://staging.example.test',SUPABASE_URL:'https://project.supabase.co',SUPABASE_ANON_KEY:'synthetic-anon',SUPABASE_SERVICE_ROLE_KEY:'synthetic-service'};
-  const context={Request,Response,URL,JSON,Set,String,Boolean,encodeURIComponent,Deno:{env:{get:key=>settings[key]},serve:fn=>handler=fn},
+  const context={Request,Response,URL,JSON,Set,String,Boolean,encodeURIComponent,requireEmailVerifiedSession,emailVerificationFailure,Deno:{env:{get:key=>settings[key]},serve:fn=>handler=fn},
     createClient(_url,key) {calls.push(['client',key]);return {auth:{
       async getUser(){return {data:{user:{id:'actor'}}};},
       async signInWithOtp(args){calls.push(['otp',args]);return {error:null};},
       admin:{async inviteUserByEmail(email,args){calls.push(['invite',email,args]);return {data:{user:{id:'new-recipient'}}};}}
-    },async rpc(name,args){calls.push(['rpc',name,args]);return name==='create_business_invitation'?reserveDenied?{error:{message:'BUSINESS_TEAM_ACCESS_REQUIRED'}}:{data:{invitation_id:invitation,email:'recipient@example.test',invitee_user_id:existing?'existing-recipient':null}}:{error:null};}};}};
+    },async rpc(name,args){calls.push(['rpc',name,args]);return name==='email_gate_current_session_verified'?{data:true,error:null}:name==='create_business_invitation'?reserveDenied?{error:{message:'BUSINESS_TEAM_ACCESS_REQUIRED'}}:{data:{invitation_id:invitation,email:'recipient@example.test',invitee_user_id:existing?'existing-recipient':null}}:{error:null};}};}};
   vm.runInNewContext(runnable,context);
   const response=await handler(new Request('https://edge.example.test',{method:'POST',headers:{Authorization:'Bearer synthetic-user-token',Origin:settings.APP_ORIGIN,'Content-Type':'application/json'},body:JSON.stringify({workspace_id:'workspace',email:'recipient@example.test',role:'staff',scope_ids:[]})}));
   return {calls,response};

@@ -1,0 +1,88 @@
+{
+  "stage_step": "FR.2.4.E4.4_EDGE_GUARDS",
+  "status": "LOCAL88PASS_WINDOWS_PENDING_NOT_DEPLOYED",
+  "source_parent_commit": "fcfd6bc904af8cca2e6812aba35b7d3f6d9117e0",
+  "preceding_owner_receipt": "docs/security-audit/security-fr-2-email-data-guard-owner-Windows-pass.json",
+  "report": "docs/security-audit/SECURITY_FR_2_4_DATABASE_PASS_AND_EDGE_GUARDS.md",
+  "manifest": "docs/security-audit/security-fr-2-email-edge-source-manifest.json",
+  "local_checks": "docs/security-audit/security-fr-2-email-edge-local-checks.json",
+  "verifier": "scripts/verify-fr-2-email-edge.mjs",
+  "entrypoint_classification": [
+    {
+      "entrypoint": "invite-admin-user",
+      "authorization": "GET_USER_THEN_CALLER_BOUND_EMAIL_PROOF_THEN_EXISTING_PLATFORM_ROLE",
+      "source_changed": true
+    },
+    {
+      "entrypoint": "invite-business-member",
+      "authorization": "GET_USER_THEN_CALLER_BOUND_EMAIL_PROOF_THEN_EXISTING_CALLER_RESERVATION_RPC",
+      "source_changed": true
+    },
+    {
+      "entrypoint": "send-test-push",
+      "authorization": "GET_USER_THEN_CALLER_BOUND_EMAIL_PROOF_THEN_ACTIVE_OWN_RECIPIENT_AND_COOLDOWN",
+      "source_changed": true
+    },
+    {
+      "entrypoint": "sync-exchange-rates",
+      "authorization": "MANUAL_GET_USER_EMAIL_PROOF_AND_EXISTING_ROLE_OR_UNCHANGED_SERVER_CRON_SECRET",
+      "source_changed": true
+    },
+    {
+      "entrypoint": "dispatch-push-reminders",
+      "authorization": "UNCHANGED_CRON_SECRET_AND_CRON_SOURCE_ONLY",
+      "source_changed": false
+    },
+    {
+      "entrypoint": "dispatch-admin-notifications",
+      "authorization": "UNCHANGED_CRON_SECRET_AND_CRON_SOURCE_ONLY",
+      "source_changed": false
+    },
+    {
+      "entrypoint": "submit-enquiry",
+      "authorization": "UNCHANGED_PUBLIC_ORIGIN_CONTENT_TURNSTILE_AND_QUOTA",
+      "source_changed": false
+    }
+  ],
+  "shared_helper": "supabase/functions/_shared/email-session-assurance.mjs",
+  "proof_contract": {
+    "RPC": "email_gate_current_session_verified",
+    "arguments": 0,
+    "client": "SAME_BEARER_BOUND_CLIENT_AFTER_GET_USER",
+    "accepted_data": "BOOLEAN_TRUE_WITH_ERROR_NULL",
+    "false_status": 403,
+    "unavailable_or_malformed_status": 503,
+    "timeout_ms": 8000,
+    "cached_approval": false,
+    "service_client_fallback": false
+  },
+  "local_PASS": 88,
+  "new_helper_handler_cases": 28,
+  "actual_SQL_proof_integration_cases": 6,
+  "affected_existing_regressions": 54,
+  "source_files_SHA256": 84,
+  "ordered_source_migrations": 54,
+  "syntax_checks": 23,
+  "current_Admin_Edge_selected_policy": "EMAIL_PROOF_PLUS_EXISTING_PLATFORM_ROLE_NO_TOTP_AAL2_BYPASS_CLAIM",
+  "legacy_TOTP_helper_and_UI_files_unchanged": true,
+  "old_TOTP_tests_preserved_as_historical_regressions": true,
+  "original_stronger_TOTP_finding_acceptance_satisfied": false,
+  "existing_role_scope_recipient_cron_and_public_challenge_controls_preserved": true,
+  "missing_backend_before_deployment_fails_503": true,
+  "coordinated_DB_UI_Admin_Pages_and_Edge_deployment_required": true,
+  "SQL_integration_uses_actual_proof_but_synthetic_SDK_and_privileged_reservation_provider_ports": true,
+  "actual_Deno_bundle_dependency_typecheck_SDK_JWT_or_hosted_execution_verified": false,
+  "canonical_schema_versioned_migration_Admin_UI_Pages_integration_complete": false,
+  "owner_Windows_result_received": false,
+  "owner_terminal_action_required": true,
+  "owner_SQL_action_required": false,
+  "owner_credential_or_deployment_action_required": false,
+  "root_dependency_or_worktree_changes_requested": false,
+  "actual_hosted_requests": 0,
+  "email_or_push_dispatched": false,
+  "hosted_enforcement_installed": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "production_or_native_changed": false,
+  "APK_update_deferred": true
+}

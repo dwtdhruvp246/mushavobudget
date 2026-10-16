@@ -1,4 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2.110.9";
+import { requireEmailVerifiedSession, emailVerificationFailure } from "../_shared/email-session-assurance.mjs";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ROLES = new Set(["business_admin", "finance_manager", "team_manager", "staff", "contributor", "viewer"]);
@@ -36,6 +37,13 @@ Deno.serve(async (request) => {
   const userClient = createClient(supabaseUrl, anonKey, { global: { headers: { Authorization: `Bearer ${bearer}` } }, auth: { persistSession: false, autoRefreshToken: false } });
   const { data: userData, error: userError } = await userClient.auth.getUser();
   if (userError || !userData.user) return json({ error: "EDGE_FUNCTION_AUTHENTICATION_FAILED" }, 401, responseOrigin);
+
+  try {
+    await requireEmailVerifiedSession(userClient);
+  } catch (error) {
+    const failure = emailVerificationFailure(error);
+    return json({ error: failure?.code || "EMAIL_VERIFICATION_UNAVAILABLE" }, failure?.status || 503, responseOrigin);
+  }
 
   let body: { action?: unknown; workspace_id?: unknown; email?: unknown; role?: unknown; scope_ids?: unknown; invitation_id?: unknown };
   try { body = await request.json(); } catch { return json({ error: "INVALID_BUSINESS_INVITATION_REQUEST" }, 400, responseOrigin); }

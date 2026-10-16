@@ -6,6 +6,7 @@ import {stripTypeScriptTypes} from 'node:module';
 import vm from 'node:vm';
 import {createAdminMfa} from '../admin-mfa.js';
 import {requireAdminAssurance} from '../supabase/functions/_shared/admin-assurance.mjs';
+import {requireEmailVerifiedSession,emailVerificationFailure} from '../supabase/functions/_shared/email-session-assurance.mjs';
 const allowed={staff:true,active:true,authorized:true,has_verified_factor:true};
 const deferred=()=>{let resolve;const promise=new Promise(r=>{resolve=r;});return {promise,resolve};};
 function ui() {
@@ -71,7 +72,7 @@ test('Edge assurance helper fails closed and never exposes private adapter error
  await assert.rejects(requireAdminAssurance({rpc:async()=>{throw Error('LOCAL_PRIVATE_ERROR');}}),{message:'ADMIN_MFA_REQUIRED'});
  await requireAdminAssurance({rpc:async()=>({data:allowed})});
 });
-async function edge(name,{assurance=allowed,role='super_admin',user=true,cron='local-secret'}={}) {
+async function edge(name,{verification=true,role='super_admin',user=true,cron='local-secret'}={}) {
  let handler;const calls={serviceReads:0,serviceWrites:0,provider:0,email:0,rpcs:[]};
  const env={APP_ORIGIN:'https://local.example.invalid',SUPABASE_URL:'https://local.example.invalid',SUPABASE_ANON_KEY:'local-anon',SUPABASE_SERVICE_ROLE_KEY:'local-service',CURRENCYAPI_API_KEY:'local-provider',CURRENCY_SYNC_SECRET:cron,CRON_SECRET:cron,VAPID_PUBLIC_KEY:'local-public',VAPID_PRIVATE_KEY:'local-private',VAPID_SUBJECT:'mailto:local@example.invalid'};
  const service={from:table=> {
@@ -81,12 +82,12 @@ async function edge(name,{assurance=allowed,role='super_admin',user=true,cron='l
    return (...args)=>{if(['insert','update','upsert','delete'].includes(key)){operation=key;calls.serviceWrites++;}if(['single','maybeSingle'].includes(key))single=true;return query;};
   }});return query;
  },rpc:async(name)=>{calls.rpcs.push(name);return {data:name.startsWith('enqueue_')?0:[],error:null};},auth:{admin:{inviteUserByEmail:async()=>{calls.email++;throw Error('NO_EMAIL_ALLOWED');}}}};
- const client={auth:{getUser:async()=>({data:{user:user?{id:'local-a'}:null},error:null})},rpc:async name=>{assert.equal(name,'admin_mfa_status');return {data:assurance,error:null};}};
+ const client={auth:{getUser:async()=>({data:{user:user?{id:'local-a'}:null},error:null})},rpc:async name=>{assert.equal(name,'email_gate_current_session_verified');return {data:verification,error:null};}};
  const source=await readFile(new URL(`../supabase/functions/${name}/index.ts`,import.meta.url),'utf8');
  const stripped=stripTypeScriptTypes(source.replace(/^import\s[\s\S]*?;\s*$/gm,''),{mode:'strip'});
  vm.runInNewContext(stripped,{
   Deno:{env:{get:key=>env[key]},serve:fn=>{handler=fn;}},createClient:(_url,key)=>key==='local-service'?service:client,
-  requireAdminAssurance,Request,Response,Headers,URL,TextEncoder,AbortController,Date,setTimeout,clearTimeout,
+  requireAdminAssurance,requireEmailVerifiedSession,emailVerificationFailure,Request,Response,Headers,URL,TextEncoder,AbortController,Date,setTimeout,clearTimeout,
   console:{error:()=>{},warn:()=>{},info:()=>{}},Error,
   safeProviderError:error=> /AUTHENTICATION|ACCESS_REQUIRED/.test(error?.message||'')?error.message:'LOCAL_SAFE_ERROR',currencyApiUrl:()=> 'https://local.example.invalid/rates',providerFailure:()=> 'LOCAL_PROVIDER_FAILURE',PROVIDER_BASE_CURRENCY:'USD',PROVIDER_NAME:'currencyapi',
   normalizeCurrencyApiPayload:()=>({rates:[{quote_currency:'USD',rate:1}],effectiveAt:'2026-10-11T00:00:00Z',missingCurrencies:[]}),
@@ -96,24 +97,24 @@ async function edge(name,{assurance=allowed,role='super_admin',user=true,cron='l
  return {calls,request:async({secret,body={source:'cron'},bearer=true,method='POST'}={})=>handler(new Request('https://local.example.invalid',{method,headers:{...(bearer?{Authorization:'Bearer local-token'}:{}),...(secret!==undefined?{'x-cron-secret':secret,'x-mushavo-cron-secret':secret}:{}),'Content-Type':'application/json'},...(method==='POST'?{body:JSON.stringify(body)}:{})}))};
 }
 const rolesFor=name=>name==='invite-admin-user'?['super_admin','admin_staff']:['super_admin','admin_staff','finance_staff'];
-test('actual Admin invite handler denies low assurance before service work or email',async()=> {
- const h=await edge('invite-admin-user',{assurance:{...allowed,authorized:false}});
- const r=await h.request({body:{role:'super_admin',aal:'aal2',mfa:true}});assert.equal(r.status,403);assert.equal((await r.json()).error,'ADMIN_MFA_REQUIRED');
+test('actual Admin invite handler requires selected email proof before service work or email',async()=> {
+ const h=await edge('invite-admin-user',{verification:false});
+ const r=await h.request({body:{role:'super_admin',aal:'aal2',mfa:true}});assert.equal(r.status,403);assert.equal((await r.json()).error,'EMAIL_VERIFICATION_REQUIRED');
  assert.equal(h.calls.serviceReads,0);assert.equal(h.calls.serviceWrites,0);assert.equal(h.calls.email,0);
 });
-test('actual Admin invite handler retains role limits after assurance',async()=> {
+test('actual Admin invite handler retains role limits after email verification',async()=> {
  for(const role of ['finance_staff','support_staff']){const h=await edge('invite-admin-user',{role});assert.equal((await h.request()).status,403);assert.equal(h.calls.email,0);assert.equal(h.calls.serviceWrites,0);}
  for(const role of ['super_admin','admin_staff']){const h=await edge('invite-admin-user',{role});assert.equal((await h.request({body:{}})).status,400);assert.equal(h.calls.email,0);}
 });
-test('actual currency handler denies forged MFA before service writes/provider',async()=> {
- const h=await edge('sync-exchange-rates',{assurance:{...allowed,authorized:false}});
+test('actual currency handler denies forged verification before service writes/provider',async()=> {
+ const h=await edge('sync-exchange-rates',{verification:false});
  const r=await h.request({body:{source:'scheduled',aal:'aal2',mfa:true}});assert.equal(r.status,403);
- assert.equal((await r.json()).error,'ADMIN_MFA_REQUIRED');assert.equal(h.calls.serviceWrites,0);assert.equal(h.calls.provider,0);
+ assert.equal((await r.json()).error,'EMAIL_VERIFICATION_REQUIRED');assert.equal(h.calls.serviceWrites,0);assert.equal(h.calls.provider,0);
 });
 test('actual currency handler keeps role matrix and scheduled secret branch',async()=> {
  for(const role of ['super_admin','admin_staff','finance_staff']) {const h=await edge('sync-exchange-rates',{role});assert.equal((await h.request({body:{}})).status,200);assert.equal(h.calls.provider,1);}
  const support=await edge('sync-exchange-rates',{role:'support_staff'});assert.notEqual((await support.request()).status,200);assert.equal(support.calls.serviceWrites,0);assert.equal(support.calls.provider,0);
- const scheduled=await edge('sync-exchange-rates',{user:false,assurance:null});assert.equal((await scheduled.request({secret:'local-secret',bearer:false})).status,200);assert.equal(scheduled.calls.provider,1);
+ const scheduled=await edge('sync-exchange-rates',{user:false,verification:null});assert.equal((await scheduled.request({secret:'local-secret',bearer:false})).status,200);assert.equal(scheduled.calls.provider,1);
  const wrong=await edge('sync-exchange-rates',{user:false});assert.equal((await wrong.request({secret:'wrong',bearer:false})).status,401);assert.equal(wrong.calls.serviceWrites,0);assert.equal(wrong.calls.provider,0);
 });
 for(const name of ['dispatch-admin-notifications','dispatch-push-reminders']) {

@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.6_APP_ENTRY_INTEGRATION",
-  "status": "LOCAL127PASS_WINDOWS_PENDING_ACTUAL_APP_ENTRY_SOURCE_NOT_DEPLOYED",
+  "status": "LOCAL_AND_OWNER_WINDOWS127PASS_APP_ENTRY_NOT_HOSTED_ACCEPTANCE",
   "source_parent_commit": "945f4c432728b3dc4d031a04c340463548a95862",
   "preceding_owner_receipt": "docs/security-audit/security-fr-2-email-ui-owner-Windows-pass.json",
   "report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_SCREEN_PASS_AND_APP_ENTRY.md",
@@ -56,8 +56,8 @@
     "new coordinated staging source/artifact contract and Pages gateway configuration",
     "full regression and genuine browser/provider/hosted acceptance"
   ],
-  "owner_Windows_result_received": false,
-  "owner_terminal_action_required": true,
+  "owner_Windows_result_received": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "owner_credential_or_deployment_action_required": false,
   "root_dependency_or_existing_checkout_changes_requested": false,
@@ -67,5 +67,8 @@
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "owner_Windows_PASS": 127,
+  "owner_Windows_exit_code": 0,
+  "owner_Windows_receipt": "docs/security-audit/security-fr-2-email-entry-owner-Windows-pass.json"
 }

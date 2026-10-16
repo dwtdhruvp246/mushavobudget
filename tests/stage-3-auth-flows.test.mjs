@@ -21,7 +21,7 @@ function harness(flow='recover') {
     async getUser(){calls.push(['getUser']);return getUserError?{error:getUserError}:{data:{user:current}};},
     async updateUser(args){calls.push(['updateUser',args]);return {error:updateError};},
     async reauthenticate(){calls.push(['reauthenticate']);return {error:null};}
-  },async rpc(name){calls.push(['rpc',name]);return {data:rows};}};
+  },async rpc(name){calls.push(['rpc',name]);return {data:name==='email_gate_current_session_verified'?true:rows,error:null};}};
   const material={flow,invitation:invitationId,access_token:'synthetic-access',refresh_token:'synthetic-refresh',type:flow==='recover'?'recovery':flow==='confirm'?'signup':flow==='business-new'?'invite':'magiclink'};
   return {client,material,calls,controller:createLinkController(client,material),setUser:u=>current=u,setRows:r=>rows=r,setUpdateError:e=>updateError=e,setLinkError:e=>linkError=e,setUserError:e=>getUserError=e};
 }
@@ -145,7 +145,7 @@ test('application ignores only its own password-sign-in event; another account i
   let handler;const events=[],timers=[];
   const context={state:{session:{user:{id,email:'controlled@example.test'}},isAdmin:false},signInInProgress:true,signInExpectedEmail:'controlled@example.test',authDataEpoch:0,
     supabase:{auth:{onAuthStateChange:fn=>handler=fn},realtime:{setAuth(){}}},isSameAuthUser:(a,b)=>a?.user?.id===b?.user?.id,
-    adminMfa:{bind(){},lock(){}},clearAdministrativeData(){},resetState(){context.authDataEpoch++;context.state.session=null;events.push('reset');},setView:value=>events.push(value),
+    emailEntry:{bind(){},ticket:()=>()=>true},adminSession:{bind(){},lock(){}},clearAdministrativeData(){},resetState(){context.authDataEpoch++;context.state.session=null;events.push('reset');},setView:value=>events.push(value),
     window:{setTimeout:fn=>timers.push(fn)},openAuthenticatedSession:async()=>{},handleLoadFailure(){},handleSignedOut(){}};
   const callback=appSource.match(/supabase.auth.onAuthStateChange\(\(event, session\) => \{[\s\S]*?\n  \}\);/)[0];
   vm.runInNewContext(callback,context);handler('SIGNED_IN',{user:{id,email:'controlled@example.test'}});assert.equal(events.length,0);
@@ -173,16 +173,16 @@ test('account switch during push cleanup never logs out the replacement account'
 });
 test('application query rejects a delayed old-account result after reset',async()=>{
   let finish;const pending=new Promise(resolve=>finish=resolve);
-  const context={authDataEpoch:0,window:{setTimeout,clearTimeout},QUERY_TIMEOUT_MS:1000,console};
+  const context={state:{session:null},emailEntry:{ticket:()=>()=>true},authDataEpoch:0,window:{setTimeout,clearTimeout},QUERY_TIMEOUT_MS:1000,console};
   vm.runInNewContext(appSource.slice(appSource.indexOf('async function query('),appSource.indexOf('async function init()')),context);
   const request=context.query('synthetic',pending);context.authDataEpoch++;finish({data:{private:'old'}});await assert.rejects(request,{code:'session_changed'});
 });
 test('application query preserves Auth error codes for safe confirmation/rate guidance',async()=>{
-  const context={authDataEpoch:0,window:{setTimeout,clearTimeout},QUERY_TIMEOUT_MS:1000,console:{warn(){}}};vm.runInNewContext(appSource.slice(appSource.indexOf('async function query('),appSource.indexOf('async function init()')),context);
+  const context={state:{session:null},emailEntry:{ticket:()=>()=>true},authDataEpoch:0,window:{setTimeout,clearTimeout},QUERY_TIMEOUT_MS:1000,console:{warn(){}}};vm.runInNewContext(appSource.slice(appSource.indexOf('async function query('),appSource.indexOf('async function init()')),context);
   await assert.rejects(context.query('sign in',Promise.resolve({error:{code:'email_not_confirmed',message:'not confirmed',status:400}})),{code:'email_not_confirmed',status:400});
 });
 test('Business query rejects delayed old-account data',async()=>{
-  let finish;const pending=new Promise(resolve=>finish=resolve);const context={businessAuthEpoch:0};vm.runInNewContext(businessSource.slice(businessSource.indexOf('async function query('),businessSource.indexOf('function selectedWorkspaceStorageKey')),context);
+  let finish;const pending=new Promise(resolve=>finish=resolve);const context={businessEmailEntry:{ticket:()=>()=>true},businessAuthEpoch:0};vm.runInNewContext(businessSource.slice(businessSource.indexOf('async function query('),businessSource.indexOf('function selectedWorkspaceStorageKey')),context);
   const request=context.query('synthetic',pending);context.businessAuthEpoch++;finish({data:['old']});await assert.rejects(request,{code:'session_changed'});
 });
 test('Business logout error does not navigate as if sign-out succeeded',async()=>{
@@ -190,7 +190,7 @@ test('Business logout error does not navigate as if sign-out succeeded',async()=
   vm.runInNewContext(businessSource.slice(businessSource.indexOf('async function signOut()'),businessSource.indexOf('function leaveBusiness(')),context);await context.signOut();assert.equal(navigations,0);assert.equal(cleared,0);assert.match(message.textContent,/session may still be active/);
 });
 test('Business Auth switch clears all access state before deferred reload',()=>{
-  let handler;const events=[],timer=[];const context={authLinkRedirect:false,state:{session:{user:{id}},profile:{id},workspaces:[{id}],memberships:[{id}],incomingInvitations:[{id}],supportedCurrencies:['USD']},businessAuthEpoch:0,appOpening:true,
+  let handler;const events=[],timer=[];const context={businessEmailEntry:{bind(){},authorized:false},authLinkRedirect:false,state:{session:{user:{id}},profile:{id},workspaces:[{id}],memberships:[{id}],incomingInvitations:[{id}],supportedCurrencies:['USD']},businessAuthEpoch:0,appOpening:true,
     supabase:{auth:{onAuthStateChange(callback){handler=callback;}},realtime:{setAuth(){}}},clearBusinessWorkspaceState(){events.push('clear');},showOnly:view=>events.push(view),window:{setTimeout:callback=>timer.push(callback)},loadBusinessAccess(){events.push('load');}};
   vm.runInNewContext(businessSource.slice(businessSource.lastIndexOf('supabase?.auth.onAuthStateChange')),context);
   events.length=0;handler('SIGNED_IN',{user:{id:other}});assert.deepEqual(events,['clear','businessLoading']);assert.equal(context.state.profile,null);assert.equal(context.state.workspaces.length,0);assert.equal(context.state.incomingInvitations.length,0);assert.equal(context.state.session.user.id,other);timer[0]();assert.equal(events.at(-1),'load');

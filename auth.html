@@ -9,7 +9,7 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="stylesheet" href="styles.css?v=79" />
     <script src="config.js?v=27"></script>
-    <script type="module" src="auth-flows.js?v=1"></script>
+    <script type="module" src="auth-flows.js?v=2"></script>
   </head>
   <body>
     <main class="workspace">
@@ -18,6 +18,7 @@
         <h1 id="securityTitle">Checking your account</h1>
         <p id="securityMessage" role="status" aria-live="polite">Please wait.</p>
         <p id="securityIdentity" hidden></p>
+        <section id="securityEmailVerification" aria-label="Email verification" hidden></section>
         <form id="securityRequest" class="form-grid" hidden>
           <label>Email<input id="securityEmail" type="email" autocomplete="email" required /></label>
           <button class="primary" type="submit">Send link</button>
@@ -37,6 +38,7 @@
           <button id="securityOpen" class="primary" type="button">Continue to app</button>
         </div>
         <a id="securitySelfSignup" class="button-link" href="signup.html?mode=self-signup" hidden>Choose a Free personal account instead</a>
+        <button id="securityResume" type="button" hidden>Continue account verification</button>
         <div class="button-row"><button id="securityCancel" type="button">Back to sign in</button></div>
       </section>
     </main>

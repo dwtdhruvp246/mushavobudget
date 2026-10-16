@@ -48,3 +48,47 @@ export function snapshotPrivateView(node){
     if(text!==null)node.nodeValue=text;node.replaceChildren?.(...originals);for(const restore of children)restore();
   };
 }
+
+// Callback pages can pause a protected step while the user enters a code. This
+// adapter never sends a code by opening the screen, and never adopts a session.
+export function createAuthCallbackEntry({client,root,origin,fetcher,show,onInvalidated,onSignOut}) {
+  let session=null,pending=null,generation=0,disposed=false;
+  const changed=()=>Object.assign(new Error('session_changed'),{code:'session_changed'});
+  function rejectPending(){const waiting=pending;pending=null;if(waiting)waiting.reject(changed());}
+  const entry=createSessionEntry({client,getSession:()=>session,root,origin,fetcher,show:()=>{if(pending)show();},
+    onInvalidated:()=>onInvalidated?.(),
+    onUnlocked:async({ticket})=>{const waiting=pending;if(waiting&&ticket()&&session?.user?.id===waiting.actor){pending=null;root.hidden=true;waiting.resolve();}},
+    onSignOut:async()=>{cancel();await onSignOut();}
+  });
+  const subscription=client.auth.onAuthStateChange((event,next)=>{
+    if(disposed||event==='INITIAL_SESSION')return;
+    const replacement=next?.user?.id!==session?.user?.id||next?.access_token!==session?.access_token;
+    session=next;
+    if(replacement){generation++;rejectPending();entry.bind(next);root.hidden=true;onInvalidated?.();}
+  }).data?.subscription;
+  function cancel(){generation++;rejectPending();session=null;entry.bind(null);root.hidden=true;}
+  return {
+    async require(actor){
+      if(disposed)throw changed();
+      const epoch=generation,current=await client.auth.getSession();
+      if(disposed||epoch!==generation||current.error||current.data?.session?.user?.id!==actor)throw changed();
+      session=current.data.session;entry.bind(session);
+      if(pending)throw changed();
+      // Register before checking: a user can complete the screen immediately.
+      let resolve,reject;const approved=new Promise((yes,no)=>{resolve=yes;reject=no;});
+      const waiting={actor,resolve,reject};pending=waiting;
+      // Attach the rejection handler before any asynchronous check can cancel it.
+      const completion=approved.then(()=>true);
+      completion.catch(()=>{});
+      try {
+        if(await entry.recheck()){
+          if(pending===waiting){pending=null;root.hidden=true;resolve();}
+        }
+      }catch(error){if(pending===waiting){pending=null;reject(error);}}
+      await completion;
+      if(disposed||epoch!==generation||!entry.authorized||session?.user?.id!==actor)throw changed();
+    },
+    cancel,
+    dispose(){disposed=true;cancel();subscription?.unsubscribe();}
+  };
+}

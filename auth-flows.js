@@ -1,21 +1,43 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm';
-import { callbackUrl, consumeAuthUrl, isolatedAuthOptions, createLinkController, createPasswordChanger, safeAuthMessage, verifiedUser, authError } from './auth-security.js?v=1';
+import { callbackUrl, consumeAuthUrl, isolatedAuthOptions, createLinkController, createPasswordChanger, safeAuthMessage, verifiedUser, authError, requireVerifiedApplicationSession } from './auth-security.js?v=2';
+import { createAuthCallbackEntry } from './session-entry.js?v=2';
 
 const $ = selector => document.querySelector(selector);
 const material = consumeAuthUrl(window.location.href, value => window.history.replaceState(null, '', value));
 const flow = material.flow;
 const settings = window.MUSHAVO_BUDGET_CONFIG || {};
-let isolated, app, controller, changer, busy = false, identity = null, cooldownUntil = 0;
+let isolated, app, controller, changer, busy = false, identity = null, cooldownUntil = 0, emailEntry = null, passwordClient = null;
 const message = value => { $('#securityMessage').textContent = value; };
-function hideForms() { for (const id of ['#securityRequest','#securityPassword','#securityContinue','#securitySelfSignup']) $(id).hidden = true; }
+function hideForms() { for (const id of ['#securityRequest','#securityPassword','#securityContinue','#securitySelfSignup','#securityResume']) $(id).hidden = true; }
 function showIdentity(user) { identity = user; $('#securityIdentity').hidden = false; $('#securityIdentity').textContent = `Verified account: ${user.email || ''}`; }
 async function operation(action) {
   if (busy) return;
   busy = true;
-  const buttons = [...document.querySelectorAll('button')];
+  const buttons = [...document.querySelectorAll('#securityRequest button, #securityPassword button, #securityContinue button, #securityResume')];
   buttons.forEach(button => { button.disabled = true; });
   try { await action(); } catch (error) { message(safeAuthMessage(error)); }
   finally { busy = false; buttons.forEach(button => { button.disabled = false; }); }
+}
+function prepareEmailEntry(client) {
+  emailEntry?.dispose();
+  emailEntry = createAuthCallbackEntry({client,root:$('#securityEmailVerification'),origin:window.location.origin,fetcher:window.fetch.bind(window),
+    show:()=>{ hideForms(); $('#securityResume').hidden = !controller?.passwordSaved && flow !== 'change'; $('#securityEmailVerification').hidden=false; message('Verify this account with an email code to continue.'); },
+    onInvalidated:()=>{ $('#securityAcknowledge').checked=false; },
+    onSignOut:()=>cancelSecurityFlow(true)
+  });
+}
+async function requireApplication(client, actor) {
+  await requireVerifiedApplicationSession(client, actor, id=>emailEntry.require(id));
+}
+async function recoveryDestination() {
+  await requireApplication(isolated, identity.id);
+  const result = await isolated.rpc('has_my_unfinished_admin_invitation');
+  if (result.error) throw result.error;
+  if (result.data === true) {
+    $('#securityContinue').hidden = true;
+    $('#securitySelfSignup').hidden = false;
+    message('Your unfinished Admin invitation is still available. Complete the latest invitation, or choose a Free personal signup instead.');
+  } else $('#securityContinue').hidden = false;
 }
 async function currentIdentity() {
   if (!identity) throw authError('session_not_found');
@@ -44,35 +66,30 @@ async function init() {
     const snapshot = createClient(settings.supabaseUrl, settings.supabasePublishableKey, {auth:{detectSessionInUrl:false,persistSession:false,autoRefreshToken:false}});
     const adopted = await snapshot.auth.setSession({access_token:session.access_token,refresh_token:session.refresh_token});
     if (adopted.error) throw adopted.error;
+    passwordClient = snapshot;
+    prepareEmailEntry(snapshot);
     changer = createPasswordChanger(snapshot);
     await changer.verify();
     showIdentity(user);
     app.auth.onAuthStateChange((event, next) => {
       if (event !== 'INITIAL_SESSION' && next?.user?.id !== user.id) {
-        identity = null; hideForms(); message(safeAuthMessage(authError('session_changed')));
+        emailEntry?.cancel(); identity = null; hideForms(); message(safeAuthMessage(authError('session_changed')));
       }
     });
     $('#securityTitle').textContent = 'Change your password';
-    message('Your account stays signed in after a successful change. If verification is required, request and enter the newest code.');
+    message('After changing your password, verify a fresh email code before returning to the app. Request a password-change code here only if your account requires one.');
     $('#securityPassword').hidden = false; $('#securityNonceLabel').hidden = false; $('#securityRequestCode').hidden = false; $('#securityCurrentLabel').hidden = false;
     return;
   }
-  controller = createLinkController(isolated, material);
+  prepareEmailEntry(isolated);
+  controller = createLinkController(isolated, material, {beforeApplication:id=>emailEntry.require(id)});
   const user = await controller.verify();
   showIdentity(user);
   $('#securityTitle').textContent = flow === 'confirm' ? 'Email confirmed' : flow === 'recover' ? 'Choose a new password' : 'Business invitation verified';
   message(flow.startsWith('business-') ? `Invitation for ${controller.invitation.workspace_name}. Membership is decided when you accept in the Business workspace.` : 'Your email link has been verified.');
   if (['recover','business-new'].includes(flow)) $('#securityPassword').hidden = false;
   else $('#securityContinue').hidden = false;
-  if (flow === 'recover') {
-    const result = await isolated.rpc('has_my_unfinished_admin_invitation');
-    if (!result.error && result.data === true) {
-      // Ordinary recovery never silently cancels an Admin invitation.
-      $('#securityContinue').hidden = true;
-      $('#securitySelfSignup').hidden = false;
-      message('Your unfinished Admin invitation is still available. Complete the latest invitation, or choose a Free personal signup instead.');
-    }
-  }
+
 }
 $('#securityRequest').addEventListener('submit', event => {
   event.preventDefault();
@@ -97,10 +114,21 @@ $('#securityPassword').addEventListener('submit', event => {
     if (flow === 'change') { await currentIdentity(); await changer.save(password, confirmation, $('#securityNonce').value.trim(), $('#securityCurrentPassword').value); await currentIdentity(); }
     else await controller.save(password, confirmation);
     $('#securityPassword').reset(); $('#securityPassword').hidden = true;
-    message(flow === 'change' ? 'Password changed. You can return to your app.' : 'Password saved. Review the verified account before continuing.');
-    if (flow !== 'change' && $('#securitySelfSignup').hidden) $('#securityContinue').hidden = false;
+    $('#securityResume').hidden = false;
+    await finishPasswordFlow();
   });
 });
+async function finishPasswordFlow() {
+  if (!identity || (flow !== 'change' && !controller.passwordSaved)) throw authError('link_unavailable');
+  message('Password saved. Verify this account before continuing.');
+  $('#securityResume').hidden = false;
+  await requireApplication(flow === 'change' ? passwordClient : isolated, identity.id);
+  if (flow === 'change') { await currentIdentity(); message('Password changed and email verification complete. You can return to your app.'); }
+  else if (flow === 'recover') await recoveryDestination();
+  else $('#securityContinue').hidden = false;
+  $('#securityResume').hidden = true;
+}
+$('#securityResume').addEventListener('click',()=>operation(finishPasswordFlow));
 $('#securityRequestCode').addEventListener('click', () => operation(async () => {
   if (Date.now() < cooldownUntil) throw {status:429};
   await currentIdentity(); cooldownUntil = Date.now()+60000;
@@ -118,11 +146,16 @@ $('#securityOpen').addEventListener('click', () => operation(async () => {
   window.sessionStorage.removeItem(storageKey + '-code-verifier');
   window.location.replace(new URL(next, window.location.href).href);
 }));
-$('#securityCancel').addEventListener('click', () => operation(async () => {
-  if (flow !== 'change' && isolated) {
-    const {error} = await isolated.auth.signOut({scope:'local'});
+async function cancelSecurityFlow(logoutNormal = false) {
+  controller?.cancel();
+  emailEntry?.cancel();
+  hideForms();
+  const target = flow === 'change' ? (logoutNormal ? app : null) : isolated;
+  if (target) {
+    const {error} = await target.auth.signOut({scope:'local'});
     if (error && !['session_not_found','session_expired'].includes(error.code)) throw error;
   }
   window.location.replace(new URL('./app.html?auth=manual', window.location.href).href);
-}));
+}
+$('#securityCancel').addEventListener('click', () => { cancelSecurityFlow().catch(error=>message(safeAuthMessage(error))); });
 operation(init);

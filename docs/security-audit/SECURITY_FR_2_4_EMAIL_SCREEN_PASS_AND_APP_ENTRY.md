@@ -1,3 +1,9 @@
+# Windows result received — FR.2.4.E4.6: 127 PASS, exit 0
+
+16 October 2026, FRE70. [Owner receipt](security-fr-2-email-entry-owner-Windows-pass.json) records 127/127 PASS on Node v22.17.0/PGlite 0.5.8, 89 source hashes and 27 syntax checks. The TypeScript warning in the affected-regression group is non-failing. This supersedes the Windows-pending action below. The next [Auth callback source checkpoint](SECURITY_FR_2_4_APP_ENTRY_PASS_AND_AUTH_CALLBACKS.md) remains offline and undeployed. Original FRE69 evidence follows.
+
+---
+
 # FR.2.4.E4.6 — email screen passed on Windows; application entry now uses it
 
 16 October 2026, FRE69. The [owner screen/Admin contract receipt](security-fr-2-email-ui-owner-Windows-pass.json) records 93/93 PASS, zero FAIL, exit 0 on Node v22.17.0/PGlite 0.5.8, with 71 matching source hashes and 11 syntax checks. This completes the E4.5 Windows repeat; hosted acceptance remains pending.

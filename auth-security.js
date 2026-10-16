@@ -19,6 +19,7 @@ export function safeAuthMessage(error) {
   if (code === 'current_password_required') return 'Enter your current password to confirm this change.';
   if (['session_changed', 'identity_mismatch'].includes(code)) return 'The active account changed. Reload and verify the email before continuing.';
   if (['otp_expired', 'link_unavailable', 'session_not_found', 'session_expired'].includes(code)) return 'This link or session is unavailable. Open the newest email or request another link.';
+  if (code === 'email_verification_required') return 'Verify your email code before continuing to your account.';
   if (code === 'business_invitation_unavailable') return 'This Business invitation is unavailable. Ask the owner for the latest invitation.';
   return 'The request could not finish. Check your connection and try again.';
 }
@@ -65,12 +66,35 @@ export async function verifiedUser(client, expectedId = null) {
   if (expectedId && data.user.id !== expectedId) throw authError('identity_mismatch');
   return data.user;
 }
-export function createLinkController(client, material) {
-  let user = null, invitation = null, passwordSaved = false;
+// A provider email link is not an application email-code proof. The optional
+// screen waits for user input; the independent server predicate still decides.
+export async function requireVerifiedApplicationSession(client, expectedId, beforeApplication = async () => {}) {
+  await beforeApplication(expectedId);
+  const before = await client.auth.getSession();
+  if (before.error) throw before.error;
+  const session = before.data?.session;
+  if (session?.user?.id !== expectedId || !session.access_token) throw authError('identity_mismatch');
+  await verifiedUser(client, expectedId);
+  const proof = await client.rpc('email_gate_current_session_verified');
+  if (proof.error !== null || proof.data !== true) throw authError('email_verification_required');
+  const after = await client.auth.getSession();
+  if (after.error || after.data?.session?.user?.id !== expectedId || after.data.session.access_token !== session.access_token) throw authError('session_changed');
+  return session;
+}
+export function createLinkController(client, material, {beforeApplication} = {}) {
+  let user = null, invitation = null, passwordSaved = false, generation = 0;
+  function active(epoch) { if (epoch !== generation) throw authError('session_changed'); }
   const flow = material.flow;
-  async function checkBusiness() {
+  async function checkBusiness(expectedId, epoch) {
     if (!UUID.test(material.invitation || '')) throw authError('business_invitation_unavailable');
+    const expectedSession = await requireVerifiedApplicationSession(client, expectedId, beforeApplication);
+    active(epoch);
     const {data, error} = await client.rpc('get_my_business_invitations');
+    active(epoch);
+    await verifiedUser(client, expectedId);
+    const current = await client.auth.getSession();
+    active(epoch);
+    if (current.error || current.data?.session?.user?.id !== expectedId || current.data.session.access_token !== expectedSession.access_token) throw authError('session_changed');
     if (error) throw error;
     const row = data?.find(item => item.invitation_id === material.invitation);
     if (!row || row.status !== 'pending' || !Number.isFinite(Date.parse(row.expires_at)) || Date.parse(row.expires_at) <= Date.now()) throw authError('business_invitation_unavailable');
@@ -78,7 +102,9 @@ export function createLinkController(client, material) {
   }
   return {
     get user() { return user; }, get invitation() { return invitation; }, get passwordSaved() { return passwordSaved; },
+    cancel() { generation++; user = null; invitation = null; passwordSaved = false; },
     async verify() {
+      const epoch = ++generation;
       user = null; passwordSaved = false;
       if (!['confirm','recover','business-new','business-existing'].includes(flow) || material.error) throw authError('link_unavailable');
       // Never fall back to an existing app or isolated session on a missing link.
@@ -93,39 +119,54 @@ export function createLinkController(client, material) {
         if (material.type && !allowed.includes(material.type)) throw authError('link_unavailable');
         result = await client.auth.setSession({access_token:material.access_token,refresh_token:material.refresh_token});
       } else throw authError('link_unavailable');
+      active(epoch);
       if (result.error) throw result.error;
       const session = result.data?.session;
       if (!session?.user?.id) throw authError('session_not_found');
       const checked = await verifiedUser(client, session.user.id);
+      active(epoch);
       if (!checked.email_confirmed_at) throw authError('email_not_confirmed');
-      if (flow.startsWith('business-')) await checkBusiness();
+      if (flow.startsWith('business-')) await checkBusiness(checked.id, epoch);
       user = checked;
       return checked;
     },
     async save(password, confirmation) {
+      const epoch = generation;
       if (!user || !['recover','business-new'].includes(flow)) throw authError('link_unavailable');
       validateNewPassword(password, confirmation);
       await verifiedUser(client, user.id);
-      if (flow === 'business-new') await checkBusiness();
+      active(epoch);
+      if (flow === 'business-new') await checkBusiness(user.id, epoch);
+      active(epoch);
       const {error} = await client.auth.updateUser({password});
+      active(epoch);
       if (error && !(passwordSaved && error.code === 'same_password')) throw error;
       if (!error) passwordSaved = true;
       await verifiedUser(client, user.id);
+      active(epoch);
       passwordSaved = true;
     },
     async continueToApp(appClient, acknowledged) {
+      const epoch = generation;
       if (!acknowledged || !user || (['recover','business-new'].includes(flow) && !passwordSaved)) throw authError('link_unavailable');
       await verifiedUser(client, user.id);
-      if (flow.startsWith('business-')) await checkBusiness();
+      active(epoch);
+      await requireVerifiedApplicationSession(client, user.id, beforeApplication);
+      active(epoch);
+      if (flow.startsWith('business-')) await checkBusiness(user.id, epoch);
       const {data,error} = await client.auth.getSession();
+      active(epoch);
       if (error) throw error;
       if (data?.session?.user?.id !== user.id || !data.session.access_token || !data.session.refresh_token) throw authError('session_not_found');
       const current = await appClient.auth.getSession();
+      active(epoch);
       if (current.error) throw current.error;
       // UI must explain account replacement; acknowledgment is always explicit.
       const adopted = await appClient.auth.setSession({access_token:data.session.access_token,refresh_token:data.session.refresh_token});
+      active(epoch);
       if (adopted.error) throw adopted.error;
       await verifiedUser(appClient, user.id);
+      active(epoch);
       return flow.startsWith('business-') ? `./business.html?invitation=${encodeURIComponent(material.invitation)}#business/team` : './app.html';
     }
   };

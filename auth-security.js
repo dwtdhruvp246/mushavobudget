@@ -191,3 +191,119 @@ export function createPasswordChanger(client) {
     }
   };
 }
+
+// Admin-created signup is an application workflow, not a platform Admin grant.
+// The screen port supplies UX only; each private step checks server proof too.
+export function createInvitationSignupController(client, {mode, invitationId = '', linkMaterial = {}, beforeApplication, onInvalidated = () => {}}) {
+  if (!['admin-invite','self-signup'].includes(mode)) throw authError('link_unavailable');
+  let epoch=0, expected=null, detail=null, ready=false, saved=false, completed=null, passwordWrite=false;
+  let bootstrapStarted=false,bootstrapSucceeded=false,working=false;
+  const unavailable=()=>authError('session_changed');
+  function cancel(){epoch++;expected=null;detail=null;ready=false;saved=false;completed=null;onInvalidated();}
+  const subscription=client.auth.onAuthStateChange((event,next)=>{
+    if(event==='INITIAL_SESSION'||!expected)return;
+    if(passwordWrite&&event==='USER_UPDATED'&&next?.user?.id===expected.user){expected.token=next.access_token;return;}
+    if(next?.user?.id!==expected.user||next?.access_token!==expected.token)cancel();
+  }).data?.subscription;
+  async function run(action){if(working)throw unavailable();working=true;try{return await action();}finally{working=false;}}
+  function active(version){if(epoch!==version||!expected)throw unavailable();}
+  async function snapshot(version){
+    active(version);const result=await client.auth.getSession();active(version);
+    const s=result.data?.session;
+    if(result.error||s?.user?.id!==expected.user||s?.access_token!==expected.token)throw unavailable();
+    const user=await verifiedUser(client,expected.user);active(version);
+    if(!user.email_confirmed_at||user.email?.toLowerCase()!==expected.email)throw authError('identity_mismatch');
+    return s;
+  }
+  async function application(version){active(version);await requireVerifiedApplicationSession(client,expected.user,beforeApplication);active(version);return snapshot(version);}
+  async function bootstrap(){
+    if(bootstrapStarted){if(!bootstrapSucceeded)throw authError('link_unavailable');return;}
+    bootstrapStarted=true;
+    const m=linkMaterial;
+    if(m.error)throw authError('link_unavailable');
+    let response;
+    if(m.token_hash||m.access_token||m.refresh_token||m.code){
+      if(m.type&&!['invite','recovery','magiclink','signup','email'].includes(m.type))throw authError('link_unavailable');
+      if(m.token_hash){if(!m.type)throw authError('link_unavailable');response=await client.auth.verifyOtp({token_hash:m.token_hash,type:m.type});}
+      else if(m.code)response=await client.auth.exchangeCodeForSession(m.code);
+      else if(m.access_token&&m.refresh_token)response=await client.auth.setSession({access_token:m.access_token,refresh_token:m.refresh_token});
+      else throw authError('link_unavailable');
+      if(response.error)throw response.error;
+      if(!response.data?.session?.user?.id)throw authError('session_not_found');
+    }
+    bootstrapSucceeded=true;
+  }
+  async function context(version){
+    await application(version);
+    const result=mode==='admin-invite'
+      ?await client.rpc('get_my_admin_user_invitation',{p_invitation_id:invitationId})
+      :await client.rpc('has_my_unfinished_admin_invitation');
+    await snapshot(version);
+    if(result.error)throw result.error;
+    if(mode==='self-signup'){
+      if(result.data!==true)throw authError('ADMIN_INVITATION_NOT_AVAILABLE');
+      return null;
+    }
+    const row=Array.isArray(result.data)?result.data[0]:result.data;
+    if(!row||row.invitation_id!==invitationId||row.email?.toLowerCase()!==expected.email||!['sent','provisioned'].includes(row.invitation_status))throw authError('ADMIN_INVITATION_NOT_AVAILABLE');
+    if(row.invitation_status==='provisioned'){
+      if(!UUID.test(row.provisioned_workspace_id||''))throw authError('ADMIN_INVITATION_NOT_AVAILABLE');
+      completed=row.provisioned_workspace_id;
+    }
+    detail=row;return row;
+  }
+  function currencies(values){
+    const list=values.enabledCurrencies;
+    if(!Array.isArray(list)||list.length<1||list.length>20||list.some(x=>typeof x!=='string'||! /^[A-Z]{3}$/.test(x))||new Set(list).size!==list.length||!list.includes(values.defaultCurrency))throw authError('INVALID_ENABLED_CURRENCIES');
+    if(mode==='self-signup'&&(typeof values.fullName!=='string'||!values.fullName.trim()||values.fullName.trim().length>120))throw authError('INVALID_SIGNUP_NAME');
+    return{enabledCurrencies:list.slice().sort(),defaultCurrency:values.defaultCurrency,fullName:values.fullName?.trim()};
+  }
+  return {
+    get passwordSaved(){return saved;},get completed(){return completed;},get invitation(){return detail;},get userId(){return expected?.user;},
+    verify:()=>run(async()=>{
+      if(mode==='admin-invite'&&!UUID.test(invitationId))throw authError('ADMIN_INVITATION_NOT_AVAILABLE');
+      const version=epoch;await bootstrap();if(epoch!==version)throw unavailable();
+      const session=await client.auth.getSession();if(epoch!==version)throw unavailable();
+      if(session.error||!session.data?.session?.user?.id)throw authError('session_not_found');
+      const user=await verifiedUser(client,session.data.session.user.id);if(epoch!==version)throw unavailable();
+      if(!user.email_confirmed_at||!user.email)throw authError('email_not_confirmed');
+      if(expected&&(expected.user!==user.id||expected.token!==session.data.session.access_token))throw unavailable();
+      expected={user:user.id,email:user.email.toLowerCase(),token:session.data.session.access_token};
+      // A locally known committed completion can retry adoption without replaying Free signup.
+      if(completed)await application(version);
+      const row=completed?detail:await context(version);active(version);ready=true;
+      return{user,invitation:row,completed};
+    }),
+    savePassword:(password,confirmation,values)=>run(async()=>{
+      if(!ready||!expected||completed)throw authError('link_unavailable');
+      validateNewPassword(password,confirmation);const selected=currencies(values),version=epoch;
+      await context(version);if(completed)throw authError('link_unavailable');
+      await snapshot(version);passwordWrite=true;
+      let result;
+      try{result=await client.auth.updateUser({password,data:mode==='admin-invite'?{full_name:detail.full_name,default_currency:selected.defaultCurrency,enabled_currencies:selected.enabledCurrencies,signup_source:'admin_invitation',admin_invitation_id:invitationId}:{full_name:selected.fullName,default_currency:selected.defaultCurrency,enabled_currencies:selected.enabledCurrencies,country_code:values.countryCode||null,signup_source:'self_signup',admin_invitation_id:null}});}finally{passwordWrite=false;}
+      active(version);
+      // Existing account setup supports retry when this password was already saved.
+      if(result.error&&result.error.code!=='same_password')throw result.error;
+      saved=true;await snapshot(version);
+    }),
+    complete:(values,acknowledged)=>run(async()=>{
+      if(!acknowledged||!ready||!expected||(!saved&&!completed))throw authError('link_unavailable');
+      const version=epoch;await application(version);if(completed)return completed;
+      const selected=currencies(values);await context(version);if(completed)return completed;
+      const result=mode==='admin-invite'
+        ?await client.rpc('complete_admin_user_invitation',{p_invitation_id:invitationId,p_enabled_currencies:selected.enabledCurrencies,p_default_currency:selected.defaultCurrency})
+        :await client.rpc('complete_self_signup_from_admin_invitation',{p_full_name:selected.fullName,p_enabled_currencies:selected.enabledCurrencies,p_default_currency:selected.defaultCurrency});
+      await snapshot(version);if(result.error)throw result.error;
+      if(!UUID.test(result.data||''))throw authError('request_invalid');
+      completed=result.data;return completed;
+    }),
+    adopt:(appClient,acknowledged)=>run(async()=>{
+      if(!acknowledged||!completed||!expected)throw authError('link_unavailable');
+      const version=epoch,s=await application(version);if(!s.refresh_token)throw authError('session_not_found');
+      const result=await appClient.auth.setSession({access_token:s.access_token,refresh_token:s.refresh_token});active(version);
+      if(result.error)throw result.error;await verifiedUser(appClient,expected.user);active(version);await snapshot(version);
+    }),
+    cancel,
+    dispose(){subscription?.unsubscribe();cancel();}
+  };
+}

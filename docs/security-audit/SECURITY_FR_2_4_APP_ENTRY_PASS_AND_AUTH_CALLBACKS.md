@@ -1,3 +1,9 @@
+# Windows result received — FR.2.4.E4.7: 192 PASS, exit 0
+
+16 October 2026, FRE71. [Owner receipt](security-fr-2-email-callback-owner-Windows-pass.json) records 192/192 PASS on Node v22.17.0/PGlite 0.5.8, with 94 source hashes and 31 syntax checks. The module-type warnings in all four groups and TypeScript warning in the prior-entry/Edge group are non-failing; their exact receipt flags are retained. This supersedes the Windows-pending action below. The next [invited signup source checkpoint](SECURITY_FR_2_4_AUTH_CALLBACK_PASS_AND_INVITED_SIGNUP.md) remains offline and undeployed. Original FRE70 evidence follows.
+
+---
+
 # FR.2.4.E4.7 — app entry passed on Windows; Auth callbacks use the email screen
 
 16 October 2026, FRE70. The [owner app-entry receipt](security-fr-2-email-entry-owner-Windows-pass.json) records 127/127 PASS, zero FAIL, exit 0 on Node v22.17.0/PGlite 0.5.8, with 89 matching source hashes and 27 syntax checks. This completes the E4.6 Windows repeat. Hosted acceptance remains pending.

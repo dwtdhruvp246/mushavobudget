@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.7_AUTH_CALLBACK_INTEGRATION",
-  "status": "LOCAL192PASS_WINDOWS_PENDING_AUTH_CALLBACK_SOURCE_NOT_DEPLOYED",
+  "status": "LOCAL_AND_OWNER_WINDOWS192PASS_CALLBACKS_NOT_HOSTED_ACCEPTANCE",
   "source_parent_commit": "945acf1ee39c4c4698bf68177f641ca8ef45f1e9",
   "preceding_owner_receipt": "docs/security-audit/security-fr-2-email-entry-owner-Windows-pass.json",
   "report": "docs/security-audit/SECURITY_FR_2_4_APP_ENTRY_PASS_AND_AUTH_CALLBACKS.md",
@@ -45,8 +45,8 @@
     "canonical schema/versioned migration and coordinated Pages/artifact contract",
     "full regression and genuine browser/provider/hosted acceptance"
   ],
-  "owner_Windows_result_received": false,
-  "owner_terminal_action_required": true,
+  "owner_Windows_result_received": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "owner_credential_or_deployment_action_required": false,
   "root_dependency_or_existing_checkout_changes_requested": false,
@@ -56,5 +56,8 @@
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "owner_Windows_PASS": 192,
+  "owner_Windows_exit_code": 0,
+  "owner_Windows_receipt": "docs/security-audit/security-fr-2-email-callback-owner-Windows-pass.json"
 }

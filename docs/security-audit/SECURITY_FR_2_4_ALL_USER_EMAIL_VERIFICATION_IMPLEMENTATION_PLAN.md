@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E4.7 Windows passed; FR.2.4.E4.8 invited signup integrated
+
+16 October 2026, FRE71. [Owner callback receipt](security-fr-2-email-callback-owner-Windows-pass.json): 192 PASS, exit 0, 94 hashes/31 syntax checks matched; non-failing module/TypeScript warning flags preserved. [Invited signup integration](SECURITY_FR_2_4_AUTH_CALLBACK_PASS_AND_INVITED_SIGNUP.md): [281 local checks](security-fr-2-email-invited-signup-local-checks.json), [123-file manifest](security-fr-2-email-invited-signup-source-manifest.json), [contract](security-fr-2-email-invited-signup-candidate-contract.json). Admin-created ordinary signup and explicit Free provisioning now check proof; password changes require fresh verification; account opening is explicit; known completion can retry without SQL/password replay. Signup CSP hash regenerated without broadening policy. Next owner action is the pinned Windows batch in chat. Device/revocation settings, canonical SQL, Pages/artifact coordination, uncertain-completion recovery and genuine hosted acceptance remain pending. No SQL, credentials, email or deployment action. All findings open, production excluded, APK deferred; previous checkpoints follow.
+
+---
+
 # Current checkpoint — FR.2.4.E4.6 Windows passed; FR.2.4.E4.7 Auth callbacks integrated
 
 16 October 2026, FRE70. [Owner app-entry receipt](security-fr-2-email-entry-owner-Windows-pass.json): 127 PASS, exit 0, 89 source hashes/27 syntax checks matched. [Auth callback integration](SECURITY_FR_2_4_APP_ENTRY_PASS_AND_AUTH_CALLBACKS.md): [192 local checks](security-fr-2-email-callback-local-checks.json), [94-file manifest](security-fr-2-email-callback-source-manifest.json), [contract](security-fr-2-email-callback-candidate-contract.json). Confirmation, recovery, Business invitation and password-change paths now use the shared screen before protected work. Pending invitations remain checked before first-password changes; a password change requires new proof. Next owner action is the pinned Windows batch in chat. Admin-invited/Free provisioning, remembered-device settings, canonical SQL, Pages/artifact coordination and genuine hosted acceptance remain pending. No SQL, credentials, email or deployment action. All findings open, production excluded, APK deferred; original checkpoints follow.
@@ -178,7 +184,7 @@ Supabase email OTP remains conventional aal1; selected email verification must u
 | FR.2.4.E1 | All-user/Admin policy, clock/session rules and source/deployment impact plan | COMPLETE_POLICY_SELECTED_NOT_IMPLEMENTED |
 | FR.2.4.E2 | Private DB challenge/device/session schema and service-only functions; concurrency, grants and revocation tests | OFFLINE_SOURCE_AND_OWNER_CHECKS_PASSED_NOT_INSTALLED |
 | FR.2.4.E3 | Auth gateway/provider mail adapter, protected cookies and challenge handlers; source tests and real bundle checks | LOCAL_CHECKS_PASSED_ZOHO_PRIVATE_SETUP_AND_LIMITER_METADATA_PASSED_PAGES_INTEGRATION_PENDING |
-| FR.2.4.E4 | Login/email-code/remember-device UI plus all RLS/RPC/Edge/Storage/Admin guards and regression batch | E4_6_WINDOWS127PASS_E4_7_CALLBACKS_LOCAL192PASS_WINDOWS_PENDING_INVITED_SIGNUP_SETTINGS_CANONICAL_PAGES_PENDING |
+| FR.2.4.E4 | Login/email-code/remember-device UI plus all RLS/RPC/Edge/Storage/Admin guards and regression batch | E4_7_WINDOWS192PASS_E4_8_INVITED_SIGNUP_LOCAL281PASS_WINDOWS_PENDING_SETTINGS_CANONICAL_PAGES_PENDING |
 | FR.2.4.E5 | Controlled staging configuration, real delivery, new/trusted/expired/revoked-device and direct-API acceptance; exact guarded Admin assignment after gates work | PENDING |
 | FR.2.4.E6 | Remaining native/session/recovery/provider regressions and final-re-audit evidence/carry-forward | PENDING_APK_DEFERRED |
 

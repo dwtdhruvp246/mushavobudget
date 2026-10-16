@@ -31,7 +31,8 @@ test("normal signup cancels only a verified unfinished invite and provisions Fre
   assert.match(schema, /complete_self_signup_from_admin_invitation/);
   assert.doesNotMatch(signup, /resetPasswordForEmail\(email/);
   assert.match(signup, /emailRedirectTo: callbackUrl\(window.location.href, "confirm"\)/);
-  assert.match(signup, /complete_self_signup_from_admin_invitation/);
+  assert.match(signup, /createInvitationSignupController/);
+  assert.match(signup, /isAdminInvite \? "admin-invite" : "self-signup"/);
 });
 
 test("signup page inline JavaScript parses after both new branches", () => {

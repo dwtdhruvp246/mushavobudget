@@ -1,0 +1,10 @@
+import {createInvitationSignupController} from '../../auth-security.js';
+export const ID='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',INVITE='cccccccc-cccc-4ccc-8ccc-cccccccccccc',WORKSPACE='dddddddd-dddd-4ddd-8ddd-dddddddddddd';
+export const choices={fullName:'Synthetic Owner',enabledCurrencies:['USD'],defaultCurrency:'USD'};
+export function invitedSignupHarness(mode='admin-invite',options={}){
+ let session={user:{id:ID,email:'invited@example.invalid',email_confirmed_at:'2026-10-16'},access_token:'synthetic',refresh_token:'synthetic-refresh'},approved=options.approved??true,updateError=null,completionError=null,hasInvite=true;
+ let row={invitation_id:INVITE,email:session.user.email,full_name:'Synthetic Owner',invitation_status:'sent',provisioned_workspace_id:null};const calls=[],listeners=[];
+ const client={auth:{onAuthStateChange(fn){listeners.push(fn);return{data:{subscription:{unsubscribe(){}}}};},getSession:async()=>({data:{session},error:null}),getUser:async()=>session?{data:{user:session.user},error:null}:{error:{code:'session_not_found'}},async updateUser(args){calls.push(['password',args]);if(!updateError)approved=false;return{error:updateError};},async setSession(){calls.push(['link']);return{data:{session},error:options.linkError||null};}},async rpc(name,args){calls.push([name,args]);if(name==='email_gate_current_session_verified')return{data:approved,error:null};if(name==='get_my_admin_user_invitation')return{data:row,error:null};if(name==='has_my_unfinished_admin_invitation')return{data:hasInvite,error:null};if(name.startsWith('complete_'))return{data:WORKSPACE,error:completionError};throw Error('UNEXPECTED_RPC');}};
+ const controller=createInvitationSignupController(client,{mode,invitationId:INVITE,...options,beforeApplication:options.beforeApplication??(async()=>{calls.push(['screen']);approved=true;})});
+ return{client,controller,calls,setProof:x=>approved=x,setRow:x=>row=x,setInvite:x=>hasInvite=x,setUpdateError:x=>updateError=x,setCompletionError:x=>completionError=x,setSession:x=>{session=x;},replace:x=>{session=x;for(const fn of listeners)fn('SIGNED_IN',x);}};
+}

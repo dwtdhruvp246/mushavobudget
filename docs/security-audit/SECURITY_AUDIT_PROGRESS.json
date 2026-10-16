@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-16",
   "current_stage": null,
-  "current_step": "FR.2.4.E4.1_ENFORCEMENT_BASELINE",
-  "current_title": "Limiter metadata passed; E4.1 read-only enforcement baseline next",
+  "current_step": "FR.2.4.E4.1_ROUTINE_RECONCILIATION",
+  "current_title": "FR.2.4.E4.1 baseline received; reconcile public functions",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.4.E4.1_ENFORCEMENT_BASELINE",
+  "next_step": "FR.2.4.E4.1_ROUTINE_RECONCILIATION",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3358,13 +3358,13 @@
   },
   "next_phase": "FINAL_REMEDIATION",
   "final_remediation": {
-    "status": "FR2_EMAIL_E3_4_METADATA_PASS_E4_1_ENFORCEMENT_BASELINE_PENDING",
+    "status": "FR2_EMAIL_E4_1_BASELINE_RECEIVED_ROUTINE_RECONCILIATION_PENDING",
     "prepared_date": "2026-10-13",
     "handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
     "proposed_batches": 8,
     "original_findings_mapped": 20,
     "existing_open_action_entries": 61,
-    "next_step": "FR.2.4.E4.1_ENFORCEMENT_BASELINE",
+    "next_step": "FR.2.4.E4.1_ROUTINE_RECONCILIATION",
     "release_gate_unchanged": true,
     "full_fresh_final_reaudit_required": true,
     "started_date": "2026-10-13",
@@ -3373,7 +3373,7 @@
     "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
     "progress": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PROGRESS.json",
     "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-    "latest_evidence": "FRE61",
+    "latest_evidence": "FRE62",
     "candidate_report": "docs/security-audit/SECURITY_FR_1_1_STAGING_CANDIDATE.md",
     "local_receipt": "docs/security-audit/security-final-staging-local-checks.json",
     "owner_terminal_action_required": false,
@@ -3862,7 +3862,16 @@
     "FR2_email_enforcement_baseline_SQL": "supabase/diagnostics/security_fr_2_4_email_enforcement_readiness.sql",
     "FR2_email_enforcement_baseline_report": "docs/security-audit/SECURITY_FR_2_4_LIMITER_METADATA_PASS_AND_ENFORCEMENT_BASELINE.md",
     "FR2_email_enforcement_baseline_SQL_local_scenarios_PASS": 2,
-    "FR2_email_enforcement_hosted_baseline_received": false
+    "FR2_email_enforcement_hosted_baseline_received": true,
+    "FR2_email_enforcement_baseline_owner_receipt": "docs/security-audit/security-fr-2-email-enforcement-baseline-owner-result.json",
+    "FR2_email_enforcement_hosted_policy_fingerprint_matches": true,
+    "FR2_email_enforcement_hosted_public_tables_with_RLS": 81,
+    "FR2_email_enforcement_hosted_public_routines": 279,
+    "FR2_email_enforcement_modeled_public_routines": 278,
+    "FR2_email_enforcement_routine_metadata_parity_verified": false,
+    "FR2_email_enforcement_routine_reconciliation_SQL": "supabase/diagnostics/security_fr_2_4_email_routine_reconciliation.sql",
+    "FR2_email_enforcement_routine_reconciliation_report": "docs/security-audit/SECURITY_FR_2_4_ENFORCEMENT_BASELINE_AND_ROUTINE_RECONCILIATION.md",
+    "FR2_email_enforcement_routine_reconciliation_SQL_local_scenarios_PASS": 3
   },
   "current_phase": "FINAL_REMEDIATION"
 }

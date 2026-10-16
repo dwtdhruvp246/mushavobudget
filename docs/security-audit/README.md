@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E4.1 baseline received; routine reconciliation next
+
+16 October2026,FRE62. [Owner baseline](security-fr-2-email-enforcement-baseline-owner-result.json):166policy/50restrictive fingerprint and81public RLS tables match;required Auth fields present;email backend absent. Public functions279versus modeled278 need reconciliation. [Full FR.2.4.E4.1 handoff](SECURITY_FR_2_4_ENFORCEMENT_BASELINE_AND_ROUTINE_RECONCILIATION.md), [3local SQL scenarios](security-fr-2-email-routine-reconciliation-local-checks.json). Next is the complete read-only event-function/catalog SQL pasted in chat;no installation/terminal/Cloudflare/email/factor action. No broad acceptance/finding closure;production excluded,APK deferred.
+
+---
+
 # Current checkpoint — limiter metadata passed; E4.1 server baseline next
 
 16 October2026,FRE61. [Owner4GET PASS](security-fr-2-limiter-read-only-owner-pass.json),exit0: Worker/SQLite namespace verified,public+preview URLs disabled,candidate hashes match. Current namespace errors=null explains the array-only checker rejection; reusable source corrected and18regressions pass. No redeploy needed. [E4.1 handoff](SECURITY_FR_2_4_LIMITER_METADATA_PASS_AND_ENFORCEMENT_BASELINE.md), [65-source inventory](security-fr-2-email-enforcement-source-inventory.json), [2metadata-SQL scenarios](security-fr-2-email-enforcement-baseline-local-checks.json). Next owner action is the full read-only staging catalog SQL pasted in chat; no installation/email/token/terminal. Applicationwide guards/UI/Pages gateway remain pending; no full acceptance/finding closure,production excluded,APK deferred.

@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E4.2 Windows passed; FR.2.4.E4.3 database integration ready
+
+16 October 2026, FRE66. [Owner Windows 24 PASS](security-fr-2-email-session-owner-Windows-pass.json), exit 0, all 61 source hashes/54 migrations matched. [New database integration and handoff](SECURITY_FR_2_4_SESSION_PASS_AND_DATABASE_GUARDS.md): 148 actual application RPC guards and 82 restrictive policies pass [32 local checks](security-fr-2-email-data-guard-local-checks.json), including 148 authenticated and 29 anonymous direct denial probes, verified operations and Auth callback preservation. [Coverage](security-fr-2-email-data-guard-coverage.json), [63-file manifest](security-fr-2-email-data-guard-source-manifest.json), [contract](security-fr-2-email-data-guard-candidate-contract.json). Next owner action is the complete temporary-folder PowerShell integration batch in chat. No hosted SQL, credentials, Cloudflare/Zoho change or real email. Canonical schema/migration, full Edge/Admin/UI/Pages integration and hosted acceptance remain pending; all findings open, production excluded and APK deferred.
+
+---
+
 # Current checkpoint — FR.2.4.E4.1 alignment passed; FR.2.4.E4.2 session source ready
 
 16 October 2026, FRE65. [Owner staging correction PASS](security-fr-2-bill-reminder-separator-owner-pass.json): the exact separator is aligned, all 278 selected non-event function fingerprints match source under assertions, protected metadata and line endings remain unchanged, and no scheduler/email enforcement ran. [Next component and Windows handoff](SECURITY_FR_2_4_SEPARATOR_PASS_AND_SESSION_PREDICATE.md): a private current-session predicate with two authenticated-only no-argument wrappers passes [24 local checks](security-fr-2-email-session-local-checks.json) against all 54 migrations and the E2 backend. [61-file manifest](security-fr-2-email-session-source-manifest.json), [contract](security-fr-2-email-session-candidate-contract.json). Next owner action is the complete temporary-folder PowerShell test command in chat; no hosted SQL, credentials, Cloudflare/Zoho change or email. Full canonical migration/schema, all applicable guards, UI/gateway integration and hosted acceptance remain pending. All findings remain open; production excluded and APK deferred.
@@ -148,7 +154,7 @@ Supabase email OTP remains conventional aal1; selected email verification must u
 | FR.2.4.E1 | All-user/Admin policy, clock/session rules and source/deployment impact plan | COMPLETE_POLICY_SELECTED_NOT_IMPLEMENTED |
 | FR.2.4.E2 | Private DB challenge/device/session schema and service-only functions; concurrency, grants and revocation tests | OFFLINE_SOURCE_AND_OWNER_CHECKS_PASSED_NOT_INSTALLED |
 | FR.2.4.E3 | Auth gateway/provider mail adapter, protected cookies and challenge handlers; source tests and real bundle checks | LOCAL_CHECKS_PASSED_ZOHO_PRIVATE_SETUP_AND_LIMITER_METADATA_PASSED_PAGES_INTEGRATION_PENDING |
-| FR.2.4.E4 | Login/email-code/remember-device UI plus all RLS/RPC/Edge/Storage/Admin guards and regression batch | E4_1_SELECTED_PARITY_PASSED_E4_2_SESSION_COMPONENT_LOCAL24PASS_WINDOWS_PENDING_FULL_INTEGRATION_PENDING |
+| FR.2.4.E4 | Login/email-code/remember-device UI plus all RLS/RPC/Edge/Storage/Admin guards and regression batch | E4_2_WINDOWS24PASS_E4_3_DATABASE_COMPONENT_LOCAL32PASS_WINDOWS_PENDING_EDGE_UI_CANONICAL_INTEGRATION_PENDING |
 | FR.2.4.E5 | Controlled staging configuration, real delivery, new/trusted/expired/revoked-device and direct-API acceptance; exact guarded Admin assignment after gates work | PENDING |
 | FR.2.4.E6 | Remaining native/session/recovery/provider regressions and final-re-audit evidence/carry-forward | PENDING_APK_DEFERRED |
 

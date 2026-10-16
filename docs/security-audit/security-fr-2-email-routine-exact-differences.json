@@ -1,0 +1,28 @@
+{
+  "source_count": 278,
+  "hosted_count": 278,
+  "matched": 277,
+  "differences": [
+    {
+      "signature_id": "f3b003c21d49ca934f0c3a658bc9092a",
+      "name": "enqueue_due_business_bill_reminders",
+      "arguments": "p_reference_time timestamp with time zone",
+      "changed": {
+        "body_md5": {
+          "source": "cb3b123fa3eb25aed3d2cb0ef3a025db",
+          "hosted": "140dff26cec8361452eb317ec74225b2"
+        }
+      }
+    }
+  ],
+  "unknown_signatures": [],
+  "source_parent_commit": "2d416772f57b8a9600db4622f105a411c1f233b5",
+  "owner_receipt": "docs/security-audit/security-fr-2-email-routine-fingerprints-owner-result.json",
+  "comparison_input_complete": true,
+  "all278_signatures_settings_and_flags_match": true,
+  "all180_authenticated_executable_source_function_entries_match": true,
+  "sole_differing_function_effective_anon_and_authenticated_EXECUTE": false,
+  "sole_differing_function_effective_service_EXECUTE": true,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

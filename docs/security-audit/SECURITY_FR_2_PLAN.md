@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E4.1 exact drift identified; guarded separator correction ready
+
+16 October2026,FRE64. [Complete278-record owner receipt](security-fr-2-email-routine-fingerprints-owner-result.json) gives277full selected matches;all278signatures/settings/flags match. Only the service-only Business bill reminder body's separator differs. [Reconstruction/guarded correction handoff](SECURITY_FR_2_4_EXACT_BILL_REMINDER_SEPARATOR_CORRECTION.md), [contract](security-fr-2-bill-reminder-separator-contract.json), [14actual full54 SQL checks](security-fr-2-bill-reminder-separator-local-checks.json). Source UTF8decoded asCP437 exactly reconstructs observed MD5;full old/new SHA256 is asserted before/after literal-only correction. Next complete SQL changes that one literal;no scheduler/app-row/provider invocation or new enforcement installation. Rollback prepared,not requested. No full acceptance/finding closure,production excluded,APK deferred.
+
+---
+
 # Current checkpoint — FR.2.4.E4.1 event hook identified; exact routine fingerprints next
 
 16 October2026,FRE63. [Owner reconciliation](security-fr-2-email-routine-reconciliation-owner-result.json):extra rls_auto_enable event function identified;remaining278function digest still differs. [Compact fingerprint handoff](SECURITY_FR_2_4_ROUTINE_DELTA_AND_COMPACT_FINGERPRINT_HANDOFF.md), [278-entry source reference](security-fr-2-email-routine-fingerprint-reference.json), [4local SQL scenarios](security-fr-2-email-routine-fingerprint-local-checks.json). Next complete read-only SQL returns bounded per-function body/settings/flag fingerprints in one string;no bodies/customer rows/credentials/writes. We remain on FR.2.4.E4.1,not a new original audit stage. Enforcement installation remains pending;no full acceptance/finding closure,production excluded,APK deferred.

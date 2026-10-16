@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.4_EDGE_GUARDS",
-  "status": "LOCAL88PASS_WINDOWS_PENDING_NOT_DEPLOYED",
+  "status": "LOCAL_AND_OWNER_WINDOWS88PASS_NOT_DEPLOYED",
   "source_parent_commit": "fcfd6bc904af8cca2e6812aba35b7d3f6d9117e0",
   "preceding_owner_receipt": "docs/security-audit/security-fr-2-email-data-guard-owner-Windows-pass.json",
   "report": "docs/security-audit/SECURITY_FR_2_4_DATABASE_PASS_AND_EDGE_GUARDS.md",
@@ -73,8 +73,8 @@
   "SQL_integration_uses_actual_proof_but_synthetic_SDK_and_privileged_reservation_provider_ports": true,
   "actual_Deno_bundle_dependency_typecheck_SDK_JWT_or_hosted_execution_verified": false,
   "canonical_schema_versioned_migration_Admin_UI_Pages_integration_complete": false,
-  "owner_Windows_result_received": false,
-  "owner_terminal_action_required": true,
+  "owner_Windows_result_received": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "owner_credential_or_deployment_action_required": false,
   "root_dependency_or_worktree_changes_requested": false,
@@ -84,5 +84,8 @@
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "owner_Windows_PASS": 88,
+  "owner_Windows_exit_code": 0,
+  "owner_Windows_receipt": "docs/security-audit/security-fr-2-email-edge-owner-Windows-pass.json"
 }

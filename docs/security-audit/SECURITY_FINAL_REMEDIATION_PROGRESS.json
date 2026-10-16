@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-16",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E4_3_WINDOWS32PASS_E4_4_EDGE_LOCAL88PASS_WINDOWS_PENDING",
+  "status": "FR2_EMAIL_E4_4_WINDOWS88PASS_E4_5_SCREEN_ADMIN_CONTRACT_LOCAL93PASS_WINDOWS_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE67",
+  "latest_evidence": "FRE68",
   "batches": [
     {
       "id": "FR.1",
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "EMAIL_E4_3_WINDOWS32PASS_E4_4_EDGE_LOCAL88PASS_WINDOWS_PENDING",
+          "status": "EMAIL_E4_4_WINDOWS88PASS_E4_5_SCREEN_ADMIN_CONTRACT_LOCAL93PASS_WINDOWS_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -646,8 +646,13 @@
           "email_data_guard_owner_Windows_PASS": 32,
           "email_data_guard_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-data-guard-owner-Windows-pass.json",
           "email_edge_local_PASS": 88,
-          "email_edge_owner_Windows_result_received": false,
-          "email_edge_contract": "docs/security-audit/security-fr-2-email-edge-candidate-contract.json"
+          "email_edge_owner_Windows_result_received": true,
+          "email_edge_contract": "docs/security-audit/security-fr-2-email-edge-candidate-contract.json",
+          "email_edge_owner_Windows_PASS": 88,
+          "email_edge_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-edge-owner-Windows-pass.json",
+          "email_ui_local_PASS": 93,
+          "email_ui_owner_Windows_result_received": false,
+          "email_ui_contract": "docs/security-audit/security-fr-2-email-ui-candidate-contract.json"
         },
         {
           "id": "FR.2.5",
@@ -717,7 +722,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E4.4_EDGE_GUARDS",
+  "next_step": "FR.2.4.E4.5_UI_AND_ADMIN_CONTRACT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -1273,6 +1278,18 @@
   "FR2_email_edge_manifest": "docs/security-audit/security-fr-2-email-edge-source-manifest.json",
   "FR2_email_edge_local_checks": "docs/security-audit/security-fr-2-email-edge-local-checks.json",
   "FR2_email_edge_local_PASS": 88,
-  "FR2_email_edge_owner_Windows_result_received": false,
-  "FR2_email_edge_hosted_deployed": false
+  "FR2_email_edge_owner_Windows_result_received": true,
+  "FR2_email_edge_hosted_deployed": false,
+  "FR2_email_edge_owner_Windows_PASS": 88,
+  "FR2_email_edge_owner_Windows_exit_code": 0,
+  "FR2_email_edge_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-edge-owner-Windows-pass.json",
+  "FR2_email_ui_verifier": "scripts/verify-fr-2-email-ui.mjs",
+  "FR2_email_ui_report": "docs/security-audit/SECURITY_FR_2_4_EDGE_PASS_AND_EMAIL_SCREEN.md",
+  "FR2_email_ui_contract": "docs/security-audit/security-fr-2-email-ui-candidate-contract.json",
+  "FR2_email_ui_manifest": "docs/security-audit/security-fr-2-email-ui-source-manifest.json",
+  "FR2_email_ui_local_checks": "docs/security-audit/security-fr-2-email-ui-local-checks.json",
+  "FR2_email_ui_local_PASS": 93,
+  "FR2_email_ui_owner_Windows_result_received": false,
+  "FR2_email_ui_app_startup_or_Admin_view_wired": false,
+  "FR2_email_admin_status_candidate": "supabase/candidates/security_fr_2_4_email_admin_status.sql"
 }

@@ -1,3 +1,9 @@
+# Windows result received — FR.2.4.E4.4: 88 PASS, exit 0
+
+16 October 2026, FRE68. [Owner receipt](security-fr-2-email-edge-owner-Windows-pass.json) records 88/88 PASS on Node v22.17.0/PGlite 0.5.8, with all 84 source hashes and 23 syntax checks matched. The TypeScript experimental warning is non-failing. This supersedes the Windows-pending action below. No hosted installation or full finding is accepted. Continue with the [shared email screen and Admin contract](SECURITY_FR_2_4_EDGE_PASS_AND_EMAIL_SCREEN.md). The original FRE67 checkpoint is retained below.
+
+---
+
 # FR.2.4.E4.4 — database guards passed on Windows; Edge integration ready
 
 16 October 2026, FRE67. The [owner Windows database receipt](security-fr-2-email-data-guard-owner-Windows-pass.json) records 32/32 PASS, zero FAIL, exit 0 on Node v22.17.0/PGlite 0.5.8. All 63 input hashes and 54 migrations matched. This is the E4.3 offline integration result; no hosted database guard was installed and no finding is closed.

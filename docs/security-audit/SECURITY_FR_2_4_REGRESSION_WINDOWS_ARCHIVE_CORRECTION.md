@@ -1,3 +1,9 @@
+# Corrected Windows regression passed — staging metadata refresh next
+
+17 October 2026, FRE79. [Owner result](security-fr-2-email-regression-corrected-owner-Windows-pass.json):1525 PASS,exit0,612 hashes/316 syntax checks,119 test files on Nodev22.17.0. This completes the corrected Windows offline regression scope, including actual Git archive cases. The first failed receipt remains historical. [Next read-only staging metadata handoff](SECURITY_FR_2_4_FULL_WINDOWS_PASS_AND_STAGING_METADATA_REFRESH.md) requires no further terminal run or SQL write. Hosted activation and genuine email/provider acceptance remain pending. Original correction evidence follows.
+
+---
+
 # FR.2.4.E4.14 — Windows archive line-ending correction
 
 17 October 2026, FRE78. [First owner Windows result](security-fr-2-email-regression-first-owner-Windows-result.json) at commit 01f916084c31fda7dce8fd8add354f2ad37494e9: Node v22.17.0/PGlite 0.5.8, zero source hashes completed, zero syntax checks or tests run, empty groups, exit 1. The manifest parsed. This is a source-preflight block, not 1522 failed tests; no hosted operation or acceptance occurred.

@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.14_FULL_OFFLINE_REGRESSION",
-  "status": "FIRST_WINDOWS_SOURCE_PREFLIGHT_BLOCKED_LF_FIXED_LOCAL1525PASS_RECHECK_PENDING",
+  "status": "CORRECTED_OWNER_WINDOWS1525PASS_FULL_DISCOVERY_AND_SQL_SCOPED_COMPLETE_NOT_HOSTED_ACCEPTANCE",
   "source_parent_commit": "01f916084c31fda7dce8fd8add354f2ad37494e9",
   "owner_prior_Windows_receipt": "docs/security-audit/security-fr-2-email-ensure-rls-owner-Windows-pass.json",
   "report": "docs/security-audit/SECURITY_FR_2_4_REGRESSION_WINDOWS_ARCHIVE_CORRECTION.md",
@@ -23,7 +23,7 @@
   "all55_migrations_unchanged": true,
   "old_source_manifests_and_receipts_remain_historical_at_original_commits": true,
   "owner_Windows_result_received": true,
-  "owner_terminal_action_required": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "owner_credential_or_deployment_action_required": false,
   "actual_hosted_requests": 0,
@@ -35,7 +35,6 @@
   "production_or_native_changed": false,
   "APK_update_deferred": true,
   "remaining_work": [
-    "owner Windows corrected full regression with LF-pinned Git archive",
     "real runtime/provider validation, fresh staging catalog/Auth/gateway/client prerequisites and coordinated live activation contract",
     "email delivery/browser/cookie/concurrency/recovery and real Admin authorization acceptance; prior audit carry-forward"
   ],
@@ -45,10 +44,14 @@
   "first_owner_Windows_exit_code": 1,
   "first_owner_Windows_completed_source_checks": 0,
   "first_owner_Windows_tests_run": 0,
-  "corrected_owner_Windows_result_received": false,
+  "corrected_owner_Windows_result_received": true,
   "archive_export_local_checks": "docs/security-audit/security-fr-2-email-regression-archive-export-local-checks.json",
   "new_actual_Git_archive_cases": 3,
   "exact_source_and_binary_bytes_preserved_in_crlf_and_lf_export_rehearsal": true,
   "owner_exact_exported_bytes_independently_received": false,
-  "safe_failure_checkpoint_and_relative_source_path_reported": true
+  "safe_failure_checkpoint_and_relative_source_path_reported": true,
+  "corrected_owner_Windows_PASS": 1525,
+  "corrected_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-regression-corrected-owner-Windows-pass.json",
+  "owner_Windows_PASS": 1525,
+  "actual_Windows_Git_archive_hash_preservation_verified": true
 }

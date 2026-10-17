@@ -1,3 +1,9 @@
+# Source received — FR.2.4.E4.12 reviewed for installer compatibility
+
+17 October 2026, FRE76. [Owner read-only receipt](security-fr-2-email-hook-source-owner-result.json) returned the exact 953-byte ensure_rls body, LF SHA256 2782e98b348aca7d6f6f73c420fd78d2e094957dd7a52b0483d4c34f29d2a7a1, with one function/binding and seven hooks. No hook/application/installer was invoked; no application rows were read; both installer/backend namespaces were absent. Dashboard project selection remains owner-selected, not independently verified. The code has now been reviewed for the bounded installer operations and replayed locally in the [new compatibility checkpoint](SECURITY_FR_2_4_REVIEWED_ENSURE_RLS_HOOK_COMPATIBILITY.md). This supersedes the source-pending handoff below. Hosted compatibility execution and activation remain pending; original FRE75 evidence follows.
+
+---
+
 # FR.2.4.E4.12 — atomic Windows pass; read-only staging hook source review
 
 17 October 2026, FRE75. [Owner atomic receipt](security-fr-2-email-atomic-owner-Windows-pass.json) records 361/361 PASS, zero FAIL, exit 0 on Node v22.17.0/PGlite 0.5.8, with 137 matching source hashes and 57 syntax checks. Exact flags are preserved: non-failing module-type warnings in groups 1–8, none in groups 9–10, and the TypeScript warning only in the prior-entry/Edge group. The private registration/atomic rollback source checkpoint now has Windows evidence. Hosted installer/enforcement, provider/browser acceptance and finding closure remain pending.

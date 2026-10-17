@@ -21313,6 +21313,7 @@ COMMIT;
 
 -- BEGIN MIGRATION 20261017000000_email_verification_atomic_installer.sql
 -- FR.2.4.E4.11: register a private atomic installer; do not activate application guards.
+-- FR.2.4.E4.13: exact ensure_rls source allowance; existing hook is never replaced here.
 -- This source phase permits OFFLINE_ATOMIC_REHEARSAL only. No live activation handoff.
 BEGIN;
 SET LOCAL statement_timeout='30s';
@@ -21343,6 +21344,22 @@ BEGIN
   AND l.lanname='plpgsql' AND NOT p.prosecdef AND NOT p.proisstrict AND NOT p.proleakproof
   AND p.provolatile='v' AND p.proparallel='u' AND p.prosupport=0 AND p.proconfig=ARRAY['search_path=""']::text[]
   AND encode(sha256(convert_to(replace(p.prosrc,E'\r\n',E'\n'),'UTF8')),'hex')=reviewed.body_sha256
+ )
+ AND NOT EXISTS (
+  SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+  JOIN pg_language l ON l.oid=p.prolang JOIN pg_roles er ON er.oid=e.evtowner JOIN pg_roles pr ON pr.oid=p.proowner
+  WHERE p.oid=e.evtfoid AND e.evtname='ensure_rls' AND e.evtevent='ddl_command_end' AND e.evtenabled='O'
+  AND ARRAY(SELECT unnest(e.evttags) ORDER BY 1)=ARRAY['CREATE TABLE','CREATE TABLE AS','SELECT INTO']::text[]
+  AND n.nspname='public' AND p.proname='rls_auto_enable' AND er.rolname='postgres' AND pr.rolname='postgres'
+  AND p.prokind='f' AND p.pronargs=0 AND p.pronargdefaults=0 AND p.prorettype='event_trigger'::regtype
+  AND l.lanname='plpgsql' AND p.prosecdef AND NOT p.proisstrict AND NOT p.proleakproof
+  AND p.provolatile='v' AND p.proparallel='u' AND p.prosupport=0 AND p.proconfig=ARRAY['search_path=pg_catalog']::text[]
+  AND (SELECT count(*) FROM pg_event_trigger WHERE evtfoid=p.oid)=1
+  AND (SELECT count(*) FROM pg_proc WHERE pronamespace=p.pronamespace AND proname=p.proname)=1
+  AND has_function_privilege('anon',p.oid,'EXECUTE') AND has_function_privilege('authenticated',p.oid,'EXECUTE')
+  AND has_function_privilege('service_role',p.oid,'EXECUTE')
+  AND octet_length(replace(p.prosrc,E'\r\n',E'\n'))=953
+  AND encode(sha256(convert_to(replace(p.prosrc,E'\r\n',E'\n'),'UTF8')),'hex')='2782e98b348aca7d6f6f73c420fd78d2e094957dd7a52b0483d4c34f29d2a7a1'
  )
 ) THEN RAISE EXCEPTION 'EMAIL_ATOMIC_UNREVIEWED_DDL_HOOK'; END IF;
  IF EXISTS(SELECT 1 FROM pg_namespace WHERE nspname='mushavo_email_install')
@@ -21385,6 +21402,22 @@ BEGIN
   AND l.lanname='plpgsql' AND NOT p.prosecdef AND NOT p.proisstrict AND NOT p.proleakproof
   AND p.provolatile='v' AND p.proparallel='u' AND p.prosupport=0 AND p.proconfig=ARRAY['search_path=""']::text[]
   AND encode(sha256(convert_to(replace(p.prosrc,E'\r\n',E'\n'),'UTF8')),'hex')=reviewed.body_sha256
+ )
+ AND NOT EXISTS (
+  SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+  JOIN pg_language l ON l.oid=p.prolang JOIN pg_roles er ON er.oid=e.evtowner JOIN pg_roles pr ON pr.oid=p.proowner
+  WHERE p.oid=e.evtfoid AND e.evtname='ensure_rls' AND e.evtevent='ddl_command_end' AND e.evtenabled='O'
+  AND ARRAY(SELECT unnest(e.evttags) ORDER BY 1)=ARRAY['CREATE TABLE','CREATE TABLE AS','SELECT INTO']::text[]
+  AND n.nspname='public' AND p.proname='rls_auto_enable' AND er.rolname='postgres' AND pr.rolname='postgres'
+  AND p.prokind='f' AND p.pronargs=0 AND p.pronargdefaults=0 AND p.prorettype='event_trigger'::regtype
+  AND l.lanname='plpgsql' AND p.prosecdef AND NOT p.proisstrict AND NOT p.proleakproof
+  AND p.provolatile='v' AND p.proparallel='u' AND p.prosupport=0 AND p.proconfig=ARRAY['search_path=pg_catalog']::text[]
+  AND (SELECT count(*) FROM pg_event_trigger WHERE evtfoid=p.oid)=1
+  AND (SELECT count(*) FROM pg_proc WHERE pronamespace=p.pronamespace AND proname=p.proname)=1
+  AND has_function_privilege('anon',p.oid,'EXECUTE') AND has_function_privilege('authenticated',p.oid,'EXECUTE')
+  AND has_function_privilege('service_role',p.oid,'EXECUTE')
+  AND octet_length(replace(p.prosrc,E'\r\n',E'\n'))=953
+  AND encode(sha256(convert_to(replace(p.prosrc,E'\r\n',E'\n'),'UTF8')),'hex')='2782e98b348aca7d6f6f73c420fd78d2e094957dd7a52b0483d4c34f29d2a7a1'
  )
 ) THEN RAISE EXCEPTION 'EMAIL_ATOMIC_UNREVIEWED_DDL_HOOK'; END IF;
  -- This lock serializes cooperative installer calls, not arbitrary application transactions.
@@ -21820,7 +21853,7 @@ BEGIN
   SELECT array_agg(p.oid ORDER BY p.oid) INTO v_targets
     FROM pg_proc p WHERE p.pronamespace='public'::regnamespace
       AND has_function_privilege('authenticated',p.oid,'EXECUTE')
-      AND p.prorettype<>'trigger'::regtype
+      AND p.prorettype NOT IN ('trigger'::regtype,'event_trigger'::regtype)
       AND left(p.proname,11)<>'email_gate_'
       AND p.proname NOT IN ('get_public_plan_catalogue','get_public_signup_currencies','latest_exchange_rate','business_bill_occurrence_date','business_storage_workspace_id');
   IF cardinality(v_targets)<>148 THEN RAISE EXCEPTION 'EMAIL_DATA_GUARD_TARGET_COUNT'; END IF;
@@ -22187,6 +22220,9 @@ GRANT EXECUTE ON FUNCTION public.email_gate_admin_status() TO authenticated;
 $email_component_3$;
  -- FR_ATOMIC_FINAL_ASSERTIONS
  IF (SELECT count(*) FROM pg_policies WHERE policyname='Email verified session required')<>82
+ OR (SELECT count(*) FROM pg_class WHERE relnamespace='mushavo_email_auth'::regnamespace
+     AND relkind='r' AND relrowsecurity AND relforcerowsecurity
+     AND relname IN ('account_state','send_events','challenges','devices','session_proofs'))<>5
  OR (SELECT count(*) FROM pg_proc WHERE pronamespace='public'::regnamespace
      AND position('PERFORM mushavo_email_auth.require_application_session();' in prosrc)>0)<>148
  OR to_regprocedure('public.email_gate_admin_status()') IS NULL

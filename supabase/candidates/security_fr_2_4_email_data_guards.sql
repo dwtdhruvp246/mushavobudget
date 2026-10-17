@@ -25,7 +25,7 @@ BEGIN
   SELECT array_agg(p.oid ORDER BY p.oid) INTO v_targets
     FROM pg_proc p WHERE p.pronamespace='public'::regnamespace
       AND has_function_privilege('authenticated',p.oid,'EXECUTE')
-      AND p.prorettype<>'trigger'::regtype
+      AND p.prorettype NOT IN ('trigger'::regtype,'event_trigger'::regtype)
       AND left(p.proname,11)<>'email_gate_'
       AND p.proname NOT IN ('get_public_plan_catalogue','get_public_signup_currencies','latest_exchange_rate','business_bill_occurrence_date','business_storage_workspace_id');
   IF cardinality(v_targets)<>148 THEN RAISE EXCEPTION 'EMAIL_DATA_GUARD_TARGET_COUNT'; END IF;

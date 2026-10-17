@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.12_LIVE_HOOK_SOURCE_REVIEW",
-  "status": "LOCAL13PASS_ACTUAL_READ_ONLY_HOOK_SOURCE_RECEIPT_PENDING",
+  "status": "OWNER_PINNED_SOURCE_RECEIVED_REVIEWED_FOR_BOUNDED_INSTALLER_COMPATIBILITY",
   "source_parent_commit": "ae2c886f6d14f3fe8ae4cc4a837e2be581c1b6a6",
   "preceding_owner_receipt": "docs/security-audit/security-fr-2-email-atomic-owner-Windows-pass.json",
   "report": "docs/security-audit/SECURITY_FR_2_4_ATOMIC_PASS_AND_LIVE_HOOK_SOURCE_REVIEW.md",
@@ -28,13 +28,13 @@
   "unmatched_or_marker_containing_source_withheld": true,
   "bounded_event_hook_inventory": 20,
   "positive_expected_MD5_substituted_only_in_local_synthetic_fixture": true,
-  "actual_prior_hook_body_known_or_semantically_reviewed": false,
-  "actual_hook_source_receipt_received": false,
+  "actual_prior_hook_body_known_or_semantically_reviewed": true,
+  "actual_hook_source_receipt_received": true,
   "hook_allowlist_installer_migration_or_canonical_schema_changed": false,
   "application_rows_read_by_diagnostic": false,
   "application_or_hook_or_installer_functions_invoked_by_diagnostic": 0,
   "owner_terminal_action_required": false,
-  "owner_SQL_action_required": true,
+  "owner_SQL_action_required": false,
   "owner_SQL_write_action_required": false,
   "owner_credential_or_deployment_action_required": false,
   "actual_hosted_requests": 0,
@@ -43,5 +43,7 @@
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "owner_source_receipt": "docs/security-audit/security-fr-2-email-hook-source-owner-result.json",
+  "reviewed_LF_body_SHA256": "2782e98b348aca7d6f6f73c420fd78d2e094957dd7a52b0483d4c34f29d2a7a1"
 }

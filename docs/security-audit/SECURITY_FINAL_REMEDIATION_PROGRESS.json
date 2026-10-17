@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-17",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E4_15_OWNER_EIGHT_METADATA_MATCHES_REQUIRED_COLUMN_DETAILS_PENDING",
+  "status": "FR2_EMAIL_E4_15_OBSERVED_VARCHAR_COMPATIBLE_LOCAL_REVISED_BASELINE_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE80",
+  "latest_evidence": "FRE81",
   "batches": [
     {
       "id": "FR.1",
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "FR2_EMAIL_E4_15_OWNER_EIGHT_METADATA_MATCHES_REQUIRED_COLUMN_DETAILS_PENDING",
+          "status": "FR2_EMAIL_E4_15_OBSERVED_VARCHAR_COMPATIBLE_LOCAL_REVISED_BASELINE_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -712,7 +712,11 @@
           "email_pre_activation_matching_checks": 8,
           "email_required_column_check_matches": false,
           "email_required_column_types_SQL": "supabase/diagnostics/security_fr_2_4_email_required_column_types.sql",
-          "email_required_column_types_owner_result_received": false
+          "email_required_column_types_owner_result_received": true,
+          "email_required_column_types_owner_receipt": "docs/security-audit/security-fr-2-email-column-types-owner-result.json",
+          "email_reviewed_types_local_tests": 17,
+          "email_reviewed_types_SQL": "supabase/diagnostics/security_fr_2_4_email_pre_activation_reviewed_types.sql",
+          "email_reviewed_types_owner_baseline_received": false
         },
         {
           "id": "FR.2.5",
@@ -782,7 +786,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E4.15_COLUMN_TYPE_REVIEW",
+  "next_step": "FR.2.4.E4.15_REVIEWED_AUTH_COLUMN_BASELINE",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -1492,5 +1496,13 @@
   "FR2_email_required_column_types_contract": "docs/security-audit/security-fr-2-email-column-types-contract.json",
   "FR2_email_required_column_types_report": "docs/security-audit/SECURITY_FR_2_4_STAGING_BASELINE_AND_REQUIRED_COLUMN_TYPE_REVIEW.md",
   "FR2_email_required_column_types_local_tests": 6,
-  "FR2_email_required_column_types_owner_result_received": false
+  "FR2_email_required_column_types_owner_result_received": true,
+  "FR2_email_required_column_types_owner_receipt": "docs/security-audit/security-fr-2-email-column-types-owner-result.json",
+  "FR2_email_required_column_types_owner_checked_UTC": "2026-10-17T16:38:05.244265+00:00",
+  "FR2_email_observed_password_column": "pg_catalog.varchar(255) NULL",
+  "FR2_email_reviewed_type_compatibility_local_tests": 17,
+  "FR2_email_reviewed_types_SQL": "supabase/diagnostics/security_fr_2_4_email_pre_activation_reviewed_types.sql",
+  "FR2_email_reviewed_types_contract": "docs/security-audit/security-fr-2-email-reviewed-types-contract.json",
+  "FR2_email_reviewed_types_report": "docs/security-audit/SECURITY_FR_2_4_REVIEWED_AUTH_COLUMN_COMPATIBILITY.md",
+  "FR2_email_reviewed_types_owner_baseline_received": false
 }

@@ -1,3 +1,9 @@
+# Current checkpoint — E4.15 observed varchar password compatibility passed
+
+17 October2026,FRE81. [Owner nine-column receipt](security-fr-2-email-column-types-owner-result.json) identifies only nullable varchar(255) versus the original text expectation. [Scoped compatibility review](SECURITY_FR_2_4_REVIEWED_AUTH_COLUMN_COMPATIBILITY.md):17actual SQL/metadata cases PASS, original runtime and Auth schema unchanged. [Reviewed read-only baseline](../../supabase/diagnostics/security_fr_2_4_email_pre_activation_reviewed_types.sql),[contract](security-fr-2-email-reviewed-types-contract.json),[checks](security-fr-2-email-reviewed-types-local-checks.json),[manifest](security-fr-2-email-reviewed-types-source-manifest.json). Next is the complete read-only SQL in chat; no Auth change or activation. Prior Windows1525PASS retained; hosted/provider/browser acceptance pending; all findings open,production excluded,APK deferred. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — E4.15 eight staging checks match; exact column details next
 
 17 October2026,FRE80. [Owner metadata receipt](security-fr-2-email-preactivation-owner-result.json) has eight true checks and one false required-column presence/type aggregate. Selected278 routines/166 policies,RLS,hooks and absent email schemas match. [Type review handoff](SECURITY_FR_2_4_STAGING_BASELINE_AND_REQUIRED_COLUMN_TYPE_REVIEW.md),[SQL](../../supabase/diagnostics/security_fr_2_4_email_required_column_types.sql),[contract](security-fr-2-email-column-types-contract.json),[six local query cases](security-fr-2-email-column-types-local-checks.json),[manifest](security-fr-2-email-column-types-source-manifest.json). Next is the read-only SQL in chat; no Auth/runtime changes or activation. Actual types remain unknown. Windows1525PASS retained; all findings open,production excluded,APK deferred. Earlier checkpoints follow.

@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.15_STAGING_METADATA_REFRESH",
-  "status": "OWNER_METADATA_EIGHT_CHECKS_MATCH_EXACT_REQUIRED_COLUMN_CHECK_FALSE_DETAILS_PENDING",
+  "status": "OWNER_PASSWORD_VARCHAR255_OBSERVED_LOCAL_COMPATIBILITY_PASS_REVISED_READ_ONLY_BASELINE_PENDING",
   "source_parent_commit": "76b8718d86a8d45858a41beb9fab4e41dbc1734e",
   "previous_Windows_receipt": "docs/security-audit/security-fr-2-email-regression-corrected-owner-Windows-pass.json",
   "previous_Windows_PASS": 1525,
@@ -40,6 +40,11 @@
   "owner_matching_checks": 8,
   "owner_total_checks": 9,
   "owner_required_column_type_or_presence_check_matches": false,
-  "required_column_actual_types_received": false,
-  "follow_up_SQL": "supabase/diagnostics/security_fr_2_4_email_required_column_types.sql"
+  "required_column_actual_types_received": true,
+  "follow_up_SQL": "supabase/diagnostics/security_fr_2_4_email_pre_activation_reviewed_types.sql",
+  "owner_column_details_receipt": "docs/security-audit/security-fr-2-email-column-types-owner-result.json",
+  "original_diagnostic_expectation_preserved": true,
+  "reviewed_password_column": "pg_catalog.varchar(255) NULL",
+  "reviewed_baseline_SQL": "supabase/diagnostics/security_fr_2_4_email_pre_activation_reviewed_types.sql",
+  "next_contract": "docs/security-audit/security-fr-2-email-reviewed-types-contract.json"
 }

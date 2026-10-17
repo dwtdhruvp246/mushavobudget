@@ -1,3 +1,9 @@
+# Windows result received — FR.2.4.E4.11: 361 PASS, exit 0
+
+17 October 2026, FRE75. [Owner receipt](security-fr-2-email-atomic-owner-Windows-pass.json) records 361/361 PASS, Node v22.17.0/PGlite 0.5.8, 137 source hashes and 57 syntax checks. Exact warning flags are retained: module-type warnings in the first eight groups, none in the final two, and the TypeScript warning only in the prior-entry/Edge group. This supersedes the Windows-pending action below. The next [live hook source review](SECURITY_FR_2_4_ATOMIC_PASS_AND_LIVE_HOOK_SOURCE_REVIEW.md) is read-only and cannot activate the installer. Original FRE74 evidence follows.
+
+---
+
 # FR.2.4.E4.11 — canonical Windows pass; private atomic installer integrated into source
 
 17 October 2026, FRE74. [Owner canonical receipt](security-fr-2-email-canonical-owner-Windows-pass.json): 338/338 PASS, zero FAIL, exit 0, Node v22.17.0/PGlite 0.5.8, 130 matching source hashes and 53 syntax checks. Exact warning flags are retained: module-type warnings in the first eight groups, none in the canonical group, and the TypeScript warning only in the prior-entry/Edge group. This is scoped offline evidence; no hosted acceptance or finding closure.

@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.11_ATOMIC_INSTALLER",
-  "status": "LOCAL361PASS_WINDOWS_PENDING_PRIVATE_REGISTRATION_INTEGRATED_NOT_LIVE_ACTIVATION",
+  "status": "LOCAL_AND_OWNER_WINDOWS361PASS_PRIVATE_ATOMIC_INSTALLER_NOT_LIVE_ACTIVATION",
   "source_parent_commit": "a93190038c71e6a848c8a1843a36f6713f29600a",
   "preceding_owner_receipt": "docs/security-audit/security-fr-2-email-canonical-owner-Windows-pass.json",
   "report": "docs/security-audit/SECURITY_FR_2_4_CANONICAL_PASS_AND_ATOMIC_INSTALLER.md",
@@ -47,8 +47,8 @@
   "hosted_operator_Admin_role_assigned": false,
   "historical_receipts_manifests_and_previous_events_rewritten": false,
   "older_verifiers_reproduce_at_original_commit_pins": true,
-  "owner_Windows_result_received": false,
-  "owner_terminal_action_required": true,
+  "owner_Windows_result_received": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "owner_credential_or_deployment_action_required": false,
   "full_repository_regression_or_CI_verified": false,
@@ -64,5 +64,8 @@
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "owner_Windows_PASS": 361,
+  "owner_Windows_exit_code": 0,
+  "owner_Windows_receipt": "docs/security-audit/security-fr-2-email-atomic-owner-Windows-pass.json"
 }

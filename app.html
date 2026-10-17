@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="referrer" content="no-referrer" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Sign in to manage your Mushavo Budget personal, family, or business workspace." />
     <meta name="theme-color" content="#10b981" />
@@ -25,7 +26,7 @@
     <script src="/pwa.js?v=80" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=112"></script>
+    <script type="module" src="app.js?v=117"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -56,6 +57,9 @@
         </div>
       </section>
 
+      <section id="emailVerificationView" class="setup-panel hidden" aria-label="Email sign-in verification"></section>
+      <section id="adminEmailView" class="setup-panel hidden" aria-label="Admin sign-in verification"></section>
+
       <section id="authView" class="auth-panel hidden" aria-labelledby="authTitle">
         <div class="panel-heading">
           <p class="eyebrow">Mushavo Budget</p>
@@ -70,11 +74,13 @@
           </label>
           <label class="full" for="password">
             Password
-            <input id="password" type="password" autocomplete="current-password" minlength="6" required placeholder="At least 6 characters" />
+            <input id="password" type="password" autocomplete="current-password" required placeholder="Your current password" />
           </label>
           <div class="button-row">
             <button class="primary" type="submit">Sign in</button>
             <a class="button-link" href="signup.html">Create account</a>
+            <a class="button-link" href="auth.html?flow=request-recovery">Forgot password</a>
+            <a class="button-link" href="auth.html?flow=request-confirmation">Resend confirmation</a>
           </div>
           <a class="auth-home-link" href="index.html">Return to the Mushavo Budget website</a>
         </form>
@@ -120,6 +126,8 @@
       </section>
 
       <section id="adminView" class="hidden">
+        <button type="button" data-manage-admin-verification>Check sign-in verification</button>
+        <a class="button-link" href="auth.html?flow=devices">Account security</a>
         <div class="app-shell">
           <div class="mobile-bar">
             <div class="mobile-brand">
@@ -862,6 +870,7 @@
                 </div>
                 <small class="push-privacy-copy">Only reminders for the account signed in on this device will be linked. Test notifications are limited to one request per minute.</small>
               </section>
+              <section class="ledger-panel"><h3>Account security</h3><p>Manage the password and email verification for your signed-in account.</p><a class="button-link" href="auth.html?flow=devices">Manage sign-in security</a><a class="button-link" href="auth.html?flow=change">Change password</a></section>
               <section class="ledger-panel currency-settings-panel">
                 <div class="panel-heading currency-settings-heading"><p class="eyebrow">Currencies</p><h3>Workspace currencies</h3><p class="muted-copy">Choose which currencies this workspace can use. Your original payment amounts will never be changed.</p></div>
                 <form id="workspaceCurrencySettingsForm" class="form-grid currency-settings-form">
@@ -1168,3 +1177,4 @@
     <div id="toast" class="toast hidden" role="status" aria-live="polite" popover="manual"></div>
   </body>
 </html>
+

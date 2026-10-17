@@ -1,0 +1,57 @@
+{
+  "stage_step": "FR.2.4_OPERATOR_IDENTITY_CHECK",
+  "result": "LOCAL_READ_ONLY_OPERATOR_IDENTITY_DIAGNOSTIC_SCOPED_PASS",
+  "migration_count": 54,
+  "node_version": "v24.19.0",
+  "tests": [
+    {
+      "test": "Missing logins reported without creating accounts or implying readiness",
+      "status": "PASS"
+    },
+    {
+      "test": "Actual new-user profile callbacks run; unconfirmed ordinary logins remain pending",
+      "status": "PASS"
+    },
+    {
+      "test": "Two confirmed active isolated ordinary logins qualify only for subsequent private MFA preparation",
+      "status": "PASS"
+    },
+    {
+      "test": "Read-only identity diagnostic preserves full Auth rows",
+      "status": "PASS"
+    },
+    {
+      "test": "Pre-existing platform role blocks ordinary pre-enrollment readiness",
+      "status": "PASS"
+    },
+    {
+      "test": "Shared prior audit identity rejected before account metadata query",
+      "status": "PASS"
+    },
+    {
+      "test": "Same email in both slots rejected before account metadata query",
+      "status": "PASS"
+    },
+    {
+      "test": "Unfilled placeholders rejected before account metadata query",
+      "status": "PASS"
+    },
+    {
+      "test": "Ordinary SQL role rejected before privileged Auth metadata reads",
+      "status": "PASS"
+    },
+    {
+      "test": "Only slot labels and aggregate status returned, without actor identifiers or emails",
+      "status": "PASS"
+    }
+  ],
+  "local_PASS": 10,
+  "local_FAIL": 0,
+  "exit_code": 0,
+  "syntax_checks": 1,
+  "modeled_Auth_Storage_and_confirmed_timestamp_used": true,
+  "actual_Auth_creation_dashboard_signin_MFA_or_email_delivery_verified": false,
+  "new_hosted_requests": 0,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

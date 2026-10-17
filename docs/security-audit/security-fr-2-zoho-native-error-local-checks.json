@@ -1,0 +1,161 @@
+{
+  "date": "2026-10-15",
+  "source_parent_commit": "7e806dd6ae853b9b014ce26065533f9a86e5f0ff",
+  "offline_utility_result": {
+    "stage_step": "FR.2.4.E3.3_PRIVATE_ZOHO_SETUP_OFFLINE",
+    "result": "OFFLINE_ACTUAL_OAUTH_SETUP_HANDLER_AND_PRIVATE_OUTPUT_SCOPED_PASS",
+    "node_version": "v24.19.0",
+    "source_files_SHA256_verified": 8,
+    "syntax_checks": 7,
+    "syntax": [
+      {
+        "file": "scripts/lib/fr-2-zoho-private-setup.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/fr-2-zoho-private-setup.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/verify-fr-2-zoho-private-setup.mjs",
+        "pass": true
+      },
+      {
+        "file": "tests/fr-2-zoho-private-setup.test.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-http.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-zoho.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/offline-test-network.cjs",
+        "pass": true
+      }
+    ],
+    "tests": 29,
+    "pass": 29,
+    "fail": 0,
+    "exit_code": 0,
+    "scope": "ACTUAL_JS_HANDLER_SYNTHETIC_ZOHO_PORTS_CLI_REJECTIONS_AND_POWERSHELL_SOURCE_ASSERTIONS",
+    "Windows_PowerShell_execution_or_DPAPI_encryption_verified": false,
+    "actual_OAuth_Auth_Zoho_or_Cloudflare_HTTP_requests": 0,
+    "actual_email_dispatched": false,
+    "hosted_settings_or_Auth_roles_SQL_or_native_changed": false,
+    "installed_or_live_application_guards_verified": false,
+    "hosted_acceptance": false,
+    "findings_closed": [],
+    "problem_code": null,
+    "APK_update_deferred": true
+  },
+  "actual_Git_archive_checks": {
+    "stage_step": "FR.2.4.E3.3_ARCHIVE_CORRECTION",
+    "result": "ACTUAL_GIT_ARCHIVE_EOL_CORRECTION_SCOPED_PASS",
+    "scope": "REAL_TEMPORARY_GIT_ARCHIVES_WITH_PREVIOUS_AND_SCOPED_ATTRIBUTES_AND_AUTOCRLF_TRUE_FALSE",
+    "checks": 6,
+    "pass": 6,
+    "fail": 0,
+    "exit_code": 0,
+    "archive_results": [
+      {
+        "attributes": "previous",
+        "core_autocrlf": "true",
+        "wrapper_bytes": 18135,
+        "wrapper_SHA256": "5ba52410b9133d1474207a42685366884e93ecd3a57f6ded6bf112a232e7d230",
+        "wrapper_matches_manifest": false
+      },
+      {
+        "attributes": "previous",
+        "core_autocrlf": "false",
+        "wrapper_bytes": 17814,
+        "wrapper_SHA256": "30a4d8481bd678dfdda651a95e0fda1bdbf4cfb2e1293f658bf6ec07440b5c29",
+        "wrapper_matches_manifest": true
+      },
+      {
+        "attributes": "corrected",
+        "core_autocrlf": "true",
+        "wrapper_bytes": 17814,
+        "wrapper_SHA256": "30a4d8481bd678dfdda651a95e0fda1bdbf4cfb2e1293f658bf6ec07440b5c29",
+        "wrapper_matches_manifest": true
+      },
+      {
+        "attributes": "corrected",
+        "core_autocrlf": "false",
+        "wrapper_bytes": 17814,
+        "wrapper_SHA256": "30a4d8481bd678dfdda651a95e0fda1bdbf4cfb2e1293f658bf6ec07440b5c29",
+        "wrapper_matches_manifest": true
+      }
+    ],
+    "corrected_archive_nested_offline_result": {
+      "stage_step": "FR.2.4.E3.3_PRIVATE_ZOHO_SETUP_OFFLINE",
+      "result": "OFFLINE_ACTUAL_OAUTH_SETUP_HANDLER_AND_PRIVATE_OUTPUT_SCOPED_PASS",
+      "node_version": "v24.19.0",
+      "source_files_SHA256_verified": 8,
+      "syntax_checks": 7,
+      "syntax": [
+        {
+          "file": "scripts/lib/fr-2-zoho-private-setup.mjs",
+          "pass": true
+        },
+        {
+          "file": "scripts/fr-2-zoho-private-setup.mjs",
+          "pass": true
+        },
+        {
+          "file": "scripts/verify-fr-2-zoho-private-setup.mjs",
+          "pass": true
+        },
+        {
+          "file": "tests/fr-2-zoho-private-setup.test.mjs",
+          "pass": true
+        },
+        {
+          "file": "supabase/functions/_shared/email-verification-http.mjs",
+          "pass": true
+        },
+        {
+          "file": "supabase/functions/_shared/email-verification-zoho.mjs",
+          "pass": true
+        },
+        {
+          "file": "scripts/offline-test-network.cjs",
+          "pass": true
+        }
+      ],
+      "tests": 29,
+      "pass": 29,
+      "fail": 0,
+      "exit_code": 0,
+      "scope": "ACTUAL_JS_HANDLER_SYNTHETIC_ZOHO_PORTS_CLI_REJECTIONS_AND_POWERSHELL_SOURCE_ASSERTIONS",
+      "Windows_PowerShell_execution_or_DPAPI_encryption_verified": false,
+      "actual_OAuth_Auth_Zoho_or_Cloudflare_HTTP_requests": 0,
+      "actual_email_dispatched": false,
+      "hosted_settings_or_Auth_roles_SQL_or_native_changed": false,
+      "installed_or_live_application_guards_verified": false,
+      "hosted_acceptance": false,
+      "findings_closed": [],
+      "problem_code": null,
+      "APK_update_deferred": true
+    },
+    "node_version": "v24.19.0",
+    "actual_Windows_execution_verified": false,
+    "owner_exported_wrapper_exact_bytes_received": false,
+    "owner_failure_cause_independently_proven": false,
+    "OAuth_Auth_Zoho_or_Cloudflare_requests": 0,
+    "credential_prompts_or_email_dispatch": false,
+    "temporary_fixture_cleanup_completed": true,
+    "hosted_acceptance": false,
+    "findings_closed": [],
+    "problem_code": null
+  },
+  "diagnostic_added_integer_native_error_and_three_path_existence_booleans": true,
+  "process_launcher_or_existing_data_guards_changed": false,
+  "Windows_launch_or_numeric_error_capture_independently_executed_by_assistant": false,
+  "actual_private_provider_requests": 0,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

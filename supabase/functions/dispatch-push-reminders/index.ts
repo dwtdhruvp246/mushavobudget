@@ -2,6 +2,7 @@ import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2.1
 // @ts-types="npm:@types/web-push@3.6.4"
 import webpush from "npm:web-push@3.6.7";
 import { createGuardedPushSender, isBlockedPushDestination } from "../_shared/push-destination.mjs";
+import { prepareReminderPayload } from "../_shared/notification-recipient.mjs";
 
 const sendGuardedPush = createGuardedPushSender(webpush);
 
@@ -356,14 +357,16 @@ Deno.serve(async (request) => {
       let temporaryFailures = 0;
       let permanentFailures = 0;
       const sentAt = new Date().toISOString();
-      const payload = JSON.stringify({
-        type: job.notification_type,
-        title: job.title,
-        body: job.body,
-        tag: `${job.source_type}:${job.source_id}:${job.notification_type}`,
-        sent_at: sentAt,
-        target_url: job.target_url,
-      });
+      // Recheck the current setting after eligibility/subscription lookup.
+      // Queued detailed copy must not survive a prior preview-off change.
+      // This is a send-time snapshot, not recall of an accepted OS notification.
+      const currentPayload = await prepareReminderPayload(serviceClient, job, sentAt);
+      if (!currentPayload) {
+        await cancelJob(serviceClient, job.id, "Payment reminders are disabled.");
+        totals.cancelled += 1;
+        continue;
+      }
+      const payload = JSON.stringify(currentPayload);
 
       for (const subscription of subscriptions as PushSubscriptionRow[]) {
         try {

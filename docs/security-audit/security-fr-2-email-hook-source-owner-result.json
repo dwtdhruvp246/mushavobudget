@@ -1,0 +1,148 @@
+[
+  {
+    "email_live_hook_source_review": {
+      "scope": "READ_ONLY_CATALOG_AND_SINGLE_PINNED_HOOK_SOURCE_NOT_INSTALLATION",
+      "result": "PINNED_HOOK_SOURCE_RETURNED_FOR_REVIEW",
+      "stage_step": "FR.2.4.E4.12_LIVE_HOOK_SOURCE_REVIEW",
+      "checked_UTC": "2026-10-17T13:07:31.096975+00:00",
+      "selected_hook": {
+        "name": "ensure_rls",
+        "tags": [
+          "CREATE TABLE",
+          "CREATE TABLE AS",
+          "SELECT INTO"
+        ],
+        "event": "ddl_command_end",
+        "language": "plpgsql",
+        "hook_owner": "postgres",
+        "lf_body_md5": "99be20677b456ea8d3be47bdd44fb369",
+        "anon_execute": true,
+        "enabled_mode": "O",
+        "function_name": "rls_auto_enable",
+        "lf_body_bytes": 953,
+        "function_owner": "postgres",
+        "lf_body_sha256": "2782e98b348aca7d6f6f73c420fd78d2e094957dd7a52b0483d4c34f29d2a7a1",
+        "function_schema": "public",
+        "security_definer": true,
+        "identity_arguments": "",
+        "search_path_settings": [
+          "search_path=pg_catalog"
+        ],
+        "service_role_execute": true,
+        "authenticated_execute": true,
+        "pinned_source_returned": true,
+        "lf_function_body_for_review": "\nDECLARE\n  cmd record;\nBEGIN\n  FOR cmd IN\n    SELECT *\n    FROM pg_event_trigger_ddl_commands()\n    WHERE command_tag IN ('CREATE TABLE', 'CREATE TABLE AS', 'SELECT INTO')\n      AND object_type IN ('table','partitioned table')\n  LOOP\n     IF cmd.schema_name IS NOT NULL AND cmd.schema_name IN ('public') AND cmd.schema_name NOT IN ('pg_catalog','information_schema') AND cmd.schema_name NOT LIKE 'pg_toast%' AND cmd.schema_name NOT LIKE 'pg_temp%' THEN\n      BEGIN\n        EXECUTE format('alter table if exists %s enable row level security', cmd.object_identity);\n        RAISE LOG 'rls_auto_enable: enabled RLS on %', cmd.object_identity;\n      EXCEPTION\n        WHEN OTHERS THEN\n          RAISE LOG 'rls_auto_enable: failed to enable RLS on %', cmd.object_identity;\n      END;\n     ELSE\n        RAISE LOG 'rls_auto_enable: skip % (either system schema or not in enforced list: %.)', cmd.object_identity, cmd.schema_name;\n     END IF;\n  END LOOP;\nEND;\n"
+      },
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "findings_closed": [],
+      "event_hook_count": 7,
+      "hosted_acceptance": false,
+      "installer_invoked": false,
+      "event_hook_inventory": [
+        {
+          "name": "ensure_rls",
+          "tags": [
+            "CREATE TABLE",
+            "CREATE TABLE AS",
+            "SELECT INTO"
+          ],
+          "event": "ddl_command_end",
+          "hook_owner": "postgres",
+          "lf_body_md5": "99be20677b456ea8d3be47bdd44fb369",
+          "enabled_mode": "O",
+          "function_name": "rls_auto_enable",
+          "function_owner": "postgres",
+          "function_schema": "public"
+        },
+        {
+          "name": "issue_graphql_placeholder",
+          "tags": [
+            "DROP EXTENSION"
+          ],
+          "event": "sql_drop",
+          "hook_owner": "supabase_admin",
+          "lf_body_md5": "a2bc2d00b2cc2f5e8d2d6b8d73e2c360",
+          "enabled_mode": "O",
+          "function_name": "set_graphql_placeholder",
+          "function_owner": "supabase_admin",
+          "function_schema": "extensions"
+        },
+        {
+          "name": "issue_pg_cron_access",
+          "tags": [
+            "CREATE EXTENSION"
+          ],
+          "event": "ddl_command_end",
+          "hook_owner": "supabase_admin",
+          "lf_body_md5": "3a3917aad6ddd66182bf45b7490c3029",
+          "enabled_mode": "O",
+          "function_name": "grant_pg_cron_access",
+          "function_owner": "supabase_admin",
+          "function_schema": "extensions"
+        },
+        {
+          "name": "issue_pg_graphql_access",
+          "tags": [
+            "CREATE EXTENSION"
+          ],
+          "event": "ddl_command_end",
+          "hook_owner": "supabase_admin",
+          "lf_body_md5": "dd3f3e2bb94cff45ef24b9cecb6af1c8",
+          "enabled_mode": "O",
+          "function_name": "grant_pg_graphql_access",
+          "function_owner": "supabase_admin",
+          "function_schema": "extensions"
+        },
+        {
+          "name": "issue_pg_net_access",
+          "tags": [
+            "CREATE EXTENSION"
+          ],
+          "event": "ddl_command_end",
+          "hook_owner": "supabase_admin",
+          "lf_body_md5": "2ee4e6920eeba3068bcfa838105352e2",
+          "enabled_mode": "O",
+          "function_name": "grant_pg_net_access",
+          "function_owner": "supabase_admin",
+          "function_schema": "extensions"
+        },
+        {
+          "name": "pgrst_ddl_watch",
+          "tags": null,
+          "event": "ddl_command_end",
+          "hook_owner": "supabase_admin",
+          "lf_body_md5": "7f27b8118fea5c88b0164331292859e3",
+          "enabled_mode": "O",
+          "function_name": "pgrst_ddl_watch",
+          "function_owner": "supabase_admin",
+          "function_schema": "extensions"
+        },
+        {
+          "name": "pgrst_drop_watch",
+          "tags": null,
+          "event": "sql_drop",
+          "hook_owner": "supabase_admin",
+          "lf_body_md5": "bc09cc3003d66f91844af4cb05e203b7",
+          "enabled_mode": "O",
+          "function_name": "pgrst_drop_watch",
+          "function_owner": "supabase_admin",
+          "function_schema": "extensions"
+        }
+      ],
+      "application_rows_read": false,
+      "transaction_read_only": "on",
+      "selected_hook_bindings": 1,
+      "live_activation_approved": false,
+      "session_replication_role": "origin",
+      "hooks_disabled_or_changed": false,
+      "selected_function_overloads": 1,
+      "event_hook_inventory_truncated": false,
+      "email_backend_namespace_present": false,
+      "private_installer_namespace_present": false,
+      "application_or_hook_functions_invoked": 0,
+      "project_selection_independently_verified": false,
+      "prior_MD5_pin_is_provenance_or_safety_acceptance": false,
+      "rows_roles_grants_Auth_or_settings_persistently_changed": false
+    }
+  }
+]

@@ -1,3 +1,4 @@
+import { PUBLIC_SITE_FILES } from '../scripts/build-public-site.mjs';
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -81,9 +82,9 @@ test("workspace switch hides old Business data before asynchronous loads", () =>
   assert.ok(select.indexOf('showOnly("businessLoading")') < select.indexOf("await Promise.all"));
   assert.match(select, /requestSequence !== workspaceLoadSequence/);
   assert.match(select, /state\.workspace\?\.id !== workspace\.id/);
-  assert.match(workflow, /cp about\.html app-entry\.html app\.html business\.html/);
-  assert.match(workflow, /cp app-entry\.js app\.js admin-plans\.js business\.js/);
-  assert.match(workflow, /cp business\.css/);
+  assert.match(workflow, /node scripts\/build-public-site\.mjs/);
+  for (const asset of ["about.html", "app-entry.html", "app.html", "business.html", "app-entry.js", "app.js", "admin-plans.js", "business.js", "business.css"]) assert.ok(PUBLIC_SITE_FILES.includes(asset), asset + " is shipped by the actual exporter");
+
 });
 
 test("every Business setup control referenced by the script is present", () => {

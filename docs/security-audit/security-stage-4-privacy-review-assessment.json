@@ -1,0 +1,218 @@
+{
+  "status": "REVIEW_ONLY_PUBLICATION_BLOCKED",
+  "publication_allowed": false,
+  "hosted_acceptance": false,
+  "source_data_categories": 14,
+  "source_service_components": 10,
+  "owner_facts_scope": "OWNER_REPORTED_NOT_INDEPENDENTLY_VERIFIED",
+  "blocked_items": [
+    {
+      "code": "CONTACT_WORKFLOW",
+      "action": "PR-R05",
+      "reason": "Owner-assigned contact is not verified privacy-request delivery/fulfillment."
+    },
+    {
+      "code": "TERRITORIES",
+      "action": "PR-R01",
+      "reason": "Country exclusions or applicable-obligation mapping remain unconfirmed."
+    },
+    {
+      "code": "CHILDREN",
+      "action": "PR-R01",
+      "reason": "No-age-restriction intent leaves child data/consent safeguards unresolved."
+    },
+    {
+      "code": "DATA_DF01",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "DATA_DF02",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "DATA_DF03",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "DATA_DF04",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "DATA_DF05",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "DATA_DF06",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "DATA_DF07",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "DATA_DF08",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "DATA_DF09",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "DATA_DF10",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "DATA_DF11",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "DATA_DF12",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "DATA_DF13",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "DATA_DF14",
+      "action": "PR-R03",
+      "reason": "Collection/grounds/retention/access decision and implementation evidence incomplete."
+    },
+    {
+      "code": "PROVIDER_TP01",
+      "action": "PR-R02",
+      "reason": "Actual provider role, configuration, contract, region/transfer or retention evidence incomplete."
+    },
+    {
+      "code": "PROVIDER_TP02",
+      "action": "PR-R02",
+      "reason": "Actual provider role, configuration, contract, region/transfer or retention evidence incomplete."
+    },
+    {
+      "code": "PROVIDER_TP03",
+      "action": "PR-R02",
+      "reason": "Actual provider role, configuration, contract, region/transfer or retention evidence incomplete."
+    },
+    {
+      "code": "PROVIDER_TP04",
+      "action": "PR-R02",
+      "reason": "Actual provider role, configuration, contract, region/transfer or retention evidence incomplete."
+    },
+    {
+      "code": "PROVIDER_TP05",
+      "action": "PR-R02",
+      "reason": "Actual provider role, configuration, contract, region/transfer or retention evidence incomplete."
+    },
+    {
+      "code": "PROVIDER_TP06",
+      "action": "PR-R02",
+      "reason": "Actual provider role, configuration, contract, region/transfer or retention evidence incomplete."
+    },
+    {
+      "code": "PROVIDER_TP07",
+      "action": "PR-R02",
+      "reason": "Actual provider role, configuration, contract, region/transfer or retention evidence incomplete."
+    },
+    {
+      "code": "PROVIDER_TP08",
+      "action": "PR-R02",
+      "reason": "Actual provider role, configuration, contract, region/transfer or retention evidence incomplete."
+    },
+    {
+      "code": "PROVIDER_TP09",
+      "action": "PR-R02",
+      "reason": "Actual provider role, configuration, contract, region/transfer or retention evidence incomplete."
+    },
+    {
+      "code": "PROVIDER_TP10",
+      "action": "PR-R02",
+      "reason": "Actual provider role, configuration, contract, region/transfer or retention evidence incomplete."
+    },
+    {
+      "code": "OPERATOR_DISCLOSURE",
+      "action": "PR-R01",
+      "reason": "Required decision/capability evidence is unresolved or owner-adopted only."
+    },
+    {
+      "code": "REGIONAL_OBLIGATIONS",
+      "action": "PR-R01",
+      "reason": "Required decision/capability evidence is unresolved or owner-adopted only."
+    },
+    {
+      "code": "CHILDREN_SAFEGUARDS",
+      "action": "PR-R01",
+      "reason": "Required decision/capability evidence is unresolved or owner-adopted only."
+    },
+    {
+      "code": "COLLECTION_CHOICES",
+      "action": "PR-R04",
+      "reason": "Required decision/capability evidence is unresolved or owner-adopted only."
+    },
+    {
+      "code": "PRIVACY_REQUESTS",
+      "action": "PR-R05",
+      "reason": "Required decision/capability evidence is unresolved or owner-adopted only."
+    },
+    {
+      "code": "DELETION_RETENTION_IMPLEMENTATION",
+      "action": "PR-R03",
+      "reason": "Required decision/capability evidence is unresolved or owner-adopted only."
+    },
+    {
+      "code": "PUBLIC_LINKS",
+      "action": "PR-R05",
+      "reason": "Required decision/capability evidence is unresolved or owner-adopted only."
+    },
+    {
+      "code": "NATIVE_STORE_LABELS",
+      "action": "PR-R06",
+      "reason": "Required decision/capability evidence is unresolved or owner-adopted only."
+    },
+    {
+      "code": "INDEPENDENT_ACCEPTANCE",
+      "action": "PR-R05",
+      "reason": "Offline declarations require independent owner/hosted/device review; this tool cannot authorize publication."
+    }
+  ],
+  "unresolved_data_ids": [
+    "DF01",
+    "DF02",
+    "DF03",
+    "DF04",
+    "DF05",
+    "DF06",
+    "DF07",
+    "DF08",
+    "DF09",
+    "DF10",
+    "DF11",
+    "DF12",
+    "DF13",
+    "DF14"
+  ],
+  "unresolved_provider_ids": [
+    "TP01",
+    "TP02",
+    "TP03",
+    "TP04",
+    "TP05",
+    "TP06",
+    "TP07",
+    "TP08",
+    "TP09",
+    "TP10"
+  ]
+}

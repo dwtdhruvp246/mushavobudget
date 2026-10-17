@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "stage_step": "8.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "5306aa19adc42654cde1a8f415aa4318a4289321",
+  "scope": "EIGHT_ACTION_ENTRIES_LINKED_TO_EXISTING_FINDINGS_NOT_NEW_FINDING_DEFINITIONS",
+  "actions": [
+    {
+      "id": "ND-R01",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F11",
+        "F05",
+        "F17",
+        "F20"
+      ],
+      "title": "Native transport/permission/registration",
+      "work": "Select and implement accepted native transport/bridge/provider registration and permission/capability handling for actual app/artifact; preserve browser support separation.",
+      "recheck": "Actual supported signed artifact/device/provider registration/permission evidence; ND01/ND08.",
+      "hosted_or_device_acceptance": false
+    },
+    {
+      "id": "ND-R02",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F11",
+        "F14",
+        "F15"
+      ],
+      "title": "Account/device lifecycle and race-safe cleanup",
+      "work": "Reconcile main/Business sign-out, opt-in/disable/recovery and delayed mutation/session switch boundaries; enforce own immutable associations and explicit safe failure recovery/retention.",
+      "recheck": "Direct own/foreign/multiple-device, delayed account switch, logout/revoke/reinstall and cleanup outage cases; ND02/ND08.",
+      "hosted_or_device_acceptance": false
+    },
+    {
+      "id": "ND-R03",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F11",
+        "F20"
+      ],
+      "title": "Current private display and queued preview redaction",
+      "work": "Define actual preview authority, retain generic defaults and revalidate/redact stale queued private copy; handle badges/retained notifications and data retention without inventing a privacy choice.",
+      "recheck": "Actual queued preview-off transition, malformed payload, lock-screen/account-switch and declarations/retention checks; ND03/ND08.",
+      "hosted_or_device_acceptance": false
+    },
+    {
+      "id": "ND-R04",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F11",
+        "F08",
+        "F15"
+      ],
+      "title": "Current server recipient/auth/event assurance",
+      "work": "Align active recipient/role/account checks across test/Admin/reminder senders; preserve cron authentication, cooldown and current source/plan/membership/invitation guards.",
+      "recheck": "Direct staged token/origin/cron/role/suspension/paid/removed/settings/invitation cases; ND04 and AU/AM/Business dependencies.",
+      "hosted_or_device_acceptance": false
+    },
+    {
+      "id": "ND-R05",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F11",
+        "F12",
+        "F15",
+        "F19"
+      ],
+      "title": "Outbox/scheduler/egress/recovery semantics",
+      "work": "Verify accepted partial-device/retry/claim ownership and ambiguity semantics, current timezone recurrence, installed destination guard/runtime and scheduler/operations parity.",
+      "recheck": "Genuine concurrent/reclaim/stale-worker/result-failure/partial-device/provider/cron recovery and F12 compatibility; ND05/ND08.",
+      "hosted_or_device_acceptance": false
+    },
+    {
+      "id": "ND-R06",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F11",
+        "F10",
+        "F14",
+        "F15"
+      ],
+      "title": "Reauthorized notification click and workspace intent",
+      "work": "Preserve safe route normalization and current session/tenant/role/MFA/source checks across existing windows, signed-out/native return and remembered workspace; keep in-app invitations distinct.",
+      "recheck": "Actual own/foreign/stale/deleted/admin/MFA/account-switch/cold click cases; ND06 with IE/NR/AU dependencies.",
+      "hosted_or_device_acceptance": false
+    },
+    {
+      "id": "ND-R07",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F11",
+        "F07",
+        "F14",
+        "F17"
+      ],
+      "title": "Private PWA update/offline and device state",
+      "work": "Preserve network-first connection-required fallback/no private cache, separate worker activation from page reload and guard actual multi-tab/dirty/in-flight/session/resume/native bypass behavior.",
+      "recheck": "Real browser/PWA old/current worker, update failure/offline/private-cache/dirty-work/resume and native artifact cases; ND07/ND08.",
+      "hosted_or_device_acceptance": false
+    },
+    {
+      "id": "ND-R08",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "finding_ids": [
+        "F11",
+        "F12",
+        "F05",
+        "F17",
+        "F19",
+        "F20",
+        "F02"
+      ],
+      "title": "Controlled platform matrix/operations and final acceptance",
+      "work": "Bind exact staging/provider/device identities/roles/retention/disclosures and recoverable fixtures; perform one bounded genuine batch or carry prerequisites, then final remediation/full re-audit.",
+      "recheck": "ND08 and relevant groups; physical delivery/privacy/cleanup/provider/monitor/recovery/rollback/final signed release evidence.",
+      "hosted_or_device_acceptance": false
+    }
+  ],
+  "total": 8,
+  "open": 8,
+  "findings_closed": [],
+  "latest_step": "8.4",
+  "latest_evidence": "S8E05",
+  "source_candidate": {
+    "report": "docs/security-audit/SECURITY_STAGE_8_2_NOTIFICATION_CANDIDATE.md",
+    "receipt": "docs/security-audit/security-stage-8-notification-local-checks.json",
+    "contract": "docs/security-audit/security-stage-8-notification-candidate-contract.json",
+    "partial_source_contribution": [
+      "ND-R02",
+      "ND-R03",
+      "ND-R04"
+    ],
+    "local_cases": 70,
+    "hosted_or_device_acceptance": false,
+    "action_closures": 0
+  },
+  "bounded_readiness": {
+    "report": "docs/security-audit/SECURITY_STAGE_8_3_READINESS_CHECKPOINT.md",
+    "receipt": "docs/security-audit/security-stage-8-notification-readiness.json",
+    "result": "BLOCKED_NOT_RUN",
+    "prerequisite_groups": 6,
+    "planned_grouped_cases": 48,
+    "executed": 0,
+    "action_closures": 0,
+    "final_remediation_and_full_reaudit_required": true
+  },
+  "stage_status": "CLOSED_NOTIFICATION_DEVICE_CHECKPOINT_WITH_CARRY_FORWARD",
+  "completion_report": "docs/security-audit/SECURITY_STAGE_8_COMPLETION_REPORT.md",
+  "final_recheck": "docs/security-audit/security-stage-8-final-recheck.json",
+  "final_remediation_and_full_reaudit_required": true
+}

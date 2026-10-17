@@ -34,6 +34,8 @@ test("a slow report cannot overwrite newer filters or a signed-out session", asy
   };
   const context = {
     state,
+    ensureAdminAssurance: async () => true,
+    adminSession: { ticket: () => () => state.isAdmin },
     $: (selector) => nodes[selector],
     supabase: { rpc: () => new Promise((resolve) => calls.push(resolve)) },
     analyticsFilterValues: () => ({}),
@@ -43,6 +45,7 @@ test("a slow report cannot overwrite newer filters or a signed-out session", asy
   const load = vm.runInNewContext(`let analyticsRequestId = 0;\n${getFunction("loadAdminAnalytics")}\nloadAdminAnalytics`, context);
   const older = load();
   const newer = load();
+  await new Promise(resolve => setImmediate(resolve));
   calls[1]({ date: "new" });
   await newer;
   calls[0]({ date: "old" });
@@ -50,6 +53,7 @@ test("a slow report cannot overwrite newer filters or a signed-out session", asy
   assert.equal(state.adminAnalytics.date, "new");
 
   const logoutRequest = load();
+  await new Promise(resolve => setImmediate(resolve));
   state.isAdmin = false;
   state.adminAnalytics = null;
   calls[2]({ date: "private" });

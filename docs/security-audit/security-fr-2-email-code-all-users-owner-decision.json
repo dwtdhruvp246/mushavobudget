@@ -1,0 +1,26 @@
+{
+  "stage_step": "FR.2.4_EMAIL_CODE_SCOPE_DECISION",
+  "date": "2026-10-15",
+  "source_parent_commit": "64e0c6c003f6ac71f2a36f16cce2b5ee89333a17",
+  "owner_statement": "for all users including admin",
+  "scope": "ALL_CUSTOMER_AND_PLATFORM_ADMIN_USERS",
+  "includes": [
+    "Personal users",
+    "Family owners and members",
+    "Business owners/admins and members",
+    "platform Admin/staff/recovery accounts"
+  ],
+  "seven_day_interval_previously_requested": true,
+  "authenticator_application_not_required_in_selected_product_policy": true,
+  "prior_recommendation_to_keep_mandatory_platform_Admin_authenticator_not_selected": true,
+  "reconfirm_scope_required": false,
+  "policy_selection_confirmed": true,
+  "implementation_or_hosted_acceptance_confirmed": false,
+  "live_Auth_RLS_Admin_guards_not_removed": true,
+  "previous_authenticator_commands_and_factor_review_handoff_on_hold": true,
+  "incomplete_PRIMARY_factor_state_not_verified_or_deleted": true,
+  "no_automatic_account_promotion_or_email_dispatch": true,
+  "production_or_native_changed": false,
+  "findings_closed": [],
+  "APK_update_deferred": true
+}

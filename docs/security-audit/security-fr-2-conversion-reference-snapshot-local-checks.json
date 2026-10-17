@@ -1,0 +1,18 @@
+{
+  "tests": 3,
+  "pass": 3,
+  "fail": 0,
+  "exit_code": 0,
+  "query_sha256": "add814fb0eca68bda9b5552dc6c5cb64901931d49aecf8213abb4237adee6f70",
+  "generated_reference_addition_keeps_original_scoped_Family_checksum": true,
+  "scope": "ACTUAL_READ_ONLY_SNAPSHOT_SQL_IN_MINIMAL_SYNTHETIC_CATALOG_NOT_FULL_MIGRATIONS_OR_HOSTED_DB",
+  "engine": "PGlite 0.5.8 PostgreSQL 18.3 WebAssembly",
+  "fixture_execution": "PASS",
+  "aggregate_mismatch_orphan_classification_verified": true,
+  "retained_two_family_scope_and_snapshot_verified": true,
+  "changed_manual_values_and_empty_scope_detected": true,
+  "raw_identifiers_emails_not_output": true,
+  "hosted_queries_run": 0,
+  "syntax_checks": 1,
+  "default_network_disabled": true
+}

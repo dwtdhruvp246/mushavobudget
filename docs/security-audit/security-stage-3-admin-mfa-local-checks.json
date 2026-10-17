@@ -1,0 +1,55 @@
+{
+  "stage_step": "3.4.2",
+  "source_parent": "9703bcac1731c1f5b68b7c3537ab0e27b3a2ae72",
+  "scope": "OFFLINE_CANDIDATE_ONLY",
+  "database": {
+    "passed": 58,
+    "failed": 0,
+    "migrations": 52,
+    "auth_storage_grants": "MODELED"
+  },
+  "suites": [
+    {
+      "name": "MFA controller and actual Edge handlers with local adapters",
+      "passed": 16,
+      "failed": 0
+    },
+    {
+      "name": "Existing invitation, manual-grant and plan workbench regression",
+      "passed": 16,
+      "failed": 0
+    }
+  ],
+  "total_passed": 90,
+  "failed": 0,
+  "syntax_checks_passed": 3,
+  "candidate_guarded_routines": 36,
+  "candidate_replaced_routines": 30,
+  "candidate_public_policies": 55,
+  "candidate_storage_policies": 3,
+  "hosted_authorization_verified": false,
+  "genuine_totp_or_auth_issued_session_verified": false,
+  "browser_render_verified": false,
+  "native_windows_or_deno_runtime_verified": false,
+  "recovery_exercised_on_hosted_actor": false,
+  "live_email_or_provider_dispatch_executed": false,
+  "production_or_staging_deployment_performed": false,
+  "findings_closed": [],
+  "source_sha256": {
+    "admin-mfa.js": "909fd25b8e364e420be9067f6a0435567d705e914c53e9358b536d0187d81f6e",
+    "app.js": "c598615b13622e8ad3e45dd93a30cc758952e92f0e9edb1c4de9b387f19fcdb1",
+    "app.html": "45120531647fbaf797fa11691db304ac9ba20f2b0ab265facc519ff72405540e",
+    ".github/workflows/pages.yml": "4c494dae6fcb54503e82a9951ef40bca157a1fc931563f14be7de4a303424713",
+    "supabase/candidates/security_stage_3_admin_mfa.sql": "e5f8395bcdfe11a34ed24d783ba6487b4e87d0c11fd45ccbfc39c81594685c38",
+    "supabase/candidates/security_stage_3_admin_mfa_rollback.sql": "87ffe801bbd2955e221bf8d26de52f6e03a814ba462a8cec474f2d36e28b18c1",
+    "supabase/diagnostics/security_stage_3_admin_mfa_readiness.sql": "181224ec6639a3308417626ce9f06a0b70318432485144daa30671ebbab62cef",
+    "supabase/functions/_shared/admin-assurance.mjs": "afd30ba055c453d85f6ad87f43d0ea8903e6ef31b5fe483d877f430076b41278",
+    "supabase/functions/invite-admin-user/index.ts": "c6ab833c9579f8e8559d7b54b3c0a84d85f8752edfc28eaa6c2438838e8fe3d9",
+    "supabase/functions/sync-exchange-rates/index.ts": "0614f2cba2d2de22157e4a5e1e7b96c2421c03d35cc233f6ac072aff409dfa0c",
+    "scripts/lib/stage-3-local-db.mjs": "df8dbe979098465213255247363ad956ac2c61ab4a5f852fcf0d133b8596c3d9",
+    "scripts/build-stage-3-admin-mfa.mjs": "f653e9516b2132babeabc91f203f02416247214ff87e0ab33efb5d52fdcce7f7",
+    "scripts/check-stage-3-admin-mfa.mjs": "55cf5351ae7b40459890283d327e9355eada49ddfc945be6478c9e92ea5fc404",
+    "scripts/verify-stage-3-admin-mfa.mjs": "6de837e79689c0612a89fe093916e10e4c8473e19866ec960af89784873e55df",
+    "tests/stage-3-admin-mfa-ui-edge.test.mjs": "e9f33d067c2ad00e51d70c1ecd0be99a26560eebbd9c6a0a22619e9ebef44f6f"
+  }
+}

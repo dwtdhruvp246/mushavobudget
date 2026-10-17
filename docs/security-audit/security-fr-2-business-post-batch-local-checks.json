@@ -1,0 +1,64 @@
+{
+  "stage_step": "FR.2.3_BUSINESS_POST_BATCH_REVIEW",
+  "result": "LOCAL_POST_BATCH_READ_ONLY_DIAGNOSTIC_SCOPED_PASS",
+  "source_parent_commit": "972c58f763ae425deecf4f849bcfaf72d563be5c",
+  "migration_count": 54,
+  "node_version": "v24.19.0",
+  "tests": [
+    {
+      "test": "Completed Family member-removal and retained manual conversions prepared in local source model",
+      "status": "PASS"
+    },
+    {
+      "test": "Corrected complete source Business batch committed locally:24 scoped PASS and five unavailable groups retained",
+      "status": "PASS"
+    },
+    {
+      "test": "Full read-only diagnostic preserves five records/seven conversions/two old orphan shapes and zero joined mismatches",
+      "status": "PASS"
+    },
+    {
+      "test": "Actual hosted fingerprints reject independently generated synthetic rows instead of accepting matching labels",
+      "status": "PASS"
+    },
+    {
+      "test": "Four local-only substituted fingerprints confirm exact retained rows and unchanged manual original-column projection",
+      "status": "PASS"
+    },
+    {
+      "test": "Expected primary completed synthetic mutations and pristine secondary aggregates distinguished",
+      "status": "PASS"
+    },
+    {
+      "test": "All public application rows/function/trigger/policy metadata remain unchanged after diagnostic",
+      "status": "PASS"
+    },
+    {
+      "test": "Version drift loses exact retained match and fails both dependent fingerprints",
+      "status": "PASS"
+    },
+    {
+      "test": "Ordinary SQL caller rejected before application row reads",
+      "status": "PASS"
+    },
+    {
+      "test": "Diagnostic output excludes actor/row identifiers and claims no hosted acceptance or cleanup authorization",
+      "status": "PASS"
+    }
+  ],
+  "local_PASS": 10,
+  "local_FAIL": 0,
+  "exit_code": 0,
+  "synthetic_Auth_Storage_HTTP_used": true,
+  "hosted_owner_fingerprints_checked_against_local_rows_fail_closed": true,
+  "four_expected_hash_literals_substituted_only_for_positive_local_model": true,
+  "SQL_ASCII": true,
+  "new_hosted_SQL_or_API_requests": 0,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "syntax_checks": 2,
+  "diagnostic_SQL": "supabase/diagnostics/security_fr_2_3_business_post_batch_review.sql",
+  "full_54_source_migrations": true,
+  "public_rows_functions_triggers_policies_before_after_compared": true,
+  "initial_local_attempt_failed": false
+}

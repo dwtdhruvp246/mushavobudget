@@ -1,0 +1,394 @@
+{
+  "schema_version": 1,
+  "stage_step": "7.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "bcb8f055f93cb9c145a0f74556e4bacb39847593",
+  "scope": "PLANNED_GROUPED_COMMERCE_ACCEPTANCE_CONTRACT_NOT_EXECUTED_TESTS",
+  "groups": [
+    {
+      "id": "CO01",
+      "title": "Channel/product/price decisions",
+      "planned_cases": 6
+    },
+    {
+      "id": "CO02",
+      "title": "Manual web/proof/Admin regression",
+      "planned_cases": 6
+    },
+    {
+      "id": "CO03",
+      "title": "Provider proof and ownership binding",
+      "planned_cases": 6
+    },
+    {
+      "id": "CO04",
+      "title": "Event authentication/idempotency/recovery",
+      "planned_cases": 6
+    },
+    {
+      "id": "CO05",
+      "title": "Subscription lifecycle/refund/restore",
+      "planned_cases": 6
+    },
+    {
+      "id": "CO06",
+      "title": "Seats/plan changes/cross-channel consistency",
+      "planned_cases": 6
+    },
+    {
+      "id": "CO07",
+      "title": "Native purchase/manage/restore UX",
+      "planned_cases": 6
+    },
+    {
+      "id": "CO08",
+      "title": "Sandbox/operations/release evidence",
+      "planned_cases": 6
+    }
+  ],
+  "cases": [
+    {
+      "id": "CO01-01",
+      "group": "CO01",
+      "expected": "Selected web/PWA/Play/iOS/sideload route matches actual distribution/storefront/program eligibility; unsupported payment CTAs are unavailable.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO01-02",
+      "group": "CO01",
+      "expected": "Server-approved product/plan/cycle/seat mapping rejects arbitrary product, unsupported quantity and wrong environment/app.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO01-03",
+      "group": "CO01",
+      "expected": "Native displayed localized product/offer price matches provider checkout; client amount/currency or finance FX cannot determine entitlement.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO01-04",
+      "group": "CO01",
+      "expected": "Price/configuration changes invalidate unsubmitted quotes while accepted invoice amounts and future effective terms remain preserved.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO01-05",
+      "group": "CO01",
+      "expected": "Null/unconfigured, zero/no-charge and Free plan paths remain distinct; no implied paid purchase or fake receipt.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO01-06",
+      "group": "CO01",
+      "expected": "Business purchase availability and complete pricing constraints are enforced directly, including stale/cached clients.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO02-01",
+      "group": "CO02",
+      "expected": "Own active workspace can submit valid server-priced Personal/Family requests; foreign/non-owner/anonymous/suspended direct calls fail.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO02-02",
+      "group": "CO02",
+      "expected": "Proof path/object/metadata and private access remain bound to actor/workspace/payment; invalid files and unauthorized signing are denied.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO02-03",
+      "group": "CO02",
+      "expected": "Business pending quote/payment and public-purchase submission retries preserve one invoice/request and accepted quote identity.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO02-04",
+      "group": "CO02",
+      "expected": "Approved/rejected review replay has no duplicate financial or entitlement effect; exact allowed staff roles and required MFA are enforced.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO02-05",
+      "group": "CO02",
+      "expected": "Business self-review restriction, suspension and invoice/workspace/owner binding hold through private and public review delegation.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO02-06",
+      "group": "CO02",
+      "expected": "Authorized manual/test grants retain bounded dates/reason/audit and create no fabricated provider purchase or payment receipt.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO03-01",
+      "group": "CO03",
+      "expected": "Genuine selected sandbox purchase is verified by the trusted backend/provider before a server entitlement is granted.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO03-02",
+      "group": "CO03",
+      "expected": "Forged client success, screenshot, JSON verified flag or unverified JWS/token creates no store entitlement.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO03-03",
+      "group": "CO03",
+      "expected": "Wrong package/bundle/product/environment, invalid signing chain/signature or untrusted provider response is rejected.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO03-04",
+      "group": "CO03",
+      "expected": "Purchase/transaction is bound to server-approved account/workspace intent; wrong account, email alias or attacker-selected workspace is denied.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO03-05",
+      "group": "CO03",
+      "expected": "Pending/failed/canceled purchase yields the correct non-grant state; repeated client callback cannot add extra time or capacity.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO03-06",
+      "group": "CO03",
+      "expected": "Renewal/linked-token/transaction chain retains one rightful owner; cross-account reuse and mistaken source transfer are rejected.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO04-01",
+      "group": "CO04",
+      "expected": "Google push receiver verifies configured JWT/claims and re-fetches authoritative purchase state before projecting entitlements.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO04-02",
+      "group": "CO04",
+      "expected": "Apple signed notification/transaction/renewal data is verified for selected environment and app; altered payload is rejected.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO04-03",
+      "group": "CO04",
+      "expected": "Any selected web-provider callback follows its own actual raw-body/signature/replay protocol; no generic trust-by-body.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO04-04",
+      "group": "CO04",
+      "expected": "Duplicate/reordered notifications and concurrent client/worker claims preserve one logical transition and do not extend time twice.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO04-05",
+      "group": "CO04",
+      "expected": "Provider timeout, acknowledgment ambiguity and partial database failure retain durable retry/reconciliation without false completion.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO04-06",
+      "group": "CO04",
+      "expected": "Transport message dedup and business purchase-chain state are separate; forged old events cannot roll back a newer accepted state.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO05-01",
+      "group": "CO05",
+      "expected": "Renewal updates the server-derived entitlement window once; server times and verified status override caller timestamps.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO05-02",
+      "group": "CO05",
+      "expected": "Cancellation preserves access through the legitimate paid term where applicable; expiry removes only the paid entitlement.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO05-03",
+      "group": "CO05",
+      "expected": "Grace/hold/paused/recovered states follow the chosen provider and approved product policy across web/native.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO05-04",
+      "group": "CO05",
+      "expected": "Verified refund/revocation or chargeback updates the right purchase source and capacity without deleting finance records.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO05-05",
+      "group": "CO05",
+      "expected": "Restore on a new device/reinstall or account switch reconciles rightful ownership without minting a second purchase.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO05-06",
+      "group": "CO05",
+      "expected": "Concurrent manual grant/store recovery, expiry and suspension follow explicit source precedence and do not undo account suspension.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO06-01",
+      "group": "CO06",
+      "expected": "Family and Business included/extra seat mappings preserve owner counts, accepted members and unexpired reserved invitations.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO06-02",
+      "group": "CO06",
+      "expected": "Existing Family anchored pricing and Business remaining-term fractions remain correct for manual web routes and old accepted invoices.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO06-03",
+      "group": "CO06",
+      "expected": "Native seat/upgrade/downgrade charge/effective date uses approved provider product rules rather than blindly copying manual proration.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO06-04",
+      "group": "CO06",
+      "expected": "Scheduled reduction retains current access until effective boundary and prevents new reservations above the approved next capacity.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO06-05",
+      "group": "CO06",
+      "expected": "Multiple workspaces, ownership transfer and overlapping web/store subscriptions follow explicit binding/precedence without duplicate benefits.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO06-06",
+      "group": "CO06",
+      "expected": "Removed member or expired source cannot buy/transfer/refund another workspace purchase; shared access remains separate from member's own plan.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO07-01",
+      "group": "CO07",
+      "expected": "Correct approved native purchase or qualifying consumption-only flow is shown for the verified channel/storefront.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO07-02",
+      "group": "CO07",
+      "expected": "Permitted native billing bridge/product query/purchase result works on a final test build; WebView manual checkout is not silently shipped as store billing.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO07-03",
+      "group": "CO07",
+      "expected": "Purchase cancellation/network interruption/process death and relaunch reconcile server state without showing unverified success.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO07-04",
+      "group": "CO07",
+      "expected": "Manage/cancel/restore surfaces and required price/renewal disclosures refer to the actual selected store plan and current account.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO07-05",
+      "group": "CO07",
+      "expected": "Deep link/callback to purchase or restored subscription preserves identity, role/MFA/tenant restrictions and prior workspace selection.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO07-06",
+      "group": "CO07",
+      "expected": "Older/offline/cached clients cannot expose unsupported payment routes or override backend entitlement; valid existing web access remains usable.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO08-01",
+      "group": "CO08",
+      "expected": "Exact staged source/schema/grants/providers/products/settings and recoverable isolated actors are verified before the accepted batch.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO08-02",
+      "group": "CO08",
+      "expected": "Supported provider keys/service accounts/certificates remain server-only with appropriate roles, rotation and separate sandbox/production boundaries.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO08-03",
+      "group": "CO08",
+      "expected": "Authenticated processing budgets, monitoring, durable reconciliation and recovery drills detect missing/misordered events without raw proof/token leakage.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO08-04",
+      "group": "CO08",
+      "expected": "Ledger/refund/retention/deletion and operator/channel/terms/disclosure decisions align with actual collected data and provider contracts.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO08-05",
+      "group": "CO08",
+      "expected": "Final signed native artifact contains approved SDK/channel flows; store sandbox purchase/restore/refund/renewal evidence is retained at correct scope.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "CO08-06",
+      "group": "CO08",
+      "expected": "Rollback preserves purchases/invoices/entitlement attribution and retained synthetic fixtures; final residual resolution/full re-audit remains required.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    }
+  ],
+  "planned_grouped_cases": 48,
+  "hosted_or_store_sandbox_cases_run": 0,
+  "device_cases_run": 0,
+  "overlap_with_prior_AU_AM_Business_UF_NR_requirements": true,
+  "counts_not_additive_unique_global_controls": true,
+  "hosted_acceptance": false,
+  "real_charges_performed": false
+}

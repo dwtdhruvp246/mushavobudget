@@ -1,0 +1,555 @@
+{
+  "schema_version": 1,
+  "stage_step": "FR.2.1",
+  "evidence_id": "FRE12",
+  "record_parent_commit": "36e4af77905354acbd9bd59cfbe747dacce5ea63",
+  "scope": "OWNER_EXECUTED_PRIVILEGED_READ_ONLY_SELECTED_METADATA_AND_AGGREGATE_COUNTS_NOT_AUTHORIZATION_ACCEPTANCE",
+  "attachment_name": "Pasted text(20261013-194956).txt",
+  "attachment_sha256": "3e40cbd8560227bb4a02c1cdd28d21e0d2ed4615aaa74283f93bc33204fff3d4",
+  "owner_receipt": {
+    "scope": "READ_ONLY_SELECTED_CATALOG_AND_AGGREGATE_COUNTS_NOT_AUTHORIZATION_ACCEPTANCE",
+    "source_pin": "12286dcbade07309bfb8ffe919224252f6cb8bff",
+    "stage_step": "FR.2.1",
+    "checked_UTC": "2026-10-13T19:49:45.300Z",
+    "target_project": "dczlddwbtgvfdujgcitb",
+    "findings_closed": [],
+    "selected_tables": [
+      {
+        "name": "budget_workspaces",
+        "present": true,
+        "force_rls": false,
+        "rls_enabled": true
+      },
+      {
+        "name": "business_member_permissions",
+        "present": true,
+        "force_rls": false,
+        "rls_enabled": true
+      },
+      {
+        "name": "business_member_scopes",
+        "present": true,
+        "force_rls": false,
+        "rls_enabled": true
+      },
+      {
+        "name": "business_role_permissions",
+        "present": true,
+        "force_rls": false,
+        "rls_enabled": true
+      },
+      {
+        "name": "payment_conversions",
+        "present": true,
+        "force_rls": false,
+        "rls_enabled": true
+      },
+      {
+        "name": "payment_items",
+        "present": true,
+        "force_rls": false,
+        "rls_enabled": true
+      },
+      {
+        "name": "payment_records",
+        "present": true,
+        "force_rls": false,
+        "rls_enabled": true
+      },
+      {
+        "name": "workspace_invitations",
+        "present": true,
+        "force_rls": false,
+        "rls_enabled": true
+      },
+      {
+        "name": "workspace_members",
+        "present": true,
+        "force_rls": false,
+        "rls_enabled": true
+      }
+    ],
+    "hosted_acceptance": false,
+    "operator_metadata": {
+      "active_super_users_with_verified_totp": 0
+    },
+    "selected_triggers": [
+      {
+        "present": true,
+        "event_bits": 23,
+        "enabled_mode": "O",
+        "trigger_name": "set_payment_outbox_workspace_context_trigger",
+        "function_name": "set_payment_outbox_workspace_context",
+        "relation_name": "notification_outbox",
+        "update_columns": [
+          "workspace_id",
+          "source_type",
+          "source_id",
+          "title",
+          "target_url"
+        ],
+        "function_schema": "public",
+        "empty_update_column_list": false
+      },
+      {
+        "present": true,
+        "event_bits": 23,
+        "enabled_mode": "O",
+        "trigger_name": "z_guard_payment_item_write_trigger",
+        "function_name": "guard_workspace_finance_write",
+        "relation_name": "payment_items",
+        "update_columns": [],
+        "function_schema": "public",
+        "empty_update_column_list": true
+      },
+      {
+        "present": true,
+        "event_bits": 31,
+        "enabled_mode": "O",
+        "trigger_name": "guard_payment_record_write_trigger",
+        "function_name": "guard_workspace_finance_write",
+        "relation_name": "payment_records",
+        "update_columns": [],
+        "function_schema": "public",
+        "empty_update_column_list": true
+      },
+      {
+        "present": true,
+        "event_bits": 23,
+        "enabled_mode": "O",
+        "trigger_name": "sync_payment_record_workspace_trigger",
+        "function_name": "sync_payment_record_workspace",
+        "relation_name": "payment_records",
+        "update_columns": [
+          "payment_item_id"
+        ],
+        "function_schema": "public",
+        "empty_update_column_list": false
+      }
+    ],
+    "selected_functions": [
+      {
+        "name": "guard_workspace_finance_write",
+        "present": true,
+        "language": "plpgsql",
+        "return_type": "trigger",
+        "anon_execute": true,
+        "lf_body_matches": true,
+        "security_definer": true,
+        "observed_lf_body_md5": "783883ce4af23615f768a0990b6f2478",
+        "reviewed_lf_body_md5": "783883ce4af23615f768a0990b6f2478",
+        "reviewed_search_path": true,
+        "authenticated_execute": true
+      },
+      {
+        "name": "set_payment_outbox_workspace_context",
+        "present": true,
+        "language": "plpgsql",
+        "return_type": "trigger",
+        "anon_execute": false,
+        "lf_body_matches": false,
+        "security_definer": true,
+        "observed_lf_body_md5": "12f6ae6147b24860005e0cd6b4e59a2a",
+        "reviewed_lf_body_md5": "85794a38ffbe61b56bab8aff4b0a3319",
+        "reviewed_search_path": true,
+        "authenticated_execute": false
+      },
+      {
+        "name": "sync_payment_record_workspace",
+        "present": true,
+        "language": "plpgsql",
+        "return_type": "trigger",
+        "anon_execute": true,
+        "lf_body_matches": true,
+        "security_definer": true,
+        "observed_lf_body_md5": "8f568f342d4e928b4c27437ba7f544e5",
+        "reviewed_lf_body_md5": "8f568f342d4e928b4c27437ba7f544e5",
+        "reviewed_search_path": true,
+        "authenticated_execute": true
+      }
+    ],
+    "transaction_read_only": "on",
+    "executing_database_role": "postgres",
+    "record_consistency_counts": {
+      "records_total": 5,
+      "records_without_parent": 0,
+      "parent_workspace_mismatches": 1,
+      "records_with_null_workspace": 0
+    },
+    "application_routines_invoked": 0,
+    "selected_policy_fingerprints": [
+      {
+        "cmd": "ALL",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "tablename": "budget_workspaces",
+        "using_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "permissive": "RESTRICTIVE",
+        "policyname": "Account must be active"
+      },
+      {
+        "cmd": "UPDATE",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "7d7795d2dc227044c4ef16a89a5d7029",
+        "tablename": "budget_workspaces",
+        "using_md5": "7d7795d2dc227044c4ef16a89a5d7029",
+        "permissive": "RESTRICTIVE",
+        "policyname": "Business workspace updates require protected RPC"
+      },
+      {
+        "cmd": "SELECT",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "tablename": "budget_workspaces",
+        "using_md5": "8b6ad517cd58151282a00ac490f6776a",
+        "permissive": "PERMISSIVE",
+        "policyname": "Members can read authorized workspaces"
+      },
+      {
+        "cmd": "UPDATE",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "6abdaadbc4c8abc379d39a146fe58a48",
+        "tablename": "budget_workspaces",
+        "using_md5": "6abdaadbc4c8abc379d39a146fe58a48",
+        "permissive": "PERMISSIVE",
+        "policyname": "Owners and admins can update workspaces"
+      },
+      {
+        "cmd": "ALL",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "tablename": "business_member_permissions",
+        "using_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "permissive": "RESTRICTIVE",
+        "policyname": "Account must be active"
+      },
+      {
+        "cmd": "SELECT",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "tablename": "business_member_permissions",
+        "using_md5": "d30a20917370bc42bced131d45fa834e",
+        "permissive": "PERMISSIVE",
+        "policyname": "Business members can read permitted member overrides"
+      },
+      {
+        "cmd": "ALL",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "tablename": "business_member_scopes",
+        "using_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "permissive": "RESTRICTIVE",
+        "policyname": "Account must be active"
+      },
+      {
+        "cmd": "SELECT",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "tablename": "business_member_scopes",
+        "using_md5": "45f25717340cf0b8c2c6d9a5d4713d12",
+        "permissive": "PERMISSIVE",
+        "policyname": "Business members can read permitted scopes"
+      },
+      {
+        "cmd": "ALL",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "tablename": "business_role_permissions",
+        "using_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "permissive": "RESTRICTIVE",
+        "policyname": "Account must be active"
+      },
+      {
+        "cmd": "SELECT",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "tablename": "business_role_permissions",
+        "using_md5": "7f2380987d01f9eddc1825e5ee0f98af",
+        "permissive": "PERMISSIVE",
+        "policyname": "Business members can read role permissions"
+      },
+      {
+        "cmd": "SELECT",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "tablename": "payment_conversions",
+        "using_md5": "0f8278e09340c34fd7c74403d9387a2f",
+        "permissive": "PERMISSIVE",
+        "policyname": "Authorized users can read payment conversions"
+      },
+      {
+        "cmd": "ALL",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "tablename": "payment_items",
+        "using_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "permissive": "RESTRICTIVE",
+        "policyname": "Account must be active"
+      },
+      {
+        "cmd": "INSERT",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "4b21cf2b77454b79d9a5313deab22751",
+        "tablename": "payment_items",
+        "using_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "permissive": "PERMISSIVE",
+        "policyname": "Household owners can create payment items"
+      },
+      {
+        "cmd": "DELETE",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "tablename": "payment_items",
+        "using_md5": "9c2614fcf3877ff655935d14c2adb919",
+        "permissive": "PERMISSIVE",
+        "policyname": "Household owners can delete payment items"
+      },
+      {
+        "cmd": "UPDATE",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "290c725e0fb2c1c69624cb3cd8f00bea",
+        "tablename": "payment_items",
+        "using_md5": "29e530d79384344f5bb8447dd0e60704",
+        "permissive": "PERMISSIVE",
+        "policyname": "Household owners can update payment items"
+      },
+      {
+        "cmd": "SELECT",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "tablename": "payment_items",
+        "using_md5": "867572036b19568384171098dd889fb2",
+        "permissive": "PERMISSIVE",
+        "policyname": "Household participants can read payment items"
+      },
+      {
+        "cmd": "ALL",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "tablename": "payment_records",
+        "using_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "permissive": "RESTRICTIVE",
+        "policyname": "Account must be active"
+      },
+      {
+        "cmd": "DELETE",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "tablename": "payment_records",
+        "using_md5": "e5c4afc2546788d8440fa463f3d7fd65",
+        "permissive": "PERMISSIVE",
+        "policyname": "Household owners can delete payment records"
+      },
+      {
+        "cmd": "UPDATE",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "cac466f2e233ddb7f2965918707a7080",
+        "tablename": "payment_records",
+        "using_md5": "c5116703e93ac22c3f49e0184eea33b2",
+        "permissive": "PERMISSIVE",
+        "policyname": "Household owners can update payment records"
+      },
+      {
+        "cmd": "INSERT",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "97a729a5b6f83ae0e684aad923669b89",
+        "tablename": "payment_records",
+        "using_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "permissive": "PERMISSIVE",
+        "policyname": "Household participants can create payment records"
+      },
+      {
+        "cmd": "SELECT",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "tablename": "payment_records",
+        "using_md5": "867572036b19568384171098dd889fb2",
+        "permissive": "PERMISSIVE",
+        "policyname": "Household participants can read payment records"
+      },
+      {
+        "cmd": "ALL",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "tablename": "workspace_invitations",
+        "using_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "permissive": "RESTRICTIVE",
+        "policyname": "Account must be active"
+      },
+      {
+        "cmd": "SELECT",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "tablename": "workspace_invitations",
+        "using_md5": "060426b44230d00b71bde4ec31dd456e",
+        "permissive": "PERMISSIVE",
+        "policyname": "Invitation participants can read workspace invitations"
+      },
+      {
+        "cmd": "ALL",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "tablename": "workspace_members",
+        "using_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+        "permissive": "RESTRICTIVE",
+        "policyname": "Account must be active"
+      },
+      {
+        "cmd": "DELETE",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "tablename": "workspace_members",
+        "using_md5": "4db1e8d864ccdf42353e5749dec1f07f",
+        "permissive": "RESTRICTIVE",
+        "policyname": "Business membership deletes require protected RPC"
+      },
+      {
+        "cmd": "INSERT",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "4db1e8d864ccdf42353e5749dec1f07f",
+        "tablename": "workspace_members",
+        "using_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "permissive": "RESTRICTIVE",
+        "policyname": "Business membership inserts require protected RPC"
+      },
+      {
+        "cmd": "SELECT",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "tablename": "workspace_members",
+        "using_md5": "218ca5aa185769206482109a86477f13",
+        "permissive": "RESTRICTIVE",
+        "policyname": "Business membership requires active membership"
+      },
+      {
+        "cmd": "UPDATE",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "4db1e8d864ccdf42353e5749dec1f07f",
+        "tablename": "workspace_members",
+        "using_md5": "4db1e8d864ccdf42353e5749dec1f07f",
+        "permissive": "RESTRICTIVE",
+        "policyname": "Business membership updates require protected RPC"
+      },
+      {
+        "cmd": "SELECT",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "tablename": "workspace_members",
+        "using_md5": "ba2823dd60e6de5e49b6e11c6eba32f7",
+        "permissive": "PERMISSIVE",
+        "policyname": "Members can read workspace membership"
+      },
+      {
+        "cmd": "ALL",
+        "roles": [
+          "authenticated"
+        ],
+        "check_md5": "4547ec689a59ab730158913494fc3c0e",
+        "tablename": "workspace_members",
+        "using_md5": "4547ec689a59ab730158913494fc3c0e",
+        "permissive": "PERMISSIVE",
+        "policyname": "Owners can manage workspace membership"
+      }
+    ],
+    "conversion_consistency_counts": {
+      "conversions_without_record": 0,
+      "record_workspace_mismatches": 1,
+      "payment_record_conversions_total": 5
+    },
+    "admin_candidate_helpers_present": 0,
+    "Auth_settings_or_recovery_verified": false,
+    "project_selection_independently_verified": false,
+    "rows_accounts_factors_or_permissions_changed": false,
+    "raw_rows_function_bodies_emails_or_secrets_printed": false
+  },
+  "reconciliation": {
+    "valid_complete_one_row_CSV_and_JSON": true,
+    "selected_functions": 3,
+    "LF_source_body_matches": 2,
+    "LF_source_body_mismatches": 1,
+    "mismatch_names": [
+      "set_payment_outbox_workspace_context"
+    ],
+    "selected_trigger_rows": 4,
+    "selected_trigger_presence_origin_enablement_and_expected_associations_match": true,
+    "record_sync_UPDATE_columns": [
+      "payment_item_id"
+    ],
+    "record_sync_workspace_id_column_coverage_missing": true,
+    "selected_relation_presence_and_RLS_flags": 9,
+    "selected_policy_fingerprints": 30,
+    "policy_full_58_parity_or_semantics_verified": false,
+    "aggregate_parent_record_workspace_mismatches": 1,
+    "aggregate_record_conversion_workspace_mismatches": 1,
+    "affected_row_provenance_or_same_pair_verified": false,
+    "active_verified_totp_super_operators": 0,
+    "candidate_Admin_MFA_helpers_present": 0,
+    "controlled_operator_recovery_or_genuine_AAL2_verified": false,
+    "new_authorization_API_cases_run": 0,
+    "assistant_new_SQL_HTTP_or_account_mutations": 0,
+    "routine_EXECUTE_metadata_not_direct_HTTP_exploit_proof": true
+  },
+  "historical_repair_or_fixture_deletion_performed": false,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "findings_closed": []
+}

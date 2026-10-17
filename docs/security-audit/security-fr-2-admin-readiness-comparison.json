@@ -1,0 +1,37 @@
+{
+  "stage_step": "FR.2.4_ADMIN_READINESS_COMPARISON",
+  "owner_receipt": "docs/security-audit/security-fr-2-admin-readiness-owner-result.json",
+  "uploaded_receipt_SHA256": "82d923076894fb70560f90f16b84e3625dbf40981f209c5da0d8c129842736bd",
+  "owner_checked_UTC": "2026-10-15T04:40:09.814675+00:00",
+  "source_parent_commit": "e13b4f48cda563eba8d4cbe3253d31d45ad5493d",
+  "owner_server_version": "17.11",
+  "source_model_server_version": "18.3",
+  "source_model": "docs/security-audit/security-fr-2-admin-readiness-source-model.json",
+  "result": "ALL_SELECTED_ROUTINE_POLICY_PROJECTIONS_MATCH_OPERATOR_RECOVERY_PREREQUISITES_UNAVAILABLE",
+  "routine_fingerprints": {
+    "source": 36,
+    "owner": 36,
+    "exact_matches": 36,
+    "mismatches": 0,
+    "missing": [],
+    "extra": []
+  },
+  "policy_fingerprints": {
+    "source": 58,
+    "owner": 58,
+    "exact_matches": 58,
+    "mismatches": 0,
+    "missing": [],
+    "extra": []
+  },
+  "selected_effective_execute_counts_match_source": true,
+  "current_selected_routine_projection_mismatches": 0,
+  "current_selected_policy_projection_mismatches": 0,
+  "active_verified_super_operator_count": 0,
+  "candidate_helper_overloads": 0,
+  "shared_audit_actors_with_platform_role": 0,
+  "source_metadata_scoped_parity": true,
+  "genuine_Admin_authorization_or_complete_ACL_or_recovery_acceptance": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

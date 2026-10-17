@@ -2,6 +2,7 @@ import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2.1
 // @ts-types="npm:@types/web-push@3.6.4"
 import webpush from "npm:web-push@3.6.7";
 import { createGuardedPushSender, isBlockedPushDestination } from "../_shared/push-destination.mjs";
+import { activeNotificationRecipient } from "../_shared/notification-recipient.mjs";
 
 const sendGuardedPush = createGuardedPushSender(webpush);
 
@@ -72,6 +73,9 @@ async function validateAdminJob(
   if (adminError) throw new Error(`admin_lookup:${adminError.code || "database_error"}`);
   if (!admin || !permittedRoles(job.source_type).includes(admin.role)) {
     return { valid: false, reason: "Recipient no longer has access to this admin alert." };
+  }
+  if (!await activeNotificationRecipient(serviceClient, job.user_id)) {
+    return { valid: false, reason: "Recipient account is not active." };
   }
 
   const { data: notification, error: notificationError } = await serviceClient

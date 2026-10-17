@@ -1,4 +1,10 @@
 -- Mushavo Budget complete Supabase schema
+-- Generated from the ordered files in supabase/migrations.
+-- Check with: node scripts/build-canonical-schema.mjs --check
+-- This bootstrap contains historical data/DDL transitions; it is not a live repair script.
+
+-- BEGIN MIGRATION 20260901061500_currencyapi_multicurrency.sql
+-- Mushavo Budget complete Supabase schema
 create extension if not exists pgcrypto;
 
 create table if not exists public.profiles (
@@ -275,8 +281,8 @@ create table if not exists public.payment_items (
   category text not null default 'Other',
   amount numeric(12, 2) not null check (amount > 0),
   currency text not null default 'USD' check (currency ~ '^[A-Z]{3}$'),
-  recurrence_type text not null default 'monthly' check (recurrence_type in ('once', 'monthly', 'quarterly', 'yearly', 'custom', 'custom_days')),
-  recurrence_interval integer not null default 1 check (recurrence_interval between 1 and 3650),
+  recurrence_type text not null default 'monthly' check (recurrence_type in ('once', 'monthly', 'quarterly', 'yearly', 'custom')),
+  recurrence_interval integer not null default 1 check (recurrence_interval between 1 and 24),
   due_day integer not null default 1 check (due_day between 1 and 31),
   start_date date not null default current_date,
   end_date date,
@@ -308,16 +314,6 @@ alter table public.payment_items
     (visibility = 'personal' and family_id is null and responsible_member_id is null)
     or
     (visibility = 'family' and family_id is not null)
-  );
-
-alter table public.payment_items
-  drop constraint if exists payment_items_recurrence_type_check,
-  add constraint payment_items_recurrence_type_check check (
-    recurrence_type in ('once', 'monthly', 'quarterly', 'yearly', 'custom', 'custom_days')
-  ),
-  drop constraint if exists payment_items_recurrence_interval_check,
-  add constraint payment_items_recurrence_interval_check check (
-    recurrence_interval between 1 and 3650
   );
 
 create table if not exists public.payment_records (
@@ -1782,7 +1778,17 @@ using (
 drop policy if exists "Invitees can respond to invitations" on public.family_invitations;
 
 drop policy if exists "Family owners can cancel invitations" on public.family_invitations;
-revoke delete on public.family_invitations from authenticated;
+create policy "Family owners can cancel invitations"
+on public.family_invitations for delete
+to authenticated
+using (
+  invited_by = (select auth.uid())
+  or exists (
+    select 1
+    from public.app_admins
+    where app_admins.user_id = (select auth.uid())
+  )
+);
 
 drop policy if exists "Users can read own notifications" on public.notifications;
 create policy "Users can read own notifications"
@@ -2065,13 +2071,6 @@ create table if not exists public.plans (
   updated_at timestamptz not null default now()
 );
 
-alter table public.plans
-  add column if not exists marketing_summary text not null default '',
-  add column if not exists is_public boolean not null default false,
-  add column if not exists is_featured boolean not null default false,
-  add column if not exists available_for_purchase boolean not null default true,
-  add column if not exists cta_label text not null default 'Choose plan';
-
 create table if not exists public.plan_prices (
   id uuid primary key default gen_random_uuid(),
   plan_id uuid not null references public.plans(id) on delete cascade,
@@ -2245,7 +2244,7 @@ values
   ('free', 'Free', 'Five active personal payment items with core tracking.', 'personal', true, 10),
   ('personal', 'Personal', 'Unlimited personal payments and full Finance analytics.', 'personal', true, 20),
   ('household', 'Household', 'Shared household finance for four people, with additional seats available.', 'household', true, 30),
-  ('business', 'Business', 'A dedicated finance workspace for businesses is coming soon.', 'business', true, 40)
+  ('business', 'Business', 'Team budgeting and expense control for an owner plus five team members.', 'business', true, 40)
 on conflict (code) do update
 set display_name = excluded.display_name,
     description = excluded.description,
@@ -2275,7 +2274,7 @@ from public.plans
 cross join lateral (
   values
     ('active_planned_payments', case when plans.code = 'free' then 5 else null end),
-    ('included_member_seats', case plans.code when 'free' then 1 when 'personal' then 1 when 'household' then 4 when 'business' then null end),
+    ('included_member_seats', case plans.code when 'free' then 1 when 'personal' then 1 when 'household' then 4 when 'business' then 6 end),
     ('owned_workspaces', case when plans.code in ('free', 'personal') then 1 else null end)
 ) as limits(limit_code, limit_value)
 on conflict (plan_id, limit_code) do update set limit_value = excluded.limit_value;
@@ -2780,7 +2779,7 @@ begin
   if v_workspace.status = 'suspended' then raise exception 'WORKSPACE_SUSPENDED'; end if;
   if p_billing_period not in ('monthly', 'annual') then raise exception 'INVALID_BILLING_PERIOD'; end if;
 
-  select * into v_plan from public.plans where code = lower(p_plan_code) and is_active and available_for_purchase;
+  select * into v_plan from public.plans where code = lower(p_plan_code) and is_active;
   if v_plan.id is null then raise exception 'PLAN_NOT_AVAILABLE'; end if;
   if v_plan.workspace_type <> v_workspace.workspace_type then raise exception 'PLAN_WORKSPACE_TYPE_MISMATCH'; end if;
   if v_plan.code = 'free' then raise exception 'FREE_PLAN_REQUIRES_NO_PAYMENT'; end if;
@@ -3479,15 +3478,11 @@ where provision_workspace_on_approval = true;
 drop function if exists public.submit_family_plan_request(
   uuid, text, text, text, numeric, text, date, text, text, text, text, text, bigint
 );
-drop function if exists public.submit_family_plan_request(
-  uuid, text, integer, text, text, numeric, text, date, text, text, text, text, text, bigint
-);
 
 create or replace function public.submit_family_plan_request(
   p_personal_workspace_id uuid,
   p_family_name text,
   p_total_member_count integer,
-  p_plan_code text,
   p_billing_period text,
   p_currency text,
   p_amount numeric,
@@ -3567,7 +3562,7 @@ begin
 
   select * into v_plan
   from public.plans
-  where code = lower(btrim(p_plan_code)) and workspace_type = 'household' and is_active and available_for_purchase;
+  where code = 'household' and workspace_type = 'household' and is_active;
   if v_plan.id is null then raise exception 'PLAN_NOT_AVAILABLE'; end if;
 
   select * into v_price
@@ -3916,11 +3911,11 @@ end;
 $$;
 
 revoke all on function public.submit_family_plan_request(
-  uuid, text, integer, text, text, text, numeric, text, date, text, text, text, text, text, bigint
+  uuid, text, integer, text, text, numeric, text, date, text, text, text, text, text, bigint
 ) from public;
 
 grant execute on function public.submit_family_plan_request(
-  uuid, text, integer, text, text, text, numeric, text, date, text, text, text, text, text, bigint
+  uuid, text, integer, text, text, numeric, text, date, text, text, text, text, text, bigint
 ) to authenticated;
 
 -- ============================================================================
@@ -4195,44 +4190,6 @@ begin
 end;
 $$;
 
-create or replace function public.cancel_family_invitation(p_invitation_id uuid)
-returns text
-language plpgsql
-security definer
-set search_path = public, pg_temp
-as $$
-declare
-  v_invitation public.family_invitations%rowtype;
-begin
-  if auth.uid() is null then raise exception 'AUTHENTICATION_REQUIRED'; end if;
-
-  select invitations.* into v_invitation
-  from public.family_invitations as invitations
-  join public.families as families on families.id = invitations.family_id
-  where invitations.id = p_invitation_id
-    and families.owner_id = auth.uid()
-    and invitations.status = 'pending'
-  for update of invitations;
-
-  if v_invitation.id is null then raise exception 'INVITATION_NOT_AVAILABLE'; end if;
-  if not public.can_manage_family_members(v_invitation.family_id) then
-    raise exception 'WORKSPACE_READ_ONLY';
-  end if;
-
-  update public.family_invitations
-  set status = 'cancelled', responded_at = now()
-  where id = v_invitation.id;
-
-  delete from public.notifications
-  where invitation_id = v_invitation.id and type = 'family_invite';
-
-  return 'cancelled';
-end;
-$$;
-
-revoke all on function public.cancel_family_invitation(uuid) from public, anon, authenticated;
-grant execute on function public.cancel_family_invitation(uuid) to authenticated;
-
 create or replace function public.enforce_approved_additional_seat()
 returns trigger
 language plpgsql
@@ -4312,7 +4269,7 @@ begin
   if v_workspace.status = 'suspended' then raise exception 'WORKSPACE_SUSPENDED'; end if;
   if p_billing_period not in ('monthly', 'annual') then raise exception 'INVALID_BILLING_PERIOD'; end if;
 
-  select * into v_plan from public.plans where code = lower(p_plan_code) and is_active and available_for_purchase;
+  select * into v_plan from public.plans where code = lower(p_plan_code) and is_active;
   if v_plan.id is null then raise exception 'PLAN_NOT_AVAILABLE'; end if;
   if v_plan.workspace_type <> v_workspace.workspace_type then raise exception 'PLAN_WORKSPACE_TYPE_MISMATCH'; end if;
   if v_plan.code = 'free' then raise exception 'FREE_PLAN_REQUIRES_NO_PAYMENT'; end if;
@@ -4534,174 +4491,6 @@ set name = excluded.name,
     decimal_digits = excluded.decimal_digits,
     updated_at = now();
 
--- Current global payment currencies. Historical codes, funds, metals and crypto are excluded.
-insert into public.supported_currencies (code, name, decimal_digits) values
-  ('AED', 'United Arab Emirates Dirham', 2),
-  ('AFN', 'Afghan Afghani', 2),
-  ('ALL', 'Albanian Lek', 2),
-  ('AMD', 'Armenian Dram', 2),
-  ('AOA', 'Angolan Kwanza', 2),
-  ('ARS', 'Argentine Peso', 2),
-  ('AUD', 'Australian Dollar', 2),
-  ('AWG', 'Aruban Florin', 2),
-  ('AZN', 'Azerbaijani Manat', 2),
-  ('BAM', 'Bosnia-Herzegovina Convertible Mark', 2),
-  ('BBD', 'Barbadian Dollar', 2),
-  ('BDT', 'Bangladeshi Taka', 2),
-  ('BHD', 'Bahraini Dinar', 3),
-  ('BIF', 'Burundian Franc', 0),
-  ('BMD', 'Bermudan Dollar', 2),
-  ('BND', 'Brunei Dollar', 2),
-  ('BOB', 'Bolivian Boliviano', 2),
-  ('BRL', 'Brazilian Real', 2),
-  ('BSD', 'Bahamian Dollar', 2),
-  ('BTN', 'Bhutanese Ngultrum', 2),
-  ('BWP', 'Botswanan Pula', 2),
-  ('BYN', 'Belarusian Ruble', 2),
-  ('BZD', 'Belize Dollar', 2),
-  ('CAD', 'Canadian Dollar', 2),
-  ('CDF', 'Congolese Franc', 2),
-  ('CHF', 'Swiss Franc', 2),
-  ('CLP', 'Chilean Peso', 0),
-  ('CNY', 'Chinese Yuan', 2),
-  ('COP', 'Colombian Peso', 2),
-  ('CRC', 'Costa Rican Colón', 2),
-  ('CUP', 'Cuban Peso', 2),
-  ('CVE', 'Cape Verdean Escudo', 2),
-  ('CZK', 'Czech Koruna', 2),
-  ('DJF', 'Djiboutian Franc', 0),
-  ('DKK', 'Danish Krone', 2),
-  ('DOP', 'Dominican Peso', 2),
-  ('DZD', 'Algerian Dinar', 2),
-  ('EGP', 'Egyptian Pound', 2),
-  ('ERN', 'Eritrean Nakfa', 2),
-  ('ETB', 'Ethiopian Birr', 2),
-  ('EUR', 'Euro', 2),
-  ('FJD', 'Fijian Dollar', 2),
-  ('FKP', 'Falkland Islands Pound', 2),
-  ('GBP', 'British Pound', 2),
-  ('GEL', 'Georgian Lari', 2),
-  ('GHS', 'Ghanaian Cedi', 2),
-  ('GIP', 'Gibraltar Pound', 2),
-  ('GMD', 'Gambian Dalasi', 2),
-  ('GNF', 'Guinean Franc', 0),
-  ('GTQ', 'Guatemalan Quetzal', 2),
-  ('GYD', 'Guyanese Dollar', 2),
-  ('HKD', 'Hong Kong Dollar', 2),
-  ('HNL', 'Honduran Lempira', 2),
-  ('HTG', 'Haitian Gourde', 2),
-  ('HUF', 'Hungarian Forint', 2),
-  ('IDR', 'Indonesian Rupiah', 2),
-  ('ILS', 'Israeli New Shekel', 2),
-  ('INR', 'Indian Rupee', 2),
-  ('IQD', 'Iraqi Dinar', 3),
-  ('IRR', 'Iranian Rial', 2),
-  ('ISK', 'Icelandic Króna', 0),
-  ('JMD', 'Jamaican Dollar', 2),
-  ('JOD', 'Jordanian Dinar', 3),
-  ('JPY', 'Japanese Yen', 0),
-  ('KES', 'Kenyan Shilling', 2),
-  ('KGS', 'Kyrgyz Som', 2),
-  ('KHR', 'Cambodian Riel', 2),
-  ('KMF', 'Comorian Franc', 0),
-  ('KPW', 'North Korean Won', 2),
-  ('KRW', 'South Korean Won', 0),
-  ('KWD', 'Kuwaiti Dinar', 3),
-  ('KYD', 'Cayman Islands Dollar', 2),
-  ('KZT', 'Kazakhstani Tenge', 2),
-  ('LAK', 'Laotian Kip', 2),
-  ('LBP', 'Lebanese Pound', 2),
-  ('LKR', 'Sri Lankan Rupee', 2),
-  ('LRD', 'Liberian Dollar', 2),
-  ('LSL', 'Lesotho Loti', 2),
-  ('LYD', 'Libyan Dinar', 3),
-  ('MAD', 'Moroccan Dirham', 2),
-  ('MDL', 'Moldovan Leu', 2),
-  ('MGA', 'Malagasy Ariary', 2),
-  ('MKD', 'Macedonian Denar', 2),
-  ('MMK', 'Myanmar Kyat', 2),
-  ('MNT', 'Mongolian Tugrik', 2),
-  ('MOP', 'Macanese Pataca', 2),
-  ('MRU', 'Mauritanian Ouguiya', 2),
-  ('MUR', 'Mauritian Rupee', 2),
-  ('MVR', 'Maldivian Rufiyaa', 2),
-  ('MWK', 'Malawian Kwacha', 2),
-  ('MXN', 'Mexican Peso', 2),
-  ('MYR', 'Malaysian Ringgit', 2),
-  ('MZN', 'Mozambican Metical', 2),
-  ('NAD', 'Namibian Dollar', 2),
-  ('NGN', 'Nigerian Naira', 2),
-  ('NIO', 'Nicaraguan Córdoba', 2),
-  ('NOK', 'Norwegian Krone', 2),
-  ('NPR', 'Nepalese Rupee', 2),
-  ('NZD', 'New Zealand Dollar', 2),
-  ('OMR', 'Omani Rial', 3),
-  ('PAB', 'Panamanian Balboa', 2),
-  ('PEN', 'Peruvian Sol', 2),
-  ('PGK', 'Papua New Guinean Kina', 2),
-  ('PHP', 'Philippine Peso', 2),
-  ('PKR', 'Pakistani Rupee', 2),
-  ('PLN', 'Polish Zloty', 2),
-  ('PYG', 'Paraguayan Guarani', 0),
-  ('QAR', 'Qatari Riyal', 2),
-  ('RON', 'Romanian Leu', 2),
-  ('RSD', 'Serbian Dinar', 2),
-  ('RUB', 'Russian Ruble', 2),
-  ('RWF', 'Rwandan Franc', 0),
-  ('SAR', 'Saudi Riyal', 2),
-  ('SBD', 'Solomon Islands Dollar', 2),
-  ('SCR', 'Seychellois Rupee', 2),
-  ('SDG', 'Sudanese Pound', 2),
-  ('SEK', 'Swedish Krona', 2),
-  ('SGD', 'Singapore Dollar', 2),
-  ('SHP', 'St. Helena Pound', 2),
-  ('SLE', 'Sierra Leonean Leone', 2),
-  ('SOS', 'Somali Shilling', 2),
-  ('SRD', 'Surinamese Dollar', 2),
-  ('SSP', 'South Sudanese Pound', 2),
-  ('STN', 'São Tomé and Príncipe Dobra', 2),
-  ('SVC', 'Salvadoran Colón', 2),
-  ('SYP', 'Syrian Pound', 2),
-  ('SZL', 'Eswatini Lilangeni', 2),
-  ('THB', 'Thai Baht', 2),
-  ('TJS', 'Tajikistani Somoni', 2),
-  ('TMT', 'Turkmenistani Manat', 2),
-  ('TND', 'Tunisian Dinar', 3),
-  ('TOP', 'Tongan Paʻanga', 2),
-  ('TRY', 'Turkish Lira', 2),
-  ('TTD', 'Trinidad and Tobago Dollar', 2),
-  ('TWD', 'New Taiwan Dollar', 2),
-  ('TZS', 'Tanzanian Shilling', 2),
-  ('UAH', 'Ukrainian Hryvnia', 2),
-  ('UGX', 'Ugandan Shilling', 0),
-  ('USD', 'US Dollar', 2),
-  ('UYU', 'Uruguayan Peso', 2),
-  ('UZS', 'Uzbekistani Som', 2),
-  ('VES', 'Venezuelan Bolívar', 2),
-  ('VND', 'Vietnamese Dong', 0),
-  ('VUV', 'Vanuatu Vatu', 0),
-  ('WST', 'Samoan Tala', 2),
-  ('XAF', 'Central African CFA Franc', 0),
-  ('XCD', 'East Caribbean Dollar', 2),
-  ('XCG', 'Caribbean Guilder', 2),
-  ('XOF', 'West African CFA Franc', 0),
-  ('XPF', 'CFP Franc', 0),
-  ('YER', 'Yemeni Rial', 2),
-  ('ZAR', 'South African Rand', 2),
-  ('ZMW', 'Zambian Kwacha', 2),
-  ('ZWG', 'Zimbabwe Gold', 2)
-on conflict (code) do update
-set name = excluded.name,
-    decimal_digits = excluded.decimal_digits,
-    is_active = true,
-    updated_at = now();
-
--- Preserve historical catalogue rows for old records, but hide them from new selections.
-update public.supported_currencies
-set is_active = false,
-    updated_at = now()
-where code in ('ANG', 'BGN', 'CUC', 'HRK', 'MRO', 'SLL', 'STD', 'VEF', 'ZMK', 'ZWL');
-
 alter table public.workspace_settings
   add column if not exists default_payment_currency text,
   add column if not exists enabled_currencies text[],
@@ -4727,15 +4516,13 @@ alter table public.workspace_settings
   add constraint workspace_settings_currency_codes_check check (
     default_payment_currency ~ '^[A-Z]{3}$'
     and reporting_currency ~ '^[A-Z]{3}$'
-    and cardinality(enabled_currencies) between 1 and 160
+    and cardinality(enabled_currencies) between 1 and 40
     and default_payment_currency = any(enabled_currencies)
     and reporting_currency = any(enabled_currencies)
   );
 
--- These UPDATE OF triggers may already exist when the complete schema is
--- reapplied. PostgreSQL will not change the type of a referenced column until
--- the trigger definition is removed. They are recreated below after every
--- currency amount column has its final numeric type.
+-- Remove existing UPDATE OF trigger definitions before changing amount column
+-- types. The conversion triggers are recreated later in this migration.
 drop trigger if exists lock_payment_record_conversion_trigger on public.payment_records;
 drop trigger if exists lock_platform_payment_conversion_trigger on public.payments;
 drop trigger if exists lock_subscription_payment_conversion_trigger on public.subscription_payments;
@@ -4953,7 +4740,7 @@ begin
 
   select array_agg(distinct upper(btrim(code)) order by upper(btrim(code)))
   into v_enabled from unnest(coalesce(p_enabled_currencies, array[]::text[])) as code;
-  if v_enabled is null or cardinality(v_enabled) = 0 or cardinality(v_enabled) > 160 then
+  if v_enabled is null or cardinality(v_enabled) = 0 or cardinality(v_enabled) > 40 then
     raise exception 'INVALID_ENABLED_CURRENCIES';
   end if;
   if not (v_default = any(v_enabled)) or not (v_reporting = any(v_enabled)) then
@@ -5477,10 +5264,11 @@ drop trigger if exists validate_expense_currency_trigger on public.expenses;
 create trigger validate_expense_currency_trigger
 before insert or update of family_id, category, currency on public.expenses
 for each row execute function public.validate_budget_expense_currency();
+-- END MIGRATION 20260901061500_currencyapi_multicurrency.sql
 
--- ============================================================================
--- Public website plan catalogue and enquiry workflow
--- ============================================================================
+-- BEGIN MIGRATION 20260903090000_public_website_enquiries.sql
+-- Public website, dynamic plan catalogue, admin plan management, and enquiries.
+-- This migration is also included in full in supabase/schema.sql.
 
 alter table public.plans
   add column if not exists marketing_summary text not null default '',
@@ -5500,118 +5288,28 @@ set is_public = true,
     end,
     is_featured = code = 'household',
     cta_label = case code when 'free' then 'Start free' when 'household' then 'Start a Family plan' else 'Choose plan' end
-where code in ('free', 'personal', 'household', 'business')
-  and marketing_summary = '';
+where code in ('free', 'personal', 'household', 'business') and marketing_summary = '';
 
 create or replace function public.get_public_plan_catalogue(p_currency text default 'USD')
-returns table (
-  plan_id uuid,
-  code text,
-  display_name text,
-  description text,
-  marketing_summary text,
-  workspace_type text,
-  is_featured boolean,
-  available_for_purchase boolean,
-  cta_label text,
-  sort_order integer,
-  included_member_seats integer,
-  active_payment_limit integer,
-  features jsonb,
-  prices jsonb,
-  available_currencies text[]
-)
-language sql
-stable
-security definer
-set search_path = public, pg_temp
+returns table (plan_id uuid, code text, display_name text, description text, marketing_summary text, workspace_type text, is_featured boolean, available_for_purchase boolean, cta_label text, sort_order integer, included_member_seats integer, active_payment_limit integer, features jsonb, prices jsonb, available_currencies text[])
+language sql stable security definer set search_path = public, pg_temp
 as $$
-  select
-    plans.id,
-    plans.code,
-    plans.display_name,
-    plans.description,
-    coalesce(nullif(plans.marketing_summary, ''), plans.description),
-    plans.workspace_type,
-    plans.is_featured,
-    plans.available_for_purchase,
-    plans.cta_label,
-    plans.sort_order,
-    coalesce((
-      select limits.limit_value
-      from public.plan_limits as limits
-      where limits.plan_id = plans.id and limits.limit_code = 'included_member_seats'
-    ), 1),
-    (
-      select limits.limit_value
-      from public.plan_limits as limits
-      where limits.plan_id = plans.id and limits.limit_code = 'active_planned_payments'
-    ),
-    coalesce((
-      select jsonb_agg(jsonb_build_object('code', feature_rows.feature_code, 'enabled', feature_rows.enabled) order by feature_rows.feature_code)
-      from public.plan_features as feature_rows
-      where feature_rows.plan_id = plans.id and feature_rows.enabled
-    ), '[]'::jsonb),
-    coalesce((
-      select jsonb_agg(
-        jsonb_build_object(
-          'billing_period', current_prices.billing_period,
-          'currency', current_prices.currency,
-          'amount', current_prices.amount,
-          'extra_member_amount', current_prices.extra_member_amount,
-          'effective_from', current_prices.effective_from
-        ) order by current_prices.billing_period
-      )
-      from public.plan_prices as current_prices
-      where current_prices.plan_id = plans.id
-        and current_prices.currency = upper(coalesce(nullif(p_currency, ''), 'USD'))
-        and current_prices.is_active
-        and current_prices.effective_from <= now()
-        and (current_prices.effective_until is null or current_prices.effective_until > now())
-    ), '[]'::jsonb),
-    coalesce((
-      select array_agg(distinct currencies.currency order by currencies.currency)
-      from public.plan_prices as currencies
-      where currencies.plan_id = plans.id
-        and currencies.is_active
-        and currencies.effective_from <= now()
-        and (currencies.effective_until is null or currencies.effective_until > now())
-    ), array[]::text[])
-  from public.plans
-  where plans.is_active and plans.is_public
-  order by plans.sort_order, plans.display_name;
+  select plans.id, plans.code, plans.display_name, plans.description,
+    coalesce(nullif(plans.marketing_summary, ''), plans.description), plans.workspace_type,
+    plans.is_featured, plans.available_for_purchase, plans.cta_label, plans.sort_order,
+    coalesce((select limit_value from public.plan_limits where plan_id = plans.id and limit_code = 'included_member_seats'), 1),
+    (select limit_value from public.plan_limits where plan_id = plans.id and limit_code = 'active_planned_payments'),
+    coalesce((select jsonb_agg(jsonb_build_object('code', feature_code, 'enabled', enabled) order by feature_code) from public.plan_features where plan_id = plans.id and enabled), '[]'::jsonb),
+    coalesce((select jsonb_agg(jsonb_build_object('billing_period', billing_period, 'currency', currency, 'amount', amount, 'extra_member_amount', extra_member_amount, 'effective_from', effective_from) order by billing_period) from public.plan_prices where plan_id = plans.id and currency = upper(coalesce(nullif(p_currency, ''), 'USD')) and is_active and effective_from <= now() and (effective_until is null or effective_until > now())), '[]'::jsonb),
+    coalesce((select array_agg(distinct currency order by currency) from public.plan_prices where plan_id = plans.id and is_active and effective_from <= now() and (effective_until is null or effective_until > now())), array[]::text[])
+  from public.plans where plans.is_active and plans.is_public order by plans.sort_order, plans.display_name;
 $$;
 
-create or replace function public.save_plan_definition(
-  p_plan_id uuid,
-  p_code text,
-  p_display_name text,
-  p_description text,
-  p_marketing_summary text,
-  p_workspace_type text,
-  p_included_member_seats integer,
-  p_active_payment_limit integer,
-  p_is_active boolean,
-  p_is_public boolean,
-  p_is_featured boolean,
-  p_available_for_purchase boolean,
-  p_cta_label text,
-  p_sort_order integer,
-  p_feature_codes text[] default array[]::text[]
-)
-returns uuid
-language plpgsql
-security definer
-set search_path = public, pg_temp
-as $$
-declare
-  v_plan_id uuid;
-  v_code text := lower(btrim(p_code));
-  v_name text := nullif(btrim(p_display_name), '');
+create or replace function public.save_plan_definition(p_plan_id uuid, p_code text, p_display_name text, p_description text, p_marketing_summary text, p_workspace_type text, p_included_member_seats integer, p_active_payment_limit integer, p_is_active boolean, p_is_public boolean, p_is_featured boolean, p_available_for_purchase boolean, p_cta_label text, p_sort_order integer, p_feature_codes text[] default array[]::text[])
+returns uuid language plpgsql security definer set search_path = public, pg_temp as $$
+declare v_plan_id uuid; v_code text := lower(btrim(p_code)); v_name text := nullif(btrim(p_display_name), '');
 begin
-  if not public.is_platform_staff(array['super_admin', 'admin_staff']) then
-    raise exception 'PLAN_MANAGEMENT_ACCESS_REQUIRED';
-  end if;
+  if not public.is_platform_staff(array['super_admin', 'admin_staff']) then raise exception 'PLAN_MANAGEMENT_ACCESS_REQUIRED'; end if;
   if v_code !~ '^[a-z][a-z0-9_]*$' then raise exception 'INVALID_PLAN_CODE'; end if;
   if v_name is null or char_length(v_name) > 80 then raise exception 'INVALID_PLAN_NAME'; end if;
   if p_workspace_type not in ('personal', 'household', 'business') then raise exception 'INVALID_WORKSPACE_TYPE'; end if;
@@ -5619,66 +5317,539 @@ begin
   if p_active_payment_limit is not null and (p_active_payment_limit < 1 or p_active_payment_limit > 100000) then raise exception 'INVALID_PAYMENT_LIMIT'; end if;
   if char_length(coalesce(p_description, '')) > 500 or char_length(coalesce(p_marketing_summary, '')) > 500 then raise exception 'PLAN_DESCRIPTION_TOO_LONG'; end if;
   if char_length(coalesce(p_cta_label, '')) > 60 then raise exception 'PLAN_CTA_TOO_LONG'; end if;
-
   if p_plan_id is null then
-    insert into public.plans (
-      code, display_name, description, marketing_summary, workspace_type,
-      is_active, is_public, is_featured, available_for_purchase, cta_label, sort_order
-    ) values (
-      v_code, v_name, coalesce(btrim(p_description), ''), coalesce(btrim(p_marketing_summary), ''), p_workspace_type,
-      coalesce(p_is_active, true), coalesce(p_is_public, false), coalesce(p_is_featured, false),
-      coalesce(p_available_for_purchase, true), coalesce(nullif(btrim(p_cta_label), ''), 'Choose plan'), coalesce(p_sort_order, 0)
-    ) returning id into v_plan_id;
+    insert into public.plans (code, display_name, description, marketing_summary, workspace_type, is_active, is_public, is_featured, available_for_purchase, cta_label, sort_order)
+    values (v_code, v_name, coalesce(btrim(p_description), ''), coalesce(btrim(p_marketing_summary), ''), p_workspace_type, coalesce(p_is_active, true), coalesce(p_is_public, false), coalesce(p_is_featured, false), coalesce(p_available_for_purchase, true), coalesce(nullif(btrim(p_cta_label), ''), 'Choose plan'), coalesce(p_sort_order, 0)) returning id into v_plan_id;
   else
     select id into v_plan_id from public.plans where id = p_plan_id for update;
     if v_plan_id is null then raise exception 'PLAN_NOT_FOUND'; end if;
-    if exists (select 1 from public.plans where id = v_plan_id and code <> v_code) then
-      raise exception 'PLAN_CODE_CANNOT_CHANGE';
-    end if;
-    update public.plans
-    set display_name = v_name,
-        description = coalesce(btrim(p_description), ''),
-        marketing_summary = coalesce(btrim(p_marketing_summary), ''),
-        workspace_type = p_workspace_type,
-        is_active = coalesce(p_is_active, true),
-        is_public = coalesce(p_is_public, false),
-        is_featured = coalesce(p_is_featured, false),
-        available_for_purchase = coalesce(p_available_for_purchase, true),
-        cta_label = coalesce(nullif(btrim(p_cta_label), ''), 'Choose plan'),
-        sort_order = coalesce(p_sort_order, 0),
-        updated_at = now()
-    where id = v_plan_id;
+    if exists (select 1 from public.plans where id = v_plan_id and code <> v_code) then raise exception 'PLAN_CODE_CANNOT_CHANGE'; end if;
+    update public.plans set display_name = v_name, description = coalesce(btrim(p_description), ''), marketing_summary = coalesce(btrim(p_marketing_summary), ''), workspace_type = p_workspace_type, is_active = coalesce(p_is_active, true), is_public = coalesce(p_is_public, false), is_featured = coalesce(p_is_featured, false), available_for_purchase = coalesce(p_available_for_purchase, true), cta_label = coalesce(nullif(btrim(p_cta_label), ''), 'Choose plan'), sort_order = coalesce(p_sort_order, 0), updated_at = now() where id = v_plan_id;
   end if;
-
-  if coalesce(p_is_featured, false) then
-    update public.plans set is_featured = false, updated_at = now()
-    where workspace_type = p_workspace_type and id <> v_plan_id and is_featured;
-  end if;
-
-  insert into public.plan_limits (plan_id, limit_code, limit_value)
-  values (v_plan_id, 'included_member_seats', p_included_member_seats)
-  on conflict (plan_id, limit_code) do update set limit_value = excluded.limit_value;
-
-  if p_active_payment_limit is null then
-    delete from public.plan_limits where plan_id = v_plan_id and limit_code = 'active_planned_payments';
-  else
-    insert into public.plan_limits (plan_id, limit_code, limit_value)
-    values (v_plan_id, 'active_planned_payments', p_active_payment_limit)
-    on conflict (plan_id, limit_code) do update set limit_value = excluded.limit_value;
-  end if;
-
+  if coalesce(p_is_featured, false) then update public.plans set is_featured = false, updated_at = now() where workspace_type = p_workspace_type and id <> v_plan_id and is_featured; end if;
+  insert into public.plan_limits (plan_id, limit_code, limit_value) values (v_plan_id, 'included_member_seats', p_included_member_seats) on conflict (plan_id, limit_code) do update set limit_value = excluded.limit_value;
+  if p_active_payment_limit is null then delete from public.plan_limits where plan_id = v_plan_id and limit_code = 'active_planned_payments'; else insert into public.plan_limits (plan_id, limit_code, limit_value) values (v_plan_id, 'active_planned_payments', p_active_payment_limit) on conflict (plan_id, limit_code) do update set limit_value = excluded.limit_value; end if;
   update public.plan_features set enabled = false where plan_id = v_plan_id;
-  insert into public.plan_features (plan_id, feature_code, enabled)
-  select v_plan_id, selected.feature_code, true
-  from unnest(coalesce(p_feature_codes, array[]::text[])) as selected(feature_code)
-  where selected.feature_code ~ '^[a-z][a-z0-9_.-]*$'
-  on conflict (plan_id, feature_code) do update set enabled = true;
-
-  insert into public.subscription_audit_events (actor_id, action, target_type, target_id, safe_details)
-  values (auth.uid(), 'plan.definition_saved', 'plan', v_plan_id, jsonb_build_object('plan_code', v_code));
+  insert into public.plan_features (plan_id, feature_code, enabled) select v_plan_id, selected.feature_code, true from unnest(coalesce(p_feature_codes, array[]::text[])) as selected(feature_code) where selected.feature_code ~ '^[a-z][a-z0-9_.-]*$' on conflict (plan_id, feature_code) do update set enabled = true;
+  insert into public.subscription_audit_events (actor_id, action, target_type, target_id, safe_details) values (auth.uid(), 'plan.definition_saved', 'plan', v_plan_id, jsonb_build_object('plan_code', v_code));
   return v_plan_id;
+end; $$;
+
+create table if not exists public.public_enquiries (
+  id uuid primary key default gen_random_uuid(), reference_number text not null unique, user_id uuid references auth.users(id) on delete set null,
+  full_name text not null check (char_length(full_name) between 2 and 120), email text not null check (char_length(email) between 5 and 254),
+  phone text check (phone is null or char_length(phone) <= 40), organisation text check (organisation is null or char_length(organisation) <= 160),
+  category text not null check (category in ('general', 'personal_plan', 'family_plan', 'business_plan', 'pricing', 'account', 'payment', 'technical', 'partnership')),
+  subject text not null check (char_length(subject) between 3 and 180), message text not null check (char_length(message) between 10 and 5000),
+  status text not null default 'new' check (status in ('new', 'in_progress', 'waiting_for_customer', 'resolved', 'spam', 'archived')),
+  priority text not null default 'normal' check (priority in ('low', 'normal', 'high', 'urgent')), assigned_to uuid references auth.users(id) on delete set null,
+  internal_notes text check (internal_notes is null or char_length(internal_notes) <= 5000), source_page text check (source_page is null or char_length(source_page) <= 500),
+  metadata jsonb not null default '{}'::jsonb, created_at timestamptz not null default now(), updated_at timestamptz not null default now(), resolved_at timestamptz, archived_at timestamptz
+);
+create index if not exists public_enquiries_status_created_idx on public.public_enquiries(status, created_at desc);
+create index if not exists public_enquiries_email_created_idx on public.public_enquiries(lower(email), created_at desc);
+create index if not exists public_enquiries_assigned_idx on public.public_enquiries(assigned_to, status, created_at desc);
+
+create table if not exists public.public_enquiry_events (
+  id uuid primary key default gen_random_uuid(), enquiry_id uuid not null references public.public_enquiries(id) on delete cascade,
+  actor_id uuid references auth.users(id) on delete set null,
+  event_type text not null check (event_type in ('created', 'status_changed', 'priority_changed', 'assignment_changed', 'notes_updated', 'updated')),
+  safe_details jsonb not null default '{}'::jsonb, created_at timestamptz not null default now()
+);
+create index if not exists public_enquiry_events_enquiry_idx on public.public_enquiry_events(enquiry_id, created_at desc);
+create or replace function public.record_public_enquiry_event() returns trigger language plpgsql security definer set search_path = public, pg_temp as $$
+declare v_event_type text := 'updated';
+begin
+  if tg_op = 'INSERT' then v_event_type := 'created';
+  elsif old.status is distinct from new.status then v_event_type := 'status_changed';
+  elsif old.priority is distinct from new.priority then v_event_type := 'priority_changed';
+  elsif old.assigned_to is distinct from new.assigned_to then v_event_type := 'assignment_changed';
+  elsif old.internal_notes is distinct from new.internal_notes then v_event_type := 'notes_updated'; end if;
+  insert into public.public_enquiry_events (enquiry_id, actor_id, event_type, safe_details)
+  values (new.id, auth.uid(), v_event_type, jsonb_strip_nulls(jsonb_build_object('status', new.status, 'previous_status', case when tg_op = 'UPDATE' then old.status else null end, 'priority', new.priority, 'previous_priority', case when tg_op = 'UPDATE' then old.priority else null end, 'assigned', new.assigned_to is not null)));
+  return new;
+end; $$;
+drop trigger if exists record_public_enquiry_event_trigger on public.public_enquiries;
+create trigger record_public_enquiry_event_trigger after insert or update on public.public_enquiries for each row execute function public.record_public_enquiry_event();
+
+create or replace function public.touch_public_enquiry() returns trigger language plpgsql set search_path = public, pg_temp as $$
+begin new.updated_at := now(); if new.status = 'resolved' and old.status is distinct from 'resolved' then new.resolved_at := now(); end if; if new.status <> 'resolved' then new.resolved_at := null; end if; if new.status = 'archived' and old.status is distinct from 'archived' then new.archived_at := now(); end if; if new.status <> 'archived' then new.archived_at := null; end if; return new; end; $$;
+drop trigger if exists touch_public_enquiry_trigger on public.public_enquiries;
+create trigger touch_public_enquiry_trigger before update on public.public_enquiries for each row execute function public.touch_public_enquiry();
+alter table public.public_enquiries enable row level security;
+alter table public.public_enquiry_events enable row level security;
+drop policy if exists "Support staff can read public enquiries" on public.public_enquiries;
+create policy "Support staff can read public enquiries" on public.public_enquiries for select to authenticated using (public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff']));
+drop policy if exists "Support staff can update public enquiries" on public.public_enquiries;
+create policy "Support staff can update public enquiries" on public.public_enquiries for update to authenticated using (public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff'])) with check (public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff']));
+drop policy if exists "Support staff can read public enquiry events" on public.public_enquiry_events;
+create policy "Support staff can read public enquiry events" on public.public_enquiry_events for select to authenticated using (public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff']));
+revoke all on public.public_enquiries from anon, authenticated;
+revoke all on public.public_enquiry_events from anon, authenticated;
+grant select, update on public.public_enquiries to authenticated;
+grant select on public.public_enquiry_events to authenticated;
+revoke all on function public.get_public_plan_catalogue(text) from public;
+grant execute on function public.get_public_plan_catalogue(text) to anon, authenticated;
+revoke all on function public.save_plan_definition(uuid, text, text, text, text, text, integer, integer, boolean, boolean, boolean, boolean, text, integer, text[]) from public;
+grant execute on function public.save_plan_definition(uuid, text, text, text, text, text, integer, integer, boolean, boolean, boolean, boolean, text, integer, text[]) to authenticated;
+do $$ begin if exists (select 1 from pg_publication where pubname = 'supabase_realtime') and not exists (select 1 from pg_publication where pubname = 'supabase_realtime' and puballtables = true) and not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'public_enquiries') then alter publication supabase_realtime add table public.public_enquiries; end if; end $$;
+-- END MIGRATION 20260903090000_public_website_enquiries.sql
+
+-- BEGIN MIGRATION 20260903091000_dynamic_family_plan_selection.sql
+-- Allow any active published Family plan to be selected when starting a new family.
+drop function if exists public.submit_family_plan_request(
+  uuid, text, text, text, numeric, text, date, text, text, text, text, text, bigint
+);
+drop function if exists public.submit_family_plan_request(
+  uuid, text, integer, text, text, numeric, text, date, text, text, text, text, text, bigint
+);
+
+create or replace function public.submit_family_plan_request(
+  p_personal_workspace_id uuid,
+  p_family_name text,
+  p_total_member_count integer,
+  p_plan_code text,
+  p_billing_period text,
+  p_currency text,
+  p_amount numeric,
+  p_payment_method text,
+  p_payment_date date,
+  p_reference_number text,
+  p_notes text default null,
+  p_proof_path text default null,
+  p_proof_name text default null,
+  p_proof_mime_type text default null,
+  p_proof_size_bytes bigint default null
+)
+returns uuid
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_workspace public.budget_workspaces%rowtype;
+  v_plan public.plans%rowtype;
+  v_price public.plan_prices%rowtype;
+  v_invoice_id uuid;
+  v_request_id uuid;
+  v_payment_id uuid;
+  v_family_limit integer := 1;
+  v_owned_count integer := 0;
+  v_pending_count integer := 0;
+  v_included integer := 4;
+  v_extra integer := 0;
+  v_total numeric(12,2);
+  v_family_name text := nullif(btrim(p_family_name), '');
+begin
+  if auth.uid() is null then raise exception 'AUTHENTICATION_REQUIRED'; end if;
+  if v_family_name is null then raise exception 'FAMILY_NAME_REQUIRED'; end if;
+  if char_length(v_family_name) > 100 then raise exception 'FAMILY_NAME_TOO_LONG'; end if;
+  if p_billing_period not in ('monthly', 'annual') then raise exception 'INVALID_BILLING_PERIOD'; end if;
+  if nullif(btrim(p_payment_method), '') is null then raise exception 'PAYMENT_METHOD_REQUIRED'; end if;
+  if nullif(btrim(p_reference_number), '') is null then raise exception 'PAYMENT_REFERENCE_REQUIRED'; end if;
+
+  select * into v_workspace
+  from public.budget_workspaces
+  where id = p_personal_workspace_id
+  for update;
+
+  if v_workspace.id is null
+     or v_workspace.owner_id <> auth.uid()
+     or v_workspace.workspace_type <> 'personal'
+  then
+    raise exception 'PERSONAL_WORKSPACE_OWNER_REQUIRED';
+  end if;
+  if v_workspace.status = 'suspended' then raise exception 'WORKSPACE_SUSPENDED'; end if;
+
+  select family_heads.family_limit into v_family_limit
+  from public.family_heads
+  where family_heads.user_id = auth.uid()
+     or lower(family_heads.email) = lower(auth.jwt() ->> 'email')
+  order by (family_heads.user_id = auth.uid()) desc
+  limit 1;
+  -- A Family plan purchase always permits the first family. The admin-set
+  -- family_limit controls additional owned families after that first plan.
+  v_family_limit := greatest(1, coalesce(v_family_limit, 1));
+
+  select count(*)::integer into v_owned_count
+  from public.families
+  where owner_id = auth.uid();
+
+  select count(*)::integer into v_pending_count
+  from public.subscription_renewal_requests
+  where requested_by = auth.uid()
+    and provision_workspace_on_approval = true
+    and status = 'pending_review';
+
+  if v_pending_count > 0 then raise exception 'FAMILY_PLAN_REQUEST_ALREADY_PENDING'; end if;
+  if v_owned_count + v_pending_count >= v_family_limit then
+    raise exception 'FAMILY_LIMIT_REACHED';
+  end if;
+
+  select * into v_plan
+  from public.plans
+  where code = lower(btrim(p_plan_code)) and workspace_type = 'household' and is_active and available_for_purchase;
+  if v_plan.id is null then raise exception 'PLAN_NOT_AVAILABLE'; end if;
+
+  select * into v_price
+  from public.plan_prices
+  where plan_id = v_plan.id
+    and billing_period = p_billing_period
+    and currency = upper(p_currency)
+    and is_active
+    and effective_from <= now()
+    and (effective_until is null or effective_until > now())
+  order by effective_from desc
+  limit 1;
+  if v_price.id is null then raise exception 'PLAN_PRICE_NOT_CONFIGURED'; end if;
+
+  select coalesce(limit_value, 4) into v_included
+  from public.plan_limits
+  where plan_id = v_plan.id and limit_code = 'included_member_seats';
+  v_included := greatest(1, coalesce(v_included, 4));
+  if p_total_member_count is null
+     or p_total_member_count < v_included
+     or p_total_member_count > 100
+  then
+    raise exception 'INVALID_FAMILY_MEMBER_COUNT';
+  end if;
+  v_extra := p_total_member_count - v_included;
+  -- extra_member_amount is always the monthly per-person rate.
+  -- Annual invoices charge that monthly rate for all 12 months.
+  v_total := v_price.amount + (
+    v_extra * v_price.extra_member_amount
+    * case when p_billing_period = 'annual' then 12 else 1 end
+  );
+  if round(p_amount, 2) <> round(v_total, 2) then
+    raise exception 'PAYMENT_AMOUNT_DOES_NOT_MATCH_INVOICE';
+  end if;
+
+  insert into public.subscription_invoices (
+    workspace_id, invoice_number, plan_code, plan_name, billing_period, currency,
+    base_amount, extra_member_amount, billable_member_count, included_member_count,
+    extra_member_count, total_amount, created_by
+  ) values (
+    p_personal_workspace_id,
+    'MB-' || to_char(clock_timestamp(), 'YYYYMMDDHH24MISSMS') || '-' || upper(substr(gen_random_uuid()::text, 1, 6)),
+    v_plan.code, v_plan.display_name, p_billing_period, v_price.currency,
+    v_price.amount, v_price.extra_member_amount,
+    p_total_member_count, v_included, v_extra, v_total, auth.uid()
+  ) returning id into v_invoice_id;
+
+  insert into public.subscription_renewal_requests (
+    workspace_id, invoice_id, requested_plan_id, requested_by,
+    requested_workspace_name, provision_workspace_on_approval
+  ) values (
+    p_personal_workspace_id, v_invoice_id, v_plan.id, auth.uid(), v_family_name, true
+  ) returning id into v_request_id;
+
+  insert into public.subscription_payments (
+    renewal_request_id, workspace_id, submitted_by, amount, currency,
+    payment_method, payment_date, reference_number, notes
+  ) values (
+    v_request_id, p_personal_workspace_id, auth.uid(), v_total, v_price.currency,
+    btrim(p_payment_method), p_payment_date, btrim(p_reference_number), nullif(btrim(p_notes), '')
+  ) returning id into v_payment_id;
+
+  if p_proof_path is not null then
+    if p_proof_mime_type not in ('image/jpeg', 'image/png', 'image/webp', 'application/pdf')
+       or p_proof_size_bytes is null
+       or p_proof_size_bytes <= 0
+       or p_proof_size_bytes > 10485760
+    then
+      raise exception 'INVALID_SUBSCRIPTION_PROOF';
+    end if;
+    if split_part(p_proof_path, '/', 1) <> 'workspaces'
+       or split_part(p_proof_path, '/', 2) <> p_personal_workspace_id::text
+       or split_part(p_proof_path, '/', 3) <> auth.uid()::text
+    then
+      raise exception 'INVALID_SUBSCRIPTION_PROOF_PATH';
+    end if;
+    insert into public.subscription_payment_proofs (
+      payment_id, storage_path, original_name, mime_type, size_bytes, uploaded_by
+    ) values (
+      v_payment_id, p_proof_path,
+      coalesce(nullif(btrim(p_proof_name), ''), 'payment-proof'),
+      p_proof_mime_type, p_proof_size_bytes, auth.uid()
+    );
+  end if;
+
+  insert into public.subscription_audit_events (
+    workspace_id, actor_id, action, target_type, target_id, safe_details
+  ) values (
+    p_personal_workspace_id, auth.uid(), 'subscription.family_plan_submitted',
+    'renewal_request', v_request_id,
+    jsonb_build_object(
+      'plan_code', 'household',
+      'billing_period', p_billing_period,
+      'currency', v_price.currency,
+      'amount', v_total,
+      'provisions_family', true
+    )
+  );
+  return v_payment_id;
 end;
 $$;
+
+create or replace function public.review_subscription_payment(
+  p_payment_id uuid,
+  p_decision text,
+  p_reason text default null
+)
+returns text
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_payment public.subscription_payments%rowtype;
+  v_request public.subscription_renewal_requests%rowtype;
+  v_invoice public.subscription_invoices%rowtype;
+  v_subscription public.workspace_subscriptions%rowtype;
+  v_start timestamptz;
+  v_paid_through timestamptz;
+  v_plan_id uuid;
+  v_owner_id uuid;
+  v_target_workspace_id uuid;
+  v_family_id uuid;
+  v_family_limit integer := 1;
+  v_owned_count integer := 0;
+  v_owner_email text;
+  v_owner_name text;
+  v_family_currency text;
+begin
+  if not public.is_platform_staff(array['super_admin', 'admin_staff', 'finance_staff']) then
+    raise exception 'FINANCE_REVIEW_ACCESS_REQUIRED';
+  end if;
+  if p_decision not in ('approved', 'rejected') then raise exception 'INVALID_REVIEW_DECISION'; end if;
+
+  select * into v_payment
+  from public.subscription_payments
+  where id = p_payment_id
+  for update;
+  if v_payment.id is null then raise exception 'SUBSCRIPTION_PAYMENT_NOT_FOUND'; end if;
+  if v_payment.status <> 'pending_review' then return 'already_reviewed'; end if;
+
+  select * into v_request
+  from public.subscription_renewal_requests
+  where id = v_payment.renewal_request_id
+  for update;
+  select * into v_invoice
+  from public.subscription_invoices
+  where id = v_request.invoice_id
+  for update;
+  select owner_id into v_owner_id
+  from public.budget_workspaces
+  where id = v_payment.workspace_id;
+  v_target_workspace_id := v_payment.workspace_id;
+
+  if p_decision = 'rejected' then
+    if nullif(btrim(p_reason), '') is null then raise exception 'REJECTION_REASON_REQUIRED'; end if;
+    update public.subscription_payments
+      set status = 'rejected', updated_at = now()
+      where id = v_payment.id;
+    update public.subscription_renewal_requests
+      set status = 'rejected', rejection_reason = btrim(p_reason),
+          reviewed_by = auth.uid(), reviewed_at = now(), updated_at = now()
+      where id = v_request.id;
+    update public.subscription_invoices
+      set status = 'rejected'
+      where id = v_invoice.id;
+  else
+    if v_request.provision_workspace_on_approval then
+      if v_invoice.plan_code <> 'household'
+         or nullif(btrim(v_request.requested_workspace_name), '') is null
+      then
+        raise exception 'INVALID_FAMILY_PLAN_REQUEST';
+      end if;
+
+      select lower(profiles.email),
+             coalesce(nullif(btrim(profiles.full_name), ''), split_part(profiles.email, '@', 1), 'Family owner')
+      into v_owner_email, v_owner_name
+      from public.profiles
+      where profiles.id = v_owner_id;
+      if v_owner_email is null then raise exception 'OWNER_PROFILE_REQUIRED'; end if;
+
+      select family_heads.family_limit into v_family_limit
+      from public.family_heads
+      where family_heads.user_id = v_owner_id
+         or lower(family_heads.email) = v_owner_email
+      order by (family_heads.user_id = v_owner_id) desc
+      limit 1
+      for update;
+      v_family_limit := greatest(1, coalesce(v_family_limit, 1));
+
+      select count(*)::integer into v_owned_count
+      from public.families
+      where owner_id = v_owner_id;
+      if v_owned_count >= v_family_limit then raise exception 'FAMILY_LIMIT_REACHED'; end if;
+
+      v_family_currency := v_invoice.currency;
+
+      insert into public.families (
+        owner_id, owner_email, name, monthly_budget, currency
+      ) values (
+        v_owner_id, v_owner_email, btrim(v_request.requested_workspace_name), 0, v_family_currency
+      ) returning id into v_family_id;
+
+      insert into public.family_members (
+        family_id, user_id, created_by, name, role, email, avatar_color, status
+      ) values (
+        v_family_id, v_owner_id, auth.uid(), v_owner_name, 'Owner',
+        v_owner_email, '#2563EB', 'active'
+      );
+
+      select id into v_target_workspace_id
+      from public.budget_workspaces
+      where legacy_family_id = v_family_id;
+      if v_target_workspace_id is null then raise exception 'FAMILY_WORKSPACE_PROVISION_FAILED'; end if;
+
+      update public.subscription_invoices
+        set workspace_id = v_target_workspace_id
+        where id = v_invoice.id;
+      update public.subscription_payments
+        set workspace_id = v_target_workspace_id, updated_at = now()
+        where id = v_payment.id;
+      update public.subscription_renewal_requests
+        set workspace_id = v_target_workspace_id,
+            provisioned_workspace_id = v_target_workspace_id,
+            updated_at = now()
+        where id = v_request.id;
+      update public.subscription_audit_events
+        set workspace_id = v_target_workspace_id
+        where target_type = 'renewal_request'
+          and target_id = v_request.id;
+    end if;
+
+    select * into v_subscription
+    from public.workspace_subscriptions
+    where workspace_id = v_target_workspace_id
+    for update;
+    v_plan_id := v_request.requested_plan_id;
+    v_start := greatest(now(), coalesce(v_subscription.paid_through_at, now()));
+    v_paid_through := case
+      when v_invoice.billing_period = 'annual' then v_start + interval '1 year'
+      else v_start + interval '1 month'
+    end;
+
+    insert into public.workspace_subscriptions (
+      workspace_id, plan_id, status, billing_period, entitlement_start_at, paid_through_at
+    ) values (
+      v_target_workspace_id, v_plan_id, 'active', v_invoice.billing_period, now(), v_paid_through
+    )
+    on conflict (workspace_id) do update
+    set plan_id = excluded.plan_id,
+        status = 'active',
+        billing_period = excluded.billing_period,
+        paid_through_at = excluded.paid_through_at,
+        suspended_at = null,
+        suspension_reason = null,
+        version = public.workspace_subscriptions.version + 1,
+        updated_at = now()
+    returning * into v_subscription;
+
+    update public.subscription_payments
+      set status = 'approved',
+          receipt_number = 'MBR-' || to_char(clock_timestamp(), 'YYYYMMDDHH24MISSMS'),
+          updated_at = now()
+      where id = v_payment.id;
+    update public.subscription_renewal_requests
+      set status = 'approved', reviewed_by = auth.uid(), reviewed_at = now(), updated_at = now()
+      where id = v_request.id;
+    update public.subscription_invoices
+      set status = 'paid', paid_at = now()
+      where id = v_invoice.id;
+
+    insert into public.subscription_entitlement_history (
+      workspace_id, subscription_id, plan_id, status,
+      effective_from, effective_until, reason, actor_id
+    ) values (
+      v_target_workspace_id, v_subscription.id, v_plan_id, 'active', now(), v_paid_through,
+      'Approved subscription payment ' || v_invoice.invoice_number, auth.uid()
+    );
+
+    if v_invoice.plan_code = 'household' then
+      update public.family_heads as heads
+      set status = 'active',
+          billing_status = 'paid',
+          can_add_members = true,
+          family_limit = greatest(heads.family_limit, 1),
+          paid_until = (v_paid_through at time zone 'Africa/Harare')::date,
+          last_payment_at = now(),
+          monthly_fee = case when v_invoice.billing_period = 'monthly' then v_invoice.base_amount else heads.monthly_fee end,
+          fee_currency = v_invoice.currency,
+          user_id = v_owner_id
+      where lower(heads.email) = lower((select email from public.profiles where id = v_owner_id));
+
+      if not found then
+        insert into public.family_heads (
+          user_id, email, full_name, created_by, status, billing_status,
+          monthly_fee, fee_currency, can_add_members, family_limit,
+          paid_until, last_payment_at
+        )
+        select v_owner_id, lower(profiles.email), profiles.full_name, auth.uid(), 'active', 'paid',
+               case when v_invoice.billing_period = 'monthly' then v_invoice.base_amount else 0 end,
+               v_invoice.currency, true, 1,
+               (v_paid_through at time zone 'Africa/Harare')::date, now()
+        from public.profiles
+        where profiles.id = v_owner_id;
+      end if;
+    end if;
+  end if;
+
+  insert into public.subscription_payment_reviews (
+    payment_id, reviewer_id, decision, reason
+  ) values (
+    v_payment.id, auth.uid(), p_decision, nullif(btrim(p_reason), '')
+  );
+
+  insert into public.notifications (
+    user_id, created_by, type, title, body, url
+  ) values (
+    v_owner_id, auth.uid(), 'subscription',
+    case
+      when p_decision = 'approved' and v_request.provision_workspace_on_approval then 'Family plan approved'
+      when p_decision = 'approved' then 'Subscription payment approved'
+      else 'Subscription payment rejected'
+    end,
+    case
+      when p_decision = 'approved' and v_request.provision_workspace_on_approval
+        then btrim(v_request.requested_workspace_name) || ' is ready. Open the workspace switcher to start using it.'
+      when p_decision = 'approved'
+        then 'Your subscription is active. Your receipt is available in Subscription.'
+      else 'Your subscription payment needs attention. Open Subscription to view the review reason.'
+    end,
+    '#family/subscription'
+  );
+
+  insert into public.subscription_audit_events (
+    workspace_id, actor_id, action, target_type, target_id, safe_details
+  ) values (
+    v_target_workspace_id, auth.uid(), 'subscription.payment_' || p_decision,
+    'subscription_payment', v_payment.id,
+    jsonb_build_object(
+      'decision', p_decision,
+      'provisioned_family', p_decision = 'approved' and v_request.provision_workspace_on_approval
+    )
+  );
+  return p_decision;
+end;
+$$;
+
+revoke all on function public.submit_family_plan_request(
+  uuid, text, integer, text, text, text, numeric, text, date, text, text, text, text, text, bigint
+) from public;
+
+grant execute on function public.submit_family_plan_request(
+  uuid, text, integer, text, text, text, numeric, text, date, text, text, text, text, text, bigint
+) to authenticated;
+-- END MIGRATION 20260903091000_dynamic_family_plan_selection.sql
+
+-- BEGIN MIGRATION 20260903120000_align_enquiry_workflow.sql
+-- Align Mushavo Budget enquiries with the established public-to-admin workflow.
+-- Existing enquiry records are preserved while the public table is renamed.
+
+begin;
 
 create table if not exists public.countries (
   id uuid primary key default gen_random_uuid(),
@@ -5688,22 +5859,125 @@ create table if not exists public.countries (
   updated_at timestamptz not null default now()
 );
 
+do $$
+begin
+  if to_regclass('public.enquiries') is null and to_regclass('public.public_enquiries') is not null then
+    alter table public.public_enquiries rename to enquiries;
+  end if;
+end $$;
+
 create table if not exists public.enquiries (
   id uuid primary key default gen_random_uuid(),
   full_name text not null check (char_length(full_name) between 2 and 120),
   email text not null check (char_length(email) between 5 and 254),
-  country_name text not null check (char_length(country_name) between 2 and 100),
-  country_code text not null check (country_code ~ '^[A-Z]{2}$'),
+  country_name text,
+  country_code text,
   country_id uuid references public.countries(id) on delete set null,
-  enquiry_type text not null check (enquiry_type in ('support', 'sales', 'subscription_renewal', 'setup_help', 'country_availability', 'partnership')),
+  enquiry_type text,
   message text not null check (char_length(message) between 10 and 5000),
-  status text not null default 'new' check (status in ('new', 'in_progress', 'resolved', 'archived')),
-  source text not null default 'website' check (source in ('website', 'admin')),
+  status text not null default 'new',
+  source text not null default 'website',
   handled_by uuid references auth.users(id) on delete set null,
   handled_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+drop trigger if exists record_public_enquiry_event_trigger on public.enquiries;
+drop trigger if exists touch_public_enquiry_trigger on public.enquiries;
+
+do $$
+begin
+  if exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public' and table_name = 'enquiries' and column_name = 'category'
+  ) and not exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public' and table_name = 'enquiries' and column_name = 'enquiry_type'
+  ) then
+    alter table public.enquiries rename column category to enquiry_type;
+  end if;
+end $$;
+
+alter table public.enquiries add column if not exists country_name text;
+alter table public.enquiries add column if not exists country_code text;
+alter table public.enquiries add column if not exists country_id uuid references public.countries(id) on delete set null;
+alter table public.enquiries add column if not exists enquiry_type text;
+alter table public.enquiries add column if not exists source text default 'website';
+alter table public.enquiries add column if not exists handled_by uuid references auth.users(id) on delete set null;
+alter table public.enquiries add column if not exists handled_at timestamptz;
+alter table public.enquiries add column if not exists updated_at timestamptz default now();
+
+do $$
+begin
+  if exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public' and table_name = 'enquiries' and column_name = 'reference_number'
+  ) then
+    alter table public.enquiries alter column reference_number drop not null;
+  end if;
+  if exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public' and table_name = 'enquiries' and column_name = 'subject'
+  ) then
+    alter table public.enquiries alter column subject drop not null;
+  end if;
+end $$;
+
+update public.enquiries
+set enquiry_type = case enquiry_type
+  when 'personal_plan' then 'sales'
+  when 'family_plan' then 'sales'
+  when 'business_plan' then 'sales'
+  when 'pricing' then 'sales'
+  when 'payment' then 'subscription_renewal'
+  when 'account' then 'support'
+  when 'technical' then 'support'
+  when 'general' then 'support'
+  else enquiry_type
+end;
+
+update public.enquiries
+set status = case status
+  when 'waiting_for_customer' then 'in_progress'
+  when 'spam' then 'archived'
+  else status
+end;
+
+update public.enquiries
+set country_name = coalesce(nullif(trim(country_name), ''), 'Not provided'),
+    country_code = coalesce(nullif(upper(trim(country_code)), ''), 'ZZ'),
+    source = coalesce(nullif(trim(source), ''), 'website'),
+    updated_at = coalesce(updated_at, created_at, now());
+
+do $$
+declare constraint_row record;
+begin
+  for constraint_row in
+    select conname
+    from pg_constraint
+    where conrelid = 'public.enquiries'::regclass
+      and contype = 'c'
+      and (pg_get_constraintdef(oid) ilike '%status%' or pg_get_constraintdef(oid) ilike '%enquiry_type%')
+  loop
+    execute format('alter table public.enquiries drop constraint %I', constraint_row.conname);
+  end loop;
+end $$;
+
+alter table public.enquiries alter column country_name set not null;
+alter table public.enquiries alter column country_code set not null;
+alter table public.enquiries alter column enquiry_type set not null;
+alter table public.enquiries alter column source set not null;
+alter table public.enquiries alter column source set default 'website';
+alter table public.enquiries alter column updated_at set not null;
+alter table public.enquiries alter column updated_at set default now();
+
+alter table public.enquiries
+  add constraint enquiries_country_name_check check (char_length(country_name) between 2 and 100),
+  add constraint enquiries_country_code_check check (country_code ~ '^[A-Z]{2}$'),
+  add constraint enquiries_type_check check (enquiry_type in ('support', 'sales', 'subscription_renewal', 'setup_help', 'country_availability', 'partnership')),
+  add constraint enquiries_status_check check (status in ('new', 'in_progress', 'resolved', 'archived')),
+  add constraint enquiries_source_check check (source in ('website', 'admin'));
 
 create index if not exists enquiries_status_created_idx on public.enquiries(status, created_at desc);
 create index if not exists enquiries_email_created_idx on public.enquiries(lower(email), created_at desc);
@@ -5746,12 +6020,14 @@ for each row execute function public.normalize_enquiry();
 
 alter table public.countries enable row level security;
 alter table public.enquiries enable row level security;
+
+drop policy if exists "Support staff can read public enquiries" on public.enquiries;
+drop policy if exists "Support staff can update public enquiries" on public.enquiries;
 drop policy if exists "Staff can read countries" on public.countries;
-create policy "Staff can read countries" on public.countries
-for select to authenticated
-using (public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff']));
 drop policy if exists "Staff can read enquiries" on public.enquiries;
+drop policy if exists "Staff can update enquiries" on public.enquiries;
 drop policy if exists "Public can submit enquiries" on public.enquiries;
+
 create policy "Public can submit enquiries" on public.enquiries
 for insert to anon, authenticated
 with check (
@@ -5762,10 +6038,15 @@ with check (
   and email ~* '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$'
   and country_code = any (string_to_array('AF AX AL DZ AS AD AO AI AQ AG AR AM AW AU AT AZ BS BH BD BB BY BE BZ BJ BM BT BO BQ BA BW BV BR IO BN BG BF BI CV KH CM CA KY CF TD CL CN CX CC CO KM CG CD CK CR CI HR CU CW CY CZ DK DJ DM DO EC EG SV GQ ER EE SZ ET FK FO FJ FI FR GF PF TF GA GM GE DE GH GI GR GL GD GP GU GT GG GN GW GY HT HM VA HN HK HU IS IN ID IR IQ IE IM IL IT JM JP JE JO KZ KE KI KP KR KW KG LA LV LB LS LR LY LI LT LU MO MG MW MY MV ML MT MH MQ MR MU YT MX FM MD MC MN ME MS MA MZ MM NA NR NP NL NC NZ NI NE NG NU NF MK MP NO OM PK PW PS PA PG PY PE PH PN PL PT PR QA RE RO RU RW BL SH KN LC MF PM VC WS SM ST SA SN RS SC SL SG SX SK SI SB SO ZA GS SS ES LK SD SR SJ SE CH SY TW TJ TZ TH TL TG TK TO TT TN TR TM TC TV UG UA AE GB US UM UY UZ VU VE VN VG VI WF EH YE ZM ZW', ' '))
 );
+
+create policy "Staff can read countries" on public.countries
+for select to authenticated
+using (public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff']));
+
 create policy "Staff can read enquiries" on public.enquiries
 for select to authenticated
 using (public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff']));
-drop policy if exists "Staff can update enquiries" on public.enquiries;
+
 create policy "Staff can update enquiries" on public.enquiries
 for update to authenticated
 using (public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff']))
@@ -5777,10 +6058,6 @@ grant select on public.countries to authenticated;
 grant select, update on public.enquiries to authenticated;
 grant insert (full_name, email, country_name, country_code, enquiry_type, message)
 on public.enquiries to anon, authenticated;
-revoke all on function public.get_public_plan_catalogue(text) from public;
-grant execute on function public.get_public_plan_catalogue(text) to anon, authenticated;
-revoke all on function public.save_plan_definition(uuid, text, text, text, text, text, integer, integer, boolean, boolean, boolean, boolean, text, integer, text[]) from public;
-grant execute on function public.save_plan_definition(uuid, text, text, text, text, text, integer, integer, boolean, boolean, boolean, boolean, text, integer, text[]) to authenticated;
 
 do $$
 begin
@@ -5795,8 +6072,226 @@ begin
   end if;
 end $$;
 
--- New-account currency preferences. Signup can read only this safe catalogue;
--- selected codes are revalidated before the personal workspace is provisioned.
+commit;
+-- END MIGRATION 20260903120000_align_enquiry_workflow.sql
+
+-- BEGIN MIGRATION 20260903123000_direct_enquiry_submission.sql
+-- Allow the public Contact page to insert enquiries directly with the
+-- Supabase publishable/anonymous key. Public roles receive no read, update,
+-- or delete access. This migration is safe to run after the enquiry-alignment
+-- migration, including when its earlier Edge Function version was deployed.
+
+begin;
+
+alter table public.enquiries enable row level security;
+
+drop policy if exists "Public can submit enquiries" on public.enquiries;
+create policy "Public can submit enquiries" on public.enquiries
+for insert to anon, authenticated
+with check (
+  status = 'new'
+  and source = 'website'
+  and handled_by is null
+  and handled_at is null
+  and email ~* '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$'
+  and country_code = any (string_to_array('AF AX AL DZ AS AD AO AI AQ AG AR AM AW AU AT AZ BS BH BD BB BY BE BZ BJ BM BT BO BQ BA BW BV BR IO BN BG BF BI CV KH CM CA KY CF TD CL CN CX CC CO KM CG CD CK CR CI HR CU CW CY CZ DK DJ DM DO EC EG SV GQ ER EE SZ ET FK FO FJ FI FR GF PF TF GA GM GE DE GH GI GR GL GD GP GU GT GG GN GW GY HT HM VA HN HK HU IS IN ID IR IQ IE IM IL IT JM JP JE JO KZ KE KI KP KR KW KG LA LV LB LS LR LY LI LT LU MO MG MW MY MV ML MT MH MQ MR MU YT MX FM MD MC MN ME MS MA MZ MM NA NR NP NL NC NZ NI NE NG NU NF MK MP NO OM PK PW PS PA PG PY PE PH PN PL PT PR QA RE RO RU RW BL SH KN LC MF PM VC WS SM ST SA SN RS SC SL SG SX SK SI SB SO ZA GS SS ES LK SD SR SJ SE CH SY TW TJ TZ TH TL TG TK TO TT TN TR TM TC TV UG UA AE GB US UM UY UZ VU VE VN VG VI WF EH YE ZM ZW', ' '))
+);
+
+revoke select, insert, update, delete on public.enquiries from anon;
+revoke insert, delete on public.enquiries from authenticated;
+grant insert (full_name, email, country_name, country_code, enquiry_type, message)
+on public.enquiries to anon, authenticated;
+
+commit;
+-- END MIGRATION 20260903123000_direct_enquiry_submission.sql
+
+-- BEGIN MIGRATION 20260905090000_expand_global_currencies.sql
+-- Expand Mushavo Budget from the original regional catalogue to current global currencies.
+-- Safe to rerun: existing financial records and workspace currency selections are preserved.
+
+-- Current global payment currencies. Historical codes, funds, metals and crypto are excluded.
+insert into public.supported_currencies (code, name, decimal_digits) values
+  ('AED', 'United Arab Emirates Dirham', 2),
+  ('AFN', 'Afghan Afghani', 2),
+  ('ALL', 'Albanian Lek', 2),
+  ('AMD', 'Armenian Dram', 2),
+  ('AOA', 'Angolan Kwanza', 2),
+  ('ARS', 'Argentine Peso', 2),
+  ('AUD', 'Australian Dollar', 2),
+  ('AWG', 'Aruban Florin', 2),
+  ('AZN', 'Azerbaijani Manat', 2),
+  ('BAM', 'Bosnia-Herzegovina Convertible Mark', 2),
+  ('BBD', 'Barbadian Dollar', 2),
+  ('BDT', 'Bangladeshi Taka', 2),
+  ('BHD', 'Bahraini Dinar', 3),
+  ('BIF', 'Burundian Franc', 0),
+  ('BMD', 'Bermudan Dollar', 2),
+  ('BND', 'Brunei Dollar', 2),
+  ('BOB', 'Bolivian Boliviano', 2),
+  ('BRL', 'Brazilian Real', 2),
+  ('BSD', 'Bahamian Dollar', 2),
+  ('BTN', 'Bhutanese Ngultrum', 2),
+  ('BWP', 'Botswanan Pula', 2),
+  ('BYN', 'Belarusian Ruble', 2),
+  ('BZD', 'Belize Dollar', 2),
+  ('CAD', 'Canadian Dollar', 2),
+  ('CDF', 'Congolese Franc', 2),
+  ('CHF', 'Swiss Franc', 2),
+  ('CLP', 'Chilean Peso', 0),
+  ('CNY', 'Chinese Yuan', 2),
+  ('COP', 'Colombian Peso', 2),
+  ('CRC', 'Costa Rican Colón', 2),
+  ('CUP', 'Cuban Peso', 2),
+  ('CVE', 'Cape Verdean Escudo', 2),
+  ('CZK', 'Czech Koruna', 2),
+  ('DJF', 'Djiboutian Franc', 0),
+  ('DKK', 'Danish Krone', 2),
+  ('DOP', 'Dominican Peso', 2),
+  ('DZD', 'Algerian Dinar', 2),
+  ('EGP', 'Egyptian Pound', 2),
+  ('ERN', 'Eritrean Nakfa', 2),
+  ('ETB', 'Ethiopian Birr', 2),
+  ('EUR', 'Euro', 2),
+  ('FJD', 'Fijian Dollar', 2),
+  ('FKP', 'Falkland Islands Pound', 2),
+  ('GBP', 'British Pound', 2),
+  ('GEL', 'Georgian Lari', 2),
+  ('GHS', 'Ghanaian Cedi', 2),
+  ('GIP', 'Gibraltar Pound', 2),
+  ('GMD', 'Gambian Dalasi', 2),
+  ('GNF', 'Guinean Franc', 0),
+  ('GTQ', 'Guatemalan Quetzal', 2),
+  ('GYD', 'Guyanese Dollar', 2),
+  ('HKD', 'Hong Kong Dollar', 2),
+  ('HNL', 'Honduran Lempira', 2),
+  ('HTG', 'Haitian Gourde', 2),
+  ('HUF', 'Hungarian Forint', 2),
+  ('IDR', 'Indonesian Rupiah', 2),
+  ('ILS', 'Israeli New Shekel', 2),
+  ('INR', 'Indian Rupee', 2),
+  ('IQD', 'Iraqi Dinar', 3),
+  ('IRR', 'Iranian Rial', 2),
+  ('ISK', 'Icelandic Króna', 0),
+  ('JMD', 'Jamaican Dollar', 2),
+  ('JOD', 'Jordanian Dinar', 3),
+  ('JPY', 'Japanese Yen', 0),
+  ('KES', 'Kenyan Shilling', 2),
+  ('KGS', 'Kyrgyz Som', 2),
+  ('KHR', 'Cambodian Riel', 2),
+  ('KMF', 'Comorian Franc', 0),
+  ('KPW', 'North Korean Won', 2),
+  ('KRW', 'South Korean Won', 0),
+  ('KWD', 'Kuwaiti Dinar', 3),
+  ('KYD', 'Cayman Islands Dollar', 2),
+  ('KZT', 'Kazakhstani Tenge', 2),
+  ('LAK', 'Laotian Kip', 2),
+  ('LBP', 'Lebanese Pound', 2),
+  ('LKR', 'Sri Lankan Rupee', 2),
+  ('LRD', 'Liberian Dollar', 2),
+  ('LSL', 'Lesotho Loti', 2),
+  ('LYD', 'Libyan Dinar', 3),
+  ('MAD', 'Moroccan Dirham', 2),
+  ('MDL', 'Moldovan Leu', 2),
+  ('MGA', 'Malagasy Ariary', 2),
+  ('MKD', 'Macedonian Denar', 2),
+  ('MMK', 'Myanmar Kyat', 2),
+  ('MNT', 'Mongolian Tugrik', 2),
+  ('MOP', 'Macanese Pataca', 2),
+  ('MRU', 'Mauritanian Ouguiya', 2),
+  ('MUR', 'Mauritian Rupee', 2),
+  ('MVR', 'Maldivian Rufiyaa', 2),
+  ('MWK', 'Malawian Kwacha', 2),
+  ('MXN', 'Mexican Peso', 2),
+  ('MYR', 'Malaysian Ringgit', 2),
+  ('MZN', 'Mozambican Metical', 2),
+  ('NAD', 'Namibian Dollar', 2),
+  ('NGN', 'Nigerian Naira', 2),
+  ('NIO', 'Nicaraguan Córdoba', 2),
+  ('NOK', 'Norwegian Krone', 2),
+  ('NPR', 'Nepalese Rupee', 2),
+  ('NZD', 'New Zealand Dollar', 2),
+  ('OMR', 'Omani Rial', 3),
+  ('PAB', 'Panamanian Balboa', 2),
+  ('PEN', 'Peruvian Sol', 2),
+  ('PGK', 'Papua New Guinean Kina', 2),
+  ('PHP', 'Philippine Peso', 2),
+  ('PKR', 'Pakistani Rupee', 2),
+  ('PLN', 'Polish Zloty', 2),
+  ('PYG', 'Paraguayan Guarani', 0),
+  ('QAR', 'Qatari Riyal', 2),
+  ('RON', 'Romanian Leu', 2),
+  ('RSD', 'Serbian Dinar', 2),
+  ('RUB', 'Russian Ruble', 2),
+  ('RWF', 'Rwandan Franc', 0),
+  ('SAR', 'Saudi Riyal', 2),
+  ('SBD', 'Solomon Islands Dollar', 2),
+  ('SCR', 'Seychellois Rupee', 2),
+  ('SDG', 'Sudanese Pound', 2),
+  ('SEK', 'Swedish Krona', 2),
+  ('SGD', 'Singapore Dollar', 2),
+  ('SHP', 'St. Helena Pound', 2),
+  ('SLE', 'Sierra Leonean Leone', 2),
+  ('SOS', 'Somali Shilling', 2),
+  ('SRD', 'Surinamese Dollar', 2),
+  ('SSP', 'South Sudanese Pound', 2),
+  ('STN', 'São Tomé and Príncipe Dobra', 2),
+  ('SVC', 'Salvadoran Colón', 2),
+  ('SYP', 'Syrian Pound', 2),
+  ('SZL', 'Eswatini Lilangeni', 2),
+  ('THB', 'Thai Baht', 2),
+  ('TJS', 'Tajikistani Somoni', 2),
+  ('TMT', 'Turkmenistani Manat', 2),
+  ('TND', 'Tunisian Dinar', 3),
+  ('TOP', 'Tongan Paʻanga', 2),
+  ('TRY', 'Turkish Lira', 2),
+  ('TTD', 'Trinidad and Tobago Dollar', 2),
+  ('TWD', 'New Taiwan Dollar', 2),
+  ('TZS', 'Tanzanian Shilling', 2),
+  ('UAH', 'Ukrainian Hryvnia', 2),
+  ('UGX', 'Ugandan Shilling', 0),
+  ('USD', 'US Dollar', 2),
+  ('UYU', 'Uruguayan Peso', 2),
+  ('UZS', 'Uzbekistani Som', 2),
+  ('VES', 'Venezuelan Bolívar', 2),
+  ('VND', 'Vietnamese Dong', 0),
+  ('VUV', 'Vanuatu Vatu', 0),
+  ('WST', 'Samoan Tala', 2),
+  ('XAF', 'Central African CFA Franc', 0),
+  ('XCD', 'East Caribbean Dollar', 2),
+  ('XCG', 'Caribbean Guilder', 2),
+  ('XOF', 'West African CFA Franc', 0),
+  ('XPF', 'CFP Franc', 0),
+  ('YER', 'Yemeni Rial', 2),
+  ('ZAR', 'South African Rand', 2),
+  ('ZMW', 'Zambian Kwacha', 2),
+  ('ZWG', 'Zimbabwe Gold', 2)
+on conflict (code) do update
+set name = excluded.name,
+    decimal_digits = excluded.decimal_digits,
+    is_active = true,
+    updated_at = now();
+
+-- Preserve historical catalogue rows for old records, but hide them from new selections.
+update public.supported_currencies
+set is_active = false,
+    updated_at = now()
+where code in ('ANG', 'BGN', 'CUC', 'HRK', 'MRO', 'SLL', 'STD', 'VEF', 'ZMK', 'ZWL');
+-- END MIGRATION 20260905090000_expand_global_currencies.sql
+
+-- BEGIN MIGRATION 20260905120000_signup_currency_preferences.sql
+-- Initialize each new personal workspace from the currencies selected at signup.
+-- Safe to rerun. Existing workspace settings are never overwritten.
+
+alter table public.workspace_settings
+  drop constraint if exists workspace_settings_currency_codes_check,
+  add constraint workspace_settings_currency_codes_check check (
+    default_payment_currency ~ '^[A-Z]{3}$'
+    and reporting_currency ~ '^[A-Z]{3}$'
+    and cardinality(enabled_currencies) between 1 and 160
+    and default_payment_currency = any(enabled_currencies)
+    and reporting_currency = any(enabled_currencies)
+  );
+
 create or replace function public.get_public_signup_currencies()
 returns table (code text, name text)
 language sql
@@ -5824,29 +6319,6 @@ declare
   v_default_currency text := 'USD';
   v_enabled_currencies text[] := array[]::text[];
 begin
-  -- An invitee has an Auth identity before completing setup. Never create a
-  -- Free workspace for that identity, including while a replacement email is
-  -- pending or after a failed/expired invitation. The explicit self-signup
-  -- completion RPC changes the profile only after cancelling the invitation.
-  if exists (
-    select 1 from public.admin_user_invitations as invitations
-    where invitations.auth_user_id = p_user_id
-      and invitations.status in ('pending_delivery', 'sent')
-  ) or exists (
-    select 1 from public.profiles as profiles
-    where profiles.id = p_user_id
-      and profiles.signup_source = 'admin_invitation'
-      and not exists (
-        select 1 from public.admin_user_invitations as invitations
-        where invitations.id = profiles.admin_invitation_id
-          and invitations.auth_user_id = p_user_id
-          and invitations.status = 'provisioned'
-          and invitations.provisioned_workspace_id is not null
-      )
-  ) then
-    raise exception 'ADMIN_INVITATION_SETUP_REQUIRED';
-  end if;
-
   select
     coalesce(nullif(btrim(profiles.full_name), ''), 'Personal budget'),
     coalesce(users.raw_user_meta_data, '{}'::jsonb)
@@ -5883,7 +6355,9 @@ begin
   join public.supported_currencies as currencies
     on currencies.code = requested.code and currencies.is_active;
 
-  if v_default_currency is null then raise exception 'NO_SUPPORTED_CURRENCIES_AVAILABLE'; end if;
+  if v_default_currency is null then
+    raise exception 'NO_SUPPORTED_CURRENCIES_AVAILABLE';
+  end if;
   if not (v_default_currency = any(v_enabled_currencies)) then
     v_enabled_currencies := array_append(v_enabled_currencies, v_default_currency);
   end if;
@@ -5932,11 +6406,94 @@ begin
 end;
 $$;
 
+create or replace function public.save_workspace_currency_settings(
+  p_workspace_id uuid,
+  p_default_payment_currency text,
+  p_enabled_currencies text[],
+  p_reporting_currency text,
+  p_conversion_enabled boolean
+)
+returns public.workspace_settings
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_default text := upper(btrim(p_default_payment_currency));
+  v_reporting text := upper(btrim(p_reporting_currency));
+  v_enabled text[];
+  v_result public.workspace_settings%rowtype;
+  v_can_manage boolean := false;
+begin
+  if auth.uid() is null then raise exception 'AUTHENTICATION_REQUIRED'; end if;
+  select public.is_workspace_owner(p_workspace_id)
+    or exists (
+      select 1 from public.workspace_members
+      where workspace_id = p_workspace_id and user_id = auth.uid() and status = 'active'
+        and role in ('business_owner', 'business_admin', 'finance_manager')
+    ) into v_can_manage;
+  if not v_can_manage then raise exception 'CURRENCY_SETTINGS_ACCESS_REQUIRED'; end if;
+
+  select array_agg(distinct upper(btrim(code)) order by upper(btrim(code)))
+  into v_enabled from unnest(coalesce(p_enabled_currencies, array[]::text[])) as code;
+  if v_enabled is null or cardinality(v_enabled) = 0 or cardinality(v_enabled) > 160 then
+    raise exception 'INVALID_ENABLED_CURRENCIES';
+  end if;
+  if not (v_default = any(v_enabled)) or not (v_reporting = any(v_enabled)) then
+    raise exception 'DEFAULT_AND_REPORTING_CURRENCY_MUST_BE_ENABLED';
+  end if;
+  if exists (
+    select 1 from unnest(v_enabled) as requested(code)
+    left join public.supported_currencies on supported_currencies.code = requested.code and supported_currencies.is_active
+    where supported_currencies.code is null
+  ) then raise exception 'UNSUPPORTED_CURRENCY'; end if;
+
+  insert into public.workspace_settings (
+    workspace_id, base_currency, default_payment_currency, enabled_currencies,
+    reporting_currency, conversion_enabled, updated_at
+  ) values (
+    p_workspace_id, v_reporting, v_default, v_enabled,
+    v_reporting, coalesce(p_conversion_enabled, false), now()
+  )
+  on conflict (workspace_id) do update
+  set base_currency = excluded.base_currency,
+      default_payment_currency = excluded.default_payment_currency,
+      enabled_currencies = excluded.enabled_currencies,
+      reporting_currency = excluded.reporting_currency,
+      conversion_enabled = excluded.conversion_enabled,
+      updated_at = now()
+  returning * into v_result;
+  return v_result;
+end;
+$$;
+
 revoke all on function public.get_public_signup_currencies() from public;
 grant execute on function public.get_public_signup_currencies() to anon, authenticated;
 revoke all on function public.provision_budget_user(uuid) from public;
+grant execute on function public.save_workspace_currency_settings(uuid, text, text[], text, boolean) to authenticated;
+-- END MIGRATION 20260905120000_signup_currency_preferences.sql
 
--- PWA Stage 7: protected per-user, per-device Web Push subscriptions.
+-- BEGIN MIGRATION 20260905143000_payment_daily_recurrence.sql
+begin;
+
+alter table public.payment_items
+  drop constraint if exists payment_items_recurrence_type_check,
+  add constraint payment_items_recurrence_type_check check (
+    recurrence_type in ('once', 'monthly', 'quarterly', 'yearly', 'custom', 'custom_days')
+  ),
+  drop constraint if exists payment_items_recurrence_interval_check,
+  add constraint payment_items_recurrence_interval_check check (
+    recurrence_interval between 1 and 3650
+  );
+
+commit;
+-- END MIGRATION 20260905143000_payment_daily_recurrence.sql
+
+-- BEGIN MIGRATION 20260907150000_push_subscriptions.sql
+-- Stage 7: protected per-user, per-device Web Push subscriptions.
+-- This migration stores subscriptions only. It does not request browser
+-- permission, deploy an Edge Function, create a Cron job, or send a push.
+
 create table if not exists public.push_subscriptions (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -6041,8 +6598,12 @@ grant update (p256dh, auth, device_label, user_agent)
 on table public.push_subscriptions to authenticated;
 
 revoke all on function public.touch_push_subscription_updated_at() from public;
+-- END MIGRATION 20260907150000_push_subscriptions.sql
 
--- PWA Stage 9: durable per-user rate limiting for test notifications.
+-- BEGIN MIGRATION 20260908130000_push_test_rate_limit.sql
+-- Stage 9: durable per-user rate limiting for authenticated test pushes.
+-- This migration does not schedule or send notifications.
+
 create table if not exists public.push_test_rate_limits (
   user_id uuid primary key references auth.users(id) on delete cascade,
   last_requested_at timestamptz not null default now(),
@@ -6052,6 +6613,8 @@ create table if not exists public.push_test_rate_limits (
 alter table public.push_test_rate_limits enable row level security;
 alter table public.push_test_rate_limits force row level security;
 
+-- Browser clients never need direct access. Only the service-role Edge
+-- Function may claim a test-send window through the function below.
 revoke all on table public.push_test_rate_limits from anon, authenticated;
 
 create or replace function public.claim_push_test_rate_limit(
@@ -6096,7 +6659,9 @@ revoke all on function public.claim_push_test_rate_limit(uuid, integer)
 from public, anon, authenticated;
 grant execute on function public.claim_push_test_rate_limit(uuid, integer)
 to service_role;
+-- END MIGRATION 20260908130000_push_test_rate_limit.sql
 
+-- BEGIN MIGRATION 20260908170000_notification_outbox.sql
 -- PWA Stage 11: idempotent payment-reminder outbox and atomic claiming.
 -- This migration creates queue rows and in-app bell notifications. It does not
 -- create Cron, invoke an Edge Function, or send an operating-system push.
@@ -6556,10 +7121,10 @@ grant execute on function public.claim_notification_outbox(integer, timestamptz)
 to service_role;
 grant execute on function public.record_notification_outbox_result(uuid, boolean, boolean, text, timestamptz)
 to service_role;
+-- END MIGRATION 20260908170000_notification_outbox.sql
 
--- ============================================================================
--- Support ticket workflow
--- ============================================================================
+-- BEGIN MIGRATION 20260912120000_support_ticket_workflow.sql
+-- Tracked support tickets for workspace customers and authorized platform staff.
 
 create table if not exists public.support_tickets (
   id uuid primary key default gen_random_uuid(),
@@ -6569,7 +7134,9 @@ create table if not exists public.support_tickets (
   assigned_admin_id uuid references auth.users(id) on delete set null,
   subject text not null check (char_length(btrim(subject)) between 3 and 140),
   description text not null check (char_length(btrim(description)) between 3 and 4000),
-  category text not null default 'other' check (category in ('account_access', 'subscription_payment', 'notifications', 'technical', 'other')),
+  category text not null default 'other' check (category in (
+    'account_access', 'subscription_payment', 'notifications', 'technical', 'other'
+  )),
   priority text not null default 'normal' check (priority in ('low', 'normal', 'high', 'urgent')),
   status text not null default 'open' check (status in ('open', 'in_progress', 'waiting_customer', 'resolved', 'closed')),
   created_at timestamptz not null default now(),
@@ -6586,26 +7153,44 @@ create table if not exists public.support_ticket_messages (
   created_at timestamptz not null default now()
 );
 
-create index if not exists support_tickets_customer_idx on public.support_tickets(customer_id, updated_at desc);
-create index if not exists support_tickets_workspace_idx on public.support_tickets(workspace_id, updated_at desc);
-create index if not exists support_tickets_queue_idx on public.support_tickets(status, priority, updated_at desc);
-create index if not exists support_ticket_messages_ticket_idx on public.support_ticket_messages(ticket_id, created_at);
+create index if not exists support_tickets_customer_idx
+on public.support_tickets(customer_id, updated_at desc);
+
+create index if not exists support_tickets_workspace_idx
+on public.support_tickets(workspace_id, updated_at desc);
+
+create index if not exists support_tickets_queue_idx
+on public.support_tickets(status, priority, updated_at desc);
+
+create index if not exists support_ticket_messages_ticket_idx
+on public.support_ticket_messages(ticket_id, created_at);
 
 create or replace function public.touch_support_ticket_updated_at()
-returns trigger language plpgsql set search_path = public, pg_temp as $$
+returns trigger
+language plpgsql
+set search_path = public, pg_temp
+as $$
 begin
   new.updated_at = now();
-  new.resolved_at = case when new.status in ('resolved', 'closed') then coalesce(old.resolved_at, now()) else null end;
+  new.resolved_at = case
+    when new.status in ('resolved', 'closed') then coalesce(old.resolved_at, now())
+    else null
+  end;
   return new;
 end;
 $$;
 
 drop trigger if exists support_tickets_touch_updated_at on public.support_tickets;
-create trigger support_tickets_touch_updated_at before update on public.support_tickets
+create trigger support_tickets_touch_updated_at
+before update on public.support_tickets
 for each row execute function public.touch_support_ticket_updated_at();
 
 create or replace function public.touch_support_ticket_from_message()
-returns trigger language plpgsql security definer set search_path = public, pg_temp as $$
+returns trigger
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
 begin
   update public.support_tickets
   set
@@ -6617,42 +7202,92 @@ end;
 $$;
 
 drop trigger if exists support_ticket_messages_touch_ticket on public.support_ticket_messages;
-create trigger support_ticket_messages_touch_ticket after insert on public.support_ticket_messages
+create trigger support_ticket_messages_touch_ticket
+after insert on public.support_ticket_messages
 for each row execute function public.touch_support_ticket_from_message();
 
 alter table public.support_tickets enable row level security;
 alter table public.support_ticket_messages enable row level security;
 
 drop policy if exists "Customers and support staff can read tickets" on public.support_tickets;
-create policy "Customers and support staff can read tickets" on public.support_tickets for select to authenticated
-using (customer_id = (select auth.uid()) or public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff']));
+create policy "Customers and support staff can read tickets"
+on public.support_tickets for select to authenticated
+using (
+  customer_id = (select auth.uid())
+  or public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff'])
+);
 
 drop policy if exists "Customers and support staff can create tickets" on public.support_tickets;
-create policy "Customers and support staff can create tickets" on public.support_tickets for insert to authenticated
-with check (created_by = (select auth.uid()) and (((customer_id = (select auth.uid())) and (workspace_id is null or public.is_workspace_member(workspace_id)) and assigned_admin_id is null and status = 'open' and resolved_at is null) or public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff'])));
+create policy "Customers and support staff can create tickets"
+on public.support_tickets for insert to authenticated
+with check (
+  created_by = (select auth.uid())
+  and (
+    (
+      customer_id = (select auth.uid())
+      and (workspace_id is null or public.is_workspace_member(workspace_id))
+      and assigned_admin_id is null
+      and status = 'open'
+      and resolved_at is null
+    )
+    or public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff'])
+  )
+);
 
 drop policy if exists "Support staff can update tickets" on public.support_tickets;
-create policy "Support staff can update tickets" on public.support_tickets for update to authenticated
+create policy "Support staff can update tickets"
+on public.support_tickets for update to authenticated
 using (public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff']))
 with check (public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff']));
 
 drop policy if exists "Administrators can delete tickets" on public.support_tickets;
-create policy "Administrators can delete tickets" on public.support_tickets for delete to authenticated
+create policy "Administrators can delete tickets"
+on public.support_tickets for delete to authenticated
 using (public.is_platform_staff(array['super_admin', 'admin_staff']));
 
 drop policy if exists "Customers and support staff can read ticket messages" on public.support_ticket_messages;
-create policy "Customers and support staff can read ticket messages" on public.support_ticket_messages for select to authenticated
-using (public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff']) or (not is_internal and exists (select 1 from public.support_tickets where support_tickets.id = support_ticket_messages.ticket_id and support_tickets.customer_id = (select auth.uid()))));
+create policy "Customers and support staff can read ticket messages"
+on public.support_ticket_messages for select to authenticated
+using (
+  public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff'])
+  or (
+    not is_internal
+    and exists (
+      select 1 from public.support_tickets
+      where support_tickets.id = support_ticket_messages.ticket_id
+        and support_tickets.customer_id = (select auth.uid())
+    )
+  )
+);
 
 drop policy if exists "Customers and support staff can add ticket messages" on public.support_ticket_messages;
-create policy "Customers and support staff can add ticket messages" on public.support_ticket_messages for insert to authenticated
-with check (author_id = (select auth.uid()) and (public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff']) or (not is_internal and exists (select 1 from public.support_tickets where support_tickets.id = support_ticket_messages.ticket_id and support_tickets.customer_id = (select auth.uid()) and support_tickets.status <> 'closed'))));
+create policy "Customers and support staff can add ticket messages"
+on public.support_ticket_messages for insert to authenticated
+with check (
+  author_id = (select auth.uid())
+  and (
+    public.is_platform_staff(array['super_admin', 'admin_staff', 'support_staff'])
+    or (
+      not is_internal
+      and exists (
+        select 1 from public.support_tickets
+        where support_tickets.id = support_ticket_messages.ticket_id
+          and support_tickets.customer_id = (select auth.uid())
+          and support_tickets.status not in ('closed')
+      )
+    )
+  )
+);
 
-grant select, insert, update, delete on public.support_tickets to authenticated;
+grant select, insert on public.support_tickets to authenticated;
+grant update, delete on public.support_tickets to authenticated;
 grant select, insert on public.support_ticket_messages to authenticated;
+
 revoke all on function public.touch_support_ticket_updated_at() from public, anon, authenticated;
 revoke all on function public.touch_support_ticket_from_message() from public, anon, authenticated;
+-- END MIGRATION 20260912120000_support_ticket_workflow.sql
 
+-- BEGIN MIGRATION 20260916190000_admin_event_notifications.sql
 -- Admin Operations 4.6: private in-app and Web Push alerts for platform staff.
 -- CurrencyAPI behavior is intentionally unchanged by this migration.
 
@@ -7011,8 +7646,448 @@ grant execute on function public.record_admin_notification_outbox_result(uuid, b
 to service_role;
 
 commit;
+-- END MIGRATION 20260916190000_admin_event_notifications.sql
 
--- Release 4.6.8: workspace-aware notifications and privacy-safe push routes.
+-- BEGIN MIGRATION 20260921090000_additional_family_subscriptions.sql
+-- Additional Family subscriptions: payment review creates one separate family.
+-- Existing direct-create limits remain enforced. No allowance is granted on submission.
+begin;
+
+create or replace function public.submit_family_plan_request(
+  p_personal_workspace_id uuid,
+  p_family_name text,
+  p_total_member_count integer,
+  p_plan_code text,
+  p_billing_period text,
+  p_currency text,
+  p_amount numeric,
+  p_payment_method text,
+  p_payment_date date,
+  p_reference_number text,
+  p_notes text default null,
+  p_proof_path text default null,
+  p_proof_name text default null,
+  p_proof_mime_type text default null,
+  p_proof_size_bytes bigint default null
+)
+returns uuid
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_workspace public.budget_workspaces%rowtype;
+  v_plan public.plans%rowtype;
+  v_price public.plan_prices%rowtype;
+  v_invoice_id uuid;
+  v_request_id uuid;
+  v_payment_id uuid;
+  v_owned_count integer := 0;
+  v_pending_count integer := 0;
+  v_included integer := 4;
+  v_extra integer := 0;
+  v_total numeric(12,2);
+  v_family_name text := nullif(btrim(p_family_name), '');
+begin
+  if auth.uid() is null then raise exception 'AUTHENTICATION_REQUIRED'; end if;
+  if v_family_name is null then raise exception 'FAMILY_NAME_REQUIRED'; end if;
+  if char_length(v_family_name) > 100 then raise exception 'FAMILY_NAME_TOO_LONG'; end if;
+  if p_billing_period not in ('monthly', 'annual') then raise exception 'INVALID_BILLING_PERIOD'; end if;
+  if nullif(btrim(p_payment_method), '') is null then raise exception 'PAYMENT_METHOD_REQUIRED'; end if;
+  if nullif(btrim(p_reference_number), '') is null then raise exception 'PAYMENT_REFERENCE_REQUIRED'; end if;
+
+  select * into v_workspace
+  from public.budget_workspaces
+  where id = p_personal_workspace_id
+  for update;
+
+  if v_workspace.id is null
+     or v_workspace.owner_id <> auth.uid()
+     or v_workspace.workspace_type <> 'personal'
+  then
+    raise exception 'PERSONAL_WORKSPACE_OWNER_REQUIRED';
+  end if;
+  if v_workspace.status = 'suspended' then raise exception 'WORKSPACE_SUSPENDED'; end if;
+
+  select count(*)::integer into v_owned_count
+  from public.families
+  where owner_id = auth.uid();
+
+  select count(*)::integer into v_pending_count
+  from public.subscription_renewal_requests
+  where requested_by = auth.uid()
+    and provision_workspace_on_approval = true
+    and status = 'pending_review';
+
+  if v_pending_count > 0 then raise exception 'FAMILY_PLAN_REQUEST_ALREADY_PENDING'; end if;
+  -- A paid purchase may add a family beyond the existing creation allowance.
+  -- Keep the platform's existing maximum; approval alone grants the new place.
+  if v_owned_count >= 100 then raise exception 'FAMILY_ACCOUNT_CAP_REACHED'; end if;
+
+  select * into v_plan
+  from public.plans
+  where code = lower(btrim(p_plan_code)) and workspace_type = 'household' and is_active and available_for_purchase;
+  if v_plan.id is null then raise exception 'PLAN_NOT_AVAILABLE'; end if;
+
+  select * into v_price
+  from public.plan_prices
+  where plan_id = v_plan.id
+    and billing_period = p_billing_period
+    and currency = upper(p_currency)
+    and is_active
+    and effective_from <= now()
+    and (effective_until is null or effective_until > now())
+  order by effective_from desc
+  limit 1;
+  if v_price.id is null then raise exception 'PLAN_PRICE_NOT_CONFIGURED'; end if;
+
+  select coalesce(limit_value, 4) into v_included
+  from public.plan_limits
+  where plan_id = v_plan.id and limit_code = 'included_member_seats';
+  v_included := greatest(1, coalesce(v_included, 4));
+  if p_total_member_count is null
+     or p_total_member_count < v_included
+     or p_total_member_count > 100
+  then
+    raise exception 'INVALID_FAMILY_MEMBER_COUNT';
+  end if;
+  v_extra := p_total_member_count - v_included;
+  -- extra_member_amount is always the monthly per-person rate.
+  -- Annual invoices charge that monthly rate for all 12 months.
+  v_total := v_price.amount + (
+    v_extra * v_price.extra_member_amount
+    * case when p_billing_period = 'annual' then 12 else 1 end
+  );
+  if round(p_amount, 2) <> round(v_total, 2) then
+    raise exception 'PAYMENT_AMOUNT_DOES_NOT_MATCH_INVOICE';
+  end if;
+
+  insert into public.subscription_invoices (
+    workspace_id, invoice_number, plan_code, plan_name, billing_period, currency,
+    base_amount, extra_member_amount, billable_member_count, included_member_count,
+    extra_member_count, total_amount, created_by
+  ) values (
+    p_personal_workspace_id,
+    'MB-' || to_char(clock_timestamp(), 'YYYYMMDDHH24MISSMS') || '-' || upper(substr(gen_random_uuid()::text, 1, 6)),
+    v_plan.code, v_plan.display_name, p_billing_period, v_price.currency,
+    v_price.amount, v_price.extra_member_amount,
+    p_total_member_count, v_included, v_extra, v_total, auth.uid()
+  ) returning id into v_invoice_id;
+
+  insert into public.subscription_renewal_requests (
+    workspace_id, invoice_id, requested_plan_id, requested_by,
+    requested_workspace_name, provision_workspace_on_approval
+  ) values (
+    p_personal_workspace_id, v_invoice_id, v_plan.id, auth.uid(), v_family_name, true
+  ) returning id into v_request_id;
+
+  insert into public.subscription_payments (
+    renewal_request_id, workspace_id, submitted_by, amount, currency,
+    payment_method, payment_date, reference_number, notes
+  ) values (
+    v_request_id, p_personal_workspace_id, auth.uid(), v_total, v_price.currency,
+    btrim(p_payment_method), p_payment_date, btrim(p_reference_number), nullif(btrim(p_notes), '')
+  ) returning id into v_payment_id;
+
+  if p_proof_path is not null then
+    if p_proof_mime_type not in ('image/jpeg', 'image/png', 'image/webp', 'application/pdf')
+       or p_proof_size_bytes is null
+       or p_proof_size_bytes <= 0
+       or p_proof_size_bytes > 10485760
+    then
+      raise exception 'INVALID_SUBSCRIPTION_PROOF';
+    end if;
+    if split_part(p_proof_path, '/', 1) <> 'workspaces'
+       or split_part(p_proof_path, '/', 2) <> p_personal_workspace_id::text
+       or split_part(p_proof_path, '/', 3) <> auth.uid()::text
+    then
+      raise exception 'INVALID_SUBSCRIPTION_PROOF_PATH';
+    end if;
+    insert into public.subscription_payment_proofs (
+      payment_id, storage_path, original_name, mime_type, size_bytes, uploaded_by
+    ) values (
+      v_payment_id, p_proof_path,
+      coalesce(nullif(btrim(p_proof_name), ''), 'payment-proof'),
+      p_proof_mime_type, p_proof_size_bytes, auth.uid()
+    );
+  end if;
+
+  insert into public.subscription_audit_events (
+    workspace_id, actor_id, action, target_type, target_id, safe_details
+  ) values (
+    p_personal_workspace_id, auth.uid(), 'subscription.family_plan_submitted',
+    'renewal_request', v_request_id,
+    jsonb_build_object(
+      'plan_code', v_plan.code,
+      'billing_period', p_billing_period,
+      'currency', v_price.currency,
+      'amount', v_total,
+      'provisions_family', true
+    )
+  );
+  return v_payment_id;
+end;
+$$;
+
+create or replace function public.review_subscription_payment(
+  p_payment_id uuid,
+  p_decision text,
+  p_reason text default null
+)
+returns text
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_payment public.subscription_payments%rowtype;
+  v_request public.subscription_renewal_requests%rowtype;
+  v_invoice public.subscription_invoices%rowtype;
+  v_subscription public.workspace_subscriptions%rowtype;
+  v_start timestamptz;
+  v_paid_through timestamptz;
+  v_plan_id uuid;
+  v_owner_id uuid;
+  v_target_workspace_id uuid;
+  v_family_id uuid;
+  v_owned_count integer := 0;
+  v_owner_email text;
+  v_owner_name text;
+  v_family_currency text;
+begin
+  if not public.is_platform_staff(array['super_admin', 'admin_staff', 'finance_staff']) then
+    raise exception 'FINANCE_REVIEW_ACCESS_REQUIRED';
+  end if;
+  if p_decision not in ('approved', 'rejected') then raise exception 'INVALID_REVIEW_DECISION'; end if;
+
+  select * into v_payment
+  from public.subscription_payments
+  where id = p_payment_id
+  for update;
+  if v_payment.id is null then raise exception 'SUBSCRIPTION_PAYMENT_NOT_FOUND'; end if;
+  if v_payment.status <> 'pending_review' then return 'already_reviewed'; end if;
+
+  select * into v_request
+  from public.subscription_renewal_requests
+  where id = v_payment.renewal_request_id
+  for update;
+  select * into v_invoice
+  from public.subscription_invoices
+  where id = v_request.invoice_id
+  for update;
+  select owner_id into v_owner_id
+  from public.budget_workspaces
+  where id = v_payment.workspace_id
+  for update;
+  v_target_workspace_id := v_payment.workspace_id;
+
+  if p_decision = 'rejected' then
+    if nullif(btrim(p_reason), '') is null then raise exception 'REJECTION_REASON_REQUIRED'; end if;
+    update public.subscription_payments
+      set status = 'rejected', updated_at = now()
+      where id = v_payment.id;
+    update public.subscription_renewal_requests
+      set status = 'rejected', rejection_reason = btrim(p_reason),
+          reviewed_by = auth.uid(), reviewed_at = now(), updated_at = now()
+      where id = v_request.id;
+    update public.subscription_invoices
+      set status = 'rejected'
+      where id = v_invoice.id;
+  else
+    if v_request.provision_workspace_on_approval then
+      if not exists (select 1 from public.plans where id = v_request.requested_plan_id and workspace_type = 'household')
+         or nullif(btrim(v_request.requested_workspace_name), '') is null
+      then
+        raise exception 'INVALID_FAMILY_PLAN_REQUEST';
+      end if;
+
+      select lower(profiles.email),
+             coalesce(nullif(btrim(profiles.full_name), ''), split_part(profiles.email, '@', 1), 'Family owner')
+      into v_owner_email, v_owner_name
+      from public.profiles
+      where profiles.id = v_owner_id;
+      if v_owner_email is null then raise exception 'OWNER_PROFILE_REQUIRED'; end if;
+
+      -- Lock the head row too, serializing against direct family creation.
+      perform 1 from public.family_heads
+      where user_id = v_owner_id or lower(email) = v_owner_email
+      for update;
+
+      select count(*)::integer into v_owned_count
+      from public.families
+      where owner_id = v_owner_id;
+      if v_owned_count >= 100 then raise exception 'FAMILY_ACCOUNT_CAP_REACHED'; end if;
+
+      v_family_currency := v_invoice.currency;
+
+      insert into public.families (
+        owner_id, owner_email, name, monthly_budget, currency
+      ) values (
+        v_owner_id, v_owner_email, btrim(v_request.requested_workspace_name), 0, v_family_currency
+      ) returning id into v_family_id;
+
+      insert into public.family_members (
+        family_id, user_id, created_by, name, role, email, avatar_color, status
+      ) values (
+        v_family_id, v_owner_id, auth.uid(), v_owner_name, 'Owner',
+        v_owner_email, '#2563EB', 'active'
+      );
+
+      select id into v_target_workspace_id
+      from public.budget_workspaces
+      where legacy_family_id = v_family_id;
+      if v_target_workspace_id is null then raise exception 'FAMILY_WORKSPACE_PROVISION_FAILED'; end if;
+
+      update public.subscription_invoices
+        set workspace_id = v_target_workspace_id
+        where id = v_invoice.id;
+      update public.subscription_payments
+        set workspace_id = v_target_workspace_id, updated_at = now()
+        where id = v_payment.id;
+      update public.subscription_renewal_requests
+        set workspace_id = v_target_workspace_id,
+            provisioned_workspace_id = v_target_workspace_id,
+            updated_at = now()
+        where id = v_request.id;
+      update public.subscription_audit_events
+        set workspace_id = v_target_workspace_id
+        where target_type = 'renewal_request'
+          and target_id = v_request.id;
+    end if;
+
+    select * into v_subscription
+    from public.workspace_subscriptions
+    where workspace_id = v_target_workspace_id
+    for update;
+    v_plan_id := v_request.requested_plan_id;
+    v_start := greatest(now(), coalesce(v_subscription.paid_through_at, now()));
+    v_paid_through := case
+      when v_invoice.billing_period = 'annual' then v_start + interval '1 year'
+      else v_start + interval '1 month'
+    end;
+
+    insert into public.workspace_subscriptions (
+      workspace_id, plan_id, status, billing_period, entitlement_start_at, paid_through_at
+    ) values (
+      v_target_workspace_id, v_plan_id, 'active', v_invoice.billing_period, now(), v_paid_through
+    )
+    on conflict (workspace_id) do update
+    set plan_id = excluded.plan_id,
+        status = 'active',
+        billing_period = excluded.billing_period,
+        paid_through_at = excluded.paid_through_at,
+        suspended_at = null,
+        suspension_reason = null,
+        version = public.workspace_subscriptions.version + 1,
+        updated_at = now()
+    returning * into v_subscription;
+
+    update public.subscription_payments
+      set status = 'approved',
+          receipt_number = 'MBR-' || to_char(clock_timestamp(), 'YYYYMMDDHH24MISSMS'),
+          updated_at = now()
+      where id = v_payment.id;
+    update public.subscription_renewal_requests
+      set status = 'approved', reviewed_by = auth.uid(), reviewed_at = now(), updated_at = now()
+      where id = v_request.id;
+    update public.subscription_invoices
+      set status = 'paid', paid_at = now()
+      where id = v_invoice.id;
+
+    insert into public.subscription_entitlement_history (
+      workspace_id, subscription_id, plan_id, status,
+      effective_from, effective_until, reason, actor_id
+    ) values (
+      v_target_workspace_id, v_subscription.id, v_plan_id, 'active', now(), v_paid_through,
+      'Approved subscription payment ' || v_invoice.invoice_number, auth.uid()
+    );
+
+    if exists (select 1 from public.plans where id = v_plan_id and workspace_type = 'household') then
+      update public.family_heads as heads
+      set status = 'active',
+          billing_status = 'paid',
+          can_add_members = true,
+          family_limit = greatest(heads.family_limit, 1, case when v_request.provision_workspace_on_approval then v_owned_count + 1 else 1 end),
+          paid_until = (v_paid_through at time zone 'Africa/Harare')::date,
+          last_payment_at = now(),
+          monthly_fee = case when v_invoice.billing_period = 'monthly' then v_invoice.base_amount else heads.monthly_fee end,
+          fee_currency = v_invoice.currency,
+          user_id = v_owner_id
+      where lower(heads.email) = lower((select email from public.profiles where id = v_owner_id));
+
+      if not found then
+        insert into public.family_heads (
+          user_id, email, full_name, created_by, status, billing_status,
+          monthly_fee, fee_currency, can_add_members, family_limit,
+          paid_until, last_payment_at
+        )
+        select v_owner_id, lower(profiles.email), profiles.full_name, auth.uid(), 'active', 'paid',
+               case when v_invoice.billing_period = 'monthly' then v_invoice.base_amount else 0 end,
+               v_invoice.currency, true, greatest(1, v_owned_count + 1),
+               (v_paid_through at time zone 'Africa/Harare')::date, now()
+        from public.profiles
+        where profiles.id = v_owner_id;
+      end if;
+    end if;
+  end if;
+
+  insert into public.subscription_payment_reviews (
+    payment_id, reviewer_id, decision, reason
+  ) values (
+    v_payment.id, auth.uid(), p_decision, nullif(btrim(p_reason), '')
+  );
+
+  insert into public.notifications (
+    user_id, created_by, type, title, body, url
+  ) values (
+    v_owner_id, auth.uid(), 'subscription',
+    case
+      when p_decision = 'approved' and v_request.provision_workspace_on_approval then 'Family plan approved'
+      when p_decision = 'approved' then 'Subscription payment approved'
+      else 'Subscription payment rejected'
+    end,
+    case
+      when p_decision = 'approved' and v_request.provision_workspace_on_approval
+        then btrim(v_request.requested_workspace_name) || ' is ready. Open the workspace switcher to start using it.'
+      when p_decision = 'approved'
+        then 'Your subscription is active. Your receipt is available in Subscription.'
+      else 'Your subscription payment needs attention. Open Subscription to view the review reason.'
+    end,
+    '#family/subscription'
+  );
+
+  insert into public.subscription_audit_events (
+    workspace_id, actor_id, action, target_type, target_id, safe_details
+  ) values (
+    v_target_workspace_id, auth.uid(), 'subscription.payment_' || p_decision,
+    'subscription_payment', v_payment.id,
+    jsonb_build_object(
+      'decision', p_decision,
+      'provisioned_family', p_decision = 'approved' and v_request.provision_workspace_on_approval
+    )
+  );
+  return p_decision;
+end;
+$$;
+
+revoke all on function public.submit_family_plan_request(
+  uuid, text, integer, text, text, text, numeric, text, date, text, text, text, text, text, bigint
+) from public;
+
+grant execute on function public.submit_family_plan_request(
+  uuid, text, integer, text, text, text, numeric, text, date, text, text, text, text, text, bigint
+) to authenticated;
+
+revoke all on function public.review_subscription_payment(uuid, text, text) from public;
+grant execute on function public.review_subscription_payment(uuid, text, text) to authenticated;
+notify pgrst, 'reload schema';
+commit;
+-- END MIGRATION 20260921090000_additional_family_subscriptions.sql
+
+-- BEGIN MIGRATION 20260921130000_notification_workspace_context.sql
+-- Stage 3: attach every relevant notification to its workspace and preserve
+-- that context through privacy-aware Web Push and safe click routes.
+
 begin;
 
 alter table public.notifications
@@ -7021,7 +8096,8 @@ alter table public.notifications
 do $$
 begin
   if not exists (
-    select 1 from pg_constraint
+    select 1
+    from pg_constraint
     where conname = 'notifications_workspace_id_fkey'
       and conrelid = 'public.notifications'::regclass
   ) then
@@ -7059,6 +8135,9 @@ begin
     where items.id = v_payment_item_id;
   end if;
 
+  -- Subscription review notifications are inserted immediately after their
+  -- review row in the same transaction. Resolve the reviewed payment without
+  -- exposing a client-controlled workspace identifier.
   if new.workspace_id is null
      and new.type = 'subscription'
      and new.user_id is not null
@@ -7088,6 +8167,7 @@ begin
       );
     end if;
   end if;
+
   return new;
 end;
 $$;
@@ -7161,11 +8241,13 @@ declare
   v_detailed_previews boolean := false;
 begin
   if new.source_type <> 'payment' then return new; end if;
+
   select workspaces.workspace_type, workspaces.name,
          coalesce(settings.detailed_notification_previews, false)
   into v_workspace_type, v_workspace_name, v_detailed_previews
   from public.budget_workspaces as workspaces
-  left join public.workspace_settings as settings on settings.workspace_id = workspaces.id
+  left join public.workspace_settings as settings
+    on settings.workspace_id = workspaces.id
   where workspaces.id = new.workspace_id;
 
   new.target_url := format(
@@ -7214,7 +8296,8 @@ set
     else 'Mushavo Budget'
   end
 from public.budget_workspaces as workspaces
-left join public.workspace_settings as settings on settings.workspace_id = workspaces.id
+left join public.workspace_settings as settings
+  on settings.workspace_id = workspaces.id
 where outbox.workspace_id = workspaces.id
   and outbox.source_type = 'payment';
 
@@ -7238,6 +8321,7 @@ declare
   v_workspace_id uuid;
 begin
   if new.source_type <> 'subscription_payment_submitted' then return new; end if;
+
   select payments.workspace_id into v_workspace_id
   from public.subscription_payments as payments
   where payments.id = new.source_id;
@@ -7338,144 +8422,9 @@ from public, anon, authenticated;
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260921130000_notification_workspace_context.sql
 
--- Release 4.9.13: atomically record a completed one-time payment.
-begin;
-
-create or replace function public.create_completed_one_time_payment(
-  p_workspace_id uuid,
-  p_name text,
-  p_category text,
-  p_amount numeric,
-  p_currency text,
-  p_payment_date date,
-  p_payment_method text,
-  p_paid_by_member_id uuid,
-  p_reference_number text,
-  p_notes text,
-  p_proof_path text,
-  p_proof_name text,
-  p_proof_mime_type text,
-  p_proof_size_bytes bigint
-)
-returns table (payment_item_id uuid, payment_record_id uuid)
-language plpgsql
-security definer
-set search_path = public, pg_temp
-as $$
-declare
-  v_user_id uuid := auth.uid();
-  v_workspace public.budget_workspaces;
-  v_entitlement record;
-  v_family_id uuid;
-  v_family_owner_id uuid;
-  v_visibility text;
-  v_item_id uuid;
-  v_record_id uuid;
-  v_currency text := upper(btrim(coalesce(p_currency, '')));
-  v_category text := coalesce(nullif(btrim(p_category), ''), 'Other');
-  v_expected_proof_prefix text;
-begin
-  if v_user_id is null then raise exception 'AUTHENTICATION_REQUIRED'; end if;
-  if public.my_account_suspended() then raise exception 'ACCOUNT_SUSPENDED'; end if;
-
-  select workspaces.* into v_workspace
-  from public.budget_workspaces as workspaces
-  where workspaces.id = p_workspace_id
-    and workspaces.status = 'active'
-    and workspaces.workspace_type in ('personal', 'household')
-    and (
-      (workspaces.workspace_type = 'personal' and workspaces.owner_id = v_user_id)
-      or
-      (workspaces.workspace_type = 'household' and public.is_active_family_participant(workspaces.legacy_family_id))
-    );
-  if not found then raise exception 'COMPLETED_PAYMENT_WORKSPACE_REQUIRED'; end if;
-
-  select * into v_entitlement
-  from public.effective_workspace_entitlement(p_workspace_id);
-  if v_entitlement.workspace_id is null then raise exception 'WORKSPACE_ACCESS_REQUIRED'; end if;
-  if v_entitlement.read_only or v_entitlement.effective_status = 'suspended' then
-    raise exception 'WORKSPACE_READ_ONLY';
-  end if;
-
-  if nullif(btrim(p_name), '') is null
-     or length(btrim(p_name)) > 160
-     or p_amount is null or round(p_amount, 2) <= 0
-     or v_currency !~ '^[A-Z]{3}$'
-     or p_payment_date is null or p_payment_date > current_date
-     or length(v_category) > 80
-     or length(coalesce(p_reference_number, '')) > 160
-     or length(coalesce(p_notes, '')) > 1000
-  then raise exception 'COMPLETED_PAYMENT_DETAILS_INVALID'; end if;
-  if p_payment_method not in ('Cash', 'EFT', 'Card', 'Bank deposit', 'Other') then
-    raise exception 'COMPLETED_PAYMENT_METHOD_INVALID';
-  end if;
-
-  if v_workspace.workspace_type = 'household' then
-    v_visibility := 'family';
-    v_family_id := v_workspace.legacy_family_id;
-    select families.owner_id into v_family_owner_id from public.families where families.id = v_family_id;
-    if p_paid_by_member_id is null or not exists (
-      select 1 from public.family_members as members
-      where members.id = p_paid_by_member_id
-        and members.family_id = v_family_id
-        and members.status = 'active'
-    ) then raise exception 'PAID_BY_MEMBER_REQUIRED'; end if;
-    v_expected_proof_prefix := 'families/' || v_family_id || '/' || v_family_owner_id || '/' || v_user_id || '/';
-  else
-    v_visibility := 'personal';
-    v_family_id := null;
-    if p_paid_by_member_id is not null then raise exception 'PAID_BY_MEMBER_REQUIRED'; end if;
-    v_expected_proof_prefix := 'personal/' || v_user_id || '/';
-  end if;
-
-  if p_proof_path is null then
-    if p_proof_name is not null or p_proof_mime_type is not null or p_proof_size_bytes is not null then
-      raise exception 'COMPLETED_PAYMENT_DETAILS_INVALID';
-    end if;
-  elsif left(p_proof_path, length(v_expected_proof_prefix)) <> v_expected_proof_prefix
-     or nullif(btrim(p_proof_name), '') is null
-     or p_proof_mime_type not in ('image/jpeg', 'image/png', 'image/webp', 'application/pdf')
-     or p_proof_size_bytes is null or p_proof_size_bytes <= 0 or p_proof_size_bytes > 10485760
-  then raise exception 'COMPLETED_PAYMENT_DETAILS_INVALID'; end if;
-
-  insert into public.payment_items (
-    workspace_id, family_id, owner_id, visibility, responsible_member_id, created_by,
-    name, category, amount, currency, recurrence_type, recurrence_interval,
-    due_day, start_date, reminder_days_before, status, notes
-  ) values (
-    p_workspace_id, v_family_id, v_user_id, v_visibility, null, v_user_id,
-    btrim(p_name), v_category, round(p_amount, 2), v_currency, 'once', 1,
-    extract(day from p_payment_date)::integer, p_payment_date, 0, 'active', nullif(btrim(p_notes), '')
-  ) returning id into v_item_id;
-
-  insert into public.payment_records (
-    workspace_id, family_id, owner_id, visibility, payment_item_id,
-    period_start, due_date, paid_by_member_id, amount, currency,
-    payment_date, payment_method, reference_number, notes,
-    proof_path, proof_name, proof_mime_type, proof_size_bytes, recorded_by
-  ) values (
-    p_workspace_id, v_family_id, v_user_id, v_visibility, v_item_id,
-    date_trunc('month', p_payment_date)::date, p_payment_date, p_paid_by_member_id,
-    round(p_amount, 2), v_currency, p_payment_date, p_payment_method,
-    nullif(btrim(p_reference_number), ''), nullif(btrim(p_notes), ''),
-    p_proof_path, p_proof_name, p_proof_mime_type, p_proof_size_bytes, v_user_id
-  ) returning id into v_record_id;
-
-  return query select v_item_id, v_record_id;
-end;
-$$;
-
-revoke all on function public.create_completed_one_time_payment(
-  uuid, text, text, numeric, text, date, text, uuid, text, text, text, text, text, bigint
-) from public, anon, authenticated;
-grant execute on function public.create_completed_one_time_payment(
-  uuid, text, text, numeric, text, date, text, uuid, text, text, text, text, text, bigint
-) to authenticated;
-
-notify pgrst, 'reload schema';
-commit;
-
+-- BEGIN MIGRATION 20260922113000_admin_user_invitations.sql
 -- Admin-created user invitation foundation.
 -- Auth users are invited server-side, but workspaces and paid entitlements are
 -- deliberately deferred until the invitee completes Stage 5 setup.
@@ -7942,7 +8891,9 @@ to service_role;
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260922113000_admin_user_invitations.sql
 
+-- BEGIN MIGRATION 20260923100000_complete_admin_user_invitations.sql
 -- Complete an admin-created user invitation only after Supabase Auth has
 -- authenticated the invitee. All workspace, entitlement, invoice, payment,
 -- and invitation changes are committed in one transaction.
@@ -8457,7 +9408,9 @@ to authenticated;
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260923100000_complete_admin_user_invitations.sql
 
+-- BEGIN MIGRATION 20260923143000_replace_pending_admin_invitations.sql
 -- Replace an unfinished invitation without deleting its Auth identity; allow an
 -- email-verified invitee to choose ordinary Free signup instead.
 begin;
@@ -8833,8 +9786,166 @@ grant execute on function public.has_my_unfinished_admin_invitation() to authent
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260923143000_replace_pending_admin_invitations.sql
 
--- Guard invited users against the normal app bootstrap's Free workspace RPC.
+-- BEGIN MIGRATION 20260923190000_guard_pending_admin_invitation_workspace.sql
+-- An invitation signs the recipient into Auth before they finish setup. The
+-- normal app bootstrap must not provision its Free workspace in the interim.
+begin;
+
+create or replace function public.provision_my_budget_workspace()
+returns uuid
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_user_id uuid := auth.uid();
+begin
+  if v_user_id is null then raise exception 'AUTHENTICATION_REQUIRED'; end if;
+
+  if exists (
+    select 1 from public.admin_user_invitations as invitations
+    where invitations.auth_user_id = v_user_id
+      and invitations.status = 'sent'
+  ) then
+    raise exception 'ADMIN_INVITATION_SETUP_REQUIRED';
+  end if;
+
+  return public.provision_budget_user(v_user_id);
+end;
+$$;
+
+commit;
+-- END MIGRATION 20260923190000_guard_pending_admin_invitation_workspace.sql
+
+-- BEGIN MIGRATION 20260923200000_hold_invited_workspace_until_setup.sql
+-- Pending invitations cannot create a workspace through any Free provisioning path.
+-- This remains true while an invitation is being replaced, cancelled, or expired.
+begin;
+
+create or replace function public.provision_budget_user(p_user_id uuid)
+returns uuid
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_workspace_id uuid;
+  v_plan_id uuid;
+  v_name text;
+  v_metadata jsonb := '{}'::jsonb;
+  v_default_currency text := 'USD';
+  v_enabled_currencies text[] := array[]::text[];
+begin
+  -- An invitee has an Auth identity before completing setup. Never create a
+  -- Free workspace for that identity, including while a replacement email is
+  -- pending or after a failed/expired invitation. The explicit self-signup
+  -- completion RPC changes the profile only after cancelling the invitation.
+  if exists (
+    select 1 from public.admin_user_invitations as invitations
+    where invitations.auth_user_id = p_user_id
+      and invitations.status in ('pending_delivery', 'sent')
+  ) or exists (
+    select 1 from public.profiles as profiles
+    where profiles.id = p_user_id
+      and profiles.signup_source = 'admin_invitation'
+      and not exists (
+        select 1 from public.admin_user_invitations as invitations
+        where invitations.id = profiles.admin_invitation_id
+          and invitations.auth_user_id = p_user_id
+          and invitations.status = 'provisioned'
+          and invitations.provisioned_workspace_id is not null
+      )
+  ) then
+    raise exception 'ADMIN_INVITATION_SETUP_REQUIRED';
+  end if;
+
+  select
+    coalesce(nullif(btrim(profiles.full_name), ''), 'Personal budget'),
+    coalesce(users.raw_user_meta_data, '{}'::jsonb)
+  into v_name, v_metadata
+  from public.profiles as profiles
+  join auth.users as users on users.id = profiles.id
+  where profiles.id = p_user_id;
+
+  v_default_currency := upper(coalesce(nullif(btrim(v_metadata ->> 'default_currency'), ''), 'USD'));
+  if not exists (
+    select 1 from public.supported_currencies
+    where supported_currencies.code = v_default_currency and supported_currencies.is_active
+  ) then
+    select currencies.code into v_default_currency
+    from public.supported_currencies as currencies
+    where currencies.is_active
+    order by (currencies.code = 'USD') desc, currencies.code
+    limit 1;
+  end if;
+
+  select coalesce(array_agg(requested.code order by requested.code), array[]::text[])
+  into v_enabled_currencies
+  from (
+    select distinct upper(btrim(metadata_values.value)) as code
+    from jsonb_array_elements_text(
+      case
+        when jsonb_typeof(v_metadata -> 'enabled_currencies') = 'array'
+          then v_metadata -> 'enabled_currencies'
+        else '[]'::jsonb
+      end
+    ) as metadata_values(value)
+    where upper(btrim(metadata_values.value)) ~ '^[A-Z]{3}$'
+  ) as requested
+  join public.supported_currencies as currencies
+    on currencies.code = requested.code and currencies.is_active;
+
+  if v_default_currency is null then raise exception 'NO_SUPPORTED_CURRENCIES_AVAILABLE'; end if;
+  if not (v_default_currency = any(v_enabled_currencies)) then
+    v_enabled_currencies := array_append(v_enabled_currencies, v_default_currency);
+  end if;
+  select array_agg(distinct code order by code)
+  into v_enabled_currencies
+  from unnest(v_enabled_currencies) as selected(code);
+
+  insert into public.budget_workspaces (owner_id, workspace_type, name)
+  values (p_user_id, 'personal', coalesce(v_name, 'Personal budget') || '''s budget')
+  on conflict (owner_id) where workspace_type = 'personal' and status <> 'closed'
+  do update set updated_at = now()
+  returning id into v_workspace_id;
+
+  insert into public.workspace_members (workspace_id, user_id, role, status)
+  values (v_workspace_id, p_user_id, 'owner', 'active')
+  on conflict (workspace_id, user_id) do update
+  set role = 'owner', status = 'active', removed_at = null, updated_at = now();
+
+  insert into public.workspace_settings (
+    workspace_id, base_currency, locale, timezone, default_payment_currency,
+    enabled_currencies, reporting_currency, conversion_enabled
+  ) values (
+    v_workspace_id, v_default_currency, 'en-ZW', 'Africa/Harare', v_default_currency,
+    v_enabled_currencies, v_default_currency, true
+  )
+  on conflict (workspace_id) do nothing;
+
+  select id into v_plan_id from public.plans where code = 'free';
+  insert into public.workspace_subscriptions (workspace_id, plan_id, status, billing_period, paid_through_at)
+  values (v_workspace_id, v_plan_id, 'active', null, null)
+  on conflict (workspace_id) do nothing;
+
+  insert into public.subscription_entitlement_history (
+    workspace_id, subscription_id, plan_id, status, effective_from, reason, actor_id
+  )
+  select v_workspace_id, subscriptions.id, v_plan_id, 'active', subscriptions.entitlement_start_at,
+         'Initial Free entitlement', p_user_id
+  from public.workspace_subscriptions as subscriptions
+  where subscriptions.workspace_id = v_workspace_id
+    and not exists (
+      select 1 from public.subscription_entitlement_history
+      where subscription_entitlement_history.workspace_id = v_workspace_id
+    );
+
+  return v_workspace_id;
+end;
+$$;
+
 create or replace function public.provision_my_budget_workspace()
 returns uuid
 language plpgsql
@@ -8867,6 +9978,12 @@ begin
 end;
 $$;
 
+revoke all on function public.provision_budget_user(uuid) from public, anon, authenticated;
+
+commit;
+-- END MIGRATION 20260923200000_hold_invited_workspace_until_setup.sql
+
+-- BEGIN MIGRATION 20260924100000_analytics_data_foundation.sql
 -- Stage 6: first-party, privacy-conscious admin analytics foundation.
 -- No IP address, user agent, page URL, payment reference, or event payload is stored.
 begin;
@@ -9069,6 +10186,9 @@ grant execute on function public.admin_analytics_foundation(date, date) to authe
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260924100000_analytics_data_foundation.sql
+
+-- BEGIN MIGRATION 20260924110000_admin_analytics_page.sql
 -- Stage 7: aggregate-only filtered analytics for signed-in administrators.
 -- The Stage 6 activity table remains inaccessible directly to browser roles.
 begin;
@@ -9342,7 +10462,13 @@ revoke all on function public.admin_analytics_page(date,date,text,text,text,text
 grant execute on function public.admin_analytics_page(date,date,text,text,text,text,text,text)
   to authenticated;
 
--- A payer must be an active member of the same Family as the payment.
+notify pgrst, 'reload schema';
+commit;
+-- END MIGRATION 20260924110000_admin_analytics_page.sql
+
+-- BEGIN MIGRATION 20260924130000_guard_payment_record_payer.sql
+-- Keep the named payer inside the payment's own Family workspace.
+-- Existing payment history is unchanged; only new writes are checked.
 create or replace function public.guard_payment_record_payer()
 returns trigger
 language plpgsql
@@ -9352,7 +10478,8 @@ as $$
 begin
   if new.visibility = 'family' and new.paid_by_member_id is not null
     and not exists (
-      select 1 from public.family_members as members
+      select 1
+      from public.family_members as members
       where members.id = new.paid_by_member_id
         and members.family_id = new.family_id
         and members.status = 'active'
@@ -9364,15 +10491,111 @@ end;
 $$;
 
 revoke all on function public.guard_payment_record_payer() from public, anon, authenticated;
+
 drop trigger if exists guard_payment_record_payer_trigger on public.payment_records;
 create trigger guard_payment_record_payer_trigger
 before insert or update of family_id, paid_by_member_id on public.payment_records
 for each row execute function public.guard_payment_record_payer();
 
-notify pgrst, 'reload schema';
-commit;
+-- Existing installations may not have these tables in the Realtime publication.
+-- The recipient's open app needs the notification INSERT to refresh immediately.
+do $$
+declare
+  realtime_table text;
+begin
+  if not exists (select 1 from pg_publication where pubname = 'supabase_realtime') then
+    create publication supabase_realtime;
+  end if;
+  if exists (select 1 from pg_publication where pubname = 'supabase_realtime' and puballtables) then
+    return;
+  end if;
+  foreach realtime_table in array array['notifications', 'family_invitations'] loop
+    if not exists (
+      select 1 from pg_publication_tables
+      where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = realtime_table
+    ) then
+      execute format('alter publication supabase_realtime add table public.%I', realtime_table);
+    end if;
+  end loop;
+end $$;
+-- END MIGRATION 20260924130000_guard_payment_record_payer.sql
 
--- Release 4.9.8: subscription expiry, account suspension, and payment selection.
+-- BEGIN MIGRATION 20260924143000_repair_payment_recurrence_constraints.sql
+begin;
+
+-- The Every N days form option was released after some production databases
+-- had already applied the original payment_items constraint. Reassert the
+-- current accepted values so those databases can save custom day schedules.
+alter table public.payment_items
+  drop constraint if exists payment_items_recurrence_type_check,
+  add constraint payment_items_recurrence_type_check check (
+    recurrence_type in ('once', 'monthly', 'quarterly', 'yearly', 'custom', 'custom_days')
+  ),
+  drop constraint if exists payment_items_recurrence_interval_check,
+  add constraint payment_items_recurrence_interval_check check (
+    recurrence_interval between 1 and 3650
+  );
+
+comment on constraint payment_items_recurrence_type_check on public.payment_items is
+  'Accepted payment schedules, including custom day intervals.';
+
+comment on constraint payment_items_recurrence_interval_check on public.payment_items is
+  'Repeat interval from 1 through 3650; the app limits month intervals to 120.';
+
+commit;
+-- END MIGRATION 20260924143000_repair_payment_recurrence_constraints.sql
+
+-- BEGIN MIGRATION 20260925080000_cancel_pending_family_invitation.sql
+begin;
+
+-- A deleted invite removes the record and its linked notification. Preserve
+-- the record as cancelled instead, so it can no longer be accepted and the
+-- family's reserved seat becomes available immediately.
+drop policy if exists "Family owners can cancel invitations" on public.family_invitations;
+revoke delete on public.family_invitations from authenticated;
+
+create or replace function public.cancel_family_invitation(p_invitation_id uuid)
+returns text
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_invitation public.family_invitations%rowtype;
+begin
+  if auth.uid() is null then raise exception 'AUTHENTICATION_REQUIRED'; end if;
+
+  select invitations.* into v_invitation
+  from public.family_invitations as invitations
+  join public.families as families on families.id = invitations.family_id
+  where invitations.id = p_invitation_id
+    and families.owner_id = auth.uid()
+    and invitations.status = 'pending'
+  for update of invitations;
+
+  if v_invitation.id is null then raise exception 'INVITATION_NOT_AVAILABLE'; end if;
+  if not public.can_manage_family_members(v_invitation.family_id) then
+    raise exception 'WORKSPACE_READ_ONLY';
+  end if;
+
+  update public.family_invitations
+  set status = 'cancelled', responded_at = now()
+  where id = v_invitation.id;
+
+  delete from public.notifications
+  where invitation_id = v_invitation.id and type = 'family_invite';
+
+  return 'cancelled';
+end;
+$$;
+
+revoke all on function public.cancel_family_invitation(uuid) from public, anon, authenticated;
+grant execute on function public.cancel_family_invitation(uuid) to authenticated;
+
+commit;
+-- END MIGRATION 20260925080000_cancel_pending_family_invitation.sql
+
+-- BEGIN MIGRATION 20260925090000_expiry_and_account_suspension.sql
 begin;
 
 -- Free plan choices are stored independently of payment status. A renewal
@@ -9844,8 +11067,9 @@ end;
 $$;
 
 commit;
+-- END MIGRATION 20260925090000_expiry_and_account_suspension.sql
 
--- Release 4.9.9: Family extra places with billing anniversary pricing.
+-- BEGIN MIGRATION 20260925120000_family_extra_places.sql
 begin;
 
 -- Extra places are a change to the existing term, never a renewal. The
@@ -10362,6 +11586,9 @@ $$;
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260925120000_family_extra_places.sql
+
+-- BEGIN MIGRATION 20260927103000_personal_cashbook_private_test.sql
 -- Personal Cashbook foundation. This deliberately does not add plan pricing,
 -- navigation, Family access, or Business access.
 begin;
@@ -10833,7 +12060,148 @@ grant execute on function public.cashbook_report(uuid, date, date) to authentica
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260927103000_personal_cashbook_private_test.sql
 
+-- BEGIN MIGRATION 20260927140000_dashboard_completed_payments.sql
+-- Release 4.9.13: atomically record a completed one-time payment.
+begin;
+
+create or replace function public.create_completed_one_time_payment(
+  p_workspace_id uuid,
+  p_name text,
+  p_category text,
+  p_amount numeric,
+  p_currency text,
+  p_payment_date date,
+  p_payment_method text,
+  p_paid_by_member_id uuid,
+  p_reference_number text,
+  p_notes text,
+  p_proof_path text,
+  p_proof_name text,
+  p_proof_mime_type text,
+  p_proof_size_bytes bigint
+)
+returns table (payment_item_id uuid, payment_record_id uuid)
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_user_id uuid := auth.uid();
+  v_workspace public.budget_workspaces;
+  v_entitlement record;
+  v_family_id uuid;
+  v_family_owner_id uuid;
+  v_visibility text;
+  v_item_id uuid;
+  v_record_id uuid;
+  v_currency text := upper(btrim(coalesce(p_currency, '')));
+  v_category text := coalesce(nullif(btrim(p_category), ''), 'Other');
+  v_expected_proof_prefix text;
+begin
+  if v_user_id is null then raise exception 'AUTHENTICATION_REQUIRED'; end if;
+  if public.my_account_suspended() then raise exception 'ACCOUNT_SUSPENDED'; end if;
+
+  select workspaces.* into v_workspace
+  from public.budget_workspaces as workspaces
+  where workspaces.id = p_workspace_id
+    and workspaces.status = 'active'
+    and workspaces.workspace_type in ('personal', 'household')
+    and (
+      (workspaces.workspace_type = 'personal' and workspaces.owner_id = v_user_id)
+      or
+      (workspaces.workspace_type = 'household' and public.is_active_family_participant(workspaces.legacy_family_id))
+    );
+  if not found then raise exception 'COMPLETED_PAYMENT_WORKSPACE_REQUIRED'; end if;
+
+  select * into v_entitlement
+  from public.effective_workspace_entitlement(p_workspace_id);
+  if v_entitlement.workspace_id is null then raise exception 'WORKSPACE_ACCESS_REQUIRED'; end if;
+  if v_entitlement.read_only or v_entitlement.effective_status = 'suspended' then
+    raise exception 'WORKSPACE_READ_ONLY';
+  end if;
+
+  if nullif(btrim(p_name), '') is null
+     or length(btrim(p_name)) > 160
+     or p_amount is null or round(p_amount, 2) <= 0
+     or v_currency !~ '^[A-Z]{3}$'
+     or p_payment_date is null or p_payment_date > current_date
+     or length(v_category) > 80
+     or length(coalesce(p_reference_number, '')) > 160
+     or length(coalesce(p_notes, '')) > 1000
+  then raise exception 'COMPLETED_PAYMENT_DETAILS_INVALID'; end if;
+  if p_payment_method not in ('Cash', 'EFT', 'Card', 'Bank deposit', 'Other') then
+    raise exception 'COMPLETED_PAYMENT_METHOD_INVALID';
+  end if;
+
+  if v_workspace.workspace_type = 'household' then
+    v_visibility := 'family';
+    v_family_id := v_workspace.legacy_family_id;
+    select families.owner_id into v_family_owner_id from public.families where families.id = v_family_id;
+    if p_paid_by_member_id is null or not exists (
+      select 1 from public.family_members as members
+      where members.id = p_paid_by_member_id
+        and members.family_id = v_family_id
+        and members.status = 'active'
+    ) then raise exception 'PAID_BY_MEMBER_REQUIRED'; end if;
+    v_expected_proof_prefix := 'families/' || v_family_id || '/' || v_family_owner_id || '/' || v_user_id || '/';
+  else
+    v_visibility := 'personal';
+    v_family_id := null;
+    if p_paid_by_member_id is not null then raise exception 'PAID_BY_MEMBER_REQUIRED'; end if;
+    v_expected_proof_prefix := 'personal/' || v_user_id || '/';
+  end if;
+
+  if p_proof_path is null then
+    if p_proof_name is not null or p_proof_mime_type is not null or p_proof_size_bytes is not null then
+      raise exception 'COMPLETED_PAYMENT_DETAILS_INVALID';
+    end if;
+  elsif left(p_proof_path, length(v_expected_proof_prefix)) <> v_expected_proof_prefix
+     or nullif(btrim(p_proof_name), '') is null
+     or p_proof_mime_type not in ('image/jpeg', 'image/png', 'image/webp', 'application/pdf')
+     or p_proof_size_bytes is null or p_proof_size_bytes <= 0 or p_proof_size_bytes > 10485760
+  then raise exception 'COMPLETED_PAYMENT_DETAILS_INVALID'; end if;
+
+  insert into public.payment_items (
+    workspace_id, family_id, owner_id, visibility, responsible_member_id, created_by,
+    name, category, amount, currency, recurrence_type, recurrence_interval,
+    due_day, start_date, reminder_days_before, status, notes
+  ) values (
+    p_workspace_id, v_family_id, v_user_id, v_visibility, null, v_user_id,
+    btrim(p_name), v_category, round(p_amount, 2), v_currency, 'once', 1,
+    extract(day from p_payment_date)::integer, p_payment_date, 0, 'active', nullif(btrim(p_notes), '')
+  ) returning id into v_item_id;
+
+  insert into public.payment_records (
+    workspace_id, family_id, owner_id, visibility, payment_item_id,
+    period_start, due_date, paid_by_member_id, amount, currency,
+    payment_date, payment_method, reference_number, notes,
+    proof_path, proof_name, proof_mime_type, proof_size_bytes, recorded_by
+  ) values (
+    p_workspace_id, v_family_id, v_user_id, v_visibility, v_item_id,
+    date_trunc('month', p_payment_date)::date, p_payment_date, p_paid_by_member_id,
+    round(p_amount, 2), v_currency, p_payment_date, p_payment_method,
+    nullif(btrim(p_reference_number), ''), nullif(btrim(p_notes), ''),
+    p_proof_path, p_proof_name, p_proof_mime_type, p_proof_size_bytes, v_user_id
+  ) returning id into v_record_id;
+
+  return query select v_item_id, v_record_id;
+end;
+$$;
+
+revoke all on function public.create_completed_one_time_payment(
+  uuid, text, text, numeric, text, date, text, uuid, text, text, text, text, text, bigint
+) from public, anon, authenticated;
+grant execute on function public.create_completed_one_time_payment(
+  uuid, text, text, numeric, text, date, text, uuid, text, text, text, text, text, bigint
+) to authenticated;
+
+notify pgrst, 'reload schema';
+commit;
+-- END MIGRATION 20260927140000_dashboard_completed_payments.sql
+
+-- BEGIN MIGRATION 20260927183000_business_stage_0_launch_lock.sql
 -- Business Stage 0: keep the unfinished product visible but impossible to purchase or provision.
 begin;
 
@@ -11175,6 +12543,9 @@ revoke all on function public.enforce_business_member_provision_launch_control()
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260927183000_business_stage_0_launch_lock.sql
+
+-- BEGIN MIGRATION 20260928070000_business_stage_2_security_foundation.sql
 begin;
 
 -- ============================================================================
@@ -12798,7 +14169,9 @@ end $$;
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260928070000_business_stage_2_security_foundation.sql
 
+-- BEGIN MIGRATION 20260928090000_admin_manual_subscription_grants.sql
 begin;
 
 -- A short-lived, transaction-scoped permit allows a super-admin to create one
@@ -13116,7 +14489,9 @@ grant execute on function public.admin_grant_manual_subscription(uuid, uuid, uui
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260928090000_admin_manual_subscription_grants.sql
 
+-- BEGIN MIGRATION 20260928130000_business_stage_3_onboarding.sql
 -- Business Stage 3: owner-led setup and a first, non-financial draft.
 begin;
 
@@ -13534,6 +14909,9 @@ grant execute on function public.complete_business_onboarding(uuid) to authentic
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260928130000_business_stage_3_onboarding.sql
+
+-- BEGIN MIGRATION 20260928170000_business_stage_4_team.sql
 begin;
 
 -- Business Stage 4: team invitations, scoped access, seat accounting,
@@ -14222,6 +15600,9 @@ end $$;
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260928170000_business_stage_4_team.sql
+
+-- BEGIN MIGRATION 20260928200000_business_stage_5_expense_claims.sql
 begin;
 
 -- Stage 5: one complete expense and reimbursement workflow.
@@ -14781,7 +16162,9 @@ grant execute on function public.business_claim_summary(uuid) to authenticated;
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260928200000_business_stage_5_expense_claims.sql
 
+-- BEGIN MIGRATION 20260928213000_business_stage_6_bills.sql
 begin;
 
 create table public.business_suppliers (
@@ -15499,6 +16882,9 @@ revoke all on function public.guard_business_bill_proof_archive() from public,an
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260928213000_business_stage_6_bills.sql
+
+-- BEGIN MIGRATION 20260928222000_stage_6_reminder_url_compatibility.sql
 -- Preserve the existing workspace-aware Family reminder target while allowing
 -- the new Business bill reminder deep link introduced in Stage 6.
 begin;
@@ -15515,7 +16901,9 @@ alter table public.notification_outbox
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260928222000_stage_6_reminder_url_compatibility.sql
 
+-- BEGIN MIGRATION 20260929193000_business_stage_7_transactions.sql
 begin;
 
 create table public.business_income_receipts (
@@ -15848,8 +17236,9 @@ begin
 end $$;
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260929193000_business_stage_7_transactions.sql
 
--- Business Stage 8: budgets and spending approvals.
+-- BEGIN MIGRATION 20260930060000_business_stage_8_budgets_approvals.sql
 begin;
 
 -- Budgets are planning targets in the immutable workspace reporting currency.
@@ -16425,8 +17814,9 @@ revoke all on function public.sync_business_request_bill_state() from public,ano
 revoke all on function public.business_transaction_rows(uuid) from public,anon,authenticated;
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260930060000_business_stage_8_budgets_approvals.sql
 
--- Business Stage 9: scoped reports, exact sources and export.
+-- BEGIN MIGRATION 20260930073000_business_stage_9_reports.sql
 begin;
 
 -- Reports never widen finance or Staff access. Non-finance managers/auditors
@@ -16754,9 +18144,9 @@ revoke all on function public.business_report_selection(jsonb,text,text,uuid,uui
 revoke all on function public.business_report_csv_cell(text,boolean) from public,anon,authenticated;
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260930073000_business_stage_9_reports.sql
 
-
--- Business Stage 10: private billing, purchased capacity and expiry.
+-- BEGIN MIGRATION 20260930090000_business_stage_10_billing.sql
 begin;
 
 -- Private pilot settings. Historical catalogue prices are not approved Business prices.
@@ -17433,6 +18823,9 @@ $$;
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260930090000_business_stage_10_billing.sql
+
+-- BEGIN MIGRATION 20260930110000_business_stage_11_admin.sql
 begin;
 
 alter table public.budget_workspaces add column business_support_version integer not null default 1 check (business_support_version > 0);
@@ -17689,6 +19082,9 @@ revoke all on function public.admin_business_support_snapshot(uuid,integer),publ
 grant execute on function public.admin_business_support_snapshot(uuid,integer),public.admin_business_set_status(uuid,text,integer,text,text,uuid),public.admin_business_transfer_owner(uuid,uuid,uuid,integer,text,text,text,uuid) to authenticated;
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260930110000_business_stage_11_admin.sql
+
+-- BEGIN MIGRATION 20260930130000_business_stage_12_realtime.sql
 begin;
 
 -- Only a neutral change counter is published, never financial rows or receipts.
@@ -17765,9 +19161,9 @@ revoke all on function public.business_signal_member(uuid),public.emit_business_
 grant execute on function public.business_signal_member(uuid) to authenticated;
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20260930130000_business_stage_12_realtime.sql
 
-
--- Admin Plans & Pricing workbench
+-- BEGIN MIGRATION 20261001190000_admin_plans_workbench.sql
 begin;
 
 -- One role-checked snapshot supplies the editor and its optimistic save token.
@@ -18041,6 +19437,9 @@ for each row execute function public.signal_business_plan_billing_change();
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20261001190000_admin_plans_workbench.sql
+
+-- BEGIN MIGRATION 20261002042500_reconcile_business_plan_seats.sql
 begin;
 
 -- Older catalogue edits could change included seats independently of private
@@ -18077,6 +19476,9 @@ where public.plan_limits.limit_value is distinct from excluded.limit_value;
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20261002042500_reconcile_business_plan_seats.sql
+
+-- BEGIN MIGRATION 20261002060000_business_public_availability.sql
 begin;
 
 -- The product is launch-ready; each plan's availability remains the sales switch.
@@ -18453,6 +19855,9 @@ do $$ declare v_plan uuid; begin
 end; $$;
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20261002060000_business_public_availability.sql
+
+-- BEGIN MIGRATION 20261002070000_business_branding.sql
 begin;
 
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
@@ -18535,8 +19940,9 @@ revoke all on function public.save_business_setup_with_branding(uuid,text,text,t
 grant execute on function public.save_business_setup_with_branding(uuid,text,text,text[],text,integer,integer,integer,timestamptz,text) to authenticated;
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20261002070000_business_branding.sql
 
-
+-- BEGIN MIGRATION 20261004153000_business_custom_roles.sql
 begin;
 
 -- Stable role codes keep assignments intact when an owner renames a role.
@@ -19228,9 +20634,9 @@ update public.business_role_permissions p set enabled=false where p.enabled and 
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20261004153000_business_custom_roles.sql
 
-
--- Stage 0 private read grants — 6 October 2026.
+-- BEGIN MIGRATION 20261006043000_security_stage_0_private_reads.sql
 -- Stage 0 follow-up: owner-supplied diagnostic 08 found anonymous SELECT on
 -- these seven private tables. Run in SQL Editor as the administrative role.
 -- This changes only SELECT grants. Existing rows, RLS, RPCs, write privileges,
@@ -19291,9 +20697,9 @@ $$;
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20261006043000_security_stage_0_private_reads.sql
 
-
--- Stage 0 internal currency-helper execution — 6 October 2026.
+-- BEGIN MIGRATION 20261006050000_security_stage_0_currency_helpers.sql
 -- Stage 0: live inventory exposed two internal currency helpers to anon.
 -- The source conversion writer trusts its protected caller; users must reach
 -- it through payment triggers or authorized backfill/settings workflows.
@@ -19352,9 +20758,9 @@ $$;
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20261006050000_security_stage_0_currency_helpers.sql
 
-
--- Business invitation notification follow-up.
+-- BEGIN MIGRATION 20261006180000_business_invitation_notifications.sql
 begin;
 
 alter table public.notifications add column if not exists business_invitation_id uuid
@@ -19431,3 +20837,1404 @@ on conflict (business_invitation_id) where business_invitation_id is not null do
 
 notify pgrst, 'reload schema';
 commit;
+-- END MIGRATION 20261006180000_business_invitation_notifications.sql
+
+-- BEGIN MIGRATION 20261009190000_public_enquiry_submission_gate.sql
+-- 2.2.2 candidate. Deploy/configure submit-enquiry before the staging cutover.
+-- No production execution is requested. Existing staff SELECT/UPDATE is retained.
+begin;
+set local lock_timeout = '3s';
+set local statement_timeout = '30s';
+
+create table public.enquiry_submission_limits (
+  scope text not null check (scope in ('global_minute', 'global_hour', 'email_hour')),
+  subject_hash text not null check (subject_hash = 'global' or subject_hash ~ '^[0-9a-f]{64}$'),
+  window_start timestamptz not null,
+  submissions integer not null check (submissions >= 0),
+  primary key (scope, subject_hash, window_start)
+);
+alter table public.enquiry_submission_limits enable row level security;
+alter table public.enquiry_submission_limits force row level security;
+-- The function owner can maintain its own counters even under FORCE RLS.
+create policy enquiry_gate_owner on public.enquiry_submission_limits
+  for all to current_user using (true) with check (true);
+revoke all on public.enquiry_submission_limits from public, anon, authenticated, service_role;
+
+create function public.submit_verified_public_enquiry(p_submission jsonb, p_email_hash text)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+set lock_timeout = '3s'
+as $gate$
+declare
+  v_now timestamptz;
+  v_limit record;
+  v_count integer;
+  v_field text;
+  v_name text;
+  v_email text;
+  v_message text;
+  v_country_name text;
+  v_country_code text;
+  v_type text;
+begin
+  if p_submission is null or pg_catalog.jsonb_typeof(p_submission) <> 'object' or
+     p_email_hash is null or p_email_hash !~ '^[0-9a-f]{64}$' then
+    raise exception using errcode = '22023', message = 'Invalid contact submission';
+  end if;
+  if exists (select 1 from pg_catalog.jsonb_object_keys(p_submission) k
+             where k <> all (array['full_name','email','message','country_name','country_code','enquiry_type'])) then
+    raise exception using errcode = '22023', message = 'Invalid contact fields';
+  end if;
+  foreach v_field in array array['full_name','email','message','country_name','country_code','enquiry_type'] loop
+    if pg_catalog.jsonb_typeof(p_submission -> v_field) is distinct from 'string' then
+      raise exception using errcode = '22023', message = 'Invalid contact fields';
+    end if;
+  end loop;
+  v_name := pg_catalog.btrim(p_submission ->> 'full_name');
+  v_email := pg_catalog.lower(pg_catalog.btrim(p_submission ->> 'email'));
+  v_message := pg_catalog.btrim(p_submission ->> 'message');
+  v_country_name := pg_catalog.btrim(p_submission ->> 'country_name');
+  v_country_code := pg_catalog.upper(pg_catalog.btrim(p_submission ->> 'country_code'));
+  v_type := p_submission ->> 'enquiry_type';
+  if pg_catalog.char_length(v_name) not between 2 and 120 or
+     pg_catalog.char_length(v_email) not between 5 and 254 or
+     v_email !~ '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$' or
+     pg_catalog.char_length(v_message) not between 10 and 5000 or
+     pg_catalog.char_length(v_country_name) not between 2 and 100 or
+     v_country_code !~ '^[A-Z]{2}$' or
+     v_type <> all (array['support','sales','subscription_renewal','setup_help','country_availability','partnership']) then
+    raise exception using errcode = '22023', message = 'Invalid contact values';
+  end if;
+
+  -- One dedicated transaction lock serializes the small contact queue. Every
+  -- counter check/increment and the enquiry insert commit or roll back together.
+  perform pg_catalog.pg_advisory_xact_lock(20261009, 2202);
+  v_now := pg_catalog.clock_timestamp();
+  delete from public.enquiry_submission_limits where window_start < v_now - interval '2 hours';
+  for v_limit in
+    select * from (values
+      ('global_minute'::text, 'global'::text, pg_catalog.to_timestamp(pg_catalog.floor(pg_catalog.date_part('epoch', v_now) / 60) * 60), 60, 10),
+      ('global_hour'::text, 'global'::text, pg_catalog.to_timestamp(pg_catalog.floor(pg_catalog.date_part('epoch', v_now) / 3600) * 3600), 3600, 60),
+      ('email_hour'::text, p_email_hash, pg_catalog.to_timestamp(pg_catalog.floor(pg_catalog.date_part('epoch', v_now) / 3600) * 3600), 3600, 3)
+    ) as limits(scope, subject_hash, window_start, seconds, maximum)
+  loop
+    select submissions into v_count from public.enquiry_submission_limits
+      where scope = v_limit.scope and subject_hash = v_limit.subject_hash and window_start = v_limit.window_start;
+    if coalesce(v_count, 0) >= v_limit.maximum then
+      return pg_catalog.jsonb_build_object('accepted', false, 'retry_after_seconds',
+        greatest(1, pg_catalog.ceil(pg_catalog.date_part('epoch',
+          (v_limit.window_start + v_limit.seconds * interval '1 second' - v_now)))::integer));
+    end if;
+  end loop;
+  insert into public.enquiry_submission_limits as existing(scope, subject_hash, window_start, submissions)
+    values
+      ('global_minute', 'global', pg_catalog.to_timestamp(pg_catalog.floor(pg_catalog.date_part('epoch', v_now) / 60) * 60), 1),
+      ('global_hour', 'global', pg_catalog.to_timestamp(pg_catalog.floor(pg_catalog.date_part('epoch', v_now) / 3600) * 3600), 1),
+      ('email_hour', p_email_hash, pg_catalog.to_timestamp(pg_catalog.floor(pg_catalog.date_part('epoch', v_now) / 3600) * 3600), 1)
+    on conflict (scope, subject_hash, window_start) do update set submissions = existing.submissions + 1;
+  insert into public.enquiries(full_name, email, message, country_name, country_code, enquiry_type,
+                               status, source, user_id, handled_by, handled_at)
+    values(v_name, v_email, v_message, v_country_name, v_country_code, v_type,
+           'new', 'website', null, null, null);
+  return pg_catalog.jsonb_build_object('accepted', true);
+end;
+$gate$;
+revoke all on function public.submit_verified_public_enquiry(jsonb, text) from public, anon, authenticated;
+grant execute on function public.submit_verified_public_enquiry(jsonb, text) to service_role;
+
+-- Table-level REVOKE does not remove the six existing column INSERT grants.
+revoke insert on public.enquiries from public, anon, authenticated;
+do $revoke_columns$
+declare v_columns text;
+begin
+  select pg_catalog.string_agg(pg_catalog.quote_ident(attname), ', ' order by attnum) into v_columns
+    from pg_catalog.pg_attribute where attrelid = 'public.enquiries'::regclass and attnum > 0 and not attisdropped;
+  execute pg_catalog.format('revoke insert (%s) on public.enquiries from public, anon, authenticated', v_columns);
+end;
+$revoke_columns$;
+drop policy if exists "Public can submit enquiries" on public.enquiries;
+
+do $check_gate$
+declare v_role text;
+begin
+  foreach v_role in array array['anon','authenticated'] loop
+    if pg_catalog.has_any_column_privilege(v_role, 'public.enquiries', 'INSERT') or
+       pg_catalog.has_function_privilege(v_role, 'public.submit_verified_public_enquiry(jsonb,text)', 'EXECUTE') or
+       pg_catalog.has_table_privilege(v_role, 'public.enquiry_submission_limits', 'SELECT,INSERT,UPDATE,DELETE') then
+      raise exception 'Contact gate effective permissions failed for %', v_role;
+    end if;
+  end loop;
+  if not pg_catalog.has_function_privilege('service_role', 'public.submit_verified_public_enquiry(jsonb,text)', 'EXECUTE') then
+    raise exception 'Contact gate service execution is missing';
+  end if;
+end;
+$check_gate$;
+notify pgrst, 'reload schema';
+commit;
+-- END MIGRATION 20261009190000_public_enquiry_submission_gate.sql
+
+-- BEGIN MIGRATION 20261014074500_payment_record_workspace_binding.sql
+-- Reviewed Supabase hooks: exact body SHA-256 + event/owners/signature/config.
+-- Canonical integration of the accepted preventive workspace binding coverage.
+-- Guarded, idempotent for the exact old/new trigger shapes; no historical row repair.
+begin;
+set local statement_timeout = '15s';
+set local lock_timeout = '3s';
+lock table public.payment_records in share row exclusive mode;
+
+do $guard$
+declare
+  v_columns text[];
+begin
+  if not exists (select 1 from pg_roles where rolname = current_user and (rolsuper or rolbypassrls)) then
+    raise exception 'BINDING_REQUIRES_PRIVILEGED_SQL_EDITOR';
+  end if;
+  if current_setting('session_replication_role') <> 'origin' then
+    raise exception 'BINDING_REQUIRES_ORIGIN_REPLICATION_ROLE';
+  end if;
+  if exists (
+    select 1 from pg_event_trigger e
+    where e.evtenabled in ('O','A')
+      and (e.evttags is null or 'CREATE TRIGGER' = any(e.evttags))
+      and not exists (
+        select 1 from pg_proc p
+        join pg_namespace n on n.oid = p.pronamespace
+        join pg_language l on l.oid = p.prolang
+        join pg_roles er on er.oid = e.evtowner
+        join pg_roles pr on pr.oid = p.proowner
+        join (values
+          ('pgrst_ddl_watch', 'ddl_command_end', 'de987df746eb39647098459e7993bd8595e592969b0cd647828a3d13d37cffe0'),
+          ('pgrst_drop_watch', 'sql_drop', '791b41f0632fc86e0fc86a303ec0fd710c4e2ecf947a23422dae2b7a2c122f1d')
+        ) as reviewed(name, event, body_sha256)
+          on e.evtname = reviewed.name and e.evtevent = reviewed.event
+        where p.oid = e.evtfoid
+          and e.evtenabled = 'O' and e.evttags is null
+          and n.nspname = 'extensions' and p.proname = reviewed.name
+          and er.rolname = 'supabase_admin' and pr.rolname = 'supabase_admin'
+          and p.prokind = 'f' and p.pronargs = 0 and p.pronargdefaults = 0
+          and p.prorettype = 'event_trigger'::regtype and l.lanname = 'plpgsql'
+          and not p.prosecdef and not p.proisstrict and not p.proleakproof
+          and p.provolatile = 'v' and p.proparallel = 'u' and p.prosupport = 0
+          and p.proconfig = array['search_path=""']::text[]
+          and encode(sha256(convert_to(replace(p.prosrc, E'\r\n', E'\n'), 'UTF8')), 'hex')
+              = reviewed.body_sha256
+      )
+  ) then
+    raise exception 'UNREVIEWED_TRIGGER_DDL_EVENT_HOOK';
+  end if;
+  if (select relkind from pg_class where oid = 'public.payment_records'::regclass) <> 'r' then
+    raise exception 'UNREVIEWED_PAYMENT_RECORD_RELATION';
+  end if;
+  if (select count(*) from (values
+      ('sync_payment_record_workspace', '8f568f342d4e928b4c27437ba7f544e5'),
+      ('guard_workspace_finance_write', '783883ce4af23615f768a0990b6f2478')
+    ) as e(name, body_md5)
+    join pg_proc p on p.pronamespace = 'public'::regnamespace
+      and p.proname = e.name and p.pronargs = 0 and p.prokind = 'f'
+    join pg_language l on l.oid = p.prolang
+    where l.lanname = 'plpgsql' and p.prorettype = 'trigger'::regtype
+      and p.prosecdef
+      and p.proconfig = array['search_path=public, pg_temp']::text[]
+      and md5(replace(p.prosrc, E'\r\n', E'\n')) = e.body_md5
+  ) <> 2 then
+    raise exception 'UNREVIEWED_PAYMENT_BINDING_FUNCTION';
+  end if;
+  if not exists (
+    select 1 from pg_trigger t
+    where t.tgrelid = 'public.payment_records'::regclass
+      and t.tgname = 'sync_payment_record_workspace_trigger'
+      and t.tgfoid = 'public.sync_payment_record_workspace()'::regprocedure
+      and t.tgtype = 23 and t.tgenabled = 'O'
+      and not t.tgisinternal and t.tgparentid = 0
+      and t.tgconstraint = 0 and not t.tgdeferrable and not t.tginitdeferred
+      and t.tgnargs = 0 and t.tgqual is null
+      and t.tgoldtable is null and t.tgnewtable is null
+  ) then
+    raise exception 'UNREVIEWED_PAYMENT_BINDING_TRIGGER';
+  end if;
+  select array_agg(a.attname::text order by a.attname)
+    into v_columns from pg_trigger t join pg_attribute a
+      on a.attrelid = t.tgrelid and a.attnum = any(t.tgattr::smallint[])
+    where t.tgrelid = 'public.payment_records'::regclass
+      and t.tgname = 'sync_payment_record_workspace_trigger';
+  if v_columns is distinct from array['payment_item_id']::text[]
+     and v_columns is distinct from array['payment_item_id','workspace_id']::text[] then
+    raise exception 'UNREVIEWED_PAYMENT_BINDING_COLUMNS';
+  end if;
+  if not exists (
+    select 1 from pg_trigger t
+    where t.tgrelid = 'public.payment_records'::regclass
+      and t.tgname = 'guard_payment_record_write_trigger'
+      and t.tgfoid = 'public.guard_workspace_finance_write()'::regprocedure
+      and t.tgtype = 31 and t.tgenabled = 'O'
+      and not t.tgisinternal and t.tgparentid = 0 and t.tgconstraint = 0
+      and t.tgnargs = 0 and t.tgqual is null
+      and cardinality(t.tgattr::smallint[]) = 0
+  ) then
+    raise exception 'UNREVIEWED_PAYMENT_FINANCE_GUARD_TRIGGER';
+  end if;
+end;
+$guard$;
+
+create or replace trigger sync_payment_record_workspace_trigger
+before insert or update of payment_item_id, workspace_id on public.payment_records
+for each row execute function public.sync_payment_record_workspace();
+
+commit;
+-- END MIGRATION 20261014074500_payment_record_workspace_binding.sql
+
+-- BEGIN MIGRATION 20261014125500_payment_record_conversion_reference.sql
+-- Canonical integration of accepted payment-record conversion deletion enforcement.
+-- Guarded and idempotent; original row values and permission controls are preserved.
+-- Existing orphan references are retained; historical validation is a separate action.
+BEGIN;
+SET LOCAL statement_timeout='20s';
+SET LOCAL lock_timeout='3s';
+SET LOCAL search_path=pg_catalog,public;
+SET LOCAL TIME ZONE 'UTC';
+LOCK TABLE public.payment_records,public.payment_conversions IN ACCESS EXCLUSIVE MODE;
+DO $lifecycle$
+DECLARE
+  v_existing integer;
+  v_ref smallint;
+  v_fk oid;
+  v_index oid;
+  v_helper oid;
+  v_guard oid;
+  v_records jsonb;
+  v_conversions jsonb;
+  v_metadata jsonb;
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname=current_user AND (rolsuper OR rolbypassrls))
+     OR current_setting('session_replication_role')<>'origin' THEN
+    RAISE EXCEPTION 'LIFECYCLE_REQUIRES_PRIVILEGED_ORIGIN_SQL_EDITOR';
+  END IF;
+  IF (SELECT count(*) FROM pg_class WHERE oid IN ('public.payment_records'::regclass,
+      'public.payment_conversions'::regclass) AND relkind='r' AND relrowsecurity AND NOT relforcerowsecurity)<>2
+     OR EXISTS(SELECT 1 FROM pg_rewrite WHERE ev_class IN ('public.payment_records'::regclass,
+       'public.payment_conversions'::regclass)) THEN
+    RAISE EXCEPTION 'UNREVIEWED_LIFECYCLE_RELATIONS';
+  END IF;
+  if exists (
+    select 1 from pg_event_trigger e
+    where e.evtenabled in ('O','A')
+      and (e.evttags is null or e.evttags && array['ALTER TABLE','CREATE INDEX','DROP INDEX','CREATE FUNCTION','CREATE TRIGGER','DROP FUNCTION','DROP TRIGGER']::text[])
+      and not exists (
+        select 1 from pg_proc p
+        join pg_namespace n on n.oid = p.pronamespace
+        join pg_language l on l.oid = p.prolang
+        join pg_roles er on er.oid = e.evtowner
+        join pg_roles pr on pr.oid = p.proowner
+        join (values
+          ('pgrst_ddl_watch', 'ddl_command_end', 'de987df746eb39647098459e7993bd8595e592969b0cd647828a3d13d37cffe0'),
+          ('pgrst_drop_watch', 'sql_drop', '791b41f0632fc86e0fc86a303ec0fd710c4e2ecf947a23422dae2b7a2c122f1d')
+        ) as reviewed(name, event, body_sha256)
+          on e.evtname = reviewed.name and e.evtevent = reviewed.event
+        where p.oid = e.evtfoid
+          and e.evtenabled = 'O' and e.evttags is null
+          and n.nspname = 'extensions' and p.proname = reviewed.name
+          and er.rolname = 'supabase_admin' and pr.rolname = 'supabase_admin'
+          and p.prokind = 'f' and p.pronargs = 0 and p.pronargdefaults = 0
+          and p.prorettype = 'event_trigger'::regtype and l.lanname = 'plpgsql'
+          and not p.prosecdef and not p.proisstrict and not p.proleakproof
+          and p.provolatile = 'v' and p.proparallel = 'u' and p.prosupport = 0
+          and p.proconfig = array['search_path=""']::text[]
+          and encode(sha256(convert_to(replace(p.prosrc, E'\r\n', E'\n'), 'UTF8')), 'hex')
+              = reviewed.body_sha256
+      )
+  ) then
+    raise exception 'UNREVIEWED_TRIGGER_DDL_EVENT_HOOK';
+  end if;
+
+  IF (SELECT count(*) FROM pg_trigger WHERE NOT tgisinternal AND (tgtype::integer & 8)<>0
+      AND tgrelid IN ('public.payment_records'::regclass,'public.payment_conversions'::regclass))<>2
+     OR (SELECT count(*) FROM (VALUES
+       ('guard_payment_record_write_trigger','guard_workspace_finance_write','783883ce4af23615f768a0990b6f2478'),
+       ('guard_suspended_account_write_trigger','guard_suspended_account_write','83011cf2afe6be237b3b33da73ba08df')
+     ) e(tg,fn,body)
+     JOIN pg_trigger t ON t.tgrelid='public.payment_records'::regclass AND t.tgname=e.tg
+     JOIN pg_proc p ON p.oid=t.tgfoid JOIN pg_namespace n ON n.oid=p.pronamespace
+     JOIN pg_language l ON l.oid=p.prolang
+     WHERE t.tgtype=31 AND t.tgenabled='O' AND NOT t.tgisinternal
+       AND t.tgparentid=0 AND t.tgconstraint=0 AND t.tgnargs=0 AND t.tgqual IS NULL
+       AND cardinality(t.tgattr::smallint[])=0 AND t.tgoldtable IS NULL AND t.tgnewtable IS NULL
+       AND n.nspname='public' AND p.proname=e.fn AND p.pronargs=0
+       AND p.prorettype='trigger'::regtype AND p.prokind='f' AND l.lanname='plpgsql'
+       AND p.prosecdef AND p.proconfig=ARRAY['search_path=public, pg_temp']::text[]
+       AND md5(replace(p.prosrc,E'\r\n',E'\n'))=e.body)<>2 THEN
+    RAISE EXCEPTION 'UNREVIEWED_LIFECYCLE_DELETE_GUARDS';
+  END IF;
+  IF (SELECT count(*) FROM pg_constraint c WHERE c.contype='f'
+      AND (c.conrelid IN ('public.payment_records'::regclass,'public.payment_conversions'::regclass)
+        OR c.confrelid IN ('public.payment_records'::regclass,'public.payment_conversions'::regclass))
+      AND NOT(c.conrelid='public.payment_conversions'::regclass AND c.conname='payment_conversions_payment_record_ref_fkey'))<>8 THEN
+    RAISE EXCEPTION 'UNREVIEWED_LIFECYCLE_FK_GRAPH';
+  END IF;
+  IF (SELECT count(*) FROM (VALUES
+      ('payment_conversions_entered_by_fkey','payment_conversions','entered_by','auth.users','n'),
+      ('payment_conversions_workspace_id_fkey','payment_conversions','workspace_id','public.budget_workspaces','c'),
+      ('payment_records_family_id_fkey','payment_records','family_id','public.families','c'),
+      ('payment_records_owner_id_fkey','payment_records','owner_id','auth.users','c'),
+      ('payment_records_paid_by_member_id_fkey','payment_records','paid_by_member_id','public.family_members','n'),
+      ('payment_records_payment_item_id_fkey','payment_records','payment_item_id','public.payment_items','c'),
+      ('payment_records_recorded_by_fkey','payment_records','recorded_by','auth.users','c'),
+      ('payment_records_workspace_id_fkey','payment_records','workspace_id','public.budget_workspaces','c')
+    ) e(name,rel,col,target,action)
+    JOIN pg_constraint c ON c.conrelid=to_regclass('public.'||e.rel) AND c.conname=e.name
+    WHERE c.contype='f' AND c.confrelid=to_regclass(e.target) AND c.confdeltype=e.action::"char"
+      AND c.convalidated AND c.conkey=ARRAY[(SELECT attnum FROM pg_attribute
+        WHERE attrelid=c.conrelid AND attname=e.col)]::smallint[]
+      AND c.confkey=ARRAY[(SELECT attnum FROM pg_attribute
+        WHERE attrelid=c.confrelid AND attname='id')]::smallint[])<>8 THEN
+    RAISE EXCEPTION 'UNREVIEWED_LIFECYCLE_FK_DEFINITIONS';
+  END IF;
+  SELECT attnum INTO v_ref FROM pg_attribute WHERE attrelid='public.payment_conversions'::regclass
+    AND attname='payment_record_ref' AND NOT attisdropped;
+  SELECT oid INTO v_fk FROM pg_constraint WHERE conrelid='public.payment_conversions'::regclass
+    AND conname='payment_conversions_payment_record_ref_fkey';
+  v_index:=to_regclass('public.payment_conversions_payment_record_ref_idx');
+  v_helper:=to_regprocedure('public.guard_reserved_payment_record_id()');
+  SELECT oid INTO v_guard FROM pg_trigger WHERE tgrelid='public.payment_records'::regclass
+    AND tgname='guard_reserved_payment_record_id_trigger';
+  IF EXISTS(SELECT 1 FROM pg_proc WHERE pronamespace='public'::regnamespace
+      AND proname='guard_reserved_payment_record_id' AND oid IS DISTINCT FROM v_helper) THEN
+    RAISE EXCEPTION 'UNREVIEWED_RESERVED_RECORD_FUNCTION_OVERLOAD';
+  END IF;
+  v_existing:=(v_ref IS NOT NULL)::integer+(v_fk IS NOT NULL)::integer+(v_index IS NOT NULL)::integer
+    +(v_helper IS NOT NULL)::integer+(v_guard IS NOT NULL)::integer;
+  IF v_existing NOT IN (0,5) THEN RAISE EXCEPTION 'PARTIAL_OR_UNREVIEWED_LIFECYCLE_OBJECTS'; END IF;
+
+  SELECT COALESCE(jsonb_agg(to_jsonb(x) ORDER BY x.id),'[]'::jsonb) INTO v_records FROM public.payment_records x;
+  SELECT COALESCE(jsonb_agg(to_jsonb(x)-'payment_record_ref' ORDER BY x.id),'[]'::jsonb)
+    INTO v_conversions FROM public.payment_conversions x;
+  SELECT jsonb_build_object(
+    'relations',(SELECT jsonb_agg(jsonb_build_array(oid,relowner,relacl::text,relrowsecurity,relforcerowsecurity) ORDER BY oid)
+      FROM pg_class WHERE oid IN ('public.payment_records'::regclass,'public.payment_conversions'::regclass)),
+    'policies',(SELECT jsonb_agg(to_jsonb(p) ORDER BY p.tablename,p.policyname) FROM pg_policies p
+      WHERE p.schemaname='public' AND p.tablename IN ('payment_records','payment_conversions')),
+    'triggers',(SELECT jsonb_agg(pg_get_triggerdef(t.oid) ORDER BY t.tgrelid,t.tgname) FROM pg_trigger t
+      WHERE NOT t.tgisinternal AND NOT(t.tgrelid='public.payment_records'::regclass AND t.tgname='guard_reserved_payment_record_id_trigger') AND t.tgrelid IN ('public.payment_records'::regclass,'public.payment_conversions'::regclass))
+  ) INTO v_metadata;
+
+  IF v_existing=0 THEN
+    ALTER TABLE public.payment_conversions ADD COLUMN payment_record_ref uuid
+      GENERATED ALWAYS AS(CASE WHEN entity_type='payment_record' THEN entity_id ELSE NULL::uuid END) STORED;
+    ALTER TABLE public.payment_conversions ADD CONSTRAINT payment_conversions_payment_record_ref_fkey
+      FOREIGN KEY(payment_record_ref) REFERENCES public.payment_records(id) ON DELETE CASCADE NOT VALID;
+    CREATE INDEX payment_conversions_payment_record_ref_idx ON public.payment_conversions(payment_record_ref)
+      WHERE payment_record_ref IS NOT NULL;
+    SELECT attnum INTO v_ref FROM pg_attribute WHERE attrelid='public.payment_conversions'::regclass
+      AND attname='payment_record_ref' AND NOT attisdropped;
+    SELECT oid INTO v_fk FROM pg_constraint WHERE conrelid='public.payment_conversions'::regclass
+      AND conname='payment_conversions_payment_record_ref_fkey';
+    v_index:=to_regclass('public.payment_conversions_payment_record_ref_idx');
+    CREATE FUNCTION public.guard_reserved_payment_record_id() RETURNS trigger
+      LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $reserved$
+BEGIN
+  IF TG_RELID<>'public.payment_records'::regclass OR TG_WHEN<>'BEFORE'
+     OR TG_LEVEL<>'ROW' OR TG_OP NOT IN ('INSERT','UPDATE') THEN
+    RAISE EXCEPTION 'RESERVED_RECORD_GUARD_REQUIRES_TRIGGER_CONTEXT';
+  END IF;
+  IF TG_OP='UPDATE' AND NEW.id IS NOT DISTINCT FROM OLD.id THEN RETURN NEW; END IF;
+  IF EXISTS(SELECT 1 FROM public.payment_conversions
+    WHERE entity_type='payment_record' AND entity_id=NEW.id) THEN
+    RAISE EXCEPTION 'PAYMENT_RECORD_ID_RESERVED_BY_CONVERSION';
+  END IF;
+  RETURN NEW;
+END;
+$reserved$;
+    REVOKE ALL ON FUNCTION public.guard_reserved_payment_record_id() FROM PUBLIC,anon,authenticated,service_role;
+    CREATE TRIGGER guard_reserved_payment_record_id_trigger BEFORE INSERT OR UPDATE OF id
+      ON public.payment_records FOR EACH ROW EXECUTE FUNCTION public.guard_reserved_payment_record_id();
+    v_helper:=to_regprocedure('public.guard_reserved_payment_record_id()');
+    SELECT oid INTO v_guard FROM pg_trigger WHERE tgrelid='public.payment_records'::regclass
+      AND tgname='guard_reserved_payment_record_id_trigger';
+  END IF;
+
+  IF NOT EXISTS(SELECT 1 FROM pg_attribute a JOIN pg_attrdef d ON d.adrelid=a.attrelid AND d.adnum=a.attnum
+      WHERE a.attrelid='public.payment_conversions'::regclass AND a.attnum=v_ref AND a.atttypid='uuid'::regtype
+        AND a.attgenerated='s' AND NOT a.attnotnull AND NOT a.attisdropped AND a.attidentity=''
+        AND btrim(regexp_replace(pg_get_expr(d.adbin,d.adrelid),'[[:space:]]+',' ','g'))=
+          'CASE WHEN (entity_type = ''payment_record''::text) THEN entity_id ELSE NULL::uuid END')
+     OR NOT EXISTS(SELECT 1 FROM pg_constraint c WHERE c.oid=v_fk AND c.contype='f'
+       AND c.conrelid='public.payment_conversions'::regclass AND c.confrelid='public.payment_records'::regclass
+       AND c.conkey=ARRAY[v_ref]::smallint[] AND c.confkey=ARRAY[(SELECT attnum FROM pg_attribute
+         WHERE attrelid=c.confrelid AND attname='id')]::smallint[]
+       AND c.confdeltype='c' AND c.confupdtype='a' AND c.confmatchtype='s'
+       AND NOT c.condeferrable AND NOT c.condeferred)
+     OR NOT EXISTS(SELECT 1 FROM pg_index i JOIN pg_class c ON c.oid=i.indexrelid JOIN pg_am am ON am.oid=c.relam
+       WHERE i.indexrelid=v_index AND i.indrelid='public.payment_conversions'::regclass
+         AND i.indisvalid AND i.indisready AND NOT i.indisunique AND i.indnkeyatts=1 AND i.indnatts=1
+         AND ARRAY(SELECT unnest(i.indkey::smallint[]))=ARRAY[v_ref]::smallint[] AND i.indexprs IS NULL
+         AND am.amname='btree' AND pg_get_expr(i.indpred,i.indrelid)='(payment_record_ref IS NOT NULL)')
+     OR (SELECT count(*) FROM pg_trigger t JOIN pg_proc p ON p.oid=t.tgfoid
+       WHERE t.tgconstraint=v_fk AND t.tgisinternal AND t.tgenabled='O'
+         AND p.pronamespace='pg_catalog'::regnamespace
+         AND p.proname IN ('RI_FKey_cascade_del','RI_FKey_noaction_upd','RI_FKey_check_ins','RI_FKey_check_upd'))<>4 THEN
+    RAISE EXCEPTION 'UNREVIEWED_LIFECYCLE_REFERENCE_DEFINITION';
+  END IF;
+
+  IF NOT EXISTS(SELECT 1 FROM pg_proc p JOIN pg_language l ON l.oid=p.prolang
+      JOIN pg_roles r ON r.oid=p.proowner WHERE p.oid=v_helper AND p.pronamespace='public'::regnamespace
+        AND p.prokind='f' AND p.pronargs=0 AND p.prorettype='trigger'::regtype AND l.lanname='plpgsql'
+        AND p.prosecdef AND p.proconfig=ARRAY['search_path=pg_catalog']::text[] AND (r.rolsuper OR r.rolbypassrls)
+        AND md5(replace(p.prosrc,E'\r\n',E'\n'))='ae4585ba13c461c6de1b42123ad9c3fc')
+     OR has_function_privilege('anon',v_helper,'EXECUTE')
+     OR has_function_privilege('authenticated',v_helper,'EXECUTE')
+     OR has_function_privilege('service_role',v_helper,'EXECUTE')
+     OR NOT EXISTS(SELECT 1 FROM pg_trigger t WHERE t.oid=v_guard AND t.tgfoid=v_helper
+       AND t.tgtype=23 AND t.tgenabled='O' AND NOT t.tgisinternal AND t.tgparentid=0 AND t.tgconstraint=0
+       AND t.tgnargs=0 AND t.tgqual IS NULL AND t.tgoldtable IS NULL AND t.tgnewtable IS NULL
+       AND ARRAY(SELECT unnest(t.tgattr::smallint[]))=ARRAY[(SELECT attnum FROM pg_attribute
+         WHERE attrelid=t.tgrelid AND attname='id')]::smallint[]) THEN
+    RAISE EXCEPTION 'UNREVIEWED_RESERVED_RECORD_ID_GUARD';
+  END IF;
+
+  IF (SELECT COALESCE(jsonb_agg(to_jsonb(x) ORDER BY x.id),'[]'::jsonb) FROM public.payment_records x)
+       IS DISTINCT FROM v_records
+     OR (SELECT COALESCE(jsonb_agg(to_jsonb(x)-'payment_record_ref' ORDER BY x.id),'[]'::jsonb)
+         FROM public.payment_conversions x) IS DISTINCT FROM v_conversions
+     OR jsonb_build_object(
+       'relations',(SELECT jsonb_agg(jsonb_build_array(oid,relowner,relacl::text,relrowsecurity,relforcerowsecurity) ORDER BY oid)
+         FROM pg_class WHERE oid IN ('public.payment_records'::regclass,'public.payment_conversions'::regclass)),
+       'policies',(SELECT jsonb_agg(to_jsonb(p) ORDER BY p.tablename,p.policyname) FROM pg_policies p
+         WHERE p.schemaname='public' AND p.tablename IN ('payment_records','payment_conversions')),
+       'triggers',(SELECT jsonb_agg(pg_get_triggerdef(t.oid) ORDER BY t.tgrelid,t.tgname) FROM pg_trigger t
+         WHERE NOT t.tgisinternal AND NOT(t.tgrelid='public.payment_records'::regclass AND t.tgname='guard_reserved_payment_record_id_trigger') AND t.tgrelid IN ('public.payment_records'::regclass,'public.payment_conversions'::regclass))
+     ) IS DISTINCT FROM v_metadata THEN
+    RAISE EXCEPTION 'LIFECYCLE_CHANGED_BASE_ROWS_OR_EXISTING_PERMISSIONS';
+  END IF;
+END;
+$lifecycle$;
+COMMIT;
+-- END MIGRATION 20261014125500_payment_record_conversion_reference.sql
+
+-- BEGIN MIGRATION 20261017000000_email_verification_atomic_installer.sql
+-- FR.2.4.E4.11: register a private atomic installer; do not activate application guards.
+-- FR.2.4.E4.13: exact ensure_rls source allowance; existing hook is never replaced here.
+-- This source phase permits OFFLINE_ATOMIC_REHEARSAL only. No live activation handoff.
+BEGIN;
+SET LOCAL statement_timeout='30s';
+SET LOCAL lock_timeout='3s';
+SET LOCAL search_path=pg_catalog;
+DO $registration$
+BEGIN
+ IF current_user<>'postgres' OR session_user<>'postgres'
+ OR current_setting('session_replication_role')<>'origin'
+ OR coalesce(current_setting('role',true),'none') NOT IN ('none','postgres')
+ OR NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname=current_user AND (rolsuper OR rolbypassrls))
+ THEN RAISE EXCEPTION 'EMAIL_ATOMIC_PRIVILEGED_ORIGIN_REQUIRED'; END IF;
+ IF EXISTS (
+ SELECT 1 FROM pg_event_trigger e
+ WHERE e.evtenabled IN ('O','A')
+ AND (e.evttags IS NULL OR e.evttags && ARRAY['CREATE SCHEMA','CREATE TABLE','ALTER TABLE','CREATE INDEX','CREATE FUNCTION','ALTER FUNCTION','CREATE TRIGGER','CREATE POLICY','GRANT','REVOKE']::text[])
+ AND NOT EXISTS (
+  SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+  JOIN pg_language l ON l.oid=p.prolang JOIN pg_roles er ON er.oid=e.evtowner JOIN pg_roles pr ON pr.oid=p.proowner
+  JOIN (VALUES
+   ('pgrst_ddl_watch','ddl_command_end','de987df746eb39647098459e7993bd8595e592969b0cd647828a3d13d37cffe0'),
+   ('pgrst_drop_watch','sql_drop','791b41f0632fc86e0fc86a303ec0fd710c4e2ecf947a23422dae2b7a2c122f1d')
+  ) reviewed(name,event,body_sha256) ON e.evtname=reviewed.name AND e.evtevent=reviewed.event
+  WHERE p.oid=e.evtfoid AND e.evtenabled='O' AND e.evttags IS NULL
+  AND n.nspname='extensions' AND p.proname=reviewed.name
+  AND er.rolname='supabase_admin' AND pr.rolname='supabase_admin'
+  AND p.prokind='f' AND p.pronargs=0 AND p.pronargdefaults=0 AND p.prorettype='event_trigger'::regtype
+  AND l.lanname='plpgsql' AND NOT p.prosecdef AND NOT p.proisstrict AND NOT p.proleakproof
+  AND p.provolatile='v' AND p.proparallel='u' AND p.prosupport=0 AND p.proconfig=ARRAY['search_path=""']::text[]
+  AND encode(sha256(convert_to(replace(p.prosrc,E'\r\n',E'\n'),'UTF8')),'hex')=reviewed.body_sha256
+ )
+ AND NOT EXISTS (
+  SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+  JOIN pg_language l ON l.oid=p.prolang JOIN pg_roles er ON er.oid=e.evtowner JOIN pg_roles pr ON pr.oid=p.proowner
+  WHERE p.oid=e.evtfoid AND e.evtname='ensure_rls' AND e.evtevent='ddl_command_end' AND e.evtenabled='O'
+  AND ARRAY(SELECT unnest(e.evttags) ORDER BY 1)=ARRAY['CREATE TABLE','CREATE TABLE AS','SELECT INTO']::text[]
+  AND n.nspname='public' AND p.proname='rls_auto_enable' AND er.rolname='postgres' AND pr.rolname='postgres'
+  AND p.prokind='f' AND p.pronargs=0 AND p.pronargdefaults=0 AND p.prorettype='event_trigger'::regtype
+  AND l.lanname='plpgsql' AND p.prosecdef AND NOT p.proisstrict AND NOT p.proleakproof
+  AND p.provolatile='v' AND p.proparallel='u' AND p.prosupport=0 AND p.proconfig=ARRAY['search_path=pg_catalog']::text[]
+  AND (SELECT count(*) FROM pg_event_trigger WHERE evtfoid=p.oid)=1
+  AND (SELECT count(*) FROM pg_proc WHERE pronamespace=p.pronamespace AND proname=p.proname)=1
+  AND has_function_privilege('anon',p.oid,'EXECUTE') AND has_function_privilege('authenticated',p.oid,'EXECUTE')
+  AND has_function_privilege('service_role',p.oid,'EXECUTE')
+  AND octet_length(replace(p.prosrc,E'\r\n',E'\n'))=953
+  AND encode(sha256(convert_to(replace(p.prosrc,E'\r\n',E'\n'),'UTF8')),'hex')='2782e98b348aca7d6f6f73c420fd78d2e094957dd7a52b0483d4c34f29d2a7a1'
+ )
+) THEN RAISE EXCEPTION 'EMAIL_ATOMIC_UNREVIEWED_DDL_HOOK'; END IF;
+ IF EXISTS(SELECT 1 FROM pg_namespace WHERE nspname='mushavo_email_install')
+ THEN RAISE EXCEPTION 'EMAIL_ATOMIC_INSTALLER_NAMESPACE_EXISTS'; END IF;
+END;
+$registration$;
+CREATE SCHEMA mushavo_email_install;
+REVOKE ALL ON SCHEMA mushavo_email_install FROM PUBLIC,anon,authenticated,service_role;
+CREATE FUNCTION mushavo_email_install.activate() RETURNS jsonb
+LANGUAGE plpgsql SECURITY INVOKER SET search_path=pg_catalog SET lock_timeout='3s'
+AS $email_activate$
+DECLARE
+ previous_backend text:=coalesce(current_setting('mushavo.email_backend_review',true),'');
+ previous_session text:=coalesce(current_setting('mushavo.email_session_review',true),'');
+ previous_data text:=coalesce(current_setting('mushavo.email_data_guard_review',true),'');
+ previous_admin text:=coalesce(current_setting('mushavo.email_admin_review',true),'');
+BEGIN
+ IF current_user<>'postgres' OR session_user<>'postgres'
+ OR current_setting('session_replication_role')<>'origin'
+ OR coalesce(current_setting('role',true),'none') NOT IN ('none','postgres')
+ OR NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname=current_user AND (rolsuper OR rolbypassrls))
+ THEN RAISE EXCEPTION 'EMAIL_ATOMIC_PRIVILEGED_ORIGIN_REQUIRED'; END IF;
+ IF current_setting('mushavo.email_atomic_review',true) IS DISTINCT FROM 'OFFLINE_ATOMIC_REHEARSAL'
+ THEN RAISE EXCEPTION 'EMAIL_ATOMIC_OFFLINE_REHEARSAL_ACK_REQUIRED'; END IF;
+ IF EXISTS (
+ SELECT 1 FROM pg_event_trigger e
+ WHERE e.evtenabled IN ('O','A')
+ AND (e.evttags IS NULL OR e.evttags && ARRAY['CREATE SCHEMA','CREATE TABLE','ALTER TABLE','CREATE INDEX','CREATE FUNCTION','ALTER FUNCTION','CREATE TRIGGER','CREATE POLICY','GRANT','REVOKE']::text[])
+ AND NOT EXISTS (
+  SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+  JOIN pg_language l ON l.oid=p.prolang JOIN pg_roles er ON er.oid=e.evtowner JOIN pg_roles pr ON pr.oid=p.proowner
+  JOIN (VALUES
+   ('pgrst_ddl_watch','ddl_command_end','de987df746eb39647098459e7993bd8595e592969b0cd647828a3d13d37cffe0'),
+   ('pgrst_drop_watch','sql_drop','791b41f0632fc86e0fc86a303ec0fd710c4e2ecf947a23422dae2b7a2c122f1d')
+  ) reviewed(name,event,body_sha256) ON e.evtname=reviewed.name AND e.evtevent=reviewed.event
+  WHERE p.oid=e.evtfoid AND e.evtenabled='O' AND e.evttags IS NULL
+  AND n.nspname='extensions' AND p.proname=reviewed.name
+  AND er.rolname='supabase_admin' AND pr.rolname='supabase_admin'
+  AND p.prokind='f' AND p.pronargs=0 AND p.pronargdefaults=0 AND p.prorettype='event_trigger'::regtype
+  AND l.lanname='plpgsql' AND NOT p.prosecdef AND NOT p.proisstrict AND NOT p.proleakproof
+  AND p.provolatile='v' AND p.proparallel='u' AND p.prosupport=0 AND p.proconfig=ARRAY['search_path=""']::text[]
+  AND encode(sha256(convert_to(replace(p.prosrc,E'\r\n',E'\n'),'UTF8')),'hex')=reviewed.body_sha256
+ )
+ AND NOT EXISTS (
+  SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+  JOIN pg_language l ON l.oid=p.prolang JOIN pg_roles er ON er.oid=e.evtowner JOIN pg_roles pr ON pr.oid=p.proowner
+  WHERE p.oid=e.evtfoid AND e.evtname='ensure_rls' AND e.evtevent='ddl_command_end' AND e.evtenabled='O'
+  AND ARRAY(SELECT unnest(e.evttags) ORDER BY 1)=ARRAY['CREATE TABLE','CREATE TABLE AS','SELECT INTO']::text[]
+  AND n.nspname='public' AND p.proname='rls_auto_enable' AND er.rolname='postgres' AND pr.rolname='postgres'
+  AND p.prokind='f' AND p.pronargs=0 AND p.pronargdefaults=0 AND p.prorettype='event_trigger'::regtype
+  AND l.lanname='plpgsql' AND p.prosecdef AND NOT p.proisstrict AND NOT p.proleakproof
+  AND p.provolatile='v' AND p.proparallel='u' AND p.prosupport=0 AND p.proconfig=ARRAY['search_path=pg_catalog']::text[]
+  AND (SELECT count(*) FROM pg_event_trigger WHERE evtfoid=p.oid)=1
+  AND (SELECT count(*) FROM pg_proc WHERE pronamespace=p.pronamespace AND proname=p.proname)=1
+  AND has_function_privilege('anon',p.oid,'EXECUTE') AND has_function_privilege('authenticated',p.oid,'EXECUTE')
+  AND has_function_privilege('service_role',p.oid,'EXECUTE')
+  AND octet_length(replace(p.prosrc,E'\r\n',E'\n'))=953
+  AND encode(sha256(convert_to(replace(p.prosrc,E'\r\n',E'\n'),'UTF8')),'hex')='2782e98b348aca7d6f6f73c420fd78d2e094957dd7a52b0483d4c34f29d2a7a1'
+ )
+) THEN RAISE EXCEPTION 'EMAIL_ATOMIC_UNREVIEWED_DDL_HOOK'; END IF;
+ -- This lock serializes cooperative installer calls, not arbitrary application transactions.
+ PERFORM pg_advisory_xact_lock(20261017,2411);
+ PERFORM set_config('mushavo.email_backend_review','OFFLINE_SOURCE_CANDIDATE',true);
+ PERFORM set_config('mushavo.email_session_review','OFFLINE_SOURCE_CANDIDATE',true);
+ PERFORM set_config('mushavo.email_data_guard_review','OFFLINE_SOURCE_CANDIDATE',true);
+ PERFORM set_config('mushavo.email_admin_review','OFFLINE_SOURCE_CANDIDATE',true);
+  -- COMPONENT verification_backend
+  EXECUTE $email_component_0$
+DO $guard$
+BEGIN
+ IF current_setting('mushavo.email_backend_review',true) IS DISTINCT FROM 'OFFLINE_SOURCE_CANDIDATE'
+ THEN RAISE EXCEPTION 'EMAIL_BACKEND_OFFLINE_REVIEW_ACK_REQUIRED'; END IF;
+ IF current_user<>'postgres' OR NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname=current_user AND (rolsuper OR rolbypassrls))
+ THEN RAISE EXCEPTION 'EMAIL_BACKEND_PRIVILEGED_REVIEW_REQUIRED'; END IF;
+ IF EXISTS(SELECT 1 FROM pg_namespace WHERE nspname='mushavo_email_auth')
+ OR EXISTS(SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+           WHERE n.nspname='public' AND left(p.proname,11)='email_gate_')
+ THEN RAISE EXCEPTION 'EMAIL_BACKEND_NAMESPACE_ALREADY_EXISTS'; END IF;
+ PERFORM id,user_id,not_after FROM auth.sessions LIMIT 0;
+ PERFORM id,email_confirmed_at,encrypted_password,banned_until FROM auth.users LIMIT 0;
+ PERFORM id,account_status FROM public.profiles LIMIT 0;
+END;
+$guard$;
+
+CREATE SCHEMA mushavo_email_auth;
+REVOKE ALL ON SCHEMA mushavo_email_auth FROM PUBLIC,anon,authenticated,service_role;
+
+CREATE TABLE mushavo_email_auth.account_state (
+ user_id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+ security_version bigint NOT NULL DEFAULT 1 CHECK(security_version>0),
+ next_send_at timestamptz NOT NULL DEFAULT '-infinity'
+);
+CREATE TABLE mushavo_email_auth.send_events (
+ id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+ user_id uuid NOT NULL REFERENCES mushavo_email_auth.account_state(user_id) ON DELETE CASCADE,
+ reserved_at timestamptz NOT NULL
+);
+CREATE INDEX email_send_actor_time ON mushavo_email_auth.send_events(user_id,reserved_at);
+CREATE TABLE mushavo_email_auth.challenges (
+ id uuid PRIMARY KEY,
+ user_id uuid NOT NULL REFERENCES mushavo_email_auth.account_state(user_id) ON DELETE CASCADE,
+ session_id uuid NOT NULL REFERENCES auth.sessions(id) ON DELETE CASCADE,
+ security_version bigint NOT NULL CHECK(security_version>0),
+ code_mac text NOT NULL CHECK(code_mac ~ '^[0-9a-f]{64}$'),
+ key_version text NOT NULL CHECK(key_version ~ '^[A-Za-z0-9_-]{1,32}$'),
+ remember_device boolean NOT NULL,
+ state text NOT NULL CHECK(state IN ('pending_delivery','ready','used','superseded','failed','locked')),
+ attempts integer NOT NULL DEFAULT 0 CHECK(attempts BETWEEN 0 AND 5),
+ issued_at timestamptz NOT NULL,
+ expires_at timestamptz NOT NULL,
+ delivered_at timestamptz,
+ consumed_at timestamptz,
+ CHECK(expires_at=issued_at+interval '10 minutes')
+);
+CREATE INDEX email_challenge_actor_session ON mushavo_email_auth.challenges(user_id,session_id,state);
+CREATE TABLE mushavo_email_auth.devices (
+ id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+ user_id uuid NOT NULL REFERENCES mushavo_email_auth.account_state(user_id) ON DELETE CASCADE,
+ credential_digest text NOT NULL UNIQUE CHECK(credential_digest ~ '^[0-9a-f]{64}$'),
+ security_version bigint NOT NULL CHECK(security_version>0),
+ origin_challenge_id uuid NOT NULL,
+ verified_at timestamptz NOT NULL,
+ expires_at timestamptz NOT NULL,
+ revoked_at timestamptz,
+ CHECK(expires_at=verified_at+interval '168 hours')
+);
+CREATE INDEX email_device_actor ON mushavo_email_auth.devices(user_id);
+CREATE TABLE mushavo_email_auth.session_proofs (
+ session_id uuid PRIMARY KEY REFERENCES auth.sessions(id) ON DELETE CASCADE,
+ user_id uuid NOT NULL REFERENCES mushavo_email_auth.account_state(user_id) ON DELETE CASCADE,
+ security_version bigint NOT NULL CHECK(security_version>0),
+ source text NOT NULL CHECK(source IN ('email','device')),
+ verified_at timestamptz NOT NULL,
+ established_at timestamptz NOT NULL,
+ device_id uuid REFERENCES mushavo_email_auth.devices(id) ON DELETE CASCADE
+);
+CREATE INDEX email_proof_actor ON mushavo_email_auth.session_proofs(user_id);
+DO $rls$
+DECLARE t text;
+BEGIN
+ FOREACH t IN ARRAY ARRAY['account_state','send_events','challenges','devices','session_proofs'] LOOP
+  EXECUTE format('ALTER TABLE mushavo_email_auth.%I ENABLE ROW LEVEL SECURITY',t);
+  EXECUTE format('ALTER TABLE mushavo_email_auth.%I FORCE ROW LEVEL SECURITY',t);
+ END LOOP;
+END;
+$rls$;
+REVOKE ALL ON ALL TABLES IN SCHEMA mushavo_email_auth FROM PUBLIC,anon,authenticated,service_role;
+
+CREATE FUNCTION mushavo_email_auth.same_digest(a text,b text) RETURNS boolean
+LANGUAGE plpgsql IMMUTABLE STRICT SET search_path=pg_catalog AS $body$
+DECLARE x bytea; y bytea; difference integer:=0; i integer;
+BEGIN
+ IF a !~ '^[0-9a-f]{64}$' OR b !~ '^[0-9a-f]{64}$' THEN RETURN false; END IF;
+ x:=decode(a,'hex'); y:=decode(b,'hex');
+ FOR i IN 0..31 LOOP difference:=difference | (get_byte(x,i) # get_byte(y,i)); END LOOP;
+ RETURN difference=0;
+END;
+$body$;
+
+-- Serialize mutations by actor. The Auth session must exist and belong to actor.
+CREATE FUNCTION mushavo_email_auth.lock_actor(p_user uuid,p_session uuid) RETURNS bigint
+LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $body$
+DECLARE v bigint;
+BEGIN
+ IF p_user IS NULL OR p_session IS NULL THEN RAISE EXCEPTION 'EMAIL_ACTOR_SESSION_REQUIRED'; END IF;
+ IF NOT EXISTS(SELECT 1 FROM auth.users u JOIN auth.sessions s ON s.user_id=u.id
+  JOIN public.profiles p ON p.id=u.id WHERE u.id=p_user AND s.id=p_session
+  AND u.email_confirmed_at IS NOT NULL AND p.account_status='active'
+  AND (u.banned_until IS NULL OR u.banned_until<=clock_timestamp())
+  AND (s.not_after IS NULL OR s.not_after>clock_timestamp()))
+ THEN RAISE EXCEPTION 'EMAIL_ACTIVE_AUTH_SESSION_REQUIRED'; END IF;
+ INSERT INTO mushavo_email_auth.account_state(user_id) VALUES(p_user) ON CONFLICT DO NOTHING;
+ SELECT security_version INTO STRICT v FROM mushavo_email_auth.account_state
+  WHERE user_id=p_user FOR UPDATE;
+ PERFORM 1 FROM auth.users u JOIN auth.sessions s ON s.user_id=u.id
+  JOIN public.profiles p ON p.id=u.id WHERE u.id=p_user AND s.id=p_session
+  AND u.email_confirmed_at IS NOT NULL AND p.account_status='active'
+  AND (u.banned_until IS NULL OR u.banned_until<=clock_timestamp())
+  AND (s.not_after IS NULL OR s.not_after>clock_timestamp()) FOR KEY SHARE OF s;
+ IF NOT FOUND THEN RAISE EXCEPTION 'EMAIL_ACTIVE_AUTH_SESSION_REQUIRED'; END IF;
+ RETURN v;
+END;
+$body$;
+
+CREATE FUNCTION mushavo_email_auth.session_valid(p_user uuid,p_session uuid) RETURNS boolean
+LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog AS $body$
+ SELECT EXISTS(SELECT 1 FROM mushavo_email_auth.session_proofs proof
+  JOIN mushavo_email_auth.account_state a ON a.user_id=proof.user_id
+  JOIN auth.users u ON u.id=proof.user_id
+  JOIN auth.sessions s ON s.id=proof.session_id AND s.user_id=u.id
+  JOIN public.profiles p ON p.id=u.id
+  WHERE proof.user_id=p_user AND proof.session_id=p_session
+  AND proof.security_version=a.security_version AND u.email_confirmed_at IS NOT NULL
+  AND p.account_status='active' AND (u.banned_until IS NULL OR u.banned_until<=statement_timestamp())
+  AND (s.not_after IS NULL OR s.not_after>statement_timestamp()));
+$body$;
+
+CREATE FUNCTION mushavo_email_auth.invalidate_user(p_user uuid) RETURNS void
+LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $body$
+BEGIN
+ UPDATE mushavo_email_auth.account_state SET security_version=security_version+1 WHERE user_id=p_user;
+ IF NOT FOUND THEN RETURN; END IF;
+ UPDATE mushavo_email_auth.devices SET revoked_at=coalesce(revoked_at,clock_timestamp()) WHERE user_id=p_user;
+ UPDATE mushavo_email_auth.challenges SET state='superseded'
+  WHERE user_id=p_user AND state IN ('pending_delivery','ready');
+ DELETE FROM mushavo_email_auth.session_proofs WHERE user_id=p_user;
+END;
+$body$;
+
+CREATE FUNCTION public.email_gate_begin_challenge(
+ p_user uuid,p_session uuid,p_challenge uuid,p_code_mac text,p_key_version text,p_remember boolean
+) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $body$
+DECLARE v bigint; a mushavo_email_auth.account_state; t timestamptz;
+BEGIN
+ IF p_challenge IS NULL OR p_code_mac IS NULL OR p_code_mac !~ '^[0-9a-f]{64}$'
+ OR p_key_version IS NULL OR p_key_version !~ '^[A-Za-z0-9_-]{1,32}$' OR p_remember IS NULL
+ THEN RETURN jsonb_build_object('result','INVALID'); END IF;
+ v:=mushavo_email_auth.lock_actor(p_user,p_session); t:=clock_timestamp();
+ SELECT * INTO STRICT a FROM mushavo_email_auth.account_state WHERE user_id=p_user;
+ IF a.next_send_at>t THEN RETURN jsonb_build_object('result','COOLDOWN'); END IF;
+ DELETE FROM mushavo_email_auth.send_events WHERE user_id=p_user AND reserved_at<=t-interval '1 hour';
+ IF (SELECT count(*) FROM mushavo_email_auth.send_events WHERE user_id=p_user)>=5
+ THEN RETURN jsonb_build_object('result','RATE_LIMIT'); END IF;
+ IF EXISTS(SELECT 1 FROM mushavo_email_auth.challenges WHERE id=p_challenge)
+ THEN RETURN jsonb_build_object('result','INVALID'); END IF;
+ UPDATE mushavo_email_auth.challenges SET state='superseded'
+  WHERE user_id=p_user AND session_id=p_session AND state IN ('pending_delivery','ready');
+ INSERT INTO mushavo_email_auth.challenges(id,user_id,session_id,security_version,code_mac,key_version,
+  remember_device,state,issued_at,expires_at)
+ VALUES(p_challenge,p_user,p_session,v,p_code_mac,p_key_version,p_remember,'pending_delivery',t,t+interval '10 minutes');
+ INSERT INTO mushavo_email_auth.send_events(user_id,reserved_at) VALUES(p_user,t);
+ UPDATE mushavo_email_auth.account_state SET next_send_at=t+interval '60 seconds' WHERE user_id=p_user;
+ RETURN jsonb_build_object('result','PENDING_DELIVERY','challenge_id',p_challenge,'expires_at',t+interval '10 minutes');
+END;
+$body$;
+
+CREATE FUNCTION public.email_gate_set_delivery(p_user uuid,p_session uuid,p_challenge uuid,p_delivered boolean)
+RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $body$
+DECLARE v bigint;
+BEGIN
+ IF p_delivered IS NULL THEN RETURN jsonb_build_object('result','INVALID'); END IF;
+ v:=mushavo_email_auth.lock_actor(p_user,p_session);
+ UPDATE mushavo_email_auth.challenges SET state=CASE WHEN p_delivered THEN 'ready' ELSE 'failed' END,
+  delivered_at=CASE WHEN p_delivered THEN clock_timestamp() ELSE NULL END
+ WHERE id=p_challenge AND user_id=p_user AND session_id=p_session AND security_version=v
+  AND state='pending_delivery' AND expires_at>clock_timestamp();
+ IF NOT FOUND THEN RETURN jsonb_build_object('result','UNAVAILABLE'); END IF;
+ RETURN jsonb_build_object('result',CASE WHEN p_delivered THEN 'READY' ELSE 'DELIVERY_FAILED' END);
+END;
+$body$;
+
+-- Only the trusted mail adapter can read this bounded context; no expected MAC/code is returned.
+CREATE FUNCTION public.email_gate_challenge_context(p_user uuid,p_session uuid,p_challenge uuid)
+RETURNS jsonb LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog AS $body$
+ SELECT jsonb_build_object('key_version',c.key_version,'remember_device',c.remember_device,'expires_at',c.expires_at)
+ FROM mushavo_email_auth.challenges c
+ JOIN mushavo_email_auth.account_state a ON a.user_id=c.user_id AND a.security_version=c.security_version
+ JOIN auth.users u ON u.id=c.user_id JOIN public.profiles p ON p.id=u.id
+ JOIN auth.sessions s ON s.id=c.session_id AND s.user_id=u.id
+ WHERE c.id=p_challenge AND c.user_id=p_user AND c.session_id=p_session
+  AND c.state='ready' AND c.expires_at>statement_timestamp() AND c.attempts<5
+  AND u.email_confirmed_at IS NOT NULL AND p.account_status='active'
+  AND (u.banned_until IS NULL OR u.banned_until<=statement_timestamp())
+  AND (s.not_after IS NULL OR s.not_after>statement_timestamp());
+$body$;
+
+CREATE FUNCTION public.email_gate_verify_challenge(
+ p_user uuid,p_session uuid,p_challenge uuid,p_code_mac text,p_device_digest text DEFAULT NULL
+) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $body$
+DECLARE v bigint; c mushavo_email_auth.challenges; d uuid; t timestamptz;
+BEGIN
+ IF p_code_mac IS NULL OR p_code_mac !~ '^[0-9a-f]{64}$'
+ OR (p_device_digest IS NOT NULL AND p_device_digest !~ '^[0-9a-f]{64}$')
+ THEN RETURN jsonb_build_object('result','INVALID'); END IF;
+ v:=mushavo_email_auth.lock_actor(p_user,p_session);
+ SELECT * INTO c FROM mushavo_email_auth.challenges WHERE id=p_challenge
+  AND user_id=p_user AND session_id=p_session FOR UPDATE;
+ IF NOT FOUND OR c.security_version<>v OR c.state<>'ready' OR c.expires_at<=clock_timestamp()
+ THEN RETURN jsonb_build_object('result','UNAVAILABLE'); END IF;
+ IF c.remember_device IS DISTINCT FROM (p_device_digest IS NOT NULL)
+ THEN RETURN jsonb_build_object('result','INVALID'); END IF;
+ IF c.attempts>=5 THEN RETURN jsonb_build_object('result','LOCKED'); END IF;
+ IF NOT mushavo_email_auth.same_digest(c.code_mac,p_code_mac) THEN
+  UPDATE mushavo_email_auth.challenges SET attempts=attempts+1,
+   state=CASE WHEN attempts+1>=5 THEN 'locked' ELSE state END WHERE id=c.id;
+  RETURN jsonb_build_object('result',CASE WHEN c.attempts+1>=5 THEN 'LOCKED' ELSE 'CODE_REJECTED' END);
+ END IF;
+ IF p_device_digest IS NOT NULL AND EXISTS(SELECT 1 FROM mushavo_email_auth.devices WHERE credential_digest=p_device_digest)
+ THEN RETURN jsonb_build_object('result','INVALID'); END IF;
+ t:=clock_timestamp();
+ IF c.remember_device THEN
+  INSERT INTO mushavo_email_auth.devices(user_id,credential_digest,security_version,origin_challenge_id,verified_at,expires_at)
+   VALUES(p_user,p_device_digest,v,c.id,t,t+interval '168 hours') RETURNING id INTO d;
+ END IF;
+ INSERT INTO mushavo_email_auth.session_proofs(session_id,user_id,security_version,source,verified_at,established_at,device_id)
+  VALUES(p_session,p_user,v,'email',t,t,d)
+ ON CONFLICT(session_id) DO UPDATE SET user_id=excluded.user_id,security_version=excluded.security_version,
+  source=excluded.source,verified_at=excluded.verified_at,established_at=excluded.established_at,device_id=excluded.device_id;
+ UPDATE mushavo_email_auth.challenges SET state='used',consumed_at=t WHERE id=c.id;
+ RETURN jsonb_build_object('result','VERIFIED','device_expires_at',CASE WHEN d IS NOT NULL THEN t+interval '168 hours' END);
+END;
+$body$;
+
+CREATE FUNCTION public.email_gate_restore_device(p_user uuid,p_session uuid,p_device_digest text)
+RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $body$
+DECLARE v bigint; d mushavo_email_auth.devices;
+BEGIN
+ IF p_device_digest IS NULL OR p_device_digest !~ '^[0-9a-f]{64}$' THEN RETURN jsonb_build_object('result','INVALID'); END IF;
+ v:=mushavo_email_auth.lock_actor(p_user,p_session);
+ SELECT * INTO d FROM mushavo_email_auth.devices WHERE user_id=p_user AND credential_digest=p_device_digest
+  AND security_version=v AND revoked_at IS NULL AND expires_at>clock_timestamp() FOR UPDATE;
+ IF NOT FOUND THEN RETURN jsonb_build_object('result','CODE_REQUIRED'); END IF;
+ INSERT INTO mushavo_email_auth.session_proofs(session_id,user_id,security_version,source,verified_at,established_at,device_id)
+  VALUES(p_session,p_user,v,'device',d.verified_at,clock_timestamp(),d.id)
+ ON CONFLICT(session_id) DO UPDATE SET user_id=excluded.user_id,security_version=excluded.security_version,
+  source=excluded.source,verified_at=excluded.verified_at,established_at=excluded.established_at,device_id=excluded.device_id;
+ RETURN jsonb_build_object('result','APPROVED','device_expires_at',d.expires_at);
+END;
+$body$;
+
+CREATE FUNCTION public.email_gate_revoke_device(p_user uuid,p_session uuid,p_device_digest text)
+RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $body$
+DECLARE d uuid;
+BEGIN
+ PERFORM mushavo_email_auth.lock_actor(p_user,p_session);
+ IF NOT mushavo_email_auth.session_valid(p_user,p_session) THEN RETURN jsonb_build_object('result','VERIFICATION_REQUIRED'); END IF;
+ UPDATE mushavo_email_auth.devices SET revoked_at=coalesce(revoked_at,clock_timestamp())
+  WHERE user_id=p_user AND credential_digest=p_device_digest RETURNING id INTO d;
+ IF NOT FOUND THEN RETURN jsonb_build_object('result','NOT_FOUND'); END IF;
+ DELETE FROM mushavo_email_auth.session_proofs WHERE user_id=p_user AND device_id=d;
+ RETURN jsonb_build_object('result','REVOKED');
+END;
+$body$;
+
+CREATE FUNCTION public.email_gate_revoke_all(p_user uuid,p_session uuid)
+RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $body$
+BEGIN
+ PERFORM mushavo_email_auth.lock_actor(p_user,p_session);
+ IF NOT mushavo_email_auth.session_valid(p_user,p_session) THEN RETURN jsonb_build_object('result','VERIFICATION_REQUIRED'); END IF;
+ PERFORM mushavo_email_auth.invalidate_user(p_user);
+ RETURN jsonb_build_object('result','REVOKED');
+END;
+$body$;
+
+CREATE FUNCTION public.email_gate_session_status(p_user uuid,p_session uuid) RETURNS boolean
+LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog AS $body$
+ SELECT mushavo_email_auth.session_valid(p_user,p_session);
+$body$;
+
+CREATE FUNCTION mushavo_email_auth.on_credentials_changed() RETURNS trigger
+LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $body$
+BEGIN
+ IF NEW.email IS DISTINCT FROM OLD.email OR NEW.encrypted_password IS DISTINCT FROM OLD.encrypted_password
+ OR NEW.banned_until IS DISTINCT FROM OLD.banned_until THEN
+  PERFORM mushavo_email_auth.invalidate_user(NEW.id);
+ END IF;
+ RETURN NEW;
+END;
+$body$;
+CREATE TRIGGER email_gate_credentials_changed AFTER UPDATE OF email,encrypted_password,banned_until ON auth.users
+ FOR EACH ROW EXECUTE FUNCTION mushavo_email_auth.on_credentials_changed();
+CREATE FUNCTION mushavo_email_auth.on_profile_suspended() RETURNS trigger
+LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $body$
+BEGIN
+ IF NEW.account_status IS DISTINCT FROM OLD.account_status AND NEW.account_status<>'active'
+ THEN PERFORM mushavo_email_auth.invalidate_user(NEW.id); END IF;
+ RETURN NEW;
+END;
+$body$;
+CREATE TRIGGER email_gate_profile_suspended AFTER UPDATE OF account_status ON public.profiles
+ FOR EACH ROW EXECUTE FUNCTION mushavo_email_auth.on_profile_suspended();
+
+REVOKE ALL ON ALL FUNCTIONS IN SCHEMA mushavo_email_auth FROM PUBLIC,anon,authenticated,service_role;
+DO $acl$
+DECLARE f record;
+BEGIN
+ FOR f IN SELECT p.oid::regprocedure AS signature FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+  WHERE n.nspname='public' AND left(p.proname,11)='email_gate_' LOOP
+  EXECUTE format('REVOKE ALL ON FUNCTION %s FROM PUBLIC,anon,authenticated,service_role',f.signature);
+  EXECUTE format('GRANT EXECUTE ON FUNCTION %s TO service_role',f.signature);
+ END LOOP;
+END;
+$acl$;
+$email_component_0$;
+  -- COMPONENT session_predicate
+  EXECUTE $email_component_1$
+DO $guard$
+BEGIN
+  IF current_setting('mushavo.email_session_review',true)
+      IS DISTINCT FROM 'OFFLINE_SOURCE_CANDIDATE' THEN
+    RAISE EXCEPTION 'EMAIL_SESSION_OFFLINE_REVIEW_ACK_REQUIRED';
+  END IF;
+  IF current_user<>'postgres' OR NOT EXISTS(
+    SELECT 1 FROM pg_roles
+    WHERE rolname=current_user AND (rolsuper OR rolbypassrls)
+  ) THEN RAISE EXCEPTION 'EMAIL_SESSION_PRIVILEGED_REVIEW_REQUIRED'; END IF;
+  IF to_regprocedure('mushavo_email_auth.session_valid(uuid,uuid)') IS NULL
+    OR to_regclass('mushavo_email_auth.session_proofs') IS NULL THEN
+    RAISE EXCEPTION 'EMAIL_SESSION_BACKEND_REQUIRED';
+  END IF;
+  IF EXISTS(
+    SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+    WHERE (n.nspname='mushavo_email_auth' AND p.proname='current_session_verified')
+      OR (n.nspname='public' AND p.proname IN (
+        'email_gate_current_session_verified','email_gate_require_current_session'
+      ))
+  ) THEN RAISE EXCEPTION 'EMAIL_SESSION_ENTRYPOINT_ALREADY_EXISTS'; END IF;
+END;
+$guard$;
+
+-- PostgREST must authenticate the JWT before setting request claims. Reading
+-- these claims in SQL is not independent signature validation. There are no
+-- caller-supplied actor/session parameters and no trust in client proof flags.
+CREATE FUNCTION mushavo_email_auth.current_session_verified() RETURNS boolean
+LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog AS $body$
+DECLARE
+  claims jsonb;
+  actor uuid;
+  auth_actor uuid;
+  session_ref uuid;
+BEGIN
+  BEGIN
+    claims:=auth.jwt();
+    IF jsonb_typeof(claims) IS DISTINCT FROM 'object'
+      OR jsonb_typeof(claims->'sub') IS DISTINCT FROM 'string'
+      OR jsonb_typeof(claims->'session_id') IS DISTINCT FROM 'string'
+      OR claims->>'role' IS DISTINCT FROM 'authenticated'
+      OR auth.role() IS DISTINCT FROM 'authenticated'
+      OR jsonb_typeof(claims->'exp') IS DISTINCT FROM 'number'
+      OR (claims->>'exp') !~ '^[0-9]{1,12}$'
+      OR (claims->>'sub') !~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+      OR (claims->>'session_id') !~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+    THEN RETURN false; END IF;
+    IF (claims->>'exp')::numeric<=extract(epoch FROM statement_timestamp())
+    THEN RETURN false; END IF;
+    actor:=(claims->>'sub')::uuid;
+    session_ref:=(claims->>'session_id')::uuid;
+    auth_actor:=auth.uid();
+  EXCEPTION WHEN invalid_text_representation OR numeric_value_out_of_range THEN
+    RETURN false;
+  END;
+  IF auth_actor IS DISTINCT FROM actor THEN RETURN false; END IF;
+  RETURN mushavo_email_auth.session_valid(actor,session_ref);
+END;
+$body$;
+REVOKE ALL ON FUNCTION mushavo_email_auth.current_session_verified()
+  FROM PUBLIC,anon,authenticated,service_role;
+
+-- No-argument wrappers expose only the caller's boolean or a fixed denial.
+-- SECURITY DEFINER lets them use the private predicate without schema access.
+CREATE FUNCTION public.email_gate_current_session_verified() RETURNS boolean
+LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog AS $body$
+  SELECT mushavo_email_auth.current_session_verified();
+$body$;
+CREATE FUNCTION public.email_gate_require_current_session() RETURNS void
+LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog AS $body$
+BEGIN
+  IF NOT mushavo_email_auth.current_session_verified() THEN
+    RAISE EXCEPTION USING ERRCODE='42501',MESSAGE='EMAIL_VERIFICATION_REQUIRED';
+  END IF;
+END;
+$body$;
+REVOKE ALL ON FUNCTION public.email_gate_current_session_verified()
+  FROM PUBLIC,anon,authenticated,service_role;
+REVOKE ALL ON FUNCTION public.email_gate_require_current_session()
+  FROM PUBLIC,anon,authenticated,service_role;
+GRANT EXECUTE ON FUNCTION public.email_gate_current_session_verified()
+  TO authenticated;
+GRANT EXECUTE ON FUNCTION public.email_gate_require_current_session()
+  TO authenticated;
+$email_component_1$;
+  -- COMPONENT data_guards
+  EXECUTE $email_component_2$
+DO $integration$
+DECLARE
+  f record; relation record; v_oid oid; v_old text; v_body text;
+  v_definition text; v_catalog text; v_targets oid[];
+  v_before jsonb; v_after jsonb; v_count integer:=0; v_policy_count integer:=0;
+BEGIN
+  IF current_setting('mushavo.email_data_guard_review',true) IS DISTINCT FROM 'OFFLINE_SOURCE_CANDIDATE'
+  THEN RAISE EXCEPTION 'EMAIL_DATA_GUARD_OFFLINE_REVIEW_ACK_REQUIRED'; END IF;
+  IF current_user<>'postgres' OR current_setting('session_replication_role')<>'origin'
+  THEN RAISE EXCEPTION 'EMAIL_DATA_GUARD_POSTGRES_ORIGIN_REQUIRED'; END IF;
+  IF to_regprocedure('mushavo_email_auth.current_session_verified()') IS NULL
+  THEN RAISE EXCEPTION 'EMAIL_DATA_GUARD_SESSION_BACKEND_REQUIRED'; END IF;
+  IF EXISTS(SELECT 1 FROM pg_proc WHERE pronamespace='mushavo_email_auth'::regnamespace AND proname='require_application_session')
+    OR EXISTS(SELECT 1 FROM pg_policy WHERE polname='Email verified session required')
+  THEN RAISE EXCEPTION 'EMAIL_DATA_GUARD_ALREADY_PRESENT'; END IF;
+  with r as(select n.nspname as schema,p.proname as name,pg_get_function_identity_arguments(p.oid) as arguments,l.lanname as language,md5(replace(p.prosrc,E'\r\n',E'\n')) as body_md5,pg_get_function_result(p.oid) as result,p.prosecdef as definer,p.provolatile as volatility,p.proconfig as settings,has_function_privilege('anon',p.oid,'EXECUTE') as anon_execute,has_function_privilege('authenticated',p.oid,'EXECUTE') as authenticated_execute,has_function_privilege('service_role',p.oid,'EXECUTE') as service_execute from pg_proc p join pg_namespace n on n.oid=p.pronamespace join pg_language l on l.oid=p.prolang where n.nspname in('public','mushavo_email_auth') and p.prokind='f' and p.prorettype<>'event_trigger'::regtype) select md5(jsonb_agg(to_jsonb(r) order by schema,name,arguments)::text) into v_catalog from r;
+  IF v_catalog<>'d16140f6067289d2c27a12395efd6ae3' THEN RAISE EXCEPTION 'EMAIL_DATA_GUARD_UNREVIEWED_ROUTINE_BASELINE'; END IF;
+  SELECT array_agg(p.oid ORDER BY p.oid) INTO v_targets
+    FROM pg_proc p WHERE p.pronamespace='public'::regnamespace
+      AND has_function_privilege('authenticated',p.oid,'EXECUTE')
+      AND p.prorettype NOT IN ('trigger'::regtype,'event_trigger'::regtype)
+      AND left(p.proname,11)<>'email_gate_'
+      AND p.proname NOT IN ('get_public_plan_catalogue','get_public_signup_currencies','latest_exchange_rate','business_bill_occurrence_date','business_storage_workspace_id');
+  IF cardinality(v_targets)<>148 THEN RAISE EXCEPTION 'EMAIL_DATA_GUARD_TARGET_COUNT'; END IF;
+  SELECT jsonb_build_object(
+    'functions',(SELECT jsonb_agg(
+      CASE WHEN p.oid=ANY(v_targets) THEN to_jsonb(p)-ARRAY['prosrc','prolang'] ELSE to_jsonb(p) END ORDER BY p.oid)
+      FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+      WHERE n.nspname IN ('public','mushavo_email_auth')
+      AND NOT(n.nspname='mushavo_email_auth' AND p.proname='require_application_session')),
+    'policies',(SELECT jsonb_agg(to_jsonb(p) ORDER BY p.schemaname,p.tablename,p.policyname)
+      FROM pg_policies p WHERE p.policyname<>'Email verified session required'),
+    'triggers',(SELECT jsonb_agg(to_jsonb(t) ORDER BY t.oid) FROM pg_trigger t),
+    'relations',(SELECT jsonb_agg(jsonb_build_array(c.oid,c.relacl::text,c.relowner,c.relrowsecurity,c.relforcerowsecurity,c.reloptions) ORDER BY c.oid)
+      FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('public','storage','mushavo_email_auth'))
+  ) INTO v_before;
+  EXECUTE $helper_ddl$CREATE FUNCTION mushavo_email_auth.require_application_session() RETURNS void
+LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog AS $body$
+DECLARE active_role text:=current_setting('role',true);
+BEGIN
+  -- The actual SET ROLE context survives nested SECURITY DEFINER calls.
+  -- A JWT claim alone never grants the service/internal bypass.
+  IF active_role='authenticated' OR auth.role()='authenticated' THEN
+    IF active_role='anon' THEN
+      RAISE EXCEPTION USING ERRCODE='42501',MESSAGE='EMAIL_VERIFICATION_REQUIRED';
+    END IF;
+    PERFORM public.email_gate_require_current_session();
+    RETURN;
+  END IF;
+  IF active_role='service_role' AND auth.role()='service_role' THEN RETURN; END IF;
+  -- Preserve existing Auth middleware trigger callbacks, not app Admin logins.
+  IF coalesce(active_role,'none')='none' AND session_user='supabase_auth_admin'
+    AND pg_trigger_depth()>0 THEN RETURN; END IF;
+  IF coalesce(active_role,'none')='none' AND EXISTS(
+    SELECT 1 FROM pg_roles WHERE rolname=session_user
+      AND rolname<>'authenticator' AND (rolsuper OR rolbypassrls)
+  ) THEN RETURN; END IF;
+  RAISE EXCEPTION USING ERRCODE='42501',MESSAGE='EMAIL_VERIFICATION_REQUIRED';
+END;
+$body$;$helper_ddl$;
+  REVOKE ALL ON FUNCTION mushavo_email_auth.require_application_session() FROM PUBLIC,anon,authenticated,service_role;
+
+  FOR f IN SELECT * FROM (VALUES
+    ('admin_analytics_foundation','p_from date, p_to date','99ef14370afce2b0ff25c12bf3d17cd3','plpgsql'),
+    ('admin_analytics_page','p_from date, p_to date, p_country text, p_plan text, p_workspace_type text, p_subscription_status text, p_billing_period text, p_currency text','55957503f7d2b0cea488ddafeea7ce27','plpgsql'),
+    ('admin_business_billing_settings','','4ad0f4db75fcbd7788e56552fcb94512','plpgsql'),
+    ('admin_business_set_status','p_workspace_id uuid, p_status text, p_expected_version integer, p_confirmation_name text, p_reason text, p_request_id uuid','8d7029a14bc6b711e8d8ae916f5b1521','plpgsql'),
+    ('admin_business_subscription_payment_detail','p_payment_id uuid','c24c804f6a2049e4792aeea819892c58','plpgsql'),
+    ('admin_business_support_snapshot','p_workspace_id uuid, p_offset integer','031fca5c3b890d6221f69f3b0f59825b','plpgsql'),
+    ('admin_business_transfer_owner','p_workspace_id uuid, p_new_owner_member_id uuid, p_expected_owner_id uuid, p_expected_version integer, p_confirmation_name text, p_confirmation_email text, p_reason text, p_request_id uuid','175ef8648601700db626cdacb6fb0294','plpgsql'),
+    ('admin_cancel_scheduled_plan_price','p_plan_id uuid, p_price_id uuid, p_edit_token text','94f7097ba883f093303ce92d07d49aba','plpgsql'),
+    ('admin_grant_manual_subscription','p_owner_id uuid, p_workspace_id uuid, p_plan_id uuid, p_billing_period text, p_starts_on date, p_ends_on date, p_reason text, p_new_business_name text','e5de74ee9405c3bc6765346201ff1b8a','plpgsql'),
+    ('admin_plan_calculation_preview','p_workspace_type text, p_base numeric, p_seat_price numeric, p_included integer, p_total integer, p_extra integer, p_start timestamp with time zone, p_end timestamp with time zone, p_at timestamp with time zone, p_period text','d21112de384008ebeecc1e82d267954f','plpgsql'),
+    ('admin_plan_workbench_snapshot','p_plan_id uuid','05e562d9eeaf540c96daeb1cf516e1dd','plpgsql'),
+    ('admin_save_plan_workbench','p_plan_id uuid, p_edit_token text, p_definition jsonb, p_business jsonb, p_price jsonb','d39e7c1f5bd71b3e6ec4bee24a53e56b','plpgsql'),
+    ('admin_subscription_monitor','','946b83d1d33388628eff3798a6a84455','sql'),
+    ('archive_business_document','p_workspace_id uuid, p_document_id uuid, p_reason text','e4ea840e736e83f6605de05fe3504efb','plpgsql'),
+    ('archive_business_role','p_workspace_id uuid, p_code text, p_expected_version integer','a1415e0f07d24b1a6532f053380ab781','plpgsql'),
+    ('archive_cashbook_account','p_account_id uuid','32bb4fa35e92811ca44dcd423b041dcf','plpgsql'),
+    ('assign_business_member_scope','p_workspace_id uuid, p_member_id uuid, p_dimension_id uuid, p_assigned boolean','1d8ceb100bfcf1b403dd2f865e36f4a2','plpgsql'),
+    ('backfill_currency_conversions','','37870f1342cdc68a3eae523511ab5374','plpgsql'),
+    ('backfill_workspace_currency_conversions','p_workspace_id uuid','4387fc7c07ebb217e17910337cbb0a0b','plpgsql'),
+    ('business_bill_summary','p_workspace_id uuid','cd5609c6d7d1246abbeff56cb2457d6c','plpgsql'),
+    ('business_billing_owner','p_workspace_id uuid','ac845db4af5ee338ce8fe58d47d21aa6','sql'),
+    ('business_billing_snapshot','p_workspace_id uuid, p_offset integer, p_limit integer','a0cc238cb4a02bd88ac120569ebdc317','plpgsql'),
+    ('business_budget_detail','p_workspace_id uuid, p_budget_id uuid, p_offset integer, p_limit integer','806c43b20f8f9365301e0b6ef6dad21b','plpgsql'),
+    ('business_budget_feed','p_workspace_id uuid, p_status text, p_offset integer, p_limit integer','23b1b051ccf9a9a8d849f4a18ab9447e','plpgsql'),
+    ('business_budget_scope','p_workspace_id uuid, p_dimension_id uuid','0ca83596a3a2b0542988abcf4b68b2fe','sql'),
+    ('business_can_view_bill','p_workspace_id uuid, p_bill_id uuid','2cef92599e782a6c25625798d708e297','sql'),
+    ('business_can_view_bill_document','p_workspace_id uuid, p_parent_type text, p_parent_id uuid','26ecdaf043eec4a26dd754d063d408b2','sql'),
+    ('business_can_view_budget','p_workspace_id uuid, p_budget_id uuid','84167717c1d584ecf97e3326357aa1f9','sql'),
+    ('business_can_view_claim','p_workspace_id uuid, p_claim_id uuid','936a4584ed2226cf91690ef59306c64f','sql'),
+    ('business_can_view_income','p_workspace_id uuid, p_income_id uuid','2552f92daf7089f441ccd305183ca47d','sql'),
+    ('business_can_view_request','p_workspace_id uuid, p_request_id uuid','f3cd896de960bc751e273dcef88f91fa','sql'),
+    ('business_claim_history','p_workspace_id uuid, p_claim_id uuid','49fc2a51fb076217ea14d4033690f499','sql'),
+    ('business_claim_in_scope','p_workspace_id uuid, p_dimension_id uuid','f5f00254e15f96d93820862513235821','sql'),
+    ('business_claim_summary','p_workspace_id uuid','0c46d6177cff540b34fb41df7b582abc','plpgsql'),
+    ('business_claims_active','p_workspace_id uuid','937fbb190901555442f25a29e764e96c','sql'),
+    ('business_effective_permissions','p_workspace_id uuid','58dd4df524ed8cadf9090a5b1f458e6a','sql'),
+    ('business_has_permission','p_workspace_id uuid, p_permission_code text','3df7d3068b199e6746fca4f0b8f377a9','plpgsql'),
+    ('business_logo_owner','p_name text','da0501db4ae77c8e43153835e101852c','sql'),
+    ('business_logo_readable','p_name text','3b5ea0a807a0286761b3d1f42bdf2d10','sql'),
+    ('business_report_export','p_workspace_id uuid, p_section text, p_expected_fingerprint text, p_export_id uuid, p_format text, p_from date, p_to date, p_mode text, p_currency text, p_category_id uuid, p_dimension_id uuid, p_group_type text, p_group_id uuid, p_budget_id uuid','f93a32f8532ba24c55bfa023f0dbe95b','plpgsql'),
+    ('business_report_records','p_workspace_id uuid, p_section text, p_expected_fingerprint text, p_from date, p_to date, p_mode text, p_currency text, p_category_id uuid, p_dimension_id uuid, p_group_type text, p_group_id uuid, p_budget_id uuid, p_offset integer, p_limit integer','145dbaa5812f261f0b7e11e647db0246','plpgsql'),
+    ('business_report_scope','p_workspace_id uuid, p_dimension_id uuid, p_submitter_id uuid','be8e402554c00916db47e30441027dfc','sql'),
+    ('business_report_summary','p_workspace_id uuid, p_from date, p_to date, p_mode text, p_currency text, p_category_id uuid, p_dimension_id uuid','ae878d9106e3588b442ced70d96aa526','sql'),
+    ('business_request_detail','p_workspace_id uuid, p_request_id uuid','431c17f9e01f75035f8d03cd4bc2688e','plpgsql'),
+    ('business_request_feed','p_workspace_id uuid, p_search text, p_status text, p_offset integer, p_limit integer','be7b2ddc61c6c1becf8fbb82073ac118','plpgsql'),
+    ('business_roles_snapshot','p_workspace_id uuid','0c19a0966bdc8052c54d577db6f0453d','plpgsql'),
+    ('business_signal_member','p_workspace_id uuid','934a8bea81fe9dae04d1712bcc808774','sql'),
+    ('business_subscription_proof_access','p_path text, p_write boolean','29384de40e5d5a2dd1f336727a254040','plpgsql'),
+    ('business_subscription_quote','p_workspace_id uuid, p_kind text, p_billing_period text, p_quantity integer','0af1476baf6f2ae1298a49c860eaca00','plpgsql'),
+    ('business_team_can_manage','p_workspace_id uuid','9d6fcab28f6ecf23f0ee5b67080c5885','sql'),
+    ('business_team_snapshot','p_workspace_id uuid','c5a538ab21cf8075244597026265ff04','plpgsql'),
+    ('business_transaction_feed','p_workspace_id uuid, p_search text, p_kind text, p_status text, p_currency text, p_category_id uuid, p_dimension_id uuid, p_from date, p_to date, p_payment_source text, p_offset integer, p_limit integer','1e533705e473e4fbd26b1b71720057fd','plpgsql'),
+    ('can_manage_family_members','p_family_id uuid','b87a3326a0b4ba66d7d8bd2444023852','sql'),
+    ('cancel_business_bill','p_workspace_id uuid, p_bill_id uuid','2efa22752e9d506f340a8dda73c981b9','plpgsql'),
+    ('cancel_business_invitation','p_invitation_id uuid','f4ed218336ba313a4809e69563a1760b','plpgsql'),
+    ('cancel_family_invitation','p_invitation_id uuid','bfb4c5f2353f7908bfd0065d7302917c','plpgsql'),
+    ('cashbook_can_access','p_workspace_id uuid','e2c5b3418cccdd901ae6188e157975d7','sql'),
+    ('cashbook_report','p_workspace_id uuid, p_start_date date, p_end_date date','d8c3f85b9f7d93fecb82f1a02813d8d8','plpgsql'),
+    ('complete_admin_user_invitation','p_invitation_id uuid, p_enabled_currencies text[], p_default_currency text','fadc9ea614cea9793d0a2fdd47529698','plpgsql'),
+    ('complete_business_onboarding','p_workspace_id uuid','50303a9fb1af9063686e9f9aa8a54a30','plpgsql'),
+    ('complete_self_signup_from_admin_invitation','p_full_name text, p_enabled_currencies text[], p_default_currency text','c4720c42d58c9dc64a567189c5ac435b','plpgsql'),
+    ('create_business_bill','p_workspace_id uuid, p_supplier_id uuid, p_title text, p_reference text, p_category_id uuid, p_dimension_id uuid, p_amount numeric, p_currency text, p_due_on date, p_remind_days_before integer, p_source_claim_id uuid, p_allow_duplicate boolean','a1f2c53654df86e59b4754b0524e6288','plpgsql'),
+    ('create_business_bill_from_request','p_workspace_id uuid, p_request_id uuid, p_supplier_id uuid, p_reference text, p_due_on date, p_remind_days_before integer','bd591364e818e10bbc83460ffa483fa9','plpgsql'),
+    ('create_business_bill_schedule','p_workspace_id uuid, p_supplier_id uuid, p_title text, p_category_id uuid, p_dimension_id uuid, p_amount numeric, p_currency text, p_frequency text, p_interval_count integer, p_starts_on date, p_ends_on date, p_remind_days_before integer','1e1e6cac76bb916357ab594cb121eca8','plpgsql'),
+    ('create_business_claim','p_workspace_id uuid, p_kind text, p_title text, p_description text, p_category_id uuid, p_dimension_id uuid, p_amount numeric, p_currency text, p_expense_date date','b0a842d41aeb5dfab66be010e8d91378','plpgsql'),
+    ('create_business_invitation','p_workspace_id uuid, p_email text, p_role text, p_scope_ids uuid[]','9607d491833af1f7780ee48adc253964','plpgsql'),
+    ('create_cashbook_account','p_workspace_id uuid, p_name text, p_account_type text, p_currency text, p_opening_balance numeric, p_opening_balance_date date','db86c83e3dbb9cc77f8386567dcf769b','plpgsql'),
+    ('create_cashbook_entry','p_workspace_id uuid, p_account_id uuid, p_direction text, p_amount numeric, p_transaction_date date, p_description text, p_category text, p_notes text','8f6fc71895a9f257207d964e8b501069','plpgsql'),
+    ('create_cashbook_payment_entry','p_workspace_id uuid, p_account_id uuid, p_payment_record_id uuid, p_notes text, p_replace_manual_entry_id uuid','1fc33ebcbe7c9c25c7add76eafeb1a83','plpgsql'),
+    ('create_cashbook_transfer','p_workspace_id uuid, p_source_account_id uuid, p_destination_account_id uuid, p_source_amount numeric, p_destination_amount numeric, p_transaction_date date, p_description text, p_notes text','2af39623d1c3f9e511c7051af36f942e','plpgsql'),
+    ('create_completed_one_time_payment','p_workspace_id uuid, p_name text, p_category text, p_amount numeric, p_currency text, p_payment_date date, p_payment_method text, p_paid_by_member_id uuid, p_reference_number text, p_notes text, p_proof_path text, p_proof_name text, p_proof_mime_type text, p_proof_size_bytes bigint','4e93e71b415d5e5eab2165dfac660ea5','plpgsql'),
+    ('create_family_workspace','p_name text, p_monthly_budget numeric, p_currency text','9d35c872f63ea929da8920b8080908ee','plpgsql'),
+    ('delete_family_workspace','p_family_id uuid','b5a0b7a9cc674c7e9610ad57ef2aa982','plpgsql'),
+    ('edit_business_invitation','p_invitation_id uuid, p_role text, p_scope_ids uuid[], p_expected_version integer','5f127540bd1153b475734c2aeb17784f','plpgsql'),
+    ('effective_workspace_entitlement','p_workspace_id uuid','2e5d472e273e9a37794bb227e46f40e9','sql'),
+    ('exchange_rate_status','p_include_admin_details boolean','1e8f16389c6331922aa7f5a5ecfad445','plpgsql'),
+    ('family_extra_place_quote','p_workspace_id uuid, p_count integer','47cd0f525b4027042e5424cbe2341750','plpgsql'),
+    ('get_my_admin_user_invitation','p_invitation_id uuid','ef53b989bee9cce0f0ece22685225e88','plpgsql'),
+    ('get_my_business_invitations','','55167164725a8300cbaac93019628e16','plpgsql'),
+    ('has_active_family_plan','','49f83f9a6a12a4055d5d67ab4c9ba5cf','sql'),
+    ('has_my_unfinished_admin_invitation','','2e8c4ebe821dbbc5fa2fb9dfa41da44a','sql'),
+    ('invite_family_member','p_family_id uuid, p_email text, p_role text','f9a079fcfe74cdafdaa5204e50aca435','plpgsql'),
+    ('is_active_family_participant','p_family_id uuid','3ea90b1679ba5298ca9c182f3656b93f','sql'),
+    ('is_app_admin','','25e2e8eddc2262f5a8857809d86e1f75','sql'),
+    ('is_business_workspace_member','p_workspace_id uuid','3c4261f684996e48fd268d1428dfe0ff','sql'),
+    ('is_platform_staff','p_roles text[]','5b2bc442c06de5c432a089b0a7d894e6','sql'),
+    ('is_workspace_member','p_workspace_id uuid','51a764e62edf69ab00d434dca89a18bd','sql'),
+    ('is_workspace_owner','p_workspace_id uuid','d2d732726b25ce9dfd7c909bae3ce571','sql'),
+    ('my_account_suspended','','50f09055187b53f43bd55219ffe28c97','sql'),
+    ('payment_plan_paused','p_payment_item_id uuid','9320f1eb3d18333739fe322fe3ff419e','sql'),
+    ('payment_reminder_allowed','p_payment_item_id uuid','515809258254f346ce3d2cbd1669d2b4','sql'),
+    ('personal_payment_plan_access','p_workspace_id uuid','b0555a87c246a6bb5353ffdfe020c680','sql'),
+    ('prepare_business_invitation_resend','p_invitation_id uuid','9797a4e3b37bda4813dd4ddef3d68578','plpgsql'),
+    ('provision_my_budget_workspace','','f161d594668fd62d6e9769b8968db0b8','plpgsql'),
+    ('public_business_checkout_terms','','3c77089bb6862e01a70c350708f9168e','plpgsql'),
+    ('record_business_bill_payment','p_workspace_id uuid, p_bill_id uuid, p_payment_id uuid, p_amount numeric, p_paid_at timestamp with time zone, p_reference text','3ea17dc9bad94d37ddbefa6e894b15b2','plpgsql'),
+    ('record_business_bill_payment_with_source','p_workspace_id uuid, p_bill_id uuid, p_payment_id uuid, p_amount numeric, p_paid_at timestamp with time zone, p_reference text, p_payment_source text','538a426072eb4c5d3504b5f22e6741bc','plpgsql'),
+    ('record_business_claim_payment','p_workspace_id uuid, p_claim_id uuid, p_expected_version integer, p_paid_at timestamp with time zone, p_payment_reference text','92f29cae2069eca9ddaebd6e2e5c4c78','plpgsql'),
+    ('record_business_claim_payment_with_source','p_workspace_id uuid, p_claim_id uuid, p_expected_version integer, p_paid_at timestamp with time zone, p_payment_reference text, p_payment_source text','2d9f8d779d249773a741732760343d53','plpgsql'),
+    ('record_business_income','p_workspace_id uuid, p_income_id uuid, p_title text, p_received_from text, p_reference text, p_description text, p_category_id uuid, p_dimension_id uuid, p_amount numeric, p_currency text, p_received_on date, p_payment_source text','e2d9dae85bc1be0ffe71366e1b9e6317','plpgsql'),
+    ('record_my_analytics_activity','','656730ea5ffcec5270f9aa29c16b20a6','plpgsql'),
+    ('register_business_document','p_document_id uuid, p_workspace_id uuid, p_parent_type text, p_parent_id uuid, p_storage_path text, p_original_name text, p_mime_type text, p_size_bytes bigint, p_checksum_sha256 text','a1c891133d5117ed74bd23f6851e1ee1','plpgsql'),
+    ('remove_business_member','p_workspace_id uuid, p_member_id uuid','f4efe1898c99a8c9af76f8d2ee634a8c','plpgsql'),
+    ('remove_family_member','p_family_id uuid, p_member_id uuid','8ae20c6cca07ae03c5699756f0a75425','plpgsql'),
+    ('respond_business_invitation','p_invitation_id uuid, p_accept boolean','dc900e92defc33bbc6156a31450824aa','plpgsql'),
+    ('respond_to_family_invitation','p_invitation_id uuid, p_accept boolean','fa7ee186e6bc0a3cb128af586d01819d','plpgsql'),
+    ('reverse_cashbook_entry','p_entry_id uuid, p_reason text','6e5463536d7a097bdf93f6738719c6a7','plpgsql'),
+    ('review_business_claim','p_workspace_id uuid, p_claim_id uuid, p_expected_version integer, p_decision text, p_reason text','41805a9a2698d13dbf139f333070484e','plpgsql'),
+    ('review_subscription_payment','p_payment_id uuid, p_decision text, p_reason text','0659e5f3461f9041cce1cd90dc6cf7cc','plpgsql'),
+    ('save_admin_finance_currency_settings','p_reporting_currency text, p_enabled_receipt_currencies text[], p_conversion_enabled boolean','ade932dfb2ae1ab036f15651fc4411d6','plpgsql'),
+    ('save_business_billing_settings','p_plan_id uuid, p_expected_version integer, p_pilot_enabled boolean, p_included_seats integer, p_currency text, p_monthly_base numeric, p_annual_base numeric, p_monthly_seat numeric, p_annual_seat numeric, p_payment_instructions text','09cda50ebcb51cabbc6627718c1da675','plpgsql'),
+    ('save_business_branding','p_workspace_id uuid, p_trading_name text, p_logo_path text, p_expected_version integer','787c600d0894fc118d099bb4256ecf16','plpgsql'),
+    ('save_business_budget','p_workspace_id uuid, p_budget_id uuid, p_expected_version integer, p_name text, p_category_id uuid, p_dimension_id uuid, p_starts_on date, p_ends_on date, p_period_type text, p_planned_amount numeric','883926a55ffd481a4a3743bab56b003f','plpgsql'),
+    ('save_business_category','p_workspace_id uuid, p_category_id uuid, p_category_type text, p_name text, p_code text, p_description text, p_colour text, p_status text, p_expected_version integer','c2f0e952764e7dde5eae45cf17858ade','plpgsql'),
+    ('save_business_claim_draft','p_workspace_id uuid, p_claim_id uuid, p_expected_version integer, p_title text, p_description text, p_category_id uuid, p_dimension_id uuid, p_amount numeric, p_currency text, p_expense_date date','4710fbc021a7f99ae2bf982141b8cc5d','plpgsql'),
+    ('save_business_dimension','p_workspace_id uuid, p_dimension_id uuid, p_dimension_type text, p_name text, p_code text, p_description text, p_parent_id uuid, p_status text, p_expected_version integer','53f5b2c4e29c5ffb7c98bffc05d45ba1','plpgsql'),
+    ('save_business_expense_entry','p_workspace_id uuid, p_claim_id uuid, p_expected_version integer, p_kind text, p_title text, p_description text, p_category_id uuid, p_dimension_id uuid, p_amount numeric, p_currency text, p_expense_date date, p_employee_payment_source text','f1d30a598e06a87aa64236eedce78823','plpgsql'),
+    ('save_business_role','p_workspace_id uuid, p_code text, p_name text, p_description text, p_scope_mode text, p_permissions text[], p_expected_version integer','cf92543f99a2d931daf4ca93473a2266','plpgsql'),
+    ('save_business_setup','p_workspace_id uuid, p_trading_name text, p_base_currency text, p_enabled_currencies text[], p_timezone text, p_financial_year_start_month integer, p_period_start_day integer, p_expected_profile_version integer, p_expected_settings_updated_at timestamp with time zone','330c03d92eaaabb28421812cc3dc2418','plpgsql'),
+    ('save_business_setup_draft','p_workspace_id uuid, p_kind text, p_description text, p_amount numeric, p_currency text, p_record_date date, p_due_date date, p_category_id uuid, p_dimension_id uuid, p_expected_version integer','08d52f74163a21284f3d5c7236daa005','plpgsql'),
+    ('save_business_setup_with_branding','p_workspace_id uuid, p_trading_name text, p_base_currency text, p_enabled_currencies text[], p_timezone text, p_financial_year_start_month integer, p_period_start_day integer, p_expected_profile_version integer, p_expected_settings_updated_at timestamp with time zone, p_logo_path text','53cf082c3edc7eea290018075d6ed52b','plpgsql'),
+    ('save_business_spending_request','p_workspace_id uuid, p_request_id uuid, p_expected_version integer, p_title text, p_description text, p_category_id uuid, p_dimension_id uuid, p_amount numeric, p_currency text, p_planned_on date','f794d7bca58797f925155af13b9d3664','plpgsql'),
+    ('save_business_supplier','p_workspace_id uuid, p_supplier_id uuid, p_name text, p_email text, p_notes text, p_expected_version integer','ab454692093f4ddbea6669399c368e8c','plpgsql'),
+    ('save_manual_payment_conversion','p_entity_type text, p_entity_id uuid, p_reporting_currency text, p_exchange_rate numeric, p_converted_amount numeric','413e75353fb5cdd3a00daa0b1878a638','plpgsql'),
+    ('save_plan_definition','p_plan_id uuid, p_code text, p_display_name text, p_description text, p_marketing_summary text, p_workspace_type text, p_included_member_seats integer, p_active_payment_limit integer, p_is_active boolean, p_is_public boolean, p_is_featured boolean, p_available_for_purchase boolean, p_cta_label text, p_sort_order integer, p_feature_codes text[]','c94a23a0e53b5027ae021366acf8fab9','plpgsql'),
+    ('save_plan_price','p_plan_code text, p_billing_period text, p_currency text, p_amount numeric, p_extra_member_amount numeric','d6327f9346043296987cc7c0bcba440a','plpgsql'),
+    ('save_workspace_currency_settings','p_workspace_id uuid, p_default_payment_currency text, p_enabled_currencies text[], p_reporting_currency text, p_conversion_enabled boolean','8610e31021a13517ff7f92e6e18c831e','plpgsql'),
+    ('set_business_member_permission','p_workspace_id uuid, p_member_id uuid, p_permission_code text, p_effect text','551da68d93e6ed868d253a81e492b15a','plpgsql'),
+    ('set_business_role_permission','p_workspace_id uuid, p_role text, p_permission_code text, p_enabled boolean','e6aa71092e5ada59313d45d350141fe6','plpgsql'),
+    ('set_business_workflow_permission','p_workspace_id uuid, p_role text, p_permission_code text, p_enabled boolean','9bd8a832fa8067d7b69166f6382d61fe','plpgsql'),
+    ('set_personal_free_payment_selection','p_workspace_id uuid, p_payment_ids uuid[]','a12a57da0589e2dc9f06d12782479692','plpgsql'),
+    ('set_user_account_status','p_user_id uuid, p_status text','3dfcdad3f784e843f67f94eb71de2501','plpgsql'),
+    ('stop_business_bill_schedule','p_workspace_id uuid, p_schedule_id uuid','1f08840f2b3a5c174b2b3c862283355f','plpgsql'),
+    ('submit_business_claim','p_workspace_id uuid, p_claim_id uuid, p_expected_version integer','b7ef82280664803d523d9b6b4039e086','plpgsql'),
+    ('submit_business_plan_request','p_personal_workspace_id uuid, p_business_name text, p_total_member_count integer, p_plan_code text, p_billing_period text, p_currency text, p_amount numeric, p_expected_settings_version integer, p_payment_method text, p_payment_date date, p_reference_number text, p_notes text, p_proof_path text, p_proof_name text, p_proof_mime_type text, p_proof_size_bytes bigint, p_submission_id uuid','a705dd064c2ffd72e98adaf583581d1b','plpgsql'),
+    ('submit_business_subscription_payment','p_workspace_id uuid, p_quote_id uuid, p_payment_id uuid, p_payment_method text, p_payment_date date, p_reference_number text, p_notes text, p_proof_path text, p_proof_name text, p_proof_mime_type text, p_proof_size_bytes bigint','762f37a850cd86de756dec93388e5076','plpgsql'),
+    ('submit_family_extra_places','p_workspace_id uuid, p_count integer, p_expected_amount numeric, p_payment_method text, p_payment_date date, p_reference_number text, p_notes text, p_proof_path text, p_proof_name text, p_proof_mime_type text, p_proof_size_bytes bigint','c79c8234977bad0e42a02a1ee846f015','plpgsql'),
+    ('submit_family_plan_request','p_personal_workspace_id uuid, p_family_name text, p_total_member_count integer, p_plan_code text, p_billing_period text, p_currency text, p_amount numeric, p_payment_method text, p_payment_date date, p_reference_number text, p_notes text, p_proof_path text, p_proof_name text, p_proof_mime_type text, p_proof_size_bytes bigint','bea495a86d960580993b92ec89e17bc3','plpgsql'),
+    ('submit_subscription_renewal','p_workspace_id uuid, p_plan_code text, p_total_member_count integer, p_billing_period text, p_currency text, p_amount numeric, p_payment_method text, p_payment_date date, p_reference_number text, p_notes text, p_proof_path text, p_proof_name text, p_proof_mime_type text, p_proof_size_bytes bigint','d042eaf44ee772e1e006dc4dcd1fde13','plpgsql'),
+    ('transfer_business_ownership','p_workspace_id uuid, p_new_owner_member_id uuid, p_confirmation_name text','070281c6f66cf6114b9032196079d746','plpgsql'),
+    ('transition_business_budget','p_workspace_id uuid, p_budget_id uuid, p_expected_version integer, p_status text, p_reason text','526f8debf463bae2cff9b5df81590488','plpgsql'),
+    ('transition_business_request','p_workspace_id uuid, p_request_id uuid, p_expected_version integer, p_action text, p_reason text','fdc2031105345dca4defdf1248161a2e','plpgsql'),
+    ('update_business_member_access','p_workspace_id uuid, p_member_id uuid, p_role text, p_scope_ids uuid[]','173c8da75afb37bacc75bd5db7d15267','plpgsql'),
+    ('update_business_member_role_access','p_workspace_id uuid, p_member_id uuid, p_role text, p_scope_ids uuid[], p_overrides jsonb','f1bf669ce0722a2e204c312568943e55','plpgsql'),
+    ('void_business_income','p_workspace_id uuid, p_income_id uuid, p_reason text','73b22ae56be8970efdc1ce0b36f09a77','plpgsql'),
+    ('workspace_billable_member_count','p_workspace_id uuid','0b51b307a840884d60d18e729ebcf4a9','sql'),
+    ('workspace_has_feature','p_workspace_id uuid, p_feature_code text','c69a319c6b014095af507159beb0e1be','sql'),
+    ('workspace_member_usage','p_workspace_id uuid','6e6518e57c9ad8dc6a220bb5390aa1ce','plpgsql')
+  ) expected(name,arguments,body_md5,language) LOOP
+    SELECT p.oid,p.prosrc,pg_get_functiondef(p.oid) INTO STRICT v_oid,v_old,v_definition
+      FROM pg_proc p JOIN pg_language l ON l.oid=p.prolang
+      WHERE p.pronamespace='public'::regnamespace AND p.proname=f.name
+        AND pg_get_function_identity_arguments(p.oid)=f.arguments
+        AND l.lanname=f.language AND p.prosecdef AND NOT p.proisstrict
+        AND md5(replace(p.prosrc,E'\r\n',E'\n'))=f.body_md5;
+    IF length(v_definition)-length(replace(v_definition,v_old,''))<>length(v_old)
+    THEN RAISE EXCEPTION 'EMAIL_DATA_GUARD_SOURCE_OCCURRENCE'; END IF;
+    IF f.language='plpgsql' THEN
+      -- Outer block guards DECLARE initializers as well as the original body.
+      v_body:=E'\nBEGIN\n  PERFORM mushavo_email_auth.require_application_session();\n'||v_old||E'\nEND;\n';
+    ELSIF f.language='sql' THEN
+      v_body:=regexp_replace(btrim(v_old),';[[:space:]]*$','');
+      IF (SELECT proretset FROM pg_proc WHERE oid=v_oid) THEN
+        v_body:=E'\n#variable_conflict use_column\nBEGIN\n  PERFORM mushavo_email_auth.require_application_session();\n  RETURN QUERY\n'||v_body||E';\nEND;\n';
+      ELSE
+        v_body:=E'\n#variable_conflict use_column\nBEGIN\n  PERFORM mushavo_email_auth.require_application_session();\n  RETURN (\n'||v_body||E'\n  );\nEND;\n';
+      END IF;
+      IF position(E'\n LANGUAGE sql\n' IN v_definition)=0
+      THEN RAISE EXCEPTION 'EMAIL_DATA_GUARD_SQL_LANGUAGE_SHAPE'; END IF;
+      v_definition:=replace(v_definition,E'\n LANGUAGE sql\n',E'\n LANGUAGE plpgsql\n');
+    ELSE RAISE EXCEPTION 'EMAIL_DATA_GUARD_LANGUAGE_NOT_REVIEWED'; END IF;
+    EXECUTE replace(v_definition,v_old,v_body);
+    IF (SELECT prosrc FROM pg_proc WHERE oid=v_oid) IS DISTINCT FROM v_body
+      OR (SELECT l.lanname FROM pg_proc p JOIN pg_language l ON l.oid=p.prolang WHERE p.oid=v_oid)<>'plpgsql'
+    THEN RAISE EXCEPTION 'EMAIL_DATA_GUARD_BODY_NOT_INSTALLED'; END IF;
+    v_count:=v_count+1;
+  END LOOP;
+
+  FOR relation IN SELECT * FROM (VALUES
+    ('public','admin_audit_logs'),
+    ('public','admin_finance_settings'),
+    ('public','admin_notification_outbox'),
+    ('public','admin_subscription_grants'),
+    ('public','admin_support_notes'),
+    ('public','admin_user_invitation_audit'),
+    ('public','admin_user_invitations'),
+    ('public','analytics_activity_hours'),
+    ('public','app_admins'),
+    ('public','budget_workspaces'),
+    ('public','business_admin_test_provisioning'),
+    ('public','business_audit_events'),
+    ('public','business_bill_payments'),
+    ('public','business_bill_schedules'),
+    ('public','business_billing_settings'),
+    ('public','business_bills'),
+    ('public','business_budgets'),
+    ('public','business_categories'),
+    ('public','business_change_signals'),
+    ('public','business_dimensions'),
+    ('public','business_documents'),
+    ('public','business_expense_claims'),
+    ('public','business_income_receipts'),
+    ('public','business_invitation_scopes'),
+    ('public','business_member_permissions'),
+    ('public','business_member_scopes'),
+    ('public','business_permission_definitions'),
+    ('public','business_profiles'),
+    ('public','business_public_provision_permits'),
+    ('public','business_public_purchases'),
+    ('public','business_role_permissions'),
+    ('public','business_roles'),
+    ('public','business_setup_drafts'),
+    ('public','business_spending_requests'),
+    ('public','business_subscription_quotes'),
+    ('public','business_suppliers'),
+    ('public','business_support_actions'),
+    ('public','business_support_permits'),
+    ('public','business_team_operation_permits'),
+    ('public','cashbook_accounts'),
+    ('public','cashbook_entries'),
+    ('public','category_budgets'),
+    ('public','countries'),
+    ('public','enquiries'),
+    ('public','enquiry_submission_limits'),
+    ('public','exchange_rate_snapshots'),
+    ('public','exchange_rate_sync_runs'),
+    ('public','expenses'),
+    ('public','families'),
+    ('public','family_heads'),
+    ('public','family_invitations'),
+    ('public','family_members'),
+    ('public','notification_outbox'),
+    ('public','notifications'),
+    ('public','payment_conversions'),
+    ('public','payment_items'),
+    ('public','payment_records'),
+    ('public','payments'),
+    ('public','plan_features'),
+    ('public','plan_limits'),
+    ('public','plan_prices'),
+    ('public','plans'),
+    ('public','product_release_controls'),
+    ('public','profiles'),
+    ('public','public_enquiry_events'),
+    ('public','push_subscriptions'),
+    ('public','push_test_rate_limits'),
+    ('public','subscription_audit_events'),
+    ('public','subscription_entitlement_history'),
+    ('public','subscription_invoices'),
+    ('public','subscription_payment_proofs'),
+    ('public','subscription_payment_reviews'),
+    ('public','subscription_payments'),
+    ('public','subscription_renewal_requests'),
+    ('public','support_ticket_messages'),
+    ('public','support_tickets'),
+    ('public','supported_currencies'),
+    ('public','workspace_invitations'),
+    ('public','workspace_members'),
+    ('public','workspace_settings'),
+    ('public','workspace_subscriptions'),
+    ('storage','objects')
+  ) expected(schema_name,table_name) LOOP
+    IF NOT EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+      WHERE n.nspname=relation.schema_name AND c.relname=relation.table_name
+      AND c.relkind='r' AND c.relrowsecurity)
+    THEN RAISE EXCEPTION 'EMAIL_DATA_GUARD_EXPECTED_RLS_TABLE_MISSING'; END IF;
+    EXECUTE format('CREATE POLICY %I ON %I.%I AS RESTRICTIVE FOR ALL TO authenticated USING ((SELECT public.email_gate_current_session_verified())) WITH CHECK ((SELECT public.email_gate_current_session_verified()))',
+      'Email verified session required',relation.schema_name,relation.table_name);
+    v_policy_count:=v_policy_count+1;
+  END LOOP;
+  SELECT jsonb_build_object(
+    'functions',(SELECT jsonb_agg(
+      CASE WHEN p.oid=ANY(v_targets) THEN to_jsonb(p)-ARRAY['prosrc','prolang'] ELSE to_jsonb(p) END ORDER BY p.oid)
+      FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+      WHERE n.nspname IN ('public','mushavo_email_auth')
+      AND NOT(n.nspname='mushavo_email_auth' AND p.proname='require_application_session')),
+    'policies',(SELECT jsonb_agg(to_jsonb(p) ORDER BY p.schemaname,p.tablename,p.policyname)
+      FROM pg_policies p WHERE p.policyname<>'Email verified session required'),
+    'triggers',(SELECT jsonb_agg(to_jsonb(t) ORDER BY t.oid) FROM pg_trigger t),
+    'relations',(SELECT jsonb_agg(jsonb_build_array(c.oid,c.relacl::text,c.relowner,c.relrowsecurity,c.relforcerowsecurity,c.reloptions) ORDER BY c.oid)
+      FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('public','storage','mushavo_email_auth'))
+  ) INTO v_after;
+  IF v_count<>148 OR v_policy_count<>82 OR v_after IS DISTINCT FROM v_before
+  THEN RAISE EXCEPTION 'EMAIL_DATA_GUARD_PROTECTED_METADATA_CHANGED'; END IF;
+END;
+$integration$;
+$email_component_2$;
+  -- COMPONENT admin_status
+  EXECUTE $email_component_3$
+DO $guard$
+BEGIN
+  IF current_setting('mushavo.email_admin_review',true) IS DISTINCT FROM 'OFFLINE_SOURCE_CANDIDATE'
+    THEN RAISE EXCEPTION 'EMAIL_ADMIN_OFFLINE_REVIEW_ACK_REQUIRED'; END IF;
+  IF current_user<>'postgres' OR current_setting('session_replication_role')<>'origin'
+    THEN RAISE EXCEPTION 'EMAIL_ADMIN_POSTGRES_ORIGIN_REQUIRED'; END IF;
+  IF to_regprocedure('mushavo_email_auth.require_application_session()') IS NULL
+    OR to_regprocedure('public.email_gate_current_session_verified()') IS NULL
+    THEN RAISE EXCEPTION 'EMAIL_ADMIN_DATABASE_GUARDS_REQUIRED'; END IF;
+  IF EXISTS(SELECT 1 FROM pg_proc WHERE pronamespace='public'::regnamespace AND proname='email_gate_admin_status')
+    THEN RAISE EXCEPTION 'EMAIL_ADMIN_STATUS_ALREADY_PRESENT'; END IF;
+END;
+$guard$;
+CREATE FUNCTION public.email_gate_admin_status() RETURNS jsonb
+LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog AS $body$
+DECLARE
+  assigned_role text;
+BEGIN
+  -- No account/role information is read or returned before real session proof.
+  IF NOT mushavo_email_auth.current_session_verified() THEN
+    RETURN jsonb_build_object('contract',1,'verified',false,'authorized',false,'role',NULL);
+  END IF;
+  SELECT a.role INTO assigned_role
+  FROM public.app_admins a JOIN public.profiles p ON p.id=a.user_id
+  WHERE a.user_id=auth.uid() AND p.account_status='active'
+    AND a.role IN ('super_admin','admin_staff','finance_staff','support_staff');
+  RETURN jsonb_build_object('contract',1,'verified',true,
+    'authorized',assigned_role IS NOT NULL,'role',assigned_role);
+END;
+$body$;
+REVOKE ALL ON FUNCTION public.email_gate_admin_status() FROM PUBLIC,anon,authenticated,service_role;
+GRANT EXECUTE ON FUNCTION public.email_gate_admin_status() TO authenticated;
+$email_component_3$;
+ -- FR_ATOMIC_FINAL_ASSERTIONS
+ IF (SELECT count(*) FROM pg_policies WHERE policyname='Email verified session required')<>82
+ OR (SELECT count(*) FROM pg_class WHERE relnamespace='mushavo_email_auth'::regnamespace
+     AND relkind='r' AND relrowsecurity AND relforcerowsecurity
+     AND relname IN ('account_state','send_events','challenges','devices','session_proofs'))<>5
+ OR (SELECT count(*) FROM pg_proc WHERE pronamespace='public'::regnamespace
+     AND position('PERFORM mushavo_email_auth.require_application_session();' in prosrc)>0)<>148
+ OR to_regprocedure('public.email_gate_admin_status()') IS NULL
+ THEN RAISE EXCEPTION 'EMAIL_ATOMIC_FINAL_INVENTORY_MISMATCH'; END IF;
+ PERFORM set_config('mushavo.email_backend_review',previous_backend,true);
+ PERFORM set_config('mushavo.email_session_review',previous_session,true);
+ PERFORM set_config('mushavo.email_data_guard_review',previous_data,true);
+ PERFORM set_config('mushavo.email_admin_review',previous_admin,true);
+ RETURN jsonb_build_object('result','ATOMIC_EMAIL_SOURCE_REHEARSAL_INSTALLED',
+   'guarded_RPCs',148,'restrictive_policies',82,'hosted_acceptance',false);
+END;
+$email_activate$;
+REVOKE ALL ON FUNCTION mushavo_email_install.activate() FROM PUBLIC,anon,authenticated,service_role;
+COMMIT;
+-- END MIGRATION 20261017000000_email_verification_atomic_installer.sql

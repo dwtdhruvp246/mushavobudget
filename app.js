@@ -1,6 +1,8 @@
 // Mushavo Budget authenticated application — release 83
 import { createAdminPlans } from "./admin-plans.js?v=2";
+import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=3";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
+import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
 const placeholderValues = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
@@ -11,7 +13,8 @@ const isConfigured =
     `${config.supabaseUrl} ${config.supabasePublishableKey}`.includes(value)
   );
 
-const supabase = isConfigured
+const authLinkRedirect = redirectLegacyAuthLink(window.location.href, "budget", href => window.location.replace(href));
+const supabase = isConfigured && !authLinkRedirect
   ? createClient(config.supabaseUrl, config.supabasePublishableKey)
   : null;
 
@@ -146,7 +149,7 @@ const ANALYTICS_ACTIVITY_INTERVAL_MS = 50 * 60 * 1000;
 
 async function recordVisibleActivity() {
   const userId = state.session?.user?.id;
-  if (!userId || document.visibilityState === "hidden" || !navigator.onLine || analyticsActivity.inFlight) return;
+  if (!emailEntry.authorized || !userId || document.visibilityState === "hidden" || !navigator.onLine || analyticsActivity.inFlight) return;
   if (analyticsActivity.userId !== userId) {
     analyticsActivity.userId = userId;
     analyticsActivity.lastSentAt = 0;
@@ -174,7 +177,10 @@ const dashboardDisclosureState = {
 let dashboardFitFrame = null;
 let appLoadPromise = null;
 let appLoadUserId = null;
+let appLoadToken = null;
 let signInInProgress = false;
+let signInExpectedEmail = null;
+let authDataEpoch = 0;
 let preserveSignInDestination = false;
 let startupWorkspacePreference = null;
 let startupWorkspaceUnavailable = false;
@@ -216,6 +222,8 @@ const views = {
   setup: $("#setupView"),
   suspended: $("#suspendedView"),
   admin: $("#adminView"),
+  adminSession: $("#adminEmailView"),
+  emailVerification: $("#emailVerificationView"),
   app: $("#appView")
 };
 
@@ -536,10 +544,10 @@ function protectSubmission(handler) {
 function showSignupSuccessMessage() {
   const url = new URL(window.location.href);
   const signupResult = url.searchParams.get("signup");
-  if (!["success", "invited"].includes(signupResult)) return;
+  if (!["success", "invited", "pending"].includes(signupResult)) return;
   url.searchParams.delete("signup");
   window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
-  showToast(signupResult === "invited"
+  showToast(signupResult === "pending" ? "If an account can be created, check your inbox for confirmation before signing in. Existing account holders can sign in or use Forgot password. Use Resend confirmation if you need another link." : signupResult === "invited"
     ? "Your account, workspace, and subscription are ready."
     : "Account created successfully. Sign in with your new account.");
 }
@@ -791,6 +799,12 @@ function friendlyMessage(message = "") {
   if (text.includes("PUSH_TEST_RATE_LIMITED")) {
     return "A test was requested recently. Wait one minute before trying again.";
   }
+  if (text.includes("PUSH_RECIPIENT_INACTIVE")) {
+    return "Notifications are unavailable because your account is not active.";
+  }
+  if (text.includes("PUSH_RECIPIENT_STATUS_CHECK_FAILED")) {
+    return "Your account status could not be checked. Try again shortly.";
+  }
   if (text.includes("PUSH_TEST_DELIVERY_FAILED")) {
     return "The push service could not reach any active device. Re-enable notifications on the device and try again.";
   }
@@ -978,7 +992,7 @@ function stopRealtime() {
 }
 
 function startRealtime() {
-  if (!supabase || !state.session) return;
+  if (!supabase || !state.session || !emailEntry.authorized) return;
   stopRealtime();
   if (state.session.access_token) supabase.realtime.setAuth(state.session.access_token);
   const channelName = `mushavo-budget:${state.session.user.id}:${state.isAdmin ? "admin" : "family"}`;
@@ -1023,12 +1037,13 @@ function startRealtime() {
 }
 
 function queueNotificationRefresh() {
-  if (!state.session) return;
+  if (!state.session || !emailEntry.authorized) return;
   if (realtime.notificationTimer) window.clearTimeout(realtime.notificationTimer);
   const userId = state.session.user.id;
   realtime.notificationTimer = window.setTimeout(async () => {
     realtime.notificationTimer = null;
     try {
+      if (state.isAdmin && !await ensureAdminAssurance()) return;
       await loadNotifications();
       if (state.session?.user?.id !== userId) return;
       renderNotifications();
@@ -1043,7 +1058,7 @@ function queueNotificationRefresh() {
 }
 
 function queueRealtimeRefresh(payload = {}) {
-  if (!state.session || appLoadPromise || document.visibilityState === "hidden" || !navigator.onLine) return;
+  if (!state.session || !emailEntry.authorized || appLoadPromise || document.visibilityState === "hidden" || !navigator.onLine) return;
   console.debug("Realtime refresh requested", payload.table || "app", payload.eventType || "REFRESH");
   if (realtime.refreshTimer) window.clearTimeout(realtime.refreshTimer);
   realtime.refreshTimer = window.setTimeout(() => {
@@ -1056,7 +1071,7 @@ function queueRealtimeRefresh(payload = {}) {
 }
 
 async function refreshVisibleData() {
-  if (!state.session || appLoadPromise || !navigator.onLine) return;
+  if (!state.session || !emailEntry.authorized || appLoadPromise || !navigator.onLine) return;
   if (realtime.refreshInFlight) {
     realtime.refreshPending = true;
     return;
@@ -1065,7 +1080,9 @@ async function refreshVisibleData() {
   realtime.refreshInFlight = true;
   try {
     if (state.isAdmin) {
-      await Promise.all([loadAdminData(), loadNotifications()]);
+      if (!await ensureAdminAssurance()) return;
+      await loadAdminData();
+      await loadNotifications();
       if (state.session?.user?.id !== sessionId) return;
       renderAdmin();
       return;
@@ -1088,13 +1105,15 @@ async function refreshVisibleData() {
 }
 
 function refreshAfterAppResume(source) {
-  if (!state.session || appLoadPromise || document.visibilityState === "hidden" || !navigator.onLine) return;
+  if (!state.session || !emailEntry.authorized || appLoadPromise || document.visibilityState === "hidden" || !navigator.onLine) return;
   if (!realtime.channel || realtime.reconnectTimer) startRealtime();
   queueNotificationRefresh();
   queueRealtimeRefresh({ table: source, eventType: "RESUME" });
 }
 
 async function query(label, promise) {
+  const epoch = authDataEpoch;
+  const proofTicket = state.session && !["sign in", "session retry", "session refresh"].includes(label) ? emailEntry.ticket() : null;
   let timeoutId;
   try {
     const { data, error } = await Promise.race([
@@ -1109,9 +1128,11 @@ async function query(label, promise) {
         );
       })
     ]);
+    if (epoch !== authDataEpoch || (proofTicket && !proofTicket())) throw Object.assign(new Error("The active account changed."), { code: "session_changed" });
+    if (error?.message?.includes("EMAIL_VERIFICATION_REQUIRED")) { emailEntry.lock(); throw Object.assign(new Error("Verify this sign-in before continuing."), {code:"session_changed"}); }
     if (error) {
-      console.error(label, error);
-      throw new Error(error.message);
+      console.warn(`Request failed: ${label}`);
+      throw Object.assign(new Error(error.message), { code: error.code, status: error.status });
     }
     return data;
   } finally {
@@ -1137,20 +1158,35 @@ async function init() {
     state.session = session;
     // Password sign-in owns its first workspace load. Auth also emits
     // SIGNED_IN during that request; handling both would race two loaders.
-    if (signInInProgress && event === "SIGNED_IN") return;
+    if (signInInProgress && event === "SIGNED_IN" && session?.user?.email?.toLowerCase() === signInExpectedEmail) return;
 
     if (session && isSameAuthUser(previousSession, session)) {
-      if (session.access_token) supabase.realtime.setAuth(session.access_token);
+      if (previousSession.access_token !== session.access_token) {
+        authDataEpoch++;appLoadPromise=null;appLoadUserId=null;appLoadToken=null;
+        emailEntry.bind(session);adminSession.bind(session);
+        const token=session.access_token;
+        window.setTimeout(() => { if(state.session?.access_token===token)openAuthenticatedSession(session).catch(handleLoadFailure); }, 0);
+      } else if(emailEntry.authorized && session.access_token) supabase.realtime.setAuth(session.access_token);
       return;
     }
 
     if (session) {
+      resetState();
+      state.session = session;
+      adminSession.bind(session);
+      clearAdministrativeData();
+      setView("loading");
+      const epoch = authDataEpoch;
       window.setTimeout(() => {
+        if (epoch !== authDataEpoch || state.session?.user?.id !== session.user.id) return;
         openAuthenticatedSession(session).catch(handleLoadFailure);
       }, 0);
       return;
     }
-    window.setTimeout(handleSignedOut, 0);
+    resetState();
+    setView("auth");
+    const epoch = authDataEpoch;
+    window.setTimeout(() => { if (epoch === authDataEpoch && !state.session) handleSignedOut(); }, 0);
   });
 
   if (state.session) {
@@ -1191,6 +1227,7 @@ function isUnrecoverableSessionError(error) {
 }
 
 async function handleLoadFailure(error, mayRefresh = true) {
+  if (error?.code === "session_changed") return;
   console.error(error);
   if (state.session && mayRefresh && isInvalidStoredSessionError(error)) {
     try {
@@ -1225,14 +1262,17 @@ async function handleLoadFailure(error, mayRefresh = true) {
 function openAuthenticatedSession(session) {
   const userId = session?.user?.id;
   if (!userId) return Promise.reject(new Error("Your secure session could not be opened. Please sign in again."));
-  if (appLoadPromise && appLoadUserId === userId) return appLoadPromise;
+  if (appLoadPromise && appLoadUserId === userId && appLoadToken === session.access_token) return appLoadPromise;
 
   resetState();
   preserveSignInDestination = false;
   state.session = session;
   appLoadUserId = userId;
+  appLoadToken = session.access_token;
+  const epoch = authDataEpoch;
   showLoading("Opening your workspace", "Loading your latest budget...");
   appLoadPromise = loadApp().then(async () => {
+    if (epoch !== authDataEpoch || state.session?.user?.id !== userId) return;
     const url = new URL(window.location.href);
     const requestedPlan = url.searchParams.get("plan");
     if (!state.isAdmin && requestedPlan && state.plans.some((plan) => plan.code === requestedPlan)) {
@@ -1245,7 +1285,7 @@ function openAuthenticatedSession(session) {
       window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
     }
   }).finally(() => {
-    if (appLoadUserId === userId) {
+    if (appLoadUserId === userId && epoch === authDataEpoch) {
       appLoadPromise = null;
       appLoadUserId = null;
     }
@@ -1254,6 +1294,12 @@ function openAuthenticatedSession(session) {
 }
 
 function resetState() {
+  authDataEpoch += 1;
+  appLoadPromise = null;
+  appLoadUserId = null;
+  emailEntry.bind(null);
+  adminSession.bind(null);
+  clearAdministrativeData();
   resetSignOutButtons();
   stopRealtime();
   realtime.lastConnectedUserId = null;
@@ -1389,17 +1435,22 @@ async function blockUnfinishedAdminInvitationSession() {
 
 async function loadApp() {
   assertSupabase();
+  if (!await emailEntry.ensure()) return;
+  const entryTicket=emailEntry.ticket();
   const startedAt = performance.now();
   const loadingUserId = state.session.user.id;
   // Opening an invitation signs its recipient into Supabase Auth. Only the
   // completed invitation may enter the app or provision any workspace.
   if (await blockUnfinishedAdminInvitationSession()) return;
-  if (await query("account status load", supabase.rpc("my_account_suspended"))) {
+  if(!entryTicket())return;
+  const suspended=await query("account status load", supabase.rpc("my_account_suspended"));
+  if(!entryTicket())return;
+  if (suspended) {
     setView("suspended");
     return;
   }
   await window.MushavoWorkspace?.hydrate(loadingUserId);
-  if (state.session?.user?.id !== loadingUserId) return;
+  if (!entryTicket() || state.session?.user?.id !== loadingUserId) return;
   startupWorkspacePreference = window.MushavoWorkspace?.startup(loadingUserId) || null;
   const settled = (promise) => promise.then(
     () => ({ ok: true }),
@@ -1407,14 +1458,17 @@ async function loadApp() {
   );
   const profileResult = settled(ensureProfile());
   const invitationResult = settled(loadInvitations());
-  const notificationResult = settled(loadNotifications());
-
   if (await loadAccess({ skipAccountCheck: true }) === false) return;
+  if(!entryTicket())return;
+
+  if (state.isAdmin && !await ensureAdminAssurance()) return;
+  const notificationResult = settled(loadNotifications());
 
   if (state.isAdmin) {
     const loadedNotifications = await notificationResult;
     if (!loadedNotifications.ok) throw loadedNotifications.error;
     await loadAdminData();
+    if (!adminSession.authorized || state.session?.user?.id !== loadingUserId) return;
     syncRouteForWorkspace("admin");
     setView("admin");
     renderAdmin();
@@ -1439,6 +1493,7 @@ async function loadApp() {
 
   const familyResult = settled(loadFamily());
   const loadedFamily = await familyResult;
+  if(!entryTicket())return;
   if (!loadedFamily.ok) throw loadedFamily.error;
 
   // Finance data can load alongside workspace plans instead of adding another
@@ -1471,6 +1526,7 @@ async function loadApp() {
   if (!loadedFinances.ok) throw loadedFinances.error;
   if (financialFamilyId !== state.family?.id) await loadFamilyFinancialData();
   await loadPersonalPlanAccess();
+  if(!entryTicket())return;
   syncRouteForWorkspace("family");
   if (state.familyTab === "cashbook") await loadCashbookData();
   if (state.familyTab === "support") await loadUserSupportData();
@@ -1549,8 +1605,8 @@ async function loadAccess({ skipAccountCheck = false } = {}) {
       supabase.from("family_heads").select("*").ilike("email", userEmail).limit(1)
     )
   ]);
-  state.isAdmin = adminRows.length > 0;
-  state.adminRole = adminRows[0]?.role || (state.isAdmin ? "super_admin" : null);
+  state.adminRole = adminRows.find(row => ["super_admin","admin_staff","finance_staff","support_staff"].includes(row.role))?.role || null;
+  state.isAdmin = state.adminRole !== null;
   state.headApproval = headRows[0] || null;
   return true;
 }
@@ -1829,13 +1885,15 @@ async function loadInvitations() {
 }
 
 async function loadNotifications() {
+  if (state.isAdmin && !adminSession.authorized) return;
+  const stillAuthorized = state.isAdmin ? adminSession.ticket() : null;
   const userId = state.session?.user?.id;
   const [notifications, invitations] = await Promise.all([
     query("notifications load", supabase.from("notifications").select("*")
       .order("created_at", { ascending: false }).limit(30)),
     query("Business notification invitations load", supabase.rpc("get_my_business_invitations"))
   ]);
-  if (state.session?.user?.id !== userId) return;
+  if (state.session?.user?.id !== userId || (stillAuthorized && !stillAuthorized())) return;
   state.notifications = notifications;
   state.businessInvitations = invitations || [];
 }
@@ -2050,6 +2108,8 @@ async function loadWorkspaceSubscriptionData() {
 }
 
 async function loadAdminData(tab = state.adminTab) {
+  if (!await ensureAdminAssurance()) return;
+  const stillAuthorized = adminSession.ticket();
   if (tab === "analytics") return loadAdminAnalytics();
   const tasks = [];
   const assign = [];
@@ -2158,6 +2218,7 @@ async function loadAdminData(tab = state.adminTab) {
   }
 
   const results = await Promise.all(tasks);
+  if (!stillAuthorized()) return;
   assign.forEach((target, index) => {
     state[target] = results[index];
   });
@@ -3701,10 +3762,12 @@ async function clearApplicationBadge() {
 }
 
 async function removeCurrentDevicePush({ requireDatabaseCleanup = true } = {}) {
+  const userId = state.session?.user?.id;
   if (!("serviceWorker" in navigator) || !("PushManager" in window)) return;
   const registration = await navigator.serviceWorker.getRegistration("/");
   if (!registration) return;
   const subscription = await registration.pushManager.getSubscription();
+  if (state.session?.user?.id !== userId) throw Object.assign(new Error("The active account changed."), {code:"session_changed"});
   const record = state.pushDevice.record;
   if (requireDatabaseCleanup) await deleteOwnPushRecord(subscription, record);
   if (subscription) {
@@ -3793,15 +3856,22 @@ async function sendTestPushNotification() {
 
 async function signOutSafely(button = null) {
   if (!supabase || !state.session) return;
+  const userId = state.session.user.id;
+  let cleanupFailed = false;
   setSubmitting(button, true, "Signing out…");
   try {
-    await removeCurrentDevicePush();
-    forgetPushOptIn(state.session.user.id);
+    try { await removeCurrentDevicePush(); }
+    catch (_cleanupError) { cleanupFailed = true; }
+    // A push cleanup outage must not prevent the requested Auth sign-out.
+    if (state.session?.user?.id !== userId) return;
     preserveSignInDestination = false;
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
+    if (!cleanupFailed) forgetPushOptIn(userId);
+    if (state.session?.user?.id === userId) handleSignedOut();
+    if (cleanupFailed) showToast("Signed out. Device notification cleanup could not finish; disable notifications in this browser if needed.");
   } catch (error) {
-    showToast(`Sign-out stopped: ${friendlyMessage(error?.message)}`);
+    showToast("Sign-out could not finish. Your session may still be active. Check your connection and try again.");
   } finally {
     // This DOM button survives sign-out and is reused after the next sign-in.
     setSubmitting(button, false, "Sign out");
@@ -4814,9 +4884,8 @@ function updateRenewalQuote() {
 }
 
 async function uploadSubscriptionProof(file, workspaceId) {
-  validateProofFile(file);
-  const extension = (file.name.split(".").pop() || "bin").toLowerCase().replace(/[^a-z0-9]/g, "");
-  const path = `workspaces/${workspaceId}/${state.session.user.id}/${crypto.randomUUID()}.${extension || "bin"}`;
+  const extension = validateProofFile(file);
+  const path = `workspaces/${workspaceId}/${state.session.user.id}/${crypto.randomUUID()}.${extension}`;
   const { error } = await supabase.storage.from(SUBSCRIPTION_PROOF_BUCKET).upload(path, file, {
     contentType: file.type,
     upsert: false
@@ -5761,12 +5830,14 @@ function analyticsFilterValues() {
 }
 
 async function loadAdminAnalytics() {
+  if (!await ensureAdminAssurance()) return;
+  const stillAuthorized = adminSession.ticket();
   const requestId = ++analyticsRequestId;
   $("#analyticsMessage").textContent = "Loading analytics…";
   $("#analyticsResults").classList.add("hidden");
   try {
     const report = await query("admin analytics load", supabase.rpc("admin_analytics_page", analyticsFilterValues()));
-    if (requestId === analyticsRequestId && state.isAdmin) state.adminAnalytics = report;
+    if (requestId === analyticsRequestId && state.isAdmin && stillAuthorized()) state.adminAnalytics = report;
   } catch (error) {
     if (requestId === analyticsRequestId) {
       state.adminAnalytics = null;
@@ -5874,6 +5945,7 @@ function renderAdminAnalytics() {
 }
 
 function renderAdmin() {
+  if (!adminSession.authorized) return;
   renderAdminTabs();
   renderAdminEnquiryBadge();
   renderNotifications();
@@ -6075,6 +6147,65 @@ const adminPlansWorkbench = createAdminPlans($("#adminPlansWorkbench"), {
   toast: showToast
 });
 function renderAdminPlans() { adminPlansWorkbench.render(); }
+
+// Restore initial DOM nodes (including their listeners), removing generated data,
+// form values and dialogs when assurance/session changes. Hidden data is also cleared.
+const restorePrivateAdminDom=[...document.querySelectorAll('#adminView,dialog')].map(snapshotPrivateView);
+const restorePrivateAppDom=[...document.querySelectorAll('#appView,#adminView,#setupView,dialog')].map(snapshotPrivateView);
+const privateModelDefaults=JSON.parse(JSON.stringify(state));
+const emailEntry=createSessionEntry({client:supabase,getSession:()=>state.session,root:views.emailVerification,
+  onReset:()=>{authDataEpoch++;appLoadPromise=null;appLoadUserId=null;appLoadToken=null;},
+  show:()=>setView('emailVerification'),onInvalidated:()=>clearApplicationPrivateData(),
+  onUnlocked:async({ticket})=>{if(ticket()&&state.session)await openAuthenticatedSession(state.session);},
+  onSignOut:()=>signOutSafely()
+});
+const adminSession=createSessionEntry({client:supabase,getSession:()=>state.session,root:views.adminSession,requireAdmin:true,retainViewDuringCheck:true,
+  show:()=>setView(emailEntry.authorized?'adminSession':'emailVerification'),onInvalidated:()=>clearAdministrativeData(),
+  onUnlocked:async({ticket})=>{if(ticket())await resumeAdminAfterVerification();},onSignOut:()=>signOutSafely()
+});
+document.querySelector('[data-manage-admin-verification]').addEventListener('click',()=> {
+  adminSession.lock();clearAdministrativeData();setView('adminSession');void resumeAdminAfterVerification();
+});
+function clearApplicationPrivateData(){
+  stopRealtime();pushRefreshSequence++;analyticsRequestId++;adminDetailsSequence++;adminPlansWorkbench.reset();
+  adminBusinessSupport=null;
+  for(const [key,value]of Object.entries(privateModelDefaults)){
+    if(key==='session')continue;
+    if(Array.isArray(value))state[key]=[];else if(value===null)state[key]=null;
+  }
+  state.isAdmin=false;state.adminRole=null;state.pushDevice=createPushDeviceState();state.billableMemberCount=1;
+  for(const dialog of document.querySelectorAll('dialog[open]'))dialog.close();
+  for(const restore of restorePrivateAppDom)restore();
+  views.app.classList.add('hidden');views.admin.classList.add('hidden');views.setup.classList.add('hidden');
+}
+function clearAdministrativeData() {
+  if(!state.isAdmin && !adminSession.authorized)return;
+  stopRealtime();
+  for(const key of Object.keys(state))if(Array.isArray(state[key]))state[key]=[];
+  for(const key of ['adminAnalytics','adminFinanceSettings','adminRateStatus','exchangeRateStatus','memberUsage'])state[key]=null;
+  adminDetailsSequence++;analyticsRequestId++;adminBusinessSupport=null;adminPlansWorkbench.reset();
+  for(const dialog of document.querySelectorAll('dialog[open]'))dialog.close();
+  for(const restore of restorePrivateAdminDom)restore();
+  views.admin.classList.add('hidden');
+}
+async function ensureAdminAssurance() {
+  const userId=state.session?.user?.id;
+  adminSession.bind(state.session);
+  if(await adminSession.recheck())return true;
+  if(state.session?.user?.id!==userId)return false;
+  clearAdministrativeData();setView('adminSession');
+  return false;
+}
+async function resumeAdminAfterVerification() {
+  if(!state.session || !state.isAdmin)return;
+  const userId=state.session.user.id;
+  if(!await ensureAdminAssurance())return;
+  await loadAdminData();
+  if(!adminSession.authorized || state.session?.user?.id!==userId)return;
+  await loadNotifications();
+  if(!adminSession.authorized || state.session?.user?.id!==userId)return;
+  syncRouteForWorkspace('admin');setView('admin');renderAdmin();startRealtime();
+}
 
 function renderSubscriptionReviews() {
   const list = $("#subscriptionReviewList");
@@ -7639,6 +7770,7 @@ async function signIn(event) {
   let signedInSession = null;
   try {
     signInInProgress = true;
+    signInExpectedEmail = email.toLowerCase();
     if (submitButton) {
       submitButton.disabled = true;
       submitButton.textContent = "Signing in...";
@@ -7648,15 +7780,17 @@ async function signIn(event) {
     if (!authData.session) throw new Error("Sign-in completed without a session. Please try again.");
     signedInSession = authData.session;
     await openAuthenticatedSession(signedInSession);
-    showToast("Signed in.");
+    if(emailEntry.authorized)showToast("Signed in.");
   } catch (error) {
+    if (error?.code === "session_changed") return;
     if (signedInSession) await handleLoadFailure(error);
     else {
       setView("auth");
-      showToast(error.message);
+      showToast(safeAuthMessage(error));
     }
   } finally {
     signInInProgress = false;
+    signInExpectedEmail = null;
     if (submitButton) {
       submitButton.disabled = false;
       submitButton.textContent = "Sign in";
@@ -8289,11 +8423,11 @@ async function savePaymentRecord(event) {
 }
 
 async function uploadPaymentProof(item, file) {
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "") || "receipt";
+  const extension = validateProofFile(file);
   const userId = state.session.user.id;
   const path = item.visibility === "family"
-    ? `families/${item.family_id}/${state.family.owner_id}/${userId}/${crypto.randomUUID()}-${safeName}`
-    : `personal/${userId}/${crypto.randomUUID()}-${safeName}`;
+    ? `families/${item.family_id}/${state.family.owner_id}/${userId}/${crypto.randomUUID()}.${extension}`
+    : `personal/${userId}/${crypto.randomUUID()}.${extension}`;
   const { error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).upload(path, file, {
     contentType: file.type,
     upsert: false
@@ -8304,9 +8438,16 @@ async function uploadPaymentProof(item, file) {
 
 async function openPaymentProof(recordId) {
   const record = state.paymentRecords.find((item) => item.id === recordId);
-  if (!record?.proof_path) return;
+  const userId = state.session?.user?.id;
+  const workspaceId = currentBudgetWorkspace()?.id;
+  if (!record?.proof_path || !userId || !workspaceId) return;
+  const epoch = authDataEpoch, familyId = state.family?.id || null, path = record.proof_path;
+  const isCurrent = () => authDataEpoch === epoch && state.session?.user?.id === userId
+    && currentBudgetWorkspace()?.id === workspaceId && (state.family?.id || null) === familyId
+    && state.paymentRecords.some((item) => item.id === recordId && item.proof_path === path);
   try {
-    const { data, error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).createSignedUrl(record.proof_path, 60);
+    const { data, error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).createSignedUrl(path, 60);
+    if (!isCurrent()) return;
     if (error) throw error;
     const link = document.createElement("a");
     link.href = data.signedUrl;
@@ -8314,7 +8455,7 @@ async function openPaymentProof(recordId) {
     link.rel = "noopener noreferrer";
     link.click();
   } catch (error) {
-    showToast(error.message);
+    if (isCurrent()) showToast(error.message);
   }
 }
 
@@ -8879,12 +9020,17 @@ function formatFileSize(bytes) {
 }
 
 function validateProofFile(file) {
-  if (!PAYMENT_PROOF_TYPES.has(file.type)) {
+  // Client metadata preflight only; Storage/server content validation is still required.
+  if (!file || !PAYMENT_PROOF_TYPES.has(file.type)) {
     throw new Error("Proof must be a JPG, PNG, WebP, or PDF file.");
+  }
+  if (!Number.isSafeInteger(file.size) || file.size < 1) {
+    throw new Error("Proof files must not be empty.");
   }
   if (file.size > PAYMENT_PROOF_MAX_BYTES) {
     throw new Error("Proof files must be 10 MB or smaller.");
   }
+  return { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "application/pdf": "pdf" }[file.type];
 }
 
 function statusBadge(status) {
@@ -9641,6 +9787,7 @@ window.setInterval(() => {
   }
 }, PUSH_REFRESH_INTERVAL_MS);
 
-init().catch(handleLoadFailure);
+if (!authLinkRedirect) init().catch(handleLoadFailure);
 
 $("#adminDetailsDialog").addEventListener("close",()=>{adminDetailsSequence++;adminBusinessSupport=null;});
+

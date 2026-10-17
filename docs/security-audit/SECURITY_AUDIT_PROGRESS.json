@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-17",
   "current_stage": null,
-  "current_step": "FR.2.4.E4.15_STAGING_METADATA_REFRESH",
-  "current_title": "FR.2.4.E4.15 fresh read-only staging metadata pending",
+  "current_step": "FR.2.4.E4.15_COLUMN_TYPE_REVIEW",
+  "current_title": "FR.2.4.E4.15 required Auth/profile column metadata review pending",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.4.E4.15_STAGING_METADATA_REFRESH",
+  "next_step": "FR.2.4.E4.15_COLUMN_TYPE_REVIEW",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3358,13 +3358,13 @@
   },
   "next_phase": "FINAL_REMEDIATION",
   "final_remediation": {
-    "status": "FR2_EMAIL_E4_14_WINDOWS1525PASS_E4_15_READ_ONLY_STAGING_METADATA_PENDING",
+    "status": "FR2_EMAIL_E4_15_OWNER_EIGHT_METADATA_MATCHES_REQUIRED_COLUMN_DETAILS_PENDING",
     "prepared_date": "2026-10-13",
     "handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
     "proposed_batches": 8,
     "original_findings_mapped": 20,
     "existing_open_action_entries": 61,
-    "next_step": "FR.2.4.E4.15_STAGING_METADATA_REFRESH",
+    "next_step": "FR.2.4.E4.15_COLUMN_TYPE_REVIEW",
     "release_gate_unchanged": true,
     "full_fresh_final_reaudit_required": true,
     "started_date": "2026-10-13",
@@ -3373,7 +3373,7 @@
     "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
     "progress": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PROGRESS.json",
     "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-    "latest_evidence": "FRE79",
+    "latest_evidence": "FRE80",
     "candidate_report": "docs/security-audit/SECURITY_FR_1_1_STAGING_CANDIDATE.md",
     "local_receipt": "docs/security-audit/security-final-staging-local-checks.json",
     "owner_terminal_action_required": false,
@@ -4071,7 +4071,17 @@
     "FR2_email_pre_activation_contract": "docs/security-audit/security-fr-2-email-preactivation-contract.json",
     "FR2_email_pre_activation_report": "docs/security-audit/SECURITY_FR_2_4_FULL_WINDOWS_PASS_AND_STAGING_METADATA_REFRESH.md",
     "FR2_email_pre_activation_local_tests": 10,
-    "FR2_email_pre_activation_owner_result_received": false
+    "FR2_email_pre_activation_owner_result_received": true,
+    "FR2_email_pre_activation_owner_receipt": "docs/security-audit/security-fr-2-email-preactivation-owner-result.json",
+    "FR2_email_pre_activation_owner_checked_UTC": "2026-10-17T16:11:59.828904+00:00",
+    "FR2_email_pre_activation_matching_checks": 8,
+    "FR2_email_pre_activation_total_checks": 9,
+    "FR2_email_pre_activation_required_column_check_matches": false,
+    "FR2_email_required_column_types_SQL": "supabase/diagnostics/security_fr_2_4_email_required_column_types.sql",
+    "FR2_email_required_column_types_contract": "docs/security-audit/security-fr-2-email-column-types-contract.json",
+    "FR2_email_required_column_types_report": "docs/security-audit/SECURITY_FR_2_4_STAGING_BASELINE_AND_REQUIRED_COLUMN_TYPE_REVIEW.md",
+    "FR2_email_required_column_types_local_tests": 6,
+    "FR2_email_required_column_types_owner_result_received": false
   },
   "current_phase": "FINAL_REMEDIATION"
 }

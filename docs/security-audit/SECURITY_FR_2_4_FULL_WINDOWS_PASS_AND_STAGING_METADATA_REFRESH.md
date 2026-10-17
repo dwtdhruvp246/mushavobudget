@@ -1,3 +1,9 @@
+# Staging metadata returned — one required-column check needs details
+
+17 October2026,FRE80. [Actual read-only result](security-fr-2-email-preactivation-owner-result.json): eight of nine checks match, including routine/policy fingerprints,hooks,RLS and absent email schemas. Exact required column presence/type check is false. [Next bounded metadata-only type review](SECURITY_FR_2_4_STAGING_BASELINE_AND_REQUIRED_COLUMN_TYPE_REVIEW.md) identifies the nine actual definitions without changing Auth or backend code. No installer or activation occurred. The original baseline handoff below remains historical.
+
+---
+
 # FR.2.4.E4.14 Windows pass; FR.2.4.E4.15 staging metadata refresh
 
 17 October 2026, FRE79. [Corrected owner Windows receipt](security-fr-2-email-regression-corrected-owner-Windows-pass.json) at commit 76b8718d86a8d45858a41beb9fab4e41dbc1734e confirms 1525 PASS, zero FAIL/cancelled/skipped/todo, exit 0; Node v22.17.0/PGlite 0.5.8, 119 discovered files (108 MJS/11 CJS), 612 source hashes and 316 syntax checks. Its nine groups match exactly: 1421 discovered tests plus 104 SQL cases (13/6/14/10/11/12/17/21). All supplied warning flags are retained; no completion timestamp was supplied or invented. The complete discovered test group includes the three actual Git archive cases, so their corrected Windows execution is now supported by the hashed-source/result evidence. The earlier zero-test failed receipt remains preserved. This is offline acceptance for the stated scope, not hosted Auth/email/application activation or the complete CI workflow.

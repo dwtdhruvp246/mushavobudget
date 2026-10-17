@@ -1,3 +1,9 @@
+# Current checkpoint — E4.15 eight staging checks match; exact column details next
+
+17 October2026,FRE80. [Owner metadata receipt](security-fr-2-email-preactivation-owner-result.json) has eight true checks and one false required-column presence/type aggregate. Selected278 routines/166 policies,RLS,hooks and absent email schemas match. [Type review handoff](SECURITY_FR_2_4_STAGING_BASELINE_AND_REQUIRED_COLUMN_TYPE_REVIEW.md),[SQL](../../supabase/diagnostics/security_fr_2_4_email_required_column_types.sql),[contract](security-fr-2-email-column-types-contract.json),[six local query cases](security-fr-2-email-column-types-local-checks.json),[manifest](security-fr-2-email-column-types-source-manifest.json). Next is the read-only SQL in chat; no Auth/runtime changes or activation. Actual types remain unknown. Windows1525PASS retained; all findings open,production excluded,APK deferred. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — full Windows1525PASS; E4.15 read-only staging metadata next
 
 17 October2026,FRE79. [Owner corrected receipt](security-fr-2-email-regression-corrected-owner-Windows-pass.json) matches1525PASS/exit0,612 hashes/316 syntax checks and119 test files. [Metadata refresh handoff](SECURITY_FR_2_4_FULL_WINDOWS_PASS_AND_STAGING_METADATA_REFRESH.md),[SQL](../../supabase/diagnostics/security_fr_2_4_email_pre_activation_baseline.sql),[contract](security-fr-2-email-preactivation-contract.json),[64-file manifest](security-fr-2-email-preactivation-source-manifest.json),[10 scoped local checks](security-fr-2-email-preactivation-local-checks.json). Next action is the complete read-only SQL in chat, not another terminal run. It checks selected catalogs/hooks/Auth column types and absent email schemas; no application rows or installer invocation. Runtime/migrations remain unchanged; no activation approved. All findings open,production excluded,APK deferred. Earlier checkpoints follow.

@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.15_STAGING_METADATA_REFRESH",
-  "status": "OFFLINE_FULL_WINDOWS_PASS_FRESH_READ_ONLY_STAGING_METADATA_PENDING",
+  "status": "OWNER_METADATA_EIGHT_CHECKS_MATCH_EXACT_REQUIRED_COLUMN_CHECK_FALSE_DETAILS_PENDING",
   "source_parent_commit": "76b8718d86a8d45858a41beb9fab4e41dbc1734e",
   "previous_Windows_receipt": "docs/security-audit/security-fr-2-email-regression-corrected-owner-Windows-pass.json",
   "previous_Windows_PASS": 1525,
@@ -27,12 +27,19 @@
   "exact_relevant_hook_bindings": 3,
   "required_Auth_and_profile_columns": 9,
   "normal_before_installation_namespaces_absent": true,
-  "owner_result_received": false,
+  "owner_result_received": true,
   "installer_or_application_functions_invoked": false,
   "live_activation_approved": false,
   "actual_hosted_requests": 0,
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "owner_receipt": "docs/security-audit/security-fr-2-email-preactivation-owner-result.json",
+  "owner_checked_UTC": "2026-10-17T16:11:59.828904+00:00",
+  "owner_matching_checks": 8,
+  "owner_total_checks": 9,
+  "owner_required_column_type_or_presence_check_matches": false,
+  "required_column_actual_types_received": false,
+  "follow_up_SQL": "supabase/diagnostics/security_fr_2_4_email_required_column_types.sql"
 }

@@ -1,7 +1,7 @@
 {
   "stage_step": "FR.2.4.E4.14_FULL_OFFLINE_REGRESSION",
-  "source_parent_commit": "4f7899945c30e07979b38b92d53b3e89e24ba271",
-  "expected_discovered_tests": 1418,
+  "source_parent_commit": "01f916084c31fda7dce8fd8add354f2ad37494e9",
+  "expected_discovered_tests": 1421,
   "discovered_test_files": [
     "tests/account-interface-polish.test.mjs",
     "tests/additional-family-subscription.test.mjs",
@@ -84,6 +84,7 @@
     "tests/pwa-stage-13-hardening.test.mjs",
     "tests/pwa-update.test.mjs",
     "tests/realtime-workspace-refresh.test.mjs",
+    "tests/regression-source-archive.test.mjs",
     "tests/security-stage-0.test.mjs",
     "tests/security-stage-1-database-properties-toc.test.cjs",
     "tests/security-stage-1-role-coverage.test.cjs",
@@ -499,6 +500,7 @@
     "tests/pwa-stage-13-hardening.test.mjs",
     "tests/pwa-update.test.mjs",
     "tests/realtime-workspace-refresh.test.mjs",
+    "tests/regression-source-archive.test.mjs",
     "tests/security-stage-0.test.mjs",
     "tests/security-stage-1-database-properties-toc.test.cjs",
     "tests/security-stage-1-role-coverage.test.cjs",
@@ -541,7 +543,7 @@
   "file_sha256": {
     ".assetsignore": "9c9e98770e137c8f1b52f3c15f0050832d8b311425f7131e1c0aa13d85025ea0",
     ".env.example": "801d2fba0a097ba253416242686497533fce9bff9a63a0c539d84c266f5ffd27",
-    ".gitattributes": "bbbabc0ca0b644057342b9f9b2ca0586cd5878fe0014e684ddf9d5cb1d227574",
+    ".gitattributes": "fcf41e5bf3c3b0e5afbe885f1b559b29463e3ddf60168639aa47c4a4643504de",
     ".github/workflows/pages.yml": "0e93a6212cba9cb63d14a0116f787bf8828afdaa33d4d0a2922a043da75b3609",
     ".gitignore": "bff24b929186884e2c94ecb69c6c8686c2e7d2f2f37fc42b99e1933b83db09e5",
     ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
@@ -782,7 +784,7 @@
     "scripts/verify-fr-2-email-hook-review.mjs": "e2b0c026165c0a220bb672d06948dd94c7b9a04af0656ad2f5de497046d8383f",
     "scripts/verify-fr-2-email-invited-signup.mjs": "b2a6de5cb9a24f5ea70c958c50bd7e36e52da7e91c068700f3a0f6811e82d395",
     "scripts/verify-fr-2-email-limiter-package.mjs": "8becdda3e672297c7ca95a36c74207cc4bfa8fa02266c3132944148eda23ab14",
-    "scripts/verify-fr-2-email-regression.mjs": "eed9acc5da537919cbf803a2b920a4d16cf30493bcc2a923475c620aa05d1cb4",
+    "scripts/verify-fr-2-email-regression.mjs": "15cafc0c5dc233ea3a9334cb4188d13beb629c66a9df5ca588f598e251ff8308",
     "scripts/verify-fr-2-email-security-controls.mjs": "955fa5f21e99b5c0abe7d96bdc96ec2bdd333cfed056bab4547df3a0abb71e59",
     "scripts/verify-fr-2-email-session.mjs": "1319033d6b2870ad5b6e83e22b9d1d6e46b8855bc7c42e15c5b9c218e6fecf6c",
     "scripts/verify-fr-2-email-ui.mjs": "a2f24ba9f6f6ffdeb98f654b684652a973c29edf9abdc73f971f094f8162e0b1",
@@ -1111,6 +1113,7 @@
     "tests/pwa-stage-13-hardening.test.mjs": "2987ac14dc0481386a71768362796bd99809a28e076a6dc987f2cbb4669c9914",
     "tests/pwa-update.test.mjs": "6e6a0746c5d7976d0215840b26fda12a93eece493bd3e9180db3c1fe4efc73ae",
     "tests/realtime-workspace-refresh.test.mjs": "97b322f3717e622d9306065faa1eed9ebb63999fb2ecfee240e1341ae7ae5f08",
+    "tests/regression-source-archive.test.mjs": "2e158f3ab5369abeabd58f502866ba5c126ac86b4f8d456c90b93ee96d72497a",
     "tests/security-stage-0.test.mjs": "9154e553de6978130ce9a5fe2fdfcdc2e6556a18d2b1e83c4c526799d234f7ac",
     "tests/security-stage-1-database-properties-toc.test.cjs": "c79faa2ec548ae23ccc14da046ad240fcf2ea824299b1455744edf290afc0661",
     "tests/security-stage-1-role-coverage.test.cjs": "349f5d957b50e9d6d14e7610914aea5b7d8f0eb2a325570890646f0ed75cfc42",
@@ -1150,5 +1153,6 @@
     "tests/workspace-startup.test.mjs": "d7325d062c243ec37a995a7589b0e086c64de33854885905badcd21f8eedc71d",
     "workspace-preference.js": "913fa62e34cf16d6f6eb1791e3bb9dad0b37001d64ed408dac2773ebbb37ce56",
     "wrangler.jsonc": "155b7b715a9e3055b494072cc686c3107ab9f4639062bc33fdff41c4ef6a42ae"
-  }
+  },
+  "revision": "WINDOWS_ARCHIVE_LINE_ENDING_CORRECTION"
 }

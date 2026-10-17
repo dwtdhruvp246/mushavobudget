@@ -1,3 +1,9 @@
+# Windows source-preflight blocked — corrected E4.14 retry next
+
+17 October 2026, FRE78. [Owner receipt](security-fr-2-email-regression-first-owner-Windows-result.json) completed zero hashes/tests, exit 1. [Git archive reproduction and LF correction](SECURITY_FR_2_4_REGRESSION_WINDOWS_ARCHIVE_CORRECTION.md) now passes 1525 cases, 612 hashes and 316 syntax checks locally. The prior1522 cases are retained, plus three actual Git cases. Runtime source and all55 migrations remain unchanged. Corrected Windows confirmation is pending; the earlier handoff below is historical.
+
+---
+
 # FR.2.4.E4.14 — full discovered regression after the Windows hook pass
 
 17 October2026, FRE77. [Owner exact-hook Windows receipt](security-fr-2-email-ensure-rls-owner-Windows-pass.json) confirms the prior commit 4f7899945c30e07979b38b92d53b3e89e24ba271: 382/382 PASS,zero FAIL/exit0,Nodev22.17.0,PGlite0.5.8,140 source hashes/59 syntax checks. The eleven group totals and each supplied warning flag are preserved. No completion timestamp was supplied, so none is invented. This remains offline evidence, not genuine staging-hook execution or hosted activation.

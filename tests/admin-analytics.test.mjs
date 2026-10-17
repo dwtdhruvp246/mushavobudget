@@ -35,7 +35,7 @@ test("a slow report cannot overwrite newer filters or a signed-out session", asy
   const context = {
     state,
     ensureAdminAssurance: async () => true,
-    adminMfa: { ticket: () => () => state.isAdmin },
+    adminSession: { ticket: () => () => state.isAdmin },
     $: (selector) => nodes[selector],
     supabase: { rpc: () => new Promise((resolve) => calls.push(resolve)) },
     analyticsFilterValues: () => ({}),

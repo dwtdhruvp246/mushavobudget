@@ -230,7 +230,7 @@ async function runHandler(name, endpoint, providerStatus) {
     async rpc(name,params) {
       rpcs.push({name,params});
       let result = 0;
-      if(name === "claim_push_test_rate_limit" || name === "business_bill_reminder_allowed")result=true;
+      if(name === "email_gate_current_session_verified" || name === "claim_push_test_rate_limit" || name === "business_bill_reminder_allowed")result=true;
       if(name === "claim_notification_outbox" || name === "claim_admin_notification_outbox")result=[job];
       return {data:result,error:null};
     },
@@ -259,6 +259,7 @@ async function runHandler(name, endpoint, providerStatus) {
     js=js.replace('import webpush from "npm:web-push@3.6.7";',"const {webpush}=globalThis."+id+";");
     js=js.replace('"../_shared/push-destination.mjs"',JSON.stringify(new URL("../supabase/functions/_shared/push-destination.mjs",import.meta.url).href));
     js=js.replace('"../_shared/notification-recipient.mjs"',JSON.stringify(new URL("../supabase/functions/_shared/notification-recipient.mjs",import.meta.url).href));
+    js=js.replace('"../_shared/email-session-assurance.mjs"',JSON.stringify(new URL("../supabase/functions/_shared/email-session-assurance.mjs",import.meta.url).href));
     await import("data:text/javascript;base64,"+Buffer.from(js+"\n//"+id).toString("base64"));
     assert.equal(typeof handler,"function");
     const response=await handler(new Request("https://synthetic.invalid/test",{

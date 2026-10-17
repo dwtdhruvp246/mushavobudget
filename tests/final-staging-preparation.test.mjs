@@ -9,6 +9,8 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {prepareFinalStaging,MANIFEST_HEADERS} from '../scripts/prepare-final-staging.mjs';
 
+import {historicalSource} from './helpers/historical-reviewed-source.mjs';
+const frozen=historicalSource('FR1');
 const repo=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const contract=JSON.parse(fs.readFileSync(path.join(repo,'docs/security-audit/security-final-staging-source-contract.json'),'utf8'));
 const sha=b=>createHash('sha256').update(b).digest('hex');
@@ -19,7 +21,7 @@ function fixture(action) {
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'mushavo-fr-staging-'));
  try {
   const source=path.join(root,'source');fs.mkdirSync(source);
-  for(const row of [...contract.public_inputs,contract.header_generator]) {const target=path.join(source,row.path);fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(path.join(repo,row.path),target);}
+  for(const row of [...contract.public_inputs,contract.header_generator]) {const target=path.join(source,row.path);fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(path.join(frozen,row.path),target);}
   const f={root,source,output:path.join(root,'public'),receipt:path.join(root,'receipt.json'),sourcePin:contract.source_commit,project:contract.staging_project,publishableKey:'sb_publishable_SYNTHETIC_FR_ONLY',contract:structuredClone(contract)};
   return action(f);
  } finally {fs.rmSync(root,{recursive:true,force:true});}

@@ -82,7 +82,7 @@ test("admin shell exposes bell controls and optional per-device push settings", 
   assert.ok(load.includes("ensureAdminAssurance()") && load.includes("settled(loadNotifications())"));
   assert.ok(load.indexOf("ensureAdminAssurance()") < load.indexOf("settled(loadNotifications())"));
   assert.match(load, /await loadAdminData\(\)/);
-  assert.match(load, /!adminMfa\.authorized/);
+  assert.match(load, /!adminSession\.authorized/);
   assert.doesNotMatch(application, /if \(!userId \|\| state\.isAdmin\) return/);
 });
 

@@ -9,7 +9,8 @@ import { fileURLToPath } from 'node:url';
 import { collectPublicMetadata, loadReviewedSources, parseCollectionArguments, STAGING_ORIGIN, STAGING_PROJECT,
   TARGETS, validateContract } from '../scripts/lib/stage-10-public-metadata.mjs';
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+import {historicalSource} from './helpers/historical-reviewed-source.mjs';
+const root = historicalSource('STAGE10');
 const contract = JSON.parse(await readFile(resolve(root, 'docs/security-audit/security-stage-10-operations-candidate-contract.json'), 'utf8'));
 const reviewedSources = await loadReviewedSources(root, contract);
 const hash = text => createHash('sha256').update(text).digest('hex');
@@ -32,7 +33,7 @@ async function fixture(run) {
   try { return await run(path, base); } finally { await rm(base, { recursive: true, force: true }); }
 }
 
-test('current actual sources load with fixed ordered target identities', async () => {
+test('pinned historical sources load with fixed ordered target identities', async () => {
   assert.deepEqual(reviewedSources.map(t => t.source), TARGETS.map(t => t.source));
   assert.equal(reviewedSources.length, 9);
   assert.ok(reviewedSources.every(t => /^[a-f0-9]{64}$/.test(t.normalized_staging_overlay_sha256)));

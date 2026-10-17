@@ -6,6 +6,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { buildPublicSite, PUBLIC_SITE_FILES } from '../scripts/build-public-site.mjs';
+import { readdirSync } from 'node:fs';
 import { discoverTestFiles } from '../scripts/run-offline-tests.mjs';
 
 const repository = fileURLToPath(new URL('../', import.meta.url));
@@ -62,7 +63,7 @@ test('offline runner includes MJS and CJS tests while excluding helpers and othe
   await mkdir(resolve(root, 'tests'));
   for (const name of ['first.test.cjs', 'second.test.mjs', 'helper.mjs', 'notes.txt']) await writeFile(resolve(root, 'tests', name), '');
   assert.deepEqual(discoverTestFiles(root).map(path => path.split(/[\\/]/).at(-1)), ['first.test.cjs', 'second.test.mjs']);
-  assert.equal(discoverTestFiles(repository).filter(path => path.endsWith('.cjs')).length, 7);
+  assert.deepEqual(discoverTestFiles(repository).filter(path => path.endsWith('.cjs')).map(path => path.split(/[\\/]/).at(-1)), readdirSync(resolve(repository, 'tests')).filter(name => name.endsWith('.test.cjs')).sort());
 });
 
 test('offline preload rejects default fetch and ordinary HTTP without contacting a service', () => {

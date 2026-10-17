@@ -1,3 +1,9 @@
+# Windows result received — FR.2.4.E4.13 passed
+
+17 October 2026, FRE77. [Owner Windows receipt](security-fr-2-email-ensure-rls-owner-Windows-pass.json) at commit 4f7899945c30e07979b38b92d53b3e89e24ba271: Node v22.17.0/PGlite0.5.8, 382 PASS/zero FAIL, exit0,140 hashes/59 syntax checks. All eleven exact group totals and supplied non-failing warning flags are retained. This supersedes the Windows-pending instruction below. The owner's run was offline and does not establish actual staging activation. [Full discovered regression checkpoint](SECURITY_FR_2_4_HOOK_PASS_AND_FULL_OFFLINE_REGRESSION.md) is next; original source review follows.
+
+---
+
 # FR.2.4.E4.13 — exact ensure_rls source reviewed and replayed with the installer
 
 17 October 2026, FRE76. The [owner source receipt](security-fr-2-email-hook-source-owner-result.json) returned the matching source under READ ONLY, checked 2026-10-17T13:07:31.096975Z. One function/one binding was selected, the seven-hook inventory was complete, and both email installer/backend namespaces were absent. No application rows were read; no hook/application/installer function was invoked; no rows, roles, grants, Auth or persistent settings changed. Project selection remains owner-selected, not independently verified. This is actual catalog/source evidence, not hosted activation acceptance.

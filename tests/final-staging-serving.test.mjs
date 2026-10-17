@@ -5,7 +5,9 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import {collectServing,loadExpected,validateArguments,ORIGIN,PROJECT,SOURCE_PIN} from '../scripts/check-final-staging-serving.mjs';
 
-const expected=loadExpected();
+import {historicalSource} from './helpers/historical-reviewed-source.mjs';
+const frozen=historicalSource('FR1');
+const expected=loadExpected(frozen);
 const config=Buffer.from('window.MUSHAVO_BUDGET_CONFIG = '+JSON.stringify({supabaseUrl:'https://'+PROJECT+'.supabase.co',supabasePublishableKey:'sb_publishable_SYNTHETIC_RESPONSE_ONLY',vapidPublicKey:''})+';\n');
 const ctype=n=>n.endsWith('.html')?'text/html':n.endsWith('.js')?'text/javascript':n.endsWith('.css')?'text/css':n.endsWith('.png')?'image/png':n.endsWith('.svg')?'image/svg+xml':'application/manifest+json';
 function response(name,data,status=200,extra={}) {
@@ -99,7 +101,7 @@ test('per-request timeout bounds a transport that does not settle',async()=>{
 test('fixed argument validation and actual CLI fail safely under disabled default network',()=>{
  const args=['--check-public-staging='+PROJECT,'--source-pin='+SOURCE_PIN];assert.doesNotThrow(()=>validateArguments(args));assert.throws(()=>validateArguments([...args,'--url=https://other.example.test']));
  assert.throws(()=>validateArguments(['--check-public-staging=kttkospkblwvguuwnhjj',args[1]]));
- const root=fileURLToPath(new URL('..',import.meta.url)),script=path.join(root,'scripts/check-final-staging-serving.mjs'),guard=path.join(root,'scripts/offline-test-network.cjs');
+ const root=frozen,script=path.join(root,'scripts/check-final-staging-serving.mjs'),guard=path.join(root,'scripts/offline-test-network.cjs');
  const env=Object.fromEntries(Object.entries(process.env).filter(([k])=>['PATH','SYSTEMROOT','WINDIR','COMSPEC','PATHEXT','TEMP','TMP','TMPDIR','LANG','LC_ALL'].includes(k.toUpperCase())));
  const child=spawnSync(process.execPath,['--require',guard,script,...args],{env,encoding:'utf8',timeout:10000});
  assert.equal(child.status,1,child.stderr);const receipt=JSON.parse(child.stdout);assert.equal(receipt.blocked,65);assert.equal(receipt.HTTP_responses_completed,0);assert.equal(receipt.hosted_acceptance,false);

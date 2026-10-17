@@ -97,7 +97,7 @@ test('a session reset repairs a button left mid sign-out', () => {
     window: {}, $: (selector) => selector === '#adminSignOutButton' ? button : null,
     state: {session:{user:{id:'old'}}, paymentItems:[{id:'old-private-data'}]},
     authDataEpoch:0, adminDetailsSequence:0, analyticsRequestId:0, pushRefreshSequence:0,
-    adminMfa:{bind(value){assert.equal(value,null);}}, clearAdministrativeData(){}, stopRealtime(){},
+    emailEntry:{bind(value){assert.equal(value,null);}}, adminSession:{bind(value){assert.equal(value,null);}}, clearAdministrativeData(){}, stopRealtime(){},
     realtime:{}, analyticsActivity:{}, resetDashboardDisclosureState(){},
     adminPlansWorkbench:{reset(){}}, createPushDeviceState(){return {};}
   };

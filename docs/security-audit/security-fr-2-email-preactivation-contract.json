@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.15_STAGING_METADATA_REFRESH",
-  "status": "OWNER_PASSWORD_VARCHAR255_OBSERVED_LOCAL_COMPATIBILITY_PASS_REVISED_READ_ONLY_BASELINE_PENDING",
+  "status": "OWNER_REVIEWED_TYPES_ALL_NINE_SELECTED_STAGING_CHECKS_MATCH_NOT_ACTIVATION_APPROVAL",
   "source_parent_commit": "76b8718d86a8d45858a41beb9fab4e41dbc1734e",
   "previous_Windows_receipt": "docs/security-audit/security-fr-2-email-regression-corrected-owner-Windows-pass.json",
   "previous_Windows_PASS": 1525,
@@ -11,7 +11,7 @@
   "local_tests": 10,
   "source_files_SHA256": 64,
   "owner_terminal_action_required": false,
-  "owner_SQL_action_required": true,
+  "owner_SQL_action_required": false,
   "owner_SQL_write_action_required": false,
   "owner_credential_or_deployment_action_required": false,
   "intended_project": "dczlddwbtgvfdujgcitb",
@@ -46,5 +46,9 @@
   "original_diagnostic_expectation_preserved": true,
   "reviewed_password_column": "pg_catalog.varchar(255) NULL",
   "reviewed_baseline_SQL": "supabase/diagnostics/security_fr_2_4_email_pre_activation_reviewed_types.sql",
-  "next_contract": "docs/security-audit/security-fr-2-email-reviewed-types-contract.json"
+  "next_contract": "docs/security-audit/security-fr-2-email-current-runtime-contract.json",
+  "reviewed_owner_baseline_received": true,
+  "reviewed_owner_receipt": "docs/security-audit/security-fr-2-email-reviewed-types-owner-result.json",
+  "reviewed_owner_checked_UTC": "2026-10-17T17:02:51.535075+00:00",
+  "reviewed_owner_matching_checks": 9
 }

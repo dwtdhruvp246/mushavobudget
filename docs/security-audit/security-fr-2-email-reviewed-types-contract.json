@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.15_REVIEWED_AUTH_COLUMN_BASELINE",
-  "status": "LOCAL_EXACT_OBSERVED_AUTH_COLUMN_COMPATIBILITY_PASS_OWNER_REVISED_METADATA_PENDING",
+  "status": "OWNER_ALL_NINE_REVIEWED_STAGING_METADATA_CHECKS_MATCH_NOT_ACTIVATION_APPROVAL",
   "source_parent_commit": "ca3fbf66018f8bf5f497c944184eaaee2610094e",
   "owner_receipt": "docs/security-audit/security-fr-2-email-column-types-owner-result.json",
   "owner_checked_UTC": "2026-10-17T16:38:05.244265+00:00",
@@ -17,8 +17,8 @@
   "arbitrary_text_varchar_length_domain_or_nullability_variants_accepted": false,
   "prior_type_review_and_baseline_preserved": true,
   "Auth_schema_and_existing_runtime_candidates_migrations_and_canonical_source_unchanged": true,
-  "revised_owner_baseline_received": false,
-  "owner_SQL_action_required": true,
+  "revised_owner_baseline_received": true,
+  "owner_SQL_action_required": false,
   "owner_SQL_write_action_required": false,
   "owner_terminal_or_credential_or_deployment_action_required": false,
   "intended_project": "dczlddwbtgvfdujgcitb",
@@ -28,5 +28,10 @@
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "revised_owner_receipt": "docs/security-audit/security-fr-2-email-reviewed-types-owner-result.json",
+  "revised_owner_checked_UTC": "2026-10-17T17:02:51.535075+00:00",
+  "revised_owner_matching_checks": 9,
+  "next_stage": "FR.2.4.E4.16_CURRENT_WORKER_SQL_RUNTIME",
+  "next_contract": "docs/security-audit/security-fr-2-email-current-runtime-contract.json"
 }

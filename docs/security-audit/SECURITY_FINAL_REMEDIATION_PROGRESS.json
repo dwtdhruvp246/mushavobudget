@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-17",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E4_15_OBSERVED_VARCHAR_COMPATIBLE_LOCAL_REVISED_BASELINE_PENDING",
+  "status": "FR2_EMAIL_E4_15_OWNER_NINE_METADATA_MATCHES_E4_16_CURRENT_WORKER_SQL_LOCAL52PASS_WINDOWS_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE81",
+  "latest_evidence": "FRE82",
   "batches": [
     {
       "id": "FR.1",
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "FR2_EMAIL_E4_15_OBSERVED_VARCHAR_COMPATIBLE_LOCAL_REVISED_BASELINE_PENDING",
+          "status": "FR2_EMAIL_E4_15_OWNER_NINE_METADATA_MATCHES_E4_16_CURRENT_WORKER_SQL_LOCAL52PASS_WINDOWS_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -716,7 +716,12 @@
           "email_required_column_types_owner_receipt": "docs/security-audit/security-fr-2-email-column-types-owner-result.json",
           "email_reviewed_types_local_tests": 17,
           "email_reviewed_types_SQL": "supabase/diagnostics/security_fr_2_4_email_pre_activation_reviewed_types.sql",
-          "email_reviewed_types_owner_baseline_received": false
+          "email_reviewed_types_owner_baseline_received": true,
+          "email_reviewed_types_owner_receipt": "docs/security-audit/security-fr-2-email-reviewed-types-owner-result.json",
+          "email_reviewed_types_owner_matching_checks": 9,
+          "email_current_runtime_local_tests": 52,
+          "email_current_runtime_contract": "docs/security-audit/security-fr-2-email-current-runtime-contract.json",
+          "email_current_runtime_owner_Windows_result_received": false
         },
         {
           "id": "FR.2.5",
@@ -776,8 +781,8 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": false,
-  "owner_SQL_action_required": true,
+  "owner_terminal_action_required": true,
+  "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
@@ -786,7 +791,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E4.15_REVIEWED_AUTH_COLUMN_BASELINE",
+  "next_step": "FR.2.4.E4.16_CURRENT_WORKER_SQL_RUNTIME",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -1504,5 +1509,13 @@
   "FR2_email_reviewed_types_SQL": "supabase/diagnostics/security_fr_2_4_email_pre_activation_reviewed_types.sql",
   "FR2_email_reviewed_types_contract": "docs/security-audit/security-fr-2-email-reviewed-types-contract.json",
   "FR2_email_reviewed_types_report": "docs/security-audit/SECURITY_FR_2_4_REVIEWED_AUTH_COLUMN_COMPATIBILITY.md",
-  "FR2_email_reviewed_types_owner_baseline_received": false
+  "FR2_email_reviewed_types_owner_baseline_received": true,
+  "FR2_email_reviewed_types_owner_receipt": "docs/security-audit/security-fr-2-email-reviewed-types-owner-result.json",
+  "FR2_email_reviewed_types_owner_checked_UTC": "2026-10-17T17:02:51.535075+00:00",
+  "FR2_email_reviewed_types_owner_matching_checks": 9,
+  "FR2_email_current_runtime_local_tests": 52,
+  "FR2_email_current_runtime_contract": "docs/security-audit/security-fr-2-email-current-runtime-contract.json",
+  "FR2_email_current_runtime_report": "docs/security-audit/SECURITY_FR_2_4_STAGING_METADATA_PASS_AND_CURRENT_WORKER_SQL_RUNTIME.md",
+  "FR2_email_current_runtime_source_manifest": "docs/security-audit/security-fr-2-email-current-runtime-source-manifest.json",
+  "FR2_email_current_runtime_owner_Windows_result_received": false
 }

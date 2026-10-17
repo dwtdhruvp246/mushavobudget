@@ -42,8 +42,8 @@ async function context(db,role,claimsValue,body){
  try{await db.query("select set_config('request.jwt.claims',$1,true)",[JSON.stringify(claimsValue)]);await db.exec('set local role '+role);const value=await body();await db.exec('rollback');return value;}catch(error){await db.exec('rollback');throw error;}
 }
 const proof=async(db,user,session)=>context(db,'authenticated',claims(user,session),async()=>(await query(db,'select public.email_gate_current_session_verified() value'))[0].value);
-test('Canonical bootstrap and all 54 migrations compile independently with no Auth account fixtures',async()=>{
- assert.equal(migrations.length,54);for(const db of databases){assert.equal((await query(db,"select count(*)::int n from pg_proc where pronamespace='public'::regnamespace and prokind='f'"))[0].n,278);assert.equal((await query(db,'select count(*)::int n from auth.users'))[0].n,0);}
+test('Canonical55 bootstrap and historical54 migrations compile with matching application baseline and no Auth fixtures',async()=>{
+ assert.equal(migrations.length,54);assert.notEqual((await query(canonical,"select to_regnamespace('mushavo_email_install') value"))[0].value,null);assert.equal((await query(migration,"select to_regnamespace('mushavo_email_install') value"))[0].value,null);for(const db of databases){assert.equal((await query(db,"select count(*)::int n from pg_proc where pronamespace='public'::regnamespace and prokind='f'"))[0].n,278);assert.equal((await query(db,'select count(*)::int n from auth.users'))[0].n,0);}
 });
 test('All 278 public routine bodies, signatures, metadata and effective API execution grants match',async()=>{await equalSQL(routines);});
 test('Every public/storage relation RLS setting and all 166 policies match',async()=>{

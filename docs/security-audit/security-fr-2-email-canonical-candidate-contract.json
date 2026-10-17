@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.10_CANONICAL_BASELINE",
-  "status": "LOCAL338PASS_WINDOWS_PENDING_CANONICAL_BASELINE_SOURCE_RECONCILED_NOT_EMAIL_ACTIVATION",
+  "status": "LOCAL_AND_OWNER_WINDOWS338PASS_CANONICAL_BASELINE_NOT_HOSTED_ACCEPTANCE",
   "source_parent_commit": "19d7babc0fa08af83f030dd3ae863799ba92da0f",
   "preceding_owner_receipt": "docs/security-audit/security-fr-2-email-security-controls-owner-Windows-pass.json",
   "report": "docs/security-audit/SECURITY_FR_2_4_ACCOUNT_SECURITY_PASS_AND_CANONICAL_BASELINE.md",
@@ -29,8 +29,8 @@
   "full_repository_regression_or_CI_verified": false,
   "historical_verifiers_and_manifests_rewritten": false,
   "historical_verifiers_reproduce_at_their_original_commit_pins": true,
-  "owner_Windows_result_received": false,
-  "owner_terminal_action_required": true,
+  "owner_Windows_result_received": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "owner_credential_or_deployment_action_required": false,
   "remaining_work": [
@@ -44,5 +44,8 @@
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "owner_Windows_PASS": 338,
+  "owner_Windows_exit_code": 0,
+  "owner_Windows_receipt": "docs/security-audit/security-fr-2-email-canonical-owner-Windows-pass.json"
 }

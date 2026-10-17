@@ -1,3 +1,9 @@
+# Windows result received — FR.2.4.E4.10: 338 PASS, exit 0
+
+17 October 2026, FRE74. [Owner receipt](security-fr-2-email-canonical-owner-Windows-pass.json) records 338/338 PASS, Node v22.17.0/PGlite 0.5.8, 130 source hashes and 53 syntax checks. Non-failing module-type warnings occurred in the first eight groups, with none in the canonical group; the TypeScript warning occurred only in the prior-entry/Edge group. This supersedes the Windows-pending action below. The next [atomic installer source checkpoint](SECURITY_FR_2_4_CANONICAL_PASS_AND_ATOMIC_INSTALLER.md) registers a private installer without activating the hosted gate. Original FRE73 evidence follows.
+
+---
+
 # FR.2.4.E4.10 — account controls passed on Windows; canonical baseline reconciled
 
 17 October 2026, FRE73. The [owner account-security receipt](security-fr-2-email-security-controls-owner-Windows-pass.json) records 320/320 PASS, zero FAIL, exit 0, Node v22.17.0/PGlite 0.5.8, 126 matching source hashes and 50 syntax checks. Exact warning flags are retained: module-type warnings in all eight groups and the TypeScript warning in the prior-entry/Edge group. Hosted acceptance remains pending.

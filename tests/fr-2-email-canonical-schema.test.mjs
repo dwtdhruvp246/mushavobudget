@@ -14,11 +14,11 @@ test('Missing, duplicate, reversed and path-shaped migration inputs are rejected
 test('Empty and NUL-containing bodies are rejected, while CRLF normalization is reproducible',()=>{
  for(const sql of['',' \n','select\0 1;'])assert.throws(()=>renderCanonicalSchema([{...a,sql}]));assert.equal(renderCanonicalSchema([{...a,sql:a.sql.replace(/\n/g,'\r\n')}]),renderCanonicalSchema([a]));
 });
-test('Actual canonical source equals all 54 unchanged migration bodies in order',async()=>{
- const inputs=await readCanonicalInputs();assert.equal(inputs.length,54);assert.equal(await readFile(new URL('../supabase/schema.sql',import.meta.url),'utf8'),renderCanonicalSchema(inputs));
+test('Actual canonical source equals the 54 baseline migrations plus dormant installer registration',async()=>{
+ const inputs=await readCanonicalInputs();assert.equal(inputs.length,55);assert.equal(await readFile(new URL('../supabase/schema.sql',import.meta.url),'utf8'),renderCanonicalSchema(inputs));
 });
 test('Read-only canonical CLI succeeds without changing the schema',async()=>{
- const url=new URL('../supabase/schema.sql',import.meta.url),before=await readFile(url);const run=spawnSync(process.execPath,[fileURLToPath(new URL('../scripts/build-canonical-schema.mjs',import.meta.url)),'--check'],{encoding:'utf8'});assert.equal(run.status,0);assert.equal(JSON.parse(run.stdout).migrations,54);assert.deepEqual(await readFile(url),before);
+ const url=new URL('../supabase/schema.sql',import.meta.url),before=await readFile(url);const run=spawnSync(process.execPath,[fileURLToPath(new URL('../scripts/build-canonical-schema.mjs',import.meta.url)),'--check'],{encoding:'utf8'});assert.equal(run.status,0);assert.equal(JSON.parse(run.stdout).migrations,55);assert.deepEqual(await readFile(url),before);
 });
 test('Canonical CLI rejects write/unknown options without changing the schema',async()=>{
  const url=new URL('../supabase/schema.sql',import.meta.url),before=await readFile(url);const run=spawnSync(process.execPath,[fileURLToPath(new URL('../scripts/build-canonical-schema.mjs',import.meta.url)),'--write'],{encoding:'utf8'});assert.equal(run.status,1);assert.deepEqual(await readFile(url),before);

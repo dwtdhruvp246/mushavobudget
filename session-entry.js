@@ -1,18 +1,18 @@
-import {createEmailVerification,attachEmailVerificationView} from './email-verification.js?v=1';
+import {createEmailVerification,attachEmailVerificationView} from './email-verification.js?v=2';
 
 // The owning page clears models/DOM before a proof change and checks tickets
 // after asynchronous work. Opening this view never sends mail automatically.
-export function createSessionEntry({client,getSession,root,origin=globalThis.location?.origin,fetcher=globalThis.fetch,requireAdmin=false,retainViewDuringCheck=false,show,onInvalidated,onUnlocked,onSignOut}){
+export function createSessionEntry({client,getSession,root,origin=globalThis.location?.origin,fetcher=globalThis.fetch,requireAdmin=false,retainViewDuringCheck=false,show,onInvalidated,onUnlocked,onSignOut,onReset,events}){
   let checking=0,retaining=false,render=()=>{},controller,pending=null,pendingActor=null,pendingToken=null,boundActor=null,boundToken=null;
   try{
-    controller=createEmailVerification({client,getSession,origin,fetcher,requireAdmin,
+    controller=createEmailVerification({client,getSession,origin,fetcher,requireAdmin,events,onReset,
       onState:value=>{if(retaining&&value.phase==='loading')return;if(retaining&&!value.authorized)onInvalidated();render(value);if(!value.authorized&&getSession())show();},
       onInvalidated:()=>{if(!retaining)onInvalidated();},
       onUnlocked:async({ticket})=>{if(!checking&&ticket())await onUnlocked({ticket});}
     });
   }catch{
     // Deferred native clients or unsupported origins must stop visibly, not skip verification.
-    controller={bind(){onInvalidated();},lock(){onInvalidated();},async prepare(){show();render({phase:'unavailable',busy:false,authorized:false,canVerify:false,message:'Verification is unavailable in this version. Open the Mushavo Budget website to continue.'});return false;},requestCode:async()=>false,verify:async()=>false,ticket:()=>()=>false,authorized:false,busy:false};
+    controller={bind(){onInvalidated();},lock(){onInvalidated();},async prepare(){show();render({phase:'unavailable',busy:false,authorized:false,canVerify:false,message:'Verification is unavailable in this version. Open the Mushavo Budget website to continue.'});return false;},requestCode:async()=>false,verify:async()=>false,manageDevice:async()=>({result:'VERIFICATION_REQUIRED',verified:false}),dispose(){},ticket:()=>()=>false,authorized:false,busy:false};
   }
   render=attachEmailVerificationView({controller,root,onSignOut});
   function bind(session){
@@ -32,7 +32,7 @@ export function createSessionEntry({client,getSession,root,origin=globalThis.loc
   }
   return {
     bind,lock:()=>{retaining=false;controller.lock();},ticket:()=>controller.ticket(),
-    ensure:()=>perform(false),recheck:()=>perform(true),
+    ensure:()=>perform(false),recheck:()=>perform(true),manageDevice:(route,ack)=>controller.manageDevice(route,ack),dispose:()=>controller.dispose(),
     get authorized(){return controller.authorized;},get busy(){return controller.busy;}
   };
 }
@@ -51,13 +51,13 @@ export function snapshotPrivateView(node){
 
 // Callback pages can pause a protected step while the user enters a code. This
 // adapter never sends a code by opening the screen, and never adopts a session.
-export function createAuthCallbackEntry({client,root,origin,fetcher,show,onInvalidated,onSignOut}) {
+export function createAuthCallbackEntry({client,root,origin,fetcher,show,onInvalidated,onSignOut,onVerified=async()=>{},events}) {
   let session=null,pending=null,generation=0,disposed=false;
   const changed=()=>Object.assign(new Error('session_changed'),{code:'session_changed'});
   function rejectPending(){const waiting=pending;pending=null;if(waiting)waiting.reject(changed());}
-  const entry=createSessionEntry({client,getSession:()=>session,root,origin,fetcher,show:()=>{if(pending)show();},
+  const entry=createSessionEntry({client,getSession:()=>session,root,origin,fetcher,events,show:()=>{if(pending)show();},
     onInvalidated:()=>onInvalidated?.(),
-    onUnlocked:async({ticket})=>{const waiting=pending;if(waiting&&ticket()&&session?.user?.id===waiting.actor){pending=null;root.hidden=true;waiting.resolve();}},
+    onUnlocked:async({ticket})=>{const waiting=pending;if(waiting&&ticket()&&session?.user?.id===waiting.actor){pending=null;root.hidden=true;waiting.resolve();}else if(!waiting&&ticket())await onVerified({ticket});},
     onSignOut:async()=>{cancel();await onSignOut();}
   });
   const subscription=client.auth.onAuthStateChange((event,next)=>{
@@ -88,7 +88,7 @@ export function createAuthCallbackEntry({client,root,origin,fetcher,show,onInval
       await completion;
       if(disposed||epoch!==generation||!entry.authorized||session?.user?.id!==actor)throw changed();
     },
-    cancel,
-    dispose(){disposed=true;cancel();subscription?.unsubscribe();}
+    cancel,manageDevice:(route,ack)=>entry.manageDevice(route,ack),
+    dispose(){disposed=true;cancel();entry.dispose();subscription?.unsubscribe();}
   };
 }

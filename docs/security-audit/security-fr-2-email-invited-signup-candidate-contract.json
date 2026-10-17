@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.8_INVITED_SIGNUP_INTEGRATION",
-  "status": "LOCAL281PASS_WINDOWS_PENDING_INVITED_SIGNUP_SOURCE_NOT_DEPLOYED",
+  "status": "LOCAL_AND_OWNER_WINDOWS281PASS_INVITED_SIGNUP_NOT_HOSTED_ACCEPTANCE",
   "source_parent_commit": "c2a6afbb9ce047f6818a71ff18de003ab275a49f",
   "preceding_owner_receipt": "docs/security-audit/security-fr-2-email-callback-owner-Windows-pass.json",
   "report": "docs/security-audit/SECURITY_FR_2_4_AUTH_CALLBACK_PASS_AND_INVITED_SIGNUP.md",
@@ -49,8 +49,8 @@
     "canonical schema/versioned migration and coordinated Pages/artifact contract",
     "full regression and genuine browser/provider/hosted acceptance including uncertain completion/reload/concurrency recovery"
   ],
-  "owner_Windows_result_received": false,
-  "owner_terminal_action_required": true,
+  "owner_Windows_result_received": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "owner_credential_or_deployment_action_required": false,
   "root_dependency_or_existing_checkout_changes_requested": false,
@@ -60,5 +60,8 @@
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "owner_Windows_PASS": 281,
+  "owner_Windows_exit_code": 0,
+  "owner_Windows_receipt": "docs/security-audit/security-fr-2-email-invited-signup-owner-Windows-pass.json"
 }

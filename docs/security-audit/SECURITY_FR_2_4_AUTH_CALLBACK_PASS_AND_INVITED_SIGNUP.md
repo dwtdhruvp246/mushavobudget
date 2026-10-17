@@ -1,3 +1,9 @@
+# Windows result received — FR.2.4.E4.8: 281 PASS, exit 0
+
+17 October 2026, FRE72. [Owner receipt](security-fr-2-email-invited-signup-owner-Windows-pass.json) records 281/281 PASS on Node v22.17.0/PGlite 0.5.8, with 123 source hashes and 47 syntax checks. All six groups reported non-failing module-type warnings; the prior-entry/Edge group also reported the non-failing TypeScript warning. The exact receipt flags are retained. This supersedes the Windows-pending action below. The next [account security controls source checkpoint](SECURITY_FR_2_4_INVITED_SIGNUP_PASS_AND_ACCOUNT_SECURITY_CONTROLS.md) remains offline and undeployed. Original FRE71 evidence follows.
+
+---
+
 # FR.2.4.E4.8 — Auth callbacks passed on Windows; invited signup now uses email proof
 
 16 October 2026, FRE71. The [owner callback receipt](security-fr-2-email-callback-owner-Windows-pass.json) records 192/192 PASS, zero FAIL, exit 0 on Node v22.17.0/PGlite 0.5.8, with 94 matching source hashes and 31 syntax checks. All four owner groups reported non-failing module-type warnings; the prior entry/Edge group also reported the non-failing TypeScript warning. These flags are preserved rather than copied from the warning-free local Node 24 groups. Hosted acceptance remains pending.

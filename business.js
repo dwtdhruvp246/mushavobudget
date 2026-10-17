@@ -1,6 +1,6 @@
 // Mushavo Budget Business application — Stage 12 pilot and realtime
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
-import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=1";
+import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=3";
 import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -3507,6 +3507,7 @@ window.MushavoWorkspace?.onResume(() => { enforceBusinessExpiry(); refreshBusine
 const restoreBusinessPrivateDom=[...document.querySelectorAll('#businessApp,#businessInvitations,dialog')].map(snapshotPrivateView);
 const businessEmailEntry=createSessionEntry({client:supabase,getSession:()=>state.session,root:$('#businessEmailVerificationContent'),
   show:()=>showOnly('businessEmailVerification'),
+  onReset:()=>{businessAuthEpoch++;appOpening=false;},
   onInvalidated:()=>{clearBusinessWorkspaceState();state.profile=null;state.workspaces=[];state.memberships=[];state.incomingInvitations=[];state.supportedCurrencies=[];for(const restore of restoreBusinessPrivateDom)restore();},
   onUnlocked:async({ticket})=>{if(ticket())await loadBusinessAccess();},onSignOut:()=>signOut()
 });

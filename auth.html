@@ -9,7 +9,7 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="stylesheet" href="styles.css?v=79" />
     <script src="config.js?v=27"></script>
-    <script type="module" src="auth-flows.js?v=2"></script>
+    <script type="module" src="auth-flows.js?v=3"></script>
   </head>
   <body>
     <main class="workspace">
@@ -19,6 +19,15 @@
         <p id="securityMessage" role="status" aria-live="polite">Please wait.</p>
         <p id="securityIdentity" hidden></p>
         <section id="securityEmailVerification" aria-label="Email verification" hidden></section>
+        <section id="securityDeviceControls" hidden>
+          <h2>Remembered devices and sessions</h2>
+          <p>Remembered approval lasts seven days. An open verified session can stay signed in after those seven days.</p>
+          <p><strong>Forget this device</strong> removes this browser’s remembered approval. Sessions using that approval may need a code, including this one.</p>
+          <p><strong>Require verification on all sessions</strong> removes your account’s remembered approvals and pauses protected access until each session verifies again. You stay signed in, with protected access paused until verification.</p>
+          <label><input id="securityDeviceAcknowledge" type="checkbox" /> I understand this can require email codes again for my signed-in sessions.</label>
+          <div class="button-row"><button id="securityForgetDevice" type="button">Forget this device</button><button id="securityRevokeAll" type="button">Require verification on all sessions</button></div>
+          <a class="button-link" href="auth.html?flow=change">Change password</a>
+        </section>
         <form id="securityRequest" class="form-grid" hidden>
           <label>Email<input id="securityEmail" type="email" autocomplete="email" required /></label>
           <button class="primary" type="submit">Send link</button>

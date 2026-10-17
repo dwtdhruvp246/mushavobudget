@@ -1,7 +1,7 @@
 // Shared browser component. Server proof, never browser flags, authorizes data.
 const roles=new Set(['super_admin','admin_staff','finance_staff','support_staff']);
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const messages={locked:'Verify this sign-in with a code sent to your email.',code:'Enter the six-digit code from your email. It expires after 10 minutes.',authorized:'Sign-in verified.',forbidden:'This account does not have Admin access.',unavailable:'Verification is unavailable. Try again.',loading:'Checking your sign-in…',verifying:'Checking your code…',MAIL_UNAVAILABLE:'Your code could not be sent. Try again later.',RATE_LIMITED:'Too many attempts. Wait before trying again.',COOLDOWN:'Wait a minute before requesting another code.',RATE_LIMIT:'Too many requests. Try again later.',CODE_REJECTED:'The code was not accepted. Check the latest email or request a new code.'};
+const messages={managing:'Updating sign-in approvals…',locked:'Verify this sign-in with a code sent to your email.',code:'Enter the six-digit code from your email. It expires after 10 minutes.',authorized:'Sign-in verified.',forbidden:'This account does not have Admin access.',unavailable:'Verification is unavailable. Try again.',loading:'Checking your sign-in…',verifying:'Checking your code…',MAIL_UNAVAILABLE:'Your code could not be sent. Try again later.',RATE_LIMITED:'Too many attempts. Wait before trying again.',COOLDOWN:'Wait a minute before requesting another code.',RATE_LIMIT:'Too many requests. Try again later.',CODE_REJECTED:'The code was not accepted. Check the latest email or request a new code.'};
 const waitLimit=(promise,signal)=>new Promise((resolve,reject)=>{
   const stop=()=>{clearTimeout(timer);signal?.removeEventListener('abort',aborted);};
   const aborted=()=>{stop();reject(Error('STALE_SESSION'));};
@@ -21,7 +21,32 @@ async function boundedJSON(response){
   if(!value||Array.isArray(value)||typeof value!=='object')throw Error('UNAVAILABLE');
   return value;
 }
-export function createEmailVerification({client,getSession,origin=globalThis.location?.origin,fetcher=globalThis.fetch,requireAdmin=false,onState=()=>{},onUnlocked=()=>{},onInvalidated=()=>{}}){
+// Notices only remove local access; no message can establish verification.
+export function createVerificationEvents(createChannel){
+  const channel=createChannel('mushavo-email-verification-v1'),listeners=new Set();
+  const receive=event=>{
+    const value=event?.data;
+    if(!value||Array.isArray(value)||typeof value!=='object'||Object.keys(value).sort().join(',')!=='kind,userId,version'||value.version!==1||value.kind!=='verification-reset'||typeof value.userId!=='string'||!value.userId||value.userId.length>128)return;
+    for(const listener of [...listeners]){try{listener(value.userId);}catch{}}
+  };
+  channel.addEventListener('message',receive);
+  return{
+    subscribe(listener){listeners.add(listener);return()=>listeners.delete(listener);},
+    publish(userId,skip){
+      if(typeof userId!=='string'||!userId||userId.length>128)return;
+      for(const listener of [...listeners])if(listener!==skip){try{listener(userId);}catch{}}
+      try{channel.postMessage({version:1,kind:'verification-reset',userId});}catch{}
+    },
+    close(){listeners.clear();channel.removeEventListener('message',receive);channel.close();}
+  };
+}
+let browserEvents;
+function defaultVerificationEvents(){
+  if(typeof window==='undefined'||typeof window.BroadcastChannel!=='function')return null;
+  if(browserEvents===undefined){try{browserEvents=createVerificationEvents(name=>new window.BroadcastChannel(name));}catch{browserEvents=null;}}
+  return browserEvents;
+}
+export function createEmailVerification({client,getSession,origin=globalThis.location?.origin,fetcher=globalThis.fetch,requireAdmin=false,onState=()=>{},onUnlocked=()=>{},onInvalidated=()=>{},onReset=()=>{},events=defaultVerificationEvents()}){
   const location=new URL(origin);
   if(location.protocol!=='https:'||location.origin!==origin||typeof fetcher!=='function'||typeof requireAdmin!=='boolean')throw Error('INVALID_CONFIGURATION');
   let identity=null,token=null,epoch=0,serial=0,busy=false,authorized=false,challenge=null,abort=null;
@@ -34,6 +59,8 @@ export function createEmailVerification({client,getSession,origin=globalThis.loc
     if(actor!==identity||bearer!==token){epoch++;invalidate();identity=actor;token=bearer;emit('locked');}
   }
   function lock(){epoch++;invalidate();emit('locked');}
+  const receiveReset=userId=>{if(userId===getSession()?.user?.id){try{onReset();}finally{lock();}}};
+  const stopNotices=events?.subscribe(receiveReset);
   async function rpc(name,signal){
     if(signal.aborted)throw Error('STALE_SESSION');
     const value=await waitLimit(Promise.resolve().then(()=>client.rpc(name)),signal);
@@ -100,8 +127,30 @@ export function createEmailVerification({client,getSession,origin=globalThis.loc
       const next=await proof(signal);if(next==='locked')throw Error('UNAVAILABLE');return next;
     },{unlock:true});
   }
+  async function manageDevice(route,acknowledged){
+    bind(getSession());
+    if(!['forget','revoke-all'].includes(route)||acknowledged!==true||busy||!authorized||!current(epoch,token))return{result:'VERIFICATION_REQUIRED',verified:false};
+    const actor=identity,e=epoch,t=token;
+    let attempted=false,result='REVIEW_REQUIRED';
+    await run('managing',async(signal,bearer,alive)=>{
+      const initial=await proof(signal);if(initial!=='authorized')return initial;
+      attempted=true;
+      events?.publish(actor,receiveReset);
+      const value=await request(route,{},signal,bearer);
+      if(!alive())throw Error('STALE_SESSION');
+      if(value.result!==(route==='forget'?'FORGOTTEN':'REVOKED'))throw Error('UNAVAILABLE');
+      const next=await proof(signal);
+      if(!alive())throw Error('STALE_SESSION');
+      if(route==='revoke-all'&&next!=='locked')throw Error('UNAVAILABLE');
+      result=value.result;return next;
+    });
+    // Both attempted and uncertain mutations make peer pages discard old data.
+    if(attempted)events?.publish(actor,receiveReset);
+    if(!current(e,t))return{result:'REVIEW_REQUIRED',verified:false};
+    return{result,verified:authorized};
+  }
   function ticket(){const e=epoch,t=token,id=serial;return()=>current(e,t)&&id===serial&&authorized;}
-  return{bind,lock,check,prepare,requestCode,verify,ticket,get authorized(){return authorized&&!!current(epoch,token);},get busy(){return busy;}};
+  return{bind,lock,check,prepare,requestCode,verify,manageDevice,ticket,dispose(){stopNotices?.();lock();},get authorized(){return authorized&&!!current(epoch,token);},get busy(){return busy;}};
 }
 
 // Mount with the owning page's DOM and callbacks; do not store codes or device credentials.

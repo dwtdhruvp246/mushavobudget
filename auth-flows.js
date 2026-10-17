@@ -1,6 +1,6 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm';
 import { callbackUrl, consumeAuthUrl, isolatedAuthOptions, createLinkController, createPasswordChanger, safeAuthMessage, verifiedUser, authError, requireVerifiedApplicationSession } from './auth-security.js?v=2';
-import { createAuthCallbackEntry } from './session-entry.js?v=2';
+import { createAuthCallbackEntry } from './session-entry.js?v=3';
 
 const $ = selector => document.querySelector(selector);
 const material = consumeAuthUrl(window.location.href, value => window.history.replaceState(null, '', value));
@@ -8,12 +8,12 @@ const flow = material.flow;
 const settings = window.MUSHAVO_BUDGET_CONFIG || {};
 let isolated, app, controller, changer, busy = false, identity = null, cooldownUntil = 0, emailEntry = null, passwordClient = null;
 const message = value => { $('#securityMessage').textContent = value; };
-function hideForms() { for (const id of ['#securityRequest','#securityPassword','#securityContinue','#securitySelfSignup','#securityResume']) $(id).hidden = true; }
+function hideForms() { for (const id of ['#securityRequest','#securityPassword','#securityContinue','#securitySelfSignup','#securityResume','#securityDeviceControls']) $(id).hidden = true; }
 function showIdentity(user) { identity = user; $('#securityIdentity').hidden = false; $('#securityIdentity').textContent = `Verified account: ${user.email || ''}`; }
 async function operation(action) {
   if (busy) return;
   busy = true;
-  const buttons = [...document.querySelectorAll('#securityRequest button, #securityPassword button, #securityContinue button, #securityResume')];
+  const buttons = [...document.querySelectorAll('#securityRequest button, #securityPassword button, #securityContinue button, #securityResume, #securityDeviceControls button')];
   buttons.forEach(button => { button.disabled = true; });
   try { await action(); } catch (error) { message(safeAuthMessage(error)); }
   finally { busy = false; buttons.forEach(button => { button.disabled = false; }); }
@@ -22,8 +22,9 @@ function prepareEmailEntry(client) {
   emailEntry?.dispose();
   emailEntry = createAuthCallbackEntry({client,root:$('#securityEmailVerification'),origin:window.location.origin,fetcher:window.fetch.bind(window),
     show:()=>{ hideForms(); $('#securityResume').hidden = !controller?.passwordSaved && flow !== 'change'; $('#securityEmailVerification').hidden=false; message('Verify this account with an email code to continue.'); },
-    onInvalidated:()=>{ $('#securityAcknowledge').checked=false; },
-    onSignOut:()=>cancelSecurityFlow(true)
+    onInvalidated:()=>{ $('#securityAcknowledge').checked=false;if(flow==='devices'){$('#securityDeviceControls').hidden=true;$('#securityDeviceAcknowledge').checked=false;$('#securityResume').hidden=false;} },
+    onSignOut:()=>cancelSecurityFlow(true),
+    onVerified:async({ticket})=>{if(flow==='devices'&&ticket()&&identity)await showDeviceSecurity();}
   });
 }
 async function requireApplication(client, actor) {
@@ -54,7 +55,7 @@ async function init() {
     $('#securityRequest').hidden = false;
     return;
   }
-  if (flow === 'change') {
+  if (['change','devices'].includes(flow)) {
     app = normalClient();
     const current = await app.auth.getSession();
     if (current.error) throw current.error;
@@ -68,14 +69,15 @@ async function init() {
     if (adopted.error) throw adopted.error;
     passwordClient = snapshot;
     prepareEmailEntry(snapshot);
-    changer = createPasswordChanger(snapshot);
-    await changer.verify();
     showIdentity(user);
     app.auth.onAuthStateChange((event, next) => {
       if (event !== 'INITIAL_SESSION' && next?.user?.id !== user.id) {
         emailEntry?.cancel(); identity = null; hideForms(); message(safeAuthMessage(authError('session_changed')));
       }
     });
+    if(flow==='devices') { await showDeviceSecurity(); return; }
+    changer = createPasswordChanger(snapshot);
+    await changer.verify();
     $('#securityTitle').textContent = 'Change your password';
     message('After changing your password, verify a fresh email code before returning to the app. Request a password-change code here only if your account requires one.');
     $('#securityPassword').hidden = false; $('#securityNonceLabel').hidden = false; $('#securityRequestCode').hidden = false; $('#securityCurrentLabel').hidden = false;
@@ -128,7 +130,33 @@ async function finishPasswordFlow() {
   else $('#securityContinue').hidden = false;
   $('#securityResume').hidden = true;
 }
-$('#securityResume').addEventListener('click',()=>operation(finishPasswordFlow));
+$('#securityResume').addEventListener('click',()=>operation(flow==='devices'?showDeviceSecurity:finishPasswordFlow));
+async function showDeviceSecurity() {
+  await currentIdentity();
+  await requireApplication(passwordClient,identity.id);
+  await currentIdentity();
+  $('#securityTitle').textContent = 'Sign-in security';
+  $('#securityDeviceAcknowledge').checked=false;
+  $('#securityDeviceControls').hidden=false;
+  $('#securityResume').hidden=true;
+  message('Manage remembered approval for your signed-in account.');
+}
+async function manageRememberedDevice(route) {
+  const acknowledged=$('#securityDeviceAcknowledge').checked;
+  if(acknowledged!==true){message('Confirm the effect of this change before continuing.');return;}
+  await currentIdentity();
+  message('Updating sign-in approvals…');
+  const result=await emailEntry.manageDevice(route,acknowledged);
+  await currentIdentity();
+  $('#securityDeviceAcknowledge').checked=false;
+  if(result.verified){$('#securityDeviceControls').hidden=false;$('#securityResume').hidden=true;}
+  else {$('#securityDeviceControls').hidden=true;$('#securityResume').hidden=false;$('#securityEmailVerification').hidden=false;}
+  if(result.result==='FORGOTTEN')message(result.verified?'This device is no longer remembered. Your current sign-in remains verified.':'This device is no longer remembered. Verify this sign-in again to continue.');
+  else if(result.result==='REVOKED')message('Email approvals were reset for your account. Verify this sign-in again to continue.');
+  else message('The change could not be confirmed. Check this sign-in again before retrying.');
+}
+$('#securityForgetDevice').addEventListener('click',()=>operation(()=>manageRememberedDevice('forget')));
+$('#securityRevokeAll').addEventListener('click',()=>operation(()=>manageRememberedDevice('revoke-all')));
 $('#securityRequestCode').addEventListener('click', () => operation(async () => {
   if (Date.now() < cooldownUntil) throw {status:429};
   await currentIdentity(); cooldownUntil = Date.now()+60000;
@@ -150,7 +178,7 @@ async function cancelSecurityFlow(logoutNormal = false) {
   controller?.cancel();
   emailEntry?.cancel();
   hideForms();
-  const target = flow === 'change' ? (logoutNormal ? app : null) : isolated;
+  const target = ['change','devices'].includes(flow) ? (logoutNormal ? app : null) : isolated;
   if (target) {
     const {error} = await target.auth.signOut({scope:'local'});
     if (error && !['session_not_found','session_expired'].includes(error.code)) throw error;

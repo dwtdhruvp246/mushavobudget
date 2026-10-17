@@ -1,3 +1,9 @@
+# Windows result received — FR.2.4.E4.9: 320 PASS, exit 0
+
+17 October 2026, FRE73. [Owner receipt](security-fr-2-email-security-controls-owner-Windows-pass.json) records 320/320 PASS on Node v22.17.0/PGlite 0.5.8, with 126 source hashes and 50 syntax checks. All eight groups reported non-failing module-type warnings, and the prior-entry/Edge group reported the non-failing TypeScript warning. This supersedes the Windows-pending action below. The next [canonical baseline source reconciliation](SECURITY_FR_2_4_ACCOUNT_SECURITY_PASS_AND_CANONICAL_BASELINE.md) is offline; it does not activate the email gate. Original FRE72 evidence follows.
+
+---
+
 # FR.2.4.E4.9 — invited signup passed on Windows; account security controls now connected
 
 17 October 2026, FRE72. The [owner invited-signup receipt](security-fr-2-email-invited-signup-owner-Windows-pass.json) records 281/281 PASS, zero FAIL, exit 0 on Node v22.17.0/PGlite 0.5.8, with 123 matching hashes and 47 syntax checks. All six groups reported non-failing module-type warnings, and the prior-entry/Edge group reported the non-failing TypeScript warning. Their exact flags are retained. Hosted acceptance remains pending.

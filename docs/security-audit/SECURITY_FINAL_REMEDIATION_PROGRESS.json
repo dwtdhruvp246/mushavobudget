@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "date": "2026-10-17",
+  "date": "2026-10-18",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E4_15_OWNER_NINE_METADATA_MATCHES_E4_16_CURRENT_WORKER_SQL_LOCAL52PASS_WINDOWS_PENDING",
+  "status": "FR2_EMAIL_E4_16_OWNER_WINDOWS52PASS_E4_17_DENO_TYPE_FIX_LOCAL144PASS_WINDOWS_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE82",
+  "latest_evidence": "FRE83",
   "batches": [
     {
       "id": "FR.1",
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "FR2_EMAIL_E4_15_OWNER_NINE_METADATA_MATCHES_E4_16_CURRENT_WORKER_SQL_LOCAL52PASS_WINDOWS_PENDING",
+          "status": "FR2_EMAIL_E4_16_OWNER_WINDOWS52PASS_E4_17_DENO_TYPE_FIX_LOCAL144PASS_WINDOWS_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -721,7 +721,12 @@
           "email_reviewed_types_owner_matching_checks": 9,
           "email_current_runtime_local_tests": 52,
           "email_current_runtime_contract": "docs/security-audit/security-fr-2-email-current-runtime-contract.json",
-          "email_current_runtime_owner_Windows_result_received": false
+          "email_current_runtime_owner_Windows_result_received": true,
+          "email_current_runtime_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-current-runtime-owner-Windows-pass.json",
+          "email_current_runtime_owner_PASS": 52,
+          "email_deno_local_tests": 144,
+          "email_deno_contract": "docs/security-audit/security-fr-2-email-deno-edge-contract.json",
+          "email_deno_owner_Windows_result_received": false
         },
         {
           "id": "FR.2.5",
@@ -791,7 +796,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E4.16_CURRENT_WORKER_SQL_RUNTIME",
+  "next_step": "FR.2.4.E4.17_DENO_EDGE_RUNTIME",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -1517,5 +1522,15 @@
   "FR2_email_current_runtime_contract": "docs/security-audit/security-fr-2-email-current-runtime-contract.json",
   "FR2_email_current_runtime_report": "docs/security-audit/SECURITY_FR_2_4_STAGING_METADATA_PASS_AND_CURRENT_WORKER_SQL_RUNTIME.md",
   "FR2_email_current_runtime_source_manifest": "docs/security-audit/security-fr-2-email-current-runtime-source-manifest.json",
-  "FR2_email_current_runtime_owner_Windows_result_received": false
+  "FR2_email_current_runtime_owner_Windows_result_received": true,
+  "FR2_email_current_runtime_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-current-runtime-owner-Windows-pass.json",
+  "FR2_email_current_runtime_owner_PASS": 52,
+  "FR2_email_current_runtime_owner_hashes": 84,
+  "FR2_email_current_runtime_owner_syntax": 18,
+  "FR2_email_deno_local_tests": 144,
+  "FR2_email_deno_contract": "docs/security-audit/security-fr-2-email-deno-edge-contract.json",
+  "FR2_email_deno_report": "docs/security-audit/SECURITY_FR_2_4_WORKER_WINDOWS_PASS_AND_DENO_EDGE_BUILD.md",
+  "FR2_email_deno_source_manifest": "docs/security-audit/security-fr-2-email-deno-edge-source-manifest.json",
+  "FR2_email_deno_type_only_fix_runtime_JS_identical": true,
+  "FR2_email_deno_owner_Windows_result_received": false
 }

@@ -1,4 +1,4 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.110.9";
+import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.110.9";
 import { requireEmailVerifiedSession, emailVerificationFailure } from "../_shared/email-session-assurance.mjs";
 import {
   normalizeCurrencyApiPayload,
@@ -24,7 +24,7 @@ function json(body: Record<string, unknown>, status = 200): Response {
 
 async function authorizeRequest(
   request: Request,
-  serviceClient: ReturnType<typeof createClient>,
+  serviceClient: SupabaseClient,
   supabaseUrl: string,
   anonKey: string,
   cronSecret: string,

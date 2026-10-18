@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.16_CURRENT_WORKER_SQL_RUNTIME",
-  "status": "OWNER_STAGING_NINE_METADATA_MATCHES_CURRENT_REAL_WORKER_SQL_LOCAL52PASS_WINDOWS_PENDING",
+  "status": "OWNER_WINDOWS_CURRENT_WORKER_SQL_AND_SHARED_LIMITER52PASS_RECEIVED_NOT_HOSTED_ACCEPTANCE",
   "source_parent_commit": "ae36928b04b4ab7c7a81b9ad70140f37cb124b45",
   "owner_receipt": "docs/security-audit/security-fr-2-email-reviewed-types-owner-result.json",
   "owner_checked_UTC": "2026-10-17T17:02:51.535075+00:00",
@@ -16,8 +16,8 @@
   "syntax_checks": 18,
   "bundles_byte_identical_to_previously_reviewed_E3_2": true,
   "existing_runtime_SQL_migrations_canonical_and_deployed_limiter_source_unchanged": true,
-  "owner_Windows_result_received": false,
-  "owner_terminal_action_required": true,
+  "owner_Windows_result_received": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "owner_credential_email_deployment_or_SQL_write_action_required": false,
   "intended_project": "dczlddwbtgvfdujgcitb",
@@ -35,5 +35,15 @@
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "owner_Windows_receipt": "docs/security-audit/security-fr-2-email-current-runtime-owner-Windows-pass.json",
+  "owner_received_date": "2026-10-18",
+  "owner_run_commit": "4be4a0fa87ed695153ea21b623e20937eb50cac1",
+  "owner_node_version": "v22.17.0",
+  "owner_tests": 52,
+  "owner_hashes": 84,
+  "owner_syntax": 18,
+  "owner_exit_code": 0,
+  "next_stage": "FR.2.4.E4.17_DENO_EDGE_RUNTIME",
+  "next_contract": "docs/security-audit/security-fr-2-email-deno-edge-contract.json"
 }

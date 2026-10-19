@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E5.1 Windows44-entry ZIP pass; E5.2 read-only Pages baseline next
+
+19 October2026,FRE87. [Owner final ZIP receipt](security-fr-2-email-staging-package-owner-Windows-pass.json) confirms57hashes,41selected source identities,44 independent .NET payload matches,legacy JSON-array count1/corrected43 and exit0. [Pages metadata handoff](SECURITY_FR_2_4_WINDOWS_ZIP_PASS_AND_PAGES_CONFIGURATION_BASELINE.md),[contract](security-fr-2-email-pages-inspection-contract.json),[six-source manifest](security-fr-2-email-pages-inspection-source-manifest.json),[18 local checks](security-fr-2-email-pages-inspection-local-checks.json) prepare four fixed read-only Cloudflare GETs. Next owner action uses a private account/token prompt;no npm reinstall,SQL,Zoho file,settings change or upload. The exact accepted ZIP remains unuploaded. All full findings remain open. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — FR.2.4.E5.1 Windows preparer57-input/44-file pass; wrapper retry pending
 
 19 October 2026,FRE86. [Owner Windows API pass](security-fr-2-email-staging-diagnostic-owner-Windows-pass.json) confirms original57hashes,44files,cleanup,exit0. [Wrapper retry review](SECURITY_FR_2_4_WINDOWS_PREPARER_PASS_AND_WRAPPER_RETRY.md),[contract](security-fr-2-email-staging-retry-contract.json),[9 local cases](security-fr-2-email-staging-retry-local-checks.json) correct PowerShell5.1 JSON-array handling and use the unchanged original API plus saved receipt in a new TEMP folder. Next owner action is the short pinned retry block in chat with Windows array probe and independent .NET ZIP readback. Do not upload yet. No SQL,credentials,email,activation or production/native change. All full findings remain open. Earlier checkpoints follow.

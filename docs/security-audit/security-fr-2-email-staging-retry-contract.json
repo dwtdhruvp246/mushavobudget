@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.1_WINDOWS_WRAPPER_RETRY",
-  "status": "OWNER_WINDOWS_ORIGINAL_API57INPUT44FILE_PASS_RETRY_LOCAL9PASS_WINDOWS_JSON_AND_ZIP_READBACK_PENDING",
+  "status": "OWNER_WINDOWS_ZIP_PREFLIGHT44CONTENT_HASHES_PASS_PAGES_CONFIGURATION_BASELINE_NEXT",
   "source_parent_commit": "81f4d290cda90e42ef4bfe88f535a3e5143c380a",
   "original_package_commit": "9ef9a080676253cab97bfe60b79fa59737e95155",
   "owner_receipt": "docs/security-audit/security-fr-2-email-staging-diagnostic-owner-Windows-pass.json",
@@ -9,10 +9,10 @@
   "owner_original_source_hashes": 57,
   "owner_original_public_files": 44,
   "owner_temporary_cleanup_completed": true,
-  "owner_Windows_dotNET_ZIP_readback_verified": false,
+  "owner_Windows_dotNET_ZIP_readback_verified": true,
   "owner_Windows_original_failure_exact_exception_known": false,
   "PowerShell_JSON_array_compatibility_correction_implemented": true,
-  "owner_legacy_array_count_probe_received": false,
+  "owner_legacy_array_count_probe_received": true,
   "new_retained_candidate_location": "NEW_ORDINARY_LOCAL_TEMP_FOLDER",
   "retry_uses_original_API_and_saved_receipt": true,
   "original_package_inputs_and_manifest_unchanged": true,
@@ -33,5 +33,15 @@
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "owner_Windows_result_received": true,
+  "owner_Windows_receipt": "docs/security-audit/security-fr-2-email-staging-package-owner-Windows-pass.json",
+  "owner_run_commit": "31bd3f47c23b14c5e0934c780ed816f3d63e248e",
+  "owner_PowerShell_version": "5.1.26100.9711",
+  "owner_ZIP_SHA256": "33bee04f34bf564330345ef7c041ca5b52e0222fbab7dd4cbcae1a789f5c6ef1",
+  "owner_ZIP_content_hashes_matched": 44,
+  "owner_legacy_array_count": 1,
+  "owner_corrected_array_count": 43,
+  "next_step": "FR.2.4.E5.2_PAGES_CONFIGURATION_BASELINE",
+  "next_contract": "docs/security-audit/security-fr-2-email-pages-inspection-contract.json"
 }

@@ -1,0 +1,72 @@
+{
+  "stage_step": "FR.2.4.E5.3_EXACT_PAGES_DATE",
+  "status": "OWNER_PUBLIC_SETTINGS_READBACK_PASS_EXACT_DATE_OWNER_PENDING",
+  "source_parent_commit": "8869cfbb7ceae7d549f2390304f572c4bb382cb5",
+  "owner_readback_receipt": "docs/security-audit/security-fr-2-email-pages-public-settings-owner-readback.json",
+  "owner_readback_checked_UTC": "2026-10-19T17:58:40.978Z",
+  "target_Pages_project": "mushavo-budget-staging",
+  "channels": [
+    "production",
+    "preview"
+  ],
+  "reviewed_compatibility_date": "2026-07-01",
+  "PATCH_body": {
+    "deployment_configs": {
+      "production": {
+        "compatibility_date": "2026-07-01"
+      },
+      "preview": {
+        "compatibility_date": "2026-07-01"
+      }
+    }
+  },
+  "write_endpoint_suffix": "/pages/projects/mushavo-budget-staging",
+  "maximum_requests": 6,
+  "maximum_PATCH_requests": 1,
+  "normal_request_sequence": [
+    "GET_STAGING_PAGES",
+    "GET_WORKER_INVENTORY",
+    "GET_NAMESPACE_INVENTORY",
+    "GET_LIMITER_PUBLIC_URLS",
+    "PATCH_TWO_COMPATIBILITY_DATES_ONLY",
+    "GET_FRESH_PAGES_READBACK"
+  ],
+  "already_correct_dates_request_count": 4,
+  "preconditions": [
+    "EXACT_LOCAL_ZIP_AND_SAVED_WINDOWS_RECEIPT",
+    "FOUR_FRESH_ACCOUNT_METADATA_CHECKS",
+    "BOTH_CHANNELS_FAIL_CLOSED_AND_LATEST_OFF",
+    "THREE_EXACT_PUBLIC_MARKERS_AND_NO_OTHER_VARIABLES",
+    "EXACT_EXISTING_SQLITE_BINDING_AND_NO_OTHER_DO_BINDINGS",
+    "CURRENT_CANONICAL_USES_FUNCTIONS_FALSE",
+    "SOURCE_NOT_REPORTED_AND_NO_REPORTED_WRANGLER_CONFIG_HASH"
+  ],
+  "readback_comparison": "ALL_OBSERVED_DEPLOYMENT_CONFIG_FIELDS_EXCEPT_TWO_DATES_PLUS_SELECTED_IDENTITY_SOURCE_BUILD_AND_DEPLOYMENT_FIELDS",
+  "raw_project_responses_stored_only_in_private_process_memory": true,
+  "API_token_channel": "HIDDEN_SECURESTRING_TO_PRIVATE_CHILD_STDIN",
+  "required_token_permissions": [
+    "Account Cloudflare Pages Edit",
+    "Account Workers Scripts Read"
+  ],
+  "token_resource_scope": "SELECTED_ACCOUNT_CONTAINING_STAGING_PAGES_PROJECT",
+  "automatic_write_retry_or_rollback": false,
+  "concurrent_configuration_changes_excluded": false,
+  "after_write_uncertainty_requires_read_only_review_before_retry": true,
+  "helper": "scripts/set-fr-2-email-pages-date.mjs",
+  "runner": "scripts/run-fr-2-email-pages-date.ps1",
+  "tests": "scripts/check-fr-2-email-pages-date.mjs",
+  "manifest": "docs/security-audit/security-fr-2-email-pages-date-source-manifest.json",
+  "new_local_tests": 37,
+  "unchanged_inspector_regression_tests": 18,
+  "total_local_tests": 55,
+  "new_Windows_private_runner_execution_verified": false,
+  "settings_write_or_actual_hosted_requests_by_assistant": 0,
+  "application_SQL_original_inspection_package_or_ZIP_changed": false,
+  "secrets_configuration_or_Zoho_file_action_required": false,
+  "upload_or_redeployment_requested": false,
+  "live_activation_approved": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "production_or_native_changed": false,
+  "APK_update_deferred": true
+}

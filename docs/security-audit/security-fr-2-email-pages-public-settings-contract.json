@@ -1,0 +1,57 @@
+{
+  "stage_step": "FR.2.4.E5.3_PAGES_PUBLIC_SETTINGS",
+  "status": "OWNER_BASELINE_PASS_NON_SECRET_SETTINGS_HANDOFF_NOT_APPLIED",
+  "source_parent_commit": "553c6642948a14dfcdc8254fcc5aa70463d95368",
+  "baseline_owner_run_commit": "553c6642948a14dfcdc8254fcc5aa70463d95368",
+  "baseline_owner_receipt": "docs/security-audit/security-fr-2-email-pages-baseline-owner-pass.json",
+  "baseline_checked_UTC": "2026-10-19T15:48:11.280Z",
+  "target_Pages_project": "mushavo-budget-staging",
+  "channels": [
+    "production",
+    "preview"
+  ],
+  "production_label_means": "LIVE_CHANNEL_OF_STAGING_PAGES_PROJECT_ONLY",
+  "compatibility_date": "2026-07-01",
+  "always_use_latest_compatibility_date": false,
+  "fail_open": false,
+  "plain_text_variables": {
+    "EMAIL_GATE_MODE": "STAGING_CONTROLLED_ONLY",
+    "EMAIL_GATE_PROJECT": "dczlddwbtgvfdujgcitb",
+    "EMAIL_GATE_ORIGIN": "https://mushavo-budget-staging.pages.dev"
+  },
+  "durable_object_binding": {
+    "name": "EMAIL_GATE_LIMITER_NS",
+    "Worker": "mushavo-email-rate-staging",
+    "class": "EmailGatewayRateLimiter",
+    "storage": "SQLITE",
+    "reuse_existing_namespace": true
+  },
+  "preserve_unrelated_settings_variables_secrets_bindings_and_compatibility_flags": true,
+  "conflicting_existing_target_marker_or_binding_requires_review": true,
+  "unreported_metadata_is_not_absence": true,
+  "baseline_inspector_reused_without_source_or_manifest_changes": true,
+  "baseline_inspector_commit": "553c6642948a14dfcdc8254fcc5aa70463d95368",
+  "post_settings_inspector_stage_step": "FR.2.4.E5.2_PAGES_CONFIGURATION_BASELINE",
+  "readback_expectations": {
+    "both_dates_match": true,
+    "both_fail_open_false": true,
+    "always_latest_false": true,
+    "three_markers_each_match": true,
+    "three_marker_types": "PLAIN_TEXT",
+    "both_limiter_bindings": "MATCH",
+    "four_HTTP_200": true,
+    "ZIP_unchanged": true
+  },
+  "gateway_readiness_remains_false_until_separate_secrets_and_rollout_acceptance": true,
+  "secret_values_to_enter_in_this_checkpoint": 0,
+  "actual_hosted_requests_by_assistant": 0,
+  "settings_applied_by_assistant": false,
+  "application_SQL_original_package_sources_or_ZIP_changed": false,
+  "upload_or_redeploy_requested": false,
+  "email_dispatched": false,
+  "live_activation_approved": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "production_or_native_changed": false,
+  "APK_update_deferred": true
+}

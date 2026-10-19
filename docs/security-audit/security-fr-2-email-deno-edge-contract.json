@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E4.17_DENO_EDGE_RUNTIME",
-  "status": "WORKER_WINDOWS52PASS_DENO_TYPE_ONLY_FIX_LOCAL144PASS_WINDOWS_PENDING",
+  "status": "OWNER_WINDOWS_DENO144PASS_RECEIVED_NOT_PROVIDER_HOSTED_ACCEPTANCE",
   "source_parent_commit": "4be4a0fa87ed695153ea21b623e20937eb50cac1",
   "owner_receipt": "docs/security-audit/security-fr-2-email-current-runtime-owner-Windows-pass.json",
   "owner_received_date": "2026-10-18",
@@ -27,8 +27,8 @@
   "source_import_URL_and_dependency_versions_preserved": true,
   "all_other_application_runtime_modules_SQL_migrations_and_canonical_source_unchanged": true,
   "old_source_pinned_manifests_and_receipts_preserved": true,
-  "owner_Windows_Deno_result_received": false,
-  "owner_terminal_action_required": true,
+  "owner_Windows_Deno_result_received": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_credential_email_push_deployment_or_activation_action_required": false,
   "dependency_downloads_are_public_NPM_and_ESM_modules_separate_from_runtime_tests": true,
   "runtime_net_env_write_and_run_permissions_denied": true,
@@ -41,5 +41,14 @@
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "owner_Deno_Windows_receipt": "docs/security-audit/security-fr-2-email-deno-edge-owner-Windows-pass.json",
+  "owner_Deno_received_date": "2026-10-19",
+  "owner_Deno_run_commit": "5a14f0c61a7ce91e3c3cefa16dc5ba276d11cc18",
+  "owner_Deno_node_version": "v22.17.0",
+  "owner_Deno_tests": 144,
+  "owner_Deno_hashes": 119,
+  "owner_Deno_exit_code": 0,
+  "next_stage": "FR.2.4.E5.1_LOCAL_UPLOAD_CANDIDATE",
+  "next_contract": "docs/security-audit/security-fr-2-email-staging-package-contract.json"
 }

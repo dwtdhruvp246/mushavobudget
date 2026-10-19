@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_date": "2026-10-18",
+  "updated_date": "2026-10-19",
   "current_stage": null,
-  "current_step": "FR.2.4.E4.17_DENO_EDGE_RUNTIME",
-  "current_title": "FR.2.4.E4.17 Worker Windows52PASS; native Deno type fix144localPASS Windows pending",
+  "current_step": "FR.2.4.E5.1_LOCAL_UPLOAD_CANDIDATE",
+  "current_title": "FR.2.4 Deno Windows144PASS; E5.1 local review ZIP21PASS Windows readback pending",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.4.E4.17_DENO_EDGE_RUNTIME",
+  "next_step": "FR.2.4.E5.1_LOCAL_UPLOAD_CANDIDATE",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3358,13 +3358,13 @@
   },
   "next_phase": "FINAL_REMEDIATION",
   "final_remediation": {
-    "status": "FR2_EMAIL_E4_16_OWNER_WINDOWS52PASS_E4_17_DENO_TYPE_FIX_LOCAL144PASS_WINDOWS_PENDING",
+    "status": "FR2_EMAIL_E4_17_OWNER_WINDOWS144PASS_E5_1_LOCAL_PACKAGE21PASS_WINDOWS_ZIP_PENDING",
     "prepared_date": "2026-10-13",
     "handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
     "proposed_batches": 8,
     "original_findings_mapped": 20,
     "existing_open_action_entries": 61,
-    "next_step": "FR.2.4.E4.17_DENO_EDGE_RUNTIME",
+    "next_step": "FR.2.4.E5.1_LOCAL_UPLOAD_CANDIDATE",
     "release_gate_unchanged": true,
     "full_fresh_final_reaudit_required": true,
     "started_date": "2026-10-13",
@@ -3373,7 +3373,7 @@
     "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
     "progress": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PROGRESS.json",
     "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-    "latest_evidence": "FRE83",
+    "latest_evidence": "FRE84",
     "candidate_report": "docs/security-audit/SECURITY_FR_1_1_STAGING_CANDIDATE.md",
     "local_receipt": "docs/security-audit/security-final-staging-local-checks.json",
     "owner_terminal_action_required": true,
@@ -4107,7 +4107,16 @@
     "FR2_email_deno_report": "docs/security-audit/SECURITY_FR_2_4_WORKER_WINDOWS_PASS_AND_DENO_EDGE_BUILD.md",
     "FR2_email_deno_source_manifest": "docs/security-audit/security-fr-2-email-deno-edge-source-manifest.json",
     "FR2_email_deno_type_only_fix_runtime_JS_identical": true,
-    "FR2_email_deno_owner_Windows_result_received": false
+    "FR2_email_deno_owner_Windows_result_received": true,
+    "FR2_email_deno_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-deno-edge-owner-Windows-pass.json",
+    "FR2_email_deno_owner_PASS": 144,
+    "FR2_email_deno_owner_hashes": 119,
+    "FR2_email_staging_package_contract": "docs/security-audit/security-fr-2-email-staging-package-contract.json",
+    "FR2_email_staging_package_report": "docs/security-audit/SECURITY_FR_2_4_DENO_WINDOWS_PASS_AND_LOCAL_STAGING_PACKAGE.md",
+    "FR2_email_staging_package_manifest": "docs/security-audit/security-fr-2-email-staging-package-source-manifest.json",
+    "FR2_email_staging_package_local_tests": 21,
+    "FR2_email_staging_package_public_files": 44,
+    "FR2_email_staging_package_owner_Windows_result_received": false
   },
   "current_phase": "FINAL_REMEDIATION"
 }

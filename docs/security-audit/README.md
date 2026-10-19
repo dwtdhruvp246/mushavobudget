@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4 Deno Windows144PASS; E5.1 local staging ZIP preparation
+
+19 October 2026, FRE84. [Owner Deno receipt](security-fr-2-email-deno-edge-owner-Windows-pass.json) confirms 144PASS,119hashes,four type checks/four bundles. [Review package](SECURITY_FR_2_4_DENO_WINDOWS_PASS_AND_LOCAL_STAGING_PACKAGE.md),[contract](security-fr-2-email-staging-package-contract.json),[57-input manifest](security-fr-2-email-staging-package-source-manifest.json),[21 local checks](security-fr-2-email-staging-package-local-checks.json):exact 44-file advanced-mode Pages ZIP,accepted Worker unchanged,POSIX paths,sidecars outside public. Next owner action is the pinned local preparation block in chat with independent Windows/.NET ZIP readback. **Do not upload yet.** No credentials,SQL,email,activation or production/native change. All full findings remain open. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — Worker Windows52PASS; native Deno Edge type fix and144localPASS
 
 18 October2026,FRE83. [Owner Windows result](security-fr-2-email-current-runtime-owner-Windows-pass.json) confirms52PASS,84hashes,18syntax and identical bundles. [Native Deno review](SECURITY_FR_2_4_WORKER_WINDOWS_PASS_AND_DENO_EDGE_BUILD.md) finds and corrects one generic client type in sync-exchange-rates;runtime JavaScript is identical. [Contract](security-fr-2-email-deno-edge-contract.json),[119-input manifest](security-fr-2-email-deno-edge-source-manifest.json),[144local checks](security-fr-2-email-deno-edge-local-checks.json),[verifier](../../scripts/verify-fr-2-email-deno-edge.mjs):four actual Edge type checks/bundles,56actual imported/bundled SDK cases and88affected Node/SQL cases pass. Next owner action is the pinned Windows Deno block in chat. No SQL/credentials/email/deployment/activation. Original source pins and all findings preserved;production excluded,APK deferred. Earlier checkpoints follow.

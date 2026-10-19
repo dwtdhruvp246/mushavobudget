@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-19",
   "current_stage": null,
-  "current_step": "FR.2.4.E5.1_LOCAL_PACKAGE_DIAGNOSTIC",
-  "current_title": "FR.2.4.E5.1 Windows preparation failure; safe diagnostic10localPASS owner pending",
+  "current_step": "FR.2.4.E5.1_WINDOWS_WRAPPER_RETRY",
+  "current_title": "FR.2.4.E5.1 Windows API57-input44-file pass; PowerShell wrapper retry9localPASS",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.4.E5.1_LOCAL_PACKAGE_DIAGNOSTIC",
+  "next_step": "FR.2.4.E5.1_WINDOWS_WRAPPER_RETRY",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3358,13 +3358,13 @@
   },
   "next_phase": "FINAL_REMEDIATION",
   "final_remediation": {
-    "status": "FR2_EMAIL_E5_1_WINDOWS_PACKAGE_REVIEW_REQUIRED_SAFE_DIAGNOSTIC_LOCAL10PASS_OWNER_PENDING",
+    "status": "FR2_EMAIL_E5_1_WINDOWS_API57INPUT44FILE_PASS_WRAPPER_RETRY_LOCAL9PASS_WINDOWS_READBACK_PENDING",
     "prepared_date": "2026-10-13",
     "handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
     "proposed_batches": 8,
     "original_findings_mapped": 20,
     "existing_open_action_entries": 61,
-    "next_step": "FR.2.4.E5.1_LOCAL_PACKAGE_DIAGNOSTIC",
+    "next_step": "FR.2.4.E5.1_WINDOWS_WRAPPER_RETRY",
     "release_gate_unchanged": true,
     "full_fresh_final_reaudit_required": true,
     "started_date": "2026-10-13",
@@ -3373,7 +3373,7 @@
     "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
     "progress": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PROGRESS.json",
     "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-    "latest_evidence": "FRE85",
+    "latest_evidence": "FRE86",
     "candidate_report": "docs/security-audit/SECURITY_FR_1_1_STAGING_CANDIDATE.md",
     "local_receipt": "docs/security-audit/security-final-staging-local-checks.json",
     "owner_terminal_action_required": true,
@@ -4121,7 +4121,16 @@
     "FR2_email_staging_package_owner_Windows_pass": false,
     "FR2_email_staging_package_failure_cause_known": false,
     "FR2_email_staging_package_diagnostic_contract": "docs/security-audit/security-fr-2-email-staging-diagnostic-contract.json",
-    "FR2_email_staging_package_diagnostic_local_tests": 10
+    "FR2_email_staging_package_diagnostic_local_tests": 10,
+    "FR2_email_staging_package_diagnostic_owner_Windows_result_received": true,
+    "FR2_email_staging_package_diagnostic_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-staging-diagnostic-owner-Windows-pass.json",
+    "FR2_email_staging_package_diagnostic_owner_exit_code": 0,
+    "FR2_email_staging_package_diagnostic_owner_source_hashes": 57,
+    "FR2_email_staging_package_diagnostic_owner_public_files": 44,
+    "FR2_email_staging_package_retry_contract": "docs/security-audit/security-fr-2-email-staging-retry-contract.json",
+    "FR2_email_staging_package_retry_local_tests": 9,
+    "FR2_email_staging_package_retry_owner_Windows_result_received": false,
+    "FR2_email_staging_package_PowerShell_JSON_array_correction_implemented": true
   },
   "current_phase": "FINAL_REMEDIATION"
 }

@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E5.1 Windows preparer57-input/44-file pass; wrapper retry pending
+
+19 October 2026,FRE86. [Owner Windows API pass](security-fr-2-email-staging-diagnostic-owner-Windows-pass.json) confirms original57hashes,44files,cleanup,exit0. [Wrapper retry review](SECURITY_FR_2_4_WINDOWS_PREPARER_PASS_AND_WRAPPER_RETRY.md),[contract](security-fr-2-email-staging-retry-contract.json),[9 local cases](security-fr-2-email-staging-retry-local-checks.json) correct PowerShell5.1 JSON-array handling and use the unchanged original API plus saved receipt in a new TEMP folder. Next owner action is the short pinned retry block in chat with Windows array probe and independent .NET ZIP readback. Do not upload yet. No SQL,credentials,email,activation or production/native change. All full findings remain open. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — FR.2.4.E5.1 Windows package failure; safe diagnostic pending
 
 19 October 2026, FRE85. [Owner failure](security-fr-2-email-staging-package-owner-Windows-review.json) is before Windows ZIP readback;exact cause is not exposed by the wrapper. [Diagnostic review](SECURITY_FR_2_4_LOCAL_PACKAGE_FAILURE_DIAGNOSTIC.md),[contract](security-fr-2-email-staging-diagnostic-contract.json),[10 local cases](security-fr-2-email-staging-diagnostic-local-checks.json) provide a temporary rehearsal of the unchanged original 57-input preparer with fixed safe failure codes. Next owner action is the short pinned diagnostic block in chat,reusing existing tools. No upload,credentials,SQL or activation. Earlier package21PASS and Deno144PASS remain scoped to their original receipts. All full findings remain open. Earlier checkpoints follow.

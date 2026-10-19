@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.1_LOCAL_PACKAGE_DIAGNOSTIC",
-  "status": "OWNER_WINDOWS_PACKAGE_FAILURE_RECEIVED_EXACT_CAUSE_PENDING_SAFE_DIAGNOSTIC",
+  "status": "OWNER_WINDOWS_ORIGINAL_API57INPUT44FILE_TEMPORARY_REHEARSAL_PASS_NOT_WRAPPER_ACCEPTANCE",
   "source_parent_commit": "9ef9a080676253cab97bfe60b79fa59737e95155",
   "owner_receipt": "docs/security-audit/security-fr-2-email-staging-package-owner-Windows-review.json",
   "received_date": "2026-10-19",
@@ -16,7 +16,7 @@
     "docs/security-audit/security-fr-2-email-staging-package-source-manifest.json": "6470790f9769d4c87cd09bb4cf06e5bdcfa7551fc1ef3a759d72039ce4108b27"
   },
   "owner_action": "REUSE_MOST_RECENT_ORIGINAL_EXPORT_AND_INSTALLED_TOOLS_RUN_SAFE_TEMPORARY_REHEARSAL",
-  "owner_Windows_result_received": false,
+  "owner_Windows_result_received": true,
   "owner_SQL_or_credentials_or_upload_action_required": false,
   "actual_Windows_root_cause_known": false,
   "actual_hosted_requests": 0,
@@ -24,5 +24,15 @@
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "owner_Windows_receipt": "docs/security-audit/security-fr-2-email-staging-diagnostic-owner-Windows-pass.json",
+  "owner_Windows_run_commit": "81f4d290cda90e42ef4bfe88f535a3e5143c380a",
+  "owner_received_date": "2026-10-19",
+  "owner_node_version": "v22.17.0",
+  "owner_original_preparer_completed": true,
+  "owner_original_source_hashes_verified": 57,
+  "owner_public_files_verified": 44,
+  "owner_temporary_output_removed": true,
+  "next_step": "FR.2.4.E5.1_WINDOWS_WRAPPER_RETRY",
+  "next_contract": "docs/security-audit/security-fr-2-email-staging-retry-contract.json"
 }

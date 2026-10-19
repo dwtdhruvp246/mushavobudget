@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E5.3 exact dates passed; E5.4 key-label readiness next
+
+19 October 2026, FRE90. [Owner exact-date receipt](security-fr-2-email-pages-exact-date-owner-pass.json) confirms six HTTP 200s, seven source hashes, both dates 2026-07-01 and other observed settings unchanged. Both staging channels retain fail closed, three matching markers and correct limiter binding; ZIP unuploaded. [Readiness handoff](SECURITY_FR_2_4_EXACT_DATE_PASS_AND_CREDENTIAL_READINESS.md) and [contract](security-fr-2-email-credential-readiness-contract.json) request only existing staging Supabase key labels/availability before type-specific credential transport setup. No keys, secrets, Zoho file, SQL, upload or deployment action requested. All full findings remain open. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — FR.2.4.E5.3 public settings except date passed; exact-date helper ready
 
 19 October 2026, FRE89. [Owner readback](security-fr-2-email-pages-public-settings-owner-readback.json) confirms both fail-closed channels, three exact public staging markers, correct SQLite limiter binding, four HTTP 200s and unchanged ZIP. The other 13 required variables are ABSENT; exact date remains unmatched because the dashboard picker lacks 2026-07-01. [Correction and API handoff](SECURITY_FR_2_4_PUBLIC_SETTINGS_READBACK_AND_EXACT_DATE.md), [contract](security-fr-2-email-pages-date-contract.json), [seven-input manifest](security-fr-2-email-pages-date-source-manifest.json) and [55 local checks](security-fr-2-email-pages-date-local-checks.json) prepare one date-only PATCH after four fresh checks and an independent readback. Owner action: use a selected-account token with Pages Edit and Workers Scripts Read in the hidden terminal prompt; no npm, secrets, SQL, upload or redeploy. Current actual Windows/date-write acceptance pending; all full findings remain open. Earlier checkpoints follow.

@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E5.1 Windows package failure; safe diagnostic pending
+
+19 October 2026, FRE85. [Owner failure](security-fr-2-email-staging-package-owner-Windows-review.json) is before Windows ZIP readback;exact cause is not exposed by the wrapper. [Diagnostic review](SECURITY_FR_2_4_LOCAL_PACKAGE_FAILURE_DIAGNOSTIC.md),[contract](security-fr-2-email-staging-diagnostic-contract.json),[10 local cases](security-fr-2-email-staging-diagnostic-local-checks.json) provide a temporary rehearsal of the unchanged original 57-input preparer with fixed safe failure codes. Next owner action is the short pinned diagnostic block in chat,reusing existing tools. No upload,credentials,SQL or activation. Earlier package21PASS and Deno144PASS remain scoped to their original receipts. All full findings remain open. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — FR.2.4 Deno Windows144PASS; E5.1 local staging ZIP preparation
 
 19 October 2026, FRE84. [Owner Deno receipt](security-fr-2-email-deno-edge-owner-Windows-pass.json) confirms 144PASS,119hashes,four type checks/four bundles. [Review package](SECURITY_FR_2_4_DENO_WINDOWS_PASS_AND_LOCAL_STAGING_PACKAGE.md),[contract](security-fr-2-email-staging-package-contract.json),[57-input manifest](security-fr-2-email-staging-package-source-manifest.json),[21 local checks](security-fr-2-email-staging-package-local-checks.json):exact 44-file advanced-mode Pages ZIP,accepted Worker unchanged,POSIX paths,sidecars outside public. Next owner action is the pinned local preparation block in chat with independent Windows/.NET ZIP readback. **Do not upload yet.** No credentials,SQL,email,activation or production/native change. All full findings remain open. Earlier checkpoints follow.

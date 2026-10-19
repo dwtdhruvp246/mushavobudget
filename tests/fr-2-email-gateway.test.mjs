@@ -31,7 +31,7 @@ function fixture(options={}) {
    const name=url.split('email_gate_')[1],args=JSON.parse(init.body);calls.push({kind:'rpc',name,args});
    assert.equal(args.p_user,state.userId||U);assert.equal(args.p_session,state.session||S);
    assert.equal(init.headers.apikey,env.SUPABASE_SERVICE_ROLE_KEY);
-   assert.equal(init.headers.authorization,'Bearer '+env.SUPABASE_SERVICE_ROLE_KEY);
+   assert.equal(init.headers.authorization,undefined);
    if(state.rpcResponse)return state.rpcResponse(name,args);
    if(name==='session_status')return json(state.verified||false);
    if(name==='begin_challenge'){state.challenge=args;return json({result:state.beginResult||'PENDING_DELIVERY',challenge_id:args.p_challenge,expires_at:new Date(Date.now()+600000).toISOString()});}

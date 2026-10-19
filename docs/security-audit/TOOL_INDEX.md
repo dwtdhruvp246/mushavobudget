@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E5.4 modern transport passed; private Windows packet next
+
+19 October 2026, FRE91. [Owner key-label report](security-fr-2-email-key-labels-owner-report.json) confirms availability only. [Handoff](SECURITY_FR_2_4_MODERN_KEYS_AND_PRIVATE_PACKET_HANDOFF.md), [contract](security-fr-2-email-modern-preparation-contract.json) and [141/141 local receipt](security-fr-2-email-modern-preparation-local-checks.json) cover modern Secret-key apikey-only transport, caller JWT/session preservation, actual compiled Worker/SQLite/full55 SQL and private packet validation. The new Pages bundle requires a replacement ZIP; keep the old ZIP unuploaded. Next: owner Windows verifier and hidden-input DPAPI packet preparation, with no provider calls, email, Cloudflare secret installation or SQL. All findings remain open. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — FR.2.4.E5.3 exact dates passed; E5.4 key-label readiness next
 
 19 October 2026, FRE90. [Owner exact-date receipt](security-fr-2-email-pages-exact-date-owner-pass.json) confirms six HTTP 200s, seven source hashes, both dates 2026-07-01 and other observed settings unchanged. Both staging channels retain fail closed, three matching markers and correct limiter binding; ZIP unuploaded. [Readiness handoff](SECURITY_FR_2_4_EXACT_DATE_PASS_AND_CREDENTIAL_READINESS.md) and [contract](security-fr-2-email-credential-readiness-contract.json) request only existing staging Supabase key labels/availability before type-specific credential transport setup. No keys, secrets, Zoho file, SQL, upload or deployment action requested. All full findings remain open. Earlier checkpoints follow.

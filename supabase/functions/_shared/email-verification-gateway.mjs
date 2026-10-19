@@ -61,9 +61,12 @@ export function createBackendAdapter({fetcher, publishableKey, serviceKey, now=D
     async rpc(name, args) {
       requireGate(['begin_challenge','set_delivery','challenge_context','verify_challenge',
         'restore_device','revoke_device','revoke_all','session_status'].includes(name));
+      // Modern secret keys authenticate through apikey; they are not bearer JWTs.
+      // Retain the legacy JWT transport for an existing service_role credential.
+      const headers = {apikey:serviceKey, 'content-type':'application/json'};
+      if (!serviceKey.startsWith('sb_secret_')) headers.authorization = 'Bearer ' + serviceKey;
       return await upstreamJSON(fetcher, backend + '/rest/v1/rpc/email_gate_' + name, {
-        method:'POST', headers:{apikey:serviceKey, authorization:'Bearer ' + serviceKey,
-          'content-type':'application/json'}, body:JSON.stringify(args)
+        method:'POST', headers, body:JSON.stringify(args)
       });
     }
   };

@@ -1,0 +1,63 @@
+{
+  "stage_step": "FR.2.4.E5.4_MODERN_KEYS_AND_PRIVATE_PREPARATION",
+  "result": "OFFLINE_MODERN_KEY_TRANSPORT_CURRENT_WORKER_SQL_AND_PRIVATE_PACKET_SCOPED_PASS",
+  "source_parent_commit": "b5da5055c52ffa408c00e580395528789ddde974",
+  "node_version": "v24.19.0",
+  "source_files_SHA256_verified": 91,
+  "tools_locks_and_installed_versions_matched": true,
+  "installed_package_bytes_independently_hashed": false,
+  "tools": {
+    "esbuild": "0.28.2",
+    "miniflare": "4.20260730.0",
+    "workerd": "1.20260730.1",
+    "@electric-sql/pglite": "0.5.8"
+  },
+  "syntax_checks": 23,
+  "tests": 141,
+  "pass": 141,
+  "fail": 0,
+  "groups": [
+    {
+      "name": "ACTUAL_MODERN_KEY_WORKER_AND_FULL55_SQL",
+      "tests": 21,
+      "pass": 21,
+      "fail": 0
+    },
+    {
+      "name": "SHARED_WORKER_AND_REAL_SQLITE_LIMITER_REGRESSIONS",
+      "tests": 31,
+      "pass": 31,
+      "fail": 0
+    },
+    {
+      "name": "ACTUAL_GATEWAY_MODERN_HEADERS_AND_PRIVATE_PACKET_BOUNDARIES",
+      "tests": 89,
+      "pass": 89,
+      "fail": 0
+    }
+  ],
+  "expected_bundle_sha256": {
+    "pages": "a7cbfa8b257eb7a53185fc57cc93a8315bbc453fd0bbbd3cc3b2a5e3cf4ee651",
+    "limiter": "4d10a3f6ea03ab14979b1d821df2c35409d519b0550da8bd4a92f4b28d37b0a1"
+  },
+  "modern_service_key_sent_only_in_apikey_header": true,
+  "caller_JWT_Auth_and_actor_session_binding_preserved": true,
+  "actual_local_Worker_SQLite_DO_and_full55_SQL_verified": true,
+  "private_packet_uses_actual_gateway_constructor": true,
+  "old_review_ZIP_requires_replacement_before_modern_key_deployment": true,
+  "actual_Windows_DPAPI_or_private_packet_file_save_verified": false,
+  "actual_provider_key_ownership_JWT_signature_mail_or_hosted_acceptance_verified": false,
+  "actual_Auth_Zoho_Cloudflare_or_hosted_SQL_requests": 0,
+  "email_dispatched": false,
+  "real_owner_credentials_or_private_Zoho_file_accessed": false,
+  "Cloudflare_secrets_SQL_Auth_or_settings_changed": false,
+  "full_repository_1525_regression_rerun": false,
+  "live_activation_approved": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "local_checkpoint": "COMPLETE",
+  "problem_code": null,
+  "exit_code": 0
+}

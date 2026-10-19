@@ -47,7 +47,7 @@ try {
    return json({id:c.sub,email:c.sub===A?'runtime-a@example.invalid':'runtime-b@example.invalid',email_confirmed_at:new Date().toISOString()});
   }
   if(url.startsWith(api+'/rest/v1/rpc/email_gate_')){
-   assert.equal(request.headers.get('authorization'),'Bearer sb_secret_SYNTHETIC');const name=url.split('email_gate_')[1],keys=shape[name];assert(keys);const args=await request.json();assert.deepEqual(Object.keys(args).sort(),keys.slice().sort());assert([A,B].includes(args.p_user));assert([S,S2,S3,BS].includes(args.p_session));
+   assert.equal(request.headers.get('authorization'),null);assert.equal(request.headers.get('apikey'),'sb_secret_SYNTHETIC');const name=url.split('email_gate_')[1],keys=shape[name];assert(keys);const args=await request.json();assert.deepEqual(Object.keys(args).sort(),keys.slice().sort());assert([A,B].includes(args.p_user));assert([S,S2,S3,BS].includes(args.p_session));
    return context('service_role',{role:'service_role'},async()=>{try{return json(await value('select public.email_gate_'+name+'('+keys.map((_,i)=>'$'+(i+1)).join(',')+') value',keys.map(k=>args[k])));}catch{return json({error:'SYNTHETIC_SQL_DENIAL'},400);}});
   }
   if(url==='https://accounts.zoho.com/oauth/v2/token')return json({access_token:'SYNTHETIC_ZOHO_TOKEN',expires_in:3600});

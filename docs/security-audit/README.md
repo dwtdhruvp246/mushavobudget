@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E5.6 Windows junction fixture retry
+
+20 October 2026, FRE95. [Owner offline result](security-fr-2-email-private-readiness-owner-Windows-review.json) passed43/44; the identified failure was redirected artifact roots, before any private runner or hosted request. [Correction](SECURITY_FR_2_4_READINESS_WINDOWS_JUNCTION_RETRY.md) uses a real Windows junction in a portable copy of the18 historical inspector cases, preserving redirect rejection and all44 cases. [Local checks](security-fr-2-email-private-readiness-junction-local-checks.json) pass44/44 with26 source hashes/21 syntax checks; native Windows retry remains pending. Production guards, private runner, accepted ZIP and encrypted packet are unchanged. Next: corrected offline verification followed by the same bounded read-only check. No elevation, upload, secret installation, email or SQL requested. All full findings remain open. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — FR.2.4.E5.5 replacement ZIP passed; E5.6 read-only readiness next
 
 20 October 2026, FRE94. [Owner pass](security-fr-2-email-modern-package-owner-Windows-pass.json) confirms17 checks,60 source hashes and independent44-entry Windows .NET readback;43 files other than the Worker match the old ZIP. Modern ZIP SHA256 is `cc9815bbd512400cbee3f3a227fdd62b697a19ee643e4458a0db924c24aaae24`; unuploaded. [Readiness handoff](SECURITY_FR_2_4_MODERN_ZIP_PASS_AND_PRIVATE_READINESS.md), [contract](security-fr-2-email-private-readiness-contract.json) and [44/44 local checks](security-fr-2-email-private-readiness-local-checks.json) prepare seven fixed read-only GETs using the private packet and hidden Cloudflare credentials. No keys printed, sessions, mail, secret installation, upload or SQL requested. Actual API acceptance remains pending. All full findings stay open. Earlier checkpoints follow.

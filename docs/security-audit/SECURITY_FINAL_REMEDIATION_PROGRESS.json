@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-20",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E5_5_OWNER_MODERN_ZIP44PASS_E5_6_READ_ONLY_READINESS_PENDING",
+  "status": "FR2_EMAIL_E5_6_WINDOWS43PASS1FAIL_JUNCTION_FIXTURE_LOCAL44PASS_RETRY_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
-  "source_parent_commit": "4e5cb42c7c4b9d5b660d2601a0efdc9fd27d364a",
+  "source_parent_commit": "3e465bf082ad5cd269e7112c35e224948c81af19",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE94",
+  "latest_evidence": "FRE95",
   "batches": [
     {
       "id": "FR.1",
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "FR2_EMAIL_E5_5_OWNER_MODERN_ZIP44PASS_E5_6_READ_ONLY_READINESS_PENDING",
+          "status": "FR2_EMAIL_E5_6_WINDOWS43PASS1FAIL_JUNCTION_FIXTURE_LOCAL44PASS_RETRY_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -783,7 +783,13 @@
           "email_modern_package_owner_ZIP_readback_matched": 44,
           "email_private_readiness_local_PASS": 44,
           "email_private_readiness_owner_result_received": false,
-          "email_private_readiness_report": "docs/security-audit/SECURITY_FR_2_4_MODERN_ZIP_PASS_AND_PRIVATE_READINESS.md"
+          "email_private_readiness_report": "docs/security-audit/SECURITY_FR_2_4_MODERN_ZIP_PASS_AND_PRIVATE_READINESS.md",
+          "email_private_readiness_owner_verifier_review": "docs/security-audit/security-fr-2-email-private-readiness-owner-Windows-review.json",
+          "email_private_readiness_owner_verifier_PASS": 43,
+          "email_private_readiness_owner_verifier_FAIL": 1,
+          "email_private_readiness_junction_local_PASS": 44,
+          "email_private_readiness_junction_owner_result_received": false,
+          "email_private_readiness_junction_report": "docs/security-audit/SECURITY_FR_2_4_READINESS_WINDOWS_JUNCTION_RETRY.md"
         },
         {
           "id": "FR.2.5",
@@ -853,7 +859,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E5.6_PRIVATE_READ_ONLY_READINESS",
+  "next_step": "FR.2.4.E5.6_WINDOWS_JUNCTION_RETRY",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -1714,5 +1720,14 @@
   "FR2_email_private_readiness_manifest": "docs/security-audit/security-fr-2-email-private-readiness-source-manifest.json",
   "FR2_email_private_readiness_local_receipt": "docs/security-audit/security-fr-2-email-private-readiness-local-checks.json",
   "FR2_email_private_readiness_local_PASS": 44,
-  "FR2_email_private_readiness_owner_result_received": false
+  "FR2_email_private_readiness_owner_result_received": false,
+  "FR2_email_private_readiness_first_owner_verifier_receipt": "docs/security-audit/security-fr-2-email-private-readiness-owner-Windows-review.json",
+  "FR2_email_private_readiness_first_owner_verifier_PASS": 43,
+  "FR2_email_private_readiness_first_owner_verifier_FAIL": 1,
+  "FR2_email_private_readiness_first_owner_verifier_exit_code": 1,
+  "FR2_email_private_readiness_junction_retry_report": "docs/security-audit/SECURITY_FR_2_4_READINESS_WINDOWS_JUNCTION_RETRY.md",
+  "FR2_email_private_readiness_junction_local_receipt": "docs/security-audit/security-fr-2-email-private-readiness-junction-local-checks.json",
+  "FR2_email_private_readiness_junction_reproduction": "docs/security-audit/security-fr-2-email-readiness-junction-reproduction.json",
+  "FR2_email_private_readiness_junction_local_PASS": 44,
+  "FR2_email_private_readiness_junction_owner_result_received": false
 }

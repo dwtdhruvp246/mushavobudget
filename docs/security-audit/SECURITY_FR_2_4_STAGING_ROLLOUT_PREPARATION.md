@@ -1,6 +1,6 @@
 # FR.2.4.E5.8 — coordinated staging rollout preparation
 
-20 October 2026. Source reviewed at `9f878b258a2e2dc804fb9d37b11f00ac27615459`. Preparation remains incomplete until the live activation/recovery implementation is tested. This document provides the next read-only owner action; it does not authorize deploying or activating the existing offline installer.
+20 October 2026. Source reviewed at `9f878b258a2e2dc804fb9d37b11f00ac27615459`. Preparation remains incomplete until the live activation/recovery implementation is tested. The read-only owner refresh below has passed; no further owner command is requested at this checkpoint. This document does not authorize deploying or activating the existing offline installer.
 
 ## Accepted evidence retained
 
@@ -8,7 +8,7 @@
 - [Accepted modern package receipt](security-fr-2-email-modern-package-owner-Windows-pass.json): 44 entries independently read through Windows .NET; only the Worker changed from the preceding package. ZIP SHA256 `cc9815bbd512400cbee3f3a227fdd62b697a19ee643e4458a0db924c24aaae24`; Worker SHA256 `a7cbfa8b257eb7a53185fc57cc93a8315bbc453fd0bbbd3cc3b2a5e3cf4ee651`. Older package contracts carry an older Worker hash and must not identify this replacement.
 - [Private readiness](security-fr-2-email-private-readiness-owner-pass.json) and E5.7's fresh readiness checks verified selected limiter/namespace/public-URL configuration and key acceptance by staging Auth settings. They do not establish service-role database authority or runtime limiter behavior.
 - [Current Worker/SQL evidence](security-fr-2-email-current-runtime-contract.json) and [Deno evidence](security-fr-2-email-deno-edge-contract.json) retain their scoped Windows passes. Neither is provider-hosted Edge deployment evidence.
-- The last selected database baseline was checked on 17 October. Its matching catalog does not establish the current database state.
+- [Refreshed owner database baseline](security-fr-2-email-rollout-baseline-owner-pass.json), checked 2026-10-20T17:27:41.729355+00:00: all nine selected checks match, including 278 routine and 166 policy fingerprints, 81 public tables and eight Storage tables with RLS, one invoker view, seven hooks, exact Auth/profile types and privileged origin. Email installer/backend/guards remain absent. The diagnostic was read-only; project selection is not independently verified by its literal target label.
 
 ## Source blockers identified
 
@@ -32,13 +32,13 @@ Existing tests demonstrate transaction rollback on activation failure and caller
 
 Steps 2–7 need concrete implementation and validation before an owner execution command. This ordering does not assert that deploying an unactivated UI provides a working login flow. The staged window and its recovery behavior must be explicit in the tested handoff.
 
-## Next owner action: unchanged read-only database baseline
+## Completed owner action: unchanged read-only database baseline
 
 Select the Supabase **staging** project `dczlddwbtgvfdujgcitb` and run [security_fr_2_4_email_pre_activation_reviewed_types.sql](../../supabase/diagnostics/security_fr_2_4_email_pre_activation_reviewed_types.sql). Its exact SQL is supplied in chat.
 
 This is the existing diagnostic, not a new test or migration. It starts `BEGIN TRANSACTION READ ONLY`, reads selected system catalogs, invokes no application/hook/installer functions, prints bounded metadata and ends `ROLLBACK`. It retains its original E4.15 stage label so historical test/source identities remain intact. Its printed target is a label, not independent verification of project selection.
 
-Expected result: `SELECTED_METADATA_PREREQUISITES_MATCH_NOT_ACTIVATION_APPROVAL`, all nine checks true, installer/backend absent and read-only on. Return the complete JSON or SQL error. A pass refreshes prerequisites only; it does not resolve the live activation/recovery implementation blocker.
+Received result: `SELECTED_METADATA_PREREQUISITES_MATCH_NOT_ACTIVATION_APPROVAL`, all nine checks true, installer/backend absent and read-only on. Exact receipt is retained above. This refresh completes dependency step 1 for the observed time; it does not resolve the live activation/recovery implementation blocker. No further SQL or terminal command is requested now. Next work is dependency step 2: implement and test the staging activation and recovery path once execution is available.
 
 ## This checkpoint's limits
 

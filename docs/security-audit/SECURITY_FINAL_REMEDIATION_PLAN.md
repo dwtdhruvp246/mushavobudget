@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E5.5 replacement ZIP passed; E5.6 read-only readiness next
+
+20 October 2026, FRE94. [Owner pass](security-fr-2-email-modern-package-owner-Windows-pass.json) confirms17 checks,60 source hashes and independent44-entry Windows .NET readback;43 files other than the Worker match the old ZIP. Modern ZIP SHA256 is `cc9815bbd512400cbee3f3a227fdd62b697a19ee643e4458a0db924c24aaae24`; unuploaded. [Readiness handoff](SECURITY_FR_2_4_MODERN_ZIP_PASS_AND_PRIVATE_READINESS.md), [contract](security-fr-2-email-private-readiness-contract.json) and [44/44 local checks](security-fr-2-email-private-readiness-local-checks.json) prepare seven fixed read-only GETs using the private packet and hidden Cloudflare credentials. No keys printed, sessions, mail, secret installation, upload or SQL requested. Actual API acceptance remains pending. All full findings stay open. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — FR.2.4.E5.5 portable test correction; Windows retry pending
 
 20 October 2026, FRE93. [Owner package verifier](security-fr-2-email-modern-package-owner-Windows-review.json) returned16 passes/1 failure after60 source hashes and15 syntax checks; ZIP preparation did not start. [Correction](SECURITY_FR_2_4_MODERN_ZIP_PORTABLE_RETRY.md) removes an unnecessary Python invocation from the portable suite and adds bounded failure diagnostics. A deliberately unusable Python command reproduced the16/1 failure class; the corrected suite passes17/17 normally and under that condition. The owner's exact failure cause is unverified. Package rules, all17 cases,44-entry Windows .NET readback, Worker/runtime/SQL and the successful private packet remain unchanged. Next: pinned Windows retry without credentials, upload or hosted writes. All full findings stay open. Earlier checkpoints follow.

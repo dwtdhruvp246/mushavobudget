@@ -1,0 +1,33 @@
+{
+  "stage_step": "FR.2.4.E5.6_PRIVATE_READ_ONLY_READINESS",
+  "source_parent_commit": "4e5cb42c7c4b9d5b660d2601a0efdc9fd27d364a",
+  "source_file_count": 25,
+  "file_sha256": {
+    "docs/security-audit/security-fr-2-email-pages-inspection-contract.json": "809c333cc11287a378e9c49a960b91c9718b09e31b7d0df2657b70a24b6dd1c2",
+    "docs/security-audit/security-fr-2-email-pages-inspection-source-manifest.json": "11ff254c5904b50e500ab746188537f7558fcbafc011ba092ef1aca62d8c037b",
+    "docs/security-audit/security-fr-2-email-private-readiness-contract.json": "dae89c98753da52e9ebba0182af2e11caa877f6e8fec11c787090a4ad8589785",
+    "scripts/check-fr-2-cloudflare-account.mjs": "577de92741f6165970c27e868017bcb868b492fba1acd8897b43bb687bcf08f2",
+    "scripts/check-fr-2-email-pages-inspection.mjs": "b9906d038822bf29bc9a9f0870bfe9c3bd8fd4c5719d23e15701b2c4daf3f1d8",
+    "scripts/check-fr-2-email-private-readiness.mjs": "4c36b61400dbafa17a18590f6ffd639c96bdd8357379903c276ea2f7badf0afc",
+    "scripts/inspect-fr-2-email-limiter.mjs": "c9927ff3cae90566d18f359c0791dd1204c3c47490cf51a6d1d9cb5889b017a9",
+    "scripts/inspect-fr-2-email-pages.mjs": "e70b2cb0fe8de5afa74df6467a1011afc09d89b46615c7a59f0d60c63443969c",
+    "scripts/lib/build-fr-2-email-workers.mjs": "6d0b141b56c3d75d175714a39533a96670af33463fcaf3195cea176a2c92cac9",
+    "scripts/lib/fr-2-email-private-packet.mjs": "d5be210c31055edc1cafaeadb360eca5d6616c6a75769c41384e261a4df22cec",
+    "scripts/lib/store-public-zip.mjs": "81eae2723285b56e321141512c2b6311777397f5b84853badcee9f60af3706aa",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+    "scripts/prepare-final-staging.mjs": "3f58dae50896af7998f02291bf583e48b2192d690ac527956d68e37c4af83edf",
+    "scripts/prepare-fr-2-email-modern-package.mjs": "dce93977a2092c250c24a79261c825a4d065177824c8253b8b2e2e5a23553de0",
+    "scripts/run-fr-2-email-pages-inspect.ps1": "16a525a7c5632a929bcc3d017242684b5d8a78b1a4b6a8678164b18c3960bacf",
+    "scripts/run-fr-2-email-private-readiness.ps1": "85f2cc6e69f802749798f412d3a5450020ba005ce99e90a71f35cec3dfe57e2f",
+    "scripts/verify-fr-2-email-private-readiness.mjs": "c7a8e3a450a8dc4186f74329242e48b6f5ed77fd121b97f8468755c137b0130a",
+    "supabase/functions/_shared/email-verification-crypto.mjs": "5ce08d08e1ca00248fc2800c3c4f62e5299b86a7ffcd2397a416520fd1fd1ac5",
+    "supabase/functions/_shared/email-verification-gateway.mjs": "5b5c316fb2203dbafaa0f61c784a1a1912e6841507ed57c35255be89f70aae77",
+    "supabase/functions/_shared/email-verification-http.mjs": "b28a80658d55725ad78a833be2192b353a9b08ba7987f8cbcb0ae40edd17e395",
+    "supabase/functions/_shared/email-verification-pages.mjs": "bd451abbf4ff8a59ef400d5d4cd34534534ff612fd21c90e7af1af2139437f03",
+    "supabase/functions/_shared/email-verification-rate-client.mjs": "e95a11a05c3865f9751c927246afa3b61da4100b6653f28b12f2404cc1958053",
+    "supabase/functions/_shared/email-verification-rate-do.mjs": "929551832b76e989d7a80510d976043eef557b53eff4be36a405305a8324b232",
+    "supabase/functions/_shared/email-verification-zoho.mjs": "757270e2535e8c349c5e44ab022d3dd56d251ffdebab2bfdc9a4978fc5737793",
+    "tests/fr-2-email-private-readiness.test.mjs": "10c107d18aa5737d91df0d4a7b2111eb17a0ed96f6d1177c2cb315fc9e2f7a41"
+  },
+  "hosted_acceptance": false
+}

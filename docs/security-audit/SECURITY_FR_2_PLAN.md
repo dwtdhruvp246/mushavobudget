@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E5.6 read-only pass; E5.7 staging secret bindings next
+
+20 October 2026, FRE96. [Owner receipt](security-fr-2-email-private-readiness-owner-pass.json) confirms7 requests: four Cloudflare200s, invalid-key401 and both saved keys accepted200 by fixed staging Auth settings; both channels match,13 required variables absent and files unchanged. [Installer handoff](SECURITY_FR_2_4_READINESS_PASS_AND_STAGING_SECRET_INSTALL.md), [contract](security-fr-2-email-secrets-contract.json) and [72/72 local checks](security-fr-2-email-secrets-local-checks.json) prepare one staging-only PATCH adding13 encrypted bindings per channel, with3 markers unchanged and independent readback. The owner command requires an explicit install switch; no upload, SQL or mail. Actual installation/runtime acceptance remains pending. The separate preceding Windows offline receipt was not supplied. All full findings stay open. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — FR.2.4.E5.6 Windows junction fixture retry
 
 20 October 2026, FRE95. [Owner offline result](security-fr-2-email-private-readiness-owner-Windows-review.json) passed43/44; the identified failure was redirected artifact roots, before any private runner or hosted request. [Correction](SECURITY_FR_2_4_READINESS_WINDOWS_JUNCTION_RETRY.md) uses a real Windows junction in a portable copy of the18 historical inspector cases, preserving redirect rejection and all44 cases. [Local checks](security-fr-2-email-private-readiness-junction-local-checks.json) pass44/44 with26 source hashes/21 syntax checks; native Windows retry remains pending. Production guards, private runner, accepted ZIP and encrypted packet are unchanged. Next: corrected offline verification followed by the same bounded read-only check. No elevation, upload, secret installation, email or SQL requested. All full findings remain open. Earlier checkpoints follow.

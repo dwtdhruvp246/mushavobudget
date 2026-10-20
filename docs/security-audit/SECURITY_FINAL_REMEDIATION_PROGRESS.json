@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-20",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E5_4_OWNER_WINDOWS141_AND_PRIVATE_PACKET_PASS_E5_5_ZIP_PENDING",
+  "status": "FR2_EMAIL_E5_5_WINDOWS16PASS1FAIL_PORTABLE_HARNESS_LOCAL17PASS_RETRY_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
-  "source_parent_commit": "ab612daeea8e946aacc9341b9b69244d65bab328",
+  "source_parent_commit": "c56b925dbd8fa66cb853db8b23e7a547b87957e1",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE92",
+  "latest_evidence": "FRE93",
   "batches": [
     {
       "id": "FR.1",
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "FR2_EMAIL_E5_4_OWNER_WINDOWS141_AND_PRIVATE_PACKET_PASS_E5_5_ZIP_PENDING",
+          "status": "FR2_EMAIL_E5_5_WINDOWS16PASS1FAIL_PORTABLE_HARNESS_LOCAL17PASS_RETRY_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -772,8 +772,14 @@
           "email_private_packet_saved_and_readback_verified": true,
           "email_modern_owner_Windows_PASS": 141,
           "email_modern_package_local_PASS": 17,
-          "email_modern_package_owner_Windows_result_received": false,
-          "email_modern_package_report": "docs/security-audit/SECURITY_FR_2_4_PRIVATE_PACKET_PASS_AND_MODERN_ZIP.md"
+          "email_modern_package_owner_Windows_result_received": true,
+          "email_modern_package_report": "docs/security-audit/SECURITY_FR_2_4_PRIVATE_PACKET_PASS_AND_MODERN_ZIP.md",
+          "email_modern_package_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-modern-package-owner-Windows-review.json",
+          "email_modern_package_owner_Windows_PASS": 16,
+          "email_modern_package_owner_Windows_FAIL": 1,
+          "email_modern_package_portable_local_PASS": 17,
+          "email_modern_package_portable_owner_result_received": false,
+          "email_modern_package_portable_report": "docs/security-audit/SECURITY_FR_2_4_MODERN_ZIP_PORTABLE_RETRY.md"
         },
         {
           "id": "FR.2.5",
@@ -843,7 +849,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E5.5_MODERN_REPLACEMENT_ZIP",
+  "next_step": "FR.2.4.E5.5_WINDOWS_PORTABLE_RETRY",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -1682,5 +1688,17 @@
   "FR2_email_modern_package_manifest": "docs/security-audit/security-fr-2-email-modern-package-source-manifest.json",
   "FR2_email_modern_package_local_receipt": "docs/security-audit/security-fr-2-email-modern-package-local-checks.json",
   "FR2_email_modern_package_local_PASS": 17,
-  "FR2_email_modern_package_owner_Windows_result_received": false
+  "FR2_email_modern_package_owner_Windows_result_received": true,
+  "FR2_email_modern_package_owner_Windows_receipt": "docs/security-audit/security-fr-2-email-modern-package-owner-Windows-review.json",
+  "FR2_email_modern_package_owner_Windows_PASS": 16,
+  "FR2_email_modern_package_owner_Windows_FAIL": 1,
+  "FR2_email_modern_package_owner_Windows_exit_code": 1,
+  "FR2_email_modern_package_owner_Windows_scoped_pass": false,
+  "FR2_email_modern_package_portable_retry_report": "docs/security-audit/SECURITY_FR_2_4_MODERN_ZIP_PORTABLE_RETRY.md",
+  "FR2_email_modern_package_portable_retry_local_receipt": "docs/security-audit/security-fr-2-email-modern-package-portable-local-checks.json",
+  "FR2_email_modern_package_portable_reproduction": "docs/security-audit/security-fr-2-email-modern-package-python-reproduction.json",
+  "FR2_email_modern_package_portable_local_PASS": 17,
+  "FR2_email_modern_package_portable_bad_python_command_PASS": 17,
+  "FR2_email_modern_package_owner_exact_failure_cause_verified": false,
+  "FR2_email_modern_package_portable_owner_result_received": false
 }

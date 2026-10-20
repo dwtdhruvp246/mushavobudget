@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E5.5 portable test correction; Windows retry pending
+
+20 October 2026, FRE93. [Owner package verifier](security-fr-2-email-modern-package-owner-Windows-review.json) returned16 passes/1 failure after60 source hashes and15 syntax checks; ZIP preparation did not start. [Correction](SECURITY_FR_2_4_MODERN_ZIP_PORTABLE_RETRY.md) removes an unnecessary Python invocation from the portable suite and adds bounded failure diagnostics. A deliberately unusable Python command reproduced the16/1 failure class; the corrected suite passes17/17 normally and under that condition. The owner's exact failure cause is unverified. Package rules, all17 cases,44-entry Windows .NET readback, Worker/runtime/SQL and the successful private packet remain unchanged. Next: pinned Windows retry without credentials, upload or hosted writes. All full findings stay open. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — FR.2.4.E5.4 private packet passed; E5.5 replacement ZIP next
 
 20 October 2026, FRE92. [Owner Windows receipts](security-fr-2-email-modern-owner-Windows-pass.json) confirm141 checks,91 source hashes and successful DPAPI/private-pipe save/readback for16 variables and two controlled recipients; no provider requests or hosted writes. [Replacement ZIP handoff](SECURITY_FR_2_4_PRIVATE_PACKET_PASS_AND_MODERN_ZIP.md), [contract](security-fr-2-email-modern-package-contract.json) and [17/17 local checks](security-fr-2-email-modern-package-local-checks.json) prepare a separate modern Worker ZIP while requiring all43 other public files to match the retained old archive. Next: Windows package/.NET readback only. No keys, private packet access, upload, Cloudflare writes or SQL requested. All full findings remain open. Earlier checkpoints follow.

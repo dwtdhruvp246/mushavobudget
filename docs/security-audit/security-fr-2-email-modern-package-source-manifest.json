@@ -47,7 +47,7 @@
     "scripts/prepare-final-staging.mjs": "3f58dae50896af7998f02291bf583e48b2192d690ac527956d68e37c4af83edf",
     "scripts/prepare-fr-2-email-modern-package.mjs": "dce93977a2092c250c24a79261c825a4d065177824c8253b8b2e2e5a23553de0",
     "scripts/prepare-stage-2-headers.cjs": "f52d8c555acc55792e5d2dc941557116d32eda447ba7490aca19ffa25b0cb169",
-    "scripts/verify-fr-2-email-modern-package.mjs": "a0c09e97ba7b3d89914a63763954c6eb20360d05da71f79868145255cb094413",
+    "scripts/verify-fr-2-email-modern-package.mjs": "a5fa651adebaf679d9568555c6ec2361d3ae9158fda4d90600f6ef1dbf049062",
     "session-entry.js": "09ad4dc4f03d1bce098a1849362a5e547e91cbfcb0715821a94cf81408ffef0e",
     "signup.html": "2866d3e9ed05168b84e88a7035b55653be4706e553ea69a9c36c82f5d0c0a084",
     "site.css": "647b886dec64270f32e01957a5b263cdef5140009cab1fa13b762468c33dc036",
@@ -61,8 +61,9 @@
     "supabase/functions/_shared/email-verification-rate-do.mjs": "929551832b76e989d7a80510d976043eef557b53eff4be36a405305a8324b232",
     "supabase/functions/_shared/email-verification-zoho.mjs": "757270e2535e8c349c5e44ab022d3dd56d251ffdebab2bfdc9a4978fc5737793",
     "sw.js": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
-    "tests/fr-2-email-modern-package.test.mjs": "026a9fc99afd5ea411a704a9cbc78b9c31f5a4966bcec4c8e74ba65b250880fd",
+    "tests/fr-2-email-modern-package.test.mjs": "59e7b6e7fd4749e1eb0b3a7dd1bae1c9c38b1bceed1ca41c7823d1d18e3b7d5a",
     "workspace-preference.js": "913fa62e34cf16d6f6eb1791e3bb9dad0b37001d64ed408dac2773ebbb37ce56"
   },
-  "hosted_acceptance": false
+  "hosted_acceptance": false,
+  "verification_revision": "PORTABLE_NODE_ONLY_PACKAGE_TESTS"
 }

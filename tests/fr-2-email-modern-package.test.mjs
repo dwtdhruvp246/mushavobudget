@@ -29,9 +29,11 @@ for(const [title,change]of [
 test('Executable suffix and missing config are rejected without evaluation',()=>{assert.throws(()=>configurationFromZIP(new Map()));assert.throws(()=>configurationFromZIP(new Map([['config.js',Buffer.concat([config(),Buffer.from('globalThis.__executed=true;')])]])));assert.equal(globalThis.__executed,undefined);});
 test('Retained ZIP digest is required before creating any output',async()=>{const d=fs.mkdtempSync(path.join(os.tmpdir(),'modern-package-reject-'));try{const old=path.join(d,'old.zip'),out=path.join(d,'out');fs.writeFileSync(old,createPublicZIP(entries()));fs.mkdirSync(out);await assert.rejects(prepareModernReplacementZIP({source:root,candidate:out,toolsRoot:path.join(root,'scripts/fixtures/email-worker-tools'),retainedZIP:old}),/RETAINED_ZIP_IDENTITY/);assert.deepEqual(fs.readdirSync(out),[]);}finally{fs.rmSync(d,{recursive:true,force:true});}});
 test('Unrelated asset change, removed entry and stale Worker all fail comparison',()=>{const p=new Map(entries()),c=new Map(entries());c.get('asset1.js')[0]^=1;assert.throws(()=>compareReplacementEntries(c,p));c.delete('asset2.js');assert.throws(()=>compareReplacementEntries(c,p));const e=new Map(entries());e.delete('asset1.js');e.set('_worker.js',Buffer.from('stale'));assert.throws(()=>compareReplacementEntries(e,e));});
-test('Actual new Worker and static exporter build44 files with preserved CSP, route and staging scope',async()=>{
+test('Actual new Worker and static exporter build44 files with preserved CSP, route and staging scope',async t=>{
+  let phase='MODERN_WORKER_AND_STATIC_EXPORT';
   const d=fs.mkdtempSync(path.join(os.tmpdir(),'modern-package-actual-'));try{
     const b=await buildModernPublicCandidate({source:root,candidate:d,toolsRoot:path.join(root,'scripts/fixtures/email-worker-tools'),configuration:config().toString()});
+    phase='PUBLIC_SCOPE_HEADERS_AND_ZIP';
     assert.equal(b.entries.size,44);assert.equal(b.component.selected_source_inputs_verified,41);assert.equal(hash(b.entries.get('_worker.js')),modernWorker);
     assert.deepEqual(JSON.parse(b.entries.get('_routes.json')),{version:1,include:['/*'],exclude:[]});
     assert.match(b.entries.get('_headers').toString(),/application\/manifest\+json/);assert.match(b.entries.get('_headers').toString(),/sha256-/);
@@ -41,6 +43,7 @@ test('Actual new Worker and static exporter build44 files with preserved CSP, ro
     const zip=createPublicZIP([...b.entries]),readback=readCanonicalPublicZIP(zip);for(const [p,v]of b.entries)assert(v.equals(readback.get(p)));
     // Reconstruct only the historical fixture adapter and require its original source/body identity.
     // This temporary copy never modifies current source or an owner artifact.
+    phase='HISTORICAL_SOURCE_RECONSTRUCTION';
     const historical=path.join(d,'historical');fs.mkdirSync(historical);
     for(const name of ['crypto','http','zoho','gateway','rate-client','pages','rate-do']){
       const relative='supabase/functions/_shared/email-verification-'+name+'.mjs',target=path.join(historical,relative);
@@ -53,14 +56,14 @@ test('Actual new Worker and static exporter build44 files with preserved CSP, ro
     assert.equal(hash(Buffer.from(priorSource)),'f9c39c3d599f3834dea1d7e8c17d6819c4656213ed3292efcb970d9b00b1dc09');
     fs.writeFileSync(gateway,priorSource);
     const require=createRequire(path.join(root,'scripts/fixtures/email-worker-tools/package.json'));
+    phase='HISTORICAL_BUNDLE_AND_43_FILE_COMPARISON';
     const oldBundles=await buildEmailWorkers(require('esbuild'),historical),previous=new Map(b.entries);
     previous.set('_worker.js',Buffer.from(oldBundles.pages));assert.equal(compareReplacementEntries(b.entries,previous),43);
     const changed=new Map(previous);changed.set('app.html',Buffer.from('unrelated change'));assert.throws(()=>compareReplacementEntries(b.entries,changed),/UNRELATED_PUBLIC_CHANGE/);
-    fs.writeFileSync(path.join(d,'synthetic-review.zip'),zip); // synthetic publishable key only
-    const py=spawnSync('python',['-c','import sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); assert len(z.infolist())==44; assert z.testzip() is None',path.join(d,'synthetic-review.zip')],{encoding:'utf8'});
-    // Windows handoff uses independent .NET; Python is an extra check only when installed.
-    if(!py.error)assert.equal(py.status,0);
-  }finally{fs.rmSync(d,{recursive:true,force:true});}
+    // The portable suite requires only its pinned Node/esbuild tools.
+    // Independent Windows .NET readback remains mandatory in the packaging wrapper.
+    phase='COMPLETE';
+  }finally{t.diagnostic('SAFE_PACKAGE_PHASE='+phase);fs.rmSync(d,{recursive:true,force:true});}
 });
 test('Existing output is never reused by actual exporter',async()=>{const d=fs.mkdtempSync(path.join(os.tmpdir(),'modern-package-existing-'));try{fs.writeFileSync(path.join(d,'keep'),'old');await assert.rejects(buildModernPublicCandidate({source:root,candidate:d,toolsRoot:path.join(root,'scripts/fixtures/email-worker-tools'),configuration:config().toString()}),/NEW_EMPTY/);assert.equal(fs.readFileSync(path.join(d,'keep'),'utf8'),'old');}finally{fs.rmSync(d,{recursive:true,force:true});}});
 test('CLI errors emit a fixed safe receipt with no configuration or raw paths',()=>{const r=spawnSync(process.execPath,[path.join(root,'scripts/prepare-fr-2-email-modern-package.mjs')],{encoding:'utf8'});assert.equal(r.status,1);const j=JSON.parse(r.stdout);assert.equal(j.actual_hosted_requests,0);assert.equal(j.raw_exceptions_configuration_or_keys_printed,false);assert.equal(j.exit_code,1);assert(!r.stdout.includes(root));assert.equal(r.stderr,'');});

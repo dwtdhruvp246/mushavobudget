@@ -1,3 +1,9 @@
+# Current checkpoint — FR.2.4.E5.4 private packet passed; E5.5 replacement ZIP next
+
+20 October 2026, FRE92. [Owner Windows receipts](security-fr-2-email-modern-owner-Windows-pass.json) confirm141 checks,91 source hashes and successful DPAPI/private-pipe save/readback for16 variables and two controlled recipients; no provider requests or hosted writes. [Replacement ZIP handoff](SECURITY_FR_2_4_PRIVATE_PACKET_PASS_AND_MODERN_ZIP.md), [contract](security-fr-2-email-modern-package-contract.json) and [17/17 local checks](security-fr-2-email-modern-package-local-checks.json) prepare a separate modern Worker ZIP while requiring all43 other public files to match the retained old archive. Next: Windows package/.NET readback only. No keys, private packet access, upload, Cloudflare writes or SQL requested. All full findings remain open. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — FR.2.4.E5.4 modern transport passed; private Windows packet next
 
 19 October 2026, FRE91. [Owner key-label report](security-fr-2-email-key-labels-owner-report.json) confirms availability only. [Handoff](SECURITY_FR_2_4_MODERN_KEYS_AND_PRIVATE_PACKET_HANDOFF.md), [contract](security-fr-2-email-modern-preparation-contract.json) and [141/141 local receipt](security-fr-2-email-modern-preparation-local-checks.json) cover modern Secret-key apikey-only transport, caller JWT/session preservation, actual compiled Worker/SQLite/full55 SQL and private packet validation. The new Pages bundle requires a replacement ZIP; keep the old ZIP unuploaded. Next: owner Windows verifier and hidden-input DPAPI packet preparation, with no provider calls, email, Cloudflare secret installation or SQL. All findings remain open. Earlier checkpoints follow.

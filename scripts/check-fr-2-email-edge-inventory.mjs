@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 
 export const inventoryStage='FR.2.4.E5.10_EDGE_METADATA_INVENTORY';
+export const inventoryRevision=2;
 export const inventoryRef='dczlddwbtgvfdujgcitb';
 export const selectedFunctions=Object.freeze([
   'invite-admin-user','invite-business-member','send-test-push','sync-exchange-rates'
@@ -35,7 +36,7 @@ function selectedMetadata(row,slug){
     import_map:row.import_map??null,
     provider_bundle_SHA256:row.ezbr_sha256?row.ezbr_sha256.toLowerCase():null};
 }
-function fromList(data){
+function fromList(data,receipt,observation){
   need(Array.isArray(data)&&data.length<=256,'FUNCTION_METADATA_SHAPE_REVIEW_REQUIRED');
   const seen=new Set();
   for(const row of data){
@@ -43,15 +44,23 @@ function fromList(data){
       'FUNCTION_METADATA_SHAPE_REVIEW_REQUIRED');
     seen.add(row.slug);
   }
+  // Preserve all four fixed-name observations before a missing/inactive row
+  // stops normalization. Arbitrary provider names, status text and IDs stay private.
+  receipt.function_list_observations.push({observation,total_functions:data.length,
+    selected_functions:selectedFunctions.map(slug=>{
+      const row=data.find(x=>x.slug===slug);
+      return {slug,present:row!==undefined,status_is_ACTIVE:row?.status==='ACTIVE'};
+    })});
+  if(observation==='BEFORE')receipt.observed_total_function_count=data.length;
   return selectedFunctions.map(slug=>{
     const row=data.find(x=>x.slug===slug);
     need(row,'SELECTED_FUNCTION_MISSING_OR_INACTIVE');return selectedMetadata(row,slug);
   });
 }
 export async function checkEdgeInventory(input,{transport=fetch}={}){
-  const r={stage_step:inventoryStage,result:'STAGING_EDGE_METADATA_REVIEW_REQUIRED',requests_attempted:0,
+  const r={stage_step:inventoryStage,diagnostic_revision:inventoryRevision,result:'STAGING_EDGE_METADATA_REVIEW_REQUIRED',requests_attempted:0,
     fixed_staging_project_metadata_matched:false,fixed_staging_database_host_matched:false,
-    selected_function_count:4,observed_total_function_count:null,selected_functions:[],
+    selected_function_count:4,observed_total_function_count:null,selected_functions:[],function_list_observations:[],
     selected_metadata_agreed_across_list_detail_list:false,selected_metadata_SHA256:null,
     deployment_source_parity_verified:false,previous_deployable_artifacts_retained:false,
     runtime_JWT_or_service_access_verified:false,token_permission_scope_independently_inspected:false,
@@ -93,12 +102,12 @@ export async function checkEdgeInventory(input,{transport=fetch}={}){
     need(object(p.database)&&p.database.host==='db.'+inventoryRef+'.supabase.co','TARGET_DATABASE_HOST_MISMATCH');
     r.fixed_staging_database_host_matched=true;need(p.status==='ACTIVE_HEALTHY','TARGET_PROJECT_NOT_READY');
     const startList=await get('STAGING_FUNCTION_LIST_BEFORE','/functions');
-    const start=fromList(startList);r.observed_total_function_count=startList.length;
+    const start=fromList(startList,r,'BEFORE');
     for(const [index,slug] of selectedFunctions.entries()){
       const detail=selectedMetadata(await get('SELECTED_FUNCTION_METADATA_'+(index+1),'/functions/'+slug),slug);
       need(JSON.stringify(detail)===JSON.stringify(start[index]),'OBSERVED_FUNCTION_METADATA_CHANGED');
     }
-    const endList=await get('STAGING_FUNCTION_LIST_AFTER','/functions');const end=fromList(endList);
+    const endList=await get('STAGING_FUNCTION_LIST_AFTER','/functions');const end=fromList(endList,r,'AFTER');
     need(JSON.stringify(start)===JSON.stringify(end),'OBSERVED_FUNCTION_METADATA_CHANGED');
     r.selected_functions=end;r.selected_metadata_SHA256=hash(end);
     r.selected_metadata_agreed_across_list_detail_list=true;

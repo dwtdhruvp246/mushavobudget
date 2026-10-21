@@ -53,6 +53,37 @@ test('Missing or inactive selected functions require review before detail reques
     const {r,calls}=await run({before});assert.equal(r.problem_code,'SELECTED_FUNCTION_MISSING_OR_INACTIVE');assert.equal(calls.length,2);
   }
 });
+test('An early missing selected function still reports all four presences and the validated total',async()=>{
+  const {r,calls}=await run({before:functions().slice(1)});
+  assert.equal(r.diagnostic_revision,2);assert.equal(r.exit_code,1);assert.equal(calls.length,2);
+  assert.equal(r.problem_code,'SELECTED_FUNCTION_MISSING_OR_INACTIVE');assert.equal(r.observed_total_function_count,3);
+  assert.deepEqual(r.function_list_observations,[{observation:'BEFORE',total_functions:3,
+    selected_functions:selectedFunctions.map((slug,i)=>({slug,present:i!==0,status_is_ACTIVE:i!==0}))}]);
+  assert.deepEqual(r.selected_functions,[]);assert.equal(r.selected_metadata_agreed_across_list_detail_list,false);
+});
+test('Mixed missing and non-active functions retain only fixed names and booleans on refusal',async()=>{
+  const before=functions().slice(1);before[0].status=token;
+  before.push({slug:'private-unrelated-function',name:token,id:token,status:token});
+  const {r,calls}=await run({before});assert.equal(r.exit_code,1);assert.equal(calls.length,2);
+  const observed=r.function_list_observations[0].selected_functions;
+  assert.deepEqual(observed.map(x=>[x.present,x.status_is_ACTIVE]),[[false,false],[true,false],[true,true],[true,true]]);
+  assert.equal(r.observed_total_function_count,4);
+  for(const privateText of [token,'private-unrelated-function','PRIVATE_ID_','PRIVATE_NAME','PRIVATE_PATH'])assert(!JSON.stringify(r).includes(privateText));
+});
+test('A structurally invalid list does not publish a misleading presence observation or count',async()=>{
+  for(const before of [{data:functions()},[...functions(),functions()[0]]]){
+    const {r}=await run({before});assert.equal(r.exit_code,1);assert.equal(r.problem_code,'FUNCTION_METADATA_SHAPE_REVIEW_REQUIRED');
+    assert.deepEqual(r.function_list_observations,[]);assert.equal(r.observed_total_function_count,null);
+  }
+});
+test('A function disappearing at the final list retains distinct before and after evidence without acceptance',async()=>{
+  const {r,calls}=await run({after:functions().slice(0,3)});assert.equal(r.exit_code,1);assert.equal(calls.length,7);
+  assert.equal(r.problem_code,'SELECTED_FUNCTION_MISSING_OR_INACTIVE');
+  assert.deepEqual(r.function_list_observations.map(x=>x.observation),['BEFORE','AFTER']);
+  assert.equal(r.function_list_observations[0].selected_functions[3].present,true);
+  assert.equal(r.function_list_observations[1].selected_functions[3].present,false);
+  assert.equal(r.selected_metadata_agreed_across_list_detail_list,false);assert.deepEqual(r.selected_functions,[]);
+});
 test('Duplicate or malformed slugs, wrapped arrays and unbounded inventories are refused',async()=>{
   for(const before of [[...functions(),functions()[0]],[...functions(),{slug:'../arbitrary'}],{data:functions()},Array.from({length:257},(_,i)=>({slug:'extra-'+i}))])assert.equal((await run({before})).r.exit_code,1);
 });

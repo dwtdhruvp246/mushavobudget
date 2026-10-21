@@ -11,7 +11,7 @@ let phase='SOURCE_HASHES',problem=null,verified=0,syntax=0,group=null;
 try{
   assert.equal(process.argv.length,2,'No input arguments supported');
   const manifest=JSON.parse(await readFile(path.join(root,'docs/security-audit/security-fr-2-email-edge-inventory-source-manifest.json'),'utf8'));
-  assert.equal(manifest.stage_step,stage);assert.equal(Object.keys(manifest.file_sha256).length,manifest.source_file_count);
+  assert.equal(manifest.stage_step,stage);assert.equal(manifest.diagnostic_revision,2);assert.equal(Object.keys(manifest.file_sha256).length,manifest.source_file_count);
   for(const [file,expected]of Object.entries(manifest.file_sha256)){
     assert(/^[A-Za-z0-9_./-]+$/.test(file)&&!path.isAbsolute(file)&&!file.includes('..'));
     const full=path.join(root,file),stat=await lstat(full);
@@ -37,8 +37,8 @@ try{
   phase='COMPLETE';
 }catch{problem='OFFLINE_EDGE_INVENTORY_SOURCE_OR_TEST_REVIEW_REQUIRED';}
 const ok=problem===null;
-console.log(JSON.stringify({stage_step:stage,result:ok?'OFFLINE_FIXED_EDGE_METADATA_INVENTORY_SCOPED_PASS':'OFFLINE_EDGE_INVENTORY_REVIEW_REQUIRED',
-  source_parent_commit:'3dd3afdcbc6f572fc2871a821774a5dfce0155c3',node_version:process.version,
+console.log(JSON.stringify({stage_step:stage,diagnostic_revision:2,result:ok?'OFFLINE_FIXED_EDGE_METADATA_INVENTORY_SCOPED_PASS':'OFFLINE_EDGE_INVENTORY_REVIEW_REQUIRED',
+  source_parent_commit:'8a5fc62a0fd332341fc5bbf33583f5566f62f094',node_version:process.version,
   source_files_SHA256_verified:verified,syntax_checks:syntax,group,
   synthetic_provider_transport_tests:true,Windows_PowerShell_private_runner_verified:false,
   actual_hosted_requests:0,provider_inventory_or_token_acceptance_verified:false,

@@ -1,8 +1,8 @@
 {
   "stage_step": "FR.2.4.E5.10_EDGE_METADATA_INVENTORY",
-  "source_parent_commit": "3dd3afdcbc6f572fc2871a821774a5dfce0155c3",
-  "status": "LOCAL24PASS_OWNER_READ_ONLY_INVENTORY_PENDING",
-  "report": "docs/security-audit/SECURITY_FR_2_4_EDGE_INVENTORY_HANDOFF.md",
+  "source_parent_commit": "8a5fc62a0fd332341fc5bbf33583f5566f62f094",
+  "status": "OWNER_REVISION1_MISSING_OR_INACTIVE_REVIEW_REVISION2_LOCAL28PASS_OWNER_PENDING",
+  "report": "docs/security-audit/SECURITY_FR_2_4_EDGE_INVENTORY_REVIEW_AND_DIAGNOSTICS.md",
   "manifest": "docs/security-audit/security-fr-2-email-edge-inventory-source-manifest.json",
   "verifier": "scripts/verify-fr-2-email-edge-inventory.mjs",
   "private_runner": "scripts/run-fr-2-email-edge-inventory.ps1",
@@ -19,7 +19,7 @@
     "Project Settings: Read",
     "Edge Functions: Read"
   ],
-  "local_PASS": 24,
+  "local_PASS": 28,
   "source_hashes": 18,
   "JS_syntax_checks": 3,
   "owner_Windows_result_received": false,
@@ -33,5 +33,10 @@
   "hosted_acceptance": false,
   "findings_closed": [],
   "production_or_native_changed": false,
-  "APK_update_deferred": true
+  "APK_update_deferred": true,
+  "diagnostic_revision": 2,
+  "earlier_revision_owner_Windows_result_received": true,
+  "earlier_owner_receipt": "docs/security-audit/security-fr-2-email-edge-inventory-owner-review.json",
+  "earlier_owner_exit_code": 1,
+  "specific_missing_or_inactive_function_identified": false
 }

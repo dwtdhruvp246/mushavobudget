@@ -1,17 +1,19 @@
 {
   "stage_step": "FR.2.4.E5.10_EDGE_METADATA_INVENTORY",
+  "diagnostic_revision": 2,
   "verification_context": "CLEAN_GIT_TREE_ARCHIVE",
-  "archive_source_tree": "81d95316495d0e78e6164a745f0f67f8ad2926aa",
+  "archive_source_tree": "f53768169cf0146b75e20c5f80bf08c0ec17a552",
   "receipt": {
     "stage_step": "FR.2.4.E5.10_EDGE_METADATA_INVENTORY",
+    "diagnostic_revision": 2,
     "result": "OFFLINE_FIXED_EDGE_METADATA_INVENTORY_SCOPED_PASS",
-    "source_parent_commit": "3dd3afdcbc6f572fc2871a821774a5dfce0155c3",
+    "source_parent_commit": "8a5fc62a0fd332341fc5bbf33583f5566f62f094",
     "node_version": "v24.19.0",
     "source_files_SHA256_verified": 18,
     "syntax_checks": 3,
     "group": {
-      "tests": 24,
-      "pass": 24,
+      "tests": 28,
+      "pass": 28,
       "fail": 0,
       "cancelled": 0,
       "skipped": 0,

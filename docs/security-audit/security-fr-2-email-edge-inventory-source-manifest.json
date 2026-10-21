@@ -2,13 +2,13 @@
   "stage_step": "FR.2.4.E5.10_EDGE_METADATA_INVENTORY",
   "source_file_count": 18,
   "file_sha256": {
-    "scripts/check-fr-2-email-edge-inventory.mjs": "a8b9f1eb967341b94ab32bac5dc57d0579361c1c50ab67f0aeb8760c448acf2a",
+    "scripts/check-fr-2-email-edge-inventory.mjs": "66fe2906b8b4542dd6b53e146ccf84693b451690bbccc277581b702fbf263ddb",
     "scripts/fixtures/email-deno-runtime/deno.json": "60fe2bb2c240e515a51b3d26b7140c4f813193c046256349cdf2d09a444dd340",
     "scripts/fixtures/email-deno-runtime/edge-deno.lock": "eb373bd333000e850a8775bc67796baee9aecbebc818bd53fbdd1e7f507ae8ff",
     "scripts/fixtures/email-deno-runtime/entrypoints.mts": "10ea83901a690da2f1a32d4fc2ba0adfea0b813ae2b60225eb7d6f1b38e5fa7a",
     "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
-    "scripts/run-fr-2-email-edge-inventory.ps1": "68b9900368a9467a066eadce726393cfc1414d8c4c68b90dbff2405d86f5db23",
-    "scripts/verify-fr-2-email-edge-inventory.mjs": "4976ca4684f3a26f1149f26a1546ca5005fa9762eef8d94151d78f40365bca77",
+    "scripts/run-fr-2-email-edge-inventory.ps1": "55b39ad9b48bbf57749badc9fc403f9794a44fd53825b60d9f702f5adc034374",
+    "scripts/verify-fr-2-email-edge-inventory.mjs": "bad275b6dff6812bb3a3f2bc152fe4819ef8a231576de6acabe023c959c5aae5",
     "supabase/config.toml": "527c331d074845665dba4d79ea782cc3e22ff37473564f9b20280daa9b8de9fb",
     "supabase/functions/_shared/admin-assurance.mjs": "afd30ba055c453d85f6ad87f43d0ea8903e6ef31b5fe483d877f430076b41278",
     "supabase/functions/_shared/email-session-assurance.mjs": "8caf0b7d9267ae2034f0a3ccb820c8aaf7e3895408f0b300b168438e0a819528",
@@ -19,12 +19,13 @@
     "supabase/functions/send-test-push/deno.json": "5335690600914ad53e9b4873a8287e0baba01902ef94eec02d01b35ca6d7b3be",
     "supabase/functions/send-test-push/index.ts": "3952c165396ac865c6b213d9c3b14025cbdaa1eab8e7cf7d3bb9abd34d8f3473",
     "supabase/functions/sync-exchange-rates/index.ts": "20636029adcc4550864d31b32c676e4b5c585c12e3301b4ccef47e70234aa6c7",
-    "tests/fr-2-email-edge-inventory.test.mjs": "85c5d6a397ea6fba2af42a73ca65ef569b1bada283df24cc0ba986916c197c85"
+    "tests/fr-2-email-edge-inventory.test.mjs": "efd8bd5c1fba06f5c7d76848531d2bd8e476aba8e963e0adc64500c7a873494b"
   },
   "syntax_paths": [
     "scripts/check-fr-2-email-edge-inventory.mjs",
     "scripts/verify-fr-2-email-edge-inventory.mjs",
     "tests/fr-2-email-edge-inventory.test.mjs"
   ],
-  "expected_tests": 24
+  "expected_tests": 28,
+  "diagnostic_revision": 2
 }

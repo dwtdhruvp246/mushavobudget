@@ -1,8 +1,8 @@
 {
   "stage_step": "FR.2.4.E5.10_EDGE_METADATA_INVENTORY",
-  "source_parent_commit": "8a5fc62a0fd332341fc5bbf33583f5566f62f094",
-  "status": "OWNER_REVISION1_MISSING_OR_INACTIVE_REVIEW_REVISION2_LOCAL28PASS_OWNER_PENDING",
-  "report": "docs/security-audit/SECURITY_FR_2_4_EDGE_INVENTORY_REVIEW_AND_DIAGNOSTICS.md",
+  "source_parent_commit": "ade14955002b1492e493accabcd3541d8346b012",
+  "status": "OWNER_REVISION2_FOUR_SELECTED_FUNCTIONS_ABSENT_FIRST_DEPLOYMENT_PREPARATION_PENDING",
+  "report": "docs/security-audit/SECURITY_FR_2_4_EDGE_ABSENCE_AND_FIRST_DEPLOYMENT_PREPARATION.md",
   "manifest": "docs/security-audit/security-fr-2-email-edge-inventory-source-manifest.json",
   "verifier": "scripts/verify-fr-2-email-edge-inventory.mjs",
   "private_runner": "scripts/run-fr-2-email-edge-inventory.ps1",
@@ -22,7 +22,7 @@
   "local_PASS": 28,
   "source_hashes": 18,
   "JS_syntax_checks": 3,
-  "owner_Windows_result_received": false,
+  "owner_Windows_result_received": true,
   "actual_hosted_requests": 0,
   "deployment_source_parity_verified": false,
   "previous_deployable_artifacts_retained": false,
@@ -38,5 +38,14 @@
   "earlier_revision_owner_Windows_result_received": true,
   "earlier_owner_receipt": "docs/security-audit/security-fr-2-email-edge-inventory-owner-review.json",
   "earlier_owner_exit_code": 1,
-  "specific_missing_or_inactive_function_identified": false
+  "specific_missing_or_inactive_function_identified": true,
+  "owner_receipt": "docs/security-audit/security-fr-2-email-edge-inventory-owner-absence.json",
+  "owner_checked_UTC": "2026-10-21T16:53:29.846Z",
+  "owner_exit_code": 1,
+  "owner_requests": 2,
+  "observed_total_function_count": 1,
+  "all_four_selected_functions_absent_from_returned_list": true,
+  "full_active_inventory_prerequisite_satisfied": false,
+  "next_step": "FR.2.4.E5.11_FIRST_EDGE_DEPLOYMENT_PREPARATION",
+  "owner_repeat_requested": false
 }

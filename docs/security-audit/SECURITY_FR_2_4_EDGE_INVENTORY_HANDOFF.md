@@ -1,5 +1,7 @@
 # E5.10 read-only staging Edge metadata inventory
 
+Latest outcome: [four selected functions absent; first-deployment preparation](SECURITY_FR_2_4_EDGE_ABSENCE_AND_FIRST_DEPLOYMENT_PREPARATION.md), FRE105. The revision-2 owner observation resolves which prerequisite is missing. No rerun or hosted write is requested at this receipt checkpoint. Earlier handoff follows.
+
 Current outcome: [owner review and revision-2 diagnostics](SECURITY_FR_2_4_EDGE_INVENTORY_REVIEW_AND_DIAGNOSTICS.md), FRE104. Both initial GETs returned HTTP 200, but a selected function was missing or non-active. Revision 2 adds bounded per-function presence observations before refusal; the current verifier has 28 cases. Use the revised pinned owner block from chat. No deployment or permission expansion is requested.
 
 21 October 2026, FRE103. E5.9's [provider-routed read-only target pass](SECURITY_FR_2_4_MANAGEMENT_TARGET_OUTCOME.md) is retained. This next check inventories the four Edge functions exercised by the reviewed Deno suite. It is one preparation checkpoint within the coordinated rollout; Pages refresh, source parity, recoverable deployment artifacts, canonical integration and the full cross-service recovery handoff remain outstanding.

@@ -1,5 +1,7 @@
 # E5.10 owner review and bounded presence diagnostics
 
+Current result: [all four selected functions absent](SECURITY_FR_2_4_EDGE_ABSENCE_AND_FIRST_DEPLOYMENT_PREPARATION.md), FRE105. Revision 2 reports one other function in the returned list and all four selected `present` booleans false. The inventory correctly remains review required. No repeat or permission expansion is requested; prepare first deployments and their dependencies instead. The earlier review and diagnostic handoff below are retained as history.
+
 21 October 2026, FRE104. The [owner receipt](security-fr-2-email-edge-inventory-owner-review.json), checked `2026-10-21T16:33:08.425Z` from handoff commit `8a5fc62a0fd332341fc5bbf33583f5566f62f094`, reports two HTTP 200 JSON responses: the fixed staging project metadata and initial function list. The private checker returned `SELECTED_FUNCTION_MISSING_OR_INACTIVE`, exit 1, before requesting individual function metadata. No function was invoked and no setting, deployment or application data was changed.
 
 ## Observed problem and diagnostic gap

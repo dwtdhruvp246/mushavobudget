@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "date": "2026-10-20",
+  "date": "2026-10-21",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E5_8_REFRESHED_DATABASE_METADATA_PASS_ACTIVATION_RECOVERY_IMPLEMENTATION_PENDING",
+  "status": "LOCAL70PASS_STAGING_CANDIDATE_OWNER_WINDOWS_PENDING_NOT_HOSTED_HANDOFF",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
-  "source_parent_commit": "bb62048ffd2a7e1894ca5708646f3b38139b19e9",
+  "source_parent_commit": "5aecaff46cc4ad77315cbf3a311507fa81e27c4c",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE98",
+  "latest_evidence": "FRE99",
   "batches": [
     {
       "id": "FR.1",
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "FR2_EMAIL_E5_8_REFRESHED_DATABASE_METADATA_PASS_ACTIVATION_RECOVERY_IMPLEMENTATION_PENDING",
+          "status": "LOCAL70PASS_STAGING_CANDIDATE_OWNER_WINDOWS_PENDING_NOT_HOSTED_HANDOFF",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -810,7 +810,11 @@
           "email_rollout_refreshed_baseline_receipt": "docs/security-audit/security-fr-2-email-rollout-baseline-owner-pass.json",
           "email_rollout_refreshed_baseline_checks": 9,
           "email_rollout_refreshed_baseline_checked_UTC": "2026-10-20T17:27:41.729355+00:00",
-          "email_staging_activation_and_recovery_implemented": false
+          "email_staging_activation_and_recovery_implemented": false,
+          "email_staging_activation_and_recovery_candidate_implemented": true,
+          "email_staging_rollout_candidate_contract": "docs/security-audit/security-fr-2-email-staging-rollout-contract.json",
+          "email_staging_rollout_candidate_local_PASS": 70,
+          "email_staging_rollout_candidate_owner_Windows_received": false
         },
         {
           "id": "FR.2.5",
@@ -870,7 +874,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": false,
+  "owner_terminal_action_required": true,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
@@ -880,7 +884,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E5.8_STAGING_ROLLOUT_PREPARATION",
+  "next_step": "FR.2.4.E5.8_OWNER_WINDOWS_STAGING_ACTIVATION_RECOVERY_OFFLINE",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,

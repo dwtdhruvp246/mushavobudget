@@ -1,3 +1,9 @@
+# Current checkpoint — separate activation/recovery candidate passes70 local checks
+
+21 October 2026, FRE99. Execution is available again. [Candidate and Windows handoff](SECURITY_FR_2_4_STAGING_ACTIVATION_RECOVERY_CANDIDATE.md), [contract](security-fr-2-email-staging-rollout-contract.json), [70-case receipt](security-fr-2-email-staging-rollout-local-checks.json). Separate candidate registration and activation recheck selected prerequisites; activation starts quarantined; committed containment retains guards/proofs/data and explicit resume refuses selected catalog drift. Original55 migrations/canonical/installer remain unchanged. Windows offline result, trusted staging target attestation, candidate/canonical integration, coordinated deployment/runtime/recovery and hosted acceptance remain pending. No hosted SQL or upload command is requested. Historical review follows.
+
+---
+
 # FR.2.4.E5.8 — coordinated staging rollout preparation
 
 20 October 2026. Source reviewed at `9f878b258a2e2dc804fb9d37b11f00ac27615459`. Preparation remains incomplete until the live activation/recovery implementation is tested. The read-only owner refresh below has passed; no further owner command is requested at this checkpoint. This document does not authorize deploying or activating the existing offline installer.

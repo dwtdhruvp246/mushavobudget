@@ -34,6 +34,8 @@ Tests use fresh modeled in-memory application databases, exact reviewed hook fix
 
 Early development failures were test-expectation/fixture issues: a retained original privileged-origin error name differed from the new control's name, a synthetic trigger-removal fixture used the wrong trigger name, and repeated activation now correctly fails the fresh preactivation baseline. Final tests retain both guard error names where applicable and the exact real trigger name; no access guard was weakened. Final 70-case verifier supersedes the intermediate 26/67-case development runs only for this new candidate checkpoint.
 
+A separate [Git archive rehearsal](security-fr-2-email-staging-rollout-archive-checks.json) exported source commit `3c275e740cfc46267d54300a665f51397d8c7eff` with per-command LF settings, installed the single locked dependency fresh using the owner recipe with lifecycle scripts disabled, and returned the same70/70 PASS,78hashes,12syntax checks and exit0. This repeats the same scoped cases; it is not140 distinct tests or Windows evidence.
+
 ## Owner Windows handoff
 
 Export the pinned commit from `security/stage-3-authorization` to a new temporary directory using per-command LF archive settings. Install only `scripts/fixtures/email-session-review-tools` with `npm.cmd ci --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org`. Then run `scripts/verify-fr-2-email-staging-rollout.mjs` with that fixture's PGlite module path. The complete PowerShell block is supplied in chat.

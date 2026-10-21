@@ -3189,7 +3189,11 @@
       "hosted_acceptance": false,
       "production_or_native_changed": false,
       "APK_update_deferred": true,
-      "findings_closed": []
+      "findings_closed": [],
+      "archive_rehearsal_receipt": "docs/security-audit/security-fr-2-email-staging-rollout-archive-checks.json",
+      "archive_rehearsal_source_commit": "3c275e740cfc46267d54300a665f51397d8c7eff",
+      "archive_rehearsal_PASS": 70,
+      "distinct_cases_remain": 70
     }
   ],
   "prior_stage_evidence_preserved": true,

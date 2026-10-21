@@ -39,7 +39,7 @@ export function sourceObservation(){
   return {decoder_step:'NOT_REACHED',multipart_parts_observed:0,file_parts_observed:0,source_files_decoded:0,
     parts_with_content_disposition:0,parts_with_supabase_path:0,parts_with_quoted_filename:0,
     metadata_part_observed:false,metadata_has_primary_entrypoint:false,metadata_has_deno2_entrypoint:false,
-    metadata_entrypoint_matches_detail:null,
+    metadata_entrypoint_matches_detail:null,body_entrypoint_selected:'NOT_REACHED',body_entrypoint_form:'NOT_REACHED',entrypoint_mapping_verified:false,mapped_relative_file_count:0,
     file_path_forms:{absolute_posix:0,file_URL:0,relative:0,unsupported:0},
     expected_relative_files:[{name:'index.ts',observed:false},{name:'handler.mjs',observed:false}],unexpected_relative_file_count:0};
 }
@@ -93,28 +93,46 @@ export function decodeSourceMultipart(bytes,type,entrypoint,observation=sourceOb
     }
     need(bytes.subarray(tail,tail+2).toString()==='\r\n','FUNCTION_SOURCE_REVIEW_REQUIRED');at=tail+2;
   }
+  let bodyEntrypoint=entrypoint;observation.body_entrypoint_selected='DETAIL_FALLBACK';
   if(metadata){
     step('METADATA_ENTRYPOINT');
     observation.metadata_has_primary_entrypoint=Object.hasOwn(metadata,'entrypoint_path');
     observation.metadata_has_deno2_entrypoint=Object.hasOwn(metadata,'deno2_entrypoint_path');
-    const entry=metadata.deno2_entrypoint_path||metadata.entrypoint_path;
-    observation.metadata_entrypoint_matches_detail=entry===undefined?false:providerPath(entry)===entrypoint;
-    need(entry!==undefined&&observation.metadata_entrypoint_matches_detail,'FUNCTION_SOURCE_REVIEW_REQUIRED');
+    const deno2=metadata.deno2_entrypoint_path;
+    const hasDeno2=typeof deno2==='string'&&deno2.length>0;
+    need(deno2===undefined||deno2===null||typeof deno2==='string','FUNCTION_SOURCE_REVIEW_REQUIRED');
+    const entry=hasDeno2?deno2:metadata.entrypoint_path;
+    need(entry!==undefined,'FUNCTION_SOURCE_REVIEW_REQUIRED');bodyEntrypoint=providerPath(entry);
+    observation.body_entrypoint_selected=hasDeno2?'DENO2_METADATA':'PRIMARY_METADATA';
+    observation.metadata_entrypoint_matches_detail=bodyEntrypoint===entrypoint;
   }
+  step('ENTRYPOINT_MAPPING');
+  need(path.posix.basename(bodyEntrypoint)==='index.ts','FUNCTION_SOURCE_REVIEW_REQUIRED');
+  observation.body_entrypoint_form=path.posix.isAbsolute(bodyEntrypoint)?'ABSOLUTE_POSIX':'RELATIVE';
   step('EXPECTED_SOURCE_FILE_COUNT');
   need(files.size===2,'FUNCTION_SOURCE_REVIEW_REQUIRED');const relative=new Map();
+  const virtualRoot='/reviewed-contact';
   for(const [p,body]of files){
     step('EXPECTED_SOURCE_RELATIVE_PATHS');
-    const relativePath=path.posix.relative(path.posix.dirname(entrypoint),p);
+    // Match the pinned Supabase CLI's metadata precedence and path-space mapping,
+    // but require the result to be exactly our two reviewed files. This virtual
+    // directory is string arithmetic only; it is never created or accessed.
+    const fromEntrypoint=path.posix.isAbsolute(bodyEntrypoint)===path.posix.isAbsolute(p)
+      ?path.posix.relative(bodyEntrypoint,p):path.posix.join('..',p);
+    const destination=fromEntrypoint.length===0?path.posix.resolve(virtualRoot,'index.ts')
+      :path.posix.resolve(virtualRoot,'index.ts',...fromEntrypoint.split('/'));
+    const relativePath=path.posix.relative(virtualRoot,destination);
     const expected=observation.expected_relative_files.find(x=>x.name===relativePath);
     if(expected)expected.observed=true;else observation.unexpected_relative_file_count++;
     need(['index.ts','handler.mjs'].includes(relativePath)&&!relative.has(relativePath),'FUNCTION_SOURCE_REVIEW_REQUIRED');relative.set(relativePath,body);
+    if(!path.posix.isAbsolute(p))observation.mapped_relative_file_count++;
   }
+  observation.entrypoint_mapping_verified=true;
   step('COMPLETE');
   return relative;
 }
 export async function checkEdgeImpact(input,{transport=fetch,baselineReceipt}={}){
-  const r={stage_step:impactStage,diagnostic_revision:2,result:'STAGING_EDGE_SHARED_IMPACT_REVIEW_REQUIRED',requests_attempted:0,
+  const r={stage_step:impactStage,diagnostic_revision:3,result:'STAGING_EDGE_SHARED_IMPACT_REVIEW_REQUIRED',requests_attempted:0,
     fixed_staging_project_metadata_matched:false,fixed_staging_database_host_matched:false,
     prior_other_function_metadata_matched:false,selected_functions_absent_before_and_after:false,
     single_unrelated_function_matches_reviewed_contact_slug:false,detail_metadata_agreed_before_and_after:false,

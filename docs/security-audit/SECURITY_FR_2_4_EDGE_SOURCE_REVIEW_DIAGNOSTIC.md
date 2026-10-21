@@ -1,5 +1,7 @@
 # E5.13 source-format review and revision two diagnostic
 
+Current correction: [revision-three Deno 2 body path mapping](SECURITY_FR_2_4_EDGE_DENO2_SOURCE_PATH_CORRECTION.md), FRE112. The owner diagnostic located the metadata equality rejection; 43 offline cases pass for the correction and owner execution remains pending. The revision-two handoff below is historical.
+
 21 October 2026, FRE111. The [owner result](security-fr-2-email-edge-impact-owner-source-review.json) from the requested commit `551dbf0578a148f3f6cc083e33bf1ea34a50494d` stopped at `STAGING_CONTACT_SOURCE` with `FUNCTION_SOURCE_REVIEW_REQUIRED`, exit 1, checked `2026-10-21T18:45:47.626Z`. All four attempted GETs returned HTTP 200 and bounded bodies. Eight source hashes were verified. The submitted result contains no separate offline verifier receipt, so no owner offline test count is asserted.
 
 ## What this result establishes

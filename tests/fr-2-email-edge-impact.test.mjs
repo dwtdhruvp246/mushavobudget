@@ -117,9 +117,9 @@ test('all six proposed values leave actual legacy and modern contact configurati
 test('adding the six names cannot enable a contact handler missing its own secrets',()=>{
   const values=Object.fromEntries(sixNames.map(n=>[n,privateMarker]));assert.equal(readConfiguration(k=>values[k]),null);
 });
-test('revision two reports boundary grammar failure without printing the content-type value',async()=>{
+test('current revision reports boundary grammar failure without printing the content-type value',async()=>{
   const body=multipart();body.type+='; private-extra='+privateMarker;
-  const f=fixture({body}),r=await f.run();assert.equal(r.diagnostic_revision,2);assert.equal(r.problem_code,'FUNCTION_SOURCE_REVIEW_REQUIRED');assert.equal(r.source_observation.decoder_step,'CONTENT_TYPE_BOUNDARY');assert.equal(r.requests_attempted,4);assert.equal(r.downloaded_source_files,0);privateSafe(r);
+  const f=fixture({body}),r=await f.run();assert.equal(r.diagnostic_revision,3);assert.equal(r.problem_code,'FUNCTION_SOURCE_REVIEW_REQUIRED');assert.equal(r.source_observation.decoder_step,'CONTENT_TYPE_BOUNDARY');assert.equal(r.requests_attempted,4);assert.equal(r.downloaded_source_files,0);privateSafe(r);
 });
 test('missing disposition is isolated using a count without exposing unknown header names',async()=>{
   const body=multipart();body.bytes=Buffer.from(body.bytes.toString().replace('Content-Disposition:','X-Private-Disposition:'));
@@ -131,18 +131,55 @@ test('missing file-path parameter is distinguished from a private path mismatch'
 });
 test('metadata mismatch reports decoded counts rather than inventing a zero-file provider response',async()=>{
   const r=await fixture({body:multipart({metadata:{entrypoint_path:'file:///private/'+privateMarker+'/index.ts'}})}).run();
-  assert.equal(r.source_observation.decoder_step,'METADATA_ENTRYPOINT');assert.equal(r.source_observation.source_files_decoded,2);assert.equal(r.source_observation.metadata_part_observed,true);assert.equal(r.source_observation.metadata_has_primary_entrypoint,true);assert.equal(r.source_observation.metadata_entrypoint_matches_detail,false);assert.equal(r.downloaded_source_files,0);assert.equal(r.exit_code,1);privateSafe(r);
+  assert.equal(r.source_observation.decoder_step,'EXPECTED_SOURCE_RELATIVE_PATHS');assert.equal(r.source_observation.source_files_decoded,2);assert.equal(r.source_observation.metadata_part_observed,true);assert.equal(r.source_observation.metadata_has_primary_entrypoint,true);assert.equal(r.source_observation.metadata_entrypoint_matches_detail,false);assert.equal(r.downloaded_source_files,0);assert.equal(r.exit_code,1);privateSafe(r);
 });
 test('extra source parts report only bounded counts and never their private names',async()=>{
   const files=[...sources].map(([n,b])=>({path:entry.replace('index.ts',n),body:b})).concat([{path:'/private/'+privateMarker+'.js',body:privateMarker}]);
   const r=await fixture({body:multipart({files})}).run();assert.equal(r.source_observation.decoder_step,'EXPECTED_SOURCE_FILE_COUNT');assert.equal(r.source_observation.source_files_decoded,3);assert.equal(r.source_observation.file_path_forms.absolute_posix,3);assert.equal(r.exact_reviewed_contact_source_bytes_match,false);assert.equal(r.exit_code,1);privateSafe(r);
 });
-test('relative source paths remain rejected while the diagnostic exposes only their form',async()=>{
-  const files=[...sources].map(([n,b])=>({path:n,body:b}));const r=await fixture({body:multipart({files})}).run();assert.equal(r.source_observation.decoder_step,'EXPECTED_SOURCE_RELATIVE_PATHS');assert.equal(r.source_observation.file_path_forms.relative,2);assert.equal(r.source_observation.unexpected_relative_file_count,1);assert.equal(r.exit_code,1);privateSafe(r);
+test('relative source paths map safely into the reviewed two-file package',async()=>{
+  const files=[...sources].map(([n,b])=>({path:n,body:b}));const r=await fixture({body:multipart({files})}).run();assert.equal(r.source_observation.decoder_step,'COMPLETE');assert.equal(r.source_observation.file_path_forms.relative,2);assert.equal(r.source_observation.unexpected_relative_file_count,0);assert.equal(r.source_observation.mapped_relative_file_count,2);assert.equal(r.exit_code,0);privateSafe(r);
 });
 test('valid source returns the completed diagnostic and ignores private metadata extras',async()=>{
   const r=await fixture({body:multipart({metadata:{entrypoint_path:'file://'+entry,private_unknown:privateMarker}})}).run();assert.equal(r.exit_code,0);assert.equal(r.source_observation.decoder_step,'COMPLETE');assert.equal(r.source_observation.source_files_decoded,2);assert.deepEqual(r.source_observation.expected_relative_files,[{name:'index.ts',observed:true},{name:'handler.mjs',observed:true}]);assert.equal(r.source_observation.metadata_entrypoint_matches_detail,true);assert.equal(r.shared_configuration_runtime_impact_verified,false);privateSafe(r);
 });
 test('diagnostic state cannot be injected through private input to bypass source acceptance',async()=>{
   const f=fixture();const r=await f.run({token,source_observation:{decoder_step:privateMarker},diagnostic_revision:2});assert.equal(f.calls.length,0);assert.equal(r.problem_code,'PRIVATE_TOKEN_INPUT_REQUIRED');assert.equal(r.source_observation.decoder_step,'NOT_REACHED');assert.equal(r.exit_code,1);privateSafe(r);
+});
+function bodyFiles(prefix=''){return [...sources].map(([n,b])=>({path:prefix+n,body:b}));}
+test('observed Deno2 metadata with a relative entrypoint and two relative files completes exact-byte checks',async()=>{
+  const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files:bodyFiles()})}),r=await f.run();
+  assert.equal(r.exit_code,0);assert.equal(f.calls.length,6);assert.equal(r.source_observation.body_entrypoint_selected,'DENO2_METADATA');assert.equal(r.source_observation.metadata_entrypoint_matches_detail,false);assert.equal(r.source_observation.entrypoint_mapping_verified,true);assert.equal(r.source_observation.mapped_relative_file_count,2);assert.equal(r.exact_reviewed_contact_source_bytes_match,true);privateSafe(r);
+});
+test('relative package-directory prefixes resolve against the Deno2 body entrypoint rather than the detail path',async()=>{
+  const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'source/submit-enquiry/index.ts'},files:bodyFiles('source/submit-enquiry/')})}).run();assert.equal(r.exit_code,0);assert.equal(r.source_observation.body_entrypoint_form,'RELATIVE');assert.equal(r.source_observation.entrypoint_mapping_verified,true);privateSafe(r);
+});
+test('absolute Deno2 body entrypoint with relative file parts uses the provider mixed-path convention',async()=>{
+  const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'file:///wire-source/index.ts'},files:bodyFiles()})}).run();assert.equal(r.exit_code,0);assert.equal(r.source_observation.body_entrypoint_form,'ABSOLUTE_POSIX');assert.equal(r.source_observation.metadata_entrypoint_matches_detail,false);privateSafe(r);
+});
+test('a complete absolute body namespace may differ from the unchanged detail namespace',async()=>{
+  const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'file:///wire-source/index.ts'},files:bodyFiles('/wire-source/')})}).run();assert.equal(r.exit_code,0);assert.equal(r.detail_metadata_agreed_before_and_after,true);assert.equal(r.source_observation.metadata_entrypoint_matches_detail,false);privateSafe(r);
+});
+test('Deno2 metadata takes precedence over the primary entrypoint using the pinned provider convention',async()=>{
+  const r=await fixture({body:multipart({metadata:{entrypoint_path:'file://'+entry,deno2_entrypoint_path:'source/index.ts'},files:bodyFiles('source/')})}).run();assert.equal(r.exit_code,0);assert.equal(r.source_observation.metadata_has_primary_entrypoint,true);assert.equal(r.source_observation.metadata_has_deno2_entrypoint,true);assert.equal(r.source_observation.body_entrypoint_selected,'DENO2_METADATA');privateSafe(r);
+});
+test('entrypoint traversal, encoded paths, remote URLs and different entrypoint filenames remain rejected',async()=>{
+  for(const value of ['../index.ts','source/../index.ts','file:///wire/../index.ts','file:///wire/%2e%2e/index.ts','https://private.invalid/index.ts','source/main.ts']){
+    const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:value},files:bodyFiles()})}),r=await f.run();assert.equal(r.exit_code,1);assert.equal(r.problem_code,'FUNCTION_SOURCE_REVIEW_REQUIRED');assert.equal(f.calls.length,4);privateSafe(r);
+  }
+});
+test('a correct Deno2 source mapping cannot pass changed source bytes or execute inert JavaScript',async()=>{
+  const files=bodyFiles();files[0].body=Buffer.from('globalThis.PRIVATE_SENTINEL=true;'+privateMarker);
+  const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}),r=await f.run();assert.equal(r.source_observation.entrypoint_mapping_verified,true);assert.equal(r.problem_code,'FUNCTION_SOURCE_MISMATCH');assert.equal(r.exact_reviewed_contact_source_bytes_match,false);assert.equal(f.calls.length,4);assert.equal(globalThis.PRIVATE_SENTINEL,undefined);privateSafe(r);
+});
+test('absolute and file-URL aliases cannot provide duplicate normalized source paths',async()=>{
+  const files=[{path:'/wire/index.ts',body:sources.get('index.ts')},{path:'file:///wire/index.ts',body:sources.get('handler.mjs')}];
+  const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'file:///wire/index.ts'},files})}).run();assert.equal(r.exit_code,1);assert.equal(r.source_observation.decoder_step,'FILE_PART_IDENTITY');privateSafe(r);
+});
+test('mixed absolute and relative aliases cannot map two parts onto the same reviewed destination',async()=>{
+  const files=[{path:'/wire/index.ts',body:sources.get('index.ts')},{path:'index.ts',body:sources.get('handler.mjs')}];
+  const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'file:///wire/index.ts'},files})}).run();assert.equal(r.exit_code,1);assert.equal(r.source_observation.entrypoint_mapping_verified,false);assert.equal(r.source_observation.decoder_step,'EXPECTED_SOURCE_RELATIVE_PATHS');privateSafe(r);
+});
+test('files outside the declared body namespace cannot pass by matching only their basenames',async()=>{
+  const files=bodyFiles('foreign/');const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'source/index.ts'},files})}).run();assert.equal(r.exit_code,1);assert.equal(r.source_observation.entrypoint_mapping_verified,false);assert.equal(r.source_observation.unexpected_relative_file_count,1);privateSafe(r);
 });

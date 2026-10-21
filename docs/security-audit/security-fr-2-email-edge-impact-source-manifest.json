@@ -3,13 +3,13 @@
   "source_file_count": 8,
   "file_sha256": {
     "docs/security-audit/security-fr-2-email-edge-readiness-owner-observation.json": "94a5a54b959774d2bda20b96be24573bd8608ddbfeb8d51d95db1757e4415d93",
-    "scripts/check-fr-2-email-edge-impact.mjs": "c93387fe08394863d1c12ec49438a8c3206bb2c953ceb5ecc732f7cd41edb49e",
+    "scripts/check-fr-2-email-edge-impact.mjs": "f4db1df7622352e753643725de410c2b0278b8ea57c6768823100cec205e9738",
     "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
-    "scripts/run-fr-2-email-edge-impact.ps1": "3c677bed4f216f335b5e569997d9f55986472962c92a1c6bd86a9466df0d6466",
-    "scripts/verify-fr-2-email-edge-impact.mjs": "7ad446e39424e6b24053dfa5dddb8890b31e35c0c79152425326ea44e7132a60",
+    "scripts/run-fr-2-email-edge-impact.ps1": "e0042754a7f89a777411c90e7339d506432e01b3201e31c6adec8b70548b04b6",
+    "scripts/verify-fr-2-email-edge-impact.mjs": "4a2ac7e6531f6f517409c0f9cbc3326b2503c60ef4b078ea5535a2fc09ff9ce7",
     "supabase/functions/submit-enquiry/handler.mjs": "392aa8ff50c4ba40fc122b1dc62786261f1e90faf407474e9339319a680da761",
     "supabase/functions/submit-enquiry/index.ts": "86f877cb8615432d962c6533a4c9620354a371c799cccfd05f9006dbfa47271f",
-    "tests/fr-2-email-edge-impact.test.mjs": "cb2eec18c88414042d8835e6148e71f566c865946ab4d5484e7dc85a9b3adb4e"
+    "tests/fr-2-email-edge-impact.test.mjs": "645385eb682fd053682339e6d6144f60a03c020e5b5a522631538e7ad341e242"
   },
   "syntax_paths": [
     "scripts/check-fr-2-email-edge-impact.mjs",
@@ -17,6 +17,6 @@
     "tests/fr-2-email-edge-impact.test.mjs",
     "supabase/functions/submit-enquiry/handler.mjs"
   ],
-  "expected_tests": 33,
-  "diagnostic_revision": 2
+  "expected_tests": 43,
+  "diagnostic_revision": 3
 }

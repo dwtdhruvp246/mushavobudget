@@ -1,5 +1,7 @@
 # E5.12 read-only Edge configuration and scheduler visibility
 
+Current outcome: [owner observation completed](SECURITY_FR_2_4_EDGE_READINESS_OBSERVATION_OUTCOME.md), FRE109. Four requests completed; all selected routes and custom names were absent, the cron relation was not observed, and aggregates remain null. This historical preparation handoff below is retained. No rerun is requested.
+
 21 October 2026, FRE108. The [owner Windows package pass](SECURITY_FR_2_4_FIRST_EDGE_WINDOWS_OUTCOME.md) is retained. This new checker collects selected metadata needed before preparing deployment/configuration writes. It does not certify readiness, deploy functions or change the accepted source package.
 
 [Private handler](../../scripts/check-fr-2-email-edge-readiness.mjs), [Windows parent](../../scripts/run-fr-2-email-edge-readiness.ps1), [verifier](../../scripts/verify-fr-2-email-edge-readiness.mjs), [catalog SELECT](../../supabase/diagnostics/security_fr_2_4_email_edge_scheduler_access.sql), [aggregate SELECT](../../supabase/diagnostics/security_fr_2_4_email_edge_scheduler_aggregates.sql), [manifest](security-fr-2-email-edge-readiness-source-manifest.json), [contract](security-fr-2-email-edge-readiness-contract.json), [local checks](security-fr-2-email-edge-readiness-local-checks.json).

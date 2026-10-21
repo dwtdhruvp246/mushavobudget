@@ -16,7 +16,7 @@ The raw verifier's `Windows_package_execution_verified: false` is preserved: it 
 
 ## Scope and next preparation
 
-Current handoff: [E5.12 bounded read-only configuration and scheduler visibility](SECURITY_FR_2_4_EDGE_CONFIGURATION_AND_SCHEDULER_HANDOFF.md), FRE108. The new checker is prepared and tested locally; owner execution remains pending. It collects observations without asserting runtime readiness or granting write approval.
+Current outcome: [E5.12 owner configuration and scheduler observation](SECURITY_FR_2_4_EDGE_READINESS_OBSERVATION_OUTCOME.md), FRE109. Owner execution completed with four requests and exit 0. All selected custom names remain unlisted and the cron relation was not observed; readiness and write approval remain false. The earlier preparation description below is retained as historical context.
 
 This completes the requested owner offline package checkpoint. No rerun, token input, SQL or deployment command is requested now. The four selected routes were absent in the last hosted observation; this offline run does not alter that observation. Provider packaging, gateway JWT/authorization, Edge environment, scheduler state and full coordinated recovery remain unverified. All nine readiness assertions inside the immutable preparation plan remain false. Do not edit them into approval.
 

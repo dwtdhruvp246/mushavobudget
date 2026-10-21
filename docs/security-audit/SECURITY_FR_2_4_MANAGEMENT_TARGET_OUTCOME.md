@@ -12,6 +12,8 @@ The check does not establish full catalog fingerprints or exact hook definitions
 
 ## Next preparation checkpoint
 
+Current handoff: [E5.10 read-only Edge metadata inventory](SECURITY_FR_2_4_EDGE_INVENTORY_HANDOFF.md), FRE103. The check is prepared and tested locally; owner execution remains pending. It covers selected deployment metadata only, not the remaining preparation items below.
+
 The next work is `FR.2.4.E5.10_COORDINATED_STAGING_ROLLOUT_PREPARATION`. Before requesting any hosted write, prepare and test a concrete handoff that covers:
 
 1. The exact staging Edge deployment inventory, configuration and previous recoverable versions compared with the reviewed source; current Pages deployment identity and metadata using checks that expect the already installed secrets.

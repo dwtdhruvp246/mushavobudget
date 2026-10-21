@@ -1,5 +1,7 @@
 # E5.8 Windows pass and E5.9 fixed read-only Management API target check
 
+Current outcome: [E5.9 owner pass](SECURITY_FR_2_4_MANAGEMENT_TARGET_OUTCOME.md), FRE102. Both fixed provider requests succeeded, all eight selected checks matched and the private runner exited zero at `2026-10-21T08:54:12.854Z`. No repeat of the historical owner action below is requested. This receipt does not verify a future installation target or grant activation approval.
+
 21 October2026,FRE100–101. [E5.8 owner receipt](security-fr-2-email-staging-rollout-owner-Windows-pass.json) confirms70PASS,78hashes,12syntax checks and exit0 at commit `0a0244f05e8b81f744afbca526f5a7c80a92564d`. The activation/recovery source remains a separate candidate; no ordered migration/canonical source or hosted application changed. All78 original source identities were rechecked unchanged while preparing this step; those70 tests are not claimed rerun.
 
 ## Why this check is separate

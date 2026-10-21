@@ -1,0 +1,21 @@
+{
+  "stage_step": "FR.2.4.E5.13_PRIVATE_EDGE_CONFIGURATION_AND_SHARED_IMPACT_PREPARATION",
+  "source_file_count": 8,
+  "file_sha256": {
+    "docs/security-audit/security-fr-2-email-edge-readiness-owner-observation.json": "94a5a54b959774d2bda20b96be24573bd8608ddbfeb8d51d95db1757e4415d93",
+    "scripts/check-fr-2-email-edge-impact.mjs": "92889206ab6f27d039dac1ce0c0596b3f526698c92c50ad5894f647fdd48acaf",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+    "scripts/run-fr-2-email-edge-impact.ps1": "c2c4cdc51294a92857078a8161bf1c36dac2b60749174941a47d083406487fac",
+    "scripts/verify-fr-2-email-edge-impact.mjs": "148894c60f8ac2634bd60cebe541ac42e861f5b0ad754cc01cbb8dcfa845a574",
+    "supabase/functions/submit-enquiry/handler.mjs": "392aa8ff50c4ba40fc122b1dc62786261f1e90faf407474e9339319a680da761",
+    "supabase/functions/submit-enquiry/index.ts": "86f877cb8615432d962c6533a4c9620354a371c799cccfd05f9006dbfa47271f",
+    "tests/fr-2-email-edge-impact.test.mjs": "eb2fb47812999a733fdd6af82ad32b9e76dd5ef8b43b2c63fe47137b6d9e0125"
+  },
+  "syntax_paths": [
+    "scripts/check-fr-2-email-edge-impact.mjs",
+    "scripts/verify-fr-2-email-edge-impact.mjs",
+    "tests/fr-2-email-edge-impact.test.mjs",
+    "supabase/functions/submit-enquiry/handler.mjs"
+  ],
+  "expected_tests": 25
+}

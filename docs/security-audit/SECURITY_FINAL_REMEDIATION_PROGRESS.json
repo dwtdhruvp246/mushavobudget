@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-21",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_E5_12_OWNER_OBSERVATION_COMPLETE_CONFIGURATION_AND_SHARED_IMPACT_PREPARATION_PENDING",
+  "status": "FR2_EMAIL_E5_13_LOCAL25PASS_PRIVATE_EDGE_SOURCE_IMPACT_OWNER_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
-  "source_parent_commit": "2874f7760d00e2969f75fed2a60cb15de049980c",
+  "source_parent_commit": "9352b8f4edf8e0e4be952f25c7d2a1063b32882d",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE109",
+  "latest_evidence": "FRE110",
   "batches": [
     {
       "id": "FR.1",
@@ -878,7 +878,11 @@
           "email_edge_readiness_scheduler_aggregates": null,
           "email_edge_readiness_external_callers_verified": false,
           "email_edge_readiness_shared_configuration_impact_verified": false,
-          "email_edge_readiness_approved": false
+          "email_edge_readiness_approved": false,
+          "email_edge_impact_contract": "docs/security-audit/security-fr-2-email-edge-impact-contract.json",
+          "email_edge_impact_report": "docs/security-audit/SECURITY_FR_2_4_EDGE_SOURCE_AND_CONFIGURATION_IMPACT_HANDOFF.md",
+          "email_edge_impact_local_PASS": 25,
+          "email_edge_impact_owner_result_received": false
         },
         {
           "id": "FR.2.5",
@@ -938,7 +942,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": false,
+  "owner_terminal_action_required": true,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],

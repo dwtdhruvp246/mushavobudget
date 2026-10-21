@@ -1,3 +1,9 @@
+# Windows checkpoint — E5.8 candidate70PASS received
+
+21 October2026,FRE100. [Owner receipt](security-fr-2-email-staging-rollout-owner-Windows-pass.json) at pinned commit `0a0244f05e8b81f744afbca526f5a7c80a92564d`: Node22.17.0/PGlite0.5.8,78source hashes,12syntax checks,70tests/70PASS/0fail,COMPLETE,exit0. All three groups returned0 cancelled/skipped/todo and exit0. No execution timestamp was supplied; received date is not an invented runtime timestamp. This supersedes the Windows-pending action below. No hosted SQL/activation/upload/mail occurred. [Next read-only targeting handoff](SECURITY_FR_2_4_WINDOWS_PASS_AND_MANAGEMENT_TARGET.md) is scoped separately; canonical/candidate integration and hosted rollout remain pending. Historical implementation evidence follows.
+
+---
+
 # FR.2.4.E5.8 — staging activation and recovery candidate
 
 21 October 2026. Source parent `5aecaff46cc4ad77315cbf3a311507fa81e27c4c`. The execution environment is available again. This checkpoint implements and tests an offline candidate; it provides no hosted SQL or deployment command.

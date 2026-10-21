@@ -1,7 +1,7 @@
 {
   "stage_step": "FR.2.4.E5.8_STAGING_ACTIVATION_RECOVERY_CANDIDATE",
   "source_parent_commit": "5aecaff46cc4ad77315cbf3a311507fa81e27c4c",
-  "status": "LOCAL70PASS_STAGING_CANDIDATE_OWNER_WINDOWS_PENDING_NOT_HOSTED_HANDOFF",
+  "status": "OWNER_WINDOWS70PASS_STAGING_CANDIDATE_NOT_HOSTED_HANDOFF",
   "candidate": "supabase/candidates/security_fr_2_4_email_staging_rollout.sql",
   "renderer": "scripts/lib/email-staging-rollout-source.mjs",
   "verifier": "scripts/verify-fr-2-email-staging-rollout.mjs",
@@ -17,12 +17,16 @@
   "target_independently_verified": false,
   "original55_migrations_and_canonical_unchanged": true,
   "candidate_canonical_integration_complete": false,
-  "owner_Windows_result_received": false,
-  "owner_terminal_action_required": true,
+  "owner_Windows_result_received": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "live_activation_approved": false,
   "hosted_acceptance": false,
   "production_or_native_changed": false,
   "APK_update_deferred": true,
-  "findings_closed": []
+  "findings_closed": [],
+  "owner_Windows_receipt": "docs/security-audit/security-fr-2-email-staging-rollout-owner-Windows-pass.json",
+  "owner_Windows_run_commit": "0a0244f05e8b81f744afbca526f5a7c80a92564d",
+  "owner_Windows_PASS": 70,
+  "owner_Windows_exit_code": 0
 }

@@ -40,7 +40,7 @@ test('six fixed GETs establish byte parity and stable list/detail snapshots with
   const f=fixture(),r=await f.run();assert.equal(r.exit_code,0);assert.equal(r.requests_attempted,6);assert.equal(r.downloaded_source_files,2);assert(r.exact_reviewed_contact_source_bytes_match&&r.six_names_not_consumed_by_matched_source&&r.selected_functions_absent_before_and_after);assert.equal(r.other_function_metadata_SHA256,beforeHash);privateSafe(r);
   assert.deepEqual(f.calls.map(x=>x.url.split(impactRef)[1]),['','/functions','/functions/submit-enquiry','/functions/submit-enquiry/body','/functions/submit-enquiry','/functions']);
 });
-test('current production baseline is loaded only by the default path; test dependency is not a request field',async()=>{
+test('pinned staging baseline is loaded only by the default path; test dependency is not a request field',async()=>{
   const f=fixture();const r=await f.run({token,baselineReceipt:baseline});assert.equal(r.problem_code,'PRIVATE_TOKEN_INPUT_REQUIRED');assert.equal(f.calls.length,0);
 });
 test('bad token and unknown caller fields stop before any request',async()=>{
@@ -116,4 +116,33 @@ test('all six proposed values leave actual legacy and modern contact configurati
 });
 test('adding the six names cannot enable a contact handler missing its own secrets',()=>{
   const values=Object.fromEntries(sixNames.map(n=>[n,privateMarker]));assert.equal(readConfiguration(k=>values[k]),null);
+});
+test('revision two reports boundary grammar failure without printing the content-type value',async()=>{
+  const body=multipart();body.type+='; private-extra='+privateMarker;
+  const f=fixture({body}),r=await f.run();assert.equal(r.diagnostic_revision,2);assert.equal(r.problem_code,'FUNCTION_SOURCE_REVIEW_REQUIRED');assert.equal(r.source_observation.decoder_step,'CONTENT_TYPE_BOUNDARY');assert.equal(r.requests_attempted,4);assert.equal(r.downloaded_source_files,0);privateSafe(r);
+});
+test('missing disposition is isolated using a count without exposing unknown header names',async()=>{
+  const body=multipart();body.bytes=Buffer.from(body.bytes.toString().replace('Content-Disposition:','X-Private-Disposition:'));
+  const r=await fixture({body}).run();assert.equal(r.source_observation.decoder_step,'CONTENT_DISPOSITION');assert.equal(r.source_observation.multipart_parts_observed,1);assert.equal(r.source_observation.parts_with_content_disposition,0);assert.equal(r.source_observation.source_files_decoded,0);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('missing file-path parameter is distinguished from a private path mismatch',async()=>{
+  const body=multipart();body.bytes=Buffer.from(body.bytes.toString().replace('; filename="'+entry+'"',''));
+  const r=await fixture({body}).run();assert.equal(r.source_observation.decoder_step,'FILE_PART_PATH');assert.equal(r.source_observation.file_parts_observed,1);assert.equal(r.source_observation.file_path_forms.unsupported,1);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('metadata mismatch reports decoded counts rather than inventing a zero-file provider response',async()=>{
+  const r=await fixture({body:multipart({metadata:{entrypoint_path:'file:///private/'+privateMarker+'/index.ts'}})}).run();
+  assert.equal(r.source_observation.decoder_step,'METADATA_ENTRYPOINT');assert.equal(r.source_observation.source_files_decoded,2);assert.equal(r.source_observation.metadata_part_observed,true);assert.equal(r.source_observation.metadata_has_primary_entrypoint,true);assert.equal(r.source_observation.metadata_entrypoint_matches_detail,false);assert.equal(r.downloaded_source_files,0);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('extra source parts report only bounded counts and never their private names',async()=>{
+  const files=[...sources].map(([n,b])=>({path:entry.replace('index.ts',n),body:b})).concat([{path:'/private/'+privateMarker+'.js',body:privateMarker}]);
+  const r=await fixture({body:multipart({files})}).run();assert.equal(r.source_observation.decoder_step,'EXPECTED_SOURCE_FILE_COUNT');assert.equal(r.source_observation.source_files_decoded,3);assert.equal(r.source_observation.file_path_forms.absolute_posix,3);assert.equal(r.exact_reviewed_contact_source_bytes_match,false);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('relative source paths remain rejected while the diagnostic exposes only their form',async()=>{
+  const files=[...sources].map(([n,b])=>({path:n,body:b}));const r=await fixture({body:multipart({files})}).run();assert.equal(r.source_observation.decoder_step,'EXPECTED_SOURCE_RELATIVE_PATHS');assert.equal(r.source_observation.file_path_forms.relative,2);assert.equal(r.source_observation.unexpected_relative_file_count,1);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('valid source returns the completed diagnostic and ignores private metadata extras',async()=>{
+  const r=await fixture({body:multipart({metadata:{entrypoint_path:'file://'+entry,private_unknown:privateMarker}})}).run();assert.equal(r.exit_code,0);assert.equal(r.source_observation.decoder_step,'COMPLETE');assert.equal(r.source_observation.source_files_decoded,2);assert.deepEqual(r.source_observation.expected_relative_files,[{name:'index.ts',observed:true},{name:'handler.mjs',observed:true}]);assert.equal(r.source_observation.metadata_entrypoint_matches_detail,true);assert.equal(r.shared_configuration_runtime_impact_verified,false);privateSafe(r);
+});
+test('diagnostic state cannot be injected through private input to bypass source acceptance',async()=>{
+  const f=fixture();const r=await f.run({token,source_observation:{decoder_step:privateMarker},diagnostic_revision:2});assert.equal(f.calls.length,0);assert.equal(r.problem_code,'PRIVATE_TOKEN_INPUT_REQUIRED');assert.equal(r.source_observation.decoder_step,'NOT_REACHED');assert.equal(r.exit_code,1);privateSafe(r);
 });

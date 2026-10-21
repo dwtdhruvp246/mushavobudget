@@ -35,29 +35,58 @@ function detail(row,before){
   need(row.ezbr_sha256===undefined||(typeof row.ezbr_sha256==='string'&&/^[a-f0-9]{64}$/.test(row.ezbr_sha256)),'FUNCTION_DETAIL_REVIEW_REQUIRED');
   return {metadata:projection(row),entrypoint_path:entry,import_map:false,import_map_path:row.import_map_path??null,ezbr_sha256:row.ezbr_sha256??null};
 }
-// Strict bounded multipart decoder. Paths are compared in memory; none are extracted.
-export function decodeSourceMultipart(bytes,type,entrypoint){
+export function sourceObservation(){
+  return {decoder_step:'NOT_REACHED',multipart_parts_observed:0,file_parts_observed:0,source_files_decoded:0,
+    parts_with_content_disposition:0,parts_with_supabase_path:0,parts_with_quoted_filename:0,
+    metadata_part_observed:false,metadata_has_primary_entrypoint:false,metadata_has_deno2_entrypoint:false,
+    metadata_entrypoint_matches_detail:null,
+    file_path_forms:{absolute_posix:0,file_URL:0,relative:0,unsupported:0},
+    expected_relative_files:[{name:'index.ts',observed:false},{name:'handler.mjs',observed:false}],unexpected_relative_file_count:0};
+}
+// Strict bounded multipart decoder. Diagnostic fields describe fixed format
+// categories only; paths, source, metadata values and headers never leave memory.
+export function decodeSourceMultipart(bytes,type,entrypoint,observation=sourceObservation()){
+  const step=value=>{observation.decoder_step=value;};
+  step('BODY_BOUNDS');
   need(Buffer.isBuffer(bytes)&&bytes.length>0&&bytes.length<=2097152,'FUNCTION_SOURCE_REVIEW_REQUIRED');
+  step('CONTENT_TYPE_BOUNDARY');
   const m=/^multipart\/form-data;\s*boundary=(?:"([A-Za-z0-9_+=:.,/-]{1,70})"|([A-Za-z0-9_+=:.,/-]{1,70}))\s*$/i.exec(type);
   need(m,'FUNCTION_SOURCE_REVIEW_REQUIRED');const boundary=m[1]||m[2],opening=Buffer.from('--'+boundary+'\r\n'),sep=Buffer.from('\r\n--'+boundary);
+  step('OPENING_BOUNDARY');
   need(bytes.subarray(0,opening.length).equals(opening),'FUNCTION_SOURCE_REVIEW_REQUIRED');let at=opening.length,parts=0,metadata=null;const files=new Map();
   for(;;){
-    need(++parts<=8,'FUNCTION_SOURCE_REVIEW_REQUIRED');const end=bytes.indexOf(sep,at),headEnd=bytes.indexOf('\r\n\r\n',at);
+    step('PART_LIMIT');observation.multipart_parts_observed=++parts;
+    need(parts<=8,'FUNCTION_SOURCE_REVIEW_REQUIRED');const end=bytes.indexOf(sep,at),headEnd=bytes.indexOf('\r\n\r\n',at);
+    step('PART_FRAMING');
     need(end>=0&&headEnd>=at&&headEnd<end&&headEnd-at<=8192,'FUNCTION_SOURCE_REVIEW_REQUIRED');
+    step('PART_HEADERS');
     const headers=new Map();for(const line of bytes.subarray(at,headEnd).toString('utf8').split('\r\n')){
       const h=/^([A-Za-z0-9-]+):[ \t]*([^\r\n]*)$/.exec(line);need(h&&!headers.has(h[1].toLowerCase()),'FUNCTION_SOURCE_REVIEW_REQUIRED');headers.set(h[1].toLowerCase(),h[2]);
     }
     const cd=headers.get('content-disposition')||'';
+    observation.parts_with_content_disposition+=headers.has('content-disposition')?1:0;
+    observation.parts_with_supabase_path+=headers.has('supabase-path')?1:0;
+    step('CONTENT_DISPOSITION');
     need(/^form-data(?:;|$)/i.test(cd)&&!cd.includes('filename*='),'FUNCTION_SOURCE_REVIEW_REQUIRED');
+    step('PART_PARAMETERS');
     const param=name=>{const matches=[...cd.matchAll(new RegExp('(?:^|;)\\s*'+name+'="([^"\\\\]*)"','gi'))];need(matches.length<=1,'FUNCTION_SOURCE_REVIEW_REQUIRED');return matches[0]?.[1];};
     const name=param('name'),filename=param('filename'),supabasePath=headers.get('supabase-path');
+    observation.parts_with_quoted_filename+=filename!==undefined?1:0;
     const body=bytes.subarray(headEnd+4,end);
     if(name==='metadata'&&!filename&&!supabasePath){
+      step('METADATA_PART');observation.metadata_part_observed=true;
       need(metadata===null&&body.length<=8192,'FUNCTION_SOURCE_REVIEW_REQUIRED');try{metadata=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(body));}catch{need(false,'FUNCTION_SOURCE_REVIEW_REQUIRED');}
       need(object(metadata),'FUNCTION_SOURCE_REVIEW_REQUIRED');
+      observation.metadata_has_primary_entrypoint=Object.hasOwn(metadata,'entrypoint_path');
+      observation.metadata_has_deno2_entrypoint=Object.hasOwn(metadata,'deno2_entrypoint_path');
     }else{
-      const p=providerPath(supabasePath||filename);need(!files.has(p)&&body.length>0,'FUNCTION_SOURCE_REVIEW_REQUIRED');files.set(p,body);
+      step('FILE_PART_PATH');observation.file_parts_observed++;
+      const value=supabasePath||filename;
+      const form=typeof value!=='string'||value.length===0?'unsupported':value.startsWith('file:///')?'file_URL':value.startsWith('/')?'absolute_posix':value.includes('://')||value.includes('\\')?'unsupported':'relative';
+      observation.file_path_forms[form]++;
+      const p=providerPath(value);step('FILE_PART_IDENTITY');need(!files.has(p)&&body.length>0,'FUNCTION_SOURCE_REVIEW_REQUIRED');files.set(p,body);observation.source_files_decoded=files.size;
     }
+    step('NEXT_OR_CLOSING_BOUNDARY');
     const tail=end+sep.length;
     if(bytes.subarray(tail,tail+2).toString()==='--'){
       const rest=bytes.subarray(tail+2).toString();need(rest===''||rest==='\r\n','FUNCTION_SOURCE_REVIEW_REQUIRED');break;
@@ -65,22 +94,31 @@ export function decodeSourceMultipart(bytes,type,entrypoint){
     need(bytes.subarray(tail,tail+2).toString()==='\r\n','FUNCTION_SOURCE_REVIEW_REQUIRED');at=tail+2;
   }
   if(metadata){
+    step('METADATA_ENTRYPOINT');
+    observation.metadata_has_primary_entrypoint=Object.hasOwn(metadata,'entrypoint_path');
+    observation.metadata_has_deno2_entrypoint=Object.hasOwn(metadata,'deno2_entrypoint_path');
     const entry=metadata.deno2_entrypoint_path||metadata.entrypoint_path;
-    need(entry!==undefined&&providerPath(entry)===entrypoint,'FUNCTION_SOURCE_REVIEW_REQUIRED');
+    observation.metadata_entrypoint_matches_detail=entry===undefined?false:providerPath(entry)===entrypoint;
+    need(entry!==undefined&&observation.metadata_entrypoint_matches_detail,'FUNCTION_SOURCE_REVIEW_REQUIRED');
   }
+  step('EXPECTED_SOURCE_FILE_COUNT');
   need(files.size===2,'FUNCTION_SOURCE_REVIEW_REQUIRED');const relative=new Map();
   for(const [p,body]of files){
+    step('EXPECTED_SOURCE_RELATIVE_PATHS');
     const relativePath=path.posix.relative(path.posix.dirname(entrypoint),p);
+    const expected=observation.expected_relative_files.find(x=>x.name===relativePath);
+    if(expected)expected.observed=true;else observation.unexpected_relative_file_count++;
     need(['index.ts','handler.mjs'].includes(relativePath)&&!relative.has(relativePath),'FUNCTION_SOURCE_REVIEW_REQUIRED');relative.set(relativePath,body);
   }
+  step('COMPLETE');
   return relative;
 }
 export async function checkEdgeImpact(input,{transport=fetch,baselineReceipt}={}){
-  const r={stage_step:impactStage,result:'STAGING_EDGE_SHARED_IMPACT_REVIEW_REQUIRED',requests_attempted:0,
+  const r={stage_step:impactStage,diagnostic_revision:2,result:'STAGING_EDGE_SHARED_IMPACT_REVIEW_REQUIRED',requests_attempted:0,
     fixed_staging_project_metadata_matched:false,fixed_staging_database_host_matched:false,
     prior_other_function_metadata_matched:false,selected_functions_absent_before_and_after:false,
     single_unrelated_function_matches_reviewed_contact_slug:false,detail_metadata_agreed_before_and_after:false,
-    other_function_metadata_SHA256:null,downloaded_source_files:0,exact_reviewed_contact_source_bytes_match:false,
+    other_function_metadata_SHA256:null,downloaded_source_files:0,source_observation:sourceObservation(),exact_reviewed_contact_source_bytes_match:false,
     six_names_not_consumed_by_matched_source:false,
     shared_configuration_runtime_impact_verified:false,previous_deployable_artifact_retained:false,
     recovery_execution_verified:false,configuration_values_collected:false,secret_or_SQL_endpoint_used:false,
@@ -120,7 +158,7 @@ export async function checkEdgeImpact(input,{transport=fetch,baselineReceipt}={}
     need(before[0].slug==='submit-enquiry','UNRELATED_FUNCTION_REVIEW_REQUIRED');r.single_unrelated_function_matches_reviewed_contact_slug=true;
     const first=detail(await get('STAGING_CONTACT_DETAIL_BEFORE','/functions/submit-enquiry'),before[0]);
     const source=await get('STAGING_CONTACT_SOURCE','/functions/submit-enquiry/body',{multipart:true});
-    const files=decodeSourceMultipart(source.bytes,source.type,first.entrypoint_path);r.downloaded_source_files=files.size;
+    const files=decodeSourceMultipart(source.bytes,source.type,first.entrypoint_path,r.source_observation);r.downloaded_source_files=files.size;
     for(const [name,bytes]of files){const local=await readFile(new URL('supabase/functions/submit-enquiry/'+name,root));need(bytes.equals(local),'FUNCTION_SOURCE_MISMATCH');}
     r.exact_reviewed_contact_source_bytes_match=true;
     // This conclusion is bound to the two exact reviewed files, not a lexical scan

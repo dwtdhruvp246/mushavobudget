@@ -1,5 +1,7 @@
 # E5.11 local first-deployment source package
 
+Current outcome: [owner Windows 72-pass verification and 12-file package creation](SECURITY_FR_2_4_FIRST_EDGE_WINDOWS_OUTCOME.md), FRE107. All four type checks and bundle builds passed, both exits were zero and the package identity matched. The historical owner action below is complete; no rerun or deployment is requested by this receipt checkpoint.
+
 21 October 2026, FRE106. The [observed staging baseline](security-fr-2-email-edge-inventory-owner-absence.json) contains none of the four selected Edge routes. This checkpoint prepares and tests their exact public source in an isolated local package. It does not deploy them or make the missing-inventory prerequisite pass.
 
 [Builder/inspector](../../scripts/prepare-fr-2-email-edge-package.mjs), [verifier](../../scripts/verify-fr-2-email-edge-preparation.mjs), [staging config candidate](../../deployment/candidates/email-edge-staging.config.toml), [manifest](security-fr-2-email-edge-preparation-source-manifest.json), [local checks](security-fr-2-email-edge-preparation-local-checks.json), [contract](security-fr-2-email-edge-preparation-contract.json).

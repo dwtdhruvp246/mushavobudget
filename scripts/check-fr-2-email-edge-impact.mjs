@@ -43,6 +43,28 @@ export function sourceObservation(){
     file_path_forms:{absolute_posix:0,file_URL:0,relative:0,unsupported:0},
     expected_relative_files:[{name:'index.ts',observed:false},{name:'handler.mjs',observed:false}],unexpected_relative_file_count:0};
 }
+// Descriptive comparisons only. Normalization never satisfies the exact-byte gate.
+export function compareSourceBytes(name,downloaded,reviewed){
+  need(['index.ts','handler.mjs'].includes(name)&&Buffer.isBuffer(downloaded)&&Buffer.isBuffer(reviewed)&&downloaded.length>0&&downloaded.length<=2097152&&reviewed.length>0&&reviewed.length<=2097152,'FUNCTION_SOURCE_REVIEW_REQUIRED');
+  const bom=bytes=>bytes.length>=3&&bytes[0]===0xef&&bytes[1]===0xbb&&bytes[2]===0xbf;
+  const r={name,reviewed_bytes:reviewed.length,downloaded_bytes:downloaded.length,
+    reviewed_SHA256:hash(reviewed),downloaded_SHA256:hash(downloaded),exact_bytes_match:downloaded.equals(reviewed),
+    reviewed_has_leading_UTF8_BOM:bom(reviewed),downloaded_has_leading_UTF8_BOM:bom(downloaded),
+    UTF8_decoding_succeeded:false,CRLF_normalized_match:null,leading_BOM_removed_match:null,
+    BOM_and_CRLF_normalized_match:null,single_final_LF_difference_after_BOM_and_CRLF_normalization:null,
+    comparison_class:'INVALID_UTF8'};
+  let a,b;try{
+    // ignoreBOM:true preserves the character so BOM removal is a separate check.
+    const decoder=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true});a=decoder.decode(downloaded);b=decoder.decode(reviewed);
+  }catch{return r;}
+  r.UTF8_decoding_succeeded=true;
+  const eol=s=>s.replace(/\r\n/g,'\n'),withoutBOM=s=>s.replace(/^\uFEFF/,'');
+  r.CRLF_normalized_match=eol(a)===eol(b);r.leading_BOM_removed_match=withoutBOM(a)===withoutBOM(b);
+  const ca=eol(withoutBOM(a)),cb=eol(withoutBOM(b));r.BOM_and_CRLF_normalized_match=ca===cb;
+  r.single_final_LF_difference_after_BOM_and_CRLF_normalization=ca!==cb&&(ca+'\n'===cb||cb+'\n'===ca);
+  r.comparison_class=r.exact_bytes_match?'EXACT':r.CRLF_normalized_match?'CRLF_ONLY':r.leading_BOM_removed_match?'LEADING_UTF8_BOM_ONLY':r.BOM_and_CRLF_normalized_match?'BOM_AND_CRLF_ONLY':r.single_final_LF_difference_after_BOM_and_CRLF_normalization?'SINGLE_FINAL_LF_AFTER_BOM_CRLF_NORMALIZATION':'OTHER_BYTES';
+  return r;
+}
 // Strict bounded multipart decoder. Diagnostic fields describe fixed format
 // categories only; paths, source, metadata values and headers never leave memory.
 export function decodeSourceMultipart(bytes,type,entrypoint,observation=sourceObservation()){
@@ -132,11 +154,11 @@ export function decodeSourceMultipart(bytes,type,entrypoint,observation=sourceOb
   return relative;
 }
 export async function checkEdgeImpact(input,{transport=fetch,baselineReceipt}={}){
-  const r={stage_step:impactStage,diagnostic_revision:3,result:'STAGING_EDGE_SHARED_IMPACT_REVIEW_REQUIRED',requests_attempted:0,
+  const r={stage_step:impactStage,diagnostic_revision:4,result:'STAGING_EDGE_SHARED_IMPACT_REVIEW_REQUIRED',requests_attempted:0,
     fixed_staging_project_metadata_matched:false,fixed_staging_database_host_matched:false,
     prior_other_function_metadata_matched:false,selected_functions_absent_before_and_after:false,
     single_unrelated_function_matches_reviewed_contact_slug:false,detail_metadata_agreed_before_and_after:false,
-    other_function_metadata_SHA256:null,downloaded_source_files:0,source_observation:sourceObservation(),exact_reviewed_contact_source_bytes_match:false,
+    other_function_metadata_SHA256:null,downloaded_source_files:0,source_observation:sourceObservation(),source_comparison:[],exact_reviewed_contact_source_bytes_match:false,
     six_names_not_consumed_by_matched_source:false,
     shared_configuration_runtime_impact_verified:false,previous_deployable_artifact_retained:false,
     recovery_execution_verified:false,configuration_values_collected:false,secret_or_SQL_endpoint_used:false,
@@ -177,7 +199,10 @@ export async function checkEdgeImpact(input,{transport=fetch,baselineReceipt}={}
     const first=detail(await get('STAGING_CONTACT_DETAIL_BEFORE','/functions/submit-enquiry'),before[0]);
     const source=await get('STAGING_CONTACT_SOURCE','/functions/submit-enquiry/body',{multipart:true});
     const files=decodeSourceMultipart(source.bytes,source.type,first.entrypoint_path,r.source_observation);r.downloaded_source_files=files.size;
-    for(const [name,bytes]of files){const local=await readFile(new URL('supabase/functions/submit-enquiry/'+name,root));need(bytes.equals(local),'FUNCTION_SOURCE_MISMATCH');}
+    for(const name of ['index.ts','handler.mjs']){
+      const local=await readFile(new URL('supabase/functions/submit-enquiry/'+name,root));r.source_comparison.push(compareSourceBytes(name,files.get(name),local));
+    }
+    need(r.source_comparison.every(x=>x.exact_bytes_match),'FUNCTION_SOURCE_MISMATCH');
     r.exact_reviewed_contact_source_bytes_match=true;
     // This conclusion is bound to the two exact reviewed files, not a lexical scan
     // of unknown code or a claim about all runtime/platform behavior.

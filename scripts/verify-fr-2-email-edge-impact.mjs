@@ -25,12 +25,12 @@ try{
   const out=(r.stdout||'')+'\n'+(r.stderr||'');
   const count=label=>Number(out.match(new RegExp('^# '+label+' (\\d+)\\s*$','m'))?.[1]??-1);
   group={tests:count('tests'),pass:count('pass'),fail:count('fail'),cancelled:count('cancelled'),skipped:count('skipped'),todo:count('todo'),failed_case_titles:out.split(/\r?\n/).filter(x=>x.startsWith('not ok ')),exit_code:r.status,signal:r.signal??null,error_code:r.error?.code??null};
-  assert.equal(r.status,0);assert.equal(group.tests,43);assert.equal(group.pass,43);
+  assert.equal(r.status,0);assert.equal(group.tests,52);assert.equal(group.pass,52);
   for(const key of ['fail','cancelled','skipped','todo'])assert.equal(group[key],0);
   phase='COMPLETE';
 }catch{problem='OFFLINE_EDGE_IMPACT_SOURCE_OR_TEST_REVIEW_REQUIRED';}
 const ok=phase==='COMPLETE'&&problem===null;
-console.log(JSON.stringify({stage_step:stage,diagnostic_revision:3,result:ok?'OFFLINE_PRIVATE_EDGE_SOURCE_AND_CONFIGURATION_IMPACT_SCOPED_PASS':'OFFLINE_EDGE_IMPACT_REVIEW_REQUIRED',source_parent_commit:'87f1157c39cdcd91097fb3426d31e83d0cf94581',node_version:process.version,source_files_SHA256_verified:verified,syntax_checks:syntax,tests:group?.tests??0,pass:group?.pass??0,fail:group?.fail??0,group,
+console.log(JSON.stringify({stage_step:stage,diagnostic_revision:4,result:ok?'OFFLINE_PRIVATE_EDGE_SOURCE_AND_CONFIGURATION_IMPACT_SCOPED_PASS':'OFFLINE_EDGE_IMPACT_REVIEW_REQUIRED',source_parent_commit:'221ac4e07bd5aa077092da1165a067a5011e7fab',node_version:process.version,source_files_SHA256_verified:verified,syntax_checks:syntax,tests:group?.tests??0,pass:group?.pass??0,fail:group?.fail??0,group,
   actual_source_decoder_and_private_transport_exercised_with_synthetic_inputs:ok,
   actual_reviewed_contact_configuration_exercised_with_synthetic_values:ok,
   downloaded_provider_source_executed_or_saved:false,Windows_private_runner_verified:false,

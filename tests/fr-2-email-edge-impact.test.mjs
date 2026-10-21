@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
-import {checkEdgeImpact,decodeSourceMultipart,impactRef,impactStage,sixNames} from '../scripts/check-fr-2-email-edge-impact.mjs';
+import {checkEdgeImpact,decodeSourceMultipart,compareSourceBytes,impactRef,impactStage,sixNames} from '../scripts/check-fr-2-email-edge-impact.mjs';
 import {readConfiguration} from '../supabase/functions/submit-enquiry/handler.mjs';
 const token='sbp_fc'+'SYNTHETIC_PRIVATE_TOKEN_'.repeat(2);
 const privateMarker='PRIVATE_SOURCE_OR_ERROR_NEVER_PRINT';
@@ -119,7 +119,7 @@ test('adding the six names cannot enable a contact handler missing its own secre
 });
 test('current revision reports boundary grammar failure without printing the content-type value',async()=>{
   const body=multipart();body.type+='; private-extra='+privateMarker;
-  const f=fixture({body}),r=await f.run();assert.equal(r.diagnostic_revision,3);assert.equal(r.problem_code,'FUNCTION_SOURCE_REVIEW_REQUIRED');assert.equal(r.source_observation.decoder_step,'CONTENT_TYPE_BOUNDARY');assert.equal(r.requests_attempted,4);assert.equal(r.downloaded_source_files,0);privateSafe(r);
+  const f=fixture({body}),r=await f.run();assert.equal(r.diagnostic_revision,4);assert.equal(r.problem_code,'FUNCTION_SOURCE_REVIEW_REQUIRED');assert.equal(r.source_observation.decoder_step,'CONTENT_TYPE_BOUNDARY');assert.equal(r.requests_attempted,4);assert.equal(r.downloaded_source_files,0);privateSafe(r);
 });
 test('missing disposition is isolated using a count without exposing unknown header names',async()=>{
   const body=multipart();body.bytes=Buffer.from(body.bytes.toString().replace('Content-Disposition:','X-Private-Disposition:'));
@@ -182,4 +182,38 @@ test('mixed absolute and relative aliases cannot map two parts onto the same rev
 });
 test('files outside the declared body namespace cannot pass by matching only their basenames',async()=>{
   const files=bodyFiles('foreign/');const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'source/index.ts'},files})}).run();assert.equal(r.exit_code,1);assert.equal(r.source_observation.entrypoint_mapping_verified,false);assert.equal(r.source_observation.unexpected_relative_file_count,1);privateSafe(r);
+});
+test('exact comparison reports both fixed files with deterministic public hashes and lengths',async()=>{
+  const r=await fixture().run();assert.equal(r.exit_code,0);assert.deepEqual(r.source_comparison.map(x=>x.name),['index.ts','handler.mjs']);
+  for(const x of r.source_comparison){assert.equal(x.comparison_class,'EXACT');assert.equal(x.exact_bytes_match,true);assert.equal(x.reviewed_SHA256,x.downloaded_SHA256);assert.equal(x.reviewed_bytes,x.downloaded_bytes);assert.equal(x.UTF8_decoding_succeeded,true);}privateSafe(r);
+});
+test('both files are compared even when the entrypoint mismatches, with no after-requests',async()=>{
+  const files=bodyFiles();files[0].body=Buffer.from(privateMarker);const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}),r=await f.run();
+  assert.equal(r.problem_code,'FUNCTION_SOURCE_MISMATCH');assert.equal(f.calls.length,4);assert.deepEqual(r.source_comparison.map(x=>x.exact_bytes_match),[false,true]);assert.equal(r.source_comparison[0].comparison_class,'OTHER_BYTES');assert.equal(r.source_comparison[1].comparison_class,'EXACT');privateSafe(r);
+});
+test('CRLF-only source differences are classified but never satisfy exact-byte acceptance',async()=>{
+  const files=bodyFiles();files[1].body=Buffer.from(files[1].body.toString().replace(/\n/g,'\r\n'));const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}),r=await f.run(),c=r.source_comparison[1];
+  assert.equal(c.comparison_class,'CRLF_ONLY');assert.equal(c.CRLF_normalized_match,true);assert.notEqual(c.reviewed_SHA256,c.downloaded_SHA256);assert.equal(r.exit_code,1);assert.equal(r.exact_reviewed_contact_source_bytes_match,false);assert.equal(r.six_names_not_consumed_by_matched_source,false);assert.equal(f.calls.length,4);privateSafe(r);
+});
+test('a leading UTF8 BOM is reported separately and still stops source acceptance',async()=>{
+  const files=bodyFiles();files[0].body=Buffer.concat([Buffer.from([0xef,0xbb,0xbf]),files[0].body]);const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}).run(),c=r.source_comparison[0];assert.equal(c.comparison_class,'LEADING_UTF8_BOM_ONLY');assert.equal(c.downloaded_has_leading_UTF8_BOM,true);assert.equal(c.reviewed_has_leading_UTF8_BOM,false);assert.equal(c.CRLF_normalized_match,false);assert.equal(c.leading_BOM_removed_match,true);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('combined leading BOM and CRLF differences have their own descriptive classification',async()=>{
+  const files=bodyFiles();files[1].body=Buffer.concat([Buffer.from([0xef,0xbb,0xbf]),Buffer.from(files[1].body.toString().replace(/\n/g,'\r\n'))]);const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}).run(),c=r.source_comparison[1];assert.equal(c.comparison_class,'BOM_AND_CRLF_ONLY');assert.equal(c.CRLF_normalized_match,false);assert.equal(c.leading_BOM_removed_match,false);assert.equal(c.BOM_and_CRLF_normalized_match,true);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('a single final LF difference is distinguished without trimming other whitespace',async()=>{
+  const files=bodyFiles();files[0].body=Buffer.from(files[0].body.toString().replace(/\n$/,''));const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}).run(),c=r.source_comparison[0];assert.equal(c.comparison_class,'SINGLE_FINAL_LF_AFTER_BOM_CRLF_NORMALIZATION');assert.equal(c.single_final_LF_difference_after_BOM_and_CRLF_normalization,true);assert.equal(c.BOM_and_CRLF_normalized_match,false);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('changed configuration names remain other-byte differences with no source text in the receipt',async()=>{
+  const files=bodyFiles();files[1].body=Buffer.from(files[1].body.toString().replace('MUSHAVO_CONTACT_QUOTA_SECRET',privateMarker));const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}).run(),c=r.source_comparison[1];assert.equal(c.comparison_class,'OTHER_BYTES');assert.equal(c.BOM_and_CRLF_normalized_match,false);assert.equal(c.single_final_LF_difference_after_BOM_and_CRLF_normalization,false);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('invalid UTF8 source remains a byte mismatch with no replacement-character equivalence',async()=>{
+  const files=bodyFiles();files[1].body=Buffer.from([0xff,0xfe,0x61]);const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}).run(),c=r.source_comparison[1];assert.equal(c.comparison_class,'INVALID_UTF8');assert.equal(c.UTF8_decoding_succeeded,false);assert.equal(c.BOM_and_CRLF_normalized_match,null);assert.equal(c.exact_bytes_match,false);assert.equal(r.problem_code,'FUNCTION_SOURCE_MISMATCH');privateSafe(r);
+});
+test('classification preserves internal BOMs bare CRs spaces code and more than one final LF',()=>{
+  const local=Buffer.from('const value = "a b";\n');
+  for(const altered of ['const value = "ab";\n','const value = "a\uFEFF b";\n','const value = "a b";\r','const value = "a b";\n\n\n','// changed\nconst value = "a b";\n']){
+    const c=compareSourceBytes('index.ts',Buffer.from(altered),local);assert.equal(c.comparison_class,'OTHER_BYTES');assert.equal(c.exact_bytes_match,false);
+  }
+  assert.throws(()=>compareSourceBytes(privateMarker,local,local));
 });

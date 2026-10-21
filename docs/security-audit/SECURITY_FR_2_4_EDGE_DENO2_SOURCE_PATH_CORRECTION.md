@@ -1,5 +1,7 @@
 # E5.13 Deno 2 download path mapping correction
 
+Current outcome: [owner mapping completion, byte mismatch and per-file diagnostic](SECURITY_FR_2_4_EDGE_SOURCE_BYTE_COMPARISON_DIAGNOSTIC.md), FRE113. Source mapping completed on the owner run; exact byte comparison failed. Fifty-two offline cases pass for the new descriptive comparison; owner diagnostic execution remains pending. The path-correction handoff below is historical context.
+
 21 October 2026, FRE112. The [owner revision-two result](security-fr-2-email-edge-impact-owner-revision2-source-review.json) identifies the exact rejection reached at `2026-10-21T18:53:01.852Z`: `METADATA_ENTRYPOINT`. Four fixed GETs returned HTTP 200; the three multipart parts contained one metadata part and two source files with relative filenames. Only `deno2_entrypoint_path` was present, and its normalized value did not equal the detail endpoint's path. No private path string or source body was supplied to the assistant.
 
 The revision-two checker incorrectly required literal equality across these two path namespaces. Its earlier fixture set did not represent this download convention. It refused the metadata equality guard before mapping filenames or comparing bytes. Therefore the two expected filename booleans remained false because their checks were not reached; they do not establish missing files. Source bytes and shared runtime impact remain unverified. The after-detail and after-list requests were not made.

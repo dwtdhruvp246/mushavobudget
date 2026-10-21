@@ -1,6 +1,8 @@
 # E5.13 private source parity and configuration impact preparation
 
-Current handoff: [revision-three Deno 2 path mapping correction](SECURITY_FR_2_4_EDGE_DENO2_SOURCE_PATH_CORRECTION.md), FRE112. Forty-three offline cases pass; owner corrected-check execution is pending.
+Current handoff: [revision-four per-file source-byte comparison](SECURITY_FR_2_4_EDGE_SOURCE_BYTE_COMPARISON_DIAGNOSTIC.md), FRE113. Fifty-two offline cases pass; the owner source-byte diagnostic is pending.
+
+Earlier handoff: [revision-three Deno 2 path mapping correction](SECURITY_FR_2_4_EDGE_DENO2_SOURCE_PATH_CORRECTION.md), FRE112. Forty-three offline cases pass; owner corrected-check execution is pending.
 
 Earlier outcome: [owner source-format review and diagnostic revision two](SECURITY_FR_2_4_EDGE_SOURCE_REVIEW_DIAGNOSTIC.md), FRE111. Four GETs returned 200; the decoder refused the source structure before returning files. Thirty-three offline cases pass for the instrumented revision, with source acceptance requirements unchanged. Owner diagnostic execution is pending. The original preparation details below remain historical context.
 

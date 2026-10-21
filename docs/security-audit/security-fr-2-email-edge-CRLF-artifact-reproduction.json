@@ -1,0 +1,32 @@
+{
+  "stage_step": "FR.2.4.E5.13_PRIVATE_EDGE_CONFIGURATION_AND_SHARED_IMPACT_PREPARATION",
+  "result": "OWNER_OBSERVED_CRLF_ARTIFACT_FINGERPRINTS_REPRODUCED_FROM_REVIEWED_SOURCE",
+  "source_parent_commit": "84b60534c3c1ee52a30602e64b1e4d55f8660996",
+  "owner_checked_UTC": "2026-10-21T19:24:09.169Z",
+  "files": [
+    {
+      "name": "index.ts",
+      "reviewed_LF_bytes": 357,
+      "reviewed_LF_SHA256": "86f877cb8615432d962c6533a4c9620354a371c799cccfd05f9006dbfa47271f",
+      "generated_CRLF_bytes": 363,
+      "generated_CRLF_SHA256": "3298a0baa0f4f3dc430e7a633390a26f8150e6f4218c0de5f9bfca6a9d88fb45",
+      "owner_observed_download_fingerprint_matches": true,
+      "generated_from_public_reviewed_source": true
+    },
+    {
+      "name": "handler.mjs",
+      "reviewed_LF_bytes": 10703,
+      "reviewed_LF_SHA256": "392aa8ff50c4ba40fc122b1dc62786261f1e90faf407474e9339319a680da761",
+      "generated_CRLF_bytes": 10881,
+      "generated_CRLF_SHA256": "a3e355178fc9f9c156c802f7f1d2f4423f7171e7eebb36e30435532491e78974",
+      "owner_observed_download_fingerprint_matches": true,
+      "generated_from_public_reviewed_source": true
+    }
+  ],
+  "hosted_source_bodies_accessed_by_assistant": false,
+  "application_or_provider_source_executed": false,
+  "hosted_requests": 0,
+  "full_before_and_after_metadata_acceptance": false,
+  "live_activation_approved": false,
+  "hosted_acceptance": false
+}

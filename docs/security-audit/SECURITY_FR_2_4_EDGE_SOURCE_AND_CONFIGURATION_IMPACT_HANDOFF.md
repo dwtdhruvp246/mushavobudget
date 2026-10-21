@@ -1,6 +1,8 @@
 # E5.13 private source parity and configuration impact preparation
 
-Current handoff: [revision-four per-file source-byte comparison](SECURITY_FR_2_4_EDGE_SOURCE_BYTE_COMPARISON_DIAGNOSTIC.md), FRE113. Fifty-two offline cases pass; the owner source-byte diagnostic is pending.
+Current handoff: [revision-five reviewed CRLF artifacts and metadata completion](SECURITY_FR_2_4_EDGE_REVIEWED_CRLF_ARTIFACTS.md), FRE114. Sixty offline cases pass; fresh owner before-and-after acceptance is pending.
+
+Earlier handoff: [revision-four per-file source-byte comparison](SECURITY_FR_2_4_EDGE_SOURCE_BYTE_COMPARISON_DIAGNOSTIC.md), FRE113. Fifty-two offline cases pass; the owner source-byte diagnostic is pending.
 
 Earlier handoff: [revision-three Deno 2 path mapping correction](SECURITY_FR_2_4_EDGE_DENO2_SOURCE_PATH_CORRECTION.md), FRE112. Forty-three offline cases pass; owner corrected-check execution is pending.
 

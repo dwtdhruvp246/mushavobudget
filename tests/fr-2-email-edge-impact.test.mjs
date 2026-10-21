@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
-import {checkEdgeImpact,decodeSourceMultipart,compareSourceBytes,impactRef,impactStage,sixNames} from '../scripts/check-fr-2-email-edge-impact.mjs';
+import {checkEdgeImpact,decodeSourceMultipart,compareSourceBytes,matchReviewedArtifact,impactRef,impactStage,sixNames} from '../scripts/check-fr-2-email-edge-impact.mjs';
 import {readConfiguration} from '../supabase/functions/submit-enquiry/handler.mjs';
 const token='sbp_fc'+'SYNTHETIC_PRIVATE_TOKEN_'.repeat(2);
 const privateMarker='PRIVATE_SOURCE_OR_ERROR_NEVER_PRINT';
@@ -119,7 +119,7 @@ test('adding the six names cannot enable a contact handler missing its own secre
 });
 test('current revision reports boundary grammar failure without printing the content-type value',async()=>{
   const body=multipart();body.type+='; private-extra='+privateMarker;
-  const f=fixture({body}),r=await f.run();assert.equal(r.diagnostic_revision,4);assert.equal(r.problem_code,'FUNCTION_SOURCE_REVIEW_REQUIRED');assert.equal(r.source_observation.decoder_step,'CONTENT_TYPE_BOUNDARY');assert.equal(r.requests_attempted,4);assert.equal(r.downloaded_source_files,0);privateSafe(r);
+  const f=fixture({body}),r=await f.run();assert.equal(r.diagnostic_revision,5);assert.equal(r.problem_code,'FUNCTION_SOURCE_REVIEW_REQUIRED');assert.equal(r.source_observation.decoder_step,'CONTENT_TYPE_BOUNDARY');assert.equal(r.requests_attempted,4);assert.equal(r.downloaded_source_files,0);privateSafe(r);
 });
 test('missing disposition is isolated using a count without exposing unknown header names',async()=>{
   const body=multipart();body.bytes=Buffer.from(body.bytes.toString().replace('Content-Disposition:','X-Private-Disposition:'));
@@ -191,9 +191,9 @@ test('both files are compared even when the entrypoint mismatches, with no after
   const files=bodyFiles();files[0].body=Buffer.from(privateMarker);const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}),r=await f.run();
   assert.equal(r.problem_code,'FUNCTION_SOURCE_MISMATCH');assert.equal(f.calls.length,4);assert.deepEqual(r.source_comparison.map(x=>x.exact_bytes_match),[false,true]);assert.equal(r.source_comparison[0].comparison_class,'OTHER_BYTES');assert.equal(r.source_comparison[1].comparison_class,'EXACT');privateSafe(r);
 });
-test('CRLF-only source differences are classified but never satisfy exact-byte acceptance',async()=>{
+test('the pinned CRLF handler variant satisfies artifact identity while exact LF identity stays false',async()=>{
   const files=bodyFiles();files[1].body=Buffer.from(files[1].body.toString().replace(/\n/g,'\r\n'));const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}),r=await f.run(),c=r.source_comparison[1];
-  assert.equal(c.comparison_class,'CRLF_ONLY');assert.equal(c.CRLF_normalized_match,true);assert.notEqual(c.reviewed_SHA256,c.downloaded_SHA256);assert.equal(r.exit_code,1);assert.equal(r.exact_reviewed_contact_source_bytes_match,false);assert.equal(r.six_names_not_consumed_by_matched_source,false);assert.equal(f.calls.length,4);privateSafe(r);
+  assert.equal(c.comparison_class,'CRLF_ONLY');assert.equal(c.CRLF_normalized_match,true);assert.notEqual(c.reviewed_SHA256,c.downloaded_SHA256);assert.equal(r.exit_code,0);assert.equal(r.exact_reviewed_contact_source_bytes_match,false);assert.equal(r.reviewed_contact_artifacts_match,true);assert.equal(r.six_names_not_consumed_by_matched_source,true);assert.equal(f.calls.length,6);privateSafe(r);
 });
 test('a leading UTF8 BOM is reported separately and still stops source acceptance',async()=>{
   const files=bodyFiles();files[0].body=Buffer.concat([Buffer.from([0xef,0xbb,0xbf]),files[0].body]);const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}).run(),c=r.source_comparison[0];assert.equal(c.comparison_class,'LEADING_UTF8_BOM_ONLY');assert.equal(c.downloaded_has_leading_UTF8_BOM,true);assert.equal(c.reviewed_has_leading_UTF8_BOM,false);assert.equal(c.CRLF_normalized_match,false);assert.equal(c.leading_BOM_removed_match,true);assert.equal(r.exit_code,1);privateSafe(r);
@@ -216,4 +216,40 @@ test('classification preserves internal BOMs bare CRs spaces code and more than 
     const c=compareSourceBytes('index.ts',Buffer.from(altered),local);assert.equal(c.comparison_class,'OTHER_BYTES');assert.equal(c.exact_bytes_match,false);
   }
   assert.throws(()=>compareSourceBytes(privateMarker,local,local));
+});
+const toCRLF=bytes=>Buffer.from(bytes.toString('utf8').replace(/\n/g,'\r\n'));
+test('both owner-observed CRLF fingerprints reproduce exactly and finish the six-read stability check',async()=>{
+  const files=bodyFiles().map(f=>({...f,body:toCRLF(f.body)}));const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}),r=await f.run();
+  assert.equal(r.exit_code,0);assert.equal(r.requests_attempted,6);assert.equal(r.exact_reviewed_contact_source_bytes_match,false);assert.equal(r.reviewed_contact_artifacts_match,true);assert.equal(r.source_review_basis,'EXACT_PINNED_CRLF_ARTIFACTS');assert.equal(r.downloaded_source_normalized_for_acceptance,false);assert(r.detail_metadata_agreed_before_and_after&&r.selected_functions_absent_before_and_after&&r.six_names_not_consumed_by_matched_source);
+  assert.deepEqual(r.source_comparison.map(c=>[c.downloaded_bytes,c.downloaded_SHA256]),[[363,'3298a0baa0f4f3dc430e7a633390a26f8150e6f4218c0de5f9bfca6a9d88fb45'],[10881,'a3e355178fc9f9c156c802f7f1d2f4423f7171e7eebb36e30435532491e78974']]);privateSafe(r);
+});
+test('mixed line endings remain unapproved even when CRLF normalization matches the reviewed source',async()=>{
+  const files=bodyFiles();files[0].body=Buffer.from(files[0].body.toString().replace('\n','\r\n'));
+  const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}),r=await f.run();assert.equal(r.source_comparison[0].CRLF_normalized_match,true);assert.equal(r.source_comparison[0].reviewed_artifact_variant,'UNAPPROVED');assert.equal(r.exit_code,1);assert.equal(r.reviewed_contact_artifacts_match,false);assert.equal(f.calls.length,4);privateSafe(r);
+});
+test('a locally changed reviewed baseline cannot define new accepted LF or CRLF variants',()=>{
+  const changed=Buffer.concat([sources.get('index.ts'),Buffer.from('// changed')]);assert.throws(()=>matchReviewedArtifact('index.ts',changed,changed),e=>e.safeCode==='SOURCE_BASELINE_REVIEW_REQUIRED');assert.throws(()=>matchReviewedArtifact(privateMarker,sources.get('index.ts'),sources.get('index.ts')));
+});
+test('pinned CRLF byte identity never bypasses changed after-detail or after-list metadata',async()=>{
+  const files=bodyFiles().map(f=>({...f,body:toCRLF(f.body)}));for(const phase of [5,6]){
+    const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files}),mutate:(i,r)=>i===phase?Response.json(i===5?{...row,import_map:false,entrypoint_path:'file://'+entry,ezbr_sha256:'a'.repeat(64)}:[{...row,version:8}]):r});const r=await f.run();assert.equal(r.reviewed_contact_artifacts_match,true);assert.equal(r.exit_code,1);assert.equal(r.problem_code,'OBSERVATION_CHANGED');assert.equal(r.readiness_approved,false);privateSafe(r);
+  }
+});
+test('request input cannot widen the reviewed artifact allowlist or enable arbitrary normalization',async()=>{
+  for(const input of [{token,allowCRLF:true},{token,reviewedArtifacts:{}},{token,normalize:true}]){const f=fixture();const r=await f.run(input);assert.equal(r.exit_code,1);assert.equal(f.calls.length,0);assert.equal(r.reviewed_contact_artifacts_match,false);privateSafe(r);}
+});
+test('generated public CRLF handler configuration has the same modern and legacy reads and values',async()=>{
+  // Derived solely from the public reviewed repository source, never provider data.
+  const publicVariant=toCRLF(sources.get('handler.mjs'));const reviewedModule=await import('data:text/javascript;base64,'+publicVariant.toString('base64'));
+  for(const modern of [false,true]){const env=environment(modern),lfReads=[],crlfReads=[];const original=readConfiguration(k=>{lfReads.push(k);return env[k];});const variant=reviewedModule.readConfiguration(k=>{crlfReads.push(k);return env[k];});assert.deepEqual(variant,original);assert.deepEqual(crlfReads,lfReads);assert(!crlfReads.some(k=>sixNames.includes(k)));}
+});
+test('only pinned full-file LF or CRLF variants are accepted; BOM and final-LF alterations stay rejected',()=>{
+  for(const [name,local]of sources){assert.equal(matchReviewedArtifact(name,local,local).reviewed_artifact_variant,'REVIEWED_LF');assert.equal(matchReviewedArtifact(name,toCRLF(local),local).reviewed_artifact_variant,'PINNED_OWNER_OBSERVED_CRLF');
+    for(const changed of [Buffer.concat([Buffer.from([0xef,0xbb,0xbf]),toCRLF(local)]),Buffer.from(local.toString().replace(/\n$/,'')),Buffer.concat([local,Buffer.from('\n')])])assert.equal(matchReviewedArtifact(name,changed,local).reviewed_artifact_exact_bytes_match,false);
+  }
+});
+test('the four combinations of exact reviewed LF and pinned CRLF files retain truthful identity fields',async()=>{
+  for(let mask=0;mask<4;mask++){
+    const files=bodyFiles().map((f,i)=>({...f,body:mask&(1<<i)?toCRLF(f.body):f.body}));const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}).run();assert.equal(r.exit_code,0);assert.equal(r.reviewed_contact_artifacts_match,true);assert.equal(r.exact_reviewed_contact_source_bytes_match,mask===0);assert.equal(r.source_review_basis,mask===0?'EXACT_REVIEWED_LF_ARTIFACTS':mask===3?'EXACT_PINNED_CRLF_ARTIFACTS':'EXACT_REVIEWED_LF_AND_PINNED_CRLF_ARTIFACTS');privateSafe(r);
+  }
 });

@@ -65,6 +65,23 @@ export function compareSourceBytes(name,downloaded,reviewed){
   r.comparison_class=r.exact_bytes_match?'EXACT':r.CRLF_normalized_match?'CRLF_ONLY':r.leading_BOM_removed_match?'LEADING_UTF8_BOM_ONLY':r.BOM_and_CRLF_normalized_match?'BOM_AND_CRLF_ONLY':r.single_final_LF_difference_after_BOM_and_CRLF_normalization?'SINGLE_FINAL_LF_AFTER_BOM_CRLF_NORMALIZATION':'OTHER_BYTES';
   return r;
 }
+// Only the two owner-observed CRLF artifacts reproduced from reviewed LF sources
+// are added. Downloaded source is never normalized to satisfy this gate.
+const reviewedArtifacts=Object.freeze({
+  'index.ts':Object.freeze({LF_SHA256:'86f877cb8615432d962c6533a4c9620354a371c799cccfd05f9006dbfa47271f',LF_bytes:357,
+    CRLF_SHA256:'3298a0baa0f4f3dc430e7a633390a26f8150e6f4218c0de5f9bfca6a9d88fb45',CRLF_bytes:363}),
+  'handler.mjs':Object.freeze({LF_SHA256:'392aa8ff50c4ba40fc122b1dc62786261f1e90faf407474e9339319a680da761',LF_bytes:10703,
+    CRLF_SHA256:'a3e355178fc9f9c156c802f7f1d2f4423f7171e7eebb36e30435532491e78974',CRLF_bytes:10881})
+});
+export function matchReviewedArtifact(name,downloaded,reviewed){
+  const pin=Object.hasOwn(reviewedArtifacts,name)?reviewedArtifacts[name]:null;
+  need(pin&&Buffer.isBuffer(reviewed)&&reviewed.length===pin.LF_bytes&&hash(reviewed)===pin.LF_SHA256,'SOURCE_BASELINE_REVIEW_REQUIRED');
+  need(Buffer.isBuffer(downloaded)&&downloaded.length>0&&downloaded.length<=2097152,'FUNCTION_SOURCE_REVIEW_REQUIRED');
+  const CRLF=Buffer.from(reviewed.toString('utf8').replace(/\n/g,'\r\n'));
+  need(CRLF.length===pin.CRLF_bytes&&hash(CRLF)===pin.CRLF_SHA256,'SOURCE_BASELINE_REVIEW_REQUIRED');
+  const variant=downloaded.equals(reviewed)?'REVIEWED_LF':downloaded.equals(CRLF)?'PINNED_OWNER_OBSERVED_CRLF':'UNAPPROVED';
+  return {reviewed_artifact_variant:variant,reviewed_artifact_exact_bytes_match:variant!=='UNAPPROVED'};
+}
 // Strict bounded multipart decoder. Diagnostic fields describe fixed format
 // categories only; paths, source, metadata values and headers never leave memory.
 export function decodeSourceMultipart(bytes,type,entrypoint,observation=sourceObservation()){
@@ -154,11 +171,12 @@ export function decodeSourceMultipart(bytes,type,entrypoint,observation=sourceOb
   return relative;
 }
 export async function checkEdgeImpact(input,{transport=fetch,baselineReceipt}={}){
-  const r={stage_step:impactStage,diagnostic_revision:4,result:'STAGING_EDGE_SHARED_IMPACT_REVIEW_REQUIRED',requests_attempted:0,
+  const r={stage_step:impactStage,diagnostic_revision:5,result:'STAGING_EDGE_SHARED_IMPACT_REVIEW_REQUIRED',requests_attempted:0,
     fixed_staging_project_metadata_matched:false,fixed_staging_database_host_matched:false,
     prior_other_function_metadata_matched:false,selected_functions_absent_before_and_after:false,
     single_unrelated_function_matches_reviewed_contact_slug:false,detail_metadata_agreed_before_and_after:false,
     other_function_metadata_SHA256:null,downloaded_source_files:0,source_observation:sourceObservation(),source_comparison:[],exact_reviewed_contact_source_bytes_match:false,
+    reviewed_contact_artifacts_match:false,source_review_basis:'NOT_ESTABLISHED',downloaded_source_normalized_for_acceptance:false,
     six_names_not_consumed_by_matched_source:false,
     shared_configuration_runtime_impact_verified:false,previous_deployable_artifact_retained:false,
     recovery_execution_verified:false,configuration_values_collected:false,secret_or_SQL_endpoint_used:false,
@@ -200,17 +218,21 @@ export async function checkEdgeImpact(input,{transport=fetch,baselineReceipt}={}
     const source=await get('STAGING_CONTACT_SOURCE','/functions/submit-enquiry/body',{multipart:true});
     const files=decodeSourceMultipart(source.bytes,source.type,first.entrypoint_path,r.source_observation);r.downloaded_source_files=files.size;
     for(const name of ['index.ts','handler.mjs']){
-      const local=await readFile(new URL('supabase/functions/submit-enquiry/'+name,root));r.source_comparison.push(compareSourceBytes(name,files.get(name),local));
+      const local=await readFile(new URL('supabase/functions/submit-enquiry/'+name,root));
+      r.source_comparison.push({...compareSourceBytes(name,files.get(name),local),...matchReviewedArtifact(name,files.get(name),local)});
     }
-    need(r.source_comparison.every(x=>x.exact_bytes_match),'FUNCTION_SOURCE_MISMATCH');
-    r.exact_reviewed_contact_source_bytes_match=true;
-    // This conclusion is bound to the two exact reviewed files, not a lexical scan
-    // of unknown code or a claim about all runtime/platform behavior.
+    need(r.source_comparison.every(x=>x.reviewed_artifact_exact_bytes_match),'FUNCTION_SOURCE_MISMATCH');
+    r.exact_reviewed_contact_source_bytes_match=r.source_comparison.every(x=>x.exact_bytes_match);
+    r.reviewed_contact_artifacts_match=true;
+    r.source_review_basis=r.exact_reviewed_contact_source_bytes_match?'EXACT_REVIEWED_LF_ARTIFACTS':
+      r.source_comparison.every(x=>x.reviewed_artifact_variant==='PINNED_OWNER_OBSERVED_CRLF')?'EXACT_PINNED_CRLF_ARTIFACTS':'EXACT_REVIEWED_LF_AND_PINNED_CRLF_ARTIFACTS';
+    // Bound to the exact LF or pinned reproduced CRLF artifacts of the two reviewed
+    // files, not a scan of unknown code or proof of all runtime/platform behavior.
     r.six_names_not_consumed_by_matched_source=true;
     const last=detail(await get('STAGING_CONTACT_DETAIL_AFTER','/functions/submit-enquiry'),before[0]);
     need(digest(first)===digest(last),'OBSERVATION_CHANGED');r.detail_metadata_agreed_before_and_after=true;
     const after=list(await get('STAGING_FUNCTION_LIST_AFTER','/functions'));need(digest(before)===digest(after),'OBSERVATION_CHANGED');r.selected_functions_absent_before_and_after=true;
-    r.result='STAGING_CONTACT_SOURCE_PARITY_OBSERVED_NOT_CONFIGURATION_APPROVAL';r.checkpoint='COMPLETE';r.exit_code=0;
+    r.result='STAGING_REVIEWED_CONTACT_ARTIFACT_PARITY_OBSERVED_NOT_CONFIGURATION_APPROVAL';r.checkpoint='COMPLETE';r.exit_code=0;
   }catch(error){r.problem_code=codes.has(error?.safeCode)?error.safeCode:'PROVIDER_GET_REVIEW_REQUIRED';}
   r.checked_UTC=new Date().toISOString();return r;
 }

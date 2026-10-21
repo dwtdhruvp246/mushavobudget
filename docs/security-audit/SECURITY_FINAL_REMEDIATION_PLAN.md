@@ -1,3 +1,9 @@
+# Current checkpoint — E5.13 scoped pass; Batch A combines four local preparation steps
+
+21 October 2026, FRE116. [Batch A handoff](SECURITY_FR_2_4_BATCH_A_HANDOFF.md) combines retained ZIP/Worker checks, fresh Edge source preparation, private input validation and a new DPAPI candidate with readback. Local verification passes 24/24 with 25 source hashes and three JavaScript syntax checks; native Windows execution and owner inputs are pending. [E5.13 outcome](SECURITY_FR_2_4_EDGE_SOURCE_IMPACT_SCOPED_OUTCOME.md) remains complete at its selected source/metadata scope. The batch labels its start and completion and reports missing inputs together. No hosted installation or activation is included. All full findings remain open; production/native unchanged and APK deferred. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — FR.2.4.E5.7 staging bindings installed; rollout preparation next
 
 20 October 2026, FRE97. [Owner pass](security-fr-2-email-secrets-owner-pass.json) confirms nine requests, 32 source hashes, PATCH HTTP 200 and independent GET HTTP 200: 13 secret_text entries and 16 required variables in each channel of the staging Pages project. Other observed channel settings and selected source/build/deployment metadata compared unchanged; encrypted packet and accepted ZIP unchanged. [Outcome](SECURITY_FR_2_4_STAGING_SECRET_INSTALLATION_OUTCOME.md) retains the [earlier 403 attempt](security-fr-2-email-secrets-owner-review.json) without asserting its exact cause. Secret value equality, runtime binding and mail delivery remain unverified. Next: coordinated staging rollout preparation; no current owner command, upload, SQL activation or email requested. The execution environment is unavailable for testing the next command. All full findings remain open; production/native unchanged and APK deferred. Earlier checkpoints follow.

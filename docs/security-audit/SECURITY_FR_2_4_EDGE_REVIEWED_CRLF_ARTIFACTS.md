@@ -1,5 +1,7 @@
 # E5.13 reviewed CRLF artifacts and metadata completion
 
+Current outcome: [owner source and selected metadata checkpoint passed](SECURITY_FR_2_4_EDGE_SOURCE_IMPACT_SCOPED_OUTCOME.md), FRE115. Six GETs completed with matching reviewed artifacts and before/after metadata, exit 0. No rerun is requested. Configuration input availability is the next preparation. The revision-five preparation below is historical context.
+
 21 October 2026, FRE114. The [owner revision-four receipt](security-fr-2-email-edge-impact-owner-revision4-CRLF-only.json), checked `2026-10-21T19:24:09.169Z`, establishes that both downloaded files differ from the reviewed LF files only by CRLF line endings. Source mapping completed; strict UTF-8 decoding succeeded; neither file had a leading BOM. Revision four correctly retained its LF-only exact-byte failure, exit 1. The after-detail and after-list checks did not run.
 
 The assistant independently [reproduced both exact reported fingerprints](security-fr-2-email-edge-CRLF-artifact-reproduction.json) by generating CRLF copies solely from the public reviewed repository files. No hosted source body was accessed or received by the assistant.

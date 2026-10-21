@@ -1,6 +1,8 @@
 # E5.13 private source parity and configuration impact preparation
 
-Current handoff: [revision-five reviewed CRLF artifacts and metadata completion](SECURITY_FR_2_4_EDGE_REVIEWED_CRLF_ARTIFACTS.md), FRE114. Sixty offline cases pass; fresh owner before-and-after acceptance is pending.
+Current outcome: [E5.13 owner source/selected-metadata scoped pass](SECURITY_FR_2_4_EDGE_SOURCE_IMPACT_SCOPED_OUTCOME.md), FRE115. Six GETs completed with exit 0. No rerun is requested; private configuration input availability is pending.
+
+Earlier handoff: [revision-five reviewed CRLF artifacts and metadata completion](SECURITY_FR_2_4_EDGE_REVIEWED_CRLF_ARTIFACTS.md), FRE114. Sixty offline cases pass; fresh owner before-and-after acceptance is pending.
 
 Earlier handoff: [revision-four per-file source-byte comparison](SECURITY_FR_2_4_EDGE_SOURCE_BYTE_COMPARISON_DIAGNOSTIC.md), FRE113. Fifty-two offline cases pass; the owner source-byte diagnostic is pending.
 

@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-22",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_BATCH_D_ONE_INSTALLED_SOURCE_PASS_HTTP401_OBSERVED_THREE_FUNCTION_RESUME_READY",
+  "status": "FR2_EMAIL_BATCH_D_FOUR_STAGING_EDGE_DEPLOYMENTS_SOURCE_AND_HTTP401_SCOPED_COMPLETE",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "3f9ce93873146db33c073f58733d38380d5aa052",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE123",
+  "latest_evidence": "FRE124",
   "batches": [
     {
       "id": "FR.1",
@@ -966,7 +966,15 @@
           "email_batch_d_first_function_HTTP401_observed": true,
           "email_batch_d_resume_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_D_RESUME_HANDOFF.md",
           "email_batch_d_resume_local_PASS": 20,
-          "email_batch_d_resume_owner_received": false
+          "email_batch_d_resume_owner_received": true,
+          "email_batch_d_resume_owner_receipt": "docs/security-audit/security-fr-2-email-edge-batch-d-resume-owner-pass.json",
+          "email_batch_d_resume_owner_offline_PASS": 20,
+          "email_batch_d_resume_owner_exit_code": 0,
+          "email_four_selected_Edge_functions_deployed": true,
+          "email_Edge_exact_source_and_missing_credentials_HTTP401_scoped_complete": true,
+          "email_Edge_unrelated_contact_preserved": true,
+          "email_Edge_completion_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_D_COMPLETE.md",
+          "email_canonical_database_integration_pending": true
         },
         {
           "id": "FR.2.5",
@@ -1036,7 +1044,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E5.17R_BATCH_D_VERIFY_ONE_AND_DEPLOY_REMAINING_THREE",
+  "next_step": "FR.2.4.E5.18_CANONICAL_DATABASE_REGISTRATION_INTEGRATION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -2093,7 +2101,12 @@
     "owner_first_function_HTTP401_observed": true,
     "owner_first_function_exact_source_files": 2,
     "resume_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_D_RESUME_HANDOFF.md",
-    "original_runner_must_not_be_rerun": true
+    "original_runner_must_not_be_rerun": true,
+    "cumulative_selected_functions_deployed": 4,
+    "scoped_Edge_deployment_checkpoint_complete": true,
+    "completion_receipt": "docs/security-audit/security-fr-2-email-edge-batch-d-resume-owner-pass.json",
+    "completion_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_D_COMPLETE.md",
+    "remaining_function_deployment_required": false
   },
   "FR2_email_batch_d_resume": {
     "stage_step": "FR.2.4.E5.17R_BATCH_D_VERIFY_ONE_AND_DEPLOY_REMAINING_THREE",
@@ -2110,9 +2123,70 @@
     "existing_identity_version_bundle_and_source_required": true,
     "denial_evidence_basis": "EXACT_HTTP_401_ONLY",
     "denial_response_JSON_format_verified": false,
-    "owner_resume_result_received": false,
+    "owner_resume_result_received": true,
     "actual_hosted_requests_by_assistant": 0,
     "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "owner_receipt": "docs/security-audit/security-fr-2-email-edge-batch-d-resume-owner-pass.json",
+    "owner_offline_PASS": 20,
+    "owner_offline_exit_code": 0,
+    "owner_node_version": "v22.17.0",
+    "owner_Windows_resume_parent_execution_observed": true,
+    "owner_requests": 32,
+    "owner_new_deployments": 3,
+    "owner_exit_code": 0,
+    "owner_checked_UTC": "2026-10-22T09:23:42.482Z",
+    "write_outcome_uncertain": false,
+    "recorded_first_function_retained": true,
+    "all_four_source_readbacks_exact": true,
+    "all_four_unauthenticated_HTTP401_observed": true,
+    "contact_metadata_and_artifacts_preserved": true,
+    "scoped_checkpoint_complete": true,
+    "completion_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_D_COMPLETE.md"
+  },
+  "FR2_email_edge_deployed_identities": {
+    "observed_UTC": "2026-10-22T09:23:42.482Z",
+    "basis": "docs/security-audit/security-fr-2-email-edge-batch-d-resume-owner-pass.json",
+    "selected_functions": [
+      {
+        "slug": "invite-admin-user",
+        "version": 1,
+        "function_identity_SHA256": "fb57a24cbaca20d32fe5533d4169006813c706d145fcf188d1da58c1e00ff224",
+        "deployment_bundle_SHA256": "9e3d472069c6c87c33dcc5af08f7293c4c14fd387d328c78c107e30b26df0b81",
+        "verify_jwt_expected": true,
+        "source_files_exact": 2,
+        "unauthenticated_HTTP_status": 401
+      },
+      {
+        "slug": "invite-business-member",
+        "version": 1,
+        "function_identity_SHA256": "1ebc6298014dc3f2a2918a3fe67431a8e4431a3d442d61f0f818dbcafad53a58",
+        "deployment_bundle_SHA256": "0885aeccb5de6e7c19bb6c83b88dddcd01d5a01bb21fd7a2b7c39dab96bf3d86",
+        "verify_jwt_expected": true,
+        "source_files_exact": 2,
+        "unauthenticated_HTTP_status": 401
+      },
+      {
+        "slug": "send-test-push",
+        "version": 1,
+        "function_identity_SHA256": "49a721dcc3e46af7d72346a5c7eba3f43b9345013f48e0356c42b91da33df39b",
+        "deployment_bundle_SHA256": "2a367a06bce55348c77c25cf593e54c94b4b8ddd555123584d9f9fa7ccf6aea1",
+        "verify_jwt_expected": false,
+        "source_files_exact": 4,
+        "unauthenticated_HTTP_status": 401
+      },
+      {
+        "slug": "sync-exchange-rates",
+        "version": 1,
+        "function_identity_SHA256": "5e4b81ca1dc05d4907cba2270802af475e7d42282eb26b071505d75f9beb5b3e",
+        "deployment_bundle_SHA256": "7aeaa1f32688ae0d456dacca625bd3ec7c3e4f88ab694257d2e2c3048d1634b7",
+        "verify_jwt_expected": false,
+        "source_files_exact": 3,
+        "unauthenticated_HTTP_status": 401
+      }
+    ],
+    "observation_is_not_a_write_lock": true,
+    "authenticated_runtime_verified": false,
     "hosted_acceptance": false
   }
 }

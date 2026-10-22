@@ -1,3 +1,9 @@
+# Current checkpoint — Batch D staging Edge deployment complete
+
+22 October 2026, FRE124. [Owner pass](security-fr-2-email-edge-batch-d-resume-owner-pass.json) reports offline 20/20 on Node 22.17.0, 46 source hashes, three syntax checks, 32 hosted requests, three deployment HTTP 201s and exit 0. The recorded first function was retained; all four selected functions have exact source readbacks, expected metadata and missing-credentials HTTP 401 observations. The unrelated contact function metadata and artifacts were preserved. [Completion report](SECURITY_FR_2_4_BATCH_D_COMPLETE.md) records the four observed ID/version/bundle pins and remaining limits. No further Batch D deployment or resume is needed. Next: canonical database registration integration, then coordinated frontend/database installation, recovery and authenticated/delivery tests. This completes only the selected Edge deployment checkpoint; live activation, full hosted acceptance, production/native/store work and all full finding closure remain pending. Earlier checkpoints follow.
+
+---
+
 # Batch D resume: retain one deployment, create the missing three
 
 22 October 2026, FRE123. The [owner's second run](security-fr-2-email-edge-batch-d-owner-partial-one-installed.json), checked at `2026-10-22T06:00:10.392Z`, confirms one deployment HTTP 201, independent metadata/source/detail GETs, two exact source files and an unauthenticated HTTP 401 for `invite-admin-user`. Its version is 1, ID SHA256 `fb57a24cbaca20d32fe5533d4169006813c706d145fcf188d1da58c1e00ff224`, and provider bundle SHA256 `9e3d472069c6c87c33dcc5af08f7293c4c14fd387d328c78c107e30b26df0b81`. The write outcome is certain at this scope. The other three deployments were never attempted. Offline verification again passed 18/18 on owner Node 22.17.0.

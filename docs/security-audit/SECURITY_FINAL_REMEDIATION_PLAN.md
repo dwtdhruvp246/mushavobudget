@@ -1,3 +1,9 @@
+# Current checkpoint — Batch A complete; Batch B frontend package ready
+
+22 October 2026, FRE118. [Batch A owner pass](security-fr-2-email-edge-batch-a-owner-pass.json) confirms six validated configuration values, newly generated staging VAPID/caller keys and a saved DPAPI candidate with exact readback, exit 0. The separate offline verifier receipt was not supplied. [Batch B](SECURITY_FR_2_4_BATCH_B_HANDOFF.md) adds the matching public key to a new frontend ZIP, checks all 43 other files unchanged, prepares a rollout checklist and independently reads the ZIP through Windows .NET. Local checks pass 12/12 with 91 pinned source files and three JavaScript syntax checks; owner execution is pending. No new credential prompts are needed. Hosted deployment, activation, provider acceptance and full finding closure remain pending.
+
+---
+
 # Current checkpoint — Batch A artifacts checked on Windows; generated-key mode ready
 
 22 October 2026, FRE117. [Owner receipt](security-fr-2-email-edge-batch-a-owner-inputs-required.json) confirms ZIP, Worker, 12-file Edge package and DPAPI/private-pipe preflight checks passed; exit 2 identifies unavailable staging VAPID and CurrencyAPI inputs. No private candidate was saved. [Updated handoff](SECURITY_FR_2_4_BATCH_A_HANDOFF.md) adds automatic local staging VAPID generation with two explained prompts: monitored contact email and CurrencyAPI dashboard key. Local verification passes 29/29; generated-mode Windows execution is pending. Earlier evidence remains intact. Hosted rollout and all full finding closure remain pending.

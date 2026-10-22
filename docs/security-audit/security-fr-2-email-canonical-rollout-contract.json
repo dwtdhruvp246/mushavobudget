@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.18_BATCH_E_CANONICAL_DATABASE_REGISTRATION_INTEGRATION",
-  "status": "BATCH_E_SOURCE_INTEGRATION114PASS_WINDOWS_PENDING_NOT_HOSTED_HANDOFF",
+  "status": "BATCH_E_CANONICAL56_INTEGRATION_OWNER_WINDOWS114PASS_COMPLETE",
   "source_parent_commit": "2f6bfc329028a54b60d203284d6a515862deb81c",
   "migration": "supabase/migrations/20261022000000_email_staging_registration_bridge.sql",
   "canonical_schema": "supabase/schema.sql",
@@ -23,7 +23,7 @@
   "retained_cases": 70,
   "source_hashes": 88,
   "syntax_checks": 18,
-  "owner_Windows_result_received": false,
+  "owner_Windows_result_received": true,
   "owner_credentials_or_hosted_SQL_required_for_next_verification": false,
   "hosted_SQL_handoff_approved": false,
   "target_independently_verified": false,
@@ -31,5 +31,9 @@
   "hosted_acceptance": false,
   "production_or_native_changed": false,
   "APK_update_deferred": true,
-  "findings_closed": []
+  "findings_closed": [],
+  "owner_Windows_PASS": 114,
+  "owner_Windows_exit_code": 0,
+  "owner_Windows_node_version": "v22.17.0",
+  "owner_receipt": "docs/security-audit/security-fr-2-email-canonical-rollout-owner-Windows-pass.json"
 }

@@ -1,5 +1,7 @@
 # Batch E: canonical database registration integration
 
+**Windows completion update, FRE126,22 October2026:** owner run at `0deaccfc91610e1acb6c60276fa2728fdf7b2ad6` passed114/114,88 hashes,18 syntax checks,Node22.17.0,PGlite0.5.8,exit0. See [owner receipt](security-fr-2-email-canonical-rollout-owner-Windows-pass.json). No runtime timestamp was supplied. The Windows-pending text below records the original handoff. The next scoped handoff is [Batch F dormant registration](SECURITY_FR_2_4_BATCH_F_HANDOFF.md); it does not approve activation.
+
 22 October 2026, FRE125. Batch D is complete at its selected Edge source/HTTP-denial scope. This batch closes the source integration conflict between the offline-only migration55 installer and the separately reviewed staging activation/recovery candidate. It implements the actual migration path and tests it locally; it does not install or activate anything on Supabase.
 
 | Combined work | Result |

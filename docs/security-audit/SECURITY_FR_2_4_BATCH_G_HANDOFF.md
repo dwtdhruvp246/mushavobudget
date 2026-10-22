@@ -1,5 +1,11 @@
 # Batch G: compiled gateway integration, frontend preflight and staging upload
 
+## Deployment and public serving checkpoint complete
+
+22 October 2026, FRE131. The [owner deployment report](security-fr-2-email-batch-g-owner-deployment-report.json) identifies https://e114f8a4.mushavo-budget-staging.pages.dev/. [Direct public verification](security-fr-2-email-batch-g-public-serving-pass.json) passes98 scoped checks across this deployment and the canonical staging origin, including exact served static bytes, both live public configurations reconstructing the accepted ZIP identity, selected headers, private-path protection and gateway GET boundary denial. Four initial transport timeouts passed targeted follow-up. This establishes the frontend publication checkpoint; it does not establish deployed Worker source parity, authenticated backend/runtime, browser caches or delivery acceptance. Do not repeat the historical static preflight or upload. [Batch H](SECURITY_FR_2_4_BATCH_H_HANDOFF.md) is the next quarantined database installation handoff. Earlier preparation instructions below are historical.
+
+---
+
 ## Owner preflight completed — dashboard upload pending
 
 22 October 2026, FRE130. [Owner receipt](security-fr-2-email-batch-g-owner-preflight-pass.json) reports five read-only requests and exit 0 at 16:00:14.404Z; the exact 44-file ZIP and all selected Pages/limiter metadata checks passed. No upload completion was supplied. Proceed to the existing conditional dashboard upload instructions below using the exact verified Batch B ZIP. Do not rerun this static-deployment preflight after uploading the gateway. No new owner offline test total is inferred from this hosted receipt. Database activation and hosted acceptance remain pending.

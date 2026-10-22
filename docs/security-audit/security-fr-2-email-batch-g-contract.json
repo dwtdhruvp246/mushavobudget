@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.20_BATCH_G_FRONTEND_GATEWAY_ROLLOUT_PREPARATION",
-  "status": "OWNER_BATCH_G_PREFLIGHT_PASS_MANUAL_STAGING_FRONTEND_UPLOAD_PENDING",
+  "status": "OWNER_STAGING_FRONTEND_DEPLOYED_PUBLIC_SERVING98_SCOPED_PASS",
   "source_parent_commit": "7bfe5a93bcc4e1510fd390c6e5362e484246c841",
   "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_G_HANDOFF.md",
   "manifest": "docs/security-audit/security-fr-2-email-batch-g-source-manifest.json",
@@ -33,7 +33,7 @@
   "new_email_keys_or_private_packets_required": false,
   "automatic_upload_or_settings_write": false,
   "manual_upload_scope_after_exit0": "EXACT_VERIFIED_ZIP_TO_PRODUCTION_CHANNEL_OF_EXISTING_STAGING_PAGES_PROJECT_ONLY",
-  "manual_upload_currently_completed": false,
+  "manual_upload_currently_completed": true,
   "owner_result_received": true,
   "Windows_parent_execution_verified": true,
   "new_dependency_fixture_installation_locally_completed": false,
@@ -52,5 +52,17 @@
   "owner_exit_code": 0,
   "owner_source_hashes": 127,
   "Windows_parent_execution_evidence_basis": "OWNER_REPORTED_SAFE_HOSTED_RESULT_AND_COMBINED_EXIT0",
-  "owner_offline_verifier_receipt_supplied": false
+  "owner_offline_verifier_receipt_supplied": false,
+  "owner_deployment_report": "docs/security-audit/security-fr-2-email-batch-g-owner-deployment-report.json",
+  "public_serving_receipt": "docs/security-audit/security-fr-2-email-batch-g-public-serving-pass.json",
+  "public_deployment_URL": "https://e114f8a4.mushavo-budget-staging.pages.dev/",
+  "served_public_files_per_origin": 41,
+  "public_serving_unique_checks_PASS": 98,
+  "public_check_requests": 102,
+  "public_check_preliminary_requests": 9,
+  "both_origins_public_configuration_exact_ZIP_reconstruction_verified": true,
+  "frontend_served_asset_bytes_verified": true,
+  "gateway_method_boundary_verified": true,
+  "authenticated_gateway_runtime_verified": false,
+  "deployed_Worker_source_bytes_independently_verified": false
 }

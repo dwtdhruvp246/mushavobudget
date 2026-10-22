@@ -33,13 +33,13 @@ try{
   const total=n=>Number(output.match(new RegExp('^# '+n+' (\\d+)\\s*$','m'))?.[1]??-1);
   group=Object.fromEntries(['tests','pass','fail','cancelled','skipped','todo'].map(n=>[n,total(n)]));
   group.exit_code=run.status;
-  assert.equal(run.status,0);assert.equal(group.tests,24);assert.equal(group.pass,24);
+  assert.equal(run.status,0);assert.equal(group.tests,29);assert.equal(group.pass,29);
   for(const name of ['fail','cancelled','skipped','todo'])assert.equal(group[name],0);
   phase='COMPLETE';
 }catch{problem='OFFLINE_BATCH_A_REVIEW_REQUIRED';}
 const good=problem===null;
-console.log(JSON.stringify({stage_step:batchStage,batch:'A',result:good?'OFFLINE_BATCH_A_24_PASS_OWNER_RUN_PENDING':'OFFLINE_BATCH_A_REVIEW_REQUIRED',
-  source_parent_commit:'0fa7e7ef7fb556eba4e1d4c0bee41452f6b4e51e',node_version:process.version,
+console.log(JSON.stringify({stage_step:batchStage,batch:'A',result:good?'OFFLINE_BATCH_A_29_PASS_GENERATED_MODE_OWNER_RUN_PENDING':'OFFLINE_BATCH_A_REVIEW_REQUIRED',
+  source_parent_commit:'b6fd77e5dfa3cf51fc9ee0b23f2825aa314a0439',node_version:process.version,
   source_files_SHA256_verified:count,JS_syntax_checks:syntax,regressions:group,
   Windows_parent_execution_verified:false,owner_ZIP_accessed:false,owner_credentials_or_private_packets_accessed:false,
   actual_hosted_requests:0,uploaded_or_deployed:false,email_push_or_FX_dispatched:false,

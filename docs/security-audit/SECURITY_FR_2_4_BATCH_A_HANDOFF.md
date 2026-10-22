@@ -1,6 +1,6 @@
 # Batch A: combined local Edge configuration preparation
 
-21 October 2026, FRE116. E5.13 is complete at its selected source and metadata scope: the owner revision 5 receipt passed six read-only requests. The next checkpoint is **FR.2.4.E5.14, Batch A**. Its implementation passes 24 offline tests and three JavaScript syntax checks with 25 pinned source files. Native Windows runner execution and the owner's private candidate remain pending.
+22 October 2026, FRE117. **FR.2.4.E5.14, Batch A** owner checks finished with exit 2: accepted ZIP/Worker identities, staging configuration, fresh 12-file Edge package and Windows DPAPI/private-pipe preflight passed. Both required inputs were reported unavailable; no private candidate was saved. The separate offline verification receipt was not supplied. The updated implementation passes 29 local tests (24 retained plus five generated-mode cases), three JavaScript syntax checks and 25 source hashes. Generated-mode Windows execution and encrypted candidate readback are pending. E5.13 remains complete at its selected source and metadata scope.
 
 The owner requested fewer handoffs, combined steps wherever possible, and explicit start and completion messages for each batch. The launch objective includes public web, Google Play and Apple App Store. This preparation does not increase the previously reported rough 19% checkpoint metric or establish whole-product completion.
 
@@ -15,6 +15,15 @@ No npm installation or Management token is required. No provider endpoint, appli
 
 The runner prints `BATCH A STARTED`, one bounded `BEGIN SAFE BATCH A RESULT` JSON receipt, and an explicit completion or missing-input message. Return the offline verifier JSON and batch JSON with both exit codes. Never return credential values or the encrypted packet contents.
 
+The next command uses **generated mode**. Obtain the CurrencyAPI key first from [App → Dashboard](https://app.currencyapi.com/dashboard), as described by the [provider quickstart](https://currencyapi.com/docs/quickstart/). The script does not create an account, purchase a plan, retrieve a saved key or call CurrencyAPI. Have a key available for authorized staging use before starting.
+
+| Exactly two hidden prompts in generated mode | What to supply |
+| --- | --- |
+| `1 of 2: monitored contact EMAIL ADDRESS only` | An email inbox you monitor. Enter the address alone, without `mailto:` or a password. The runner adds `mailto:` internally. |
+| `2 of 2: CurrencyAPI dashboard key for staging` | The API key copied from your CurrencyAPI dashboard. Do not paste it into chat. |
+
+No VAPID availability or manual key prompts appear in this mode. After validation, the child generates a fresh P-256 pair and independent caller secret. All six variables are passed privately to the existing unique-file DPAPI save/readback flow. The raw private scalar is padded to 32 bytes when necessary. Generated keys appear only in the private candidate envelope, never the safe receipt or public Edge package. The receipt adds `VAPID_pair_generated_locally`. Existing packets and hosted credentials are not rotated or opened.
+
 | Batch exit | Meaning and next action |
 | --- | --- |
 | 0 | Validated local candidate saved and read back. Hosted configuration installation, deployment and activation are pending. |
@@ -25,10 +34,10 @@ Default retained ZIP: `C:\Users\HP\AppData\Local\Temp\mushavo-email-modern-revie
 
 Accepted ZIP SHA256: `cc9815bbd512400cbee3f3a227fdd62b697a19ee643e4458a0db924c24aaae24`. Worker SHA256: `a7cbfa8b257eb7a53185fc57cc93a8315bbc453fd0bbbd3cc3b2a5e3cf4ee651`. Edge package identity: `e1fb82c6001ee4bb8f3d6999f078a028637cf90d912e275fb14ac84774f192a3`.
 
-If the accepted ZIP has no frontend VAPID key, the candidate may be saved with `frontend_candidate_update_required: true`. A later frontend candidate update remains required; the runner does not alter the ZIP or prove which key is currently live. A different existing frontend key blocks candidate retention. It does not generate a new VAPID pair or borrow production credentials.
+If the accepted ZIP has no frontend VAPID key, the candidate may be saved with `frontend_candidate_update_required: true`. A later frontend candidate update remains required; the runner does not alter the ZIP or prove which key is currently live. A different existing frontend key blocks candidate retention. The original manual mode does not generate a pair. The new explicit `GenerateStagingVAPID` mode generates a new local pair only when the ZIP has no push key and both external inputs pass syntax checks; it refuses to replace a populated frontend key.
 
-CurrencyAPI validation is restricted to local input syntax, not provider validity, account entitlement or quota. VAPID subject checks are local syntax restrictions, not contact ownership verification. Pair validation does not independently establish that the key is dedicated to staging; that availability declaration comes from the owner. The P-256 calculation uses Node's native crypto API ([Node documentation](https://nodejs.org/docs/latest-v22.x/api/crypto.html)); the contact/key forms follow [RFC 8292](https://www.rfc-editor.org/rfc/rfc8292.html), with additional local input restrictions.
+CurrencyAPI validation is restricted to local input syntax, not provider validity, account entitlement or quota. VAPID subject checks are local syntax restrictions, not contact ownership verification. Pair validation does not independently establish that the key is dedicated to staging; that availability declaration comes from the owner in manual mode. Generated mode creates a new pair using native crypto rather than importing an existing key. The P-256 calculation uses Node's native crypto API ([Node documentation](https://nodejs.org/docs/latest-v22.x/api/crypto.html)); the contact/key forms follow [RFC 8292](https://www.rfc-editor.org/rfc/rfc8292.html), with additional local input restrictions.
 
-Plaintext exists transiently in the parent and child processes and their private pipe. BSTR and byte buffers are cleared where controlled; managed strings and process memory are not claimed to be forensically erased. Disk retention uses DPAPI only and a unique new file. Windows parsing, ZIP wrapper execution and DPAPI behavior for this new parent require the owner run; local tests exercised the actual JavaScript module and private CLI with synthetic inputs, under the existing offline network blocker.
+Plaintext exists transiently in the parent and child processes and their private pipe. BSTR and byte buffers are cleared where controlled; managed strings and process memory are not claimed to be forensically erased. Disk retention uses DPAPI only and a unique new file. The preceding parent's ZIP wrapper and DPAPI preflight passed on the owner's Windows run. The updated parent and actual encrypted candidate readback require the new owner run; local tests exercised the actual JavaScript module and private CLI with synthetic inputs, under the existing offline network blocker.
 
 Later work remains: provider credential acceptance, external caller/scheduler review, configuration installation, coordinated database/Edge/Pages rollout with recovery, genuine hosted authorization/email tests, remaining final remediation batches and store release acceptance. Readiness, live activation, hosted acceptance and finding closure remain false. Production/native unchanged; APK deferred.

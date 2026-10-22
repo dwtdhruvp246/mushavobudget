@@ -18,7 +18,7 @@ function base(){return {stage_step:batchStage,batch:'A',result:'LOCAL_BATCH_A_RE
   fresh_Edge_source_package_verified:false,package_files:0,package_SHA256:null,
   retained_ZIP_staging_configuration_validated:false,retained_frontend_VAPID_key_present:false,
   input_availability:{separate_staging_VAPID_pair:false,CurrencyAPI_key:false},
-  VAPID_pair_mathematically_validated:false,VAPID_subject_syntax_validated:false,
+  VAPID_pair_mathematically_validated:false,VAPID_pair_generated_locally:false,VAPID_subject_syntax_validated:false,
   CurrencyAPI_input_syntax_validated:false,CurrencyAPI_provider_validity_verified:false,
   frontend_VAPID_relation:'NOT_CHECKED',frontend_candidate_update_required:false,
   independent_staging_caller_secret_generated:false,configured_variable_count:0,
@@ -97,12 +97,37 @@ export function prepareBatchA(input,{sourceRoot=root,entropy=randomBytes,now=()=
   }catch(error){receipt.problem_code=safeProblems.has(error?.safeCode)?error.safeCode:'LOCAL_BATCH_INPUT_REQUIRED';}
   return {receipt,private_configuration};
 }
+export function prepareGeneratedBatchA(input,options={}){
+  let answer={receipt:base(),private_configuration:null};
+  try{
+    need(exact(input,['action','configuration','subject','currencyKey'])&&input.action==='generate-candidate','LOCAL_BATCH_INPUT_REQUIRED');
+    answer=prepareBatchA({action:'artifacts',configuration:input.configuration},options);
+    if(answer.receipt.exit_code!==0)return answer;
+    const r=answer.receipt;r.result='LOCAL_BATCH_A_CHECKS_COMPLETE_INPUT_REVIEW_REQUIRED';r.checkpoint='GENERATED_PAIR_INPUT_VALIDATION';r.exit_code=2;
+    r.VAPID_subject_syntax_validated=validSubject(input.subject);
+    r.CurrencyAPI_input_syntax_validated=typeof input.currencyKey==='string'&&/^[A-Za-z0-9_.-]{16,512}$/.test(input.currencyKey);
+    r.input_availability.CurrencyAPI_key=r.CurrencyAPI_input_syntax_validated;
+    if(!r.VAPID_subject_syntax_validated)r.input_issues.push('VAPID_SUBJECT_REVIEW_REQUIRED');
+    if(!r.CurrencyAPI_input_syntax_validated)r.input_issues.push('CURRENCYAPI_INPUT_SYNTAX_REVIEW_REQUIRED');
+    if(r.retained_frontend_VAPID_key_present)r.input_issues.push('EXISTING_FRONTEND_VAPID_KEY_REQUIRES_REVIEW');
+    r.batch_checks_complete=true;
+    if(r.input_issues.length)return answer;
+    const curve=createECDH('prime256v1');curve.generateKeys();
+    const scalar=curve.getPrivateKey(),padded=Buffer.alloc(32);let privateKey;
+    try{scalar.copy(padded,32-scalar.length);privateKey=padded.toString('base64url');}finally{scalar.fill(0);padded.fill(0);}
+    answer=prepareBatchA({action:'candidate',configuration:input.configuration,
+      availability:{separate_staging_VAPID_pair:true,CurrencyAPI_key:true},
+      vapid:{publicKey:curve.getPublicKey().toString('base64url'),privateKey,subject:input.subject},currencyKey:input.currencyKey},options);
+    answer.receipt.VAPID_pair_generated_locally=true;
+  }catch{answer.receipt.exit_code=1;answer.receipt.result='LOCAL_BATCH_A_REVIEW_REQUIRED';answer.receipt.problem_code='LOCAL_BATCH_INPUT_REQUIRED';answer.private_configuration=null;}
+  return answer;
+}
 if(process.argv[1]===fileURLToPath(import.meta.url)){
   let answer;try{
     need(process.argv.length===3&&process.argv[2]==='--private-parent-pipe'&&!process.stdin.isTTY&&!process.stdout.isTTY,'LOCAL_BATCH_INPUT_REQUIRED');
     let size=0;const chunks=[];for await(const chunk of process.stdin){size+=chunk.length;need(size<=65536,'LOCAL_BATCH_INPUT_REQUIRED');chunks.push(chunk);}
     const input=JSON.parse(Buffer.concat(chunks).toString('utf8'));
-    answer=exact(input,['preflight'])&&input.preflight===true?{receipt:{...base(),result:'PRIVATE_PIPE_PREFLIGHT_PASS',exit_code:0},private_configuration:null}:prepareBatchA(input);
+    answer=exact(input,['preflight'])&&input.preflight===true?{receipt:{...base(),result:'PRIVATE_PIPE_PREFLIGHT_PASS',exit_code:0},private_configuration:null}:input?.action==='generate-candidate'?prepareGeneratedBatchA(input):prepareBatchA(input);
   }catch{answer={receipt:{...base(),problem_code:'LOCAL_BATCH_INPUT_REQUIRED'},private_configuration:null};}
   process.stdout.write(JSON.stringify(answer));process.exitCode=answer.receipt.exit_code;
 }

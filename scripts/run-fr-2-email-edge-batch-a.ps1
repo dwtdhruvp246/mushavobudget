@@ -1,6 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$SnapshotRoot,
-    [string]$AcceptedZIP = 'C:\Users\HP\AppData\Local\Temp\mushavo-email-modern-review-365a33690028462489520db3e85c4b90\mushavo-email-modern-review.zip'
+    [string]$AcceptedZIP = 'C:\Users\HP\AppData\Local\Temp\mushavo-email-modern-review-365a33690028462489520db3e85c4b90\mushavo-email-modern-review.zip',
+    [switch]$GenerateStagingVAPID
 )
 $ErrorActionPreference = 'Stop'
 $Stage = 'FR.2.4.E5.14_BATCH_A_LOCAL_EDGE_CONFIGURATION_PREPARATION'
@@ -83,7 +84,7 @@ function Private-Child([string]$Node, [string]$Entry, [string]$Text) {
             $Answer.receipt.batch -ne 'A' -or $Answer.receipt.exit_code -notin @(0,1,2) -or
             $Child.ExitCode -ne $Answer.receipt.exit_code -or $Answer.receipt.actual_hosted_requests -ne 0 -or
             @($Answer.PSObject.Properties | Where-Object { $_.Name -notin @('receipt','private_configuration') }).Count -ne 0) { throw 'PRIVATE_CHILD_REVIEW_REQUIRED' }
-        $AllowedReceipt = @('stage_step','batch','result','batch_checks_complete','fresh_Edge_source_package_verified','package_files','package_SHA256','retained_ZIP_staging_configuration_validated','retained_frontend_VAPID_key_present','input_availability','VAPID_pair_mathematically_validated','VAPID_subject_syntax_validated','CurrencyAPI_input_syntax_validated','CurrencyAPI_provider_validity_verified','frontend_VAPID_relation','frontend_candidate_update_required','independent_staging_caller_secret_generated','configured_variable_count','existing_private_packets_accessed','existing_credentials_rotated','actual_hosted_requests','application_or_Edge_functions_invoked','email_push_or_FX_dispatched','frontend_ZIP_or_runtime_source_modified','uploaded_or_deployed','settings_or_schedules_changed','readiness_approved','live_activation_approved','hosted_acceptance','production_or_native_changed','APK_update_deferred','findings_closed','input_issues','checkpoint','problem_code','exit_code')
+        $AllowedReceipt = @('stage_step','batch','result','batch_checks_complete','fresh_Edge_source_package_verified','package_files','package_SHA256','retained_ZIP_staging_configuration_validated','retained_frontend_VAPID_key_present','input_availability','VAPID_pair_mathematically_validated','VAPID_pair_generated_locally','VAPID_subject_syntax_validated','CurrencyAPI_input_syntax_validated','CurrencyAPI_provider_validity_verified','frontend_VAPID_relation','frontend_candidate_update_required','independent_staging_caller_secret_generated','configured_variable_count','existing_private_packets_accessed','existing_credentials_rotated','actual_hosted_requests','application_or_Edge_functions_invoked','email_push_or_FX_dispatched','frontend_ZIP_or_runtime_source_modified','uploaded_or_deployed','settings_or_schedules_changed','readiness_approved','live_activation_approved','hosted_acceptance','production_or_native_changed','APK_update_deferred','findings_closed','input_issues','checkpoint','problem_code','exit_code')
         if (@($Answer.receipt.PSObject.Properties | Where-Object { $_.Name -notin $AllowedReceipt }).Count -ne 0) { throw 'UNEXPECTED_RECEIPT_FIELDS' }
         return $Answer
     } finally {
@@ -170,17 +171,27 @@ try {
     if ($ArtifactAnswer.receipt.exit_code -ne 0 -or $ArtifactAnswer.receipt.result -ne 'LOCAL_BATCH_A_PUBLIC_ARTIFACTS_CHECKED' -or $null -ne $ArtifactAnswer.private_configuration) { $Safe=$ArtifactAnswer.receipt; throw 'ARTIFACT_CHECK_REQUIRED' }
     $Phase = 'INPUT_AVAILABILITY'
     Write-Host 'Answer availability only first. No Management token is needed; no hosted service is contacted.'
-    $HaveVAPID = Read-Available 'Do you already have a SEPARATE STAGING VAPID public/private key pair? Y/N'
-    $HaveCurrency = Read-Available 'Do you have a CurrencyAPI key available for STAGING use? Y/N'
     $VAPID = $null
     $CurrencyKey = $null
-    if ($HaveVAPID -and $HaveCurrency) {
+    if ($GenerateStagingVAPID) {
+        Write-Host 'This mode generates the new staging push key pair locally after validating these two inputs.'
+        Write-Host 'Prompt 1: an email inbox you monitor, such as admin@your-domain.com. No password is required.'
+        Write-Host 'Prompt 2: your CurrencyAPI dashboard key for staging use. Both inputs are hidden.'
         $Phase = 'PRIVATE_CREDENTIAL_INPUT'
-        Write-Host 'Enter existing staging values only at the hidden prompts. The frontend ZIP is checked but stays unchanged.'
-        $VAPID = @{publicKey=(Read-Hidden 'Staging VAPID public key (hidden)');privateKey=(Read-Hidden 'Matching staging VAPID private key (hidden)');subject=(Read-Hidden 'VAPID contact subject: mailto:address or https: URI (hidden)')}
-        $CurrencyKey = Read-Hidden 'CurrencyAPI key for staging (hidden)'
+        $ContactEmail = Read-Hidden '1 of 2: monitored contact EMAIL ADDRESS only (hidden)'
+        $CurrencyKey = Read-Hidden '2 of 2: CurrencyAPI dashboard key for staging (hidden)'
+        $Payload = @{action='generate-candidate';configuration=$Configuration;subject=('mailto:' + $ContactEmail);currencyKey=$CurrencyKey} | ConvertTo-Json -Depth 5 -Compress
+    } else {
+        $HaveVAPID = Read-Available 'Do you already have a SEPARATE STAGING VAPID public/private key pair? Y/N'
+        $HaveCurrency = Read-Available 'Do you have a CurrencyAPI key available for STAGING use? Y/N'
+        if ($HaveVAPID -and $HaveCurrency) {
+            $Phase = 'PRIVATE_CREDENTIAL_INPUT'
+            Write-Host 'Enter existing staging values only at the hidden prompts. The frontend ZIP is checked but stays unchanged.'
+            $VAPID = @{publicKey=(Read-Hidden 'Staging VAPID public key (hidden)');privateKey=(Read-Hidden 'Matching staging VAPID private key (hidden)');subject=(Read-Hidden 'VAPID contact subject: mailto:address or https: URI (hidden)')}
+            $CurrencyKey = Read-Hidden 'CurrencyAPI key for staging (hidden)'
+        }
+        $Payload = @{action='candidate';configuration=$Configuration;availability=@{separate_staging_VAPID_pair=$HaveVAPID;CurrencyAPI_key=$HaveCurrency};vapid=$VAPID;currencyKey=$CurrencyKey} | ConvertTo-Json -Depth 5 -Compress
     }
-    $Payload = @{action='candidate';configuration=$Configuration;availability=@{separate_staging_VAPID_pair=$HaveVAPID;CurrencyAPI_key=$HaveCurrency};vapid=$VAPID;currencyKey=$CurrencyKey} | ConvertTo-Json -Depth 5 -Compress
     $Phase = 'BATCHED_LOCAL_VALIDATION'
     $Answer = Private-Child $Runtime.execPath $Entry $Payload
     $Safe = $Answer.receipt
@@ -225,7 +236,7 @@ try {
     foreach ($Value in $Inputs) { if ($Value) { $Value.Dispose() } }
     $Local.batch_run_finished=$true
     foreach ($Key in $Local.Keys) { $Safe | Add-Member -NotePropertyName $Key -NotePropertyValue $Local[$Key] -Force }
-    $Payload=$null;$PrivateJson=$null;$Packet=$null;$Answer=$null;$VAPID=$null;$CurrencyKey=$null;$Configuration=$null;$Cipher=$null
+    $Payload=$null;$PrivateJson=$null;$Packet=$null;$Answer=$null;$VAPID=$null;$CurrencyKey=$null;$ContactEmail=$null;$Configuration=$null;$Cipher=$null
 }
 if ($Saved) { Write-Host ('New encrypted candidate saved locally: ' + $OutputPath) }
 Write-Host 'BEGIN SAFE BATCH A RESULT'

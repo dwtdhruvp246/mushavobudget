@@ -11,10 +11,10 @@
     "scripts/fixtures/email-deno-runtime/edge-deno.lock": "eb373bd333000e850a8775bc67796baee9aecbebc818bd53fbdd1e7f507ae8ff",
     "scripts/fixtures/email-deno-runtime/entrypoints.mts": "10ea83901a690da2f1a32d4fc2ba0adfea0b813ae2b60225eb7d6f1b38e5fa7a",
     "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
-    "scripts/prepare-fr-2-email-edge-batch-a.mjs": "843a98fbb6b5f65136ed5051eca692db33d8420818c501bd6288a055322c05be",
+    "scripts/prepare-fr-2-email-edge-batch-a.mjs": "ee09bb3fa8d669564272d332457365442c52f9ac5f58578cfc6db976c4182f70",
     "scripts/prepare-fr-2-email-edge-package.mjs": "04176f2545e1f78191de80b19fa72106adfd4b30e49809b8e3fab7dc6f5be39f",
-    "scripts/run-fr-2-email-edge-batch-a.ps1": "44b9a26615c0ad8d5646dffb7ca77e620fece70da0222bd6e23642303039ad31",
-    "scripts/verify-fr-2-email-edge-batch-a.mjs": "81776a5d7ca47f41838ae142b23dd394a2d006060849a2df04a10e0b09a22dff",
+    "scripts/run-fr-2-email-edge-batch-a.ps1": "6f0bc483da3414a26b52c5bb2fbe3fcdd1d70a39a1d73606bf06ea8aa343afff",
+    "scripts/verify-fr-2-email-edge-batch-a.mjs": "b1563bd3a48d090622d509177b48eef17353d6e5cd9a0ed000c4506bf6e8dae5",
     "scripts/verify-fr-2-email-edge-preparation.mjs": "3e0d0b3ac83141538b0d81be3d9640dee5c01cd5f0d62843c7731bbe5fe8480a",
     "supabase/config.toml": "527c331d074845665dba4d79ea782cc3e22ff37473564f9b20280daa9b8de9fb",
     "supabase/functions/_shared/currencyapi.ts": "e7864c35fe09971042e913690874d3464326a23b0859e3a801ead12f5b63ca00",
@@ -25,9 +25,9 @@
     "supabase/functions/invite-business-member/index.ts": "8ae109f85763672b655ec8b390d12bbf2e11bbc32dea94cae91c830f863e3521",
     "supabase/functions/send-test-push/index.ts": "3952c165396ac865c6b213d9c3b14025cbdaa1eab8e7cf7d3bb9abd34d8f3473",
     "supabase/functions/sync-exchange-rates/index.ts": "20636029adcc4550864d31b32c676e4b5c585c12e3301b4ccef47e70234aa6c7",
-    "tests/fr-2-email-edge-batch-a.test.mjs": "198be907dfb045ddddc14726a6d31c402b27ec317c1258c9e972c9a9c0fc3e77",
+    "tests/fr-2-email-edge-batch-a.test.mjs": "58af63a473c1b24c4795675ee99a60bc482383597656e0cf5d55fbefd99c272e",
     "tests/fr-2-email-edge-preparation.test.mjs": "545d63712a880dff9e91622a637a6e4e11cf5c379723673e1d14279ccb1f37f6"
   },
-  "expected_tests": 24,
+  "expected_tests": 29,
   "hosted_write_approved": false
 }

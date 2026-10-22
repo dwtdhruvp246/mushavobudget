@@ -1,3 +1,9 @@
+# Current checkpoint — Batch A artifacts checked on Windows; generated-key mode ready
+
+22 October 2026, FRE117. [Owner receipt](security-fr-2-email-edge-batch-a-owner-inputs-required.json) confirms ZIP, Worker, 12-file Edge package and DPAPI/private-pipe preflight checks passed; exit 2 identifies unavailable staging VAPID and CurrencyAPI inputs. No private candidate was saved. [Updated handoff](SECURITY_FR_2_4_BATCH_A_HANDOFF.md) adds automatic local staging VAPID generation with two explained prompts: monitored contact email and CurrencyAPI dashboard key. Local verification passes 29/29; generated-mode Windows execution is pending. Earlier evidence remains intact. Hosted rollout and all full finding closure remain pending.
+
+---
+
 # Current checkpoint — E5.13 scoped pass; Batch A combines four local preparation steps
 
 21 October 2026, FRE116. [Batch A handoff](SECURITY_FR_2_4_BATCH_A_HANDOFF.md) combines retained ZIP/Worker checks, fresh Edge source preparation, private input validation and a new DPAPI candidate with readback. Local verification passes 24/24 with 25 source hashes and three JavaScript syntax checks; native Windows execution and owner inputs are pending. [E5.13 outcome](SECURITY_FR_2_4_EDGE_SOURCE_IMPACT_SCOPED_OUTCOME.md) remains complete at its selected source/metadata scope. The batch labels its start and completion and reports missing inputs together. No hosted installation or activation is included. All full findings remain open; production/native unchanged and APK deferred. Earlier checkpoints follow.

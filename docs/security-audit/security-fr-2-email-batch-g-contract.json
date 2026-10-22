@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.20_BATCH_G_FRONTEND_GATEWAY_ROLLOUT_PREPARATION",
-  "status": "LOCAL_BATCH_G31PASS_OWNER_PREFLIGHT_AND_MANUAL_STAGING_FRONTEND_UPLOAD_PENDING",
+  "status": "OWNER_BATCH_G_PREFLIGHT_PASS_MANUAL_STAGING_FRONTEND_UPLOAD_PENDING",
   "source_parent_commit": "7bfe5a93bcc4e1510fd390c6e5362e484246c841",
   "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_G_HANDOFF.md",
   "manifest": "docs/security-audit/security-fr-2-email-batch-g-source-manifest.json",
@@ -34,8 +34,8 @@
   "automatic_upload_or_settings_write": false,
   "manual_upload_scope_after_exit0": "EXACT_VERIFIED_ZIP_TO_PRODUCTION_CHANNEL_OF_EXISTING_STAGING_PAGES_PROJECT_ONLY",
   "manual_upload_currently_completed": false,
-  "owner_result_received": false,
-  "Windows_parent_execution_verified": false,
+  "owner_result_received": true,
+  "Windows_parent_execution_verified": true,
   "new_dependency_fixture_installation_locally_completed": false,
   "new_dependency_fixture_local_install_limitation": "OFFLINE_NPM_CACHE_MISSING_ESBUILD_TARBALL_EXISTING_PINNED_INSTALLED_TEST_TOOLS_USED",
   "application_guard_activation_approved": false,
@@ -45,5 +45,12 @@
   "hosted_acceptance": false,
   "production_or_native_changed": false,
   "APK_update_deferred": true,
-  "findings_closed": []
+  "findings_closed": [],
+  "owner_receipt": "docs/security-audit/security-fr-2-email-batch-g-owner-preflight-pass.json",
+  "owner_checked_UTC": "2026-10-22T16:00:14.404Z",
+  "owner_preflight_requests": 5,
+  "owner_exit_code": 0,
+  "owner_source_hashes": 127,
+  "Windows_parent_execution_evidence_basis": "OWNER_REPORTED_SAFE_HOSTED_RESULT_AND_COMBINED_EXIT0",
+  "owner_offline_verifier_receipt_supplied": false
 }

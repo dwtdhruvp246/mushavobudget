@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-22",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_BATCH_G_COMPILED_GATEWAY_SQL31PASS_FRONTEND_PREFLIGHT_AND_UPLOAD_OWNER_PENDING",
+  "status": "FR2_EMAIL_BATCH_G_OWNER_PREFLIGHT_PASS_MANUAL_STAGING_FRONTEND_UPLOAD_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "3f9ce93873146db33c073f58733d38380d5aa052",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE129",
+  "latest_evidence": "FRE130",
   "batches": [
     {
       "id": "FR.1",
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "FR2_EMAIL_BATCH_G_COMPILED_GATEWAY_SQL_PASS_FRONTEND_PREFLIGHT_AND_UPLOAD_PENDING",
+          "status": "FR2_EMAIL_BATCH_G_OWNER_PREFLIGHT_PASS_MANUAL_STAGING_FRONTEND_UPLOAD_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -1012,8 +1012,11 @@
           "email_batch_g_local_PASS": 31,
           "email_batch_g_source_hashes": 127,
           "email_compiled_gateway_integrated_SQL_and_shared_Edge_check_verified_locally": true,
-          "email_batch_g_owner_result_received": false,
-          "email_frontend_Batch_B_uploaded": false
+          "email_batch_g_owner_result_received": true,
+          "email_frontend_Batch_B_uploaded": false,
+          "email_batch_g_owner_receipt": "docs/security-audit/security-fr-2-email-batch-g-owner-preflight-pass.json",
+          "email_batch_g_owner_preflight_exit_code": 0,
+          "email_batch_g_frontend_upload_confirmed": false
         },
         {
           "id": "FR.2.5",
@@ -1073,7 +1076,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
@@ -1083,11 +1086,11 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E5.20_OWNER_BATCH_G_PREFLIGHT_AND_MANUAL_STAGING_FRONTEND_UPLOAD",
+  "next_step": "FR.2.4.E5.20_OWNER_MANUAL_STAGING_FRONTEND_UPLOAD",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
-  "owner_staging_direct_upload_action_required": false,
+  "owner_staging_direct_upload_action_required": true,
   "serving_product": "CLOUDFLARE_PAGES",
   "owner_deployment_method": "DIRECT_UPLOAD",
   "target_project": "mushavo-budget-staging",
@@ -1100,7 +1103,7 @@
   "owner_zip_preflight_status": "PASS_39_RECEIPT_HASHES_40_ZIP_HASHES",
   "owner_zip_sha256": "c79819c4abb1cc8184d87ccfeb70c7d0e6b2cd7630e1f89072ea63415ba7707c",
   "owner_zip_path": "C:\\Users\\HP\\Desktop\\Mushavo-Staging-Candidate-6205f79b476048a48edf4fe9e8a88cd0\\mushavo-staging-upload-beb642556710479b91dbfde0931744a2.zip",
-  "owner_new_upload_requested": false,
+  "owner_new_upload_requested": true,
   "owner_canonical_URL_received": "https://mushavo-budget-staging.pages.dev/",
   "owner_upload_filename_confirmed": "mushavo-staging-upload-beb642556710479b91dbfde0931744a2.zip",
   "unique_new_deployment_ID_or_provider_success_status_received": false,
@@ -2383,7 +2386,7 @@
   },
   "FR2_email_next_coordinated_rollout": {
     "stage_step": "FR.2.4.E5.20_COORDINATED_FRONTEND_GATEWAY_AND_ACTIVATION_READINESS_PREPARATION",
-    "status": "BATCH_G_EXECUTABLE_PREFLIGHT_AND_CONDITIONAL_MANUAL_UPLOAD_HANDOFF_READY",
+    "status": "BATCH_G_OWNER_PREFLIGHT_PASS_MANUAL_STAGING_FRONTEND_UPLOAD_PENDING",
     "scope": "FRESH_PAGES_LIMITER_FRONTEND_GATEWAY_AND_CALLER_READINESS_THEN_COORDINATED_ROLLOUT",
     "retained_frontend_ZIP_SHA256": "867296b5e71747a15d46c7ed8937484558ea9fcac97cd96c66ddf5dc00c8b9da",
     "frontend_publication_confirmed": false,
@@ -2392,11 +2395,14 @@
     "live_activation_approved": false,
     "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_G_HANDOFF.md",
     "local_PASS": 31,
-    "compiled_gateway_integration_tested": true
+    "compiled_gateway_integration_tested": true,
+    "owner_preflight_receipt": "docs/security-audit/security-fr-2-email-batch-g-owner-preflight-pass.json",
+    "owner_preflight_exit_code": 0,
+    "owner_preflight_checked_UTC": "2026-10-22T16:00:14.404Z"
   },
   "FR2_email_batch_g": {
     "stage_step": "FR.2.4.E5.20_BATCH_G_FRONTEND_GATEWAY_ROLLOUT_PREPARATION",
-    "status": "LOCAL_BATCH_G31PASS_OWNER_PREFLIGHT_AND_MANUAL_STAGING_FRONTEND_UPLOAD_PENDING",
+    "status": "OWNER_BATCH_G_PREFLIGHT_PASS_MANUAL_STAGING_FRONTEND_UPLOAD_PENDING",
     "source_parent_commit": "7bfe5a93bcc4e1510fd390c6e5362e484246c841",
     "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_G_HANDOFF.md",
     "manifest": "docs/security-audit/security-fr-2-email-batch-g-source-manifest.json",
@@ -2430,8 +2436,8 @@
     "automatic_upload_or_settings_write": false,
     "manual_upload_scope_after_exit0": "EXACT_VERIFIED_ZIP_TO_PRODUCTION_CHANNEL_OF_EXISTING_STAGING_PAGES_PROJECT_ONLY",
     "manual_upload_currently_completed": false,
-    "owner_result_received": false,
-    "Windows_parent_execution_verified": false,
+    "owner_result_received": true,
+    "Windows_parent_execution_verified": true,
     "new_dependency_fixture_installation_locally_completed": false,
     "new_dependency_fixture_local_install_limitation": "OFFLINE_NPM_CACHE_MISSING_ESBUILD_TARBALL_EXISTING_PINNED_INSTALLED_TEST_TOOLS_USED",
     "application_guard_activation_approved": false,
@@ -2441,6 +2447,13 @@
     "hosted_acceptance": false,
     "production_or_native_changed": false,
     "APK_update_deferred": true,
-    "findings_closed": []
+    "findings_closed": [],
+    "owner_receipt": "docs/security-audit/security-fr-2-email-batch-g-owner-preflight-pass.json",
+    "owner_checked_UTC": "2026-10-22T16:00:14.404Z",
+    "owner_preflight_requests": 5,
+    "owner_exit_code": 0,
+    "owner_source_hashes": 127,
+    "Windows_parent_execution_evidence_basis": "OWNER_REPORTED_SAFE_HOSTED_RESULT_AND_COMBINED_EXIT0",
+    "owner_offline_verifier_receipt_supplied": false
   }
 }

@@ -1,5 +1,11 @@
 # Batch G: compiled gateway integration, frontend preflight and staging upload
 
+## Owner preflight completed — dashboard upload pending
+
+22 October 2026, FRE130. [Owner receipt](security-fr-2-email-batch-g-owner-preflight-pass.json) reports five read-only requests and exit 0 at 16:00:14.404Z; the exact 44-file ZIP and all selected Pages/limiter metadata checks passed. No upload completion was supplied. Proceed to the existing conditional dashboard upload instructions below using the exact verified Batch B ZIP. Do not rerun this static-deployment preflight after uploading the gateway. No new owner offline test total is inferred from this hosted receipt. Database activation and hosted acceptance remain pending.
+
+---
+
 22 October 2026, FRE129. Batch F dormant registration is complete at its verified scope. This handoff combines the remaining local compiled integration check, retained frontend artifact proof, fresh Cloudflare metadata preflight and a conditional owner dashboard upload. It does not install or activate database guards.
 
 | Combined work | Scope |

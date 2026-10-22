@@ -1,3 +1,9 @@
+# Current checkpoint — Batch D offline 18/18; first deployment returned 403
+
+22 October 2026, FRE122. [Owner receipt](security-fr-2-email-edge-batch-d-owner-403-review.json) confirms 18/18 offline cases on Node 22.17.0, 40 source hashes, three syntax checks and Windows runner execution. Ten Management GETs passed; the first deployment POST returned HTTP 403. The other three deployments and all function invocations were not attempted. Zero deployments were confirmed; the receipt's uncertainty remains preserved because no post-attempt state was read. [Review](SECURITY_FR_2_4_BATCH_D_403_REVIEW.md) directs an Edge Functions Read-write token/account permission check, then reuse of the unchanged runner's fresh read-only target/source/names/absence/metadata gates before any guarded retry. Exact denial cause is unverified. No additional diagnostic implementation or source/manifest change is needed. Full hosted acceptance, activation, production/native/store work and finding closure remain pending. Earlier checkpoints follow.
+
+---
+
 # Batch D: four staging Edge deployments and immediate checks
 
 22 October 2026, FRE121. Batch C installation and its scoped follow-up review are complete: the owner reported six names installed, exact reviewed CRLF contact artifacts, stable current list/detail metadata, no selected routes and exit 0. The accepted current fingerprint is explicitly `f8fe331bf335145aff9cb8979816b3d092bc900c93c78e8856be1afbb975296e`, checked at `2026-10-22T05:35:12.841Z`. The old `a887…` fingerprint and original failure receipt remain historical evidence. The metadata change cause and equality of prior function ID/version remain unverified. No separate owner offline 12-test receipt was supplied.

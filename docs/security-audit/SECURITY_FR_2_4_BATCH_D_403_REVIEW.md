@@ -1,3 +1,9 @@
+# Current checkpoint — first Edge function installed; remaining-three resume ready
+
+22 October 2026, FRE123. [Owner result](security-fr-2-email-edge-batch-d-owner-partial-one-installed.json) confirms deployment 201, matching metadata/bundle, two exact source files and unauthenticated HTTP 401 for `invite-admin-user`, version 1; write uncertainty false. Offline 18/18 passed on owner Node 22.17.0. Exit 1 came from the checker's additional error JSON format assertion after HTTP 401 had already been received; the actual error-body schema remains unknown. The other three deployments were not attempted. Do not rerun the original absence-only Batch D runner. [Resume handoff](SECURITY_FR_2_4_BATCH_D_RESUME_HANDOFF.md) pins the installed identity/version/bundle and rechecks source before deploying only the missing three, with exact HTTP 401 evidence and no provider-specific error-body assumption. Local verification passes 20/20 with 46 hashes and three syntax checks; native Windows resume and hosted completion remain pending. Database activation, full acceptance, production/native/store work and all finding closure remain pending. Earlier checkpoints follow.
+
+---
+
 # Batch D first deployment: HTTP 403 review
 
 The owner result checked at `2026-10-22T05:52:06.691Z` reports ten successful fixed Management GETs followed by HTTP 403 on the first deployment POST (`invite-admin-user`). Offline verification passed 18/18 on Node 22.17.0, with 40 hashes and three syntax checks; the new Windows parent was executed. No other deployment or Edge invocation was attempted. The original receipt retains `deployment_write_outcome_uncertain: true` and `deployment_may_have_changed: true`. No post-attempt state inspection has occurred. Zero confirmed deployments is not proof of current absence.

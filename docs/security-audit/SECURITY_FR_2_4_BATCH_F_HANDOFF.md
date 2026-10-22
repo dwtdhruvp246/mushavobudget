@@ -1,5 +1,7 @@
 # Batch F: dormant staging database registration
 
+**Owner update,FRE127,22 October2026:** offline18/18 passed on Windows; one registration POST returnedHTTP201 after all9 fresh prerequisites passed. Independent catalog readback passed the other8 baseline checks but failed exact private reference equality. Control state was not read. Receipt: [owner review-required](security-fr-2-email-batch-f-owner-review-required.json). Do not rerun this registration command. Continue with the [read-only version/catalog review](SECURITY_FR_2_4_BATCH_F_READ_ONLY_REVIEW_HANDOFF.md); the original handoff follows for history.
+
 22 October 2026, FRE126. Owner Batch E is complete: Windows Node22.17.0, PGlite0.5.8,114/114,88 source hashes,18 syntax checks,exit0 at commit `0deaccfc91610e1acb6c60276fa2728fdf7b2ad6`. The pasted output supplied no execution timestamp. The receipt is owner-reported, not an independent machine attestation.
 
 This batch combines the next three related steps in one owner run. It does not repeat Edge deployment or configuration installation.

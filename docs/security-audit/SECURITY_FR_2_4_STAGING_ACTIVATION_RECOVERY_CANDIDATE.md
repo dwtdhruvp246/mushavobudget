@@ -1,3 +1,9 @@
+# Current checkpoint — Batch E canonical database integration implemented, 114/114 local pass
+
+22 October 2026, FRE125. [Batch E handoff](SECURITY_FR_2_4_BATCH_E_HANDOFF.md) integrates the reviewed staging controls through a new dormant migration56 and an existing54 registration bundle. All original55 migration bytes and the canonical55 prefix remain unchanged; current schema renders all56. The integrated path disables the old offline activation body before exposing private explicit registration. [Local verification](security-fr-2-email-canonical-rollout-local-checks.json) passes 114/114, 88 hashes and 18 syntax checks, including actual three-path catalog parity and registration/quarantine/recovery behavior. Historical54/55 fixtures and earlier evidence are explicitly retained. Native Windows verification is pending and requires no credentials or hosted SQL. Hosted target/Pages readiness, installation/recovery, live authorization/delivery and full acceptance remain pending. Existing staging Edge deployment is complete; production/native unchanged and APK deferred. Earlier checkpoints follow.
+
+---
+
 # Windows checkpoint — E5.8 candidate70PASS received
 
 21 October2026,FRE100. [Owner receipt](security-fr-2-email-staging-rollout-owner-Windows-pass.json) at pinned commit `0a0244f05e8b81f744afbca526f5a7c80a92564d`: Node22.17.0/PGlite0.5.8,78source hashes,12syntax checks,70tests/70PASS/0fail,COMPLETE,exit0. All three groups returned0 cancelled/skipped/todo and exit0. No execution timestamp was supplied; received date is not an invented runtime timestamp. This supersedes the Windows-pending action below. No hosted SQL/activation/upload/mail occurred. [Next read-only targeting handoff](SECURITY_FR_2_4_WINDOWS_PASS_AND_MANAGEMENT_TARGET.md) is scoped separately; canonical/candidate integration and hosted rollout remain pending. Historical implementation evidence follows.

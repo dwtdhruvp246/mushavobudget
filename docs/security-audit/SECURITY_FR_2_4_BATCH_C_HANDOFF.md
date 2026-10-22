@@ -1,3 +1,9 @@
+# Batch C write/readback confirmed — do not rerun installation
+
+22 October 2026, FRE120. [Owner receipt](security-fr-2-email-edge-batch-c-owner-write-pass-review.json) confirms all six configuration names installed/read back after HTTP 201, with other names unchanged and write uncertainty false. CurrencyAPI status and available quota passed. The overall exit is 1 because the post-install function-list check stopped before detail/body review; the specific cause is not exposed. [Run only the read-only follow-up](SECURITY_FR_2_4_BATCH_C_INSTALLED_STATE_REVIEW.md). The original installer and historical metadata baseline remain unchanged. Earlier installation handoff follows for history, not retry.
+
+---
+
 # Batch C: install six staging Edge configuration values
 
 22 October 2026, FRE119. Batch B completed offline 12/12 on owner Node 22.17.0 and independent Windows readback, both exit codes 0. The new 44-file ZIP has only `config.js` changed, with its public VAPID key matching the encrypted Batch A candidate. The other 43 files, original ZIP and encrypted packet are unchanged. New ZIP SHA256 is `867296b5e71747a15d46c7ed8937484558ea9fcac97cd96c66ddf5dc00c8b9da`.

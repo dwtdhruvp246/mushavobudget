@@ -1,3 +1,9 @@
+# Current checkpoint — six staging values installed; read-only function review next
+
+22 October 2026, FRE120. [Owner C result](security-fr-2-email-edge-batch-c-owner-write-pass-review.json) confirms the six-value POST returned 201, independent names readback passed, unrelated names were unchanged and the write outcome is certain. CurrencyAPI status/quota checks passed. Exit 1 occurred after the post-install project and function-list GETs; contact detail/body were not reached. The specific inner checker failure was not exposed, so its cause is unconfirmed. Do not rerun installation. [Read-only follow-up](SECURITY_FR_2_4_BATCH_C_INSTALLED_STATE_REVIEW.md) checks current exact source, stable current metadata and installed names with at most seven GETs. Local checks pass 12/12; no writes. Deployment, activation and full acceptance remain pending. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — Batch B complete; Batch C staging configuration installation ready
 
 22 October 2026, FRE119. [Owner Batch B pass](security-fr-2-email-edge-batch-b-owner-pass.json) includes offline 12/12, both exit codes 0, independent Windows readback of 44 entries, 43 unchanged files and matching frontend/private push keys. New ZIP SHA256: `867296b5e71747a15d46c7ed8937484558ea9fcac97cd96c66ddf5dc00c8b9da`. [Batch C handoff](SECURITY_FR_2_4_BATCH_C_HANDOFF.md) prepares fresh source/target checks, CurrencyAPI status, one explicit six-value staging configuration installation and independent names readback. Local verification passes 20/20 with 105 source hashes and three JavaScript syntax checks; installation is owner-pending. Frontend/function deployment and database activation are separate outstanding work. Earlier checkpoints follow.

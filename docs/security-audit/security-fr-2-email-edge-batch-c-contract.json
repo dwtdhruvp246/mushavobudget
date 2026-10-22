@@ -1,7 +1,7 @@
 {
   "stage_step": "FR.2.4.E5.16_BATCH_C_STAGING_EDGE_CONFIGURATION_INSTALLATION",
   "source_parent_commit": "9991c0b15bc3fa62790f1555a2d82f0c8cbbf381",
-  "status": "LOCAL20PASS_OWNER_INSTALLATION_PENDING",
+  "status": "OWNER_SIX_NAME_WRITE_READBACK_CONFIRMED_POST_FUNCTION_REVIEW_REQUIRED",
   "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_C_HANDOFF.md",
   "manifest": "docs/security-audit/security-fr-2-email-edge-batch-c-source-manifest.json",
   "private_runner": "scripts/run-fr-2-email-edge-batch-c.ps1",
@@ -31,8 +31,15 @@
   "local_PASS": 20,
   "source_hashes": 105,
   "JS_syntax_checks": 3,
-  "hosted_installation_performed": false,
+  "hosted_installation_performed": true,
   "live_activation_approved": false,
   "hosted_acceptance": false,
-  "findings_closed": []
+  "findings_closed": [],
+  "owner_receipt": "docs/security-audit/security-fr-2-email-edge-batch-c-owner-write-pass-review.json",
+  "owner_exit_code": 1,
+  "owner_requests": 12,
+  "owner_installed_variable_count": 6,
+  "write_outcome_uncertain": false,
+  "post_install_source_target_check_passed": false,
+  "next_step": "FR.2.4.E5.16R_READ_ONLY_POST_INSTALL_SOURCE_REVIEW"
 }

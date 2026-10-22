@@ -1,3 +1,9 @@
+# Batch B complete — staging configuration installation next
+
+22 October 2026, FRE119. [Owner result](security-fr-2-email-edge-batch-b-owner-pass.json) supplies offline 12/12 on Node 22.17.0 and a Windows completion receipt, both exit codes 0. It confirms the new public push key, 43 other files byte-identical, independent .NET readback and unchanged encrypted packet. New ZIP SHA256 is `867296b5e71747a15d46c7ed8937484558ea9fcac97cd96c66ddf5dc00c8b9da`. No hosted requests or deployment occurred. [Batch C](SECURITY_FR_2_4_BATCH_C_HANDOFF.md) prepares the six-value staging configuration installation. Earlier handoff follows.
+
+---
+
 # Batch B: frontend key alignment and rollout candidate preparation
 
 22 October 2026, FRE118. **Batch A is complete at its local preparation scope.** The owner receipt reports 25 source hashes, generated and validated staging VAPID keys, six configured values, and Windows CurrentUser DPAPI save with exact readback, exit 0. Its separate offline verifier JSON was not supplied; no owner test total is inferred. CurrencyAPI provider validity remains unverified.

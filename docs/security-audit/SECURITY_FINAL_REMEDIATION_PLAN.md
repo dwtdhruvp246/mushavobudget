@@ -1,3 +1,9 @@
+# Current checkpoint — Batch B complete; Batch C staging configuration installation ready
+
+22 October 2026, FRE119. [Owner Batch B pass](security-fr-2-email-edge-batch-b-owner-pass.json) includes offline 12/12, both exit codes 0, independent Windows readback of 44 entries, 43 unchanged files and matching frontend/private push keys. New ZIP SHA256: `867296b5e71747a15d46c7ed8937484558ea9fcac97cd96c66ddf5dc00c8b9da`. [Batch C handoff](SECURITY_FR_2_4_BATCH_C_HANDOFF.md) prepares fresh source/target checks, CurrencyAPI status, one explicit six-value staging configuration installation and independent names readback. Local verification passes 20/20 with 105 source hashes and three JavaScript syntax checks; installation is owner-pending. Frontend/function deployment and database activation are separate outstanding work. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — Batch A complete; Batch B frontend package ready
 
 22 October 2026, FRE118. [Batch A owner pass](security-fr-2-email-edge-batch-a-owner-pass.json) confirms six validated configuration values, newly generated staging VAPID/caller keys and a saved DPAPI candidate with exact readback, exit 0. The separate offline verifier receipt was not supplied. [Batch B](SECURITY_FR_2_4_BATCH_B_HANDOFF.md) adds the matching public key to a new frontend ZIP, checks all 43 other files unchanged, prepares a rollout checklist and independently reads the ZIP through Windows .NET. Local checks pass 12/12 with 91 pinned source files and three JavaScript syntax checks; owner execution is pending. No new credential prompts are needed. Hosted deployment, activation, provider acceptance and full finding closure remain pending.

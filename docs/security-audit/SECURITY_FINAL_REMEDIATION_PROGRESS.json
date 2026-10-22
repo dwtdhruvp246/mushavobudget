@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-22",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_BATCH_C_SIX_VALUES_INSTALLED_READBACK_CONFIRMED_POST_FUNCTION_REVIEW_PENDING",
+  "status": "FR2_EMAIL_BATCH_C_INSTALLATION_AND_CURRENT_SOURCE_REVIEW_SCOPED_COMPLETE_BATCH_D_READY",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "3f9ce93873146db33c073f58733d38380d5aa052",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE120",
+  "latest_evidence": "FRE121",
   "batches": [
     {
       "id": "FR.1",
@@ -947,7 +947,15 @@
           "email_batch_c_read_only_review_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_C_INSTALLED_STATE_REVIEW.md",
           "email_batch_c_read_only_review_local_receipt": "docs/security-audit/security-fr-2-email-edge-installed-review-local-checks.json",
           "email_batch_c_read_only_review_local_PASS": 12,
-          "email_batch_c_read_only_review_owner_received": false
+          "email_batch_c_read_only_review_owner_received": true,
+          "email_batch_c_read_only_review_owner_receipt": "docs/security-audit/security-fr-2-email-edge-installed-owner-scoped-pass.json",
+          "email_batch_c_read_only_review_owner_exit_code": 0,
+          "email_batch_c_followup_current_source_and_names_scoped_pass": true,
+          "email_batch_c_metadata_change_cause_verified": false,
+          "email_batch_d_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_D_HANDOFF.md",
+          "email_batch_d_local_receipt": "docs/security-audit/security-fr-2-email-edge-batch-d-local-checks.json",
+          "email_batch_d_local_PASS": 18,
+          "email_batch_d_owner_deployment_result_received": false
         },
         {
           "id": "FR.2.5",
@@ -1017,7 +1025,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E5.16R_READ_ONLY_POST_INSTALL_SOURCE_REVIEW",
+  "next_step": "FR.2.4.E5.17_BATCH_D_FIRST_STAGING_EDGE_DEPLOYMENT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -2011,7 +2019,8 @@
     "CurrencyAPI_status_HTTP_accepted": true,
     "CurrencyAPI_quota_available": true,
     "separate_owner_offline_verifier_receipt_received": false,
-    "do_not_retry_installer": true
+    "do_not_retry_installer": true,
+    "separate_post_install_read_only_review_scoped_pass": true
   },
   "FR2_email_batch_c_read_only_review": {
     "stage_step": "FR.2.4.E5.16R_READ_ONLY_POST_INSTALL_SOURCE_REVIEW",
@@ -2023,7 +2032,33 @@
     "JS_syntax_checks": 3,
     "maximum_GETs": 7,
     "maximum_writes": 0,
-    "owner_result_received": false,
-    "metadata_change_cause_verified": false
+    "owner_result_received": true,
+    "metadata_change_cause_verified": false,
+    "owner_receipt": "docs/security-audit/security-fr-2-email-edge-installed-owner-scoped-pass.json",
+    "owner_exit_code": 0,
+    "owner_GETs": 7,
+    "owner_checked_UTC": "2026-10-22T05:35:12.841Z",
+    "current_source_and_installed_names_scoped_complete": true,
+    "prior_metadata_fingerprint_matches": false,
+    "current_metadata_SHA256": "f8fe331bf335145aff9cb8979816b3d092bc900c93c78e8856be1afbb975296e",
+    "separate_owner_offline_verifier_receipt_received": false
+  },
+  "FR2_email_batch_d": {
+    "stage_step": "FR.2.4.E5.17_BATCH_D_FIRST_STAGING_EDGE_DEPLOYMENT",
+    "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_D_HANDOFF.md",
+    "local_receipt": "docs/security-audit/security-fr-2-email-edge-batch-d-local-checks.json",
+    "manifest": "docs/security-audit/security-fr-2-email-edge-batch-d-source-manifest.json",
+    "local_PASS": 18,
+    "source_hashes": 40,
+    "JS_syntax_checks": 3,
+    "maximum_requests": 37,
+    "maximum_deployment_POSTs": 4,
+    "maximum_unauthenticated_Edge_POSTs": 4,
+    "explicit_Deploy_switch_required": true,
+    "owner_deployment_result_received": false,
+    "actual_hosted_requests_by_assistant": 0,
+    "deployment_performed": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false
   }
 }

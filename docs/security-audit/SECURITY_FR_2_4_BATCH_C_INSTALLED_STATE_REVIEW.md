@@ -1,3 +1,9 @@
+# Owner review completed at selected current-state scope
+
+22 October 2026, FRE121. The [owner receipt](security-fr-2-email-edge-installed-owner-scoped-pass.json) reports seven successful GETs, exact pinned CRLF artifacts for both contact files, stable current list/detail metadata, all four selected routes absent and all six installed configuration names, exit 0. The current fingerprint is `f8fe331bf335145aff9cb8979816b3d092bc900c93c78e8856be1afbb975296e`; it differs from the historical fingerprint. Cause and old ID/version equality remain unverified. Native Windows runner execution is now owner-observed; the separate offline verifier receipt was not provided. Installation and this scoped follow-up are complete. [Batch D](SECURITY_FR_2_4_BATCH_D_HANDOFF.md) explicitly uses the new reviewed snapshot for staging deployment preflight. Earlier preparation below remains historical, including its then-pending statements.
+
+---
+
 # Batch C installed-state review: GET-only follow-up
 
 22 October 2026, FRE120. The owner result checked at `2026-10-22T04:54:12.334Z` confirms one configuration POST, HTTP 201, six names listed through independent readback, other names unchanged and `write_outcome_uncertain: false`. CurrencyAPI status was accepted and available quota observed. Installation is confirmed at that scope. The separate offline verification output was not supplied, so no owner 20-test total is asserted.

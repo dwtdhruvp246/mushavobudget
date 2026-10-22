@@ -1,3 +1,9 @@
+# Current checkpoint — Batch C scoped review complete; Batch D staging deployment ready
+
+22 October 2026, FRE121. [Owner read-only pass](security-fr-2-email-edge-installed-owner-scoped-pass.json) confirms seven GETs, exact reviewed CRLF contact artifacts, stable current metadata, selected routes absent, all six installed names and exit 0. The new observed fingerprint `f8fe331bf335145aff9cb8979816b3d092bc900c93c78e8856be1afbb975296e` is explicitly pinned for the next batch; the historical baseline remains unchanged. Its change cause remains unverified. The separate offline owner receipt was not supplied. [Batch D](SECURITY_FR_2_4_BATCH_D_HANDOFF.md) combines fresh checks, four first staging Edge deployments, exact source/metadata readback and unauthenticated denial checks. Local verification passes 18/18 with 40 hashes and three syntax checks. Deployment/native Windows execution are owner-pending. Database activation, full hosted acceptance, production/native/store work and all finding closure remain pending. Earlier checkpoints follow.
+
+---
+
 # Current checkpoint — six staging values installed; read-only function review next
 
 22 October 2026, FRE120. [Owner C result](security-fr-2-email-edge-batch-c-owner-write-pass-review.json) confirms the six-value POST returned 201, independent names readback passed, unrelated names were unchanged and the write outcome is certain. CurrencyAPI status/quota checks passed. Exit 1 occurred after the post-install project and function-list GETs; contact detail/body were not reached. The specific inner checker failure was not exposed, so its cause is unconfirmed. Do not rerun installation. [Read-only follow-up](SECURITY_FR_2_4_BATCH_C_INSTALLED_STATE_REVIEW.md) checks current exact source, stable current metadata and installed names with at most seven GETs. Local checks pass 12/12; no writes. Deployment, activation and full acceptance remain pending. Earlier checkpoints follow.

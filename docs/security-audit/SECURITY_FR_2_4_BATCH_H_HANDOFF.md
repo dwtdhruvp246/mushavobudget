@@ -1,5 +1,11 @@
 # Batch H: quarantined staging database installation and independent readback
 
+## Hosted installation complete — do not repeat
+
+22 October 2026, FRE133. [Owner receipt](security-fr-2-email-batch-h-owner-pass.json) reports one accepted installation, committed QUARANTINED readback,148 RPC guards,82 policies,5 forced-RLS tables, exact installer catalog and matching final target, exit0. The write outcome is resolved. [Completion report](SECURITY_FR_2_4_BATCH_H_COMPLETE.md); [next Batch I handoff](SECURITY_FR_2_4_BATCH_I_HANDOFF.md). The separate owner offline verifier JSON was not supplied; no new owner offline count is inferred. Installation instructions below are historical.
+
+---
+
 22 October 2026, FRE132. The Batch G owner deployment and independent public serving checkpoint are recorded in FRE131: https://e114f8a4.mushavo-budget-staging.pages.dev/ and the canonical staging address pass98 public checks. This handoff combines the next database steps into one owner command. The assistant has made no hosted Supabase installation request.
 
 | Combined step | Behavior |

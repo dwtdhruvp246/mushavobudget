@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.19_BATCH_F_DORMANT_STAGING_DATABASE_REGISTRATION",
-  "status": "OWNER_WINDOWS18PASS_ONE_REGISTRATION_HTTP201_PRIVATE_CATALOG_REVIEW_REQUIRED",
+  "status": "DORMANT_STAGING_REGISTRATION_CURRENT_STATE_VERIFIED_OWNER_READ_ONLY_PASS",
   "source_parent_commit": "0deaccfc91610e1acb6c60276fa2728fdf7b2ad6",
   "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_F_HANDOFF.md",
   "local_receipt": "docs/security-audit/security-fr-2-email-batch-f-local-checks.json",
@@ -44,5 +44,13 @@
   "owner_private_catalog_exact": false,
   "owner_registered_control_observed": false,
   "owner_checked_UTC": "2026-10-22T10:34:57.208Z",
-  "next_scope": "READ_ONLY_VERSION_AND_CATALOG_REVIEW_NO_REGISTRATION_RETRY"
+  "next_scope": "COORDINATED_FRONTEND_GATEWAY_READINESS_THEN_QUARANTINED_ACTIVATION_AND_ACCEPTANCE",
+  "current_state_resolution_receipt": "docs/security-audit/security-fr-2-email-batch-f-review-owner-pass.json",
+  "current_state_checked_UTC": "2026-10-22T10:46:11.030Z",
+  "current_registration_outcome_uncertain": false,
+  "current_registration_committed_state_observed": true,
+  "current_registration_mode": "REGISTERED",
+  "current_private_catalog_version_reference_exact": true,
+  "current_application_guards_absent": true,
+  "registration_repeated": false
 }

@@ -1,3 +1,5 @@
+> **Completed 23 October 2026, FRE137.** [Owner receipt](security-fr-2-email-batch-i-owner-pass.json):21 direct hosted requests,one real inbox code verified,replay denied,rollback-only recovery passed,selected Auth session/proofs/challenges removed,final quarantine/target checks passed,exit0. [Completion report](SECURITY_FR_2_4_BATCH_I_COMPLETE.md) records scope and remaining gates. Do not repeat this workflow to advance the checkpoint; the preparation text below is retained as history.
+
 # Batch I: one controlled email proof and rolled-back recovery
 
 23 October 2026, FRE136. [Runner correction and owner retry](SECURITY_FR_2_4_BATCH_I_RUNNER_FIX.md): the owner original offline14 PASS/local parent stop is recorded as FRE135. Corrected recipient-array handling and absent-directory fallback now have39 actual PowerShell helper cases in addition to the14 retained cases (53 total),137 hashes and5 syntax checks. The exact old owner cause is not inferred from its broad checkpoint. The next full retry still reuses the retained packet and existing credentials; no Batch H installation or automatic resend. Owner Windows/DPAPI and hosted acceptance remain pending.

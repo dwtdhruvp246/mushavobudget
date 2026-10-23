@@ -1,3 +1,7 @@
+# Current checkpoint: Batch L owner pass recorded
+
+The owner reports the closed upgrade and independent readback passed at 2026-10-23T09:33:05.020Z, five requests, one write, combined exit 0. Staging remains QUARANTINED and the window table is empty. See SECURITY_FR_2_4_BATCH_L_COMPLETE.md and security-fr-2-email-batch-l-owner-pass.json. Do not rerun this installation. The original preparation handoff below is retained as history.
+
 # Batch L — one closed staging acceptance-control upgrade and independent readback
 
 23 October2026. Main Stage3Authorization/Admin security remains current. Owner Windows Batch K56/56PASS,148hashes,11syntax checks,Node22.17.0,PGlite0.5.8,combined exit0 is recorded as FRE142. Its source receipt's Windows_owner_execution_verified=false is an unchanged generic verifier flag; the separately recorded owner terminal evidence establishes the reported Windows run, not an independent machine attestation. No hosted operation occurred in K.

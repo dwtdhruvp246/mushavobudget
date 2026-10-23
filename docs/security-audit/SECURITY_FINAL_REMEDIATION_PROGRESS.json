@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-23",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_BATCH_K_WINDOWS56PASS_BATCH_L_CLOSED_UPGRADE_READY",
+  "status": "FR2_EMAIL_BATCH_L_HOSTED_CLOSED_CONTROLS_PASS_BOUNDED_HTTP_ACCEPTANCE_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "3f9ce93873146db33c073f58733d38380d5aa052",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE143",
+  "latest_evidence": "FRE144",
   "batches": [
     {
       "id": "FR.1",
@@ -1028,7 +1028,14 @@
           "email_current_restrictive_policies": 82,
           "email_batch_i_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_I_HANDOFF.md",
           "email_batch_i_local_PASS": 14,
-          "email_batch_i_owner_result_received": false
+          "email_batch_i_owner_result_received": false,
+          "email_batch_l_owner_result_received": true,
+          "email_batch_l_owner_receipt": "docs/security-audit/security-fr-2-email-batch-l-owner-pass.json",
+          "email_batch_l_owner_exit_code": 0,
+          "email_batch_l_hosted_requests": 5,
+          "email_batch_l_closed_controls_verified": true,
+          "email_acceptance_window_rows_last_observed": 0,
+          "next_step": "FR.2.4.E5.26_PREPARE_BOUNDED_STAGING_HTTP_ACCEPTANCE_AND_VERIFIED_QUARANTINE"
         },
         {
           "id": "FR.2.5",
@@ -1048,7 +1055,8 @@
       "hosted_acceptance": false,
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
-      "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md"
+      "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
+      "next_step": "FR.2.4.E5.26_PREPARE_BOUNDED_STAGING_HTTP_ACCEPTANCE_AND_VERIFIED_QUARANTINE"
     },
     {
       "id": "FR.3",
@@ -1088,7 +1096,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
@@ -1098,7 +1106,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.4.E5.25_OWNER_BATCH_L_COMBINED_OFFLINE_AND_QUARANTINED_UPGRADE",
+  "next_step": "FR.2.4.E5.26_PREPARE_BOUNDED_STAGING_HTTP_ACCEPTANCE_AND_VERIFIED_QUARANTINE",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -2794,7 +2802,7 @@
   },
   "FR2_email_batch_l": {
     "stage_step": "FR.2.4.E5.25_BATCH_L_QUARANTINED_ACCEPTANCE_CONTROL_UPGRADE_AND_READBACK",
-    "status": "LOCAL42PASS_COMBINED_OWNER_OFFLINE_AND_CLOSED_UPGRADE_PENDING",
+    "status": "OWNER_BATCH_L_CLOSED_UPGRADE_AND_READBACK_PASS",
     "source_parent_commit": "96130dc87889cf10e81795e69dd57cd98f05ba26",
     "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_L_HANDOFF.md",
     "manifest": "docs/security-audit/security-fr-2-email-batch-l-source-manifest.json",
@@ -2816,14 +2824,25 @@
     "ORIGINAL_readback_does_not_rule_out_delayed_POST": true,
     "original_quarantine_source_preserved": true,
     "upgraded_reference": "docs/security-audit/security-fr-2-email-batch-l-private-catalog.json",
-    "Windows_private_parent_execution_verified": false,
+    "Windows_private_parent_execution_verified": true,
     "actual_older_PostgreSQL_servers_executed": false,
-    "owner_result_received": false,
+    "owner_result_received": true,
     "actual_hosted_requests_by_assistant": 0,
     "live_activation_approved": false,
     "hosted_acceptance": false,
     "production_or_native_changed": false,
     "APK_update_deferred": true,
-    "findings_closed": []
+    "findings_closed": [],
+    "owner_receipt": "docs/security-audit/security-fr-2-email-batch-l-owner-pass.json",
+    "completion_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_L_COMPLETE.md",
+    "owner_checked_UTC": "2026-10-23T09:33:05.020Z",
+    "owner_exit_code": 0,
+    "owner_combined_exit_code": 0,
+    "owner_hosted_requests": 5,
+    "owner_upgrade_write_attempts": 1,
+    "owner_readback_verified": true,
+    "owner_observed_mode": "QUARANTINED",
+    "owner_observed_window_rows": 0,
+    "separate_owner_offline_verifier_JSON_received": false
   }
 }

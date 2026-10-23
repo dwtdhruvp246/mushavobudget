@@ -1,3 +1,5 @@
+> FRE166: owner Windows12/12 local +24/24 hosted scoped checks passed, combined exit0. Exact v89 worker/config and safe offline browser navigation passed on the new d24b6611 deployment and main staging URL; both browser/profile cleanups passed. No repeat upload or run. See [completion](SECURITY_FR_2_4_BATCH_Q_COMPLETE.md) and [canonical source alignment](SECURITY_FR_2_4_BATCH_R_COMPLETE.md). Earlier upload instructions below are historical.
+
 # Batch Q — reviewed staging worker upload and public browser readback
 
 FR.2.4.E5.30, FRE165. Main Stage3 Authorization and Admin MFA remains current. Batch P Windows29/29 and independent .NET ZIP readback are complete. Do not rerun P or rebuild its ZIP.

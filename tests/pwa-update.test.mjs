@@ -286,7 +286,7 @@ test("service worker uses explicit activation and revalidation without caching p
   const shellStart = workerSource.indexOf("const SAFE_SHELL = [");
   const shellEnd = workerSource.indexOf("];", shellStart);
   const safeShellSource = workerSource.slice(shellStart, shellEnd);
-  assert.match(workerSource, /pwa-shell-v88/);
+  assert.match(workerSource, /pwa-shell-v89/);
   assert.match(workerSource, /await self\.skipWaiting\(\)/);
   assert.match(workerSource, /X-Mushavo-Offline/);
   assert.match(workerSource, /event\.waitUntil\(self\.skipWaiting\(\)\)/);

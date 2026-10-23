@@ -1,7 +1,7 @@
 {
   "stage_step": "FR.2.4.E5.30_BATCH_Q_REVIEWED_STAGING_SW_UPLOAD_AND_PUBLIC_BROWSER_READBACK",
   "source_parent_commit": "bfb2104eef8e181145be7f225496f1d172c29a0a",
-  "source_file_count": 206,
+  "source_file_count": 207,
   "file_sha256": {
     "docs/security-audit/security-fr-2-email-batch-f-private-catalog.json": "611700a66b1331bd860c1062fb3e4af8ff5a8cea9882ca05917476f1f99f0df9",
     "docs/security-audit/security-fr-2-email-batch-f-review-source-manifest.json": "20613784cd219028a4d12b55aefbda562aed8609a77f82edefab7c1d6e854917",
@@ -167,7 +167,7 @@
     "docs/security-audit/security-fr-2-email-batch-l-source-manifest.json": "091c65d6bc9af0fe9c77cfa5f6086c686f5cfb4c69f23d216d0a2e70d9181bbf",
     "email-verification.js": "ae466d7272ae06e66d41848efa356132390aa0efe2c982b371bc2815b2be012d",
     "session-entry.js": "09ad4dc4f03d1bce098a1849362a5e547e91cbfcb0715821a94cf81408ffef0e",
-    "sw.js": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
+    "sw.js": "0bc471318eb7156aed4f004c153a3e45fd08a71f665ad77ba59caa29fd8d8c47",
     "offline.html": "5f8b7c5d5d676b038e66be2ddb96a857af147696f868178d9cf6a837134f24be",
     "app-entry.html": "303ce44a28399dd5a2028d15f2c80e411daea56cb8eaf2a26feb1ee6fd7d8ae0",
     "app.js": "6df6e954a1f71d74b1c73bc7d83f96f086cef01c2eb73e23cbe05cb31210edb9",
@@ -193,22 +193,23 @@
     "docs/security-audit/security-fr-2-email-batch-m-source-manifest.json": "057b0c60cf5d89f3431f377233c565357439c760ac94cea7fea1467325ae3575",
     "scripts/lib/browser-route-audit.mjs": "8343fe1fea1f5ceece3238c2fa1384655a9bf38dfd1356751ccff118cfc34163",
     "manifest.webmanifest": "9d70bf76140917b6fd58c11ada54e711ca8408bca7af7f7ec3e9dd0906ade950",
-    "scripts/check-fr-2-email-batch-o.mjs": "e99ad683780b8504eb3698a7560c95f1a7f38fe2e4b9b0cb6ac8707cf872a2b8",
-    "scripts/test-fr-2-email-batch-o-engine.mjs": "0d2ee9145d7ba6ffbfa9fe5cfb6683a570b2adf4aa479e455a3cb3252e63fcf7",
+    "scripts/check-fr-2-email-batch-o.mjs": "9ec45f4da5f3b88435262c43c728adb851a7e1610edd307b8aaac6e63d2c2933",
+    "scripts/test-fr-2-email-batch-o-engine.mjs": "dcddffe76e5c05ab0d522e7c2a683796f0b4d1aa8e5dc958810add7bcbb74a21",
     "scripts/verify-fr-2-email-batch-o.mjs": "7f4c93dadd62560458627bc48cd4d9e6a292b313b6a4730faaff8e428101ad9e",
-    "tests/fr-2-email-batch-o.test.mjs": "548ead0e0c5fc927adbaaad680cbb0885e9a083fd5310e4665496c57670277ed",
+    "tests/fr-2-email-batch-o.test.mjs": "027c208d1006077d447fc0cb179a98a7ec3817b92c316b05e1d70a78102cdd51",
     "scripts/lib/browser-public-target.mjs": "78f0f8160f31896324b35d74b5e976dd0308098dd683595dc13bee9c2b8a0e06",
     "scripts/lib/browser-tls-observation.mjs": "51e75553e973e70f5806ff8f651eae07bc2f08b35014251a9c7216c4650fdcb9",
     "tests/fr-2-email-batch-o-tls.test.mjs": "6eb794ff774dd70776df5dc48210abefae7e7c1f671f9ada489c4e8d07bd38b8",
     "scripts/lib/browser-offline-model.mjs": "b9a49d385cf62ca00485d22041c7c901e695dfc07a3868e589b6aab7d90c4fe1",
     "tests/fr-2-email-batch-o-offline.test.mjs": "4a09cdcccd7abf56060ffdef277b39bd5920f9f9061cc5498936cc7550c0f1e6",
     "deployment/candidates/email-offline-pages-v89.sw.js": "0bc471318eb7156aed4f004c153a3e45fd08a71f665ad77ba59caa29fd8d8c47",
-    "scripts/prepare-fr-2-email-batch-p.mjs": "d5c75924d689d8616a0b7441b9503d50bc3a05e8388102df2835d191bda064f3",
-    "scripts/verify-fr-2-email-batch-p.mjs": "6e867f99be60d9e7a667186492919c53c5203e7007b0e2400db4b7c69a5646f1",
+    "scripts/prepare-fr-2-email-batch-p.mjs": "f300be7c9160f0f6d5fc71bb5a6b3e11137504c36cacd7907ff87799ca57636d",
+    "scripts/verify-fr-2-email-batch-p.mjs": "83869f4bbd550045ac7521e7ac20ef7a5fe47f85063b1fe7e8dca873f30be30b",
     "tests/fr-2-email-batch-p.test.mjs": "e0ec708d2f6d3daa314bd95a56d3c77b47118b0ee89c7e9c1b6abd9abcfee2b2",
     "scripts/check-fr-2-email-batch-q.mjs": "953420dd8070bf329f31aec39337d914ba13c2b3e0d2358cb422ffb29c161628",
     "scripts/verify-fr-2-email-batch-q.mjs": "66396b4bcaecc57ce35b2ee1792136ef5c54027b0fefd2a442c18df29602f0e8",
-    "tests/fr-2-email-batch-q.test.mjs": "2c7f4844ab36fa00cece8d7a885b4d06532d967f9835f4515961a3b9283e9d28"
+    "tests/fr-2-email-batch-q.test.mjs": "f475696756bb166d1261e2f143ffc4caac0280763d59c5f7f73efe54f056e05a",
+    "tests/fixtures/email-offline-v88.sw.js": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c"
   },
   "syntax_paths": [
     "scripts/check-fr-2-email-batch-i.mjs",
@@ -266,7 +267,8 @@
     "tests/fr-2-email-batch-p.test.mjs",
     "scripts/check-fr-2-email-batch-q.mjs",
     "scripts/verify-fr-2-email-batch-q.mjs",
-    "tests/fr-2-email-batch-q.test.mjs"
+    "tests/fr-2-email-batch-q.test.mjs",
+    "tests/fixtures/email-offline-v88.sw.js"
   ],
   "test_groups": [
     {

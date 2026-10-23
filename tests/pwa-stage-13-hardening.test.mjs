@@ -82,6 +82,6 @@ test("all current web release markers agree", () => {
   assert.match(appPage, /styles\.css\?v=79/);
   assert.match(appPage, /pwa\.js\?v=80/);
   assert.match(appPage, /Version 4\.9\.40/g);
-  assert.match(workerSource, /pwa-shell-v88/);
+  assert.match(workerSource, /pwa-shell-v89/);
   assert.match(workerSource, /"\/pwa\.js\?v=80"/);
 });

@@ -17,7 +17,7 @@ export function replacePublicWorker(entries,oldSource,candidate){
 }
 export function prepareOfflineZIP(retainedZIP,outputDirectory){
  ordinary(retainedZIP);ordinary(outputDirectory,true);if(fs.readdirSync(outputDirectory).length)throw Error('EMPTY_OUTPUT_REQUIRED');
- verifyFrontendZIP(retainedZIP);const prior=fs.readFileSync(retainedZIP),oldSource=fs.readFileSync(path.join(root,'sw.js')),candidate=fs.readFileSync(path.join(root,'deployment/candidates/email-offline-pages-v89.sw.js'));
+ verifyFrontendZIP(retainedZIP);const prior=fs.readFileSync(retainedZIP),oldSource=fs.readFileSync(path.join(root,'tests/fixtures/email-offline-v88.sw.js')),candidate=fs.readFileSync(path.join(root,'deployment/candidates/email-offline-pages-v89.sw.js'));
  const next=replacePublicWorker(readCanonicalPublicZIP(prior),oldSource,candidate);const bytes=createPublicZIP([...next]),readback=readCanonicalPublicZIP(bytes);
  for(const [name,value]of next)if(!value.equals(readback.get(name)))throw Error('CANDIDATE_ZIP_READBACK_REQUIRED');
  if(hash(fs.readFileSync(retainedZIP))!==frontendZIP)throw Error('RETAINED_ZIP_CHANGED');

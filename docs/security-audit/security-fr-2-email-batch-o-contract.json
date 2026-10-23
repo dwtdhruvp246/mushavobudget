@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
-  "status": "OWNER_WINDOWS16PASS_HOSTED7PASS_BROWSER_ERROR_REDIRECT_DEFECT_REPRODUCED_CANDIDATE_REQUIRED",
+  "status": "PUBLIC_OFFLINE_BROWSER_GAP_RESOLVED_BY_Q_HOSTED24_CANONICAL_SOURCE_ALIGNED_R",
   "source_parent_commit": "1f4412c32ec7a87fc208c3fabf2a127365a81336",
   "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_P_HANDOFF.md",
   "manifest": "docs/security-audit/security-fr-2-email-batch-o-source-manifest.json",
@@ -88,5 +88,11 @@
   "local_Pages_redirect_reproduces_owner_error": true,
   "hosted_cached_document_redirected_directly_observed": false,
   "staging_worker_candidate_prepared": true,
-  "candidate_deployed": false
+  "candidate_deployed": true,
+  "public_scope_followup_complete_via_Q": true,
+  "public_scope_followup_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_Q_COMPLETE.md",
+  "public_scope_followup_receipt": "docs/security-audit/security-fr-2-email-batch-q-owner-hosted-pass.json",
+  "canonical_v89_source_aligned": true,
+  "current_manifest_source_hashes_after_R": 200,
+  "current_manifest_syntax_checks_after_R": 50
 }

@@ -167,7 +167,7 @@
     "docs/security-audit/security-fr-2-email-batch-l-source-manifest.json": "091c65d6bc9af0fe9c77cfa5f6086c686f5cfb4c69f23d216d0a2e70d9181bbf",
     "email-verification.js": "ae466d7272ae06e66d41848efa356132390aa0efe2c982b371bc2815b2be012d",
     "session-entry.js": "09ad4dc4f03d1bce098a1849362a5e547e91cbfcb0715821a94cf81408ffef0e",
-    "sw.js": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
+    "sw.js": "0bc471318eb7156aed4f004c153a3e45fd08a71f665ad77ba59caa29fd8d8c47",
     "offline.html": "5f8b7c5d5d676b038e66be2ddb96a857af147696f868178d9cf6a837134f24be",
     "app-entry.html": "303ce44a28399dd5a2028d15f2c80e411daea56cb8eaf2a26feb1ee6fd7d8ae0",
     "app.js": "6df6e954a1f71d74b1c73bc7d83f96f086cef01c2eb73e23cbe05cb31210edb9",

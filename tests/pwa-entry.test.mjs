@@ -177,7 +177,7 @@ test("service worker caches only the safe launcher shell", () => {
   const shellStart = serviceWorkerSource.indexOf("const SAFE_SHELL = [");
   const shellEnd = serviceWorkerSource.indexOf("];", shellStart);
   const safeShellSource = serviceWorkerSource.slice(shellStart, shellEnd);
-  assert.match(serviceWorkerSource, /pwa-shell-v88/);
+  assert.match(serviceWorkerSource, /pwa-shell-v89/);
   assert.match(serviceWorkerSource, /"\/app-entry\.js\?v=3"/);
   assert.doesNotMatch(safeShellSource, /"\/app\.html/);
   assert.doesNotMatch(safeShellSource, /"\/config\.js/);
@@ -198,7 +198,7 @@ function createOfflineWorkerHarness() {
   };
   const caches = {
     async open() { return cache; },
-    async keys() { return ["mushavo-budget-pwa-shell-v38", "mushavo-budget-pwa-shell-v88"]; },
+    async keys() { return ["mushavo-budget-pwa-shell-v38", "mushavo-budget-pwa-shell-v89"]; },
     async delete(key) { stored.delete(key); return true; }
   };
   const self = {
@@ -213,15 +213,15 @@ function createOfflineWorkerHarness() {
     if (offline) throw new TypeError("Failed to fetch");
     const url = String(input?.url || input);
     if (url.includes("app-entry.html")) {
-      return new Response("<!doctype html><title>Opening Mushavo Budget</title>", { status: 200 });
+      return new Response("<!doctype html><title>Opening Mushavo Budget</title>", { status: 200, headers: { "Content-Type": "text/html; charset=utf-8" } });
     }
     if (url.includes("offline.html")) {
-      return new Response("<!doctype html><title>You are offline</title>", { status: 200 });
+      return new Response("<!doctype html><title>You are offline</title>", { status: 200, headers: { "Content-Type": "text/html; charset=utf-8" } });
     }
     return new Response("asset", { status: 200 });
   }
   vm.runInNewContext(serviceWorkerSource, {
-    self, caches, fetch, URL, Date, Number, String, Set, Promise, Array, Response, console
+    self, caches, fetch, URL, Date, Number, String, Set, Promise, Array, Response, Headers, console
   }, { filename: "sw.js" });
 
   async function fireInstall() {

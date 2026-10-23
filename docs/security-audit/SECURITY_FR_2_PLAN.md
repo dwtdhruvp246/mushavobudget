@@ -1,3 +1,5 @@
+> Latest FRE156/FRE157: Windows24 local checks pass; hosted public DOM passes but TLS assertion stops (1 PASS,1 FAIL), cleanup verified. Exact TLS-metadata cause unknown. Short collection-only diagnostic prepared (197 hashes,47 syntax); no full rerun requested. See [TLS review](SECURITY_FR_2_4_BATCH_O_TLS_REVIEW.md).
+
 > Latest FRE154/FRE155: Windows8 unit passes then local browser setup stop; no hosted probe, cleanup verified. Explicit page attachment, worker-only auto-attach and safe phase diagnostics now pass24 local checks (195 hashes,45 syntax). Exact original cause remains unknown; corrected Windows/hosted result pending. See [target setup review](SECURITY_FR_2_4_BATCH_O_TARGET_REVIEW.md).
 
 > Latest checkpoint FRE153: Batch O prepared for owner hosted public browser/TLS/service-worker checks. Local20/20 PASS (194 hashes,44 syntax); assistant hosted attempt established no acceptance and cleaned up. No credentials, email or window required. Main Stage3 remains current. See [Batch O handoff](SECURITY_FR_2_4_BATCH_O_HANDOFF.md).

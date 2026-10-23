@@ -5,7 +5,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {localTLS} from './lib/browser-local-tls.mjs';
 import {publicBrowser,publicRequestAllowed} from './check-fr-2-email-batch-o.mjs';
-const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');let origin,unexpected=0;const variant=process.argv[3]??'normal';if(!['normal','source-drift','unreviewed-route'].includes(variant))throw Error('LOCAL_VARIANT_REQUIRED');
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');let origin,unexpected=0;const variant=process.argv[3]??'normal';if(!['normal','source-drift','unreviewed-route','tls-metadata'].includes(variant))throw Error('LOCAL_VARIANT_REQUIRED');
 const server=https.createServer(localTLS(),async(req,res)=>{try{
  if(!publicRequestAllowed(origin+req.url,req.method,{origin})){unexpected++;res.writeHead(404).end();return;}
  let f=new URL(req.url,origin).pathname.slice(1);if(f==='offline'||f==='app-entry')f+='.html';
@@ -13,5 +13,5 @@ const server=https.createServer(localTLS(),async(req,res)=>{try{
  res.writeHead(200,{'Content-Type':type,'Cache-Control':'no-store'}).end(data);
  }catch{res.writeHead(500).end();}});
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));origin='https://localhost:'+server.address().port;
-let r;try{r=await publicBrowser(process.argv[2],{fixtureOrigin:origin});}finally{await new Promise(resolve=>server.close(resolve));}
+let r;try{r=await publicBrowser(process.argv[2],{fixtureOrigin:origin,tlsDiagnostic:variant==='tls-metadata'});}finally{await new Promise(resolve=>server.close(resolve));}
 r.local_fixture_variant=variant;r.local_fixture_closed=true;r.local_fixture_unexpected_requests=unexpected;console.log(JSON.stringify(r,null,2));process.exitCode=r.exit_code||Number(unexpected>0);

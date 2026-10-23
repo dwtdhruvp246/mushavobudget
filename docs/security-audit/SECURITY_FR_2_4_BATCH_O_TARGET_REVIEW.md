@@ -1,3 +1,5 @@
+> Latest FRE156/FRE157: Windows24 local checks pass; hosted public DOM passes but TLS assertion stops (1 PASS,1 FAIL), cleanup verified. Exact TLS-metadata cause unknown. Short collection-only diagnostic prepared (197 hashes,47 syntax); no full rerun requested. See [TLS review](SECURITY_FR_2_4_BATCH_O_TLS_REVIEW.md).
+
 # Batch O target setup review — 2026-10-23
 
 The owner ran published commit `25d76a3029e9abd009098437b6fa328d543647fa` on Node22.17.0/Windows with Chrome155.0.8059.79. All194 source hashes,44 syntax checks and8 policy units passed. Local browser setup stopped before the first browser assertion and before any intercepted request. The hosted probe was not started. Browser process, temporary profile and localhost fixture cleanup passed. Combined exit1. This is not a hosted TLS failure or a need to reinstall Chrome.

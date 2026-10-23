@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.26_BATCH_M_BOUNDED_HTTP_ACCEPTANCE_AND_VERIFIED_QUARANTINE",
-  "status": "OWNER_INITIAL_WINDOW_READBACK_STOP_CLEANUP_VERIFIED_CORRECTION_LOCAL62PASS_RETRY_PENDING",
+  "status": "OWNER_BATCH_M_BOUNDED_HTTP_SCOPED_PASS_QUARANTINE_AND_CLEANUP_VERIFIED",
   "source_parent_commit": "b2088da1950d5ac0a1e0c07c67c454348395396b",
   "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_M_HANDOFF.md",
   "manifest": "docs/security-audit/security-fr-2-email-batch-m-source-manifest.json",
@@ -38,7 +38,7 @@
   ],
   "new_credentials_or_credential_rotation_required": false,
   "privileged_gateway_secret_values_passed_to_child": false,
-  "Windows_private_parent_execution_verified": false,
+  "Windows_private_parent_execution_verified": true,
   "owner_result_received": true,
   "actual_hosted_requests_by_assistant": 0,
   "hosted_acceptance": false,
@@ -46,7 +46,7 @@
   "production_or_native_changed": false,
   "APK_update_deferred": true,
   "findings_closed": [],
-  "owner_receipt": "docs/security-audit/security-fr-2-email-batch-m-owner-review-required.json",
+  "owner_receipt": "docs/security-audit/security-fr-2-email-batch-m-owner-pass.json",
   "owner_initial_exit_code": 1,
   "owner_initial_combined_exit_code": 1,
   "owner_initial_hosted_requests": 35,
@@ -55,5 +55,15 @@
   "owner_initial_separate_offline_verifier_JSON_received": false,
   "retry_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_M_RETRY.md",
   "retry_contract": "docs/security-audit/security-fr-2-email-batch-m-retry-contract.json",
-  "owner_retry_result_received": false
+  "owner_retry_result_received": true,
+  "owner_initial_receipt": "docs/security-audit/security-fr-2-email-batch-m-owner-review-required.json",
+  "completion_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_M_COMPLETE.md",
+  "owner_checked_UTC": "2026-10-23T10:34:20.604Z",
+  "owner_hosted_requests": 53,
+  "owner_exit_code": 0,
+  "owner_combined_exit_code": 0,
+  "owner_response_shape": "LAST_ROWSET_ONLY",
+  "owner_active_readback_rows": 1,
+  "owner_quarantine_and_cleanup_verified": true,
+  "separate_owner_retry_offline_verifier_JSON_received": false
 }

@@ -1,3 +1,7 @@
+# Current checkpoint: Batch M owner scoped pass — no rerun needed
+
+FRE148: owner53requests/oneemail/exit0, selected active HTTP checks passed, explicit quarantine/fencing and exact generated cleanup independently read back. LAST_ROWSET_ONLY observed. See SECURITY_FR_2_4_BATCH_M_COMPLETE.md and security-fr-2-email-batch-m-owner-pass.json. Full hosted/browser/role/Admin MFA acceptance remains pending. The preparation/retry history below is retained; its command is not a request to repeat this completed batch.
+
 # Batch M — owner stop recorded, one-row readback correction and controlled retry
 
 23 October 2026. Main Stage 3 — Authorization and Admin MFA remains current. Initial owner run pinned to a4d4de11b6eaf44788a1a7b012bb861f0cfdba4c stopped at INDEPENDENT_ACTIVE_WINDOW with WINDOW_REQUIRED, 35 direct hosted requests and combined exit1. Receipt checked_UTC: 2026-10-23T10:17:26.340Z. No active-session HTTP probes ran. The owner verified one real email proof and remembered-device account binding, one open response HTTP201, explicit quarantine with stale-open fencing, exact generated device/four sessions/proofs/challenges absent, unchanged retained packet and final QUARANTINED catalog/target. Cleanup and final-state problem codes are null. No extra containment or blind retry of the old write is indicated by this receipt.

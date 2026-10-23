@@ -1,3 +1,7 @@
+# Latest checkpoint — 23 October 2026: Batch M hosted scoped HTTP pass
+
+FRE148 records owner53requests/oneemail/exit0 at2026-10-23T10:34:20.604Z: proved/restored HTTP access passed, password-only and foreign-profile denials passed, explicit quarantine/fencing and exact generated device/four sessions cleanup verified. LAST_ROWSET_ONLY observed; one-row active readback passed. No rerun needed. Main Stage3 remains current; next prepare browser/PWA cookie/cache/device acceptance and retain remaining role/Admin MFA gates. No findings closed or launch approval. Separate Windows offline JSON not supplied. See SECURITY_FR_2_4_BATCH_M_COMPLETE.md.
+
 # Latest checkpoint — 23 October 2026: Batch M owner readback stop contained; corrected local62 pass
 
 FRE146 records owner35requests/exit1 at INDEPENDENT_ACTIVE_WINDOW, WINDOW_REQUIRED, with quarantine/fencing and exact cleanup verified. No active HTTP checks ran. Exact historical hosted cause remains unknown. FRE147 records a one-row combined readback correction, public-only response-shape preflight before Auth/email, precise safe diagnostics and local62/62 (Windows expected101),162hashes,19syntax. See SECURITY_FR_2_4_BATCH_M_RETRY.md. No database reinstall/control-source change, no findings closure, no production/native change; main Stage3 remains current.

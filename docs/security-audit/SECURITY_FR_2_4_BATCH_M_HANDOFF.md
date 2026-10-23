@@ -1,3 +1,7 @@
+# Current checkpoint: Batch M owner scoped pass — no rerun needed
+
+FRE148: owner53requests/oneemail/exit0, selected active HTTP checks passed, explicit quarantine/fencing and exact generated cleanup independently read back. LAST_ROWSET_ONLY observed. See SECURITY_FR_2_4_BATCH_M_COMPLETE.md and security-fr-2-email-batch-m-owner-pass.json. Full hosted/browser/role/Admin MFA acceptance remains pending. The preparation/retry history below is retained; its command is not a request to repeat this completed batch.
+
 # Current checkpoint: initial owner stop contained; use corrected retry handoff
 
 Initial owner run stopped at active readback,35requests/exit1, with quarantine and selected cleanup verified. See SECURITY_FR_2_4_BATCH_M_RETRY.md for the single-row correction, public shape probe, local62/Windows expected101 and normal53requests. Do not use the old published command. Original preparation below is retained as history.

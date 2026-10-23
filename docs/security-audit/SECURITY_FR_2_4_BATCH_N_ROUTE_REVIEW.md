@@ -1,3 +1,5 @@
+> Latest checkpoint FRE152: owner Windows Edge short diagnostic **36/36 PASS**, exit 0; final route audit 0 unexpected requests and cleanup verified. Local browser scope complete; no N rerun needed. Prior failed route remains unidentified. See [Batch N completion](SECURITY_FR_2_4_BATCH_N_COMPLETE.md). Hosted browser/PWA acceptance remains pending.
+
 # Batch N — Windows119/120 stop, exact manifest dependency and safe route review
 
 23 October2026. Main Stage3 Authorization and Admin MFA remains current. Owner run pin0c4582594f53d32e2e4c544276b6bee63109cf93, Node22.17.0/win32/Edg155.0.4283.62,188hashes/39syntax:120checks,119PASS,1FAIL, combined exit1. All89retained regressions and10protocol/TLS tests passed. The first20browser security-behavior checks passed. Only LOCAL_FIXTURE_NO_UNREVIEWED_ROUTE failed at2026-10-23T11:21:45.387Z. Raw source receipt is security-fr-2-email-batch-n-owner-review-required.json; the coarse outer wrapper receipt is retained separately.

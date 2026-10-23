@@ -1,3 +1,5 @@
+> Latest checkpoint FRE152: owner Windows Edge short diagnostic **36/36 PASS**, exit 0; final route audit 0 unexpected requests and cleanup verified. Local browser scope complete; no N rerun needed. Prior failed route remains unidentified. See [Batch N completion](SECURITY_FR_2_4_BATCH_N_COMPLETE.md). Hosted browser/PWA acceptance remains pending.
+
 # Current checkpoint: owner119/120 route stop; use short route-review handoff
 
 Windows owner passed99regression/fixture tests and20browser behavior checks; final unknown-route guard failed, cleanup verified. See SECURITY_FR_2_4_BATCH_N_ROUTE_REVIEW.md for exact manifest fixture bytes and safe route diagnostics. Local full125/short36 pass; owner short diagnostic pending. Original120 preparation history below is retained; do not rerun its old pin.

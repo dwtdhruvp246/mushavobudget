@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.4.E5.27_OWNER_BATCH_N_SHORT36_SAFE_ROUTE_DIAGNOSTIC",
+  "next_step": "FR.2.4.E5.28_PREPARE_HOSTED_BROWSER_AND_PWA_ACCEPTANCE",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,

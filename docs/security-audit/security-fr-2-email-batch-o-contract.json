@@ -1,8 +1,8 @@
 {
   "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
-  "status": "OWNER_HOSTED7PASS_OFFLINE_TIMEOUT_WORKER_FAILURE_MODEL_LOCAL43PASS_OWNER_PENDING",
+  "status": "OWNER_WINDOWS16PASS_HOSTED7PASS_BROWSER_ERROR_REDIRECT_DEFECT_REPRODUCED_CANDIDATE_REQUIRED",
   "source_parent_commit": "1f4412c32ec7a87fc208c3fabf2a127365a81336",
-  "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_O_OFFLINE_REVIEW.md",
+  "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_P_HANDOFF.md",
   "manifest": "docs/security-audit/security-fr-2-email-batch-o-source-manifest.json",
   "local_receipt": "docs/security-audit/security-fr-2-email-batch-o-offline-local-checks.json",
   "local_PASS": 43,
@@ -49,8 +49,8 @@
   "explicit_page_attachment": true,
   "worker_only_auto_attach": true,
   "safe_target_setup_phase_diagnostics": true,
-  "owner_latest_receipt": "docs/security-audit/security-fr-2-email-batch-o-owner-offline-review-required.json",
-  "owner_latest_offline_PASS": 13,
+  "owner_latest_receipt": "docs/security-audit/security-fr-2-email-batch-o-owner-browser-error.json",
+  "owner_latest_offline_PASS": 16,
   "owner_hosted_public_PASS": 7,
   "owner_hosted_public_FAIL": 0,
   "owner_latest_exit_code": 1,
@@ -79,9 +79,14 @@
   "owner_hosted_uncompleted_checks": 3,
   "Windows_secure_transport_correction_verified": true,
   "owner_offline_timeout_exact_response_known": false,
-  "corrected_offline_Windows_execution_verified": false,
+  "corrected_offline_Windows_execution_verified": true,
   "offline_failure_injection_target": "SERVICE_WORKER_OUTBOUND_FETCH",
   "page_navigator_override_separate_from_transport": true,
   "local_offline_document_from_service_worker": true,
-  "local_offline_app_navigation_reached_fixture": 0
+  "local_offline_app_navigation_reached_fixture": 0,
+  "owner_final_document_class": "BROWSER_ERROR",
+  "local_Pages_redirect_reproduces_owner_error": true,
+  "hosted_cached_document_redirected_directly_observed": false,
+  "staging_worker_candidate_prepared": true,
+  "candidate_deployed": false
 }

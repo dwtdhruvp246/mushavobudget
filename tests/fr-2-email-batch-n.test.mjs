@@ -35,7 +35,7 @@ test('Browser evaluation rejects runtime exceptions and polling is bounded',asyn
 const request=(url,{method='GET',headers={},body}={})=>new Promise((resolve,reject)=>{const req=https.request(url,{method,headers,rejectUnauthorized:false,lookup:(host,options,cb)=>cb(null,options?.all?[{address:'127.0.0.1',family:4}]:'127.0.0.1',4)},res=>{let text='';res.on('data',x=>text+=x);res.on('end',()=>resolve({status:res.statusCode,headers:res.headers,text}));});req.on('error',reject);req.end(body);});
 async function withFixture(fn){const f=await browserFixture();try{return await fn(f);}finally{await f.close();}}
 test('Loopback HTTPS serves exact shared source bytes; rejects foreign Host and unknown paths',()=>withFixture(async f=>{
- for(const file of ['email-verification.js','session-entry.js','sw.js','offline.html']){const r=await request(f.origin+'/'+file);assert.equal(r.status,200);assert.equal(r.text,await readFile(new URL('../'+file,import.meta.url),'utf8'));}
+ for(const file of ['email-verification.js','session-entry.js','sw.js','offline.html','manifest.webmanifest']){const r=await request(f.origin+'/'+file);assert.equal(r.status,200);assert.equal(r.text,await readFile(new URL('../'+file,import.meta.url),'utf8'));if(file==='manifest.webmanifest')assert.equal(r.headers['content-type'],'application/manifest+json');}
  assert.equal((await request(f.origin+'/fixture.html?actor=a1',{headers:{Host:'foreign.invalid'}})).status,403);assert.equal((await request(f.origin+'/not-reviewed')).status,404);
 }));
 test('Actual gateway over synthetic HTTPS binds remember cookie, code MAC and sessions without external Auth/SQL/mail',()=>withFixture(async f=>{
@@ -53,4 +53,21 @@ test('Missing browser is a safe local failure with no hosted operation or privat
 });
 test('Browser harness contains 21 explicit engine checks, own-child cleanup and no persistent user-profile/session import',async()=>{
  const s=await readFile(new URL('../scripts/check-fr-2-email-batch-n.mjs',import.meta.url),'utf8');assert.equal([...s.matchAll(/check\('[A-Z_]+',/g)].length,21);for(const x of ['--user-data-dir=','Browser.close','temporary_profile_removed','loopback_fixture_closed'])assert(s.includes(x));assert(!s.includes('storageState'));assert(!s.includes('api.supabase.com'));
+});
+test('Route diagnostics redact raw host/path/query/header values and emit a bounded fixed schema',async()=>{
+ const {summarizeUnreviewedRoute}=await import('../scripts/lib/browser-route-audit.mjs');
+ const x=summarizeUnreviewedRoute(new URL('https://private-host.invalid/SYNTHETIC_PRIVATE_PATH?token=SYNTHETIC_PRIVATE_QUERY'),'TRACE','SYNTHETIC_PRIVATE_DESTINATION');
+ assert.deepEqual(Object.keys(x).sort(),['destination','method','pathname_sha256','probe_tag','query_present']);assert.equal(x.probe_tag,'UNCLASSIFIED');assert.match(x.pathname_sha256,/^[a-f0-9]{64}$/);assert.equal(x.query_present,true);assert.equal(x.method,'OTHER');assert.equal(x.destination,'OTHER');assert(!JSON.stringify(x).includes('SYNTHETIC_PRIVATE'));assert(!JSON.stringify(x).includes('private-host'));
+});
+test('Recognized diagnostic probe names still receive 404 and remain acceptance failures',()=>withFixture(async f=>{
+ const r=await request(f.origin+'/.well-known/appspecific/com.chrome.devtools.json');assert.equal(r.status,404);assert.equal(f.state.unexpected,1);const {safeRouteAudit}=await import('../scripts/lib/browser-route-audit.mjs');const x=safeRouteAudit(f.state);assert.equal(x.entries[0].probe_tag,'DEVTOOLS_WORKSPACE_PROBE');assert.equal(x.entries[0].count,1);
+}));
+test('Repeated unreviewed requests aggregate while retaining method/destination/query differences',async()=>{
+ const {collectUnreviewedRoute,safeRouteAudit}=await import('../scripts/lib/browser-route-audit.mjs');const s={unexpected:0,unreviewedRoutes:new Map(),unreviewedRouteOverflow:0},u=new URL('https://localhost/path');for(let i=0;i<3;i++)collectUnreviewedRoute(s,u,'GET','image');collectUnreviewedRoute(s,new URL(u+'?secret=ignored'),'GET','image');const a=safeRouteAudit(s);assert.equal(a.unexpected_request_count,4);assert.equal(a.entries.length,2);assert.equal(a.entries[0].count,3);assert.equal(a.entries[1].query_present,true);
+});
+test('Route audit caps distinct entries and counts overflow without retaining extra raw material',async()=>{
+ const {collectUnreviewedRoute,safeRouteAudit}=await import('../scripts/lib/browser-route-audit.mjs');const s={unexpected:0,unreviewedRoutes:new Map(),unreviewedRouteOverflow:0};for(let i=0;i<40;i++)collectUnreviewedRoute(s,new URL('https://localhost/private'+i),'GET','');const a=safeRouteAudit(s);assert.equal(a.entries.length,16);assert.equal(a.unexpected_request_count,40);assert.equal(a.overflow_request_count,24);assert(!JSON.stringify(a).includes('private'));
+});
+test('Harness takes the immutable safe route snapshot after browser and listener cleanup before the final route check',async()=>{
+ const s=await readFile(new URL('../scripts/check-fr-2-email-batch-n.mjs',import.meta.url),'utf8');assert(s.indexOf('await fixture.close()')<s.indexOf('r.route_audit=safeRouteAudit'));assert(s.indexOf('r.route_audit=safeRouteAudit')<s.indexOf("check('LOCAL_FIXTURE_NO_UNREVIEWED_ROUTE'"));
 });

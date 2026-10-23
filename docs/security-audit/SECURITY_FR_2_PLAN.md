@@ -1,3 +1,7 @@
+# Latest checkpoint — 23 October2026: Windows N119/120 route stop contained; short diagnostic ready
+
+FRE150 records ownerNode22.17.0/Edge155:99regression-fixture tests plus20security behavior checks passed; final unreviewed-route guard failed; browser/profile/listener cleanup verified, exit1, no hosted effects. Exact failed route is unknown. FRE151 adds exact reviewed manifest bytes/MIME and bounded redacted post-cleanup route audit without allowing unknown routes. Local full125/125 and short36/36,190hashes,40syntax. Owner short run skips89unchanged regressions. See SECURITY_FR_2_4_BATCH_N_ROUTE_REVIEW.md. Main Stage3 and hosted/PWA/Admin MFA gates remain pending.
+
 # Latest checkpoint — 23 October2026: Batch N local120 actual-browser pass, Windows pending
 
 FRE149 records89retained regressions+10protocol/TLS fixture tests+21real Chromium checks=120/120,188hashes,39syntax, Node24.19.0/Linux/HeadlessChrome153.0.8010.0. Actual shared UI/gateway/SW exercised over isolated local HTTPS with synthetic Auth/DB/mail. Browser/profile/fixture cleanup verified. Owner Windows Edge/Chrome run needs no credentials, packets, provider calls or installation; no staging window opens. Full hosted browser/PWA, role/Admin MFA and release acceptance remain pending; main Stage3 current. See SECURITY_FR_2_4_BATCH_N_HANDOFF.md.

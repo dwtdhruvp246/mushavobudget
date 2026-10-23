@@ -1,3 +1,7 @@
+# Current checkpoint: owner119/120 route stop; use short route-review handoff
+
+Windows owner passed99regression/fixture tests and20browser behavior checks; final unknown-route guard failed, cleanup verified. See SECURITY_FR_2_4_BATCH_N_ROUTE_REVIEW.md for exact manifest fixture bytes and safe route diagnostics. Local full125/short36 pass; owner short diagnostic pending. Original120 preparation history below is retained; do not rerun its old pin.
+
 # Batch N — local browser cookie, DOM and service-worker acceptance
 
 23 October2026. Main Stage3 — Authorization and Admin MFA remains current. Retain FRE148 Batch M hosted scoped HTTP pass (53requests,oneemail,exit0, explicit quarantine and exact generated cleanup). Last owner-observed staging mode QUARANTINED. Do not repeat completed H/I/J/K/L/M.

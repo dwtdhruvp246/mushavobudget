@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.27_BATCH_N_LOCAL_BROWSER_COOKIE_DOM_AND_SERVICE_WORKER",
-  "status": "LOCAL120PASS_REAL_CHROMIUM_OWNER_WINDOWS_BROWSER_PENDING",
+  "status": "OWNER_WINDOWS119PASS_ROUTE_STOP_CLEANUP_VERIFIED_SHORT_DIAGNOSTIC_PENDING",
   "source_parent_commit": "24c0f83dc1383966e35f06e4e63674c9798ef7ce",
   "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_N_HANDOFF.md",
   "manifest": "docs/security-audit/security-fr-2-email-batch-n-source-manifest.json",
@@ -23,7 +23,7 @@
   "actual_hosted_requests_by_harness": 0,
   "real_email_requests": 0,
   "committed_mode_change_requests": 0,
-  "Windows_owner_result_received": false,
+  "Windows_owner_result_received": true,
   "full_app_or_business_pages_bootstrapped": false,
   "local_certificate_validation_bypassed": true,
   "hosted_TLS_or_CSRF_acceptance": false,
@@ -33,5 +33,15 @@
   "live_activation_approved": false,
   "production_or_native_changed": false,
   "APK_update_deferred": true,
-  "findings_closed": []
+  "findings_closed": [],
+  "owner_receipt": "docs/security-audit/security-fr-2-email-batch-n-owner-review-required.json",
+  "owner_PASS": 119,
+  "owner_FAIL": 1,
+  "owner_exit_code": 1,
+  "owner_browser_product": "Edg/155.0.4283.62",
+  "owner_cleanup_verified": true,
+  "exact_original_unreviewed_route_known": false,
+  "route_review_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_N_ROUTE_REVIEW.md",
+  "route_diagnostic_contract": "docs/security-audit/security-fr-2-email-batch-n-route-contract.json",
+  "owner_route_diagnostic_received": false
 }

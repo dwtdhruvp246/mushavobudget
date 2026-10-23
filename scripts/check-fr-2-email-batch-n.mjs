@@ -6,10 +6,11 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {setTimeout as delay} from 'node:timers/promises';
 import {LocalCDP,until,evaluate} from './lib/browser-local-cdp.mjs';
+import {safeRouteAudit} from './lib/browser-route-audit.mjs';
 import {browserFixture,actors} from './lib/browser-email-fixture.mjs';
 export const stage='FR.2.4.E5.27_BATCH_N_LOCAL_BROWSER_COOKIE_DOM_AND_SERVICE_WORKER';
 export async function browserAcceptance(executable){
- const r={stage_step:stage,batch:'N',result:'LOCAL_BROWSER_BATCH_N_REVIEW_REQUIRED',scope:'ACTUAL_SHARED_COMPONENTS_GATEWAY_AND_SW_LOCAL_HTTPS_SYNTHETIC_BACKEND',tests:0,pass:0,fail:0,checks:[],browser_product:null,
+ const r={stage_step:stage,batch:'N',result:'LOCAL_BROWSER_BATCH_N_REVIEW_REQUIRED',scope:'ACTUAL_SHARED_COMPONENTS_GATEWAY_AND_SW_LOCAL_HTTPS_SYNTHETIC_BACKEND',tests:0,pass:0,fail:0,checks:[],browser_product:null,route_audit:null,
  isolated_temporary_profile:true,temporary_profile_removed:false,browser_process_stopped:false,loopback_fixture_closed:false,
  actual_browser_engine_executed:false,ephemeral_test_certificate_in_memory:true,local_certificate_validation_bypassed:true,
  real_Auth_database_and_mail_exercised:false,full_app_or_business_pages_bootstrapped:false,hosted_TLS_or_CSRF_acceptance:false,
@@ -76,15 +77,16 @@ export async function browserAcceptance(executable){
   check('ACTUAL_SW_DOES_NOT_CACHE_API_OR_PRIVATE_RESPONSES',await ev(s2,'(async()=>{for(const key of await caches.keys())for(const r of await(await caches.open(key)).keys())if(/\\/(?:api|rpc|auth|rest|storage|functions)\\//.test(new URL(r.url).pathname))return false;return true;})()'));
   fixture.state.offline=true;await cdp.call('Page.navigate',{url:fixture.origin+'/app.html?offline_n=1'},s2);await wait(s2,'document.body?.textContent.includes("No financial data has been stored")');
   check('ACTUAL_SW_NAVIGATION_OUTAGE_SHOWS_SAFE_OFFLINE_PAGE',await ev(s2,'!document.body.textContent.includes("SYNTHETIC_PRIVATE_CANARY")&&document.body.textContent.includes("Reconnect")'));
-  check('LOCAL_FIXTURE_NO_UNREVIEWED_ROUTE',fixture.state.unexpected===0);
   main=true;
  }catch(error){const known=new Set(['LOCAL_BROWSER_CHECK_REQUIRED','CDP_COMMAND_REQUIRED','CDP_COMMAND_TIMEOUT','CDP_CONNECTION_REQUIRED','BROWSER_EVALUATION_REQUIRED','BROWSER_CHECK_TIMEOUT']);r.problem_code=known.has(error?.message)?error.message:'LOCAL_BROWSER_OR_CHECK_REVIEW_REQUIRED';}
  finally{
   if(cdp){try{await cdp.call('Browser.close',{},undefined,3000);}catch{}cdp.close();}
   if(child){if(child.exitCode===null&&!child.killed)child.kill();try{await until(()=>child.exitCode!==null||child.signalCode!==null,{timeout:5000});r.browser_process_stopped=true;}catch{}}
   if(fixture){try{await fixture.close();r.loopback_fixture_closed=true;}catch{}}
+  if(fixture)r.route_audit=safeRouteAudit(fixture.state);
   if(profile){try{await rm(profile,{recursive:true,force:true,maxRetries:10,retryDelay:100});r.temporary_profile_removed=true;}catch{}}
  }
+ if(main){try{check('LOCAL_FIXTURE_NO_UNREVIEWED_ROUTE',r.route_audit?.unexpected_request_count===0);}catch{r.problem_code='LOCAL_BROWSER_UNREVIEWED_ROUTE_REQUIRED';main=false;}}
  if(main&&r.browser_process_stopped&&r.loopback_fixture_closed&&r.temporary_profile_removed){r.result='LOCAL_BROWSER_BATCH_N_SYNTHETIC_COOKIE_DOM_AND_SW_SCOPED_PASS';r.checkpoint='COMPLETE';r.exit_code=0;}else r.problem_code??='LOCAL_BROWSER_CLEANUP_REQUIRED';
  r.checked_UTC=new Date().toISOString();return r;
 }

@@ -3,11 +3,12 @@ import https from 'node:https';
 import {readFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {localTLS} from './browser-local-tls.mjs';
+import {collectUnreviewedRoute} from './browser-route-audit.mjs';
 import {createEmailGateway,STAGING_ORIGIN} from '../../supabase/functions/_shared/email-verification-gateway.mjs';
 const root=new URL('../../',import.meta.url);
 export const actors={a1:{user:'00000000-0000-4000-8000-000000000901',session:'a1',dbSession:'00000000-0000-4000-8000-000000000911'},a2:{user:'00000000-0000-4000-8000-000000000901',session:'a2',dbSession:'00000000-0000-4000-8000-000000000912'},a3:{user:'00000000-0000-4000-8000-000000000901',session:'a3',dbSession:'00000000-0000-4000-8000-000000000913'},b1:{user:'00000000-0000-4000-8000-000000000902',session:'b1',dbSession:'00000000-0000-4000-8000-000000000914'}};
 export async function browserFixture(){
- const state={proofs:new Set(),challenges:new Map(),devices:new Map(),mail:0,code:null,offline:false,suppressProof:false,requests:0,unexpected:0,probeCookie:null,routeCounts:{},rpcCalls:0};
+ const state={proofs:new Set(),challenges:new Map(),devices:new Map(),mail:0,code:null,offline:false,suppressProof:false,requests:0,unexpected:0,unreviewedRoutes:new Map(),unreviewedRouteOverflow:0,probeCookie:null,routeCounts:{},rpcCalls:0};
  const adapter={authenticate:async request=>{const name=(request.headers.get('authorization')||'').replace('Bearer SYNTHETIC_',''),a=actors[name];if(!a)throw Error('SYNTHETIC_AUTH_REQUIRED');return{userId:a.user,sessionId:a.dbSession,email:name+'@example.invalid'};},
   rpc:async(name,p)=>{
    const key=p.p_user+':'+p.p_session;
@@ -26,7 +27,7 @@ export async function browserFixture(){
    throw Error('SYNTHETIC_RPC_REQUIRED');
   }};
  const gateway=createEmailGateway({adapter,mailer:async({code})=>{state.code=code;state.mail++;return{accepted:true};},keyring:new Map([['v1',new Uint8Array(32).fill(19)]]),currentKeyVersion:'v1',limit:async()=>({success:true})});
- const sources=Object.fromEntries(await Promise.all(['email-verification.js','session-entry.js','sw.js','offline.html','app-entry.html'].map(async f=>[f,await readFile(new URL(f,root),'utf8')])));
+ const sources=Object.fromEntries(await Promise.all(['email-verification.js','session-entry.js','sw.js','offline.html','app-entry.html','manifest.webmanifest'].map(async f=>[f,await readFile(new URL(f,root),'utf8')])));
  let origin;
  const json=(res,data,status=200)=>{res.writeHead(status,{'content-type':'application/json','cache-control':'no-store'});res.end(JSON.stringify(data));};
  const html=res=>{res.writeHead(200,{'content-type':'text/html','cache-control':'no-store'});};
@@ -59,10 +60,10 @@ window.fixture={entry,events,async ensure(){const ok=await entry.ensure();if(ok&
 await window.fixture.ensure();window.ready=true;
 </script>`);return;}
   const name=url.pathname.slice(1);
-  if(Object.hasOwn(sources,name)){res.writeHead(200,{'content-type':name.endsWith('.js')?'text/javascript':'text/html','cache-control':'no-store','service-worker-allowed':'/'});res.end(sources[name]);return;}
+  if(Object.hasOwn(sources,name)){res.writeHead(200,{'content-type':name.endsWith('.js')?'text/javascript':name==='manifest.webmanifest'?'application/manifest+json':'text/html','cache-control':'no-store','service-worker-allowed':'/'});res.end(sources[name]);return;}
   if(url.pathname==='/app.html'){if(state.offline){req.socket.destroy();return;}html(res);res.end('<!doctype html><title>Synthetic app</title>SYNTHETIC_PRIVATE_CANARY');return;}
   if(url.pathname.startsWith('/assets/')||/\.(?:js|css)$/.test(url.pathname)){res.writeHead(200,{'content-type':url.pathname.endsWith('.js')?'text/javascript':url.pathname.endsWith('.css')?'text/css':'application/octet-stream','cache-control':'no-store'});res.end('');return;}
-  state.unexpected++;res.writeHead(404);res.end();
+  collectUnreviewedRoute(state,url,req.method,req.headers['sec-fetch-dest']);res.writeHead(404);res.end();
  }catch{json(res,{result:'FIXTURE_REQUIRED'},500);}});
  await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve);});origin='https://localhost:'+server.address().port;
  return{origin,state,close:async()=>{server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}};

@@ -1,0 +1,13 @@
+{
+  "stage_step": "FR.2.4.E5.27_BATCH_N_LOCAL_BROWSER_COOKIE_DOM_AND_SERVICE_WORKER",
+  "result": "OWNER_BATCH_N_LOCAL_REVIEW_REQUIRED",
+  "checkpoint": "LOCAL_SOURCE_REGRESSIONS_AND_BROWSER",
+  "problem_code": "LOCAL_PREPARATION_OR_BROWSER_REQUIRED",
+  "local_browser_cleanup_may_require_inspection": true,
+  "actual_hosted_requests_by_harness": 0,
+  "real_email_requests": 0,
+  "private_packets_accessed": false,
+  "committed_mode_change_requests": 0,
+  "production_or_native_changed": false,
+  "exit_code": 1
+}

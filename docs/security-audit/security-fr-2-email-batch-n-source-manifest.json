@@ -1,7 +1,7 @@
 {
   "stage_step": "FR.2.4.E5.27_BATCH_N_LOCAL_BROWSER_COOKIE_DOM_AND_SERVICE_WORKER",
-  "source_parent_commit": "24c0f83dc1383966e35f06e4e63674c9798ef7ce",
-  "source_file_count": 188,
+  "source_parent_commit": "0c4582594f53d32e2e4c544276b6bee63109cf93",
+  "source_file_count": 190,
   "file_sha256": {
     "docs/security-audit/security-fr-2-email-batch-f-private-catalog.json": "611700a66b1331bd860c1062fb3e4af8ff5a8cea9882ca05917476f1f99f0df9",
     "docs/security-audit/security-fr-2-email-batch-f-review-source-manifest.json": "20613784cd219028a4d12b55aefbda562aed8609a77f82edefab7c1d6e854917",
@@ -184,13 +184,15 @@
     "tests/fr-2-email-ui.test.mjs": "30c8a51c4a16f3911d7f77b4b0afb8e32c49124d73eaaa30e0b6c2c82e49253c",
     "tests/fr-2-email-entry.test.mjs": "788f140ea1c63bdcde943bc7b19d3fb30c2ad3adc435ccb73fec6ef46f86cdd3",
     "tests/fr-2-email-security-controls.test.mjs": "c6ca837d9e49f5a01f4bcc05b4b89ad3f5eaaa45469febcd3c510255f596da4f",
-    "scripts/check-fr-2-email-batch-n.mjs": "563c31d4b19741666f748420bdfaa4e6abfdb7653d669fcfcd90f4307858f0b2",
-    "scripts/verify-fr-2-email-batch-n.mjs": "49c092e5fbe3ef48518aeb8afa33d41555a5a2687897ddee4c53e2041212b1a0",
+    "scripts/check-fr-2-email-batch-n.mjs": "d870750a74e16b48597bab14d7cd1be9824bf439510201afaa977c89797ff537",
+    "scripts/verify-fr-2-email-batch-n.mjs": "f1d5e29a0249a670a631930f8ee2fd37686495fe70609736197787e587c64561",
     "scripts/lib/browser-local-cdp.mjs": "3baaeee2a32b094bc33623f43b71137636b2b40cfe1637f3f831c9b3fa5c0a28",
     "scripts/lib/browser-local-tls.mjs": "74c1bb337e3f0be3d41c0b3717beda01521ec42be52cd0fc8c34eec0615ae716",
-    "scripts/lib/browser-email-fixture.mjs": "a81473f16354a7fde6a1654a2d66a6780e4b31fb3f986e95e258e48514ae1346",
-    "tests/fr-2-email-batch-n.test.mjs": "5191aa275463a522b79bda016d0d60403a035523be4b12a0622dcd4dfa2a2bd4",
-    "docs/security-audit/security-fr-2-email-batch-m-source-manifest.json": "057b0c60cf5d89f3431f377233c565357439c760ac94cea7fea1467325ae3575"
+    "scripts/lib/browser-email-fixture.mjs": "2398dd66712f7ade9824f02dd3912d0584988a59222e842029c1d10c53651b6b",
+    "tests/fr-2-email-batch-n.test.mjs": "d5403b106a9904e757739a66a9b8a82cddb6f9c814f45ebcb8a6a96eafd85079",
+    "docs/security-audit/security-fr-2-email-batch-m-source-manifest.json": "057b0c60cf5d89f3431f377233c565357439c760ac94cea7fea1467325ae3575",
+    "scripts/lib/browser-route-audit.mjs": "8343fe1fea1f5ceece3238c2fa1384655a9bf38dfd1356751ccff118cfc34163",
+    "manifest.webmanifest": "9d70bf76140917b6fd58c11ada54e711ca8408bca7af7f7ec3e9dd0906ade950"
   },
   "syntax_paths": [
     "scripts/check-fr-2-email-batch-i.mjs",
@@ -231,7 +233,8 @@
     "scripts/lib/browser-local-cdp.mjs",
     "scripts/lib/browser-local-tls.mjs",
     "scripts/lib/browser-email-fixture.mjs",
-    "tests/fr-2-email-batch-n.test.mjs"
+    "tests/fr-2-email-batch-n.test.mjs",
+    "scripts/lib/browser-route-audit.mjs"
   ],
   "test_groups": [
     {
@@ -250,7 +253,7 @@
       "files": [
         "tests/fr-2-email-batch-n.test.mjs"
       ],
-      "expected_tests": 10
+      "expected_tests": 15
     }
   ]
 }

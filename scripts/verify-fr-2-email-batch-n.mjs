@@ -9,7 +9,8 @@ import {browserAcceptance,stage} from './check-fr-2-email-batch-n.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 let checkpoint='PINNED_SOURCE',hashes=0,syntax=0,groups=[],browser=null,problem=null;
 try{
- assert.equal(process.argv.length,3);
+ assert(process.argv.length===3||(process.argv.length===4&&process.argv[3]==='--route-diagnostic'));
+ const diagnostic=process.argv[3]==='--route-diagnostic';
  const manifest=JSON.parse(await readFile(path.join(root,'docs/security-audit/security-fr-2-email-batch-n-source-manifest.json'),'utf8'));
  assert.equal(manifest.stage_step,stage);assert.equal(Object.keys(manifest.file_sha256).length,manifest.source_file_count);
  for(const [file,hash]of Object.entries(manifest.file_sha256)){
@@ -19,6 +20,7 @@ try{
  }
  checkpoint='SYNTAX';for(const file of manifest.syntax_paths){const run=spawnSync(process.execPath,['--check',path.join(root,file)],{encoding:'utf8',timeout:30000});assert.equal(run.status,0);syntax++;}
  for(const group of manifest.test_groups){
+  if(diagnostic&&group.name==='RETAINED_UI_ENTRY_AND_SECURITY_REGRESSIONS')continue;
   checkpoint=group.name;
   const run=spawnSync(process.execPath,[...(group.network==='DENY'?['--require',path.join(root,'scripts/offline-test-network.cjs')]:[]),'--test','--test-concurrency=1','--test-reporter=tap',...group.files.map(f=>path.join(root,f))],{cwd:root,encoding:'utf8',timeout:90000,maxBuffer:4*1024*1024});
   const output=(run.stdout||'')+'\n'+(run.stderr||'');const count=k=>Number(output.match(new RegExp('^# '+k+' (\\d+)\\s*$','m'))?.[1]??-1);
@@ -28,6 +30,6 @@ try{
  checkpoint='ACTUAL_LOCAL_BROWSER';browser=await browserAcceptance(process.argv[2]);assert.equal(browser.exit_code,0);assert.equal(browser.tests,21);assert.equal(browser.pass,21);assert.equal(browser.fail,0);checkpoint='COMPLETE';
 }catch{problem='LOCAL_BATCH_N_SOURCE_OR_BROWSER_REVIEW_REQUIRED';}
 const ok=checkpoint==='COMPLETE'&&!problem;
-console.log(JSON.stringify({stage_step:stage,batch:'N',result:ok?'LOCAL_BATCH_N120_BROWSER_ENGINE_SCOPED_PASS':'LOCAL_BATCH_N_REVIEW_REQUIRED',source_parent_commit:'24c0f83dc1383966e35f06e4e63674c9798ef7ce',node_version:process.version,platform:process.platform,
+console.log(JSON.stringify({stage_step:stage,batch:'N',result:ok?(process.argv[3]==='--route-diagnostic'?'LOCAL_BATCH_N36_ROUTE_DIAGNOSTIC_ENGINE_SCOPED_PASS':'LOCAL_BATCH_N125_BROWSER_ENGINE_SCOPED_PASS'):'LOCAL_BATCH_N_REVIEW_REQUIRED',source_parent_commit:'0c4582594f53d32e2e4c544276b6bee63109cf93',run_mode:process.argv[3]==='--route-diagnostic'?'ROUTE_DIAGNOSTIC_SHORT':'FULL_LOCAL_BATCH',node_version:process.version,platform:process.platform,
  source_hashes_verified:hashes,syntax_checks:syntax,tests:groups.reduce((n,g)=>n+Math.max(0,g.tests),0)+(browser?.tests??0),pass:groups.reduce((n,g)=>n+Math.max(0,g.pass),0)+(browser?.pass??0),fail:groups.reduce((n,g)=>n+Math.max(0,g.fail),0)+(browser?.fail??0),groups,browser,
  actual_hosted_requests_by_harness:0,real_email_requests:0,private_packets_accessed:false,committed_mode_change_requests:0,hosted_acceptance:false,live_activation_approved:false,production_or_native_changed:false,APK_update_deferred:true,findings_closed:[],checkpoint,problem_code:problem,exit_code:ok?0:1},null,2));process.exitCode=ok?0:1;

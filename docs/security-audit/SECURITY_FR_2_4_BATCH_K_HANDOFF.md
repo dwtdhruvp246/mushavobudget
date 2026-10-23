@@ -1,3 +1,9 @@
+# Owner checkpoint — Windows Batch K complete
+
+23October2026,FRE142. Owner Node22.17.0/PGlite0.5.8:56PASS,148hashes,11syntax,exit0; retained dependency reused. [Safe owner receipt](security-fr-2-email-batch-k-owner-pass.json). No hosted action. Next is [Batch L combined offline/closed-upgrade/readback](SECURITY_FR_2_4_BATCH_L_HANDOFF.md), remaining QUARANTINED. Earlier preparation below is historical.
+
+---
+
 # Batch K — bounded acceptance-window controls and combined offline regression
 
 23 October 2026. Main implementation Stage **3 — Authorization and Admin MFA** remains current. Source parent `de32ce5d77e2b6b8f0c33ce8ae18b8589ed5130f`; previous hosted checkpoint is Batch J/FRE140, QUARANTINED. December 2026 is the owner's revised launch planning target, with related changes combined into tested batches. It is not release acceptance or an approval to resume application access.

@@ -1,3 +1,9 @@
+# Current checkpoint — Batch K Windows56PASS; Batch L combined closed upgrade ready
+
+23October2026,FRE142–143. Owner K56/56PASS,148hashes,11syntax,Node22.17.0/PGlite0.5.8,exit0; no hosted action. [Owner K receipt](security-fr-2-email-batch-k-owner-pass.json). [Batch L handoff](SECURITY_FR_2_4_BATCH_L_HANDOFF.md),[contract](security-fr-2-email-batch-l-contract.json),[local42PASS](security-fr-2-email-batch-l-local-checks.json). One combined owner run: offline/source/private-parent preflight, hidden existing Management token, fresh staging/source checks, at most one CLOSED upgrade if absent, independent readback. No acceptance window, email, password, packet, role assignment, production/native change or H/I/J repeat. Main Stage3 remains current; December2026 is the planning target. Earlier summaries below are historical.
+
+---
+
 # Current checkpoint — Main Stage3; December2026 target; Batch K offline controls ready
 
 23October2026,FRE141. Batches I/J are hosted scoped PASS; staging last observed QUARANTINED. [Batch K handoff](SECURITY_FR_2_4_BATCH_K_HANDOFF.md),[contract](security-fr-2-email-batch-k-contract.json),[local56PASS](security-fr-2-email-batch-k-local-checks.json),[December batch plan](SECURITY_DECEMBER_2026_LAUNCH_BATCH_PLAN.md). Related source controls and retained I/J regressions pass together; owner Windows verification next. No hosted write, account/email/private packet access, global resume, production/native change or repeated H/I/J run. A future selected-account deadline denies new checked access after expiry but does not rewrite stored mode automatically; independent explicit quarantine/readback remains required. Main Stage3 is current despite historical audit closure labels. Earlier summaries below are historical.

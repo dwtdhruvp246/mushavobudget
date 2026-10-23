@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.24_BATCH_K_BOUNDED_ACCEPTANCE_WINDOW_CONTROLS",
-  "status": "LOCAL56PASS_OWNER_WINDOWS_PENDING_NO_HOSTED_EXECUTION",
+  "status": "OWNER_WINDOWS56PASS_COMPLETE_HOSTED_UPGRADE_PENDING",
   "source_parent_commit": "de32ce5d77e2b6b8f0c33ce8ae18b8589ed5130f",
   "main_implementation_stage": 3,
   "candidate": "supabase/candidates/security_fr_2_4_email_acceptance_window.sql",
@@ -21,12 +21,16 @@
   "original_quarantine_function_source_preserved": true,
   "stored_mode_automatically_changed_on_expiry": false,
   "hosted_installation_handoff_supplied": false,
-  "owner_Windows_result_received": false,
+  "owner_Windows_result_received": true,
   "actual_hosted_requests": 0,
   "committed_mode_change_requested": false,
   "live_activation_approved": false,
   "hosted_acceptance": false,
   "production_or_native_changed": false,
   "APK_update_deferred": true,
-  "findings_closed": []
+  "findings_closed": [],
+  "owner_receipt": "docs/security-audit/security-fr-2-email-batch-k-owner-pass.json",
+  "owner_PASS": 56,
+  "owner_Node_version": "v22.17.0",
+  "owner_combined_exit_code": 0
 }

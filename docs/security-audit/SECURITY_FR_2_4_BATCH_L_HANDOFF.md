@@ -1,0 +1,33 @@
+# Batch L — one closed staging acceptance-control upgrade and independent readback
+
+23 October2026. Main Stage3Authorization/Admin security remains current. Owner Windows Batch K56/56PASS,148hashes,11syntax checks,Node22.17.0,PGlite0.5.8,combined exit0 is recorded as FRE142. Its source receipt's Windows_owner_execution_verified=false is an unchanged generic verifier flag; the separately recorded owner terminal evidence establishes the reported Windows run, not an independent machine attestation. No hosted operation occurred in K.
+
+Batch L combines the next offline verification, private parent preflight, fresh provider target/source checks, at most one **QUARANTINED-only** acceptance-control upgrade and independent readback. No acceptance window is opened. No account/password/inbox/DPAPI packet input, email, push, FX, deployment, Auth setting, role assignment or production/native change. Existing H/I/J installations/results are retained; do not rerun them.
+
+## Exact effect and bounded protocol
+
+Use the unchanged, Windows-accepted K candidate. Add one private forced-RLS acceptance-window table, require the selected account/deadline as well as existing session proof/role/workspace checks, deny the old unbounded resume entry point, and register a private bounded opener. Preserve quarantine() source exactly. The upgrade stays QUARANTINED and leaves the new window table empty. 148RPC guards,82restrictive policies and5private backend forced-RLS tables remain; the new control table is in the separate installer schema.
+
+The provider URL is fixed to staging dczlddwbtgvfdujgcitb. Success uses at most five direct Management request attempts: target GET, read-only precheck POST, one guarded upgrade POST if absent, independent read-only readback POST, final target GET. If exact controls already exist, inspect them twice and skip the write, using four requests. An ACTIVE/inexact/nonempty/unreviewed state stops; no blind repair or retry.
+
+Read-only snapshots use explicit SQL READ ONLY transactions, timeouts and the same rollout advisory lock. They compare the exact original/upgraded private installer source/ACL projection **before invoking** the known catalog-identity function. The predicate identity/current quarantined stamp, private schema denial and guard counts are checked. Upgraded state additionally requires the exact pinned table/function/constraint/index/RLS catalog and empty window. No application row is queried. Snapshot temporary output uses a transaction-local setting discarded at ROLLBACK; it contains safe counts/booleans only.
+
+The upgrade repeats write-time K guards and ends COMMIT. A lost write response may be resolved only when independent readback proves the expected installed and closed state. A readback still showing ORIGINAL is a current observation; it **does not exclude a delayed attempted POST**, so uncertainty is retained and the run stops without retry. Lock timeout, unknown catalog or incomplete readback likewise requires review. Nothing automatically opens/quarantines/deletes state on failure.
+
+The new exact local catalog reference is PostgreSQL18-generated. Version-specific **reference** projections for15–17 remove only the nine known NOT NULL catalog entries, retaining attnotnull, and account for the owner MAINTAIN ACL on the two known tables for15–16. Observed metadata is never normalized. Actual older servers/deparsers are untested; a new mismatch stops for read-only review. SQL target acknowledgements are not independent provider attestation; the separate fixed provider GETs supply that boundary.
+
+## Verification and scopes
+
+Combined local result: **42PASS/zeroFAIL**,155source hashes,15JSsyntax checks,Node24.19.0/PGlite0.5.8. This comprises31Kwindow-suite runner counts (including its parent driver) and11new transport/SQL/pipe cases, not42unique release controls. Actual synthetic SQL executes both the upgrade and pre/post readback, source drift rejection before unknown function invocation, a committed-but-lost response, and repeat inspection with zero additional write. All five direct failure positions, malformed/redirect/oversize responses, input/target/catalog/guard/window/version refusal and redaction are exercised with synthetic transports. Kcovers actor/deadline/proof/RLS behavior, late DDL rollback and preserved quarantine.
+
+The PowerShell path/SecureString/private-child helper bodies are source-compared to the accepted H runner, allowing only fixed L labels and the five-request bound. Node's private pipe protocol is exercised. The new PowerShell parent itself has not been run here on Windows; it parses/runs and completes a no-secret/no-network child preflight before prompting for a token. No PowerShell installation is requested. Installed dependency bytes are not independently hashed and real provider SQL transport/concurrency/browser/Auth/email acceptance is not claimed.
+
+## Owner command and prompts
+
+The complete published-pin PowerShell is supplied in chat. It exports an isolated LF source snapshot, reuses retained PGlite0.5.8 (locked public fixture fallback only if unavailable), runs the42offline checks, then runs the private Windows parent with -Install. Process-only execution-policy bypass is used for that pinned script; no administrator prompt is expected.
+
+**One hidden prompt:** reuse the existing staging Management token used for H/I/J, with Project Settings Read and Database Read-write. Retrieve it from the private location where you retained that token; do not create/regenerate one just for L and do not paste it in chat. No account selection, app password, inbox code, gateway packet or service/Zoho/pepper value is requested. Token transport is a private stdin pipe; none is put in disk files, command arguments or environment variables.
+
+Return only the safe JSON and combined exit code. If the upgrade/readback fails, do not retry. The receipt records attempted writes, current verified state and remaining uncertainty. After exact closed installation is accepted, prepare the combined bounded ACTIVE HTTP/browser batch against the new catalog with explicit return-to-quarantine and independent cleanup/readback. K's maximum1800second window is not opened by L; expiry does not rewrite mode or revoke in-flight/issued capabilities. Staging-only acceptance controls remain separate from a permanent production rollout.
+
+All original findings and full hosted/native/store acceptance remain open. December2026 remains a planning target. Last hosted state remains the prior QUARANTINED observation until this owner run provides new evidence; no new hosted action has been performed by the assistant.

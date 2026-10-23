@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.4.E5.26_PREPARE_BOUNDED_STAGING_HTTP_ACCEPTANCE_AND_VERIFIED_QUARANTINE",
+  "next_step": "FR.2.4.E5.26_OWNER_BATCH_M_WINDOWS98_AND_BOUNDED_HTTP_THEN_QUARANTINE",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,

@@ -1,3 +1,7 @@
+# Latest checkpoint — 23 October 2026: Batch M local59 pass, owner bounded HTTP pending
+
+FRE145: Batch L hosted closed controls are retained. Batch M combines fresh closed-state email proof, a first-account-only five-minute committed acceptance window, selected real HTTP access/denial checks, explicit quarantine with stale-open fencing, exact generated cleanup and independent final readback. Local59/59,162hashes,19syntax; Windows owner adds39public helper/AST checks before prompts. No owner M hosted result or findings closure; main Stage3 remains current. See SECURITY_FR_2_4_BATCH_M_HANDOFF.md.
+
 # Latest checkpoint — 23 October 2026: Batch L hosted closed-controls pass
 
 FRE144 records the owner receipt: five hosted requests, one upgrade write, independent readback, exit 0; bounded controls installed, window table empty, staging QUARANTINED. Main Stage 3 remains in progress. Next: prepare tested bounded HTTP acceptance with explicit quarantine and cleanup. No owner rerun is requested, no findings closed, no production/native changes or launch approval. Separate owner L offline-verifier JSON was not supplied.

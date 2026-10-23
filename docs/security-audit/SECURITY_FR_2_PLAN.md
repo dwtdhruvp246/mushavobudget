@@ -1,3 +1,5 @@
+> Latest checkpoint FRE153: Batch O prepared for owner hosted public browser/TLS/service-worker checks. Local20/20 PASS (194 hashes,44 syntax); assistant hosted attempt established no acceptance and cleaned up. No credentials, email or window required. Main Stage3 remains current. See [Batch O handoff](SECURITY_FR_2_4_BATCH_O_HANDOFF.md).
+
 > Latest checkpoint FRE152: owner Windows Edge short diagnostic **36/36 PASS**, exit 0; final route audit 0 unexpected requests and cleanup verified. Local browser scope complete; no N rerun needed. Prior failed route remains unidentified. See [Batch N completion](SECURITY_FR_2_4_BATCH_N_COMPLETE.md). Hosted browser/PWA acceptance remains pending.
 
 # Latest checkpoint — 23 October2026: Windows N119/120 route stop contained; short diagnostic ready

@@ -1,7 +1,7 @@
 {
   "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
-  "source_parent_commit": "8c2187cd55ad0bb401b6f62f23b92a31cb0309d8",
-  "source_file_count": 194,
+  "source_parent_commit": "25d76a3029e9abd009098437b6fa328d543647fa",
+  "source_file_count": 195,
   "file_sha256": {
     "docs/security-audit/security-fr-2-email-batch-f-private-catalog.json": "611700a66b1331bd860c1062fb3e4af8ff5a8cea9882ca05917476f1f99f0df9",
     "docs/security-audit/security-fr-2-email-batch-f-review-source-manifest.json": "20613784cd219028a4d12b55aefbda562aed8609a77f82edefab7c1d6e854917",
@@ -193,10 +193,11 @@
     "docs/security-audit/security-fr-2-email-batch-m-source-manifest.json": "057b0c60cf5d89f3431f377233c565357439c760ac94cea7fea1467325ae3575",
     "scripts/lib/browser-route-audit.mjs": "8343fe1fea1f5ceece3238c2fa1384655a9bf38dfd1356751ccff118cfc34163",
     "manifest.webmanifest": "9d70bf76140917b6fd58c11ada54e711ca8408bca7af7f7ec3e9dd0906ade950",
-    "scripts/check-fr-2-email-batch-o.mjs": "fa50238e97bf59b5b9a7cd5c92ec16e505f9fe8ff9a03208a0d406b550415eec",
+    "scripts/check-fr-2-email-batch-o.mjs": "fe6b73c5f01aafe8304deb8ecf392300a8935314aa0ceac7476da2e1351aeeb8",
     "scripts/test-fr-2-email-batch-o-engine.mjs": "3ccc09a9f2210188bc13dcaa72d254eb9a4aea058c15906ce84ea3043ed55728",
-    "scripts/verify-fr-2-email-batch-o.mjs": "e1b7907df70ea06aa33b9ad213b5071a3f55cd26f8a5c40ae61c5da901bde62c",
-    "tests/fr-2-email-batch-o.test.mjs": "3eb525cfcbe269d956d4419b0d37935637b113bea7ca26301b99d7fbd11119b6"
+    "scripts/verify-fr-2-email-batch-o.mjs": "8499cec729250703e5242f7e540bd9ae7bd4ae6d4f187a6a3fd519deaea305ed",
+    "tests/fr-2-email-batch-o.test.mjs": "9b2d03e207be2da17ef73b35b0fac8555c080d11ddb9d221b5e87b264096d6c8",
+    "scripts/lib/browser-public-target.mjs": "fbbfda64e74acdbdaaa9362ae955155f32f903fe4c7402a72d067831fa0122a3"
   },
   "syntax_paths": [
     "scripts/check-fr-2-email-batch-i.mjs",
@@ -242,7 +243,8 @@
     "scripts/check-fr-2-email-batch-o.mjs",
     "scripts/test-fr-2-email-batch-o-engine.mjs",
     "scripts/verify-fr-2-email-batch-o.mjs",
-    "tests/fr-2-email-batch-o.test.mjs"
+    "tests/fr-2-email-batch-o.test.mjs",
+    "scripts/lib/browser-public-target.mjs"
   ],
   "test_groups": [
     {
@@ -250,7 +252,7 @@
       "files": [
         "tests/fr-2-email-batch-o.test.mjs"
       ],
-      "expected_tests": 8,
+      "expected_tests": 12,
       "network": "DENY"
     }
   ]

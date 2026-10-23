@@ -6,6 +6,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {LocalCDP,until} from './lib/browser-local-cdp.mjs';
+import {configurePublicTarget,workerAutoAttach} from './lib/browser-public-target.mjs';
 export const stage='FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER';
 export const stagingOrigin='https://mushavo-budget-staging.pages.dev';
 export const assets=['offline.html','app-entry.html','sw.js','manifest.webmanifest','workspace-preference.js','app-entry.js','pwa-shell.css','pwa-update.css','pwa-install.css','pwa-install.js','pwa.js','assets/mushavo-budget-logo.png','assets/pwa-icon-192.png','assets/pwa-icon-512.png','assets/pwa-icon-maskable-512.png','assets/apple-touch-icon.png'];
@@ -22,7 +23,7 @@ export async function publicBrowser(executable,{fixtureOrigin=null}={}){
  if(fixture&&!/^https:\/\/localhost:[1-9][0-9]{0,4}$/.test(fixtureOrigin))throw Error('LOOPBACK_FIXTURE_REQUIRED');
  const origin=fixture?fixtureOrigin:stagingOrigin;
  const r={stage_step:stage,batch:'O',result:'BATCH_O_PUBLIC_BROWSER_REVIEW_REQUIRED',scope:fixture?'LOCAL_HTTPS_PUBLIC_SOURCE_FIXTURE':'HOSTED_PUBLIC_SOURCE_TLS_AND_BROWSER_SERVICE_WORKER',
- checks:[],tests:0,pass:0,fail:0,browser_product:null,public_assets_verified:0,intercepted_request_attempts:0,maximum_intercepted_requests:128,blocked_unreviewed_requests:0,simulated_offline_requests:0,
+ target_setup_failure:null,explicit_page_attachment:true,checks:[],tests:0,pass:0,fail:0,browser_product:null,public_assets_verified:0,intercepted_request_attempts:0,maximum_intercepted_requests:128,blocked_unreviewed_requests:0,simulated_offline_requests:0,
  intercepted_hosted_request_attempts:0,worker_startup_fetches_not_intercepted:true,total_browser_hosted_requests_independently_counted:false,document_scripts_disabled:true,hosted_TLS_verified:false,executed_worker_source_verified:false,isolated_temporary_profile:true,temporary_profile_removed:false,browser_process_stopped:false,
  private_packets_accessed:false,credentials_or_Auth_or_gateway_requests_permitted:false,real_email_requests:0,committed_mode_change_requests:0,hosted_authenticated_browser_acceptance:false,
  installed_PWA_OS_lifecycle_verified:false,external_traffic_OS_sandboxed:false,local_certificate_validation_bypassed:fixture,hosted_acceptance:false,live_activation_approved:false,production_or_native_changed:false,APK_update_deferred:true,findings_closed:[],checkpoint:'BROWSER_INPUT',problem_code:null,exit_code:1};
@@ -43,14 +44,12 @@ export async function publicBrowser(executable,{fixtureOrigin=null}={}){
   cdp=await LocalCDP.connect(endpoint);
   const version=await cdp.call('Browser.getVersion');need(/^(?:HeadlessChrome|Chrome|Edg)\/[0-9.]+$/.test(version.product));r.browser_product=version.product;
   cdp.socket.addEventListener('message',event=>{let x;try{x=JSON.parse(String(event.data));}catch{return;}const p=x.params??{},sid=x.sessionId;
-   if(x.method==='Target.attachedToTarget')job((async()=>{
-    const s=p.sessionId;need(['page','service_worker','worker'].includes(p.targetInfo.type),'UNREVIEWED_BROWSER_TARGET');
-    sessions.set(s,{target:p.targetInfo.targetId,ready:false});
-    if(p.targetInfo.type==='service_worker')await cdp.call('Runtime.runIfWaitingForDebugger',{},s);
-    await cdp.call('Network.enable',{},s);await cdp.call('Fetch.enable',{patterns:[{urlPattern:'*',requestStage:'Request'}]},s);
-    if(p.targetInfo.type==='page'){await cdp.call('Page.enable',{},s);await cdp.call('Runtime.enable',{},s);await cdp.call('Emulation.setScriptExecutionDisabled',{value:true},s);}
-    if(p.targetInfo.type==='service_worker')await cdp.call('Debugger.enable',{},s);
-    sessions.get(s).ready=true;await cdp.call('Runtime.runIfWaitingForDebugger',{},s);
+   // Only worker targets are automatically attached. Never configure Chrome's transient startup page/tab.
+   if(x.method==='Target.attachedToTarget'&&['service_worker','worker'].includes(p.targetInfo.type))job((async()=>{
+    const target=p.targetInfo.targetId;if([...sessions.values()].some(x=>x.target===target))return;
+    const s=p.sessionId;sessions.set(s,{target,ready:false});
+    await configurePublicTarget(cdp,{sessionId:s,type:p.targetInfo.type},failure=>{r.target_setup_failure??=failure;});
+    sessions.get(s).ready=true;
    })());
    if(x.method==='Fetch.requestPaused')job((async()=>{
     const allowed=publicRequestAllowed(p.request.url,p.request.method,{origin,offline});
@@ -63,9 +62,14 @@ export async function publicBrowser(executable,{fixtureOrigin=null}={}){
    if(x.method==='Network.responseReceived'&&p.type==='Document'&&p.response?.url===origin+'/offline')secureDocument=p.response.securityState==='secure'&&typeof p.response.securityDetails?.protocol==='string'&&/^TLS 1\.[23]$/.test(p.response.securityDetails.protocol);
    if(x.method==='Debugger.scriptParsed'&&publicRequestAllowed(p.url,'GET',{origin})&&new URL(p.url).pathname==='/sw.js')job((async()=>{const s=await cdp.call('Debugger.getScriptSource',{scriptId:p.scriptId},sid);workerHash=hash(s.scriptSource)===expected['/sw.js'];})());
   });
-  await cdp.call('Target.setAutoAttach',{autoAttach:true,waitForDebuggerOnStart:true,flatten:true});
-  const t=await cdp.call('Target.createTarget',{url:'about:blank'});let s;
-  await until(()=>{need(!fatal,fatal);s=[...sessions].find(([,v])=>v.target===t.targetId&&v.ready)?.[0];return !!s;});
+  r.checkpoint='WORKER_AUTO_ATTACH_CONFIGURATION';
+  await cdp.call('Target.setAutoAttach',workerAutoAttach);
+  r.checkpoint='EXPLICIT_PUBLIC_PAGE_ATTACHMENT';
+  const t=await cdp.call('Target.createTarget',{url:'about:blank'});
+  const attached=await cdp.call('Target.attachToTarget',{targetId:t.targetId,flatten:true}),s=attached.sessionId;
+  sessions.set(s,{target:t.targetId,ready:false});
+  await configurePublicTarget(cdp,{sessionId:s,type:'page'},failure=>{r.target_setup_failure??=failure;});
+  sessions.get(s).ready=true;
   const ev=async code=>{const x=await cdp.call('Runtime.evaluate',{expression:code,awaitPromise:true,returnByValue:true},s,45000);need(!x.exceptionDetails&&x.result&&x.result.subtype!=='error','BROWSER_EVALUATION_REQUIRED');return x.result.value;},wait=code=>until(async()=>{need(!fatal,fatal);try{return await ev(code);}catch{return false;}},{timeout:25000});
   r.checkpoint='PUBLIC_OFFLINE_DOCUMENT';const navigation=await cdp.call('Page.navigate',{url:origin+'/offline'},s);if(navigation.errorText){const e=navigation.errorText;r.navigation_failure_class=e.startsWith('net::ERR_CERT_')?'TLS_CERTIFICATE_REJECTED':e==='net::ERR_NAME_NOT_RESOLVED'?'DNS_UNAVAILABLE':'NETWORK_NAVIGATION_REQUIRED';need(false,r.navigation_failure_class);}await wait('document.querySelector("h1")?.textContent==="Your workspace needs a connection"');
   check('REAL_PUBLIC_DOM_AND_SECURE_CONTEXT',await ev('isSecureContext&&location.origin==='+JSON.stringify(origin)));
@@ -89,7 +93,7 @@ export async function publicBrowser(executable,{fixtureOrigin=null}={}){
   check('OFFLINE_NAVIGATION_DID_NOT_CACHE_PRIVATE_APP_HTML',await ev(audit));
   check('NO_INTERCEPTED_AUTH_GATEWAY_OR_UNREVIEWED_REQUEST_ALLOWED',r.blocked_unreviewed_requests===0&&!fatal);
   main=true;
- }catch(error){const known=new Set(['PUBLIC_BROWSER_CHECK_REQUIRED','LOOPBACK_FIXTURE_REQUIRED','BROWSER_NETWORK_GUARD_REQUIRED','UNREVIEWED_PUBLIC_REQUEST','PUBLIC_REQUEST_BUDGET_REQUIRED','UNREVIEWED_BROWSER_TARGET','BROWSER_CHECK_TIMEOUT','CDP_COMMAND_REQUIRED','CDP_COMMAND_TIMEOUT','CDP_CONNECTION_REQUIRED','BROWSER_EVALUATION_REQUIRED','TLS_CERTIFICATE_REJECTED','DNS_UNAVAILABLE','NETWORK_NAVIGATION_REQUIRED']);r.problem_code=known.has(error?.message)?error.message:'PUBLIC_BROWSER_OR_SOURCE_REVIEW_REQUIRED';}
+ }catch(error){const known=new Set(['PUBLIC_BROWSER_CHECK_REQUIRED','LOOPBACK_FIXTURE_REQUIRED','BROWSER_NETWORK_GUARD_REQUIRED','BROWSER_TARGET_SETUP_REQUIRED','UNREVIEWED_PUBLIC_REQUEST','PUBLIC_REQUEST_BUDGET_REQUIRED','UNREVIEWED_BROWSER_TARGET','BROWSER_CHECK_TIMEOUT','CDP_COMMAND_REQUIRED','CDP_COMMAND_TIMEOUT','CDP_CONNECTION_REQUIRED','BROWSER_EVALUATION_REQUIRED','TLS_CERTIFICATE_REJECTED','DNS_UNAVAILABLE','NETWORK_NAVIGATION_REQUIRED']);r.problem_code=known.has(error?.message)?error.message:'PUBLIC_BROWSER_OR_SOURCE_REVIEW_REQUIRED';}
  finally{
   if(cdp){try{await cdp.call('Browser.close',{},undefined,3000);}catch{}cdp.close();}
   if(child){if(child.exitCode===null&&!child.killed)child.kill();try{await until(()=>child.exitCode!==null||child.signalCode!==null,{timeout:5000});r.browser_process_stopped=true;}catch{}}

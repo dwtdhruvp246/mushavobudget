@@ -1,3 +1,5 @@
+> Latest FRE154/FRE155: Windows8 unit passes then local browser setup stop; no hosted probe, cleanup verified. Explicit page attachment, worker-only auto-attach and safe phase diagnostics now pass24 local checks (195 hashes,45 syntax). Exact original cause remains unknown; corrected Windows/hosted result pending. See [target setup review](SECURITY_FR_2_4_BATCH_O_TARGET_REVIEW.md).
+
 > Latest checkpoint FRE153: Batch O prepared for owner hosted public browser/TLS/service-worker checks. Local20/20 PASS (194 hashes,44 syntax); assistant hosted attempt established no acceptance and cleaned up. No credentials, email or window required. Main Stage3 remains current. See [Batch O handoff](SECURITY_FR_2_4_BATCH_O_HANDOFF.md).
 
 > Latest checkpoint FRE152: owner Windows Edge short diagnostic **36/36 PASS**, exit 0; final route audit 0 unexpected requests and cleanup verified. Local browser scope complete; no N rerun needed. Prior failed route remains unidentified. See [Batch N completion](SECURITY_FR_2_4_BATCH_N_COMPLETE.md). Hosted browser/PWA acceptance remains pending.

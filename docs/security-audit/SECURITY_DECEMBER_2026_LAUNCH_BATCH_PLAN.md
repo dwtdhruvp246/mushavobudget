@@ -1,0 +1,18 @@
+# December 2026 launch preparation — related tested batches
+
+Owner direction recorded23October2026: move the earlier November target to **December2026**, continue existing work, and combine related changes/checks to reduce repeated setup and handoffs. No particular launch day or equal completion date for web,Google Play and Apple App Store is confirmed. December is a planning target; each channel still requires its acceptance evidence. Main implementation Stage3remains current.
+
+| Work group | Combine and reuse | Acceptance result required |
+|---|---|---|
+| Current: authorization and controlled live acceptance | Preserve H/I/J passes; prepare bounded account/deadline controls, one quarantined upgrade/readback, then ACTIVE HTTP/browser proof/device/account-switch/failure cleanup | Positive ordinary workflows and actual denials, deliberate return to quarantine, selected Admin/recovery and remaining Auth/finance/role cases |
+| Public and operational carry-forward | Coordinate production HTTPS/header/Contact delivery mapping; prepare push/FX/job caller coverage, backup Storage/offsite recovery and actual alerts | Required Stage0–2gaps have real evidence; source candidates or partial exports are not final acceptance |
+| Privacy, files and deletion | Share field/object/processor inventory, retained-record rules, ownership/cascade review, trusted files and durable deletion/privacy notices | Main Stage4approved semantics and actual positive/negative/failure tests; preserve legitimate shared finance |
+| Native foundations and identity | Reuse Capacitor identity/build preparation; secure storage/backup/callbacks, provider linking and all-user email proof share device acceptance | Main Stages5–6signed build/device/provider evidence; store/build prerequisites prepared alongside authorized development |
+| Commerce and reminders | Reconcile subscription/seat/account binding before native purchase events and notification/device registration tests | Main Stages7–8sandbox lifecycle, entitlement/replay/restore and real delivery/privacy evidence |
+| Release acceptance and rollout | One accepted release-source/artifact mapping, finance/security/privacy regression, required device/store tests, final findings reconciliation and monitored rollout | Main Stages9–10evidence-backed channel decisions, fresh full re-audit and working monitoring/recovery |
+
+Batch rules: preserve completed receipts and source pins; reuse configuration/dependencies/controlled fixtures; prepare complete code and prompts before owner runs; inspect uncertain writes before retrying; combine related checks at one pinned source without adding repeat test counts as new coverage. Keep private inputs in hidden prompts/pipes, outside logs,arguments and environment variables. No automatic resend or broad cleanup.
+
+Preparation for independent decisions/inventories can overlap within the existing authorized scope. Existing production exclusion and APK deferral are retained for the current staging batches. The target month does not silently authorize native deployment, store purchases, paid services, destructive deletion or global staging resume. Required store/build/account/deletion/product decisions must be resolved as their concrete work becomes ready; do not claim those external prerequisites are complete.
+
+Current next batch: **K — acceptance-window source controls plus I/J offline regressions**, followed by owner Windows verification and a combined quarantined upgrade/readback handoff. Keep local tests, hosted scoped results and full release acceptance distinct; no invented percentage or guaranteed launch date.

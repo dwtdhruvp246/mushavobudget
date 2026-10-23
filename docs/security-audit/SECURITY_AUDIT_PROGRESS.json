@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.4.E5.2_PAGES_CONFIGURATION_BASELINE",
+  "next_step": "FR.2.4.E5.24_OWNER_BATCH_K_COMBINED_OFFLINE_VERIFICATION",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -4142,5 +4142,20 @@
     "FR2_email_Pages_baseline_local_tests": 18,
     "FR2_email_Pages_baseline_owner_result_received": false
   },
-  "current_phase": "FINAL_REMEDIATION"
+  "current_phase": "FINAL_REMEDIATION",
+  "main_implementation_stage": {
+    "number": 3,
+    "title": "Authorization and Admin MFA",
+    "status": "IN_PROGRESS",
+    "audit_checkpoint_closure_is_not_main_stage_completion": true
+  },
+  "launch_planning": {
+    "target_month": "2026-12",
+    "previous_target_month": "2026-11",
+    "target_day_confirmed": false,
+    "owner_requested_related_tested_batches": true,
+    "channel_acceptance_separate": true,
+    "report": "docs/security-audit/SECURITY_DECEMBER_2026_LAUNCH_BATCH_PLAN.md",
+    "target_is_not_release_acceptance": true
+  }
 }

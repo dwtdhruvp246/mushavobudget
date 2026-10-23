@@ -1,3 +1,7 @@
+# Latest checkpoint — 23 October2026: Batch N local120 actual-browser pass, Windows pending
+
+FRE149 records89retained regressions+10protocol/TLS fixture tests+21real Chromium checks=120/120,188hashes,39syntax, Node24.19.0/Linux/HeadlessChrome153.0.8010.0. Actual shared UI/gateway/SW exercised over isolated local HTTPS with synthetic Auth/DB/mail. Browser/profile/fixture cleanup verified. Owner Windows Edge/Chrome run needs no credentials, packets, provider calls or installation; no staging window opens. Full hosted browser/PWA, role/Admin MFA and release acceptance remain pending; main Stage3 current. See SECURITY_FR_2_4_BATCH_N_HANDOFF.md.
+
 # Latest checkpoint — 23 October 2026: Batch M hosted scoped HTTP pass
 
 FRE148 records owner53requests/oneemail/exit0 at2026-10-23T10:34:20.604Z: proved/restored HTTP access passed, password-only and foreign-profile denials passed, explicit quarantine/fencing and exact generated device/four sessions cleanup verified. LAST_ROWSET_ONLY observed; one-row active readback passed. No rerun needed. Main Stage3 remains current; next prepare browser/PWA cookie/cache/device acceptance and retain remaining role/Admin MFA gates. No findings closed or launch approval. Separate Windows offline JSON not supplied. See SECURITY_FR_2_4_BATCH_M_COMPLETE.md.

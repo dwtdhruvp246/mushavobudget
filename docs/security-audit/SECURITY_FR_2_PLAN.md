@@ -1,3 +1,7 @@
+# Latest checkpoint — 23 October 2026: Batch M owner readback stop contained; corrected local62 pass
+
+FRE146 records owner35requests/exit1 at INDEPENDENT_ACTIVE_WINDOW, WINDOW_REQUIRED, with quarantine/fencing and exact cleanup verified. No active HTTP checks ran. Exact historical hosted cause remains unknown. FRE147 records a one-row combined readback correction, public-only response-shape preflight before Auth/email, precise safe diagnostics and local62/62 (Windows expected101),162hashes,19syntax. See SECURITY_FR_2_4_BATCH_M_RETRY.md. No database reinstall/control-source change, no findings closure, no production/native change; main Stage3 remains current.
+
 # Latest checkpoint — 23 October 2026: Batch M local59 pass, owner bounded HTTP pending
 
 FRE145: Batch L hosted closed controls are retained. Batch M combines fresh closed-state email proof, a first-account-only five-minute committed acceptance window, selected real HTTP access/denial checks, explicit quarantine with stale-open fencing, exact generated cleanup and independent final readback. Local59/59,162hashes,19syntax; Windows owner adds39public helper/AST checks before prompts. No owner M hosted result or findings closure; main Stage3 remains current. See SECURITY_FR_2_4_BATCH_M_HANDOFF.md.

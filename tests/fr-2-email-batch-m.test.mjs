@@ -15,7 +15,7 @@ const actors=[1,2,3,4].map((n)=>({user:id(n===4?22002:22001),session:id(23000+n)
 const users=actors.map(a=>({id:a.user,email:a.email,email_confirmed_at:new Date().toISOString(),is_anonymous:false}));
 const tokens=actors.map(a=>[{alg:'HS256'},{sub:a.user,session_id:a.session,iss:api+'/auth/v1',role:'authenticated',aud:'authenticated',exp:Math.floor(Date.now()/1000)+3600}].map(x=>Buffer.from(JSON.stringify(x)).toString('base64url')).join('.')+'.SYNTHETIC');
 const input={managementToken:'sbp_fc'+'SYNTHETIC_ONLY_'.repeat(3),accounts:[{email:actors[0].email,password:'SYNTHETIC_FIRST_PASSWORD'},{email:actors[3].email,password:'SYNTHETIC_SECOND_PASSWORD'}],publishableKey:'sb_publishable_SYNTHETIC',allowedRecipients:[actors[0].email,actors[3].email],acknowledgement};
-import {stateSQL,openSQL,quarantineSQL,leaseSQL,deviceCleanupSQL,windowSeconds} from '../scripts/lib/email-bounded-http-sql.mjs';
+import {stateSQL,openSQL,quarantineSQL,leaseSQL,deviceCleanupSQL,windowSeconds,responseShapeSQL} from '../scripts/lib/email-bounded-http-sql.mjs';
 import {windowHandoffSQL} from '../scripts/lib/email-window-handoff-sql.mjs';
 const context={privileged_origin:true,transaction_read_only:'on'},challenge=id(24001),credential='K'.repeat(43);
 const cookieName=i=>'__Host-mushavo_device_'+actors[i].user.replaceAll('-','');
@@ -25,7 +25,7 @@ const reply=(data,status=200,headers={})=>Response.json(data,{status,headers});
 
 const fence='2026-10-23 09:33:05.020000+00',later='2026-10-23 10:33:05.020000+00';
 function observation(mode='QUARANTINED',after=false){return {context,server_version_num:180003,catalog_kind:'BOUNDED',control_rows:1,quarantined_stamp_matched:mode==='QUARANTINED',predicate_source_matched:true,mode,private_fence:after?later:fence,stamp_matched:true,window_present:true,window_empty:mode==='QUARANTINED',guarded_RPCs:148,restrictive_policies:82,backend_forced_RLS_tables:5,private_schema_API_denied:true};}
-function mock({fail=-1,lostOpen=false,lostClose=false,change}={}){
+function mock({fail=-1,lostOpen=false,lostClose=false,change,resultShape='last'}={}){
  const calls=[];let signed=0,mode='QUARANTINED',after=false;
  const transport=async(url,options)=>{
   const pos=calls.length;calls.push({url,options});if(pos===fail)throw Error('PRIVATE_PROVIDER_SENTINEL');
@@ -33,9 +33,10 @@ function mock({fail=-1,lostOpen=false,lostClose=false,change}={}){
   if(url===management)return reply({ref:stagingRef,status:'ACTIVE_HEALTHY',database:{host:'db.'+stagingRef+'.supabase.co'}});
   if(url===management+'/database/query'){
    const q=JSON.parse(options.body).query;
+   if(q.includes('AS bounded_shape_last'))return reply([...(resultShape==='all'?[{bounded_shape_first:'FIRST_PUBLIC_CONSTANT'}]:[]),{bounded_shape_last:'LAST_PUBLIC_CONSTANT',bounded_shape_pair:true}],201);
    if(q.includes('AS bounded_open')){mode='ACTIVE';if(lostOpen)throw Error('PRIVATE_LOST_OPEN');return reply([{bounded_open:{opened:true,allowed_actor_count:1,maximum_seconds:300}}],201);}
    if(q.includes('AS bounded_close')){mode='QUARANTINED';after=true;if(lostClose)throw Error('PRIVATE_LOST_CLOSE');return reply([{bounded_close:{quarantined:true,window_empty:true,stale_open_fenced:true}}],201);}
-   if(q.includes('AS bounded_state'))return reply([{bounded_state:observation(mode,after)},...(q.includes('AS bounded_lease')?[{bounded_lease:{exact_live_lease:true,remaining_seconds:299}}]:[])],201);
+   if(q.includes('AS bounded_state'))return reply([{bounded_state:observation(mode,after),...(q.includes('AS bounded_lease')?{bounded_lease:{exact_live_lease:true,remaining_seconds:299}}:{})}],201);
    if(q.includes('AS actor_facts'))return reply([{actor_facts:{context,four_ordinary_live_sessions:true,fresh_session_proofs_absent:true}}],201);
    if(q.includes('AS device_state'))return reply([{device_state:{context,one_exact_fixed_deadline_device:true,email_proof_and_restored_proof_bound:true,fresh_and_other_account_proofs_absent:true}}],201);
    if(q.includes('AS device_cleanup'))return reply([{device_cleanup:{selected_generated_device_absent:true}}],201);
@@ -58,10 +59,10 @@ function mock({fail=-1,lostOpen=false,lostClose=false,change}={}){
 }
 function noPrivate(r){const text=JSON.stringify(r);for(const value of [input.managementToken,...input.accounts.map(a=>a.password),...actors.flatMap(a=>[a.user,a.session,a.email]),...tokens,credential,'123456','PRIVATE_PROVIDER_SENTINEL',fence,later,'PRIVATE_LOST_OPEN','PRIVATE_LOST_CLOSE'])assert(!text.includes(value),value);}
 test('One real-proof-shaped flow uses the first account only, HTTP verified and unproved sessions, explicit quarantine and exact cleanup',async()=>{
- const m=mock(),r=await controlledProbe(input,m);assert.equal(r.exit_code,0,JSON.stringify(r));assert.equal(r.actual_hosted_requests,52);assert.equal(r.email_request_attempts,1);assert.equal(r.bounded_open_write_attempts,1);assert.equal(r.quarantine_write_attempts,1);assert.equal(r.committed_mode_change_requests,2);assert.equal(r.explicit_quarantine_and_stale_open_fence_verified,true);assert.equal(r.selected_sessions_proofs_and_challenges_absent,true);noPrivate(r);
+ const m=mock(),r=await controlledProbe(input,m);assert.equal(r.exit_code,0,JSON.stringify(r));assert.equal(r.actual_hosted_requests,53);assert.equal(r.email_request_attempts,1);assert.equal(r.bounded_open_write_attempts,1);assert.equal(r.quarantine_write_attempts,1);assert.equal(r.committed_mode_change_requests,2);assert.equal(r.explicit_quarantine_and_stale_open_fence_verified,true);assert.equal(r.selected_sessions_proofs_and_challenges_absent,true);noPrivate(r);
 });
-test('All 52 direct failure positions preserve bounded calls, one email/open/close/delete and finally quarantine on attempted open',async()=>{
- for(let fail=0;fail<52;fail++){const m=mock({fail}),r=await controlledProbe(input,m);assert.equal(r.exit_code,1,'position '+fail);assert(r.actual_hosted_requests<=56);assert(r.email_request_attempts<=1);assert(r.bounded_open_write_attempts<=1);assert(r.quarantine_write_attempts<=1);assert(r.exact_generated_device_cleanup_write_attempts<=1);if(r.bounded_open_write_attempts)assert.equal(r.quarantine_write_attempts,1);noPrivate(r);}
+test('All 53 direct failure positions preserve bounded calls, one email/open/close/delete and finally quarantine on attempted open',async()=>{
+ for(let fail=0;fail<53;fail++){const m=mock({fail}),r=await controlledProbe(input,m);assert.equal(r.exit_code,1,'position '+fail);assert(r.actual_hosted_requests<=56);assert(r.email_request_attempts<=1);assert(r.bounded_open_write_attempts<=1);assert(r.quarantine_write_attempts<=1);assert(r.exact_generated_device_cleanup_write_attempts<=1);if(r.bounded_open_write_attempts)assert.equal(r.quarantine_write_attempts,1);noPrivate(r);}
 });
 test('A lost open response stops main acceptance, inspects, quarantines and verifies the stale-open fence without reopening',async()=>{
  const m=mock({lostOpen:true}),r=await controlledProbe(input,m);assert.equal(r.exit_code,1);assert.equal(r.bounded_open_write_attempts,1);assert.equal(r.explicit_quarantine_and_stale_open_fence_verified,true);assert.equal(r.open_write_outcome_uncertain,false);assert.equal(r.selected_sessions_proofs_and_challenges_absent,true);noPrivate(r);
@@ -81,7 +82,7 @@ test('Source/target/ordinary account drift stops before email; stale lease and u
    if(url===management+'/database/query'){const q=JSON.parse(options.body).query;
     if(kind==='source'&&q.includes('AS bounded_state'))return reply([{bounded_state:{...observation(),predicate_source_matched:false}}],201);
     if(kind==='ordinary'&&q.includes('AS actor_facts'))return reply([{actor_facts:{context,four_ordinary_live_sessions:false,fresh_session_proofs_absent:false}}],201);
-    if(kind==='lease'&&q.includes('AS bounded_lease'))return reply([{bounded_state:observation('ACTIVE')},{bounded_lease:{exact_live_lease:false,remaining_seconds:299}}],201);
+    if(kind==='lease'&&q.includes('AS bounded_lease'))return reply([{bounded_state:observation('ACTIVE'),bounded_lease:{exact_live_lease:false,remaining_seconds:299}}],201);
     if(kind==='close'&&q.includes('AS bounded_state')&&states++>=3)return reply([{bounded_state:observation('ACTIVE')}],201);
    }
    const i=tokens.indexOf((options.headers.Authorization||'').slice(7));
@@ -106,6 +107,11 @@ async function actualIntegration(loss=null){
   await db.query("insert into mushavo_email_auth.devices(id,user_id,credential_digest,security_version,origin_challenge_id,verified_at,expires_at) values($1,$2,$3,1,$4,statement_timestamp(),statement_timestamp()+interval '168 hours')",[id(25002),actors[0].user,'4b'.repeat(32),id(25003)]);
   await db.query("insert into mushavo_email_auth.session_proofs(session_id,user_id,security_version,source,verified_at,established_at,device_id) select $1,user_id,1,'device',verified_at,statement_timestamp(),id from mushavo_email_auth.devices where id=$2",[id(25001),id(25002)]);
   const before=await value('select changed_at::text value from mushavo_email_install.rollout_control');
+  // Reproduce the old boundary: two SELECT rowsets cannot be required when transport returns only the last.
+  const legacy=await db.exec('BEGIN TRANSACTION READ ONLY; SELECT true AS bounded_state; SELECT true AS bounded_lease; ROLLBACK;');
+  const legacyLast=legacy.filter(x=>x.fields?.length).at(-1).rows;
+  assert.deepEqual(legacyLast,[{bounded_lease:true}]);assert.equal(legacy.flatMap(x=>x.rows).length,2);
+
   const keys={begin_challenge:['p_user','p_session','p_challenge','p_code_mac','p_key_version','p_remember'],set_delivery:['p_user','p_session','p_challenge','p_delivered'],challenge_context:['p_user','p_session','p_challenge'],verify_challenge:['p_user','p_session','p_challenge','p_code_mac','p_device_digest'],session_status:['p_user','p_session'],restore_device:['p_user','p_session','p_device_digest']};
   const upstream=async(url,options)=>{
    if(url===api+'/auth/v1/user')return reply(users[tokens.indexOf(options.headers.authorization.slice(7))]);
@@ -118,7 +124,8 @@ async function actualIntegration(loss=null){
   const fallback=mock();
   const transport=async(url,options)=>{
    if(url===management+'/database/query'){const q=JSON.parse(options.body).query;try{
-    const output=(await db.exec(q)).flatMap(x=>x.rows);
+    // Model an API that exposes the final SELECT result set, not every SQL statement's rows.
+    const output=(await db.exec(q)).filter(x=>x.fields?.length).at(-1)?.rows??[];
     if((loss==='open'&&q.includes('AS bounded_open'))||(loss==='close'&&q.includes('AS bounded_close'))||(loss==='device'&&q.includes('AS device_cleanup')))throw Error('PRIVATE_LOST_COMMIT_RESPONSE');
     return reply(output,201);
    }catch(e){errors.push(e.message);await db.exec('rollback');throw Error('PRIVATE_SYNTHETIC_SQL_ERROR');}}
@@ -189,4 +196,19 @@ test('Windows parent packet/SecureString/dialogue helpers preserve the owner-pro
  const helper=s=>s.slice(s.indexOf('function Assert-Unlinked'),s.indexOf('\nif ($InspectPacketOnly'));
  assert.equal(helper(m),helper(j).replaceAll('FR.2.4.E5.23_BATCH_J_REMEMBERED_DEVICE_ACCOUNT_BINDING_AND_ROLLED_BACK_LIFECYCLE',stage).replaceAll('BATCH J','BATCH M').replaceAll('BATCH_J','BATCH_M').replace('$Answer.actual_hosted_requests -gt 35','$Answer.actual_hosted_requests -gt 56').replace('$Clock.ElapsedMilliseconds -ge 1500000','$Clock.ElapsedMilliseconds -ge 3600000'));
  const r=await controlledProbe(input,mock());const allowed=m.match(/\$Allowed = @\(([^\n]+)\)/)[1].match(/'([^']+)'/g).map(x=>x.slice(1,-1));assert.deepEqual(Object.keys(r).sort(),allowed.sort());assert(m.includes('[switch]$ExerciseBoundedHttpWindow'));assert(m.includes('committed_mode_change_may_require_inspection'));
+});
+test('Public-only result-shape preflight accepts final-rowset and flattened transports; both use one-row active readback',async()=>{
+ for(const resultShape of ['last','all']){const m=mock({resultShape}),r=await controlledProbe(input,m);assert.equal(r.exit_code,0,JSON.stringify(r));assert.equal(r.management_multiple_SELECT_result_shape,resultShape==='last'?'LAST_ROWSET_ONLY':'ALL_ROWSETS_FLATTENED');assert.equal(r.active_window_readback_rows,1);assert.equal(r.active_window_readback_shape_matched,true);assert.equal(r.active_window_lease_matched,true);assert.equal(r.active_window_remaining_seconds,299);noPrivate(r);}
+});
+test('Unexpected public result shape stops before login, email or mode change, without printing provider data',async()=>{
+ const m=mock({change:(url,options)=>url===management+'/database/query'&&JSON.parse(options.body).query.includes('AS bounded_shape_last')?reply([{private:'PRIVATE_PROVIDER_SENTINEL'}],201):undefined});
+ const r=await controlledProbe(input,m);assert.equal(r.exit_code,1);assert.equal(r.problem_code,'MANAGEMENT_RESULT_SHAPE_REQUIRED');assert.equal(r.Auth_password_signin_attempts,0);assert.equal(r.email_request_attempts,0);assert.equal(r.committed_mode_change_requests,0);noPrivate(r);
+});
+test('Active readback distinguishes response shape, exact lease and deadline failures while preserving containment',async()=>{
+ for(const [kind,problem] of [['shape','WINDOW_RESPONSE_SHAPE_REQUIRED'],['lease','WINDOW_LEASE_MATCH_REQUIRED'],['deadline','WINDOW_DEADLINE_REQUIRED']]){
+  const m=mock({change:(url,options)=>{if(url!==management+'/database/query'||!JSON.parse(options.body).query.includes('AS bounded_lease'))return;
+   if(kind==='shape')return reply([{bounded_lease:{exact_live_lease:true,remaining_seconds:299}}],201);
+   return reply([{bounded_state:observation('ACTIVE'),bounded_lease:{exact_live_lease:kind!=='lease',remaining_seconds:kind==='deadline'?29:299}}],201);
+  }});const r=await controlledProbe(input,m);assert.equal(r.exit_code,1);assert.equal(r.problem_code,problem);assert.equal(r.explicit_quarantine_and_stale_open_fence_verified,true);assert.equal(r.selected_sessions_proofs_and_challenges_absent,true);noPrivate(r);
+ }
 });

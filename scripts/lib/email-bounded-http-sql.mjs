@@ -43,11 +43,13 @@ SELECT jsonb_build_object('opened',true,'allowed_actor_count',1,'maximum_seconds
 }
 export async function leaseSQL(user,fence){inputs(user,fence);
  const state=await stateSQL();
- return state.replace('AS bounded_state',`AS bounded_state`).replace('ROLLBACK;\n',`SELECT jsonb_build_object('exact_live_lease',EXISTS(SELECT 1 FROM mushavo_email_install.acceptance_window WHERE ${selectedLease(user,fence)}
+ const marker='AS bounded_state;';
+ if(state.split(marker).length!==2)throw Error('WINDOW_SINGLE_SELECT_REQUIRED');
+ return state.replace(marker,`AS bounded_state,
+ jsonb_build_object('exact_live_lease',EXISTS(SELECT 1 FROM mushavo_email_install.acceptance_window WHERE ${selectedLease(user,fence)}
  AND opened_at<=clock_timestamp() AND expires_at>clock_timestamp()+interval '30 seconds'
  AND opened_at=(SELECT changed_at FROM mushavo_email_install.rollout_control WHERE singleton AND mode='ACTIVE')),
- 'remaining_seconds',(SELECT greatest(0,floor(extract(epoch FROM expires_at-clock_timestamp())))::integer FROM mushavo_email_install.acceptance_window WHERE ${selectedLease(user,fence)})) AS bounded_lease;
-ROLLBACK;\n`);
+ 'remaining_seconds',(SELECT greatest(0,floor(extract(epoch FROM expires_at-clock_timestamp())))::integer FROM mushavo_email_install.acceptance_window WHERE ${selectedLease(user,fence)})) AS bounded_lease;`);
 }
 export async function quarantineSQL(user,fence){inputs(user,fence);
  return transaction(`DO $close$ DECLARE observed jsonb; kind text; predicate_hash text; result jsonb; old_changed timestamptz; old_mode text; BEGIN
@@ -73,3 +75,11 @@ export async function deviceCleanupSQL(actor,challenge){
  IF NOT EXISTS(SELECT 1 FROM mushavo_email_install.rollout_control WHERE singleton AND target_project='${stagingRef}' AND mode='QUARANTINED')
  OR EXISTS(SELECT 1 FROM mushavo_email_install.acceptance_window) THEN RAISE EXCEPTION 'EMAIL_M_CLOSED_DEVICE_CLEANUP_REQUIRED'; END IF;`+old.slice(end).replace('DO $cleanup$ BEGIN','DO $cleanup$ BEGIN');
 }
+
+// Harmless constants only: inspect transport result-set selection before any Auth or email action.
+export const responseShapeSQL=`BEGIN TRANSACTION READ ONLY;
+SET LOCAL statement_timeout='10s';
+SELECT 'FIRST_PUBLIC_CONSTANT'::text AS bounded_shape_first;
+SELECT 'LAST_PUBLIC_CONSTANT'::text AS bounded_shape_last, true AS bounded_shape_pair;
+ROLLBACK;
+`;

@@ -1,3 +1,7 @@
+# Current checkpoint: initial owner stop contained; use corrected retry handoff
+
+Initial owner run stopped at active readback,35requests/exit1, with quarantine and selected cleanup verified. See SECURITY_FR_2_4_BATCH_M_RETRY.md for the single-row correction, public shape probe, local62/Windows expected101 and normal53requests. Do not use the old published command. Original preparation below is retained as history.
+
 # Batch M — bounded staging HTTP acceptance and verified quarantine
 
 23 October 2026. Main Stage 3 — Authorization and Admin MFA remains in progress. Batch L's owner pass is FRE144: five hosted requests, one closed-control upgrade, independent readback, QUARANTINED and empty window at 2026-10-23T09:33:05.020Z. Do not reinstall or repeat H/I/J/K/L.

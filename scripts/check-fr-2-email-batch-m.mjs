@@ -3,7 +3,7 @@
 import {fileURLToPath} from 'node:url';
 import {createInterface} from 'node:readline';
 import {isDeepStrictEqual as equal} from 'node:util';
-import {stateSQL,openSQL,leaseSQL,quarantineSQL,deviceCleanupSQL,windowSeconds} from './lib/email-bounded-http-sql.mjs';
+import {stateSQL,openSQL,leaseSQL,quarantineSQL,deviceCleanupSQL,windowSeconds,responseShapeSQL} from './lib/email-bounded-http-sql.mjs';
 import {contextSQL,stagingRef} from './lib/email-registration-handoff-sql.mjs';
 
 import {isSingleMailbox} from '../supabase/functions/_shared/email-verification-zoho.mjs';
@@ -17,7 +17,7 @@ const object=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
 const exact=(x,keys)=>object(x)&&equal(Object.keys(x).sort(),keys.slice().sort());
 const uuid=x=>typeof x==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(x);
 const need=(v,code)=>{if(!v)throw Object.assign(Error(code),{safeCode:code});};
-const problems=new Set(['PRIVATE_INPUT_REQUIRED','TARGET_REQUIRED','CATALOG_REQUIRED','RESPONSE_REQUIRED','NETWORK_REQUIRED','IDENTITY_REQUIRED','ORDINARY_ACTORS_REQUIRED','QUARANTINED_DENIAL_REQUIRED','EMAIL_REQUIRED','CODE_REQUIRED','COOKIE_REQUIRED','ACCOUNT_BINDING_REQUIRED','RESTORE_REQUIRED','DEVICE_STATE_REQUIRED','DEVICE_CLEANUP_REQUIRED','AUTH_CLEANUP_REQUIRED','WINDOW_REQUIRED','ACTIVE_HTTP_REQUIRED','QUARANTINE_REQUIRED']);
+const problems=new Set(['PRIVATE_INPUT_REQUIRED','TARGET_REQUIRED','CATALOG_REQUIRED','RESPONSE_REQUIRED','NETWORK_REQUIRED','IDENTITY_REQUIRED','ORDINARY_ACTORS_REQUIRED','QUARANTINED_DENIAL_REQUIRED','EMAIL_REQUIRED','CODE_REQUIRED','COOKIE_REQUIRED','ACCOUNT_BINDING_REQUIRED','RESTORE_REQUIRED','DEVICE_STATE_REQUIRED','DEVICE_CLEANUP_REQUIRED','AUTH_CLEANUP_REQUIRED','WINDOW_REQUIRED','ACTIVE_HTTP_REQUIRED','QUARANTINE_REQUIRED','MANAGEMENT_RESULT_SHAPE_REQUIRED','WINDOW_RESPONSE_SHAPE_REQUIRED','WINDOW_LEASE_MATCH_REQUIRED','WINDOW_DEADLINE_REQUIRED']);
 const safe=e=>problems.has(e?.safeCode)?e.safeCode:'NETWORK_REQUIRED';
 const quote=x=>"'"+String(x).replaceAll("'","''")+"'";
 const ro=body=>`BEGIN TRANSACTION READ ONLY;\nSET LOCAL statement_timeout='25s';\nSET LOCAL lock_timeout='3s';\nSET LOCAL search_path=pg_catalog;\n${body}\nROLLBACK;\n`;
@@ -53,7 +53,7 @@ export function cleanupSQL(actors,c=null){need(Array.isArray(actors)&&actors.len
 }
 export async function controlledProbe(input,{transport=fetch,readCode=async()=>{throw Error('CODE_REQUIRED');}}={}){
  const r={stage_step:stage,batch:'M',result:'BATCH_M_BOUNDED_HTTP_ACCEPTANCE_REVIEW_REQUIRED',actual_hosted_requests:0,maximum_direct_HTTP_requests:56,gateway_internal_provider_requests_not_counted:true,
- fixed_target_before_and_after_verified:false,quarantined_catalog_before_verified:false,live_public_key_matches_private_snapshot:false,four_ordinary_sessions_verified:false,
+ fixed_target_before_and_after_verified:false,quarantined_catalog_before_verified:false,live_public_key_matches_private_snapshot:false,management_multiple_SELECT_result_shape:null,active_window_readback_rows:null,active_window_readback_shape_matched:false,active_window_lease_matched:false,active_window_remaining_seconds:null,four_ordinary_sessions_verified:false,
  quarantined_password_only_HTTP_denied:false,email_request_attempts:0,email_provider_acceptance_observed:false,email_dispatch_outcome_uncertain:false,email_code_verified:false,verification_outcome_uncertain:false,
  secure_fixed_deadline_remember_cookie_observed:false,foreign_account_renamed_cookie_restore_denied:false,missing_cookie_restore_requires_code:false,same_account_new_session_restore_approved:false,repeated_restore_emits_no_cookie:false,
  independent_device_and_proof_binding_aggregates_verified:false,bounded_window_seconds:windowSeconds,allowed_window_accounts:1,bounded_open_write_attempts:0,open_write_outcome_uncertain:false,independent_active_window_verified:false,
@@ -98,6 +98,11 @@ export async function controlledProbe(input,{transport=fetch,readCode=async()=>{
  try{
   need(exact(input,['managementToken','accounts','publishableKey','allowedRecipients','acknowledgement'])&&input.acknowledgement===acknowledgement&&typeof input.managementToken==='string'&&/^sbp_fc[A-Za-z0-9_-]{20,512}$/.test(input.managementToken)&&typeof input.publishableKey==='string'&&/^sb_publishable_[A-Za-z0-9_-]{1,512}$/.test(input.publishableKey)&&Array.isArray(input.allowedRecipients)&&input.allowedRecipients.length>=2&&input.allowedRecipients.length<=10&&input.allowedRecipients.every(isSingleMailbox)&&Array.isArray(input.accounts)&&input.accounts.length===2&&input.accounts.every(a=>exact(a,['email','password'])&&isSingleMailbox(a.email)&&typeof a.password==='string'&&a.password.length>0&&a.password.length<=4096&&!/[\0\r\n]/.test(a.password)&&input.allowedRecipients.some(x=>x.toLowerCase()===a.email.toLowerCase()))&&input.accounts[0].email.toLowerCase()!==input.accounts[1].email.toLowerCase(),'PRIVATE_INPUT_REQUIRED');
   sql=await stateSQL();target(await mgmt('TARGET_BEFORE'));const initial=observation(row(await mgmt('QUARANTINED_CATALOG_BEFORE',sql),'bounded_state'),{closed:true});fence=initial.private_fence;ready=true;closedVerified=true;r.quarantined_catalog_before_verified=true;
+  const shape=await mgmt('READ_ONLY_MANAGEMENT_RESULT_SHAPE',responseShapeSQL);
+  const last={bounded_shape_last:'LAST_PUBLIC_CONSTANT',bounded_shape_pair:true};
+  if(equal(shape,[last]))r.management_multiple_SELECT_result_shape='LAST_ROWSET_ONLY';
+  else if(equal(shape,[{bounded_shape_first:'FIRST_PUBLIC_CONSTANT'},last]))r.management_multiple_SELECT_result_shape='ALL_ROWSETS_FLATTENED';
+  else need(false,'MANAGEMENT_RESULT_SHAPE_REQUIRED');
   need(parseStagingConfiguration((await request('LIVE_PUBLIC_CONFIGURATION',origin+'/config.js',{json:false})).data).supabasePublishableKey===input.publishableKey,'TARGET_REQUIRED');r.live_public_key_matches_private_snapshot=true;
   for(let i=0;i<4;i++){
    const account=input.accounts[i===3?1:0];r.Auth_password_signin_attempts++;r.Auth_session_cleanup_outcome_uncertain=true;
@@ -131,9 +136,12 @@ export async function controlledProbe(input,{transport=fetch,readCode=async()=>{
   r.bounded_open_write_attempts=1;r.open_write_outcome_uncertain=true;openAttempted=true;closedVerified=false;r.committed_mode_change_requests++;
   need(equal(row(await mgmt('OPEN_FIRST_ACCOUNT_FIVE_MINUTE_WINDOW',await openSQL(actors[0].user,fence)),'bounded_open'),{opened:true,allowed_actor_count:1,maximum_seconds:windowSeconds}),'WINDOW_REQUIRED');
   const leaseRows=await mgmt('INDEPENDENT_ACTIVE_WINDOW',await leaseSQL(actors[0].user,fence));
-  need(Array.isArray(leaseRows)&&leaseRows.length===2&&exact(leaseRows[0],['bounded_state'])&&exact(leaseRows[1],['bounded_lease']),'WINDOW_REQUIRED');
-  const live=observation(leaseRows[0].bounded_state),lease=leaseRows[1].bounded_lease;
-  need(live.mode==='ACTIVE'&&!live.window_empty&&exact(lease,['exact_live_lease','remaining_seconds'])&&lease.exact_live_lease===true&&Number.isInteger(lease.remaining_seconds)&&lease.remaining_seconds>=30&&lease.remaining_seconds<=windowSeconds,'WINDOW_REQUIRED');
+  r.active_window_readback_rows=Array.isArray(leaseRows)&&leaseRows.length<=4?leaseRows.length:null;
+  need(Array.isArray(leaseRows)&&leaseRows.length===1&&exact(leaseRows[0],['bounded_state','bounded_lease']),'WINDOW_RESPONSE_SHAPE_REQUIRED');r.active_window_readback_shape_matched=true;
+  const live=observation(leaseRows[0].bounded_state),lease=leaseRows[0].bounded_lease;
+  need(live.mode==='ACTIVE'&&!live.window_empty&&exact(lease,['exact_live_lease','remaining_seconds'])&&lease.exact_live_lease===true,'WINDOW_LEASE_MATCH_REQUIRED');r.active_window_lease_matched=true;
+  if(Number.isInteger(lease.remaining_seconds)&&lease.remaining_seconds>=0&&lease.remaining_seconds<=windowSeconds)r.active_window_remaining_seconds=lease.remaining_seconds;
+  need(Number.isInteger(lease.remaining_seconds)&&lease.remaining_seconds>=30&&lease.remaining_seconds<=windowSeconds,'WINDOW_DEADLINE_REQUIRED');
   // Use a conservative local budget; the database server remains the authority for expiry.
   activeDeadline=Date.now()+(lease.remaining_seconds-10)*1000;
   r.open_write_outcome_uncertain=false;r.independent_active_window_verified=true;

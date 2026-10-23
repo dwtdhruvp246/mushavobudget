@@ -33,7 +33,7 @@ try{
  const count=k=>Number(output.match(new RegExp('^# '+k+' (\\d+)\\s*$','m'))?.[1]??-1);
  group={tests:count('tests'),pass:count('pass'),fail:count('fail'),cancelled:count('cancelled'),skipped:count('skipped'),todo:count('todo'),
   failed_case_titles:output.split(/\r?\n/).filter(x=>/^\s*not ok /.test(x)),exit_code:t.status,signal:t.signal??null,error_code:t.error?.code??null};
- assert.equal(t.status,0);assert.equal(group.tests,59);assert.equal(group.pass,59);
+ assert.equal(t.status,0);assert.equal(group.tests,62);assert.equal(group.pass,62);
  for(const k of ['fail','cancelled','skipped','todo'])assert.equal(group[k],0);
  phase='WINDOWS_RUNNER_HELPERS';
  if(process.platform==='win32'){
@@ -45,11 +45,12 @@ try{
  phase='COMPLETE';
 }catch{problem='OFFLINE_BATCH_M_SOURCE_OR_TEST_REQUIRED';}
 const ok=phase==='COMPLETE'&&!problem;
-console.log(JSON.stringify({stage_step:windowStage,batch:'M',result:ok?(runner?'OFFLINE_BATCH_M98_PASS_OWNER_BOUNDED_HTTP_PENDING':'OFFLINE_BATCH_M59_PASS_WINDOWS_HELPERS_AND_HOSTED_PENDING'):'OFFLINE_BATCH_M_REVIEW_REQUIRED',
- source_parent_commit:'b2088da1950d5ac0a1e0c07c67c454348395396b',node_version:process.version,pglite_version:'0.5.8',
+console.log(JSON.stringify({stage_step:windowStage,batch:'M',result:ok?(runner?'OFFLINE_BATCH_M101_PASS_OWNER_BOUNDED_HTTP_RETRY_PENDING':'OFFLINE_BATCH_M62_PASS_WINDOWS_HELPERS_AND_HOSTED_RETRY_PENDING'):'OFFLINE_BATCH_M_REVIEW_REQUIRED',
+ source_parent_commit:'a4d4de11b6eaf44788a1a7b012bb861f0cfdba4c',node_version:process.version,pglite_version:'0.5.8',
  source_hashes_verified:hashes,syntax_checks:syntax,tests:(group?.tests??0)+(runner?.tests??0),pass:(group?.pass??0)+(runner?.pass??0),fail:(group?.fail??0)+(runner?.fail??0),group,runner,
+ single_row_active_readback_with_final_rowset_transport_exercised:ok,public_result_shape_preflight_and_precise_safe_diagnostics_exercised:ok,
  actual_local_installed_SQL_and_gateway_HTTP_flow_exercised:ok,Auth_and_mail_services_synthetic:true,
- all_52_direct_failure_positions_exercised:ok,lost_open_and_quarantine_COMMIT_responses_exercised:ok,
+ all_53_direct_failure_positions_exercised:ok,lost_open_and_quarantine_COMMIT_responses_exercised:ok,
  stale_open_after_quarantine_refused_in_both_orders:ok,exact_generated_cleanup_and_preexisting_state_preserved:ok,
  Windows_runner_AST_and_packet_helpers_executed:runner!==null,Windows_private_dialogue_parent_execution_verified:false,
  real_PostgreSQL_concurrency_verified:false,older_PostgreSQL_servers_executed:false,installed_dependency_bytes_independently_hashed:false,

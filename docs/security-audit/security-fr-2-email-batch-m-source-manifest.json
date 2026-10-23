@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.26_BATCH_M_BOUNDED_HTTP_ACCEPTANCE_AND_VERIFIED_QUARANTINE",
-  "source_parent_commit": "b2088da1950d5ac0a1e0c07c67c454348395396b",
+  "source_parent_commit": "a4d4de11b6eaf44788a1a7b012bb861f0cfdba4c",
   "source_file_count": 162,
   "file_sha256": {
     "docs/security-audit/security-fr-2-email-batch-f-private-catalog.json": "611700a66b1331bd860c1062fb3e4af8ff5a8cea9882ca05917476f1f99f0df9",
@@ -158,11 +158,11 @@
     "scripts/run-fr-2-email-batch-l.ps1": "c8ed5c44fcdab0416fb723bf746b758d05668098a6a6b80cc748df4090641211",
     "scripts/verify-fr-2-email-batch-l.mjs": "193c21b851531a8c1336510f4fd07e54eba494e5c14664ed0b698dbd20d43198",
     "tests/fr-2-email-batch-l.test.mjs": "a7859b0b6eab48e400d9076fd1847f38887fa6b7174ec9b1e776a2a1677a65a1",
-    "scripts/lib/email-bounded-http-sql.mjs": "11fdeb15a5a57bd8be7f30afaa52eed9c1dfbb16a539ab5d1d09815a0632e4ee",
-    "scripts/check-fr-2-email-batch-m.mjs": "e7de37520e9eab6e5aa119b9b20c7c9feefcf2c3a085dad1f47baaceceff8116",
-    "scripts/run-fr-2-email-batch-m.ps1": "7d28879db0da46fc1f8a9e3970f5e89818afc4a49691d28456cf447e6bd5128b",
-    "scripts/verify-fr-2-email-batch-m.mjs": "842a3d960218f311e0c7c713bb18187b9f6ce858fbacbf47aea79fd13b680548",
-    "tests/fr-2-email-batch-m.test.mjs": "0dc4f6651bf4adaa842400ba961bdc51903c1d14926d478523fe7355949a52a0",
+    "scripts/lib/email-bounded-http-sql.mjs": "ddf5782aed4e896fea24615aa241aea4e34071354cf1eb4c595042eef926ccdd",
+    "scripts/check-fr-2-email-batch-m.mjs": "b839b76338f831c706c033300b25b40a021c363e1697481a2c70f34f52bf6133",
+    "scripts/run-fr-2-email-batch-m.ps1": "bbe470ba82938f4ab4db5e06da7d1f422ca64d5f486946ce69853e3584450a5e",
+    "scripts/verify-fr-2-email-batch-m.mjs": "00c635c8ad133aa51fee22aec67c4271f644fbbea45d8daccd5fb2bcee51948c",
+    "tests/fr-2-email-batch-m.test.mjs": "79afaac8cb7f3b131a7ba4d974982b59a4f4e014fb68913e173acedfe646354f",
     "tests/fr-2-email-batch-m-runner.tests.ps1": "e1552ceac6e595e0fe2ac936549dd15d1f65900ad6eb9278014f431ff54d4216",
     "docs/security-audit/security-fr-2-email-batch-l-source-manifest.json": "091c65d6bc9af0fe9c77cfa5f6086c686f5cfb4c69f23d216d0a2e70d9181bbf"
   },

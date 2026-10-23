@@ -1,3 +1,5 @@
+> **Owner Windows offline PASS; numeric selection retry ready (23 October2026,FRE139).** [Owner receipt](security-fr-2-email-batch-j-owner-selection-stop.json):50/50,143 hashes,8 syntax checks,Node22.17.0,PowerShell5.1.26100.9711,offline exit0. The parent stopped before any hosted probe when an address was entered at the first number prompt. [Retry](SECURITY_FR_2_4_BATCH_J_SELECTION_RETRY.md) reuses the unchanged published cc7dd34 runner without repeating tests/installations; with the same displayed list enter first2,then1. No runtime/manifest fix or hosted recovery is required. The workflow below retains its existing scope.
+
 # Batch J: remembered-device/account binding and rolled-back lifecycle
 
 23 October 2026, FRE138. Source parent: `76ecae1e91235f8fd787ff09a44b5183afdf2ea0`. [Batch I](SECURITY_FR_2_4_BATCH_I_COMPLETE.md) remains completed at its scoped hosted result; do not rerun it or reinstall Batch H. Its latest observed staging mode is QUARANTINED at2026-10-23T04:47:35.020Z.

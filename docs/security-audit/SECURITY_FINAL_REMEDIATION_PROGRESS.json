@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-23",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_EMAIL_BATCH_I_HOSTED_PASS_BATCH_J_DEVICE50_LOCAL_PASS_OWNER_PENDING",
+  "status": "FR2_EMAIL_BATCH_J_OWNER_WINDOWS50PASS_NUMERIC_SELECTION_RETRY_READY",
   "active_batch": "FR.2",
   "active_step": "FR.2.4",
   "source_parent_commit": "3f9ce93873146db33c073f58733d38380d5aa052",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE138",
+  "latest_evidence": "FRE139",
   "batches": [
     {
       "id": "FR.1",
@@ -2648,7 +2648,7 @@
   },
   "FR2_email_batch_j": {
     "stage_step": "FR.2.4.E5.23_BATCH_J_REMEMBERED_DEVICE_ACCOUNT_BINDING_AND_ROLLED_BACK_LIFECYCLE",
-    "status": "LOCAL_BATCH_J50PASS_OWNER_DEVICE_ACCEPTANCE_PENDING",
+    "status": "OWNER_WINDOWS50PASS_LOCAL_NUMERIC_SELECTION_RETRY_READY",
     "source_parent_commit": "76ecae1e91235f8fd787ff09a44b5183afdf2ea0",
     "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_J_HANDOFF.md",
     "manifest": "docs/security-audit/security-fr-2-email-batch-j-source-manifest.json",
@@ -2696,6 +2696,22 @@
     "hosted_acceptance": false,
     "production_or_native_changed": false,
     "APK_update_deferred": true,
-    "findings_closed": []
+    "findings_closed": [],
+    "owner_selection_stop_receipt": "docs/security-audit/security-fr-2-email-batch-j-owner-selection-stop.json",
+    "selection_retry_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_J_SELECTION_RETRY.md",
+    "owner_offline_PASS": 50,
+    "owner_offline_exit_code": 0,
+    "owner_Node_version": "v22.17.0",
+    "owner_PowerShell_helper_version": "5.1.26100.9711",
+    "owner_PowerShell_helper_PASS": 39,
+    "owner_source_hashes": 143,
+    "owner_JS_syntax_checks": 8,
+    "owner_combined_exit_code": 1,
+    "hosted_probe_started": false,
+    "owner_hosted_requests_for_selection_attempt": 0,
+    "email_or_Auth_session_outcome_requires_inspection": false,
+    "local_selection_cause": "NUMERIC_INDEX_REQUIRED_EMAIL_ADDRESS_ENTERED",
+    "unchanged_pinned_runtime_retry_commit": "cc7dd343645a386a3a0ed6441d5fdac5b62d45cd",
+    "new_offline_suite_or_dependency_install_required": false
   }
 }

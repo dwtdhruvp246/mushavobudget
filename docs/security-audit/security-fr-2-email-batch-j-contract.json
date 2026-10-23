@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.23_BATCH_J_REMEMBERED_DEVICE_ACCOUNT_BINDING_AND_ROLLED_BACK_LIFECYCLE",
-  "status": "LOCAL_BATCH_J50PASS_OWNER_DEVICE_ACCEPTANCE_PENDING",
+  "status": "OWNER_WINDOWS50PASS_LOCAL_NUMERIC_SELECTION_RETRY_READY",
   "source_parent_commit": "76ecae1e91235f8fd787ff09a44b5183afdf2ea0",
   "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_J_HANDOFF.md",
   "manifest": "docs/security-audit/security-fr-2-email-batch-j-source-manifest.json",
@@ -48,5 +48,21 @@
   "hosted_acceptance": false,
   "production_or_native_changed": false,
   "APK_update_deferred": true,
-  "findings_closed": []
+  "findings_closed": [],
+  "owner_selection_stop_receipt": "docs/security-audit/security-fr-2-email-batch-j-owner-selection-stop.json",
+  "selection_retry_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_J_SELECTION_RETRY.md",
+  "owner_offline_PASS": 50,
+  "owner_offline_exit_code": 0,
+  "owner_Node_version": "v22.17.0",
+  "owner_PowerShell_helper_version": "5.1.26100.9711",
+  "owner_PowerShell_helper_PASS": 39,
+  "owner_source_hashes": 143,
+  "owner_JS_syntax_checks": 8,
+  "owner_combined_exit_code": 1,
+  "hosted_probe_started": false,
+  "owner_hosted_requests_for_selection_attempt": 0,
+  "email_or_Auth_session_outcome_requires_inspection": false,
+  "local_selection_cause": "NUMERIC_INDEX_REQUIRED_EMAIL_ADDRESS_ENTERED",
+  "unchanged_pinned_runtime_retry_commit": "cc7dd343645a386a3a0ed6441d5fdac5b62d45cd",
+  "new_offline_suite_or_dependency_install_required": false
 }

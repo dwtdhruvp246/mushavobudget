@@ -1,3 +1,5 @@
+> Latest FRE158/FRE159: Windows diagnostic8/8 +hosted DOM1/1 PASS, secure QUIC and valid/error-free certificate observed, cleanup verified. TLS-only label matcher corrected with strict TLS/QUIC certificate checks; local37/37 PASS. Focused13-local +10-hosted public followup pending; prior Windows24 passes retained. See [QUIC correction](SECURITY_FR_2_4_BATCH_O_QUIC_CORRECTION.md).
+
 # Batch O hosted TLS assertion review — 2026-10-23
 
 The owner ran published commit `7905c724d6d640672a61c56413ec258fee7b7685` on Node22.17.0/Windows/Chrome155.0.8059.79. Source195/syntax45 and all24 local checks passed. Explicit target setup now passes on this Windows execution; the original first-attempt cause remains unidentified.

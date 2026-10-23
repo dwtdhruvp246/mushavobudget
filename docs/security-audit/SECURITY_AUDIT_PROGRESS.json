@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.4.E5.28_OWNER_BATCH_O_SHORT_TLS_METADATA_DIAGNOSTIC",
+  "next_step": "FR.2.4.E5.28_OWNER_BATCH_O_QUIC_CERTIFICATE_GUARD_AND_PUBLIC_FOLLOWUP",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,

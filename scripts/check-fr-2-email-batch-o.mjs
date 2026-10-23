@@ -7,7 +7,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {LocalCDP,until} from './lib/browser-local-cdp.mjs';
-import {tlsObservation} from './lib/browser-tls-observation.mjs';
+import {tlsObservation,browserTransportVerified} from './lib/browser-tls-observation.mjs';
 import {configurePublicTarget,workerAutoAttach} from './lib/browser-public-target.mjs';
 export const stage='FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER';
 export const stagingOrigin='https://mushavo-budget-staging.pages.dev';
@@ -26,10 +26,10 @@ export async function publicBrowser(executable,{fixtureOrigin=null,tlsDiagnostic
  const origin=fixture?fixtureOrigin:stagingOrigin;
  const r={stage_step:stage,batch:'O',result:'BATCH_O_PUBLIC_BROWSER_REVIEW_REQUIRED',scope:fixture?'LOCAL_HTTPS_PUBLIC_SOURCE_FIXTURE':'HOSTED_PUBLIC_SOURCE_TLS_AND_BROWSER_SERVICE_WORKER',
  tls_metadata:null,tls_metadata_only:tlsDiagnostic,target_setup_failure:null,explicit_page_attachment:true,checks:[],tests:0,pass:0,fail:0,browser_product:null,public_assets_verified:0,intercepted_request_attempts:0,maximum_intercepted_requests:128,blocked_unreviewed_requests:0,simulated_offline_requests:0,
- intercepted_hosted_request_attempts:0,worker_startup_fetches_not_intercepted:true,total_browser_hosted_requests_independently_counted:false,document_scripts_disabled:true,hosted_TLS_verified:false,executed_worker_source_verified:false,isolated_temporary_profile:true,temporary_profile_removed:false,browser_process_stopped:false,
+ intercepted_hosted_request_attempts:0,worker_startup_fetches_not_intercepted:true,total_browser_hosted_requests_independently_counted:false,document_scripts_disabled:true,hosted_TLS_verified:false,hosted_secure_transport_verified:false,executed_worker_source_verified:false,isolated_temporary_profile:true,temporary_profile_removed:false,browser_process_stopped:false,
  private_packets_accessed:false,credentials_or_Auth_or_gateway_requests_permitted:false,real_email_requests:0,committed_mode_change_requests:0,hosted_authenticated_browser_acceptance:false,
  installed_PWA_OS_lifecycle_verified:false,external_traffic_OS_sandboxed:false,local_certificate_validation_bypassed:fixture,hosted_acceptance:false,live_activation_approved:false,production_or_native_changed:false,APK_update_deferred:true,findings_closed:[],checkpoint:'BROWSER_INPUT',problem_code:null,exit_code:1};
- let child,profile,cdp,offline=false,fatal=null,secureDocument=false,workerHash=false,main=false;
+ let child,profile,cdp,offline=false,fatal=null,workerHash=false,main=false;
  const sessions=new Map(),tasks=new Set(),tls=tlsObservation(origin);let pageSession=null;
  const need=(v,code='PUBLIC_BROWSER_CHECK_REQUIRED')=>{if(!v)throw Error(code);};
  const check=(name,v)=>{r.checkpoint=name;r.tests++;const ok=v===true;r.checks.push({check:name,status:ok?'PASS':'FAIL'});ok?r.pass++:r.fail++;need(ok);need(!fatal,fatal);};
@@ -61,7 +61,6 @@ export async function publicBrowser(executable,{fixtureOrigin=null,tlsDiagnostic
     if(!allowed||!budget||fatal||offline){if(offline&&allowed)r.simulated_offline_requests++;await cdp.call('Fetch.failRequest',{requestId:p.requestId,errorReason:'InternetDisconnected'},sid);}
     else{if(!fixture)r.intercepted_hosted_request_attempts++;await cdp.call('Fetch.continueRequest',{requestId:p.requestId},sid);}
    })());
-   if(x.method==='Network.responseReceived'&&p.type==='Document'&&p.response?.url===origin+'/offline')secureDocument=p.response.securityState==='secure'&&typeof p.response.securityDetails?.protocol==='string'&&/^TLS 1\.[23]$/.test(p.response.securityDetails.protocol);
    if(x.method==='Debugger.scriptParsed'&&publicRequestAllowed(p.url,'GET',{origin})&&new URL(p.url).pathname==='/sw.js')job((async()=>{const s=await cdp.call('Debugger.getScriptSource',{scriptId:p.scriptId},sid);workerHash=hash(s.scriptSource)===expected['/sw.js'];})());
   });
   r.checkpoint='WORKER_AUTO_ATTACH_CONFIGURATION';
@@ -76,9 +75,10 @@ export async function publicBrowser(executable,{fixtureOrigin=null,tlsDiagnostic
   r.checkpoint='PUBLIC_OFFLINE_DOCUMENT';const navigation=await cdp.call('Page.navigate',{url:origin+'/offline'},s);if(navigation.errorText){const e=navigation.errorText;r.navigation_failure_class=e.startsWith('net::ERR_CERT_')?'TLS_CERTIFICATE_REJECTED':e==='net::ERR_NAME_NOT_RESOLVED'?'DNS_UNAVAILABLE':'NETWORK_NAVIGATION_REQUIRED';need(false,r.navigation_failure_class);}await wait('document.querySelector("h1")?.textContent==="Your workspace needs a connection"');
   check('REAL_PUBLIC_DOM_AND_SECURE_CONTEXT',await ev('isSecureContext&&location.origin==='+JSON.stringify(origin)));
   if(tlsDiagnostic)await delay(500);
+  if(!fixture&&!tlsDiagnostic){try{await until(()=>{const m=tls.snapshot();return m.document_response_observed&&m.visible_state_observed&&m.visible_certificate_present;},{timeout:5000});}catch{}}
   r.tls_metadata=tls.snapshot();
   if(tlsDiagnostic){main=true;}else{
-  check(fixture?'LOCAL_FIXTURE_TLS_BYPASS_EXPLICIT':'BROWSER_TLS_VALIDATED_WITHOUT_CERTIFICATE_BYPASS',fixture||secureDocument);r.hosted_TLS_verified=!fixture&&secureDocument;
+  check(fixture?'LOCAL_FIXTURE_TLS_BYPASS_EXPLICIT':'BROWSER_SECURE_TRANSPORT_AND_CERTIFICATE_VERIFIED',fixture||browserTransportVerified(r.tls_metadata,{certificateBypass:r.local_certificate_validation_bypassed}));r.hosted_secure_transport_verified=!fixture;r.hosted_TLS_verified=r.hosted_secure_transport_verified;
   r.checkpoint='PUBLIC_SOURCE_BYTES';
   const source=await ev(`(async()=>{const expected=${JSON.stringify(expected)};let count=0;for(const [p,h]of Object.entries(expected)){const r=await fetch(p,{cache:'no-store',credentials:'omit',redirect:'follow',signal:AbortSignal.timeout(10000)});if(!r.ok||new URL(r.url).origin!==location.origin)return false;const reader=r.body.getReader(),chunks=[];let n=0;try{for(;;){const x=await reader.read();if(x.done)break;n+=x.value.length;if(n>1048576)return false;chunks.push(x.value);}}finally{await reader.cancel();reader.releaseLock();}const b=new Uint8Array(n);let at=0;for(const c of chunks){b.set(c,at);at+=c.length;}const digest=[...new Uint8Array(await crypto.subtle.digest('SHA-256',b))].map(x=>x.toString(16).padStart(2,'0')).join('');if(digest!==h)return false;count++;}return count;})()`);
   check('ALL_16_PUBLIC_ASSET_BYTES_MATCH_PINNED_SOURCE',source===assets.length);r.public_assets_verified=source;

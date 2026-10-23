@@ -1,4 +1,4 @@
-// Collection only. Never converts missing metadata, QUIC, or a secure context into TLS acceptance.
+// Metadata stays collection-only. Acceptance is a separate strict browser/certificate predicate.
 const state=x=>['unknown','neutral','insecure','secure','info','insecure-broken'].includes(x)?x:(x==null?'MISSING':'OTHER');
 const protocol=x=>x==='TLS 1.2'?'TLS_1_2':x==='TLS 1.3'?'TLS_1_3':x==='QUIC'?'QUIC':x==null?'MISSING':'OTHER';
 export function tlsObservation(origin){
@@ -19,4 +19,11 @@ export function tlsObservation(origin){
    if(method==='Security.certificateError')result.certificate_error_event_observed=true;
   },snapshot(){return {...result};}
  };
+}
+
+export function browserTransportVerified(m,{certificateBypass=false}={}){
+ return certificateBypass===false&&m?.document_response_observed===true&&['OFFLINE_CLEAN','OFFLINE_HTML'].includes(m.document_path_class)&&
+  m.document_security_state==='secure'&&['TLS_1_2','TLS_1_3','QUIC'].includes(m.document_protocol_class)&&
+  m.visible_state_observed===true&&m.visible_security_state==='secure'&&m.visible_protocol_class===m.document_protocol_class&&
+  m.visible_certificate_present===true&&m.certificate_network_error_present===false&&m.certificate_currently_valid===true&&m.certificate_error_event_observed===false;
 }

@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
-  "source_parent_commit": "7905c724d6d640672a61c56413ec258fee7b7685",
+  "source_parent_commit": "6676d9c934fe32257c7538e5fcc2fc2ed544c506",
   "source_file_count": 197,
   "file_sha256": {
     "docs/security-audit/security-fr-2-email-batch-f-private-catalog.json": "611700a66b1331bd860c1062fb3e4af8ff5a8cea9882ca05917476f1f99f0df9",
@@ -193,13 +193,13 @@
     "docs/security-audit/security-fr-2-email-batch-m-source-manifest.json": "057b0c60cf5d89f3431f377233c565357439c760ac94cea7fea1467325ae3575",
     "scripts/lib/browser-route-audit.mjs": "8343fe1fea1f5ceece3238c2fa1384655a9bf38dfd1356751ccff118cfc34163",
     "manifest.webmanifest": "9d70bf76140917b6fd58c11ada54e711ca8408bca7af7f7ec3e9dd0906ade950",
-    "scripts/check-fr-2-email-batch-o.mjs": "bb5f1ed289c8f92a6236b25555953bdf2810314d67ea73f1cdaa624956f1a3c4",
+    "scripts/check-fr-2-email-batch-o.mjs": "18f2715b41977fd43d67d557e079e940a70d1609501e1fb033b9048e590f139b",
     "scripts/test-fr-2-email-batch-o-engine.mjs": "de27d242648e2ab502a6d51e4c8be863a488aa92938d86c2cf6b56601ee4b079",
-    "scripts/verify-fr-2-email-batch-o.mjs": "7de3bc95b533fcfd2253cef0a8666d02875569f90cf3ab7e8fd2c619ad7427ce",
+    "scripts/verify-fr-2-email-batch-o.mjs": "a164198dce3e7bab1b0c51200e734ce92943cbd02d18b794383a0e288b1e655c",
     "tests/fr-2-email-batch-o.test.mjs": "548ead0e0c5fc927adbaaad680cbb0885e9a083fd5310e4665496c57670277ed",
     "scripts/lib/browser-public-target.mjs": "78f0f8160f31896324b35d74b5e976dd0308098dd683595dc13bee9c2b8a0e06",
-    "scripts/lib/browser-tls-observation.mjs": "45ad5f4b8196b06aa432ba0eb7e3f57db1f98eeb4eb4b5ff5dbd2bbb20b0ad61",
-    "tests/fr-2-email-batch-o-tls.test.mjs": "918f7b3339adfbb096207fcda8e518cba13ba119c057f77ccea77c6d99294db0"
+    "scripts/lib/browser-tls-observation.mjs": "51e75553e973e70f5806ff8f651eae07bc2f08b35014251a9c7216c4650fdcb9",
+    "tests/fr-2-email-batch-o-tls.test.mjs": "6eb794ff774dd70776df5dc48210abefae7e7c1f671f9ada489c4e8d07bd38b8"
   },
   "syntax_paths": [
     "scripts/check-fr-2-email-batch-i.mjs",
@@ -264,7 +264,7 @@
       "files": [
         "tests/fr-2-email-batch-o-tls.test.mjs"
       ],
-      "expected_tests": 7,
+      "expected_tests": 13,
       "network": "DENY"
     }
   ]

@@ -2,10 +2,12 @@ param(
     [Parameter(Mandatory=$true)][string]$SnapshotRoot,
     [switch]$PreflightOnly,
     [switch]$SendOneCode,
+    [switch]$InspectPacketOnly,
     [string]$PacketFile = ''
 )
 $ErrorActionPreference = 'Stop'
 $Phase = 'SOURCE_IDENTITIES'
+$Problem = 'LOCAL_PRIVATE_RUNNER_REVIEW_REQUIRED'
 $SourceCount = 0
 $TokenSecure = $null
 $PasswordSecure = $null
@@ -25,6 +27,71 @@ function Assert-Unlinked([string]$Value) {
         if ($null -eq $Parent) { break }
         $Probe = $Parent.FullName
     }
+}
+# These helpers are kept in the Windows parent: no privileged packet field reaches Node.
+function Select-RetainedGatewayPacket([string]$PrivateRoot, [string]$RequestedFile) {
+    $script:Phase = 'RETAINED_GATEWAY_PACKET_DISCOVERY'
+    $script:Problem = 'PRIVATE_PACKET_DISCOVERY_REVIEW_REQUIRED'
+    if ([string]::IsNullOrWhiteSpace($RequestedFile)) {
+        Assert-Unlinked $PrivateRoot
+        $Packets = @()
+        # A missing default directory must reach the documented full-path prompt.
+        if (Test-Path -LiteralPath $PrivateRoot) {
+            if (-not (Test-Path -LiteralPath $PrivateRoot -PathType Container)) { throw 'PRIVATE_DIRECTORY_REQUIRED' }
+            $Packets = @(Get-ChildItem -LiteralPath $PrivateRoot -Filter 'email-gateway-*.dpapi' -File | Sort-Object Name)
+        }
+        if ($Packets.Count -eq 1) { $RequestedFile = $Packets[0].FullName }
+        elseif ($Packets.Count -gt 1) {
+            $script:Phase = 'RETAINED_GATEWAY_PACKET_CHOICE'
+            $script:Problem = 'PRIVATE_PACKET_SELECTION_REQUIRED'
+            Write-Host 'Choose the encrypted email-gateway packet used for the installed staging Pages gateway:'
+            for ($Index = 0; $Index -lt $Packets.Count; $Index++) { Write-Host (($Index + 1).ToString() + ': ' + $Packets[$Index].Name) }
+            $PacketChoice = Read-Host 'Enter its number'
+            $Number = 0
+            if ($PacketChoice -notmatch '^[1-9][0-9]*$' -or -not [int]::TryParse($PacketChoice, [ref]$Number) -or $Number -gt $Packets.Count) { throw 'PRIVATE_PACKET_SELECTION_REQUIRED' }
+            $RequestedFile = $Packets[$Number - 1].FullName
+        } else {
+            $script:Phase = 'RETAINED_GATEWAY_PACKET_PATH_INPUT'
+            $script:Problem = 'PRIVATE_PACKET_PATH_REQUIRED'
+            $RequestedFile = Read-Host 'Enter the full path to your EXISTING retained email-gateway-*.dpapi file (do not create a new packet)'
+        }
+    }
+    $script:Phase = 'RETAINED_GATEWAY_PACKET_PATH_VALIDATION'
+    $script:Problem = 'PRIVATE_PACKET_PATH_REVIEW_REQUIRED'
+    $RequestedFile = $RequestedFile.Trim().Trim('"')
+    if ([string]::IsNullOrWhiteSpace($RequestedFile) -or -not [IO.Path]::IsPathRooted($RequestedFile)) { throw 'PRIVATE_PACKET_PATH_REQUIRED' }
+    Assert-Unlinked $RequestedFile
+    return $RequestedFile
+}
+function Get-RetainedGatewayPublicInputs([object]$Configuration) {
+    $script:Phase = 'RETAINED_GATEWAY_PACKET_SCOPE_VALIDATION'
+    $script:Problem = 'PRIVATE_PACKET_SCOPE_REQUIRED'
+    if ($null -eq $Configuration -or $Configuration -is [Array] -or
+        $Configuration.schema_version -ne 1 -or $Configuration.purpose -cne 'MUSHAVO_STAGING_EMAIL_GATEWAY_CONFIGURATION_ONLY' -or
+        $Configuration.project -cne 'dczlddwbtgvfdujgcitb' -or $Configuration.origin -cne 'https://mushavo-budget-staging.pages.dev' -or
+        $Configuration.expected_modern_Pages_Worker_SHA256 -cne 'a7cbfa8b257eb7a53185fc57cc93a8315bbc453fd0bbbd3cc3b2a5e3cf4ee651' -or
+        $null -eq $Configuration.env -or $Configuration.env -is [Array] -or
+        $Configuration.env.EMAIL_GATE_MODE -cne 'STAGING_CONTROLLED_ONLY' -or $Configuration.env.EMAIL_GATE_PROJECT -cne 'dczlddwbtgvfdujgcitb' -or
+        $Configuration.env.EMAIL_GATE_ORIGIN -cne 'https://mushavo-budget-staging.pages.dev' -or
+        $Configuration.env.SUPABASE_PUBLISHABLE_KEY -isnot [string] -or
+        $Configuration.env.SUPABASE_PUBLISHABLE_KEY -cnotmatch '^sb_publishable_[A-Za-z0-9_-]{1,512}$') { throw 'PRIVATE_PACKET_SCOPE_REQUIRED' }
+    $script:Phase = 'RETAINED_GATEWAY_RECIPIENT_JSON'
+    $script:Problem = 'PRIVATE_RECIPIENT_JSON_REQUIRED'
+    $Json = $Configuration.env.ZOHO_TEST_RECIPIENTS_JSON
+    if ($Json -isnot [string] -or $Json.Length -gt 8192) { throw 'PRIVATE_RECIPIENT_JSON_REQUIRED' }
+    # Windows PowerShell 5.1 emits a top-level JSON array as ONE pipeline object.
+    # Read a property of an object instead; array identity survives in both 5.1 and 7.
+    $Document = ConvertFrom-Json -InputObject ('{"items":' + $Json + '}')
+    $script:Phase = 'RETAINED_GATEWAY_RECIPIENT_VALIDATION'
+    $script:Problem = 'PRIVATE_RECIPIENT_LIST_REQUIRED'
+    $Emails = $Document.items
+    if (@($Document.PSObject.Properties).Count -ne 1 -or $Emails -isnot [Array] -or
+        $Emails.Count -lt 1 -or $Emails.Count -gt 10) { throw 'PRIVATE_RECIPIENT_LIST_REQUIRED' }
+    foreach ($Email in $Emails) {
+        if ($Email -isnot [string] -or $Email.Length -gt 254 -or $Email -notmatch '^[^\s@\x00-\x1f]+@[^\s@\x00-\x1f]+\.[A-Za-z]{2,63}$') { throw 'PRIVATE_RECIPIENT_LIST_REQUIRED' }
+    }
+    if (@($Emails | ForEach-Object { $_.ToLowerInvariant() } | Select-Object -Unique).Count -ne $Emails.Count) { throw 'PRIVATE_RECIPIENT_LIST_REQUIRED' }
+    return [pscustomobject]@{publishableKey=$Configuration.env.SUPABASE_PUBLISHABLE_KEY;recipients=$Emails}
 }
 function Plain([Security.SecureString]$Value) {
     $Pointer = [IntPtr]::Zero
@@ -129,7 +196,8 @@ function Private-Dialogue([string]$Node, [string]$Entry, [string]$Text, [bool]$A
         $Errors = $null
     }
 }
-Write-Host 'BATCH I STARTED: one controlled staging login/email, code verification, rolled-back recovery and test-session cleanup. Staging remains quarantined.'
+if ($InspectPacketOnly.IsPresent -or $PreflightOnly.IsPresent) { Write-Host 'BATCH I STARTED: local inspection only; no hosted login or email request.' }
+else { Write-Host 'BATCH I STARTED: one controlled staging login/email, code verification, rolled-back recovery and test-session cleanup. Staging remains quarantined.' }
 try {
     if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT) { throw 'WINDOWS_REQUIRED' }
     Assert-Unlinked $SnapshotRoot
@@ -153,42 +221,39 @@ try {
     if ($Preflight.result -ne 'PRIVATE_DIALOGUE_PREFLIGHT_PASS' -or $Preflight.actual_hosted_requests -ne 0 -or $Preflight.exit_code -ne 0) { throw 'PRIVATE_DIALOGUE_REQUIRED' }
     if ($PreflightOnly.IsPresent) {
         Write-Host ('{"stage_step":"FR.2.4.E5.22_BATCH_I_CONTROLLED_EMAIL_PROOF_AND_ROLLED_BACK_RECOVERY","result":"WINDOWS_PRIVATE_DIALOGUE_PREFLIGHT_PASS","actual_hosted_requests":0,"source_hashes_verified":' + $SourceCount + ',"exit_code":0}')
+        Write-Host 'BATCH I LOCAL PREFLIGHT COMPLETE: hosted acceptance remains pending.'
         return 0
     }
-    if (-not $SendOneCode.IsPresent) { throw 'EXPLICIT_ONE_EMAIL_SWITCH_REQUIRED' }
-    $Phase = 'RETAINED_GATEWAY_PACKET_SELECTION'
+    if (-not $SendOneCode.IsPresent -and -not $InspectPacketOnly.IsPresent) { throw 'EXPLICIT_ONE_EMAIL_SWITCH_REQUIRED' }
     $PrivateRoot = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'MushavoBudget/PrivateStaging'
-    if ([string]::IsNullOrWhiteSpace($PacketFile)) {
-        Assert-Unlinked $PrivateRoot
-        $Packets = @(Get-ChildItem -LiteralPath $PrivateRoot -Filter 'email-gateway-*.dpapi' -File)
-        if ($Packets.Count -eq 1) { $PacketFile = $Packets[0].FullName }
-        elseif ($Packets.Count -gt 1) {
-            Write-Host 'Choose the encrypted email-gateway packet used for the installed staging Pages gateway:'
-            for ($Index = 0; $Index -lt $Packets.Count; $Index++) { Write-Host (($Index + 1).ToString() + ': ' + $Packets[$Index].Name) }
-            $PacketChoice = Read-Host 'Enter its number'
-            if ($PacketChoice -notmatch '^[1-9][0-9]*$' -or [int]$PacketChoice -gt $Packets.Count) { throw 'PRIVATE_PACKET_SELECTION_REQUIRED' }
-            $PacketFile = $Packets[[int]$PacketChoice - 1].FullName
-        } else {
-            $PacketFile = Read-Host 'Enter the full path to the retained email-gateway-*.dpapi file in AppData\Local\MushavoBudget\PrivateStaging'
-        }
-    }
-    Assert-Unlinked $PacketFile
+    $PacketFile = Select-RetainedGatewayPacket $PrivateRoot $PacketFile
+    $Phase = 'RETAINED_GATEWAY_PACKET_FILE_READ'
+    $Problem = 'PRIVATE_PACKET_FILE_READ_REQUIRED'
     $PacketItem = Get-Item -LiteralPath $PacketFile
     if ($PacketItem.PSIsContainer -or $PacketItem.Length -lt 1 -or $PacketItem.Length -gt 262144) { throw 'PRIVATE_PACKET_REQUIRED' }
     $PacketHash = (Get-FileHash -LiteralPath $PacketFile -Algorithm SHA256).Hash
-    $PacketSecure = ConvertTo-SecureString ([IO.File]::ReadAllText($PacketFile, [Text.Encoding]::UTF8))
+    $Cipher = [IO.File]::ReadAllText($PacketFile, [Text.Encoding]::UTF8)
+    $Phase = 'RETAINED_GATEWAY_PACKET_DPAPI_DECRYPTION'
+    $Problem = 'PRIVATE_PACKET_DPAPI_DECRYPTION_REQUIRED'
+    $PacketSecure = ConvertTo-SecureString $Cipher
+    $Cipher = $null
+    $Phase = 'RETAINED_GATEWAY_PACKET_JSON'
+    $Problem = 'PRIVATE_PACKET_JSON_REQUIRED'
     $Packet = (Plain $PacketSecure) | ConvertFrom-Json
-    if ($Packet.schema_version -ne 1 -or $Packet.purpose -ne 'MUSHAVO_STAGING_EMAIL_GATEWAY_CONFIGURATION_ONLY' -or
-        $Packet.project -ne 'dczlddwbtgvfdujgcitb' -or $Packet.origin -ne 'https://mushavo-budget-staging.pages.dev' -or
-        $Packet.expected_modern_Pages_Worker_SHA256 -ne 'a7cbfa8b257eb7a53185fc57cc93a8315bbc453fd0bbbd3cc3b2a5e3cf4ee651' -or
-        $Packet.env.EMAIL_GATE_MODE -ne 'STAGING_CONTROLLED_ONLY' -or $Packet.env.EMAIL_GATE_PROJECT -ne 'dczlddwbtgvfdujgcitb' -or
-        $Packet.env.EMAIL_GATE_ORIGIN -ne 'https://mushavo-budget-staging.pages.dev' -or
-        $Packet.env.SUPABASE_PUBLISHABLE_KEY -cnotmatch '^sb_publishable_[A-Za-z0-9_-]{1,512}$') { throw 'PRIVATE_PACKET_SCOPE_REQUIRED' }
-    $RecipientEmails = @($Packet.env.ZOHO_TEST_RECIPIENTS_JSON | ConvertFrom-Json)
-    if ($RecipientEmails.Count -lt 1 -or $RecipientEmails.Count -gt 10) { throw 'PRIVATE_RECIPIENT_LIST_REQUIRED' }
-    foreach ($Email in $RecipientEmails) {
-        if ($Email -isnot [string] -or $Email.Length -gt 254 -or $Email -notmatch '^[^\s@\x00-\x1f]+@[^\s@\x00-\x1f]+\.[A-Za-z]{2,63}$') { throw 'PRIVATE_RECIPIENT_LIST_REQUIRED' }
+    $PublicInputs = Get-RetainedGatewayPublicInputs $Packet
+    $RecipientEmails = $PublicInputs.recipients
+    $PublicKey = $PublicInputs.publishableKey
+    $Phase = 'RETAINED_GATEWAY_PACKET_LOCAL_READBACK'
+    $Problem = 'PRIVATE_PACKET_CHANGED'
+    Assert-Unlinked $PacketFile
+    if ((Get-FileHash -LiteralPath $PacketFile -Algorithm SHA256).Hash -cne $PacketHash) { throw 'PRIVATE_PACKET_CHANGED' }
+    if ($InspectPacketOnly.IsPresent) {
+        Write-Host ('{"stage_step":"FR.2.4.E5.22_BATCH_I_CONTROLLED_EMAIL_PROOF_AND_ROLLED_BACK_RECOVERY","result":"LOCAL_RETAINED_GATEWAY_PACKET_INSPECTION_PASS","actual_hosted_requests":0,"source_hashes_verified":' + $SourceCount + ',"retained_gateway_packet_unchanged":true,"exit_code":0}')
+        Write-Host 'BATCH I LOCAL PACKET INSPECTION COMPLETE: hosted email acceptance remains pending.'
+        return 0
     }
+    $Phase = 'RETAINED_GATEWAY_TEST_INBOX_CHOICE'
+    $Problem = 'PRIVATE_RECIPIENT_SELECTION_REQUIRED'
     Write-Host 'These are the existing test inboxes from your encrypted gateway configuration. Choose one whose inbox and ordinary staging APP login you control:'
     for ($Index = 0; $Index -lt $RecipientEmails.Count; $Index++) { Write-Host (($Index + 1).ToString() + ': ' + $RecipientEmails[$Index]) }
     if ($RecipientEmails.Count -eq 1) { $SelectedEmail = $RecipientEmails[0] }
@@ -197,7 +262,7 @@ try {
         if ($Choice -notmatch '^[1-9][0-9]*$' -or [int]$Choice -gt $RecipientEmails.Count) { throw 'PRIVATE_RECIPIENT_SELECTION_REQUIRED' }
         $SelectedEmail = $RecipientEmails[[int]$Choice - 1]
     }
-    $PublicKey = [string]$Packet.env.SUPABASE_PUBLISHABLE_KEY
+    $Problem = 'LOCAL_PRIVATE_RUNNER_REVIEW_REQUIRED'
     $Phase = 'PRIVATE_TOKEN_AND_STAGING_APP_PASSWORD'
     $TokenSecure = Read-Host 'Paste the same staging Management token: Project Settings Read + Database Read-write (hidden)' -AsSecureString
     $PasswordSecure = Read-Host ('Enter the STAGING APP password for ' + $SelectedEmail + ' (hidden; not your mailbox or database password)') -AsSecureString
@@ -222,11 +287,14 @@ try {
     else { Write-Host 'BATCH I STOPPED FOR REVIEW: send the safe JSON; do not resend email or repeat the probe blindly.' }
     return [int]$Safe.exit_code
 } catch {
-    Write-Host ('{"stage_step":"FR.2.4.E5.22_BATCH_I_CONTROLLED_EMAIL_PROOF_AND_ROLLED_BACK_RECOVERY","result":"PRIVATE_BATCH_I_RUNNER_REVIEW_REQUIRED","checkpoint":"' + $Phase + '","problem_code":"LOCAL_PRIVATE_RUNNER_REVIEW_REQUIRED","email_or_Auth_session_outcome_requires_inspection":' + $(if ($ProbeStarted) { 'true' } else { 'false' }) + ',"committed_mode_change_requested":false,"exit_code":1}')
+    Write-Host ('{"stage_step":"FR.2.4.E5.22_BATCH_I_CONTROLLED_EMAIL_PROOF_AND_ROLLED_BACK_RECOVERY","result":"PRIVATE_BATCH_I_RUNNER_REVIEW_REQUIRED","checkpoint":"' + $Phase + '","problem_code":"' + $Problem + '","email_or_Auth_session_outcome_requires_inspection":' + $(if ($ProbeStarted) { 'true' } else { 'false' }) + ',"committed_mode_change_requested":false,"exit_code":1}')
+    Write-Host 'BATCH I STOPPED FOR REVIEW: send only the safe JSON and exit code; inspect the checkpoint before retrying.'
     return 1
 } finally {
     foreach ($Secret in @($TokenSecure,$PasswordSecure,$PacketSecure)) { if ($Secret) { $Secret.Dispose() } }
     $Packet = $null
+    $Cipher = $null
+    $PublicInputs = $null
     $RecipientEmails = $null
     $SelectedEmail = $null
     $PublicKey = $null

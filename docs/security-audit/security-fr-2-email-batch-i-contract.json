@@ -1,12 +1,12 @@
 {
   "stage_step": "FR.2.4.E5.22_BATCH_I_CONTROLLED_EMAIL_PROOF_AND_ROLLED_BACK_RECOVERY",
-  "status": "LOCAL_BATCH_I14PASS_OWNER_CONTROLLED_EMAIL_AND_ROLLBACK_RECOVERY_PENDING",
-  "source_parent_commit": "6192de9114b6bf5e4779d2e20d64ed5a52b66fd5",
+  "status": "LOCAL_RUNNER_CORRECTION53PASS_OWNER_WINDOWS_AND_HOSTED_RETRY_PENDING",
+  "source_parent_commit": "1dbdba3a6cf1352f00c42249dcc0e12a8ee7479b",
   "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_I_HANDOFF.md",
   "manifest": "docs/security-audit/security-fr-2-email-batch-i-source-manifest.json",
-  "local_receipt": "docs/security-audit/security-fr-2-email-batch-i-local-checks.json",
-  "local_PASS": 14,
-  "source_hashes": 136,
+  "local_receipt": "docs/security-audit/security-fr-2-email-batch-i-runner-fix-local-checks.json",
+  "local_PASS": 53,
+  "source_hashes": 137,
   "JS_syntax_checks": 5,
   "staging_project": "dczlddwbtgvfdujgcitb",
   "staging_origin": "https://mushavo-budget-staging.pages.dev",
@@ -44,5 +44,14 @@
   "hosted_acceptance": false,
   "production_or_native_changed": false,
   "APK_update_deferred": true,
-  "findings_closed": []
+  "findings_closed": [],
+  "original_local_receipt": "docs/security-audit/security-fr-2-email-batch-i-local-checks.json",
+  "owner_local_stop_receipt": "docs/security-audit/security-fr-2-email-batch-i-owner-local-stop.json",
+  "runner_fix_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_I_RUNNER_FIX.md",
+  "retained_gateway_SQL_transport_cases": 14,
+  "new_PowerShell_runner_cases": 39,
+  "optional_local_packet_inspection_switch": "InspectPacketOnly",
+  "exact_old_owner_local_cause_confirmed": false,
+  "legacy_JSON_array_compatibility_defect_reproduced_with_model": true,
+  "actual_Windows_DPAPI_verified": false
 }

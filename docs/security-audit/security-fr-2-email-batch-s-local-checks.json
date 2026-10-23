@@ -1,0 +1,273 @@
+{
+  "stage_step": "FR.2.4.E5.32_BATCH_S_LOCAL_QUARANTINE_BROWSER_TRANSITION_AND_FAILURE_CONTAINMENT",
+  "batch": "S",
+  "result": "LOCAL_BATCH_S118_BROWSER_TRANSITIONS_AND_CONTAINMENT_SCOPED_PASS",
+  "source_parent_commit": "b29a6d6aa71ce02b58dfc431ca8f4f0e5ec57f68",
+  "node_version": "v24.19.0",
+  "platform": "linux",
+  "pglite_version": "0.5.8",
+  "source_hashes_verified": 231,
+  "syntax_checks": 71,
+  "tests": 118,
+  "pass": 118,
+  "fail": 0,
+  "units": {
+    "tests": 30,
+    "pass": 30,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "exit_code": 0
+  },
+  "retained_SQL_containment": {
+    "tests": 62,
+    "pass": 62,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "exit_code": 0
+  },
+  "local_browser": {
+    "stage_step": "FR.2.4.E5.32_BATCH_S_LOCAL_QUARANTINE_BROWSER_TRANSITION_AND_FAILURE_CONTAINMENT",
+    "batch": "S",
+    "result": "BATCH_S_LOCAL_BOUNDED_BROWSER_TRANSITIONS_SCOPED_PASS",
+    "scope": "LOCAL_REAL_COMPONENTS_SYNTHETIC_AUTH_MAIL_AND_BOUNDED_BACKEND",
+    "checks": [
+      {
+        "check": "PINNED_SHARED_MODULES_EXECUTED_IN_SECURE_LOCAL_DOM",
+        "status": "PASS"
+      },
+      {
+        "check": "QUARANTINED_PASSWORD_ONLY_VIEW_LOCKED_NO_EMAIL",
+        "status": "PASS"
+      },
+      {
+        "check": "ONE_EXPLICIT_REMEMBER_EMAIL_WHILE_QUARANTINED",
+        "status": "PASS"
+      },
+      {
+        "check": "CODE_ACCEPTED_BUT_QUARANTINE_STILL_LOCKS_VIEW",
+        "status": "PASS"
+      },
+      {
+        "check": "AUTOMATIC_COOKIE_SECURE_HTTPONLY_STRICT_HOST_ONLY",
+        "status": "PASS"
+      },
+      {
+        "check": "HTTPONLY_COOKIE_NOT_EXPOSED_TO_DOCUMENT",
+        "status": "PASS"
+      },
+      {
+        "check": "RESTORE_CREATES_PROOF_WHILE_QUARANTINED_WITHOUT_UNLOCK_OR_RESEND",
+        "status": "PASS"
+      },
+      {
+        "check": "AUTOMATIC_RESTORE_PRESERVES_FIXED_COOKIE_EXPIRY",
+        "status": "PASS"
+      },
+      {
+        "check": "FRESH_SESSION_AND_OTHER_ACCOUNT_KEEP_NO_PROOFS",
+        "status": "PASS"
+      },
+      {
+        "check": "BOUNDED_MODE_UNLOCKS_ONLY_TWO_PROVED_SESSIONS",
+        "status": "PASS"
+      },
+      {
+        "check": "ACTUAL_BROWSER_HTTP_SESSION_1_BOUNDARIES",
+        "status": "PASS"
+      },
+      {
+        "check": "ACTUAL_BROWSER_HTTP_SESSION_2_BOUNDARIES",
+        "status": "PASS"
+      },
+      {
+        "check": "ACTUAL_BROWSER_HTTP_SESSION_3_BOUNDARIES",
+        "status": "PASS"
+      },
+      {
+        "check": "ACTUAL_BROWSER_HTTP_SESSION_4_BOUNDARIES",
+        "status": "PASS"
+      },
+      {
+        "check": "ACCOUNT_CHANGE_SYNCHRONOUSLY_CLEARS_VIEW_AND_TICKET",
+        "status": "PASS"
+      },
+      {
+        "check": "EXPLICIT_QUARANTINE_LOCKS_VIEWS_AND_OLD_TICKET",
+        "status": "PASS"
+      },
+      {
+        "check": "POST_QUARANTINE_BROWSER_GATEWAY_RPC_AND_PROFILE_DENIED",
+        "status": "PASS"
+      },
+      {
+        "check": "ONE_EMAIL_AND_ONE_VERIFY_NO_RETRY_DURING_MODE_TRANSITIONS",
+        "status": "PASS"
+      },
+      {
+        "check": "NO_AUTH_TOKENS_CODES_OR_DEVICE_CREDENTIAL_IN_WEB_STORAGE",
+        "status": "PASS"
+      },
+      {
+        "check": "NO_PRIVATE_RESPONSE_OR_CANARY_IN_CACHE_STORAGE",
+        "status": "PASS"
+      },
+      {
+        "check": "EXACT_REQUEST_GUARD_AND_FIXTURE_ROUTES",
+        "status": "PASS"
+      }
+    ],
+    "tests": 21,
+    "pass": 21,
+    "fail": 0,
+    "browser_product": "HeadlessChrome/153.0.8010.0",
+    "failure_exercise": null,
+    "synthetic_email_attempts": 1,
+    "synthetic_open_attempts": 1,
+    "synthetic_quarantine_attempts": 1,
+    "synthetic_final_quarantined": true,
+    "request_guard": {
+      "attempts": 61,
+      "blocked": 0,
+      "begin": 1,
+      "verify": 1,
+      "maximum": 96
+    },
+    "actual_modules_loaded_and_hashed": true,
+    "incognito_contexts_disposed": true,
+    "disposed_context_cookies_absent": true,
+    "browser_process_stopped": true,
+    "temporary_profile_removed": true,
+    "local_fixture_closed": true,
+    "shared_components_executed": true,
+    "full_app_bootstrap_executed": false,
+    "local_certificate_validation_bypassed": true,
+    "hosted_TLS_verified": false,
+    "actual_hosted_requests": 0,
+    "real_email_requests": 0,
+    "private_packets_or_credentials_accessed": false,
+    "actual_SQL_or_real_session_cleanup_executed": false,
+    "committed_mode_change_requests": 0,
+    "hosted_acceptance": false,
+    "live_activation_approved": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0,
+    "checked_UTC": "2026-10-23T18:07:28.984Z"
+  },
+  "expected_failure_exercises": [
+    {
+      "exercise": "BEGIN_RESPONSE_LOST",
+      "expected_stop_and_cleanup_verified": true,
+      "observed_problem_code": "EXPECTED_BEGIN_RESPONSE_LOST",
+      "browser_checks_before_stop": 2,
+      "expected_rejection_checks": 0,
+      "synthetic_email_attempts": 1,
+      "synthetic_open_attempts": 0,
+      "synthetic_final_quarantined": true,
+      "request_guard": {
+        "attempts": 6,
+        "blocked": 0,
+        "begin": 1,
+        "verify": 0,
+        "maximum": 96
+      },
+      "cleanup_verified": true
+    },
+    {
+      "exercise": "VERIFY_RESPONSE_LOST",
+      "expected_stop_and_cleanup_verified": true,
+      "observed_problem_code": "EXPECTED_VERIFY_RESPONSE_LOST",
+      "browser_checks_before_stop": 3,
+      "expected_rejection_checks": 0,
+      "synthetic_email_attempts": 1,
+      "synthetic_open_attempts": 0,
+      "synthetic_final_quarantined": true,
+      "request_guard": {
+        "attempts": 7,
+        "blocked": 0,
+        "begin": 1,
+        "verify": 1,
+        "maximum": 96
+      },
+      "cleanup_verified": true
+    },
+    {
+      "exercise": "ACTIVE_PROOF_DENIED",
+      "expected_stop_and_cleanup_verified": true,
+      "observed_problem_code": "LOCAL_BROWSER_CHECK_REQUIRED",
+      "browser_checks_before_stop": 9,
+      "expected_rejection_checks": 1,
+      "synthetic_email_attempts": 1,
+      "synthetic_open_attempts": 1,
+      "synthetic_final_quarantined": true,
+      "request_guard": {
+        "attempts": 36,
+        "blocked": 0,
+        "begin": 1,
+        "verify": 1,
+        "maximum": 96
+      },
+      "cleanup_verified": true
+    },
+    {
+      "exercise": "AFTER_OPEN",
+      "expected_stop_and_cleanup_verified": true,
+      "observed_problem_code": "EXPECTED_AFTER_OPEN",
+      "browser_checks_before_stop": 9,
+      "expected_rejection_checks": 0,
+      "synthetic_email_attempts": 1,
+      "synthetic_open_attempts": 1,
+      "synthetic_final_quarantined": true,
+      "request_guard": {
+        "attempts": 26,
+        "blocked": 0,
+        "begin": 1,
+        "verify": 1,
+        "maximum": 96
+      },
+      "cleanup_verified": true
+    },
+    {
+      "exercise": "UNREVIEWED_REQUEST",
+      "expected_stop_and_cleanup_verified": true,
+      "observed_problem_code": "LOCAL_REQUEST_GUARD_REQUIRED",
+      "browser_checks_before_stop": 20,
+      "expected_rejection_checks": 0,
+      "synthetic_email_attempts": 1,
+      "synthetic_open_attempts": 1,
+      "synthetic_final_quarantined": true,
+      "request_guard": {
+        "attempts": 62,
+        "blocked": 1,
+        "begin": 1,
+        "verify": 1,
+        "maximum": 96
+      },
+      "cleanup_verified": true
+    }
+  ],
+  "cases_include_retained_and_overlapping_regressions": true,
+  "synthetic_backend_browser_and_actual_SQL_runs_separate": true,
+  "Windows_S_execution_verified": false,
+  "hosted_driver_or_private_parent_ready": false,
+  "owner_action_required": false,
+  "actual_hosted_requests": 0,
+  "real_email_requests": 0,
+  "private_packets_or_credentials_accessed": false,
+  "committed_mode_change_requests": 0,
+  "artifact_regenerated_or_uploaded": false,
+  "hosted_acceptance": false,
+  "live_activation_approved": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "checkpoint": "COMPLETE",
+  "problem_code": null,
+  "exit_code": 0,
+  "checked_UTC": "2026-10-23T18:07:33.601Z"
+}

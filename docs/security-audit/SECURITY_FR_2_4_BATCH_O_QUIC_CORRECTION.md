@@ -1,3 +1,5 @@
+> Latest FRE160/FRE161: Windows13 local passes +7 hosted public passes (transport/assets/worker/cache); timeout during offline navigation, cleanup verified. Worker-fetch-only failure injection and safe snapshots now pass43 local checks (199 hashes,49 syntax); corrected Windows/hosted followup pending. See [offline review](SECURITY_FR_2_4_BATCH_O_OFFLINE_REVIEW.md).
+
 # Batch O secure QUIC correction — 2026-10-23
 
 ## Owner evidence and diagnosis

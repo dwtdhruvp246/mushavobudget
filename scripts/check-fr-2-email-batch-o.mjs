@@ -8,6 +8,7 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {LocalCDP,until} from './lib/browser-local-cdp.mjs';
 import {tlsObservation,browserTransportVerified} from './lib/browser-tls-observation.mjs';
+import {offlinePauseAction,offlineNavigatorState,offlineViewExpression} from './lib/browser-offline-model.mjs';
 import {configurePublicTarget,workerAutoAttach} from './lib/browser-public-target.mjs';
 export const stage='FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER';
 export const stagingOrigin='https://mushavo-budget-staging.pages.dev';
@@ -25,12 +26,12 @@ export async function publicBrowser(executable,{fixtureOrigin=null,tlsDiagnostic
  if(fixture&&!/^https:\/\/localhost:[1-9][0-9]{0,4}$/.test(fixtureOrigin))throw Error('LOOPBACK_FIXTURE_REQUIRED');
  const origin=fixture?fixtureOrigin:stagingOrigin;
  const r={stage_step:stage,batch:'O',result:'BATCH_O_PUBLIC_BROWSER_REVIEW_REQUIRED',scope:fixture?'LOCAL_HTTPS_PUBLIC_SOURCE_FIXTURE':'HOSTED_PUBLIC_SOURCE_TLS_AND_BROWSER_SERVICE_WORKER',
- tls_metadata:null,tls_metadata_only:tlsDiagnostic,target_setup_failure:null,explicit_page_attachment:true,checks:[],tests:0,pass:0,fail:0,browser_product:null,public_assets_verified:0,intercepted_request_attempts:0,maximum_intercepted_requests:128,blocked_unreviewed_requests:0,simulated_offline_requests:0,
+ offline_navigation:{model:'WORKER_FETCH_FAILURE_PAGE_STATE_ONLY',worker_fetch_failures:0,page_navigation_continuations:0,document_from_service_worker:null,document_http_status:null,navigation_error_present:false,view:null},tls_metadata:null,tls_metadata_only:tlsDiagnostic,target_setup_failure:null,explicit_page_attachment:true,checks:[],tests:0,pass:0,fail:0,browser_product:null,public_assets_verified:0,intercepted_request_attempts:0,maximum_intercepted_requests:128,blocked_unreviewed_requests:0,simulated_offline_requests:0,
  intercepted_hosted_request_attempts:0,worker_startup_fetches_not_intercepted:true,total_browser_hosted_requests_independently_counted:false,document_scripts_disabled:true,hosted_TLS_verified:false,hosted_secure_transport_verified:false,executed_worker_source_verified:false,isolated_temporary_profile:true,temporary_profile_removed:false,browser_process_stopped:false,
  private_packets_accessed:false,credentials_or_Auth_or_gateway_requests_permitted:false,real_email_requests:0,committed_mode_change_requests:0,hosted_authenticated_browser_acceptance:false,
  installed_PWA_OS_lifecycle_verified:false,external_traffic_OS_sandboxed:false,local_certificate_validation_bypassed:fixture,hosted_acceptance:false,live_activation_approved:false,production_or_native_changed:false,APK_update_deferred:true,findings_closed:[],checkpoint:'BROWSER_INPUT',problem_code:null,exit_code:1};
  let child,profile,cdp,offline=false,fatal=null,workerHash=false,main=false;
- const sessions=new Map(),tasks=new Set(),tls=tlsObservation(origin);let pageSession=null;
+ const sessions=new Map(),tasks=new Set(),tls=tlsObservation(origin);let pageSession=null,pageEvaluate=null;
  const need=(v,code='PUBLIC_BROWSER_CHECK_REQUIRED')=>{if(!v)throw Error(code);};
  const check=(name,v)=>{r.checkpoint=name;r.tests++;const ok=v===true;r.checks.push({check:name,status:ok?'PASS':'FAIL'});ok?r.pass++:r.fail++;need(ok);need(!fatal,fatal);};
  const job=p=>{tasks.add(p);p.catch(()=>{fatal??='BROWSER_NETWORK_GUARD_REQUIRED';}).finally(()=>tasks.delete(p));};
@@ -49,7 +50,7 @@ export async function publicBrowser(executable,{fixtureOrigin=null,tlsDiagnostic
    // Only worker targets are automatically attached. Never configure Chrome's transient startup page/tab.
    if(x.method==='Target.attachedToTarget'&&['service_worker','worker'].includes(p.targetInfo.type))job((async()=>{
     const target=p.targetInfo.targetId;if([...sessions.values()].some(x=>x.target===target))return;
-    const s=p.sessionId;sessions.set(s,{target,ready:false});
+    const s=p.sessionId;sessions.set(s,{target,ready:false,type:p.targetInfo.type});
     await configurePublicTarget(cdp,{sessionId:s,type:p.targetInfo.type},failure=>{r.target_setup_failure??=failure;});
     sessions.get(s).ready=true;
    })());
@@ -58,9 +59,21 @@ export async function publicBrowser(executable,{fixtureOrigin=null,tlsDiagnostic
     r.intercepted_request_attempts++;const budget=r.intercepted_request_attempts<=r.maximum_intercepted_requests;
     if(!allowed){r.blocked_unreviewed_requests++;fatal??='UNREVIEWED_PUBLIC_REQUEST';}
     if(!budget)fatal??='PUBLIC_REQUEST_BUDGET_REQUIRED';
-    if(!allowed||!budget||fatal||offline){if(offline&&allowed)r.simulated_offline_requests++;await cdp.call('Fetch.failRequest',{requestId:p.requestId,errorReason:'InternetDisconnected'},sid);}
-    else{if(!fixture)r.intercepted_hosted_request_attempts++;await cdp.call('Fetch.continueRequest',{requestId:p.requestId},sid);}
+    if(!allowed||!budget||fatal){await cdp.call('Fetch.failRequest',{requestId:p.requestId,errorReason:'BlockedByClient'},sid);return;}
+    if(offline){const action=offlinePauseAction(sessions.get(sid)?.type,p.resourceType);
+     if(action==='FAIL_WORKER_FETCH'||action==='FAIL_UNKNOWN_TARGET'){
+      r.simulated_offline_requests++;if(action==='FAIL_WORKER_FETCH')r.offline_navigation.worker_fetch_failures++;
+      await cdp.call('Fetch.failRequest',{requestId:p.requestId,errorReason:'InternetDisconnected'},sid);return;
+     }
+     if(action==='CONTINUE_PAGE_NAVIGATION')r.offline_navigation.page_navigation_continuations++;
+     await cdp.call('Fetch.continueRequest',{requestId:p.requestId},sid);return;
+    }
+    if(!fixture)r.intercepted_hosted_request_attempts++;await cdp.call('Fetch.continueRequest',{requestId:p.requestId},sid);
    })());
+   if(offline&&sid===pageSession&&x.method==='Network.responseReceived'&&p.type==='Document'){
+    r.offline_navigation.document_from_service_worker=typeof p.response?.fromServiceWorker==='boolean'?p.response.fromServiceWorker:null;
+    r.offline_navigation.document_http_status=Number.isInteger(p.response?.status)&&p.response.status>=0&&p.response.status<=599?p.response.status:null;
+   }
    if(x.method==='Debugger.scriptParsed'&&publicRequestAllowed(p.url,'GET',{origin})&&new URL(p.url).pathname==='/sw.js')job((async()=>{const s=await cdp.call('Debugger.getScriptSource',{scriptId:p.scriptId},sid);workerHash=hash(s.scriptSource)===expected['/sw.js'];})());
   });
   r.checkpoint='WORKER_AUTO_ATTACH_CONFIGURATION';
@@ -68,10 +81,11 @@ export async function publicBrowser(executable,{fixtureOrigin=null,tlsDiagnostic
   r.checkpoint='EXPLICIT_PUBLIC_PAGE_ATTACHMENT';
   const t=await cdp.call('Target.createTarget',{url:'about:blank'});
   const attached=await cdp.call('Target.attachToTarget',{targetId:t.targetId,flatten:true}),s=attached.sessionId;
-  pageSession=s;sessions.set(s,{target:t.targetId,ready:false});
+  pageSession=s;sessions.set(s,{target:t.targetId,ready:false,type:'page'});
   await configurePublicTarget(cdp,{sessionId:s,type:'page'},failure=>{r.target_setup_failure??=failure;});
   sessions.get(s).ready=true;
   const ev=async code=>{const x=await cdp.call('Runtime.evaluate',{expression:code,awaitPromise:true,returnByValue:true},s,45000);need(!x.exceptionDetails&&x.result&&x.result.subtype!=='error','BROWSER_EVALUATION_REQUIRED');return x.result.value;},wait=code=>until(async()=>{need(!fatal,fatal);try{return await ev(code);}catch{return false;}},{timeout:25000});
+  pageEvaluate=ev;
   r.checkpoint='PUBLIC_OFFLINE_DOCUMENT';const navigation=await cdp.call('Page.navigate',{url:origin+'/offline'},s);if(navigation.errorText){const e=navigation.errorText;r.navigation_failure_class=e.startsWith('net::ERR_CERT_')?'TLS_CERTIFICATE_REJECTED':e==='net::ERR_NAME_NOT_RESOLVED'?'DNS_UNAVAILABLE':'NETWORK_NAVIGATION_REQUIRED';need(false,r.navigation_failure_class);}await wait('document.querySelector("h1")?.textContent==="Your workspace needs a connection"');
   check('REAL_PUBLIC_DOM_AND_SECURE_CONTEXT',await ev('isSecureContext&&location.origin==='+JSON.stringify(origin)));
   if(tlsDiagnostic)await delay(500);
@@ -90,16 +104,19 @@ export async function publicBrowser(executable,{fixtureOrigin=null,tlsDiagnostic
   check('STALE_PRODUCT_CACHE_REMOVED_UNRELATED_CACHE_PRESERVED',await ev('caches.keys().then(x=>!x.includes("mushavo-budget-batch-o-stale")&&x.includes("batch-o-unrelated")&&x.includes("mushavo-budget-pwa-shell-v88"))'));
   const audit=`(async()=>{const expected=${JSON.stringify(expected)};const c=await caches.open('mushavo-budget-pwa-shell-v88');const keys=await c.keys();if(keys.length!==14)return false;for(const request of keys){const u=new URL(request.url);let p=u.pathname;if(p==='/__mushavo-budget-offline/app-entry')p='/app-entry.html';else if(p==='/__mushavo-budget-offline/page')p='/offline.html';if(u.origin!==location.origin||!expected[p]||p==='/sw.js'||p==='/manifest.webmanifest')return false;const bytes=await(await c.match(request)).arrayBuffer();const h=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('');if(h!==expected[p])return false;}return true;})()`;
   check('ALL_14_PRODUCT_CACHE_ENTRIES_ARE_EXACT_PUBLIC_SOURCE',await ev(audit));
+  need(await ev('!!navigator.serviceWorker.controller'),'OFFLINE_WORKER_CONTROL_REQUIRED');
+  r.checkpoint='OFFLINE_NAVIGATOR_STATE_OVERRIDE';
+  await cdp.call('Network.overrideNetworkState',offlineNavigatorState,s);
   offline=true;
-  for(const sid of sessions.keys())await cdp.call('Network.emulateNetworkConditions',{offline:true,latency:0,downloadThroughput:0,uploadThroughput:0},sid);
-  r.checkpoint='BROWSER_OFFLINE_NAVIGATION';await cdp.call('Page.navigate',{url:origin+'/app.html?batch_o=offline'},s);
+  r.checkpoint='BROWSER_OFFLINE_NAVIGATION';const offlineNavigation=await cdp.call('Page.navigate',{url:origin+'/app.html?batch_o=offline'},s);r.offline_navigation.navigation_error_present=typeof offlineNavigation.errorText==='string'&&offlineNavigation.errorText.length>0;
   await wait('document.querySelector("h1")?.textContent==="Your workspace needs a connection"');
-  check('REAL_WORKER_OFFLINE_NAVIGATION_SHOWS_ONLY_SAFE_DOCUMENT',await ev('location.pathname==="/app.html"&&document.body.textContent.includes("No financial data has been stored")&&!navigator.onLine'));
+  r.offline_navigation.view=await ev(offlineViewExpression(origin));
+  check('REAL_WORKER_OFFLINE_NAVIGATION_SHOWS_ONLY_SAFE_DOCUMENT',r.offline_navigation.view.document_class==='EXPECTED_APP_PATH'&&r.offline_navigation.view.expected_heading_present&&r.offline_navigation.view.expected_notice_present&&r.offline_navigation.view.navigator_online===false&&r.offline_navigation.document_from_service_worker===true&&r.offline_navigation.worker_fetch_failures>0);
   check('OFFLINE_NAVIGATION_DID_NOT_CACHE_PRIVATE_APP_HTML',await ev(audit));
   check('NO_INTERCEPTED_AUTH_GATEWAY_OR_UNREVIEWED_REQUEST_ALLOWED',r.blocked_unreviewed_requests===0&&!fatal);
   main=true;
   }
- }catch(error){const known=new Set(['PUBLIC_BROWSER_CHECK_REQUIRED','LOOPBACK_FIXTURE_REQUIRED','BROWSER_NETWORK_GUARD_REQUIRED','BROWSER_TARGET_SETUP_REQUIRED','UNREVIEWED_PUBLIC_REQUEST','PUBLIC_REQUEST_BUDGET_REQUIRED','UNREVIEWED_BROWSER_TARGET','BROWSER_CHECK_TIMEOUT','CDP_COMMAND_REQUIRED','CDP_COMMAND_TIMEOUT','CDP_CONNECTION_REQUIRED','BROWSER_EVALUATION_REQUIRED','TLS_CERTIFICATE_REJECTED','DNS_UNAVAILABLE','NETWORK_NAVIGATION_REQUIRED']);r.problem_code=known.has(error?.message)?error.message:'PUBLIC_BROWSER_OR_SOURCE_REVIEW_REQUIRED';}
+ }catch(error){const known=new Set(['PUBLIC_BROWSER_CHECK_REQUIRED','OFFLINE_WORKER_CONTROL_REQUIRED','LOOPBACK_FIXTURE_REQUIRED','BROWSER_NETWORK_GUARD_REQUIRED','BROWSER_TARGET_SETUP_REQUIRED','UNREVIEWED_PUBLIC_REQUEST','PUBLIC_REQUEST_BUDGET_REQUIRED','UNREVIEWED_BROWSER_TARGET','BROWSER_CHECK_TIMEOUT','CDP_COMMAND_REQUIRED','CDP_COMMAND_TIMEOUT','CDP_CONNECTION_REQUIRED','BROWSER_EVALUATION_REQUIRED','TLS_CERTIFICATE_REJECTED','DNS_UNAVAILABLE','NETWORK_NAVIGATION_REQUIRED']);r.problem_code=known.has(error?.message)?error.message:'PUBLIC_BROWSER_OR_SOURCE_REVIEW_REQUIRED';if(offline&&pageEvaluate){try{r.offline_navigation.view=await pageEvaluate(offlineViewExpression(origin));}catch{}}}
  finally{
   if(cdp){try{await cdp.call('Browser.close',{},undefined,3000);}catch{}cdp.close();}
   if(child){if(child.exitCode===null&&!child.killed)child.kill();try{await until(()=>child.exitCode!==null||child.signalCode!==null,{timeout:5000});r.browser_process_stopped=true;}catch{}}

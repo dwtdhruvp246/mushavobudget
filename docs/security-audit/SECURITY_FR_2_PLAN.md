@@ -1,3 +1,5 @@
+> Latest FRE160/FRE161: Windows13 local passes +7 hosted public passes (transport/assets/worker/cache); timeout during offline navigation, cleanup verified. Worker-fetch-only failure injection and safe snapshots now pass43 local checks (199 hashes,49 syntax); corrected Windows/hosted followup pending. See [offline review](SECURITY_FR_2_4_BATCH_O_OFFLINE_REVIEW.md).
+
 > Latest FRE158/FRE159: Windows diagnostic8/8 +hosted DOM1/1 PASS, secure QUIC and valid/error-free certificate observed, cleanup verified. TLS-only label matcher corrected with strict TLS/QUIC certificate checks; local37/37 PASS. Focused13-local +10-hosted public followup pending; prior Windows24 passes retained. See [QUIC correction](SECURITY_FR_2_4_BATCH_O_QUIC_CORRECTION.md).
 
 > Latest FRE156/FRE157: Windows24 local checks pass; hosted public DOM passes but TLS assertion stops (1 PASS,1 FAIL), cleanup verified. Exact TLS-metadata cause unknown. Short collection-only diagnostic prepared (197 hashes,47 syntax); no full rerun requested. See [TLS review](SECURITY_FR_2_4_BATCH_O_TLS_REVIEW.md).

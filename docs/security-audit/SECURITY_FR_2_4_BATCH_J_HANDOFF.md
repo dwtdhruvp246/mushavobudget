@@ -1,3 +1,5 @@
+> **Completed 23 October2026,FRE140.** [Owner hosted receipt](security-fr-2-email-batch-j-owner-pass.json):35 direct requests,one remembered-code email/account-binding and rolled-back lifecycle pass,exact device/four-session cleanup,final quarantine/target verified,exit0. [Completion report](SECURITY_FR_2_4_BATCH_J_COMPLETE.md) records scope and pending gates. Do not rerun this historical workflow to advance the checkpoint.
+
 > **Owner Windows offline PASS; numeric selection retry ready (23 October2026,FRE139).** [Owner receipt](security-fr-2-email-batch-j-owner-selection-stop.json):50/50,143 hashes,8 syntax checks,Node22.17.0,PowerShell5.1.26100.9711,offline exit0. The parent stopped before any hosted probe when an address was entered at the first number prompt. [Retry](SECURITY_FR_2_4_BATCH_J_SELECTION_RETRY.md) reuses the unchanged published cc7dd34 runner without repeating tests/installations; with the same displayed list enter first2,then1. No runtime/manifest fix or hosted recovery is required. The workflow below retains its existing scope.
 
 # Batch J: remembered-device/account binding and rolled-back lifecycle

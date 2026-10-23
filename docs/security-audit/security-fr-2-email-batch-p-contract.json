@@ -1,6 +1,6 @@
 {
   "stage_step": "FR.2.4.E5.29_BATCH_P_PAGES_REDIRECT_SAFE_OFFLINE_CANDIDATE_AND_RETAINED_ZIP",
-  "status": "LOCAL29PASS_PAGES_REDIRECT_SAFE_SW_CANDIDATE_OWNER_ZIP_PENDING",
+  "status": "OWNER_WINDOWS_LOCAL29PASS_AND_INDEPENDENT_ZIP_READBACK_COMPLETE_NOT_DEPLOYED",
   "source_parent_commit": "df8bdc48490ceaf4879fe4056a0e5aa57e553997",
   "report": "docs/security-audit/SECURITY_FR_2_4_BATCH_P_HANDOFF.md",
   "manifest": "docs/security-audit/security-fr-2-email-batch-p-source-manifest.json",
@@ -22,8 +22,8 @@
   "public_entry_count": 44,
   "preserved_public_entries": 43,
   "actual_owner_retained_ZIP_accessed_by_assistant": false,
-  "Windows_owner_execution_verified": false,
-  "owner_result_received": false,
+  "Windows_owner_execution_verified": true,
+  "owner_result_received": true,
   "private_packets_or_credentials_required": false,
   "regeneration_or_installation_required": false,
   "actual_hosted_requests": 0,
@@ -35,5 +35,18 @@
   "live_activation_approved": false,
   "production_or_native_changed": false,
   "APK_update_deferred": true,
-  "findings_closed": []
+  "findings_closed": [],
+  "owner_receipt": "docs/security-audit/security-fr-2-email-batch-p-owner-pass.json",
+  "completion_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_P_COMPLETE.md",
+  "owner_execution_commit": "bfb2104eef8e181145be7f225496f1d172c29a0a",
+  "owner_PASS": 29,
+  "owner_FAIL": 0,
+  "owner_exit_code": 0,
+  "Windows_independent_preserved_entries": 43,
+  "Windows_dotNET_ZIP_readback_verified": true,
+  "candidate_ZIP_SHA256": "5bbbea1dfaca36a05c513b087012657c0dfd7380901dcf2f47dc2eac45309fe0",
+  "candidate_ZIP_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\mushavo-batch-p-397169b10cd441e7b9a7833f67e56484\\public-candidate\\mushavo-pages-offline-review.zip",
+  "local_preparation_checkpoint_complete": true,
+  "do_not_repeat_batch_p": true,
+  "next_step": "FR.2.4.E5.30_BATCH_Q_REVIEWED_STAGING_SW_UPLOAD_AND_PUBLIC_BROWSER_READBACK"
 }

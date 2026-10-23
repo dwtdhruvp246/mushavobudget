@@ -1,3 +1,5 @@
+> FRE164: owner Windows29/29 and independent .NET44-entry ZIP readback passed;43 entries preserved, only sw.js changed. Local checkpoint complete, no upload. Do not rerun P. See [completion](SECURITY_FR_2_4_BATCH_P_COMPLETE.md) and [Q handoff](SECURITY_FR_2_4_BATCH_Q_HANDOFF.md). Preparation instructions below are historical.
+
 # Batch P — Pages-redirect-safe offline worker candidate and retained ZIP
 
 Stage FR.2.4.E5.29. Main Stage3 Authorization and Admin MFA remains in progress. No production/native update or APK rebuild.

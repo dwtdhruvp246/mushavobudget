@@ -21,13 +21,22 @@ export function publicRequestAllowed(url,method,{origin=stagingOrigin,offline=fa
  }catch{return false;}
 }
 const hash=b=>createHash('sha256').update(b).digest('hex');
-export async function publicBrowser(executable,{fixtureOrigin=null,tlsDiagnostic=false,candidateWorker=false}={}){
+export function reviewedStagingOrigin(value,{unique=false}={}){
+ if(typeof value!=='string'||!(unique?/^https:\/\/[a-f0-9]{8}\.mushavo-budget-staging\.pages\.dev\/?$/:/^https:\/\/(?:[a-f0-9]{8}\.)?mushavo-budget-staging\.pages\.dev\/?$/).test(value))throw Error('REVIEWED_STAGING_ORIGIN_REQUIRED');
+ return value.replace(/\/$/,'');
+}
+export function publicBrowserSettings({fixtureOrigin=null,tlsDiagnostic=false,candidateWorker=false,reviewedDeploymentOrigin=null}={}){
  const fixture=fixtureOrigin!==null;if(candidateWorker&&!fixture)throw Error('LOCAL_CANDIDATE_ONLY');
- const cacheName=candidateWorker?'mushavo-budget-pwa-shell-v89':'mushavo-budget-pwa-shell-v88';
  if(fixture&&!/^https:\/\/localhost:[1-9][0-9]{0,4}$/.test(fixtureOrigin))throw Error('LOOPBACK_FIXTURE_REQUIRED');
- const origin=fixture?fixtureOrigin:stagingOrigin;
+ if(reviewedDeploymentOrigin!==null&&(fixture||candidateWorker||tlsDiagnostic))throw Error('REVIEWED_STAGING_OPTIONS_REQUIRED');
+ const origin=fixture?fixtureOrigin:reviewedDeploymentOrigin===null?stagingOrigin:reviewedStagingOrigin(reviewedDeploymentOrigin);
+ const candidate=candidateWorker||reviewedDeploymentOrigin!==null;
+ return {fixture,origin,candidate,cacheName:candidate?'mushavo-budget-pwa-shell-v89':'mushavo-budget-pwa-shell-v88'};
+}
+export async function publicBrowser(executable,{fixtureOrigin=null,tlsDiagnostic=false,candidateWorker=false,reviewedDeploymentOrigin=null}={}){
+ const {fixture,origin,candidate,cacheName}=publicBrowserSettings({fixtureOrigin,tlsDiagnostic,candidateWorker,reviewedDeploymentOrigin});
  const r={stage_step:stage,batch:'O',result:'BATCH_O_PUBLIC_BROWSER_REVIEW_REQUIRED',scope:fixture?'LOCAL_HTTPS_PUBLIC_SOURCE_FIXTURE':'HOSTED_PUBLIC_SOURCE_TLS_AND_BROWSER_SERVICE_WORKER',
- offline_navigation:{model:'WORKER_FETCH_FAILURE_PAGE_STATE_ONLY',worker_fetch_failures:0,page_navigation_continuations:0,document_from_service_worker:null,document_http_status:null,navigation_error_present:false,navigation_error_class:null,cached_document_redirected:null,cached_document_type:null,view:null},tls_metadata:null,tls_metadata_only:tlsDiagnostic,candidate_worker_exercised:candidateWorker,target_setup_failure:null,explicit_page_attachment:true,checks:[],tests:0,pass:0,fail:0,browser_product:null,public_assets_verified:0,intercepted_request_attempts:0,maximum_intercepted_requests:128,blocked_unreviewed_requests:0,simulated_offline_requests:0,
+ offline_navigation:{model:'WORKER_FETCH_FAILURE_PAGE_STATE_ONLY',worker_fetch_failures:0,page_navigation_continuations:0,document_from_service_worker:null,document_http_status:null,navigation_error_present:false,navigation_error_class:null,cached_document_redirected:null,cached_document_type:null,view:null},tls_metadata:null,tls_metadata_only:tlsDiagnostic,candidate_worker_exercised:candidate,reviewed_staging_deployment_origin:reviewedDeploymentOrigin===null?null:origin,target_setup_failure:null,explicit_page_attachment:true,checks:[],tests:0,pass:0,fail:0,browser_product:null,public_assets_verified:0,intercepted_request_attempts:0,maximum_intercepted_requests:128,blocked_unreviewed_requests:0,simulated_offline_requests:0,
  intercepted_hosted_request_attempts:0,worker_startup_fetches_not_intercepted:true,total_browser_hosted_requests_independently_counted:false,document_scripts_disabled:true,hosted_TLS_verified:false,hosted_secure_transport_verified:false,executed_worker_source_verified:false,isolated_temporary_profile:true,temporary_profile_removed:false,browser_process_stopped:false,
  private_packets_accessed:false,credentials_or_Auth_or_gateway_requests_permitted:false,real_email_requests:0,committed_mode_change_requests:0,hosted_authenticated_browser_acceptance:false,
  installed_PWA_OS_lifecycle_verified:false,external_traffic_OS_sandboxed:false,local_certificate_validation_bypassed:fixture,hosted_acceptance:false,live_activation_approved:false,production_or_native_changed:false,APK_update_deferred:true,findings_closed:[],checkpoint:'BROWSER_INPUT',problem_code:null,exit_code:1};
@@ -40,10 +49,10 @@ export async function publicBrowser(executable,{fixtureOrigin=null,tlsDiagnostic
   need(typeof executable==='string'&&path.isAbsolute(executable)&&(await stat(executable)).isFile());
   const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),expected={};
   for(const f of assets)expected['/'+f]=hash(await readFile(path.join(root,f)));
-  if(candidateWorker)expected['/sw.js']=hash(await readFile(path.join(root,'deployment/candidates/email-offline-pages-v89.sw.js')));
+  if(candidate)expected['/sw.js']=hash(await readFile(path.join(root,'deployment/candidates/email-offline-pages-v89.sw.js')));
   profile=await mkdtemp(path.join(tmpdir(),'mushavo-browser-o-'));
   child=spawn(executable,[...(process.platform==='linux'?['--no-sandbox','--disable-setuid-sandbox']:[]),'--headless=new','--no-first-run','--no-default-browser-check','--disable-background-networking','--disable-component-update','--disable-sync','--disable-extensions','--disable-default-apps','--disable-client-side-phishing-detection','--disable-domain-reliability','--disable-features=MediaRouter,OptimizationHints,AutofillServerCommunication','--no-proxy-server',
-   '--host-resolver-rules='+(fixture?'MAP localhost 127.0.0.1, EXCLUDE 127.0.0.1':'EXCLUDE mushavo-budget-staging.pages.dev')+', MAP * ~NOTFOUND',...(fixture?['--ignore-certificate-errors']:[]),'--remote-debugging-address=127.0.0.1','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{stdio:'ignore',windowsHide:true});
+   '--host-resolver-rules='+(fixture?'MAP localhost 127.0.0.1, EXCLUDE 127.0.0.1':'EXCLUDE '+new URL(origin).hostname)+', MAP * ~NOTFOUND',...(fixture?['--ignore-certificate-errors']:[]),'--remote-debugging-address=127.0.0.1','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{stdio:'ignore',windowsHide:true});
   let launchError=false;child.on('error',()=>{launchError=true;});r.checkpoint='ISOLATED_BROWSER_START';let endpoint;
   await until(async()=>{need(!launchError&&child.exitCode===null);try{const lines=(await readFile(path.join(profile,'DevToolsActivePort'),'utf8')).trim().split(/\r?\n/);need(/^[1-9][0-9]{0,4}$/.test(lines[0])&&/^\/devtools\/browser\/[A-Za-z0-9-]+$/.test(lines[1]));endpoint='ws://127.0.0.1:'+lines[0]+lines[1];return true;}catch{return false;}},{timeout:20000});
   cdp=await LocalCDP.connect(endpoint);

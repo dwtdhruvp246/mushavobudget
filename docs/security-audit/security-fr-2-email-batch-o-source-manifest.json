@@ -193,7 +193,7 @@
     "docs/security-audit/security-fr-2-email-batch-m-source-manifest.json": "057b0c60cf5d89f3431f377233c565357439c760ac94cea7fea1467325ae3575",
     "scripts/lib/browser-route-audit.mjs": "8343fe1fea1f5ceece3238c2fa1384655a9bf38dfd1356751ccff118cfc34163",
     "manifest.webmanifest": "9d70bf76140917b6fd58c11ada54e711ca8408bca7af7f7ec3e9dd0906ade950",
-    "scripts/check-fr-2-email-batch-o.mjs": "97c0bee38fb127d9e394922e43dfa3308269f414ba850b59fe447598fa90ed25",
+    "scripts/check-fr-2-email-batch-o.mjs": "e99ad683780b8504eb3698a7560c95f1a7f38fe2e4b9b0cb6ac8707cf872a2b8",
     "scripts/test-fr-2-email-batch-o-engine.mjs": "0d2ee9145d7ba6ffbfa9fe5cfb6683a570b2adf4aa479e455a3cb3252e63fcf7",
     "scripts/verify-fr-2-email-batch-o.mjs": "7f4c93dadd62560458627bc48cd4d9e6a292b313b6a4730faaff8e428101ad9e",
     "tests/fr-2-email-batch-o.test.mjs": "548ead0e0c5fc927adbaaad680cbb0885e9a083fd5310e4665496c57670277ed",

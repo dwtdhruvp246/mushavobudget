@@ -1,3 +1,5 @@
+> FRE185: new **28beb907** staging deployment and canonical URL pass **9 direct public checks, exit0** (one old-config baseline plus four selected assets per current origin): both exact U lifecycle modules, preserved v89 worker/config, MIME and security headers. Assistant public browser stopped at native public-document navigation; cleanup passed, no browser acceptance claimed. [Readback and limits](SECURITY_FR_2_4_BATCH_U_DEPLOYMENT_READBACK.md). Windows55/55 and ZIP remain complete; no repeat upload/local run. U remains IN PROGRESS, hosted actual full-app driver/acceptance pending.
+
 # Batch U — Windows pass and exact staging upload
 
 **Stage 3/10 | FR.2/8 | Batch U/Z — IN PROGRESS. Local checks and public artifact COMPLETE; hosted U acceptance pending.**

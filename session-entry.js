@@ -42,10 +42,15 @@ export function snapshotPrivateView(node){
   const children=[...node.childNodes].map(snapshotPrivateView),originals=[...node.childNodes];
   const attributes=node.nodeType===1?[...node.attributes].map(a=>[a.name,a.value]):null;
   const text=node.nodeType===3?node.nodeValue:null;
+  const selectedIndex=node.nodeType===1&&node.tagName==='SELECT'&&!node.multiple?node.selectedIndex:null;
   return()=>{
     if(attributes){for(const a of [...node.attributes])node.removeAttribute(a.name);for(const [name,value]of attributes)node.setAttribute(name,value);
-      if('value'in node)node.value=node.defaultValue||'';if('checked'in node)node.checked=node.defaultChecked===true;}
+      // Only text/input controls expose defaultValue. Option/button value is
+      // an HTML attribute and must retain its restored source value.
+      if('defaultValue'in node)node.value=node.defaultValue||'';if('checked'in node)node.checked=node.defaultChecked===true;}
     if(text!==null)node.nodeValue=text;node.replaceChildren?.(...originals);for(const restore of children)restore();
+    if('defaultSelected'in node)node.selected=node.defaultSelected===true;
+    if(selectedIndex!==null)node.selectedIndex=selectedIndex;
   };
 }
 

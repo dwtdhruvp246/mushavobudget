@@ -3865,7 +3865,7 @@ async function signOutSafely(button = null) {
     // A push cleanup outage must not prevent the requested Auth sign-out.
     if (state.session?.user?.id !== userId) return;
     preserveSignInDestination = false;
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut({ scope: "local" });
     if (error) throw error;
     if (!cleanupFailed) forgetPushOptIn(userId);
     if (state.session?.user?.id === userId) handleSignedOut();

@@ -1,0 +1,41 @@
+# Batch U local full-app verification and two-file public candidate
+
+**Stage 3/10 | FR.2/8 | Batch U/Z — IN PREPARATION.** Local preparation is a phase of U; hosted full-app acceptance and U's full exit evidence remain pending. Z remains the final letter of this sequence. This handoff supersedes the earlier U statement that no runtime implementation exists. It does not repeat Batch T.
+
+The actual `app.html`, `app.js`, Business no-membership entry, entry router, shared gate, v89 worker and real Supabase JS2.110.9 static dependency graph now execute in a disposable native browser. Nine exact public CDN modules and their package licenses are vendored only as an offline test fixture, not deployed. Auth/REST transport/Realtime/mail are synthetic loopback services; real reviewed SQL, guards, RLS and gateway code run against in-memory PGlite0.5.8. This is not a real PostgREST, Realtime replication, provider mail or hosted concurrency result.
+
+## Two reproduced product defects and corrections
+
+1. Personal `signOutSafely()` used SDK default global logout. A real-page/real-SDK run removed an unrelated preseeded synthetic Auth session. It now explicitly uses `{ scope: "local" }`, matching Business and other existing local logout paths. This controls refresh-session revocation scope; it does not promise to invalidate every already-issued access JWT immediately.
+2. `snapshotPrivateView()` reset the `value` property of every element exposing it. HTML options lack `defaultValue`; their source values became empty, so the full app failed at `renderPaymentScope()` when its `family` option was missing. Reset now clears text/input defaults, preserves restored option/button attributes, resets option selection and restores each single select's original selected index while preserving multiple defaults. A native-DOM test checks cleared private input/generated text, exact option values/default selections and preserved listeners, followed by actual app startup.
+
+These fixes are source changes only until a reviewed staging artifact is prepared, uploaded and independently read back. Do not run real-account full-app sign-out against the old accepted deployment as U acceptance.
+
+## Current finite local scope
+
+The combined verifier expects **50 Node tests**:32 retained entry regressions,9 SDK/request-policy/portable-artifact tests and9 actual-browser cases (one positive plus eight expected failures). Counts are test cases, not findings closed or percentages. Each full positive case includes17 named browser checks. Failure cases cover served source drift, email begin/verify response loss, failed proof RPC, lost open/quarantine commit responses, a conditional profile-sync request refused by the declared local policy, and failed Auth refresh. Containment checks preserve a preexisting session/device/proof and both private canaries, close the synthetic window without retrying the open/write, delete only generated fixture identities/devices, and dispose contexts/process/profile/server.
+
+The synthetic policy declares24 read tables and10 RPCs. It refuses all application table writes, undeclared RPCs, global logout, external destinations, extra email attempts and unexpected bodies. Budgets per local case:1600 intercepted attempts,400 CORS preflights, one begin, one verify, one first-account window open and one quarantine. Native WebSocket URLs accept only the fixed loopback endpoint and public API key/version parameters; synthetic frames are bounded. Worker attachment is scoped to selected pages. Worker startup fetches may precede interception; counts are not total browser/OS traffic accounting and this is not an OS network sandbox.
+
+The normal fixture has two ordinary synthetic identities with existing matching profiles and Personal workspaces, one private finance canary each, no Family/Admin/Business membership, no push opt-in and an omitted VAPID key. Activity RPC writes are allowed and counted in the synthetic database. Profile insertion/sync, missing-workspace provisioning, opted-in push behavior and a populated Business workspace are not positively accepted here; the unexpected profile-sync branch deliberately fails closed. Hosted preflight/fixtures must explicitly resolve legitimate startup mutations before any real credential is entered. The full Business/role matrix remains in X and privileged operator work in V.
+
+Real SDK native incognito Web Storage, BroadcastChannel and HttpOnly cookies are exercised with synthetic values. Physical memory-only storage has not been independently established; no real credential/private runner is supplied by this handoff. No secret is in a CLI argument, environment, file or output. Local TLS certificate bypass applies solely to the synthetic loopback browser. Hosted normal-trust TLS is not tested here.
+
+## Owner run, effects and every possible prompt
+
+The complete pinned PowerShell wrapper is supplied in chat. It fetches the security branch, verifies the published pin, extracts a separate temporary snapshot without changing the project checkout, reuses retained PGlite0.5.8 and an existing Edge/Chrome, and runs all local checks before any artifact prompt. Only if no retained public PGlite dependency exists may it install the existing lockfile's public test fixture with scripts disabled. No browser installation, key regeneration, DPAPI access or hosted probe occurs.
+
+Possible prompts:
+
+- **Existing Edge or Chrome EXE path**, only if normal installed paths cannot be found. Find `msedge.exe` or `chrome.exe` in the installed browser's Application folder. No sign-in prompt.
+- **Full path to the retained reviewed Batch P/Q ZIP.** In File Explorer, search the retained Desktop staging-output folders for `mushavo-pages-offline-review.zip`. This is the archive already accepted in Q, exact SHA256 `5bbbea1dfaca36a05c513b087012657c0dfd7380901dcf2f47dc2eac45309fe0`; do not choose an older Batch B archive or regenerate configuration. The tool verifies identity before writing. Missing/mismatched files stop for review.
+
+There are **no** token, password, inbox, email-code, packet-selection, browser login or acceptance-window prompts. Browser interactions use entirely synthetic identities automatically. The existing normal browser profile is not used.
+
+After all checks pass, a new Desktop `Mushavo-Batch-U-<random>` folder receives exactly **`mushavo-batch-u-lifecycle-review.zip`**. This is the future U candidate filename. It changes only `app.js` and `session-entry.js`, preserving42/44 entries including configuration/public push key, gateway worker, headers and v89 service worker. The retained ZIP remains unchanged. Portable readback is tested locally; the owner wrapper independently reads every candidate ZIP entry with Windows .NET and compares its SHA256 before reporting success. No overwrite or upload occurs.
+
+**Do not upload yet.** The safe Windows test/artifact receipt is the next review input; the real-input isolation and bounded hosted U handoff still need preparation. This is an execution/verification boundary, not a request to repeat T or approve an unfinished deployment. Full runnable upload/readback instructions will name this exact candidate after its owner receipt is reviewed.
+
+## Hosted and release boundaries
+
+No new hosted request, real email, live mode change, Auth setting, deployment, secret, schedule, production or native change occurred during U local preparation. The last actual database-mode observation remains the Batch T owner receipt: **QUARANTINED at2026-10-24T07:43:01.498Z**, not a fresh U readback. Existing accepted frontend remains `d24b6611` until a later explicit upload/readback. Overall hosted acceptance, findings closure, public launch approval and later main stages/FR groups remain pending. APK update deferred.

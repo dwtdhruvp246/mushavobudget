@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {diagnosticError,safeLocalDiagnostic} from '../scripts/lib/email-batch-t-diagnostic-shape.mjs';
+import {diagnosticError,safeLocalDiagnostic,localDiagnosticEvents} from '../scripts/lib/email-batch-t-diagnostic-shape.mjs';
 import {startLoopbackStagingBrowser} from '../scripts/lib/browser-staging-acceptance.mjs';
 
 test('Offline diagnostic projection drops private values, raw errors, URLs, paths, cookies and unknown fields at every exposed level',()=>{
@@ -8,6 +8,7 @@ test('Offline diagnostic projection drops private values, raw errors, URLs, path
  const result={exit_code:1,checkpoint:privateValue,problem_code:privateValue,actual_hosted_requests:3,email_request_attempts:0,privateValue,browser:{browser_product:privateValue,checkpoint:privateValue,problem_code:privateValue,request_guard:{attempts:2,privateValue},cookies:[privateValue],error:new Error(privateValue)}};
  const safe=safeLocalDiagnostic(result,{operation:privateValue,failure_operation:privateValue,error_code:privateValue,failed_cdp_method:privateValue,guard_denial:privateValue,raw:privateValue});
  assert(!JSON.stringify(safe).includes(privateValue));assert.equal(safe.browser_product,null);assert.equal(safe.operation,null);assert.equal(safe.synthetic_direct_requests,3);assert.equal(safe.browser_request_attempts,2);
+ const events=localDiagnosticEvents('# BATCH_T_LOCAL_DIAGNOSTIC '+JSON.stringify({case:'positive',browser_product:privateValue,operation:privateValue,raw_error:privateValue,browser_cleanup_verified:true})+'\n# BATCH_T_TARGET_SCOPE '+JSON.stringify({variant:privateValue,raw_error:privateValue})+'\n# BATCH_T_LOCAL_DIAGNOSTIC malformed JSON\n# Arbitrary private stack '+privateValue);assert.equal(events.length,1);assert.equal(events[0].case,'positive');assert.equal(events[0].browser_cleanup_verified,true);assert(!JSON.stringify(events).includes(privateValue));
 });
 test('Offline diagnostic errors accept only exact fixed codes and never echo arbitrary messages or safeCode strings',()=>{
  for(const e of [new Error('TOKEN_PRIVATE'),{safeCode:'BROWSER_REQUIRED TOKEN_PRIVATE'},null,{message:'CDP_COMMAND_REQUIRED\nTOKEN_PRIVATE'}])assert.equal(diagnosticError(e),'LOCAL_DIAGNOSTIC_FAILED');

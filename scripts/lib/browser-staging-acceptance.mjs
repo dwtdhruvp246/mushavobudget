@@ -6,7 +6,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {LocalCDP,until,evaluate} from './browser-local-cdp.mjs';
 import {tlsObservation,browserTransportVerified} from './browser-tls-observation.mjs';
-import {workerAutoAttach} from './browser-public-target.mjs';
+import {guardStagingPageWorkers,navigationProblem} from './browser-staging-target.mjs';
 import {stagingOrigin,stagingAPI,stagingGuard,loopbackStagingGuard} from './browser-staging-guard.mjs';
 import {diagnosticError} from './email-batch-t-diagnostic-shape.mjs';
 import {harnessExpression,lockedExpression,cleanDocument} from './browser-staging-harness.mjs';
@@ -67,10 +67,10 @@ function browser(executable,{origin,api,publishableKey,fixture}){
   mark('PAGE_CREATE_AND_ATTACH');
   const t=await call('Target.createTarget',{url:'about:blank',browserContextId:context}),s=(await call('Target.attachToTarget',{targetId:t.targetId,flatten:true})).sessionId;
   const tls=tlsObservation(origin);pages.set(s,{tls,index:null,context});
-  mark('PAGE_DOMAIN_SETUP');await call('Network.enable',{},s);await call('Network.setBypassServiceWorker',{bypass:true},s);
+  mark('PAGE_DOMAIN_SETUP');await guardStagingPageWorkers({call},s);await call('Network.enable',{},s);await call('Network.setBypassServiceWorker',{bypass:true},s);
   await call('Fetch.enable',{patterns:[{urlPattern:'*',requestStage:'Request'},{urlPattern:origin+'/api/email-verification/*',requestStage:'Response'}]},s);
   await call('Page.enable',{},s);await call('Security.enable',{},s);await call('Runtime.enable',{},s);await call('Debugger.enable',{},s);await call('Emulation.setScriptExecutionDisabled',{value:true},s);
-  mark('PAGE_NAVIGATION');const nav=await call('Page.navigate',{url:origin+'/offline'},s);need(!nav.errorText,'BROWSER_TLS_REQUIRED');
+  mark('PAGE_NAVIGATION');need(!fatal,fatal||'BROWSER_REQUIRED');const nav=await call('Page.navigate',{url:origin+'/offline'},s);const navigationFailure=navigationProblem(nav.errorText,fatal);need(!navigationFailure,navigationFailure||'BROWSER_NAVIGATION_REQUIRED');
   mark('PAGE_DOCUMENT_READY');await wait(async()=>{try{return await ev(s,'document.querySelector("h1")?.textContent==="Your workspace needs a connection"&&isSecureContext');}catch{return false;}});
   if(!fixture){await wait(()=>browserTransportVerified(tls.snapshot(),{certificateBypass:false}));r.normal_hosted_TLS_verified=true;}
   mark('PAGE_TEST_MOUNT');const frame=(await call('Page.getFrameTree',{},s)).frameTree.frame.id;
@@ -98,7 +98,7 @@ function browser(executable,{origin,api,publishableKey,fixture}){
      const entry=Object.entries(p.headers??{}).find(([name])=>name.toLowerCase()==='set-cookie');
      wireCookies.set(s+':'+p.requestId,entry?.[1]??null);
     }
-    if(e.method==='Target.attachedToTarget'&&['worker','service_worker'].includes(p.targetInfo?.type))fatal??='BROWSER_UNREVIEWED_WORKER';
+    if(e.method==='Target.attachedToTarget'&&['worker','service_worker'].includes(p.targetInfo?.type)){fatal??='BROWSER_UNREVIEWED_WORKER';failure({safeCode:fatal});}
     if(e.method==='Fetch.requestPaused')job((async()=>{
      if(p.responseStatusCode!==undefined||p.responseErrorReason){try{await response(p,s);}catch(e){try{await call('Fetch.failRequest',{requestId:p.requestId,errorReason:'BlockedByClient'},s);}catch{}throw e;}return;}
      const allowed=!fatal&&guard.allow({...p.request,resourceType:p.resourceType,redirected:!!p.redirectedRequestId},s);
@@ -108,7 +108,7 @@ function browser(executable,{origin,api,publishableKey,fixture}){
     })());
     if(e.method==='Debugger.scriptParsed'&&[origin+'/session-entry.js',origin+'/email-verification.js?v=2'].includes(p.url))job((async()=>{const source=await call('Debugger.getScriptSource',{scriptId:p.scriptId},s),f=new URL(p.url).pathname;need(hash(source.scriptSource)===expected[f],'BROWSER_SOURCE_REQUIRED');executed.add(f);})());
    });
-   mark('BROWSER_CONTEXT_SETUP');await call('Target.setAutoAttach',workerAutoAttach);
+   mark('BROWSER_CONTEXT_SETUP');
    shared=(await call('Target.createBrowserContext',{disposeOnDetach:true})).browserContextId;isolated=(await call('Target.createBrowserContext',{disposeOnDetach:true})).browserContextId;
    firstPage=await page(shared);
    mark('PUBLIC_SOURCE_FETCH_AND_HASH');const count=await ev(firstPage,`(async()=>{const expected=${JSON.stringify(expected)};let n=0;for(const [p,h] of Object.entries(expected)){const r=await fetch(p,{credentials:'omit',cache:'no-store',redirect:'follow',signal:AbortSignal.timeout(12000)});if(!r.ok||new URL(r.url).origin!==location.origin)return false;const b=await r.arrayBuffer();if(b.byteLength>1048576)return false;const v=[...new Uint8Array(await crypto.subtle.digest('SHA-256',b))].map(x=>x.toString(16).padStart(2,'0')).join('');if(v!==h)return false;n++;}return n;})()`);

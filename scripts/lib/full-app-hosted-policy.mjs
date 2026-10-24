@@ -1,5 +1,6 @@
 // Finite full-app traffic policy; SQL/RLS remains authoritative for allowed reads.
 import {appTables,appRPCs} from './full-app-rest-fixture.mjs';
+import {pagesHTMLAliases} from './full-app-pages-redirects.mjs';
 export const hostedAppLimits=Object.freeze({attempts:1800,preflights:450,begin:1,verify:1,refresh:1,localLogout:2,activity:12,socketConnections:12,socketMessages:128});
 const uuid=s=>typeof s==='string'&&/^[a-f0-9-]{36}$/i.test(s),empty=b=>b&&typeof b==='object'&&!Array.isArray(b)&&Object.keys(b).length===0;
 export function fullAppHostPolicy({origin,api,publishableKey,sources,fixture=false}){
@@ -9,7 +10,7 @@ export function fullAppHostPolicy({origin,api,publishableKey,sources,fixture=fal
  function allow(p,session){
   lastRequestFacts={route:'OTHER',method:['GET','POST','OPTIONS','PATCH','DELETE','PUT'].includes(p?.method)?p.method:'OTHER',bound_index:Number.isInteger(pages.get(session))?pages.get(session):null};r.attempts++;if(r.attempts>hostedAppLimits.attempts||!p||typeof p.url!=='string'||p.url.length>8192)return no('REQUEST_BOUND');let u,b;try{u=new URL(p.url);b=p.postData?JSON.parse(p.postData):{};}catch{return no('URL_OR_BODY');}
   if(u.username||u.password||u.hash||p.url!==u.href||p.redirectedRequestId)return no('URL_IDENTITY');const h=Object.fromEntries(Object.entries(p.headers||{}).map(([k,v])=>[k.toLowerCase(),v]));
-  if(u.origin===origin&&p.method==='GET'&&!h.authorization&&!p.postData&&(sources.has(u.pathname)||['/config.js','/app','/app-entry','/offline','/favicon.ico'].includes(u.pathname))&&[...u.searchParams.keys()].every(k=>['v','source','auth','workspace_unavailable'].includes(k)))return true;
+  if(u.origin===origin&&p.method==='GET'&&!h.authorization&&!p.postData&&(sources.has(u.pathname)||Object.hasOwn(pagesHTMLAliases,u.pathname)||['/config.js','/app','/app-entry','/offline','/favicon.ico'].includes(u.pathname))&&[...u.searchParams.keys()].every(k=>['v','source','auth','workspace_unavailable'].includes(k)))return true;
   let index=pages.get(session),s=selected[index];if(!s)return no('UNBOUND_PRIVATE_PAGE');
   const gate=u.origin===origin&&!u.search&&/^\/api\/email-verification\/(?:status|restore|begin|verify)$/.test(u.pathname),rpc=u.origin===api&&!u.search&&u.pathname.match(/^\/rest\/v1\/rpc\/([a-z_]+)$/),table=u.origin===api&&u.pathname.match(/^\/rest\/v1\/([a-z_]+)$/),auth=u.origin===api&&u.pathname.match(/^\/auth\/v1\/(user|logout|token)$/);
   const backend=!!(rpc&&appRPCs.has(rpc[1])||table&&appTables.has(table[1])||auth);

@@ -1,9 +1,9 @@
 // End-to-end local rehearsal of the hosted browser driver, never a real account/provider.
 import https from 'node:https';
-import {fullAppLocalFixture} from './full-app-local-fixture.mjs';
+import {fullAppPagesFixture as fullAppLocalFixture} from './full-app-pages-fixture.mjs';
 import {startFullAppLoopbackBrowser} from './full-app-staging-browser.mjs';
-export async function fullAppStagingLocalCheck(executable,modulePath,{failure=null}={}){
- const f=await fullAppLocalFixture(modulePath,{failure});let browser,opened=false,problem=null,failedCheckpoint=null;
+export async function fullAppStagingLocalCheck(executable,modulePath,{failure=null,pagesFailure=null}={}){
+ const f=await fullAppLocalFixture(modulePath,{failure,pagesFailure});let browser,opened=false,problem=null,failedCheckpoint=null;
  const read=(url,body)=>new Promise((resolve,reject)=>{const u=new URL(url);if(u.origin!==f.api){reject(Error('LOCAL_ORIGIN_REQUIRED'));return;}const q=https.request(url,{method:'POST',rejectUnauthorized:false,headers:{apikey:f.publishableKey,'Content-Type':'application/json'}},r=>{let b='';r.on('data',x=>{b+=x;if(b.length>65536){q.destroy();reject(Error('LOCAL_RESPONSE_BOUND'));}});r.on('end',()=>{try{resolve(JSON.parse(b));}catch{reject(Error('LOCAL_RESPONSE_REQUIRED'));}});});q.on('error',()=>reject(Error('LOCAL_NETWORK_REQUIRED')));q.end(JSON.stringify(body));});
  let close,inspection;try{
   browser=startFullAppLoopbackBrowser(executable,{origin:f.origin,api:f.api,publishableKey:f.publishableKey});await browser.preflight();const selected=[];

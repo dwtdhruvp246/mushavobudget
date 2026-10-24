@@ -1,3 +1,5 @@
+> Fixed lettered endpoint (FRE176,24 October): **six remaining Stage3 authorization work packages U–Z, with Z the final letter of this sequence.** U covers full app/cache/session; V Admin MFA/recovery; W Auth/account/email; X workspace roles/finance; Y backend callers/real database races/containment; Z integrated authorization closeout. Each letter includes its preparation, implementation, tests, hosted acceptance and fixes; retries do not automatically add letters. This is a new explicit planning baseline, not a promise of six commands/days or whole-launch completion. See [fixed list and exit criteria](SECURITY_STAGE_3_REMAINING_LETTERED_BATCHES.md). No new owner action or hosted work is requested.
+
 # Batch U — actual app/bootstrap, private cache and session lifecycle preparation
 
 Main Stage3 remains current. T's hosted shared-component browser pass is preserved; do not repeat its email/window run or claim full application acceptance from it. U currently consists of selected source review and this plan, not an executed runtime test or an owner handoff. December2026 remains a target month, not a release decision.

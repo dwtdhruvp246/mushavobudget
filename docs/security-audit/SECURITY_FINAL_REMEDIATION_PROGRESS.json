@@ -9,7 +9,7 @@
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE175",
+  "latest_evidence": "FRE176",
   "batches": [
     {
       "id": "FR.1",
@@ -3602,6 +3602,13 @@
     "live_activation_approved": false,
     "production_or_native_changed": false,
     "APK_update_deferred": true,
-    "findings_closed": []
-  }
+    "findings_closed": [],
+    "lettered_completion_scope": "LOCAL_PREPARATION_IMPLEMENTATION_AND_BOUNDED_HOSTED_FULL_APP_BROWSER_ACCEPTANCE",
+    "original_U_preparation_is_phase_of_same_batch": true,
+    "full_lettered_baseline": "docs/security-audit/SECURITY_STAGE_3_REMAINING_LETTERED_BATCHES.md"
+  },
+  "remaining_lettered_batch_plan": "docs/security-audit/SECURITY_STAGE_3_REMAINING_LETTERED_BATCHES.md",
+  "remaining_lettered_batch_baseline": "docs/security-audit/security-stage-3-lettered-batch-baseline.json",
+  "remaining_lettered_batch_count": 6,
+  "final_lettered_batch": "Z"
 }

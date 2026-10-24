@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "baseline_version": 1,
+  "date": "2026-10-24",
+  "source_commit": "88184eb016c970738e0a7d26275394047a37c841",
+  "scope": "CURRENT_MAIN_STAGE_3_STAGING_AUTHORIZATION_REMEDIATION_LETTERED_STREAM",
+  "status": "FIXED_REMAINING_WORK_PACKAGE_BASELINE_NOT_EXECUTION_EVIDENCE",
+  "why_created": "Earlier lettered batches were introduced incrementally without an explicit endpoint; owner requested a finite remaining list. This baseline fixes that planning gap.",
+  "lettered_labels_already_used": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T"
+  ],
+  "last_observed_scoped_pass": "T",
+  "next_letter": "U",
+  "final_letter": "Z",
+  "remaining_planned_batch_count": 6,
+  "total_labels_in_this_baseline": 26,
+  "batches": [
+    {
+      "letter": "U",
+      "title": "Actual app startup, browser cache and session lifecycle",
+      "status": "IN_PREPARATION",
+      "traceability": [
+        "FR.2.4 browser integration",
+        "FR.2.5 session integration"
+      ],
+      "scope": [
+        "Execute actual Personal/Business entry and real pinned SDK instead of the T minimal adapter",
+        "Verify deployed worker/public cache versus private DOM/API data, offline/reconnect and account/session transitions",
+        "Review automatic startup profile/activity/realtime/push-refresh effects and use exact controlled fixtures"
+      ],
+      "exit_evidence": [
+        "Pinned app/SDK/worker bytes and finite route/side-effect inventory",
+        "Passing integrated local actual-page scenario and meaningful failure/cleanup cases",
+        "Prepared bounded hosted handoff, then actual ordinary-account full-page startup/cache/session evidence with explicit final quarantine and exact cleanup",
+        "Any shim, omitted page/SDK feature, cache/OS or role limitation explicitly recorded without full-app overclaim"
+      ]
+    },
+    {
+      "letter": "V",
+      "title": "Admin MFA, recoverable operators and privileged access",
+      "status": "PLANNED",
+      "traceability": [
+        "FR.2.4 Admin parity/operator/recovery"
+      ],
+      "scope": [
+        "Reuse and privately verify the controlled operator identities and independent recovery path before enforcement",
+        "Complete reviewed SQL/UI/Edge Admin assurance consistency and effective grants",
+        "Exercise genuine AAL2, low-assurance bypass denials, same-session revocation, factor lifecycle and safe recovery"
+      ],
+      "exit_evidence": [
+        "Recoverable controlled verified operator and independent recovery evidence",
+        "Installed source/grant/policy parity for the selected Admin surface",
+        "Positive genuine Admin AAL2 plus direct/API/UI low-assurance and ordinary-user denials",
+        "Factor/revocation/recovery outcomes and preservation of working access verified; no sole-factor removal or blanket revoke"
+      ]
+    },
+    {
+      "letter": "W",
+      "title": "Auth settings, account flows, passwords and email",
+      "status": "PLANNED",
+      "traceability": [
+        "FR.2.5 Auth workflows"
+      ],
+      "scope": [
+        "Reconcile actual staging Auth settings and the proposed new-password policy while preserving valid older-password login",
+        "Exercise controlled signup/confirmation/invitation/recovery/password and email-change/session outcomes against the existing Auth scope",
+        "Verify trusted callback, expiry, replay and wrong-session/identity denials; reconcile the existing 31 AU case definitions"
+      ],
+      "exit_evidence": [
+        "Current server and UI settings/policies reconciled to explicit approved behavior",
+        "Frozen Auth acceptance cases have real scoped positive/negative outcomes or an explicit blocking dependency",
+        "Necessary real inbox/link/code delivery and terminal-created session cleanup verified without secret output",
+        "Google/Apple provider integration and native callbacks remain in their later designated stages; not silently marked passed here"
+      ]
+    },
+    {
+      "letter": "X",
+      "title": "Personal, Family and Business permissions with legitimate finance",
+      "status": "PLANNED",
+      "traceability": [
+        "FR.2.2 carry-forward",
+        "FR.2.3 carry-forward",
+        "FR.2.5 legitimate finance"
+      ],
+      "scope": [
+        "Reconcile existing scoped passes and remaining blocked/untested role and finance cases instead of repeating all earlier work",
+        "Exercise own/foreign/removed/assigned/team scopes, escalation, protected Owner and invitation/removal effects",
+        "Verify legitimate controlled Personal/Family/Business finance, relink/deletion and currency/entitlement access remain correct after enforcement"
+      ],
+      "exit_evidence": [
+        "Remaining authorization-role/finance coverage ledger mapped to concrete actors and exact fixtures",
+        "Expected allowed operations work and expected unauthorized operations are denied through applicable direct/API/UI paths",
+        "Fixture cleanup and independent preservation of existing records, including the two retained manual Family conversions",
+        "Historical data/retention issues belonging to later work remain explicitly owned; any that block authorization acceptance keep X open rather than being counted as passed"
+      ]
+    },
+    {
+      "letter": "Y",
+      "title": "Backend caller permissions, real database races and containment",
+      "status": "PLANNED",
+      "traceability": [
+        "FR.2.4 human versus service callers",
+        "FR.2.6 affected backend recheck"
+      ],
+      "scope": [
+        "Complete the source/catalog classification of protected, anonymous, authenticated, service and scheduled/Edge callers affected by the authorization guards",
+        "Verify legitimate selected backend/job callers still work and inappropriate callers are denied",
+        "Run required real PostgreSQL proof/device/replay/expiry/revocation or authorization-change races using isolated controlled fixtures; rehearse failure containment/readback"
+      ],
+      "exit_evidence": [
+        "Reviewed finite installed-routine/caller matrix and evidence for permitted versus denied caller classes",
+        "Real PostgreSQL concurrency outcomes distinguished from PGlite/model tests",
+        "No blind write retry; independent quarantine/fence/exact fixture absence and preserved unrelated rows after failure exercises",
+        "Full monitoring, all scheduler/provider delivery, backup/recovery operations remain in later operational work; Y covers their affected authorization boundary, not their entire launch acceptance"
+      ]
+    },
+    {
+      "letter": "Z",
+      "title": "Integrated authorization recheck and Stage 3 closeout",
+      "status": "PLANNED_DEPENDS_ON_U_THROUGH_Y",
+      "traceability": [
+        "FR.2.6 affected recheck/report"
+      ],
+      "scope": [
+        "Reconcile U–Y, previous scoped passes, retained failures and every remaining required Stage 3 authorization exit criterion",
+        "Run appropriate integrated/affected regressions against the final exact staging source/installations rather than repeat unrelated completed batches",
+        "Produce an evidence-backed Stage 3 decision and complete handoff to the later main stages"
+      ],
+      "exit_evidence": [
+        "Required authorization work packages have accepted local and hosted evidence at their actual scopes",
+        "No unresolved required Stage 3 blocker is hidden as a carry-forward or a pass",
+        "Accepted source/deployment/installation, selected fixture cleanup, containment and remaining later-stage obligations recorded",
+        "Stage 3 is closed only if its exit criteria are met; a blocked/failed Z stays open; full final launch audit and release approval remain later work"
+      ]
+    }
+  ],
+  "counting_rules": {
+    "preparation_implementation_local_tests_hosted_acceptance_and_fixes_stay_under_assigned_letter": true,
+    "failed_test_or_platform_fix_automatically_adds_new_letter": false,
+    "six_batches_means_six_terminal_commands": false,
+    "six_batches_is_a_duration_or_release_date_guarantee": false,
+    "new_requirements_require_explicit_baseline_change_with_reason_scope_and_count_impact": true,
+    "no_automatic_AA_extension": true,
+    "close_only_when_required_exit_evidence_met": true,
+    "freeze_named_acceptance_case_list_before_execution_and_close_when_required_evidence_passes": true
+  },
+  "constraints": {
+    "preserve_A_through_T_evidence_and_unrelated_modification": true,
+    "no_repeat_T_email_or_upload_for_planning": true,
+    "staging_only": true,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "no_blanket_new_privilege_factor_fixture_settings_or_dispatch_authorization": true,
+    "full_release_acceptance": false,
+    "no_new_owner_command_or_private_input_requested": true
+  },
+  "implementation_or_runtime_tests_added": 0,
+  "actual_new_hosted_requests": 0,
+  "actual_new_email_requests": 0,
+  "committed_mode_change_requests": 0,
+  "findings_closed": []
+}

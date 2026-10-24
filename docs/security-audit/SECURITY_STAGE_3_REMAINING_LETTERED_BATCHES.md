@@ -1,0 +1,26 @@
+# Fixed remaining lettered batches — current Stage 3 authorization work
+
+Baseline1,24 October2026. **Six planned batches remain: U,V,W,X,Y,Z. Z is the endpoint of this authorization sequence.** A–T are20 historical labels already used; their receipts and partial-scope limits remain unchanged. The lettered sequence had previously been developed incrementally without an explicit endpoint. This baseline corrects that planning gap; it does not pretend the endpoint was previously defined.
+
+This is the current **main Stage3 staging authorization/remediation stream**, not the whole public-web/Google Play/Apple App Store launch programme. The original main Stage0–10 roadmap and existing remediation requirement definitions remain intact. Later privacy, provider identity, commerce, native/device/operational and full final release work are not counted as already completed here.
+
+| Letter | Work package | Complete only when |
+|---|---|---|
+| **U** | Actual app startup, browser/private-cache and session lifecycle | Actual app/SDK/worker sources and network/side effects are pinned; integrated local actual-page/failure tests pass; bounded hosted ordinary-account app/cache/session evidence, quarantine and exact cleanup are verified. Any limited/shimmed behavior is labelled honestly. |
+| **V** | Admin MFA, recoverable operators and privileged access | Controlled verified operators and independent recovery work; selected source/effective grants match; genuine AAL2 succeeds, low assurance/ordinary bypass attempts fail, and revocation/factor/recovery checks preserve working access. |
+| **W** | Auth settings, passwords, account/email workflows | Existing Auth acceptance cases have actual scoped signup/confirmation/invitation/recovery/change/session and expiry/replay/wrong-identity results; the new-password rule and valid older-password login are reconciled; required inbox/callback and exact cleanup evidence exists. |
+| **X** | Personal/Family/Business roles and legitimate finance | Remaining required own/foreign/removed/assigned/team, escalation, Owner, invite/removal and legitimate finance/currency/entitlement cases pass on controlled actors/fixtures; existing records and retained manual conversions are preserved. Earlier passes are reused where still applicable. |
+| **Y** | Backend caller permissions, real database races and containment | A finite installed caller/permission matrix distinguishes human/API/service/job access; permitted affected callers work, unauthorized callers fail; required real PostgreSQL races and failure readback/containment/fixture cleanup pass. This does not claim all monitoring/provider/job operational work is finished. |
+| **Z** | Integrated authorization recheck and Stage3 closeout | U–Y and required earlier authorization evidence are reconciled against final exact staging source/installations; appropriate affected regressions pass; no required Stage3 blocker is hidden; an evidence-backed closeout and later-stage handoff exist. Z is not overall launch approval. |
+
+## Counting and scope rules
+
+- Every letter includes its necessary source review, implementation, local testing, owner/hosted acceptance and fixes. These phases are not extra lettered batches. U's existing preparation plan is the first phase of U, not a separate U-preparation batch followed by an automatically added live batch.
+- A failed test, Windows compatibility correction or retest remains inside the same batch. It does not automatically create AA or another letter. Completed evidence is reused; only affected checks are repeated when justified.
+- Six work packages does not mean six terminal commands, six days or six guaranteed first-pass runs. Concrete owner commands are grouped where safe and their exact actions/prompts are explained before execution.
+- Before execution, the batch contract must freeze its required acceptance-case list and pass/fail criteria. Passing work is not expanded with speculative checks; an identified new requirement/finding needs an explicit scope change.
+- A batch closes only when its required exit evidence passes. A genuine blocker is shown as an open requirement in its assigned letter; it is not renamed away or called complete to reach Z.
+- New requirements must be identified as an explicit change to this baseline, with reason, scope and count/schedule impact. There is no silent extension beyond Z. Routine repairs within the frozen scope do not need a new approval flow or a new letter.
+- This planning baseline grants no blanket permission for new roles/factors, destructive data repair, settings changes, messages, provider jobs or production/native deployment. Existing staging scope and tested reviewable handoff requirements remain in force. APK remains deferred.
+
+Machine-readable scopes, dependencies and exit evidence: `security-stage-3-lettered-batch-baseline.json`. Traceability preserves the existing source/permissions/Admin/Auth/finance exit requirements; it does not replace them with six vague milestone names. The latest T hosted pass and last-observed quarantined state remain unchanged. No new runtime tests, staging requests, emails, private inputs or owner commands are part of this planning update.

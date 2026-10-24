@@ -9,7 +9,7 @@
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE178",
+  "latest_evidence": "FRE179",
   "batches": [
     {
       "id": "FR.1",
@@ -3638,7 +3638,8 @@
     "full_lettered_batch_U_complete": false,
     "actual_local_full_app_and_worker_canary_scenario_passed": true,
     "last_hosted_database_mode_observation": "Batch T QUARANTINED; owner receipt checked 2026-10-24T07:43:01.498Z",
-    "physical_memory_only_private_storage_independently_proven": false
+    "physical_memory_only_private_storage_independently_proven": false,
+    "published_archive_source_integrity_followup": "FRE179"
   },
   "remaining_lettered_batch_plan": "docs/security-audit/SECURITY_STAGE_3_REMAINING_LETTERED_BATCHES.md",
   "remaining_lettered_batch_baseline": "docs/security-audit/security-stage-3-lettered-batch-baseline.json",

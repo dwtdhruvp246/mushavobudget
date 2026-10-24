@@ -5819,6 +5819,26 @@
       "production_or_native_changed": false,
       "APK_update_deferred": true,
       "findings_closed": []
+    },
+    {
+      "id": "FRE179",
+      "date": "2026-10-24",
+      "stage_step": "FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE_PREPARATION",
+      "result": "PUBLICATION_READBACK_LICENSE_CRLF_PRESERVATION_CORRECTION",
+      "source_parent_commit": "67aff03a072965f5566bcf10a58c76b12208775d",
+      "cause": "Text decoding during Git API tree preparation normalized the original CRLF bytes in one observed SDK license, producing a published blob that differed from its pinned raw SHA256. Existing text attributes would also normalize it on staging.",
+      "affected_fixture_file": "scripts/fixtures/full-app-sdk/db13cd8c45a3d3efa291.LICENSE.txt",
+      "correction": "Preserve observed license bytes with a dedicated -text attribute and decode bytes without universal newline conversion. Application modules, license wording and the tested local fixture bytes are unchanged.",
+      "required_publication_readback": "Verify every one of 279 pinned source hashes from the published commit and a Git archive before issuing the owner command.",
+      "local_runtime_evidence_preserved": "FRE178 local50/50 and105 syntax checks; no additional app/runtime change",
+      "owner_command_for_previous_commit_issued": false,
+      "actual_new_hosted_requests": 0,
+      "real_email_requests": 0,
+      "committed_mode_change_requests": 0,
+      "production_or_native_changed": false,
+      "full_lettered_batch_U_complete": false,
+      "hosted_acceptance": false,
+      "findings_closed": []
     }
   ],
   "prior_stage_evidence_preserved": true,

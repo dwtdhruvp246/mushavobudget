@@ -25,3 +25,6 @@ _headers text eol=lf
 
 # Preserve the reviewed setup wrapper bytes in Git archives on Windows.
 scripts/setup-fr-2-zoho-private.ps1 text eol=lf
+
+# Keep observed public SDK license bytes, including published CRLF notices.
+scripts/fixtures/full-app-sdk/*.LICENSE.txt -text

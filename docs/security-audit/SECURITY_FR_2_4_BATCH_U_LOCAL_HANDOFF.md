@@ -39,3 +39,5 @@ After all checks pass, a new Desktop `Mushavo-Batch-U-<random>` folder receives 
 ## Hosted and release boundaries
 
 No new hosted request, real email, live mode change, Auth setting, deployment, secret, schedule, production or native change occurred during U local preparation. The last actual database-mode observation remains the Batch T owner receipt: **QUARANTINED at2026-10-24T07:43:01.498Z**, not a fresh U readback. Existing accepted frontend remains `d24b6611` until a later explicit upload/readback. Overall hosted acceptance, findings closure, public launch approval and later main stages/FR groups remain pending. APK update deferred.
+
+Publication integrity follow-up FRE179: readback caught one CRLF license normalized by text decoding. Its original observed bytes and SHA256 are preserved with a dedicated `-text` attribute. All279 manifest hashes must match the corrected published commit and Git archive before any owner command is issued; no application/test behavior changed.

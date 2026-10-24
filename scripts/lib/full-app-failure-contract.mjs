@@ -1,8 +1,8 @@
 // Fixed local synthetic fault boundaries. An arbitrary contained failure is not a named fault pass.
 export const fullAppFailureContracts=Object.freeze({
  source:{checkpoint:'SIGNED_OUT_ACTUAL_APP_AND_WORKER',code:'BROWSER_SOURCE_REQUIRED'},
- begin:{checkpoint:'ONE_SYNTHETIC_EMAIL_THROUGH_ACTUAL_DOM',code:'BROWSER_CHECK_TIMEOUT'},
- verify:{checkpoint:'ONE_SYNTHETIC_EMAIL_THROUGH_ACTUAL_DOM',code:'BROWSER_CHECK_TIMEOUT'},
+ begin:{checkpoint:'EMAIL_REQUEST_WAIT_CODE_FORM_READY',code:'BROWSER_CHECK_TIMEOUT'},
+ verify:{checkpoint:'EMAIL_CODE_WAIT_DEVICE_COOKIE',code:'BROWSER_CHECK_TIMEOUT'},
  rpc:{checkpoint:'REAL_APP_PRIVATE_VIEW',code:'BROWSER_CHECK_TIMEOUT'},
  open:{checkpoint:'SYNTHETIC_BOUNDED_WINDOW',code:'SYNTHETIC_LOST_COMMIT_RESPONSE'},
  close:{checkpoint:'EXPLICIT_QUARANTINE_AND_ACTUAL_APP_REFRESH',code:'SYNTHETIC_LOST_COMMIT_RESPONSE'},

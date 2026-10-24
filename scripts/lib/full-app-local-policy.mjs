@@ -40,3 +40,18 @@ export function localAppRequestAllowed(request,{origin,api,sources,guard}){
  }
  return !!table&&appTables.has(table[1])&&method==='GET'&&[...url.searchParams].length<=12&&[...url.searchParams.keys()].every(k=>/^[a-z_]+$/.test(k));
 }
+
+// Response-byte inspection is only for public source. Private gateway responses
+// can be aborted by the real controller on signout; they need no source hashing.
+export function localAppInterceptionPatterns(origin,sources){
+ const url=new URL(origin);if(url.protocol!=='https:'||url.hostname!=='localhost'||url.origin!==origin||!(sources instanceof Map))throw Error('LOCAL_PUBLIC_RESPONSE_SCOPE_REQUIRED');
+ const paths=new Set([...sources.keys(),'/app','/app-entry','/offline']);
+ for(const path of paths)if(!['/app','/app-entry','/offline'].includes(path)&&!/^\/(?:[A-Za-z0-9_-]+\.(?:html|js|css|webmanifest)|assets\/[A-Za-z0-9_.-]+\.(?:png|svg))$/.test(path))throw Error('LOCAL_PUBLIC_RESPONSE_SCOPE_REQUIRED');
+ return [{urlPattern:'*',requestStage:'Request'},...[...paths].map(path=>({urlPattern:origin+path+'*',requestStage:'Response'}))];
+}
+
+// A native navigation can cancel a paused public response after its exact body
+// was verified. Never excuse an unverified/private body or an unrelated CDP error.
+export function verifiedPublicCancellation({bytesVerified,publicSource,nativeCancelled,method,protocolCode,protocolClass}){
+ return bytesVerified===true&&publicSource===true&&nativeCancelled===true&&method==='Fetch.continueResponse'&&[-32000,-32602].includes(protocolCode)&&protocolClass==='INTERCEPTION_NOT_FOUND';
+}

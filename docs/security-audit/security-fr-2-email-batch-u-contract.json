@@ -2,10 +2,10 @@
   "stage_step": "FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE_PREPARATION",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch U/Z — IN PREPARATION",
   "scope": "LOCAL_SYNTHETIC_FULL_APP_VERIFICATION_AND_TWO_FILE_PUBLIC_ARTIFACT_PREPARATION_ONLY",
-  "expected_tests": 52,
+  "expected_tests": 55,
   "entry_regressions": 32,
-  "SDK_policy_and_artifact_tests": 11,
-  "actual_browser_cases": 9,
+  "SDK_policy_and_artifact_tests": 13,
+  "actual_browser_cases": 10,
   "expected_failure_cases": [
     "source",
     "begin",
@@ -65,5 +65,14 @@
   "refreshed_token_correlated_for_both_actual_pages": true,
   "native_foreground_required_before_resume_trigger": true,
   "owner_previous_local_receipt": "docs/security-audit/security-fr-2-email-batch-u-owner-offline-stop.json",
-  "Windows_root_cause_confirmed": false
+  "Windows_root_cause_confirmed": false,
+  "controlled_first_synthetic_restore_response_exercises_disabled_native_click": true,
+  "native_enabled_controls_required_before_one_shot_send_and_verify": true,
+  "response_byte_interception_limited_to_public_source_paths": true,
+  "positive_named_browser_checks": 19,
+  "latest_owner_stop_receipt": "docs/security-audit/security-fr-2-email-batch-u-owner-readiness-stop.json",
+  "readiness_review": "docs/security-audit/SECURITY_FR_2_4_BATCH_U_NATIVE_READINESS_REVIEW.md",
+  "verified_public_response_native_cancellation_contract_required": true,
+  "unverified_private_uncorrelated_or_other_protocol_errors_remain_failures": true,
+  "freeze_new_browser_jobs_before_drain_and_context_disposal_required": true
 }

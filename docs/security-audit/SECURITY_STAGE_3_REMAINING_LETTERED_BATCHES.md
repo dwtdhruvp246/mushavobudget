@@ -1,3 +1,5 @@
+> Progress-output convention (FRE177,24 October): show **Stage 3/10 | FR.2/8 | Batch U/Z — IN PREPARATION** on current project updates. Full titles/statuses are recorded in [the display convention](SECURITY_PROGRESS_DISPLAY_CONVENTION.md). Main-stage/group/batch completion is independent; successful local preparation does not mark U complete. Preserve all earlier pinned receipts/scripts; this is a new-output convention, not a rerun request.
+
 # Fixed remaining lettered batches — current Stage 3 authorization work
 
 Baseline1,24 October2026. **Six planned batches remain: U,V,W,X,Y,Z. Z is the endpoint of this authorization sequence.** A–T are20 historical labels already used; their receipts and partial-scope limits remain unchanged. The lettered sequence had previously been developed incrementally without an explicit endpoint. This baseline corrects that planning gap; it does not pretend the endpoint was previously defined.

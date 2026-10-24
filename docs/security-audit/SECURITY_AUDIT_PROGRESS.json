@@ -3373,7 +3373,7 @@
     "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
     "progress": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PROGRESS.json",
     "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-    "latest_evidence": "FRE176",
+    "latest_evidence": "FRE177",
     "candidate_report": "docs/security-audit/SECURITY_FR_1_1_STAGING_CANDIDATE.md",
     "local_receipt": "docs/security-audit/security-final-staging-local-checks.json",
     "owner_terminal_action_required": false,
@@ -4344,7 +4344,38 @@
     },
     "remaining_lettered_batch_plan": "docs/security-audit/SECURITY_STAGE_3_REMAINING_LETTERED_BATCHES.md",
     "remaining_lettered_batch_count": 6,
-    "final_lettered_batch": "Z"
+    "final_lettered_batch": "Z",
+    "progress_hierarchy": {
+      "schema_version": 1,
+      "main_stage": {
+        "number": 3,
+        "final_number": 10,
+        "label": "Stage 3/10",
+        "title": "Authorization and Admin MFA",
+        "status": "IN_PROGRESS"
+      },
+      "remediation_group": {
+        "id": "FR.2",
+        "number": 2,
+        "total": 8,
+        "label": "FR.2/8",
+        "title": "Authorization, Admin MFA, authentication and finance integrity",
+        "status": "IN_PROGRESS"
+      },
+      "lettered_batch": {
+        "letter": "U",
+        "final_letter": "Z",
+        "label": "Batch U/Z",
+        "title": "Full-app startup, private cache and session lifecycle",
+        "status": "IN_PREPARATION"
+      },
+      "compact_display": "Stage 3/10 | FR.2/8 | Batch U/Z — IN PREPARATION",
+      "labels_are_not_completion_percentages": true,
+      "current_hierarchy_only_not_a_universal_FR_to_stage_mapping": true,
+      "batch_completion_requires_its_full_exit_evidence": true
+    },
+    "progress_display_contract": "docs/security-audit/security-progress-display-contract.json",
+    "progress_display_convention": "docs/security-audit/SECURITY_PROGRESS_DISPLAY_CONVENTION.md"
   },
   "current_phase": "FINAL_REMEDIATION",
   "main_implementation_stage": {

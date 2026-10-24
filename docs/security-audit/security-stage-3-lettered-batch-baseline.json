@@ -177,5 +177,7 @@
   "actual_new_hosted_requests": 0,
   "actual_new_email_requests": 0,
   "committed_mode_change_requests": 0,
-  "findings_closed": []
+  "findings_closed": [],
+  "progress_output_contract": "docs/security-audit/security-progress-display-contract.json",
+  "current_progress_display": "Stage 3/10 | FR.2/8 | Batch U/Z — IN PREPARATION"
 }

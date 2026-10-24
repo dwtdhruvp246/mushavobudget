@@ -1,7 +1,7 @@
 {
   "stage_step": "FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE",
-  "source_parent_commit": "aecdb030100f4d1e9f79c3cbbc9d495e70b37913",
-  "source_file_count": 292,
+  "source_parent_commit": "1091fc7364ce1f40482e9b953fb5eb659a79534f",
+  "source_file_count": 294,
   "file_sha256": {
     ".github/workflows/pages.yml": "0e93a6212cba9cb63d14a0116f787bf8828afdaa33d4d0a2922a043da75b3609",
     "PWA_STAGE_13_DEPLOYMENT.md": "2cce399bccec06c03b6be3d2a6aaef334aca28e46a488f434b7d47b6fa9b6511",
@@ -118,14 +118,14 @@
     "scripts/lib/email-staging-rollout-source.mjs": "ae3ee95441be8c99eaa5bd2fca9bd25aad8c4a1a8e15b9338a275b1a3977f6b2",
     "scripts/lib/email-window-handoff-sql.mjs": "cb6add63f0d052c414b2a0441ffa4d08ecfe48b3e932fdea8ca09ff46bb00e18",
     "scripts/lib/full-app-failure-contract.mjs": "dcdfc3f96dd9dfc2406c017de3fcebdae9b631300ffcc5934683645aae9ab896",
-    "scripts/lib/full-app-hosted-policy.mjs": "02f8c9d31fd3304d525154c2fa31f92c9c1bcc9fef2058b001a50f30221de974",
+    "scripts/lib/full-app-hosted-policy.mjs": "256330381adc086891bea483c01d2ebbc089112af41301e200077afab26a9af0",
     "scripts/lib/full-app-local-fixture.mjs": "3f8bcf907d487c41d2300076cf97c05de17ee2a5632cffb2d75dbeced91b3a5c",
     "scripts/lib/full-app-local-policy.mjs": "a3a6d37829361319d5073b7228088571c65fcc44fdfa5340ab2b4995ba7775c9",
     "scripts/lib/full-app-memory-storage.mjs": "37cb21127127eded4e875ee6bad3c315f1ff59e804560fda3e60e051212359df",
     "scripts/lib/full-app-realtime-fixture.mjs": "98d292432ca052be617337327572b30749213cb3925611a5f885e31abc1d214f",
     "scripts/lib/full-app-rest-fixture.mjs": "a5d3112fe390470c63f6cd967fecb3cebf597fb0c6b2e25db6d650aaed93ba93",
     "scripts/lib/full-app-sdk-fixture.mjs": "2a87a5a269f7f9f4e995699ab068a24a2f268815b31531399a99c32811eb37a2",
-    "scripts/lib/full-app-staging-browser.mjs": "92aa80448e828204721081c8f73f8f2d83e89b74653623be42ec1c4c7125fcb1",
+    "scripts/lib/full-app-staging-browser.mjs": "d8eb2d6196dd177321541844ed5fcbe960bf0246a0eb83d31551874782832e53",
     "scripts/lib/full-app-staging-local-check.mjs": "1526d2ffd2725261ed628ebcac447469988a6047983956ca7e03234ec4cce38c",
     "scripts/lib/stage-3-local-db.mjs": "38039a868faf3ad854085a270a16abc9dd358708ee591b87ffd4a2f38ecf2ea1",
     "scripts/lib/store-public-zip.mjs": "81eae2723285b56e321141512c2b6311777397f5b84853badcee9f60af3706aa",
@@ -166,7 +166,7 @@
     "scripts/verify-fr-2-email-batch-r.mjs": "83ef4e39edb22b91f664a5115ddd15c9c2bcfad7b4ffc6c8cd55f52ccdeeef8f",
     "scripts/verify-fr-2-email-batch-s.mjs": "34840656b79d780006b19c51f5903c7655ab7efbd1dfede2e3741af3ff407aa0",
     "scripts/verify-fr-2-email-batch-t.mjs": "d3d650ae5bbc22cb35f47ff697aa369acbe3f60d16cd2f6eadfcd425befe020a",
-    "scripts/verify-fr-2-email-batch-u-hosted.mjs": "d2c684c07b64f04bde611699c71b0dc92ff3ac99095f4b0242dea32327aa33db",
+    "scripts/verify-fr-2-email-batch-u-hosted.mjs": "eee9ea113fd184ed7a4797032696ef8eff314698e70948dddbc93d0a640a8083",
     "scripts/verify-fr-2-email-batch-u.mjs": "ff22f84f416f3cf1187c97ca51834f83c8682701f2362cc6d8a63ba4a7e88bec",
     "scripts/verify-fr-2-email-canonical-rollout.mjs": "4aee77b9d44b5f7a76a65bb5936cc05441788c04eb95ac38a5ca15dd69939129",
     "scripts/verify-fr-2-email-staging-rollout.mjs": "7d2d8869ea338b11a9abf2b8f41e59ffcee7c82f86725a23940c862e62f7e7d7",
@@ -248,6 +248,7 @@
     "sw.js": "0bc471318eb7156aed4f004c153a3e45fd08a71f665ad77ba59caa29fd8d8c47",
     "tests/fixtures/email-offline-v88.sw.js": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
     "tests/fixtures/fr-2-email-batch-t-transport.mjs": "c288f2c73208213727ac5278dfea682f83d7d5e0f8bd9c2607b86e32ab5b621c",
+    "tests/fixtures/fr-2-email-u-published-binding-policy.txt": "02f8c9d31fd3304d525154c2fa31f92c9c1bcc9fef2058b001a50f30221de974",
     "tests/fixtures/fr-2-reviewed-ensure-rls.json": "e7f83de6500beb499dd3010db4ae5aec5be454a09e131068d61d44d9e3dade6b",
     "tests/fixtures/fr-2-reviewed-provider-hooks.json": "e720447d892028e5468d47724725c502f0bdd0f036e9518fa021da623ab9deb2",
     "tests/fr-2-email-acceptance-window.test.mjs": "1377707c83e619c309b165d9e7292ae23b750a26cd67cfd9789c0c618c44b661",
@@ -278,6 +279,7 @@
     "tests/fr-2-email-batch-t-runner.tests.ps1": "cf22c76e4a0523654edf06bb93b76b8972cf2d54a8a79acb1fcd2899b5ca3d40",
     "tests/fr-2-email-batch-t-target.test.mjs": "1562c5c1251925af2c418b1f35a8fe7d16b2502519ab6c0665f43147c0f247aa",
     "tests/fr-2-email-batch-t.test.mjs": "5ad050147ba9b2f1671d173fbbc1972d75a713d31b3a2b3fa58618372934ff19",
+    "tests/fr-2-email-batch-u-binding.test.mjs": "fcda2f01c6a580aa26a2b22554cb435ec8f5cbb76551c459942f1011b703b99d",
     "tests/fr-2-email-batch-u-browser.test.mjs": "9eda9063ed8c8443052895018d9262003174276fd9c74912d545917a71d8c4b5",
     "tests/fr-2-email-batch-u-hosted-browser.test.mjs": "32756f042a7c4173199ca27d5fcc2be0b834056f9de228377cb901f33bab0c8c",
     "tests/fr-2-email-batch-u-hosted-policy.test.mjs": "a56043842365a7a2d774332e76827eb58f2132ca0c4db61ccbd7070b37006da2",
@@ -413,7 +415,8 @@
     "tests/fr-2-email-batch-u-hosted.test.mjs",
     "tests/fr-2-email-batch-u-hosted-sql.test.mjs",
     "tests/fr-2-email-batch-u-hosted-policy.test.mjs",
-    "tests/fr-2-email-batch-u-hosted-browser.test.mjs"
+    "tests/fr-2-email-batch-u-hosted-browser.test.mjs",
+    "tests/fr-2-email-batch-u-binding.test.mjs"
   ],
   "owner_passed_U55_sources_unchanged": true
 }

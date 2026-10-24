@@ -1,3 +1,5 @@
+> FRE187–FRE188: owner Windows26/27 stopped locally at same-account session binding; cleanup passed and the private run never began. Premature driver rebind is reproduced and corrected with an identity/proof-gated handoff and request-stage cancellation of exact retired-session work. Full local33/33 and focused6/6 PASS,294 hashes/118 syntax. [Review and focused combined retry](SECURITY_FR_2_4_BATCH_U_BINDING_REVIEW.md). Six focused Windows checks then the same private probe; no U55/old26 rerun, upload, email resend or installation requested. U remains IN PROGRESS; corrected owner result pending.
+
 # Batch U — combined actual full-app staging acceptance
 
 **Stage 3/10 | FR.2/8 | Batch U/Z — IN PROGRESS. Local hosted-driver checks COMPLETE; owner staging execution pending.**

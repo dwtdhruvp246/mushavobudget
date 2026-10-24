@@ -2,11 +2,20 @@
   "stage_step": "FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE_PREPARATION",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch U/Z — IN PREPARATION",
   "scope": "LOCAL_SYNTHETIC_FULL_APP_VERIFICATION_AND_TWO_FILE_PUBLIC_ARTIFACT_PREPARATION_ONLY",
-  "expected_tests": 50,
+  "expected_tests": 52,
   "entry_regressions": 32,
-  "SDK_policy_and_artifact_tests": 9,
+  "SDK_policy_and_artifact_tests": 11,
   "actual_browser_cases": 9,
-  "expected_failure_cases": ["source", "begin", "verify", "rpc", "open", "close", "profile-sync", "refresh"],
+  "expected_failure_cases": [
+    "source",
+    "begin",
+    "verify",
+    "rpc",
+    "open",
+    "close",
+    "profile-sync",
+    "refresh"
+  ],
   "pinned_real_SDK_static_modules": 9,
   "SDK_version": "2.110.9",
   "optional_dynamic_tracing_import_pinned_or_executed": false,
@@ -29,7 +38,10 @@
   "owner_action": "LOCAL_VERIFICATION_THEN_RETAINED_PUBLIC_ZIP_TWO_FILE_CANDIDATE_AND_DOTNET_READBACK",
   "retained_ZIP_SHA256": "5bbbea1dfaca36a05c513b087012657c0dfd7380901dcf2f47dc2eac45309fe0",
   "output_filename": "mushavo-batch-u-lifecycle-review.zip",
-  "changed_public_files": ["app.js", "session-entry.js"],
+  "changed_public_files": [
+    "app.js",
+    "session-entry.js"
+  ],
   "unchanged_public_entries": 42,
   "private_inputs_requested": false,
   "DPAPI_accessed": false,
@@ -48,5 +60,10 @@
   "live_activation_approved": false,
   "production_or_native_changed": false,
   "APK_update_deferred": true,
-  "findings_closed": []
+  "findings_closed": [],
+  "named_fault_requires_exact_checkpoint_code_and_executed_marker": true,
+  "refreshed_token_correlated_for_both_actual_pages": true,
+  "native_foreground_required_before_resume_trigger": true,
+  "owner_previous_local_receipt": "docs/security-audit/security-fr-2-email-batch-u-owner-offline-stop.json",
+  "Windows_root_cause_confirmed": false
 }

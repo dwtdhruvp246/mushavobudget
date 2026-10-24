@@ -1,3 +1,7 @@
+> FRE181 corrected local52/52 PASS (280 hashes,106 syntax): both-page refreshed-token request/response correlation, native foreground verification and exact named fault checkpoint/code/marker assertions now pass, including main close-response loss. Complete corrected owner Windows52 verification/public-artifact command is supplied in chat after publication readback. No private input or upload. The Windows timeout cause/outcome is still unconfirmed; all earlier receipts are preserved. Batch U remains IN PREPARATION.
+
+> FRE180 owner Windows stop:49/50 at the late-response/cross-tab sequence, cleanup verified, no ZIP prepared and zero hosted activity. The exact inner wait/Windows cause was not captured; the named close-fault case also stopped earlier and was not accepted at its intended main boundary. [Resume review](SECURITY_FR_2_4_BATCH_U_WINDOWS_RESUME_REVIEW.md) replaces the retry plan with both-page current-token correlation, native foreground verification, precise checkpoints and exact executed-fault assertions. Corrected suite expects52 tests; owner retry remains pending assistant verification/publication. Earlier50-case handoff/counts below are historical.
+
 # Batch U local full-app verification and two-file public candidate
 
 **Stage 3/10 | FR.2/8 | Batch U/Z — IN PREPARATION.** Local preparation is a phase of U; hosted full-app acceptance and U's full exit evidence remain pending. Z remains the final letter of this sequence. This handoff supersedes the earlier U statement that no runtime implementation exists. It does not repeat Batch T.

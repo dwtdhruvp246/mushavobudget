@@ -22,7 +22,7 @@ export async function fullAppLocalFixture(modulePath,{failure=null}={}){
  const serial=fn=>{const task=queue.then(fn);queue=task.catch(()=>{});return task;};
  const value=async(q,p)=>(await db.query(q,p)).rows[0]?.value;
  const actors=[{id:id(62001),email:'first@example.invalid',password:'SYNTHETIC_FIRST_PASSWORD',full_name:'Synthetic First'},{id:id(62002),email:'second@example.invalid',password:'SYNTHETIC_SECOND_PASSWORD',full_name:'Synthetic Second'}];
- const sessions=[],generatedChallenges=new Set(),publishableKey='sb_publishable_SYNTHETIC',state={mail:0,code:null,requests:0,unreviewed:0,rpcCalls:0,RESTCalls:0,authCalls:0,analyticsWrites:0,profileWriteAttempts:0,globalLogouts:0,localLogouts:0,refreshes:0,socketConnections:0,socketMessages:0,heldResponses:0,SQL_errors:[],calls:[],offline:false};
+ const sessions=[],generatedChallenges=new Set(),publishableKey='sb_publishable_SYNTHETIC',state={mail:0,code:null,requests:0,unreviewed:0,rpcCalls:0,RESTCalls:0,authCalls:0,analyticsWrites:0,profileWriteAttempts:0,globalLogouts:0,localLogouts:0,refreshes:0,socketConnections:0,socketMessages:0,heldResponses:0,injectedFaults:[],SQL_errors:[],calls:[],offline:false};
  const publicNames=['app.html','app.js','app-entry.html','app-entry.js','auth.html','auth-flows.js','auth-security.js','admin-mfa.js','admin-plans.js','business.html','business.js','business.css','styles.css','workspace-preference.js','session-entry.js','email-verification.js','pwa.js','pwa-install.js','push-notifications.js','pwa-shell.css','pwa-update.css','pwa-install.css','offline.html','sw.js','manifest.webmanifest','assets/pwa-icon-192.png','assets/pwa-icon-512.png','assets/pwa-icon-maskable-512.png','assets/apple-touch-icon.png','assets/mushavo-budget-logo.png','assets/pwa-icon-maskable-192.png'];
  const publicSources=new Map();for(const name of publicNames){try{let bytes=await readFile(new URL(name,root));if(/\.(?:html|js|css|webmanifest)$/.test(name))bytes=Buffer.from(bytes.toString().replaceAll('kttkospkblwvguuwnhjj',stagingRef));publicSources.set('/'+name,bytes);}catch{if(name!=='assets/pwa-icon-maskable-192.png')throw Error('PUBLIC_SOURCE_REQUIRED');}}
  const servedSources=new Map(publicSources);
@@ -75,7 +75,7 @@ export async function fullAppLocalFixture(modulePath,{failure=null}={}){
       const s=mint(a,id(64001+sessions.length));sessions.push(s);await serial(()=>db.query('insert into auth.sessions(id,user_id) values($1,$2)',[s.sessionId,a.id]));json(res,authResponse(s),200,cors);return;
      }
      if(url.search==='?grant_type=refresh_token'){
-      if(failure==='refresh'){json(res,{error:'invalid_grant',error_code:'refresh_token_not_found',message:'Invalid refresh token'},400,cors);return;}
+      if(failure==='refresh'){state.injectedFaults.push('refresh');json(res,{error:'invalid_grant',error_code:'refresh_token_not_found',message:'Invalid refresh token'},400,cors);return;}
       const old=sessions.find(x=>x.refreshToken===body.refresh_token&&x.active);if(!old){json(res,{error:'invalid_grant',message:'Invalid refresh token'},400,cors);return;}
       const next=mint(old.actor,old.sessionId,old.revision+1);for(const token of old.tokens)next.tokens.add(token);Object.assign(old,next);state.refreshes++;json(res,authResponse(old),200,cors);return;
      }
@@ -90,12 +90,12 @@ export async function fullAppLocalFixture(modulePath,{failure=null}={}){
     const headers={...req.headers,origin:STAGING_ORIGIN,'sec-fetch-site':'same-origin','cf-connecting-ip':'192.0.2.182'};delete headers.host;
     if(url.pathname.endsWith('/verify')){const selected=JSON.parse(raw).challengeId;if(/^[a-f0-9-]{36}$/i.test(selected))generatedChallenges.add(selected);}
     const response=await gateway(new Request(STAGING_ORIGIN+url.pathname,{method:'POST',headers,body:raw}));
-    if(failure==='begin'&&url.pathname.endsWith('/begin')||failure==='verify'&&url.pathname.endsWith('/verify')){json(res,{result:'UNAVAILABLE'},502);return;}
+    if(failure==='begin'&&url.pathname.endsWith('/begin')||failure==='verify'&&url.pathname.endsWith('/verify')){state.injectedFaults.push(failure);json(res,{result:'UNAVAILABLE'},502);return;}
     res.writeHead(response.status,Object.fromEntries(response.headers));res.end(await response.text());return;
    }
    if(backend&&url.pathname.startsWith('/rest/v1/')&&req.headers.apikey===publishableKey){
     const s=find(req.headers.authorization);if(!s?.active){json(res,{message:'Session required'},401,cors);return;}
-    if(failure==='rpc'&&url.pathname.endsWith('/email_gate_current_session_verified')){json(res,false,200,cors);return;}
+    if(failure==='rpc'&&url.pathname.endsWith('/email_gate_current_session_verified')){state.injectedFaults.push('rpc');json(res,false,200,cors);return;}
     if(req.method==='PATCH'||req.method==='POST'&&!url.pathname.includes('/rpc/'))state.profileWriteAttempts++;
     if(url.pathname.includes('/rpc/'))state.rpcCalls++;else state.RESTCalls++;
     if(url.pathname.endsWith('/record_my_analytics_activity'))state.analyticsWrites++;
@@ -105,7 +105,7 @@ export async function fullAppLocalFixture(modulePath,{failure=null}={}){
     if(url.pathname==='/config.js'){res.writeHead(200,{'content-type':'application/javascript','cache-control':'no-store'});res.end('window.MUSHAVO_BUDGET_CONFIG='+JSON.stringify({supabaseUrl:localAPI,supabasePublishableKey:publishableKey,vapidPublicKey:''})+';');return;}
     if(url.pathname==='/favicon.ico'){res.writeHead(204);res.end();return;}
     const path=url.pathname==='/app'?'/app.html':url.pathname==='/app-entry'?'/app-entry.html':url.pathname==='/offline'?'/offline.html':url.pathname;
-    const source=servedSources.get(path);if(source){res.writeHead(200,{'content-type':path.endsWith('.js')?'text/javascript':path.endsWith('.css')?'text/css':path.endsWith('.png')?'image/png':path.endsWith('.webmanifest')?'application/manifest+json':'text/html','cache-control':'no-store',...(path==='/sw.js'?{'service-worker-allowed':'/'}:{})});res.end(source);return;}
+    const source=servedSources.get(path);if(source){if(failure==='source'&&path==='/app.js')state.injectedFaults.push('source');res.writeHead(200,{'content-type':path.endsWith('.js')?'text/javascript':path.endsWith('.css')?'text/css':path.endsWith('.png')?'image/png':path.endsWith('.webmanifest')?'application/manifest+json':'text/html','cache-control':'no-store',...(path==='/sw.js'?{'service-worker-allowed':'/'}:{})});res.end(source);return;}
    }
    state.unreviewed++;json(res,{},404);
   }catch{json(res,{result:'SYNTHETIC_FIXTURE_REQUIRED'},500);}});
@@ -121,8 +121,8 @@ export async function fullAppLocalFixture(modulePath,{failure=null}={}){
    }});
   });
   await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve);});origin='https://localhost:'+server.address().port;localAPI='https://127.0.0.1:'+server.address().port;
-  return {holdFinances(){holdFinances=true;},releaseFinances(){holdFinances=false;for(const resolve of held.splice(0))resolve();},origin,api:localAPI,actors,sessions,publishableKey,state,publicSources,
-   async setWindow(open){const sql=open?await openSQL(actors[0].id,fence):await quarantineSQL(actors[0].id,fence);const result=await serial(()=>db.exec(sql));if(failure===(open?'open':'close'))throw Error('SYNTHETIC_LOST_COMMIT_RESPONSE');return result;},
+  return {currentRevision(header){const s=find(header);return s?.active&&s.actor.id===actors[0].id&&header==='Bearer '+s.token?s.revision:null;},holdFinances(){holdFinances=true;},releaseFinances(){holdFinances=false;for(const resolve of held.splice(0))resolve();},origin,api:localAPI,actors,sessions,publishableKey,state,publicSources,
+   async setWindow(open){const sql=open?await openSQL(actors[0].id,fence):await quarantineSQL(actors[0].id,fence);const result=await serial(()=>db.exec(sql));if(failure===(open?'open':'close')){state.injectedFaults.push(failure);throw Error('SYNTHETIC_LOST_COMMIT_RESPONSE');}return result;},
    async inspect(){return serial(async()=>({mode:await value('select mode value from mushavo_email_install.rollout_control'),windows:await value('select count(*)::int value from mushavo_email_install.acceptance_window'),priorSession:await value('select count(*)::int value from auth.sessions where id=$1',[id(65001)]),priorDevice:await value('select count(*)::int value from mushavo_email_auth.devices where id=$1',[id(65002)]),priorProof:await value('select count(*)::int value from mushavo_email_auth.session_proofs where session_id=$1',[id(65001)]),selectedSessions:await value('select count(*)::int value from auth.sessions where id<>$1',[id(65001)]),selectedDevices:await value('select count(*)::int value from mushavo_email_auth.devices where id<>$1',[id(65002)]),challenges:await value('select count(*)::int value from mushavo_email_auth.challenges'),paymentCanaries:await value('select count(*)::int value from public.payment_items where id in ($1,$2)',[id(63001),id(63002)])}));},
    async cleanup(){await serial(async()=>{await db.query('delete from mushavo_email_auth.devices where origin_challenge_id=any($1::uuid[]) and user_id=any($2::uuid[])',[[...generatedChallenges],actors.map(a=>a.id)]);await db.query('delete from auth.sessions where id=any($1::uuid[])',[sessions.map(s=>s.sessionId)]);});},
    async close(){if(closed)return;closed=true;for(const resolve of held.splice(0))resolve();for(const socket of sockets)socket.destroy();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));await queue;await db.close();}

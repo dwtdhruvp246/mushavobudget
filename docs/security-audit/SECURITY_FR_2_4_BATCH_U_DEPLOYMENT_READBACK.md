@@ -1,3 +1,5 @@
+> FRE186: the bounded actual full-app hosted driver is implemented and locally **27/27 PASS** (292 hashes,117 syntax; five actual-browser cases). [Combined owner run, exact effects/prompts and limits](SECURITY_FR_2_4_BATCH_U_HOSTED_HANDOFF.md). Reuse completed U55/artifact/deployment; one new-driver check-and-private-staging command, one real email and one first-account five-minute window followed by verified quarantine/exact cleanup. No new ZIP/upload/install. Actual owner hosted result remains pending; U stays IN PROGRESS.
+
 # Batch U — new staging deployment readback
 
 **Stage 3/10 | FR.2/8 | Batch U/Z — IN PROGRESS. Direct public publication checks COMPLETE; browser acceptance remains open.**

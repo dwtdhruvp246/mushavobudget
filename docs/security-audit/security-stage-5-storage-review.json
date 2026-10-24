@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "stage_step": "5.2",
+  "evidence_id": "S5E03",
+  "date": "2026-10-12",
+  "source_commit": "64bbd2695b004168b45235d96f2220862cede5cc",
+  "scope": "TRACKED_CLIENT_STORAGE_SOURCE_REVIEW_AND_EXISTING_VM_REGRESSION_ONLY",
+  "status": "SOURCE_AND_LOCAL_REVIEW_COMPLETE_OWNER_BACKUP_XML_PENDING",
+  "files": [
+    {
+      "path": "app-entry.js",
+      "sha256": "a2a15b461036cdf6b201ca6c9f022fb64c30b0b4f40f0f77e3d5169b91c081a7",
+      "git_blob_sha": "4496b291102c26aa4dbcf9fbb88882cd972f5775",
+      "bytes": 6807
+    },
+    {
+      "path": "workspace-preference.js",
+      "sha256": "913fa62e34cf16d6f6eb1791e3bb9dad0b37001d64ed408dac2773ebbb37ce56",
+      "git_blob_sha": "17abce600781bc378e17bba19771316291c26f71",
+      "bytes": 4677
+    },
+    {
+      "path": "auth-security.js",
+      "sha256": "ae6eb487fa9ae5f21b1e3a95f698fe5869a377349bc5ff66bf9e8d32cef6cf54",
+      "git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "bytes": 9909
+    },
+    {
+      "path": "auth-flows.js",
+      "sha256": "ef16214f827d6650a507e30bdae7703c975f061437ed0672cf0abf9072e37500",
+      "git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "bytes": 8343
+    },
+    {
+      "path": "sw.js",
+      "sha256": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
+      "git_blob_sha": "b61477393fa2b0ed7baa3c52d61076df549df948",
+      "bytes": 13508
+    },
+    {
+      "path": "package.json",
+      "sha256": "fe28c33c1a1c93b8f5efaf7b098b6884afca7b61f7910e767f8ce069ff1d8c6a",
+      "git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+      "bytes": 883
+    },
+    {
+      "path": "scripts/build-capacitor.mjs",
+      "sha256": "20d6a31e4955433c119db9c1777941ae70272f48681f3237b3b190df63a9fe38",
+      "git_blob_sha": "d911f7f777a9b80bb27d8b99cf88a3e16dd8599e",
+      "bytes": 4490
+    },
+    {
+      "path": "app.js",
+      "sha256": "eb4222245c6d75bf3708335d6c5f24c942c62715d3ce0afdf7d79cb3777cb6f6",
+      "git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+      "bytes": 504595
+    },
+    {
+      "path": "business.js",
+      "sha256": "6754f92c72399bf45ea849ef692318a6d88a227a413b552a6ca50ee9e1b98f6f",
+      "git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+      "bytes": 239567
+    },
+    {
+      "path": "tests/workspace-preference.test.mjs",
+      "sha256": "7b67262f3a25caa17f4550be47bbace8f6615ce04031994f8503e154b37ee426",
+      "git_blob_sha": "1da274830ccf27056a7969f5ba96d90b62747d05",
+      "bytes": 6269
+    }
+  ],
+  "selected_current_git_blob_matches": 10,
+  "source_blob_mismatches": 0,
+  "auth_storage_observations": {
+    "normal_app_business_clients": "DEFAULT_SUPABASE_AUTH_STORAGE_NO_CUSTOM_NATIVE_ADAPTER",
+    "launcher": "PERSISTED_SESSION_NO_CUSTOM_NATIVE_ADAPTER_LOCALSTORAGE_KEY_CLEANUP",
+    "auth_page_normal_client": "PERSISTED_SESSION_NO_CUSTOM_NATIVE_ADAPTER",
+    "auth_link_client": "EXPLICIT_SESSIONSTORAGE_PROJECT_SEPARATE_KEY",
+    "auth_page_snapshot": "PERSISTSESSION_FALSE",
+    "workspace_preference_bridge": "SELECTION_METADATA_ONLY_OPTIONAL_PREFERENCES_AND_LOCALSTORAGE",
+    "workspace_payload_fields": [
+      "version",
+      "kind",
+      "id",
+      "familyId",
+      "savedAt"
+    ],
+    "workspace_storage_key_includes_account_id": true,
+    "native_keystore_keychain_adapter_identified_in_reviewed_client_initialization": false,
+    "actual_installed_storage_encryption_and_payload_verified": false,
+    "OS_sandbox_or_disk_encryption_is_not_application_crypto_adapter_proof": true,
+    "local_cleanup_is_not_cloud_or_other_device_copy_erasure": true
+  },
+  "owner_5_1_receipt": "docs/security-audit/security-stage-5-native-owner-metadata.json",
+  "local_checkout_matches_audit_source": false,
+  "local_manifest_backup_attributes_inspected_at_5_2": false,
+  "missing_conventional_rules_are_not_effective_backup_catalog_proof": true,
+  "primary_finding": "F14",
+  "dependencies": [
+    "F05",
+    "F06",
+    "F10",
+    "F17",
+    "F02",
+    "F08",
+    "F15"
+  ],
+  "new_findings_defined": 0,
+  "findings_closed": [],
+  "local_regression": {
+    "command": "node --test tests/workspace-preference.test.mjs",
+    "node_version": "v24.19.0",
+    "tests": 10,
+    "pass": 10,
+    "fail": 0,
+    "exit_code": 0,
+    "scope": "EXISTING_ACTUAL_WORKSPACE_SELECTION_FUNCTIONS_IN_VM_WITH_SYNTHETIC_LOCALSTORAGE_AND_MOCKED_PREFERENCES",
+    "new_test_definitions": 0,
+    "native_encryption_or_backup_tests": 0,
+    "preparation_attempt": {
+      "exit_code": 1,
+      "tests_executed": 0,
+      "reason": "TEST_FILE_ABSENT_IN_PARTIAL_SCRATCH_EXPORT; pinned test fetched and byte-verified before successful execution"
+    }
+  },
+  "owner_handoff": "scripts/read-stage-5-backup-config.ps1",
+  "PowerShell_handoff_executed_by_assistant": false,
+  "PowerShell_runtime_available_here": false,
+  "native_builds_run": 0,
+  "native_sync_install_sign_upload_run": false,
+  "device_checks_run": 0,
+  "hosted_checks_run": 0,
+  "actual_backup_export_restore_or_token_payload_access": false,
+  "runtime_application_changed": false,
+  "production_or_accounts_changed": false,
+  "native_security_acceptance": false,
+  "APK_update_deferred": true,
+  "references": [
+    {
+      "url": "https://supabase.com/docs/reference/javascript/auth",
+      "scope": "CURRENT_OFFICIAL_DEFAULT_STORAGE_GUIDANCE_NOT_PINNED_BINARY_INSPECTION",
+      "accessed": "2026-10-12"
+    },
+    {
+      "url": "https://capacitorjs.com/docs/apis/preferences",
+      "scope": "CURRENT_V8_OFFICIAL_PREFERENCES_GUIDANCE_NOT_OWNER_INSTALLED_PLUGIN_INSPECTION",
+      "accessed": "2026-10-12"
+    },
+    {
+      "url": "https://developer.android.com/identity/data/autobackup",
+      "scope": "CURRENT_PLATFORM_BACKUP_RULE_GUIDANCE_NOT_EFFECTIVE_OWNER_MANIFEST",
+      "accessed": "2026-10-12"
+    }
+  ]
+}

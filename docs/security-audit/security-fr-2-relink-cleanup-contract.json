@@ -1,0 +1,42 @@
+{
+  "stage_step": "FR.2.2_EXACT_RELINK_CLEANUP_CANDIDATE",
+  "source_parent_commit": "57d51962d544c493a2aa755e3beb49933096f049",
+  "target_project": "dczlddwbtgvfdujgcitb",
+  "owner_post_snapshot": "docs/security-audit/security-fr-2-post-relink-snapshot-owner-result.json",
+  "run_marker": "AUDIT-FR22-RELINK-5f93bfbe-5830-457d-b3a4-c1088d4711fd",
+  "target_items": 4,
+  "target_records": 2,
+  "target_linked_identity_conversions": 2,
+  "creation_window_UTC": [
+    "2026-10-14T05:27:00Z",
+    "2026-10-14T05:29:00Z"
+  ],
+  "actor_source": "TWO_EXACT_RETAINED_SYNTHETIC_AUTH_EMAILS",
+  "item_shape": "EXACT_FOUR_SUFFIX_NAMES_OWNER_CREATOR_ACTIVE_PERSONAL_WORKSPACE_INACTIVE_ONCE_USD1_NOTES_START_DATE_AND_CREATED_WINDOW",
+  "record_shape": "EXACT_TWO_RESTORED_A_PARENT_RECORDS_ONE_PER_OWNER_USD1_PERSONAL_DATE_METHOD_NOTES_NO_PROOF_OR_MEMBER_ATTRIBUTION",
+  "conversion_shape": "EXACT_TWO_DISTINCT_LINKED_RECORD_IDENTITIES_LOCKED_USD1_RATE1_NULL_ENTERED_BY_AND_CREATED_WINDOW",
+  "guarded_delete_triggers": 4,
+  "guarded_function_body_LF_MD5": {
+    "guard_suspended_account_write": "83011cf2afe6be237b3b33da73ba08df",
+    "guard_workspace_finance_write": "783883ce4af23615f768a0990b6f2478"
+  },
+  "unreviewed_inbound_FK_or_delete_trigger": "REJECTED",
+  "normal_application_delete_guards_remain_active": true,
+  "administrative_attribution": "PRIVILEGED_SQL_EDITOR_ROLE_WITH_TRANSACTION_LOCAL_REQUEST_CLAIMS_PER_VERIFIED_FIXTURE_OWNER_NOT_REAL_AUTH_JWT_SESSION",
+  "claims_or_search_path_or_timezone_persisted": false,
+  "non_target_protection": "ALL_OTHER_ROWS_IN_THREE_PAYMENT_TABLES_COMPARED_AS_FULL_JSONB_VALUES_UNDER_TABLE_WRITE_LOCKS",
+  "expected_delete_counts_asserted_per_actor": true,
+  "residual_target_refs_asserted_absent": true,
+  "atomic_commit_after_all_assertions": true,
+  "replay": "REJECTS_MISSING_EXACT_TARGETS_DOES_NOT_BROADEN",
+  "historical_mismatch_or_earlier_orphan_cleanup_requested": false,
+  "manual_Family_conversions_targeted": false,
+  "settings_accounts_permissions_or_functions_changed": false,
+  "local_receipt": "docs/security-audit/security-fr-2-relink-cleanup-local-checks.json",
+  "local_tests": 14,
+  "cleanup_SQL": "supabase/remediation/security_fr_2_2_relink_cleanup.sql",
+  "cleanup_SQL_sha256": "48446f38b01d177a8297065c5452df755cf2912e555d3f35e5bde6bfb8437433",
+  "owner_cleanup_result_received": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

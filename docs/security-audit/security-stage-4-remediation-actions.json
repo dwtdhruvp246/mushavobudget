@@ -1,0 +1,458 @@
+{
+  "schema_version": 1,
+  "stage_step": "4.4",
+  "recorded_date": "2026-10-11",
+  "evidence_id": "S4E12",
+  "scope": "STAGE_4_EXISTING_ACTION_CONSOLIDATION_NOT_NEW_FINDING_DEFINITIONS",
+  "source_parent_commit": "fdd9ebdba2c0f8ba3b6c79528fcecb1c8db2ab27",
+  "stage4_status": "CLOSED_WITH_CARRY_FORWARD",
+  "actions_count": 18,
+  "all_statuses": "OPEN",
+  "original_findings_count": 20,
+  "original_finding_definitions_changed": false,
+  "actions": [
+    {
+      "id": "DL-R01",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.1",
+      "required_work": "Approved factual operator/audience/territory and purpose/grounds/expiry/access/processor/backup rules; truthful user notices",
+      "recorded_scoped_work": "Proposed category matrix and unapproved eight-category template",
+      "completion_evidence": null,
+      "affected_acceptance_groups": [
+        "DL01",
+        "DL02",
+        "DL03",
+        "DL04",
+        "DL05"
+      ],
+      "original_finding_dependencies": [
+        "F01",
+        "F02",
+        "F13",
+        "F20",
+        "F08",
+        "F15"
+      ]
+    },
+    {
+      "id": "DL-R02",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.1",
+      "required_work": "Genuine server verification/session boundary, durable subject-bound request/idempotency, usable in-app/web initiation and truthful status",
+      "recorded_scoped_work": "Self-request shape, recent-identity and safe preflight gates modeled",
+      "completion_evidence": null,
+      "affected_acceptance_groups": [
+        "DL01",
+        "DL02",
+        "DL03",
+        "DL04",
+        "DL05"
+      ],
+      "original_finding_dependencies": [
+        "F01",
+        "F02",
+        "F13",
+        "F20",
+        "F08",
+        "F15"
+      ]
+    },
+    {
+      "id": "DL-R03",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.1",
+      "required_work": "Exact final/hosted catalog and source parity; guarded household resolution, approved shared closure and observed financial/other-member preservation",
+      "recorded_scoped_work": "Ownership/transfer/closure/current-revision safeguards modeled; selected source dependencies recorded",
+      "completion_evidence": null,
+      "affected_acceptance_groups": [
+        "DL01",
+        "DL02",
+        "DL03",
+        "DL04",
+        "DL05"
+      ],
+      "original_finding_dependencies": [
+        "F01",
+        "F02",
+        "F13",
+        "F20",
+        "F08",
+        "F15"
+      ]
+    },
+    {
+      "id": "DL-R04",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.1",
+      "required_work": "Authoritative row/object collectors, actual Storage/data/Auth/provider adapters, durable partial-failure recovery and justified retained-file/backup treatment",
+      "recorded_scoped_work": "File ownership/scope, manifest-first ordering, retry/manual-review and reconciliation modeled",
+      "completion_evidence": null,
+      "affected_acceptance_groups": [
+        "DL01",
+        "DL02",
+        "DL03",
+        "DL04",
+        "DL05"
+      ],
+      "original_finding_dependencies": [
+        "F01",
+        "F02",
+        "F13",
+        "F20",
+        "F08",
+        "F15"
+      ]
+    },
+    {
+      "id": "DL-R05",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.1",
+      "required_work": "Actual JWT/refresh/login/signed URLs/realtime/push/cache/provider effects/windows and safe access/recovery gates",
+      "recorded_scoped_work": "Unknown access/provider state blocks the model; synthetic false completion refused",
+      "completion_evidence": null,
+      "affected_acceptance_groups": [
+        "DL01",
+        "DL02",
+        "DL03",
+        "DL04",
+        "DL05"
+      ],
+      "original_finding_dependencies": [
+        "F01",
+        "F02",
+        "F13",
+        "F20",
+        "F08",
+        "F15"
+      ]
+    },
+    {
+      "id": "DL-R06",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_1_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.1",
+      "required_work": "Functional public/in-app deletion resource; all 25 DL01–DL05 cases using separate recoverable disposable fixtures; store declarations and fresh full re-audit",
+      "recorded_scoped_work": "Source and 46 local model cases remain separately scoped",
+      "completion_evidence": null,
+      "affected_acceptance_groups": [
+        "DL01",
+        "DL02",
+        "DL03",
+        "DL04",
+        "DL05"
+      ],
+      "original_finding_dependencies": [
+        "F01",
+        "F02",
+        "F13",
+        "F20",
+        "F08",
+        "F15"
+      ]
+    },
+    {
+      "id": "UF-R01",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_2_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.2",
+      "required_work": "Trusted bounded type-specific byte validation and appropriate private processing/quarantine. Preserve JPG/PNG/WebP/PDF and separately supported general Business CSV/XLSX. Do not substitute declared MIME, signatures or client checks for the server trust decision.",
+      "recorded_scoped_work": null,
+      "completion_evidence": null,
+      "affected_acceptance_groups": [
+        "UF01",
+        "UF02",
+        "UF03",
+        "UF04",
+        "UF05",
+        "UF06"
+      ],
+      "original_finding_dependencies": [
+        "F13",
+        "F08",
+        "F15",
+        "F02",
+        "F20"
+      ]
+    },
+    {
+      "id": "UF-R02",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_2_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.2",
+      "required_work": "Reconcile final hosted private buckets, operation grants, permissive/restrictive policy composition and helper roles. Resolve Stage 3 parity/MFA dependencies and verify direct own/foreign/removed/scoped/staff effects.",
+      "recorded_scoped_work": null,
+      "completion_evidence": null,
+      "affected_acceptance_groups": [
+        "UF01",
+        "UF02",
+        "UF03",
+        "UF04",
+        "UF05",
+        "UF06"
+      ],
+      "original_finding_dependencies": [
+        "F13",
+        "F08",
+        "F15",
+        "F02",
+        "F20"
+      ]
+    },
+    {
+      "id": "UF-R03",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_2_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.2",
+      "required_work": "Authoritative object/uploader/workspace/parent/content-state/type/size binding. Reject missing or inconsistent metadata without caller fallbacks; protect active/submitted references and financial integrity under concurrency.",
+      "recorded_scoped_work": null,
+      "completion_evidence": null,
+      "affected_acceptance_groups": [
+        "UF01",
+        "UF02",
+        "UF03",
+        "UF04",
+        "UF05",
+        "UF06"
+      ],
+      "original_finding_dependencies": [
+        "F13",
+        "F08",
+        "F15",
+        "F02",
+        "F20"
+      ]
+    },
+    {
+      "id": "UF-R04",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_2_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.2",
+      "required_work": "Deploy and verify the selected client guards and actual downloads: lifetime/replay, response headers/names/disposition, context races, cache/log/referrer and browser/native behavior. Issued signatures are a separate capability from Auth sessions.",
+      "recorded_scoped_work": null,
+      "completion_evidence": null,
+      "affected_acceptance_groups": [
+        "UF01",
+        "UF02",
+        "UF03",
+        "UF04",
+        "UF05",
+        "UF06"
+      ],
+      "original_finding_dependencies": [
+        "F13",
+        "F08",
+        "F15",
+        "F02",
+        "F20"
+      ]
+    },
+    {
+      "id": "UF-R05",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_2_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.2",
+      "required_work": "Decide actual aggregate/count/concurrency/processing/egress budgets and enforce them server-side. Record any processor's purpose/data/privacy treatment and exercise harmless bounded failures.",
+      "recorded_scoped_work": null,
+      "completion_evidence": null,
+      "affected_acceptance_groups": [
+        "UF01",
+        "UF02",
+        "UF03",
+        "UF04",
+        "UF05",
+        "UF06"
+      ],
+      "original_finding_dependencies": [
+        "F13",
+        "F08",
+        "F15",
+        "F02",
+        "F20"
+      ]
+    },
+    {
+      "id": "UF-R06",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_2_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.2",
+      "required_work": "Implement durable authoritative cleanup/reconciliation with failed-removal evidence, ambiguous-commit handling, active/shared reference preservation and idempotent retries. Recheck retained finance/history/fixtures before full fresh acceptance.",
+      "recorded_scoped_work": null,
+      "completion_evidence": null,
+      "affected_acceptance_groups": [
+        "UF01",
+        "UF02",
+        "UF03",
+        "UF04",
+        "UF05",
+        "UF06"
+      ],
+      "original_finding_dependencies": [
+        "F13",
+        "F08",
+        "F15",
+        "F02",
+        "F20"
+      ]
+    },
+    {
+      "id": "PR-R01",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_3_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.3",
+      "required_work": "Finish operator disclosures/applicable duties, audience/children handling and territory decisions while preserving owner identity/contact/intent",
+      "recorded_scoped_work": null,
+      "completion_evidence": "Adopted factual decisions and appropriately qualified review; genuine child consent/protection behavior where required.",
+      "affected_acceptance_groups": [
+        "PR01",
+        "PR02",
+        "PR03",
+        "PR04",
+        "PR05"
+      ],
+      "original_finding_dependencies": [
+        "F01",
+        "F20",
+        "F02",
+        "F13",
+        "F08",
+        "F15"
+      ]
+    },
+    {
+      "id": "PR-R02",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_3_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.3",
+      "required_work": "Reconcile actual fields/purposes, required/optional collection, third-person/shared-workspace recipients and providers/regions/contracts/SDKs",
+      "recorded_scoped_work": null,
+      "completion_evidence": "Browser/device network and storage inventory, configuration/contract summaries and role/recipient evidence.",
+      "affected_acceptance_groups": [
+        "PR01",
+        "PR02",
+        "PR03",
+        "PR04",
+        "PR05"
+      ],
+      "original_finding_dependencies": [
+        "F01",
+        "F20",
+        "F02",
+        "F13",
+        "F08",
+        "F15"
+      ]
+    },
+    {
+      "id": "PR-R03",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_3_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.3",
+      "required_work": "Adopt and implement category retention, minimization, expiry and deletion/retained-copy handling",
+      "recorded_scoped_work": null,
+      "completion_evidence": "Approved grounds/periods or criteria; active/idle expiry and lifecycle/file/support/mail/log/backup evidence linked to DL/UF actions.",
+      "affected_acceptance_groups": [
+        "PR01",
+        "PR02",
+        "PR03",
+        "PR04",
+        "PR05"
+      ],
+      "original_finding_dependencies": [
+        "F01",
+        "F20",
+        "F02",
+        "F13",
+        "F08",
+        "F15"
+      ]
+    },
+    {
+      "id": "PR-R04",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_3_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.3",
+      "required_work": "Resolve account-linked analytics/hosting telemetry notices and required choice/consent/withdrawal; review device metadata and notification previews",
+      "recorded_scoped_work": null,
+      "completion_evidence": "Processing before/after controls across relevant roles/surfaces/regions; push permission is not unrelated collection consent.",
+      "affected_acceptance_groups": [
+        "PR01",
+        "PR02",
+        "PR03",
+        "PR04",
+        "PR05"
+      ],
+      "original_finding_dependencies": [
+        "F01",
+        "F20",
+        "F02",
+        "F13",
+        "F08",
+        "F15"
+      ]
+    },
+    {
+      "id": "PR-R05",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_3_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.3",
+      "required_work": "Adopt factual privacy/terms/support/deletion resources and accessible consistent links; verify request contact/identity/fulfillment",
+      "recorded_scoped_work": null,
+      "completion_evidence": "Working public responses, adopted version/effective date matching real behavior, monitored delivery and bounded request handling.",
+      "affected_acceptance_groups": [
+        "PR01",
+        "PR02",
+        "PR03",
+        "PR04",
+        "PR05"
+      ],
+      "original_finding_dependencies": [
+        "F01",
+        "F20",
+        "F02",
+        "F13",
+        "F08",
+        "F15"
+      ]
+    },
+    {
+      "id": "PR-R06",
+      "status": "OPEN",
+      "source_checkpoint": "docs/security-audit/SECURITY_STAGE_4_3_CHECKPOINT_REPORT.md",
+      "source_stage_step": "4.3",
+      "required_work": "Inspect final native SDK/plugins/permissions/privacy manifests/WebView/Google sign-in and accurate store labels",
+      "recorded_scoped_work": null,
+      "completion_evidence": "Final binary/configuration/device evidence and Play/Apple criteria, retaining later native/store dependencies.",
+      "affected_acceptance_groups": [
+        "PR01",
+        "PR02",
+        "PR03",
+        "PR04",
+        "PR05"
+      ],
+      "original_finding_dependencies": [
+        "F01",
+        "F20",
+        "F02",
+        "F13",
+        "F08",
+        "F15"
+      ]
+    }
+  ],
+  "hosted_acceptance_cases": {
+    "DL": 25,
+    "UF": 30,
+    "PR": 25,
+    "total": 80,
+    "run": 0,
+    "status": "BLOCKED"
+  },
+  "next_stage": 5,
+  "next_step": "5.1",
+  "final_remediation_and_full_reaudit_required": true
+}

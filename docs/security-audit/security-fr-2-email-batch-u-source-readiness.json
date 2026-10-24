@@ -1,0 +1,89 @@
+{
+  "stage_step": "FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE_PREPARATION",
+  "source_commit": "12dbf724a3376b06422d8fb562e119701d8e801f",
+  "scope": "STATIC_SELECTED_ENTRYPOINT_AND_SIDE_EFFECT_REVIEW_ONLY",
+  "source_file_count": 19,
+  "file_sha256": {
+    "app.html": "db910ee00accc58f37cc3f2ee786a5b26a1d4cd7bdae01cacdec1c2bd7d1bd59",
+    "app.js": "6df6e954a1f71d74b1c73bc7d83f96f086cef01c2eb73e23cbe05cb31210edb9",
+    "business.html": "3ffba4d1057e53ce42b1161c93174496fd8ee6917b73b44260cb528311341b3c",
+    "business.js": "bacb6b6d01db0018361253332777f2296332a3ac66b367a99494b3124f1b7628",
+    "app-entry.html": "303ce44a28399dd5a2028d15f2c80e411daea56cb8eaf2a26feb1ee6fd7d8ae0",
+    "app-entry.js": "a2a15b461036cdf6b201ca6c9f022fb64c30b0b4f40f0f77e3d5169b91c081a7",
+    "auth.html": "6c0a23ef40b50cf26d1a5fe2e792c0c0cd2b47560cafce90c6fad9f46e8f4ccf",
+    "auth-flows.js": "e922a7c2c3d4275d0f2590dfab7d0f390717dbbac79cece90397b9a5b6a549db",
+    "auth-security.js": "db68bc5f10ae85e78577f3c9f16debf190bb92ab6246b0349f9bf5a9362d54fa",
+    "workspace-preference.js": "913fa62e34cf16d6f6eb1791e3bb9dad0b37001d64ed408dac2773ebbb37ce56",
+    "session-entry.js": "09ad4dc4f03d1bce098a1849362a5e547e91cbfcb0715821a94cf81408ffef0e",
+    "email-verification.js": "ae466d7272ae06e66d41848efa356132390aa0efe2c982b371bc2815b2be012d",
+    "pwa.js": "749b9898def77f6cb0c257bc036420b417770833afd96d120a31ed3d786c93e0",
+    "pwa-install.js": "6af08699d98b1f0e38ee6c2421cef46b0309ebc1b88642abe2f333284e67ffd4",
+    "push-notifications.js": "9ed9e471a92d1d58d9ea7902b6fbd8093b382cd412280616910ed6459fe57e91",
+    "sw.js": "0bc471318eb7156aed4f004c153a3e45fd08a71f665ad77ba59caa29fd8d8c47",
+    "scripts/lib/browser-staging-guard.mjs": "aaf081b54abb16e5991700c7e847c2643ad0367539cb4a355d805dc3eb257940",
+    "scripts/lib/browser-staging-acceptance.mjs": "922d0bd32743c54dc7f572cc6582c6f97af3a2808bfe27a88acb549c51808037",
+    "scripts/lib/browser-public-target.mjs": "78f0f8160f31896324b35d74b5e976dd0308098dd683595dc13bee9c2b8a0e06"
+  },
+  "reviewed_source_anchors": {
+    "app.js": [
+      "createClient(config.supabaseUrl, config.supabasePublishableKey)",
+      "async function loadApp()",
+      "if (!await emailEntry.ensure()) return;",
+      "async function ensureProfile()",
+      "record_my_analytics_activity",
+      "startRealtime();",
+      "schedulePushNotificationRefresh(true, true)"
+    ],
+    "business.js": [
+      "createClient(config.supabaseUrl, config.supabasePublishableKey)",
+      "async function loadBusinessAccess()",
+      "if(!await businessEmailEntry.ensure())return;",
+      "get_my_business_invitations",
+      "refreshBusinessAccessState"
+    ],
+    "auth-flows.js": [
+      "persistSession:true",
+      "window.sessionStorage"
+    ],
+    "app-entry.js": [
+      "persistSession: true",
+      "getSession()",
+      "getUser()"
+    ],
+    "sw.js": [
+      "pwa-shell-v89",
+      "if (event.request.method !== \"GET\") return;",
+      "if (requestUrl.origin !== self.location.origin) return;",
+      "if (isSensitiveRequest(requestUrl)) return;",
+      "if (!SAFE_SHELL_PATHS.has(requestUrl.pathname)) return;"
+    ]
+  },
+  "external_ES_module_imports": [
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm"
+  ],
+  "source_observations": {
+    "full_app_uses_real_SDK_and_workspace_loaders_beyond_T_adapter": true,
+    "Auth_flow_explicitly_configures_persistSession_true": true,
+    "full_app_clients_have_no_acceptance_specific_storage_options": true,
+    "profile_bootstrap_can_insert_or_sync_selected_profile": true,
+    "visible_activity_has_recording_RPC": true,
+    "startup_can_open_realtime_and_push_refresh_paths": true,
+    "Business_startup_loads_workspaces_memberships_invitations_and_entitlement": true,
+    "worker_is_accepted_v89_source": true,
+    "worker_routes_only_selected_GET_same_origin_public_shell_assets_to_cache": true,
+    "T_guard_does_not_cover_full_application_route_graph": true
+  },
+  "complete_static_or_dynamic_call_graph_established": false,
+  "SDK_transitive_bytes_fetched_or_pinned": false,
+  "SDK_storage_behavior_executed": false,
+  "actual_new_runtime_tests": 0,
+  "actual_new_local_browser_runs": 0,
+  "actual_hosted_requests": 0,
+  "real_email_requests": 0,
+  "private_packets_or_credentials_accessed": false,
+  "committed_mode_change_requests": 0,
+  "source_or_product_behavior_changed": false,
+  "hosted_full_app_or_PWA_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true
+}

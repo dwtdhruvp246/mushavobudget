@@ -1,0 +1,30 @@
+{
+  "scope": "SYNTHETIC_PRESENT_BUT_UNUSABLE_PYTHON_COMMAND_NOT_OWNER_ROOT_CAUSE_PROOF",
+  "source_parent_commit": "c56b925dbd8fa66cb853db8b23e7a547b87957e1",
+  "original_suite_with_command_exit49": {
+    "tests": 17,
+    "pass": 16,
+    "fail": 1,
+    "exit_code": 1,
+    "failing_case": "Actual new Worker and static exporter build44 files with preserved CSP, route and staging scope"
+  },
+  "corrected_suite_normal": {
+    "tests": 17,
+    "pass": 17,
+    "fail": 0,
+    "exit_code": 0
+  },
+  "corrected_suite_with_same_command_exit49": {
+    "tests": 17,
+    "pass": 17,
+    "fail": 0,
+    "exit_code": 0
+  },
+  "actual_owner_failed_case_or_exact_cause_verified": false,
+  "portable_suite_requires_Python": false,
+  "all_17_existing_cases_retained": true,
+  "canonical_ZIP_CRC_44_entries_old_Worker_and_43_file_comparison_checks_preserved": true,
+  "Windows_dotNET_readback_still_required": true,
+  "actual_hosted_requests": 0,
+  "real_owner_ZIP_or_DPAPI_files_accessed": false
+}

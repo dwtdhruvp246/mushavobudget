@@ -1,0 +1,69 @@
+[
+  {
+    "business_archive_state_review": {
+      "scope": "READ_ONLY_POST_FAILED_BATCH_ROLE_STATE_AND_ROUTINE_METADATA",
+      "stage_step": "FR.2.3_BUSINESS_ARCHIVE_STATE_REVIEW",
+      "checked_UTC": "2026-10-14T19:17:46.683109+00:00",
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "findings_closed": [],
+      "routine_metadata": [
+        {
+          "name": "archive_business_role",
+          "owner": "postgres",
+          "settings": [
+            "search_path=public, pg_temp"
+          ],
+          "lf_body_md5": "a1415e0f07d24b1a6532f053380ab781",
+          "result_type": "void",
+          "lf_body_sha256": "61a3083e57759d6e8a868deca5b3911348bf5ee1d13d49e8d393e431b842655c",
+          "security_definer": true,
+          "identity_arguments": "p_workspace_id uuid, p_code text, p_expected_version integer",
+          "authenticated_execute": true,
+          "matches_reviewed_archive_body": true
+        }
+      ],
+      "hosted_acceptance": false,
+      "target_custom_roles": 1,
+      "target_role_details": [
+        {
+          "name": "AUDIT-S333-ROLE-EDITED",
+          "status": "archived",
+          "version": 3,
+          "is_system": false,
+          "scope_mode": "all",
+          "permission_rows": 2,
+          "role_row_sha256": "24ccbd63efe40da23303d3a9c9e866fbcfe83452fa2331cb8ea9444f361a900f",
+          "permission_rows_sha256": "fb1812e78849d04b443c3f1de4792873730a5e1199826dddd46c438ef61d9f65",
+          "enabled_permission_codes": [
+            "reports.view",
+            "workspace.view"
+          ],
+          "active_members_using_role": 0,
+          "description_matches_audit": true,
+          "code_has_expected_custom_shape": true,
+          "pending_valid_invitations_using_role": 0
+        }
+      ],
+      "payment_records_total": 5,
+      "primary_builtin_roles": 6,
+      "transaction_read_only": "on",
+      "primary_active_members": 1,
+      "role_details_truncated": false,
+      "primary_invitation_rows": 0,
+      "role_saved_audit_events": 2,
+      "target_audit_rows_sha256": "74cbb242ff9a95d17858459699e5eeb57672b1bec870b33b251539dcee3ce6a2",
+      "matched_fixture_workspaces": 2,
+      "role_archived_audit_events": 1,
+      "matched_primary_owner_scope": 1,
+      "application_routines_invoked": 0,
+      "archive_retried_or_rows_cleaned": false,
+      "payment_record_conversions_total": 7,
+      "old_checker_HTTP_status_was_not_recorded": true,
+      "project_selection_independently_verified": false,
+      "target_audit_actor_matches_primary_owner": true,
+      "rows_functions_roles_grants_or_settings_changed": false,
+      "read_only_state_does_not_independently_prove_HTTP_status": true,
+      "rows_identifiers_emails_credentials_or_function_bodies_printed": false
+    }
+  }
+]

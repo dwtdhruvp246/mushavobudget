@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-15",
+  "source_parent_commit": "814131a0a44d3f5b56e9b71b6309c8e3d3a27838",
+  "stage_step": "FR.2.4.E3.4_LIMITER_DEPLOYMENT",
+  "scope": "ACTUAL_ORCHESTRATOR_WITH_SYNTHETIC_TRANSPORT_TOOLS_CANDIDATE_AND_EXECUTION_PORTS_PLUS_ACTUAL_MALFORMED_STDIN_CLI",
+  "tests": 16,
+  "pass_count": 16,
+  "fail": 0,
+  "exit_code": 0,
+  "actual_live_deployment_executed": false,
+  "actual_pinned_Wrangler_deploy_strict_dry_run_exit_code": 0,
+  "actual_strict_probe_guard_loads": 3,
+  "actual_strict_probe_blocked_network_attempts": 0,
+  "strict_probe_reviewed_artifact_and14_source_hashes_and_tools_verified": true,
+  "actual_Cloudflare_requests": 0,
+  "PowerShell_wrapper_source_reviewed": true,
+  "actual_Windows_new_wrapper_execution_verified": false,
+  "old18case_and31case_batches_not_repeated": true,
+  "secret_outputs_or_production_changes": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

@@ -1,0 +1,21 @@
+# FR.2.2 — owner installation metadata recorded
+
+14 October 2026, FRE16. The [owner installation receipt](security-fr-2-binding-owner-installation.json) reports PREVENTIVE_BINDING_TRIGGER_INSTALLED_METADATA_NOT_API_ACCEPTANCE and workspace_update_column_present=true. The revised installer supplied from aef5ff503737972b5148a3a32828ff7cdc9c1652 places its metadata SELECT after COMMIT. This supports completion of the selected preventive coverage installation. There is no reported error or trigger-install failure to rerun.
+
+The fixed target label and literal no-row-rewrite/no-function-policy-grant-account-factor-change fields are script scope declarations, not independent project attestation or before/after data inventories. The catalog-derived workspace update-column flag is true. Source-reviewed installer guards and earlier local evidence remain applicable; the receipt does not prove real authorization behavior, repair the one historical record/one conversion mismatch, independently inventory unchanged live rows/hooks, integrate canonical migrations, or close F15/F08/F10 and coordinating actions. Full hosted authorization acceptance remains false.
+
+## Next bounded direct API batch
+
+[Personal recheck handoff](SECURITY_FR_2_2_PERSONAL_API_RECHECK_HANDOFF.md), [exact source contract](security-fr-2-personal-api-recheck-contract.json). Reuse the byte-identical reviewed Personal checker and runner from the pinned audit commit. All three checker/runner/test Git blobs were compared with the current tree and match. No code was changed and no local behavior suite was repeated for this documentation/handoff checkpoint; prior evidence remains preserved.
+
+A successful owner execution should report 33 PASS checks. It verifies staging-only config, two verified ordinary nonsuspended app identities and distinct Personal workspaces; own create/read/update; outsider and anonymous known-row read/PATCH/DELETE and forged-owner INSERT denials with owner readback; owner/workspace substitution prevention; foreign existing-parent relink denial; four protected currency-helper denials; exact new-row deletion for both owners; and local logout of only the API-created sessions. JSON retains the original stage_step 3.2.1 label; its new execution will be recorded as this FR.2.2 recheck, never used to overwrite the earlier 26 PASS/one REVIEW receipt.
+
+New fixtures have random UUIDs and AUDIT-S321 markers, inactive schedules and USD1 synthetic records. Deletion is bounded to these newly created record/item IDs. Earlier failed Personal fixtures, earlier seed, Family actors/invitation history and two retained manual Family conversions are not targeted. The checker does not positively inspect preservation of those old rows or prove cleanup of derived conversion rows. Known local post-deletion synthetic conversion references remain a separate retention/history dependency; a successful row delete alone does not settle it.
+
+On a REVIEW/failure, stop with the safe JSON; exact incomplete new fixtures may remain, and a retry or broad cleanup is not requested. Credentials are prompted as staging APP passwords on the owner's computer, temporarily passed to Node and cleared by the runner. Never paste passwords, tokens or raw rows. No service-role key, database password, UI settings, provider dispatch, production or native change is involved.
+
+After this bounded result, valid relinking between an owner's own parents, missing-parent rejection, retained/historical conversion integrity and separately scoped earlier fixture disposition still require genuine evidence. Business/outbox/Admin/Auth dependencies retain their FR.2.3–FR.2.6 order. FR.1 scoped serving PASS remains. All Stage 0–10 objects, earlier evidence events, original finding/action/decision definitions and owner-local native/recovery state remain preserved; release gate OPEN_PENDING_REQUIRED_EVIDENCE, fresh final audit PLANNED_NOT_PERFORMED and APK deferred.
+
+## Subsequent direct Personal recheck — 14 October 2026
+
+FRE17: [fresh outcome](SECURITY_FR_2_2_PERSONAL_RECHECK_OUTCOME.md) records 33 owner PASS checks and exit 0. The earlier pending-API handoff above is superseded at this bounded scope. Remaining valid-own relink/history/conversion disposition/canonical integration and original open requirements remain explicit.

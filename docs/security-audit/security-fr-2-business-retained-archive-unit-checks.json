@@ -1,0 +1,13 @@
+{
+  "scope": "RETAINED_ARCHIVE_CONTRACT_TIMESTAMP_JSONB_AND_EXISTING_VOID_TRANSPORT_UNIT_CASES",
+  "tests": 29,
+  "pass_count": 29,
+  "fail": 0,
+  "exit_code": 0,
+  "new_retained_archive_cases": 12,
+  "existing_void_transport_cases": 17,
+  "hosted_HTTP_calls": 0,
+  "Windows_PowerShell_execution_verified": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

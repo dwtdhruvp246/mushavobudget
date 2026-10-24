@@ -1,0 +1,34 @@
+{
+  "stage_step": "FR.2.4.E3.2",
+  "source_parent_commit": "413e8388cbfbd75b3d959b663a0be4e70aa748b9",
+  "file_sha256": {
+    "deployment/candidates/email-pages-bindings.review.json": "ccca3663db036bcafe7408e9426cbe99c6b9977a6b2808a1aa33666d2851ddd9",
+    "deployment/candidates/email-rate-worker.wrangler.json": "77faed4211d5285408f5a5ae0f2fed3d5d2123a4d747952e42e52edb046b6a54",
+    "scripts/check-fr-2-email-workers.mjs": "a4ddfc8951b18c8580241e21b9c2a8b3107654071f099af623f2c8ae59d6ff36",
+    "scripts/fixtures/email-worker-tools/package-lock.json": "8a921a9b641ea1fc8f24a9c21f28b55dff180d2e5042d2d51d11366c0c18cd84",
+    "scripts/fixtures/email-worker-tools/package.json": "fd288cbce88cd64b23419e49a0d76ee52a8999d77f64957e4a6b36d91048d615",
+    "scripts/lib/build-fr-2-email-workers.mjs": "6d0b141b56c3d75d175714a39533a96670af33463fcaf3195cea176a2c92cac9",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+    "scripts/verify-fr-2-email-workers.mjs": "7a3f9a0890629f1117b482cba9815bdbc9f07fba4d043c7c46ad18c9d032ec13",
+    "supabase/functions/_shared/email-verification-crypto.mjs": "5ce08d08e1ca00248fc2800c3c4f62e5299b86a7ffcd2397a416520fd1fd1ac5",
+    "supabase/functions/_shared/email-verification-gateway.mjs": "f9c39c3d599f3834dea1d7e8c17d6819c4656213ed3292efcb970d9b00b1dc09",
+    "supabase/functions/_shared/email-verification-http.mjs": "b28a80658d55725ad78a833be2192b353a9b08ba7987f8cbcb0ae40edd17e395",
+    "supabase/functions/_shared/email-verification-pages.mjs": "bd451abbf4ff8a59ef400d5d4cd34534534ff612fd21c90e7af1af2139437f03",
+    "supabase/functions/_shared/email-verification-rate-client.mjs": "e95a11a05c3865f9751c927246afa3b61da4100b6653f28b12f2404cc1958053",
+    "supabase/functions/_shared/email-verification-rate-do.mjs": "929551832b76e989d7a80510d976043eef557b53eff4be36a405305a8324b232",
+    "supabase/functions/_shared/email-verification-zoho.mjs": "757270e2535e8c349c5e44ab022d3dd56d251ffdebab2bfdc9a4978fc5737793",
+    "tests/fr-2-email-rate-client.test.mjs": "6fdfa37147977c91bbb0555b51d9f9291a037c2e6b8480d2873005bc222aa3e2"
+  },
+  "expected_bundle_sha256": {
+    "pages": "fb089fffe0cabd9be4fb5e8cfed165786ef56dee8cd5209b7be679166ef4ae99",
+    "limiter": "4d10a3f6ea03ab14979b1d821df2c35409d519b0550da8bd4a92f4b28d37b0a1"
+  },
+  "tools": {
+    "esbuild": "0.28.2",
+    "miniflare": "4.20260730.0",
+    "workerd": "1.20260730.1"
+  },
+  "install_scripts_allowed": false,
+  "full_dependency_lock_entries": 84,
+  "public_deployment_authorized_by_this_handoff": false
+}

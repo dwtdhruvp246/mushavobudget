@@ -1,0 +1,313 @@
+{
+  "stage_step": "FR.2.3_BUSINESS_RETAINED_ARCHIVE_CONTINUATION",
+  "result": "LOCAL_RETAINED_ARCHIVE_CONTINUATION_AND_VOID_RPC_SCOPED_PASS",
+  "migration_count": 54,
+  "tests": [
+    {
+      "test": "Read-only trigger diagnostic accepts ordered source and discloses no raw bodies",
+      "status": "PASS"
+    },
+    {
+      "test": "Read-only diagnostic identifies Unknown trigger rejected before fixture writes",
+      "status": "PASS"
+    },
+    {
+      "test": "Unknown trigger rejected before fixture writes",
+      "status": "PASS"
+    },
+    {
+      "test": "Read-only diagnostic identifies Reattached known function rejected before fixture writes",
+      "status": "PASS"
+    },
+    {
+      "test": "Reattached known function rejected before fixture writes",
+      "status": "PASS"
+    },
+    {
+      "test": "Read-only diagnostic identifies Changed source trigger body rejected before fixture writes",
+      "status": "PASS"
+    },
+    {
+      "test": "Changed source trigger body rejected before fixture writes",
+      "status": "PASS"
+    },
+    {
+      "test": "Completed Family removal and two manual conversions established as preservation controls",
+      "status": "PASS"
+    },
+    {
+      "test": "Disabled expected trigger rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Missing expected trigger rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Changed direct function grant rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Added API overload rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Unreviewed CHECK callback rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Active cron metadata blocks setup without running a job",
+      "status": "PASS"
+    },
+    {
+      "test": "Third Auth identity blocks setup",
+      "status": "PASS"
+    },
+    {
+      "test": "Ordinary SQL role rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Non-origin replication role rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Injected prior-conversion mutation aborts entire fixture transaction",
+      "status": "PASS"
+    },
+    {
+      "test": "CRLF source catalog accepted with retained manual and two modeled orphan conversions unchanged",
+      "status": "PASS"
+    },
+    {
+      "test": "Repeated setup rejected without another business or entitlement",
+      "status": "PASS"
+    },
+    {
+      "test": "real ordered source lifecycle",
+      "status": "PASS",
+      "checks": 24,
+      "requests": 484,
+      "blocked": 5
+    },
+    {
+      "test": "false_denial",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 67,
+      "blocked": 0
+    },
+    {
+      "test": "missing_function",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 67,
+      "blocked": 0
+    },
+    {
+      "test": "hidden_write",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 71,
+      "blocked": 0
+    },
+    {
+      "test": "foreign_read",
+      "status": "PASS",
+      "checks": 4,
+      "requests": 58,
+      "blocked": 0
+    },
+    {
+      "test": "logout",
+      "status": "PASS",
+      "checks": 23,
+      "requests": 484,
+      "blocked": 5
+    },
+    {
+      "test": "legacy_void",
+      "status": "PASS",
+      "checks": 24,
+      "requests": 484,
+      "blocked": 5
+    },
+    {
+      "test": "void_noeffect",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 120,
+      "blocked": 0
+    },
+    {
+      "test": "void_body",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 119,
+      "blocked": 0
+    },
+    {
+      "test": "nonvoid_204",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 108,
+      "blocked": 0
+    },
+    {
+      "test": "Read-only diagnostic distinguishes edited active role from completed archive",
+      "status": "PASS"
+    },
+    {
+      "test": "Read-only role state review preserves actual role rows",
+      "status": "PASS"
+    },
+    {
+      "test": "Read-only diagnostic reports archived version3 and its exact audit/unused permission scope after modeled204",
+      "status": "PASS"
+    },
+    {
+      "test": "All three fingerprint renderings match actual PostgreSQL jsonb/UTC with microseconds and equivalent offsets preserved",
+      "status": "PASS"
+    },
+    {
+      "test": "retained archive: real ordered source lifecycle",
+      "status": "PASS",
+      "checks": 24,
+      "requests": 494,
+      "blocked": 5
+    },
+    {
+      "test": "retained archive: legacy_void",
+      "status": "PASS",
+      "checks": 24,
+      "requests": 494,
+      "blocked": 5
+    },
+    {
+      "test": "retained archive: void_noeffect",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 130,
+      "blocked": 0
+    },
+    {
+      "test": "retained archive: false_denial",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 77,
+      "blocked": 0
+    },
+    {
+      "test": "retained archive: retained_member",
+      "status": "PASS",
+      "checks": 3,
+      "requests": 19,
+      "blocked": 0
+    },
+    {
+      "test": "retained archive: retained_invitation",
+      "status": "PASS",
+      "checks": 3,
+      "requests": 19,
+      "blocked": 0
+    },
+    {
+      "test": "retained archive: retained_permission",
+      "status": "PASS",
+      "checks": 3,
+      "requests": 23,
+      "blocked": 0
+    },
+    {
+      "test": "retained archive: retained_audit_actor",
+      "status": "PASS",
+      "checks": 3,
+      "requests": 23,
+      "blocked": 0
+    },
+    {
+      "test": "retained archive: retained_after",
+      "status": "PASS",
+      "checks": 24,
+      "requests": 494,
+      "blocked": 5
+    },
+    {
+      "test": "retained archive: RETAINED_ARCHIVE_ROW_HASH_MISMATCH",
+      "status": "PASS",
+      "checks": 3,
+      "requests": 23,
+      "blocked": 0
+    },
+    {
+      "test": "retained archive: RETAINED_ARCHIVE_PERMISSION_HASH_MISMATCH",
+      "status": "PASS",
+      "checks": 3,
+      "requests": 23,
+      "blocked": 0
+    },
+    {
+      "test": "retained archive: RETAINED_ARCHIVE_AUDIT_HASH_MISMATCH",
+      "status": "PASS",
+      "checks": 3,
+      "requests": 23,
+      "blocked": 0
+    },
+    {
+      "test": "PRISTINE_BUILTIN_ROLES_REQUIRED",
+      "status": "PASS",
+      "checks": 3,
+      "requests": 19,
+      "blocked": 0
+    },
+    {
+      "test": "Version drift on retained archive rejected before test mutations",
+      "status": "PASS"
+    },
+    {
+      "test": "Active instead of archived on retained archive rejected before test mutations",
+      "status": "PASS"
+    },
+    {
+      "test": "Name drift on retained archive rejected before test mutations",
+      "status": "PASS"
+    },
+    {
+      "test": "Scope drift on retained archive rejected before test mutations",
+      "status": "PASS"
+    },
+    {
+      "test": "Repeated scoped and failure runs preserve old archived role, both permission rows, three audit rows, manual and orphan conversions",
+      "status": "PASS"
+    }
+  ],
+  "provider_auth_storage_and_http_adapters_used": true,
+  "hosted_PostgREST_or_real_file_or_dispatch_verified": false,
+  "production_staging_or_native_changed": false,
+  "local_tests": 52,
+  "local_PASS": 52,
+  "local_FAIL": 0,
+  "exit_code": 0,
+  "SQL_ASCII_only": true,
+  "Business_fixture_rows_created_on_host": 0,
+  "hosted_Business_API_checks_run": 0,
+  "findings_closed": [],
+  "source_parent_commit": "0a06a9bba02769b9ac22e929e19845c2113a4949",
+  "Node_version": "v24.19.0",
+  "PGlite_version": "0.5.8",
+  "syntax_checks": 4,
+  "runner_Node_payload_syntax_checked": true,
+  "PowerShell_Windows_runtime_locally_verified": false,
+  "unit_tests": 29,
+  "unit_PASS": 29,
+  "total_model_and_unit_tests": 81,
+  "total_model_and_unit_PASS": 81,
+  "scoped_continuation_model_PASS": 24,
+  "scoped_continuation_model_BLOCKED": 5,
+  "scoped_continuation_model_transport_calls_including_config": 494,
+  "all_three_fingerprints_checked_against_actual_PostgreSQL_jsonb": true,
+  "UTC_microseconds_and_equivalent_offsets_preserved": true,
+  "initial_local_attempt_failed": true,
+  "initial_local_attempt_reason": "Applying PostgreSQL JSON serialization to every table changed earlier Family POST/GET adapter date contracts; narrowed exact PostgreSQL JSON serialization to role, permission and audit GET projections, then all earlier model controls passed.",
+  "final_local_attempt_passed": true
+}

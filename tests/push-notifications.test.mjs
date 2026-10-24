@@ -1,3 +1,4 @@
+import { PUBLIC_SITE_FILES } from '../scripts/build-public-site.mjs';
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
@@ -276,7 +277,8 @@ test("revoked permission removes the current account's server row before unsubsc
 
 test("Stage 10 adds safe click routing and app badges without scheduled dispatch", () => {
   assert.match(applicationPage, /\/push-notifications\.js\?v=1/);
-  assert.match(workflowSource, /push-notifications\.js/);
+  assert.match(workflowSource, /node scripts\/build-public-site\.mjs/);
+  for (const asset of ["push-notifications.js"]) assert.ok(PUBLIC_SITE_FILES.includes(asset), asset + " is shipped by the actual exporter");
   assert.match(workerSource, /addEventListener\("push"/);
   assert.match(workerSource, /showNotification\(title, options\)/);
   assert.match(workerSource, /addEventListener\("notificationclick"/);

@@ -15,13 +15,16 @@ test("activity is recorded only for a visible, online, completed app session and
   const analyticsActivity = { userId: null, lastSentAt: 0, inFlight: false };
   let time = 10_000;
   const context = {
-    state, document, navigator, analyticsActivity,
+    state, document, navigator, analyticsActivity, emailEntry:{authorized:true},
     ANALYTICS_ACTIVITY_INTERVAL_MS: 50 * 60 * 1000,
     Date: { now: () => time },
     supabase: { async rpc(name) { calls.push(name); return { error: null }; } },
     console: { warn() {} }
   };
   const record = vm.runInNewContext(`${source}\nrecordVisibleActivity`, context);
+  context.emailEntry.authorized=false;
+  await record();assert.equal(calls.length,0);
+  context.emailEntry.authorized=true;
   await record();
   await record();
   assert.deepEqual(calls, ["record_my_analytics_activity"]);

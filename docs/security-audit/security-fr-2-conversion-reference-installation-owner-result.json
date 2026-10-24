@@ -1,0 +1,21 @@
+[
+  {
+    "conversion_reference_installation": {
+      "result": "GENERATED_RECORD_REFERENCE_AND_CASCADE_FK_INSTALLED_NOT_HOSTED_API_ACCEPTANCE",
+      "stage_step": "FR.2.2_CONVERSION_REFERENCE_INSTALL",
+      "checked_UTC": "2026-10-14T12:04:50.103096+00:00",
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "findings_closed": [],
+      "hosted_acceptance": false,
+      "constraint_validated": false,
+      "hosted_API_deletion_checks_run": 0,
+      "project_selection_independently_verified": false,
+      "legacy_conversion_ID_reuse_guard_installed": true,
+      "existing_unlinked_or_manual_conversions_deleted": false,
+      "new_helper_direct_execute_revoked_for_API_roles": true,
+      "baseline_projection_excludes_only_new_payment_record_ref": true,
+      "existing_record_and_original_conversion_columns_compared_unchanged": true,
+      "existing_DELETE_guards_RLS_policies_and_table_grants_compared_unchanged": true
+    }
+  }
+]

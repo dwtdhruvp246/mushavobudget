@@ -2,6 +2,8 @@ import { createClient } from "npm:@supabase/supabase-js@2.110.9";
 // @ts-types="npm:@types/web-push@3.6.4"
 import webpush from "npm:web-push@3.6.7";
 import { createGuardedPushSender, isBlockedPushDestination } from "../_shared/push-destination.mjs";
+import { activeNotificationRecipient } from "../_shared/notification-recipient.mjs";
+import { requireEmailVerifiedSession, emailVerificationFailure } from "../_shared/email-session-assurance.mjs";
 
 const sendGuardedPush = createGuardedPushSender(webpush);
 
@@ -94,9 +96,23 @@ Deno.serve(async (request) => {
     return json({ error: "EDGE_FUNCTION_AUTHENTICATION_FAILED" }, 401, responseOrigin);
   }
 
+  try {
+    await requireEmailVerifiedSession(userClient);
+  } catch (error) {
+    const failure = emailVerificationFailure(error);
+    return json({ error: failure?.code || "EMAIL_VERIFICATION_UNAVAILABLE" }, failure?.status || 503, responseOrigin);
+  }
+
   const serviceClient = createClient(supabaseUrl, serviceRoleKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
+  try {
+    if (!await activeNotificationRecipient(serviceClient, userData.user.id)) {
+      return json({ error: "PUSH_RECIPIENT_INACTIVE" }, 403, responseOrigin);
+    }
+  } catch (_error) {
+    return json({ error: "PUSH_RECIPIENT_STATUS_CHECK_FAILED" }, 500, responseOrigin);
+  }
   try {
     webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
   } catch (_error) {

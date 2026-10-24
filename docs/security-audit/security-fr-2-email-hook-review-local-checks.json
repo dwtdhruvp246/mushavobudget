@@ -1,0 +1,79 @@
+{
+  "stage_step": "FR.2.4.E4.12_LIVE_HOOK_SOURCE_REVIEW",
+  "result": "LOCAL_READ_ONLY_PINNED_HOOK_SOURCE_DIAGNOSTIC_SCOPED_PASS",
+  "scope": "ACTUAL_CATALOG_SQL_IN_MODELED_FULL55_DATABASE_WITH_SYNTHETIC_EVENT_HOOKS_NOT_ACTUAL_STAGING_SOURCE",
+  "source_parent_commit": "ae2c886f6d14f3fe8ae4cc4a837e2be581c1b6a6",
+  "node_version": "v24.19.0",
+  "migration_count": 55,
+  "source_files_SHA256_verified": 61,
+  "diagnostic_SHA256": "724c2dee758a89ff163f15a404928d0ac5ca5463b41e1d4ad284186bb40570f2",
+  "tests": 13,
+  "pass": 13,
+  "fail": 0,
+  "cases": [
+    {
+      "title": "The source is read-only and retains the exact prior selector pin, UTC scope and bounded inventory",
+      "result": "PASS"
+    },
+    {
+      "title": "An absent hook returns metadata with no source and does not invoke the dormant installer",
+      "result": "PASS"
+    },
+    {
+      "title": "A matching-name synthetic hook is withheld by the actual shipped MD5 pin",
+      "result": "PASS"
+    },
+    {
+      "title": "Synthetic selector substitution exercises the positive path without invoking the raising fixture",
+      "result": "PASS"
+    },
+    {
+      "title": "A changed body fails the same synthetic selector and withholds source",
+      "result": "PASS"
+    },
+    {
+      "title": "An unexpected function search path withholds otherwise matching source",
+      "result": "PASS"
+    },
+    {
+      "title": "An unexpected function owner withholds otherwise matching source",
+      "result": "PASS"
+    },
+    {
+      "title": "Extra function overloads prevent source release",
+      "result": "PASS"
+    },
+    {
+      "title": "Additional hook bindings prevent source release",
+      "result": "PASS"
+    },
+    {
+      "title": "Credential-like text is withheld even when the local synthetic pin matches",
+      "result": "PASS"
+    },
+    {
+      "title": "Oversized body source is withheld even under a matching synthetic selector",
+      "result": "PASS"
+    },
+    {
+      "title": "More than 20 hooks return a bounded inventory with an explicit truncation flag",
+      "result": "PASS"
+    },
+    {
+      "title": "An ordinary API role cannot run the privileged diagnostic and the failure leaves no persistent changes",
+      "result": "PASS"
+    }
+  ],
+  "failure": null,
+  "positive_expected_MD5_substituted_only_in_memory_for_synthetic_fixture": true,
+  "actual_prior_pinned_hook_body_known_or_semantically_reviewed": false,
+  "actual_hosted_requests": 0,
+  "application_hook_or_installer_invocations": 0,
+  "hosted_SQL_Auth_rows_roles_grants_or_settings_changed": false,
+  "live_activation_approved": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "exit_code": 0
+}

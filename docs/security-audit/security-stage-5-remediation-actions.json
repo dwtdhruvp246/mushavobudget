@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "stage_step": "5.5",
+  "date": "2026-10-12",
+  "source_parent_commit": "967081fa3ae06ef3dad9b02ba24725aafb5a698c",
+  "scope": "FINAL_REMEDIATION_ACTIONS_LINKED_TO_EXISTING_FINDINGS_NOT_NEW_FINDING_DEFINITIONS",
+  "actions": [
+    {
+      "id": "NR-R01",
+      "findings": [
+        "F05",
+        "F06"
+      ],
+      "title": "Reconcile and preserve the actual native baseline",
+      "required_work": "Preserve com.mushavo.budget, signing identity and untracked local edits; reconcile main/audit/native/generated asset versions; verify accepted JDK/SDK/Gradle and clean locked dependency compatibility, then retain the complete Auth/MFA packaging repair.",
+      "acceptance": "Reviewed actual source/configuration/version mapping; compatible clean dependency/build inputs and real complete assets; no loss of local project/signing identity.",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "native_acceptance_verified": false
+    },
+    {
+      "id": "NR-R02",
+      "findings": [
+        "F14"
+      ],
+      "title": "Implement and verify native credential storage and migration",
+      "required_work": "Inspect actual shipped Auth/token stores; wire a supported OS-backed sensitive-storage adapter with no raw-token fallback on failure; plan migration, key invalidation, expiry/revocation, account switch, logout and update/reinstall behavior while preserving appropriate per-account workspace metadata.",
+      "acceptance": "Actual artifact/store and disposable-device lifecycle evidence shows protected credentials and correct identity boundaries; browser/PWA behavior remains separately verified.",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "native_acceptance_verified": false
+    },
+    {
+      "id": "NR-R03",
+      "findings": [
+        "F14"
+      ],
+      "title": "Exclude sensitive session/device data from backups and transfers",
+      "required_work": "Review final merged manifests, supported OS/target versions and all relevant legacy/current backup modes and storage paths; implement narrow exclusions or approved no-backup policy and verify cloud backup, restore and device transfer using disposable data.",
+      "acceptance": "Final artifact rules match sensitive storage locations and actual supported backup/restore/transfer tests exclude session/device material; no stale identity restored.",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "native_acceptance_verified": false
+    },
+    {
+      "id": "NR-R04",
+      "findings": [
+        "F10",
+        "F08",
+        "F15"
+      ],
+      "title": "Complete explicit native origins and validated callbacks",
+      "required_work": "Establish actual WebView/request origins and precise supported server policy; register validated scheme/host/path links and domain associations; implement cold/warm event dispatch and browser/app state-verifier handoff while retaining verified JWT, identity, role, MFA and tenant authorization.",
+      "acceptance": "Real supported callbacks succeed; wrong host/path, edited identity, replay, expired/revoked links and account switches fail safely; exact origin enforcement is retained.",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "native_acceptance_verified": false
+    },
+    {
+      "id": "NR-R05",
+      "findings": [
+        "F05",
+        "F13"
+      ],
+      "title": "Harden final permissions, transport and file-sharing scope",
+      "required_work": "Review merged permissions/components and actual native networking/debug/navigation defaults and overrides; allow only justified access; narrow broad external/cache FileProvider paths to feature-specific app-owned temporary content; validate URI input, recipient, minimum grants, lifetime and cleanup without breaking valid file flows.",
+      "acceptance": "Final release policy and disposable-device negative/positive permission, transport, URI-grant and cleanup tests demonstrate least required access and safe sharing.",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "native_acceptance_verified": false
+    },
+    {
+      "id": "NR-R06",
+      "findings": [
+        "F17",
+        "F20"
+      ],
+      "title": "Verify actual iOS SDKs, required reasons and privacy archive",
+      "required_work": "Obtain actual iOS source/target/dependency inventory; align Info.plist, entitlements, required-reason/data declarations and applicable SDK manifests/signatures with shipped behavior and factual privacy decisions; verify target inclusion and final archive privacy report.",
+      "acceptance": "Signed archive and report contain correct declarations and applicable SDK provenance; actual data use/store disclosures match the shipped artifact.",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "native_acceptance_verified": false
+    },
+    {
+      "id": "NR-R07",
+      "findings": [
+        "F05",
+        "F06",
+        "F17"
+      ],
+      "title": "Produce final signed artifacts and real-device release evidence",
+      "required_work": "After approved remediation/integration, compile/sign the accepted Android/iOS variants and preserve update identity; inspect final merged resources/assets and execute actual device lifecycle, session, routing, finance/permission, file, notification and install-over-existing checks. Complete assigned Stage 9/10 store/recovery/release evidence and fresh full re-audit.",
+      "acceptance": "Final artifact identities, supported device matrix and release evidence are recorded against the same source/configuration pins; residual findings and release gate are resolved before publication.",
+      "status": "OPEN",
+      "owner": "BOTH",
+      "native_acceptance_verified": false
+    }
+  ],
+  "total": 7,
+  "open": 7,
+  "findings_closed": []
+}

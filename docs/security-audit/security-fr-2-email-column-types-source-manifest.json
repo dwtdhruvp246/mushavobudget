@@ -1,0 +1,16 @@
+{
+  "stage_step": "FR.2.4.E4.15_COLUMN_TYPE_REVIEW",
+  "source_parent_commit": "37a01bd3cb4e0c06176502f3c60483caba6d1c29",
+  "file_sha256": {
+    "scripts/check-fr-2-email-column-types-db.mjs": "2da44724503527e309cefdd38d6ca736a113db1c1bb798ba4892bbc514448d6b",
+    "scripts/fixtures/email-session-review-tools/package-lock.json": "016a47678f4d552bf80121203c8907561b60da8de63123398a84941b1a6fd322",
+    "scripts/fixtures/email-session-review-tools/package.json": "b2f802b29de80f29a039ada02b51de6dcdaafca68b240a8e41fae3a70b61ff9c",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+    "supabase/diagnostics/security_fr_2_4_email_pre_activation_baseline.sql": "3b3bc6b3288c4a0e98205c727f15f475c5ec500076429fad9dc7e7128216f5c0",
+    "supabase/diagnostics/security_fr_2_4_email_required_column_types.sql": "fef520f5e8463e712b538a243196439bf0486e3be324aa9bafa387f2df46f12d"
+  },
+  "test_dependency": {
+    "package": "@electric-sql/pglite",
+    "version": "0.5.8"
+  }
+}

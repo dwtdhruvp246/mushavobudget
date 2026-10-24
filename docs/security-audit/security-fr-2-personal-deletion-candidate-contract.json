@@ -1,0 +1,74 @@
+{
+  "stage_step": "FR.2.2_DELETION_CANDIDATE",
+  "source_parent_commit": "d28043043cac9c4809172961be656ec10e2cff66",
+  "target_project": "dczlddwbtgvfdujgcitb",
+  "origin": "https://dczlddwbtgvfdujgcitb.supabase.co",
+  "public_config": "https://mushavo-budget-staging.pages.dev/config.js",
+  "owner_install_receipt": "docs/security-audit/security-fr-2-conversion-reference-installation-owner-result.json",
+  "owner_install_checked_UTC": "2026-10-14T12:04:50.103096+00:00",
+  "owner_install_scope": "DDL_ASSERTIONS_ORIGINAL_VALUES_AND_EXISTING_PERMISSIONS_PRESERVED_NOT_GENUINE_API_ACCEPTANCE",
+  "constraint_validated": false,
+  "old_orphans_deleted": false,
+  "checker": "scripts/check-fr-2-personal-deletion.cjs",
+  "runner": "scripts/run-fr-2-personal-deletion.ps1",
+  "tests": "tests/fr-2-personal-deletion.test.cjs",
+  "offline_verifier": "scripts/verify-fr-2-personal-deletion.mjs",
+  "local_receipt": "docs/security-audit/security-fr-2-personal-deletion-local-checks.json",
+  "local_tests": 41,
+  "local_PASS": 41,
+  "local_FAIL": 0,
+  "local_exit_code": 0,
+  "syntax_checks": 5,
+  "planned_hosted_grouped_checks": 30,
+  "controlled_existing_actors": [
+    "audit.owner@example.com",
+    "audit.outsider@example.com"
+  ],
+  "new_inactive_items_planned": 4,
+  "new_paid_records_planned": 4,
+  "new_identity_conversions_planned": 4,
+  "new_fixture_marker_prefix": "AUDIT-FR22-DELETE-",
+  "before_writes": [
+    "staging public publishable configuration and no push key",
+    "two distinct genuine Auth sessions independently reread; ordinary and nonsuspended",
+    "own distinct active Personal scopes with existing enabled conversions and USD reporting; INR base/default allowed",
+    "new generated column visible in PostgREST schema cache; every existing visible generated reference has correct entity-type shape",
+    "bounded full private original item/record/conversion baselines ordered by id, max100 per actor per table",
+    "both owner-attributed retained Family locked manual USD1 conversions scoped and privately captured"
+  ],
+  "real_deletion_paths": [
+    "record DELETE removes only exact new record/conversion, retains own inactive item, then owner removes now-empty item",
+    "item DELETE removes only exact new item/record/conversion via cascade"
+  ],
+  "denial_checks": [
+    "other actor and anonymous exact record/conversion DELETE; exact item DELETE on item-cascade path; structured permission denial or empty successful representation, followed by full owner readback",
+    "owner direct conversion DELETE affects no conversion under unchanged RLS"
+  ],
+  "success_checks": [
+    "exact owner DELETE return representation",
+    "absence under both test sessions; linked conversion query empty",
+    "all original visible item/record/conversion baselines unchanged including old orphan/manual rows",
+    "all selected currency settings unchanged",
+    "two API-created Auth sessions logout scope=local"
+  ],
+  "not_exercised": [
+    "standalone old orphan ID reuse; covered by owner-installed guard and previous 38-case catalog model only",
+    "other workspace/account deletion lifecycles",
+    "concurrent transactions/provider writes/scheduler jobs",
+    "automatic exchange rates/reporting-currency changes",
+    "full stage findings or complete authorization acceptance"
+  ],
+  "request_budget": 240,
+  "per_request_timeout_seconds": 20,
+  "redirects": "REJECTED",
+  "failure_cleanup": "NO_BROAD_OR_AUTOMATIC_CLEANUP; STOP_AND_RETURN_SAFE_MARKER_PROBLEM_AND_RESIDUAL_FLAG",
+  "passwords": "local secure prompts; transient child environment cleared/restored; never printed",
+  "new_hosted_requests_run": 0,
+  "owner_API_deletion_result_received": false,
+  "canonical_generated_reference_integration_performed": false,
+  "post_batch_SQL_snapshot_pending": true,
+  "full_hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <title>Account security | Mushavo Budget</title>
+    <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
+    <link rel="stylesheet" href="styles.css?v=79" />
+    <script src="config.js?v=27"></script>
+    <script type="module" src="auth-flows.js?v=3"></script>
+  </head>
+  <body>
+    <main class="workspace">
+      <section class="auth-panel" aria-labelledby="securityTitle">
+        <p class="eyebrow">Mushavo Budget · Account security</p>
+        <h1 id="securityTitle">Checking your account</h1>
+        <p id="securityMessage" role="status" aria-live="polite">Please wait.</p>
+        <p id="securityIdentity" hidden></p>
+        <section id="securityEmailVerification" aria-label="Email verification" hidden></section>
+        <section id="securityDeviceControls" hidden>
+          <h2>Remembered devices and sessions</h2>
+          <p>Remembered approval lasts seven days. An open verified session can stay signed in after those seven days.</p>
+          <p><strong>Forget this device</strong> removes this browser’s remembered approval. Sessions using that approval may need a code, including this one.</p>
+          <p><strong>Require verification on all sessions</strong> removes your account’s remembered approvals and pauses protected access until each session verifies again. You stay signed in, with protected access paused until verification.</p>
+          <label><input id="securityDeviceAcknowledge" type="checkbox" /> I understand this can require email codes again for my signed-in sessions.</label>
+          <div class="button-row"><button id="securityForgetDevice" type="button">Forget this device</button><button id="securityRevokeAll" type="button">Require verification on all sessions</button></div>
+          <a class="button-link" href="auth.html?flow=change">Change password</a>
+        </section>
+        <form id="securityRequest" class="form-grid" hidden>
+          <label>Email<input id="securityEmail" type="email" autocomplete="email" required /></label>
+          <button class="primary" type="submit">Send link</button>
+        </form>
+        <form id="securityPassword" class="form-grid" hidden>
+          <label id="securityCurrentLabel" hidden>Current password (if required)<input id="securityCurrentPassword" type="password" autocomplete="current-password" /></label>
+          <label>New password<input id="securityNewPassword" type="password" autocomplete="new-password" minlength="12" required aria-describedby="securityPasswordHelp" /></label>
+          <small id="securityPasswordHelp">Use at least 12 characters. Choose a password you do not use elsewhere.</small>
+          <label>Repeat new password<input id="securityConfirmPassword" type="password" autocomplete="new-password" minlength="12" required /></label>
+          <label id="securityNonceLabel" hidden>Verification code (if requested)<input id="securityNonce" type="text" autocomplete="one-time-code" /></label>
+          <button class="primary" type="submit">Save password</button>
+          <button id="securityRequestCode" type="button" hidden>Request verification code</button>
+        </form>
+        <div id="securityContinue" hidden>
+          <p>Continuing opens this account in your app tabs. It may replace another account currently signed in there.</p>
+          <label><input id="securityAcknowledge" type="checkbox" /> Open the verified account shown above</label>
+          <button id="securityOpen" class="primary" type="button">Continue to app</button>
+        </div>
+        <a id="securitySelfSignup" class="button-link" href="signup.html?mode=self-signup" hidden>Choose a Free personal account instead</a>
+        <button id="securityResume" type="button" hidden>Continue account verification</button>
+        <div class="button-row"><button id="securityCancel" type="button">Back to sign in</button></div>
+      </section>
+    </main>
+  </body>
+</html>

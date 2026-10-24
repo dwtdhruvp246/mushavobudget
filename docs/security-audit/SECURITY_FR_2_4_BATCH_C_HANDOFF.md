@@ -1,0 +1,40 @@
+# Batch C write/readback confirmed — do not rerun installation
+
+22 October 2026, FRE120. [Owner receipt](security-fr-2-email-edge-batch-c-owner-write-pass-review.json) confirms all six configuration names installed/read back after HTTP 201, with other names unchanged and write uncertainty false. CurrencyAPI status and available quota passed. The overall exit is 1 because the post-install function-list check stopped before detail/body review; the specific cause is not exposed. [Run only the read-only follow-up](SECURITY_FR_2_4_BATCH_C_INSTALLED_STATE_REVIEW.md). The original installer and historical metadata baseline remain unchanged. Earlier installation handoff follows for history, not retry.
+
+---
+
+# Batch C: install six staging Edge configuration values
+
+22 October 2026, FRE119. Batch B completed offline 12/12 on owner Node 22.17.0 and independent Windows readback, both exit codes 0. The new 44-file ZIP has only `config.js` changed, with its public VAPID key matching the encrypted Batch A candidate. The other 43 files, original ZIP and encrypted packet are unchanged. New ZIP SHA256 is `867296b5e71747a15d46c7ed8937484558ea9fcac97cd96c66ddf5dc00c8b9da`.
+
+Batch C is a **hosted configuration write** to staging project `dczlddwbtgvfdujgcitb`. It installs only `APP_ORIGIN`, `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`, `CURRENCYAPI_API_KEY` and `CURRENCY_SYNC_SECRET`. The terminal handoff supplies an explicit `Install` switch and the private payload requires the exact acknowledgement `INSTALL_SIX_STAGING_EDGE_CONFIGURATION_VALUES_ONLY`. The prepared packet remains a candidate with its original approval flags unchanged; this separate execution acknowledgement scopes the write.
+
+| Combined work | Gate and evidence |
+| --- | --- |
+| Local candidate check | Read the existing Batch A encrypted file; validate its exact schema, staging target and key pairing. Verify the exact Batch B ZIP identity, fixed staging configuration, preserved Worker and matching public key before asking for a token. |
+| Fresh target and shared-source review | Reuse the tested E5.13 checker: six fixed GETs, provider-routed staging metadata/host, four selected routes absent, sole unrelated function metadata and exact pinned LF/CRLF source artifacts, stable list/detail snapshots. Downloaded source is neither executed nor saved. |
+| Names and provider credential check | Require all six custom names absent. Call only CurrencyAPI `/v3/status` with its saved key; require HTTP 200, documented quota shape and positive regular/grace remaining quota. No FX-rate endpoint or Edge function is invoked. |
+| Install and independently read back | Issue one six-value staging secrets POST; independently GET configuration names, require all six listed and other names unchanged. Then rerun the six-GET target/source review. |
+
+Maximum requests are **16**: 12 shared-source/target GETs, two configuration-name GETs, one CurrencyAPI status GET and one configuration POST. No database/SQL, Auth, deployment, function invocation, cron or message-dispatch endpoint is used. CurrencyAPI documents its [status endpoint](https://currencyapi.com/docs/status/) as returning account/quota metadata without consuming request quota. This proves limited status acceptance, not FX endpoint access, entitlement or runtime behavior.
+
+## Inputs explained before execution
+
+The existing encrypted file is selected exactly as in Batch B: only the expected Batch A filename pattern in `%LOCALAPPDATA%\MushavoBudget\PrivateStaging`; automatic selection only if there is exactly one match. Otherwise, a full-path prompt appears before any file is decrypted. No email, VAPID key or CurrencyAPI key is re-entered. The default ZIP path is the exact path reported by the successful Batch B run; optional `CandidateZIP` can change location but not identity.
+
+The normal run has one hidden input: a **scoped/fine-grained Supabase personal access token**, prefix `sbp_fc`, from [account access tokens](https://supabase.com/dashboard/account/tokens). This comes from the Supabase account, not an app Admin login. Scope it to staging. Required dashboard resources are Project Settings **Read**, Edge Functions **Read**, and Edge Function Secrets **Read-write**. Corresponding API permissions are `project_admin_read`, `edge_functions_read`, `edge_functions_secrets_read`, `edge_functions_secrets_write`. A previous token is usable if it already grants these permissions; a read-only secrets token is insufficient for installation. No Database permission is required here.
+
+Primary references: [scoped PAT guide](https://supabase.com/docs/guides/platform/personal-access-tokens), [project metadata](https://supabase.com/docs/reference/api/v1-get-project), [function list](https://supabase.com/docs/reference/api/v1-list-all-functions), [secret names](https://supabase.com/docs/reference/api/v1-list-all-secrets), [bulk secret creation](https://supabase.com/docs/reference/api/v1-bulk-create-secrets). The provider documents HTTP 201 for bulk creation and a body containing name/value objects. The implementation ignores all non-name fields from names readback, including any provider value/digest fields.
+
+## Write and recovery boundaries
+
+Run during a window with no other staging secret edits. The provider write lacks a create-if-absent compare-and-swap guard: the absence snapshot is not a lock, and secret creation can collide with another operator's changes. A preexisting selected name blocks before any POST. The payload contains no other names. No automatic deletion, credential rotation or POST retry is implemented.
+
+An independent names GET is attempted even if the POST response is denied or uncertain. HTTP 201 plus matching names establishes scoped write/readback acceptance; secret equality, unrelated secret values, runtime access and full shared runtime impact remain unverified. If the write response is uncertain, the receipt preserves uncertainty even if all names appear afterward. If the Windows child does not return a valid receipt after installation starts, the parent marks hosted write outcome as requiring inspection. Return that result; do not rerun the installer blindly. A post-install source mismatch also stops for review while preserving the recorded write state.
+
+The token and saved private values travel only through the owner processes' private pipe/HTTPS requests. They are not saved to arguments, environment, logs or plaintext files. The saved encrypted file is read-only and compared unchanged. Controlled byte/BSTR buffers are cleared; forensic erasure of managed strings is not claimed.
+
+Local verification passes **20/20** integration cases with 105 source hashes and three JavaScript syntax checks. Tests exercise the actual installer and E5.13 source checker using synthetic ZIPs, real synthetic key pairs and bounded mock provider responses, under the network blocker. Owner private artifacts and real providers are not accessed locally. Native Windows parsing/execution, token permissions and actual installation remain owner-pending.
+
+The runner prints `BATCH C STARTED`, one `BEGIN SAFE BATCH C RESULT` receipt, and completion or review status. Return both offline and private safe JSON with exit codes. Successful configuration installation is followed by the still-outstanding coordinated function/frontend/database rollout and genuine hosted tests. Findings, full readiness, live activation, hosted acceptance and native/store acceptance remain open; production unchanged and APK deferred.

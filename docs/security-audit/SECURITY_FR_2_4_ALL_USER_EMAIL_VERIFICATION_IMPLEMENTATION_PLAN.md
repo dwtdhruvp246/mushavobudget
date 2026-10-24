@@ -1,0 +1,299 @@
+# Current checkpoint — FR.2.4.E5.1 Windows44-entry ZIP pass; E5.2 read-only Pages baseline next
+
+19 October2026,FRE87. [Owner final ZIP receipt](security-fr-2-email-staging-package-owner-Windows-pass.json) confirms57hashes,41selected source identities,44 independent .NET payload matches,legacy JSON-array count1/corrected43 and exit0. [Pages metadata handoff](SECURITY_FR_2_4_WINDOWS_ZIP_PASS_AND_PAGES_CONFIGURATION_BASELINE.md),[contract](security-fr-2-email-pages-inspection-contract.json),[six-source manifest](security-fr-2-email-pages-inspection-source-manifest.json),[18 local checks](security-fr-2-email-pages-inspection-local-checks.json) prepare four fixed read-only Cloudflare GETs. Next owner action uses a private account/token prompt;no npm reinstall,SQL,Zoho file,settings change or upload. The exact accepted ZIP remains unuploaded. All full findings remain open. Earlier checkpoints follow.
+
+---
+
+# Current checkpoint — FR.2.4.E5.1 Windows preparer57-input/44-file pass; wrapper retry pending
+
+19 October 2026,FRE86. [Owner Windows API pass](security-fr-2-email-staging-diagnostic-owner-Windows-pass.json) confirms original57hashes,44files,cleanup,exit0. [Wrapper retry review](SECURITY_FR_2_4_WINDOWS_PREPARER_PASS_AND_WRAPPER_RETRY.md),[contract](security-fr-2-email-staging-retry-contract.json),[9 local cases](security-fr-2-email-staging-retry-local-checks.json) correct PowerShell5.1 JSON-array handling and use the unchanged original API plus saved receipt in a new TEMP folder. Next owner action is the short pinned retry block in chat with Windows array probe and independent .NET ZIP readback. Do not upload yet. No SQL,credentials,email,activation or production/native change. All full findings remain open. Earlier checkpoints follow.
+
+---
+
+# Current checkpoint — FR.2.4.E5.1 Windows package failure; safe diagnostic pending
+
+19 October 2026, FRE85. [Owner failure](security-fr-2-email-staging-package-owner-Windows-review.json) is before Windows ZIP readback;exact cause is not exposed by the wrapper. [Diagnostic review](SECURITY_FR_2_4_LOCAL_PACKAGE_FAILURE_DIAGNOSTIC.md),[contract](security-fr-2-email-staging-diagnostic-contract.json),[10 local cases](security-fr-2-email-staging-diagnostic-local-checks.json) provide a temporary rehearsal of the unchanged original 57-input preparer with fixed safe failure codes. Next owner action is the short pinned diagnostic block in chat,reusing existing tools. No upload,credentials,SQL or activation. Earlier package21PASS and Deno144PASS remain scoped to their original receipts. All full findings remain open. Earlier checkpoints follow.
+
+---
+
+# Current checkpoint — FR.2.4 Deno Windows144PASS; E5.1 local staging ZIP preparation
+
+19 October 2026, FRE84. [Owner Deno receipt](security-fr-2-email-deno-edge-owner-Windows-pass.json) confirms 144PASS,119hashes,four type checks/four bundles. [Review package](SECURITY_FR_2_4_DENO_WINDOWS_PASS_AND_LOCAL_STAGING_PACKAGE.md),[contract](security-fr-2-email-staging-package-contract.json),[57-input manifest](security-fr-2-email-staging-package-source-manifest.json),[21 local checks](security-fr-2-email-staging-package-local-checks.json):exact 44-file advanced-mode Pages ZIP,accepted Worker unchanged,POSIX paths,sidecars outside public. Next owner action is the pinned local preparation block in chat with independent Windows/.NET ZIP readback. **Do not upload yet.** No credentials,SQL,email,activation or production/native change. All full findings remain open. Earlier checkpoints follow.
+
+---
+
+# Current checkpoint — Worker Windows52PASS; native Deno Edge type fix and144localPASS
+
+18 October2026,FRE83. [Owner Windows result](security-fr-2-email-current-runtime-owner-Windows-pass.json) confirms52PASS,84hashes,18syntax and identical bundles. [Native Deno review](SECURITY_FR_2_4_WORKER_WINDOWS_PASS_AND_DENO_EDGE_BUILD.md) finds and corrects one generic client type in sync-exchange-rates;runtime JavaScript is identical. [Contract](security-fr-2-email-deno-edge-contract.json),[119-input manifest](security-fr-2-email-deno-edge-source-manifest.json),[144local checks](security-fr-2-email-deno-edge-local-checks.json),[verifier](../../scripts/verify-fr-2-email-deno-edge.mjs):four actual Edge type checks/bundles,56actual imported/bundled SDK cases and88affected Node/SQL cases pass. Next owner action is the pinned Windows Deno block in chat. No SQL/credentials/email/deployment/activation. Original source pins and all findings preserved;production excluded,APK deferred. Earlier checkpoints follow.
+
+---
+
+# Current checkpoint — all nine staging metadata checks pass; current Worker/SQL52PASS locally
+
+17 October2026,FRE82. [Owner reviewed baseline](security-fr-2-email-reviewed-types-owner-result.json) matches all nine selected catalog checks. [Current compiled Worker/SQL runtime](SECURITY_FR_2_4_STAGING_METADATA_PASS_AND_CURRENT_WORKER_SQL_RUNTIME.md),[contract](security-fr-2-email-current-runtime-contract.json),[84-input manifest](security-fr-2-email-current-runtime-source-manifest.json),[52local checks](security-fr-2-email-current-runtime-local-checks.json),[verifier](../../scripts/verify-fr-2-email-current-runtime.mjs). Real Worker/SQLite DO plus actual full55 SQL now run together with synthetic Auth/mail ports;21new cases plus31existing runtime/client cases pass. Bundles and application/SQL source unchanged. Next owner action is the pinned Windows combined-runtime block in chat;no SQL/credentials/email/deployment. Hosted activation/acceptance remain pending;all findings open,production excluded,APK deferred. Earlier checkpoints follow.
+
+---
+
+# Current checkpoint — E4.15 observed varchar password compatibility passed
+
+17 October2026,FRE81. [Owner nine-column receipt](security-fr-2-email-column-types-owner-result.json) identifies only nullable varchar(255) versus the original text expectation. [Scoped compatibility review](SECURITY_FR_2_4_REVIEWED_AUTH_COLUMN_COMPATIBILITY.md):17actual SQL/metadata cases PASS, original runtime and Auth schema unchanged. [Reviewed read-only baseline](../../supabase/diagnostics/security_fr_2_4_email_pre_activation_reviewed_types.sql),[contract](security-fr-2-email-reviewed-types-contract.json),[checks](security-fr-2-email-reviewed-types-local-checks.json),[manifest](security-fr-2-email-reviewed-types-source-manifest.json). Next is the complete read-only SQL in chat; no Auth change or activation. Prior Windows1525PASS retained; hosted/provider/browser acceptance pending; all findings open,production excluded,APK deferred. Earlier checkpoints follow.
+
+---
+
+# Current checkpoint — E4.15 eight staging checks match; exact column details next
+
+17 October2026,FRE80. [Owner metadata receipt](security-fr-2-email-preactivation-owner-result.json) has eight true checks and one false required-column presence/type aggregate. Selected278 routines/166 policies,RLS,hooks and absent email schemas match. [Type review handoff](SECURITY_FR_2_4_STAGING_BASELINE_AND_REQUIRED_COLUMN_TYPE_REVIEW.md),[SQL](../../supabase/diagnostics/security_fr_2_4_email_required_column_types.sql),[contract](security-fr-2-email-column-types-contract.json),[six local query cases](security-fr-2-email-column-types-local-checks.json),[manifest](security-fr-2-email-column-types-source-manifest.json). Next is the read-only SQL in chat; no Auth/runtime changes or activation. Actual types remain unknown. Windows1525PASS retained; all findings open,production excluded,APK deferred. Earlier checkpoints follow.
+
+---
+
+# Current checkpoint — full Windows1525PASS; E4.15 read-only staging metadata next
+
+17 October2026,FRE79. [Owner corrected receipt](security-fr-2-email-regression-corrected-owner-Windows-pass.json) matches1525PASS/exit0,612 hashes/316 syntax checks and119 test files. [Metadata refresh handoff](SECURITY_FR_2_4_FULL_WINDOWS_PASS_AND_STAGING_METADATA_REFRESH.md),[SQL](../../supabase/diagnostics/security_fr_2_4_email_pre_activation_baseline.sql),[contract](security-fr-2-email-preactivation-contract.json),[64-file manifest](security-fr-2-email-preactivation-source-manifest.json),[10 scoped local checks](security-fr-2-email-preactivation-local-checks.json). Next action is the complete read-only SQL in chat, not another terminal run. It checks selected catalogs/hooks/Auth column types and absent email schemas; no application rows or installer invocation. Runtime/migrations remain unchanged; no activation approved. All findings open,production excluded,APK deferred. Earlier checkpoints follow.
+
+---
+
+# Current checkpoint — E4.14 Windows archive correction ready
+
+17 October 2026, FRE78. [Owner result](security-fr-2-email-regression-first-owner-Windows-result.json): zero source checks/tests, exit 1. [Reproduction and correction](SECURITY_FR_2_4_REGRESSION_WINDOWS_ARCHIVE_CORRECTION.md) pins text exports to LF while preserving binary bytes and exact hashes. All1525 cases pass locally, including three actual Git archive cases:119 discovered files,612 hashes,316 syntax checks. [Manifest](security-fr-2-email-regression-source-manifest.json),[contract](security-fr-2-email-regression-contract.json),[local result](security-fr-2-email-regression-archive-local-checks.json),[archive checks](security-fr-2-email-regression-archive-export-local-checks.json). Next is the corrected Windows offline block in chat. No staging SQL/credentials/upload; runtime source/55 migrations unchanged. All findings open; hosted activation pending; production excluded,APK deferred. Earlier checkpoints follow.
+
+---
+
+# Current checkpoint — E4.13 Windows382PASS; E4.14 full offline regression ready for Windows
+
+17 October2026,FRE77. [Owner hook receipt](security-fr-2-email-ensure-rls-owner-Windows-pass.json):382PASS,exit0,140 hashes/59 syntax checks on Nodev22.17.0. [Full regression](SECURITY_FR_2_4_HOOK_PASS_AND_FULL_OFFLINE_REGRESSION.md):1418 discovered tests/118files plus104 actual SQL cases in8 batches,all1522 localPASS,611 hashes/315 syntax checks. Historical FR1/stage10 source pins and contracts are preserved; outdated test fixtures/assertions now match their intended source versions and the current email-proof flow. Runtime code/55 migrations/schema remain unchanged. [Verifier](../../scripts/verify-fr-2-email-regression.mjs),[manifest](security-fr-2-email-regression-source-manifest.json),[contract](security-fr-2-email-regression-contract.json),[local result](security-fr-2-email-regression-local-checks.json). Next owner action is the pinned Windows offline block in chat. Hosted runtime/email/activation remain pending; no SQL/credentials/upload action. All findings open,production excluded,APK deferred. Previous checkpoints follow.
+
+---
+
+# Current checkpoint — FR.2.4.E4.12 source reviewed; FR.2.4.E4.13 exact-hook compatibility Windows check next
+
+17 October 2026, FRE76. [Owner exact hook source](security-fr-2-email-hook-source-owner-result.json) matches the 953-byte SHA256 pin; no write/invocation occurred and installer/backend namespaces were absent. [Source review and compatibility fix](SECURITY_FR_2_4_REVIEWED_ENSURE_RLS_HOOK_COMPATIBILITY.md): exact ensure_rls allowance, event-trigger RPC exclusion and five-private-table RLS/FORCE RLS postcondition. [382 local checks](security-fr-2-email-ensure-rls-local-checks.json), [140-file manifest](security-fr-2-email-ensure-rls-source-manifest.json), [contract](security-fr-2-email-ensure-rls-contract.json) replay all three reviewed hooks unchanged before full55 migration/canonical paths; 148 RPC guards/82 policies remain. Next owner action is the pinned offline Windows block in chat, not staging SQL. Live activation, full regression/runtime and hosted acceptance pending. All findings open, production excluded, APK deferred. Previous checkpoints follow.
+
+---
+
+# Current checkpoint — FR.2.4.E4.11 Windows passed; FR.2.4.E4.12 live hook source review next
+
+17 October 2026, FRE75. [Owner atomic receipt](security-fr-2-email-atomic-owner-Windows-pass.json): 361 PASS, exit 0, 137 hashes/57 syntax checks, exact warning flags retained. [Read-only hook source handoff](SECURITY_FR_2_4_ATOMIC_PASS_AND_LIVE_HOOK_SOURCE_REVIEW.md), [SQL](../../supabase/diagnostics/security_fr_2_4_email_live_hook_source.sql), [13 local checks](security-fr-2-email-hook-review-local-checks.json), [61-file manifest](security-fr-2-email-hook-review-source-manifest.json), [contract](security-fr-2-email-hook-review-contract.json). The staging ensure_rls body must be reviewed before any allowlist/activation change. The diagnostic conditionally returns only the previously fingerprinted 953-byte hook source, withholds changed/marker-containing bodies, reads no application rows and ends with ROLLBACK. Next owner action is the complete staging SQL block in chat; no terminal/write/credential/deployment action. All installer/migration/application source unchanged. Live activation/full acceptance pending; all findings open, production excluded, APK deferred. Previous checkpoints follow.
+
+---
+
+# Current checkpoint — FR.2.4.E4.10 Windows passed; FR.2.4.E4.11 private atomic installer registered in source
+
+17 October 2026, FRE74. [Owner canonical receipt](security-fr-2-email-canonical-owner-Windows-pass.json): 338 PASS, exit 0, 130 hashes/53 syntax checks; exact warning flags retained. [Private atomic installer](SECURITY_FR_2_4_CANONICAL_PASS_AND_ATOMIC_INSTALLER.md) is now the 55th migration and part of generated schema.sql. Ordinary database creation registers it without activating the gate. [361 local checks](security-fr-2-email-atomic-local-checks.json), [137-file manifest](security-fr-2-email-atomic-source-manifest.json), [contract](security-fr-2-email-atomic-candidate-contract.json) prove rollback, privilege/hook boundaries and full55 creation-path parity; component controls retain explicit historical54 fixtures. Next owner action is the pinned offline Windows check in chat. The observed staging ensure_rls hook remains unreviewed for this DDL and is expected to block live installation. No SQL/credentials/email/deployment action; coordinated activation, full regression and genuine hosted acceptance pending. All findings open, production excluded, APK deferred. Previous checkpoints follow.
+
+---
+
+# Current checkpoint — FR.2.4.E4.9 Windows passed; FR.2.4.E4.10 canonical baseline reconciled
+
+17 October 2026, FRE73. [Owner account-controls receipt](security-fr-2-email-security-controls-owner-Windows-pass.json): 320 PASS, exit 0, 126 hashes/50 syntax checks; exact non-failing warning flags retained. [Canonical source reconciliation](SECURITY_FR_2_4_ACCOUNT_SECURITY_PASS_AND_CANONICAL_BASELINE.md): the actual schema.sql is now generated from the unchanged 54 migrations. Previous source had missing enquiry relations/functions/policies, different bodies and direct API permissions absent from migrations. [338 local checks](security-fr-2-email-canonical-local-checks.json), [130-file manifest](security-fr-2-email-canonical-source-manifest.json), [contract](security-fr-2-email-canonical-candidate-contract.json) compare both creation paths and email candidates. Next owner action is the pinned offline Windows check in chat. Do not execute the bootstrap on an existing hosted database. Atomic email migration integration, coordinated Pages/gateway activation, full regression and genuine hosted acceptance remain pending. No SQL/credentials/email/deployment action; all findings open, production excluded, APK deferred. Previous checkpoints follow.
+
+---
+
+# Current checkpoint — FR.2.4.E4.8 Windows passed; FR.2.4.E4.9 account security controls connected
+
+17 October 2026, FRE72. [Owner invited-signup receipt](security-fr-2-email-invited-signup-owner-Windows-pass.json): 281 PASS, exit 0, 123 hashes/47 syntax checks matched; non-failing warning flags preserved. [Account security controls](SECURITY_FR_2_4_INVITED_SIGNUP_PASS_AND_ACCOUNT_SECURITY_CONTROLS.md): [320 local checks](security-fr-2-email-security-controls-local-checks.json), [126-file manifest](security-fr-2-email-security-controls-source-manifest.json), [contract](security-fr-2-email-security-controls-candidate-contract.json). Forget/revoke-all now require acknowledgement and server proof, use existing gateway SQL and notify same-account tabs to discard access/private data. Auth sessions/factors/roles are retained. Next owner action is the pinned Windows check in chat. Canonical SQL, coordinated Pages activation, full regression and genuine browser/provider/hosted acceptance remain pending; channel delivery/cross-device UI and late uncertain outcomes are not claimed. No SQL, credentials, email or deployment action. All findings open, production excluded, APK deferred; previous checkpoints follow.
+
+---
+
+# Current checkpoint — FR.2.4.E4.7 Windows passed; FR.2.4.E4.8 invited signup integrated
+
+16 October 2026, FRE71. [Owner callback receipt](security-fr-2-email-callback-owner-Windows-pass.json): 192 PASS, exit 0, 94 hashes/31 syntax checks matched; non-failing module/TypeScript warning flags preserved. [Invited signup integration](SECURITY_FR_2_4_AUTH_CALLBACK_PASS_AND_INVITED_SIGNUP.md): [281 local checks](security-fr-2-email-invited-signup-local-checks.json), [123-file manifest](security-fr-2-email-invited-signup-source-manifest.json), [contract](security-fr-2-email-invited-signup-candidate-contract.json). Admin-created ordinary signup and explicit Free provisioning now check proof; password changes require fresh verification; account opening is explicit; known completion can retry without SQL/password replay. Signup CSP hash regenerated without broadening policy. Next owner action is the pinned Windows batch in chat. Device/revocation settings, canonical SQL, Pages/artifact coordination, uncertain-completion recovery and genuine hosted acceptance remain pending. No SQL, credentials, email or deployment action. All findings open, production excluded, APK deferred; previous checkpoints follow.
+
+---
+
+# Current checkpoint — FR.2.4.E4.6 Windows passed; FR.2.4.E4.7 Auth callbacks integrated
+
+16 October 2026, FRE70. [Owner app-entry receipt](security-fr-2-email-entry-owner-Windows-pass.json): 127 PASS, exit 0, 89 source hashes/27 syntax checks matched. [Auth callback integration](SECURITY_FR_2_4_APP_ENTRY_PASS_AND_AUTH_CALLBACKS.md): [192 local checks](security-fr-2-email-callback-local-checks.json), [94-file manifest](security-fr-2-email-callback-source-manifest.json), [contract](security-fr-2-email-callback-candidate-contract.json). Confirmation, recovery, Business invitation and password-change paths now use the shared screen before protected work. Pending invitations remain checked before first-password changes; a password change requires new proof. Next owner action is the pinned Windows batch in chat. Admin-invited/Free provisioning, remembered-device settings, canonical SQL, Pages/artifact coordination and genuine hosted acceptance remain pending. No SQL, credentials, email or deployment action. All findings open, production excluded, APK deferred; original checkpoints follow.
+
+---
+
+# Current checkpoint — FR.2.4.E4.5 Windows passed; FR.2.4.E4.6 actual app entry integrated
+
+16 October 2026, FRE69. [Owner screen result](security-fr-2-email-ui-owner-Windows-pass.json): 93 PASS, exit 0, 71 hashes/11 syntax checks matched. [Actual app/Business/Admin entry and exporter integration](SECURITY_FR_2_4_EMAIL_SCREEN_PASS_AND_APP_ENTRY.md): [127 local checks](security-fr-2-email-entry-local-checks.json), [89-file manifest](security-fr-2-email-entry-source-manifest.json), [contract](security-fr-2-email-entry-candidate-contract.json). Proof now precedes private startup; Admin uses the new role/status contract; token replacement and stale replies are checked. Next owner action is the complete temporary-folder Windows batch in chat. Auth callback/security-settings integration, canonical SQL, Pages/new artifact coordination and hosted acceptance remain pending. No hosted SQL, credentials, mail, configuration change or deployment. All findings open, production excluded, APK deferred; prior checkpoints remain below.
+
+---
+
+# Current checkpoint — FR.2.4.E4.4 Windows passed; FR.2.4.E4.5 email screen and Admin contract ready
+
+16 October 2026, FRE68. [Owner Edge result](security-fr-2-email-edge-owner-Windows-pass.json): 88 PASS, exit 0, 84 hashes/23 syntax checks matched on Windows. [Shared email screen and Admin contract](SECURITY_FR_2_4_EDGE_PASS_AND_EMAIL_SCREEN.md): [93 local checks](security-fr-2-email-ui-local-checks.json), [71-file manifest](security-fr-2-email-ui-source-manifest.json), [contract](security-fr-2-email-ui-candidate-contract.json). The actual controller/form, gateway and SQL enforce server proof, existing Admin role and fixed seven-day device behavior. App/Business startup and the current Admin page are not yet rewired; canonical schema/migration and Pages/hosted integration remain pending. Next owner action is the complete temporary-folder PowerShell batch in chat. No hosted SQL, credentials, mail, Cloudflare/Zoho change or deployment. All findings open, production excluded, APK deferred; historical checkpoints remain below.
+
+---
+
+# Current checkpoint — FR.2.4.E4.3 Windows passed; FR.2.4.E4.4 Edge integration ready
+
+16 October 2026, FRE67. [Owner Windows database result](security-fr-2-email-data-guard-owner-Windows-pass.json): 32 PASS, exit 0, 63 hashes/54 migrations matched. [Edge integration and Windows handoff](SECURITY_FR_2_4_DATABASE_PASS_AND_EDGE_GUARDS.md) covers four actual user entrypoints with the caller-bound email proof and preserves the two cron dispatchers and public Turnstile enquiry boundary. [88 local checks](security-fr-2-email-edge-local-checks.json), [84-file manifest](security-fr-2-email-edge-source-manifest.json), [contract](security-fr-2-email-edge-candidate-contract.json). Next owner action is the complete temporary-folder PowerShell batch in chat. No hosted SQL, credentials, real mail, Cloudflare/Zoho change or deployment. Canonical migration/schema, Admin/UI/Pages coordination and hosted acceptance remain pending; all findings open, production excluded and APK deferred. Prior checkpoints remain below.
+
+---
+
+# Current checkpoint — FR.2.4.E4.2 Windows passed; FR.2.4.E4.3 database integration ready
+
+16 October 2026, FRE66. [Owner Windows 24 PASS](security-fr-2-email-session-owner-Windows-pass.json), exit 0, all 61 source hashes/54 migrations matched. [New database integration and handoff](SECURITY_FR_2_4_SESSION_PASS_AND_DATABASE_GUARDS.md): 148 actual application RPC guards and 82 restrictive policies pass [32 local checks](security-fr-2-email-data-guard-local-checks.json), including 148 authenticated and 29 anonymous direct denial probes, verified operations and Auth callback preservation. [Coverage](security-fr-2-email-data-guard-coverage.json), [63-file manifest](security-fr-2-email-data-guard-source-manifest.json), [contract](security-fr-2-email-data-guard-candidate-contract.json). Next owner action is the complete temporary-folder PowerShell integration batch in chat. No hosted SQL, credentials, Cloudflare/Zoho change or real email. Canonical schema/migration, full Edge/Admin/UI/Pages integration and hosted acceptance remain pending; all findings open, production excluded and APK deferred.
+
+---
+
+# Current checkpoint — FR.2.4.E4.1 alignment passed; FR.2.4.E4.2 session source ready
+
+16 October 2026, FRE65. [Owner staging correction PASS](security-fr-2-bill-reminder-separator-owner-pass.json): the exact separator is aligned, all 278 selected non-event function fingerprints match source under assertions, protected metadata and line endings remain unchanged, and no scheduler/email enforcement ran. [Next component and Windows handoff](SECURITY_FR_2_4_SEPARATOR_PASS_AND_SESSION_PREDICATE.md): a private current-session predicate with two authenticated-only no-argument wrappers passes [24 local checks](security-fr-2-email-session-local-checks.json) against all 54 migrations and the E2 backend. [61-file manifest](security-fr-2-email-session-source-manifest.json), [contract](security-fr-2-email-session-candidate-contract.json). Next owner action is the complete temporary-folder PowerShell test command in chat; no hosted SQL, credentials, Cloudflare/Zoho change or email. Full canonical migration/schema, all applicable guards, UI/gateway integration and hosted acceptance remain pending. All findings remain open; production excluded and APK deferred.
+
+---
+
+# Current checkpoint — FR.2.4.E4.1 exact drift identified; guarded separator correction ready
+
+16 October2026,FRE64. [Complete278-record owner receipt](security-fr-2-email-routine-fingerprints-owner-result.json) gives277full selected matches;all278signatures/settings/flags match. Only the service-only Business bill reminder body's separator differs. [Reconstruction/guarded correction handoff](SECURITY_FR_2_4_EXACT_BILL_REMINDER_SEPARATOR_CORRECTION.md), [contract](security-fr-2-bill-reminder-separator-contract.json), [14actual full54 SQL checks](security-fr-2-bill-reminder-separator-local-checks.json). Source UTF8decoded asCP437 exactly reconstructs observed MD5;full old/new SHA256 is asserted before/after literal-only correction. Next complete SQL changes that one literal;no scheduler/app-row/provider invocation or new enforcement installation. Rollback prepared,not requested. No full acceptance/finding closure,production excluded,APK deferred.
+
+---
+
+# Current checkpoint — FR.2.4.E4.1 event hook identified; exact routine fingerprints next
+
+16 October2026,FRE63. [Owner reconciliation](security-fr-2-email-routine-reconciliation-owner-result.json):extra rls_auto_enable event function identified;remaining278function digest still differs. [Compact fingerprint handoff](SECURITY_FR_2_4_ROUTINE_DELTA_AND_COMPACT_FINGERPRINT_HANDOFF.md), [278-entry source reference](security-fr-2-email-routine-fingerprint-reference.json), [4local SQL scenarios](security-fr-2-email-routine-fingerprint-local-checks.json). Next complete read-only SQL returns bounded per-function body/settings/flag fingerprints in one string;no bodies/customer rows/credentials/writes. We remain on FR.2.4.E4.1,not a new original audit stage. Enforcement installation remains pending;no full acceptance/finding closure,production excluded,APK deferred.
+
+---
+
+# Current checkpoint — FR.2.4.E4.1 baseline received; routine reconciliation next
+
+16 October2026,FRE62. [Owner baseline](security-fr-2-email-enforcement-baseline-owner-result.json):166policy/50restrictive fingerprint and81public RLS tables match;required Auth fields present;email backend absent. Public functions279versus modeled278 need reconciliation. [Full FR.2.4.E4.1 handoff](SECURITY_FR_2_4_ENFORCEMENT_BASELINE_AND_ROUTINE_RECONCILIATION.md), [3local SQL scenarios](security-fr-2-email-routine-reconciliation-local-checks.json). Next is the complete read-only event-function/catalog SQL pasted in chat;no installation/terminal/Cloudflare/email/factor action. No broad acceptance/finding closure;production excluded,APK deferred.
+
+---
+
+# Current checkpoint — limiter metadata passed; E4.1 server baseline next
+
+16 October2026,FRE61. [Owner4GET PASS](security-fr-2-limiter-read-only-owner-pass.json),exit0: Worker/SQLite namespace verified,public+preview URLs disabled,candidate hashes match. Current namespace errors=null explains the array-only checker rejection; reusable source corrected and18regressions pass. No redeploy needed. [E4.1 handoff](SECURITY_FR_2_4_LIMITER_METADATA_PASS_AND_ENFORCEMENT_BASELINE.md), [65-source inventory](security-fr-2-email-enforcement-source-inventory.json), [2metadata-SQL scenarios](security-fr-2-email-enforcement-baseline-local-checks.json). Next owner action is the full read-only staging catalog SQL pasted in chat; no installation/email/token/terminal. Applicationwide guards/UI/Pages gateway remain pending; no full acceptance/finding closure,production excluded,APK deferred.
+
+---
+
+# Current checkpoint — Worker deployment reported; read-only metadata review next
+
+15 October2026,FRE60. [Owner Wrangler exit0/Worker deployed, overall postcheck exit1](security-fr-2-limiter-deployment-owner-review.json),namespace API response review required. Public URL/final candidate checks were not reached. [Read-only inspection handoff](SECURITY_FR_2_4_LIMITER_POST_DEPLOY_READ_ONLY_REVIEW.md), [15local checks](security-fr-2-limiter-inspection-local-checks.json). Do not rerun deployment/delete/recreate. Next command reads bounded response shapes, numeric codes and selected metadata; no writes/npm/SQL/email/Zoho file. No full acceptance or finding closure; E4 remains pending, production excluded, APK deferred.
+
+---
+
+# Current checkpoint — authenticated account check passed; live limiter handoff ready
+
+15 October2026,FRE59. [Owner genuine3GET account/absence PASS](security-fr-2-cloudflare-account-owner-pass.json),exit0. [Live staging limiter deployment handoff](SECURITY_FR_2_4_LIMITER_LIVE_DEPLOYMENT_HANDOFF.md), [16new local checks and actual strict dry-run](security-fr-2-limiter-deployment-local-checks.json). The next pasted command validates locked tools/artifacts,rechecks account and absence,deploys the exact isolated limiter once and reads namespace/public-URL metadata. Nothing has yet been deployed. No Pages/email/SQL/Auth/application guard change; E4/global acceptance pending, production excluded, APK deferred, no finding closure.
+
+---
+
+# Current checkpoint — Windows limiter package passed; account precheck next
+
+15 October2026,FRE58. [Owner Windows18PASS and retained preparation exit0](security-fr-2-email-limiter-package-owner-pass.json). [Read-only account handoff](SECURITY_FR_2_4_LIMITER_WINDOWS_PASS_AND_ACCOUNT_CHECK.md), [new checker15PASS](security-fr-2-cloudflare-account-local-checks.json). The exact Worker and config hashes match; nothing deployed. Next owner enters a narrowly scoped Cloudflare token privately and checks the selected account's staging Pages project and current Worker absence using three GETs. No SQL, mail, Zoho file, Pages change or deployment. E4/global acceptance pending, production excluded, APK deferred, no findings closed.
+
+---
+
+# Current checkpoint — owner reports limiter absent; local deployment package18PASS ready
+
+15 October2026,FRE57. [Owner exact-name NO](security-fr-2-email-limiter-absence-owner-result.json),Workers FREE. [Local package/Windows handoff](SECURITY_FR_2_4_LIMITER_PACKAGE_AND_WINDOWS_HANDOFF.md), [contract](security-fr-2-email-limiter-package-contract.json), [14source hashes](security-fr-2-email-limiter-package-source-manifest.json), [18actual checks](security-fr-2-email-limiter-package-local-checks.json). Pinned Wrangler4.149.0 actual dry run succeeds with0network attempts and unchanged reviewed Worker bytes;strict two-file config disables public routes and uses SQLite. Next owner command installs isolated locked tools,runs18checks and prepares a local candidate only. No Cloudflare login/deploy,token,Zoho file,email,SQL or plan change. Windows CLI/hosted deployment,E4 and global acceptance pending;production excluded,APK deferred,no finding closure.
+
+---
+
+# Current checkpoint — private Zoho OAuth/account/DPAPI setup passed; Cloudflare readiness next
+
+15 October2026,FRE55. [Owner private setup PASS](security-fr-2-zoho-private-setup-owner-pass.json):3provider requests,refresh check/exact scopes/sender metadata passed,current-user DPAPI file saved,exit0,no email. The retained encrypted file explains probe_removed=false;do not delete or upload it. [Read-only Cloudflare handoff](SECURITY_FR_2_4_ZOHO_SETUP_PASS_AND_CLOUDFLARE_READINESS.md) requests only Workers plan label and whether exact Worker mushavo-email-rate-staging already exists. No SQL,terminal,creation,upload,plan change or credential action now. E4 integration and delivery/global acceptance remain pending;production excluded,APK deferred,no finding closure.
+
+---
+
+# Current checkpoint — corrected Windows preflight passed; private Zoho setup next
+
+15 October2026,FRE54. [Owner corrected preflight](security-fr-2-zoho-corrected-preflight-owner-result.json):30PASS,8hashes,PowerShell5.1,COMPLETE,real synthetic DPAPI/private pipe passed,all launch paths present,empty probe removed and exit0. No credentials or provider requests yet. [Private setup handoff](SECURITY_FR_2_4_ZOHO_PREFLIGHT_PASS_AND_PRIVATE_SETUP.md) resumes the unchanged69c963a source with the running Node path and hidden prompts, fresh scoped code only when prompted, at most3OAuth/account requests, DPAPI-only output and no email. No routine offline rerun or SQL needed. Full private result/E4 integration/hosted acceptance remain pending; production excluded,APK deferred and no finding closure.
+
+---
+
+# Current checkpoint — invalid Node launch path identified; corrected runtime path preflight ready
+
+15 October2026,FRE53. [Owner result](security-fr-2-zoho-node-path-owner-result.json): Windows error2, selected Node file absent, entry file/directory present,29PASS and zero provider requests. [Node path correction](SECURITY_FR_2_4_ZOHO_NODE_EXECUTABLE_CORRECTION.md) captures the working runtime's process.execPath privately, validates it and passes it explicitly; fallback uses one ApplicationInfo.Path rather than Source.30portable utility cases and6real archive checks pass. Next Windows run remains -PreflightOnly, with no credentials/code/email/SQL. Full setup and E4 integration remain pending; no full finding closure, production excluded and APK deferred.
+
+---
+
+# Current checkpoint — Windows encryption path passed; Node process-start error needs its native code
+
+15 October2026,FRE52. [Owner result](security-fr-2-zoho-pipe-start-owner-result.json):29PASS,8hashes,PowerShell5.1; PRIVATE_PIPE_START_FAILED with Win32Exception, zero provider requests and empty probe removed. DPAPI synthetic roundtrip passed by control-flow inference; combined pipe flag is false. [Native-code diagnostic](SECURITY_FR_2_4_ZOHO_PIPE_START_DIAGNOSTIC.md) adds only an integer OS error and three existence booleans; no raw paths/messages. Launcher unchanged, exact native cause still unknown. Next owner run remains -PreflightOnly without credentials/code/email/SQL.29offline checks and6real archive checks pass. Production excluded, APK deferred, hosted acceptance false and no finding closure.
+
+---
+
+# Current checkpoint — Windows27PASS; local preflight stage diagnostic ready
+
+15 October2026,FRE51. [Owner result](security-fr-2-zoho-private-setup-preflight-owner-result.json) matches8hashes,7syntax checks and27PASS, then LOCAL_PREFLIGHT_FAILED before credential prompts/provider requests. [Preflight-only handoff](SECURITY_FR_2_4_ZOHO_LOCAL_PREFLIGHT_DIAGNOSTIC.md) adds fixed stage labels without printing private exception text. Updated utility29PASS and6real archive checks pass. Next owner command uses -PreflightOnly: no credentials, code generation, provider request, email or SQL. Exact Windows failing stage remains unknown; no unsupported cause or hosted acceptance claimed. Production excluded, APK deferred and no full finding closure.
+
+---
+
+# Current checkpoint — owner hash stop recorded; scoped archive correction ready
+
+15 October 2026, FRE50. [Archive correction](SECURITY_FR_2_4_ZOHO_ARCHIVE_CORRECTION.md), [owner result](security-fr-2-zoho-private-setup-first-owner-result.json), [real Git fixture checks](security-fr-2-zoho-archive-local-checks.json). Owner verifier stopped after two hashes, before credentials or provider calls. The missing PowerShell LF attribute reproduces the mismatch with core.autocrlf=true. One scoped LF attribute and a per-command archive override preserve bytes; six archive checks and the extracted 27-case verifier pass. Eight reviewed inputs/manifest are unchanged; hashes remain strict. Owner Windows/private result is pending; no email, hosted acceptance or finding closure, production excluded and APK deferred.
+
+---
+
+# Current checkpoint — client created; private token exchange prepared, owner result pending
+
+15 October 2026, FRE49. [Private exchange handoff](SECURITY_FR_2_4_ZOHO_PRIVATE_EXCHANGE_HANDOFF.md), [owner facts](security-fr-2-zoho-client-owner-result.json), [27-case local checks](security-fr-2-zoho-private-setup-local-checks.json). Corrected sender localpart is plural notifications; console hostname api-console.zoho.com and Self Client creation are owner reported. Eight source hashes/seven JS syntax checks pass. Windows encryption/private pipe runs before hidden credential/code prompts; then at most three OAuth/account-metadata requests, no email. Secrets stay in captured pipes and a current-user DPAPI file outside Git/public output. Actual Windows/provider result is pending. E4 full guard/canonical integration and hosted acceptance remain pending; no finding closure, production excluded, APK deferred.
+
+---
+
+# Current checkpoint — three setup facts received; private Zoho client preparation next
+
+15 October 2026, FRE48. [Owner readiness receipt](security-fr-2-email-hosted-readiness-owner-result.json) records mail.zoho.com, notification-mailbox access YES and staging Durable Object option AVAILABLE, all owner reported. [Private Zoho client preparation](SECURITY_FR_2_4_ZOHO_PRIVATE_CLIENT_PREPARATION.md): select the notification Zoho account, create Self Client if absent or report an existing client without resetting it, and keep credentials private. No SQL, terminal, short-lived code, email, token exchange or Cloudflare upload requested at this step. E2/E3.1/E3.2 offline results remain preserved; hosted acceptance and E4 global guard/canonical integration remain pending. No finding closure; production excluded and APK deferred.
+
+---
+
+# Current checkpoint — Windows bundles/shared limiter31PASS; actual setup details next
+
+15October2026,FRE47. [Read-only Zoho/Cloudflare owner handoff](SECURITY_FR_2_4_EMAIL_HOSTED_READINESS_OWNER_HANDOFF.md), [contract](security-fr-2-email-hosted-readiness-contract.json), [owner Windows31PASS](security-fr-2-email-workers-owner-Windows-result.json).16source hashes/full tools-lock/two output hashes match;12syntax checks and native workerd/SQLite concurrency/restart cases pass;cleanup complete. E2/E3.1/E3.2local checkpoints complete. Next: hostname-only Zoho region,notification-mailbox access and staging Durable Object binding-option visibility. No SQL,terminal rerun,email or configuration change requested. Actual login/global data guards/canonical integration,hosted acceptance and final merge/deployment remain pending;no full finding closure,production excluded,APK deferred.
+
+---
+
+# Current checkpoint — owner gateway63PASS; real bundle/local runtime/shared limiter31PASS
+
+15October2026,FRE46. [Bundle/limiter source and Windows handoff](SECURITY_FR_2_4_EMAIL_WORKER_BUNDLE_LIMITER_AND_OFFLINE_HANDOFF.md), [contract](security-fr-2-email-workers-candidate-contract.json), [31localPASS](security-fr-2-email-workers-local-checks.json), [16source hashes/locked tools](security-fr-2-email-workers-source-manifest.json), [owner gateway63PASS](security-fr-2-email-gateway-owner-Windows-result.json). Actual esbuild produces two bundles;local workerd executes real persistent SQLite Durable Objects,120simultaneous requests and runtime restart checks. Next: new temporary Windows tools install and local-only31check batch in chat. No SQL,upload or email now. Hosted bindings/ingress,Zoho sender/data centre/delivery,all app guards/UI and hosted acceptance remain pending. No full finding closure,production excluded,APK deferred.
+
+---
+
+# Current checkpoint — E2 owner checks complete; E3.1gateway/Zoho source63PASS
+
+15October2026,FRE45. [Actual gateway/mail adapter and Windows handoff](SECURITY_FR_2_4_EMAIL_GATEWAY_SOURCE_AND_OFFLINE_HANDOFF.md), [contract](security-fr-2-email-gateway-candidate-contract.json), [63local checks](security-fr-2-email-gateway-local-checks.json), [64source hashes](security-fr-2-email-gateway-source-manifest.json), [owner dependencyPASS](security-fr-2-email-backend-owner-dependency-recheck.json). Previous46backend tests and59source/dependency metadata checks passed on owner Node22.17.0. New50actual handler/transport tests plus13actual SQL integration checks pass locally; full54source unchanged. Next: dependency-reusing offline Windows gateway recheck in chat. No SQL or email now; real bundle/Cloudflare/shared limiter/Zoho sender-region delivery,all app guards/UI and hosted acceptance pending. No finding closure,production excluded,APK deferred.
+
+---
+
+# FR.2.4 — selected policy: email verification for every account, including platform Admin
+
+15 October2026, FRE42. [Owner decision](security-fr-2-email-code-all-users-owner-decision.json): “for all users including admin”. This resolves the scope question from FRE41. Continue under that scope without asking again whether Admins are included. This is a selected product policy and concrete implementation plan, not a deployed feature or permission to claim former TOTP/AAL2 acceptance. No hosted Auth/SQL/RLS/role/factor/template/setting was changed and no email was dispatched.
+
+## Selected experience
+
+All authenticated customer roles in Personal/Family/Business and all platform staff/Admin/recovery roles use the same email-verification/device-approval policy. Keep the existing first sign-in method (email/password today; future provider login must integrate with the same gate). First/new-device sign-in requires an emailed six-digit code. After code verification, Remember this device for7days can approve that specific account/browser/app installation. During that fixed604800-second interval, subsequent successful password sign-ins on that approved device do not require another code. The interval starts at successful code verification and does not slide forward on ordinary sign-in or refresh. Seven days is the approval duration, not the code lifetime.
+
+On the next sign-in after approval expiry, require a new code. Per the owner's stated trigger, a valid already-open session is not automatically logged out or emailed solely because day7 arrives. That verified session remains subject to normal session expiry/revocation/account suspension. Session approval and reusable device approval must therefore be separate server records. Standard sign-out ends the current Auth session while leaving explicitly remembered device approval until expiry; Forget this device/revoke-all removes it too. Another device/browser or clearing that credential requires a code. Password reset/change, email change or security revocation invalidates affected/all remembered approvals and session proofs. Shared devices can leave remember off and require a code on later logins. Keep workspace-resume preferences separate from verification so app-entry/PWA/native routing cannot bypass the gate or reveal prior-account data.
+
+Implementation defaults: one-use codes expire after10minutes,5 failed attempts per challenge, resend cooldown60seconds plus aggregate account/IP abuse limits. New/resend challenges supersede previous pending codes atomically. These are concrete design defaults within the selected policy; no global live Auth expiry/template has been changed. Show pending delivery/retry messaging without granting access on mail failure. Existing confirmation-email, invitation and password-recovery links remain distinct flows and need regressions; never equate signup confirmation alone with this fresh sign-in/device approval.
+
+## Server architecture and enforcement
+
+1. Create private challenge, remembered-device and verified-session records. Generate codes cryptographically, store only a server-keyed HMAC bound to actor/session/challenge (a bare digest of a six-digit space is insufficient), enforce attempts/expiry/one-time consume under concurrency. Generate independent high-entropy random device credentials; retain only digests, expiry and revocation/security version server-side. No codes, tokens, real actor identifiers or mailbox contents in audit receipts/log output.
+2. Validate the real Auth bearer with the provider, derive the actor/email/session ID on the server, require a confirmed active identity and bind the challenge to that same actor/session/sign-in attempt. Client email/user-ID fields are not authority. Successful verification creates only that session's proof; a remembered credential can create proof for a later fresh session of the same account before its fixed approval expiry. Email challenge should be a dedicated post-first-sign-in mechanism rather than treating a standalone passwordless email OTP session as Supabase MFA.
+3. For web/PWA, prepare a same-origin advanced-mode Cloudflare Pages _worker.js authentication gateway to handle secure HttpOnly device cookies, exact-origin/CSRF validation and no-store responses. The existing dashboard Direct Upload method supports _worker.js according to current Cloudflare documentation, so the plan need not force a switch to Git integration. Review gateway bindings, secret configuration, static asset fallback and dynamic security headers; a normal static ZIP or functions directory alone is insufficient. Browser JavaScript/localStorage timestamps cannot authorize trust. Native integration must use platform secure credential storage/transport; it is a separate acceptance dependency, not an assumed cookie-equivalent. No native sync/APK update now.
+4. Add one private central verified-session predicate for normal authenticated data access, while preserving existing role/owner/workspace/suspension/entitlement checks. Apply across applicable RLS policies, user-executable SECURITY DEFINER RPC entry points, Storage access and user-facing Edge handlers. Edge service clients and definer routines can bypass table RLS, so table guards alone are insufficient. Session proof does not confer a role; platform Admin still needs its authorized platform assignment and active profile. Never replace workspace checks with an email proof.
+5. Preserve minimal pre-verification Auth/challenge/status/logout access and intentional public catalog/enquiry access. Public home/pricing/contact pages do not require a code merely to browse. Distinguish scheduler/service jobs from user actions using existing verified service authorization; do not break FX/push jobs or create a new unauthenticated bypass. Audit all7 existing Edge entrypoints rather than blanket allowing or denying them: dispatch-admin-notifications,dispatch-push-reminders,invite-admin-user,invite-business-member,send-test-push,submit-enquiry,sync-exchange-rates.
+6. Reconcile normal session refresh/logout/revocation and direct Auth password/email changes with proof/security-version invalidation; do not trust only a frontend logout callback. A short-lived access JWT must not be stretched to7days. Direct provider Auth endpoints remain provider-controlled; app-data/session proof gates must be described accurately rather than claiming custom code mediates every possible Auth API call. New device proof, actor switches, revoked sessions and replayed approval credentials require negative tests.
+
+Supabase email OTP remains conventional aal1; selected email verification must use an explicitly named app authorization proof, never a fabricated aal2 claim. Frozen security_stage_3_admin_mfa installer/rollback and isolated TOTP operator scripts are historical candidates, not the installation path for the selected policy. Do not merely make admin_mfa_status or has_verified_factor always true or drop the guard. Prepare a coordinated replacement frontend/RPC/Edge/DB status contract and compare ACL/source parity. Original finding definitions and evidence remain preserved; the original stronger-MFA acceptance criterion is not met by an email code and must be reported with the owner-selected alternative and residual mailbox-dependent risk in the final re-audit. No full finding is closed by the policy decision.
+
+## Implementation milestones and required evidence
+
+| Step | Concrete deliverable | Status |
+| --- | --- | --- |
+| FR.2.4.E1 | All-user/Admin policy, clock/session rules and source/deployment impact plan | COMPLETE_POLICY_SELECTED_NOT_IMPLEMENTED |
+| FR.2.4.E2 | Private DB challenge/device/session schema and service-only functions; concurrency, grants and revocation tests | OFFLINE_SOURCE_AND_OWNER_CHECKS_PASSED_NOT_INSTALLED |
+| FR.2.4.E3 | Auth gateway/provider mail adapter, protected cookies and challenge handlers; source tests and real bundle checks | LOCAL_CHECKS_PASSED_ZOHO_PRIVATE_SETUP_AND_LIMITER_METADATA_PASSED_PAGES_INTEGRATION_PENDING |
+| FR.2.4.E4 | Login/email-code/remember-device UI plus all RLS/RPC/Edge/Storage/Admin guards and regression batch | E4_12_SOURCE_REVIEWED_E4_13_EXACT_HOOK_LOCAL382PASS_WINDOWS_PENDING_LIVE_ACTIVATION_HOSTED_PENDING |
+| FR.2.4.E5 | Controlled staging configuration, real delivery, new/trusted/expired/revoked-device and direct-API acceptance; exact guarded Admin assignment after gates work | PENDING |
+| FR.2.4.E6 | Remaining native/session/recovery/provider regressions and final-re-audit evidence/carry-forward | PENDING_APK_DEFERRED |
+
+E2 must compile against the current ordered54-migration source and inventory every applicable user entry point before enabling a global gate. Prove server clock boundaries, independent account/device binding, single-use concurrent consumption, resend invalidation, rate/attempt limits, service-only writes and absence of API grants to private proof tables. Synthetic fixtures are local source evidence only; they cannot establish actual email delivery, hosted RLS/Edge behavior or complete acceptance.
+
+E3 must select a working mail transport through a controlled sender with secrets configured privately. Existing Supabase Auth SMTP configuration is not automatically a credential source for a custom Edge/Worker mailer. Delivery/sender/quotas remain prerequisites; no live SMTP changes, unsolicited test email or production recipient is authorized by this documentation checkpoint. If built-in Auth OTP is considered during implementation, preserve shouldCreateUser:false where appropriate and shared Magic Link/confirmation/recovery/invitation templates/expiry; do not assume those global settings can safely implement a separate10-minute challenge.
+
+E4/E5 require direct password-only/forged-proof API denials before any application data is released, and legitimate Personal/Family/Business/Admin operations after proof. Test retained sessions beyond day7 separately from new sign-ins after day7; no accidental forced logout or silent device-extension. Test mail outage, multiple devices/accounts, password/email changes, session revocation, suspended/removed users, expired entitlements, invitation/provider callbacks and all affected notification/FX jobs. No global production enablement until supported deployed clients have a valid challenge path; current native client readiness cannot be assumed while APK is deferred.
+
+## Preserved state and next action
+
+The two isolated operator accounts remain ordinary according to the last received metadata; no Admin promotion has been performed. The first PRIMARY enrollment may have left an unverified TOTP factor. Its status is still unverified and exact read-only review/cleanup remains a carried item; selecting email does not authorize blind removal or account recreation. Prior authenticator setup commands and pending-factor SQL handoff remain on hold while E2/E3 are prepared. No SQL or terminal command is requested from the owner at this checkpoint. Future handoffs must include the complete code/SQL in chat and request only sanitized receipts after completion.
+
+Source basis: current audit head64e0c6c003f6ac71f2a36f16cce2b5ee89333a17,7 Edge entrypoint paths from recursive tree, prior inspected admin-assurance/app/Admin MFA and54-migration source. Official sources checked15 October2026: https://supabase.com/docs/guides/auth/auth-mfa (AAL and server enforcement), https://supabase.com/docs/guides/auth/auth-email-passwordless (email OTP and shared expiry/templates), https://developers.cloudflare.com/pages/get-started/direct-upload/ (dashboard _worker.js support; normal functions folder needs Wrangler). Architecture above is a selected implementation plan, not a verified installed capability.
+
+No new tests for this decision/plan-only checkpoint. Original stage0-10 objects,123coverage rows/20full findings, prior events/actions/decisions and other batches are preserved. Full gate OPEN_PENDING_REQUIRED_EVIDENCE, final re-audit PLANNED_NOT_PERFORMED, hosted/native/store acceptance false, production excluded, APK deferred.

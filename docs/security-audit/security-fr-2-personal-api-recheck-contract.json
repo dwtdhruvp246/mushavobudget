@@ -1,0 +1,45 @@
+{
+  "stage_step": "FR.2.2_PERSONAL_API_RECHECK",
+  "date": "2026-10-14",
+  "source_pin": "aef5ff503737972b5148a3a32828ff7cdc9c1652",
+  "source_inputs": [
+    {
+      "path": "scripts/check-stage-3-personal-api.cjs",
+      "git_blob_sha": "ee1b0f6e76aa3aae112252fd1015100e50eee5f0",
+      "sha256": "e157dd2ba70cfc8b45e25ea75536d5f96ace195d808e0ba97d6263adcc5fd5dd",
+      "bytes": 15873
+    },
+    {
+      "path": "scripts/run-stage-3-personal-acceptance.ps1",
+      "git_blob_sha": "c6a10b177d77c1f8177083a095147a7c3325876d",
+      "sha256": "a91bf6287f928ec3f7974e7deee6d718b7ee2af6f2afd2293a01972869416edc",
+      "bytes": 3148
+    },
+    {
+      "path": "tests/stage-3-personal-api.test.cjs",
+      "git_blob_sha": "7c02fcd352659d786cf5b88e621c1a824eb781b2",
+      "sha256": "90983a0e7c13d0dd03c1d83467806666eb48bba3564ca2534ae5c31779ca1da6",
+      "bytes": 11943
+    }
+  ],
+  "expected_scoped_PASS_checks": 33,
+  "existing_checker_JSON_stage_label": "3.2.1",
+  "checker_or_runner_changed": false,
+  "new_assistant_behavior_or_syntax_tests_run": 0,
+  "owner_execution_requested": true,
+  "owner_result_received": false,
+  "request_budget": 160,
+  "target_project": "dczlddwbtgvfdujgcitb",
+  "target_api": "https://dczlddwbtgvfdujgcitb.supabase.co",
+  "config_origin": "https://mushavo-budget-staging.pages.dev/config.js",
+  "actor_scope": "TWO_RETAINED_ORDINARY_SYNTHETIC_STAGING_APP_IDENTITIES",
+  "write_scope": "NEW_UUID_INACTIVE_PERSONAL_SCHEDULES_AND_ASSOCIATED_PAID_RECORDS_ONLY_PLUS_SELECTED_NEGATIVE_TEST_RPC_REQUESTS",
+  "successful_run_cleanup": "EXACT_NEW_RECORD_AND_ITEM_IDS_WITH_ABSENCE_READBACK_AND_LOCAL_TEST_SESSION_LOGOUT",
+  "earlier_retained_Personal_rows_targeted": false,
+  "retained_Family_manual_conversions_targeted": false,
+  "derived_conversion_cleanup_verified": false,
+  "valid_own_parent_relink_verified_by_this_batch": false,
+  "historical_consistency_repaired_by_this_batch": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

@@ -1,0 +1,59 @@
+[
+  {
+    "email_pre_activation_baseline": {
+      "scope": "READ_ONLY_SELECTED_CATALOG_PREREQUISITES_NOT_INSTALLATION_OR_ACTIVATION_APPROVAL",
+      "checks": {
+        "observed_storage_tables_have_rls": true,
+        "public_table_count_and_rls_match": true,
+        "public_view_invoker_metadata_matches": true,
+        "reviewed_event_hook_metadata_matches": true,
+        "selected_166_policy_fingerprint_matches": true,
+        "selected_278_routine_fingerprint_matches": true,
+        "email_backend_installer_and_guards_absent": true,
+        "privileged_origin_matches_installer_context": true,
+        "required_auth_and_profile_column_types_present": false
+      },
+      "result": "SELECTED_STAGING_METADATA_REVIEW_REQUIRED",
+      "policies": {
+        "total": 166,
+        "restrictive": 50,
+        "metadata_md5": "c4d08b3911e268d7e133a8ed3d3d330e"
+      },
+      "stage_step": "FR.2.4.E4.15_STAGING_METADATA_REFRESH",
+      "checked_UTC": "2026-10-17T16:11:59.828904+00:00",
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "findings_closed": [],
+      "relation_counts": [
+        {
+          "views": 1,
+          "tables": 81,
+          "schema_name": "public",
+          "tables_without_rls": 0
+        },
+        {
+          "views": 0,
+          "tables": 8,
+          "schema_name": "storage",
+          "tables_without_rls": 0
+        }
+      ],
+      "event_hook_count": 7,
+      "hosted_acceptance": false,
+      "non_event_routines": {
+        "count": 278,
+        "metadata_md5": "c4f0854e34bb2f8ba4c3a9b79d700fe7"
+      },
+      "application_rows_read": false,
+      "transaction_read_only": "on",
+      "live_activation_approved": false,
+      "email_backend_namespace_present": false,
+      "installer_registered_or_invoked": false,
+      "private_installer_namespace_present": false,
+      "application_or_hook_functions_invoked": 0,
+      "project_selection_independently_verified": false,
+      "application_rows_or_function_bodies_printed": false,
+      "provider_Auth_gateway_browser_or_email_delivery_verified": false,
+      "rows_roles_grants_Auth_hooks_or_settings_persistently_changed": false
+    }
+  }
+]

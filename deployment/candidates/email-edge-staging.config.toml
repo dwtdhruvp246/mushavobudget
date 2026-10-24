@@ -1,0 +1,18 @@
+# Offline staging preparation only. This project label is not target attestation.
+project_id = "dczlddwbtgvfdujgcitb"
+
+[functions.invite-admin-user]
+verify_jwt = true
+entrypoint = "./functions/invite-admin-user/index.ts"
+
+[functions.invite-business-member]
+verify_jwt = true
+entrypoint = "./functions/invite-business-member/index.ts"
+
+[functions.send-test-push]
+verify_jwt = false
+entrypoint = "./functions/send-test-push/index.ts"
+
+[functions.sync-exchange-rates]
+verify_jwt = false
+entrypoint = "./functions/sync-exchange-rates/index.ts"

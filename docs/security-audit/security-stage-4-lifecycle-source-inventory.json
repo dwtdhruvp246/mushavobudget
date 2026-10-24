@@ -1,0 +1,609 @@
+{
+  "scope": "SELECTED_SOURCE_DECLARATIONS_NOT_FINAL_OR_HOSTED_CATALOG",
+  "migration_count": 52,
+  "selected_schema_auth_reference_declarations": [
+    {
+      "table": "profiles",
+      "column": "id",
+      "declared_on_delete": "CASCADE",
+      "source": "supabase/schema.sql",
+      "line": 5,
+      "declaration": "id uuid primary key references auth.users(id) on delete cascade"
+    },
+    {
+      "table": "families",
+      "column": "owner_id",
+      "declared_on_delete": "CASCADE",
+      "source": "supabase/schema.sql",
+      "line": 180,
+      "declaration": "owner_id uuid not null references auth.users(id) on delete cascade"
+    },
+    {
+      "table": "family_members",
+      "column": "user_id",
+      "declared_on_delete": "SET NULL",
+      "source": "supabase/schema.sql",
+      "line": 194,
+      "declaration": "user_id uuid references auth.users(id) on delete set null"
+    },
+    {
+      "table": "family_members",
+      "column": "created_by",
+      "declared_on_delete": "CASCADE",
+      "source": "supabase/schema.sql",
+      "line": 195,
+      "declaration": "created_by uuid not null references auth.users(id) on delete cascade"
+    },
+    {
+      "table": "payment_items",
+      "column": "owner_id",
+      "declared_on_delete": "CASCADE",
+      "source": "supabase/schema.sql",
+      "line": 270,
+      "declaration": "owner_id uuid references auth.users(id) on delete cascade"
+    },
+    {
+      "table": "payment_items",
+      "column": "created_by",
+      "declared_on_delete": "CASCADE",
+      "source": "supabase/schema.sql",
+      "line": 273,
+      "declaration": "created_by uuid not null references auth.users(id) on delete cascade"
+    },
+    {
+      "table": "payment_records",
+      "column": "owner_id",
+      "declared_on_delete": "CASCADE",
+      "source": "supabase/schema.sql",
+      "line": 326,
+      "declaration": "owner_id uuid references auth.users(id) on delete cascade"
+    },
+    {
+      "table": "payment_records",
+      "column": "recorded_by",
+      "declared_on_delete": "CASCADE",
+      "source": "supabase/schema.sql",
+      "line": 337,
+      "declaration": "recorded_by uuid not null references auth.users(id) on delete cascade"
+    },
+    {
+      "table": "budget_workspaces",
+      "column": "owner_id",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 1986,
+      "declaration": "owner_id uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "workspace_members",
+      "column": "user_id",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 2007,
+      "declaration": "user_id uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "workspace_members",
+      "column": "invited_by",
+      "declared_on_delete": "SET NULL",
+      "source": "supabase/schema.sql",
+      "line": 2013,
+      "declaration": "invited_by uuid references auth.users(id) on delete set null"
+    },
+    {
+      "table": "workspace_invitations",
+      "column": "invited_by",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 2028,
+      "declaration": "invited_by uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "workspace_invitations",
+      "column": "invitee_user_id",
+      "declared_on_delete": "SET NULL",
+      "source": "supabase/schema.sql",
+      "line": 2030,
+      "declaration": "invitee_user_id uuid references auth.users(id) on delete set null"
+    },
+    {
+      "table": "support_tickets",
+      "column": "customer_id",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 6566,
+      "declaration": "customer_id uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "support_tickets",
+      "column": "created_by",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 6568,
+      "declaration": "created_by uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "support_tickets",
+      "column": "assigned_admin_id",
+      "declared_on_delete": "SET NULL",
+      "source": "supabase/schema.sql",
+      "line": 6569,
+      "declaration": "assigned_admin_id uuid references auth.users(id) on delete set null"
+    },
+    {
+      "table": "support_ticket_messages",
+      "column": "author_id",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 6583,
+      "declaration": "author_id uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "admin_user_invitations",
+      "column": "auth_user_id",
+      "declared_on_delete": "SET NULL",
+      "source": "supabase/schema.sql",
+      "line": 7513,
+      "declaration": "auth_user_id uuid unique references auth.users(id) on delete set null"
+    },
+    {
+      "table": "admin_user_invitations",
+      "column": "invited_by",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 7514,
+      "declaration": "invited_by uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "business_documents",
+      "column": "uploaded_by",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 11389,
+      "declaration": "uploaded_by uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "business_documents",
+      "column": "archived_by",
+      "declared_on_delete": "SET NULL",
+      "source": "supabase/schema.sql",
+      "line": 11392,
+      "declaration": "archived_by uuid references auth.users(id) on delete set null"
+    },
+    {
+      "table": "cashbook_accounts",
+      "column": "created_by",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 10378,
+      "declaration": "created_by uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "cashbook_entries",
+      "column": "created_by",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 10408,
+      "declaration": "created_by uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "cashbook_entries",
+      "column": "reversed_by",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 10411,
+      "declaration": "reversed_by uuid references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "business_subscription_quotes",
+      "column": "owner_id",
+      "declared_on_delete": "NO ACTION (implicit)",
+      "source": "supabase/schema.sql",
+      "line": 16792,
+      "declaration": "owner_id uuid not null references auth.users(id), plan_id uuid not null references public.plans(id)"
+    },
+    {
+      "table": "subscription_payment_proofs",
+      "column": "uploaded_by",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 2207,
+      "declaration": "uploaded_by uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "business_expense_claims",
+      "column": "submitted_by",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 14231,
+      "declaration": "submitted_by uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "business_expense_claims",
+      "column": "reviewed_by",
+      "declared_on_delete": "SET NULL",
+      "source": "supabase/schema.sql",
+      "line": 14249,
+      "declaration": "reviewed_by uuid references auth.users(id) on delete set null"
+    },
+    {
+      "table": "business_expense_claims",
+      "column": "paid_by",
+      "declared_on_delete": "SET NULL",
+      "source": "supabase/schema.sql",
+      "line": 14252,
+      "declaration": "paid_by uuid references auth.users(id) on delete set null"
+    },
+    {
+      "table": "business_income_receipts",
+      "column": "recorded_by",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 15540,
+      "declaration": "recorded_by uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "business_income_receipts",
+      "column": "voided_by",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 15543,
+      "declaration": "voided_by uuid references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "business_bill_payments",
+      "column": "recorded_by",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 14889,
+      "declaration": "recorded_by uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "business_support_actions",
+      "column": "actor_id",
+      "declared_on_delete": "RESTRICT",
+      "source": "supabase/schema.sql",
+      "line": 17445,
+      "declaration": "actor_id uuid not null references auth.users(id) on delete restrict"
+    },
+    {
+      "table": "business_public_purchases",
+      "column": "owner_id",
+      "declared_on_delete": "NO ACTION (implicit)",
+      "source": "supabase/schema.sql",
+      "line": 18091,
+      "declaration": "owner_id uuid not null references auth.users(id)"
+    },
+    {
+      "table": "analytics_activity_hours",
+      "column": "user_id",
+      "declared_on_delete": "CASCADE",
+      "source": "supabase/schema.sql",
+      "line": 8881,
+      "declaration": "user_id uuid not null references auth.users(id) on delete cascade"
+    },
+    {
+      "table": "notifications",
+      "column": "user_id",
+      "declared_on_delete": "CASCADE",
+      "source": "supabase/schema.sql",
+      "line": 392,
+      "declaration": "user_id uuid references auth.users(id) on delete cascade"
+    },
+    {
+      "table": "notifications",
+      "column": "created_by",
+      "declared_on_delete": "SET NULL",
+      "source": "supabase/schema.sql",
+      "line": 394,
+      "declaration": "created_by uuid references auth.users(id) on delete set null"
+    },
+    {
+      "table": "push_subscriptions",
+      "column": "user_id",
+      "declared_on_delete": "CASCADE",
+      "source": "supabase/schema.sql",
+      "line": 5942,
+      "declaration": "user_id uuid not null references auth.users(id) on delete cascade"
+    }
+  ],
+  "latest_selected_migration_routines": [
+    {
+      "name": "delete_family_workspace",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 967,
+      "body_sha256": "a66c0b4f15b0e6b9dd55aa80da11c2385e36bee5bb18a7c859913eec9bfcc4a6"
+    },
+    {
+      "name": "remove_family_member",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 926,
+      "body_sha256": "61aed42370b67506ac8f0b9b4cfbe1e7b7e473481ff9b82c98ac1d5d538ef999"
+    },
+    {
+      "name": "sync_legacy_family_workspace",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 3139,
+      "body_sha256": "9f3839df532a8252a29510dbe50c1236dc859547b193612897039e4b81327d81"
+    },
+    {
+      "name": "sync_legacy_family_member",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 3180,
+      "body_sha256": "9dfa21628d43bbeb188c55358036d06ff1646559c16ecab19674eb8dd5351641"
+    },
+    {
+      "name": "remove_business_member",
+      "source": "supabase/migrations/20261004153000_business_custom_roles.sql",
+      "line": 638,
+      "body_sha256": "8f3be3480dc79cfee27cd674f8bb23dcc7728f09b3dfce00cf600aefacd648ca"
+    },
+    {
+      "name": "transfer_business_ownership",
+      "source": "supabase/migrations/20260930110000_business_stage_11_admin.sql",
+      "line": 206,
+      "body_sha256": "d6561b1e14eab8fcc146db2816d7b12867bd8384b2010ac477ab376718ad9038"
+    },
+    {
+      "name": "admin_business_transfer_owner",
+      "source": "supabase/migrations/20260930110000_business_stage_11_admin.sql",
+      "line": 150,
+      "body_sha256": "3e5adff62e177e787b1f5649bdc37b203f1157263ebec8030e9ddf7d244201eb"
+    }
+  ],
+  "routine_notes": {
+    "delete_family_workspace": {
+      "has_auth_uid": true,
+      "deletes_auth_user": false,
+      "explicit_inactive": false
+    },
+    "remove_family_member": {
+      "has_auth_uid": true,
+      "deletes_auth_user": false,
+      "explicit_inactive": true
+    },
+    "sync_legacy_family_workspace": {
+      "has_auth_uid": false,
+      "deletes_auth_user": false,
+      "explicit_inactive": false
+    },
+    "sync_legacy_family_member": {
+      "has_auth_uid": false,
+      "deletes_auth_user": false,
+      "explicit_inactive": true
+    },
+    "remove_business_member": {
+      "has_auth_uid": true,
+      "deletes_auth_user": false,
+      "explicit_inactive": true
+    },
+    "transfer_business_ownership": {
+      "has_auth_uid": true,
+      "deletes_auth_user": false,
+      "explicit_inactive": false
+    },
+    "admin_business_transfer_owner": {
+      "has_auth_uid": true,
+      "deletes_auth_user": false,
+      "explicit_inactive": false
+    }
+  },
+  "selected_schema_tables": [
+    "profiles",
+    "families",
+    "family_members",
+    "payment_items",
+    "payment_records",
+    "budget_workspaces",
+    "workspace_members",
+    "workspace_invitations",
+    "support_tickets",
+    "support_ticket_messages",
+    "admin_user_invitations",
+    "business_documents",
+    "cashbook_accounts",
+    "cashbook_entries",
+    "business_subscription_quotes",
+    "subscription_payment_proofs",
+    "business_expense_claims",
+    "business_income_receipts",
+    "business_bill_payments",
+    "business_support_actions",
+    "business_public_purchases",
+    "analytics_activity_hours",
+    "notifications",
+    "push_subscriptions"
+  ],
+  "selected_reference_action_counts": {
+    "CASCADE": 10,
+    "NO ACTION (implicit)": 2,
+    "RESTRICT": 17,
+    "SET NULL": 9
+  },
+  "not_a_complete_catalog": true,
+  "alter_table_and_trigger_effects_require_followup": true,
+  "stage_step": "4.1.1",
+  "source_commit": "70b34a545a81db983e1030a90e3b26d3419621da",
+  "recorded_date": "2026-10-11",
+  "source_inspection_only": true,
+  "sql_source_integrity": {
+    "verified": 53,
+    "mismatches": []
+  },
+  "reviewed_pages": [
+    "app.html",
+    "business.html",
+    "signup.html",
+    "auth.html",
+    "index.html",
+    "about.html",
+    "contact.html",
+    "pricing.html"
+  ],
+  "page_scan": [
+    {
+      "path": "app.html",
+      "account_deletion_copy_matches": 0,
+      "policy_or_deletion_link_matches": []
+    },
+    {
+      "path": "business.html",
+      "account_deletion_copy_matches": 0,
+      "policy_or_deletion_link_matches": []
+    },
+    {
+      "path": "signup.html",
+      "account_deletion_copy_matches": 0,
+      "policy_or_deletion_link_matches": []
+    },
+    {
+      "path": "auth.html",
+      "account_deletion_copy_matches": 0,
+      "policy_or_deletion_link_matches": []
+    },
+    {
+      "path": "index.html",
+      "account_deletion_copy_matches": 0,
+      "policy_or_deletion_link_matches": []
+    },
+    {
+      "path": "about.html",
+      "account_deletion_copy_matches": 0,
+      "policy_or_deletion_link_matches": []
+    },
+    {
+      "path": "contact.html",
+      "account_deletion_copy_matches": 0,
+      "policy_or_deletion_link_matches": []
+    },
+    {
+      "path": "pricing.html",
+      "account_deletion_copy_matches": 0,
+      "policy_or_deletion_link_matches": []
+    }
+  ],
+  "reviewed_edge_entrypoints": [
+    {
+      "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+      "auth_admin_deleteUser_call_found": false
+    },
+    {
+      "path": "supabase/functions/dispatch-push-reminders/index.ts",
+      "auth_admin_deleteUser_call_found": false
+    },
+    {
+      "path": "supabase/functions/invite-admin-user/index.ts",
+      "auth_admin_deleteUser_call_found": false
+    },
+    {
+      "path": "supabase/functions/invite-business-member/index.ts",
+      "auth_admin_deleteUser_call_found": false
+    },
+    {
+      "path": "supabase/functions/send-test-push/index.ts",
+      "auth_admin_deleteUser_call_found": false
+    },
+    {
+      "path": "supabase/functions/submit-enquiry/index.ts",
+      "auth_admin_deleteUser_call_found": false
+    },
+    {
+      "path": "supabase/functions/sync-exchange-rates/index.ts",
+      "auth_admin_deleteUser_call_found": false
+    }
+  ],
+  "source_scan_limit": "Literal selected source scans identify review targets; absence is bounded to these tracked sources, not a hosted route/console/provider attestation. Selected CREATE TABLE declarations are not effective final FK constraints.",
+  "account_deletion_workflow_identified": false,
+  "public_deletion_filename_identified": false,
+  "protected_household_transfer_rpc_identified": false,
+  "business_transfer_not_account_erasure": true,
+  "member_removal_not_account_erasure": true,
+  "primary_documents_checked": [
+    "https://developer.apple.com/help/app-review/guideline-reference/5-1-1-account-deletion",
+    "https://support.google.com/googleplay/android-developer/answer/13327111?hl=en",
+    "https://supabase.com/docs/reference/javascript/auth-admin-deleteuser",
+    "https://supabase.com/docs/guides/auth/managing-user-data",
+    "https://supabase.com/docs/guides/storage/management/delete-objects"
+  ],
+  "hosted_checks_run": 0,
+  "accounts_fixtures_Auth_Storage_SQL_or_settings_changed": false,
+  "deployment_or_native_rebuild_performed": false,
+  "finding_F02_closed": false,
+  "source_git_blob_sha1": {
+    "about.html": "6c10088db686923f0c5d2952b35c1eefbade4e82",
+    "app.html": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+    "app.js": "6abd41c7c0bbd78265b453d15c813ac5184676ec",
+    "auth-flows.js": "206f0c32277a4da9a0bab667a06905468fdcc444",
+    "auth-security.js": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+    "auth.html": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+    "business.html": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+    "business.js": "e9114a888ea9773c13ae0a30e035baeafa021010",
+    "contact.html": "8fe5a2689b0cb83fac5f6e85034e9eff8cb9a6eb",
+    "index.html": "f6e71eb717aaf8071b827ff612ecff31c1e009e4",
+    "pricing.html": "abb1db5130f943c4bbc761c6c93ced2abadcdc54",
+    "signup.html": "6093ca502c3a2b954a0289f5c5e4cacbe7def584",
+    "site.js": "f3d5abb558476b2ae1701e4911c3d1b58a50f348",
+    "supabase/functions/dispatch-admin-notifications/index.ts": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+    "supabase/functions/dispatch-push-reminders/index.ts": "ec9b1561cc20f16080099704ee6174044582d67f",
+    "supabase/functions/invite-admin-user/index.ts": "a26f1633237126a8a558d8e702ffaa1943173253",
+    "supabase/functions/invite-business-member/index.ts": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+    "supabase/functions/send-test-push/index.ts": "ba209ea5a0a7e246e10be544fbfa4f7487dfbd5f",
+    "supabase/functions/submit-enquiry/index.ts": "890f5a02eb01c6d3de4c68f6dd78534b6cbcc71a",
+    "supabase/functions/sync-exchange-rates/index.ts": "0c5a1b60a1e15c103cfd9a05422f23f94eee2133",
+    "supabase/migrations/20260901061500_currencyapi_multicurrency.sql": "4ca474dce0806ba483aa53a24dee64e20d942187",
+    "supabase/migrations/20260903090000_public_website_enquiries.sql": "43425235fd1dfff5646761482ec472f234466ec7",
+    "supabase/migrations/20260903091000_dynamic_family_plan_selection.sql": "8e4abea4561de370232c7213d336c86b4bcc839c",
+    "supabase/migrations/20260903120000_align_enquiry_workflow.sql": "e8edf51c81ae42125aab757e8a9d2be0cc2d41ca",
+    "supabase/migrations/20260903123000_direct_enquiry_submission.sql": "82254777c3397fe06d02ed7c7ec99a83b0a0099c",
+    "supabase/migrations/20260905090000_expand_global_currencies.sql": "80853d91277149bd0c8c2fd2071b912c2f54d541",
+    "supabase/migrations/20260905120000_signup_currency_preferences.sql": "3689ae95d29d7611d4372a54615583bd53254f7a",
+    "supabase/migrations/20260905143000_payment_daily_recurrence.sql": "82a3f7bf780d1a3dea32753739a29094e220354a",
+    "supabase/migrations/20260907150000_push_subscriptions.sql": "91d6012df8cfdc57a81f02e867a79b57e015bfc6",
+    "supabase/migrations/20260908130000_push_test_rate_limit.sql": "69dc3ac43815f25c0a892d25e83403008b6d70cb",
+    "supabase/migrations/20260908170000_notification_outbox.sql": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+    "supabase/migrations/20260912120000_support_ticket_workflow.sql": "719ba585f7bdbbe44f6fafd6b6a5de13c62802db",
+    "supabase/migrations/20260916190000_admin_event_notifications.sql": "1218eaf24829e287f8054916248a0dea429f010e",
+    "supabase/migrations/20260921090000_additional_family_subscriptions.sql": "34addfdd2b4abef3e9a73bbe992f51a85464a505",
+    "supabase/migrations/20260921130000_notification_workspace_context.sql": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+    "supabase/migrations/20260922113000_admin_user_invitations.sql": "3559065aea9ad7d693121ea56bfd3837fa4dba35",
+    "supabase/migrations/20260923100000_complete_admin_user_invitations.sql": "46de8cdf2b64736452865de1092f3c92037aad50",
+    "supabase/migrations/20260923143000_replace_pending_admin_invitations.sql": "0dfeb64ae451d78f2fd659393c6f3ce757b5e82a",
+    "supabase/migrations/20260923190000_guard_pending_admin_invitation_workspace.sql": "4fd1e66584d4e895b1fe6372c946145a4dc0ec72",
+    "supabase/migrations/20260923200000_hold_invited_workspace_until_setup.sql": "b1a37fb3bcb57f4c6e4e644bfc87ba6f30621406",
+    "supabase/migrations/20260924100000_analytics_data_foundation.sql": "81e1049b8289215f41e1a446f7f5388b73c23c36",
+    "supabase/migrations/20260924110000_admin_analytics_page.sql": "b916b91777334bb7fb2ee2d8ab906b3b07ef8b24",
+    "supabase/migrations/20260924130000_guard_payment_record_payer.sql": "eb83b5f4513581335f8c17e261f354fe84eb6d50",
+    "supabase/migrations/20260924143000_repair_payment_recurrence_constraints.sql": "bcdb619d48a10bd0e61c23c06a159e184263d40d",
+    "supabase/migrations/20260925080000_cancel_pending_family_invitation.sql": "ab049c067da85e3b783dd0efbf2bc9698eb91ff3",
+    "supabase/migrations/20260925090000_expiry_and_account_suspension.sql": "ddf61a186a128a2a4ffe593560197440209e8328",
+    "supabase/migrations/20260925120000_family_extra_places.sql": "8a63e75e94965c7d737d7a8194f3f37feeffea5d",
+    "supabase/migrations/20260927103000_personal_cashbook_private_test.sql": "8ebcff8d90440218316240ae9b0ea5a1f63167e1",
+    "supabase/migrations/20260927140000_dashboard_completed_payments.sql": "1c7bb1c21d00e72f32038c5d3ac85f61bb554a0c",
+    "supabase/migrations/20260927183000_business_stage_0_launch_lock.sql": "ef756e2ba8f873f61e189372839db164b0e804eb",
+    "supabase/migrations/20260928070000_business_stage_2_security_foundation.sql": "4ec51d1c99311e29577b7c53283ef7fcc9fedf6b",
+    "supabase/migrations/20260928090000_admin_manual_subscription_grants.sql": "859b123f33f00b4bc7aa26fca4f9795a04244eaf",
+    "supabase/migrations/20260928130000_business_stage_3_onboarding.sql": "a8fd4e1771255a13b5f32e6042bba75874b205d1",
+    "supabase/migrations/20260928170000_business_stage_4_team.sql": "0d979bceddde1c4c122bf725efc632959dd23391",
+    "supabase/migrations/20260928200000_business_stage_5_expense_claims.sql": "3635ad6c7d9f256bed39090f1498043223c2b9b0",
+    "supabase/migrations/20260928213000_business_stage_6_bills.sql": "d20f9d99910c8b2585ea299ca47eba6986ffe616",
+    "supabase/migrations/20260928222000_stage_6_reminder_url_compatibility.sql": "865a70ea8d3e3b30dfe7b4e4ac9ee531f6cf3e16",
+    "supabase/migrations/20260929193000_business_stage_7_transactions.sql": "2a36e10e23372e7c73f3df1f1eb9209355d2479d",
+    "supabase/migrations/20260930060000_business_stage_8_budgets_approvals.sql": "91650ec00ef5300724b3da1e0ba8e9c429cf9387",
+    "supabase/migrations/20260930073000_business_stage_9_reports.sql": "640421d095741262ee6727aeadd99afab4b8311e",
+    "supabase/migrations/20260930090000_business_stage_10_billing.sql": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+    "supabase/migrations/20260930110000_business_stage_11_admin.sql": "d505b0c16529147fea998d794a60c55d5ff38e84",
+    "supabase/migrations/20260930130000_business_stage_12_realtime.sql": "8e44bd0a3c08a373181114a137e66c11310b8a2f",
+    "supabase/migrations/20261001190000_admin_plans_workbench.sql": "2dc028ccd92314e6f6f92388fc2107142ea2ddf2",
+    "supabase/migrations/20261002042500_reconcile_business_plan_seats.sql": "2bf290c33957d0c7cb85e7ea928355fcceb4b124",
+    "supabase/migrations/20261002060000_business_public_availability.sql": "04577f4423d3473501f247621fa92a69616c13bd",
+    "supabase/migrations/20261002070000_business_branding.sql": "d49d530a311f3ef4677cbe1e8413fe6b897dc8be",
+    "supabase/migrations/20261004153000_business_custom_roles.sql": "c943e03949affcf1ee326ae86198cc22af5090e5",
+    "supabase/migrations/20261006043000_security_stage_0_private_reads.sql": "57622217d1b180bd16aac47debe0618d70693e71",
+    "supabase/migrations/20261006050000_security_stage_0_currency_helpers.sql": "7b954296e256a46e0274a893a4852e62fa77190f",
+    "supabase/migrations/20261006180000_business_invitation_notifications.sql": "501ae2a45018cf0e89531f0821834c57c904c328",
+    "supabase/migrations/20261009190000_public_enquiry_submission_gate.sql": "6c9f26f2000aeb98f5175c410f4e95917a78289c",
+    "supabase/schema.sql": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+    "sw.js": "b61477393fa2b0ed7baa3c52d61076df549df948",
+    "workspace-preference.js": "17abce600781bc378e17bba19771316291c26f71"
+  }
+}

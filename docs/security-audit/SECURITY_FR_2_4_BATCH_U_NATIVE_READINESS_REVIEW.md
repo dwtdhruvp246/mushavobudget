@@ -1,3 +1,5 @@
+> FRE184: owner Windows **55/55 PASS**,280 hashes/106 syntax,10 browser cases; exact two-file ZIP and all44 entries passed Windows .NET readback, combined exit0. Local work COMPLETE; **U IN PROGRESS**. No local rerun or ZIP regeneration. The receipt hold is reviewed: upload the finished `mushavo-batch-u-lifecycle-review.zip` once to the existing staging Pages project, then independently read back the new deployment. [Exact file and next action](SECURITY_FR_2_4_BATCH_U_OWNER_PASS_AND_UPLOAD.md). No U hosted result, real private-input driver or full U acceptance yet.
+
 # Batch U native email-control readiness and response-interception review
 
 **Stage 3/10 | FR.2/8 | Batch U/Z — IN PREPARATION.** The correction stays within U and changes only local verification code/evidence. It does not complete hosted U acceptance or add another letter.

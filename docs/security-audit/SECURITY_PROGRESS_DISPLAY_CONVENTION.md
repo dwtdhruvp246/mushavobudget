@@ -1,3 +1,5 @@
+> FRE184 current status: **Stage 3/10 | FR.2/8 | Batch U/Z — IN PROGRESS**. Owner Windows55/55 and exact44-entry .NET ZIP readback passed, exit0. Local work COMPLETE; staging upload/readback and hosted full-app acceptance pending. Earlier preparation-only descriptions below are historical.
+
 # Required progress display — Mushavo Budget security and launch work
 
 Adopted24 October2026 at the owner's request (FRE177). This convention applies to project commentary, final progress answers, new owner handoffs and future terminal status/safe-result output. It keeps the main roadmap, remediation group and lettered work package visible together.

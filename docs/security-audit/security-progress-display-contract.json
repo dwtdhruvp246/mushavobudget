@@ -25,9 +25,9 @@
       "final_letter": "Z",
       "label": "Batch U/Z",
       "title": "Full-app startup, private cache and session lifecycle",
-      "status": "IN_PREPARATION"
+      "status": "IN_PROGRESS"
     },
-    "compact_display": "Stage 3/10 | FR.2/8 | Batch U/Z — IN PREPARATION",
+    "compact_display": "Stage 3/10 | FR.2/8 | Batch U/Z — IN PROGRESS",
     "labels_are_not_completion_percentages": true,
     "current_hierarchy_only_not_a_universal_FR_to_stage_mapping": true,
     "batch_completion_requires_its_full_exit_evidence": true

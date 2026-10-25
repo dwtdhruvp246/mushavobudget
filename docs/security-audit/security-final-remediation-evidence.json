@@ -6970,6 +6970,68 @@
       "APK_update_deferred": true,
       "findings_closed": [],
       "checked_UTC": "2026-10-25T19:54:14.482136+00:00"
+    },
+    {
+      "id": "FRE210",
+      "date": "2026-10-25",
+      "stage_step": "FR.2.4.E5.35_BATCH_V_ADMIN_MFA_OPERATOR_FACTOR_AND_CATALOG_REVIEW",
+      "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
+      "result": "OWNER_EXTERNAL_AUTH_LOG_INSPECTION_EXIT0_RECOVERY_NODE_ENROLLMENT_START_SEQUENCE_ORIGIN_RECOGNITION_PENDING",
+      "source_commit": "8fbf7322d8a3f2012eaed870cd10a9e12a96c1e1",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-v-owner-external-auth-log-pass.json",
+      "outcome_report": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_EXTERNAL_LOG_RESULT.md",
+      "owner_query_exit_code": 0,
+      "corrected_flat_query_hosted_owner_execution_passed": true,
+      "selected_username_matching_rows": 6,
+      "selected_auth_service_rows": 3,
+      "selected_auth_audit_rows": 3,
+      "details_truncated": false,
+      "RECOVERY_action_time_pairs_UTC": [
+        {
+          "UTC": "2026-10-25 14:03:01.000000000",
+          "action": "login",
+          "represented_in_both_sources": true
+        },
+        {
+          "UTC": "2026-10-25 14:03:03.000000000",
+          "action": "factor_in_progress",
+          "represented_in_both_sources": true
+        },
+        {
+          "UTC": "2026-10-25 14:03:16.000000000",
+          "action": "logout",
+          "represented_in_both_sources": true
+        }
+      ],
+      "selected_PRIMARY_rows": 0,
+      "audit_client_class": "NODE_OR_UNDICI",
+      "service_client_class": "UNRECORDED",
+      "six_rows_do_not_establish_six_logins_or_independent_requests": true,
+      "exact_cross_source_request_identity_proven": false,
+      "selected_actor_username_filter_only": true,
+      "exact_current_factor_ID_binding_verified": false,
+      "human_or_client_origin_proven": false,
+      "retention_completeness_verified": false,
+      "interpretation": "Sequence is consistent with an interrupted programmatic MFA enrollment; time and agent class do not identify a specific runner or human",
+      "owner_recognizes_16_03_Zimbabwe_RECOVERY_terminal_run": null,
+      "previous_owner_factor_recognition": "UNRECOGNIZED",
+      "owner_next_action": "ONLY_NON_SECRET_TERMINAL_RUN_RECOGNITION_AND_SAVED_AUTHENTICATOR_ENTRY_AVAILABILITY_FOR16_03_LOCAL",
+      "MFA_setup_remains_on_hold": true,
+      "new_owner_SQL_or_terminal_or_credential_action_required": false,
+      "fresh_factor_session_or_quarantine_state_measured_by_external_query": false,
+      "last_actual_quarantine_and_selected_session_observation_UTC": "2026-10-25T15:14:35.7749+00:00",
+      "owner_external_query_execution_timestamp_UTC_reported": null,
+      "actual_HTTP_request_count_independently_measured": false,
+      "factor_or_mode_or_setting_write_requested": false,
+      "all_previous335_source_hashes_unchanged": true,
+      "all_frozen_U310_source_hashes_unchanged": true,
+      "new_tests_or_installation_requested": false,
+      "full_lettered_batch_V_complete": false,
+      "hosted_acceptance": false,
+      "production_or_native_changed": false,
+      "APK_update_deferred": true,
+      "findings_closed": [],
+      "owner_saved_current_RECOVERY_entry_availability_after_timeline_review": null
     }
   ],
   "prior_stage_evidence_preserved": true,

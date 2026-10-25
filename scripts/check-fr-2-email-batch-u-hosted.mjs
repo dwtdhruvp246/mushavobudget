@@ -3,7 +3,8 @@
 import {fileURLToPath} from 'node:url';
 import {createInterface} from 'node:readline';
 import {isDeepStrictEqual as equal} from 'node:util';
-import {stateSQL,openSQL,leaseSQL,quarantineSQL,deviceCleanupSQL,windowSeconds,responseShapeSQL} from './lib/email-bounded-http-sql.mjs';
+import {stateSQL,openSQL,leaseSQL,quarantineSQL,windowSeconds,responseShapeSQL} from './lib/email-bounded-http-sql.mjs';
+import {fullAppDeviceCleanupSQL} from './lib/full-app-device-cleanup-sql.mjs';
 import {startFullAppStagingBrowser} from './lib/full-app-staging-browser.mjs';
 import {contextSQL,stagingRef} from './lib/email-registration-handoff-sql.mjs';
 
@@ -63,7 +64,7 @@ export function preservationSQL(actors){actorsRequired(actors);const ids=[actors
  'payment_items',(SELECT md5(coalesce(string_agg(to_jsonb(p)::text,',' ORDER BY id),'')) FROM public.payment_items p WHERE owner_id IN (${ids})),
  'payment_records',(SELECT md5(coalesce(string_agg(to_jsonb(r)::text,',' ORDER BY r.id),'')) FROM public.payment_records r JOIN public.payment_items p ON p.id=r.payment_item_id WHERE p.owner_id IN (${ids}))) AS full_app_preservation;`);}
 
-export async function controlledProbe(input,{transport=fetch,readCode=async()=>{throw Error('CODE_REQUIRED');},createBrowser=startFullAppStagingBrowser}={}){
+export async function controlledProbe(input,{transport=fetch,readCode=async()=>{throw Error('CODE_REQUIRED');},createBrowser=startFullAppStagingBrowser,beforePrerequisites}={}){
  const r={stage_step:stage,batch:'U',result:'BATCH_U_BOUNDED_HTTP_ACCEPTANCE_REVIEW_REQUIRED',actual_hosted_requests:0,maximum_direct_HTTP_requests:32,gateway_internal_provider_requests_not_counted:true,
  fixed_target_before_and_after_verified:false,quarantined_catalog_before_verified:false,live_public_key_matches_private_snapshot:false,management_multiple_SELECT_result_shape:null,active_window_readback_rows:null,active_window_readback_shape_matched:false,active_window_lease_matched:false,active_window_remaining_seconds:null,four_ordinary_sessions_verified:false,
  quarantined_password_only_HTTP_denied:false,email_request_attempts:0,email_provider_acceptance_observed:false,email_dispatch_outcome_uncertain:false,email_code_verified:false,verification_outcome_uncertain:false,
@@ -78,7 +79,7 @@ export async function controlledProbe(input,{transport=fetch,readCode=async()=>{
  credentials_codes_cookies_or_raw_provider_bodies_in_safe_result:false,credentials_or_cookies_saved_to_disk_arguments_or_environment:false,
  Auth_settings_secrets_schedules_or_deployments_changed:false,live_activation_approved:false,hosted_acceptance:false,production_or_native_changed:false,APK_update_deferred:true,findings_closed:[],
  browser:null,samples:[],cleanup_problem_code:null,final_state_problem_code:null,failure_checkpoint:null,checkpoint:'PRIVATE_INPUT',problem_code:null,exit_code:1};
- const sessions=[];let preservationBefore=null;let browser=null;let sql,version,ready=false,challenge=null,credential=null,main=false,knownLogins=0,fence=null,openAttempted=false,closedVerified=false,activeDeadline=0;
+ const sessions=[];let cleanupDigest=null;let preservationBefore=null;let browser=null;let sql,version,ready=false,challenge=null,credential=null,main=false,knownLogins=0,fence=null,openAttempted=false,closedVerified=false,activeDeadline=0;
  const row=(x,n)=>{need(Array.isArray(x)&&x.length===1&&exact(x[0],[n]),'RESPONSE_REQUIRED');return x[0][n];};
  async function request(label,url,{method='GET',headers={},body,expected=200,json=true,gateway=false,cookiePolicy='none'}={}){
   if(label.startsWith('ACTIVE_SESSION_'))need(Date.now()<activeDeadline,'WINDOW_REQUIRED');
@@ -126,13 +127,14 @@ export async function controlledProbe(input,{transport=fetch,readCode=async()=>{
   }
   const actors=sessions.map(s=>s.actor);actorsRequired(actors);
   need(equal(row(await mgmt('FOUR_SELECTED_ACTOR_FACTS',actorFactsSQL(actors)),'actor_facts'),{context:{privileged_origin:true,transaction_read_only:'on'},four_ordinary_live_sessions:true,fresh_session_proofs_absent:true}),'ORDINARY_ACTORS_REQUIRED');r.four_ordinary_sessions_verified=true;
+  if(beforePrerequisites!==undefined){need(typeof beforePrerequisites==='function','PRIVATE_INPUT_REQUIRED');r.checkpoint='SCOPED_FIXTURE_PREPARATION';await beforePrerequisites(actors);}
   const fixtures=row(await mgmt('FULL_APP_FIXTURE_PREREQUISITES',fullAppPrerequisitesSQL(actors)),'full_app_prerequisites');r.full_app_fixture_checks=Object.fromEntries(['profiles_match_Auth_metadata','existing_personal_workspaces','existing_first_account_payment_marker'].map(k=>[k,fixtures?.[k]===true]));need(equal(fixtures,{context:{privileged_origin:true,transaction_read_only:'on'},profiles_match_Auth_metadata:true,existing_personal_workspaces:true,existing_first_account_payment_marker:true}),'ORDINARY_ACTORS_REQUIRED');r.full_app_fixture_prerequisites_verified=true;preservationBefore=row(await mgmt('BEFORE_EXISTING_STATE_FINGERPRINTS',preservationSQL(actors)),'full_app_preservation');need(exact(preservationBefore,['context','prior_sessions','prior_devices','payment_items','payment_records'])&&equal(preservationBefore.context,{privileged_origin:true,transaction_read_only:'on'})&&['prior_sessions','prior_devices','payment_items','payment_records'].every(k=>/^[a-f0-9]{32}$/.test(preservationBefore[k])),'RESPONSE_REQUIRED');
   r.checkpoint='BROWSER_PASSWORD_ONLY';await browser.attachSessions(sessions);r.quarantined_password_only_HTTP_denied=true;
   r.checkpoint='BROWSER_ONE_EMAIL_PROOF';await browser.prove(readCode);
   r.checkpoint='BROWSER_RESTORE_AND_ACCOUNT_BINDING';await browser.restoreAndBind();
   const device=browser.privateState();challenge=device.challenge;credential=device.credential;
   const digest=await deviceDigest(credential);
-  need(equal(row(await mgmt('INDEPENDENT_DEVICE_BINDING',deviceStateSQL(actors,challenge,digest,device.cookieExpirySeconds)),'device_state'),{context:{privileged_origin:true,transaction_read_only:'on'},one_exact_fixed_deadline_device:true,email_proof_and_restored_proof_bound:true,fresh_and_other_account_proofs_absent:true}),'DEVICE_STATE_REQUIRED');r.independent_device_and_proof_binding_aggregates_verified=true;
+  need(equal(row(await mgmt('INDEPENDENT_DEVICE_BINDING',deviceStateSQL(actors,challenge,digest,device.cookieExpirySeconds)),'device_state'),{context:{privileged_origin:true,transaction_read_only:'on'},one_exact_fixed_deadline_device:true,email_proof_and_restored_proof_bound:true,fresh_and_other_account_proofs_absent:true}),'DEVICE_STATE_REQUIRED');r.independent_device_and_proof_binding_aggregates_verified=true;cleanupDigest=digest;
   // No terminal prompt occurs while the account window is open.
   r.bounded_open_write_attempts=1;r.open_write_outcome_uncertain=true;openAttempted=true;closedVerified=false;r.committed_mode_change_requests++;
   need(equal(row(await mgmt('OPEN_FIRST_ACCOUNT_FIVE_MINUTE_WINDOW',await openSQL(actors[0].user,fence)),'bounded_open'),{opened:true,allowed_actor_count:1,maximum_seconds:windowSeconds}),'WINDOW_REQUIRED');
@@ -162,7 +164,7 @@ export async function controlledProbe(input,{transport=fetch,readCode=async()=>{
   }
 
   if(challenge&&sessions.length&&closedVerified){r.exact_generated_device_cleanup_write_attempts=1;r.device_cleanup_write_outcome_uncertain=true;
-   try{need(equal(row(await mgmt('EXACT_GENERATED_DEVICE_CLEANUP',await deviceCleanupSQL(sessions[0].actor,challenge)),'device_cleanup'),{selected_generated_device_absent:true}),'DEVICE_CLEANUP_REQUIRED');}catch(e){r.cleanup_problem_code=safe(e);}
+   try{need(equal(row(await mgmt('EXACT_GENERATED_DEVICE_CLEANUP',await fullAppDeviceCleanupSQL(sessions[0].actor,challenge,sessions.map(s=>s.actor),cleanupDigest)),'device_cleanup'),{selected_generated_device_absent:true}),'DEVICE_CLEANUP_REQUIRED');}catch(e){r.cleanup_problem_code=safe(e);}
   }
 
   for(let i=0;i<sessions.length;i++){if(browser?.privateState().UI_local_logout_indexes?.includes(i))continue;r.Auth_local_logout_attempts++;try{await request('AUTH_LOCAL_LOGOUT_'+(i+1),api+'/auth/v1/logout?scope=local',{method:'POST',headers:auth(sessions[i]),expected:204});}catch(e){r.cleanup_problem_code??=safe(e);}}
@@ -177,7 +179,7 @@ export async function controlledProbe(input,{transport=fetch,readCode=async()=>{
    r.browser_cookie_cache_or_device_restore_verified=b.cleanup_verified&&b.private_web_storage_and_cache_empty;r.automatic_activity_RPC_write_attempts=b.automatic_activity_RPC_write_attempts||0;r.application_rows_explicitly_written=r.automatic_activity_RPC_write_attempts>0?null:false;
    if(!b.cleanup_verified||b.problem_code)r.cleanup_problem_code??=b.problem_code||'BROWSER_CLEANUP_REQUIRED';
   }catch{r.cleanup_problem_code??='BROWSER_CLEANUP_REQUIRED';}}
-  credential=null;preservationBefore=null;for(const s of sessions){s.token=null;s.refreshToken=null;}
+  credential=null;cleanupDigest=null;preservationBefore=null;for(const s of sessions){s.token=null;s.refreshToken=null;}
  }
  if(main&&r.browser?.own_private_finance_marker_rendered&&r.browser?.actual_Business_entry_executed&&r.existing_session_device_and_finance_state_preserved&&r.browser?.actual_app_HTML_and_bootstrap_executed&&r.browser?.executed_SDK_modules_verified===9&&r.browser?.registered_worker_source_verified&&r.browser?.private_web_storage_native_backing_empty&&r.browser?.SDK_refresh_and_both_tabs_rebound&&r.browser?.cross_tab_signout_clears_private_view&&r.browser?.late_old_account_response_discarded&&r.browser?.offline_worker_document_verified&&r.browser?.reconnect_restores_authorized_app&&r.browser?.cleanup_verified&&r.browser?.verified_browser_views_and_HTTP_passed&&r.browser?.account_change_clears_private_view&&r.browser?.same_account_session_change_clears_private_view&&r.explicit_quarantine_and_stale_open_fence_verified&&r.post_window_quarantined_HTTP_denied&&!r.problem_code&&!r.cleanup_problem_code&&!r.final_state_problem_code&&!r.Auth_session_cleanup_outcome_uncertain&&r.selected_generated_device_absent&&r.selected_sessions_proofs_and_challenges_absent&&r.quarantined_catalog_after_verified){r.result='BATCH_U_HOSTED_FULL_APP_MEMORY_STORAGE_CACHE_AND_SESSION_SCOPED_PASS';r.checkpoint='COMPLETE';r.exit_code=0;}
  else {r.problem_code??=r.cleanup_problem_code||r.final_state_problem_code||'AUTH_CLEANUP_REQUIRED';if(r.failure_checkpoint)r.checkpoint=r.failure_checkpoint;}

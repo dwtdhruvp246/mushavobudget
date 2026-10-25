@@ -3,7 +3,8 @@
 import https from 'node:https';
 import {fullAppLocalFixture} from './full-app-local-fixture.mjs';
 import {pagesHTMLAliases} from './full-app-pages-redirects.mjs';
-export async function fullAppPagesFixture(modulePath,{pagesFailure=null,...options}={}){
+export async function fullAppPagesFixture(modulePath,{pagesFailure=null,fixtureFactory=fullAppLocalFixture,...options}={}){
+ if(typeof fixtureFactory!=='function')throw Error('LOCAL_PAGES_FACTORY_REQUIRED');
  if(![null,'redirect'].includes(pagesFailure))throw Error('LOCAL_PAGES_FAILURE_REQUIRED');
  const original=https.createServer;
  try {
@@ -19,6 +20,6 @@ export async function fullAppPagesFixture(modulePath,{pagesFailure=null,...optio
     return handler(req,res);
    });
   };
-  return await fullAppLocalFixture(modulePath,options);
+  return await fixtureFactory(modulePath,options);
  } finally {https.createServer=original;}
 }

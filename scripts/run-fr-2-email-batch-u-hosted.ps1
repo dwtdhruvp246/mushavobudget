@@ -2,12 +2,14 @@ param(
     [Parameter(Mandatory=$true)][string]$SnapshotRoot,
     [switch]$PreflightOnly,
     [switch]$ExerciseFullAppWindow,
+    [switch]$ExerciseScopedFixtureWindow,
     [switch]$InspectPacketOnly,
     [switch]$InspectFixtureOnly,
     [string]$PacketFile = '',
     [string]$BrowserExecutable = ''
 )
 $ErrorActionPreference = 'Stop'
+$RequestLimit = $(if ($ExerciseScopedFixtureWindow.IsPresent) { 44 } else { 32 })
 $Phase = 'SOURCE_IDENTITIES'
 $Problem = 'LOCAL_PRIVATE_RUNNER_REVIEW_REQUIRED'
 $SourceCount = 0
@@ -185,7 +187,7 @@ function Private-Dialogue([string]$Node, [string]$Entry, [string]$Text, [bool]$A
             if ($Extra.Length -ne 0 -or $Errors.Length -ne 0 -or
                 $Answer.stage_step -ne 'FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE' -or
                 $Answer.exit_code -notin @(0,1) -or $Answer.exit_code -ne $Child.ExitCode -or
-                $Answer.actual_hosted_requests -lt 0 -or $Answer.actual_hosted_requests -gt 32) { throw 'PRIVATE_CHILD_REVIEW_REQUIRED' }
+                $Answer.actual_hosted_requests -lt 0 -or $Answer.actual_hosted_requests -gt $RequestLimit) { throw 'PRIVATE_CHILD_REVIEW_REQUIRED' }
             return $Answer
         }
     } finally {
@@ -203,8 +205,10 @@ if ($InspectPacketOnly.IsPresent -or $PreflightOnly.IsPresent -or $InspectFixtur
     if ($InspectFixtureOnly.IsPresent) { Write-Host 'Stage 3/10 | FR.2/8 | Batch U/Z - STARTED: READ ONLY retained-inbox fixture inventory. No app password, Auth session, email, application write or mode change.' }
     else { Write-Host 'BATCH U STARTED: local inspection only; no hosted login or email request.' }
 }
+elseif ($ExerciseScopedFixtureWindow.IsPresent) { Write-Host 'Stage 3/10 | FR.2/8 | Batch U/Z - STARTED: ONE temporary synthetic Personal item, ONE email, first-account FIVE-MINUTE window, then quarantine, exact session/device/fixture cleanup and independent readback.' }
 else { Write-Host 'Stage 3/10 | FR.2/8 | Batch U/Z - STARTED: actual FULL APP browser checks with two ordinary staging accounts, ONE code email, a FIRST-account-only FIVE-MINUTE window, then explicit quarantine and exact cleanup. No public launch.' }
 try {
+    if ($ExerciseScopedFixtureWindow.IsPresent -and ($ExerciseFullAppWindow.IsPresent -or $InspectFixtureOnly.IsPresent -or $InspectPacketOnly.IsPresent -or $PreflightOnly.IsPresent)) { throw 'ONE_SCOPED_MODE_REQUIRED' }
     if ($InspectFixtureOnly.IsPresent -and ($InspectPacketOnly.IsPresent -or $PreflightOnly.IsPresent -or $ExerciseFullAppWindow.IsPresent)) { throw 'ONE_INSPECTION_MODE_REQUIRED' }
     if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT) { throw 'WINDOWS_REQUIRED' }
     Assert-Unlinked $SnapshotRoot
@@ -223,7 +227,7 @@ try {
     if ($LASTEXITCODE -ne 0 -or $RuntimeLines.Count -ne 1) { throw 'NODE_RUNTIME_REQUIRED' }
     $Runtime = ($RuntimeLines -join '') | ConvertFrom-Json
     if (-not [IO.Path]::IsPathRooted($Runtime.execPath) -or -not [IO.File]::Exists($Runtime.execPath)) { throw 'NODE_RUNTIME_REQUIRED' }
-    $Entry = Join-Path $SnapshotRoot 'scripts/check-fr-2-email-batch-u-hosted.mjs'
+    $Entry = Join-Path $SnapshotRoot $(if ($ExerciseScopedFixtureWindow.IsPresent) { 'scripts/check-fr-2-email-batch-u-scoped.mjs' } else { 'scripts/check-fr-2-email-batch-u-hosted.mjs' })
     $Preflight = Private-Dialogue $Runtime.execPath $Entry '{"preflight":true}' $false
     if ($Preflight.result -ne 'PRIVATE_DIALOGUE_PREFLIGHT_PASS' -or $Preflight.actual_hosted_requests -ne 0 -or $Preflight.exit_code -ne 0) { throw 'PRIVATE_DIALOGUE_REQUIRED' }
     if ($PreflightOnly.IsPresent) {
@@ -231,7 +235,7 @@ try {
         Write-Host 'BATCH U LOCAL PREFLIGHT COMPLETE: hosted acceptance remains pending.'
         return 0
     }
-    if (-not $ExerciseFullAppWindow.IsPresent -and -not $InspectPacketOnly.IsPresent -and -not $InspectFixtureOnly.IsPresent) { throw 'EXPLICIT_ONE_EMAIL_SWITCH_REQUIRED' }
+    if (-not $ExerciseFullAppWindow.IsPresent -and -not $ExerciseScopedFixtureWindow.IsPresent -and -not $InspectPacketOnly.IsPresent -and -not $InspectFixtureOnly.IsPresent) { throw 'EXPLICIT_ONE_EMAIL_SWITCH_REQUIRED' }
     if (-not $InspectFixtureOnly.IsPresent) {
     $Phase = 'EXISTING_BROWSER_VALIDATION'
     $BrowserExecutable = $BrowserExecutable.Trim().Trim('"')
@@ -304,7 +308,8 @@ try {
     if ($OtherChoice -notmatch '^[1-9][0-9]*$' -or -not [int]::TryParse($OtherChoice,[ref]$OtherNumber) -or $OtherNumber -gt $RecipientEmails.Count -or $OtherNumber -eq $Number) { throw 'PRIVATE_RECIPIENT_SELECTION_REQUIRED' }
     $OtherEmail = $RecipientEmails[$OtherNumber - 1]
     $Problem = 'LOCAL_PRIVATE_RUNNER_REVIEW_REQUIRED'
-    Write-Host 'Full app startup: only existing profiles/workspaces are accepted. Finance/profile table writes are blocked; normal activity RPC timestamps may update. The first account must already have a visible active Personal payment with a name at least four characters long.'
+    if ($ExerciseScopedFixtureWindow.IsPresent) { Write-Host 'Fresh privileged checks must confirm an empty Personal payment scope before inserting ONE temporary synthetic once-only obligation: amount 1 in the existing default currency, start/end seven days ago, reminder window zero. No payment record is created. Exact fixture removal/readback follows acceptance or failure; altered/linked rows stop for review. Browser finance/profile writes remain blocked; normal activity timestamps may update.' }
+    else { Write-Host 'Full app startup: only existing profiles/workspaces are accepted. Finance/profile table writes are blocked; normal activity RPC timestamps may update. The first account must already have a visible active Personal payment with a name at least four characters long.' }
     Write-Host 'A verified pre-init memory Web Storage shim is used. This does not establish installed PWA/native OS storage acceptance.'
     $Phase = 'PRIVATE_TOKEN_AND_TWO_STAGING_APP_PASSWORDS'
     $TokenSecure = Read-Host 'Paste the same staging Management token: Project Settings Read + Database Read-write (hidden)' -AsSecureString
@@ -312,12 +317,13 @@ try {
     $OtherPasswordSecure = Read-Host ('Enter the SECOND STAGING APP password for ' + $OtherEmail + ' (hidden; not a mailbox or database password)') -AsSecureString
     $Accounts = @(@{email=$SelectedEmail;password=(Plain $PasswordSecure)},@{email=$OtherEmail;password=(Plain $OtherPasswordSecure)})
     $Payload = @{managementToken=((Plain $TokenSecure).Trim());accounts=$Accounts;publishableKey=$PublicKey;allowedRecipients=$RecipientEmails;
-        browserExecutable=$BrowserExecutable;acknowledgement='FULL_APP_ONE_EMAIL_FIRST_ACCOUNT_FIVE_MINUTES_THEN_QUARANTINE'} | ConvertTo-Json -Depth 5 -Compress
+        browserExecutable=$BrowserExecutable;acknowledgement=$(if ($ExerciseScopedFixtureWindow.IsPresent) { 'ONE_TEMP_PERSONAL_TEST_ITEM_ONE_EMAIL_FIVE_MINUTES_THEN_EXACT_CLEANUP' } else { 'FULL_APP_ONE_EMAIL_FIRST_ACCOUNT_FIVE_MINUTES_THEN_QUARANTINE' })} | ConvertTo-Json -Depth 5 -Compress
     $Phase = 'CONTROLLED_PROVIDER_PROBE'
     $ProbeStarted = $true
     $Safe = Private-Dialogue $Runtime.execPath $Entry $Payload $true
     if ((Get-FileHash -LiteralPath $PacketFile -Algorithm SHA256).Hash -cne $PacketHash) { throw 'PRIVATE_PACKET_CHANGED' }
     $Allowed = @('stage_step','batch','result','actual_hosted_requests','maximum_direct_HTTP_requests','gateway_internal_provider_requests_not_counted','fixed_target_before_and_after_verified','quarantined_catalog_before_verified','live_public_key_matches_private_snapshot','management_multiple_SELECT_result_shape','active_window_readback_rows','active_window_readback_shape_matched','active_window_lease_matched','active_window_remaining_seconds','four_ordinary_sessions_verified','quarantined_password_only_HTTP_denied','email_request_attempts','email_provider_acceptance_observed','email_dispatch_outcome_uncertain','email_code_verified','verification_outcome_uncertain','secure_fixed_deadline_remember_cookie_observed','foreign_account_renamed_cookie_restore_denied','missing_cookie_restore_requires_code','same_account_new_session_restore_approved','repeated_restore_emits_no_cookie','independent_device_and_proof_binding_aggregates_verified','bounded_window_seconds','allowed_window_accounts','bounded_open_write_attempts','open_write_outcome_uncertain','independent_active_window_verified','verified_email_and_restored_session_HTTP_access_passed','same_account_password_only_HTTP_denied','other_account_password_only_HTTP_denied','verified_sessions_foreign_profile_HTTP_denied','pre_quarantine_state_inspected','quarantine_write_attempts','quarantine_write_outcome_uncertain','quarantine_response_problem_code','explicit_quarantine_and_stale_open_fence_verified','post_window_quarantined_HTTP_denied','committed_mode_change_requests','exact_generated_device_cleanup_write_attempts','device_cleanup_write_outcome_uncertain','selected_generated_device_absent','Auth_password_signin_attempts','Auth_local_logout_attempts','Auth_session_cleanup_outcome_uncertain','selected_sessions_proofs_and_challenges_absent','quarantined_catalog_after_verified','application_rows_explicitly_written','automatic_activity_RPC_write_attempts','finance_or_profile_table_writes_allowed','existing_session_device_and_finance_state_preserved','full_app_fixture_prerequisites_verified','full_app_fixture_checks','progress_display','private_rate_and_send_audit_retained','other_devices_or_Auth_sessions_explicitly_deleted','browser_cookie_cache_or_device_restore_verified','full_cross_account_and_role_acceptance_verified','real_PostgreSQL_concurrency_verified','full_scheduler_or_external_caller_graph_verified','credentials_codes_cookies_or_raw_provider_bodies_in_safe_result','credentials_or_cookies_saved_to_disk_arguments_or_environment','Auth_settings_secrets_schedules_or_deployments_changed','live_activation_approved','hosted_acceptance','production_or_native_changed','APK_update_deferred','findings_closed','browser','samples','cleanup_problem_code','final_state_problem_code','failure_checkpoint','checkpoint','problem_code','exit_code','checked_UTC')
+    if ($ExerciseScopedFixtureWindow.IsPresent) { $Allowed += @('acceptance_core_direct_HTTP_requests','scoped_fixture') }
     if (@($Safe.PSObject.Properties | Where-Object { $_.Name -notin $Allowed }).Count -ne 0) { throw 'UNEXPECTED_SAFE_FIELDS' }
     $Safe | Add-Member -NotePropertyName source_hashes_verified -NotePropertyValue $SourceCount
     $Safe | Add-Member -NotePropertyName retained_gateway_DPAPI_packet_read_only -NotePropertyValue $true
@@ -327,7 +333,8 @@ try {
     Write-Host 'BEGIN SAFE BATCH U RESULT'
     Write-Host ($Safe | ConvertTo-Json -Depth 10)
     Write-Host 'END SAFE BATCH U RESULT'
-    if ($Safe.exit_code -eq 0) { Write-Host 'Stage 3/10 | FR.2/8 | Batch U/Z - SCOPED COMPLETE: actual full app/SDK/memory-storage/cache/session checks passed, explicit quarantine independently verified, exact generated device/four sessions removed, preexisting sessions/devices and payment rows unchanged and disposable browser cleaned up. Send the safe JSON and exit code.' }
+    if ($Safe.exit_code -eq 0 -and $ExerciseScopedFixtureWindow.IsPresent) { Write-Host 'Stage 3/10 | FR.2/8 | Batch U/Z - SCOPED COMPLETE: full app acceptance, explicit quarantine, exact temporary item/device/session cleanup and preexisting-state readback passed. Release acceptance remains open. Send the safe JSON and exit code.' }
+    elseif ($Safe.exit_code -eq 0) { Write-Host 'Stage 3/10 | FR.2/8 | Batch U/Z - SCOPED COMPLETE: actual full app/SDK/memory-storage/cache/session checks passed, explicit quarantine independently verified, exact generated device/four sessions removed, preexisting sessions/devices and payment rows unchanged and disposable browser cleaned up. Send the safe JSON and exit code.' }
     else { Write-Host 'BATCH U STOPPED FOR REVIEW: send the safe JSON; do not resend email or repeat the probe blindly.' }
     return [int]$Safe.exit_code
 } catch {

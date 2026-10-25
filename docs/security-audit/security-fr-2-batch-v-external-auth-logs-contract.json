@@ -1,0 +1,82 @@
+{
+  "stage_step": "FR.2.4.E5.35_BATCH_V_ADMIN_MFA_OPERATOR_FACTOR_AND_CATALOG_REVIEW",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
+  "status": "OWNER_EXTERNAL_AUTH_LOG_QUERY_SOURCE_REVIEWED_HOSTED_PENDING",
+  "source_parent_commit": "03dbde716ed9798c5ef66a54ce84581ca4fbc172",
+  "previous_owner_receipt": "docs/security-audit/security-fr-2-batch-v-owner-factor-audit-review.json",
+  "SQL": "supabase/diagnostics/security_fr_2_4_operator_external_auth_logs.sql",
+  "SQL_SHA256": "a56a9589d53572df8746b5f7f5950423a835d9ef3653ed6372348d3ce789b2ad",
+  "handoff": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_EXTERNAL_AUTH_LOGS_HANDOFF.md",
+  "run_in": "STAGING_DASHBOARD_EXPLORER_RUN_SQL_QUERY_SOURCE_LOGS_CLICKHOUSE",
+  "target_project": "dczlddwbtgvfdujgcitb",
+  "project_selected_in_dashboard_not_attested_by_log_query": true,
+  "window_start_UTC": "2026-10-25T13:35:00Z",
+  "window_end_UTC": "2026-10-25T14:10:00Z",
+  "time_range_must_also_be_selected_in_Explorer": true,
+  "sources": [
+    "auth_audit_logs",
+    "auth_logs"
+  ],
+  "operator_selection": "Only two already selected public email input literals; actor_username matching alone, not UUID or exact-factor binding",
+  "one_submitted_read_only_query": true,
+  "maximum_events_returned": 50,
+  "selected_row_count_and_truncation_flag": true,
+  "safe_event_fields": [
+    "UTC",
+    "source",
+    "slot",
+    "action_fixed_enum_or_OTHER_OR_UNRECORDED",
+    "client_class_fixed_enum"
+  ],
+  "safe_source_counts": "Two project-level source row counts in the fixed35-minute window; these are log rows, not independent requests or people",
+  "raw_emails_IDs_IPs_user_agents_messages_or_credentials_printed": false,
+  "no_new_Management_token_or_password_or_code_prompt": true,
+  "existing_dashboard_session_reused": true,
+  "Auth_API_or_factor_or_role_or_mode_or_setting_write": false,
+  "quarantine_rechecked_by_log_query": false,
+  "latest_actual_quarantine_observation_UTC": "2026-10-25T15:14:35.7749+00:00",
+  "human_or_client_origin_proven": false,
+  "exact_factor_reference_verified": false,
+  "retention_completeness_verified": false,
+  "client_class_is_only_recorded_user_agent_hint_not_client_or_human_attribution": true,
+  "empty_source_or_selected_results_prove_no_activity": false,
+  "query_source_and_projection_reviewed": true,
+  "actual_ClickHouse_execution_verified": false,
+  "actual_hosted_log_query_executed": false,
+  "new_test_PASS_claimed": false,
+  "prior_local_SQL8_pass_preserved": true,
+  "previous335_source_hashes_unchanged": true,
+  "frozen_U310_sources_unchanged": true,
+  "primary_sources": [
+    {
+      "URL": "https://supabase.com/docs/guides/auth/audit-logs",
+      "purpose": "Database storage optional; external dashboard audit logs"
+    },
+    {
+      "URL": "https://supabase.com/docs/guides/observability/advanced-log-filtering",
+      "purpose": "Explorer Logs source, ClickHouse dialect, bounded range, explicit limits"
+    },
+    {
+      "repository": "supabase/supabase",
+      "commit": "7e866ef83e89e35cdda45a6c98abd069d5fa1b2f",
+      "path": "packages/shared-data/log-constants.ts",
+      "blob_SHA": "a7c214981fb081b8f115f54f0fa24afb30cfc9e8",
+      "purpose": "auth_audit_event versus auth_event action/actor_username, audit user_agent fields"
+    },
+    {
+      "repository": "supabase/supabase",
+      "commit": "7e866ef83e89e35cdda45a6c98abd069d5fa1b2f",
+      "path": "apps/studio/components/interfaces/Settings/Logs/Logs.fieldReference.ts",
+      "blob_SHA": "3f89c77b37282ac9f0b9d636f50e33098a4431c0",
+      "purpose": "metadata root dropped; dotted log_attributes key mapping"
+    }
+  ],
+  "on_query_error": "Return only safe fixed code LOGS_QUERY_REVIEW_REQUIRED and exit1; no raw messages, exports or automatic AI rewrite",
+  "on_access_or_legacy_dialect_wall": "Return LOGS_ACCESS_OR_DIALECT_REVIEW_REQUIRED and exit1; do not grant new token scopes or change settings",
+  "MFA_setup_remains_paused": true,
+  "full_lettered_batch_V_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

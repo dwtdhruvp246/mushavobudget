@@ -1,3 +1,5 @@
+> FRE207: **Stage 3/10 | FR.2/8 | Batch V/Z — database audit inspection COMPLETE; MFA remains ON HOLD.** Owner SQL at2026-10-25T15:14:35.7749+00:00 returned AVAILABLE,0 selected events, no truncation, same exact reviewed RECOVERY pending factor and0 current sessions for each operator; read-only/ROLLBACK/QUARANTINED before and after PASS, exit0. No Auth/factor/mode/settings write. Empty selected database history does not establish origin or complete retention. [Next read-only external Auth log query](SECURITY_FR_2_4_BATCH_V_EXTERNAL_AUTH_LOGS_HANDOFF.md) checks the same35-minute window with fixed safe projections and no new credential input. It is source-reviewed, NOT executed in ClickHouse or hosted yet; previous local8/8 evidence and all335 source hashes/all310 U files remain unchanged. No owner offline rerun/install or MFA retry. U stays COMPLETE; full V/FR.2/Stage3/release remain open.
+
 # Batch V — Admin MFA, recoverable operators and privileged access
 
 **STARTED — Stage 3/10 | FR.2/8 | Batch V/Z — IN PROGRESS.** U is accepted COMPLETE at its frozen scoped boundary. V–Z are the five remaining current authorization packages; Z remains final. Stage3/FR.2/release are not closed. This plan freezes16 existing V acceptance requirements before hosted work; it does not expand the lettered baseline.
@@ -8,7 +10,7 @@
 |---|---|---|
 | V01 | Current Admin source, selected policies/effective grants and email containment parity | Hosted scoped review PASS; see FRE197 and genuine MFA handoff |
 | V02 | Current isolated PRIMARY/RECOVERY identities and retained private-control evidence | Hosted scoped review PASS; see FRE197 and genuine MFA handoff |
-| V03 | Resolve prior uncertain/pending factor state by exact read-only metadata before any factor write | Hosted scoped review PASS; see FRE197 and genuine MFA handoff |
+| V03 | Resolve prior uncertain/pending factor state by exact read-only metadata before any factor write | Exact current metadata observed; new unrecognized RECOVERY origin unresolved, MFA on hold; FRE204–FRE207 |
 | V04 | Genuine PRIMARY TOTP/AAL2 including a fresh password session | Pending |
 | V05 | Genuine RECOVERY TOTP/AAL2 and independently accessible recovery control | Pending |
 | V06 | Coordinated reviewed SQL/UI/Edge assurance enforcement and narrowly scoped operator roles | Pending |

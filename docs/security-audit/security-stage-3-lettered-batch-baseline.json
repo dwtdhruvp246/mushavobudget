@@ -4,7 +4,7 @@
   "date": "2026-10-24",
   "source_commit": "88184eb016c970738e0a7d26275394047a37c841",
   "scope": "CURRENT_MAIN_STAGE_3_STAGING_AUTHORIZATION_REMEDIATION_LETTERED_STREAM",
-  "status": "FIXED_REMAINING_WORK_PACKAGE_BASELINE_NOT_EXECUTION_EVIDENCE",
+  "status": "FIXED_BASELINE_WITH_CURRENT_EVIDENCE_STATUS",
   "why_created": "Earlier lettered batches were introduced incrementally without an explicit endpoint; owner requested a finite remaining list. This baseline fixes that planning gap.",
   "lettered_labels_already_used": [
     "A",
@@ -28,16 +28,16 @@
     "S",
     "T"
   ],
-  "last_observed_scoped_pass": "T",
-  "next_letter": "U",
+  "last_observed_scoped_pass": "U",
+  "next_letter": "V",
   "final_letter": "Z",
-  "remaining_planned_batch_count": 6,
+  "remaining_planned_batch_count": 5,
   "total_labels_in_this_baseline": 26,
   "batches": [
     {
       "letter": "U",
       "title": "Actual app startup, browser cache and session lifecycle",
-      "status": "IN_PROGRESS",
+      "status": "COMPLETE",
       "traceability": [
         "FR.2.4 browser integration",
         "FR.2.5 session integration"
@@ -52,12 +52,14 @@
         "Passing integrated local actual-page scenario and meaningful failure/cleanup cases",
         "Prepared bounded hosted handoff, then actual ordinary-account full-page startup/cache/session evidence with explicit final quarantine and exact cleanup",
         "Any shim, omitted page/SDK feature, cache/OS or role limitation explicitly recorded without full-app overclaim"
-      ]
+      ],
+      "accepted_receipt": "docs/security-audit/security-fr-2-email-batch-u-owner-scoped-hosted-pass.json",
+      "exit_review": "docs/security-audit/SECURITY_FR_2_4_BATCH_U_COMPLETE.md"
     },
     {
       "letter": "V",
       "title": "Admin MFA, recoverable operators and privileged access",
-      "status": "PLANNED",
+      "status": "IN_PROGRESS",
       "traceability": [
         "FR.2.4 Admin parity/operator/recovery"
       ],
@@ -71,7 +73,11 @@
         "Installed source/grant/policy parity for the selected Admin surface",
         "Positive genuine Admin AAL2 plus direct/API/UI low-assurance and ordinary-user denials",
         "Factor/revocation/recovery outcomes and preservation of working access verified; no sole-factor removal or blanket revoke"
-      ]
+      ],
+      "plan": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PLAN.md",
+      "contract": "docs/security-audit/security-fr-2-batch-v-contract.json",
+      "required_case_count": 16,
+      "owner_read_only_result_received": false
     },
     {
       "letter": "W",
@@ -179,5 +185,8 @@
   "committed_mode_change_requests": 0,
   "findings_closed": [],
   "progress_output_contract": "docs/security-audit/security-progress-display-contract.json",
-  "current_progress_display": "Stage 3/10 | FR.2/8 | Batch U/Z — IN PROGRESS"
+  "current_progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z — IN PROGRESS",
+  "completed_since_baseline": [
+    "U"
+  ]
 }

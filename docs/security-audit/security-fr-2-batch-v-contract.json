@@ -1,0 +1,126 @@
+{
+  "stage_step": "FR.2.4.E5.35_BATCH_V_ADMIN_MFA_OPERATOR_FACTOR_AND_CATALOG_REVIEW",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z — IN PROGRESS",
+  "status": "READ_ONLY_COMBINED_REVIEW_LOCAL13_PASS_HOSTED_PENDING",
+  "frozen_required_case_count": 16,
+  "cases": [
+    {
+      "id": "V01",
+      "requirement": "Current Admin source, selected policies/effective grants and email containment parity",
+      "status": "READ_ONLY_REVIEW_PENDING"
+    },
+    {
+      "id": "V02",
+      "requirement": "Current isolated PRIMARY/RECOVERY identities and retained private-control evidence",
+      "status": "READ_ONLY_REVIEW_PENDING"
+    },
+    {
+      "id": "V03",
+      "requirement": "Resolve prior uncertain/pending factor state by exact read-only metadata before any factor write",
+      "status": "READ_ONLY_REVIEW_PENDING"
+    },
+    {
+      "id": "V04",
+      "requirement": "Genuine PRIMARY TOTP/AAL2 including a fresh password session",
+      "status": "PLANNED"
+    },
+    {
+      "id": "V05",
+      "requirement": "Genuine RECOVERY TOTP/AAL2 and independently accessible recovery control",
+      "status": "PLANNED"
+    },
+    {
+      "id": "V06",
+      "requirement": "Coordinated reviewed SQL/UI/Edge assurance enforcement and narrowly scoped operator roles",
+      "status": "PLANNED"
+    },
+    {
+      "id": "V07",
+      "requirement": "Permitted genuine AAL2 Admin role operations through required UI/API paths",
+      "status": "PLANNED"
+    },
+    {
+      "id": "V08",
+      "requirement": "Password-only/low-assurance/stale-token direct bypass denial with required email proof boundary",
+      "status": "PLANNED"
+    },
+    {
+      "id": "V09",
+      "requirement": "Ordinary verified-email users cannot obtain platform Admin access",
+      "status": "PLANNED"
+    },
+    {
+      "id": "V10",
+      "requirement": "Super/Admin staff/finance/support role-scope boundaries and protected operator rules",
+      "status": "PLANNED"
+    },
+    {
+      "id": "V11",
+      "requirement": "Selected session revocation and stale privileged-client/session denial",
+      "status": "PLANNED"
+    },
+    {
+      "id": "V12",
+      "requirement": "Controlled factor lifecycle/revocation preserving a functioning alternate route",
+      "status": "PLANNED"
+    },
+    {
+      "id": "V13",
+      "requirement": "Actual independent recovery drill without sole-factor/operator removal",
+      "status": "PLANNED"
+    },
+    {
+      "id": "V14",
+      "requirement": "Preserve legitimate affected finance/backend access and retained historical fixtures",
+      "status": "PLANNED"
+    },
+    {
+      "id": "V15",
+      "requirement": "Final quarantine/fence/exact selected session/device/fixture cleanup and source readback",
+      "status": "PLANNED"
+    },
+    {
+      "id": "V16",
+      "requirement": "Evidence reconciliation and handoff to W with no hidden required Admin blocker",
+      "status": "PLANNED"
+    }
+  ],
+  "first_owner_action": "COMBINED_READ_ONLY_ADMIN_OPERATOR_FACTOR_REVIEW",
+  "maximum_direct_HTTP_requests": 5,
+  "selected_routine_names": 36,
+  "selected_policies": 58,
+  "source_model": "docs/security-audit/security-fr-2-batch-v-source-model.json",
+  "source_model_includes_accepted_email_H_and_bounded_controls": true,
+  "historical_Admin_model_replaced_or_modified": false,
+  "read_only_SQL_enforced": true,
+  "Management_transport_read_only_flag": false,
+  "Management_flag_reason": "Reuse proven privileged transport; each SQL payload enforces BEGIN TRANSACTION READ ONLY and ROLLBACK",
+  "hidden_inputs": [
+    "existing staging Management token",
+    "existing PRIMARY operator email",
+    "existing RECOVERY operator email"
+  ],
+  "existing_private_stdin_helpers_reused_with_stage_protocol_labels_only": true,
+  "private_parent_request_bound": 5,
+  "DPAPI_packet_or_browser_or_passwords_or_TOTP_required": false,
+  "Auth_API_or_email_or_factor_role_setting_or_mode_writes": false,
+  "missing_accounts_created_automatically": false,
+  "pending_factors_deleted_or_reenrolled_automatically": false,
+  "metadata_time_or_label_correlation_authorizes_cleanup": false,
+  "readiness_is_genuine_AAL2_or_recovery_acceptance": false,
+  "Batch_U_complete_at_frozen_scope": true,
+  "remaining_current_authorization_batches_including_V": 5,
+  "final_letter": "Z",
+  "full_lettered_batch_V_complete": false,
+  "hosted_acceptance": false,
+  "live_activation_approved": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "expected_local_tests": 13,
+  "source_hashes": 321,
+  "syntax_checks": 139,
+  "verifier": "scripts/verify-fr-2-batch-v.mjs",
+  "runner": "scripts/run-fr-2-batch-v.ps1",
+  "checker": "scripts/check-fr-2-batch-v.mjs"
+}

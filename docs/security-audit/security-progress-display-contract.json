@@ -21,13 +21,13 @@
       "status": "IN_PROGRESS"
     },
     "lettered_batch": {
-      "letter": "U",
+      "letter": "V",
       "final_letter": "Z",
-      "label": "Batch U/Z",
-      "title": "Full-app startup, private cache and session lifecycle",
+      "label": "Batch V/Z",
+      "title": "Admin MFA, recoverable operators and privileged access",
       "status": "IN_PROGRESS"
     },
-    "compact_display": "Stage 3/10 | FR.2/8 | Batch U/Z — IN PROGRESS",
+    "compact_display": "Stage 3/10 | FR.2/8 | Batch V/Z — IN PROGRESS",
     "labels_are_not_completion_percentages": true,
     "current_hierarchy_only_not_a_universal_FR_to_stage_mapping": true,
     "batch_completion_requires_its_full_exit_evidence": true
@@ -51,9 +51,9 @@
   "rules": [
     "Show all three levels together; include full titles when helpful for a handoff or status report.",
     "Represent the actual main-stage, remediation-group and lettered-batch statuses independently. Completing a batch does not automatically complete FR.2 or Stage3.",
-    "The current hierarchy is Stage3 > FR.2 > BatchU. Other FR groups may span other roadmap stages; do not assume FR number equals stage number.",
+    "The current hierarchy is Stage3 > FR.2 > BatchV. Other FR groups may span other roadmap stages; do not assume FR number equals stage number.",
     "Stage3/10 and FR.2/8 identify position/endpoint, not completed counts or percentages. The roadmap also contains Stage0.",
-    "Display current BatchU/Z as IN_PREPARATION until its defined acceptance evidence passes. A successful local verifier is LOCAL_CHECKS_COMPLETE with hosted acceptance pending; it is not whole-batch COMPLETE.",
+    "U is accepted COMPLETE (FRE195); current BatchV/Z stays IN_PROGRESS until its defined acceptance evidence passes. A successful local verifier is LOCAL_CHECKS_COMPLETE with hosted acceptance pending; it is not whole-batch COMPLETE.",
     "STARTED, COMPLETE and STOPPED_FOR_REVIEW must identify the action/phase they describe. If updating a document or output convention, say that action completed while retaining the actual batch status.",
     "On failure keep the same batch letter and STOPPED_FOR_REVIEW; do not advance or silently add letters. Preserve prior results and inspect uncertain writes before retry.",
     "After a batch completes, report the completed batch with COMPLETE. When real work starts in the next batch, update the current letter/status and remaining-work ledger; do not show a future planned batch as already completed.",
@@ -72,5 +72,6 @@
   "owner_private_inputs_requested": false,
   "production_or_native_changed": false,
   "APK_update_deferred": true,
-  "findings_closed": []
+  "findings_closed": [],
+  "updated_date": "2026-10-25"
 }

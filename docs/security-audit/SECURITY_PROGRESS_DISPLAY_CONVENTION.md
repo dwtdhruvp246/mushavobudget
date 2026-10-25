@@ -1,3 +1,5 @@
+> FRE195–FRE196: **Batch U COMPLETE at its frozen scoped boundary.** Owner hosted37-request/one-email full-app lifecycle, quarantine/fence, exact temporary item/device/four-session cleanup and preexisting-state readback PASS/exit0; last DB observation QUARANTINED2026-10-25T07:35:50.069Z. [U acceptance and limits](SECURITY_FR_2_4_BATCH_U_COMPLETE.md). **Batch V/Z STARTED**; five packages V–Z remain. [V frozen16-case plan and combined read-only handoff](SECURITY_FR_2_4_BATCH_V_PLAN.md) reuses current36/58 source/grant checks and the earlier operator/pending-factor checkpoint. Local13/13 PASS,321 hashes/139 syntax, all310 U sources unchanged. No U rerun, account/factor/role write, password, TOTP, upload or installation requested. FR.2/Stage3/release stay open.
+
 > FRE184 current status: **Stage 3/10 | FR.2/8 | Batch U/Z — IN PROGRESS**. Owner Windows55/55 and exact44-entry .NET ZIP readback passed, exit0. Local work COMPLETE; staging upload/readback and hosted full-app acceptance pending. Earlier preparation-only descriptions below are historical.
 
 # Required progress display — Mushavo Budget security and launch work
@@ -8,18 +10,18 @@ Adopted24 October2026 at the owner's request (FRE177). This convention applies t
 
 **Stage 3/10 — Authorization and Admin MFA — IN PROGRESS**  
 **FR.2/8 — Authorization, Admin MFA, authentication and finance integrity — IN PROGRESS**  
-**Batch U/Z — Full-app startup, private cache and session lifecycle — IN PREPARATION**
+**Batch V/Z — Admin MFA, recoverable operators and privileged access — IN PROGRESS**
 
 Compact form for routine updates:
 
-`Stage 3/10 | FR.2/8 | Batch U/Z — IN PREPARATION`
+`Stage 3/10 | FR.2/8 | Batch V/Z — IN PROGRESS`
 
-This is the current hierarchy, not a universal mapping from FR number to main-stage number. Other remediation groups address other/spanning roadmap requirements. The numbers/letters identify the current point and plan endpoint, not completed counts, test totals or completion percentages. The original roadmap includes Stage0;10 is its last numbered stage. U–Z is the current fixed six-package authorization baseline.
+This is the current hierarchy, not a universal mapping from FR number to main-stage number. Other remediation groups address other/spanning roadmap requirements. The numbers/letters identify the current point and plan endpoint, not completed counts, test totals or completion percentages. The original roadmap includes Stage0;10 is its last numbered stage. U–Z was the fixed six-package authorization baseline; U is now accepted complete and V–Z are the five remaining packages.
 
 ## Status rules
 
 1. Keep the actual statuses independent. Batch U can be COMPLETE while FR.2 and Stage3 remain IN PROGRESS. No stage/group closes automatically because one batch or local test passes.
-2. U is currently IN PREPARATION. The earlier T hosted pass is retained; U has selected-source review/planning only and has not passed runtime or hosted acceptance. Do not display “Batch U/Z completed” today.
+2. U is accepted COMPLETE at its frozen scoped boundary (FRE195). V is IN PROGRESS; its first combined read-only review is locally tested and awaits the owner result. Do not display V complete from local readiness or close FR.2/Stage3/release because U passed.
 3. Use STARTED when the described batch/action begins, COMPLETE for the completed scope, and STOPPED FOR REVIEW on a failed/uncertain step. Identify the scope: e.g. “Local checks COMPLETE; hosted acceptance pending” or “Progress-display setup COMPLETE; Batch U remains IN PREPARATION.”
 4. On failure retain the current letter and explain the safe checkpoint/uncertainty. Do not advance the letter or add a new one for a retry. Once all exit evidence passes, report that completed letter with COMPLETE; show the next letter only when starting its actual work.
 5. Keep local test counts, hosted results, exit codes, timestamps, cleanup/readback evidence and overall release acceptance distinct. Hierarchy labels replace none of those details.

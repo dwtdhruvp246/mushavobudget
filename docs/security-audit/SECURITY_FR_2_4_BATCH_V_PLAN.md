@@ -23,6 +23,10 @@
 | V15 | Final quarantine/fence/exact selected session/device/fixture cleanup and source readback | Pending |
 | V16 | Evidence reconciliation and handoff to W with no hidden required Admin blocker | Pending |
 
+## Current checkpoint — first genuine MFA run stopped at RECOVERY password sign-in
+
+FRE199 records owner offline58/58 PASS; hosted8 requests with one rejected Auth password request, no enrollment/deletion and final zero sessions/QUARANTINED. Its generic HTTP_STATUS_REVIEW_REQUIRED does not establish a wrong password. FRE200 adds only bounded safe HTTP status/public code diagnostics and visible local email entry,66/66 local PASS; original recovery-first/exact pending-factor protections remain. See the [updated concrete MFA handoff](SECURITY_FR_2_4_BATCH_V_MFA_HANDOFF.md). Full V remains IN PROGRESS.
+
 ## Read-only action completed; genuine MFA next
 
 FRE197 records owner13/13 local and five hosted read-only requests PASS, exact36/58 parity on providerPostgreSQL17.11 and both isolated ordinary identities; staging QUARANTINED at2026-10-25T12:25:30.771Z. PRIMARY has the exact one unverified factor described in the [recovery-first MFA handoff](SECURITY_FR_2_4_BATCH_V_MFA_HANDOFF.md); RECOVERY has none. Read-only review did not authorize a write. FRE198 prepares a concrete SETUP-acknowledged Auth action with recovery first, exact pending cleanup, genuine initial/fresh AAL2 and independent final reads.58 local tests PASS; actual hosted MFA and recovery remain pending. Original read-only scope below is retained as historical context.

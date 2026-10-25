@@ -6569,6 +6569,105 @@
       "APK_update_deferred": true,
       "findings_closed": [],
       "checked_UTC": "2026-10-25T12:50:19.717Z"
+    },
+    {
+      "id": "FRE199",
+      "date": "2026-10-25",
+      "stage_step": "FR.2.4.E5.36_BATCH_V_RECOVERY_FIRST_GENUINE_MFA_AND_EXACT_PENDING_FACTOR",
+      "result": "BATCH_V_OWNER_LOCAL58_PASS_RECOVERY_PASSWORD_SIGNIN_HTTP_STATUS_STOP_FINAL_QUARANTINE_AND_ZERO_SESSIONS_VERIFIED",
+      "source_commit": "a6358a1558491462bca9118134a842676f8909f3",
+      "owner_local_receipt": "docs/security-audit/security-fr-2-batch-v-owner-mfa-first-local-checks.json",
+      "owner_hosted_receipt": "docs/security-audit/security-fr-2-batch-v-owner-mfa-signin-stop.json",
+      "owner_local_PASS": 58,
+      "owner_local_FAIL": 0,
+      "source_hashes": 331,
+      "syntax_checks": 148,
+      "actual_hosted_requests": 8,
+      "Management_requests": 6,
+      "Auth_requests": 1,
+      "public_config_requests": 1,
+      "failure_checkpoint": "AUTH_PASSWORD_SIGNIN",
+      "selected_slot": "RECOVERY",
+      "Auth_problem_code": "HTTP_STATUS_REVIEW_REQUIRED",
+      "actual_HTTP_status_or_provider_error_code_observed": false,
+      "wrong_password_or_other_information_proven": false,
+      "current_Admin_source_and_effective_grants_matched": true,
+      "ordinary_confirmed_isolated_operators_verified": true,
+      "preexisting_operator_sessions": 0,
+      "known_created_Auth_sessions": 0,
+      "final_operator_session_counts": [
+        {
+          "slot": "PRIMARY",
+          "sessions": 0
+        },
+        {
+          "slot": "RECOVERY",
+          "sessions": 0
+        }
+      ],
+      "unattributed_operator_sessions": 0,
+      "new_enrollment_attempts": 0,
+      "exact_pending_factor_delete_attempts": 0,
+      "retained_factor_counts": [
+        {
+          "slot": "PRIMARY",
+          "verified_totp": 0,
+          "unverified_totp": 1
+        },
+        {
+          "slot": "RECOVERY",
+          "verified_totp": 0,
+          "unverified_totp": 0
+        }
+      ],
+      "credentials_or_private_provider_bodies_in_receipt": false,
+      "mode": "QUARANTINED",
+      "target_before_and_after_verified": true,
+      "full_lettered_batch_V_complete": false,
+      "genuine_hosted_AAL2_verified": false,
+      "hosted_acceptance": false,
+      "production_or_native_changed": false,
+      "APK_update_deferred": true,
+      "findings_closed": [],
+      "checked_UTC": "2026-10-25T13:23:33.045Z"
+    },
+    {
+      "id": "FRE200",
+      "date": "2026-10-25",
+      "stage_step": "FR.2.4.E5.36_BATCH_V_RECOVERY_FIRST_GENUINE_MFA_AND_EXACT_PENDING_FACTOR",
+      "result": "BATCH_V_SAFE_AUTH_HTTP_STATUS_AND_FIXED_ENUM_DIAGNOSTICS_VISIBLE_OPERATOR_EMAILS_LOCAL66_OWNER_READY",
+      "source_parent_commit": "a6358a1558491462bca9118134a842676f8909f3",
+      "previous_hosted_receipt": "docs/security-audit/security-fr-2-batch-v-owner-mfa-signin-stop.json",
+      "local_receipt": "docs/security-audit/security-fr-2-batch-v-auth-diagnostics-local-checks.json",
+      "local_PASS": 66,
+      "local_FAIL": 0,
+      "source_hashes": 331,
+      "syntax_checks": 148,
+      "frozen_U_sources_unchanged": 310,
+      "retained_review_regressions": 13,
+      "retained_MFA_regressions": 31,
+      "guarded_and_diagnostic_cases": 22,
+      "added_safe_diagnostic_and_local_email_display_cases": 8,
+      "operator_emails_visible_only_locally": true,
+      "token_password_and_TOTP_inputs_hidden": true,
+      "safe_error_fields": [
+        "endpoint_group",
+        "http_status",
+        "provider_error_code"
+      ],
+      "provider_messages_unknown_codes_or_private_bodies_copied": false,
+      "failed_signin_retried_automatically": false,
+      "actual_hosted_requests": 0,
+      "real_Auth_or_factor_or_setting_or_role_changes": false,
+      "previous_password_failure_cause_known": false,
+      "corrected_Windows_or_hosted_diagnostic_executed": false,
+      "genuine_hosted_AAL2_verified": false,
+      "full_lettered_batch_V_complete": false,
+      "hosted_acceptance": false,
+      "production_or_native_changed": false,
+      "APK_update_deferred": true,
+      "findings_closed": [],
+      "checked_UTC": "2026-10-25T13:30:49.202Z"
     }
   ],
   "prior_stage_evidence_preserved": true,

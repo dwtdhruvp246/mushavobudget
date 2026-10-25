@@ -1,18 +1,18 @@
 {
   "stage_step": "FR.2.4.E5.36_BATCH_V_RECOVERY_FIRST_GENUINE_MFA_AND_EXACT_PENDING_FACTOR",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
-  "status": "LOCAL58_PASS_OWNER_GENUINE_MFA_PENDING",
-  "source_parent_commit": "943a7b8cb0976a4c3bde257b04823b7d17800174",
+  "status": "LOCAL66_PASS_SAFE_AUTH_DIAGNOSTIC_AND_VISIBLE_OPERATOR_EMAILS_OWNER_READY",
+  "source_parent_commit": "a6358a1558491462bca9118134a842676f8909f3",
   "owner_read_only_receipt": "docs/security-audit/security-fr-2-batch-v-owner-read-only-result.json",
   "handoff": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_MFA_HANDOFF.md",
   "checker": "scripts/lib/admin-batch-v-mfa.mjs",
   "owner_entry": "scripts/setup-fr-2-batch-v-mfa.mjs",
   "verifier": "scripts/verify-fr-2-batch-v-mfa.mjs",
   "manifest": "docs/security-audit/security-fr-2-batch-v-mfa-source-manifest.json",
-  "expected_local_tests": 58,
+  "expected_local_tests": 66,
   "local_review_regressions": 13,
   "local_MFA_regressions": 31,
-  "new_guarded_setup_cases": 14,
+  "new_guarded_setup_cases": 22,
   "source_hashes": 331,
   "owner_verifier_syntax_checks": 148,
   "frozen_U_sources_unchanged": 310,
@@ -48,5 +48,18 @@
   "hosted_acceptance": false,
   "production_or_native_changed": false,
   "APK_update_deferred": true,
-  "findings_closed": []
+  "findings_closed": [],
+  "previous_owner_receipt": "docs/security-audit/security-fr-2-batch-v-owner-mfa-signin-stop.json",
+  "operator_emails_visible_only_in_local_terminal": true,
+  "password_token_TOTP_prompts_hidden": true,
+  "shared_JSON_contains_operator_emails": false,
+  "safe_Auth_error_review_fields": [
+    "endpoint_group",
+    "http_status",
+    "provider_error_code"
+  ],
+  "unknown_Auth_error_strings_or_messages_copied": false,
+  "Auth_error_body_limit_bytes": 262144,
+  "failed_signin_retried_automatically": false,
+  "local_receipt": "docs/security-audit/security-fr-2-batch-v-auth-diagnostics-local-checks.json"
 }

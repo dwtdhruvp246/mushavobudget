@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "baseline_version": 1,
-  "date": "2026-10-24",
+  "date": "2026-10-25",
   "source_commit": "88184eb016c970738e0a7d26275394047a37c841",
   "scope": "CURRENT_MAIN_STAGE_3_STAGING_AUTHORIZATION_REMEDIATION_LETTERED_STREAM",
   "status": "FIXED_BASELINE_WITH_CURRENT_EVIDENCE_STATUS",
@@ -77,7 +77,11 @@
       "plan": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PLAN.md",
       "contract": "docs/security-audit/security-fr-2-batch-v-contract.json",
       "required_case_count": 16,
-      "owner_read_only_result_received": false
+      "owner_read_only_result_received": true,
+      "read_only_receipt": "docs/security-audit/security-fr-2-batch-v-owner-read-only-result.json",
+      "next_action": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_MFA_HANDOFF.md",
+      "genuine_hosted_AAL2_verified": false,
+      "independent_recovery_drill_verified": false
     },
     {
       "letter": "W",

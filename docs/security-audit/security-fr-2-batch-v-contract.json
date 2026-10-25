@@ -1,23 +1,23 @@
 {
   "stage_step": "FR.2.4.E5.35_BATCH_V_ADMIN_MFA_OPERATOR_FACTOR_AND_CATALOG_REVIEW",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z — IN PROGRESS",
-  "status": "READ_ONLY_COMBINED_REVIEW_LOCAL13_PASS_HOSTED_PENDING",
+  "status": "HOSTED_READ_ONLY_PARITY_AND_ISOLATED_IDENTITIES_PASS_GUARDED_RECOVERY_FIRST_MFA_READY",
   "frozen_required_case_count": 16,
   "cases": [
     {
       "id": "V01",
       "requirement": "Current Admin source, selected policies/effective grants and email containment parity",
-      "status": "READ_ONLY_REVIEW_PENDING"
+      "status": "HOSTED_SCOPED_PARITY_PASS"
     },
     {
       "id": "V02",
       "requirement": "Current isolated PRIMARY/RECOVERY identities and retained private-control evidence",
-      "status": "READ_ONLY_REVIEW_PENDING"
+      "status": "HOSTED_ISOLATED_IDENTITIES_PASS_RETAINED_CONTROL_REPORT_NOT_INDEPENDENT_RECOVERY_DRILL"
     },
     {
       "id": "V03",
       "requirement": "Resolve prior uncertain/pending factor state by exact read-only metadata before any factor write",
-      "status": "READ_ONLY_REVIEW_PENDING"
+      "status": "EXACT_PENDING_STATE_OBSERVED_GUARDED_ACTION_READY"
     },
     {
       "id": "V04",
@@ -122,5 +122,9 @@
   "syntax_checks": 139,
   "verifier": "scripts/verify-fr-2-batch-v.mjs",
   "runner": "scripts/run-fr-2-batch-v.ps1",
-  "checker": "scripts/check-fr-2-batch-v.mjs"
+  "checker": "scripts/check-fr-2-batch-v.mjs",
+  "read_only_review_completed": true,
+  "read_only_owner_receipt": "docs/security-audit/security-fr-2-batch-v-owner-read-only-result.json",
+  "genuine_MFA_handoff": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_MFA_HANDOFF.md",
+  "genuine_MFA_contract": "docs/security-audit/security-fr-2-batch-v-mfa-contract.json"
 }

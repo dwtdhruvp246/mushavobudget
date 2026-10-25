@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_date": "2026-10-24",
+  "updated_date": "2026-10-25",
   "current_stage": null,
-  "current_step": "FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE_PREPARATION",
-  "current_title": "Main Stage3: U accepted COMPLETE; Batch V Admin MFA/operator/factor review local13 PASS, owner read-only run pending",
+  "current_step": "FR.2.4.E5.36_BATCH_V_RECOVERY_FIRST_GENUINE_MFA_AND_EXACT_PENDING_FACTOR",
+  "current_title": "Main Stage3 / FR.2 / Batch V: current Admin/operator review hosted PASS; guarded recovery-first genuine MFA local58 PASS, owner run next",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE_PREPARATION",
+  "next_step": "FR.2.4.E5.36_BATCH_V_RECOVERY_FIRST_GENUINE_MFA_AND_EXACT_PENDING_FACTOR",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,

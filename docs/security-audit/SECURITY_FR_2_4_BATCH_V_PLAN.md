@@ -6,9 +6,9 @@
 
 | Case | Required evidence | Current status |
 |---|---|---|
-| V01 | Current Admin source, selected policies/effective grants and email containment parity | Read-only review pending |
-| V02 | Current isolated PRIMARY/RECOVERY identities and retained private-control evidence | Read-only review pending |
-| V03 | Resolve prior uncertain/pending factor state by exact read-only metadata before any factor write | Read-only review pending |
+| V01 | Current Admin source, selected policies/effective grants and email containment parity | Hosted scoped review PASS; see FRE197 and genuine MFA handoff |
+| V02 | Current isolated PRIMARY/RECOVERY identities and retained private-control evidence | Hosted scoped review PASS; see FRE197 and genuine MFA handoff |
+| V03 | Resolve prior uncertain/pending factor state by exact read-only metadata before any factor write | Hosted scoped review PASS; see FRE197 and genuine MFA handoff |
 | V04 | Genuine PRIMARY TOTP/AAL2 including a fresh password session | Pending |
 | V05 | Genuine RECOVERY TOTP/AAL2 and independently accessible recovery control | Pending |
 | V06 | Coordinated reviewed SQL/UI/Edge assurance enforcement and narrowly scoped operator roles | Pending |
@@ -23,7 +23,11 @@
 | V15 | Final quarantine/fence/exact selected session/device/fixture cleanup and source readback | Pending |
 | V16 | Evidence reconciliation and handoff to W with no hidden required Admin blocker | Pending |
 
-## First combined owner action
+## Read-only action completed; genuine MFA next
+
+FRE197 records owner13/13 local and five hosted read-only requests PASS, exact36/58 parity on providerPostgreSQL17.11 and both isolated ordinary identities; staging QUARANTINED at2026-10-25T12:25:30.771Z. PRIMARY has the exact one unverified factor described in the [recovery-first MFA handoff](SECURITY_FR_2_4_BATCH_V_MFA_HANDOFF.md); RECOVERY has none. Read-only review did not authorize a write. FRE198 prepares a concrete SETUP-acknowledged Auth action with recovery first, exact pending cleanup, genuine initial/fresh AAL2 and independent final reads.58 local tests PASS; actual hosted MFA and recovery remain pending. Original read-only scope below is retained as historical context.
+
+## First combined owner action (completed)
 
 One read-only Management run combines the existing36-routine/58-policy/effective-execute Admin diagnostic, isolated PRIMARY/RECOVERY identity diagnostic and prior uncertain MFA-factor diagnostic into ONE result rowset. It verifies fixed staging target and exact quarantined email catalog before/after, maximum five direct requests. No Auth API/login, mail, factor reset/enrollment/deletion, privilege promotion, settings/schedule/application/control write or deployment. SQL explicitly uses BEGIN TRANSACTION READ ONLY, time/lock/search-path/UTC limits, privileged-origin guard and ROLLBACK. The proven Management transport read_only:false flag is retained to support its existing catalog DO/readback; the SQL transaction enforces read-only operation. Metadata SELECTs invoke catalog functions only, not application RPCs.
 

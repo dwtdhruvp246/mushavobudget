@@ -55,7 +55,9 @@ function sessionClaims(token, aal, expectedId, priorSession) {
     && (!priorSession || c.session_id === priorSession), 'SESSION_CONSTRAINT_REJECTED');
   return c;
 }
-export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch}) {
+export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch,
+  order=[0,1], verifiedPublishableKey=null, prepareFactors=null,
+  beforeVerify=async()=>{}, sessionOpened=async()=>{}}) {
   const receipt = {
     stage_step:'FR.2.4_OPERATOR_MFA_SETUP', project:PROJECT,
     result:'STAGING_OPERATOR_MFA_REVIEW_REQUIRED', accounts:[], problem_code:null,
@@ -136,6 +138,7 @@ export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch}) {
     finally { password=''; }
     need(typeof data?.access_token==='string', 'PASSWORD_SESSION_MISSING');
     currentToken=data.access_token; logoutNeeded=true;
+    await sessionOpened({slot,email,token:currentToken});
     if(currentAccount)currentAccount.local_logout_confirmed=false;
     receipt.password_session_creation_state_may_require_review=false;
     const checked=await authenticatedUser(email,'aal1',actor);
@@ -146,6 +149,7 @@ export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch}) {
       const code=await io.code(slot, {fresh:!!previousCode,retry:attempt>0});
       need(/^\d{6}$/.test(code||''), 'SIX_DIGIT_CODE_REQUIRED');
       if(code===previousCode) { io.notice('WAIT_FOR_A_NEW_AUTHENTICATOR_CODE'); continue; }
+      await beforeVerify({slot,email,factor:id,actor,session:sid});
       const challenge=await http(`${AUTH}/factors/${id}/challenge`, {method:'POST',token:currentToken,body:{}});
       need(UUID.test(challenge?.id||''), 'CHALLENGE_SHAPE_REJECTED');
       let verified;
@@ -161,9 +165,13 @@ export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch}) {
   }
   try {
     const selected=validateEmails(emails);
-    key=parseConfig(await http(CONFIG));
+    need(Array.isArray(order)&&order.length===2&&order.every(x=>x===0||x===1)&&order[0]!==order[1], 'ACCOUNT_ORDER_REJECTED');
+    if(verifiedPublishableKey!==null) {
+      need(/^sb_publishable_[A-Za-z0-9_-]{1,512}$/.test(verifiedPublishableKey), 'STAGING_CONFIG_REJECTED');
+      key=verifiedPublishableKey;
+    } else key=parseConfig(await http(CONFIG));
     const actorIds=[];
-    for(let i=0;i<2;i++) {
+    for(const i of order) {
       const slot=i===0?'PRIMARY':'RECOVERY', email=selected[i];
       const state={slot,password_signin_verified:false,existing_verified_factor_reused:false,
         new_factor_enrollment_attempted:false,initial_TOTP_and_AAL2_verified:false,
@@ -172,7 +180,7 @@ export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch}) {
       const initial=await signIn(email,slot);
       need(!actorIds.includes(initial.user.id), 'DISTINCT_ACTORS_REQUIRED'); actorIds.push(initial.user.id);
       state.password_signin_verified=true;
-      const factors=initial.user.factors||[];
+      const factors=prepareFactors?await prepareFactors({slot,email,initial,token:currentToken}):initial.user.factors||[];
       if(!Array.isArray(factors)||factors.length>1||factors.some(f=>f.factor_type!=='totp'||f.status!=='verified'))
         receipt.factor_state_may_require_review=true;
       need(Array.isArray(factors)&&factors.length<=1, 'EXISTING_FACTORS_REQUIRE_REVIEW');
@@ -207,7 +215,7 @@ export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch}) {
     receipt.factor_state_may_require_review=false;
     receipt.result='STAGING_TWO_OPERATOR_TOTP_AND_FRESH_AUTH_SESSIONS_SCOPED_PASS';
   } catch(e) {
-    receipt.problem_code=e instanceof SetupError ? e.code : 'LOCAL_SETUP_ERROR';
+    receipt.problem_code=e instanceof SetupError ? e.code : e?.batchVSafe===true&&/^BATCH_V_[A-Z0-9_]+$/.test(e.message)?e.message:'LOCAL_SETUP_ERROR';
   } finally {
     try { await logout(); } catch { receipt.problem_code ||= 'LOCAL_LOGOUT_NOT_CONFIRMED'; }
     if(!receipt.all_created_sessions_local_logout_confirmed) {

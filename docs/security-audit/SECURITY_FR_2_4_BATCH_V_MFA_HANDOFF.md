@@ -1,5 +1,7 @@
 # Stage 3/10 · FR.2/8 · Batch V/Z — recovery-first genuine MFA
 
+> FRE202–FRE203: **MFA setup ON HOLD. Do not use this earlier setup/retry handoff now.** Latest state differs from its exact pending-factor baseline. Use the [current read-only factor review](SECURITY_FR_2_4_BATCH_V_CURRENT_FACTOR_REVIEW.md), with no password, Auth call or factor change. Earlier setup actions below are historical and are not current retry instructions.
+
 FRE197 records the exact owner Windows13/13 pass (Node22.17.0/PGlite0.5.8,321 hashes/139 syntax) and hosted five-read review at2026-10-25T12:25:30.771Z. Current36 Admin routines/58 policies/effective grants match the accepted H/bounded-control model on real PostgreSQL17.11; both selected operators are confirmed, active, ordinary, financially isolated accounts with no platform role. Staging remains QUARANTINED. PRIMARY has one unverified TOTP with expected label and failed15October run timestamps, metadata SHA256 `d3f81681acaee6a48d7ef5911d5fc6898394dc0bc243a4d8c54366aa7c164ce0`; RECOVERY has none. Correlation does not establish provenance. The read-only receipt itself authorized no cleanup, factor enrollment, role or enforcement write.
 
 

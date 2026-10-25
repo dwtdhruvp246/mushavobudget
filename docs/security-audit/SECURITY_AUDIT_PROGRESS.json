@@ -2,8 +2,8 @@
   "schema_version": 1,
   "updated_date": "2026-10-25",
   "current_stage": null,
-  "current_step": "FR.2.4.E5.36_BATCH_V_RECOVERY_FIRST_GENUINE_MFA_AND_EXACT_PENDING_FACTOR",
-  "current_title": "Main Stage3 / FR.2 / Batch V: owner local66 PASS; RECOVERY HTTP400 invalid_credentials, final Q/zero sessions; selected email now included in password prompt",
+  "current_step": "FR.2.4.E5.35_BATCH_V_ADMIN_MFA_OPERATOR_FACTOR_AND_CATALOG_REVIEW",
+  "current_title": "Main Stage3 / FR.2 / Batch V: unexpected RECOVERY unverified factor stopped before Auth; zero sessions/QUARANTINED; read-only metadata review local68 ready",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.4.E5.36_BATCH_V_RECOVERY_FIRST_GENUINE_MFA_AND_EXACT_PENDING_FACTOR",
+  "next_step": "FR.2.4.E5.35_BATCH_V_ADMIN_MFA_OPERATOR_FACTOR_AND_CATALOG_REVIEW",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,

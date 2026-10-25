@@ -23,7 +23,11 @@
 | V15 | Final quarantine/fence/exact selected session/device/fixture cleanup and source readback | Pending |
 | V16 | Evidence reconciliation and handoff to W with no hidden required Admin blocker | Pending |
 
-## Current checkpoint — RECOVERY HTTP400 invalid_credentials; selected account now shown in password prompt
+## Current checkpoint — MFA on hold; unexpected factor requires read-only metadata review
+
+FRE202 records latest owner6-request Management-only run at2026-10-25T14:04:42.103Z stopped at BATCH_V_UNEXPECTED_EXISTING_FACTOR before any Auth/password. PRIMARY has0 and RECOVERY1 unverified factor, compared with previous1/0. This run changed neither factor nor mode; cause of the difference is unknown. Final Q/target/Admin parity/zero sessions pass. The root false ordinary-identity flag was assigned after the refused factor guard; it does not prove identity drift. FRE203 reuses the existing tested five-read review via a current-source interactive entry and restores star masking,68 local PASS. [Current read-only handoff](SECURITY_FR_2_4_BATCH_V_CURRENT_FACTOR_REVIEW.md). No enrollment, deletion, reset, role write or password retry from these counts.
+
+## Earlier checkpoint — RECOVERY HTTP400 invalid_credentials; selected account shown in password prompt
 
 FRE201 records owner66/66 offline PASS and corrected hosted diagnostic HTTP400 invalid_credentials for RECOVERY. Visible local account selections show that the owner-mentioned admin address was PRIMARY, so the first password prompt required the other RECOVERY account password. Which password was typed is unknown. Final quarantine/zero sessions/unchanged factors verified. Prompt-only email labelling local66 PASS; reuse the owner66 pass for a focused source-verified retry. No automatic password reset, credential guess or factor change.
 

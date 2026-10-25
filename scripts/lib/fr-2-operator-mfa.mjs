@@ -73,7 +73,7 @@ function sessionClaims(token, aal, expectedId, priorSession) {
 }
 export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch,
   order=[0,1], verifiedPublishableKey=null, prepareFactors=null,
-  beforeVerify=async()=>{}, sessionOpened=async()=>{}}) {
+  beforeVerify=async()=>{}, sessionOpened=async()=>{}, resumeUnverifiedFactor=null}) {
   const receipt = {
     stage_step:'FR.2.4_OPERATOR_MFA_SETUP', project:PROJECT,
     result:'STAGING_OPERATOR_MFA_REVIEW_REQUIRED', accounts:[], problem_code:null,
@@ -193,6 +193,7 @@ export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch,
   }
   try {
     const selected=validateEmails(emails);
+    need(resumeUnverifiedFactor===null||typeof resumeUnverifiedFactor==='function', 'UNVERIFIED_RESUME_CALLBACK_REQUIRED');
     need(Array.isArray(order)&&order.length===2&&order.every(x=>x===0||x===1)&&order[0]!==order[1], 'ACCOUNT_ORDER_REJECTED');
     if(verifiedPublishableKey!==null) {
       need(/^sb_publishable_[A-Za-z0-9_-]{1,512}$/.test(verifiedPublishableKey), 'STAGING_CONFIG_REJECTED');
@@ -214,8 +215,15 @@ export async function runOperatorMfa({emails, io, fetcher = globalThis.fetch,
       need(Array.isArray(factors)&&factors.length<=1, 'EXISTING_FACTORS_REQUIRE_REVIEW');
       let factor=factors[0];
       if(factor) {
-        need(factor.factor_type==='totp'&&factor.status==='verified'&&UUID.test(factor.id||''), 'EXISTING_FACTORS_REQUIRE_REVIEW');
-        state.existing_verified_factor_reused=true;
+        need(factor.factor_type==='totp'&&UUID.test(factor.id||''), 'EXISTING_FACTORS_REQUIRE_REVIEW');
+        if(factor.status==='unverified'&&resumeUnverifiedFactor!==null) {
+          need(await resumeUnverifiedFactor({slot,email,factor,actor:initial.user.id,session:initial.c.session_id})===true,
+            'EXISTING_FACTORS_REQUIRE_REVIEW');
+          state.existing_unverified_factor_resumed=true;
+        } else {
+          need(factor.status==='verified', 'EXISTING_FACTORS_REQUIRE_REVIEW');
+          state.existing_verified_factor_reused=true;
+        }
       } else {
         receipt.enrollment_request_attempted=true; state.new_factor_enrollment_attempted=true;
         receipt.factor_state_may_require_review=true;

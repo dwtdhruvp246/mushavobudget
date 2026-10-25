@@ -23,7 +23,11 @@
 | V15 | Final quarantine/fence/exact selected session/device/fixture cleanup and source readback | Pending |
 | V16 | Evidence reconciliation and handoff to W with no hidden required Admin blocker | Pending |
 
-## Current checkpoint — first genuine MFA run stopped at RECOVERY password sign-in
+## Current checkpoint — RECOVERY HTTP400 invalid_credentials; selected account now shown in password prompt
+
+FRE201 records owner66/66 offline PASS and corrected hosted diagnostic HTTP400 invalid_credentials for RECOVERY. Visible local account selections show that the owner-mentioned admin address was PRIMARY, so the first password prompt required the other RECOVERY account password. Which password was typed is unknown. Final quarantine/zero sessions/unchanged factors verified. Prompt-only email labelling local66 PASS; reuse the owner66 pass for a focused source-verified retry. No automatic password reset, credential guess or factor change.
+
+## Earlier first genuine MFA run stopped at RECOVERY password sign-in
 
 FRE199 records owner offline58/58 PASS; hosted8 requests with one rejected Auth password request, no enrollment/deletion and final zero sessions/QUARANTINED. Its generic HTTP_STATUS_REVIEW_REQUIRED does not establish a wrong password. FRE200 adds only bounded safe HTTP status/public code diagnostics and visible local email entry,66/66 local PASS; original recovery-first/exact pending-factor protections remain. See the [updated concrete MFA handoff](SECURITY_FR_2_4_BATCH_V_MFA_HANDOFF.md). Full V remains IN PROGRESS.
 

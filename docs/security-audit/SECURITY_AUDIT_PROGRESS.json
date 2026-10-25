@@ -3,7 +3,7 @@
   "updated_date": "2026-10-25",
   "current_stage": null,
   "current_step": "FR.2.4.E5.36_BATCH_V_RECOVERY_FIRST_GENUINE_MFA_AND_EXACT_PENDING_FACTOR",
-  "current_title": "Main Stage3 / FR.2 / Batch V: owner local58 PASS; RECOVERY password sign-in HTTP stop, final Q/zero sessions; safe Auth diagnostics and visible email correction local66 ready",
+  "current_title": "Main Stage3 / FR.2 / Batch V: owner local66 PASS; RECOVERY HTTP400 invalid_credentials, final Q/zero sessions; selected email now included in password prompt",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,

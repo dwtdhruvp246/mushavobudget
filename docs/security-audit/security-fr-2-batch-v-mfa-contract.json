@@ -1,7 +1,7 @@
 {
   "stage_step": "FR.2.4.E5.36_BATCH_V_RECOVERY_FIRST_GENUINE_MFA_AND_EXACT_PENDING_FACTOR",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
-  "status": "LOCAL66_PASS_SAFE_AUTH_DIAGNOSTIC_AND_VISIBLE_OPERATOR_EMAILS_OWNER_READY",
+  "status": "OWNER_LOCAL66_PASS_RECOVERY_INVALID_CREDENTIALS_ACCOUNT_LABELLED_PASSWORD_PROMPT_READY",
   "source_parent_commit": "a6358a1558491462bca9118134a842676f8909f3",
   "owner_read_only_receipt": "docs/security-audit/security-fr-2-batch-v-owner-read-only-result.json",
   "handoff": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_MFA_HANDOFF.md",
@@ -61,5 +61,11 @@
   "unknown_Auth_error_strings_or_messages_copied": false,
   "Auth_error_body_limit_bytes": 262144,
   "failed_signin_retried_automatically": false,
-  "local_receipt": "docs/security-audit/security-fr-2-batch-v-auth-diagnostics-local-checks.json"
+  "local_receipt": "docs/security-audit/security-fr-2-batch-v-auth-diagnostics-local-checks.json",
+  "latest_owner_receipt": "docs/security-audit/security-fr-2-batch-v-owner-mfa-invalid-credentials.json",
+  "latest_local_receipt": "docs/security-audit/security-fr-2-batch-v-password-label-local-checks.json",
+  "password_prompt_names_selected_email_locally": true,
+  "password_value_echoed": false,
+  "owner_offline66_repeat_required_for_prompt_only_retry": false,
+  "source_identity_verification_before_prompts_retained": true
 }

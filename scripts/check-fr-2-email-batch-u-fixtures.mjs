@@ -1,0 +1,47 @@
+// The existing privileged Management transport is reused (read_only:false); SQL itself
+// enforces BEGIN TRANSACTION READ ONLY, local limits and ROLLBACK.
+// Aggregate-only inventory of retained test inboxes. No Auth, email, browser or database write.
+import {fileURLToPath} from 'node:url';
+import {createInterface} from 'node:readline';
+import {isDeepStrictEqual as equal} from 'node:util';
+import {isSingleMailbox} from '../supabase/functions/_shared/email-verification-zoho.mjs';
+import {contextSQL,stagingRef} from './lib/email-registration-handoff-sql.mjs';
+import {stateSQL} from './lib/email-bounded-http-sql.mjs';
+export const stage='FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE';
+const object=x=>x!==null&&typeof x==='object'&&!Array.isArray(x),exact=(x,keys)=>object(x)&&equal(Object.keys(x).sort(),keys.slice().sort());
+const need=(v,c)=>{if(!v)throw Error(c);},quote=x=>"'"+x.replaceAll("'","''")+"'";
+function recipientsRequired(values){need(Array.isArray(values)&&values.length>=2&&values.length<=10&&values.every(isSingleMailbox)&&new Set(values.map(x=>x.toLowerCase())).size===values.length,'FIXTURE_PRIVATE_INPUT_REQUIRED');}
+export function fixtureInventorySQL(recipients){
+ recipientsRequired(recipients);
+ return `BEGIN TRANSACTION READ ONLY;\nSET LOCAL statement_timeout='25s';\nSET LOCAL lock_timeout='3s';\nSET LOCAL search_path=pg_catalog;\nWITH configured(inbox_number,email) AS (VALUES ${recipients.map((x,i)=>`(${i+1},${quote(x.toLowerCase())})`).join(',')}), facts AS (
+ SELECT c.inbox_number,
+ (SELECT count(*)::int FROM auth.users u WHERE lower(u.email)=c.email) AS matching_accounts,
+ EXISTS(SELECT 1 FROM auth.users u JOIN public.profiles p ON p.id=u.id WHERE lower(u.email)=c.email AND u.email_confirmed_at IS NOT NULL AND p.account_status='active' AND (u.banned_until IS NULL OR u.banned_until<=statement_timestamp()) AND NOT EXISTS(SELECT 1 FROM public.app_admins a WHERE a.user_id=u.id OR lower(a.email)=lower(u.email))) AS ordinary_active_verified,
+ EXISTS(SELECT 1 FROM auth.users u JOIN public.profiles p ON p.id=u.id WHERE lower(u.email)=c.email AND p.email=lower(u.email) AND p.full_name=coalesce(nullif(u.raw_user_meta_data->>'full_name',''),split_part(u.email,'@',1),'Household owner')) AS profile_matches_Auth_metadata,
+ (SELECT count(*)::int FROM public.budget_workspaces w JOIN auth.users u ON u.id=w.owner_id WHERE lower(u.email)=c.email AND w.workspace_type='personal' AND w.status<>'closed') AS personal_workspaces,
+ (SELECT count(*)::int FROM public.payment_items p JOIN auth.users u ON u.id=p.owner_id WHERE lower(u.email)=c.email AND p.visibility='personal') AS personal_payment_rows,
+ EXISTS(SELECT 1 FROM public.payment_items p JOIN auth.users u ON u.id=p.owner_id WHERE lower(u.email)=c.email AND p.visibility='personal' AND p.status='active' AND length(p.name) BETWEEN 4 AND 200) AS qualifying_active_personal_payment
+ FROM configured c)
+ SELECT jsonb_build_object('context',${contextSQL},'inboxes',jsonb_agg(to_jsonb(f) ORDER BY inbox_number)) AS fixture_inventory FROM facts f;\nROLLBACK;\n`;
+}
+const context={privileged_origin:true,transaction_read_only:'on'};
+const fields=['inbox_number','matching_accounts','ordinary_active_verified','profile_matches_auth_metadata','personal_workspaces','personal_payment_rows','qualifying_active_personal_payment'];
+export async function inspectFixtures(input,{transport=fetch}={}){
+ const r={stage_step:stage,progress_display:'Stage 3/10 | FR.2/8 | Batch U/Z — READ ONLY FIXTURE REVIEW',result:'BATCH_U_READ_ONLY_FIXTURE_INVENTORY_REVIEW_REQUIRED',actual_hosted_requests:0,maximum_direct_HTTP_requests:5,target_before_and_after_verified:false,quarantined_catalog_before_verified:false,quarantined_catalog_after_verified:false,inboxes:[],recommended_first_inbox_number:null,fixture_preparation_required:null,application_rows_written:false,Auth_sessions_created:0,Auth_sessions_deleted:0,real_email_requests:0,committed_mode_change_requests:0,private_packet_values_beyond_retained_inbox_list_passed_to_child:false,credentials_emails_IDs_or_provider_bodies_in_safe_result:false,hosted_acceptance:false,production_or_native_changed:false,APK_update_deferred:true,findings_closed:[],checkpoint:'PRIVATE_INPUT',problem_code:null,final_state_problem_code:null,exit_code:1};
+ let ready=false,complete=false,sql;const base='https://api.supabase.com/v1/projects/'+stagingRef;
+ const read=async(label,query)=>{r.checkpoint=label;need(++r.actual_hosted_requests<=5,'FIXTURE_REQUEST_BOUND');const res=await transport(base+(query?'/database/query':''),{method:query?'POST':'GET',redirect:'error',signal:AbortSignal.timeout(40000),headers:{Authorization:'Bearer '+input.managementToken,Accept:'application/json',...(query?{'Content-Type':'application/json'}:{})},...(query?{body:JSON.stringify({query,read_only:false})}:{})});need(res.status===(query?201:200)&&!res.redirected&&(!res.url||res.url===base+(query?'/database/query':''))&&/^application\/json(?:\s*;|$)/i.test(res.headers.get('content-type')||''),'FIXTURE_RESPONSE_REQUIRED');const reader=res.body?.getReader();need(reader,'FIXTURE_RESPONSE_REQUIRED');let size=0;const chunks=[];try{for(;;){const q=await reader.read();if(q.done)break;need((size+=q.value.length)<=131072,'FIXTURE_RESPONSE_BOUND');chunks.push(q.value);}}finally{await reader.cancel().catch(()=>{});reader.releaseLock();}return JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(Buffer.concat(chunks)));};
+ const target=x=>need(object(x)&&(x.ref===stagingRef||x.ref===undefined&&x.id===stagingRef)&&!(typeof x.id==='string'&&/^[a-z]{20}$/.test(x.id)&&x.id!==stagingRef)&&x.status==='ACTIVE_HEALTHY'&&x.database?.host==='db.'+stagingRef+'.supabase.co','FIXTURE_TARGET_REQUIRED');
+ const closed=rows=>{need(Array.isArray(rows)&&rows.length===1&&exact(rows[0],['bounded_state']),'FIXTURE_CATALOG_REQUIRED');const x=rows[0].bounded_state;need(equal(x?.context,context)&&x.catalog_kind==='BOUNDED'&&x.control_rows===1&&x.mode==='QUARANTINED'&&x.quarantined_stamp_matched===true&&x.predicate_source_matched===true&&x.stamp_matched===true&&x.window_present===true&&x.window_empty===true&&x.guarded_RPCs===148&&x.restrictive_policies===82&&x.backend_forced_RLS_tables===5&&x.private_schema_API_denied===true,'FIXTURE_CATALOG_REQUIRED');};
+ const safe=e=>/^FIXTURE_[A-Z0-9_]+$/.test(e?.message||'')?e.message:'FIXTURE_NETWORK_OR_RESPONSE_REQUIRED';
+ try{
+  need(exact(input,['managementToken','allowedRecipients'])&&typeof input.managementToken==='string'&&/^sbp_fc[A-Za-z0-9_-]{20,512}$/.test(input.managementToken),'FIXTURE_PRIVATE_INPUT_REQUIRED');recipientsRequired(input.allowedRecipients);sql=await stateSQL();target(await read('TARGET_BEFORE'));closed(await read('QUARANTINED_CATALOG_BEFORE',sql));r.quarantined_catalog_before_verified=true;ready=true;
+  const rows=await read('RETAINED_INBOX_FIXTURE_INVENTORY',fixtureInventorySQL(input.allowedRecipients));need(Array.isArray(rows)&&rows.length===1&&exact(rows[0],['fixture_inventory']),'FIXTURE_RESPONSE_REQUIRED');const v=rows[0].fixture_inventory;need(exact(v,['context','inboxes'])&&equal(v.context,context)&&Array.isArray(v.inboxes)&&v.inboxes.length===input.allowedRecipients.length,'FIXTURE_RESPONSE_REQUIRED');
+  for(let i=0;i<v.inboxes.length;i++){const f=v.inboxes[i];need(exact(f,fields)&&f.inbox_number===i+1&&['matching_accounts','personal_workspaces','personal_payment_rows'].every(k=>Number.isSafeInteger(f[k])&&f[k]>=0)&&['ordinary_active_verified','profile_matches_auth_metadata','qualifying_active_personal_payment'].every(k=>typeof f[k]==='boolean'),'FIXTURE_RESPONSE_REQUIRED');const eligible=f.matching_accounts===1&&f.ordinary_active_verified&&f.profile_matches_auth_metadata&&f.personal_workspaces===1&&f.qualifying_active_personal_payment;r.inboxes.push({...f,eligible_as_first_account:eligible});}
+  r.recommended_first_inbox_number=r.inboxes.find(f=>f.eligible_as_first_account)?.inbox_number??null;r.fixture_preparation_required=r.recommended_first_inbox_number===null;complete=true;
+ }catch(e){r.problem_code=safe(e);}
+ finally{if(ready){try{closed(await read('QUARANTINED_CATALOG_AFTER',sql));r.quarantined_catalog_after_verified=true;}catch(e){r.final_state_problem_code=safe(e);}try{target(await read('TARGET_AFTER'));r.target_before_and_after_verified=true;}catch(e){r.final_state_problem_code??=safe(e);}}}
+ if(complete&&!r.problem_code&&!r.final_state_problem_code){r.result='BATCH_U_READ_ONLY_FIXTURE_INVENTORY_COMPLETE';r.checkpoint='COMPLETE';r.exit_code=0;}r.checked_UTC=new Date().toISOString();return r;
+}
+if(process.argv[1]===fileURLToPath(import.meta.url)){
+ let rl,answer;try{need(process.argv.length===3&&process.argv[2]==='--private-dialogue'&&!process.stdin.isTTY&&!process.stdout.isTTY,'FIXTURE_PRIVATE_INPUT_REQUIRED');rl=createInterface({input:process.stdin,crlfDelay:Infinity});const it=rl[Symbol.asyncIterator]();let timer;try{const line=await Promise.race([it.next(),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('FIXTURE_INPUT_TIMEOUT')),30000);})]);need(!line.done&&Buffer.byteLength(line.value)<=65536,'FIXTURE_PRIVATE_INPUT_REQUIRED');answer=await inspectFixtures(JSON.parse(line.value));}finally{clearTimeout(timer);}}catch{answer={stage_step:stage,result:'BATCH_U_FIXTURE_PRIVATE_INPUT_REVIEW_REQUIRED',actual_hosted_requests:0,exit_code:1};}finally{rl?.close();process.stdin.destroy();}process.stdout.write(JSON.stringify({protocol:'BATCH_U_RESULT',receipt:answer})+'\n');process.exitCode=answer.exit_code;
+}

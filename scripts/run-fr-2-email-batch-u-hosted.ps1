@@ -3,6 +3,7 @@ param(
     [switch]$PreflightOnly,
     [switch]$ExerciseFullAppWindow,
     [switch]$InspectPacketOnly,
+    [switch]$InspectFixtureOnly,
     [string]$PacketFile = '',
     [string]$BrowserExecutable = ''
 )
@@ -198,9 +199,13 @@ function Private-Dialogue([string]$Node, [string]$Entry, [string]$Text, [bool]$A
         $Errors = $null
     }
 }
-if ($InspectPacketOnly.IsPresent -or $PreflightOnly.IsPresent) { Write-Host 'BATCH U STARTED: local inspection only; no hosted login or email request.' }
+if ($InspectPacketOnly.IsPresent -or $PreflightOnly.IsPresent -or $InspectFixtureOnly.IsPresent) {
+    if ($InspectFixtureOnly.IsPresent) { Write-Host 'Stage 3/10 | FR.2/8 | Batch U/Z - STARTED: READ ONLY retained-inbox fixture inventory. No app password, Auth session, email, application write or mode change.' }
+    else { Write-Host 'BATCH U STARTED: local inspection only; no hosted login or email request.' }
+}
 else { Write-Host 'Stage 3/10 | FR.2/8 | Batch U/Z - STARTED: actual FULL APP browser checks with two ordinary staging accounts, ONE code email, a FIRST-account-only FIVE-MINUTE window, then explicit quarantine and exact cleanup. No public launch.' }
 try {
+    if ($InspectFixtureOnly.IsPresent -and ($InspectPacketOnly.IsPresent -or $PreflightOnly.IsPresent -or $ExerciseFullAppWindow.IsPresent)) { throw 'ONE_INSPECTION_MODE_REQUIRED' }
     if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT) { throw 'WINDOWS_REQUIRED' }
     Assert-Unlinked $SnapshotRoot
     $Manifest = Get-Content -LiteralPath (Join-Path $SnapshotRoot 'docs/security-audit/security-fr-2-email-batch-u-hosted-source-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -226,12 +231,14 @@ try {
         Write-Host 'BATCH U LOCAL PREFLIGHT COMPLETE: hosted acceptance remains pending.'
         return 0
     }
-    if (-not $ExerciseFullAppWindow.IsPresent -and -not $InspectPacketOnly.IsPresent) { throw 'EXPLICIT_ONE_EMAIL_SWITCH_REQUIRED' }
+    if (-not $ExerciseFullAppWindow.IsPresent -and -not $InspectPacketOnly.IsPresent -and -not $InspectFixtureOnly.IsPresent) { throw 'EXPLICIT_ONE_EMAIL_SWITCH_REQUIRED' }
+    if (-not $InspectFixtureOnly.IsPresent) {
     $Phase = 'EXISTING_BROWSER_VALIDATION'
     $BrowserExecutable = $BrowserExecutable.Trim().Trim('"')
     if (-not [IO.Path]::IsPathRooted($BrowserExecutable) -or -not (Test-Path -LiteralPath $BrowserExecutable -PathType Leaf) -or
         (Split-Path $BrowserExecutable -Leaf) -notin @('msedge.exe','chrome.exe')) { throw 'EXISTING_BROWSER_REQUIRED' }
     Assert-Unlinked $BrowserExecutable
+    }
     $PrivateRoot = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'MushavoBudget/PrivateStaging'
     $PacketFile = Select-RetainedGatewayPacket $PrivateRoot $PacketFile
     $Phase = 'RETAINED_GATEWAY_PACKET_FILE_READ'
@@ -258,6 +265,28 @@ try {
         Write-Host ('{"stage_step":"FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE","result":"LOCAL_RETAINED_GATEWAY_PACKET_INSPECTION_PASS","actual_hosted_requests":0,"source_hashes_verified":' + $SourceCount + ',"retained_gateway_packet_unchanged":true,"exit_code":0}')
         Write-Host 'BATCH U LOCAL PACKET INSPECTION COMPLETE: hosted email acceptance remains pending.'
         return 0
+    }
+    if ($InspectFixtureOnly.IsPresent) {
+        $Phase = 'READ_ONLY_FIXTURE_INVENTORY'
+        $Problem = 'PRIVATE_FIXTURE_INVENTORY_REVIEW_REQUIRED'
+        Write-Host 'Configured retained test inbox numbers (displayed locally only):'
+        for ($Index = 0; $Index -lt $RecipientEmails.Count; $Index++) { Write-Host (($Index + 1).ToString() + ': ' + $RecipientEmails[$Index]) }
+        $TokenSecure = Read-Host 'Paste the same staging Management token: Project Settings Read + Database Read-write (hidden)' -AsSecureString
+        $Payload = @{managementToken=((Plain $TokenSecure).Trim());allowedRecipients=$RecipientEmails} | ConvertTo-Json -Depth 4 -Compress
+        $InventoryEntry = Join-Path $SnapshotRoot 'scripts/check-fr-2-email-batch-u-fixtures.mjs'
+        $Safe = Private-Dialogue $Runtime.execPath $InventoryEntry $Payload $false
+        if ((Get-FileHash -LiteralPath $PacketFile -Algorithm SHA256).Hash -cne $PacketHash) { throw 'PRIVATE_PACKET_CHANGED' }
+        $InventoryAllowed = @('stage_step','progress_display','result','actual_hosted_requests','maximum_direct_HTTP_requests','target_before_and_after_verified','quarantined_catalog_before_verified','quarantined_catalog_after_verified','inboxes','recommended_first_inbox_number','fixture_preparation_required','application_rows_written','Auth_sessions_created','Auth_sessions_deleted','real_email_requests','committed_mode_change_requests','private_packet_values_beyond_retained_inbox_list_passed_to_child','credentials_emails_IDs_or_provider_bodies_in_safe_result','hosted_acceptance','production_or_native_changed','APK_update_deferred','findings_closed','checkpoint','problem_code','final_state_problem_code','exit_code','checked_UTC')
+        if (@($Safe.PSObject.Properties | Where-Object { $_.Name -notin $InventoryAllowed }).Count -ne 0) { throw 'UNEXPECTED_SAFE_FIELDS' }
+        $Safe | Add-Member -NotePropertyName source_hashes_verified -NotePropertyValue $SourceCount
+        $Safe | Add-Member -NotePropertyName retained_gateway_DPAPI_packet_read_only -NotePropertyValue $true
+        $Safe | Add-Member -NotePropertyName retained_gateway_packet_unchanged -NotePropertyValue $true
+        Write-Host 'BEGIN SAFE BATCH U FIXTURE INVENTORY'
+        Write-Host ($Safe | ConvertTo-Json -Depth 10)
+        Write-Host 'END SAFE BATCH U FIXTURE INVENTORY'
+        if ($Safe.exit_code -eq 0) { Write-Host 'Stage 3/10 | FR.2/8 | Batch U/Z - READ ONLY INVENTORY COMPLETE. Batch U acceptance remains pending. Send the safe JSON and exit code.' }
+        else { Write-Host 'Stage 3/10 | FR.2/8 | Batch U/Z - STOPPED FOR REVIEW. No email or mode change was requested.' }
+        return [int]$Safe.exit_code
     }
     $Phase = 'RETAINED_GATEWAY_TEST_INBOX_CHOICE'
     $Problem = 'PRIVATE_RECIPIENT_SELECTION_REQUIRED'

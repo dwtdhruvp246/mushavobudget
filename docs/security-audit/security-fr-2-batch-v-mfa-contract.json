@@ -1,7 +1,7 @@
 {
   "stage_step": "FR.2.4.E5.36_BATCH_V_RECOVERY_FIRST_GENUINE_MFA_AND_EXACT_PENDING_FACTOR",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
-  "status": "MFA_SETUP_ON_HOLD_UNEXPECTED_FACTOR_READ_ONLY_CURRENT_REVIEW_REQUIRED",
+  "status": "MFA_SETUP_ON_HOLD_AWAIT_OWNER_CURRENT_RECOVERY_AUTHENTICATOR_ENTRY_STATUS",
   "source_parent_commit": "a6358a1558491462bca9118134a842676f8909f3",
   "owner_read_only_receipt": "docs/security-audit/security-fr-2-batch-v-owner-read-only-result.json",
   "handoff": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_MFA_HANDOFF.md",
@@ -62,7 +62,7 @@
   "Auth_error_body_limit_bytes": 262144,
   "failed_signin_retried_automatically": false,
   "local_receipt": "docs/security-audit/security-fr-2-batch-v-auth-diagnostics-local-checks.json",
-  "latest_owner_receipt": "docs/security-audit/security-fr-2-batch-v-owner-unexpected-factor-stop.json",
+  "latest_owner_receipt": "docs/security-audit/security-fr-2-batch-v-owner-current-factor-review.json",
   "latest_local_receipt": "docs/security-audit/security-fr-2-batch-v-factor-review-local-checks.json",
   "password_prompt_names_selected_email_locally": true,
   "password_value_echoed": false,
@@ -74,5 +74,10 @@
   "password_or_TOTP_or_SETUP_prompt_in_current_action": false,
   "Auth_requests_in_current_action": 0,
   "pending_factor_changes_authorized_by_current_action": false,
-  "hidden_values_echo_only_star_characters": true
+  "hidden_values_echo_only_star_characters": true,
+  "current_reviewed_RECOVERY_pending_sha256": "6c694294cb8273bce316aa86fd706e32a8028f2e3fba3ac65d4e75f98e6854cc",
+  "current_reviewed_RECOVERY_pending_created_UTC": "2026-10-25T14:03:03.118678+00:00",
+  "prior_PRIMARY_pending_factor_not_currently_present": true,
+  "non_secret_owner_entry_status_required": true,
+  "current_action_is_another_terminal_run": false
 }

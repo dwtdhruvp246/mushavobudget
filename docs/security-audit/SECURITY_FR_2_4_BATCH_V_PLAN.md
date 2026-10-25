@@ -23,7 +23,11 @@
 | V15 | Final quarantine/fence/exact selected session/device/fixture cleanup and source readback | Pending |
 | V16 | Evidence reconciliation and handoff to W with no hidden required Admin blocker | Pending |
 
-## Current checkpoint — MFA on hold; unexpected factor requires read-only metadata review
+## Current checkpoint — read-only review passed; owner saved RECOVERY entry status required
+
+FRE204 records current5-read/zero Auth review PASS at2026-10-25T14:23:19.296Z. PRIMARY0 factors, RECOVERY1 unverified expected-label TOTP created14:03:03UTC today, metadata SHA2566c694294cb8273bce316aa86fd706e32a8028f2e3fba3ac65d4e75f98e6854cc. This is different metadata from the old15October PRIMARY factor, now absent. Current36/58 parity, isolated ordinary identities and quarantine pass. Origin/intervening changes are not established. Ask only whether owner recognizes the setup and has its saved authenticator entry; do not request its secret or code in chat. If accessible, prepare a no-enrollment/no-deletion resume for the exact reviewed factor, genuine fresh-session AAL2 and later missing PRIMARY setup. If recognized but unavailable, prepare a separate exact guarded recovery route that first preserves working access. If unrecognized, keep setup paused pending origin review. No such path is automatically authorized by metadata and no additional hosted/secret operation is performed here.
+
+## Earlier checkpoint — unexpected factor required read-only metadata review
 
 FRE202 records latest owner6-request Management-only run at2026-10-25T14:04:42.103Z stopped at BATCH_V_UNEXPECTED_EXISTING_FACTOR before any Auth/password. PRIMARY has0 and RECOVERY1 unverified factor, compared with previous1/0. This run changed neither factor nor mode; cause of the difference is unknown. Final Q/target/Admin parity/zero sessions pass. The root false ordinary-identity flag was assigned after the refused factor guard; it does not prove identity drift. FRE203 reuses the existing tested five-read review via a current-source interactive entry and restores star masking,68 local PASS. [Current read-only handoff](SECURITY_FR_2_4_BATCH_V_CURRENT_FACTOR_REVIEW.md). No enrollment, deletion, reset, role write or password retry from these counts.
 

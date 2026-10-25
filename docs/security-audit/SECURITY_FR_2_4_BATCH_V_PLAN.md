@@ -23,7 +23,11 @@
 | V15 | Final quarantine/fence/exact selected session/device/fixture cleanup and source readback | Pending |
 | V16 | Evidence reconciliation and handoff to W with no hidden required Admin blocker | Pending |
 
-## Current checkpoint — read-only review passed; owner saved RECOVERY entry status required
+## Current checkpoint — owner does not recognize factor; read-only Auth audit required
+
+FRE205 records owner Unrecognized; do not repeat MFA, challenge, remove or replace this factor blindly. FRE206 prepares [bounded selected Auth audit SQL](SECURITY_FR_2_4_BATCH_V_AUTH_AUDIT_HANDOFF.md),8/8 new local SQL tests PASS,335 source identities including all332 existing executed sources unchanged. Read only selected actor/subject/exact current-factor audit references for13:35–14:10UTC, project/quarantine guards and ROLLBACK. Pinned public Auth source can purge old unverified unchallenged factors globally during enrollment; that may explain old PRIMARY disappearance but hosted build/actual cleanup is unproven. New RECOVERY creator/human/client origin remains unknown. Optional DB audit storage/no events does not establish no activity. No factor/Auth/settings/mode write, new installation or offline owner repeat.
+
+## Earlier checkpoint — owner saved RECOVERY entry status required
 
 FRE204 records current5-read/zero Auth review PASS at2026-10-25T14:23:19.296Z. PRIMARY0 factors, RECOVERY1 unverified expected-label TOTP created14:03:03UTC today, metadata SHA2566c694294cb8273bce316aa86fd706e32a8028f2e3fba3ac65d4e75f98e6854cc. This is different metadata from the old15October PRIMARY factor, now absent. Current36/58 parity, isolated ordinary identities and quarantine pass. Origin/intervening changes are not established. Ask only whether owner recognizes the setup and has its saved authenticator entry; do not request its secret or code in chat. If accessible, prepare a no-enrollment/no-deletion resume for the exact reviewed factor, genuine fresh-session AAL2 and later missing PRIMARY setup. If recognized but unavailable, prepare a separate exact guarded recovery route that first preserves working access. If unrecognized, keep setup paused pending origin review. No such path is automatically authorized by metadata and no additional hosted/secret operation is performed here.
 

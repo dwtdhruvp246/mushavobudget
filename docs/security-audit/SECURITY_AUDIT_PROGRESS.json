@@ -3,7 +3,7 @@
   "updated_date": "2026-10-25",
   "current_stage": null,
   "current_step": "FR.2.4.E5.35_BATCH_V_ADMIN_MFA_OPERATOR_FACTOR_AND_CATALOG_REVIEW",
-  "current_title": "Main Stage3 / FR.2 / Batch V: current five-read metadata review PASS; new pending RECOVERY factor identified; owner saved-authenticator-entry status needed before reuse/replacement",
+  "current_title": "Main Stage3 / FR.2 / Batch V: owner does not recognize pending RECOVERY factor; MFA paused, bounded read-only Auth audit SQL local8 ready",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,

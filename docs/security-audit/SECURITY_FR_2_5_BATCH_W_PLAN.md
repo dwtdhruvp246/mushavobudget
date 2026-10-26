@@ -1,0 +1,31 @@
+# Batch W — Auth settings, account flows, passwords and email
+
+**STARTED: Stage 3/10 | FR.2/8 | Batch W/Z.** On26October2026 the owner explicitly deferred V MFA until phone transfer is complete and requested independent next work. V remains ON HOLD, not complete. Its owner86/86 offline pass at4396cb3 is retained for later reuse. Choice3 stopped before private credentials or hosted requests; combined exit1 is the intentional hold. MFA enforcement is not disabled or bypassed.
+
+W is an existing package in the fixed U–Z baseline. Its required acceptance list is the **same31 AU cases** from `SECURITY_STAGE_3_5_AUTH_FLOWS.md`, now individually identified in `security-fr-2-batch-w-contract.json`. No additional letter, acceptance requirement or launch approval is added. U is complete; five packages V,W,X,Y,Z remain and Z is final.
+
+| Group | Count | Existing acceptance scope | Dependency |
+|---|---:|---|---|
+| AU01 | 5 | Signup, confirmation pending/unconfirmed state, correct destination, generic resend/rate response | Current settings/callbacks; isolated controlled identity/inbox and bounded dispatch |
+| AU02 | 8 | Five Admin invitation cases; three Business first-password/existing-recipient/response cases | AU02.01–05 remain blocked by V Admin MFA; Business cases need reviewed controlled workspace/actors |
+| AU03 | 5 | Valid older-password sign-in, invalid credentials, new-password boundary, change/retry and recent-login verification | Current server policy and isolated account/session controls |
+| AU04 | 6 | Generic recovery, dedicated password view, wrong/missing session, expired/used link, save retry and cross-tab isolation | Controlled inbox/link and exact session/identity cleanup |
+| AU05 | 7 | Refresh, invalid/transient refresh, cleanup/sign-out failures, account switches and rate/stale-token behavior | Appropriate source, controlled sessions, no deliberate rate-limit hammering |
+
+These are acceptance cases, not the new20 synthetic runner checks. None is credited from configuration metadata alone. Relevant earlier passes may be reused only after their applicability, exact source, evidence and limitations are reconciled. Existing U browser/session evidence and accepted Personal/Business results are not rerun automatically. Later Google/Apple identity, native callbacks, stores and full launch acceptance remain in their designated stages.
+
+## Current combined action
+
+One command runs20 local read-only-runner checks and then performs a maximum of5 staging Management requests: fixed target; existing exact quarantined catalog snapshot; Auth configuration GET; independent quarantined catalog readback; fixed target again. Every SQL request uses the unchanged reviewed `stateSQL()` and `BEGIN TRANSACTION READ ONLY` ending in `ROLLBACK`. Its existing transport `read_only:false` is retained; the SQL transaction enforces read-only behavior. No application rows, operator factor rows or Auth sessions are selected. No Auth user endpoint, credential login, signup, email, role/account/factor/settings/mode change or deployment is requested.
+
+The only owner input is the retained hidden staging Management token. Current official Management documentation requires Auth-config read access for the GET. Existing token support is observed, not assumed;401/403 reports a fixed authorization diagnostic followed by final readback. No token is regenerated, permission silently broadened or request automatically retried. The runner never interprets a read failure as a password or authenticator failure.
+
+The provider configuration response may include SMTP/OAuth private fields. It remains in bounded process memory, is never logged or saved, and is reduced to explicitly named booleans, nonnegative integers, fixed classifications and counts. Missing/null values stay unknown; arbitrary strings, URLs, template bodies, SMTP/provider values and private catalog fences are omitted. There is no hash of private configuration or secret values. Callback literal presence and pattern counts do not establish provider glob semantics, actual link delivery or identity binding. A successful inspection can return policy review items; it does not mutate configuration or satisfy AU acceptance.
+
+## Validation and next work
+
+Assistant-local20/20 PASS, Node24.22.1,345 hashes/4 syntax checks. All339 previous executed source identities and frozen U310 are unchanged. New checks cover the real fixed request sequence/read-only SQL composition, safe projection, typed/missing values, callback classification, all five transport losses, permission denial, malformed/oversized/redirected responses, target/catalog drift, private input/cancellation/environment guards, actual one-prompt dialogue and unchanged UI/callback constructors. Default test network is disabled with the existing preload; explicit transports are synthetic. No new public dependency is needed; owner86 MFA tests are not repeated. Windows private execution and current hosted Auth configuration remain pending.
+
+After the safe owner inspection, reconcile actual password/callback/secure-change settings with pinned UI and prepare the smallest affected ordinary-account workflow batch. Any concrete later settings write, account creation/password change or mail dispatch must be described with its exact target/cleanup and meaningful tests before owner execution. Admin-dependent W cases remain blocked by V. V resumes only after the owner reports phone ready, with current-state inspection before any factor operation. Do not reenroll/delete from an old metadata fingerprint without checking current state.
+
+Full W, V, FR.2, Stage3 and findings/release acceptance remain open. Last direct hosted quarantine observation remains25October15:14:35UTC; the phone hold and local tests did not remeasure it. Production/native unchanged; APK deferred.

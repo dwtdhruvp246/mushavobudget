@@ -1,3 +1,5 @@
+> FRE213–FRE214,26 October2026: **Stage 3/10 | FR.2/8 | Batch W/Z STARTED; V MFA ON HOLD at the owner’s request.** The owner’s current V command at4396cb3 passed86/86 offline on Node22.17/PGlite0.5.8,339 hashes/5 syntax checks, then chose3 (phone unfinished), producing0 hosted/0 Auth/no factor requests and intentional combined exit1. [Exact owner receipt](security-fr-2-batch-v-owner-recovery-phone-hold.json). Reuse that offline pass when the owner reports phone ready; no authenticator operation, factor reset, MFA disablement or assurance bypass is requested now. [W read-only handoff](SECURITY_FR_2_5_BATCH_W_AUTH_HANDOFF.md) proceeds independently with20/20 assistant-local checks,345 hashes/4 syntax checks, all339 prior/U310 sources unchanged, no new dependency. Its one hidden prompt reuses the existing Management token; max5 read-only target/catalog/Auth-config/readback requests, no settings/account/session/mode write. Auth config permission denial is explicit and does not create a new token or broaden scope. The existing31 AU cases are frozen, not passed by settings metadata; Admin-dependent invitations remain blocked by V. U COMPLETE; V–Z five packages remain, Z final; full V/W/FR.2/Stage3/launch remain open. Last observed hosted quarantine is still25October15:14:35UTC, not remeasured by the phone hold.
+
 > FRE195–FRE196: **Batch U COMPLETE at its frozen scoped boundary.** Owner hosted37-request/one-email full-app lifecycle, quarantine/fence, exact temporary item/device/four-session cleanup and preexisting-state readback PASS/exit0; last DB observation QUARANTINED2026-10-25T07:35:50.069Z. [U acceptance and limits](SECURITY_FR_2_4_BATCH_U_COMPLETE.md). **Batch V/Z STARTED**; five packages V–Z remain. [V frozen16-case plan and combined read-only handoff](SECURITY_FR_2_4_BATCH_V_PLAN.md) reuses current36/58 source/grant checks and the earlier operator/pending-factor checkpoint. Local13/13 PASS,321 hashes/139 syntax, all310 U sources unchanged. No U rerun, account/factor/role write, password, TOTP, upload or installation requested. FR.2/Stage3/release stay open.
 
 > FRE184 current status: **Stage 3/10 | FR.2/8 | Batch U/Z — IN PROGRESS**. Owner Windows55/55 and exact44-entry .NET ZIP readback passed, exit0. Local work COMPLETE; staging upload/readback and hosted full-app acceptance pending. Earlier preparation-only descriptions below are historical.
@@ -10,11 +12,12 @@ Adopted24 October2026 at the owner's request (FRE177). This convention applies t
 
 **Stage 3/10 — Authorization and Admin MFA — IN PROGRESS**  
 **FR.2/8 — Authorization, Admin MFA, authentication and finance integrity — IN PROGRESS**  
-**Batch V/Z — Admin MFA, recoverable operators and privileged access — IN PROGRESS**
+**Batch W/Z — Auth settings, account flows, passwords and email — IN PROGRESS**  
+**Batch V/Z — Admin MFA — ON HOLD for owner phone transfer; not complete**
 
 Compact form for routine updates:
 
-`Stage 3/10 | FR.2/8 | Batch V/Z — IN PROGRESS`
+`Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS; V MFA ON HOLD`
 
 This is the current hierarchy, not a universal mapping from FR number to main-stage number. Other remediation groups address other/spanning roadmap requirements. The numbers/letters identify the current point and plan endpoint, not completed counts, test totals or completion percentages. The original roadmap includes Stage0;10 is its last numbered stage. U–Z was the fixed six-package authorization baseline; U is now accepted complete and V–Z are the five remaining packages.
 

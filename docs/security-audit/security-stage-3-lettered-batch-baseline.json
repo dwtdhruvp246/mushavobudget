@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "baseline_version": 1,
-  "date": "2026-10-25",
+  "date": "2026-10-26",
   "source_commit": "88184eb016c970738e0a7d26275394047a37c841",
   "scope": "CURRENT_MAIN_STAGE_3_STAGING_AUTHORIZATION_REMEDIATION_LETTERED_STREAM",
   "status": "FIXED_BASELINE_WITH_CURRENT_EVIDENCE_STATUS",
@@ -29,7 +29,7 @@
     "T"
   ],
   "last_observed_scoped_pass": "U",
-  "next_letter": "V",
+  "next_letter": "W",
   "final_letter": "Z",
   "remaining_planned_batch_count": 5,
   "total_labels_in_this_baseline": 26,
@@ -59,7 +59,7 @@
     {
       "letter": "V",
       "title": "Admin MFA, recoverable operators and privileged access",
-      "status": "IN_PROGRESS",
+      "status": "ON_HOLD",
       "traceability": [
         "FR.2.4 Admin parity/operator/recovery"
       ],
@@ -79,14 +79,15 @@
       "required_case_count": 16,
       "owner_read_only_result_received": true,
       "read_only_receipt": "docs/security-audit/security-fr-2-batch-v-owner-read-only-result.json",
-      "next_action": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_MFA_HANDOFF.md",
+      "next_action": "Wait for owner phone-ready report; reuse owner86 exact-source offline pass; inspect current state before any factor action",
       "genuine_hosted_AAL2_verified": false,
-      "independent_recovery_drill_verified": false
+      "independent_recovery_drill_verified": false,
+      "owner_phone_hold_receipt": "docs/security-audit/security-fr-2-batch-v-owner-recovery-phone-hold.json"
     },
     {
       "letter": "W",
       "title": "Auth settings, account flows, passwords and email",
-      "status": "PLANNED",
+      "status": "IN_PROGRESS",
       "traceability": [
         "FR.2.5 Auth workflows"
       ],
@@ -100,7 +101,11 @@
         "Frozen Auth acceptance cases have real scoped positive/negative outcomes or an explicit blocking dependency",
         "Necessary real inbox/link/code delivery and terminal-created session cleanup verified without secret output",
         "Google/Apple provider integration and native callbacks remain in their later designated stages; not silently marked passed here"
-      ]
+      ],
+      "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
+      "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
+      "required_AU_case_count": 31,
+      "Admin_dependent_cases_remain_blocked_by_V": true
     },
     {
       "letter": "X",
@@ -189,8 +194,9 @@
   "committed_mode_change_requests": 0,
   "findings_closed": [],
   "progress_output_contract": "docs/security-audit/security-progress-display-contract.json",
-  "current_progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z — IN PROGRESS",
+  "current_progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS; V MFA ON HOLD",
   "completed_since_baseline": [
     "U"
-  ]
+  ],
+  "current_execution_order_change": "Owner explicitly deferred V MFA during phone transfer; independent W work proceeds; V remains an open prerequisite for dependent Admin cases and Z closeout"
 }

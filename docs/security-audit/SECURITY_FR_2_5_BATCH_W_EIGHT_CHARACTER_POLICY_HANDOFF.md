@@ -1,3 +1,5 @@
+> FRE223, 26 October 2026: **Stage 3/10 | FR.2/8 | Batch W/Z — owner Windows74/74 PASS, combined exit0, real retained public ZIP patch COMPLETE.** Exact output ZIP SHA256 `3255992abbc6058afa2e74f804cc19b3d9337d2380db52d52b82d0363454218b`;44 files/3 changed/41 preserved. No hosted setting, frontend upload or quarantine recheck occurred. [Current combined staging upload/settings handoff](SECURITY_FR_2_5_BATCH_W_EIGHT_DEPLOYMENT_AND_SETTINGS_HANDOFF.md); no terminal/offline rerun, installation or credential input required. Minimum8 and four exact callback readback remain pending; V MFA stays ON HOLD. Earlier preparation-pending statements below are retained as dated history.
+
 # Batch W — owner-selected eight-character password policy
 
 **Stage 3/10 | FR.2/8 | Batch W/Z — source/local work COMPLETE; owner Windows/package, staging deployment/settings and Auth acceptance pending. V MFA remains ON HOLD for phone transfer.** FRE221 records the explicit owner choice:8 characters replaces the previous12-character proposal and manual setting instruction. The callback additions remain the same4 exact URLs; no extra letter or acceptance requirement is added.

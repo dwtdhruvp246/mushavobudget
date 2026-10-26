@@ -1,3 +1,5 @@
+> FRE224, 26 October 2026: owner reports deployment done at https://05e04e4d.mushavo-budget-staging.pages.dev/ and reloaded minimum8. Required-character answer8 and all null fields require clarification; independent public fetch was unavailable, not a hosted failure. **Do not repeat the upload or settings Save.** [Current read-only follow-up](SECURITY_FR_2_5_BATCH_W_DEPLOYMENT_PARTIAL_READ_ONLY_FOLLOWUP.md). V MFA remains ON HOLD. Earlier write handoff below is retained as dated history.
+
 # Batch W — eight-character staging deployment and settings readback
 
 **Stage 3/10 | FR.2/8 | Batch W/Z — Windows verification/public ZIP COMPLETE; staging deployment/settings action ready, not performed. V MFA remains ON HOLD during phone transfer.**

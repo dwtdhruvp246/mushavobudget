@@ -106,14 +106,14 @@
       "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
       "required_AU_case_count": 31,
       "Admin_dependent_cases_remain_blocked_by_V": true,
-      "next_action": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_DEPLOYMENT_PARTIAL_READ_ONLY_FOLLOWUP.md",
+      "next_action": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PUBLIC_READBACK_HANDOFF.md",
       "owner_offline20_PASS": true,
       "Auth_config_GET_denied_403": true,
       "settings_accepted": false,
       "owner_corrected_dashboard_receipt": "docs/security-audit/security-fr-2-batch-w-owner-dashboard-corrected.json",
       "server_minimum_owner_reported": 8,
       "pinned_UI_new_password_minimum": 8,
-      "redirect_category_observed": "O",
+      "redirect_category_observed": "E",
       "owner_settings_action_prepared_not_applied": true,
       "owner_selected_new_password_minimum": 8,
       "previous_12_proposal_superseded": true,
@@ -122,7 +122,12 @@
       "owner_minimum8_public_ZIP_prepared": true,
       "owner_minimum8_receipt": "docs/security-audit/security-fr-2-batch-w-owner-eight-local-and-artifact-pass.json",
       "owner_deployment_and_settings_partial_receipt": "docs/security-audit/security-fr-2-batch-w-owner-deployment-and-settings-partial.json",
-      "required_character_rule_currently_unknown": true
+      "required_character_rule_currently_unknown": true,
+      "owner_settings_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-settings-screenshots.json",
+      "redirect_count_visible": 8,
+      "public_readback_expected_cases": 18,
+      "public_readback_maximum_GETs": 30,
+      "public_reader_local6_PASS": true
     },
     {
       "letter": "X",
@@ -211,7 +216,7 @@
   "committed_mode_change_requests": 0,
   "findings_closed": [],
   "progress_output_contract": "docs/security-audit/security-progress-display-contract.json",
-  "current_progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS; upload/minimum8 owner-reported, read-only settings clarification/public readback pending; V MFA ON HOLD",
+  "current_progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS; settings screenshot review complete, public reader local6 PASS owner-ready; V MFA ON HOLD",
   "completed_since_baseline": [
     "U"
   ],

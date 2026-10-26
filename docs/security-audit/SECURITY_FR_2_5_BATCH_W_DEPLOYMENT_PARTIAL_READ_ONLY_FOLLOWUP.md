@@ -1,3 +1,5 @@
+> FRE225–FRE226, 26 October 2026: three owner screenshots visually confirm the fixed staging project reference, minimum8, canonical Site URL and all8 redirect entries. Password requirements shows an empty selector; secure email change is on, secure password/current-password/leaked-password controls are off. No extra Save/upload is requested. Backend enforcement is not proved by screenshots. [Current public-only readback handoff](SECURITY_FR_2_5_BATCH_W_PUBLIC_READBACK_HANDOFF.md): local6/6 PASS,18 fixed two-origin metadata cases/max30 GETs, zero prompts/credentials/installations/email/mode writes. Owner74 pass reused; V MFA stays ON HOLD. Earlier missing-metadata instructions below are retained as dated history.
+
 # Batch W — partial deployment/settings report and read-only follow-up
 
 **Stage 3/10 | FR.2/8 | Batch W/Z — owner upload/minimum8 report recorded; settings metadata and independent served-source verification remain pending. V MFA stays ON HOLD.**

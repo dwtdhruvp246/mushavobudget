@@ -10,6 +10,15 @@ test('real recovery page saves before explicit continuation, fresh proof and acc
  await h.code();assert.equal(h.nodes.securityContinue.hidden,false);h.nodes.securityOpen.events.click();await h.ready();assert(!h.calls.includes('normal:adopt'));
  await h.open();assert.match(h.navigations.at(-1),/app.html$/);assert(!h.calls.includes('isolated:logout'));assert(h.calls.includes('isolated:stop-refresh'));
 });
+test('actual recovery page rejects seven characters then saves an eight-character password without premature adoption or email',async()=>{
+ const h=page();await h.ready();
+ const submit=()=>h.nodes.securityPassword.events.submit({preventDefault(){}});
+ h.nodes.securityNewPassword.value='Seven77';h.nodes.securityConfirmPassword.value='Seven77';submit();await h.ready();
+ assert.match(h.nodes.securityMessage.textContent,/at least 8 characters/);assert(!h.calls.includes('isolated:password'));
+ h.nodes.securityNewPassword.value='Eight888';h.nodes.securityConfirmPassword.value='Eight888';submit();await h.ready();
+ assert.equal(h.calls.filter(x=>x==='isolated:password').length,1);assert(!h.calls.includes('normal:adopt'));
+ assert(!h.calls.includes('gateway:begin'));assert.equal(h.navigations.length,0);
+});
 test('real confirmation page requires acknowledgement and code without a password update',async()=>{
  const h=page('confirm');await h.ready();assert.equal(h.nodes.securityContinue.hidden,false);assert.equal(h.nodes.securityPassword.hidden,true);assert(!h.calls.some(x=>x.endsWith(':password')));await h.open();assert(!h.calls.includes('normal:adopt'));await h.code();assert(h.calls.includes('normal:adopt'));
 });

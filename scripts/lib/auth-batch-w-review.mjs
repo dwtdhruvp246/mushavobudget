@@ -2,6 +2,7 @@
 import {stateSQL} from './email-bounded-http-sql.mjs';
 import {closedState} from './admin-batch-v-mfa.mjs';
 import {boundedBody} from './fr-2-operator-mfa.mjs';
+import {NEW_PASSWORD_MINIMUM} from '../../auth-security.js';
 
 export const stage = 'FR.2.5.W1_AUTH_SETTINGS_READ_ONLY_AND_FROZEN_AU31';
 export const display = 'Stage 3/10 | FR.2/8 | Batch W/Z';
@@ -105,7 +106,7 @@ export function projectAuthSettings(config) {
   };
   summary.fields_missing_or_null = missing.sort();
   const review = [];
-  if (summary.minimum_password_length !== 12) review.push(summary.minimum_password_length === null ? 'PASSWORD_MINIMUM_UNKNOWN' : 'SERVER_AND_PINNED_UI_PASSWORD_MINIMUM_DIFFER');
+  if (summary.minimum_password_length !== NEW_PASSWORD_MINIMUM) review.push(summary.minimum_password_length === null ? 'PASSWORD_MINIMUM_UNKNOWN' : 'SERVER_AND_PINNED_UI_PASSWORD_MINIMUM_DIFFER');
   if (summary.email_confirmation_enabled !== true) review.push('EMAIL_CONFIRMATION_NOT_CONFIRMED_ENABLED');
   if (summary.unverified_email_signins_allowed !== false) review.push('UNVERIFIED_EMAIL_SIGNIN_POLICY_REQUIRES_REVIEW');
   if (summary.required_character_class === 'CUSTOM_OR_UNRECOGNIZED' || summary.required_character_class === 'UNKNOWN') review.push('PASSWORD_CHARACTER_RULE_REQUIRES_REVIEW');
@@ -113,7 +114,7 @@ export function projectAuthSettings(config) {
   if (siteClass !== 'CANONICAL_STAGING_ROOT') review.push('SITE_URL_REQUIRES_REVIEW');
   if (redirects === null || !Object.values(callbacks).every(Boolean)) review.push('CALLBACK_LITERAL_OR_PATTERN_REVIEW_REQUIRED');
   if (invalid || other || glob) review.push('REDIRECT_PATTERN_OR_OTHER_ORIGIN_REVIEW_REQUIRED');
-  return {settings: summary, pinned_UI_new_password_minimum: 12, review_items: review,
+  return {settings: summary, pinned_UI_new_password_minimum: NEW_PASSWORD_MINIMUM, review_items: review,
     configuration_readback_is_not_workflow_acceptance: true,
     existing_password_login_or_new_password_boundary_exercised: false};
 }

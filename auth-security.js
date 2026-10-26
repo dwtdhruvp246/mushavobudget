@@ -1,5 +1,5 @@
 // Review candidate: browser UX checks supplement Supabase Auth enforcement.
-export const NEW_PASSWORD_MINIMUM = 12;
+export const NEW_PASSWORD_MINIMUM = 8;
 export const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 export function authError(code) { return Object.assign(new Error(code), { code }); }
 export function validateNewPassword(password, confirmation) {
@@ -8,7 +8,7 @@ export function validateNewPassword(password, confirmation) {
 }
 export function safeAuthMessage(error) {
   const code = error?.code;
-  if (code === 'new_password_too_short') return 'Use at least 12 characters for your new password.';
+  if (code === 'new_password_too_short') return `Use at least ${NEW_PASSWORD_MINIMUM} characters for your new password.`;
   if (code === 'password_mismatch') return 'Passwords do not match.';
   if (code === 'email_not_confirmed') return 'Confirm your email before signing in. Open the newest email or request another confirmation link.';
   if (code === 'invalid_credentials') return 'The email or password was not accepted. Check both and try again.';

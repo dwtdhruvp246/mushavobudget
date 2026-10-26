@@ -26,11 +26,12 @@ function harness(flow='recover') {
   return {client,material,calls,controller:createLinkController(client,material),setUser:u=>current=u,setRows:r=>rows=r,setUpdateError:e=>updateError=e,setLinkError:e=>linkError=e,setUserError:e=>getUserError=e};
 }
 const count=(h,name)=>h.calls.filter(c=>c[0]===name).length;
-test('new-password boundary accepts 12 characters and rejects short/mismatched values',()=>{
-  validateNewPassword('123456789012','123456789012');
-  assert.throws(()=>validateNewPassword('12345678901','12345678901'),{code:'new_password_too_short'});
+test('new-password boundary accepts eight characters and rejects short/mismatched values',()=>{
+  validateNewPassword('12345678','12345678');
+  assert.throws(()=>validateNewPassword('1234567','1234567'),{code:'new_password_too_short'});
   assert.throws(()=>validateNewPassword(password,'different'),{code:'password_mismatch'});
-  assert.throws(()=>validateNewPassword('😀'.repeat(6),'😀'.repeat(6)),{code:'new_password_too_short'});
+  assert.throws(()=>validateNewPassword('😀'.repeat(7),'😀'.repeat(7)),{code:'new_password_too_short'});
+  validateNewPassword('😀'.repeat(8),'😀'.repeat(8));
 });
 test('SDK messages never echo raw callback material',()=>{
   assert.equal(safeAuthMessage({code:'invalid_credentials',message:'synthetic-sensitive'}).includes('synthetic-sensitive'),false);

@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {projectAuthSettings, reviewAuthSettings, base, origin, flows} from '../scripts/lib/auth-batch-w-review.mjs';
-import {authReviewEntry, unsafePrivateEnvironment, verifyWSources} from '../scripts/review-fr-2-batch-w-auth.mjs';
+import {authReviewEntry, unsafePrivateEnvironment} from '../scripts/review-fr-2-batch-w-auth.mjs';
+import {verifyEightSources as verifyWSources} from '../scripts/lib/auth-eight-source.mjs';
 
 const token = 'sbp_fc' + 'SYNTHETIC_TEST_TOKEN_ONLY_'.repeat(2);
 const closed = () => ({context: {privileged_origin: true, transaction_read_only: 'on'},
@@ -13,7 +14,7 @@ const closed = () => ({context: {privileged_origin: true, transaction_read_only:
   private_fence: 'SYNTHETIC_PRIVATE_FENCE_NEVER_PRINT'});
 const project = () => ({ref: 'dczlddwbtgvfdujgcitb', status: 'ACTIVE_HEALTHY', database: {host: 'db.dczlddwbtgvfdujgcitb.supabase.co'}});
 const config = () => ({mailer_autoconfirm: false, external_email_enabled: true, disable_signup: false,
-  mailer_allow_unverified_email_sign_ins: false, password_min_length: 12, password_required_characters: '',
+  mailer_allow_unverified_email_sign_ins: false, password_min_length: 8, password_required_characters: '',
   security_update_password_require_current_password: false, security_update_password_require_reauthentication: true,
   mailer_secure_email_change_enabled: true, password_hibp_enabled: false, refresh_token_rotation_enabled: true,
   sessions_single_per_user: false, sessions_timebox: 0, sessions_inactivity_timeout: 0,
@@ -51,7 +52,7 @@ test('five fixed Management reads inspect Auth settings and quarantine; no Auth 
       assert.match(q.query, /EMAIL_L_PRIVILEGED_READ_ONLY_REQUIRED/); assert(!q.query.includes(token));
     } else { assert.equal(c.options.method, 'GET'); assert.equal(c.options.body, undefined); }
   }
-  assert.equal(r.quarantined_catalog_after_verified, true); assert.equal(r.safe_settings.settings.minimum_password_length, 12);
+  assert.equal(r.quarantined_catalog_after_verified, true); assert.equal(r.safe_settings.settings.minimum_password_length, 8);
   assert.equal(r.full_lettered_batch_W_complete, false); assert.equal(r.pending_batch_V_MFA_deferred_by_owner, true); assertPrivate(r);
 });
 
@@ -84,7 +85,7 @@ test('strict field types reject secret-shaped strings without printing the field
 });
 
 test('password-policy difference is an explicit review item, not a configuration write or failed inspection', async () => {
-  for (const minimum of [8, 16]) {
+  for (const minimum of [6, 12]) {
     const r = await fixture({change: ({url, value}) => url.endsWith('/config/auth') ? {...value, password_min_length: minimum} : value}).run();
     assert.equal(r.exit_code, 0); assert.equal(r.safe_settings.settings.minimum_password_length, minimum);
     assert(r.safe_settings.review_items.includes('SERVER_AND_PINNED_UI_PASSWORD_MINIMUM_DIFFER'));
@@ -212,16 +213,16 @@ test('frozen 31 AU cases keep Admin-dependent invitations blocked by V; no case 
 test('pinned UI password and four callback constructors match declared review scope without changing password sign-in', async () => {
   const source = await readFile(new URL('../auth-security.js', import.meta.url), 'utf8');
   const actual = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
-  assert.equal(actual.NEW_PASSWORD_MINIMUM, 12);
+  assert.equal(actual.NEW_PASSWORD_MINIMUM, 8);
   for (const flow of flows) assert.equal(actual.callbackUrl(origin + '/auth.html', flow), origin + '/auth.html?flow=' + flow);
   assert.equal(projectAuthSettings(config()).pinned_UI_new_password_minimum, actual.NEW_PASSWORD_MINIMUM);
 });
 
-test('all 339 previous executed sources and U310 remain exact; current 345 source identities verify', async () => {
-  assert.equal(await verifyWSources(), 345);
-  const previous = JSON.parse(await readFile(new URL('../docs/security-audit/security-fr-2-batch-v-recovery-source-manifest.json', import.meta.url), 'utf8'));
-  const u = JSON.parse(await readFile(new URL('../docs/security-audit/security-fr-2-email-batch-u-hosted-source-manifest.json', import.meta.url), 'utf8'));
-  assert.equal(Object.keys(u.file_sha256).length, 310);
-  for (const [n, h] of Object.entries(u.file_sha256)) assert.equal(previous.file_sha256[n], h);
+test('current policy manifest verifies the explicit owner-approved deltas while preserving unrelated sources', async () => {
+  const current = JSON.parse(await readFile(new URL('../docs/security-audit/security-fr-2-batch-w-eight-source-manifest.json', import.meta.url), 'utf8'));
+  assert.equal(await verifyWSources(), current.source_file_count);
+  const previous = JSON.parse(await readFile(new URL('../docs/security-audit/security-fr-2-batch-w-source-manifest.json', import.meta.url), 'utf8'));
+  const changed = new Set(current.intentional_prior_source_changes.map(x => x.path));
+  for (const [n, h] of Object.entries(previous.file_sha256)) if (!changed.has(n)) assert.equal(current.file_sha256[n], h);
   assert.equal(createHash('sha256').update(await readFile(new URL('../scripts/lib/operator-private-terminal.mjs', import.meta.url))).digest('hex'), previous.file_sha256['scripts/lib/operator-private-terminal.mjs']);
 });

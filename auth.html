@@ -34,9 +34,9 @@
         </form>
         <form id="securityPassword" class="form-grid" hidden>
           <label id="securityCurrentLabel" hidden>Current password (if required)<input id="securityCurrentPassword" type="password" autocomplete="current-password" /></label>
-          <label>New password<input id="securityNewPassword" type="password" autocomplete="new-password" minlength="12" required aria-describedby="securityPasswordHelp" /></label>
-          <small id="securityPasswordHelp">Use at least 12 characters. Choose a password you do not use elsewhere.</small>
-          <label>Repeat new password<input id="securityConfirmPassword" type="password" autocomplete="new-password" minlength="12" required /></label>
+          <label>New password<input id="securityNewPassword" type="password" autocomplete="new-password" minlength="8" required aria-describedby="securityPasswordHelp" /></label>
+          <small id="securityPasswordHelp">Use at least 8 characters. Choose a password you do not use elsewhere.</small>
+          <label>Repeat new password<input id="securityConfirmPassword" type="password" autocomplete="new-password" minlength="8" required /></label>
           <label id="securityNonceLabel" hidden>Verification code (if requested)<input id="securityNonce" type="text" autocomplete="one-time-code" /></label>
           <button class="primary" type="submit">Save password</button>
           <button id="securityRequestCode" type="button" hidden>Request verification code</button>

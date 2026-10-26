@@ -106,10 +106,13 @@
       "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
       "required_AU_case_count": 31,
       "Admin_dependent_cases_remain_blocked_by_V": true,
-      "next_action": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_AUTH_DENIAL_AND_DASHBOARD_HANDOFF.md",
+      "next_action": "Owner callback-list category clarification only; no repeat command or settings change",
       "owner_offline20_PASS": true,
       "Auth_config_GET_denied_403": true,
-      "settings_accepted": false
+      "settings_accepted": false,
+      "owner_corrected_dashboard_receipt": "docs/security-audit/security-fr-2-batch-w-owner-dashboard-corrected.json",
+      "server_minimum_owner_reported": 6,
+      "pinned_UI_new_password_minimum": 12
     },
     {
       "letter": "X",
@@ -198,7 +201,7 @@
   "committed_mode_change_requests": 0,
   "findings_closed": [],
   "progress_output_contract": "docs/security-audit/security-progress-display-contract.json",
-  "current_progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS; Auth API403 reviewed, dashboard summary next; V MFA ON HOLD",
+  "current_progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS; corrected settings recorded, callback metadata pending; V MFA ON HOLD",
   "completed_since_baseline": [
     "U"
   ],

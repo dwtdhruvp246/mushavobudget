@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-27",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "OWNER_POST_CODE_RECOVERY_CONTINUATION_SCREEN_REPORTED",
+  "existing_AU_case": "AU04.05",
+  "owner_screenshot_SHA256": "05a2cb5bd7f82eb61bd85884b3db1486adfb5a7bb41f85a7ddea36d07d7d152f",
+  "owner_report": "After clicking Verify, recovery shows an additional account checkbox and Continue to app button. Owner requests valid-code sign-in to happen automatically and wrong codes to be rejected on the verification form.",
+  "visible_UI": [
+    "Choose a new password title",
+    "Verified account shown",
+    "Stale instruction to verify with an email code",
+    "Account-opening acknowledgement checkbox",
+    "Continue to app button"
+  ],
+  "reviewed_old_source_consistent_with_password_saved_and_application_proof_passed_at_screen_entry": true,
+  "provider_trace_independently_captured": false,
+  "gateway_email_delivery_or_secret_equality_independently_verified": false,
+  "dashboard_entry_reported_for_this_attempt": false,
+  "current_window_or_proof_unexpired_now_verified": false,
+  "owner_policy_change": "Ordinary recovery Verify supplies intent to sign in; no additional checkbox/continue action after correct verification. Existing Business invitation and unfinished Admin invitation setup choices stay explicit.",
+  "raw_account_email_password_code_token_or_link_stored": false,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-27",
+  "stage_step": "FR.2.5.W35_RECOVERY_CODE_VERIFIED_AUTOMATIC_APP_ENTRY",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "FR2_BATCH_W_RECOVERY_AUTO_ENTRY_LOCAL_PASS_STAGING_PACKAGE_AND_UPLOAD_PENDING",
+  "source_parent_commit": "90f992f168847aee897f47feca6a411f57b1149d",
+  "runtime_and_preparer_source_pin": "5fce41918705643b3c80219b421cdaf66b74a61d",
+  "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-continue-screen.json",
+  "contract": "docs/security-audit/security-fr-2-batch-w-auto-entry-contract.json",
+  "local_checks": "docs/security-audit/security-fr-2-batch-w-auto-entry-local-checks.json",
+  "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECOVERY_AUTO_ENTRY_HANDOFF.md",
+  "source_manifest": "docs/security-audit/security-fr-2-batch-w-auto-entry-source-manifest.json",
+  "existing_AU_case": "AU04.05",
+  "new_public_acceptance_cases_added": 0,
+  "frozen_public_acceptance_case_count": 31,
+  "ordinary_recovery_behavior": [
+    "Password save must succeed before application entry.",
+    "Correct verification resumes through current remote identity, bearer, server proof and destination guards, then adopts the same account session and navigates to the application automatically.",
+    "Wrong/rejected code stays on verification with no normal-session adoption or protected navigation.",
+    "Missing or expired server proof, actor/bearer changes and destination failures prevent entry.",
+    "Adoption failures expose Retry sign-in without another password save or email code when the same current proof remains valid.",
+    "No extra account checkbox or Continue to app action for ordinary recovery."
+  ],
+  "preserved_behaviors": [
+    "Business invitation explicit account choice",
+    "Unfinished Admin invitation setup or Free personal choice",
+    "Signup confirmation returns to manual sign-in",
+    "Separate Admin MFA dependency and guarded application proof",
+    "Isolated callback session cleanup without server logout of adopted session"
+  ],
+  "public_files_changed": [
+    "auth-flows.js",
+    "auth-security.js",
+    "auth.html"
+  ],
+  "auth_security_change_is_comment_only": true,
+  "module_cache_versions": {
+    "auth-flows.js": "6",
+    "auth-security.js": "3"
+  },
+  "accepted_input_ZIP_SHA256": "53437a8f2b452b387f75bcbca512b08e08f29a6b446f33de28660154a03301f5",
+  "output_filename": "mushavo-auto-signin-staging.zip",
+  "public_entries": 44,
+  "unchanged_public_entries": 41,
+  "configuration_Worker_service_worker_headers_routes_short_messages_preserved": true,
+  "source_hashes_verified_by_preparer": 17,
+  "preparer_SHA256": "807ed23faa56cc0028ec9ff99856787a5746446115ab73d8efbc0d33e87c48f4",
+  "requested_owner_action_now": "Run pinned public ZIP preparation; return safe result. On exit 0 upload only the new ZIP to mushavo-budget-staging and provide its new deployment URL. No password save, email/code, SQL or secret change requested now.",
+  "current_open_tab": "Already loaded older JavaScript. Keep it open; do not refresh or reuse its consumed link. If finishing this already verified old-build attempt, use its existing checkbox/Continue once. It cannot acquire the new behavior merely through deployment.",
+  "later_live_test": "A fresh callback loaded from the updated staging build is required for scoped automatic-entry acceptance. Preserve existing readiness/identity/proof/window checks; no account recreation or profile repair.",
+  "actual_hosted_requests": 0,
+  "real_email_requests": 0,
+  "settings_SQL_or_account_writes": 0,
+  "frontend_uploaded": false,
+  "accepted_owner_ZIP_available_in_assistant_workspace": false,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

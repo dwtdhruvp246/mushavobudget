@@ -1,3 +1,5 @@
+> FRE235 update, 27 October 2026: The owner reports Sign-in verified and an automatic transition to the dashboard. This is a current-access pass. Next confirm the normal sign-out/fresh password-signin cycle in the same browser without another code; perform it once only if not already completed. No repeat of the SQL window opening is requested. Its exact result/deadline was not pasted. [Owner receipt](security-fr-2-batch-w-owner-signin-dashboard.json). The original handoff below is retained for context.
+
 # Confirmed browser: bounded password sign-in test
 
 Stage 3/10 | FR.2/8 | Batch W/Z. 27 October 2026, FRE234.

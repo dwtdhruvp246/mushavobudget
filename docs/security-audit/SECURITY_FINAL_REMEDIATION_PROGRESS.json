@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-27",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_OWNER_CONFIRMATION_TRUST_REPORTED_SIGNIN_UNAVAILABLE_SINGLE_ACCOUNT_WINDOW_READY",
+  "status": "FR2_BATCH_W_OWNER_SIGNIN_VERIFIED_DASHBOARD_PASS_FRESH_PASSWORD_CYCLE_UNCONFIRMED",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "14bccdff7e5a22a1e3ca8ba746ca8ddd85d6cf5e",
+  "source_parent_commit": "2db61df6dcc34440985377a9452bffaedba663d0",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE234",
+  "latest_evidence": "FRE235",
   "batches": [
     {
       "id": "FR.1",
@@ -1097,7 +1097,7 @@
         },
         {
           "id": "FR.2.5",
-          "status": "IN_PROGRESS_CONFIRMATION_TRUST_OWNER_REPORT_BOUNDED_SIGNIN_TEST_PENDING",
+          "status": "IN_PROGRESS_CURRENT_DASHBOARD_OWNER_PASS_FRESH_PASSWORD_CYCLE_PENDING",
           "title": "Auth/finance/session hosted workflows",
           "active_lettered_batch": "W",
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
@@ -1105,7 +1105,7 @@
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
           "next_step": "FR.2.5.W9_FRESH_CONFIRMATION_TEST_IDENTITY_PREREQUISITE",
           "persistent_browser_trust_checkpoint": {
-            "status": "CONFIRMATION_TRUST_OWNER_REPORTED_BOUNDED_SIGNIN_WINDOW_PENDING",
+            "status": "CURRENT_SIGNIN_DASHBOARD_OWNER_PASS_FRESH_PASSWORD_CYCLE_UNCONFIRMED",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
             "local_receipt": "docs/security-audit/security-fr-2-batch-w-browser-trust-local-checks.json",
             "source_manifest": "docs/security-audit/security-fr-2-batch-w-browser-trust-source-manifest.json",
@@ -1144,10 +1144,17 @@
             "test_window_local_PASS": 11,
             "test_window_seconds": 1800,
             "test_window_identity_limit": 1,
-            "acceptance_window_opened": false,
-            "actual_password_signin_without_code": false,
+            "acceptance_window_opened": null,
+            "actual_password_signin_without_code": null,
             "signin_unavailable_cause_independently_established": false,
-            "window_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONFIRMED_BROWSER_SIGNIN_WINDOW.md"
+            "window_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONFIRMED_BROWSER_SIGNIN_WINDOW.md",
+            "owner_dashboard_transition_reported": true,
+            "owner_signin_verified_message_reported": true,
+            "owner_dashboard_receipt": "docs/security-audit/security-fr-2-batch-w-owner-signin-dashboard.json",
+            "owner_window_SQL_result_received": false,
+            "acceptance_window_current_state": "NOT_INDEPENDENTLY_VERIFIED_AFTER_OWNER_ACTIONS",
+            "new_code_requested_or_entered_current_attempt": null,
+            "fresh_password_cycle_report_pending": true
           }
         },
         {
@@ -1205,7 +1212,7 @@
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
   "owner_terminal_action_required": false,
-  "owner_SQL_action_required": true,
+  "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
@@ -1214,7 +1221,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W13_SINGLE_ACCOUNT_BOUNDED_WINDOW_AND_SAME_BROWSER_PASSWORD_SIGNIN",
+  "next_step": "FR.2.5.W14_CONFIRM_SAME_BROWSER_FRESH_PASSWORD_SIGNIN_WITHOUT_CODE",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4420,7 +4427,7 @@
   },
   "owner_controlled_test_inbox_information_required": false,
   "FR2_email_persistent_browser_trust": {
-    "status": "CONFIRMATION_TRUST_OWNER_REPORTED_BOUNDED_SIGNIN_WINDOW_PENDING",
+    "status": "CURRENT_SIGNIN_DASHBOARD_OWNER_PASS_FRESH_PASSWORD_CYCLE_UNCONFIRMED",
     "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
     "local_receipt": "docs/security-audit/security-fr-2-batch-w-browser-trust-local-checks.json",
     "source_manifest": "docs/security-audit/security-fr-2-batch-w-browser-trust-source-manifest.json",
@@ -4459,10 +4466,17 @@
     "test_window_local_PASS": 11,
     "test_window_seconds": 1800,
     "test_window_identity_limit": 1,
-    "acceptance_window_opened": false,
-    "actual_password_signin_without_code": false,
+    "acceptance_window_opened": null,
+    "actual_password_signin_without_code": null,
     "signin_unavailable_cause_independently_established": false,
-    "window_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONFIRMED_BROWSER_SIGNIN_WINDOW.md"
+    "window_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONFIRMED_BROWSER_SIGNIN_WINDOW.md",
+    "owner_dashboard_transition_reported": true,
+    "owner_signin_verified_message_reported": true,
+    "owner_dashboard_receipt": "docs/security-audit/security-fr-2-batch-w-owner-signin-dashboard.json",
+    "owner_window_SQL_result_received": false,
+    "acceptance_window_current_state": "NOT_INDEPENDENTLY_VERIFIED_AFTER_OWNER_ACTIONS",
+    "new_code_requested_or_entered_current_attempt": null,
+    "fresh_password_cycle_report_pending": true
   },
   "owner_fresh_signup_inbox_required": false
 }

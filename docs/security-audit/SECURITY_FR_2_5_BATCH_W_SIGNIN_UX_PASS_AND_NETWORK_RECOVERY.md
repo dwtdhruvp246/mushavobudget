@@ -1,0 +1,21 @@
+# Smoother sign-in accepted; temporary network loss/retry next
+
+Stage 3/10 | FR.2/8 | Batch W/Z — FRE256, 27 October2026.
+
+[Owner receipt](security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json) accepts the current normal sign-in UX after the corrected staging upload082009fe at source 6be81d6534549e657d57444a841e27aa9f400527. Accept the current-browser UI as an owner-reported scoped PASS and continue. No exact seconds, individual code-form absence, new safe window output or provider/cookie trace was supplied; no speed SLA, complete older-password case or full recovery/session security acceptance is inferred. The mismatch-prominence item remains deferred. Do not repeat the normal sign-in or recovery exercise solely to restate that acceptance.
+
+Next is existing frozen case **AU05.03 — Transient network preservation/retry**, a narrow browser offline/reconnect variant. [Frozen31 contract](security-fr-2-batch-w-contract.json), [original matrix](SECURITY_STAGE_3_5_AUTH_FLOWS.md). It is independent of held Admin MFA and needs no second account, password change, invitation, email or database/settings change. Current app source preserves stored login on transient refresh/load errors and offers retry; shared verification can display unavailable/Check again rather than authorizing offline. Prior runtime140/package9 remain at their pins without rerun. This handoff makes no new source or test change.
+
+The browser-control connection could not be established from this originating chat. No browser tab or session was read or changed. A cloud browser cannot represent the owner's current remembered browser/account, so use the same existing local browser for this check.
+
+Owner steps:
+
+1. Start on the existing signed-in staging dashboard, in the same browser/profile. First ensure the dashboard currently opens online. Do not edit an account, financial record or form. If it already cannot open online, stop and report that message instead of beginning the offline test.
+2. Press F12, select Network, leave Disable cache unchecked, and switch No throttling/Online to Offline. This is a reversible per-tab network condition; do not delete cookies/site data or disable the account.
+3. Reload that app tab once while offline. Note the actual screen/message. An offline notice, verification-unavailable/retry view or browser network error can depend on which assets are cached; the key check is that a temporary connection problem does not erase the login. If no message appears, stop waiting after about15seconds and record the loading state.
+4. Restore No throttling/Online before closing Developer Tools. If an app retry view is present, select Check again or Try again once. If it is a browser offline error, reload once. Do not select Sign out, request a code or reenter credentials as part of this retry.
+5. Expect the same account dashboard to return without a new password sign-in. Return the offline screen/message and whether reconnection restored the dashboard without credentials. On a different account, sign-in request, persistent error or missing recovery, report the actual result without repeated requests.
+
+Scope: this is a real temporary browser transport disruption and restoration check. A browser-level asset error alone does not prove the application's Auth-refresh failure handler ran. Grant-type refresh/invalid-token, provider refusal, cleanup failure and account-switch cases remain separate pending evidence. Do not infer immediate JWT revocation or full AU05.03/provider/network acceptance from a bare yes. The last explicitly reported window deadline is historical; no current expiry is assumed. If a fence/deadline causes reconnect denial, classify it as readiness review until the existing bounded window is rechecked, not a demonstrated network-signout bug. No new timed SQL action is requested for this test while the online dashboard is available.
+
+No runtime patch, build/upload, additional offline test suite, password/code, fresh recovery link or SQL/settings action now. Restore Online even if the test fails. Current-browser smooth UX is accepted at owner scope; precise timings and unobserved variants remain uncredited. V Admin MFA stays ON HOLD; full W/FR.2/Stage3/release/findings open, production/native unchanged and APK deferred. No new public AU cases (frozen31).

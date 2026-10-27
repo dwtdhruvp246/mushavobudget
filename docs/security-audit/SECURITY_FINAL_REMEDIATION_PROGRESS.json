@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-27",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_SMOOTH_SIGNIN_OWNER_PACKAGE_PASS_DEPLOYMENT_REPORTED_BROWSER_UX_PENDING",
+  "status": "FR2_BATCH_W_OWNER_SMOOTH_SIGNIN_UI_SCOPED_PASS_AU05_03_NETWORK_CHECK_NEXT",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "7af3b4314bbff3756303c96f19052b85017b0131",
+  "source_parent_commit": "be51703c676a010b32bc4970109b3b2fa3b4c8cb",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE255",
+  "latest_evidence": "FRE256",
   "batches": [
     {
       "id": "FR.1",
@@ -1097,15 +1097,15 @@
         },
         {
           "id": "FR.2.5",
-          "status": "IN_PROGRESS_SMOOTH_SIGNIN_OWNER_PACKAGE_PASS_DEPLOYMENT_REPORTED_UX_CHECK_PENDING",
+          "status": "IN_PROGRESS_SIGNIN_UX_OWNER_SCOPED_PASS_AU05_03_NETWORK_CHECK_NEXT",
           "title": "Auth/finance/session hosted workflows",
           "active_lettered_batch": "W",
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5.W39_SMOOTH_SIGNIN_OWNER_PACKAGE_PASS_DEPLOYMENT_AND_BROWSER_UX_CHECK",
+          "next_step": "FR.2.5.W40_OWNER_SIGNIN_UX_ACCEPTANCE_AND_TRANSIENT_NETWORK_CASE",
           "persistent_browser_trust_checkpoint": {
-            "status": "OWNER_ACCEPTS_CURRENT_UI_BACKGROUND_UX_DEFERRED_INDEPENDENT_AUTH_CASE_NEXT",
+            "status": "OWNER_CURRENT_SIGNIN_UX_ACCEPTED_REMAINING_BROWSER_SECURITY_CASES_OPEN",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
             "local_receipt": "docs/security-audit/security-fr-2-batch-w-browser-trust-local-checks.json",
             "source_manifest": "docs/security-audit/security-fr-2-batch-w-browser-trust-source-manifest.json",
@@ -1159,11 +1159,13 @@
             "deferred_UX_id": "UX_AUTH_BACKGROUND_VERIFICATION",
             "fresh_password_cycle_repeat_requested_now": false,
             "new_browser_code_test_readiness_pending": true,
-            "next_independent_Auth_case": "AU03.02"
+            "next_independent_Auth_case": "AU05.03",
+            "deferred_UX_status": "OWNER_CURRENT_BROWSER_UI_SCOPED_ACCEPTED",
+            "current_UI_acceptance_receipt": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json"
           },
           "deferred_auth_UX": {
             "id": "UX_AUTH_BACKGROUND_VERIFICATION",
-            "status": "DEPLOYMENT_REPORTED_PENDING_BROWSER_UX_AND_TIMING",
+            "status": "OWNER_CURRENT_BROWSER_UI_SCOPED_ACCEPTED",
             "desired_behavior": "Trusted-browser verification runs without showing the code form. Use a minimal Signing in indicator, then open the dashboard. Show the verification form only when user action is actually required.",
             "performance": "Reduce perceived and measured sign-in delay; measure before choosing a specific timing target.",
             "security_invariants": [
@@ -1176,33 +1178,34 @@
             "runtime_source_pin": "a9a8a195c4950f33b433c15fb2699507b1d7e84f",
             "contract": "docs/security-audit/security-fr-2-batch-w-smooth-signin-contract.json",
             "local_checks": "docs/security-audit/security-fr-2-batch-w-smooth-signin-local-checks.json",
-            "hosted_UX_acceptance": false,
+            "hosted_UX_acceptance": true,
             "live_latency_measured": false,
             "owner_deployment_URL": "https://082009fe.mushavo-budget-staging.pages.dev/",
-            "browser_UX_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SMOOTH_PACKAGE_PASS_AND_BROWSER_UX_CHECK.md"
+            "browser_UX_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SMOOTH_PACKAGE_PASS_AND_BROWSER_UX_CHECK.md",
+            "hosted_UX_acceptance_scope": "Owner accepts current normal sign-in experience after deployment; no precise timing or independent trace.",
+            "owner_acceptance_receipt": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json"
           },
           "AU03_02_wrong_password_message_receipt": "docs/security-audit/security-fr-2-batch-w-owner-invalid-credentials.json",
           "next_Auth_case": {
-            "id": "AU04.05",
-            "title": "Password-save failure/retry",
-            "variant": "Owner-reported positive recovery auto-entry UI PASS; full security/session outcomes open. Smooth background checking update prepared locally and awaits staging upload/UX review.",
-            "status": "AUTO_ENTRY_UI_PASS_SMOOTH_SIGNIN_DEPLOYMENT_REPORTED_NORMAL_BROWSER_UX_CHECK_PENDING",
-            "matching_password_save_requested": false,
-            "owner_action_required_now": "Recheck the unchanged one-account bounded window, then sign in once with the existing current password in the same remembered browser at canonical staging. Report whether verification UI flashes, correct dashboard entry and rough seconds; report any code-form message before requesting mail. No recovery/password save required for this check.",
-            "preserve_original_verified_recovery_tab": true,
+            "id": "AU05.03",
+            "title": "Transient network preservation/retry",
+            "variant": "One per-tab offline/reload/reconnect UI session-preservation check in current signed-in staging browser",
+            "status": "OWNER_BROWSER_CHECK_PENDING",
+            "source_pin": "6be81d6534549e657d57444a841e27aa9f400527",
+            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNIN_UX_PASS_AND_NETWORK_RECOVERY.md",
+            "existing_frozen_case": true,
+            "new_public_AU_cases_added": 0,
+            "owner_action_required_now": "With the online dashboard currently available, set that tab Offline once using Developer Tools, reload once, restore Online, then use the displayed retry action or browser reload once. Report the offline message and whether the same dashboard returns without signing in.",
             "readiness_requirements": [
-              "Existing same-account guarded window returns ready/current; original profile repair is not repeated.",
-              "Same normal browser/profile and canonical staging origin preserve remembered-cookie context.",
-              "Use current password for one ordinary sign-in; do not repeat recovery, reset password or send another code for this check."
+              "Current same-account dashboard is reachable online before starting.",
+              "Same remembered browser/profile and canonical staging origin; no storage/cookie clearing or account change.",
+              "If a bounded window/fence blocks access, stop/report readiness rather than relax it."
             ],
-            "readiness_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SMOOTH_PACKAGE_PASS_AND_BROWSER_UX_CHECK.md",
-            "readiness_source_pin": "6be81d6534549e657d57444a841e27aa9f400527",
-            "same_current_password_refusal_attempt_requested": false,
-            "successful_new_password_save_requested": false,
-            "same_password_refusal_owner_UI_scoped_pass": true,
-            "successful_retry_conditioned_on_local_recipient_secret_save": true,
-            "recipient_secret_save_explicit_report_received": false,
-            "positive_retry_condition": "Only after ready one-account window, existing local recipient readiness and a fresh same-account recovery callback."
+            "password_save_requested": false,
+            "new_email_or_code_requested": false,
+            "SQL_or_settings_action_requested": false,
+            "must_restore_online": true,
+            "hosted_acceptance": false
           },
           "recipient_preparation_and_redeploy_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recipient-addition-and-redeploy.json",
           "recovery_window": {
@@ -1430,7 +1433,7 @@
             "owner_functional_result_receipt": "docs/security-audit/security-fr-2-batch-w-owner-auto-entry-pass-and-smoothing-request.json"
           },
           "smooth_signin": {
-            "status": "OWNER_CORRECTED_PACKAGE_PASS_NEW_DEPLOYMENT_REPORTED_BROWSER_UX_CHECK_PENDING",
+            "status": "OWNER_CURRENT_NORMAL_SIGNIN_UI_SCOPED_PASS",
             "source_pin": "6be81d6534549e657d57444a841e27aa9f400527",
             "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-auto-entry-pass-and-smoothing-request.json",
             "contract": "docs/security-audit/security-fr-2-batch-w-smooth-signin-contract.json",
@@ -1462,7 +1465,19 @@
             "owner_package_portable_readback_verified": true,
             "prior_package_failure_resolved_by_owner_exit0": true,
             "independent_hosted_source_parity_verified": false,
-            "browser_UX_result_received": false
+            "browser_UX_result_received": true,
+            "owner_current_UI_accepted": true,
+            "owner_UX_receipt": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json",
+            "signin_duration_seconds": null,
+            "repeat_signin_or_recovery_requested_now": false
+          },
+          "completed_current_Auth_UI_checkpoint": {
+            "status": "OWNER_SIGNIN_AND_RECOVERY_AUTOMATIC_ENTRY_UI_SCOPED_PASS_OTHER_VARIANTS_OPEN",
+            "smooth_signin_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json",
+            "ordinary_signin_UI_subscope": "AU03.01",
+            "recovery_retry_UI_subscope": "AU04.05",
+            "full_AU03_01_or_AU04_05_complete": false,
+            "older_password_and_security_session_variants_preserved_pending": true
           }
         },
         {
@@ -1479,7 +1494,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "FR.2.5.W39_SMOOTH_SIGNIN_OWNER_PACKAGE_PASS_DEPLOYMENT_AND_BROWSER_UX_CHECK"
+      "next_step": "FR.2.5.W40_OWNER_SIGNIN_UX_ACCEPTANCE_AND_TRANSIENT_NETWORK_CASE"
     },
     {
       "id": "FR.3",
@@ -1519,8 +1534,8 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": true,
-  "owner_SQL_action_required": true,
+  "owner_terminal_action_required": false,
+  "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
@@ -1529,7 +1544,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W39_SMOOTH_SIGNIN_OWNER_PACKAGE_PASS_DEPLOYMENT_AND_BROWSER_UX_CHECK",
+  "next_step": "FR.2.5.W40_OWNER_SIGNIN_UX_ACCEPTANCE_AND_TRANSIENT_NETWORK_CASE",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4818,7 +4833,7 @@
   "FR2_email_current_version_UI_owner_decision": "docs/security-audit/security-fr-2-batch-w-owner-ux-deferral-and-next-auth-case.json",
   "deferred_auth_UX": {
     "id": "UX_AUTH_BACKGROUND_VERIFICATION",
-    "status": "DEPLOYMENT_REPORTED_PENDING_BROWSER_UX_AND_TIMING",
+    "status": "OWNER_CURRENT_BROWSER_UI_SCOPED_ACCEPTED",
     "desired_behavior": "Trusted-browser verification runs without showing the code form. Use a minimal Signing in indicator, then open the dashboard. Show the verification form only when user action is actually required.",
     "performance": "Reduce perceived and measured sign-in delay; measure before choosing a specific timing target.",
     "security_invariants": [
@@ -4831,10 +4846,12 @@
     "runtime_source_pin": "a9a8a195c4950f33b433c15fb2699507b1d7e84f",
     "contract": "docs/security-audit/security-fr-2-batch-w-smooth-signin-contract.json",
     "local_checks": "docs/security-audit/security-fr-2-batch-w-smooth-signin-local-checks.json",
-    "hosted_UX_acceptance": false,
+    "hosted_UX_acceptance": true,
     "live_latency_measured": false,
     "owner_deployment_URL": "https://082009fe.mushavo-budget-staging.pages.dev/",
-    "browser_UX_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SMOOTH_PACKAGE_PASS_AND_BROWSER_UX_CHECK.md"
+    "browser_UX_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SMOOTH_PACKAGE_PASS_AND_BROWSER_UX_CHECK.md",
+    "hosted_UX_acceptance_scope": "Owner accepts current normal sign-in experience after deployment; no precise timing or independent trace.",
+    "owner_acceptance_receipt": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json"
   },
   "FR2_email_next_Auth_case": {
     "id": "AU04.05",
@@ -5257,7 +5274,7 @@
     "owner_functional_result_receipt": "docs/security-audit/security-fr-2-batch-w-owner-auto-entry-pass-and-smoothing-request.json"
   },
   "smooth_signin": {
-    "status": "OWNER_CORRECTED_PACKAGE_PASS_NEW_DEPLOYMENT_REPORTED_BROWSER_UX_CHECK_PENDING",
+    "status": "OWNER_CURRENT_NORMAL_SIGNIN_UI_SCOPED_PASS",
     "source_pin": "6be81d6534549e657d57444a841e27aa9f400527",
     "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-auto-entry-pass-and-smoothing-request.json",
     "contract": "docs/security-audit/security-fr-2-batch-w-smooth-signin-contract.json",
@@ -5289,6 +5306,11 @@
     "owner_package_portable_readback_verified": true,
     "prior_package_failure_resolved_by_owner_exit0": true,
     "independent_hosted_source_parity_verified": false,
-    "browser_UX_result_received": false
-  }
+    "browser_UX_result_received": true,
+    "owner_current_UI_accepted": true,
+    "owner_UX_receipt": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json",
+    "signin_duration_seconds": null,
+    "repeat_signin_or_recovery_requested_now": false
+  },
+  "owner_browser_action_required": true
 }

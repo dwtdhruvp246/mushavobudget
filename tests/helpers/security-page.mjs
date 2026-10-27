@@ -3,6 +3,7 @@ import vm from 'node:vm';
 import {readFile} from 'node:fs/promises';
 import * as security from '../../auth-security.js';
 import {createAuthCallbackEntry} from '../../session-entry.js';
+import {registerConfirmationDevice} from '../../email-verification.js';
 const source=(await readFile(new URL('../../auth-flows.js',import.meta.url),'utf8')).replace(/^import .*;\n/gm,'');
 const id='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',foreign='bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',invitation='cccccccc-cccc-4ccc-8ccc-cccccccccccc';
 const tick=()=>new Promise(r=>setImmediate(r));
@@ -14,7 +15,7 @@ export function securityPageFixture(flow='recover',options={}){
  const calls=[],navigations=[],proofs=new Map(),nodes={},clients=[],removed=[],user={id,email:'owner@example.invalid',email_confirmed_at:'2026-10-16T00:00:00Z'};
  let linkError=options.linkError??null,invited=options.invited??true,proofOverride=null,unfinishedError=null;
  const doc={createElement:tag=>new Element(tag,doc),createTextNode:text=>({textContent:text}),querySelector:selector=>nodes[selector.slice(1)],querySelectorAll:()=>[]};
- for(const name of['securityMessage','securityTitle','securityIdentity','securityRequest','securityEmail','securityPassword','securityContinue','securitySelfSignup','securityEmailVerification','securityNonceLabel','securityRequestCode','securityCurrentLabel','securityNewPassword','securityConfirmPassword','securityNonce','securityCurrentPassword','securityAcknowledge','securityOpen','securityCancel','securityResume','securityDeviceControls','securityDeviceAcknowledge','securityForgetDevice','securityRevokeAll'])nodes[name]=new Element('section',doc);
+ for(const name of['securityMessage','securityTitle','securityIdentity','securityRequest','securityEmail','securityPassword','securityContinue','securitySelfSignup','securityEmailVerification','securityNonceLabel','securityRequestCode','securityCurrentLabel','securityNewPassword','securityConfirmPassword','securityNonce','securityCurrentPassword','securityAcknowledge','securityOpen','securityCancel','securityResume','securityDeviceControls','securityDeviceAcknowledge','securityForgetDevice','securityRevokeAll','securityTrustRetry'])nodes[name]=new Element('section',doc);
  nodes.securityPassword.reset=()=>{for(const n of['securityNewPassword','securityConfirmPassword','securityNonce','securityCurrentPassword'])nodes[n].value='';};
  function newClient(kind){
   let session=kind==='normal'||kind==='snapshot'?{user,access_token:'original',refresh_token:'refresh'}:null;const listeners=[];
@@ -31,9 +32,9 @@ export function securityPageFixture(flow='recover',options={}){
   clients.push(client);return client;
  }
  const win={location:{href:'https://mushavo-budget-staging.pages.dev/auth.html?flow='+flow+'&invitation='+invitation+'#access_token=link-token&refresh_token=link-refresh&type='+(flow==='recover'?'recovery':flow==='confirm'?'signup':flow==='business-new'?'invite':'magiclink'),origin:'https://mushavo-budget-staging.pages.dev',replace:x=>navigations.push(x)},history:{replaceState(){calls.push('strip-url');}},sessionStorage:{removeItem:x=>removed.push(x)},MUSHAVO_BUDGET_CONFIG:{supabaseUrl:'https://dczlddwbtgvfdujgcitb.supabase.co',supabasePublishableKey:'synthetic-publishable'},
- async fetch(url,init){const action=url.split('/').at(-1);calls.push('gateway:'+action);if(action==='restore')return json({result:'CODE_REQUIRED'});if(action==='begin')return json({result:'CODE_REQUESTED',challengeId:'00000000-0000-4000-8000-000000000123',expiresAt:'2099-01-01'});if(action==='forget'||action==='revoke-all'){if(options.failActions)throw Error('PRIVATE_PROVIDER_ERROR');if(action==='revoke-all'||options.forgetInvalidates)proofs.set(init.headers.Authorization.slice('Bearer '.length),false);return json({result:action==='forget'?'FORGOTTEN':'REVOKED'});}if(action==='verify'){assert.equal(JSON.parse(init.body).code,'123456');proofs.set(init.headers.Authorization.slice('Bearer '.length),true);return json({result:'VERIFIED'});}throw Error('UNEXPECTED_GATEWAY');}};
+ async fetch(url,init){const action=url.split('/').at(-1);calls.push('gateway:'+action);if(action==='confirm-device'){if(options.failDeviceTrust)return json({result:'UNAVAILABLE'},503);if(options.prepareDeviceCookie&&calls.filter(x=>x==='gateway:confirm-device').length===1)return json({result:'DEVICE_COOKIE_PREPARED'});return json({result:'TRUSTED',persistent:true});}if(action==='restore')return json({result:options.restoreApproved?'APPROVED':'CODE_REQUIRED'});if(action==='begin')return json({result:'CODE_REQUESTED',challengeId:'00000000-0000-4000-8000-000000000123',expiresAt:'2099-01-01'});if(action==='forget'||action==='revoke-all'){if(options.failActions)throw Error('PRIVATE_PROVIDER_ERROR');if(action==='revoke-all'||options.forgetInvalidates)proofs.set(init.headers.Authorization.slice('Bearer '.length),false);return json({result:action==='forget'?'FORGOTTEN':'REVOKED'});}if(action==='verify'){assert.equal(JSON.parse(init.body).code,'123456');proofs.set(init.headers.Authorization.slice('Bearer '.length),true);return json({result:'VERIFIED'});}throw Error('UNEXPECTED_GATEWAY');}};
  if(options.noTokens)win.location.href=win.location.href.split('#')[0];
- const context={...security,createAuthCallbackEntry:opts=>createAuthCallbackEntry({...opts,events:options.events}),createClient:(u,k,o)=>newClient(o.auth.storageKey?'isolated':o.auth.persistSession===false?'snapshot':'normal'),window:win,document:doc,URL,Date,Promise};
+ const context={...security,registerConfirmationDevice,createAuthCallbackEntry:opts=>createAuthCallbackEntry({...opts,events:options.events}),createClient:(u,k,o)=>newClient(o.auth.storageKey?'isolated':o.auth.persistSession===false?'snapshot':'normal'),window:win,document:doc,URL,Date,Promise};
  vm.createContext(context);vm.runInContext(source,context);
  function all(){const a=[];function visit(n){a.push(n);for(const c of n.children||[])visit(c);}visit(nodes.securityEmailVerification);return a;}
  async function code(){const send=all().find(x=>x.textContent==='Send email code');assert(send&&!send.disabled);send.events.click();await tick();const input=all().find(x=>x.autocomplete==='one-time-code'),form=all().find(x=>x.tag==='form');input.value='123456';form.events.submit({preventDefault(){}});await tick();await tick();assert.equal(input.value,'');}
@@ -41,5 +42,5 @@ export function securityPageFixture(flow='recover',options={}){
  async function open(){nodes.securityAcknowledge.checked=true;nodes.securityOpen.events.click();await tick();await tick();}
  return{actor:id,calls,clients,nodes,navigations,removed,context,all,code,save,open,proof:x=>proofOverride=x,unfinishedError:x=>unfinishedError=x,linkError:x=>linkError=x,invited:x=>invited=x,ready:async()=>{await tick();await tick();}};
 }
-const json=x=>new Response(JSON.stringify(x),{headers:{'content-type':'application/json'}});
+const json=(x,status=200)=>new Response(JSON.stringify(x),{status,headers:{'content-type':'application/json'}});
 // Explicit transport passed to the real component; the default Node network stays disabled.

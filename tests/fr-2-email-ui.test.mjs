@@ -112,8 +112,8 @@ class Element{
  append(...x){this.children.push(...x);}replaceChildren(...x){this.children=x;}setAttribute(k,v){this[k]=v;}addEventListener(k,fn){this.events[k]=fn;}
 }
 function view(){const doc={createElement:tag=>new Element(tag,doc),createTextNode:text=>({textContent:text})};const root=new Element('section',doc),calls=[];const controller={requestCode:x=>calls.push(['send',x]),prepare:()=>calls.push(['prepare']),verify:x=>calls.push(['verify',x]),lock:()=>calls.push(['lock'])};const render=attachEmailVerificationView({controller,root,document:doc,onSignOut:()=>calls.push(['signout'])});const all=[];function visit(n){all.push(n);for(const x of n.children||[])visit(x);}visit(root);return{root,all,calls,render};}
-test('Actual view defaults remember off, labels email code and keeps signout available during requests',()=>{
- const v=view(),remember=v.all.find(x=>x.type==='checkbox'),send=v.all.find(x=>x.textContent==='Send email code');assert.equal(remember.checked,false);remember.checked=true;send.events.click();assert.deepEqual(v.calls,[['send',true]]);
+test('Actual view defaults browser trust on, labels email code and keeps signout available during requests',()=>{
+ const v=view(),remember=v.all.find(x=>x.type==='checkbox'),send=v.all.find(x=>x.textContent==='Send email code');assert.equal(remember.checked,true);send.events.click();assert.deepEqual(v.calls,[['send',true]]);
  v.render({phase:'loading',busy:true,authorized:false,canVerify:false});assert.equal(send.disabled,true);assert.equal(v.all.find(x=>x.textContent==='Sign out').disabled,false);
 });
 test('Actual form removes the code from its input before invoking verification',()=>{

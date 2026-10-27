@@ -7,9 +7,9 @@
     <meta http-equiv="Cache-Control" content="no-store" />
     <title>Account security | Mushavo Budget</title>
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
-    <link rel="stylesheet" href="styles.css?v=79" />
+    <link rel="stylesheet" href="styles.css?v=80" />
     <script src="config.js?v=27"></script>
-    <script type="module" src="auth-flows.js?v=4"></script>
+    <script type="module" src="auth-flows.js?v=5"></script>
   </head>
   <body>
     <main class="workspace">
@@ -21,7 +21,7 @@
         <section id="securityEmailVerification" aria-label="Email verification" hidden></section>
         <section id="securityDeviceControls" hidden>
           <h2>Remembered devices and sessions</h2>
-          <p>Remembered approval lasts seven days. An open verified session can stay signed in after those seven days.</p>
+          <p>Trusted browsers stay approved until their approval is removed or browser data is cleared.</p>
           <p><strong>Forget this device</strong> removes this browser’s remembered approval. Sessions using that approval may need a code, including this one.</p>
           <p><strong>Require verification on all sessions</strong> removes your account’s remembered approvals and pauses protected access until each session verifies again. You stay signed in, with protected access paused until verification.</p>
           <label><input id="securityDeviceAcknowledge" type="checkbox" /> I understand this can require email codes again for my signed-in sessions.</label>
@@ -48,6 +48,7 @@
         </div>
         <a id="securitySelfSignup" class="button-link" href="signup.html?mode=self-signup" hidden>Choose a Free personal account instead</a>
         <button id="securityResume" type="button" hidden>Continue account verification</button>
+        <button id="securityTrustRetry" type="button" hidden>Retry saving this browser</button>
         <div class="button-row"><button id="securityCancel" type="button">Back to sign in</button></div>
       </section>
     </main>

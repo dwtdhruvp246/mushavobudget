@@ -1,4 +1,4 @@
-import {createEmailVerification,attachEmailVerificationView} from './email-verification.js?v=2';
+import {createEmailVerification,attachEmailVerificationView} from './email-verification.js?v=3';
 
 // The owning page clears models/DOM before a proof change and checks tickets
 // after asynchronous work. Opening this view never sends mail automatically.

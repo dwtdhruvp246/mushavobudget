@@ -27,7 +27,8 @@ test('real confirmation page verifies the link without mounting a code screen or
  for(const name of ['securityContinue','securityPassword','securityEmailVerification','securityDeviceControls'])assert.equal(h.nodes[name].hidden,true);
  assert.equal(h.nodes.securityCancel.textContent,'Go to sign in');
  assert.equal(h.nodes.securityEmailVerification.children.length,0);
- assert(!h.calls.some(x=>x.startsWith('gateway:')||x.endsWith(':password')||x==='normal:adopt'||x==='email_gate_current_session_verified'));
+ assert.equal(h.calls.filter(x=>x==='gateway:confirm-device').length,1);
+ assert(!h.calls.some(x=>(x.startsWith('gateway:')&&x!=='gateway:confirm-device')||x.endsWith(':password')||x==='normal:adopt'||x==='email_gate_current_session_verified'));
  assert(h.clients.every(client=>client.kind==='isolated'));
  assert.equal(h.navigations.length,0);
 });
@@ -36,7 +37,7 @@ test('confirmation success returns to manual sign-in after isolated logout witho
  h.nodes.securityCancel.events.click();await h.ready();
  assert.equal(h.calls.filter(call=>call==='isolated:logout').length,1);
  assert.equal(h.navigations.at(-1),'https://mushavo-budget-staging.pages.dev/app.html?auth=manual');
- assert(!h.calls.some(call=>call.startsWith('gateway:')||call==='normal:adopt'||call==='normal:logout'));
+ assert(!h.calls.some(call=>(call.startsWith('gateway:')&&call!=='gateway:confirm-device')||call==='normal:adopt'||call==='normal:logout'));
 });
 test('failed confirmation-session cleanup stays on the page and can retry without sending a code',async()=>{
  const h=page('confirm');await h.ready();
@@ -46,7 +47,7 @@ test('failed confirmation-session cleanup stays on the page and can retry withou
  assert.match(h.nodes.securityMessage.textContent,/try again/);
  h.nodes.securityCancel.events.click();await h.ready();
  assert.equal(h.navigations.at(-1),'https://mushavo-budget-staging.pages.dev/app.html?auth=manual');
- assert(!h.calls.some(call=>call.startsWith('gateway:')||call==='normal:adopt'));
+ assert(!h.calls.some(call=>(call.startsWith('gateway:')&&call!=='gateway:confirm-device')||call==='normal:adopt'));
 });
 test('confirmation intent alone or an expired link never displays verified success or mounts a code screen',async()=>{
  for(const options of [{noTokens:true},{linkError:{code:'otp_expired'}}]){
@@ -61,7 +62,7 @@ test('confirmation intent alone or an expired link never displays verified succe
 test('a legacy confirmation Continue event returns to sign-in without an application verification attempt',async()=>{
  const h=page('confirm');await h.ready();await h.open();
  assert.equal(h.navigations.at(-1),'https://mushavo-budget-staging.pages.dev/app.html?auth=manual');
- assert(!h.calls.some(call=>call.startsWith('gateway:')||call==='email_gate_current_session_verified'||call==='normal:adopt'));
+ assert(!h.calls.some(call=>(call.startsWith('gateway:')&&call!=='gateway:confirm-device')||call==='email_gate_current_session_verified'||call==='normal:adopt'));
 });
 test('unfinished Admin recipient keeps an explicit personal-signup choice after password and fresh proof',async()=>{
  const h=page('recover',{unfinished:true});await h.ready();await h.save();await h.code();assert.equal(h.nodes.securitySelfSignup.hidden,false);assert.equal(h.nodes.securityContinue.hidden,true);assert(!h.calls.some(x=>/complete_|cancel.*invitation/.test(x)));assert.equal(h.navigations.length,0);

@@ -1,5 +1,5 @@
 import {GateError, requireGate, readBoundedJSON, upstreamJSON} from './email-verification-http.mjs';
-import {codeMac, newChallengeMaterial, newDeviceMaterial, deviceDigest} from './email-verification-crypto.mjs';
+import {codeMac, newChallengeMaterial, newDeviceMaterial, deviceDigest, enrollmentMac, validEnrollmentMac} from './email-verification-crypto.mjs';
 import {createZohoCodeMailer, isSingleMailbox} from './email-verification-zoho.mjs';
 export const STAGING_PROJECT = 'dczlddwbtgvfdujgcitb';
 export const STAGING_ORIGIN = 'https://mushavo-budget-staging.pages.dev';
@@ -7,29 +7,50 @@ const backend = 'https://' + STAGING_PROJECT + '.supabase.co';
 const prefix = '/api/email-verification/';
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const credential = /^[A-Za-z0-9_-]{43}$/;
+// Browser storage is finite even when server approval has no application expiry.
+export const BROWSER_CREDENTIAL_MAX_AGE = 34560000;
 const reply = (status, data, cookie) => {
   const headers = {'content-type':'application/json; charset=utf-8', 'cache-control':'no-store',
     'pragma':'no-cache', 'x-content-type-options':'nosniff', 'referrer-policy':'no-referrer',
     'content-security-policy':"default-src 'none'; frame-ancestors 'none'"};
-  if (cookie) headers['set-cookie'] = cookie;
-  return new Response(JSON.stringify(data), {status, headers});
+  const responseHeaders = new Headers(headers);
+  for (const value of cookie ? (Array.isArray(cookie) ? cookie : [cookie]) : []) responseHeaders.append('set-cookie',value);
+  return new Response(JSON.stringify(data), {status, headers:responseHeaders});
 };
 const exactKeys = (value, keys) => value && !Array.isArray(value) && typeof value === 'object'
   && Object.keys(value).sort().join(',') === keys.slice().sort().join(',');
 const cookieName = user => '__Host-mushavo_device_' + user.replaceAll('-', '');
+const pendingName = user => '__Host-mushavo_enroll_' + user.replaceAll('-', '');
+function cookieValues(request,name) {
+  return (request.headers.get('cookie') || '').split(';').map(x=>x.trim())
+    .filter(x=>x.startsWith(name+'=')).map(x=>x.slice(name.length+1));
+}
 function getCredential(request, user) {
-  const values = (request.headers.get('cookie') || '').split(';').map(x=>x.trim())
-    .filter(x=>x.startsWith(cookieName(user) + '=')).map(x=>x.slice(cookieName(user).length + 1));
+  const values = cookieValues(request,cookieName(user));
   requireGate(values.length <= 1, 'INVALID_REQUEST', 400);
   requireGate(!values.length || credential.test(values[0]), 'INVALID_REQUEST', 400);
   return values[0] || null;
 }
 const clearCookie = user => cookieName(user) + '=; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=0';
-function approvalCookie(user, token, expiry, now) {
-  const until = Date.parse(expiry); const seconds = Math.floor((until-now())/1000);
-  requireGate(credential.test(token) && Number.isFinite(until) && seconds > 0 && seconds <= 604800);
+function approvalCookie(user, token, now) {
+  const until = now()+BROWSER_CREDENTIAL_MAX_AGE*1000;
+  const seconds = BROWSER_CREDENTIAL_MAX_AGE;
+  requireGate(credential.test(token) && Number.isFinite(until));
   return cookieName(user) + '=' + token + '; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age='
     + seconds + '; Expires=' + new Date(until).toUTCString();
+}
+const clearPending = user => pendingName(user)+'=; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=0';
+function freshSignupProof(claims,user,now) {
+  const seconds=Math.floor(now()/1000),confirmed=Date.parse(user.email_confirmed_at)/1000;
+  if(!Array.isArray(claims.amr)||claims.amr.length>16||!Number.isSafeInteger(claims.iat)
+    ||claims.iat>seconds+30||claims.iat<seconds-300)return null;
+  // Generic OTP may also mean SMS. Only an email-only signup can use that fallback.
+  const emailOnly=!user.phone&&!user.phone_confirmed_at;
+  const proofs=claims.amr.filter(value=>value&&(value.method==='email/signup'||(value.method==='otp'&&emailOnly))
+    &&Number.isSafeInteger(value.timestamp)&&value.timestamp>=seconds-300&&value.timestamp<=seconds+30
+    &&value.timestamp<=claims.iat+30&&Math.abs(confirmed-value.timestamp)<=120);
+  if(!proofs.length)return null;
+  return new Date(Math.max(...proofs.map(value=>value.timestamp))*1000).toISOString();
 }
 function claimsFrom(token) {
   requireGate(typeof token === 'string' && token.length <= 16384 && /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(token), 'SIGN_IN_REQUIRED', 401);
@@ -56,11 +77,11 @@ export function createBackendAdapter({fetcher, publishableKey, serviceKey, now=D
       });
       requireGate(user.id === claims.sub && user.is_anonymous !== true && isSingleMailbox(user.email)
         && typeof user.email_confirmed_at === 'string' && Number.isFinite(Date.parse(user.email_confirmed_at)), 'SIGN_IN_REQUIRED', 401);
-      return {userId:user.id, sessionId:claims.session_id, email:user.email};
+      return {userId:user.id, sessionId:claims.session_id, email:user.email, signupProofAt:freshSignupProof(claims,user,now)};
     },
     async rpc(name, args) {
       requireGate(['begin_challenge','set_delivery','challenge_context','verify_challenge',
-        'restore_device','revoke_device','revoke_all','session_status'].includes(name));
+        'restore_device','revoke_device','revoke_all','session_status','register_link_device'].includes(name));
       // Modern secret keys authenticate through apikey; they are not bearer JWTs.
       // Retain the legacy JWT transport for an existing service_role credential.
       const headers = {apikey:serviceKey, 'content-type':'application/json'};
@@ -80,7 +101,7 @@ export function createEmailGateway({adapter, mailer, keyring, currentKeyVersion,
     try {
       const url = new URL(request.url), route = url.pathname.slice(prefix.length);
       requireGate(url.origin === STAGING_ORIGIN && url.pathname.startsWith(prefix)
-        && ['begin','verify','restore','status','forget','revoke-all'].includes(route) && !url.search,
+        && ['begin','verify','restore','status','forget','revoke-all','confirm-device'].includes(route) && !url.search,
         'NOT_FOUND', 404);
       requireGate(request.method === 'POST', 'METHOD_NOT_ALLOWED', 405);
       requireGate(request.headers.get('origin') === STAGING_ORIGIN
@@ -106,13 +127,44 @@ export function createEmailGateway({adapter, mailer, keyring, currentKeyVersion,
       };
       if (route === 'status') return reply(200,{verified:await status()});
       const remembered = getCredential(request, actor.userId);
+      if (route === 'confirm-device') {
+        requireGate(typeof actor.signupProofAt==='string'&&Number.isFinite(Date.parse(actor.signupProofAt)), 'SIGNUP_LINK_REQUIRED',403);
+        const values=cookieValues(request,pendingName(actor.userId));
+        requireGate(values.length<=1,'INVALID_REQUEST',400);
+        let pending=null;
+        if(values.length) {
+          requireGate(values[0].length<=160,'INVALID_REQUEST',400);
+          const parts=values[0].split('.'),issuedAt=Number(parts[2]),seconds=Math.floor(now()/1000);
+          requireGate(parts.length===4&&credential.test(parts[0])&&keyring.has(parts[1])
+            &&/^[0-9]{1,12}$/.test(parts[2])&&Number.isSafeInteger(issuedAt)
+            &&issuedAt>=seconds-300&&issuedAt<=seconds+30,'SIGNUP_LINK_REQUIRED',403);
+          requireGate(await validEnrollmentMac({userId:actor.userId,sessionId:actor.sessionId,
+            credential:parts[0],keyVersion:parts[1],issuedAt,pepper:keyring.get(parts[1])},parts[3]),'SIGNUP_LINK_REQUIRED',403);
+          pending=parts[0];
+        }
+        if(!pending&&remembered) {
+          const result=await call('register_link_device',{p_device_digest:await deviceDigest(remembered),p_proof_at:actor.signupProofAt,p_allow_new:false});
+          if(result?.result==='TRUSTED'&&result.persistent===true)return reply(200,{result:'TRUSTED',persistent:true},[approvalCookie(actor.userId,remembered,now),clearPending(actor.userId)]);
+          requireGate(result?.result==='PENDING_REQUIRED','SIGNUP_LINK_REQUIRED',403);
+        }
+        if(!pending) {
+          const device=await newDeviceMaterial(),issuedAt=Math.floor(now()/1000);
+          const mac=await enrollmentMac({userId:actor.userId,sessionId:actor.sessionId,credential:device.credential,
+            keyVersion:currentKeyVersion,issuedAt,pepper:keyring.get(currentKeyVersion)});
+          const value=[device.credential,currentKeyVersion,issuedAt,mac].join('.');
+          return reply(200,{result:'DEVICE_COOKIE_PREPARED'},pendingName(actor.userId)+'='+value+'; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=300');
+        }
+        const result=await call('register_link_device',{p_device_digest:await deviceDigest(pending),p_proof_at:actor.signupProofAt,p_allow_new:true});
+        requireGate(result?.result==='TRUSTED'&&result.persistent===true,'SIGNUP_LINK_REQUIRED',403);
+        return reply(200,{result:'TRUSTED',persistent:true},[approvalCookie(actor.userId,pending,now),clearPending(actor.userId)]);
+      }
       if (route === 'restore') {
         if (await status()) return reply(200,{result:'VERIFIED'});
         if (!remembered) return reply(200,{result:'CODE_REQUIRED'});
         const result = await call('restore_device',{p_device_digest:await deviceDigest(remembered)});
         requireGate(['APPROVED','CODE_REQUIRED'].includes(result?.result));
-        // Restore never emits Set-Cookie: the seven-day deadline cannot slide.
-        return reply(200,{result:result.result}, result.result === 'CODE_REQUIRED' ? clearCookie(actor.userId) : undefined);
+        if(result.result==='APPROVED')requireGate(result.device_persistent===true&&result.device_expires_at===null);
+        return reply(200,{result:result.result}, result.result === 'CODE_REQUIRED' ? clearCookie(actor.userId) : approvalCookie(actor.userId,remembered,now));
       }
       if (route === 'forget') {
         requireGate(await status(), 'VERIFICATION_REQUIRED', 403);
@@ -152,7 +204,8 @@ export function createEmailGateway({adapter, mailer, keyring, currentKeyVersion,
       const verified = await call('verify_challenge',{p_challenge:body.challengeId,p_code_mac:mac,p_device_digest:device?.digest || null});
       if (['UNAVAILABLE','LOCKED','CODE_REJECTED','INVALID'].includes(verified?.result)) return reply(400,{result:'CODE_REJECTED'});
       requireGate(verified?.result === 'VERIFIED');
-      const cookie = device ? approvalCookie(actor.userId,device.credential,verified.device_expires_at,now) : clearCookie(actor.userId);
+      if(device)requireGate(verified.device_persistent===true&&verified.device_expires_at===null);
+      const cookie = device ? approvalCookie(actor.userId,device.credential,now) : clearCookie(actor.userId);
       return reply(200,{result:'VERIFIED'},cookie);
     } catch (error) {
       return reply(error instanceof GateError ? error.status : 503,

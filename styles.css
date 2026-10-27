@@ -6561,3 +6561,19 @@ input[type="file"] {
 .support-message, .admin-detail-card, .device-notifications-panel, .cashbook-page, .cashbook-selected-balance, .cashbook-entry-dialog, .payment-choice-dialog, .invite-member-dialog { border: 1px solid var(--box-border, #000000); }
 
 .occurrence-facts > div, .workload-metrics > div, .workload-detail-row, .admin-invite-summary > div, .workspace-plan-owner-note.coming-soon-note, .plan-publication-options, .cashbook-report-card dl > div, #adminPlansWorkbench .ap-message, #adminPlansWorkbench .ap-audit-values { border: 1px solid var(--box-border, #000000); }
+
+/* Keep the browser-trust checkbox compact beside its label. */
+.verification-trust-choice {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.verification-trust-choice input[type="checkbox"] {
+  width: 1.1rem;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  flex: 0 0 auto;
+}

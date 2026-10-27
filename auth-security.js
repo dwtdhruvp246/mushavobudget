@@ -20,6 +20,7 @@ export function safeAuthMessage(error) {
   if (['session_changed', 'identity_mismatch'].includes(code)) return 'The active account changed. Reload and verify the email before continuing.';
   if (['otp_expired', 'link_unavailable', 'session_not_found', 'session_expired'].includes(code)) return 'This link or session is unavailable. Open the newest email or request another link.';
   if (code === 'email_verification_required') return 'Verify your email code before continuing to your account.';
+  if (code === 'device_trust_unavailable') return "Email confirmed. We couldn't save this browser. Try again.";
   if (code === 'business_invitation_unavailable') return 'This Business invitation is unavailable. Ask the owner for the latest invitation.';
   return 'The request could not finish. Check your connection and try again.';
 }

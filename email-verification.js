@@ -21,6 +21,39 @@ async function boundedJSON(response){
   if(!value||Array.isArray(value)||typeof value!=='object')throw Error('UNAVAILABLE');
   return value;
 }
+// Signup-link trust is enrolled by the server, not by an email-confirmed browser flag.
+// One pending-cookie handshake may be followed by one registration POST; transport failures are not retried.
+export async function registerConfirmationDevice({client,expectedId,origin=globalThis.location?.origin,fetcher=globalThis.fetch}) {
+  const fail=code=>Object.assign(new Error(code),{code});
+  const location=new URL(origin);
+  if(location.protocol!=='https:'||location.origin!==origin||!uuid.test(expectedId||'')||typeof fetcher!=='function')throw fail('device_trust_unavailable');
+  const abort=new AbortController(),signal=abort.signal;
+  try {
+    const initial=await waitLimit(client.auth.getSession(),signal);
+    const token=initial?.data?.session?.access_token;
+    if(initial?.error||initial?.data?.session?.user?.id!==expectedId||typeof token!=='string'||!token||token.length>16384)throw fail('session_changed');
+    async function current(){
+      const value=await waitLimit(client.auth.getSession(),signal);
+      if(value?.error||value?.data?.session?.user?.id!==expectedId||value.data.session.access_token!==token)throw fail('session_changed');
+      const checked=await waitLimit(client.auth.getUser(),signal);
+      if(checked?.error||checked?.data?.user?.id!==expectedId||!checked.data.user.email_confirmed_at)throw fail('session_changed');
+    }
+    for(let step=0;step<2;step++){
+      await current();
+      const response=await waitLimit(fetcher(origin+'/api/email-verification/confirm-device',{
+        method:'POST',credentials:'same-origin',cache:'no-store',redirect:'error',referrerPolicy:'no-referrer',signal,
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'X-Mushavo-CSRF':'email-v1'},body:'{}'
+      }),signal);
+      const value=await waitLimit(boundedJSON(response),signal);
+      await current();
+      if(response.status!==200)throw fail('device_trust_unavailable');
+      if(value.result==='TRUSTED'&&value.persistent===true)return true;
+      if(value.result!=='DEVICE_COOKIE_PREPARED'||step!==0)throw fail('device_trust_unavailable');
+    }
+    throw fail('device_trust_unavailable');
+  } catch(error) {throw fail(error?.code==='session_changed'?'session_changed':'device_trust_unavailable');}
+  finally {abort.abort();}
+}
 // Notices only remove local access; no message can establish verification.
 export function createVerificationEvents(createChannel){
   const channel=createChannel('mushavo-email-verification-v1'),listeners=new Set();
@@ -158,9 +191,9 @@ export function attachEmailVerificationView({controller,root,document=root.owner
   let awaitingCode=false;
   const element=(tag,text)=>{const node=document.createElement(tag);if(text)node.textContent=text;return node;};
   const title=element('h1','Verify your sign-in'),message=element('p');message.setAttribute('role','status');message.setAttribute('aria-live','polite');
-  const remember=element('input');remember.type='checkbox';remember.checked=false;
-  const rememberLabel=element('label');rememberLabel.append(remember,document.createTextNode(' Remember this device for 7 days'));
-  const explanation=element('p','Only choose this on a device you trust. An open verified session stays signed in when the seven days end.');
+  const remember=element('input');remember.type='checkbox';remember.checked=true;
+  const rememberLabel=element('label');rememberLabel.className='verification-trust-choice';rememberLabel.append(remember,document.createTextNode(' Trust this browser'));
+  const explanation=element('p','Trusted browsers do not need another code unless their approval is removed or browser data is cleared.');
   const send=element('button','Send email code');send.type='button';
   const form=element('form'),label=element('label','Email code'),code=element('input');
   code.type='text';code.inputMode='numeric';code.pattern='[0-9]{6}';code.maxLength=6;code.autocomplete='one-time-code';code.required=true;label.append(code);
@@ -177,7 +210,7 @@ export function attachEmailVerificationView({controller,root,document=root.owner
     message.textContent=state.message||messages.unavailable;
     form.hidden=!state.canVerify||['authorized','forbidden','unavailable','locked'].includes(state.phase);
     if(state.phase!=='code')code.value='';
-    if(['locked','authorized','forbidden','unavailable'].includes(state.phase))remember.checked=false;
+    if(['locked','authorized','forbidden','unavailable'].includes(state.phase))remember.checked=true;
     send.textContent=state.canVerify?'Send a new code':'Send email code';
     for(const node of[send,retry,verify,remember,code])node.disabled=state.busy||state.authorized||state.phase==='forbidden';
     signout.disabled=false;

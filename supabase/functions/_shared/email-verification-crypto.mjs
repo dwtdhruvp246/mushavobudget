@@ -29,3 +29,24 @@ export async function newDeviceMaterial() {
  const credential=btoa(String.fromCharCode(...bytes)).replaceAll('+','-').replaceAll('/','_').replace(/=+$/,'');
  return {credential,digest:await deviceDigest(credential)};
 }
+
+// Short-lived server attestation for a pending signup-browser credential.
+// Binding actor/session/credential/time prevents a caller choosing its own trust token.
+function enrollmentMessage({userId,sessionId,keyVersion,credential,issuedAt,pepper}) {
+ need(uuid.test(userId||'')&&uuid.test(sessionId||'')&&/^[A-Za-z0-9_-]{1,32}$/.test(keyVersion||'')
+  &&/^[A-Za-z0-9_-]{43}$/.test(credential||'')&&Number.isSafeInteger(issuedAt)&&issuedAt>0
+  &&pepper instanceof Uint8Array&&pepper.length>=32&&pepper.length<=64);
+ return enc.encode(['mushavo-signup-device-v1',userId.toLowerCase(),sessionId.toLowerCase(),credential,keyVersion,String(issuedAt)].join('\0'));
+}
+export async function enrollmentMac(args) {
+ const message=enrollmentMessage(args);
+ const key=await crypto.subtle.importKey('raw',args.pepper,{name:'HMAC',hash:'SHA-256'},false,['sign']);
+ return hex(await crypto.subtle.sign('HMAC',key,message));
+}
+export async function validEnrollmentMac(args,mac) {
+ if(typeof mac!=='string'||!/^[0-9a-f]{64}$/.test(mac))return false;
+ const message=enrollmentMessage(args);
+ const key=await crypto.subtle.importKey('raw',args.pepper,{name:'HMAC',hash:'SHA-256'},false,['verify']);
+ const signature=Uint8Array.from(mac.match(/../g),value=>parseInt(value,16));
+ return crypto.subtle.verify('HMAC',key,signature,message);
+}

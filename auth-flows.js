@@ -1,6 +1,7 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm';
 import { callbackUrl, consumeAuthUrl, isolatedAuthOptions, createLinkController, createPasswordChanger, safeAuthMessage, verifiedUser, authError, requireVerifiedApplicationSession } from './auth-security.js?v=2';
 import { createAuthCallbackEntry } from './session-entry.js?v=3';
+import { registerConfirmationDevice } from './email-verification.js?v=3';
 
 const $ = selector => document.querySelector(selector);
 const material = consumeAuthUrl(window.location.href, value => window.history.replaceState(null, '', value));
@@ -8,7 +9,7 @@ const flow = material.flow;
 const settings = window.MUSHAVO_BUDGET_CONFIG || {};
 let isolated, app, controller, changer, busy = false, identity = null, cooldownUntil = 0, emailEntry = null, passwordClient = null;
 const message = value => { $('#securityMessage').textContent = value; };
-function hideForms() { for (const id of ['#securityRequest','#securityPassword','#securityContinue','#securitySelfSignup','#securityResume','#securityDeviceControls']) $(id).hidden = true; }
+function hideForms() { for (const id of ['#securityRequest','#securityPassword','#securityContinue','#securitySelfSignup','#securityResume','#securityDeviceControls','#securityTrustRetry']) $(id).hidden = true; }
 function showIdentity(user) { identity = user; $('#securityIdentity').hidden = false; $('#securityIdentity').textContent = `Verified account: ${user.email || ''}`; }
 async function operation(action) {
   if (busy) return;
@@ -90,10 +91,10 @@ async function init() {
   showIdentity(user);
   $('#securityTitle').textContent = flow === 'confirm' ? 'Email confirmed' : flow === 'recover' ? 'Choose a new password' : 'Business invitation verified';
   if (confirmationOnly) {
-    message('Your email has been confirmed. You can now sign in.');
     const signInButton = $('#securityCancel');
     signInButton.textContent = 'Go to sign in';
     signInButton.className = 'primary';
+    await finishConfirmationDevice();
     return;
   }
   message(flow.startsWith('business-') ? `Invitation for ${controller.invitation.workspace_name}. Membership is decided when you accept in the Business workspace.` : 'Your email link has been verified.');
@@ -101,6 +102,18 @@ async function init() {
   else $('#securityContinue').hidden = false;
 
 }
+async function finishConfirmationDevice() {
+  if(flow!=='confirm'||!identity)throw authError('link_unavailable');
+  const signInButton=$('#securityCancel');signInButton.disabled=true;
+  $('#securityTrustRetry').hidden=true;
+  message('Email confirmed. Saving this browser…');
+  try {
+    await registerConfirmationDevice({client:isolated,expectedId:identity.id,origin:window.location.origin,fetcher:window.fetch.bind(window)});
+    message('This browser is trusted. You can now sign in.');
+  } catch(error) { $('#securityTrustRetry').hidden=false;throw error; }
+  finally {signInButton.disabled=false;}
+}
+$('#securityTrustRetry').addEventListener('click',()=>operation(finishConfirmationDevice));
 $('#securityRequest').addEventListener('submit', event => {
   event.preventDefault();
   operation(async () => {

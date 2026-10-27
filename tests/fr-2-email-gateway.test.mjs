@@ -8,7 +8,7 @@ const V='00000000-0000-4000-8000-000000000502',C='00000000-0000-4000-8000-000000
 const origin='https://' + STAGING_PROJECT + '.supabase.co';
 const json=(v,status=200)=>new Response(JSON.stringify(v),{status,headers:{'content-type':'application/json'}});
 const cookieName=user=>'__Host-mushavo_device_' + user.replaceAll('-','');
-const baseClaims=()=>({sub:U,session_id:S,role:'authenticated',aud:'authenticated',iss:origin+'/auth/v1',exp:Math.floor(Date.now()/1000)+3600});
+const baseClaims=()=>({sub:U,session_id:S,role:'authenticated',aud:'authenticated',iss:origin+'/auth/v1',iat:Math.floor(Date.now()/1000),exp:Math.floor(Date.now()/1000)+3600});
 const jwt=c=>Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url')+'.'+Buffer.from(JSON.stringify(c)).toString('base64url')+'.c3ludGhldGlj';
 function fixture(options={}) {
  const calls=[]; const state={...options};
@@ -25,7 +25,7 @@ function fixture(options={}) {
   if(state.throwUpstream)throw Error('SYNTHETIC_SECRET_NEVER_RETURN_THIS');
   if(url.endsWith('/auth/v1/user')) {
    if(state.authResponse)return state.authResponse();
-   return json({id:state.userId||U,email:state.email||'primary@example.invalid',email_confirmed_at:state.unconfirmed?null:new Date().toISOString(),is_anonymous:state.anonymous||false},state.authStatus||200);
+   return json({id:state.userId||U,email:state.email||'primary@example.invalid',email_confirmed_at:state.unconfirmed?null:state.confirmedAt||new Date().toISOString(),is_anonymous:state.anonymous||false,phone:state.phone,phone_confirmed_at:state.phoneConfirmedAt},state.authStatus||200);
   }
   if(url.includes('/rest/v1/rpc/')) {
    const name=url.split('email_gate_')[1],args=JSON.parse(init.body);calls.push({kind:'rpc',name,args});
@@ -37,8 +37,9 @@ function fixture(options={}) {
    if(name==='begin_challenge'){state.challenge=args;return json({result:state.beginResult||'PENDING_DELIVERY',challenge_id:args.p_challenge,expires_at:new Date(Date.now()+600000).toISOString()});}
    if(name==='set_delivery')return json({result:state.deliveryResult||(args.p_delivered?'READY':'DELIVERY_FAILED')});
    if(name==='challenge_context')return json(state.noContext?null:{key_version:state.keyVersion||'v1',remember_device:state.remember!==false,expires_at:new Date(Date.now()+600000).toISOString()});
-   if(name==='verify_challenge')return json({result:state.verifyResult||'VERIFIED',device_expires_at:new Date(Date.now()+604800000).toISOString()});
-   if(name==='restore_device')return json({result:state.restoreResult||'APPROVED',device_expires_at:new Date(Date.now()+5000).toISOString()});
+   if(name==='verify_challenge')return json({result:state.verifyResult||'VERIFIED',device_persistent:true,device_expires_at:null});
+   if(name==='restore_device')return json({result:state.restoreResult||'APPROVED',device_persistent:true,device_expires_at:null});
+   if(name==='register_link_device')return json({result:state.registerResult||'TRUSTED',persistent:true});
    if(name==='revoke_device')return json({result:state.revokeResult||'REVOKED'});
    if(name==='revoke_all')return json({result:state.revokeAllResult||'REVOKED'});
    throw Error('unexpected RPC');
@@ -154,7 +155,7 @@ test('Late delivery acknowledgement failure cannot claim the superseded code is 
 test('Verification generates an opaque HttpOnly host cookie with a capped fixed expiry and no JSON credential',async()=>{
  const f=fixture();const r=await f.gateway()(f.request('verify',{challengeId:C,code:'123456'}));assert.equal(r.status,200);
  const cookie=r.headers.get('set-cookie');assert(cookie.startsWith(cookieName(U)+'='));assert(cookie.includes('; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age='));assert(!cookie.includes('Domain='));
- const max=Number(cookie.match(/Max-Age=(\d+)/)[1]);assert(max>604790&&max<=604800);
+ const max=Number(cookie.match(/Max-Age=(\d+)/)[1]);assert.equal(max,34560000);
  const raw=cookie.split(';')[0].split('=')[1];assert.equal(raw.length,43);assert.equal(rpc(f,'verify_challenge')[0].args.p_device_digest,await deviceDigest(raw));
  assert.deepEqual(await r.json(),{result:'VERIFIED'});assert.equal(r.headers.get('cache-control'),'no-store');assert.equal(r.headers.get('access-control-allow-origin'),null);
 });
@@ -171,9 +172,9 @@ test('Unknown or missing challenge context cannot mint proof or device cookies',
 for(const result of ['UNAVAILABLE','LOCKED','CODE_REJECTED','INVALID'])test('Database '+result+' verification result never emits a remembered credential',async()=>{
  const f=fixture({verifyResult:result});const r=await f.gateway()(f.request('verify',{challengeId:C,code:'123456'}));assert.equal(r.status,400);assert.equal(r.headers.get('set-cookie'),null);
 });
-test('Remembered-device restore reads only the matching account cookie and never renews expiry',async()=>{
+test('Trusted-device restore reads only the matching account cookie and renews browser storage without an approval deadline',async()=>{
  const f=fixture();const token='A'.repeat(43);const r=await f.gateway()(f.request('restore',{}, {cookie:cookieName(V)+'='+'B'.repeat(43)+'; '+cookieName(U)+'='+token}));
- assert.equal((await r.json()).result,'APPROVED');assert.equal(r.headers.get('set-cookie'),null);assert.equal(rpc(f,'restore_device')[0].args.p_device_digest,await deviceDigest(token));
+ assert.equal((await r.json()).result,'APPROVED');assert(r.headers.get('set-cookie').includes('Max-Age=34560000'));assert.equal(rpc(f,'restore_device')[0].args.p_device_digest,await deviceDigest(token));
 });
 test('Missing or other-account-only device cookie requires a code without restore RPC',async()=>{
  const f=fixture();const r=await f.gateway()(f.request('restore',{}, {cookie:cookieName(V)+'='+'B'.repeat(43)}));assert.equal((await r.json()).result,'CODE_REQUIRED');assert.equal(rpc(f,'restore_device').length,0);
@@ -209,3 +210,114 @@ test('Actual default Worker static fallback strips cookies/bearer and preserves 
 test('Actual default Worker refuses API setup without secrets and denies static POST',async()=>{
  const f=fixture();assert.equal((await worker.fetch(f.request(),{})).status,503);assert.equal((await worker.fetch(new Request(STAGING_ORIGIN+'/app',{method:'POST'}),{})).status,405);
 });
+
+const linkClaims=(method='otp')=>({...baseClaims(),amr:[{method,timestamp:Math.floor(Date.now()/1000)}]});
+const pendingCookieName=user=>'__Host-mushavo_enroll_'+user.replaceAll('-','');
+const pendingPair=response=>response.headers.getSetCookie().find(x=>x.startsWith(pendingCookieName(U)+'=')).split(';')[0];
+test('Confirmation trust uses a server-minted attested cookie handshake with no email or application proof',async()=>{
+ const f=fixture(),claims=linkClaims();
+ const first=await f.gateway()(f.request('confirm-device',{}, {},claims));
+ assert.deepEqual(await first.json(),{result:'DEVICE_COOKIE_PREPARED'});
+ const pair=pendingPair(first);assert.match(pair,new RegExp('^'+pendingCookieName(U)+'=[A-Za-z0-9_-]{43}\\.v1\\.[0-9]+\\.[0-9a-f]{64}$'));
+ assert.match(first.headers.get('set-cookie'),/Secure; HttpOnly; SameSite=Strict; Max-Age=300/);
+ assert.equal(f.calls.filter(x=>x.kind==='rpc').length,0);
+ const second=await f.gateway()(f.request('confirm-device',{}, {cookie:pair},claims));
+ assert.equal(second.status,200);assert.deepEqual(await second.json(),{result:'TRUSTED',persistent:true});
+ const raw=pair.split('=')[1].split('.')[0],call=rpc(f,'register_link_device')[0];
+ assert.equal(call.args.p_allow_new,true);assert.equal(call.args.p_device_digest,await deviceDigest(raw));
+ assert.equal(call.args.p_proof_at,new Date(claims.amr[0].timestamp*1000).toISOString());
+ const cookies=second.headers.getSetCookie();assert.equal(cookies.length,2);
+ assert(cookies.some(x=>x.startsWith(cookieName(U)+'='+raw+';')&&x.includes('Max-Age=34560000')));
+ assert(cookies.some(x=>x.startsWith(pendingCookieName(U)+'=;')&&x.includes('Max-Age=0')));
+ assert(!f.state.mail);assert.equal(rpc(f,'session_status').length,0);assert.equal(rpc(f,'begin_challenge').length,0);
+});
+for(const [name,mutate,options] of [
+ ['password-only',c=>{c.amr=[{method:'password',timestamp:c.iat}];}],
+ ['stale email AMR',c=>{c.amr[0].timestamp-=301;}],
+ ['future email AMR',c=>{c.amr[0].timestamp+=31;}],
+ ['stale token issuance',c=>{c.iat-=301;}],
+ ['future token issuance',c=>{c.iat+=31;}],
+ ['missing issuance',c=>{delete c.iat;}],
+ ['old account confirmation',()=>{}, {confirmedAt:'2026-01-01T00:00:00Z'}],
+ ['SMS-capable generic OTP',()=>{}, {phone:'+15550000000'}],
+ ['confirmed phone generic OTP',()=>{}, {phoneConfirmedAt:'2026-01-01T00:00:00Z'}]
+])test(name+' cannot enroll browser trust from a password session or unrelated OTP',async()=>{
+ const f=fixture(options),claims=linkClaims();mutate(claims);
+ const r=await f.gateway()(f.request('confirm-device',{}, {},claims));
+ assert.equal(r.status,403);assert.equal(r.headers.get('set-cookie'),null);
+ assert.equal(f.calls.filter(x=>x.kind==='rpc').length,0);assert(!f.state.mail);
+});
+test('Explicit signed email/signup AMR can prepare enrollment even when the account also has a phone',async()=>{
+ const f=fixture({phone:'+15550000000'}),r=await f.gateway()(f.request('confirm-device',{}, {},linkClaims('email/signup')));
+ assert.equal(r.status,200);assert.equal((await r.json()).result,'DEVICE_COOKIE_PREPARED');
+});
+test('A forged fresh email claim still requires remote validation of the exact bearer',async()=>{
+ const f=fixture({authStatus:401}),r=await f.gateway()(f.request('confirm-device',{}, {},linkClaims()));
+ assert.equal(r.status,401);assert.equal(r.headers.get('set-cookie'),null);assert.equal(f.calls.filter(x=>x.kind==='rpc').length,0);
+});
+test('A caller-selected device cookie can only look up existing enrollment, never register a new one',async()=>{
+ const f=fixture({registerResult:'PENDING_REQUIRED'}),raw='Q'.repeat(43);
+ const r=await f.gateway()(f.request('confirm-device',{}, {cookie:cookieName(U)+'='+raw},linkClaims()));
+ assert.equal(r.status,200);assert.equal((await r.json()).result,'DEVICE_COOKIE_PREPARED');
+ const lookup=rpc(f,'register_link_device')[0];assert.equal(lookup.args.p_allow_new,false);
+ const prepared=pendingPair(r).split('=')[1].split('.')[0];assert.notEqual(prepared,raw);
+ assert.equal(r.headers.getSetCookie().filter(x=>x.startsWith(cookieName(U)+'=')).length,0);
+});
+test('Existing matching enrollment can recover a lost success response without replacing its credential',async()=>{
+ const f=fixture(),raw='Q'.repeat(43),r=await f.gateway()(f.request('confirm-device',{}, {cookie:cookieName(U)+'='+raw},linkClaims()));
+ assert.equal(r.status,200);assert.deepEqual(await r.json(),{result:'TRUSTED',persistent:true});
+ assert.equal(rpc(f,'register_link_device')[0].args.p_allow_new,false);
+ assert(r.headers.getSetCookie().some(x=>x.startsWith(cookieName(U)+'='+raw+';')));
+});
+for(const result of ['LINK_ALREADY_REGISTERED','LINK_PROOF_REQUIRED','INVALID'])test('Enrollment RPC '+result+' never mints a permanent credential',async()=>{
+ const f=fixture({registerResult:result}),claims=linkClaims();
+ const prepared=await f.gateway()(f.request('confirm-device',{}, {},claims));
+ const r=await f.gateway()(f.request('confirm-device',{}, {cookie:pendingPair(prepared)},claims));
+ assert.equal(r.status,403);assert.equal(r.headers.get('set-cookie'),null);
+});
+test('Pending credential and MAC tampering cannot reach a registration write',async()=>{
+ const f=fixture(),claims=linkClaims(),prepared=await f.gateway()(f.request('confirm-device',{}, {},claims));
+ const pair=pendingPair(prepared),parts=pair.split('=')[1].split('.');
+ for(const index of [0,3]){
+  const copy=[...parts];copy[index]=(copy[index][0]==='A'?'B':'A')+copy[index].slice(1);
+  const r=await f.gateway()(f.request('confirm-device',{}, {cookie:pendingCookieName(U)+'='+copy.join('.')},claims));
+  assert.equal(r.status,403);assert.equal(r.headers.get('set-cookie'),null);
+ }
+ assert.equal(rpc(f,'register_link_device').length,0);
+});
+test('A pending cookie is bound to its exact account, Auth session and known signing key',async()=>{
+ const f=fixture(),claims=linkClaims(),prepared=await f.gateway()(f.request('confirm-device',{}, {},claims)),pair=pendingPair(prepared);
+ const otherSession={...claims,session_id:'00000000-0000-4000-8000-000000000602'};
+ const r=await f.gateway()(f.request('confirm-device',{}, {cookie:pair},otherSession));assert.equal(r.status,403);
+ const other=fixture({userId:V});const accountResponse=await other.gateway()(other.request('confirm-device',{}, {cookie:pendingCookieName(V)+'='+pair.split('=')[1]},{...claims,sub:V}));
+ assert.equal(accountResponse.status,403);
+ const unknown=pair.replace('.v1.','.unknown.');assert.equal((await f.gateway()(f.request('confirm-device',{}, {cookie:unknown},claims))).status,403);
+ assert.equal(rpc(f,'register_link_device').length,0);assert.equal(rpc(other,'register_link_device').length,0);
+});
+test('Expired or duplicate pending cookies do not grant trust',async()=>{
+ const f=fixture(),claims=linkClaims(),prepared=await f.gateway()(f.request('confirm-device',{}, {},claims)),pair=pendingPair(prepared),parts=pair.split('=')[1].split('.');
+ parts[2]=String(Math.floor(Date.now()/1000)-301);
+ assert.equal((await f.gateway()(f.request('confirm-device',{}, {cookie:pendingCookieName(U)+'='+parts.join('.')},claims))).status,403);
+ assert.equal((await f.gateway()(f.request('confirm-device',{}, {cookie:pair+'; '+pair},claims))).status,400);
+ assert.equal(rpc(f,'register_link_device').length,0);
+});
+test('Enrollment does not trust client confirmation flags and retains normal CSRF checks',async()=>{
+ const f=fixture(),claims=linkClaims();
+ for(const body of [{confirmed:true},{persistent:true},{userId:U},{device:'A'.repeat(43)}]){
+  assert.equal((await f.gateway()(f.request('confirm-device',body,{},claims))).status,400);
+ }
+ assert.equal((await f.gateway()(f.request('confirm-device',{}, {origin:'https://foreign.invalid'},claims))).status,403);
+ assert.equal(fetches(f).length,0);
+});
+test('A legacy finite-expiry backend reply cannot be presented as permanent browser approval',async()=>{
+ for(const route of ['verify','restore']){
+  const f=fixture({rpcResponse:name=>{
+   if(name==='session_status')return json(false);
+   if(name==='challenge_context')return json({key_version:'v1',remember_device:true});
+   return json({result:name==='verify_challenge'?'VERIFIED':'APPROVED',device_expires_at:new Date(Date.now()+604800000).toISOString()});
+  }});
+  const body=route==='verify'?{challengeId:C,code:'123456'}:{},headers=route==='restore'?{cookie:cookieName(U)+'='+'A'.repeat(43)}:{};
+  const r=await f.gateway()(f.request(route,body,headers));assert.equal(r.status,503);assert.equal(r.headers.get('set-cookie'),null);
+ }
+});
+

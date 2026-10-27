@@ -2,6 +2,8 @@
 
 Stage 3/10 | FR.2/8 | Batch W/Z. 27 October 2026, FRE247.
 
+Diagnostic source pin: `c42fe2d06ed2bcd9d9bf40ffd91998c12152e817`.
+
 [Owner result](security-fr-2-batch-w-owner-recovery-profile-missing.json) identifies the recovery-window blocker: one matched Auth account, confirmed email, no current ban, and no application profile. This is not an email-confirmation or password rejection. The diagnostic made no writes. The window is not ready, and no matching-password save/code is requested.
 
 [Current source baseline](security-fr-2-batch-w-profile-provisioning-source-baseline.json) shows that signup already has **on_auth_user_created_create_profile**, an Auth INSERT/email-or-metadata UPDATE trigger calling **public.handle_new_user_profile()**. The last canonical function creates/synchronizes the profile, links legacy family records and normally provisions a Personal workspace. Admin invitation metadata and pending-setup workspace restrictions are significant; do not replay this Auth update path blindly or insert a replacement profile with unreviewed signup origin. The frontend also has an ensureProfile fallback. Source does not prove the current live trigger/function is present or explain whether the profile was manually removed. Treat the cause as unknown until metadata arrives.

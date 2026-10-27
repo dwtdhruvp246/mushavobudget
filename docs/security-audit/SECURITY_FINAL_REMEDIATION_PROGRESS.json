@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-27",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_OWNER_WINDOW_ACCOUNT_ELIGIBILITY_GUARD_READ_ONLY_DIAGNOSTIC_NEXT",
+  "status": "FR2_BATCH_W_OWNER_PROFILE_MISSING_CONFIRMED_PROVISIONING_METADATA_NEXT",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "dd0bd1a33d598a592dbadb1e67d0a808d823c303",
+  "source_parent_commit": "c42fe2d06ed2bcd9d9bf40ffd91998c12152e817",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE246",
+  "latest_evidence": "FRE247",
   "batches": [
     {
       "id": "FR.1",
@@ -1097,13 +1097,13 @@
         },
         {
           "id": "FR.2.5",
-          "status": "IN_PROGRESS_RECOVERY_ACCOUNT_ELIGIBILITY_REVIEW",
+          "status": "IN_PROGRESS_PROFILE_MISSING_PROVISIONING_METADATA_PENDING",
           "title": "Auth/finance/session hosted workflows",
           "active_lettered_batch": "W",
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5.W30_RECOVERY_ACCOUNT_ELIGIBILITY_READ_ONLY",
+          "next_step": "FR.2.5.W31_PROFILE_PROVISIONING_METADATA_READ_ONLY",
           "persistent_browser_trust_checkpoint": {
             "status": "OWNER_ACCEPTS_CURRENT_UI_BACKGROUND_UX_DEFERRED_INDEPENDENT_AUTH_CASE_NEXT",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
@@ -1178,21 +1178,21 @@
             "id": "AU04.05",
             "title": "Password-save failure/retry",
             "variant": "Actual password-save/provider failure and successful retry/session outcome; mismatch UI variant now accepted",
-            "status": "PENDING_ACCOUNT_ELIGIBILITY_DIAGNOSTIC_THEN_BOUNDED_WINDOW",
+            "status": "BLOCKED_MISSING_PROFILE_PROVISIONING_METADATA_NEXT",
             "matching_password_save_requested": false,
-            "owner_action_required_now": "Run only the read-only account eligibility diagnostic in independently selected staging; return safe JSON before selecting any account/profile repair or repeating the window. Keep the genuine recovery form open. No matching-password save or code.",
+            "owner_action_required_now": "Read only the existing signup provisioning trigger/function/default metadata in independently selected staging and return the safe JSON. Keep the genuine recovery form open; no profile/status/confirmation write, repeated window or matching-password save/code yet.",
             "preserve_original_verified_recovery_tab": true,
             "readiness_requirements": [
               "Confirm the exact owner-controlled recovery account can receive the staging gateway verification code.",
               "Prepare and verify a bounded staging application window for that exact active confirmed account before requesting actual save/verification/continuation.",
               "Keep recovery identity isolation, password/security invalidation and explicit application-session outcome in the later handoff."
             ],
-            "readiness_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECOVERY_ELIGIBILITY_REVIEW.md",
-            "readiness_source_pin": "dd0bd1a33d598a592dbadb1e67d0a808d823c303"
+            "readiness_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PROFILE_MISSING_AND_PROVISIONING_CHECK.md",
+            "readiness_source_pin": "c42fe2d06ed2bcd9d9bf40ffd91998c12152e817"
           },
           "recipient_preparation_and_redeploy_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recipient-addition-and-redeploy.json",
           "recovery_window": {
-            "status": "OWNER_SQL_STOPPED_AT_CONFIRMED_ACTIVE_ACCOUNT_GUARD",
+            "status": "BLOCKED_MISSING_APPLICATION_PROFILE",
             "source_pin": "2c2befd448de7b0737fe651f7f457c913144e0ea",
             "stage_step": "FR.2.5.W29_RECOVERY_SINGLE_ACCOUNT_WINDOW_READINESS",
             "candidate": "supabase/candidates/security_fr_2_5_recovery_test_window.sql",
@@ -1222,10 +1222,12 @@
             "new_window_ready_receipt_received": false,
             "window_opened_by_reported_attempt": false,
             "existing_window_state_independently_remeasured": false,
-            "failed_eligibility_condition_known": false
+            "failed_eligibility_condition_known": true,
+            "failed_eligibility_condition": "MISSING_APPLICATION_PROFILE",
+            "eligibility_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-profile-missing.json"
           },
           "recovery_eligibility": {
-            "status": "READ_ONLY_DIAGNOSTIC_HANDOFF_READY_OWNER_RESULT_PENDING",
+            "status": "OWNER_READ_ONLY_RESULT_CONFIRMED_NONBANNED_PROFILE_MISSING",
             "owner_error_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-window-eligibility-review.json",
             "diagnostic": "supabase/diagnostics/security_fr_2_5_recovery_account_eligibility.sql",
             "diagnostic_SHA256": "3de4c77417ce11d714b8e2d2378acaa73e3093c5d6c7f4469ad7e546034349bb",
@@ -1234,13 +1236,42 @@
             "source_parent_commit": "abd5e3ae22429cc948a307ea325744f372915cc1",
             "read_only_transaction_and_final_rollback": true,
             "safe_counts_booleans_and_status_classes_only": true,
-            "owner_result_received": false,
-            "actual_failed_condition": null,
+            "owner_result_received": true,
+            "actual_failed_condition": "MISSING_APPLICATION_PROFILE",
             "account_profile_or_confirmation_repair_selected": false,
             "password_save_or_code_requested": false,
             "new_AU_cases_added": 0,
             "hosted_acceptance": false,
-            "source_pin": "dd0bd1a33d598a592dbadb1e67d0a808d823c303"
+            "source_pin": "dd0bd1a33d598a592dbadb1e67d0a808d823c303",
+            "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-profile-missing.json",
+            "owner_matching_accounts": 1,
+            "owner_email_confirmed": true,
+            "owner_profile_exists": false,
+            "owner_profile_active": false,
+            "owner_not_currently_banned": true,
+            "owner_recorded_staging_target_matches": true
+          },
+          "profile_provisioning": {
+            "status": "SOURCE_AUTOMATIC_TRIGGER_REVIEWED_OWNER_LIVE_METADATA_PENDING",
+            "source_pin": "c42fe2d06ed2bcd9d9bf40ffd91998c12152e817",
+            "source_parent_commit": "15678865efc14f613029143ea07fa8f5f86181d1",
+            "owner_profile_missing_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-profile-missing.json",
+            "source_baseline": "docs/security-audit/security-fr-2-batch-w-profile-provisioning-source-baseline.json",
+            "diagnostic": "supabase/diagnostics/security_fr_2_5_profile_provisioning.sql",
+            "diagnostic_SHA256": "4162b6b6afabb65dcd6ce384f4d1e30b8c5b8b1b2fb73925db959e9e22e5ce7d",
+            "offline_validation": "docs/security-audit/security-fr-2-batch-w-profile-provisioning-local-check.json",
+            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PROFILE_MISSING_AND_PROVISIONING_CHECK.md",
+            "source_has_Auth_profile_trigger": true,
+            "source_profile_function_LF_SHA256": "0c70136bcb3e2ebce36bd1829ad83f8e168e774f072faf5d16ca42e1cc502c03",
+            "normal_function_may_provision_workspace_and_link_legacy_family": true,
+            "pending_Admin_invitation_workspace_restrictions_preserved": true,
+            "live_metadata_received": false,
+            "cause_of_missing_profile_known": false,
+            "repair_or_account_activation_or_guard_bypass_selected": false,
+            "read_only_transaction_and_final_rollback": true,
+            "actual_assistant_hosted_SQL_Auth_or_email_requests": 0,
+            "new_AU_cases_added": 0,
+            "hosted_acceptance": false
           }
         },
         {
@@ -1257,7 +1288,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "FR.2.5.W30_RECOVERY_ACCOUNT_ELIGIBILITY_READ_ONLY"
+      "next_step": "FR.2.5.W31_PROFILE_PROVISIONING_METADATA_READ_ONLY"
     },
     {
       "id": "FR.3",
@@ -1307,7 +1338,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W30_RECOVERY_ACCOUNT_ELIGIBILITY_READ_ONLY",
+  "next_step": "FR.2.5.W31_PROFILE_PROVISIONING_METADATA_READ_ONLY",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4610,17 +4641,17 @@
     "id": "AU04.05",
     "title": "Password-save failure/retry",
     "variant": "Actual password-save/provider failure and successful retry/session outcome; mismatch UI variant now accepted",
-    "status": "PENDING_ACCOUNT_ELIGIBILITY_DIAGNOSTIC_THEN_BOUNDED_WINDOW",
+    "status": "BLOCKED_MISSING_PROFILE_PROVISIONING_METADATA_NEXT",
     "matching_password_save_requested": false,
-    "owner_action_required_now": "Run only the read-only account eligibility diagnostic in independently selected staging; return safe JSON before selecting any account/profile repair or repeating the window. Keep the genuine recovery form open. No matching-password save or code.",
+    "owner_action_required_now": "Read only the existing signup provisioning trigger/function/default metadata in independently selected staging and return the safe JSON. Keep the genuine recovery form open; no profile/status/confirmation write, repeated window or matching-password save/code yet.",
     "preserve_original_verified_recovery_tab": true,
     "readiness_requirements": [
       "Confirm the exact owner-controlled recovery account can receive the staging gateway verification code.",
       "Prepare and verify a bounded staging application window for that exact active confirmed account before requesting actual save/verification/continuation.",
       "Keep recovery identity isolation, password/security invalidation and explicit application-session outcome in the later handoff."
     ],
-    "readiness_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECOVERY_ELIGIBILITY_REVIEW.md",
-    "readiness_source_pin": "dd0bd1a33d598a592dbadb1e67d0a808d823c303"
+    "readiness_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PROFILE_MISSING_AND_PROVISIONING_CHECK.md",
+    "readiness_source_pin": "c42fe2d06ed2bcd9d9bf40ffd91998c12152e817"
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -4800,7 +4831,7 @@
   "owner_recovery_window_SQL_result_required": false,
   "owner_browser_recovery_save_action_required": false,
   "FR2_email_recovery_window": {
-    "status": "OWNER_SQL_STOPPED_AT_CONFIRMED_ACTIVE_ACCOUNT_GUARD",
+    "status": "BLOCKED_MISSING_APPLICATION_PROFILE",
     "source_pin": "2c2befd448de7b0737fe651f7f457c913144e0ea",
     "stage_step": "FR.2.5.W29_RECOVERY_SINGLE_ACCOUNT_WINDOW_READINESS",
     "candidate": "supabase/candidates/security_fr_2_5_recovery_test_window.sql",
@@ -4830,11 +4861,13 @@
     "new_window_ready_receipt_received": false,
     "window_opened_by_reported_attempt": false,
     "existing_window_state_independently_remeasured": false,
-    "failed_eligibility_condition_known": false
+    "failed_eligibility_condition_known": true,
+    "failed_eligibility_condition": "MISSING_APPLICATION_PROFILE",
+    "eligibility_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-profile-missing.json"
   },
-  "owner_recovery_eligibility_read_only_result_required": true,
+  "owner_recovery_eligibility_read_only_result_required": false,
   "FR2_email_recovery_account_eligibility": {
-    "status": "READ_ONLY_DIAGNOSTIC_HANDOFF_READY_OWNER_RESULT_PENDING",
+    "status": "OWNER_READ_ONLY_RESULT_CONFIRMED_NONBANNED_PROFILE_MISSING",
     "owner_error_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-window-eligibility-review.json",
     "diagnostic": "supabase/diagnostics/security_fr_2_5_recovery_account_eligibility.sql",
     "diagnostic_SHA256": "3de4c77417ce11d714b8e2d2378acaa73e3093c5d6c7f4469ad7e546034349bb",
@@ -4843,12 +4876,42 @@
     "source_parent_commit": "abd5e3ae22429cc948a307ea325744f372915cc1",
     "read_only_transaction_and_final_rollback": true,
     "safe_counts_booleans_and_status_classes_only": true,
-    "owner_result_received": false,
-    "actual_failed_condition": null,
+    "owner_result_received": true,
+    "actual_failed_condition": "MISSING_APPLICATION_PROFILE",
     "account_profile_or_confirmation_repair_selected": false,
     "password_save_or_code_requested": false,
     "new_AU_cases_added": 0,
     "hosted_acceptance": false,
-    "source_pin": "dd0bd1a33d598a592dbadb1e67d0a808d823c303"
+    "source_pin": "dd0bd1a33d598a592dbadb1e67d0a808d823c303",
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-profile-missing.json",
+    "owner_matching_accounts": 1,
+    "owner_email_confirmed": true,
+    "owner_profile_exists": false,
+    "owner_profile_active": false,
+    "owner_not_currently_banned": true,
+    "owner_recorded_staging_target_matches": true
+  },
+  "owner_profile_provisioning_metadata_required": true,
+  "FR2_email_profile_provisioning": {
+    "status": "SOURCE_AUTOMATIC_TRIGGER_REVIEWED_OWNER_LIVE_METADATA_PENDING",
+    "source_pin": "c42fe2d06ed2bcd9d9bf40ffd91998c12152e817",
+    "source_parent_commit": "15678865efc14f613029143ea07fa8f5f86181d1",
+    "owner_profile_missing_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-profile-missing.json",
+    "source_baseline": "docs/security-audit/security-fr-2-batch-w-profile-provisioning-source-baseline.json",
+    "diagnostic": "supabase/diagnostics/security_fr_2_5_profile_provisioning.sql",
+    "diagnostic_SHA256": "4162b6b6afabb65dcd6ce384f4d1e30b8c5b8b1b2fb73925db959e9e22e5ce7d",
+    "offline_validation": "docs/security-audit/security-fr-2-batch-w-profile-provisioning-local-check.json",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PROFILE_MISSING_AND_PROVISIONING_CHECK.md",
+    "source_has_Auth_profile_trigger": true,
+    "source_profile_function_LF_SHA256": "0c70136bcb3e2ebce36bd1829ad83f8e168e774f072faf5d16ca42e1cc502c03",
+    "normal_function_may_provision_workspace_and_link_legacy_family": true,
+    "pending_Admin_invitation_workspace_restrictions_preserved": true,
+    "live_metadata_received": false,
+    "cause_of_missing_profile_known": false,
+    "repair_or_account_activation_or_guard_bypass_selected": false,
+    "read_only_transaction_and_final_rollback": true,
+    "actual_assistant_hosted_SQL_Auth_or_email_requests": 0,
+    "new_AU_cases_added": 0,
+    "hosted_acceptance": false
   }
 }

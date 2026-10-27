@@ -1,3 +1,5 @@
+> FRE227, 27 October 2026: **Stage 3/10 | FR.2/8 | Batch W/Z — owner public18/18 PASS, combined exit0.** At26October17:01:47.661UTC the pinned reader received30 HTTP responses from30 public GETs and matched five selected files/four callback routes at both staging origins, including12 accepted same-origin308-to-200 HTML aliases. Source356 reported verified; no Auth/email/Management/settings request. [Receipt and next prerequisite](SECURITY_FR_2_5_BATCH_W_PUBLIC_PASS_AND_WORKFLOW_PREREQUISITES.md). Public serving scope COMPLETE; real Auth password/link acceptance and all31 AU cases remain pending/blocked. No upload, Save or public18/offline74 rerun requested. Next collect an unused owner-controlled inbox for a separate staging test identity before preparing bounded signup/recovery actions and cleanup. V MFA stays ON HOLD; full W/FR.2/Stage3/release remain open. Earlier pending descriptions below are historical.
+
 # Batch W — public source and callback-serving readback
 
 **Stage 3/10 | FR.2/8 | Batch W/Z — settings screenshot review COMPLETE; public reader local6/6 PASS, hosted owner execution pending. V MFA remains ON HOLD.**

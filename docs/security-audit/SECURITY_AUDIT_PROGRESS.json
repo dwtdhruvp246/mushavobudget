@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_date": "2026-10-26",
+  "updated_date": "2026-10-27",
   "current_stage": null,
-  "current_step": "FR.2.5.W5_EIGHT_CHARACTER_FRONTEND_DEPLOYMENT_AND_EXACT_AUTH_SETTINGS_READBACK",
-  "current_title": "Main Stage 3 / FR.2 / Batch W: correct staging/min8/eight callbacks visually reviewed; public reader local6 PASS owner-ready; V MFA ON HOLD",
+  "current_step": "FR.2.5.W6_CONTROLLED_ORDINARY_AUTH_WORKFLOW_PREPARATION",
+  "current_title": "Main Stage 3 / FR.2 / Batch W: owner public18 source/routes PASS exit0; controlled ordinary Auth inbox pending; V MFA ON HOLD",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.5.W5_EIGHT_CHARACTER_FRONTEND_DEPLOYMENT_AND_EXACT_AUTH_SETTINGS_READBACK",
+  "next_step": "FR.2.5.W6_CONTROLLED_ORDINARY_AUTH_WORKFLOW_PREPARATION",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3359,16 +3359,16 @@
   "next_phase": "FINAL_REMEDIATION",
   "final_remediation": {
     "schema_version": 1,
-    "date": "2026-10-26",
+    "date": "2026-10-27",
     "phase": "FINAL_REMEDIATION",
-    "status": "FR2_BATCH_W_SCREENSHOT_METADATA_REVIEW_COMPLETE_PUBLIC18_READER_LOCAL6_PASS_OWNER_READY",
+    "status": "FR2_BATCH_W_OWNER_PUBLIC18_SCOPED_PASS_CONTROLLED_WORKFLOW_INBOX_PENDING",
     "active_batch": "FR.2",
     "active_step": "FR.2.5",
-    "source_parent_commit": "7bd994147f4e6bee817e0435bf8b9ebeec8d7bfe",
+    "source_parent_commit": "40f3f9ba79e75a9f36bee075658fe19ac18c3fcd",
     "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
     "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
     "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-    "latest_evidence": "FRE226",
+    "latest_evidence": "FRE227",
     "batches": [
       {
         "id": "FR.1",
@@ -4456,11 +4456,13 @@
           },
           {
             "id": "FR.2.5",
-            "status": "IN_PROGRESS_OWNER_SELECTED_MIN8_LOCAL74_PASS_PUBLIC_PACKAGE_PENDING",
+            "status": "IN_PROGRESS_PUBLIC18_SCOPED_PASS_CONTROLLED_AUTH_WORKFLOWS_PENDING",
             "title": "Auth/finance/session hosted workflows",
             "active_lettered_batch": "W",
             "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
-            "V_Admin_MFA_dependency_remains_open": true
+            "V_Admin_MFA_dependency_remains_open": true,
+            "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
+            "next_step": "FR.2.5.W6_CONTROLLED_ORDINARY_AUTH_WORKFLOW_PREPARATION"
           },
           {
             "id": "FR.2.6",
@@ -4476,7 +4478,7 @@
         "findings_closed": [],
         "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
         "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-        "next_step": "FR.2.5.W4_OWNER_SELECTED_EIGHT_CHARACTER_PASSWORD_POLICY"
+        "next_step": "FR.2.5.W6_CONTROLLED_ORDINARY_AUTH_WORKFLOW_PREPARATION"
       },
       {
         "id": "FR.3",
@@ -4516,7 +4518,7 @@
     "OP_decisions_UNCONFIRMED": 6,
     "full_OP_cases_BLOCKED_NOT_RUN": 24,
     "original_completed_stage_0_to_10_progress_objects_preserved": true,
-    "owner_terminal_action_required": true,
+    "owner_terminal_action_required": false,
     "owner_SQL_action_required": false,
     "actual_hosted_or_backend_rechecks_run": 3,
     "findings_closed": [],
@@ -4526,7 +4528,7 @@
     "native_security_acceptance": false,
     "store_acceptance": false,
     "APK_update_deferred": true,
-    "next_step": "FR.2.5.W5_EIGHT_CHARACTER_FRONTEND_DEPLOYMENT_AND_EXACT_AUTH_SETTINGS_READBACK",
+    "next_step": "FR.2.5.W6_CONTROLLED_ORDINARY_AUTH_WORKFLOW_PREPARATION",
     "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
     "owner_preparation_summary_received": true,
     "owner_dashboard_metadata_required": false,
@@ -7412,7 +7414,7 @@
     "FR2_batch_w": {
       "stage_step": "FR.2.5.W5_EIGHT_CHARACTER_FRONTEND_DEPLOYMENT_AND_EXACT_AUTH_SETTINGS_READBACK",
       "status": "IN_PROGRESS",
-      "phase": "SCREENSHOT_METADATA_COMPLETE_PUBLIC18_READBACK_OWNER_READY",
+      "phase": "PUBLIC18_SOURCE_AND_ROUTE_SCOPED_PASS_CONTROLLED_INBOX_PREREQUISITE_PENDING",
       "required_AU_cases": 31,
       "Admin_invitation_cases_blocked_by_V": [
         "AU02.01",
@@ -7422,9 +7424,9 @@
         "AU02.05"
       ],
       "full_lettered_batch_W_complete": false,
-      "owner_terminal_action_required": true,
+      "owner_terminal_action_required": false,
       "owner_SQL_action_required": false,
-      "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PUBLIC_READBACK_HANDOFF.md",
+      "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PUBLIC_PASS_AND_WORKFLOW_PREREQUISITES.md",
       "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
       "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
       "entry": "scripts/review-fr-2-batch-w-dashboard.ps1",
@@ -7442,7 +7444,7 @@
       "expected_hidden_prompts": 0,
       "private_input": "NONE; public enumerated setting summaries only",
       "Auth_user_or_factor_requests": 0,
-      "settings_or_mode_write_requested": true,
+      "settings_or_mode_write_requested": false,
       "new_dependency_install_required": false,
       "hosted_owner_result_received": true,
       "actual_hosted_AU_cases_run": 0,
@@ -7510,7 +7512,7 @@
       "secure_email_change_owner_reported": true,
       "reauthentication_requirement_still_unknown": false,
       "redirect_entry_category_still_unknown": false,
-      "next_action": "Run the fixed public-only two-origin reader: source356 and exact reviewed artifact hashes,18 metadata cases/max30GETs. No prompts, credentials, installation, Save/upload, email, factor or mode action. Reuse owner74 pass.",
+      "next_action": "Collect dedicated owner-controlled unused inbox address, then prepare bounded signup/confirmation/boundary/recovery handoff with exact identity isolation, dispatch and cleanup. Do not repeat public18/offline74 or change retained accounts or V factors.",
       "metadata_result_not_AU_or_whole_W_acceptance": true,
       "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
       "current_redirect_entry_category_observed": "E",
@@ -7591,8 +7593,8 @@
       "minimum8_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-public-readback-unavailable.json",
       "new_frontend_deployment_URL_owner_reported": "https://05e04e4d.mushavo-budget-staging.pages.dev/",
       "new_frontend_deployment_success_owner_reported": true,
-      "new_frontend_deployment_evidence_scope": "OWNER_REPORTED_URL_AND_DONE_NOT_INDEPENDENT_PROVIDER_OR_SOURCE_READBACK",
-      "new_frontend_source_independently_read_back": false,
+      "new_frontend_deployment_evidence_scope": "OWNER_EXECUTED_PINNED_TWO_ORIGIN_SELECTED_PUBLIC_SOURCE_ROUTES_MIME_HEADERS_PARITY_NOT_PROVIDER_METADATA_OR_ENTIRE_ARTIFACT",
+      "new_frontend_source_independently_read_back": true,
       "Supabase_minimum8_owner_reported": true,
       "minimum8_policy_alignment_scope": "OWNER_REPORTED_VALUE8_SOURCE8_INDEPENDENT_SERVER_ENFORCEMENT_PENDING",
       "required_character_class_owner_reported": null,
@@ -7632,8 +7634,27 @@
       "public_reader_local_FAIL": 0,
       "public_reader_expected_metadata_cases": 18,
       "public_reader_maximum_GET_requests": 30,
-      "public_reader_expected_prompts": 0
-    }
+      "public_reader_expected_prompts": 0,
+      "public_readback_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
+      "public_readback_outcome_report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PUBLIC_PASS_AND_WORKFLOW_PREREQUISITES.md",
+      "public_reader_owner_result_received": true,
+      "public_reader_owner_source_commit": "40f3f9ba79e75a9f36bee075658fe19ac18c3fcd",
+      "public_reader_owner_result": "BATCH_W_TWO_ORIGIN_EIGHT_CHARACTER_SOURCE_AND_CALLBACK_SERVING_SCOPED_PASS",
+      "public_reader_owner_PASS": 18,
+      "public_reader_owner_GET_attempts": 30,
+      "public_reader_owner_HTTP_responses": 30,
+      "public_reader_owner_source_hashes": 356,
+      "public_reader_owner_checked_UTC": "2026-10-26T17:01:47.661Z",
+      "public_reader_owner_exit_code": 0,
+      "public_reader_owner_combined_exit_code": 0,
+      "selected_public_frontend_source_readback_complete": true,
+      "public_reader_repeat_requested": false,
+      "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
+      "owner_controlled_unused_test_inbox_information_required": true,
+      "expected_nonsecret_input": "Email address of an unused owner-controlled inbox for a separate staging test identity; no password/link/code/token",
+      "next_step": "FR.2.5.W6_CONTROLLED_ORDINARY_AUTH_WORKFLOW_PREPARATION"
+    },
+    "owner_controlled_test_inbox_information_required": true
   },
   "current_phase": "FINAL_REMEDIATION",
   "main_implementation_stage": {

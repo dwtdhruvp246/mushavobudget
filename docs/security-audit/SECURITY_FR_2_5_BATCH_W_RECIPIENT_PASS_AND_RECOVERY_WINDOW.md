@@ -2,6 +2,8 @@
 
 Stage 3/10 | FR.2/8 | Batch W/Z. 27 October 2026, FRE245.
 
+Window source pin: `2c2befd448de7b0737fe651f7f457c913144e0ea`. Candidate SHA256: `600082e01d6eef21a1a36f1c7b57e9ee853c0dab1552bf7e957773bae97a2d2c`.
+
 [Owner receipt](security-fr-2-batch-w-owner-recipient-addition-and-redeploy.json): source3/Windows DPAPI/new encrypted packet/readback/original unchanged/recipient-only clipboard/exact accepted ZIP all passed, combined exit0. Two retained recipients became three. The preparer made no hosted request or setting/SQL/password change. Owner subsequently supplied https://cf533a08.mushavo-budget-staging.pages.dev/. The same accepted trusted-browser ZIP is intentional. The explicit report that the one secret was saved in both staging environments before this deployment is still requested; local preparation and a deployment URL alone cannot prove it.
 
 [Automated selected public readback](security-fr-2-batch-w-recipient-redeploy-public-readback.json) was blocked: eight selected GET attempts plus one diagnostic GET, the latter HTTP403 with Cloudflare error1010. The web reader also could not access the URL. Do not call these source mismatches or infer an owner browser outage. No runtime parity, live secret equality or mail delivery is credited. Prior accepted public16 remains at its original deployment/pin. No private Worker source, Auth request, SQL or email was read or executed.

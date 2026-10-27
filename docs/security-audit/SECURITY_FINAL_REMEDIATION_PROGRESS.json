@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-27",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_AU04_05_MISMATCH_UI_OWNER_PASS_ERROR_VISIBILITY_DEFERRED_SAVE_READINESS_NEXT",
+  "status": "FR2_BATCH_W_RECOVERY_RECIPIENT_LOCAL16_PASS_OWNER_WINDOWS_READ_ONLY_CHECK_NEXT",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "161de8600e333b64ec4f3ebb0268c4d84c55e2a2",
+  "source_parent_commit": "2c77f19528925d0f615ac919e218010f7f06c974",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE242",
+  "latest_evidence": "FRE243",
   "batches": [
     {
       "id": "FR.1",
@@ -1252,7 +1252,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": false,
+  "owner_terminal_action_required": true,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
@@ -1262,7 +1262,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W27_RECOVERY_PASSWORD_SAVE_READINESS_PREPARATION",
+  "next_step": "FR.2.5.W27_RECOVERY_RECIPIENT_LOCAL_READ_ONLY",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -2133,7 +2133,7 @@
   "FR2_email_private_readiness_junction_reproduction": "docs/security-audit/security-fr-2-email-readiness-junction-reproduction.json",
   "FR2_email_private_readiness_junction_local_PASS": 44,
   "FR2_email_private_readiness_junction_owner_result_received": false,
-  "owner_private_Cloudflare_token_prompt_required": true,
+  "owner_private_Cloudflare_token_prompt_required": false,
   "owner_staging_Pages_secret_action_required": true,
   "FR2_email_private_readiness_owner_receipt": "docs/security-audit/security-fr-2-email-private-readiness-owner-pass.json",
   "FR2_email_private_readiness_owner_checked_UTC": "2026-10-20T05:42:30.965Z",
@@ -4246,7 +4246,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "Prepare controlled recipient and bounded-window readiness before a separate real password-save/verification/continuation handoff. No matching submission or new owner browser/SQL/email/settings/upload action is requested in this UI-deferral checkpoint.",
+    "next_action": "Run the pinned read-only Windows recipient check against the existing encrypted staging packet, return safe JSON/exit code and retain the verified recovery tab. No new credentials, email dispatch, matching save, settings, SQL/window, upload or account creation.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4385,8 +4385,8 @@
     "public_reader_repeat_requested": false,
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
-    "expected_nonsecret_input": "NONE_REQUESTED_NOW; retain the original verified recovery tab",
-    "next_step": "FR.2.5.W27_RECOVERY_PASSWORD_SAVE_READINESS_PREPARATION",
+    "expected_nonsecret_input": "Safe recipient-readiness JSON and combined exit code only; packet path only if original selection is ambiguous",
+    "next_step": "FR.2.5.W27_RECOVERY_RECIPIENT_LOCAL_READ_ONLY",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -4481,7 +4481,10 @@
     "recovery_mismatch_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-mismatch-and-ux-deferral.json",
     "owner_recovery_mismatch_UI_scoped_pass": true,
     "deferred_password_mismatch_visibility": "UX_AUTH_PASSWORD_MISMATCH_VISIBILITY",
-    "deferred_auth_UI_backlog": "docs/security-audit/SECURITY_FR_2_5_AUTH_UI_DEFERRED_IMPROVEMENTS.md"
+    "deferred_auth_UI_backlog": "docs/security-audit/SECURITY_FR_2_5_AUTH_UI_DEFERRED_IMPROVEMENTS.md",
+    "recovery_recipient_readiness_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECOVERY_SAVE_RECIPIENT_READINESS.md",
+    "recovery_recipient_readiness_source_pin": "2c77f19528925d0f615ac919e218010f7f06c974",
+    "recovery_recipient_local_PASS": 16
   },
   "owner_controlled_test_inbox_information_required": false,
   "FR2_email_persistent_browser_trust": {
@@ -4559,15 +4562,17 @@
     "id": "AU04.05",
     "title": "Password-save failure/retry",
     "variant": "Actual password-save/provider failure and successful retry/session outcome; mismatch UI variant now accepted",
-    "status": "PENDING_CONTROLLED_PASSWORD_SAVE_READINESS_PREPARATION",
+    "status": "PENDING_OWNER_LOCAL_RECIPIENT_READ_THEN_BOUNDED_WINDOW_PREPARATION",
     "matching_password_save_requested": false,
-    "owner_action_required_now": false,
+    "owner_action_required_now": "Run only the local read-only retained-packet recipient check; keep the original recovery tab open",
     "preserve_original_verified_recovery_tab": true,
     "readiness_requirements": [
       "Confirm the exact owner-controlled recovery account can receive the staging gateway verification code.",
       "Prepare and verify a bounded staging application window for that exact active confirmed account before requesting actual save/verification/continuation.",
       "Keep recovery identity isolation, password/security invalidation and explicit application-session outcome in the later handoff."
-    ]
+    ],
+    "readiness_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECOVERY_SAVE_RECIPIENT_READINESS.md",
+    "readiness_source_pin": "2c77f19528925d0f615ac919e218010f7f06c974"
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -4663,5 +4668,30 @@
     "backlog": "docs/security-audit/SECURITY_FR_2_5_AUTH_UI_DEFERRED_IMPROVEMENTS.md",
     "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-mismatch-and-ux-deferral.json"
   },
-  "deferred_auth_UI_backlog": "docs/security-audit/SECURITY_FR_2_5_AUTH_UI_DEFERRED_IMPROVEMENTS.md"
+  "deferred_auth_UI_backlog": "docs/security-audit/SECURITY_FR_2_5_AUTH_UI_DEFERRED_IMPROVEMENTS.md",
+  "owner_private_DPAPI_recipient_check_required": true,
+  "FR2_email_recovery_recipient_readiness": {
+    "status": "LOCAL16_PASS_OWNER_WINDOWS_LOCAL_READ_PENDING",
+    "source_pin": "2c77f19528925d0f615ac919e218010f7f06c974",
+    "runner": "scripts/run-fr-2-batch-w-recovery-recipient.ps1",
+    "private_core": "scripts/check-fr-2-batch-w-recovery-recipient.mjs",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECOVERY_SAVE_RECIPIENT_READINESS.md",
+    "contract": "docs/security-audit/security-fr-2-batch-w-recovery-recipient-contract.json",
+    "source_manifest": "docs/security-audit/security-fr-2-batch-w-recovery-recipient-source-manifest.json",
+    "local_receipt": "docs/security-audit/security-fr-2-batch-w-recovery-recipient-local-checks.json",
+    "local_tests": 16,
+    "local_PASS": 16,
+    "local_FAIL": 0,
+    "review_source_hashes": 9,
+    "owner_execution_source_hashes": 2,
+    "owner_PowerShell_parse_or_DPAPI_execution_received": false,
+    "source_verified_before_private_read": true,
+    "maximum_hosted_requests": 0,
+    "maximum_real_email_requests": 0,
+    "settings_SQL_or_account_writes_requested": false,
+    "matching_password_save_requested": false,
+    "new_keys_or_credentials_or_inboxes_requested": false,
+    "live_remote_allowlist_equality_or_delivery_verified": false,
+    "new_AU_cases_added": 0
+  }
 }

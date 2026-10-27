@@ -10,7 +10,7 @@ export function safeAuthMessage(error) {
   const code = error?.code;
   if (code === 'new_password_too_short') return `Use at least ${NEW_PASSWORD_MINIMUM} characters for your new password.`;
   if (code === 'password_mismatch') return 'Passwords do not match.';
-  if (code === 'email_not_confirmed') return 'Confirm your email before signing in. Open the newest email or request another confirmation link.';
+  if (code === 'email_not_confirmed') return 'Confirm your email before signing in.';
   if (code === 'invalid_credentials') return 'The email or password was not accepted. Check both and try again.';
   if (['over_request_rate_limit', 'over_email_send_rate_limit', 'over_sms_send_rate_limit'].includes(code) || error?.status === 429) return 'Too many attempts. Wait before trying again.';
   if (['reauthentication_needed', 'reauthentication_not_valid'].includes(code)) return 'Request a verification code, then enter the newest code to change your password.';

@@ -7613,6 +7613,45 @@
       "production_or_native_changed": false,
       "APK_update_deferred": true,
       "findings_closed": []
+    },
+    {
+      "id": "FRE228",
+      "date": "2026-10-27",
+      "stage_step": "FR.2.5.W6_ORDINARY_SIGNUP_OWNER_RESULT_AND_CONCISE_CONFIRMATION_COPY",
+      "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+      "result": "FR2_BATCH_W_OWNER_ORDINARY_SIGNUP_SCOPED_PASS_CONCISE_CONFIRMATION_COPY_LOCAL44_PASS_PACKAGE_PENDING",
+      "source_parent_commit": "35a1e70649a4e9407fbe519596959a5f562524a9",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
+      "local_receipt": "docs/security-audit/security-fr-2-batch-w-copy-local-checks.json",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONCISE_CONFIRMATION_COPY_HANDOFF.md",
+      "owner_scoped_AU_cases": [
+        "AU01.01",
+        "AU01.02",
+        "AU01.03"
+      ],
+      "AU03_03": "PARTIAL_BROWSER7_REJECTION_SIGNUP8_ACCEPTANCE",
+      "confirmation_link_left_unopened": true,
+      "local_tests": 44,
+      "local_PASS": 44,
+      "local_FAIL": 0,
+      "syntax_checks": 4,
+      "source_hashes": 15,
+      "product_changes": [
+        "app.js",
+        "auth-security.js"
+      ],
+      "unchanged_public_ZIP_entries": 42,
+      "new_assistant_hosted_requests": 0,
+      "new_assistant_email_requests": 0,
+      "real_owner_ZIP_preparation": false,
+      "new_copy_uploaded": false,
+      "prior_owner74_and_public18_reused_at_original_scopes": true,
+      "pending_batch_V_MFA_deferred_by_owner": true,
+      "full_lettered_batch_W_complete": false,
+      "hosted_acceptance": false,
+      "production_or_native_changed": false,
+      "APK_update_deferred": true,
+      "findings_closed": []
     }
   ],
   "prior_stage_evidence_preserved": true,

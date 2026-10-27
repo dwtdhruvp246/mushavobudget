@@ -547,7 +547,7 @@ function showSignupSuccessMessage() {
   if (!["success", "invited", "pending"].includes(signupResult)) return;
   url.searchParams.delete("signup");
   window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
-  showToast(signupResult === "pending" ? "If an account can be created, check your inbox for confirmation before signing in. Existing account holders can sign in or use Forgot password. Use Resend confirmation if you need another link." : signupResult === "invited"
+  showToast(signupResult === "pending" ? "Check your inbox to confirm your email, then sign in." : signupResult === "invited"
     ? "Your account, workspace, and subscription are ready."
     : "Account created successfully. Sign in with your new account.");
 }

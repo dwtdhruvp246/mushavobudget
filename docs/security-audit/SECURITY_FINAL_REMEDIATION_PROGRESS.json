@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-27",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_OWNER_PUBLIC18_SCOPED_PASS_CONTROLLED_WORKFLOW_INBOX_PENDING",
+  "status": "FR2_BATCH_W_OWNER_ORDINARY_SIGNUP_SCOPED_PASS_CONCISE_CONFIRMATION_COPY_LOCAL44_PASS_PACKAGE_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "40f3f9ba79e75a9f36bee075658fe19ac18c3fcd",
+  "source_parent_commit": "35a1e70649a4e9407fbe519596959a5f562524a9",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE227",
+  "latest_evidence": "FRE228",
   "batches": [
     {
       "id": "FR.1",
@@ -1097,13 +1097,13 @@
         },
         {
           "id": "FR.2.5",
-          "status": "IN_PROGRESS_PUBLIC18_SCOPED_PASS_CONTROLLED_AUTH_WORKFLOWS_PENDING",
+          "status": "IN_PROGRESS_OWNER_ORDINARY_SIGNUP_SCOPED_PASS_CONCISE_COPY_STAGING_PENDING",
           "title": "Auth/finance/session hosted workflows",
           "active_lettered_batch": "W",
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5.W6_CONTROLLED_ORDINARY_AUTH_WORKFLOW_PREPARATION"
+          "next_step": "FR.2.5.W6_OWNER_RETAINED_PASSWORD8_ZIP_COPY_PATCH_AND_STAGING_UPLOAD"
         },
         {
           "id": "FR.2.6",
@@ -4053,9 +4053,9 @@
     "Z"
   ],
   "FR2_batch_w": {
-    "stage_step": "FR.2.5.W5_EIGHT_CHARACTER_FRONTEND_DEPLOYMENT_AND_EXACT_AUTH_SETTINGS_READBACK",
+    "stage_step": "FR.2.5.W6_ORDINARY_SIGNUP_OWNER_RESULT_AND_CONCISE_CONFIRMATION_COPY",
     "status": "IN_PROGRESS",
-    "phase": "PUBLIC18_SOURCE_AND_ROUTE_SCOPED_PASS_CONTROLLED_INBOX_PREREQUISITE_PENDING",
+    "phase": "OWNER_ORDINARY_SIGNUP_SCOPED_PASS_CONCISE_COPY_LOCAL44_PASS_STAGING_UPDATE_PENDING",
     "required_AU_cases": 31,
     "Admin_invitation_cases_blocked_by_V": [
       "AU02.01",
@@ -4065,9 +4065,9 @@
       "AU02.05"
     ],
     "full_lettered_batch_W_complete": false,
-    "owner_terminal_action_required": false,
+    "owner_terminal_action_required": true,
     "owner_SQL_action_required": false,
-    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PUBLIC_PASS_AND_WORKFLOW_PREREQUISITES.md",
+    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONCISE_CONFIRMATION_COPY_HANDOFF.md",
     "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
     "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
     "entry": "scripts/review-fr-2-batch-w-dashboard.ps1",
@@ -4088,7 +4088,7 @@
     "settings_or_mode_write_requested": false,
     "new_dependency_install_required": false,
     "hosted_owner_result_received": true,
-    "actual_hosted_AU_cases_run": 0,
+    "actual_hosted_AU_cases_run": 3,
     "hosted_acceptance": false,
     "production_or_native_changed": false,
     "APK_update_deferred": true,
@@ -4153,7 +4153,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "Collect dedicated owner-controlled unused inbox address, then prepare bounded signup/confirmation/boundary/recovery handoff with exact identity isolation, dispatch and cleanup. Do not repeat public18/offline74 or change retained accounts or V factors.",
+    "next_action": "Prepare the exact retained password-eight public ZIP with the two text replacements, deploy to the existing staging Pages project after exit0, and verify public copy. Keep the dedicated confirmation link unopened; later confirmation/recovery remain pending.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4173,7 +4173,7 @@
     "owner_next_setting_changes": "NONE_REQUESTED",
     "settings_write_handoff_ready_not_applied": false,
     "settings_write_or_readback_owner_receipt_received": true,
-    "owner_no_terminal_rerun_required": false,
+    "owner_no_terminal_rerun_required": true,
     "application_rollout_mode_change_requested": false,
     "owner_selected_new_password_minimum": 8,
     "previous_12_minimum_instruction_superseded": true,
@@ -4225,8 +4225,8 @@
     "new_public_ZIP_portable_readback_verified": true,
     "new_public_ZIP_Windows_dotNET_readback_verified": false,
     "repeat_owner_offline74_requested": false,
-    "current_verifier": "scripts/verify-fr-2-batch-w-eight.mjs",
-    "current_source_manifest": "docs/security-audit/security-fr-2-batch-w-eight-source-manifest.json",
+    "current_verifier": "scripts/prepare-fr-2-batch-w-copy.mjs",
+    "current_source_manifest": "docs/security-audit/security-fr-2-batch-w-copy-source-manifest.json",
     "next_step_terminal_prompts": 0,
     "next_step_manual_process_exit_code": null,
     "next_step_application_mode_or_factor_action_requested": false,
@@ -4248,8 +4248,8 @@
     "current_canonical_site_URL_preserved_owner_confirmation": null,
     "current_unexpected_changes_owner_confirmation": null,
     "complete_settings_readback_owner_receipt_received": false,
-    "owner_staging_direct_upload_action_required": false,
-    "owner_new_upload_requested": false,
+    "owner_staging_direct_upload_action_required": true,
+    "owner_new_upload_requested": true,
     "next_step_read_only_dashboard_metadata": false,
     "owner_settings_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-settings-screenshots.json",
     "project_reference_visually_confirmed": true,
@@ -4291,9 +4291,35 @@
     "selected_public_frontend_source_readback_complete": true,
     "public_reader_repeat_requested": false,
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
-    "owner_controlled_unused_test_inbox_information_required": true,
-    "expected_nonsecret_input": "Email address of an unused owner-controlled inbox for a separate staging test identity; no password/link/code/token",
-    "next_step": "FR.2.5.W6_CONTROLLED_ORDINARY_AUTH_WORKFLOW_PREPARATION"
+    "owner_controlled_unused_test_inbox_information_required": false,
+    "expected_nonsecret_input": "Only the retained public password-eight ZIP path if its recorded default has moved",
+    "next_step": "FR.2.5.W6_OWNER_RETAINED_PASSWORD8_ZIP_COPY_PATCH_AND_STAGING_UPLOAD",
+    "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
+    "owner_reported_AU_case_scoped_passes": [
+      "AU01.01",
+      "AU01.02",
+      "AU01.03"
+    ],
+    "owner_reported_AU03_03_boundary": "PARTIAL_BROWSER7_REJECT_AND_SIGNUP8_ACCEPT_DIRECT_SERVER_BELOW8_UNTESTED",
+    "actual_hosted_AU_cases_scope": "OWNER_REPORTED_BROWSER_RESULTS_AT_PRIOR_SOURCE; THREE_SCOPED_PASSES_PLUS_PARTIAL_AU03.03",
+    "confirmation_link_left_unopened": true,
+    "test_account_state": "UNCONFIRMED_RETAINED_FOR_CONFIRMATION_AND_RECOVERY",
+    "copy_local_receipt": "docs/security-audit/security-fr-2-batch-w-copy-local-checks.json",
+    "copy_local_tests": 44,
+    "copy_local_PASS": 44,
+    "copy_local_FAIL": 0,
+    "copy_syntax_checks": 4,
+    "copy_source_hashes": 15,
+    "copy_changed_public_files": [
+      "app.js",
+      "auth-security.js"
+    ],
+    "copy_unchanged_public_entries": 42,
+    "copy_new_public_ZIP_filename": "mushavo-confirmation-copy-staging.zip",
+    "copy_real_owner_ZIP_prepared": false,
+    "copy_frontend_uploaded": false,
+    "source_only_copy_patch_does_not_recredit_prior_public18_or_offline74": true,
+    "owner_controlled_test_inbox_information_required": false
   },
-  "owner_controlled_test_inbox_information_required": true
+  "owner_controlled_test_inbox_information_required": false
 }

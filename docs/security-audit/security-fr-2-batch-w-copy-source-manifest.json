@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "stage_step": "FR.2.5.W6_ORDINARY_SIGNUP_OWNER_RESULT_AND_CONCISE_CONFIRMATION_COPY",
+  "source_parent_commit": "35a1e70649a4e9407fbe519596959a5f562524a9",
+  "source_file_count": 15,
+  "file_sha256": {
+    "app.js": "ba02a923b8373d5812df1499ab570fafb45cad078d252ef63d42cb087a866e8e",
+    "auth-security.js": "5a536b4913a91f7575e4841e96c29c2686b07bffa0a36337757bba738bf2e762",
+    "business.js": "bacb6b6d01db0018361253332777f2296332a3ac66b367a99494b3124f1b7628",
+    "email-verification.js": "ae466d7272ae06e66d41848efa356132390aa0efe2c982b371bc2815b2be012d",
+    "package.json": "f33fa5b1cd6ea07cf2584fe7d7b458c3653251f46043dd594821d42f843ad999",
+    "scripts/lib/build-fr-2-email-workers.mjs": "6d0b141b56c3d75d175714a39533a96670af33463fcaf3195cea176a2c92cac9",
+    "scripts/lib/store-public-zip.mjs": "81eae2723285b56e321141512c2b6311777397f5b84853badcee9f60af3706aa",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+    "scripts/prepare-final-staging.mjs": "3f58dae50896af7998f02291bf583e48b2192d690ac527956d68e37c4af83edf",
+    "scripts/prepare-fr-2-batch-w-copy.mjs": "bff197699cfda0addb99d0c4cfb5ebc06a34f8f190c7d21a3d95ada09f25caf2",
+    "scripts/prepare-fr-2-email-modern-package.mjs": "dce93977a2092c250c24a79261c825a4d065177824c8253b8b2e2e5a23553de0",
+    "session-entry.js": "8ddf940ae5be0856ac85a20e3445995e535aac61e7d33c2379f89fb2e0125e58",
+    "signup.html": "cacfd3f4098d33cd8c3eead65856ab07b356421c718ad3cb0d4dd25ffa4427be",
+    "tests/fr-2-batch-w-copy.test.mjs": "b857c226c9f258517e8fd4b7b01773b365175b0328880e53b801310d03a1d3b1",
+    "tests/stage-3-auth-flows.test.mjs": "40aedef62f702e04f9a1d6c106a5261e72920f10679c6ad805a6123d40166ee3"
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "date": "2026-10-27",
+  "result": "PUBLIC_SELECTED_SOURCE_READBACK_PASS",
+  "cases": 16,
+  "pass": 16,
+  "web_reader_lookup_unavailable": true,
+  "real_Auth_or_email_or_SQL_requests": 0,
+  "Worker_HTTP_body_source_verified": false,
+  "hosted_browser_acceptance": false,
+  "rows": [
+    {
+      "origin": "https://f3dc8933.mushavo-budget-staging.pages.dev",
+      "file": "auth.html",
+      "status": 200,
+      "final_url": "https://f3dc8933.mushavo-budget-staging.pages.dev/auth?flow=confirm",
+      "SHA256": "40bf13e33c7287398ebed8790e9c87be5f497b8ddabf7465abde39eaf8b846e6",
+      "expected_SHA256": "40bf13e33c7287398ebed8790e9c87be5f497b8ddabf7465abde39eaf8b846e6",
+      "source_match": true,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 4241,
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin"
+      }
+    },
+    {
+      "origin": "https://f3dc8933.mushavo-budget-staging.pages.dev",
+      "file": "auth-security.js",
+      "status": 200,
+      "final_url": "https://f3dc8933.mushavo-budget-staging.pages.dev/auth-security.js?v=2",
+      "SHA256": "81876a4032c49759e1df241ebef193b58681e2de4d52899c28cb4d9c65a6a6ee",
+      "expected_SHA256": "81876a4032c49759e1df241ebef193b58681e2de4d52899c28cb4d9c65a6a6ee",
+      "source_match": true,
+      "content_type": "application/javascript",
+      "bytes": 20672,
+      "headers": null
+    },
+    {
+      "origin": "https://f3dc8933.mushavo-budget-staging.pages.dev",
+      "file": "email-verification.js",
+      "status": 200,
+      "final_url": "https://f3dc8933.mushavo-budget-staging.pages.dev/email-verification.js?v=3",
+      "SHA256": "9273be56b63614d7bf8041133362070cc34bfea5266dc8fd2272209c0fce8743",
+      "expected_SHA256": "9273be56b63614d7bf8041133362070cc34bfea5266dc8fd2272209c0fce8743",
+      "source_match": true,
+      "content_type": "application/javascript",
+      "bytes": 15779,
+      "headers": null
+    },
+    {
+      "origin": "https://f3dc8933.mushavo-budget-staging.pages.dev",
+      "file": "session-entry.js",
+      "status": 200,
+      "final_url": "https://f3dc8933.mushavo-budget-staging.pages.dev/session-entry.js?v=3",
+      "SHA256": "e4beb5ab129d8ed0b75f22670e37bdd18f79a9637377ec629328e89cd5c3df53",
+      "expected_SHA256": "e4beb5ab129d8ed0b75f22670e37bdd18f79a9637377ec629328e89cd5c3df53",
+      "source_match": true,
+      "content_type": "application/javascript",
+      "bytes": 6759,
+      "headers": null
+    },
+    {
+      "origin": "https://f3dc8933.mushavo-budget-staging.pages.dev",
+      "file": "styles.css",
+      "status": 200,
+      "final_url": "https://f3dc8933.mushavo-budget-staging.pages.dev/styles.css?v=80",
+      "SHA256": "a34e2aef3181399bcda1320496732bddb474ddf6044135c707c7297c0726b80d",
+      "expected_SHA256": "a34e2aef3181399bcda1320496732bddb474ddf6044135c707c7297c0726b80d",
+      "source_match": true,
+      "content_type": "text/css; charset=utf-8",
+      "bytes": 168477,
+      "headers": null
+    },
+    {
+      "origin": "https://f3dc8933.mushavo-budget-staging.pages.dev",
+      "file": "config.js",
+      "status": 200,
+      "final_url": "https://f3dc8933.mushavo-budget-staging.pages.dev/config.js?v=27",
+      "SHA256": "be23e23251470da5a1caa5c19f9af46763aa9192dee62e96700c317c479cc74c",
+      "expected_SHA256": "be23e23251470da5a1caa5c19f9af46763aa9192dee62e96700c317c479cc74c",
+      "source_match": true,
+      "content_type": "application/javascript",
+      "bytes": 285,
+      "headers": null
+    },
+    {
+      "origin": "https://f3dc8933.mushavo-budget-staging.pages.dev",
+      "file": "sw.js",
+      "status": 200,
+      "final_url": "https://f3dc8933.mushavo-budget-staging.pages.dev/sw.js",
+      "SHA256": "0bc471318eb7156aed4f004c153a3e45fd08a71f665ad77ba59caa29fd8d8c47",
+      "expected_SHA256": "0bc471318eb7156aed4f004c153a3e45fd08a71f665ad77ba59caa29fd8d8c47",
+      "source_match": true,
+      "content_type": "application/javascript",
+      "bytes": 14240,
+      "headers": null
+    },
+    {
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "file": "auth.html",
+      "status": 200,
+      "final_url": "https://mushavo-budget-staging.pages.dev/auth?flow=confirm",
+      "SHA256": "40bf13e33c7287398ebed8790e9c87be5f497b8ddabf7465abde39eaf8b846e6",
+      "expected_SHA256": "40bf13e33c7287398ebed8790e9c87be5f497b8ddabf7465abde39eaf8b846e6",
+      "source_match": true,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 4241,
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin"
+      }
+    },
+    {
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "file": "auth-security.js",
+      "status": 200,
+      "final_url": "https://mushavo-budget-staging.pages.dev/auth-security.js?v=2",
+      "SHA256": "81876a4032c49759e1df241ebef193b58681e2de4d52899c28cb4d9c65a6a6ee",
+      "expected_SHA256": "81876a4032c49759e1df241ebef193b58681e2de4d52899c28cb4d9c65a6a6ee",
+      "source_match": true,
+      "content_type": "application/javascript",
+      "bytes": 20672,
+      "headers": null
+    },
+    {
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "file": "email-verification.js",
+      "status": 200,
+      "final_url": "https://mushavo-budget-staging.pages.dev/email-verification.js?v=3",
+      "SHA256": "9273be56b63614d7bf8041133362070cc34bfea5266dc8fd2272209c0fce8743",
+      "expected_SHA256": "9273be56b63614d7bf8041133362070cc34bfea5266dc8fd2272209c0fce8743",
+      "source_match": true,
+      "content_type": "application/javascript",
+      "bytes": 15779,
+      "headers": null
+    },
+    {
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "file": "session-entry.js",
+      "status": 200,
+      "final_url": "https://mushavo-budget-staging.pages.dev/session-entry.js?v=3",
+      "SHA256": "e4beb5ab129d8ed0b75f22670e37bdd18f79a9637377ec629328e89cd5c3df53",
+      "expected_SHA256": "e4beb5ab129d8ed0b75f22670e37bdd18f79a9637377ec629328e89cd5c3df53",
+      "source_match": true,
+      "content_type": "application/javascript",
+      "bytes": 6759,
+      "headers": null
+    },
+    {
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "file": "styles.css",
+      "status": 200,
+      "final_url": "https://mushavo-budget-staging.pages.dev/styles.css?v=80",
+      "SHA256": "a34e2aef3181399bcda1320496732bddb474ddf6044135c707c7297c0726b80d",
+      "expected_SHA256": "a34e2aef3181399bcda1320496732bddb474ddf6044135c707c7297c0726b80d",
+      "source_match": true,
+      "content_type": "text/css; charset=utf-8",
+      "bytes": 168477,
+      "headers": null
+    },
+    {
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "file": "config.js",
+      "status": 200,
+      "final_url": "https://mushavo-budget-staging.pages.dev/config.js?v=27",
+      "SHA256": "be23e23251470da5a1caa5c19f9af46763aa9192dee62e96700c317c479cc74c",
+      "expected_SHA256": "be23e23251470da5a1caa5c19f9af46763aa9192dee62e96700c317c479cc74c",
+      "source_match": true,
+      "content_type": "application/javascript",
+      "bytes": 285,
+      "headers": null
+    },
+    {
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "file": "sw.js",
+      "status": 200,
+      "final_url": "https://mushavo-budget-staging.pages.dev/sw.js",
+      "SHA256": "0bc471318eb7156aed4f004c153a3e45fd08a71f665ad77ba59caa29fd8d8c47",
+      "expected_SHA256": "0bc471318eb7156aed4f004c153a3e45fd08a71f665ad77ba59caa29fd8d8c47",
+      "source_match": true,
+      "content_type": "application/javascript",
+      "bytes": 14240,
+      "headers": null
+    },
+    {
+      "origin": "https://f3dc8933.mushavo-budget-staging.pages.dev",
+      "file": "auth-flows.js",
+      "status": 200,
+      "SHA256": "22d5003ac45a2910138e99d7bf812887c84c3f0d69ecaf050a7351b4f9d81695",
+      "expected_SHA256": "22d5003ac45a2910138e99d7bf812887c84c3f0d69ecaf050a7351b4f9d81695",
+      "source_match": true,
+      "bytes": 13604
+    },
+    {
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "file": "auth-flows.js",
+      "status": 200,
+      "SHA256": "22d5003ac45a2910138e99d7bf812887c84c3f0d69ecaf050a7351b4f9d81695",
+      "expected_SHA256": "22d5003ac45a2910138e99d7bf812887c84c3f0d69ecaf050a7351b4f9d81695",
+      "source_match": true,
+      "bytes": 13604
+    }
+  ],
+  "selected_static_initial_GETs": 16,
+  "automatic_redirect_followups_excluded_from_initial_GET_count": true,
+  "wire_request_count_not_recorded": true,
+  "source_commit": "a1feb46df4a8c118a7e7a7d2255d4dd4e82448b4",
+  "scope": "Six updated public assets plus unchanged config/service worker at each of the deployment and canonical staging origins. The Worker bundle is private and is not served as a static file."
+}

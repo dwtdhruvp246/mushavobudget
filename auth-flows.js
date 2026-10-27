@@ -1,5 +1,5 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm';
-import { callbackUrl, consumeAuthUrl, isolatedAuthOptions, createLinkController, createPasswordChanger, safeAuthMessage, verifiedUser, authError, requireVerifiedApplicationSession } from './auth-security.js?v=2';
+import { callbackUrl, consumeAuthUrl, isolatedAuthOptions, createLinkController, createPasswordChanger, safeAuthMessage, verifiedUser, authError, requireVerifiedApplicationSession } from './auth-security.js?v=3';
 import { createAuthCallbackEntry } from './session-entry.js?v=3';
 import { registerConfirmationDevice } from './email-verification.js?v=3';
 
@@ -39,7 +39,12 @@ async function recoveryDestination() {
     $('#securityContinue').hidden = true;
     $('#securitySelfSignup').hidden = false;
     message('Your unfinished Admin invitation is still available. Complete the latest invitation, or choose a Free personal signup instead.');
-  } else $('#securityContinue').hidden = false;
+  } else {
+    $('#securityContinue').hidden = true;
+    $('#securityResume').textContent = 'Retry sign-in';
+    message('Signing in…');
+    await openVerifiedAccount();
+  }
 }
 async function currentIdentity() {
   if (!identity) throw authError('session_not_found');
@@ -145,10 +150,12 @@ async function finishPasswordFlow() {
   if (!identity || (flow !== 'change' && !controller.passwordSaved)) throw authError('link_unavailable');
   message('Password saved. Verify this account before continuing.');
   $('#securityResume').hidden = false;
-  await requireApplication(flow === 'change' ? passwordClient : isolated, identity.id);
-  if (flow === 'change') { await currentIdentity(); message('Password changed and email verification complete. You can return to your app.'); }
-  else if (flow === 'recover') await recoveryDestination();
-  else $('#securityContinue').hidden = false;
+  if (flow === 'recover') await recoveryDestination();
+  else {
+    await requireApplication(flow === 'change' ? passwordClient : isolated, identity.id);
+    if (flow === 'change') { await currentIdentity(); message('Password changed and email verification complete. You can return to your app.'); }
+    else $('#securityContinue').hidden = false;
+  }
   $('#securityResume').hidden = true;
 }
 $('#securityResume').addEventListener('click',()=>operation(flow==='devices'?showDeviceSecurity:finishPasswordFlow));
@@ -185,9 +192,15 @@ $('#securityRequestCode').addEventListener('click', () => operation(async () => 
 }));
 $('#securityOpen').addEventListener('click', () => operation(async () => {
   if (flow === 'confirm') { await cancelSecurityFlow(); return; }
-  if (!$('#securityAcknowledge').checked) { message('Confirm that you want to open the verified account shown above.'); return; }
+  if (flow !== 'recover' && !$('#securityAcknowledge').checked) { message('Confirm that you want to open the verified account shown above.'); return; }
+  await openVerifiedAccount();
+}));
+async function openVerifiedAccount() {
   app ||= createClient(settings.supabaseUrl, settings.supabasePublishableKey, {auth:{detectSessionInUrl:false,persistSession:true,autoRefreshToken:true}});
+  // Completing recovery verification is the intent to sign in. The controller
+  // still revalidates the saved password, actor and server proof before adoption.
   const next = await controller.continueToApp(app, true);
+  if (flow === 'recover') message('Signing in…');
   // Removing this local copy must not call server logout: the adopted app
   // uses the same Auth session and refresh token.
   await isolated.auth.stopAutoRefresh();
@@ -195,7 +208,7 @@ $('#securityOpen').addEventListener('click', () => operation(async () => {
   window.sessionStorage.removeItem(storageKey);
   window.sessionStorage.removeItem(storageKey + '-code-verifier');
   window.location.replace(new URL(next, window.location.href).href);
-}));
+}
 async function cancelSecurityFlow(logoutNormal = false) {
   controller?.cancel();
   emailEntry?.cancel();

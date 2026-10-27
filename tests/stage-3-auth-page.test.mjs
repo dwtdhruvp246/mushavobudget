@@ -4,11 +4,12 @@ import {securityPageFixture as page} from './helpers/security-page.mjs';
 test('real page module rejects a flag-only recovery without showing a password form',async()=>{
  const h=page('recover',{noTokens:true});await h.ready();assert.equal(h.nodes.securityPassword.hidden,true);assert.match(h.nodes.securityMessage.textContent,/link.*unavailable/);assert(!h.calls.includes('normal:adopt'));
 });
-test('real recovery page saves before explicit continuation, fresh proof and account adoption',async()=>{
+test('real recovery page automatically adopts and opens the app only after password save and fresh proof',async()=>{
  const h=page();await h.ready();assert.equal(h.nodes.securityPassword.hidden,false);assert.equal(h.nodes.securityContinue.hidden,true);assert.match(h.nodes.securityIdentity.textContent,/owner@example.invalid/);
  await h.save();assert.equal(h.nodes.securityContinue.hidden,true);assert(!h.calls.includes('has_my_unfinished_admin_invitation'));assert.equal(h.navigations.length,0);
- await h.code();assert.equal(h.nodes.securityContinue.hidden,false);h.nodes.securityOpen.events.click();await h.ready();assert(!h.calls.includes('normal:adopt'));
- await h.open();assert.match(h.navigations.at(-1),/app.html$/);assert(!h.calls.includes('isolated:logout'));assert(h.calls.includes('isolated:stop-refresh'));
+ await h.code();await h.ready();assert.equal(h.nodes.securityContinue.hidden,true);assert.equal(h.nodes.securityAcknowledge.checked,false);
+ assert.equal(h.navigations.length,1);assert.match(h.navigations.at(-1),/app.html$/);assert(!h.calls.includes('isolated:logout'));assert(h.calls.includes('isolated:stop-refresh'));
+ assert.equal(h.calls.filter(x=>x==='normal:adopt').length,1);
 });
 test('actual recovery page rejects seven characters then saves an eight-character password without premature adoption or email',async()=>{
  const h=page();await h.ready();
@@ -78,4 +79,37 @@ test('change page snapshots identity and clears the password form on account swi
  const h=page('change');await h.ready();assert(h.clients.some(c=>c.kind==='snapshot'));assert.equal(h.nodes.securityPassword.hidden,false);
  h.clients.find(c=>c.kind==='normal').emit('SIGNED_IN',{user:{id:'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'},access_token:'foreign'});await h.ready();assert.equal(h.nodes.securityPassword.hidden,true);assert.match(h.nodes.securityMessage.textContent,/active account changed/);
  await h.save();assert(!h.calls.some(x=>x.endsWith(':password')));
+});
+test('a rejected recovery code keeps verification open without adopting or navigating',async()=>{
+ const h=page();await h.ready();await h.save();h.verifyResult('CODE_REJECTED');await h.code();await h.ready();
+ assert.equal(h.nodes.securityEmailVerification.hidden,false);assert.equal(h.nodes.securityContinue.hidden,true);assert.equal(h.navigations.length,0);assert(!h.calls.includes('normal:adopt'));assert(!h.calls.includes('has_my_unfinished_admin_invitation'));
+ assert(h.all().some(n=>/code was not accepted/.test(n.textContent||'')));
+});
+test('gateway code success without current server proof cannot automatically open recovery',async()=>{
+ const h=page();await h.ready();await h.save();h.proof({data:false,error:null});await h.code();await h.ready();
+ assert.equal(h.navigations.length,0);assert(!h.calls.includes('normal:adopt'));assert(!h.calls.includes('has_my_unfinished_admin_invitation'));
+});
+test('an account or bearer change while recovery waits for its code cancels automatic sign-in',async()=>{
+ for(const user of [{id:'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',email_confirmed_at:'today'},{id:'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',email_confirmed_at:'today'}]){
+  const h=page();await h.ready();await h.save();h.clients.find(c=>c.kind==='isolated').emit('SIGNED_IN',{user,access_token:'replacement',refresh_token:'replacement-refresh'});await h.ready();
+  assert.equal(h.navigations.length,0);assert(!h.calls.includes('normal:adopt'));assert.match(h.nodes.securityMessage.textContent,/active account changed/);
+ }
+});
+test('failed automatic session adoption can retry without another password save or email',async()=>{
+ const h=page();await h.ready();await h.save();h.normalAdoptError({code:'network_error'});await h.code();await h.ready();
+ assert.equal(h.navigations.length,0);assert.equal(h.nodes.securityContinue.hidden,true);assert.equal(h.nodes.securityResume.hidden,false);assert.match(h.nodes.securityMessage.textContent,/try again/);
+ h.normalAdoptError(null);h.nodes.securityResume.events.click();await h.ready();await h.ready();
+ assert.equal(h.navigations.length,1);assert.match(h.navigations[0],/app.html$/);assert.equal(h.calls.filter(x=>x==='isolated:password').length,1);assert.equal(h.calls.filter(x=>x==='gateway:begin').length,1);
+});
+test('failed recovery destination lookup cannot adopt until a successful proof-checked retry',async()=>{
+ const h=page();await h.ready();await h.save();h.unfinishedError({code:'network_error'});await h.code();await h.ready();assert.equal(h.navigations.length,0);assert(!h.calls.includes('normal:adopt'));
+ h.unfinishedError(null);h.nodes.securityResume.events.click();await h.ready();await h.ready();assert.equal(h.navigations.length,1);
+});
+test('Business invitation verification retains its explicit account choice',async()=>{
+ const h=page('business-new');await h.ready();await h.code();await h.ready();await h.save();await h.code();await h.ready();assert.equal(h.nodes.securityContinue.hidden,false);assert.equal(h.navigations.length,0);assert(!h.calls.includes('normal:adopt'));
+ h.nodes.securityOpen.events.click();await h.ready();assert(!h.calls.includes('normal:adopt'));await h.open();assert.equal(h.navigations.length,1);assert.match(h.navigations[0],/business.html/);
+});
+test('a duplicate verification event does not adopt or navigate a recovered account twice',async()=>{
+ const h=page();await h.ready();await h.save();await h.code();await h.ready();const form=h.all().find(n=>n.tag==='form');form.events.submit({preventDefault(){}});await h.ready();
+ assert.equal(h.navigations.length,1);assert.equal(h.calls.filter(x=>x==='normal:adopt').length,1);
 });

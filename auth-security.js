@@ -162,7 +162,8 @@ export function createLinkController(client, material, {beforeApplication} = {})
       const current = await appClient.auth.getSession();
       active(epoch);
       if (current.error) throw current.error;
-      // UI must explain account replacement; acknowledgment is always explicit.
+      // Recovery supplies intent after its verification step; invitation pages
+      // use their explicit account choice. Neither substitutes for server proof.
       const adopted = await appClient.auth.setSession({access_token:data.session.access_token,refresh_token:data.session.refresh_token});
       active(epoch);
       if (adopted.error) throw adopted.error;

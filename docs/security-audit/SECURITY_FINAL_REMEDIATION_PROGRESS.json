@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-27",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_OWNER_BROWSER_TRUST_INSTALLED_QUARANTINED_PUBLIC16_PASS_FRESH_SIGNUP_INBOX_PENDING",
+  "status": "FR2_BATCH_W_OWNER_CONFIRMATION_TRUST_REPORTED_SIGNIN_UNAVAILABLE_SINGLE_ACCOUNT_WINDOW_READY",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "a1feb46df4a8c118a7e7a7d2255d4dd4e82448b4",
+  "source_parent_commit": "14bccdff7e5a22a1e3ca8ba746ca8ddd85d6cf5e",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE233",
+  "latest_evidence": "FRE234",
   "batches": [
     {
       "id": "FR.1",
@@ -1097,7 +1097,7 @@
         },
         {
           "id": "FR.2.5",
-          "status": "IN_PROGRESS_BROWSER_TRUST_INSTALLED_PUBLIC16_PASS_FRESH_SIGNUP_INBOX_PENDING",
+          "status": "IN_PROGRESS_CONFIRMATION_TRUST_OWNER_REPORT_BOUNDED_SIGNIN_TEST_PENDING",
           "title": "Auth/finance/session hosted workflows",
           "active_lettered_batch": "W",
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
@@ -1105,7 +1105,7 @@
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
           "next_step": "FR.2.5.W9_FRESH_CONFIRMATION_TEST_IDENTITY_PREREQUISITE",
           "persistent_browser_trust_checkpoint": {
-            "status": "OWNER_INSTALLED_QUARANTINED_SELECTED_STATIC16_PASS_BROWSER_ACCEPTANCE_PENDING",
+            "status": "CONFIRMATION_TRUST_OWNER_REPORTED_BOUNDED_SIGNIN_WINDOW_PENDING",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
             "local_receipt": "docs/security-audit/security-fr-2-batch-w-browser-trust-local-checks.json",
             "source_manifest": "docs/security-audit/security-fr-2-batch-w-browser-trust-source-manifest.json",
@@ -1135,7 +1135,19 @@
             "owner_install_SQL_catalog_identity_matched": true,
             "owner_install_SQL_application_access_opened": false,
             "owner_deployment_URL": "https://f3dc8933.mushavo-budget-staging.pages.dev/",
-            "fresh_signup_inbox_required": true
+            "fresh_signup_inbox_required": false,
+            "owner_confirmation_success_reported": true,
+            "confirmation_success_screenshot_supplied": false,
+            "owner_later_signin_unavailable_screenshot_received": true,
+            "owner_confirmation_receipt": "docs/security-audit/security-fr-2-batch-w-owner-confirmation-trust-and-signin-screen.json",
+            "test_window_SQL": "supabase/candidates/security_fr_2_5_browser_trust_test_window.sql",
+            "test_window_local_PASS": 11,
+            "test_window_seconds": 1800,
+            "test_window_identity_limit": 1,
+            "acceptance_window_opened": false,
+            "actual_password_signin_without_code": false,
+            "signin_unavailable_cause_independently_established": false,
+            "window_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONFIRMED_BROWSER_SIGNIN_WINDOW.md"
           }
         },
         {
@@ -1193,7 +1205,7 @@
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
   "owner_terminal_action_required": false,
-  "owner_SQL_action_required": false,
+  "owner_SQL_action_required": true,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
@@ -1202,7 +1214,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W12_FRESH_SIGNUP_CONFIRMATION_BROWSER_TRUST_IDENTITY_PREREQUISITE",
+  "next_step": "FR.2.5.W13_SINGLE_ACCOUNT_BOUNDED_WINDOW_AND_SAME_BROWSER_PASSWORD_SIGNIN",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -1498,7 +1510,7 @@
   "FR2_Admin_ordinary_identity_verified_TOTP_factors": 0,
   "FR2_Admin_ordinary_identity_outcome_report": "docs/security-audit/SECURITY_FR_2_4_IDENTITY_OUTCOME_AND_SIGNIN_HANDOFF.md",
   "FR2_Admin_genuine_operator_signin_owner_result_received": true,
-  "owner_browser_signin_action_required": false,
+  "owner_browser_signin_action_required": true,
   "owner_private_control_summary_required": false,
   "FR2_Admin_operator_signin_owner_receipt": "docs/security-audit/security-fr-2-operator-signin-owner-result.json",
   "FR2_Admin_primary_and_recovery_signin_owner_reported_PASS": true,
@@ -4408,7 +4420,7 @@
   },
   "owner_controlled_test_inbox_information_required": false,
   "FR2_email_persistent_browser_trust": {
-    "status": "OWNER_INSTALLED_QUARANTINED_SELECTED_STATIC16_PASS_BROWSER_ACCEPTANCE_PENDING",
+    "status": "CONFIRMATION_TRUST_OWNER_REPORTED_BOUNDED_SIGNIN_WINDOW_PENDING",
     "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
     "local_receipt": "docs/security-audit/security-fr-2-batch-w-browser-trust-local-checks.json",
     "source_manifest": "docs/security-audit/security-fr-2-batch-w-browser-trust-source-manifest.json",
@@ -4438,7 +4450,19 @@
     "owner_install_SQL_catalog_identity_matched": true,
     "owner_install_SQL_application_access_opened": false,
     "owner_deployment_URL": "https://f3dc8933.mushavo-budget-staging.pages.dev/",
-    "fresh_signup_inbox_required": true
+    "fresh_signup_inbox_required": false,
+    "owner_confirmation_success_reported": true,
+    "confirmation_success_screenshot_supplied": false,
+    "owner_later_signin_unavailable_screenshot_received": true,
+    "owner_confirmation_receipt": "docs/security-audit/security-fr-2-batch-w-owner-confirmation-trust-and-signin-screen.json",
+    "test_window_SQL": "supabase/candidates/security_fr_2_5_browser_trust_test_window.sql",
+    "test_window_local_PASS": 11,
+    "test_window_seconds": 1800,
+    "test_window_identity_limit": 1,
+    "acceptance_window_opened": false,
+    "actual_password_signin_without_code": false,
+    "signin_unavailable_cause_independently_established": false,
+    "window_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONFIRMED_BROWSER_SIGNIN_WINDOW.md"
   },
-  "owner_fresh_signup_inbox_required": true
+  "owner_fresh_signup_inbox_required": false
 }

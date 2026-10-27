@@ -2,6 +2,8 @@
 
 Stage 3/10 | FR.2/8 | Batch W/Z. 27 October 2026, FRE246.
 
+Diagnostic source pin: `dd0bd1a33d598a592dbadb1e67d0a808d823c303`.
+
 [Owner screenshot receipt](security-fr-2-batch-w-owner-recovery-window-eligibility-review.json) shows SQLSTATE P0001, **CONFIRMED_ACTIVE_RECOVERY_ACCOUNT_REQUIRED**, inline block line44 and zero result rows. In the supplied SQL this guard follows exact-account resolution and precedes any catalog/window read or controller write. The attempt does not open or change the window. The entire submitted query and current database/window state were not independently read back. The screenshot alone does not identify whether confirmation, a missing/nonactive profile or a current ban failed. Do not infer suspension or missing confirmation, force activation, create a replacement account or weaken the predicate from this combined error.
 
 Next run only [the read-only diagnostic](../../supabase/diagnostics/security_fr_2_5_recovery_account_eligibility.sql) in the independently selected Supabase staging project **dczlddwbtgvfdujgcitb**, with the exact account already shown in the genuine recovery form. Its initial ROLLBACK clears a possibly aborted SQL Editor transaction. The next transaction is explicitly READ ONLY and ends in ROLLBACK. It returns a count, guarded booleans, a fixed profile-status classification and the stored target marker. No email, account UUID, ban timestamp, token, password, private hash or application row content is returned. A matching target marker is not independent proof of the physical project; select staging in the dashboard first.

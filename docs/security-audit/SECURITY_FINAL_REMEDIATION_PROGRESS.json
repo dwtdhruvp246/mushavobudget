@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-27",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_RECIPIENT_OWNER_PREP_PASS_DEPLOYMENT_RECEIVED_RECOVERY_WINDOW_LOCAL12_PASS",
+  "status": "FR2_BATCH_W_OWNER_WINDOW_ACCOUNT_ELIGIBILITY_GUARD_READ_ONLY_DIAGNOSTIC_NEXT",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "2c2befd448de7b0737fe651f7f457c913144e0ea",
+  "source_parent_commit": "dd0bd1a33d598a592dbadb1e67d0a808d823c303",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE245",
+  "latest_evidence": "FRE246",
   "batches": [
     {
       "id": "FR.1",
@@ -1097,13 +1097,13 @@
         },
         {
           "id": "FR.2.5",
-          "status": "IN_PROGRESS_RECOVERY_RECIPIENT_PREPARATION_PASS_WINDOW_READINESS_PENDING",
+          "status": "IN_PROGRESS_RECOVERY_ACCOUNT_ELIGIBILITY_REVIEW",
           "title": "Auth/finance/session hosted workflows",
           "active_lettered_batch": "W",
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5.W29_RECOVERY_SINGLE_ACCOUNT_WINDOW_READINESS",
+          "next_step": "FR.2.5.W30_RECOVERY_ACCOUNT_ELIGIBILITY_READ_ONLY",
           "persistent_browser_trust_checkpoint": {
             "status": "OWNER_ACCEPTS_CURRENT_UI_BACKGROUND_UX_DEFERRED_INDEPENDENT_AUTH_CASE_NEXT",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
@@ -1178,21 +1178,21 @@
             "id": "AU04.05",
             "title": "Password-save failure/retry",
             "variant": "Actual password-save/provider failure and successful retry/session outcome; mismatch UI variant now accepted",
-            "status": "PENDING_ONE_ACCOUNT_WINDOW_AND_RECIPIENT_SECRET_SAVE_CONFIRMATION",
+            "status": "PENDING_ACCOUNT_ELIGIBILITY_DIAGNOSTIC_THEN_BOUNDED_WINDOW",
             "matching_password_save_requested": false,
-            "owner_action_required_now": "After confirming the prepared recipient secret was saved before the new staging deployment, run the bounded one-account recovery window SQL and return its safe receipt. Keep the genuine recovery form open. No matching-password save or code request yet.",
+            "owner_action_required_now": "Run only the read-only account eligibility diagnostic in independently selected staging; return safe JSON before selecting any account/profile repair or repeating the window. Keep the genuine recovery form open. No matching-password save or code.",
             "preserve_original_verified_recovery_tab": true,
             "readiness_requirements": [
               "Confirm the exact owner-controlled recovery account can receive the staging gateway verification code.",
               "Prepare and verify a bounded staging application window for that exact active confirmed account before requesting actual save/verification/continuation.",
               "Keep recovery identity isolation, password/security invalidation and explicit application-session outcome in the later handoff."
             ],
-            "readiness_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECIPIENT_PASS_AND_RECOVERY_WINDOW.md",
-            "readiness_source_pin": "2c2befd448de7b0737fe651f7f457c913144e0ea"
+            "readiness_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECOVERY_ELIGIBILITY_REVIEW.md",
+            "readiness_source_pin": "dd0bd1a33d598a592dbadb1e67d0a808d823c303"
           },
           "recipient_preparation_and_redeploy_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recipient-addition-and-redeploy.json",
           "recovery_window": {
-            "status": "LOCAL12_PASS_OWNER_STAGING_SQL_PENDING",
+            "status": "OWNER_SQL_STOPPED_AT_CONFIRMED_ACTIVE_ACCOUNT_GUARD",
             "source_pin": "2c2befd448de7b0737fe651f7f457c913144e0ea",
             "stage_step": "FR.2.5.W29_RECOVERY_SINGLE_ACCOUNT_WINDOW_READINESS",
             "candidate": "supabase/candidates/security_fr_2_5_recovery_test_window.sql",
@@ -1212,9 +1212,35 @@
             "expired_reopen_uses_original_controllers_atomically": true,
             "application_proof_or_device_approval_created": false,
             "password_or_email_requested": false,
-            "hosted_SQL_executed": false,
+            "hosted_SQL_executed": true,
             "hosted_acceptance": false,
-            "new_AU_cases_added": 0
+            "new_AU_cases_added": 0,
+            "owner_SQL_execution_report_received": true,
+            "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-window-eligibility-review.json",
+            "owner_SQLSTATE": "P0001",
+            "owner_error": "CONFIRMED_ACTIVE_RECOVERY_ACCOUNT_REQUIRED",
+            "new_window_ready_receipt_received": false,
+            "window_opened_by_reported_attempt": false,
+            "existing_window_state_independently_remeasured": false,
+            "failed_eligibility_condition_known": false
+          },
+          "recovery_eligibility": {
+            "status": "READ_ONLY_DIAGNOSTIC_HANDOFF_READY_OWNER_RESULT_PENDING",
+            "owner_error_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-window-eligibility-review.json",
+            "diagnostic": "supabase/diagnostics/security_fr_2_5_recovery_account_eligibility.sql",
+            "diagnostic_SHA256": "3de4c77417ce11d714b8e2d2378acaa73e3093c5d6c7f4469ad7e546034349bb",
+            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECOVERY_ELIGIBILITY_REVIEW.md",
+            "offline_validation": "docs/security-audit/security-fr-2-batch-w-recovery-eligibility-local-check.json",
+            "source_parent_commit": "abd5e3ae22429cc948a307ea325744f372915cc1",
+            "read_only_transaction_and_final_rollback": true,
+            "safe_counts_booleans_and_status_classes_only": true,
+            "owner_result_received": false,
+            "actual_failed_condition": null,
+            "account_profile_or_confirmation_repair_selected": false,
+            "password_save_or_code_requested": false,
+            "new_AU_cases_added": 0,
+            "hosted_acceptance": false,
+            "source_pin": "dd0bd1a33d598a592dbadb1e67d0a808d823c303"
           }
         },
         {
@@ -1231,7 +1257,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "FR.2.5.W29_RECOVERY_SINGLE_ACCOUNT_WINDOW_READINESS"
+      "next_step": "FR.2.5.W30_RECOVERY_ACCOUNT_ELIGIBILITY_READ_ONLY"
     },
     {
       "id": "FR.3",
@@ -1281,7 +1307,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W29_RECOVERY_SINGLE_ACCOUNT_WINDOW_READINESS",
+  "next_step": "FR.2.5.W30_RECOVERY_ACCOUNT_ELIGIBILITY_READ_ONLY",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4584,17 +4610,17 @@
     "id": "AU04.05",
     "title": "Password-save failure/retry",
     "variant": "Actual password-save/provider failure and successful retry/session outcome; mismatch UI variant now accepted",
-    "status": "PENDING_ONE_ACCOUNT_WINDOW_AND_RECIPIENT_SECRET_SAVE_CONFIRMATION",
+    "status": "PENDING_ACCOUNT_ELIGIBILITY_DIAGNOSTIC_THEN_BOUNDED_WINDOW",
     "matching_password_save_requested": false,
-    "owner_action_required_now": "After confirming the prepared recipient secret was saved before the new staging deployment, run the bounded one-account recovery window SQL and return its safe receipt. Keep the genuine recovery form open. No matching-password save or code request yet.",
+    "owner_action_required_now": "Run only the read-only account eligibility diagnostic in independently selected staging; return safe JSON before selecting any account/profile repair or repeating the window. Keep the genuine recovery form open. No matching-password save or code.",
     "preserve_original_verified_recovery_tab": true,
     "readiness_requirements": [
       "Confirm the exact owner-controlled recovery account can receive the staging gateway verification code.",
       "Prepare and verify a bounded staging application window for that exact active confirmed account before requesting actual save/verification/continuation.",
       "Keep recovery identity isolation, password/security invalidation and explicit application-session outcome in the later handoff."
     ],
-    "readiness_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECIPIENT_PASS_AND_RECOVERY_WINDOW.md",
-    "readiness_source_pin": "2c2befd448de7b0737fe651f7f457c913144e0ea"
+    "readiness_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECOVERY_ELIGIBILITY_REVIEW.md",
+    "readiness_source_pin": "dd0bd1a33d598a592dbadb1e67d0a808d823c303"
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -4771,10 +4797,10 @@
     "new_upload_requested": false
   },
   "owner_staging_Pages_secret_confirmation_required": true,
-  "owner_recovery_window_SQL_result_required": true,
+  "owner_recovery_window_SQL_result_required": false,
   "owner_browser_recovery_save_action_required": false,
   "FR2_email_recovery_window": {
-    "status": "LOCAL12_PASS_OWNER_STAGING_SQL_PENDING",
+    "status": "OWNER_SQL_STOPPED_AT_CONFIRMED_ACTIVE_ACCOUNT_GUARD",
     "source_pin": "2c2befd448de7b0737fe651f7f457c913144e0ea",
     "stage_step": "FR.2.5.W29_RECOVERY_SINGLE_ACCOUNT_WINDOW_READINESS",
     "candidate": "supabase/candidates/security_fr_2_5_recovery_test_window.sql",
@@ -4794,8 +4820,35 @@
     "expired_reopen_uses_original_controllers_atomically": true,
     "application_proof_or_device_approval_created": false,
     "password_or_email_requested": false,
-    "hosted_SQL_executed": false,
+    "hosted_SQL_executed": true,
     "hosted_acceptance": false,
-    "new_AU_cases_added": 0
+    "new_AU_cases_added": 0,
+    "owner_SQL_execution_report_received": true,
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-window-eligibility-review.json",
+    "owner_SQLSTATE": "P0001",
+    "owner_error": "CONFIRMED_ACTIVE_RECOVERY_ACCOUNT_REQUIRED",
+    "new_window_ready_receipt_received": false,
+    "window_opened_by_reported_attempt": false,
+    "existing_window_state_independently_remeasured": false,
+    "failed_eligibility_condition_known": false
+  },
+  "owner_recovery_eligibility_read_only_result_required": true,
+  "FR2_email_recovery_account_eligibility": {
+    "status": "READ_ONLY_DIAGNOSTIC_HANDOFF_READY_OWNER_RESULT_PENDING",
+    "owner_error_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-window-eligibility-review.json",
+    "diagnostic": "supabase/diagnostics/security_fr_2_5_recovery_account_eligibility.sql",
+    "diagnostic_SHA256": "3de4c77417ce11d714b8e2d2378acaa73e3093c5d6c7f4469ad7e546034349bb",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECOVERY_ELIGIBILITY_REVIEW.md",
+    "offline_validation": "docs/security-audit/security-fr-2-batch-w-recovery-eligibility-local-check.json",
+    "source_parent_commit": "abd5e3ae22429cc948a307ea325744f372915cc1",
+    "read_only_transaction_and_final_rollback": true,
+    "safe_counts_booleans_and_status_classes_only": true,
+    "owner_result_received": false,
+    "actual_failed_condition": null,
+    "account_profile_or_confirmation_repair_selected": false,
+    "password_save_or_code_requested": false,
+    "new_AU_cases_added": 0,
+    "hosted_acceptance": false,
+    "source_pin": "dd0bd1a33d598a592dbadb1e67d0a808d823c303"
   }
 }

@@ -89,7 +89,7 @@ export function createEmailVerification({client,getSession,origin=globalThis.loc
   function bind(session){
     const actor=typeof session?.user?.id==='string'?session.user.id:null;
     const bearer=typeof session?.access_token==='string'?session.access_token:null;
-    if(actor!==identity||bearer!==token){epoch++;invalidate();identity=actor;token=bearer;emit('locked');}
+    if(actor!==identity||bearer!==token){epoch++;invalidate();identity=actor;token=bearer;emit(actor&&bearer?'loading':'locked');}
   }
   function lock(){epoch++;invalidate();emit('locked');}
   const receiveReset=userId=>{if(userId===getSession()?.user?.id){try{onReset();}finally{lock();}}};
@@ -188,6 +188,7 @@ export function createEmailVerification({client,getSession,origin=globalThis.loc
 
 // Mount with the owning page's DOM and callbacks; do not store codes or device credentials.
 export function attachEmailVerificationView({controller,root,document=root.ownerDocument,onSignOut}){
+  root.setAttribute('data-email-verification','');
   let awaitingCode=false;
   const element=(tag,text)=>{const node=document.createElement(tag);if(text)node.textContent=text;return node;};
   const title=element('h1','Verify your sign-in'),message=element('p');message.setAttribute('role','status');message.setAttribute('aria-live','polite');
@@ -195,7 +196,7 @@ export function attachEmailVerificationView({controller,root,document=root.owner
   const rememberLabel=element('label');rememberLabel.className='verification-trust-choice';rememberLabel.append(remember,document.createTextNode(' Trust this browser'));
   const explanation=element('p','Trusted browsers do not need another code unless their approval is removed or browser data is cleared.');
   const send=element('button','Send email code');send.type='button';
-  const form=element('form'),label=element('label','Email code'),code=element('input');
+  const form=element('form'),label=element('label','Email code'),code=element('input');form.className='verification-code-form';
   code.type='text';code.inputMode='numeric';code.pattern='[0-9]{6}';code.maxLength=6;code.autocomplete='one-time-code';code.required=true;label.append(code);
   const verify=element('button','Verify');verify.type='submit';form.append(label,verify);form.hidden=true;
   const retry=element('button','Check again');retry.type='button';const signout=element('button','Sign out');signout.type='button';
@@ -206,9 +207,13 @@ export function attachEmailVerificationView({controller,root,document=root.owner
   signout.addEventListener('click',()=>{code.value='';remember.checked=false;controller.lock();void onSignOut();});
   form.addEventListener('submit',event=>{event.preventDefault();const value=code.value.trim();code.value='';void controller.verify(value);});
   return state=>{
+    const working=['loading','verifying','managing','authorized'].includes(state.phase);
     awaitingCode=state.canVerify;
-    message.textContent=state.message||messages.unavailable;
-    form.hidden=!state.canVerify||['authorized','forbidden','unavailable','locked'].includes(state.phase);
+    root.setAttribute('aria-busy',state.busy?'true':'false');
+    message.className=working?'verification-progress':'';
+    message.textContent=working?(state.phase==='verifying'?'Checking your code…':state.phase==='managing'?messages.managing:'Signing in…'):(state.message||messages.unavailable);
+    for(const node of[title,rememberLabel,explanation,send,retry,signout])node.hidden=working;
+    form.hidden=working||!state.canVerify||['forbidden','unavailable','locked'].includes(state.phase);
     if(state.phase!=='code')code.value='';
     if(['locked','authorized','forbidden','unavailable'].includes(state.phase))remember.checked=true;
     send.textContent=state.canVerify?'Send a new code':'Send email code';

@@ -1,6 +1,6 @@
 // Mushavo Budget authenticated application — release 83
 import { createAdminPlans } from "./admin-plans.js?v=2";
-import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=3";
+import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=4";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
 
@@ -6155,7 +6155,7 @@ const restorePrivateAppDom=[...document.querySelectorAll('#appView,#adminView,#s
 const privateModelDefaults=JSON.parse(JSON.stringify(state));
 const emailEntry=createSessionEntry({client:supabase,getSession:()=>state.session,root:views.emailVerification,
   onReset:()=>{authDataEpoch++;appLoadPromise=null;appLoadUserId=null;appLoadToken=null;},
-  show:()=>setView('emailVerification'),onInvalidated:()=>clearApplicationPrivateData(),
+  show:state=>{if(['loading','verifying'].includes(state?.phase))showLoading('Signing in','Please wait…');else setView('emailVerification');},onInvalidated:()=>clearApplicationPrivateData(),
   onUnlocked:async({ticket})=>{if(ticket()&&state.session)await openAuthenticatedSession(state.session);},
   onSignOut:()=>signOutSafely()
 });

@@ -1,4 +1,4 @@
-import {createEmailVerification,attachEmailVerificationView} from './email-verification.js?v=3';
+import {createEmailVerification,attachEmailVerificationView} from './email-verification.js?v=4';
 
 // The owning page clears models/DOM before a proof change and checks tickets
 // after asynchronous work. Opening this view never sends mail automatically.
@@ -6,7 +6,7 @@ export function createSessionEntry({client,getSession,root,origin=globalThis.loc
   let checking=0,retaining=false,render=()=>{},controller,pending=null,pendingActor=null,pendingToken=null,boundActor=null,boundToken=null;
   try{
     controller=createEmailVerification({client,getSession,origin,fetcher,requireAdmin,events,onReset,
-      onState:value=>{if(retaining&&value.phase==='loading')return;if(retaining&&!value.authorized)onInvalidated();render(value);if(!value.authorized&&getSession())show();},
+      onState:value=>{if(retaining&&value.phase==='loading')return;if(retaining&&!value.authorized)onInvalidated();render(value);if(!value.authorized&&getSession())show(value);},
       onInvalidated:()=>{if(!retaining)onInvalidated();},
       onUnlocked:async({ticket})=>{if(!checking&&ticket())await onUnlocked({ticket});}
     });
@@ -60,7 +60,7 @@ export function createAuthCallbackEntry({client,root,origin,fetcher,show,onInval
   let session=null,pending=null,generation=0,disposed=false;
   const changed=()=>Object.assign(new Error('session_changed'),{code:'session_changed'});
   function rejectPending(){const waiting=pending;pending=null;if(waiting)waiting.reject(changed());}
-  const entry=createSessionEntry({client,getSession:()=>session,root,origin,fetcher,events,show:()=>{if(pending)show();},
+  const entry=createSessionEntry({client,getSession:()=>session,root,origin,fetcher,events,show:state=>{if(pending)show(state);},
     onInvalidated:()=>onInvalidated?.(),
     onUnlocked:async({ticket})=>{const waiting=pending;if(waiting&&ticket()&&session?.user?.id===waiting.actor){pending=null;root.hidden=true;waiting.resolve();}else if(!waiting&&ticket())await onVerified({ticket});},
     onSignOut:async()=>{cancel();await onSignOut();}
@@ -86,14 +86,17 @@ export function createAuthCallbackEntry({client,root,origin,fetcher,show,onInval
       const completion=approved.then(()=>true);
       completion.catch(()=>{});
       try {
-        if(await entry.recheck()){
+        // A current actor/token-bound ticket can finish this callback without
+        // repeating prepare(). Its caller still checks the remote user and SQL
+        // application proof before adopting or opening the account.
+        if(await entry.ensure()){
           if(pending===waiting){pending=null;root.hidden=true;resolve();}
         }
       }catch(error){if(pending===waiting){pending=null;reject(error);}}
       await completion;
       if(disposed||epoch!==generation||!entry.authorized||session?.user?.id!==actor)throw changed();
     },
-    cancel,manageDevice:(route,ack)=>entry.manageDevice(route,ack),
+    cancel,lock:()=>entry.lock(),manageDevice:(route,ack)=>entry.manageDevice(route,ack),
     dispose(){disposed=true;cancel();entry.dispose();subscription?.unsubscribe();}
   };
 }

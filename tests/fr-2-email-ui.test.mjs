@@ -126,3 +126,19 @@ test('Changing remember after requesting a code invalidates that challenge befor
 test('Actual view uses textContent for messages and clears code/remember on logout and locking',()=>{
  const v=view(),code=v.all.find(x=>x.autocomplete==='one-time-code'),remember=v.all.find(x=>x.type==='checkbox'),signout=v.all.find(x=>x.textContent==='Sign out');code.value='123456';remember.checked=true;signout.events.click();assert.equal(code.value,'');assert.equal(remember.checked,false);assert.deepEqual(v.calls,[['lock'],['signout']]);v.render({phase:'locked',message:'<img onerror=unsafe>',busy:false,authorized:false,canVerify:false});assert.equal(v.all.find(x=>x.role==='status').textContent,'<img onerror=unsafe>');
 });
+
+test('Background approval and post-code completion hide verification controls until a code is actually required',()=>{
+ const v=view(),heading=v.all.find(n=>n.tag==='h1'),send=v.all.find(n=>n.textContent==='Send email code'),form=v.all.find(n=>n.tag==='form'),remember=v.all.find(n=>n.type==='checkbox'),status=v.all.find(n=>n.role==='status');
+ for(const phase of ['loading','verifying','authorized']){
+  v.render({phase,busy:phase!=='authorized',authorized:phase==='authorized',canVerify:phase==='verifying'});
+  assert.equal(heading.hidden,true);assert.equal(send.hidden,true);assert.equal(form.hidden,true);assert.equal(remember.disabled,true);
+  assert.match(status.textContent,/Signing in|Checking your code/);assert.equal(v.root['aria-busy'],phase==='authorized'?'false':'true');
+ }
+ v.render({phase:'locked',busy:false,authorized:false,canVerify:false});assert.equal(heading.hidden,false);assert.equal(send.hidden,false);
+ v.render({phase:'code',busy:false,authorized:false,canVerify:true,message:'The code was not accepted.'});assert.equal(form.hidden,false);assert.equal(status.textContent,'The code was not accepted.');
+});
+test('Binding a replacement session shows a check without suggesting code entry or granting approval',async()=>{
+ const h=fixture({approved:true});h.c.bind({user:{id:'actor-a'},access_token:'synthetic-bearer-a'});
+ assert.equal(h.states.at(-1).phase,'loading');assert.equal(h.c.authorized,false);assert.equal(h.unlocks.length,0);assert.equal(h.calls.length,0);
+ assert.equal(await h.c.prepare(),true);assert.equal(h.calls.length,0);
+});

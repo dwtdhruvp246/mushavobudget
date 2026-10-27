@@ -86,3 +86,17 @@ test('Actual Business entry invalidation clears profile, membership, invitation 
  const start=business.indexOf('const businessEmailEntry=createSessionEntry('),source=business.slice(start);const a=source.indexOf('onInvalidated:')+'onInvalidated:'.length,b=source.indexOf(',\n  onUnlocked:',a);assert(a>0&&b>a);
  let clears=0,restores=0;const c={state:{profile:{private:true},workspaces:[1],memberships:[1],incomingInvitations:[1],supportedCurrencies:[1]},clearBusinessWorkspaceState:()=>clears++,restoreBusinessPrivateDom:[()=>restores++]};vm.createContext(c);vm.runInContext('const invalidate='+source.slice(a,b)+';invalidate();',c);for(const k of['workspaces','memberships','incomingInvitations','supportedCurrencies'])assert.equal(c.state[k].length,0);assert.equal(c.state.profile,null);assert.equal(clears,1);assert.equal(restores,1);
 });
+
+test('A delayed approved startup keeps the code screen hidden throughout the background check',async()=>{
+ const d=deferred(),h=fixture({rpc:()=>d.promise}),pending=h.entry.ensure();await new Promise(r=>setImmediate(r));
+ assert.equal(h.all().find(n=>n.tag==='h1').hidden,true);assert.equal(h.all().find(n=>n.tag==='form').hidden,true);assert.equal(h.entry.authorized,false);
+ d.resolve({data:true,error:null});assert.equal(await pending,true);assert.equal(h.all().find(n=>n.tag==='h1').hidden,true);assert(!h.calls.includes('restore'));
+});
+test('The real app and Business page choose their loading view during checks and the code view only when needed',()=>{
+ for(const [source,marker,businessPage]of [[app,'const emailEntry=createSessionEntry(',false],[business,'const businessEmailEntry=createSessionEntry(',true]]){
+  const tail=source.slice(source.indexOf(marker)),a=tail.indexOf('show:')+5,b=tail.indexOf(',\n  onReset:',a)>=0&&businessPage?tail.indexOf(',\n  onReset:',a):tail.indexOf(',onInvalidated:',a);
+  const views=[],c={showLoading:()=>views.push('loading'),setView:x=>views.push(x),showOnly:x=>views.push(x)};assert(b>a);vm.createContext(c);vm.runInContext('var show='+tail.slice(a,b),c);
+  c.show({phase:'loading'});c.show({phase:'verifying'});assert.deepEqual(views,businessPage?['businessLoading','businessLoading']:['loading','loading']);
+  c.show({phase:'locked'});assert.equal(views.at(-1),businessPage?'businessEmailVerification':'emailVerification');c.show({phase:'unavailable'});assert.equal(views.at(-1),businessPage?'businessEmailVerification':'emailVerification');
+ }
+});

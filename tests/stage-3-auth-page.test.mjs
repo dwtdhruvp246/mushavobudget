@@ -113,3 +113,14 @@ test('a duplicate verification event does not adopt or navigate a recovered acco
  const h=page();await h.ready();await h.save();await h.code();await h.ready();const form=h.all().find(n=>n.tag==='form');form.events.submit({preventDefault(){}});await h.ready();
  assert.equal(h.navigations.length,1);assert.equal(h.calls.filter(x=>x==='normal:adopt').length,1);
 });
+
+test('Verified recovery avoids the duplicate preparation RPC without showing the verification screen again',async()=>{
+ const h=page();await h.ready();await h.save();await h.code();await h.ready();
+ assert.equal(h.calls.filter(x=>x==='email_gate_current_session_verified').length,4);assert.equal(h.calls.filter(x=>x==='gateway:restore').length,1);assert.equal(h.navigations.length,1);
+ assert.equal(h.nodes.securityEmailVerification.hidden,true);assert.equal(h.all().find(n=>n.tag==='h1').hidden,true);assert.equal(h.nodes.securityContinue.hidden,true);
+});
+test('An expired server proof after code verification invalidates the callback ticket and retry can ask for verification again',async()=>{
+ const h=page();await h.ready();await h.save();let proofCalls=0;h.proof(()=>({data:++proofCalls===1,error:null}));await h.code();await h.ready();
+ assert.equal(h.navigations.length,0);assert(!h.calls.includes('normal:adopt'));assert.equal(h.nodes.securityResume.hidden,false);assert.match(h.nodes.securityMessage.textContent,/Verify your email/);
+ h.nodes.securityResume.events.click();await h.ready();assert.equal(h.nodes.securityEmailVerification.hidden,false);assert.equal(h.all().find(n=>n.tag==='h1').hidden,false);assert.equal(h.calls.filter(x=>x==='gateway:begin').length,1);assert.equal(h.navigations.length,0);
+});

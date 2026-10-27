@@ -6577,3 +6577,23 @@ input[type="file"] {
   margin: 0;
   flex: 0 0 auto;
 }
+
+/* A compact status replaces verification controls while approval is checked. */
+.verification-progress {
+  display: flex; align-items: center; gap: .75rem;
+  min-height: 3rem; margin: .75rem 0; color: var(--muted);
+}
+.verification-progress::before {
+  content: ''; width: 1.15rem; height: 1.15rem; flex: 0 0 auto;
+  border: 2px solid #dce7e5; border-top-color: #069b77;
+  border-radius: 50%; animation: spin 850ms linear infinite;
+}
+.verification-code-form { display: grid; gap: 1rem; max-width: 28rem; }
+.verification-code-form[hidden] { display: none; }
+.verification-code-form label { display: grid; gap: .5rem; }
+.verification-code-form input { font-size: 1.25rem; letter-spacing: .2em; }
+@media (prefers-reduced-motion: reduce) {
+  .verification-progress::before { animation: none; }
+}
+
+[data-email-verification] > [hidden] { display: none !important; }

@@ -1,7 +1,7 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm';
 import { callbackUrl, consumeAuthUrl, isolatedAuthOptions, createLinkController, createPasswordChanger, safeAuthMessage, verifiedUser, authError, requireVerifiedApplicationSession } from './auth-security.js?v=3';
-import { createAuthCallbackEntry } from './session-entry.js?v=3';
-import { registerConfirmationDevice } from './email-verification.js?v=3';
+import { createAuthCallbackEntry } from './session-entry.js?v=4';
+import { registerConfirmationDevice } from './email-verification.js?v=4';
 
 const $ = selector => document.querySelector(selector);
 const material = consumeAuthUrl(window.location.href, value => window.history.replaceState(null, '', value));
@@ -22,14 +22,28 @@ async function operation(action) {
 function prepareEmailEntry(client) {
   emailEntry?.dispose();
   emailEntry = createAuthCallbackEntry({client,root:$('#securityEmailVerification'),origin:window.location.origin,fetcher:window.fetch.bind(window),
-    show:()=>{ hideForms(); $('#securityResume').hidden = !controller?.passwordSaved && flow !== 'change'; $('#securityEmailVerification').hidden=false; message('Verify this account with an email code to continue.'); },
+    show:state=>{
+      hideForms(); $('#securityEmailVerification').hidden=false;
+      const checking=state?.busy||state?.phase==='loading';
+      if(flow==='recover'){
+        $('#securityTitle').textContent=checking?'Signing in':'Check your email';
+        message(checking?'Please wait.':'Enter your email code to finish signing in.');
+      }else message(checking?'Checking your account…':'Verify this account with an email code to continue.');
+    },
     onInvalidated:()=>{ $('#securityAcknowledge').checked=false;if(flow==='devices'){$('#securityDeviceControls').hidden=true;$('#securityDeviceAcknowledge').checked=false;$('#securityResume').hidden=false;} },
     onSignOut:()=>cancelSecurityFlow(true),
     onVerified:async({ticket})=>{if(flow==='devices'&&ticket()&&identity)await showDeviceSecurity();}
   });
 }
 async function requireApplication(client, actor) {
-  await requireVerifiedApplicationSession(client, actor, id=>emailEntry.require(id));
+  try { await requireVerifiedApplicationSession(client, actor, id=>emailEntry.require(id)); }
+  catch(error){
+    if(error?.code==='email_verification_required'){
+      emailEntry.lock();
+      $('#securityResume').hidden=false;
+    }
+    throw error;
+  }
 }
 async function recoveryDestination() {
   await requireApplication(isolated, identity.id);
@@ -41,6 +55,7 @@ async function recoveryDestination() {
     message('Your unfinished Admin invitation is still available. Complete the latest invitation, or choose a Free personal signup instead.');
   } else {
     $('#securityContinue').hidden = true;
+    $('#securityResume').hidden = false;
     $('#securityResume').textContent = 'Retry sign-in';
     message('Signing in…');
     await openVerifiedAccount();
@@ -141,6 +156,9 @@ $('#securityPassword').addEventListener('submit', event => {
     const password = $('#securityNewPassword').value, confirmation = $('#securityConfirmPassword').value;
     if (flow === 'change') { await currentIdentity(); await changer.save(password, confirmation, $('#securityNonce').value.trim(), $('#securityCurrentPassword').value); await currentIdentity(); }
     else await controller.save(password, confirmation);
+    // Password changes revoke the prior approval even when the bearer stays
+    // unchanged. A subsequent step must obtain fresh server-backed proof.
+    emailEntry.lock();
     $('#securityPassword').reset(); $('#securityPassword').hidden = true;
     $('#securityResume').hidden = false;
     await finishPasswordFlow();
@@ -148,7 +166,7 @@ $('#securityPassword').addEventListener('submit', event => {
 });
 async function finishPasswordFlow() {
   if (!identity || (flow !== 'change' && !controller.passwordSaved)) throw authError('link_unavailable');
-  message('Password saved. Verify this account before continuing.');
+  message(flow==='recover'?'Signing in…':'Password saved. Verify this account before continuing.');
   $('#securityResume').hidden = false;
   if (flow === 'recover') await recoveryDestination();
   else {

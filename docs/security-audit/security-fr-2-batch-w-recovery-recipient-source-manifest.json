@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "stage_step": "FR.2.5.W27_RECOVERY_RECIPIENT_LOCAL_READ_ONLY",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "source_parent_commit": "2352037189dae1a9cb14457e56358e73f82bbe4b",
+  "source_file_count": 9,
+  "file_sha256": {
+    "scripts/check-fr-2-batch-w-recovery-recipient.mjs": "22419d83009fa4ecd7aed6c0769412553daab1a014ef02c06ebd50f22136e817",
+    "scripts/run-fr-2-batch-w-recovery-recipient.ps1": "6fda50a4991a5eb10508242352bccec52b806f5715d97dc986af865b53b85572",
+    "tests/recovery-recipient-local.test.mjs": "c9fc3ba396879f1d93050189d1a1ca1663bd0074d8d7e5a93879ba7b61517c3b",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+    "supabase/functions/_shared/email-verification-zoho.mjs": "757270e2535e8c349c5e44ab022d3dd56d251ffdebab2bfdc9a4978fc5737793",
+    "supabase/functions/_shared/email-verification-gateway.mjs": "aa3225be25f3d8a446b47c937c28fd42d7ce26c8d93e7c5940bfb08c9312531f",
+    "auth-flows.js": "22d5003ac45a2910138e99d7bf812887c84c3f0d69ecaf050a7351b4f9d81695",
+    "auth-security.js": "81876a4032c49759e1df241ebef193b58681e2de4d52899c28cb4d9c65a6a6ee",
+    "auth.html": "40bf13e33c7287398ebed8790e9c87be5f497b8ddabf7465abde39eaf8b846e6"
+  },
+  "owner_execution_source_hashes": 2,
+  "runtime_files_changed": false,
+  "historical_manifests_and_receipts_preserved": true
+}

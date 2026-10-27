@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "stage_step": "FR.2.5.W31_PROFILE_PROVISIONING_METADATA_READ_ONLY",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "PROFILE_PROVISIONING_READ_ONLY_SQL_SYNTAX_PROJECTION_CHECK_PASS",
+  "source_parent_commit": "15678865efc14f613029143ea07fa8f5f86181d1",
+  "source": "supabase/diagnostics/security_fr_2_5_profile_provisioning.sql",
+  "source_SHA256": "4162b6b6afabb65dcd6ce384f4d1e30b8c5b8b1b2fb73925db959e9e22e5ce7d",
+  "validation": "Actual read-only metadata SQL executes offline with the exact reviewed canonical profile function/trigger and modeled control/profile schema; enabled-origin and disabled trigger classes and source/default projections checked. No Auth signup or provisioning function execution occurred.",
+  "full_hosted_catalog_modeled": false,
+  "new_persistent_test_file_or_suite_added": false,
+  "prior_suite_rerun": false,
+  "network_disabled": true,
+  "actual_hosted_SQL_Auth_or_email_requests": 0,
+  "new_AU_cases_added": 0,
+  "hosted_acceptance": false
+}

@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-27",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_AU04_02_RECOVERY_VIEW_OWNER_PASS_CLEAN_SUFFIX_CONFIRMED_AU04_03_NO_LINK_NEXT",
+  "status": "FR2_BATCH_W_AU04_03_FLAG_ONLY_DENIAL_OWNER_PASS_AU04_04_USED_LINK_NEXT",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "fc3fc73589fb183dcd87d035e1b26fbeb1bd87e3",
+  "source_parent_commit": "7051e8cf31526b38378649d33c2e1f2e92229c69",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE239",
+  "latest_evidence": "FRE240",
   "batches": [
     {
       "id": "FR.1",
@@ -1262,7 +1262,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W21_AU04_03_FLAG_ONLY_RECOVERY_DENIAL",
+  "next_step": "FR.2.5.W23_AU04_04_USED_RECOVERY_LINK_DENIAL",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4246,7 +4246,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "Keep the genuine verified recovery/password-form tab open. In a separate manually opened private tab, navigate once to the public auth?flow=recover URL without link material; report the unavailable-link message and absence of password fields. No password entry/save, email-link reopen/resend, code, SQL/window/settings/upload is requested.",
+    "next_action": "Retain the original verified password-form tab. Open Reset password from the same already-used recovery email once in a separate private tab; report the message and absence/presence of password fields. No password entry/save, resend, code, SQL/window/settings/upload is requested.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4385,8 +4385,8 @@
     "public_reader_repeat_requested": false,
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
-    "expected_nonsecret_input": "No-link denial-tab message or screenshot and whether password fields are absent; never a recovery link/token/code/password",
-    "next_step": "FR.2.5.W21_AU04_03_FLAG_ONLY_RECOVERY_DENIAL",
+    "expected_nonsecret_input": "Replay result page message or screenshot and whether password fields are absent; never the recovery link, code, token or password",
+    "next_step": "FR.2.5.W23_AU04_04_USED_RECOVERY_LINK_DENIAL",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -4471,7 +4471,10 @@
     "recovery_link_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-link-view.json",
     "owner_recovery_verified_identity_and_password_view_scoped_pass": true,
     "owner_loaded_recovery_suffix": "auth?flow=recover",
-    "recovery_no_link_handoff": "docs/security-audit/security-fr-2-batch-w-recovery-no-link-handoff.json"
+    "recovery_no_link_handoff": "docs/security-audit/security-fr-2-batch-w-recovery-no-link-handoff.json",
+    "recovery_no_link_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-no-link.json",
+    "owner_flag_only_recovery_denial_scoped_pass": true,
+    "recovery_used_link_handoff": "docs/security-audit/security-fr-2-batch-w-recovery-used-link-handoff.json"
   },
   "owner_controlled_test_inbox_information_required": false,
   "FR2_email_persistent_browser_trust": {
@@ -4546,25 +4549,26 @@
     "runtime_implementation_requested_now": false
   },
   "FR2_email_next_Auth_case": {
-    "id": "AU04.03",
-    "title": "Wrong/no session",
-    "variant": "A separate manually opened private tab has a recovery intent flag but no usable recovery link material or isolated recovery session",
-    "status": "PREPARED_OWNER_FLAG_ONLY_DENIAL_RESULT_PENDING",
-    "target": "https://mushavo-budget-staging.pages.dev/auth?flow=recover",
-    "maximum_manual_navigations": 1,
-    "context": "Leave the genuine recovery/password-form tab open. Manually open a separate new tab in the private window and paste only the public target above; do not duplicate, refresh or replace the genuine recovery tab.",
+    "id": "AU04.04",
+    "title": "Expired/used link",
+    "variant": "Replay of the same recovery email link already consumed by the successful AU04.02 view; expiry variant remains separate",
+    "status": "PREPARED_OWNER_USED_LINK_DENIAL_RESULT_PENDING",
+    "maximum_manual_used_email_link_opens": 1,
+    "link_source": "Reset password in the same recovery email already successfully used; never share or persist its URL",
+    "browser_context": "Keep the original verified password-form tab open. Open the original email link once in a separate private tab; copy/paste privately there if required. Do not replace, refresh or duplicate the verified tab.",
     "expected_message": "This link or session is unavailable. Open the newest email or request another link.",
     "expected_password_fields_visible": false,
-    "expected_dashboard_or_automatic_app_transfer": false,
+    "expected_verified_identity_or_automatic_app_transfer": false,
     "owner_return_fields": [
-      "Displayed message or resulting-page screenshot",
+      "Displayed message or screenshot of the replay result",
       "Whether password fields are absent"
     ],
     "enter_or_save_password_requested": false,
-    "new_email_link_open_or_recovery_request_or_code_requested": false,
+    "new_recovery_email_or_code_requested": false,
     "new_SQL_window_settings_upload_or_account_requested": false,
-    "do_not_follow_generic_resend_guidance_during_negative_test": true,
-    "cleanup": "After reporting this separate tab's result it can be closed; retain the original verified password-form tab for later controlled steps."
+    "if_password_fields_or_verified_identity_appear": "Stop and report that observation without entering or saving any password. Do not infer replay denial.",
+    "if_other_error_appears": "Report the exact safe page message; do not retry or request another email.",
+    "cleanup": "After reporting, close only the replay/error tabs. Retain the original verified password-form tab for later controlled steps."
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -4600,13 +4604,25 @@
       "owner_reported_suffix": "auth?flow=recover",
       "entire_URL_independently_inspected": false,
       "cross_tab_or_current_account_isolation_accepted": false
+    },
+    "AU04.03": {
+      "variant": "Separate manually opened private tab; recovery intent flag without usable link material/session",
+      "status": "OWNER_SCREENSHOT_UNAVAILABLE_LINK_AND_PASSWORD_FIELDS_ABSENT_SCOPED_PASS",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-no-link.json",
+      "expected_message_matched": true,
+      "password_fields_absent": true,
+      "wrong_identity_or_other_session_variants_accepted": false,
+      "independent_HTTP_session_inspection": false
     }
   },
   "FR2_email_recovery_request_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_WRONG_PASSWORD_PASS_AND_RECOVERY_REQUEST.md",
   "owner_browser_recovery_link_action_required": false,
   "FR2_email_recovery_request_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-request.json",
   "FR2_email_recovery_link_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECOVERY_REQUEST_PASS_AND_LINK_VIEW.md",
-  "owner_browser_recovery_no_link_action_required": true,
+  "owner_browser_recovery_no_link_action_required": false,
   "FR2_email_recovery_link_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-link-view.json",
-  "FR2_email_recovery_no_link_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECOVERY_VIEW_PASS_AND_NO_LINK_DENIAL.md"
+  "FR2_email_recovery_no_link_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_RECOVERY_VIEW_PASS_AND_NO_LINK_DENIAL.md",
+  "owner_browser_recovery_used_link_action_required": true,
+  "FR2_email_recovery_no_link_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-no-link.json",
+  "FR2_email_recovery_used_link_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NO_LINK_PASS_AND_USED_LINK_DENIAL.md"
 }

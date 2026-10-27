@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-27",
+  "stage_step": "FR.2.5.W36_AUTO_ENTRY_PACKAGE_PASS_AND_HOSTED_RECOVERY_RETEST",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "AUTOMATED_PUBLIC_READBACK_BLOCKED_NOT_A_SOURCE_MISMATCH",
+  "deployment_URL": "https://5b278cbc.mushavo-budget-staging.pages.dev/",
+  "web_reader_attempted_public_URLs": [
+    "https://5b278cbc.mushavo-budget-staging.pages.dev/auth.html",
+    "https://5b278cbc.mushavo-budget-staging.pages.dev/auth-flows.js?v=6"
+  ],
+  "web_reader_result": "Both URLs inaccessible via reader; no content returned.",
+  "direct_diagnostic_GETs": 1,
+  "direct_diagnostic_URL": "https://5b278cbc.mushavo-budget-staging.pages.dev/auth.html",
+  "direct_HTTP_status": 403,
+  "Cloudflare_error_1010": true,
+  "selected_public_read_attempts_total": 3,
+  "runtime_source_bytes_or_hash_parity_verified": false,
+  "owner_browser_outage_inferred": false,
+  "new_source_mismatch_inferred": false,
+  "private_or_Auth_or_gateway_requests": 0,
+  "SQL_or_account_writes": 0,
+  "real_email_requests": 0,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

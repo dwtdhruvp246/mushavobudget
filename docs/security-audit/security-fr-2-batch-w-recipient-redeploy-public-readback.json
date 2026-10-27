@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-27",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "SELECTED_RECOVERY_SOURCE_READBACK_BLOCKED",
+  "cases": 8,
+  "passed": 0,
+  "source_commit": "a1feb46df4a8c118a7e7a7d2255d4dd4e82448b4",
+  "selected_static_initial_GETs": 8,
+  "automatic_redirect_followups_excluded_from_initial_GET_count": true,
+  "wire_request_count_not_recorded": true,
+  "real_Auth_or_email_or_SQL_requests": 0,
+  "live_recipient_secret_readback": false,
+  "live_email_delivery_verified": false,
+  "Worker_private_source_or_runtime_verified": false,
+  "hosted_acceptance": false,
+  "rows": [
+    {
+      "origin": "https://cf533a08.mushavo-budget-staging.pages.dev",
+      "file": "auth.html",
+      "status": null,
+      "source_match": null,
+      "error_type": "HTTPError",
+      "HTTP_failure_status_not_captured_in_initial_batch": true
+    },
+    {
+      "origin": "https://cf533a08.mushavo-budget-staging.pages.dev",
+      "file": "auth-flows.js",
+      "status": null,
+      "source_match": null,
+      "error_type": "HTTPError",
+      "HTTP_failure_status_not_captured_in_initial_batch": true
+    },
+    {
+      "origin": "https://cf533a08.mushavo-budget-staging.pages.dev",
+      "file": "email-verification.js",
+      "status": null,
+      "source_match": null,
+      "error_type": "HTTPError",
+      "HTTP_failure_status_not_captured_in_initial_batch": true
+    },
+    {
+      "origin": "https://cf533a08.mushavo-budget-staging.pages.dev",
+      "file": "config.js",
+      "status": null,
+      "source_match": null,
+      "error_type": "HTTPError",
+      "HTTP_failure_status_not_captured_in_initial_batch": true
+    },
+    {
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "file": "auth.html",
+      "status": null,
+      "source_match": null,
+      "error_type": "HTTPError",
+      "HTTP_failure_status_not_captured_in_initial_batch": true
+    },
+    {
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "file": "auth-flows.js",
+      "status": null,
+      "source_match": null,
+      "error_type": "HTTPError",
+      "HTTP_failure_status_not_captured_in_initial_batch": true
+    },
+    {
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "file": "email-verification.js",
+      "status": null,
+      "source_match": null,
+      "error_type": "HTTPError",
+      "HTTP_failure_status_not_captured_in_initial_batch": true
+    },
+    {
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "file": "config.js",
+      "status": null,
+      "source_match": null,
+      "error_type": "HTTPError",
+      "HTTP_failure_status_not_captured_in_initial_batch": true
+    }
+  ],
+  "failed": 0,
+  "blocked": 8,
+  "source_parity_established": false,
+  "diagnostic_static_GETs": 1,
+  "diagnostic_HTTP_status": 403,
+  "diagnostic_body_class": "CLOUDFLARE_ERROR_1010",
+  "web_reader_lookup_unavailable": true,
+  "web_reader_attempts": 1,
+  "automated_request_block_not_owner_browser_outage_evidence": true
+}

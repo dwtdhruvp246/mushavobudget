@@ -83,11 +83,19 @@ async function init() {
     $('#securityPassword').hidden = false; $('#securityNonceLabel').hidden = false; $('#securityRequestCode').hidden = false; $('#securityCurrentLabel').hidden = false;
     return;
   }
-  prepareEmailEntry(isolated);
-  controller = createLinkController(isolated, material, {beforeApplication:id=>emailEntry.require(id)});
+  const confirmationOnly = flow === 'confirm';
+  if (!confirmationOnly) prepareEmailEntry(isolated);
+  controller = createLinkController(isolated, material, confirmationOnly ? {} : {beforeApplication:id=>emailEntry.require(id)});
   const user = await controller.verify();
   showIdentity(user);
   $('#securityTitle').textContent = flow === 'confirm' ? 'Email confirmed' : flow === 'recover' ? 'Choose a new password' : 'Business invitation verified';
+  if (confirmationOnly) {
+    message('Your email has been confirmed. You can now sign in.');
+    const signInButton = $('#securityCancel');
+    signInButton.textContent = 'Go to sign in';
+    signInButton.className = 'primary';
+    return;
+  }
   message(flow.startsWith('business-') ? `Invitation for ${controller.invitation.workspace_name}. Membership is decided when you accept in the Business workspace.` : 'Your email link has been verified.');
   if (['recover','business-new'].includes(flow)) $('#securityPassword').hidden = false;
   else $('#securityContinue').hidden = false;
@@ -163,6 +171,7 @@ $('#securityRequestCode').addEventListener('click', () => operation(async () => 
   await changer.requestCode(); message('Check your account inbox for the newest verification code.');
 }));
 $('#securityOpen').addEventListener('click', () => operation(async () => {
+  if (flow === 'confirm') { await cancelSecurityFlow(); return; }
   if (!$('#securityAcknowledge').checked) { message('Confirm that you want to open the verified account shown above.'); return; }
   app ||= createClient(settings.supabaseUrl, settings.supabasePublishableKey, {auth:{detectSessionInUrl:false,persistSession:true,autoRefreshToken:true}});
   const next = await controller.continueToApp(app, true);

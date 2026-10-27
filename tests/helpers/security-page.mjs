@@ -12,7 +12,7 @@ class Element {
 }
 export function securityPageFixture(flow='recover',options={}){
  const calls=[],navigations=[],proofs=new Map(),nodes={},clients=[],removed=[],user={id,email:'owner@example.invalid',email_confirmed_at:'2026-10-16T00:00:00Z'};
- let linkError=null,invited=options.invited??true,proofOverride=null,unfinishedError=null;
+ let linkError=options.linkError??null,invited=options.invited??true,proofOverride=null,unfinishedError=null;
  const doc={createElement:tag=>new Element(tag,doc),createTextNode:text=>({textContent:text}),querySelector:selector=>nodes[selector.slice(1)],querySelectorAll:()=>[]};
  for(const name of['securityMessage','securityTitle','securityIdentity','securityRequest','securityEmail','securityPassword','securityContinue','securitySelfSignup','securityEmailVerification','securityNonceLabel','securityRequestCode','securityCurrentLabel','securityNewPassword','securityConfirmPassword','securityNonce','securityCurrentPassword','securityAcknowledge','securityOpen','securityCancel','securityResume','securityDeviceControls','securityDeviceAcknowledge','securityForgetDevice','securityRevokeAll'])nodes[name]=new Element('section',doc);
  nodes.securityPassword.reset=()=>{for(const n of['securityNewPassword','securityConfirmPassword','securityNonce','securityCurrentPassword'])nodes[n].value='';};

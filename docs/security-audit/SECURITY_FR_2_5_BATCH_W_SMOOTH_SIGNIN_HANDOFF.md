@@ -1,12 +1,14 @@
+> FRE254, 27 October2026: The previous preparation stopped before creating a ZIP because my app/Business HTML baseline used repository URLs instead of the recorded staging-export URLs. This handoff now uses corrected source 6be81d6534549e657d57444a841e27aa9f400527, preparer SHA256 2414be1ac6a9f092ad410d6a986ca6bd212b89e92e5daef76c258585cc28ce26, source30 and package9/9 PASS. Whole input archive identity and all per-file checks remain enforced. Updated HTML is transformed to staging before output; no production project reference is reintroduced. Reuse the same accepted auto-signin ZIP. On successful preparation the command prints and opens its new output folder. [Owner refusal](security-fr-2-batch-w-owner-smooth-signin-preparation-refusal.json), [correction checks](security-fr-2-batch-w-smooth-signin-baseline-fix-local-checks.json). No smooth-signin archive has yet been prepared/uploaded by the owner.
+
 # Smooth background checking and verified sign-in
 
 Stage 3/10 | FR.2/8 | Batch W/Z — FRE253, 27 October2026.
 
 The owner reports that automatic recovery sign-in did what was expected at deployment5b278cbc, while criticizing glitches and the visible Verify your sign-in page. Record the functional result as owner-reported scoped UI PASS, not full AU04.05 or live security/timing acceptance. The owner has now requested the previously deferred background verification polish.
 
-Source a9a8a195c4950f33b433c15fb2699507b1d7e84f keeps approved-session checks in the existing app/Business loading view and makes callback checking a compact Signing in status. The full verification form appears when server state requires a code or an actionable error. Post-code completion stays on loading through automatic dashboard entry. Current actor/token tickets avoid one duplicate preparation request, while the independent remote user/server-proof checks still run. Successful password save and independent proof denial clear a prior ticket. No client flag grants app access; protected reads and navigation still require current proof. Invitation choices, unfinished Admin setup, signup confirmation/manual sign-in and separate Admin MFA are preserved.
+Source 6be81d6534549e657d57444a841e27aa9f400527 keeps approved-session checks in the existing app/Business loading view and makes callback checking a compact Signing in status. The full verification form appears when server state requires a code or an actionable error. Post-code completion stays on loading through automatic dashboard entry. Current actor/token tickets avoid one duplicate preparation request, while the independent remote user/server-proof checks still run. Successful password save and independent proof denial clear a prior ticket. No client flag grants app access; protected reads and navigation still require current proof. Invitation choices, unfinished Admin setup, signup confirmation/manual sign-in and separate Admin MFA are preserved.
 
-[Contract](security-fr-2-batch-w-smooth-signin-contract.json), [owner receipt](security-fr-2-batch-w-owner-auto-entry-pass-and-smoothing-request.json), [local checks](security-fr-2-batch-w-smooth-signin-local-checks.json), [28 source identities](security-fr-2-batch-w-smooth-signin-source-manifest.json). Runtime140 and package5 checks pass; syntax11 pass. The same recovery fixture makes4 proof RPCs versus5 before. This does not establish live latency. Local browser rendering was unavailable because Chromium is not installed; no viewport/screenshot pass is claimed.
+[Contract](security-fr-2-batch-w-smooth-signin-contract.json), [owner receipt](security-fr-2-batch-w-owner-auto-entry-pass-and-smoothing-request.json), [local checks](security-fr-2-batch-w-smooth-signin-local-checks.json), [30 source identities](security-fr-2-batch-w-smooth-signin-source-manifest.json). Runtime140 retained and corrected package9 checks pass; prior runtime syntax11 and current packaging syntax2 pass. The same recovery fixture makes4 proof RPCs versus5 before. This does not establish live latency. Local browser rendering was unavailable because Chromium is not installed; no viewport/screenshot pass is claimed.
 
 The preparer reads the accepted auto-signin ZIP SHA2561696a99a4fd5fde38210818ada25a983a352a5cb0b547294383b007aaa45865b, changes10 public files and preserves the remaining34 of44 plus the input archive. Worker/SW/configuration/headers/routes/SQL/Auth settings are untouched. Shared helper/CSS/page cache versions are updated. It performs no deployment, password/email, SQL, setting or account action. Actual owner archive readback remains pending.
 
@@ -16,8 +18,8 @@ Run in PowerShell:
 & {
     $ErrorActionPreference = 'Stop'
     $Project = 'C:\Users\HP\Desktop\Mushavo Budget'
-    $Commit = 'a9a8a195c4950f33b433c15fb2699507b1d7e84f'
-    $EntryHash = 'c2eba45066e1b1f4cdb6677eeffc3ca1e22c6ef49ba26cc6da3f722dfe97dda8'
+    $Commit = '6be81d6534549e657d57444a841e27aa9f400527'
+    $EntryHash = '2414be1ac6a9f092ad410d6a986ca6bd212b89e92e5daef76c258585cc28ce26'
     $OriginalLocation = Get-Location
     $BatchExit = 1
     Write-Host 'STARTED: Stage 3/10 | FR.2/8 | Batch W/Z - smoother background sign-in.'
@@ -48,6 +50,8 @@ Run in PowerShell:
         & node $Entry $Retained $OutputFolder
         if ($LASTEXITCODE -ne 0) { throw 'PUBLIC_ZIP_PREPARATION_REQUIRED' }
         $BatchExit = 0
+        Write-Host ('Created ZIP folder: ' + $OutputFolder)
+        Invoke-Item -LiteralPath $OutputFolder -ErrorAction SilentlyContinue
     } catch {
         Write-Host ([ordered]@{
             progress_display = 'Stage 3/10 | FR.2/8 | Batch W/Z'

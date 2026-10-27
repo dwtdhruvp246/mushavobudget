@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-27",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_OWNER_AUTO_ENTRY_SCOPED_PASS_SMOOTH_SIGNIN_LOCAL145_PASS_UPLOAD_PENDING",
+  "status": "FR2_BATCH_W_SMOOTH_SIGNIN_PACKAGE_BASELINE_CORRECTED_LOCAL9_PASS_OWNER_RETRY_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "a9a8a195c4950f33b433c15fb2699507b1d7e84f",
+  "source_parent_commit": "6be81d6534549e657d57444a841e27aa9f400527",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE253",
+  "latest_evidence": "FRE254",
   "batches": [
     {
       "id": "FR.1",
@@ -1097,13 +1097,13 @@
         },
         {
           "id": "FR.2.5",
-          "status": "IN_PROGRESS_OWNER_AUTO_ENTRY_UI_PASS_SMOOTH_SIGNIN_LOCAL_PASS_UPLOAD_PENDING",
+          "status": "IN_PROGRESS_SMOOTH_SIGNIN_BASELINE_FIXED_OWNER_PACKAGE_RETRY_PENDING",
           "title": "Auth/finance/session hosted workflows",
           "active_lettered_batch": "W",
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5.W37_SMOOTH_BACKGROUND_VERIFICATION_AND_FRESH_PROOF",
+          "next_step": "FR.2.5.W38_STAGING_HTML_BASELINE_AND_OUTPUT_IDENTITY_CORRECTION",
           "persistent_browser_trust_checkpoint": {
             "status": "OWNER_ACCEPTS_CURRENT_UI_BACKGROUND_UX_DEFERRED_INDEPENDENT_AUTH_CASE_NEXT",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
@@ -1184,9 +1184,9 @@
             "id": "AU04.05",
             "title": "Password-save failure/retry",
             "variant": "Owner-reported positive recovery auto-entry UI PASS; full security/session outcomes open. Smooth background checking update prepared locally and awaits staging upload/UX review.",
-            "status": "OWNER_AUTO_ENTRY_UI_SCOPED_PASS_SMOOTH_SIGNIN_UPLOAD_PENDING",
+            "status": "AUTO_ENTRY_UI_PASS_SMOOTH_PACKAGE_BASELINE_FIXED_RETRY_PENDING",
             "matching_password_save_requested": false,
-            "owner_action_required_now": "Prepare the new ZIP from the accepted auto-signin ZIP. After exit0 upload only the new ZIP to mushavo-budget-staging and return safe JSON/new URL. No new password recovery, code/email or timed SQL action requested during packaging.",
+            "owner_action_required_now": "Rerun corrected pinned preparation with the same accepted auto-signin ZIP. On exit0 its output folder is printed/opened; upload the new smooth-signin ZIP and return safe result/URL. No SQL/password/email action now.",
             "preserve_original_verified_recovery_tab": true,
             "readiness_requirements": [
               "Prepare/upload the smooth-signin archive; no new password/email or timed SQL action during packaging.",
@@ -1194,7 +1194,7 @@
               "Any later recovery retry still needs exact same actor and current bounded staging window; no consumed-link reuse or profile repair."
             ],
             "readiness_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SMOOTH_SIGNIN_HANDOFF.md",
-            "readiness_source_pin": "a9a8a195c4950f33b433c15fb2699507b1d7e84f",
+            "readiness_source_pin": "6be81d6534549e657d57444a841e27aa9f400527",
             "same_current_password_refusal_attempt_requested": false,
             "successful_new_password_save_requested": false,
             "same_password_refusal_owner_UI_scoped_pass": true,
@@ -1427,14 +1427,14 @@
             "owner_functional_result_receipt": "docs/security-audit/security-fr-2-batch-w-owner-auto-entry-pass-and-smoothing-request.json"
           },
           "smooth_signin": {
-            "status": "LOCAL_RUNTIME140_PACKAGE5_PASS_PREPARATION_AND_UPLOAD_PENDING",
-            "source_pin": "a9a8a195c4950f33b433c15fb2699507b1d7e84f",
+            "status": "OWNER_PREPARATION_REFUSED_BASELINE_FIXED_LOCAL9_PASS_RETRY_PENDING",
+            "source_pin": "6be81d6534549e657d57444a841e27aa9f400527",
             "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-auto-entry-pass-and-smoothing-request.json",
             "contract": "docs/security-audit/security-fr-2-batch-w-smooth-signin-contract.json",
             "local_checks": "docs/security-audit/security-fr-2-batch-w-smooth-signin-local-checks.json",
             "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SMOOTH_SIGNIN_HANDOFF.md",
             "source_manifest": "docs/security-audit/security-fr-2-batch-w-smooth-signin-source-manifest.json",
-            "preparer_SHA256": "c2eba45066e1b1f4cdb6677eeffc3ca1e22c6ef49ba26cc6da3f722dfe97dda8",
+            "preparer_SHA256": "2414be1ac6a9f092ad410d6a986ca6bd212b89e92e5daef76c258585cc28ce26",
             "output_filename": "mushavo-smooth-signin-staging.zip",
             "public_files_changed": 10,
             "unchanged_public_entries": 34,
@@ -1442,7 +1442,13 @@
             "new_deployment_received": false,
             "live_latency_measured": false,
             "hosted_acceptance": false,
-            "new_public_AU_cases_added": 0
+            "new_public_AU_cases_added": 0,
+            "source_hashes_verified_by_preparer": 30,
+            "owner_preparation_failure_receipt": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-preparation-refusal.json",
+            "corrected_package_local_checks": "docs/security-audit/security-fr-2-batch-w-smooth-signin-baseline-fix-local-checks.json",
+            "owner_failed_preparation_exit_code": 1,
+            "ZIP_created_by_failed_attempt": false,
+            "accepted_input_ZIP_still_required": "1696a99a4fd5fde38210818ada25a983a352a5cb0b547294383b007aaa45865b"
           }
         },
         {
@@ -1459,7 +1465,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "FR.2.5.W37_SMOOTH_BACKGROUND_VERIFICATION_AND_FRESH_PROOF"
+      "next_step": "FR.2.5.W38_STAGING_HTML_BASELINE_AND_OUTPUT_IDENTITY_CORRECTION"
     },
     {
       "id": "FR.3",
@@ -1509,7 +1515,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W37_SMOOTH_BACKGROUND_VERIFICATION_AND_FRESH_PROOF",
+  "next_step": "FR.2.5.W38_STAGING_HTML_BASELINE_AND_OUTPUT_IDENTITY_CORRECTION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -5235,14 +5241,14 @@
     "owner_functional_result_receipt": "docs/security-audit/security-fr-2-batch-w-owner-auto-entry-pass-and-smoothing-request.json"
   },
   "smooth_signin": {
-    "status": "LOCAL_RUNTIME140_PACKAGE5_PASS_PREPARATION_AND_UPLOAD_PENDING",
-    "source_pin": "a9a8a195c4950f33b433c15fb2699507b1d7e84f",
+    "status": "OWNER_PREPARATION_REFUSED_BASELINE_FIXED_LOCAL9_PASS_RETRY_PENDING",
+    "source_pin": "6be81d6534549e657d57444a841e27aa9f400527",
     "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-auto-entry-pass-and-smoothing-request.json",
     "contract": "docs/security-audit/security-fr-2-batch-w-smooth-signin-contract.json",
     "local_checks": "docs/security-audit/security-fr-2-batch-w-smooth-signin-local-checks.json",
     "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SMOOTH_SIGNIN_HANDOFF.md",
     "source_manifest": "docs/security-audit/security-fr-2-batch-w-smooth-signin-source-manifest.json",
-    "preparer_SHA256": "c2eba45066e1b1f4cdb6677eeffc3ca1e22c6ef49ba26cc6da3f722dfe97dda8",
+    "preparer_SHA256": "2414be1ac6a9f092ad410d6a986ca6bd212b89e92e5daef76c258585cc28ce26",
     "output_filename": "mushavo-smooth-signin-staging.zip",
     "public_files_changed": 10,
     "unchanged_public_entries": 34,
@@ -5250,6 +5256,12 @@
     "new_deployment_received": false,
     "live_latency_measured": false,
     "hosted_acceptance": false,
-    "new_public_AU_cases_added": 0
+    "new_public_AU_cases_added": 0,
+    "source_hashes_verified_by_preparer": 30,
+    "owner_preparation_failure_receipt": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-preparation-refusal.json",
+    "corrected_package_local_checks": "docs/security-audit/security-fr-2-batch-w-smooth-signin-baseline-fix-local-checks.json",
+    "owner_failed_preparation_exit_code": 1,
+    "ZIP_created_by_failed_attempt": false,
+    "accepted_input_ZIP_still_required": "1696a99a4fd5fde38210818ada25a983a352a5cb0b547294383b007aaa45865b"
   }
 }

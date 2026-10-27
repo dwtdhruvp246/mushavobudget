@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-27",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_AU04_04_USED_LINK_DENIAL_OWNER_PASS_AU04_05_MISMATCH_NEXT",
+  "status": "FR2_BATCH_W_AU04_05_MISMATCH_UI_OWNER_PASS_ERROR_VISIBILITY_DEFERRED_SAVE_READINESS_NEXT",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "aa4b1816fc6ca6776f99fb360192f716d881dfa0",
+  "source_parent_commit": "161de8600e333b64ec4f3ebb0268c4d84c55e2a2",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE241",
+  "latest_evidence": "FRE242",
   "batches": [
     {
       "id": "FR.1",
@@ -1262,7 +1262,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W25_AU04_05_RECOVERY_PASSWORD_MISMATCH_VALIDATION",
+  "next_step": "FR.2.5.W27_RECOVERY_PASSWORD_SAVE_READINESS_PREPARATION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4246,7 +4246,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "In the original verified recovery form, enter two different private test values of at least eight characters and click Save password once. Expect Passwords do not match with form retained, then stop before correcting/submitting matching values. No new email/code, SQL/window/settings/upload is requested.",
+    "next_action": "Prepare controlled recipient and bounded-window readiness before a separate real password-save/verification/continuation handoff. No matching submission or new owner browser/SQL/email/settings/upload action is requested in this UI-deferral checkpoint.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4385,8 +4385,8 @@
     "public_reader_repeat_requested": false,
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
-    "expected_nonsecret_input": "Mismatch validation message or page screenshot and whether form remains visible; never either password or a recovery link/code/token",
-    "next_step": "FR.2.5.W25_AU04_05_RECOVERY_PASSWORD_MISMATCH_VALIDATION",
+    "expected_nonsecret_input": "NONE_REQUESTED_NOW; retain the original verified recovery tab",
+    "next_step": "FR.2.5.W27_RECOVERY_PASSWORD_SAVE_READINESS_PREPARATION",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -4477,7 +4477,11 @@
     "recovery_used_link_handoff": "docs/security-audit/security-fr-2-batch-w-recovery-used-link-handoff.json",
     "recovery_used_link_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-used-link.json",
     "owner_used_recovery_link_denial_UI_scoped_pass": true,
-    "recovery_mismatch_handoff": "docs/security-audit/security-fr-2-batch-w-recovery-mismatch-handoff.json"
+    "recovery_mismatch_handoff": "docs/security-audit/security-fr-2-batch-w-recovery-mismatch-handoff.json",
+    "recovery_mismatch_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-mismatch-and-ux-deferral.json",
+    "owner_recovery_mismatch_UI_scoped_pass": true,
+    "deferred_password_mismatch_visibility": "UX_AUTH_PASSWORD_MISMATCH_VISIBILITY",
+    "deferred_auth_UI_backlog": "docs/security-audit/SECURITY_FR_2_5_AUTH_UI_DEFERRED_IMPROVEMENTS.md"
   },
   "owner_controlled_test_inbox_information_required": false,
   "FR2_email_persistent_browser_trust": {
@@ -4554,24 +4558,16 @@
   "FR2_email_next_Auth_case": {
     "id": "AU04.05",
     "title": "Password-save failure/retry",
-    "variant": "Mismatched new-password confirmation rejected before an Auth write; server-failure and successful-retry variants remain pending",
-    "status": "PREPARED_OWNER_MISMATCH_VALIDATION_RESULT_PENDING",
-    "context": "Use the existing original verified Choose a new password tab for the intended account; keep it open without refreshing or reopening the email link.",
-    "maximum_manual_mismatched_Save_password_clicks": 1,
-    "input_rule": "Enter two different private test values, each at least eight characters, in New password and Repeat new password. Never share either value.",
-    "expected_message": "Passwords do not match.",
-    "expected_password_form_retained": true,
+    "variant": "Actual password-save/provider failure and successful retry/session outcome; mismatch UI variant now accepted",
+    "status": "PENDING_CONTROLLED_PASSWORD_SAVE_READINESS_PREPARATION",
     "matching_password_save_requested": false,
-    "expected_Auth_password_update_for_mismatched_attempt": false,
-    "new_email_code_SQL_window_settings_upload_or_account_action_requested": false,
-    "owner_return_fields": [
-      "Displayed message or page screenshot",
-      "Whether the password form remains visible"
-    ],
-    "stop_after_message": "Leave the fields mismatched and stop after reporting; do not correct and submit matching values yet.",
-    "if_original_verified_tab_unavailable": "Report that state without requesting another link or trying to recreate the session.",
-    "if_saved_or_verification_screen_appears": "Stop and report the result rather than requesting a code or continuing.",
-    "cleanup": "Keep the original recovery tab open for the next controlled step; replay/denial tabs can be closed."
+    "owner_action_required_now": false,
+    "preserve_original_verified_recovery_tab": true,
+    "readiness_requirements": [
+      "Confirm the exact owner-controlled recovery account can receive the staging gateway verification code.",
+      "Prepare and verify a bounded staging application window for that exact active confirmed account before requesting actual save/verification/continuation.",
+      "Keep recovery identity isolation, password/security invalidation and explicit application-session outcome in the later handoff."
+    ]
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -4625,6 +4621,15 @@
       "password_fields_absent": true,
       "actual_timeout_expiry_variant_accepted": false,
       "provider_reason_or_HTTP_session_trace_independently_verified": false
+    },
+    "AU04.05": {
+      "status": "PARTIAL_OWNER_SCREENSHOT_MISMATCH_VALIDATION_PASS_PROVIDER_FAILURE_AND_RETRY_PENDING",
+      "variant": "Mismatched confirmation validation; actual provider-save failure and successful-retry variants remain pending",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-mismatch-and-ux-deferral.json",
+      "expected_mismatch_message_matched": true,
+      "password_form_retained": true,
+      "provider_failure_or_successful_retry_or_password_session_outcomes_accepted": false,
+      "deferred_UI_item": "UX_AUTH_PASSWORD_MISMATCH_VISIBILITY"
     }
   },
   "FR2_email_recovery_request_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_WRONG_PASSWORD_PASS_AND_RECOVERY_REQUEST.md",
@@ -4637,7 +4642,26 @@
   "owner_browser_recovery_used_link_action_required": false,
   "FR2_email_recovery_no_link_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-no-link.json",
   "FR2_email_recovery_used_link_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NO_LINK_PASS_AND_USED_LINK_DENIAL.md",
-  "owner_browser_recovery_mismatch_action_required": true,
+  "owner_browser_recovery_mismatch_action_required": false,
   "FR2_email_recovery_used_link_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-used-link.json",
-  "FR2_email_recovery_mismatch_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_USED_LINK_PASS_AND_PASSWORD_MISMATCH.md"
+  "FR2_email_recovery_mismatch_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_USED_LINK_PASS_AND_PASSWORD_MISMATCH.md",
+  "FR2_email_recovery_mismatch_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-mismatch-and-ux-deferral.json",
+  "deferred_auth_validation_message": {
+    "id": "UX_AUTH_PASSWORD_MISMATCH_VISIBILITY",
+    "status": "DEFERRED_BY_OWNER",
+    "date_recorded": "2026-10-27",
+    "owner_request": "but the Passwords do not match needs to be highlighted as someone can miss it. record it for later",
+    "problem": "Passwords do not match. currently appears as ordinary body text and can be missed.",
+    "desired_behavior": "Present the mismatch message as a prominent error near the password fields, with clear visual emphasis and readable contrast.",
+    "future_acceptance_criteria": [
+      "The mismatch message is visibly distinct from ordinary page text on desktop and mobile.",
+      "Use an error callout/emphasis and associate feedback with the relevant fields; color is not the only cue.",
+      "Announce the error accessibly while retaining the clear message text.",
+      "Preserve mismatch rejection before any Auth password write."
+    ],
+    "runtime_implementation_requested_now": false,
+    "backlog": "docs/security-audit/SECURITY_FR_2_5_AUTH_UI_DEFERRED_IMPROVEMENTS.md",
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-mismatch-and-ux-deferral.json"
+  },
+  "deferred_auth_UI_backlog": "docs/security-audit/SECURITY_FR_2_5_AUTH_UI_DEFERRED_IMPROVEMENTS.md"
 }

@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-28",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_AUTOMATIC_CROSS_TAB_SIGNOUT_OWNER_PASS_DIFFERENT_ACCOUNT_PENDING",
+  "status": "FR2_BATCH_W_TAB_A_STAYED_SIGNIN_OWNER_PASS_TAB_B_ACCOUNT_OBSERVATION_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "f22aed81d14ca656e33b9912d17d516178a9aaed",
+  "source_parent_commit": "b4fe777cf2e66190e10bb59737453c057f331f2b",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE274",
+  "latest_evidence": "FRE275",
   "batches": [
     {
       "id": "FR.1",
@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W58_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_CHECK",
+  "next_step": "FR.2.5.W59_TAB_A_STAYS_SIGNED_OUT_TAB_B_ACCOUNT_OBSERVATION_PENDING",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4623,7 +4623,7 @@
     "Z"
   ],
   "FR2_batch_w": {
-    "stage_step": "FR.2.5.W58_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_CHECK",
+    "stage_step": "FR.2.5.W59_TAB_A_STAYS_SIGNED_OUT_TAB_B_ACCOUNT_OBSERVATION_PENDING",
     "status": "IN_PROGRESS",
     "phase": "CONFIRMATION_RETURN_OWNER_WINDOWS_ZIP_COMPLETE_NEW_DEPLOYMENT_URL_RECEIVED_BROWSER_ACCEPTANCE_PENDING",
     "required_AU_cases": 31,
@@ -4723,7 +4723,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "Keep tab A on sign-in following the passed cross-tab signout. In the existing same-origin normal tab B, sign in once with a different existing confirmed staging test account controlled by the owner. Confirm B displays that account dashboard with no previous-account name/data, and return to A without refreshing or submitting sign-in: A should stay on sign-in. Report those outcomes or the displayed error. If there is no second controlled account, report that blocker; do not create an account or request a confirmation/recovery message for this check. No code, password change, SQL, settings, upload, forced network failure or token manipulation.",
+    "next_action": "Clarify the other outcome from the already-requested different-account check: did tab B successfully open the different existing test account dashboard, showing the correct account with no previous-account name/data? Tab A staying on sign-in is already owner-reported and must not be repeated. Report what was observed in B, any error, or that no second existing account was available. No new sign-in, signout, reload, signup, password change, code/mail, SQL, upload or settings operation is requested just to answer.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4863,7 +4863,7 @@
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
     "expected_nonsecret_input": "Safe local preparation JSON/combined exit code, one-secret-per-staging-environment save confirmation and new deployment URL; never the private packet or recipient clipboard JSON",
-    "next_step": "FR.2.5.W58_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_CHECK",
+    "next_step": "FR.2.5.W59_TAB_A_STAYS_SIGNED_OUT_TAB_B_ACCOUNT_OBSERVATION_PENDING",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -5270,7 +5270,7 @@
       "prior_failure_is_historical": true,
       "corrected_install_success_received": true
     },
-    "owner_browser_action_required": true,
+    "owner_browser_action_required": false,
     "password_signin_backend_installation": {
       "stage_step": "FR.2.5.W50_PASSWORD_SIGNIN_INSTALLED_BROWSER_CHECK",
       "status": "OWNER_BACKEND_INSTALL_PASS_BROWSER_ACCEPTANCE_PENDING",
@@ -5443,10 +5443,10 @@
       "owner_automatic_signout_receipt": "docs/security-audit/security-fr-2-batch-w-owner-automatic-cross-tab-signout-pass.json",
       "automatic_tab_A_transition_evidence_scope": "OWNER_EXPLICIT_REPORT"
     },
-    "owner_observation_clarification_required": false,
+    "owner_observation_clarification_required": true,
     "different_account_tab_check": {
       "stage_step": "FR.2.5.W58_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_CHECK",
-      "status": "DIFFERENT_ACCOUNT_MANUAL_TAB_ISOLATION_OWNER_PENDING",
+      "status": "OWNER_TAB_A_SIGNIN_VIEW_PASS_TAB_B_ACCOUNT_OBSERVATION_PENDING",
       "existing_case": "AU05.06",
       "title": "Account switch with in-flight/Business UI clearing",
       "variant": "Different existing account in tab B; manually signed-out tab A stays on sign-in",
@@ -5460,10 +5460,18 @@
       "tab_A_should_remain_signed_out_without_submission": true,
       "password_or_code_requested_in_chat": false,
       "runtime_SQL_or_deployment_change_required": false,
-      "hosted_result_received": false,
+      "hosted_result_received": true,
       "in_flight_Business_or_failure_variants_accepted": false,
       "new_public_AU_cases_added": 0,
-      "hosted_acceptance": false
+      "hosted_acceptance": false,
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-tab-a-stayed-signin.json",
+      "tab_A_remained_signed_out_owner_PASS": true,
+      "tab_B_successful_different_account_signin_separately_reported": false,
+      "tab_B_correct_account_and_no_previous_data_separately_reported": false,
+      "complete_variant_acceptance": false,
+      "observation_clarification_required": true,
+      "new_browser_mutation_requested": false,
+      "repeat_requested": false
     }
   },
   "owner_controlled_test_inbox_information_required": false,
@@ -5568,18 +5576,18 @@
     "id": "AU05.06",
     "group": "AU05",
     "title": "Account switch with in-flight/Business UI clearing",
-    "status": "DIFFERENT_ACCOUNT_MANUAL_TAB_ISOLATION_OWNER_PENDING",
+    "status": "TAB_A_VIEW_OWNER_PASS_TAB_B_ACCOUNT_OBSERVATION_PENDING",
     "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
     "settings_inspection_satisfies_case": false,
-    "stage_step": "FR.2.5.W58_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_CHECK",
+    "stage_step": "FR.2.5.W59_TAB_A_STAYS_SIGNED_OUT_TAB_B_ACCOUNT_OBSERVATION_PENDING",
     "variant": "Different existing account in tab B; manually signed-out tab A stays on sign-in",
-    "owner_action_required_now": "Keep tab A on sign-in following the passed cross-tab signout. In the existing same-origin normal tab B, sign in once with a different existing confirmed staging test account controlled by the owner. Confirm B displays that account dashboard with no previous-account name/data, and return to A without refreshing or submitting sign-in: A should stay on sign-in. Report those outcomes or the displayed error. If there is no second controlled account, report that blocker; do not create an account or request a confirmation/recovery message for this check. No code, password change, SQL, settings, upload, forced network failure or token manipulation.",
+    "owner_action_required_now": "Clarify the other outcome from the already-requested different-account check: did tab B successfully open the different existing test account dashboard, showing the correct account with no previous-account name/data? Tab A staying on sign-in is already owner-reported and must not be repeated. Report what was observed in B, any error, or that no second existing account was available. No new sign-in, signout, reload, signup, password change, code/mail, SQL, upload or settings operation is requested just to answer.",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
     "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
     "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_DIFFERENT_ACCOUNT_TAB_CHECK.md",
     "hosted_acceptance": false,
-    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-automatic-cross-tab-signout-pass.json"
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-tab-a-stayed-signin.json"
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -5711,7 +5719,7 @@
     "AU05.06": {
       "id": "AU05.06",
       "title": "Account switch with in-flight/Business UI clearing",
-      "status": "PARTIAL_OWNER_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_PENDING",
+      "status": "PARTIAL_OWNER_AUTOMATIC_SIGNOUT_AND_TAB_A_SIGNIN_VIEW_PASS_TAB_B_ACCOUNT_PENDING",
       "variant": "Ordinary same-origin two-tab signout broadcast and clearing of the old dashboard",
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-cross-tab-signin-return.json",
       "owner_reported_expected_signin_return": true,
@@ -5724,7 +5732,11 @@
       "new_public_AU_cases_added": 0,
       "repeat_requested": false,
       "automatic_original_tab_transition_evidence_scope": "OWNER_EXPLICIT_REPORT",
-      "owner_automatic_signout_receipt": "docs/security-audit/security-fr-2-batch-w-owner-automatic-cross-tab-signout-pass.json"
+      "owner_automatic_signout_receipt": "docs/security-audit/security-fr-2-batch-w-owner-automatic-cross-tab-signout-pass.json",
+      "owner_tab_A_stayed_signin_receipt": "docs/security-audit/security-fr-2-batch-w-owner-tab-a-stayed-signin.json",
+      "tab_A_stayed_signin_owner_PASS": true,
+      "tab_B_successful_different_account_signin_separately_reported": false,
+      "tab_B_correct_account_and_no_previous_data_separately_reported": false
     }
   },
   "FR2_email_recovery_request_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_WRONG_PASSWORD_PASS_AND_RECOVERY_REQUEST.md",
@@ -6107,7 +6119,7 @@
     "new_runtime_patch_requested_during_readiness_diagnosis": true,
     "signout_entry_source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51"
   },
-  "owner_browser_action_required": true,
+  "owner_browser_action_required": false,
   "owner_SQL_action_condition": "None: backend and accepted frontend remain unchanged.",
   "signout_entry": {
     "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
@@ -6606,10 +6618,10 @@
     "owner_automatic_signout_receipt": "docs/security-audit/security-fr-2-batch-w-owner-automatic-cross-tab-signout-pass.json",
     "automatic_tab_A_transition_evidence_scope": "OWNER_EXPLICIT_REPORT"
   },
-  "owner_observation_clarification_required": false,
+  "owner_observation_clarification_required": true,
   "different_account_tab_check": {
     "stage_step": "FR.2.5.W58_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_CHECK",
-    "status": "DIFFERENT_ACCOUNT_MANUAL_TAB_ISOLATION_OWNER_PENDING",
+    "status": "OWNER_TAB_A_SIGNIN_VIEW_PASS_TAB_B_ACCOUNT_OBSERVATION_PENDING",
     "existing_case": "AU05.06",
     "title": "Account switch with in-flight/Business UI clearing",
     "variant": "Different existing account in tab B; manually signed-out tab A stays on sign-in",
@@ -6623,9 +6635,17 @@
     "tab_A_should_remain_signed_out_without_submission": true,
     "password_or_code_requested_in_chat": false,
     "runtime_SQL_or_deployment_change_required": false,
-    "hosted_result_received": false,
+    "hosted_result_received": true,
     "in_flight_Business_or_failure_variants_accepted": false,
     "new_public_AU_cases_added": 0,
-    "hosted_acceptance": false
+    "hosted_acceptance": false,
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-tab-a-stayed-signin.json",
+    "tab_A_remained_signed_out_owner_PASS": true,
+    "tab_B_successful_different_account_signin_separately_reported": false,
+    "tab_B_correct_account_and_no_previous_data_separately_reported": false,
+    "complete_variant_acceptance": false,
+    "observation_clarification_required": true,
+    "new_browser_mutation_requested": false,
+    "repeat_requested": false
   }
 }

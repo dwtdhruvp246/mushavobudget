@@ -1,3 +1,5 @@
+> Current observation, FRE275, 28 October 2026: **Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS.** [Owner receipt](security-fr-2-batch-w-owner-tab-a-stayed-signin.json) confirms A stayed on sign-in. Clarify only the already-observed B result: did the different account successfully open its correct dashboard without previous-account name/data, or was there an error/no second account? No repeat browser action is requested to answer; the procedure below is the original handoff, not a request to repeat it. A is recorded, B identity/data scope and full AU05.06 remain unconfirmed.
+
 # Different-account sign-in with another tab kept signed out
 
 **Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS.** The owner explicitly confirms original tab A returned to sign-in automatically before refresh after signout in tab B. [Owner receipt](security-fr-2-batch-w-owner-automatic-cross-tab-signout-pass.json). Automatic cross-tab signout/old-dashboard removal is owner PASS within AU05.06. No repeat signout or reload is requested. Persistence after reload was not separately reported; do not silently credit it or force a repeat now.

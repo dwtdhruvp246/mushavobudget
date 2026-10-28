@@ -116,4 +116,35 @@ test('rollback restores the exact previous predicate, service ACLs and catalog w
  assert.equal((await one('select mode,catalog_sha256=mushavo_email_install.catalog_identity() matched from mushavo_email_install.rollout_control')).matched,true);
  assert.equal((await one('select mode from mushavo_email_install.rollout_control')).mode,'QUARANTINED');
 });
+for(const [name,convert]of [
+ ['Windows CRLF',sql=>sql.replace(/\n/g,'\r\n')],
+ ['mixed clipboard line endings',sql=>sql.split('\n').map((line,index)=>line+(index%2?'\r':'')).join('\n')]
+])test(name+' install retains exact reviewed bodies, role ACLs and quarantined rollback',async()=>{
+ const snapshot=await tableSnapshot();
+ const r=await result(convert(upgrade));assert.equal(r.result,'PASSWORD_SIGNIN_ALL_USERS_ENABLED_STAGING');assert.equal(r.catalog_identity_matched,true);
+ const bodies=(await db.query("select proname,position(chr(13) in prosrc)::int cr from pg_proc where oid in ('mushavo_email_auth.session_valid(uuid,uuid)'::regprocedure,'public.app_session_status()'::regprocedure)")).rows;
+ assert.equal(bodies.length,2);assert(bodies.every(row=>row.cr===0));
+ assert.equal((await status()).admin_authorized,true);assert.equal((await status(claims({sub:V,session_id:T}))).admin_authorized,false);
+ assert.equal((await one("select has_function_privilege('anon','public.app_session_status()','EXECUTE') allowed")).allowed,false);
+ assert.equal((await one("select has_table_privilege('service_role','mushavo_email_install.password_signin_policy','SELECT') allowed")).allowed,false);
+ assert.deepEqual(await tableSnapshot(),snapshot);
+ const back=await result(convert(rollback));assert.equal(back.result,'PASSWORD_SIGNIN_ROLLED_BACK_QUARANTINED');
+ assert.equal((await one("select prosrc from pg_proc where oid='mushavo_email_auth.session_valid(uuid,uuid)'::regprocedure")).prosrc,oldPredicate);
+ assert.equal((await one('select catalog_sha256=mushavo_email_install.catalog_identity() matched from mushavo_email_install.rollout_control')).matched,true);
+ assert.equal((await one('select mode from mushavo_email_install.rollout_control')).mode,'QUARANTINED');assert.deepEqual(await tableSnapshot(),snapshot);
+});
+test('line-ending normalization never permits changed predicate semantics or new public authority',async()=>{
+ const snapshot=await tableSnapshot();
+ const denied=[
+  upgrade.replace("AND u.email_confirmed_at IS NOT NULL AND p.account_status='active'","AND u.email_confirmed_at IS NOT NULL AND p.account_status<>'suspended'"),
+  upgrade.replace('GRANT EXECUTE ON FUNCTION public.app_session_status() TO authenticated;','GRANT EXECUTE ON FUNCTION public.app_session_status() TO authenticated,anon;'),
+  upgrade.replace(' INSERT INTO mushavo_email_install.password_signin_policy',' GRANT SELECT ON mushavo_email_install.password_signin_policy TO service_role;\n INSERT INTO mushavo_email_install.password_signin_policy')
+ ];
+ for(const sql of denied){
+  assert.notEqual(sql,upgrade);await assert.rejects(db.exec(sql.replace(/\n/g,'\r\n')),/PASSWORD_SIGNIN_NEW_AUTHORITY_REQUIRED/);await db.exec('ROLLBACK');
+  assert.equal((await one("select to_regclass('mushavo_email_install.password_signin_policy') value")).value,null);
+  assert.equal((await one('select mode from mushavo_email_install.rollout_control')).mode,'QUARANTINED');
+  assert.equal((await one('select catalog_sha256=mushavo_email_install.catalog_identity() matched from mushavo_email_install.rollout_control')).matched,true);assert.deepEqual(await tableSnapshot(),snapshot);
+ }
+});
 

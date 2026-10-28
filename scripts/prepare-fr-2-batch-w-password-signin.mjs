@@ -4,7 +4,7 @@ import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {readPublicZIP} from './lib/read-public-zip.mjs';
 import {createPublicZIP} from './lib/store-public-zip.mjs';
-export const stage='FR.2.5.W48_PASSWORD_SIGNIN_ALL_USERS_REMOVAL';
+export const stage='FR.2.5.W49_PASSWORD_SIGNIN_SQL_LINE_ENDINGS';
 export const display='Stage 3/10 | FR.2/8 | Batch W/Z';
 export const retainedZIPHash='e7de4e1b90d46a1503be5cf77fe7974b32d650fd526cb473c39002fe8cf1675b';
 export const removedPublicFiles=['email-verification.js','admin-mfa.js'];
@@ -84,7 +84,7 @@ export const SQLFiles=[
   {
     "source": "supabase/candidates/security_fr_2_5_password_signin_upgrade.sql",
     "output": "mushavo-password-signin-staging.sql",
-    "sha256": "65930de5a3ad51104d3c79be0e14bbe0d330316e0cc01c37983540a0f2edd301"
+    "sha256": "14637a243fb514b32bab8de8d877181060d7bbb2dee9eb8ec638e35e4bc1e4ad"
   },
   {
     "source": "supabase/candidates/security_fr_2_5_password_signin_rollback.sql",
@@ -134,7 +134,7 @@ export function preparePasswordSignin(retained,output){
  const files=[{name:'mushavo-password-signin-staging.zip',bytes},...SQLFiles.map(row=>({name:row.output,bytes:fs.readFileSync(new URL(row.source,root))}))];
  for(const file of files){const filename=path.join(output,file.name);fs.writeFileSync(filename,file.bytes,{flag:'wx'});if(!fs.readFileSync(filename).equals(file.bytes))throw Error('OUTPUT_READBACK_REQUIRED');}
  return{stage_step:stage,progress_display:display,result:'PASSWORD_SIGNIN_ALL_USERS_ZIP_AND_SQL_PREPARED_NOT_APPLIED',
- source_parent_commit:'6c43ffb2b2d577d0105131559a40ca396890b4bd',source_hashes_verified:m.source_file_count,
+ source_parent_commit:'e7964f3efe1e3546b6b59a05ab48d22d251dfce3',source_hashes_verified:m.source_file_count,
  includes_Admin:true,signup_email_confirmation_preserved:true,role_permissions_preserved:true,
  public_files:42,changed_files:updates.map(x=>x.name),removed_public_files:removedPublicFiles,unchanged_public_entries:32,
  config_service_worker_headers_and_routes_byte_preserved:true,retained_ZIP_unchanged:true,retained_ZIP_SHA256_verified:retainedZIPHash,

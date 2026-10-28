@@ -131,7 +131,8 @@ BEGIN
  REVOKE ALL ON TABLE mushavo_email_install.password_signin_policy FROM PUBLIC,anon,authenticated,service_role;
  INSERT INTO mushavo_email_install.password_signin_policy(singleton,policy,previous_prosrc,previous_catalog_sha256)
  VALUES(true,'PASSWORD_ONLY_ALL_USERS',previous_source,expected);
- EXECUTE $password_component$
+ -- Keep reviewed function bodies identical after Windows clipboard CRLF conversion.
+ EXECUTE replace($password_component$
 CREATE OR REPLACE FUNCTION mushavo_email_auth.session_valid(p_user uuid,p_session uuid) RETURNS boolean
 LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog AS $body$
  SELECT EXISTS(SELECT 1 FROM auth.users u
@@ -171,7 +172,7 @@ REVOKE ALL ON FUNCTION public.email_gate_restore_device(uuid,uuid,text) FROM PUB
 REVOKE ALL ON FUNCTION public.email_gate_revoke_device(uuid,uuid,text) FROM PUBLIC,anon,authenticated,service_role;
 REVOKE ALL ON FUNCTION public.email_gate_revoke_all(uuid,uuid) FROM PUBLIC,anon,authenticated,service_role;
 REVOKE ALL ON FUNCTION public.email_gate_register_link_device(uuid,uuid,text,timestamptz,boolean) FROM PUBLIC,anon,authenticated,service_role;
-$password_component$;
+$password_component$,E'\r\n',E'\n');
  IF before_catalog IS DISTINCT FROM (SELECT jsonb_build_object(
  'functions',(SELECT jsonb_agg(
   CASE WHEN p.oid=ANY(ARRAY(SELECT to_regprocedure(x)::oid FROM unnest(ARRAY['public.email_gate_begin_challenge(uuid,uuid,uuid,text,text,boolean)','public.email_gate_set_delivery(uuid,uuid,uuid,boolean)','public.email_gate_challenge_context(uuid,uuid,uuid)','public.email_gate_verify_challenge(uuid,uuid,uuid,text,text)','public.email_gate_restore_device(uuid,uuid,text)','public.email_gate_revoke_device(uuid,uuid,text)','public.email_gate_revoke_all(uuid,uuid)','public.email_gate_register_link_device(uuid,uuid,text,timestamptz,boolean)']::text[]) x))

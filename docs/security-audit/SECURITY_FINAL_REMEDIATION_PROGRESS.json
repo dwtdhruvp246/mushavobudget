@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-28",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_SIGNOUT_RELOAD_SOURCE_FIX_PACKAGE_AND_DEPLOYMENT_PENDING",
+  "status": "FR2_BATCH_W_NETWORK_CASE_OWNER_PASS_CODE_REQUEST_FAILURE_REVIEW",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "522c883f50724efdd4daf967200bc4934eeb7a51",
+  "source_parent_commit": "d69d6d048ac9bf867993072c5eca3927f16cc2ee",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE258",
+  "latest_evidence": "FRE259",
   "batches": [
     {
       "id": "FR.1",
@@ -1097,13 +1097,13 @@
         },
         {
           "id": "FR.2.5",
-          "status": "IN_PROGRESS_SIGNOUT_RELOAD_SOURCE_FIX_DEPLOYMENT_PENDING",
+          "status": "IN_PROGRESS_NETWORK_CASE_OWNER_PASS_CODE_REQUEST_FAILURE_REVIEW",
           "title": "Auth/finance/session hosted workflows",
           "active_lettered_batch": "W",
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
+          "next_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
           "persistent_browser_trust_checkpoint": {
             "status": "OWNER_CURRENT_SIGNIN_UX_ACCEPTED_REMAINING_BROWSER_SECURITY_CASES_OPEN",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
@@ -1159,7 +1159,7 @@
             "deferred_UX_id": "UX_AUTH_BACKGROUND_VERIFICATION",
             "fresh_password_cycle_repeat_requested_now": false,
             "new_browser_code_test_readiness_pending": true,
-            "next_independent_Auth_case": "AU05.03",
+            "next_independent_Auth_case": "AU05.04",
             "deferred_UX_status": "SIGNOUT_RELOAD_SOURCE_FIX_DEPLOYMENT_PENDING",
             "current_UI_acceptance_receipt": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json",
             "current_UI_acceptance_reopened_for_signout_reload": true,
@@ -1207,12 +1207,13 @@
             "new_public_AU_cases_added": 0,
             "source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51",
             "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNOUT_ENTRY_HANDOFF.md",
-            "owner_action_required_now": "Run the pinned sign-out-entry preparer with the accepted smooth-signin ZIP; after exit0 upload the new ZIP to staging. Then sign out on the fresh canonical app and reload once; return safe JSON, deployment URL and visible page/message. No offline cycle, recovery, new password/code or SQL action now.",
+            "owner_action_required_now": "First return safe begin request HTTP status/result and page hostname for the code-request failure; retain the pending sign-out package/upload and canonical reload check.",
             "password_save_requested": false,
             "new_email_or_code_requested": false,
             "SQL_or_settings_action_requested": false,
             "hosted_acceptance": false,
-            "full_case_acceptance": false
+            "full_case_acceptance": false,
+            "current_blocker_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md"
           },
           "recipient_preparation_and_redeploy_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recipient-addition-and-redeploy.json",
           "recovery_window": {
@@ -1518,6 +1519,27 @@
             "sole_live_cause_proven": false,
             "new_public_AU_cases_added": 0,
             "password_recovery_code_email_SQL_or_settings_requested": false
+          },
+          "AU05_03_owner_result": {
+            "id": "AU05.03",
+            "title": "Transient network preservation/retry",
+            "status": "OWNER_REPORTED_PASS",
+            "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-network-pass-and-code-request-failure.json",
+            "owner_reported_pass": true,
+            "independently_traced": false,
+            "exact_current_deployment_verified": false,
+            "repeat_requested": false,
+            "new_public_AU_cases_added": 0
+          },
+          "code_request_failure_review": {
+            "stage_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
+            "status": "SAFE_REQUEST_STATUS_AND_RESULT_PENDING",
+            "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-network-pass-and-code-request-failure.json",
+            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md",
+            "live_cause_established": false,
+            "code_mail_attempt_verified": false,
+            "SQL_or_settings_action_requested": false,
+            "signout_patch_upload_receipt_received": false
           }
         },
         {
@@ -1534,7 +1556,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY"
+      "next_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW"
     },
     {
       "id": "FR.3",
@@ -1574,7 +1596,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
@@ -1584,7 +1606,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
+  "next_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4468,7 +4490,7 @@
     "Z"
   ],
   "FR2_batch_w": {
-    "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
+    "stage_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
     "status": "IN_PROGRESS",
     "phase": "CONFIRMATION_RETURN_OWNER_WINDOWS_ZIP_COMPLETE_NEW_DEPLOYMENT_URL_RECEIVED_BROWSER_ACCEPTANCE_PENDING",
     "required_AU_cases": 31,
@@ -4480,9 +4502,9 @@
       "AU02.05"
     ],
     "full_lettered_batch_W_complete": false,
-    "owner_terminal_action_required": true,
+    "owner_terminal_action_required": false,
     "owner_SQL_action_required": false,
-    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNOUT_ENTRY_HANDOFF.md",
+    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md",
     "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
     "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
     "entry": "scripts/review-fr-2-batch-w-dashboard.ps1",
@@ -4568,7 +4590,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "Run the pinned sign-out-entry preparer with the accepted smooth-signin ZIP; after exit0 upload the new ZIP to staging. Then sign out on the fresh canonical app and reload once; return safe JSON, deployment URL and visible page/message. No offline cycle, recovery, new password/code or SQL action now.",
+    "next_action": "First return safe begin request HTTP status/result and page hostname for the code-request failure; retain the pending sign-out package/upload and canonical reload check.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4708,7 +4730,7 @@
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
     "expected_nonsecret_input": "Safe local preparation JSON/combined exit code, one-secret-per-staging-environment save confirmation and new deployment URL; never the private packet or recipient clipboard JSON",
-    "next_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
+    "next_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -4838,6 +4860,27 @@
       "sole_live_cause_proven": false,
       "new_public_AU_cases_added": 0,
       "password_recovery_code_email_SQL_or_settings_requested": false
+    },
+    "AU05_03_owner_result": {
+      "id": "AU05.03",
+      "title": "Transient network preservation/retry",
+      "status": "OWNER_REPORTED_PASS",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-network-pass-and-code-request-failure.json",
+      "owner_reported_pass": true,
+      "independently_traced": false,
+      "exact_current_deployment_verified": false,
+      "repeat_requested": false,
+      "new_public_AU_cases_added": 0
+    },
+    "code_request_failure_review": {
+      "stage_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
+      "status": "SAFE_REQUEST_STATUS_AND_RESULT_PENDING",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-network-pass-and-code-request-failure.json",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md",
+      "live_cause_established": false,
+      "code_mail_attempt_verified": false,
+      "SQL_or_settings_action_requested": false,
+      "signout_patch_upload_receipt_received": false
     }
   },
   "owner_controlled_test_inbox_information_required": false,
@@ -4941,12 +4984,13 @@
     "new_public_AU_cases_added": 0,
     "source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51",
     "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNOUT_ENTRY_HANDOFF.md",
-    "owner_action_required_now": "Run the pinned sign-out-entry preparer with the accepted smooth-signin ZIP; after exit0 upload the new ZIP to staging. Then sign out on the fresh canonical app and reload once; return safe JSON, deployment URL and visible page/message. No offline cycle, recovery, new password/code or SQL action now.",
+    "owner_action_required_now": "First return safe begin request HTTP status/result and page hostname for the code-request failure; retain the pending sign-out package/upload and canonical reload check.",
     "password_save_requested": false,
     "new_email_or_code_requested": false,
     "SQL_or_settings_action_requested": false,
     "hosted_acceptance": false,
-    "full_case_acceptance": false
+    "full_case_acceptance": false,
+    "current_blocker_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md"
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -5011,10 +5055,15 @@
       "deferred_UI_item": "UX_AUTH_PASSWORD_MISMATCH_VISIBILITY"
     },
     "AU05.03": {
-      "status": "PAUSED_OWNER_TRIGGER_PRECEDED_OFFLINE_SELECTION",
-      "owner_clarification": "docs/security-audit/security-fr-2-batch-w-owner-signout-reload-clarification.json",
-      "reconnect_or_session_retention_accepted": false,
-      "new_offline_cycle_requested_now": false
+      "id": "AU05.03",
+      "title": "Transient network preservation/retry",
+      "status": "OWNER_REPORTED_PASS",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-network-pass-and-code-request-failure.json",
+      "owner_reported_pass": true,
+      "independently_traced": false,
+      "exact_current_deployment_verified": false,
+      "repeat_requested": false,
+      "new_public_AU_cases_added": 0
     }
   },
   "FR2_email_recovery_request_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_WRONG_PASSWORD_PASS_AND_RECOVERY_REQUEST.md",
@@ -5397,7 +5446,7 @@
     "signout_entry_source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51"
   },
   "owner_browser_action_required": true,
-  "owner_SQL_action_condition": "None for sign-out/reload package and logged-out UI verification.",
+  "owner_SQL_action_condition": "None; first inspect the safe request status/result for the reported email-code failure.",
   "signout_entry": {
     "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
     "status": "SOURCE_AND_LOCAL_CHECKS_PASS_OWNER_PACKAGE_DEPLOYMENT_PENDING",
@@ -5425,6 +5474,17 @@
     "live_logout_or_storage_inspected": false,
     "sole_live_cause_proven": false,
     "new_public_AU_cases_added": 0,
-    "password_recovery_code_email_SQL_or_settings_requested": false
+    "password_recovery_code_email_SQL_or_settings_requested": false,
+    "superseding_current_diagnostic_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md"
+  },
+  "code_request_failure_review": {
+    "stage_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
+    "status": "SAFE_REQUEST_STATUS_AND_RESULT_PENDING",
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-network-pass-and-code-request-failure.json",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md",
+    "live_cause_established": false,
+    "code_mail_attempt_verified": false,
+    "SQL_or_settings_action_requested": false,
+    "signout_patch_upload_receipt_received": false
   }
 }

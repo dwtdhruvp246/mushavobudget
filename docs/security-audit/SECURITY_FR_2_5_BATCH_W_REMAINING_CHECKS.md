@@ -1,0 +1,59 @@
+# Batch W — remaining work after stable recovery isolation
+
+**Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS.** Updated 28 October 2026.
+
+The owner reports all three requested AU04.06 observations passed: recovery identity matches, URL clean, original dashboard unchanged. [Exact receipt](security-fr-2-batch-w-owner-stable-recovery-isolation-pass.json). This is the recovery-link isolation observation before password saving; it is not an additional password change or session adoption. No repeat of that observation is requested.
+
+W retains **31 original case groups**, including both normal and failure variants. It has no trustworthy completion percentage: positive observations and partial cases are not the same as fully closed cases. The recorded browser workflow successes must be reused where applicable. There are **eight invitation case groups without accepted W workflow results: five Admin cases blocked by paused V and three Business cases still pending**. Other remaining work comprises confirmation/resend closure, older-password/server-boundary/reauthentication checks, recovery expiry/save/retry, and refresh/sign-out/account-switch failure handling. No cases are added by this summary.
+
+| Area | Original cases | Remaining scope |
+|---|---:|---|
+| Signup/confirmation | 5 | Final confirmation destination and resend/existing-email/rate results; reconcile earlier signup/pending/denial passes. |
+| Invitations | 8 | Five Admin cases blocked by V; three Business new/existing-recipient and response/replay cases. |
+| Sign-in/passwords | 5 | Older valid password, direct server boundary, actual save failure/retry, applicable reauthentication behavior; normal sign-in/change passed. |
+| Recovery/links | 6 | Remaining wrong-session/expiry, current save/retry/adoption outcome and generic-response variants; requested real-link isolation passed. |
+| Sessions/failures | 7 | Actual refresh/invalid refresh, cleanup/Auth sign-out failures, in-flight Business clearing and supported rate/stale-token behavior; reload/shared-tabs/network positives retained. |
+
+## Fixed remaining case list
+
+“Observed” and “partly checked” describe evidence scope; they do not claim full-case closure or require an automatic repeat. Historical evidence is retained with its source limitations. The contract and original AU definitions remain unchanged.
+
+| Case | Existing title | Evidence state | Remaining evidence / limit |
+|---|---|---|---|
+| AU01.01 | Valid ordinary signup | Positive signup observed | Earlier ordinary signup/email receipt retained; reconcile final source and test-account cleanup. |
+| AU01.02 | Confirmation-pending guidance | Pending guidance observed | Earlier guidance observed; subsequent copy changes require final applicability reconciliation. |
+| AU01.03 | Unconfirmed sign-in denial | Unconfirmed denial observed | Earlier denial observed; preserve signup-confirmation requirement and final applicability review. |
+| AU01.04 | Correct confirmation destination | Not yet accepted | Correct confirmation destination and intended identity after current callback flow. |
+| AU01.05 | Generic existing-email/resend failure and rate response | Not yet accepted | Generic existing-email/resend failure and rate behavior. |
+| AU02.01 | Admin new-recipient setup | Blocked by paused V | Admin invitation setup/isolation/denial/retry scope depends on V and policy reconciliation. |
+| AU02.02 | Admin-tab isolation | Blocked by paused V | Admin invitation setup/isolation/denial/retry scope depends on V and policy reconciliation. |
+| AU02.03 | Wrong-recipient denial | Blocked by paused V | Admin invitation setup/isolation/denial/retry scope depends on V and policy reconciliation. |
+| AU02.04 | Expired/cancelled/replaced invitation denial | Blocked by paused V | Admin invitation setup/isolation/denial/retry scope depends on V and policy reconciliation. |
+| AU02.05 | Completion retry/idempotence | Blocked by paused V | Admin invitation setup/isolation/denial/retry scope depends on V and policy reconciliation. |
+| AU02.06 | Business new-recipient first password | Not yet accepted | Business new/existing recipient and accept/decline/replay workflow evidence. |
+| AU02.07 | Existing Business recipient without password overwrite | Not yet accepted | Business new/existing recipient and accept/decline/replay workflow evidence. |
+| AU02.08 | Business accept/decline/replay | Not yet accepted | Business new/existing recipient and accept/decline/replay workflow evidence. |
+| AU03.01 | Ordinary valid sign-in including older valid password | Partly checked | Ordinary sign-in/dashboard passed; older valid-password compatibility remains. |
+| AU03.02 | Invalid credentials | Invalid-credentials message observed | Known account/wrong-password UI result retained; reconcile original outcome criteria. |
+| AU03.03 | Configured new-password boundary | Partly checked | Browser rejects seven and accepts eight at signup; direct server below-minimum rejection is unverified. |
+| AU03.04 | Signed-in password change and retry | Partly checked | Change and new-password sign-in passed; actual provider failure/retry remains unverified. |
+| AU03.05 | Required recent-login/reauthentication failure/success | Not yet accepted | Determine applicable current reauthentication rule, then required-condition failure/success; do not turn an optional feature on merely to manufacture a test. |
+| AU04.01 | Generic recovery request | Partly checked | Known-account generic acknowledgement and delivery passed; account-existence uniformity/rate variants remain. |
+| AU04.02 | Valid recovery opens dedicated new-password view | Dedicated recovery view observed | Verified requested identity/password view observed earlier and supported by latest isolation result; no password save inferred. |
+| AU04.03 | Wrong/no session | Partly checked | Missing-link/private-tab denial and signed-in account continuity observed; wrong-session variants remain. |
+| AU04.04 | Expired/used link | Partly checked | Used-link denial observed; actual timeout expiry remains unverified. |
+| AU04.05 | Password-save failure/retry | Partly checked | Mismatch and same-password refusal evidence retained; complete current password-only save/retry/adoption outcome is not established by today's view-only check. |
+| AU04.06 | Cross-tab/current-account isolation and sanitized URL | Latest requested isolation check passed | Owner confirms requested recovery identity, clean stable URL and unchanged original dashboard before saving. Do not repeat. |
+| AU05.01 | Same-user access refresh | Partly checked | Saved-session reload passed; actual same-user access-token refresh remains unverified. |
+| AU05.02 | Invalid refresh cleanup | Not yet accepted | Invalid-refresh cleanup. |
+| AU05.03 | Transient network preservation/retry | Network retry observed | Earlier owner PASS retained; reconcile applicability without an automatic repeat. |
+| AU05.04 | Sign-out with push cleanup failure | Not yet accepted | Sign-out outcome when protected push cleanup fails. |
+| AU05.05 | Auth sign-out failure | Not yet accepted | Auth sign-out failure and accurate session outcome. |
+| AU05.06 | Account switch with in-flight/Business UI clearing | Partly checked | Shared-tab sign-in/sign-out/re-sign-in passed; in-flight/Business clearing remains. |
+| AU05.07 | Selected Auth rate errors and observed stale-token window | Historical review; current outcome pending | Earlier retired custom-code rate message is historical; remaining supported Auth rate and stale-token-window evidence must match the current password-only policy. |
+
+## Remaining lettered packages
+
+The fixed endpoint remains Z. **V, W, X, Y and Z remain open**; V is on hold. After W the planned sequence is **X (Personal/Family/Business roles and finance), Y (backend caller permissions/database races/containment), Z (integrated authorization recheck and Stage 3 closeout)**, with V's blocking requirements still to resolve. This is the Stage 3 authorization sequence, not the whole launch programme. Do not describe W/Z as a percentage of work or promise a number of clicks/hours from these heterogeneous groups.
+
+Keep all future owner URLs on **https://mushavo-budget-staging.pages.dev/**. Do not request another preview callback, deployment, SQL rerun, mail, password write or settings change merely to report status. Prepare the next affected check with its specific target/actions before execution; reuse earlier accepted results. No new runtime change or tests are warranted for this evidence-only update. No full W/FR.2/Stage3/finding/release acceptance; production/native unchanged and APK deferred.

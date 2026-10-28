@@ -1,3 +1,5 @@
+> **28 October 2026 — requested stable-origin recovery-isolation check PASSED.** The owner explicitly reports recovery identity matches **yes**, URL clean **yes**, and original dashboard unchanged **yes**. [Receipt](security-fr-2-batch-w-owner-stable-recovery-isolation-pass.json). Preserve the before-password-save scope; no save/adoption inferred. Do not repeat these passed steps or request another callback. [Current remaining original W checklist](SECURITY_FR_2_5_BATCH_W_REMAINING_CHECKS.md). W remains open; V on hold, X/Y/Z remain planned. Earlier pending instructions below are retained as history.
+
 # Current handoff — stable staging address, 28 October 2026
 
 **Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS.** The owner explicitly chooses **https://mushavo-budget-staging.pages.dev/** for all remaining staging checks. Use this stable origin for instructions, links and recovery requests. The deployment-specific instructions retained below are historical and superseded; do not request another preview callback or repeat the accepted shared-tab cycle.

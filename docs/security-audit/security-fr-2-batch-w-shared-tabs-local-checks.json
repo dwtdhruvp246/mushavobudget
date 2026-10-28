@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-28",
+  "stage_step": "FR.2.5.W64_SHARED_NORMAL_TAB_SESSION_SYNC",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "source_pin": "7005e81825049510aa8b45c08d21c42031328794",
+  "source_parent_commit": "39342ce4fe94d065162fe7fead7cd0798cc6bfd8",
+  "result": "SHARED_NORMAL_TABS_LOCAL_129_PASS_PACKAGE_READY_NOT_DEPLOYED",
+  "tests": 129,
+  "PASS": 129,
+  "FAIL": 0,
+  "runtime_callback_and_workflow_tests": 122,
+  "public_package_tests": 7,
+  "new_shared_signin_and_race_unit_cases": 10,
+  "source_manifest": "docs/security-audit/security-fr-2-batch-w-shared-tabs-source-manifest.json",
+  "source_hashes_verified": 28,
+  "source_changed_or_added_blobs": 8,
+  "source_deleted_blobs": 0,
+  "public_files": 42,
+  "changed_public_entries": [
+    "app.js",
+    "app.html"
+  ],
+  "unchanged_public_entries": 40,
+  "app_cache_version": 122,
+  "retained_input": "mushavo-fast-signin-staging.zip",
+  "output_filename": "mushavo-shared-tabs-staging.zip",
+  "configuration_Worker_service_worker_headers_routes_and_auth_policy_byte_preserved_by_package": true,
+  "source_syntax_checks": [
+    "node --check app.js",
+    "node --check scripts/prepare-fr-2-batch-w-shared-tabs.mjs"
+  ],
+  "runtime_and_package_command": "node --require ./scripts/offline-test-network.cjs --test ./tests/password-signin-entry.test.mjs ./tests/stage-3-auth-page.test.mjs ./tests/stage-3-auth-flows.test.mjs ./tests/signout-entry.test.mjs ./tests/session-recovery.test.mjs ./tests/fr-2-email-invited-controller.test.mjs ./tests/fast-signin-startup.test.mjs ./tests/shared-tabs-package.test.mjs",
+  "meaningful_checks": [
+    "New same/different-account SIGNED_IN resumes a signed-out normal tab through protected startup",
+    "Existing-session refresh/refocus does not hide a failed sign-out",
+    "New same-account session during delayed push cleanup is not signed out",
+    "Shared signout/token change cancels queued stale startup",
+    "Two app-page callback instances share new sign-in and later signout outcomes",
+    "Existing actor/token/server-role contract, recovery/invitation isolation and password failures stay guarded",
+    "Canonical ZIP/CRC integrity, immutable source hashes, exact predecessor entries and forty preserved public entries",
+    "Unknown ZIP/config/Worker/header/routes tampering and unsafe or occupied paths refuse before artifact write"
+  ],
+  "limits": [
+    "Actual application callbacks/controllers and package helper run locally with synthetic Auth transports",
+    "No real browser Auth broadcast, hosted sign-in latency, Business role/in-flight or provider behavior accepted by these checks",
+    "PowerShell command uses the prior working template; not runtime-executed on Windows by the assistant",
+    "Historical frozen package manifests/tests remain at their pins; no whole-repository test pass claimed"
+  ],
+  "actual_hosted_Auth_SQL_email_or_provider_requests": 0,
+  "real_email_requests": 0,
+  "settings_SQL_or_account_writes": 0,
+  "new_dependencies_installed": false,
+  "frontend_uploaded": false,
+  "hosted_acceptance": false,
+  "full_lettered_batch_W_complete": false,
+  "new_public_AU_cases_added": 0,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

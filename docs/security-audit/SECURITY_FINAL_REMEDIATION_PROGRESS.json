@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-28",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_NETWORK_CASE_OWNER_PASS_CODE_REQUEST_FAILURE_REVIEW",
+  "status": "FR2_BATCH_W_MAIL_UNAVAILABLE_CONFIRMED_RETAINED_DIAGNOSTIC_READY",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "d69d6d048ac9bf867993072c5eca3927f16cc2ee",
+  "source_parent_commit": "2f5fbff2b4e4e8fb1a7be1df1bc9b8e6b1860ca0",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE259",
+  "latest_evidence": "FRE260",
   "batches": [
     {
       "id": "FR.1",
@@ -1097,13 +1097,13 @@
         },
         {
           "id": "FR.2.5",
-          "status": "IN_PROGRESS_NETWORK_CASE_OWNER_PASS_CODE_REQUEST_FAILURE_REVIEW",
+          "status": "IN_PROGRESS_MAIL_UNAVAILABLE_RETAINED_DIAGNOSTIC_NEXT",
           "title": "Auth/finance/session hosted workflows",
           "active_lettered_batch": "W",
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
+          "next_step": "FR.2.5.W44_MAIL_UNAVAILABLE_RETAINED_CONFIGURATION_DIAGNOSTIC",
           "persistent_browser_trust_checkpoint": {
             "status": "OWNER_CURRENT_SIGNIN_UX_ACCEPTED_REMAINING_BROWSER_SECURITY_CASES_OPEN",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
@@ -1207,13 +1207,13 @@
             "new_public_AU_cases_added": 0,
             "source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51",
             "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNOUT_ENTRY_HANDOFF.md",
-            "owner_action_required_now": "First return safe begin request HTTP status/result and page hostname for the code-request failure; retain the pending sign-out package/upload and canonical reload check.",
+            "owner_action_required_now": "Run the pinned retained-recipient/Zoho readiness check once using the existing encrypted gateway packet; return safe JSON even on exit1. No more Send email code attempts, reset, new credentials, SQL, settings or upload at this diagnostic checkpoint.",
             "password_save_requested": false,
             "new_email_or_code_requested": false,
             "SQL_or_settings_action_requested": false,
             "hosted_acceptance": false,
             "full_case_acceptance": false,
-            "current_blocker_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md"
+            "current_blocker_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_MAIL_UNAVAILABLE_HANDOFF.md"
           },
           "recipient_preparation_and_redeploy_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recipient-addition-and-redeploy.json",
           "recovery_window": {
@@ -1533,13 +1533,35 @@
           },
           "code_request_failure_review": {
             "stage_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
-            "status": "SAFE_REQUEST_STATUS_AND_RESULT_PENDING",
+            "status": "CANONICAL_HTTP503_MAIL_UNAVAILABLE_CONFIRMED",
             "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-network-pass-and-code-request-failure.json",
-            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md",
+            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_MAIL_UNAVAILABLE_HANDOFF.md",
             "live_cause_established": false,
             "code_mail_attempt_verified": false,
             "SQL_or_settings_action_requested": false,
-            "signout_patch_upload_receipt_received": false
+            "signout_patch_upload_receipt_received": false,
+            "owner_response_receipt": "docs/security-audit/security-fr-2-batch-w-owner-mail-unavailable.json",
+            "request_status_and_result_received": true
+          },
+          "mail_readiness_diagnostic": {
+            "stage_step": "FR.2.5.W44_MAIL_UNAVAILABLE_RETAINED_CONFIGURATION_DIAGNOSTIC",
+            "status": "LOCAL17_PASS_OWNER_PRIVATE_DIAGNOSTIC_PENDING",
+            "source_pin": "2f5fbff2b4e4e8fb1a7be1df1bc9b8e6b1860ca0",
+            "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-mail-unavailable.json",
+            "contract": "docs/security-audit/security-fr-2-batch-w-mail-readiness-contract.json",
+            "local_checks": "docs/security-audit/security-fr-2-batch-w-mail-readiness-local-checks.json",
+            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_MAIL_UNAVAILABLE_HANDOFF.md",
+            "entry": "scripts/run-fr-2-batch-w-mail-readiness.ps1",
+            "entry_SHA256": "d2c4a4d356da105c0d6b9159912ac7fde9a6e542babe5a4267937ea4eed83345",
+            "observed_HTTP_status": 503,
+            "observed_result": "MAIL_UNAVAILABLE",
+            "maximum_provider_requests": 2,
+            "real_email_requests": 0,
+            "settings_SQL_or_account_writes": 0,
+            "local_PASS": 17,
+            "owner_result_received": false,
+            "live_dispatch_cause_established": false,
+            "hosted_acceptance": false
           }
         },
         {
@@ -1556,7 +1578,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW"
+      "next_step": "FR.2.5.W44_MAIL_UNAVAILABLE_RETAINED_CONFIGURATION_DIAGNOSTIC"
     },
     {
       "id": "FR.3",
@@ -1596,7 +1618,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": false,
+  "owner_terminal_action_required": true,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
@@ -1606,11 +1628,11 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
+  "next_step": "FR.2.5.W44_MAIL_UNAVAILABLE_RETAINED_CONFIGURATION_DIAGNOSTIC",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
-  "owner_staging_direct_upload_action_required": true,
+  "owner_staging_direct_upload_action_required": false,
   "serving_product": "CLOUDFLARE_PAGES",
   "owner_deployment_method": "DIRECT_UPLOAD",
   "target_project": "mushavo-budget-staging",
@@ -1623,7 +1645,7 @@
   "owner_zip_preflight_status": "PASS_39_RECEIPT_HASHES_40_ZIP_HASHES",
   "owner_zip_sha256": "c79819c4abb1cc8184d87ccfeb70c7d0e6b2cd7630e1f89072ea63415ba7707c",
   "owner_zip_path": "C:\\Users\\HP\\Desktop\\Mushavo-Staging-Candidate-6205f79b476048a48edf4fe9e8a88cd0\\mushavo-staging-upload-beb642556710479b91dbfde0931744a2.zip",
-  "owner_new_upload_requested": true,
+  "owner_new_upload_requested": false,
   "owner_canonical_URL_received": "https://mushavo-budget-staging.pages.dev/",
   "owner_upload_filename_confirmed": "mushavo-staging-upload-beb642556710479b91dbfde0931744a2.zip",
   "unique_new_deployment_ID_or_provider_success_status_received": false,
@@ -4490,7 +4512,7 @@
     "Z"
   ],
   "FR2_batch_w": {
-    "stage_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
+    "stage_step": "FR.2.5.W44_MAIL_UNAVAILABLE_RETAINED_CONFIGURATION_DIAGNOSTIC",
     "status": "IN_PROGRESS",
     "phase": "CONFIRMATION_RETURN_OWNER_WINDOWS_ZIP_COMPLETE_NEW_DEPLOYMENT_URL_RECEIVED_BROWSER_ACCEPTANCE_PENDING",
     "required_AU_cases": 31,
@@ -4502,9 +4524,9 @@
       "AU02.05"
     ],
     "full_lettered_batch_W_complete": false,
-    "owner_terminal_action_required": false,
+    "owner_terminal_action_required": true,
     "owner_SQL_action_required": false,
-    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md",
+    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_MAIL_UNAVAILABLE_HANDOFF.md",
     "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
     "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
     "entry": "scripts/review-fr-2-batch-w-dashboard.ps1",
@@ -4590,7 +4612,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "First return safe begin request HTTP status/result and page hostname for the code-request failure; retain the pending sign-out package/upload and canonical reload check.",
+    "next_action": "Run the pinned retained-recipient/Zoho readiness check once using the existing encrypted gateway packet; return safe JSON even on exit1. No more Send email code attempts, reset, new credentials, SQL, settings or upload at this diagnostic checkpoint.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4685,8 +4707,8 @@
     "current_canonical_site_URL_preserved_owner_confirmation": null,
     "current_unexpected_changes_owner_confirmation": null,
     "complete_settings_readback_owner_receipt_received": false,
-    "owner_staging_direct_upload_action_required": true,
-    "owner_new_upload_requested": true,
+    "owner_staging_direct_upload_action_required": false,
+    "owner_new_upload_requested": false,
     "next_step_read_only_dashboard_metadata": false,
     "owner_settings_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-settings-screenshots.json",
     "project_reference_visually_confirmed": true,
@@ -4730,7 +4752,7 @@
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
     "expected_nonsecret_input": "Safe local preparation JSON/combined exit code, one-secret-per-staging-environment save confirmation and new deployment URL; never the private packet or recipient clipboard JSON",
-    "next_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
+    "next_step": "FR.2.5.W44_MAIL_UNAVAILABLE_RETAINED_CONFIGURATION_DIAGNOSTIC",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -4874,13 +4896,35 @@
     },
     "code_request_failure_review": {
       "stage_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
-      "status": "SAFE_REQUEST_STATUS_AND_RESULT_PENDING",
+      "status": "CANONICAL_HTTP503_MAIL_UNAVAILABLE_CONFIRMED",
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-network-pass-and-code-request-failure.json",
-      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_MAIL_UNAVAILABLE_HANDOFF.md",
       "live_cause_established": false,
       "code_mail_attempt_verified": false,
       "SQL_or_settings_action_requested": false,
-      "signout_patch_upload_receipt_received": false
+      "signout_patch_upload_receipt_received": false,
+      "owner_response_receipt": "docs/security-audit/security-fr-2-batch-w-owner-mail-unavailable.json",
+      "request_status_and_result_received": true
+    },
+    "mail_readiness_diagnostic": {
+      "stage_step": "FR.2.5.W44_MAIL_UNAVAILABLE_RETAINED_CONFIGURATION_DIAGNOSTIC",
+      "status": "LOCAL17_PASS_OWNER_PRIVATE_DIAGNOSTIC_PENDING",
+      "source_pin": "2f5fbff2b4e4e8fb1a7be1df1bc9b8e6b1860ca0",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-mail-unavailable.json",
+      "contract": "docs/security-audit/security-fr-2-batch-w-mail-readiness-contract.json",
+      "local_checks": "docs/security-audit/security-fr-2-batch-w-mail-readiness-local-checks.json",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_MAIL_UNAVAILABLE_HANDOFF.md",
+      "entry": "scripts/run-fr-2-batch-w-mail-readiness.ps1",
+      "entry_SHA256": "d2c4a4d356da105c0d6b9159912ac7fde9a6e542babe5a4267937ea4eed83345",
+      "observed_HTTP_status": 503,
+      "observed_result": "MAIL_UNAVAILABLE",
+      "maximum_provider_requests": 2,
+      "real_email_requests": 0,
+      "settings_SQL_or_account_writes": 0,
+      "local_PASS": 17,
+      "owner_result_received": false,
+      "live_dispatch_cause_established": false,
+      "hosted_acceptance": false
     }
   },
   "owner_controlled_test_inbox_information_required": false,
@@ -4984,13 +5028,13 @@
     "new_public_AU_cases_added": 0,
     "source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51",
     "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNOUT_ENTRY_HANDOFF.md",
-    "owner_action_required_now": "First return safe begin request HTTP status/result and page hostname for the code-request failure; retain the pending sign-out package/upload and canonical reload check.",
+    "owner_action_required_now": "Run the pinned retained-recipient/Zoho readiness check once using the existing encrypted gateway packet; return safe JSON even on exit1. No more Send email code attempts, reset, new credentials, SQL, settings or upload at this diagnostic checkpoint.",
     "password_save_requested": false,
     "new_email_or_code_requested": false,
     "SQL_or_settings_action_requested": false,
     "hosted_acceptance": false,
     "full_case_acceptance": false,
-    "current_blocker_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md"
+    "current_blocker_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_MAIL_UNAVAILABLE_HANDOFF.md"
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -5445,8 +5489,8 @@
     "new_runtime_patch_requested_during_readiness_diagnosis": true,
     "signout_entry_source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51"
   },
-  "owner_browser_action_required": true,
-  "owner_SQL_action_condition": "None; first inspect the safe request status/result for the reported email-code failure.",
+  "owner_browser_action_required": false,
+  "owner_SQL_action_condition": "None for the retained mail readiness diagnostic.",
   "signout_entry": {
     "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
     "status": "SOURCE_AND_LOCAL_CHECKS_PASS_OWNER_PACKAGE_DEPLOYMENT_PENDING",
@@ -5479,12 +5523,34 @@
   },
   "code_request_failure_review": {
     "stage_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
-    "status": "SAFE_REQUEST_STATUS_AND_RESULT_PENDING",
+    "status": "CANONICAL_HTTP503_MAIL_UNAVAILABLE_CONFIRMED",
     "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-network-pass-and-code-request-failure.json",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_MAIL_UNAVAILABLE_HANDOFF.md",
     "live_cause_established": false,
     "code_mail_attempt_verified": false,
     "SQL_or_settings_action_requested": false,
-    "signout_patch_upload_receipt_received": false
+    "signout_patch_upload_receipt_received": false,
+    "owner_response_receipt": "docs/security-audit/security-fr-2-batch-w-owner-mail-unavailable.json",
+    "request_status_and_result_received": true
+  },
+  "mail_readiness_diagnostic": {
+    "stage_step": "FR.2.5.W44_MAIL_UNAVAILABLE_RETAINED_CONFIGURATION_DIAGNOSTIC",
+    "status": "LOCAL17_PASS_OWNER_PRIVATE_DIAGNOSTIC_PENDING",
+    "source_pin": "2f5fbff2b4e4e8fb1a7be1df1bc9b8e6b1860ca0",
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-mail-unavailable.json",
+    "contract": "docs/security-audit/security-fr-2-batch-w-mail-readiness-contract.json",
+    "local_checks": "docs/security-audit/security-fr-2-batch-w-mail-readiness-local-checks.json",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_MAIL_UNAVAILABLE_HANDOFF.md",
+    "entry": "scripts/run-fr-2-batch-w-mail-readiness.ps1",
+    "entry_SHA256": "d2c4a4d356da105c0d6b9159912ac7fde9a6e542babe5a4267937ea4eed83345",
+    "observed_HTTP_status": 503,
+    "observed_result": "MAIL_UNAVAILABLE",
+    "maximum_provider_requests": 2,
+    "real_email_requests": 0,
+    "settings_SQL_or_account_writes": 0,
+    "local_PASS": 17,
+    "owner_result_received": false,
+    "live_dispatch_cause_established": false,
+    "hosted_acceptance": false
   }
 }

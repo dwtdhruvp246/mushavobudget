@@ -72,6 +72,7 @@ test('sign-out button is reusable after success and after signing in again', asy
       return { error: null };
     } } },
     beginManualSignOut(){context.state.manualSignInRequired=true;},showSignOutStatus(){},setView(){},
+    applicationSessionKey(){return null;},resumeSharedSignIn(){},
     async removeCurrentDevicePush() {}, forgetPushOptIn() {},
     showToast() {}, friendlyMessage: (message) => message
   };

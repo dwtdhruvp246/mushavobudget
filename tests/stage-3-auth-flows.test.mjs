@@ -159,6 +159,7 @@ test('duplicate signup uses confirmation-pending destination without extra email
 });
 function appLogout(cleanupFails=false, authFails=false) {
   const messages=[], context={state:{session:{user:{id}}},supabase:{auth:{async signOut(){context.authCalls++;return {error:authFails?{code:'network_error'}:null};}}},authCalls:0,
+    applicationSessionKey(){return null;},resumeSharedSignIn(){},
     beginManualSignOut(){context.state.manualSignInRequired=true;},showSignOutStatus(){},setView(){},setSubmitting(){}, async removeCurrentDevicePush(){if(cleanupFails)throw Error('cleanup');},forgetPushOptIn(){context.forgot=true;},handleSignedOut(){context.state.session=null;},showToast:m=>messages.push(m)};
   vm.runInNewContext(appSource.slice(appSource.indexOf('async function signOutSafely'),appSource.indexOf('function currencyCatalogue')),context);
   return {context,messages};

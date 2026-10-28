@@ -182,6 +182,8 @@ let appLoadUserId = null;
 let appLoadToken = null;
 let signInInProgress = false;
 let signInExpectedEmail = null;
+let manualSignInSessionKey = null;
+let pendingSharedSignIn = null;
 let authDataEpoch = 0;
 let preserveSignInDestination = false;
 let startupWorkspacePreference = null;
@@ -969,8 +971,21 @@ function requiresManualSignIn(href) {
   return ["manual", "signed-out", "expired"].includes(new URL(href).searchParams.get("auth"));
 }
 
-// This is a request to stay at sign-in, never a source of application authority.
+// Only distinguish a new SDK session from a refresh of an unfinished sign-out.
+// Decoded claims are a navigation hint; loadApp still requires server authority.
+function applicationSessionKey(session) {
+  try {
+    const payload = session.access_token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    const claims = JSON.parse(window.atob(payload));
+    if (claims.sub !== session.user.id || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(claims.session_id)) return null;
+    return `${claims.sub}/${claims.session_id}`;
+  } catch (_error) { return null; }
+}
+
+// Keep failed/pending sign-out sessions at sign-in; a new shared login can resume.
 function setManualSignInIntent(reason = "manual", preserveDestination = false) {
+  manualSignInSessionKey = applicationSessionKey(state.session);
+  pendingSharedSignIn = null;
   state.manualSignInRequired = true;
   const url = new URL(window.location.href);
   if (!preserveDestination) { url.search = ""; url.hash = ""; }
@@ -984,9 +999,33 @@ function setManualSignInIntent(reason = "manual", preserveDestination = false) {
 
 function clearManualSignInIntent() {
   state.manualSignInRequired = false;
+  manualSignInSessionKey = null;
+  pendingSharedSignIn = null;
   const url = new URL(window.location.href);
   url.searchParams.delete("auth");
   window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
+function resumeSharedSignIn() {
+  const session = pendingSharedSignIn;
+  if (!session || !state.manualSignInRequired || state.signingOut || signInInProgress) return;
+  pendingSharedSignIn = null;
+  if (state.session?.user?.id !== session.user.id || state.session?.access_token !== session.access_token) return;
+  const key = applicationSessionKey(session);
+  if (!key || key === manualSignInSessionKey) return;
+  clearManualSignInIntent();
+  showSignOutStatus();
+  resetState();
+  state.session = session;
+  adminSession.bind(session);
+  setView("loading");
+  const epoch = authDataEpoch;
+  // Defer SDK work until the Auth callback releases its lock.
+  window.setTimeout(() => {
+    if (epoch !== authDataEpoch || state.manualSignInRequired || state.signingOut ||
+        state.session?.user?.id !== session.user.id || state.session?.access_token !== session.access_token) return;
+    openAuthenticatedSession(session).catch(handleLoadFailure);
+  }, 0);
 }
 
 function beginManualSignOut() {
@@ -1193,20 +1232,23 @@ async function init() {
   const { data, error } = await supabase.auth.getSession();
   if (error) throw error;
   state.session = data.session;
+  if (state.manualSignInRequired) manualSignInSessionKey = applicationSessionKey(state.session);
 
   supabase.auth.onAuthStateChange((event, session) => {
     if (event === "INITIAL_SESSION") return;
-    if (state.manualSignInRequired && session) {
-      // Keep the SDK session available for an explicit sign-out retry, but do
-      // not open protected views from a saved/refresh/cross-tab sign-in event.
-      state.session = session;
-      return;
-    }
     const previousSession = state.session;
     state.session = session;
     // Password sign-in owns its first workspace load. Auth also emits
     // SIGNED_IN during that request; handling both would race two loaders.
     if (signInInProgress && event === "SIGNED_IN" && session?.user?.email?.toLowerCase() === signInExpectedEmail) return;
+    if (state.manualSignInRequired && session) {
+      const key = applicationSessionKey(session);
+      if (event === "SIGNED_IN" && key && key !== manualSignInSessionKey) pendingSharedSignIn = session;
+      else if (pendingSharedSignIn && key === applicationSessionKey(pendingSharedSignIn)) pendingSharedSignIn = session;
+      resumeSharedSignIn();
+      return;
+    }
+    if (!session) pendingSharedSignIn = null;
 
     if (session && isSameAuthUser(previousSession, session)) {
       if (previousSession.access_token !== session.access_token) {
@@ -1226,7 +1268,7 @@ async function init() {
       setView("loading");
       const epoch = authDataEpoch;
       window.setTimeout(() => {
-        if (epoch !== authDataEpoch || state.session?.user?.id !== session.user.id) return;
+        if (epoch !== authDataEpoch || state.session?.user?.id !== session.user.id || state.session?.access_token !== session.access_token) return;
         openAuthenticatedSession(session).catch(handleLoadFailure);
       }, 0);
       return;
@@ -3930,7 +3972,11 @@ async function sendTestPushNotification() {
 
 async function signOutSafely(button = null) {
   if (!supabase || !state.session || state.signingOut) return;
-  const userId = state.session.user.id;
+  const leavingSession = state.session;
+  const userId = leavingSession.user.id;
+  const leavingKey = applicationSessionKey(leavingSession);
+  const sameSession = () => state.session?.user?.id === userId &&
+    (leavingKey ? applicationSessionKey(state.session) === leavingKey : state.session?.access_token === leavingSession.access_token);
   let cleanupFailed = false;
   state.signingOut = true;
   beginManualSignOut();
@@ -3939,13 +3985,13 @@ async function signOutSafely(button = null) {
     try { await removeCurrentDevicePush(); }
     catch (_cleanupError) { cleanupFailed = true; }
     // A push cleanup outage must not prevent the requested Auth sign-out.
-    if (state.session?.user?.id !== userId) { setView("auth"); return; }
+    if (!sameSession()) { setView("auth"); return; }
     preserveSignInDestination = false;
     const { error } = await supabase.auth.signOut({ scope: "local" });
     if (error) throw error;
     showSignOutStatus();
     if (!cleanupFailed) forgetPushOptIn(userId);
-    if (!state.session || state.session.user.id === userId) handleSignedOut();
+    if (!state.session || sameSession()) handleSignedOut();
     else setView("auth");
     if (cleanupFailed) showToast("Signed out. Device notification cleanup could not finish; disable notifications in this browser if needed.");
   } catch (error) {
@@ -3957,6 +4003,7 @@ async function signOutSafely(button = null) {
     state.signingOut = false;
     // This DOM button survives sign-out and is reused after the next sign-in.
     setSubmitting(button, false, "Sign out");
+    resumeSharedSignIn();
   }
 }
 
@@ -7881,6 +7928,7 @@ async function signIn(event) {
   } finally {
     signInInProgress = false;
     signInExpectedEmail = null;
+    resumeSharedSignIn();
     if (submitButton) {
       submitButton.disabled = false;
       submitButton.textContent = "Sign in";

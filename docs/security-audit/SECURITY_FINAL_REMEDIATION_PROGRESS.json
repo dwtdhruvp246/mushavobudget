@@ -5,11 +5,11 @@
   "status": "FR2_BATCH_W_SHARED_NORMAL_TAB_CYCLE_OWNER_PASS_CURRENT_ORIGIN_RECOVERY_ISOLATION_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "3acfe2f3666f305ee02d6bab4735757e6cdfeb26",
+  "source_parent_commit": "34a5e7004b30cbc2b7e80d6612c1dab37410e43a",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE284",
+  "latest_evidence": "FRE285",
   "batches": [
     {
       "id": "FR.1",
@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W_REMAINING_ORIGINAL_CASE_EVIDENCE_REVIEW",
+  "next_step": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4637,7 +4637,7 @@
     "full_lettered_batch_W_complete": false,
     "owner_terminal_action_required": false,
     "owner_SQL_action_required": false,
-    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_REMAINING_CHECKS.md",
+    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md",
     "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
     "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
     "entry": "scripts/review-fr-2-batch-w-dashboard.ps1",
@@ -4863,7 +4863,7 @@
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
     "expected_nonsecret_input": "Safe local preparation JSON/combined exit code, one-secret-per-staging-environment save confirmation and new deployment URL; never the private packet or recipient clipboard JSON",
-    "next_step": "FR.2.5.W_REMAINING_ORIGINAL_CASE_EVIDENCE_REVIEW",
+    "next_step": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -5270,7 +5270,7 @@
       "prior_failure_is_historical": true,
       "corrected_install_success_received": true
     },
-    "owner_browser_action_required": false,
+    "owner_browser_action_required": true,
     "password_signin_backend_installation": {
       "stage_step": "FR.2.5.W50_PASSWORD_SIGNIN_INSTALLED_BROWSER_CHECK",
       "status": "OWNER_BACKEND_INSTALL_PASS_BROWSER_ACCEPTANCE_PENDING",
@@ -5363,7 +5363,7 @@
       "owner_new_password_signin_receipt": "docs/security-audit/security-fr-2-batch-w-owner-new-password-signin-pass.json",
       "provider_failure_or_required_reauth_variants_verified": false
     },
-    "owner_password_write_requested": false,
+    "owner_password_write_requested": true,
     "password_change_mismatch_retry": {
       "stage_step": "FR.2.5.W53_PASSWORD_CHANGE_MISMATCH_VALIDATION_AND_RETRY",
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-mismatch.json",
@@ -5696,6 +5696,31 @@
       "repeat_requested": false,
       "latest_evidence_scope": "Existing AU04.06 real other-account recovery-link view before password saving or normal-session adoption",
       "password_save_or_normal_adoption_accepted": false
+    },
+    "stable_recovery_save_check": {
+      "stage_step": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
+      "status": "OWNER_STABLE_RECOVERY_SAVE_AUTOMATIC_ADOPTION_AND_NEW_PASSWORD_SIGNIN_PENDING",
+      "existing_case": "AU04.05",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md",
+      "source_parent_commit": "34a5e7004b30cbc2b7e80d6612c1dab37410e43a",
+      "expected_frontend_source_pin": "7005e81825049510aa8b45c08d21c42031328794",
+      "origin": "https://mushavo-budget-staging.pages.dev",
+      "starting_identity_and_link_isolation_receipt": "docs/security-audit/security-fr-2-batch-w-owner-stable-recovery-isolation-pass.json",
+      "reuse_existing_open_recovery_form": true,
+      "recovery_tab_reload_requested": false,
+      "new_email_or_code_requested": false,
+      "maximum_password_save_clicks": 1,
+      "maximum_normal_signouts": 1,
+      "maximum_app_reloads": 1,
+      "maximum_new_password_signins": 1,
+      "password_values_or_link_requested_in_chat": false,
+      "expected_normal_session_adoption": "Recovered displayed controlled test account after successful save; normal app tabs follow that session",
+      "error_or_ambiguous_save_stop_before_retry": true,
+      "new_SQL_settings_upload_or_runtime_change_required": false,
+      "owner_result_received": false,
+      "new_public_AU_cases_added": 0,
+      "full_lettered_batch_W_complete": false,
+      "hosted_acceptance": false
     }
   },
   "owner_controlled_test_inbox_information_required": false,
@@ -5797,21 +5822,17 @@
     "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json"
   },
   "FR2_email_next_Auth_case": {
-    "id": "AU04.06",
+    "id": "AU04.05",
     "group": "AU04",
-    "title": "Cross-tab/current-account isolation and sanitized URL",
-    "status": "OWNER_STABLE_RECOVERY_IDENTITY_CLEAN_URL_AND_ORIGINAL_DASHBOARD_ISOLATION_PASS",
-    "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
-    "settings_inspection_satisfies_case": false,
-    "stage_step": "FR.2.5.W66_SHARED_TABS_OWNER_PASS_CURRENT_ORIGIN_RECOVERY_ISOLATION",
-    "variant": "Same-origin other-account recovery link while normal B remains signed in; clean URL before password saving",
-    "owner_action_required_now": "None: requested recovery identity, clean URL and dashboard-isolation observations all received. Review the remaining original case checklist before the next bounded handoff.",
+    "title": "Password-save failure/retry",
+    "stage_step": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
+    "status": "OWNER_STABLE_RECOVERY_SAVE_AUTOMATIC_ADOPTION_AND_NEW_PASSWORD_SIGNIN_PENDING",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
-    "source_pin": "7005e81825049510aa8b45c08d21c42031328794",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_REMAINING_CHECKS.md",
-    "hosted_acceptance": false,
-    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-stable-recovery-isolation-pass.json"
+    "variant": "Current password-only recovery successful save, automatic intended adoption and new-password sign-in; earlier negative evidence preserved",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md",
+    "owner_action_required_now": "Use the retained verified recovery form without refresh. Save one new private password once; only after the recovered dashboard opens and normal tabs follow it, sign out/reload/sign in once with the new password. Stop on error, other screen or ambiguous save.",
+    "hosted_acceptance": false
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -5887,7 +5908,10 @@
       "expected_mismatch_message_matched": true,
       "password_form_retained": true,
       "provider_failure_or_successful_retry_or_password_session_outcomes_accepted": false,
-      "deferred_UI_item": "UX_AUTH_PASSWORD_MISMATCH_VISIBILITY"
+      "deferred_UI_item": "UX_AUTH_PASSWORD_MISMATCH_VISIBILITY",
+      "current_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md",
+      "current_positive_recovery_save_check": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
+      "owner_result_received_for_current_step": false
     },
     "AU05.03": {
       "id": "AU05.03",
@@ -6370,7 +6394,7 @@
     "new_runtime_patch_requested_during_readiness_diagnosis": true,
     "signout_entry_source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51"
   },
-  "owner_browser_action_required": false,
+  "owner_browser_action_required": true,
   "owner_SQL_action_condition": "None: backend and accepted frontend remain unchanged.",
   "signout_entry": {
     "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
@@ -6839,7 +6863,7 @@
     "full_case_acceptance": false,
     "no_repeat_requested": true
   },
-  "owner_password_write_requested": false,
+  "owner_password_write_requested": true,
   "cross_tab_signout_check": {
     "stage_step": "FR.2.5.W56_SAVED_SESSION_RELOAD_PASS_CROSS_TAB_SIGNOUT_CHECK",
     "status": "OWNER_AUTOMATIC_ORIGINAL_TAB_SIGNOUT_BEFORE_REFRESH_PASS",
@@ -7123,5 +7147,30 @@
     "password_save_or_normal_adoption_accepted": false
   },
   "batch_W_remaining_checklist": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_REMAINING_CHECKS.md",
-  "staging_owner_test_origin": "https://mushavo-budget-staging.pages.dev"
+  "staging_owner_test_origin": "https://mushavo-budget-staging.pages.dev",
+  "stable_recovery_save_check": {
+    "stage_step": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
+    "status": "OWNER_STABLE_RECOVERY_SAVE_AUTOMATIC_ADOPTION_AND_NEW_PASSWORD_SIGNIN_PENDING",
+    "existing_case": "AU04.05",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md",
+    "source_parent_commit": "34a5e7004b30cbc2b7e80d6612c1dab37410e43a",
+    "expected_frontend_source_pin": "7005e81825049510aa8b45c08d21c42031328794",
+    "origin": "https://mushavo-budget-staging.pages.dev",
+    "starting_identity_and_link_isolation_receipt": "docs/security-audit/security-fr-2-batch-w-owner-stable-recovery-isolation-pass.json",
+    "reuse_existing_open_recovery_form": true,
+    "recovery_tab_reload_requested": false,
+    "new_email_or_code_requested": false,
+    "maximum_password_save_clicks": 1,
+    "maximum_normal_signouts": 1,
+    "maximum_app_reloads": 1,
+    "maximum_new_password_signins": 1,
+    "password_values_or_link_requested_in_chat": false,
+    "expected_normal_session_adoption": "Recovered displayed controlled test account after successful save; normal app tabs follow that session",
+    "error_or_ambiguous_save_stop_before_retry": true,
+    "new_SQL_settings_upload_or_runtime_change_required": false,
+    "owner_result_received": false,
+    "new_public_AU_cases_added": 0,
+    "full_lettered_batch_W_complete": false,
+    "hosted_acceptance": false
+  }
 }

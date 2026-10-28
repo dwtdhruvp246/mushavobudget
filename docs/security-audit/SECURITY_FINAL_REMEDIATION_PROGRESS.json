@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-28",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_OWNER_RATE_MESSAGE_READ_ONLY_RETRY_TIME_NEXT",
+  "status": "FR2_BATCH_W_OWNER_PASSWORD_SIGNIN_ALL_USERS_SOURCE_READY_NOT_APPLIED",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "5f8bd52a15173cb3f54ab76d99276bdd2eb448ee",
+  "source_parent_commit": "628fcbede4dacbcbc248128b93e550631fb20990",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE263",
+  "latest_evidence": "FRE264",
   "batches": [
     {
       "id": "FR.1",
@@ -1097,15 +1097,15 @@
         },
         {
           "id": "FR.2.5",
-          "status": "IN_PROGRESS_CODE_REQUEST_RATE_WAIT_TIMING_READ_PENDING",
+          "status": "IN_PROGRESS_PASSWORD_ONLY_ALL_ROLES_STAGING_ROLLOUT_PENDING",
           "title": "Auth/finance/session hosted workflows",
           "active_lettered_batch": "W",
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5.W47_ACCOUNT_SEND_RATE_LIMIT_READ_ONLY_RETRY_TIME",
+          "next_step": "FR.2.5.W48_PASSWORD_SIGNIN_ALL_USERS_REMOVAL",
           "persistent_browser_trust_checkpoint": {
-            "status": "OWNER_CURRENT_SIGNIN_UX_ACCEPTED_REMAINING_BROWSER_SECURITY_CASES_OPEN",
+            "status": "SUPERSEDED_OWNER_PASSWORD_ONLY_ALL_ROLES",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
             "local_receipt": "docs/security-audit/security-fr-2-batch-w-browser-trust-local-checks.json",
             "source_manifest": "docs/security-audit/security-fr-2-batch-w-browser-trust-source-manifest.json",
@@ -1163,27 +1163,30 @@
             "deferred_UX_status": "SIGNOUT_RELOAD_SOURCE_FIX_DEPLOYMENT_PENDING",
             "current_UI_acceptance_receipt": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json",
             "current_UI_acceptance_reopened_for_signout_reload": true,
-            "signout_entry_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNOUT_ENTRY_HANDOFF.md"
+            "signout_entry_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNOUT_ENTRY_HANDOFF.md",
+            "superseding_owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
+            "historical_only": true
           },
           "deferred_auth_UX": {
             "id": "UX_AUTH_BACKGROUND_VERIFICATION",
-            "status": "SIGNOUT_FIX_OWNER_PACKAGE_PASS_CANONICAL_RECHECK_PENDING",
-            "desired_behavior": "Trusted-browser verification runs without showing the code form. Use a minimal Signing in indicator, then open the dashboard. Show the verification form only when user action is actually required.",
+            "status": "OWNER_REMOVED_CUSTOM_SIGNIN_VERIFICATION_ALL_ROLES_SOURCE_READY",
+            "desired_behavior": "Email/password directly to the authorized dashboard after signup email confirmation; no custom sign-in code or trusted-browser requirement for any role.",
             "performance": "Reduce perceived and measured sign-in delay; measure before choosing a specific timing target.",
             "security_invariants": [
-              "Do not open or fetch protected views before server proof succeeds",
-              "Retain actor/token binding, revocation and failure handling",
-              "Keep new-browser email-code checks and separate Admin MFA"
+              "Valid/current Auth actor-token-session binding",
+              "Confirmed active non-banned accounts and revocation/expiry checks",
+              "Existing role/ownership/membership/RLS/RPC permissions",
+              "No fabricated MFA/aal2 status"
             ],
             "runtime_implementation_requested_now": true,
             "owner_reactivated_date": "2026-10-27",
-            "runtime_source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51",
+            "runtime_source_pin": "628fcbede4dacbcbc248128b93e550631fb20990",
             "contract": "docs/security-audit/security-fr-2-batch-w-smooth-signin-contract.json",
             "local_checks": "docs/security-audit/security-fr-2-batch-w-smooth-signin-local-checks.json",
             "hosted_UX_acceptance": false,
             "live_latency_measured": false,
             "owner_deployment_URL": "https://082009fe.mushavo-budget-staging.pages.dev/",
-            "browser_UX_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_FOURTH_RECIPIENT_PACKAGE_PASS_AND_DELIVERY_RETEST.md",
+            "browser_UX_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_SIGNIN_ALL_USERS_HANDOFF.md",
             "hosted_UX_acceptance_scope": "Owner accepts current normal sign-in experience after deployment; no precise timing or independent trace.",
             "owner_acceptance_receipt": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json",
             "prior_owner_current_browser_UI_acceptance_preserved": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json",
@@ -1191,25 +1194,28 @@
             "availability_cause_established": false,
             "source_gap_reproduced": true,
             "offline_initial_trigger_ruled_out_by_owner": true,
-            "signout_entry_contract": "docs/security-audit/security-fr-2-batch-w-signout-entry-contract.json"
+            "signout_entry_contract": "docs/security-audit/security-fr-2-batch-w-signout-entry-contract.json",
+            "superseded_desired_behavior": "Trusted-browser verification runs without showing the code form. Use a minimal Signing in indicator, then open the dashboard. Show the verification form only when user action is actually required.",
+            "superseded_security_invariants": [
+              "Do not open or fetch protected views before server proof succeeds",
+              "Retain actor/token binding, revocation and failure handling",
+              "Keep new-browser email-code checks and separate Admin MFA"
+            ],
+            "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json"
           },
           "AU03_02_wrong_password_message_receipt": "docs/security-audit/security-fr-2-batch-w-owner-invalid-credentials.json",
           "next_Auth_case": {
-            "id": "AU05.07",
-            "title": "Selected Auth rate errors and observed stale-token window",
-            "variant": "Current email-code per-account rate message; read retry deadline without changing counters or making another mail request.",
-            "status": "OWNER_RATE_MESSAGE_READ_ONLY_TIMING_PENDING",
-            "owner_action_required_now": "Run the read-only staging SQL retry-time diagnostic for the same current controlled account and return JSON. Pause Send email code clicks. No counter reset, account switch, settings/window change, password, new build or deployment requested by this diagnostic.",
+            "id": "AU03.01",
+            "title": "Ordinary valid sign-in including older valid password",
+            "status": "PASSWORD_ONLY_POLICY_SOURCE_PASS_STAGING_BROWSER_PENDING",
+            "variant": "Existing confirmed account enters authorized dashboard with email/password only after the coordinated staging rollout. Admin inclusion still enforces current server role.",
+            "owner_action_required_now": "Prepare the exact password-signin ZIP and SQL files with the pinned command. After exit0 upload the ZIP to staging, then run the generated guarded install SQL in the staging Supabase project. After the fixed success result, check email/password dashboard entry and Sign out/reload. No custom email code, trust enrollment, recipient edit or old acceptance-window query.",
             "existing_frozen_case": true,
             "new_public_AU_cases_added": 0,
-            "source_pin": "5f8bd52a15173cb3f54ab76d99276bdd2eb448ee",
-            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_RATE_RETRY_TIME.md",
-            "SQL_or_settings_action_requested": true,
-            "SQL_is_read_only": true,
-            "password_save_requested": false,
-            "new_email_or_code_requested": false,
-            "hosted_acceptance": false,
-            "full_case_acceptance": false
+            "source_pin": "628fcbede4dacbcbc248128b93e550631fb20990",
+            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_SIGNIN_ALL_USERS_HANDOFF.md",
+            "custom_email_or_device_test_requested": false,
+            "hosted_acceptance": false
           },
           "recipient_preparation_and_redeploy_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recipient-addition-and-redeploy.json",
           "recovery_window": {
@@ -1544,9 +1550,9 @@
           },
           "code_request_failure_review": {
             "stage_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
-            "status": "OWNER_RATE_MESSAGE_REPORTED_READ_ONLY_TIMING_PENDING",
+            "status": "CUSTOM_SIGNIN_GATE_REMOVAL_AUTHORIZED_ALL_ROLES",
             "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-network-pass-and-code-request-failure.json",
-            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_RATE_RETRY_TIME.md",
+            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_SIGNIN_ALL_USERS_HANDOFF.md",
             "live_cause_established": false,
             "code_mail_attempt_verified": false,
             "SQL_or_settings_action_requested": false,
@@ -1556,7 +1562,9 @@
             "owner_diagnostic_receipt": "docs/security-audit/security-fr-2-batch-w-owner-current-recipient-absent.json",
             "owner_package_and_deployment_receipt": "docs/security-audit/security-fr-2-batch-w-owner-fourth-recipient-signout-package-and-deployment.json",
             "current_mailbox_delivery_retest_received": false,
-            "latest_owner_rate_receipt": "docs/security-audit/security-fr-2-batch-w-owner-code-request-rate-message.json"
+            "latest_owner_rate_receipt": "docs/security-audit/security-fr-2-batch-w-owner-code-request-rate-message.json",
+            "superseding_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
+            "specific_old_live_cause_resolved": false
           },
           "mail_readiness_diagnostic": {
             "stage_step": "FR.2.5.W44_MAIL_UNAVAILABLE_RETAINED_CONFIGURATION_DIAGNOSTIC",
@@ -1633,6 +1641,35 @@
             "owner_result_received": false,
             "live_retry_timestamp_verified": false,
             "hosted_acceptance": false
+          },
+          "password_signin_all_users": {
+            "stage_step": "FR.2.5.W48_PASSWORD_SIGNIN_ALL_USERS_REMOVAL",
+            "status": "SOURCE_PUBLISHED_122_LOCAL_PASS_OWNER_STAGING_PREPARATION_AND_INSTALL_PENDING",
+            "source_pin": "628fcbede4dacbcbc248128b93e550631fb20990",
+            "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
+            "contract": "docs/security-audit/security-fr-2-batch-w-password-signin-contract.json",
+            "local_checks": "docs/security-audit/security-fr-2-batch-w-password-signin-local-checks.json",
+            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_SIGNIN_ALL_USERS_HANDOFF.md",
+            "entry": "scripts/prepare-fr-2-batch-w-password-signin.mjs",
+            "entry_SHA256": "7d10bc81592d5fd18d96ed2b63b158af6f9a574015094532a3aa6a8a5238a642",
+            "source_manifest": "docs/security-audit/security-fr-2-batch-w-password-signin-source-manifest.json",
+            "manifest_SHA256": "0cc8914bddd5c7e28b582def6166338960478eb116c997bddccd1694b9c17772",
+            "source_hashes": 34,
+            "local_PASS": 122,
+            "public_files": 42,
+            "changed_public_entries": 10,
+            "removed_public_files": [
+              "email-verification.js",
+              "admin-mfa.js"
+            ],
+            "unchanged_public_entries": 32,
+            "retained_input_SHA256": "e7de4e1b90d46a1503be5cf77fe7974b32d650fd526cb473c39002fe8cf1675b",
+            "owner_new_ZIP_prepared": false,
+            "frontend_uploaded": false,
+            "SQL_applied": false,
+            "includes_Admin": true,
+            "hosted_acceptance": false,
+            "new_public_AU_cases_added": 0
           }
         },
         {
@@ -1649,7 +1686,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "FR.2.5.W47_ACCOUNT_SEND_RATE_LIMIT_READ_ONLY_RETRY_TIME"
+      "next_step": "FR.2.5.W48_PASSWORD_SIGNIN_ALL_USERS_REMOVAL"
     },
     {
       "id": "FR.3",
@@ -1689,7 +1726,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": false,
+  "owner_terminal_action_required": true,
   "owner_SQL_action_required": true,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
@@ -1699,11 +1736,11 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W47_ACCOUNT_SEND_RATE_LIMIT_READ_ONLY_RETRY_TIME",
+  "next_step": "FR.2.5.W48_PASSWORD_SIGNIN_ALL_USERS_REMOVAL",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
-  "owner_staging_direct_upload_action_required": false,
+  "owner_staging_direct_upload_action_required": true,
   "serving_product": "CLOUDFLARE_PAGES",
   "owner_deployment_method": "DIRECT_UPLOAD",
   "target_project": "mushavo-budget-staging",
@@ -1716,7 +1753,7 @@
   "owner_zip_preflight_status": "PASS_39_RECEIPT_HASHES_40_ZIP_HASHES",
   "owner_zip_sha256": "c79819c4abb1cc8184d87ccfeb70c7d0e6b2cd7630e1f89072ea63415ba7707c",
   "owner_zip_path": "C:\\Users\\HP\\Desktop\\Mushavo-Staging-Candidate-6205f79b476048a48edf4fe9e8a88cd0\\mushavo-staging-upload-beb642556710479b91dbfde0931744a2.zip",
-  "owner_new_upload_requested": false,
+  "owner_new_upload_requested": true,
   "owner_canonical_URL_received": "https://mushavo-budget-staging.pages.dev/",
   "owner_upload_filename_confirmed": "mushavo-staging-upload-beb642556710479b91dbfde0931744a2.zip",
   "unique_new_deployment_ID_or_provider_success_status_received": false,
@@ -4573,7 +4610,10 @@
     "MFA_disabled_or_server_assurance_bypassed": false,
     "no_new_factor_or_session_or_mode_observation_from_phone_hold": true,
     "previous86_may_be_reused_for_same_exact_published_source": true,
-    "independent_W_started_while_V_remains_open": true
+    "independent_W_started_while_V_remains_open": true,
+    "owner_password_only_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
+    "policy_reconciliation_required_before_resuming_factor_work": true,
+    "mandatory_custom_signin_verification_superseded_for_Admin": true
   },
   "remaining_required_lettered_batches": [
     "V",
@@ -4583,7 +4623,7 @@
     "Z"
   ],
   "FR2_batch_w": {
-    "stage_step": "FR.2.5.W47_ACCOUNT_SEND_RATE_LIMIT_READ_ONLY_RETRY_TIME",
+    "stage_step": "FR.2.5.W48_PASSWORD_SIGNIN_ALL_USERS_REMOVAL",
     "status": "IN_PROGRESS",
     "phase": "CONFIRMATION_RETURN_OWNER_WINDOWS_ZIP_COMPLETE_NEW_DEPLOYMENT_URL_RECEIVED_BROWSER_ACCEPTANCE_PENDING",
     "required_AU_cases": 31,
@@ -4595,9 +4635,9 @@
       "AU02.05"
     ],
     "full_lettered_batch_W_complete": false,
-    "owner_terminal_action_required": false,
+    "owner_terminal_action_required": true,
     "owner_SQL_action_required": true,
-    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_RATE_RETRY_TIME.md",
+    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_SIGNIN_ALL_USERS_HANDOFF.md",
     "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
     "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
     "entry": "scripts/review-fr-2-batch-w-dashboard.ps1",
@@ -4683,7 +4723,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "Run the read-only staging SQL retry-time diagnostic for the same current controlled account and return JSON. Pause Send email code clicks. No counter reset, account switch, settings/window change, password, new build or deployment requested by this diagnostic.",
+    "next_action": "Prepare the exact password-signin ZIP and SQL files with the pinned command. After exit0 upload the ZIP to staging, then run the generated guarded install SQL in the staging Supabase project. After the fixed success result, check email/password dashboard entry and Sign out/reload. No custom email code, trust enrollment, recipient edit or old acceptance-window query.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4778,8 +4818,8 @@
     "current_canonical_site_URL_preserved_owner_confirmation": null,
     "current_unexpected_changes_owner_confirmation": null,
     "complete_settings_readback_owner_receipt_received": false,
-    "owner_staging_direct_upload_action_required": false,
-    "owner_new_upload_requested": false,
+    "owner_staging_direct_upload_action_required": true,
+    "owner_new_upload_requested": true,
     "next_step_read_only_dashboard_metadata": false,
     "owner_settings_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-settings-screenshots.json",
     "project_reference_visually_confirmed": true,
@@ -4823,7 +4863,7 @@
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
     "expected_nonsecret_input": "Safe local preparation JSON/combined exit code, one-secret-per-staging-environment save confirmation and new deployment URL; never the private packet or recipient clipboard JSON",
-    "next_step": "FR.2.5.W47_ACCOUNT_SEND_RATE_LIMIT_READ_ONLY_RETRY_TIME",
+    "next_step": "FR.2.5.W48_PASSWORD_SIGNIN_ALL_USERS_REMOVAL",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -5071,6 +5111,35 @@
       "owner_result_received": false,
       "live_retry_timestamp_verified": false,
       "hosted_acceptance": false
+    },
+    "password_signin_all_users": {
+      "stage_step": "FR.2.5.W48_PASSWORD_SIGNIN_ALL_USERS_REMOVAL",
+      "status": "SOURCE_PUBLISHED_122_LOCAL_PASS_OWNER_STAGING_PREPARATION_AND_INSTALL_PENDING",
+      "source_pin": "628fcbede4dacbcbc248128b93e550631fb20990",
+      "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
+      "contract": "docs/security-audit/security-fr-2-batch-w-password-signin-contract.json",
+      "local_checks": "docs/security-audit/security-fr-2-batch-w-password-signin-local-checks.json",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_SIGNIN_ALL_USERS_HANDOFF.md",
+      "entry": "scripts/prepare-fr-2-batch-w-password-signin.mjs",
+      "entry_SHA256": "7d10bc81592d5fd18d96ed2b63b158af6f9a574015094532a3aa6a8a5238a642",
+      "source_manifest": "docs/security-audit/security-fr-2-batch-w-password-signin-source-manifest.json",
+      "manifest_SHA256": "0cc8914bddd5c7e28b582def6166338960478eb116c997bddccd1694b9c17772",
+      "source_hashes": 34,
+      "local_PASS": 122,
+      "public_files": 42,
+      "changed_public_entries": 10,
+      "removed_public_files": [
+        "email-verification.js",
+        "admin-mfa.js"
+      ],
+      "unchanged_public_entries": 32,
+      "retained_input_SHA256": "e7de4e1b90d46a1503be5cf77fe7974b32d650fd526cb473c39002fe8cf1675b",
+      "owner_new_ZIP_prepared": false,
+      "frontend_uploaded": false,
+      "SQL_applied": false,
+      "includes_Admin": true,
+      "hosted_acceptance": false,
+      "new_public_AU_cases_added": 0
     }
   },
   "owner_controlled_test_inbox_information_required": false,
@@ -5129,29 +5198,32 @@
     "deferred_UX_id": "UX_AUTH_BACKGROUND_VERIFICATION",
     "fresh_password_cycle_repeat_requested_now": false,
     "new_browser_code_test_readiness_pending": true,
-    "next_independent_Auth_case": "AU03.02"
+    "next_independent_Auth_case": "AU03.02",
+    "current_policy_status": "SUPERSEDED_BY_OWNER_PASSWORD_ONLY_ALL_ROLES",
+    "superseding_owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json"
   },
   "owner_fresh_signup_inbox_required": false,
   "FR2_email_current_version_UI_owner_decision": "docs/security-audit/security-fr-2-batch-w-owner-ux-deferral-and-next-auth-case.json",
   "deferred_auth_UX": {
     "id": "UX_AUTH_BACKGROUND_VERIFICATION",
-    "status": "SIGNOUT_FIX_OWNER_PACKAGE_PASS_CANONICAL_RECHECK_PENDING",
-    "desired_behavior": "Trusted-browser verification runs without showing the code form. Use a minimal Signing in indicator, then open the dashboard. Show the verification form only when user action is actually required.",
+    "status": "OWNER_REMOVED_CUSTOM_SIGNIN_VERIFICATION_ALL_ROLES_SOURCE_READY",
+    "desired_behavior": "Email/password directly to the authorized dashboard after signup email confirmation; no custom sign-in code or trusted-browser requirement for any role.",
     "performance": "Reduce perceived and measured sign-in delay; measure before choosing a specific timing target.",
     "security_invariants": [
-      "Do not open or fetch protected views before server proof succeeds",
-      "Retain actor/token binding, revocation and failure handling",
-      "Keep new-browser email-code checks and separate Admin MFA"
+      "Valid/current Auth actor-token-session binding",
+      "Confirmed active non-banned accounts and revocation/expiry checks",
+      "Existing role/ownership/membership/RLS/RPC permissions",
+      "No fabricated MFA/aal2 status"
     ],
     "runtime_implementation_requested_now": true,
     "owner_reactivated_date": "2026-10-27",
-    "runtime_source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51",
+    "runtime_source_pin": "628fcbede4dacbcbc248128b93e550631fb20990",
     "contract": "docs/security-audit/security-fr-2-batch-w-smooth-signin-contract.json",
     "local_checks": "docs/security-audit/security-fr-2-batch-w-smooth-signin-local-checks.json",
     "hosted_UX_acceptance": false,
     "live_latency_measured": false,
     "owner_deployment_URL": "https://082009fe.mushavo-budget-staging.pages.dev/",
-    "browser_UX_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_FOURTH_RECIPIENT_PACKAGE_PASS_AND_DELIVERY_RETEST.md",
+    "browser_UX_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_SIGNIN_ALL_USERS_HANDOFF.md",
     "hosted_UX_acceptance_scope": "Owner accepts current normal sign-in experience after deployment; no precise timing or independent trace.",
     "owner_acceptance_receipt": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json",
     "prior_owner_current_browser_UI_acceptance_preserved": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json",
@@ -5159,24 +5231,27 @@
     "availability_cause_established": false,
     "source_gap_reproduced": true,
     "offline_initial_trigger_ruled_out_by_owner": true,
-    "signout_entry_contract": "docs/security-audit/security-fr-2-batch-w-signout-entry-contract.json"
+    "signout_entry_contract": "docs/security-audit/security-fr-2-batch-w-signout-entry-contract.json",
+    "superseded_desired_behavior": "Trusted-browser verification runs without showing the code form. Use a minimal Signing in indicator, then open the dashboard. Show the verification form only when user action is actually required.",
+    "superseded_security_invariants": [
+      "Do not open or fetch protected views before server proof succeeds",
+      "Retain actor/token binding, revocation and failure handling",
+      "Keep new-browser email-code checks and separate Admin MFA"
+    ],
+    "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json"
   },
   "FR2_email_next_Auth_case": {
-    "id": "AU05.07",
-    "title": "Selected Auth rate errors and observed stale-token window",
-    "variant": "Current email-code per-account rate message; read retry deadline without changing counters or making another mail request.",
-    "status": "OWNER_RATE_MESSAGE_READ_ONLY_TIMING_PENDING",
-    "owner_action_required_now": "Run the read-only staging SQL retry-time diagnostic for the same current controlled account and return JSON. Pause Send email code clicks. No counter reset, account switch, settings/window change, password, new build or deployment requested by this diagnostic.",
+    "id": "AU03.01",
+    "title": "Ordinary valid sign-in including older valid password",
+    "status": "PASSWORD_ONLY_POLICY_SOURCE_PASS_STAGING_BROWSER_PENDING",
+    "variant": "Existing confirmed account enters authorized dashboard with email/password only after the coordinated staging rollout. Admin inclusion still enforces current server role.",
+    "owner_action_required_now": "Prepare the exact password-signin ZIP and SQL files with the pinned command. After exit0 upload the ZIP to staging, then run the generated guarded install SQL in the staging Supabase project. After the fixed success result, check email/password dashboard entry and Sign out/reload. No custom email code, trust enrollment, recipient edit or old acceptance-window query.",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
-    "source_pin": "5f8bd52a15173cb3f54ab76d99276bdd2eb448ee",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_RATE_RETRY_TIME.md",
-    "SQL_or_settings_action_requested": true,
-    "SQL_is_read_only": true,
-    "password_save_requested": false,
-    "new_email_or_code_requested": false,
-    "hosted_acceptance": false,
-    "full_case_acceptance": false
+    "source_pin": "628fcbede4dacbcbc248128b93e550631fb20990",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_SIGNIN_ALL_USERS_HANDOFF.md",
+    "custom_email_or_device_test_requested": false,
+    "hosted_acceptance": false
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -5369,7 +5444,7 @@
     "selected_public_readback_status": "BLOCKED_AUTOMATED_HTTP403_ERROR1010",
     "new_upload_requested": false
   },
-  "owner_staging_Pages_secret_confirmation_required": true,
+  "owner_staging_Pages_secret_confirmation_required": false,
   "owner_recovery_window_SQL_result_required": false,
   "owner_browser_recovery_save_action_required": false,
   "FR2_email_recovery_window": {
@@ -5638,7 +5713,7 @@
     "signout_entry_source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51"
   },
   "owner_browser_action_required": false,
-  "owner_SQL_action_condition": "Read-only per-account rate deadline only. No application-window change, counter reset or data write.",
+  "owner_SQL_action_condition": "Only the new generated password-signin install SQL, after the matching new frontend is uploaded to staging. Old email-code rate/window/recipient actions are superseded.",
   "signout_entry": {
     "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
     "status": "OWNER_PACKAGE_PASS_DEPLOYMENT_URL_RECEIVED_CANONICAL_BROWSER_CHECK_PENDING",
@@ -5668,7 +5743,7 @@
     "new_public_AU_cases_added": 0,
     "password_recovery_code_email_SQL_or_settings_requested": false,
     "superseding_current_diagnostic_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_FAILURE_REVIEW.md",
-    "combined_next_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_FOURTH_RECIPIENT_AND_SIGNOUT_HANDOFF.md",
+    "combined_next_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_SIGNIN_ALL_USERS_HANDOFF.md",
     "frontend_uploaded_owner_reported": true,
     "owner_package_and_deployment_receipt": "docs/security-audit/security-fr-2-batch-w-owner-fourth-recipient-signout-package-and-deployment.json",
     "owner_ZIP_SHA256": "e7de4e1b90d46a1503be5cf77fe7974b32d650fd526cb473c39002fe8cf1675b",
@@ -5681,13 +5756,15 @@
     "owner_deployment_URL": "https://490ba810.mushavo-budget-staging.pages.dev/",
     "deployed_source_independently_verified": false,
     "public_readback": "docs/security-audit/security-fr-2-batch-w-fourth-recipient-signout-public-readback.json",
-    "browser_check_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_FOURTH_RECIPIENT_PACKAGE_PASS_AND_DELIVERY_RETEST.md"
+    "browser_check_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_FOURTH_RECIPIENT_PACKAGE_PASS_AND_DELIVERY_RETEST.md",
+    "current_policy_status": "RETAINED_AND_TESTED_IN_PASSWORD_SIGNIN_IMPLEMENTATION",
+    "replacement_source_pin": "628fcbede4dacbcbc248128b93e550631fb20990"
   },
   "code_request_failure_review": {
     "stage_step": "FR.2.5.W43_OWNER_NETWORK_PASS_AND_CODE_REQUEST_FAILURE_REVIEW",
-    "status": "OWNER_RATE_MESSAGE_REPORTED_READ_ONLY_TIMING_PENDING",
+    "status": "CUSTOM_SIGNIN_GATE_REMOVAL_AUTHORIZED_ALL_ROLES",
     "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-network-pass-and-code-request-failure.json",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CODE_REQUEST_RATE_RETRY_TIME.md",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_SIGNIN_ALL_USERS_HANDOFF.md",
     "live_cause_established": false,
     "code_mail_attempt_verified": false,
     "SQL_or_settings_action_requested": false,
@@ -5697,7 +5774,9 @@
     "owner_diagnostic_receipt": "docs/security-audit/security-fr-2-batch-w-owner-current-recipient-absent.json",
     "owner_package_and_deployment_receipt": "docs/security-audit/security-fr-2-batch-w-owner-fourth-recipient-signout-package-and-deployment.json",
     "current_mailbox_delivery_retest_received": false,
-    "latest_owner_rate_receipt": "docs/security-audit/security-fr-2-batch-w-owner-code-request-rate-message.json"
+    "latest_owner_rate_receipt": "docs/security-audit/security-fr-2-batch-w-owner-code-request-rate-message.json",
+    "superseding_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
+    "specific_old_live_cause_resolved": false
   },
   "mail_readiness_diagnostic": {
     "stage_step": "FR.2.5.W44_MAIL_UNAVAILABLE_RETAINED_CONFIGURATION_DIAGNOSTIC",
@@ -5725,7 +5804,10 @@
     "owner_packet_unchanged": true,
     "owner_provider_requests": 0,
     "owner_recipient_allowed": false,
-    "owner_recipient_count": 3
+    "owner_recipient_count": 3,
+    "current_policy_status": "HISTORICAL_CUSTOM_SIGNIN_REQUIREMENT_SUPERSEDED",
+    "superseded_by": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
+    "repeat_requested": false
   },
   "fourth_recipient_preparation": {
     "stage_step": "FR.2.5.W46_OWNER_FOUR_RECIPIENT_AND_SIGNOUT_PACKAGE_PASS_DEPLOYMENT_RECEIVED",
@@ -5756,9 +5838,12 @@
     "owner_deployment_URL": "https://490ba810.mushavo-budget-staging.pages.dev/",
     "secret_save_before_deployment": null,
     "public_readback": "docs/security-audit/security-fr-2-batch-w-fourth-recipient-signout-public-readback.json",
-    "next_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_FOURTH_RECIPIENT_PACKAGE_PASS_AND_DELIVERY_RETEST.md"
+    "next_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_FOURTH_RECIPIENT_PACKAGE_PASS_AND_DELIVERY_RETEST.md",
+    "current_policy_status": "HISTORICAL_CUSTOM_SIGNIN_REQUIREMENT_SUPERSEDED",
+    "superseded_by": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
+    "repeat_requested": false
   },
-  "owner_redeploy_condition": "Only if recipient setting was saved after490ba810 or is not yet saved; use the same prepared signout-entry ZIP after the one reviewed setting is saved in both staging environments.",
+  "owner_redeploy_condition": "Deploy the new password-signin ZIP as part of this coordinated policy change.",
   "owner_progress_display_reminder": {
     "date": "2026-10-28",
     "visible_prefix": "Stage 3/10 | FR.2/8 | Batch W/Z",
@@ -5780,6 +5865,48 @@
     "counter_or_account_writes": 0,
     "owner_result_received": false,
     "live_retry_timestamp_verified": false,
-    "hosted_acceptance": false
+    "hosted_acceptance": false,
+    "current_policy_status": "HISTORICAL_CUSTOM_SIGNIN_REQUIREMENT_SUPERSEDED",
+    "superseded_by": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
+    "repeat_requested": false,
+    "owner_last_readback": {
+      "result": "CODE_REQUEST_RATE_WAIT",
+      "requests_in_rolling_hour": 5,
+      "limit_per_hour": 5,
+      "retry_after_seconds": 79,
+      "retry_at_africa_johannesburg": "2026-10-28T08:26:43.494621",
+      "email_requests": 0,
+      "settings_or_account_writes": 0,
+      "hosted_acceptance": false
+    }
+  },
+  "password_signin_all_users": {
+    "stage_step": "FR.2.5.W48_PASSWORD_SIGNIN_ALL_USERS_REMOVAL",
+    "status": "SOURCE_PUBLISHED_122_LOCAL_PASS_OWNER_STAGING_PREPARATION_AND_INSTALL_PENDING",
+    "source_pin": "628fcbede4dacbcbc248128b93e550631fb20990",
+    "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
+    "contract": "docs/security-audit/security-fr-2-batch-w-password-signin-contract.json",
+    "local_checks": "docs/security-audit/security-fr-2-batch-w-password-signin-local-checks.json",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_SIGNIN_ALL_USERS_HANDOFF.md",
+    "entry": "scripts/prepare-fr-2-batch-w-password-signin.mjs",
+    "entry_SHA256": "7d10bc81592d5fd18d96ed2b63b158af6f9a574015094532a3aa6a8a5238a642",
+    "source_manifest": "docs/security-audit/security-fr-2-batch-w-password-signin-source-manifest.json",
+    "manifest_SHA256": "0cc8914bddd5c7e28b582def6166338960478eb116c997bddccd1694b9c17772",
+    "source_hashes": 34,
+    "local_PASS": 122,
+    "public_files": 42,
+    "changed_public_entries": 10,
+    "removed_public_files": [
+      "email-verification.js",
+      "admin-mfa.js"
+    ],
+    "unchanged_public_entries": 32,
+    "retained_input_SHA256": "e7de4e1b90d46a1503be5cf77fe7974b32d650fd526cb473c39002fe8cf1675b",
+    "owner_new_ZIP_prepared": false,
+    "frontend_uploaded": false,
+    "SQL_applied": false,
+    "includes_Admin": true,
+    "hosted_acceptance": false,
+    "new_public_AU_cases_added": 0
   }
 }

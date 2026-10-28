@@ -1493,23 +1493,26 @@ async function loadApp() {
   const entryTicket=emailEntry.ticket();
   const startedAt = performance.now();
   const loadingUserId = state.session.user.id;
+  const settled = (promise) => Promise.resolve(promise).then(
+    (value) => ({ ok: true, value }),
+    (error) => ({ ok: false, error })
+  );
   // Opening an invitation signs its recipient into Supabase Auth. Only the
   // completed invitation may enter the app or provision any workspace.
-  if (await blockUnfinishedAdminInvitationSession()) return;
-  if(!entryTicket())return;
-  const suspended=await query("account status load", supabase.rpc("my_account_suspended"));
-  if(!entryTicket())return;
-  if (suspended) {
+  // These independent checks must all finish before protected startup continues.
+  const [invitationCheck, accountCheck, preferenceCheck] = await Promise.all([
+    settled(blockUnfinishedAdminInvitationSession()),
+    settled(query("account status load", supabase.rpc("my_account_suspended"))),
+    settled(window.MushavoWorkspace?.hydrate(loadingUserId))
+  ]);
+  if (!entryTicket() || state.session?.user?.id !== loadingUserId) return;
+  for (const check of [invitationCheck, accountCheck, preferenceCheck]) if (!check.ok) throw check.error;
+  if (invitationCheck.value) return;
+  if (accountCheck.value) {
     setView("suspended");
     return;
   }
-  await window.MushavoWorkspace?.hydrate(loadingUserId);
-  if (!entryTicket() || state.session?.user?.id !== loadingUserId) return;
   startupWorkspacePreference = window.MushavoWorkspace?.startup(loadingUserId) || null;
-  const settled = (promise) => promise.then(
-    () => ({ ok: true }),
-    (error) => ({ ok: false, error })
-  );
   const profileResult = settled(ensureProfile());
   const invitationResult = settled(loadInvitations());
   if (await loadAccess({ skipAccountCheck: true }) === false) return;
@@ -1545,7 +1548,11 @@ async function loadApp() {
     return;
   }
 
-  const familyResult = settled(loadFamily());
+  const familyReady = loadFamily();
+  const familyResult = settled(familyReady);
+  // Fetch the catalogue alongside families. The loader waits for the selected
+  // family before reconciling or provisioning any subscription workspace.
+  const subscriptionResult = settled(loadWorkspaceSubscriptionData({ familyReady, includePersonalPlanAccess: true }));
   const loadedFamily = await familyResult;
   if(!entryTicket())return;
   if (!loadedFamily.ok) throw loadedFamily.error;
@@ -1553,8 +1560,9 @@ async function loadApp() {
   // Finance data can load alongside workspace plans instead of adding another
   // network round trip before the dashboard is shown.
   const financialFamilyId = state.family?.id;
-  const financialResult = settled(loadFamilyFinancialData());
-  await loadWorkspaceSubscriptionData();
+  const financialResult = settled(loadFamilyFinancialData({ includePlanAccess: false }));
+  const loadedSubscription = await subscriptionResult;
+  if (!loadedSubscription.ok) throw loadedSubscription.error;
 
   if (routeFromHash().area === "business") {
     const requestedWorkspaceId = new URL(window.location.href).searchParams.get("workspace") || "";
@@ -1579,7 +1587,6 @@ async function loadApp() {
   const loadedFinances = await financialResult;
   if (!loadedFinances.ok) throw loadedFinances.error;
   if (financialFamilyId !== state.family?.id) await loadFamilyFinancialData();
-  await loadPersonalPlanAccess();
   if(!entryTicket())return;
   syncRouteForWorkspace("family");
   if (state.familyTab === "cashbook") await loadCashbookData();
@@ -1870,8 +1877,8 @@ async function loadCashbookData(force = false) {
   state.cashbookLoadedWorkspaceId = workspaceId;
 }
 
-async function loadFamilyFinancialData() {
-  await Promise.all([loadMembers(), loadPaymentItems(), loadPaymentRecords()]);
+async function loadFamilyFinancialData({ includePlanAccess = true } = {}) {
+  await Promise.all([loadMembers(), loadPaymentItems({ includePlanAccess }), loadPaymentRecords()]);
 }
 
 async function loadMembers() {
@@ -1889,13 +1896,13 @@ async function loadMembers() {
   );
 }
 
-async function loadPaymentItems() {
+async function loadPaymentItems({ includePlanAccess = true } = {}) {
   let request = supabase.from("payment_items").select("*");
   request = state.family
     ? request.or(`visibility.eq.personal,family_id.eq.${state.family.id}`)
     : request.eq("visibility", "personal");
   state.paymentItems = await query("payment items load", request.order("created_at", { ascending: false }));
-  await loadPersonalPlanAccess();
+  if (includePlanAccess) await loadPersonalPlanAccess();
 }
 
 async function loadPersonalPlanAccess() {
@@ -2052,7 +2059,14 @@ function currentWorkspaceIsOwned() {
   return currentBudgetWorkspace()?.owner_id === state.session?.user?.id;
 }
 
-async function loadWorkspaceSubscriptionData() {
+async function loadWorkspaceSubscriptionData({ familyReady = null, includePersonalPlanAccess = false } = {}) {
+  const epoch = authDataEpoch, userId = state.session?.user?.id, token = state.session?.access_token;
+  const stillAuthorized = emailEntry.ticket();
+  const requireCurrent = () => {
+    if (epoch !== authDataEpoch || state.session?.user?.id !== userId || state.session?.access_token !== token || !stillAuthorized()) {
+      throw Object.assign(new Error("The active account changed."), { code: "session_changed" });
+    }
+  };
   let [workspaces, members, plans, prices, features, limits, supportedCurrencies, businessCheckoutTerms] = await Promise.all([
     query("workspace load", supabase.from("budget_workspaces").select("*").order("created_at", { ascending: true })),
     query("workspace membership load", supabase.from("workspace_members").select("*").order("created_at", { ascending: true })),
@@ -2063,16 +2077,20 @@ async function loadWorkspaceSubscriptionData() {
     query("supported currencies load", supabase.from("supported_currencies").select("*").eq("is_active", true).order("code")),
     query("Business checkout terms", supabase.rpc("public_business_checkout_terms"))
   ]);
+  if (familyReady) await familyReady;
+  requireCurrent();
   // Existing accounts already have a Personal workspace. Only provision a
   // missing one, avoiding an extra RPC round trip on every sign-in.
   if (!workspaces.some((workspace) => workspace.workspace_type === "personal" &&
     workspace.owner_id === state.session.user.id && workspace.status !== "closed")) {
     await query("personal workspace provision", supabase.rpc("provision_my_budget_workspace"));
+    requireCurrent();
     [workspaces, members] = await Promise.all([
       query("workspace load after provision", supabase.from("budget_workspaces").select("*").order("created_at", { ascending: true })),
       query("workspace membership load after provision", supabase.from("workspace_members").select("*").order("created_at", { ascending: true }))
     ]);
   }
+  requireCurrent();
   state.workspaces = workspaces;
   state.workspaceMembers = members;
   state.plans = plans;
@@ -2120,8 +2138,10 @@ async function loadWorkspaceSubscriptionData() {
       : Promise.resolve([]),
     ownedBusinessIds.length
       ? query("owned business plans load", supabase.from("workspace_subscriptions").select("workspace_id, status, paid_through_at, entitlement_start_at").in("workspace_id", ownedBusinessIds))
-      : Promise.resolve([])
+      : Promise.resolve([]),
+    includePersonalPlanAccess ? loadPersonalPlanAccess() : Promise.resolve()
   ]);
+  requireCurrent();
   state.workspaceSubscription = subscriptions[0] || null;
   state.workspaceEntitlement = entitlements[0] || null;
   state.personalWorkspaceSubscription = workspace.id === personalWorkspace?.id

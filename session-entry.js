@@ -1,20 +1,66 @@
-import {createEmailVerification,attachEmailVerificationView} from './email-verification.js?v=4';
-
-// The owning page clears models/DOM before a proof change and checks tickets
-// after asynchronous work. Opening this view never sends mail automatically.
-export function createSessionEntry({client,getSession,root,origin=globalThis.location?.origin,fetcher=globalThis.fetch,requireAdmin=false,retainViewDuringCheck=false,show,onInvalidated,onUnlocked,onSignOut,onReset,events}){
-  let checking=0,retaining=false,render=()=>{},controller,pending=null,pendingActor=null,pendingToken=null,boundActor=null,boundToken=null;
-  try{
-    controller=createEmailVerification({client,getSession,origin,fetcher,requireAdmin,events,onReset,
-      onState:value=>{if(retaining&&value.phase==='loading')return;if(retaining&&!value.authorized)onInvalidated();render(value);if(!value.authorized&&getSession())show(value);},
-      onInvalidated:()=>{if(!retaining)onInvalidated();},
-      onUnlocked:async({ticket})=>{if(!checking&&ticket())await onUnlocked({ticket});}
-    });
-  }catch{
-    // Deferred native clients or unsupported origins must stop visibly, not skip verification.
-    controller={bind(){onInvalidated();},lock(){onInvalidated();},async prepare(){show();render({phase:'unavailable',busy:false,authorized:false,canVerify:false,message:'Verification is unavailable in this version. Open the Mushavo Budget website to continue.'});return false;},requestCode:async()=>false,verify:async()=>false,manageDevice:async()=>({result:'VERIFICATION_REQUIRED',verified:false}),dispose(){},ticket:()=>()=>false,authorized:false,busy:false};
+const adminRoles=new Set(['super_admin','admin_staff','finance_staff','support_staff']);
+const policy='PASSWORD_ONLY_ALL_USERS';
+// This checks server authorization for the same current Auth actor/token.
+// It never sends mail, reads a browser approval, or grants access from local flags.
+export function createSessionAccess({client,getSession,requireAdmin=false,onState=()=>{},onUnlocked=()=>{},onInvalidated=()=>{},onReset=()=>{}}){
+  let actor=null,token=null,epoch=0,serial=0,busy=false,authorized=false,abort=null;
+  const current=(e,t)=>e===epoch&&t===token&&getSession()?.user?.id===actor&&getSession()?.access_token===t;
+  const emit=(phase,message)=>onState({phase,message,busy,authorized});
+  function invalidate(){serial++;abort?.abort();abort=null;busy=false;authorized=false;onInvalidated();}
+  function bind(session){
+    const id=typeof session?.user?.id==='string'?session.user.id:null,bearer=typeof session?.access_token==='string'?session.access_token:null;
+    if(id!==actor||bearer!==token){epoch++;invalidate();actor=id;token=bearer;emit(id&&bearer?'loading':'unavailable','Please sign in to continue.');}
   }
-  render=attachEmailVerificationView({controller,root,onSignOut});
+  function lock(){epoch++;invalidate();onReset();emit('unavailable','Your sign-in needs to be checked again.');}
+  function ticket(){const e=epoch,t=token,id=serial;return()=>current(e,t)&&id===serial&&authorized;}
+  async function prepare(){
+    bind(getSession());if(busy||!actor||!token)return false;
+    const e=epoch,t=token,id=++serial;authorized=false;onInvalidated();busy=true;abort=new AbortController();const requestAbort=abort,signal=abort.signal;
+    emit('loading','Signing in…');let timer,removeAbort;
+    try{
+      const response=await Promise.race([
+        Promise.resolve().then(()=>{const request=client.rpc('app_session_status');return typeof request?.abortSignal==='function'?request.abortSignal(signal):request;}),
+        new Promise((_,reject)=>{
+          const cancel=()=>reject(Error('STALE_SESSION'));signal.addEventListener('abort',cancel,{once:true});removeAbort=()=>signal.removeEventListener('abort',cancel);
+          timer=setTimeout(()=>{reject(Error('SESSION_UNAVAILABLE'));requestAbort.abort();},8000);
+        })
+      ]);
+      if(!current(e,t)||id!==serial)return false;
+      const s=response?.data;
+      if(response?.error!==null||!s||Array.isArray(s)||Object.keys(s).sort().join(',')!=='admin_authorized,contract,policy,role,session_valid'
+        ||s.contract!==1||s.policy!==policy||typeof s.session_valid!=='boolean'||typeof s.admin_authorized!=='boolean'
+        ||!(s.role===null||adminRoles.has(s.role))||s.admin_authorized!==(s.session_valid&&adminRoles.has(s.role))
+        ||(!s.session_valid&&s.role!==null))throw Error('SESSION_UNAVAILABLE');
+      if(!s.session_valid)throw Error('SESSION_REQUIRED');
+      busy=false;authorized=!requireAdmin||s.admin_authorized;
+      emit(authorized?'authorized':'forbidden',authorized?'Signed in.':'This account cannot open Admin tools.');
+      if(authorized&&current(e,t)&&id===serial)await onUnlocked({ticket:ticket()});
+      return authorized&&current(e,t)&&id===serial;
+    }catch(error){
+      if(current(e,t)&&id===serial){busy=false;authorized=false;onInvalidated();emit('unavailable',error?.message==='SESSION_REQUIRED'?'This account or session is unavailable. Sign in again.':'Your sign-in could not be checked. Try again.');}
+      return false;
+    }finally{
+      clearTimeout(timer);removeAbort?.();
+      if(current(e,t)&&id===serial){busy=false;abort=null;}
+    }
+  }
+  return{bind,lock,prepare,ticket,dispose(){epoch++;invalidate();},get authorized(){return authorized&&!!current(epoch,token);},get busy(){return busy;}};
+}
+export function attachSessionAccessView({controller,root,onSignOut}){
+  const document=root.ownerDocument,element=(tag,text)=>{const node=document.createElement(tag);node.textContent=text;return node;};
+  const title=element('h1','Unable to open your account'),message=element('p','Please try again.'),retry=element('button','Try again'),signout=element('button','Sign out');
+  message.setAttribute('role','status');message.setAttribute('aria-live','polite');retry.type=signout.type='button';
+  root.replaceChildren(title,message,retry,signout);retry.addEventListener('click',()=>{void controller.prepare();});signout.addEventListener('click',()=>{controller.lock();void onSignOut();});
+  return s=>{root.setAttribute('aria-busy',s.busy?'true':'false');message.textContent=s.message||'Please try again.';title.hidden=retry.hidden=signout.hidden=s.phase==='loading'||s.phase==='authorized';retry.disabled=s.busy;signout.disabled=false;};
+}
+export function createSessionEntry({client,getSession,root,requireAdmin=false,retainViewDuringCheck=false,show,onInvalidated,onUnlocked,onSignOut,onReset}){
+  let checking=0,retaining=false,render=()=>{},pending=null,pendingActor=null,pendingToken=null,boundActor=null,boundToken=null;
+  const controller=createSessionAccess({client,getSession,requireAdmin,onReset,
+    onState:value=>{if(retaining&&value.phase==='loading')return;if(retaining&&!value.authorized)onInvalidated();render(value);if(!value.authorized&&getSession())show(value);},
+    onInvalidated:()=>{if(!retaining)onInvalidated();},
+    onUnlocked:async({ticket})=>{if(!checking&&ticket())await onUnlocked({ticket});}
+  });
+  render=attachSessionAccessView({controller,root,onSignOut});
   function bind(session){
     const actor=session?.user?.id||null,token=session?.access_token||null;
     if(actor!==boundActor||token!==boundToken)retaining=false;
@@ -23,18 +69,13 @@ export function createSessionEntry({client,getSession,root,origin=globalThis.loc
   function perform(force){
     const session=getSession(),actor=session?.user?.id,token=session?.access_token;
     if(pending&&(actor!==pendingActor||token!==pendingToken))retaining=false;
-    bind(session);
-    if(pending&&actor===pendingActor&&token===pendingToken)return pending;
+    bind(session);if(pending&&actor===pendingActor&&token===pendingToken)return pending;
     if(!force&&controller.authorized)return Promise.resolve(true);
     retaining=force&&retainViewDuringCheck&&controller.authorized;checking++;pendingActor=actor;pendingToken=token;
     const task=Promise.resolve().then(()=>controller.prepare()).finally(()=>{checking--;if(pending===task){pending=null;retaining=false;}});
     pending=task;return task;
   }
-  return {
-    bind,lock:()=>{retaining=false;controller.lock();},ticket:()=>controller.ticket(),
-    ensure:()=>perform(false),recheck:()=>perform(true),manageDevice:(route,ack)=>controller.manageDevice(route,ack),dispose:()=>controller.dispose(),
-    get authorized(){return controller.authorized;},get busy(){return controller.busy;}
-  };
+  return{bind,lock:()=>{retaining=false;controller.lock();},ticket:()=>controller.ticket(),ensure:()=>perform(false),recheck:()=>perform(true),dispose:()=>controller.dispose(),get authorized(){return controller.authorized;},get busy(){return controller.busy;}};
 }
 
 // Restore original nodes so their listeners survive; remove generated private content.
@@ -54,8 +95,8 @@ export function snapshotPrivateView(node){
   };
 }
 
-// Callback pages can pause a protected step while the user enters a code. This
-// adapter never sends a code by opening the screen, and never adopts a session.
+// Callback operations retain identity isolation and check the normal server session.
+// This adapter never adopts a session or requests any sign-in code.
 export function createAuthCallbackEntry({client,root,origin,fetcher,show,onInvalidated,onSignOut,onVerified=async()=>{},events}) {
   let session=null,pending=null,generation=0,disposed=false;
   const changed=()=>Object.assign(new Error('session_changed'),{code:'session_changed'});
@@ -96,7 +137,7 @@ export function createAuthCallbackEntry({client,root,origin,fetcher,show,onInval
       await completion;
       if(disposed||epoch!==generation||!entry.authorized||session?.user?.id!==actor)throw changed();
     },
-    cancel,lock:()=>entry.lock(),manageDevice:(route,ack)=>entry.manageDevice(route,ack),
+    cancel,lock:()=>entry.lock(),
     dispose(){disposed=true;cancel();entry.dispose();subscription?.unsubscribe();}
   };
 }

@@ -1,6 +1,6 @@
 // Mushavo Budget Business application — Stage 12 pilot and realtime
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
-import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=4";
+import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=5";
 import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
@@ -201,7 +201,7 @@ async function query(label, request) {
   const epoch = businessAuthEpoch,proofTicket=businessEmailEntry.ticket();
   const { data, error } = await request;
   if (epoch !== businessAuthEpoch || !proofTicket()) throw Object.assign(new Error("The active account changed."), {code:"session_changed"});
-  if(error?.message?.includes("EMAIL_VERIFICATION_REQUIRED")){businessEmailEntry.lock();throw Object.assign(new Error("Verify this sign-in before continuing."),{code:"session_changed"});}
+  if(error?.message?.includes("EMAIL_VERIFICATION_REQUIRED")){businessEmailEntry.lock();throw Object.assign(new Error("Your sign-in ended. Sign in again."),{code:"session_changed"});}
   if (error) {
     error.message = `${label}: ${error.message}`;
     throw error;

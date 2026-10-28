@@ -17,10 +17,9 @@ export function safeAuthMessage(error) {
   if (code === 'weak_password') return 'Your new password does not meet the account security rules. Choose a stronger password.';
   if (code === 'same_password') return 'Choose a password different from your current password.';
   if (code === 'current_password_required') return 'Enter your current password to confirm this change.';
-  if (['session_changed', 'identity_mismatch'].includes(code)) return 'The active account changed. Reload and verify the email before continuing.';
+  if (['session_changed', 'identity_mismatch'].includes(code)) return 'The active account changed. Reload and sign in with the intended account.';
   if (['otp_expired', 'link_unavailable', 'session_not_found', 'session_expired'].includes(code)) return 'This link or session is unavailable. Open the newest email or request another link.';
-  if (code === 'email_verification_required') return 'Verify your email code before continuing to your account.';
-  if (code === 'device_trust_unavailable') return "Email confirmed. We couldn't save this browser. Try again.";
+  if (['email_verification_required','application_session_required'].includes(code)) return 'Your sign-in could not be checked. Try signing in again.';
   if (code === 'business_invitation_unavailable') return 'This Business invitation is unavailable. Ask the owner for the latest invitation.';
   return 'The request could not finish. Check your connection and try again.';
 }
@@ -67,8 +66,8 @@ export async function verifiedUser(client, expectedId = null) {
   if (expectedId && data.user.id !== expectedId) throw authError('identity_mismatch');
   return data.user;
 }
-// A provider email link is not an application email-code proof. The optional
-// screen waits for user input; the independent server predicate still decides.
+// The provider link verifies identity; the server independently validates the
+// current confirmed, active Auth session before any application adoption.
 export async function requireVerifiedApplicationSession(client, expectedId, beforeApplication = async () => {}) {
   await beforeApplication(expectedId);
   const before = await client.auth.getSession();
@@ -76,8 +75,8 @@ export async function requireVerifiedApplicationSession(client, expectedId, befo
   const session = before.data?.session;
   if (session?.user?.id !== expectedId || !session.access_token) throw authError('identity_mismatch');
   await verifiedUser(client, expectedId);
-  const proof = await client.rpc('email_gate_current_session_verified');
-  if (proof.error !== null || proof.data !== true) throw authError('email_verification_required');
+  const proof = await client.rpc('app_session_status');
+  if (proof.error !== null || proof.data?.contract !== 1 || proof.data?.policy !== 'PASSWORD_ONLY_ALL_USERS' || proof.data?.session_valid !== true) throw authError('application_session_required');
   const after = await client.auth.getSession();
   if (after.error || after.data?.session?.user?.id !== expectedId || after.data.session.access_token !== session.access_token) throw authError('session_changed');
   return session;

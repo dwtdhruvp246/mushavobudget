@@ -44,7 +44,7 @@
         <section id="adminInviteStatus" class="notice admin-invite-status hidden" role="status" aria-live="polite"></section>
         <section id="adminInviteSummary" class="admin-invite-summary hidden" aria-label="Invitation details"></section>
 
-        <section id="signupEmailVerification" aria-label="Email verification" hidden></section>
+        <section id="signupSessionStatus" aria-label="Sign-in status" hidden></section>
         <button id="signupRetrySetup" type="button" hidden>Retry account verification</button>
         <form id="signupForm" class="form-grid">
           <label class="full" for="signupName">
@@ -122,8 +122,8 @@
 
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
-      import { validateNewPassword, safeAuthMessage, callbackUrl, consumeAuthUrl, createInvitationSignupController } from "./auth-security.js?v=3";
-      import { createAuthCallbackEntry } from "./session-entry.js?v=3";
+      import { validateNewPassword, safeAuthMessage, callbackUrl, consumeAuthUrl, createInvitationSignupController } from "./auth-security.js?v=4";
+      import { createAuthCallbackEntry } from "./session-entry.js?v=5";
 
       const config = window.MUSHAVO_BUDGET_CONFIG || {};
       const pageUrl = new URL(window.location.href);
@@ -160,7 +160,7 @@
       let invitationReady = !isAdminInvite && !isSelfSignupFromInvite;
       let invitation = null;
       let invitationController = null, emailEntry = null, setupInProgress = false, initialising = false;
-      const verificationRoot = document.querySelector("#signupEmailVerification");
+      const verificationRoot = document.querySelector("#signupSessionStatus");
       const retrySetup = document.querySelector("#signupRetrySetup");
       const accountAcknowledgement = document.querySelector("#signupAccountAcknowledgement");
 
@@ -469,7 +469,7 @@
 
         if (isAdminInvite || isSelfSignupFromInvite) {
           emailEntry = createAuthCallbackEntry({client:supabase,root:verificationRoot,origin:window.location.origin,fetcher:window.fetch.bind(window),
-            show:()=>{form.hidden=true;inviteSummary.classList.add("hidden");verificationRoot.hidden=false;showInviteStatus("Verify this account with an email code to continue.");},
+            show:()=>{form.hidden=true;inviteSummary.classList.add("hidden");verificationRoot.hidden=false;showInviteStatus("Checking your sign-in…");},
             onInvalidated:()=>{},onSignOut:()=>leaveInvitationSetup(supabase)
           });
           invitationController = createInvitationSignupController(supabase, {

@@ -1,6 +1,6 @@
 // Mushavo Budget authenticated application — release 83
 import { createAdminPlans } from "./admin-plans.js?v=2";
-import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=4";
+import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=5";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
 
@@ -1171,7 +1171,7 @@ async function query(label, promise) {
       })
     ]);
     if (epoch !== authDataEpoch || (proofTicket && !proofTicket())) throw Object.assign(new Error("The active account changed."), { code: "session_changed" });
-    if (error?.message?.includes("EMAIL_VERIFICATION_REQUIRED")) { emailEntry.lock(); throw Object.assign(new Error("Verify this sign-in before continuing."), {code:"session_changed"}); }
+    if (error?.message?.includes("EMAIL_VERIFICATION_REQUIRED")) { emailEntry.lock(); throw Object.assign(new Error("Your sign-in ended. Sign in again."), {code:"session_changed"}); }
     if (error) {
       console.warn(`Request failed: ${label}`);
       throw Object.assign(new Error(error.message), { code: error.code, status: error.status });
@@ -6224,9 +6224,6 @@ const emailEntry=createSessionEntry({client:supabase,getSession:()=>state.manual
 const adminSession=createSessionEntry({client:supabase,getSession:()=>state.manualSignInRequired?null:state.session,root:views.adminSession,requireAdmin:true,retainViewDuringCheck:true,
   show:()=>setView(emailEntry.authorized?'adminSession':'emailVerification'),onInvalidated:()=>clearAdministrativeData(),
   onUnlocked:async({ticket})=>{if(ticket())await resumeAdminAfterVerification();},onSignOut:()=>signOutSafely()
-});
-document.querySelector('[data-manage-admin-verification]').addEventListener('click',()=> {
-  adminSession.lock();clearAdministrativeData();setView('adminSession');void resumeAdminAfterVerification();
 });
 function clearApplicationPrivateData(){
   stopRealtime();pushRefreshSequence++;analyticsRequestId++;adminDetailsSequence++;adminPlansWorkbench.reset();

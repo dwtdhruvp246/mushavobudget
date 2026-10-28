@@ -21,7 +21,7 @@ function harness(flow='recover') {
     async getUser(){calls.push(['getUser']);return getUserError?{error:getUserError}:{data:{user:current}};},
     async updateUser(args){calls.push(['updateUser',args]);return {error:updateError};},
     async reauthenticate(){calls.push(['reauthenticate']);return {error:null};}
-  },async rpc(name){calls.push(['rpc',name]);return {data:name==='email_gate_current_session_verified'?true:rows,error:null};}};
+  },async rpc(name){calls.push(['rpc',name]);return {data:name==='app_session_status'?{contract:1,policy:'PASSWORD_ONLY_ALL_USERS',session_valid:true,admin_authorized:false,role:null}:rows,error:null};}};
   const material={flow,invitation:invitationId,access_token:'synthetic-access',refresh_token:'synthetic-refresh',type:flow==='recover'?'recovery':flow==='confirm'?'signup':flow==='business-new'?'invite':'magiclink'};
   return {client,material,calls,controller:createLinkController(client,material),setUser:u=>current=u,setRows:r=>rows=r,setUpdateError:e=>updateError=e,setLinkError:e=>linkError=e,setUserError:e=>getUserError=e};
 }

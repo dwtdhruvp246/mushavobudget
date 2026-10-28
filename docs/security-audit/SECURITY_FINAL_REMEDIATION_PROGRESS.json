@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-28",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_PASSWORD_CHANGE_MISMATCH_IDENTIFIED_CORRECTED_INPUT_RETRY_PENDING",
+  "status": "FR2_BATCH_W_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "7db8de3be17986a0709d306429be2eb1c0e69e4a",
+  "source_parent_commit": "f48f7543d3543b075db470dc1c742a6cceb61f40",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE269",
+  "latest_evidence": "FRE270",
   "batches": [
     {
       "id": "FR.1",
@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W53_PASSWORD_CHANGE_MISMATCH_VALIDATION_AND_RETRY",
+  "next_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4623,7 +4623,7 @@
     "Z"
   ],
   "FR2_batch_w": {
-    "stage_step": "FR.2.5.W53_PASSWORD_CHANGE_MISMATCH_VALIDATION_AND_RETRY",
+    "stage_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
     "status": "IN_PROGRESS",
     "phase": "CONFIRMATION_RETURN_OWNER_WINDOWS_ZIP_COMPLETE_NEW_DEPLOYMENT_URL_RECEIVED_BROWSER_ACCEPTANCE_PENDING",
     "required_AU_cases": 31,
@@ -4637,7 +4637,7 @@
     "full_lettered_batch_W_complete": false,
     "owner_terminal_action_required": false,
     "owner_SQL_action_required": false,
-    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_CHANGE_MISMATCH_RETRY.md",
+    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NEW_PASSWORD_SIGNIN_CHECK.md",
     "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
     "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
     "entry": "scripts/review-fr-2-batch-w-dashboard.ps1",
@@ -4723,7 +4723,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "The owner confirmed Passwords do not match above the still-enabled form. Clear and re-enter identical private new-password/confirmation values (at least eight characters), leave the optional code blank and Save once on the same controlled staging account. Read the top status; after explicit success sign out/reload and sign in with the new password. Report the message/outcome only. No code, SQL, ZIP, upload, mail or settings action. Mismatch visibility remains deferred by the owner.",
+    "next_action": "Password save is owner-reported successful without a verification code for this attempt. Do not save or request a code again. On the same f8c4b8d6 staging origin, return to the app, sign out if still signed in, reload to the sign-in form and sign in once with the same test email and new private password. Return the form/dashboard outcome or displayed error only. No SQL, upload, reset or mail action.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4740,7 +4740,7 @@
     "policy_new_SDK_cases": 2,
     "policy_existing_affected_Auth_cases": 40,
     "owner_dashboard_settings_action_required": false,
-    "owner_next_setting_changes": "NONE; ONE MATCHING-INPUT PASSWORD SAVE RETRY ON CONTROLLED STAGING ACCOUNT",
+    "owner_next_setting_changes": "NONE; ONE NEW_PASSWORD_SIGNIN_CHECK_AFTER_SUCCESSFUL_SAVE",
     "settings_write_handoff_ready_not_applied": false,
     "settings_write_or_readback_owner_receipt_received": true,
     "owner_no_terminal_rerun_required": true,
@@ -4863,7 +4863,7 @@
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
     "expected_nonsecret_input": "Safe local preparation JSON/combined exit code, one-secret-per-staging-environment save confirmation and new deployment URL; never the private packet or recipient clipboard JSON",
-    "next_step": "FR.2.5.W53_PASSWORD_CHANGE_MISMATCH_VALIDATION_AND_RETRY",
+    "next_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -5334,10 +5334,10 @@
       "repeat_preparation_upload_or_speed_check_requested": false
     },
     "signed_in_password_change": {
-      "stage_step": "FR.2.5.W53_PASSWORD_CHANGE_MISMATCH_VALIDATION_AND_RETRY",
-      "status": "MISMATCH_REJECTED_BEFORE_WRITE_CORRECTED_INPUT_RETRY_PENDING",
+      "stage_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
+      "status": "OWNER_PASSWORD_SAVE_PASS_NEW_PASSWORD_SIGNIN_PENDING",
       "existing_case": "AU03.04",
-      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_CHANGE_MISMATCH_RETRY.md",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NEW_PASSWORD_SIGNIN_CHECK.md",
       "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
       "deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
       "change_password_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/auth.html?flow=change",
@@ -5348,16 +5348,19 @@
       "new_password_value_or_code_requested_in_chat": false,
       "provider_or_email_dispatch_requested": false,
       "runtime_or_SQL_change_required": false,
-      "hosted_save_result_received": false,
+      "hosted_save_result_received": true,
       "hosted_acceptance": false,
       "owner_mismatch_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-mismatch.json",
       "owner_button_still_clickable": true,
       "owner_message": "Passwords do not match",
       "mismatch_rejection_scoped_owner_PASS": true,
-      "hosted_password_save_success_received": false,
-      "maximum_corrected_save_clicks": 1
+      "hosted_password_save_success_received": true,
+      "maximum_corrected_save_clicks": 1,
+      "owner_success_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json",
+      "owner_code_required_this_attempt": false,
+      "new_password_signin_received": false
     },
-    "owner_password_write_requested": true,
+    "owner_password_write_requested": false,
     "password_change_mismatch_retry": {
       "stage_step": "FR.2.5.W53_PASSWORD_CHANGE_MISMATCH_VALIDATION_AND_RETRY",
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-mismatch.json",
@@ -5366,7 +5369,23 @@
       "provider_update_not_reached_by_reviewed_mismatch_path": true,
       "password_or_code_collected": false,
       "UI_highlighting_remains_deferred": true,
-      "runtime_change_required_now": false
+      "runtime_change_required_now": false,
+      "status": "RESOLVED_BY_OWNER_CORRECTED_INPUT_PASSWORD_SAVE_SUCCEEDED",
+      "owner_success_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json",
+      "further_password_save_requested": false
+    },
+    "new_password_signin_check": {
+      "stage_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
+      "existing_case": "AU03.04",
+      "status": "OWNER_BROWSER_PENDING",
+      "owner_save_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NEW_PASSWORD_SIGNIN_CHECK.md",
+      "expected_deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+      "new_private_password_chosen_by_owner": true,
+      "maximum_initial_signin_attempts": 1,
+      "no_new_password_save_or_verification_code_requested": true,
+      "new_public_AU_cases_added": 0,
+      "hosted_acceptance": false
     }
   },
   "owner_controlled_test_inbox_information_required": false,
@@ -5471,18 +5490,19 @@
     "id": "AU03.04",
     "group": "AU03",
     "title": "Signed-in password change and retry",
-    "status": "MISMATCH_VALIDATION_CONFIRMED_CORRECTED_INPUT_RETRY_PENDING",
+    "status": "OWNER_SAVE_PASS_NEW_PASSWORD_SIGNIN_CHECK_PENDING",
     "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
     "settings_inspection_satisfies_case": false,
-    "stage_step": "FR.2.5.W53_PASSWORD_CHANGE_MISMATCH_VALIDATION_AND_RETRY",
+    "stage_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
     "variant": "One initial current-account password save and new-password sign-in; provider failure/retry/reauthentication variants only as observed.",
-    "owner_action_required_now": "The owner confirmed Passwords do not match above the still-enabled form. Clear and re-enter identical private new-password/confirmation values (at least eight characters), leave the optional code blank and Save once on the same controlled staging account. Read the top status; after explicit success sign out/reload and sign in with the new password. Report the message/outcome only. No code, SQL, ZIP, upload, mail or settings action. Mismatch visibility remains deferred by the owner.",
+    "owner_action_required_now": "Password save is owner-reported successful without a verification code for this attempt. Do not save or request a code again. On the same f8c4b8d6 staging origin, return to the app, sign out if still signed in, reload to the sign-in form and sign in once with the same test email and new private password. Return the form/dashboard outcome or displayed error only. No SQL, upload, reset or mail action.",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
     "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_CHANGE_MISMATCH_RETRY.md",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NEW_PASSWORD_SIGNIN_CHECK.md",
     "hosted_acceptance": false,
-    "owner_validation_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-mismatch.json"
+    "owner_validation_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-mismatch.json",
+    "owner_password_save_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json"
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -5581,13 +5601,17 @@
       "signout_reload_separately_reported": false
     },
     "AU03.04": {
-      "status": "PARTIAL_OWNER_REPORTED_MISMATCH_REJECTION_POSITIVE_SAVE_PENDING",
+      "status": "OWNER_PASSWORD_SAVE_SCOPED_PASS_NEW_PASSWORD_SIGNIN_PENDING",
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-mismatch.json",
       "local_mismatch_feedback_observed": true,
-      "password_saved_or_new_password_signin_accepted": false,
+      "password_saved_or_new_password_signin_accepted": true,
       "hosted_provider_failure_or_retry_accepted": false,
       "full_case_acceptance": false,
-      "new_public_AU_cases_added": 0
+      "new_public_AU_cases_added": 0,
+      "owner_success_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json",
+      "password_save_owner_PASS": true,
+      "verification_code_required_this_attempt": false,
+      "new_password_signin_accepted": false
     }
   },
   "FR2_email_recovery_request_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_WRONG_PASSWORD_PASS_AND_RECOVERY_REQUEST.md",
@@ -6360,10 +6384,10 @@
     "repeat_preparation_upload_or_speed_check_requested": false
   },
   "signed_in_password_change": {
-    "stage_step": "FR.2.5.W53_PASSWORD_CHANGE_MISMATCH_VALIDATION_AND_RETRY",
-    "status": "MISMATCH_REJECTED_BEFORE_WRITE_CORRECTED_INPUT_RETRY_PENDING",
+    "stage_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
+    "status": "OWNER_PASSWORD_SAVE_PASS_NEW_PASSWORD_SIGNIN_PENDING",
     "existing_case": "AU03.04",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_CHANGE_MISMATCH_RETRY.md",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NEW_PASSWORD_SIGNIN_CHECK.md",
     "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
     "deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
     "change_password_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/auth.html?flow=change",
@@ -6374,14 +6398,17 @@
     "new_password_value_or_code_requested_in_chat": false,
     "provider_or_email_dispatch_requested": false,
     "runtime_or_SQL_change_required": false,
-    "hosted_save_result_received": false,
+    "hosted_save_result_received": true,
     "hosted_acceptance": false,
     "owner_mismatch_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-mismatch.json",
     "owner_button_still_clickable": true,
     "owner_message": "Passwords do not match",
     "mismatch_rejection_scoped_owner_PASS": true,
-    "hosted_password_save_success_received": false,
-    "maximum_corrected_save_clicks": 1
+    "hosted_password_save_success_received": true,
+    "maximum_corrected_save_clicks": 1,
+    "owner_success_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json",
+    "owner_code_required_this_attempt": false,
+    "new_password_signin_received": false
   },
   "password_change_mismatch_retry": {
     "stage_step": "FR.2.5.W53_PASSWORD_CHANGE_MISMATCH_VALIDATION_AND_RETRY",
@@ -6391,6 +6418,22 @@
     "provider_update_not_reached_by_reviewed_mismatch_path": true,
     "password_or_code_collected": false,
     "UI_highlighting_remains_deferred": true,
-    "runtime_change_required_now": false
+    "runtime_change_required_now": false,
+    "status": "RESOLVED_BY_OWNER_CORRECTED_INPUT_PASSWORD_SAVE_SUCCEEDED",
+    "owner_success_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json",
+    "further_password_save_requested": false
+  },
+  "new_password_signin_check": {
+    "stage_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
+    "existing_case": "AU03.04",
+    "status": "OWNER_BROWSER_PENDING",
+    "owner_save_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NEW_PASSWORD_SIGNIN_CHECK.md",
+    "expected_deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+    "new_private_password_chosen_by_owner": true,
+    "maximum_initial_signin_attempts": 1,
+    "no_new_password_save_or_verification_code_requested": true,
+    "new_public_AU_cases_added": 0,
+    "hosted_acceptance": false
   }
 }

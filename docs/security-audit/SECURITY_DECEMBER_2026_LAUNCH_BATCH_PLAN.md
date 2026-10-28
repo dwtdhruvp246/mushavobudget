@@ -1,3 +1,5 @@
+> **28 October 2026 — launch planning reset requested by the owner.** Use the [current launch delivery plan](MUSHAVO_BUDGET_LAUNCH_DELIVERY_PLAN.md) for the complete remaining scope, seven deliverables, grouped W packs, capacity assumptions, initial time ranges and conditional calendar. December remains the recorded target, not a promise. Web/PWA-first is a recommendation, not an approved feature/channel exclusion. Original requirements and all earlier receipts below remain preserved.
+
 # December 2026 launch preparation — related tested batches
 
 Owner direction recorded23October2026: move the earlier November target to **December2026**, continue existing work, and combine related changes/checks to reduce repeated setup and handoffs. No particular launch day or equal completion date for web,Google Play and Apple App Store is confirmed. December is a planning target; each channel still requires its acceptance evidence. Main implementation Stage3remains current.

@@ -5,11 +5,11 @@
   "status": "FR2_BATCH_W_SHARED_NORMAL_TAB_CYCLE_OWNER_PASS_CURRENT_ORIGIN_RECOVERY_ISOLATION_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "34a5e7004b30cbc2b7e80d6612c1dab37410e43a",
+  "source_parent_commit": "ca6eb643adac1252c35f9d7392a2df9be89334ee",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE285",
+  "latest_evidence": "FRE286",
   "batches": [
     {
       "id": "FR.1",
@@ -7172,5 +7172,39 @@
     "new_public_AU_cases_added": 0,
     "full_lettered_batch_W_complete": false,
     "hosted_acceptance": false
+  },
+  "launch_delivery_plan": {
+    "path": "docs/security-audit/MUSHAVO_BUDGET_LAUNCH_DELIVERY_PLAN.md",
+    "version": 1,
+    "date": "2026-10-28",
+    "status": "INITIAL_ESTIMATED_PLAN_CHANNEL_AND_CAPACITY_UNCONFIRMED",
+    "owner_request": "Clear finite remaining-to-launch plan and possible duration",
+    "current_case_handoff_remains_pending": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
+    "existing_target_month": "2026-12",
+    "exact_launch_day_or_simultaneous_channels_confirmed": false,
+    "recommended_scenario": "WEB_PWA_FIRST_PROPOSED_NOT_SELECTED",
+    "scope_removed_or_security_acceptance_changed": false,
+    "web_base_workdays": [
+      23,
+      38
+    ],
+    "web_with_reserve_workdays": [
+      29,
+      48
+    ],
+    "full_roadmap_base_workdays": [
+      41,
+      67
+    ],
+    "full_with_reserve_workdays": [
+      52,
+      84
+    ],
+    "external_waits_included": false,
+    "estimate_confidence": "LOW_INITIAL_PLANNING_ALLOWANCE",
+    "capacity_assumption": "One engineering stream, six productive hours/day, five days/week; prompt owner feedback",
+    "reestimate_after_grouped_work_sessions": 2,
+    "original_AU_case_count": 31,
+    "additional_AU_cases": 0
   }
 }

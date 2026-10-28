@@ -9732,6 +9732,38 @@
       "production_or_native_changed": false,
       "APK_update_deferred": true,
       "findings_closed": []
+    },
+    {
+      "id": "FRE286",
+      "date": "2026-10-28",
+      "stage_step": "LAUNCH_DELIVERY_PLANNING_RESET",
+      "result": "OWNER_REQUESTED_CLEAR_REMAINING_LAUNCH_SCOPE_AND_DURATION_INITIAL_PLAN_WRITTEN",
+      "source_parent_commit": "ca6eb643adac1252c35f9d7392a2df9be89334ee",
+      "plan": "docs/security-audit/MUSHAVO_BUDGET_LAUNCH_DELIVERY_PLAN.md",
+      "seven_delivery_groups_map_existing_requirements": true,
+      "estimated_web_with_reserve_workdays": [
+        29,
+        48
+      ],
+      "estimated_full_with_reserve_workdays": [
+        52,
+        84
+      ],
+      "estimate_is_low_confidence_planning_judgment": true,
+      "owner_launch_channel_or_daily_capacity_assumed_confirmed": false,
+      "external_waits_included": false,
+      "policy_or_product_scope_changed": false,
+      "old_password_only_owner_decision_preserved": true,
+      "current_recovery_save_result_received": false,
+      "new_runtime_changes": 0,
+      "new_tests_run": 0,
+      "new_hosted_Auth_SQL_settings_email_or_deployment_actions": 0,
+      "new_AU_cases_added": 0,
+      "full_lettered_batch_W_complete": false,
+      "hosted_acceptance": false,
+      "production_or_native_changed": false,
+      "APK_update_deferred": true,
+      "findings_closed": []
     }
   ],
   "prior_stage_evidence_preserved": true,

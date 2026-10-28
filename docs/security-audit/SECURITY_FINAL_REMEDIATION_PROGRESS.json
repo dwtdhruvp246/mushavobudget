@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-28",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_CROSS_TAB_SIGNOUT_SIGNIN_RETURN_REPORTED_TAB_TIMING_PENDING",
+  "status": "FR2_BATCH_W_AUTOMATIC_CROSS_TAB_SIGNOUT_OWNER_PASS_DIFFERENT_ACCOUNT_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "1dfae48ba38f04cd1aed035c205a9aa258266d7c",
+  "source_parent_commit": "f22aed81d14ca656e33b9912d17d516178a9aaed",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE273",
+  "latest_evidence": "FRE274",
   "batches": [
     {
       "id": "FR.1",
@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W57_CROSS_TAB_SIGNOUT_RETURN_REPORTED_TIMING_CLARIFICATION",
+  "next_step": "FR.2.5.W58_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_CHECK",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4623,7 +4623,7 @@
     "Z"
   ],
   "FR2_batch_w": {
-    "stage_step": "FR.2.5.W57_CROSS_TAB_SIGNOUT_RETURN_REPORTED_TIMING_CLARIFICATION",
+    "stage_step": "FR.2.5.W58_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_CHECK",
     "status": "IN_PROGRESS",
     "phase": "CONFIRMATION_RETURN_OWNER_WINDOWS_ZIP_COMPLETE_NEW_DEPLOYMENT_URL_RECEIVED_BROWSER_ACCEPTANCE_PENDING",
     "required_AU_cases": 31,
@@ -4637,7 +4637,7 @@
     "full_lettered_batch_W_complete": false,
     "owner_terminal_action_required": false,
     "owner_SQL_action_required": false,
-    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CROSS_TAB_SIGNOUT_OBSERVATION.md",
+    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_DIFFERENT_ACCOUNT_TAB_CHECK.md",
     "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
     "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
     "entry": "scripts/review-fr-2-batch-w-dashboard.ps1",
@@ -4723,7 +4723,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "Clarify the already-performed cross-tab signout observation: did original dashboard tab A switch to sign-in automatically before its reload, or was sign-in seen only after reloading? Do not repeat signout/login/reload to answer; report the observed timing or that it was not noticed. Return-to-sign-in is an expected owner-reported UI outcome, with automatic old-dashboard clearing and persistence after reload not separately established. No password, code, account, SQL, settings, deployment or provider action.",
+    "next_action": "Keep tab A on sign-in following the passed cross-tab signout. In the existing same-origin normal tab B, sign in once with a different existing confirmed staging test account controlled by the owner. Confirm B displays that account dashboard with no previous-account name/data, and return to A without refreshing or submitting sign-in: A should stay on sign-in. Report those outcomes or the displayed error. If there is no second controlled account, report that blocker; do not create an account or request a confirmation/recovery message for this check. No code, password change, SQL, settings, upload, forced network failure or token manipulation.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4863,7 +4863,7 @@
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
     "expected_nonsecret_input": "Safe local preparation JSON/combined exit code, one-secret-per-staging-environment save confirmation and new deployment URL; never the private packet or recipient clipboard JSON",
-    "next_step": "FR.2.5.W57_CROSS_TAB_SIGNOUT_RETURN_REPORTED_TIMING_CLARIFICATION",
+    "next_step": "FR.2.5.W58_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_CHECK",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -5270,7 +5270,7 @@
       "prior_failure_is_historical": true,
       "corrected_install_success_received": true
     },
-    "owner_browser_action_required": false,
+    "owner_browser_action_required": true,
     "password_signin_backend_installation": {
       "stage_step": "FR.2.5.W50_PASSWORD_SIGNIN_INSTALLED_BROWSER_CHECK",
       "status": "OWNER_BACKEND_INSTALL_PASS_BROWSER_ACCEPTANCE_PENDING",
@@ -5416,7 +5416,7 @@
     },
     "cross_tab_signout_check": {
       "stage_step": "FR.2.5.W56_SAVED_SESSION_RELOAD_PASS_CROSS_TAB_SIGNOUT_CHECK",
-      "status": "OWNER_SIGNIN_RETURN_REPORTED_TAB_TIMING_PENDING",
+      "status": "OWNER_AUTOMATIC_ORIGINAL_TAB_SIGNOUT_BEFORE_REFRESH_PASS",
       "existing_case": "AU05.06",
       "title": "Account switch with in-flight/Business UI clearing",
       "variant": "Ordinary same-origin two-tab signout broadcast and clearing of the old dashboard",
@@ -5434,14 +5434,37 @@
       "hosted_acceptance": false,
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-cross-tab-signin-return.json",
       "owner_reported_return_to_signin": true,
-      "automatic_tab_A_transition_verified": false,
+      "automatic_tab_A_transition_verified": true,
       "after_reload_persistence_separately_verified": false,
       "full_case_acceptance": false,
-      "observation_clarification_required": true,
+      "observation_clarification_required": false,
       "new_browser_mutation_requested": false,
-      "repeat_requested": false
+      "repeat_requested": false,
+      "owner_automatic_signout_receipt": "docs/security-audit/security-fr-2-batch-w-owner-automatic-cross-tab-signout-pass.json",
+      "automatic_tab_A_transition_evidence_scope": "OWNER_EXPLICIT_REPORT"
     },
-    "owner_observation_clarification_required": true
+    "owner_observation_clarification_required": false,
+    "different_account_tab_check": {
+      "stage_step": "FR.2.5.W58_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_CHECK",
+      "status": "DIFFERENT_ACCOUNT_MANUAL_TAB_ISOLATION_OWNER_PENDING",
+      "existing_case": "AU05.06",
+      "title": "Account switch with in-flight/Business UI clearing",
+      "variant": "Different existing account in tab B; manually signed-out tab A stays on sign-in",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_DIFFERENT_ACCOUNT_TAB_CHECK.md",
+      "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
+      "expected_deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+      "same_origin_and_normal_browser_profile_required": true,
+      "second_existing_confirmed_controlled_account_required": true,
+      "maximum_signin_attempts_requested": 1,
+      "new_signup_or_email_request_requested": false,
+      "tab_A_should_remain_signed_out_without_submission": true,
+      "password_or_code_requested_in_chat": false,
+      "runtime_SQL_or_deployment_change_required": false,
+      "hosted_result_received": false,
+      "in_flight_Business_or_failure_variants_accepted": false,
+      "new_public_AU_cases_added": 0,
+      "hosted_acceptance": false
+    }
   },
   "owner_controlled_test_inbox_information_required": false,
   "FR2_email_persistent_browser_trust": {
@@ -5545,18 +5568,18 @@
     "id": "AU05.06",
     "group": "AU05",
     "title": "Account switch with in-flight/Business UI clearing",
-    "status": "OWNER_SIGNIN_RETURN_REPORTED_TAB_TIMING_PENDING",
+    "status": "DIFFERENT_ACCOUNT_MANUAL_TAB_ISOLATION_OWNER_PENDING",
     "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
     "settings_inspection_satisfies_case": false,
-    "stage_step": "FR.2.5.W57_CROSS_TAB_SIGNOUT_RETURN_REPORTED_TIMING_CLARIFICATION",
-    "variant": "Ordinary same-origin two-tab signout broadcast and clearing of the old dashboard",
-    "owner_action_required_now": "Clarify the already-performed cross-tab signout observation: did original dashboard tab A switch to sign-in automatically before its reload, or was sign-in seen only after reloading? Do not repeat signout/login/reload to answer; report the observed timing or that it was not noticed. Return-to-sign-in is an expected owner-reported UI outcome, with automatic old-dashboard clearing and persistence after reload not separately established. No password, code, account, SQL, settings, deployment or provider action.",
+    "stage_step": "FR.2.5.W58_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_CHECK",
+    "variant": "Different existing account in tab B; manually signed-out tab A stays on sign-in",
+    "owner_action_required_now": "Keep tab A on sign-in following the passed cross-tab signout. In the existing same-origin normal tab B, sign in once with a different existing confirmed staging test account controlled by the owner. Confirm B displays that account dashboard with no previous-account name/data, and return to A without refreshing or submitting sign-in: A should stay on sign-in. Report those outcomes or the displayed error. If there is no second controlled account, report that blocker; do not create an account or request a confirmation/recovery message for this check. No code, password change, SQL, settings, upload, forced network failure or token manipulation.",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
     "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CROSS_TAB_SIGNOUT_OBSERVATION.md",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_DIFFERENT_ACCOUNT_TAB_CHECK.md",
     "hosted_acceptance": false,
-    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-cross-tab-signin-return.json"
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-automatic-cross-tab-signout-pass.json"
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -5688,18 +5711,20 @@
     "AU05.06": {
       "id": "AU05.06",
       "title": "Account switch with in-flight/Business UI clearing",
-      "status": "PARTIAL_OWNER_SIGNIN_RETURN_REPORTED_CROSS_TAB_TIMING_PENDING",
+      "status": "PARTIAL_OWNER_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_PENDING",
       "variant": "Ordinary same-origin two-tab signout broadcast and clearing of the old dashboard",
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-cross-tab-signin-return.json",
       "owner_reported_expected_signin_return": true,
-      "automatic_original_tab_transition_verified": false,
+      "automatic_original_tab_transition_verified": true,
       "after_reload_persistence_separately_verified": false,
       "different_user_in_flight_Business_or_failure_variants_accepted": false,
       "server_JWT_revocation_accepted": false,
       "full_case_acceptance": false,
       "frozen_definition_changed": false,
       "new_public_AU_cases_added": 0,
-      "repeat_requested": false
+      "repeat_requested": false,
+      "automatic_original_tab_transition_evidence_scope": "OWNER_EXPLICIT_REPORT",
+      "owner_automatic_signout_receipt": "docs/security-audit/security-fr-2-batch-w-owner-automatic-cross-tab-signout-pass.json"
     }
   },
   "FR2_email_recovery_request_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_WRONG_PASSWORD_PASS_AND_RECOVERY_REQUEST.md",
@@ -6082,7 +6107,7 @@
     "new_runtime_patch_requested_during_readiness_diagnosis": true,
     "signout_entry_source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51"
   },
-  "owner_browser_action_required": false,
+  "owner_browser_action_required": true,
   "owner_SQL_action_condition": "None: backend and accepted frontend remain unchanged.",
   "signout_entry": {
     "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
@@ -6554,7 +6579,7 @@
   "owner_password_write_requested": false,
   "cross_tab_signout_check": {
     "stage_step": "FR.2.5.W56_SAVED_SESSION_RELOAD_PASS_CROSS_TAB_SIGNOUT_CHECK",
-    "status": "OWNER_SIGNIN_RETURN_REPORTED_TAB_TIMING_PENDING",
+    "status": "OWNER_AUTOMATIC_ORIGINAL_TAB_SIGNOUT_BEFORE_REFRESH_PASS",
     "existing_case": "AU05.06",
     "title": "Account switch with in-flight/Business UI clearing",
     "variant": "Ordinary same-origin two-tab signout broadcast and clearing of the old dashboard",
@@ -6572,12 +6597,35 @@
     "hosted_acceptance": false,
     "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-cross-tab-signin-return.json",
     "owner_reported_return_to_signin": true,
-    "automatic_tab_A_transition_verified": false,
+    "automatic_tab_A_transition_verified": true,
     "after_reload_persistence_separately_verified": false,
     "full_case_acceptance": false,
-    "observation_clarification_required": true,
+    "observation_clarification_required": false,
     "new_browser_mutation_requested": false,
-    "repeat_requested": false
+    "repeat_requested": false,
+    "owner_automatic_signout_receipt": "docs/security-audit/security-fr-2-batch-w-owner-automatic-cross-tab-signout-pass.json",
+    "automatic_tab_A_transition_evidence_scope": "OWNER_EXPLICIT_REPORT"
   },
-  "owner_observation_clarification_required": true
+  "owner_observation_clarification_required": false,
+  "different_account_tab_check": {
+    "stage_step": "FR.2.5.W58_AUTOMATIC_CROSS_TAB_SIGNOUT_PASS_DIFFERENT_ACCOUNT_CHECK",
+    "status": "DIFFERENT_ACCOUNT_MANUAL_TAB_ISOLATION_OWNER_PENDING",
+    "existing_case": "AU05.06",
+    "title": "Account switch with in-flight/Business UI clearing",
+    "variant": "Different existing account in tab B; manually signed-out tab A stays on sign-in",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_DIFFERENT_ACCOUNT_TAB_CHECK.md",
+    "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
+    "expected_deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+    "same_origin_and_normal_browser_profile_required": true,
+    "second_existing_confirmed_controlled_account_required": true,
+    "maximum_signin_attempts_requested": 1,
+    "new_signup_or_email_request_requested": false,
+    "tab_A_should_remain_signed_out_without_submission": true,
+    "password_or_code_requested_in_chat": false,
+    "runtime_SQL_or_deployment_change_required": false,
+    "hosted_result_received": false,
+    "in_flight_Business_or_failure_variants_accepted": false,
+    "new_public_AU_cases_added": 0,
+    "hosted_acceptance": false
+  }
 }

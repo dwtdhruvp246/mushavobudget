@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-28",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_PASSWORD_SIGNIN_DIRECT_DASHBOARD_OWNER_PASS_FAST_STARTUP_READY_NOT_DEPLOYED",
+  "status": "FR2_BATCH_W_FAST_SIGNIN_OWNER_ACCEPTED_SIGNED_IN_PASSWORD_CHANGE_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "3e5f04e429cc903f6837912b5345fd5068fad5a7",
+  "source_parent_commit": "3c3072ed03c98ec0a854fe593b0eda79003e5d56",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE267",
+  "latest_evidence": "FRE268",
   "batches": [
     {
       "id": "FR.1",
@@ -1726,7 +1726,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": true,
+  "owner_terminal_action_required": false,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W51_PASSWORD_SIGNIN_FASTER_STARTUP",
+  "next_step": "FR.2.5.W52_FAST_SIGNIN_ACCEPTED_SIGNED_IN_PASSWORD_CHANGE",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4623,7 +4623,7 @@
     "Z"
   ],
   "FR2_batch_w": {
-    "stage_step": "FR.2.5.W51_PASSWORD_SIGNIN_FASTER_STARTUP",
+    "stage_step": "FR.2.5.W52_FAST_SIGNIN_ACCEPTED_SIGNED_IN_PASSWORD_CHANGE",
     "status": "IN_PROGRESS",
     "phase": "CONFIRMATION_RETURN_OWNER_WINDOWS_ZIP_COMPLETE_NEW_DEPLOYMENT_URL_RECEIVED_BROWSER_ACCEPTANCE_PENDING",
     "required_AU_cases": 31,
@@ -4635,9 +4635,9 @@
       "AU02.05"
     ],
     "full_lettered_batch_W_complete": false,
-    "owner_terminal_action_required": true,
+    "owner_terminal_action_required": false,
     "owner_SQL_action_required": false,
-    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_FAST_SIGNIN_HANDOFF.md",
+    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNED_IN_PASSWORD_CHANGE.md",
     "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
     "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
     "entry": "scripts/review-fr-2-batch-w-dashboard.ps1",
@@ -4723,7 +4723,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "Prepare the frontend-only fast-signin ZIP from the existing password-signin ZIP using the pinned command. After exit 0 upload mushavo-fast-signin-staging.zip to staging, check direct password dashboard entry/loading and Sign out/reload, and return the new deployment URL. No SQL, email code, recipient or acceptance-window action.",
+    "next_action": "On the accepted f8c4b8d6 deployment, while signed in as the same controlled staging test account, open auth.html?flow=change and confirm the displayed identity. Enter current password and a different private new password of at least eight characters twice; leave the optional code blank and save once. Report the success/error message. After success sign out/reload and sign in with the new password. No SQL, rebuild, upload, custom sign-in code or email dispatch for this initial attempt.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4740,7 +4740,7 @@
     "policy_new_SDK_cases": 2,
     "policy_existing_affected_Auth_cases": 40,
     "owner_dashboard_settings_action_required": false,
-    "owner_next_setting_changes": "NONE; FRONTEND_ONLY_STARTUP_UPDATE",
+    "owner_next_setting_changes": "NONE; ONE PRIVATE SIGNED_IN_PASSWORD_CHANGE_ON_CONTROLLED_STAGING_ACCOUNT",
     "settings_write_handoff_ready_not_applied": false,
     "settings_write_or_readback_owner_receipt_received": true,
     "owner_no_terminal_rerun_required": true,
@@ -4863,7 +4863,7 @@
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
     "expected_nonsecret_input": "Safe local preparation JSON/combined exit code, one-secret-per-staging-environment save confirmation and new deployment URL; never the private packet or recipient clipboard JSON",
-    "next_step": "FR.2.5.W51_PASSWORD_SIGNIN_FASTER_STARTUP",
+    "next_step": "FR.2.5.W52_FAST_SIGNIN_ACCEPTED_SIGNED_IN_PASSWORD_CHANGE",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -5209,7 +5209,7 @@
       "owner_dashboard_deployment_URL": "https://8317ea3c.mushavo-budget-staging.pages.dev/",
       "fast_startup_update": {
         "stage_step": "FR.2.5.W51_PASSWORD_SIGNIN_FASTER_STARTUP",
-        "status": "119_LOCAL_PASS_SOURCE_PUBLISHED_OWNER_FRONTEND_PREPARATION_PENDING",
+        "status": "OWNER_LOADING_UX_ACCEPTED",
         "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
         "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-signin-dashboard-and-loading.json",
         "contract": "docs/security-audit/security-fr-2-batch-w-fast-signin-contract.json",
@@ -5227,10 +5227,20 @@
         ],
         "unchanged_public_entries": 40,
         "SQL_rerun_required": false,
-        "frontend_uploaded": false,
+        "frontend_uploaded": true,
         "live_speed_verified": false,
-        "hosted_acceptance": false
-      }
+        "hosted_acceptance": false,
+        "owner_acceptance_receipt": "docs/security-audit/security-fr-2-batch-w-owner-fast-signin-accepted.json",
+        "deployment_URL_owner_supplied": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+        "frontend_uploaded_owner_reported": true,
+        "loading_UX_owner_accepted": true,
+        "quantitative_speed_measured": false,
+        "served_source_independently_verified": false,
+        "repeat_preparation_upload_or_speed_check_requested": false
+      },
+      "latest_loading_UX_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-fast-signin-accepted.json",
+      "latest_owner_deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+      "loading_UX_owner_accepted": true
     },
     "password_signin_sql_retry": {
       "date": "2026-10-28",
@@ -5260,7 +5270,7 @@
       "prior_failure_is_historical": true,
       "corrected_install_success_received": true
     },
-    "owner_browser_action_required": false,
+    "owner_browser_action_required": true,
     "password_signin_backend_installation": {
       "stage_step": "FR.2.5.W50_PASSWORD_SIGNIN_INSTALLED_BROWSER_CHECK",
       "status": "OWNER_BACKEND_INSTALL_PASS_BROWSER_ACCEPTANCE_PENDING",
@@ -5294,7 +5304,7 @@
     },
     "fast_signin_startup": {
       "stage_step": "FR.2.5.W51_PASSWORD_SIGNIN_FASTER_STARTUP",
-      "status": "119_LOCAL_PASS_SOURCE_PUBLISHED_OWNER_FRONTEND_PREPARATION_PENDING",
+      "status": "OWNER_LOADING_UX_ACCEPTED",
       "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-signin-dashboard-and-loading.json",
       "contract": "docs/security-audit/security-fr-2-batch-w-fast-signin-contract.json",
@@ -5312,10 +5322,36 @@
       ],
       "unchanged_public_entries": 40,
       "SQL_rerun_required": false,
-      "frontend_uploaded": false,
+      "frontend_uploaded": true,
       "live_speed_verified": false,
+      "hosted_acceptance": false,
+      "owner_acceptance_receipt": "docs/security-audit/security-fr-2-batch-w-owner-fast-signin-accepted.json",
+      "deployment_URL_owner_supplied": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+      "frontend_uploaded_owner_reported": true,
+      "loading_UX_owner_accepted": true,
+      "quantitative_speed_measured": false,
+      "served_source_independently_verified": false,
+      "repeat_preparation_upload_or_speed_check_requested": false
+    },
+    "signed_in_password_change": {
+      "stage_step": "FR.2.5.W52_FAST_SIGNIN_ACCEPTED_SIGNED_IN_PASSWORD_CHANGE",
+      "status": "SIGNED_IN_PASSWORD_CHANGE_OWNER_BROWSER_PENDING",
+      "existing_case": "AU03.04",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNED_IN_PASSWORD_CHANGE.md",
+      "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
+      "deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+      "change_password_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/auth.html?flow=change",
+      "account_scope": "Same existing owner-controlled staging test account; identity must match the displayed account before save",
+      "maximum_initial_password_save_clicks": 1,
+      "private_password_chosen_and_retained_by_owner": true,
+      "optional_code_initially_blank": true,
+      "new_password_value_or_code_requested_in_chat": false,
+      "provider_or_email_dispatch_requested": false,
+      "runtime_or_SQL_change_required": false,
+      "hosted_save_result_received": false,
       "hosted_acceptance": false
-    }
+    },
+    "owner_password_write_requested": true
   },
   "owner_controlled_test_inbox_information_required": false,
   "FR2_email_persistent_browser_trust": {
@@ -5416,20 +5452,20 @@
     "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json"
   },
   "FR2_email_next_Auth_case": {
-    "id": "AU03.01",
-    "title": "Ordinary valid sign-in including older valid password",
-    "status": "OWNER_DIRECT_SIGNIN_SCOPED_PASS_FAST_STARTUP_RETEST_PENDING",
-    "variant": "Existing confirmed account enters authorized dashboard with email/password only after the coordinated staging rollout. Admin inclusion still enforces current server role.",
-    "owner_action_required_now": "Prepare the frontend-only fast-signin ZIP from the existing password-signin ZIP using the pinned command. After exit 0 upload mushavo-fast-signin-staging.zip to staging, check direct password dashboard entry/loading and Sign out/reload, and return the new deployment URL. No SQL, email code, recipient or acceptance-window action.",
+    "id": "AU03.04",
+    "group": "AU03",
+    "title": "Signed-in password change and retry",
+    "status": "SIGNED_IN_PASSWORD_CHANGE_OWNER_BROWSER_PENDING",
+    "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+    "settings_inspection_satisfies_case": false,
+    "stage_step": "FR.2.5.W52_FAST_SIGNIN_ACCEPTED_SIGNED_IN_PASSWORD_CHANGE",
+    "variant": "One initial current-account password save and new-password sign-in; provider failure/retry/reauthentication variants only as observed.",
+    "owner_action_required_now": "On the accepted f8c4b8d6 deployment, while signed in as the same controlled staging test account, open auth.html?flow=change and confirm the displayed identity. Enter current password and a different private new password of at least eight characters twice; leave the optional code blank and save once. Report the success/error message. After success sign out/reload and sign in with the new password. No SQL, rebuild, upload, custom sign-in code or email dispatch for this initial attempt.",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
     "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_FAST_SIGNIN_HANDOFF.md",
-    "custom_email_or_device_test_requested": false,
-    "hosted_acceptance": false,
-    "stage_step": "FR.2.5.W51_PASSWORD_SIGNIN_FASTER_STARTUP",
-    "backend_installation_owner_PASS": true,
-    "ordinary_current_account_owner_PASS": true
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNED_IN_PASSWORD_CHANGE.md",
+    "hosted_acceptance": false
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -5521,7 +5557,11 @@
       "full_case_acceptance": false,
       "frozen_definition_changed": false,
       "new_public_AU_cases_added": 0,
-      "loading_UX_followup": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_FAST_SIGNIN_HANDOFF.md"
+      "loading_UX_followup": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_FAST_SIGNIN_HANDOFF.md",
+      "latest_owner_acceptance_receipt": "docs/security-audit/security-fr-2-batch-w-owner-fast-signin-accepted.json",
+      "latest_owner_accepted_deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+      "loading_UX_owner_accepted": true,
+      "signout_reload_separately_reported": false
     }
   },
   "FR2_email_recovery_request_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_WRONG_PASSWORD_PASS_AND_RECOVERY_REQUEST.md",
@@ -5903,8 +5943,8 @@
     "new_runtime_patch_requested_during_readiness_diagnosis": true,
     "signout_entry_source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51"
   },
-  "owner_browser_action_required": false,
-  "owner_SQL_action_condition": "None: installed password-only server policy is unchanged by this frontend scheduling update.",
+  "owner_browser_action_required": true,
+  "owner_SQL_action_condition": "None: backend and accepted frontend remain unchanged.",
   "signout_entry": {
     "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
     "status": "OWNER_PACKAGE_PASS_DEPLOYMENT_URL_RECEIVED_CANONICAL_BROWSER_CHECK_PENDING",
@@ -6168,7 +6208,7 @@
     "owner_dashboard_deployment_URL": "https://8317ea3c.mushavo-budget-staging.pages.dev/",
     "fast_startup_update": {
       "stage_step": "FR.2.5.W51_PASSWORD_SIGNIN_FASTER_STARTUP",
-      "status": "119_LOCAL_PASS_SOURCE_PUBLISHED_OWNER_FRONTEND_PREPARATION_PENDING",
+      "status": "OWNER_LOADING_UX_ACCEPTED",
       "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-signin-dashboard-and-loading.json",
       "contract": "docs/security-audit/security-fr-2-batch-w-fast-signin-contract.json",
@@ -6186,10 +6226,20 @@
       ],
       "unchanged_public_entries": 40,
       "SQL_rerun_required": false,
-      "frontend_uploaded": false,
+      "frontend_uploaded": true,
       "live_speed_verified": false,
-      "hosted_acceptance": false
-    }
+      "hosted_acceptance": false,
+      "owner_acceptance_receipt": "docs/security-audit/security-fr-2-batch-w-owner-fast-signin-accepted.json",
+      "deployment_URL_owner_supplied": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+      "frontend_uploaded_owner_reported": true,
+      "loading_UX_owner_accepted": true,
+      "quantitative_speed_measured": false,
+      "served_source_independently_verified": false,
+      "repeat_preparation_upload_or_speed_check_requested": false
+    },
+    "latest_loading_UX_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-fast-signin-accepted.json",
+    "latest_owner_deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+    "loading_UX_owner_accepted": true
   },
   "password_signin_sql_retry": {
     "date": "2026-10-28",
@@ -6219,7 +6269,7 @@
     "prior_failure_is_historical": true,
     "corrected_install_success_received": true
   },
-  "owner_frontend_upload_condition": "Upload the new fast-signin ZIP after preparation exit 0; no SQL update.",
+  "owner_frontend_upload_condition": "None: f8c4b8d6 loading UX accepted; no repeat upload or preparation.",
   "password_signin_backend_installation": {
     "stage_step": "FR.2.5.W50_PASSWORD_SIGNIN_INSTALLED_BROWSER_CHECK",
     "status": "OWNER_BACKEND_INSTALL_PASS_BROWSER_ACCEPTANCE_PENDING",
@@ -6253,7 +6303,7 @@
   },
   "fast_signin_startup": {
     "stage_step": "FR.2.5.W51_PASSWORD_SIGNIN_FASTER_STARTUP",
-    "status": "119_LOCAL_PASS_SOURCE_PUBLISHED_OWNER_FRONTEND_PREPARATION_PENDING",
+    "status": "OWNER_LOADING_UX_ACCEPTED",
     "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
     "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-signin-dashboard-and-loading.json",
     "contract": "docs/security-audit/security-fr-2-batch-w-fast-signin-contract.json",
@@ -6271,8 +6321,33 @@
     ],
     "unchanged_public_entries": 40,
     "SQL_rerun_required": false,
-    "frontend_uploaded": false,
+    "frontend_uploaded": true,
     "live_speed_verified": false,
+    "hosted_acceptance": false,
+    "owner_acceptance_receipt": "docs/security-audit/security-fr-2-batch-w-owner-fast-signin-accepted.json",
+    "deployment_URL_owner_supplied": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+    "frontend_uploaded_owner_reported": true,
+    "loading_UX_owner_accepted": true,
+    "quantitative_speed_measured": false,
+    "served_source_independently_verified": false,
+    "repeat_preparation_upload_or_speed_check_requested": false
+  },
+  "signed_in_password_change": {
+    "stage_step": "FR.2.5.W52_FAST_SIGNIN_ACCEPTED_SIGNED_IN_PASSWORD_CHANGE",
+    "status": "SIGNED_IN_PASSWORD_CHANGE_OWNER_BROWSER_PENDING",
+    "existing_case": "AU03.04",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNED_IN_PASSWORD_CHANGE.md",
+    "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
+    "deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+    "change_password_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/auth.html?flow=change",
+    "account_scope": "Same existing owner-controlled staging test account; identity must match the displayed account before save",
+    "maximum_initial_password_save_clicks": 1,
+    "private_password_chosen_and_retained_by_owner": true,
+    "optional_code_initially_blank": true,
+    "new_password_value_or_code_requested_in_chat": false,
+    "provider_or_email_dispatch_requested": false,
+    "runtime_or_SQL_change_required": false,
+    "hosted_save_result_received": false,
     "hosted_acceptance": false
   }
 }

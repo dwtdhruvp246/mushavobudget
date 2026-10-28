@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-28",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_PENDING",
+  "status": "FR2_BATCH_W_NEW_PASSWORD_SIGNIN_OWNER_PASS_SAME_USER_SESSION_RELOAD_PENDING",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "f48f7543d3543b075db470dc1c742a6cceb61f40",
+  "source_parent_commit": "a6a278416e57b3edfb07cf11270d647b5f1de559",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE270",
+  "latest_evidence": "FRE271",
   "batches": [
     {
       "id": "FR.1",
@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
+  "next_step": "FR.2.5.W55_NEW_PASSWORD_SIGNIN_PASS_SESSION_RELOAD_CHECK",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4623,7 +4623,7 @@
     "Z"
   ],
   "FR2_batch_w": {
-    "stage_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
+    "stage_step": "FR.2.5.W55_NEW_PASSWORD_SIGNIN_PASS_SESSION_RELOAD_CHECK",
     "status": "IN_PROGRESS",
     "phase": "CONFIRMATION_RETURN_OWNER_WINDOWS_ZIP_COMPLETE_NEW_DEPLOYMENT_URL_RECEIVED_BROWSER_ACCEPTANCE_PENDING",
     "required_AU_cases": 31,
@@ -4637,7 +4637,7 @@
     "full_lettered_batch_W_complete": false,
     "owner_terminal_action_required": false,
     "owner_SQL_action_required": false,
-    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NEW_PASSWORD_SIGNIN_CHECK.md",
+    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNED_IN_SESSION_RELOAD_CHECK.md",
     "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
     "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
     "entry": "scripts/review-fr-2-batch-w-dashboard.ps1",
@@ -4723,7 +4723,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "Password save is owner-reported successful without a verification code for this attempt. Do not save or request a code again. On the same f8c4b8d6 staging origin, return to the app, sign out if still signed in, reload to the sign-in form and sign in once with the same test email and new private password. Return the form/dashboard outcome or displayed error only. No SQL, upload, reset or mail action.",
+    "next_action": "Stay signed in on the same f8c4b8d6 staging account and reload the page once without signing out. Expect the same dashboard to reopen without re-entering the password or seeing custom sign-in verification/trust. Return whether it stays signed in or the displayed error. This is initial saved-session restoration under AU05.01, not proof of actual refresh-token use or the full case. No password save, login retry, code, mail, SQL, upload or settings action.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4740,7 +4740,7 @@
     "policy_new_SDK_cases": 2,
     "policy_existing_affected_Auth_cases": 40,
     "owner_dashboard_settings_action_required": false,
-    "owner_next_setting_changes": "NONE; ONE NEW_PASSWORD_SIGNIN_CHECK_AFTER_SUCCESSFUL_SAVE",
+    "owner_next_setting_changes": "NONE; ONE NORMAL_RELOAD_WHILE_SIGNED_IN",
     "settings_write_handoff_ready_not_applied": false,
     "settings_write_or_readback_owner_receipt_received": true,
     "owner_no_terminal_rerun_required": true,
@@ -4863,7 +4863,7 @@
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
     "expected_nonsecret_input": "Safe local preparation JSON/combined exit code, one-secret-per-staging-environment save confirmation and new deployment URL; never the private packet or recipient clipboard JSON",
-    "next_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
+    "next_step": "FR.2.5.W55_NEW_PASSWORD_SIGNIN_PASS_SESSION_RELOAD_CHECK",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -5335,7 +5335,7 @@
     },
     "signed_in_password_change": {
       "stage_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
-      "status": "OWNER_PASSWORD_SAVE_PASS_NEW_PASSWORD_SIGNIN_PENDING",
+      "status": "OWNER_SAVE_AND_NEW_PASSWORD_SIGNIN_CORE_PATH_PASS",
       "existing_case": "AU03.04",
       "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NEW_PASSWORD_SIGNIN_CHECK.md",
       "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
@@ -5358,7 +5358,10 @@
       "maximum_corrected_save_clicks": 1,
       "owner_success_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json",
       "owner_code_required_this_attempt": false,
-      "new_password_signin_received": false
+      "new_password_signin_received": true,
+      "new_password_signin_owner_PASS": true,
+      "owner_new_password_signin_receipt": "docs/security-audit/security-fr-2-batch-w-owner-new-password-signin-pass.json",
+      "provider_failure_or_required_reauth_variants_verified": false
     },
     "owner_password_write_requested": false,
     "password_change_mismatch_retry": {
@@ -5377,13 +5380,33 @@
     "new_password_signin_check": {
       "stage_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
       "existing_case": "AU03.04",
-      "status": "OWNER_BROWSER_PENDING",
+      "status": "OWNER_REPORTED_PASS",
       "owner_save_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json",
       "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NEW_PASSWORD_SIGNIN_CHECK.md",
       "expected_deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
       "new_private_password_chosen_by_owner": true,
       "maximum_initial_signin_attempts": 1,
       "no_new_password_save_or_verification_code_requested": true,
+      "new_public_AU_cases_added": 0,
+      "hosted_acceptance": false,
+      "owner_signin_receipt": "docs/security-audit/security-fr-2-batch-w-owner-new-password-signin-pass.json",
+      "owner_new_password_dashboard_PASS": true,
+      "no_repeat_requested": true
+    },
+    "same_user_session_reload": {
+      "stage_step": "FR.2.5.W55_NEW_PASSWORD_SIGNIN_PASS_SESSION_RELOAD_CHECK",
+      "status": "INITIAL_SAVED_SESSION_RELOAD_OWNER_PENDING",
+      "existing_case": "AU05.01",
+      "title": "Same-user access refresh",
+      "variant": "Normal reload with a current valid saved session; actual token rotation/expiry recovery not inferred",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNED_IN_SESSION_RELOAD_CHECK.md",
+      "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
+      "expected_deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+      "owner_credentials_required_for_this_step": false,
+      "maximum_page_reloads_requested": 1,
+      "runtime_SQL_or_deployment_change_required": false,
+      "hosted_result_received": false,
+      "actual_Auth_refresh_grant_verified": false,
       "new_public_AU_cases_added": 0,
       "hosted_acceptance": false
     }
@@ -5487,22 +5510,20 @@
     "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json"
   },
   "FR2_email_next_Auth_case": {
-    "id": "AU03.04",
-    "group": "AU03",
-    "title": "Signed-in password change and retry",
-    "status": "OWNER_SAVE_PASS_NEW_PASSWORD_SIGNIN_CHECK_PENDING",
+    "id": "AU05.01",
+    "group": "AU05",
+    "title": "Same-user access refresh",
+    "status": "INITIAL_SAVED_SESSION_RELOAD_OWNER_PENDING",
     "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
     "settings_inspection_satisfies_case": false,
-    "stage_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
-    "variant": "One initial current-account password save and new-password sign-in; provider failure/retry/reauthentication variants only as observed.",
-    "owner_action_required_now": "Password save is owner-reported successful without a verification code for this attempt. Do not save or request a code again. On the same f8c4b8d6 staging origin, return to the app, sign out if still signed in, reload to the sign-in form and sign in once with the same test email and new private password. Return the form/dashboard outcome or displayed error only. No SQL, upload, reset or mail action.",
+    "stage_step": "FR.2.5.W55_NEW_PASSWORD_SIGNIN_PASS_SESSION_RELOAD_CHECK",
+    "variant": "Normal reload with a current valid saved session; actual token rotation/expiry recovery not inferred",
+    "owner_action_required_now": "Stay signed in on the same f8c4b8d6 staging account and reload the page once without signing out. Expect the same dashboard to reopen without re-entering the password or seeing custom sign-in verification/trust. Return whether it stays signed in or the displayed error. This is initial saved-session restoration under AU05.01, not proof of actual refresh-token use or the full case. No password save, login retry, code, mail, SQL, upload or settings action.",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
     "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NEW_PASSWORD_SIGNIN_CHECK.md",
-    "hosted_acceptance": false,
-    "owner_validation_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-mismatch.json",
-    "owner_password_save_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json"
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNED_IN_SESSION_RELOAD_CHECK.md",
+    "hosted_acceptance": false
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -5601,7 +5622,7 @@
       "signout_reload_separately_reported": false
     },
     "AU03.04": {
-      "status": "OWNER_PASSWORD_SAVE_SCOPED_PASS_NEW_PASSWORD_SIGNIN_PENDING",
+      "status": "OWNER_CORE_PASSWORD_CHANGE_AND_NEW_PASSWORD_SIGNIN_PASS",
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-mismatch.json",
       "local_mismatch_feedback_observed": true,
       "password_saved_or_new_password_signin_accepted": true,
@@ -5611,7 +5632,10 @@
       "owner_success_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json",
       "password_save_owner_PASS": true,
       "verification_code_required_this_attempt": false,
-      "new_password_signin_accepted": false
+      "new_password_signin_accepted": true,
+      "owner_new_password_signin_receipt": "docs/security-audit/security-fr-2-batch-w-owner-new-password-signin-pass.json",
+      "requested_signout_reload_sequence_acknowledged_in_context": true,
+      "intermediate_signin_form_separately_described": false
     }
   },
   "FR2_email_recovery_request_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_WRONG_PASSWORD_PASS_AND_RECOVERY_REQUEST.md",
@@ -6385,7 +6409,7 @@
   },
   "signed_in_password_change": {
     "stage_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
-    "status": "OWNER_PASSWORD_SAVE_PASS_NEW_PASSWORD_SIGNIN_PENDING",
+    "status": "OWNER_SAVE_AND_NEW_PASSWORD_SIGNIN_CORE_PATH_PASS",
     "existing_case": "AU03.04",
     "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NEW_PASSWORD_SIGNIN_CHECK.md",
     "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
@@ -6408,7 +6432,10 @@
     "maximum_corrected_save_clicks": 1,
     "owner_success_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json",
     "owner_code_required_this_attempt": false,
-    "new_password_signin_received": false
+    "new_password_signin_received": true,
+    "new_password_signin_owner_PASS": true,
+    "owner_new_password_signin_receipt": "docs/security-audit/security-fr-2-batch-w-owner-new-password-signin-pass.json",
+    "provider_failure_or_required_reauth_variants_verified": false
   },
   "password_change_mismatch_retry": {
     "stage_step": "FR.2.5.W53_PASSWORD_CHANGE_MISMATCH_VALIDATION_AND_RETRY",
@@ -6426,13 +6453,33 @@
   "new_password_signin_check": {
     "stage_step": "FR.2.5.W54_PASSWORD_CHANGE_OWNER_PASS_NEW_PASSWORD_SIGNIN_CHECK",
     "existing_case": "AU03.04",
-    "status": "OWNER_BROWSER_PENDING",
+    "status": "OWNER_REPORTED_PASS",
     "owner_save_receipt": "docs/security-audit/security-fr-2-batch-w-owner-password-change-success.json",
     "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_NEW_PASSWORD_SIGNIN_CHECK.md",
     "expected_deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
     "new_private_password_chosen_by_owner": true,
     "maximum_initial_signin_attempts": 1,
     "no_new_password_save_or_verification_code_requested": true,
+    "new_public_AU_cases_added": 0,
+    "hosted_acceptance": false,
+    "owner_signin_receipt": "docs/security-audit/security-fr-2-batch-w-owner-new-password-signin-pass.json",
+    "owner_new_password_dashboard_PASS": true,
+    "no_repeat_requested": true
+  },
+  "same_user_session_reload": {
+    "stage_step": "FR.2.5.W55_NEW_PASSWORD_SIGNIN_PASS_SESSION_RELOAD_CHECK",
+    "status": "INITIAL_SAVED_SESSION_RELOAD_OWNER_PENDING",
+    "existing_case": "AU05.01",
+    "title": "Same-user access refresh",
+    "variant": "Normal reload with a current valid saved session; actual token rotation/expiry recovery not inferred",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNED_IN_SESSION_RELOAD_CHECK.md",
+    "source_pin": "e62f74494f4c828cdb4a748b2f175d6dfa431d67",
+    "expected_deployment_URL": "https://f8c4b8d6.mushavo-budget-staging.pages.dev/",
+    "owner_credentials_required_for_this_step": false,
+    "maximum_page_reloads_requested": 1,
+    "runtime_SQL_or_deployment_change_required": false,
+    "hosted_result_received": false,
+    "actual_Auth_refresh_grant_verified": false,
     "new_public_AU_cases_added": 0,
     "hosted_acceptance": false
   }

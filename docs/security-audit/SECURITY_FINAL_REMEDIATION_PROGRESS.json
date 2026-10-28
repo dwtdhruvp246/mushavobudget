@@ -2,14 +2,14 @@
   "schema_version": 1,
   "date": "2026-10-28",
   "phase": "FINAL_REMEDIATION",
-  "status": "FR2_BATCH_W_SHARED_NORMAL_TAB_CYCLE_OWNER_PASS_CURRENT_ORIGIN_RECOVERY_ISOLATION_PENDING",
+  "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "ca6eb643adac1252c35f9d7392a2df9be89334ee",
+  "source_parent_commit": "bc68626e093bb56f31210cb19c411e4a77d332e4",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE286",
+  "latest_evidence": "FRE287",
   "batches": [
     {
       "id": "FR.1",
@@ -145,7 +145,7 @@
     },
     {
       "id": "FR.2",
-      "status": "IN_PROGRESS_EMAIL_GLOBAL_ENFORCEMENT_BASELINE",
+      "status": "IN_PROGRESS_CURRENT_PASSWORD_ONLY_AUTHORIZATION_AND_WORKFLOWS",
       "definition": "Preserved in original final-remediation handoff",
       "plan": "docs/security-audit/SECURITY_FR_2_PLAN.md",
       "finding_ids": [
@@ -471,7 +471,7 @@
         },
         {
           "id": "FR.2.4",
-          "status": "BATCH_O_OFFLINE_BROWSER_ERROR_BATCH_P_REDIRECT_SAFE_CANDIDATE_PENDING",
+          "status": "IN_PROGRESS_HISTORICAL_ROLLOUT_RETAINED_V_POLICY_PRIVILEGED_ACCEPTANCE_PENDING",
           "title": "Admin parity/operator/recovery and assurance",
           "readiness_SQL": "supabase/diagnostics/security_fr_2_4_admin_readiness.sql",
           "readiness_contract": "docs/security-audit/security-fr-2-admin-readiness-contract.json",
@@ -1097,7 +1097,7 @@
         },
         {
           "id": "FR.2.5",
-          "status": "IN_PROGRESS_PASSWORD_ONLY_ALL_ROLES_STAGING_ROLLOUT_PENDING",
+          "status": "IN_PROGRESS_BATCH_W_CURRENT_PASSWORD_ONLY_AUTH_WORKFLOWS",
           "title": "Auth/finance/session hosted workflows",
           "active_lettered_batch": "W",
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
@@ -1686,7 +1686,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "FR.2.5.W48_PASSWORD_SIGNIN_ALL_USERS_REMOVAL"
+      "next_step": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN"
     },
     {
       "id": "FR.3",
@@ -7205,6 +7205,9 @@
     "capacity_assumption": "One engineering stream, six productive hours/day, five days/week; prompt owner feedback",
     "reestimate_after_grouped_work_sessions": 2,
     "original_AU_case_count": 31,
-    "additional_AU_cases": 0
+    "additional_AU_cases": 0,
+    "complete_hierarchy": "docs/security-audit/MUSHAVO_BUDGET_COMPLETE_STAGE_FR_BATCH_MAP.md",
+    "execution_breakdown_status": "PROPOSED_NUMBERED_FR3_TO_FR8_PACKS_EXISTING_SCOPE",
+    "later_FR_work_pack_count": 29
   }
 }

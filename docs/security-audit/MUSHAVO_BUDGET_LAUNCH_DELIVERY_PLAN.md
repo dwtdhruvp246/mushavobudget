@@ -1,3 +1,5 @@
+> **Start with the [complete Stage → FR → batch map](MUSHAVO_BUDGET_COMPLETE_STAGE_FR_BATCH_MAP.md).** It lists every main stage, FR.1–FR.8, all A–Z batches, the original 31 W scenarios and the proposed later-FR execution packs. The seven deliverables below are an estimating view of that same work, not a replacement roadmap.
+
 # Mushavo Budget — launch delivery plan
 Version 1 • 28 October 2026 • Planning reset requested by the owner
 

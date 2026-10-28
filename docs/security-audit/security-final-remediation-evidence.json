@@ -9764,6 +9764,34 @@
       "production_or_native_changed": false,
       "APK_update_deferred": true,
       "findings_closed": []
+    },
+    {
+      "id": "FRE287",
+      "date": "2026-10-28",
+      "stage_step": "COMPLETE_STAGE_FR_BATCH_PLANNING_MAP",
+      "result": "OWNER_REQUESTED_COMPLETE_EXISTING_HIERARCHY_AND_ALL_REMAINING_WORK",
+      "source_parent_commit": "bc68626e093bb56f31210cb19c411e4a77d332e4",
+      "report": "docs/security-audit/MUSHAVO_BUDGET_COMPLETE_STAGE_FR_BATCH_MAP.md",
+      "main_stages_covered": "0–10",
+      "FR_groups_covered": "FR.1–FR.8",
+      "lettered_batches_covered": "A–Z within FR.2",
+      "remaining_lettered_batches": [
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z"
+      ],
+      "original_W_cases_preserved": 31,
+      "proposed_later_FR_work_pack_count": 29,
+      "new_product_requirements_or_acceptance_cases_added": 0,
+      "stale_active_status_pointers_corrected_without_rewriting_historical_review_objects": true,
+      "time_estimates_retained_as_low_confidence_scenarios": true,
+      "runtime_changes": 0,
+      "new_tests": 0,
+      "new_hosted_or_owner_actions_requested": 0,
+      "scope_exclusions_approved": false,
+      "full_release_acceptance": false
     }
   ],
   "prior_stage_evidence_preserved": true,

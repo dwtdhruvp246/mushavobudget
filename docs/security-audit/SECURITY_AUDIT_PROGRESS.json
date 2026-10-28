@@ -2,7 +2,7 @@
   "schema_version": 1,
   "updated_date": "2026-10-27",
   "current_stage": null,
-  "current_step": "FR.2.5.W6_CONTROLLED_ORDINARY_AUTH_WORKFLOW_PREPARATION",
+  "current_step": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
   "current_title": "Main Stage 3 / FR.2 / Batch W: owner public18 source/routes PASS exit0; controlled ordinary Auth inbox pending; V MFA ON HOLD",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
@@ -7659,7 +7659,7 @@
   "current_phase": "FINAL_REMEDIATION",
   "main_implementation_stage": {
     "number": 3,
-    "title": "Authorization and Admin MFA",
+    "title": "Authorization and Auth controls",
     "status": "IN_PROGRESS",
     "audit_checkpoint_closure_is_not_main_stage_completion": true
   },
@@ -7670,6 +7670,9 @@
     "owner_requested_related_tested_batches": true,
     "channel_acceptance_separate": true,
     "report": "docs/security-audit/SECURITY_DECEMBER_2026_LAUNCH_BATCH_PLAN.md",
-    "target_is_not_release_acceptance": true
+    "target_is_not_release_acceptance": true,
+    "complete_stage_FR_batch_map": "docs/security-audit/MUSHAVO_BUDGET_COMPLETE_STAGE_FR_BATCH_MAP.md",
+    "current_execution_pointer_source": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PROGRESS.json",
+    "historical_stage_review_objects_preserved": true
   }
 }

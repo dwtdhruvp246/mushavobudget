@@ -32,6 +32,8 @@ function createPushDeviceState() {
 
 const state = {
   session: null,
+  manualSignInRequired: requiresManualSignIn(window.location.href),
+  signingOut: false,
   profile: null,
   isAdmin: false,
   adminRole: null,
@@ -505,6 +507,11 @@ function setView(viewName) {
   if (viewName) views[viewName].classList.remove("hidden");
 }
 
+function showSignOutStatus(message = "") {
+  $("#signOutStatusMessage").textContent = message;
+  $("#signOutStatus").classList.toggle("hidden", !message);
+}
+
 function showLoading(title = "Opening your workspace", message = "Loading your latest budget...") {
   $("#loadingTitle").textContent = title;
   $("#loadingMessage").textContent = message;
@@ -958,6 +965,41 @@ function assertSupabase() {
   }
 }
 
+function requiresManualSignIn(href) {
+  return ["manual", "signed-out", "expired"].includes(new URL(href).searchParams.get("auth"));
+}
+
+// This is a request to stay at sign-in, never a source of application authority.
+function setManualSignInIntent(reason = "manual", preserveDestination = false) {
+  state.manualSignInRequired = true;
+  const url = new URL(window.location.href);
+  if (!preserveDestination) { url.search = ""; url.hash = ""; }
+  else {
+    for (const key of ["code", "token", "token_hash", "access_token", "refresh_token", "type"]) url.searchParams.delete(key);
+    if (new URLSearchParams(url.hash.slice(1)).has("access_token")) url.hash = "";
+  }
+  url.searchParams.set("auth", reason);
+  window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
+function clearManualSignInIntent() {
+  state.manualSignInRequired = false;
+  const url = new URL(window.location.href);
+  url.searchParams.delete("auth");
+  window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
+function beginManualSignOut() {
+  // Persist the navigation intent before push cleanup or Auth sign-out can wait.
+  setManualSignInIntent("signed-out");
+  authDataEpoch++;
+  appLoadPromise = null; appLoadUserId = null; appLoadToken = null;
+  emailEntry.bind(null); adminSession.bind(null);
+  clearApplicationPrivateData();
+  showSignOutStatus();
+  showLoading("Signing out", "Please wait…");
+}
+
 function isSameAuthUser(previousSession, nextSession) {
   return Boolean(previousSession?.user?.id && previousSession.user.id === nextSession?.user?.id);
 }
@@ -1154,6 +1196,12 @@ async function init() {
 
   supabase.auth.onAuthStateChange((event, session) => {
     if (event === "INITIAL_SESSION") return;
+    if (state.manualSignInRequired && session) {
+      // Keep the SDK session available for an explicit sign-out retry, but do
+      // not open protected views from a saved/refresh/cross-tab sign-in event.
+      state.session = session;
+      return;
+    }
     const previousSession = state.session;
     state.session = session;
     // Password sign-in owns its first workspace load. Auth also emits
@@ -1189,7 +1237,12 @@ async function init() {
     window.setTimeout(() => { if (epoch === authDataEpoch && !state.session) handleSignedOut(); }, 0);
   });
 
-  if (state.session) {
+  if (state.manualSignInRequired) {
+    showSignOutStatus(new URL(window.location.href).searchParams.get("auth") === "signed-out" && state.session
+      ? "Your previous sign-out did not finish. Retry signing out to end that session." : "");
+    setView("auth");
+    showSignupSuccessMessage();
+  } else if (state.session) {
     await openAuthenticatedSession(state.session);
   } else {
     setView("auth");
@@ -1198,8 +1251,9 @@ async function init() {
 }
 
 function handleSignedOut() {
+  state.manualSignInRequired = true;
   resetState();
-  if (!preserveSignInDestination) window.history.replaceState(null, "", window.location.pathname);
+  setManualSignInIntent("signed-out", preserveSignInDestination);
   setView("auth");
 }
 
@@ -3855,24 +3909,32 @@ async function sendTestPushNotification() {
 }
 
 async function signOutSafely(button = null) {
-  if (!supabase || !state.session) return;
+  if (!supabase || !state.session || state.signingOut) return;
   const userId = state.session.user.id;
   let cleanupFailed = false;
+  state.signingOut = true;
+  beginManualSignOut();
   setSubmitting(button, true, "Signing out…");
   try {
     try { await removeCurrentDevicePush(); }
     catch (_cleanupError) { cleanupFailed = true; }
     // A push cleanup outage must not prevent the requested Auth sign-out.
-    if (state.session?.user?.id !== userId) return;
+    if (state.session?.user?.id !== userId) { setView("auth"); return; }
     preserveSignInDestination = false;
     const { error } = await supabase.auth.signOut({ scope: "local" });
     if (error) throw error;
+    showSignOutStatus();
     if (!cleanupFailed) forgetPushOptIn(userId);
-    if (state.session?.user?.id === userId) handleSignedOut();
+    if (!state.session || state.session.user.id === userId) handleSignedOut();
+    else setView("auth");
     if (cleanupFailed) showToast("Signed out. Device notification cleanup could not finish; disable notifications in this browser if needed.");
   } catch (error) {
-    showToast("Sign-out could not finish. Your session may still be active. Check your connection and try again.");
+    const message = "Sign-out could not finish. Your session may still be active. Retry signing out.";
+    showSignOutStatus(message);
+    setView("auth");
+    showToast(message);
   } finally {
+    state.signingOut = false;
     // This DOM button survives sign-out and is reused after the next sign-in.
     setSubmitting(button, false, "Sign out");
   }
@@ -6153,13 +6215,13 @@ function renderAdminPlans() { adminPlansWorkbench.render(); }
 const restorePrivateAdminDom=[...document.querySelectorAll('#adminView,dialog')].map(snapshotPrivateView);
 const restorePrivateAppDom=[...document.querySelectorAll('#appView,#adminView,#setupView,dialog')].map(snapshotPrivateView);
 const privateModelDefaults=JSON.parse(JSON.stringify(state));
-const emailEntry=createSessionEntry({client:supabase,getSession:()=>state.session,root:views.emailVerification,
+const emailEntry=createSessionEntry({client:supabase,getSession:()=>state.manualSignInRequired?null:state.session,root:views.emailVerification,
   onReset:()=>{authDataEpoch++;appLoadPromise=null;appLoadUserId=null;appLoadToken=null;},
   show:state=>{if(['loading','verifying'].includes(state?.phase))showLoading('Signing in','Please wait…');else setView('emailVerification');},onInvalidated:()=>clearApplicationPrivateData(),
   onUnlocked:async({ticket})=>{if(ticket()&&state.session)await openAuthenticatedSession(state.session);},
   onSignOut:()=>signOutSafely()
 });
-const adminSession=createSessionEntry({client:supabase,getSession:()=>state.session,root:views.adminSession,requireAdmin:true,retainViewDuringCheck:true,
+const adminSession=createSessionEntry({client:supabase,getSession:()=>state.manualSignInRequired?null:state.session,root:views.adminSession,requireAdmin:true,retainViewDuringCheck:true,
   show:()=>setView(emailEntry.authorized?'adminSession':'emailVerification'),onInvalidated:()=>clearAdministrativeData(),
   onUnlocked:async({ticket})=>{if(ticket())await resumeAdminAfterVerification();},onSignOut:()=>signOutSafely()
 });
@@ -7778,11 +7840,22 @@ async function signIn(event) {
     showLoading("Signing you in", "Verifying your account...");
     const authData = await query("sign in", supabase.auth.signInWithPassword({ email, password }));
     if (!authData.session) throw new Error("Sign-in completed without a session. Please try again.");
-    signedInSession = authData.session;
+    const current = await supabase.auth.getSession();
+    if (current.error) throw current.error;
+    if (current.data?.session?.user?.id !== authData.session.user.id ||
+        current.data.session.access_token !== authData.session.access_token) {
+      throw Object.assign(new Error("The active account changed."), {code:"session_changed"});
+    }
+    signedInSession = current.data.session;
+    clearManualSignInIntent();
+    showSignOutStatus();
     await openAuthenticatedSession(signedInSession);
     if(emailEntry.authorized)showToast("Signed in.");
   } catch (error) {
-    if (error?.code === "session_changed") return;
+    if (error?.code === "session_changed") {
+      if (state.manualSignInRequired) { setView("auth"); showToast(safeAuthMessage(error)); }
+      return;
+    }
     if (signedInSession) await handleLoadFailure(error);
     else {
       setView("auth");
@@ -9613,6 +9686,7 @@ $("#adminEnablePushNotificationsButton").addEventListener("click", enablePushNot
 $("#adminSendTestPushButton").addEventListener("click", sendTestPushNotification);
 $("#adminDisablePushNotificationsButton").addEventListener("click", disablePushNotifications);
 $("#signOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
+$("#retrySignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
 $("#adminSignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
 $("#suspendedSignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
 $("#obligationCurrencySearch").addEventListener("input", (event) => {

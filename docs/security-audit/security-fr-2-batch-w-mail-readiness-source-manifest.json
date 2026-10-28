@@ -1,0 +1,16 @@
+{
+  "stage_step": "FR.2.5.W44_MAIL_UNAVAILABLE_RETAINED_CONFIGURATION_DIAGNOSTIC",
+  "source_parent_commit": "b4dafba0ce927b94053d8a797da1260beb952317",
+  "source_file_count": 8,
+  "execution_file_count": 6,
+  "file_sha256": {
+    "scripts/check-fr-2-batch-w-mail-readiness.mjs": "f1e89dd3e0591b3de93d33a032776712fd9756d80ab831bfe8f7afd343fe4417",
+    "scripts/check-fr-2-batch-w-recovery-recipient.mjs": "22419d83009fa4ecd7aed6c0769412553daab1a014ef02c06ebd50f22136e817",
+    "scripts/lib/fr-2-zoho-private-setup.mjs": "c69f30166b95d805b773fe7cb9fd4fe36ef13b02df0c0abc3e90d74c07473bf4",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+    "scripts/run-fr-2-batch-w-mail-readiness.ps1": "d2c4a4d356da105c0d6b9159912ac7fde9a6e542babe5a4267937ea4eed83345",
+    "supabase/functions/_shared/email-verification-http.mjs": "b28a80658d55725ad78a833be2192b353a9b08ba7987f8cbcb0ae40edd17e395",
+    "supabase/functions/_shared/email-verification-zoho.mjs": "757270e2535e8c349c5e44ab022d3dd56d251ffdebab2bfdc9a4978fc5737793",
+    "tests/fr-2-mail-readiness.test.mjs": "dd1963765074988dd4f35238d037539f6552e40f1b670cf7d2603a8fa47b6b30"
+  }
+}

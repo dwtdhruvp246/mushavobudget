@@ -2,6 +2,12 @@
 
 29 October 2026. Stage 3 / FR.2 / FR.2.5 / Batch W. Existing AU05.01 only.
 
+## Current diagnostic — one-hour wait inconclusive; stop waiting
+
+29 October 2026: owner reports an hour elapsed. Screenshot image(20261029-112151).png shows signed-in Personal dashboard, active Network recording, Keep log, All, No throttling, refresh_token filter and 0/176 matching requests. Console shows CHANNEL_ERROR reconnect warning. No natural refresh, failure of Auth refresh, or full AU05.01 pass is established. Network panels are per tab; the pinned auth-js 2.110.9 fixture has BroadcastChannel session updates, navigator lock coordination, visibility-controlled automatic refresh and a 30-second tick comparing actual stored expires_at. A peer-tab refresh or different actual expiry is possible, not established. The Realtime warning is not proof of an Auth refresh failure; do not expand this into a separate feature change.
+
+Do not ask for another timed wait or rerun the blocked console script. Next owner diagnostic is read-only: Application > Local storage > stable staging origin, select sb-dczlddwbtgvfdujgcitb-auth-token once, inspect only the numeric expires_at and expires_in properties in its parsed preview, and report those numbers plus current computer time. Do not edit/delete storage, copy the entire record, or share token/session screenshots. If these properties or preview are unavailable, report that instead. Use the metadata to decide whether the current shared session is expired, renewed or has a different lifetime; do not infer a refresh solely from signed-in UI. Prior console and waiting procedures below are retained history rather than current instructions.
+
 ## Current owner route — native automatic refresh observation
 
 The owner screenshot image(20261029-091242).png shows Chrome's self-XSS paste warning and the signed-out app, without check output. No execution or refresh outcome is credited. Keep console pasting protection enabled; the earlier explicit console route below is historical preparation, not the current owner action.

@@ -40,3 +40,7 @@ Use Cloudflare Pages project mushavo-budget-staging and its existing direct-uplo
 ## Acceptance after deployment
 
 First verify served app.html uses app.js?v=123 and app.js matches the prepared source. Then repeat only the affected offline sign-out / online Retry sign-out sequence. Expected: warning is visible for an unconfirmed failure, then clears after confirmed sign-out without manual refresh; a subsequent online reload stays signed out. Record unexpected SDK behavior without inventing a pass. Full Batch W, V/X/Y/Z, and release acceptance remain open.
+
+## Package verification correction — 29 October 2026
+
+Owner preparation at 403e412 stopped with SIGNOUT_RETRY_SOURCE_REQUIRED before upload, hosted requests or settings writes. Reproduced using the exact published files, verified against Git blob identities. The manifest had hashes of local copies of scripts/lib/read-public-zip.mjs and scripts/lib/store-public-zip.mjs with an extra trailing newline; those helper changes were never published. Corrected only their two manifest hashes to the existing published bytes at 878c8711e021f4dbc28b73c4e797e43fa08755e9. App source and output target hashes are unchanged. All 15 focused packaging/reconciliation tests pass against exact published source with corrected manifest. Earlier 85 local passes remain historical; the earlier package-source check did not establish published-byte parity. Owner preparation retry and hosted deployment remain pending.

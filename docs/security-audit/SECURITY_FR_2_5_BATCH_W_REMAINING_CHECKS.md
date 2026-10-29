@@ -4,12 +4,12 @@
 
 The owner reports all three requested AU04.06 observations passed: recovery identity matches, URL clean, original dashboard unchanged. [Exact receipt](security-fr-2-batch-w-owner-stable-recovery-isolation-pass.json). This is the recovery-link isolation observation before password saving; it is not an additional password change or session adoption. No repeat of that observation is requested.
 
-W retains **31 original case groups**, including both normal and failure variants. It has no trustworthy completion percentage: positive observations and partial cases are not the same as fully closed cases. The recorded browser workflow successes must be reused where applicable. AU02.06 now has an owner-confirmed new-recipient setup PASS. **Seven invitation case groups remain without full W acceptance: five Admin cases await V/policy reconciliation, AU02.07 is pending, and AU02.08 has positive acceptance evidence with decline/replay remaining.** Other remaining work comprises confirmation/resend closure, older-password/server-boundary/reauthentication checks, recovery expiry/save/retry, and refresh/sign-out/account-switch failure handling. No cases are added by this summary.
+W retains **31 original case groups**, including both normal and failure variants. It has no trustworthy completion percentage: positive observations and partial cases are not the same as fully closed cases. The recorded browser workflow successes must be reused where applicable. AU02.06 and AU02.07 now have owner-confirmed setup/password-preservation PASS results. **Six invitation case groups remain without full W acceptance: five Admin cases await V/policy reconciliation, and AU02.08 retains decline/declined-invitation handling.** Positive acceptance and accepted-link replay denial have passed. Other remaining work comprises confirmation/resend closure, older-password/server-boundary/reauthentication checks, recovery expiry/save/retry, and refresh/sign-out/account-switch failure handling. No cases are added by this summary.
 
 | Area | Original cases | Remaining scope |
 |---|---:|---|
 | Signup/confirmation | 5 | Final confirmation destination and resend/existing-email/rate results; reconcile earlier signup/pending/denial passes. |
-| Invitations | 8 | New Business recipient setup passed. Five Admin cases await V/policy reconciliation; existing Business recipient and remaining decline/replay checks are open. |
+| Invitations | 8 | New and existing Business recipient setup passed; existing password preserved and accepted-link replay denied. Five Admin cases await V/policy reconciliation; decline/declined-link handling remains. |
 | Sign-in/passwords | 5 | Older valid password, direct server boundary, actual save failure/retry, applicable reauthentication behavior; normal sign-in/change passed. |
 | Recovery/links | 6 | Remaining wrong-session/expiry, remaining provider failure/retry and generic-response variants; requested real-link isolation passed. |
 | Sessions/failures | 7 | Actual refresh/invalid refresh, independent push cleanup failure, in-flight Business clearing and supported rate/stale-token behavior; reload/shared-tabs/network positives retained. |
@@ -26,6 +26,11 @@ AU05.05 scoped owner PASS after v123 correction and public 4/4 source verificati
 ## Business new-recipient setup accepted — 29 October 2026
 
 All four requested owner observations passed for AU02.06: invitation delivery, first-password setup, intended Business workspace and accepted membership on the owner Team page. [Receipt](security-fr-2-batch-w-owner-business-new-recipient-pass.json). Reuse the positive acceptance result for AU02.08; do not repeat this signup. AU02.07 existing-recipient password preservation and AU02.08 decline/replay are still open. The simplified seat editor is working by owner report; this does not close V.
+
+
+## Business existing-recipient and accepted-link replay accepted — 29 October 2026
+
+[Owner receipt](security-fr-2-batch-w-owner-business-existing-recipient-pass.json): no new-password setup, original password sign-in, correct workspace and one membership all pass. Latest owner replay result explicitly shows the safe unavailable-link message; earlier checkbox-only description is superseded. Do not repeat AU02.07 or accepted-link replay. Continue only AU02.08 decline and its unavailable/rejected state.
 
 ## Fixed remaining case list
 
@@ -44,8 +49,8 @@ All four requested owner observations passed for AU02.06: invitation delivery, f
 | AU02.04 | Expired/cancelled/replaced invitation denial | Blocked by paused V | Admin invitation setup/isolation/denial/retry scope depends on V and policy reconciliation. |
 | AU02.05 | Completion retry/idempotence | Blocked by paused V | Admin invitation setup/isolation/denial/retry scope depends on V and policy reconciliation. |
 | AU02.06 | Business new-recipient first password | Owner-reported scoped PASS, 29 October | Email received, first password set, intended Business workspace opened and accepted membership shown on owner Team page. Preserve; no repeat. |
-| AU02.07 | Existing Business recipient without password overwrite | Not yet accepted | Business new/existing recipient and accept/decline/replay workflow evidence. |
-| AU02.08 | Business accept/decline/replay | Partly checked | Positive invitation acceptance and owner membership display passed with AU02.06. Decline and replay remain. |
+| AU02.07 | Existing Business recipient without password overwrite | Owner-reported scoped PASS, 29 October | Joined without a password setup, original password still signs in, intended Business workspace opens and only one membership remains. No repeat. |
+| AU02.08 | Business accept/decline/replay | Partly checked: acceptance and accepted-link replay PASS | Positive membership accepted. Latest owner result confirms used-link unavailable message and one membership; this supersedes the earlier checkbox-only description. Decline/no membership/reservation release and declined-link handling remain. |
 | AU03.01 | Ordinary valid sign-in including older valid password | Partly checked | Ordinary sign-in/dashboard passed; older valid-password compatibility remains. |
 | AU03.02 | Invalid credentials | Invalid-credentials message observed | Known account/wrong-password UI result retained; reconcile original outcome criteria. |
 | AU03.03 | Configured new-password boundary | Partly checked | Browser rejects seven and accepts eight at signup; direct server below-minimum rejection is unverified. |

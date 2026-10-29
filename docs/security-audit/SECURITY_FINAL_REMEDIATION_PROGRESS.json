@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.AU02.07_BUSINESS_EXISTING_RECIPIENT",
+  "next_step": "FR.2.5.AU02.08_BUSINESS_INVITATION_DECLINE",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -5822,15 +5822,15 @@
     "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json"
   },
   "FR2_email_next_Auth_case": {
-    "id": "AU02.07",
+    "id": "AU02.08",
     "group": "AU02",
-    "title": "Existing Business recipient without password overwrite",
-    "stage_step": "FR.2.5.AU02.07",
-    "status": "OWNER_EXISTING_RECIPIENT_CHECK_PENDING",
+    "title": "Business accept/decline/replay",
+    "stage_step": "FR.2.5.AU02.08",
+    "status": "OWNER_DECLINE_CHECK_PENDING",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
-    "variant": "Existing registered recipient uses invitation without first-password reset; confirms original password still signs in. Reopen used invitation without resend for AU02.08 replay observation.",
-    "owner_action_required_now": "Invite one existing registered non-member account controlled by the owner as Staff. Open in a clean Incognito session, accept without setting a new password, then sign out and sign in with the unchanged password. Reopen the original used invitation once and report safe denial/no duplicate membership. Stop on unexpected identity or password setup.",
+    "variant": "Only the remaining decline/no-membership/reservation-release and declined-link handling. Prior acceptance and accepted-link replay retained.",
+    "owner_action_required_now": "Invite one other existing controlled staging non-member as Staff. Recipient opens in clean Incognito, declines the Business invitation, and owner verifies rejected invitation with no membership and restored reserved capacity. Reopen declined invitation once; it must not create a membership.",
     "hosted_acceptance": false
   },
   "owner_browser_recovery_request_action_required": false,
@@ -6045,12 +6045,29 @@
       "new_public_AU_cases_added": 0
     },
     "AU02.08": {
-      "status": "OWNER_POSITIVE_BUSINESS_INVITATION_ACCEPTANCE_PASS_DECLINE_REPLAY_PENDING",
+      "status": "OWNER_ACCEPTANCE_AND_ACCEPTED_LINK_REPLAY_PASS_DECLINE_PENDING",
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-new-recipient-pass.json",
       "positive_acceptance_owner_PASS": true,
       "decline_accepted": false,
-      "replay_accepted": false,
+      "replay_accepted": true,
       "full_case_acceptance": false,
+      "new_public_AU_cases_added": 0,
+      "existing_recipient_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-existing-recipient-pass.json",
+      "replay_scope": "Previously accepted invitation: safe unavailable-link result and no duplicate membership",
+      "repeat_accepted_link_replay_requested": false
+    },
+    "AU02.07": {
+      "status": "OWNER_REPORTED_EXISTING_BUSINESS_RECIPIENT_PASSWORD_PRESERVATION_PASS",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-existing-recipient-pass.json",
+      "owner_checks": {
+        "joined_without_setting_new_password": true,
+        "existing_password_still_signs_in": true,
+        "correct_Business_workspace_opens": true,
+        "only_one_membership_shown": true
+      },
+      "full_case_acceptance": true,
+      "acceptance_basis": "Original AU02.07 owner-reported password-preservation workflow",
+      "repeat_requested": false,
       "new_public_AU_cases_added": 0
     }
   },
@@ -7448,5 +7465,14 @@
     "AU02_08_positive_acceptance_retained": true,
     "full_lettered_batch_W_complete": false,
     "AU05_01_refresh_continuity_carry_forward_preserved": true
+  },
+  "batch_W_business_existing_recipient": {
+    "status": "OWNER_REPORTED_EXISTING_BUSINESS_RECIPIENT_PASSWORD_PRESERVATION_PASS",
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-existing-recipient-pass.json",
+    "owner_result_received": true,
+    "AU02_07_requested_scope_complete": true,
+    "AU02_08_accepted_link_replay_owner_PASS": true,
+    "AU02_08_decline_pending": true,
+    "full_lettered_batch_W_complete": false
   }
 }

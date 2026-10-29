@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_BATCH_W_AU05.05_SIGNOUT_RETRY_FIX_STAGING_PACKAGE_AND_DEPLOY",
+  "next_step": "FR.2.5_BATCH_W_AU05.05_DEPLOYED_SOURCE_READBACK_AND_RETEST",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -7236,14 +7236,14 @@
   "batch_W_signout_retry_fix": {
     "date": "2026-10-29",
     "existing_case": "AU05.05",
-    "status": "SOURCE_FIXED_LOCAL_PASS_STAGING_DEPLOYMENT_PENDING",
+    "status": "OWNER_PACKAGE_PASS_DEPLOYMENT_URL_RECEIVED_PUBLIC_READBACK_PENDING",
     "report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNOUT_RETRY_FIX.md",
     "app_asset_version": 123,
     "local_tests": 85,
     "local_pass": 85,
     "local_fail": 0,
-    "staging_package_prepared_by_owner": false,
-    "frontend_uploaded": false,
+    "staging_package_prepared_by_owner": true,
+    "frontend_uploaded": true,
     "hosted_retry_fix_verified": false,
     "changed_public_files": [
       "app.js",
@@ -7262,6 +7262,14 @@
       "focused_fail": 0,
       "application_source_changed_by_correction": false,
       "owner_package_retry_pending": true
-    }
+    },
+    "owner_package_exit_code": 0,
+    "owner_source_hashes_verified": 7,
+    "owner_package_sha256": "79efc8646cd64a1cc0604857ebc6433dcf5c69aff984d0c6fd328991e94e8702",
+    "owner_package_public_files": 42,
+    "owner_package_portable_readback_verified": true,
+    "frontend_upload_evidence": "Owner supplied deployment URL after successful package preparation; provider metadata not independently inspected",
+    "owner_deployment_url": "https://04fbca77.mushavo-budget-staging.pages.dev/",
+    "assistant_public_readback": "Four public GET attempts returned HTTP 403; served source equality not verified; no owner outage inferred"
   }
 }

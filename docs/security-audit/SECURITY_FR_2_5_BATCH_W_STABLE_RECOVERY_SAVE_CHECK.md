@@ -2,6 +2,12 @@
 
 **Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS.** Prepared 28 October 2026 under existing AU04.05. This does not add an AU case or repeat the passed AU04.06 link-isolation observation.
 
+## Owner result — 29 October 2026: scoped PASS
+
+The owner confirms that saving the recovery password automatically opened the recovered account, the other normal app tab showed the same account, and the dashboard opened successfully after the requested sign-out/reload/new-password sign-in. All three requested W67 observations pass. Do not repeat this successful sequence. This is owner-reported hosted evidence, not a new automated test run. Provider failure/retry and other untested AU variants remain open; Batch W remains in progress.
+
+The instructions below are retained as historical procedure, not a pending request.
+
 ## Accepted starting point
 
 [The owner receipt](security-fr-2-batch-w-owner-stable-recovery-isolation-pass.json) reports matching requested recovery identity, clean stable URL and unchanged original signed-in dashboard. Reuse that accepted before-save view. Keep future URLs on **https://mushavo-budget-staging.pages.dev/**. The password-only backend is already installed. No ZIP, SQL, callback/settings change, email/code request or account creation is required.

@@ -68,7 +68,7 @@ All four requested owner observations passed for AU02.06: invitation delivery, f
 | AU05.04 | Sign-out with push cleanup failure | Not yet accepted | Sign-out outcome when protected push cleanup fails. |
 | AU05.05 | Auth sign-out failure | Owner-reported scoped PASS, 29 October | v123 offline warning, restoration of No throttling, explicit retry, warning cleared without refresh, reload remained signed out. Owner action clarified by yes. No repeat requested; independent push failure remains AU05.04. |
 | AU05.06 | Account switch with in-flight/Business UI clearing | Partly checked | Shared-tab sign-in/sign-out/re-sign-in passed; in-flight/Business clearing remains. |
-| AU05.07 | Selected Auth rate errors and observed stale-token window | Historical review; current outcome pending | Earlier retired custom-code rate message is historical; remaining supported Auth rate and stale-token-window evidence must match the current password-only policy. |
+| AU05.07 | Selected Auth rate errors and observed stale-token window | Current Auth provider 429 observed; full case pending | Business email dispatch stored provider 429; recipient exists and is linked. Edge wraps this as generic 502 and UI classification is not accepted. Exact reset boundary and stale-token behavior remain unverified; retired custom-code history is not current-policy acceptance. |
 
 ## Remaining lettered packages
 
@@ -85,3 +85,9 @@ Current source can return several bounded mail/reservation/auth error codes, but
 ## Failed delivery response received — 29 October 2026
 
 Owner supplied HTTP502 response BUSINESS_INVITATION_EMAIL_FAILED for invitation 2cbc417b-930e-47b3-b7c3-ec0b551834d2. In the reviewed source this follows successful reservation and delivery-result recording; it does not establish the underlying provider cause. No rate/SMTP/account-specific diagnosis is asserted. The existing delivery_error_code stores the Auth provider HTTP status or a bounded fallback. Prepare one read-only lookup of this invitation and recipient account/profile linkage; no resend, cancellation, mail dispatch, settings write or grant change. See supabase/diagnostics/security_fr_2_5_business_invitation_delivery.sql. Decline acceptance remains pending; previous accepted results retained.
+
+## Delivery rate limit identified; continue decline in-app — 29 October 2026
+
+[Owner safe read-only result](security-fr-2-batch-w-owner-business-delivery-rate-limit.json) confirms pending/failed invitation, provider status 429, matching existing Auth/profile/linkage and no active membership. This establishes rate limiting of the Auth email operation, without establishing the exact configured quota, cooldown/reset time, or SMTP outage. Retain as narrow AU05.07 evidence; generic Edge502/UI message handling and stale-token window remain open.
+
+Reviewed source creates the recipient's in-app notification independently of email delivery. get_my_business_invitations selects pending invitations bound to the authenticated recipient; respond_business_invitation supports decline after session, recipient and active-subscription checks without a delivery_status requirement. app.js renders a Decline button in Notifications. Continue the existing AU02.08 decline through that signed-in UI, with no resend/new mail/settings change. Expected counts for the last screenshot's unchanged fixture: seat limit 10, active members 3, pending 0, available 7. These are expected, not observed outcomes. No declined-email-link replay is inferred because this attempt produced no delivered link; accepted-link replay already passed.

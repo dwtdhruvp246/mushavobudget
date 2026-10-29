@@ -2,6 +2,18 @@
 
 29 October 2026. Stage 3 / FR.2 / FR.2.5 / Batch W. Existing AU05.01 only.
 
+## Current state — ordinary login restored; repeat not required
+
+29 October 2026: owner explicitly confirms all three requested restoration results: dashboard opened after sign-in; same dashboard remained after one online reload; other normal tab shows the same account. The duplicated identical message is one receipt, not two test runs. Record restored normal password sign-in, native saved-session reload and shared-tab identity continuity as scoped owner PASS. No clean immediate-reload persistence failure was reproduced after restoration. No repeat restoration request.
+
+The earlier actual refresh fetch HTTP200 remains accepted at that observed scope. The interrupted session sequence (manual local-storage removal followed by unconfirmed restoration before expiry/reload) does not establish continuous same-user identity/persistence across that renewal, so AU05.01 remains partial. Current fresh account-status HTTP code was not separately reported; successful normal dashboard startup is accepted as restored app access, not an invented HTTP trace.
+
+Existing Batch U receipt security-fr-2-email-batch-u-owner-scoped-hosted-pass.json was reviewed: real_SDK_refresh_response_observed and SDK_refresh_and_both_tabs_rebound are true, and one browser refresh was counted. That run used the prior email/trusted-device policy, pinned SDK fixture and acceptance memory Web Storage shim. Preserve this as historical positive evidence; do not silently recredit changed current Auth behavior. Remaining native refresh continuity goes into one consolidated session acceptance run, with expiry captured before observation and both tab logs available, rather than another immediate one-hour wait.
+
+Other W evidence reconciliation: AU03.05 recent-login/reauthentication is conditional. The 26 October owner settings receipt shows secure password change and current-password requirement disabled; no optional verification condition should be enabled just to manufacture a test. Mark not required under the last reviewed configuration, with final configuration reconciliation retained. No hosted-required reauthentication pass is claimed. Current original AU04.05 positive recovery save/adoption/new-password sign-in result was already accepted and must remain visible in the current case registry; provider-failure/retry remains open.
+
+Next work is preparation of the remaining original W cases. No immediate owner restoration action, further timed wait, new SQL/settings/deployment, or new public AU case is requested by this receipt review.
+
 ## Current result — first-tab reload shows sign-in; restore baseline before further refresh acceptance
 
 29 October 2026: owner states first tab was signed out when refreshed. Screenshot image(20261029-114729).png shows sign-in view and0/40 Network entries matching my_account_suspended after requested clear/reload. No fresh account-status RPC success/failure was exercised; the prior401 is not newly reproduced. This sequence follows accidental saved-session entry deletion, with normal sign-in restoration not confirmed. Neither a clean same-user refresh/persistence pass nor a product session-loss defect can be concluded from this interrupted baseline. Preserve the earlier actual refresh fetch200 as a scoped observation only.

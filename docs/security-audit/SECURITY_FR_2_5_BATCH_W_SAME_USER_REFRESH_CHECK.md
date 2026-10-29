@@ -2,6 +2,12 @@
 
 29 October 2026. Stage 3 / FR.2 / FR.2.5 / Batch W. Existing AU05.01 only.
 
+## Current state — accidental local login-entry deletion; observation interrupted
+
+29 October 2026: owner reports accidentally deleting sb-dczlddwbtgvfdujgcitb-auth-token from browser local storage. The AU05.01 observation is interrupted and remains unverified. The prior expiry and13:38 deadline no longer define a valid continuous observation. This is an owner test interruption, not evidence of an application refresh failure or a pass. Deleting that local saved-session entry does not delete the Supabase account or finance records and does not establish server session revocation.
+
+Restore only through ordinary sign-in: keep network online/No throttling; reload both existing stable staging app tabs to discard stale page state; sign into the same controlled existing account in one normal tab. The SDK should recreate its saved entry, and the peer tab should follow the normal shared session. If sign-in fails or an unexpected screen appears, report it before retries. Do not manually reconstruct tokens, paste a saved session, delete other storage, change a password, or create a replacement account. Restoration is setup recovery, not another credited AU case. Stop the timed refresh observation; do not request another hour of waiting. Confirm restored dashboard access before selecting the next bounded check within existing W. Prior AU05.05 and recovery successes remain accepted.
+
 ## Actual owner expiry metadata — 29 October 2026
 
 Owner reports expires_at=1793273792, expires_in=3600, computer time13:27. UTC+02 conversion: expiry13:36:32 on29October2026 (11:36:32UTC), remaining572seconds at13:27. Subtracting the reported lifetime gives12:36:32 as an inferred issue time; no baseline token/expiry was captured, so prior refresh is not established. The current token was not expired at the reported13:27 time.

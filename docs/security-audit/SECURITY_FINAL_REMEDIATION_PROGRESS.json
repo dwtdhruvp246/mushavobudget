@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_BATCH_W_RESTORE_NORMAL_STAGING_LOGIN_AFTER_LOCAL_ENTRY_DELETION",
+  "next_step": "FR.2.5_BATCH_W_AU05.01_FRESH_ACCOUNT_STATUS_READ_AFTER_REFRESH",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -7300,7 +7300,7 @@
   },
   "batch_W_same_user_refresh": {
     "existing_case": "AU05.01",
-    "status": "INTERRUPTED_OWNER_LOCAL_SESSION_ENTRY_DELETED_NORMAL_SIGNIN_RESTORE_PENDING",
+    "status": "ACTUAL_REFRESH_HTTP200_OBSERVED_FRESH_ACCOUNT_STATUS_CHECK_PENDING",
     "report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SAME_USER_REFRESH_CHECK.md",
     "SDK_version": "2.110.9",
     "origin": "https://mushavo-budget-staging.pages.dev",
@@ -7354,6 +7354,19 @@
       "manual_token_reconstruction_requested": false,
       "restore_method": "Online reload both normal staging app tabs; sign into same existing account once",
       "another_hour_wait_requested": false
+    },
+    "actual_refresh_response_observation": {
+      "date": "2026-10-29",
+      "evidence": "image(20261029-114020).png",
+      "fetch_status": 200,
+      "preflight_status": 200,
+      "refresh_fetches_visible": 1,
+      "personal_dashboard_visible": true,
+      "account_status_RPC_HTTP401_visible": true,
+      "error_function": "my_account_suspended",
+      "error_timing_relative_to_refresh_established": false,
+      "normal_signin_restore_explicitly_described": false,
+      "full_AU05_01_pass": false
     }
   }
 }

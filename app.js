@@ -6495,12 +6495,13 @@ function renderAdminBusinessSupport(snapshot, offset = 0) {
   const field = (label,value)=>[label,escapeHtml(value ?? 'Not set')];
   const confirmation = '<label class="full">Type the workspace name<input name="confirmation_name" required autocomplete="off" /></label><label class="full">Reason / verified support reference<textarea name="reason" required minlength="8" maxlength="1000" rows="3"></textarea></label>';
   const statusForm=canStatus?`<section class="admin-detail-section"><h4>${w.status==='suspended'?'Restore workspace access':'Suspend workspace access'}</h4><p class="muted-copy">${w.status==='suspended'?'Restoration keeps account suspensions and subscription expiry in force.':'Suspension locks Business activity for every member. Records are retained.'}</p><form data-business-support-form="status" class="form-grid">${confirmation}<button class="${w.status==='suspended'?'primary':'danger'} full" type="submit">${w.status==='suspended'?'Restore workspace':'Suspend workspace'}</button></form></section>`:'';
+  const seatForm=state.adminRole==='super_admin' && effective==='active' ? `<section class="admin-detail-section"><h4>Edit Business seats</h4><p class="muted-copy">Total seats include the Owner. This manual allowance records no payment and keeps the plan and expiry unchanged. Scheduled seat changes or pending payments must be resolved first.</p><form data-business-support-form="seats" class="form-grid"><label class="full">Total seats<input name="total_seats" type="number" min="${Math.max(1,Number(snapshot.usage)||1)}" max="100" step="1" value="${Number(snapshot.current_limit)||1}" required /></label>${confirmation}<button class="primary full" type="submit">Save seat allowance</button></form></section>` : '';
   const transferForm=canTransfer?`<section class="admin-detail-section"><h4>Recover or transfer ownership</h4><p class="muted-copy">Verify the request before proceeding. Choose an existing active member. The previous Owner becomes a Viewer and loses member permission overrides. This changes neither the subscription nor the number of seats. Suspensions remain in force.</p>${snapshot.pending_payment?'<p role="status">Resolve the pending subscription payment in Finance before transferring ownership.</p>':eligible.length?`<form data-business-support-form="ownership" class="form-grid"><label class="full">New Owner<select name="member_id" required><option value="">Choose an existing member</option>${eligible.map(m=>`<option value="${escapeHtml(m.id)}">${escapeHtml(m.name || m.email)} — ${escapeHtml(m.email)}</option>`).join('')}</select></label><label class="full">Type the new Owner’s email<input name="confirmation_email" type="email" required autocomplete="off" /></label>${confirmation}<button class="primary full" type="submit">Confirm ownership change</button></form>`:'<p>No eligible member. Ask a registered active member to join through the existing invitation process first.</p>'}</section>`:'';
   const history=(snapshot.actions || []).map(a=>`<article class="admin-detail-card"><div><strong>${escapeHtml(titleCase(a.action))}</strong><span>${escapeHtml(a.actor_email || a.actor_id)} · ${escapeHtml(formatAdminDate(a.created_at))}</span><p>${escapeHtml(a.reason)}</p><small>${escapeHtml(a.before_summary?.status || a.before_summary?.owner_id || '')} → ${escapeHtml(a.after_summary?.status || a.after_summary?.owner_id || '')}</small></div></article>`).join('') || '<p class="muted-copy">No platform support actions recorded.</p>';
   showAdminDetails({eyebrow:'Business support',title:w.name,subtitle:owner.email || 'Owner unavailable',body:
     `<section class="admin-detail-section"><h4>Access and subscription</h4>${adminDetailRows([
       field('Owner',owner.name || owner.email || w.owner_id),field('Owner email',owner.email),field('Owner account',owner.account_status),field('Workspace status',w.status),field('Effective access',effective),field('Suspension reason',w.suspension_reason),field('Plan',snapshot.plan_name),field('Billing period',s.billing_period),field('Activation',formatAdminDate(s.entitlement_start_at)),field('Paid through',formatAdminDate(s.paid_through_at)),field('Time remaining',adminExpiryCountdown(s.paid_through_at)),field('Current seats',snapshot.current_limit),field('Members and live reservations',snapshot.usage),field('Invitation capacity',snapshot.invitation_limit),field('Next term seats',s.business_next_member_limit),field('Next term starts',s.business_next_effective_at?formatAdminDate(s.business_next_effective_at):'Not scheduled')
-    ])}<p class="muted-copy">Plan configuration is under Plans. Subscription payments and paid seat approvals are under Finance. These support controls do not grant membership or edit Business finance records.</p><button type="button" data-business-support-refresh>Refresh details</button></section>${statusForm}${transferForm}<section class="admin-detail-section"><h4>Platform support history</h4><div class="admin-detail-stack">${history}</div><div class="row-actions"><button type="button" data-business-support-page="${Math.max(0,offset-20)}" ${offset===0?'disabled':''}>Previous</button><span>${Number(snapshot.action_count)?offset+1:0}–${Math.min(offset+20,Number(snapshot.action_count))} of ${Number(snapshot.action_count)} actions</span><button type="button" data-business-support-page="${offset+20}" ${offset+20>=snapshot.action_count?'disabled':''}>Next</button></div></section>`});
+    ])}<p class="muted-copy">Plan configuration is under Plans. Subscription payments and paid seat approvals are under Finance. Manual seat allowances are available to Super Admins below. These support controls do not grant membership or edit Business finance records.</p><button type="button" data-business-support-refresh>Refresh details</button></section>${seatForm}${statusForm}${transferForm}<section class="admin-detail-section"><h4>Platform support history</h4><div class="admin-detail-stack">${history}</div><div class="row-actions"><button type="button" data-business-support-page="${Math.max(0,offset-20)}" ${offset===0?'disabled':''}>Previous</button><span>${Number(snapshot.action_count)?offset+1:0}–${Math.min(offset+20,Number(snapshot.action_count))} of ${Number(snapshot.action_count)} actions</span><button type="button" data-business-support-page="${offset+20}" ${offset+20>=snapshot.action_count?'disabled':''}>Next</button></div></section>`});
   $("#adminDetailsBody").classList.add("admin-business-support");
   adminBusinessSupport={snapshot,offset,userId:state.session?.user?.id,sequence:adminDetailsSequence,requests:{status:crypto.randomUUID(),ownership:crypto.randomUUID()}};
   // Keep the directory behind the support dialog consistent with its fresh snapshot.
@@ -6519,10 +6520,15 @@ async function submitAdminBusinessSupport(form) {
   const args={p_workspace_id:w.id,p_expected_version:w.version,p_confirmation_name:data.get('confirmation_name'),p_reason:data.get('reason'),p_request_id:context.requests[kind]};
   if (kind==='ownership') Object.assign(args,{p_new_owner_member_id:data.get('member_id'),p_expected_owner_id:w.owner_id,p_confirmation_email:data.get('confirmation_email')});
   else if (kind==='status') args.p_status=w.status==='suspended'?'active':'suspended';
+  else if (kind==='seats') {
+    if(state.adminRole!=='super_admin') return;
+    Object.assign(args,{p_total_seats:Number(data.get('total_seats')),p_expected_version:context.snapshot.subscription.version});
+    delete args.p_request_id;
+  }
   else return;
   adminBusinessSupportBusy=true;form.querySelector('button[type="submit"]').disabled=true;
   try {
-    await query('Business support action',supabase.rpc(kind==='ownership'?'admin_business_transfer_owner':'admin_business_set_status',args));
+    await query('Business support action',supabase.rpc(kind==='seats'?'admin_set_business_seats':kind==='ownership'?'admin_business_transfer_owner':'admin_business_set_status',args));
     if (context.sequence!==adminDetailsSequence || context.userId!==state.session?.user?.id || !$('#adminDetailsDialog').open) return;
     showToast('Business support action recorded.');
     await openAdminBusinessSupport(w.id,0);
@@ -7102,6 +7108,7 @@ function refreshAdminManualGrantPlans() {
   const nameField = $("#adminManualBusinessNameField");
   const nameInput = $("#adminManualBusinessName");
   const creatingBusiness = workspaceValue === "__new_business__";
+  $("#adminManualEditSeats").classList.toggle("hidden", state.adminRole !== "super_admin" || workspace?.workspace_type !== "business");
   nameField.classList.toggle("hidden", !creatingBusiness);
   nameInput.required = creatingBusiness;
   $("#adminManualGrantNotice").textContent = creatingBusiness
@@ -7133,6 +7140,12 @@ function refreshAdminManualGrantWorkspaces() {
   if ([...select.options].some((option) => option.value === previous)) select.value = previous;
   refreshAdminManualGrantPlans();
 }
+
+document.addEventListener("click", event => {
+  if (!event.target.closest("#adminManualEditSeats")) return;
+  const workspace=state.adminWorkspaces.find(row=>row.id===$("#adminManualGrantWorkspace").value);
+  if(state.adminRole==="super_admin" && workspace?.workspace_type==="business") void openAdminBusinessSupport(workspace.id);
+});
 
 function renderAdminManualGrantForm() {
   const panel = $("#adminManualGrantPanel");
@@ -9961,5 +9974,3 @@ window.setInterval(() => {
 if (!authLinkRedirect) init().catch(handleLoadFailure);
 
 $("#adminDetailsDialog").addEventListener("close",()=>{adminDetailsSequence++;adminBusinessSupport=null;});
-
-

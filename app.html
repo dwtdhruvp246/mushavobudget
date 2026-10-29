@@ -26,7 +26,7 @@
     <script src="/pwa.js?v=80" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=123"></script>
+    <script type="module" src="app.js?v=124"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -316,6 +316,7 @@
                   <form id="adminManualGrantForm" class="form-grid">
                     <label for="adminManualGrantUser">Registered owner<select id="adminManualGrantUser" required></select></label>
                     <label for="adminManualGrantWorkspace">Workspace<select id="adminManualGrantWorkspace" required></select></label>
+                    <button id="adminManualEditSeats" type="button" class="full hidden">Edit Business seats for this workspace</button>
                     <label for="adminManualGrantPlan">Plan<select id="adminManualGrantPlan" required></select></label>
                     <label for="adminManualGrantPeriod">Billing period<select id="adminManualGrantPeriod" required><option value="monthly">Monthly</option><option value="annual">Annual</option></select></label>
                     <label for="adminManualGrantStart">Access begins<input id="adminManualGrantStart" type="date" required /></label>
@@ -1180,5 +1181,3 @@
     <div id="toast" class="toast hidden" role="status" aria-live="polite" popover="manual"></div>
   </body>
 </html>
-
-

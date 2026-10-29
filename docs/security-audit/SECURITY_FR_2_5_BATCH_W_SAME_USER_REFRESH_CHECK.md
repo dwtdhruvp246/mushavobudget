@@ -2,6 +2,12 @@
 
 29 October 2026. Stage 3 / FR.2 / FR.2.5 / Batch W. Existing AU05.01 only.
 
+## Current owner route — native automatic refresh observation
+
+The owner screenshot image(20261029-091242).png shows Chrome's self-XSS paste warning and the signed-out app, without check output. No execution or refresh outcome is credited. Keep console pasting protection enabled; the earlier explicit console route below is historical preparation, not the current owner action.
+
+For the same original AU05.01 case: sign into the controlled ordinary account on stable staging, with two normal tabs displaying that same dashboard and Network set to No throttling. In the first tab's Network panel enable Preserve log, select All and filter refresh_token. Leave the app open, computer awake and connected. Observe its native token?grant_type=refresh_token request and HTTP status, without opening or sharing headers, request payloads or response bodies. No reload/sign-out while waiting. The recorded token lifetime was 3600 seconds; a newly signed-in session may take around an hour to reach renewal. This is an estimate based on that recorded setting, not a verified current hosted deadline. Once the request completes, report status and whether both tabs retain the same account/dashboard before refreshing, then whether one online reload opens that same dashboard. If no request appears after about an hour or any error appears, report that and stop; do not change settings or manufacture expiry. A 200 alone is insufficient for full case closure without the dashboard observations. Owner outcome remains pending. No new AU cases, product change, upload or settings action.
+
 ## Accepted previous result
 
 AU05.05 scoped hosted PASS: version123 offline sign-out warning, connectivity restoration and Retry sign-out action confirmed by owner, warning cleared without refresh, subsequent reload remained signed out. Do not repeat.

@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_BATCH_W_AU05.01_READ_ONLY_EXPIRY_METADATA_DIAGNOSTIC",
+  "next_step": "FR.2.5_BATCH_W_AU05.01_ACTUAL_EXPIRY_BOUNDED_OBSERVATION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -7300,7 +7300,7 @@
   },
   "batch_W_same_user_refresh": {
     "existing_case": "AU05.01",
-    "status": "OWNER_ONE_HOUR_NO_MATCHING_REQUEST_INCONCLUSIVE_EXPIRY_METADATA_PENDING",
+    "status": "ACTUAL_EXPIRY_METADATA_RECEIVED_BOUNDED_REFRESH_OBSERVATION_PENDING",
     "report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SAME_USER_REFRESH_CHECK.md",
     "SDK_version": "2.110.9",
     "origin": "https://mushavo-budget-staging.pages.dev",
@@ -7335,6 +7335,16 @@
       "expires_in",
       "current computer time"
     ],
-    "hosted_case_complete": false
+    "hosted_case_complete": false,
+    "owner_expiry_metadata": {
+      "expires_at": 1793273792,
+      "expires_in": 3600,
+      "computer_time_owner_reported": "2026-10-29 13:27 UTC+02",
+      "expiry_local": "2026-10-29 13:36:32 UTC+02",
+      "remaining_seconds_at_reported_time": 572,
+      "inferred_issue_time_local": "2026-10-29 12:36:32 UTC+02",
+      "prior_refresh_from_metadata_alone_established": false
+    },
+    "bounded_observation_deadline_local": "2026-10-29 13:38 UTC+02"
   }
 }

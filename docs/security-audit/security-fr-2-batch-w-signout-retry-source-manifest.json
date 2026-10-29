@@ -49,8 +49,8 @@
     "app.js": "34ebb8fe15c112483f535c86e469e071b5f37e8191a41e6e8e6a36f5c4ab5e76",
     "app.html": "7613bde43837a44ec2972290d910081b37c4e3c730d795d9d7e1f4670f3d54ed",
     "scripts/prepare-fr-2-batch-w-signout-retry.mjs": "ba1da422235abc831961179934da8cb21bcd243d91e00389039a6ca897defaf7",
-    "scripts/lib/read-public-zip.mjs": "8b152538b4c4c0ba07a11723b7c8cec338e90133ba2342854870b4f4d0bfd008",
-    "scripts/lib/store-public-zip.mjs": "15ce9746104324b2adb4426b47b7215c852a44d5ca04d4c18479b98fbe88ccfd",
+    "scripts/lib/read-public-zip.mjs": "028781910dc28e64d1bb5c02af7a8d26e9f345d4b82f6f1c35f26e14673ff2b0",
+    "scripts/lib/store-public-zip.mjs": "81eae2723285b56e321141512c2b6311777397f5b84853badcee9f60af3706aa",
     "tests/signout-retry-package.test.mjs": "66c55bd122905d7faf823a639e660f53bee4934c3fc89b6ba6ef005521d36e98",
     "tests/signout-retry-reconciliation.test.mjs": "ede7928604c304aa1f9248d4796c88293fca5ff1cb7256ecb97248d046b74713"
   },

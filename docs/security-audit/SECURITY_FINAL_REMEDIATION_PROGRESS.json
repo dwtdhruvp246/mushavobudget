@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_BATCH_W_AU05.05_VERSION_123_OFFLINE_SIGNOUT_ONLINE_RETRY_RETEST",
+  "next_step": "FR.2.5_BATCH_W_AU05.05_CLARIFY_RETRY_ACTION_WITHOUT_REPEAT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -7236,7 +7236,7 @@
   "batch_W_signout_retry_fix": {
     "date": "2026-10-29",
     "existing_case": "AU05.05",
-    "status": "OWNER_PUBLIC_SOURCE_READBACK_4_OF_4_PASS_HOSTED_RETRY_RETEST_PENDING",
+    "status": "OWNER_SIGNED_OUT_RELOAD_PASS_RETRY_ACTION_CLARIFICATION_PENDING",
     "report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNOUT_RETRY_FIX.md",
     "app_asset_version": 123,
     "local_tests": 85,
@@ -7282,6 +7282,19 @@
       "app_html_sha256": "a900dc61d505321a4a11817fd59cbeb9c432c5dd78772d1c18e45feb4213d0d7",
       "app_js_sha256": "34ebb8fe15c112483f535c86e469e071b5f37e8191a41e6e8e6a36f5c4ab5e76",
       "evidence_type": "OWNER_SUPPLIED_NODE_READ_ONLY_HASH_OUTPUT"
+    },
+    "owner_retest": {
+      "date": "2026-10-29",
+      "offline_signout_warning_reported": true,
+      "screenshot_shows_signin_view": true,
+      "screenshot_shows_transient_warning_toast": true,
+      "persistent_retry_notice_visible_in_screenshot": false,
+      "warning_disappeared_owner_reported": true,
+      "reload_remained_signed_out_owner_reported": true,
+      "No_throttling_restored_explicitly_confirmed": false,
+      "retry_button_clicked_explicitly_confirmed": false,
+      "repeat_requested": false,
+      "scope": "Signed-out persistence accepted; actual retry action and recovery timing not established"
     }
   }
 }

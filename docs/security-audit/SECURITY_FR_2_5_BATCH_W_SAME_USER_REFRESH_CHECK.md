@@ -2,6 +2,12 @@
 
 29 October 2026. Stage 3 / FR.2 / FR.2.5 / Batch W. Existing AU05.01 only.
 
+## Current evidence — actual refresh HTTP200; fresh account-status read pending
+
+29 October 2026: screenshot image(20261029-114020).png shows token?grant_type=refresh_token fetch HTTP200 (2.1kB), plus a separate preflight HTTP200. This establishes a real refresh response, not two token refreshes. Personal dashboard is visible. Screenshot also contains POST /rest/v1/rpc/my_account_suspended HTTP401, permission denied for function my_account_suspended, from loadAccess through refreshVisibleData. Because Keep log is enabled, timing relative to the successful refresh and local-storage deletion/recovery is not established. Normal sign-in restoration was not explicitly described. Do not credit a full AU05.01 pass or assume the permission error is current or resolved.
+
+Source read of deployed v123 app.js confirms initial loadApp and background loadAccess both invoke my_account_suspended; background failure is caught and logged while an existing view can remain visible. Next immediate check: No throttling, replace Network filter with my_account_suspended, clear Network log, then reload only the first app tab once online. Record the fresh request status, whether that tab opens the intended dashboard, and whether the peer still shows the same account. This requests no password write, account/role change or new timed wait. Retain the supplied refresh screenshot as accepted evidence before clearing the local log. Do not request headers, response bodies or stored token values. Investigate only if the fresh read fails; never relax permission merely to silence the error. Preserve prior accepted AU05.05/recovery results.
+
 ## Current state — accidental local login-entry deletion; observation interrupted
 
 29 October 2026: owner reports accidentally deleting sb-dczlddwbtgvfdujgcitb-auth-token from browser local storage. The AU05.01 observation is interrupted and remains unverified. The prior expiry and13:38 deadline no longer define a valid continuous observation. This is an owner test interruption, not evidence of an application refresh failure or a pass. Deleting that local saved-session entry does not delete the Supabase account or finance records and does not establish server session revocation.

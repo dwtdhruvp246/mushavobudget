@@ -7251,6 +7251,17 @@
     ],
     "unrelated_public_entries_preserved_by_packager": 40,
     "SQL_or_settings_change_required": false,
-    "full_batch_W_complete": false
+    "full_batch_W_complete": false,
+    "package_correction": {
+      "owner_error": "SIGNOUT_RETRY_SOURCE_REQUIRED",
+      "cause": "Two helper hashes included a local extra trailing newline absent from published source",
+      "reproduced_from_published_bytes": true,
+      "corrected_commit": "878c8711e021f4dbc28b73c4e797e43fa08755e9",
+      "focused_tests": 15,
+      "focused_pass": 15,
+      "focused_fail": 0,
+      "application_source_changed_by_correction": false,
+      "owner_package_retry_pending": true
+    }
   }
 }

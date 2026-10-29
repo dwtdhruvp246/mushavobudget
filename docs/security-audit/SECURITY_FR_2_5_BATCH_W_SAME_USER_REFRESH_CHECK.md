@@ -2,6 +2,12 @@
 
 29 October 2026. Stage 3 / FR.2 / FR.2.5 / Batch W. Existing AU05.01 only.
 
+## Current result — first-tab reload shows sign-in; restore baseline before further refresh acceptance
+
+29 October 2026: owner states first tab was signed out when refreshed. Screenshot image(20261029-114729).png shows sign-in view and0/40 Network entries matching my_account_suspended after requested clear/reload. No fresh account-status RPC success/failure was exercised; the prior401 is not newly reproduced. This sequence follows accidental saved-session entry deletion, with normal sign-in restoration not confirmed. Neither a clean same-user refresh/persistence pass nor a product session-loss defect can be concluded from this interrupted baseline. Preserve the earlier actual refresh fetch200 as a scoped observation only.
+
+Next required baseline restoration: No throttling, sign into the same existing controlled ordinary account once in the currently signed-out first tab; if correct dashboard opens, reload that tab once online; observe whether it keeps the same dashboard and whether the peer tab follows. Stop/report any error or renewed sign-in screen rather than repeating authentication. These are setup restoration observations, not new AU cases. Do not inspect/edit session storage further, wait another hour, change password or reissue recovery mail. If normal sign-in followed by immediate reload still loses the account, investigate a reproducible persistence problem on that restored baseline. Existing AU05.05/recovery passes remain accepted and AU05.01 remains open.
+
 ## Current evidence — actual refresh HTTP200; fresh account-status read pending
 
 29 October 2026: screenshot image(20261029-114020).png shows token?grant_type=refresh_token fetch HTTP200 (2.1kB), plus a separate preflight HTTP200. This establishes a real refresh response, not two token refreshes. Personal dashboard is visible. Screenshot also contains POST /rest/v1/rpc/my_account_suspended HTTP401, permission denied for function my_account_suspended, from loadAccess through refreshVisibleData. Because Keep log is enabled, timing relative to the successful refresh and local-storage deletion/recovery is not established. Normal sign-in restoration was not explicitly described. Do not credit a full AU05.01 pass or assume the permission error is current or resolved.

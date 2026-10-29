@@ -17,3 +17,11 @@ Owner workflow: install complete candidate SQL on staging, upload prepared stagi
 Do not re-grant the subscription just to change seats.
 
 Current W evidence: password-change failure/retry AU03.04 deferred at owner request; AU02.06–08 invitation acceptance pending. Owner reports Business workspace and Team invitation control available following owner-managed Admin setup/manual grant. This does not close V or W.
+
+## Owner installation and first save attempt — 29 October 2026
+
+Owner preparation PASS, exit 0, pinned commit fe904ace128a6a709379b029e50620c4fdaa8cbe. ZIP SHA256 99b4c23e6e2b44cb7c98c2945e15915daa0963efe278323aed1119e3a2311240; 42 public files, app.js/app.html replaced, 40 unchanged. Owner reports SQL result “Success. No rows returned” and deployment https://78da89b0.mushavo-budget-staging.pages.dev/.
+
+Screenshot image(20261029-171149).png shows the v124 seat editor, total 10, confirmation text “testing1”, and three admin_set_business_seats HTTP400 requests. Visible returned message: WORKSPACE_NAME_CONFIRMATION_REQUIRED. The dialog title/actual workspace name is outside the screenshot. These facts establish a hosted validation rejection; they do not establish a successful seat save or prove the entered name matches the stored name. Source comparison requires the trimmed input to equal the workspace name exactly, including case.
+
+Next owner action: copy the exact workspace name from the top of the same dialog into the confirmation field, use an 8+ character reason, and submit once. Confirm refreshed Current seats = 10 and Business Team capacity. If the exact-name attempt still rejects, obtain the displayed title and returned error before changing code. No SQL rerun or new upload requested for this validation rejection. W invitation cases remain pending.

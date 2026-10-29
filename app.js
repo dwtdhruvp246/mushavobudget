@@ -1296,6 +1296,7 @@ function handleSignedOut() {
   state.manualSignInRequired = true;
   resetState();
   setManualSignInIntent("signed-out", preserveSignInDestination);
+  showSignOutStatus();
   setView("auth");
 }
 
@@ -3970,6 +3971,37 @@ async function sendTestPushNotification() {
   }
 }
 
+async function retrySignOut(button) {
+  if (!supabase || state.signingOut) return;
+  if (state.session) return signOutSafely(button);
+  // A SIGNED_OUT event can arrive after the failed request. Reconcile the
+  // SDK before clearing a stale warning; never sign out a replacement session.
+  const epoch = authDataEpoch;
+  state.signingOut = true;
+  setSubmitting(button, true, "Checking session…");
+  try {
+    const { data, error } = await supabase.auth.getSession();
+    if (epoch !== authDataEpoch || state.session) return;
+    if (error) throw error;
+    if (!data || !("session" in data)) throw new Error("Session unavailable");
+    if (data?.session) {
+      showSignOutStatus("Your session changed. Reload the page to review it before signing out.");
+      setView("auth");
+      return;
+    }
+    handleSignedOut();
+  } catch (_error) {
+    if (epoch === authDataEpoch && !state.session) {
+      showSignOutStatus("Sign-out could not be confirmed. Check your connection and retry signing out.");
+      setView("auth");
+    }
+  } finally {
+    state.signingOut = false;
+    setSubmitting(button, false, "Retry sign-out");
+    resumeSharedSignIn();
+  }
+}
+
 async function signOutSafely(button = null) {
   if (!supabase || !state.session || state.signingOut) return;
   const leavingSession = state.session;
@@ -4002,7 +4034,7 @@ async function signOutSafely(button = null) {
   } finally {
     state.signingOut = false;
     // This DOM button survives sign-out and is reused after the next sign-in.
-    setSubmitting(button, false, "Sign out");
+    setSubmitting(button, false, button?.id === "retrySignOutButton" ? "Retry sign-out" : "Sign out");
     resumeSharedSignIn();
   }
 }
@@ -9751,7 +9783,7 @@ $("#adminEnablePushNotificationsButton").addEventListener("click", enablePushNot
 $("#adminSendTestPushButton").addEventListener("click", sendTestPushNotification);
 $("#adminDisablePushNotificationsButton").addEventListener("click", disablePushNotifications);
 $("#signOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
-$("#retrySignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
+$("#retrySignOutButton").addEventListener("click", (event) => retrySignOut(event.currentTarget));
 $("#adminSignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
 $("#suspendedSignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
 $("#obligationCurrencySearch").addEventListener("input", (event) => {
@@ -9929,4 +9961,5 @@ window.setInterval(() => {
 if (!authLinkRedirect) init().catch(handleLoadFailure);
 
 $("#adminDetailsDialog").addEventListener("close",()=>{adminDetailsSequence++;adminBusinessSupport=null;});
+
 

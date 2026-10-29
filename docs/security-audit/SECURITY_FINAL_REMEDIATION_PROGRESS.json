@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_BATCH_W_AU05.05_HOSTED_SIGNOUT_FAILURE_RETRY",
+  "next_step": "FR.2.5_BATCH_W_AU05.05_SIGNOUT_RETRY_FIX_STAGING_PACKAGE_AND_DEPLOY",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -7226,9 +7226,31 @@
     "local_fail": 0,
     "local_exit_code": 0,
     "hosted_case": "AU05.05",
-    "hosted_owner_result_received": false,
+    "hosted_owner_result_received": true,
     "new_AU_cases": 0,
     "application_source_changed": false,
+    "full_batch_W_complete": false,
+    "hosted_result": "OFFLINE_WARNING_AND_PRIVATE_VIEW_HIDDEN_PASS_RETRY_VISUAL_COMPLETION_REVIEW_REQUIRED",
+    "owner_report": "Retry appeared to do nothing after No throttling restored; refresh showed signed-out state."
+  },
+  "batch_W_signout_retry_fix": {
+    "date": "2026-10-29",
+    "existing_case": "AU05.05",
+    "status": "SOURCE_FIXED_LOCAL_PASS_STAGING_DEPLOYMENT_PENDING",
+    "report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SIGNOUT_RETRY_FIX.md",
+    "app_asset_version": 123,
+    "local_tests": 85,
+    "local_pass": 85,
+    "local_fail": 0,
+    "staging_package_prepared_by_owner": false,
+    "frontend_uploaded": false,
+    "hosted_retry_fix_verified": false,
+    "changed_public_files": [
+      "app.js",
+      "app.html"
+    ],
+    "unrelated_public_entries_preserved_by_packager": 40,
+    "SQL_or_settings_change_required": false,
     "full_batch_W_complete": false
   }
 }

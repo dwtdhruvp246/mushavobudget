@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_BATCH_W_AU05.01_ACTUAL_EXPIRY_BOUNDED_OBSERVATION",
+  "next_step": "FR.2.5_BATCH_W_RESTORE_NORMAL_STAGING_LOGIN_AFTER_LOCAL_ENTRY_DELETION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -7300,7 +7300,7 @@
   },
   "batch_W_same_user_refresh": {
     "existing_case": "AU05.01",
-    "status": "ACTUAL_EXPIRY_METADATA_RECEIVED_BOUNDED_REFRESH_OBSERVATION_PENDING",
+    "status": "INTERRUPTED_OWNER_LOCAL_SESSION_ENTRY_DELETED_NORMAL_SIGNIN_RESTORE_PENDING",
     "report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SAME_USER_REFRESH_CHECK.md",
     "SDK_version": "2.110.9",
     "origin": "https://mushavo-budget-staging.pages.dev",
@@ -7345,6 +7345,15 @@
       "inferred_issue_time_local": "2026-10-29 12:36:32 UTC+02",
       "prior_refresh_from_metadata_alone_established": false
     },
-    "bounded_observation_deadline_local": "2026-10-29 13:38 UTC+02"
+    "bounded_observation_deadline_local": null,
+    "interruption": {
+      "date": "2026-10-29",
+      "owner_accidental_local_storage_key_deletion": true,
+      "affected_key": "sb-dczlddwbtgvfdujgcitb-auth-token",
+      "app_refresh_failure_established": false,
+      "manual_token_reconstruction_requested": false,
+      "restore_method": "Online reload both normal staging app tabs; sign into same existing account once",
+      "another_hour_wait_requested": false
+    }
   }
 }

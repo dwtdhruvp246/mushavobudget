@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_BATCH_W_ADMIN_INVITATION_PREPARATION_CURRENT_POLICY_V_RECONCILIATION",
+  "next_step": "FR.2.5.AU02.01_AU02.02_CURRENT_POLICY_OWNER_CHECK",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4613,7 +4613,10 @@
     "independent_W_started_while_V_remains_open": true,
     "owner_password_only_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
     "policy_reconciliation_required_before_resuming_factor_work": true,
-    "mandatory_custom_signin_verification_superseded_for_Admin": true
+    "mandatory_custom_signin_verification_superseded_for_Admin": true,
+    "current_policy_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
+    "W_Admin_invitation_preparation_uses_later_password_policy": true,
+    "original_stronger_MFA_criteria_met_by_current_policy": false
   },
   "remaining_required_lettered_batches": [
     "V",
@@ -5823,15 +5826,18 @@
   },
   "FR2_email_next_Auth_case": {
     "id": "AU02.01",
+    "related_case": "AU02.02",
     "group": "AU02",
-    "title": "Admin new-recipient setup",
-    "stage_step": "FR.2.5.AU02.01",
-    "status": "PREPARATION_CURRENT_PASSWORD_POLICY_AND_V_DEPENDENCY_RECONCILIATION_PENDING",
+    "title": "Admin new-recipient setup and pre-adoption Admin-tab isolation",
+    "stage_step": "FR.2.5.AU02.01_AU02.02",
+    "status": "OWNER_GROUPED_CURRENT_POLICY_CHECK_PREPARED",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
-    "variant": "Original Admin invitation setup/isolation/denial/retry cases AU02.01–05. Historical V AAL2/factor procedure must be reconciled to the later owner-selected password-only policy; role, live-session and denial guards remain.",
-    "owner_action_required_now": "No new invitation/resend, code, settings change, SQL rerun, upload or factor setup requested at this checkpoint. Prepare the next applicable Admin check before mail dispatch; retain unresolved Auth mail rate boundary.",
-    "hosted_acceptance": false
+    "owner_action_required_now": "One Admin-created Free Personal test invitation to an unused controlled inbox, at most one send. Open in a new normal tab in same browser; verify recipient and original Admin continuity before explicit Complete setup/account adoption. Stop on rate/error without resend. Then complete setup and verify intended recipient/Free Personal workspace.",
+    "hosted_acceptance": false,
+    "maximum_send_actions": 1,
+    "rate_reset_verified": false
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -6084,6 +6090,46 @@
       "full_case_acceptance": true,
       "acceptance_basis": "Original AU02.07 owner-reported password-preservation workflow",
       "repeat_requested": false,
+      "new_public_AU_cases_added": 0
+    },
+    "AU02.01": {
+      "status": "CURRENT_POLICY_GROUPED_OWNER_CHECK_PREPARED",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
+      "source_prerequisite_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
+      "owner_result_received": false,
+      "full_case_acceptance": false,
+      "new_public_AU_cases_added": 0
+    },
+    "AU02.02": {
+      "status": "CURRENT_POLICY_GROUPED_OWNER_CHECK_PREPARED",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
+      "source_prerequisite_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
+      "owner_result_received": false,
+      "full_case_acceptance": false,
+      "new_public_AU_cases_added": 0
+    },
+    "AU02.03": {
+      "status": "CURRENT_POLICY_HOSTED_VARIANT_PENDING",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
+      "source_prerequisite_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
+      "owner_result_received": false,
+      "full_case_acceptance": false,
+      "new_public_AU_cases_added": 0
+    },
+    "AU02.04": {
+      "status": "CURRENT_POLICY_HOSTED_VARIANT_PENDING",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
+      "source_prerequisite_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
+      "owner_result_received": false,
+      "full_case_acceptance": false,
+      "new_public_AU_cases_added": 0
+    },
+    "AU02.05": {
+      "status": "CURRENT_POLICY_HOSTED_VARIANT_PENDING",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
+      "source_prerequisite_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
+      "owner_result_received": false,
+      "full_case_acceptance": false,
       "new_public_AU_cases_added": 0
     }
   },
@@ -7488,7 +7534,7 @@
     "owner_result_received": true,
     "AU02_07_requested_scope_complete": true,
     "AU02_08_accepted_link_replay_owner_PASS": true,
-    "AU02_08_decline_pending": true,
+    "AU02_08_decline_pending": false,
     "full_lettered_batch_W_complete": false
   },
   "batch_W_business_invitation_delivery_rate_limit": {
@@ -7497,7 +7543,8 @@
     "quota_and_reset_unverified": true,
     "resend_requested": false,
     "in_app_decline_prepared": true,
-    "full_case_acceptance": false
+    "full_case_acceptance": false,
+    "in_app_decline_owner_PASS": true
   },
   "batch_W_business_invitations": {
     "status": "AU02_06_AU02_07_AU02_08_OWNER_SCOPED_PASS",
@@ -7510,13 +7557,22 @@
     "provider_429_carry_forward_case": "AU05.07"
   },
   "batch_W_Admin_invitation_prerequisite_review": {
-    "status": "SOURCE_REVIEW_IDENTIFIES_HISTORICAL_V_MFA_DEPENDENCY_NEEDS_CURRENT_POLICY_RECONCILIATION",
-    "historical_V_contract": "docs/security-audit/security-fr-2-batch-v-contract.json",
-    "historical_V_plan": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PLAN.md",
+    "status": "CURRENT_POLICY_SOURCE_PREREQUISITE_RECONCILED_OWNER_AU02_01_02_PENDING",
     "owner_selected_password_only_policy_retained": true,
-    "Super_Admin_availability_owner_reported": true,
+    "policy_receipt": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
+    "reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
+    "preparation_receipt": "docs/security-audit/security-fr-2-batch-w-admin-invitation-current-policy-preparation.json",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
+    "original_V_criteria_reviewed": 16,
+    "historical_MFA_criteria_met": false,
     "V_complete": false,
-    "no_historical_MFA_setup_requested": true,
-    "email_provider_rate_boundary_unresolved": true
+    "current_Admin_invitation_entry_requires_TOTP_setup": false,
+    "session_and_server_role_checks_retained": true,
+    "Super_Admin_availability_owner_reported": true,
+    "hosted_Admin_invitation_results_received": false,
+    "email_provider_rate_boundary_unresolved": true,
+    "maximum_owner_send_actions": 1,
+    "stop_on_rate_or_error": true,
+    "new_public_AU_cases_added": 0
   }
 }

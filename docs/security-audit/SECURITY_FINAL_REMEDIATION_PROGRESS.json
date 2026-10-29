@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_BATCH_W_AU05.01_FRESH_ACCOUNT_STATUS_READ_AFTER_REFRESH",
+  "next_step": "FR.2.5_BATCH_W_RESTORE_NORMAL_SIGNIN_THEN_IMMEDIATE_RELOAD_BASELINE",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -7300,7 +7300,7 @@
   },
   "batch_W_same_user_refresh": {
     "existing_case": "AU05.01",
-    "status": "ACTUAL_REFRESH_HTTP200_OBSERVED_FRESH_ACCOUNT_STATUS_CHECK_PENDING",
+    "status": "INTERRUPTED_BASELINE_FIRST_TAB_SIGNED_OUT_ON_RELOAD_NORMAL_SIGNIN_REQUIRED",
     "report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SAME_USER_REFRESH_CHECK.md",
     "SDK_version": "2.110.9",
     "origin": "https://mushavo-budget-staging.pages.dev",
@@ -7367,6 +7367,16 @@
       "error_timing_relative_to_refresh_established": false,
       "normal_signin_restore_explicitly_described": false,
       "full_AU05_01_pass": false
+    },
+    "owner_first_tab_reload": {
+      "date": "2026-10-29",
+      "signed_out_owner_reported": true,
+      "screenshot_signin_view": true,
+      "fresh_account_status_RPC_requests_visible": 0,
+      "network_total_requests": 40,
+      "previous_RPC401_freshly_reproduced": false,
+      "normal_signin_restoration_prior_to_reload_confirmed": false,
+      "clean_session_persistence_bug_established": false
     }
   }
 }

@@ -1,6 +1,6 @@
 # Batch W — remaining work after stable recovery isolation
 
-**Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS.** Updated 28 October 2026.
+**Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS.** Updated 29 October 2026.
 
 The owner reports all three requested AU04.06 observations passed: recovery identity matches, URL clean, original dashboard unchanged. [Exact receipt](security-fr-2-batch-w-owner-stable-recovery-isolation-pass.json). This is the recovery-link isolation observation before password saving; it is not an additional password change or session adoption. No repeat of that observation is requested.
 
@@ -11,8 +11,12 @@ W retains **31 original case groups**, including both normal and failure variant
 | Signup/confirmation | 5 | Final confirmation destination and resend/existing-email/rate results; reconcile earlier signup/pending/denial passes. |
 | Invitations | 8 | Five Admin cases blocked by V; three Business new/existing-recipient and response/replay cases. |
 | Sign-in/passwords | 5 | Older valid password, direct server boundary, actual save failure/retry, applicable reauthentication behavior; normal sign-in/change passed. |
-| Recovery/links | 6 | Remaining wrong-session/expiry, current save/retry/adoption outcome and generic-response variants; requested real-link isolation passed. |
+| Recovery/links | 6 | Remaining wrong-session/expiry, remaining provider failure/retry and generic-response variants; requested real-link isolation passed. |
 | Sessions/failures | 7 | Actual refresh/invalid refresh, cleanup/Auth sign-out failures, in-flight Business clearing and supported rate/stale-token behavior; reload/shared-tabs/network positives retained. |
+
+## Recovery continuation accepted — 29 October 2026
+
+W67 owner-reported scoped PASS: recovery save automatically opened the recovered account, the other normal app tab switched to that account, and sign-out/reload/new-password sign-in opened its dashboard successfully. Preserve these results; no repeat requested. Actual provider failure/retry remains unverified. See [accepted recovery sequence](SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md).
 
 ## Fixed remaining case list
 
@@ -42,7 +46,7 @@ W retains **31 original case groups**, including both normal and failure variant
 | AU04.02 | Valid recovery opens dedicated new-password view | Dedicated recovery view observed | Verified requested identity/password view observed earlier and supported by latest isolation result; no password save inferred. |
 | AU04.03 | Wrong/no session | Partly checked | Missing-link/private-tab denial and signed-in account continuity observed; wrong-session variants remain. |
 | AU04.04 | Expired/used link | Partly checked | Used-link denial observed; actual timeout expiry remains unverified. |
-| AU04.05 | Password-save failure/retry | Partly checked | Mismatch and same-password refusal evidence retained; complete current password-only save/retry/adoption outcome is not established by today's view-only check. |
+| AU04.05 | Password-save failure/retry | Partly checked | Mismatch and same-password refusal evidence retained; successful password save, automatic adoption, shared-tab switch and subsequent new-password sign-in now owner-confirmed; actual provider failure/retry remains unverified. |
 | AU04.06 | Cross-tab/current-account isolation and sanitized URL | Latest requested isolation check passed | Owner confirms requested recovery identity, clean stable URL and unchanged original dashboard before saving. Do not repeat. |
 | AU05.01 | Same-user access refresh | Partly checked | Saved-session reload passed; actual same-user access-token refresh remains unverified. |
 | AU05.02 | Invalid refresh cleanup | Not yet accepted | Invalid-refresh cleanup. |

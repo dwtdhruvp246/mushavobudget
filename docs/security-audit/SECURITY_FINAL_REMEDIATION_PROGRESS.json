@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_BATCH_W_AU05.01_SAME_USER_REFRESH_PREPARATION",
+  "next_step": "FR.2.5_BATCH_W_AU05.01_EXPLICIT_REFRESH_AND_NORMAL_TABS_CHECK",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -7297,5 +7297,22 @@
       "scope": "Owner-reported failure warning, online retry/clear without refresh, signed-out persistence after reload; scoped AU05.05 accepted; no repeat requested"
     },
     "owner_action_clarification": "Owner replied yes to restoring No throttling and clicking Retry sign-out."
+  },
+  "batch_W_same_user_refresh": {
+    "existing_case": "AU05.01",
+    "status": "EXPLICIT_SDK_REFRESH_CHECK_PREPARED_OWNER_RESULT_PENDING",
+    "report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SAME_USER_REFRESH_CHECK.md",
+    "SDK_version": "2.110.9",
+    "origin": "https://mushavo-budget-staging.pages.dev",
+    "coordinator_explicit_refresh_calls": 1,
+    "real_hosted_requests_run_by_assistant": 0,
+    "natural_automatic_timer_observed": false,
+    "owner_result_received": false,
+    "local_tests": 8,
+    "local_pass": 8,
+    "local_fail": 0,
+    "new_AU_cases": 0,
+    "application_source_changed": false,
+    "upload_or_SQL_required": false
   }
 }

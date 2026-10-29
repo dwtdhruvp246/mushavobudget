@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_BATCH_W_REMAINING_EXISTING_CASE_PREPARATION_WITH_REFRESH_CONTINUITY_CARRY_FORWARD",
+  "next_step": "FR.2.5.AU02.07_BUSINESS_EXISTING_RECIPIENT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -5822,16 +5822,15 @@
     "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json"
   },
   "FR2_email_next_Auth_case": {
-    "id": "AU04.05",
-    "group": "AU04",
-    "title": "Password-save failure/retry",
-    "stage_step": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
-    "status": "OWNER_STABLE_RECOVERY_SAVE_AUTOMATIC_ADOPTION_AND_NEW_PASSWORD_SIGNIN_PENDING",
+    "id": "AU02.07",
+    "group": "AU02",
+    "title": "Existing Business recipient without password overwrite",
+    "stage_step": "FR.2.5.AU02.07",
+    "status": "OWNER_EXISTING_RECIPIENT_CHECK_PENDING",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
-    "variant": "Current password-only recovery successful save, automatic intended adoption and new-password sign-in; earlier negative evidence preserved",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md",
-    "owner_action_required_now": "Use the retained verified recovery form without refresh. Save one new private password once; only after the recovered dashboard opens and normal tabs follow it, sign out/reload/sign in once with the new password. Stop on error, other screen or ambiguous save.",
+    "variant": "Existing registered recipient uses invitation without first-password reset; confirms original password still signs in. Reopen used invitation without resend for AU02.08 replay observation.",
+    "owner_action_required_now": "Invite one existing registered non-member account controlled by the owner as Staff. Open in a clean Incognito session, accept without setting a new password, then sign out and sign in with the unchanged password. Reopen the original used invitation once and report safe denial/no duplicate membership. Stop on unexpected identity or password setup.",
     "hosted_acceptance": false
   },
   "owner_browser_recovery_request_action_required": false,
@@ -5964,7 +5963,9 @@
       "new_password_signin_accepted": true,
       "owner_new_password_signin_receipt": "docs/security-audit/security-fr-2-batch-w-owner-new-password-signin-pass.json",
       "requested_signout_reload_sequence_acknowledged_in_context": true,
-      "intermediate_signin_form_separately_described": false
+      "intermediate_signin_form_separately_described": false,
+      "failure_retry_deferred_by_owner": true,
+      "automatic_repeat_requested": false
     },
     "AU05.01": {
       "id": "AU05.01",
@@ -6027,6 +6028,30 @@
       "new_hosted_settings_API_read": false,
       "optional_requirement_activation_requested": false,
       "required_reauthentication_hosted_pass_claimed": false
+    },
+    "AU02.06": {
+      "status": "OWNER_REPORTED_BUSINESS_NEW_RECIPIENT_SETUP_PASS",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-new-recipient-pass.json",
+      "acceptance_scope": "Original AU02.06 new-recipient setup and the positive invitation-acceptance observation in AU02.08",
+      "owner_checks": {
+        "invitation_email_received": true,
+        "first_password_setup_succeeded": true,
+        "correct_Business_workspace_opened": true,
+        "owner_Team_page_shows_accepted_membership": true
+      },
+      "full_case_acceptance": true,
+      "acceptance_basis": "Owner-reported original AU02.06 workflow scope; no independent browser or backend trace",
+      "repeat_requested": false,
+      "new_public_AU_cases_added": 0
+    },
+    "AU02.08": {
+      "status": "OWNER_POSITIVE_BUSINESS_INVITATION_ACCEPTANCE_PASS_DECLINE_REPLAY_PENDING",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-new-recipient-pass.json",
+      "positive_acceptance_owner_PASS": true,
+      "decline_accepted": false,
+      "replay_accepted": false,
+      "full_case_acceptance": false,
+      "new_public_AU_cases_added": 0
     }
   },
   "FR2_email_recovery_request_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_WRONG_PASSWORD_PASS_AND_RECOVERY_REQUEST.md",
@@ -7414,5 +7439,14 @@
     },
     "clean_immediate_reload_persistence_failure_reproduced": false,
     "another_immediate_hour_wait_requested": false
+  },
+  "batch_W_business_new_recipient": {
+    "status": "OWNER_REPORTED_BUSINESS_NEW_RECIPIENT_SETUP_PASS",
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-new-recipient-pass.json",
+    "owner_result_received": true,
+    "AU02_06_requested_scope_complete": true,
+    "AU02_08_positive_acceptance_retained": true,
+    "full_lettered_batch_W_complete": false,
+    "AU05_01_refresh_continuity_carry_forward_preserved": true
   }
 }

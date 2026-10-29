@@ -4,12 +4,12 @@
 
 The owner reports all three requested AU04.06 observations passed: recovery identity matches, URL clean, original dashboard unchanged. [Exact receipt](security-fr-2-batch-w-owner-stable-recovery-isolation-pass.json). This is the recovery-link isolation observation before password saving; it is not an additional password change or session adoption. No repeat of that observation is requested.
 
-W retains **31 original case groups**, including both normal and failure variants. It has no trustworthy completion percentage: positive observations and partial cases are not the same as fully closed cases. The recorded browser workflow successes must be reused where applicable. There are **eight invitation case groups without accepted W workflow results: five Admin cases blocked by paused V and three Business cases still pending**. Other remaining work comprises confirmation/resend closure, older-password/server-boundary/reauthentication checks, recovery expiry/save/retry, and refresh/sign-out/account-switch failure handling. No cases are added by this summary.
+W retains **31 original case groups**, including both normal and failure variants. It has no trustworthy completion percentage: positive observations and partial cases are not the same as fully closed cases. The recorded browser workflow successes must be reused where applicable. AU02.06 now has an owner-confirmed new-recipient setup PASS. **Seven invitation case groups remain without full W acceptance: five Admin cases await V/policy reconciliation, AU02.07 is pending, and AU02.08 has positive acceptance evidence with decline/replay remaining.** Other remaining work comprises confirmation/resend closure, older-password/server-boundary/reauthentication checks, recovery expiry/save/retry, and refresh/sign-out/account-switch failure handling. No cases are added by this summary.
 
 | Area | Original cases | Remaining scope |
 |---|---:|---|
 | Signup/confirmation | 5 | Final confirmation destination and resend/existing-email/rate results; reconcile earlier signup/pending/denial passes. |
-| Invitations | 8 | Five Admin cases blocked by V; three Business new/existing-recipient and response/replay cases. |
+| Invitations | 8 | New Business recipient setup passed. Five Admin cases await V/policy reconciliation; existing Business recipient and remaining decline/replay checks are open. |
 | Sign-in/passwords | 5 | Older valid password, direct server boundary, actual save failure/retry, applicable reauthentication behavior; normal sign-in/change passed. |
 | Recovery/links | 6 | Remaining wrong-session/expiry, remaining provider failure/retry and generic-response variants; requested real-link isolation passed. |
 | Sessions/failures | 7 | Actual refresh/invalid refresh, independent push cleanup failure, in-flight Business clearing and supported rate/stale-token behavior; reload/shared-tabs/network positives retained. |
@@ -21,6 +21,11 @@ W67 owner-reported scoped PASS: recovery save automatically opened the recovered
 ## Sign-out failure/retry accepted — 29 October 2026
 
 AU05.05 scoped owner PASS after v123 correction and public 4/4 source verification: warning clears after connectivity restoration/retry, and reload remains signed out. Owner confirmed the retry action. Preserve this result and do not repeat. See [sign-out retry report](SECURITY_FR_2_5_BATCH_W_SIGNOUT_RETRY_FIX.md). Remaining session work is AU05.01/02/04/06/07 at the scopes listed below.
+
+
+## Business new-recipient setup accepted — 29 October 2026
+
+All four requested owner observations passed for AU02.06: invitation delivery, first-password setup, intended Business workspace and accepted membership on the owner Team page. [Receipt](security-fr-2-batch-w-owner-business-new-recipient-pass.json). Reuse the positive acceptance result for AU02.08; do not repeat this signup. AU02.07 existing-recipient password preservation and AU02.08 decline/replay are still open. The simplified seat editor is working by owner report; this does not close V.
 
 ## Fixed remaining case list
 
@@ -38,13 +43,13 @@ AU05.05 scoped owner PASS after v123 correction and public 4/4 source verificati
 | AU02.03 | Wrong-recipient denial | Blocked by paused V | Admin invitation setup/isolation/denial/retry scope depends on V and policy reconciliation. |
 | AU02.04 | Expired/cancelled/replaced invitation denial | Blocked by paused V | Admin invitation setup/isolation/denial/retry scope depends on V and policy reconciliation. |
 | AU02.05 | Completion retry/idempotence | Blocked by paused V | Admin invitation setup/isolation/denial/retry scope depends on V and policy reconciliation. |
-| AU02.06 | Business new-recipient first password | Not yet accepted | Business new/existing recipient and accept/decline/replay workflow evidence. |
+| AU02.06 | Business new-recipient first password | Owner-reported scoped PASS, 29 October | Email received, first password set, intended Business workspace opened and accepted membership shown on owner Team page. Preserve; no repeat. |
 | AU02.07 | Existing Business recipient without password overwrite | Not yet accepted | Business new/existing recipient and accept/decline/replay workflow evidence. |
-| AU02.08 | Business accept/decline/replay | Not yet accepted | Business new/existing recipient and accept/decline/replay workflow evidence. |
+| AU02.08 | Business accept/decline/replay | Partly checked | Positive invitation acceptance and owner membership display passed with AU02.06. Decline and replay remain. |
 | AU03.01 | Ordinary valid sign-in including older valid password | Partly checked | Ordinary sign-in/dashboard passed; older valid-password compatibility remains. |
 | AU03.02 | Invalid credentials | Invalid-credentials message observed | Known account/wrong-password UI result retained; reconcile original outcome criteria. |
 | AU03.03 | Configured new-password boundary | Partly checked | Browser rejects seven and accepts eight at signup; direct server below-minimum rejection is unverified. |
-| AU03.04 | Signed-in password change and retry | Partly checked | Change and new-password sign-in passed; actual provider failure/retry remains unverified. |
+| AU03.04 | Signed-in password change and retry | Partly checked; failure/retry deferred by owner | Change and new-password sign-in passed; failure/retry unverified and explicitly skipped at owner request. Do not automatically repeat. |
 | AU03.05 | Required recent-login/reauthentication failure/success | Conditional: not required under last reviewed settings | 26 October owner screenshot/metadata show secure password change and current-password requirement disabled. Retain final configuration reconciliation; do not enable an optional requirement to manufacture this test or claim a required-reauthentication pass. |
 | AU04.01 | Generic recovery request | Partly checked | Known-account generic acknowledgement and delivery passed; account-existence uniformity/rate variants remain. |
 | AU04.02 | Valid recovery opens dedicated new-password view | Dedicated recovery view observed | Verified requested identity/password view observed earlier and supported by latest isolation result; no password save inferred. |

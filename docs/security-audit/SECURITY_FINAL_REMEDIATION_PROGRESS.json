@@ -4,7 +4,7 @@
   "phase": "FINAL_REMEDIATION",
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
-  "active_step": "FR.2.5",
+  "active_step": "Batch W: W67 recovery save/adoption/new-password sign-in scoped PASS; prepare remaining existing AU cases",
   "source_parent_commit": "bc68626e093bb56f31210cb19c411e4a77d332e4",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
+  "next_step": "FR.2.5_BATCH_W_REMAINING_EXISTING_CASE_REVIEW",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -6863,7 +6863,7 @@
     "full_case_acceptance": false,
     "no_repeat_requested": true
   },
-  "owner_password_write_requested": true,
+  "owner_password_write_requested": false,
   "cross_tab_signout_check": {
     "stage_step": "FR.2.5.W56_SAVED_SESSION_RELOAD_PASS_CROSS_TAB_SIGNOUT_CHECK",
     "status": "OWNER_AUTOMATIC_ORIGINAL_TAB_SIGNOUT_BEFORE_REFRESH_PASS",
@@ -7150,7 +7150,7 @@
   "staging_owner_test_origin": "https://mushavo-budget-staging.pages.dev",
   "stable_recovery_save_check": {
     "stage_step": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
-    "status": "OWNER_STABLE_RECOVERY_SAVE_AUTOMATIC_ADOPTION_AND_NEW_PASSWORD_SIGNIN_PENDING",
+    "status": "OWNER_REPORTED_SCOPED_PASS",
     "existing_case": "AU04.05",
     "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md",
     "source_parent_commit": "34a5e7004b30cbc2b7e80d6612c1dab37410e43a",
@@ -7171,7 +7171,13 @@
     "owner_result_received": false,
     "new_public_AU_cases_added": 0,
     "full_lettered_batch_W_complete": false,
-    "hosted_acceptance": false
+    "hosted_acceptance": false,
+    "owner_result_date": "2026-10-29",
+    "automatic_recovered_dashboard": true,
+    "other_normal_tab_switched": true,
+    "new_password_signin_dashboard": true,
+    "provider_failure_retry_verified": false,
+    "repeat_requested": false
   },
   "launch_delivery_plan": {
     "path": "docs/security-audit/MUSHAVO_BUDGET_LAUNCH_DELIVERY_PLAN.md",

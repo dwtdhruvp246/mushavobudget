@@ -12,11 +12,15 @@ W retains **31 original case groups**, including both normal and failure variant
 | Invitations | 8 | Five Admin cases blocked by V; three Business new/existing-recipient and response/replay cases. |
 | Sign-in/passwords | 5 | Older valid password, direct server boundary, actual save failure/retry, applicable reauthentication behavior; normal sign-in/change passed. |
 | Recovery/links | 6 | Remaining wrong-session/expiry, remaining provider failure/retry and generic-response variants; requested real-link isolation passed. |
-| Sessions/failures | 7 | Actual refresh/invalid refresh, cleanup/Auth sign-out failures, in-flight Business clearing and supported rate/stale-token behavior; reload/shared-tabs/network positives retained. |
+| Sessions/failures | 7 | Actual refresh/invalid refresh, independent push cleanup failure, in-flight Business clearing and supported rate/stale-token behavior; reload/shared-tabs/network positives retained. |
 
 ## Recovery continuation accepted — 29 October 2026
 
 W67 owner-reported scoped PASS: recovery save automatically opened the recovered account, the other normal app tab switched to that account, and sign-out/reload/new-password sign-in opened its dashboard successfully. Preserve these results; no repeat requested. Actual provider failure/retry remains unverified. See [accepted recovery sequence](SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md).
+
+## Sign-out failure/retry accepted — 29 October 2026
+
+AU05.05 scoped owner PASS after v123 correction and public 4/4 source verification: warning clears after connectivity restoration/retry, and reload remains signed out. Owner confirmed the retry action. Preserve this result and do not repeat. See [sign-out retry report](SECURITY_FR_2_5_BATCH_W_SIGNOUT_RETRY_FIX.md). Remaining session work is AU05.01/02/04/06/07 at the scopes listed below.
 
 ## Fixed remaining case list
 
@@ -52,7 +56,7 @@ W67 owner-reported scoped PASS: recovery save automatically opened the recovered
 | AU05.02 | Invalid refresh cleanup | Not yet accepted | Invalid-refresh cleanup. |
 | AU05.03 | Transient network preservation/retry | Network retry observed | Earlier owner PASS retained; reconcile applicability without an automatic repeat. |
 | AU05.04 | Sign-out with push cleanup failure | Not yet accepted | Sign-out outcome when protected push cleanup fails. |
-| AU05.05 | Auth sign-out failure | Not yet accepted | Auth sign-out failure and accurate session outcome. |
+| AU05.05 | Auth sign-out failure | Owner-reported scoped PASS, 29 October | v123 offline warning, restoration of No throttling, explicit retry, warning cleared without refresh, reload remained signed out. Owner action clarified by yes. No repeat requested; independent push failure remains AU05.04. |
 | AU05.06 | Account switch with in-flight/Business UI clearing | Partly checked | Shared-tab sign-in/sign-out/re-sign-in passed; in-flight/Business clearing remains. |
 | AU05.07 | Selected Auth rate errors and observed stale-token window | Historical review; current outcome pending | Earlier retired custom-code rate message is historical; remaining supported Auth rate and stale-token-window evidence must match the current password-only policy. |
 

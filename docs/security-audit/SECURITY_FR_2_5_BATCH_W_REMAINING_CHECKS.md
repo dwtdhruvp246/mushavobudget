@@ -4,12 +4,12 @@
 
 The owner reports all three requested AU04.06 observations passed: recovery identity matches, URL clean, original dashboard unchanged. [Exact receipt](security-fr-2-batch-w-owner-stable-recovery-isolation-pass.json). This is the recovery-link isolation observation before password saving; it is not an additional password change or session adoption. No repeat of that observation is requested.
 
-W retains **31 original case groups**, including both normal and failure variants. It has no trustworthy completion percentage: positive observations and partial cases are not the same as fully closed cases. The recorded browser workflow successes must be reused where applicable. AU02.06 and AU02.07 now have owner-confirmed setup/password-preservation PASS results. **Six invitation case groups remain without full W acceptance: five Admin cases await V/policy reconciliation, and AU02.08 retains decline/declined-invitation handling.** Positive acceptance and accepted-link replay denial have passed. Other remaining work comprises confirmation/resend closure, older-password/server-boundary/reauthentication checks, recovery expiry/save/retry, and refresh/sign-out/account-switch failure handling. No cases are added by this summary.
+W retains **31 original case groups**, including both normal and failure variants. It has no trustworthy completion percentage: positive observations and partial cases are not the same as fully closed cases. The recorded browser workflow successes must be reused where applicable. **All three Business invitation case groups AU02.06–08 now have owner-confirmed scoped PASS results. Five Admin invitation groups remain without W acceptance and await current-policy/V prerequisite reconciliation.** Other remaining work comprises confirmation/resend closure, older-password/server-boundary/reauthentication checks, recovery expiry/save/retry, and refresh/sign-out/account-switch failure handling. No cases are added by this summary.
 
 | Area | Original cases | Remaining scope |
 |---|---:|---|
 | Signup/confirmation | 5 | Final confirmation destination and resend/existing-email/rate results; reconcile earlier signup/pending/denial passes. |
-| Invitations | 8 | New and existing Business recipient setup passed; existing password preserved and accepted-link replay denied. Five Admin cases await V/policy reconciliation; decline/declined-link handling remains. |
+| Invitations | 8 | Business AU02.06–08 scoped PASS: new/existing recipient, password preservation, acceptance, accepted-link refusal/no duplicates and decline/reservation release. Five Admin cases await current-policy/V prerequisite reconciliation. |
 | Sign-in/passwords | 5 | Older valid password, direct server boundary, actual save failure/retry, applicable reauthentication behavior; normal sign-in/change passed. |
 | Recovery/links | 6 | Remaining wrong-session/expiry, remaining provider failure/retry and generic-response variants; requested real-link isolation passed. |
 | Sessions/failures | 7 | Actual refresh/invalid refresh, independent push cleanup failure, in-flight Business clearing and supported rate/stale-token behavior; reload/shared-tabs/network positives retained. |
@@ -32,6 +32,13 @@ All four requested owner observations passed for AU02.06: invitation delivery, f
 
 [Owner receipt](security-fr-2-batch-w-owner-business-existing-recipient-pass.json): no new-password setup, original password sign-in, correct workspace and one membership all pass. Latest owner replay result explicitly shows the safe unavailable-link message; earlier checkbox-only description is superseded. Do not repeat AU02.07 or accepted-link replay. Continue only AU02.08 decline and its unavailable/rejected state.
 
+
+## Current checkpoint — all three Business invitation cases accepted
+
+[Decline receipt](security-fr-2-batch-w-owner-business-decline-pass.json), image(20261029-193018).png, shows invitation Rejected with seat limit 10, active members 3, pending 0 and available 7. The prior screenshot had members 3/pending 1/available 6. This accepts decline, no added membership and reservation release through the existing signed-in notification flow. Together with the retained acceptance and accepted-link unavailable/no-duplicate observation, original AU02.08 scope passes. AU02.06/07/08 need no repeat or extra mail. No undelivered-email-link result or resolution of provider 429 is inferred.
+
+Next preparation is the original five Admin invitation cases. Source review of Batch V contract/plan confirms they still describe the older MFA/AAL2/operator workflow. Reconcile applicability against the later owner-selected password-only policy and retain role/session/ordinary-user-denial requirements; do not run the historical factor-enrollment/recovery commands or claim V complete merely because the owner now has a working Super Admin account. The invitation delivery rate boundary remains unresolved; no new email, quota/SMTP change, SQL rerun or upload requested by this evidence update. Other W cases, V and X–Z remain open.
+
 ## Fixed remaining case list
 
 “Observed” and “partly checked” describe evidence scope; they do not claim full-case closure or require an automatic repeat. Historical evidence is retained with its source limitations. The contract and original AU definitions remain unchanged.
@@ -50,7 +57,7 @@ All four requested owner observations passed for AU02.06: invitation delivery, f
 | AU02.05 | Completion retry/idempotence | Blocked by paused V | Admin invitation setup/isolation/denial/retry scope depends on V and policy reconciliation. |
 | AU02.06 | Business new-recipient first password | Owner-reported scoped PASS, 29 October | Email received, first password set, intended Business workspace opened and accepted membership shown on owner Team page. Preserve; no repeat. |
 | AU02.07 | Existing Business recipient without password overwrite | Owner-reported scoped PASS, 29 October | Joined without a password setup, original password still signs in, intended Business workspace opens and only one membership remains. No repeat. |
-| AU02.08 | Business accept/decline/replay | Partly checked: acceptance and accepted-link replay PASS | Positive membership accepted. Latest owner result confirms used-link unavailable message and one membership; this supersedes the earlier checkbox-only description. Decline/no membership/reservation release and declined-link handling remain. |
+| AU02.08 | Business accept/decline/replay | Owner-reported/screenshot scoped PASS, 29 October | Acceptance and accepted-link unavailable/no duplicate passed earlier. In-app decline now shows Rejected, members unchanged at 3, pending 0, available 7 of 10 seats. No repeat. The failed mail attempt's provider 429 remains separate AU05.07 evidence. |
 | AU03.01 | Ordinary valid sign-in including older valid password | Partly checked | Ordinary sign-in/dashboard passed; older valid-password compatibility remains. |
 | AU03.02 | Invalid credentials | Invalid-credentials message observed | Known account/wrong-password UI result retained; reconcile original outcome criteria. |
 | AU03.03 | Configured new-password boundary | Partly checked | Browser rejects seven and accepts eight at signup; direct server below-minimum rejection is unverified. |

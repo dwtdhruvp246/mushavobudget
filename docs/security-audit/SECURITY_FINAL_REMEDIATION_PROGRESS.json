@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.AU02.08_IN_APP_DECLINE_AFTER_AUTH_MAIL_RATE_LIMIT",
+  "next_step": "FR.2.5_BATCH_W_ADMIN_INVITATION_PREPARATION_CURRENT_POLICY_V_RECONCILIATION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -5822,15 +5822,15 @@
     "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json"
   },
   "FR2_email_next_Auth_case": {
-    "id": "AU02.08",
+    "id": "AU02.01",
     "group": "AU02",
-    "title": "Business accept/decline/replay",
-    "stage_step": "FR.2.5.AU02.08",
-    "status": "OWNER_IN_APP_DECLINE_PENDING_AFTER_MAIL_429",
+    "title": "Admin new-recipient setup",
+    "stage_step": "FR.2.5.AU02.01",
+    "status": "PREPARATION_CURRENT_PASSWORD_POLICY_AND_V_DEPENDENCY_RECONCILIATION_PENDING",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
-    "variant": "Same pending invitation; authenticated existing recipient declines through Notifications. Preserve prior acceptance and accepted-link replay.",
-    "owner_action_required_now": "Sign in normally as the invited existing account in Incognito on stable staging. Open Notifications, identify the intended Business invitation and click Decline. Owner refreshes Team and verifies rejected invitation, unchanged 3 members, pending 0 and available 7 if fixture otherwise unchanged. If no notification/Decline appears, stop and report that screen.",
+    "variant": "Original Admin invitation setup/isolation/denial/retry cases AU02.01–05. Historical V AAL2/factor procedure must be reconciled to the later owner-selected password-only policy; role, live-session and denial guards remain.",
+    "owner_action_required_now": "No new invitation/resend, code, settings change, SQL rerun, upload or factor setup requested at this checkpoint. Prepare the next applicable Admin check before mail dispatch; retain unresolved Auth mail rate boundary.",
     "hosted_acceptance": false
   },
   "owner_browser_recovery_request_action_required": false,
@@ -6051,19 +6051,26 @@
       "new_public_AU_cases_added": 0
     },
     "AU02.08": {
-      "status": "OWNER_ACCEPTANCE_AND_ACCEPTED_LINK_REPLAY_PASS_DECLINE_PENDING",
+      "status": "OWNER_BUSINESS_ACCEPT_DECLINE_AND_ACCEPTED_LINK_REPLAY_SCOPED_PASS",
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-new-recipient-pass.json",
       "positive_acceptance_owner_PASS": true,
-      "decline_accepted": false,
+      "decline_accepted": true,
       "replay_accepted": true,
-      "full_case_acceptance": false,
+      "full_case_acceptance": true,
       "new_public_AU_cases_added": 0,
       "existing_recipient_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-existing-recipient-pass.json",
       "replay_scope": "Previously accepted invitation: safe unavailable-link result and no duplicate membership",
       "repeat_accepted_link_replay_requested": false,
       "delivery_failure_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-delivery-rate-limit.json",
       "delivery_failure_cause": "AUTH_PROVIDER_429_RATE_LIMIT",
-      "next_decline_route": "Existing recipient signs in normally and declines from Notifications; mail not required for this pending invitation."
+      "next_decline_route": "Existing recipient signs in normally and declines from Notifications; mail not required for this pending invitation.",
+      "decline_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-decline-pass.json",
+      "reservation_release_accepted": true,
+      "no_added_membership_on_decline_accepted": true,
+      "acceptance_scope": "Combine with recorded positive acceptance and accepted-link unavailable/no-duplicate result to complete original AU02.08 accept/decline/replay observations.",
+      "email_delivery_failure_resolved": false,
+      "undelivered_email_link_replay_inferred": false,
+      "repeat_requested": false
     },
     "AU02.07": {
       "status": "OWNER_REPORTED_EXISTING_BUSINESS_RECIPIENT_PASSWORD_PRESERVATION_PASS",
@@ -7491,5 +7498,25 @@
     "resend_requested": false,
     "in_app_decline_prepared": true,
     "full_case_acceptance": false
+  },
+  "batch_W_business_invitations": {
+    "status": "AU02_06_AU02_07_AU02_08_OWNER_SCOPED_PASS",
+    "new_recipient_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-new-recipient-pass.json",
+    "existing_recipient_and_accepted_link_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-existing-recipient-pass.json",
+    "decline_and_reservation_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-decline-pass.json",
+    "original_Business_invitation_groups_complete": 3,
+    "repeat_requested": false,
+    "full_lettered_batch_W_complete": false,
+    "provider_429_carry_forward_case": "AU05.07"
+  },
+  "batch_W_Admin_invitation_prerequisite_review": {
+    "status": "SOURCE_REVIEW_IDENTIFIES_HISTORICAL_V_MFA_DEPENDENCY_NEEDS_CURRENT_POLICY_RECONCILIATION",
+    "historical_V_contract": "docs/security-audit/security-fr-2-batch-v-contract.json",
+    "historical_V_plan": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PLAN.md",
+    "owner_selected_password_only_policy_retained": true,
+    "Super_Admin_availability_owner_reported": true,
+    "V_complete": false,
+    "no_historical_MFA_setup_requested": true,
+    "email_provider_rate_boundary_unresolved": true
   }
 }

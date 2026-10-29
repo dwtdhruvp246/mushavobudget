@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_BATCH_W_AU05.01_NATIVE_REFRESH_NETWORK_AND_DASHBOARD_OBSERVATION",
+  "next_step": "FR.2.5_BATCH_W_AU05.01_READ_ONLY_EXPIRY_METADATA_DIAGNOSTIC",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -7300,14 +7300,14 @@
   },
   "batch_W_same_user_refresh": {
     "existing_case": "AU05.01",
-    "status": "CONSOLE_ROUTE_NOT_EXECUTED_NATIVE_REFRESH_OBSERVATION_PENDING",
+    "status": "OWNER_ONE_HOUR_NO_MATCHING_REQUEST_INCONCLUSIVE_EXPIRY_METADATA_PENDING",
     "report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SAME_USER_REFRESH_CHECK.md",
     "SDK_version": "2.110.9",
     "origin": "https://mushavo-budget-staging.pages.dev",
     "coordinator_explicit_refresh_calls": 1,
     "real_hosted_requests_run_by_assistant": 0,
     "natural_automatic_timer_observed": false,
-    "owner_result_received": false,
+    "owner_result_received": true,
     "local_tests": 8,
     "local_pass": 8,
     "local_fail": 0,
@@ -7318,6 +7318,23 @@
     "owner_screenshot_shows_signed_out_app": true,
     "owner_console_check_result_received": false,
     "current_owner_method": "Observe native automatic refresh request in Network, then both dashboards and online reload; no console code",
-    "browser_protection_change_requested": false
+    "browser_protection_change_requested": false,
+    "owner_wait_observation": {
+      "date": "2026-10-29",
+      "wait_minutes_owner_reported": 60,
+      "network_filtered_matching_requests": 0,
+      "network_total_requests": 176,
+      "signed_in_personal_dashboard_visible": true,
+      "realtime_channel_error_visible": true,
+      "actual_Auth_refresh_failure_established": false,
+      "peer_tab_refresh_possible_not_verified": true,
+      "additional_wait_requested": false
+    },
+    "next_safe_metadata": [
+      "expires_at",
+      "expires_in",
+      "current computer time"
+    ],
+    "hosted_case_complete": false
   }
 }

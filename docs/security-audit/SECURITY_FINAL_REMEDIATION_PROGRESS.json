@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_BATCH_W_RESTORE_NORMAL_SIGNIN_THEN_IMMEDIATE_RELOAD_BASELINE",
+  "next_step": "FR.2.5_BATCH_W_REMAINING_EXISTING_CASE_PREPARATION_WITH_REFRESH_CONTINUITY_CARRY_FORWARD",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -5902,7 +5902,7 @@
       "provider_reason_or_HTTP_session_trace_independently_verified": false
     },
     "AU04.05": {
-      "status": "PARTIAL_OWNER_SCREENSHOT_MISMATCH_VALIDATION_PASS_PROVIDER_FAILURE_AND_RETRY_PENDING",
+      "status": "PARTIAL_VALIDATION_AND_POSITIVE_RECOVERY_SAVE_ADOPTION_NEW_PASSWORD_SIGNIN_PASS_PROVIDER_FAILURE_RETRY_PENDING",
       "variant": "Mismatched confirmation validation; actual provider-save failure and successful-retry variants remain pending",
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-mismatch-and-ux-deferral.json",
       "expected_mismatch_message_matched": true,
@@ -5911,7 +5911,10 @@
       "deferred_UI_item": "UX_AUTH_PASSWORD_MISMATCH_VISIBILITY",
       "current_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md",
       "current_positive_recovery_save_check": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
-      "owner_result_received_for_current_step": false
+      "owner_result_received_for_current_step": true,
+      "current_positive_save_and_adoption_accepted": true,
+      "provider_failure_or_retry_accepted": false,
+      "full_case_acceptance": false
     },
     "AU05.03": {
       "id": "AU05.03",
@@ -5966,17 +5969,20 @@
     "AU05.01": {
       "id": "AU05.01",
       "title": "Same-user access refresh",
-      "status": "PARTIAL_OWNER_SAVED_SESSION_RELOAD_PASS_ACTUAL_REFRESH_PENDING",
+      "status": "PARTIAL_REFRESH_HTTP200_AND_RESTORED_NATIVE_LOGIN_RELOAD_SHARED_TABS_PASS",
       "variant": "Normal page reload while signed in with the existing saved session",
       "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-saved-session-reload-pass.json",
       "owner_reported_stayed_signed_in": true,
-      "actual_Auth_refresh_grant_verified": false,
+      "actual_Auth_refresh_grant_verified": true,
       "token_rotation_or_expiry_recovery_accepted": false,
       "invalid_refresh_cleanup_accepted": false,
       "full_case_acceptance": false,
       "frozen_definition_changed": false,
       "new_public_AU_cases_added": 0,
-      "repeat_requested": false
+      "repeat_requested": false,
+      "current_owner_restoration_all_three_pass": true,
+      "continuous_current_same_user_refresh_and_native_persistence_verified": false,
+      "current_report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SAME_USER_REFRESH_CHECK.md"
     },
     "AU05.06": {
       "id": "AU05.06",
@@ -6012,6 +6018,15 @@
       "shared_signout_current_owner_PASS": true,
       "shared_resignin_without_refresh_owner_PASS": true,
       "shared_cycle_evidence_scope": "OWNER_EXPLICIT_ALL_THREE_STEPS_PASS"
+    },
+    "AU03.05": {
+      "status": "CONDITIONAL_NOT_REQUIRED_UNDER_LAST_REVIEWED_SETTINGS_FINAL_CONFIG_RECONCILIATION_RETAINED",
+      "receipt": "docs/security-audit/security-fr-2-batch-w-owner-settings-screenshots.json",
+      "secure_password_change_enabled_observed": false,
+      "require_current_password_observed": false,
+      "new_hosted_settings_API_read": false,
+      "optional_requirement_activation_requested": false,
+      "required_reauthentication_hosted_pass_claimed": false
     }
   },
   "FR2_email_recovery_request_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_WRONG_PASSWORD_PASS_AND_RECOVERY_REQUEST.md",
@@ -7300,7 +7315,7 @@
   },
   "batch_W_same_user_refresh": {
     "existing_case": "AU05.01",
-    "status": "INTERRUPTED_BASELINE_FIRST_TAB_SIGNED_OUT_ON_RELOAD_NORMAL_SIGNIN_REQUIRED",
+    "status": "NORMAL_LOGIN_RESTORED_REFRESH_HTTP200_RETAINED_CONTINUOUS_REFRESH_ACCEPTANCE_PARTIAL",
     "report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SAME_USER_REFRESH_CHECK.md",
     "SDK_version": "2.110.9",
     "origin": "https://mushavo-budget-staging.pages.dev",
@@ -7377,6 +7392,27 @@
       "previous_RPC401_freshly_reproduced": false,
       "normal_signin_restoration_prior_to_reload_confirmed": false,
       "clean_session_persistence_bug_established": false
-    }
+    },
+    "owner_clean_baseline_restoration": {
+      "date": "2026-10-29",
+      "dashboard_after_signin": true,
+      "same_dashboard_after_online_reload": true,
+      "peer_tab_same_account": true,
+      "duplicate_message_counted_as_one_receipt": true,
+      "repeat_requested": false
+    },
+    "historical_U_refresh_evidence_review": {
+      "receipt": "docs/security-audit/security-fr-2-email-batch-u-owner-scoped-hosted-pass.json",
+      "real_SDK_refresh_response_observed": true,
+      "SDK_refresh_and_both_tabs_rebound": true,
+      "limits": [
+        "prior Auth policy",
+        "acceptance memory storage shim",
+        "pinned SDK fixture"
+      ],
+      "recredits_current_native_refresh_continuity": false
+    },
+    "clean_immediate_reload_persistence_failure_reproduced": false,
+    "another_immediate_hour_wait_requested": false
   }
 }

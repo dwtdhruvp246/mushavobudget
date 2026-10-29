@@ -1,4 +1,21 @@
 # Business workspace seat editor — Batch W prerequisite
+
+## Current implementation — simplified selected-workspace editor
+29 October 2026. Source parent: cf210bc1af8b4b0c3222791bae9fbcbd96f46d49.
+
+Owner requested a normal workspace edit flow without retyping its name or a mandatory support reason.
+Admin selects the registered owner and existing Business workspace under Manual plan access, then opens Edit Business seats. The workspace's fresh snapshot displays its current allowance and member/invitation usage. The editor asks only for total seats and Save seats.
+The selected workspace UUID, exact snapshot name, subscription version and generated audit description are supplied by the application. Existing server-side Super Admin, verified session, capacity, pending-payment and concurrency guards remain in force.
+No SQL change or rerun is needed. The installed admin_set_business_seats RPC is reused. Suspension and ownership workflows are unchanged.
+This change is limited to the seat editor; the existing manual subscription controls remain available for plan/date changes.
+
+Validation: six local behavioral tests passed (four UI and two package tests), plus JavaScript syntax checks. Covers current-value loading, workspace name escaping, one-field form, selected snapshot binding, automatic audit note, role/session/busy denials, conflict guidance, forty unchanged public files and canonical ZIP readback. These are local tests; updated hosted saving is still pending.
+Preparation accepts the owner's v124 ZIP SHA256 99b4c23e6e2b44cb7c98c2945e15915daa0963efe278323aed1119e3a2311240. Replaces only app.js/app.html (v125); no SQL file is emitted and no hosted requests are made.
+
+Owner next step: run the complete pinned preparation block, upload the resulting staging ZIP, select the existing Business workspace, set total seats to 10 and Save seats. Confirm refreshed Current seats = 10 and Team capacity before resuming AU02.06–08. W and V remain open.
+
+## Prior installation and observations (superseded interaction instructions)
+
 29 October 2026. Parent source: ab18fe67c62b1652f5050d525a8e70b383008291.
 Owner requested editing the one-seat manual Business workspace to permit invitation testing.
 

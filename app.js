@@ -6486,6 +6486,34 @@ async function openAdminBusinessSupport(workspaceId, offset = 0) {
   }
 }
 
+function renderAdminBusinessSeatEditor(snapshot, effective) {
+  if (state.adminRole !== "super_admin" || effective !== "active") return "";
+  const seats = Number(snapshot.current_limit) || 1;
+  const usage = Number(snapshot.usage) || 1;
+  return `<section class="admin-detail-section"><h4>Edit Business seats</h4>
+    <p>Workspace: <strong>${escapeHtml(snapshot.workspace.name)}</strong></p>
+    <p class="muted-copy">Current allowance: ${seats} seats · Members and pending invitations: ${usage}. Total seats include the Owner.</p>
+    <form data-business-support-form="seats" class="form-grid">
+      <label class="full">Total seats<input name="total_seats" type="number" min="${Math.max(1,usage)}" max="100" step="1" value="${seats}" required /></label>
+      <button class="primary full" type="submit">Save seats</button>
+    </form></section>`;
+}
+
+function businessSeatEditMessage(error) {
+  const messages = {
+    SUPER_ADMIN_REQUIRED: "Super Admin access is required to edit seats.",
+    INVALID_BUSINESS_SEAT_ALLOWANCE: "Enter a whole number of seats from 1 to 100.",
+    ACTIVE_BUSINESS_WORKSPACE_REQUIRED: "This Business workspace must be active before you can edit its seats.",
+    ACTIVE_BUSINESS_SUBSCRIPTION_REQUIRED: "This workspace needs an active Business subscription.",
+    WORKSPACE_NAME_CONFIRMATION_REQUIRED: "The workspace details changed. Refresh details, then save again.",
+    SUBSCRIPTION_CHANGED_REFRESH_DETAILS: "The subscription changed. Refresh details, then save again.",
+    SCHEDULED_SEAT_CHANGE_REQUIRES_REVIEW: "Resolve the scheduled seat change before editing the current allowance.",
+    RESOLVE_PENDING_BUSINESS_PAYMENT_FIRST: "Review the pending Business payment before editing seats.",
+    BUSINESS_CAPACITY_BELOW_USAGE: "The seat allowance must cover all current members and pending invitations."
+  };
+  return messages[error?.message] || "Seats could not be saved. Refresh details and try again.";
+}
+
 function renderAdminBusinessSupport(snapshot, offset = 0) {
   const w=snapshot.workspace,s=snapshot.subscription || {},owner=snapshot.owner || {};
   const canStatus=snapshot.can_suspend && ['super_admin','admin_staff'].includes(state.adminRole) && ['active','suspended'].includes(w.status);
@@ -6495,7 +6523,7 @@ function renderAdminBusinessSupport(snapshot, offset = 0) {
   const field = (label,value)=>[label,escapeHtml(value ?? 'Not set')];
   const confirmation = '<label class="full">Type the workspace name<input name="confirmation_name" required autocomplete="off" /></label><label class="full">Reason / verified support reference<textarea name="reason" required minlength="8" maxlength="1000" rows="3"></textarea></label>';
   const statusForm=canStatus?`<section class="admin-detail-section"><h4>${w.status==='suspended'?'Restore workspace access':'Suspend workspace access'}</h4><p class="muted-copy">${w.status==='suspended'?'Restoration keeps account suspensions and subscription expiry in force.':'Suspension locks Business activity for every member. Records are retained.'}</p><form data-business-support-form="status" class="form-grid">${confirmation}<button class="${w.status==='suspended'?'primary':'danger'} full" type="submit">${w.status==='suspended'?'Restore workspace':'Suspend workspace'}</button></form></section>`:'';
-  const seatForm=state.adminRole==='super_admin' && effective==='active' ? `<section class="admin-detail-section"><h4>Edit Business seats</h4><p class="muted-copy">Total seats include the Owner. This manual allowance records no payment and keeps the plan and expiry unchanged. Scheduled seat changes or pending payments must be resolved first.</p><form data-business-support-form="seats" class="form-grid"><label class="full">Total seats<input name="total_seats" type="number" min="${Math.max(1,Number(snapshot.usage)||1)}" max="100" step="1" value="${Number(snapshot.current_limit)||1}" required /></label>${confirmation}<button class="primary full" type="submit">Save seat allowance</button></form></section>` : '';
+  const seatForm=renderAdminBusinessSeatEditor(snapshot,effective);
   const transferForm=canTransfer?`<section class="admin-detail-section"><h4>Recover or transfer ownership</h4><p class="muted-copy">Verify the request before proceeding. Choose an existing active member. The previous Owner becomes a Viewer and loses member permission overrides. This changes neither the subscription nor the number of seats. Suspensions remain in force.</p>${snapshot.pending_payment?'<p role="status">Resolve the pending subscription payment in Finance before transferring ownership.</p>':eligible.length?`<form data-business-support-form="ownership" class="form-grid"><label class="full">New Owner<select name="member_id" required><option value="">Choose an existing member</option>${eligible.map(m=>`<option value="${escapeHtml(m.id)}">${escapeHtml(m.name || m.email)} — ${escapeHtml(m.email)}</option>`).join('')}</select></label><label class="full">Type the new Owner’s email<input name="confirmation_email" type="email" required autocomplete="off" /></label>${confirmation}<button class="primary full" type="submit">Confirm ownership change</button></form>`:'<p>No eligible member. Ask a registered active member to join through the existing invitation process first.</p>'}</section>`:'';
   const history=(snapshot.actions || []).map(a=>`<article class="admin-detail-card"><div><strong>${escapeHtml(titleCase(a.action))}</strong><span>${escapeHtml(a.actor_email || a.actor_id)} · ${escapeHtml(formatAdminDate(a.created_at))}</span><p>${escapeHtml(a.reason)}</p><small>${escapeHtml(a.before_summary?.status || a.before_summary?.owner_id || '')} → ${escapeHtml(a.after_summary?.status || a.after_summary?.owner_id || '')}</small></div></article>`).join('') || '<p class="muted-copy">No platform support actions recorded.</p>';
   showAdminDetails({eyebrow:'Business support',title:w.name,subtitle:owner.email || 'Owner unavailable',body:
@@ -6522,7 +6550,13 @@ async function submitAdminBusinessSupport(form) {
   else if (kind==='status') args.p_status=w.status==='suspended'?'active':'suspended';
   else if (kind==='seats') {
     if(state.adminRole!=='super_admin') return;
-    Object.assign(args,{p_total_seats:Number(data.get('total_seats')),p_expected_version:context.snapshot.subscription.version});
+    const totalSeats=Number(data.get('total_seats'));
+    Object.assign(args,{
+      p_total_seats:totalSeats,
+      p_expected_version:context.snapshot.subscription.version,
+      p_confirmation_name:w.name,
+      p_reason:`Admin changed Business seat allowance from ${context.snapshot.current_limit} to ${totalSeats} total seats.`
+    });
     delete args.p_request_id;
   }
   else return;
@@ -6530,10 +6564,10 @@ async function submitAdminBusinessSupport(form) {
   try {
     await query('Business support action',supabase.rpc(kind==='seats'?'admin_set_business_seats':kind==='ownership'?'admin_business_transfer_owner':'admin_business_set_status',args));
     if (context.sequence!==adminDetailsSequence || context.userId!==state.session?.user?.id || !$('#adminDetailsDialog').open) return;
-    showToast('Business support action recorded.');
+    showToast(kind==='seats'?'Seat allowance saved.':'Business support action recorded.');
     await openAdminBusinessSupport(w.id,0);
   } catch(error) {
-    if (context.sequence===adminDetailsSequence && context.userId===state.session?.user?.id) showToast(error.message);
+    if (context.sequence===adminDetailsSequence && context.userId===state.session?.user?.id) showToast(kind==='seats'?businessSeatEditMessage(error):error.message);
   } finally {
     adminBusinessSupportBusy=false;
     if (form.isConnected) form.querySelector('button[type="submit"]').disabled=false;

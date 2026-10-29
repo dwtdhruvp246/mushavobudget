@@ -1,0 +1,9 @@
+{
+  "sources": {
+    "app.js": "f8fc38dc6ea329a92cc0b607f75137228467d96f3b011249d1a2cb94ca18defe",
+    "app.html": "86b42b7a23f2f23f0c8ecd1ecec0e3760c9a6acdc45c58828522fcd28df51bfa",
+    "scripts/prepare-business-seats-simple.mjs": "40f4989a2e225d546ba88e3afe6ddb4f85a4d8a855b0a1f319cb4a56cd1cd463",
+    "scripts/lib/read-public-zip.mjs": "028781910dc28e64d1bb5c02af7a8d26e9f345d4b82f6f1c35f26e14673ff2b0",
+    "scripts/lib/store-public-zip.mjs": "81eae2723285b56e321141512c2b6311777397f5b84853badcee9f60af3706aa"
+  }
+}

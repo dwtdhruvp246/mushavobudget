@@ -2,6 +2,12 @@
 
 29 October 2026. Stage 3 / FR.2 / FR.2.5 / Batch W. Existing AU05.01 only.
 
+## Actual owner expiry metadata — 29 October 2026
+
+Owner reports expires_at=1793273792, expires_in=3600, computer time13:27. UTC+02 conversion: expiry13:36:32 on29October2026 (11:36:32UTC), remaining572seconds at13:27. Subtracting the reported lifetime gives12:36:32 as an inferred issue time; no baseline token/expiry was captured, so prior refresh is not established. The current token was not expired at the reported13:27 time.
+
+Use the actual deadline for one bounded observation, rather than another one-hour wait: enable Network recording/Keep log/All/No throttling/filter refresh_token in both existing normal app tabs, keep one app tab visible and computer awake/online. The reviewed SDK threshold implies renewal around13:35, but scheduling and clock skew may differ. Report by13:38: refresh-request Status from either tab, updated expires_at number, and whether both dashboards retain the intended account. If a200 and correct dashboards are observed, one online reload can check retained access. If13:38 has already passed, inspect/report the current expiry/log result immediately; no new timed wait. Do not reload/signout before those observations or expose headers/response bodies/storage records. No full AU05.01 acceptance claimed from metadata alone.
+
 ## Current diagnostic — one-hour wait inconclusive; stop waiting
 
 29 October 2026: owner reports an hour elapsed. Screenshot image(20261029-112151).png shows signed-in Personal dashboard, active Network recording, Keep log, All, No throttling, refresh_token filter and 0/176 matching requests. Console shows CHANNEL_ERROR reconnect warning. No natural refresh, failure of Auth refresh, or full AU05.01 pass is established. Network panels are per tab; the pinned auth-js 2.110.9 fixture has BroadcastChannel session updates, navigator lock coordination, visibility-controlled automatic refresh and a 30-second tick comparing actual stored expires_at. A peer-tab refresh or different actual expiry is possible, not established. The Realtime warning is not proof of an Auth refresh failure; do not expand this into a separate feature change.

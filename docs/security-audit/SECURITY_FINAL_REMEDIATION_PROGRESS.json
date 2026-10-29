@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_BATCH_W_REMAINING_EXISTING_CASE_REVIEW",
+  "next_step": "FR.2.5_BATCH_W_AU05.05_HOSTED_SIGNOUT_FAILURE_RETRY",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -7215,5 +7215,20 @@
     "complete_hierarchy": "docs/security-audit/MUSHAVO_BUDGET_COMPLETE_STAGE_FR_BATCH_MAP.md",
     "execution_breakdown_status": "PROPOSED_NUMBERED_FR3_TO_FR8_PACKS_EXISTING_SCOPE",
     "later_FR_work_pack_count": 29
+  },
+  "batch_W_auth_failure_retry_review": {
+    "date": "2026-10-29",
+    "report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_AUTH_FAILURE_RETRY_REVIEW.md",
+    "source_commit": "a1667bca627c54347c7911f9551d8d635df6d6ea",
+    "node_version": "v24.22.1",
+    "local_tests": 46,
+    "local_pass": 46,
+    "local_fail": 0,
+    "local_exit_code": 0,
+    "hosted_case": "AU05.05",
+    "hosted_owner_result_received": false,
+    "new_AU_cases": 0,
+    "application_source_changed": false,
+    "full_batch_W_complete": false
   }
 }

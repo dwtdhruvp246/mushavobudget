@@ -3,13 +3,21 @@
 Stage 3/10 | FR.2/8 | Batch W/Z. 30 October 2026.
 Source parent: ac6e92b25019290b79a38652c8ded9fd0cc9a5b5.
 
-## Current checkpoint
+## Owner scoped PASS — 30 October 2026
+
+[Final owner terminal receipt](security-fr-2-batch-w-owner-unavailable-admin-invitation-pass.json) reports exit0,25 hosted requests,3 denied completion RPCs and all three expired/cancelled/stored-replaced read/completion denials. The original profile/owned-workspace set was preserved; fixture and audit reads returned HTTP200/zero rows; both newly created sessions returned logout HTTP204. Ten source hashes and the accepted staging ZIP were verified, and25 owner local tests passed. All four clipboard copy/readback steps were exercised on Windows. No repeat of AU02.04 is requested.
+
+Refresh grants were0. The session-renewals-verified flag records no failed attempted renewal, not a live refresh exercise. AU05.01 native browser continuity gets no new acceptance. Older failed-run Node-session cleanup remains unverified and was not remeasured. The stored replacement-state fixture did not send a replacement email or invoke the reservation workflow.
+
+Next original invitation work is [AU02.05 incomplete completion failure/retry](SECURITY_FR_2_5_BATCH_W_ADMIN_SETUP_COMPLETION_RETRY.md). The complete protocol below is historical for the passed AU02.04 run; do not rerun it.
+
+## Prior starting checkpoint
 
 [Owner read-only state](security-fr-2-batch-w-owner-post-stop-state.json) confirms zero marked fixture rows and zero marked fixture audit rows. Do not repeat cleanup for the old fixture.
 
 Each selected account has two Auth session rows, including one exact node/undici-agent row. Recorded ages were 8221 seconds for Super Admin and 8234 for the ordinary test user. These ages and labels do not identify the original session IDs or establish the prior HTTP failure cause. Original terminal logouts remain unverified. The older rows are a separate cleanup carry-forward, not an invitation denial PASS.
 
-The prior checker requested only expired/cleanup, returned no accepted variants and made zero completion RPCs. All four SQL result messages alone did not test API denial. AU02.04 remains pending. Preserve AU02.01/02, AU02.03 completed-invitation wrong-recipient denial, AU02.05 completed-invitation idempotence and Business AU02.06–08 without repeats. Actual incomplete-setup/provider-failure retry in AU02.05 stays open.
+The prior checker requested only expired/cleanup, returned no accepted variants and made zero completion RPCs. All four SQL result messages alone did not test API denial. AU02.04 was pending at that starting checkpoint and is now accepted at the owner scope above. Preserve AU02.01/02, AU02.03 completed-invitation wrong-recipient denial, AU02.05 completed-invitation idempotence and Business AU02.06–08 without repeats. Actual incomplete-setup/provider-failure retry in AU02.05 stays open.
 
 ## Complete owner workflow
 
@@ -54,7 +62,7 @@ Typical success uses 25 direct HTTP requests; a synthetic two-hour pause at ever
 
 ## Validation and limits
 
-[Current checks](security-fr-2-batch-w-unavailable-invitation-session-workflow-checks.json):25 transport/package tests PASS, ten hashes. They cover two-hour pauses, rotation, same-session binding, actual getUser verification, final-cleanup renewal failures, safe diagnostics, staged SQL publication, clipboard stdin/readback protocol, source tamper refusal and existing-pack repair. Five prior real local SQL checks are retained; the generator/guards have not changed. Actual Windows clipboard/Notepad execution is pending the owner, with a current-file fallback.
+[Current checks](security-fr-2-batch-w-unavailable-invitation-session-workflow-checks.json):25 transport/package tests PASS, ten hashes. They cover two-hour pauses, rotation, same-session binding, actual getUser verification, final-cleanup renewal failures, safe diagnostics, staged SQL publication, clipboard stdin/readback protocol, source tamper refusal and existing-pack repair. Five prior real local SQL checks are retained; the generator/guards have not changed. The owner exercised all four clipboard copy/readback steps; Notepad fallback was not exercised.
 
 The [prior Business-trigger repair](SECURITY_FR_2_5_BATCH_W_UNAVAILABLE_ADMIN_INVITATION_TRIGGER_REPAIR.md) is historical for the already-ended original run. Do not resume that run or repeat the post-stop query for this retry.
 

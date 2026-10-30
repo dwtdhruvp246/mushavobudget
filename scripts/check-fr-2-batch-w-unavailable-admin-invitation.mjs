@@ -9,6 +9,7 @@ import { checkUnavailableAdminInvitation } from './lib/unavailable-admin-invitat
 const root = new URL('../', import.meta.url);
 const sourceNames = [
   'scripts/check-fr-2-batch-w-unavailable-admin-invitation.mjs',
+  'scripts/repair-fr-2-batch-w-unavailable-invitation-sql.mjs',
   'scripts/lib/unavailable-admin-invitation-check.mjs',
   'scripts/lib/unavailable-admin-invitation-sql.mjs',
   'scripts/check-fr-2-batch-w-completed-admin-invitation.mjs',

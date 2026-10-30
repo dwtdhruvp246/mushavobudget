@@ -26,6 +26,13 @@ async function database() {
   for (const name of ['20260922113000_admin_user_invitations.sql', '20260923100000_complete_admin_user_invitations.sql']) {
     await db.exec(fs.readFileSync(__dirname + '/../supabase/migrations/' + name, 'utf8'));
   }
+  // Include the canonical launch trigger that the first two-migration fixture omitted.
+  const launch = fs.readFileSync(__dirname + '/../supabase/migrations/20260927183000_business_stage_0_launch_lock.sql', 'utf8');
+  const currentLaunch = fs.readFileSync(__dirname + '/../supabase/migrations/20261002060000_business_public_availability.sql', 'utf8');
+  const launchFunction = currentLaunch.match(/create or replace function public\.enforce_business_admin_invitation_launch_control\(\)[\s\S]*?\$\$;/i)?.[0];
+  const launchTrigger = launch.match(/create trigger enforce_business_admin_invitation_launch_control_trigger[\s\S]*?;/i)?.[0];
+  assert.ok(launchFunction && launchTrigger);
+  await db.exec(launchFunction + '\n' + launchTrigger);
   await db.exec(`
     INSERT INTO auth.users(id,email,email_confirmed_at) VALUES('${actorId}','ordinary@example.test',now()),('${adminId}','admin@example.test',now());
     INSERT INTO profiles(id,email,full_name) VALUES('${actorId}','ordinary@example.test','Original test account'),('${adminId}','admin@example.test','Original admin');
@@ -98,5 +105,33 @@ test('cleanup refuses a renamed, linked or provisioned row and never deletes an 
     await attempt(db, pack.cleanup);
     assert.equal((await db.query('SELECT count(*)::int n FROM auth.users')).rows[0].n, 2);
     assert.equal((await db.query('SELECT count(*)::int n FROM budget_workspaces')).rows[0].n, 1);
+  } finally { await db.close(); }
+});
+test('old guard reproduces the owner stop with the canonical launch trigger; repaired guard leaves Business launch protection enforced', async () => {
+  const { unavailableInvitationSQL, reviewedBusinessTriggerClause } = await import('../scripts/lib/unavailable-admin-invitation-sql.mjs');
+  const pack = unavailableInvitationSQL({ actorId, adminId, invitationId }), db = await database();
+  try {
+    await assert.rejects(attempt(db, pack.expired.replace(reviewedBusinessTriggerClause, '')), /FIXTURE_UNREVIEWED_INVITATION_TRIGGER/);
+    assert.equal((await db.query('SELECT count(*)::int n FROM admin_user_invitations')).rows[0].n, 0);
+    await attempt(db, pack.expired);
+    const businessId = id(11);
+    await db.exec(`INSERT INTO plans VALUES('${businessId}','business','Business','business',true);
+      INSERT INTO plan_prices(plan_id,billing_period,currency,amount,extra_member_amount,is_active,effective_from)
+      VALUES('${businessId}','monthly','USD',10,0,true,now()-interval '1 day')`);
+    await assert.rejects(db.query(`UPDATE admin_user_invitations SET plan_id=$1 WHERE id=$2`, [businessId, invitationId]), /BUSINESS_MANUAL_GRANT_REQUIRED/);
+    await attempt(db, pack.cleanup);
+  } finally { await db.close(); }
+});
+test('unknown triggers and altered launch-handler bodies are still refused before any fixture write', async () => {
+  const { unavailableInvitationSQL } = await import('../scripts/lib/unavailable-admin-invitation-sql.mjs');
+  const pack = unavailableInvitationSQL({ actorId, adminId, invitationId }), db = await database();
+  try {
+    await db.exec(`CREATE FUNCTION public.unreviewed_fixture_hook() RETURNS trigger LANGUAGE plpgsql AS $$BEGIN RETURN NEW; END$$;
+      CREATE TRIGGER unreviewed_fixture_hook BEFORE INSERT ON public.admin_user_invitations FOR EACH ROW EXECUTE FUNCTION public.unreviewed_fixture_hook()`);
+    await assert.rejects(attempt(db, pack.expired), /FIXTURE_UNREVIEWED_INVITATION_TRIGGER/);
+    await db.exec('DROP TRIGGER unreviewed_fixture_hook ON public.admin_user_invitations');
+    await db.exec(`CREATE OR REPLACE FUNCTION public.enforce_business_admin_invitation_launch_control() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public,pg_temp AS $$BEGIN RETURN NEW; END$$`);
+    await assert.rejects(attempt(db, pack.expired), /FIXTURE_UNREVIEWED_INVITATION_TRIGGER/);
+    assert.equal((await db.query('SELECT count(*)::int n FROM admin_user_invitations')).rows[0].n, 0);
   } finally { await db.close(); }
 });

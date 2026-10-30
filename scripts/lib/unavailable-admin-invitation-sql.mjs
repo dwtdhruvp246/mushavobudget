@@ -1,5 +1,26 @@
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
+// Exact current Business launch guard from 20261002060000_business_public_availability.sql.
+// Keep the fragment separate so an existing generated pack can be repaired without changing its bindings.
+export const reviewedBusinessTriggerClause = `
+          OR (t.tgname = 'enforce_business_admin_invitation_launch_control_trigger'
+              AND t.tgfoid = 'public.enforce_business_admin_invitation_launch_control()'::regprocedure
+              AND t.tgenabled = 'O' AND t.tgtype = 23 AND t.tgnargs = 0
+              AND t.tgconstraint = 0 AND t.tgqual IS NULL
+              AND (
+                SELECT array_agg(a.attname::text ORDER BY a.attname::text)
+                FROM unnest(t.tgattr::smallint[]) AS col(attnum)
+                JOIN pg_attribute a ON a.attrelid = t.tgrelid AND a.attnum = col.attnum
+              ) = ARRAY['plan_id', 'status']::text[]
+              AND EXISTS (
+                SELECT 1 FROM pg_proc p JOIN pg_language l ON l.oid = p.prolang
+                WHERE p.oid = t.tgfoid AND p.prokind = 'f' AND p.pronargs = 0
+                  AND p.prorettype = 'trigger'::regtype AND p.prosecdef AND l.lanname = 'plpgsql'
+                  AND p.proconfig = ARRAY['search_path=public, pg_temp']::text[]
+                  AND encode(sha256(convert_to(replace(p.prosrc, E'\\r\\n', E'\\n'), 'UTF8')), 'hex')
+                    = '812af7eb96d926a05bed6c3426ac90e0d4e991933ac790fe1999080ac7e9d1da'
+              ))`;
+
 export function unavailableInvitationSQL({ actorId, adminId, invitationId }) {
   if (![actorId, adminId, invitationId].every(value => typeof value === 'string' && UUID.test(value))
       || new Set([actorId, adminId, invitationId]).size !== 3) throw Error('DISTINCT_UUID4_BINDINGS_REQUIRED');
@@ -33,7 +54,7 @@ BEGIN
           (t.tgname = 'admin_user_invitations_touch_updated_at'
            AND t.tgfoid = 'public.touch_admin_user_invitation_updated_at()'::regprocedure)
           OR (t.tgname = 'snapshot_admin_user_invitation_price_trigger'
-              AND t.tgfoid = 'public.snapshot_admin_user_invitation_price()'::regprocedure)
+              AND t.tgfoid = 'public.snapshot_admin_user_invitation_price()'::regprocedure)${reviewedBusinessTriggerClause}
         )
       )
   ) THEN RAISE EXCEPTION 'FIXTURE_UNREVIEWED_INVITATION_TRIGGER'; END IF;

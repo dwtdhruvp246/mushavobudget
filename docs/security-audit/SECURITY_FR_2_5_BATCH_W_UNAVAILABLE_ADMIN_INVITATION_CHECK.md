@@ -9,11 +9,15 @@ The [owner inventory](security-fr-2-batch-w-owner-unavailable-admin-invitation-i
 
 AU02.01/02 setup/isolation, completed-invitation AU02.03 wrong-recipient denial, the repeated-completion part of AU02.05 and Business AU02.06–08 stay accepted. The completed invitation must not be cancelled or edited. AU02.05 actual incomplete-setup/provider-failure retry remains open.
 
-## Concrete next action
+## Current action after the owner SQL stop
+
+The owner received FIXTURE_UNREVIEWED_INVITATION_TRIGGER. Follow the [complete existing-pack repair handoff](SECURITY_FR_2_5_BATCH_W_UNAVAILABLE_ADMIN_INVITATION_TRIGGER_REPAIR.md) in a second PowerShell window before executing another phase. Preserve the current run; do not create a new fixture or repeat sign-ins. The correction recognizes the exact canonical Business launch trigger omitted by the initial helper. Unknown triggers still stop.
+
+## Original controlled fixture action
 
 Entry: scripts/check-fr-2-batch-w-unavailable-admin-invitation.mjs.
 Runtime: scripts/lib/unavailable-admin-invitation-check.mjs and scripts/lib/unavailable-admin-invitation-sql.mjs.
-Manifest: scripts/unavailable-admin-invitation-manifest.json, eight runtime sources.
+Manifest: scripts/unavailable-admin-invitation-manifest.json, nine runtime sources after the trigger-repair correction.
 Reuse the exact accepted v125 staging ZIP SHA256 9bbad6f7fe83b731aef9b65d3bae5df8b832204c5e7bbd0867a9e5a9b811033b.
 
 Use the OTHER existing ordinary account from the completed-invitation check, not the newly invited recipient, followed by the existing staging Super Admin. Both passwords are masked and used only for actual Auth password sessions. The ordinary account must have an active self_signup profile, no Admin invitation linkage or platform role, and an existing Personal workspace. Do not repair/change a profile if this preflight fails.
@@ -52,4 +56,4 @@ The SQL requires the registered staging target, privileged origin, current activ
 
 This is actual recipient-bound hosted API denial for controlled unavailable database states. The replacement marker is a fixture of the stored cancelled/replaced state; this run does not invoke the email resend/replacement reservation workflow. It does not measure Auth email-link TTL, original UI rendering, new delivery, setup/provider-failure retry or races. No additional public AU case is added.
 
-[Local checks](security-fr-2-batch-w-unavailable-admin-invitation-local-checks.json): fourteen transport/package tests and three real local PostgreSQL/PGlite tests PASS, three syntax checks, eight runtime hashes. The SQL tests execute the unchanged foundation and completion migrations against synthetic local tables; they are offline evidence only. The owner command runs the fourteen dependency-free tests, with no PGlite install. Assistant hosted requests/writes/email: zero. Owner run pending; no W/V/FR.2/Stage3/release closure.
+Initial [local17 checks](security-fr-2-batch-w-unavailable-admin-invitation-local-checks.json) did not include the later Business launch trigger. Current [local21 repair checks](security-fr-2-batch-w-unavailable-invitation-trigger-repair-local-checks.json): sixteen transport/package tests and five real local SQL tests PASS, nine runtime hashes. The SQL tests execute the unchanged foundation and completion migrations against synthetic local tables; they are offline evidence only. The current owner command runs the sixteen dependency-free tests, with no PGlite install. Assistant hosted requests/writes/email: zero. Owner run pending; no W/V/FR.2/Stage3/release closure.

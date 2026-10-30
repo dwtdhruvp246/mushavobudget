@@ -1,0 +1,84 @@
+// Staging V only. Auth owns factor writes; all Management SQL is READ ONLY.
+import {readFile} from 'node:fs/promises';
+import {isDeepStrictEqual as equal} from 'node:util';
+import {runOperatorMfa,boundedBody,validateEmails,AUTH,CONFIG,SetupError} from './fr-2-operator-mfa.mjs';
+import {batchVReviewSQL,validateReview,exact,object} from './admin-batch-v-review.mjs';
+import {stateSQL} from './email-bounded-http-sql.mjs';
+import {parseStagingConfiguration} from '../prepare-fr-2-email-edge-batch-a.mjs';
+export const stage='FR.2.4.E5.36_BATCH_V_RECOVERY_FIRST_GENUINE_MFA_AND_EXACT_PENDING_FACTOR';
+export const acknowledgement='SETUP_RECOVERY_THEN_EXACT_PENDING_PRIMARY_MFA';
+export const expectedPending='d3f81681acaee6a48d7ef5911d5fc6898394dc0bc243a4d8c54366aa7c164ce0';
+const base='https://api.supabase.com/v1/projects/dczlddwbtgvfdujgcitb',slots=['PRIMARY','RECOVERY'];
+const uuid=x=>typeof x==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(x),need=(v,c)=>{if(!v)throw Object.assign(Error(c),{batchVSafe:true});};
+const safe=e=>e?.batchVSafe===true?e.message:e instanceof SetupError?e.code:'BATCH_V_PRIVATE_OPERATION_REVIEW_REQUIRED';
+export async function operatorSnapshotSQL(primary,recovery){
+ const source=await batchVReviewSQL(primary,recovery),marker='AS batch_v_review;';need(source.split(marker).length===2,'BATCH_V_SQL_SOURCE_REQUIRED');
+ return source.replace(marker,`AS batch_v_review,
+ (WITH requested(slot,email) AS (VALUES ('PRIMARY',lower(current_setting('mushavo.operator_primary_email'))),('RECOVERY',lower(current_setting('mushavo.operator_recovery_email'))))
+ SELECT jsonb_agg(jsonb_build_object('slot',r.slot,'user_id',u.id,
+ 'sessions',coalesce((SELECT jsonb_agg(s.id ORDER BY s.id) FROM auth.sessions s WHERE s.user_id=u.id),'[]'::jsonb),
+ 'factors',coalesce((SELECT jsonb_agg(jsonb_build_object('id',f.id,'factor_type',f.factor_type,'status',f.status,
+ 'expected_label',f.friendly_name=('Mushavo staging '||r.slot),
+ 'metadata_sha256',encode(sha256(convert_to(jsonb_build_object('id',f.id,'user_id',f.user_id,'factor_type',f.factor_type,'status',f.status,'friendly_name',f.friendly_name,'created_at',f.created_at,'updated_at',f.updated_at)::text,'UTF8')),'hex')) ORDER BY f.id) FROM auth.mfa_factors f WHERE f.user_id=u.id),'[]'::jsonb)) ORDER BY r.slot)
+ FROM requested r LEFT JOIN auth.users u ON lower(u.email)=r.email) AS private_operator_state;`);
+}
+export function validatePrivateState(value,review){
+ need(Array.isArray(value)&&value.length===2,'BATCH_V_PRIVATE_STATE_REQUIRED');
+ for(const slot of slots){const rows=value.filter(x=>x.slot===slot),safeFactor=review.factor_metadata.find(x=>x.slot===slot);need(rows.length===1,'BATCH_V_PRIVATE_STATE_REQUIRED');const x=rows[0];
+  need(exact(x,['slot','user_id','sessions','factors'])&&uuid(x.user_id)&&Array.isArray(x.sessions)&&x.sessions.length<=20&&x.sessions.every(uuid)&&new Set(x.sessions).size===x.sessions.length&&Array.isArray(x.factors)&&x.factors.length<=5&&x.factors.length===safeFactor.factor_count&&safeFactor.factors.length===x.factors.length&&!safeFactor.details_truncated,'BATCH_V_PRIVATE_STATE_REQUIRED');
+  for(const f of x.factors)need(exact(f,['id','factor_type','status','expected_label','metadata_sha256'])&&uuid(f.id)&&f.factor_type==='totp'&&['verified','unverified'].includes(f.status)&&typeof f.expected_label==='boolean'&&/^[a-f0-9]{64}$/.test(f.metadata_sha256)&&safeFactor.factors.some(y=>y.metadata_sha256===f.metadata_sha256&&y.status===f.status&&y.factor_type===f.factor_type),'BATCH_V_PRIVATE_FACTOR_REQUIRED');
+ }
+ need(value[0].user_id!==value[1].user_id,'BATCH_V_DISTINCT_ACTORS_REQUIRED');return value;
+}
+export function closedState(x){need(object(x)&&equal(x.context,{privileged_origin:true,transaction_read_only:'on'})&&x.catalog_kind==='BOUNDED'&&x.control_rows===1&&x.mode==='QUARANTINED'&&x.quarantined_stamp_matched===true&&x.predicate_source_matched===true&&x.stamp_matched===true&&x.window_present===true&&x.window_empty===true&&x.guarded_RPCs===148&&x.restrictive_policies===82&&x.backend_forced_RLS_tables===5&&x.private_schema_API_denied===true,'BATCH_V_QUARANTINED_CATALOG_REQUIRED');}
+export async function setupBatchVMfa(input,{transport=fetch,io}={}){
+ const r={stage_step:stage,progress_display:'Stage 3/10 | FR.2/8 | Batch V/Z',result:'BATCH_V_OPERATOR_MFA_REVIEW_REQUIRED',actual_hosted_requests:0,maximum_direct_HTTP_requests:80,Management_requests:0,Auth_requests:0,public_config_requests:0,target_before_and_after_verified:false,quarantined_catalog_before_verified:false,quarantined_catalog_after_verified:false,Admin_source_and_effective_grants_matched_before_and_after:false,live_public_key_ownership_verified:false,existing_operator_identities_ordinary_and_isolated:false,initial_preexisting_operator_sessions:0,preexisting_operator_sessions_block_enrollment:true,recovery_first_fresh_AAL2_verified:false,exact_reviewed_unverified_PRIMARY_factor_delete_attempts:0,exact_pending_factor_delete_HTTP_accepted:false,exact_pending_factor_absent_independently_verified:false,pending_factor_delete_response_problem_code:null,pending_factor_delete_outcome_uncertain:false,verified_factors_explicitly_deleted:false,automatic_factor_write_retries:0,new_enrollment_attempts:0,selected_created_Auth_sessions:0,selected_sessions_absent_independently_verified:false,final_operator_session_counts:[],unattributed_operator_session_count:0,retained_verified_TOTP_per_operator:[],mfa:null,cleanup_problem_code:null,final_state_problem_code:null,failure_checkpoint:null,checkpoint:'PRIVATE_INPUT',problem_code:null,exit_code:1,real_email_requests:0,application_rows_or_roles_or_settings_changed:false,committed_mode_change_requests:0,factor_keys_displayed_only_in_private_terminal:true,credentials_codes_factor_secrets_or_tokens_saved_to_files_arguments_or_environment:false,credentials_emails_raw_IDs_or_provider_bodies_in_safe_result:false,independent_device_or_account_recovery_drill_verified:false,hosted_Admin_MFA_acceptance:false,full_lettered_batch_V_complete:false,hosted_acceptance:false,live_activation_approved:false,production_or_native_changed:false,APK_update_deferred:true,findings_closed:[]};
+ let ready=false,finished=false,snapshotQuery,closedQuery,model,initial=null,current=null,run;
+ const created=[],retainedFactorIds=new Map();
+ const row=(v,keys)=>{need(Array.isArray(v)&&v.length===1&&exact(v[0],keys),'BATCH_V_ROWSET_REQUIRED');return v[0];};
+ async function request(label,url,options={},limit=262144){
+  r.checkpoint=label;need(++r.actual_hosted_requests<=80,'BATCH_V_REQUEST_BOUND');const management=url===base||url===base+'/database/query',auth=url.startsWith(AUTH+'/');need(management||auth||url===CONFIG,'BATCH_V_ENDPOINT_REQUIRED');
+  if(management)r.Management_requests++;else if(auth)r.Auth_requests++;else r.public_config_requests++;
+  const res=await transport(url,{...options,redirect:'error',signal:AbortSignal.timeout(40000)});need(!res.redirected&&(!res.url||res.url===url),'BATCH_V_RESPONSE_REQUIRED');
+  if(options.expected204&&res.status===204){await res.body?.cancel();return null;}
+  need(res.status===(url===base+'/database/query'?201:200)&&/^(?:application\/json|(?:application|text)\/javascript)(?:\s*;|$)/i.test(res.headers.get('content-type')||''),'BATCH_V_RESPONSE_REQUIRED');
+  const text=await boundedBody(res,limit);if(url===CONFIG)return text;return JSON.parse(text);
+ }
+ const mgmt=(label,query,path='')=>request(label,base+path+(query?'/database/query':''),{method:query?'POST':'GET',headers:{Authorization:'Bearer '+input.managementToken,Accept:'application/json',...(query?{'Content-Type':'application/json'}:{})},...(query?{body:JSON.stringify({query,read_only:false})}:{})});
+ function target(t){need(object(t)&&(t.ref==='dczlddwbtgvfdujgcitb'||t.ref===undefined&&t.id==='dczlddwbtgvfdujgcitb')&&!(typeof t.id==='string'&&/^[a-z]{20}$/.test(t.id)&&t.id!=='dczlddwbtgvfdujgcitb')&&t.status==='ACTIVE_HEALTHY'&&t.database?.host==='db.dczlddwbtgvfdujgcitb.supabase.co','BATCH_V_TARGET_REQUIRED');}
+ async function snapshot(label){const x=row(await mgmt(label,snapshotQuery),['batch_v_review','private_operator_state']),review=validateReview(x.batch_v_review,model);need(review.source_and_effective_grants_match_current_installed_baseline&&review.operators_ready_as_ordinary_isolated_identities,'BATCH_V_ADMIN_OR_OPERATOR_DRIFT');current=validatePrivateState(x.private_operator_state,review);for(const [slot,id]of retainedFactorIds)need(one(current,slot).factors.some(f=>f.id===id),'BATCH_V_RETAINED_FACTOR_CHANGED');if(r.recovery_first_fresh_AAL2_verified)need(one(current,'RECOVERY').factors.length===1&&one(current,'RECOVERY').factors[0].status==='verified','BATCH_V_WORKING_RECOVERY_FACTOR_REQUIRED');if(initial)need(current.every(x=>x.user_id===initial.find(y=>y.slot===x.slot).user_id),'BATCH_V_ACTOR_DRIFT');return current;}
+ function one(rows,slot){return rows.find(x=>x.slot===slot);}
+ function allowedFactor(x){return x.factors.length===0||x.factors.length===1&&(x.factors[0].status==='verified'&&x.factors[0].expected_label||x.slot==='PRIMARY'&&x.factors[0].status==='unverified'&&x.factors[0].expected_label&&x.factors[0].metadata_sha256===expectedPending);}
+ function sessionGuard(state,slot,session){for(const x of state)need(equal(x.sessions, x.slot===slot?[session]:[]),'BATCH_V_UNEXPECTED_OPERATOR_SESSION');}
+ try{
+  need(exact(input,['managementToken','primaryEmail','recoveryEmail','acknowledgement'])&&input.acknowledgement===acknowledgement&&/^sbp_fc[A-Za-z0-9_-]{20,512}$/.test(input.managementToken||''),'BATCH_V_PRIVATE_INPUT_REQUIRED');
+  const emails=validateEmails([input.primaryEmail,input.recoveryEmail]);snapshotQuery=await operatorSnapshotSQL(...emails);closedQuery=await stateSQL();model=JSON.parse(await readFile(new URL('../../docs/security-audit/security-fr-2-batch-v-source-model.json',import.meta.url),'utf8'));
+  target(await mgmt('TARGET_BEFORE'));closedState(row(await mgmt('QUARANTINED_CATALOG_BEFORE',closedQuery),['bounded_state']).bounded_state);ready=true;r.quarantined_catalog_before_verified=true;
+  initial=structuredClone(await snapshot('CURRENT_ADMIN_OPERATOR_FACTOR_AND_SESSION_GUARD'));r.existing_operator_identities_ordinary_and_isolated=true;r.initial_preexisting_operator_sessions=initial.reduce((n,x)=>n+x.sessions.length,0);need(r.initial_preexisting_operator_sessions===0,'BATCH_V_PREEXISTING_OPERATOR_SESSIONS_REQUIRE_REVIEW');need(initial.every(allowedFactor),'BATCH_V_UNEXPECTED_EXISTING_FACTOR');for(const x of initial)if(x.factors[0]?.status==='verified')retainedFactorIds.set(x.slot,x.factors[0].id);
+  const config=parseStagingConfiguration(await request('LIVE_PUBLIC_CONFIGURATION',CONFIG,{headers:{Accept:'application/javascript','Cache-Control':'no-store'}},8192));
+
+  const authTransport=async(url,opts)=>{need(url.startsWith(AUTH+'/')&&((opts.method==='POST'&&['/token?grant_type=password','/logout?scope=local','/factors'].includes(url.slice(AUTH.length)))||(opts.method==='GET'&&url===AUTH+'/user')||(opts.method==='POST'&&/^\/factors\/[a-f0-9-]{36}\/(challenge|verify)$/.test(url.slice(AUTH.length)))),'BATCH_V_AUTH_ENDPOINT_REQUIRED');r.checkpoint='AUTH_'+(url===AUTH+'/factors'?'ENROLL':url.endsWith('/verify')?'VERIFY':url.endsWith('/challenge')?'CHALLENGE':url.endsWith('/user')?'USER':url.includes('/logout')?'LOCAL_LOGOUT':'PASSWORD_SIGNIN');need(++r.actual_hosted_requests<=80,'BATCH_V_REQUEST_BOUND');r.Auth_requests++;if(url===AUTH+'/factors')r.new_enrollment_attempts++;return transport(url,opts);};
+  run=await runOperatorMfa({emails,order:[1,0],verifiedPublishableKey:config.supabasePublishableKey,fetcher:authTransport,
+   io:{...io,notice:code=>{if(code==='RECOVERY_PASS')r.recovery_first_fresh_AAL2_verified=true;io.notice(code);}},
+   sessionOpened:async({slot,email,token})=>{let c;try{c=JSON.parse(Buffer.from(token.split('.')[1],'base64url').toString('utf8'));}catch{need(false,'BATCH_V_SESSION_SHAPE_REQUIRED');}need(uuid(c.sub)&&uuid(c.session_id)&&c.sub===one(initial,slot).user_id&&email.toLowerCase()===emails[slots.indexOf(slot)],'BATCH_V_SESSION_IDENTITY_REQUIRED');need(!created.some(x=>x.session===c.session_id),'BATCH_V_FRESH_SESSION_REQUIRED');created.push({slot,session:c.session_id});r.selected_created_Auth_sessions=created.length;},
+   prepareFactors:async({slot,initial:login,token})=>{
+    let state=await snapshot('BEFORE_'+slot+'_FACTOR_ACTION');need(login.user.id===one(state,slot).user_id,'BATCH_V_ACTOR_DRIFT');r.live_public_key_ownership_verified=true;sessionGuard(state,slot,login.c.session_id);const selected=one(state,slot);need(allowedFactor(selected),'BATCH_V_UNEXPECTED_EXISTING_FACTOR');const api=login.user.factors||[];need(Array.isArray(api)&&api.length<=1&&api.every(f=>selected.factors.some(y=>y.id===f.id&&y.status===f.status&&y.factor_type===f.factor_type)),'BATCH_V_AUTH_SQL_FACTOR_DISAGREEMENT');
+    if(selected.factors[0]?.status==='unverified'){
+     need(slot==='PRIMARY'&&r.recovery_first_fresh_AAL2_verified&&one(state,'RECOVERY').factors.length===1&&one(state,'RECOVERY').factors[0].status==='verified','BATCH_V_WORKING_RECOVERY_FACTOR_REQUIRED');
+     const recoveryFactors=structuredClone(one(state,'RECOVERY').factors),f=selected.factors[0];need(f.metadata_sha256===expectedPending&&f.expected_label,'BATCH_V_EXACT_PENDING_FACTOR_REQUIRED');r.exact_reviewed_unverified_PRIMARY_factor_delete_attempts++;r.pending_factor_delete_outcome_uncertain=true;
+     try{const data=await request('AUTH_DELETE_EXACT_REVIEWED_UNVERIFIED_PRIMARY',AUTH+'/factors/'+f.id,{method:'DELETE',headers:{apikey:config.supabasePublishableKey,Authorization:'Bearer '+token,Accept:'application/json'},expected204:true});need(data===null||data?.id===f.id,'BATCH_V_DELETE_RESPONSE_REQUIRED');r.exact_pending_factor_delete_HTTP_accepted=true;}catch(e){r.pending_factor_delete_response_problem_code=safe(e);}
+     state=await snapshot('INDEPENDENT_EXACT_PENDING_FACTOR_ABSENCE');sessionGuard(state,slot,login.c.session_id);need(one(state,slot).factors.length===0&&equal(one(state,'RECOVERY').factors,recoveryFactors),'BATCH_V_DELETE_READBACK_REQUIRED');r.exact_pending_factor_absent_independently_verified=true;r.pending_factor_delete_outcome_uncertain=false;
+     // A missing acknowledgement is resolved by readback; never retry DELETE or proceed to enrollment in this run.
+     need(r.exact_pending_factor_delete_HTTP_accepted,'BATCH_V_DELETE_RESPONSE_LOST_STATE_RESOLVED_REVIEW_REQUIRED');
+    }
+    return one(state,slot).factors.map(f=>({id:f.id,status:f.status,factor_type:f.factor_type}));
+   },
+   beforeVerify:async({slot,factor,actor,session})=>{const state=await snapshot('BEFORE_'+slot+'_TOTP_VERIFY');sessionGuard(state,slot,session);const x=one(state,slot);need(x.user_id===actor&&x.factors.length===1&&x.factors[0].id===factor&&x.factors[0].expected_label,'BATCH_V_VERIFY_FACTOR_DRIFT');if(retainedFactorIds.has(slot))need(retainedFactorIds.get(slot)===factor,'BATCH_V_RETAINED_FACTOR_CHANGED');retainedFactorIds.set(slot,factor);}
+  });
+  r.mfa=run;need(run.result==='STAGING_TWO_OPERATOR_TOTP_AND_FRESH_AUTH_SESSIONS_SCOPED_PASS','BATCH_V_GENUINE_MFA_FLOW_REQUIRED');finished=true;
+ }catch(e){r.problem_code=safe(e);r.failure_checkpoint=r.checkpoint;}
+ finally{
+  if(ready){try{const state=await snapshot('INDEPENDENT_FINAL_FACTOR_AND_SESSION_STATE');r.retained_verified_TOTP_per_operator=slots.map(slot=>({slot,verified_totp:one(state,slot).factors.filter(x=>x.status==='verified').length,unverified_totp:one(state,slot).factors.filter(x=>x.status==='unverified').length}));r.final_operator_session_counts=slots.map(slot=>({slot,sessions:one(state,slot).sessions.length}));r.unattributed_operator_session_count=state.reduce((n,x)=>n+x.sessions.filter(s=>!created.some(y=>y.slot===x.slot&&y.session===s)).length,0);r.selected_sessions_absent_independently_verified=created.every(s=>!one(state,s.slot).sessions.includes(s.session));need(r.selected_sessions_absent_independently_verified&&state.every(x=>x.sessions.length===0),'BATCH_V_OPERATOR_SESSION_CLEANUP_REQUIRED');if(finished)need(state.every(x=>x.sessions.length===0&&x.factors.length===1&&x.factors[0].status==='verified'&&x.factors[0].expected_label),'BATCH_V_FINAL_VERIFIED_FACTOR_REQUIRED');r.Admin_source_and_effective_grants_matched_before_and_after=!!initial;}catch(e){r.cleanup_problem_code=safe(e);}try{closedState(row(await mgmt('QUARANTINED_CATALOG_AFTER',closedQuery),['bounded_state']).bounded_state);r.quarantined_catalog_after_verified=true;}catch(e){r.final_state_problem_code=safe(e);}try{target(await mgmt('TARGET_AFTER'));r.target_before_and_after_verified=true;}catch(e){r.final_state_problem_code??=safe(e);}}
+ }
+ if(finished&&!r.problem_code&&!r.cleanup_problem_code&&!r.final_state_problem_code){r.result='BATCH_V_TWO_OPERATOR_GENUINE_FRESH_AAL2_SCOPED_PASS';r.checkpoint='COMPLETE';r.exit_code=0;}r.checked_UTC=new Date().toISOString();return r;
+}

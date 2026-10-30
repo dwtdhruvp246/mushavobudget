@@ -1,0 +1,28 @@
+{
+  "stage_step": "FR.2.4.E5.16R_READ_ONLY_POST_INSTALL_SOURCE_REVIEW",
+  "source_file_count": 14,
+  "file_sha256": {
+    "docs/security-audit/security-fr-2-email-edge-batch-c-owner-write-pass-review.json": "117fe09e5393dc1d91a08ae93a990095fb6e2b22af975f2080a7a19210eb66e7",
+    "docs/security-audit/security-fr-2-email-edge-impact-source-manifest.json": "99a2e27798c74d6150ac8b33d0f3f55425cec49228bb0f946b83a13192f3bed4",
+    "docs/security-audit/security-fr-2-email-edge-readiness-owner-observation.json": "94a5a54b959774d2bda20b96be24573bd8608ddbfeb8d51d95db1757e4415d93",
+    "scripts/check-fr-2-email-edge-impact.mjs": "4681e0b8374860deff91373329c11e336c36f61b38ebc722aa14602d0ad1d776",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+    "scripts/review-fr-2-email-edge-installed.mjs": "80f448c7e9f90e33721d12ac26151740075993f1bed00f9110ce2af1b60dc480",
+    "scripts/run-fr-2-email-edge-impact.ps1": "a329087e2cd3d7570fb83e441efa21fccbb6266ca49e61de9def3582e3610cad",
+    "scripts/run-fr-2-email-edge-installed-review.ps1": "b7b97771980ec9cbead70ccc1c0753ee6ea889bb17403af8427740435c40d2b3",
+    "scripts/verify-fr-2-email-edge-impact.mjs": "3872b6fed363e9c6a4a8de9c17d047dafbf276b0688e9a5a6b5915b3ef9f45c1",
+    "scripts/verify-fr-2-email-edge-installed-review.mjs": "3daa11e844b4372ebd1fadf5ce321c0529dfc0664179f93611088066c0a15abb",
+    "supabase/functions/submit-enquiry/handler.mjs": "392aa8ff50c4ba40fc122b1dc62786261f1e90faf407474e9339319a680da761",
+    "supabase/functions/submit-enquiry/index.ts": "86f877cb8615432d962c6533a4c9620354a371c799cccfd05f9006dbfa47271f",
+    "tests/fr-2-email-edge-impact.test.mjs": "a6381aa88e670284c9bc1652cff4d9bcb341bd43540e534e9d5ccdee81fb85cd",
+    "tests/fr-2-email-edge-installed-review.test.mjs": "6971c294582bb247a21c6e4e724105d8e8431514563146849a9351868b5c4371"
+  },
+  "syntax_paths": [
+    "scripts/review-fr-2-email-edge-installed.mjs",
+    "scripts/verify-fr-2-email-edge-installed-review.mjs",
+    "tests/fr-2-email-edge-installed-review.test.mjs"
+  ],
+  "expected_tests": 12,
+  "maximum_GETs": 7,
+  "maximum_writes": 0
+}

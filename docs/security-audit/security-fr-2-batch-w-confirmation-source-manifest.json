@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "stage_step": "FR.2.5.W8_CONFIRMATION_ONLY_SUCCESS_AND_RETURN_TO_SIGNIN",
+  "source_parent_commit": "c18c2c876accab999c9463c42a70cdfb33bcb99f",
+  "source_file_count": 19,
+  "file_sha256": {
+    "app.js": "ba02a923b8373d5812df1499ab570fafb45cad078d252ef63d42cb087a866e8e",
+    "auth-flows.js": "ffee5b12df573326bf370be955ab5efb3dd12d9c96cedecec317b08fe7f808ea",
+    "auth-security.js": "5a536b4913a91f7575e4841e96c29c2686b07bffa0a36337757bba738bf2e762",
+    "auth.html": "7dc63cebb5001e156cbec642594f512cc886f05f5dff8b3fa8ff621044d28b65",
+    "business.js": "bacb6b6d01db0018361253332777f2296332a3ac66b367a99494b3124f1b7628",
+    "email-verification.js": "ae466d7272ae06e66d41848efa356132390aa0efe2c982b371bc2815b2be012d",
+    "package.json": "f33fa5b1cd6ea07cf2584fe7d7b458c3653251f46043dd594821d42f843ad999",
+    "scripts/lib/build-fr-2-email-workers.mjs": "6d0b141b56c3d75d175714a39533a96670af33463fcaf3195cea176a2c92cac9",
+    "scripts/lib/store-public-zip.mjs": "81eae2723285b56e321141512c2b6311777397f5b84853badcee9f60af3706aa",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+    "scripts/prepare-final-staging.mjs": "3f58dae50896af7998f02291bf583e48b2192d690ac527956d68e37c4af83edf",
+    "scripts/prepare-fr-2-batch-w-confirmation.mjs": "1c37f0350b0be2aa1b8966dd8b849b1f5b5483f8d90bdaa5074d2f574f7b80a0",
+    "scripts/prepare-fr-2-email-modern-package.mjs": "dce93977a2092c250c24a79261c825a4d065177824c8253b8b2e2e5a23553de0",
+    "session-entry.js": "8ddf940ae5be0856ac85a20e3445995e535aac61e7d33c2379f89fb2e0125e58",
+    "signup.html": "cacfd3f4098d33cd8c3eead65856ab07b356421c718ad3cb0d4dd25ffa4427be",
+    "tests/fr-2-batch-w-confirmation.test.mjs": "8def0d5f1399f577823db2fdf4e86233b04842bc8a50ba3e2b7ae8fe2d424bb5",
+    "tests/helpers/security-page.mjs": "3d4c7561df779a7c10fd0cc7e680c65c77ba7653e9b7981140cd64cae2aac7c6",
+    "tests/stage-3-auth-flows.test.mjs": "40aedef62f702e04f9a1d6c106a5261e72920f10679c6ad805a6123d40166ee3",
+    "tests/stage-3-auth-page.test.mjs": "0212cb2760e99cf8bedd5dc02999babeef2764f0083bb001f7638f6f1b860584"
+  }
+}

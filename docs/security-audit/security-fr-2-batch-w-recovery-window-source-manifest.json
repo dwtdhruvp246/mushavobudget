@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "stage_step": "FR.2.5.W29_RECOVERY_SINGLE_ACCOUNT_WINDOW_READINESS",
+  "source_parent_commit": "ee88859459699933a2ede4ff4e849e7ff178fbda",
+  "review_source_count": 8,
+  "owner_executes_only": "supabase/candidates/security_fr_2_5_recovery_test_window.sql",
+  "files": [
+    {
+      "path": "supabase/candidates/security_fr_2_5_recovery_test_window.sql",
+      "SHA256": "600082e01d6eef21a1a36f1c7b57e9ee853c0dab1552bf7e957773bae97a2d2c"
+    },
+    {
+      "path": "tests/recovery-window.check.mjs",
+      "SHA256": "cb4f4447da2223c8504434b5b625968ceb20fe1561d4086a78ddb360a152458b"
+    },
+    {
+      "path": "supabase/candidates/security_fr_2_4_email_verification_backend.sql",
+      "SHA256": "45c715381db6e270633f9967a4e9a705740bf50d1fbbedb2e119f02735358bbe"
+    },
+    {
+      "path": "tests/fixtures/persistent-device-staging-model.sql",
+      "SHA256": "58d52bb981a230499d0ca577248daacb88052b20c9f18530270ad3f29b79b016"
+    },
+    {
+      "path": "supabase/candidates/security_fr_2_4_email_acceptance_window.sql",
+      "SHA256": "b256ea6b7d4da7785bd7c8f99b0bff6fef12b7473c6b9d8bfe3591c437e9546d"
+    },
+    {
+      "path": "supabase/candidates/security_fr_2_5_persistent_device_component.sql",
+      "SHA256": "2536f43f192c49b8c784efbe53ad561226814f45ecee77c4a45b6fb2a8370a0c"
+    },
+    {
+      "path": "scripts/offline-test-network.cjs",
+      "SHA256": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5"
+    },
+    {
+      "path": "tests/browser-trust-window.check.mjs",
+      "SHA256": "55fab0e0817554bb8026db3d1bf11e68bcf9e2d9aae6931ea5bcede261caeced"
+    }
+  ],
+  "scope": "Only the new transaction wrapper and its local test are executable source additions. Original backend, controllers, modeled catalog, device component and network preload are unchanged. No new runtime or migration install."
+}

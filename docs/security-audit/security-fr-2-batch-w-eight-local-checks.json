@@ -1,0 +1,69 @@
+{
+  "stage_step": "FR.2.5.W4_OWNER_SELECTED_EIGHT_CHARACTER_PASSWORD_POLICY",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "BATCH_W_OWNER_SELECTED_MINIMUM8_LOCAL74_PASS_PUBLIC_PACKAGE_READY",
+  "source_parent_commit": "ae235991910579b6eb4e4dd240a79149c37a326d",
+  "node_version": "v24.22.1",
+  "new_password_minimum": 8,
+  "source_hashes_verified": 356,
+  "syntax_checks": 10,
+  "tests": 74,
+  "pass": 74,
+  "fail": 0,
+  "group": {
+    "tests": 74,
+    "pass": 74,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "failed_case_numbers": []
+  },
+  "policy_source_revisions": 7,
+  "intentional_prior_manifest_source_changes": 4,
+  "newly_covered_policy_source_revisions": 3,
+  "prior_manifests_preserved_as_historical": true,
+  "old_U_acceptance_not_claimed_for_modified_Auth_bytes": true,
+  "actual_pinned_SDK_with_synthetic_Auth_exercised": true,
+  "public_three_file_patch_and_41_entry_preservation_exercised": true,
+  "new_dependency_install_required": false,
+  "actual_hosted_requests": 0,
+  "real_credentials_or_private_packets_accessed": false,
+  "frontend_uploaded": false,
+  "Supabase_password_minimum_verified": false,
+  "real_email_requests": 0,
+  "committed_mode_change_requests": 0,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "checkpoint": "COMPLETE",
+  "problem_code": null,
+  "exit_code": 0,
+  "checked_UTC": "2026-10-26T10:43:40.551Z",
+  "earlier_local_failures_resolved": [
+    {
+      "tests": 74,
+      "pass_count": 70,
+      "fail": 4,
+      "reason": "Source-coverage assumptions omitted three newly covered policy inputs; synthetic ZIP prior hashes needed explicit staging-exported source identity"
+    },
+    {
+      "tests": 74,
+      "pass_count": 73,
+      "fail": 1,
+      "reason": "Synthetic expected signup bytes did not apply the existing production-to-staging preconnect substitution; corrected test and real input guard to staging byte identity"
+    }
+  ],
+  "earlier_failures_are_not_hosted_results": true,
+  "real_retained_U_ZIP_not_available_in_assistant_environment": true,
+  "owner_real_ZIP_preparation_and_Windows_execution_pending": true,
+  "historical_U_source_deltas": [
+    "auth-security.js",
+    "auth.html"
+  ],
+  "historical_U_unchanged_sources": 308,
+  "previous345_manifest_unchanged_sources": 341
+}

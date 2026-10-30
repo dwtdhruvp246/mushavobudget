@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "stage_step": "9.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "2ea0a69b1bbe5ffedf7a3fc5c0d2179ff1b1f895",
+  "scope": "EIGHT_COORDINATING_ACTIONS_LINKED_TO_EXISTING_FINDINGS_NOT_NEW_FINDING_DEFINITIONS",
+  "actions": [
+    {
+      "id": "RG-R01",
+      "status": "OPEN",
+      "action": "Correctness across finance/workspaces",
+      "remediation": "Resolve Personal binding REVIEW and demonstrate relink/deletion, Business roles and automatic currency/history integrity on accepted isolated deployment.",
+      "owner": "Both",
+      "finding_ids": [
+        "F15",
+        "F10"
+      ],
+      "acceptance_groups": [
+        "RG01"
+      ],
+      "prerequisites": "Stage 3 PF/Business/AU and actual controlled finance callers.",
+      "recheck": "Personal record binding; Family membership and attribution; Business role and scope finance; Schedule and history integrity; Currency and rates; Cashbook and entitlements"
+    },
+    {
+      "id": "RG-R02",
+      "status": "OPEN",
+      "action": "Auth and effective privileges",
+      "remediation": "Complete deployed Auth, recovery/linking, Admin AAL2/recovery and direct caller/grant acceptance.",
+      "owner": "Both",
+      "finding_ids": [
+        "F08",
+        "F14",
+        "F15"
+      ],
+      "acceptance_groups": [
+        "RG02"
+      ],
+      "prerequisites": "Stage 3 AU/Admin operators, settings and installed enforcement.",
+      "recheck": "Signup and confirmation; Invitation and identity linking; Password and recovery; Session and account switching; Admin MFA and recovery; Direct caller and grants"
+    },
+    {
+      "id": "RG-R03",
+      "status": "OPEN",
+      "action": "Data, files and factual privacy",
+      "remediation": "Implement/verify trusted content limits, authorized objects, durable deletion, retention and final actual collection/disclosures.",
+      "owner": "Both",
+      "finding_ids": [
+        "F01",
+        "F02",
+        "F13",
+        "F20"
+      ],
+      "acceptance_groups": [
+        "RG03"
+      ],
+      "prerequisites": "Stage 4 DL/UF/PR implementation, approved decisions and recoverable fixtures.",
+      "recheck": "Trusted upload processing; Proof access and context; Account deletion and ownership; Cleanup and retry; Data inventory and declarations; Audience and retention"
+    },
+    {
+      "id": "RG-R04",
+      "status": "OPEN",
+      "action": "Measured quality and PWA behavior",
+      "remediation": "Choose representative devices/data/networks and budgets; measure startup/errors and verify responsive/accessibility/update/offline flows.",
+      "owner": "Both",
+      "finding_ids": [
+        "F07",
+        "F10",
+        "F14",
+        "F17"
+      ],
+      "acceptance_groups": [
+        "RG04"
+      ],
+      "prerequisites": "Accepted RG-D03/D04 and controlled browser/device sessions.",
+      "recheck": "Cold and warm startup; Responsive finance and input; Dashboard and reports; Realtime and repeated operations; Offline and account privacy; Update and interruption"
+    },
+    {
+      "id": "RG-R05",
+      "status": "OPEN",
+      "action": "Repeatable regression and deployment parity",
+      "remediation": "Include seven CJS suites explicitly, reconcile dedicated verifiers and CI/serving artifact asset closure; verify exact installed source/configuration.",
+      "owner": "Both",
+      "finding_ids": [
+        "F05",
+        "F07",
+        "F09",
+        "F15",
+        "F19"
+      ],
+      "acceptance_groups": [
+        "RG05",
+        "RG08"
+      ],
+      "prerequisites": "91-file catalog, package/CI candidates, deployment and operational evidence.",
+      "recheck": "Exact artifact references and explicit MJS/CJS results, genuine installed parity and bounded operational cases."
+    },
+    {
+      "id": "RG-R06",
+      "status": "OPEN",
+      "action": "Final native artifact security",
+      "remediation": "Preserve identity/signing; prove complete signed artifacts, Auth returns, backup/session behavior, SDK/privacy reasons and native push lifecycle.",
+      "owner": "Both",
+      "finding_ids": [
+        "F05",
+        "F11",
+        "F14",
+        "F17",
+        "F20"
+      ],
+      "acceptance_groups": [
+        "RG06"
+      ],
+      "prerequisites": "Stage 5/6/8 prerequisites; APK deferred until later authorized artifact work.",
+      "recheck": "Android identity and signing; iOS archive and privacy; Native Auth return; Backup and token persistence; Native push lifecycle; Device compatibility and recovery"
+    },
+    {
+      "id": "RG-R07",
+      "status": "OPEN",
+      "action": "Store accounts, declarations and external review",
+      "remediation": "Verify publisher account applicability, final truthful listings/data declarations/reviewer resources and required beta/closed-test outcomes.",
+      "owner": "Owner/Both",
+      "finding_ids": [
+        "F05",
+        "F17",
+        "F20",
+        "F02"
+      ],
+      "acceptance_groups": [
+        "RG07"
+      ],
+      "prerequisites": "Accepted source/artifacts, account-specific console evidence and Stage 4/6/7/8 controls.",
+      "recheck": "Publisher accounts and roles; Google required testing; TestFlight beta evidence; Reviewer access and listings; Commerce and availability; Privacy and account deletion"
+    },
+    {
+      "id": "RG-R08",
+      "status": "OPEN",
+      "action": "Traceable final evidence and release decision",
+      "remediation": "Reconcile all original findings/coverage and actions; demonstrate recovery/rollback, retain failures and complete fresh full re-audit before release.",
+      "owner": "Both",
+      "finding_ids": [
+        "F05",
+        "F15",
+        "F19",
+        "F20"
+      ],
+      "acceptance_groups": [
+        "RG08"
+      ],
+      "prerequisites": "Required final remediation and all accepted source/deployment/artifact evidence.",
+      "recheck": "Coverage traceability; Regression completeness; Backup and recovery proof; Release and rollback package; Known gaps and release decision; Full fresh re-audit"
+    }
+  ],
+  "total": 8,
+  "open": 8,
+  "findings_closed": [],
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "final_remediation_and_full_reaudit_required": true,
+  "latest_step": "9.4",
+  "latest_evidence": "S9E06",
+  "source_candidate": {
+    "report": "docs/security-audit/SECURITY_STAGE_9_2_REGRESSION_CANDIDATE.md",
+    "receipt": "docs/security-audit/security-stage-9-regression-local-checks.json",
+    "contract": "docs/security-audit/security-stage-9-regression-candidate-contract.json",
+    "partial_source_contribution": [
+      "RG-R05"
+    ],
+    "local_unique_cases": 882,
+    "local_file_count": 92,
+    "hosted_native_store_acceptance": false,
+    "action_closures": 0
+  },
+  "windows_correction": {
+    "report": "docs/security-audit/SECURITY_STAGE_9_2_WINDOWS_CORRECTION.md",
+    "receipt": "docs/security-audit/security-stage-9-regression-windows-correction-checks.json",
+    "owner_receipt": "docs/security-audit/security-stage-9-regression-owner-local-checks.json",
+    "owner_result": "REVIEW_875_PASS_7_FAIL",
+    "corrected_local_pass": 882,
+    "corrected_owner_recheck_received": true,
+    "action_closures": 0,
+    "corrected_owner_receipt": "docs/security-audit/security-stage-9-regression-owner-recheck.json",
+    "corrected_owner_pass": 882
+  },
+  "owner_corrected_recheck": {
+    "receipt": "docs/security-audit/security-stage-9-regression-owner-recheck.json",
+    "result": "PASS_882_EXIT_0",
+    "syntax_checks": 21,
+    "pinned_hashes": 26,
+    "unexpected_mismatches": 0,
+    "earlier_owner_failed_result_preserved": true,
+    "action_closures": 0
+  },
+  "bounded_readiness": {
+    "report": "docs/security-audit/SECURITY_STAGE_9_3_READINESS_CHECKPOINT.md",
+    "receipt": "docs/security-audit/security-stage-9-regression-readiness.json",
+    "result": "BLOCKED_NOT_RUN",
+    "prerequisite_groups": 6,
+    "planned_grouped_cases": 48,
+    "executed_full_cases": 0,
+    "public_frontend_metadata_GETs": 12,
+    "explicit_selected_asset_type_FAIL_observations": 1,
+    "installed_candidate_parity_verified": false,
+    "action_closures": 0,
+    "final_remediation_and_full_reaudit_required": true
+  },
+  "stage_status": "CLOSED_REGRESSION_RELEASE_CHECKPOINT_WITH_CARRY_FORWARD",
+  "completion_report": "docs/security-audit/SECURITY_STAGE_9_COMPLETION_REPORT.md",
+  "final_recheck_receipt": "docs/security-audit/security-stage-9-final-recheck.json",
+  "next_step": "10.1"
+}

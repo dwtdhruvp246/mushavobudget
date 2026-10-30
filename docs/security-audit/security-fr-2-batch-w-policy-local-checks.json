@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "stage_step": "FR.2.5.W3_EXACT_CALLBACK_ADDITIONS_AND_NEW_PASSWORD_POLICY_ALIGNMENT",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "BATCH_W_POLICY_CALLBACK_LOCAL42_PASS_REVIEWABLE_STAGING_DASHBOARD_ACTION_READY",
+  "source_parent_commit": "a19fa0b0ef156546091833181cb580b314c6b76d",
+  "node_version": "v24.22.1",
+  "tests": 42,
+  "pass_count": 42,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "exit_code": 0,
+  "new_actual_SDK_cases": 2,
+  "affected_existing_Auth_flow_cases": 40,
+  "SDK_version": "2.110.9",
+  "actual_pinned_SDK_modules_loaded": 9,
+  "SDK_module_and_license_hashes_checked": true,
+  "synthetic_WebSocket_throws_if_constructed": true,
+  "actual_SDK_accepts_simulated_success_with_old_six_character_password_and_strength_advisory": true,
+  "actual_SDK_preserves_simulated_invalid_credentials_rejection": true,
+  "actual_UI_new_password_boundary_recovery_invitation_change_identity_and_session_regressions_pass": true,
+  "actual_hosted_password_strength_or_older_login_verified": false,
+  "explicit_Auth_transport_is_synthetic": true,
+  "default_network_disabled_by_existing_preload": true,
+  "OS_network_sandbox_claimed": false,
+  "real_credentials_or_private_packets_accessed": false,
+  "actual_new_hosted_requests": 0,
+  "actual_email_requests": 0,
+  "settings_or_factor_or_mode_writes": false,
+  "prior345_source_hashes_unchanged": true,
+  "new_dependency_install_required": false,
+  "owner20_and_V86_repeated": false,
+  "owner_Windows_execution_of_new_SDK_cases_verified": false,
+  "initial_local_attempts": [
+    {
+      "tests": 44,
+      "pass_count": 42,
+      "fail": 2,
+      "cause": "Synthetic VM omitted WebSocket capability; actual SDK constructor refused before synthetic Auth"
+    },
+    {
+      "tests": 44,
+      "pass_count": 43,
+      "fail": 1,
+      "cause": "Synthetic error response omitted provider API-version header required for modern code field decoding"
+    }
+  ],
+  "final_fixture_corrections": "Add fail-on-use synthetic WebSocket and API-version response header; remove two redundant boundary/URL unit cases already covered by existing flow tests. No product fix or provider failure is inferred.",
+  "nonfailing_warnings": [
+    "VM_MODULES_EXPERIMENTAL",
+    "MODULE_TYPELESS_PACKAGE_JSON"
+  ],
+  "reproducible_command": [
+    "node",
+    "--experimental-vm-modules",
+    "--require",
+    "./scripts/offline-test-network.cjs",
+    "--test",
+    "--test-concurrency=1",
+    "--test-reporter=tap",
+    "tests/fr-2-batch-w-policy-sdk.test.mjs",
+    "tests/stage-3-auth-flows.test.mjs"
+  ],
+  "selected_source_SHA256": {
+    "tests/fr-2-batch-w-policy-sdk.test.mjs": "9b6611ed9245def8995d140a37ee61e07b39723167d702a582c2d6b4ad7316c7",
+    "tests/stage-3-auth-flows.test.mjs": "d69ac3b8c22c6aff4159e62900ee08788f7a93818065903fdb1fa1cac857f69b",
+    "scripts/lib/full-app-sdk-fixture.mjs": "2a87a5a269f7f9f4e995699ab068a24a2f268815b31531399a99c32811eb37a2",
+    "scripts/fixtures/full-app-sdk/manifest.json": "dc1a9736cfe444591706a9fc90bbbed4610dba105486a34f75b29dda4252e254",
+    "auth-security.js": "db68bc5f10ae85e78577f3c9f16debf190bb92ab6246b0349f9bf5a9362d54fa",
+    "auth-flows.js": "e922a7c2c3d4275d0f2590dfab7d0f390717dbbac79cece90397b9a5b6a549db",
+    "app.js": "05e08c2c7b62303ebb2f4b9b45a3fc7232e24ece61793df9e0a8551c4f7061bb",
+    "business.js": "bacb6b6d01db0018361253332777f2296332a3ac66b367a99494b3124f1b7628",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5"
+  },
+  "hosted_acceptance": false,
+  "full_lettered_batch_W_complete": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "checked_UTC": "2026-10-26T09:59:01.956083+00:00"
+}

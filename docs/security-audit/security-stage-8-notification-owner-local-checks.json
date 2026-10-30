@@ -1,0 +1,279 @@
+{
+  "schema_version": 1,
+  "stage_step": "8.2",
+  "date": "2026-10-12",
+  "scope": "OWNER_REPORTED_WINDOWS_REPEAT_OF_SAME_SELECTED_OFFLINE_CASES_AND_EXACT_PINNED_HASH_RECONCILIATION",
+  "candidate_commit": "d6a797536c277c59f351e0c44c71d4074c1b92c7",
+  "source_parent_commit": "a51e29cb2b71182dc5373c3804ec5ebc4a3c2ce0",
+  "owner_local_result": {
+    "stage_step": "8.2",
+    "result": "OFFLINE_ACTUAL_NOTIFICATION_BOUNDARIES_AND_SELECTED_REGRESSIONS_SCOPED_PASS",
+    "scope": "ACTUAL_BUSINESS_SIGNOUT_VM_SHARED_HELPERS_AND_STRIPPED_EDGE_HANDLERS_WITH_SYNTHETIC_AUTH_DB_BROWSER_TRANSPORT_PORTS",
+    "source_parent_commit": "a51e29cb2b71182dc5373c3804ec5ebc4a3c2ce0",
+    "node_version": "v22.17.0",
+    "tests": 70,
+    "pass": 70,
+    "fail": 0,
+    "exit_code": 0,
+    "notification_boundaries": {
+      "tests": 32,
+      "pass": 32,
+      "fail": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "non_failing_TypeScript_experimental_warning": true
+    },
+    "selected_existing_regressions": {
+      "tests": 38,
+      "pass": 38,
+      "fail": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "non_failing_TypeScript_experimental_warning": false
+    },
+    "syntax_checks": 9,
+    "Node_JS_syntax_checks": 6,
+    "stripped_TS_Node_syntax_checks": 3,
+    "file_sha256": {
+      "business.js": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+      "app.js": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+      "supabase/functions/_shared/notification-recipient.mjs": "b5e9f0718e28d4800ffac32b43313710d789686fcbc6099975ea7d9eb5e3e017",
+      "tests/stage-8-notification-boundaries.test.mjs": "f41de04ffb2df613a4d18fb5b789cdafae1f195a25d37302701a9883f3062023",
+      "scripts/verify-stage-8-notifications.mjs": "4391e893be2f67060fcb10e2efb9446b0249465e87d2043f1f5ee954ac119cce",
+      "tests/security-stage-2-push-destination.test.mjs": "0724d2b76fbe17c980ab3efacbb5cb552912d7a4622cc875eaa85eb9cb2423ab",
+      "supabase/functions/send-test-push/index.ts": "708f9ca7720ead8c3fd1becbd9db327ae448bb12c264462bfff948d7c68905d7",
+      "supabase/functions/dispatch-push-reminders/index.ts": "f7946520e7328254be2747282d91f29b1763782c1541771cbb53cab044b7afa9",
+      "supabase/functions/dispatch-admin-notifications/index.ts": "e1ebda3cface358c9dc4916913e0ef417f68ef307faa60ab8815ccb034c5cb18",
+      "business.html": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+      "app.html": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+      "supabase/functions/_shared/push-destination.mjs": "9aa9cd6da4f4c60663c4d3b1bd1eeb7a0ecfe48076001cd34de34d4545ba271f",
+      "tests/push-display-click.test.mjs": "e14e52510036c5b8a363c6a13e9237bd6843ae7fe15ccb19cf2c3ee1e41d308e",
+      "tests/notification-workspace-context.test.mjs": "72fcf73c37aac305ab4b3ef6ea8a6291123aef88aa633b06cc3128623f7c77d4",
+      "tests/business-stage-10.test.mjs": "b113e631e28af9c2cb12d4d625aa910273984c9a6782413149a6b680e5638ccf",
+      "sw.js": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
+      "supabase/schema.sql": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+      "supabase/migrations/20260930090000_business_stage_10_billing.sql": "150cdfc2b70521b4fc2f0b666adf4b772513a56ce43a39b7e912cdd00b3e6215",
+      "supabase/migrations/20260921130000_notification_workspace_context.sql": "9e61d4139b44f2849acce24c9968931f5c20ff8912a46a0800263702ec480390",
+      "supabase/notification-workspace-context-diagnostic.sql": "61a749ae5d15025737172f6b0cb107d241dc69944081b372cd0486730cc967e2",
+      "docs/security-audit/security-stage-8-notification-candidate-contract.json": "14fc9f717c590ec336a799d9b40b17846bd005f1bba025c054dd63c7d9bc043a"
+    },
+    "actual_Deno_dependency_resolution_bundle_or_hosted_execution_verified": false,
+    "actual_PostgreSQL_RLS_roles_MFA_concurrent_claims_or_recovery_verified": false,
+    "actual_provider_OS_display_account_switch_privacy_or_cleanup_verified": false,
+    "native_push_SDK_transport_or_registration_implemented": false,
+    "hosted_ND01_ND08_grouped_cases_run": 0,
+    "planned_hosted_device_grouped_cases": 48,
+    "candidate_deployed": false,
+    "hosted_acceptance": false,
+    "native_security_acceptance": false,
+    "actual_notification_dispatched": false,
+    "device_permission_or_subscription_changed": false,
+    "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": []
+  },
+  "owner_parent_process_TypeScript_experimental_warning_observed_non_failing": true,
+  "hash_reconciliation": [
+    {
+      "path": "business.js",
+      "published_git_blob_sha": "28b561065b168ac3dcb1968e490c853a84c0673a",
+      "published_sha256": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+      "owner_sha256": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+      "computed_exact_LF_to_CRLF_sha256": "bd99a431f2bcaeaade938f72d732579a9a9ff61fd4db98316c1d26e5b7438d01",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "app.js",
+      "published_git_blob_sha": "82919e23f74d10bd5e7bc4992ca0929d19f390fb",
+      "published_sha256": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+      "owner_sha256": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+      "computed_exact_LF_to_CRLF_sha256": "78b61c9733146d2fd23344f24a314e1cf996f556b100427ccdd5c51b14efde88",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "supabase/functions/_shared/notification-recipient.mjs",
+      "published_git_blob_sha": "b8d341176f8c7bb3c44971af6478d4246b0b01fb",
+      "published_sha256": "638a890a23cc49b77bcc2712e9e61135f9fde24fd031d868ea2c76780c704f24",
+      "owner_sha256": "b5e9f0718e28d4800ffac32b43313710d789686fcbc6099975ea7d9eb5e3e017",
+      "computed_exact_LF_to_CRLF_sha256": "b5e9f0718e28d4800ffac32b43313710d789686fcbc6099975ea7d9eb5e3e017",
+      "result": "EXACT_LF_TO_CRLF_VARIANT"
+    },
+    {
+      "path": "tests/stage-8-notification-boundaries.test.mjs",
+      "published_git_blob_sha": "4b4b99bc3de970a60e0cdeb070d5d7ec0a8366e8",
+      "published_sha256": "06399254de84b8084d363b9f02c5224c1c7497cdf005b9761cfb5acd9169934b",
+      "owner_sha256": "f41de04ffb2df613a4d18fb5b789cdafae1f195a25d37302701a9883f3062023",
+      "computed_exact_LF_to_CRLF_sha256": "f41de04ffb2df613a4d18fb5b789cdafae1f195a25d37302701a9883f3062023",
+      "result": "EXACT_LF_TO_CRLF_VARIANT"
+    },
+    {
+      "path": "scripts/verify-stage-8-notifications.mjs",
+      "published_git_blob_sha": "41788d728a8c03fb62b0c9e70150dc8cfa0706be",
+      "published_sha256": "1ce4f19e9edaa13234069b32e4bfb1c897e9b0ba185452e7f93c64e056c0b629",
+      "owner_sha256": "4391e893be2f67060fcb10e2efb9446b0249465e87d2043f1f5ee954ac119cce",
+      "computed_exact_LF_to_CRLF_sha256": "4391e893be2f67060fcb10e2efb9446b0249465e87d2043f1f5ee954ac119cce",
+      "result": "EXACT_LF_TO_CRLF_VARIANT"
+    },
+    {
+      "path": "tests/security-stage-2-push-destination.test.mjs",
+      "published_git_blob_sha": "1a43368b833d0c902994a1eb4b7aa7f0d77e838b",
+      "published_sha256": "23362fe99d4963cdc04a3d54b5f0487ea70fd030164f8a2402f3619d8fee262d",
+      "owner_sha256": "0724d2b76fbe17c980ab3efacbb5cb552912d7a4622cc875eaa85eb9cb2423ab",
+      "computed_exact_LF_to_CRLF_sha256": "0724d2b76fbe17c980ab3efacbb5cb552912d7a4622cc875eaa85eb9cb2423ab",
+      "result": "EXACT_LF_TO_CRLF_VARIANT"
+    },
+    {
+      "path": "supabase/functions/send-test-push/index.ts",
+      "published_git_blob_sha": "6215a1d2131c840193fe01f863542940f2cb99fb",
+      "published_sha256": "708f9ca7720ead8c3fd1becbd9db327ae448bb12c264462bfff948d7c68905d7",
+      "owner_sha256": "708f9ca7720ead8c3fd1becbd9db327ae448bb12c264462bfff948d7c68905d7",
+      "computed_exact_LF_to_CRLF_sha256": "30bc0058932fad5b43acbe9d4df76a36c539cdbf3252502ace65d61a319afb41",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "supabase/functions/dispatch-push-reminders/index.ts",
+      "published_git_blob_sha": "b1b8a4d964e349033e7a1a30818dbd252238a697",
+      "published_sha256": "f7946520e7328254be2747282d91f29b1763782c1541771cbb53cab044b7afa9",
+      "owner_sha256": "f7946520e7328254be2747282d91f29b1763782c1541771cbb53cab044b7afa9",
+      "computed_exact_LF_to_CRLF_sha256": "1d1ff48faad40169ff9f23e30764c3b275e50e773ec3f9f486ed57925a67eb71",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+      "published_git_blob_sha": "40f32dacb8bc0c9254647627bdbbfbc68a51d33c",
+      "published_sha256": "e1ebda3cface358c9dc4916913e0ef417f68ef307faa60ab8815ccb034c5cb18",
+      "owner_sha256": "e1ebda3cface358c9dc4916913e0ef417f68ef307faa60ab8815ccb034c5cb18",
+      "computed_exact_LF_to_CRLF_sha256": "d671a2626ccb0ab0828a015a525109ac3d447f3976a9422c9d1fc3b47660fde3",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "business.html",
+      "published_git_blob_sha": "72cb99a21ba40b5140f1312538b677fe15dd6cab",
+      "published_sha256": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+      "owner_sha256": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+      "computed_exact_LF_to_CRLF_sha256": "d0c9fe47c06fc38fcb78178ce9c7c08d4ccbded92fb5169097df5b982d0707c6",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "app.html",
+      "published_git_blob_sha": "3564f09e4dea7cdad6669514bc2bea7812dcdfef",
+      "published_sha256": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+      "owner_sha256": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+      "computed_exact_LF_to_CRLF_sha256": "11a4f5cd1a25c86b601f2735d809d57c9be91ab9ceebca5753340795eea4e8a7",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "supabase/functions/_shared/push-destination.mjs",
+      "published_git_blob_sha": "047a76e7607cef3ba164e70ea5bfaa5977398042",
+      "published_sha256": "3c04dd7ca25442cdc600cc836f347553a0e2e88920c333ed1d975c58a1742743",
+      "owner_sha256": "9aa9cd6da4f4c60663c4d3b1bd1eeb7a0ecfe48076001cd34de34d4545ba271f",
+      "computed_exact_LF_to_CRLF_sha256": "9aa9cd6da4f4c60663c4d3b1bd1eeb7a0ecfe48076001cd34de34d4545ba271f",
+      "result": "EXACT_LF_TO_CRLF_VARIANT"
+    },
+    {
+      "path": "tests/push-display-click.test.mjs",
+      "published_git_blob_sha": "c1e2663a83d768817085126a574609f9326e5545",
+      "published_sha256": "b0bead17fa4ce393c75614ec1d1f9edbdb89ca146f53221f9b8304626bd61123",
+      "owner_sha256": "e14e52510036c5b8a363c6a13e9237bd6843ae7fe15ccb19cf2c3ee1e41d308e",
+      "computed_exact_LF_to_CRLF_sha256": "e14e52510036c5b8a363c6a13e9237bd6843ae7fe15ccb19cf2c3ee1e41d308e",
+      "result": "EXACT_LF_TO_CRLF_VARIANT"
+    },
+    {
+      "path": "tests/notification-workspace-context.test.mjs",
+      "published_git_blob_sha": "2f40cf02467bf8eeb228e698c2ee91ae66f97399",
+      "published_sha256": "3a69d18d882ccd01e0c87536019a82ef781b3b6789aea4d7b58c4940c555c477",
+      "owner_sha256": "72fcf73c37aac305ab4b3ef6ea8a6291123aef88aa633b06cc3128623f7c77d4",
+      "computed_exact_LF_to_CRLF_sha256": "72fcf73c37aac305ab4b3ef6ea8a6291123aef88aa633b06cc3128623f7c77d4",
+      "result": "EXACT_LF_TO_CRLF_VARIANT"
+    },
+    {
+      "path": "tests/business-stage-10.test.mjs",
+      "published_git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+      "published_sha256": "405bef6a89bd76a37afb54abcf75a73e97b55471d76ea0e709858dcf9baef7c5",
+      "owner_sha256": "b113e631e28af9c2cb12d4d625aa910273984c9a6782413149a6b680e5638ccf",
+      "computed_exact_LF_to_CRLF_sha256": "b113e631e28af9c2cb12d4d625aa910273984c9a6782413149a6b680e5638ccf",
+      "result": "EXACT_LF_TO_CRLF_VARIANT"
+    },
+    {
+      "path": "sw.js",
+      "published_git_blob_sha": "b61477393fa2b0ed7baa3c52d61076df549df948",
+      "published_sha256": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
+      "owner_sha256": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
+      "computed_exact_LF_to_CRLF_sha256": "729cc1bde5e3d7ef757187025b6e5aaffcbdec8bff8e274043d63a667c34c027",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "supabase/schema.sql",
+      "published_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "published_sha256": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+      "owner_sha256": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+      "computed_exact_LF_to_CRLF_sha256": "4bb20fac7232023cc4ac3e7a41027de0ca1f20c45d92e5094fe7969f873032dd",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+      "published_git_blob_sha": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+      "published_sha256": "150cdfc2b70521b4fc2f0b666adf4b772513a56ce43a39b7e912cdd00b3e6215",
+      "owner_sha256": "150cdfc2b70521b4fc2f0b666adf4b772513a56ce43a39b7e912cdd00b3e6215",
+      "computed_exact_LF_to_CRLF_sha256": "0a0bca919958884291fb90102f4bce99f826cb2bc7b5af599e453a6e5330a967",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "supabase/migrations/20260921130000_notification_workspace_context.sql",
+      "published_git_blob_sha": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+      "published_sha256": "9e61d4139b44f2849acce24c9968931f5c20ff8912a46a0800263702ec480390",
+      "owner_sha256": "9e61d4139b44f2849acce24c9968931f5c20ff8912a46a0800263702ec480390",
+      "computed_exact_LF_to_CRLF_sha256": "7d80d2e9054fb004f7447967d7dca57ff4abe2386764d8824248ce2b8a76fe8b",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "supabase/notification-workspace-context-diagnostic.sql",
+      "published_git_blob_sha": "43794ed7225bb48fff41824353770a3fd55d4932",
+      "published_sha256": "61a749ae5d15025737172f6b0cb107d241dc69944081b372cd0486730cc967e2",
+      "owner_sha256": "61a749ae5d15025737172f6b0cb107d241dc69944081b372cd0486730cc967e2",
+      "computed_exact_LF_to_CRLF_sha256": "2108282f93e7095b320d72c4ae7a82ec14b4d5613361e9ed7c9da26d1f034004",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "docs/security-audit/security-stage-8-notification-candidate-contract.json",
+      "published_git_blob_sha": "b0a53b8ff131dac4b85ac810d43af628c961e780",
+      "published_sha256": "14fc9f717c590ec336a799d9b40b17846bd005f1bba025c054dd63c7d9bc043a",
+      "owner_sha256": "14fc9f717c590ec336a799d9b40b17846bd005f1bba025c054dd63c7d9bc043a",
+      "computed_exact_LF_to_CRLF_sha256": "2b61e267e6bb264078e375ed685b958994452d7741bf8abbe77c464cb79a2c75",
+      "result": "EXACT_PUBLISHED_BYTES"
+    }
+  ],
+  "summary": {
+    "same_primary_boundary_cases": 32,
+    "same_selected_regression_cases": 38,
+    "owner_pass": 70,
+    "owner_fail": 0,
+    "owner_exit_code": 0,
+    "owner_Node_JS_syntax_checks": 6,
+    "owner_stripped_TS_Node_syntax_checks": 3,
+    "owner_syntax_checks": 9,
+    "pinned_input_git_blob_and_assistant_hash_matches": 21,
+    "owner_exact_published_byte_matches": 13,
+    "owner_exact_LF_to_CRLF_variants": 8,
+    "unexplained_hash_mismatches": 0,
+    "new_assistant_behavior_or_syntax_tests_run": 0,
+    "hosted_provider_device_cases_run": 0,
+    "unique_final_suite_cases_remain": 70,
+    "retained_assistant_historical_case_executions": 172,
+    "owner_repeat_case_executions": 70,
+    "combined_historical_case_executions": 242,
+    "combined_historical_pass": 242,
+    "combined_historical_fail": 0
+  },
+  "interpretation": "Same 70-case repeat, not 70 new unique controls. Thirteen exact published bytes and eight exact LF-to-CRLF variants; warning flags retained at each actual scope, including owner regression false versus assistant true.",
+  "previous_assistant_receipt_and_history_preserved": true,
+  "no_owner_rerun_or_additional_SQL_terminal_setup_action_required": true,
+  "source_runtime_settings_or_native_changed_by_reconciliation": false,
+  "findings_closed": [],
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "APK_update_deferred": true,
+  "next_step": "8.3",
+  "report_due_step": "8.4"
+}

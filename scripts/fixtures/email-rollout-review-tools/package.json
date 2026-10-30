@@ -1,0 +1,9 @@
+{
+  "name": "mushavo-email-rollout-review-tools",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.8",
+    "esbuild": "0.28.2"
+  }
+}

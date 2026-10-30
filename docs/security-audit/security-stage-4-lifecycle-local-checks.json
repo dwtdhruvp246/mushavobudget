@@ -1,0 +1,30 @@
+{
+  "stage_step": "4.1.2",
+  "result": "OFFLINE_LIFECYCLE_REVIEW_MODEL_SCOPED_PASS",
+  "scope": "SYNTHETIC_IDENTITY_INVENTORY_RETENTION_PORTS_AND_PURE_STATE_TRANSITIONS",
+  "node_version": "v24.19.0",
+  "tests": 46,
+  "pass": 46,
+  "fail": 0,
+  "exit_code": 0,
+  "test_files": [
+    "tests/stage-4-lifecycle-review.test.mjs"
+  ],
+  "syntax_checks": 3,
+  "file_sha256": {
+    "scripts/lib/stage-4-lifecycle-review.mjs": "ace1165804c6bc72ea241039cc216223789a1da5548798f513748f9ce6732073",
+    "scripts/verify-stage-4-lifecycle.mjs": "29c3447e40b4bfccd2378631ff18c8e0acd715b4444f23750e6e398d7b734378",
+    "tests/stage-4-lifecycle-review.test.mjs": "a9a280481f6f2425e650e3db873f885705f95e3a97b761dc05d66d903a28fee4",
+    "docs/security-audit/security-stage-4-retention-decisions.json": "0e94fdf0f4fe3e71f4f6442835ed457ded3c09d2e9e5c53e8c06bb67c587e398"
+  },
+  "genuine_Auth_verification": false,
+  "final_or_hosted_dependency_inventory_verified": false,
+  "adopted_retention_policy": false,
+  "durable_job_or_provider_adapter_implemented": false,
+  "hosted_DL01_DL05_checks_run": 0,
+  "candidate_deployed": false,
+  "accounts_Storage_SQL_settings_changed": false,
+  "production_or_native_changed": false,
+  "account_deleted": false,
+  "finding_F02_closed": false
+}

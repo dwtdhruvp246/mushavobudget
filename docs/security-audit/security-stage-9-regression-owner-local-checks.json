@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "stage_step": "9.2",
+  "date": "2026-10-13",
+  "candidate_commit": "f2c5d32de32b4c48cf3e1c3f25c4d9a2f6268783",
+  "scope": "OWNER_WINDOWS_NODE_PRINTED_SAFE_RECEIPT_NOT_HOSTED_DEVICE_ACCEPTANCE",
+  "owner_verifier": {
+    "stage_step": "9.2",
+    "result": "OFFLINE_REGRESSION_REVIEW",
+    "scope": "ALL_DISCOVERED_MJS_CJS_NODE_TESTS_WITH_SYNTHETIC_PORTS_SOURCE_ASSERTIONS_AND_TEMPORARY_REAL_EXPORTER_FIXTURES",
+    "source_parent_commit": "bf7d1ec1690a43b692d2164204ebbd7d21d051ae",
+    "node_version": "v22.17.0",
+    "tests": 882,
+    "pass": 875,
+    "fail": 7,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "exit_code": 1,
+    "test_files": 92,
+    "MJS_test_files": 85,
+    "CJS_test_files": 7,
+    "new_release_runner_cases": 6,
+    "syntax_checks": 17,
+    "file_sha256": {
+      ".github/workflows/pages.yml": "0e93a6212cba9cb63d14a0116f787bf8828afdaa33d4d0a2922a043da75b3609",
+      "_headers": "cf2211e49803c77afd048966ae14ce86c6eb7ba33b3868d56851074657b60646",
+      "package.json": "f33fa5b1cd6ea07cf2584fe7d7b458c3653251f46043dd594821d42f843ad999",
+      "scripts/build-public-site.mjs": "0df4643844348bcaafc855ec45c041c51e30cdb6ff01170652c9d7fc36309a04",
+      "scripts/offline-test-network.cjs": "5042434f0c7aae87f7fb466e1bcfac0517aed7762d0f1b5d4d1453d9e4143230",
+      "scripts/run-offline-tests.mjs": "887d47a0178e7c3469b5995847a8bb7ca7b0addc06d5d50d3258c65701a3e4a8",
+      "scripts/verify-stage-9-regression.mjs": "b867dc1da4582deba60caa3093c642a9eed5e3aa25912d6e912e03bfae6827df",
+      "tests/admin-analytics.test.mjs": "072e1f6cff5393e6419f7073b061100267a6766a185a29abe9b1c758e4d37ece",
+      "tests/admin-event-notifications.test.mjs": "ed45034b270035465e664ddcc85a452da540d26669b42afa916f7fdb693acca2",
+      "tests/admin-plans-workbench.test.mjs": "350c3364ef471b5c4943f5550c25aa90b6c6b8d7fcf1a4c6f601dc27f531127a",
+      "tests/business-stage-1.test.mjs": "8ef6bd786897ed15723169f936cae848eaf4e30bc5a6f0cf7dd88aa14d299eaf",
+      "tests/business-stage-3.test.mjs": "92707f06780d82e5902e8e70432dbb1db92264591424e95774a7a091d785c4db",
+      "tests/cashbook-private-test.test.mjs": "3307e0aa622b3f41fec667626f433d95fc1185f6e8d177f1ae3c724f899cc628",
+      "tests/push-notifications.test.mjs": "ab9d4b9df08340aaede31d3a5e89c59b80a7b3b8a037e634aedb63b11aa8e144",
+      "tests/pwa-install.test.mjs": "1d5536f436d626930319a067b49cc31733cb8b44e7dfef72ca21fe03c6a55f40",
+      "tests/pwa-stage-13-hardening.test.mjs": "a5e10c776795b4aa8499e0f44b115a1d35cb41d82d77650106b2443700e511d5",
+      "tests/pwa-update.test.mjs": "1bd9b8d5d87ec9aca16a3fb44829f95ac32e97e161894aebac1afbedac223e9c",
+      "tests/stage-3-auth-flows.test.mjs": "a337b06553d3d2d639e9fdd591fef8665d330bc1b70ec79b3a9718e34e7d5f46",
+      "tests/stage-9-regression-release.test.mjs": "066b56b48c1f55db3139040a43fc6188dd9fa4c0552629b7d537860801c83d47",
+      "tests/workspace-startup.test.mjs": "e7f2f25a3af4b79001789dfb4cab8db9ed715f1b00a452a611e69a308a84938c",
+      "docs/security-audit/security-stage-9-regression-candidate-contract.json": "a36cd72210bb535d20081f712d9a2097692ac4d23ae1c3a03b016bfe835e0e97"
+    },
+    "non_failing_TypeScript_experimental_warning": true,
+    "non_failing_module_type_warning": true,
+    "failed_case_titles": [
+      "not ok 356 - invalid native listing and redirected executable are rejected",
+      "not ok 419 - tracked production policy matches reviewed HTML hashes and has no broad script permission",
+      "not ok 429 - preview rejects redirected asset without creating output",
+      "not ok 430 - preview rejects an output-parent alias into the source without modifying that source",
+      "not ok 487 - staging builder includes new Auth and existing MFA assets, strips production references and disables push",
+      "not ok 488 - staging builder rejects secret keys, missing project confirmation and production config key",
+      "not ok 489 - incomplete candidate source fails before creating a staging output"
+    ],
+    "dependency_install_or_real_native_bundle_run": false,
+    "full_CI_workflow_execution_verified": false,
+    "hosted_device_store_or_performance_cases_run": 0,
+    "planned_hosted_device_store_grouped_cases": 48,
+    "candidate_deployed": false,
+    "hosted_acceptance": false,
+    "native_security_acceptance": false,
+    "store_acceptance": false,
+    "notification_email_or_charge_dispatched": false,
+    "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": []
+  },
+  "hash_reconciliation": {
+    "exact_pinned_bytes": 3,
+    "exact_CRLF_variants": 18,
+    "mismatches": 0,
+    "inputs": [
+      {
+        "path": ".github/workflows/pages.yml",
+        "owner_sha256": "0e93a6212cba9cb63d14a0116f787bf8828afdaa33d4d0a2922a043da75b3609",
+        "pinned_sha256": "0e93a6212cba9cb63d14a0116f787bf8828afdaa33d4d0a2922a043da75b3609",
+        "exact_LF_to_CRLF_sha256": "fa54fbf6041a551bad401a4273dbb2a1757ef4364d1504293506b067631ce235",
+        "match": "EXACT_PINNED_BYTES"
+      },
+      {
+        "path": "_headers",
+        "owner_sha256": "cf2211e49803c77afd048966ae14ce86c6eb7ba33b3868d56851074657b60646",
+        "pinned_sha256": "3bfa142f590b3bec5679bb551d0911530ffd7a96902337016060ce63208a8250",
+        "exact_LF_to_CRLF_sha256": "cf2211e49803c77afd048966ae14ce86c6eb7ba33b3868d56851074657b60646",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "package.json",
+        "owner_sha256": "f33fa5b1cd6ea07cf2584fe7d7b458c3653251f46043dd594821d42f843ad999",
+        "pinned_sha256": "f33fa5b1cd6ea07cf2584fe7d7b458c3653251f46043dd594821d42f843ad999",
+        "exact_LF_to_CRLF_sha256": "493a31a05c9b16b2e69458dfe0579f3778a32ff89ab526d9a8958035d2869e0b",
+        "match": "EXACT_PINNED_BYTES"
+      },
+      {
+        "path": "scripts/build-public-site.mjs",
+        "owner_sha256": "0df4643844348bcaafc855ec45c041c51e30cdb6ff01170652c9d7fc36309a04",
+        "pinned_sha256": "4c37fceb04f37316a12d359c7d906060c4e7c3670c4237eb13682843ed01cc4c",
+        "exact_LF_to_CRLF_sha256": "0df4643844348bcaafc855ec45c041c51e30cdb6ff01170652c9d7fc36309a04",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "scripts/offline-test-network.cjs",
+        "owner_sha256": "5042434f0c7aae87f7fb466e1bcfac0517aed7762d0f1b5d4d1453d9e4143230",
+        "pinned_sha256": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+        "exact_LF_to_CRLF_sha256": "5042434f0c7aae87f7fb466e1bcfac0517aed7762d0f1b5d4d1453d9e4143230",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "scripts/run-offline-tests.mjs",
+        "owner_sha256": "887d47a0178e7c3469b5995847a8bb7ca7b0addc06d5d50d3258c65701a3e4a8",
+        "pinned_sha256": "6cabdb5e7bd44b3798d7f1b903ea8c4bcdaf974dba3286f35411ceaa0489b3d5",
+        "exact_LF_to_CRLF_sha256": "887d47a0178e7c3469b5995847a8bb7ca7b0addc06d5d50d3258c65701a3e4a8",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "scripts/verify-stage-9-regression.mjs",
+        "owner_sha256": "b867dc1da4582deba60caa3093c642a9eed5e3aa25912d6e912e03bfae6827df",
+        "pinned_sha256": "68d8db3609d76b9fc8870a8afd28de363954f12418a58436c34a447e5d2a8d02",
+        "exact_LF_to_CRLF_sha256": "b867dc1da4582deba60caa3093c642a9eed5e3aa25912d6e912e03bfae6827df",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/admin-analytics.test.mjs",
+        "owner_sha256": "072e1f6cff5393e6419f7073b061100267a6766a185a29abe9b1c758e4d37ece",
+        "pinned_sha256": "e7c40cb25e8f6ce37cf7ab62552a9e8956edbfe920b55d672c859c37c07e09c2",
+        "exact_LF_to_CRLF_sha256": "072e1f6cff5393e6419f7073b061100267a6766a185a29abe9b1c758e4d37ece",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/admin-event-notifications.test.mjs",
+        "owner_sha256": "ed45034b270035465e664ddcc85a452da540d26669b42afa916f7fdb693acca2",
+        "pinned_sha256": "8933821a4de8ffb679bbe037dfe2e15a3dc7f3734f13abdacf792249f7db217c",
+        "exact_LF_to_CRLF_sha256": "ed45034b270035465e664ddcc85a452da540d26669b42afa916f7fdb693acca2",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/admin-plans-workbench.test.mjs",
+        "owner_sha256": "350c3364ef471b5c4943f5550c25aa90b6c6b8d7fcf1a4c6f601dc27f531127a",
+        "pinned_sha256": "2eb894ccf5172e63d12a884da7b0ed4c4ec678adbad5652bbda0a0b061c52744",
+        "exact_LF_to_CRLF_sha256": "350c3364ef471b5c4943f5550c25aa90b6c6b8d7fcf1a4c6f601dc27f531127a",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/business-stage-1.test.mjs",
+        "owner_sha256": "8ef6bd786897ed15723169f936cae848eaf4e30bc5a6f0cf7dd88aa14d299eaf",
+        "pinned_sha256": "ebef8d6f3046a39bf0ae259aed29be0ab422483f1835c06153b9c1c674fd8609",
+        "exact_LF_to_CRLF_sha256": "8ef6bd786897ed15723169f936cae848eaf4e30bc5a6f0cf7dd88aa14d299eaf",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/business-stage-3.test.mjs",
+        "owner_sha256": "92707f06780d82e5902e8e70432dbb1db92264591424e95774a7a091d785c4db",
+        "pinned_sha256": "7067915b962a571765695b8e46b575208cffd7f79400c79b7be38aa77ae698c1",
+        "exact_LF_to_CRLF_sha256": "92707f06780d82e5902e8e70432dbb1db92264591424e95774a7a091d785c4db",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/cashbook-private-test.test.mjs",
+        "owner_sha256": "3307e0aa622b3f41fec667626f433d95fc1185f6e8d177f1ae3c724f899cc628",
+        "pinned_sha256": "bb57d8ed3f35dd5579399efe7609bd63ff56acde6a6fb29361555880029d51b1",
+        "exact_LF_to_CRLF_sha256": "3307e0aa622b3f41fec667626f433d95fc1185f6e8d177f1ae3c724f899cc628",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/push-notifications.test.mjs",
+        "owner_sha256": "ab9d4b9df08340aaede31d3a5e89c59b80a7b3b8a037e634aedb63b11aa8e144",
+        "pinned_sha256": "705f07eda0440bf78b95575668bcb0cd940125302ddea2c87119275de4ccb9e4",
+        "exact_LF_to_CRLF_sha256": "ab9d4b9df08340aaede31d3a5e89c59b80a7b3b8a037e634aedb63b11aa8e144",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/pwa-install.test.mjs",
+        "owner_sha256": "1d5536f436d626930319a067b49cc31733cb8b44e7dfef72ca21fe03c6a55f40",
+        "pinned_sha256": "3bbd1f8ed4c7f991098520570b705e4336c001548a95849e3b597625a734b414",
+        "exact_LF_to_CRLF_sha256": "1d5536f436d626930319a067b49cc31733cb8b44e7dfef72ca21fe03c6a55f40",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/pwa-stage-13-hardening.test.mjs",
+        "owner_sha256": "a5e10c776795b4aa8499e0f44b115a1d35cb41d82d77650106b2443700e511d5",
+        "pinned_sha256": "89b9e22e7ac8682c63a8982ab081936190ebb0d19fcc1ebfa59b02986cc01998",
+        "exact_LF_to_CRLF_sha256": "a5e10c776795b4aa8499e0f44b115a1d35cb41d82d77650106b2443700e511d5",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/pwa-update.test.mjs",
+        "owner_sha256": "1bd9b8d5d87ec9aca16a3fb44829f95ac32e97e161894aebac1afbedac223e9c",
+        "pinned_sha256": "6e6a0746c5d7976d0215840b26fda12a93eece493bd3e9180db3c1fe4efc73ae",
+        "exact_LF_to_CRLF_sha256": "1bd9b8d5d87ec9aca16a3fb44829f95ac32e97e161894aebac1afbedac223e9c",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/stage-3-auth-flows.test.mjs",
+        "owner_sha256": "a337b06553d3d2d639e9fdd591fef8665d330bc1b70ec79b3a9718e34e7d5f46",
+        "pinned_sha256": "1719e640d49650738b07cd2d52bc274d29d44cd6166090c0598bd608a57e22c5",
+        "exact_LF_to_CRLF_sha256": "a337b06553d3d2d639e9fdd591fef8665d330bc1b70ec79b3a9718e34e7d5f46",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/stage-9-regression-release.test.mjs",
+        "owner_sha256": "066b56b48c1f55db3139040a43fc6188dd9fa4c0552629b7d537860801c83d47",
+        "pinned_sha256": "0d72f4e62737465acd003fd89a26e06d7693d4eb72c299d51f1a339cc2d56b22",
+        "exact_LF_to_CRLF_sha256": "066b56b48c1f55db3139040a43fc6188dd9fa4c0552629b7d537860801c83d47",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/workspace-startup.test.mjs",
+        "owner_sha256": "e7f2f25a3af4b79001789dfb4cab8db9ed715f1b00a452a611e69a308a84938c",
+        "pinned_sha256": "20f31c8f9675641e6456de6fd4e675f43d6d828767fb11aed0e1b80d7e812966",
+        "exact_LF_to_CRLF_sha256": "e7f2f25a3af4b79001789dfb4cab8db9ed715f1b00a452a611e69a308a84938c",
+        "match": "EXACT_CRLF_VARIANT"
+      },
+      {
+        "path": "docs/security-audit/security-stage-9-regression-candidate-contract.json",
+        "owner_sha256": "a36cd72210bb535d20081f712d9a2097692ac4d23ae1c3a03b016bfe835e0e97",
+        "pinned_sha256": "a36cd72210bb535d20081f712d9a2097692ac4d23ae1c3a03b016bfe835e0e97",
+        "exact_LF_to_CRLF_sha256": "bd0edfa5c54cb6306d995fd1b7226e94918f28e9e24cabebb4dfdd587e0599a2",
+        "match": "EXACT_PINNED_BYTES"
+      }
+    ]
+  },
+  "original_FAILURE_RESULT_PRESERVED": true,
+  "Windows_exception_details_supplied": false,
+  "owner_corrected_recheck_received": false,
+  "next_step": "9.2"
+}

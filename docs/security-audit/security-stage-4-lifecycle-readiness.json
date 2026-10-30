@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "stage_step": "4.1.3",
+  "recorded_date": "2026-10-11",
+  "result": "HOSTED_DELETION_ACCEPTANCE_BLOCKED_STEP_4_1_CLOSED_WITH_CARRY_FORWARD",
+  "scope": "READ_ONLY_PINNED_SOURCE_AND_EXISTING_LOCAL_EVIDENCE_NOT_HOSTED_METADATA_OR_API",
+  "source_commit": "a777e6ec26c0ec495d512ba6c8b58e69a504e0d7",
+  "project": "dczlddwbtgvfdujgcitb",
+  "production_excluded": "kttkospkblwvguuwnhjj",
+  "source_blob_matches": 75,
+  "source_blob_mismatches": 0,
+  "candidate_receipt_hashes_match": 4,
+  "prior_4_1_2_local_tests": 46,
+  "prior_4_1_2_local_pass": 46,
+  "prior_4_1_2_local_fail": 0,
+  "prior_4_1_2_syntax_checks": 3,
+  "fresh_local_tests_run": 0,
+  "retention_template_categories": 8,
+  "retention_or_operator_decisions_approved": false,
+  "genuine_product_deletion_endpoint_implemented": false,
+  "durable_job_or_provider_adapter_implemented": false,
+  "public_deletion_resource_identified": false,
+  "candidate_deployed_verified": false,
+  "final_or_hosted_dependency_inventory_verified": false,
+  "separate_disposable_deletion_identities_and_files_verified": false,
+  "full_isolated_deletion_recovery_verified": false,
+  "hosted_acceptance": false,
+  "selected_planned_hosted_cases": 25,
+  "hosted_cases_blocked": 25,
+  "hosted_API_Auth_Storage_or_provider_checks_run": 0,
+  "prerequisite_groups": [
+    {
+      "id": "DL-P01",
+      "status": "DECISION",
+      "requirement": "Approved retention/operator/ownership semantics",
+      "observed": "Eight-category tracked template remains unapproved; supported category grounds/expiry/access/disclosure and owner transfer/closure decisions are unresolved.",
+      "actions": [
+        "DL-R01",
+        "DL-R03",
+        "DL-R06"
+      ]
+    },
+    {
+      "id": "DL-P02",
+      "status": "SOURCE_ONLY_NOT_IMPLEMENTED",
+      "requirement": "Genuine product workflow and public/in-app resource",
+      "observed": "Candidate is an offline review/state model, with no installed deletion endpoint, durable worker, database/Storage/Auth/provider adapters or public initiation resource.",
+      "actions": [
+        "DL-R02",
+        "DL-R04",
+        "DL-R06"
+      ]
+    },
+    {
+      "id": "DL-P03",
+      "status": "UNVERIFIED",
+      "requirement": "Exact final/hosted dependency and authoritative file/identity scope",
+      "observed": "75 pinned source blobs match; selected declaration inventory is not a final hosted FK/trigger/transitive/copied-identity/object catalog or deployed parity proof.",
+      "actions": [
+        "DL-R03",
+        "DL-R04"
+      ]
+    },
+    {
+      "id": "DL-P04",
+      "status": "UNVERIFIED",
+      "requirement": "Separate disposable actors/files and isolated recovery",
+      "observed": "No new owner evidence verifies separate recoverable deletion identities/workspaces/files or full isolated Storage recovery; retained Stage 1–3 fixtures remain protected.",
+      "actions": [
+        "DL-R03",
+        "DL-R04",
+        "DL-R06"
+      ]
+    },
+    {
+      "id": "DL-P05",
+      "status": "UNVERIFIED",
+      "requirement": "Genuine residual-access/provider/recovery controls",
+      "observed": "Synthetic model assertions do not verify JWT/refresh/signed URLs/realtime/push/cache/provider cleanup or safe operator recovery.",
+      "actions": [
+        "DL-R04",
+        "DL-R05"
+      ]
+    },
+    {
+      "id": "DL-P06",
+      "status": "NOT_PREPARED",
+      "requirement": "Bounded actual effect/manifest/retry/preservation/cleanup plan",
+      "observed": "Without approved semantics and actual adapters/actors, no authoritative disposable manifest or safe hosted effect/reconciliation plan exists for this batch.",
+      "actions": [
+        "DL-R02",
+        "DL-R04",
+        "DL-R06"
+      ]
+    }
+  ],
+  "acceptance_groups": [
+    {
+      "id": "DL01",
+      "planned_cases": 5,
+      "status": "BLOCKED",
+      "executed": 0,
+      "blockers": [
+        "DL-P01",
+        "DL-P02",
+        "DL-P04",
+        "DL-P06"
+      ]
+    },
+    {
+      "id": "DL02",
+      "planned_cases": 5,
+      "status": "BLOCKED",
+      "executed": 0,
+      "blockers": [
+        "DL-P01",
+        "DL-P02",
+        "DL-P03",
+        "DL-P04",
+        "DL-P06"
+      ]
+    },
+    {
+      "id": "DL03",
+      "planned_cases": 5,
+      "status": "BLOCKED",
+      "executed": 0,
+      "blockers": [
+        "DL-P01",
+        "DL-P02",
+        "DL-P03",
+        "DL-P04",
+        "DL-P05",
+        "DL-P06"
+      ]
+    },
+    {
+      "id": "DL04",
+      "planned_cases": 5,
+      "status": "BLOCKED",
+      "executed": 0,
+      "blockers": [
+        "DL-P02",
+        "DL-P04",
+        "DL-P05",
+        "DL-P06"
+      ]
+    },
+    {
+      "id": "DL05",
+      "planned_cases": 5,
+      "status": "BLOCKED",
+      "executed": 0,
+      "blockers": [
+        "DL-P01",
+        "DL-P02",
+        "DL-P03",
+        "DL-P04",
+        "DL-P05",
+        "DL-P06"
+      ]
+    }
+  ],
+  "bounded_4_1_work_items": 3,
+  "recorded_4_1_work_item_outcomes": 3,
+  "remaining_4_1_work_items": 0,
+  "outcome_is_not_hosted_pass": true,
+  "owner_action_requested": false,
+  "accounts_fixtures_Auth_Storage_SQL_or_settings_changed": false,
+  "provider_email_job_executed": false,
+  "production_or_native_changed": false,
+  "findings_closed": [],
+  "open_actions": [
+    "DL-R01",
+    "DL-R02",
+    "DL-R03",
+    "DL-R04",
+    "DL-R05",
+    "DL-R06"
+  ],
+  "next_step": "4.2.1",
+  "stage_4_full_report_due_at": "4.4"
+}

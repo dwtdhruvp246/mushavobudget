@@ -1,0 +1,365 @@
+{
+  "schema_version": 1,
+  "stage_step": "4.3.2",
+  "scope": "REVIEW_ONLY_NOT_PUBLIC_NOTICE",
+  "source_parent_commit": "2f1c033431b3880b28077ae664de50e10cfcb883",
+  "inventory_source_parent_commit": "29b6c1cffeb4f9c38cad446c931fe1d1a9583ee2",
+  "recorded_date": "2026-10-11",
+  "owner_facts": {
+    "operator": {
+      "legal_name": "Dhruv Parekh",
+      "country": "Zimbabwe",
+      "entity_type": "INDIVIDUAL",
+      "registered_business": false,
+      "status": "OWNER_REPORTED"
+    },
+    "privacy_contact": {
+      "email": "support@mushavobudget.com",
+      "assigned_by_owner": true,
+      "status": "OWNER_REPORTED",
+      "delivery_and_request_workflow_verified": false
+    },
+    "audience": {
+      "age_restriction": "NONE_OWNER_INTENT",
+      "minimum_account_age": null,
+      "children_possible": true,
+      "status": "OWNER_REPORTED_INTENT",
+      "child_safeguards_verified": false
+    },
+    "territories": {
+      "intent": "WORLDWIDE_PRIOR_PLAN",
+      "exclusions_confirmed": false,
+      "excluded_countries": [],
+      "status": "UNCONFIRMED",
+      "jurisdiction_mapping_approved": false
+    }
+  },
+  "data_decisions": [
+    {
+      "id": "DF01",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DF02",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DF03",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DF04",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DF05",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DF06",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DF07",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DF08",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DF09",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DF10",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DF11",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DF12",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DF13",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DF14",
+      "status": "UNRESOLVED",
+      "collection_requirement": null,
+      "lawful_ground": null,
+      "retention_criteria": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "decision_ref": null,
+      "implementation_scope": "NONE",
+      "evidence_refs": []
+    }
+  ],
+  "provider_decisions": [
+    {
+      "id": "TP01",
+      "status": "UNRESOLVED",
+      "role": null,
+      "region_and_transfer_summary": null,
+      "contract_ref": null,
+      "retention_summary": null,
+      "configuration_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "TP02",
+      "status": "UNRESOLVED",
+      "role": null,
+      "region_and_transfer_summary": null,
+      "contract_ref": null,
+      "retention_summary": null,
+      "configuration_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "TP03",
+      "status": "UNRESOLVED",
+      "role": null,
+      "region_and_transfer_summary": null,
+      "contract_ref": null,
+      "retention_summary": null,
+      "configuration_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "TP04",
+      "status": "UNRESOLVED",
+      "role": null,
+      "region_and_transfer_summary": null,
+      "contract_ref": null,
+      "retention_summary": null,
+      "configuration_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "TP05",
+      "status": "UNRESOLVED",
+      "role": null,
+      "region_and_transfer_summary": null,
+      "contract_ref": null,
+      "retention_summary": null,
+      "configuration_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "TP06",
+      "status": "UNRESOLVED",
+      "role": null,
+      "region_and_transfer_summary": null,
+      "contract_ref": null,
+      "retention_summary": null,
+      "configuration_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "TP07",
+      "status": "UNRESOLVED",
+      "role": null,
+      "region_and_transfer_summary": null,
+      "contract_ref": null,
+      "retention_summary": null,
+      "configuration_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "TP08",
+      "status": "UNRESOLVED",
+      "role": null,
+      "region_and_transfer_summary": null,
+      "contract_ref": null,
+      "retention_summary": null,
+      "configuration_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "TP09",
+      "status": "UNRESOLVED",
+      "role": null,
+      "region_and_transfer_summary": null,
+      "contract_ref": null,
+      "retention_summary": null,
+      "configuration_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "TP10",
+      "status": "UNRESOLVED",
+      "role": null,
+      "region_and_transfer_summary": null,
+      "contract_ref": null,
+      "retention_summary": null,
+      "configuration_scope": "NONE",
+      "evidence_refs": []
+    }
+  ],
+  "assurance_decisions": [
+    {
+      "id": "OPERATOR_DISCLOSURE",
+      "status": "UNRESOLVED",
+      "evidence_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "REGIONAL_OBLIGATIONS",
+      "status": "UNRESOLVED",
+      "evidence_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "CHILDREN_SAFEGUARDS",
+      "status": "UNRESOLVED",
+      "evidence_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "COLLECTION_CHOICES",
+      "status": "UNRESOLVED",
+      "evidence_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "PRIVACY_REQUESTS",
+      "status": "UNRESOLVED",
+      "evidence_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "DELETION_RETENTION_IMPLEMENTATION",
+      "status": "UNRESOLVED",
+      "evidence_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "PUBLIC_LINKS",
+      "status": "UNRESOLVED",
+      "evidence_scope": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "id": "NATIVE_STORE_LABELS",
+      "status": "UNRESOLVED",
+      "evidence_scope": "NONE",
+      "evidence_refs": []
+    }
+  ],
+  "public_notice": {
+    "adopted": false,
+    "published": false,
+    "effective_date": null
+  },
+  "note": "The operator/contact and unrestricted-age intent are owner-reported, not independent verification. Unconfirmed country exclusions are not a confirmed empty list. No retention period, legal ground, child safeguard, provider contract, rights/deletion capability or policy adoption is invented."
+}

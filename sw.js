@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "mushavo-budget-";
-const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v88`;
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v89`;
 const APP_ENTRY_URL = "/app-entry.html";
 const OFFLINE_URL = "/offline.html";
 const OFFLINE_ENTRY_CACHE_KEY = "/__mushavo-budget-offline/app-entry";
@@ -231,8 +231,19 @@ async function navigationResponse(request) {
     const offlineCacheKey = APP_ENTRY_PATHS.has(requestUrl.pathname)
       ? OFFLINE_ENTRY_CACHE_KEY
       : OFFLINE_PAGE_CACHE_KEY;
-    return (await cache.match(offlineCacheKey)) ||
-      inlineOfflineResponse(APP_ENTRY_PATHS.has(requestUrl.pathname) ? "entry" : "page");
+    const kind = APP_ENTRY_PATHS.has(requestUrl.pathname) ? "entry" : "page";
+    const cached = await cache.match(offlineCacheKey);
+    if (!cached || cached.status !== 200 || !/^text\/html(?:\s*;|$)/i.test(cached.headers.get("Content-Type") || "")) {
+      return inlineOfflineResponse(kind);
+    }
+    // Pages follows .html -> clean-URL redirects during pre-cache fetches. A navigation
+    // with redirect mode manual cannot reuse that response's redirect URL history.
+    // Return the same public bytes and security headers as a fresh response instead.
+    const headers = new Headers(cached.headers);
+    for (const name of ["Content-Length", "Content-Encoding", "Transfer-Encoding"]) headers.delete(name);
+    headers.set("Cache-Control", "no-store");
+    headers.set("X-Mushavo-Offline", "cached");
+    return new Response(cached.body, { status: 200, headers });
   }
 }
 

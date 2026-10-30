@@ -1,0 +1,17 @@
+{
+  "stage_step": "FR.2.4.E5.4_PRIVATE_CREDENTIAL_READINESS",
+  "result": "OWNER_REPORTED_STAGING_PROJECT_AND_KEY_LABELS_AVAILABLE_NOT_KEY_OWNERSHIP_ACCEPTANCE",
+  "received_date": "2026-10-19",
+  "target_project": "dczlddwbtgvfdujgcitb",
+  "owner_report": {
+    "staging_project_reference_matches": true,
+    "publishable_key_listed": true,
+    "secret_key_listed": true,
+    "legacy_anon_and_service_role_section_listed": true
+  },
+  "key_values_requested_or_received": false,
+  "independent_project_key_ownership_or_validity_verified": false,
+  "actual_hosted_requests_by_assistant": 0,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

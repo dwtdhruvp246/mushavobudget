@@ -1,0 +1,30 @@
+{
+  "stage_step": "FR.2.4.E4.15_COLUMN_TYPE_REVIEW",
+  "result": "ACTUAL_READ_ONLY_REQUIRED_COLUMN_QUERY_MODELED_PASS",
+  "node_version": "v24.19.0",
+  "pglite_version": "0.5.8",
+  "tests": 6,
+  "pass_count": 6,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "todo": 0,
+  "exit_code": 0,
+  "source_files_SHA256_recorded": 6,
+  "new_JS_syntax_checks": 1,
+  "actual_read_only_SQL_compiled_and_executed": true,
+  "cases": [
+    "nine exact modeled definitions",
+    "synthetic varchar length/type difference without accepting compatibility",
+    "explicit missing column rather than false type classification",
+    "domain and immediate base type separately reported",
+    "private row-value sentinel absent and catalog/settings unchanged",
+    "ordinary-role refusal"
+  ],
+  "modeled_types_are_not_observed_staging_types": true,
+  "actual_hosted_requests": 0,
+  "Auth_schema_or_application_runtime_changed": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "findings_closed": []
+}

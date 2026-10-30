@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "source_parent_commit": "aa4b1816fc6ca6776f99fb360192f716d881dfa0",
+  "runtime_source_commit": "a1feb46df4a8c118a7e7a7d2255d4dd4e82448b4",
+  "stage_step": "FR.2.5.W25_AU04_05_RECOVERY_PASSWORD_MISMATCH_VALIDATION",
+  "result": "AU04_05_SINGLE_MISMATCHED_PASSWORD_VALIDATION_HANDOFF_READY_NOT_RUN",
+  "case": {
+    "id": "AU04.05",
+    "title": "Password-save failure/retry",
+    "variant": "Mismatched new-password confirmation rejected before an Auth write; server-failure and successful-retry variants remain pending",
+    "status": "PREPARED_OWNER_MISMATCH_VALIDATION_RESULT_PENDING",
+    "context": "Use the existing original verified Choose a new password tab for the intended account; keep it open without refreshing or reopening the email link.",
+    "maximum_manual_mismatched_Save_password_clicks": 1,
+    "input_rule": "Enter two different private test values, each at least eight characters, in New password and Repeat new password. Never share either value.",
+    "expected_message": "Passwords do not match.",
+    "expected_password_form_retained": true,
+    "matching_password_save_requested": false,
+    "expected_Auth_password_update_for_mismatched_attempt": false,
+    "new_email_code_SQL_window_settings_upload_or_account_action_requested": false,
+    "owner_return_fields": [
+      "Displayed message or page screenshot",
+      "Whether the password form remains visible"
+    ],
+    "stop_after_message": "Leave the fields mismatched and stop after reporting; do not correct and submit matching values yet.",
+    "if_original_verified_tab_unavailable": "Report that state without requesting another link or trying to recreate the session.",
+    "if_saved_or_verification_screen_appears": "Stop and report the result rather than requesting a code or continuing.",
+    "cleanup": "Keep the original recovery tab open for the next controlled step; replay/denial tabs can be closed."
+  },
+  "source_review": {
+    "auth.html": "Both password fields have required and minlength=8, so each mismatched value must be at least eight characters to reach confirmation validation.",
+    "auth-security.js": "createLinkController.save calls validateNewPassword before verifiedUser or auth.updateUser. password_mismatch maps to Passwords do not match.",
+    "auth-flows.js": "A thrown validation error is displayed by operation; the form reset/hide and finishPasswordFlow run only after controller.save succeeds."
+  },
+  "scope": "This checks browser confirmation validation, not a provider/network save failure, password update success, retry idempotence, security invalidation or application continuation.",
+  "later_matching_save_readiness": "Confirm exact controlled gateway-code recipient and bounded application-window readiness before a separate matching-password save/verification/continuation handoff. The mismatch attempt itself needs neither.",
+  "deferred_UI_improvement_preserved": "UX_AUTH_BACKGROUND_VERIFICATION",
+  "new_local_test_suite_runs": 0,
+  "assistant_Auth_SQL_email_or_account_requests": 0,
+  "runtime_or_SQL_or_settings_changes": 0,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

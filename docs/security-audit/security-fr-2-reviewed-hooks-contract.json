@@ -1,0 +1,44 @@
+{
+  "stage_step": "FR.2.2",
+  "source_parent_commit": "806dca2d6a9515f340acfc53884a21b3c4d1c9f7",
+  "owner_metadata_receipt": "docs/security-audit/security-fr-2-event-hooks-owner-result.json",
+  "upstream_repository": "supabase/postgres",
+  "reviewed_upstream_commit": "220751e04862f6023ba56871cc22fb81bc6f0954",
+  "reviewed_upstream_path": "migrations/schema-17.sql",
+  "reviewed_upstream_file_sha256": "1ad2a3687cc7bc41bae14fc807a7d09dc23e5cfb5331941a18269b402b318692",
+  "additional_matching_legacy_definition_path": "migrations/db/migrations/20220321174452_fix-postgrest-alter-type-event-trigger.sql",
+  "additional_matching_legacy_definition_commit": "f4c005d50608990033ab370f9b00fd1c693c99db",
+  "reviewed_hooks": [
+    {
+      "name": "pgrst_ddl_watch",
+      "event": "ddl_command_end",
+      "lf_body_md5": "7f27b8118fea5c88b0164331292859e3",
+      "lf_body_sha256": "de987df746eb39647098459e7993bd8595e592969b0cd647828a3d13d37cffe0",
+      "lf_bytes": 729
+    },
+    {
+      "name": "pgrst_drop_watch",
+      "event": "sql_drop",
+      "lf_body_md5": "bc09cc3003d66f91844af4cb05e203b7",
+      "lf_body_sha256": "791b41f0632fc86e0fc86a303ec0fd710c4e2ecf947a23422dae2b7a2c122f1d",
+      "lf_bytes": 412
+    }
+  ],
+  "installer": "supabase/remediation/security_fr_2_2_paid_record_binding_reviewed_hooks.sql",
+  "rollback_candidate_not_requested": "supabase/remediation/security_fr_2_2_paid_record_binding_rollback_reviewed_hooks.sql",
+  "function_owner_and_hook_owner": "supabase_admin",
+  "required_enabled_mode": "O",
+  "required_tags": null,
+  "required_function_schema": "extensions",
+  "required_signature": "no arguments returns event_trigger PLpgSQL security invoker",
+  "required_proconfig": [
+    "search_path=\"\""
+  ],
+  "other_active_matching_hooks": "REJECTED",
+  "only_body_normalization": "CRLF_TO_LF",
+  "local_cases": 48,
+  "hosted_installation_success_received": false,
+  "canonical_schema_or_auto_migration_changed": false,
+  "historical_rows_repaired": false,
+  "findings_closed": []
+}

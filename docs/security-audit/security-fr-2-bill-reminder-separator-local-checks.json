@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-16",
+  "source_parent_commit": "2d416772f57b8a9600db4622f105a411c1f233b5",
+  "actual_full54_SQL_correction_and_rollback_checks": {
+    "stage_step": "FR.2.4.E4.1_BILL_REMINDER_SEPARATOR_CANDIDATE",
+    "result": "OFFLINE_ACTUAL_GUARDED_CORRECTION_AND_ROLLBACK_SCOPED_PASS",
+    "scope": "FULL54_MIGRATIONS_AND_ACTUAL_CORRECTION_WITH_RECONSTRUCTED_BODY_SYNTHETIC_HOOKS_NO_SCHEDULER_INVOCATION",
+    "node_version": "v24.19.0",
+    "migration_count": 54,
+    "tests": 14,
+    "pass": 14,
+    "fail": 0,
+    "exit_code": 0,
+    "cases": [
+      {
+        "title": "ASCII SQL reconstruction matches owner MD5 and reviewed source SHA256 with exactly one changed line",
+        "result": "PASS"
+      },
+      {
+        "title": "actual guarded correction fixes only separator, preserves CRLF and OID and asserts full source catalog parity",
+        "result": "PASS"
+      },
+      {
+        "title": "already corrected source is accepted without altering its bytes",
+        "result": "PASS"
+      },
+      {
+        "title": "actual guarded rollback restores exact previous display bytes and correction succeeds again",
+        "result": "PASS"
+      },
+      {
+        "title": "unknown target body is rejected before any replacement",
+        "result": "PASS"
+      },
+      {
+        "title": "authenticated EXECUTE promotion is refused and rolled back",
+        "result": "PASS"
+      },
+      {
+        "title": "unrelated public function grant drift is refused",
+        "result": "PASS"
+      },
+      {
+        "title": "target overload collision is refused",
+        "result": "PASS"
+      },
+      {
+        "title": "target search path drift is refused",
+        "result": "PASS"
+      },
+      {
+        "title": "unknown relevant function-DDL hook is refused without disabling it",
+        "result": "PASS"
+      },
+      {
+        "title": "ordinary SQL role cannot apply the correction",
+        "result": "PASS"
+      },
+      {
+        "title": "irrelevant CREATE TABLE hook remains enabled and source event exclusion remains exact",
+        "result": "PASS"
+      },
+      {
+        "title": "exact reviewed provider hooks stay enabled through real rollback and correction",
+        "result": "PASS"
+      },
+      {
+        "title": "provider hook body drift is refused",
+        "result": "PASS"
+      }
+    ],
+    "SQL_SHA256": {
+      "supabase/remediation/security_fr_2_4_bill_reminder_separator_correction.sql": "2819b1770a19a281dc0086b3e5d1df9cecb0dd7f6110ce4e4ac700aa3bcc88eb",
+      "supabase/remediation/security_fr_2_4_bill_reminder_separator_rollback.sql": "8265c2ab76f4c81e77128eb4d6b08504ec9eb99a9ab4e405eca6c3a1a5af925e"
+    },
+    "actual_hosted_SQL_or_provider_requests": 0,
+    "scheduler_or_notification_dispatch_invoked": false,
+    "hosted_acceptance": false,
+    "findings_closed": []
+  },
+  "actual_hosted_SQL_or_provider_requests": 0,
+  "hosted_correction_performed": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

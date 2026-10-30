@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "stage_step": "FR.1.1",
+  "source_parent_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
+  "receipt": {
+    "stage_step": "FR.1.1",
+    "result": "OFFLINE_ACTUAL_STAGING_EXPORT_AND_CLI_SCOPED_PASS",
+    "scope": "ACTUAL_PREPARATION_ON_HASH_VERIFIED_SOURCE_SNAPSHOTS_AND_FILESYSTEM_FIXTURES_WITH_SYNTHETIC_PUBLISHABLE_KEY_NOT_CLOUDFLARE_SERVING_OR_DEPLOYMENT",
+    "source_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
+    "node_version": "v24.19.0",
+    "tests": 18,
+    "pass": 18,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "exit_code": 0,
+    "syntax_checks": 3,
+    "syntax": [
+      {
+        "file": "scripts/prepare-final-staging.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/verify-final-staging.mjs",
+        "pass": true
+      },
+      {
+        "file": "tests/final-staging-preparation.test.mjs",
+        "pass": true
+      }
+    ],
+    "selected_source_inputs": 39,
+    "source_matches": 39,
+    "source_mismatches": 0,
+    "file_sha256": {
+      "scripts/prepare-final-staging.mjs": "8d016c5469d73accb290ffaf54645cdb401bdfb513c04ba1ca582e0f7c322bfa",
+      "scripts/verify-final-staging.mjs": "8b6ea71d65c0772fec0d65576ebf876348905437186e0c87f4d525ed616b631b",
+      "tests/final-staging-preparation.test.mjs": "e122f96f3742d6fbc9084876677fc4855100e803015349eff648231d0b4383eb",
+      "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+      "docs/security-audit/security-final-staging-source-contract.json": "c620d8cdfe23551d3bda5ab3c66e8508eec5b59e16aafe52f737c8d95ca4c2cb"
+    },
+    "failed_case_titles": [],
+    "actual_staging_HTTP_Auth_API_SQL_jobs_provider_device_or_store_checks_run": 0,
+    "candidate_deployed": false,
+    "actual_serving_product_project_branch_or_deployed_source_confirmed": false,
+    "actual_publishable_key_ownership_verified": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": []
+  },
+  "history": {
+    "draft_syntax_failure_before_case_execution": true,
+    "corrected_before_publication": true,
+    "final_direct_batch_pass": 18,
+    "final_verifier_batch_pass": 18,
+    "unique_cases": 18,
+    "successful_case_executions": 36
+  },
+  "owner_Windows_repeat_status": "PENDING",
+  "actual_staging_key_artifact_preparation_by_owner": "PENDING",
+  "hosted_acceptance": false
+}

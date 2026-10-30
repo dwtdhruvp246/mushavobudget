@@ -1,0 +1,82 @@
+{
+  "stage_step": "FR.2.2_EXACT_HISTORICAL_BINDING_REPAIR_CANDIDATE",
+  "scope": "GUARDED_REPAIR_SQL_WITH_ONLY_TWO_OWNER_ROW_HASH_LITERALS_SUBSTITUTED_FOR_SYNTHETIC_FIXTURE_HASHES_IN_FULL_SOURCE_PGLITE_CATALOG_NOT_HOSTED_AUTH_OR_POSTGRESQL17",
+  "engine": "PostgreSQL 18.3 (PGlite 0.5.8) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "source_migrations_compiled": 52,
+  "node_version": "v24.19.0",
+  "tests": 12,
+  "pass": 12,
+  "fail": 0,
+  "exit_code": 0,
+  "query_sha256": "787d497f5ec76de549bf2afd5219cf17f0478cb27b06ee377407aafd89fd1e2f",
+  "cases": [
+    {
+      "title": "changed target full-row fingerprint rejects",
+      "result": "PASS"
+    },
+    {
+      "title": "changed parent fingerprint rejects",
+      "result": "PASS"
+    },
+    {
+      "title": "missing linked conversion stops repair",
+      "result": "PASS"
+    },
+    {
+      "title": "linked conversion drift to wrong workspace stops repair",
+      "result": "PASS"
+    },
+    {
+      "title": "extra workspace update trigger rejects",
+      "result": "PASS"
+    },
+    {
+      "title": "old sync coverage rejects rather than bypasses",
+      "result": "PASS"
+    },
+    {
+      "title": "finance guard function drift rejects",
+      "result": "PASS"
+    },
+    {
+      "title": "ordinary SQL role rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "non-origin session rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "suspended fixture owner normal guard prevents update",
+      "result": "PASS"
+    },
+    {
+      "title": "actual guarded repair changes only one workspace and preserves all conversions, orphans and other payment rows",
+      "result": "PASS"
+    },
+    {
+      "title": "replay stops without broadening target",
+      "result": "PASS"
+    }
+  ],
+  "manual_rows_scope": "TWO_PERSONAL_MANUAL_STANDINS_NOT_REAL_FAMILY_BASELINE",
+  "hosted_requests_run": 0,
+  "hosted_acceptance": false,
+  "syntax_checks": 1,
+  "earlier_local_attempts": [
+    {
+      "tests": 3,
+      "pass": 2,
+      "fail": 1,
+      "exit_code": 1,
+      "cause": "Source migrations leave modeled session timezone at UTC+04. Synthetic row fingerprints captured outside UTC did not match the candidate UTC fingerprint guard. Model session corrected to UTC before seeding/capture; candidate UTC unchanged."
+    },
+    {
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "exit_code": 1,
+      "cause": "UTC changed only after before-state capture, causing JSON timestamp representation comparison failure. Model UTC setup moved before seed/state capture."
+    }
+  ]
+}

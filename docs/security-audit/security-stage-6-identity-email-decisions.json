@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "stage_step": "6.1",
+  "date": "2026-10-12",
+  "scope": "KNOWN_OWNER_INTENT_AND_UNCONFIRMED_CONFIGURATION_NOT_ACTIVATION_APPROVAL",
+  "source_parent_commit": "fe2c281ce13e7d0d8cb49115fa1bd6c195579c4e",
+  "known_owner_intent": {
+    "Google_login_desired": true,
+    "web_PWA_Android_iOS_planned": true,
+    "password_login_retained": true,
+    "preserve_working_SMTP": true,
+    "support_contact": "support@mushavobudget.com",
+    "operator": {
+      "name": "Dhruv Parekh",
+      "country": "Zimbabwe",
+      "entity_type": "INDIVIDUAL_NOT_YET_REGISTERED_BUSINESS",
+      "scope": "PRIOR_OWNER_REPORTED"
+    },
+    "no_age_restriction_intent": true,
+    "age_and_child_safeguards_remain_unresolved": true
+  },
+  "decisions": [
+    {
+      "id": "IE-D01",
+      "topic": "Google clients, audience, scopes and exact owned domains",
+      "status": "CONFIGURATION_UNCONFIRMED",
+      "proposal": "Login-only scopes; environment-isolated clients and callbacks; no unrelated Google data/offline access."
+    },
+    {
+      "id": "IE-D02",
+      "topic": "iOS equivalent privacy login",
+      "status": "PROPOSED_NOT_OWNER_CONFIRMED",
+      "proposal": "Plan Sign in with Apple alongside Google for the primary account unless a qualifying alternative/exception is established for the actual product."
+    },
+    {
+      "id": "IE-D03",
+      "topic": "Supported web/PWA/native flow",
+      "status": "CONFIGURATION_UNCONFIRMED",
+      "proposal": "Web provider redirect with purpose-bound transaction; permitted native/system-browser flow with verified return and secure verifier/session handoff."
+    },
+    {
+      "id": "IE-D04",
+      "topic": "Account linking, relay and invitation collision policy",
+      "status": "DESIGN_NOT_ACCEPTED_AS_HOSTED_IMPLEMENTATION",
+      "proposal": "Auth UUID is the ownership key; verify server automatic linking; explicit authenticated different-email linking; never merge finance or grants by client email."
+    },
+    {
+      "id": "IE-D05",
+      "topic": "Auth delivery route",
+      "status": "SMTP_PRESERVATION_ACCEPTED_HOOK_ACTIVATION_UNCONFIRMED",
+      "proposal": "Retain current SMTP route; repair purpose templates locally; signed Hook remains separate reviewed option and replaces SMTP when enabled."
+    },
+    {
+      "id": "IE-D06",
+      "topic": "Mailbox/sender addresses and provider operation",
+      "status": "CURRENT_CONFIGURATION_UNCONFIRMED",
+      "proposal": "Distinguish monitored support, security/Auth sender and optional application-event sender; verify existing sender/provider before creating or changing addresses."
+    },
+    {
+      "id": "IE-D07",
+      "topic": "Application email events/limits/preferences/retention",
+      "status": "UNCONFIRMED",
+      "proposal": "Server-authorized durable event delivery distinct from Auth and Web Push; approve recipient/event/budget/retention rules before implementation/activation."
+    },
+    {
+      "id": "IE-D08",
+      "topic": "Controlled rollout and acceptance actors",
+      "status": "PREREQUISITES_UNVERIFIED",
+      "proposal": "Exact staging pin/settings with separate recoverable identities/inboxes, provider readiness, selected native return and rollback; no production dispatch."
+    }
+  ],
+  "historical_provider_status": {
+    "Google": "DISABLED_AT_PRIOR_OWNER_REPORT_SCOPE_NOT_FRESHLY_INSPECTED",
+    "Apple": "DISABLED_AT_PRIOR_SCREENSHOT_SCOPE_NOT_FRESHLY_INSPECTED"
+  },
+  "prior_staging_auth_summary": {
+    "project": "dczlddwbtgvfdujgcitb",
+    "email_confirmation_enabled": true,
+    "minimum_password_length": 8,
+    "prior_delivery_owner_reported": true,
+    "isolated_Auth_test_identities_available": false,
+    "callback_paths": null,
+    "candidate_deployed": null,
+    "scope": "UNCHANGED_3_5_3_OWNER_RECEIPT_NOT_CURRENT_HOSTED_VERIFICATION"
+  },
+  "settings_changed": false,
+  "email_dispatched": false,
+  "providers_activated": false,
+  "hosted_acceptance": false
+}

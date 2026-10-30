@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="referrer" content="no-referrer" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Sign in to manage your Mushavo Budget personal, family, or business workspace." />
     <meta name="theme-color" content="#10b981" />
@@ -17,7 +18,7 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="styles.css?v=79" />
+    <link rel="stylesheet" href="styles.css?v=81" />
     <link rel="stylesheet" href="/pwa-update.css?v=2" />
     <link rel="stylesheet" href="/pwa-install.css?v=2" />
     <script src="/workspace-preference.js?v=1"></script>
@@ -25,7 +26,7 @@
     <script src="/pwa.js?v=80" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
     <script src="/push-notifications.js?v=1" defer></script>
-    <script type="module" src="app.js?v=112"></script>
+    <script type="module" src="app.js?v=125"></script>
   </head>
   <body>
     <a class="skip-link" href="#mainWorkspace">Skip to main content</a>
@@ -56,6 +57,9 @@
         </div>
       </section>
 
+      <section id="emailVerificationView" class="setup-panel hidden" aria-label="Sign-in status"></section>
+      <section id="adminEmailView" class="setup-panel hidden" aria-label="Admin access status"></section>
+
       <section id="authView" class="auth-panel hidden" aria-labelledby="authTitle">
         <div class="panel-heading">
           <p class="eyebrow">Mushavo Budget</p>
@@ -63,6 +67,10 @@
           <p class="muted-copy">Track personal and family payments, see what is due, and keep everyone clear on responsibility.</p>
         </div>
 
+        <div id="signOutStatus" class="notice hidden" role="alert">
+          <p id="signOutStatusMessage"></p>
+          <button id="retrySignOutButton" type="button">Retry sign-out</button>
+        </div>
         <form id="authForm" class="form-grid">
           <label class="full" for="email">
             Email
@@ -70,11 +78,13 @@
           </label>
           <label class="full" for="password">
             Password
-            <input id="password" type="password" autocomplete="current-password" minlength="6" required placeholder="At least 6 characters" />
+            <input id="password" type="password" autocomplete="current-password" required placeholder="Your current password" />
           </label>
           <div class="button-row">
             <button class="primary" type="submit">Sign in</button>
             <a class="button-link" href="signup.html">Create account</a>
+            <a class="button-link" href="auth.html?flow=request-recovery">Forgot password</a>
+            <a class="button-link" href="auth.html?flow=request-confirmation">Resend confirmation</a>
           </div>
           <a class="auth-home-link" href="index.html">Return to the Mushavo Budget website</a>
         </form>
@@ -120,6 +130,7 @@
       </section>
 
       <section id="adminView" class="hidden">
+        <a class="button-link" href="auth.html?flow=account">Account security</a>
         <div class="app-shell">
           <div class="mobile-bar">
             <div class="mobile-brand">
@@ -305,6 +316,7 @@
                   <form id="adminManualGrantForm" class="form-grid">
                     <label for="adminManualGrantUser">Registered owner<select id="adminManualGrantUser" required></select></label>
                     <label for="adminManualGrantWorkspace">Workspace<select id="adminManualGrantWorkspace" required></select></label>
+                    <button id="adminManualEditSeats" type="button" class="full hidden">Edit Business seats for this workspace</button>
                     <label for="adminManualGrantPlan">Plan<select id="adminManualGrantPlan" required></select></label>
                     <label for="adminManualGrantPeriod">Billing period<select id="adminManualGrantPeriod" required><option value="monthly">Monthly</option><option value="annual">Annual</option></select></label>
                     <label for="adminManualGrantStart">Access begins<input id="adminManualGrantStart" type="date" required /></label>
@@ -862,6 +874,7 @@
                 </div>
                 <small class="push-privacy-copy">Only reminders for the account signed in on this device will be linked. Test notifications are limited to one request per minute.</small>
               </section>
+              <section class="ledger-panel"><h3>Account security</h3><p>Manage the password for your signed-in account.</p><a class="button-link" href="auth.html?flow=account">Account settings</a><a class="button-link" href="auth.html?flow=change">Change password</a></section>
               <section class="ledger-panel currency-settings-panel">
                 <div class="panel-heading currency-settings-heading"><p class="eyebrow">Currencies</p><h3>Workspace currencies</h3><p class="muted-copy">Choose which currencies this workspace can use. Your original payment amounts will never be changed.</p></div>
                 <form id="workspaceCurrencySettingsForm" class="form-grid currency-settings-form">

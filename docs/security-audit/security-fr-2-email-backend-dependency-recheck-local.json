@@ -1,0 +1,23 @@
+{
+  "scope": "EXACT_STDIN_JAVASCRIPT_WITH_LOCAL_SOURCE_AND_COPIED_INSTALLED_PACKAGE_METADATA_IN_TEMPORARY_FIXTURE_NOT_WINDOWS_EXECUTION",
+  "valid_lock_with_empty_root_key": {
+    "stage_step": "FR.2.4.E2_DEPENDENCY_RECHECK",
+    "result": "SOURCE_HASHES_AND_PINNED_DEPENDENCY_METADATA_PASS",
+    "node_version": "v24.19.0",
+    "source_files_SHA256_verified": 59,
+    "installed_package_name_and_version_match": true,
+    "package_lock_version_registry_and_integrity_match": true,
+    "installed_package_bytes_independently_hashed": false,
+    "backend_tests_rerun": false,
+    "hosted_requests": 0,
+    "files_or_settings_changed": false,
+    "hosted_acceptance": false,
+    "exit_code": 0
+  },
+  "tampered_integrity_rejected": true,
+  "changed_source_hash_rejected": true,
+  "cases": 3,
+  "pass": 3,
+  "fail": 0,
+  "exit_code": 0
+}

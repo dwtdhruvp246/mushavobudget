@@ -1,0 +1,20 @@
+{
+  "scope": "INERT_REVIEW_TEMPLATE_NOT_A_WRANGLER_DEPLOYMENT_FILE",
+  "project": "mushavo-budget-staging",
+  "origin": "https://mushavo-budget-staging.pages.dev",
+  "compatibility_date": "2026-07-01",
+  "advanced_mode_bundle": "_worker.js",
+  "durable_object_binding": {
+    "name": "EMAIL_GATE_LIMITER_NS",
+    "script_name": "mushavo-email-rate-staging",
+    "class_name": "EmailGatewayRateLimiter"
+  },
+  "runtime_mode": "STAGING_CONTROLLED_ONLY",
+  "additional_private_secret_name": "EMAIL_GATE_RATE_PEPPER",
+  "shared_limit_policy": {"requests_per_rolling_minute": 60, "requests_per_rolling_hour": 600},
+  "public_route_for_limiter": false,
+  "deployed": false,
+  "publishable_key_ownership_verified": false,
+  "actual_Cloudflare_account_resources_bindings_or_secrets_verified": false,
+  "Zoho_sender_data_centre_scope_credentials_or_delivery_verified": false
+}

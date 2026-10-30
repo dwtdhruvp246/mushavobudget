@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "received_date": "2026-10-27",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "source_commit": "40f3f9ba79e75a9f36bee075658fe19ac18c3fcd",
+  "receipt_source": "Owner-supplied public readback output from Pasted text(20261027-045129).txt; parsed and reconciled against the pinned reader and contract",
+  "owner_public_readback": {
+    "stage_step": "FR.2.5.W5_EIGHT_CHARACTER_FRONTEND_DEPLOYMENT_AND_EXACT_AUTH_SETTINGS_READBACK",
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+    "result": "BATCH_W_TWO_ORIGIN_EIGHT_CHARACTER_SOURCE_AND_CALLBACK_SERVING_SCOPED_PASS",
+    "scope": "FIVE_SELECTED_PUBLIC_FILES_AND_FOUR_CALLBACKS_AT_TWO_STAGING_ORIGINS",
+    "metadata_cases_expected": 18,
+    "pass": 18,
+    "direct_public_GET_attempts": 30,
+    "HTTP_responses": 30,
+    "maximum_public_GET_requests": 30,
+    "automatic_retries": 0,
+    "unrestricted_redirects_followed": 0,
+    "samples": [
+      {
+        "origin": "DEPLOYMENT",
+        "route": "/auth-security.js",
+        "file": "auth-security.js",
+        "HTTP_statuses": [
+          200
+        ],
+        "fixed_clean_path_followed": false,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "DEPLOYMENT",
+        "route": "/auth.html",
+        "file": "auth.html",
+        "HTTP_statuses": [
+          308,
+          200
+        ],
+        "fixed_clean_path_followed": true,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "DEPLOYMENT",
+        "route": "/signup.html",
+        "file": "signup.html",
+        "HTTP_statuses": [
+          308,
+          200
+        ],
+        "fixed_clean_path_followed": true,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "DEPLOYMENT",
+        "route": "/config.js",
+        "file": "config.js",
+        "HTTP_statuses": [
+          200
+        ],
+        "fixed_clean_path_followed": false,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "DEPLOYMENT",
+        "route": "/sw.js",
+        "file": "sw.js",
+        "HTTP_statuses": [
+          200
+        ],
+        "fixed_clean_path_followed": false,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "DEPLOYMENT",
+        "route": "/auth.html?flow=confirm",
+        "file": "auth.html",
+        "HTTP_statuses": [
+          308,
+          200
+        ],
+        "fixed_clean_path_followed": true,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "DEPLOYMENT",
+        "route": "/auth.html?flow=recover",
+        "file": "auth.html",
+        "HTTP_statuses": [
+          308,
+          200
+        ],
+        "fixed_clean_path_followed": true,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "DEPLOYMENT",
+        "route": "/auth.html?flow=business-new",
+        "file": "auth.html",
+        "HTTP_statuses": [
+          308,
+          200
+        ],
+        "fixed_clean_path_followed": true,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "DEPLOYMENT",
+        "route": "/auth.html?flow=business-existing",
+        "file": "auth.html",
+        "HTTP_statuses": [
+          308,
+          200
+        ],
+        "fixed_clean_path_followed": true,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "CANONICAL",
+        "route": "/auth-security.js",
+        "file": "auth-security.js",
+        "HTTP_statuses": [
+          200
+        ],
+        "fixed_clean_path_followed": false,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "CANONICAL",
+        "route": "/auth.html",
+        "file": "auth.html",
+        "HTTP_statuses": [
+          308,
+          200
+        ],
+        "fixed_clean_path_followed": true,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "CANONICAL",
+        "route": "/signup.html",
+        "file": "signup.html",
+        "HTTP_statuses": [
+          308,
+          200
+        ],
+        "fixed_clean_path_followed": true,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "CANONICAL",
+        "route": "/config.js",
+        "file": "config.js",
+        "HTTP_statuses": [
+          200
+        ],
+        "fixed_clean_path_followed": false,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "CANONICAL",
+        "route": "/sw.js",
+        "file": "sw.js",
+        "HTTP_statuses": [
+          200
+        ],
+        "fixed_clean_path_followed": false,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "CANONICAL",
+        "route": "/auth.html?flow=confirm",
+        "file": "auth.html",
+        "HTTP_statuses": [
+          308,
+          200
+        ],
+        "fixed_clean_path_followed": true,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "CANONICAL",
+        "route": "/auth.html?flow=recover",
+        "file": "auth.html",
+        "HTTP_statuses": [
+          308,
+          200
+        ],
+        "fixed_clean_path_followed": true,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "CANONICAL",
+        "route": "/auth.html?flow=business-new",
+        "file": "auth.html",
+        "HTTP_statuses": [
+          308,
+          200
+        ],
+        "fixed_clean_path_followed": true,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      },
+      {
+        "origin": "CANONICAL",
+        "route": "/auth.html?flow=business-existing",
+        "file": "auth.html",
+        "HTTP_statuses": [
+          308,
+          200
+        ],
+        "fixed_clean_path_followed": true,
+        "MIME_match": true,
+        "selected_headers_match": true,
+        "source_match": true
+      }
+    ],
+    "Auth_gateway_or_Management_requests": 0,
+    "real_email_requests": 0,
+    "settings_or_mode_or_account_writes": 0,
+    "credentials_private_packets_or_browser_accessed": false,
+    "response_bodies_keys_or_raw_headers_printed": false,
+    "entire_deployed_artifact_verified": false,
+    "real_Auth_password_policy_enforcement_verified": false,
+    "browser_TLS_cookie_cache_or_offline_acceptance_verified": false,
+    "quarantine_remeasured": false,
+    "pending_batch_V_MFA_deferred_by_owner": true,
+    "full_lettered_batch_W_complete": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0,
+    "checked_UTC": "2026-10-26T17:01:47.661Z",
+    "source_hashes_verified": 356
+  },
+  "combined_exit_code": 0,
+  "owner_executed_not_new_assistant_hosted_execution": true,
+  "receipt_reconciled": {
+    "all_18_fixed_origin_route_file_samples_present": true,
+    "all_selected_source_MIME_headers_match": true,
+    "all_12_HTML_aliases_took_only_fixed_same_origin_clean_path_redirect": true,
+    "all_30_public_GETs_received_HTTP_responses": true,
+    "checker_reported_previous_source_hashes": 356
+  },
+  "new_hosted_requests_for_receipt_review": 0,
+  "repeat_public18_or_offline74_required": false,
+  "real_Auth_password_policy_enforcement_verified": false,
+  "actual_hosted_AU_cases_credited": 0,
+  "required_AU_cases_unchanged": 31,
+  "quarantine_remeasured": false,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "stage": 5,
+  "date": "2026-10-12",
+  "stage_status": "CLOSED_NATIVE_SECURITY_COMPATIBILITY_CHECKPOINT_WITH_CARRY_FORWARD",
+  "scope": "INDEX_OF_RECORDED_STAGE5_RECEIPTS_WITHOUT_REWRITING_PRIOR_OUTCOMES",
+  "active_step": null,
+  "events": [
+    {
+      "id": "S5E01",
+      "step": "5.1",
+      "outcome": "SOURCE_INVENTORY_COMPLETE_OWNER_METADATA_PENDING",
+      "receipt": "docs/security-audit/security-stage-5-native-source-inventory.json"
+    },
+    {
+      "id": "S5E02",
+      "step": "5.1",
+      "outcome": "OWNER_METADATA_RECONCILED_INVENTORY_COMPLETE",
+      "receipt": "docs/security-audit/security-stage-5-native-owner-metadata.json"
+    },
+    {
+      "id": "S5E03",
+      "step": "5.2",
+      "outcome": "SOURCE_REVIEW_10_LOCAL_VM_PASS_OWNER_BACKUP_PENDING",
+      "receipt": "docs/security-audit/security-stage-5-storage-review.json"
+    },
+    {
+      "id": "S5E04",
+      "step": "5.2",
+      "outcome": "OWNER_BACKUP_SOURCE_GAP_RECORDED_WITH_CARRY_FORWARD",
+      "receipt": "docs/security-audit/security-stage-5-backup-owner-summary.json"
+    },
+    {
+      "id": "S5E05",
+      "step": "5.3",
+      "outcome": "SOURCE_REVIEW_11_SYNTHETIC_CALLBACK_PASS_OWNER_CONFIG_PENDING",
+      "receipt": "docs/security-audit/security-stage-5-platform-review.json"
+    },
+    {
+      "id": "S5E06",
+      "step": "5.3",
+      "outcome": "OWNER_PLATFORM_SOURCE_RECONCILED_WITH_CARRY_FORWARD",
+      "receipt": "docs/security-audit/security-stage-5-platform-owner-summary.json"
+    },
+    {
+      "id": "S5E07",
+      "step": "5.4",
+      "outcome": "PACKAGING_CANDIDATE_FIXTURE_9_PASS_NATIVE_READINESS_DEFERRED",
+      "receipt": "docs/security-audit/security-stage-5-packaging-local-checks.json"
+    },
+    {
+      "id": "S5E08",
+      "step": "5.4",
+      "outcome": "OWNER_WINDOWS_8_PASS_1_FAIL_RETAINED_TEST_HARNESS_CORRECTED",
+      "receipt": "docs/security-audit/security-stage-5-packaging-owner-checks.json"
+    },
+    {
+      "id": "S5E09",
+      "step": "5.4",
+      "outcome": "CORRECTED_OWNER_WINDOWS_9_PASS_WITH_CARRY_FORWARD",
+      "receipt": "docs/security-audit/security-stage-5-packaging-owner-recheck.json"
+    },
+    {
+      "id": "S5E10",
+      "step": "5.5",
+      "outcome": "FULL_REPORT_CLOSED_WITH_CARRY_FORWARD",
+      "receipt": "docs/security-audit/security-stage-5-final-recheck.json"
+    }
+  ],
+  "report": "docs/security-audit/SECURITY_STAGE_5_COMPLETION_REPORT.md",
+  "action_index": "docs/security-audit/security-stage-5-remediation-actions.json",
+  "historical_receipts_unchanged": true,
+  "native_security_acceptance": false,
+  "findings_closed": [],
+  "APK_update_deferred": true,
+  "next_stage": 6,
+  "next_step": "6.1"
+}

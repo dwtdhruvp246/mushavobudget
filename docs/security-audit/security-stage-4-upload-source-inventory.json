@@ -1,0 +1,686 @@
+{
+  "scope": "SELECTED_ORDERED_LITERAL_SOURCE_NOT_FINAL_OR_HOSTED_CATALOG",
+  "migration_count": 52,
+  "storage_policy_declarations": [
+    {
+      "name": "Users can upload permitted payment proofs",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 1884,
+      "kind": "PERMISSIVE",
+      "command": "INSERT",
+      "declaration": "create policy \"Users can upload permitted payment proofs\"\non storage.objects for insert\nto authenticated\nwith check (\n  bucket_id = 'payment-proofs'\n  and (\n    (\n      (storage.foldername(name))[1] = 'personal'\n      and (storage.foldername(name))[2] = (select auth.uid())::text\n    )\n    or (\n      (storage.foldername(name))[1] = 'families'\n      and (storage.foldername(name))[4] = (select auth.uid())::text\n      and exists (\n        select 1\n        from public.families\n        where families.id = ((storage.foldername(name))[2])::uuid\n          and families.owner_id::text = (storage.foldername(name))[3]\n          and public.is_active_family_participant(families.id)\n      )\n    )\n  )\n);",
+      "sha256": "a90e16e57a61dc0b18bd92c06ce867ecbfa5e33148c7014764b69982594da7d4"
+    },
+    {
+      "name": "Users can read permitted payment proofs",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 1909,
+      "kind": "PERMISSIVE",
+      "command": "SELECT",
+      "declaration": "create policy \"Users can read permitted payment proofs\"\non storage.objects for select\nto authenticated\nusing (\n  bucket_id = 'payment-proofs'\n  and (\n    (\n      (storage.foldername(name))[1] = 'personal'\n      and (storage.foldername(name))[2] = (select auth.uid())::text\n    )\n    or (\n      (storage.foldername(name))[1] = 'families'\n      and public.is_active_family_participant(((storage.foldername(name))[2])::uuid)\n    )\n    or exists (\n      select 1\n      from public.app_admins\n      where app_admins.user_id = (select auth.uid())\n    )\n  )\n);",
+      "sha256": "ee8344a4376c5b60e570d06c0367347cf48bf64153ae78fcb987178397fccbd6"
+    },
+    {
+      "name": "Owners can delete payment proofs",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 1932,
+      "kind": "PERMISSIVE",
+      "command": "DELETE",
+      "declaration": "create policy \"Owners can delete payment proofs\"\non storage.objects for delete\nto authenticated\nusing (\n  bucket_id = 'payment-proofs'\n  and (\n    (\n      (storage.foldername(name))[1] = 'personal'\n      and (storage.foldername(name))[2] = (select auth.uid())::text\n    )\n    or (\n      (storage.foldername(name))[1] = 'families'\n      and (storage.foldername(name))[3] = (select auth.uid())::text\n    )\n    or exists (\n      select 1\n      from public.app_admins\n      where app_admins.user_id = (select auth.uid())\n    )\n  )\n);",
+      "sha256": "15366d581a9cb7f60ca382e6d2e07bccc6e1a6e2c04cc2aa525942a52639076d"
+    },
+    {
+      "name": "Owners can upload subscription proofs",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 3371,
+      "kind": "PERMISSIVE",
+      "command": "INSERT",
+      "declaration": "create policy \"Owners can upload subscription proofs\" on storage.objects for insert to authenticated\nwith check (\n  bucket_id = 'subscription-proofs'\n  and (storage.foldername(name))[1] = 'workspaces'\n  and (storage.foldername(name))[3] = auth.uid()::text\n  and public.is_workspace_owner(((storage.foldername(name))[2])::uuid)\n);",
+      "sha256": "0cca65be62f7742a923df8d6de78bbbff5928e212c2b7af6302a3d17f1bd1470"
+    },
+    {
+      "name": "Owners and finance staff can read subscription proofs",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 3380,
+      "kind": "PERMISSIVE",
+      "command": "SELECT",
+      "declaration": "create policy \"Owners and finance staff can read subscription proofs\" on storage.objects for select to authenticated\nusing (\n  bucket_id = 'subscription-proofs'\n  and (\n    public.is_workspace_owner(((storage.foldername(name))[2])::uuid)\n    or public.is_platform_staff(array['super_admin', 'admin_staff', 'finance_staff', 'support_staff'])\n  )\n);",
+      "sha256": "8a95ecd0b8d544ccd4a694b7a28a7ffeae05a3649020e22dd64ee51e34a497a9"
+    },
+    {
+      "name": "Owners can delete unsubmitted subscription proofs",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 3390,
+      "kind": "PERMISSIVE",
+      "command": "DELETE",
+      "declaration": "create policy \"Owners can delete unsubmitted subscription proofs\" on storage.objects for delete to authenticated\nusing (\n  bucket_id = 'subscription-proofs'\n  and (storage.foldername(name))[3] = auth.uid()::text\n  and public.is_workspace_owner(((storage.foldername(name))[2])::uuid)\n  and not exists (\n    select 1 from public.subscription_payment_proofs\n    where subscription_payment_proofs.storage_path = name\n  )\n);",
+      "sha256": "981513ac60a263cc14e19c91bcf44250aa7025f1bfd038d3bfa290fb06552c26"
+    },
+    {
+      "name": "Business members can upload private documents",
+      "source": "supabase/migrations/20260928200000_business_stage_5_expense_claims.sql",
+      "line": 151,
+      "kind": "PERMISSIVE",
+      "command": "INSERT",
+      "declaration": "create policy \"Business members can upload private documents\" on storage.objects for insert to authenticated\nwith check (\n  bucket_id = 'business-documents'\n  and public.business_storage_workspace_id(name) is not null\n  and (storage.foldername(name))[3] = auth.uid()::text\n  and public.business_claims_active(public.business_storage_workspace_id(name))\n  and public.business_has_permission(public.business_storage_workspace_id(name), 'documents.create')\n);",
+      "sha256": "4753eb0578d17e48690c1b30ccba27fb01c0e5ba877a626a404c190b070f5830"
+    },
+    {
+      "name": "Business members can delete archived or unregistered private documents",
+      "source": "supabase/migrations/20260928200000_business_stage_5_expense_claims.sql",
+      "line": 160,
+      "kind": "PERMISSIVE",
+      "command": "DELETE",
+      "declaration": "create policy \"Business members can delete archived or unregistered private documents\"\non storage.objects for delete to authenticated using (\n  bucket_id = 'business-documents'\n  and public.business_storage_workspace_id(name) is not null\n  and public.business_claims_active(public.business_storage_workspace_id(name))\n  and (\n    (public.business_has_permission(public.business_storage_workspace_id(name), 'documents.manage')\n      and not exists (select 1 from public.business_documents d\n        where d.storage_path = storage.objects.name and d.status = 'active'))\n    or ((storage.foldername(name))[3] = auth.uid()::text\n      and public.business_has_permission(public.business_storage_workspace_id(name), 'documents.create')\n      and not exists (select 1 from public.business_documents d\n        where d.storage_path = storage.objects.name))\n  )\n);",
+      "sha256": "8240d922462aef27497c49c8bd947e1e52ff13eb12aa51f11c17c1edfcd0d1d0"
+    },
+    {
+      "name": "Business members can read registered private documents",
+      "source": "supabase/migrations/20260928213000_business_stage_6_bills.sql",
+      "line": 592,
+      "kind": "PERMISSIVE",
+      "command": "SELECT",
+      "declaration": "create policy \"Business members can read registered private documents\" on storage.objects for select to authenticated\nusing(bucket_id='business-documents' and exists(select 1 from public.business_documents d\n  where d.storage_path=storage.objects.name and d.status='active'\n    and d.workspace_id=public.business_storage_workspace_id(storage.objects.name)\n    and public.business_claims_active(d.workspace_id)\n    and public.business_has_permission(d.workspace_id,'documents.view')\n    and (case when d.parent_type='expense_claim' then public.business_can_view_claim(d.workspace_id,d.parent_id)\n      when d.parent_type in ('business_bill','business_bill_payment')\n        then public.business_can_view_bill_document(d.workspace_id,d.parent_type,d.parent_id)\n      else true end)));",
+      "sha256": "7e1ce6dc67e96f4347d9e3823783e1ebb498b57332c56817d65b7477ad5d0852"
+    },
+    {
+      "name": "business_subscription_proof_read_guard",
+      "source": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+      "line": 427,
+      "kind": "RESTRICTIVE",
+      "command": "SELECT",
+      "declaration": "create policy business_subscription_proof_read_guard on storage.objects as restrictive for select to authenticated\n  using(bucket_id<>'subscription-proofs' or public.business_subscription_proof_access(name));",
+      "sha256": "5d84ef5c2f7e71ac14b7dd779bd865ba0d63684a4e9fbf320db640bb4a0d4965"
+    },
+    {
+      "name": "business_subscription_proof_upload_guard",
+      "source": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+      "line": 429,
+      "kind": "RESTRICTIVE",
+      "command": "INSERT",
+      "declaration": "create policy business_subscription_proof_upload_guard on storage.objects as restrictive for insert to authenticated\n  with check(bucket_id<>'subscription-proofs' or public.business_subscription_proof_access(name,true));",
+      "sha256": "198574ac2bd7bd4987da5d76d79c08420b4a6ec8133228d204c2b716334a8606"
+    },
+    {
+      "name": "business_subscription_proof_delete_guard",
+      "source": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+      "line": 431,
+      "kind": "RESTRICTIVE",
+      "command": "DELETE",
+      "declaration": "create policy business_subscription_proof_delete_guard on storage.objects as restrictive for delete to authenticated\n  using(bucket_id<>'subscription-proofs' or public.business_subscription_proof_access(name,true));",
+      "sha256": "0b4ced88e4086dd37956e669794650fccaad285679cdb7c530b6c8a9f9f79f24"
+    },
+    {
+      "name": "business_logos_owner_upload",
+      "source": "supabase/migrations/20261002070000_business_branding.sql",
+      "line": 27,
+      "kind": "PERMISSIVE",
+      "command": "INSERT",
+      "declaration": "create policy business_logos_owner_upload on storage.objects for insert to authenticated\n with check(bucket_id='business-logos' and public.business_logo_owner(name));",
+      "sha256": "5c8acaafe706184aa2e4ca0ea7abe3065fc98f8c98e521da2719bfbdd20b2a33"
+    },
+    {
+      "name": "business_logos_member_read",
+      "source": "supabase/migrations/20261002070000_business_branding.sql",
+      "line": 30,
+      "kind": "PERMISSIVE",
+      "command": "SELECT",
+      "declaration": "create policy business_logos_member_read on storage.objects for select to authenticated\n using(bucket_id='business-logos' and (public.business_logo_readable(name) or public.business_logo_owner(name)));",
+      "sha256": "dc8ceb148ebe0607145aebd3ebfbdc4897006076d6ff302965cfa3792ff7b111"
+    },
+    {
+      "name": "business_logos_owner_remove",
+      "source": "supabase/migrations/20261002070000_business_branding.sql",
+      "line": 34,
+      "kind": "PERMISSIVE",
+      "command": "DELETE",
+      "declaration": "create policy business_logos_owner_remove on storage.objects for delete to authenticated\n using(bucket_id='business-logos' and public.business_logo_owner(name) and not public.business_logo_readable(name));",
+      "sha256": "f2fbb398a1f377033a1780d0e81b8909e28db3a198af20a311ec10ca6dd6765a"
+    }
+  ],
+  "alter_policy_declarations_unapplied": [],
+  "latest_selected_migration_routines": [
+    {
+      "name": "is_active_family_participant",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 575,
+      "definition_sha256": "c04d76e34db67165c7b0c493c7bf4a5ee0a9ec692894a53928c68a8d1978fd8e"
+    },
+    {
+      "name": "is_platform_staff",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 2288,
+      "definition_sha256": "2d05901309587cf4912b01486251f93d149245428bad655a6e8eeb9fcae95700"
+    },
+    {
+      "name": "is_workspace_owner",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 2320,
+      "definition_sha256": "3f64bb941320b46ffd348d64ad1728bf178009aadc6549435f7f222785c28bd7"
+    },
+    {
+      "name": "submit_subscription_renewal",
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 4223,
+      "definition_sha256": "069e4be410342da15913325876404b52081729f7cfa7029fed6620d2c29d8cfa"
+    },
+    {
+      "name": "submit_family_extra_places",
+      "source": "supabase/migrations/20260925120000_family_extra_places.sql",
+      "line": 107,
+      "definition_sha256": "19b4964f7996c4ce1a84e347bb1ddae2f4c0ee4c4ab5dad6b56b2511dcc8808a"
+    },
+    {
+      "name": "business_has_permission",
+      "source": "supabase/migrations/20261004153000_business_custom_roles.sql",
+      "line": 75,
+      "definition_sha256": "180cfe29bf4945a8b0a880c1cbf08243beceef3a9453424996f27c591db92236"
+    },
+    {
+      "name": "register_business_document",
+      "source": "supabase/migrations/20260928200000_business_stage_5_expense_claims.sql",
+      "line": 176,
+      "definition_sha256": "7dde7f1e6ce9e00112cbd801d5791fe65c39a07fb72e76272c0ace21d190b0ee"
+    },
+    {
+      "name": "archive_business_document",
+      "source": "supabase/migrations/20260928200000_business_stage_5_expense_claims.sql",
+      "line": 225,
+      "definition_sha256": "7f71a2de6d2789e73d837bc48fd1a072d8541c68c3a4e462389a9fd9189e99d8"
+    },
+    {
+      "name": "business_storage_workspace_id",
+      "source": "supabase/migrations/20260928070000_business_stage_2_security_foundation.sql",
+      "line": 1481,
+      "definition_sha256": "0d98f5473ef4380ddddb346884c006d52af312f5c2ea8659306bd042dd0f277e"
+    },
+    {
+      "name": "business_claims_active",
+      "source": "supabase/migrations/20260928200000_business_stage_5_expense_claims.sql",
+      "line": 80,
+      "definition_sha256": "4e16a6c64cfa9e008da58991fc2b3b3ddd2542a50428902307c2b069016f8d5f"
+    },
+    {
+      "name": "business_can_view_claim",
+      "source": "supabase/migrations/20260928200000_business_stage_5_expense_claims.sql",
+      "line": 103,
+      "definition_sha256": "67c3376c1b033a420ddac41d972f1cf1cff51bef7594b17f7ffc55b1a77b5025"
+    },
+    {
+      "name": "business_can_view_bill_document",
+      "source": "supabase/migrations/20260928213000_business_stage_6_bills.sql",
+      "line": 548,
+      "definition_sha256": "e5b9fae49991c49cdbc7be85f92576f5a50a184030140fc354a378d3f4df3373"
+    },
+    {
+      "name": "guard_business_bill_document_registration",
+      "source": "supabase/migrations/20260928213000_business_stage_6_bills.sql",
+      "line": 556,
+      "definition_sha256": "0f145e279a94807c084cd68d4ef342a0fee312df6de38657e0ff3ed679771054"
+    },
+    {
+      "name": "business_billing_owner",
+      "source": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+      "line": 57,
+      "definition_sha256": "7add3cc643914430181fe2510ff0834ed2bdd58db414291b285c98b9f478c399"
+    },
+    {
+      "name": "submit_business_subscription_payment",
+      "source": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+      "line": 227,
+      "definition_sha256": "014e19c4c1b03df6eec75575a3f962a2d8d146971ef44115fc45184fda4de52f"
+    },
+    {
+      "name": "business_subscription_proof_access",
+      "source": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+      "line": 409,
+      "definition_sha256": "e447db58e0473a7aad90cda1ccd8145157e4cfed509ac3acdd0c3bd26e779607"
+    },
+    {
+      "name": "business_logo_owner",
+      "source": "supabase/migrations/20261002070000_business_branding.sql",
+      "line": 7,
+      "definition_sha256": "2c3bae395aef0f2c6604e9e21d37bb166ea2aa86a10e4b5000af190878fbf539"
+    },
+    {
+      "name": "business_logo_readable",
+      "source": "supabase/migrations/20261002070000_business_branding.sql",
+      "line": 17,
+      "definition_sha256": "d16be1f525b99f9ade152c7cebdc97318b3f7a1c8435bf43ae9fe89e7737bc5b"
+    },
+    {
+      "name": "save_business_branding",
+      "source": "supabase/migrations/20261002070000_business_branding.sql",
+      "line": 37,
+      "definition_sha256": "50e3384b11b3e1d3c2525da7d2840d9adc6224dd2ed8c94bb07a18307f09fbd2"
+    },
+    {
+      "name": "save_business_setup_with_branding",
+      "source": "supabase/migrations/20261002070000_business_branding.sql",
+      "line": 65,
+      "definition_sha256": "71c077ae3b38ec6c0a424f14fb53dfa0acbb234fd9e8e7ad924e5062bea585ca"
+    },
+    {
+      "name": "validate_business_document_parent",
+      "source": "supabase/migrations/20260928213000_business_stage_6_bills.sql",
+      "line": 523,
+      "definition_sha256": "15e13a9200dee007094f6ceabc0ffb4dd1902d218a2addc01e19578f57a62b4d"
+    },
+    {
+      "name": "guard_business_bill_proof_archive",
+      "source": "supabase/migrations/20260928213000_business_stage_6_bills.sql",
+      "line": 569,
+      "definition_sha256": "c174023685ae719a59cfc45646fdc190b8f9b829c80f8c23a8be726b93509e0d"
+    }
+  ],
+  "bucket_declarations": [
+    {
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 1870,
+      "declaration": "insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)\nvalues (\n  'payment-proofs',\n  'payment-proofs',\n  false,\n  10485760,\n  array['image/jpeg', 'image/png', 'image/webp', 'application/pdf']\n)\non conflict (id) do update\nset public = excluded.public,\n    file_size_limit = excluded.file_size_limit,\n    allowed_mime_types = excluded.allowed_mime_types;"
+    },
+    {
+      "source": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "line": 3360,
+      "declaration": "insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)\nvalues (\n  'subscription-proofs', 'subscription-proofs', false, 10485760,\n  array['image/jpeg', 'image/png', 'image/webp', 'application/pdf']\n)\non conflict (id) do update\nset public = excluded.public,\n    file_size_limit = excluded.file_size_limit,\n    allowed_mime_types = excluded.allowed_mime_types;"
+    },
+    {
+      "source": "supabase/migrations/20260928070000_business_stage_2_security_foundation.sql",
+      "line": 1495,
+      "declaration": "insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)\nvalues (\n  'business-documents', 'business-documents', false, 10485760,\n  array[\n    'image/jpeg', 'image/png', 'image/webp', 'application/pdf',\n    'text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'\n  ]\n)\non conflict (id) do update\nset public = excluded.public,\n    file_size_limit = excluded.file_size_limit,\n    allowed_mime_types = excluded.allowed_mime_types;"
+    },
+    {
+      "source": "supabase/migrations/20261002070000_business_branding.sql",
+      "line": 3,
+      "declaration": "insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)\nvalues('business-logos','business-logos',false,2097152,array['image/png','image/jpeg','image/webp'])\non conflict(id) do update set public=false,file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;"
+    }
+  ],
+  "syntactic_inventory_limit": "Literal ordered CREATE/DROP declarations only; not SQL execution, conditional DDL, effective policy semantics/grants, overloaded routine catalog, service settings or deployment.",
+  "selected_HTML_file_inputs": [
+    {
+      "source": "app.html",
+      "line": 1050,
+      "id": "completedPaymentProof",
+      "accept": "image/jpeg,image/png,image/webp,application/pdf"
+    },
+    {
+      "source": "app.html",
+      "line": 1087,
+      "id": "renewalProof",
+      "accept": "image/jpeg,image/png,image/webp,application/pdf"
+    },
+    {
+      "source": "app.html",
+      "line": 1104,
+      "id": "familySeatsProof",
+      "accept": "image/jpeg,image/png,image/webp,application/pdf"
+    },
+    {
+      "source": "app.html",
+      "line": 1127,
+      "id": "recordProof",
+      "accept": "image/jpeg,image/png,image/webp,application/pdf"
+    },
+    {
+      "source": "business.html",
+      "line": 172,
+      "id": "setupBusinessLogo",
+      "accept": "image/png,image/jpeg,image/webp"
+    },
+    {
+      "source": "business.html",
+      "line": 336,
+      "id": "settingsBusinessLogo",
+      "accept": "image/png,image/jpeg,image/webp"
+    },
+    {
+      "source": "business.html",
+      "line": 443,
+      "id": "claimReceiptFile",
+      "accept": "image/jpeg,image/png,image/webp,application/pdf"
+    },
+    {
+      "source": "business.html",
+      "line": 540,
+      "id": "billProofFile",
+      "accept": "image/jpeg,image/png,image/webp,application/pdf"
+    },
+    {
+      "source": "business.html",
+      "line": 552,
+      "id": "businessBillingPaymentProof",
+      "accept": "image/jpeg,image/png,image/webp,application/pdf"
+    }
+  ],
+  "selected_client_functions": [
+    {
+      "name": "validateProofFile",
+      "source": "app.js",
+      "line": 9000
+    },
+    {
+      "name": "uploadSubscriptionProof",
+      "source": "app.js",
+      "line": 4867
+    },
+    {
+      "name": "uploadPaymentProof",
+      "source": "app.js",
+      "line": 8410
+    },
+    {
+      "name": "openPaymentProof",
+      "source": "app.js",
+      "line": 8424
+    },
+    {
+      "name": "deletePaymentRecord",
+      "source": "app.js",
+      "line": 8440
+    },
+    {
+      "name": "deletePaymentItem",
+      "source": "app.js",
+      "line": 8459
+    },
+    {
+      "name": "uploadClaimReceipt",
+      "source": "business.js",
+      "line": 1234
+    },
+    {
+      "name": "uploadBillProof",
+      "source": "business.js",
+      "line": 1559
+    },
+    {
+      "name": "chooseBusinessLogo",
+      "source": "business.js",
+      "line": 2069
+    },
+    {
+      "name": "uploadBrandingDraft",
+      "source": "business.js",
+      "line": 2090
+    },
+    {
+      "name": "applySavedBusinessBranding",
+      "source": "business.js",
+      "line": 2102
+    },
+    {
+      "name": "openBusinessBillingProof",
+      "source": "business.js",
+      "line": 2695
+    },
+    {
+      "name": "submitBusinessBillingPayment",
+      "source": "business.js",
+      "line": 2675
+    },
+    {
+      "name": "refreshBusinessLogo",
+      "source": "business.js",
+      "line": 2054
+    }
+  ],
+  "stage_step": "4.2.1",
+  "recorded_date": "2026-10-11",
+  "source_commit": "9373887eeb70ac8285485f1fbd804f1cb4d9e541",
+  "source_inspection_only": true,
+  "source_git_blob_sha1": {
+    "app.js": "6abd41c7c0bbd78265b453d15c813ac5184676ec",
+    "business.js": "e9114a888ea9773c13ae0a30e035baeafa021010",
+    "app.html": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+    "business.html": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+    "sw.js": "b61477393fa2b0ed7baa3c52d61076df549df948",
+    "supabase/schema.sql": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+    "supabase/migrations/20260901061500_currencyapi_multicurrency.sql": "4ca474dce0806ba483aa53a24dee64e20d942187",
+    "supabase/migrations/20260903090000_public_website_enquiries.sql": "43425235fd1dfff5646761482ec472f234466ec7",
+    "supabase/migrations/20260903091000_dynamic_family_plan_selection.sql": "8e4abea4561de370232c7213d336c86b4bcc839c",
+    "supabase/migrations/20260903120000_align_enquiry_workflow.sql": "e8edf51c81ae42125aab757e8a9d2be0cc2d41ca",
+    "supabase/migrations/20260903123000_direct_enquiry_submission.sql": "82254777c3397fe06d02ed7c7ec99a83b0a0099c",
+    "supabase/migrations/20260905090000_expand_global_currencies.sql": "80853d91277149bd0c8c2fd2071b912c2f54d541",
+    "supabase/migrations/20260905120000_signup_currency_preferences.sql": "3689ae95d29d7611d4372a54615583bd53254f7a",
+    "supabase/migrations/20260905143000_payment_daily_recurrence.sql": "82a3f7bf780d1a3dea32753739a29094e220354a",
+    "supabase/migrations/20260907150000_push_subscriptions.sql": "91d6012df8cfdc57a81f02e867a79b57e015bfc6",
+    "supabase/migrations/20260908130000_push_test_rate_limit.sql": "69dc3ac43815f25c0a892d25e83403008b6d70cb",
+    "supabase/migrations/20260908170000_notification_outbox.sql": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+    "supabase/migrations/20260912120000_support_ticket_workflow.sql": "719ba585f7bdbbe44f6fafd6b6a5de13c62802db",
+    "supabase/migrations/20260916190000_admin_event_notifications.sql": "1218eaf24829e287f8054916248a0dea429f010e",
+    "supabase/migrations/20260921090000_additional_family_subscriptions.sql": "34addfdd2b4abef3e9a73bbe992f51a85464a505",
+    "supabase/migrations/20260921130000_notification_workspace_context.sql": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+    "supabase/migrations/20260922113000_admin_user_invitations.sql": "3559065aea9ad7d693121ea56bfd3837fa4dba35",
+    "supabase/migrations/20260923100000_complete_admin_user_invitations.sql": "46de8cdf2b64736452865de1092f3c92037aad50",
+    "supabase/migrations/20260923143000_replace_pending_admin_invitations.sql": "0dfeb64ae451d78f2fd659393c6f3ce757b5e82a",
+    "supabase/migrations/20260923190000_guard_pending_admin_invitation_workspace.sql": "4fd1e66584d4e895b1fe6372c946145a4dc0ec72",
+    "supabase/migrations/20260923200000_hold_invited_workspace_until_setup.sql": "b1a37fb3bcb57f4c6e4e644bfc87ba6f30621406",
+    "supabase/migrations/20260924100000_analytics_data_foundation.sql": "81e1049b8289215f41e1a446f7f5388b73c23c36",
+    "supabase/migrations/20260924110000_admin_analytics_page.sql": "b916b91777334bb7fb2ee2d8ab906b3b07ef8b24",
+    "supabase/migrations/20260924130000_guard_payment_record_payer.sql": "eb83b5f4513581335f8c17e261f354fe84eb6d50",
+    "supabase/migrations/20260924143000_repair_payment_recurrence_constraints.sql": "bcdb619d48a10bd0e61c23c06a159e184263d40d",
+    "supabase/migrations/20260925080000_cancel_pending_family_invitation.sql": "ab049c067da85e3b783dd0efbf2bc9698eb91ff3",
+    "supabase/migrations/20260925090000_expiry_and_account_suspension.sql": "ddf61a186a128a2a4ffe593560197440209e8328",
+    "supabase/migrations/20260925120000_family_extra_places.sql": "8a63e75e94965c7d737d7a8194f3f37feeffea5d",
+    "supabase/migrations/20260927103000_personal_cashbook_private_test.sql": "8ebcff8d90440218316240ae9b0ea5a1f63167e1",
+    "supabase/migrations/20260927140000_dashboard_completed_payments.sql": "1c7bb1c21d00e72f32038c5d3ac85f61bb554a0c",
+    "supabase/migrations/20260927183000_business_stage_0_launch_lock.sql": "ef756e2ba8f873f61e189372839db164b0e804eb",
+    "supabase/migrations/20260928070000_business_stage_2_security_foundation.sql": "4ec51d1c99311e29577b7c53283ef7fcc9fedf6b",
+    "supabase/migrations/20260928090000_admin_manual_subscription_grants.sql": "859b123f33f00b4bc7aa26fca4f9795a04244eaf",
+    "supabase/migrations/20260928130000_business_stage_3_onboarding.sql": "a8fd4e1771255a13b5f32e6042bba75874b205d1",
+    "supabase/migrations/20260928170000_business_stage_4_team.sql": "0d979bceddde1c4c122bf725efc632959dd23391",
+    "supabase/migrations/20260928200000_business_stage_5_expense_claims.sql": "3635ad6c7d9f256bed39090f1498043223c2b9b0",
+    "supabase/migrations/20260928213000_business_stage_6_bills.sql": "d20f9d99910c8b2585ea299ca47eba6986ffe616",
+    "supabase/migrations/20260928222000_stage_6_reminder_url_compatibility.sql": "865a70ea8d3e3b30dfe7b4e4ac9ee531f6cf3e16",
+    "supabase/migrations/20260929193000_business_stage_7_transactions.sql": "2a36e10e23372e7c73f3df1f1eb9209355d2479d",
+    "supabase/migrations/20260930060000_business_stage_8_budgets_approvals.sql": "91650ec00ef5300724b3da1e0ba8e9c429cf9387",
+    "supabase/migrations/20260930073000_business_stage_9_reports.sql": "640421d095741262ee6727aeadd99afab4b8311e",
+    "supabase/migrations/20260930090000_business_stage_10_billing.sql": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+    "supabase/migrations/20260930110000_business_stage_11_admin.sql": "d505b0c16529147fea998d794a60c55d5ff38e84",
+    "supabase/migrations/20260930130000_business_stage_12_realtime.sql": "8e44bd0a3c08a373181114a137e66c11310b8a2f",
+    "supabase/migrations/20261001190000_admin_plans_workbench.sql": "2dc028ccd92314e6f6f92388fc2107142ea2ddf2",
+    "supabase/migrations/20261002042500_reconcile_business_plan_seats.sql": "2bf290c33957d0c7cb85e7ea928355fcceb4b124",
+    "supabase/migrations/20261002060000_business_public_availability.sql": "04577f4423d3473501f247621fa92a69616c13bd",
+    "supabase/migrations/20261002070000_business_branding.sql": "d49d530a311f3ef4677cbe1e8413fe6b897dc8be",
+    "supabase/migrations/20261004153000_business_custom_roles.sql": "c943e03949affcf1ee326ae86198cc22af5090e5",
+    "supabase/migrations/20261006043000_security_stage_0_private_reads.sql": "57622217d1b180bd16aac47debe0618d70693e71",
+    "supabase/migrations/20261006050000_security_stage_0_currency_helpers.sql": "7b954296e256a46e0274a893a4852e62fa77190f",
+    "supabase/migrations/20261006180000_business_invitation_notifications.sql": "501ae2a45018cf0e89531f0821834c57c904c328",
+    "supabase/migrations/20261009190000_public_enquiry_submission_gate.sql": "6c9f26f2000aeb98f5175c410f4e95917a78289c",
+    "supabase/functions/dispatch-admin-notifications/index.ts": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+    "supabase/functions/dispatch-push-reminders/index.ts": "ec9b1561cc20f16080099704ee6174044582d67f",
+    "supabase/functions/invite-admin-user/index.ts": "a26f1633237126a8a558d8e702ffaa1943173253",
+    "supabase/functions/invite-business-member/index.ts": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+    "supabase/functions/send-test-push/index.ts": "ba209ea5a0a7e246e10be544fbfa4f7487dfbd5f",
+    "supabase/functions/submit-enquiry/index.ts": "890f5a02eb01c6d3de4c68f6dd78534b6cbcc71a",
+    "supabase/functions/sync-exchange-rates/index.ts": "0c5a1b60a1e15c103cfd9a05422f23f94eee2133"
+  },
+  "source_integrity": {
+    "verified_files": 65,
+    "sql_files": 53,
+    "client_page_SW_files": 5,
+    "Edge_entrypoints": 7,
+    "mismatches": 0
+  },
+  "buckets": [
+    {
+      "id": "payment-proofs",
+      "public": false,
+      "max_bytes": 10485760,
+      "mime_types": [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "application/pdf"
+      ]
+    },
+    {
+      "id": "subscription-proofs",
+      "public": false,
+      "max_bytes": 10485760,
+      "mime_types": [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "application/pdf"
+      ]
+    },
+    {
+      "id": "business-documents",
+      "public": false,
+      "max_bytes": 10485760,
+      "mime_types": [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "application/pdf",
+        "text/csv",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ]
+    },
+    {
+      "id": "business-logos",
+      "public": false,
+      "max_bytes": 2097152,
+      "mime_types": [
+        "image/png",
+        "image/jpeg",
+        "image/webp"
+      ],
+      "client_max_width": 4096,
+      "client_max_height": 4096
+    }
+  ],
+  "selected_policy_kind_counts": {
+    "PERMISSIVE": 12,
+    "RESTRICTIVE": 3
+  },
+  "selected_policy_command_counts": {
+    "SELECT": 5,
+    "INSERT": 5,
+    "DELETE": 5,
+    "UPDATE": 0
+  },
+  "source_observations": {
+    "all_selected_uploads_upsert_false": true,
+    "proof_signed_url_seconds": 60,
+    "logo_signed_url_seconds": 600,
+    "browser_logo_decoder": "createImageBitmap",
+    "proof_byte_content_decoder_or_trusted_scanner_identified": false,
+    "server_logo_byte_decoder_identified": false,
+    "complete_aggregate_upload_download_processing_budgets_identified": false,
+    "source_metadata_comparison_not_byte_validation": true,
+    "Business_register_metadata_coalesce_fallback": true,
+    "ordinary_renewal_Storage_lookup_identified": false,
+    "proof_link_captured_context_guards_consistent": false,
+    "client_cleanup_not_durable_reconciliation": true,
+    "SW_cross_origin_and_storage_fetch_excluded": true
+  },
+  "reviewed_Edge_entrypoints": [
+    "supabase/functions/dispatch-admin-notifications/index.ts",
+    "supabase/functions/dispatch-push-reminders/index.ts",
+    "supabase/functions/invite-admin-user/index.ts",
+    "supabase/functions/invite-business-member/index.ts",
+    "supabase/functions/send-test-push/index.ts",
+    "supabase/functions/submit-enquiry/index.ts",
+    "supabase/functions/sync-exchange-rates/index.ts"
+  ],
+  "primary_documents_checked": [
+    "https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html",
+    "https://supabase.com/docs/guides/storage/buckets/creating-buckets",
+    "https://supabase.com/docs/guides/storage/security/access-control",
+    "https://supabase.com/docs/guides/storage/serving/downloads",
+    "https://supabase.com/docs/guides/storage/management/delete-objects",
+    "https://www.postgresql.org/docs/17/ddl-rowsecurity.html"
+  ],
+  "acceptance_groups": [
+    {
+      "id": "UF01",
+      "title": "Formats/content",
+      "cases": [
+        "Valid allowed formats per surface, including general Business CSV/XLSX",
+        "Declared MIME/extension/byte mismatch using harmless fixtures",
+        "Empty/truncated/malformed content",
+        "Disallowed HTML/SVG/script or harmless polyglot masquerade",
+        "Large dimensions/processing or archive-structure boundaries"
+      ],
+      "expected": "Valid supported content preserved; invalid or unsafe/unverified processing never served as validated."
+    },
+    {
+      "id": "UF02",
+      "title": "Object authorization",
+      "cases": [
+        "Own Personal and intended Family object access",
+        "Foreign workspace/uploader/path spoof",
+        "Inactive removed member and outsider denied",
+        "Suspended/expired state with intended read/delete exceptions",
+        "Business scoped role and actual staff/MFA allowlists"
+      ],
+      "expected": "Direct Storage list/read/sign/upload/delete effects match final permissions; no reliance on hidden UI."
+    },
+    {
+      "id": "UF03",
+      "title": "Registration/binding",
+      "cases": [
+        "Valid object matches record/parent/workspace",
+        "Missing/null object metadata and nonexistent object",
+        "Object MIME/size/owner/path mismatch",
+        "Foreign or disallowed claim/bill/payment parent",
+        "Overwrite/delete/archive of active or submitted evidence"
+      ],
+      "expected": "Authoritative valid binding; impossible/foreign/mismatched registrations denied; approved evidence rules preserved."
+    },
+    {
+      "id": "UF04",
+      "title": "Download/link/session",
+      "cases": [
+        "Allowed view/download renders with safe response/name treatment",
+        "Foreign authenticated GET/list/sign attempt denied",
+        "Issued URL before/after TTL, removal and role change",
+        "Account/workspace switch during pending proof/sign operation",
+        "Browser/SW/cache/log/referrer or device residual link exposure"
+      ],
+      "expected": "Correct bytes and observed access window; stale context never opens another session's result; private tokens omitted from shared receipts."
+    },
+    {
+      "id": "UF05",
+      "title": "Limits/cost/processors",
+      "cases": [
+        "Exact file caps and just-over boundary for proof/logo",
+        "Count/aggregate bytes and concurrent reservation boundary",
+        "Repeated upload/sign/download rate or egress boundary",
+        "Bounded image/ZIP/spreadsheet/PDF processing resource behavior",
+        "Known processor/quarantine status and privacy failure/outage"
+      ],
+      "expected": "Actual supported budgets and failure states enforced; no infinite client retries or unreviewed third-party disclosure."
+    },
+    {
+      "id": "UF06",
+      "title": "Failure/cleanup/preservation",
+      "cases": [
+        "Upload succeeds then registration fails; cleanup result observed",
+        "Ambiguous committed registration response; referenced bytes preserved",
+        "User/workspace change after upload; orphan manifest retained",
+        "Logo replacement/owner transfer/shared evidence cleanup",
+        "Idempotent bounded reconciliation and retained audit/financial history"
+      ],
+      "expected": "Truthful resumable cleanup, no deletion of committed/shared proof, exact unrelated fixture/history preservation."
+    }
+  ],
+  "planned_grouped_cases": 30,
+  "hosted_checks_run": 0,
+  "fresh_local_tests_run": 0,
+  "upload_or_object_removal_or_signed_URL_performed": false,
+  "accounts_Auth_Storage_SQL_settings_or_provider_changed": false,
+  "production_or_native_changed": false,
+  "effective_hosted_catalog_or_bucket_settings_verified": false,
+  "findings_closed": [],
+  "open_actions": [
+    "UF-R01",
+    "UF-R02",
+    "UF-R03",
+    "UF-R04",
+    "UF-R05",
+    "UF-R06"
+  ]
+}

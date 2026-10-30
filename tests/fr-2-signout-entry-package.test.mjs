@@ -1,0 +1,23 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import path from 'node:path';import {tmpdir} from 'node:os';import {createHash} from 'node:crypto';import {spawnSync} from 'node:child_process';import {fileURLToPath} from 'node:url';
+import {updates,replaceEntries,verifySources,stagingPublicBytes,acceptedEntryHashes} from '../scripts/prepare-fr-2-batch-w-signout-entry.mjs';
+import {createPublicZIP} from '../scripts/lib/store-public-zip.mjs';import {readCanonicalPublicZIP} from '../scripts/prepare-fr-2-email-modern-package.mjs';
+const hash=b=>createHash('sha256').update(b).digest('hex');
+function fixture(){const previous=new Map(),replacements=new Map();for(const row of updates){const b=Buffer.from('OLD_'+row.name);previous.set(row.name,b);replacements.set(row.name,{before:hash(b),bytes:Buffer.from('NEW_'+row.name)});}for(const n of ['_worker.js','_headers','_routes.json','config.js','sw.js'])previous.set(n,Buffer.from('PRESERVE_'+n));for(let n=0;previous.size<44;n++)previous.set('fixture-'+n+'.js',Buffer.from('PUBLIC_'+n));return{previous,replacements};}
+test('manifest verifies the actual updated page and its transitive package inputs',()=>{assert(verifySources()>=12);});
+test('patch changes only two entries and preserves all forty-two remaining entries and the input',()=>{const{previous,replacements}=fixture(),saved=new Map([...previous].map(([n,b])=>[n,Buffer.from(b)])),next=replaceEntries(previous,replacements);for(const[n,b]of previous){assert(b.equals(saved.get(n)));assert(next.get(n).equals(replacements.get(n)?.bytes||b));}assert.equal(next.size,44);const decoded=readCanonicalPublicZIP(createPublicZIP([...next]));for(const[n,b]of next)assert(b.equals(decoded.get(n)));});
+test('missing public entries, unexpected replacements and wrong prior bytes refuse',()=>{const a=fixture();a.previous.delete('config.js');assert.throws(()=>replaceEntries(a.previous,a.replacements));const b=fixture();b.replacements.delete('app.html');b.replacements.set('_worker.js',{before:'0'.repeat(64),bytes:Buffer.from('WRONG')});assert.throws(()=>replaceEntries(b.previous,b.replacements));const c=fixture();c.previous.set('app.js',Buffer.from('UNREVIEWED'));assert.throws(()=>replaceEntries(c.previous,c.replacements),/PRIOR_SIGNOUT_ENTRY_SOURCE_REQUIRED/);});
+test('corrupted archives are rejected by the reused canonical reader',()=>{const bytes=createPublicZIP([...fixture().previous]);bytes[40]^=1;assert.throws(()=>readCanonicalPublicZIP(bytes));});
+test('actual CLI rejects an unknown ZIP without modifying its input or output directory',()=>{const d=fs.mkdtempSync(path.join(tmpdir(),'mushavo-signout-entry-'));try{const input=path.join(d,'old.zip'),output=path.join(d,'out'),bytes=createPublicZIP([...fixture().previous]);fs.writeFileSync(input,bytes);fs.mkdirSync(output);const result=spawnSync(process.execPath,[fileURLToPath(new URL('../scripts/prepare-fr-2-batch-w-signout-entry.mjs',import.meta.url)),input,output],{encoding:'utf8'});assert.equal(result.status,1);assert.equal(JSON.parse(result.stdout).problem_code,'ACCEPTED_SMOOTH_SIGNIN_ZIP_REQUIRED');assert(fs.readFileSync(input).equals(bytes));assert.deepEqual(fs.readdirSync(output),[]);}finally{fs.rmSync(d,{recursive:true,force:true});}});
+
+
+test('both prior identities match the accepted smooth-signin archive chain',()=>{
+ const accepted=acceptedEntryHashes();assert.equal(updates.length,2);for(const row of updates)assert.equal(row.before,accepted[row.name]);
+ assert.equal(accepted['app.js'],'c18946c75ae34a52f91ecb755ec29e7c50f92628829180035096fdfbfdb5c0c6');assert.equal(accepted['app.html'],'96933b18fda558f1a423f76d974153b1a940aee192081a65640d888d0f855e64');
+});
+test('the actual app HTML keeps staging origins and adds the sign-out retry and new module version',()=>{
+ const raw=fs.readFileSync(new URL('../app.html',import.meta.url)),out=stagingPublicBytes(raw),row=updates.find(x=>x.name==='app.html');
+ assert.equal(hash(raw),row.sourceSHA256);assert.equal(hash(out),row.after);assert.notEqual(row.sourceSHA256,row.after);assert(!out.includes(Buffer.from('kttkospkblwvguuwnhjj')));assert(out.includes(Buffer.from('dczlddwbtgvfdujgcitb')));assert(out.includes(Buffer.from('app.js?v=119')));assert(out.includes(Buffer.from('id="retrySignOutButton"')));
+});
+test('a mismatched prior public entry is refused with a safe filename',()=>{
+ const {previous,replacements}=fixture();previous.set('app.html',Buffer.from('WRONG'));assert.throws(()=>replaceEntries(previous,replacements),e=>e.message==='PRIOR_SIGNOUT_ENTRY_SOURCE_REQUIRED'&&e.problem_file==='app.html');
+});

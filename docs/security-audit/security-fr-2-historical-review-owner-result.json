@@ -1,0 +1,81 @@
+[
+  {
+    "historical_review": {
+      "scope": "READ_ONLY_POST_CLEANUP_COUNTS_FINGERPRINTS_AND_BOUNDED_HISTORICAL_LINKAGE",
+      "stage_step": "FR.2.2_HISTORICAL_REVIEW",
+      "checked_UTC": "2026-10-14T07:32:43.142484+00:00",
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "hosted_acceptance": false,
+      "record_consistency": {
+        "records_total": 5,
+        "null_record_workspaces": 0,
+        "records_without_parent": 0,
+        "parent_workspace_mismatches": 1,
+        "mismatches_matching_prior_audit_item_shape": 1
+      },
+      "transaction_read_only": "on",
+      "conversion_consistency": {
+        "conversions_without_record": 2,
+        "record_workspace_mismatches": 1,
+        "payment_record_conversions_total": 7,
+        "unlinked_rows_matching_audit_owner_usd1_identity_shape": 2
+      },
+      "unlinked_conversion_details": [
+        {
+          "created_UTC": "2026-10-14T04:36:14.892703+00:00",
+          "entered_by_is_null": true,
+          "rate_effective_UTC": "2026-10-14T23:59:00+00:00",
+          "workspace_active_personal": true,
+          "locked_USD1_identity_shape": true,
+          "conversion_fingerprint_sha256": "f7b9ed1ef6dbd6ffb5670984da8cd997f46440b0af08d0b286b9cec361d07138",
+          "workspace_owner_is_retained_actor": true,
+          "created_in_owner_personal_recheck_window": true
+        },
+        {
+          "created_UTC": "2026-10-14T04:36:16.784147+00:00",
+          "entered_by_is_null": true,
+          "rate_effective_UTC": "2026-10-14T23:59:00+00:00",
+          "workspace_active_personal": true,
+          "locked_USD1_identity_shape": true,
+          "conversion_fingerprint_sha256": "7a6899f42547ecc471b709226aaf87fecfcf2aa19ce1b6720aa3c3e98890aa82",
+          "workspace_owner_is_retained_actor": true,
+          "created_in_owner_personal_recheck_window": true
+        }
+      ],
+      "application_routines_invoked": 0,
+      "synthetic_actor_rows_matched": 2,
+      "record_parent_mismatch_details": [
+        {
+          "parent_created_UTC": "2026-10-10T17:18:59.686741+00:00",
+          "record_created_UTC": "2026-10-10T17:19:00.948861+00:00",
+          "record_workspace_type": "personal",
+          "prior_audit_item_notes": true,
+          "prior_audit_name_shape": true,
+          "owner_is_retained_actor": true,
+          "prior_audit_record_notes": true,
+          "parent_fingerprint_sha256": "b805cc76f30048fbd07060f1d9a8467e72d8f18f03c4c7325dbfd409b4a79eea",
+          "record_fingerprint_sha256": "a75141260231d3a916ec2f0bf5a815437dd5b9cacfdde1fd659ff206f3e06615",
+          "personal_inactive_USD1_shape": true,
+          "linked_payment_record_conversions": 1,
+          "parent_workspace_active_owned_personal": true,
+          "record_workspace_owned_by_record_owner": false,
+          "linked_conversion_workspace_matches_parent": 1,
+          "linked_conversion_workspace_mismatches_record": 1,
+          "item_owner_creator_record_owner_recorder_agree": true
+        }
+      ],
+      "retained_manual_snapshot_sha256": "d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3",
+      "retained_family_fixture_names_matched": 2,
+      "unlinked_conversion_details_truncated": false,
+      "raw_rows_identifiers_or_emails_printed": false,
+      "completed_relink_marker_items_remaining": 0,
+      "project_selection_independently_verified": false,
+      "record_parent_mismatch_details_truncated": false,
+      "historical_rows_repaired_or_conversions_deleted": false,
+      "audit_shape_is_provenance_or_cleanup_authorization": false,
+      "retained_family_manual_USD1_rows_matching_full_scope": 2,
+      "paired_parent_and_conversion_workspace_mismatch_records": 1,
+      "creation_window_correlation_proves_deleted_record_provenance": false
+    }
+  }
+]

@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "stage_step": "3.5.1",
+  "recorded_date": "2026-10-11",
+  "source_commit": "8ecc3a10a608053d33b434cce7f53d7c6fe0c9bf",
+  "source_scope": "AUDIT_BRANCH_SOURCE_ONLY",
+  "project_settings_verified": false,
+  "hosted_acceptance": false,
+  "selected_hosted_checks_run": 0,
+  "sdk_version": "2.110.9",
+  "ordered_migration_files_searched": 52,
+  "new_modeled_catalog_probe": "NOT_RUN_EXTERNAL_PGLITE_MODULE_UNAVAILABLE",
+  "sources": [
+    {
+      "path": "app.js",
+      "repository_blob_sha": "44746c5689f35f55ec05d2908fc9d3661873a22e"
+    },
+    {
+      "path": "app.html",
+      "repository_blob_sha": "78b70c64208261510f05d2b54f54942932821baa"
+    },
+    {
+      "path": "signup.html",
+      "repository_blob_sha": "0a085f2cf43a13966412e88ab8a3733b8a319741"
+    },
+    {
+      "path": "app-entry.js",
+      "repository_blob_sha": "4496b291102c26aa4dbcf9fbb88882cd972f5775"
+    },
+    {
+      "path": "business.js",
+      "repository_blob_sha": "08ae7490e33a9db17d3383ac6042829c5dc17c84"
+    },
+    {
+      "path": "business.html",
+      "repository_blob_sha": "236ebce6b509e106d8ec4fc93d19c14862be4412"
+    },
+    {
+      "path": "workspace-preference.js",
+      "repository_blob_sha": "17abce600781bc378e17bba19771316291c26f71"
+    },
+    {
+      "path": "supabase/config.toml",
+      "repository_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c"
+    },
+    {
+      "path": "supabase/functions/invite-admin-user/index.ts",
+      "repository_blob_sha": "a26f1633237126a8a558d8e702ffaa1943173253"
+    },
+    {
+      "path": "supabase/functions/invite-business-member/index.ts",
+      "repository_blob_sha": "9aa9f6bd24542415b8d6ceb4f9acbff1d2b79fd2"
+    },
+    {
+      "path": "supabase/migrations/20260923100000_complete_admin_user_invitations.sql",
+      "repository_blob_sha": "46de8cdf2b64736452865de1092f3c92037aad50"
+    },
+    {
+      "path": "supabase/migrations/20260923143000_replace_pending_admin_invitations.sql",
+      "repository_blob_sha": "0dfeb64ae451d78f2fd659393c6f3ce757b5e82a"
+    },
+    {
+      "path": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+      "repository_blob_sha": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8"
+    },
+    {
+      "path": "tests/session-recovery.test.mjs",
+      "repository_blob_sha": "7cbb89dc53bbc7a8d45e2280fceb3461b2eb6d71"
+    },
+    {
+      "path": "tests/startup-recovery.test.mjs",
+      "repository_blob_sha": "8d991be45e67ba2ae12ca437881988dd1ddab190"
+    },
+    {
+      "path": "tests/admin-invitation-exit.test.mjs",
+      "repository_blob_sha": "539262093d638c2cc1aeff08e7c0bf5997a0b977"
+    },
+    {
+      "path": "tests/admin-invitation-setup-retry.test.mjs",
+      "repository_blob_sha": "f09fbf03fdb397783cece8356ca6b474e864e60b"
+    },
+    {
+      "path": "tests/admin-user-invitation-completion.test.mjs",
+      "repository_blob_sha": "be52f2c0160ab41b58c3a1c20a0737057fb00bea"
+    },
+    {
+      "path": "tests/admin-user-invitations.test.mjs",
+      "repository_blob_sha": "c3ae95143a316f705c92024159d9257f495ae2fc"
+    },
+    {
+      "path": "tests/admin-invitation-replacement.test.mjs",
+      "repository_blob_sha": "dcd5dabe092d07d9fe7897b95f8ce2242a05b3ec"
+    },
+    {
+      "path": "tests/signup-currencies.test.mjs",
+      "repository_blob_sha": "0bbe70a779ca4e9fcd01f8b58450545817f97d0d"
+    },
+    {
+      "path": "styles.css",
+      "repository_blob_sha": "6e8f8da472cdc48b25dff2d5bfe0045716ac8699"
+    },
+    {
+      "path": "supabase/signup-currency-diagnostic.sql",
+      "repository_blob_sha": "e607d6d7446857240399aa173c013ee83bb0d835"
+    },
+    {
+      "path": "supabase/schema.sql",
+      "repository_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b"
+    }
+  ],
+  "regressions": {
+    "command": "node --test tests/session-recovery.test.mjs tests/startup-recovery.test.mjs tests/admin-invitation-exit.test.mjs tests/admin-invitation-setup-retry.test.mjs tests/admin-user-invitation-completion.test.mjs tests/admin-user-invitations.test.mjs tests/admin-invitation-replacement.test.mjs tests/signup-currencies.test.mjs",
+    "tests": 35,
+    "pass": 34,
+    "fail": 1,
+    "exit_code": 1,
+    "scope": "EXISTING_SOURCE_ASSERTIONS_AND_VM_MOCKS",
+    "failed_test": "a session reset repairs a button left mid sign-out",
+    "failure_classification": "BRITTLE_FIRST_STATEMENT_ASSERTION_REVIEW",
+    "button_reset_helper_behavior_passed": true,
+    "runtime_signout_failure_demonstrated": false
+  },
+  "acceptance_groups": [
+    "AU01",
+    "AU02",
+    "AU03",
+    "AU04",
+    "AU05"
+  ],
+  "planned_selected_cases": 31,
+  "owner_action_requested": false,
+  "production_or_native_changed": false,
+  "findings_closed": false
+}

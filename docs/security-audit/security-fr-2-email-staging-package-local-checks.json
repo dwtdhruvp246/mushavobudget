@@ -1,0 +1,79 @@
+{
+  "stage_step": "FR.2.4.E5.1_LOCAL_UPLOAD_CANDIDATE",
+  "result": "LOCAL_SYNTHETIC_PACKAGE_AND_INDEPENDENT_ZIP_READER_SCOPED_PASS",
+  "node_version": "v24.19.0",
+  "tests": 21,
+  "pass": 21,
+  "fail": 0,
+  "source_files_SHA256_verified": 57,
+  "syntax_checks": 12,
+  "syntax": [
+    {
+      "file": "scripts/check-fr-2-email-staging-package.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/lib/build-fr-2-email-workers.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/lib/store-public-zip.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/prepare-final-staging.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/prepare-fr-2-email-staging.mjs",
+      "pass": true
+    },
+    {
+      "file": "supabase/functions/_shared/email-verification-crypto.mjs",
+      "pass": true
+    },
+    {
+      "file": "supabase/functions/_shared/email-verification-gateway.mjs",
+      "pass": true
+    },
+    {
+      "file": "supabase/functions/_shared/email-verification-http.mjs",
+      "pass": true
+    },
+    {
+      "file": "supabase/functions/_shared/email-verification-pages.mjs",
+      "pass": true
+    },
+    {
+      "file": "supabase/functions/_shared/email-verification-rate-client.mjs",
+      "pass": true
+    },
+    {
+      "file": "supabase/functions/_shared/email-verification-rate-do.mjs",
+      "pass": true
+    },
+    {
+      "file": "supabase/functions/_shared/email-verification-zoho.mjs",
+      "pass": true
+    }
+  ],
+  "public_files": 44,
+  "selected_public_and_header_source_identities_verified": 41,
+  "Worker_SHA256": "fb089fffe0cabd9be4fb5e8cfed165786ef56dee8cd5209b7be679166ef4ae99",
+  "independent_Python_ZIP_readback_entries": 44,
+  "nested_binary_assets_preserved": true,
+  "headers_from_final_HTML_verified": true,
+  "source_prior_config_and_existing_output_preserved": true,
+  "synthetic_publishable_key_only": true,
+  "Windows_PowerShell_or_dotNET_execution_verified": false,
+  "application_or_SQL_runtime_source_changed": false,
+  "actual_hosted_requests": 0,
+  "email_dispatched": false,
+  "deployed": false,
+  "hosted_acceptance": false,
+  "activation_approved": false,
+  "findings_closed": [],
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "exit_code": 0
+}

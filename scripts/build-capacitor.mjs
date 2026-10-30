@@ -12,8 +12,8 @@ try {
 } catch (_) {
   throw new Error("Install esbuild and @capacitor/preferences / @capacitor/app matching your @capacitor/core major. See docs/LAST_WORKSPACE.md.");
 }
-const htmlFiles = ["about.html", "app-entry.html", "app.html", "business.html", "contact.html", "index.html", "offline.html", "pricing.html", "signup.html"];
-const assets = ["workspace-preference.js", "app-entry.js", "app.js", "admin-plans.js", "business.js", "config.js", "push-notifications.js", "pwa-install.js", "pwa.js", "site.js", "sw.js", "business.css", "pwa-install.css", "pwa-shell.css", "pwa-update.css", "site.css", "styles.css", "manifest.webmanifest", "assets"];
+const htmlFiles = ["about.html", "app-entry.html", "app.html", "auth.html", "business.html", "contact.html", "index.html", "offline.html", "pricing.html", "signup.html"];
+const assets = ["workspace-preference.js", "app-entry.js", "app.js", "admin-plans.js", "admin-mfa.js", "email-verification.js", "session-entry.js", "auth-flows.js", "auth-security.js", "business.js", "config.js", "push-notifications.js", "pwa-install.js", "pwa.js", "site.js", "sw.js", "business.css", "pwa-install.css", "pwa-shell.css", "pwa-update.css", "site.css", "styles.css", "manifest.webmanifest", "assets"];
 // A partial checkout must not silently produce an incomplete native app.
 for (const source of [...htmlFiles, ...assets]) {
   const info = await lstat(path.join(projectRoot, source));

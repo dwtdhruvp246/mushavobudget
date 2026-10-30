@@ -18,7 +18,7 @@ function exitHarness(error = null) {
     removeAttribute(name) { attributes.delete(name); }
   };
   const context = {
-    backToSignIn, form: {}, URL,
+    backToSignIn, form: {}, URL, invitationController:null,emailEntry:null,
     showMessage(message) { events.push(`message:${message}`); },
     window: {
       location: { href: "https://mushavobudget.com/signup.html?mode=admin-invite", replace(url) { events.push(`navigate:${url}`); } },

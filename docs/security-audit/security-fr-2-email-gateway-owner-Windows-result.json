@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-15",
+  "source_commit": "413e8388cbfbd75b3d959b663a0be4e70aa748b9",
+  "evidence_scope": "OWNER_RETURNED_WINDOWS_POWERSHELL_JSON_NOT_ASSISTANT_HOSTED_EXECUTION",
+  "receipt": {
+    "stage_step": "FR.2.4.E3.1",
+    "result": "OFFLINE_ACTUAL_GATEWAY_MAIL_ADAPTER_AND_SQL_INTEGRATION_SCOPED_PASS",
+    "scope": "ACTUAL_PORTABLE_GATEWAY_ZOHO_ADAPTER_CRYPTO_AND_FULL54_SQL_WITH_SYNTHETIC_AUTH_PROVIDER_AND_LIMITER_PORTS",
+    "source_parent_commit": "6e4963df553eced6946250a5aec812152b84004f",
+    "node_version": "v22.17.0",
+    "pglite_version": "0.5.8",
+    "source_files_SHA256_verified": 64,
+    "dependency_lock_version_registry_and_integrity_matched": true,
+    "tests": 63,
+    "pass": 63,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "syntax_checks": 8,
+    "syntax": [
+      {
+        "file": "supabase/functions/_shared/email-verification-http.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-crypto.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-zoho.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-gateway.mjs",
+        "pass": true
+      },
+      {
+        "file": "tests/fr-2-email-gateway.test.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/check-fr-2-email-gateway-db.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/verify-fr-2-email-gateway.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/offline-test-network.cjs",
+        "pass": true
+      }
+    ],
+    "exit_code": 0,
+    "failed_case_titles": [],
+    "migration_count": 54,
+    "actual_SQL_handler_integration_checks": 13,
+    "isolated_gateway_transport_checks": 50,
+    "real_Auth_or_Zoho_or_Cloudflare_HTTP_requests": 0,
+    "real_mail_sent": false,
+    "real_Worker_bundle_or_runtime_verified": false,
+    "real_shared_rate_limiter_binding_verified": false,
+    "Zoho_data_centre_sender_scope_credentials_or_inbox_delivery_verified": false,
+    "existing_application_RLS_RPC_Edge_Storage_guards_installed": false,
+    "owner_real_SQL_Auth_profiles_roles_factors_or_settings_changed": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "findings_closed": [],
+    "APK_update_deferred": true
+  },
+  "terminal_exit_code": 0,
+  "FR2_E3_1_status": "OFFLINE_SOURCE_CHECKPOINT_COMPLETE_NOT_HOSTED_ACCEPTANCE",
+  "findings_closed": [],
+  "APK_update_deferred": true
+}

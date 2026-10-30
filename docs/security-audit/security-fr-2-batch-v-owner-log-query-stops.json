@@ -1,0 +1,43 @@
+{
+  "stage_step": "FR.2.4.E5.35_BATCH_V_ADMIN_MFA_OPERATOR_FACTOR_AND_CATALOG_REVIEW",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
+  "result": "OWNER_DATABASE_SOURCE_ERROR_THEN_LOGS_SOURCE_SYNTAX_ERROR_NO_AUDIT_RESULT",
+  "source_commit": "2b841b213cb2137fd2da6aab687820a1d5162b22",
+  "evidence_source": "Owner screenshots; no completed safe_json or terminal exit code returned",
+  "owner_query_execution_timestamp_UTC": null,
+  "owner_process_exit_code_reported": null,
+  "safe_review_exit_code": 1,
+  "attempts": [
+    {
+      "screenshot": "image(20261025-194049).png",
+      "problem_code": "POSTGRES_DATABASE_SOURCE_SELECTED_FOR_EXTERNAL_LOG_QUERY",
+      "observed_error_SQLSTATE": "42P01",
+      "observed_fixed_error": "relation logs does not exist",
+      "query_engine": "PostgreSQL",
+      "completed_safe_JSON_received": false
+    },
+    {
+      "screenshot": "image(20261025-194632).png",
+      "problem_code": "HOSTED_LOGS_QUERY_SYNTAX_REVIEW_REQUIRED",
+      "Logs_source_selected_visible": true,
+      "observed_error_code": "SYNTAX_ERROR",
+      "observed_failure_location": "opening parenthesis before WITH windowed AS query",
+      "completed_safe_JSON_received": false,
+      "zero_rows_display_is_not_successful_zero_match_history": true
+    }
+  ],
+  "dashboard_target_independently_attested_by_screenshots": false,
+  "actual_HTTP_request_count_independently_measured": false,
+  "raw_provider_log_events_or_secrets_returned": false,
+  "factor_or_password_API_called_by_supplied_query": false,
+  "query_was_SELECT_only_no_factor_role_mode_or_setting_write_requested": true,
+  "fresh_quarantine_or_operator_session_or_factor_state_observed_by_these_errors": false,
+  "latest_actual_quarantine_and_zero_selected_sessions_observation_UTC": "2026-10-25T15:14:35.7749+00:00",
+  "human_or_client_origin_proven": false,
+  "MFA_setup_remains_on_hold": true,
+  "full_lettered_batch_V_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

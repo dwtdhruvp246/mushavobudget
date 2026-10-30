@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "stage_step": "5.3",
+  "evidence_id": "S5E05",
+  "date": "2026-10-12",
+  "source_commit": "14f5926d6301b961e86e9bfaf1680aff83007c30",
+  "scope": "SELECTED_TRACKED_ORIGIN_CALLBACK_SOURCE_AND_SYNTHETIC_AUTH_TESTS_NOT_NATIVE_PERMISSION_TRANSPORT_OR_ARCHIVE_ACCEPTANCE",
+  "status": "SOURCE_LOCAL_REVIEW_COMPLETE_OWNER_PLATFORM_CONFIG_PENDING",
+  "files": [
+    {
+      "path": "auth-security.js",
+      "sha256": "ae6eb487fa9ae5f21b1e3a95f698fe5869a377349bc5ff66bf9e8d32cef6cf54",
+      "git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "bytes": 9909
+    },
+    {
+      "path": "auth-flows.js",
+      "sha256": "ef16214f827d6650a507e30bdae7703c975f061437ed0672cf0abf9072e37500",
+      "git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "bytes": 8343
+    },
+    {
+      "path": "workspace-preference.js",
+      "sha256": "913fa62e34cf16d6f6eb1791e3bb9dad0b37001d64ed408dac2773ebbb37ce56",
+      "git_blob_sha": "17abce600781bc378e17bba19771316291c26f71",
+      "bytes": 4677
+    },
+    {
+      "path": "scripts/build-capacitor.mjs",
+      "sha256": "20d6a31e4955433c119db9c1777941ae70272f48681f3237b3b190df63a9fe38",
+      "git_blob_sha": "d911f7f777a9b80bb27d8b99cf88a3e16dd8599e",
+      "bytes": 4490
+    },
+    {
+      "path": "docs/LAST_WORKSPACE.md",
+      "sha256": "e87ac98ad65da1519ac745f0cebcbaed4a2ec159b054d4e134aac784db2fa377",
+      "git_blob_sha": "e927e7ab818bb6525e843dbcfec390bfc79de1f8",
+      "bytes": 5728
+    },
+    {
+      "path": "package.json",
+      "sha256": "fe28c33c1a1c93b8f5efaf7b098b6884afca7b61f7910e767f8ce069ff1d8c6a",
+      "git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+      "bytes": 883
+    },
+    {
+      "path": "_headers",
+      "sha256": "469212383f4efdee15b29834aba220fe61b8229d09c11291f60929a74c57853f",
+      "git_blob_sha": "6f1109ea4f616843cafef113f1f6f48e984e8858",
+      "bytes": 1285
+    },
+    {
+      "path": "supabase/functions/invite-business-member/index.ts",
+      "sha256": "980e0911ffddfec984f41d952735734ea926566993f480cece36e90dcbf93a10",
+      "git_blob_sha": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+      "bytes": 6614
+    },
+    {
+      "path": "supabase/functions/invite-admin-user/index.ts",
+      "sha256": "c6ab833c9579f8e8559d7b54b3c0a84d85f8752edfc28eaa6c2438838e8fe3d9",
+      "git_blob_sha": "a26f1633237126a8a558d8e702ffaa1943173253",
+      "bytes": 13668
+    },
+    {
+      "path": "tests/stage-3-auth-flows.test.mjs",
+      "sha256": "3377d8f3f07997a8d4ce046741a34beff6c9077aeb061df9163cf2e91ee7bc75",
+      "git_blob_sha": "9ba114c045d014af8b0a48f40e1dbf0eda16cb99",
+      "bytes": 19893
+    },
+    {
+      "path": "app.js",
+      "sha256": "eb4222245c6d75bf3708335d6c5f24c942c62715d3ce0afdf7d79cb3777cb6f6",
+      "git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+      "bytes": 504595
+    },
+    {
+      "path": "business.js",
+      "sha256": "6754f92c72399bf45ea849ef692318a6d88a227a413b552a6ca50ee9e1b98f6f",
+      "git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+      "bytes": 239567
+    }
+  ],
+  "selected_git_blob_matches": 12,
+  "source_blob_mismatches": 0,
+  "source_observations": {
+    "selected_invitation_functions": "EXACT_NONEMPTY_REQUEST_ORIGIN_EQUALS_APP_ORIGIN_WITH_SEPARATE_JWT_IDENTITY_AUTHORIZATION",
+    "callback_urls": "RELATIVE_AUTH_HTML_ON_CURRENT_PAGE_ORIGIN",
+    "legacy_callback_routing": "SAME_CURRENT_URL_ORIGIN_AUTH_PAGE_BEFORE_NORMAL_CLIENT_INITIALIZATION",
+    "selected_native_bridge": "APP_STATE_CHANGE_FOR_RESUME; NO_INSPECTED_APP_URL_OPEN_DISPATCHER_IN_SELECTED_BRIDGE",
+    "native_and_hosted_origin_compatibility_verified": false,
+    "web_headers_transported_to_native_verified": false,
+    "root_source_capacitor_modules": {
+      "@capacitor/app": "8.1.2",
+      "@capacitor/core": "8.5.2",
+      "@capacitor/preferences": "8.0.1",
+      "@capacitor/android": "8.5.2"
+    },
+    "owner_iOS_paths_missing_in_5_1_selected_root": true,
+    "actual_iOS_project_archive_and_SDK_inventory_verified": false,
+    "actual_owner_permissions_components_transport_values_reviewed": false
+  },
+  "local_regression": {
+    "command": "node --test --test-name-pattern 'capture removes sensitive|link storage is tab-isolated|legacy Business callback|legacy ordinary recovery|a recovery flag without|Auth callback errors|wrong callback type|PKCE code exchange|server identity disagreement|verified session transfer|adopted server identity mismatch' tests/stage-3-auth-flows.test.mjs",
+    "node_version": "v24.19.0",
+    "tests": 11,
+    "pass": 11,
+    "fail": 0,
+    "exit_code": 0,
+    "scope": "EXISTING_CALLBACK_ISOLATION_AND_VERIFIED_TRANSFER_FUNCTIONS_WITH_SYNTHETIC_MATERIAL_AND_MOCK_AUTH",
+    "new_test_definitions": 0,
+    "counts_do_not_certify_OS_OR_hosted_callbacks": true,
+    "warning": "MODULE_TYPELESS_PACKAGE_JSON; Node reparsed auth-security.js as ES module; non-failing; no package-type change"
+  },
+  "primary_existing_findings": [
+    "F10",
+    "F17"
+  ],
+  "dependencies": [
+    "F05",
+    "F06",
+    "F14",
+    "F08",
+    "F15",
+    "F20"
+  ],
+  "owner_handoff": "scripts/read-stage-5-platform-config.ps1",
+  "owner_handoff_executed_by_assistant": false,
+  "PowerShell_runtime_available_here": false,
+  "hosted_checks_run": 0,
+  "device_checks_run": 0,
+  "native_builds_run": 0,
+  "native_sync_install_sign_upload_or_provider_action_run": false,
+  "runtime_native_settings_accounts_or_production_changed": false,
+  "native_security_acceptance": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "references": [
+    {
+      "url": "https://capacitorjs.com/docs/config",
+      "scope": "CURRENT_V8_SCHEMA_NOT_OWNER_EFFECTIVE_SETTINGS"
+    },
+    {
+      "url": "https://capacitorjs.com/docs/guides/deep-links",
+      "scope": "LINK_REGISTRATION_AND_APP_EVENT_GUIDANCE"
+    },
+    {
+      "url": "https://capacitorjs.com/docs/apis/preferences",
+      "scope": "PREFERENCES_REQUIRED_REASON_GUIDANCE"
+    },
+    {
+      "url": "https://developer.android.com/guide/topics/manifest/application-element.html",
+      "scope": "MANIFEST_TRANSPORT_ATTRIBUTES_AND_PLATFORM_DEPENDENCE"
+    },
+    {
+      "url": "https://developer.apple.com/support/third-party-SDK-requirements/",
+      "scope": "CAPACITOR_LISTED; REQUIRED_MANIFESTS_AND_CONDITIONAL_BINARY_SDK_SIGNATURES"
+    }
+  ]
+}

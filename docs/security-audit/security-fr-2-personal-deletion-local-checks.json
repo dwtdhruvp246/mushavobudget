@@ -1,0 +1,53 @@
+{
+  "stage_step": "FR.2.2_DELETION_CANDIDATE",
+  "result": "OFFLINE_ACTUAL_PERSONAL_DELETION_CHECKER_SCOPED_PASS",
+  "scope": "ACTUAL_CHECKER_AND_EXTRACTED_DRIVER_WITH_SYNTHETIC_AUTH_RLS_CASCADE_AND_RESPONSE_PORTS_NOT_REAL_POSTGRESQL_OR_WINDOWS_POWERSHELL",
+  "source_parent_commit": "d28043043cac9c4809172961be656ec10e2cff66",
+  "node_version": "v24.19.0",
+  "tests": 41,
+  "pass": 41,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "exit_code": 0,
+  "syntax_checks": 5,
+  "syntax": [
+    {
+      "file": "scripts/check-fr-2-personal-deletion.cjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/verify-fr-2-personal-deletion.mjs",
+      "pass": true
+    },
+    {
+      "file": "tests/fr-2-personal-deletion.test.cjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/check-stage-3-personal-api.cjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/offline-test-network.cjs",
+      "pass": true
+    }
+  ],
+  "planned_hosted_grouped_checks": 30,
+  "file_sha256": {
+    "scripts/check-fr-2-personal-deletion.cjs": "ddcc51b2c32024437df620ef9c8f8d2596c92d797f7ff4e5bfed52620ec64010",
+    "scripts/run-fr-2-personal-deletion.ps1": "98b3e3ca959a346703f2c5fc75e06db84e7cd4c68bdc444f977ed7ca2cd0c3c8",
+    "scripts/verify-fr-2-personal-deletion.mjs": "cb89374ee7e1f07ccbebdf40634d89acb42f123e2ff9f0bfe41081e552fa7f5f",
+    "tests/fr-2-personal-deletion.test.cjs": "3657bbd381295143a624bef05f8bd4cc072a11bb7e947ccc071777ea11363e6a",
+    "scripts/check-stage-3-personal-api.cjs": "e157dd2ba70cfc8b45e25ea75536d5f96ace195d808e0ba97d6263adcc5fd5dd",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5"
+  },
+  "default_network_disabled": true,
+  "Windows_PowerShell_execution_verified": false,
+  "new_hosted_requests_run": 0,
+  "candidate_API_deletion_checks_run": 0,
+  "settings_or_existing_rows_changed": false,
+  "production_or_native_changed": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

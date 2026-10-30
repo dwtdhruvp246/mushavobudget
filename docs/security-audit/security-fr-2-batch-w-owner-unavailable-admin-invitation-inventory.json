@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-30",
+  "source_commit": "2613fdf1122803337c6fb2af31c01028565b77fb",
+  "result": "OWNER_UNAVAILABLE_ADMIN_INVITATION_INVENTORY_ZERO_CANDIDATES",
+  "owner_SQL_result": [
+    {
+      "safe_result": {
+        "result": "ADMIN_UNAVAILABLE_INVITATION_INVENTORY_ONLY",
+        "variants": {
+          "expired": {
+            "existing_invitations": 0,
+            "free_personal_unprovisioned": 0,
+            "with_confirmed_matching_recipient": 0
+          },
+          "replaced": {
+            "existing_invitations": 0,
+            "free_personal_unprovisioned": 0,
+            "with_confirmed_matching_recipient": 0
+          },
+          "cancelled": {
+            "existing_invitations": 0,
+            "free_personal_unprovisioned": 0,
+            "with_confirmed_matching_recipient": 0
+          }
+        },
+        "email_requests": 0,
+        "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+        "completion_RPC_calls": 0,
+        "SQL_or_settings_writes": 0,
+        "hosted_denial_checks_executed": false,
+        "full_lettered_batch_W_complete": false,
+        "recipient_password_signin_tested": false
+      }
+    }
+  ],
+  "interpretation": "No existing expired/cancelled/replaced Admin invitation fixture was found. Fixture gap, not a product defect or hosted denial pass.",
+  "AU02_04_hosted_denial_accepted": false,
+  "repeat_inventory_requested": false,
+  "prior_completed_invitation_and_Business_results_retained": true,
+  "next_action": "Prepare one temporary recipient-bound fixture with complete cleanup SQL before any fixture write; test real Auth recipient read/completion denials for the three unavailable states.",
+  "assistant_hosted_requests": 0,
+  "full_lettered_batch_W_complete": false,
+  "V_complete": false
+}

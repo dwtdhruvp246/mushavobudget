@@ -6,19 +6,20 @@ import { fileURLToPath } from 'node:url';
 import { privateTerminal } from './lib/operator-private-terminal.mjs';
 import { readStagingConfiguration } from './check-fr-2-batch-w-completed-admin-invitation.mjs';
 import { checkUnavailableAdminInvitation } from './lib/unavailable-admin-invitation-check.mjs';
+import { stagedSQLFiles, copySQLToClipboard, stepFiles, stepResults } from './lib/unavailable-admin-invitation-workflow.mjs';
 const root = new URL('../', import.meta.url);
 const sourceNames = [
   'scripts/check-fr-2-batch-w-unavailable-admin-invitation.mjs',
   'scripts/repair-fr-2-batch-w-unavailable-invitation-sql.mjs',
   'scripts/lib/unavailable-admin-invitation-check.mjs',
   'scripts/lib/unavailable-admin-invitation-sql.mjs',
+  'scripts/lib/unavailable-admin-invitation-workflow.mjs',
   'scripts/check-fr-2-batch-w-completed-admin-invitation.mjs',
   'scripts/lib/completed-admin-invitation-check.mjs',
   'scripts/lib/operator-private-terminal.mjs',
   'scripts/lib/read-public-zip.mjs',
   'scripts/lib/store-public-zip.mjs'
 ];
-const filenames = { expired: '01-expired.sql', cancelled: '02-cancelled.sql', replaced: '03-replaced-state.sql', cleanup: '04-cleanup.sql' };
 export function verifyUnavailableSources() {
   const manifest = JSON.parse(fs.readFileSync(new URL('scripts/unavailable-admin-invitation-manifest.json', root), 'utf8'));
   if (Object.keys(manifest.sources || {}).sort().join('|') !== sourceNames.slice().sort().join('|')) throw Error('SOURCE_HASH_MISMATCH');
@@ -38,10 +39,12 @@ async function main() {
     const config = readStagingConfiguration(fs.readFileSync(process.argv[2]));
     const output = path.resolve(process.argv[3]);
     if (fs.existsSync(output)) throw Error('NEW_EMPTY_OUTPUT_DIRECTORY_REQUIRED');
+    const files = stagedSQLFiles(output);
     terminal = privateTerminal();
     terminal.notice('STARTED: Stage 3/10 | FR.2/8 | Batch W/Z — unavailable invitation check, staging only.');
     terminal.notice('Use the OTHER existing ordinary test account from the previous check, then your existing staging Super Admin. Passwords are masked. No email is sent.');
-    terminal.notice('This prepares four complete SQL files. At each prompt, copy ALL of the opened file into the staging SQL Editor, run it once, then return here. The fourth file removes the temporary fixture. No SQL edits or API keys are needed.');
+    terminal.notice('ONE STEP AT A TIME: this checker copies the current complete SQL step to your clipboard. In staging Supabase, open a NEW BLANK query, press Ctrl+V and Run. Return here and type DONE after the expected result. The next step is supplied only after its server checks pass.');
+    terminal.notice('Only the new test sessions may be refreshed and locally signed out. The two older Node-labelled rows are not targeted. No email, upload, API key or settings change is needed.');
     const actor = { email: (await terminal.prompt('Existing ordinary test user email:', false)).trim(), password: await terminal.prompt('Test user password:', true) };
     const admin = async () => {
       terminal.notice('Ordinary test account verified. Enter the existing staging Super Admin.');
@@ -62,25 +65,25 @@ async function main() {
     };
     const interact = {
       prepare: async pack => {
-        fs.mkdirSync(output, { recursive: false });
-        for (const phase of Object.keys(filenames)) fs.writeFileSync(path.join(output, filenames[phase]), pack[phase], { encoding: 'utf8', flag: 'wx' });
-        terminal.notice('COMPLETE: All four SQL files are ready. Keep this directory until cleanup is verified: ' + output);
+        files.prepare(pack);
+        terminal.notice('Emergency cleanup prepared before the fixture: ' + path.join(output, stepFiles.cleanup));
       },
-      sqlStep: async phase => {
-        const filename = path.join(output, filenames[phase]);
-        terminal.notice((phase === 'cleanup' ? 'CLEANUP' : 'SQL STEP ' + ({ expired: 1, cancelled: 2, replaced: 3 })[phase]) + ': ' + filename);
-        terminal.notice('Use Supabase STAGING project dczlddwbtgvfdujgcitb. Copy the WHOLE file into a new query and run it once. Do not rerun an earlier file.');
-        if (process.platform === 'win32') {
+      sqlStep: async (phase, sql) => {
+        const filename = files.materialize(phase, sql), copied = await copySQLToClipboard(sql);
+        terminal.notice('STEP ' + ({ expired: 1, cancelled: 2, replaced: 3, cleanup: 4 })[phase] + '/4 — ' + phase.toUpperCase());
+        terminal.notice(copied ? 'CURRENT SQL COPIED: Supabase staging dczlddwbtgvfdujgcitb > NEW BLANK query > Ctrl+V > Run once.' : 'Clipboard unavailable. Copy the WHOLE current file into a NEW BLANK staging query: ' + filename);
+        terminal.notice('Expected SQL result: ' + stepResults[phase]);
+        if (!copied && process.platform === 'win32') {
           const child = spawn('notepad.exe', [filename], { stdio: 'ignore', detached: true });
           child.on('error', () => terminal.notice('Open the SQL file above manually in Notepad.')); child.unref();
         }
-        if ((await terminal.prompt('After the SQL finishes without an error, type DONE:', false)).trim() !== 'DONE') throw Error('OWNER_CANCELLED');
+        if ((await terminal.prompt('After that expected SQL result, type DONE:', false)).trim() !== 'DONE') throw Error('OWNER_CANCELLED');
       }
     };
     const report = await checkUnavailableAdminInvitation({ actor, admin, invitationId: randomUUID() }, transport, interact);
     report.source_hashes_verified = count; report.retained_staging_ZIP_verified = true;
     terminal.notice(report.exit_code === 0 ? 'COMPLETE: Three unavailable states denied; fixture and sessions cleaned up.' : 'STOPPED FOR REVIEW: Preserve the safe JSON below.');
-    if (report.fixture_cleanup_required) terminal.notice('MANUAL CLEANUP REQUIRED: Open ' + path.join(output, filenames.cleanup) + ' and run the whole file in staging. Report any safe error code; do not restart the check.');
+    if (report.fixture_cleanup_required) terminal.notice('MANUAL CLEANUP REQUIRED: Open ' + path.join(output, stepFiles.cleanup) + ' and run the whole file in staging. Report any safe error code; do not restart the check.');
     console.log(JSON.stringify(report, null, 2)); process.exitCode = report.exit_code;
   } catch (error) {
     const allowed = new Set(['ZIP_AND_NEW_OUTPUT_DIRECTORY_REQUIRED', 'NEW_EMPTY_OUTPUT_DIRECTORY_REQUIRED', 'SOURCE_HASH_MISMATCH', 'ACCEPTED_STAGING_ZIP_REQUIRED', 'STAGING_PUBLIC_CONFIGURATION_REQUIRED', 'PUBLIC_ANON_OR_PUBLISHABLE_KEY_REQUIRED', 'PRIVATE_INTERACTIVE_TERMINAL_REQUIRED', 'OWNER_CANCELLED']);

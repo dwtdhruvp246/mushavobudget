@@ -7,10 +7,12 @@ import { pathToFileURL } from 'node:url';
 import { verifyUnavailableSources } from '../scripts/check-fr-2-batch-w-unavailable-admin-invitation.mjs';
 import { unavailableInvitationSQL, reviewedBusinessTriggerClause } from '../scripts/lib/unavailable-admin-invitation-sql.mjs';
 import { repairUnavailableInvitationSQL } from '../scripts/repair-fr-2-batch-w-unavailable-invitation-sql.mjs';
+import { stagedSQLFiles, stepFiles, copySQLToClipboard } from '../scripts/lib/unavailable-admin-invitation-workflow.mjs';
+import { EventEmitter } from 'node:events';
 import { readStagingConfiguration, validateStagingConfiguration } from '../scripts/check-fr-2-batch-w-completed-admin-invitation.mjs';
 const root = new URL('../', import.meta.url);
-test('all nine runtime inputs match the manifest and a modified input is refused before private input', async () => {
-  assert.equal(verifyUnavailableSources(), 9);
+test('all ten runtime inputs match the manifest and a modified input is refused before private input', async () => {
+  assert.equal(verifyUnavailableSources(), 10);
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'mushavo-unavailable-'));
   try {
     const manifest = JSON.parse(fs.readFileSync(new URL('scripts/unavailable-admin-invitation-manifest.json', root), 'utf8'));
@@ -69,4 +71,34 @@ test('SQL repair refuses edited or mixed-run files before writing any file', () 
     for (const [name, content] of Object.entries(before)) assert.equal(fs.readFileSync(path.join(directory, name), 'utf8'), content);
     assert.equal(fs.existsSync(path.join(directory, 'before-trigger-repair')), false);
   } finally { fs.rmSync(directory, { recursive: true, force: true }); }
+});
+test('only emergency cleanup exists initially; later SQL files appear only when their phase is requested', () => {
+  const parent = fs.mkdtempSync(path.join(os.tmpdir(), 'mushavo-staged-')), output = path.join(parent, 'steps');
+  try {
+    const pack = unavailableInvitationSQL(bindings), files = stagedSQLFiles(output);
+    files.prepare(pack); assert.deepEqual(fs.readdirSync(output), [stepFiles.cleanup]);
+    files.materialize('expired', pack.expired);
+    assert.equal(fs.existsSync(path.join(output, stepFiles.cancelled)), false);
+    assert.equal(fs.existsSync(path.join(output, stepFiles.replaced)), false);
+    assert.throws(() => files.materialize('cancelled', pack.replaced), /REQUESTED_SQL_STEP_REQUIRED/);
+    files.materialize('cancelled', pack.cancelled); files.materialize('replaced', pack.replaced); files.materialize('cleanup', pack.cleanup);
+    assert.deepEqual(fs.readdirSync(output).sort(), Object.values(stepFiles).sort());
+  } finally { fs.rmSync(parent, { recursive: true, force: true }); }
+});
+test('clipboard copy sends SQL only through stdin, verifies the fixed marker and does not execute SQL as shell text', async () => {
+  let command, args, received;
+  const spawn = (name, values) => {
+    command = name; args = values;
+    const child = new EventEmitter(); child.stdout = new EventEmitter(); child.stdin = new EventEmitter(); child.kill = () => {};
+    child.stdin.end = text => {
+      received = text;
+      queueMicrotask(() => { child.stdout.emit('data', Buffer.from('COPIED')); child.emit('close', 0); });
+    };
+    return child;
+  };
+  const sql = 'SELECT 1; -- literal $() and backticks remain data\n';
+  assert.equal(await copySQLToClipboard(sql, { platform: 'win32', spawn }), true);
+  assert.equal(command, 'powershell.exe'); assert.equal(received, sql);
+  assert.ok(!args.includes(sql)); assert.ok(args.includes('-STA'));
+  assert.equal(await copySQLToClipboard(sql, { platform: 'linux', spawn }), false);
 });

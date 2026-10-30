@@ -1,59 +1,61 @@
-# Unavailable Admin invitations — controlled state-denial check
+# AU02.04 — one SQL step at a time with session renewal
 
 Stage 3/10 | FR.2/8 | Batch W/Z. 30 October 2026.
-Source parent: 2613fdf1122803337c6fb2af31c01028565b77fb.
+Source parent: ac6e92b25019290b79a38652c8ded9fd0cc9a5b5.
 
 ## Current checkpoint
 
-The [owner inventory](security-fr-2-batch-w-owner-unavailable-admin-invitation-inventory.json) returned zero expired, cancelled and replaced rows, including zero Free Personal/confirmed-recipient candidates. Do not repeat that query. AU02.04 remains untested because no existing fixture was available; zero candidates is not a product failure.
+[Owner read-only state](security-fr-2-batch-w-owner-post-stop-state.json) confirms zero marked fixture rows and zero marked fixture audit rows. Do not repeat cleanup for the old fixture.
 
-AU02.01/02 setup/isolation, completed-invitation AU02.03 wrong-recipient denial, the repeated-completion part of AU02.05 and Business AU02.06–08 stay accepted. The completed invitation must not be cancelled or edited. AU02.05 actual incomplete-setup/provider-failure retry remains open.
+Each selected account has two Auth session rows, including one exact node/undici-agent row. Recorded ages were 8221 seconds for Super Admin and 8234 for the ordinary test user. These ages and labels do not identify the original session IDs or establish the prior HTTP failure cause. Original terminal logouts remain unverified. The older rows are a separate cleanup carry-forward, not an invitation denial PASS.
 
-## Current action after the owner SQL stop
+The prior checker requested only expired/cleanup, returned no accepted variants and made zero completion RPCs. All four SQL result messages alone did not test API denial. AU02.04 remains pending. Preserve AU02.01/02, AU02.03 completed-invitation wrong-recipient denial, AU02.05 completed-invitation idempotence and Business AU02.06–08 without repeats. Actual incomplete-setup/provider-failure retry in AU02.05 stays open.
 
-The owner received FIXTURE_UNREVIEWED_INVITATION_TRIGGER. Follow the [complete existing-pack repair handoff](SECURITY_FR_2_5_BATCH_W_UNAVAILABLE_ADMIN_INVITATION_TRIGGER_REPAIR.md) in a second PowerShell window before executing another phase. Preserve the current run; do not create a new fixture or repeat sign-ins. The correction recognizes the exact canonical Business launch trigger omitted by the initial helper. Unknown triggers still stop.
-
-## Original controlled fixture action
+## Complete owner workflow
 
 Entry: scripts/check-fr-2-batch-w-unavailable-admin-invitation.mjs.
-Runtime: scripts/lib/unavailable-admin-invitation-check.mjs and scripts/lib/unavailable-admin-invitation-sql.mjs.
-Manifest: scripts/unavailable-admin-invitation-manifest.json, nine runtime sources after the trigger-repair correction.
-Reuse the exact accepted v125 staging ZIP SHA256 9bbad6f7fe83b731aef9b65d3bae5df8b832204c5e7bbd0867a9e5a9b811033b.
+Core: scripts/lib/unavailable-admin-invitation-check.mjs.
+Single-step/clipboard helper: scripts/lib/unavailable-admin-invitation-workflow.mjs.
+Manifest: scripts/unavailable-admin-invitation-manifest.json, ten runtime sources.
+Reuse accepted v125 staging ZIP SHA256 9bbad6f7fe83b731aef9b65d3bae5df8b832204c5e7bbd0867a9e5a9b811033b.
 
-Use the OTHER existing ordinary account from the completed-invitation check, not the newly invited recipient, followed by the existing staging Super Admin. Both passwords are masked and used only for actual Auth password sessions. The ordinary account must have an active self_signup profile, no Admin invitation linkage or platform role, and an existing Personal workspace. Do not repair/change a profile if this preflight fails.
+Run the complete newly pinned PowerShell block in one fresh terminal. It checks twenty-five dependency-free tests, verifies the existing ZIP/public staging configuration and requests masked passwords for the OTHER ordinary test account used previously, followed by the existing staging Super Admin. No new API/Management/service key, install, frontend upload or email is needed.
 
-The runner validates the real identities, the Admin role and staff table-read access before preparing one new random fixture UUID. It creates four complete SQL files in the new local output directory before requesting any SQL execution. No token or password is written into them.
+After the two real identities, current Super Admin role and table-read access are verified, the checker creates an output directory with complete emergency cleanup SQL. It does not create later phase files in advance.
 
-| File | Exact bounded action |
-|---|---|
-| 01-expired.sql | Insert one temporary Free Personal invitation bound to the verified ordinary account, status sent with an already-past server expiry, plus a marked fixture audit row. No email dispatch. |
-| 02-cancelled.sql | Change only that marked fixture to cancelled and a future expiry, isolating cancellation from expiry; insert its marked cancellation audit. |
-| 03-replaced-state.sql | Add the same replacement-reason cancellation audit marker used to classify replaced invitations. No new recipient/invitation/email or replacement reservation call. |
-| 04-cleanup.sql | Delete only the exact unprovisioned marked fixture and its cascading fixture audit rows. Idempotent when already absent; refuse linked/provisioned/renamed/unexpected-audit rows. |
+For each requested step, it writes and verifies the current complete SQL file and copies that SQL directly to the Windows clipboard. SQL is passed through stdin into a fixed PowerShell string variable, never interpolated into command code. Clipboard content is read back for equality. If the clipboard is unavailable, the helper opens only the current file in Notepad and gives its path.
 
-On Windows the current file opens in Notepad. Copy its entire contents to a new query in the STAGING Supabase SQL Editor, project dczlddwbtgvfdujgcitb, and run once. Return to the same terminal and type DONE only after SQL succeeds. Each file is complete; no value or line edits are required. Do not re-run an earlier phase file.
+The owner action is identical each time:
+1. Open a NEW BLANK query in staging Supabase project dczlddwbtgvfdujgcitb.
+2. Press Ctrl+V and Run once.
+3. Check the expected result shown by the terminal, then return there and type DONE.
+4. Wait for actual server checks to finish and the next step to be supplied. Do not select future files or execute phases ahead of the terminal.
 
-If SQL errors, press Escape in the terminal rather than typing DONE. Cleanup is still offered whenever a fixture might have been created. If the terminal is closed, run the already-prepared 04-cleanup.sql in staging before restarting anything, and report the safe result/error. No broad cleanup or deletion of a real invitation is requested.
+| Step | Expected SQL result | Actual server check before the next phase |
+|---|---|---|
+| 1 — expired | EXPIRED_FIXTURE_READY | Exact recipient-bound sent/past-expiry fixture; read unavailable and completion ADMIN_INVITATION_EXPIRED. |
+| 2 — cancelled | CANCELLED_FIXTURE_READY | Same cancelled fixture with future expiry; read and completion ADMIN_INVITATION_NOT_AVAILABLE. |
+| 3 — replaced state | REPLACED_STATE_FIXTURE_READY | Same cancelled fixture and exact replacement-reason audit; read/completion unavailable. This is a stored-state fixture, not a resend/reservation-flow test. |
+| 4 — cleanup | TEMPORARY_INVITATION_FIXTURE_ABSENT | Exact fixture and audit absent; locally sign out only the two sessions created by this run. |
 
-## Hosted checks and cleanup
+Escape cancels a failed SQL handoff and still offers cleanup. If the terminal closes, its prepared 04-cleanup.sql remains available. Do not start another fixture while its cleanup is unresolved. The generated SQL guard rules are unchanged from the reviewed Business-trigger correction: one marked Free Personal fixture, no payment, exact identity/current registered staging catalogue, no existing recipient invitation, no profile/workspace/role/settings or schema change.
 
-At each phase, the real Admin reads the fixture and verifies its recipient, random marker, Free plan, no payment, no workspace/completed marker and exact status/expiry. Expiry comparison uses the HTTP server Date rather than the computer clock. The replaced-state phase also requires its actual fixture audit marker.
+## Test-session lifetime and diagnostics
 
-The ordinary account then calls get_my_admin_user_invitation and complete_admin_user_invitation using its actual Auth token:
-- all three reads must deny with ADMIN_INVITATION_NOT_AVAILABLE;
-- past-expiry completion must deny with ADMIN_INVITATION_EXPIRED;
-- cancelled/replaced-state completion must deny with ADMIN_INVITATION_NOT_AVAILABLE.
+The previous helper retained the original access tokens through manual pauses. The revised helper keeps its own refresh tokens in memory, schedules renewal from expires_in using a monotonic clock, and does not depend on the computer's wall clock. It renews only when needed, before protected reads/RPCs and local cleanup.
 
-Wrong-identity, generic session, unavailable network or successful completion responses do not count as the expected state denial. These are three attempts to complete an unprovisioned unavailable fixture, each expected to stop before provisioning. No valid first-provisioning target or new workspace creation is requested.
+Each renewed access token must retain both the original Auth user ID and original session_id. Auth getUser must also confirm the same verified identity before protected actions continue. Signature/authorization verification remains with Auth; locally decoded claims are binding hints checked against the Auth response, not a replacement for getUser. Wrong-user/session, invalid refresh, failed getUser or unsuccessful renewal during final logout prevents COMPLETE. Failed grants are not retried automatically.
 
-The ordinary profile and owned-workspace set must match their starting values. After the fourth SQL file, real Admin reads must show the fixture and audit absent. Only the two newly created Auth sessions are logged out with scope=local, including after failure. COMPLETE requires verified fixture and session cleanup. The normal browser sessions are not edited.
+Only /auth/v1/logout?scope=local is used for the new sessions. No global/others signout, Auth-table deletion or alteration of the two older Node-labelled rows is requested. No access/refresh token, password, email or identity UUID is printed in safe JSON or saved to files.
 
-Normal success uses 25 direct HTTP requests, bounded at 30, each with a 25-second timeout and no retries; three completion RPCs and four acknowledged manual SQL steps. SQL Editor dashboard traffic is not measured. Fixture SQL writes are explicitly requested; settings, existing profiles/passwords/workspaces/roles, DDL, grants/RLS and application policy are unchanged. No API/Management/service key, dependency install, email, upload or hour-long expiry wait is required.
+The report now includes safe per-phase HTTP status, array/count, allowlisted error code and identity-match booleans; fixture cleanup response shapes; per-slot logout status/code; and same-session renewal verification. Missing-row HTTP200, JWT/session errors and wrong fixture identity no longer share an unexplained combined error alone.
 
-The SQL requires the registered staging target, privileged origin, current active reviewed catalogue/password-only policy, existing ordinary actor and active Super Admin. Unreviewed invitation-table triggers, pre-existing recipient invitations, nonzero Free prices, stale phase or unexpected fixture identity stop the transaction. Cleanup does not depend on the catalogue remaining ACTIVE, but retains staging/identity/audit/dependency guards.
+Typical success uses 25 direct HTTP requests; a synthetic two-hour pause at every SQL step uses 41. Maximum50 direct requests, at most8 refresh grants,25-second request timeouts, no completion/write retries. Dashboard SQL traffic is unmeasured. Refresh can still be refused by the project's existing Auth policy; the checker reports that instead of changing settings or accepting an authentication failure as invitation denial.
 
-## Acceptance and validation limits
+## Validation and limits
 
-This is actual recipient-bound hosted API denial for controlled unavailable database states. The replacement marker is a fixture of the stored cancelled/replaced state; this run does not invoke the email resend/replacement reservation workflow. It does not measure Auth email-link TTL, original UI rendering, new delivery, setup/provider-failure retry or races. No additional public AU case is added.
+[Current checks](security-fr-2-batch-w-unavailable-invitation-session-workflow-checks.json):25 transport/package tests PASS, ten hashes. They cover two-hour pauses, rotation, same-session binding, actual getUser verification, final-cleanup renewal failures, safe diagnostics, staged SQL publication, clipboard stdin/readback protocol, source tamper refusal and existing-pack repair. Five prior real local SQL checks are retained; the generator/guards have not changed. Actual Windows clipboard/Notepad execution is pending the owner, with a current-file fallback.
 
-Initial [local17 checks](security-fr-2-batch-w-unavailable-admin-invitation-local-checks.json) did not include the later Business launch trigger. Current [local21 repair checks](security-fr-2-batch-w-unavailable-invitation-trigger-repair-local-checks.json): sixteen transport/package tests and five real local SQL tests PASS, nine runtime hashes. The SQL tests execute the unchanged foundation and completion migrations against synthetic local tables; they are offline evidence only. The current owner command runs the sixteen dependency-free tests, with no PGlite install. Assistant hosted requests/writes/email: zero. Owner run pending; no W/V/FR.2/Stage3/release closure.
+The [prior Business-trigger repair](SECURITY_FR_2_5_BATCH_W_UNAVAILABLE_ADMIN_INVITATION_TRIGGER_REPAIR.md) is historical for the already-ended original run. Do not resume that run or repeat the post-stop query for this retry.
+
+No assistant hosted Auth, SQL, email or browser action was executed in this revision. This CLI does not close AU05.01 continuous native-browser refresh/persistence, AU02.05 actual setup-failure retry, the old Node-session cleanup carry-forward or whole W/V/FR.2/Stage3/release acceptance. There are no new public AU cases, product policy changes or production/native updates.

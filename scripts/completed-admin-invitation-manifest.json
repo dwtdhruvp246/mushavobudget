@@ -1,0 +1,9 @@
+{
+  "sources": {
+    "scripts/check-fr-2-batch-w-completed-admin-invitation.mjs": "83ae4ad90a3ca9714906d55ae32a0e2bd82071330d5fe033da3eef4b8734f09d",
+    "scripts/lib/completed-admin-invitation-check.mjs": "e8c7c74b00209719dae29f80c733b4bc3b6455638c1206c321df6d9d05992927",
+    "scripts/lib/operator-private-terminal.mjs": "e56b2ada080efdc9d6057b268c9378fcc9387eb69ca3256a801be920c7922956",
+    "scripts/lib/read-public-zip.mjs": "028781910dc28e64d1bb5c02af7a8d26e9f345d4b82f6f1c35f26e14673ff2b0",
+    "scripts/lib/store-public-zip.mjs": "81eae2723285b56e321141512c2b6311777397f5b84853badcee9f60af3706aa"
+  }
+}

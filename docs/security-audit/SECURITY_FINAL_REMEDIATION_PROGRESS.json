@@ -1736,7 +1736,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.AU02.01_AU02.02_CURRENT_POLICY_OWNER_CHECK",
+  "next_step": "FR.2.5.AU02.03_AU02.05_COMPLETED_INVITATION_OWNER_CHECK",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -5825,19 +5825,20 @@
     "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json"
   },
   "FR2_email_next_Auth_case": {
-    "id": "AU02.01",
-    "related_case": "AU02.02",
+    "id": "AU02.03",
+    "related_case": "AU02.05",
     "group": "AU02",
-    "title": "Admin new-recipient setup and pre-adoption Admin-tab isolation",
-    "stage_step": "FR.2.5.AU02.01_AU02.02",
-    "status": "OWNER_GROUPED_CURRENT_POLICY_CHECK_PREPARED",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
+    "title": "Completed Admin invitation: wrong identity denial and repeated completion",
+    "stage_step": "FR.2.5.AU02.03_AU02.05_COMPLETED_INVITATION",
+    "status": "OWNER_BOUNDED_SERVER_CHECK_PREPARED",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_COMPLETED_ADMIN_INVITATION_CHECK.md",
+    "entry": "scripts/check-fr-2-batch-w-completed-admin-invitation.mjs",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
-    "owner_action_required_now": "One Admin-created Free Personal test invitation to an unused controlled inbox, at most one send. Open in a new normal tab in same browser; verify recipient and original Admin continuity before explicit Complete setup/account adoption. Stop on rate/error without resend. Then complete setup and verify intended recipient/Free Personal workspace.",
-    "hosted_acceptance": false,
-    "maximum_send_actions": 1,
-    "rate_reset_verified": false
+    "maximum_hosted_requests": 15,
+    "maximum_real_email_requests": 0,
+    "owner_action_required_now": "Run the pinned full PowerShell block. Four local prompts: new Admin-invited Free recipient email/password and different existing test email/password. Retained accepted ZIP supplies public staging configuration. Send safe JSON and exit code.",
+    "hosted_acceptance": false
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -6093,25 +6094,26 @@
       "new_public_AU_cases_added": 0
     },
     "AU02.01": {
-      "status": "CURRENT_POLICY_GROUPED_OWNER_CHECK_PREPARED",
-      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
-      "source_prerequisite_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
-      "owner_result_received": false,
-      "full_case_acceptance": false,
+      "status": "OWNER_ADMIN_NEW_RECIPIENT_SETUP_SCOPED_PASS",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-new-recipient-isolation-pass.json",
+      "owner_result_received": true,
+      "full_case_acceptance": true,
+      "repeat_requested": false,
       "new_public_AU_cases_added": 0
     },
     "AU02.02": {
-      "status": "CURRENT_POLICY_GROUPED_OWNER_CHECK_PREPARED",
-      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
-      "source_prerequisite_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
-      "owner_result_received": false,
-      "full_case_acceptance": false,
+      "status": "OWNER_ADMIN_TAB_ISOLATION_BEFORE_EXPLICIT_ADOPTION_SCOPED_PASS",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-new-recipient-isolation-pass.json",
+      "owner_result_received": true,
+      "acceptance_scope": "Before explicit recipient completion/account-adoption choice",
+      "full_case_acceptance": true,
+      "post_adoption_Admin_still_selected_claimed": false,
+      "repeat_requested": false,
       "new_public_AU_cases_added": 0
     },
     "AU02.03": {
-      "status": "CURRENT_POLICY_HOSTED_VARIANT_PENDING",
-      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
-      "source_prerequisite_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
+      "status": "COMPLETED_INVITATION_WRONG_RECIPIENT_API_CHECK_PREPARED",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_COMPLETED_ADMIN_INVITATION_CHECK.md",
       "owner_result_received": false,
       "full_case_acceptance": false,
       "new_public_AU_cases_added": 0
@@ -6125,10 +6127,12 @@
       "new_public_AU_cases_added": 0
     },
     "AU02.05": {
-      "status": "CURRENT_POLICY_HOSTED_VARIANT_PENDING",
-      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
-      "source_prerequisite_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
-      "owner_result_received": false,
+      "status": "INITIAL_SETUP_PASS_COMPLETED_INVITATION_IDEMPOTENCE_CHECK_PREPARED",
+      "owner_setup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-new-recipient-isolation-pass.json",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_COMPLETED_ADMIN_INVITATION_CHECK.md",
+      "successful_initial_setup_accepted": true,
+      "repeated_completion_hosted_accepted": false,
+      "provider_failure_retry_accepted": false,
       "full_case_acceptance": false,
       "new_public_AU_cases_added": 0
     }
@@ -7574,5 +7578,32 @@
     "maximum_owner_send_actions": 1,
     "stop_on_rate_or_error": true,
     "new_public_AU_cases_added": 0
+  },
+  "batch_W_Admin_new_recipient_isolation": {
+    "status": "OWNER_REPORTED_ADMIN_NEW_RECIPIENT_AND_PRE_ADOPTION_TAB_ISOLATION_PASS",
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-new-recipient-isolation-pass.json",
+    "requested_observations_passed": 5,
+    "AU02_01_scoped_complete": true,
+    "AU02_02_pre_adoption_scoped_complete": true,
+    "repeat_requested": false,
+    "full_lettered_batch_W_complete": false,
+    "V_complete": false
+  },
+  "batch_W_completed_Admin_invitation_check": {
+    "status": "LOCAL12_PASS_OWNER_HOSTED_PENDING",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_COMPLETED_ADMIN_INVITATION_CHECK.md",
+    "entry": "scripts/check-fr-2-batch-w-completed-admin-invitation.mjs",
+    "source_manifest": "scripts/completed-admin-invitation-manifest.json",
+    "local_tests": 12,
+    "local_fail": 0,
+    "syntax_checks": 2,
+    "maximum_hosted_requests": 15,
+    "maximum_real_email_requests": 0,
+    "created_Auth_sessions_max": 2,
+    "completion_RPC_calls_max": 3,
+    "no_first_provisioning_requested": true,
+    "cleanup_scope": "Only newly created sessions via Auth logout scope=local",
+    "full_AU02_05_provider_failure_retry_complete": false,
+    "full_lettered_batch_W_complete": false
   }
 }

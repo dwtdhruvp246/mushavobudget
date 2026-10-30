@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "date": "2026-10-28",
+  "date": "2026-10-30",
   "phase": "FINAL_REMEDIATION",
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "bc68626e093bb56f31210cb19c411e4a77d332e4",
+  "source_parent_commit": "ae79422a7ecd2a964d8d734ccd015ab3a29976e9",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE287",
+  "latest_evidence": "FRE288",
   "batches": [
     {
       "id": "FR.1",
@@ -1103,7 +1103,7 @@
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5.W48_PASSWORD_SIGNIN_ALL_USERS_REMOVAL",
+          "next_step": "FR.2.5.AU02.04_EXISTING_UNAVAILABLE_INVITATION_INVENTORY",
           "persistent_browser_trust_checkpoint": {
             "status": "SUPERSEDED_OWNER_PASSWORD_ONLY_ALL_ROLES",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
@@ -1205,17 +1205,21 @@
           },
           "AU03_02_wrong_password_message_receipt": "docs/security-audit/security-fr-2-batch-w-owner-invalid-credentials.json",
           "next_Auth_case": {
-            "id": "AU03.01",
-            "title": "Ordinary valid sign-in including older valid password",
-            "status": "PASSWORD_ONLY_POLICY_SOURCE_PASS_STAGING_BROWSER_PENDING",
-            "variant": "Existing confirmed account enters authorized dashboard with email/password only after the coordinated staging rollout. Admin inclusion still enforces current server role.",
-            "owner_action_required_now": "Prepare the exact password-signin ZIP and SQL files with the pinned command. After exit0 upload the ZIP to staging, then run the generated guarded install SQL in the staging Supabase project. After the fixed success result, check email/password dashboard entry and Sign out/reload. No custom email code, trust enrollment, recipient edit or old acceptance-window query.",
+            "id": "AU02.04",
+            "related_case": "AU02.05",
+            "group": "AU02",
+            "title": "Unavailable Admin invitations: read-only existing-fixture inventory",
+            "stage_step": "FR.2.5.AU02.04_EXISTING_UNAVAILABLE_INVITATION_INVENTORY",
+            "status": "SOURCE_PREPARED_OWNER_INVENTORY_PENDING",
+            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_UNAVAILABLE_ADMIN_INVITATION_CHECK.md",
+            "diagnostic": "supabase/diagnostics/security_fr_2_5_admin_unavailable_invitation_inventory.sql",
             "existing_frozen_case": true,
             "new_public_AU_cases_added": 0,
-            "source_pin": "628fcbede4dacbcbc248128b93e550631fb20990",
-            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PASSWORD_SIGNIN_ALL_USERS_HANDOFF.md",
-            "custom_email_or_device_test_requested": false,
-            "hosted_acceptance": false
+            "read_only": true,
+            "maximum_real_email_requests": 0,
+            "maximum_completion_RPC_calls": 0,
+            "owner_action_required_now": "In staging Supabase project dczlddwbtgvfdujgcitb, run the complete read-only inventory SQL once and return safe_result. It reports only expired/cancelled/replaced counts and matching confirmed-recipient candidate counts. No new invitation, cancellation, password, permission, settings or fixture change.",
+            "hosted_denial_acceptance": false
           },
           "recipient_preparation_and_redeploy_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recipient-addition-and-redeploy.json",
           "recovery_window": {
@@ -1670,7 +1674,9 @@
             "includes_Admin": true,
             "hosted_acceptance": false,
             "new_public_AU_cases_added": 0
-          }
+          },
+          "completed_Admin_invitation_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-completed-admin-invitation-pass.json",
+          "current_Admin_invitation_policy_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md"
         },
         {
           "id": "FR.2.6",
@@ -1727,7 +1733,7 @@
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
   "owner_terminal_action_required": false,
-  "owner_SQL_action_required": false,
+  "owner_SQL_action_required": true,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
@@ -1736,7 +1742,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.AU02.03_AU02.05_COMPLETED_INVITATION_PROFILE_DIAGNOSTIC_RETRY",
+  "next_step": "FR.2.5.AU02.04_EXISTING_UNAVAILABLE_INVITATION_INVENTORY",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -2124,7 +2130,7 @@
   "FR2_email_workers_offline_checkpoint_complete": true,
   "FR2_email_hosted_readiness_contract": "docs/security-audit/security-fr-2-email-hosted-readiness-contract.json",
   "FR2_email_hosted_readiness_report": "docs/security-audit/SECURITY_FR_2_4_EMAIL_HOSTED_READINESS_OWNER_HANDOFF.md",
-  "owner_dashboard_read_only_information_required": false,
+  "owner_dashboard_read_only_information_required": true,
   "FR2_email_hosted_readiness_owner_result_received": true,
   "FR2_email_hosted_readiness_owner_receipt": "docs/security-audit/security-fr-2-email-hosted-readiness-owner-result.json",
   "FR2_email_private_Zoho_client_handoff": "docs/security-audit/SECURITY_FR_2_4_ZOHO_PRIVATE_CLIENT_PREPARATION.md",
@@ -4639,7 +4645,7 @@
     ],
     "full_lettered_batch_W_complete": false,
     "owner_terminal_action_required": false,
-    "owner_SQL_action_required": false,
+    "owner_SQL_action_required": true,
     "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md",
     "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
     "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
@@ -4726,7 +4732,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "Reconcile remaining original AU evidence and prepare the next bounded check; reuse accepted flows and stable origin.",
+    "next_action": "In staging Supabase project dczlddwbtgvfdujgcitb, run the complete read-only inventory SQL once and return safe_result. It reports only expired/cancelled/replaced counts and matching confirmed-recipient candidate counts. No new invitation, cancellation, password, permission, settings or fixture change.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4866,7 +4872,7 @@
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
     "expected_nonsecret_input": "Safe local preparation JSON/combined exit code, one-secret-per-staging-environment save confirmation and new deployment URL; never the private packet or recipient clipboard JSON",
-    "next_step": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
+    "next_step": "FR.2.5.AU02.04_EXISTING_UNAVAILABLE_INVITATION_INVENTORY",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -5724,7 +5730,8 @@
       "new_public_AU_cases_added": 0,
       "full_lettered_batch_W_complete": false,
       "hosted_acceptance": false
-    }
+    },
+    "current_Admin_invitation_entry_blocked_by_historical_MFA_workflow": false
   },
   "owner_controlled_test_inbox_information_required": false,
   "FR2_email_persistent_browser_trust": {
@@ -5825,20 +5832,21 @@
     "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json"
   },
   "FR2_email_next_Auth_case": {
-    "id": "AU02.03",
+    "id": "AU02.04",
     "related_case": "AU02.05",
     "group": "AU02",
-    "title": "Completed Admin invitation: wrong identity denial and repeated completion",
-    "stage_step": "FR.2.5.AU02.03_AU02.05_COMPLETED_INVITATION",
-    "status": "OWNER_COMPLETED_INVITATION_SAFE_PROFILE_DIAGNOSTIC_RETRY_PREPARED",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_COMPLETED_ADMIN_INVITATION_CHECK.md",
-    "entry": "scripts/check-fr-2-batch-w-completed-admin-invitation.mjs",
+    "title": "Unavailable Admin invitations: read-only existing-fixture inventory",
+    "stage_step": "FR.2.5.AU02.04_EXISTING_UNAVAILABLE_INVITATION_INVENTORY",
+    "status": "SOURCE_PREPARED_OWNER_INVENTORY_PENDING",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_UNAVAILABLE_ADMIN_INVITATION_CHECK.md",
+    "diagnostic": "supabase/diagnostics/security_fr_2_5_admin_unavailable_invitation_inventory.sql",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
-    "maximum_hosted_requests": 15,
+    "read_only": true,
     "maximum_real_email_requests": 0,
-    "owner_action_required_now": "Run the complete updated pinned PowerShell block. First account is the new Free recipient from the completed Admin setup. Second-account prompts occur only after that recipient is verified. Return safe JSON/exit code; no email, SQL, permission change or initial setup repeat.",
-    "hosted_acceptance": false
+    "maximum_completion_RPC_calls": 0,
+    "owner_action_required_now": "In staging Supabase project dczlddwbtgvfdujgcitb, run the complete read-only inventory SQL once and return safe_result. It reports only expired/cancelled/replaced counts and matching confirmed-recipient candidate counts. No new invitation, cancellation, password, permission, settings or fixture change.",
+    "hosted_denial_acceptance": false
   },
   "owner_browser_recovery_request_action_required": false,
   "FR2_email_Auth_case_results": {
@@ -6112,29 +6120,40 @@
       "new_public_AU_cases_added": 0
     },
     "AU02.03": {
-      "status": "COMPLETED_INVITATION_WRONG_RECIPIENT_API_CHECK_PREPARED",
+      "status": "OWNER_COMPLETED_INVITATION_WRONG_RECIPIENT_API_SCOPED_PASS",
       "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_COMPLETED_ADMIN_INVITATION_CHECK.md",
-      "owner_result_received": false,
-      "full_case_acceptance": false,
-      "new_public_AU_cases_added": 0
+      "owner_result_received": true,
+      "full_case_acceptance": true,
+      "new_public_AU_cases_added": 0,
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-completed-admin-invitation-pass.json",
+      "acceptance_scope": "Completed invitation: read and completion denied to a separately verified valid other identity.",
+      "first_provisioning_requested": false,
+      "repeat_requested": false
     },
     "AU02.04": {
-      "status": "CURRENT_POLICY_HOSTED_VARIANT_PENDING",
-      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
+      "status": "READ_ONLY_EXISTING_UNAVAILABLE_INVITATION_INVENTORY_PREPARED",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_UNAVAILABLE_ADMIN_INVITATION_CHECK.md",
       "source_prerequisite_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
       "owner_result_received": false,
       "full_case_acceptance": false,
-      "new_public_AU_cases_added": 0
+      "new_public_AU_cases_added": 0,
+      "diagnostic": "supabase/diagnostics/security_fr_2_5_admin_unavailable_invitation_inventory.sql",
+      "hosted_denial_checks_executed": false,
+      "inventory_owner_result_received": false
     },
     "AU02.05": {
-      "status": "INITIAL_SETUP_PASS_COMPLETED_INVITATION_IDEMPOTENCE_CHECK_PREPARED",
+      "status": "INITIAL_SETUP_AND_COMPLETED_INVITATION_IDEMPOTENCE_PASS_ACTUAL_FAILURE_RETRY_OPEN",
       "owner_setup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-new-recipient-isolation-pass.json",
       "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_COMPLETED_ADMIN_INVITATION_CHECK.md",
       "successful_initial_setup_accepted": true,
-      "repeated_completion_hosted_accepted": false,
+      "repeated_completion_hosted_accepted": true,
       "provider_failure_retry_accepted": false,
       "full_case_acceptance": false,
-      "new_public_AU_cases_added": 0
+      "new_public_AU_cases_added": 0,
+      "owner_completion_receipt": "docs/security-audit/security-fr-2-batch-w-owner-completed-admin-invitation-pass.json",
+      "original_workspace_returned_twice": true,
+      "owned_workspace_set_unchanged": true,
+      "completed_invitation_repeat_requested": false
     }
   },
   "FR2_email_recovery_request_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_WRONG_PASSWORD_PASS_AND_RECOVERY_REQUEST.md",
@@ -7561,7 +7580,7 @@
     "provider_429_carry_forward_case": "AU05.07"
   },
   "batch_W_Admin_invitation_prerequisite_review": {
-    "status": "CURRENT_POLICY_SOURCE_PREREQUISITE_RECONCILED_OWNER_AU02_01_02_PENDING",
+    "status": "CURRENT_POLICY_SOURCE_RECONCILED_OWNER_AU02_01_02_AND_COMPLETED_INVITATION_CHECKS_PASS",
     "owner_selected_password_only_policy_retained": true,
     "policy_receipt": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
     "reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
@@ -7573,11 +7592,13 @@
     "current_Admin_invitation_entry_requires_TOTP_setup": false,
     "session_and_server_role_checks_retained": true,
     "Super_Admin_availability_owner_reported": true,
-    "hosted_Admin_invitation_results_received": false,
+    "hosted_Admin_invitation_results_received": true,
     "email_provider_rate_boundary_unresolved": true,
     "maximum_owner_send_actions": 1,
     "stop_on_rate_or_error": true,
-    "new_public_AU_cases_added": 0
+    "new_public_AU_cases_added": 0,
+    "completed_invitation_receipt": "docs/security-audit/security-fr-2-batch-w-owner-completed-admin-invitation-pass.json",
+    "maximum_next_owner_send_actions": 0
   },
   "batch_W_Admin_new_recipient_isolation": {
     "status": "OWNER_REPORTED_ADMIN_NEW_RECIPIENT_AND_PRE_ADOPTION_TAB_ISOLATION_PASS",
@@ -7590,7 +7611,7 @@
     "V_complete": false
   },
   "batch_W_completed_Admin_invitation_check": {
-    "status": "OWNER_PROFILE_PREFLIGHT_STOP_LOCAL16_DIAGNOSTIC_RETRY_PREPARED",
+    "status": "OWNER_WRONG_RECIPIENT_DENIAL_AND_COMPLETED_INVITATION_IDEMPOTENCE_SCOPED_PASS",
     "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_COMPLETED_ADMIN_INVITATION_CHECK.md",
     "entry": "scripts/check-fr-2-batch-w-completed-admin-invitation.mjs",
     "source_manifest": "scripts/completed-admin-invitation-manifest.json",
@@ -7614,10 +7635,41 @@
     "owner_first_completion_RPC_calls": 0,
     "owner_first_exit_code": 1,
     "root_cause_established": false,
-    "profile_HTTP_or_metadata_details_received": false,
+    "profile_HTTP_or_metadata_details_received": true,
     "other_account_prompt_deferred_until_recipient_verified": true,
     "successful_HTTP206_reads_supported": true,
     "security_profile_binding_guard_retained": true,
-    "hosted_wrong_recipient_or_idempotence_accepted": false
+    "hosted_wrong_recipient_or_idempotence_accepted": true,
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-completed-admin-invitation-pass.json",
+    "owner_result_received": true,
+    "owner_exit_code": 0,
+    "owner_hosted_requests": 15,
+    "owner_completion_RPC_calls": 3,
+    "owner_created_sessions": 2,
+    "owner_cleaned_sessions": 2,
+    "owner_real_email_requests": 0,
+    "owner_SQL_or_settings_writes": 0,
+    "owner_source_hashes_verified": 5,
+    "owner_retained_staging_ZIP_verified": true,
+    "owner_profile_HTTP_status": 200,
+    "owner_profile_binding_verified": true,
+    "repeat_requested": false
+  },
+  "batch_W_unavailable_Admin_invitation_inventory": {
+    "status": "SOURCE_PREPARED_OWNER_COUNTS_PENDING",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_UNAVAILABLE_ADMIN_INVITATION_CHECK.md",
+    "diagnostic": "supabase/diagnostics/security_fr_2_5_admin_unavailable_invitation_inventory.sql",
+    "existing_case": "AU02.04",
+    "new_public_AU_cases_added": 0,
+    "read_only_transaction": true,
+    "statement_timeout_seconds": 10,
+    "selects_emails_IDs_links_or_tokens": false,
+    "requested_email_or_fixture_writes": 0,
+    "completion_RPC_calls": 0,
+    "inventory_is_hosted_denial_acceptance": false,
+    "owner_inventory_received": false,
+    "local_SQL_execution_performed": false,
+    "source_review_completed": true,
+    "full_lettered_batch_W_complete": false
   }
 }

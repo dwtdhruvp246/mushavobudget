@@ -10,13 +10,13 @@ This is the existing Admin-created ordinary-user invitation workflow, using the 
 
 | Case | This handoff / limit |
 |---|---|
-| AU02.01 | New recipient verifies the invited identity, sets first password, completes setup and opens the intended ordinary Personal workspace/plan. Pending owner result. |
-| AU02.02 | Same-browser normal Admin tab remains the Admin while the isolated invitation setup is open, before the explicit account-adoption choice. Pending owner result. |
-| AU02.03 | Wrong-recipient denial is still pending separate specific protocol; no source-only PASS. |
-| AU02.04 | Expired/cancelled/replaced invitation denial remains pending; no resend/cancellation/expiry is requested by this first handoff. |
-| AU02.05 | Completion retry/idempotence remains pending; a single successful setup does not close all failure/retry variants. |
+| AU02.01 | New recipient verifies the invited identity, sets first password, completes setup and opens the intended ordinary Personal workspace/plan. Owner PASS, 30 October; preserve the accepted result. |
+| AU02.02 | Same-browser normal Admin tab remains the Admin while the isolated invitation setup is open, before the explicit account-adoption choice. Owner PASS, 30 October; preserve the accepted result. |
+| AU02.03 | Owner completed-invitation API scoped PASS, 30 October: distinct valid account denied both read and completion. |
+| AU02.04 | Expired/cancelled/replaced denial remains pending. Next preparation inventories existing unavailable rows; no new mail or cancellation requested. |
+| AU02.05 | Initial setup and repeated completed-invitation idempotence pass. Actual incomplete-setup/provider-failure retry remains unverified. |
 
-## Owner sequence
+## Original owner sequence — already completed; do not repeat
 
 1. Keep admin@mushavobudget.com signed in on the stable staging origin in a normal browser tab.
 2. Users > Manual user settings > Invite a new user.
@@ -32,3 +32,7 @@ No new install, upload, SQL, factor setup, manual Auth-storage editing or paymen
 ## Rate and evidence limits
 
 Real provider429 was observed during the earlier Business email request; exact quota/reset time is still unverified. This first live Admin request is bounded to one actual invitation. Admin's readable rate handling is reviewed source, not yet accepted hosted behavior. Business AU02.06–08 passes, AU03.04 owner-deferred retry and AU05.01 refresh-continuity carry-forward are retained without repeats.
+
+## Current outcome — 30 October 2026
+
+AU02.01/02 [owner browser PASS](security-fr-2-batch-w-owner-admin-new-recipient-isolation-pass.json), AU02.03 and completed-invitation AU02.05 [owner server scoped PASS](security-fr-2-batch-w-owner-completed-admin-invitation-pass.json). Next action is the [AU02.04 existing-fixture inventory](SECURITY_FR_2_5_BATCH_W_UNAVAILABLE_ADMIN_INVITATION_CHECK.md), not another invitation send. Actual setup-failure retry remains separate. Full W/V/Stage3 acceptance is not claimed.

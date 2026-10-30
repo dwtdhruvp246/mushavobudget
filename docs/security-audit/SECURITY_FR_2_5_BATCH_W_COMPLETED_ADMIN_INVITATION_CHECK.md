@@ -5,7 +5,7 @@ Source parent: b78584afa8956bc99bad2ab94987b075fdd4f1d8.
 AU02.01/02 owner PASS: [receipt](security-fr-2-batch-w-owner-admin-new-recipient-isolation-pass.json).
 
 Use the just-created Free Personal recipient and a different existing controlled test account.
-Four local terminal prompts: recipient email, recipient password (masked), other account email, other password (masked). Reuse the accepted v125 ZIP SHA256 9bbad6f7fe83b731aef9b65d3bae5df8b832204c5e7bbd0867a9e5a9b811033b for fixed staging public configuration. No service/Management key, console paste, installation, email or SQL is required.
+At most four local terminal prompts: recipient email and password (masked), then the other account email/password only after the recipient's completed invitation and owned workspace pass preflight. Reuse the accepted v125 ZIP SHA256 9bbad6f7fe83b731aef9b65d3bae5df8b832204c5e7bbd0867a9e5a9b811033b for fixed staging public configuration. No service/Management key, console paste, installation, email or SQL is required.
 
 Entry: scripts/check-fr-2-batch-w-completed-admin-invitation.mjs.
 Core: scripts/lib/completed-admin-invitation-check.mjs.
@@ -29,6 +29,12 @@ Maximum completion RPC calls: three (one denied wrong-recipient call and two int
 
 AU02.03 evidence is scoped to this completed invitation with a separately valid Auth identity; a session failure is not credited as recipient denial. AU02.05 duplicate-completion identity/workspace behavior can be accepted only after the owner run. It is not a provider-failure retry, fresh incomplete setup, race test or independent finance/audit parity proof. AU02.04 expired/cancelled/replaced variants remain pending. No new public AU cases or W/V/Stage3/release closure.
 
-Local validation: twelve synthetic tests PASS and two JavaScript syntax checks. Covers incomplete-target stop, wrong identity denials, unacceptable read/completion success, duplicate creation, session/request cleanup, safe Auth classifications, secret-free JSON, fixed staging configuration and refusal of service/secret keys. No hosted calls or emails by the assistant. Owner live run pending.
+Local validation: sixteen synthetic tests PASS and two JavaScript syntax checks. Covers incomplete-target stop, wrong identity denials, unacceptable read/completion success, duplicate creation, session/request cleanup, safe Auth classifications, secret-free JSON, fixed staging configuration and refusal of service/secret keys. No hosted calls or emails by the assistant. Owner live run pending.
 
 The runner uses only prompt/notice/close from the existing private-terminal helper; it never calls its authenticator setup method or a factor endpoint.
+
+## Owner first run and diagnostic correction — 30 October 2026
+
+[Owner stop receipt](security-fr-2-batch-w-owner-admin-invitation-profile-stop.json): four requests, one Auth session created and cleaned up, no completion RPC or email. The profile preflight did not establish its required metadata. The original combined error omitted HTTP status/shape/marker details, so neither a wrong first account nor a profile/grant/RLS defect is established. The positive browser setup/isolation results remain accepted.
+
+Updated runner reports profile_preflight with safe HTTP status, array/row count, user-ID match boolean, allowlisted signup-source enum, invitation-ID presence/format booleans and allowlisted database code. No row values, IDs, email, token, password or raw response is printed. Successful HTTP206 GET reads are accepted in addition to HTTP200. Required recipient/profile/invitation binding remains enforced. The other account is prompted only after recipient preflight, and prompt cancellation cleans the newly created recipient session. Correct the first selected account if it was not the just-created Free recipient; otherwise return the new diagnostic JSON. Do not rerun unchanged old code or loosen database access.

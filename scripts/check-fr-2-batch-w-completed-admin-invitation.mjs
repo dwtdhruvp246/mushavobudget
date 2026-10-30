@@ -41,9 +41,12 @@ async function main(){
   const count=verifySources(),config=readStagingConfiguration(fs.readFileSync(process.argv[2]));
   terminal=privateTerminal();
   terminal.notice('STARTED: Batch W completed Admin invitation check — staging only.');
-  terminal.notice('Four local prompts. Passwords are masked. No email is sent. Use the NEW Admin-invited Free account first, then a DIFFERENT existing test account.');
-  const recipient={email:(await terminal.prompt('New Admin-invited recipient email:',false)).trim(),password:await terminal.prompt('Recipient password:',true)};
-  const other={email:(await terminal.prompt('Different existing test account email:',false)).trim(),password:await terminal.prompt('Other test account password:',true)};
+  terminal.notice('First enter the NEW FREE USER whose setup you just completed. Passwords are masked. The other test account is requested only after the recipient invitation is verified. No email is sent.');
+  const recipient={email:(await terminal.prompt('New Free user email from completed setup:',false)).trim(),password:await terminal.prompt('New Free user password:',true)};
+  const other=async()=>{
+   terminal.notice('Recipient invitation verified. Enter a different existing staging test account.');
+   return {email:(await terminal.prompt('Different existing test account email:',false)).trim(),password:await terminal.prompt('Other test account password:',true)};
+  };
   input={recipient,other};
   const transport=async({method,route,token,body})=>{
    if(!/^\/(auth\/v1|rest\/v1)\//.test(route))throw Error('FIXED_ROUTE_REQUIRED');

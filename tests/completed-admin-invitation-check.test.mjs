@@ -18,11 +18,15 @@ function fixture(options={}){
   }
   const recipient=token===tokens.recipient;
   if(route==='/auth/v1/user')return {status:200,data:{id:recipient?recipientId:otherId,email:recipient?input.recipient.email:input.other.email,email_confirmed_at:'2026-10-30T00:00:00Z'}};
-  if(route.startsWith('/rest/v1/profiles?'))return {status:200,data:[{id:recipientId,signup_source:'admin_invitation',admin_invitation_id:invitationId}]};
+  if(route.startsWith('/rest/v1/profiles?')){
+   if(options.profileDenied)return {status:403,data:{code:'42501',message:'PRIVATE_PROFILE_FAILURE'}};
+   if(options.profileEmpty)return {status:200,data:[]};
+   return {status:options.partialContent?206:200,data:[{id:recipientId,signup_source:options.selfSignup?'self_signup':'admin_invitation',admin_invitation_id:options.selfSignup?null:invitationId}]};
+  }
   if(route.startsWith('/rest/v1/budget_workspaces?')){
    const rows=[{id:recipient?workspaceId:otherWorkspaceId,owner_id:recipient?recipientId:otherId,workspace_type:'personal'}];
    if(recipient&&options.duplicate&&repeats===2)rows.push({id:uuid(6),owner_id:recipientId,workspace_type:'personal'});
-   return {status:200,data:rows};
+   return {status:options.partialContent?206:200,data:rows};
   }
   if(route==='/rest/v1/rpc/get_my_admin_user_invitation'){
    if(!recipient&&options.networkFailure)throw Error('PRIVATE_PROVIDER_RESPONSE_WITH_SECRET');
@@ -91,4 +95,33 @@ test('failed sign-in identifies its slot and safe code without raw Auth messages
  assert.deepEqual(report.failed_auth,{account_slot:'recipient',HTTP_status:400,code:'invalid_credentials'});
  assert.equal(report.created_sessions,0);assert.equal(report.actual_hosted_requests,1);
  assert.ok(!JSON.stringify(report).includes('PRIVATE_AUTH_RESPONSE'));
+});
+test('profile diagnostics distinguish denied, hidden and non-invited rows without printing private data',async()=>{
+ for(const options of [{profileDenied:true},{profileEmpty:true},{selfSignup:true}]){
+  const {transport}=fixture(options),report=await checkCompletedAdminInvitation(input,transport);
+  assert.equal(report.exit_code,1);assert.equal(report.actual_hosted_requests,4);
+  assert.equal(report.completion_RPC_calls,0);assert.equal(report.cleanup_sessions,1);
+  assert.ok(!JSON.stringify(report).includes('PRIVATE_PROFILE_FAILURE'));
+  if(options.profileDenied){
+   assert.equal(report.problem_code,'PROFILE_READ_NOT_SUCCESSFUL');
+   assert.equal(report.profile_preflight.HTTP_status,403);
+   assert.equal(report.profile_preflight.database_error_code,'42501');
+  }else if(options.profileEmpty)assert.equal(report.profile_preflight.row_count,0);
+  else {assert.equal(report.profile_preflight.signup_source,'self_signup');assert.equal(report.profile_preflight.invitation_id_present,false);}
+ }
+});
+test('valid partial-content profile and workspace reads are accepted',async()=>{
+ const {transport}=fixture({partialContent:true}),report=await checkCompletedAdminInvitation(input,transport);
+ assert.equal(report.exit_code,0);assert.equal(report.profile_preflight.HTTP_status,206);assert.equal(report.actual_hosted_requests,15);
+});
+test('the other account prompt is not reached when recipient profile verification fails',async()=>{
+ let prompted=false;const {transport}=fixture({profileEmpty:true});
+ const report=await checkCompletedAdminInvitation({recipient:input.recipient,other:async()=>{prompted=true;return input.other;}},transport);
+ assert.equal(prompted,false);assert.equal(report.created_sessions,1);assert.equal(report.cleanup_sessions,1);
+});
+test('cancelling the deferred other-account prompt still cleans up the recipient session',async()=>{
+ const {transport}=fixture();
+ const report=await checkCompletedAdminInvitation({recipient:input.recipient,other:async()=>{throw Error('OWNER_CANCELLED');}},transport);
+ assert.equal(report.problem_code,'OWNER_CANCELLED');assert.equal(report.created_sessions,1);assert.equal(report.cleanup_sessions,1);
+ assert.equal(report.completion_RPC_calls,0);
 });

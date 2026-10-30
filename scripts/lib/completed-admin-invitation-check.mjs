@@ -33,22 +33,39 @@ export async function checkCompletedAdminInvitation(input,transport){
  async function rpc(actor,name,body){return call('POST','/rest/v1/rpc/'+name,actor.token,body);}
  async function workspaces(actor){
   const response=await call('GET','/rest/v1/budget_workspaces?select=id,owner_id,workspace_type&owner_id=eq.'+actor.user.id+'&limit=21',actor.token);
-  requireCheck(response.status===200&&Array.isArray(response.data)&&response.data.length>=1&&response.data.length<=20
+  requireCheck([200,206].includes(response.status)&&Array.isArray(response.data)&&response.data.length>=1&&response.data.length<=20
    &&response.data.every(row=>UUID.test(row.id||'')&&row.owner_id===actor.user.id),'OWNED_WORKSPACE_READ_NOT_ESTABLISHED');
   return response.data.map(row=>row.id).sort();
  }
  try {
-  for(const account of [input?.recipient,input?.other]){
+  const validateAccount=account=>{
    requireCheck(typeof account?.email==='string'&&account.email.length<=320&&EMAIL.test(account.email)
     &&typeof account.password==='string'&&account.password.length>0&&account.password.length<=4096,'PRIVATE_INPUT_REQUIRED');
+  };
+  validateAccount(input?.recipient);
+  if(typeof input?.other!=='function'){
+   validateAccount(input?.other);
+   requireCheck(input.recipient.email.toLowerCase()!==input.other.email.toLowerCase(),'DISTINCT_TEST_ACCOUNTS_REQUIRED');
   }
-  requireCheck(input.recipient.email.toLowerCase()!==input.other.email.toLowerCase(),'DISTINCT_TEST_ACCOUNTS_REQUIRED');
   const recipient=await login(input.recipient,'recipient');
   const profile=await call('GET','/rest/v1/profiles?select=id,signup_source,admin_invitation_id&id=eq.'+recipient.user.id+'&limit=2',recipient.token);
-  requireCheck(profile.status===200&&Array.isArray(profile.data)&&profile.data.length===1
-   &&profile.data[0].id===recipient.user.id&&profile.data[0].signup_source==='admin_invitation'
-   &&UUID.test(profile.data[0].admin_invitation_id||''),'COMPLETED_ADMIN_INVITATION_PROFILE_REQUIRED');
-  const invitationId=profile.data[0].admin_invitation_id;
+  const row=Array.isArray(profile.data)&&profile.data.length===1?profile.data[0]:null;
+  const knownSources=new Set(['self_signup','admin_invitation','family_invitation','google']);
+  const knownDatabaseCodes=new Set(['42501','42703','PGRST301','PGRST302','PGRST200','PGRST204','PGRST205','P0001','42P01']);
+  report.profile_preflight={
+   HTTP_status:profile.status,
+   response_is_array:Array.isArray(profile.data),
+   row_count:Array.isArray(profile.data)?profile.data.length:null,
+   user_id_matches:row?.id===recipient.user.id,
+   signup_source:knownSources.has(row?.signup_source)?row.signup_source:'OTHER_OR_MISSING',
+   invitation_id_present:typeof row?.admin_invitation_id==='string'&&row.admin_invitation_id.length>0,
+   invitation_id_valid:UUID.test(row?.admin_invitation_id||''),
+   database_error_code:knownDatabaseCodes.has(profile.data?.code)?profile.data.code:null
+  };
+  requireCheck([200,206].includes(profile.status),'PROFILE_READ_NOT_SUCCESSFUL');
+  requireCheck(Array.isArray(profile.data)&&profile.data.length===1&&row?.id===recipient.user.id
+   &&row.signup_source==='admin_invitation'&&UUID.test(row.admin_invitation_id||''),'COMPLETED_ADMIN_INVITATION_PROFILE_REQUIRED');
+  const invitationId=row.admin_invitation_id;
   const read=await rpc(recipient,'get_my_admin_user_invitation',{p_invitation_id:invitationId});
   const invitation=Array.isArray(read.data)&&read.data.length===1?read.data[0]:null;
   requireCheck(read.status===200&&invitation?.invitation_id===invitationId
@@ -63,7 +80,10 @@ export async function checkCompletedAdminInvitation(input,transport){
   checks.completed_recipient_invitation_verified=true;
   const before=await workspaces(recipient);
   requireCheck(before.includes(invitation.provisioned_workspace_id),'INVITATION_WORKSPACE_NOT_OWNED');
-  const other=await login(input.other,'other');
+  const otherAccount=typeof input.other==='function'?await input.other():input.other;
+  validateAccount(otherAccount);
+  requireCheck(input.recipient.email.toLowerCase()!==otherAccount.email.toLowerCase(),'DISTINCT_TEST_ACCOUNTS_REQUIRED');
+  const other=await login(otherAccount,'other');
   requireCheck(other.user.id!==recipient.user.id,'DISTINCT_TEST_ACCOUNTS_REQUIRED');
   await workspaces(other);
   checks.other_account_valid_and_distinct=true;
@@ -86,7 +106,7 @@ export async function checkCompletedAdminInvitation(input,transport){
   checks.no_additional_owned_workspace=true;
   complete=true;
  } catch(error) {
-  report.problem_code=error instanceof Review?error.safeCode:'REQUEST_FAILED';
+  report.problem_code=error instanceof Review?error.safeCode:error?.message==='OWNER_CANCELLED'?'OWNER_CANCELLED':'REQUEST_FAILED';
  } finally {
   for(const token of sessions.reverse()){
    try {const result=await call('POST','/auth/v1/logout?scope=local',token);

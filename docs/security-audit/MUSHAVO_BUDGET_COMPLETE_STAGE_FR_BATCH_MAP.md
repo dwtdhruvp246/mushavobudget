@@ -1,9 +1,9 @@
 # Mushavo Budget — complete stages, FR groups and batches
-As of 28 October 2026 • Full remaining-to-launch hierarchy • Version 1
+As of 1 November 2026 • Full remaining-to-launch hierarchy • Version 1.1
 
 ## Read this structure correctly
 
-**Current implementation location: Main Stage 3 → FR.2 → FR.2.5 → Batch W.** V is also open/on hold. W67 recovery save/new-password sign-in has been prepared, but its result has not been received.
+**Current implementation location: Launch deliverable 1 → Main Stage 3 → FR.2 → FR.2.5 → Batch W.** FRE294 records all eight invitation groups at their scoped passes. Recovery save/adoption/new-password sign-in and Auth sign-out retry are also accepted. Next is [AU01.04 ordinary signup confirmation/return to sign-in](SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md). V remains open/on hold; W is not complete.
 
 There are three overlapping views of the SAME project:
 - **Main Stages 0–10** describe the product/security areas.
@@ -85,8 +85,8 @@ Historical preparation/local pass is not relabelled as current full security acc
 | S | Browser transition/failure containment preparation | Local preparation completed; hosted follow-through in T/U. |
 | T | Hosted shared-browser/recovery exercise | Scoped hosted pass; not equivalent to full application or launch acceptance. |
 | U | Full-app startup/cache/session lifecycle | Recorded COMPLETE at its accepted scope; reuse applicable evidence. |
-| V | Privileged access, recoverable operators and original MFA scope | OPEN/ON HOLD; reconcile old stronger-assurance requirements with the later password-only decision, then finish current-policy privilege/recovery/invitation prerequisites. |
-| W | Auth/password/account/email workflows | IN PROGRESS; 31 original scenario groups; remaining invitation/password/recovery/session evidence and closure. |
+| V | Privileged access, recoverable operators and original MFA scope | OPEN/ON HOLD; sixteen-case password-only applicability reconciliation is documented, stronger historical MFA criteria remain unmet, and remaining privilege/session/recovery acceptance is open. |
+| W | Auth/password/account/email workflows | IN PROGRESS; 31 original scenario groups. All eight invitation groups scoped PASS; ordinary confirmation/generic-email, remaining applicable password/recovery/session evidence and cleanup remain. |
 | X | Personal/Family/Business permissions and legitimate finance | PLANNED; finish remaining role/scope/finance checks using retained actors/fixtures and applicable earlier passes. |
 | Y | Backend caller permissions, real database races and containment | PLANNED; finite caller matrix, real concurrency, legitimate service/job access and safe failure readback/cleanup. |
 | Z | Integrated authorization recheck and Stage 3 closeout | PLANNED; reconcile U–Y and original authorization exits, integrated affected recheck and final Stage 3 handoff. |
@@ -95,7 +95,7 @@ Historical preparation/local pass is not relabelled as current full security acc
 
 ### Work left inside V/X/Y/Z
 
-- **V:** controlled privileged identities and independent recovery; current installed role/grant behavior; ordinary/wrong-role denials; revocation/recovery continuity. The old V contract has 16 cases tied partly to stronger MFA. Reconcile those against the explicit password-only decision before execution. Do not silently reinstate custom codes/trust/MFA, falsely mark old stronger-assurance checks passed, or automatically reenroll/delete factors.
+- **V:** controlled privileged identities and independent recovery; current installed role/grant behavior; ordinary/wrong-role denials; revocation/recovery continuity. The old V contract has 16 cases tied partly to stronger MFA; their [current password-only applicability reconciliation](SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md) is documented and remaining acceptance is open. Do not silently reinstate custom codes/trust/MFA, falsely mark old stronger-assurance checks passed, or automatically reenroll/delete factors.
 - **X:** reconcile earlier Personal/Family/Business passes; execute missing own/foreign/removed/assigned/team/Owner/escalation and invite/removal effects; verify legitimate finance/currency/entitlements; prove exact fixture cleanup and retained-record preservation.
 - **Y:** freeze the installed routine/caller matrix; test applicable anonymous/authenticated/human/service/job permissions; real PostgreSQL concurrency/replay/expiry/revocation or current-policy authorization-change races; verify independent failure readback, containment and cleanup. Retired proof/device mechanisms do not automatically require new tests.
 - **Z:** reconcile required authorization outcomes and current exact installations; run justified integrated/affected regressions; check preservation/cleanup/containment and issue the Stage 3 completion decision/handoff. Unresolved required blockers keep it open.
@@ -107,14 +107,14 @@ X/Y/Z had named scope and exits but no fully enumerated final execution-case cou
 | Group | Original scenarios | Recorded progress | Remaining obligation |
 |---|---:|---|---|
 | AU01 — signup/confirmation | 5 | Earlier signup/pending-guidance/unconfirmed-denial observations | Final confirmation destination, generic existing-email/resend/rate behavior and current-source applicability/cleanup |
-| AU02 — invitations | 8 | No accepted complete W invitation workflow results | Five Admin cases historically blocked by V; three Business new/existing-recipient and accept/decline/replay cases |
-| AU03 — sign-in/passwords | 5 | Current password sign-in, wrong-password message, browser boundary, password change/new-password login observations | Older valid-password compatibility, direct server boundary, actual failure/retry and applicable recent-login policy |
-| AU04 — recovery/links | 6 | Dedicated view, missing/used-link denial, validation/refusal history; latest real-link isolation passed | Remaining wrong-session/actual-expiry/generic-response variants and current successful recovery-save/adoption/retry outcome |
-| AU05 — sessions/failures | 7 | Saved reload, network retry and shared-tab cycle observations | Actual refresh/invalid cleanup, push/Auth logout failures, in-flight Business clearing and supported rate/stale-token behavior |
+| AU02 — invitations | 8 | All eight original groups have scoped PASS results: Admin setup/isolation/denials/network retry/idempotence and Business new/existing/accept/decline/replay | No invitation repeat. Exact unrecorded retry wording/internal provider outage were not exercised; older failed-run Node-session cleanup stays under session closure |
+| AU03 — sign-in/passwords | 5 | Current password sign-in, wrong-password message, browser boundary, password change/new-password login observations | Older valid-password compatibility, direct server boundary and final recent-login applicability. AU03.04 actual failure/retry remains owner-deferred, not passed or automatically repeated |
+| AU04 — recovery/links | 6 | Dedicated view, missing/used-link denial, validation/refusal history, real-link isolation, successful recovery save/adoption/shared-tab switch and new-password login accepted | Remaining wrong-session/actual-expiry/generic-response and actual password-save failure/retry variants; no repeat of accepted success sequence |
+| AU05 — sessions/failures | 7 | Saved reload, network retry, shared-tab cycle and Auth sign-out failure/retry accepted. Real refresh HTTP200 observed with incomplete continuity evidence | Clean continuous refresh/invalid cleanup, independent push-cleanup failure, in-flight Business clearing, relevant rate/stale-token behavior and exact older Node-session cleanup; no immediate hour-long wait or logout repeat |
 
-Total remains **31 original scenarios**, many with multiple variants. Partial observations are not whole-case completion. Latest recovery-isolation result is accepted at its before-save scope; subsequent recovery-save instructions remain pending.
+Total remains **31 original scenarios**, many with multiple variants. Partial observations are not whole-case completion. All eight invitation groups have scoped passes and recovery-save success is accepted; no trustworthy overall W percentage follows from these heterogeneous cases. [The current checklist](SECURITY_FR_2_5_BATCH_W_REMAINING_CHECKS.md) retains every original case and its exact evidence limits.
 
-Group execution into W1 passwords/recovery, W2 confirmation/email, W3 invitations, W4 session failures/closure. These are scheduling packs inside W, not new AU requirements. W's preliminary allowance is 3–6 working days within FR.2's total.
+Group execution into W1 passwords/recovery, W2 confirmation/email, W3 invitations, W4 session failures/closure. W3 has scoped completion; W1/W2/W4 retain the remaining obligations above. These are scheduling packs inside W, not new AU requirements. The original 28 October W allowance was 3–6 active engineering days within FR.2's total; it is a baseline, not a newly measured remaining-time quote.
 
 ## D. Detailed work packs for every later FR
 

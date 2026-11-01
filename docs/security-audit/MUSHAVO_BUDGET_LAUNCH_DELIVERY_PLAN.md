@@ -1,7 +1,7 @@
 > **Start with the [complete Stage → FR → batch map](MUSHAVO_BUDGET_COMPLETE_STAGE_FR_BATCH_MAP.md).** It lists every main stage, FR.1–FR.8, all A–Z batches, the original 31 W scenarios and the proposed later-FR execution packs. The seven deliverables below are an estimating view of that same work, not a replacement roadmap.
 
 # Mushavo Budget — launch delivery plan
-Version 1 • 28 October 2026 • Planning reset requested by the owner
+Version 1.1 • Status updated 1 November 2026 • Original estimating baseline: 28 October 2026
 
 ## 1. What this plan fixes
 
@@ -9,7 +9,7 @@ The previous reporting followed technical audit steps and individual test observ
 
 This is one launch-level delivery plan with seven deliverables. Existing finding definitions, the original 31 W scenarios, prior results and source history remain intact. The seven deliverables group existing work; they do not add seven new audit stages. Feature exclusions below are proposals requiring the owner's launch-scope choice, not silently applied scope reductions.
 
-**Current implementation checkpoint:** Stage 3 authorization remediation / FR.2 / Batch W. Latest recorded evidence: FRE285 at source parent ca6eb643adac1252c35f9d7392a2df9be89334ee. W67 recovery save/sign-in instructions are prepared; their results have not been supplied. The latest completed owner observation is AU04.06 recovery identity, clean URL and original-dashboard isolation.
+**Current implementation checkpoint:** Launch deliverable 1, accounts/permissions/finance access → Stage 3 authorization remediation / FR.2 / FR.2.5 / Batch W. Latest evidence FRE294, source parent d30f9e34100b533ec431dd528e6e31c463272f23. All eight invitation groups AU02.01–08 now have scoped passes, including actual completion-network retry plus retained server idempotence. Recovery save/adoption/new-password sign-in and Auth sign-out retry also have accepted owner results. Next is [AU01.04 ordinary signup confirmation and return to sign-in](SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md). W and the whole deliverable remain open.
 
 **Target on record:** December 2026, with no confirmed day or commitment to simultaneous web, Google Play and Apple App Store release.
 
@@ -17,9 +17,9 @@ This is one launch-level delivery plan with seven deliverables. Existing finding
 
 - FR.1 selected staging static serving has a scoped completion receipt, with wider deployment/release issues carried forward.
 - Personal and Business finance/authorization work has earlier scoped live passes. Reuse applicable results; do not repeat all those workflows from the beginning.
-- Current password-only sign-in, signed-in password change/new-password login, normal saved-session reload, normal shared-tab sign-in/sign-out/re-sign-in and the latest before-save recovery isolation have owner observations at their recorded scopes.
-- W remains open. Invitations and several password/recovery/session failure variants still need acceptance. There are eight invitation scenario groups without accepted W workflow outcomes: five Admin cases historically blocked by V and three Business cases pending.
-- V remains on hold and needs reconciliation with the owner's later password-only policy. X, Y and Z remain in the authorization delivery path.
+- Current password-only sign-in, signed-in password change/new-password login, normal saved-session reload, shared-tab sign-in/sign-out/re-sign-in, recovery isolation followed by successful save/adoption/new-password login, and Auth sign-out failure/retry have owner observations at their recorded scopes. Reuse them.
+- W remains open for ordinary confirmation/generic-email behavior and remaining applicable password/recovery/session failures and cleanup. All eight invitation groups have scoped passes; their exact limits remain in the receipts. AU02.05's exact error wording was not recorded and does not require a repeated invitation.
+- V remains open/on hold. Its sixteen original requirements have an explicit current password-only applicability reconciliation; stronger historical MFA criteria are not passed. Remaining privilege/session/recovery acceptance and X, Y and Z stay in the authorization delivery path.
 - FR.3–FR.7 are not accepted for launch. Some reviewed source or local candidates exist; “not accepted” does not mean every component must be written from scratch.
 - FR.8 fresh final audit/release disposition has not been performed. No release approval, native artifact acceptance or store approval is inferred.
 
@@ -71,16 +71,16 @@ All day ranges are active engineering days, including applicable implementation 
 
 The [31-case remaining checklist](SECURITY_FR_2_5_BATCH_W_REMAINING_CHECKS.md) remains the detailed scope. Grouping does not convert a partial case to PASS. Do not repeat the accepted shared-tab or recovery-isolation checks solely because this plan changed.
 
-| Pack | Existing work to finish | Owner interaction | Allowance |
+| Pack | Current remaining work / outcome | Owner interaction | Original allowance (28 Oct) |
 |---|---|---|---:|
-| W1 — password and recovery completion | Complete the current recovery save/adoption/new-password outcome; remaining applicable old-password, direct server boundary, wrong/expired-session and retry evidence; reconcile actual reauthentication policy | One coherent password/recovery session where prerequisites permit; do not re-open consumed links or repeat uncertain writes | 0.5–1 day |
+| W1 — password and recovery completion | Recovery save/adoption/new-password login accepted. Remaining applicable older-password, direct server boundary, wrong/expired-session/generic-response and recovery-save failure evidence; reconcile final reauthentication settings. AU03.04 failure/retry stays explicitly owner-deferred | One coherent remaining password/recovery session where prerequisites permit; no repeat of accepted saves/sign-ins or automatic reversal of the owner's deferral | 0.5–1 day |
 | W2 — confirmation and generic email behavior | Final confirmation destination, existing-email/resend behavior, actual relevant generic/rate responses; reuse earlier signup/pending/unconfirmed-denial observations | One bounded inbox/account session and one results checklist | 0.5–1 day |
-| W3 — invitations | Three Business and five Admin scenario groups, intended recipient, explicit setup, wrong/expired/cancelled/replaced/replayed invitations and retries | One prepared controlled-actor/invitation pack, with private values kept local; dependent actions remain sequential | 1–2 days |
-| W4 — session failures and closure | Actual refresh/invalid refresh, push/Auth sign-out failures, in-flight/Business state clearing, supported Auth rate/stale-token behavior and exact cleanup | Prefer automated controlled tests/collection; one grouped owner browser review for behavior automation cannot establish | 1–2 days |
+| W3 — invitations | COMPLETE at eight recorded scoped passes: all five Admin and three Business groups, including real completion-network retry plus server idempotence | No invitation repeat; remove the prior test block if it remains. Older failed-run Node-session cleanup is carried under W4 | 1–2 days; scoped work now accepted |
+| W4 — session failures and closure | Clean continuous refresh/invalid cleanup, independent push-cleanup failure, in-flight/Business state clearing, relevant rate/stale-token behavior and exact older Node-session cleanup remain. Auth sign-out retry already accepted | Prefer controlled collection and a grouped owner browser review; no repeated accepted logout cycle, immediate hour-long expiry wait or broad revocation of unrelated sessions | 1–2 days |
 
-**W allowance: 3–6 active engineering days**, within Deliverable 1's 6–10 days. The remainder of Deliverable 1 has a rough 3–4-day allowance for V policy/actor reconciliation, affected remaining X/Y evidence and Z closeout, reusing earlier finance passes. These are particularly uncertain until the exact current installed matrix and actor readiness are checked. If they cannot fit, publish the revised estimate and cause; do not keep extending the pack without telling the owner.
+**Original W allowance: 3–6 active engineering days**, within Deliverable 1's original 6–10 days. The 1 November update records completed work; these baseline allowances are not a fresh remaining-time estimate. Actual active engineering time and provider delays have not been measured, so no claim that the allowance has or has not been exceeded is made. The remainder of Deliverable 1 has a rough 3–4-day allowance for V policy/actor reconciliation, affected remaining X/Y evidence and Z closeout, reusing earlier finance passes. These are particularly uncertain until the exact current installed matrix and actor readiness are checked. If they cannot fit, publish the revised estimate and cause; do not keep extending the pack without telling the owner.
 
-**V policy reconciliation is an early task.** The owner explicitly removed custom sign-in codes and trusted-browser requirements for all app users, including Admins. Do not reintroduce them or automatically restart authenticator setup. Reconcile the remaining privileged-role/recovery/invitation requirements with that decision; preserve the old stronger-assurance criterion as historically unmet or explicitly revised, not falsely passed. Clarify only a genuinely unresolved policy choice, not the already-decided password-only rule. Provider/operator account protection and recovery need their actual scope reviewed separately.
+**V policy applicability is now documented; remaining acceptance is still open.** The owner explicitly removed custom sign-in codes and trusted-browser requirements for all app users, including Admins. Do not reintroduce them or automatically restart authenticator setup. Reconcile the remaining privileged-role/recovery/invitation requirements with that decision; preserve the old stronger-assurance criterion as historically unmet or explicitly revised, not falsely passed. Clarify only a genuinely unresolved policy choice, not the already-decided password-only rule. Provider/operator account protection and recovery need their actual scope reviewed separately.
 
 ## 6. Extra work for the full native/provider roadmap
 
@@ -146,21 +146,21 @@ Unknown is a recorded dependency, not a reason to repeat known setup or request 
 - Every added requirement gets a visible reason, scope and forecast impact. Existing launch blockers are not silently removed to reach an endpoint.
 - Keep the final release review concrete: exact accepted source/artifact/configuration, required results, unresolved risks, monitoring, rollback and accountable owner decision.
 
-## 11. Immediate next two work sessions
+## 11. Immediate next bounded work
 
-**Session 1 — freeze launch scope and reconcile the backlog.** Use this document as the launch dashboard. Confirm the one channel decision that materially changes the schedule, reconcile the obsolete Auth/V requirements, check later-stage prerequisites, and map the seven deliverables to the existing acceptance records. Prepare W1 and W2 as coherent packs. The current recovery-save instruction is still pending, not failed; do not manufacture a result or request a new email just because planning took time.
+**W2 — ordinary confirmation first.** Follow the [prepared AU01.04 sequence](SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md): one new ordinary signup/email on stable staging, confirm the correct identity and clean route, Go to sign in, then one password sign-in. The older ordinary link was consumed before the callback correction. Retain earlier signup/pending/unconfirmed-denial observations and all invitation passes. Stop on an actual mail/rate/error without resending.
 
-**Session 2 — execute the first prepared pack and measure pace.** Complete the still-applicable recovery/password/confirmation outcomes with one grouped owner handoff, record precise results and fix demonstrated failures. Update the remaining effort from actual work and set the next pack. If the retained recovery form is no longer usable, prepare the bounded next action from its observed state instead of reopening a consumed link or blindly resubmitting a save.
+**W1/W2/W4 — remaining evidence and cleanup.** Use the resulting account/state for applicable generic-email checks, and prepare the remaining password/recovery/session variants as bounded groups. Exact older Node-session cleanup remains unverified; do not delete or revoke broadly by user-agent counts. Reconcile real source/settings applicability before tests, preserve the owner's AU03.04 deferral and reuse normal session/recovery/logout passes. After this bounded work, revise remaining active effort from measured progress; V/X/Y/Z and the later launch deliverables remain explicit dependencies. Launch-channel choice and later prerequisites remain unresolved where recorded; this status update makes no scope reduction.
 
 This plan does not run those tests, deploy code or change the product. Its purpose is to make the remaining route, effort and decisions visible before continuing.
 
 ## Source and status references
 
-- [Current final-remediation progress](SECURITY_FINAL_REMEDIATION_PROGRESS.json), retrieved at ca6eb643adac1252c35f9d7392a2df9be89334ee, for current accepted scopes and FR.3–FR.8 status.
+- [Current final-remediation progress](SECURITY_FINAL_REMEDIATION_PROGRESS.json), updated through FRE294 from source parent d30f9e34100b533ec431dd528e6e31c463272f23, for current accepted scopes and FR.3–FR.8 status.
 - [Original final-remediation handoff](SECURITY_FINAL_REMEDIATION_HANDOFF.md), 13 October, for FR.1–FR.8 exit requirements. Its old “next FR.1” instruction is historical.
 - [December target and batching decision](SECURITY_DECEMBER_2026_LAUNCH_BATCH_PLAN.md), owner direction 23 October; no exact channel/date commitment established.
 - [Fixed remaining lettered packages](SECURITY_STAGE_3_REMAINING_LETTERED_BATCHES.md), for U–Z scope and endpoint.
-- [W remaining original cases](SECURITY_FR_2_5_BATCH_W_REMAINING_CHECKS.md), [latest completed recovery-isolation receipt](security-fr-2-batch-w-owner-stable-recovery-isolation-pass.json), and [prepared recovery-save handoff](SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md).
+- [W remaining original cases](SECURITY_FR_2_5_BATCH_W_REMAINING_CHECKS.md), [latest invitation retry receipt](security-fr-2-batch-w-owner-admin-setup-completion-retry-pass.json), [accepted recovery-save sequence](SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md), and [next ordinary confirmation handoff](SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md).
 - [Carry-forward register](SECURITY_AUDIT_CARRY_FORWARD.md), for original findings and overlapping deletion/files/privacy and later actions. Dated historical observations are not treated as fresh failures or current configuration reads.
 
 Durations and launch sequencing are new planning judgments in this version; they are not results stated by these source documents.

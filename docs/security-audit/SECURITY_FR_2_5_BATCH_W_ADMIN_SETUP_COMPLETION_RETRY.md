@@ -1,5 +1,7 @@
 # AU02.05 — completion failure and retry after the first password is saved
 
+> **COMPLETE at the recorded scope — 1 November 2026, FRE294.** [Owner receipt](security-fr-2-batch-w-owner-admin-setup-completion-retry-pass.json): the completion request showed `(blocked:devtools)`, the setup page remained, retry worked without entering the password again, the correct recipient's Free Personal workspace opened and only one Personal workspace appeared. The exact error message was not recorded; no exact-copy or internal-provider-outage pass is inferred, and a repeat is not required for that omission. Combine this result with the accepted server idempotence receipt. All eight invitation groups now have scoped passes. Remove the test blocking rule if it remains, retain the controlled recipient account and continue with [ordinary signup confirmation AU01.04](SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md). The protocol below is retained as history and must not be executed again merely to record this pass.
+
 Stage 3/10 | FR.2/8 | Batch W/Z. 30 October 2026.
 Source parent: a169e996ed8dccfac899c727ac0513caba26eea8.
 
@@ -36,7 +38,7 @@ Keep the recipient setup tab open. Use Chrome DevTools in THAT recipient tab. Th
 2. Add and enable one BLOCK condition for this exact staging URL:
    https://dczlddwbtgvfdujgcitb.supabase.co/rest/v1/rpc/complete_admin_user_invitation
    Use a blocking condition, with the general Network throttle remaining No throttling. Keep DevTools open; closing it disables request blocking.
-3. In the recipient form enter the private first password/confirmation of at least8 characters, keep USD, and tick Open this verified account in Mushavo Budget after setup.
+3. In the recipient form enter the private first password/confirmation of at least 8 characters, keep USD, and tick Open this verified account in Mushavo Budget after setup.
 4. Click Complete setup once. The password-save request is allowed, but the completion endpoint must show (blocked:devtools) in Network. The expected UI is a connection/retry error, the setup form retained and no dashboard adoption. Current source message: The request could not finish. Check your connection and try again. Password fields are expected to become hidden because passwordSaved is retained.
 5. If the dashboard opens or the completion request was not blocked, stop and report. Do not treat a successful first submission as failure/retry acceptance or issue another email automatically.
 6. Remove only the condition added for this test. Keep the same setup page and values; no reload or password change is needed. Click Complete setup once more. Source should skip an already-saved password, complete the same invitation and open the correct Free Personal workspace after the existing acknowledgement.

@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "date": "2026-10-30",
+  "date": "2026-11-01",
   "phase": "FINAL_REMEDIATION",
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "a169e996ed8dccfac899c727ac0513caba26eea8",
+  "source_parent_commit": "d30f9e34100b533ec431dd528e6e31c463272f23",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE293",
+  "latest_evidence": "FRE294",
   "batches": [
     {
       "id": "FR.1",
@@ -1103,7 +1103,7 @@
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5.AU02.05_UNFINISHED_SETUP_RECIPIENT_PREPARATION",
+          "next_step": "FR.2.5.AU01.04_CURRENT_ORDINARY_CONFIRMATION",
           "persistent_browser_trust_checkpoint": {
             "status": "SUPERSEDED_OWNER_PASSWORD_ONLY_ALL_ROLES",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
@@ -1205,18 +1205,21 @@
           },
           "AU03_02_wrong_password_message_receipt": "docs/security-audit/security-fr-2-batch-w-owner-invalid-credentials.json",
           "next_Auth_case": {
-            "id": "AU02.05",
-            "group": "AU02",
-            "title": "Unfinished Admin setup completion failure and retry",
-            "stage_step": "FR.2.5.AU02.05_UNFINISHED_SETUP_RECIPIENT_PREPARATION",
-            "status": "OWNER_UNFINISHED_RECIPIENT_PREPARATION_PENDING",
-            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_SETUP_COMPLETION_RETRY.md",
+            "id": "AU01.04",
+            "group": "AU01",
+            "title": "Ordinary signup confirmation destination and return to sign-in",
+            "stage_step": "FR.2.5.AU01.04_CURRENT_ORDINARY_CONFIRMATION",
+            "status": "OWNER_ONE_ORDINARY_SIGNUP_CONFIRMATION_SEQUENCE_READY",
+            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md",
             "existing_frozen_case": true,
             "new_public_AU_cases_added": 0,
-            "maximum_owner_invitation_send_actions": 1,
-            "maximum_owner_completion_submissions": 2,
-            "owner_action_required_now": "In stable staging as the existing Super Admin, create one Free Personal invitation to an unused owner-controlled inbox (Batch W Setup Retry, Monthly/USD, USD/default USD, no payment). Send once and stop on error. Open its received link in a new normal tab, verify recipient and leave Complete setup unclicked. Return email received, correct recipient displayed and unfinished form open.",
-            "successful_setup_and_idempotence_prior_results_retained": true,
+            "maximum_owner_signup_submissions": 1,
+            "maximum_owner_email_requests": 1,
+            "maximum_owner_confirmation_link_openings": 1,
+            "maximum_owner_manual_signins": 1,
+            "owner_action_required_now": "Remove the previous completion-request block if it remains. In one new Chrome Incognito window on stable staging signup.html, create one ordinary test signup using an unused owner-controlled inbox entered privately, Batch W Confirmation, a private password of at least8 characters, and USD/default USD. Submit once and stop on email/rate/error. Open the received confirmation link once in the same Incognito window; check intended identity, clean confirmation route and Go to sign in before manual password sign-in. Retain the account; return only the requested observations. No Admin invitation, resend, SQL, settings, upload or duplicate earlier denial test.",
+            "all_eight_invitation_scoped_passes_retained": true,
+            "earlier_signup_pending_unconfirmed_denial_results_retained": true,
             "hosted_acceptance": false
           },
           "recipient_preparation_and_redeploy_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recipient-addition-and-redeploy.json",
@@ -1674,7 +1677,8 @@
             "new_public_AU_cases_added": 0
           },
           "completed_Admin_invitation_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-completed-admin-invitation-pass.json",
-          "current_Admin_invitation_policy_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md"
+          "current_Admin_invitation_policy_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
+          "Admin_setup_completion_retry_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-setup-completion-retry-pass.json"
         },
         {
           "id": "FR.2.6",
@@ -1690,7 +1694,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN"
+      "next_step": "FR.2.5.AU01.04_CURRENT_ORDINARY_CONFIRMATION"
     },
     {
       "id": "FR.3",
@@ -1740,7 +1744,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.AU02.05_UNFINISHED_SETUP_RECIPIENT_PREPARATION",
+  "next_step": "FR.2.5.AU01.04_CURRENT_ORDINARY_CONFIRMATION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -2036,7 +2040,7 @@
   "FR2_Admin_ordinary_identity_verified_TOTP_factors": 0,
   "FR2_Admin_ordinary_identity_outcome_report": "docs/security-audit/SECURITY_FR_2_4_IDENTITY_OUTCOME_AND_SIGNIN_HANDOFF.md",
   "FR2_Admin_genuine_operator_signin_owner_result_received": true,
-  "owner_browser_signin_action_required": false,
+  "owner_browser_signin_action_required": true,
   "owner_private_control_summary_required": false,
   "FR2_Admin_operator_signin_owner_receipt": "docs/security-audit/security-fr-2-operator-signin-owner-result.json",
   "FR2_Admin_primary_and_recovery_signin_owner_reported_PASS": true,
@@ -4644,7 +4648,7 @@
     "full_lettered_batch_W_complete": false,
     "owner_terminal_action_required": false,
     "owner_SQL_action_required": false,
-    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_STABLE_RECOVERY_SAVE_CHECK.md",
+    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md",
     "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
     "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
     "entry": "scripts/review-fr-2-batch-w-dashboard.ps1",
@@ -4730,7 +4734,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "In stable staging as the existing Super Admin, create one Free Personal invitation to an unused owner-controlled inbox (Batch W Setup Retry, Monthly/USD, USD/default USD, no payment). Send once and stop on error. Open its received link in a new normal tab, verify recipient and leave Complete setup unclicked. Return email received, correct recipient displayed and unfinished form open.",
+    "next_action": "Remove the previous completion-request block if it remains. In one new Chrome Incognito window on stable staging signup.html, create one ordinary test signup using an unused owner-controlled inbox entered privately, Batch W Confirmation, a private password of at least8 characters, and USD/default USD. Submit once and stop on email/rate/error. Open the received confirmation link once in the same Incognito window; check intended identity, clean confirmation route and Go to sign in before manual password sign-in. Retain the account; return only the requested observations. No Admin invitation, resend, SQL, settings, upload or duplicate earlier denial test.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4870,7 +4874,7 @@
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
     "expected_nonsecret_input": "Safe local preparation JSON/combined exit code, one-secret-per-staging-environment save confirmation and new deployment URL; never the private packet or recipient clipboard JSON",
-    "next_step": "FR.2.5.AU02.05_UNFINISHED_SETUP_RECIPIENT_PREPARATION",
+    "next_step": "FR.2.5.AU01.04_CURRENT_ORDINARY_CONFIRMATION",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -5729,7 +5733,9 @@
       "full_lettered_batch_W_complete": false,
       "hosted_acceptance": false
     },
-    "current_Admin_invitation_entry_blocked_by_historical_MFA_workflow": false
+    "current_Admin_invitation_entry_blocked_by_historical_MFA_workflow": false,
+    "owner_new_account_signup_requested": true,
+    "owner_existing_password_change_requested": false
   },
   "owner_controlled_test_inbox_information_required": false,
   "FR2_email_persistent_browser_trust": {
@@ -5830,18 +5836,21 @@
     "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json"
   },
   "FR2_email_next_Auth_case": {
-    "id": "AU02.05",
-    "group": "AU02",
-    "title": "Unfinished Admin setup completion failure and retry",
-    "stage_step": "FR.2.5.AU02.05_UNFINISHED_SETUP_RECIPIENT_PREPARATION",
-    "status": "OWNER_UNFINISHED_RECIPIENT_PREPARATION_PENDING",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_SETUP_COMPLETION_RETRY.md",
+    "id": "AU01.04",
+    "group": "AU01",
+    "title": "Ordinary signup confirmation destination and return to sign-in",
+    "stage_step": "FR.2.5.AU01.04_CURRENT_ORDINARY_CONFIRMATION",
+    "status": "OWNER_ONE_ORDINARY_SIGNUP_CONFIRMATION_SEQUENCE_READY",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
-    "maximum_owner_invitation_send_actions": 1,
-    "maximum_owner_completion_submissions": 2,
-    "owner_action_required_now": "In stable staging as the existing Super Admin, create one Free Personal invitation to an unused owner-controlled inbox (Batch W Setup Retry, Monthly/USD, USD/default USD, no payment). Send once and stop on error. Open its received link in a new normal tab, verify recipient and leave Complete setup unclicked. Return email received, correct recipient displayed and unfinished form open.",
-    "successful_setup_and_idempotence_prior_results_retained": true,
+    "maximum_owner_signup_submissions": 1,
+    "maximum_owner_email_requests": 1,
+    "maximum_owner_confirmation_link_openings": 1,
+    "maximum_owner_manual_signins": 1,
+    "owner_action_required_now": "Remove the previous completion-request block if it remains. In one new Chrome Incognito window on stable staging signup.html, create one ordinary test signup using an unused owner-controlled inbox entered privately, Batch W Confirmation, a private password of at least8 characters, and USD/default USD. Submit once and stop on email/rate/error. Open the received confirmation link once in the same Incognito window; check intended identity, clean confirmation route and Go to sign in before manual password sign-in. Retain the account; return only the requested observations. No Admin invitation, resend, SQL, settings, upload or duplicate earlier denial test.",
+    "all_eight_invitation_scoped_passes_retained": true,
+    "earlier_signup_pending_unconfirmed_denial_results_retained": true,
     "hosted_acceptance": false
   },
   "owner_browser_recovery_request_action_required": false,
@@ -6162,21 +6171,40 @@
       "repeat_requested": false
     },
     "AU02.05": {
-      "status": "INITIAL_SETUP_IDEMPOTENCE_PASS_COMPLETION_NETWORK_FAILURE_RETRY_PENDING",
+      "status": "OWNER_COMPLETION_NETWORK_RETRY_AND_SERVER_IDEMPOTENCE_SCOPED_PASS",
       "owner_setup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-new-recipient-isolation-pass.json",
       "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_SETUP_COMPLETION_RETRY.md",
       "successful_initial_setup_accepted": true,
       "repeated_completion_hosted_accepted": true,
       "provider_failure_retry_accepted": false,
-      "full_case_acceptance": false,
+      "full_case_acceptance": true,
       "new_public_AU_cases_added": 0,
       "owner_completion_receipt": "docs/security-audit/security-fr-2-batch-w-owner-completed-admin-invitation-pass.json",
       "original_workspace_returned_twice": true,
       "owned_workspace_set_unchanged": true,
       "completed_invitation_repeat_requested": false,
-      "completion_network_failure_retry_accepted": false,
-      "current_owner_action": "Prepare one new controlled Free Personal invitation and leave its verified setup form open before any Complete setup submission.",
-      "existing_completed_idempotence_repeat_requested": false
+      "completion_network_failure_retry_accepted": true,
+      "current_owner_action": "No repeat. Remove the AU02.05 test block if it remains; retain the controlled recipient account.",
+      "existing_completed_idempotence_repeat_requested": false,
+      "owner_failure_retry_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-setup-completion-retry-pass.json",
+      "full_case_acceptance_scope": "Original completion retry/idempotence: real browser blocked-completion retry after password save plus retained repeated-completion server idempotence.",
+      "error_message_recorded": false,
+      "exact_error_message": null,
+      "exact_failure_copy_acceptance_added": false,
+      "internal_provider_outage_required": false,
+      "repeat_requested": false
+    },
+    "AU01.04": {
+      "status": "CURRENT_ORDINARY_CONFIRMATION_DESTINATION_OWNER_CHECK_PENDING",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md",
+      "prior_confirmation_package_receipt": "docs/security-audit/security-fr-2-batch-w-owner-confirmation-package-and-deployment.json",
+      "prior_link_consumed_before_confirmation_return_correction": true,
+      "existing_case": true,
+      "new_public_AU_cases_added": 0,
+      "maximum_new_signup_submissions": 1,
+      "maximum_email_requests": 1,
+      "earlier_AU01_01_02_03_observations_retained": true,
+      "full_case_acceptance": false
     }
   },
   "FR2_email_recovery_request_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_WRONG_PASSWORD_PASS_AND_RECOVERY_REQUEST.md",
@@ -7603,7 +7631,7 @@
     "provider_429_carry_forward_case": "AU05.07"
   },
   "batch_W_Admin_invitation_prerequisite_review": {
-    "status": "CURRENT_POLICY_SOURCE_RECONCILED_OWNER_AU02_01_02_AND_COMPLETED_INVITATION_CHECKS_PASS",
+    "status": "ALL_FIVE_ADMIN_INVITATION_CASES_SCOPED_PASS_CURRENT_POLICY_LIMITS_RETAINED",
     "owner_selected_password_only_policy_retained": true,
     "policy_receipt": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
     "reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
@@ -7621,9 +7649,11 @@
     "stop_on_rate_or_error": true,
     "new_public_AU_cases_added": 0,
     "completed_invitation_receipt": "docs/security-audit/security-fr-2-batch-w-owner-completed-admin-invitation-pass.json",
-    "maximum_next_owner_send_actions": 1,
-    "next_case": "AU02.05",
-    "next_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_SETUP_COMPLETION_RETRY.md"
+    "maximum_next_owner_send_actions": 0,
+    "next_case": null,
+    "next_handoff": null,
+    "latest_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-setup-completion-retry-pass.json",
+    "Admin_invitation_repeat_requested": false
   },
   "batch_W_Admin_new_recipient_isolation": {
     "status": "OWNER_REPORTED_ADMIN_NEW_RECIPIENT_AND_PRE_ADOPTION_TAB_ISOLATION_PASS",
@@ -7791,26 +7821,27 @@
   },
   "batch_W_invitation_case_checkpoint": {
     "original_case_groups": 8,
-    "scoped_pass_groups": 7,
+    "scoped_pass_groups": 8,
     "scoped_pass_case_ids": [
       "AU02.01",
       "AU02.02",
       "AU02.03",
       "AU02.04",
+      "AU02.05",
       "AU02.06",
       "AU02.07",
       "AU02.08"
     ],
-    "remaining_partial_case_ids": [
-      "AU02.05"
-    ],
+    "remaining_partial_case_ids": [],
     "AU02_05_initial_setup_and_idempotence_accepted": true,
-    "scope_note": "Each pass retains its recorded limits; completion-network failure/retry remains. This is not whole Batch W or Stage3 acceptance.",
+    "scope_note": "All eight original invitation groups have scoped passes. Exact unrecorded retry error wording and internal provider outage are not accepted; no repeat is required. This is not whole Batch W or Stage3 acceptance.",
     "older_failed_run_Node_cleanup_unverified": true,
-    "new_public_case_groups_added": 0
+    "new_public_case_groups_added": 0,
+    "AU02_05_completion_network_retry_and_idempotence_accepted": true,
+    "latest_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-setup-completion-retry-pass.json"
   },
   "batch_W_Admin_setup_completion_retry": {
-    "status": "SOURCE_PROTOCOL_PREPARED_OWNER_UNFINISHED_RECIPIENT_READINESS_PENDING",
+    "status": "OWNER_COMPLETION_NETWORK_FAILURE_RETRY_SCOPED_PASS",
     "existing_case": "AU02.05",
     "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_SETUP_COMPLETION_RETRY.md",
     "source_review": [
@@ -7824,7 +7855,39 @@
     "completion_network_block_endpoint": "https://dczlddwbtgvfdujgcitb.supabase.co/rest/v1/rpc/complete_admin_user_invitation",
     "new_controlled_Free_Personal_recipient_required": true,
     "provider_outage_required": false,
-    "actual_failure_retry_result_received": false,
-    "new_runtime_or_SQL_install_or_upload_requested": false
+    "actual_failure_retry_result_received": true,
+    "new_runtime_or_SQL_install_or_upload_requested": false,
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-setup-completion-retry-pass.json",
+    "recipient_form_readiness_received": true,
+    "completion_request_blocked": true,
+    "retained_setup_page": true,
+    "retry_without_password_reentry_succeeded": true,
+    "correct_Free_Personal_workspace_and_single_visible_Personal_workspace": true,
+    "error_message_recorded": false,
+    "exact_error_message": null,
+    "repeat_requested": false,
+    "existing_server_idempotence_retained": true
+  },
+  "batch_W_ordinary_confirmation_check": {
+    "status": "SOURCE_REVIEWED_BOUNDED_OWNER_SEQUENCE_PREPARED",
+    "case_id": "AU01.04",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md",
+    "source_review": [
+      "signup.html",
+      "auth-flows.js",
+      "auth.html"
+    ],
+    "prior_consumed_link_not_reused": true,
+    "unused_owner_controlled_inbox_entered_privately": true,
+    "maximum_signup_submissions": 1,
+    "maximum_email_requests": 1,
+    "maximum_confirmation_link_openings": 1,
+    "maximum_manual_signins": 1,
+    "resend_or_existing_email_case_AU01_05_not_executed": true,
+    "signup_password_boundary_and_unconfirmed_denial_repeat_requested": false,
+    "no_unused_inbox_fallback": "Report prerequisite only; no confirmed-account reset or guessed alias.",
+    "expected_owner_active_minutes_if_email_prompt": "5–10; email delay unestimated",
+    "result_received": false,
+    "new_runtime_SQL_upload_or_settings_change_requested": false
   }
 }

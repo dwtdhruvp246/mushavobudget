@@ -1,5 +1,7 @@
 # AU01.04 — ordinary signup confirmation and return to sign-in
 
+> **COMPLETE at owner browser scope — 1 November 2026, FRE295.** [All requested results passed](security-fr-2-batch-w-owner-ordinary-confirmation-pass.json): pending guidance/email, correct confirmed recipient/clean URL, manual sign-in form and correct Free Personal workspace after password sign-in, with no error. Retain this account; do not repeat confirmation. Next is [AU01.05's prepared request-feedback correction and bounded check](SECURITY_FR_2_5_BATCH_W_CONFIRMATION_REQUEST_RETRY.md). The protocol below is historical.
+
 Stage 3/10 | FR.2/8 | Batch W/Z. Prepared 1 November 2026.
 Source parent: d30f9e34100b533ec431dd528e6e31c463272f23. Evidence update: FRE294.
 

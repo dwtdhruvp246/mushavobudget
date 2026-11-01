@@ -5,11 +5,11 @@
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "d30f9e34100b533ec431dd528e6e31c463272f23",
+  "source_parent_commit": "cc2251174b75867b96798acfa833621031826fb5",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE294",
+  "latest_evidence": "FRE295",
   "batches": [
     {
       "id": "FR.1",
@@ -1103,7 +1103,7 @@
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5.AU01.04_CURRENT_ORDINARY_CONFIRMATION",
+          "next_step": "FR.2.5.AU01.05_CONFIRMATION_REQUEST_RETRY_STAGING_PACKAGE",
           "persistent_browser_trust_checkpoint": {
             "status": "SUPERSEDED_OWNER_PASSWORD_ONLY_ALL_ROLES",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
@@ -1205,21 +1205,21 @@
           },
           "AU03_02_wrong_password_message_receipt": "docs/security-audit/security-fr-2-batch-w-owner-invalid-credentials.json",
           "next_Auth_case": {
-            "id": "AU01.04",
+            "id": "AU01.05",
             "group": "AU01",
-            "title": "Ordinary signup confirmation destination and return to sign-in",
-            "stage_step": "FR.2.5.AU01.04_CURRENT_ORDINARY_CONFIRMATION",
-            "status": "OWNER_ONE_ORDINARY_SIGNUP_CONFIRMATION_SEQUENCE_READY",
-            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md",
+            "title": "Generic existing-email and confirmation-request failure/rate response",
+            "stage_step": "FR.2.5.AU01.05_CONFIRMATION_REQUEST_RETRY_STAGING_PACKAGE",
+            "status": "OWNER_PINNED_TWO_FILE_PACKAGE_AND_STAGING_UPLOAD_PENDING",
+            "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONFIRMATION_REQUEST_RETRY.md",
+            "code_commit": "cc2251174b75867b96798acfa833621031826fb5",
             "existing_frozen_case": true,
             "new_public_AU_cases_added": 0,
-            "maximum_owner_signup_submissions": 1,
-            "maximum_owner_email_requests": 1,
-            "maximum_owner_confirmation_link_openings": 1,
-            "maximum_owner_manual_signins": 1,
-            "owner_action_required_now": "Remove the previous completion-request block if it remains. In one new Chrome Incognito window on stable staging signup.html, create one ordinary test signup using an unused owner-controlled inbox entered privately, Batch W Confirmation, a private password of at least8 characters, and USD/default USD. Submit once and stop on email/rate/error. Open the received confirmation link once in the same Incognito window; check intended identity, clean confirmation route and Go to sign in before manual password sign-in. Retain the account; return only the requested observations. No Admin invitation, resend, SQL, settings, upload or duplicate earlier denial test.",
+            "owner_action_required_now": "Run the complete pinned PowerShell package handoff using code commit cc2251174b75867b96798acfa833621031826fb5 and the retained accepted SimpleSeats ZIP. The helper verifies seven inputs and patches only auth-flows.js/auth.html in a new42-entry ZIP while preserving40 entries. Upload the new ZIP once to the existing Cloudflare Pages mushavo-budget-staging project; return safe JSON, exit code and deployment URL. No SQL, settings, new signup or email is requested by preparation. Keep the newly confirmed account for the following AU01.05 browser check.",
+            "current_step_prompts": [],
+            "current_step_application_Auth_or_email_requests": 0,
+            "current_step_SQL_or_settings_writes": 0,
             "all_eight_invitation_scoped_passes_retained": true,
-            "earlier_signup_pending_unconfirmed_denial_results_retained": true,
+            "AU01_04_confirmation_scoped_pass_retained": true,
             "hosted_acceptance": false
           },
           "recipient_preparation_and_redeploy_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recipient-addition-and-redeploy.json",
@@ -1678,7 +1678,8 @@
           },
           "completed_Admin_invitation_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-completed-admin-invitation-pass.json",
           "current_Admin_invitation_policy_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
-          "Admin_setup_completion_retry_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-setup-completion-retry-pass.json"
+          "Admin_setup_completion_retry_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-setup-completion-retry-pass.json",
+          "ordinary_confirmation_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-confirmation-pass.json"
         },
         {
           "id": "FR.2.6",
@@ -1694,7 +1695,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "FR.2.5.AU01.04_CURRENT_ORDINARY_CONFIRMATION"
+      "next_step": "FR.2.5.AU01.05_CONFIRMATION_REQUEST_RETRY_STAGING_PACKAGE"
     },
     {
       "id": "FR.3",
@@ -1734,7 +1735,7 @@
   "OP_decisions_UNCONFIRMED": 6,
   "full_OP_cases_BLOCKED_NOT_RUN": 24,
   "original_completed_stage_0_to_10_progress_objects_preserved": true,
-  "owner_terminal_action_required": false,
+  "owner_terminal_action_required": true,
   "owner_SQL_action_required": false,
   "actual_hosted_or_backend_rechecks_run": 3,
   "findings_closed": [],
@@ -1744,11 +1745,11 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.AU01.04_CURRENT_ORDINARY_CONFIRMATION",
+  "next_step": "FR.2.5.AU01.05_CONFIRMATION_REQUEST_RETRY_STAGING_PACKAGE",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
-  "owner_staging_direct_upload_action_required": false,
+  "owner_staging_direct_upload_action_required": true,
   "serving_product": "CLOUDFLARE_PAGES",
   "owner_deployment_method": "DIRECT_UPLOAD",
   "target_project": "mushavo-budget-staging",
@@ -1761,7 +1762,7 @@
   "owner_zip_preflight_status": "PASS_39_RECEIPT_HASHES_40_ZIP_HASHES",
   "owner_zip_sha256": "c79819c4abb1cc8184d87ccfeb70c7d0e6b2cd7630e1f89072ea63415ba7707c",
   "owner_zip_path": "C:\\Users\\HP\\Desktop\\Mushavo-Staging-Candidate-6205f79b476048a48edf4fe9e8a88cd0\\mushavo-staging-upload-beb642556710479b91dbfde0931744a2.zip",
-  "owner_new_upload_requested": false,
+  "owner_new_upload_requested": true,
   "owner_canonical_URL_received": "https://mushavo-budget-staging.pages.dev/",
   "owner_upload_filename_confirmed": "mushavo-staging-upload-beb642556710479b91dbfde0931744a2.zip",
   "unique_new_deployment_ID_or_provider_success_status_received": false,
@@ -2040,7 +2041,7 @@
   "FR2_Admin_ordinary_identity_verified_TOTP_factors": 0,
   "FR2_Admin_ordinary_identity_outcome_report": "docs/security-audit/SECURITY_FR_2_4_IDENTITY_OUTCOME_AND_SIGNIN_HANDOFF.md",
   "FR2_Admin_genuine_operator_signin_owner_result_received": true,
-  "owner_browser_signin_action_required": true,
+  "owner_browser_signin_action_required": false,
   "owner_private_control_summary_required": false,
   "FR2_Admin_operator_signin_owner_receipt": "docs/security-audit/security-fr-2-operator-signin-owner-result.json",
   "FR2_Admin_primary_and_recovery_signin_owner_reported_PASS": true,
@@ -4646,9 +4647,9 @@
       "AU02.05"
     ],
     "full_lettered_batch_W_complete": false,
-    "owner_terminal_action_required": false,
+    "owner_terminal_action_required": true,
     "owner_SQL_action_required": false,
-    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md",
+    "owner_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONFIRMATION_REQUEST_RETRY.md",
     "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
     "contract": "docs/security-audit/security-fr-2-batch-w-contract.json",
     "entry": "scripts/review-fr-2-batch-w-dashboard.ps1",
@@ -4734,7 +4735,7 @@
     "secure_email_change_owner_reported": true,
     "reauthentication_requirement_still_unknown": false,
     "redirect_entry_category_still_unknown": false,
-    "next_action": "Remove the previous completion-request block if it remains. In one new Chrome Incognito window on stable staging signup.html, create one ordinary test signup using an unused owner-controlled inbox entered privately, Batch W Confirmation, a private password of at least8 characters, and USD/default USD. Submit once and stop on email/rate/error. Open the received confirmation link once in the same Incognito window; check intended identity, clean confirmation route and Go to sign in before manual password sign-in. Retain the account; return only the requested observations. No Admin invitation, resend, SQL, settings, upload or duplicate earlier denial test.",
+    "next_action": "Run the complete pinned PowerShell package handoff using code commit cc2251174b75867b96798acfa833621031826fb5 and the retained accepted SimpleSeats ZIP. The helper verifies seven inputs and patches only auth-flows.js/auth.html in a new42-entry ZIP while preserving40 entries. Upload the new ZIP once to the existing Cloudflare Pages mushavo-budget-staging project; return safe JSON, exit code and deployment URL. No SQL, settings, new signup or email is requested by preparation. Keep the newly confirmed account for the following AU01.05 browser check.",
     "metadata_result_not_AU_or_whole_W_acceptance": true,
     "owner_redirect_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-redirect-screenshot.json",
     "current_redirect_entry_category_observed": "E",
@@ -4829,8 +4830,8 @@
     "current_canonical_site_URL_preserved_owner_confirmation": null,
     "current_unexpected_changes_owner_confirmation": null,
     "complete_settings_readback_owner_receipt_received": false,
-    "owner_staging_direct_upload_action_required": false,
-    "owner_new_upload_requested": false,
+    "owner_staging_direct_upload_action_required": true,
+    "owner_new_upload_requested": true,
     "next_step_read_only_dashboard_metadata": false,
     "owner_settings_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-settings-screenshots.json",
     "project_reference_visually_confirmed": true,
@@ -4874,7 +4875,7 @@
     "public_GETs_or_Auth_requests_for_current_receipt_review": 0,
     "owner_controlled_unused_test_inbox_information_required": false,
     "expected_nonsecret_input": "Safe local preparation JSON/combined exit code, one-secret-per-staging-environment save confirmation and new deployment URL; never the private packet or recipient clipboard JSON",
-    "next_step": "FR.2.5.AU01.04_CURRENT_ORDINARY_CONFIRMATION",
+    "next_step": "FR.2.5.AU01.05_CONFIRMATION_REQUEST_RETRY_STAGING_PACKAGE",
     "owner_ordinary_signup_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
     "owner_reported_AU_case_scoped_passes": [
       "AU01.01",
@@ -4884,7 +4885,7 @@
     "owner_reported_AU03_03_boundary": "PARTIAL_BROWSER7_REJECT_AND_SIGNUP8_ACCEPT_DIRECT_SERVER_BELOW8_UNTESTED",
     "actual_hosted_AU_cases_scope": "OWNER_REPORTED_BROWSER_RESULTS_AT_PRIOR_SOURCE; THREE_SCOPED_PASSES_PLUS_PARTIAL_AU03.03",
     "confirmation_link_left_unopened": false,
-    "test_account_state": "EMAIL_CONFIRMED_LINK_CONSUMED; EXTRA_CODE_SCREEN_OBSERVED_ON_PRIOR_SOURCE; CORRECTED_UI_NOT_DEPLOYED",
+    "test_account_state": "EMAIL_CONFIRMED_PERSONAL_WORKSPACE_OPENED_PASSWORD_SIGNIN_PASS_RETAIN_FOR_AU01_05",
     "copy_local_receipt": "docs/security-audit/security-fr-2-batch-w-copy-local-checks.json",
     "copy_local_tests": 44,
     "copy_local_PASS": 44,
@@ -4933,7 +4934,7 @@
     "confirmation_duplicate_code_view_removed_in_source": true,
     "confirmation_success_returns_to_manual_signin": true,
     "ordinary_new_device_signin_security_owner_explicitly_retained": true,
-    "confirmation_callback_destination_case": "PARTIAL_OWNER_LINK_SUCCESS_IDENTITY_VISIBLE; CORRECTED_UI_CLEAN_ROUTE_RETURN_PENDING",
+    "confirmation_callback_destination_case": "OWNER_CURRENT_CONFIRMED_IDENTITY_CLEAN_ROUTE_MANUAL_SIGNIN_SCOPED_PASS",
     "confirmation_real_owner_ZIP_prepared": true,
     "confirmation_frontend_uploaded": null,
     "confirmation_retained_input_ZIP_SHA256": "a6c5a3a3111b0a78af375a0ccf86f1bc7387e78b4a4b57adbada1efe04d8879d",
@@ -4951,8 +4952,8 @@
     "confirmation_provider_success_status_owner_supplied": null,
     "confirmation_public_lookup_attempts": 2,
     "confirmation_public_source_verified": false,
-    "confirmation_new_callback_browser_acceptance_verified": false,
-    "fresh_confirmation_test_inbox_prerequisite_pending": true,
+    "confirmation_new_callback_browser_acceptance_verified": true,
+    "fresh_confirmation_test_inbox_prerequisite_pending": false,
     "recovery_request_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-recovery-request.json",
     "recovery_link_handoff": "docs/security-audit/security-fr-2-batch-w-recovery-link-handoff.json",
     "owner_recovery_request_acknowledgement_and_email_scoped_pass": true,
@@ -5281,7 +5282,7 @@
       "prior_failure_is_historical": true,
       "corrected_install_success_received": true
     },
-    "owner_browser_action_required": true,
+    "owner_browser_action_required": false,
     "password_signin_backend_installation": {
       "stage_step": "FR.2.5.W50_PASSWORD_SIGNIN_INSTALLED_BROWSER_CHECK",
       "status": "OWNER_BACKEND_INSTALL_PASS_BROWSER_ACCEPTANCE_PENDING",
@@ -5734,8 +5735,9 @@
       "hosted_acceptance": false
     },
     "current_Admin_invitation_entry_blocked_by_historical_MFA_workflow": false,
-    "owner_new_account_signup_requested": true,
-    "owner_existing_password_change_requested": false
+    "owner_new_account_signup_requested": false,
+    "owner_existing_password_change_requested": false,
+    "ordinary_confirmation_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-confirmation-pass.json"
   },
   "owner_controlled_test_inbox_information_required": false,
   "FR2_email_persistent_browser_trust": {
@@ -5836,21 +5838,21 @@
     "owner_policy": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json"
   },
   "FR2_email_next_Auth_case": {
-    "id": "AU01.04",
+    "id": "AU01.05",
     "group": "AU01",
-    "title": "Ordinary signup confirmation destination and return to sign-in",
-    "stage_step": "FR.2.5.AU01.04_CURRENT_ORDINARY_CONFIRMATION",
-    "status": "OWNER_ONE_ORDINARY_SIGNUP_CONFIRMATION_SEQUENCE_READY",
-    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md",
+    "title": "Generic existing-email and confirmation-request failure/rate response",
+    "stage_step": "FR.2.5.AU01.05_CONFIRMATION_REQUEST_RETRY_STAGING_PACKAGE",
+    "status": "OWNER_PINNED_TWO_FILE_PACKAGE_AND_STAGING_UPLOAD_PENDING",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONFIRMATION_REQUEST_RETRY.md",
+    "code_commit": "cc2251174b75867b96798acfa833621031826fb5",
     "existing_frozen_case": true,
     "new_public_AU_cases_added": 0,
-    "maximum_owner_signup_submissions": 1,
-    "maximum_owner_email_requests": 1,
-    "maximum_owner_confirmation_link_openings": 1,
-    "maximum_owner_manual_signins": 1,
-    "owner_action_required_now": "Remove the previous completion-request block if it remains. In one new Chrome Incognito window on stable staging signup.html, create one ordinary test signup using an unused owner-controlled inbox entered privately, Batch W Confirmation, a private password of at least8 characters, and USD/default USD. Submit once and stop on email/rate/error. Open the received confirmation link once in the same Incognito window; check intended identity, clean confirmation route and Go to sign in before manual password sign-in. Retain the account; return only the requested observations. No Admin invitation, resend, SQL, settings, upload or duplicate earlier denial test.",
+    "owner_action_required_now": "Run the complete pinned PowerShell package handoff using code commit cc2251174b75867b96798acfa833621031826fb5 and the retained accepted SimpleSeats ZIP. The helper verifies seven inputs and patches only auth-flows.js/auth.html in a new42-entry ZIP while preserving40 entries. Upload the new ZIP once to the existing Cloudflare Pages mushavo-budget-staging project; return safe JSON, exit code and deployment URL. No SQL, settings, new signup or email is requested by preparation. Keep the newly confirmed account for the following AU01.05 browser check.",
+    "current_step_prompts": [],
+    "current_step_application_Auth_or_email_requests": 0,
+    "current_step_SQL_or_settings_writes": 0,
     "all_eight_invitation_scoped_passes_retained": true,
-    "earlier_signup_pending_unconfirmed_denial_results_retained": true,
+    "AU01_04_confirmation_scoped_pass_retained": true,
     "hosted_acceptance": false
   },
   "owner_browser_recovery_request_action_required": false,
@@ -6195,7 +6197,7 @@
       "repeat_requested": false
     },
     "AU01.04": {
-      "status": "CURRENT_ORDINARY_CONFIRMATION_DESTINATION_OWNER_CHECK_PENDING",
+      "status": "OWNER_CURRENT_ORDINARY_CONFIRMATION_MANUAL_SIGNIN_SCOPED_PASS",
       "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md",
       "prior_confirmation_package_receipt": "docs/security-audit/security-fr-2-batch-w-owner-confirmation-package-and-deployment.json",
       "prior_link_consumed_before_confirmation_return_correction": true,
@@ -6204,7 +6206,50 @@
       "maximum_new_signup_submissions": 1,
       "maximum_email_requests": 1,
       "earlier_AU01_01_02_03_observations_retained": true,
-      "full_case_acceptance": false
+      "full_case_acceptance": true,
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-confirmation-pass.json",
+      "full_case_acceptance_scope": "Current ordinary signup confirms the intended email, sanitizes callback URL, returns to manual sign-in and opens the intended Free Personal workspace after password sign-in.",
+      "repeat_requested": false,
+      "confirmation_success_code_unchanged_by_request_failure_fix": true
+    },
+    "AU01.01": {
+      "status": "OWNER_CURRENT_VALID_SIGNUP_SCOPED_PASS",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-confirmation-pass.json",
+      "prior_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
+      "full_case_acceptance": true,
+      "scope": "Owner ordinary signup, received confirmation email and later intended Free Personal workspace.",
+      "repeat_requested": false
+    },
+    "AU01.02": {
+      "status": "OWNER_CURRENT_PENDING_CONFIRMATION_GUIDANCE_SCOPED_PASS",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-confirmation-pass.json",
+      "full_case_acceptance": true,
+      "scope": "Pending-confirmation guidance appeared in the current ordinary signup sequence.",
+      "repeat_requested": false
+    },
+    "AU01.03": {
+      "status": "PRIOR_OWNER_UNCONFIRMED_SIGNIN_DENIAL_SCOPED_PASS_RETAINED",
+      "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
+      "scope": "Earlier owner unconfirmed account sign-in denial; no new negative sign-in test inferred from the later confirmation success.",
+      "source_applicability": "Provider password sign-in denial and signup confirmation policy are retained; this request-feedback patch does not alter sign-in or confirmation requirements.",
+      "current_denial_repeated": false,
+      "repeat_requested": false
+    },
+    "AU01.05": {
+      "status": "SOURCE_OPERATIONAL_ERROR_FEEDBACK_FIX_LOCAL13_PASS_OWNER_PACKAGE_UPLOAD_PENDING",
+      "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONFIRMATION_REQUEST_RETRY.md",
+      "local_receipt": "docs/security-audit/security-fr-2-batch-w-confirmation-request-feedback-local-checks.json",
+      "code_commit": "cc2251174b75867b96798acfa833621031826fb5",
+      "existing_case": true,
+      "new_public_AU_cases_added": 0,
+      "full_case_acceptance": false,
+      "owner_ZIP_prepared": false,
+      "frontend_uploaded": false,
+      "hosted_verified": false,
+      "planned_existing_confirmed_account_reused": true,
+      "new_inbox_or_account_required": false,
+      "planned_rate_scope": "Local UI cooldown; no real provider quota stress.",
+      "provider_quota_or_reset_boundary_accepted": false
     }
   },
   "FR2_email_recovery_request_handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_WRONG_PASSWORD_PASS_AND_RECOVERY_REQUEST.md",
@@ -6587,7 +6632,7 @@
     "new_runtime_patch_requested_during_readiness_diagnosis": true,
     "signout_entry_source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51"
   },
-  "owner_browser_action_required": true,
+  "owner_browser_action_required": false,
   "owner_SQL_action_condition": "None: backend and accepted frontend remain unchanged.",
   "signout_entry": {
     "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
@@ -7869,7 +7914,7 @@
     "existing_server_idempotence_retained": true
   },
   "batch_W_ordinary_confirmation_check": {
-    "status": "SOURCE_REVIEWED_BOUNDED_OWNER_SEQUENCE_PREPARED",
+    "status": "OWNER_CURRENT_CONFIRMATION_AND_MANUAL_SIGNIN_SCOPED_PASS",
     "case_id": "AU01.04",
     "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md",
     "source_review": [
@@ -7887,7 +7932,56 @@
     "signup_password_boundary_and_unconfirmed_denial_repeat_requested": false,
     "no_unused_inbox_fallback": "Report prerequisite only; no confirmed-account reset or guessed alias.",
     "expected_owner_active_minutes_if_email_prompt": "5–10; email delay unestimated",
-    "result_received": false,
-    "new_runtime_SQL_upload_or_settings_change_requested": false
+    "result_received": true,
+    "new_runtime_SQL_upload_or_settings_change_requested": false,
+    "owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-confirmation-pass.json",
+    "repeat_requested": false,
+    "account_retained_for_AU01_05": true
+  },
+  "batch_W_signup_case_checkpoint": {
+    "original_case_groups": 5,
+    "scoped_pass_groups": 4,
+    "scoped_pass_case_ids": [
+      "AU01.01",
+      "AU01.02",
+      "AU01.03",
+      "AU01.04"
+    ],
+    "prior_scoped_pass_retained_without_new_denial": [
+      "AU01.03"
+    ],
+    "remaining_case_ids": [
+      "AU01.05"
+    ],
+    "latest_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-confirmation-pass.json",
+    "new_public_case_groups_added": 0,
+    "scope_note": "Prior unconfirmed denial retains its earlier owner-UI scope; four scoped groups is not a whole-W percentage."
+  },
+  "batch_W_confirmation_request_retry": {
+    "status": "LOCAL13_PASS_PACKAGE_HANDOFF_PREPARED_NOT_DEPLOYED",
+    "code_commit": "cc2251174b75867b96798acfa833621031826fb5",
+    "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONFIRMATION_REQUEST_RETRY.md",
+    "local_receipt": "docs/security-audit/security-fr-2-batch-w-confirmation-request-feedback-local-checks.json",
+    "builder": "scripts/prepare-confirmation-request-retry.mjs",
+    "manifest": "scripts/confirmation-request-feedback-manifest.json",
+    "source_hashes": 7,
+    "local_tests": 13,
+    "local_pass": 13,
+    "local_fail": 0,
+    "syntax_checks": 4,
+    "changed_public_entries": [
+      "auth-flows.js",
+      "auth.html"
+    ],
+    "preserved_public_entries": 40,
+    "public_entry_count": 42,
+    "retained_accepted_ZIP_SHA256": "9bbad6f7fe83b731aef9b65d3bae5df8b832204c5e7bbd0867a9e5a9b811033b",
+    "owner_real_ZIP_prepared": false,
+    "frontend_uploaded": false,
+    "hosted_acceptance": false,
+    "SQL_or_settings_change_required": false,
+    "maximum_preparation_application_Auth_or_email_requests": 0,
+    "following_check_uses_newly_confirmed_existing_account": true,
+    "no_new_public_AU_cases": true
   }
 }

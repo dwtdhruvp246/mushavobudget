@@ -3,7 +3,7 @@ As of 1 November 2026 • Full remaining-to-launch hierarchy • Version 1.1
 
 ## Read this structure correctly
 
-**Current implementation location: Launch deliverable 1 → Main Stage 3 → FR.2 → FR.2.5 → Batch W.** FRE294 records all eight invitation groups at their scoped passes. Recovery save/adoption/new-password sign-in and Auth sign-out retry are also accepted. Next is [AU01.04 ordinary signup confirmation/return to sign-in](SECURITY_FR_2_5_BATCH_W_ORDINARY_CONFIRMATION_CHECK.md). V remains open/on hold; W is not complete.
+**Current implementation location: Launch deliverable 1 → Main Stage 3 → FR.2 → FR.2.5 → Batch W.** FRE295 records current ordinary confirmation/manual sign-in AU01.04 PASS. Signup AU01.01/02 current positives and earlier AU01.03 denial are retained; all eight invitation groups have scoped passes. Recovery save/adoption/new-password sign-in and Auth sign-out retry remain accepted. Next is [AU01.05's two-file request-feedback correction and existing-account check](SECURITY_FR_2_5_BATCH_W_CONFIRMATION_REQUEST_RETRY.md), local 13 PASS with packaging/upload pending. V remains open/on hold; W is not complete.
 
 There are three overlapping views of the SAME project:
 - **Main Stages 0–10** describe the product/security areas.
@@ -106,7 +106,7 @@ X/Y/Z had named scope and exits but no fully enumerated final execution-case cou
 
 | Group | Original scenarios | Recorded progress | Remaining obligation |
 |---|---:|---|---|
-| AU01 — signup/confirmation | 5 | Earlier signup/pending-guidance/unconfirmed-denial observations | Final confirmation destination, generic existing-email/resend/rate behavior and current-source applicability/cleanup |
+| AU01 — signup/confirmation | 5 | AU01.01/02/04 current owner positives/passes; earlier AU01.03 denial scoped PASS retained | AU01.05 existing-email/request-failure/rate behavior: two-file feedback fix local 13 PASS; one staging package/upload and existing-account check pending; no new inbox |
 | AU02 — invitations | 8 | All eight original groups have scoped PASS results: Admin setup/isolation/denials/network retry/idempotence and Business new/existing/accept/decline/replay | No invitation repeat. Exact unrecorded retry wording/internal provider outage were not exercised; older failed-run Node-session cleanup stays under session closure |
 | AU03 — sign-in/passwords | 5 | Current password sign-in, wrong-password message, browser boundary, password change/new-password login observations | Older valid-password compatibility, direct server boundary and final recent-login applicability. AU03.04 actual failure/retry remains owner-deferred, not passed or automatically repeated |
 | AU04 — recovery/links | 6 | Dedicated view, missing/used-link denial, validation/refusal history, real-link isolation, successful recovery save/adoption/shared-tab switch and new-password login accepted | Remaining wrong-session/actual-expiry/generic-response and actual password-save failure/retry variants; no repeat of accepted success sequence |

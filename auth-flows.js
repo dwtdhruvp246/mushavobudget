@@ -134,7 +134,14 @@ $('#securityRequest').addEventListener('submit', event => {
       : await isolated.auth.resend({type:'signup',email,options:{emailRedirectTo:callbackUrl(window.location.href,'confirm')}});
     // Use the same application response for absent, confirmed or registered
     // addresses. Rate/network feedback remains useful without exposing SDK text.
-    if (result.error && (result.error.status === 429 || result.error.code?.startsWith('over_'))) throw result.error;
+    const requestError = result.error;
+    if (requestError && (
+      requestError.status === 429
+      || requestError.code?.startsWith('over_')
+      || requestError.status === 0
+      || requestError.status >= 500
+      || requestError.name === 'AuthRetryableFetchError'
+    )) throw requestError;
     message('If your account can receive this link, check your inbox for the newest email. Wait a minute before requesting another.');
   });
 });

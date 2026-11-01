@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-01",
+  "source_parent_commit": "1d76defb2785357a730503f8e99444a3e8fcff7f",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "STABLE_CONFIRMATION_REQUEST_RETRY_PUBLIC_ASSET_HASHES_2_OF_2_PASS",
+  "origin": "https://mushavo-budget-staging.pages.dev",
+  "initial_strict_redirect_check": {
+    "origin": "https://mushavo-budget-staging.pages.dev",
+    "checks": [
+      {
+        "path": "/auth-flows.js?v=9",
+        "HTTP_status": 200,
+        "SHA256": "1bded7699dbc6e2c2e790465e13b0c0f73a40c5a4f28dd5244caf791dd6d3949",
+        "passed": true
+      },
+      {
+        "path": "/auth.html",
+        "HTTP_status": null,
+        "passed": false,
+        "error_code": "TypeError"
+      }
+    ],
+    "passed": 1,
+    "attempts": 2,
+    "Auth_or_email_requests": 0
+  },
+  "targeted_HTML_redirect_followup": {
+    "requests": [
+      {
+        "path": "/auth.html",
+        "HTTP_status": 308,
+        "same_origin_clean_auth_redirect": true
+      },
+      {
+        "path": "/auth",
+        "HTTP_status": 200,
+        "SHA256": "29e216592f62950ba0725db2adac7bb4f57d092d1e6570afae2b56ede074a244",
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "additional_GETs": 2,
+    "Auth_or_email_requests": 0
+  },
+  "total_public_fetch_attempts": 4,
+  "verified_public_asset_hashes": 2,
+  "expected_public_file_SHA256": {
+    "auth-flows.js": "1bded7699dbc6e2c2e790465e13b0c0f73a40c5a4f28dd5244caf791dd6d3949",
+    "auth.html": "29e216592f62950ba0725db2adac7bb4f57d092d1e6570afae2b56ede074a244"
+  },
+  "only_same_origin_clean_auth_redirect_followed": true,
+  "observed_HTML_route": "/auth.html HTTP308 -> /auth HTTP200",
+  "initial_HTML_error_preserved_without_retroactive_HTTP_status": true,
+  "initial_error_cause_independently_captured": false,
+  "selected_asset_serving_verified": true,
+  "original_ZIP_preservation_scope_from_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-confirmation-request-package-and-deployment.json",
+  "script_auth_success_or_email_delivery_tested": false,
+  "real_Auth_or_email_requests": 0,
+  "SQL_or_settings_or_account_writes": 0,
+  "new_tests_run": 0,
+  "AU01_05_browser_workflow_accepted": false,
+  "full_lettered_batch_W_complete": false,
+  "V_complete": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

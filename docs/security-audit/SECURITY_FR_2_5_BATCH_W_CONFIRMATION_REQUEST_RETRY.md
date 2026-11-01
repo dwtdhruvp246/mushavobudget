@@ -1,5 +1,7 @@
 # AU01.05 — existing-email and confirmation-request failure/rate behavior
 
+> **FRE296 — packaging and stable served-source checks COMPLETE, 1 November 2026.** [Owner preparation](security-fr-2-batch-w-owner-confirmation-request-package-and-deployment.json): exit0, 7 hashes, 42 entries/two changed/40 preserved, portable readback true, retained ZIP unchanged; output ZIP SHA256 2006961ea38c6219a3a9b70f85cff7b683cae4d28879aa5df5ec722119feeaff. Deployment URL c8977c16 received. [Independent stable public readback](security-fr-2-batch-w-confirmation-request-public-readback.json) matches both public hashes; the first strict HTML request errored, then a bounded same-origin auth.html HTTP308 → auth HTTP200 follow-up verified the HTML bytes. Four public fetch attempts total, 0 Auth/email/SQL/settings/account requests. No preparation/upload/readback repeat. Current action is the bounded existing-account browser check below. AU01.05 workflow acceptance remains pending.
+
 Stage 3/10 | FR.2/8 | Batch W/Z. 1 November 2026.
 Pinned package code: cc2251174b75867b96798acfa833621031826fb5. Source parent: e05929414a3e49229d6cacbe608182159bd1fa3a. Evidence FRE295.
 
@@ -13,11 +15,11 @@ Original AU01.05 remains the fixed scope: generic existing-email/resend failure 
 
 Only public auth-flows.js and auth.html change (module version 8 to 9). Config, Worker, service worker, headers, routes, existing app.js/app.html including the seat editor and server Auth policy remain byte-preserved. No SQL, settings or native change.
 
-## Current owner action — prepare and upload one ZIP
+## Completed owner preparation — retained protocol
 
 This step prompts for no password, email, token or SQL. It reads the exact accepted SimpleSeats archive, verifies sources and original auth-file hashes, creates a new output directory and leaves the retained ZIP untouched. No duplicate owner test-suite run is requested.
 
-Run the WHOLE PowerShell block:
+The completed preparation used this WHOLE PowerShell block. It is retained for audit; do not run it again:
 
 ```powershell
 & {
@@ -69,15 +71,15 @@ Expected safe JSON: CONFIRMATION_REQUEST_RETRY_FRONTEND_PREPARED_NOT_DEPLOYED,7 
 
 Upload **mushavo-confirmation-request-retry-staging.zip** from the opened output folder to the existing **Cloudflare Pages mushavo-budget-staging** project. No Supabase upload or SQL action. Return safe JSON, exit code and new deployment URL. All later owner browser checks use https://mushavo-budget-staging.pages.dev/; no preview callbacks are added.
 
-## Post-upload public readback — next gate, not run yet
+## Completed stable public readback
 
-After upload, verify these two public stable-origin files with at most 2 GETs, no Auth/cookies:
+The following stable-origin file hashes now match; no Auth/cookies were used:
 - /auth-flows.js?v=9 — SHA256 1bded7699dbc6e2c2e790465e13b0c0f73a40c5a4f28dd5244caf791dd6d3949
 - /auth.html — SHA256 29e216592f62950ba0725db2adac7bb4f57d092d1e6570afae2b56ede074a244
 
-Use no-cache, a 25-second request limit and fixed PASS/FAIL output; no raw body. Do not run the UI failure check against unverified older source.
+The initial two strict fetches verified the script but did not expose the HTML response. Two targeted manual-redirect fetches then observed auth.html HTTP308 to the same-origin clean auth route and HTTP200 with the matching HTML hash. Earlier HTML error is preserved, not retroactively assigned a status/cause. Four public fetch attempts total, no Auth/email requests. Do not repeat this check.
 
-## Prepared AU01.05 browser check — only after upload/readback
+## Current owner browser check — AU01.05
 
 This is about 5–10 active minutes and uses the ordinary account just confirmed. No new inbox/account creation is intended.
 

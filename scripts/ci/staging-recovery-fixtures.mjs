@@ -1,37 +1,69 @@
 import { need } from './staging-access.mjs';
 export function recoveryFixtures(runId) {
-  need(/^w300-[a-z0-9]{6,12}-[a-z0-9]{6}$/.test(runId), 'EXACT_RECOVERY_FIXTURE_RUN_REQUIRED');
+  need(/^w(?:300|304)-[a-z0-9]{6,12}-[a-z0-9]{6}$/.test(runId), 'EXACT_RECOVERY_FIXTURE_RUN_REQUIRED');
   return { run_id: runId, A: `pkisgettingscammed+${runId}a@gmail.com`, B: `stilldhruvp246+${runId}b@gmail.com`,
     UNKNOWN: `pkisgettingscammed+${runId}unknown@gmail.com` };
 }
-export function expirySQL(runId) {
+export function recoveryTimestampSnapshotSQL(runId) {
   const f = recoveryFixtures(runId);
+  return `SELECT jsonb_build_object(
+ 'result', 'BOUND_UNUSED_RECOVERY_TIMESTAMPS',
+ 'user_digest', encode(sha256(convert_to(u.id::text, 'UTF8')), 'hex'),
+ 'token_row_digest', encode(sha256(convert_to(t.id::text, 'UTF8')), 'hex'),
+ 'sent_at', to_char(u.recovery_sent_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"'),
+ 'expires_at', to_char(t.expires_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"')
+) AS safe_result
+FROM auth.users u JOIN auth.one_time_tokens t ON t.user_id = u.id
+WHERE u.email = '${f.A}' AND u.raw_user_meta_data->>'mushavo_recovery_fixture' = '${runId}'
+ AND u.created_at > now() - interval '1 day' AND u.email_confirmed_at IS NOT NULL
+ AND u.recovery_sent_at > now() - interval '15 minutes' AND t.token_type = 'recovery_token'
+ AND (t.expires_at IS NULL OR t.expires_at > now());`;
+}
+
+export function expirySQL(runId, snapshot, restore = false) {
+  const f = recoveryFixtures(runId);
+  const timestamp = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}Z$/;
+  need(snapshot?.result === 'BOUND_UNUSED_RECOVERY_TIMESTAMPS'
+    && /^[a-f0-9]{64}$/.test(snapshot.user_digest || '') && /^[a-f0-9]{64}$/.test(snapshot.token_row_digest || '')
+    && timestamp.test(snapshot.sent_at || '') && (snapshot.expires_at === null || timestamp.test(snapshot.expires_at || '')),
+  'EXACT_UNUSED_RECOVERY_TIMESTAMP_SNAPSHOT_REQUIRED');
+  const sent = `'${snapshot.sent_at}'::timestamptz`;
+  const expires = snapshot.expires_at === null ? 'NULL::timestamptz' : `'${snapshot.expires_at}'::timestamptz`;
+  const past = "'2000-01-01T00:00:00Z'::timestamptz";
   return `BEGIN;
+SET LOCAL lock_timeout = '5s';
+SET LOCAL statement_timeout = '20s';
 DO $fixture$
-DECLARE v_id uuid; v_count integer;
+DECLARE v_user uuid; v_token uuid;
 BEGIN
- SELECT id INTO STRICT v_id FROM auth.users WHERE email='${f.B}'
-   AND raw_user_meta_data->>'mushavo_recovery_fixture'='${runId}'
-   AND created_at>now()-interval '1 day' AND email_confirmed_at IS NOT NULL
-   AND recovery_sent_at>now()-interval '15 minutes';
- IF EXISTS(SELECT 1 FROM public.app_admins WHERE user_id=v_id) THEN RAISE EXCEPTION 'RECOVERY_FIXTURE_ROLE_REFUSED'; END IF;
- UPDATE auth.users SET recovery_sent_at=now()-interval '2 hours' WHERE id=v_id;
- GET DIAGNOSTICS v_count=ROW_COUNT;
- IF v_count<>1 THEN RAISE EXCEPTION 'RECOVERY_FIXTURE_EXACT_USER_REQUIRED'; END IF;
- UPDATE auth.one_time_tokens SET expires_at=now()-interval '1 hour'
- WHERE user_id=v_id AND token_type='recovery_token';
- GET DIAGNOSTICS v_count=ROW_COUNT;
- IF v_count<>1 THEN RAISE EXCEPTION 'RECOVERY_FIXTURE_EXACT_RECOVERY_TOKEN_REQUIRED'; END IF;
+ IF ${sent} <= now() - interval '15 minutes' OR ${sent} > now()
+   OR (${expires} IS NOT NULL AND (${expires} <= now() OR ${expires} > ${sent} + interval '62 minutes'))
+ THEN RAISE EXCEPTION 'RECOVERY_ORIGINAL_VALIDITY_WINDOW_REQUIRED'; END IF;
+ SELECT u.id, t.id INTO STRICT v_user, v_token
+ FROM auth.users u JOIN auth.one_time_tokens t ON t.user_id = u.id
+ WHERE u.email = '${f.A}' AND u.raw_user_meta_data->>'mushavo_recovery_fixture' = '${runId}'
+   AND u.created_at > now() - interval '1 day' AND u.email_confirmed_at IS NOT NULL
+   AND encode(sha256(convert_to(u.id::text, 'UTF8')), 'hex') = '${snapshot.user_digest}'
+   AND t.token_type = 'recovery_token'
+   AND encode(sha256(convert_to(t.id::text, 'UTF8')), 'hex') = '${snapshot.token_row_digest}'
+   AND u.recovery_sent_at = ${restore ? past : sent}
+   AND t.expires_at IS NOT DISTINCT FROM ${restore ? past : expires}
+ FOR UPDATE OF u, t;
+ IF EXISTS(SELECT 1 FROM public.app_admins WHERE user_id = v_user)
+ THEN RAISE EXCEPTION 'RECOVERY_FIXTURE_ROLE_REFUSED'; END IF;
+ UPDATE auth.users SET recovery_sent_at = ${restore ? sent : past} WHERE id = v_user;
+ UPDATE auth.one_time_tokens SET expires_at = ${restore ? expires : past} WHERE id = v_token;
 END;
 $fixture$;
-SELECT jsonb_build_object('result','EXACT_NEW_RECOVERY_FIXTURE_BACKDATED','fixture_only',true,
- 'global_Auth_policy_changed',false,'natural_hour_long_expiry_observed',false,
- 'token_values_returned',false) AS safe_result;
+SELECT jsonb_build_object('result', '${restore ? 'EXACT_UNUSED_RECOVERY_TIMESTAMPS_RESTORED' : 'EXACT_UNUSED_RECOVERY_TIMESTAMPS_BACKDATED'}',
+ 'fixture_only', true, 'token_values_returned', false) AS safe_result;
 COMMIT;
 `;
 }
 export function cleanupSQL(runId) {
   const f = recoveryFixtures(runId);
+  const aliases = runId.startsWith('w304-') ? [f.A] : [f.A, f.B];
+  const exactEmails = aliases.map(email => `'${email}'`).join(',');
   return `BEGIN;
 SET LOCAL lock_timeout='5s';
 SET LOCAL statement_timeout='30s';
@@ -39,12 +71,12 @@ DO $fixture$
 DECLARE v_users uuid[]; v_workspaces uuid[]; v_row record; v_count bigint; v_total integer;
 BEGIN
  -- Metadata binds newly-created disposable fixtures only; it grants no access.
- SELECT array_agg(id) INTO v_users FROM auth.users WHERE email IN ('${f.A}','${f.B}')
+ SELECT array_agg(id) INTO v_users FROM auth.users WHERE email IN (${exactEmails})
    AND raw_user_meta_data->>'mushavo_recovery_fixture'='${runId}' AND created_at>now()-interval '1 day';
  v_total:=coalesce(cardinality(v_users),0);
- IF (SELECT count(*) FROM auth.users WHERE email IN ('${f.A}','${f.B}'))<>v_total
+ IF (SELECT count(*) FROM auth.users WHERE email IN (${exactEmails}))<>v_total
  THEN RAISE EXCEPTION 'RECOVERY_FIXTURE_IDENTITY_REVIEW_REQUIRED'; END IF;
- IF v_total>2 THEN RAISE EXCEPTION 'RECOVERY_FIXTURE_BOUND_REQUIRED'; END IF;
+ IF v_total>${aliases.length} THEN RAISE EXCEPTION 'RECOVERY_FIXTURE_BOUND_REQUIRED'; END IF;
  PERFORM 1 FROM auth.users WHERE id=ANY(v_users) FOR UPDATE;
  SELECT coalesce(array_agg(id),array[]::uuid[]) INTO v_workspaces FROM public.budget_workspaces WHERE owner_id=ANY(v_users);
  PERFORM 1 FROM public.budget_workspaces WHERE id=ANY(v_workspaces) FOR UPDATE;
@@ -80,10 +112,10 @@ BEGIN
  IF EXISTS(SELECT 1 FROM auth.identities WHERE user_id=ANY(v_users) AND provider<>'email')
  THEN RAISE EXCEPTION 'RECOVERY_FIXTURE_PASSWORD_IDENTITIES_REQUIRED'; END IF;
  DELETE FROM public.budget_workspaces WHERE id=ANY(v_workspaces) AND owner_id=ANY(v_users);
- DELETE FROM auth.users WHERE id=ANY(v_users) AND email IN ('${f.A}','${f.B}')
+ DELETE FROM auth.users WHERE id=ANY(v_users) AND email IN (${exactEmails})
    AND raw_user_meta_data->>'mushavo_recovery_fixture'='${runId}';
  GET DIAGNOSTICS v_count=ROW_COUNT;
- IF v_count<>v_total OR EXISTS(SELECT 1 FROM auth.users WHERE email IN ('${f.A}','${f.B}'))
+ IF v_count<>v_total OR EXISTS(SELECT 1 FROM auth.users WHERE email IN (${exactEmails}))
    OR EXISTS(SELECT 1 FROM public.profiles WHERE id=ANY(v_users))
    OR EXISTS(SELECT 1 FROM auth.sessions WHERE user_id=ANY(v_users))
    OR EXISTS(SELECT 1 FROM auth.one_time_tokens WHERE user_id=ANY(v_users))

@@ -1,8 +1,12 @@
 {
-  "run_id": "2026-11-05-recovery-variants-01",
+  "run_id": "2026-11-05-recovery-variants-single-fixture",
   "scope": "recovery-variants",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
-  "case_ids": ["AU04.01", "AU04.03", "AU04.04", "AU04.05", "AU05.07"],
-  "fixture_run_id": "w300-mw3dwzsv-m9siry",
-  "source_parent_commit": "e2395a1ff34006205b3e2ac94a015eef96c6318b"
+  "case_ids": [
+    "AU04.03",
+    "AU04.04",
+    "AU04.05"
+  ],
+  "fixture_run_id": "w304-mw3y2pth-761cf4",
+  "source_parent_commit": "94aeed093effd7053e133c52c046f0618a1c98e9"
 }

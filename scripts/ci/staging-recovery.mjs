@@ -30,10 +30,10 @@ export function recoveryMailToken(value, type) {
     && redirect.searchParams.get('flow') === (type === 'signup' ? 'confirm' : 'recover'), 'EXACT_STABLE_MAIL_CALLBACK_REQUIRED');
   return token;
 }
-export function recoveryBrowserDecision(url, method, mode, counts = {}) {
+export function recoveryBrowserDecision(url, method, mode) {
   const u = new URL(url);
   if (u.origin === API_ORIGIN) {
-    if (method === 'POST' && u.pathname === '/auth/v1/recover' && ['live-request','synthetic-rate','blocked-request'].includes(mode)) return 'recovery-request';
+    if (method === 'POST' && u.pathname === '/auth/v1/recover' && mode === 'live-request') return 'recovery-request';
     if (method === 'POST' && u.pathname === '/auth/v1/verify' && mode === 'recovery') return 'verify-recovery';
     if (method === 'PUT' && u.pathname === '/auth/v1/user' && ['recovery','block-save','save'].includes(mode)) return 'password-save';
   }
@@ -43,37 +43,47 @@ export function recoveryBrowserDecision(url, method, mode, counts = {}) {
 export async function checkRecovery(plan, accounts, chromium, env = process.env, fetcher = fetch) {
   const fixtures = recoveryFixtures(plan.fixture_run_id), sessions = [], contexts = [];
   const report = { progress_display:'Stage 3/10 | FR.2/8 | Batch W/Z', result:'RECOVERY_VARIANTS_REVIEW_REQUIRED',
-    case_ids:['AU04.01','AU04.03','AU04.04','AU04.05','AU05.07'], run_plan:plan.run_id,
+    case_ids:['AU04.03','AU04.04','AU04.05'], run_plan:plan.run_id,
     source_commit:env.GITHUB_SHA, workflow_run_id:env.GITHUB_RUN_ID, workflow_run_attempt:env.GITHUB_RUN_ATTEMPT,
     checks:{}, cases:{}, direct_API_requests:0, browser_backend_requests:0, signup_requests:0, recovery_requests:0,
-    actual_confirmation_email_requests:0, actual_recovery_email_requests:0, absent_recipient_recovery_requests:0,
+    actual_confirmation_email_requests:0, actual_recovery_email_requests:0,
     recovery_request_responses:[], accepted_recovery_email_requests:0,
-    password_updates_forwarded:0, password_updates_blocked:0, synthetic_rate_responses:0,
+    password_updates_forwarded:0, password_updates_blocked:0,
     created_fixture_accounts:0, created_sessions:0, scoped_logout_acknowledgements:0, context_cleanup_count:0,
     global_Auth_policy_changed:false, saved_account_passwords_changed:false, finance_or_shared_workspace_writes:false,
     production_or_native_changed:false, service_workers:'blocked_for_interception', full_lettered_batch_W_complete:false,
     owner_deferred_AU03_04_restarted:false, natural_hour_long_expiry_observed:false, provider_quota_exhaustion_attempted:false,
     legacy_short_password_candidate_available:Object.values(accounts).some(x=>Array.from(x.password).length<8), exit_code:1 };
-  const passwords = { A:'W9!'+randomBytes(24).toString('base64url'), B:'W9!'+randomBytes(24).toString('base64url'), NEW_A:'W9!'+randomBytes(24).toString('base64url') };
+  const passwords = { A:'W9!'+randomBytes(24).toString('base64url'), NEW_A:'W9!'+randomBytes(24).toString('base64url') };
   let key, browser, mailbox, stage='SOURCE_PREFLIGHT', routeProblem=null, complete=false;
-  const register = session => {
+  const register = (session, newOtherAccount = false) => {
     if (!session?.access_token) return;
     const identity = tokenIdentity(session.access_token);
-    need(identity && [fixtures.A,fixtures.B].includes(session.user?.email?.toLowerCase()) && session.user.id===identity.userId, 'OWN_NEW_FIXTURE_SESSION_REQUIRED');
-    const found=sessions.find(x=>x.identity.sessionId===identity.sessionId && x.identity.userId===identity.userId);
+    need(identity && session.user?.id === identity.userId, 'OWN_RUNNER_SESSION_IDENTITY_REQUIRED');
+    const found = sessions.find(x => x.identity.sessionId === identity.sessionId && x.identity.userId === identity.userId);
+    const email = session.user.email?.toLowerCase();
+    const otherAccount = email === accounts.USER_B.email;
+    need(email === fixtures.A || otherAccount && (newOtherAccount || found?.otherAccount), 'OWN_NEW_FIXTURE_OR_OTHER_RUNNER_SESSION_REQUIRED');
     if (found) found.token=session.access_token;
-    else { sessions.push({identity,token:session.access_token,cleaned:false}); report.created_sessions++; }
+    else { sessions.push({identity,token:session.access_token,otherAccount,cleaned:false}); report.created_sessions++; }
   };
   async function api(method, path, body, token) {
-    const allowed = method==='POST' && path==='/auth/v1/signup?redirect_to='+encodeURIComponent(WEB_ORIGIN+'/auth.html?flow=confirm')
-      || method==='POST' && ['/auth/v1/verify','/auth/v1/token?grant_type=password','/auth/v1/logout?scope=local'].includes(path)
-      || method==='GET' && path==='/auth/v1/user';
+    const passwordGrant = method === 'POST' && path === '/auth/v1/token?grant_type=password';
+    const newOtherAccount = passwordGrant && body?.email === accounts.USER_B.email && body.password === accounts.USER_B.password;
+    const ownedToken = sessions.some(session => session.token === token);
+    const allowed = method === 'POST' && path === '/auth/v1/signup?redirect_to=' + encodeURIComponent(WEB_ORIGIN + '/auth.html?flow=confirm')
+      && report.signup_requests === 1 && body?.email === fixtures.A && body.password === passwords.A
+      && body.data?.mushavo_recovery_fixture === fixtures.run_id
+      || method === 'POST' && path === '/auth/v1/verify' && body?.type === 'signup'
+      || passwordGrant && (newOtherAccount || body?.email === fixtures.A && body.password === passwords.NEW_A)
+      || method === 'POST' && path === '/auth/v1/logout?scope=local' && ownedToken
+      || method === 'GET' && path === '/auth/v1/user' && ownedToken;
     need(report.direct_API_requests++<28 && allowed, 'RECOVERY_DIRECT_API_BOUND_REQUIRED');
     const response=await fetcher(API_ORIGIN+path,{method,redirect:'error',signal:AbortSignal.timeout(20000),
       headers:{apikey:key,'Content-Type':'application/json','User-Agent':`Mushavo-Recovery/${env.GITHUB_RUN_ID}`,
         ...(token?{Authorization:'Bearer '+token}:{})},...(body?{body:JSON.stringify(body)}:{})});
     let data=null; try {data=await response.json();} catch {}
-    register(data); return {status:response.status,data};
+    register(data, newOtherAccount); return {status:response.status,data};
   }
   async function verifyIdentity(session,email) {
     const read=await api('GET','/auth/v1/user',null,session.access_token);
@@ -83,7 +93,7 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
   async function newTest(seed=null, initialMode='idle') {
     const context=await browser.newContext({serviceWorkers:'block',userAgent:`Mushavo-Recovery/${env.GITHUB_RUN_ID}/browser`});
     context.setDefaultTimeout(20000);
-    const test={context,mode:initialMode,requestEmail:null,liveRequests:0,verifyResponses:[],pending:[],refused:0,updateResponses:[],lastRecoverySession:null};
+    const test={context,mode:initialMode,recoveryToken:null,verifyRequests:0,verifyResponses:[],pending:[],refused:0,updateResponses:[],lastRecoverySession:null};
     contexts.push(test);
     await context.addInitScript(({seed,key,iso,origin})=>{
       if(location.origin!==origin)return;
@@ -97,18 +107,13 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
       if(u.origin===API_ORIGIN && ++report.browser_backend_requests>400) routeProblem='RECOVERY_BROWSER_BOUND_REACHED';
       if(action==='recovery-request'){
         let body;try{body=request.postDataJSON();}catch{}
-        if(body?.email!==test.requestEmail || !Object.values(fixtures).includes(body?.email))routeProblem='RECOVERY_RECIPIENT_BINDING_REQUIRED';
-        else if(test.mode==='synthetic-rate'){
-          report.synthetic_rate_responses++;
-          await route.fulfill({status:429,contentType:'application/json',headers:{'access-control-allow-origin':'*'},
-            body:JSON.stringify({code:429,error_code:'over_email_send_rate_limit',msg:'Controlled rate boundary'})});return;
-        }else if(test.mode==='blocked-request'){await route.abort('internetdisconnected');return;}
-        else if(report.recovery_requests>=3 || test.liveRequests>=1)routeProblem='RECOVERY_EMAIL_BOUND_REACHED';
-        else {report.recovery_requests++;test.liveRequests++;
-          if(body.email===fixtures.UNKNOWN)report.absent_recipient_recovery_requests++;else report.actual_recovery_email_requests++;}
+        if (body?.email !== fixtures.A) routeProblem = 'RECOVERY_RECIPIENT_BINDING_REQUIRED';
+        else if (report.recovery_requests >= 1) routeProblem = 'RECOVERY_EMAIL_BOUND_REACHED';
+        else { report.recovery_requests++; report.actual_recovery_email_requests++; }
       } else if(action==='verify-recovery'){
         let body;try{body=request.postDataJSON();}catch{}
-        if(body?.type!=='recovery' || typeof body.token_hash!=='string')routeProblem='RECOVERY_VERIFY_TYPE_REQUIRED';
+        if (body?.type !== 'recovery' || !test.recoveryToken || body.token_hash !== test.recoveryToken || test.verifyRequests++ !== 0)
+          routeProblem = 'EXACT_SINGLE_RECOVERY_VERIFY_REQUIRED';
       } else if(action==='password-save'){
         let body;try{body=request.postDataJSON();}catch{}
         const identity=tokenIdentity((request.headers().authorization||'').replace(/^Bearer /,''));
@@ -131,14 +136,14 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     test.page=await context.newPage();return test;
   }
   async function requestLink(test,email){
-    test.mode='live-request';test.requestEmail=email;
+    test.mode='live-request';
     await test.page.goto(WEB_ORIGIN+'/auth?flow=request-recovery',{waitUntil:'networkidle'});
     await test.page.locator('#securityEmail').fill(email);
     const [response]=await Promise.all([test.page.waitForResponse(r=>new URL(r.url()).origin===API_ORIGIN && new URL(r.url()).pathname==='/auth/v1/recover'),
       test.page.getByRole('button',{name:'Send link',exact:true}).click()]);
     let data=null;try{data=await response.json();}catch{}
     const outcome=safeRecoveryRequestOutcome(response.status(),data);report.recovery_request_responses.push(outcome);
-    if(outcome.accepted_by_Auth && email!==fixtures.UNKNOWN)report.accepted_recovery_email_requests++;
+    if(outcome.accepted_by_Auth)report.accepted_recovery_email_requests++;
     if(outcome.rate_limited){
       await test.page.getByText(RATE,{exact:true}).waitFor({state:'visible'});
       report.checks.actual_rate_warning_and_retained_address=await test.page.locator('#securityEmail').inputValue()===email
@@ -159,6 +164,7 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
   }
   try {
     need(env.GITHUB_REPOSITORY==='dwtdhruvp246/mushavobudget' && env.GITHUB_REF==='refs/heads/security/stage-3-authorization','RECOVERY_STAGING_BRANCH_REQUIRED');
+    need(fixtures.run_id.startsWith('w304-'), 'SINGLE_DISPOSABLE_RECOVERY_RUN_REQUIRED');
     const config=await fetcher(WEB_ORIGIN+'/config.js?v=27',{redirect:'error',signal:AbortSignal.timeout(20000)});
     need(config.status===200,'RECOVERY_PUBLIC_CONFIGURATION_REQUIRED');key=readPublicConfiguration(await config.text()).key;
     for(const [path,expected]of Object.entries(SOURCES)){
@@ -169,40 +175,65 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     report.checks.six_accepted_deployed_sources_verified=true;
     mailbox=createMailbox(env,fetcher);await mailbox.status('READY|'+mailbox.publicKey);
     browser=await chromium.launch({headless:true});
-    const confirmed={};
-    for(const slot of ['A','B']){
-      stage='SIGNUP_'+slot;report.signup_requests++;report.actual_confirmation_email_requests++;
-      const signup=await api('POST','/auth/v1/signup?redirect_to='+encodeURIComponent(WEB_ORIGIN+'/auth.html?flow=confirm'),
-        {email:fixtures[slot],password:passwords[slot],data:{full_name:'Batch W disposable recovery '+slot,default_currency:'USD',enabled_currencies:['USD'],
-          mushavo_recovery_fixture:fixtures.run_id}});
-      need(signup.status===200 && signup.data?.id && !signup.data?.access_token,'EXACT_NEW_PENDING_CONFIRMATION_FIXTURE_REQUIRED');
-      report.created_fixture_accounts++;
-      stage='CONFIRM_'+slot;const input=await mailbox.receive(stage);
-      const token=recoveryMailToken(input?.url,'signup');
-      const verified=await api('POST','/auth/v1/verify',{token_hash:token,type:'signup'});
-      need(verified.status===200 && verified.data?.user?.email===fixtures[slot],'NEW_FIXTURE_CONFIRMATION_REQUIRED');
-      await verifyIdentity(verified.data,fixtures[slot]);confirmed[slot]=verified.data;
-    }
-    report.checks.two_new_confirmed_disposable_identities=true;
-    stage='GENERIC_RECOVERY';const known=await newTest();await requestLink(known,fixtures.A);
-    const countBefore=report.recovery_requests;await known.page.getByRole('button',{name:'Send link',exact:true}).click();
-    await known.page.getByText(RATE,{exact:true}).waitFor({state:'visible'});
-    need(report.recovery_requests===countBefore,'RECOVERY_LOCAL_COOLDOWN_MUST_PREVENT_DISPATCH');
-    const absent=await newTest();await requestLink(absent,fixtures.UNKNOWN);
-    report.cases.AU04_01={status:'SCOPED_PASS',real_known_and_absent_request_HTTP_status:200,exact_same_generic_guidance:true,
-      local_cooldown_blocks_second_dispatch:true,absent_identity_creation_requested:false};
-    stage='RATE_UI';const rate=await newTest(null,'synthetic-rate');rate.requestEmail=fixtures.A;
-    await rate.page.goto(WEB_ORIGIN+'/auth?flow=request-recovery',{waitUntil:'networkidle'});
-    await rate.page.locator('#securityEmail').fill(fixtures.A);await rate.page.getByRole('button',{name:'Send link',exact:true}).click();
-    await rate.page.getByText(RATE,{exact:true}).waitFor({state:'visible'});
-    need(report.synthetic_rate_responses===1 && await rate.page.locator('#securityEmail').inputValue()===fixtures.A
-      && await rate.page.getByRole('button',{name:'Send link',exact:true}).isEnabled(),'SYNTHETIC_AUTH_RATE_UI_REQUIRED');
-    report.cases.AU05_07_rate={status:'SYNTHETIC_AUTH_UI_SCOPED_PASS',HTTP_429_injected_at_browser_boundary:true,
-      operational_guidance_and_retained_form:true,actual_provider_429_or_Business_Edge_502_exercised:false};
-    stage='RECOVER_A';const recoveryInput=await mailbox.receive(stage),recoverToken=recoveryMailToken(recoveryInput?.url,'recovery');
+    const confirmed = {};
+    stage = 'OTHER_ACCOUNT_SIGNIN';
+    const other = await api('POST', '/auth/v1/token?grant_type=password', accounts.USER_B);
+    need(other.status === 200 && other.data?.user?.email === accounts.USER_B.email, 'EXISTING_OTHER_RUNNER_ACCOUNT_REQUIRED');
+    await verifyIdentity(other.data, accounts.USER_B.email);
+    confirmed.B = other.data;
+
+    stage = 'SIGNUP_A';
+    report.signup_requests++;
+    report.actual_confirmation_email_requests++;
+    const signup = await api('POST', '/auth/v1/signup?redirect_to=' + encodeURIComponent(WEB_ORIGIN + '/auth.html?flow=confirm'),
+      {email:fixtures.A,password:passwords.A,data:{full_name:'Batch W disposable recovery',default_currency:'USD',
+        enabled_currencies:['USD'],mushavo_recovery_fixture:fixtures.run_id}});
+    need(signup.status === 200 && signup.data?.id && !signup.data?.access_token, 'EXACT_NEW_PENDING_CONFIRMATION_FIXTURE_REQUIRED');
+    report.created_fixture_accounts++;
+    stage = 'CONFIRM_A';
+    const input = await mailbox.receive(stage);
+    const token = recoveryMailToken(input?.url, 'signup');
+    const verified = await api('POST', '/auth/v1/verify', {token_hash:token,type:'signup'});
+    need(verified.status === 200 && verified.data?.user?.email === fixtures.A
+      && verified.data.user.id === signup.data.id && verified.data.user.id !== confirmed.B.user.id, 'NEW_DISTINCT_FIXTURE_CONFIRMATION_REQUIRED');
+    await verifyIdentity(verified.data, fixtures.A);
+    confirmed.A = verified.data;
+    report.checks.one_new_confirmed_fixture_and_distinct_existing_runner_identity = true;
+
+    stage = 'RECOVERY_REQUEST';
+    const requester = await newTest();
+    await requestLink(requester, fixtures.A);
+    stage = 'RECOVER_A';
+    const recoveryInput = await mailbox.receive(stage);
+    const recoverToken = recoveryMailToken(recoveryInput?.url, 'recovery');
+    const recoveryURL = WEB_ORIGIN + '/auth?flow=recover&token_hash=' + encodeURIComponent(recoverToken) + '&type=recovery';
+
+    stage = 'EXPIRE_A';
+    const prepared = await mailbox.receive(stage);
+    need(prepared?.kind === 'exact-fixture-expiry-prepared', 'CONTROLLED_EXPIRY_FIXTURE_ACK_REQUIRED');
+    stage = 'EXPIRED_LINK';
+    const expired = await newTest(null, 'recovery');
+    expired.recoveryToken = recoverToken;
+    await expired.page.goto(recoveryURL, {waitUntil:'networkidle'});
+    await expired.page.getByText('This link or session is unavailable. Open the newest email or request another link.', {exact:true}).waitFor({state:'visible'});
+    await Promise.all(expired.pending);
+    need(expired.verifyResponses.length === 1 && expired.verifyResponses[0].status === 403 && expired.verifyResponses[0].code === 'otp_expired'
+      && !expired.lastRecoverySession && !await expired.page.locator('#securityPassword').isVisible()
+      && new URL(expired.page.url()).search === '?flow=recover' && !new URL(expired.page.url()).hash
+      && report.password_updates_forwarded === 0, 'REAL_EXPIRED_LINK_DENIAL_REQUIRED');
+    report.cases.AU04_04 = {status:'CONTROLLED_EXPIRED_FIXTURE_SCOPED_PASS',actual_verify_HTTP_status:403,error_code:'otp_expired',
+      new_disposable_fixture_timestamp_backdated:true,global_expiry_policy_changed:false,natural_hour_long_expiry_observed:false,
+      password_view_hidden_and_URL_clean:true,password_update_not_dispatched:true};
+
+    stage = 'RESTORE_A';
+    const timestamps = await mailbox.receive(stage);
+    need(timestamps?.kind === 'exact-unused-recovery-timestamps-restored', 'ORIGINAL_UNUSED_RECOVERY_TIMESTAMPS_REQUIRED');
+    report.checks.original_validity_restored_to_same_unused_disposable_token = true;
+    stage = 'VALID_RECOVERY';
     const test=await newTest(confirmed.B,'recovery');test.expectedActor=confirmed.A.user.id;
+    test.recoveryToken = recoverToken;
     const normal=await test.context.newPage();await normal.goto(WEB_ORIGIN+'/app#personal/dashboard',{waitUntil:'domcontentloaded'});await readyDashboard(normal);
-    await test.page.goto(WEB_ORIGIN+'/auth?flow=recover&token_hash='+encodeURIComponent(recoverToken)+'&type=recovery',{waitUntil:'networkidle'});
+    await test.page.goto(recoveryURL,{waitUntil:'networkidle'});
     await test.page.locator('#securityPassword').waitFor({state:'visible'});await Promise.all(test.pending);
     need(await test.page.locator('#securityIdentity').innerText()===`Verified account: ${fixtures.A}` && test.lastRecoverySession?.user?.id===confirmed.A.user.id,'REAL_RECOVERY_RECIPIENT_REQUIRED');
     need(new URL(test.page.url()).search==='?flow=recover' && !new URL(test.page.url()).hash,'RECOVERY_URL_MUST_BE_CLEAN');
@@ -235,25 +266,14 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     await verifyIdentity(adopted,fixtures.A);
     const newSignin=await api('POST','/auth/v1/token?grant_type=password',{email:fixtures.A,password:passwords.NEW_A});
     need(newSignin.status===200 && newSignin.data?.user?.id===confirmed.A.user.id,'RECOVERED_NEW_PASSWORD_SIGNIN_REQUIRED');
-    const unchangedB=await api('POST','/auth/v1/token?grant_type=password',{email:fixtures.B,password:passwords.B});
-    need(unchangedB.status===200 && unchangedB.data?.user?.id===confirmed.B.user.id,'OTHER_FIXTURE_PASSWORD_MUST_REMAIN_VALID');
+    const unchangedB=await api('POST','/auth/v1/token?grant_type=password',accounts.USER_B);
+    need(unchangedB.status===200 && unchangedB.data?.user?.id===confirmed.B.user.id,'OTHER_SAVED_PASSWORD_MUST_REMAIN_VALID');
     report.cases.AU04_05={status:'SCOPED_PASS',actual_browser_network_failure_before_server_write:true,
       both_password_fields_retained:true,retry_without_reentering_password:true,real_password_update_HTTP_status:200,
       correct_account_opened_and_server_verified:true,new_password_signin_succeeded:true,other_account_password_unchanged:true};
-    stage='EXPIRY_REQUEST';const expiryRequest=await newTest();await requestLink(expiryRequest,fixtures.B);
-    stage='RECOVER_B';const expiryInput=await mailbox.receive(stage),expiryToken=recoveryMailToken(expiryInput?.url,'recovery');
-    stage='EXPIRE_B';const prepared=await mailbox.receive(stage);need(prepared?.kind==='exact-fixture-expiry-prepared','CONTROLLED_EXPIRY_FIXTURE_ACK_REQUIRED');
-    stage='EXPIRED_LINK';const expired=await newTest(unchangedB.data,'recovery');
-    await expired.page.goto(WEB_ORIGIN+'/auth?flow=recover&token_hash='+encodeURIComponent(expiryToken)+'&type=recovery',{waitUntil:'networkidle'});
-    await expired.page.getByText('This link or session is unavailable. Open the newest email or request another link.',{exact:true}).waitFor({state:'visible'});
-    await Promise.all(expired.pending);
-    need(expired.verifyResponses.length===1 && expired.verifyResponses[0].status===403 && expired.verifyResponses[0].code==='otp_expired'
-      && !await expired.page.locator('#securityPassword').isVisible() && new URL(expired.page.url()).search==='?flow=recover'
-      && !new URL(expired.page.url()).hash && report.password_updates_forwarded===1,'REAL_EXPIRED_LINK_DENIAL_REQUIRED');
-    report.cases.AU04_04={status:'CONTROLLED_EXPIRED_FIXTURE_SCOPED_PASS',actual_verify_HTTP_status:403,error_code:'otp_expired',
-      new_disposable_fixture_timestamp_backdated:true,global_expiry_policy_changed:false,natural_hour_long_expiry_observed:false,
-      password_view_hidden_and_URL_clean:true,password_update_not_dispatched:true};
-    need(!routeProblem,'RECOVERY_BROWSER_REQUEST_BOUNDARIES_REQUIRED');complete=true;
+    need(!routeProblem && report.signup_requests === 1 && report.recovery_requests === 1,
+      'RECOVERY_BROWSER_REQUEST_AND_TWO_EMAIL_BOUNDARIES_REQUIRED');
+    complete = true;
   } catch(error) {report.problem_code=routeProblem||(error instanceof Stop?error.code:'RECOVERY_EXPECTATION_NOT_MET_'+stage);}
   finally {
     for(const test of contexts){try{await Promise.all(test.pending);await test.context.close();report.context_cleanup_count++;}catch{}}
@@ -264,6 +284,7 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
       catch{}
     }
     report.checks.all_isolated_contexts_closed=report.context_cleanup_count===contexts.length;
+    report.checks.all_existing_account_runner_sessions_scoped_logout = sessions.filter(session => session.otherAccount).every(session => session.cleaned);
     if(mailbox && report.signup_requests>0){
       try{const cleanup=await mailbox.receive('CLEANUP');
         need(cleanup?.kind==='exact-new-fixtures-absent','EXACT_FIXTURE_CLEANUP_ACK_REQUIRED');
@@ -273,7 +294,8 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     report.session_cleanup_method='own_local_logout_then_guarded_new_fixture_deletion_with_external_SQL_absence_readback';
     report.checks.saved_accounts_passwords_and_settings_not_targeted=true;
     report.mailbox_polls=mailbox?.polls||0;
-    if(complete && report.checks.all_isolated_contexts_closed && report.checks.external_guarded_SQL_fixture_and_session_absence_acknowledged){
+    if(complete && report.checks.all_isolated_contexts_closed && report.checks.all_existing_account_runner_sessions_scoped_logout
+      && report.checks.external_guarded_SQL_fixture_and_session_absence_acknowledged){
       report.result='RECOVERY_VARIANTS_SCOPED_PASS';report.exit_code=0;
     }
     try{await mailbox?.status(report.exit_code===0?'SCOPED_PASS':'REVIEW_REQUIRED',report.exit_code===0?'success':'failure');}catch{}

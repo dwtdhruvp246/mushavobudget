@@ -17,7 +17,7 @@ async function main() {
     const accountSwitch = plan.scope === 'account-switch-and-stale-session'
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU05.06', 'AU05.07']);
     const recovery = plan.scope === 'recovery-variants'
-      && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.01','AU04.03','AU04.04','AU04.05','AU05.07']);
+      && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.03','AU04.04','AU04.05']);
     const recoveryFeedback = plan.scope === 'recovery-request-feedback'
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.01','AU05.07']);
     need(confirmation || passwordSessions || accountSwitch || recovery || recoveryFeedback, 'REVIEWED_RUN_SCOPE_REQUIRED');

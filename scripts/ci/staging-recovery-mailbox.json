@@ -2,9 +2,9 @@
   "protocol": "mushavo-staging-recovery-v1",
   "run": "42095468799",
   "commit": "884d3196e577ff3bb442738a732f4512a39be39c",
-  "phase": "RECOVER_A",
-  "ephemeral_key": "MCowBQYDK2VuAyEAQoIIe0w49LWbfNZKPnNXdxmHBWbntUNkGVz-RbHZanA",
-  "iv": "rpvQnl2zOe5j6Dzf",
-  "ciphertext": "TKx4qAKxGRVy5PdryOY6V4sssMsDdVHvr44-4slq16vf-pS70z3NqqNPGkQpb5niJnBhJh0yXLVMjuG4DRxIG1WvcwSQGjnWBebXNu8TFn16BMuglWt0e2p71KmXN8lU97M5fWWnA_zc179lBtUqr5V6y6UoIfwc97Q3UiUkuchCF197v8_D30Awph650G0DCl8xGngJyj_qHHo86hkwy59zV_QLRdKfEQWmrhDxSf8VHqbdyTPOugTsg_xoA0Sw-MX5ylRscKF-2Ngc7A2nbMsuOZbU_kWzwg7NmA5xQ6eXTM0oyX8",
-  "tag": "zMOFR9DmcK_2pJfbPXnjLg"
+  "phase": "EXPIRE_A",
+  "ephemeral_key": "MCowBQYDK2VuAyEAGxKl9h4FIDFlYTVI_SXwCtnsl-NZycZugbwBxkHK2iY",
+  "iv": "coDcSNzrUoO8lLxG",
+  "ciphertext": "5Zpk0QrhKP0BXAlJraZRfwpvb-tMqCFZ7_fSxlGxIfE7NakK_Zjf_A",
+  "tag": "SXU-uPx4ED-RLljntDLB0w"
 }

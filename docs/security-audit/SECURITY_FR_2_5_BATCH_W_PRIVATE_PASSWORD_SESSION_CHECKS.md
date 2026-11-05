@@ -57,3 +57,8 @@ actual receipt, including partial results or a stop, before updating its status.
 Remaining W recovery/expiry/wrong-session/account-switch/rate variants, older
 unbound Node-session cleanup, V/X/Y/Z and later FRs remain open. No whole W,
 Stage3, finding or release closure follows from this run plan.
+
+
+## Hosted result
+
+FRE298: all four selected cases scoped PASS in [run41998406883](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41998406883), exit0. [Safe receipt](security-fr-2-batch-w-password-session-pass.json). The first run received HTTP422/minimum8 but stopped because its parser preferred numeric code over error_code; its review receipt is retained. The parser was corrected and the guard fixture now includes both fields. The corrected run used17 direct API calls,149 browser backend requests,1 bounded short-password request and1 server-identity read, with4 normal activity RPCs included in browser traffic. It created3 sessions and acknowledged3 scoped logouts. Read-only metadata found zero rows with either exact run tag. No screenshot/trace/token/console export, app deployment or password change.

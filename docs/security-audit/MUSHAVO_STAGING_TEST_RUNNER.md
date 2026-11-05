@@ -9,7 +9,7 @@ The owner saved six repository Actions secrets. Their names were observed in
 GitHub's repository secrets list; their contents were not read. The runner uses
 them privately for the two designated ordinary accounts and existing Super Admin.
 
-## Current finite run
+## Initial completed finite run
 
 `scripts/ci/staging-run.json` selects **access-and-confirmation / AU01.05**:
 
@@ -85,3 +85,10 @@ the next applicable existing scope after reconciling its fixtures and evidence.
 FRE297, 5 November 2026: [successful run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41991579027) and [safe receipt](security-fr-2-batch-w-staging-runner-confirmation-pass.json). All three private credentials/confirmed active identities/expected platform roles passed. AU01.05 generic existing-account guidance, actual browser-blocked resend, safe retry feedback, retained address/form/enabled button and no-dispatch local cooldown passed. Three created sessions received local logout acknowledgements; the isolated browser closed. No unblocked resend or fresh provider429/quota test ran. This is scoped W progress, not full W or launch acceptance.
 
 The [read-only role inventory](security-fr-2-staging-runner-role-fixture-inventory.json) found Personal ownership for the three selected accounts and an active Business staff membership for USER_B. These selected accounts do not own Family or Business workspaces, and no additional platform staff identity is installed. Inventory existing retained actors before arranging missing role/recovery prerequisites. No role or plan was changed by this setup.
+
+
+## Latest completed finite run: password boundary and sessions
+
+FRE298, 5 November2026: [successful run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41998406883) / [receipt](security-fr-2-batch-w-password-session-pass.json). The current plan selects exactly AU03.03/AU05.01/AU05.02/AU05.04; all four have scoped passes. The [full run protocol](SECURITY_FR_2_5_BATCH_W_PRIVATE_PASSWORD_SESSION_CHECKS.md) fixes their actions and limits. Sixteen local guard checks pass. Token rotation updates the same session's cleanup credential; early/app logout acknowledgements are recorded once. The failed initial numeric-error classifier run and its cleanup are retained separately.
+
+The refresh test accelerates only isolated cached expiry metadata while using the real app timer/server response. The push test injects a browser registration-lookup error while using real Auth logout. Natural hour-long expiry, actual push delivery and protected push-row DELETE failure are not inferred. Three new sessions were locally logged out; no exact tagged rows remained. Normal app foreground activity recorded four analytics RPCs. No owner password/command/upload is needed for this completed run. Remaining original account-switch/recovery/rate and legacy/configuration obligations remain open, along with older unbound Node cleanup and V/X/Y/Z.

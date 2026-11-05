@@ -5,11 +5,11 @@
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "9e0429968185f32f770386c6f68e8cbf043ade54",
+  "source_parent_commit": "d24d0da68f3974cd67d219a3a326660ae1c2b415",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE297",
+  "latest_evidence": "FRE298",
   "batches": [
     {
       "id": "FR.1",
@@ -1747,7 +1747,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.AU03.03_SERVER_PASSWORD_BOUNDARY_AND_REMAINING_W_VARIANTS",
+  "next_step": "FR.2.5.AU05.06_ACCOUNT_SWITCH_AND_REMAINING_RECOVERY_RATE_VARIANTS",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -7548,7 +7548,7 @@
   },
   "batch_W_same_user_refresh": {
     "existing_case": "AU05.01",
-    "status": "NORMAL_LOGIN_RESTORED_REFRESH_HTTP200_RETAINED_CONTINUOUS_REFRESH_ACCEPTANCE_PARTIAL",
+    "status": "PRIVATE_RUNNER_REAL_REFRESH_CONTINUITY_AND_RELOAD_SCOPED_PASS",
     "report": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_SAME_USER_REFRESH_CHECK.md",
     "SDK_version": "2.110.9",
     "origin": "https://mushavo-budget-staging.pages.dev",
@@ -7646,7 +7646,14 @@
       "recredits_current_native_refresh_continuity": false
     },
     "clean_immediate_reload_persistence_failure_reproduced": false,
-    "another_immediate_hour_wait_requested": false
+    "another_immediate_hour_wait_requested": false,
+    "latest_runner_receipt": "docs/security-audit/security-fr-2-batch-w-password-session-pass.json",
+    "latest_workflow_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41998406883",
+    "automatic_client_timer_observed": true,
+    "isolated_cached_expiry_metadata_accelerated": true,
+    "natural_hour_long_JWT_expiry_observed": false,
+    "explicit_refreshSession_calls": 0,
+    "no_repeat_owner_hour_wait_required": true
   },
   "batch_W_business_new_recipient": {
     "status": "OWNER_REPORTED_BUSINESS_NEW_RECIPIENT_SETUP_PASS",
@@ -8017,21 +8024,42 @@
     "existing_owner_package_and_deployment_retained": true
   },
   "staging_test_runner": {
-    "status": "ACCESS_VERIFIED_AND_AU01_05_SCOPED_PASS",
+    "status": "ACCESS_AND_FOUR_PASSWORD_SESSION_CHECKS_SCOPED_PASS",
     "workflow": ".github/workflows/staging-checks.yml",
     "run_plan": "scripts/ci/staging-run.json",
     "documentation": "docs/security-audit/MUSHAVO_STAGING_TEST_RUNNER.md",
-    "latest_receipt": "docs/security-audit/security-fr-2-batch-w-staging-runner-confirmation-pass.json",
-    "latest_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41991579027",
+    "latest_receipt": "docs/security-audit/security-fr-2-batch-w-password-session-pass.json",
+    "latest_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41998406883",
     "secrets_saved_by_owner": 6,
     "secret_values_visible_to_model": false,
     "confirmed_active_ordinary_accounts": 2,
     "confirmed_existing_super_admin": 1,
-    "local_guard_tests": 10,
+    "local_guard_tests": 16,
     "existing_scope_only": true,
     "no_owner_command_or_upload_required_for_this_setup": true,
     "latest_created_sessions": 3,
     "latest_scoped_cleanup_acknowledgements": 3,
     "older_Node_cleanup_not_resolved": true
+  },
+  "batch_W_password_session_runner": {
+    "status": "FOUR_EXISTING_CASES_SCOPED_PASS",
+    "receipt": "docs/security-audit/security-fr-2-batch-w-password-session-pass.json",
+    "run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41998406883",
+    "case_ids": [
+      "AU03.03",
+      "AU05.01",
+      "AU05.02",
+      "AU05.04"
+    ],
+    "local_guard_tests": 16,
+    "latest_created_sessions": 3,
+    "latest_cleanup_acknowledgements": 3,
+    "server_password_minimum": 8,
+    "automatic_refresh_trigger": "ISOLATED_LOCAL_EXPIRY_METADATA_ACCELERATED",
+    "natural_JWT_expiry_observed": false,
+    "push_failure_scope": "INJECTED_BROWSER_REGISTRATION_LOOKUP_FAILURE_WITH_REAL_AUTH_LOGOUT",
+    "push_provider_or_protected_row_failure_exercised": false,
+    "old_Node_cleanup_verified": false,
+    "AU03_04_retry_deferred": true
   }
 }

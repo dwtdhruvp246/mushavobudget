@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { bridgeKey, publicBridgeKey, sealBridge, openBridge, createMailbox } from '../scripts/ci/staging-recovery-bridge.mjs';
 import { recoveryFixtures, cleanupSQL, expirySQL, recoveryTimestampSnapshotSQL } from '../scripts/ci/staging-recovery-fixtures.mjs';
-import { recoveryMailToken, recoveryBrowserDecision, safeRecoveryRequestOutcome } from '../scripts/ci/staging-recovery.mjs';
+import { recoveryMailToken, recoveryBrowserDecision, safeRecoveryRequestOutcome, isBoundRecoveryPasswordUpdate } from '../scripts/ci/staging-recovery.mjs';
 import { API_ORIGIN, WEB_ORIGIN } from '../scripts/ci/staging-access.mjs';
 import { recoveryFeedbackDecision } from '../scripts/ci/staging-recovery-feedback.mjs';
 const binding={run:'12345',commit:'a'.repeat(40),phase:'RECOVER_A'};
@@ -68,6 +68,21 @@ test('recovery browser permits only its phase-specific Auth mutations and retain
   for(const [path,method,phase]of [['/auth/v1/user','PUT','idle'],['/auth/v1/signup','POST','recovery'],
     ['/auth/v1/logout?scope=global','POST','save'],['/rest/v1/profiles','PATCH','save'],['/rest/v1/rpc/complete_admin_user_invitation','POST','save']])
     assert.equal(recoveryBrowserDecision(API_ORIGIN+path,method,phase),'refuse');
+});
+test('password retry accepts SDK null PKCE fields only for the exact recovery actor and session', () => {
+  const actor = '11111111-1111-4111-8111-111111111111';
+  const recovery = '22222222-2222-4222-8222-222222222222';
+  const different = '33333333-3333-4333-8333-333333333333';
+  const makeToken = (sub, session_id) => 'e30.' + Buffer.from(JSON.stringify({ sub, session_id })).toString('base64url') + '.test';
+  const identity = { userId: actor, sessionId: recovery }, token = makeToken(actor, recovery), password = 'ExampleFixture9!';
+  const body = { password, code_challenge: null, code_challenge_method: null };
+  assert.equal(isBoundRecoveryPasswordUpdate(body, token, identity, password), true);
+  assert.equal(isBoundRecoveryPasswordUpdate({ password }, token, identity, password), true);
+  for (const extra of [{ email: 'other@example.invalid' }, { data: {} }, { code_challenge: 'unexpected' }, { code_challenge_method: 's256' }])
+    assert.equal(isBoundRecoveryPasswordUpdate({ ...body, ...extra }, token, identity, password), false);
+  assert.equal(isBoundRecoveryPasswordUpdate(body, makeToken(different, recovery), identity, password), false);
+  assert.equal(isBoundRecoveryPasswordUpdate(body, makeToken(actor, different), identity, password), false);
+  assert.equal(isBoundRecoveryPasswordUpdate(body, token, identity, 'DifferentFixture9!'), false);
 });
 test('feedback-only execution refuses password changes, fixture creation, session adoption and unrelated mutations',()=>{
   for(const mode of ['absent','blocked','rate']){

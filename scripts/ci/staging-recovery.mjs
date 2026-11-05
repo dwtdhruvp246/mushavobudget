@@ -40,6 +40,15 @@ export function recoveryBrowserDecision(url, method, mode) {
   return sessionBrowserDecision(url, method);
 }
 
+export function isBoundRecoveryPasswordUpdate(body, token, expectedIdentity, expectedPassword) {
+  const identity = tokenIdentity(token);
+  return Boolean(identity && expectedIdentity && identity.userId === expectedIdentity.userId
+    && identity.sessionId === expectedIdentity.sessionId && typeof expectedPassword === 'string'
+    && expectedPassword.length > 0 && body?.password === expectedPassword
+    && Object.entries(body).every(([key, value]) => key === 'password'
+      || (key === 'code_challenge' || key === 'code_challenge_method') && value === null));
+}
+
 export async function checkRecovery(plan, accounts, chromium, env = process.env, fetcher = fetch) {
   const fixtures = recoveryFixtures(plan.fixture_run_id), sessions = [], contexts = [];
   const report = { progress_display:'Stage 3/10 | FR.2/8 | Batch W/Z', result:'RECOVERY_VARIANTS_REVIEW_REQUIRED',
@@ -116,9 +125,9 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
           routeProblem = 'EXACT_SINGLE_RECOVERY_VERIFY_REQUIRED';
       } else if(action==='password-save'){
         let body;try{body=request.postDataJSON();}catch{}
-        const identity=tokenIdentity((request.headers().authorization||'').replace(/^Bearer /,''));
-        if(!test.expectedActor || identity?.userId!==test.expectedActor || body?.password!==passwords.NEW_A
-          || Object.keys(body||{}).some(x=>x!=='password'))routeProblem='EXACT_NEW_FIXTURE_PASSWORD_WRITE_REQUIRED';
+        const token = (await request.headerValue('authorization') || '').replace(/^Bearer /i, '');
+        if (!isBoundRecoveryPasswordUpdate(body, token, test.expectedRecoveryIdentity, passwords.NEW_A))
+          routeProblem = 'EXACT_NEW_FIXTURE_PASSWORD_WRITE_REQUIRED';
         else if(test.mode==='block-save') {report.password_updates_blocked++;await route.abort('internetdisconnected');return;}
         else if(test.mode!=='save' || report.password_updates_forwarded>=1)routeProblem='RECOVERY_PASSWORD_WRITE_BOUND_REQUIRED';
         else report.password_updates_forwarded++;
@@ -230,7 +239,7 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     need(timestamps?.kind === 'exact-unused-recovery-timestamps-restored', 'ORIGINAL_UNUSED_RECOVERY_TIMESTAMPS_REQUIRED');
     report.checks.original_validity_restored_to_same_unused_disposable_token = true;
     stage = 'VALID_RECOVERY';
-    const test=await newTest(confirmed.B,'recovery');test.expectedActor=confirmed.A.user.id;
+    const test=await newTest(confirmed.B,'recovery');
     test.recoveryToken = recoverToken;
     const normal=await test.context.newPage();await normal.goto(WEB_ORIGIN+'/app#personal/dashboard',{waitUntil:'domcontentloaded'});await readyDashboard(normal);
     await test.page.goto(recoveryURL,{waitUntil:'networkidle'});
@@ -238,6 +247,7 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     need(await test.page.locator('#securityIdentity').innerText()===`Verified account: ${fixtures.A}` && test.lastRecoverySession?.user?.id===confirmed.A.user.id,'REAL_RECOVERY_RECIPIENT_REQUIRED');
     need(new URL(test.page.url()).search==='?flow=recover' && !new URL(test.page.url()).hash,'RECOVERY_URL_MUST_BE_CLEAN');
     const recoverySession=test.lastRecoverySession;
+    test.expectedRecoveryIdentity = tokenIdentity(recoverySession.access_token);
     stage='WRONG_SESSION';const wrong=await installIsolated(test.page,confirmed.B);
     need(wrong.ok && wrong.id===confirmed.B.user.id,'DISTINCT_REAL_ISOLATED_SESSION_REQUIRED');
     await test.page.locator('#securityNewPassword').fill(passwords.NEW_A);await test.page.locator('#securityConfirmPassword').fill(passwords.NEW_A);

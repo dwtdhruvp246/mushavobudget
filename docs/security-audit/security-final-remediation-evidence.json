@@ -10591,6 +10591,32 @@
       "findings_closed": [],
       "exit_code": 0,
       "next_step": "FR.2.5_REMAINING_RECOVERY_VARIANTS_AND_BUSINESS_ERROR_BROWSER_VERIFICATION"
+    },
+    {
+      "id": "FRE305",
+      "date": "2026-11-05",
+      "stage_step": "FR.2.5_SINGLE_FIXTURE_RECOVERY_VARIANTS",
+      "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+      "result": "WRONG_RECOVERY_SESSION_AND_CONTROLLED_EXPIRY_SCOPED_PASS_SAVE_RETRY_PENDING",
+      "source_parent_commit": "884d3196e577ff3bb442738a732f4512a39be39c",
+      "live_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42095468799",
+      "receipt": "docs/security-audit/security-fr-2-batch-w-single-fixture-recovery-partial.json",
+      "accepted_original_cases": [
+        "AU04.03",
+        "AU04.04"
+      ],
+      "live_AU04_05_save_retry_verified": false,
+      "password_updates_forwarded": 0,
+      "real_email_requests": 2,
+      "new_disposable_accounts": 1,
+      "scoped_logout_acknowledgements": 3,
+      "independent_fixture_absence_verified": true,
+      "local_guard_and_Business_checks_passed": 33,
+      "new_public_AU_cases": 0,
+      "full_lettered_batch_W_complete": false,
+      "production_or_native_changed": false,
+      "findings_closed": [],
+      "next_step": "FR.2.5_RECOVERY_SAVE_RETRY_AND_BUSINESS_ERROR_BROWSER_VERIFICATION"
     }
   ],
   "prior_stage_evidence_preserved": true,

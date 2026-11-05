@@ -9,7 +9,7 @@
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE304",
+  "latest_evidence": "FRE305",
   "batches": [
     {
       "id": "FR.1",
@@ -1755,7 +1755,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_REMAINING_RECOVERY_VARIANTS_AND_BUSINESS_ERROR_BROWSER_VERIFICATION",
+  "next_step": "FR.2.5_RECOVERY_SAVE_RETRY_AND_BUSINESS_ERROR_BROWSER_VERIFICATION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -8042,17 +8042,17 @@
     "secret_values_visible_to_model": false,
     "confirmed_active_ordinary_accounts": 2,
     "confirmed_existing_super_admin": 1,
-    "local_guard_tests": 25,
+    "local_guard_tests": 33,
     "existing_scope_only": true,
     "no_owner_command_or_upload_required_for_this_setup": true,
     "latest_created_sessions": 3,
     "latest_scoped_cleanup_acknowledgements": 3,
-    "older_Node_cleanup_not_resolved": true,
+    "older_Node_cleanup_not_resolved": false,
     "remaining_recovery_fixture_connector_confirmation_required": false,
-    "latest_attempt_receipt": "docs/security-audit/security-fr-2-batch-w-recovery-rate-stop-cleanup-required.json",
-    "latest_attempt_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42014057621",
-    "latest_attempt_created_sessions": 2,
-    "latest_attempt_scoped_cleanup_acknowledgements": 2,
+    "latest_attempt_receipt": "docs/security-audit/security-fr-2-batch-w-single-fixture-recovery-partial.json",
+    "latest_attempt_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42095468799",
+    "latest_attempt_created_sessions": 3,
+    "latest_attempt_scoped_cleanup_acknowledgements": 3,
     "latest_fixture_cleanup_receipt": "docs/security-audit/security-fr-2-batch-w-approved-recovery-fixture-cleanup-pass.json",
     "latest_attempt_fixture_accounts_remaining": 0,
     "latest_attempt_fixture_workspaces_remaining": 0,
@@ -8201,12 +8201,15 @@
     "actual_email_requests": 0
   },
   "batch_W_remaining_recovery_preflight": {
-    "status": "NO_EXISTING_UNUSED_LINK_FIXTURE_PRIVATE_EXECUTION_UNAVAILABLE",
-    "receipt": "docs/security-audit/security-fr-2-batch-w-business-error-and-historical-session-binding.json",
+    "status": "WRONG_SESSION_AND_CONTROLLED_EXPIRY_SCOPED_PASS_SAVE_RETRY_PENDING",
+    "receipt": "docs/security-audit/security-fr-2-batch-w-single-fixture-recovery-partial.json",
     "fixture_accounts_remaining": 0,
-    "proposed_new_disposable_accounts": 1,
-    "proposed_confirmation_emails": 1,
-    "mail_availability_verified": false,
-    "execution_environment_available": false
+    "accepted_original_cases": [
+      "AU04.03",
+      "AU04.04"
+    ],
+    "pending_original_case": "AU04.05",
+    "real_email_requests": 2,
+    "guard_correction_local_PASS": true
   }
 }

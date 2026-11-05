@@ -1,7 +1,8 @@
 {
-  "run_id": "2026-11-05-account-switch-and-stale-session-01",
-  "scope": "account-switch-and-stale-session",
+  "run_id": "2026-11-05-recovery-request-feedback-01",
+  "scope": "recovery-request-feedback",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
-  "case_ids": ["AU05.06", "AU05.07"],
-  "source_parent_commit": "bb55c7cacc7a7b506c4efb01fca6305bbc6f89eb"
+  "case_ids": ["AU04.01", "AU05.07"],
+  "fixture_run_id": "w300-mw3dwzsv-m9siry",
+  "source_parent_commit": "8213d649f1a7921b4bb5ed99cb58b88113f661b3"
 }

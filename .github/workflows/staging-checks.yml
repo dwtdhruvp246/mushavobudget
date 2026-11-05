@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: '22'
       - name: Verify runner boundaries without credentials
-        run: node --test tests/staging-runner-guards.test.mjs
+        run: node --test tests/staging-runner-guards.test.mjs tests/staging-recovery-guards.test.mjs
       - name: Install locked browser tools
         run: npm ci --ignore-scripts --prefix scripts/fixtures/staging-browser-tools
       - name: Install Chromium

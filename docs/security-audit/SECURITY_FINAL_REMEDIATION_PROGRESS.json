@@ -5,11 +5,11 @@
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "c349f769c0765308ffda8350a3597fc574199479",
+  "source_parent_commit": "9d3284bf07797506ed3521d11e7df38bb06d3782",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE299",
+  "latest_evidence": "FRE300",
   "batches": [
     {
       "id": "FR.1",
@@ -1103,7 +1103,7 @@
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5.AU01.05_EXISTING_EMAIL_AND_BLOCKED_CONFIRMATION_REQUEST",
+          "next_step": "FR.2.5_AU04_DISPOSABLE_FIXTURE_CLEANUP_CONFIRMATION_AND_REMAINING_LEGACY_BUSINESS_ERROR_EXACT_OLD_SESSION_DEPENDENCIES",
           "persistent_browser_trust_checkpoint": {
             "status": "SUPERSEDED_OWNER_PASSWORD_ONLY_ALL_ROLES",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
@@ -1681,7 +1681,10 @@
           "completed_Admin_invitation_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-completed-admin-invitation-pass.json",
           "current_Admin_invitation_policy_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
           "Admin_setup_completion_retry_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-setup-completion-retry-pass.json",
-          "ordinary_confirmation_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-confirmation-pass.json"
+          "ordinary_confirmation_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-confirmation-pass.json",
+          "latest_evidence": "FRE300",
+          "latest_runner_receipt": "docs/security-audit/security-fr-2-batch-w-recovery-feedback-pass.json",
+          "recovery_fixture_preparation_blocked": "docs/security-audit/security-fr-2-batch-w-recovery-fixture-preparation-blocked.json"
         },
         {
           "id": "FR.2.6",
@@ -1697,7 +1700,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "FR.2.5.AU01.05_EXISTING_EMAIL_AND_BLOCKED_CONFIRMATION_REQUEST"
+      "next_step": "FR.2.5_AU04_DISPOSABLE_FIXTURE_CLEANUP_CONFIRMATION_AND_REMAINING_LEGACY_BUSINESS_ERROR_EXACT_OLD_SESSION_DEPENDENCIES"
     },
     {
       "id": "FR.3",
@@ -1747,7 +1750,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_AU04_REMAINING_RECOVERY_VARIANTS_AND_AU05_07_RATE_UI_LEGACY_PASSWORD_CLEANUP",
+  "next_step": "FR.2.5_AU04_DISPOSABLE_FIXTURE_CLEANUP_CONFIRMATION_AND_REMAINING_LEGACY_BUSINESS_ERROR_EXACT_OLD_SESSION_DEPENDENCIES",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -6643,7 +6646,7 @@
     "signout_entry_source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51"
   },
   "owner_browser_action_required": false,
-  "owner_SQL_action_condition": "None: backend and accepted frontend remain unchanged.",
+  "owner_SQL_action_condition": "No manual SQL handoff requested. The Supabase connector requires confirmation for the guarded disposable-fixture cleanup rehearsal.",
   "signout_entry": {
     "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
     "status": "OWNER_PACKAGE_PASS_DEPLOYMENT_URL_RECEIVED_CANONICAL_BROWSER_CHECK_PENDING",
@@ -8024,22 +8027,23 @@
     "existing_owner_package_and_deployment_retained": true
   },
   "staging_test_runner": {
-    "status": "LATEST_BUSINESS_SWITCH_AND_STALE_SESSION_SCOPED_PASS",
+    "status": "LATEST_RECOVERY_REQUEST_FEEDBACK_AND_SYNTHETIC_AUTH_RATE_UI_SCOPED_PASS",
     "workflow": ".github/workflows/staging-checks.yml",
     "run_plan": "scripts/ci/staging-run.json",
     "documentation": "docs/security-audit/MUSHAVO_STAGING_TEST_RUNNER.md",
-    "latest_receipt": "docs/security-audit/security-fr-2-batch-w-account-switch-stale-session-pass.json",
-    "latest_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42000458416",
+    "latest_receipt": "docs/security-audit/security-fr-2-batch-w-recovery-feedback-pass.json",
+    "latest_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42012681035",
     "secrets_saved_by_owner": 6,
     "secret_values_visible_to_model": false,
     "confirmed_active_ordinary_accounts": 2,
     "confirmed_existing_super_admin": 1,
-    "local_guard_tests": 18,
+    "local_guard_tests": 24,
     "existing_scope_only": true,
     "no_owner_command_or_upload_required_for_this_setup": true,
     "latest_created_sessions": 3,
     "latest_scoped_cleanup_acknowledgements": 3,
-    "older_Node_cleanup_not_resolved": true
+    "older_Node_cleanup_not_resolved": true,
+    "remaining_recovery_fixture_connector_confirmation_required": true
   },
   "batch_W_password_session_runner": {
     "status": "FOUR_EXISTING_CASES_SCOPED_PASS",
@@ -8081,5 +8085,43 @@
     "email_OTP_expiration_seconds": 3600,
     "settings_changed": false,
     "required_reauthentication_failure_success_tested": false
+  },
+  "owner_connector_confirmation_required": true,
+  "owner_connector_confirmation_reason": "Supabase connector confirmation expired for exact-new-fixture rollback-only cleanup rehearsal; do not create disposable recovery accounts before cleanup can be executed and verified.",
+  "batch_W_recovery_feedback_runner": {
+    "status": "AU04_01_FEEDBACK_AND_CONTROLLED_AUTH429_UI_SCOPED_PASS",
+    "receipt": "docs/security-audit/security-fr-2-batch-w-recovery-feedback-pass.json",
+    "workflow_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42012681035",
+    "local_guard_tests": 24,
+    "absent_recipient_HTTP_status": 200,
+    "existing_recipient_reset_requests_forwarded": 0,
+    "blocked_recovery_requests": 1,
+    "synthetic_Auth429_responses": 1,
+    "actual_provider429_or_Business_Edge502_exercised": false,
+    "new_sessions": 3,
+    "scoped_logout_acknowledgements": 3,
+    "exact_tagged_session_rows_remaining": 0,
+    "legacy_short_ordinary_password_candidate_available": false,
+    "legacy_short_Admin_password_candidate_available": false,
+    "saved_password_values_exported": false,
+    "AU03_04_owner_deferral_retained": true
+  },
+  "batch_W_recovery_fixture_preparation": {
+    "status": "PREPARED_NOT_EXECUTED_SUPABASE_CONFIRMATION_EXPIRED",
+    "receipt": "docs/security-audit/security-fr-2-batch-w-recovery-fixture-preparation-blocked.json",
+    "protocol": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PRIVATE_RECOVERY_CHECKS.md",
+    "cleanup_SQL": "supabase/diagnostics/security_fr_2_5_recovery_fixture_cleanup_w300.sql",
+    "expiry_SQL": "supabase/diagnostics/security_fr_2_5_recovery_fixture_expiry_w300.sql",
+    "case_ids": [
+      "AU04.03",
+      "AU04.04",
+      "AU04.05"
+    ],
+    "disposable_accounts_created": 0,
+    "test_email_requests": 0,
+    "SQL_execution_verified": false,
+    "encrypted_bridge_hosted_verified": false,
+    "workflow_status_write_permission_granted": false,
+    "GitHub_token_exposed_to_test_step": false
   }
 }

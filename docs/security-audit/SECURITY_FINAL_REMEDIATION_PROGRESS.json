@@ -5,11 +5,11 @@
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "d24d0da68f3974cd67d219a3a326660ae1c2b415",
+  "source_parent_commit": "c349f769c0765308ffda8350a3597fc574199479",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE298",
+  "latest_evidence": "FRE299",
   "batches": [
     {
       "id": "FR.1",
@@ -1747,7 +1747,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.AU05.06_ACCOUNT_SWITCH_AND_REMAINING_RECOVERY_RATE_VARIANTS",
+  "next_step": "FR.2.5_AU04_REMAINING_RECOVERY_VARIANTS_AND_AU05_07_RATE_UI_LEGACY_PASSWORD_CLEANUP",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -8024,17 +8024,17 @@
     "existing_owner_package_and_deployment_retained": true
   },
   "staging_test_runner": {
-    "status": "ACCESS_AND_FOUR_PASSWORD_SESSION_CHECKS_SCOPED_PASS",
+    "status": "LATEST_BUSINESS_SWITCH_AND_STALE_SESSION_SCOPED_PASS",
     "workflow": ".github/workflows/staging-checks.yml",
     "run_plan": "scripts/ci/staging-run.json",
     "documentation": "docs/security-audit/MUSHAVO_STAGING_TEST_RUNNER.md",
-    "latest_receipt": "docs/security-audit/security-fr-2-batch-w-password-session-pass.json",
-    "latest_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41998406883",
+    "latest_receipt": "docs/security-audit/security-fr-2-batch-w-account-switch-stale-session-pass.json",
+    "latest_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42000458416",
     "secrets_saved_by_owner": 6,
     "secret_values_visible_to_model": false,
     "confirmed_active_ordinary_accounts": 2,
     "confirmed_existing_super_admin": 1,
-    "local_guard_tests": 16,
+    "local_guard_tests": 18,
     "existing_scope_only": true,
     "no_owner_command_or_upload_required_for_this_setup": true,
     "latest_created_sessions": 3,
@@ -8061,5 +8061,25 @@
     "push_provider_or_protected_row_failure_exercised": false,
     "old_Node_cleanup_verified": false,
     "AU03_04_retry_deferred": true
+  },
+  "batch_W_account_switch_runner": {
+    "status": "AU05_06_SCOPED_PASS_AU05_07_STALE_VARIANT_SCOPED_PASS",
+    "receipt": "docs/security-audit/security-fr-2-batch-w-account-switch-stale-session-pass.json",
+    "run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42000458416",
+    "delayed_response_original_payload": true,
+    "existing_Business_staff_fixture_used": true,
+    "cleanup_acknowledgements": 3,
+    "rate_UI_or_quota_acceptance": false,
+    "older_Node_cleanup_resolved": false
+  },
+  "batch_W_current_password_configuration": {
+    "status": "AU03_05_NOT_REQUIRED_UNDER_CURRENT_DISABLED_REQUIREMENTS",
+    "receipt": "docs/security-audit/security-fr-2-batch-w-current-password-config-readback.json",
+    "secure_password_change_enabled": false,
+    "current_password_required": false,
+    "minimum_eight_server_verified": true,
+    "email_OTP_expiration_seconds": 3600,
+    "settings_changed": false,
+    "required_reauthentication_failure_success_tested": false
   }
 }

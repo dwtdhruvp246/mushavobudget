@@ -87,8 +87,15 @@ FRE297, 5 November 2026: [successful run](https://github.com/dwtdhruvp246/mushav
 The [read-only role inventory](security-fr-2-staging-runner-role-fixture-inventory.json) found Personal ownership for the three selected accounts and an active Business staff membership for USER_B. These selected accounts do not own Family or Business workspaces, and no additional platform staff identity is installed. Inventory existing retained actors before arranging missing role/recovery prerequisites. No role or plan was changed by this setup.
 
 
-## Latest completed finite run: password boundary and sessions
+## Completed finite run: password boundary and sessions
 
 FRE298, 5 November2026: [successful run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41998406883) / [receipt](security-fr-2-batch-w-password-session-pass.json). The current plan selects exactly AU03.03/AU05.01/AU05.02/AU05.04; all four have scoped passes. The [full run protocol](SECURITY_FR_2_5_BATCH_W_PRIVATE_PASSWORD_SESSION_CHECKS.md) fixes their actions and limits. Sixteen local guard checks pass. Token rotation updates the same session's cleanup credential; early/app logout acknowledgements are recorded once. The failed initial numeric-error classifier run and its cleanup are retained separately.
 
 The refresh test accelerates only isolated cached expiry metadata while using the real app timer/server response. The push test injects a browser registration-lookup error while using real Auth logout. Natural hour-long expiry, actual push delivery and protected push-row DELETE failure are not inferred. Three new sessions were locally logged out; no exact tagged rows remained. Normal app foreground activity recorded four analytics RPCs. No owner password/command/upload is needed for this completed run. Remaining original account-switch/recovery/rate and legacy/configuration obligations remain open, along with older unbound Node cleanup and V/X/Y/Z.
+
+
+## Latest completed finite run: account switch and stale-session denial
+
+FRE299 [live run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42000458416) / [receipt](security-fr-2-batch-w-account-switch-stale-session-pass.json): AU05.06 actual Business staff view, one real unchanged held response, distinct stock-SDK session adoption/broadcast, cleared branding/activity/dialogs, no late protected-view restoration and replacement Personal persistence all scoped PASS. AU05.07 stale-session denial variant passed: the new old-actor runner session was locally revoked, its JWT was still before expiry, and the current server contract/own-profile read denied protected access. Rate UI/quota remains separate.18 local guards passed;3/3 new sessions received scoped logout acknowledgement and no exact tagged session rows remained.
+
+[Current password configuration readback](security-fr-2-batch-w-current-password-config-readback.json) independently shows Secure password change and Require current password both disabled; Save was disabled and Cancel closed the dialog. AU03.05's conditional requirement is not applicable in current staging. No setting or credential changed. Remaining work is original recovery/legacy-password/rate-UI/exact-old-session closure; AU03.04 retry stays owner-deferred.

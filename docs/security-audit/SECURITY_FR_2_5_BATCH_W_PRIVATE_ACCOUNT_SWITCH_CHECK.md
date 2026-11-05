@@ -46,3 +46,8 @@ hosted acceptance. Record the actual workflow receipt before crediting AU05.06
 or AU05.07's stale-session variant. Auth/provider rate UI/quota, recovery cases,
 legacy-password/configuration reconciliation and older unbound Node cleanup
 remain independent; no whole W/FR/Stage3/release acceptance is claimed.
+
+
+## Hosted result
+
+FRE299: [run42000458416](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42000458416) exit0, AU05.06 and AU05.07's stale-session variant scoped PASS. [Receipt](security-fr-2-batch-w-account-switch-stale-session-pass.json). One genuine old-actor HTTP200 response was held and released unchanged; actual cross-tab adoption cleared Business branding/activity/dialogs before release, protected content stayed hidden afterward, and the replacement Personal session persisted through reload. The revoked old runner session's still-unexpired JWT received session_valid=false and an empty own-profile result.3/3 new-session logout acknowledgements; exact run-tag rows0.18 direct API calls,156 browser backend requests including3 normal activity RPCs,2 stale-session snapshots and3 pinned public reads are separately counted; public assets/WebSocket traffic is not claimed as measured. No mail or account/finance/role/settings/schema/deployment mutation.

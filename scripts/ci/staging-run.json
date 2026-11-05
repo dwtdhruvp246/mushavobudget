@@ -1,8 +1,8 @@
 {
-  "run_id": "2026-11-05-recovery-request-feedback-01",
-  "scope": "recovery-request-feedback",
+  "run_id": "2026-11-05-recovery-variants-01",
+  "scope": "recovery-variants",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
-  "case_ids": ["AU04.01", "AU05.07"],
+  "case_ids": ["AU04.01", "AU04.03", "AU04.04", "AU04.05", "AU05.07"],
   "fixture_run_id": "w300-mw3dwzsv-m9siry",
-  "source_parent_commit": "8213d649f1a7921b4bb5ed99cb58b88113f661b3"
+  "source_parent_commit": "e2395a1ff34006205b3e2ac94a015eef96c6318b"
 }

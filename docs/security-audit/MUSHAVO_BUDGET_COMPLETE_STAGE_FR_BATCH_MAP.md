@@ -1,5 +1,5 @@
 # Mushavo Budget — complete stages, FR groups and batches
-As of 5 November 2026 • Full remaining-to-launch hierarchy • Version 1.6
+As of 5 November 2026 • Full remaining-to-launch hierarchy • Version 1.7
 
 ## Read this structure correctly
 
@@ -239,3 +239,6 @@ Snapshot reviewed at bc68626e093bb56f31210cb19c411e4a77d332e4. The proposed late
 
 
 FRE303 records the Business invitation error candidate and the matching historical session evidence. The exact two-session revocation is paused after cancellation. The recovery runner requires a usable private execution environment. [Safe receipt](security-fr-2-batch-w-business-error-and-historical-session-binding.json).
+
+
+FRE304 resolves the October 30 test session cleanup. Both identified sessions and their two refresh tokens were revoked in staging and verified absent. The existing case list still governs recovery and Business invitation verification. [Cleanup receipt](security-fr-2-batch-w-historical-invitation-session-cleanup-pass.json).

@@ -2,12 +2,16 @@ import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { WEB_ORIGIN, privateAccounts, readPublicConfiguration, apiTransport, checkStagingAccess, Stop, need } from './staging-access.mjs';
 import { checkConfirmation } from './staging-confirmation.mjs';
+import { checkPasswordSessions } from './staging-password-sessions.mjs';
 
 async function main() {
   let report;
   try {
     const plan = JSON.parse(fs.readFileSync(new URL('./staging-run.json', import.meta.url), 'utf8'));
-    need(plan.scope === 'access-and-confirmation' && plan.case_id === 'AU01.05', 'REVIEWED_RUN_SCOPE_REQUIRED');
+    const confirmation = plan.scope === 'access-and-confirmation' && plan.case_id === 'AU01.05';
+    const passwordSessions = plan.scope === 'password-and-sessions'
+      && JSON.stringify(plan.case_ids) === JSON.stringify(['AU03.03', 'AU05.01', 'AU05.02', 'AU05.04']);
+    need(confirmation || passwordSessions, 'REVIEWED_RUN_SCOPE_REQUIRED');
     need(process.env.GITHUB_REPOSITORY === 'dwtdhruvp246/mushavobudget'
       && process.env.GITHUB_REF === 'refs/heads/security/stage-3-authorization', 'STAGING_BRANCH_RUN_REQUIRED');
     const accounts = privateAccounts(process.env);
@@ -16,7 +20,8 @@ async function main() {
     const config = readPublicConfiguration(await response.text());
     const { chromium } = await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs');
     const agent = `Mushavo-Staging-Runner/${process.env.GITHUB_RUN_ID}/${process.env.GITHUB_RUN_ATTEMPT}`;
-    report = await checkStagingAccess(accounts, apiTransport(config.key, agent), args => checkConfirmation(args, chromium, agent));
+    report = await checkStagingAccess(accounts, apiTransport(config.key, agent), args => confirmation
+      ? checkConfirmation(args, chromium, agent) : checkPasswordSessions(args, chromium, config.key, agent));
     report.run_plan = plan.run_id;
     report.source_commit = process.env.GITHUB_SHA;
     report.workflow_run_id = process.env.GITHUB_RUN_ID;

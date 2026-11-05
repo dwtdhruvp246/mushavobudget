@@ -1,5 +1,5 @@
 name: Mushavo staging checks
-run-name: Staging access and Batch W confirmation checks
+run-name: Staging Batch W selected checks
 
 on:
   push:

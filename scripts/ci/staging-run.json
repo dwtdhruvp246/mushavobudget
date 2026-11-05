@@ -1,7 +1,7 @@
 {
-  "run_id": "2026-11-05-access-and-confirmation-02",
-  "scope": "access-and-confirmation",
+  "run_id": "2026-11-05-password-and-sessions-01",
+  "scope": "password-and-sessions",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
-  "case_id": "AU01.05",
-  "source_parent_commit": "7f97a0be9142b1e66a6b6dd63a4f1e83a223c938"
+  "case_ids": ["AU03.03", "AU05.01", "AU05.02", "AU05.04"],
+  "source_parent_commit": "3e934969ae39e6aafbbfc482bf10336a58f0144e"
 }

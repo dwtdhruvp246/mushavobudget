@@ -13,6 +13,12 @@ export class Stop extends Error {
 }
 export function need(value, code) { if (!value) throw new Stop(code); }
 export const digest = value => createHash('sha256').update(value).digest('hex');
+export function tokenIdentity(token) {
+  try {
+    const value = JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString('utf8'));
+    return UUID.test(value.sub || '') && UUID.test(value.session_id || '') ? { userId: value.sub, sessionId: value.session_id } : null;
+  } catch { return null; }
+}
 
 export function privateAccounts(env) {
   return Object.fromEntries(Object.keys(BINDINGS).map(slot => {
@@ -76,16 +82,38 @@ export async function checkStagingAccess(accounts, transport, exercise = async (
     report.API_requests++;
     return transport({ method, route, token, body });
   };
+  const locate = token => {
+    const identity = tokenIdentity(token);
+    return sessions.find(item => item.token === token || identity && item.identity?.sessionId === identity.sessionId
+      && item.identity.userId === identity.userId);
+  };
+  const registerSession = token => {
+    if (typeof token !== 'string' || !token.length) return;
+    const existing = locate(token);
+    if (existing) existing.token = token;
+    else { sessions.push({ token, identity: tokenIdentity(token), cleaned: false }); report.created_sessions++; }
+  };
+  const acknowledgeLogout = (token, status) => {
+    const item = locate(token);
+    need(item && [200, 204].includes(status), 'OWN_SCOPED_LOGOUT_ACKNOWLEDGEMENT_REQUIRED');
+    if (!item.cleaned) { item.cleaned = true; report.cleanup_sessions++; }
+  };
+  const scopedLogout = async token => {
+    need(locate(token), 'OWN_SESSION_REQUIRED_FOR_LOGOUT');
+    const result = await call('POST', '/auth/v1/logout?scope=local', token, undefined, true);
+    acknowledgeLogout(token, result.status);
+    return result;
+  };
   let complete = false;
   try {
     for (const slot of ['USER_A', 'USER_B', 'ADMIN']) {
       const account = accounts[slot];
       const login = await call('POST', '/auth/v1/token?grant_type=password', null, account);
       if (typeof login.data?.access_token === 'string' && login.data.access_token.length) {
-        sessions.push(login.data.access_token); report.created_sessions++;
+        registerSession(login.data.access_token);
       }
       report.accounts[slot] = { signin_HTTP_status: login.status };
-      need(login.status === 200 && sessions.includes(login.data?.access_token), `SIGNIN_NOT_ESTABLISHED_${slot}`);
+      need(login.status === 200 && locate(login.data?.access_token), `SIGNIN_NOT_ESTABLISHED_${slot}`);
       const token = login.data.access_token;
       const read = await call('GET', '/auth/v1/user', token);
       const user = read.data;
@@ -105,26 +133,23 @@ export async function checkStagingAccess(accounts, transport, exercise = async (
         && workspaces.data.every(row => UUID.test(row.id || '') && row.owner_id === user.id
           && ['personal', 'family', 'business'].includes(row.workspace_type)), `OWN_WORKSPACE_READ_REQUIRED_${slot}`);
       need(slot === 'ADMIN' || workspaces.data.some(row => row.workspace_type === 'personal'), `PERSONAL_WORKSPACE_REQUIRED_${slot}`);
-      actors[slot] = { id: user.id, token };
+      actors[slot] = { id: user.id, token, session: login.data };
       report.accounts[slot] = { signin_HTTP_status: 200, confirmed_identity: true, active_profile: true,
         expected_platform_role: true, owned_workspace_counts: Object.fromEntries(['personal', 'family', 'business']
           .map(type => [type, workspaces.data.filter(row => row.workspace_type === type).length])) };
     }
     report.checks.three_private_credentials_and_expected_roles_verified = true;
     report.exercise = {};
-    await exercise({ accounts, actors, evidence: report.exercise, registerSession: token => {
-      if (typeof token === 'string' && token.length && !sessions.includes(token)) {
-        sessions.push(token); report.created_sessions++;
-      }
-    } });
+    await exercise({ accounts, actors, evidence: report.exercise, registerSession, scopedLogout, acknowledgeLogout });
     complete = true;
   } catch (error) {
     report.problem_code = error instanceof Stop ? error.code : 'REQUEST_OR_BROWSER_CHECK_FAILED';
   } finally {
-    for (const token of sessions.reverse()) {
+    for (const item of sessions.reverse()) {
+      if (item.cleaned) continue;
       try {
-        const result = await call('POST', '/auth/v1/logout?scope=local', token, undefined, true);
-        if ([200, 204].includes(result.status)) report.cleanup_sessions++;
+        const result = await call('POST', '/auth/v1/logout?scope=local', item.token, undefined, true);
+        acknowledgeLogout(item.token, result.status);
       } catch {}
     }
     report.checks.created_sessions_local_logout_acknowledged = report.created_sessions === report.cleanup_sessions;

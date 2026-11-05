@@ -8,7 +8,6 @@ on:
 
 permissions:
   contents: read
-  statuses: write
 
 concurrency:
   group: mushavo-staging-acceptance
@@ -18,7 +17,7 @@ jobs:
   staging:
     if: github.repository == 'dwtdhruvp246/mushavobudget' && github.ref == 'refs/heads/security/stage-3-authorization'
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 8
     steps:
       - name: Checkout the exact staging source
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -36,7 +35,6 @@ jobs:
         run: scripts/fixtures/staging-browser-tools/node_modules/.bin/playwright install --with-deps chromium
       - name: Run the selected staging checks
         env:
-          GITHUB_TOKEN: ${{ github.token }}
           MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}
           MUSHAVO_STAGING_USER_A_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_A_PASSWORD }}
           MUSHAVO_STAGING_USER_B_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_B_EMAIL }}

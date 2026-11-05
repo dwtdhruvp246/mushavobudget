@@ -13,6 +13,11 @@ const RATE = 'Too many attempts. Wait before trying again.';
 const SOURCES = { '/auth':'4f110e101a1bdf2ae7019fb227a0fc4dc579facd', '/auth-flows.js':'74c3bcb1dc6ef2494f327460ff6cef9866b527c3',
   '/auth-security.js':'eadce63c4b7166166236e2466c11d421f28a0229', '/session-entry.js':'b9d0a517c64174ecbd8f78fff273694f2655692d',
   '/app':'daf5c65b469e9a6f4ef53bea69d47acf2a3544c1', '/app.js':'ba7097c27a0488ce7d91b3c6e3912214f44fb2e6' };
+export function safeRecoveryRequestOutcome(status, data) {
+  const code=data?.error_code || (typeof data?.code==='string'?data.code:null);
+  return {HTTP_status:status,error_code:['over_email_send_rate_limit','over_request_rate_limit','email_address_invalid','unexpected_failure'].includes(code)?code:code?'OTHER':null,
+    accepted_by_Auth:status===200,rate_limited:status===429};
+}
 export function recoveryMailToken(value, type) {
   need(typeof value === 'string' && value.length < 5500 && ['signup','recovery'].includes(type), 'EXACT_TEST_MAIL_LINK_REQUIRED');
   const u = new URL(value);
@@ -42,6 +47,7 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     source_commit:env.GITHUB_SHA, workflow_run_id:env.GITHUB_RUN_ID, workflow_run_attempt:env.GITHUB_RUN_ATTEMPT,
     checks:{}, cases:{}, direct_API_requests:0, browser_backend_requests:0, signup_requests:0, recovery_requests:0,
     actual_confirmation_email_requests:0, actual_recovery_email_requests:0, absent_recipient_recovery_requests:0,
+    recovery_request_responses:[], accepted_recovery_email_requests:0,
     password_updates_forwarded:0, password_updates_blocked:0, synthetic_rate_responses:0,
     created_fixture_accounts:0, created_sessions:0, scoped_logout_acknowledgements:0, context_cleanup_count:0,
     global_Auth_policy_changed:false, saved_account_passwords_changed:false, finance_or_shared_workspace_writes:false,
@@ -130,6 +136,15 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     await test.page.locator('#securityEmail').fill(email);
     const [response]=await Promise.all([test.page.waitForResponse(r=>new URL(r.url()).origin===API_ORIGIN && new URL(r.url()).pathname==='/auth/v1/recover'),
       test.page.getByRole('button',{name:'Send link',exact:true}).click()]);
+    let data=null;try{data=await response.json();}catch{}
+    const outcome=safeRecoveryRequestOutcome(response.status(),data);report.recovery_request_responses.push(outcome);
+    if(outcome.accepted_by_Auth && email!==fixtures.UNKNOWN)report.accepted_recovery_email_requests++;
+    if(outcome.rate_limited){
+      await test.page.getByText(RATE,{exact:true}).waitFor({state:'visible'});
+      report.checks.actual_rate_warning_and_retained_address=await test.page.locator('#securityEmail').inputValue()===email
+        && await test.page.locator('#securityRequest').isVisible() && await test.page.getByRole('button',{name:'Send link',exact:true}).isEnabled();
+      need(false,'RECOVERY_REQUEST_RATE_LIMITED_NO_RETRY');
+    }
     need(response.status()===200,'ACTUAL_RECOVERY_GENERIC_RESPONSE_REQUIRED');
     await test.page.getByText(GENERIC,{exact:true}).waitFor({state:'visible'});
     return response.status();

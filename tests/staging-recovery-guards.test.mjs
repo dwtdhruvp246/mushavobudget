@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { bridgeKey, publicBridgeKey, sealBridge, openBridge, createMailbox } from '../scripts/ci/staging-recovery-bridge.mjs';
 import { recoveryFixtures, cleanupSQL, expirySQL } from '../scripts/ci/staging-recovery-fixtures.mjs';
-import { recoveryMailToken, recoveryBrowserDecision } from '../scripts/ci/staging-recovery.mjs';
+import { recoveryMailToken, recoveryBrowserDecision, safeRecoveryRequestOutcome } from '../scripts/ci/staging-recovery.mjs';
 import { API_ORIGIN, WEB_ORIGIN } from '../scripts/ci/staging-access.mjs';
 import { recoveryFeedbackDecision } from '../scripts/ci/staging-recovery-feedback.mjs';
 const binding={run:'12345',commit:'a'.repeat(40),phase:'RECOVER_A'};
@@ -54,4 +54,11 @@ test('feedback-only execution refuses password changes, fixture creation, sessio
       ['/rest/v1/profiles','PATCH'],['/auth/v1/logout?scope=global','POST']])assert.equal(recoveryFeedbackDecision(API_ORIGIN+path,method,mode),'refuse');
   }
   assert.equal(recoveryFeedbackDecision(API_ORIGIN+'/auth/v1/recover','POST','unreviewed'),'refuse');
+});
+test('recovery outcomes preserve named Auth rate codes and never export arbitrary messages or tokens',()=>{
+  assert.deepEqual(safeRecoveryRequestOutcome(429,{code:429,error_code:'over_email_send_rate_limit',msg:'private-provider-body'}),
+    {HTTP_status:429,error_code:'over_email_send_rate_limit',accepted_by_Auth:false,rate_limited:true});
+  const result=safeRecoveryRequestOutcome(500,{code:'untrusted-arbitrary-text',msg:'private-message',access_token:'private-token'});
+  assert.equal(result.error_code,'OTHER');assert.equal(JSON.stringify(result).includes('private'),false);
+  assert.equal(safeRecoveryRequestOutcome(200,{}).accepted_by_Auth,true);
 });

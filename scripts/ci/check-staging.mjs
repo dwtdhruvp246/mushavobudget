@@ -18,19 +18,21 @@ async function main() {
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU05.06', 'AU05.07']);
     const recovery = plan.scope === 'recovery-variants'
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.03','AU04.04','AU04.05']);
+    const recoverySaveRetry = plan.scope === 'recovery-save-retry'
+      && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.05']);
     const recoveryFeedback = plan.scope === 'recovery-request-feedback'
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.01','AU05.07']);
     const controlledBrowser = plan.scope === 'controlled-browser'
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.05','AU05.07']);
-    need(confirmation || passwordSessions || accountSwitch || recovery || recoveryFeedback || controlledBrowser, 'REVIEWED_RUN_SCOPE_REQUIRED');
+    need(confirmation || passwordSessions || accountSwitch || recovery || recoverySaveRetry || recoveryFeedback || controlledBrowser, 'REVIEWED_RUN_SCOPE_REQUIRED');
     need(process.env.GITHUB_REPOSITORY === 'dwtdhruvp246/mushavobudget'
       && process.env.GITHUB_REF === 'refs/heads/security/stage-3-authorization', 'STAGING_BRANCH_RUN_REQUIRED');
     const { chromium } = await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs');
     if (controlledBrowser) {
       const { checkControlledBrowser } = await import('./staging-controlled-browser.mjs');
       report = await checkControlledBrowser(chromium);
-    } else if (recovery) {
-      report = await checkRecovery(plan, privateAccounts(process.env), chromium);
+    } else if (recovery || recoverySaveRetry) {
+      report = await checkRecovery(plan, recovery ? privateAccounts(process.env) : {}, chromium);
     } else {
     const accounts = privateAccounts(process.env);
     const response = await fetch(WEB_ORIGIN + '/config.js?v=27', { redirect: 'error', signal: AbortSignal.timeout(20000) });

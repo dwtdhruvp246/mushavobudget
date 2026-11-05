@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { bridgeKey, publicBridgeKey, sealBridge, openBridge, createMailbox } from '../scripts/ci/staging-recovery-bridge.mjs';
 import { recoveryFixtures, cleanupSQL, expirySQL, recoveryTimestampSnapshotSQL } from '../scripts/ci/staging-recovery-fixtures.mjs';
-import { recoveryMailToken, recoveryBrowserDecision, safeRecoveryRequestOutcome, isBoundRecoveryPasswordUpdate } from '../scripts/ci/staging-recovery.mjs';
+import { checkRecovery, recoveryMailToken, recoveryBrowserDecision, safeRecoveryRequestOutcome, isBoundRecoveryPasswordUpdate } from '../scripts/ci/staging-recovery.mjs';
 import { API_ORIGIN, WEB_ORIGIN } from '../scripts/ci/staging-access.mjs';
 import { recoveryFeedbackDecision } from '../scripts/ci/staging-recovery-feedback.mjs';
 const binding={run:'12345',commit:'a'.repeat(40),phase:'RECOVER_A'};
@@ -83,6 +83,21 @@ test('password retry accepts SDK null PKCE fields only for the exact recovery ac
   assert.equal(isBoundRecoveryPasswordUpdate(body, makeToken(different, recovery), identity, password), false);
   assert.equal(isBoundRecoveryPasswordUpdate(body, makeToken(actor, different), identity, password), false);
   assert.equal(isBoundRecoveryPasswordUpdate(body, token, identity, 'DifferentFixture9!'), false);
+});
+test('retry-only recovery refuses other cases, reruns and an early email window before any request', async () => {
+  const plan = { scope: 'recovery-save-retry', case_ids: ['AU04.05'], fixture_run_id: 'w304-mw3dwzsv-m9siry',
+    not_before_utc: new Date(Date.now() + 60_000).toISOString() };
+  const env = { GITHUB_REPOSITORY: 'dwtdhruvp246/mushavobudget', GITHUB_REF: 'refs/heads/security/stage-3-authorization', GITHUB_RUN_ATTEMPT: '1' };
+  let requests = 0;
+  const fetcher = async () => { requests++; throw new Error('Unexpected request'); };
+  await assert.rejects(checkRecovery({ ...plan, case_ids: ['AU04.03', 'AU04.05'] }, {}, null, env, fetcher),
+    { code: 'EXACT_RECOVERY_CASE_SCOPE_REQUIRED' });
+  const early = await checkRecovery(plan, {}, null, env, fetcher);
+  assert.equal(early.problem_code, 'STAGING_AUTH_EMAIL_WINDOW_PENDING');
+  const rerun = await checkRecovery(plan, {}, null, { ...env, GITHUB_RUN_ATTEMPT: '2' }, fetcher);
+  assert.equal(rerun.problem_code, 'NEW_REVIEWED_RECOVERY_ATTEMPT_REQUIRED');
+  assert.equal(requests, 0);
+  assert.equal(early.actual_confirmation_email_requests + early.actual_recovery_email_requests, 0);
 });
 test('feedback-only execution refuses password changes, fixture creation, session adoption and unrelated mutations',()=>{
   for(const mode of ['absent','blocked','rate']){

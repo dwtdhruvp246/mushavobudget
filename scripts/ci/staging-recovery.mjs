@@ -50,9 +50,13 @@ export function isBoundRecoveryPasswordUpdate(body, token, expectedIdentity, exp
 }
 
 export async function checkRecovery(plan, accounts, chromium, env = process.env, fetcher = fetch) {
+  const retryOnly = plan.scope === 'recovery-save-retry';
+  const caseIds = retryOnly ? ['AU04.05'] : ['AU04.03','AU04.04','AU04.05'];
+  need(JSON.stringify(plan.case_ids) === JSON.stringify(caseIds), 'EXACT_RECOVERY_CASE_SCOPE_REQUIRED');
+  const existingAccount = retryOnly ? null : accounts.USER_B;
   const fixtures = recoveryFixtures(plan.fixture_run_id), sessions = [], contexts = [];
   const report = { progress_display:'Stage 3/10 | FR.2/8 | Batch W/Z', result:'RECOVERY_VARIANTS_REVIEW_REQUIRED',
-    case_ids:['AU04.03','AU04.04','AU04.05'], run_plan:plan.run_id,
+    case_ids:caseIds, run_plan:plan.run_id,
     source_commit:env.GITHUB_SHA, workflow_run_id:env.GITHUB_RUN_ID, workflow_run_attempt:env.GITHUB_RUN_ATTEMPT,
     checks:{}, cases:{}, direct_API_requests:0, browser_backend_requests:0, signup_requests:0, recovery_requests:0,
     actual_confirmation_email_requests:0, actual_recovery_email_requests:0,
@@ -62,7 +66,8 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     global_Auth_policy_changed:false, saved_account_passwords_changed:false, finance_or_shared_workspace_writes:false,
     production_or_native_changed:false, service_workers:'blocked_for_interception', full_lettered_batch_W_complete:false,
     owner_deferred_AU03_04_restarted:false, natural_hour_long_expiry_observed:false, provider_quota_exhaustion_attempted:false,
-    legacy_short_password_candidate_available:Object.values(accounts).some(x=>Array.from(x.password).length<8), exit_code:1 };
+    exit_code:1 };
+  if (!retryOnly) report.legacy_short_password_candidate_available = Object.values(accounts).some(x=>Array.from(x.password).length<8);
   const passwords = { A:'W9!'+randomBytes(24).toString('base64url'), NEW_A:'W9!'+randomBytes(24).toString('base64url') };
   let key, browser, mailbox, stage='SOURCE_PREFLIGHT', routeProblem=null, complete=false;
   const register = (session, newOtherAccount = false) => {
@@ -71,14 +76,14 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     need(identity && session.user?.id === identity.userId, 'OWN_RUNNER_SESSION_IDENTITY_REQUIRED');
     const found = sessions.find(x => x.identity.sessionId === identity.sessionId && x.identity.userId === identity.userId);
     const email = session.user.email?.toLowerCase();
-    const otherAccount = email === accounts.USER_B.email;
+    const otherAccount = Boolean(existingAccount && email === existingAccount.email);
     need(email === fixtures.A || otherAccount && (newOtherAccount || found?.otherAccount), 'OWN_NEW_FIXTURE_OR_OTHER_RUNNER_SESSION_REQUIRED');
     if (found) found.token=session.access_token;
     else { sessions.push({identity,token:session.access_token,otherAccount,cleaned:false}); report.created_sessions++; }
   };
   async function api(method, path, body, token) {
     const passwordGrant = method === 'POST' && path === '/auth/v1/token?grant_type=password';
-    const newOtherAccount = passwordGrant && body?.email === accounts.USER_B.email && body.password === accounts.USER_B.password;
+    const newOtherAccount = passwordGrant && existingAccount && body?.email === existingAccount.email && body.password === existingAccount.password;
     const ownedToken = sessions.some(session => session.token === token);
     const allowed = method === 'POST' && path === '/auth/v1/signup?redirect_to=' + encodeURIComponent(WEB_ORIGIN + '/auth.html?flow=confirm')
       && report.signup_requests === 1 && body?.email === fixtures.A && body.password === passwords.A
@@ -128,7 +133,9 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
         const token = (await request.headerValue('authorization') || '').replace(/^Bearer /i, '');
         if (!isBoundRecoveryPasswordUpdate(body, token, test.expectedRecoveryIdentity, passwords.NEW_A))
           routeProblem = 'EXACT_NEW_FIXTURE_PASSWORD_WRITE_REQUIRED';
-        else if(test.mode==='block-save') {report.password_updates_blocked++;await route.abort('internetdisconnected');return;}
+        else if(test.mode==='block-save' && report.password_updates_blocked===0) {
+          report.password_updates_blocked++;await route.abort('internetdisconnected');return;
+        }
         else if(test.mode!=='save' || report.password_updates_forwarded>=1)routeProblem='RECOVERY_PASSWORD_WRITE_BOUND_REQUIRED';
         else report.password_updates_forwarded++;
       } else if(action==='refuse') {test.refused++;routeProblem='UNPLANNED_RECOVERY_BROWSER_REQUEST_REFUSED';}
@@ -174,6 +181,10 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
   try {
     need(env.GITHUB_REPOSITORY==='dwtdhruvp246/mushavobudget' && env.GITHUB_REF==='refs/heads/security/stage-3-authorization','RECOVERY_STAGING_BRANCH_REQUIRED');
     need(fixtures.run_id.startsWith('w304-'), 'SINGLE_DISPOSABLE_RECOVERY_RUN_REQUIRED');
+    if (retryOnly) {
+      need(env.GITHUB_RUN_ATTEMPT === '1', 'NEW_REVIEWED_RECOVERY_ATTEMPT_REQUIRED');
+      need(Date.now() >= Date.parse(plan.not_before_utc), 'STAGING_AUTH_EMAIL_WINDOW_PENDING');
+    }
     const config=await fetcher(WEB_ORIGIN+'/config.js?v=27',{redirect:'error',signal:AbortSignal.timeout(20000)});
     need(config.status===200,'RECOVERY_PUBLIC_CONFIGURATION_REQUIRED');key=readPublicConfiguration(await config.text()).key;
     for(const [path,expected]of Object.entries(SOURCES)){
@@ -184,12 +195,14 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     report.checks.six_accepted_deployed_sources_verified=true;
     mailbox=createMailbox(env,fetcher);await mailbox.status('READY|'+mailbox.publicKey);
     browser=await chromium.launch({headless:true});
-    const confirmed = {};
-    stage = 'OTHER_ACCOUNT_SIGNIN';
-    const other = await api('POST', '/auth/v1/token?grant_type=password', accounts.USER_B);
-    need(other.status === 200 && other.data?.user?.email === accounts.USER_B.email, 'EXISTING_OTHER_RUNNER_ACCOUNT_REQUIRED');
-    await verifyIdentity(other.data, accounts.USER_B.email);
-    confirmed.B = other.data;
+    let otherSession = null;
+    if (!retryOnly) {
+      stage = 'OTHER_ACCOUNT_SIGNIN';
+      const other = await api('POST', '/auth/v1/token?grant_type=password', existingAccount);
+      need(other.status === 200 && other.data?.user?.email === existingAccount.email, 'EXISTING_OTHER_RUNNER_ACCOUNT_REQUIRED');
+      await verifyIdentity(other.data, existingAccount.email);
+      otherSession = other.data;
+    }
 
     stage = 'SIGNUP_A';
     report.signup_requests++;
@@ -204,10 +217,11 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     const token = recoveryMailToken(input?.url, 'signup');
     const verified = await api('POST', '/auth/v1/verify', {token_hash:token,type:'signup'});
     need(verified.status === 200 && verified.data?.user?.email === fixtures.A
-      && verified.data.user.id === signup.data.id && verified.data.user.id !== confirmed.B.user.id, 'NEW_DISTINCT_FIXTURE_CONFIRMATION_REQUIRED');
+      && verified.data.user.id === signup.data.id && verified.data.user.id !== otherSession?.user.id, 'NEW_DISTINCT_FIXTURE_CONFIRMATION_REQUIRED');
     await verifyIdentity(verified.data, fixtures.A);
-    confirmed.A = verified.data;
-    report.checks.one_new_confirmed_fixture_and_distinct_existing_runner_identity = true;
+    const confirmedUserId = verified.data.user.id;
+    report.checks.one_new_confirmed_fixture = true;
+    if (!retryOnly) report.checks.distinct_existing_runner_identity = true;
 
     stage = 'RECOVERY_REQUEST';
     const requester = await newTest();
@@ -217,53 +231,60 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     const recoverToken = recoveryMailToken(recoveryInput?.url, 'recovery');
     const recoveryURL = WEB_ORIGIN + '/auth?flow=recover&token_hash=' + encodeURIComponent(recoverToken) + '&type=recovery';
 
-    stage = 'EXPIRE_A';
-    const prepared = await mailbox.receive(stage);
-    need(prepared?.kind === 'exact-fixture-expiry-prepared', 'CONTROLLED_EXPIRY_FIXTURE_ACK_REQUIRED');
-    stage = 'EXPIRED_LINK';
-    const expired = await newTest(null, 'recovery');
-    expired.recoveryToken = recoverToken;
-    await expired.page.goto(recoveryURL, {waitUntil:'networkidle'});
-    await expired.page.getByText('This link or session is unavailable. Open the newest email or request another link.', {exact:true}).waitFor({state:'visible'});
-    await Promise.all(expired.pending);
-    need(expired.verifyResponses.length === 1 && expired.verifyResponses[0].status === 403 && expired.verifyResponses[0].code === 'otp_expired'
-      && !expired.lastRecoverySession && !await expired.page.locator('#securityPassword').isVisible()
-      && new URL(expired.page.url()).search === '?flow=recover' && !new URL(expired.page.url()).hash
-      && report.password_updates_forwarded === 0, 'REAL_EXPIRED_LINK_DENIAL_REQUIRED');
-    report.cases.AU04_04 = {status:'CONTROLLED_EXPIRED_FIXTURE_SCOPED_PASS',actual_verify_HTTP_status:403,error_code:'otp_expired',
-      new_disposable_fixture_timestamp_backdated:true,global_expiry_policy_changed:false,natural_hour_long_expiry_observed:false,
-      password_view_hidden_and_URL_clean:true,password_update_not_dispatched:true};
-
-    stage = 'RESTORE_A';
-    const timestamps = await mailbox.receive(stage);
-    need(timestamps?.kind === 'exact-unused-recovery-timestamps-restored', 'ORIGINAL_UNUSED_RECOVERY_TIMESTAMPS_REQUIRED');
-    report.checks.original_validity_restored_to_same_unused_disposable_token = true;
+    if (!retryOnly) {
+      stage = 'EXPIRE_A';
+      const prepared = await mailbox.receive(stage);
+      need(prepared?.kind === 'exact-fixture-expiry-prepared', 'CONTROLLED_EXPIRY_FIXTURE_ACK_REQUIRED');
+      stage = 'EXPIRED_LINK';
+      const expired = await newTest(null, 'recovery');
+      expired.recoveryToken = recoverToken;
+      await expired.page.goto(recoveryURL, {waitUntil:'networkidle'});
+      await expired.page.getByText('This link or session is unavailable. Open the newest email or request another link.', {exact:true}).waitFor({state:'visible'});
+      await Promise.all(expired.pending);
+      need(expired.verifyResponses.length === 1 && expired.verifyResponses[0].status === 403 && expired.verifyResponses[0].code === 'otp_expired'
+        && !expired.lastRecoverySession && !await expired.page.locator('#securityPassword').isVisible()
+        && new URL(expired.page.url()).search === '?flow=recover' && !new URL(expired.page.url()).hash
+        && report.password_updates_forwarded === 0, 'REAL_EXPIRED_LINK_DENIAL_REQUIRED');
+      report.cases.AU04_04 = {status:'CONTROLLED_EXPIRED_FIXTURE_SCOPED_PASS',actual_verify_HTTP_status:403,error_code:'otp_expired',
+        new_disposable_fixture_timestamp_backdated:true,global_expiry_policy_changed:false,natural_hour_long_expiry_observed:false,
+        password_view_hidden_and_URL_clean:true,password_update_not_dispatched:true};
+      stage = 'RESTORE_A';
+      const timestamps = await mailbox.receive(stage);
+      need(timestamps?.kind === 'exact-unused-recovery-timestamps-restored', 'ORIGINAL_UNUSED_RECOVERY_TIMESTAMPS_REQUIRED');
+      report.checks.original_validity_restored_to_same_unused_disposable_token = true;
+    }
     stage = 'VALID_RECOVERY';
-    const test=await newTest(confirmed.B,'recovery');
+    const test=await newTest(otherSession,'recovery');
     test.recoveryToken = recoverToken;
-    const normal=await test.context.newPage();await normal.goto(WEB_ORIGIN+'/app#personal/dashboard',{waitUntil:'domcontentloaded'});await readyDashboard(normal);
+    let normal;
+    if (otherSession) {
+      normal=await test.context.newPage();await normal.goto(WEB_ORIGIN+'/app#personal/dashboard',{waitUntil:'domcontentloaded'});await readyDashboard(normal);
+    }
     await test.page.goto(recoveryURL,{waitUntil:'networkidle'});
     await test.page.locator('#securityPassword').waitFor({state:'visible'});await Promise.all(test.pending);
-    need(await test.page.locator('#securityIdentity').innerText()===`Verified account: ${fixtures.A}` && test.lastRecoverySession?.user?.id===confirmed.A.user.id,'REAL_RECOVERY_RECIPIENT_REQUIRED');
+    need(await test.page.locator('#securityIdentity').innerText()===`Verified account: ${fixtures.A}` && test.lastRecoverySession?.user?.id===confirmedUserId,'REAL_RECOVERY_RECIPIENT_REQUIRED');
     need(new URL(test.page.url()).search==='?flow=recover' && !new URL(test.page.url()).hash,'RECOVERY_URL_MUST_BE_CLEAN');
     const recoverySession=test.lastRecoverySession;
     test.expectedRecoveryIdentity = tokenIdentity(recoverySession.access_token);
-    stage='WRONG_SESSION';const wrong=await installIsolated(test.page,confirmed.B);
-    need(wrong.ok && wrong.id===confirmed.B.user.id,'DISTINCT_REAL_ISOLATED_SESSION_REQUIRED');
     await test.page.locator('#securityNewPassword').fill(passwords.NEW_A);await test.page.locator('#securityConfirmPassword').fill(passwords.NEW_A);
-    await test.page.getByRole('button',{name:'Save password',exact:true}).click();
-    await test.page.getByText('The active account changed. Reload and sign in with the intended account.',{exact:true}).waitFor({state:'visible'});
-    need(report.password_updates_forwarded===0 && report.password_updates_blocked===0
-      && await test.page.locator('#securityNewPassword').inputValue()===passwords.NEW_A,'WRONG_SESSION_MUST_BE_DENIED_BEFORE_WRITE');
-    const normalIdentity=await normal.evaluate(key=>JSON.parse(localStorage.getItem(key)||'null')?.user?.id,KEY);
-    need(normalIdentity===confirmed.B.user.id && await normal.locator('#appView:not(.hidden)').isVisible(),'ORIGINAL_NORMAL_ACCOUNT_MUST_REMAIN');
-    report.cases.AU04_03={status:'SCOPED_PASS',real_distinct_account_substitution_denied_before_password_update:true,
-      explicit_account_changed_message:true,normal_account_and_password_form_retained:true};
-    stage='BLOCKED_PASSWORD_SAVE';const restored=await installIsolated(test.page,recoverySession);
-    need(restored.ok && restored.id===confirmed.A.user.id,'CORRECT_RECOVERY_SESSION_RESTORATION_REQUIRED');
+    if (otherSession) {
+      stage='WRONG_SESSION';const wrong=await installIsolated(test.page,otherSession);
+      need(wrong.ok && wrong.id===otherSession.user.id,'DISTINCT_REAL_ISOLATED_SESSION_REQUIRED');
+      await test.page.getByRole('button',{name:'Save password',exact:true}).click();
+      await test.page.getByText('The active account changed. Reload and sign in with the intended account.',{exact:true}).waitFor({state:'visible'});
+      need(report.password_updates_forwarded===0 && report.password_updates_blocked===0
+        && await test.page.locator('#securityNewPassword').inputValue()===passwords.NEW_A,'WRONG_SESSION_MUST_BE_DENIED_BEFORE_WRITE');
+      const normalIdentity=await normal.evaluate(key=>JSON.parse(localStorage.getItem(key)||'null')?.user?.id,KEY);
+      need(normalIdentity===otherSession.user.id && await normal.locator('#appView:not(.hidden)').isVisible(),'ORIGINAL_NORMAL_ACCOUNT_MUST_REMAIN');
+      report.cases.AU04_03={status:'SCOPED_PASS',real_distinct_account_substitution_denied_before_password_update:true,
+        explicit_account_changed_message:true,normal_account_and_password_form_retained:true};
+      const restored=await installIsolated(test.page,recoverySession);
+      need(restored.ok && restored.id===confirmedUserId,'CORRECT_RECOVERY_SESSION_RESTORATION_REQUIRED');
+    }
+    stage='BLOCKED_PASSWORD_SAVE';
     test.mode='block-save';await test.page.getByRole('button',{name:'Save password',exact:true}).click();
     await test.page.getByText(NETWORK,{exact:true}).waitFor({state:'visible'});
-    need(report.password_updates_blocked>=1 && report.password_updates_forwarded===0
+    need(report.password_updates_blocked===1 && report.password_updates_forwarded===0
       && await test.page.locator('#securityNewPassword').inputValue()===passwords.NEW_A
       && await test.page.locator('#securityConfirmPassword').inputValue()===passwords.NEW_A
       && await test.page.getByRole('button',{name:'Save password',exact:true}).isEnabled(),'ACTUAL_SAVE_NETWORK_FAILURE_AND_FORM_RETENTION_REQUIRED');
@@ -272,15 +293,18 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     await test.page.waitForURL(u=>u.origin===WEB_ORIGIN && u.pathname==='/app',{timeout:35000});await readyDashboard(test.page);
     need(report.password_updates_forwarded===1 && test.updateResponses.length===1 && test.updateResponses[0]===200,'ONE_REAL_PASSWORD_RETRY_SUCCESS_REQUIRED');
     const adopted=await test.page.evaluate(key=>JSON.parse(localStorage.getItem(key)||'null'),KEY);register(adopted);
-    need(adopted?.user?.id===confirmed.A.user.id,'RECOVERY_RETRY_MUST_OPEN_INTENDED_ACCOUNT');
+    need(adopted?.user?.id===confirmedUserId,'RECOVERY_RETRY_MUST_OPEN_INTENDED_ACCOUNT');
     await verifyIdentity(adopted,fixtures.A);
     const newSignin=await api('POST','/auth/v1/token?grant_type=password',{email:fixtures.A,password:passwords.NEW_A});
-    need(newSignin.status===200 && newSignin.data?.user?.id===confirmed.A.user.id,'RECOVERED_NEW_PASSWORD_SIGNIN_REQUIRED');
-    const unchangedB=await api('POST','/auth/v1/token?grant_type=password',accounts.USER_B);
-    need(unchangedB.status===200 && unchangedB.data?.user?.id===confirmed.B.user.id,'OTHER_SAVED_PASSWORD_MUST_REMAIN_VALID');
+    need(newSignin.status===200 && newSignin.data?.user?.id===confirmedUserId,'RECOVERED_NEW_PASSWORD_SIGNIN_REQUIRED');
+    if (otherSession) {
+      const unchangedB=await api('POST','/auth/v1/token?grant_type=password',existingAccount);
+      need(unchangedB.status===200 && unchangedB.data?.user?.id===otherSession.user.id,'OTHER_SAVED_PASSWORD_MUST_REMAIN_VALID');
+    }
     report.cases.AU04_05={status:'SCOPED_PASS',actual_browser_network_failure_before_server_write:true,
       both_password_fields_retained:true,retry_without_reentering_password:true,real_password_update_HTTP_status:200,
-      correct_account_opened_and_server_verified:true,new_password_signin_succeeded:true,other_account_password_unchanged:true};
+      correct_account_opened_and_server_verified:true,new_password_signin_succeeded:true};
+    if (otherSession) report.cases.AU04_05.other_account_password_unchanged = true;
     need(!routeProblem && report.signup_requests === 1 && report.recovery_requests === 1,
       'RECOVERY_BROWSER_REQUEST_AND_TWO_EMAIL_BOUNDARIES_REQUIRED');
     complete = true;
@@ -306,7 +330,7 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     report.mailbox_polls=mailbox?.polls||0;
     if(complete && report.checks.all_isolated_contexts_closed && report.checks.all_existing_account_runner_sessions_scoped_logout
       && report.checks.external_guarded_SQL_fixture_and_session_absence_acknowledged){
-      report.result='RECOVERY_VARIANTS_SCOPED_PASS';report.exit_code=0;
+      report.result=retryOnly?'RECOVERY_SAVE_RETRY_SCOPED_PASS':'RECOVERY_VARIANTS_SCOPED_PASS';report.exit_code=0;
     }
     try{await mailbox?.status(report.exit_code===0?'SCOPED_PASS':'REVIEW_REQUIRED',report.exit_code===0?'success':'failure');}catch{}
   }

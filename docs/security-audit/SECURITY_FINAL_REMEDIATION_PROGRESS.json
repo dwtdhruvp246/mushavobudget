@@ -5,11 +5,11 @@
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "018cd3d0b4abc13d352e5b79afadd6fbb0b9b2e7",
+  "source_parent_commit": "d974e7dc3c09f792f88d25b73b6602a4c928b221",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE302",
+  "latest_evidence": "FRE303",
   "batches": [
     {
       "id": "FR.1",
@@ -1103,7 +1103,7 @@
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5_REMAINING_RECOVERY_EMAIL_BUDGET_LEGACY_BUSINESS_ERROR_AND_EXACT_HISTORICAL_SESSION_DEPENDENCIES",
+          "next_step": "FR.2.5_BUSINESS_ERROR_HOSTED_CHECK_REMAINING_RECOVERY_AND_PAUSED_HISTORICAL_SESSION_REVOCATION",
           "persistent_browser_trust_checkpoint": {
             "status": "SUPERSEDED_OWNER_PASSWORD_ONLY_ALL_ROLES",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
@@ -1682,11 +1682,13 @@
           "current_Admin_invitation_policy_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
           "Admin_setup_completion_retry_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-setup-completion-retry-pass.json",
           "ordinary_confirmation_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-confirmation-pass.json",
-          "latest_evidence": "FRE302",
+          "latest_evidence": "FRE303",
           "latest_runner_receipt": "docs/security-audit/security-fr-2-batch-w-recovery-feedback-pass.json",
           "recovery_fixture_preparation_blocked": "docs/security-audit/security-fr-2-batch-w-recovery-rate-stop-cleanup-required.json",
           "recovery_fixture_cleanup_receipt": "docs/security-audit/security-fr-2-batch-w-approved-recovery-fixture-cleanup-pass.json",
-          "recovery_fixture_cleanup_pending": false
+          "recovery_fixture_cleanup_pending": false,
+          "business_error_candidate_receipt": "docs/security-audit/security-fr-2-batch-w-business-error-and-historical-session-binding.json",
+          "exact_historical_session_revocation_paused": true
         },
         {
           "id": "FR.2.6",
@@ -1702,7 +1704,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "FR.2.5_REMAINING_RECOVERY_EMAIL_BUDGET_LEGACY_BUSINESS_ERROR_AND_EXACT_HISTORICAL_SESSION_DEPENDENCIES"
+      "next_step": "FR.2.5_BUSINESS_ERROR_HOSTED_CHECK_REMAINING_RECOVERY_AND_PAUSED_HISTORICAL_SESSION_REVOCATION"
     },
     {
       "id": "FR.3",
@@ -1752,7 +1754,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_REMAINING_RECOVERY_EMAIL_BUDGET_LEGACY_BUSINESS_ERROR_AND_EXACT_HISTORICAL_SESSION_DEPENDENCIES",
+  "next_step": "FR.2.5_BUSINESS_ERROR_HOSTED_CHECK_REMAINING_RECOVERY_AND_PAUSED_HISTORICAL_SESSION_REVOCATION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -8171,5 +8173,37 @@
     "original_selected_active_profiles": 3,
     "original_selected_owned_Personal_workspaces": 3,
     "older_unbound_Node_cleanup_resolved": false
+  },
+  "batch_W_historical_session_cleanup": {
+    "status": "EXACT_FAILED_RUN_SESSIONS_IDENTIFIED_REVOCATION_CANCELLED_AND_PAUSED",
+    "receipt": "docs/security-audit/security-fr-2-batch-w-business-error-and-historical-session-binding.json",
+    "guarded_SQL": "supabase/diagnostics/security_fr_2_5_w_historical_invitation_session_cleanup.sql",
+    "matched_sessions": 2,
+    "remaining_sessions": 2,
+    "remaining_refresh_tokens": 2,
+    "readback_verified": true,
+    "revocation_committed": false,
+    "ready_for_specific_owner_resume": true
+  },
+  "batch_W_business_invitation_error_candidate": {
+    "status": "TARGETED_CONTROLLED_PASS_HOSTED_CANDIDATE_CHECK_PENDING",
+    "receipt": "docs/security-audit/security-fr-2-batch-w-business-error-and-historical-session-binding.json",
+    "original_case": "AU05.07",
+    "candidate_files": [
+      "business.js",
+      "business.html"
+    ],
+    "targeted_pass": 6,
+    "hosted_browser_check": false,
+    "actual_email_requests": 0
+  },
+  "batch_W_remaining_recovery_preflight": {
+    "status": "NO_EXISTING_UNUSED_LINK_FIXTURE_PRIVATE_EXECUTION_UNAVAILABLE",
+    "receipt": "docs/security-audit/security-fr-2-batch-w-business-error-and-historical-session-binding.json",
+    "fixture_accounts_remaining": 0,
+    "proposed_new_disposable_accounts": 1,
+    "proposed_confirmation_emails": 1,
+    "mail_availability_verified": false,
+    "execution_environment_available": false
   }
 }

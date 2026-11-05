@@ -155,7 +155,7 @@ function friendlyMessage(error) {
   if (/ALREADY_BUSINESS_MEMBER/.test(message)) return "This person is already an active member of this Business workspace.";
   if (/CANNOT_INVITE_YOURSELF/.test(message)) return "You are already a member of this Business workspace.";
   if (/BUSINESS_INVITATION_RATE_LIMITED/.test(message)) return "Wait one minute before resending this invitation.";
-  if (/CUSTOM_ROLE_INVITATION_DELIVERY_FAILED/.test(message)) return 'The invitation was saved, but email delivery failed. Use Resend in the pending invitations list.';
+  if (/BUSINESS_INVITATION_EMAIL_FAILED|CUSTOM_ROLE_INVITATION_DELIVERY_FAILED/.test(message)) return "The invitation was saved, but email delivery failed. Use Resend in the pending invitations list.";
   if (/BUSINESS_INVITATION_CHANGED/.test(message)) return "This invitation changed while you were editing. Reload the team list and try again.";
   if (/OWNERSHIP_CONFIRMATION_MISMATCH/.test(message)) return "Type the exact business name to confirm the ownership transfer.";
   if (/BUSINESS_TEAM_ACCESS_REQUIRED/.test(message)) return "You do not have permission to manage this Business team.";
@@ -2461,6 +2461,26 @@ async function refreshBusinessTeam() {
   renderTeam();
 }
 
+async function businessInvitationFailure(data, error) {
+  const response = error?.context;
+  if (response?.status === 429 || response?.status === 502) {
+    let payload;
+    try {
+      payload = await response.json();
+    } catch {
+      // A gateway error may not include the invitation function's JSON body.
+    }
+    if (response.status === 429 && payload?.error === "BUSINESS_INVITATION_RATE_LIMITED") {
+      return payload.error;
+    }
+    if (response.status === 502 && payload?.error === "BUSINESS_INVITATION_EMAIL_FAILED"
+        && typeof payload.invitation_id === "string" && payload.invitation_id) {
+      return payload.error;
+    }
+  }
+  return data?.error || error?.message || "The invitation request could not finish.";
+}
+
 async function withTeamBusy(action) {
   if (teamBusy) return;
   teamBusy = true;
@@ -2493,14 +2513,20 @@ async function saveBusinessInvitation(event) {
       // Existing deployed mail functions can deliver a database-created custom
       // invitation through their resend path; SQL remains the authority for roles.
       let body = {action: 'create', workspace_id: state.workspace.id, email: $('#businessInviteEmail').value.trim(), role, scope_ids: scopes};
-      if (role.startsWith('custom_')) {
+      const customRole = role.startsWith("custom_");
+      if (customRole) {
         const invitation = await query('Create custom-role invitation',supabase.rpc('create_business_invitation', {p_workspace_id:state.workspace.id,p_email:body.email,p_role:role,p_scope_ids:scopes}));
         body = {action:'resend',invitation_id:invitation.invitation_id};
       }
       const { data, error } = await supabase.functions.invoke("invite-business-member", { body });
       if (error || data?.error) {
-        if (role.startsWith('custom_')) {$('#businessInviteDialog').close();await refreshBusinessTeam();throw new Error('CUSTOM_ROLE_INVITATION_DELIVERY_FAILED');}
-        throw new Error(data?.error || error?.message || "BUSINESS_INVITATION_EMAIL_FAILED");
+        const failure = await businessInvitationFailure(data, error);
+        if (customRole || failure === "BUSINESS_INVITATION_EMAIL_FAILED") {
+          $("#businessInviteDialog").close();
+          await refreshBusinessTeam();
+        }
+        throw new Error(customRole && failure !== "BUSINESS_INVITATION_RATE_LIMITED"
+          ? "CUSTOM_ROLE_INVITATION_DELIVERY_FAILED" : failure);
       }
       setTeamMessage(`Invitation sent to ${data.email}.`);
     }
@@ -2515,7 +2541,11 @@ async function teamAction(action, id) {
     teamBusy = true;
     if (action === "resend") {
       const { data, error } = await supabase.functions.invoke("invite-business-member", { body: { action: "resend", invitation_id: id } });
-      if (error || data?.error) throw new Error(data?.error || error?.message || "BUSINESS_INVITATION_EMAIL_FAILED");
+      if (error || data?.error) {
+        const failure = await businessInvitationFailure(data, error);
+        if (failure === "BUSINESS_INVITATION_EMAIL_FAILED") await refreshBusinessTeam();
+        throw new Error(failure);
+      }
       setTeamMessage("Invitation resent.");
     } else if (action === "cancel") {
       if (!window.confirm("Cancel this invitation and release its reserved seat?")) return;

@@ -13,14 +13,14 @@ const READ_RPCS = new Set(['app_session_status', 'my_account_suspended', 'has_my
   'effective_workspace_entitlement', 'workspace_billable_member_count', 'workspace_member_usage',
   'exchange_rate_status', 'personal_payment_plan_access']);
 
-export function sessionBrowserDecision(url, method) {
+export function sessionBrowserDecision(url, method, additionalReadRPCs = []) {
   const target = new URL(url);
   if (target.origin === API_ORIGIN) {
     if (method === 'POST' && target.pathname === '/auth/v1/token' && target.search === '?grant_type=refresh_token') return 'refresh';
     if (method === 'POST' && target.pathname === '/auth/v1/logout' && target.search === '?scope=local') return 'local-logout';
     if (method === 'GET' && (target.pathname === '/auth/v1/user' || target.pathname.startsWith('/rest/v1/'))) return 'read';
     const name = target.pathname.startsWith('/rest/v1/rpc/') ? target.pathname.slice(13) : null;
-    if (method === 'POST' && READ_RPCS.has(name)) return 'read';
+    if (method === 'POST' && (READ_RPCS.has(name) || additionalReadRPCs.includes(name))) return 'read';
     if (method === 'POST' && name === 'record_my_analytics_activity') return 'normal-activity';
     return 'refuse';
   }
@@ -65,7 +65,7 @@ async function verifyPublicSources(evidence, fetcher) {
   evidence.reviewed_app_and_session_sources_verified = true;
 }
 
-async function createTestContext(browser, session, caseId, agent, acknowledgeLogout) {
+export async function createTestContext(browser, session, caseId, agent, acknowledgeLogout, { additionalReadRPCs = [], routeHook = null } = {}) {
   const context = await browser.newContext({ serviceWorkers: 'block', userAgent: agent + '/' + caseId });
   context.setDefaultTimeout(20000);
   const state = { backend_requests: 0, refused_requests: 0, refresh_requests: 0,
@@ -95,7 +95,7 @@ async function createTestContext(browser, session, caseId, agent, acknowledgeLog
     }
   }, { session, key: STORAGE_KEY, origin: WEB_ORIGIN });
   await context.route('**/*', async route => {
-    const request = route.request(), action = sessionBrowserDecision(request.url(), request.method());
+    const request = route.request(), action = sessionBrowserDecision(request.url(), request.method(), additionalReadRPCs);
     if (!['public', 'refuse'].includes(action)) {
       state.backend_requests++;
       if (state.backend_requests > 280) state.problem = 'SESSION_BROWSER_REQUEST_BOUND_REACHED';
@@ -108,6 +108,7 @@ async function createTestContext(browser, session, caseId, agent, acknowledgeLog
     if (action === 'normal-activity') state.normal_activity_RPCs++;
     if (action === 'refuse') { state.refused_requests++; state.problem = 'UNPLANNED_SESSION_BROWSER_REQUEST_REFUSED'; }
     if (state.problem) { await route.abort('blockedbyclient'); return; }
+    if (routeHook && await routeHook(route, action)) return;
     await route.continue();
   });
   context.on('response', response => {
@@ -121,13 +122,13 @@ async function createTestContext(browser, session, caseId, agent, acknowledgeLog
   return { context, state, page: await context.newPage() };
 }
 
-async function readyDashboard(page) {
+export async function readyDashboard(page) {
   await page.locator('#appView:not(.hidden)').waitFor({ state: 'visible', timeout: 35000 });
   need(await page.locator('#signOutButton').isVisible(), 'AUTHENTICATED_DASHBOARD_REQUIRED');
   return page.locator('#dashboardMonthTitle').innerText();
 }
 
-async function closeTestContext(test, evidence) {
+export async function closeTestContext(test, evidence) {
   if (!test) return;
   Object.assign(evidence, test.state);
   delete evidence.problem;

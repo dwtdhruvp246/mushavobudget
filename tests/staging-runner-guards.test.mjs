@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import { privateAccounts, readPublicConfiguration, allowedAPICall, apiTransport, checkStagingAccess, Stop, API_ORIGIN, tokenIdentity } from '../scripts/ci/staging-access.mjs';
 import { browserRequestDecision, reviewedSourceMatches } from '../scripts/ci/staging-confirmation.mjs';
 import { checkServerPasswordBoundary, sessionBrowserDecision } from '../scripts/ci/staging-password-sessions.mjs';
+import { staleSessionSnapshot, BUSINESS_READ_RPCS } from '../scripts/ci/staging-account-switch.mjs';
 
 const ids = ['11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222', '33333333-3333-4333-8333-333333333333'];
 const workspace = '44444444-4444-4444-8444-444444444444';
@@ -105,6 +106,24 @@ test('session-browser boundary permits only reads, refresh, local logout and nor
     ['POST', '/auth/v1/recover'], ['POST', '/auth/v1/resend'], ['POST', '/auth/v1/signup'],
     ['DELETE', '/rest/v1/push_subscriptions'], ['PATCH', '/rest/v1/profiles'], ['POST', '/rest/v1/rpc/provision_my_budget_workspace']]) {
     assert.equal(sessionBrowserDecision(API_ORIGIN + route, method), 'refuse');
+  }
+});
+
+test('Business concurrency allowlist contains reads and does not admit finance/team writes', () => {
+  assert.equal(sessionBrowserDecision(API_ORIGIN + '/rest/v1/rpc/business_transaction_feed', 'POST', BUSINESS_READ_RPCS), 'read');
+  for (const name of ['record_business_income', 'save_business_role', 'respond_business_invitation', 'remove_business_member', 'save_business_setup_with_branding'])
+    assert.equal(sessionBrowserDecision(API_ORIGIN + '/rest/v1/rpc/' + name, 'POST', BUSINESS_READ_RPCS), 'refuse');
+});
+
+test('stale-token acceptance requires a still-unexpired JWT, the exact denied session contract and no protected row', async () => {
+  const actor = { id: ids[1], token: 'fixture.' + Buffer.from(JSON.stringify({ sub: ids[1], session_id: ids[1], exp: Math.floor(Date.now()/1000) + 3600 })).toString('base64url') + '.signature' };
+  const denied = { contract: 1, policy: 'PASSWORD_ONLY_ALL_USERS', session_valid: false, admin_authorized: false, role: null };
+  for (const [gate, rows, pass] of [[denied, [], true], [{ ...denied, session_valid: true }, [], false], [denied, [{ id: ids[1] }], false]]) {
+    let count = 0;
+    const fetcher = async () => new Response(JSON.stringify(++count === 1 ? gate : rows), { status: 200 });
+    if (pass) { const result = await staleSessionSnapshot(actor, 'public', 'fixture', fetcher); assert.equal(result.status, 'STALE_SESSION_VARIANT_SCOPED_PASS'); assert.equal(JSON.stringify(result).includes(actor.token), false); }
+    else await assert.rejects(staleSessionSnapshot(actor, 'public', 'fixture', fetcher), /STALE_SESSION_BOUNDARY_NOT_VERIFIED/);
+    assert.equal(count, 2);
   }
 });
 

@@ -2,8 +2,10 @@ import { createHash } from 'node:crypto';
 import { WEB_ORIGIN, API_ORIGIN, need, Stop } from './staging-access.mjs';
 
 const SOURCES = {
-  '/signup': 'e180783ad2a4cdef8bfb9018eee7e6ab8d771eaa',
-  '/signup.html': 'e180783ad2a4cdef8bfb9018eee7e6ab8d771eaa',
+  // The accepted staging package changes only the two production DNS hints in
+  // canonical signup.html to this staging project, preserving executable code.
+  '/signup': 'f1e2dcfd6b856aca78a329e03c62ec9d5ec2bc5b',
+  '/signup.html': 'f1e2dcfd6b856aca78a329e03c62ec9d5ec2bc5b',
   '/auth': '4f110e101a1bdf2ae7019fb227a0fc4dc579facd',
   '/auth.html': '4f110e101a1bdf2ae7019fb227a0fc4dc579facd',
   '/auth-flows.js': '74c3bcb1dc6ef2494f327460ff6cef9866b527c3',
@@ -11,6 +13,7 @@ const SOURCES = {
   '/session-entry.js': 'b9d0a517c64174ecbd8f78fff273694f2655692d'
 };
 const gitHash = bytes => createHash('sha1').update(`blob ${bytes.length}\0`).update(bytes).digest('hex');
+export const reviewedSourceMatches = (path, bytes) => !!SOURCES[path] && gitHash(bytes) === SOURCES[path];
 
 // Only the existing duplicate-signup request and the public read-only currency
 // RPC may reach staging. Resends are always aborted at the browser boundary.
@@ -68,7 +71,7 @@ export async function checkConfirmation({ accounts, registerSession, evidence },
       const path = new URL(response.url()).pathname;
       if (response.status() !== 200 || !SOURCES[path]) return;
       pendingBodies.push(response.body().then(bytes => {
-        if (gitHash(bytes) === SOURCES[path]) verifiedSources.add(path);
+        if (reviewedSourceMatches(path, bytes)) verifiedSources.add(path);
         else routeProblem = 'DEPLOYED_SOURCE_IDENTITY_MISMATCH';
       }).catch(() => { routeProblem = 'DEPLOYED_SOURCE_READ_FAILED'; }));
     });

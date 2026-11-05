@@ -60,9 +60,16 @@ leave cleanup unverified; do not broadly delete sessions based on counts or age.
 
 ## Verification and remaining scope
 
-Nine offline guard checks cover credential/configuration rejection, fixed API
+Ten offline guard checks cover credential/configuration rejection, fixed API
 routes, expected roles/distinct actors, bounded requests, report privacy,
 failure-path cleanup, cleanup failure and browser mutation/resend boundaries.
+The source pin includes the exact accepted staging signup HTML, whose two DNS
+hints name staging rather than the canonical production project. The first run
+verified all three private identities/roles and acknowledged all three local
+logouts, then refused that expected packaging difference before any signup or
+resend request. A public byte comparison established only these two substitutions;
+the next run uses the exact reviewed staging pin. No app deployment changed.
+
 These checks do not constitute hosted acceptance. Record the actual workflow
 receipt before crediting access readiness or AU01.05.
 

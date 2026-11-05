@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { privateAccounts, readPublicConfiguration, allowedAPICall, apiTransport, checkStagingAccess, Stop, API_ORIGIN } from '../scripts/ci/staging-access.mjs';
-import { browserRequestDecision } from '../scripts/ci/staging-confirmation.mjs';
+import { browserRequestDecision, reviewedSourceMatches } from '../scripts/ci/staging-confirmation.mjs';
 
 const ids = ['11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222', '33333333-3333-4333-8333-333333333333'];
 const workspace = '44444444-4444-4444-8444-444444444444';
@@ -103,4 +104,12 @@ test('browser guard caps duplicate signup and blocks every resend, production ca
   assert.equal(browserRequestDecision(API_ORIGIN + '/auth/v1/recover', 'POST', 'confirmation', 1), 'refuse');
   assert.equal(browserRequestDecision(API_ORIGIN + '/auth/v1/user', 'PUT', 'confirmation', 1), 'refuse');
   assert.equal(browserRequestDecision('https://production.example.invalid/auth/v1/resend', 'POST', 'confirmation', 1), 'refuse');
+});
+
+test('signup pin accepts only the exact canonical HTML with the approved two staging DNS substitutions', () => {
+  const canonical = fs.readFileSync(new URL('../signup.html', import.meta.url), 'utf8');
+  const staging = Buffer.from(canonical.replaceAll('kttkospkblwvguuwnhjj.supabase.co', 'dczlddwbtgvfdujgcitb.supabase.co'));
+  assert.equal(reviewedSourceMatches('/signup', staging), true);
+  assert.equal(reviewedSourceMatches('/signup', Buffer.from(canonical)), false);
+  assert.equal(reviewedSourceMatches('/signup', Buffer.from(staging.toString().replace('supabase.auth.signUp', 'supabase.auth.signOut'))), false);
 });

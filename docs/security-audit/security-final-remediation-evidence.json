@@ -10617,6 +10617,28 @@
       "production_or_native_changed": false,
       "findings_closed": [],
       "next_step": "FR.2.5_RECOVERY_SAVE_RETRY_AND_BUSINESS_ERROR_BROWSER_VERIFICATION"
+    },
+    {
+      "id": "FRE306",
+      "date": "2026-11-05",
+      "stage_step": "FR.2.5_CONTROLLED_BUSINESS_AND_RECOVERY_GUARD_BROWSER_CHECK",
+      "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+      "result": "CONTROLLED_BROWSER_SCOPED_PASS",
+      "source_parent_commit": "963b0c34e8bc5a2f8f0e0fe7923f89612063255e",
+      "receipt": "docs/security-audit/security-fr-2-batch-w-controlled-browser-checks.json",
+      "workflow_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42098492193",
+      "checks": {
+        "controlled_502_saved_invitation_and_resend_visible": true,
+        "controlled_429_wait_guidance_and_existing_row_retained": true,
+        "real_sdk_null_PKCE_fields_and_exact_session_guard_verified": true
+      },
+      "real_email_requests": 0,
+      "actual_hosted_backend_requests": 0,
+      "new_public_AU_cases": 0,
+      "full_lettered_batch_W_complete": false,
+      "findings_closed": [],
+      "next_step": "FR.2.5_LIVE_RECOVERY_SAVE_RETRY_AND_DEPLOYED_BUSINESS_VERIFICATION",
+      "exit_code": 0
     }
   ],
   "prior_stage_evidence_preserved": true,

@@ -1,0 +1,44 @@
+name: Mushavo staging checks
+run-name: Staging access and Batch W confirmation checks
+
+on:
+  push:
+    branches: ["security/stage-3-authorization"]
+    paths: ["scripts/ci/staging-run.json"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mushavo-staging-acceptance
+  cancel-in-progress: false
+
+jobs:
+  staging:
+    if: github.repository == 'dwtdhruvp246/mushavobudget' && github.ref == 'refs/heads/security/stage-3-authorization'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Checkout the exact staging source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+      - name: Verify runner boundaries without credentials
+        run: node --test tests/staging-runner-guards.test.mjs
+      - name: Install locked browser tools
+        run: npm ci --ignore-scripts --prefix scripts/fixtures/staging-browser-tools
+      - name: Install Chromium
+        run: scripts/fixtures/staging-browser-tools/node_modules/.bin/playwright install --with-deps chromium
+      - name: Run the selected staging checks
+        env:
+          MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}
+          MUSHAVO_STAGING_USER_A_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_A_PASSWORD }}
+          MUSHAVO_STAGING_USER_B_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_B_EMAIL }}
+          MUSHAVO_STAGING_USER_B_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_B_PASSWORD }}
+          MUSHAVO_STAGING_ADMIN_EMAIL: ${{ secrets.MUSHAVO_STAGING_ADMIN_EMAIL }}
+          MUSHAVO_STAGING_ADMIN_PASSWORD: ${{ secrets.MUSHAVO_STAGING_ADMIN_PASSWORD }}
+        run: node scripts/ci/check-staging.mjs

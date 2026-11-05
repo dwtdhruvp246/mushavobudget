@@ -8204,10 +8204,12 @@
     "package_receipt": "docs/security-audit/security-fr-2-batch-w-business-error-staging-package.json",
     "ZIP_filename": "mushavo-business-invitation-errors-staging.zip",
     "ZIP_SHA256": "4dbff05c42bb262e5a036f8c95962947e6dedfbbb8b5dc8b5fba5b0b63bc4e3a",
-    "exact_accepted_staging_ZIP_rebuilt": true
+    "exact_accepted_staging_ZIP_rebuilt": true,
+    "deployment_approval_pending": true,
+    "staging_project": "mushavo-budget-staging"
   },
   "batch_W_remaining_recovery_preflight": {
-    "status": "WRONG_SESSION_AND_CONTROLLED_EXPIRY_SCOPED_PASS_SAVE_RETRY_PENDING",
+    "status": "LIVE_RETRY_PREPARED_CONNECTED_STAGING_DASHBOARD_REQUIRED",
     "receipt": "docs/security-audit/security-fr-2-batch-w-single-fixture-recovery-partial.json",
     "fixture_accounts_remaining": 0,
     "accepted_original_cases": [
@@ -8218,6 +8220,12 @@
     "real_email_requests": 2,
     "guard_correction_local_PASS": true,
     "guard_correction_browser_scoped_PASS": true,
-    "guard_browser_receipt": "docs/security-audit/security-fr-2-batch-w-controlled-browser-checks.json"
+    "guard_browser_receipt": "docs/security-audit/security-fr-2-batch-w-controlled-browser-checks.json",
+    "retry_case_ids": [
+      "AU04.05"
+    ],
+    "local_guard_tests": 34,
+    "live_retry_started": false,
+    "cleanup_access_check_required": true
   }
 }

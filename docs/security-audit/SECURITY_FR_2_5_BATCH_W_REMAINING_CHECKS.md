@@ -8,6 +8,8 @@ W retains **31 original case groups**, including both normal and failure variant
 
 FRE304 closed the exact October 30 test-session cleanup. FRE305 adds live scoped passes for the distinct recovery-account denial and the controlled expired-link denial. Both new test emails arrived and all three runner sessions and the disposable account were cleaned up. The password-save retry stopped at a runner guard that rejected the SDK's null PKCE fields. The corrected guard passed local tests. FRE306 verifies the Business candidate's saved-invitation and resend-cooldown messages in Chromium with controlled responses, and verifies the corrected guard using the pinned Supabase SDK. Remaining checks are the live AU04.05 retry, older valid short-password compatibility, and deployed Business candidate verification. The verified v25 staging package is ready.
 
+The AU04.05-only runner passed 34 local checks. The connected browser became unavailable before a new fixture was created, so the live retry awaits restored staging dashboard access. The Business archive is ready for the confirmed `mushavo-budget-staging` project, with the upload approval pending.
+
 | Area | Original cases | Remaining scope |
 |---|---:|---|
 | Signup/confirmation | 5 | All five original groups scoped PASS. AU01.05 now has hosted generic existing-email, browser-aborted resend, retained form and no-dispatch local-cooldown evidence. No repeat; provider 429/quota is not inferred. |

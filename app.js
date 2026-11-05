@@ -6870,6 +6870,7 @@ function renderAdminManualGrantForm() {
 
 async function submitAdminManualGrant(event) {
   event.preventDefault();
+  const form = event.currentTarget;
   if (state.adminRole !== "super_admin") {
     showToast(friendlyMessage("SUPER_ADMIN_REQUIRED"));
     return;
@@ -6895,6 +6896,7 @@ async function submitAdminManualGrant(event) {
   if (!window.confirm(`Grant ${plan.display_name} access to ${owner.email} for ${destination} through ${endsOn}? This replaces the current subscription and records no payment.`)) return;
 
   setSubmitting(submitted, true, "Granting subscription…");
+  let successMessage;
   try {
     const grantedWorkspaceId = await query("manual subscription grant", supabase.rpc("admin_grant_manual_subscription", {
       p_owner_id: ownerId,
@@ -6906,13 +6908,16 @@ async function submitAdminManualGrant(event) {
       p_reason: reason,
       p_new_business_name: newBusiness ? businessName : null
     }));
-    event.currentTarget.reset();
-    window.MushavoPWA?.markFormClean("#adminManualGrantForm");
+    successMessage = `Manual ${plan.display_name} access granted to ${owner.email}. Workspace: ${grantedWorkspaceId}.`;
+    form.reset();
+    window.MushavoPWA?.markFormClean(form);
     await loadAdminData("users");
     renderAdmin();
-    showToast(`Manual ${plan.display_name} access granted to ${owner.email}. Workspace: ${grantedWorkspaceId}.`);
+    showToast(successMessage);
   } catch (error) {
-    showToast(friendlyMessage(error?.message));
+    showToast(successMessage
+      ? `${successMessage} Refresh the Users page to see the updated subscription.`
+      : friendlyMessage(error?.message));
   } finally {
     setSubmitting(submitted, false, "Grant subscription");
   }

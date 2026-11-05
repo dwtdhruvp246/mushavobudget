@@ -78,7 +78,7 @@ test("the manual matrix covers mobile, authentication, privacy, updates and offl
 
 test("all current web release markers agree", () => {
   assert.match(pwaSource, /const RELEASE = "4\.9\.40"/);
-  assert.match(appPage, /app\.js\?v=112/);
+  assert.match(appPage, /app\.js\?v=113/);
   assert.match(appPage, /styles\.css\?v=79/);
   assert.match(appPage, /pwa\.js\?v=80/);
   assert.match(appPage, /Version 4\.9\.40/g);

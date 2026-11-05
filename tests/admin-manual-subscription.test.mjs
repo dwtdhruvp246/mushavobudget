@@ -64,3 +64,63 @@ test("default inclusive expiry respects month-end and leap-year anniversaries", 
   assert.equal(calculate("2026-05-20", "monthly"), "2026-06-19");
   assert.equal(calculate("2024-02-29", "annual"), "2025-02-27");
 });
+
+test("manual grant resets the form after the submit event has finished dispatching", async () => {
+  const start = app.indexOf("async function submitAdminManualGrant(");
+  const end = app.indexOf("function refreshAdminInvitationDefaultCurrency()", start);
+  const form = new EventTarget();
+  const button = { disabled: false };
+  const calls = [];
+  const fields = {
+    User: "owner",
+    Workspace: "workspace",
+    Plan: "plan",
+    Start: "2026-11-05",
+    End: "2027-11-04",
+    Reason: "Approved access",
+    Period: "annual"
+  };
+  form.reset = () => calls.push("reset");
+  const submit = runInNewContext(
+    `${app.slice(start, end)}; submitAdminManualGrant`,
+    {
+      state: {
+        adminRole: "super_admin",
+        adminProfiles: [{ id: "owner", email: "owner@example.com" }],
+        adminWorkspaces: [{ id: "workspace", name: "My workspace" }],
+        adminPlans: [{ id: "plan", display_name: "Personal" }]
+      },
+      $: (selector) => selector === "#adminManualGrantSubmit"
+        ? button
+        : { value: fields[selector.replace("#adminManualGrant", "")] ?? "" },
+      window: {
+        confirm: () => true,
+        MushavoPWA: { markFormClean: (target) => {
+          assert.equal(target, form);
+          calls.push("clean");
+        } }
+      },
+      setSubmitting: (target, disabled) => { target.disabled = disabled; },
+      supabase: { rpc: () => Promise.resolve("workspace") },
+      query: async (_label, request) => request,
+      loadAdminData: async (tab) => calls.push(tab),
+      renderAdmin: () => calls.push("render"),
+      showToast: (message) => calls.push(message),
+      friendlyMessage: (message) => message
+    }
+  );
+
+  let submission;
+  form.addEventListener("submit", (event) => { submission = submit(event); });
+  const event = new Event("submit", { cancelable: true });
+  form.dispatchEvent(event);
+  assert.equal(event.currentTarget, null);
+  assert.equal(button.disabled, true);
+  await submission;
+
+  assert.deepEqual(calls, [
+    "reset", "clean", "users", "render",
+    "Manual Personal access granted to owner@example.com. Workspace: workspace."
+  ]);
+  assert.equal(button.disabled, false);
+});

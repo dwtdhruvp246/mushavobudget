@@ -1,0 +1,10 @@
+{
+  "protocol": "mushavo-staging-recovery-v1",
+  "run": "42095468799",
+  "commit": "884d3196e577ff3bb442738a732f4512a39be39c",
+  "phase": "CONFIRM_A",
+  "ephemeral_key": "MCowBQYDK2VuAyEA-l7cVG07YfgCJJ6Hx-qS7PM-p5a_10YJAkjhyXC-Viw",
+  "iv": "eccuZtF7wOhfNTwN",
+  "ciphertext": "9QOr5Aj70d3kBgmtMBI1CFLGvHJ-GK8qA6_JeaEUBc1iMMsxdD54SG28w-03JyDeaTma1wUcVboY1GoKULiVw63Hwe4Q4lfuNjCX2zJl4Gh2LzXdypKQdjNQa6YiYbfOl6KYulBImsLa9Bc43xKv6DJw1TnvttPbgrOo1KFcVdMCoY7M_MNmLu9FYT-PDymTN9VqtQ2uwbz1QW_CNwLuJ54OQqkkbBd-viOxsG6ziy0f4T-NoP1XGgJHeb1-gtnsZAiEJjUW8h6NBg3Nk2Yg8fgzb0lvz4gp2ZxaIziXktZZ3rbc",
+  "tag": "nwx1kDuHzMyk0EAO6ZFUvg"
+}

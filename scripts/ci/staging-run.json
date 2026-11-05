@@ -1,7 +1,7 @@
 {
-  "run_id": "2026-11-05-password-and-sessions-01",
+  "run_id": "2026-11-05-password-and-sessions-02",
   "scope": "password-and-sessions",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
   "case_ids": ["AU03.03", "AU05.01", "AU05.02", "AU05.04"],
-  "source_parent_commit": "3e934969ae39e6aafbbfc482bf10336a58f0144e"
+  "source_parent_commit": "841028e59d6ca33807ba6e9bc07e8317fc7b4365"
 }

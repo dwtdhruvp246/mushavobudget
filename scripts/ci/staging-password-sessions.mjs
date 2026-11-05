@@ -39,7 +39,7 @@ export async function checkServerPasswordBoundary(account, key, registerSession,
   let data = null;
   try { data = await response.json(); } catch {}
   if (typeof data?.access_token === 'string') registerSession(data.access_token);
-  const code = data?.code || data?.error_code;
+  const code = data?.error_code || (typeof data?.code === 'string' ? data.code : null);
   const minimum = String(data?.msg || data?.message || '').match(/at least (\d+) characters/i);
   evidence.HTTP_status = response.status;
   evidence.error_code = code === 'weak_password' ? code : 'OTHER';
@@ -206,7 +206,7 @@ async function invalidRefresh(browser, input, agent, evidence) {
       page.goto(WEB_ORIGIN + '/app#personal/dashboard', { waitUntil: 'domcontentloaded' })
     ]);
     const rejected = await response.json();
-    const code = rejected?.code || rejected?.error_code;
+    const code = rejected?.error_code || (typeof rejected?.code === 'string' ? rejected.code : null);
     evidence.refresh_HTTP_status = response.status();
     evidence.error_code = ['refresh_token_not_found', 'refresh_token_already_used', 'session_not_found'].includes(code) ? code : 'OTHER';
     need([400, 401, 403].includes(response.status()) && evidence.error_code !== 'OTHER', 'REAL_INVALID_REFRESH_DENIAL_REQUIRED');

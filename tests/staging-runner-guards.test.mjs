@@ -68,7 +68,7 @@ test('server password boundary sends exactly one seven-character request and acc
   const calls = [];
   const result = await checkServerPasswordBoundary(accounts.USER_A, 'public', () => {}, async (url, options) => {
     calls.push({ url, ...options });
-    return new Response(JSON.stringify({ code: 'weak_password', msg: 'Password should be at least 8 characters.' }), { status: 422 });
+    return new Response(JSON.stringify({ code: 422, error_code: 'weak_password', msg: 'Password should be at least 8 characters.' }), { status: 422 });
   });
   assert.equal(result.status, 'SCOPED_PASS'); assert.equal(calls.length, 1);
   const body = JSON.parse(calls[0].body);

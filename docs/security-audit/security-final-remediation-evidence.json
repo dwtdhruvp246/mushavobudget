@@ -10639,6 +10639,25 @@
       "findings_closed": [],
       "next_step": "FR.2.5_LIVE_RECOVERY_SAVE_RETRY_AND_DEPLOYED_BUSINESS_VERIFICATION",
       "exit_code": 0
+    },
+    {
+      "id": "FRE307",
+      "date": "2026-11-05",
+      "stage_step": "FR.2.5_BUSINESS_INVITATION_ERROR_STAGING_PACKAGE",
+      "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+      "result": "EXACT_ACCEPTED_BASELINE_REBUILT_BUSINESS_CANDIDATE_PREPARED",
+      "receipt": "docs/security-audit/security-fr-2-batch-w-business-error-staging-package.json",
+      "original_case": "AU05.07",
+      "exact_baseline_ZIP_reproduced": true,
+      "public_entries": 42,
+      "byte_identical_entries": 40,
+      "frontend_uploaded": false,
+      "real_email_requests": 0,
+      "new_public_AU_cases": 0,
+      "full_lettered_batch_W_complete": false,
+      "findings_closed": [],
+      "next_step": "FR.2.5_LIVE_RECOVERY_SAVE_RETRY_AND_DEPLOYED_BUSINESS_VERIFICATION",
+      "exit_code": 0
     }
   ],
   "prior_stage_evidence_preserved": true,

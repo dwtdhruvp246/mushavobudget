@@ -9,7 +9,7 @@
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE306",
+  "latest_evidence": "FRE307",
   "batches": [
     {
       "id": "FR.1",
@@ -8189,7 +8189,7 @@
     "screenshot": "docs/security-audit/security-fr-2-batch-w-historical-invitation-session-cleanup.png"
   },
   "batch_W_business_invitation_error_candidate": {
-    "status": "CONTROLLED_CHROMIUM_SCOPED_PASS_DEPLOYED_CHECK_PENDING",
+    "status": "STAGING_PACKAGE_VERIFIED_DEPLOYMENT_PENDING",
     "receipt": "docs/security-audit/security-fr-2-batch-w-business-error-and-historical-session-binding.json",
     "original_case": "AU05.07",
     "candidate_files": [
@@ -8200,7 +8200,11 @@
     "hosted_browser_check": false,
     "actual_email_requests": 0,
     "controlled_browser_receipt": "docs/security-audit/security-fr-2-batch-w-controlled-browser-checks.json",
-    "controlled_browser_check": true
+    "controlled_browser_check": true,
+    "package_receipt": "docs/security-audit/security-fr-2-batch-w-business-error-staging-package.json",
+    "ZIP_filename": "mushavo-business-invitation-errors-staging.zip",
+    "ZIP_SHA256": "4dbff05c42bb262e5a036f8c95962947e6dedfbbb8b5dc8b5fba5b0b63bc4e3a",
+    "exact_accepted_staging_ZIP_rebuilt": true
   },
   "batch_W_remaining_recovery_preflight": {
     "status": "WRONG_SESSION_AND_CONTROLLED_EXPIRY_SCOPED_PASS_SAVE_RETRY_PENDING",

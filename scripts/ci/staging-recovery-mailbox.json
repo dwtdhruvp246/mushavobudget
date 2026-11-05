@@ -2,9 +2,9 @@
   "protocol": "mushavo-staging-recovery-v1",
   "run": "42014057621",
   "commit": "d6ff9ce4dc7c048b8be4eff07af02dafe09f2adb",
-  "phase": "CONFIRM_A",
-  "ephemeral_key": "MCowBQYDK2VuAyEA7y2BLQgeCMkYnUxdAgYYm4cRdFjHkaxaQCjbg7ZIY2w",
-  "iv": "TmW7nCOh-R-4WkVd",
-  "ciphertext": "KewSjowJMhB5PyRRZ9uj0zOVKhFyfnSjJz3ozPij-4MS6SzroX7P9q5hKOUQU08iLu8QBk5Hs3DOXJWYh_4O09r9QwN8paU6zWwyBk2r8axPi_F573P2bnKll-Y-oBXCHuVYfkPub2k697sZ5EPN1Xp9pP3-xwOAoR0IbJZI4SDk8VrNBE6tolum-C8pyZpBzDPzKvUEyX_aR01e2_-a_TMV3Bpeiipn_rOIsLne1CZVnEZe84l6A6PuOf6HcS9jwRUtbaX627jS2TWq_xdVtQwjGzilirbmoM2pHaTxc4TZW9Nk",
-  "tag": "3ywCWdTsXKfFlVicv47Kpg"
+  "phase": "CONFIRM_B",
+  "ephemeral_key": "MCowBQYDK2VuAyEAMoHFdlpcpALqzBDfbUcRaAVGBGcuSXLAYMmC3_Qf1Uc",
+  "iv": "u7fFEy3eU7POPdst",
+  "ciphertext": "BpW-g36CpcU2kM5iJu98l7KuGjz4sTvZQj1y4ZwgxD_vjbNXHMtNdFGvQsiwa-2Pp_ErrpDrXtF1MPqWqiIGhvxKWYHeqiIjzv38BR7c3aGvV3FYHG1Fh4jSQwM8xDfwNrdeWlFeC1AivRmpATjKQHbV2QkzLnzthkwqS9R-keQJ2ErjuZI6bJ5o3fgKPeJR2uWW_KQOBMPSjTB_XnCWHxdy9iylYb_STlFNa0NmldEfK6w8bAcVYs6kzQSURqVqYWdpBWH04PJDZG2F816E72tGG7U-z-uy1DI5eqEPJEOTDBYl",
+  "tag": "oNbrrW3o2xWzjibkGNQdQw"
 }

@@ -20,28 +20,32 @@ async function main() {
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.03','AU04.04','AU04.05']);
     const recoveryFeedback = plan.scope === 'recovery-request-feedback'
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.01','AU05.07']);
-    need(confirmation || passwordSessions || accountSwitch || recovery || recoveryFeedback, 'REVIEWED_RUN_SCOPE_REQUIRED');
+    const controlledBrowser = plan.scope === 'controlled-browser'
+      && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.05','AU05.07']);
+    need(confirmation || passwordSessions || accountSwitch || recovery || recoveryFeedback || controlledBrowser, 'REVIEWED_RUN_SCOPE_REQUIRED');
     need(process.env.GITHUB_REPOSITORY === 'dwtdhruvp246/mushavobudget'
       && process.env.GITHUB_REF === 'refs/heads/security/stage-3-authorization', 'STAGING_BRANCH_RUN_REQUIRED');
-    const accounts = privateAccounts(process.env);
-    if (recovery) {
-      const { chromium } = await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs');
-      report = await checkRecovery(plan, accounts, chromium);
+    const { chromium } = await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs');
+    if (controlledBrowser) {
+      const { checkControlledBrowser } = await import('./staging-controlled-browser.mjs');
+      report = await checkControlledBrowser(chromium);
+    } else if (recovery) {
+      report = await checkRecovery(plan, privateAccounts(process.env), chromium);
     } else {
+    const accounts = privateAccounts(process.env);
     const response = await fetch(WEB_ORIGIN + '/config.js?v=27', { redirect: 'error', signal: AbortSignal.timeout(20000) });
     need(response.status === 200, 'PUBLIC_CONFIGURATION_READ_REQUIRED');
     const config = readPublicConfiguration(await response.text());
-    const { chromium } = await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs');
     const agent = `Mushavo-Staging-Runner/${process.env.GITHUB_RUN_ID}/${process.env.GITHUB_RUN_ATTEMPT}`;
     report = await checkStagingAccess(accounts, apiTransport(config.key, agent), args => confirmation
       ? checkConfirmation(args, chromium, agent) : passwordSessions ? checkPasswordSessions(args, chromium, config.key, agent)
         : recoveryFeedback ? checkRecoveryFeedback(args, chromium, agent, plan) : checkAccountSwitch(args, chromium, config.key, agent));
+    report.public_configuration_requests = 1;
+    }
     report.run_plan = plan.run_id;
     report.source_commit = process.env.GITHUB_SHA;
     report.workflow_run_id = process.env.GITHUB_RUN_ID;
     report.workflow_run_attempt = process.env.GITHUB_RUN_ATTEMPT;
-    report.public_configuration_requests = 1;
-    }
   } catch (error) {
     report = { progress_display: 'Stage 3/10 | FR.2/8 | Batch W/Z', result: 'STAGING_RUNNER_PREPARATION_REVIEW_REQUIRED',
       problem_code: error instanceof Stop ? error.code : 'RUNNER_DEPENDENCY_OR_PUBLIC_CONFIGURATION_REQUIRED', exit_code: 1 };

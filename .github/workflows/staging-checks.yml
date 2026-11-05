@@ -33,7 +33,14 @@ jobs:
         run: npm ci --ignore-scripts --prefix scripts/fixtures/staging-browser-tools
       - name: Install Chromium
         run: scripts/fixtures/staging-browser-tools/node_modules/.bin/playwright install --with-deps chromium
+      - name: Select the test scope
+        id: scope
+        run: echo "controlled=$(node -p 'require("./scripts/ci/staging-run.json").scope === "controlled-browser"')" >> "$GITHUB_OUTPUT"
+      - name: Run the controlled browser checks
+        if: steps.scope.outputs.controlled == 'true'
+        run: node scripts/ci/check-staging.mjs
       - name: Run the selected staging checks
+        if: steps.scope.outputs.controlled != 'true'
         env:
           MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}
           MUSHAVO_STAGING_USER_A_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_A_PASSWORD }}

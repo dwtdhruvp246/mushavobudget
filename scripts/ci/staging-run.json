@@ -1,12 +1,10 @@
 {
-  "run_id": "2026-11-05-recovery-variants-single-fixture",
-  "scope": "recovery-variants",
+  "run_id": "2026-11-05-recovery-guard-and-business-browser",
+  "scope": "controlled-browser",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
   "case_ids": [
-    "AU04.03",
-    "AU04.04",
-    "AU04.05"
+    "AU04.05",
+    "AU05.07"
   ],
-  "fixture_run_id": "w304-mw3y2pth-761cf4",
-  "source_parent_commit": "94aeed093effd7053e133c52c046f0618a1c98e9"
+  "source_parent_commit": "c1f8b2f4d16a600e57ce77483d79713054b6cb58"
 }

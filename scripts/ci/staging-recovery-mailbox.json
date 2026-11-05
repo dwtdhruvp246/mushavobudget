@@ -2,9 +2,9 @@
   "protocol": "mushavo-staging-recovery-v1",
   "run": "42095468799",
   "commit": "884d3196e577ff3bb442738a732f4512a39be39c",
-  "phase": "RESTORE_A",
-  "ephemeral_key": "MCowBQYDK2VuAyEA2B_Xqt3EKw8CDMfCxuARgrUSJNsQArdexwZvGd9N5gE",
-  "iv": "re8K6CPIqg_wTjfS",
-  "ciphertext": "u-VWzdx9rpeJA8gA_oC3YqiBbuDA_jLZtDqkJpXLTTYZYBFuMaMgRecmfK_q-nfevlW0Gg",
-  "tag": "MQ_80OoJThN6Le1DTVTzjw"
+  "phase": "CLEANUP",
+  "ephemeral_key": "MCowBQYDK2VuAyEAiK5U3ntZKahAmqF4rkU5gCF4NvpK9ArL0-SbuntPghk",
+  "iv": "NYREFTO8SLFPnbQ-",
+  "ciphertext": "zcULwfIO2v1Iwm7qG74iHtPOXt0AIdsyHvFXBHnG63kQjPHM",
+  "tag": "04pL9R23Ez1RJeJPpkf52g"
 }

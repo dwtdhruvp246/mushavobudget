@@ -36,17 +36,27 @@ export function recoveryBrowserDecision(url, method, mode) {
     if (method === 'POST' && u.pathname === '/auth/v1/recover' && mode === 'live-request') return 'recovery-request';
     if (method === 'POST' && u.pathname === '/auth/v1/verify' && mode === 'recovery') return 'verify-recovery';
     if (method === 'PUT' && u.pathname === '/auth/v1/user' && ['recovery','block-save','save'].includes(mode)) return 'password-save';
+    if (method === 'POST' && u.pathname === '/rest/v1/rpc/provision_my_budget_workspace' && mode === 'save') return 'provision-fixture';
   }
   return sessionBrowserDecision(url, method);
 }
 
-export function isBoundRecoveryPasswordUpdate(body, token, expectedIdentity, expectedPassword) {
+function isExpectedRecoverySession(token, expectedIdentity) {
   const identity = tokenIdentity(token);
   return Boolean(identity && expectedIdentity && identity.userId === expectedIdentity.userId
-    && identity.sessionId === expectedIdentity.sessionId && typeof expectedPassword === 'string'
+    && identity.sessionId === expectedIdentity.sessionId);
+}
+
+export function isBoundRecoveryPasswordUpdate(body, token, expectedIdentity, expectedPassword) {
+  return isExpectedRecoverySession(token, expectedIdentity) && typeof expectedPassword === 'string'
     && expectedPassword.length > 0 && body?.password === expectedPassword
     && Object.entries(body).every(([key, value]) => key === 'password'
-      || (key === 'code_challenge' || key === 'code_challenge_method') && value === null));
+      || (key === 'code_challenge' || key === 'code_challenge_method') && value === null);
+}
+
+export function isBoundRecoveryProvision(body, token, expectedIdentity) {
+  return isExpectedRecoverySession(token, expectedIdentity) && body !== null && typeof body === 'object'
+    && !Array.isArray(body) && Object.keys(body).length === 0;
 }
 
 export async function checkRecovery(plan, accounts, chromium, env = process.env, fetcher = fetch) {
@@ -61,7 +71,7 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     checks:{}, cases:{}, direct_API_requests:0, browser_backend_requests:0, signup_requests:0, recovery_requests:0,
     actual_confirmation_email_requests:0, actual_recovery_email_requests:0,
     recovery_request_responses:[], accepted_recovery_email_requests:0,
-    password_updates_forwarded:0, password_updates_blocked:0,
+    password_updates_forwarded:0, password_updates_blocked:0, fixture_personal_provision_requests:0,
     created_fixture_accounts:0, created_sessions:0, scoped_logout_acknowledgements:0, context_cleanup_count:0,
     global_Auth_policy_changed:false, saved_account_passwords_changed:false, finance_or_shared_workspace_writes:false,
     production_or_native_changed:false, service_workers:'blocked_for_interception', full_lettered_batch_W_complete:false,
@@ -138,6 +148,15 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
         }
         else if(test.mode!=='save' || report.password_updates_forwarded>=1)routeProblem='RECOVERY_PASSWORD_WRITE_BOUND_REQUIRED';
         else report.password_updates_forwarded++;
+      } else if(action==='provision-fixture') {
+        let body;try{body=request.postDataJSON();}catch{}
+        const token = (await request.headerValue('authorization') || '').replace(/^Bearer /i, '');
+        if (!isBoundRecoveryProvision(body, token, test.expectedRecoveryIdentity)
+          || !test.updateResponses.includes(200) || report.fixture_personal_provision_requests !== 0) {
+          routeProblem = 'SINGLE_NEW_FIXTURE_PERSONAL_PROVISION_REQUIRED';
+        } else {
+          report.fixture_personal_provision_requests++;
+        }
       } else if(action==='refuse') {test.refused++;routeProblem='UNPLANNED_RECOVERY_BROWSER_REQUEST_REFUSED';}
       if(routeProblem){await route.abort('blockedbyclient');return;} await route.continue();
     });

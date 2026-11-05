@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { bridgeKey, publicBridgeKey, sealBridge, openBridge, createMailbox } from '../scripts/ci/staging-recovery-bridge.mjs';
 import { recoveryFixtures, cleanupSQL, expirySQL, recoveryTimestampSnapshotSQL } from '../scripts/ci/staging-recovery-fixtures.mjs';
-import { checkRecovery, recoveryMailToken, recoveryBrowserDecision, safeRecoveryRequestOutcome, isBoundRecoveryPasswordUpdate } from '../scripts/ci/staging-recovery.mjs';
+import { checkRecovery, recoveryMailToken, recoveryBrowserDecision, safeRecoveryRequestOutcome, isBoundRecoveryPasswordUpdate, isBoundRecoveryProvision } from '../scripts/ci/staging-recovery.mjs';
 import { API_ORIGIN, WEB_ORIGIN } from '../scripts/ci/staging-access.mjs';
 import { recoveryFeedbackDecision } from '../scripts/ci/staging-recovery-feedback.mjs';
 const binding={run:'12345',commit:'a'.repeat(40),phase:'RECOVER_A'};
@@ -83,6 +83,13 @@ test('password retry accepts SDK null PKCE fields only for the exact recovery ac
   assert.equal(isBoundRecoveryPasswordUpdate(body, makeToken(different, recovery), identity, password), false);
   assert.equal(isBoundRecoveryPasswordUpdate(body, makeToken(actor, different), identity, password), false);
   assert.equal(isBoundRecoveryPasswordUpdate(body, token, identity, 'DifferentFixture9!'), false);
+  const provision = API_ORIGIN + '/rest/v1/rpc/provision_my_budget_workspace';
+  assert.equal(recoveryBrowserDecision(provision, 'POST', 'block-save'), 'refuse');
+  assert.equal(recoveryBrowserDecision(provision, 'POST', 'save'), 'provision-fixture');
+  assert.equal(isBoundRecoveryProvision({}, token, identity), true);
+  assert.equal(isBoundRecoveryProvision({ user_id: different }, token, identity), false);
+  assert.equal(isBoundRecoveryProvision(null, token, identity), false);
+  assert.equal(isBoundRecoveryProvision({}, makeToken(actor, different), identity), false);
 });
 test('retry-only recovery refuses other cases, reruns and an early email window before any request', async () => {
   const plan = { scope: 'recovery-save-retry', case_ids: ['AU04.05'], fixture_run_id: 'w304-mw3dwzsv-m9siry',

@@ -1,3 +1,5 @@
+> **FRE297 — AU01.05 hosted browser scoped PASS, 5 November 2026.** The [private staging runner](MUSHAVO_STAGING_TEST_RUNNER.md) verified the two ordinary accounts and existing Super Admin, then completed one generic duplicate signup, one actually browser-aborted resend, retained form/address/enabled button and local cooldown without another dispatch. Three new sessions received scoped logout acknowledgement; test context closed. [Safe receipt](security-fr-2-batch-w-staging-runner-confirmation-pass.json) · [successful run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41991579027). The initial source-pin stop and correction are retained separately. No unblocked resend, real provider429/quota, new case or frontend/native deployment. The manual instructions below are historical; do not repeat them. Continue the original remaining W variants.
+
 # AU01.05 — existing-email and confirmation-request failure/rate behavior
 
 > **FRE296 — packaging and stable served-source checks COMPLETE, 1 November 2026.** [Owner preparation](security-fr-2-batch-w-owner-confirmation-request-package-and-deployment.json): exit0, 7 hashes, 42 entries/two changed/40 preserved, portable readback true, retained ZIP unchanged; output ZIP SHA256 2006961ea38c6219a3a9b70f85cff7b683cae4d28879aa5df5ec722119feeaff. Deployment URL c8977c16 received. [Independent stable public readback](security-fr-2-batch-w-confirmation-request-public-readback.json) matches both public hashes; the first strict HTML request errored, then a bounded same-origin auth.html HTTP308 → auth HTTP200 follow-up verified the HTML bytes. Four public fetch attempts total, 0 Auth/email/SQL/settings/account requests. No preparation/upload/readback repeat. Current action is the bounded existing-account browser check below. AU01.05 workflow acceptance remains pending.
@@ -79,7 +81,7 @@ The following stable-origin file hashes now match; no Auth/cookies were used:
 
 The initial two strict fetches verified the script but did not expose the HTML response. Two targeted manual-redirect fetches then observed auth.html HTTP308 to the same-origin clean auth route and HTTP200 with the matching HTML hash. Earlier HTML error is preserved, not retroactively assigned a status/cause. Four public fetch attempts total, no Auth/email requests. Do not repeat this check.
 
-## Current owner browser check — AU01.05
+## Completed AU01.05 protocol — historical manual instructions
 
 This is about 5–10 active minutes and uses the ordinary account just confirmed. No new inbox/account creation is intended.
 
@@ -98,4 +100,4 @@ This exercises current UI account-state privacy, browser-blocked request failure
 
 ## Carry-forward
 
-AU01.04 is accepted; all eight invitation groups remain scoped passes. AU01.05 is not yet hosted-accepted. Remaining W password/recovery/session and exact older Node-session cleanup carries stay open; AU03.04 retry remains owner-deferred. V/X/Y/Z, FR.2–8 and full release are not closed. Production/native unchanged, APK deferred. No new public AU case or factor/trust/sign-in-code workflow.
+AU01.04 is accepted; all eight invitation groups remain scoped passes. AU01.05 now has the hosted scoped acceptance recorded in FRE297 above. Remaining W password/recovery/session and exact older Node-session cleanup carries stay open; AU03.04 retry remains owner-deferred. V/X/Y/Z, FR.2–8 and full release are not closed. Production/native unchanged, APK deferred. No new public AU case or factor/trust/sign-in-code workflow.

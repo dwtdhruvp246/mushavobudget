@@ -78,3 +78,10 @@ retry stays owner-deferred. The other outstanding W variants, V/X/Y/Z, later
 FRs, native/device/provider acceptance and release decisions remain governed by
 their existing checklists and prerequisites. Extend the finite run plan only for
 the next applicable existing scope after reconciling its fixtures and evidence.
+
+
+## Live readiness and first selected check accepted
+
+FRE297, 5 November 2026: [successful run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41991579027) and [safe receipt](security-fr-2-batch-w-staging-runner-confirmation-pass.json). All three private credentials/confirmed active identities/expected platform roles passed. AU01.05 generic existing-account guidance, actual browser-blocked resend, safe retry feedback, retained address/form/enabled button and no-dispatch local cooldown passed. Three created sessions received local logout acknowledgements; the isolated browser closed. No unblocked resend or fresh provider429/quota test ran. This is scoped W progress, not full W or launch acceptance.
+
+The [read-only role inventory](security-fr-2-staging-runner-role-fixture-inventory.json) found Personal ownership for the three selected accounts and an active Business staff membership for USER_B. These selected accounts do not own Family or Business workspaces, and no additional platform staff identity is installed. Inventory existing retained actors before arranging missing role/recovery prerequisites. No role or plan was changed by this setup.

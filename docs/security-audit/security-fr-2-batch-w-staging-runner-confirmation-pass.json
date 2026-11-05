@@ -1,0 +1,88 @@
+{
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+  "checks": {
+    "three_private_credentials_and_expected_roles_verified": true,
+    "created_sessions_local_logout_acknowledged": true
+  },
+  "accounts": {
+    "USER_A": {
+      "signin_HTTP_status": 200,
+      "confirmed_identity": true,
+      "active_profile": true,
+      "expected_platform_role": true,
+      "owned_workspace_counts": {
+        "personal": 1,
+        "family": 0,
+        "business": 0
+      }
+    },
+    "USER_B": {
+      "signin_HTTP_status": 200,
+      "confirmed_identity": true,
+      "active_profile": true,
+      "expected_platform_role": true,
+      "owned_workspace_counts": {
+        "personal": 1,
+        "family": 0,
+        "business": 0
+      }
+    },
+    "ADMIN": {
+      "signin_HTTP_status": 200,
+      "confirmed_identity": true,
+      "active_profile": true,
+      "expected_platform_role": true,
+      "owned_workspace_counts": {
+        "personal": 1,
+        "family": 0,
+        "business": 0
+      }
+    }
+  },
+  "API_requests": 18,
+  "created_sessions": 3,
+  "cleanup_sessions": 3,
+  "settings_or_finance_writes_requested": 0,
+  "production_changed": false,
+  "full_lettered_batch_W_complete": false,
+  "exit_code": 0,
+  "exercise": {
+    "case_id": "AU01.05",
+    "status": "SCOPED_PASS",
+    "checks": {
+      "reviewed_signup_sources_loaded": true,
+      "generic_existing_account_guidance": true,
+      "reviewed_confirmation_source_loaded": true,
+      "actual_browser_block_and_retry_guidance": true,
+      "address_form_and_enabled_button_retained": true,
+      "local_cooldown_prevented_second_dispatch": true,
+      "no_resend_reached_server": true,
+      "test_browser_context_closed": true
+    },
+    "duplicate_signup_requests_forwarded": 1,
+    "resend_requests_forwarded": 0,
+    "blocked_resend_attempts": 1,
+    "public_currency_reads": 1,
+    "refused_unplanned_requests": 0,
+    "service_workers": "blocked_for_network_interception",
+    "provider_429_exercised": false,
+    "actual_duplicate_signup_email_delivery_measured": false
+  },
+  "run_plan": "2026-11-05-access-and-confirmation-02",
+  "source_commit": "9e0429968185f32f770386c6f68e8cbf043ade54",
+  "workflow_run_id": "41991579027",
+  "workflow_run_attempt": "1",
+  "public_configuration_requests": 1,
+  "recorded_date": "2026-11-05",
+  "evidence": "FRE297",
+  "run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41991579027",
+  "exact_second_run_agent_rows_after_local_logout": 0,
+  "independent_session_metadata_check_read_only": true,
+  "first_run_retained": "security-fr-2-batch-w-staging-runner-first-receipt.json",
+  "source_pin_review": "security-fr-2-batch-w-staging-runner-source-pin-review.json",
+  "prior_owner_scoped_passes_retained": true,
+  "older_unbound_Node_cleanup_verified": false,
+  "AU03_04_failure_retry_still_owner_deferred": true,
+  "new_public_AU_cases": 0
+}

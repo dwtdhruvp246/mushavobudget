@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "date": "2026-11-01",
+  "date": "2026-11-05",
   "phase": "FINAL_REMEDIATION",
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
   "active_step": "FR.2.5",
-  "source_parent_commit": "1d76defb2785357a730503f8e99444a3e8fcff7f",
+  "source_parent_commit": "9e0429968185f32f770386c6f68e8cbf043ade54",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE296",
+  "latest_evidence": "FRE297",
   "batches": [
     {
       "id": "FR.1",
@@ -1747,7 +1747,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5.AU01.05_EXISTING_EMAIL_AND_BLOCKED_CONFIRMATION_REQUEST",
+  "next_step": "FR.2.5.AU03.03_SERVER_PASSWORD_BOUNDARY_AND_REMAINING_W_VARIANTS",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -5284,7 +5284,7 @@
       "prior_failure_is_historical": true,
       "corrected_install_success_received": true
     },
-    "owner_browser_action_required": true,
+    "owner_browser_action_required": false,
     "password_signin_backend_installation": {
       "stage_step": "FR.2.5.W50_PASSWORD_SIGNIN_INSTALLED_BROWSER_CHECK",
       "status": "OWNER_BACKEND_INSTALL_PASS_BROWSER_ACCEPTANCE_PENDING",
@@ -6642,7 +6642,7 @@
     "new_runtime_patch_requested_during_readiness_diagnosis": true,
     "signout_entry_source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51"
   },
-  "owner_browser_action_required": true,
+  "owner_browser_action_required": false,
   "owner_SQL_action_condition": "None: backend and accepted frontend remain unchanged.",
   "signout_entry": {
     "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
@@ -7950,25 +7950,25 @@
   },
   "batch_W_signup_case_checkpoint": {
     "original_case_groups": 5,
-    "scoped_pass_groups": 4,
+    "scoped_pass_groups": 5,
     "scoped_pass_case_ids": [
       "AU01.01",
       "AU01.02",
       "AU01.03",
-      "AU01.04"
+      "AU01.04",
+      "AU01.05"
     ],
     "prior_scoped_pass_retained_without_new_denial": [
       "AU01.03"
     ],
-    "remaining_case_ids": [
-      "AU01.05"
-    ],
+    "remaining_case_ids": [],
     "latest_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-confirmation-pass.json",
     "new_public_case_groups_added": 0,
-    "scope_note": "Prior unconfirmed denial retains its earlier owner-UI scope; four scoped groups is not a whole-W percentage."
+    "scope_note": "Five scoped signup/confirmation groups; actual provider 429/quota, other W variants and whole-W acceptance are not inferred.",
+    "latest_runner_receipt": "docs/security-audit/security-fr-2-batch-w-staging-runner-confirmation-pass.json"
   },
   "batch_W_confirmation_request_retry": {
-    "status": "OWNER_ZIP_PREPARATION_PASS_STABLE_SOURCE_2_OF_2_VERIFIED_BROWSER_CHECK_PENDING",
+    "status": "HOSTED_EXISTING_EMAIL_BLOCKED_RESEND_AND_LOCAL_COOLDOWN_SCOPED_PASS",
     "code_commit": "cc2251174b75867b96798acfa833621031826fb5",
     "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_CONFIRMATION_REQUEST_RETRY.md",
     "local_receipt": "docs/security-audit/security-fr-2-batch-w-confirmation-request-feedback-local-checks.json",
@@ -7988,7 +7988,7 @@
     "retained_accepted_ZIP_SHA256": "9bbad6f7fe83b731aef9b65d3bae5df8b832204c5e7bbd0867a9e5a9b811033b",
     "owner_real_ZIP_prepared": true,
     "frontend_uploaded": true,
-    "hosted_acceptance": false,
+    "hosted_acceptance": true,
     "SQL_or_settings_change_required": false,
     "maximum_preparation_application_Auth_or_email_requests": 0,
     "following_check_uses_newly_confirmed_existing_account": true,
@@ -8006,6 +8006,32 @@
     "stable_served_source_verified": true,
     "public_assets_verified": 2,
     "public_fetch_attempts": 4,
-    "repeat_preparation_or_upload_requested": false
+    "repeat_preparation_or_upload_requested": false,
+    "runner_receipt": "docs/security-audit/security-fr-2-batch-w-staging-runner-confirmation-pass.json",
+    "workflow_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41991579027",
+    "provider_429_exercised": false,
+    "duplicate_signup_requests_forwarded": 1,
+    "resend_requests_forwarded": 0,
+    "blocked_resend_attempts": 1,
+    "test_context_closed": true,
+    "existing_owner_package_and_deployment_retained": true
+  },
+  "staging_test_runner": {
+    "status": "ACCESS_VERIFIED_AND_AU01_05_SCOPED_PASS",
+    "workflow": ".github/workflows/staging-checks.yml",
+    "run_plan": "scripts/ci/staging-run.json",
+    "documentation": "docs/security-audit/MUSHAVO_STAGING_TEST_RUNNER.md",
+    "latest_receipt": "docs/security-audit/security-fr-2-batch-w-staging-runner-confirmation-pass.json",
+    "latest_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/41991579027",
+    "secrets_saved_by_owner": 6,
+    "secret_values_visible_to_model": false,
+    "confirmed_active_ordinary_accounts": 2,
+    "confirmed_existing_super_admin": 1,
+    "local_guard_tests": 10,
+    "existing_scope_only": true,
+    "no_owner_command_or_upload_required_for_this_setup": true,
+    "latest_created_sessions": 3,
+    "latest_scoped_cleanup_acknowledgements": 3,
+    "older_Node_cleanup_not_resolved": true
   }
 }

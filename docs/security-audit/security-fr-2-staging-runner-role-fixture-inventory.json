@@ -1,0 +1,59 @@
+{
+  "result": "STAGING_ROLE_FIXTURE_INVENTORY_ONLY",
+  "writes": 0,
+  "accounts": [
+    {
+      "slot": "USER_B",
+      "account_found": true,
+      "owned_family_workspaces": 0,
+      "workspace_role_inventory": [
+        {
+          "role": "staff",
+          "status": "active",
+          "workspace_type": "business",
+          "membership_count": 1
+        },
+        {
+          "role": "owner",
+          "status": "active",
+          "workspace_type": "personal",
+          "membership_count": 1
+        }
+      ],
+      "owned_business_workspaces": 0
+    },
+    {
+      "slot": "USER_A",
+      "account_found": true,
+      "owned_family_workspaces": 0,
+      "workspace_role_inventory": [
+        {
+          "role": "owner",
+          "status": "active",
+          "workspace_type": "personal",
+          "membership_count": 1
+        }
+      ],
+      "owned_business_workspaces": 0
+    },
+    {
+      "slot": "ADMIN",
+      "account_found": true,
+      "owned_family_workspaces": 0,
+      "workspace_role_inventory": [
+        {
+          "role": "owner",
+          "status": "active",
+          "workspace_type": "personal",
+          "membership_count": 1
+        }
+      ],
+      "owned_business_workspaces": 0
+    }
+  ],
+  "role_behavior_tested": false,
+  "other_platform_staff_count": 0,
+  "date": "2026-11-05",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "scope_note": "Read-only prerequisite inventory. Selected accounts have Personal ownership; USER_B also has an active Business staff membership. Selected accounts do not own Family or Business workspaces; no second platform staff identity is installed. This is not behavioral role acceptance or authorization to create or change roles."
+}

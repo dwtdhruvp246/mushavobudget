@@ -37,6 +37,8 @@ export function recoveryBrowserDecision(url, method, mode) {
     if (method === 'POST' && u.pathname === '/auth/v1/verify' && mode === 'recovery') return 'verify-recovery';
     if (method === 'PUT' && u.pathname === '/auth/v1/user' && ['recovery','block-save','save'].includes(mode)) return 'password-save';
     if (method === 'POST' && u.pathname === '/rest/v1/rpc/provision_my_budget_workspace' && mode === 'save') return 'provision-fixture';
+    if (method === 'POST' && u.pathname === '/auth/v1/token' && u.search === '?grant_type=password'
+      && mode === 'legacy-sign-in') return 'legacy-sign-in';
   }
   return sessionBrowserDecision(url, method);
 }
@@ -61,7 +63,8 @@ export function isBoundRecoveryProvision(body, token, expectedIdentity) {
 
 export async function checkRecovery(plan, accounts, chromium, env = process.env, fetcher = fetch) {
   const retryOnly = plan.scope === 'recovery-save-retry';
-  const caseIds = retryOnly ? ['AU04.05'] : ['AU04.03','AU04.04','AU04.05'];
+  const legacy = retryOnly && JSON.stringify(plan.case_ids) === '["AU04.05","AU03.01"]';
+  const caseIds = legacy ? ['AU04.05','AU03.01'] : retryOnly ? ['AU04.05'] : ['AU04.03','AU04.04','AU04.05'];
   need(JSON.stringify(plan.case_ids) === JSON.stringify(caseIds), 'EXACT_RECOVERY_CASE_SCOPE_REQUIRED');
   const existingAccount = retryOnly ? null : accounts.USER_B;
   const fixtures = recoveryFixtures(plan.fixture_run_id), sessions = [], contexts = [];
@@ -71,7 +74,7 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     checks:{}, cases:{}, direct_API_requests:0, browser_backend_requests:0, signup_requests:0, recovery_requests:0,
     actual_confirmation_email_requests:0, actual_recovery_email_requests:0,
     recovery_request_responses:[], accepted_recovery_email_requests:0,
-    password_updates_forwarded:0, password_updates_blocked:0, fixture_personal_provision_requests:0,
+    password_updates_forwarded:0, password_updates_blocked:0, fixture_personal_provision_requests:0, legacy_signin_requests:0,
     created_fixture_accounts:0, created_sessions:0, scoped_logout_acknowledgements:0, context_cleanup_count:0,
     global_Auth_policy_changed:false, saved_account_passwords_changed:false, finance_or_shared_workspace_writes:false,
     production_or_native_changed:false, service_workers:'blocked_for_interception', full_lettered_batch_W_complete:false,
@@ -157,6 +160,11 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
         } else {
           report.fixture_personal_provision_requests++;
         }
+      } else if(action==='legacy-sign-in') {
+        let body;try{body=request.postDataJSON();}catch{}
+        if (!test.legacyPassword || body?.email !== fixtures.A || body.password !== test.legacyPassword
+          || report.legacy_signin_requests !== 0) routeProblem='EXACT_LEGACY_FIXTURE_SIGNIN_REQUIRED';
+        else report.legacy_signin_requests++;
       } else if(action==='refuse') {test.refused++;routeProblem='UNPLANNED_RECOVERY_BROWSER_REQUEST_REFUSED';}
       if(routeProblem){await route.abort('blockedbyclient');return;} await route.continue();
     });
@@ -167,6 +175,8 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
         if(data?.access_token)test.lastRecoverySession=data;
       })().catch(()=>{routeProblem='RECOVERY_VERIFICATION_RESPONSE_REQUIRED';}));
       if(u.pathname==='/auth/v1/user' && response.request().method()==='PUT')test.updateResponses.push(response.status());
+      if(test.mode==='legacy-sign-in' && u.pathname==='/auth/v1/token' && u.search==='?grant_type=password')
+        test.pending.push(response.json().then(data=>register(data)).catch(()=>{routeProblem='LEGACY_SIGNIN_RESPONSE_REQUIRED';}));
     });
     test.page=await context.newPage();return test;
   }
@@ -326,6 +336,32 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     if (otherSession) report.cases.AU04_05.other_account_password_unchanged = true;
     need(!routeProblem && report.signup_requests === 1 && report.recovery_requests === 1,
       'RECOVERY_BROWSER_REQUEST_AND_TWO_EMAIL_BOUNDARIES_REQUIRED');
+    if (legacy) {
+      stage='LEGACY_A';
+      const input=await mailbox.receive(stage);
+      need(input?.kind==='exact-new-fixture-legacy-credential' && /^[A-Za-z0-9_-]{7}$/.test(input.password || ''),
+        'EXACT_SYNTHETIC_LEGACY_CREDENTIAL_REQUIRED');
+      const legacyTest=await newTest(null,'legacy-sign-in');
+      legacyTest.legacyPassword=input.password;
+      await legacyTest.page.goto(WEB_ORIGIN+'/app', {waitUntil:'domcontentloaded'});
+      await legacyTest.page.locator('#authForm #email').fill(fixtures.A);
+      await legacyTest.page.locator('#authForm #password').fill(input.password);
+      const [response]=await Promise.all([
+        legacyTest.page.waitForResponse(r=>r.url()===API_ORIGIN+'/auth/v1/token?grant_type=password'),
+        legacyTest.page.locator('#authForm').getByRole('button',{name:'Sign in',exact:true}).click()
+      ]);
+      input.password=legacyTest.legacyPassword=null;
+      await Promise.all(legacyTest.pending);
+      need(response.status()===200 && report.legacy_signin_requests===1, 'LIVE_SHORT_PASSWORD_SIGNIN_REQUIRED');
+      await readyDashboard(legacyTest.page);
+      const session=await legacyTest.page.evaluate(key=>JSON.parse(localStorage.getItem(key)||'null'),KEY);
+      register(session);
+      need(session?.user?.id===confirmedUserId && !routeProblem,'SHORT_PASSWORD_CORRECT_DASHBOARD_REQUIRED');
+      await verifyIdentity(session,fixtures.A);
+      report.cases.AU03_01={status:'SCOPED_PASS',fixture_type:'controlled_legacy_password_hash',
+        password_length:7,real_sign_in_HTTP_status:200,correct_account_opened_and_server_verified:true,
+        historical_account_age_simulated:false,global_password_policy_changed:false};
+    }
     complete = true;
   } catch(error) {report.problem_code=routeProblem||(error instanceof Stop?error.code:'RECOVERY_EXPECTATION_NOT_MET_'+stage);}
   finally {
@@ -349,7 +385,7 @@ export async function checkRecovery(plan, accounts, chromium, env = process.env,
     report.mailbox_polls=mailbox?.polls||0;
     if(complete && report.checks.all_isolated_contexts_closed && report.checks.all_existing_account_runner_sessions_scoped_logout
       && report.checks.external_guarded_SQL_fixture_and_session_absence_acknowledged){
-      report.result=retryOnly?'RECOVERY_SAVE_RETRY_SCOPED_PASS':'RECOVERY_VARIANTS_SCOPED_PASS';report.exit_code=0;
+      report.result=legacy?'RECOVERY_AND_LEGACY_PASSWORD_SCOPED_PASS':retryOnly?'RECOVERY_SAVE_RETRY_SCOPED_PASS':'RECOVERY_VARIANTS_SCOPED_PASS';report.exit_code=0;
     }
     try{await mailbox?.status(report.exit_code===0?'SCOPED_PASS':'REVIEW_REQUIRED',report.exit_code===0?'success':'failure');}catch{}
   }

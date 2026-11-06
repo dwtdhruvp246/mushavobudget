@@ -4,7 +4,7 @@ import { need } from './staging-access.mjs';
 const PROTOCOL = 'mushavo-staging-recovery-v1';
 const BRANCH = 'security/stage-3-authorization';
 const REPO = 'dwtdhruvp246/mushavobudget';
-const PHASES = new Set(['CONFIRM_A', 'RECOVER_A', 'EXPIRE_A', 'RESTORE_A', 'CLEANUP']);
+const PHASES = new Set(['CONFIRM_A', 'RECOVER_A', 'EXPIRE_A', 'RESTORE_A', 'LEGACY_A', 'CLEANUP']);
 export function bridgeKey() { return generateKeyPairSync('x25519'); }
 export function publicBridgeKey(key) { return key.export({ type: 'spki', format: 'der' }).toString('base64url'); }
 function aad(binding) {

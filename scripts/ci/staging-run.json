@@ -1,10 +1,12 @@
 {
-  "run_id": "2026-11-05-recovery-guard-and-business-browser",
-  "scope": "controlled-browser",
+  "run_id": "2026-11-06-recovery-retry-and-legacy-password",
+  "scope": "recovery-save-retry",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
   "case_ids": [
     "AU04.05",
-    "AU05.07"
+    "AU03.01"
   ],
-  "source_parent_commit": "c1f8b2f4d16a600e57ce77483d79713054b6cb58"
+  "fixture_run_id": "w304-mw4k71ca-618ef6",
+  "not_before_utc": "2026-11-05T20:38:53.000Z",
+  "source_parent_commit": "8ef1d952281c532f35f5a045f41b0ae700fde4c1"
 }

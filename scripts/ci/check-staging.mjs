@@ -19,7 +19,7 @@ async function main() {
     const recovery = plan.scope === 'recovery-variants'
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.03','AU04.04','AU04.05']);
     const recoverySaveRetry = plan.scope === 'recovery-save-retry'
-      && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.05']);
+      && ['["AU04.05"]', '["AU04.05","AU03.01"]'].includes(JSON.stringify(plan.case_ids));
     const recoveryFeedback = plan.scope === 'recovery-request-feedback'
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.01','AU05.07']);
     const controlledBrowser = plan.scope === 'controlled-browser'

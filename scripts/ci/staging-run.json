@@ -1,7 +1,12 @@
 {
-  "run_id": "2026-11-06-admin-boundaries-with-monitor",
-  "scope": "admin-boundaries",
-  "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
-  "case_ids": ["V06", "V07", "V08", "V09", "V11"],
-  "source_parent_commit": "7a08c865a318c7fbffa0a43e35422872777c528c"
+  "run_id": "2026-11-06-batch-x-receipt-d7be160c2026",
+  "scope": "business-receipt-authorization",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "case_ids": [
+    "X_RECEIPT",
+    "X_PRIVATE_STORAGE",
+    "Y_REQUEST_RACE"
+  ],
+  "fixture_name": "audit-batch-x-receipt-d7be160c2026",
+  "source_parent_commit": "7d3a2f8b98b7df3482b52e1c0fdccefad29da866"
 }

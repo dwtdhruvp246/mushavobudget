@@ -7,6 +7,7 @@ import { checkAccountSwitch } from './staging-account-switch.mjs';
 import { checkRecovery } from './staging-recovery.mjs';
 import { checkRecoveryFeedback } from './staging-recovery-feedback.mjs';
 import { checkAdminBoundaries, verifyAdminSources } from './staging-admin-boundaries.mjs';
+import { checkBusinessReceipt, isBusinessReceiptPlan, manageReceiptFixture } from './staging-business-receipt.mjs';
 
 async function main() {
   let report;
@@ -28,23 +29,47 @@ async function main() {
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.05','AU05.07']);
     const adminBoundaries = plan.scope === 'admin-boundaries'
       && JSON.stringify(plan.case_ids) === JSON.stringify(['V06', 'V07', 'V08', 'V09', 'V11']);
-    need(confirmation || passwordSessions || accountSwitch || recovery || recoverySaveRetry || recoveryFeedback || controlledBrowser || adminBoundaries, 'REVIEWED_RUN_SCOPE_REQUIRED');
+    const businessReceipt = isBusinessReceiptPlan(plan);
+    need(confirmation || passwordSessions || accountSwitch || recovery || recoverySaveRetry || recoveryFeedback
+      || controlledBrowser || adminBoundaries || businessReceipt, 'REVIEWED_RUN_SCOPE_REQUIRED');
     if (adminBoundaries) progress = 'Stage 3/10 | FR.2/8 | Batch V/Z';
+    if (businessReceipt) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     need(process.env.GITHUB_REPOSITORY === 'dwtdhruvp246/mushavobudget'
       && process.env.GITHUB_REF === 'refs/heads/security/stage-3-authorization', 'STAGING_BRANCH_RUN_REQUIRED');
-    const { chromium } = await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs');
+    const fixtureAction = process.env.MUSHAVO_STAGING_RECEIPT_ADMIN_ACTION || null;
+    need(!fixtureAction || businessReceipt && ['provision', 'suspend'].includes(fixtureAction), 'REVIEWED_FIXTURE_ACTION_REQUIRED');
+    if (businessReceipt) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'BUSINESS_FIXTURE_RERUN_REFUSED');
+    const chromium = businessReceipt ? null
+      : (await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs')).chromium;
     if (controlledBrowser) {
       const { checkControlledBrowser } = await import('./staging-controlled-browser.mjs');
       report = await checkControlledBrowser(chromium);
     } else if (recovery || recoverySaveRetry) {
       report = await checkRecovery(plan, recovery ? privateAccounts(process.env) : {}, chromium);
     } else {
-    const accounts = privateAccounts(process.env);
+    const accountScope = fixtureAction ? 'businessFixture' : businessReceipt ? 'ordinary' : 'standard';
+    const accounts = privateAccounts(process.env, { accountScope });
     const response = await fetch(WEB_ORIGIN + '/config.js?v=27', { redirect: 'error', signal: AbortSignal.timeout(20000) });
     need(response.status === 200, 'PUBLIC_CONFIGURATION_READ_REQUIRED');
     const config = readPublicConfiguration(await response.text());
     const agent = `Mushavo-Staging-Runner/${process.env.GITHUB_RUN_ID}/${process.env.GITHUB_RUN_ATTEMPT}`;
-    if (adminBoundaries) {
+    if (businessReceipt) {
+      if (fixtureAction === 'suspend') {
+        const prior = JSON.parse(fs.readFileSync('reports/staging/summary.json', 'utf8'));
+        need(prior.run_plan === plan.run_id && prior.source_commit === process.env.GITHUB_SHA
+          && prior.disposable_fixture_action === 'exercise'
+          && (prior.exercise?.upload_attempted === false || prior.exercise?.storage_delete_acknowledged === true),
+          'EXACT_STORAGE_CLEANUP_REQUIRED_BEFORE_SUSPENSION');
+      }
+      report = await checkStagingAccess(accounts, apiTransport(config.key, agent), args => fixtureAction
+        ? manageReceiptFixture(args, config.key, agent, plan, fixtureAction)
+        : checkBusinessReceipt(args, config.key, agent, plan), { accountScope });
+      delete report.full_lettered_batch_W_complete;
+      delete report.settings_or_finance_writes_requested;
+      report.disposable_fixture_action = fixtureAction || 'exercise';
+      report.full_lettered_batch_X_complete = false;
+      report.full_lettered_batch_Y_complete = false;
+    } else if (adminBoundaries) {
       const sourceEvidence = {};
       await verifyAdminSources(sourceEvidence);
       report = await checkStagingAccess(accounts, apiTransport(config.key, agent),

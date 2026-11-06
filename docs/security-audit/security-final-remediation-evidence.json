@@ -10678,6 +10678,28 @@
       "findings_closed": [],
       "next_step": "FR.2.5_EXACT_LIVE_RETRY_FIXTURE_CLEANUP_AND_DEPLOYED_BUSINESS_VERIFICATION",
       "exit_code": 1
+    },
+    {
+      "id": "FRE309",
+      "date": "2026-11-06",
+      "stage_step": "FR.2.5_BATCH_W_AGREED_STAGING_SCOPE_CLOSEOUT",
+      "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+      "result": "BATCH_W_AGREED_STAGING_SCOPE_COMPLETE",
+      "receipt": "docs/security-audit/security-fr-2-batch-w-staging-closeout.json",
+      "recovery_save_retry": "LIVE_SCOPED_PASS_RETAINED",
+      "exact_fixture_cleanup": "VERIFIED_ABSENT",
+      "legacy_signin": "LIVE_SCOPED_PASS_CONTROLLED_SEVEN_CHARACTER_CREDENTIAL",
+      "business_error_UI": "STAGING_V25_DEPLOYED_AND_CONTROLLED_CHROMIUM_SCOPED_PASS",
+      "business_staging_deployment": "https://b29545cc.mushavo-budget-staging.pages.dev",
+      "real_email_requests": 0,
+      "owner_deferred_cases": [
+        "AU03.04 failure/retry variant"
+      ],
+      "full_original_case_contract_executed": false,
+      "stage_3_complete": false,
+      "findings_closed": [],
+      "next_step": "STAGE_3_RECONCILE_REMAINING_BATCHES_V_X_Y_Z",
+      "exit_code": 0
     }
   ],
   "prior_stage_evidence_preserved": true,

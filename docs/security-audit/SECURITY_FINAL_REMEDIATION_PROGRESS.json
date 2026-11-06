@@ -9,7 +9,7 @@
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE308",
+  "latest_evidence": "FRE309",
   "batches": [
     {
       "id": "FR.1",
@@ -1097,13 +1097,13 @@
         },
         {
           "id": "FR.2.5",
-          "status": "IN_PROGRESS_BATCH_W_CURRENT_PASSWORD_ONLY_AUTH_WORKFLOWS",
+          "status": "SCOPED_COMPLETE_BATCH_W_OWNER_DEFERRED_SIGNED_IN_RETRY",
           "title": "Auth/finance/session hosted workflows",
-          "active_lettered_batch": "W",
+          "active_lettered_batch": null,
           "plan": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_PLAN.md",
           "V_Admin_MFA_dependency_remains_open": true,
           "owner_public_readback_receipt": "docs/security-audit/security-fr-2-batch-w-owner-public-pass.json",
-          "next_step": "FR.2.5_REMAINING_RECOVERY_VARIANTS_AND_BUSINESS_ERROR_BROWSER_VERIFICATION",
+          "next_step": "STAGE_3_RECONCILE_REMAINING_BATCHES_V_X_Y_Z",
           "persistent_browser_trust_checkpoint": {
             "status": "SUPERSEDED_OWNER_PASSWORD_ONLY_ALL_ROLES",
             "policy": "docs/security-audit/security-fr-2-batch-w-browser-trust-owner-policy.json",
@@ -1682,14 +1682,15 @@
           "current_Admin_invitation_policy_reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
           "Admin_setup_completion_retry_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-admin-setup-completion-retry-pass.json",
           "ordinary_confirmation_owner_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-confirmation-pass.json",
-          "latest_evidence": "FRE304",
-          "latest_runner_receipt": "docs/security-audit/security-fr-2-batch-w-recovery-feedback-pass.json",
+          "latest_evidence": "FRE309",
+          "latest_runner_receipt": "docs/security-audit/security-fr-2-batch-w-staging-closeout.json",
           "recovery_fixture_preparation_blocked": "docs/security-audit/security-fr-2-batch-w-recovery-rate-stop-cleanup-required.json",
-          "recovery_fixture_cleanup_receipt": "docs/security-audit/security-fr-2-batch-w-approved-recovery-fixture-cleanup-pass.json",
+          "recovery_fixture_cleanup_receipt": "docs/security-audit/security-fr-2-batch-w-staging-closeout.json",
           "recovery_fixture_cleanup_pending": false,
-          "business_error_candidate_receipt": "docs/security-audit/security-fr-2-batch-w-business-error-and-historical-session-binding.json",
+          "business_error_candidate_receipt": "docs/security-audit/security-fr-2-batch-w-staging-closeout.json",
           "exact_historical_session_revocation_paused": false,
-          "exact_historical_session_cleanup_receipt": "docs/security-audit/security-fr-2-batch-w-historical-invitation-session-cleanup-pass.json"
+          "exact_historical_session_cleanup_receipt": "docs/security-audit/security-fr-2-batch-w-historical-invitation-session-cleanup-pass.json",
+          "completed_lettered_batch": "W"
         },
         {
           "id": "FR.2.6",
@@ -1705,7 +1706,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "FR.2.5_REMAINING_RECOVERY_VARIANTS_AND_BUSINESS_ERROR_BROWSER_VERIFICATION"
+      "next_step": "STAGE_3_RECONCILE_REMAINING_BATCHES_V_X_Y_Z"
     },
     {
       "id": "FR.3",
@@ -1755,7 +1756,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_EXACT_LIVE_RETRY_FIXTURE_CLEANUP_AND_DEPLOYED_BUSINESS_VERIFICATION",
+  "next_step": "STAGE_3_RECONCILE_REMAINING_BATCHES_V_X_Y_Z",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -8189,7 +8190,7 @@
     "screenshot": "docs/security-audit/security-fr-2-batch-w-historical-invitation-session-cleanup.png"
   },
   "batch_W_business_invitation_error_candidate": {
-    "status": "STAGING_PACKAGE_VERIFIED_DEPLOYMENT_PENDING",
+    "status": "DEPLOYED_STAGING_V25_SCOPED_PASS",
     "receipt": "docs/security-audit/security-fr-2-batch-w-business-error-and-historical-session-binding.json",
     "original_case": "AU05.07",
     "candidate_files": [
@@ -8207,14 +8208,18 @@
     "exact_accepted_staging_ZIP_rebuilt": true,
     "deployment_approval_pending": false,
     "staging_project": "mushavo-budget-staging",
-    "cloudflare_private_signin_handoff_required": true,
-    "deployed_candidate_verified": false,
-    "observed_staging_business_script_version": 24
+    "cloudflare_private_signin_handoff_required": false,
+    "deployed_candidate_verified": true,
+    "observed_staging_business_script_version": 25,
+    "deployment_url": "https://b29545cc.mushavo-budget-staging.pages.dev",
+    "stable_staging_origin": "https://mushavo-budget-staging.pages.dev",
+    "deployed_sources_controlled_chromium_pass": true,
+    "deployed_verification_receipt": "docs/security-audit/security-fr-2-batch-w-staging-closeout.json"
   },
   "batch_W_remaining_recovery_preflight": {
-    "status": "LIVE_AU04_05_SCOPED_PASS_FIXTURE_CLEANUP_PENDING",
+    "status": "LIVE_AU04_05_AND_EXACT_FIXTURE_CLEANUP_SCOPED_PASS",
     "receipt": "docs/security-audit/security-fr-2-batch-w-single-fixture-recovery-partial.json",
-    "fixture_accounts_remaining": 1,
+    "fixture_accounts_remaining": 0,
     "accepted_original_cases": [
       "AU04.03",
       "AU04.04",
@@ -8230,12 +8235,25 @@
     ],
     "local_guard_tests": 34,
     "live_retry_started": true,
-    "cleanup_access_check_required": true,
+    "cleanup_access_check_required": false,
     "live_retry_receipt": "docs/security-audit/security-fr-2-batch-w-live-recovery-save-retry.json",
     "fixture_sessions_remaining": 0,
     "fixture_refresh_tokens_remaining": 0,
-    "new_fixture_cleanup_required": true,
+    "new_fixture_cleanup_required": false,
     "cleanup_sql": "supabase/diagnostics/security_fr_2_5_batch_w_live_retry_fixture_cleanup.sql",
-    "legacy_AU03_01_compatibility": "OPEN_NO_LEGACY_SIGNIN_ATTEMPTED"
+    "legacy_AU03_01_compatibility": "LIVE_SCOPED_PASS_CONTROLLED_LEGACY_CREDENTIAL",
+    "exact_cleanup_readback_verified": true,
+    "closure_receipt": "docs/security-audit/security-fr-2-batch-w-staging-closeout.json"
+  },
+  "batch_W_staging_closeout": {
+    "status": "BATCH_W_AGREED_STAGING_SCOPE_COMPLETE",
+    "receipt": "docs/security-audit/security-fr-2-batch-w-staging-closeout.json",
+    "staging_deployment_url": "https://b29545cc.mushavo-budget-staging.pages.dev",
+    "applicable_active_scope_complete": true,
+    "full_original_case_contract_executed": false,
+    "owner_deferred_cases": [
+      "AU03.04 failure/retry variant"
+    ],
+    "stage_3_complete": false
   }
 }

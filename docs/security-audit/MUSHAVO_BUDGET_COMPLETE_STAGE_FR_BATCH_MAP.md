@@ -1,9 +1,9 @@
 # Mushavo Budget — complete stages, FR groups and batches
-As of 6 November 2026 • Full remaining-to-launch hierarchy • Version 1.9
+As of 6 November 2026 • Full remaining-to-launch hierarchy • Version 1.10
 
 ## Read this structure correctly
 
-**Main Stage 3 → FR.2 → FR.2.4 → Batch V is in progress.** On staging, Super Admin opened Plans and ordinary accounts were denied Admin access. Revoking the selected test Admin session blocked its still-unexpired token and cleared the open Admin editor. The isolated SQL role matrix passed. Live staff-role checks, independent Admin recovery and reconciliation of the wider database fingerprint remain open. [Batch V evidence](security-fr-2-batch-v-current-admin-staging-result.json).
+**Main Stage 3 → FR.2 → FR.2.4 → Batch V is in progress.** Super Admin access, ordinary-user denial and revoked-session behavior passed on staging. Admin staff, Finance staff and Support staff passed their scoped hosted checks, and all three disposable identities, workspaces and sessions were removed. The catalog mismatch was reconciled to the exact Supabase Storage migration delta and the staging stamp was refreshed. Independent Admin recovery remains open while staging SMTP is configured. [Current Batch V evidence](security-fr-2-batch-v-staff-and-catalog-staging-result.json) and [earlier Batch V evidence](security-fr-2-batch-v-current-admin-staging-result.json).
 
 **Main Stage 3 → FR.2 → FR.2.5 → Batch W is complete for the agreed staging scope.** The live recovery password-save retry passed and its disposable account and empty Personal workspace were removed. The existing-password sign-in accepted a seven-character credential on the disposable account under the current policy. Business v25 is live on stable staging, and Chromium confirmed the delivery-failure and resend wait messages against the deployed files using controlled responses. The signed-in password-change failure/retry is owner-deferred. [Closeout receipt](security-fr-2-batch-w-staging-closeout.json).
 
@@ -87,9 +87,9 @@ Historical preparation/local pass is not relabelled as current full security acc
 | S | Browser transition/failure containment preparation | Local preparation completed; hosted follow-through in T/U. |
 | T | Hosted shared-browser/recovery exercise | Scoped hosted pass; not equivalent to full application or launch acceptance. |
 | U | Full-app startup/cache/session lifecycle | Recorded COMPLETE at its accepted scope; reuse applicable evidence. |
-| V | Privileged access, recoverable operators and original MFA scope | IN PROGRESS. Super Admin access, ordinary-user denial and selected revocation passed on staging. Live staff-role checks, independent recovery and full catalog reconciliation remain open. Historical MFA checks remain on hold. [Batch V evidence](security-fr-2-batch-v-current-admin-staging-result.json). |
+| V | Privileged access, recoverable operators and original MFA scope | IN PROGRESS. Staging Admin access, ordinary denial, session revocation, staff roles and catalog reconciliation passed at their reviewed scope. Independent recovery remains open. Historical MFA checks remain on hold. [Batch V evidence](security-fr-2-batch-v-staff-and-catalog-staging-result.json). |
 | W | Auth/password/account/email workflows | Complete for the agreed staging scope. The signed-in password-change failure/retry is owner-deferred. [Closeout receipt](security-fr-2-batch-w-staging-closeout.json). |
-| X | Personal/Family/Business permissions and legitimate finance | PLANNED; finish remaining role/scope/finance checks using retained actors/fixtures and applicable earlier passes. |
+| X | Personal/Family/Business permissions and legitimate finance | READ-ONLY PREFLIGHT STARTED. Revalidated retained Business role/audit data, Family conversion evidence and private storage metadata. The five retained workflow groups still require hosted acceptance. |
 | Y | Backend caller permissions, real database races and containment | PLANNED; finite caller matrix, real concurrency, legitimate service/job access and safe failure readback/cleanup. |
 | Z | Integrated authorization recheck and Stage 3 closeout | PLANNED; reconcile U–Y and original authorization exits, integrated affected recheck and final Stage 3 handoff. |
 

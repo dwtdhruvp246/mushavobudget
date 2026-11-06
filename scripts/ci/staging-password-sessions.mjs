@@ -51,9 +51,9 @@ export async function checkServerPasswordBoundary(account, key, registerSession,
   return evidence;
 }
 
-async function verifyPublicSources(evidence, fetcher) {
+export async function verifyPublicSources(evidence, fetcher, additionalSources = {}) {
   evidence.public_source_reads = 0;
-  for (const [path, expected] of Object.entries(SOURCE_BLOBS)) {
+  for (const [path, expected] of Object.entries({ ...SOURCE_BLOBS, ...additionalSources })) {
     const response = await fetcher(WEB_ORIGIN + path, { redirect: 'error', signal: AbortSignal.timeout(20000) });
     evidence.public_source_reads++;
     need(response.status === 200, 'SESSION_TEST_PUBLIC_SOURCE_REQUIRED');

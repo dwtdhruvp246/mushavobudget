@@ -6,9 +6,11 @@ import { checkPasswordSessions } from './staging-password-sessions.mjs';
 import { checkAccountSwitch } from './staging-account-switch.mjs';
 import { checkRecovery } from './staging-recovery.mjs';
 import { checkRecoveryFeedback } from './staging-recovery-feedback.mjs';
+import { checkAdminBoundaries, verifyAdminSources } from './staging-admin-boundaries.mjs';
 
 async function main() {
   let report;
+  let progress = 'Stage 3/10 | FR.2/8 | Batch W/Z';
   try {
     const plan = JSON.parse(fs.readFileSync(new URL('./staging-run.json', import.meta.url), 'utf8'));
     const confirmation = plan.scope === 'access-and-confirmation' && plan.case_id === 'AU01.05';
@@ -24,7 +26,10 @@ async function main() {
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.01','AU05.07']);
     const controlledBrowser = plan.scope === 'controlled-browser'
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU04.05','AU05.07']);
-    need(confirmation || passwordSessions || accountSwitch || recovery || recoverySaveRetry || recoveryFeedback || controlledBrowser, 'REVIEWED_RUN_SCOPE_REQUIRED');
+    const adminBoundaries = plan.scope === 'admin-boundaries'
+      && JSON.stringify(plan.case_ids) === JSON.stringify(['V06', 'V07', 'V08', 'V09', 'V11']);
+    need(confirmation || passwordSessions || accountSwitch || recovery || recoverySaveRetry || recoveryFeedback || controlledBrowser || adminBoundaries, 'REVIEWED_RUN_SCOPE_REQUIRED');
+    if (adminBoundaries) progress = 'Stage 3/10 | FR.2/8 | Batch V/Z';
     need(process.env.GITHUB_REPOSITORY === 'dwtdhruvp246/mushavobudget'
       && process.env.GITHUB_REF === 'refs/heads/security/stage-3-authorization', 'STAGING_BRANCH_RUN_REQUIRED');
     const { chromium } = await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs');
@@ -39,17 +44,28 @@ async function main() {
     need(response.status === 200, 'PUBLIC_CONFIGURATION_READ_REQUIRED');
     const config = readPublicConfiguration(await response.text());
     const agent = `Mushavo-Staging-Runner/${process.env.GITHUB_RUN_ID}/${process.env.GITHUB_RUN_ATTEMPT}`;
-    report = await checkStagingAccess(accounts, apiTransport(config.key, agent), args => confirmation
-      ? checkConfirmation(args, chromium, agent) : passwordSessions ? checkPasswordSessions(args, chromium, config.key, agent)
-        : recoveryFeedback ? checkRecoveryFeedback(args, chromium, agent, plan) : checkAccountSwitch(args, chromium, config.key, agent));
+    if (adminBoundaries) {
+      const sourceEvidence = {};
+      await verifyAdminSources(sourceEvidence);
+      report = await checkStagingAccess(accounts, apiTransport(config.key, agent),
+        args => checkAdminBoundaries(args, chromium, config.key, agent));
+      delete report.full_lettered_batch_W_complete;
+      report.full_lettered_batch_V_complete = false;
+      report.public_sources = sourceEvidence;
+    } else {
+      report = await checkStagingAccess(accounts, apiTransport(config.key, agent), args => confirmation
+        ? checkConfirmation(args, chromium, agent) : passwordSessions ? checkPasswordSessions(args, chromium, config.key, agent)
+          : recoveryFeedback ? checkRecoveryFeedback(args, chromium, agent, plan) : checkAccountSwitch(args, chromium, config.key, agent));
+    }
     report.public_configuration_requests = 1;
     }
+    report.progress_display = progress;
     report.run_plan = plan.run_id;
     report.source_commit = process.env.GITHUB_SHA;
     report.workflow_run_id = process.env.GITHUB_RUN_ID;
     report.workflow_run_attempt = process.env.GITHUB_RUN_ATTEMPT;
   } catch (error) {
-    report = { progress_display: 'Stage 3/10 | FR.2/8 | Batch W/Z', result: 'STAGING_RUNNER_PREPARATION_REVIEW_REQUIRED',
+    report = { progress_display: progress, result: 'STAGING_RUNNER_PREPARATION_REVIEW_REQUIRED',
       problem_code: error instanceof Stop ? error.code : 'RUNNER_DEPENDENCY_OR_PUBLIC_CONFIGURATION_REQUIRED', exit_code: 1 };
   }
   // Only this explicitly constructed receipt is written. No response payloads,

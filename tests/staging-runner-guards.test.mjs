@@ -5,11 +5,34 @@ import { privateAccounts, readPublicConfiguration, allowedAPICall, apiTransport,
 import { browserRequestDecision, reviewedSourceMatches } from '../scripts/ci/staging-confirmation.mjs';
 import { checkServerPasswordBoundary, sessionBrowserDecision } from '../scripts/ci/staging-password-sessions.mjs';
 import { staleSessionSnapshot, BUSINESS_READ_RPCS } from '../scripts/ci/staging-account-switch.mjs';
+import { adminProbe } from '../scripts/ci/staging-admin-boundaries.mjs';
 
 const ids = ['11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222', '33333333-3333-4333-8333-333333333333'];
 const workspace = '44444444-4444-4444-8444-444444444444';
 const slots = ['USER_A', 'USER_B', 'ADMIN'];
 const accounts = Object.fromEntries(slots.map((slot, i) => [slot, { email: `fixture${i}@example.invalid`, password: `private-fixture-password-${i}` }]));
+
+test('Admin Edge probe carries no invitation fields, and the finite receipt excludes credentials and private response data', async () => {
+  const calls = [];
+  const evidence = { direct_probe_requests: 0, probes: {} };
+  const probe = adminProbe('public-key', 'fixture-run', evidence, async (url, request) => {
+    calls.push({ url, request });
+    return Response.json({ error: 'INVALID_INVITATION_REQUEST', private: 'UNEXPECTED_PRIVATE_FIELD' }, { status: 400 });
+  });
+  await probe('EDGE', 'edge', 'PRIVATE_BEARER', ({ status, value }) =>
+    status === 400 && value.error === 'INVALID_INVITATION_REQUEST');
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].url, API_ORIGIN + '/functions/v1/invite-admin-user');
+  assert.equal(calls[0].request.method, 'POST');
+  assert.equal(calls[0].request.body, '{}');
+  assert.deepEqual(evidence.probes, { EDGE: { HTTP_status: 400, passed: true } });
+  assert.doesNotMatch(JSON.stringify(evidence), /PRIVATE_BEARER|UNEXPECTED_PRIVATE_FIELD/);
+  await assert.rejects(probe('WRITE', 'save', 'PRIVATE_BEARER', () => true), /UNPLANNED_ADMIN_PROBE_REFUSED/);
+  evidence.direct_probe_requests = 25;
+  await assert.rejects(probe('MORE', 'preview', null, () => true), /ADMIN_PROBE_BOUND_REACHED/);
+  assert.equal(calls.length, 1);
+});
+
 function fixture(options = {}) {
   const calls = [];
   const fixtureToken = i => options.jwtTokens ? jwt(ids[i], ids[i], 1) : `fixture-token-${slots[i]}`;

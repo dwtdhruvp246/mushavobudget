@@ -1,12 +1,7 @@
 {
-  "run_id": "2026-11-06-recovery-retry-and-legacy-password",
-  "scope": "recovery-save-retry",
-  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
-  "case_ids": [
-    "AU04.05",
-    "AU03.01"
-  ],
-  "fixture_run_id": "w304-mw4k71ca-618ef6",
-  "not_before_utc": "2026-11-05T20:38:53.000Z",
-  "source_parent_commit": "8ef1d952281c532f35f5a045f41b0ae700fde4c1"
+  "run_id": "2026-11-06-admin-boundaries",
+  "scope": "admin-boundaries",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
+  "case_ids": ["V06", "V07", "V08", "V09", "V11"],
+  "source_parent_commit": "b6511f28829b0b6563ddf3c5b2e291a0f3a23a41"
 }

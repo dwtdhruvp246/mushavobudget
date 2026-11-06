@@ -20,8 +20,12 @@ export function tokenIdentity(token) {
   } catch { return null; }
 }
 
-export function privateAccounts(env) {
-  return Object.fromEntries(Object.keys(BINDINGS).map(slot => {
+function stagingSlots(ordinaryOnly) {
+  return ordinaryOnly ? ['USER_A', 'USER_B'] : Object.keys(BINDINGS);
+}
+
+export function privateAccounts(env, { ordinaryOnly = false } = {}) {
+  return Object.fromEntries(stagingSlots(ordinaryOnly).map(slot => {
     const email = env[`MUSHAVO_STAGING_${slot}_EMAIL`]?.trim().toLowerCase();
     const password = env[`MUSHAVO_STAGING_${slot}_PASSWORD`];
     need(typeof email === 'string' && digest(email) === BINDINGS[slot]
@@ -68,7 +72,7 @@ export function apiTransport(key, agent, fetcher = fetch) {
   };
 }
 
-export async function checkStagingAccess(accounts, transport, exercise = async () => ({})) {
+export async function checkStagingAccess(accounts, transport, exercise = async () => ({}), { ordinaryOnly = false } = {}) {
   const sessions = [], actors = {}, report = {
     progress_display: 'Stage 3/10 | FR.2/8 | Batch W/Z',
     result: 'STAGING_ACCESS_REVIEW_REQUIRED', checks: {}, accounts: {},
@@ -106,7 +110,7 @@ export async function checkStagingAccess(accounts, transport, exercise = async (
   };
   let complete = false;
   try {
-    for (const slot of ['USER_A', 'USER_B', 'ADMIN']) {
+    for (const slot of stagingSlots(ordinaryOnly)) {
       const account = accounts[slot];
       const login = await call('POST', '/auth/v1/token?grant_type=password', null, account);
       if (typeof login.data?.access_token === 'string' && login.data.access_token.length) {
@@ -138,7 +142,8 @@ export async function checkStagingAccess(accounts, transport, exercise = async (
         expected_platform_role: true, owned_workspace_counts: Object.fromEntries(['personal', 'family', 'business']
           .map(type => [type, workspaces.data.filter(row => row.workspace_type === type).length])) };
     }
-    report.checks.three_private_credentials_and_expected_roles_verified = true;
+    const verifiedActors = ordinaryOnly ? 'two_ordinary_credentials_and_roles_verified' : 'three_private_credentials_and_expected_roles_verified';
+    report.checks[verifiedActors] = true;
     report.exercise = {};
     await exercise({ accounts, actors, evidence: report.exercise, registerSession, scopedLogout, acknowledgeLogout });
     complete = true;

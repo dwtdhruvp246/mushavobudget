@@ -1,5 +1,5 @@
 name: Mushavo staging checks
-run-name: Staging Batch W selected checks
+run-name: Staging authorization checks
 
 on:
   push:
@@ -35,12 +35,22 @@ jobs:
         run: scripts/fixtures/staging-browser-tools/node_modules/.bin/playwright install --with-deps chromium
       - name: Select the test scope
         id: scope
-        run: echo "controlled=$(node -p 'require("./scripts/ci/staging-run.json").scope === "controlled-browser"')" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "controlled=$(node -p 'require("./scripts/ci/staging-run.json").scope === "controlled-browser"')" >> "$GITHUB_OUTPUT"
+          echo "business_receipt=$(node -p 'require("./scripts/ci/staging-run.json").scope === "business-receipt-authorization"')" >> "$GITHUB_OUTPUT"
       - name: Run the controlled browser checks
         if: steps.scope.outputs.controlled == 'true'
         run: node scripts/ci/check-staging.mjs
+      - name: Run the selected Business receipt checks
+        if: steps.scope.outputs.business_receipt == 'true'
+        env:
+          MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}
+          MUSHAVO_STAGING_USER_A_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_A_PASSWORD }}
+          MUSHAVO_STAGING_USER_B_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_B_EMAIL }}
+          MUSHAVO_STAGING_USER_B_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_B_PASSWORD }}
+        run: node scripts/ci/check-staging.mjs
       - name: Run the selected staging checks
-        if: steps.scope.outputs.controlled != 'true'
+        if: steps.scope.outputs.controlled != 'true' && steps.scope.outputs.business_receipt != 'true'
         env:
           MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}
           MUSHAVO_STAGING_USER_A_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_A_PASSWORD }}

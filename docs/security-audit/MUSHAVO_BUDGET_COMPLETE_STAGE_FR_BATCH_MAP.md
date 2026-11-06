@@ -1,7 +1,9 @@
 # Mushavo Budget — complete stages, FR groups and batches
-As of 6 November 2026 • Full remaining-to-launch hierarchy • Version 1.8
+As of 6 November 2026 • Full remaining-to-launch hierarchy • Version 1.9
 
 ## Read this structure correctly
+
+**Main Stage 3 → FR.2 → FR.2.4 → Batch V is in progress.** On staging, Super Admin opened Plans and ordinary accounts were denied Admin access. Revoking the selected test Admin session blocked its still-unexpired token and cleared the open Admin editor. The isolated SQL role matrix passed. Live staff-role checks, independent Admin recovery and reconciliation of the wider database fingerprint remain open. [Batch V evidence](security-fr-2-batch-v-current-admin-staging-result.json).
 
 **Main Stage 3 → FR.2 → FR.2.5 → Batch W is complete for the agreed staging scope.** The live recovery password-save retry passed and its disposable account and empty Personal workspace were removed. The existing-password sign-in accepted a seven-character credential on the disposable account under the current policy. Business v25 is live on stable staging, and Chromium confirmed the delivery-failure and resend wait messages against the deployed files using controlled responses. The signed-in password-change failure/retry is owner-deferred. [Closeout receipt](security-fr-2-batch-w-staging-closeout.json).
 
@@ -85,17 +87,17 @@ Historical preparation/local pass is not relabelled as current full security acc
 | S | Browser transition/failure containment preparation | Local preparation completed; hosted follow-through in T/U. |
 | T | Hosted shared-browser/recovery exercise | Scoped hosted pass; not equivalent to full application or launch acceptance. |
 | U | Full-app startup/cache/session lifecycle | Recorded COMPLETE at its accepted scope; reuse applicable evidence. |
-| V | Privileged access, recoverable operators and original MFA scope | OPEN/ON HOLD; sixteen-case password-only applicability reconciliation is documented, stronger historical MFA criteria remain unmet, and remaining privilege/session/recovery acceptance is open. |
+| V | Privileged access, recoverable operators and original MFA scope | IN PROGRESS. Super Admin access, ordinary-user denial and selected revocation passed on staging. Live staff-role checks, independent recovery and full catalog reconciliation remain open. Historical MFA checks remain on hold. [Batch V evidence](security-fr-2-batch-v-current-admin-staging-result.json). |
 | W | Auth/password/account/email workflows | Complete for the agreed staging scope. The signed-in password-change failure/retry is owner-deferred. [Closeout receipt](security-fr-2-batch-w-staging-closeout.json). |
 | X | Personal/Family/Business permissions and legitimate finance | PLANNED; finish remaining role/scope/finance checks using retained actors/fixtures and applicable earlier passes. |
 | Y | Backend caller permissions, real database races and containment | PLANNED; finite caller matrix, real concurrency, legitimate service/job access and safe failure readback/cleanup. |
 | Z | Integrated authorization recheck and Stage 3 closeout | PLANNED; reconcile U–Y and original authorization exits, integrated affected recheck and final Stage 3 handoff. |
 
-**V, X, Y and Z remain open.** V is on hold. Z is the planned closeout for Stage 3 authorization. FR.3–FR.8 are separate launch work.
+**V, X, Y and Z remain open.** Z is the planned closeout for Stage 3 authorization. FR.3–FR.8 are separate launch work.
 
 ### Work left inside V/X/Y/Z
 
-- **V:** controlled privileged identities and independent recovery; current installed role/grant behavior; ordinary/wrong-role denials; revocation/recovery continuity. The old V contract has 16 cases tied partly to stronger MFA; their [current password-only applicability reconciliation](SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md) is documented and remaining acceptance is open. Do not silently reinstate custom codes/trust/MFA, falsely mark old stronger-assurance checks passed, or automatically reenroll/delete factors.
+- **V:** verify Admin staff, Finance and Support on staging, exercise independent recovery for a separate Admin, and reconcile the wider catalog fingerprint. Historical MFA criteria remain on hold under the owner's password-only decision. [Current policy reconciliation](SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md).
 - **X:** reconcile earlier Personal/Family/Business passes; execute missing own/foreign/removed/assigned/team/Owner/escalation and invite/removal effects; verify legitimate finance/currency/entitlements; prove exact fixture cleanup and retained-record preservation.
 - **Y:** freeze the installed routine/caller matrix; test applicable anonymous/authenticated/human/service/job permissions; real PostgreSQL concurrency/replay/expiry/revocation or current-policy authorization-change races; verify independent failure readback, containment and cleanup. Retired proof/device mechanisms do not automatically require new tests.
 - **Z:** reconcile required authorization outcomes and current exact installations; run justified integrated/affected regressions; check preservation/cleanup/containment and issue the Stage 3 completion decision/handoff. Unresolved required blockers keep it open.

@@ -12,7 +12,7 @@ const API = {
   // Missing all invitation fields. Even an authorized caller cannot reserve or send anything.
   edge: ['POST', '/functions/v1/invite-admin-user', {}]
 };
-const adminReads = ['admin_business_billing_settings', 'admin_plan_workbench_snapshot'];
+export const ADMIN_READ_RPCS = ['admin_business_billing_settings', 'admin_plan_workbench_snapshot', 'admin_subscription_monitor'];
 const denied = status => status === 401 || status === 403;
 const emptyOrDenied = ({ status, value }) => denied(status) || status === 200 && Array.isArray(value) && value.length === 0;
 const contract = ({ status, value }, valid, role) => status === 200 && value?.contract === 1
@@ -84,6 +84,14 @@ export async function checkAdminBoundaries(input, chromium, key, agent, fetcher 
     await route.abort('blockedbyclient');
     return true;
   };
+  const describeRefusal = (url, method) => {
+    const target = new URL(url);
+    if (target.origin !== API_ORIGIN) return 'NON_API_ORIGIN';
+    if (target.pathname === '/rest/v1/profiles' && method === 'PATCH') return 'PROFILE_UPDATE';
+    if (target.pathname.startsWith('/rest/v1/rpc/')) return 'UNLISTED_RPC';
+    if (target.pathname.startsWith('/functions/v1/')) return 'UNLISTED_EDGE_FUNCTION';
+    return 'UNLISTED_API_OPERATION';
+  };
   let ordinaryTest, adminTest;
   try {
     ordinaryTest = await createTestContext(browser, actors.USER_A.session, 'V09', agent, acknowledgeLogout,
@@ -97,7 +105,7 @@ export async function checkAdminBoundaries(input, chromium, key, agent, fetcher 
     evidence.browser_checks.ordinary_deep_link_opened_Personal_without_Admin_data = true;
 
     adminTest = await createTestContext(browser, admin.session, 'V07-V11', agent, acknowledgeLogout,
-      { additionalReadRPCs: adminReads, routeHook: blockAnalytics });
+      { additionalReadRPCs: ADMIN_READ_RPCS, routeHook: blockAnalytics, describeRefusal });
     const { page } = adminTest;
     await page.goto(WEB_ORIGIN + '/app#admin/plans', { waitUntil: 'domcontentloaded' });
     await page.locator('#adminView:not(.hidden)').waitFor({ state: 'visible', timeout: 35000 });
@@ -108,7 +116,10 @@ export async function checkAdminBoundaries(input, chromium, key, agent, fetcher 
 
     await scopedLogout(admin.token);
     evidence.selected_Admin_local_logout_acknowledged = true;
-    await page.locator('#adminView nav [data-admin-tab="finance"]').click();
+    await page.evaluate(() => {
+      const view = document.querySelector('#adminView:not(.hidden)');
+      view?.querySelector('nav [data-admin-tab="finance"]')?.click();
+    });
     await page.locator('#adminEmailView:not(.hidden) [role="status"]').filter({ hasText: 'Sign in again.' }).waitFor();
     need(!await page.locator('#adminView').isVisible() && await page.locator('#ap-form, #adminPlansWorkbench .ap-plan, dialog[open]').count() === 0
       && !adminTest.state.problem, 'STALE_ADMIN_BROWSER_DATA_CLEARING_REQUIRED');

@@ -1,7 +1,7 @@
 {
-  "run_id": "2026-11-06-admin-boundaries",
+  "run_id": "2026-11-06-admin-boundaries-with-monitor",
   "scope": "admin-boundaries",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
   "case_ids": ["V06", "V07", "V08", "V09", "V11"],
-  "source_parent_commit": "b6511f28829b0b6563ddf3c5b2e291a0f3a23a41"
+  "source_parent_commit": "7a08c865a318c7fbffa0a43e35422872777c528c"
 }

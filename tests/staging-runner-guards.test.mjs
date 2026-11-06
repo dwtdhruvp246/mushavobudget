@@ -5,7 +5,7 @@ import { privateAccounts, readPublicConfiguration, allowedAPICall, apiTransport,
 import { browserRequestDecision, reviewedSourceMatches } from '../scripts/ci/staging-confirmation.mjs';
 import { checkServerPasswordBoundary, sessionBrowserDecision } from '../scripts/ci/staging-password-sessions.mjs';
 import { staleSessionSnapshot, BUSINESS_READ_RPCS } from '../scripts/ci/staging-account-switch.mjs';
-import { adminProbe } from '../scripts/ci/staging-admin-boundaries.mjs';
+import { adminProbe, ADMIN_READ_RPCS } from '../scripts/ci/staging-admin-boundaries.mjs';
 
 const ids = ['11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222', '33333333-3333-4333-8333-333333333333'];
 const workspace = '44444444-4444-4444-8444-444444444444';
@@ -31,6 +31,18 @@ test('Admin Edge probe carries no invitation fields, and the finite receipt excl
   evidence.direct_probe_requests = 25;
   await assert.rejects(probe('MORE', 'preview', null, () => true), /ADMIN_PROBE_BOUND_REACHED/);
   assert.equal(calls.length, 1);
+});
+
+test('Admin browser allows the dashboard and Plans reads while blocking finance writes and invitation dispatch', () => {
+  for (const name of ['admin_subscription_monitor', 'admin_plan_workbench_snapshot', 'admin_business_billing_settings']) {
+    const url = API_ORIGIN + '/rest/v1/rpc/' + name;
+    assert.equal(sessionBrowserDecision(url, 'POST', ADMIN_READ_RPCS), 'read');
+    assert.equal(sessionBrowserDecision(url, 'POST'), 'refuse');
+  }
+  for (const path of ['/rest/v1/rpc/admin_save_plan_workbench', '/rest/v1/rpc/admin_set_business_seats',
+    '/rest/v1/rpc/save_admin_finance_currency_settings', '/functions/v1/invite-admin-user']) {
+    assert.equal(sessionBrowserDecision(API_ORIGIN + path, 'POST', ADMIN_READ_RPCS), 'refuse');
+  }
 });
 
 function fixture(options = {}) {

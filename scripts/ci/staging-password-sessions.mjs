@@ -65,7 +65,8 @@ export async function verifyPublicSources(evidence, fetcher, additionalSources =
   evidence.reviewed_app_and_session_sources_verified = true;
 }
 
-export async function createTestContext(browser, session, caseId, agent, acknowledgeLogout, { additionalReadRPCs = [], routeHook = null } = {}) {
+export async function createTestContext(browser, session, caseId, agent, acknowledgeLogout,
+  { additionalReadRPCs = [], routeHook = null, describeRefusal = null } = {}) {
   const context = await browser.newContext({ serviceWorkers: 'block', userAgent: agent + '/' + caseId });
   context.setDefaultTimeout(20000);
   const state = { backend_requests: 0, refused_requests: 0, refresh_requests: 0,
@@ -106,7 +107,11 @@ export async function createTestContext(browser, session, caseId, agent, acknowl
     }
     if (action === 'local-logout') state.local_logout_requests++;
     if (action === 'normal-activity') state.normal_activity_RPCs++;
-    if (action === 'refuse') { state.refused_requests++; state.problem = 'UNPLANNED_SESSION_BROWSER_REQUEST_REFUSED'; }
+    if (action === 'refuse') {
+      state.refused_requests++;
+      state.problem = 'UNPLANNED_SESSION_BROWSER_REQUEST_REFUSED';
+      if (describeRefusal) state.first_refusal_type ??= describeRefusal(request.url(), request.method());
+    }
     if (state.problem) { await route.abort('blockedbyclient'); return; }
     if (routeHook && await routeHook(route, action)) return;
     await route.continue();

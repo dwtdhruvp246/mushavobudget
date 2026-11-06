@@ -44,6 +44,12 @@ function receiptTransport(key, agent, evidence, fetcher, limit) {
     } else {
       try { data = await response.json(); } catch {}
     }
+    if (response.status >= 400) {
+      evidence.last_refusal = { status: response.status };
+      if (typeof data?.message === 'string' && /^[A-Z][A-Z0-9_]{2,79}$/.test(data.message)) {
+        evidence.last_refusal.application_code = data.message;
+      }
+    }
     return { status: response.status, data };
   };
 }
@@ -57,11 +63,67 @@ export async function manageReceiptFixture({ actors, evidence }, key, agent, pla
   const { USER_A: owner, ADMIN: admin } = actors;
   need(Object.keys(actors).length === 2 && owner?.id !== admin?.id
     && [owner, admin].every(hasBoundSession), 'BOUND_FIXTURE_OWNER_AND_ADMIN_REQUIRED');
-  const request = receiptTransport(key, agent, evidence, fetcher, 5);
+  const request = receiptTransport(key, agent, evidence, fetcher, 12);
   const fixtureRoute = '/rest/v1/budget_workspaces?select=id,owner_id,workspace_type,status,business_support_version'
     + '&name=eq.' + plan.fixture_name + '&limit=2';
   const existing = await request('GET', fixtureRoute, admin);
   need(existing.status === 200 && Array.isArray(existing.data), 'FIXTURE_NAME_LOOKUP_REQUIRED');
+  const setStatus = async (row, status) => {
+    const updated = await request('POST', '/rest/v1/rpc/admin_business_set_status', admin, {
+      p_workspace_id: row.id, p_status: status, p_expected_version: row.business_support_version,
+      p_confirmation_name: plan.fixture_name, p_reason: 'Isolate or resume the exact synthetic staging test workspace',
+      p_request_id: randomUUID()
+    });
+    need(updated.status === 200 && UUID.test(updated.data || ''), 'FIXTURE_STATUS_ACKNOWLEDGEMENT_REQUIRED');
+    const proof = await request('GET', fixtureRoute, admin);
+    const current = single(proof.data);
+    need(proof.status === 200 && current?.id === row.id && current.owner_id === owner.id
+      && current.status === status, 'FIXTURE_STATUS_READBACK_REQUIRED');
+  };
+  const subscription = async row => {
+    const result = await request('GET', '/rest/v1/workspace_subscriptions?select=member_limit,version,status'
+      + '&workspace_id=eq.' + row.id + '&limit=2', admin);
+    const current = single(result.data);
+    need(result.status === 200 && current?.status === 'active'
+      && Number.isInteger(current.version) && Number.isInteger(current.member_limit), 'EXACT_FIXTURE_SUBSCRIPTION_REQUIRED');
+    return current;
+  };
+  const setSeats = async (row, current, seats) => {
+    const updated = await request('POST', '/rest/v1/rpc/admin_set_business_seats', admin, {
+      p_workspace_id: row.id, p_total_seats: seats, p_expected_version: current.version,
+      p_confirmation_name: plan.fixture_name, p_reason: 'Scoped synthetic staging test seat adjustment'
+    });
+    need(updated.status === 200 && updated.data === seats, 'FIXTURE_SEAT_CHANGE_ACKNOWLEDGEMENT_REQUIRED');
+    need((await subscription(row)).member_limit === seats, 'FIXTURE_SEAT_READBACK_REQUIRED');
+  };
+  if (action === 'provision' && plan.resume_fixture === true) {
+    const row = single(existing.data);
+    need(UUID.test(row?.id || '') && row.owner_id === owner.id && row.workspace_type === 'business'
+      && row.status === 'suspended' && row.business_support_version === 2, 'REVIEWED_SUSPENDED_FIXTURE_REQUIRED');
+    const grant = await request('GET', '/rest/v1/admin_subscription_grants?select=owner_id,grant_kind,reason'
+      + '&workspace_id=eq.' + row.id + '&limit=2', admin);
+    const binding = single(grant.data);
+    need(grant.status === 200 && binding?.owner_id === owner.id && binding.grant_kind === 'business_test'
+      && binding.reason === 'Generated staging receipt and spending request replay test', 'EXACT_ORIGINAL_TEST_GRANT_REQUIRED');
+    const current = await subscription(row);
+    need(current.version === 1 && current.member_limit === 1, 'REVIEWED_ORIGINAL_ONE_SEAT_FIXTURE_REQUIRED');
+    try {
+      await setStatus(row, 'active');
+      await setSeats(row, current, 2);
+    } catch (error) {
+      const observed = await request('GET', fixtureRoute, admin);
+      const active = single(observed.data);
+      if (observed.status === 200 && active?.id === row.id && active.owner_id === owner.id
+        && active.status === 'active' && active.business_support_version === 3) {
+        await setStatus(active, 'suspended');
+        evidence.failed_resume_suspended = true;
+      }
+      throw error;
+    }
+    evidence.disposable_workspace_restored = true;
+    evidence.test_seat_limit = 2;
+    return;
+  }
   if (action === 'provision') {
     const owned = await request('GET', '/rest/v1/budget_workspaces?select=id&workspace_type=eq.business'
       + '&owner_id=eq.' + owner.id + '&limit=2', owner);
@@ -93,16 +155,17 @@ export async function manageReceiptFixture({ actors, evidence }, key, agent, pla
   const row = single(existing.data);
   need(UUID.test(row?.id || '') && row.owner_id === owner.id && row.workspace_type === 'business'
     && row.status === 'active' && Number.isInteger(row.business_support_version), 'EXACT_ACTIVE_FIXTURE_REQUIRED');
-  const held = await request('POST', '/rest/v1/rpc/admin_business_set_status', admin, {
-    p_workspace_id: row.id, p_status: 'suspended', p_expected_version: row.business_support_version,
-    p_confirmation_name: plan.fixture_name, p_reason: 'Isolate the completed synthetic staging test workspace',
-    p_request_id: randomUUID()
-  });
-  need(held.status === 200 && UUID.test(held.data || ''), 'FIXTURE_SUSPENSION_ACKNOWLEDGEMENT_REQUIRED');
-  const proof = await request('GET', fixtureRoute, admin);
-  const retained = single(proof.data);
-  need(proof.status === 200 && retained?.id === row.id && retained.owner_id === owner.id
-    && retained.status === 'suspended', 'FIXTURE_SUSPENSION_READBACK_REQUIRED');
+  if (plan.resume_fixture === true) {
+    const scoped = '&workspace_id=eq.' + row.id + '&limit=3';
+    const members = await request('GET', '/rest/v1/workspace_members?select=user_id&status=eq.active' + scoped, owner);
+    const invitations = await request('GET', '/rest/v1/workspace_invitations?select=id&status=eq.pending' + scoped, owner);
+    if (members.status === 200 && members.data?.length === 1 && members.data[0]?.user_id === owner.id
+      && invitations.status === 200 && invitations.data?.length === 0) {
+      await setSeats(row, await subscription(row), 1);
+      evidence.original_one_seat_restored = true;
+    }
+  }
+  await setStatus(row, 'suspended');
   evidence.disposable_workspace_suspended_with_audit_history = true;
 }
 
@@ -130,11 +193,15 @@ export async function checkBusinessReceipt({ accounts, actors, evidence }, key, 
   const claims = await request('GET', '/rest/v1/business_expense_claims?select=id&workspace_id=eq.' + workspace + '&limit=2', owner);
   confirm('WORKSPACE_RECEIPTS_AND_CLAIMS_EMPTY', [documents, claims]
     .every(result => result.status === 200 && Array.isArray(result.data) && result.data.length === 0));
-  const categories = await rpc('save_business_category', owner, {
+  const categories = plan.resume_fixture === true
+    ? await request('GET', '/rest/v1/business_categories?select=id&status=eq.active&name=eq.Synthetic%20audit%20expense' + scoped, owner)
+    : await rpc('save_business_category', owner, {
     p_workspace_id: workspace, p_category_id: null, p_category_type: 'expense', p_name: 'Synthetic audit expense',
     p_code: '', p_description: '', p_colour: '', p_status: 'active', p_expected_version: null
   });
-  const dimensions = await rpc('save_business_dimension', owner, {
+  const dimensions = plan.resume_fixture === true
+    ? await request('GET', '/rest/v1/business_dimensions?select=id&status=eq.active&name=eq.Synthetic%20audit%20team' + scoped, owner)
+    : await rpc('save_business_dimension', owner, {
     p_workspace_id: workspace, p_dimension_id: null, p_dimension_type: 'team', p_name: 'Synthetic audit team',
     p_code: '', p_description: '', p_parent_id: null, p_status: 'active', p_expected_version: null
   });

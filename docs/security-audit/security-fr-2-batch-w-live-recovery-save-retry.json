@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-06",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "LIVE_AU04_05_SCOPED_PASS_WITH_FIXTURE_CLEANUP_PENDING",
+  "workflow_run_url": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42171574114",
+  "workflow_receipt": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+    "result": "RECOVERY_VARIANTS_REVIEW_REQUIRED",
+    "case_ids": [
+      "AU04.05",
+      "AU03.01"
+    ],
+    "run_plan": "2026-11-06-recovery-retry-and-legacy-password",
+    "source_commit": "2250bff91ae67d07bd7e62c619b0a3264ec2b0c4",
+    "workflow_run_id": "42171574114",
+    "workflow_run_attempt": "1",
+    "checks": {
+      "six_accepted_deployed_sources_verified": true,
+      "one_new_confirmed_fixture": true,
+      "all_isolated_contexts_closed": true,
+      "all_existing_account_runner_sessions_scoped_logout": true,
+      "saved_accounts_passwords_and_settings_not_targeted": true
+    },
+    "cases": {
+      "AU04_05": {
+        "status": "SCOPED_PASS",
+        "actual_browser_network_failure_before_server_write": true,
+        "both_password_fields_retained": true,
+        "retry_without_reentering_password": true,
+        "real_password_update_HTTP_status": 200,
+        "correct_account_opened_and_server_verified": true,
+        "new_password_signin_succeeded": true
+      }
+    },
+    "direct_API_requests": 8,
+    "browser_backend_requests": 54,
+    "signup_requests": 1,
+    "recovery_requests": 1,
+    "actual_confirmation_email_requests": 1,
+    "actual_recovery_email_requests": 1,
+    "recovery_request_responses": [
+      {
+        "HTTP_status": 200,
+        "error_code": null,
+        "accepted_by_Auth": true,
+        "rate_limited": false
+      }
+    ],
+    "accepted_recovery_email_requests": 1,
+    "password_updates_forwarded": 1,
+    "password_updates_blocked": 1,
+    "fixture_personal_provision_requests": 0,
+    "legacy_signin_requests": 0,
+    "created_fixture_accounts": 1,
+    "created_sessions": 3,
+    "scoped_logout_acknowledgements": 2,
+    "context_cleanup_count": 2,
+    "global_Auth_policy_changed": false,
+    "saved_account_passwords_changed": false,
+    "finance_or_shared_workspace_writes": false,
+    "production_or_native_changed": false,
+    "service_workers": "blocked_for_interception",
+    "full_lettered_batch_W_complete": false,
+    "owner_deferred_AU03_04_restarted": false,
+    "natural_hour_long_expiry_observed": false,
+    "provider_quota_exhaustion_attempted": false,
+    "exit_code": 1,
+    "problem_code": "EXACT_SYNTHETIC_LEGACY_CREDENTIAL_REQUIRED",
+    "cleanup_problem_code": "EXACT_NEW_FIXTURE_CLEANUP_NOT_VERIFIED",
+    "session_cleanup_method": "own_local_logout_then_guarded_new_fixture_deletion_with_external_SQL_absence_readback",
+    "mailbox_polls": 125
+  },
+  "fixture_cleanup_SQL": "supabase/diagnostics/security_fr_2_5_batch_w_live_retry_fixture_cleanup.sql",
+  "staging_project": "dczlddwbtgvfdujgcitb",
+  "cleanup_preflight_rollback_verified": true,
+  "cleanup_confirmation_status": "expired",
+  "independent_fixture_readback": {
+    "auth_users": 1,
+    "profiles": 1,
+    "personal_workspaces": 1,
+    "sessions": 0,
+    "refresh_tokens": 0,
+    "one_time_tokens": 0
+  },
+  "legacy_compatibility": "OPEN_NO_LEGACY_SIGNIN_ATTEMPTED",
+  "legacy_fixture_guard": "The recovery_sent_at field was null after the successful password reset.",
+  "stable_business_script_version_observed": 24,
+  "staging_upload_performed": false,
+  "staging_upload_blocker": "Automatic approval review blocked inspection of the Google sign-in flow during Cloudflare authentication.",
+  "staging_workflow_read_only_restored": true,
+  "temporary_encrypted_mailbox_removed": true,
+  "full_lettered_batch_W_complete": false,
+  "next_step": "FR.2.5_EXACT_LIVE_RETRY_FIXTURE_CLEANUP_AND_DEPLOYED_BUSINESS_VERIFICATION"
+}

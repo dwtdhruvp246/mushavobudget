@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "date": "2026-11-05",
+  "date": "2026-11-06",
   "phase": "FINAL_REMEDIATION",
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
@@ -9,7 +9,7 @@
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE307",
+  "latest_evidence": "FRE308",
   "batches": [
     {
       "id": "FR.1",
@@ -1755,7 +1755,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "FR.2.5_LIVE_RECOVERY_SAVE_RETRY_AND_DEPLOYED_BUSINESS_VERIFICATION",
+  "next_step": "FR.2.5_EXACT_LIVE_RETRY_FIXTURE_CLEANUP_AND_DEPLOYED_BUSINESS_VERIFICATION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -8205,18 +8205,22 @@
     "ZIP_filename": "mushavo-business-invitation-errors-staging.zip",
     "ZIP_SHA256": "4dbff05c42bb262e5a036f8c95962947e6dedfbbb8b5dc8b5fba5b0b63bc4e3a",
     "exact_accepted_staging_ZIP_rebuilt": true,
-    "deployment_approval_pending": true,
-    "staging_project": "mushavo-budget-staging"
+    "deployment_approval_pending": false,
+    "staging_project": "mushavo-budget-staging",
+    "cloudflare_private_signin_handoff_required": true,
+    "deployed_candidate_verified": false,
+    "observed_staging_business_script_version": 24
   },
   "batch_W_remaining_recovery_preflight": {
-    "status": "LIVE_RETRY_PREPARED_CONNECTED_STAGING_DASHBOARD_REQUIRED",
+    "status": "LIVE_AU04_05_SCOPED_PASS_FIXTURE_CLEANUP_PENDING",
     "receipt": "docs/security-audit/security-fr-2-batch-w-single-fixture-recovery-partial.json",
-    "fixture_accounts_remaining": 0,
+    "fixture_accounts_remaining": 1,
     "accepted_original_cases": [
       "AU04.03",
-      "AU04.04"
+      "AU04.04",
+      "AU04.05"
     ],
-    "pending_original_case": "AU04.05",
+    "pending_original_case": null,
     "real_email_requests": 2,
     "guard_correction_local_PASS": true,
     "guard_correction_browser_scoped_PASS": true,
@@ -8225,7 +8229,13 @@
       "AU04.05"
     ],
     "local_guard_tests": 34,
-    "live_retry_started": false,
-    "cleanup_access_check_required": true
+    "live_retry_started": true,
+    "cleanup_access_check_required": true,
+    "live_retry_receipt": "docs/security-audit/security-fr-2-batch-w-live-recovery-save-retry.json",
+    "fixture_sessions_remaining": 0,
+    "fixture_refresh_tokens_remaining": 0,
+    "new_fixture_cleanup_required": true,
+    "cleanup_sql": "supabase/diagnostics/security_fr_2_5_batch_w_live_retry_fixture_cleanup.sql",
+    "legacy_AU03_01_compatibility": "OPEN_NO_LEGACY_SIGNIN_ATTEMPTED"
   }
 }

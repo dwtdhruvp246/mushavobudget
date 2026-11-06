@@ -65,7 +65,9 @@ test('recovery browser permits only its phase-specific Auth mutations and retain
   assert.equal(recoveryBrowserDecision(API_ORIGIN+'/auth/v1/user','PUT','block-save'),'password-save');
   assert.equal(recoveryBrowserDecision(API_ORIGIN+'/auth/v1/verify','POST','recovery'),'verify-recovery');
   assert.equal(recoveryBrowserDecision(API_ORIGIN+'/auth/v1/recover','POST','live-request'),'recovery-request');
+  assert.equal(recoveryBrowserDecision(API_ORIGIN+'/auth/v1/token?grant_type=password','POST','legacy-sign-in'),'legacy-sign-in');
   for(const [path,method,phase]of [['/auth/v1/user','PUT','idle'],['/auth/v1/signup','POST','recovery'],
+    ['/auth/v1/token?grant_type=password','POST','save'],['/auth/v1/user','PUT','legacy-sign-in'],
     ['/auth/v1/logout?scope=global','POST','save'],['/rest/v1/profiles','PATCH','save'],['/rest/v1/rpc/complete_admin_user_invitation','POST','save']])
     assert.equal(recoveryBrowserDecision(API_ORIGIN+path,method,phase),'refuse');
 });

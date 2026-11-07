@@ -9,6 +9,7 @@ import { checkRecoveryFeedback } from './staging-recovery-feedback.mjs';
 import { checkAdminBoundaries, verifyAdminSources } from './staging-admin-boundaries.mjs';
 import { checkBusinessReceipt, isBusinessReceiptPlan, manageReceiptFixture } from './staging-business-receipt.mjs';
 import { checkDispatcherBoundaries, isDispatcherBoundaryPlan } from './staging-dispatcher-boundaries.mjs';
+import { checkAccountSuspension, isAccountSuspensionPlan } from './staging-account-suspension.mjs';
 
 async function main() {
   let report;
@@ -33,18 +34,21 @@ async function main() {
       && JSON.stringify(plan.case_ids) === JSON.stringify(['V06', 'V07', 'V08', 'V09', 'V11']);
     const businessReceipt = isBusinessReceiptPlan(plan);
     const dispatcherBoundaries = isDispatcherBoundaryPlan(plan);
+    const accountSuspension = isAccountSuspensionPlan(plan);
     need(confirmation || passwordSessions || accountSwitch || recovery || recoverySaveRetry || recoveryFeedback
-      || controlledBrowser || adminBoundaries || businessReceipt || dispatcherBoundaries, 'REVIEWED_RUN_SCOPE_REQUIRED');
+      || controlledBrowser || adminBoundaries || businessReceipt || dispatcherBoundaries || accountSuspension, 'REVIEWED_RUN_SCOPE_REQUIRED');
     if (adminBoundaries) progress = 'Stage 3/10 | FR.2/8 | Batch V/Z';
     if (businessReceipt) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     if (dispatcherBoundaries) progress = 'Stage 3/10 | FR.2/8 | Batch Y/Z';
+    if (accountSuspension) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     need(process.env.GITHUB_REPOSITORY === 'dwtdhruvp246/mushavobudget'
       && process.env.GITHUB_REF === 'refs/heads/security/stage-3-authorization', 'STAGING_BRANCH_RUN_REQUIRED');
     const fixtureAction = process.env.MUSHAVO_STAGING_RECEIPT_ADMIN_ACTION || null;
     need(!fixtureAction || businessReceipt && ['provision', 'suspend'].includes(fixtureAction), 'REVIEWED_FIXTURE_ACTION_REQUIRED');
     if (businessReceipt) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'BUSINESS_FIXTURE_RERUN_REFUSED');
     if (dispatcherBoundaries) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'DISPATCHER_BOUNDARY_RERUN_REFUSED');
-    const chromium = businessReceipt || dispatcherBoundaries ? null
+    if (accountSuspension) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'ACCOUNT_SUSPENSION_RERUN_REFUSED');
+    const chromium = businessReceipt || dispatcherBoundaries || accountSuspension ? null
       : (await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs')).chromium;
     if (controlledBrowser) {
       const { checkControlledBrowser } = await import('./staging-controlled-browser.mjs');
@@ -80,6 +84,12 @@ async function main() {
         args => checkDispatcherBoundaries(args, config.key, agent), { accountScope });
       delete report.full_lettered_batch_W_complete;
       report.full_lettered_batch_Y_complete = false;
+    } else if (accountSuspension) {
+      report = await checkStagingAccess(accounts, apiTransport(config.key, agent),
+        args => checkAccountSuspension(args, config.key, agent), { accountScope });
+      delete report.full_lettered_batch_W_complete;
+      delete report.settings_or_finance_writes_requested;
+      report.full_lettered_batch_X_complete = false;
     } else if (adminBoundaries) {
       const sourceEvidence = {};
       await verifyAdminSources(sourceEvidence);

@@ -1,17 +1,17 @@
 {
-  "enabled": false,
-  "run_id": "2026-11-07-batch-y-dispatcher-boundaries",
-  "scope": "dispatcher-boundaries",
+  "enabled": true,
+  "run_id": "2026-11-07-batch-x-account-suspension",
+  "scope": "account-suspension-boundaries",
   "project": "dczlddwbtgvfdujgcitb",
-  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "target_slot": "USER_A",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
   "case_ids": [
-    "Y_EDGE_METHOD",
-    "Y_EDGE_NO_SECRET",
-    "Y_EDGE_WRONG_SECRET",
-    "Y_EDGE_HUMAN_CALLER"
+    "X_ACCOUNT_NONADMIN_DENIAL",
+    "X_ACCOUNT_EXISTING_SESSION_SUSPENDED",
+    "X_ACCOUNT_OTHER_ACTORS_UNAFFECTED",
+    "X_ACCOUNT_SUPPORTED_RESTORE"
   ],
-  "source_parent_commit": "cd52c1dd61162cb8dc08b699b8f715be963cd21d",
-  "deployed_source_commit": "d744dea1bf7263dea8ff5c31765a968d411e5a84",
-  "completed_after_workflow_run": "42352472602",
-  "completion_receipt": "docs/security-audit/security-fr-2-batch-y-dispatcher-staging-result.json"
+  "source_parent_commit": "408ed1b2fa1fef96aa014a8f342c9ab4e8076862",
+  "plan_path": "docs/security-audit/security-fr-2-batch-x-account-suspension-plan.json",
+  "no_automatic_rerun": true
 }

@@ -195,5 +195,7 @@
     "password_or_auth_user_changes_performed": false
   },
   "additional_independent_backend_overlap_receipt": "docs/security-audit/security-fr-2-batch-y-independent-queue-overlap-result.json",
-  "additional_three_ordinary_team_receipt": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json"
+  "additional_three_ordinary_team_receipt": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json",
+  "additional_private_file_cache_receipt": "docs/security-audit/security-fr-2-batch-x-private-file-cache-staging-result.json",
+  "private_file_cache_comparison": "SCOPED_SIGNED_URL_EXPIRY_AND_SUPPORTED_CACHE_SETTINGS_PASS_ORIGINAL_MEMBERSHIP_REVOCATION_FOLLOWUP_OPEN"
 }

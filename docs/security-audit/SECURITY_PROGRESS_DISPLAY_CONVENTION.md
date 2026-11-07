@@ -24,7 +24,7 @@ Current display synchronized on 7 November 2026 (FRE320). The dated October bloc
 
 These labels identify the current point and plan endpoint, not completed counts or percentages. The roadmap includes Stage 0. The fixed U–Z baseline is preserved; the current remaining-required ledger contains V, X, Y and Z (four packages). W is complete at the owner-agreed active scope, with its deferred variant recorded explicitly.
 
-The latest completed action is the scoped Family proof upload/fresh-access recheck: 22 live assertions, exit 0 (FRE319), with cached-copy access carried forward. The next third-ordinary-actor setup is STOPPED FOR REVIEW because the Browser runtime did not return a connection. Neither action changes the overall IN PROGRESS status of Batch X, FR.2 or Stage 3.
+The third ordinary credential is now verified. The real three-actor Business permission/removal scope passed 42 live assertions (exit 0), including existing-session revocation after manager removal. The subsequent private-file cache comparison passed 21 live assertions (exit 0): warmed and unused signed links were denied after expiry for both requested upload cache settings. The earlier warmed authenticated original URL after Family removal remains open. Remaining work includes the installed backend caller/authorization-change reconciliation and integrated Batch Z. [Current checkpoint](SECURITY_FR_2_RESUME_CHECKPOINT_20261107.md), [team receipt](security-fr-2-batch-x-three-ordinary-team-staging-result.json), [cache receipt](security-fr-2-batch-x-private-file-cache-staging-result.json). Batch X, FR.2 and Stage 3 remain IN PROGRESS.
 
 ## Execution agreement now in force
 

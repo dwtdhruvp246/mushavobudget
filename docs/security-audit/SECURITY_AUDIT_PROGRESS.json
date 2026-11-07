@@ -7213,18 +7213,26 @@
         }
       ],
       "latest_completed_action": {
-        "title": "Family proof uploads and fresh-access authorization",
+        "title": "Private-file signed URL expiry and cache-setting comparison",
         "status": "COMPLETE",
-        "scope": "Recorded scoped live checks; cached-copy access remains open for file-delivery follow-up.",
-        "selected_live_assertions": 22,
+        "scope": "Two harmless Personal files; warmed and unused signed URLs denied after expiry. Original Family membership-removal cached-copy finding remains open.",
+        "selected_live_assertions": 21,
+        "workflow_guard_tests": 84,
         "exit_code": 0,
-        "evidence": "FRE319"
+        "evidence": "docs/security-audit/security-fr-2-batch-x-private-file-cache-staging-result.json",
+        "previous_completed_action": {
+          "title": "Three ordinary Business actors, manager removal and existing-session revocation",
+          "selected_live_assertions": 42,
+          "exit_code": 0,
+          "evidence": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json"
+        }
       },
       "next_required_action": {
-        "title": "Third ordinary Business test identity",
-        "status": "STOPPED_FOR_REVIEW",
-        "reason": "Browser runtime did not return a connection; no third account was created.",
-        "receipt": "docs/security-audit/security-fr-2-third-actor-browser-block.json"
+        "title": "Remaining installed backend caller and authorization-change coverage",
+        "status": "PENDING",
+        "scope": "Reconcile original finite Batch Y cases and existing passes before selecting affected live tests. Cached-original-file serving contract and integrated Batch Z remain open.",
+        "third_ordinary_credentials_required": false,
+        "checkpoint": "docs/security-audit/SECURITY_FR_2_RESUME_CHECKPOINT_20261107.md"
       },
       "updated_date": "2026-11-07"
     },

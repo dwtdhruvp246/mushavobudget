@@ -39,12 +39,28 @@
     "new_signing_denied": true
   },
   "meaning": "The previously authorized 68-byte immutable test file remained available at the warmed URL with CF cache HIT. A cacheNonce request was denied and the removed member could not obtain a new signature. This proves fresh authorization denial, not immediate withdrawal of an already-cached copy.",
-  "next_scope": "Boundedly compare warm and cold signed URL expiry and supported cache settings with harmless Personal proof files; no new Family or modeled Auth session is needed.",
+  "next_scope": "Reconcile the original warmed authenticated URL membership-removal behavior with a concrete current-policy serving contract; freeze affected cases before changing delivery. The finite warm/cold signed expiry comparison is complete and must not be rerun without a new reason.",
   "acceptance_limit": "Do not claim that cache:no-store, private/no-cache headers, a browser TTL reduction or short signed token expiry by themselves guarantee immediate revocation. Verify current provider behavior before a stronger serving contract.",
   "references": [
     "https://supabase.com/kb/troubleshooting/storage-private-bucket-files-still-accessible-after-remove-access-or-logout",
     "https://supabase.com/docs/guides/storage/cdn/smart-cdn"
   ],
   "public_policy_or_file_delivery_runtime_changed": false,
-  "findings_closed": []
+  "findings_closed": [],
+  "completed_followup": {
+    "evidence": "docs/security-audit/security-fr-2-batch-x-private-file-cache-staging-result.json",
+    "source_commit": "ebefa905c7ae0eabbf39bae3a6cdd5f2f3afe541",
+    "workflow_run_id": "42403720180",
+    "selected_HTTP_assertions": 21,
+    "exit_code": 0,
+    "requested_upload_cache_control_seconds": [
+      0,
+      60
+    ],
+    "warm_and_cold_signed_URLs_denied_after_expiry_in_this_run": true,
+    "expired_signed_cached_copy_observed": false,
+    "original_Family_membership_removal_retested": false,
+    "immediate_revocation_established": false,
+    "cache_policy_or_runtime_changed": false
+  }
 }

@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "result": "PRIVATE_PERSONAL_SIGNED_URL_EXPIRY_AND_SUPPORTED_CACHE_SETTINGS_OBSERVED_SCOPED_PASS",
+  "source_commit": "ebefa905c7ae0eabbf39bae3a6cdd5f2f3afe541",
+  "workflow_run_id": "42403720180",
+  "workflow_job_id": "128496817336",
+  "workflow_guard_tests": 84,
+  "selected_HTTP_assertions": 21,
+  "hosted_report": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "two_ordinary_credentials_and_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 12,
+    "created_sessions": 2,
+    "cleanup_sessions": 2,
+    "production_changed": false,
+    "exit_code": 0,
+    "exercise": {
+      "checks": {
+        "UPLOAD_CACHE_0_ACCEPTED": true,
+        "OWNER_ORIGINAL_CACHE_0_MATCHES": true,
+        "WARM_SIGNED_CACHE_0_MATCHES_BEFORE_EXPIRY": true,
+        "UPLOAD_CACHE_60_ACCEPTED": true,
+        "OWNER_ORIGINAL_CACHE_60_MATCHES": true,
+        "WARM_SIGNED_CACHE_60_MATCHES_BEFORE_EXPIRY": true,
+        "FOREIGN_ORIGINAL_DENIED": true,
+        "FOREIGN_SIGNING_DENIED": true,
+        "ANONYMOUS_ORIGINAL_DENIED": true,
+        "ANONYMOUS_SIGNING_DENIED": true,
+        "ALL_TEST_SIGNED_TOKENS_EXPIRED": true,
+        "COLD_SIGNED_CACHE_0_DENIED_AFTER_EXPIRY": true,
+        "NONCE_WARM_SIGNED_CACHE_0_OUTCOME_RECORDED": true,
+        "WARM_SIGNED_CACHE_0_OUTCOME_RECORDED": true,
+        "OWNER_ORIGINAL_CACHE_0_STILL_EXISTS": true,
+        "COLD_SIGNED_CACHE_60_DENIED_AFTER_EXPIRY": true,
+        "NONCE_WARM_SIGNED_CACHE_60_OUTCOME_RECORDED": true,
+        "WARM_SIGNED_CACHE_60_OUTCOME_RECORDED": true,
+        "OWNER_ORIGINAL_CACHE_60_STILL_EXISTS": true,
+        "EXACT_PERSONAL_TEST_OBJECT_DELETE_ACKNOWLEDGED": true,
+        "ALL_ATTEMPTED_PERSONAL_OBJECTS_FRESHLY_ABSENT": true
+      },
+      "exercise_requests": 25,
+      "upload_attempts": 2,
+      "cleanup_paths": [
+        "personal/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/audit-cache-25a13d40-6024-4529-9d74-63f8144b80d2-0.png",
+        "personal/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/audit-cache-25a13d40-6024-4529-9d74-63f8144b80d2-60.png"
+      ],
+      "Storage_cleanup_verified": true,
+      "email_requests": 0,
+      "provider_payment_requests": 0,
+      "finance_writes": 0,
+      "browser_cache_tested": false,
+      "membership_revocation_tested": false,
+      "CDN_purge_requested": false,
+      "cached_copy_immediate_revocation_claimed": false,
+      "observations": [
+        {
+          "requested_upload_cache_control_seconds": 0,
+          "original_before": {
+            "status": 200,
+            "cache_headers": {
+              "cache-control": "private, max-age=0, must-revalidate",
+              "cf-cache-status": "MISS",
+              "vary": "Authorization, apikey",
+              "content-type": "image/png"
+            },
+            "bytes": 68,
+            "harmless_fixture_matches": true
+          },
+          "warm_before": {
+            "status": 200,
+            "cache_headers": {
+              "cf-cache-status": "MISS",
+              "content-type": "image/png"
+            },
+            "bytes": 68,
+            "harmless_fixture_matches": true
+          },
+          "cold_after_expiry": {
+            "status": 400,
+            "cache_headers": {
+              "cache-control": "private, no-cache",
+              "cf-cache-status": "DYNAMIC",
+              "content-type": "application/json; charset=utf-8"
+            },
+            "Storage_error": "InvalidJWT",
+            "token_expired_response": true,
+            "Storage_status_code": 400
+          },
+          "warm_after_expiry": {
+            "status": 400,
+            "cache_headers": {
+              "cache-control": "private, no-cache",
+              "cf-cache-status": "DYNAMIC",
+              "content-type": "application/json; charset=utf-8"
+            },
+            "Storage_error": "InvalidJWT",
+            "token_expired_response": true,
+            "Storage_status_code": 400
+          },
+          "fresh_warm_after_expiry": {
+            "status": 400,
+            "cache_headers": {
+              "cache-control": "private, no-cache",
+              "cf-cache-status": "DYNAMIC",
+              "content-type": "application/json; charset=utf-8"
+            },
+            "Storage_error": "InvalidJWT",
+            "token_expired_response": true,
+            "Storage_status_code": 400
+          },
+          "owner_original_after_signed_expiry": {
+            "status": 200,
+            "cache_headers": {
+              "cache-control": "private, max-age=0, must-revalidate",
+              "cf-cache-status": "HIT",
+              "vary": "Authorization, apikey",
+              "content-type": "image/png"
+            },
+            "bytes": 68,
+            "harmless_fixture_matches": true
+          },
+          "expired_warm_copy_observed": false,
+          "nonce_copy_after_expiry_observed": false
+        },
+        {
+          "requested_upload_cache_control_seconds": 60,
+          "original_before": {
+            "status": 200,
+            "cache_headers": {
+              "cache-control": "private, max-age=60, must-revalidate",
+              "cf-cache-status": "MISS",
+              "vary": "Authorization, apikey",
+              "content-type": "image/png"
+            },
+            "bytes": 68,
+            "harmless_fixture_matches": true
+          },
+          "warm_before": {
+            "status": 200,
+            "cache_headers": {
+              "cf-cache-status": "MISS",
+              "content-type": "image/png"
+            },
+            "bytes": 68,
+            "harmless_fixture_matches": true
+          },
+          "cold_after_expiry": {
+            "status": 400,
+            "cache_headers": {
+              "cache-control": "private, no-cache",
+              "cf-cache-status": "DYNAMIC",
+              "content-type": "application/json; charset=utf-8"
+            },
+            "Storage_error": "InvalidJWT",
+            "token_expired_response": true,
+            "Storage_status_code": 400
+          },
+          "warm_after_expiry": {
+            "status": 400,
+            "cache_headers": {
+              "cache-control": "private, no-cache",
+              "cf-cache-status": "DYNAMIC",
+              "content-type": "application/json; charset=utf-8"
+            },
+            "Storage_error": "InvalidJWT",
+            "token_expired_response": true,
+            "Storage_status_code": 400
+          },
+          "fresh_warm_after_expiry": {
+            "status": 400,
+            "cache_headers": {
+              "cache-control": "private, no-cache",
+              "cf-cache-status": "DYNAMIC",
+              "content-type": "application/json; charset=utf-8"
+            },
+            "Storage_error": "InvalidJWT",
+            "token_expired_response": true,
+            "Storage_status_code": 400
+          },
+          "owner_original_after_signed_expiry": {
+            "status": 200,
+            "cache_headers": {
+              "cache-control": "private, max-age=60, must-revalidate",
+              "cf-cache-status": "HIT",
+              "vary": "Authorization, apikey",
+              "content-type": "image/png"
+            },
+            "bytes": 68,
+            "harmless_fixture_matches": true
+          },
+          "expired_warm_copy_observed": false,
+          "nonce_copy_after_expiry_observed": false
+        }
+      ],
+      "expired_signed_warm_copies_observed": false,
+      "result_scope": "MEASURED_PROVIDER_CACHE_BEHAVIOR_NOT_IMMEDIATE_REVOCATION_ACCEPTANCE"
+    },
+    "full_lettered_batch_X_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-07-batch-x-private-file-cache-expiry-classifier",
+    "source_commit": "ebefa905c7ae0eabbf39bae3a6cdd5f2f3afe541",
+    "workflow_run_id": "42403720180",
+    "workflow_run_attempt": "1"
+  },
+  "independent_readback": {
+    "checked_at": "2026-11-07T18:57:22.186671+00:00",
+    "admin_queue": 0,
+    "normal_queue": 0,
+    "test_objects": 0,
+    "catalog_matches": true,
+    "runner_sessions": 0,
+    "business_fixture": {
+      "seats": 1,
+      "status": "suspended",
+      "paid_through_at": "2026-11-08T00:00:00+00:00",
+      "support_version": 16,
+      "subscription_version": 15
+    }
+  },
+  "initial_review": "docs/security-audit/security-fr-2-batch-x-private-file-cache-initial-review.json",
+  "initial_exit_code": 1,
+  "initial_classifier_limit": "The initial runner did not recognize the hosted InvalidJWT exp-claim expiry message. Its receipt omitted the exact error; the revised runner preserves a whitelisted error name and expiry boolean. No unknown initial message is retrospectively credited.",
+  "initial_sessions_created": 2,
+  "initial_sessions_logged_out": 2,
+  "successful_sessions_created": 2,
+  "successful_sessions_logged_out": 2,
+  "all_created_sessions_remaining": 0,
+  "all_generated_test_objects_remaining": 0,
+  "observations": {
+    "requested_upload_cache_control_seconds": [
+      0,
+      60
+    ],
+    "warm_signed_links_denied_after_expiry_for_both_settings": true,
+    "unused_signed_links_denied_after_expiry_for_both_settings": true,
+    "expired_signed_cached_copy_observed": false,
+    "same_signed_link_with_cacheNonce_after_expiry_denied": true,
+    "browser_cache_tested": false,
+    "Family_membership_revocation_tested": false,
+    "original_Family_warmed_authenticated_URL_removal_finding_still_open": true,
+    "CDN_purge_requested": false,
+    "cache_policies_or_runtime_changed": false
+  },
+  "source_documentation": [
+    "https://supabase.com/docs/guides/storage/cdn/smart-cdn",
+    "https://supabase.com/docs/guides/storage/cdn/purge-cdn-cache"
+  ],
+  "acceptance_limit": "These two harmless Personal files and this staging edge denied warmed and cold signed links after expiry. This does not establish immediate revocation of a previously authorized Family original URL, cached bytes, browser copies or all provider edges.",
+  "email_requests": 0,
+  "provider_payment_requests": 0,
+  "finance_writes": 0,
+  "production_changed": false,
+  "full_batch_X_complete": false,
+  "stage_3_complete": false,
+  "findings_closed": [],
+  "exit_code": 0
+}

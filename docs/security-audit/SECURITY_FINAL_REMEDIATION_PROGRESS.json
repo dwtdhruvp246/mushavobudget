@@ -1716,7 +1716,7 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "PRIVATE_FILE_CACHE_EXPIRY_MEASUREMENT_AND_REMAINING_X_Y_Z",
+      "next_step": "BATCH_X_THIRD_ORDINARY_ACTOR_AND_REMAINING_ENTITLEMENT_ACCEPTANCE",
       "latest_evidence": "FRE319"
     },
     {
@@ -1767,7 +1767,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "PRIVATE_FILE_CACHE_EXPIRY_MEASUREMENT_AND_REMAINING_X_Y_Z",
+  "next_step": "BATCH_X_THIRD_ORDINARY_ACTOR_AND_REMAINING_ENTITLEMENT_ACCEPTANCE",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -8368,6 +8368,7 @@
       "X",
       "Y",
       "Z"
-    ]
+    ],
+    "next_action": "Resume the existing unfinished Batch X acceptance. Retain cached-file behavior under its existing file-delivery follow-up; no new stage, letter or speculative case is introduced."
   }
 }

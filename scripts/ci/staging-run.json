@@ -1,23 +1,60 @@
 {
-  "enabled": false,
-  "run_id": "2026-11-07-batch-y-send-authorization-deployed-boundaries",
-  "scope": "dispatcher-boundaries",
+  "schema_version": 1,
+  "date": "2026-11-07",
   "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "status": "FROZEN_BEFORE_SUPPORTED_STATUS_WRITES",
+  "source_parent_commit": "30f714c75c0fa6e8659fea8ad904534482dce2cb",
+  "scope": "postgres-authorization-change",
+  "workspace_id": "dcf3d122-e99f-4fe5-bbd1-03c3547629df",
+  "fixture_name": "audit-batch-x-receipt-d7be160c2026",
+  "expected_support_version": 16,
+  "expected_subscription_version": 15,
+  "hold_before_revoke_ms": 35000,
+  "hold_after_revoke_ms": 20000,
+  "original_paid_through_at": "2026-11-08T00:00:00.000Z",
   "case_ids": [
-    "Y_EDGE_METHOD",
-    "Y_EDGE_NO_SECRET",
-    "Y_EDGE_WRONG_SECRET",
-    "Y_EDGE_HUMAN_CALLER"
+    "Y_RACE_REAL_SESSION_BASELINE",
+    "Y_RACE_SHARED_WORKSPACE_HOLD",
+    "Y_RACE_COMMITTED_SUSPENSION",
+    "Y_RACE_SAME_SESSION_DENIAL",
+    "Y_RACE_EXACT_CLEANUP"
   ],
-  "source_parent_commit": "59772c5dc3dfe7befed3f3a8007e73b70e2ef16f",
-  "plan_path": "docs/security-audit/security-fr-2-batch-y-send-authorization-plan.json",
-  "no_automatic_rerun": true,
-  "phase": "POSTDEPLOYMENT_DENIALS_ONLY",
-  "deployed_function_versions": {
-    "dispatch-push-reminders": 2,
-    "dispatch-admin-notifications": 2
+  "witness": {
+    "diagnostic": "supabase/diagnostics/security_fr_2_6_authorization_change_witness.sql",
+    "transaction": "READ_COMMITTED_READ_ONLY",
+    "hold_seconds": 40,
+    "uses_existing_real_owner_session": true,
+    "JWT_claims": "MODELED_IN_SQL_WITH_REAL_SESSION_ID_AND_CONSERVATIVE_EXPIRY",
+    "JWT_signature_validation_in_SQL": false,
+    "mutating_connection": "GENUINE_ADMIN_HTTP_CALL_IN_GITHUB_ACTION",
+    "assertions": [
+      "business permission true at active support version17",
+      "same open database transaction observes committed suspended version18",
+      "same real ordinary session remains valid",
+      "same session Business permission false",
+      "unchanged subscription version15 one seat original paid-through"
+    ]
   },
-  "result_path": "docs/security-audit/security-fr-2-batch-y-send-authorization-staging-result.json",
-  "completed_workflow_run_id": "42413734552",
-  "exit_code": 0
+  "bounds": {
+    "status_RPCS": 2,
+    "new_Auth_accounts": 0,
+    "new_session_row_writes": 0,
+    "login_sessions": 3,
+    "public_or_exercise_API_requests_at_most": 36,
+    "exercise_API_requests_including_cleanup_at_most": 48,
+    "financial_or_role_or_subscription_writes": 0,
+    "email_or_push_or_provider_requests": 0,
+    "production_changes": 0
+  },
+  "failure_cleanup": "Read exact fixture and version before any compensation. Restore suspended only if the exact owned fixture is active; never replay uncertain activation. All runner-created sessions are locally logged out in the existing access wrapper.",
+  "preserved_state": "The isolated fixture ends suspended at support18; subscription15, seat1 and original term are unchanged. Two supported synthetic status/audit/history entries may remain.",
+  "readiness_poll_limit": 30,
+  "readiness_poll_interval_ms": 2000,
+  "full_batch_Y_complete": false,
+  "stage_3_complete": false,
+  "enabled": true,
+  "run_id": "2026-11-07-batch-y-real-session-postgres-authorization-change",
+  "plan_path": "docs/security-audit/security-fr-2-batch-y-authorization-change-plan.json",
+  "no_automatic_rerun": true
 }

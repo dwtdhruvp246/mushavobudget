@@ -5,11 +5,11 @@
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
   "active_step": "FR.2.6",
-  "source_parent_commit": "c8344cd5a85e684ca028b77d830cfab7e1f19edd",
+  "source_parent_commit": "611761d71635b5c6ed398fdc58f54c9a6f59feab",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE313",
+  "latest_evidence": "FRE315",
   "batches": [
     {
       "id": "FR.1",
@@ -1701,7 +1701,9 @@
           "backend_receipt": "docs/security-audit/security-fr-2-batch-y-backend-caller-and-lease-staging-result.json",
           "archive_scope_receipt": "docs/security-audit/security-fr-2-batch-x-document-archive-scope-staging-result.json",
           "dispatcher_receipt": "docs/security-audit/security-fr-2-batch-y-dispatcher-staging-result.json",
-          "remaining_X_coverage_ledger": "docs/security-audit/security-fr-2-batch-x-remaining-coverage-ledger.json"
+          "remaining_X_coverage_ledger": "docs/security-audit/security-fr-2-batch-x-remaining-coverage-ledger.json",
+          "account_suspension_receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json",
+          "real_queue_overlap_receipt": "docs/security-audit/security-fr-2-batch-y-real-queue-overlap-result.json"
         }
       ],
       "readiness_handoff": "docs/security-audit/SECURITY_FR_2_1_READINESS_HANDOFF.md",
@@ -1712,8 +1714,8 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "BATCH_Y_BACKEND_CONCURRENCY_AND_X_REMAINING_REAL_SESSION_FLOWS",
-      "latest_evidence": "FRE313"
+      "next_step": "BATCH_X_REMAINING_FINANCE_AND_ENTITLEMENT_HTTP_FLOWS_Y_INDEPENDENT_OVERLAP_CONNECTION",
+      "latest_evidence": "FRE315"
     },
     {
       "id": "FR.3",
@@ -1763,7 +1765,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "BATCH_Y_BACKEND_CONCURRENCY_AND_X_REMAINING_REAL_SESSION_FLOWS",
+  "next_step": "BATCH_X_REMAINING_FINANCE_AND_ENTITLEMENT_HTTP_FLOWS_Y_INDEPENDENT_OVERLAP_CONNECTION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -8300,5 +8302,18 @@
     "ordinary_and_anonymous_HTTP_checks": 10,
     "provider_push_requests": 0
   },
-  "batch_X_remaining_coverage_ledger": "docs/security-audit/security-fr-2-batch-x-remaining-coverage-ledger.json"
+  "batch_X_remaining_coverage_ledger": "docs/security-audit/security-fr-2-batch-x-remaining-coverage-ledger.json",
+  "batch_X_account_suspension": {
+    "status": "REAL_SESSION_ACCOUNT_SUSPENSION_AND_SUPPORTED_RESTORE_SCOPED_PASS",
+    "receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json",
+    "selected_HTTP_assertions": 20,
+    "account_restored": true,
+    "test_sessions_remaining": 0
+  },
+  "batch_Y_real_queue_overlap": {
+    "status": "REAL_WORKER_OVERLAP_NOT_OBSERVED",
+    "receipt": "docs/security-audit/security-fr-2-batch-y-real-queue-overlap-result.json",
+    "fixture_removed": true,
+    "repeat_serialized_attempt": false
+  }
 }

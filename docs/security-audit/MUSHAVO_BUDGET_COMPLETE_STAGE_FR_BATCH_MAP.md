@@ -1,5 +1,5 @@
 # Mushavo Budget — complete stages, FR groups and batches
-As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.15
+As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.16
 
 ## Read this structure correctly
 
@@ -12,6 +12,10 @@ As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.15
 Both queues now reject stale worker completions on staging. All 24 selected database-role denial calls passed, and both service-role queue lifecycle checks rolled back cleanly. Both paired dispatchers are now deployed on staging. Ten public/ordinary-session HTTP denial checks passed; all test sessions were closed, the queues remain empty and no scheduler was added. Full scheduler/provider delivery remains later operations work. [Deployment evidence](security-fr-2-batch-y-dispatcher-staging-result.json). [Backend evidence](security-fr-2-batch-y-backend-caller-and-lease-staging-result.json).
 
 Nineteen staging database checks passed with modeled claims. Twenty genuine hosted receipt/request checks passed, including upload, original and signed download, removed-member denial and two concurrent requests retaining one draft. An archived-file deletion defect was corrected on staging and verified through the real Storage API. Independent readback confirms zero test files and CI sessions; one synthetic workspace is suspended with its grant/audit history retained. [Hosted evidence](security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json) and [database/preflight evidence](security-fr-2-batch-x-staging-database-and-receipt-readiness.json).
+
+Twenty genuine account-suspension HTTP assertions passed. The existing ordinary session lost application access immediately, a protected mutation was rejected before lookup, other accounts retained access, and the normal Admin restoration recovered the same session and workspace snapshot. The account is active and all six sessions across the initial acknowledgement review and completed run are absent. [Suspension evidence](security-fr-2-batch-x-account-suspension-staging-result.json).
+
+The real queue-overlap attempt did not establish concurrency: the connection serialized the requests. Its sole synthetic queue item was removed and both queues remain empty. This is an open independent-connection acceptance case, with no product defect inferred. [Overlap receipt](security-fr-2-batch-y-real-queue-overlap-result.json).
 
 There are three overlapping views of the SAME project:
 - **Main Stages 0–10** describe the product/security areas.

@@ -38,8 +38,11 @@
     {
       "original": "B07 Suspended account and expired entitlement acceptance",
       "original_state": "BLOCKED_ISOLATED_STATE_FIXTURES_NOT_PREPARED",
-      "current_state": "SCOPED_POSTGRES_PASS_REAL_SESSION_VARIANTS_OPEN",
-      "evidence": "docs/security-audit/security-fr-2-batch-x-staging-database-and-receipt-readiness.json"
+      "current_state": "SCOPED_POSTGRES_AND_REAL_SESSION_ACCOUNT_SUSPENSION_PASS_EXPIRED_ENTITLEMENT_HTTP_OPEN",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-x-staging-database-and-receipt-readiness.json",
+        "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json"
+      ]
     }
   ],
   "additional_document_archive_scope": "docs/security-audit/security-fr-2-batch-x-document-archive-scope-staging-result.json",
@@ -167,5 +170,6 @@
   "historical_conversion_deletion_or_FK_validation_performed": false,
   "full_lettered_batch_X_complete": false,
   "stage_3_complete": false,
-  "findings_closed": []
+  "findings_closed": [],
+  "additional_account_suspension_receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json"
 }

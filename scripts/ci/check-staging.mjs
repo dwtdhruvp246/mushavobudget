@@ -11,6 +11,7 @@ import { checkBusinessReceipt, isBusinessReceiptPlan, manageReceiptFixture } fro
 import { checkDispatcherBoundaries, isDispatcherBoundaryPlan } from './staging-dispatcher-boundaries.mjs';
 import { checkAccountSuspension, isAccountSuspensionPlan } from './staging-account-suspension.mjs';
 import { checkBusinessFinance, isBusinessFinancePlan } from './staging-business-finance.mjs';
+import { checkFamilyProof, isFamilyProofPlan } from './staging-family-proof.mjs';
 
 async function main() {
   let report;
@@ -37,13 +38,15 @@ async function main() {
     const dispatcherBoundaries = isDispatcherBoundaryPlan(plan);
     const accountSuspension = isAccountSuspensionPlan(plan);
     const businessFinance = isBusinessFinancePlan(plan);
+    const familyProof = isFamilyProofPlan(plan);
     need(confirmation || passwordSessions || accountSwitch || recovery || recoverySaveRetry || recoveryFeedback
-      || controlledBrowser || adminBoundaries || businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance, 'REVIEWED_RUN_SCOPE_REQUIRED');
+      || controlledBrowser || adminBoundaries || businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof, 'REVIEWED_RUN_SCOPE_REQUIRED');
     if (adminBoundaries) progress = 'Stage 3/10 | FR.2/8 | Batch V/Z';
     if (businessReceipt) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     if (dispatcherBoundaries) progress = 'Stage 3/10 | FR.2/8 | Batch Y/Z';
     if (accountSuspension) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     if (businessFinance) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
+    if (familyProof) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     need(process.env.GITHUB_REPOSITORY === 'dwtdhruvp246/mushavobudget'
       && process.env.GITHUB_REF === 'refs/heads/security/stage-3-authorization', 'STAGING_BRANCH_RUN_REQUIRED');
     const fixtureAction = process.env.MUSHAVO_STAGING_RECEIPT_ADMIN_ACTION || null;
@@ -52,7 +55,8 @@ async function main() {
     if (dispatcherBoundaries) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'DISPATCHER_BOUNDARY_RERUN_REFUSED');
     if (accountSuspension) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'ACCOUNT_SUSPENSION_RERUN_REFUSED');
     if (businessFinance) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'BUSINESS_FINANCE_RERUN_REFUSED');
-    const chromium = businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance ? null
+    if (familyProof) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'FAMILY_PROOF_RERUN_REFUSED');
+    const chromium = businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof ? null
       : (await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs')).chromium;
     if (controlledBrowser) {
       const { checkControlledBrowser } = await import('./staging-controlled-browser.mjs');
@@ -97,6 +101,12 @@ async function main() {
     } else if (businessFinance) {
       report = await checkStagingAccess(accounts, apiTransport(config.key, agent),
         args => checkBusinessFinance(args, config.key, agent, plan), { accountScope });
+      delete report.full_lettered_batch_W_complete;
+      delete report.settings_or_finance_writes_requested;
+      report.full_lettered_batch_X_complete = false;
+    } else if (familyProof) {
+      report = await checkStagingAccess(accounts, apiTransport(config.key, agent),
+        args => checkFamilyProof(args, config.key, agent, plan), { accountScope });
       delete report.full_lettered_batch_W_complete;
       delete report.settings_or_finance_writes_requested;
       report.full_lettered_batch_X_complete = false;

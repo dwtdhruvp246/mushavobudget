@@ -142,12 +142,13 @@ export async function checkStagingAccess(accounts, transport, exercise = async (
       const workspaces = await call('GET', `/rest/v1/budget_workspaces?select=id,owner_id,workspace_type,status&owner_id=eq.${user.id}&limit=21`, token);
       need(workspaces.status === 200 && Array.isArray(workspaces.data) && workspaces.data.length <= 20
         && workspaces.data.every(row => UUID.test(row.id || '') && row.owner_id === user.id
-          && ['personal', 'family', 'business'].includes(row.workspace_type)), `OWN_WORKSPACE_READ_REQUIRED_${slot}`);
+          && ['personal', 'family', 'household', 'business'].includes(row.workspace_type)), `OWN_WORKSPACE_READ_REQUIRED_${slot}`);
       need(slot === 'ADMIN' || workspaces.data.some(row => row.workspace_type === 'personal'), `PERSONAL_WORKSPACE_REQUIRED_${slot}`);
       actors[slot] = { id: user.id, token, session: login.data };
       report.accounts[slot] = { signin_HTTP_status: 200, confirmed_identity: true, active_profile: true,
         expected_platform_role: true, owned_workspace_counts: Object.fromEntries(['personal', 'family', 'business']
-          .map(type => [type, workspaces.data.filter(row => row.workspace_type === type).length])) };
+          .map(type => [type, workspaces.data.filter(row => type === 'family'
+            ? ['family', 'household'].includes(row.workspace_type) : row.workspace_type === type).length])) };
     }
     const verifiedActors = {
       standard: 'three_private_credentials_and_expected_roles_verified',

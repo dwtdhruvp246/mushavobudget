@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "run_id": "2026-11-07-batch-x-family-proof-path-binding",
   "scope": "family-proof-path-binding",
   "project": "dczlddwbtgvfdujgcitb",
@@ -13,5 +13,7 @@
   ],
   "source_parent_commit": "b99c9e7daafd48b493a0b143aced47e554ce8bcf",
   "plan_path": "docs/security-audit/security-fr-2-batch-x-family-proof-hosted-plan.json",
-  "no_automatic_rerun": true
+  "no_automatic_rerun": true,
+  "completed_after_workflow_run": "42373564899",
+  "completion_receipt": "docs/security-audit/security-fr-2-batch-x-family-proof-initial-hosted-review.json"
 }

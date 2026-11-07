@@ -9,7 +9,7 @@ const actors = { USER_A: actor('1'), USER_B: actor('2'), ADMIN: actor('3') };
 const plan = { scope: 'family-proof-path-binding', project: 'dczlddwbtgvfdujgcitb', fixture_name: 'audit-family-proof-policy-20261107', family_id: id('4'),
   case_ids: ['X_FAMILY_PROOF_OWNER_MEMBER', 'X_FAMILY_PROOF_PATH_DENIALS', 'X_FAMILY_PROOF_REMOVAL', 'X_FAMILY_PROOF_CLEANUP'] };
 
-function backend({ loseUploadResponse = false, refuseCleanup = false } = {}) {
+function backend({ loseUploadResponse = false, refuseCleanup = false, warmReadRetained = false } = {}) {
   const state = { family: true, member: true, objects: new Map(), calls: [] };
   const fetcher = async (url, options) => {
     const p = new URL(url); assert.equal(p.origin, 'https://dczlddwbtgvfdujgcitb.supabase.co');
@@ -20,6 +20,8 @@ function backend({ loseUploadResponse = false, refuseCleanup = false } = {}) {
     if (p.pathname === '/rest/v1/families') return ok(state.family ? [{ id: plan.family_id, name: plan.fixture_name, owner_id: actors.USER_A.id }] : []);
     if (p.pathname === '/rest/v1/family_members') return ok([{ id: id('5'), user_id: actors.USER_B.id, status: 'active' }]);
     if (p.pathname.endsWith('/remove_family_member')) { state.member = false; return ok('removed'); }
+    if (p.pathname.endsWith('/app_session_status')) return ok({ session_valid: true, admin_authorized: false });
+    if (p.pathname.endsWith('/is_active_family_participant')) return ok(state.member);
     if (p.pathname.endsWith('/delete_family_workspace')) {
       assert.equal(state.objects.size, 0, 'database fixture must survive until all file bytes are gone'); state.family = false; return ok('deleted');
     }
@@ -46,8 +48,9 @@ function backend({ loseUploadResponse = false, refuseCleanup = false } = {}) {
     if (p.pathname.includes('/object/authenticated/payment-proofs/')) {
       const path = p.pathname.split('/object/authenticated/payment-proofs/')[1];
       if (!state.objects.has(path)) return new Response(JSON.stringify({ statusCode: '404' }), { status: 400 });
-      if (!(caller === actors.ADMIN || caller === actors.USER_A || caller === actors.USER_B && state.member)) return no();
-      return new Response(state.objects.get(path), { status: 200 });
+      const cached = caller === actors.USER_B && !state.member && warmReadRetained && !p.searchParams.has('cacheNonce');
+      if (!(caller === actors.ADMIN || caller === actors.USER_A || caller === actors.USER_B && state.member || cached)) return no();
+      return new Response(state.objects.get(path), { status: 200, headers: { 'cache-control': 'private,max-age=3600', 'cf-cache-status': cached ? 'HIT' : 'MISS' } });
     }
     throw new Error('unexpected test route');
   };
@@ -58,6 +61,20 @@ test('Family proof scope binds the synthetic fixture and reviewed cases', () => 
   assert.equal(isFamilyProofPlan(plan), true);
   assert.equal(isFamilyProofPlan({ ...plan, family_id: 'arbitrary' }), false);
   assert.equal(isFamilyProofPlan({ ...plan, project: 'production' }), false);
+  assert.equal(isFamilyProofPlan({ ...plan, revocation_mode: 'ORIGIN_DENIAL_WITH_CACHED_COPY_OBSERVATION' }), false);
+});
+test('a separate reviewed case records cached bytes while requiring fresh authoritative denial', async () => {
+  const { state, fetcher } = backend({ warmReadRetained: true }), evidence = {};
+  const observedPlan = { ...plan, revocation_mode: 'ORIGIN_DENIAL_WITH_CACHED_COPY_OBSERVATION',
+    case_ids: [...plan.case_ids, 'X_FAMILY_PROOF_CDN_OBSERVATION'] };
+  assert.equal(isFamilyProofPlan(observedPlan), true);
+  await checkFamilyProof({ actors, evidence }, 'test', 'test', observedPlan, fetcher);
+  assert.equal(evidence.warm_cached_read_observed, true);
+  assert.equal(evidence.cached_copy_revocation_immediate, false);
+  assert.equal(evidence.cached_read_behavior_requires_file_delivery_followup, true);
+  assert.equal(evidence.removed_member_original_read_response.cache_headers['cf-cache-status'], 'HIT');
+  assert.equal(evidence.checks.REMOVED_MEMBER_FRESH_ORIGIN_READ_DENIED, true);
+  assert.equal(state.objects.size, 0); assert.equal(state.family, false);
 });
 test('the real-request harness removes every attempted test object before deleting the Family', async () => {
   const { state, fetcher } = backend(), evidence = {};

@@ -11,9 +11,12 @@ const denied = result => [401,403,404].includes(result.status)
 const absent = result => result.status === 404 || result.status === 400 && Number(result.data?.statusCode) === 404;
 
 export function isFamilyProofPlan(plan) {
+  const original = JSON.stringify(plan.case_ids) === JSON.stringify(CASES) && plan.revocation_mode === undefined;
+  const observed = plan.revocation_mode === 'ORIGIN_DENIAL_WITH_CACHED_COPY_OBSERVATION'
+    && JSON.stringify(plan.case_ids) === JSON.stringify([...CASES, 'X_FAMILY_PROOF_CDN_OBSERVATION']);
   return plan.scope === 'family-proof-path-binding' && plan.project === 'dczlddwbtgvfdujgcitb'
     && plan.fixture_name === FIXTURE && UUID.test(plan.family_id || '')
-    && JSON.stringify(plan.case_ids) === JSON.stringify(CASES);
+    && (original || observed);
 }
 
 export async function checkFamilyProof({ actors, evidence }, key, agent, plan, fetcher = fetch) {
@@ -37,7 +40,8 @@ export async function checkFamilyProof({ actors, evidence }, key, agent, plan, f
     need(route.startsWith('/') && url.origin === API_ORIGIN && !url.hash
       && (url.pathname.startsWith('/storage/v1/object/')
         || method === 'GET' && ['/rest/v1/families','/rest/v1/family_members'].includes(url.pathname)
-        || method === 'POST' && ['/rest/v1/rpc/remove_family_member','/rest/v1/rpc/delete_family_workspace'].includes(url.pathname)),
+        || method === 'POST' && ['/rest/v1/rpc/remove_family_member','/rest/v1/rpc/delete_family_workspace',
+          '/rest/v1/rpc/is_active_family_participant','/rest/v1/rpc/app_session_status'].includes(url.pathname)),
     'FAMILY_PROOF_ROUTE_REFUSED');
     evidence.exercise_requests++;
     const response = await fetcher(url, { method, redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(15000),
@@ -47,10 +51,16 @@ export async function checkFamilyProof({ actors, evidence }, key, agent, plan, f
     let data = null;
     if (method === 'GET' && binary && response.status === 200) data = Buffer.from(await response.arrayBuffer());
     else { try { data = await response.json(); } catch {} }
-    return { status: response.status, data };
+    const cache_headers = Object.fromEntries(['cache-control','cf-cache-status','age','vary','content-type']
+      .map(name => [name, response.headers.get(name)]).filter(([,value]) => typeof value === 'string' && value.length <= 200));
+    return { status: response.status, data, cache_headers };
   };
   const familyRoute = `/rest/v1/families?select=id,owner_id,name&id=eq.${family}&name=eq.${FIXTURE}&limit=2`;
-  const read = (path, actor, cleanup = false) => request('GET', '/storage/v1/object/authenticated/payment-proofs/' + path, actor, undefined, cleanup, true);
+  const read = (path, actor, cleanup = false, fresh = false) => request('GET', '/storage/v1/object/authenticated/payment-proofs/' + path
+    + (fresh ? '?cacheNonce=' + randomUUID() : ''), actor, undefined, cleanup, true);
+  const safeResponse = result => ({ status: result.status, cache_headers: result.cache_headers,
+    ...(result.data?.statusCode && /^[0-9]{3}$/.test(String(result.data.statusCode)) ? { Storage_status_code: Number(result.data.statusCode) } : {}),
+    ...(Buffer.isBuffer(result.data) ? { bytes: result.data.length, harmless_fixture_matches: digest(result.data) === digest(PNG) } : {}) });
   const upload = async (path, actor) => {
     attempted.add(path); evidence.cleanup_paths = [...attempted]; evidence.upload_attempts++;
     return request('POST', '/storage/v1/object/payment-proofs/' + path, actor, PNG, false, true);
@@ -68,6 +78,7 @@ export async function checkFamilyProof({ actors, evidence }, key, agent, plan, f
     check('ACTIVE_MEMBER_FAMILY_UPLOAD_ALLOWED', [200,201].includes((await upload(memberPath,member)).status));
     check('OWN_PERSONAL_UPLOAD_REMAINS_ALLOWED', [200,201].includes((await upload(personal,owner)).status));
     const ownerFile = await read(ownerPath,owner), memberFile = await read(memberPath,member);
+    evidence.active_member_read_response = safeResponse(memberFile);
     check('UPLOADED_BYTES_MATCH', [ownerFile,memberFile].every(file => file.status === 200 && digest(file.data) === digest(PNG)));
     check('FOREIGN_UPLOADER_PATH_DENIED', denied(await upload(familyPath(member.id,'spoof-uploader'),owner)));
     check('WRONG_FAMILY_OWNER_PATH_DENIED', denied(await upload(familyPath(member.id,'spoof-owner',family,member.id),member)));
@@ -76,7 +87,25 @@ export async function checkFamilyProof({ actors, evidence }, key, agent, plan, f
     const removed = await request('POST','/rest/v1/rpc/remove_family_member',owner,{ p_family_id: family, p_member_id: memberRow.id });
     check('OWNER_REMOVED_EXACT_TEST_MEMBER', removed.status === 200 && removed.data === 'removed');
     check('REMOVED_MEMBER_UPLOAD_DENIED', denied(await upload(familyPath(member.id,'removed'),member)));
-    check('REMOVED_MEMBER_ORIGINAL_READ_DENIED', denied(await read(memberPath,member)));
+    const removedRead = await read(memberPath,member);
+    evidence.removed_member_original_read_response = safeResponse(removedRead);
+    if (plan.revocation_mode === 'ORIGIN_DENIAL_WITH_CACHED_COPY_OBSERVATION') {
+      const liveSession = await request('POST','/rest/v1/rpc/app_session_status',member,{});
+      check('REMOVED_MEMBER_ORDINARY_SESSION_VALID', liveSession.status === 200 && liveSession.data?.session_valid === true
+        && liveSession.data.admin_authorized === false);
+      const access = await request('POST','/rest/v1/rpc/is_active_family_participant',member,{ p_family_id: family });
+      check('AUTHORITATIVE_FAMILY_PARTICIPATION_REVOKED', access.status === 200 && access.data === false);
+      const freshRead = await read(memberPath,member,false,true);
+      evidence.removed_member_fresh_read_response = safeResponse(freshRead);
+      check('REMOVED_MEMBER_FRESH_ORIGIN_READ_DENIED', denied(freshRead));
+      evidence.warm_cached_read_observed = removedRead.status === 200 && Buffer.isBuffer(removedRead.data)
+        && digest(removedRead.data) === digest(PNG);
+      check('WARM_URL_OUTCOME_RECORDED', denied(removedRead) || evidence.warm_cached_read_observed);
+      evidence.cached_copy_revocation_immediate = denied(removedRead);
+      evidence.cached_read_behavior_requires_file_delivery_followup = evidence.warm_cached_read_observed;
+    } else {
+      check('REMOVED_MEMBER_ORIGINAL_READ_DENIED', denied(removedRead));
+    }
     const sign = await request('POST','/storage/v1/object/sign/payment-proofs/'+memberPath,member,{ expiresIn: 60 });
     check('REMOVED_MEMBER_SIGNING_DENIED', denied(sign));
     const retained = await read(memberPath,owner);

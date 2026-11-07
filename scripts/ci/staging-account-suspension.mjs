@@ -87,7 +87,8 @@ export async function checkAccountSuspension({ actors, evidence }, key, agent, f
     evidence.suspension_attempted = true;
     const suspended = await call(admin, 'POST', '/rest/v1/rpc/set_user_account_status',
       { p_user_id: target.id, p_status: 'suspended' });
-    check('ADMIN_SUSPENSION_ACKNOWLEDGED', suspended.status === 200);
+    evidence.suspension_HTTP_status = suspended.status;
+    check('ADMIN_SUSPENSION_ACKNOWLEDGED', [200, 204].includes(suspended.status));
     check('TARGET_SUSPENDED_READBACK', await targetStatus() === 'suspended');
     const blocked = await sessionStatus(target);
     check('EXISTING_SESSION_INVALID_FOR_APP', blocked.session_valid === false && blocked.admin_authorized === false);
@@ -115,7 +116,8 @@ export async function checkAccountSuspension({ actors, evidence }, key, agent, f
           try {
             const restored = await call(admin, 'POST', '/rest/v1/rpc/set_user_account_status',
               { p_user_id: target.id, p_status: 'active' }, true);
-            check('ADMIN_RESTORATION_ACKNOWLEDGED', restored.status === 200);
+            evidence.restoration_HTTP_status = restored.status;
+            check('ADMIN_RESTORATION_ACKNOWLEDGED', [200, 204].includes(restored.status));
           } catch (error) { cleanupFailure = error; }
         }
         evidence.restored_active_verified = await targetStatus(true) === 'active';

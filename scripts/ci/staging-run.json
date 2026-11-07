@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "run_id": "2026-11-07-batch-x-account-suspension",
+  "run_id": "2026-11-07-batch-x-account-suspension-void-ack",
   "scope": "account-suspension-boundaries",
   "project": "dczlddwbtgvfdujgcitb",
   "target_slot": "USER_A",
@@ -11,7 +11,8 @@
     "X_ACCOUNT_OTHER_ACTORS_UNAFFECTED",
     "X_ACCOUNT_SUPPORTED_RESTORE"
   ],
-  "source_parent_commit": "408ed1b2fa1fef96aa014a8f342c9ab4e8076862",
+  "source_parent_commit": "142a6008e1840390ca7c4f23fa41ead0ae444973",
   "plan_path": "docs/security-audit/security-fr-2-batch-x-account-suspension-plan.json",
-  "no_automatic_rerun": true
+  "no_automatic_rerun": true,
+  "retry_receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-ack-review.json"
 }

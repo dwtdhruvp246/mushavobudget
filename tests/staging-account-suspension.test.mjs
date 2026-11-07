@@ -12,7 +12,7 @@ const plan = { scope: 'account-suspension-boundaries', project: 'dczlddwbtgvfduj
   case_ids: ['X_ACCOUNT_NONADMIN_DENIAL', 'X_ACCOUNT_EXISTING_SESSION_SUSPENDED',
     'X_ACCOUNT_OTHER_ACTORS_UNAFFECTED', 'X_ACCOUNT_SUPPORTED_RESTORE'] };
 
-function backend({ badHiddenRead = false, ambiguousSuspend = false, refuseRestore = false } = {}) {
+function backend({ badHiddenRead = false, ambiguousSuspend = false, refuseRestore = false, voidStatus = 204 } = {}) {
   let suspended = false;
   const calls = [];
   const fetcher = async (url, options) => {
@@ -35,7 +35,7 @@ function backend({ badHiddenRead = false, ambiguousSuspend = false, refuseRestor
       if (body.p_status === 'active' && refuseRestore) return result({ message: 'UNEXPECTED' }, 500);
       suspended = body.p_status === 'suspended';
       if (suspended && ambiguousSuspend) throw new Error('response lost after write');
-      return result(null);
+      return voidStatus === 204 ? new Response(null, { status: 204 }) : result(null, voidStatus);
     }
     if (route.endsWith('/archive_business_document')) {
       assert.equal(body.p_workspace_id, '00000000-0000-4000-8000-000000000000');
@@ -59,10 +59,20 @@ test('the suspension check uses the same sessions and restores its exact account
   assert.ok(Object.values(evidence.checks).every(Boolean));
   assert.equal(evidence.restored_active_verified, true);
   assert.equal(mock.suspended(), false);
+  assert.equal(evidence.suspension_HTTP_status, 204);
+  assert.equal(evidence.restoration_HTTP_status, 204);
   assert.equal(evidence.exercise_requests, mock.calls.length);
   assert.ok(mock.calls.length <= 30);
   assert.deepEqual(mock.calls.filter(call => call.route.endsWith('/set_user_account_status'))
     .map(call => [call.caller === actors.ADMIN, call.body.p_status]), [[false, 'suspended'], [true, 'suspended'], [true, 'active']]);
+});
+test('a JSON null success from a void RPC is also acknowledged with readback', async () => {
+  const mock = backend({ voidStatus: 200 }), evidence = {};
+  await checkAccountSuspension({ actors, evidence }, 'test', 'test', mock.fetcher);
+  assert.equal(mock.suspended(), false);
+  assert.equal(evidence.suspension_HTTP_status, 200);
+  assert.equal(evidence.restoration_HTTP_status, 200);
+  assert.equal(evidence.restored_active_verified, true);
 });
 test('an intermediate failed assertion still restores the suspended account', async () => {
   const mock = backend({ badHiddenRead: true }), evidence = {};

@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-07",
+  "original_plan": "docs/security-audit/security-fr-2-batch-x-account-suspension-plan.json",
+  "source_parent_commit": "142a6008e1840390ca7c4f23fa41ead0ae444973",
+  "change": "Accept supported void RPC HTTP 200 or 204 with required exact profile status readback; capture both HTTP codes.",
+  "previous_suspension_and_restoration_effect_confirmed": true,
+  "current_preflight": {
+    "account_active": true,
+    "active_devices": 0,
+    "platform_roles": 0,
+    "session_proofs": 0,
+    "matched_account": 1,
+    "ready_challenges": 0,
+    "security_version": 1,
+    "remaining_CI_sessions": 0,
+    "profile_hash_except_update_time": "425b1fdb570ffaa68c26ea25178fd13e"
+  },
+  "session_cleanup_verified": true,
+  "security_version_must_remain_monotonic": true,
+  "original_limits_and_assertions_retained": true
+}

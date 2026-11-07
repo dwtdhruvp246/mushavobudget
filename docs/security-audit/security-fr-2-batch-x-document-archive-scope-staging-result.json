@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "result": "DOCUMENT_ARCHIVE_PARENT_SCOPE_SCOPED_STAGING_PASS",
+  "project": "dczlddwbtgvfdujgcitb",
+  "plan_commit": "17399baf6d0895f9ae50e9e6edaa2e25cb8faaed",
+  "source_candidate_commit": "0d1fe519120aa74ea2d3e55cf3db3e78cb202ebf",
+  "migration": "supabase/migrations/20261107072702_business_document_archive_parent_scope.sql",
+  "migration_version": "20261107072702",
+  "initial_failure": "docs/security-audit/security-fr-2-batch-x-document-archive-scope-reproduction.json",
+  "staging_installed": true,
+  "production_installed": false,
+  "hosted_Postgres_recheck": {
+    "checks": {
+      "owner_modeled_session_valid": true,
+      "foreign_scope_archive_denied": true,
+      "scoped_modeled_session_valid": true,
+      "scoped_manager_cannot_view_parent": true,
+      "foreign_scope_receipt_hidden_by_RLS": true,
+      "scoped_manager_has_document_management": true,
+      "foreign_scope_document_preserved_active": true,
+      "owner_may_archive_own_scoped_claim_receipt": true
+    },
+    "project": "dczlddwbtgvfdujgcitb",
+    "auth_claims": "MODELED_TRANSACTION_ONLY",
+    "provider_requests": 0,
+    "rollback_required": true,
+    "external_email_requests": 0,
+    "foreign_document_status": "active",
+    "committed_fixture_writes": 0,
+    "physical_Storage_uploads": 0
+  },
+  "independent_rollback_readback": {
+    "catalog": {
+      "mode": "ACTIVE",
+      "sha256": "e902fca1d972f7cb76a0cc7b8f5ca649f24dfd2ae198cc77a1d96526a82172e8",
+      "target": "dczlddwbtgvfdujgcitb",
+      "matches": true
+    },
+    "fixture": {
+      "seats": 1,
+      "claims": 1,
+      "status": "suspended",
+      "documents": 1,
+      "active_members": 1,
+      "support_version": 6,
+      "physical_objects": 0,
+      "pending_invitations": 0,
+      "subscription_version": 3
+    },
+    "migration": {
+      "name": "business_document_archive_parent_scope",
+      "version": "20261107072702"
+    },
+    "new_claims": 0,
+    "new_documents": 0,
+    "new_dimensions": 0,
+    "archive_function": {
+      "acl": [
+        "postgres=X/postgres",
+        "authenticated=X/postgres",
+        "service_role=X/postgres"
+      ],
+      "md5": "08ce9fadef1a17457f49316336961659",
+      "anon": false,
+      "service": true,
+      "authenticated": true
+    },
+    "temporary_sessions": 0
+  },
+  "local_Postgres_assertions": 20,
+  "local_dependencies": "MODELED_APPLICATION_SESSION_PARENT_VISIBILITY_AND_PERMISSION_PREDICATES",
+  "actual_HTTP_login_or_Storage_upload_exercised": false,
+  "pre_catalog_sha256": "897dcb81876542b9012fbc90dd25df79e21f2a212422f2bab15b5396c8368be1",
+  "post_catalog_sha256": "e902fca1d972f7cb76a0cc7b8f5ca649f24dfd2ae198cc77a1d96526a82172e8",
+  "exact_existing_execute_grants_preserved": true,
+  "source_filename_matches_hosted_migration_version": true,
+  "migration_ledger_writes_for_alignment": 0,
+  "external_email_requests": 0,
+  "provider_requests": 0,
+  "committed_fixture_writes": 0,
+  "findings_closed": [],
+  "full_batch_X_complete": false,
+  "stage_3_complete": false,
+  "remaining": "Reconcile the rest of the original X/Y role, finance and caller exits and prepare integrated Batch Z. Independent Admin recovery and SMTP remain owner-deferred.",
+  "exit_code": 0
+}

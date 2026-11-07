@@ -9,7 +9,7 @@
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE311",
+  "latest_evidence": "FRE312",
   "batches": [
     {
       "id": "FR.1",
@@ -1694,11 +1694,12 @@
         },
         {
           "id": "FR.2.6",
-          "status": "IN_PROGRESS_SELECTED_BACKEND_CALLER_AND_CLAIM_LIFECYCLE_PASS",
+          "status": "IN_PROGRESS_SELECTED_BACKEND_AND_DOCUMENT_SCOPE_RECHECKS_PASS",
           "title": "Affected recheck and bounded completion report",
           "receipt": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
           "full_Stage_3_complete": false,
-          "backend_receipt": "docs/security-audit/security-fr-2-batch-y-backend-caller-and-lease-staging-result.json"
+          "backend_receipt": "docs/security-audit/security-fr-2-batch-y-backend-caller-and-lease-staging-result.json",
+          "archive_scope_receipt": "docs/security-audit/security-fr-2-batch-x-document-archive-scope-staging-result.json"
         }
       ],
       "readiness_handoff": "docs/security-audit/SECURITY_FR_2_1_READINESS_HANDOFF.md",
@@ -1710,7 +1711,7 @@
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
       "next_step": "STAGE_3_RECONCILE_REMAINING_X_Y_MATRIX_AND_PREPARE_Z",
-      "latest_evidence": "FRE311"
+      "latest_evidence": "FRE312"
     },
     {
       "id": "FR.3",
@@ -8281,5 +8282,13 @@
     "stale_result_rejection_both_queues": true,
     "independent_rollback_absence_verified": true,
     "full_batch_Y_complete": false
+  },
+  "batch_X_document_archive_scope": {
+    "status": "DOCUMENT_ARCHIVE_PARENT_SCOPE_SCOPED_STAGING_PASS",
+    "receipt": "docs/security-audit/security-fr-2-batch-x-document-archive-scope-staging-result.json",
+    "staging_database_fix_installed": true,
+    "modeled_claims": true,
+    "independent_fixture_absence_verified": true,
+    "full_batch_X_complete": false
   }
 }

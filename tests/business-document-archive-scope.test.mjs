@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import test from 'node:test';
 import { PGlite } from '../scripts/fixtures/email-session-review-tools/node_modules/@electric-sql/pglite/dist/index.js';
 
-const candidate=fs.readFileSync(new URL('../supabase/candidates/security_fr_2_6_document_archive_scope.sql',import.meta.url),'utf8');
+const candidate=fs.readFileSync(new URL('../supabase/migrations/20261107072702_business_document_archive_parent_scope.sql',import.meta.url),'utf8');
 const original=JSON.parse(fs.readFileSync(new URL('./fixtures/document-archive-reviewed-function.json',import.meta.url),'utf8')).definition;
 const ws='11111111-1111-4111-8111-111111111111',doc='22222222-2222-4222-8222-222222222222',parent='33333333-3333-4333-8333-333333333333';
 test('archive enforces parent scope and preserves valid owner/workflow behavior',async()=>{

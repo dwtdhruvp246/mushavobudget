@@ -151,11 +151,11 @@
     "Reconcile the rest of the current caller/role matrix and original X exits.",
     "Verify remaining required overlapping backend claims and authorization-change cases.",
     "Deploy and accept the paired dispatchers with the controlled operations scope; actual scheduler/provider delivery remains untested.",
-    "Integrated Batch Z and Stage 3 completion decision.",
-    "Finish original X mutation-scope checks, including document archive access when the parent lies outside the caller's assigned scope."
+    "Integrated Batch Z and Stage 3 completion decision."
   ],
   "full_lettered_batch_Y_complete": false,
   "stage_3_complete": false,
   "findings_closed": [],
-  "exit_code": 0
+  "exit_code": 0,
+  "subsequent_archive_scope_receipt": "docs/security-audit/security-fr-2-batch-x-document-archive-scope-staging-result.json"
 }

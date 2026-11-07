@@ -10751,6 +10751,26 @@
       "findings_closed": [],
       "next_step": "STAGE_3_RECONCILE_REMAINING_X_Y_MATRIX_AND_PREPARE_Z",
       "exit_code": 0
+    },
+    {
+      "id": "FRE312",
+      "date": "2026-11-07",
+      "stage_step": "FR.2.6_X_DOCUMENT_ARCHIVE_PARENT_SCOPE",
+      "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+      "result": "DOCUMENT_ARCHIVE_PARENT_SCOPE_SCOPED_STAGING_PASS",
+      "receipt": "docs/security-audit/security-fr-2-batch-x-document-archive-scope-staging-result.json",
+      "staging_database_fix_installed": true,
+      "local_Postgres_assertions": 20,
+      "modeled_staging_claims": true,
+      "hosted_HTTP_login_or_upload_test": false,
+      "independent_fixture_absence": true,
+      "external_delivery_requests": 0,
+      "production_changed": false,
+      "full_batch_X_complete": false,
+      "stage_3_complete": false,
+      "findings_closed": [],
+      "next_step": "STAGE_3_RECONCILE_REMAINING_X_Y_MATRIX_AND_PREPARE_Z",
+      "exit_code": 0
     }
   ],
   "prior_stage_evidence_preserved": true,

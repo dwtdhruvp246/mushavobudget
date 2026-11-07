@@ -1,5 +1,5 @@
 # Mushavo Budget — complete stages, FR groups and batches
-As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.13
+As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.14
 
 ## Read this structure correctly
 
@@ -7,7 +7,9 @@ As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.13
 
 **Main Stage 3 → FR.2 → FR.2.5 → Batch W is complete for the agreed staging scope.** The live recovery password-save retry passed and its disposable account and empty Personal workspace were removed. The existing-password sign-in accepted a seven-character credential on the disposable account under the current policy. Business v25 is live on stable staging, and Chromium confirmed the delivery-failure and resend wait messages against the deployed files using controlled responses. The signed-in password-change failure/retry is owner-deferred. [Closeout receipt](security-fr-2-batch-w-staging-closeout.json).
 
-**Current execution is the remaining X/Y authorization scope.** Both queues now reject stale worker completions on staging. All 24 selected database-role denial calls passed, and both service-role queue lifecycle checks rolled back cleanly. The paired dispatcher source passed Deno type checking; its hosted deployment and real scheduler/provider delivery remain open. [Backend evidence](security-fr-2-batch-y-backend-caller-and-lease-staging-result.json).
+**Current execution is the remaining X/Y authorization scope.** The document archive action now also enforces the parent team scope. Owner access and foreign-scope denial passed in the selected rollback-only staging test; all temporary records and modeled sessions are absent. [Archive scope evidence](security-fr-2-batch-x-document-archive-scope-staging-result.json).
+
+Both queues now reject stale worker completions on staging. All 24 selected database-role denial calls passed, and both service-role queue lifecycle checks rolled back cleanly. The paired dispatcher source passed Deno type checking; its hosted deployment and real scheduler/provider delivery remain open. [Backend evidence](security-fr-2-batch-y-backend-caller-and-lease-staging-result.json).
 
 Nineteen staging database checks passed with modeled claims. Twenty genuine hosted receipt/request checks passed, including upload, original and signed download, removed-member denial and two concurrent requests retaining one draft. An archived-file deletion defect was corrected on staging and verified through the real Storage API. Independent readback confirms zero test files and CI sessions; one synthetic workspace is suspended with its grant/audit history retained. [Hosted evidence](security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json) and [database/preflight evidence](security-fr-2-batch-x-staging-database-and-receipt-readiness.json).
 
@@ -93,7 +95,7 @@ Historical preparation/local pass is not relabelled as current full security acc
 | U | Full-app startup/cache/session lifecycle | Recorded COMPLETE at its accepted scope; reuse applicable evidence. |
 | V | Privileged access, recoverable operators and original MFA scope | IN PROGRESS. Staging Admin access, ordinary denial, session revocation, staff roles and catalog reconciliation passed at their reviewed scope. Independent recovery is owner-deferred and remains open. Historical MFA checks remain on hold. [Batch V evidence](security-fr-2-batch-v-staff-and-catalog-staging-result.json). |
 | W | Auth/password/account/email workflows | Complete for the agreed staging scope. The signed-in password-change failure/retry is owner-deferred. [Closeout receipt](security-fr-2-batch-w-staging-closeout.json). |
-| X | Personal/Family/Business permissions and legitimate finance | Scoped database and hosted receipt/request passes. Upload, original/signed download, removed-member denial and physical cleanup verified. Reconcile remaining original role/tenant/finance exits before full closure. [Hosted evidence](security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json). |
+| X | Personal/Family/Business permissions and legitimate finance | Scoped database and hosted receipt/request passes. Upload, downloads, removed-member denial and physical cleanup verified. The archive RPC now enforces parent scope; Owner positive and foreign-team denial passed under modeled staging claims. Reconcile remaining original role/tenant/finance exits before full closure. [Receipt evidence](security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json), [archive evidence](security-fr-2-batch-x-document-archive-scope-staging-result.json). |
 | Y | Backend caller permissions, real database races and containment | Scoped hosted caller/claim checks passed: anonymous and authenticated roles denied all 12 selected backend signatures; service role claim, expiry, stale-worker rejection, current completion and replay passed for both queues. One genuine concurrent request-id HTTP workflow also passed. Remaining matrix/overlap scenarios and paired dispatcher deployment stay open. [Backend evidence](security-fr-2-batch-y-backend-caller-and-lease-staging-result.json). |
 | Z | Integrated authorization recheck and Stage 3 closeout | PLANNED; reconcile U–Y and original authorization exits, integrated affected recheck and final Stage 3 handoff. |
 

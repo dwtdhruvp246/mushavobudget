@@ -16,6 +16,24 @@ function requireClaim(table, job, referenceTime) {
   return reference;
 }
 
+export function isOutboxClaimLost(error) {
+  return error instanceof Error && /^(?:outbox_claim:|outbox_(?:delivery|cancel|result):claim_lost$)/.test(error.message);
+}
+
+export async function requireCurrentOutboxClaim(client, table, job, now = () => new Date().toISOString()) {
+  requireClaim(table, job, now());
+  const { data, error } = await client.from(table)
+    .select('id,status,attempt_count,claimed_at').eq('id', job.id).maybeSingle();
+  if (error) throw new Error('outbox_delivery:database_error');
+  if (data?.id !== job.id || data.status !== 'processing'
+    || data.attempt_count !== job.attempt_count
+    || Date.parse(data.claimed_at) !== Date.parse(job.claimed_at)) {
+    throw new Error('outbox_delivery:claim_lost');
+  }
+  // A slow lookup must not extend the worker's original lease.
+  requireClaim(table, job, now());
+}
+
 export async function cancelClaimedOutboxJob(client, table, job, reason, referenceTime = new Date().toISOString()) {
   const reference = requireClaim(table, job, referenceTime);
   const { data, error } = await client.from(table)

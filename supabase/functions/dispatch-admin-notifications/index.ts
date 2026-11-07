@@ -4,7 +4,7 @@ import webpush from "npm:web-push@3.6.7";
 import { createGuardedPushSender, isBlockedPushDestination } from "../_shared/push-destination.mjs";
 import { activeNotificationRecipient } from "../_shared/notification-recipient.mjs";
 
-import { cancelClaimedOutboxJob, recordClaimedOutboxResult } from "../_shared/outbox-claim.mjs";
+import { cancelClaimedOutboxJob, recordClaimedOutboxResult, requireCurrentOutboxClaim, isOutboxClaimLost } from "../_shared/outbox-claim.mjs";
 
 const sendGuardedPush = createGuardedPushSender(webpush);
 
@@ -209,6 +209,7 @@ Deno.serve(async (request) => {
     retry: 0,
     failed: 0,
     cancelled: 0,
+    skipped: 0,
     devices_delivered: 0,
     devices_failed: 0,
     devices_disabled: 0,
@@ -236,6 +237,7 @@ Deno.serve(async (request) => {
       }
 
       let delivered = 0;
+      let cancelledDuringDelivery = false;
       let temporaryFailures = 0;
       let permanentFailures = 0;
       const sentAt = new Date().toISOString();
@@ -249,6 +251,25 @@ Deno.serve(async (request) => {
       });
 
       for (const subscription of subscriptions as PushSubscriptionRow[]) {
+        // Check each device after lookup; an earlier delivery grants no later access.
+        try {
+          const currentAccess = await validateAdminJob(serviceClient, job);
+          if (!currentAccess.valid) {
+            if (delivered === 0) {
+              await cancelJob(serviceClient, job, currentAccess.reason);
+              totals.cancelled += 1;
+              cancelledDuringDelivery = true;
+            }
+            break;
+          }
+          await requireCurrentOutboxClaim(serviceClient, "admin_notification_outbox", job);
+        } catch (error) {
+          if (delivered > 0 && !isOutboxClaimLost(error)) {
+            console.warn("Admin notification remaining devices stopped after revalidation failed", { jobId: job.id });
+            break;
+          }
+          throw error;
+        }
         try {
           await sendGuardedPush(
             {
@@ -282,6 +303,8 @@ Deno.serve(async (request) => {
         }
       }
 
+      if (cancelledDuringDelivery) continue;
+
       if (delivered > 0) {
         await recordJobResult(serviceClient, job, true, false, null, sentAt);
         totals.sent += 1;
@@ -307,6 +330,10 @@ Deno.serve(async (request) => {
         totals.failed += 1;
       }
     } catch (error) {
+      if (isOutboxClaimLost(error)) {
+        totals.skipped += 1;
+        continue;
+      }
       console.error("Admin notification job processing failed", {
         jobId: job.id,
         category: error instanceof Error ? error.message.split(":")[0] : "unknown_error",

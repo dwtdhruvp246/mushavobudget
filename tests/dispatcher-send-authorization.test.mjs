@@ -74,8 +74,8 @@ async function run(kind,{onLookup,onSend,alterClaim,claimError=false,devices=2}=
     'activeNotificationRecipient','prepareReminderPayload','cancelClaimedOutboxJob','recordClaimedOutboxResult',
     'requireCurrentOutboxClaim','isOutboxClaimLost','Deno','console','Date',sources[admin?'dispatch-admin-notifications':'dispatch-push-reminders']);
   execute(()=>db,{setVapidDetails(){}},()=>async(device,payload)=>{state.deliveries.push(JSON.parse(payload));if(onSend)await onSend(state);},
-    ()=>false,activeNotificationRecipient,prepareReminderPayload,claims.cancelClaimedOutboxJob,claims.recordClaimedOutboxResult,
-    claims.requireCurrentOutboxClaim,claims.isOutboxClaimLost,{env:{get:k=>env[k]},serve:f=>{serve=f;}},
+    ()=>false,activeNotificationRecipient,prepareReminderPayload,(...args)=>claims.cancelClaimedOutboxJob(...args,new Clock().toISOString()),claims.recordClaimedOutboxResult,
+    (...args)=>claims.requireCurrentOutboxClaim(...args,()=>new Clock().toISOString()),claims.isOutboxClaimLost,{env:{get:k=>env[k]},serve:f=>{serve=f;}},
     {warn:(...x)=>state.logs.push(x),error:(...x)=>state.logs.push(x)},Clock);
   const response=await serve(new Request('https://synthetic.invalid/dispatch',{method:'POST',headers:{'x-mushavo-cron-secret':env.CRON_SECRET,'Content-Type':'application/json'},body:'{"source":"cron"}'}));
   state.result=await response.json();state.status=response.status;

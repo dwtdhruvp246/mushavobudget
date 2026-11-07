@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "result": "PER_DEVICE_AUTHORIZATION_AND_CURRENT_CLAIM_LOCAL_SCOPED_PASS",
+  "plan": "docs/security-audit/security-fr-2-batch-y-send-authorization-plan.json",
+  "initial_review": "docs/security-audit/security-fr-2-batch-y-send-authorization-initial-review.json",
+  "node_version": "v24.22.1",
+  "deno_version": "2.9.5",
+  "actual_handler_cases": 23,
+  "selected_Node_tests": {
+    "tests": 92,
+    "pass": 92,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "failed_titles": []
+  },
+  "PGlite_queue_regression": {
+    "tests": 1,
+    "pass": 1,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "failed_titles": [],
+    "SQL_assertions": 42,
+    "real_hosted_database": false
+  },
+  "Deno_typechecks": {
+    "exit_code": 0,
+    "output": "Download https://registry.npmjs.org/@supabase%2fsupabase-js\n",
+    "typechecked_entrypoints": 2
+  },
+  "locked_dependencies": {
+    "sha256": "eb373bd333000e850a8775bc67796baee9aecbebc818bd53fbdd1e7f507ae8ff",
+    "unchanged": true,
+    "npm_integrity_entries": 29
+  },
+  "intermediate_harness_correction": {
+    "tests": 23,
+    "pass": 17,
+    "fail": 6,
+    "meaning": "All six failing cancellation assertions came from the test's fixed clock differing from the shared cancellation helper's real clock. Injected the same clock into both helpers; production time handling was unchanged."
+  },
+  "preflight_notes": [
+    "The unsupported Node json reporter exited before tests; TAP was used instead.",
+    "The unsupported Deno cached-only flag was replaced after reading CLI help.",
+    "A native-client package download attempt failed. The verified HTTPS proxy/CA path was reused without relaxing TLS; pinned lock remained unchanged."
+  ],
+  "host_deployment_or_real_provider_acceptance": false,
+  "production_changed": false,
+  "exit_code": 0
+}

@@ -1,11 +1,36 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { cancelClaimedOutboxJob, recordClaimedOutboxResult } from '../supabase/functions/_shared/outbox-claim.mjs';
+import { cancelClaimedOutboxJob, recordClaimedOutboxResult, requireCurrentOutboxClaim, isOutboxClaimLost } from '../supabase/functions/_shared/outbox-claim.mjs';
 
 const job = { id: '11111111-1111-4111-8111-111111111111', attempt_count: 2, claimed_at: '2026-11-07T06:00:00.000Z' };
 const at = '2026-11-07T06:01:00.000Z';
 
 for (const table of ['notification_outbox', 'admin_notification_outbox']) {
+  const lookup = (data, error = null, onRead = () => {}) => ({ from(name) {
+    assert.equal(name, table);
+    return {select(columns) { assert.equal(columns, 'id,status,attempt_count,claimed_at'); return this; },
+      eq(key, value) { assert.equal(key, 'id'); assert.equal(value, job.id); return this; },
+      async maybeSingle() { onRead(); return {data,error}; }};
+  }});
+  test(`${table}: a current claim permits the delivery boundary`, async () => {
+    await requireCurrentOutboxClaim(lookup({...job,status:'processing'}), table, job, () => at);
+  });
+  test(`${table}: missing, terminal and superseded rows lose delivery authority`, async () => {
+    for (const row of [null,{...job,status:'sent'},{...job,status:'processing',attempt_count:3},
+      {...job,status:'processing',claimed_at:'2026-11-07T06:00:01Z'}]) {
+      await assert.rejects(requireCurrentOutboxClaim(lookup(row), table, job, () => at), e => isOutboxClaimLost(e));
+    }
+  });
+  test(`${table}: an uncertain claim lookup never authorizes sending`, async () => {
+    await assert.rejects(requireCurrentOutboxClaim(lookup(null,{message:'PRIVATE DATABASE ERROR'}), table, job, () => at),
+      {message:'outbox_delivery:database_error'});
+    assert.equal(isOutboxClaimLost(new Error('outbox_delivery:database_error')),false);
+  });
+  test(`${table}: expiry during the lookup cannot extend the lease`, async () => {
+    let current=at;
+    await assert.rejects(requireCurrentOutboxClaim(lookup({...job,status:'processing'},null,()=>{current='2026-11-07T06:16:00Z';}),
+      table,job,()=>current),{message:'outbox_claim:expired_claim'});
+  });
   test(`${table}: completion submits and verifies the exact lease`, async () => {
     const client = { async rpc(name, args) {
       assert.equal(name, `record_${table}_result`);

@@ -1,4 +1,6 @@
 {
+  "schema_version": 1,
+  "date": "2026-11-07",
   "inventory": {
     "project": "dczlddwbtgvfdujgcitb",
     "routines": [
@@ -5627,10 +5629,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "3d08f9c80c40ec55e521f689d3924610",
+      "body_md5": "b9567252671bc68b43e5edbc39bb7398",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_bill_reminder_allowed",
@@ -5652,10 +5660,23 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "EDGE_SERVICE_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "d15dccbce06c483e3451a74caf5cb0a0",
+      "body_md5": "8397241480f2cded92910b53cc1eecd8",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/dispatch-push-reminders/index.ts",
+          "line": 202,
+          "client": "serviceClient",
+          "routine": "business_bill_reminder_allowed"
+        }
+      ]
     },
     {
       "name": "business_billing_usage",
@@ -5713,10 +5734,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "c68fa6b8d2bec1f95761ba1da61742ce",
+      "body_md5": "358b7f0bd877db90fc55a93083cc2b3a",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_budget_rows",
@@ -5749,10 +5776,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "89d73bc574e5ad6c6a449deb5f2bb586",
+      "body_md5": "caa68453a748f6a11463cf192c0a7f7f",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_budget_totals",
@@ -5785,10 +5818,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "7f9d19d2ea7762d748f248480b5a9ce1",
+      "body_md5": "60732f9825d2fff8a3c37ba0e8516762",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_check_role_assignment",
@@ -5831,10 +5870,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "fed7c1e39731c0e5dd2394bce694cf16",
+      "body_md5": "37ad47ec8fb81acf5e48212a17c38144",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_effective_member_limit",
@@ -5907,10 +5952,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "91063a55676bd0430337fdf5ff4f2186",
+      "body_md5": "3da2c9501df98d1199ef8c03e00b2079",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_public_price_ready",
@@ -5953,10 +6004,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "0f9c5ec74e2aad9836f8ecaa3be00d4a",
+      "body_md5": "4bf57d1b9b70cc7f6fda660d18314f44",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_public_provision_permit",
@@ -5994,10 +6051,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "e4864f601e0e8d5e7a6b9aafe5ccfe9d",
+      "body_md5": "512f140e2cd8afc7ddb7f5a9b34fc734",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_record_audit_event",
@@ -6265,10 +6328,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "e7e61812c10f648283c848c13c55fca1",
+      "body_md5": "d909dd3288ed51c6ae445050a4d182ce",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_report_csv_cell",
@@ -6296,10 +6365,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "221f05122c1ae47405d9fe6ed7d55042",
+      "body_md5": "d3c7ceafb383f48c8025efb7c60703fa",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_report_data",
@@ -6337,10 +6412,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "ed68303dfc7a602f4e733d0512a60f4e",
+      "body_md5": "8230e2deb7c5d6d8c413ca072f046264",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_report_rows",
@@ -6368,10 +6449,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "8e4a132a8afd4276ba34d20833622b4a",
+      "body_md5": "34ffd0455213326013e3846158b0b162",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_report_selection",
@@ -6404,10 +6491,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "32e167c168ee17c0df2a58c973e6d441",
+      "body_md5": "229d031179b127ebcc2d4a971c75c785",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_role_editable_permission",
@@ -6458,10 +6551,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "06c9cf3651bf0311098488d115d1d521",
+      "body_md5": "fea7711fa62de23d489f0d2b8d4cbb38",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_role_owner_required",
@@ -6509,10 +6608,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "51d9e052f793e4ceada4e731369d78fc",
+      "body_md5": "31f1502baa9209bacb1b469e6944f824",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_role_scope_mode",
@@ -6555,10 +6660,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "2993548205029d374e6853a46e9cf340",
+      "body_md5": "031f6ac942e82dda323bfa29f962faf1",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_role_valid",
@@ -6611,10 +6722,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "08dbe8796c5744060f0b1ccbaadceb4c",
+      "body_md5": "deb855fd49886ab75fe7308b1de1536d",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_roles_scope",
@@ -6647,10 +6764,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "2ee4b79737b5ccba52e690704312c374",
+      "body_md5": "240954b1b0985f878c14d024ee595cff",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_seat_proration",
@@ -6683,10 +6806,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "583ee1c45d51271fa427510c3b80407f",
+      "body_md5": "51e9697cbd064d4e33887238778fd4e6",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_setup_owner_required",
@@ -6734,10 +6863,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "edace07435967e8eae9da66210ca0c1c",
+      "body_md5": "199b30b380dae083d3b16c8730e7e34f",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_support_permitted",
@@ -6770,10 +6905,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "e52a2d59a2db7314680a99e688fe2677",
+      "body_md5": "9a2d5cde7fd39d93cd5f7be3709d450f",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_team_permit",
@@ -6806,10 +6947,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "becff8de5f38101e5b830f3afba81477",
+      "body_md5": "cfe358fb6ada9067149ebd5dde856f35",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_touch_updated_at",
@@ -6847,7 +6994,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "cc4fd5619e6a8b8512fb5d156b459a1c",
+      "body_md5": "608ef48381668ad5cc300914a52c93f5",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_touch_versioned_updated_at",
@@ -6891,7 +7044,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "0fbf9f60cb7f61f29726c22f3538b502",
+      "body_md5": "efe50a15bb641be0225baf52f582df5d",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "business_transaction_rows",
@@ -6919,10 +7078,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "e304a1f8f37cfe6d83c8e7acfc5c6a50",
+      "body_md5": "d20a8f9260b91066c691ea151cf156fe",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "claim_admin_notification_outbox",
@@ -6930,7 +7095,7 @@
       "schema": "public",
       "anon_execute": false,
       "auth_uid_check": false,
-      "definition_md5": "e47bab9239e077cde6c48d04a061652e",
+      "definition_md5": "5cc4a7fea2b64334e16bc2917c839f81",
       "public_execute": false,
       "security_definer": true,
       "fixed_search_path": [
@@ -6944,10 +7109,23 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "EDGE_SERVICE_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "e47bab9239e077cde6c48d04a061652e",
+      "body_md5": "abfc875449b901fb357da003f6684e7e",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+          "line": 196,
+          "client": "serviceClient",
+          "routine": "claim_admin_notification_outbox"
+        }
+      ]
     },
     {
       "name": "claim_notification_outbox",
@@ -6955,7 +7133,7 @@
       "schema": "public",
       "anon_execute": false,
       "auth_uid_check": false,
-      "definition_md5": "0eef461a77bb8e46473c15843b753f95",
+      "definition_md5": "a7c819609163839e0cecdf9a7f29cec8",
       "public_execute": false,
       "security_definer": true,
       "fixed_search_path": [
@@ -6969,10 +7147,23 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "EDGE_SERVICE_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "0eef461a77bb8e46473c15843b753f95",
+      "body_md5": "eeac97972a6cedf17edbc9b62300477c",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/dispatch-push-reminders/index.ts",
+          "line": 300,
+          "client": "serviceClient",
+          "routine": "claim_notification_outbox"
+        }
+      ]
     },
     {
       "name": "claim_push_test_rate_limit",
@@ -6994,10 +7185,23 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "EDGE_SERVICE_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "3d5720ff7af844d413fdf616255147c6",
+      "body_md5": "d4dd89ac58587ac867615494f4a55580",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/send-test-push/index.ts",
+          "line": 135,
+          "client": "serviceClient",
+          "routine": "claim_push_test_rate_limit"
+        }
+      ]
     },
     {
       "name": "currency_conversion_backfill_dates",
@@ -7019,10 +7223,23 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "EDGE_SERVICE_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "b4c2e7672de899ce0cf281d9e779716b",
+      "body_md5": "3542ff5af411e04ba31a27b7f330347e",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/sync-exchange-rates/index.ts",
+          "line": 160,
+          "client": "serviceClient",
+          "routine": "currency_conversion_backfill_dates"
+        }
+      ]
     },
     {
       "name": "email_gate_session_status",
@@ -7055,10 +7272,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "2959d0b31b1e0cb9cf0afddbb18f2cc4",
+      "body_md5": "7516671039a0e87213560e96ef2e5b23",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "emit_business_change_signal",
@@ -7106,10 +7329,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "cafbb00deb568e2fe6b9fa9adf58d524",
+      "body_md5": "69f442371022b027e5460eac1af87734",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "enforce_business_admin_invitation_launch_control",
@@ -7141,7 +7370,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "7f16e3b50ece3655873cce314e77f690",
+      "body_md5": "0aa9541dfca7e1191682311c3afb3269",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "enforce_business_member_invitation_launch_control",
@@ -7173,7 +7408,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "5ec78679de2c73e673f88f0cefb1067b",
+      "body_md5": "a3feeb7ce7b5283356f2c69ab061ac21",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "enforce_business_member_provision_launch_control",
@@ -7205,7 +7446,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "dca727e2fd647b0bd592fb1298e011f0",
+      "body_md5": "84bbe29fdd5fd75593500bcce9da96c0",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "enforce_business_payment_approval_launch_control",
@@ -7237,7 +7484,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "337f8033aa9451f878c4e93479e52fdc",
+      "body_md5": "ae1b082a422e6a6b4a50197ce3e4049c",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "enforce_business_plan_launch_control",
@@ -7269,7 +7522,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "62e3bc49cd418524c7726df77de549f5",
+      "body_md5": "0c5dd14f046e631010625fec0d3ae5ec",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "enforce_business_subscription_request_launch_control",
@@ -7301,7 +7560,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "e5acafa735c78989b4e886edf34dcf8d",
+      "body_md5": "182907815ef3d90e3c9a145f4c0b5517",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "enforce_business_workspace_launch_control",
@@ -7333,7 +7598,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "b97a6fc1bfe3db2e60da94233df59b96",
+      "body_md5": "2ab4145effe1e33a6aa7ac6362481107",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "enqueue_admin_event_notification",
@@ -7371,10 +7642,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "8d5fa2773327d262396141e988d3ee89",
+      "body_md5": "3add245d905f928c3f9e72e98e6dfd9e",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "enqueue_due_business_bill_reminders",
@@ -7396,10 +7673,23 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "EDGE_SERVICE_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "245f0c49714013c273a7ed973cf9a143",
+      "body_md5": "557cb2cb8af2abf5f65647c29a3ab040",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/dispatch-push-reminders/index.ts",
+          "line": 290,
+          "client": "serviceClient",
+          "routine": "enqueue_due_business_bill_reminders"
+        }
+      ]
     },
     {
       "name": "enqueue_due_payment_reminders",
@@ -7421,10 +7711,23 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "EDGE_SERVICE_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "4e1dafacc0bc48ac2a88c4f379feaa18",
+      "body_md5": "0a49259c7eba2a08bfa7b7ae61779bfb",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/dispatch-push-reminders/index.ts",
+          "line": 272,
+          "client": "serviceClient",
+          "routine": "enqueue_due_payment_reminders"
+        }
+      ]
     },
     {
       "name": "expire_business_invitations",
@@ -7462,10 +7765,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "69bf3d5749a86519b040d51ee3557a0d",
+      "body_md5": "b30262a3d0e10cc4e2e2f2350f868764",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "family_extra_place_proration",
@@ -7498,10 +7807,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "85d39ec8638ee729533859b56250d9b3",
+      "body_md5": "daceb45b669af756c0e6d6697c242e3a",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "generate_business_bill_occurrences",
@@ -7529,10 +7844,23 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER_AND_EDGE_SERVICE_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "f1a376e6ee3444ad0aa7c21c265ca7b0",
+      "body_md5": "b9892cad528086ce485768294b301799",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/dispatch-push-reminders/index.ts",
+          "line": 282,
+          "client": "serviceClient",
+          "routine": "generate_business_bill_occurrences"
+        }
+      ]
     },
     {
       "name": "guard_business_bill_document_registration",
@@ -7564,7 +7892,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "13840a7aa3f899fe733215df07479a50",
+      "body_md5": "ea964168a5668ab0531dcd68b7f2b998",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "guard_business_bill_proof_archive",
@@ -7596,7 +7930,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "2a9bab478c1513a6e885fb3a0168822f",
+      "body_md5": "9d626f507ae9cf18f18338ffd30cbd66",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "guard_business_invitation_notification",
@@ -7628,7 +7968,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "97dad3e6ce154cfee329c2ddcd6d1a91",
+      "body_md5": "4ed60980ffc8cb177fe188f002fcb097",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "guard_business_owner_membership",
@@ -7660,7 +8006,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "4cef4caee410595990aae2338fb98cae",
+      "body_md5": "395ab00bc6e0f0ee3fcfd1f153638b37",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "guard_business_request_bill_link",
@@ -7692,7 +8044,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "caf4650544aabc87687f6fd083e94ddd",
+      "body_md5": "05938a7947356e0352db685fbdd888e8",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "guard_business_workspace_support",
@@ -7724,7 +8082,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "aa5c82e38bf3ecf40b398102d5b5e306",
+      "body_md5": "60747eb98b1a385a524befbc22cb61aa",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "guard_linked_claim_payment",
@@ -7756,7 +8120,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "a9de6c059314ab42e4a5996a7c88d95e",
+      "body_md5": "553e6baade1992ea0006d76460c8ea02",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "guard_payment_record_payer",
@@ -7788,7 +8158,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "4970bb8d10e9059a68c633a167ed4121",
+      "body_md5": "89f61bfd216fac035068b61a5ba5b031",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "initialize_business_workspace_foundation",
@@ -7820,7 +8196,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "910dca1b58f77fce0051dc65b4391b16",
+      "body_md5": "593c7900b9a6eeb840d7e09d04726d0c",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "link_admin_notification_workspace_context",
@@ -7852,7 +8234,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "2a7c4136aa4c45799d298895fa41c2df",
+      "body_md5": "9eefb47c537d8f40332ca4be170a26d0",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "lock_business_claim_reporting_currency",
@@ -7884,7 +8272,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "0e2e984ee5f0a87f1c83540f9dbdeaa3",
+      "body_md5": "af67e4d49ee6ee6977f6a416f63f1075",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "notify_admins_on_public_enquiry",
@@ -7916,7 +8310,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "b77628f78ae98856890be1909a8c6ba6",
+      "body_md5": "a1e3f0057e60fc6529d73c94fb7fac53",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "notify_admins_on_subscription_payment",
@@ -7948,7 +8348,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "4e6893619e2f82d90075c30c385fb514",
+      "body_md5": "bc806eb46b52ad89e083b35b80d8ef0d",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "notify_admins_on_support_ticket",
@@ -7980,7 +8386,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "0d6ddc92a223c34059fa014f2d25f890",
+      "body_md5": "f380ab52bd85c874aa503e445ce115a2",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "prevent_business_audit_mutation",
@@ -8018,7 +8430,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "895f486eb839a367ef92329f7b1a6537",
+      "body_md5": "37f7cfcecc1bdbc2647652fb0f7dc17c",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "product_customer_purchase_enabled",
@@ -8061,10 +8479,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "2523c9f569faf4598501bafb52f85981",
+      "body_md5": "0d48c3d7e28c097e7d90ce7f6c8d4eaf",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "product_customer_workspace_creation_enabled",
@@ -8102,10 +8526,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "5a3efa1201cdb297d6b5859ea2cf6164",
+      "body_md5": "e5f392cc6543f47caedb9d3220bc4ea2",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "provision_budget_user",
@@ -8143,10 +8573,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "9046b8f483d34b91e4799ed6f56a3fba",
+      "body_md5": "1acf655703a9b7dd598f7e11e070bf98",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "record_admin_notification_outbox_result",
@@ -8154,7 +8590,7 @@
       "schema": "public",
       "anon_execute": false,
       "auth_uid_check": false,
-      "definition_md5": "6648fd0445cc6a1143463a62f1f21826",
+      "definition_md5": "f1ee6c1056405b6f0d202ddf4061e8db",
       "public_execute": false,
       "security_definer": true,
       "fixed_search_path": [
@@ -8168,10 +8604,16 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "LEGACY_UNFENCED_RESULT_SIGNATURE_RETAINS_SERVICE_GRANT_BUT_FAILS_CLOSED",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "6648fd0445cc6a1143463a62f1f21826",
+      "body_md5": "5f1d4e4f6d7b2c0f31ce6f914ed89b8f",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "record_admin_notification_outbox_result",
@@ -8179,7 +8621,7 @@
       "schema": "public",
       "anon_execute": false,
       "auth_uid_check": false,
-      "definition_md5": "0d1c0eee181db79567de8e198676bf51",
+      "definition_md5": "742905b5d1a943ddc3e05e6f1d5a8e78",
       "public_execute": false,
       "security_definer": true,
       "fixed_search_path": [
@@ -8196,7 +8638,22 @@
       "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "0d1c0eee181db79567de8e198676bf51",
+      "body_md5": "6c0470b99666f144596147934ec49279",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/_shared/outbox-claim.mjs",
+          "line": 33,
+          "routine": "record_admin_notification_outbox_result",
+          "signature_arguments": 7,
+          "client": "serviceClient via dispatcher",
+          "mechanism": "record_${table}_result allowlisted table mapping"
+        }
+      ]
     },
     {
       "name": "record_admin_user_invitation_delivery",
@@ -8218,10 +8675,29 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "EDGE_SERVICE_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "8f96fc38312c72c4043a98a5b02e7177",
+      "body_md5": "52be42a720c122daa6af61861bca29d8",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/invite-admin-user/index.ts",
+          "line": 262,
+          "client": "serviceClient",
+          "routine": "record_admin_user_invitation_delivery"
+        },
+        {
+          "path": "supabase/functions/invite-admin-user/index.ts",
+          "line": 273,
+          "client": "serviceClient",
+          "routine": "record_admin_user_invitation_delivery"
+        }
+      ]
     },
     {
       "name": "record_business_invitation_delivery",
@@ -8243,10 +8719,23 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "EDGE_SERVICE_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "30de77885fa0be2732e6a4aa4dea2d78",
+      "body_md5": "a080e343dfd3aa1dbbe136e1d024a084",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/invite-business-member/index.ts",
+          "line": 89,
+          "client": "serviceClient",
+          "routine": "record_business_invitation_delivery"
+        }
+      ]
     },
     {
       "name": "record_notification_outbox_result",
@@ -8254,7 +8743,7 @@
       "schema": "public",
       "anon_execute": false,
       "auth_uid_check": false,
-      "definition_md5": "9b938262e794a74efd88fd3c9fcc34a8",
+      "definition_md5": "e0248b99ded506c01933d06cdd639da5",
       "public_execute": false,
       "security_definer": true,
       "fixed_search_path": [
@@ -8268,10 +8757,16 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "LEGACY_UNFENCED_RESULT_SIGNATURE_RETAINS_SERVICE_GRANT_BUT_FAILS_CLOSED",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "9b938262e794a74efd88fd3c9fcc34a8",
+      "body_md5": "5f1d4e4f6d7b2c0f31ce6f914ed89b8f",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "record_notification_outbox_result",
@@ -8279,7 +8774,7 @@
       "schema": "public",
       "anon_execute": false,
       "auth_uid_check": false,
-      "definition_md5": "505484943bc286a0f03873d034321909",
+      "definition_md5": "67b40c312df4d99770a5b94f7cc99621",
       "public_execute": false,
       "security_definer": true,
       "fixed_search_path": [
@@ -8296,7 +8791,22 @@
       "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "505484943bc286a0f03873d034321909",
+      "body_md5": "4572d219e9b2217900270aecbc62c4e4",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/_shared/outbox-claim.mjs",
+          "line": 33,
+          "routine": "record_notification_outbox_result",
+          "signature_arguments": 7,
+          "client": "serviceClient via dispatcher",
+          "mechanism": "record_${table}_result allowlisted table mapping"
+        }
+      ]
     },
     {
       "name": "require_business_workspace_row",
@@ -8376,7 +8886,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "52de6ca2b68ee1b09ecb59969e4bbf0d",
+      "body_md5": "228ea1369e4d9e3dfa53ab77ba96b2b3",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "reserve_admin_user_invitation",
@@ -8398,10 +8914,23 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "EDGE_SERVICE_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "358a64a49d443765d708cbcc898f7b17",
+      "body_md5": "dc262400133a59a2f5a074d1bc30d15f",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/invite-admin-user/index.ts",
+          "line": 189,
+          "client": "serviceClient",
+          "routine": "reserve_admin_user_invitation"
+        }
+      ]
     },
     {
       "name": "reset_business_capacity_after_manual_grant",
@@ -8433,7 +8962,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "8133503d2550bd342ab1e1feb9fb47b6",
+      "body_md5": "e8ab7506166cd8d8ae033b8c28823f7a",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "review_subscription_payment_before_business_public",
@@ -8461,10 +8996,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "742d8a985188aa817cd187b9b50cb045",
+      "body_md5": "b2786310727d9eb1c41038f2e356f851",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "review_subscription_payment_before_business_stage10",
@@ -8492,10 +9033,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "8b958e90683dfd4eaff678945a3ab5c4",
+      "body_md5": "f786734a6ca38a44ef725a1fba84855e",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "save_business_profile",
@@ -8503,7 +9050,7 @@
       "schema": "public",
       "anon_execute": false,
       "auth_uid_check": true,
-      "definition_md5": "88ec628fc721f7733efc1c89e977926d",
+      "definition_md5": "b602aa560b9fa3d34e15ef829bc35937",
       "public_execute": false,
       "security_definer": true,
       "fixed_search_path": [
@@ -8517,10 +9064,16 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "OLDER_PROFILE_OVERLOAD_WITH_AUTHENTICATED_GRANT_REVOKED_NO_SCANNED_CALLER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "88ec628fc721f7733efc1c89e977926d",
+      "body_md5": "c30d926dc1ed2b8fa39ef222ee0a3e9c",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "seed_business_billing_settings",
@@ -8552,7 +9105,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "999575a6ca05d33ca185774758b8dd6c",
+      "body_md5": "99fa94cb13c2cdd89d50b6e0821f5cf2",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "seed_business_roles",
@@ -8580,10 +9139,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "68df49958ba04188df86ec114efeb51f",
+      "body_md5": "f27347b757ce385872618ff0017511d4",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "seed_business_roles_trigger",
@@ -8615,7 +9180,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "8efff5826051586adfaf42f932354f26",
+      "body_md5": "bf6cf762e0258043bfc5b2ac37a92e81",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "seed_business_workspace_foundation",
@@ -8643,10 +9214,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "d8c8805820c9b761f59ffb94fa43e090",
+      "body_md5": "55c3a0aee2a63b6b42672ccca2012049",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "set_admin_notification_workspace_context",
@@ -8678,7 +9255,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "ef84a52c55f34fe01683b1a7abe0d460",
+      "body_md5": "e3cbab378306ff1caf3f0cebc9bb2e71",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "set_notification_workspace_context",
@@ -8710,7 +9293,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "2ce762a5b43957403362492ee05f07d2",
+      "body_md5": "bcd5c27e47a0701f145dc4fdf1b37b1c",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "set_payment_outbox_workspace_context",
@@ -8742,7 +9331,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "00b7b24209374b198f199ec8c69b6636",
+      "body_md5": "639de26a0fceb2fe579d1ceab033e71a",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "signal_business_plan_billing_change",
@@ -8774,7 +9369,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "261c63e482bdd61fd8416b3af6c3bc95",
+      "body_md5": "c5c5547f423b6bd1a8ac5d817f2eb47a",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "signal_business_public_catalogue",
@@ -8812,7 +9413,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "249a1203098fb1789870d4217486e110",
+      "body_md5": "e778452fbfdf7e1e20125daba697aee2",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "signal_business_row_change",
@@ -8976,7 +9583,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "d815338d2e20d8c7f871156dd2159078",
+      "body_md5": "c31a5a05cfdba332b6c4e12f7decf82d",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "snapshot_admin_user_invitation_price",
@@ -9008,7 +9621,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "a06cadc32d0cd3786c83a36dac8e36e1",
+      "body_md5": "7a7550e3182b76e5e584fcabf00c99f0",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "store_api_payment_conversion",
@@ -9056,10 +9675,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "a26aad6f34e996f4ba91d3881fd0ae54",
+      "body_md5": "43d5da380aee0af45113b0f663561726",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "submit_verified_public_enquiry",
@@ -9082,10 +9707,24 @@
       "trigger_function": false,
       "static_database_callers": [],
       "attached_triggers": [],
-      "intended_caller_class": "EXTERNAL_BACKEND_OR_LEGACY_REQUIRES_SOURCE_MAPPING",
+      "intended_caller_class": "EDGE_SERVICE_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "94aa499a68054bf5a58f00e49aadc60f",
+      "body_md5": "6859174f4cdcf1354f824431b0399800",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": [
+        {
+          "path": "supabase/functions/submit-enquiry/handler.mjs",
+          "line": 163,
+          "client": "RAW_HTTP_SERVICE_PATH",
+          "routine": "submit_verified_public_enquiry",
+          "dynamic_prefix_only": false
+        }
+      ]
     },
     {
       "name": "sync_business_invitation_notification",
@@ -9117,7 +9756,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "d5270bfe81d3c034af47d6a0ffe5d6bb",
+      "body_md5": "fefafde891ab83cc54b62099a2229b0d",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "sync_business_public_prices",
@@ -9145,10 +9790,16 @@
         }
       ],
       "attached_triggers": [],
-      "intended_caller_class": "INTERNAL_DATABASE_HELPER_OR_BACKEND_RPC",
+      "intended_caller_class": "INTERNAL_DATABASE_HELPER",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "ab55714bb9717a7f412646876a0e8fb3",
+      "body_md5": "8ec7f2f82ea659a1abf22dd5e0840c72",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "sync_business_request_bill_state",
@@ -9180,7 +9831,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "eafe471f71e34ad42fd6a08ed1220375",
+      "body_md5": "b11a3fee664b816e3283d7642c7a70ec",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "touch_admin_notification_outbox_updated_at",
@@ -9212,7 +9869,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "568e119e20ec88c01dd7f976bb337a23",
+      "body_md5": "608ef48381668ad5cc300914a52c93f5",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "touch_admin_user_invitation_updated_at",
@@ -9244,7 +9907,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "44793e337d7655c6446a1d7720215361",
+      "body_md5": "608ef48381668ad5cc300914a52c93f5",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "touch_cashbook_account_updated_at",
@@ -9276,7 +9945,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "40a64644e679e77f7ac4907f2c491e07",
+      "body_md5": "608ef48381668ad5cc300914a52c93f5",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "touch_notification_outbox_updated_at",
@@ -9308,7 +9983,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "dc97e75961247f381d4cd884359a63d4",
+      "body_md5": "608ef48381668ad5cc300914a52c93f5",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "touch_support_ticket_from_message",
@@ -9340,7 +10021,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "8b42ca6b1203dbc2627a0683ad494542",
+      "body_md5": "5cbe59ec8ce0607a80c117d7c2585c8e",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "touch_support_ticket_updated_at",
@@ -9372,7 +10059,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "daf619695087c56581e1283b75880b2f",
+      "body_md5": "5daea838521b7ec3976c548df513cac2",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "validate_business_document_parent",
@@ -9404,7 +10097,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "1bb4a062c34300b59599a2a87dd25a1a",
+      "body_md5": "a85bfc3b525ef3a5b3674d164758c4fa",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "validate_business_invitation_role",
@@ -9436,7 +10135,13 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "270f52a8f094cbb14d51390b273ba2f9",
+      "body_md5": "98d3315a3394cf487684014b5cabb7ab",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     },
     {
       "name": "validate_business_public_plan",
@@ -9474,9 +10179,175 @@
       "intended_caller_class": "ATTACHED_DATABASE_TRIGGER_NOT_DIRECT_RPC",
       "human_direct_execute": "DENIED",
       "anonymous_direct_execute": "DENIED",
-      "service_execute_grant_is_not_positive_call_acceptance": true
+      "service_execute_grant_is_not_positive_call_acceptance": true,
+      "default_rendered_definition_md5": "f08c874ccbc68342c78cc49a691fe15b",
+      "body_md5": "cdffda3129d78f12077e7c4caf4f5599",
+      "fingerprint_rendering_search_path": "pg_catalog",
+      "actual_anon_execute_denied": true,
+      "actual_authenticated_execute_denied": true,
+      "source_Edge_callers": []
     }
   ],
-  "static_call_graph_limits": "Name-based body references include textual matches and do not prove runtime reachability; attached pg_trigger metadata is independent.",
-  "cron_catalog_present": false
+  "source_call_site_scan": {
+    "source_parent": "a2b2a8a6c9fdff0bf4d149ca9fc2e550ed553d7c",
+    "local_source_unchanged_since_parent": true,
+    "literal_call_sites": [
+      {
+        "path": "supabase/functions/send-test-push/index.ts",
+        "line": 135,
+        "client": "serviceClient",
+        "routine": "claim_push_test_rate_limit"
+      },
+      {
+        "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+        "line": 196,
+        "client": "serviceClient",
+        "routine": "claim_admin_notification_outbox"
+      },
+      {
+        "path": "supabase/functions/invite-business-member/index.ts",
+        "line": 54,
+        "client": "userClient",
+        "routine": "prepare_business_invitation_resend"
+      },
+      {
+        "path": "supabase/functions/invite-business-member/index.ts",
+        "line": 62,
+        "client": "userClient",
+        "routine": "create_business_invitation"
+      },
+      {
+        "path": "supabase/functions/invite-business-member/index.ts",
+        "line": 89,
+        "client": "serviceClient",
+        "routine": "record_business_invitation_delivery"
+      },
+      {
+        "path": "supabase/functions/dispatch-push-reminders/index.ts",
+        "line": 106,
+        "client": "serviceClient",
+        "routine": "payment_reminder_allowed"
+      },
+      {
+        "path": "supabase/functions/dispatch-push-reminders/index.ts",
+        "line": 202,
+        "client": "serviceClient",
+        "routine": "business_bill_reminder_allowed"
+      },
+      {
+        "path": "supabase/functions/dispatch-push-reminders/index.ts",
+        "line": 272,
+        "client": "serviceClient",
+        "routine": "enqueue_due_payment_reminders"
+      },
+      {
+        "path": "supabase/functions/dispatch-push-reminders/index.ts",
+        "line": 282,
+        "client": "serviceClient",
+        "routine": "generate_business_bill_occurrences"
+      },
+      {
+        "path": "supabase/functions/dispatch-push-reminders/index.ts",
+        "line": 290,
+        "client": "serviceClient",
+        "routine": "enqueue_due_business_bill_reminders"
+      },
+      {
+        "path": "supabase/functions/dispatch-push-reminders/index.ts",
+        "line": 300,
+        "client": "serviceClient",
+        "routine": "claim_notification_outbox"
+      },
+      {
+        "path": "supabase/functions/invite-admin-user/index.ts",
+        "line": 189,
+        "client": "serviceClient",
+        "routine": "reserve_admin_user_invitation"
+      },
+      {
+        "path": "supabase/functions/invite-admin-user/index.ts",
+        "line": 262,
+        "client": "serviceClient",
+        "routine": "record_admin_user_invitation_delivery"
+      },
+      {
+        "path": "supabase/functions/invite-admin-user/index.ts",
+        "line": 273,
+        "client": "serviceClient",
+        "routine": "record_admin_user_invitation_delivery"
+      },
+      {
+        "path": "supabase/functions/sync-exchange-rates/index.ts",
+        "line": 160,
+        "client": "serviceClient",
+        "routine": "currency_conversion_backfill_dates"
+      },
+      {
+        "path": "supabase/functions/sync-exchange-rates/index.ts",
+        "line": 182,
+        "client": "serviceClient",
+        "routine": "backfill_currency_conversions"
+      },
+      {
+        "path": "supabase/functions/submit-enquiry/handler.mjs",
+        "line": 163,
+        "client": "RAW_HTTP_SERVICE_PATH",
+        "routine": "submit_verified_public_enquiry",
+        "dynamic_prefix_only": false
+      },
+      {
+        "path": "supabase/functions/_shared/email-session-assurance.mjs",
+        "line": 16,
+        "client": "userClient",
+        "routine": "email_gate_current_session_verified"
+      },
+      {
+        "path": "supabase/functions/_shared/email-verification-gateway.mjs",
+        "line": 89,
+        "client": "RAW_HTTP_SERVICE_PATH",
+        "routine": "email_gate_",
+        "dynamic_prefix_only": true
+      },
+      {
+        "path": "supabase/functions/_shared/admin-assurance.mjs",
+        "line": 5,
+        "client": "userClient",
+        "routine": "admin_mfa_status"
+      }
+    ],
+    "source_SHA256": {
+      "supabase/functions/_shared/admin-assurance.mjs": "afd30ba055c453d85f6ad87f43d0ea8903e6ef31b5fe483d877f430076b41278",
+      "supabase/functions/_shared/email-session-assurance.mjs": "8caf0b7d9267ae2034f0a3ccb820c8aaf7e3895408f0b300b168438e0a819528",
+      "supabase/functions/_shared/email-verification-gateway.mjs": "aa3225be25f3d8a446b47c937c28fd42d7ce26c8d93e7c5940bfb08c9312531f",
+      "supabase/functions/_shared/outbox-claim.mjs": "2587dbfb8461e7b23cfe79f063f1ea4033233d1706a80972db52672469189f30",
+      "supabase/functions/dispatch-admin-notifications/index.ts": "a61e77fd7f632af8c239b13844e1fdae84bc68c7d721abf3164dffad3c45402f",
+      "supabase/functions/dispatch-push-reminders/index.ts": "565fd4c81c172d88ffd92f0bbcf1bce70d7c4eb7c6e117f1aa8ab3489a74e55d",
+      "supabase/functions/invite-admin-user/index.ts": "1f69b0d15b8305acd3b5fb7aa2d6f2c14045190c17dc6f17ee754a5274c4d39f",
+      "supabase/functions/invite-business-member/index.ts": "8ae109f85763672b655ec8b390d12bbf2e11bbc32dea94cae91c830f863e3521",
+      "supabase/functions/send-test-push/index.ts": "3952c165396ac865c6b213d9c3b14025cbdaa1eab8e7cf7d3bb9abd34d8f3473",
+      "supabase/functions/submit-enquiry/handler.mjs": "392aa8ff50c4ba40fc122b1dc62786261f1e90faf407474e9339319a680da761",
+      "supabase/functions/sync-exchange-rates/index.ts": "20636029adcc4550864d31b32c676e4b5c585c12e3301b4ccef47e70234aa6c7"
+    }
+  },
+  "dynamic_result_callers": [
+    {
+      "path": "supabase/functions/_shared/outbox-claim.mjs",
+      "line": 33,
+      "routine": "record_notification_outbox_result",
+      "signature_arguments": 7,
+      "client": "serviceClient via dispatcher",
+      "mechanism": "record_${table}_result allowlisted table mapping"
+    },
+    {
+      "path": "supabase/functions/_shared/outbox-claim.mjs",
+      "line": 33,
+      "routine": "record_admin_notification_outbox_result",
+      "signature_arguments": 7,
+      "client": "serviceClient via dispatcher",
+      "mechanism": "record_${table}_result allowlisted table mapping"
+    }
+  ],
+  "source_graph_limits": "Name-based body references and literal call-site scans identify candidate callers, not proof of runtime reachability; current deployed source parity uses prior dispatcher receipts. The dynamic email_gate_ prefix is excluded from literal signature mapping.",
+  "cron_catalog_present": false,
+  "all_46_trigger_functions_have_attached_trigger_metadata": true
 }

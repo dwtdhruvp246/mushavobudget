@@ -7194,13 +7194,13 @@
         "status": "IN_PROGRESS"
       },
       "lettered_batch": {
-        "letter": "X",
+        "letter": "Y",
         "final_letter": "Z",
-        "label": "Batch X/Z",
-        "title": "Personal/Family/Business roles and legitimate finance",
+        "label": "Batch Y/Z",
+        "title": "Backend caller permissions, real database races and containment",
         "status": "IN_PROGRESS"
       },
-      "compact_display": "Stage 3/10 | FR.2/8 | Batch X/Z — IN PROGRESS",
+      "compact_display": "Stage 3/10 | FR.2/8 | Batch Y/Z — IN PROGRESS",
       "labels_are_not_completion_percentages": true,
       "current_hierarchy_only_not_a_universal_FR_to_stage_mapping": true,
       "batch_completion_requires_its_full_exit_evidence": true,
@@ -7213,24 +7213,32 @@
         }
       ],
       "latest_completed_action": {
-        "title": "Private-file signed URL expiry and cache-setting comparison",
+        "title": "Installed service-only caller matrix and database-role boundaries",
         "status": "COMPLETE",
-        "scope": "Two harmless Personal files; warmed and unused signed URLs denied after expiry. Original Family membership-removal cached-copy finding remains open.",
-        "selected_live_assertions": 21,
-        "workflow_guard_tests": 84,
+        "scope": "100 exact signatures denied under both actual database roles; four read-only service calls passed. Modeled role claims; no new HTTP login or provider delivery.",
+        "actual_database_role_denials": 200,
+        "permitted_service_read_only_calls": 4,
         "exit_code": 0,
-        "evidence": "docs/security-audit/security-fr-2-batch-x-private-file-cache-staging-result.json",
-        "previous_completed_action": {
-          "title": "Three ordinary Business actors, manager removal and existing-session revocation",
-          "selected_live_assertions": 42,
-          "exit_code": 0,
-          "evidence": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json"
-        }
+        "evidence": "docs/security-audit/security-fr-2-batch-y-installed-caller-matrix-staging-result.json",
+        "previous_completed_actions": [
+          {
+            "title": "Three ordinary Business actors and same-session revocation",
+            "selected_live_assertions": 42,
+            "exit_code": 0,
+            "evidence": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json"
+          },
+          {
+            "title": "Signed URL expiry and cache-setting observations",
+            "selected_live_assertions": 21,
+            "exit_code": 0,
+            "evidence": "docs/security-audit/security-fr-2-batch-x-private-file-cache-staging-result.json"
+          }
+        ]
       },
       "next_required_action": {
-        "title": "Remaining installed backend caller and authorization-change coverage",
+        "title": "Remaining original backend authorization-change and integrated exits",
         "status": "PENDING",
-        "scope": "Reconcile original finite Batch Y cases and existing passes before selecting affected live tests. Cached-original-file serving contract and integrated Batch Z remain open.",
+        "scope": "Reconcile prior service-workflow evidence and applicable original current-policy races; resolve the cached-original-file contract before justified Batch Z checks.",
         "third_ordinary_credentials_required": false,
         "checkpoint": "docs/security-audit/SECURITY_FR_2_RESUME_CHECKPOINT_20261107.md"
       },

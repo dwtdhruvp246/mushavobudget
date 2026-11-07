@@ -12,19 +12,20 @@ Adopted24 October2026 at the owner's request (FRE177). This convention applies t
 
 **Stage 3/10 — Authorization and Admin MFA — IN PROGRESS**  
 **FR.2/8 — Authorization, Admin MFA, authentication and finance integrity — IN PROGRESS**  
+**Batch Y/Z — Backend caller permissions, real database races and containment — IN PROGRESS**  
 **Batch X/Z — Personal/Family/Business roles and legitimate finance — IN PROGRESS**  
 **Batch V/Z — held items remain open: SMTP and independent Admin recovery owner-deferred; historical MFA scope on hold under the selected password-only policy**  
 **Batch W/Z — COMPLETE for the agreed staging scope; signed-in password failure/retry remains owner-deferred**
 
 Compact form for routine updates:
 
-`Stage 3/10 | FR.2/8 | Batch X/Z — IN PROGRESS`
+`Stage 3/10 | FR.2/8 | Batch Y/Z — IN PROGRESS`
 
 Current display synchronized on 7 November 2026 (FRE320). The dated October blockquotes above remain historical checkpoints. Formal stage/group titles are retained; current authentication policy is described in the policy reconciliation and later evidence.
 
 These labels identify the current point and plan endpoint, not completed counts or percentages. The roadmap includes Stage 0. The fixed U–Z baseline is preserved; the current remaining-required ledger contains V, X, Y and Z (four packages). W is complete at the owner-agreed active scope, with its deferred variant recorded explicitly.
 
-The third ordinary credential is now verified. The real three-actor Business permission/removal scope passed 42 live assertions (exit 0), including existing-session revocation after manager removal. The subsequent private-file cache comparison passed 21 live assertions (exit 0): warmed and unused signed links were denied after expiry for both requested upload cache settings. The earlier warmed authenticated original URL after Family removal remains open. Remaining work includes the installed backend caller/authorization-change reconciliation and integrated Batch Z. [Current checkpoint](SECURITY_FR_2_RESUME_CHECKPOINT_20261107.md), [team receipt](security-fr-2-batch-x-three-ordinary-team-staging-result.json), [cache receipt](security-fr-2-batch-x-private-file-cache-staging-result.json). Batch X, FR.2 and Stage 3 remain IN PROGRESS.
+The third ordinary credential is now verified. The real three-actor Business permission/removal scope passed 42 live assertions (exit 0), including existing-session revocation after manager removal. The subsequent private-file cache comparison passed 21 live assertions (exit 0): warmed and unused signed links were denied after expiry for both requested upload cache settings. The earlier warmed authenticated original URL after Family removal remains open. The installed service-only caller matrix now covers 100 signatures: actual anonymous and authenticated role execution was denied for every signature (200 denials); four read-only service positives passed, exit 0. [Backend matrix receipt](security-fr-2-batch-y-installed-caller-matrix-staging-result.json). Applicable original authorization-change races, the cached-original contract and integrated Batch Z remain open. [Current checkpoint](SECURITY_FR_2_RESUME_CHECKPOINT_20261107.md), [team receipt](security-fr-2-batch-x-three-ordinary-team-staging-result.json), [cache receipt](security-fr-2-batch-x-private-file-cache-staging-result.json). Batch X, FR.2 and Stage 3 remain IN PROGRESS.
 
 ## Execution agreement now in force
 

@@ -5,11 +5,11 @@
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
   "active_step": "FR.2.6",
-  "source_parent_commit": "611761d71635b5c6ed398fdc58f54c9a6f59feab",
+  "source_parent_commit": "d4ba627a05b8b43bbe2adb34e0a43bd73505e560",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE315",
+  "latest_evidence": "FRE316",
   "batches": [
     {
       "id": "FR.1",
@@ -1703,7 +1703,8 @@
           "dispatcher_receipt": "docs/security-audit/security-fr-2-batch-y-dispatcher-staging-result.json",
           "remaining_X_coverage_ledger": "docs/security-audit/security-fr-2-batch-x-remaining-coverage-ledger.json",
           "account_suspension_receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json",
-          "real_queue_overlap_receipt": "docs/security-audit/security-fr-2-batch-y-real-queue-overlap-result.json"
+          "real_queue_overlap_receipt": "docs/security-audit/security-fr-2-batch-y-real-queue-overlap-result.json",
+          "business_finance_receipt": "docs/security-audit/security-fr-2-batch-x-business-finance-staging-result.json"
         }
       ],
       "readiness_handoff": "docs/security-audit/SECURITY_FR_2_1_READINESS_HANDOFF.md",
@@ -1714,8 +1715,8 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "BATCH_X_REMAINING_FINANCE_AND_ENTITLEMENT_HTTP_FLOWS_Y_INDEPENDENT_OVERLAP_CONNECTION",
-      "latest_evidence": "FRE315"
+      "next_step": "BATCH_X_THIRD_ACTOR_AND_EXPIRY_Y_INDEPENDENT_OVERLAP_CONNECTION_Z_RECONCILIATION",
+      "latest_evidence": "FRE316"
     },
     {
       "id": "FR.3",
@@ -1765,7 +1766,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "BATCH_X_REMAINING_FINANCE_AND_ENTITLEMENT_HTTP_FLOWS_Y_INDEPENDENT_OVERLAP_CONNECTION",
+  "next_step": "BATCH_X_THIRD_ACTOR_AND_EXPIRY_Y_INDEPENDENT_OVERLAP_CONNECTION_Z_RECONCILIATION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -8315,5 +8316,14 @@
     "receipt": "docs/security-audit/security-fr-2-batch-y-real-queue-overlap-result.json",
     "fixture_removed": true,
     "repeat_serialized_attempt": false
+  },
+  "batch_X_business_finance": {
+    "status": "REAL_SESSION_REQUEST_APPROVAL_LINKED_BILL_AND_PAYMENT_REPLAY_SCOPED_PASS",
+    "receipt": "docs/security-audit/security-fr-2-batch-x-business-finance-staging-result.json",
+    "selected_HTTP_assertions": 36,
+    "temporary_member_removed": true,
+    "one_seat_restored": true,
+    "fixture_suspended": true,
+    "remaining_CI_sessions": 0
   }
 }

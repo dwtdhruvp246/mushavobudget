@@ -1,5 +1,5 @@
 # Mushavo Budget — complete stages, FR groups and batches
-As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.16
+As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.17
 
 ## Read this structure correctly
 
@@ -16,6 +16,8 @@ Nineteen staging database checks passed with modeled claims. Twenty genuine host
 Twenty genuine account-suspension HTTP assertions passed. The existing ordinary session lost application access immediately, a protected mutation was rejected before lookup, other accounts retained access, and the normal Admin restoration recovered the same session and workspace snapshot. The account is active and all six sessions across the initial acknowledgement review and completed run are absent. [Suspension evidence](security-fr-2-batch-x-account-suspension-staging-result.json).
 
 The real queue-overlap attempt did not establish concurrency: the connection serialized the requests. Its sole synthetic queue item was removed and both queues remain empty. This is an open independent-connection acceptance case, with no product defect inferred. [Overlap receipt](security-fr-2-batch-y-real-queue-overlap-result.json).
+
+Thirty-six genuine Business finance HTTP assertions passed. The controlled finance manager approved the Owner's request, created one linked bill and recorded two synthetic ledger payments totaling USD 1. Self-approval, stale review, overpayment and invalid cancellation were rejected; replay preserved original amounts and payment sources. The request is fulfilled and the bill paid. The temporary manager was removed, one seat restored and the workspace suspended; all CI sessions are absent and original fixture fingerprints match. [Finance workflow evidence](security-fr-2-batch-x-business-finance-staging-result.json).
 
 There are three overlapping views of the SAME project:
 - **Main Stages 0–10** describe the product/security areas.

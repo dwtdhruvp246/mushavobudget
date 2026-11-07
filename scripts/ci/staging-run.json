@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "run_id": "2026-11-07-batch-x-business-finance",
   "scope": "business-finance-workflow",
   "project": "dczlddwbtgvfdujgcitb",
@@ -14,5 +14,7 @@
   ],
   "source_parent_commit": "7815d425cff73fb13cd2f46bb23b7f812bac4ba5",
   "plan_path": "docs/security-audit/security-fr-2-batch-x-business-finance-plan.json",
-  "no_automatic_rerun": true
+  "no_automatic_rerun": true,
+  "completed_after_workflow_run": "42356288736",
+  "completion_receipt": "docs/security-audit/security-fr-2-batch-x-business-finance-staging-result.json"
 }

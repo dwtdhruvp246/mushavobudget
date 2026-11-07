@@ -22,10 +22,11 @@
     {
       "original": "B05 Bill and spending-request lifecycle",
       "original_state": "BLOCKED_NOT_SELECTED_FOR_THIS_TWO_ACCOUNT_BATCH",
-      "current_state": "SCOPED_POSTGRES_PASS_AND_HTTP_REQUEST_ID_RACE_PASS_WIDER_REAL_SESSION_FLOW_OPEN",
+      "current_state": "SCOPED_HTTP_REQUEST_APPROVAL_LINKED_BILL_PARTIAL_FINAL_PAYMENT_AND_REPLAY_PASS",
       "evidence": [
         "docs/security-audit/security-fr-2-batch-x-staging-database-and-receipt-readiness.json",
-        "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json"
+        "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
+        "docs/security-audit/security-fr-2-batch-x-business-finance-staging-result.json"
       ]
     },
     {
@@ -83,7 +84,7 @@
   "current_read_only_business_snapshot": {
     "scope": "READ_ONLY_POST_API_BUSINESS_COUNTS_RETAINED_FINGERPRINTS_AND_CONVERSION_CONSISTENCY",
     "stage_step": "FR.2.3_BUSINESS_POST_BATCH_REVIEW",
-    "checked_UTC": "2026-11-07T07:51:27.182992+00:00",
+    "checked_UTC": "2026-11-07T08:38:53.650617+00:00",
     "business_state": [
       {
         "fixture": "PRIMARY",
@@ -171,5 +172,6 @@
   "full_lettered_batch_X_complete": false,
   "stage_3_complete": false,
   "findings_closed": [],
-  "additional_account_suspension_receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json"
+  "additional_account_suspension_receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json",
+  "additional_business_finance_receipt": "docs/security-audit/security-fr-2-batch-x-business-finance-staging-result.json"
 }

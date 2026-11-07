@@ -15,6 +15,7 @@ import { checkFamilyProof, isFamilyProofPlan } from './staging-family-proof.mjs'
 import { checkBusinessExpiry, isBusinessExpiryPlan } from './staging-business-expiry.mjs';
 import { checkBusinessTeam, isBusinessTeamPlan } from './staging-business-team.mjs';
 import { checkPrivateFileCache, isPrivateFileCachePlan } from './staging-private-file-cache.mjs';
+import { checkPostgresAuthorizationRace, isPostgresAuthorizationRacePlan } from './staging-postgres-authorization-race.mjs';
 
 async function main() {
   let report;
@@ -45,11 +46,12 @@ async function main() {
     const businessExpiry = isBusinessExpiryPlan(plan);
     const businessTeam = isBusinessTeamPlan(plan);
     const privateFileCache = isPrivateFileCachePlan(plan);
+    const postgresAuthorizationRace = isPostgresAuthorizationRacePlan(plan);
     need(confirmation || passwordSessions || accountSwitch || recovery || recoverySaveRetry || recoveryFeedback
-      || controlledBrowser || adminBoundaries || businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof || businessExpiry || businessTeam || privateFileCache, 'REVIEWED_RUN_SCOPE_REQUIRED');
+      || controlledBrowser || adminBoundaries || businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof || businessExpiry || businessTeam || privateFileCache || postgresAuthorizationRace, 'REVIEWED_RUN_SCOPE_REQUIRED');
     if (adminBoundaries) progress = 'Stage 3/10 | FR.2/8 | Batch V/Z';
     if (businessReceipt) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
-    if (dispatcherBoundaries) progress = 'Stage 3/10 | FR.2/8 | Batch Y/Z';
+    if (dispatcherBoundaries || postgresAuthorizationRace) progress = 'Stage 3/10 | FR.2/8 | Batch Y/Z';
     if (accountSuspension) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     if (businessFinance) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     if (familyProof || businessExpiry || businessTeam || privateFileCache) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
@@ -58,6 +60,7 @@ async function main() {
     const fixtureAction = process.env.MUSHAVO_STAGING_RECEIPT_ADMIN_ACTION || null;
     need(!fixtureAction || businessReceipt && ['provision', 'suspend'].includes(fixtureAction), 'REVIEWED_FIXTURE_ACTION_REQUIRED');
     if (businessReceipt) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'BUSINESS_FIXTURE_RERUN_REFUSED');
+    if (postgresAuthorizationRace) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'POSTGRES_AUTHORIZATION_RACE_RERUN_REFUSED');
     if (dispatcherBoundaries) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'DISPATCHER_BOUNDARY_RERUN_REFUSED');
     if (accountSuspension) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'ACCOUNT_SUSPENSION_RERUN_REFUSED');
     if (businessFinance) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'BUSINESS_FINANCE_RERUN_REFUSED');
@@ -65,7 +68,7 @@ async function main() {
     if (businessExpiry) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'BUSINESS_EXPIRY_RERUN_REFUSED');
     if (businessTeam) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'BUSINESS_TEAM_RERUN_REFUSED');
     if (privateFileCache) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'PRIVATE_FILE_CACHE_RERUN_REFUSED');
-    const chromium = businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof || businessExpiry || businessTeam || privateFileCache ? null
+    const chromium = businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof || businessExpiry || businessTeam || privateFileCache || postgresAuthorizationRace ? null
       : (await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs')).chromium;
     if (controlledBrowser) {
       const { checkControlledBrowser } = await import('./staging-controlled-browser.mjs');
@@ -95,6 +98,12 @@ async function main() {
       delete report.settings_or_finance_writes_requested;
       report.disposable_fixture_action = fixtureAction || 'exercise';
       report.full_lettered_batch_X_complete = false;
+      report.full_lettered_batch_Y_complete = false;
+    } else if (postgresAuthorizationRace) {
+      report = await checkStagingAccess(accounts, apiTransport(config.key, agent),
+        args => checkPostgresAuthorizationRace(args, config.key, agent, plan), { accountScope });
+      delete report.full_lettered_batch_W_complete;
+      delete report.settings_or_finance_writes_requested;
       report.full_lettered_batch_Y_complete = false;
     } else if (dispatcherBoundaries) {
       report = await checkStagingAccess(accounts, apiTransport(config.key, agent),

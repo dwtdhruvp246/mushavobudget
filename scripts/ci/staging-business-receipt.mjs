@@ -96,6 +96,21 @@ export async function manageReceiptFixture({ actors, evidence }, key, agent, pla
     need(updated.status === 200 && updated.data === seats, 'FIXTURE_SEAT_CHANGE_ACKNOWLEDGEMENT_REQUIRED');
     need((await subscription(row)).member_limit === seats, 'FIXTURE_SEAT_READBACK_REQUIRED');
   };
+  if (action === 'provision' && plan.cleanup_fixture === true && plan.resume_cleanup === true) {
+    const row = single(existing.data);
+    need(UUID.test(row?.id || '') && row.owner_id === owner.id && row.workspace_type === 'business'
+      && row.status === 'suspended' && row.business_support_version === 4, 'EXACT_ISOLATED_CLEANUP_FIXTURE_REQUIRED');
+    const grant = await request('GET', '/rest/v1/admin_subscription_grants?select=owner_id,grant_kind,reason'
+      + '&workspace_id=eq.' + row.id + '&limit=2', admin);
+    const binding = single(grant.data);
+    need(grant.status === 200 && binding?.owner_id === owner.id && binding.grant_kind === 'business_test'
+      && binding.reason === 'Generated staging receipt and spending request replay test', 'EXACT_ORIGINAL_TEST_GRANT_REQUIRED');
+    const current = await subscription(row);
+    need(current.version === 3 && current.member_limit === 1, 'EXACT_ISOLATED_ONE_SEAT_FIXTURE_REQUIRED');
+    await setStatus(row, 'active');
+    evidence.exact_workspace_resumed_for_storage_cleanup = true;
+    return;
+  }
   if (action === 'provision' && plan.resume_fixture === true) {
     const row = single(existing.data);
     need(UUID.test(row?.id || '') && row.owner_id === owner.id && row.workspace_type === 'business'
@@ -201,6 +216,12 @@ export async function checkBusinessReceipt({ accounts, actors, evidence }, key, 
       && parts.length === 5 && parts[0] === 'workspaces' && parts[1] === workspace
       && parts[2] === staff.id && UUID.test(parts[3]) && parts[4] === FILE_NAME);
     evidence.independent_archive_readback_bound = true;
+    const originalRoute = '/storage/v1/object/authenticated/' + BUCKET + '/' + reviewed.storage_path;
+    const signingRoute = '/storage/v1/object/sign/' + BUCKET + '/' + reviewed.storage_path;
+    confirm('ARCHIVED_OWNER_ORIGINAL_AND_SIGNING_DENIED', storageDenied(await request('GET', originalRoute, owner))
+      && storageDenied(await request('POST', signingRoute, owner, { expiresIn: 60 })));
+    confirm('REMOVED_STAFF_ARCHIVE_DELETE_DENIED', storageDenied(await request('DELETE',
+      '/storage/v1/object/' + BUCKET + '/' + reviewed.storage_path, staff)));
     const removed = await request('DELETE', '/storage/v1/object/' + BUCKET + '/' + reviewed.storage_path, owner);
     evidence.storage_delete_http_status = removed.status;
     evidence.storage_delete_acknowledged = removed.status === 204

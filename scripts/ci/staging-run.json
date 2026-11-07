@@ -1,5 +1,5 @@
 {
-  "run_id": "2026-11-07-batch-x-verified-path-cleanup",
+  "run_id": "2026-11-07-batch-x-fixed-storage-cleanup",
   "scope": "business-receipt-authorization",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
   "case_ids": [
@@ -8,9 +8,10 @@
     "Y_REQUEST_RACE"
   ],
   "fixture_name": "audit-batch-x-receipt-d7be160c2026",
-  "source_parent_commit": "d0cbb83394ab1847b7251f03ed5c22e73ad4fa15",
+  "source_parent_commit": "8f17f8bd5be3e4fa112e46a644f6a6b5d39cd919",
   "resume_fixture": true,
   "cleanup_fixture": true,
+  "resume_cleanup": true,
   "archived_receipt_readback": {
     "project": "dczlddwbtgvfdujgcitb",
     "verified_on": "2026-11-07",

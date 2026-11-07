@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "run_id": "2026-11-07-batch-x-private-file-cache-observation",
+  "run_id": "2026-11-07-batch-x-private-file-cache-expiry-classifier",
   "scope": "private-file-cache-observation",
   "project": "dczlddwbtgvfdujgcitb",
   "cache_controls": [
@@ -16,7 +16,8 @@
     "X_ZERO_AND_SHORT_UPLOAD_CACHE_CONTROL",
     "X_PRIVATE_FILE_EXACT_CLEANUP"
   ],
-  "source_parent_commit": "e1f1fef13e6a07530814d0e0cd7b68fd73396307",
+  "source_parent_commit": "e6c671f5aeaff05e3d7a9f8f817b691c8ca5dc63",
   "plan_path": "docs/security-audit/security-fr-2-batch-x-private-file-cache-plan.json",
-  "no_automatic_rerun": true
+  "no_automatic_rerun": true,
+  "initial_review": "docs/security-audit/security-fr-2-batch-x-private-file-cache-initial-review.json"
 }

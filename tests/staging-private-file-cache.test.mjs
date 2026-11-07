@@ -9,7 +9,7 @@ const plan = { scope: 'private-file-cache-observation', project: 'dczlddwbtgvfdu
   case_ids: ['X_PRIVATE_FILE_OWNER_FOREIGN', 'X_SIGNED_URL_COLD_EXPIRY', 'X_SIGNED_URL_WARM_EXPIRY',
     'X_ZERO_AND_SHORT_UPLOAD_CACHE_CONTROL', 'X_PRIVATE_FILE_EXACT_CLEANUP'] };
 
-function backend({ coldExposure = false, foreignSigning = false, foreignURL = false, lostUpload = false, nonceHit = false } = {}) {
+function backend({ coldExposure = false, foreignSigning = false, foreignURL = false, lostUpload = false, nonceHit = false, expiryText = '\"exp\" claim timestamp check failed' } = {}) {
   const state = { time: Date.parse('2026-11-07T18:00:00Z'), objects: new Map(), warmed: new Set(), calls: [], signedTokens: [] };
   const fetcher = async (url, options) => {
     const parsed = new URL(url); assert.equal(parsed.origin, 'https://dczlddwbtgvfdujgcitb.supabase.co');
@@ -18,7 +18,7 @@ function backend({ coldExposure = false, foreignSigning = false, foreignURL = fa
     state.calls.push({ method: options.method, route: parsed.pathname + parsed.search, caller });
     const json = (data, status = 200) => Response.json(data, { status });
     const missing = () => json({ statusCode: '404', error: 'not_found' }, 400);
-    const expired = () => json({ statusCode: '400', error: 'InvalidJWT', message: 'jwt expired' }, 400);
+    const expired = () => json({ statusCode: '400', error: 'InvalidJWT', message: expiryText }, 400);
     const image = (object, hit = false) => new Response(object.bytes, { status: 200,
       headers: { 'content-type': 'image/png', 'cache-control': 'private, no-cache', 'cf-cache-status': hit ? 'HIT' : 'MISS' } });
     if (options.method === 'POST' && parsed.pathname.startsWith('/storage/v1/object/payment-proofs/')) {
@@ -119,4 +119,13 @@ test('duplicate ordinary identities cause no storage request', async () => {
   await assert.rejects(checkPrivateFileCache({ actors: { ...actors, USER_B: actors.USER_A }, evidence: {} },
     'public', 'test', plan, { fetcher: async () => { requests++; } }), /TWO_DISTINCT_BOUND_ORDINARY/);
   assert.equal(requests, 0);
+});
+
+test('legacy expiry wording is also recognized but unrelated JWT failures cannot pass', async () => {
+  const legacy = backend({ expiryText: 'jwt expired' }), legacyEvidence = {};
+  await checkPrivateFileCache({ actors, evidence: legacyEvidence }, 'public', 'test', plan, legacy.dependencies);
+  assert.equal(legacyEvidence.Storage_cleanup_verified, true);
+  const invalid = backend({ expiryText: 'signature verification failed' });
+  await assert.rejects(checkPrivateFileCache({ actors, evidence: {} }, 'public', 'test', plan, invalid.dependencies), /COLD_SIGNED_CACHE_0_DENIED/);
+  assert.equal(invalid.state.objects.size, 0);
 });

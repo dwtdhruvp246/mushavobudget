@@ -7,8 +7,9 @@ const CASES = ['X_PRIVATE_FILE_OWNER_FOREIGN', 'X_SIGNED_URL_COLD_EXPIRY', 'X_SI
 const BUCKET = '/storage/v1/object/payment-proofs';
 const rowsDenied = result => [401, 403, 404].includes(result.status)
   || result.status === 400 && [401, 403, 404].includes(Number(result.data?.statusCode));
+const expiryMessage = message => /expired|[\"']?exp[\"']? claim timestamp check failed/i.test(message || '');
 const expiredDenied = result => rowsDenied(result) || result.status === 400
-  && result.data?.error === 'InvalidJWT' && /expired/i.test(result.data?.message || '');
+  && result.data?.error === 'InvalidJWT' && expiryMessage(result.data?.message);
 const absent = result => result.status === 404 || result.status === 400 && Number(result.data?.statusCode) === 404;
 
 export function isPrivateFileCachePlan(plan) {
@@ -61,8 +62,10 @@ export async function checkPrivateFileCache({ actors, evidence }, key, agent, pl
     return { status: response.status, data, cache_headers };
   };
   const safe = result => ({ status: result.status, cache_headers: result.cache_headers,
+    ...(typeof result.data?.error === 'string' && /^[A-Za-z][A-Za-z0-9_]{0,59}$/.test(result.data.error)
+      ? { Storage_error: result.data.error } : {}),
     ...(Buffer.isBuffer(result.data) ? { bytes: result.data.length, harmless_fixture_matches: digest(result.data) === digest(PNG) } : {}),
-    ...(result.data?.error === 'InvalidJWT' && /expired/i.test(result.data.message || '') ? { token_expired_response: true } : {}),
+    ...(result.data?.error === 'InvalidJWT' && expiryMessage(result.data.message) ? { token_expired_response: true } : {}),
     ...(Number.isInteger(Number(result.data?.statusCode)) ? { Storage_status_code: Number(result.data.statusCode) } : {}) });
   const matches = result => result.status === 200 && Buffer.isBuffer(result.data) && digest(result.data) === digest(PNG);
   const readOriginal = (path, actor, cleanup = false, fresh = false) => request('GET', authPath(path)

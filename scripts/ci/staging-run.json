@@ -1,13 +1,13 @@
 {
   "enabled": true,
-  "run_id": "2026-11-07-batch-x-business-expiry",
+  "run_id": "2026-11-07-batch-x-business-expiry-corrected",
   "scope": "business-expiry-boundaries",
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_name": "audit-batch-x-receipt-d7be160c2026",
   "workspace_id": "dcf3d122-e99f-4fe5-bbd1-03c3547629df",
-  "expected_support_version": 8,
-  "expected_subscription_version": 6,
-  "expiry_at": "2026-11-07T17:48:31.880694+00:00",
+  "expected_support_version": 10,
+  "expected_subscription_version": 8,
+  "expiry_at": "2026-11-07T17:53:42.402036+00:00",
   "original_paid_through_at": "2026-11-08T00:00:00.000Z",
   "supported_restore": true,
   "case_ids": [
@@ -16,7 +16,8 @@
     "X_EXPIRY_OWNER_RENEWAL_GATE",
     "X_EXPIRY_FIXTURE_ISOLATION"
   ],
-  "source_parent_commit": "aaa45c355ba8cd875f07a5437a0143ec283422dc",
+  "source_parent_commit": "f3d962e7280355ab7f250bde41d5cf839ec39a5b",
   "plan_path": "docs/security-audit/security-fr-2-batch-x-business-expiry-plan.json",
-  "no_automatic_rerun": true
+  "no_automatic_rerun": true,
+  "operator_final_term_restore": true
 }

@@ -8,6 +8,7 @@ import { checkRecovery } from './staging-recovery.mjs';
 import { checkRecoveryFeedback } from './staging-recovery-feedback.mjs';
 import { checkAdminBoundaries, verifyAdminSources } from './staging-admin-boundaries.mjs';
 import { checkBusinessReceipt, isBusinessReceiptPlan, manageReceiptFixture } from './staging-business-receipt.mjs';
+import { checkDispatcherBoundaries, isDispatcherBoundaryPlan } from './staging-dispatcher-boundaries.mjs';
 
 async function main() {
   let report;
@@ -31,16 +32,19 @@ async function main() {
     const adminBoundaries = plan.scope === 'admin-boundaries'
       && JSON.stringify(plan.case_ids) === JSON.stringify(['V06', 'V07', 'V08', 'V09', 'V11']);
     const businessReceipt = isBusinessReceiptPlan(plan);
+    const dispatcherBoundaries = isDispatcherBoundaryPlan(plan);
     need(confirmation || passwordSessions || accountSwitch || recovery || recoverySaveRetry || recoveryFeedback
-      || controlledBrowser || adminBoundaries || businessReceipt, 'REVIEWED_RUN_SCOPE_REQUIRED');
+      || controlledBrowser || adminBoundaries || businessReceipt || dispatcherBoundaries, 'REVIEWED_RUN_SCOPE_REQUIRED');
     if (adminBoundaries) progress = 'Stage 3/10 | FR.2/8 | Batch V/Z';
     if (businessReceipt) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
+    if (dispatcherBoundaries) progress = 'Stage 3/10 | FR.2/8 | Batch Y/Z';
     need(process.env.GITHUB_REPOSITORY === 'dwtdhruvp246/mushavobudget'
       && process.env.GITHUB_REF === 'refs/heads/security/stage-3-authorization', 'STAGING_BRANCH_RUN_REQUIRED');
     const fixtureAction = process.env.MUSHAVO_STAGING_RECEIPT_ADMIN_ACTION || null;
     need(!fixtureAction || businessReceipt && ['provision', 'suspend'].includes(fixtureAction), 'REVIEWED_FIXTURE_ACTION_REQUIRED');
     if (businessReceipt) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'BUSINESS_FIXTURE_RERUN_REFUSED');
-    const chromium = businessReceipt ? null
+    if (dispatcherBoundaries) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'DISPATCHER_BOUNDARY_RERUN_REFUSED');
+    const chromium = businessReceipt || dispatcherBoundaries ? null
       : (await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs')).chromium;
     if (controlledBrowser) {
       const { checkControlledBrowser } = await import('./staging-controlled-browser.mjs');
@@ -48,7 +52,7 @@ async function main() {
     } else if (recovery || recoverySaveRetry) {
       report = await checkRecovery(plan, recovery ? privateAccounts(process.env) : {}, chromium);
     } else {
-    const accountScope = fixtureAction ? 'businessFixture' : businessReceipt ? 'ordinary' : 'standard';
+    const accountScope = fixtureAction ? 'businessFixture' : businessReceipt || dispatcherBoundaries ? 'ordinary' : 'standard';
     const accounts = privateAccounts(process.env, { accountScope });
     const response = await fetch(WEB_ORIGIN + '/config.js?v=27', { redirect: 'error', signal: AbortSignal.timeout(20000) });
     need(response.status === 200, 'PUBLIC_CONFIGURATION_READ_REQUIRED');
@@ -70,6 +74,11 @@ async function main() {
       delete report.settings_or_finance_writes_requested;
       report.disposable_fixture_action = fixtureAction || 'exercise';
       report.full_lettered_batch_X_complete = false;
+      report.full_lettered_batch_Y_complete = false;
+    } else if (dispatcherBoundaries) {
+      report = await checkStagingAccess(accounts, apiTransport(config.key, agent),
+        args => checkDispatcherBoundaries(args, config.key, agent), { accountScope });
+      delete report.full_lettered_batch_W_complete;
       report.full_lettered_batch_Y_complete = false;
     } else if (adminBoundaries) {
       const sourceEvidence = {};

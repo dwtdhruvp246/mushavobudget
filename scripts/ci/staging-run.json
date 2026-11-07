@@ -1,25 +1,15 @@
 {
-  "enabled": false,
-  "completed_after_workflow_run": "42348451487",
-  "completion_receipt": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
-  "run_id": "2026-11-07-batch-x-fixed-storage-cleanup",
-  "scope": "business-receipt-authorization",
-  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "enabled": true,
+  "run_id": "2026-11-07-batch-y-dispatcher-boundaries",
+  "scope": "dispatcher-boundaries",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
   "case_ids": [
-    "X_RECEIPT",
-    "X_PRIVATE_STORAGE",
-    "Y_REQUEST_RACE"
+    "Y_EDGE_METHOD",
+    "Y_EDGE_NO_SECRET",
+    "Y_EDGE_WRONG_SECRET",
+    "Y_EDGE_HUMAN_CALLER"
   ],
-  "fixture_name": "audit-batch-x-receipt-d7be160c2026",
-  "source_parent_commit": "8f17f8bd5be3e4fa112e46a644f6a6b5d39cd919",
-  "resume_fixture": true,
-  "cleanup_fixture": true,
-  "resume_cleanup": true,
-  "archived_receipt_readback": {
-    "project": "dczlddwbtgvfdujgcitb",
-    "verified_on": "2026-11-07",
-    "status": "archived",
-    "size_bytes": 68,
-    "storage_path": "workspaces/dcf3d122-e99f-4fe5-bbd1-03c3547629df/660a1463-6589-4c4d-ab6c-8ee50161038f/fbda5d37-7e1d-46ac-807c-174bd4fbc877/synthetic-audit-receipt.png"
-  }
+  "source_parent_commit": "cd52c1dd61162cb8dc08b699b8f715be963cd21d",
+  "deployed_source_commit": "d744dea1bf7263dea8ff5c31765a968d411e5a84"
 }

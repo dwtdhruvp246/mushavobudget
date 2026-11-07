@@ -14,12 +14,13 @@ const TABLES = ['budget_workspaces', 'workspace_subscriptions', 'workspace_membe
   'business_dimensions', 'business_categories', 'business_member_scopes', 'business_member_permissions'];
 const one = data => Array.isArray(data) && data.length === 1 ? data[0] : data;
 const rows = result => result.status === 200 && Array.isArray(result.data) && result.data.length < 4;
+const voidSuccess = result => [200, 204].includes(result.status) && result.data === null;
 const denied = (result, code) => result.status === 400 && result.data?.message === code;
 
 export function isBusinessTeamPlan(plan) {
   return plan.scope === 'business-team-boundaries' && plan.project === 'dczlddwbtgvfdujgcitb'
     && plan.fixture_name === FIXTURE && plan.workspace_id === WORKSPACE
-    && plan.expected_support_version === 12 && plan.expected_subscription_version === 11
+    && plan.expected_support_version === 14 && plan.expected_subscription_version === 13
     && plan.original_paid_through_at === '2026-11-08T00:00:00.000Z'
     && JSON.stringify(plan.case_ids) === JSON.stringify(CASES);
 }
@@ -110,9 +111,10 @@ export async function checkBusinessTeam({ actors, accounts, evidence }, key, age
     evidence.resume_attempted = true;
     await setStatus(initial, 'active');
     const baseline = await members(), invitations = await pending();
-    check('EXACT_ORIGINAL_OWNER_AND_INACTIVE_MANAGER', rows(baseline) && baseline.data.length === 2
+    check('EXACT_ORIGINAL_OWNER_AND_INACTIVE_MANAGER', rows(baseline) && baseline.data.length === 3
       && baseline.data.some(row => row.user_id === owner.id && row.role === 'business_owner' && row.status === 'active')
       && baseline.data.some(row => row.user_id === manager.id && row.role === 'finance_manager' && row.status === 'inactive')
+      && baseline.data.some(row => row.user_id === member.id && row.role === 'staff' && row.status === 'inactive')
       && rows(invitations) && invitations.data.length === 0);
     await setSeats(sub, 3);
     const dimensions = await get('business_dimensions', 'id', scoped + '&name=eq.Synthetic%20audit%20team&status=eq.active');
@@ -152,12 +154,14 @@ export async function checkBusinessTeam({ actors, accounts, evidence }, key, age
     'BUSINESS_PRIVILEGE_ESCALATION_BLOCKED'));
     const override = await rpc('set_business_member_permission', owner, { p_workspace_id: WORKSPACE,
       p_member_id: memberRow.id, p_permission_code: 'team.view', p_effect: 'allow' });
+    evidence.permission_update_HTTP_statuses = { member_allow: override.status };
     const overrideRows = await get('business_member_permissions', 'member_id,permission_code,effect', scoped + '&member_id=eq.' + memberRow.id);
-    check('OWNER_SET_ONE_REMOVABLE_MEMBER_OVERRIDE', override.status === 200 && rows(overrideRows) && overrideRows.data.length === 1
+    check('OWNER_SET_ONE_REMOVABLE_MEMBER_OVERRIDE', voidSuccess(override) && rows(overrideRows) && overrideRows.data.length === 1
       && overrideRows.data[0].permission_code === 'team.view' && overrideRows.data[0].effect === 'allow');
     const deniedOverride = await rpc('set_business_member_permission', owner, { p_workspace_id: WORKSPACE,
       p_member_id: managerRow.id, p_permission_code: 'team.manage', p_effect: 'deny' });
-    check('EXPLICIT_MANAGER_DENIAL_EFFECTIVE', deniedOverride.status === 200 && (await permission(manager, 'team.manage')).data === false);
+    evidence.permission_update_HTTP_statuses.manager_deny = deniedOverride.status;
+    check('EXPLICIT_MANAGER_DENIAL_EFFECTIVE', voidSuccess(deniedOverride) && (await permission(manager, 'team.manage')).data === false);
     check('DENIED_MANAGER_CANNOT_REMOVE_MEMBER', denied(await rpc('remove_business_member', manager,
       { p_workspace_id: WORKSPACE, p_member_id: memberRow.id }), 'BUSINESS_TEAM_ACCESS_REQUIRED'));
     const stillJoined = await members();
@@ -165,7 +169,8 @@ export async function checkBusinessTeam({ actors, accounts, evidence }, key, age
       && stillJoined.data.find(row => row.user_id === member.id)?.role === 'staff');
     const cleared = await rpc('set_business_member_permission', owner, { p_workspace_id: WORKSPACE,
       p_member_id: managerRow.id, p_permission_code: 'team.manage', p_effect: null });
-    check('OWNER_RESTORED_DEFAULT_MANAGER_AUTHORITY', cleared.status === 200 && (await permission(manager, 'team.manage')).data === true);
+    evidence.permission_update_HTTP_statuses.manager_clear = cleared.status;
+    check('OWNER_RESTORED_DEFAULT_MANAGER_AUTHORITY', voidSuccess(cleared) && (await permission(manager, 'team.manage')).data === true);
     const beforeRead = await get('business_categories', 'id,name,status', scoped + '&name=eq.Synthetic%20audit%20expense&status=eq.active', member);
     check('MEMBER_PROTECTED_CATEGORY_VISIBLE_BEFORE_REMOVAL', rows(beforeRead) && beforeRead.data.length === 1);
     const personalBefore = await get('budget_workspaces', 'id,owner_id,workspace_type,status',

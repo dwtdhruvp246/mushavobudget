@@ -11,14 +11,14 @@ const actors = { USER_A: actor('1'), USER_B: actor('2'), USER_C: actor('3'), ADM
 const accounts = Object.fromEntries(Object.entries(actors).map(([slot], i) => [slot,
   { email: `controlled${i}@example.test`, password: `PRIVATE_PASSWORD_${i}` }]));
 const plan = { scope: 'business-team-boundaries', project: 'dczlddwbtgvfdujgcitb', fixture_name: 'audit-batch-x-receipt-d7be160c2026',
-  workspace_id: workspace, expected_support_version: 12, expected_subscription_version: 11,
+  workspace_id: workspace, expected_support_version: 14, expected_subscription_version: 13,
   original_paid_through_at: '2026-11-08T00:00:00.000Z',
   case_ids: ['X_THREE_ORDINARY_TEAM_ACTORS', 'X_MANAGER_OWNER_AND_ESCALATION_DENIALS',
     'X_MANAGER_REMOVES_ANOTHER_MEMBER', 'X_REMOVED_MEMBER_SAME_SESSION', 'X_TEAM_FIXTURE_CLEANUP'] };
 
 function backend({ wrongDenial = false, lostInvitation = false, lostSeatResponse = false, failedCleanup = false } = {}) {
-  const state = { status: 'suspended', support: 12, seats: 1, subVersion: 11, managerRole: 'finance_manager',
-    managerActive: false, memberExists: false, memberActive: false, managerDenied: false, memberOverride: false,
+  const state = { status: 'suspended', support: 14, seats: 1, subVersion: 13, managerRole: 'finance_manager',
+    managerActive: false, memberExists: true, memberActive: false, managerDenied: false, memberOverride: false,
     managerScopes: [], memberScopes: [], pending: [], calls: [] };
   const ownerRow = () => ({ id: id('a'), user_id: actors.USER_A.id, role: 'business_owner', status: 'active' });
   const managerRow = () => ({ id: id('b'), user_id: actors.USER_B.id, role: state.managerRole, status: state.managerActive ? 'active' : 'inactive' });
@@ -79,7 +79,7 @@ function backend({ wrongDenial = false, lostInvitation = false, lostSeatResponse
       if (caller !== actors.USER_A) return no('BUSINESS_OWNER_REQUIRED');
       if (body.p_member_id === id('b')) state.managerDenied = body.p_effect === 'deny';
       else state.memberOverride = body.p_effect === 'allow';
-      return ok(null);
+      return new Response(null, { status: 204 });
     }
     if (name === 'update_business_member_access') {
       if (caller === actors.USER_B) return no('BUSINESS_PRIVILEGE_ESCALATION_BLOCKED');
@@ -108,7 +108,7 @@ function backend({ wrongDenial = false, lostInvitation = false, lostSeatResponse
 test('team scope binds one reviewed fixture, original term and exact versions', () => {
   assert.equal(isBusinessTeamPlan(plan), true);
   for (const change of [{ project: 'production' }, { workspace_id: id('7') }, { fixture_name: 'customer' },
-    { expected_support_version: 13 }, { expected_subscription_version: 12 }, { case_ids: [] }])
+    { expected_support_version: 15 }, { expected_subscription_version: 14 }, { case_ids: [] }])
     assert.equal(isBusinessTeamPlan({ ...plan, ...change }), false);
 });
 test('an unconfigured third credential is refused without weakening the standard three-account scope', () => {
@@ -119,10 +119,11 @@ test('real-session team flow removes the target with the nonowner manager and re
   const { state, fetcher } = backend(), evidence = {};
   await checkBusinessTeam({ actors, accounts, evidence }, 'public', 'test', plan, fetcher);
   assert.ok(Object.values(evidence.checks).every(Boolean));
-  assert.equal(state.status, 'suspended'); assert.equal(state.seats, 1); assert.equal(state.subVersion, 13);
+  assert.equal(state.status, 'suspended'); assert.equal(state.seats, 1); assert.equal(state.subVersion, 15);
   assert.equal(state.managerActive, false); assert.equal(state.memberActive, false); assert.equal(state.managerRole, 'finance_manager');
   assert.equal(state.pending.length, 0); assert.equal(state.managerScopes.length + state.memberScopes.length, 0);
   assert.ok(state.calls.some(value => value.name === 'remove_business_member' && value.caller === actors.USER_B && value.body.p_member_id === id('c')));
+  assert.deepEqual(evidence.permission_update_HTTP_statuses, { member_allow: 204, manager_deny: 204, manager_clear: 204 });
   assert.equal(state.calls.length, evidence.exercise_requests); assert.ok(state.calls.length < 100);
   const safe = JSON.stringify(evidence);
   for (const value of [...Object.values(actors).map(value => value.token), ...Object.values(accounts).flatMap(value => [value.email, value.password])])

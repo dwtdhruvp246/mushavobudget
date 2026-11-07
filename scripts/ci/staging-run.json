@@ -1,12 +1,12 @@
 {
   "enabled": true,
-  "run_id": "2026-11-07-batch-x-three-ordinary-team",
+  "run_id": "2026-11-07-batch-x-three-ordinary-team-void-ack",
   "scope": "business-team-boundaries",
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_name": "audit-batch-x-receipt-d7be160c2026",
   "workspace_id": "dcf3d122-e99f-4fe5-bbd1-03c3547629df",
-  "expected_support_version": 12,
-  "expected_subscription_version": 11,
+  "expected_support_version": 14,
+  "expected_subscription_version": 13,
   "original_paid_through_at": "2026-11-08T00:00:00.000Z",
   "case_ids": [
     "X_THREE_ORDINARY_TEAM_ACTORS",
@@ -15,7 +15,8 @@
     "X_REMOVED_MEMBER_SAME_SESSION",
     "X_TEAM_FIXTURE_CLEANUP"
   ],
-  "source_parent_commit": "a2b2a8a6c9fdff0bf4d149ca9fc2e550ed553d7c",
+  "source_parent_commit": "dd8deb3b2a650378f808c1a42471c673b5d8e0ee",
   "plan_path": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-plan.json",
-  "no_automatic_rerun": true
+  "no_automatic_rerun": true,
+  "initial_review": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-initial-review.json"
 }

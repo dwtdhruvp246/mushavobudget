@@ -12,19 +12,30 @@ Adopted24 October2026 at the owner's request (FRE177). This convention applies t
 
 **Stage 3/10 — Authorization and Admin MFA — IN PROGRESS**  
 **FR.2/8 — Authorization, Admin MFA, authentication and finance integrity — IN PROGRESS**  
-**Batch W/Z — Auth settings, account flows, passwords and email — IN PROGRESS**  
-**Batch V/Z — Admin MFA — ON HOLD for owner phone transfer; not complete**
+**Batch X/Z — Personal/Family/Business roles and legitimate finance — IN PROGRESS**  
+**Batch V/Z — held items remain open: SMTP and independent Admin recovery owner-deferred; historical MFA scope on hold under the selected password-only policy**  
+**Batch W/Z — COMPLETE for the agreed staging scope; signed-in password failure/retry remains owner-deferred**
 
 Compact form for routine updates:
 
-`Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS; V MFA ON HOLD`
+`Stage 3/10 | FR.2/8 | Batch X/Z — IN PROGRESS`
 
-This is the current hierarchy, not a universal mapping from FR number to main-stage number. Other remediation groups address other/spanning roadmap requirements. The numbers/letters identify the current point and plan endpoint, not completed counts, test totals or completion percentages. The original roadmap includes Stage0;10 is its last numbered stage. U–Z was the fixed six-package authorization baseline; U is now accepted complete and V–Z are the five remaining packages.
+Current display synchronized on 7 November 2026 (FRE320). The dated October blockquotes above remain historical checkpoints. Formal stage/group titles are retained; current authentication policy is described in the policy reconciliation and later evidence.
+
+These labels identify the current point and plan endpoint, not completed counts or percentages. The roadmap includes Stage 0. The fixed U–Z baseline is preserved; the current remaining-required ledger contains V, X, Y and Z (four packages). W is complete at the owner-agreed active scope, with its deferred variant recorded explicitly.
+
+The latest completed action is the scoped Family proof upload/fresh-access recheck: 22 live assertions, exit 0 (FRE319), with cached-copy access carried forward. The next third-ordinary-actor setup is STOPPED FOR REVIEW because the Browser runtime did not return a connection. Neither action changes the overall IN PROGRESS status of Batch X, FR.2 or Stage 3.
+
+## Execution agreement now in force
+
+Use the November autonomous staging agreement and the owner's existing full-access authorization. Continue with approved connected services and existing GitHub Actions account secrets. Manual PowerShell/SQL handoffs are only for an action the available tools cannot perform and the owner actually needs to execute; provide complete commands and explain their effects, prompts and input sources. Keep private values out of chat and logs. A required provider confirmation is identified separately from broad task permission.
+
+Use the existing finite batches and frozen cases. Group related work, announce STARTED with its scope, then COMPLETE or STOPPED FOR REVIEW with the actual result, cleanup/readback, exit code, remaining work and exact next step. Preserve accepted work; only repeat affected checks when a change, failure or uncertainty justifies it. Do not add stages, letters or speculative cases to extend the plan silently.
 
 ## Status rules
 
 1. Keep the actual statuses independent. Batch U can be COMPLETE while FR.2 and Stage3 remain IN PROGRESS. No stage/group closes automatically because one batch or local test passes.
-2. U is accepted COMPLETE at its frozen scoped boundary (FRE195). V is IN PROGRESS; its first combined read-only review is locally tested and awaits the owner result. Do not display V complete from local readiness or close FR.2/Stage3/release because U passed.
+2. U retains its frozen scoped completion (FRE195). W is complete at the agreed staging scope; its deferred variant stays recorded. V's held requirements remain open alongside its accepted scoped passes. X and Y retain their specific acceptance results and remaining cases; Z is the planned integrated closeout. No scoped pass automatically closes FR.2, Stage 3 or release.
 3. Use STARTED when the described batch/action begins, COMPLETE for the completed scope, and STOPPED FOR REVIEW on a failed/uncertain step. Identify the scope: e.g. “Local checks COMPLETE; hosted acceptance pending” or “Progress-display setup COMPLETE; Batch U remains IN PREPARATION.”
 4. On failure retain the current letter and explain the safe checkpoint/uncertainty. Do not advance the letter or add a new one for a retry. Once all exit evidence passes, report that completed letter with COMPLETE; show the next letter only when starting its actual work.
 5. Keep local test counts, hosted results, exit codes, timestamps, cleanup/readback evidence and overall release acceptance distinct. Hierarchy labels replace none of those details.

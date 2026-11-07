@@ -21,13 +21,13 @@
       "status": "IN_PROGRESS"
     },
     "lettered_batch": {
-      "letter": "W",
+      "letter": "X",
       "final_letter": "Z",
-      "label": "Batch W/Z",
-      "title": "Auth settings, account flows, passwords and email",
+      "label": "Batch X/Z",
+      "title": "Personal/Family/Business roles and legitimate finance",
       "status": "IN_PROGRESS"
     },
-    "compact_display": "Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS; V MFA ON HOLD",
+    "compact_display": "Stage 3/10 | FR.2/8 | Batch X/Z — IN PROGRESS",
     "labels_are_not_completion_percentages": true,
     "current_hierarchy_only_not_a_universal_FR_to_stage_mapping": true,
     "batch_completion_requires_its_full_exit_evidence": true,
@@ -35,10 +35,25 @@
       {
         "letter": "V",
         "status": "ON_HOLD",
-        "reason": "Owner phone transfer; no factor/assurance bypass",
+        "reason": "SMTP and independent Admin recovery are owner-deferred; historical MFA acceptance remains on hold under the selected password-only policy. Completed privileged/staff checks remain accepted at their recorded scopes.",
         "full_exit_evidence_accepted": false
       }
-    ]
+    ],
+    "latest_completed_action": {
+      "title": "Family proof uploads and fresh-access authorization",
+      "status": "COMPLETE",
+      "scope": "Recorded scoped live checks; cached-copy access remains open for file-delivery follow-up.",
+      "selected_live_assertions": 22,
+      "exit_code": 0,
+      "evidence": "FRE319"
+    },
+    "next_required_action": {
+      "title": "Third ordinary Business test identity",
+      "status": "STOPPED_FOR_REVIEW",
+      "reason": "Browser runtime did not return a connection; no third account was created.",
+      "receipt": "docs/security-audit/security-fr-2-third-actor-browser-block.json"
+    },
+    "updated_date": "2026-11-07"
   },
   "required_for": [
     "assistant_project_progress_commentary",
@@ -62,7 +77,7 @@
     "Represent the actual main-stage, remediation-group and lettered-batch statuses independently. Completing a batch does not automatically complete FR.2 or Stage3.",
     "The current hierarchy is Stage3 > FR.2 > current lettered batch. Other FR groups may span other roadmap stages; do not assume FR number equals stage number.",
     "Stage3/10 and FR.2/8 identify position/endpoint, not completed counts or percentages. The roadmap also contains Stage0.",
-    "U is accepted COMPLETE (FRE195); BatchV/Z remains ON_HOLD during owner phone transfer and stays open until its defined acceptance evidence passes. A successful local verifier is LOCAL_CHECKS_COMPLETE with hosted acceptance pending; it is not whole-batch COMPLETE.",
+    "U remains accepted COMPLETE at its frozen scope. W is COMPLETE for the agreed staging scope with the signed-in password failure/retry owner-deferred. V retains its scoped privileged/staff passes; SMTP and independent recovery remain owner-deferred, and historical MFA acceptance is on hold under the selected password-only policy. Local readiness alone never completes a whole batch.",
     "STARTED, COMPLETE and STOPPED_FOR_REVIEW must identify the action/phase they describe. If updating a document or output convention, say that action completed while retaining the actual batch status.",
     "On failure keep the same batch letter and STOPPED_FOR_REVIEW; do not advance or silently add letters. Preserve prior results and inspect uncertain writes before retry.",
     "After a batch completes, report the completed batch with COMPLETE. When real work starts in the next batch, update the current letter/status and remaining-work ledger; do not show a future planned batch as already completed.",
@@ -70,7 +85,8 @@
     "Keep exact result/test counts, local versus hosted scope, checked timestamps, exit codes and uncertainty fields alongside this display. Progress labels replace none of the safety or acceptance evidence.",
     "Keep pinned historical scripts/receipts unchanged. Do not retrofit old output, invalidate old manifests, repeat installations/emails/uploads or rerun successful acceptance just to add labels.",
     "Continue to explain every owner-command effect/prompt, use published pins, keep private inputs hidden, and end runnable owner instructions with Send me the safe JSON and exit code.",
-    "An explicit owner instruction may hold an incomplete package while independent work starts in another planned letter. Show the held package and dependent blocked cases; never label it complete or bypass its controls. Owner deferred V MFA on26October; W read-only Auth review can proceed, Admin-dependent W/Z acceptance stays blocked."
+    "An explicit owner instruction may hold an incomplete item while independent work proceeds within another already-planned letter. Display the held item and its limits. Preserve the current owner-selected authentication policy and required authorization checks; do not invent completion or bypass remaining controls.",
+    "Follow the latest owner authorization: the November agreement permits autonomous staging testing through existing connected services and approved GitHub Actions account secrets. Do not routinely return execution to owner-run PowerShell/SQL or repeatedly request broad access already granted. Explain a genuinely required provider confirmation or unavailable capability precisely before asking for the minimum owner action."
   ],
   "historical_pinned_runners_or_receipts_modified": false,
   "runtime_behavior_changed": false,
@@ -83,5 +99,5 @@
   "production_or_native_changed": false,
   "APK_update_deferred": true,
   "findings_closed": [],
-  "updated_date": "2026-10-26"
+  "updated_date": "2026-11-07"
 }

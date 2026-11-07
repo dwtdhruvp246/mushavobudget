@@ -7174,7 +7174,7 @@
     },
     "remaining_lettered_batch_plan": "docs/security-audit/SECURITY_STAGE_3_REMAINING_LETTERED_BATCHES.md",
     "remaining_lettered_batch_baseline": "docs/security-audit/security-stage-3-lettered-batch-baseline.json",
-    "remaining_lettered_batch_count": 5,
+    "remaining_lettered_batch_count": 4,
     "final_lettered_batch": "Z",
     "progress_hierarchy": {
       "schema_version": 1,
@@ -7194,13 +7194,13 @@
         "status": "IN_PROGRESS"
       },
       "lettered_batch": {
-        "letter": "W",
+        "letter": "X",
         "final_letter": "Z",
-        "label": "Batch W/Z",
-        "title": "Auth settings, account flows, passwords and email",
+        "label": "Batch X/Z",
+        "title": "Personal/Family/Business roles and legitimate finance",
         "status": "IN_PROGRESS"
       },
-      "compact_display": "Stage 3/10 | FR.2/8 | Batch W/Z — IN PROGRESS; owner-selected minimum8 local74 PASS, frontend package pending; V MFA ON HOLD",
+      "compact_display": "Stage 3/10 | FR.2/8 | Batch X/Z — IN PROGRESS",
       "labels_are_not_completion_percentages": true,
       "current_hierarchy_only_not_a_universal_FR_to_stage_mapping": true,
       "batch_completion_requires_its_full_exit_evidence": true,
@@ -7208,10 +7208,25 @@
         {
           "letter": "V",
           "status": "ON_HOLD",
-          "reason": "Owner phone transfer; no factor/assurance bypass",
+          "reason": "SMTP and independent Admin recovery are owner-deferred; historical MFA acceptance remains on hold under the selected password-only policy. Completed privileged/staff checks remain accepted at their recorded scopes.",
           "full_exit_evidence_accepted": false
         }
-      ]
+      ],
+      "latest_completed_action": {
+        "title": "Family proof uploads and fresh-access authorization",
+        "status": "COMPLETE",
+        "scope": "Recorded scoped live checks; cached-copy access remains open for file-delivery follow-up.",
+        "selected_live_assertions": 22,
+        "exit_code": 0,
+        "evidence": "FRE319"
+      },
+      "next_required_action": {
+        "title": "Third ordinary Business test identity",
+        "status": "STOPPED_FOR_REVIEW",
+        "reason": "Browser runtime did not return a connection; no third account was created.",
+        "receipt": "docs/security-audit/security-fr-2-third-actor-browser-block.json"
+      },
+      "updated_date": "2026-11-07"
     },
     "progress_display_contract": "docs/security-audit/security-progress-display-contract.json",
     "progress_display_convention": "docs/security-audit/SECURITY_PROGRESS_DISPLAY_CONVENTION.md",
@@ -7406,7 +7421,6 @@
     },
     "remaining_required_lettered_batches": [
       "V",
-      "W",
       "X",
       "Y",
       "Z"

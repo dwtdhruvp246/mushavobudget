@@ -1,25 +1,21 @@
 {
-  "enabled": false,
-  "run_id": "2026-11-07-batch-x-business-expiry-corrected",
-  "scope": "business-expiry-boundaries",
+  "enabled": true,
+  "run_id": "2026-11-07-batch-x-three-ordinary-team",
+  "scope": "business-team-boundaries",
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_name": "audit-batch-x-receipt-d7be160c2026",
   "workspace_id": "dcf3d122-e99f-4fe5-bbd1-03c3547629df",
-  "expected_support_version": 10,
-  "expected_subscription_version": 8,
-  "expiry_at": "2026-11-07T17:53:42.402036+00:00",
+  "expected_support_version": 12,
+  "expected_subscription_version": 11,
   "original_paid_through_at": "2026-11-08T00:00:00.000Z",
-  "supported_restore": true,
   "case_ids": [
-    "X_EXPIRY_ACTIVE_BASELINE",
-    "X_EXPIRY_SAME_SESSION_DENIAL",
-    "X_EXPIRY_OWNER_RENEWAL_GATE",
-    "X_EXPIRY_FIXTURE_ISOLATION"
+    "X_THREE_ORDINARY_TEAM_ACTORS",
+    "X_MANAGER_OWNER_AND_ESCALATION_DENIALS",
+    "X_MANAGER_REMOVES_ANOTHER_MEMBER",
+    "X_REMOVED_MEMBER_SAME_SESSION",
+    "X_TEAM_FIXTURE_CLEANUP"
   ],
-  "source_parent_commit": "f3d962e7280355ab7f250bde41d5cf839ec39a5b",
-  "plan_path": "docs/security-audit/security-fr-2-batch-x-business-expiry-plan.json",
-  "no_automatic_rerun": true,
-  "operator_final_term_restore": true,
-  "completed_after_workflow_run": "42398220245",
-  "completion_receipt": "docs/security-audit/security-fr-2-batch-x-business-expiry-staging-result.json"
+  "source_parent_commit": "a2b2a8a6c9fdff0bf4d149ca9fc2e550ed553d7c",
+  "plan_path": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-plan.json",
+  "no_automatic_rerun": true
 }

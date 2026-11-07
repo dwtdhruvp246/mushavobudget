@@ -6,6 +6,7 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-
 const BINDINGS = {
   USER_A: '78517e097a62a504568d89ea98e37c754446634cd03663e9edb9a6d5be5bab5d',
   USER_B: 'e8afd004e7935fea5c2244534828c287c5d38854f21c10061b9d7f2faf071c71',
+  USER_C: '89fe06284eb279191f5dbb880289d8bde025b12ff795b6bebb936d3d6f9b8bc0',
   ADMIN: 'b0fb88c55c65b5b9d5e02301b421c25d031af5e4995c91dad53dd27c5e3839de'
 };
 export class Stop extends Error {
@@ -21,9 +22,10 @@ export function tokenIdentity(token) {
 }
 
 const ACCOUNT_SCOPES = {
-  standard: Object.keys(BINDINGS),
+  standard: ['USER_A', 'USER_B', 'ADMIN'],
   ordinary: ['USER_A', 'USER_B'],
-  businessFixture: ['USER_A', 'ADMIN']
+  businessFixture: ['USER_A', 'ADMIN'],
+  businessTeam: ['USER_A', 'USER_B', 'USER_C', 'ADMIN']
 };
 
 function stagingSlots(accountScope) {
@@ -153,7 +155,8 @@ export async function checkStagingAccess(accounts, transport, exercise = async (
     const verifiedActors = {
       standard: 'three_private_credentials_and_expected_roles_verified',
       ordinary: 'two_ordinary_credentials_and_roles_verified',
-      businessFixture: 'fixture_owner_and_super_admin_verified'
+      businessFixture: 'fixture_owner_and_super_admin_verified',
+      businessTeam: 'three_ordinary_credentials_and_separate_super_admin_verified'
     }[accountScope];
     report.checks[verifiedActors] = true;
     report.exercise = {};

@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: '22'
       - name: Verify runner boundaries without credentials
-        run: node --test tests/staging-runner-guards.test.mjs tests/staging-recovery-guards.test.mjs tests/business-invitation-delivery.test.mjs tests/staging-dispatcher-boundaries.test.mjs tests/staging-account-suspension.test.mjs tests/staging-business-finance.test.mjs tests/staging-family-proof.test.mjs tests/staging-business-expiry.test.mjs
+        run: node --test tests/staging-runner-guards.test.mjs tests/staging-recovery-guards.test.mjs tests/business-invitation-delivery.test.mjs tests/staging-dispatcher-boundaries.test.mjs tests/staging-account-suspension.test.mjs tests/staging-business-finance.test.mjs tests/staging-family-proof.test.mjs tests/staging-business-expiry.test.mjs tests/staging-business-team.test.mjs
       - name: Select the test scope
         id: scope
         run: |
@@ -36,8 +36,9 @@ jobs:
           echo "dispatcher_boundaries=$(node -p 'require("./scripts/ci/staging-run.json").scope === "dispatcher-boundaries"')" >> "$GITHUB_OUTPUT"
           echo "account_suspension=$(node -p 'require("./scripts/ci/staging-run.json").scope === "account-suspension-boundaries"')" >> "$GITHUB_OUTPUT"
           echo "business_finance=$(node -p 'require("./scripts/ci/staging-run.json").scope === "business-finance-workflow"')" >> "$GITHUB_OUTPUT"
+          echo "business_team=$(node -p 'require("./scripts/ci/staging-run.json").scope === "business-team-boundaries"')" >> "$GITHUB_OUTPUT"
           echo "family_proof=$(node -p 'require("./scripts/ci/staging-run.json").scope === "family-proof-path-binding"')" >> "$GITHUB_OUTPUT"
-          echo "api_only=$(node -p '["business-receipt-authorization","dispatcher-boundaries","account-suspension-boundaries","business-finance-workflow","family-proof-path-binding","business-expiry-boundaries"].includes(require("./scripts/ci/staging-run.json").scope)')" >> "$GITHUB_OUTPUT"
+          echo "api_only=$(node -p '["business-receipt-authorization","dispatcher-boundaries","account-suspension-boundaries","business-finance-workflow","family-proof-path-binding","business-expiry-boundaries","business-team-boundaries"].includes(require("./scripts/ci/staging-run.json").scope)')" >> "$GITHUB_OUTPUT"
           echo "controlled=$(node -p 'require("./scripts/ci/staging-run.json").scope === "controlled-browser"')" >> "$GITHUB_OUTPUT"
           echo "business_receipt=$(node -p 'require("./scripts/ci/staging-run.json").scope === "business-receipt-authorization"')" >> "$GITHUB_OUTPUT"
           echo "receipt_cleanup=$(node -p 'require("./scripts/ci/staging-run.json").cleanup_fixture === true')" >> "$GITHUB_OUTPUT"
@@ -79,7 +80,7 @@ jobs:
           MUSHAVO_STAGING_ADMIN_PASSWORD: ${{ secrets.MUSHAVO_STAGING_ADMIN_PASSWORD }}
         run: node scripts/ci/check-staging.mjs
       - name: Run the selected staging checks
-        if: steps.scope.outputs.enabled == 'true' && steps.scope.outputs.controlled != 'true' && steps.scope.outputs.business_receipt != 'true' && steps.scope.outputs.dispatcher_boundaries != 'true' && steps.scope.outputs.account_suspension != 'true' && steps.scope.outputs.business_finance != 'true' && steps.scope.outputs.family_proof != 'true'
+        if: steps.scope.outputs.enabled == 'true' && steps.scope.outputs.controlled != 'true' && steps.scope.outputs.business_receipt != 'true' && steps.scope.outputs.dispatcher_boundaries != 'true' && steps.scope.outputs.account_suspension != 'true' && steps.scope.outputs.business_finance != 'true' && steps.scope.outputs.family_proof != 'true' && steps.scope.outputs.business_team != 'true'
         env:
           MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}
           MUSHAVO_STAGING_USER_A_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_A_PASSWORD }}
@@ -123,6 +124,18 @@ jobs:
           MUSHAVO_STAGING_USER_A_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_A_PASSWORD }}
           MUSHAVO_STAGING_USER_B_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_B_EMAIL }}
           MUSHAVO_STAGING_USER_B_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_B_PASSWORD }}
+          MUSHAVO_STAGING_ADMIN_EMAIL: ${{ secrets.MUSHAVO_STAGING_ADMIN_EMAIL }}
+          MUSHAVO_STAGING_ADMIN_PASSWORD: ${{ secrets.MUSHAVO_STAGING_ADMIN_PASSWORD }}
+        run: node scripts/ci/check-staging.mjs
+      - name: Run the bounded three-ordinary-account Business team checks
+        if: steps.scope.outputs.enabled == 'true' && steps.scope.outputs.business_team == 'true'
+        env:
+          MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}
+          MUSHAVO_STAGING_USER_A_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_A_PASSWORD }}
+          MUSHAVO_STAGING_USER_B_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_B_EMAIL }}
+          MUSHAVO_STAGING_USER_B_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_B_PASSWORD }}
+          MUSHAVO_STAGING_USER_C_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_C_EMAIL }}
+          MUSHAVO_STAGING_USER_C_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_C_PASSWORD }}
           MUSHAVO_STAGING_ADMIN_EMAIL: ${{ secrets.MUSHAVO_STAGING_ADMIN_EMAIL }}
           MUSHAVO_STAGING_ADMIN_PASSWORD: ${{ secrets.MUSHAVO_STAGING_ADMIN_PASSWORD }}
         run: node scripts/ci/check-staging.mjs

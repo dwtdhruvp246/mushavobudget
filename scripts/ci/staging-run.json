@@ -1,27 +1,16 @@
 {
   "enabled": false,
-  "run_id": "2026-11-07-batch-x-private-file-cache-expiry-classifier",
-  "scope": "private-file-cache-observation",
+  "run_id": "2026-11-07-batch-y-send-authorization-predeployment-guards",
+  "scope": "dispatcher-boundaries",
   "project": "dczlddwbtgvfdujgcitb",
-  "cache_controls": [
-    0,
-    60
-  ],
-  "warm_seconds": 10,
-  "cold_seconds": 12,
   "case_ids": [
-    "X_PRIVATE_FILE_OWNER_FOREIGN",
-    "X_SIGNED_URL_COLD_EXPIRY",
-    "X_SIGNED_URL_WARM_EXPIRY",
-    "X_ZERO_AND_SHORT_UPLOAD_CACHE_CONTROL",
-    "X_PRIVATE_FILE_EXACT_CLEANUP"
+    "Y_EDGE_METHOD",
+    "Y_EDGE_NO_SECRET",
+    "Y_EDGE_WRONG_SECRET",
+    "Y_EDGE_HUMAN_CALLER"
   ],
-  "source_parent_commit": "e6c671f5aeaff05e3d7a9f8f817b691c8ca5dc63",
-  "plan_path": "docs/security-audit/security-fr-2-batch-x-private-file-cache-plan.json",
+  "source_parent_commit": "04a4f1ca4162794bdaec717553674d67ea985324",
+  "plan_path": "docs/security-audit/security-fr-2-batch-y-send-authorization-plan.json",
   "no_automatic_rerun": true,
-  "initial_review": "docs/security-audit/security-fr-2-batch-x-private-file-cache-initial-review.json",
-  "completed_source_commit": "ebefa905c7ae0eabbf39bae3a6cdd5f2f3afe541",
-  "completed_workflow_run_id": "42403720180",
-  "result_path": "docs/security-audit/security-fr-2-batch-x-private-file-cache-staging-result.json",
-  "exit_code": 0
+  "phase": "PREDEPLOYMENT_GUARDS_ONLY"
 }

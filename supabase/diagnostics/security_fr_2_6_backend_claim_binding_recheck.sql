@@ -17,6 +17,7 @@ declare
   v_before text;
   v_after text;
   v_status text;
+  v_stale_status text;
   v_attempt integer;
   v_checks jsonb := '{}'::jsonb;
 begin
@@ -90,6 +91,7 @@ begin
   perform public.record_notification_outbox_result(v_job,true,false,null,v_time+interval '1 minute',1,v_time);
   select status,attempt_count into v_status,v_attempt from public.notification_outbox where id=v_job;
   v_checks := v_checks || jsonb_build_object('stale_completion_preserves_new_claim',v_status='processing' and v_attempt=2);
+  v_stale_status := v_status;
   perform public.record_notification_outbox_result(v_job,true,false,null,v_time+interval '17 minutes',2,v_time+interval '16 minutes');
   select status into v_status from public.notification_outbox where id=v_job;
   v_checks := v_checks || jsonb_build_object('current_claim_result_succeeds',v_status='sent');
@@ -102,7 +104,8 @@ begin
   v_checks := v_checks || jsonb_build_object('non_target_rows_unchanged',v_before=v_after);
   perform set_config('mushavo.batch_y.safe_result',jsonb_build_object(
     'project','dczlddwbtgvfdujgcitb','checks',v_checks,
-    'source_claim_attempt',1,'newer_claim_attempt',v_attempt,'status_after_stale_completion',v_status,
+    'source_claim_attempt',1,'newer_claim_attempt',v_attempt,
+    'status_after_stale_completion',v_stale_status,'status_after_current_completion',v_status,
     'external_delivery_requests',0,'committed_writes',0,'overlapping_transactions_tested',false,
     'non_target_checksum_before',v_before,'non_target_checksum_after',v_after)::text,true);
 end;

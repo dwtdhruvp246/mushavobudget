@@ -153,5 +153,32 @@
     "Actual scheduler/provider delivery",
     "True overlapping service worker transactions",
     "Full Batch Y or Stage 3 closure"
-  ]
+  ],
+  "repair_recheck": {
+    "source_commit": "5fde40987b83bee6851adda58bb77e3fa51da2fd",
+    "case_groups_reused": [
+      "Y_BACKEND_01",
+      "Y_BACKEND_02",
+      "Y_BACKEND_03",
+      "Y_BACKEND_04",
+      "Y_BACKEND_05",
+      "Y_BACKEND_06",
+      "Y_BACKEND_07"
+    ],
+    "implementations": [
+      "notification_outbox",
+      "admin_notification_outbox"
+    ],
+    "new_seven_argument_result_signatures": 2,
+    "legacy_signatures_fail_closed": true,
+    "max_fixture_rows_per_transaction": 1,
+    "existing_owner_notice": "REFERENCE_ONLY_WITH_CHECKSUM_PRESERVATION",
+    "external_delivery_requests": 0,
+    "overlapping_service_transactions": false,
+    "local_Postgres_assertions": 42,
+    "shared_helper_tests": 10,
+    "affected_dispatcher_checks": 9,
+    "deno_typechecked_dispatchers": 2,
+    "frozen_dependency_integrity_matches": 29
+  }
 }

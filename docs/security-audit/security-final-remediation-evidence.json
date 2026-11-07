@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "phase": "FINAL_REMEDIATION",
-  "date": "2026-11-06",
+  "date": "2026-11-07",
   "events": [
     {
       "id": "FRE01",
@@ -10699,6 +10699,29 @@
       "stage_3_complete": false,
       "findings_closed": [],
       "next_step": "STAGE_3_RECONCILE_REMAINING_BATCHES_V_X_Y_Z",
+      "exit_code": 0
+    },
+    {
+      "id": "FRE310",
+      "date": "2026-11-07",
+      "stage_step": "FR.2.6_BATCH_X_RECEIPT_AND_Y_REQUEST_RACE",
+      "progress_display": "Stage 3/10 | FR.2/8 | Batches X/Y",
+      "result": "SCOPED_HOSTED_RECEIPT_AND_REQUEST_REPLAY_PASS_CLEANUP_VERIFIED",
+      "receipt": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
+      "hosted_receipt_assertions": 20,
+      "concurrent_request_id_workflow": "SCOPED_POSTGREST_HTTP_PASS",
+      "staging_storage_fix_installed": true,
+      "physical_test_objects_remaining": 0,
+      "CI_sessions_remaining": 0,
+      "retained_suspended_workspace_count": 1,
+      "production_changed": false,
+      "real_email_requests": 0,
+      "provider_payments": 0,
+      "full_batch_X_complete": false,
+      "full_batch_Y_complete": false,
+      "stage_3_complete": false,
+      "findings_closed": [],
+      "next_step": "BATCH_Y_CURRENT_BACKEND_CALLER_MATRIX_AND_REMAINING_SCOPE_RECONCILIATION",
       "exit_code": 0
     }
   ],

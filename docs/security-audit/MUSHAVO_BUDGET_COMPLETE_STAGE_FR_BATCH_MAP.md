@@ -1,5 +1,5 @@
 # Mushavo Budget — complete stages, FR groups and batches
-As of 6 November 2026 • Full remaining-to-launch hierarchy • Version 1.11
+As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.12
 
 ## Read this structure correctly
 
@@ -7,7 +7,7 @@ As of 6 November 2026 • Full remaining-to-launch hierarchy • Version 1.11
 
 **Main Stage 3 → FR.2 → FR.2.5 → Batch W is complete for the agreed staging scope.** The live recovery password-save retry passed and its disposable account and empty Personal workspace were removed. The existing-password sign-in accepted a seven-character credential on the disposable account under the current policy. Business v25 is live on stable staging, and Chromium confirmed the delivery-failure and resend wait messages against the deployed files using controlled responses. The signed-in password-change failure/retry is owner-deferred. [Closeout receipt](security-fr-2-batch-w-staging-closeout.json).
 
-**Current execution is Batch X.** The selected database checks cover bills and spending requests, delegated member removal, isolated suspension and expired Business access. The live receipt runner is prepared on a separate branch. The fixture confirmation expired and independent readback found zero test workspaces or objects. The first Batch Y caller checks also passed. [Current evidence](security-fr-2-batch-x-staging-database-and-receipt-readiness.json).
+**Current execution is the remaining X/Y authorization scope.** Nineteen staging database checks passed with modeled claims. Twenty genuine hosted receipt/request checks passed, including upload, original and signed download, removed-member denial and two concurrent requests retaining one draft. An archived-file deletion defect was corrected on staging and verified through the real Storage API. Independent readback confirms zero test files and CI sessions; one synthetic workspace is suspended with its grant/audit history retained. [Hosted evidence](security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json) and [database/preflight evidence](security-fr-2-batch-x-staging-database-and-receipt-readiness.json).
 
 There are three overlapping views of the SAME project:
 - **Main Stages 0–10** describe the product/security areas.
@@ -91,15 +91,15 @@ Historical preparation/local pass is not relabelled as current full security acc
 | U | Full-app startup/cache/session lifecycle | Recorded COMPLETE at its accepted scope; reuse applicable evidence. |
 | V | Privileged access, recoverable operators and original MFA scope | IN PROGRESS. Staging Admin access, ordinary denial, session revocation, staff roles and catalog reconciliation passed at their reviewed scope. Independent recovery is owner-deferred and remains open. Historical MFA checks remain on hold. [Batch V evidence](security-fr-2-batch-v-staff-and-catalog-staging-result.json). |
 | W | Auth/password/account/email workflows | Complete for the agreed staging scope. The signed-in password-change failure/retry is owner-deferred. [Closeout receipt](security-fr-2-batch-w-staging-closeout.json). |
-| X | Personal/Family/Business permissions and legitimate finance | IN PROGRESS. Nineteen scoped staging PostgreSQL checks passed with modeled Auth claims and verified rollback. Real receipt upload and private download acceptance are pending fixture confirmation. [Batch X evidence](security-fr-2-batch-x-staging-database-and-receipt-readiness.json). |
-| Y | Backend caller permissions, real database races and containment | READ-ONLY PREFLIGHT PASSED. Ordinary roles were denied a backend helper and the service role could execute two read helpers. Actual workflow concurrency and service job acceptance remain open. [Batch Y preflight](security-fr-2-batch-x-staging-database-and-receipt-readiness.json). |
+| X | Personal/Family/Business permissions and legitimate finance | Scoped database and hosted receipt/request passes. Upload, original/signed download, removed-member denial and physical cleanup verified. Reconcile remaining original role/tenant/finance exits before full closure. [Hosted evidence](security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json). |
+| Y | Backend caller permissions, real database races and containment | Read-only preflight and one actual concurrent request-id workflow passed. Two simultaneous PostgREST calls retained one spending-request draft/version. Remaining caller matrix, service/job concurrency and applicable authorization-change races remain open. [Evidence](security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json). |
 | Z | Integrated authorization recheck and Stage 3 closeout | PLANNED; reconcile U–Y and original authorization exits, integrated affected recheck and final Stage 3 handoff. |
 
 **V, X, Y and Z remain open.** Z is the planned closeout for Stage 3 authorization. FR.3–FR.8 are separate launch work.
 
 ### Work left inside V/X/Y/Z
 
-- **V:** verify Admin staff, Finance and Support on staging, exercise independent recovery for a separate Admin, and reconcile the wider catalog fingerprint. Historical MFA criteria remain on hold under the owner's password-only decision. [Current policy reconciliation](SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md).
+- **V:** retain the verified Admin staff, Finance, Support and reconciled catalog passes. Independent Admin recovery and SMTP are owner-deferred. Historical MFA criteria remain on hold under the owner's password-only decision. [Current policy reconciliation](SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md).
 - **X:** reconcile earlier Personal/Family/Business passes; execute missing own/foreign/removed/assigned/team/Owner/escalation and invite/removal effects; verify legitimate finance/currency/entitlements; prove exact fixture cleanup and retained-record preservation.
 - **Y:** freeze the installed routine/caller matrix; test applicable anonymous/authenticated/human/service/job permissions; real PostgreSQL concurrency/replay/expiry/revocation or current-policy authorization-change races; verify independent failure readback, containment and cleanup. Retired proof/device mechanisms do not automatically require new tests.
 - **Z:** reconcile required authorization outcomes and current exact installations; run justified integrated/affected regressions; check preservation/cleanup/containment and issue the Stage 3 completion decision/handoff. Unresolved required blockers keep it open.

@@ -1,4 +1,7 @@
 {
+  "enabled": false,
+  "completed_after_workflow_run": "42348451487",
+  "completion_receipt": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
   "run_id": "2026-11-07-batch-x-fixed-storage-cleanup",
   "scope": "business-receipt-authorization",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",

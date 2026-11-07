@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "date": "2026-11-06",
+  "date": "2026-11-07",
   "phase": "FINAL_REMEDIATION",
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
-  "active_step": "FR.2.5",
+  "active_step": "FR.2.6",
   "source_parent_commit": "c8344cd5a85e684ca028b77d830cfab7e1f19edd",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE309",
+  "latest_evidence": "FRE310",
   "batches": [
     {
       "id": "FR.1",
@@ -1694,8 +1694,10 @@
         },
         {
           "id": "FR.2.6",
-          "status": "PLANNED_NOT_EXECUTED",
-          "title": "Affected recheck and bounded completion report"
+          "status": "IN_PROGRESS_SCOPED_REQUEST_RACE_AND_RECEIPT_CLEANUP_PASS",
+          "title": "Affected recheck and bounded completion report",
+          "receipt": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
+          "full_Stage_3_complete": false
         }
       ],
       "readiness_handoff": "docs/security-audit/SECURITY_FR_2_1_READINESS_HANDOFF.md",
@@ -1706,7 +1708,8 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "STAGE_3_RECONCILE_REMAINING_BATCHES_V_X_Y_Z"
+      "next_step": "BATCH_Y_CURRENT_BACKEND_CALLER_MATRIX_AND_REMAINING_SCOPE_RECONCILIATION",
+      "latest_evidence": "FRE310"
     },
     {
       "id": "FR.3",
@@ -1756,7 +1759,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "STAGE_3_RECONCILE_REMAINING_BATCHES_V_X_Y_Z",
+  "next_step": "BATCH_Y_CURRENT_BACKEND_CALLER_MATRIX_AND_REMAINING_SCOPE_RECONCILIATION",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4640,7 +4643,6 @@
   },
   "remaining_required_lettered_batches": [
     "V",
-    "W",
     "X",
     "Y",
     "Z"
@@ -8255,5 +8257,18 @@
       "AU03.04 failure/retry variant"
     ],
     "stage_3_complete": false
+  },
+  "batch_X_hosted_receipt_and_storage_cleanup": {
+    "status": "SCOPED_HOSTED_RECEIPT_AND_REQUEST_REPLAY_PASS_CLEANUP_VERIFIED",
+    "receipt": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
+    "physical_test_objects_remaining": 0,
+    "CI_sessions_remaining": 0,
+    "retained_suspended_workspace_count": 1,
+    "full_batch_X_complete": false
+  },
+  "batch_Y_request_id_HTTP_concurrency": {
+    "status": "SCOPED_PASS_REMAINING_BACKEND_MATRIX_OPEN",
+    "receipt": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
+    "service_job_concurrency_acceptance": false
   }
 }

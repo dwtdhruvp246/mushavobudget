@@ -14,6 +14,7 @@ async function main() {
   let progress = 'Stage 3/10 | FR.2/8 | Batch W/Z';
   try {
     const plan = JSON.parse(fs.readFileSync(new URL('./staging-run.json', import.meta.url), 'utf8'));
+    need(plan.enabled !== false, 'RUN_PLAN_ARCHIVED');
     const confirmation = plan.scope === 'access-and-confirmation' && plan.case_id === 'AU01.05';
     const passwordSessions = plan.scope === 'password-and-sessions'
       && JSON.stringify(plan.case_ids) === JSON.stringify(['AU03.03', 'AU05.01', 'AU05.02', 'AU05.04']);

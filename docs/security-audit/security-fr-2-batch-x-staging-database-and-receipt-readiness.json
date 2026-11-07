@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "date": "2026-11-06",
+  "date": "2026-11-07",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
-  "result": "BATCH_X_SCOPED_HOSTED_POSTGRES_PASS_PRIVATE_STORAGE_OPEN",
+  "result": "BATCH_X_DATABASE_AND_HOSTED_RECEIPT_SCOPED_PASS_BACKEND_CLOSEOUT_OPEN",
   "project": "dczlddwbtgvfdujgcitb",
   "source_parent": "eb3686f4eebf217571a9d29a3dcb8f71a7c026a3",
   "batch_v": {
@@ -61,19 +61,15 @@
     ]
   },
   "receipt_and_private_original": {
-    "status": "RUNNER_LOCAL_CHECKS_PASS_LIVE_FIXTURE_CONFIRMATION_EXPIRED",
-    "scope": "One generated PNG, one disposable staging workspace and two ordinary staging sign-ins.",
-    "readiness_branch": "security/batch-x-receipt-readiness",
-    "readiness_commit": "7dba82a548e4d58894490a135e8b197c12c56b72",
-    "runner_started": false,
-    "local_mocked_assertions": 17,
-    "local_mocked_requests": 25,
-    "fixture_creation_confirmation": "EXPIRED",
-    "independent_fixture_readback": {
-      "workspace_count": 0,
-      "ordinary_actor_sessions": 0,
-      "business_document_storage_objects": 0
-    }
+    "status": "SCOPED_HOSTED_PASS_CLEANUP_VERIFIED",
+    "evidence": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
+    "original_hosted_assertions": 20,
+    "real_Storage_upload_and_original_and_signed_download": true,
+    "anonymous_and_removed_member_denials": true,
+    "archived_download_and_signing_denied": true,
+    "physical_test_objects_remaining": 0,
+    "CI_sessions_remaining": 0,
+    "retained_suspended_workspace_count": 1
   },
   "batch_y_read_only_preflight": {
     "checks": {
@@ -84,9 +80,10 @@
       "service_billing_usage_read_allowed_and_missing_workspace_zero": true
     },
     "result": "BATCH_Y_SCOPED_BACKEND_READ_ONLY_PASS",
-    "concurrency_acceptance": false,
+    "concurrency_acceptance": "SELECTED_REQUEST_ID_HTTP_RACE_PASSED_SERVICE_JOBS_STILL_OPEN",
     "external_delivery_requests": 0,
-    "dispatch_or_queue_operations_invoked": 0
+    "dispatch_or_queue_operations_invoked": 0,
+    "request_id_concurrency_evidence": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json"
   },
   "full_lettered_batch_X_complete": false,
   "full_lettered_batch_Y_complete": false,

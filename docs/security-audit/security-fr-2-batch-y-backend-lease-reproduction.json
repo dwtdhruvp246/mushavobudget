@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "result": "STALE_OUTBOX_COMPLETION_REPLACED_NEWER_CLAIM_FIX_REQUIRED",
+  "project": "dczlddwbtgvfdujgcitb",
+  "plan_commit": "0437a392c3dc575aecb9689d525ae691362f810b",
+  "observed": {
+    "checks": {
+      "non_target_rows_unchanged": true,
+      "expired_claim_reclaimed_once": true,
+      "service_claims_exact_fixture": true,
+      "anon_ten_backend_calls_denied": true,
+      "unexpired_claim_not_reclaimed": true,
+      "stale_completion_preserves_new_claim": false,
+      "authenticated_ten_backend_calls_denied": true
+    },
+    "project": "dczlddwbtgvfdujgcitb",
+    "committed_writes": 0,
+    "newer_claim_attempt": 2,
+    "source_claim_attempt": 1,
+    "non_target_checksum_after": "d751713988987e9331980363e24189ce",
+    "external_delivery_requests": 0,
+    "non_target_checksum_before": "d751713988987e9331980363e24189ce",
+    "status_after_stale_completion": "sent",
+    "overlapping_transactions_tested": false
+  },
+  "independent_rollback_readback": {
+    "outbox_rows": 0,
+    "fixture_status": "suspended",
+    "catalog_matches": true,
+    "backend_fixture_rows": 0
+  },
+  "source_routines": [
+    {
+      "md5": "5cc4a7fea2b64334e16bc2917c839f81",
+      "anon": false,
+      "service": true,
+      "function": "claim_admin_notification_outbox",
+      "signature": "p_batch_size integer, p_reference_time timestamp with time zone",
+      "return_type": "SETOF public.admin_notification_outbox",
+      "authenticated": false,
+      "security_definer": true
+    },
+    {
+      "md5": "a7c819609163839e0cecdf9a7f29cec8",
+      "anon": false,
+      "service": true,
+      "function": "claim_notification_outbox",
+      "signature": "p_batch_size integer, p_reference_time timestamp with time zone",
+      "return_type": "SETOF public.notification_outbox",
+      "authenticated": false,
+      "security_definer": true
+    },
+    {
+      "md5": "afc4a37b78eb86e2134ad8b3bf80156a",
+      "anon": false,
+      "service": true,
+      "function": "record_admin_notification_outbox_result",
+      "signature": "p_outbox_id uuid, p_succeeded boolean, p_permanent_failure boolean, p_error text, p_reference_time timestamp with time zone",
+      "return_type": "public.admin_notification_outbox",
+      "authenticated": false,
+      "security_definer": true
+    },
+    {
+      "md5": "665eb764ded51412c85c8ae80047bd51",
+      "anon": false,
+      "service": true,
+      "function": "record_notification_outbox_result",
+      "signature": "p_outbox_id uuid, p_succeeded boolean, p_permanent_failure boolean, p_error text, p_reference_time timestamp with time zone",
+      "return_type": "public.notification_outbox",
+      "authenticated": false,
+      "security_definer": true
+    }
+  ],
+  "actual_overlapping_transactions": false,
+  "provider_delivery_exercised": false,
+  "production_changed": false,
+  "exit_code": 1
+}

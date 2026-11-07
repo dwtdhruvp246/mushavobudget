@@ -1,6 +1,6 @@
 {
-  "enabled": false,
-  "run_id": "2026-11-07-batch-y-send-authorization-predeployment-guards",
+  "enabled": true,
+  "run_id": "2026-11-07-batch-y-send-authorization-deployed-boundaries",
   "scope": "dispatcher-boundaries",
   "project": "dczlddwbtgvfdujgcitb",
   "case_ids": [
@@ -9,8 +9,12 @@
     "Y_EDGE_WRONG_SECRET",
     "Y_EDGE_HUMAN_CALLER"
   ],
-  "source_parent_commit": "04a4f1ca4162794bdaec717553674d67ea985324",
+  "source_parent_commit": "59772c5dc3dfe7befed3f3a8007e73b70e2ef16f",
   "plan_path": "docs/security-audit/security-fr-2-batch-y-send-authorization-plan.json",
   "no_automatic_rerun": true,
-  "phase": "PREDEPLOYMENT_GUARDS_ONLY"
+  "phase": "POSTDEPLOYMENT_DENIALS_ONLY",
+  "deployed_function_versions": {
+    "dispatch-push-reminders": 2,
+    "dispatch-admin-notifications": 2
+  }
 }

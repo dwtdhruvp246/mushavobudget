@@ -189,6 +189,23 @@ export async function checkBusinessReceipt({ accounts, actors, evidence }, key, 
     && fixture.owner_id === owner.id && fixture.workspace_type === 'business' && fixture.status === 'active');
   const workspace = fixture.id;
   const scoped = '&workspace_id=eq.' + workspace + '&limit=2';
+  if (plan.cleanup_fixture === true) {
+    const response = await request('GET', '/rest/v1/business_documents?select=storage_path,original_name,size_bytes,status'
+      + '&original_name=eq.' + FILE_NAME + '&status=eq.archived' + scoped, owner);
+    const row = single(response.data);
+    const parts = typeof row?.storage_path === 'string' ? row.storage_path.split('/') : [];
+    confirm('EXACT_SYNTHETIC_ARCHIVE_VERIFIED', response.status === 200 && row?.status === 'archived'
+      && row.original_name === FILE_NAME && Number(row.size_bytes) === PNG.length
+      && parts.length === 5 && parts[0] === 'workspaces' && parts[1] === workspace
+      && parts[2] === staff.id && UUID.test(parts[3]) && parts[4] === FILE_NAME);
+    evidence.archive_verified = true;
+    const removed = await request('DELETE', '/storage/v1/object/' + BUCKET + '/' + row.storage_path, owner);
+    evidence.storage_delete_http_status = removed.status;
+    evidence.storage_delete_acknowledged = removed.status === 204
+      || removed.status === 200 && removed.data?.message === 'Successfully deleted';
+    need(evidence.storage_delete_acknowledged, 'SINGLE_OBJECT_STORAGE_DELETE_REVIEW_REQUIRED');
+    return;
+  }
   const documents = await request('GET', '/rest/v1/business_documents?select=id&workspace_id=eq.' + workspace + '&limit=2', owner);
   const claims = await request('GET', '/rest/v1/business_expense_claims?select=id&workspace_id=eq.' + workspace + '&limit=2', owner);
   confirm('WORKSPACE_RECEIPTS_AND_CLAIMS_EMPTY', [documents, claims]

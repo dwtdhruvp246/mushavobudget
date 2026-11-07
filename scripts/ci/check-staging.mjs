@@ -56,9 +56,10 @@ async function main() {
     if (businessReceipt) {
       if (fixtureAction === 'suspend') {
         const prior = JSON.parse(fs.readFileSync('reports/staging/summary.json', 'utf8'));
+        const safeToSuspend = plan.cleanup_fixture === true ? prior.exercise?.archive_verified === true
+          : prior.exercise?.upload_attempted === false || prior.exercise?.storage_delete_acknowledged === true;
         need(prior.run_plan === plan.run_id && prior.source_commit === process.env.GITHUB_SHA
-          && prior.disposable_fixture_action === 'exercise'
-          && (prior.exercise?.upload_attempted === false || prior.exercise?.storage_delete_acknowledged === true),
+          && prior.disposable_fixture_action === 'exercise' && safeToSuspend,
           'EXACT_STORAGE_CLEANUP_REQUIRED_BEFORE_SUSPENSION');
       }
       report = await checkStagingAccess(accounts, apiTransport(config.key, agent), args => fixtureAction

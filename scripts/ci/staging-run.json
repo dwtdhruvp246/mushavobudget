@@ -1,5 +1,5 @@
 {
-  "run_id": "2026-11-06-batch-x-receipt-d7be160c2026-seat-resume",
+  "run_id": "2026-11-07-batch-x-single-receipt-cleanup",
   "scope": "business-receipt-authorization",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
   "case_ids": [
@@ -8,6 +8,7 @@
     "Y_REQUEST_RACE"
   ],
   "fixture_name": "audit-batch-x-receipt-d7be160c2026",
-  "source_parent_commit": "17608633c73599d2faa5ffe3f163b35e8707c8d5",
-  "resume_fixture": true
+  "source_parent_commit": "f5e0886dc6332f5876fe46fe29a785282b6252cc",
+  "resume_fixture": true,
+  "cleanup_fixture": true
 }

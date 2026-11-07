@@ -34,6 +34,7 @@ jobs:
         run: |
           echo "controlled=$(node -p 'require("./scripts/ci/staging-run.json").scope === "controlled-browser"')" >> "$GITHUB_OUTPUT"
           echo "business_receipt=$(node -p 'require("./scripts/ci/staging-run.json").scope === "business-receipt-authorization"')" >> "$GITHUB_OUTPUT"
+          echo "receipt_cleanup=$(node -p 'require("./scripts/ci/staging-run.json").cleanup_fixture === true')" >> "$GITHUB_OUTPUT"
       - name: Install locked browser tools
         if: steps.scope.outputs.business_receipt != 'true'
         run: npm ci --ignore-scripts --prefix scripts/fixtures/staging-browser-tools
@@ -45,7 +46,7 @@ jobs:
         run: node scripts/ci/check-staging.mjs
       - name: Prepare the exact disposable Business workspace
         id: receipt_fixture
-        if: steps.scope.outputs.business_receipt == 'true'
+        if: steps.scope.outputs.business_receipt == 'true' && steps.scope.outputs.receipt_cleanup != 'true'
         env:
           MUSHAVO_STAGING_RECEIPT_ADMIN_ACTION: provision
           MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}
@@ -62,7 +63,7 @@ jobs:
           MUSHAVO_STAGING_USER_B_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_B_PASSWORD }}
         run: node scripts/ci/check-staging.mjs
       - name: Suspend the test workspace after receipt cleanup
-        if: always() && steps.scope.outputs.business_receipt == 'true' && steps.receipt_fixture.outcome == 'success'
+        if: always() && steps.scope.outputs.business_receipt == 'true' && (steps.receipt_fixture.outcome == 'success' || steps.scope.outputs.receipt_cleanup == 'true')
         env:
           MUSHAVO_STAGING_RECEIPT_ADMIN_ACTION: suspend
           MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}

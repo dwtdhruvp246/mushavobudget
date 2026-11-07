@@ -10874,6 +10874,28 @@
       "stage_3_complete": false,
       "findings_closed": [],
       "exit_code": 0
+    },
+    {
+      "id": "FRE317",
+      "date": "2026-11-07",
+      "stage_step": "FR.2.6_X_FAMILY_PROOF_PATH_POLICY",
+      "result": "FAMILY_UPLOAD_PATH_POLICY_FIXED_LIVE_API_ACCEPTANCE_BLOCKED_PROVIDER_CONFIRMATION",
+      "receipt": "docs/security-audit/security-fr-2-batch-x-family-proof-path-staging-result.json",
+      "migration_version": "20261107085131",
+      "local_PostgreSQL_assertions": 17,
+      "runner_guard_tests": 5,
+      "hosted_HTTP_assertions": 0,
+      "provider_setup_confirmation_expired_attempts": 2,
+      "committed_test_fixture_rows": 0,
+      "remaining_physical_files": 0,
+      "remaining_CI_or_setup_sessions": 0,
+      "catalog_matches": true,
+      "original_manual_Family_hash_matches": true,
+      "production_changed": false,
+      "full_batch_X_complete": false,
+      "stage_3_complete": false,
+      "findings_closed": [],
+      "exit_code": 1
     }
   ],
   "prior_stage_evidence_preserved": true,

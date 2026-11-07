@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "result": "FAMILY_UPLOAD_PATH_POLICY_FIXED_LIVE_API_ACCEPTANCE_BLOCKED_PROVIDER_CONFIRMATION",
+  "candidate_commit": "7549c5e673dc89749db9466cb9e31ecbfaac9b7c",
+  "plan_commit": "2648d75537081890f499b72f1a5b50d56326c4ea",
+  "prepared_runner_commit": "cf54435829051233ca945c9dd798ff03b4fc7d67",
+  "migration_version": "20261107085131",
+  "local_PostgreSQL_assertions": 17,
+  "runner_guard_tests": 5,
+  "hosted_HTTP_assertions": 0,
+  "provider_confirmation": {
+    "operation": "execute_sql of supabase/diagnostics/security_fr_2_6_family_proof_fixture_create.sql",
+    "expired_attempts": 2,
+    "setup_executed": false,
+    "reason": "Supabase returned confirmation expired after 2 minutes on both attempts.",
+    "new_credentials_required": false,
+    "existing_broad_task_authorization_repeatedly_requested": false
+  },
+  "independent_readback": {
+    "catalog": {
+      "mode": "ACTIVE",
+      "stamp": "4646c0fe0367fe033b4594428f9c180eb96ca9b39ed2d1a2024bdc843804c3d7",
+      "matches": true
+    },
+    "CI_sessions": 0,
+    "setup_sessions": 0,
+    "admin_queue_rows": 0,
+    "normal_queue_rows": 0,
+    "family_fixture_rows": 0,
+    "physical_file_objects": 0,
+    "fixture_workspace_rows": 0,
+    "family_policy_fingerprint": "5ef836d2e7dca19c3e65ad9aec5749c2"
+  },
+  "manual_Family_conversion_snapshot": {
+    "scope": "READ_ONLY_REFERENCE_STATE_AND_ORIGINAL_COLUMN_MANUAL_BASELINE",
+    "stage_step": "FR.2.2_CONVERSION_REFERENCE_SNAPSHOT",
+    "checked_UTC": "2026-11-07T12:34:44.52024+00:00",
+    "target_project": "dczlddwbtgvfdujgcitb",
+    "hosted_acceptance": false,
+    "record_consistency": {
+      "records_total": 5,
+      "null_record_workspaces": 0,
+      "records_without_parent": 0,
+      "parent_workspace_mismatches": 0,
+      "mismatches_matching_prior_audit_item_shape": 0
+    },
+    "reference_FK_present": true,
+    "transaction_read_only": "on",
+    "conversion_consistency": {
+      "conversions_without_record": 2,
+      "record_workspace_mismatches": 0,
+      "payment_record_conversions_total": 7,
+      "unlinked_rows_matching_audit_owner_usd1_identity_shape": 2
+    },
+    "reference_FK_validated": false,
+    "application_routines_invoked": 0,
+    "synthetic_actor_rows_matched": 2,
+    "retained_manual_snapshot_sha256": "d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3",
+    "generated_reference_column_present": true,
+    "retained_family_fixture_names_matched": 2,
+    "raw_rows_identifiers_or_emails_printed": false,
+    "project_selection_independently_verified": false,
+    "historical_rows_repaired_or_conversions_deleted": false,
+    "audit_shape_is_provenance_or_cleanup_authorization": false,
+    "retained_family_manual_USD1_rows_matching_full_scope": 2,
+    "manual_baseline_excludes_only_derived_payment_record_ref": true
+  },
+  "original_manual_SHA256_matches": true,
+  "remaining_Auth_accounts_or_test_Family_fixtures_created": 0,
+  "Storage_objects_uploaded": 0,
+  "external_email_and_provider_requests": 0,
+  "production_changed": false,
+  "full_batch_X_complete": false,
+  "stage_3_complete": false,
+  "findings_closed": [],
+  "resume_instructions": "docs/security-audit/SECURITY_FR_2_FAMILY_PROOF_RESUME.md",
+  "exit_code": 1
+}

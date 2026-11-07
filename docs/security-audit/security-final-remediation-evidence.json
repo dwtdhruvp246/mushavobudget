@@ -10723,6 +10723,34 @@
       "findings_closed": [],
       "next_step": "BATCH_Y_CURRENT_BACKEND_CALLER_MATRIX_AND_REMAINING_SCOPE_RECONCILIATION",
       "exit_code": 0
+    },
+    {
+      "id": "FRE311",
+      "date": "2026-11-07",
+      "stage_step": "FR.2.6_BATCH_Y_SELECTED_BACKEND_CALLERS_AND_CLAIM_LIFECYCLE",
+      "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+      "result": "SELECTED_BACKEND_CALLERS_AND_CLAIM_LIFECYCLE_SCOPED_PASS",
+      "receipt": "docs/security-audit/security-fr-2-batch-y-backend-caller-and-lease-staging-result.json",
+      "staging_database_fix_installed": true,
+      "backend_signature_denials_per_role": 12,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "local_Postgres_assertions": 42,
+      "shared_helper_tests": 10,
+      "affected_dispatcher_checks": 9,
+      "Deno_dispatchers_checked": 2,
+      "independent_fixture_absence": true,
+      "actual_overlapping_service_transactions": false,
+      "paired_dispatcher_hosted_deployment": false,
+      "external_delivery_requests": 0,
+      "production_changed": false,
+      "full_batch_Y_complete": false,
+      "stage_3_complete": false,
+      "findings_closed": [],
+      "next_step": "STAGE_3_RECONCILE_REMAINING_X_Y_MATRIX_AND_PREPARE_Z",
+      "exit_code": 0
     }
   ],
   "prior_stage_evidence_preserved": true,

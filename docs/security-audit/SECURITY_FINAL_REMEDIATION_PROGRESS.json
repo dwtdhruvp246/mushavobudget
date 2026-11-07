@@ -9,7 +9,7 @@
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE310",
+  "latest_evidence": "FRE311",
   "batches": [
     {
       "id": "FR.1",
@@ -1694,10 +1694,11 @@
         },
         {
           "id": "FR.2.6",
-          "status": "IN_PROGRESS_SCOPED_REQUEST_RACE_AND_RECEIPT_CLEANUP_PASS",
+          "status": "IN_PROGRESS_SELECTED_BACKEND_CALLER_AND_CLAIM_LIFECYCLE_PASS",
           "title": "Affected recheck and bounded completion report",
           "receipt": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
-          "full_Stage_3_complete": false
+          "full_Stage_3_complete": false,
+          "backend_receipt": "docs/security-audit/security-fr-2-batch-y-backend-caller-and-lease-staging-result.json"
         }
       ],
       "readiness_handoff": "docs/security-audit/SECURITY_FR_2_1_READINESS_HANDOFF.md",
@@ -1708,8 +1709,8 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "BATCH_Y_CURRENT_BACKEND_CALLER_MATRIX_AND_REMAINING_SCOPE_RECONCILIATION",
-      "latest_evidence": "FRE310"
+      "next_step": "STAGE_3_RECONCILE_REMAINING_X_Y_MATRIX_AND_PREPARE_Z",
+      "latest_evidence": "FRE311"
     },
     {
       "id": "FR.3",
@@ -1759,7 +1760,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "BATCH_Y_CURRENT_BACKEND_CALLER_MATRIX_AND_REMAINING_SCOPE_RECONCILIATION",
+  "next_step": "STAGE_3_RECONCILE_REMAINING_X_Y_MATRIX_AND_PREPARE_Z",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -8270,5 +8271,15 @@
     "status": "SCOPED_PASS_REMAINING_BACKEND_MATRIX_OPEN",
     "receipt": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
     "service_job_concurrency_acceptance": false
+  },
+  "batch_Y_backend_claim_lifecycle": {
+    "status": "SELECTED_BACKEND_CALLERS_AND_CLAIM_LIFECYCLE_SCOPED_PASS",
+    "receipt": "docs/security-audit/security-fr-2-batch-y-backend-caller-and-lease-staging-result.json",
+    "stage_database_fix_installed": true,
+    "paired_dispatcher_source_ready": true,
+    "paired_dispatcher_hosted_deployment": false,
+    "stale_result_rejection_both_queues": true,
+    "independent_rollback_absence_verified": true,
+    "full_batch_Y_complete": false
   }
 }

@@ -50,7 +50,7 @@
     "service_job_concurrency_tested": false
   },
   "storage_correction": {
-    "migration": "supabase/migrations/20261107070000_business_document_storage_delete_authorization.sql",
+    "migration": "supabase/migrations/20261107064428_business_document_storage_delete_authorization.sql",
     "source_commit": "8f17f8bd5be3e4fa112e46a644f6a6b5d39cd919",
     "staging_installed": true,
     "production_installed": false,
@@ -276,5 +276,11 @@
   "stage_3_complete": false,
   "findings_closed": [],
   "next_step": "BATCH_Y_CURRENT_BACKEND_CALLER_MATRIX_AND_REMAINING_SCOPE_RECONCILIATION",
-  "exit_code": 0
+  "exit_code": 0,
+  "source_migration_history_alignment": {
+    "version": "20261107064428",
+    "name": "business_document_storage_delete_authorization",
+    "source_filename_matches_hosted_version": true,
+    "ledger_changed": false
+  }
 }

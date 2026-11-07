@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "result": "SELECTED_BACKEND_CALLERS_AND_CLAIM_LIFECYCLE_SCOPED_PASS",
+  "project": "dczlddwbtgvfdujgcitb",
+  "plan_commit": "0437a392c3dc575aecb9689d525ae691362f810b",
+  "repair_source_commit": "5fde40987b83bee6851adda58bb77e3fa51da2fd",
+  "recheck_source_commit": "94d3c68cb816f2d07b587a2b68d7eba4c1943471",
+  "initial_failure": "docs/security-audit/security-fr-2-batch-y-backend-lease-reproduction.json",
+  "installed_correction": {
+    "migration": "supabase/migrations/20261107070657_outbox_result_claim_binding.sql",
+    "stage_installed": true,
+    "production_installed": false,
+    "new_fenced_result_signatures": 2,
+    "legacy_signatures_fail_closed": true,
+    "pre_catalog_sha256": "cbe13656ff46192b424e2479f18ac50e1c5bceaaec1f3caac822ec9f9d92bdad",
+    "post_catalog_sha256": "897dcb81876542b9012fbc90dd25df79e21f2a212422f2bab15b5396c8368be1",
+    "paired_dispatcher_source_ready": true,
+    "paired_dispatchers_hosted_deployed": false
+  },
+  "caller_checks": {
+    "distinct_backend_routine_names": 10,
+    "signatures": 12,
+    "actual_anon_execute_denials": 12,
+    "actual_authenticated_execute_denials": 12,
+    "mechanism": "ACTUAL_SET_ROLE_POSTGRES_EXECUTE_GRANTS_WITH_MODELED_ROLE_CLAIMS",
+    "ordinary_HTTP_login_test": false,
+    "service_role_positive_calls": "ACTUAL_SET_ROLE_SERVICE_ROLE_WITH_ROLLED_BACK_SYNTHETIC_QUEUE_ROWS"
+  },
+  "normal_queue": {
+    "checks": {
+      "non_target_rows_unchanged": true,
+      "expired_claim_reclaimed_once": true,
+      "legacy_unbound_result_denied": true,
+      "service_claims_exact_fixture": true,
+      "anon_ten_backend_calls_denied": true,
+      "current_claim_result_succeeds": true,
+      "unexpired_claim_not_reclaimed": true,
+      "terminal_completion_replay_noop": true,
+      "stale_completion_preserves_new_claim": true,
+      "authenticated_ten_backend_calls_denied": true
+    },
+    "project": "dczlddwbtgvfdujgcitb",
+    "committed_writes": 0,
+    "newer_claim_attempt": 2,
+    "source_claim_attempt": 1,
+    "non_target_checksum_after": "d751713988987e9331980363e24189ce",
+    "external_delivery_requests": 0,
+    "non_target_checksum_before": "d751713988987e9331980363e24189ce",
+    "status_after_stale_completion": "processing",
+    "overlapping_transactions_tested": false,
+    "status_after_current_completion": "sent"
+  },
+  "admin_queue": {
+    "checks": {
+      "existing_owner_notice_unchanged": true,
+      "anon_new_result_signatures_denied": true,
+      "expired_admin_claim_reclaimed_once": true,
+      "legacy_unbound_admin_result_denied": true,
+      "service_claims_exact_admin_fixture": true,
+      "current_admin_claim_result_succeeds": true,
+      "unexpired_admin_claim_not_reclaimed": true,
+      "non_target_admin_queue_rows_unchanged": true,
+      "terminal_admin_completion_replay_noop": true,
+      "authenticated_new_result_signatures_denied": true,
+      "stale_admin_completion_preserves_new_claim": true
+    },
+    "project": "dczlddwbtgvfdujgcitb",
+    "committed_writes": 0,
+    "existing_notice_written": false,
+    "non_target_checksum_after": "d751713988987e9331980363e24189ce",
+    "external_delivery_requests": 0,
+    "non_target_checksum_before": "d751713988987e9331980363e24189ce",
+    "overlapping_transactions_tested": false
+  },
+  "independent_readback": {
+    "catalog_sha256": "897dcb81876542b9012fbc90dd25df79e21f2a212422f2bab15b5396c8368be1",
+    "catalog_matches": true,
+    "runner_sessions": 0,
+    "admin_queue_rows": 0,
+    "normal_queue_rows": 0,
+    "receipt_file_objects": 0,
+    "admin_backend_fixtures": 0,
+    "receipt_fixture_status": "suspended",
+    "normal_backend_fixtures": 0
+  },
+  "local_verification": {
+    "Postgres_queue_assertions": 42,
+    "shared_helper_tests": 10,
+    "affected_dispatcher_checks": 9,
+    "deno_version": "2.9.5",
+    "Deno_typechecked_dispatchers": 2,
+    "frozen_dependency_integrities_matched": 29,
+    "dependency_lock_changed": false,
+    "exit_code": 0
+  },
+  "source_migration_history_alignment": {
+    "source_versions_match_hosted_versions": true,
+    "migration_ledger_writes_for_alignment": 0,
+    "source_SQL_bodies_changed_for_alignment": false,
+    "versions": [
+      {
+        "version": "20261107064428",
+        "name": "business_document_storage_delete_authorization"
+      },
+      {
+        "version": "20261107070657",
+        "name": "outbox_result_claim_binding"
+      }
+    ]
+  },
+  "external_email_requests": 0,
+  "push_deliveries": 0,
+  "provider_payment_requests": 0,
+  "committed_fixture_writes": 0,
+  "production_changed": false,
+  "retained_advisory_summary": [
+    {
+      "name": "rls_enabled_no_policy",
+      "level": "INFO",
+      "count": 8,
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy"
+    },
+    {
+      "name": "function_search_path_mutable",
+      "level": "WARN",
+      "count": 1,
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable"
+    },
+    {
+      "name": "anon_security_definer_function_executable",
+      "level": "WARN",
+      "count": 57,
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable"
+    },
+    {
+      "name": "authenticated_security_definer_function_executable",
+      "level": "WARN",
+      "count": 182,
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable"
+    },
+    {
+      "name": "auth_leaked_password_protection",
+      "level": "WARN",
+      "count": 1,
+      "remediation": "https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection"
+    }
+  ],
+  "remaining": [
+    "Reconcile the rest of the current caller/role matrix and original X exits.",
+    "Verify remaining required overlapping backend claims and authorization-change cases.",
+    "Deploy and accept the paired dispatchers with the controlled operations scope; actual scheduler/provider delivery remains untested.",
+    "Integrated Batch Z and Stage 3 completion decision.",
+    "Finish original X mutation-scope checks, including document archive access when the parent lies outside the caller's assigned scope."
+  ],
+  "full_lettered_batch_Y_complete": false,
+  "stage_3_complete": false,
+  "findings_closed": [],
+  "exit_code": 0
+}

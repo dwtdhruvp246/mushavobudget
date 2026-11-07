@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import test from 'node:test';
 import { PGlite } from '../scripts/fixtures/email-session-review-tools/node_modules/@electric-sql/pglite/dist/index.js';
 
-const migration = fs.readFileSync(new URL('../supabase/migrations/20261107070000_business_document_storage_delete_authorization.sql', import.meta.url), 'utf8');
+const migration = fs.readFileSync(new URL('../supabase/migrations/20261107064428_business_document_storage_delete_authorization.sql', import.meta.url), 'utf8');
 const owner = '11111111-1111-4111-8111-111111111111';
 const uploader = '22222222-2222-4222-8222-222222222222';
 const workspace = '33333333-3333-4333-8333-333333333333';

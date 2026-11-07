@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import test from 'node:test';
 import { PGlite } from '../scripts/fixtures/email-session-review-tools/node_modules/@electric-sql/pglite/dist/index.js';
 
-const migration = fs.readFileSync(new URL('../supabase/migrations/20261107080000_outbox_result_claim_binding.sql', import.meta.url), 'utf8');
+const migration = fs.readFileSync(new URL('../supabase/migrations/20261107070657_outbox_result_claim_binding.sql', import.meta.url), 'utf8');
 const claims = JSON.parse(fs.readFileSync(new URL('./fixtures/outbox-reviewed-claim-functions.json', import.meta.url), 'utf8'));
 const id = '11111111-1111-4111-8111-111111111111';
 const at = '1900-01-01T00:00:00Z';

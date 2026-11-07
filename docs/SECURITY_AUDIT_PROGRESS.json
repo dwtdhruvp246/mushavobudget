@@ -1,0 +1,1070 @@
+{
+  "schema_version": 1,
+  "updated_date": "2026-10-09",
+  "current_stage": 1,
+  "current_step": "1.6",
+  "current_title": "Stage 1 closure and detailed report",
+  "stage_0": {
+    "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
+    "owner_approved": true,
+    "approval_date": "2026-10-07",
+    "report": "docs/SECURITY_STAGE_0_COMPLETION_REPORT.md",
+    "documentation_merge_commit": "067cb5f00ad7f644647926c5fd1e82a5c754f058",
+    "all_controls_or_release_cleared": false
+  },
+  "stage_1": {
+    "status": "CLOSED_FOUNDATIONS_CHECKPOINT_WITH_CARRY_FORWARD",
+    "authorized": true,
+    "active_step": null,
+    "plan": "docs/SECURITY_STAGE_1_FOUNDATIONS_PLAN.md",
+    "steps": [
+      {
+        "id": "1.1",
+        "title": "Account security and recovery",
+        "status": "NORMAL_SIGNIN_CHECKS_COMPLETE_WITH_CARRY_FORWARD",
+        "latest_evidence": "S1E07",
+        "provider_checks": {
+          "github": "OWNER_TESTED_PASSKEY_SIGNIN_PASS",
+          "cloudflare": "OWNER_TESTED_EMAIL_CODE_SIGNIN_PASS",
+          "supabase": "OWNER_TESTED_AUTH_APP_SIGNIN_PASS_BACKUP_GAP",
+          "zoho": "OWNER_TESTED_MAIL_AUTH_APP_SIGNIN_PASS_BACKUP_SENDER_IDENTITY_UNCONFIRMED"
+        },
+        "provider_signin_methods": {
+          "cloudflare": "GOOGLE_OWNER_CONFIRMED",
+          "supabase": "EMAIL_BASED_OWNER_CONFIRMED"
+        },
+        "cloudflare_google_mfa_and_recovery": "UNVERIFIED",
+        "cloudflare_recovery_code_storage": "OBTAINED_OWNER_CONFIRMED_PERSISTENT_STORAGE_UNCONFIRMED",
+        "supabase_backup_authentication": "OWNER_REPORTED_NOT_AVAILABLE_CARRIED_FORWARD",
+        "fresh_signin_checks": "OWNER_TESTED_PASS_FOR_ALL_FOUR_REPORTED_METHODS",
+        "fresh_signin_results": [
+          {
+            "provider": "Cloudflare",
+            "method": "Email verification code",
+            "result": "OWNER-TESTED PASS"
+          },
+          {
+            "provider": "GitHub",
+            "method": "Passkey",
+            "result": "OWNER-TESTED PASS"
+          },
+          {
+            "provider": "Supabase",
+            "method": "Authenticator app",
+            "result": "OWNER-TESTED PASS"
+          },
+          {
+            "provider": "Zoho Mail",
+            "method": "Authenticator app",
+            "result": "OWNER-TESTED PASS"
+          }
+        ],
+        "remaining_recovery_identity_evidence": "OPEN_IN_CARRY_FORWARD_REGISTER; no complete recovery/assurance/F08 closure"
+      },
+      {
+        "id": "1.2",
+        "title": "External protection",
+        "status": "CLOSED_CHECKPOINT_WITH_CARRY_FORWARD_FULL_EXTERNAL_PROTECTION_UNVERIFIED",
+        "latest_evidence": "S1E64",
+        "instructions": "docs/SECURITY_STAGE_1_2_BACKUP_INVENTORY.md",
+        "backups_created_or_restore_verified": false,
+        "executable_inventory": "OWNER_COMPLETED_S1E09",
+        "observed_tools": [
+          {
+            "tool": "node",
+            "status": "FOUND",
+            "version": "v22.17.0"
+          },
+          {
+            "tool": "npm.cmd",
+            "status": "FOUND",
+            "version": "10.9.2"
+          },
+          {
+            "tool": "git",
+            "status": "FOUND",
+            "version": "git version 2.55.0.windows.3"
+          },
+          {
+            "tool": "docker",
+            "status": "FOUND",
+            "version": "Docker version 29.6.2, build dfc4efb"
+          },
+          {
+            "tool": "pg_dump",
+            "status": "NOT ON PATH",
+            "version": null
+          },
+          {
+            "tool": "psql",
+            "status": "NOT ON PATH",
+            "version": null
+          },
+          {
+            "tool": "supabase",
+            "status": "FOUND",
+            "version": "2.106.0"
+          }
+        ],
+        "engine_target_readiness": "HISTORICAL_FAIL_DESKTOP_LINUX_PIPE; NOT_REQUIRED_FOR_SELECTED_EXPORT_METHOD",
+        "installed_cli_dump_options": "HISTORICAL_PS1_BLOCKER; NOT_REQUIRED_FOR_SELECTED_EXPORT_METHOD",
+        "hosted_database_scope": "OWNER_METADATA_RECEIVED_S1E13; PRECISE_EXPORT_COVERAGE_PENDING",
+        "sql_fixture_validation": "PASS_DISPOSABLE_POSTGRESQL_18_3_ONLY",
+        "diagnostic": "supabase/diagnostics/security_stage_1_backup_inventory.sql",
+        "engine_context": "desktop-linux",
+        "export_method": "OWNER_SELECTED_STANDALONE_POSTGRESQL_CLIENTS",
+        "standalone_client_paths_versions": "OWNER_TESTED_ALL_FOUR_17_11_AT_STANDARD_PG17_BIN_PASS",
+        "client_installation": "FOUR_EXECUTABLES_OWNER_VERIFIED_AT_FULL_PATH; INSTALLER_COMPONENTS_NOT_INDEPENDENTLY_INSPECTED",
+        "deployed_postgresql": "17.6",
+        "deployed_database_bytes": 30559379,
+        "selected_client_major": "17.x stable",
+        "inventory_result": "12 INFO + 1 REVIEW; NOT_BACKUP_OR_SECURITY_CLEARANCE",
+        "client_version_results": [
+          {
+            "tool": "pg_dump",
+            "status": "OWNER_TESTED_VERSION_PASS",
+            "version": "17.11"
+          },
+          {
+            "tool": "pg_dumpall",
+            "status": "OWNER_TESTED_VERSION_PASS",
+            "version": "17.11"
+          },
+          {
+            "tool": "pg_restore",
+            "status": "OWNER_TESTED_VERSION_PASS",
+            "version": "17.11"
+          },
+          {
+            "tool": "psql",
+            "status": "OWNER_TESTED_VERSION_PASS",
+            "version": "17.11"
+          }
+        ],
+        "connection_preparation": "OWNER_EXECUTED_S1E18_CHECK_PASS_S1E19",
+        "hosted_connection_verified": true,
+        "connection_check_script": "scripts/security-stage-1-connection-check.ps1",
+        "connection_endpoint": {
+          "host": "aws-0-eu-central-1.pooler.supabase.com",
+          "port": 5432,
+          "database": "postgres",
+          "username": "postgres.kttkospkblwvguuwnhjj",
+          "method": "Shared pooler session mode; owner screenshot"
+        },
+        "ssl_certificate_and_verified_connection": "OWNER_TESTED_VERIFY_FULL_CONNECTION_PASS_TLS_1_3",
+        "connection_tls": {
+          "protocol": "TLSv1.3",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "scope": "Owner client-to-session-pooler"
+        },
+        "protected_export_destination": "OWNER_LOCAL_NTFS_DACL_PASS_S1E28; ENCRYPTED_DATABASE_COMPONENT_CREATED_VERIFIED_S1E32; GOOGLE_COPY_WORK_DEFERRED_S1E40; OFFSITE_FULL_COVERAGE_AND_CREDENTIAL_RETENTION_UNVERIFIED",
+        "precise_export_coverage": "PENDING_DATABASE_ROLES_MANAGED_ENCRYPTION_FILES_CONFIGURATION_RECONCILIATION",
+        "offsite_destination_choice": {
+          "destination": "Google Drive",
+          "evidence": "S1E20",
+          "choice_only": false,
+          "account_mfa_sharing_upload_verified": false,
+          "protection_evidence": "S1E26; owner settings confirmation only",
+          "mfa_and_private_folder_owner_reported": true,
+          "actual_upload_and_download_integrity_verified": false,
+          "current_status": "GOOGLE_DRIVE_DEFERRED_OWNER_REQUEST_S1E40"
+        },
+        "encryption_tool_check": "OWNER_INFORMATION_RECHECK_PASS_26_04_EXECUTABLE_AND_LIBRARY_S1E23; S1E22_PATCH_GAP_SUPERSEDED",
+        "encryption_archive_and_restore_verified": false,
+        "observed_encryption_tool": {
+          "executable": "C:\\Program Files\\7-Zip\\7z.exe",
+          "version": "26.04",
+          "library_version": "26.04",
+          "architecture": "x64",
+          "security_update_verified": true
+        },
+        "drive_account_two_step_verification": "OWNER_CONFIRMED_ENABLED_S1E26; SETTINGS_SCOPE_ONLY",
+        "drive_folder_protection": "OWNER_CONFIRMED_CREATED_RESTRICTED_ONLY_OWNER_S1E26; SETTINGS_SCOPE_ONLY",
+        "synthetic_encryption_check": "OWNER_EXECUTED_S1E24_BLOCK_PASS_S1E25",
+        "synthetic_encryption_verified": true,
+        "synthetic_encryption_result": {
+          "evidence": "S1E25",
+          "scope": "Public dummy file/password only; encrypted metadata, hidden filename, wrong-password rejection, correct-password integrity/extraction and matching restored SHA-256",
+          "real_backup_passphrase_or_local_cloud_protection_verified": false
+        },
+        "local_backup_folder_handoff": "OWNER_EXECUTED_S1E27_BLOCK_PASS_S1E28",
+        "local_backup_folder_and_dacl_verified": true,
+        "local_disk_encryption": "OWNER_REPORTED_ENABLED_S1E28; NO_INDEPENDENT_CIPHER_KEY_RECOVERY_PROOF",
+        "drive_free_capacity": "OWNER_REPORTED_APPROXIMATELY_10_GB_S1E28",
+        "local_backup_destination": {
+          "directory": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342",
+          "evidence": "S1E28",
+          "local_free_gib": 28.12,
+          "scope": "Owner-tested folder DACL/filesystem/readback; time-specific space"
+        },
+        "database_export_handoff": "scripts/security-stage-1-database-export.ps1; OWNER_EXECUTED_PASS_S1E30",
+        "database_export_created": true,
+        "encrypted_package_created": true,
+        "database_archive_read_verified": true,
+        "database_export_result": {
+          "evidence": "S1E30",
+          "completed_utc": "2026-10-07T18:11:03.7896753Z",
+          "bytes": 2109566,
+          "public_table_data_entries": 80,
+          "auth_users_and_storage_metadata_present": true,
+          "sha256": "OWNER_WITHHELD; LOCAL_COMPARISON_ONLY",
+          "warnings": "NOT_REPORTED",
+          "scope": "One database component; offline archive reading is not SQL execution/restore or full platform completeness"
+        },
+        "encrypted_package_handoff": "scripts/security-stage-1-database-encryption.ps1; OWNER_EXECUTED_PASS_S1E32",
+        "complete_platform_backup_created": false,
+        "backups_created_or_restore_verified_scope": "Complete selected database/roles/files/configuration and offsite/isolated recovery; first database component separately recorded in S1E30",
+        "encrypted_package_file_verification_verified": true,
+        "encrypted_package_result": {
+          "evidence": "S1E32",
+          "completed_utc": "2026-10-07T18:26:23.3604019Z",
+          "file": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342\\20261007T180751Z-216304be49af48c4b889640c8ab9cef1.database-component-8135efd7cfce4f89b01da7296e864731.7z",
+          "bytes": 566080,
+          "packaged_files": 3,
+          "method": "LZMA2:3m 7zAES",
+          "wrong_password_source_filename_denial_and_three_extracted_hashes": "OWNER_TESTED_PASS",
+          "hashes": "PRIVATE_LOCAL_ONLY",
+          "warnings": "NOT_REPORTED",
+          "scope": "Actual owner-held database component encryption/file integrity; no database restore or full platform/offsite clearance"
+        },
+        "real_backup_passphrase_storage": "UNCONFIRMED_CARRY_FORWARD; CATEGORICAL_PROMPT_NOT_EXECUTED_BEFORE_DEFERRAL",
+        "drive_download_check_handoff": "scripts/security-stage-1-drive-download-check.ps1; HISTORICAL_PREPARED_OWNER_ATTEMPTS_BLOCKED; NO_EXECUTION_REQUEST_AFTER_S1E40",
+        "downloaded_archive_file_verification_verified": false,
+        "offsite_upload_download_verified": false,
+        "drive_download_attempt": {
+          "evidence": "S1E36",
+          "selected_extension": ".7z",
+          "result": "COMBINED_FILE_GUARD_REJECTED_BEFORE_COPY_OR_DOWNLOADED_HASH_TEST",
+          "actual_size_format_and_exact_failing_predicate": "NOT_REPORTED",
+          "rename_of_previous_zip": "INFERENCE_FROM_SAME_BASENAME_ONLY",
+          "downloaded_artifact_corrupt": "NOT_ESTABLISHED"
+        },
+        "cloud_upload_scope": "UNCONFIRMED_CARRY_FORWARD; NO_SCOPE_REPORT_RECEIVED_BEFORE_GOOGLE_DEFERRAL",
+        "download_format_diagnostic_handoff": "scripts/security-stage-1-download-format-check.ps1; OWNER_EXECUTED_S1E38_METADATA_RESULT",
+        "download_format_result": {
+          "evidence": "S1E38",
+          "actual_bytes": 1212733,
+          "expected_bytes": 566080,
+          "format_hint": "7z signature; integrity not tested",
+          "expected_named_candidates": 0,
+          "size_matches_original": false,
+          "rename_zip_inference": "NOT_SUPPORTED_BY_CURRENT_7Z_PREFIX; CREATION_HISTORY_UNKNOWN"
+        },
+        "original_archive_selection_handoff": "scripts/security-stage-1-original-archive-selection.ps1; PREPARED_NOT_EXECUTED; DEFERRED_NOT_REQUESTED_S1E40",
+        "google_drive_work_status": "DEFERRED_OWNER_REQUEST_S1E40",
+        "offsite_copy_status": "UNVERIFIED_CARRY_FORWARD; GOOGLE_ROUTE_DEFERRED; NO_ALTERNATIVE_SELECTED",
+        "remaining_current_step_work": "Four groups: exact database/global-role/managed/extension/foreign/Vault recovery coverage, actual Storage file bytes, Auth/SMTP/Edge/provider configuration and private credential handling, and frequency/retention/recovery objectives/failure records. Google route remains deferred; isolated synthetic restore is 1.4.",
+        "remaining_work_groups": [
+          {
+            "id": "database_scope",
+            "work": "Reconcile exact archive/database/managed/extension/foreign/Vault coverage and separately protect global roles, membership and grant dependencies.",
+            "status": "LOCAL_DATABASE_ROLE_PACKAGE_PASS_AND_16_SELECTED_ROLE_ATTRIBUTES_21_MEMBERSHIPS_MATCH_S1E50; 15_ROLE_WIDE_COUNTS_MATCH; SETTINGS_VALUES_DATABASE_SCOPE_ACL_MANAGED_KEYS_PENDING_S1E51"
+          },
+          {
+            "id": "storage_bytes",
+            "work": "Back up actual uploaded Storage files and verify counts, sizes and integrity against a consistent inventory.",
+            "status": "PENDING; earlier metadata reported two objects, not downloaded bytes"
+          },
+          {
+            "id": "configuration_and_credentials",
+            "work": "Inventory protected Auth/SMTP/Edge/provider recovery configuration and independently retained recovery credentials/key dependencies.",
+            "status": "PENDING; do not send secrets or raw configuration"
+          },
+          {
+            "id": "backup_operations",
+            "work": "Choose frequency, retention, acceptable data loss/recovery time and success/failure records.",
+            "status": "OWNER_DECISIONS_PENDING; Google offsite work deferred"
+          }
+        ],
+        "local_coverage_handoff": "scripts/security-stage-1-local-coverage-check.ps1; OWNER_EXECUTED_S1E42_PRIOR_COUNTER; COUNTER_CORRECTED_S1E43_NO_REPEAT_REQUEST",
+        "local_toc_scope_review_verified": false,
+        "local_coverage_result": {
+          "evidence": "S1E42",
+          "summary": {
+            "stage_step": "1.2",
+            "result": "LOCAL_VERIFIED_COMPONENT_TOC_COVERAGE_REVIEW",
+            "project": "kttkospkblwvguuwnhjj",
+            "checked_utc": "2026-10-07T19:45:48.9791986Z",
+            "archive_and_three_sources_match_private_receipt": true,
+            "toc_entries": 2322,
+            "table_data_entries_total": 127,
+            "extension_definitions": 6,
+            "acl_entries": 527,
+            "default_acl_entries": 27,
+            "publication_definitions": 31,
+            "publication_table_entries": 29,
+            "foreign_table_definitions": 0,
+            "large_object_related_entries": 0,
+            "complete_platform_backup_verified": false,
+            "isolated_database_restore_verified": false,
+            "files_modified_or_uploaded": false
+          },
+          "schema_rows": [
+            {
+              "schema": "public",
+              "table_definitions": 80,
+              "table_data_entries": 80,
+              "routine_definitions": 281,
+              "policies": 151,
+              "triggers": 140
+            },
+            {
+              "schema": "auth",
+              "table_definitions": 27,
+              "table_data_entries": 27,
+              "routine_definitions": 4,
+              "policies": 0,
+              "triggers": 1
+            },
+            {
+              "schema": "storage",
+              "table_definitions": 8,
+              "table_data_entries": 8,
+              "routine_definitions": 19,
+              "policies": 15,
+              "triggers": 7
+            },
+            {
+              "schema": "realtime",
+              "table_definitions": 10,
+              "table_data_entries": 9,
+              "routine_definitions": 17,
+              "policies": 0,
+              "triggers": 1
+            },
+            {
+              "schema": "cron",
+              "table_definitions": 0,
+              "table_data_entries": 2,
+              "routine_definitions": 0,
+              "policies": 0,
+              "triggers": 0
+            },
+            {
+              "schema": "vault",
+              "table_definitions": 0,
+              "table_data_entries": 1,
+              "routine_definitions": 0,
+              "policies": 0,
+              "triggers": 0
+            },
+            {
+              "schema": "extensions",
+              "table_definitions": 0,
+              "table_data_entries": 0,
+              "routine_definitions": 6,
+              "policies": 0,
+              "triggers": 0
+            },
+            {
+              "schema": "graphql",
+              "table_definitions": 0,
+              "table_data_entries": 0,
+              "routine_definitions": 0,
+              "policies": 0,
+              "triggers": 0
+            },
+            {
+              "schema": "graphql_public",
+              "table_definitions": 0,
+              "table_data_entries": 0,
+              "routine_definitions": 1,
+              "policies": 0,
+              "triggers": 0
+            },
+            {
+              "schema": "net",
+              "table_definitions": 0,
+              "table_data_entries": 0,
+              "routine_definitions": 0,
+              "policies": 0,
+              "triggers": 0
+            },
+            {
+              "schema": "pgbouncer",
+              "table_definitions": 0,
+              "table_data_entries": 0,
+              "routine_definitions": 1,
+              "policies": 0,
+              "triggers": 0
+            }
+          ],
+          "exact_scope_reconciliation_complete": false,
+          "publication_counter_scope": "S1E42 reported 31 includes 29 table mappings, not 31 actual definitions. Corrected local helper is not rerun; S1E44 now supplies 2 current source definitions, 29 direct mappings and 0 schema mappings."
+        },
+        "local_component_receipt_recheck_verified": true,
+        "recovery_dependency_handoff": "supabase/diagnostics/security_stage_1_recovery_dependencies.sql; OWNER_EXECUTED_COMPLETE_METADATA_S1E44",
+        "recovery_dependency_result": {
+          "evidence": "S1E44",
+          "checked_utc": "2026-10-08T04:04:45.322523+00:00",
+          "server_version": "17.6",
+          "status_counts": {
+            "INFO": 6,
+            "REVIEW": 1
+          },
+          "non_system_roles": 16,
+          "memberships": 24,
+          "role_database_setting_records": 10,
+          "parameter_acl_records": 1,
+          "publication_definitions": 2,
+          "direct_relation_mappings": 29,
+          "expanded_tables": 35,
+          "schema_mappings": 0,
+          "foreign_tables": 0,
+          "foreign_servers": 0,
+          "user_mappings": 0,
+          "large_objects": 0,
+          "scope": "Current source snapshot; metadata classification only, not full artifact/restore coverage"
+        },
+        "role_export_handoff": "scripts/security-stage-1-role-export.ps1; OWNER_EXECUTED_NATIVE_MARKERS_PASS_S1E46",
+        "roles_export_created": true,
+        "encrypted_roles_package_created": true,
+        "recovery_source_drift": "Realtime routines 18 in current S1E44 metadata versus 17 in older S1E13/S1E42; exact identity/change/update snapshot unresolved",
+        "role_export_result": {
+          "evidence": "S1E46",
+          "stage_step": "1.2",
+          "result": "ROLE_EXPORT_NATIVE_COMPLETION_AND_MARKERS_PASS",
+          "project": "kttkospkblwvguuwnhjj",
+          "completed_utc": "2026-10-08T04:22:25.3745418Z",
+          "file": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342\\20261008T042143Z-48bbd715d1b24cec870ee95e8113edb2.roles.sql",
+          "bytes": 6310,
+          "inventoried_role_definitions": 16,
+          "membership_grant_statements": 21,
+          "parameter_acl_statements": 1,
+          "role_password_export_disabled": true,
+          "exact_membership_flags_and_settings_recovery_verified": false,
+          "database_scoped_role_settings_reconciled": false,
+          "encrypted_roles_package_created": false,
+          "complete_platform_backup_verified": false,
+          "isolated_restore_verified": false
+        },
+        "role_membership_count_review": "S1E50 owner private tuples now match all 21 expected S1E44 memberships including grantor/ADMIN/INHERIT/SET; three builtin-to-builtin omissions classified. Live source/omitted builtin/destination recovery still unverified.",
+        "roles_encryption_handoff": "scripts/security-stage-1-role-encryption.ps1; OWNER_EXECUTED_LOCAL_PACKAGE_FILE_PASS_S1E48",
+        "encrypted_roles_package_result": {
+          "evidence": "S1E48",
+          "stage_step": "1.2",
+          "result": "ROLES_COMPONENT_ENCRYPTED_PACKAGE_AND_EXTRACTED_HASH_PASS",
+          "project": "kttkospkblwvguuwnhjj",
+          "completed_utc": "2026-10-08T04:31:59.1197194Z",
+          "file": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342\\20261008T042143Z-48bbd715d1b24cec870ee95e8113edb2.roles-component-47e6cd53c0884338b318426926349d77.7z",
+          "bytes": 1919,
+          "packaged_files": 2,
+          "roles_match_private_manifest": true,
+          "wrong_password_cannot_list_source_filenames": true,
+          "both_extracted_hashes_match": true,
+          "role_password_export_disabled": true,
+          "exact_membership_flags_and_settings_recovery_verified": false,
+          "database_scoped_role_settings_reconciled": false,
+          "offsite_upload_download_verified": false,
+          "complete_platform_backup_verified": false,
+          "isolated_database_restore_verified": false
+        },
+        "role_coverage_handoff": "scripts/security-stage-1-role-coverage-check.ps1 and pinned security-stage-1-role-coverage.cjs; OWNER_EXECUTED_SELECTED_ATTRIBUTES_MEMBERSHIPS_MATCH_S1E50",
+        "selected_role_attributes_and_exported_memberships_verified": true,
+        "role_coverage_result": {
+          "evidence": "S1E50",
+          "stage_step": "1.2",
+          "result": "PRIVATE_ROLE_ATTRIBUTES_AND_EXPORTED_MEMBERSHIPS_MATCH_S1E44",
+          "project": "kttkospkblwvguuwnhjj",
+          "checked_utc": "2026-10-08T04:50:05.598Z",
+          "source_metadata_checked_utc": "2026-10-08T04:04:45.322523Z",
+          "archive_and_role_files_match_private_receipts": true,
+          "inventoried_role_definitions": 16,
+          "role_names_and_selected_attributes_match_s1e44": true,
+          "source_membership_records": 24,
+          "builtin_to_builtin_memberships_excluded_by_pg_dumpall": 3,
+          "expected_exported_memberships": 21,
+          "parsed_exported_memberships": 21,
+          "exported_grantor_admin_inherit_set_match_s1e44": true,
+          "role_wide_setting_statement_count": 15,
+          "role_wide_setting_counts_match_s1e44": true,
+          "database_scoped_setting_statements_in_role_file": 0,
+          "parameter_acl_statements": 1,
+          "unexamined_metadata_statements": 3,
+          "settings_values_and_database_scope_recovery_verified": false,
+          "parameter_acl_semantics_verified": false,
+          "omitted_builtin_memberships_recovered": false,
+          "independent_login_credentials_verified": false,
+          "live_source_or_isolated_restore_verified": false,
+          "complete_platform_backup_verified": false,
+          "isolated_database_restore_verified": false,
+          "raw_artifacts_uploaded": false
+        },
+        "setting_scope_handoff": "supabase/diagnostics/security_stage_1_setting_scope.sql; OWNER_EXECUTED_METADATA_COMPLETE_S1E52",
+        "settings_values_and_database_scope_recovery_verified": false,
+        "parameter_acl_semantics_verified": false,
+        "setting_scope_result": {
+          "evidence": "S1E52",
+          "checked_utc": "2026-10-08T05:28:30.392498+00:00",
+          "rows": 5,
+          "info_rows": 4,
+          "review_rows": 1,
+          "role_wide_records": 9,
+          "role_wide_setting_entries": 15,
+          "database_wide_records": 1,
+          "database_wide_setting_keys": [
+            "app.settings.jwt_exp"
+          ],
+          "incomplete_metadata_records": 0,
+          "parameter_acl_records": 1,
+          "parameter_acl_entries": 3,
+          "builtin_membership_records": 3,
+          "exact_archived_values_or_recovery_verified": false
+        },
+        "setting_coverage_handoff": "scripts/security-stage-1-setting-coverage-check.ps1; OWNER_EXECUTED_PARTIAL_MATCH_REVIEW_S1E54; selected-TOC prerequisite superseded by S1E55",
+        "database_properties_toc_presence_verified": true,
+        "private_setting_key_names_and_parameter_delta_shape_verified": true,
+        "setting_coverage_result": {
+          "evidence": "S1E54",
+          "stage_step": "1.2",
+          "result": "PRIVATE_SETTING_COVERAGE_REVIEW",
+          "project": "kttkospkblwvguuwnhjj",
+          "checked_utc": "2026-10-08T06:01:38.392Z",
+          "source_metadata_checked_utc": "2026-10-08T05:28:30.392498+00:00",
+          "database_and_roles_originals_match_private_receipts": true,
+          "role_wide_setting_statement_count": 15,
+          "role_wide_setting_role_count": 9,
+          "role_wide_setting_key_names_match_s1e52": true,
+          "database_scoped_setting_statements_in_roles_file": 0,
+          "parameter_acl_statement_count": 1,
+          "parameter_grant_delta_shape_matches_s1e52": true,
+          "parameter_acl_bootstrap_owner_and_effective_semantics_verified": false,
+          "settings_values_and_database_scope_recovery_verified": false,
+          "intended_database_definition_toc_entries": 0,
+          "intended_database_properties_toc_entries": 0,
+          "intended_database_properties_entry_present": false,
+          "database_properties_contains_required_setting_verified": false,
+          "database_properties_values_or_recovered_behavior_verified": false,
+          "live_source_drift_or_destination_recovery_verified": false,
+          "complete_platform_backup_verified": false,
+          "isolated_database_restore_verified": false,
+          "raw_artifacts_uploaded": false
+        },
+        "selected_toc_zero_counts_scope": "Plain pg_restore --list suppresses DATABASE/PROPERTIES by default; not proof of absent archive entries. Full native TOC execution pending.",
+        "database_properties_full_toc_handoff": "scripts/security-stage-1-database-properties-toc-check.ps1; OWNER_EXECUTED_NARROW_ENTRY_PRESENCE_PASS_S1E56",
+        "database_properties_full_toc_result": {
+          "evidence": "S1E56",
+          "stage_step": "1.2",
+          "result": "DATABASE_DEFINITION_AND_PROPERTIES_FULL_TOC_PRESENT",
+          "project": "kttkospkblwvguuwnhjj",
+          "checked_utc": "2026-10-08T09:56:42.880Z",
+          "database_archive_and_three_sources_match_private_receipt": true,
+          "native_pg_restore_list_verbose_exit_code": 0,
+          "native_messages_present_kept_private": false,
+          "full_toc_database_header_matches_intended": true,
+          "full_toc_entries": 2329,
+          "original_selected_toc_database_definition_entries": 0,
+          "original_selected_toc_database_properties_entries": 0,
+          "intended_database_definition_toc_entries": 1,
+          "intended_database_properties_toc_entries": 1,
+          "intended_database_properties_entry_present": true,
+          "database_properties_contains_required_setting_verified": false,
+          "database_properties_values_or_recovered_behavior_verified": false,
+          "original_database_component_files_unchanged": true,
+          "sql_generated_or_executed": false,
+          "database_connection_performed": false,
+          "complete_platform_backup_verified": false,
+          "isolated_database_restore_verified": false,
+          "raw_artifacts_uploaded": false
+        },
+        "bounded_worklist": {
+          "evidence": "S1E57",
+          "total_work_items": 4,
+          "done_with_carry_forward": 4,
+          "remaining_work_items": 0,
+          "items": [
+            {
+              "id": "1.2.1",
+              "title": "Database/roles component exports and local checks",
+              "status": "DONE_WITH_CARRY_FORWARD",
+              "evidence": [
+                "S1E30",
+                "S1E32",
+                "S1E42",
+                "S1E46",
+                "S1E48",
+                "S1E50",
+                "S1E54",
+                "S1E56"
+              ],
+              "completed_scope": "Owner-held database/role exports and local encryption/file checks, selected role/membership/key/grant comparisons and full database TOC entry presence.",
+              "remaining_scope": "Exact property/setting values, bootstrap/default/effective grant semantics, managed/builtin/key recovery, source drift and destination behavior remain recovery/final-remediation dependencies; no complete database/platform backup clearance."
+            },
+            {
+              "id": "1.2.2",
+              "title": "Actual Storage file bytes",
+              "status": "DONE_WITH_CARRY_FORWARD",
+              "scope": "One consolidated current inventory/download/verification pass for actual uploaded bytes and their metadata. Missing/changed/inaccessible/unverified files are recorded and carried; no diagnostic cascade.",
+              "prepared_evidence": "S1E58",
+              "outcome_evidence": "S1E59",
+              "remaining_scope": "Encrypted Storage archive extraction/hash proof failed; password/archive/prompt cause unknown. Historical/atomic/same-time/offsite/recovery gaps carried; no diagnostic cascade."
+            },
+            {
+              "id": "1.2.3",
+              "title": "Protected provider configuration and recovery credentials",
+              "status": "DONE_WITH_CARRY_FORWARD",
+              "scope": "One consolidated owner-private Auth/SMTP/Edge/provider configuration and credential/key recovery inventory. Only redacted presence/status evidence is shared. Missing/unknown dependencies are carried.",
+              "prepared_evidence": "S1E60",
+              "outcome_evidence": "S1E61",
+              "remaining_scope": "Auth copy PARTIAL; Cron/Vault/integration material UNSURE. Other six categories owner-reported SAVED, completeness/independent recovery untested."
+            },
+            {
+              "id": "1.2.4",
+              "title": "Backup operating decisions and step checkpoint summary",
+              "status": "DONE_WITH_CARRY_FORWARD",
+              "scope": "One consolidated owner decision batch for frequency/retention/data-loss and recovery-time targets, record completion/failure handling and write the 1.2 checkpoint summary. Undecided/unavailable choices remain explicit carry-forward; no provider/schedule is enabled by documentation.",
+              "prepared_evidence": "S1E62",
+              "outcome_evidence": "S1E63",
+              "remaining_scope": "Targets approved; reliable execution/retention/failure notification/data-loss/recovery-time achievement unverified."
+            }
+          ],
+          "stopping_rule": "Database/roles component export/local-check work stops here for 1.2 with detailed gaps carried. Each remaining work item receives one planned consolidated evidence/decision pass; record PASS/PARTIAL/REVIEW/BLOCKED/DECISION and carry additional unresolved issues instead of automatically spawning more diagnostic/repair loops in 1.2. These are work items, not an invented fixed number of terminal commands.",
+          "finish_condition": "When the three remaining work-item outcomes and their carry-forward actions are recorded, issue the 1.2 checkpoint summary and advance to 1.3. Completing this audit checkpoint with gaps does not certify full external protection or close F16/release gates. Detailed Stage 1 report remains 1.6; isolated recovery is 1.4 and unresolved issues remain for final remediation/full re-audit.",
+          "next_work_item": "1.3",
+          "new_owner_command_handoff_issued": true,
+          "latest_evidence": "S1E64",
+          "checkpoint_complete": true
+        },
+        "storage_component_handoff": {
+          "evidence": "S1E58",
+          "helper": "scripts/security-stage-1-storage-backup.cjs",
+          "helper_git_blob": "1c6d1ca70be9d285b19042eb4f0ab3830fd8f156",
+          "inline_powershell_source": "scripts/security-stage-1-storage-backup-check.ps1",
+          "owner_execution": "COMPLETED_WITH_CARRY_FORWARD_S1E59",
+          "actual_storage_byte_download_verified": true,
+          "encrypted_storage_component_verified": false,
+          "one_planned_pass": true,
+          "next_after_outcome": "1.2.3",
+          "automatic_diagnostic_cascade": false,
+          "one_planned_pass_completed": true
+        },
+        "storage_component_result": {
+          "evidence": "S1E59",
+          "stage_step": "1.2",
+          "work_item": "1.2.2",
+          "project": "kttkospkblwvguuwnhjj",
+          "result": "STORAGE_COMPONENT_REVIEW",
+          "run_directory": "C:\\Users\\HP\\AppData\\Local\\MushavoBudget-Private-Backup-eb5ce347aa18442a8559acc40d2fa342\\StorageComponent-ef1b994c-321b-4a75-9977-9e1834c194d7",
+          "bucket_count": 4,
+          "object_count": 2,
+          "downloaded_objects": 2,
+          "downloaded_bytes": 771059,
+          "failed_objects": 0,
+          "inventory_before_and_after_complete": true,
+          "expected_baseline_buckets_present": true,
+          "before_after_inventory_equal": true,
+          "all_downloaded_sizes_and_local_hashes_match": true,
+          "encrypted_package_and_extracted_hashes_verified": false,
+          "snapshot_is_atomic": false,
+          "historical_versions_and_deleted_objects_covered": false,
+          "database_and_storage_same_point_in_time": false,
+          "offsite_copy_verified": false,
+          "complete_platform_backup_verified": false,
+          "isolated_restore_verified": false,
+          "problem_codes": [
+            "ARCHIVE_EXTRACT_FAILED"
+          ],
+          "completed_utc": "2026-10-08T10:48:13.621Z"
+        },
+        "provider_configuration_inventory": {
+          "evidence": "S1E60",
+          "status": "OWNER_REPORTED_SIX_SAVED_ONE_PARTIAL_ONE_UNSURE",
+          "areas": [
+            {
+              "id": "1",
+              "area": "Supabase database/API recovery",
+              "scope": "Database connection details/password, intended project identity, required privileged API/JWT/encryption-key recovery dependencies.",
+              "status": "OWNER_INVENTORY_PENDING"
+            },
+            {
+              "id": "2",
+              "area": "Supabase Auth configuration",
+              "scope": "Site/redirect URLs, enabled providers, signup/email-confirmation rules, Auth templates and other current Auth settings.",
+              "status": "OWNER_INVENTORY_PENDING"
+            },
+            {
+              "id": "3",
+              "area": "Zoho SMTP",
+              "scope": "Working host/port/TLS/sender/username settings and the private SMTP credential; domain/mail account configuration needed to recreate the sender.",
+              "status": "OWNER_INVENTORY_PENDING"
+            },
+            {
+              "id": "4",
+              "area": "Edge Functions",
+              "scope": "Current deployed names/source/version and per-function configuration, dependencies and required secret values; repository source alone does not prove deployed parity.",
+              "status": "OWNER_INVENTORY_PENDING"
+            },
+            {
+              "id": "5",
+              "area": "Cron, Vault and integrations",
+              "scope": "Scheduler definitions, Vault/dispatch recovery dependencies, currency-provider and Web Push/VAPID credentials where used. Unreadable values or unavailable keys stay MISSING/UNSURE.",
+              "status": "OWNER_INVENTORY_PENDING"
+            },
+            {
+              "id": "6",
+              "area": "Cloudflare hosting/domain/DNS",
+              "scope": "Actual deployment project/method, branch/build/output settings, environment/bindings and required credentials, plus domain/DNS settings.",
+              "status": "OWNER_INVENTORY_PENDING"
+            },
+            {
+              "id": "7",
+              "area": "GitHub deployment recovery",
+              "scope": "Repository/workflow/deployment configuration and required credentials or independent access recovery.",
+              "status": "OWNER_INVENTORY_PENDING"
+            },
+            {
+              "id": "8",
+              "area": "Account and backup access recovery",
+              "scope": "Recovery arrangements for GitHub, Cloudflare (including its actual login provider), Supabase and Zoho; privately saved backup passphrase and recovery access.",
+              "status": "OWNER_INVENTORY_PENDING"
+            }
+          ],
+          "reply_contract": [
+            "SAVED",
+            "PARTIAL",
+            "MISSING",
+            "UNSURE",
+            "NOT_USED"
+          ],
+          "protected_recovery_or_credentials_verified": false,
+          "outcome_evidence": "S1E61",
+          "owner_reported_areas": [
+            {
+              "id": "1",
+              "area": "Supabase database/API recovery",
+              "owner_reply": "done",
+              "status": "SAVED"
+            },
+            {
+              "id": "2",
+              "area": "Supabase Auth configuration",
+              "owner_reply": "half done. need to still work on it.",
+              "status": "PARTIAL"
+            },
+            {
+              "id": "3",
+              "area": "Zoho SMTP",
+              "owner_reply": "done",
+              "status": "SAVED"
+            },
+            {
+              "id": "4",
+              "area": "Edge Functions",
+              "owner_reply": "done",
+              "status": "SAVED"
+            },
+            {
+              "id": "5",
+              "area": "Cron, Vault and integrations",
+              "owner_reply": "i dont know",
+              "status": "UNSURE"
+            },
+            {
+              "id": "6",
+              "area": "Cloudflare hosting/domain/DNS",
+              "owner_reply": "done",
+              "status": "SAVED"
+            },
+            {
+              "id": "7",
+              "area": "GitHub deployment recovery",
+              "owner_reply": "done",
+              "status": "SAVED"
+            },
+            {
+              "id": "8",
+              "area": "Account and backup access recovery",
+              "owner_reply": "done",
+              "status": "SAVED"
+            }
+          ]
+        },
+        "backup_operating_decision_batch": {
+          "evidence": "S1E62",
+          "status": "OWNER_APPROVED_TARGETS_S1E63",
+          "targets": [
+            {
+              "id": "frequency",
+              "proposal": "DAILY",
+              "scope": "Intended full database/roles, current Storage bytes and protected configuration components; additionally before significant schema/configuration changes."
+            },
+            {
+              "id": "retention",
+              "proposal": "30_DAYS",
+              "scope": "Protected dated backup versions for 30 days; no automated deletion/cleanup authorized. Separate customer-data retention/legal policy remains later work."
+            },
+            {
+              "id": "maximum_data_loss",
+              "proposal": "24_HOURS_TARGET",
+              "scope": "Proposed recovery point objective; no guarantee from current incomplete/offsite-deferred backups."
+            },
+            {
+              "id": "recovery_time",
+              "proposal": "24_HOURS_TARGET",
+              "scope": "Proposed time to restore working service; actual recoverability/time requires the isolated 1.4 drill."
+            },
+            {
+              "id": "completion_and_failure_owner",
+              "proposal": "OWNER_RESPONSIBLE",
+              "scope": "Maintain date/component/outcome record after each planned run; treat incomplete/missed/failed components as failures, preserve last verified copies and review same day. Automatic execution/alerts are not enabled by this proposal."
+            }
+          ],
+          "policy_or_automation_enabled": false,
+          "actual_recovery_time_verified": false,
+          "approval_evidence": "S1E63"
+        },
+        "checkpoint_report": "docs/SECURITY_STAGE_1_2_CHECKPOINT_REPORT.md",
+        "full_external_protection_acceptance_met": false,
+        "checkpoint_work_review_complete": true,
+        "approved_operating_targets": {
+          "evidence": "S1E63",
+          "frequency": "DAILY_PLUS_BEFORE_MAJOR_CHANGES",
+          "retention_days": 30,
+          "maximum_data_loss_hours_target": 24,
+          "recovery_time_hours_target": 24,
+          "owner": "OWNER",
+          "completion_failure": "Record each planned component/run date/outcome, same-day review of missed/incomplete/failed runs, preserve last verified copies.",
+          "automated_execution_verified": false,
+          "automatic_failure_alerts_verified": false,
+          "retention_execution_verified": false,
+          "actual_recovery_time_verified": false
+        }
+      },
+      {
+        "id": "1.3",
+        "title": "Isolated staging",
+        "status": "CLOSED_SCOPED_PASSES_WITH_CARRY_FORWARD",
+        "latest_evidence": "S1E75",
+        "instructions": "docs/SECURITY_STAGE_1_3_ISOLATED_STAGING.md",
+        "actual_account_capacity_verified": false,
+        "isolated_target_created": "OWNER_REPORTED_S1E66",
+        "isolated_target_verified": false,
+        "production_data_imported": false,
+        "owner_reported_initial_project_count": 1,
+        "owner_reported_staging_created": true,
+        "intended_staging_reference": "dczlddwbtgvfdujgcitb",
+        "production_reference": "kttkospkblwvguuwnhjj",
+        "references_differ": true,
+        "database_version_and_selected_empty_counts_verified": false,
+        "application_schema_initialized": true,
+        "preflight": {
+          "evidence": "S1E67",
+          "diagnostic": "supabase/diagnostics/security_stage_1_staging_preflight.sql",
+          "owner_execution": "RECEIVED_WITH_REVIEW_S1E68",
+          "fixture_cases_passed": 7,
+          "hosted_identity_verified_by_sql": false,
+          "routine_review": "IDENTIFIED_WITH_BEHAVIOR_LIMITATIONS_S1E69"
+        },
+        "report": "docs/SECURITY_STAGE_1_3_CHECKPOINT_REPORT.md",
+        "initial_metadata_review_completed": true,
+        "owner_reported_staging_server_version": "17.11",
+        "selected_initial_counts_scope": "S1E68: zero selected user/bucket/object/relation counts; one routine identified in S1E69; not all-schema emptiness",
+        "owner_reported_frontend_deployed": true,
+        "owner_reported_auth_configuration_confirmed": true,
+        "owner_reported_ui_checks_passed": 5,
+        "owner_reported_api_checks_passed": 12,
+        "complete_staging_isolation_verified": false,
+        "bounded_work_items": 5,
+        "remaining_work_items": 0
+      },
+      {
+        "id": "1.4",
+        "title": "Recovery proof",
+        "status": "CLOSED_SCOPED_NATIVE_PASSES_WITH_CARRY_FORWARD",
+        "active_work_item": null,
+        "bounded_work_items": 4,
+        "latest_evidence": "S1E88",
+        "synthetic_restore_verified": true,
+        "production_restore_requested": false,
+        "customer_rows_imported_into_staging": false,
+        "instructions": "docs/SECURITY_STAGE_1_4_SYNTHETIC_RECOVERY.md",
+        "owner_server_tools_reported": {
+          "initdb": "17.11",
+          "pg_ctl": "17.11",
+          "postgres": "17.11"
+        },
+        "local_recovery_target_ready": true,
+        "completed_work_items": 4,
+        "remaining_work_items": 0,
+        "local_target_outcome": {
+          "evidence": "S1E79",
+          "owner_reported_result": "NEW_LOCAL_RECOVERY_TARGET_READY_AND_STOPPED",
+          "completed_utc": "2026-10-09T05:48:28.4415907Z",
+          "server_version": "17.11",
+          "loopback_port": 55439,
+          "server_stopped": true,
+          "pgcrypto_available": true,
+          "managed_extensions_available": [],
+          "actual_restore_verified": false,
+          "independent_root_windows_execution": false
+        },
+        "synthetic_export_handoff": {
+          "evidence": "S1E80",
+          "script": "scripts/export-synthetic-recovery-source.ps1",
+          "private_probe": "supabase/diagnostics/security_stage_1_synthetic_export.sql",
+          "owner_execution": "OWNER_SCOPED_PASS_S1E82",
+          "scope": "Public staging schema/archive, Auth identity-only bootstrap and local dummy file; native ownership and managed dependency adaptation must be explicit before restore."
+        },
+        "synthetic_export_outcome": {
+          "evidence": "S1E82",
+          "archive_bytes": 1330785,
+          "public_table_data_entries": 80,
+          "public_acl_entries": 380,
+          "synthetic_auth_identities": 2,
+          "synthetic_payment_items": 1,
+          "synthetic_paid_records": 1,
+          "synthetic_personal_workspaces": 2,
+          "offline_archive_read_passed": true,
+          "selected_before_after_metadata_equal": true,
+          "all_public_data_drift_or_shared_snapshot_verified": false,
+          "full_platform_backup_verified": false
+        },
+        "restore_handoff": {
+          "evidence": "S1E83",
+          "script": "scripts/restore-synthetic-recovery.ps1",
+          "private_builder": "scripts/prepare-synthetic-restore.cjs",
+          "owner_execution": "OWNER_SCOPED_NATIVE_PASS_S1E87",
+          "expected_result": "SYNTHETIC_NATIVE_APPLICATION_RESTORE_SCOPED_PASS",
+          "planned_effective_access_checks": 13,
+          "managed_dependencies_and_original_ownership_substituted": true,
+          "hosted_auth_storage_or_full_platform_recovery_verified": false,
+          "correction_evidence": "S1E86"
+        },
+        "restore_attempt_outcome": {
+          "evidence": "S1E84",
+          "diagnostic_evidence": "S1E85",
+          "database_restore_transaction_committed": false,
+          "effective_role_access_checks": 0,
+          "local_server_stopped": true,
+          "problem_code": "LOCAL_RESTORE_OR_VALIDATION_TRANSACTION_FAILED",
+          "cause": "Inherited dump row_security off; validator corrected in S1E86",
+          "native_retry_verified": true
+        },
+        "checkpoint_complete": true,
+        "report": "docs/SECURITY_STAGE_1_4_CHECKPOINT_REPORT.md",
+        "full_platform_recovery_verified": false,
+        "restore_outcome": {
+          "evidence": "S1E87",
+          "stage_step": "1.4.3",
+          "result": "SYNTHETIC_NATIVE_APPLICATION_RESTORE_SCOPED_PASS",
+          "completed_utc": "2026-10-09T08:17:46.8281144Z",
+          "phase": "completed",
+          "problem_code": null,
+          "elapsed_seconds": 11,
+          "database_restore_transaction_committed": true,
+          "effective_role_access_checks": 13,
+          "relation_and_rls_flags_match": true,
+          "selected_payment_and_workspace_values_match": true,
+          "dummy_file_restored_sha256_matches": true,
+          "source_component_hashes_unchanged": true,
+          "local_server_stopped": true,
+          "excluded_schema_or_provider_toc_entries": 1,
+          "auth_identity_adapter": "SQL_SETTINGS_WITH_MINIMAL_AUTH_TABLE",
+          "managed_roles_adapter": "NONLOGIN_NONPRIVILEGED_PLACEHOLDERS",
+          "original_hosted_ownership_or_global_role_authority_recovered": false,
+          "storage_service_or_file_backup_verified": false,
+          "hosted_auth_or_app_runtime_recovered": false,
+          "full_platform_recovery_verified": false,
+          "offsite_copy_verified": false,
+          "staging_or_production_connected": false,
+          "original_backup_files_modified": false
+        },
+        "next_step": "1.5.1"
+      },
+      {
+        "id": "1.5",
+        "title": "Inventory/monitoring/response",
+        "status": "CLOSED_OPERATIONS_CHECKPOINT_WITH_CARRY_FORWARD",
+        "active_work_item": null,
+        "bounded_work_items": 4,
+        "completed_work_items": 4,
+        "remaining_work_items": 0,
+        "latest_evidence": "S1E97",
+        "instructions": "docs/SECURITY_STAGE_1_5_OPERATIONS.md",
+        "deployed_inventory_verified": false,
+        "monitoring_delivery_verified": false,
+        "inventory": {
+          "evidence": "S1E90",
+          "report": "docs/SECURITY_STAGE_1_5_INVENTORY.md",
+          "production_functions_visible": 6,
+          "active_cron_jobs_visible": 3,
+          "latest_scheduler_sql_statuses": "ALL_THREE_SUCCEEDED_IN_SCREENSHOT",
+          "production_domain_active_commit_and_build_mapping_verified": false,
+          "deployed_function_authentication_or_source_parity_verified": false,
+          "actual_http_dispatch_or_recipient_delivery_verified": false,
+          "owner_alert_reply_received": true,
+          "hosting_evidence": "S1E91",
+          "production_hosting_type": "CLOUDFLARE_WORKER",
+          "production_domain_binding_visible": true,
+          "production_domain": "mushavobudget.com",
+          "production_branch_visible": "main",
+          "configured_build_and_deploy_commands_visible": true,
+          "git_account_disconnected_warning_visible": true,
+          "active_version_to_commit_mapping_verified": false,
+          "isolated_preview_runtime_verified": false,
+          "owner_alert_reply": "unsure",
+          "alert_configuration_status": "UNVERIFIED",
+          "checkpoint_status": "CLOSED_PARTIAL_WITH_CARRY_FORWARD",
+          "closure_evidence": "S1E92"
+        },
+        "monitoring_check_handoff": {
+          "evidence": "S1E93",
+          "instructions": "docs/SECURITY_STAGE_1_5_MONITORING_CHECK.md",
+          "owner_execution": "COMPLETED_CONSOLIDATED_BATCH_WITH_PARTIAL_OUTCOMES",
+          "consolidated_batch": true,
+          "provider_settings_changed": false,
+          "outcome_evidence": "S1E94",
+          "closure_evidence": "S1E95"
+        },
+        "report": "docs/SECURITY_STAGE_1_5_CHECKPOINT_REPORT.md",
+        "runbooks": "docs/SECURITY_STAGE_1_5_OPERATIONAL_RUNBOOKS.md",
+        "support_incoming_receipt_verified_in_owner_scope": true,
+        "operational_runbook_exercise_verified": false,
+        "monitoring_outcomes": {
+          "cloudflare_account_policy_list": "NO_POLICIES_CONFIGURED_IN_SHOWN_VIEW",
+          "sample_policy_test": "UNAVAILABLE_NO_CONFIGURED_POLICY",
+          "support_incoming_receipt": "SCOPED_OWNER_CONFIRMED_PASS",
+          "usage": "SIX_DISPLAYED_VALUES_WITHIN_QUOTA_SCOPE_CYCLE_DATES_UNVERIFIED",
+          "backup_application_dispatch_detection_and_delivery": "UNVERIFIED",
+          "owner_incident_support_review_coverage": "UNVERIFIED",
+          "provider_settings_changed": false
+        }
+      },
+      {
+        "id": "1.6",
+        "title": "Closure and report",
+        "status": "CLOSED_REPORT_AND_CONSISTENCY_CHECK_WITH_CARRY_FORWARD",
+        "latest_evidence": "S1E99",
+        "report": "docs/SECURITY_STAGE_1_COMPLETION_REPORT.md",
+        "documentation_consistency_checked": true,
+        "runtime_changes_or_additional_runtime_rechecks": false,
+        "full_security_or_release_acceptance_verified": false
+      }
+    ],
+    "evidence": "docs/security-stage-1-evidence.json",
+    "completed_date": "2026-10-09",
+    "report": "docs/SECURITY_STAGE_1_COMPLETION_REPORT.md",
+    "latest_evidence": "S1E99",
+    "all_controls_or_release_cleared": false,
+    "final_remediation_and_full_reaudit_required": true
+  },
+  "message_number_required": true,
+  "stage_end_report_required": true,
+  "carry_forward_register": "docs/SECURITY_AUDIT_CARRY_FORWARD.md",
+  "final_residual_resolution_and_full_reaudit_required": true,
+  "final_reaudit_status": "PLANNED_NOT_PERFORMED",
+  "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
+  "secrets_or_customer_records_stored": false,
+  "next_stage": 2,
+  "next_step": "2.1",
+  "stage_2": {
+    "status": "NEXT_PENDING",
+    "planned_first_step": "2.1",
+    "planned_scope": [
+      "Browser headers",
+      "Public contact abuse",
+      "Web Push outbound destinations"
+    ],
+    "started": false
+  }
+}

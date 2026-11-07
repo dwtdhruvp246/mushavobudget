@@ -2016,5 +2016,54 @@
     "stage1_implementation_console_mailbox_project_purchase_sql_apk_change_performed": false,
     "earlier_evidence_values_preserved": true,
     "scope": "Documentation only; final owner facts, proposed Stage 0 sign-off and bounded Stage 1 plan"
+  },
+  "owner_stage_0_signoff_stage1_authorization_and_reporting_rules": {
+    "evidence_ref": "E33",
+    "received_date": "2026-10-07",
+    "owner_approval": "yes sure: merge documentation PR, close Stage 0 and begin Stage 1",
+    "stage_0_status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
+    "stage_1_status": "IN_PROGRESS",
+    "active_stage_step": "1.1",
+    "stage_1_actual_security_recovery_verification": "PENDING owner evidence",
+    "merged_pull_request": 91,
+    "approved_head": "e3d324c27be664bc418c130598018c6367cb2ccb",
+    "merge_commit": "067cb5f00ad7f644647926c5fd1e82a5c754f058",
+    "merged_at": "2026-10-07T05:51:06Z",
+    "pre_merge_checks": [
+      {
+        "name": "Workers Builds: mushavobudget",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify production release",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "deploy",
+        "status": "completed",
+        "conclusion": "skipped",
+        "reason": "if github.event_name != pull_request in workflow"
+      }
+    ],
+    "owner_requirements": {
+      "each_message_has_stage_step_number": true,
+      "report_at_end_of_each_stage": true,
+      "remaining_failed_unsure_items_resolved_at_end": true,
+      "fresh_full_audit_after_resolution": true
+    },
+    "report": "docs/SECURITY_STAGE_0_COMPLETION_REPORT.md",
+    "action_register": "docs/SECURITY_AUDIT_CARRY_FORWARD.md",
+    "workflow": "docs/SECURITY_AUDIT_WORKFLOW.md",
+    "progress": "docs/SECURITY_AUDIT_PROGRESS.json",
+    "initial_owner_instructions": "docs/SECURITY_STAGE_1_1_ACCOUNT_CHECKS.md",
+    "coverage_sections_preserved": 123,
+    "original_findings_preserved": 20,
+    "earlier_evidence_values_preserved": true,
+    "whole_finding_or_all_control_release_pass_inferred": false,
+    "final_remediation_reaudit": "PLANNED_NOT_PERFORMED",
+    "provider_account_settings_credentials_backup_staging_sql_apk_changed": false,
+    "scope": "Authorized documentation merge, Stage 0 report/closure and Stage 1.1 read-only inspection start"
   }
 }

@@ -1,6 +1,6 @@
 # Stage 0 closure checklist
 
-Updated 7 October 2026. **Baseline inputs are accounted for; READY FOR OWNER SIGN-OFF. Stage 1 has not started.** Current reviewed source main: `464f52c39ff56cc57bf8dfd2b0e35bd3d51a4436`, merged web/PWA 4.9.40. This checklist distinguishes the collected baseline from later implementation/security/store gates. Review [the sign-off proposal](SECURITY_STAGE_0_SIGNOFF.md) and [Stage 1 foundations plan](SECURITY_STAGE_1_FOUNDATIONS_PLAN.md).
+Updated 7 October 2026. **Stage 0 baseline CLOSED, owner-approved; Stage 1 authorized and IN PROGRESS at 1.1.** Runtime source remains 4.9.40; documentation merge #91 is `067cb5f00ad7f644647926c5fd1e82a5c754f058`. Remaining unknowns/decisions are carried forward, not PASS. See [the completion report](SECURITY_STAGE_0_COMPLETION_REPORT.md), [actions](SECURITY_AUDIT_CARRY_FORWARD.md) and [1.1 checks](SECURITY_STAGE_1_1_ACCOUNT_CHECKS.md).
 
 ## Already accounted for
 
@@ -19,7 +19,7 @@ Updated 7 October 2026. **Baseline inputs are accounted for; READY FOR OWNER SIG
 | Operator/operations | E32 operator undecided, support contact designated, worldwide intent and no configured alerts | Operator/age decisions remain later gates; mailbox/alerts need Stage 1 verification |
 | APK/email boundary | APK update deferred; full email architecture deferred | No APK, new hook, application dispatcher or queue implemented by this reconciliation |
 
-Detailed snapshots and hashes remain in [the baseline](SECURITY_STAGE_0_BASELINE.md), [all-section register](SECURITY_AUDIT_REGISTER.md) and `security-stage-0-evidence.json`. E27–E32 supersede only the current-state outcomes covered by later evidence; old snapshots remain intact.
+Detailed snapshots and hashes remain in [the baseline](SECURITY_STAGE_0_BASELINE.md), [all-section register](SECURITY_AUDIT_REGISTER.md) and `security-stage-0-evidence.json`. E27–E33 supersede only the current-state outcomes covered by later evidence; old snapshots remain intact.
 
 ## First bundle received (E30)
 
@@ -35,7 +35,7 @@ The owner reports **no** external database/uploaded-file backups and **no** Play
 
 The owner answers operator **yet to decide**, support **support@mushavobudget.com**, launch **worldwide**, alerts **no**. These broad inputs are accounted for. Mailbox operation and response ownership are not tested; age audience was not specified. Record operator/age as later decision prerequisites and actual support/alerts as Stage 1 verification/configuration work. Worldwide intent is not legal/store clearance.
 
-No further broad owner questionnaire is needed to prepare the baseline sign-off. Review [the concrete proposal](SECURITY_STAGE_0_SIGNOFF.md) and [Stage 1 worklist](SECURITY_STAGE_1_FOUNDATIONS_PLAN.md). Owner agreement is pending; no stage transition is inferred from answering the questionnaire. Unknown Auth/deployment/workflow/recovery properties below retain their stages and evidence limits.
+All broad bundles were accounted for and the owner accepted the factual baseline. Stage 1 is authorized; step 1.1 starts with actual sign-in/MFA/recovery inspection. Unknown Auth/deployment/workflow/recovery properties below retain their stages, carry-forward actions and evidence limits.
 
 ## Carried-forward inputs and verification gates
 
@@ -64,6 +64,6 @@ The agreed direction is a shared versioned template catalog, a signed Supabase A
 
 ## Closure gate
 
-The scoped sign-off proposal is prepared: baseline source/deployment evidence reconciled, external inputs recorded or explicitly deferred, narrow repairs/recheck limits retained, staging requirements concrete, and outstanding owners/stages assigned. Obtain owner agreement to the proposal and Stage 1 scope before marking the baseline CLOSED or beginning Stage 1. Unknown properties remain unverified; missing iOS/staging/resources remain prerequisites, not PASS.
+The owner accepted the scoped sign-off on 7 October and authorized Stage 1. Baseline is CLOSED WITH CARRY-FORWARD; findings and unverified properties retain their own closure gates. Stage-end reports and final residual remediation/full re-audit now follow [the workflow](SECURITY_AUDIT_WORKFLOW.md).
 
-The Stage 0 sign-off should state **baseline complete, known gaps assigned**. Store submission, native release, full recovery/authorization testing and email architecture retain their separate gates. Stage 1 starts only after that sign-off and agreement on its concrete work.
+Stage 0 is recorded **baseline complete, known gaps assigned**. Store/native/recovery/authorization/email gates remain separate. Stage 1.1 is in progress with owner status verification pending; no provider settings are changed by these instructions.

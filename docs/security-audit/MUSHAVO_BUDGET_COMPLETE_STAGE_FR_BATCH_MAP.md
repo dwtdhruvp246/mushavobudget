@@ -1,5 +1,5 @@
 # Mushavo Budget — complete stages, FR groups and batches
-As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.14
+As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.15
 
 ## Read this structure correctly
 
@@ -9,7 +9,7 @@ As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.14
 
 **Current execution is the remaining X/Y authorization scope.** The document archive action now also enforces the parent team scope. Owner access and foreign-scope denial passed in the selected rollback-only staging test; all temporary records and modeled sessions are absent. [Archive scope evidence](security-fr-2-batch-x-document-archive-scope-staging-result.json).
 
-Both queues now reject stale worker completions on staging. All 24 selected database-role denial calls passed, and both service-role queue lifecycle checks rolled back cleanly. The paired dispatcher source passed Deno type checking; its hosted deployment and real scheduler/provider delivery remain open. [Backend evidence](security-fr-2-batch-y-backend-caller-and-lease-staging-result.json).
+Both queues now reject stale worker completions on staging. All 24 selected database-role denial calls passed, and both service-role queue lifecycle checks rolled back cleanly. Both paired dispatchers are now deployed on staging. Ten public/ordinary-session HTTP denial checks passed; all test sessions were closed, the queues remain empty and no scheduler was added. Full scheduler/provider delivery remains later operations work. [Deployment evidence](security-fr-2-batch-y-dispatcher-staging-result.json). [Backend evidence](security-fr-2-batch-y-backend-caller-and-lease-staging-result.json).
 
 Nineteen staging database checks passed with modeled claims. Twenty genuine hosted receipt/request checks passed, including upload, original and signed download, removed-member denial and two concurrent requests retaining one draft. An archived-file deletion defect was corrected on staging and verified through the real Storage API. Independent readback confirms zero test files and CI sessions; one synthetic workspace is suspended with its grant/audit history retained. [Hosted evidence](security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json) and [database/preflight evidence](security-fr-2-batch-x-staging-database-and-receipt-readiness.json).
 
@@ -96,10 +96,12 @@ Historical preparation/local pass is not relabelled as current full security acc
 | V | Privileged access, recoverable operators and original MFA scope | IN PROGRESS. Staging Admin access, ordinary denial, session revocation, staff roles and catalog reconciliation passed at their reviewed scope. Independent recovery is owner-deferred and remains open. Historical MFA checks remain on hold. [Batch V evidence](security-fr-2-batch-v-staff-and-catalog-staging-result.json). |
 | W | Auth/password/account/email workflows | Complete for the agreed staging scope. The signed-in password-change failure/retry is owner-deferred. [Closeout receipt](security-fr-2-batch-w-staging-closeout.json). |
 | X | Personal/Family/Business permissions and legitimate finance | Scoped database and hosted receipt/request passes. Upload, downloads, removed-member denial and physical cleanup verified. The archive RPC now enforces parent scope; Owner positive and foreign-team denial passed under modeled staging claims. Reconcile remaining original role/tenant/finance exits before full closure. [Receipt evidence](security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json), [archive evidence](security-fr-2-batch-x-document-archive-scope-staging-result.json). |
-| Y | Backend caller permissions, real database races and containment | Scoped hosted caller/claim checks passed: anonymous and authenticated roles denied all 12 selected backend signatures; service role claim, expiry, stale-worker rejection, current completion and replay passed for both queues. One genuine concurrent request-id HTTP workflow also passed. Remaining matrix/overlap scenarios and paired dispatcher deployment stay open. [Backend evidence](security-fr-2-batch-y-backend-caller-and-lease-staging-result.json). |
+| Y | Backend caller permissions, real database races and containment | Scoped hosted caller/claim checks passed: anonymous and authenticated roles denied all 12 selected backend signatures; service role claim, expiry, stale-worker rejection, current completion and replay passed for both queues. One genuine concurrent request-id HTTP workflow also passed. Paired dispatchers are deployed; their ten anonymous/ordinary HTTP denial checks passed. Remaining caller/overlap scenarios stay open. [Backend evidence](security-fr-2-batch-y-backend-caller-and-lease-staging-result.json). |
 | Z | Integrated authorization recheck and Stage 3 closeout | PLANNED; reconcile U–Y and original authorization exits, integrated affected recheck and final Stage 3 handoff. |
 
 **V, X, Y and Z remain open.** Z is the planned closeout for Stage 3 authorization. FR.3–FR.8 are separate launch work.
+
+The original five Business carry-forward groups now have a [current coverage ledger](security-fr-2-batch-x-remaining-coverage-ledger.json). Both original Business fixture states and the archived-role permissions/audit fingerprints match the prior receipt. The two manual Family conversions retain their original SHA-256; the two historical orphans remain untouched.
 
 ### Work left inside V/X/Y/Z
 

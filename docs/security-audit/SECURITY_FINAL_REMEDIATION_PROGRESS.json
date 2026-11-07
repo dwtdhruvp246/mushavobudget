@@ -9,7 +9,7 @@
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE312",
+  "latest_evidence": "FRE313",
   "batches": [
     {
       "id": "FR.1",
@@ -1699,7 +1699,9 @@
           "receipt": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
           "full_Stage_3_complete": false,
           "backend_receipt": "docs/security-audit/security-fr-2-batch-y-backend-caller-and-lease-staging-result.json",
-          "archive_scope_receipt": "docs/security-audit/security-fr-2-batch-x-document-archive-scope-staging-result.json"
+          "archive_scope_receipt": "docs/security-audit/security-fr-2-batch-x-document-archive-scope-staging-result.json",
+          "dispatcher_receipt": "docs/security-audit/security-fr-2-batch-y-dispatcher-staging-result.json",
+          "remaining_X_coverage_ledger": "docs/security-audit/security-fr-2-batch-x-remaining-coverage-ledger.json"
         }
       ],
       "readiness_handoff": "docs/security-audit/SECURITY_FR_2_1_READINESS_HANDOFF.md",
@@ -1710,8 +1712,8 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "STAGE_3_RECONCILE_REMAINING_X_Y_MATRIX_AND_PREPARE_Z",
-      "latest_evidence": "FRE312"
+      "next_step": "BATCH_Y_BACKEND_CONCURRENCY_AND_X_REMAINING_REAL_SESSION_FLOWS",
+      "latest_evidence": "FRE313"
     },
     {
       "id": "FR.3",
@@ -1761,7 +1763,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "STAGE_3_RECONCILE_REMAINING_X_Y_MATRIX_AND_PREPARE_Z",
+  "next_step": "BATCH_Y_BACKEND_CONCURRENCY_AND_X_REMAINING_REAL_SESSION_FLOWS",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -8290,5 +8292,13 @@
     "modeled_claims": true,
     "independent_fixture_absence_verified": true,
     "full_batch_X_complete": false
-  }
+  },
+  "batch_Y_dispatcher_deployment": {
+    "status": "STAGING_DISPATCHERS_DEPLOYED_AND_PUBLIC_ORDINARY_BOUNDARIES_PASS",
+    "receipt": "docs/security-audit/security-fr-2-batch-y-dispatcher-staging-result.json",
+    "staging_dispatchers_deployed": true,
+    "ordinary_and_anonymous_HTTP_checks": 10,
+    "provider_push_requests": 0
+  },
+  "batch_X_remaining_coverage_ledger": "docs/security-audit/security-fr-2-batch-x-remaining-coverage-ledger.json"
 }

@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "run_id": "2026-11-07-batch-y-dispatcher-boundaries",
   "scope": "dispatcher-boundaries",
   "project": "dczlddwbtgvfdujgcitb",
@@ -11,5 +11,7 @@
     "Y_EDGE_HUMAN_CALLER"
   ],
   "source_parent_commit": "cd52c1dd61162cb8dc08b699b8f715be963cd21d",
-  "deployed_source_commit": "d744dea1bf7263dea8ff5c31765a968d411e5a84"
+  "deployed_source_commit": "d744dea1bf7263dea8ff5c31765a968d411e5a84",
+  "completed_after_workflow_run": "42352472602",
+  "completion_receipt": "docs/security-audit/security-fr-2-batch-y-dispatcher-staging-result.json"
 }

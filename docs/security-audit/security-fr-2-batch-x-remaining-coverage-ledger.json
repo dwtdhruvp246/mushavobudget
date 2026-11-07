@@ -39,10 +39,11 @@
     {
       "original": "B07 Suspended account and expired entitlement acceptance",
       "original_state": "BLOCKED_ISOLATED_STATE_FIXTURES_NOT_PREPARED",
-      "current_state": "SCOPED_POSTGRES_AND_REAL_SESSION_ACCOUNT_SUSPENSION_PASS_EXPIRED_ENTITLEMENT_HTTP_OPEN",
+      "current_state": "SCOPED_POSTGRES_AND_REAL_SESSION_ACCOUNT_SUSPENSION_AND_BUSINESS_EXPIRY_OWNER_RENEWAL_GATE_PASS",
       "evidence": [
         "docs/security-audit/security-fr-2-batch-x-staging-database-and-receipt-readiness.json",
-        "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json"
+        "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json",
+        "docs/security-audit/security-fr-2-batch-x-business-expiry-staging-result.json"
       ]
     }
   ],
@@ -50,7 +51,7 @@
   "current_read_only_conversion_snapshot": {
     "scope": "READ_ONLY_REFERENCE_STATE_AND_ORIGINAL_COLUMN_MANUAL_BASELINE",
     "stage_step": "FR.2.2_CONVERSION_REFERENCE_SNAPSHOT",
-    "checked_UTC": "2026-11-07T07:45:08.409963+00:00",
+    "checked_UTC": "2026-11-07T17:55:01.320493+00:00",
     "target_project": "dczlddwbtgvfdujgcitb",
     "hosted_acceptance": false,
     "record_consistency": {
@@ -84,7 +85,7 @@
   "current_read_only_business_snapshot": {
     "scope": "READ_ONLY_POST_API_BUSINESS_COUNTS_RETAINED_FINGERPRINTS_AND_CONVERSION_CONSISTENCY",
     "stage_step": "FR.2.3_BUSINESS_POST_BATCH_REVIEW",
-    "checked_UTC": "2026-11-07T08:38:53.650617+00:00",
+    "checked_UTC": "2026-11-07T17:55:03.057142+00:00",
     "business_state": [
       {
         "fixture": "PRIMARY",
@@ -176,5 +177,17 @@
   "additional_business_finance_receipt": "docs/security-audit/security-fr-2-batch-x-business-finance-staging-result.json",
   "additional_family_proof_path_policy": "docs/security-audit/security-fr-2-batch-x-family-proof-path-hosted-completion.json",
   "family_proof_live_HTTP_acceptance": "SCOPED_UPLOAD_AND_FRESH_AUTHORIZATION_PASS_CACHED_COPY_FOLLOWUP_OPEN",
-  "private_file_cache_followup": "docs/security-audit/security-fr-2-family-file-cache-carry-forward.json"
+  "private_file_cache_followup": "docs/security-audit/security-fr-2-family-file-cache-carry-forward.json",
+  "additional_business_expiry_receipt": "docs/security-audit/security-fr-2-batch-x-business-expiry-staging-result.json",
+  "remaining_third_actor_prerequisite": {
+    "existing_ordinary_account_available": true,
+    "email_confirmed": true,
+    "active_profile": true,
+    "platform_staff": false,
+    "personal_workspaces": 1,
+    "fixture_active_memberships": 0,
+    "third_ordinary_credential_slot": "USER_C",
+    "credential_availability": "NOT_PRESENT_IN_PREVIOUS_SIX_SECRET_SETUP",
+    "password_or_auth_user_changes_performed": false
+  }
 }

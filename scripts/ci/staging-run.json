@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "run_id": "2026-11-07-batch-x-business-expiry-corrected",
   "scope": "business-expiry-boundaries",
   "project": "dczlddwbtgvfdujgcitb",
@@ -19,5 +19,7 @@
   "source_parent_commit": "f3d962e7280355ab7f250bde41d5cf839ec39a5b",
   "plan_path": "docs/security-audit/security-fr-2-batch-x-business-expiry-plan.json",
   "no_automatic_rerun": true,
-  "operator_final_term_restore": true
+  "operator_final_term_restore": true,
+  "completed_after_workflow_run": "42398220245",
+  "completion_receipt": "docs/security-audit/security-fr-2-batch-x-business-expiry-staging-result.json"
 }

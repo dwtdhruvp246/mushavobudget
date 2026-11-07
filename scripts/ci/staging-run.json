@@ -1,20 +1,18 @@
 {
-  "enabled": false,
-  "run_id": "2026-11-07-batch-x-account-suspension-void-ack",
-  "scope": "account-suspension-boundaries",
+  "enabled": true,
+  "run_id": "2026-11-07-batch-x-business-finance",
+  "scope": "business-finance-workflow",
   "project": "dczlddwbtgvfdujgcitb",
-  "target_slot": "USER_A",
-  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "fixture_name": "audit-batch-x-receipt-d7be160c2026",
+  "expected_support_version": 6,
+  "expected_subscription_version": 3,
   "case_ids": [
-    "X_ACCOUNT_NONADMIN_DENIAL",
-    "X_ACCOUNT_EXISTING_SESSION_SUSPENDED",
-    "X_ACCOUNT_OTHER_ACTORS_UNAFFECTED",
-    "X_ACCOUNT_SUPPORTED_RESTORE"
+    "X_REQUEST_LIFECYCLE",
+    "X_REQUEST_BILL_LINK",
+    "X_BILL_PAYMENT_REPLAY",
+    "X_FINANCE_FIXTURE_ISOLATION"
   ],
-  "source_parent_commit": "142a6008e1840390ca7c4f23fa41ead0ae444973",
-  "plan_path": "docs/security-audit/security-fr-2-batch-x-account-suspension-plan.json",
-  "no_automatic_rerun": true,
-  "retry_receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-ack-review.json",
-  "completed_after_workflow_run": "42355292667",
-  "completion_receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json"
+  "source_parent_commit": "7815d425cff73fb13cd2f46bb23b7f812bac4ba5",
+  "plan_path": "docs/security-audit/security-fr-2-batch-x-business-finance-plan.json",
+  "no_automatic_rerun": true
 }

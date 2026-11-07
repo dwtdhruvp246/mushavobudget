@@ -5,11 +5,11 @@
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
   "active_step": "FR.2.6",
-  "source_parent_commit": "cf54435829051233ca945c9dd798ff03b4fc7d67",
+  "source_parent_commit": "83daeb4b6c173a1ee90c8feb5c99295832fc6cd9",
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE317",
+  "latest_evidence": "FRE319",
   "batches": [
     {
       "id": "FR.1",
@@ -1705,7 +1705,7 @@
           "account_suspension_receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json",
           "real_queue_overlap_receipt": "docs/security-audit/security-fr-2-batch-y-real-queue-overlap-result.json",
           "business_finance_receipt": "docs/security-audit/security-fr-2-batch-x-business-finance-staging-result.json",
-          "family_proof_path_policy_receipt": "docs/security-audit/security-fr-2-batch-x-family-proof-path-staging-result.json"
+          "family_proof_path_policy_receipt": "docs/security-audit/security-fr-2-batch-x-family-proof-path-hosted-completion.json"
         }
       ],
       "readiness_handoff": "docs/security-audit/SECURITY_FR_2_1_READINESS_HANDOFF.md",
@@ -1716,8 +1716,8 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "PROVIDER_CONFIRMATION_FOR_FROZEN_FAMILY_PROOF_SETUP_THEN_LIVE_STORAGE_AND_CLEANUP",
-      "latest_evidence": "FRE317"
+      "next_step": "PRIVATE_FILE_CACHE_EXPIRY_MEASUREMENT_AND_REMAINING_X_Y_Z",
+      "latest_evidence": "FRE319"
     },
     {
       "id": "FR.3",
@@ -1767,7 +1767,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "PROVIDER_CONFIRMATION_FOR_FROZEN_FAMILY_PROOF_SETUP_THEN_LIVE_STORAGE_AND_CLEANUP",
+  "next_step": "PRIVATE_FILE_CACHE_EXPIRY_MEASUREMENT_AND_REMAINING_X_Y_Z",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -8110,8 +8110,8 @@
     "settings_changed": false,
     "required_reauthentication_failure_success_tested": false
   },
-  "owner_connector_confirmation_required": true,
-  "owner_connector_confirmation_reason": "Supabase execution confirmation for the exact temporary Family setup expired twice before execution.",
+  "owner_connector_confirmation_required": false,
+  "owner_connector_confirmation_reason": null,
   "batch_W_recovery_feedback_runner": {
     "status": "AU04_01_FEEDBACK_AND_CONTROLLED_AUTH429_UI_SCOPED_PASS",
     "receipt": "docs/security-audit/security-fr-2-batch-w-recovery-feedback-pass.json",
@@ -8328,14 +8328,15 @@
     "remaining_CI_sessions": 0
   },
   "batch_X_family_proof_path_policy": {
-    "status": "FAMILY_UPLOAD_PATH_POLICY_FIXED_LIVE_API_ACCEPTANCE_BLOCKED_PROVIDER_CONFIRMATION",
-    "receipt": "docs/security-audit/security-fr-2-batch-x-family-proof-path-staging-result.json",
+    "status": "REAL_FAMILY_UPLOAD_AND_FRESH_REVOCATION_SCOPED_PASS_WITH_CACHED_COPY_CARRY_FORWARD",
+    "receipt": "docs/security-audit/security-fr-2-batch-x-family-proof-path-hosted-completion.json",
     "migration_version": "20261107085131",
     "catalog_sha256": "4646c0fe0367fe033b4594428f9c180eb96ca9b39ed2d1a2024bdc843804c3d7",
     "local_PostgreSQL_assertions": 17,
-    "runner_guard_tests": 5,
-    "hosted_HTTP_assertions": 0,
+    "workflow_guard_tests": 58,
+    "selected_HTTP_assertions": 22,
     "fixture_rows_remaining": 0,
-    "provider_confirmation_expired_attempts": 2
+    "provider_setup_confirmed_and_completed": true,
+    "cached_copy_followup": "docs/security-audit/security-fr-2-family-file-cache-carry-forward.json"
   }
 }

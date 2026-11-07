@@ -174,6 +174,7 @@
   "findings_closed": [],
   "additional_account_suspension_receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json",
   "additional_business_finance_receipt": "docs/security-audit/security-fr-2-batch-x-business-finance-staging-result.json",
-  "additional_family_proof_path_policy": "docs/security-audit/security-fr-2-batch-x-family-proof-path-staging-result.json",
-  "family_proof_live_HTTP_acceptance": "BLOCKED_PROVIDER_SETUP_CONFIRMATION_EXPIRED_NO_FIXTURE_CREATED"
+  "additional_family_proof_path_policy": "docs/security-audit/security-fr-2-batch-x-family-proof-path-hosted-completion.json",
+  "family_proof_live_HTTP_acceptance": "SCOPED_UPLOAD_AND_FRESH_AUTHORIZATION_PASS_CACHED_COPY_FOLLOWUP_OPEN",
+  "private_file_cache_followup": "docs/security-audit/security-fr-2-family-file-cache-carry-forward.json"
 }

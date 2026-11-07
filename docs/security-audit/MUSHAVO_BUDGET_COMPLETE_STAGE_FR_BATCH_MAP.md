@@ -1,5 +1,5 @@
 # Mushavo Budget — complete stages, FR groups and batches
-As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.18
+As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.19
 
 ## Read this structure correctly
 
@@ -19,7 +19,7 @@ The real queue-overlap attempt did not establish concurrency: the connection ser
 
 Thirty-six genuine Business finance HTTP assertions passed. The controlled finance manager approved the Owner's request, created one linked bill and recorded two synthetic ledger payments totaling USD 1. Self-approval, stale review, overpayment and invalid cancellation were rejected; replay preserved original amounts and payment sources. The request is fulfilled and the bill paid. The temporary manager was removed, one seat restored and the workspace suspended; all CI sessions are absent and original fixture fingerprints match. [Finance workflow evidence](security-fr-2-batch-x-business-finance-staging-result.json).
 
-The Family proof-upload policy now correlates its lookup to the Storage object path rather than the Family display name. Seventeen PostgreSQL assertions reproduced the old owner/member denial and verified the corrected isolation rules. The staging fix and five runner guard tests are complete. Genuine Storage API acceptance is prepared but blocked because Supabase's exact test-fixture setup confirmation expired twice; no temporary Family, workspace, session or file was created. [Policy/readiness receipt](security-fr-2-batch-x-family-proof-path-staging-result.json) and [exact resume steps](SECURITY_FR_2_FAMILY_PROOF_RESUME.md).
+The Family proof-upload policy now correlates its lookup to the Storage object path rather than the Family display name. The fix passed 17 PostgreSQL assertions and genuine owner/member/Personal upload checks. The follow-up passed 58 workflow guards and 22 selected HTTP assertions: forged and removed uploads, fresh removed-member downloads and new signing were denied. A previously authorized warmed URL returned a CF cache HIT; immediate cached-copy revocation is not claimed and remains file-delivery follow-up. Both synthetic Families, all physical files and all six genuine test sessions are absent; original manual Family fingerprints match. [Live receipt](security-fr-2-batch-x-family-proof-path-hosted-completion.json) and [cache follow-up](security-fr-2-family-file-cache-carry-forward.json).
 
 There are three overlapping views of the SAME project:
 - **Main Stages 0–10** describe the product/security areas.

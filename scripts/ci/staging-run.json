@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "run_id": "2026-11-07-batch-x-family-proof-origin-and-cache",
   "scope": "family-proof-path-binding",
   "project": "dczlddwbtgvfdujgcitb",
@@ -16,5 +16,7 @@
   "source_parent_commit": "3ad2f3101112ba65242e8fbd4845f3ca6dd20507",
   "plan_path": "docs/security-audit/security-fr-2-batch-x-family-proof-cache-observation-plan.json",
   "setup_source": "supabase/diagnostics/security_fr_2_6_family_proof_public_fixture_create.sql",
-  "no_automatic_rerun": true
+  "no_automatic_rerun": true,
+  "completed_after_workflow_run": "42374771602",
+  "completion_receipt": "docs/security-audit/security-fr-2-batch-x-family-proof-path-hosted-completion.json"
 }

@@ -1,24 +1,22 @@
 {
-  "enabled": false,
-  "run_id": "2026-11-07-batch-x-three-ordinary-team-void-ack",
-  "scope": "business-team-boundaries",
+  "enabled": true,
+  "run_id": "2026-11-07-batch-x-private-file-cache-observation",
+  "scope": "private-file-cache-observation",
   "project": "dczlddwbtgvfdujgcitb",
-  "fixture_name": "audit-batch-x-receipt-d7be160c2026",
-  "workspace_id": "dcf3d122-e99f-4fe5-bbd1-03c3547629df",
-  "expected_support_version": 14,
-  "expected_subscription_version": 13,
-  "original_paid_through_at": "2026-11-08T00:00:00.000Z",
-  "case_ids": [
-    "X_THREE_ORDINARY_TEAM_ACTORS",
-    "X_MANAGER_OWNER_AND_ESCALATION_DENIALS",
-    "X_MANAGER_REMOVES_ANOTHER_MEMBER",
-    "X_REMOVED_MEMBER_SAME_SESSION",
-    "X_TEAM_FIXTURE_CLEANUP"
+  "cache_controls": [
+    0,
+    60
   ],
-  "source_parent_commit": "dd8deb3b2a650378f808c1a42471c673b5d8e0ee",
-  "plan_path": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-plan.json",
-  "no_automatic_rerun": true,
-  "initial_review": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-initial-review.json",
-  "completed_after_workflow_run": "42402672067",
-  "completion_receipt": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json"
+  "warm_seconds": 10,
+  "cold_seconds": 12,
+  "case_ids": [
+    "X_PRIVATE_FILE_OWNER_FOREIGN",
+    "X_SIGNED_URL_COLD_EXPIRY",
+    "X_SIGNED_URL_WARM_EXPIRY",
+    "X_ZERO_AND_SHORT_UPLOAD_CACHE_CONTROL",
+    "X_PRIVATE_FILE_EXACT_CLEANUP"
+  ],
+  "source_parent_commit": "e1f1fef13e6a07530814d0e0cd7b68fd73396307",
+  "plan_path": "docs/security-audit/security-fr-2-batch-x-private-file-cache-plan.json",
+  "no_automatic_rerun": true
 }

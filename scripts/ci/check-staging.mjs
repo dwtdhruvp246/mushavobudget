@@ -14,6 +14,7 @@ import { checkBusinessFinance, isBusinessFinancePlan } from './staging-business-
 import { checkFamilyProof, isFamilyProofPlan } from './staging-family-proof.mjs';
 import { checkBusinessExpiry, isBusinessExpiryPlan } from './staging-business-expiry.mjs';
 import { checkBusinessTeam, isBusinessTeamPlan } from './staging-business-team.mjs';
+import { checkPrivateFileCache, isPrivateFileCachePlan } from './staging-private-file-cache.mjs';
 
 async function main() {
   let report;
@@ -43,14 +44,15 @@ async function main() {
     const familyProof = isFamilyProofPlan(plan);
     const businessExpiry = isBusinessExpiryPlan(plan);
     const businessTeam = isBusinessTeamPlan(plan);
+    const privateFileCache = isPrivateFileCachePlan(plan);
     need(confirmation || passwordSessions || accountSwitch || recovery || recoverySaveRetry || recoveryFeedback
-      || controlledBrowser || adminBoundaries || businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof || businessExpiry || businessTeam, 'REVIEWED_RUN_SCOPE_REQUIRED');
+      || controlledBrowser || adminBoundaries || businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof || businessExpiry || businessTeam || privateFileCache, 'REVIEWED_RUN_SCOPE_REQUIRED');
     if (adminBoundaries) progress = 'Stage 3/10 | FR.2/8 | Batch V/Z';
     if (businessReceipt) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     if (dispatcherBoundaries) progress = 'Stage 3/10 | FR.2/8 | Batch Y/Z';
     if (accountSuspension) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     if (businessFinance) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
-    if (familyProof || businessExpiry || businessTeam) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
+    if (familyProof || businessExpiry || businessTeam || privateFileCache) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     need(process.env.GITHUB_REPOSITORY === 'dwtdhruvp246/mushavobudget'
       && process.env.GITHUB_REF === 'refs/heads/security/stage-3-authorization', 'STAGING_BRANCH_RUN_REQUIRED');
     const fixtureAction = process.env.MUSHAVO_STAGING_RECEIPT_ADMIN_ACTION || null;
@@ -62,7 +64,8 @@ async function main() {
     if (familyProof) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'FAMILY_PROOF_RERUN_REFUSED');
     if (businessExpiry) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'BUSINESS_EXPIRY_RERUN_REFUSED');
     if (businessTeam) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'BUSINESS_TEAM_RERUN_REFUSED');
-    const chromium = businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof || businessExpiry || businessTeam ? null
+    if (privateFileCache) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'PRIVATE_FILE_CACHE_RERUN_REFUSED');
+    const chromium = businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof || businessExpiry || businessTeam || privateFileCache ? null
       : (await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs')).chromium;
     if (controlledBrowser) {
       const { checkControlledBrowser } = await import('./staging-controlled-browser.mjs');
@@ -70,7 +73,7 @@ async function main() {
     } else if (recovery || recoverySaveRetry) {
       report = await checkRecovery(plan, recovery ? privateAccounts(process.env) : {}, chromium);
     } else {
-    const accountScope = fixtureAction ? 'businessFixture' : businessTeam ? 'businessTeam' : businessReceipt || dispatcherBoundaries ? 'ordinary' : 'standard';
+    const accountScope = fixtureAction ? 'businessFixture' : businessTeam ? 'businessTeam' : businessReceipt || dispatcherBoundaries || privateFileCache ? 'ordinary' : 'standard';
     const accounts = privateAccounts(process.env, { accountScope });
     const response = await fetch(WEB_ORIGIN + '/config.js?v=27', { redirect: 'error', signal: AbortSignal.timeout(20000) });
     need(response.status === 200, 'PUBLIC_CONFIGURATION_READ_REQUIRED');
@@ -107,6 +110,12 @@ async function main() {
     } else if (businessFinance) {
       report = await checkStagingAccess(accounts, apiTransport(config.key, agent),
         args => checkBusinessFinance(args, config.key, agent, plan), { accountScope });
+      delete report.full_lettered_batch_W_complete;
+      delete report.settings_or_finance_writes_requested;
+      report.full_lettered_batch_X_complete = false;
+    } else if (privateFileCache) {
+      report = await checkStagingAccess(accounts, apiTransport(config.key, agent),
+        args => checkPrivateFileCache(args, config.key, agent, plan), { accountScope });
       delete report.full_lettered_batch_W_complete;
       delete report.settings_or_finance_writes_requested;
       report.full_lettered_batch_X_complete = false;

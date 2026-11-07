@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "result": "PER_DEVICE_AUTHORIZATION_AND_CURRENT_CLAIM_REPAIR_DEPLOYED_SCOPED_PASS",
+  "plan_commit": "ab52ba3983fadb7ec5e1cdc35651ae571945bdaa",
+  "repair_commit": "04a4f1ca4162794bdaec717553674d67ea985324",
+  "hosted_check_commit": "22722bbc10246db9965afa3bc8f2290eada20c35",
+  "initial_review": "docs/security-audit/security-fr-2-batch-y-send-authorization-initial-review.json",
+  "local_result": "docs/security-audit/security-fr-2-batch-y-send-authorization-local-result.json",
+  "actual_handler_interleavings": {
+    "tests": 23,
+    "pass": 23,
+    "provider_and_database_clients": "CONTROLLED_TEST_DOUBLES",
+    "new_real_Postgres_concurrency": false
+  },
+  "selected_local_Node_tests": 92,
+  "selected_local_Node_pass": 92,
+  "local_PGlite_queue_assertions": 42,
+  "Deno_typechecked_dispatchers": 2,
+  "predeployment_CI": {
+    "run_id": "42413537983",
+    "job_id": "128526578971",
+    "source_commit": "59772c5dc3dfe7befed3f3a8007e73b70e2ef16f",
+    "tests": 172,
+    "pass": 172,
+    "fail": 0,
+    "exit_code": 0,
+    "live_scopes_skipped": true
+  },
+  "hosted_CI": {
+    "run_id": "42413734552",
+    "job_id": "128527216540",
+    "tests": 172,
+    "pass": 172,
+    "fail": 0,
+    "exit_code": 0
+  },
+  "hosted_report": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "two_ordinary_credentials_and_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 12,
+    "created_sessions": 2,
+    "cleanup_sessions": 2,
+    "settings_or_finance_writes_requested": 0,
+    "production_changed": false,
+    "exit_code": 0,
+    "exercise": {
+      "checks": {
+        "dispatch-push-reminders:ANONYMOUS_GET_REJECTED": true,
+        "dispatch-push-reminders:ANONYMOUS_POST_WITHOUT_SECRET_REJECTED": true,
+        "dispatch-push-reminders:ANONYMOUS_POST_WITH_WRONG_SECRET_REJECTED": true,
+        "dispatch-push-reminders:ORDINARY_A_POST_REJECTED": true,
+        "dispatch-push-reminders:ORDINARY_B_POST_REJECTED": true,
+        "dispatch-admin-notifications:ANONYMOUS_GET_REJECTED": true,
+        "dispatch-admin-notifications:ANONYMOUS_POST_WITHOUT_SECRET_REJECTED": true,
+        "dispatch-admin-notifications:ANONYMOUS_POST_WITH_WRONG_SECRET_REJECTED": true,
+        "dispatch-admin-notifications:ORDINARY_A_POST_REJECTED": true,
+        "dispatch-admin-notifications:ORDINARY_B_POST_REJECTED": true
+      },
+      "exercise_requests": 10,
+      "email_requests": 0,
+      "provider_push_requests": 0,
+      "valid_cron_secret_used": false
+    },
+    "full_lettered_batch_Y_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-07-batch-y-send-authorization-deployed-boundaries",
+    "source_commit": "22722bbc10246db9965afa3bc8f2290eada20c35",
+    "workflow_run_id": "42413734552",
+    "workflow_run_attempt": "1"
+  },
+  "deployed_runtime_source_readback": [
+    {
+      "name": "dispatch-push-reminders",
+      "version": 2,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "ezbr_sha256": "63eef29fb88fe26cf1579fa6ade384afcd2d49aa8809713b93d0755ab3d02f4f",
+      "runtime_files": [
+        {
+          "path": "supabase/functions/dispatch-push-reminders/index.ts",
+          "matches": true
+        },
+        {
+          "path": "supabase/functions/_shared/push-destination.mjs",
+          "matches": true
+        },
+        {
+          "path": "supabase/functions/_shared/notification-recipient.mjs",
+          "matches": true
+        },
+        {
+          "path": "supabase/functions/_shared/outbox-claim.mjs",
+          "matches": true
+        }
+      ],
+      "submitted_deno_configuration_returned_by_readback": false
+    },
+    {
+      "name": "dispatch-admin-notifications",
+      "version": 2,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "ezbr_sha256": "71b18077f55725fa7a6b13e0c2f43be796bb774d0bee40b2071d5e273a32b74d",
+      "runtime_files": [
+        {
+          "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+          "matches": true
+        },
+        {
+          "path": "supabase/functions/_shared/push-destination.mjs",
+          "matches": true
+        },
+        {
+          "path": "supabase/functions/_shared/notification-recipient.mjs",
+          "matches": true
+        },
+        {
+          "path": "supabase/functions/_shared/outbox-claim.mjs",
+          "matches": true
+        }
+      ],
+      "submitted_deno_configuration_returned_by_readback": false
+    }
+  ],
+  "configuration_readback_limit": "The deployment accepted deno.json, but the source-readback API returns the four runtime files per function only; no configuration-file readback is claimed.",
+  "independent_readback": {
+    "checked_at": "2026-11-07T21:04:10.188591+00:00",
+    "admin_queue": 0,
+    "normal_queue": 0,
+    "catalog_active": true,
+    "catalog_matches": true,
+    "runner_sessions": 0,
+    "business_fixture": {
+      "seats": 1,
+      "status": "suspended",
+      "paid_through_at": "2026-11-08T00:00:00+00:00",
+      "support_version": 16,
+      "subscription_version": 15
+    }
+  },
+  "bounds": {
+    "external_push_deliveries": 0,
+    "emails": 0,
+    "valid_cron_secret_used": false,
+    "Auth_users_passwords_settings_changed": false,
+    "database_schema_changed": false,
+    "financial_records_changed": false,
+    "production_changed": false
+  },
+  "acceptance_limits": [
+    "Fresh per-device authorization and exact live lease are checked before provider handoff. This is not recall of a provider-accepted notification or a guarantee against a change after the final database read.",
+    "The 23 changed-state interleavings execute the actual handlers locally with test doubles. Existing real-session and real PostgreSQL race receipts remain separate; no new live authorization-change race is inferred from these tests.",
+    "Complete original Batch Y exit reconciliation and integrated Batch Z remain open; cached-original-file revocation and owner-deferred items remain explicit."
+  ],
+  "full_batch_Y_complete": false,
+  "stage_3_complete": false,
+  "findings_closed": [],
+  "exit_code": 0
+}

@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "run_id": "2026-11-07-batch-y-send-authorization-deployed-boundaries",
   "scope": "dispatcher-boundaries",
   "project": "dczlddwbtgvfdujgcitb",
@@ -16,5 +16,8 @@
   "deployed_function_versions": {
     "dispatch-push-reminders": 2,
     "dispatch-admin-notifications": 2
-  }
+  },
+  "result_path": "docs/security-audit/security-fr-2-batch-y-send-authorization-staging-result.json",
+  "completed_workflow_run_id": "42413734552",
+  "exit_code": 0
 }

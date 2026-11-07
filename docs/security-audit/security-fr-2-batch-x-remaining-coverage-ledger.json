@@ -32,9 +32,13 @@
     {
       "original": "B07 Nonowner manager removes another ordinary member",
       "original_state": "BLOCKED_THIRD_DISTINCT_IDENTITY_NOT_AVAILABLE",
-      "current_state": "SCOPED_POSTGRES_PASS_THREE_ORDINARY_HTTP_ACTORS_PENDING",
-      "evidence": "docs/security-audit/security-fr-2-batch-x-staging-database-and-receipt-readiness.json",
-      "third_account_UI_setup": "BROWSER_CONNECTION_DID_NOT_RESPOND_NO_ACCOUNT_CREATED"
+      "current_state": "SCOPED_REAL_HTTP_THREE_ORDINARY_ACTORS_MANAGER_REMOVAL_AND_SAME_SESSION_REVOCATION_PASS",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-x-staging-database-and-receipt-readiness.json",
+        "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json"
+      ],
+      "third_account_UI_setup": "BROWSER_CONNECTION_DID_NOT_RESPOND_NO_ACCOUNT_CREATED",
+      "third_account_current_status": "EXISTING_CONTROLLED_ORDINARY_IDENTITY_AND_SAVED_CREDENTIALS_VERIFIED"
     },
     {
       "original": "B07 Suspended account and expired entitlement acceptance",
@@ -51,7 +55,7 @@
   "current_read_only_conversion_snapshot": {
     "scope": "READ_ONLY_REFERENCE_STATE_AND_ORIGINAL_COLUMN_MANUAL_BASELINE",
     "stage_step": "FR.2.2_CONVERSION_REFERENCE_SNAPSHOT",
-    "checked_UTC": "2026-11-07T17:55:01.320493+00:00",
+    "checked_UTC": "2026-11-07T18:45:18.599836+00:00",
     "target_project": "dczlddwbtgvfdujgcitb",
     "hosted_acceptance": false,
     "record_consistency": {
@@ -85,7 +89,7 @@
   "current_read_only_business_snapshot": {
     "scope": "READ_ONLY_POST_API_BUSINESS_COUNTS_RETAINED_FINGERPRINTS_AND_CONVERSION_CONSISTENCY",
     "stage_step": "FR.2.3_BUSINESS_POST_BATCH_REVIEW",
-    "checked_UTC": "2026-11-07T17:55:03.057142+00:00",
+    "checked_UTC": "2026-11-07T18:45:16.754599+00:00",
     "business_state": [
       {
         "fixture": "PRIMARY",
@@ -185,10 +189,11 @@
     "active_profile": true,
     "platform_staff": false,
     "personal_workspaces": 1,
-    "fixture_active_memberships": 0,
     "third_ordinary_credential_slot": "USER_C",
-    "credential_availability": "NOT_PRESENT_IN_PREVIOUS_SIX_SECRET_SETUP",
+    "credential_availability": "VERIFIED_BY_REAL_STAGING_SIGNIN",
+    "three_ordinary_manager_removal": "SCOPED_HTTP_PASS",
     "password_or_auth_user_changes_performed": false
   },
-  "additional_independent_backend_overlap_receipt": "docs/security-audit/security-fr-2-batch-y-independent-queue-overlap-result.json"
+  "additional_independent_backend_overlap_receipt": "docs/security-audit/security-fr-2-batch-y-independent-queue-overlap-result.json",
+  "additional_three_ordinary_team_receipt": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json"
 }

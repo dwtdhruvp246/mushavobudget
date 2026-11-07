@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "run_id": "2026-11-07-batch-x-three-ordinary-team-void-ack",
   "scope": "business-team-boundaries",
   "project": "dczlddwbtgvfdujgcitb",
@@ -18,5 +18,7 @@
   "source_parent_commit": "dd8deb3b2a650378f808c1a42471c673b5d8e0ee",
   "plan_path": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-plan.json",
   "no_automatic_rerun": true,
-  "initial_review": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-initial-review.json"
+  "initial_review": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-initial-review.json",
+  "completed_after_workflow_run": "42402672067",
+  "completion_receipt": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json"
 }

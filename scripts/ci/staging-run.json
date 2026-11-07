@@ -1,22 +1,22 @@
 {
-  "enabled": false,
-  "run_id": "2026-11-07-batch-x-family-proof-origin-and-cache",
-  "scope": "family-proof-path-binding",
+  "enabled": true,
+  "run_id": "2026-11-07-batch-x-business-expiry",
+  "scope": "business-expiry-boundaries",
   "project": "dczlddwbtgvfdujgcitb",
-  "fixture_name": "audit-family-proof-policy-20261107",
-  "family_id": "07def34b-bf6b-423a-bf11-563c5f908911",
+  "fixture_name": "audit-batch-x-receipt-d7be160c2026",
+  "workspace_id": "dcf3d122-e99f-4fe5-bbd1-03c3547629df",
+  "expected_support_version": 8,
+  "expected_subscription_version": 6,
+  "expiry_at": "2026-11-07T17:48:31.880694+00:00",
+  "original_paid_through_at": "2026-11-08T00:00:00.000Z",
+  "supported_restore": true,
   "case_ids": [
-    "X_FAMILY_PROOF_OWNER_MEMBER",
-    "X_FAMILY_PROOF_PATH_DENIALS",
-    "X_FAMILY_PROOF_REMOVAL",
-    "X_FAMILY_PROOF_CLEANUP",
-    "X_FAMILY_PROOF_CDN_OBSERVATION"
+    "X_EXPIRY_ACTIVE_BASELINE",
+    "X_EXPIRY_SAME_SESSION_DENIAL",
+    "X_EXPIRY_OWNER_RENEWAL_GATE",
+    "X_EXPIRY_FIXTURE_ISOLATION"
   ],
-  "revocation_mode": "ORIGIN_DENIAL_WITH_CACHED_COPY_OBSERVATION",
-  "source_parent_commit": "3ad2f3101112ba65242e8fbd4845f3ca6dd20507",
-  "plan_path": "docs/security-audit/security-fr-2-batch-x-family-proof-cache-observation-plan.json",
-  "setup_source": "supabase/diagnostics/security_fr_2_6_family_proof_public_fixture_create.sql",
-  "no_automatic_rerun": true,
-  "completed_after_workflow_run": "42374771602",
-  "completion_receipt": "docs/security-audit/security-fr-2-batch-x-family-proof-path-hosted-completion.json"
+  "source_parent_commit": "aaa45c355ba8cd875f07a5437a0143ec283422dc",
+  "plan_path": "docs/security-audit/security-fr-2-batch-x-business-expiry-plan.json",
+  "no_automatic_rerun": true
 }

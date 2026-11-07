@@ -1,19 +1,20 @@
 {
-  "enabled": false,
-  "run_id": "2026-11-07-batch-x-family-proof-path-binding",
+  "enabled": true,
+  "run_id": "2026-11-07-batch-x-family-proof-origin-and-cache",
   "scope": "family-proof-path-binding",
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_name": "audit-family-proof-policy-20261107",
-  "family_id": "4832ecbe-e35f-4489-a771-44d27920e225",
+  "family_id": "07def34b-bf6b-423a-bf11-563c5f908911",
   "case_ids": [
     "X_FAMILY_PROOF_OWNER_MEMBER",
     "X_FAMILY_PROOF_PATH_DENIALS",
     "X_FAMILY_PROOF_REMOVAL",
-    "X_FAMILY_PROOF_CLEANUP"
+    "X_FAMILY_PROOF_CLEANUP",
+    "X_FAMILY_PROOF_CDN_OBSERVATION"
   ],
-  "source_parent_commit": "b99c9e7daafd48b493a0b143aced47e554ce8bcf",
-  "plan_path": "docs/security-audit/security-fr-2-batch-x-family-proof-hosted-plan.json",
-  "no_automatic_rerun": true,
-  "completed_after_workflow_run": "42373564899",
-  "completion_receipt": "docs/security-audit/security-fr-2-batch-x-family-proof-initial-hosted-review.json"
+  "revocation_mode": "ORIGIN_DENIAL_WITH_CACHED_COPY_OBSERVATION",
+  "source_parent_commit": "3ad2f3101112ba65242e8fbd4845f3ca6dd20507",
+  "plan_path": "docs/security-audit/security-fr-2-batch-x-family-proof-cache-observation-plan.json",
+  "setup_source": "supabase/diagnostics/security_fr_2_6_family_proof_public_fixture_create.sql",
+  "no_automatic_rerun": true
 }

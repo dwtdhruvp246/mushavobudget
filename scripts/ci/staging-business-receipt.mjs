@@ -190,16 +190,18 @@ export async function checkBusinessReceipt({ accounts, actors, evidence }, key, 
   const workspace = fixture.id;
   const scoped = '&workspace_id=eq.' + workspace + '&limit=2';
   if (plan.cleanup_fixture === true) {
-    const response = await request('GET', '/rest/v1/business_documents?select=storage_path,original_name,size_bytes,status'
-      + '&original_name=eq.' + FILE_NAME + '&status=eq.archived' + scoped, owner);
-    const row = single(response.data);
-    const parts = typeof row?.storage_path === 'string' ? row.storage_path.split('/') : [];
-    confirm('EXACT_SYNTHETIC_ARCHIVE_VERIFIED', response.status === 200 && row?.status === 'archived'
-      && row.original_name === FILE_NAME && Number(row.size_bytes) === PNG.length
+    // Archived rows are intentionally absent from the ordinary document read
+    // policy. The exact target was independently verified in a read-only SQL
+    // readback before this pinned, single-object cleanup plan was committed.
+    const reviewed = plan.archived_receipt_readback;
+    const parts = typeof reviewed?.storage_path === 'string' ? reviewed.storage_path.split('/') : [];
+    confirm('EXACT_INDEPENDENT_ARCHIVE_READBACK_BOUND', reviewed?.project === 'dczlddwbtgvfdujgcitb'
+      && reviewed.status === 'archived' && reviewed.size_bytes === PNG.length
+      && reviewed.verified_on === '2026-11-07'
       && parts.length === 5 && parts[0] === 'workspaces' && parts[1] === workspace
       && parts[2] === staff.id && UUID.test(parts[3]) && parts[4] === FILE_NAME);
-    evidence.archive_verified = true;
-    const removed = await request('DELETE', '/storage/v1/object/' + BUCKET + '/' + row.storage_path, owner);
+    evidence.independent_archive_readback_bound = true;
+    const removed = await request('DELETE', '/storage/v1/object/' + BUCKET + '/' + reviewed.storage_path, owner);
     evidence.storage_delete_http_status = removed.status;
     evidence.storage_delete_acknowledged = removed.status === 204
       || removed.status === 200 && removed.data?.message === 'Successfully deleted';

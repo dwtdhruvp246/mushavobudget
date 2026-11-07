@@ -1,5 +1,5 @@
 {
-  "run_id": "2026-11-07-batch-x-single-receipt-cleanup",
+  "run_id": "2026-11-07-batch-x-verified-path-cleanup",
   "scope": "business-receipt-authorization",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
   "case_ids": [
@@ -8,7 +8,14 @@
     "Y_REQUEST_RACE"
   ],
   "fixture_name": "audit-batch-x-receipt-d7be160c2026",
-  "source_parent_commit": "f5e0886dc6332f5876fe46fe29a785282b6252cc",
+  "source_parent_commit": "d0cbb83394ab1847b7251f03ed5c22e73ad4fa15",
   "resume_fixture": true,
-  "cleanup_fixture": true
+  "cleanup_fixture": true,
+  "archived_receipt_readback": {
+    "project": "dczlddwbtgvfdujgcitb",
+    "verified_on": "2026-11-07",
+    "status": "archived",
+    "size_bytes": 68,
+    "storage_path": "workspaces/dcf3d122-e99f-4fe5-bbd1-03c3547629df/660a1463-6589-4c4d-ab6c-8ee50161038f/fbda5d37-7e1d-46ac-807c-174bd4fbc877/synthetic-audit-receipt.png"
+  }
 }

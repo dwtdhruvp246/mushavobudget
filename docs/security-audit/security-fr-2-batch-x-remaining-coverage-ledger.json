@@ -189,5 +189,6 @@
     "third_ordinary_credential_slot": "USER_C",
     "credential_availability": "NOT_PRESENT_IN_PREVIOUS_SIX_SECRET_SETUP",
     "password_or_auth_user_changes_performed": false
-  }
+  },
+  "additional_independent_backend_overlap_receipt": "docs/security-audit/security-fr-2-batch-y-independent-queue-overlap-result.json"
 }

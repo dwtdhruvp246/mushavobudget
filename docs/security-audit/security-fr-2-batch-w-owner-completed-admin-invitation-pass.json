@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-30",
+  "source_commit": "ae79422a7ecd2a964d8d734ccd015ab3a29976e9",
+  "stage_step": "FR.2.5.AU02.03_AU02.05_COMPLETED_INVITATION",
+  "evidence_source": "Owner terminal safe JSON and exit code",
+  "safe_result": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+    "result": "WRONG_RECIPIENT_DENIAL_AND_COMPLETED_INVITATION_IDEMPOTENCE_SCOPED_PASS",
+    "checks": {
+      "completed_recipient_invitation_verified": true,
+      "other_account_valid_and_distinct": true,
+      "wrong_recipient_invitation_read_denied": true,
+      "wrong_recipient_completion_denied": true,
+      "repeated_completion_returns_same_workspace": true,
+      "no_additional_owned_workspace": true,
+      "created_sessions_cleaned_up": true
+    },
+    "actual_hosted_requests": 15,
+    "real_email_requests": 0,
+    "SQL_or_settings_writes": 0,
+    "first_provisioning_requested": false,
+    "completion_RPC_calls": 3,
+    "created_sessions": 2,
+    "cleanup_sessions": 2,
+    "full_AU02_05_failure_retry_acceptance": false,
+    "full_lettered_batch_W_complete": false,
+    "exit_code": 0,
+    "profile_preflight": {
+      "HTTP_status": 200,
+      "response_is_array": true,
+      "row_count": 1,
+      "user_id_matches": true,
+      "signup_source": "admin_invitation",
+      "invitation_id_present": true,
+      "invitation_id_valid": true,
+      "database_error_code": null
+    },
+    "source_hashes_verified": 5,
+    "retained_staging_ZIP_verified": true
+  },
+  "accepted_scope": {
+    "AU02_03": "Separately valid other identity denied invitation read and completion for the completed recipient invitation.",
+    "AU02_05": "Two recipient completion calls returned the original workspace and the owned-workspace set was unchanged."
+  },
+  "accepted_AU02_01_02_results_retained": true,
+  "repeat_requested": false,
+  "earlier_profile_stop_root_cause_established": false,
+  "actual_provider_or_incomplete_setup_failure_retry_accepted": false,
+  "AU02_04_unavailable_variants_accepted": false,
+  "runtime_changes": 0,
+  "new_tests_run": 0,
+  "prior_local_tests_retained": 16,
+  "assistant_hosted_Auth_requests": 0,
+  "full_lettered_batch_W_complete": false,
+  "V_complete": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

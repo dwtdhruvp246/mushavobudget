@@ -1,0 +1,21 @@
+[
+  {
+    "relink_cleanup": {
+      "result": "EXACT_SYNTHETIC_RUN_CLEANUP_COMMITTED_NOT_FULL_ACCEPTANCE",
+      "run_marker": "AUDIT-FR22-RELINK-5f93bfbe-5830-457d-b3a4-c1088d4711fd",
+      "stage_step": "FR.2.2_EXACT_RELINK_CLEANUP",
+      "checked_UTC": "2026-10-14T06:29:20.16418+00:00",
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "findings_closed": [],
+      "hosted_acceptance": false,
+      "historical_binding_repair_performed": false,
+      "project_selection_independently_verified": false,
+      "items_deleted_under_exact_count_assertions": 4,
+      "records_deleted_under_exact_count_assertions": 2,
+      "earlier_unlinked_or_manual_conversions_targeted": false,
+      "non_target_payment_rows_compared_unchanged_in_transaction": true,
+      "claims_context_transaction_local_not_genuine_Auth_acceptance": true,
+      "linked_identity_conversions_deleted_under_exact_count_assertions": 2
+    }
+  }
+]

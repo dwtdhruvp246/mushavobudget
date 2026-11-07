@@ -1,0 +1,16 @@
+import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {spawnSync} from 'node:child_process';
+import {dirname,resolve} from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
+const syntaxTargets=['scripts/prepare-final-staging.mjs','scripts/check-final-staging-serving.mjs','scripts/prepare-final-staging-correction.mjs','scripts/verify-final-staging-correction.mjs','tests/final-staging-preparation.test.mjs','tests/final-staging-serving.test.mjs','tests/final-staging-correction.test.mjs'];
+const env=Object.fromEntries(Object.entries(process.env).filter(([k])=>['PATH','SYSTEMROOT','WINDIR','COMSPEC','PATHEXT','TEMP','TMP','TMPDIR','LANG','LC_ALL'].includes(k.toUpperCase())));
+const syntax=syntaxTargets.map(file=>{const r=spawnSync(process.execPath,['--check',resolve(root,file)],{cwd:root,env,encoding:'utf8',timeout:10000,maxBuffer:1024*1024});return {file,pass:!r.error&&!r.signal&&r.status===0};});
+const run=syntax.every(x=>x.pass)?spawnSync(process.execPath,['--require',resolve(root,'scripts/offline-test-network.cjs'),'--test','--test-reporter=tap',...['final-staging-preparation','final-staging-serving','final-staging-correction'].map(n=>resolve(root,'tests/'+n+'.test.mjs'))],{cwd:root,env,encoding:'utf8',timeout:60000,maxBuffer:4*1024*1024}):{status:1,stdout:''};
+const count=k=>Number((run.stdout||'').match(new RegExp('^# '+k+' (\\d+)$','m'))?.[1]??-1);
+const totals=Object.fromEntries(['tests','pass','fail','cancelled','skipped','todo'].map(k=>[k,count(k)]));
+const ok=syntax.every(x=>x.pass)&&!run.error&&!run.signal&&run.status===0&&totals.tests===44&&totals.pass===44&&['fail','cancelled','skipped','todo'].every(k=>totals[k]===0);
+const inputs=[...syntaxTargets,'scripts/package-final-staging-correction.ps1','scripts/prepare-stage-2-headers.cjs','scripts/offline-test-network.cjs','docs/security-audit/security-final-staging-source-contract.json'];
+console.log(JSON.stringify({stage_step:'FR.1.3_DELIVERY_CORRECTION',result:ok?'OFFLINE_DELIVERY_CORRECTION_SCOPED_PASS':'OFFLINE_DELIVERY_CORRECTION_REVIEW',scope:'ACTUAL_CANDIDATE_VALIDATION_PREPARATION_AND_SERVING_CHECKER_WITH_TEMPORARY_FILES_SYNTHETIC_KEYS_AND_DISABLED_NETWORK_NOT_WINDOWS_ZIP_EXECUTION',source_commit:'268eb30b21154c14b5eede7e3ceb187341ef586b',node_version:process.version,...totals,exit_code:ok?0:1,syntax_checks:syntax.length,syntax,file_sha256:Object.fromEntries(inputs.map(file=>[file,createHash('sha256').update(readFileSync(resolve(root,file))).digest('hex')])),failed_case_titles:(run.stdout||'').split(/\r?\n/).filter(l=>/^not ok \d+ - /.test(l)),Windows_PowerShell_ZIP_execution_verified:false,actual_public_staging_HTTP_responses:0,Auth_API_SQL_jobs_provider_device_or_store_checks_run:0,hosted_acceptance:false,candidate_deployed_by_this_verifier:false,production_or_native_changed:false,APK_update_deferred:true,findings_closed:[]},null,2));
+process.exitCode=ok?0:1;

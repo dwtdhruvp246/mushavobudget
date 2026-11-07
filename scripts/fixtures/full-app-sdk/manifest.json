@@ -1,0 +1,121 @@
+{
+  "entry": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm",
+  "scope": "PUBLIC_OFFLINE_TEST_FIXTURE_ONLY_NOT_APPLICATION_DEPLOYMENT",
+  "downloaded_UTC_date": "2026-10-24",
+  "bytes_are_observed_CDN_build_not_immutable_CDN_guarantee": true,
+  "modules": {
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm": {
+      "filename": "a58f48d9118c58799d70.mjs",
+      "bytes": 11800,
+      "sha256": "5a19857fdea834d25c8b579887bdf0c21d74d4b3dc7e5b3c7f4fb7fe5a0b161e",
+      "imports": [
+        "/npm/@supabase/auth-js@2.110.9/+esm",
+        "/npm/@supabase/functions-js@2.110.9/+esm",
+        "/npm/@supabase/postgrest-js@2.110.9/+esm",
+        "/npm/@supabase/realtime-js@2.110.9/+esm",
+        "/npm/@supabase/storage-js@2.110.9/+esm"
+      ],
+      "package": "@supabase/supabase-js",
+      "version": "2.110.9",
+      "license": "MIT",
+      "license_filename": "a58f48d9118c58799d70.LICENSE.txt",
+      "license_sha256": "334dd6820e2eaeab2064e7c59001b810566728a28a41a7c1dbf69bbee17d0936"
+    },
+    "https://cdn.jsdelivr.net/npm/@supabase/auth-js@2.110.9/+esm": {
+      "filename": "23660a1e1619068fedac.mjs",
+      "bytes": 102843,
+      "sha256": "a77b4b6273054bd4edef2405d5d19bfe8a64e0a0291b3fb56c6835b2ca545c77",
+      "imports": [
+        "/npm/tslib@2.8.1/+esm"
+      ],
+      "package": "@supabase/auth-js",
+      "version": "2.110.9",
+      "license": "MIT",
+      "license_filename": "23660a1e1619068fedac.LICENSE.txt",
+      "license_sha256": "334dd6820e2eaeab2064e7c59001b810566728a28a41a7c1dbf69bbee17d0936"
+    },
+    "https://cdn.jsdelivr.net/npm/@supabase/functions-js@2.110.9/+esm": {
+      "filename": "67d87671802a8aca7bba.mjs",
+      "bytes": 3447,
+      "sha256": "ba0c24cf22658a7693dc53fe371f8f6f74333de507802890924add927a868f22",
+      "imports": [
+        "/npm/tslib@2.8.1/+esm"
+      ],
+      "package": "@supabase/functions-js",
+      "version": "2.110.9",
+      "license": "MIT",
+      "license_filename": "67d87671802a8aca7bba.LICENSE.txt",
+      "license_sha256": "334dd6820e2eaeab2064e7c59001b810566728a28a41a7c1dbf69bbee17d0936"
+    },
+    "https://cdn.jsdelivr.net/npm/@supabase/postgrest-js@2.110.9/+esm": {
+      "filename": "879a6dc4d99665a8933d.mjs",
+      "bytes": 16601,
+      "sha256": "bf730a29130db529d894b1bda8922144bcff1408827aaed0c499562912b01224",
+      "imports": [],
+      "package": "@supabase/postgrest-js",
+      "version": "2.110.9",
+      "license": "MIT",
+      "license_filename": "879a6dc4d99665a8933d.LICENSE.txt",
+      "license_sha256": "334dd6820e2eaeab2064e7c59001b810566728a28a41a7c1dbf69bbee17d0936"
+    },
+    "https://cdn.jsdelivr.net/npm/@supabase/realtime-js@2.110.9/+esm": {
+      "filename": "1e37bf0bfac42ea82ddb.mjs",
+      "bytes": 32439,
+      "sha256": "584b20ab57542472a46d5c61ca39cd9ea19e48d78d0c8202745d03f9b510a84b",
+      "imports": [
+        "/npm/@supabase/phoenix@0.4.5/+esm"
+      ],
+      "package": "@supabase/realtime-js",
+      "version": "2.110.9",
+      "license": "MIT",
+      "license_filename": "1e37bf0bfac42ea82ddb.LICENSE.txt",
+      "license_sha256": "334dd6820e2eaeab2064e7c59001b810566728a28a41a7c1dbf69bbee17d0936"
+    },
+    "https://cdn.jsdelivr.net/npm/@supabase/storage-js@2.110.9/+esm": {
+      "filename": "5e2468b871ca0e5a3fe3.mjs",
+      "bytes": 45052,
+      "sha256": "80d5bddb5e86ca30313678adb3e8b05b834f81d6b6028381162898674c42bb86",
+      "imports": [
+        "/npm/iceberg-js@0.8.1/+esm"
+      ],
+      "package": "@supabase/storage-js",
+      "version": "2.110.9",
+      "license": "MIT",
+      "license_filename": "5e2468b871ca0e5a3fe3.LICENSE.txt",
+      "license_sha256": "334dd6820e2eaeab2064e7c59001b810566728a28a41a7c1dbf69bbee17d0936"
+    },
+    "https://cdn.jsdelivr.net/npm/tslib@2.8.1/+esm": {
+      "filename": "db13cd8c45a3d3efa291.mjs",
+      "bytes": 11507,
+      "sha256": "87dfa73ce9e2ec672fd980fd4d575821f9e0b977c06065df602c7301d352a310",
+      "imports": [],
+      "package": "tslib",
+      "version": "2.8.1",
+      "license": "0BSD",
+      "license_filename": "db13cd8c45a3d3efa291.LICENSE.txt",
+      "license_sha256": "210b19e543130388c68654b7497e967119ce17145f66ab7d85688fbd70f08751"
+    },
+    "https://cdn.jsdelivr.net/npm/@supabase/phoenix@0.4.5/+esm": {
+      "filename": "2a68ef4d118048fdf8ff.mjs",
+      "bytes": 26200,
+      "sha256": "b57054fe408779390d6563f17c45b8e164cecede4d3a8cad4159748f4d79f811",
+      "imports": [],
+      "package": "@supabase/phoenix",
+      "version": "0.4.5",
+      "license": "MIT",
+      "license_filename": "2a68ef4d118048fdf8ff.LICENSE.txt",
+      "license_sha256": "41a686069f0199ff369d7e5277d5267385cc54d9199f1efc960bacbe2e799255"
+    },
+    "https://cdn.jsdelivr.net/npm/iceberg-js@0.8.1/+esm": {
+      "filename": "bb173853512012ec5a7b.mjs",
+      "bytes": 6431,
+      "sha256": "9f07545eaa5090e8bc8a015036859061c9b1afcce3e7610730067cffc8cfcb0e",
+      "imports": [],
+      "package": "iceberg-js",
+      "version": "0.8.1",
+      "license": "MIT",
+      "license_filename": "bb173853512012ec5a7b.LICENSE.txt",
+      "license_sha256": "e6e972dba808fb9d80863fe90ca222a47710cb850f6e6e2af95cdc0d022f79bd"
+    }
+  }
+}

@@ -2,6 +2,9 @@ import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2.1
 // @ts-types="npm:@types/web-push@3.6.4"
 import webpush from "npm:web-push@3.6.7";
 import { createGuardedPushSender, isBlockedPushDestination } from "../_shared/push-destination.mjs";
+import { prepareReminderPayload } from "../_shared/notification-recipient.mjs";
+
+import { cancelClaimedOutboxJob, recordClaimedOutboxResult } from "../_shared/outbox-claim.mjs";
 
 const sendGuardedPush = createGuardedPushSender(webpush);
 
@@ -10,6 +13,8 @@ const DELIVERY_TTL_SECONDS = 60 * 60;
 
 type OutboxJob = {
   id: string;
+  attempt_count: number;
+  claimed_at: string;
   user_id: string;
   workspace_id: string;
   source_type: string;
@@ -204,33 +209,22 @@ async function validateBusinessBillJob(
 
 async function cancelJob(
   serviceClient: SupabaseClient,
-  jobId: string,
+  job: OutboxJob,
   reason: string,
 ): Promise<void> {
-  const { error } = await serviceClient
-    .from("notification_outbox")
-    .update({ status: "cancelled", last_error: reason.slice(0, 500) })
-    .eq("id", jobId)
-    .eq("status", "processing");
-  if (error) throw new Error(`outbox_cancel:${error.code || "database_error"}`);
+  await cancelClaimedOutboxJob(serviceClient, "notification_outbox", job, reason);
 }
 
 async function recordJobResult(
   serviceClient: SupabaseClient,
-  jobId: string,
+  job: OutboxJob,
   succeeded: boolean,
   permanentFailure: boolean,
   errorSummary: string | null,
   referenceTime: string,
 ): Promise<void> {
-  const { error } = await serviceClient.rpc("record_notification_outbox_result", {
-    p_outbox_id: jobId,
-    p_succeeded: succeeded,
-    p_permanent_failure: permanentFailure,
-    p_error: errorSummary,
-    p_reference_time: referenceTime,
-  });
-  if (error) throw new Error(`outbox_result:${error.code || "database_error"}`);
+  await recordClaimedOutboxResult(serviceClient, "notification_outbox", job,
+    succeeded, permanentFailure, errorSummary, referenceTime);
 }
 
 Deno.serve(async (request) => {
@@ -335,7 +329,7 @@ Deno.serve(async (request) => {
         ? await validateBusinessBillJob(serviceClient, job)
         : await validatePaymentJob(serviceClient, job);
       if (!validation.valid) {
-        await cancelJob(serviceClient, job.id, validation.reason);
+        await cancelJob(serviceClient, job, validation.reason);
         totals.cancelled += 1;
         continue;
       }
@@ -347,7 +341,7 @@ Deno.serve(async (request) => {
         .is("disabled_at", null);
       if (subscriptionError) throw new Error(`subscription_lookup:${subscriptionError.code || "database_error"}`);
       if (!subscriptions?.length) {
-        await cancelJob(serviceClient, job.id, "No active push subscriptions.");
+        await cancelJob(serviceClient, job, "No active push subscriptions.");
         totals.cancelled += 1;
         continue;
       }
@@ -356,14 +350,16 @@ Deno.serve(async (request) => {
       let temporaryFailures = 0;
       let permanentFailures = 0;
       const sentAt = new Date().toISOString();
-      const payload = JSON.stringify({
-        type: job.notification_type,
-        title: job.title,
-        body: job.body,
-        tag: `${job.source_type}:${job.source_id}:${job.notification_type}`,
-        sent_at: sentAt,
-        target_url: job.target_url,
-      });
+      // Recheck the current setting after eligibility/subscription lookup.
+      // Queued detailed copy must not survive a prior preview-off change.
+      // This is a send-time snapshot, not recall of an accepted OS notification.
+      const currentPayload = await prepareReminderPayload(serviceClient, job, sentAt);
+      if (!currentPayload) {
+        await cancelJob(serviceClient, job, "Payment reminders are disabled.");
+        totals.cancelled += 1;
+        continue;
+      }
+      const payload = JSON.stringify(currentPayload);
 
       for (const subscription of subscriptions as PushSubscriptionRow[]) {
         try {
@@ -400,12 +396,12 @@ Deno.serve(async (request) => {
       }
 
       if (delivered > 0) {
-        await recordJobResult(serviceClient, job.id, true, false, null, sentAt);
+        await recordJobResult(serviceClient, job, true, false, null, sentAt);
         totals.sent += 1;
       } else if (temporaryFailures > 0) {
         await recordJobResult(
           serviceClient,
-          job.id,
+          job,
           false,
           false,
           `Temporary delivery failure on ${temporaryFailures} device(s).`,
@@ -415,7 +411,7 @@ Deno.serve(async (request) => {
       } else {
         await recordJobResult(
           serviceClient,
-          job.id,
+          job,
           false,
           permanentFailures > 0,
           "All registered push subscriptions are permanently invalid.",
@@ -431,7 +427,7 @@ Deno.serve(async (request) => {
       try {
         await recordJobResult(
           serviceClient,
-          job.id,
+          job,
           false,
           false,
           "Dispatcher could not complete this attempt.",

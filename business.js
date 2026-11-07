@@ -1,5 +1,7 @@
 // Mushavo Budget Business application — Stage 12 pilot and realtime
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
+import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=5";
+import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
 const placeholders = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
@@ -8,7 +10,8 @@ const isConfigured = Boolean(
   config.supabasePublishableKey &&
   !placeholders.some((value) => `${config.supabaseUrl} ${config.supabasePublishableKey}`.includes(value))
 );
-const supabase = isConfigured ? createClient(config.supabaseUrl, config.supabasePublishableKey) : null;
+const authLinkRedirect = redirectLegacyAuthLink(window.location.href, "business", href => window.location.replace(href));
+const supabase = isConfigured && !authLinkRedirect ? createClient(config.supabaseUrl, config.supabasePublishableKey) : null;
 const VALID_TABS = new Set(["overview", "activity", "bills", "approvals", "budgets", "reports", "team", "settings", "subscription"]);
 const TAB_COPY = {
   overview: ["Business overview", "Business overview", "A clear view of your company’s financial activity."],
@@ -79,6 +82,7 @@ const state = {
 let billingSequence = 0, billingOffset = 0, billingBusy = false, billingQuote = null, billingAction = 'renewal', billingSubmissionId = null, billingPrintWindow = null;
 let workspaceLoadSequence = 0;
 let appOpening = false;
+let businessAuthEpoch = 0;
 let setupStep = "basics";
 let setupOpen = false;
 let setupBusy = false;
@@ -117,7 +121,7 @@ const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 
 function showOnly(viewId) {
-  ["businessLoading", "businessConfig", "businessSuspended", "businessNoAccess", "businessInvitations", "businessError", "businessApp"]
+  ["businessLoading", "businessEmailVerification", "businessConfig", "businessSuspended", "businessNoAccess", "businessInvitations", "businessError", "businessApp"]
     .forEach((id) => document.getElementById(id)?.classList.toggle("hidden", id !== viewId));
 }
 
@@ -151,7 +155,7 @@ function friendlyMessage(error) {
   if (/ALREADY_BUSINESS_MEMBER/.test(message)) return "This person is already an active member of this Business workspace.";
   if (/CANNOT_INVITE_YOURSELF/.test(message)) return "You are already a member of this Business workspace.";
   if (/BUSINESS_INVITATION_RATE_LIMITED/.test(message)) return "Wait one minute before resending this invitation.";
-  if (/CUSTOM_ROLE_INVITATION_DELIVERY_FAILED/.test(message)) return 'The invitation was saved, but email delivery failed. Use Resend in the pending invitations list.';
+  if (/BUSINESS_INVITATION_EMAIL_FAILED|CUSTOM_ROLE_INVITATION_DELIVERY_FAILED/.test(message)) return "The invitation was saved, but email delivery failed. Use Resend in the pending invitations list.";
   if (/BUSINESS_INVITATION_CHANGED/.test(message)) return "This invitation changed while you were editing. Reload the team list and try again.";
   if (/OWNERSHIP_CONFIRMATION_MISMATCH/.test(message)) return "Type the exact business name to confirm the ownership transfer.";
   if (/BUSINESS_TEAM_ACCESS_REQUIRED/.test(message)) return "You do not have permission to manage this Business team.";
@@ -194,7 +198,10 @@ function friendlyMessage(error) {
 }
 
 async function query(label, request) {
+  const epoch = businessAuthEpoch,proofTicket=businessEmailEntry.ticket();
   const { data, error } = await request;
+  if (epoch !== businessAuthEpoch || !proofTicket()) throw Object.assign(new Error("The active account changed."), {code:"session_changed"});
+  if(error?.message?.includes("EMAIL_VERIFICATION_REQUIRED")){businessEmailEntry.lock();throw Object.assign(new Error("Your sign-in ended. Sign in again."),{code:"session_changed"});}
   if (error) {
     error.message = `${label}: ${error.message}`;
     throw error;
@@ -2454,6 +2461,26 @@ async function refreshBusinessTeam() {
   renderTeam();
 }
 
+async function businessInvitationFailure(data, error) {
+  const response = error?.context;
+  if (response?.status === 429 || response?.status === 502) {
+    let payload;
+    try {
+      payload = await response.json();
+    } catch {
+      // A gateway error may not include the invitation function's JSON body.
+    }
+    if (response.status === 429 && payload?.error === "BUSINESS_INVITATION_RATE_LIMITED") {
+      return payload.error;
+    }
+    if (response.status === 502 && payload?.error === "BUSINESS_INVITATION_EMAIL_FAILED"
+        && typeof payload.invitation_id === "string" && payload.invitation_id) {
+      return payload.error;
+    }
+  }
+  return data?.error || error?.message || "The invitation request could not finish.";
+}
+
 async function withTeamBusy(action) {
   if (teamBusy) return;
   teamBusy = true;
@@ -2486,14 +2513,20 @@ async function saveBusinessInvitation(event) {
       // Existing deployed mail functions can deliver a database-created custom
       // invitation through their resend path; SQL remains the authority for roles.
       let body = {action: 'create', workspace_id: state.workspace.id, email: $('#businessInviteEmail').value.trim(), role, scope_ids: scopes};
-      if (role.startsWith('custom_')) {
+      const customRole = role.startsWith("custom_");
+      if (customRole) {
         const invitation = await query('Create custom-role invitation',supabase.rpc('create_business_invitation', {p_workspace_id:state.workspace.id,p_email:body.email,p_role:role,p_scope_ids:scopes}));
         body = {action:'resend',invitation_id:invitation.invitation_id};
       }
       const { data, error } = await supabase.functions.invoke("invite-business-member", { body });
       if (error || data?.error) {
-        if (role.startsWith('custom_')) {$('#businessInviteDialog').close();await refreshBusinessTeam();throw new Error('CUSTOM_ROLE_INVITATION_DELIVERY_FAILED');}
-        throw new Error(data?.error || error?.message || "BUSINESS_INVITATION_EMAIL_FAILED");
+        const failure = await businessInvitationFailure(data, error);
+        if (customRole || failure === "BUSINESS_INVITATION_EMAIL_FAILED") {
+          $("#businessInviteDialog").close();
+          await refreshBusinessTeam();
+        }
+        throw new Error(customRole && failure !== "BUSINESS_INVITATION_RATE_LIMITED"
+          ? "CUSTOM_ROLE_INVITATION_DELIVERY_FAILED" : failure);
       }
       setTeamMessage(`Invitation sent to ${data.email}.`);
     }
@@ -2508,7 +2541,11 @@ async function teamAction(action, id) {
     teamBusy = true;
     if (action === "resend") {
       const { data, error } = await supabase.functions.invoke("invite-business-member", { body: { action: "resend", invitation_id: id } });
-      if (error || data?.error) throw new Error(data?.error || error?.message || "BUSINESS_INVITATION_EMAIL_FAILED");
+      if (error || data?.error) {
+        const failure = await businessInvitationFailure(data, error);
+        if (failure === "BUSINESS_INVITATION_EMAIL_FAILED") await refreshBusinessTeam();
+        throw new Error(failure);
+      }
       setTeamMessage("Invitation resent.");
     } else if (action === "cancel") {
       if (!window.confirm("Cancel this invitation and release its reserved seat?")) return;
@@ -2689,9 +2726,39 @@ async function submitBusinessBillingPayment(event) {
 }
 async function openBusinessBillingProof(path) {
   if(!businessBillingOwner() || !(state.billingSnapshot?.history || []).some(row=>(row.proofs || []).some(proof=>proof.path===path)))return;
-  const sequence=workspaceLoadSequence;
-  try{const signed=await query('Subscription proof',supabase.storage.from('subscription-proofs').createSignedUrl(path,60));if(sequence===workspaceLoadSequence)window.open(signed.signedUrl,'_blank','noopener,noreferrer');}
-  catch(error){if(sequence===workspaceLoadSequence)setClaimMessage('#businessBillingMessage',friendlyMessage(error),true);}
+  const isCurrent=captureBusinessFileContext();
+  const stillListed=()=>businessBillingOwner() && (state.billingSnapshot?.history || []).some(row=>(row.proofs || []).some(proof=>proof.path===path));
+  try{const signed=await query('Subscription proof',supabase.storage.from('subscription-proofs').createSignedUrl(path,60));if(isCurrent() && stillListed())window.open(signed.signedUrl,'_blank','noopener,noreferrer');}
+  catch(error){if(isCurrent() && stillListed())setClaimMessage('#businessBillingMessage',friendlyMessage(error),true);}
+}
+
+function captureBusinessFileContext() {
+  const sequence = workspaceLoadSequence, epoch = businessAuthEpoch;
+  const userId = state.session?.user?.id, workspaceId = state.workspace?.id;
+  return () => Boolean(userId && workspaceId) && sequence === workspaceLoadSequence
+    && epoch === businessAuthEpoch && state.session?.user?.id === userId
+    && state.workspace?.id === workspaceId;
+}
+
+async function openBusinessDocumentProof(path, kind) {
+  if (!["claim", "bill"].includes(kind)) return;
+  const isCurrent = captureBusinessFileContext();
+  const parentId = kind === "claim" ? openedClaimId : openedBillId;
+  const stillListed = () => {
+    if (!parentId || parentId !== (kind === "claim" ? openedClaimId : openedBillId)) return false;
+    if (kind === "claim") return state.claims.some((item) => item.id === parentId)
+      && state.claimReceipts.some((item) => item.parent_id === parentId && item.storage_path === path);
+    return state.bills.some((item) => item.id === parentId) && state.billDocuments.some((item) => item.storage_path === path
+      && (item.parent_id === parentId || state.billPayments.some((payment) => payment.bill_id === parentId && payment.id === item.parent_id)));
+  };
+  if (!isCurrent() || !stillListed()) return;
+  const message = kind === "claim" ? "#claimDetailMessage" : "#billDetailMessage";
+  try {
+    const signed = await query("Open business proof", supabase.storage.from("business-documents").createSignedUrl(path, 60));
+    if (isCurrent() && stillListed()) window.open(signed.signedUrl, "_blank", "noopener,noreferrer");
+  } catch (error) {
+    if (isCurrent() && stillListed()) setClaimMessage(message, friendlyMessage(error), true);
+  }
 }
 async function printBusinessBillingReceipt(id) {
   if(!businessBillingOwner())return;
@@ -2876,6 +2943,7 @@ async function selectBusinessWorkspace(workspaceId, { preserveSetup = false } = 
 async function loadBusinessAccess() {
   if (appOpening) return;
   appOpening = true;
+  const epoch = businessAuthEpoch;
   showOnly("businessLoading");
   try {
     if (!isConfigured) {
@@ -2883,6 +2951,7 @@ async function loadBusinessAccess() {
       return;
     }
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (epoch !== businessAuthEpoch) return;
     if (sessionError) throw sessionError;
     if (!session) {
       const url = new URL("./app.html", window.location.href);
@@ -2893,7 +2962,10 @@ async function loadBusinessAccess() {
       return;
     }
     state.session = session;
+    if(!await businessEmailEntry.ensure())return;
+    if(epoch!==businessAuthEpoch)return;
     await window.MushavoWorkspace?.hydrate(session.user.id);
+    if (epoch !== businessAuthEpoch) return;
     const suspended = await query("account status load", supabase.rpc("my_account_suspended"));
     if (suspended) {
       showOnly("businessSuspended");
@@ -2907,6 +2979,7 @@ async function loadBusinessAccess() {
       query("Business supported currencies load", supabase.from("supported_currencies").select("code,name").eq("is_active", true).order("code")),
       query("Business invitation load", supabase.rpc("get_my_business_invitations"))
     ]);
+    if(epoch!==businessAuthEpoch||!businessEmailEntry.authorized)return;
     state.profile = profile;
     state.memberships = memberships;
     state.supportedCurrencies = currencies;
@@ -2948,20 +3021,80 @@ async function loadBusinessAccess() {
     url.searchParams.delete("restore_workspace");
     window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   } catch (error) {
-    console.error(error);
+    if (epoch !== businessAuthEpoch || error?.code === "session_changed") return;
+    console.warn("Business access could not load.");
     $("#businessErrorMessage").textContent = friendlyMessage(error);
     showOnly("businessError");
   } finally {
-    appOpening = false;
+    if (epoch === businessAuthEpoch) appOpening = false;
   }
 }
 
+let businessSignOutInProgress = false;
+
+async function removeBusinessDevicePush(userId, isCurrent) {
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) return;
+  const assertCurrent = () => {
+    if (!isCurrent()) throw Object.assign(new Error("The active account changed."), {code: "session_changed"});
+  };
+  assertCurrent();
+  const registration = await navigator.serviceWorker.getRegistration("/");
+  assertCurrent();
+  if (!registration) return;
+  const subscription = await registration.pushManager.getSubscription();
+  assertCurrent();
+  if (subscription) {
+    const {error} = await supabase.from("push_subscriptions").delete()
+      .eq("user_id", userId).eq("endpoint", subscription.endpoint);
+    if (error) throw error;
+    assertCurrent();
+    await subscription.unsubscribe();
+    assertCurrent();
+  }
+  try { await navigator.clearAppBadge?.(); } catch (_badgeError) { /* Optional. */ }
+  assertCurrent();
+}
+
 async function signOut() {
-  clearBusinessWorkspaceState();
+  if (businessSignOutInProgress || !state.session?.user?.id) return;
+  businessSignOutInProgress = true;
+  const userId = state.session.user.id, epoch = businessAuthEpoch;
+  let expired = false, timeoutId, cleanupFailed = false;
+  const isCurrent = () => !expired && state.session?.user?.id === userId && businessAuthEpoch === epoch;
   try {
-    await supabase?.auth.signOut({ scope: "local" });
-  } finally {
+    try {
+      await Promise.race([
+        removeBusinessDevicePush(userId, isCurrent),
+        new Promise((_, reject) => {
+          timeoutId = window.setTimeout(() => {
+            expired = true;
+            reject(new Error("Device notification cleanup timed out."));
+          }, 10000);
+        })
+      ]);
+    } catch (_cleanupError) { cleanupFailed = true; }
+    finally { window.clearTimeout(timeoutId); }
+    // Cleanup failure/timeout must not trap the requested Auth sign-out, and
+    // delayed cleanup must never retire a newly signed-in account's device.
+    if (state.session?.user?.id !== userId || businessAuthEpoch !== epoch) return;
+    const {error} = await supabase.auth.signOut({ scope: "local" });
+    if (error) throw error;
+    if (state.session?.user?.id && (state.session.user.id !== userId || businessAuthEpoch !== epoch)) return;
+    if (!cleanupFailed) {
+      try { window.localStorage.removeItem(`mushavo-budget:push-enabled:${userId}`); } catch (_storageError) { /* Optional. */ }
+    }
+    clearBusinessWorkspaceState();
+    if (cleanupFailed && typeof window.alert === "function") {
+      window.alert("Signed out. Device notifications could not be disconnected. Turn off this site's notifications in your device settings if needed.");
+    }
     window.location.replace("/app.html");
+  } catch (_error) {
+    $('#businessErrorMessage').textContent = 'Sign-out could not finish. Your session may still be active. Check your connection and try again.';
+    showOnly('businessError');
+  } finally {
+    expired = true;
+    window.clearTimeout(timeoutId);
+    businessSignOutInProgress = false;
   }
 }
 
@@ -3031,10 +3164,7 @@ $("#billProofFile").addEventListener("change", uploadBillProof);
 $("#billProofList").addEventListener("click", async (event) => {
   const button = event.target.closest("[data-proof-path]");
   if (!button) return;
-  try {
-    const signed = await query("Open bill proof", supabase.storage.from("business-documents").createSignedUrl(button.dataset.proofPath, 60));
-    window.open(signed.signedUrl, "_blank", "noopener,noreferrer");
-  } catch (error) { setClaimMessage("#billDetailMessage", friendlyMessage(error), true); }
+  await openBusinessDocumentProof(button.dataset.proofPath, "bill");
 });
 $("#businessClaimForm").addEventListener("submit", createClaim);
 $$("[data-close-claim]").forEach((button) => button.addEventListener("click", () => $("#businessClaimDialog").close()));
@@ -3119,10 +3249,7 @@ $("#claimDecisionPanel").addEventListener("click", (event) => {
 $("#claimReceiptList").addEventListener("click", async (event) => {
   const button = event.target.closest("[data-receipt-path]");
   if (!button) return;
-  try {
-    const signed = await query("Open receipt", supabase.storage.from("business-documents").createSignedUrl(button.dataset.receiptPath, 60));
-    window.open(signed.signedUrl, "_blank", "noopener,noreferrer");
-  } catch (error) { setClaimMessage("#claimDetailMessage", friendlyMessage(error), true); }
+  await openBusinessDocumentProof(button.dataset.receiptPath, "claim");
 });
 ["#businessOverviewClaims", "#businessClaimActivity", "#businessClaimApprovals"].forEach((selector) => {
   $(selector).addEventListener("click", (event) => {
@@ -3338,7 +3465,7 @@ async function flushBusinessLiveRefresh() {
   }
 }
 function startBusinessRealtime() {
-  if(!state.workspace||!state.session||!supabase?.channel)return;
+  if(!businessEmailEntry.authorized||!state.workspace||!state.session||!supabase?.channel)return;
   const workspaceId=state.workspace.id;
   if(businessLiveWorkspace===workspaceId&&businessLiveChannel)return;
   stopBusinessRealtime();businessLiveWorkspace=workspaceId;
@@ -3373,7 +3500,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&businessL
 
 let businessAccessCheckBusy=false;
 async function refreshBusinessAccessState() {
-  if(!state.workspace || businessAccessCheckBusy)return;
+  if(!businessEmailEntry.authorized||!state.workspace || businessAccessCheckBusy)return;
   const workspaceId=state.workspace.id,sequence=workspaceLoadSequence,wasLocked=state.locked;businessAccessCheckBusy=true;
   try{
     const suspended=await query('Account access check',supabase.rpc('my_account_suspended'));
@@ -3407,5 +3534,28 @@ window.setInterval(enforceBusinessExpiry,15000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){enforceBusinessExpiry();refreshBusinessAccessState();}});
 window.MushavoWorkspace?.onResume(() => { enforceBusinessExpiry(); refreshBusinessAccessState(); });
 
+const restoreBusinessPrivateDom=[...document.querySelectorAll('#businessApp,#businessInvitations,dialog')].map(snapshotPrivateView);
+const businessEmailEntry=createSessionEntry({client:supabase,getSession:()=>state.session,root:$('#businessEmailVerificationContent'),
+  show:state=>showOnly(['loading','verifying'].includes(state?.phase)?'businessLoading':'businessEmailVerification'),
+  onReset:()=>{businessAuthEpoch++;appOpening=false;},
+  onInvalidated:()=>{clearBusinessWorkspaceState();state.profile=null;state.workspaces=[];state.memberships=[];state.incomingInvitations=[];state.supportedCurrencies=[];for(const restore of restoreBusinessPrivateDom)restore();},
+  onUnlocked:async({ticket})=>{if(ticket())await loadBusinessAccess();},onSignOut:()=>signOut()
+});
 $("#businessToday").textContent = new Date().toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
-loadBusinessAccess();
+supabase?.auth.onAuthStateChange((event, session) => {
+  if (event === 'INITIAL_SESSION') return;
+  if (session?.user?.id && session.user.id === state.session?.user?.id && session.access_token===state.session.access_token) {
+    state.session=session;
+    if(businessEmailEntry.authorized&&session.access_token)supabase.realtime.setAuth(session.access_token);
+    return;
+  }
+  businessAuthEpoch += 1;
+  clearBusinessWorkspaceState();
+  state.profile = null; state.workspaces = []; state.memberships = []; state.incomingInvitations = []; state.supportedCurrencies = [];
+  state.session = session;businessEmailEntry.bind(session);appOpening = false;
+  showOnly('businessLoading');
+  const epoch = businessAuthEpoch;
+  // Auth callbacks must not await another SDK call while its lock is held.
+  window.setTimeout(() => { if (epoch === businessAuthEpoch) loadBusinessAccess(); }, 0);
+});
+if (!authLinkRedirect) loadBusinessAccess();

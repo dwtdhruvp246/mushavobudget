@@ -1,0 +1,18 @@
+{
+  "result": "BILL_REMINDER_SEPARATOR_ALIGNED_COMMITTED_NOT_SCHEDULER_ACCEPTANCE",
+  "stage_step": "FR.2.4.E4.1_BILL_REMINDER_SEPARATOR_CORRECTION",
+  "checked_UTC": "2026-10-16T05:24:10.809717+00:00",
+  "target_project": "dczlddwbtgvfdujgcitb",
+  "findings_closed": [],
+  "hosted_acceptance": false,
+  "target_LF_body_md5": "cb3b123fa3eb25aed3d2cb0ef3a025db",
+  "email_enforcement_installed": false,
+  "production_or_native_changed": false,
+  "existing_body_line_endings_preserved": true,
+  "project_selection_independently_verified": false,
+  "application_rows_read_or_written_by_script": false,
+  "only_exact_separator_literal_change_permitted": true,
+  "scheduler_function_or_provider_dispatch_invoked": false,
+  "source_non_event_catalog_matches_under_assertion": true,
+  "function_metadata_grants_policies_relations_triggers_and_event_hooks_compared_unchanged": true
+}

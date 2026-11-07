@@ -1,0 +1,1558 @@
+{
+  "schema_version": 1,
+  "stage_step": "8.3",
+  "date": "2026-10-12",
+  "source_parent_commit": "db81dd920a50626b6441f70b2145ff7bb3596d27",
+  "result": "BOUNDED_READINESS_COMPLETE_HOSTED_DEVICE_ACCEPTANCE_BLOCKED",
+  "scope": "CURRENT_REPOSITORY_AND_PRESERVED_RECEIPT_RECONCILIATION_NOT_HOSTED_PROVIDER_OR_DEVICE_PROBING",
+  "candidate_commit": "d6a797536c277c59f351e0c44c71d4074c1b92c7",
+  "owner_repeat_record_commit": "db81dd920a50626b6441f70b2145ff7bb3596d27",
+  "target_if_later_authorized": {
+    "staging_project": "dczlddwbtgvfdujgcitb",
+    "production_project_excluded": "kttkospkblwvguuwnhjj",
+    "dashboard_configuration_provider_or_devices_inspected_this_step": false
+  },
+  "integrity": {
+    "source_identity_checks": [
+      {
+        "path": "push-notifications.js",
+        "original_inventory_git_blob_sha": "2e3fb6dd0fbf8126bb7ec0405e39ec072d2bc68c",
+        "current_git_blob_sha": "2e3fb6dd0fbf8126bb7ec0405e39ec072d2bc68c",
+        "expected_current_git_blob_sha": "2e3fb6dd0fbf8126bb7ec0405e39ec072d2bc68c",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "sw.js",
+        "original_inventory_git_blob_sha": "b61477393fa2b0ed7baa3c52d61076df549df948",
+        "current_git_blob_sha": "b61477393fa2b0ed7baa3c52d61076df549df948",
+        "expected_current_git_blob_sha": "b61477393fa2b0ed7baa3c52d61076df549df948",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "manifest.webmanifest",
+        "original_inventory_git_blob_sha": "58c701867538153b64166582588c4e3dbf86a0a9",
+        "current_git_blob_sha": "58c701867538153b64166582588c4e3dbf86a0a9",
+        "expected_current_git_blob_sha": "58c701867538153b64166582588c4e3dbf86a0a9",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "offline.html",
+        "original_inventory_git_blob_sha": "74ec210d864062a617b6c9bf6b3a7b0b50b989f9",
+        "current_git_blob_sha": "74ec210d864062a617b6c9bf6b3a7b0b50b989f9",
+        "expected_current_git_blob_sha": "74ec210d864062a617b6c9bf6b3a7b0b50b989f9",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "app.js",
+        "original_inventory_git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+        "current_git_blob_sha": "82919e23f74d10bd5e7bc4992ca0929d19f390fb",
+        "expected_current_git_blob_sha": "82919e23f74d10bd5e7bc4992ca0929d19f390fb",
+        "result": "INTENTIONAL_CANDIDATE_MATCH"
+      },
+      {
+        "path": "app.html",
+        "original_inventory_git_blob_sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+        "current_git_blob_sha": "3564f09e4dea7cdad6669514bc2bea7812dcdfef",
+        "expected_current_git_blob_sha": "3564f09e4dea7cdad6669514bc2bea7812dcdfef",
+        "result": "INTENTIONAL_CANDIDATE_MATCH"
+      },
+      {
+        "path": "business.js",
+        "original_inventory_git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+        "current_git_blob_sha": "28b561065b168ac3dcb1968e490c853a84c0673a",
+        "expected_current_git_blob_sha": "28b561065b168ac3dcb1968e490c853a84c0673a",
+        "result": "INTENTIONAL_CANDIDATE_MATCH"
+      },
+      {
+        "path": "business.html",
+        "original_inventory_git_blob_sha": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+        "current_git_blob_sha": "72cb99a21ba40b5140f1312538b677fe15dd6cab",
+        "expected_current_git_blob_sha": "72cb99a21ba40b5140f1312538b677fe15dd6cab",
+        "result": "INTENTIONAL_CANDIDATE_MATCH"
+      },
+      {
+        "path": "site.js",
+        "original_inventory_git_blob_sha": "f3d5abb558476b2ae1701e4911c3d1b58a50f348",
+        "current_git_blob_sha": "f3d5abb558476b2ae1701e4911c3d1b58a50f348",
+        "expected_current_git_blob_sha": "f3d5abb558476b2ae1701e4911c3d1b58a50f348",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "config.js",
+        "original_inventory_git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+        "current_git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+        "expected_current_git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "package.json",
+        "original_inventory_git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+        "current_git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+        "expected_current_git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "package-lock.json",
+        "original_inventory_git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+        "current_git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+        "expected_current_git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "scripts/build-capacitor.mjs",
+        "original_inventory_git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+        "current_git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+        "expected_current_git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/config.toml",
+        "original_inventory_git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+        "current_git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+        "expected_current_git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/schema.sql",
+        "original_inventory_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+        "current_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+        "expected_current_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/functions/send-test-push/index.ts",
+        "original_inventory_git_blob_sha": "ba209ea5a0a7e246e10be544fbfa4f7487dfbd5f",
+        "current_git_blob_sha": "6215a1d2131c840193fe01f863542940f2cb99fb",
+        "expected_current_git_blob_sha": "6215a1d2131c840193fe01f863542940f2cb99fb",
+        "result": "INTENTIONAL_CANDIDATE_MATCH"
+      },
+      {
+        "path": "supabase/functions/dispatch-push-reminders/index.ts",
+        "original_inventory_git_blob_sha": "ec9b1561cc20f16080099704ee6174044582d67f",
+        "current_git_blob_sha": "b1b8a4d964e349033e7a1a30818dbd252238a697",
+        "expected_current_git_blob_sha": "b1b8a4d964e349033e7a1a30818dbd252238a697",
+        "result": "INTENTIONAL_CANDIDATE_MATCH"
+      },
+      {
+        "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+        "original_inventory_git_blob_sha": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+        "current_git_blob_sha": "40f32dacb8bc0c9254647627bdbbfbc68a51d33c",
+        "expected_current_git_blob_sha": "40f32dacb8bc0c9254647627bdbbfbc68a51d33c",
+        "result": "INTENTIONAL_CANDIDATE_MATCH"
+      },
+      {
+        "path": "supabase/functions/send-test-push/deno.json",
+        "original_inventory_git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+        "current_git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+        "expected_current_git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/functions/dispatch-push-reminders/deno.json",
+        "original_inventory_git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+        "current_git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+        "expected_current_git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/functions/dispatch-admin-notifications/deno.json",
+        "original_inventory_git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+        "current_git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+        "expected_current_git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/functions/_shared/push-destination.mjs",
+        "original_inventory_git_blob_sha": "047a76e7607cef3ba164e70ea5bfaa5977398042",
+        "current_git_blob_sha": "047a76e7607cef3ba164e70ea5bfaa5977398042",
+        "expected_current_git_blob_sha": "047a76e7607cef3ba164e70ea5bfaa5977398042",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260907150000_push_subscriptions.sql",
+        "original_inventory_git_blob_sha": "91d6012df8cfdc57a81f02e867a79b57e015bfc6",
+        "current_git_blob_sha": "91d6012df8cfdc57a81f02e867a79b57e015bfc6",
+        "expected_current_git_blob_sha": "91d6012df8cfdc57a81f02e867a79b57e015bfc6",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260908130000_push_test_rate_limit.sql",
+        "original_inventory_git_blob_sha": "69dc3ac43815f25c0a892d25e83403008b6d70cb",
+        "current_git_blob_sha": "69dc3ac43815f25c0a892d25e83403008b6d70cb",
+        "expected_current_git_blob_sha": "69dc3ac43815f25c0a892d25e83403008b6d70cb",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260908170000_notification_outbox.sql",
+        "original_inventory_git_blob_sha": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+        "current_git_blob_sha": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+        "expected_current_git_blob_sha": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260916190000_admin_event_notifications.sql",
+        "original_inventory_git_blob_sha": "1218eaf24829e287f8054916248a0dea429f010e",
+        "current_git_blob_sha": "1218eaf24829e287f8054916248a0dea429f010e",
+        "expected_current_git_blob_sha": "1218eaf24829e287f8054916248a0dea429f010e",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260921130000_notification_workspace_context.sql",
+        "original_inventory_git_blob_sha": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+        "current_git_blob_sha": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+        "expected_current_git_blob_sha": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260928222000_stage_6_reminder_url_compatibility.sql",
+        "original_inventory_git_blob_sha": "865a70ea8d3e3b30dfe7b4e4ac9ee531f6cf3e16",
+        "current_git_blob_sha": "865a70ea8d3e3b30dfe7b4e4ac9ee531f6cf3e16",
+        "expected_current_git_blob_sha": "865a70ea8d3e3b30dfe7b4e4ac9ee531f6cf3e16",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/migrations/20261006180000_business_invitation_notifications.sql",
+        "original_inventory_git_blob_sha": "501ae2a45018cf0e89531f0821834c57c904c328",
+        "current_git_blob_sha": "501ae2a45018cf0e89531f0821834c57c904c328",
+        "expected_current_git_blob_sha": "501ae2a45018cf0e89531f0821834c57c904c328",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/cron-push-reminders.sql",
+        "original_inventory_git_blob_sha": "1a56f688d62302cbf45097c2387945c00f0eba93",
+        "current_git_blob_sha": "1a56f688d62302cbf45097c2387945c00f0eba93",
+        "expected_current_git_blob_sha": "1a56f688d62302cbf45097c2387945c00f0eba93",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/cron-admin-notifications.sql",
+        "original_inventory_git_blob_sha": "cc7b2a72100026160c3ffcdd2b5d12a074ee9e6a",
+        "current_git_blob_sha": "cc7b2a72100026160c3ffcdd2b5d12a074ee9e6a",
+        "expected_current_git_blob_sha": "cc7b2a72100026160c3ffcdd2b5d12a074ee9e6a",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "tests/dispatch-push-reminders.test.mjs",
+        "original_inventory_git_blob_sha": "40ef77891a778e85e65146e51c98c5bce9f9cadf",
+        "current_git_blob_sha": "40ef77891a778e85e65146e51c98c5bce9f9cadf",
+        "expected_current_git_blob_sha": "40ef77891a778e85e65146e51c98c5bce9f9cadf",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "tests/send-test-push.test.mjs",
+        "original_inventory_git_blob_sha": "e0f18287d0e88b4a9aae6d31b82945d4fbfc386d",
+        "current_git_blob_sha": "e0f18287d0e88b4a9aae6d31b82945d4fbfc386d",
+        "expected_current_git_blob_sha": "e0f18287d0e88b4a9aae6d31b82945d4fbfc386d",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "tests/notification-outbox.test.mjs",
+        "original_inventory_git_blob_sha": "f1ad370f06cac22fcb14caf1b22c7c53a03bf493",
+        "current_git_blob_sha": "f1ad370f06cac22fcb14caf1b22c7c53a03bf493",
+        "expected_current_git_blob_sha": "f1ad370f06cac22fcb14caf1b22c7c53a03bf493",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "tests/notification-workspace-context.test.mjs",
+        "original_inventory_git_blob_sha": "2f40cf02467bf8eeb228e698c2ee91ae66f97399",
+        "current_git_blob_sha": "2f40cf02467bf8eeb228e698c2ee91ae66f97399",
+        "expected_current_git_blob_sha": "2f40cf02467bf8eeb228e698c2ee91ae66f97399",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "tests/push-display-click.test.mjs",
+        "original_inventory_git_blob_sha": "c1e2663a83d768817085126a574609f9326e5545",
+        "current_git_blob_sha": "c1e2663a83d768817085126a574609f9326e5545",
+        "expected_current_git_blob_sha": "c1e2663a83d768817085126a574609f9326e5545",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "tests/push-notifications.test.mjs",
+        "original_inventory_git_blob_sha": "2d4795c90a5ac9f12c8c79791871ed3af73fcef1",
+        "current_git_blob_sha": "2d4795c90a5ac9f12c8c79791871ed3af73fcef1",
+        "expected_current_git_blob_sha": "2d4795c90a5ac9f12c8c79791871ed3af73fcef1",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "tests/admin-event-notifications.test.mjs",
+        "original_inventory_git_blob_sha": "125316d9c7ee198362cd09f8677807e28f3ed80f",
+        "current_git_blob_sha": "125316d9c7ee198362cd09f8677807e28f3ed80f",
+        "expected_current_git_blob_sha": "125316d9c7ee198362cd09f8677807e28f3ed80f",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "tests/business-invitation-notifications.test.mjs",
+        "original_inventory_git_blob_sha": "9358d731c77f9e98d42227d6010e558ed39908f4",
+        "current_git_blob_sha": "9358d731c77f9e98d42227d6010e558ed39908f4",
+        "expected_current_git_blob_sha": "9358d731c77f9e98d42227d6010e558ed39908f4",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "tests/security-stage-2-push-destination.test.mjs",
+        "original_inventory_git_blob_sha": "ef6cae3c399a85cf57fe8f6a2de90a4049ea94cb",
+        "current_git_blob_sha": "1a43368b833d0c902994a1eb4b7aa7f0d77e838b",
+        "expected_current_git_blob_sha": "1a43368b833d0c902994a1eb4b7aa7f0d77e838b",
+        "result": "INTENTIONAL_CANDIDATE_MATCH"
+      },
+      {
+        "path": "docs/PWA_WEB_PUSH_BUILD_ROADMAP.md",
+        "original_inventory_git_blob_sha": "59d1dfe80cc41387f6a742464a8a983ba0a76457",
+        "current_git_blob_sha": "59d1dfe80cc41387f6a742464a8a983ba0a76457",
+        "expected_current_git_blob_sha": "59d1dfe80cc41387f6a742464a8a983ba0a76457",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "NOTIFICATION_WORKSPACE_CONTEXT_DEPLOYMENT.md",
+        "original_inventory_git_blob_sha": "602b0d137bcc775f5ddcf6f79439d63da99373f0",
+        "current_git_blob_sha": "602b0d137bcc775f5ddcf6f79439d63da99373f0",
+        "expected_current_git_blob_sha": "602b0d137bcc775f5ddcf6f79439d63da99373f0",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "app-entry.html",
+        "original_inventory_git_blob_sha": "eab3265c5a9fb31696266a182b28b2e560125c7a",
+        "current_git_blob_sha": "eab3265c5a9fb31696266a182b28b2e560125c7a",
+        "expected_current_git_blob_sha": "eab3265c5a9fb31696266a182b28b2e560125c7a",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "app-entry.js",
+        "original_inventory_git_blob_sha": "4496b291102c26aa4dbcf9fbb88882cd972f5775",
+        "current_git_blob_sha": "4496b291102c26aa4dbcf9fbb88882cd972f5775",
+        "expected_current_git_blob_sha": "4496b291102c26aa4dbcf9fbb88882cd972f5775",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "workspace-preference.js",
+        "original_inventory_git_blob_sha": "17abce600781bc378e17bba19771316291c26f71",
+        "current_git_blob_sha": "17abce600781bc378e17bba19771316291c26f71",
+        "expected_current_git_blob_sha": "17abce600781bc378e17bba19771316291c26f71",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "pwa.js",
+        "original_inventory_git_blob_sha": "026dc2aefaba5eea0a1570764020a8eb4100a679",
+        "current_git_blob_sha": "026dc2aefaba5eea0a1570764020a8eb4100a679",
+        "expected_current_git_blob_sha": "026dc2aefaba5eea0a1570764020a8eb4100a679",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "tests/pwa-entry.test.mjs",
+        "original_inventory_git_blob_sha": "7a4d0bbe57dce5dd9da0f79e030070f4d8fee1c4",
+        "current_git_blob_sha": "7a4d0bbe57dce5dd9da0f79e030070f4d8fee1c4",
+        "expected_current_git_blob_sha": "7a4d0bbe57dce5dd9da0f79e030070f4d8fee1c4",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "tests/pwa-update.test.mjs",
+        "original_inventory_git_blob_sha": "9d3d51891be8d4dcba5125b9a8300c0e8dc0cdaa",
+        "current_git_blob_sha": "9d3d51891be8d4dcba5125b9a8300c0e8dc0cdaa",
+        "expected_current_git_blob_sha": "9d3d51891be8d4dcba5125b9a8300c0e8dc0cdaa",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "tests/pwa-stage-13-hardening.test.mjs",
+        "original_inventory_git_blob_sha": "52e175e569b2792f4a1b5f918ffa4d3d80ffa07c",
+        "current_git_blob_sha": "52e175e569b2792f4a1b5f918ffa4d3d80ffa07c",
+        "expected_current_git_blob_sha": "52e175e569b2792f4a1b5f918ffa4d3d80ffa07c",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "tests/workspace-preference.test.mjs",
+        "original_inventory_git_blob_sha": "1da274830ccf27056a7969f5ba96d90b62747d05",
+        "current_git_blob_sha": "1da274830ccf27056a7969f5ba96d90b62747d05",
+        "expected_current_git_blob_sha": "1da274830ccf27056a7969f5ba96d90b62747d05",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "supabase/pwa-stage-13-monitoring.sql",
+        "original_inventory_git_blob_sha": "5e2fe1e7c828fef2775ecd68b42e28a8f5f3f4cf",
+        "current_git_blob_sha": "5e2fe1e7c828fef2775ecd68b42e28a8f5f3f4cf",
+        "expected_current_git_blob_sha": "5e2fe1e7c828fef2775ecd68b42e28a8f5f3f4cf",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": "PWA_STAGE_13_DEPLOYMENT.md",
+        "original_inventory_git_blob_sha": "62ec1c096b67339f8d34931371c9260e2f5f638d",
+        "current_git_blob_sha": "62ec1c096b67339f8d34931371c9260e2f5f638d",
+        "expected_current_git_blob_sha": "62ec1c096b67339f8d34931371c9260e2f5f638d",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      },
+      {
+        "path": ".github/workflows/pages.yml",
+        "original_inventory_git_blob_sha": "8f4433b99535e7ed6af0148b0fa24e23de9adb16",
+        "current_git_blob_sha": "8f4433b99535e7ed6af0148b0fa24e23de9adb16",
+        "expected_current_git_blob_sha": "8f4433b99535e7ed6af0148b0fa24e23de9adb16",
+        "result": "ORIGINAL_IDENTITY_MATCH"
+      }
+    ],
+    "consumed_candidate_input_checks": [
+      {
+        "path": "business.js",
+        "current_git_blob_sha": "28b561065b168ac3dcb1968e490c853a84c0673a",
+        "current_sha256": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+        "assistant_sha256": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+        "owner_sha256": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+        "computed_exact_LF_to_CRLF_sha256": "bd99a431f2bcaeaade938f72d732579a9a9ff61fd4db98316c1d26e5b7438d01",
+        "owner_match": "EXACT_PUBLISHED_BYTES",
+        "result": "MATCH"
+      },
+      {
+        "path": "app.js",
+        "current_git_blob_sha": "82919e23f74d10bd5e7bc4992ca0929d19f390fb",
+        "current_sha256": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+        "assistant_sha256": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+        "owner_sha256": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+        "computed_exact_LF_to_CRLF_sha256": "78b61c9733146d2fd23344f24a314e1cf996f556b100427ccdd5c51b14efde88",
+        "owner_match": "EXACT_PUBLISHED_BYTES",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/functions/_shared/notification-recipient.mjs",
+        "current_git_blob_sha": "b8d341176f8c7bb3c44971af6478d4246b0b01fb",
+        "current_sha256": "638a890a23cc49b77bcc2712e9e61135f9fde24fd031d868ea2c76780c704f24",
+        "assistant_sha256": "638a890a23cc49b77bcc2712e9e61135f9fde24fd031d868ea2c76780c704f24",
+        "owner_sha256": "b5e9f0718e28d4800ffac32b43313710d789686fcbc6099975ea7d9eb5e3e017",
+        "computed_exact_LF_to_CRLF_sha256": "b5e9f0718e28d4800ffac32b43313710d789686fcbc6099975ea7d9eb5e3e017",
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/stage-8-notification-boundaries.test.mjs",
+        "current_git_blob_sha": "4b4b99bc3de970a60e0cdeb070d5d7ec0a8366e8",
+        "current_sha256": "06399254de84b8084d363b9f02c5224c1c7497cdf005b9761cfb5acd9169934b",
+        "assistant_sha256": "06399254de84b8084d363b9f02c5224c1c7497cdf005b9761cfb5acd9169934b",
+        "owner_sha256": "f41de04ffb2df613a4d18fb5b789cdafae1f195a25d37302701a9883f3062023",
+        "computed_exact_LF_to_CRLF_sha256": "f41de04ffb2df613a4d18fb5b789cdafae1f195a25d37302701a9883f3062023",
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT",
+        "result": "MATCH"
+      },
+      {
+        "path": "scripts/verify-stage-8-notifications.mjs",
+        "current_git_blob_sha": "41788d728a8c03fb62b0c9e70150dc8cfa0706be",
+        "current_sha256": "1ce4f19e9edaa13234069b32e4bfb1c897e9b0ba185452e7f93c64e056c0b629",
+        "assistant_sha256": "1ce4f19e9edaa13234069b32e4bfb1c897e9b0ba185452e7f93c64e056c0b629",
+        "owner_sha256": "4391e893be2f67060fcb10e2efb9446b0249465e87d2043f1f5ee954ac119cce",
+        "computed_exact_LF_to_CRLF_sha256": "4391e893be2f67060fcb10e2efb9446b0249465e87d2043f1f5ee954ac119cce",
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/security-stage-2-push-destination.test.mjs",
+        "current_git_blob_sha": "1a43368b833d0c902994a1eb4b7aa7f0d77e838b",
+        "current_sha256": "23362fe99d4963cdc04a3d54b5f0487ea70fd030164f8a2402f3619d8fee262d",
+        "assistant_sha256": "23362fe99d4963cdc04a3d54b5f0487ea70fd030164f8a2402f3619d8fee262d",
+        "owner_sha256": "0724d2b76fbe17c980ab3efacbb5cb552912d7a4622cc875eaa85eb9cb2423ab",
+        "computed_exact_LF_to_CRLF_sha256": "0724d2b76fbe17c980ab3efacbb5cb552912d7a4622cc875eaa85eb9cb2423ab",
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/functions/send-test-push/index.ts",
+        "current_git_blob_sha": "6215a1d2131c840193fe01f863542940f2cb99fb",
+        "current_sha256": "708f9ca7720ead8c3fd1becbd9db327ae448bb12c264462bfff948d7c68905d7",
+        "assistant_sha256": "708f9ca7720ead8c3fd1becbd9db327ae448bb12c264462bfff948d7c68905d7",
+        "owner_sha256": "708f9ca7720ead8c3fd1becbd9db327ae448bb12c264462bfff948d7c68905d7",
+        "computed_exact_LF_to_CRLF_sha256": "30bc0058932fad5b43acbe9d4df76a36c539cdbf3252502ace65d61a319afb41",
+        "owner_match": "EXACT_PUBLISHED_BYTES",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/functions/dispatch-push-reminders/index.ts",
+        "current_git_blob_sha": "b1b8a4d964e349033e7a1a30818dbd252238a697",
+        "current_sha256": "f7946520e7328254be2747282d91f29b1763782c1541771cbb53cab044b7afa9",
+        "assistant_sha256": "f7946520e7328254be2747282d91f29b1763782c1541771cbb53cab044b7afa9",
+        "owner_sha256": "f7946520e7328254be2747282d91f29b1763782c1541771cbb53cab044b7afa9",
+        "computed_exact_LF_to_CRLF_sha256": "1d1ff48faad40169ff9f23e30764c3b275e50e773ec3f9f486ed57925a67eb71",
+        "owner_match": "EXACT_PUBLISHED_BYTES",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+        "current_git_blob_sha": "40f32dacb8bc0c9254647627bdbbfbc68a51d33c",
+        "current_sha256": "e1ebda3cface358c9dc4916913e0ef417f68ef307faa60ab8815ccb034c5cb18",
+        "assistant_sha256": "e1ebda3cface358c9dc4916913e0ef417f68ef307faa60ab8815ccb034c5cb18",
+        "owner_sha256": "e1ebda3cface358c9dc4916913e0ef417f68ef307faa60ab8815ccb034c5cb18",
+        "computed_exact_LF_to_CRLF_sha256": "d671a2626ccb0ab0828a015a525109ac3d447f3976a9422c9d1fc3b47660fde3",
+        "owner_match": "EXACT_PUBLISHED_BYTES",
+        "result": "MATCH"
+      },
+      {
+        "path": "business.html",
+        "current_git_blob_sha": "72cb99a21ba40b5140f1312538b677fe15dd6cab",
+        "current_sha256": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+        "assistant_sha256": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+        "owner_sha256": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+        "computed_exact_LF_to_CRLF_sha256": "d0c9fe47c06fc38fcb78178ce9c7c08d4ccbded92fb5169097df5b982d0707c6",
+        "owner_match": "EXACT_PUBLISHED_BYTES",
+        "result": "MATCH"
+      },
+      {
+        "path": "app.html",
+        "current_git_blob_sha": "3564f09e4dea7cdad6669514bc2bea7812dcdfef",
+        "current_sha256": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+        "assistant_sha256": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+        "owner_sha256": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+        "computed_exact_LF_to_CRLF_sha256": "11a4f5cd1a25c86b601f2735d809d57c9be91ab9ceebca5753340795eea4e8a7",
+        "owner_match": "EXACT_PUBLISHED_BYTES",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/functions/_shared/push-destination.mjs",
+        "current_git_blob_sha": "047a76e7607cef3ba164e70ea5bfaa5977398042",
+        "current_sha256": "3c04dd7ca25442cdc600cc836f347553a0e2e88920c333ed1d975c58a1742743",
+        "assistant_sha256": "3c04dd7ca25442cdc600cc836f347553a0e2e88920c333ed1d975c58a1742743",
+        "owner_sha256": "9aa9cd6da4f4c60663c4d3b1bd1eeb7a0ecfe48076001cd34de34d4545ba271f",
+        "computed_exact_LF_to_CRLF_sha256": "9aa9cd6da4f4c60663c4d3b1bd1eeb7a0ecfe48076001cd34de34d4545ba271f",
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/push-display-click.test.mjs",
+        "current_git_blob_sha": "c1e2663a83d768817085126a574609f9326e5545",
+        "current_sha256": "b0bead17fa4ce393c75614ec1d1f9edbdb89ca146f53221f9b8304626bd61123",
+        "assistant_sha256": "b0bead17fa4ce393c75614ec1d1f9edbdb89ca146f53221f9b8304626bd61123",
+        "owner_sha256": "e14e52510036c5b8a363c6a13e9237bd6843ae7fe15ccb19cf2c3ee1e41d308e",
+        "computed_exact_LF_to_CRLF_sha256": "e14e52510036c5b8a363c6a13e9237bd6843ae7fe15ccb19cf2c3ee1e41d308e",
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/notification-workspace-context.test.mjs",
+        "current_git_blob_sha": "2f40cf02467bf8eeb228e698c2ee91ae66f97399",
+        "current_sha256": "3a69d18d882ccd01e0c87536019a82ef781b3b6789aea4d7b58c4940c555c477",
+        "assistant_sha256": "3a69d18d882ccd01e0c87536019a82ef781b3b6789aea4d7b58c4940c555c477",
+        "owner_sha256": "72fcf73c37aac305ab4b3ef6ea8a6291123aef88aa633b06cc3128623f7c77d4",
+        "computed_exact_LF_to_CRLF_sha256": "72fcf73c37aac305ab4b3ef6ea8a6291123aef88aa633b06cc3128623f7c77d4",
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/business-stage-10.test.mjs",
+        "current_git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+        "current_sha256": "405bef6a89bd76a37afb54abcf75a73e97b55471d76ea0e709858dcf9baef7c5",
+        "assistant_sha256": "405bef6a89bd76a37afb54abcf75a73e97b55471d76ea0e709858dcf9baef7c5",
+        "owner_sha256": "b113e631e28af9c2cb12d4d625aa910273984c9a6782413149a6b680e5638ccf",
+        "computed_exact_LF_to_CRLF_sha256": "b113e631e28af9c2cb12d4d625aa910273984c9a6782413149a6b680e5638ccf",
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT",
+        "result": "MATCH"
+      },
+      {
+        "path": "sw.js",
+        "current_git_blob_sha": "b61477393fa2b0ed7baa3c52d61076df549df948",
+        "current_sha256": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
+        "assistant_sha256": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
+        "owner_sha256": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
+        "computed_exact_LF_to_CRLF_sha256": "729cc1bde5e3d7ef757187025b6e5aaffcbdec8bff8e274043d63a667c34c027",
+        "owner_match": "EXACT_PUBLISHED_BYTES",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/schema.sql",
+        "current_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+        "current_sha256": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+        "assistant_sha256": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+        "owner_sha256": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+        "computed_exact_LF_to_CRLF_sha256": "4bb20fac7232023cc4ac3e7a41027de0ca1f20c45d92e5094fe7969f873032dd",
+        "owner_match": "EXACT_PUBLISHED_BYTES",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+        "current_git_blob_sha": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+        "current_sha256": "150cdfc2b70521b4fc2f0b666adf4b772513a56ce43a39b7e912cdd00b3e6215",
+        "assistant_sha256": "150cdfc2b70521b4fc2f0b666adf4b772513a56ce43a39b7e912cdd00b3e6215",
+        "owner_sha256": "150cdfc2b70521b4fc2f0b666adf4b772513a56ce43a39b7e912cdd00b3e6215",
+        "computed_exact_LF_to_CRLF_sha256": "0a0bca919958884291fb90102f4bce99f826cb2bc7b5af599e453a6e5330a967",
+        "owner_match": "EXACT_PUBLISHED_BYTES",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260921130000_notification_workspace_context.sql",
+        "current_git_blob_sha": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+        "current_sha256": "9e61d4139b44f2849acce24c9968931f5c20ff8912a46a0800263702ec480390",
+        "assistant_sha256": "9e61d4139b44f2849acce24c9968931f5c20ff8912a46a0800263702ec480390",
+        "owner_sha256": "9e61d4139b44f2849acce24c9968931f5c20ff8912a46a0800263702ec480390",
+        "computed_exact_LF_to_CRLF_sha256": "7d80d2e9054fb004f7447967d7dca57ff4abe2386764d8824248ce2b8a76fe8b",
+        "owner_match": "EXACT_PUBLISHED_BYTES",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/notification-workspace-context-diagnostic.sql",
+        "current_git_blob_sha": "43794ed7225bb48fff41824353770a3fd55d4932",
+        "current_sha256": "61a749ae5d15025737172f6b0cb107d241dc69944081b372cd0486730cc967e2",
+        "assistant_sha256": "61a749ae5d15025737172f6b0cb107d241dc69944081b372cd0486730cc967e2",
+        "owner_sha256": "61a749ae5d15025737172f6b0cb107d241dc69944081b372cd0486730cc967e2",
+        "computed_exact_LF_to_CRLF_sha256": "2108282f93e7095b320d72c4ae7a82ec14b4d5613361e9ed7c9da26d1f034004",
+        "owner_match": "EXACT_PUBLISHED_BYTES",
+        "result": "MATCH"
+      },
+      {
+        "path": "docs/security-audit/security-stage-8-notification-candidate-contract.json",
+        "current_git_blob_sha": "b0a53b8ff131dac4b85ac810d43af628c961e780",
+        "current_sha256": "14fc9f717c590ec336a799d9b40b17846bd005f1bba025c054dd63c7d9bc043a",
+        "assistant_sha256": "14fc9f717c590ec336a799d9b40b17846bd005f1bba025c054dd63c7d9bc043a",
+        "owner_sha256": "14fc9f717c590ec336a799d9b40b17846bd005f1bba025c054dd63c7d9bc043a",
+        "computed_exact_LF_to_CRLF_sha256": "2b61e267e6bb264078e375ed685b958994452d7741bf8abbe77c464cb79a2c75",
+        "owner_match": "EXACT_PUBLISHED_BYTES",
+        "result": "MATCH"
+      }
+    ],
+    "distinct_current_input_identities": 60,
+    "original_8_1_source_identities_preserved": 45,
+    "intentional_8_2_source_inventory_replacements": 8,
+    "additional_selected_or_added_current_targets": 7,
+    "consumed_current_input_byte_and_SHA256_matches": 21,
+    "owner_exact_published_hashes": 13,
+    "owner_exact_LF_to_CRLF_variants": 8,
+    "unexplained_drift": 0,
+    "complete_stage_8_non_document_diff_from_initial_pin": [
+      "app.html",
+      "app.js",
+      "business.html",
+      "business.js",
+      "scripts/verify-stage-8-notifications.mjs",
+      "supabase/functions/_shared/notification-recipient.mjs",
+      "supabase/functions/dispatch-admin-notifications/index.ts",
+      "supabase/functions/dispatch-push-reminders/index.ts",
+      "supabase/functions/send-test-push/index.ts",
+      "tests/security-stage-2-push-destination.test.mjs",
+      "tests/stage-8-notification-boundaries.test.mjs"
+    ],
+    "runtime_candidate_paths": 8,
+    "offline_changed_or_added_paths": 3,
+    "SQL_cron_dependency_native_builder_or_project_diff": [],
+    "immutable_record_identities": [
+      {
+        "path": "docs/security-audit/security-stage-8-notification-source-inventory.json",
+        "git_blob_sha": "14123ff01ff6e0b38cf361669fd9b6ad0d9a435d",
+        "preserved": true
+      },
+      {
+        "path": "docs/security-audit/security-stage-8-notification-decisions.json",
+        "git_blob_sha": "837fe11e99cf69b0dba5c9081fd80f0a24d67a19",
+        "preserved": true
+      },
+      {
+        "path": "docs/security-audit/security-stage-8-notification-test-matrix.json",
+        "git_blob_sha": "d484cde8d8ecef2377cec635a08a5a896b53dde4",
+        "preserved": true
+      },
+      {
+        "path": "docs/security-audit/security-stage-8-notification-candidate-contract.json",
+        "git_blob_sha": "b0a53b8ff131dac4b85ac810d43af628c961e780",
+        "preserved": true
+      },
+      {
+        "path": "docs/security-audit/security-stage-8-notification-local-checks.json",
+        "git_blob_sha": "96bd015b7278dd89a2b6e278e6dc1b4ce8dfa191",
+        "preserved": true
+      },
+      {
+        "path": "docs/security-audit/security-stage-8-notification-owner-local-checks.json",
+        "git_blob_sha": "e60c53da54a8c12e9ebb57776afb35b99adc5536",
+        "preserved": true
+      }
+    ]
+  },
+  "prerequisites": [
+    {
+      "id": "ND-P01",
+      "status": "BLOCKED_INSTALLED_STAGING_PARITY_UNVERIFIED",
+      "title": "Exact isolated frontend/Edge/schema/guard/key parity",
+      "evidence": "Published 8.2 source and offline receipts do not establish installed frontend/three Edge entrypoints/shared helper, schema/RPC/policy/grants/profile fields/roles, browser public key or private server settings. No dashboard/SQL/configuration probe was performed here; earlier empty staging key is historical.",
+      "required": [
+        "Verify isolated project dczlddwbtgvfdujgcitb and exact candidate/frontend/helper/Edge/source/schema/RPC/RLS/grants before genuine calls",
+        "Verify current supported browser public key, protected server configuration/origin and active-profile/role/MFA/proof/source dependencies",
+        "Retain production exclusion and original controlled fixtures/two conversions"
+      ],
+      "actions": [
+        "ND-R02",
+        "ND-R03",
+        "ND-R04",
+        "ND-R05",
+        "ND-R06",
+        "ND-R07",
+        "ND-R08"
+      ]
+    },
+    {
+      "id": "ND-P02",
+      "status": "BLOCKED_NATIVE_TRANSPORT_AND_ARTIFACT_PREREQUISITES",
+      "title": "Accepted native integration and actual provider/artifact configuration",
+      "evidence": "Candidate declares native push transport and new native SDK/registration selection unimplemented. Selected native bridge remains App/Preferences; actual merged permission/capability/signing identity/SDK/provider registration scheme and final signed artifact/device configuration are unverified. APK update is deferred.",
+      "required": [
+        "Select accepted native transport/bridge/current SDK/API registration and actual app/provider identities",
+        "Implement permission/registration/retirement/callback handling and verify merged/signed native output on accepted toolchain",
+        "Verify private provider/environment capabilities/settings without returning secrets or treating browser Web Push as native delivery"
+      ],
+      "actions": [
+        "ND-R01",
+        "ND-R06",
+        "ND-R07",
+        "ND-R08"
+      ]
+    },
+    {
+      "id": "ND-P03",
+      "status": "BLOCKED_CONTROLLED_ACTOR_AND_PHYSICAL_DEVICE_MATRIX_UNVERIFIED",
+      "title": "Recoverable staged actors and real browser/PWA/native devices",
+      "evidence": "Owner repeat executed local Node fixtures only. Historical PC/phone smoke does not prove exact-candidate closed/minimized/permission-revoke/account-switch/lock-screen/old-worker behavior. No physical browser/PWA/native device, OS permission, subscription/registration or actor session was inspected.",
+      "required": [
+        "Bind separate recoverable own/foreign/staff/removed/suspended identities and controlled test subscriptions/devices",
+        "Verify supported browser/PWA/native states and real foreground/background/closed/offline/lock-screen matrix",
+        "Exercise cleanup/account switch/permission change/current route/MFA/preview behavior while preserving other devices and fixtures"
+      ],
+      "actions": [
+        "ND-R01",
+        "ND-R02",
+        "ND-R03",
+        "ND-R04",
+        "ND-R06",
+        "ND-R07",
+        "ND-R08"
+      ]
+    },
+    {
+      "id": "ND-P04",
+      "status": "BLOCKED_PRIVACY_LIFECYCLE_AND_DELIVERY_POLICY_UNCONFIRMED",
+      "title": "Preview authority, device lifecycle, event/display and retry decisions",
+      "evidence": "All eight ND-D decisions remain unconfirmed. Source fixes current queued preview reads and explicit Business cleanup, but that snapshot cannot recall accepted notifications or establish recipient/device authority, forced expiry/shared-device/in-flight provider semantics. Claim generation/partial-device/ambiguity policy remains open.",
+      "required": [
+        "Approve concrete preview/device/account/event/foreground/badge/retention boundaries without replacing accepted generic defaults or finance rules",
+        "Define accepted source-to-provider/OS delivery ambiguity, partial-device/retry/claim ownership and failure/recovery semantics",
+        "Resolve immediate worker activation versus page reload and native/PWA limits with real platform evidence"
+      ],
+      "actions": [
+        "ND-R01",
+        "ND-R02",
+        "ND-R03",
+        "ND-R05",
+        "ND-R06",
+        "ND-R07",
+        "ND-R08"
+      ]
+    },
+    {
+      "id": "ND-P05",
+      "status": "BLOCKED_GENUINE_OUTBOX_SCHEDULER_EGRESS_AND_PROVIDER_ACCEPTANCE",
+      "title": "Actual database concurrency, schedule, delivery and guarded runtime",
+      "evidence": "No genuine SQL claim/reclaim/result write, scheduler/Vault/Edge run, provider request or OS display occurred. F12 deployed compatibility and Node-versus-Deno/runtime/egress requirements remain unverified. New recipient helper import/dependency resolution is not an actual Deno/hosted bundle result.",
+      "required": [
+        "Verify current recurrence/timezone/paid/paused/member/account event generation and service-only queue/cooldown access",
+        "Exercise actual concurrent/reclaimed/stale-worker/result-failure/temporary/permanent/partial-device/provider outcomes with accepted policy",
+        "Verify actual cron/Vault/Edge identity, installed guard DNS/TLS/proxy/redirect compatibility, request acceptance and physical display separately"
+      ],
+      "actions": [
+        "ND-R04",
+        "ND-R05",
+        "ND-R08"
+      ]
+    },
+    {
+      "id": "ND-P06",
+      "status": "BLOCKED_OPERATIONS_PRIVACY_RETENTION_RECOVERY_AND_RELEASE_EVIDENCE",
+      "title": "Operations, registration/payload retention, disclosure and rollback",
+      "evidence": "Source monitoring and feature rollback documents are not fresh deployed health/recovery/retention/disclosure evidence. PR/DL/NR/IE/CO and original release/operations requirements remain open. No private provider console/logs, recovery drill, release artifact or declaration was inspected.",
+      "required": [
+        "Verify server-only configuration roles/rotation, redacted budgets/queue health/retirement/monitoring and actual recovery",
+        "Approve and implement actual registration/endpoint/payload/outbox retention/deletion/processor/operator declarations",
+        "Verify safe rollback/schedule recovery, final physical/signed artifact evidence and residual remediation/full re-audit"
+      ],
+      "actions": [
+        "ND-R02",
+        "ND-R03",
+        "ND-R05",
+        "ND-R07",
+        "ND-R08"
+      ]
+    }
+  ],
+  "group_outcomes": [
+    {
+      "id": "ND01",
+      "title": "Permission/channel/native transport",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "ND02",
+      "title": "Device/account lifecycle",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "ND03",
+      "title": "Private display/content",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "ND04",
+      "title": "Server authorization/recipient/event guards",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "ND05",
+      "title": "Outbox/scheduler/egress/recovery",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "ND06",
+      "title": "Click/workspace/identity routing",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "ND07",
+      "title": "PWA update/offline/cache/device state",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "ND08",
+      "title": "Isolated devices/operations/release",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    }
+  ],
+  "case_outcomes": [
+    {
+      "id": "ND01-01",
+      "group": "ND01",
+      "expected": "Explicit user gesture/support detection and allow/deny/dismiss/revoke paths are correct on real supported browser/PWA/native surfaces.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND01-02",
+      "group": "ND01",
+      "expected": "iOS/iPadOS Home Screen Web Push and ordinary tab unsupported state are correctly distinguished without claiming native push.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND01-03",
+      "group": "ND01",
+      "expected": "Actual selected native Android permission/channel and iOS capability/environment/configuration work on the accepted signed test artifact.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND01-04",
+      "group": "ND01",
+      "expected": "Configured public browser key and server-only provider credentials match exact isolated environment; malformed/missing configuration fails safely.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND01-05",
+      "group": "ND01",
+      "expected": "Selected actual provider/SDK registration freshness/change/retirement protocol is implemented; no hard-coded obsolete token schema or trust in caller device ID.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND01-06",
+      "group": "ND01",
+      "expected": "Native wrapper does not expose a falsely successful browser Web Push path or silently enable local/tab reminder scheduling.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND02-01",
+      "group": "ND02",
+      "expected": "Own authenticated device registration/update/read/delete succeeds; anonymous/foreign user/account reassignment and server-health edits fail directly.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND02-02",
+      "group": "ND02",
+      "expected": "Main app and Business explicit sign-out retire current-device server association/browser subscription or follow a recorded safe failure recovery without blocking requested Auth sign-out.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND02-03",
+      "group": "ND02",
+      "expected": "Delayed permission/subscribe/lookup/save/reconcile completion during account switch cannot mutate or display the wrong user's device association.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND02-04",
+      "group": "ND02",
+      "expected": "Permission revocation, disabled/expired endpoint and re-registration clear stale associations/badges and respect explicit prior opt-in.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND02-05",
+      "group": "ND02",
+      "expected": "Multiple tabs/devices/accounts and unique endpoint conflicts preserve rightful binding; removing this device does not remove another valid device.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND02-06",
+      "group": "ND02",
+      "expected": "Auth expiry/forced sign-out/offline cleanup/reinstall/provider registration change cannot retain unintended cross-account delivery; recovery/retention is auditable.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND03-01",
+      "group": "ND03",
+      "expected": "Default push preview contains only approved generic copy, never payment names/amounts, workspace/customer identities, proofs or secrets.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P04",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND03-02",
+      "group": "ND03",
+      "expected": "Detailed previews follow approved recipient/device/workspace authority and actual lock-screen/foreground privacy checks.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P04",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND03-03",
+      "group": "ND03",
+      "expected": "Turning previews off after enqueue redacts pending/retried content before send; current queued settings cannot preserve stale sensitive copy.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P04",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND03-04",
+      "group": "ND03",
+      "expected": "Malformed/oversized/control-rich payloads produce bounded generic display, approved icon/tag/badge and no executable/injected navigation.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P04",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND03-05",
+      "group": "ND03",
+      "expected": "Displayed retained notifications/badges and click handling across sign-out/account switch do not disclose the previous account's financial details.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P04",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND03-06",
+      "group": "ND03",
+      "expected": "Actual payload/provider/log/ledger retention and deletion agree with operator/privacy declarations without leaking raw endpoints, keys, proof or customer contents.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P04",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND04-01",
+      "group": "ND04",
+      "expected": "Test sender authenticates actual active account before dispatch and applies authoritative per-user cooldown; wrong origin/method/token/inadequate account status are denied.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND04-02",
+      "group": "ND04",
+      "expected": "Cron sender rejects missing/wrong/empty secret and malformed source before claim/send; browser public keys cannot trigger service dispatch.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND04-03",
+      "group": "ND04",
+      "expected": "Personal/Family paid/paused/deleted/reassigned/removed/suspended/settings changes cancel stale reminders before delivery.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND04-04",
+      "group": "ND04",
+      "expected": "Business bill fully-paid/due-date/workspace/owner/member/subscription/suspension changes invalidate stale reminders.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND04-05",
+      "group": "ND04",
+      "expected": "Admin recipient active account/role/unread source and source status are revalidated; removed/suspended/inadequate-role recipients receive no unauthorized alert.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND04-06",
+      "group": "ND04",
+      "expected": "In-app invitation/notification create/read/mark-read metadata and membership acceptance remain protected; invitation visibility is not an implicit push pipeline or access grant.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P03",
+        "ND-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND05-01",
+      "group": "ND05",
+      "expected": "Server due generation uses authoritative saved timezone/local date/delivery time and recurrence/overdue semantics without client-tab scheduling.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P04",
+        "ND-P05",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND05-02",
+      "group": "ND05",
+      "expected": "Unique enqueue and genuine concurrent claim/reclaim/result writes preserve claim ownership and do not overwrite a newer attempt with a stale worker result.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P04",
+        "ND-P05",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND05-03",
+      "group": "ND05",
+      "expected": "Temporary/permanent/no-subscription/blocked-destination/partial-device outcomes follow approved retry policy with observable correct totals.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P04",
+        "ND-P05",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND05-04",
+      "group": "ND05",
+      "expected": "Provider acceptance then result-write failure/timeout/process interruption recovers durably; duplicate delivery ambiguity is documented and bounded.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P04",
+        "ND-P05",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND05-05",
+      "group": "ND05",
+      "expected": "Stage 2 destination/DNS/TLS/proxy/redirect/runtime compatibility and legitimate provider delivery hold in actual installed senders.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P04",
+        "ND-P05",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND05-06",
+      "group": "ND05",
+      "expected": "Actual cron/Vault/Edge parity, failure budgets/private logs/queue age/retirement and recovery/rollback are verified without secrets or production sends.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P04",
+        "ND-P05",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND06-01",
+      "group": "ND06",
+      "expected": "External/wrong-origin/lookalike/path/query targets fall back safely; approved context is preserved without treating URL IDs as permission.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND06-02",
+      "group": "ND06",
+      "expected": "Valid Personal/Family reminder selects an accessible workspace and correct payment/due occurrence after current session revalidation.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND06-03",
+      "group": "ND06",
+      "expected": "Business bill route binds valid accessible workspace/bill and handles signed-out/removed/expired/deleted targets safely.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND06-04",
+      "group": "ND06",
+      "expected": "Admin alert click enforces current role/MFA/source access and notification ownership before displaying private queue data.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND06-05",
+      "group": "ND06",
+      "expected": "Old notification from another account or previously open tab cannot select a foreign workspace or reveal cached data after switch.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND06-06",
+      "group": "ND06",
+      "expected": "Valid invitation/manual sign-in/last-workspace/native return intent is retained while malformed/replayed/unavailable intent is rejected through actual platform flow.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND07-01",
+      "group": "ND07",
+      "expected": "Fresh/current/old worker and deployment markers are reconciled; actual installation/activation and shell failures recover safely.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND07-02",
+      "group": "ND07",
+      "expected": "Worker activation across tabs is tested separately from explicit page refresh, with dirty forms/in-flight operations preserved.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND07-03",
+      "group": "ND07",
+      "expected": "Offline navigation and failed Auth checks show generic connection-required UI rather than private or falsely-current financial data.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND07-04",
+      "group": "ND07",
+      "expected": "Sensitive API/private responses and cross-origin requests are not cached/intercepted incorrectly; obsolete shell caches are retired safely.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND07-05",
+      "group": "ND07",
+      "expected": "Foreground/resume/online update and last-workspace checks preserve current account/session; native bypass behavior is correct on a real artifact.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND07-06",
+      "group": "ND07",
+      "expected": "Physical browser/PWA/app closed/minimized/background/offline/relaunch states match accepted update/badge/delivery expectations; no native OTA behavior is inferred from PWA refresh.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND08-01",
+      "group": "ND08",
+      "expected": "Exact staged source/schema/grants/configuration and controlled recoverable actors/devices/subscriptions are verified before the bounded batch.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04",
+        "ND-P05",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND08-02",
+      "group": "ND08",
+      "expected": "Closed/minimized real-device delivery and provider acceptance/display/interaction evidence are separately recorded for the accepted platform matrix.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04",
+        "ND-P05",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND08-03",
+      "group": "ND08",
+      "expected": "Sign-out/account-switch/permission-revoke/removed-member/suspension/detailed-preview cases pass without touching retained fixtures or two conversions.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04",
+        "ND-P05",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND08-04",
+      "group": "ND08",
+      "expected": "Server credentials/registration roles/channel settings and operations signals remain private with actual retention/deletion/rotation evidence.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04",
+        "ND-P05",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND08-05",
+      "group": "ND08",
+      "expected": "Rollback/retry/claim recovery preserves finance/notification attribution and safely stops/restarts accepted schedules without destructive fixture cleanup.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04",
+        "ND-P05",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    },
+    {
+      "id": "ND08-06",
+      "group": "ND08",
+      "expected": "Final signed artifact/provider/privacy/data declarations and Stage 9 broad regression/full re-audit remain required before release approval.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "ND-P01",
+        "ND-P02",
+        "ND-P03",
+        "ND-P04",
+        "ND-P05",
+        "ND-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_CRON_OR_PHYSICAL_DEVICE_CASE"
+    }
+  ],
+  "summary": {
+    "prerequisite_groups_blocked": 6,
+    "planned_grouped_cases": 48,
+    "hosted_provider_scheduler_or_device_cases_run": 0,
+    "blocked_not_run": 48,
+    "actual_case_passes": 0,
+    "actual_case_failures": 0,
+    "new_behavior_or_syntax_tests_run": 0,
+    "prior_unique_final_offline_suite_cases": 70,
+    "assistant_final_same_case_pass": 70,
+    "owner_final_same_case_pass": 70,
+    "assistant_and_owner_final_syntax_checks_each": 9,
+    "retained_assistant_historical_case_executions": 172,
+    "owner_repeat_case_executions": 70,
+    "combined_historical_executions_PASS": 242,
+    "unconfirmed_decisions": 8,
+    "open_actions": 8
+  },
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "notification_dispatched": false,
+  "device_permission_registration_or_subscription_changed": false,
+  "provider_SDK_key_or_cron_configuration_changed": false,
+  "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "owner_SQL_terminal_setup_or_file_opening_action_required": false,
+  "prior_progress_receipts_and_original_definitions_preserved": true,
+  "findings_closed": [],
+  "next_step": "8.4",
+  "report_due_step": "8.4"
+}

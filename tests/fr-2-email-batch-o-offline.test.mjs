@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {offlinePauseAction,offlineNavigatorState,offlineViewExpression} from '../scripts/lib/browser-offline-model.mjs';
+test('page Document requests continue so the worker can return the cached fallback',()=>assert.equal(offlinePauseAction('page','Document'),'CONTINUE_PAGE_NAVIGATION'));
+test('the worker network fetch fails for both Document and Fetch resources',()=>{for(const r of ['Document','Fetch','Other'])assert.equal(offlinePauseAction('service_worker',r),'FAIL_WORKER_FETCH');});
+test('reviewed page subresources continue and unknown targets remain denied',()=>{assert.equal(offlinePauseAction('page','Stylesheet'),'CONTINUE_PUBLIC_SUBRESOURCE');for(const k of [null,'worker','OTHER'])assert.equal(offlinePauseAction(k,'Document'),'FAIL_UNKNOWN_TARGET');});
+test('navigator override declares offline without throttling network transport',()=>assert.deepEqual(offlineNavigatorState,{offline:true,latency:0,downloadThroughput:-1,uploadThroughput:-1}));
+const origin='https://mushavo-budget-staging.pages.dev';
+test('offline snapshot returns only fixed state and booleans',()=>{const r=vm.runInNewContext(offlineViewExpression(origin),{location:{origin,pathname:'/app.html',protocol:'https:'},navigator:{onLine:false},document:{querySelector:()=>({textContent:'Your workspace needs a connection'}),body:{textContent:'No financial data has been stored'}}});assert.equal(r.document_class,'EXPECTED_APP_PATH');assert(r.expected_heading_present&&r.expected_notice_present&&!r.navigator_online);});
+test('browser error and unexpected content never become a successful fallback or raw DOM output',()=>{const r=vm.runInNewContext(offlineViewExpression(origin),{location:{origin:'null',pathname:'/PRIVATE_PATH',protocol:'chrome-error:'},navigator:{onLine:false},document:{querySelector:()=>({textContent:'PRIVATE_HEADING'}),body:{textContent:'PRIVATE_BODY'}}});assert.equal(r.document_class,'BROWSER_ERROR');assert(!r.expected_heading_present&&!r.expected_notice_present);assert(!JSON.stringify(r).includes('PRIVATE'));});

@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "REAL_SESSION_ACCOUNT_SUSPENSION_AND_SUPPORTED_RESTORE_SCOPED_PASS",
+  "plan_commit": "408ed1b2fa1fef96aa014a8f342c9ab4e8076862",
+  "source_commit": "611761d71635b5c6ed398fdc58f54c9a6f59feab",
+  "workflow_run_id": "42355292667",
+  "workflow_job_id": "128351948857",
+  "workflow_guard_tests": 47,
+  "selected_HTTP_assertions": 20,
+  "hosted_report": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "production_changed": false,
+    "exit_code": 0,
+    "exercise": {
+      "checks": {
+        "TARGET_INITIAL_SESSION_VALID": true,
+        "OTHER_INITIAL_SESSION_VALID": true,
+        "ADMIN_INITIAL_SESSION_AUTHORIZED": true,
+        "BOTH_PERSONAL_BASELINES_PRESENT": true,
+        "TARGET_INITIAL_ACTIVE": true,
+        "ORDINARY_CANNOT_SUSPEND_TARGET": true,
+        "ORDINARY_DENIAL_PRESERVED_ACTIVE": true,
+        "ADMIN_SUSPENSION_ACKNOWLEDGED": true,
+        "TARGET_SUSPENDED_READBACK": true,
+        "EXISTING_SESSION_INVALID_FOR_APP": true,
+        "PROTECTED_WORKSPACES_HIDDEN": true,
+        "PROTECTED_MUTATION_REJECTED_BEFORE_LOOKUP": true,
+        "UNDERLYING_AUTH_USER_STILL_VERIFIED": true,
+        "OTHER_ACCOUNT_SESSION_UNAFFECTED": true,
+        "OTHER_WORKSPACES_UNCHANGED": true,
+        "ADMIN_SESSION_UNAFFECTED": true,
+        "ADMIN_RESTORATION_ACKNOWLEDGED": true,
+        "TARGET_ACTIVE_AFTER_CLEANUP": true,
+        "SAME_SESSION_VALID_AFTER_RESTORE": true,
+        "TARGET_WORKSPACES_RESTORED_EXACTLY": true
+      },
+      "exercise_requests": 22,
+      "status_write_requests": 3,
+      "email_requests": 0,
+      "provider_requests": 0,
+      "finance_write_requests": 0,
+      "suspension_attempted": true,
+      "restoration_attempted": true,
+      "restored_active_verified": true,
+      "suspension_HTTP_status": 204,
+      "restoration_HTTP_status": 204
+    },
+    "full_lettered_batch_X_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-07-batch-x-account-suspension-void-ack",
+    "source_commit": "611761d71635b5c6ed398fdc58f54c9a6f59feab",
+    "workflow_run_id": "42355292667",
+    "workflow_run_attempt": "1"
+  },
+  "independent_readback": {
+    "target_active": true,
+    "active_devices": 0,
+    "session_proofs": 0,
+    "catalog_matches": true,
+    "matched_account": 1,
+    "admin_queue_rows": 0,
+    "ready_challenges": 0,
+    "security_version": 2,
+    "fixture_suspended": true,
+    "normal_queue_rows": 0,
+    "remaining_CI_sessions": 0,
+    "profile_hash_except_update_time": "425b1fdb570ffaa68c26ea25178fd13e",
+    "remaining_compensation_sessions": 0
+  },
+  "profile_original_fields_preserved": true,
+  "security_version_expected_monotonic_changes": {
+    "before": null,
+    "after_first_review_run": 1,
+    "after_completed_run": 2,
+    "decremented": false
+  },
+  "prior_runner_response_review": "docs/security-audit/security-fr-2-batch-x-account-suspension-ack-review.json",
+  "compensating_SQL_used": false,
+  "created_sessions_across_both_runs": 6,
+  "cleanup_sessions_across_both_runs": 6,
+  "remaining_actual_HTTP_acceptance": [
+    "Expired entitlement and owner-only renewal.",
+    "Third ordinary identity for delegated member removal.",
+    "Wider bill and spending-request finance workflow."
+  ],
+  "external_email_requests": 0,
+  "provider_requests": 0,
+  "production_changed": false,
+  "full_batch_X_complete": false,
+  "stage_3_complete": false,
+  "exit_code": 0
+}

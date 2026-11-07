@@ -1,0 +1,22 @@
+{
+  "stage_step": "3.5.3",
+  "scope": "OWNER_READ_ONLY_DASHBOARD_SUMMARIES",
+  "project": "dczlddwbtgvfdujgcitb",
+  "staging_selection_owner_confirmed": true,
+  "email_confirmation_enabled": true,
+  "minimum_password_length": 8,
+  "required_password_characters": "u",
+  "secure_password_change_enabled": null,
+  "current_password_required": null,
+  "staging_callback_paths_present": null,
+  "site_url_is_staging": true,
+  "prior_staging_mail_delivery_verified": true,
+  "isolated_controlled_Auth_test_identities_available": false,
+  "candidate_deployed_owner_reported": null,
+  "hosted_acceptance": false,
+  "hosted_Auth_checks_run": 0,
+  "settings_changed": false,
+  "email_dispatched": false,
+  "existing_synthetic_accounts_changed": false,
+  "production_or_native_changed": false
+}

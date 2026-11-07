@@ -1,0 +1,55 @@
+{
+  "stage_step": "FR.2.3_OUTBOX_DRIFT_REVIEW_CANDIDATE",
+  "scope": "ACTUAL_READ_ONLY_QUERY_IN_MINIMAL_SYNTHETIC_PGLITE_CATALOG_NOT_FULL_APPLICATION_OR_HOSTED_FUNCTION_RECONCILIATION",
+  "result": "OFFLINE_READ_ONLY_OUTBOX_METADATA_QUERY_SCOPED_PASS",
+  "node_version": "v24.19.0",
+  "tests": 8,
+  "pass": 8,
+  "fail": 0,
+  "exit_code": 0,
+  "cases": [
+    {
+      "title": "canonical body has exact whole and per-line hashes plus five-column enabled trigger binding; no row writes",
+      "result": "PASS"
+    },
+    {
+      "title": "known historical migration body stays distinct with its own exact hash",
+      "result": "PASS"
+    },
+    {
+      "title": "altered literal never becomes a match and its text is never printed",
+      "result": "PASS"
+    },
+    {
+      "title": "only CRLF-to-LF normalization is accepted; exact line hashes remain unchanged",
+      "result": "PASS"
+    },
+    {
+      "title": "line inventory remains bounded and flags truncated details",
+      "result": "PASS"
+    },
+    {
+      "title": "missing function and trigger produce explicit empty metadata",
+      "result": "PASS"
+    },
+    {
+      "title": "additional overload is counted separately instead of silently ignored",
+      "result": "PASS"
+    },
+    {
+      "title": "ordinary SQL role cannot run privileged catalog review",
+      "result": "PASS"
+    }
+  ],
+  "file_sha256": {
+    "supabase/diagnostics/security_fr_2_3_outbox_drift_review.sql": "27b2797ffaf89a9cb96fa8b95995b5e821e2d329e6c6176c1e7e0ffa85372304",
+    "scripts/verify-fr-2-outbox-drift-review.mjs": "b0650851261089a0fc0eab50a3c994042468bf8f6edc20e62a479c97afe109c5"
+  },
+  "hosted_queries_run": 0,
+  "application_routines_invoked": 0,
+  "fixture_rows_created": 0,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "syntax_checks": 1,
+  "default_network_disabled": true
+}

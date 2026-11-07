@@ -1,0 +1,128 @@
+{
+  "stage_step": "FR.2.4.E4.2_SESSION_PREDICATE",
+  "result": "OFFLINE_ACTUAL_SESSION_PREDICATE_AND_REPRESENTATIVE_GUARDS_SCOPED_PASS",
+  "scope": "FULL54_MIGRATIONS_E2_BACKEND_NEW_SELF_SESSION_SQL_AND_LOCAL_PROFILE_RLS_SYNTHETIC_DEFINER_NOT_APPLICATIONWIDE_GUARDS",
+  "node_version": "v22.17.0",
+  "pglite_version": "0.5.8",
+  "migration_count": 54,
+  "source_files_SHA256_verified": 61,
+  "tests": 24,
+  "pass": 24,
+  "fail": 0,
+  "cases": [
+    {
+      "title": "Missing offline acknowledgement refuses new predicate before any change",
+      "result": "PASS"
+    },
+    {
+      "title": "Backend prerequisite must exist; the session candidate cannot install an incomplete gate",
+      "result": "PASS"
+    },
+    {
+      "title": "Actual no-argument session functions compile without changing prior public routines, RLS or triggers",
+      "result": "PASS"
+    },
+    {
+      "title": "Existing predicate names or overloads are never overwritten by a second candidate installation",
+      "result": "PASS"
+    },
+    {
+      "title": "Only authenticated can execute the two public wrappers; all API roles lack the private helper",
+      "result": "PASS"
+    },
+    {
+      "title": "Password-only ordinary and platform Admin sessions both fail without stored verification",
+      "result": "PASS"
+    },
+    {
+      "title": "Forged email-verified, AAL2, Admin-role and remembered-until claims do not create a proof",
+      "result": "PASS"
+    },
+    {
+      "title": "Proof established by the actual service challenge/verify SQL authorizes only its exact session",
+      "result": "PASS"
+    },
+    {
+      "title": "Foreign-account session substitution and nonexistent session are denied",
+      "result": "PASS"
+    },
+    {
+      "title": "Missing, malformed, wrong-type and null request claims safely return false",
+      "result": "PASS"
+    },
+    {
+      "title": "Expired, missing, string, fractional, oversized and negative JWT expiry are denied",
+      "result": "PASS"
+    },
+    {
+      "title": "Service/anonymous token roles cannot become a user proof through the callable wrapper",
+      "result": "PASS"
+    },
+    {
+      "title": "Conflicting legacy Auth sub/role settings cannot borrow a valid proof",
+      "result": "PASS"
+    },
+    {
+      "title": "Assertion returns a fixed permission denial for an unverified session and accepts the verified one",
+      "result": "PASS"
+    },
+    {
+      "title": "A restrictive policy on actual profiles denies password-only reads while preserving existing owner rules",
+      "result": "PASS"
+    },
+    {
+      "title": "A guarded definer still checks the request session and keeps an independent target-ownership check",
+      "result": "PASS"
+    },
+    {
+      "title": "A platform Admin gets the same verification gate, then retains only its existing Admin authorization",
+      "result": "PASS"
+    },
+    {
+      "title": "Day-seven device expiry does not expire an open approved session or approve a fresh session",
+      "result": "PASS"
+    },
+    {
+      "title": "Real session timebox invalidates an existing proof and restoring the timebox preserves other checks",
+      "result": "PASS"
+    },
+    {
+      "title": "Security-version mismatch denies a stored proof without trusting client verification flags",
+      "result": "PASS"
+    },
+    {
+      "title": "Password changes invalidate the current proof without changing another approved account",
+      "result": "PASS"
+    },
+    {
+      "title": "Profile suspension invalidates proof, and reactivation does not revive it",
+      "result": "PASS"
+    },
+    {
+      "title": "Deleting the real modeled Auth session cascades its proof and leaves another account approved",
+      "result": "PASS"
+    },
+    {
+      "title": "Application policies and synthetic definer used for integration are removed before final metadata comparison",
+      "result": "PASS"
+    }
+  ],
+  "exit_code": 0,
+  "modeled_Auth_claims_not_actual_JWT_signature_validation": true,
+  "actual_provider_Auth_JWT_or_hosted_SQL_verified": false,
+  "complete_application_RLS_RPC_Storage_Edge_Admin_UI_guards_integrated": false,
+  "canonical_schema_or_versioned_migration_integrated": false,
+  "actual_hosted_requests": 0,
+  "email_dispatched": false,
+  "hosted_enforcement_installed": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "date": "2026-10-16",
+  "source_commit": "4ee445dfbb4ea7eaee70fd7be124d8ab058c1661",
+  "evidence_basis": "OWNER_RETURNED_WINDOWS_TERMINAL_JSON_NOT_ASSISTANT_HOSTED_ACCESS",
+  "dependency_installation_succeeded_under_terminal_guard": true,
+  "dependency_packages_added_owner_reported": 1,
+  "owner_terminal_exit_code": 0
+}

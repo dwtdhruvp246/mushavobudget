@@ -1,0 +1,80 @@
+{
+  "stage_step": "FR.2.5.W6_ORDINARY_SIGNUP_OWNER_RESULT_AND_CONCISE_CONFIRMATION_COPY",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "OWNER_WINDOWS_CONCISE_COPY_ZIP_PREPARATION_PASS_DEPLOYMENT_URL_RECEIVED_PUBLIC_READBACK_UNVERIFIED",
+  "received_date": "2026-10-27",
+  "source_commit": "1abc6f40fdda488706a5cc0c85a758880e49199e",
+  "source": "OWNER_SAFE_TERMINAL_RESULT_AND_DEPLOYMENT_URL",
+  "duplicate_paste_same_preparation_receipt_counted_once": true,
+  "source_hashes_verified": 15,
+  "public_files": 44,
+  "changed_files": [
+    "app.js",
+    "auth-security.js"
+  ],
+  "unchanged_public_entries": 42,
+  "retained_ZIP_SHA256_verified": "3255992abbc6058afa2e74f804cc19b3d9337d2380db52d52b82d0363454218b",
+  "retained_ZIP_unchanged": true,
+  "configuration_worker_service_worker_headers_and_routes_byte_preserved": true,
+  "ZIP_path": "C:\\Users\\HP\\Desktop\\Mushavo-W-Messages-abaee52a18604dcd9ea9357118670b44\\mushavo-confirmation-copy-staging.zip",
+  "ZIP_SHA256": "a6c5a3a3111b0a78af375a0ccf86f1bc7387e78b4a4b57adbada1efe04d8879d",
+  "portable_ZIP_readback_verified": true,
+  "Windows_dotNET_ZIP_readback_verified": false,
+  "owner_preparation_actual_hosted_requests": 0,
+  "owner_preparation_real_email_requests": 0,
+  "owner_preparation_settings_or_mode_or_account_writes": 0,
+  "owner_preparation_frontend_uploaded": false,
+  "owner_preparation_exit_code": 0,
+  "combined_exit_code": 0,
+  "owner_deployment_URL": "https://df776a63.mushavo-budget-staging.pages.dev/",
+  "deployment_URL_provided_after_upload_handoff": true,
+  "provider_success_status_explicitly_supplied": false,
+  "assistant_public_readback": {
+    "scope": "TWO_CHANGED_PUBLIC_FILES_AT_TWO_STAGING_ORIGINS",
+    "GET_attempts": 4,
+    "maximum_GET_requests": 4,
+    "HTTP_responses": 4,
+    "automatic_retries": 0,
+    "redirects_followed": 0,
+    "samples": [
+      {
+        "origin": "DEPLOYMENT",
+        "file": "app.js",
+        "HTTP_status": 403,
+        "source_verified": false
+      },
+      {
+        "origin": "DEPLOYMENT",
+        "file": "auth-security.js",
+        "HTTP_status": 403,
+        "source_verified": false
+      },
+      {
+        "origin": "CANONICAL",
+        "file": "app.js",
+        "HTTP_status": 403,
+        "source_verified": false
+      },
+      {
+        "origin": "CANONICAL",
+        "file": "auth-security.js",
+        "HTTP_status": 403,
+        "source_verified": false
+      }
+    ],
+    "result": "PUBLIC_READBACK_UNVERIFIED_HTTP403_FROM_ASSISTANT_ENVIRONMENT",
+    "origin_provider_or_environment_cause_not_established": true,
+    "Auth_email_or_settings_requests": 0
+  },
+  "new_copy_served_source_or_browser_display_verified": false,
+  "prior_owner_signup_pass_and_local44_retained_at_original_scopes": true,
+  "no_offline74_public18_or_signup_repeat_requested": true,
+  "test_account_last_owner_reported_state": "UNCONFIRMED_ORIGINAL_LINK_UNOPENED",
+  "next_action": "Owner checks two revised messages in staging, then opens original confirmation link once in the same private window; no Continue acknowledgement or email-code dispatch yet",
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

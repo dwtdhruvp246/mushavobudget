@@ -1,0 +1,186 @@
+{
+  "stage_step": "FR.2.2",
+  "result": "OFFLINE_ORDERED_SOURCE_BINDING_CANDIDATE_SCOPED_PASS",
+  "scope": "ACTUAL_SQL_IN_PGLITE_ORDERED_52_MIGRATION_CATALOG_WITH_MODELED_AUTH_STORAGE_DEFAULT_GRANTS_AND_SYNTHETIC_ACTORS_NOT_HOSTED_API_OR_AUTH",
+  "node_version": "v24.19.0",
+  "engine": "PostgreSQL 18.3 (PGlite 0.5.8) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "source_migrations_compiled": 52,
+  "selected_source_inputs_verified": 55,
+  "tests": 32,
+  "pass": 32,
+  "fail": 0,
+  "exit_code": 0,
+  "cases": [
+    {
+      "title": "original complete catalog permits the submitted foreign workspace gap",
+      "result": "PASS"
+    },
+    {
+      "title": "actual guarded candidate compiles and adds only workspace_id UPDATE coverage",
+      "result": "PASS"
+    },
+    {
+      "title": "installation preserves all existing fixture rows and both locked conversions",
+      "result": "PASS"
+    },
+    {
+      "title": "all source routines policies grants and unrelated triggers remain identical",
+      "result": "PASS"
+    },
+    {
+      "title": "reapplying exact candidate is idempotent without data changes",
+      "result": "PASS"
+    },
+    {
+      "title": "direct foreign workspace UPDATE normalizes to the matching owner parent",
+      "result": "PASS"
+    },
+    {
+      "title": "direct NULL workspace UPDATE derives the parent workspace",
+      "result": "PASS"
+    },
+    {
+      "title": "owner can still update legitimate record amount",
+      "result": "PASS"
+    },
+    {
+      "title": "owner can still update legitimate record notes",
+      "result": "PASS"
+    },
+    {
+      "title": "INSERT with submitted foreign workspace derives authorized parent binding",
+      "result": "PASS"
+    },
+    {
+      "title": "valid relink to another own parent retains correct workspace",
+      "result": "PASS"
+    },
+    {
+      "title": "foreign-parent relink is denied and preserves the authorized parent",
+      "result": "PASS"
+    },
+    {
+      "title": "nonexistent-parent relink is rejected without changing the row",
+      "result": "PASS"
+    },
+    {
+      "title": "outsider cannot read known foreign record",
+      "result": "PASS"
+    },
+    {
+      "title": "outsider UPDATE cannot change known foreign record",
+      "result": "PASS"
+    },
+    {
+      "title": "outsider DELETE cannot remove known foreign record",
+      "result": "PASS"
+    },
+    {
+      "title": "anonymous writes are denied or affect zero known foreign rows",
+      "result": "PASS"
+    },
+    {
+      "title": "each owner can delete an exact own synthetic record and verify absence",
+      "result": "PASS"
+    },
+    {
+      "title": "two retained manual conversions remain byte-identical after selected authorized writes and record deletions",
+      "result": "PASS"
+    },
+    {
+      "title": "guarded rollback restores exact prior trigger coverage without row changes",
+      "result": "PASS"
+    },
+    {
+      "title": "candidate reinstalls after reviewed rollback",
+      "result": "PASS"
+    },
+    {
+      "title": "changed function body aborts installation and retains existing trigger",
+      "result": "PASS"
+    },
+    {
+      "title": "disabled sync trigger aborts installation without bypassing the guard",
+      "result": "PASS"
+    },
+    {
+      "title": "unexpected WHEN condition aborts installation without changing that trigger",
+      "result": "PASS"
+    },
+    {
+      "title": "unexpected UPDATE column coverage aborts installation",
+      "result": "PASS"
+    },
+    {
+      "title": "missing finance guard trigger aborts installation",
+      "result": "PASS"
+    },
+    {
+      "title": "wrong sync function association aborts installation",
+      "result": "PASS"
+    },
+    {
+      "title": "unreviewed sync search_path aborts installation",
+      "result": "PASS"
+    },
+    {
+      "title": "ordinary authenticated role cannot install privileged coverage change",
+      "result": "PASS"
+    },
+    {
+      "title": "non-origin replication mode aborts candidate installation",
+      "result": "PASS"
+    },
+    {
+      "title": "unreviewed active CREATE TRIGGER event hook aborts installation",
+      "result": "PASS"
+    },
+    {
+      "title": "all drift fixtures restore exact source metadata and the candidate can reapply",
+      "result": "PASS"
+    }
+  ],
+  "file_sha256": {
+    "scripts/verify-fr-2-paid-record-binding.mjs": "848bc4248ec113c94b309061bce9413f84374517a2cca30237aec6ae5a178e3c",
+    "scripts/lib/stage-3-local-db.mjs": "df8dbe979098465213255247363ad956ac2c61ab4a5f852fcf0d133b8596c3d9",
+    "docs/security-audit/security-fr-2-binding-candidate-contract.json": "bb02e87a6f1af7ea16bff9010b485d2daa1ce774e584f54604136e67bec98579",
+    "supabase/remediation/security_fr_2_2_paid_record_binding.sql": "1790feda5b1e09593312ac6ac9d37c0fadb3ee9069061f07d7ce9b85c51cd1f0",
+    "supabase/remediation/security_fr_2_2_paid_record_binding_rollback.sql": "b2b2507cdb21e78f8f442bff52d8d45fbfcb42738db5e144acd393500e5b39b1"
+  },
+  "local_unlinked_synthetic_conversion_rows_after_selected_record_deletion": 2,
+  "conversion_cleanup_or_retention_acceptance": false,
+  "hosted_checks_run": 0,
+  "candidate_installed_to_staging": false,
+  "historical_staging_rows_or_conversions_changed": false,
+  "production_or_native_changed": false,
+  "hosted_acceptance": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "verification_history": {
+    "early_fixture_setup": "A synthetic item column typo and conversion uniqueness collision were corrected before named case execution",
+    "draft_case_outcomes": [
+      {
+        "executed": 19,
+        "pass": 18,
+        "fail": 1,
+        "reason": "Overbroad conversion preservation/cleanup expectation after legitimate synthetic record deletion; no binding correction failure demonstrated"
+      },
+      {
+        "executed": 30,
+        "pass": 30,
+        "fail": 0,
+        "scope": "Before adding replication/DDL-hook guards"
+      },
+      {
+        "executed": 32,
+        "pass": 32,
+        "fail": 0,
+        "scope": "Before final source identity/disabled-default-transport preflight"
+      }
+    ],
+    "final_batch_default_network_transport_disabled": true,
+    "new_tests_are_32_named_sequential_database_control_groups_not_node_test_discovery": true,
+    "syntax_checks": 1,
+    "full_882_case_regression_run": false
+  }
+}

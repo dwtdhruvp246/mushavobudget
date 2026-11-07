@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-30",
+  "source_commit": "ac6e92b25019290b79a38652c8ded9fd0cc9a5b5",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "OWNER_READ_ONLY_FIXTURE_AND_AUDIT_ABSENCE_CONFIRMED_OLDER_NODE_SESSION_ROWS_REMAIN",
+  "owner_SQL_result": [
+    {
+      "safe_result": {
+        "result": "POST_STOP_FIXTURE_AND_SESSION_METADATA_ONLY",
+        "accounts": {
+          "super_admin": {
+            "account_found": true,
+            "current_session_rows": 2,
+            "node_or_undici_agent_rows": 1,
+            "newest_node_or_undici_session_age_seconds": 8221
+          },
+          "ordinary_test_user": {
+            "account_found": true,
+            "current_session_rows": 2,
+            "node_or_undici_agent_rows": 1,
+            "newest_node_or_undici_session_age_seconds": 8234
+          }
+        },
+        "email_requests": 0,
+        "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+        "SQL_or_settings_writes": 0,
+        "hosted_denial_acceptance": false,
+        "remaining_marked_fixture_rows": 0,
+        "HTTP_failure_cause_established": false,
+        "full_lettered_batch_W_complete": false,
+        "remaining_marked_fixture_audit_rows": 0,
+        "session_counts_identify_failed_run_sessions": false
+      }
+    }
+  ],
+  "current_marked_fixture_cleanup_confirmed": true,
+  "current_marked_audit_cleanup_confirmed": true,
+  "repeat_fixture_cleanup_requested": false,
+  "older_Node_agent_rows_per_account": 1,
+  "older_Node_session_cleanup_verified": false,
+  "exact_failed_run_session_IDs_identified": false,
+  "original_HTTP_failure_cause_established": false,
+  "access_token_expiry_is_possible_not_proven": true,
+  "no_Auth_session_deletion_or_broad_signout_requested": true,
+  "next_action": "Prepare a fresh AU02.04 checker run with one requested SQL phase at a time, same-user/same-session verified in-memory renewal and safe HTTP diagnostics. Only newly created sessions are signed out.",
+  "AU02_04_hosted_denial_accepted": false,
+  "prior_accepted_results_retained": true,
+  "full_lettered_batch_W_complete": false,
+  "V_complete": false
+}

@@ -1,0 +1,103 @@
+{
+  "stage_step": "FR.2.4_ADMIN_SQL_DELIVERY_REVIEW",
+  "result": "LOCAL_EXACT_BYTE_DELIVERY_AND_HISTORICAL_CRLF_REPRODUCTION_PASS",
+  "source_parent_commit": "e13b4f48cda563eba8d4cbe3253d31d45ad5493d",
+  "node_version": "v24.19.0",
+  "migration_count": 54,
+  "tests": [
+    {
+      "test": "Reviewed exact LF and exact CRLF roundtrip to identical UTF8 bytes: supabase/candidates/security_stage_3_admin_mfa.sql",
+      "status": "PASS"
+    },
+    {
+      "test": "Changed SQL bytes and BOM reject without execution: supabase/candidates/security_stage_3_admin_mfa.sql",
+      "status": "PASS"
+    },
+    {
+      "test": "Reviewed exact LF and exact CRLF roundtrip to identical UTF8 bytes: supabase/candidates/security_stage_3_admin_mfa_rollback.sql",
+      "status": "PASS"
+    },
+    {
+      "test": "Changed SQL bytes and BOM reject without execution: supabase/candidates/security_stage_3_admin_mfa_rollback.sql",
+      "status": "PASS"
+    },
+    {
+      "test": "Reviewed exact LF and exact CRLF roundtrip to identical UTF8 bytes: supabase/diagnostics/security_stage_3_admin_mfa_readiness.sql",
+      "status": "PASS"
+    },
+    {
+      "test": "Changed SQL bytes and BOM reject without execution: supabase/diagnostics/security_stage_3_admin_mfa_readiness.sql",
+      "status": "PASS"
+    },
+    {
+      "test": "Mixed line endings and corrupted encoding reject; no whitespace or Unicode guessing",
+      "status": "PASS"
+    },
+    {
+      "test": "Non-byte input rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Old readiness exact Windows CRLF reproduces same34 historical policy names; LF has zero mismatches",
+      "status": "PASS"
+    },
+    {
+      "test": "Byte-guarded normalization restores old selected readiness exactly",
+      "status": "PASS"
+    },
+    {
+      "test": "Existing recovery and operator installer prerequisites still reject with source unchanged",
+      "status": "PASS"
+    },
+    {
+      "test": "Raw CRLF frozen installer rejects policy drift atomically even after modeled operator prerequisites",
+      "status": "PASS"
+    },
+    {
+      "test": "Exact normalized frozen candidate compiles against full54 source with modeled operator only",
+      "status": "PASS"
+    },
+    {
+      "test": "Independent rollback acknowledgement remains required",
+      "status": "PASS"
+    },
+    {
+      "test": "Raw CRLF frozen rollback also rejects changed expected policy literal formatting",
+      "status": "PASS"
+    },
+    {
+      "test": "Normalized frozen rollback restores full routine metadata and policy metadata/exact deparsed definitions",
+      "status": "PASS"
+    }
+  ],
+  "local_PASS": 16,
+  "local_FAIL": 0,
+  "exit_code": 0,
+  "old_LF_policy_mismatches": 0,
+  "old_CRLF_policy_mismatches": 34,
+  "historical34_name_set_reproduced_exactly": true,
+  "actual_historical_pasted_bytes_not_retained": true,
+  "current_hosted_36_routine_58_policy_fingerprints_already_match_source": true,
+  "reviewed_frozen_SQL_artifacts_unchanged": true,
+  "real_Windows_clipboard_execution_verified": false,
+  "genuine_AAL1_AAL2_or_recovery_verified": false,
+  "new_hosted_installation_Auth_or_SQL_calls": 0,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "syntax_checks": 2,
+  "initial_local_attempts": [
+    {
+      "result": "FAIL",
+      "reason": "Rollback test omitted independent required rollback acknowledgement; verified that guard, then supplied model-only acknowledgement for drift tests."
+    },
+    {
+      "result": "FAIL",
+      "reason": "Raw policy parse-tree token locations change on legitimate ALTER/reparse; comparison now retains every other policy catalog field and exact native deparsed predicates, with no whitespace normalization."
+    },
+    {
+      "result": "FAIL",
+      "reason": "JavaScript SQL quoting while refining policy metadata comparison; fixed before final syntax/model run."
+    }
+  ],
+  "final_local_attempt_passed": true
+}

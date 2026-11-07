@@ -1,0 +1,100 @@
+{
+  "stage_step": "FR.2.2_EXACT_RELINK_CLEANUP_CANDIDATE",
+  "result": "OFFLINE_ACTUAL_GUARDED_CLEANUP_SCOPED_PASS",
+  "scope": "ACTUAL_SQL_IN_ORDERED_52_MIGRATION_PGLITE_CATALOG_MODELED_AUTH_STORAGE_GRANTS_NOT_HOSTED_AUTH_OR_POSTGRESQL17",
+  "engine": "PostgreSQL 18.3 (PGlite 0.5.8) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "node_version": "v24.19.0",
+  "source_migrations_compiled": 52,
+  "selected_source_inputs_verified": 55,
+  "tests": 14,
+  "pass": 14,
+  "fail": 0,
+  "exit_code": 0,
+  "cases": [
+    {
+      "title": "unavailable exact marker rejects without deleting unrelated rows",
+      "result": "PASS"
+    },
+    {
+      "title": "duplicate exact item label rejects before deletion",
+      "result": "PASS"
+    },
+    {
+      "title": "unexpected item value rejects before deletion",
+      "result": "PASS"
+    },
+    {
+      "title": "new record still linked to B parent rejects",
+      "result": "PASS"
+    },
+    {
+      "title": "record proof attachment rejects as non-cleanup shape",
+      "result": "PASS"
+    },
+    {
+      "title": "manual conversion substituted for new identity is not deleted",
+      "result": "PASS"
+    },
+    {
+      "title": "missing new conversion rejects before deleting paid record",
+      "result": "PASS"
+    },
+    {
+      "title": "unreviewed inbound FK rejects cascading scope",
+      "result": "PASS"
+    },
+    {
+      "title": "additional DELETE trigger rejects before execution",
+      "result": "PASS"
+    },
+    {
+      "title": "finance guard body drift rejects without disabling it",
+      "result": "PASS"
+    },
+    {
+      "title": "ordinary authenticated role cannot perform operator cleanup",
+      "result": "PASS"
+    },
+    {
+      "title": "non-origin session rejects cleanup",
+      "result": "PASS"
+    },
+    {
+      "title": "actual guarded SQL commits exact four items two records two conversions and preserves every non-target row",
+      "result": "PASS"
+    },
+    {
+      "title": "repeated cleanup stops rather than broadening to other fixtures",
+      "result": "PASS"
+    }
+  ],
+  "manual_preservation_fixture_scope": "TWO_PERSONAL_MANUAL_CONVERSION_STANDINS_NOT_ACTUAL_RETAINED_FAMILY_ROWS_OR_KNOWN_HOSTED_DIGEST",
+  "file_sha256": {
+    "supabase/remediation/security_fr_2_2_relink_cleanup.sql": "48446f38b01d177a8297065c5452df755cf2912e555d3f35e5bde6bfb8437433",
+    "scripts/verify-fr-2-relink-cleanup.mjs": "79915dea2b82d6814b4c7d3c3400408038459a0cdb8c62c4dce1b1e88717e1b1",
+    "scripts/lib/stage-3-local-db.mjs": "df8dbe979098465213255247363ad956ac2c61ab4a5f852fcf0d133b8596c3d9",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5"
+  },
+  "hosted_queries_run": 0,
+  "existing_historical_staging_rows_changed": false,
+  "production_or_native_changed": false,
+  "findings_closed": [],
+  "syntax_checks": 1,
+  "default_network_disabled": true,
+  "current_source_blob_matches": 55,
+  "earlier_local_attempts": [
+    {
+      "tests": 0,
+      "pass": 0,
+      "exit_code": 1,
+      "cause": "Local seed attribution was transaction-local and expired before seeding writes; fixture seeding changed to session attribution in the isolated model. Cleanup attribution remains LOCAL."
+    },
+    {
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "exit_code": 1,
+      "cause": "Initial cleanup prototype expected three DELETE-capable triggers; full source catalog also contains the existing item DELETE-only finance trigger. Guard revised to require all four exact source associations/bits/bodies; no trigger disabled."
+    }
+  ]
+}

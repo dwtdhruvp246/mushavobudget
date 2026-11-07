@@ -1,0 +1,288 @@
+{
+  "received_date": "2026-10-22",
+  "requested_run_commit": "a6dc6ab66990fc81d5d7409791c46f5ff4ca9d63",
+  "run_commit_independently_attested": false,
+  "owner_Windows_resume_parent_execution_observed": true,
+  "offline_receipt": {
+    "stage_step": "FR.2.4.E5.17R_BATCH_D_VERIFY_ONE_AND_DEPLOY_REMAINING_THREE",
+    "result": "OFFLINE_BATCH_D_RESUME_20_PASS_OWNER_PENDING",
+    "source_parent_commit": "1608281f8d5ae52d87fa4b5de823536e9d8b9593",
+    "node_version": "v22.17.0",
+    "source_files_SHA256_verified": 46,
+    "syntax_checks": 3,
+    "tests": 20,
+    "pass": 20,
+    "fail": 0,
+    "group": {
+      "tests": 20,
+      "pass": 20,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "failed_case_titles": [],
+      "exit_code": 0,
+      "signal": null,
+      "error_code": null
+    },
+    "actual_deployment_transport_and_readback_exercised_with_synthetic_inputs": true,
+    "all_32_failure_positions_and_partial_resume_exercised_with_synthetic_responses": true,
+    "downloaded_provider_source_executed_or_saved": false,
+    "Windows_private_runner_verified": false,
+    "live_source_parity_or_shared_configuration_runtime_impact_verified": false,
+    "credentials_or_private_packet_accessed": false,
+    "actual_hosted_requests": 0,
+    "settings_or_deployments_changed": false,
+    "email_push_or_FX_dispatched": false,
+    "uploaded_or_deployed": false,
+    "readiness_approved": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "local_checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0
+  },
+  "offline_exit_code": 0,
+  "receipt": {
+    "stage_step": "FR.2.4.E5.17R_BATCH_D_VERIFY_ONE_AND_DEPLOY_REMAINING_THREE",
+    "batch": "D_RESUME",
+    "previously_confirmed_deployment_count": 1,
+    "new_deployment_target_count": 3,
+    "result": "STAGING_BATCH_D_RESUMED_THREE_DEPLOYED_FOUR_SOURCE_AND_HTTP401_SCOPED_PASS",
+    "recorded_existing_function_verified": true,
+    "recorded_existing_function_redeployed": false,
+    "denial_evidence_basis": "EXACT_HTTP_401_ONLY",
+    "denial_response_JSON_format_verified": false,
+    "actual_hosted_requests": 32,
+    "deployment_POST_requests": 3,
+    "deployment_HTTP_accepted_count": 3,
+    "deployment_write_outcome_uncertain": false,
+    "fresh_source_target_and_six_names_verified": true,
+    "current_review_problem": null,
+    "reviewed_current_metadata_matched": true,
+    "package_SHA256": "e1fb82c6001ee4bb8f3d6999f078a028637cf90d912e275fb14ac84774f192a3",
+    "selected_functions": [
+      {
+        "slug": "invite-admin-user",
+        "verify_jwt_expected": true,
+        "already_installed": true,
+        "POST_attempted": false,
+        "POST_HTTP_accepted": false,
+        "metadata_readback_matched": true,
+        "source_files_exact": 2,
+        "unauthenticated_HTTP_status": 401,
+        "unauthenticated_denied": true,
+        "denial_evidence_basis": "EXACT_HTTP_401_ONLY",
+        "version": 1,
+        "function_identity_SHA256": "fb57a24cbaca20d32fe5533d4169006813c706d145fcf188d1da58c1e00ff224",
+        "deployment_bundle_SHA256": "9e3d472069c6c87c33dcc5af08f7293c4c14fd387d328c78c107e30b26df0b81"
+      },
+      {
+        "slug": "invite-business-member",
+        "verify_jwt_expected": true,
+        "already_installed": false,
+        "POST_attempted": true,
+        "POST_HTTP_accepted": true,
+        "metadata_readback_matched": true,
+        "source_files_exact": 2,
+        "unauthenticated_HTTP_status": 401,
+        "unauthenticated_denied": true,
+        "denial_evidence_basis": "EXACT_HTTP_401_ONLY",
+        "version": 1,
+        "function_identity_SHA256": "1ebc6298014dc3f2a2918a3fe67431a8e4431a3d442d61f0f818dbcafad53a58",
+        "deployment_bundle_SHA256": "0885aeccb5de6e7c19bb6c83b88dddcd01d5a01bb21fd7a2b7c39dab96bf3d86"
+      },
+      {
+        "slug": "send-test-push",
+        "verify_jwt_expected": false,
+        "already_installed": false,
+        "POST_attempted": true,
+        "POST_HTTP_accepted": true,
+        "metadata_readback_matched": true,
+        "source_files_exact": 4,
+        "unauthenticated_HTTP_status": 401,
+        "unauthenticated_denied": true,
+        "denial_evidence_basis": "EXACT_HTTP_401_ONLY",
+        "version": 1,
+        "function_identity_SHA256": "49a721dcc3e46af7d72346a5c7eba3f43b9345013f48e0356c42b91da33df39b",
+        "deployment_bundle_SHA256": "2a367a06bce55348c77c25cf593e54c94b4b8ddd555123584d9f9fa7ccf6aea1"
+      },
+      {
+        "slug": "sync-exchange-rates",
+        "verify_jwt_expected": false,
+        "already_installed": false,
+        "POST_attempted": true,
+        "POST_HTTP_accepted": true,
+        "metadata_readback_matched": true,
+        "source_files_exact": 3,
+        "unauthenticated_HTTP_status": 401,
+        "unauthenticated_denied": true,
+        "denial_evidence_basis": "EXACT_HTTP_401_ONLY",
+        "version": 1,
+        "function_identity_SHA256": "5e4b81ca1dc05d4907cba2270802af475e7d42282eb26b071505d75f9beb5b3e",
+        "deployment_bundle_SHA256": "7aeaa1f32688ae0d456dacca625bd3ec7c3e4f88ab694257d2e2c3048d1634b7"
+      }
+    ],
+    "all_four_source_readbacks_exact": true,
+    "all_four_unauthenticated_requests_denied": true,
+    "unrelated_contact_metadata_and_artifacts_preserved": true,
+    "metadata_snapshot_is_not_a_write_lock": true,
+    "automatic_retry_or_delete_performed": false,
+    "hosted_dependency_bytes_or_lockfile_parity_verified": false,
+    "runtime_authenticated_JWT_and_user_authorization_verified": false,
+    "secret_value_equality_or_full_runtime_access_verified": false,
+    "shared_configuration_runtime_impact_verified": false,
+    "application_rows_read": false,
+    "SQL_Auth_secret_write_or_scheduler_endpoint_used": false,
+    "unauthenticated_Edge_requests": 4,
+    "email_push_or_FX_dispatched": false,
+    "deployment_may_have_changed": true,
+    "uploaded_or_deployed": true,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "raw_provider_bodies_paths_IDs_or_credentials_printed": false,
+    "token_saved_to_disk_or_environment": false,
+    "samples": [
+      {
+        "endpoint": "STAGING_PROJECT",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_PARTIAL_FUNCTION_LIST",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_CONTACT_DETAIL_PINNED",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_CONTACT_SOURCE_PINNED",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_CONTACT_DETAIL_AFTER",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_INSTALLED_NAMES",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_DEPLOYED_DETAIL_invite-admin-user",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_DEPLOYED_SOURCE_invite-admin-user",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_DEPLOYED_DETAIL_AFTER_invite-admin-user",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_UNAUTHENTICATED_DENIAL_invite-admin-user",
+        "http_status": 401
+      },
+      {
+        "endpoint": "STAGING_ABSENCE_BEFORE_invite-business-member",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_DEPLOY_invite-business-member",
+        "http_status": 201
+      },
+      {
+        "endpoint": "STAGING_DEPLOYED_DETAIL_invite-business-member",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_DEPLOYED_SOURCE_invite-business-member",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_DEPLOYED_DETAIL_AFTER_invite-business-member",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_UNAUTHENTICATED_DENIAL_invite-business-member",
+        "http_status": 401
+      },
+      {
+        "endpoint": "STAGING_ABSENCE_BEFORE_send-test-push",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_DEPLOY_send-test-push",
+        "http_status": 201
+      },
+      {
+        "endpoint": "STAGING_DEPLOYED_DETAIL_send-test-push",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_DEPLOYED_SOURCE_send-test-push",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_DEPLOYED_DETAIL_AFTER_send-test-push",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_UNAUTHENTICATED_DENIAL_send-test-push",
+        "http_status": 401
+      },
+      {
+        "endpoint": "STAGING_ABSENCE_BEFORE_sync-exchange-rates",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_DEPLOY_sync-exchange-rates",
+        "http_status": 201
+      },
+      {
+        "endpoint": "STAGING_DEPLOYED_DETAIL_sync-exchange-rates",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_DEPLOYED_SOURCE_sync-exchange-rates",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_DEPLOYED_DETAIL_AFTER_sync-exchange-rates",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_UNAUTHENTICATED_DENIAL_sync-exchange-rates",
+        "http_status": 401
+      },
+      {
+        "endpoint": "STAGING_FINAL_FUNCTION_LIST",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_CONTACT_FINAL_DETAIL",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_CONTACT_FINAL_SOURCE",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_FINAL_STABLE_FUNCTION_LIST",
+        "http_status": 200
+      }
+    ],
+    "checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0,
+    "checked_UTC": "2026-10-22T09:23:42.482Z",
+    "source_hashes_verified": 46
+  },
+  "combined_exit_code": 0
+}

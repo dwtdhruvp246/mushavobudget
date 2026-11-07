@@ -1,0 +1,14 @@
+{
+  "policy": {
+    "name": "Users can upload permitted payment proofs",
+    "roles": [
+      "authenticated"
+    ],
+    "using": null,
+    "operation": "INSERT",
+    "permissive": "PERMISSIVE",
+    "with_check": "((bucket_id = 'payment-proofs'::text) AND ((((storage.foldername(name))[1] = 'personal'::text) AND ((storage.foldername(name))[2] = (( SELECT auth.uid() AS uid))::text)) OR (((storage.foldername(name))[1] = 'families'::text) AND ((storage.foldername(name))[4] = (( SELECT auth.uid() AS uid))::text) AND (EXISTS ( SELECT 1\n   FROM public.families\n  WHERE ((families.id = ((storage.foldername(families.name))[2])::uuid) AND ((families.owner_id)::text = (storage.foldername(families.name))[3]) AND public.is_active_family_participant(families.id)))))))"
+  },
+  "old_policy_fingerprint": "2b4234683af9de0380b2e71c7213864f",
+  "staging_catalog": "e902fca1d972f7cb76a0cc7b8f5ca649f24dfd2ae198cc77a1d96526a82172e8"
+}

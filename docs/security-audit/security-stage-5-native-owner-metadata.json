@@ -1,0 +1,282 @@
+{
+  "schema_version": 1,
+  "evidence_id": "S5E02",
+  "stage_step": "5.1",
+  "received_date": "2026-10-12",
+  "scope": "OWNER_REPORTED_WINDOWS_METADATA_WITH_ASSISTANT_RECONCILIATION",
+  "source_audit_commit": "83f5dd2ac04be107e82baf992f796f47e24d7049",
+  "audit_branch_parent": "e5090e827f41dc6c7d1b5e89480a1f941e5bfd06",
+  "attachment": {
+    "name": "Pasted text(20261012-041617).txt",
+    "sha256": "6c2a240219c590ac747aec490d27e463a641271a713478db52e2c7960d12e71a"
+  },
+  "owner_receipt": {
+    "stage_step": "5.1",
+    "scope": "OWNER_LOCAL_FILE_METADATA_ONLY",
+    "audit_source_pin": "83f5dd2ac04be107e82baf992f796f47e24d7049",
+    "checkout_commit": "2aa668451a8e743dafb3768261175c51a215205e",
+    "checkout_branch": "main",
+    "checkout_matches_audit_pin": false,
+    "files": [
+      {
+        "path": "package.json",
+        "kind": "FILE",
+        "bytes": 692,
+        "sha256": "fc0803a88163c2e9979bbe6d52699b59f4c4ea3de833e77c5cebb0e41025647c",
+        "tracked_entries": 1
+      },
+      {
+        "path": "package-lock.json",
+        "kind": "FILE",
+        "bytes": 53663,
+        "sha256": "022b29612d4228a48db280f7ea217f4682716d78d5e27209794ff6f7e8b1985c",
+        "tracked_entries": 1
+      },
+      {
+        "path": ".gitignore",
+        "kind": "FILE",
+        "bytes": 120,
+        "sha256": "644f956dc885523eecf6eedf0dddce64a03fe0dfbd3cc84cc590d7a98e1269a8",
+        "tracked_entries": 1
+      },
+      {
+        "path": "scripts/build-capacitor.mjs",
+        "kind": "FILE",
+        "bytes": 2296,
+        "sha256": "f007a2f217cf66a39aa5fa4a0dfefa5a12c7e723718c40bb3d7c28855f86683c",
+        "tracked_entries": 0
+      },
+      {
+        "path": "capacitor.config.json",
+        "kind": "FILE",
+        "bytes": 89,
+        "sha256": "857b89b8e5127bad99450458e5ca2b02f457b4a9f5db94ce7d0f2b2a606a0508",
+        "tracked_entries": 0
+      },
+      {
+        "path": "capacitor.config.ts",
+        "kind": "MISSING",
+        "bytes": null,
+        "sha256": null,
+        "tracked_entries": 0
+      },
+      {
+        "path": "capacitor.config.js",
+        "kind": "MISSING",
+        "bytes": null,
+        "sha256": null,
+        "tracked_entries": 0
+      },
+      {
+        "path": "android",
+        "kind": "DIRECTORY",
+        "bytes": null,
+        "sha256": null,
+        "tracked_entries": 0
+      },
+      {
+        "path": "ios",
+        "kind": "MISSING",
+        "bytes": null,
+        "sha256": null,
+        "tracked_entries": 0
+      },
+      {
+        "path": "www",
+        "kind": "DIRECTORY",
+        "bytes": null,
+        "sha256": null,
+        "tracked_entries": 0
+      },
+      {
+        "path": "node_modules",
+        "kind": "DIRECTORY",
+        "bytes": null,
+        "sha256": null,
+        "tracked_entries": 0
+      },
+      {
+        "path": "android/build.gradle",
+        "kind": "FILE",
+        "bytes": 637,
+        "sha256": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9",
+        "tracked_entries": 0
+      },
+      {
+        "path": "android/variables.gradle",
+        "kind": "FILE",
+        "bytes": 498,
+        "sha256": "83d502c9ed8fcf1dd4791482067abeedbebae49fafe9cd14a8a1f5891deb0d88",
+        "tracked_entries": 0
+      },
+      {
+        "path": "android/app/build.gradle",
+        "kind": "FILE",
+        "bytes": 2134,
+        "sha256": "e80e1234bedfe0e9f5b6831684f82f84c13d1dc7b261cce29c1c91017bb61a22",
+        "tracked_entries": 0
+      },
+      {
+        "path": "android/gradle/wrapper/gradle-wrapper.properties",
+        "kind": "FILE",
+        "bytes": 253,
+        "sha256": "9a479a85aa879bb55284fc16d0de5b81a745c3854f4e2d88c42e7debaf007435",
+        "tracked_entries": 0
+      },
+      {
+        "path": "android/app/src/main/AndroidManifest.xml",
+        "kind": "FILE",
+        "bytes": 1537,
+        "sha256": "b642d0f51d088301d0107c9b94c85994fbc612e0a7b6a9cb1754113ae1be90cd",
+        "tracked_entries": 0
+      },
+      {
+        "path": "android/app/src/main/res/xml/file_paths.xml",
+        "kind": "FILE",
+        "bytes": 213,
+        "sha256": "a46ed43ef65c90cb6778f4581decf3556e3f0055aad8f36d69dae16f9a0e99aa",
+        "tracked_entries": 0
+      },
+      {
+        "path": "android/app/src/main/res/xml/backup_rules.xml",
+        "kind": "MISSING",
+        "bytes": null,
+        "sha256": null,
+        "tracked_entries": 0
+      },
+      {
+        "path": "android/app/src/main/res/xml/data_extraction_rules.xml",
+        "kind": "MISSING",
+        "bytes": null,
+        "sha256": null,
+        "tracked_entries": 0
+      },
+      {
+        "path": "android/app/src/main/res/xml/network_security_config.xml",
+        "kind": "MISSING",
+        "bytes": null,
+        "sha256": null,
+        "tracked_entries": 0
+      },
+      {
+        "path": "ios/App/App/Info.plist",
+        "kind": "MISSING",
+        "bytes": null,
+        "sha256": null,
+        "tracked_entries": 0
+      },
+      {
+        "path": "ios/App/App/PrivacyInfo.xcprivacy",
+        "kind": "MISSING",
+        "bytes": null,
+        "sha256": null,
+        "tracked_entries": 0
+      },
+      {
+        "path": "ios/App/PrivacyInfo.xcprivacy",
+        "kind": "MISSING",
+        "bytes": null,
+        "sha256": null,
+        "tracked_entries": 0
+      },
+      {
+        "path": "ios/App/App/App.entitlements",
+        "kind": "MISSING",
+        "bytes": null,
+        "sha256": null,
+        "tracked_entries": 0
+      }
+    ],
+    "tools_on_path": {
+      "git": true,
+      "node": true,
+      "npm": true,
+      "java": false,
+      "adb": false
+    },
+    "android_sdk_env_present": false,
+    "java_home_env_present": false,
+    "config_contents_reviewed": false,
+    "build_prerequisites_verified": false,
+    "build_sync_install_or_sign_run": false,
+    "device_checks_run": 0,
+    "native_security_acceptance": false,
+    "files_settings_or_accounts_changed": false
+  },
+  "reconciliation": {
+    "status": "INVENTORY_COMPLETE_AT_SOURCE_AND_OWNER_METADATA_SCOPE",
+    "selected_path_rows": 24,
+    "file_rows": 11,
+    "directory_rows": 3,
+    "missing_rows": 10,
+    "link_skipped_rows": 0,
+    "tracked_selected_file_rows": 3,
+    "untracked_selected_file_rows": 8,
+    "owner_checkout_is_audit_pin": false,
+    "owner_checkout_local_changes_inventory_performed": false,
+    "common_selected_file_hash_comparisons": [
+      {
+        "path": "package.json",
+        "owner_sha256": "fc0803a88163c2e9979bbe6d52699b59f4c4ea3de833e77c5cebb0e41025647c",
+        "audit_sha256": "fe28c33c1a1c93b8f5efaf7b098b6884afca7b61f7910e767f8ce069ff1d8c6a",
+        "exact_audit_bytes_match": false,
+        "owner_bytes": 692,
+        "audit_bytes": 883
+      },
+      {
+        "path": "package-lock.json",
+        "owner_sha256": "022b29612d4228a48db280f7ea217f4682716d78d5e27209794ff6f7e8b1985c",
+        "audit_sha256": "cb476c5d8cebfa65f44edf0f54c8d1124d446f0cecef2c305e92f38dae13cd0f",
+        "exact_audit_bytes_match": false,
+        "owner_bytes": 53663,
+        "audit_bytes": 70459
+      },
+      {
+        "path": ".gitignore",
+        "owner_sha256": "644f956dc885523eecf6eedf0dddce64a03fe0dfbd3cc84cc590d7a98e1269a8",
+        "audit_sha256": "bff24b929186884e2c94ecb69c6c8686c2e7d2f2f37fc42b99e1933b83db09e5",
+        "exact_audit_bytes_match": false,
+        "owner_bytes": 120,
+        "audit_bytes": 129
+      },
+      {
+        "path": "scripts/build-capacitor.mjs",
+        "owner_sha256": "f007a2f217cf66a39aa5fa4a0dfefa5a12c7e723718c40bb3d7c28855f86683c",
+        "audit_sha256": "20d6a31e4955433c119db9c1777941ae70272f48681f3237b3b190df63a9fe38",
+        "exact_audit_bytes_match": false,
+        "owner_bytes": 2296,
+        "audit_bytes": 4490
+      }
+    ],
+    "exact_audit_common_file_matches": 0,
+    "audit_common_file_differences": 4,
+    "differences_are_not_test_failures": true,
+    "differences_require_content_review_and_later_baseline_reconciliation": true,
+    "local_build_script_is_not_audited_candidate": true,
+    "android_project_reported_present": true,
+    "android_project_tracked_entries": 0,
+    "capacitor_JSON_reported_present": true,
+    "capacitor_JSON_tracked_entries": 0,
+    "ios_directory_missing_at_selected_checkout_root": true,
+    "other_locations_not_searched": true,
+    "missing_expected_XML_resources": [
+      "backup_rules.xml",
+      "data_extraction_rules.xml",
+      "network_security_config.xml"
+    ],
+    "missing_expected_XML_is_not_proof_of_absent_protection": true,
+    "java_and_adb_not_on_PATH": true,
+    "absent_PATH_or_env_is_not_proof_tools_uninstalled": true,
+    "actual_JDK_SDK_Gradle_versions_and_compatibility_verified": false,
+    "config_contents_reviewed": false,
+    "installed_or_generated_app_matches_source_verified": false,
+    "new_local_behavior_tests_run": 0,
+    "native_builds_run": 0,
+    "hosted_checks_run": 0,
+    "device_checks_run": 0,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "next_step": "5.2",
+    "rerun_required": false
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "scope": "THIRD_ORDINARY_BUSINESS_ACTOR_SETUP",
+  "result": "BROWSER_RUNTIME_DOCUMENTATION_DID_NOT_RETURN_NO_ACCOUNT_CREATED",
+  "local_browser_request": "Read-only runtime bootstrap and documentation",
+  "waited_seconds_approximately": 60,
+  "cancelled_read_only_request": true,
+  "returned_browser_state_or_documentation": false,
+  "connection_cause_established": false,
+  "Auth_user_creation_connector_available": false,
+  "third_account_created": false,
+  "UI_mutations": 0,
+  "external_email_requests": 0,
+  "existing_task_authorization_retained": true,
+  "required_dependency": "A working connected Browser session for the staging Supabase Auth UI, or an equivalent supported Auth Admin user-creation capability. Do not extract server credentials, SQL-set passwords or demote the existing Super Admin.",
+  "completed_Family_receipt": "docs/security-audit/security-fr-2-batch-x-family-proof-path-hosted-completion.json",
+  "family_setup_confirmation_still_pending": false,
+  "production_changed": false,
+  "product_defect_inferred": false,
+  "full_Stage_3_complete": false
+}

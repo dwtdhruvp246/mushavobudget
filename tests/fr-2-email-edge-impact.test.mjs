@@ -1,0 +1,255 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {spawnSync} from 'node:child_process';
+import {checkEdgeImpact,decodeSourceMultipart,compareSourceBytes,matchReviewedArtifact,impactRef,impactStage,sixNames} from '../scripts/check-fr-2-email-edge-impact.mjs';
+import {readConfiguration} from '../supabase/functions/submit-enquiry/handler.mjs';
+const token='sbp_fc'+'SYNTHETIC_PRIVATE_TOKEN_'.repeat(2);
+const privateMarker='PRIVATE_SOURCE_OR_ERROR_NEVER_PRINT';
+const entry='/home/deno/functions/submit-enquiry/index.ts';
+const row={slug:'submit-enquiry',id:'SYNTHETIC_PRIVATE_ID',status:'ACTIVE',version:7,verify_jwt:false,created_at:1,updated_at:3};
+const sha=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
+const beforeHash=sha([row]);
+const baseline={receipt:{stage_step:'FR.2.4.E5.12_EDGE_CONFIGURATION_AND_SCHEDULER_READINESS',other_function_count:1,selected_functions_still_absent:true,other_function_metadata_SHA256:beforeHash}};
+const sources=new Map(await Promise.all(['index.ts','handler.mjs'].map(async n=>[n,await readFile(new URL('../supabase/functions/submit-enquiry/'+n,import.meta.url))])));
+function multipart({files=[...sources].map(([n,b])=>({path:entry.replace('index.ts',n),body:b})),metadata={entrypoint_path:'file://'+entry},boundary='SafeBoundaryFixture',supabasePath=false}={}){
+  const chunks=[];
+  if(metadata!==false)chunks.push(Buffer.from('--'+boundary+'\r\nContent-Disposition: form-data; name="metadata"\r\n\r\n'+JSON.stringify(metadata)+'\r\n'));
+  for(const f of files)chunks.push(Buffer.from('--'+boundary+'\r\nContent-Disposition: form-data; name="file"; filename="'+(supabasePath?'ignored.ts':f.path)+'"\r\n'+(supabasePath?'Supabase-Path: '+f.path+'\r\n':'')+'Content-Type: application/typescript\r\n\r\n'),Buffer.from(f.body),Buffer.from('\r\n'));
+  chunks.push(Buffer.from('--'+boundary+'--\r\n'));return {bytes:Buffer.concat(chunks),type:'multipart/form-data; boundary='+boundary};
+}
+function fixture({rows=[row],detailPatch={},body=multipart(),mutate,baselineReceipt=baseline}={}){
+  const calls=[];let i=0;
+  const transport=async(url,init)=>{
+    calls.push({url,init});assert.equal(init.method,'GET');assert.equal(init.redirect,'error');assert.equal(init.headers.Authorization,'Bearer '+token);assert.equal(init.body,undefined);
+    assert(url.startsWith('https://api.supabase.com/v1/projects/'+impactRef));
+    assert(!url.includes('/secrets')&&!url.includes('/database')&&!url.includes('/functions/v1/'));
+    i++;let response;
+    if(i===1)response=Response.json({ref:impactRef,status:'ACTIVE_HEALTHY',database:{host:'db.'+impactRef+'.supabase.co'}});
+    else if(i===2||i===6)response=Response.json(rows);
+    else if(i===3||i===5)response=Response.json({...row,import_map:false,entrypoint_path:'file://'+entry,...detailPatch});
+    else if(i===4){assert.equal(init.headers.Accept,'multipart/form-data');response=new Response(body.bytes,{headers:{'Content-Type':body.type}});}
+    else throw Error(privateMarker);
+    return mutate?mutate(i,response):response;
+  };
+  return {calls,run:input=>checkEdgeImpact(input??{token},{transport,baselineReceipt})};
+}
+function privateSafe(r){const s=JSON.stringify(r);for(const value of [token,privateMarker,row.id,entry])assert(!s.includes(value));assert.equal(r.Edge_functions_invoked,0);assert.equal(r.downloaded_source_executed_or_saved,false);assert.equal(r.readiness_approved,false);assert.equal(r.shared_configuration_runtime_impact_verified,false);assert.equal(r.previous_deployable_artifact_retained,false);}
+test('six fixed GETs establish byte parity and stable list/detail snapshots without invoking source',async()=>{
+  const f=fixture(),r=await f.run();assert.equal(r.exit_code,0);assert.equal(r.requests_attempted,6);assert.equal(r.downloaded_source_files,2);assert(r.exact_reviewed_contact_source_bytes_match&&r.six_names_not_consumed_by_matched_source&&r.selected_functions_absent_before_and_after);assert.equal(r.other_function_metadata_SHA256,beforeHash);privateSafe(r);
+  assert.deepEqual(f.calls.map(x=>x.url.split(impactRef)[1]),['','/functions','/functions/submit-enquiry','/functions/submit-enquiry/body','/functions/submit-enquiry','/functions']);
+});
+test('pinned staging baseline is loaded only by the default path; test dependency is not a request field',async()=>{
+  const f=fixture();const r=await f.run({token,baselineReceipt:baseline});assert.equal(r.problem_code,'PRIVATE_TOKEN_INPUT_REQUIRED');assert.equal(f.calls.length,0);
+});
+test('bad token and unknown caller fields stop before any request',async()=>{
+  for(const input of [{},{token:'invalid'},{token,url:'https://example.invalid'},{token,write:true}]){const f=fixture();const r=await f.run(input);assert.equal(r.exit_code,1);assert.equal(f.calls.length,0);privateSafe(r);}
+});
+test('contradictory project id, host mismatch and unhealthy target stop before functions',async()=>{
+  for(const patch of [{id:'abcdefghijklmnopqrst'},{database:{host:'wrong.invalid'}},{status:'INACTIVE'}]){const f=fixture({mutate:(i,r)=>i===1?Response.json({ref:impactRef,status:'ACTIVE_HEALTHY',database:{host:'db.'+impactRef+'.supabase.co'},...patch}):r});const r=await f.run();assert.equal(r.exit_code,1);assert.equal(f.calls.length,1);}
+});
+test('baseline drift is explicit and prevents private source retrieval',async()=>{
+  const f=fixture({rows:[{...row,version:8}]});const r=await f.run();assert.equal(r.problem_code,'BASELINE_METADATA_CHANGED');assert.equal(f.calls.length,2);privateSafe(r);
+});
+test('a newly appeared selected route stops before downloading any source',async()=>{
+  const f=fixture({rows:[row,{...row,slug:'send-test-push',id:'other'}]});const r=await f.run();assert.equal(r.problem_code,'SELECTED_FUNCTION_APPEARED');assert.equal(f.calls.length,2);
+});
+test('an unknown sole function is not requested or printed',async()=>{
+  const rows=[{...row,slug:'unreviewed-function'}];const f=fixture({rows,baselineReceipt:{receipt:{...baseline.receipt,other_function_metadata_SHA256:sha(rows)}}});const r=await f.run();assert.equal(r.problem_code,'UNRELATED_FUNCTION_REVIEW_REQUIRED');assert.equal(f.calls.length,2);assert(!JSON.stringify(r).includes('unreviewed-function'));
+});
+test('duplicate malformed and excessively large lists stop at metadata',async()=>{
+  for(const rows of [[row,row],[{...row,slug:'../bad'}],Array(257).fill(row),{rows:[row]}]){const f=fixture({rows});const r=await f.run();assert.equal(r.problem_code,'FUNCTION_METADATA_REVIEW_REQUIRED');assert.equal(f.calls.length,2);}
+});
+test('JWT, import-map, version and entrypoint differences prevent source comparison',async()=>{
+  for(const detailPatch of [{verify_jwt:true},{import_map:true},{version:8},{entrypoint_path:'file:///src/../index.ts'},{import_map_path:'/private/map.json'}]){const f=fixture({detailPatch});const r=await f.run();assert.equal(r.exit_code,1);assert.equal(f.calls.length,3);privateSafe(r);}
+});
+test('source bytes including inert malicious JavaScript are never executed or accepted',async()=>{
+  const body=multipart({files:[{path:entry,body:Buffer.from('globalThis.PRIVATE_SENTINEL=true;throw Error("'+privateMarker+'");')},{path:entry.replace('index.ts','handler.mjs'),body:sources.get('handler.mjs')}]});
+  const f=fixture({body}),r=await f.run();assert.equal(r.problem_code,'FUNCTION_SOURCE_MISMATCH');assert.equal(f.calls.length,4);assert.equal(globalThis.PRIVATE_SENTINEL,undefined);privateSafe(r);
+});
+test('all source files must be present and exact, with no extra dependency or path traversal',async()=>{
+  for(const files of [[{path:entry,body:sources.get('index.ts')}],[...sources].map(([n,b])=>({path:entry.replace('index.ts',n),body:b})).concat([{path:'/private/.env',body:'private'}]),[{path:entry,body:sources.get('index.ts')},{path:entry.replace('index.ts','../handler.mjs'),body:sources.get('handler.mjs')}]] ){
+    const f=fixture({body:multipart({files})}),r=await f.run();assert.equal(r.problem_code,'FUNCTION_SOURCE_REVIEW_REQUIRED');assert.equal(f.calls.length,4);privateSafe(r);
+  }
+});
+test('standard supabase-path headers are handled without any filesystem extraction',async()=>{
+  const r=await fixture({body:multipart({supabasePath:true})}).run();assert.equal(r.exit_code,0);privateSafe(r);
+});
+test('optional metadata uses either exact entrypoint form and rejects conflicts',async()=>{
+  for(const metadata of [false,{deno2_entrypoint_path:'file://'+entry}])assert.equal((await fixture({body:multipart({metadata})}).run()).exit_code,0);
+  const r=await fixture({body:multipart({metadata:{entrypoint_path:'file:///different/index.ts'}})}).run();assert.equal(r.problem_code,'FUNCTION_SOURCE_REVIEW_REQUIRED');
+});
+test('multipart truncation duplicate paths ambiguous headers and binary format fail closed',()=>{
+  const m=multipart();for(const [bytes,type] of [[m.bytes.subarray(0,-6),m.type],[m.bytes,'application/octet-stream'],[Buffer.from(m.bytes.toString().replace('Content-Type: application/typescript','Content-Type: application/typescript\r\nContent-Type: private')),m.type],[multipart({files:[{path:entry,body:'x'},{path:entry,body:'x'}]}).bytes,m.type]])assert.throws(()=>decodeSourceMultipart(bytes,type,entry));
+});
+test('metadata changes after body retrieval remain review results despite matched source',async()=>{
+  for(const phase of [5,6]){const f=fixture({mutate:(i,r)=>i===phase?Response.json(i===5?{...row,import_map:false,entrypoint_path:'file://'+entry,ezbr_sha256:'a'.repeat(64)}:[{...row,version:8}]):r});const r=await f.run();assert.equal(r.exit_code,1);assert.equal(r.problem_code,'OBSERVATION_CHANGED');assert.equal(r.selected_functions_absent_before_and_after,false);privateSafe(r);}
+});
+test('private HTTP failures at every phase stop without retry or body disclosure',async()=>{
+  for(let phase=1;phase<=6;phase++){const f=fixture({mutate:(i,r)=>i===phase?new Response(privateMarker,{status:403}):r});const r=await f.run();assert.equal(r.problem_code,'PROVIDER_GET_REVIEW_REQUIRED');assert.equal(f.calls.length,phase);privateSafe(r);}
+});
+test('redirect and wrong response URL are refused before parsing',async()=>{
+  for(const key of ['redirected','url']){const f=fixture({mutate:(i,r)=>{if(i===2)Object.defineProperty(r,key,{value:key==='url'?'https://example.invalid':true});return r;}});const r=await f.run();assert.equal(r.exit_code,1);assert.equal(f.calls.length,2);privateSafe(r);}
+});
+test('JSON and source byte limits stop collection with safe receipts',async()=>{
+  for(const phase of [2,4]){const f=fixture({mutate:(i,r)=>i===phase?new Response('x'.repeat(phase===2?262145:2097153),{headers:{'Content-Type':phase===2?'application/json':multipart().type}}):r});const r=await f.run();assert.equal(r.problem_code,'RESPONSE_TOO_LARGE');assert.equal(f.calls.length,phase);privateSafe(r);}
+});
+test('network exceptions never print the token source or raw error',async()=>{
+  const r=await checkEdgeImpact({token},{baselineReceipt:baseline,transport:async()=>{throw Error(token+privateMarker);}});assert.equal(r.problem_code,'PROVIDER_GET_REVIEW_REQUIRED');privateSafe(r);
+});
+test('malformed private baseline refuses any provider request',async()=>{
+  const f=fixture({baselineReceipt:{receipt:{...baseline.receipt,other_function_count:2}}});const r=await f.run();assert.equal(r.problem_code,'SOURCE_BASELINE_REVIEW_REQUIRED');assert.equal(f.calls.length,0);
+});
+test('private CLI preflight performs no requests and stdout remains JSON only',()=>{
+  const r=spawnSync(process.execPath,['scripts/check-fr-2-email-edge-impact.mjs','--private-parent-pipe'],{input:'{"preflight":true}',encoding:'utf8'});assert.equal(r.status,0);assert.equal(r.stderr,'');assert.deepEqual(JSON.parse(r.stdout),{stage_step:impactStage,result:'PRIVATE_PIPE_PREFLIGHT_PASS',requests_attempted:0,exit_code:0});
+});
+test('private CLI rejects argument or input escape hatches',()=>{
+  for(const [args,input]of [[[],JSON.stringify({token})],[['--private-parent-pipe'],JSON.stringify({token,baselineReceipt:baseline})],[['--private-parent-pipe'],'x'.repeat(8193)]]){const r=spawnSync(process.execPath,['scripts/check-fr-2-email-edge-impact.mjs',...args],{input,encoding:'utf8'});assert.equal(r.status,1);assert.equal(r.stderr,'');privateSafe({...JSON.parse(r.stdout),Edge_functions_invoked:0,downloaded_source_executed_or_saved:false,readiness_approved:false,shared_configuration_runtime_impact_verified:false,previous_deployable_artifact_retained:false});}
+});
+function environment(modern=false){return {SUPABASE_URL:'https://'+impactRef+'.supabase.co',SUPABASE_SERVICE_ROLE_KEY:'sb_secret_SYNTHETIC',...(modern?{SUPABASE_SECRET_KEYS:JSON.stringify({default:'sb_secret_MODERN_SYNTHETIC'})}:{}),MUSHAVO_CONTACT_TURNSTILE_SECRET:'0xSYNTHETIC_TURNSTILE_SECRET',MUSHAVO_CONTACT_QUOTA_SECRET:'ab'.repeat(32)};}
+test('actual reviewed contact configuration reads only the five reviewed platform/contact names',()=>{
+  const calls=[];assert(readConfiguration(name=>{calls.push(name);return environment()[name];}));assert.deepEqual(calls,['SUPABASE_URL','SUPABASE_SECRET_KEYS','SUPABASE_SERVICE_ROLE_KEY','MUSHAVO_CONTACT_TURNSTILE_SECRET','MUSHAVO_CONTACT_QUOTA_SECRET']);assert(!calls.some(x=>sixNames.includes(x)));
+});
+test('all six proposed values leave actual legacy and modern contact configuration unchanged',()=>{
+  for(const modern of [false,true]){const original=environment(modern);const prior=readConfiguration(k=>original[k]);assert(prior);for(const name of sixNames){const after={...original,[name]:privateMarker};assert.deepEqual(readConfiguration(k=>after[k]),prior);}assert.deepEqual(readConfiguration(k=>({...original,...Object.fromEntries(sixNames.map(n=>[n,privateMarker]))})[k]),prior);}
+});
+test('adding the six names cannot enable a contact handler missing its own secrets',()=>{
+  const values=Object.fromEntries(sixNames.map(n=>[n,privateMarker]));assert.equal(readConfiguration(k=>values[k]),null);
+});
+test('current revision reports boundary grammar failure without printing the content-type value',async()=>{
+  const body=multipart();body.type+='; private-extra='+privateMarker;
+  const f=fixture({body}),r=await f.run();assert.equal(r.diagnostic_revision,5);assert.equal(r.problem_code,'FUNCTION_SOURCE_REVIEW_REQUIRED');assert.equal(r.source_observation.decoder_step,'CONTENT_TYPE_BOUNDARY');assert.equal(r.requests_attempted,4);assert.equal(r.downloaded_source_files,0);privateSafe(r);
+});
+test('missing disposition is isolated using a count without exposing unknown header names',async()=>{
+  const body=multipart();body.bytes=Buffer.from(body.bytes.toString().replace('Content-Disposition:','X-Private-Disposition:'));
+  const r=await fixture({body}).run();assert.equal(r.source_observation.decoder_step,'CONTENT_DISPOSITION');assert.equal(r.source_observation.multipart_parts_observed,1);assert.equal(r.source_observation.parts_with_content_disposition,0);assert.equal(r.source_observation.source_files_decoded,0);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('missing file-path parameter is distinguished from a private path mismatch',async()=>{
+  const body=multipart();body.bytes=Buffer.from(body.bytes.toString().replace('; filename="'+entry+'"',''));
+  const r=await fixture({body}).run();assert.equal(r.source_observation.decoder_step,'FILE_PART_PATH');assert.equal(r.source_observation.file_parts_observed,1);assert.equal(r.source_observation.file_path_forms.unsupported,1);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('metadata mismatch reports decoded counts rather than inventing a zero-file provider response',async()=>{
+  const r=await fixture({body:multipart({metadata:{entrypoint_path:'file:///private/'+privateMarker+'/index.ts'}})}).run();
+  assert.equal(r.source_observation.decoder_step,'EXPECTED_SOURCE_RELATIVE_PATHS');assert.equal(r.source_observation.source_files_decoded,2);assert.equal(r.source_observation.metadata_part_observed,true);assert.equal(r.source_observation.metadata_has_primary_entrypoint,true);assert.equal(r.source_observation.metadata_entrypoint_matches_detail,false);assert.equal(r.downloaded_source_files,0);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('extra source parts report only bounded counts and never their private names',async()=>{
+  const files=[...sources].map(([n,b])=>({path:entry.replace('index.ts',n),body:b})).concat([{path:'/private/'+privateMarker+'.js',body:privateMarker}]);
+  const r=await fixture({body:multipart({files})}).run();assert.equal(r.source_observation.decoder_step,'EXPECTED_SOURCE_FILE_COUNT');assert.equal(r.source_observation.source_files_decoded,3);assert.equal(r.source_observation.file_path_forms.absolute_posix,3);assert.equal(r.exact_reviewed_contact_source_bytes_match,false);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('relative source paths map safely into the reviewed two-file package',async()=>{
+  const files=[...sources].map(([n,b])=>({path:n,body:b}));const r=await fixture({body:multipart({files})}).run();assert.equal(r.source_observation.decoder_step,'COMPLETE');assert.equal(r.source_observation.file_path_forms.relative,2);assert.equal(r.source_observation.unexpected_relative_file_count,0);assert.equal(r.source_observation.mapped_relative_file_count,2);assert.equal(r.exit_code,0);privateSafe(r);
+});
+test('valid source returns the completed diagnostic and ignores private metadata extras',async()=>{
+  const r=await fixture({body:multipart({metadata:{entrypoint_path:'file://'+entry,private_unknown:privateMarker}})}).run();assert.equal(r.exit_code,0);assert.equal(r.source_observation.decoder_step,'COMPLETE');assert.equal(r.source_observation.source_files_decoded,2);assert.deepEqual(r.source_observation.expected_relative_files,[{name:'index.ts',observed:true},{name:'handler.mjs',observed:true}]);assert.equal(r.source_observation.metadata_entrypoint_matches_detail,true);assert.equal(r.shared_configuration_runtime_impact_verified,false);privateSafe(r);
+});
+test('diagnostic state cannot be injected through private input to bypass source acceptance',async()=>{
+  const f=fixture();const r=await f.run({token,source_observation:{decoder_step:privateMarker},diagnostic_revision:2});assert.equal(f.calls.length,0);assert.equal(r.problem_code,'PRIVATE_TOKEN_INPUT_REQUIRED');assert.equal(r.source_observation.decoder_step,'NOT_REACHED');assert.equal(r.exit_code,1);privateSafe(r);
+});
+function bodyFiles(prefix=''){return [...sources].map(([n,b])=>({path:prefix+n,body:b}));}
+test('observed Deno2 metadata with a relative entrypoint and two relative files completes exact-byte checks',async()=>{
+  const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files:bodyFiles()})}),r=await f.run();
+  assert.equal(r.exit_code,0);assert.equal(f.calls.length,6);assert.equal(r.source_observation.body_entrypoint_selected,'DENO2_METADATA');assert.equal(r.source_observation.metadata_entrypoint_matches_detail,false);assert.equal(r.source_observation.entrypoint_mapping_verified,true);assert.equal(r.source_observation.mapped_relative_file_count,2);assert.equal(r.exact_reviewed_contact_source_bytes_match,true);privateSafe(r);
+});
+test('relative package-directory prefixes resolve against the Deno2 body entrypoint rather than the detail path',async()=>{
+  const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'source/submit-enquiry/index.ts'},files:bodyFiles('source/submit-enquiry/')})}).run();assert.equal(r.exit_code,0);assert.equal(r.source_observation.body_entrypoint_form,'RELATIVE');assert.equal(r.source_observation.entrypoint_mapping_verified,true);privateSafe(r);
+});
+test('absolute Deno2 body entrypoint with relative file parts uses the provider mixed-path convention',async()=>{
+  const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'file:///wire-source/index.ts'},files:bodyFiles()})}).run();assert.equal(r.exit_code,0);assert.equal(r.source_observation.body_entrypoint_form,'ABSOLUTE_POSIX');assert.equal(r.source_observation.metadata_entrypoint_matches_detail,false);privateSafe(r);
+});
+test('a complete absolute body namespace may differ from the unchanged detail namespace',async()=>{
+  const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'file:///wire-source/index.ts'},files:bodyFiles('/wire-source/')})}).run();assert.equal(r.exit_code,0);assert.equal(r.detail_metadata_agreed_before_and_after,true);assert.equal(r.source_observation.metadata_entrypoint_matches_detail,false);privateSafe(r);
+});
+test('Deno2 metadata takes precedence over the primary entrypoint using the pinned provider convention',async()=>{
+  const r=await fixture({body:multipart({metadata:{entrypoint_path:'file://'+entry,deno2_entrypoint_path:'source/index.ts'},files:bodyFiles('source/')})}).run();assert.equal(r.exit_code,0);assert.equal(r.source_observation.metadata_has_primary_entrypoint,true);assert.equal(r.source_observation.metadata_has_deno2_entrypoint,true);assert.equal(r.source_observation.body_entrypoint_selected,'DENO2_METADATA');privateSafe(r);
+});
+test('entrypoint traversal, encoded paths, remote URLs and different entrypoint filenames remain rejected',async()=>{
+  for(const value of ['../index.ts','source/../index.ts','file:///wire/../index.ts','file:///wire/%2e%2e/index.ts','https://private.invalid/index.ts','source/main.ts']){
+    const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:value},files:bodyFiles()})}),r=await f.run();assert.equal(r.exit_code,1);assert.equal(r.problem_code,'FUNCTION_SOURCE_REVIEW_REQUIRED');assert.equal(f.calls.length,4);privateSafe(r);
+  }
+});
+test('a correct Deno2 source mapping cannot pass changed source bytes or execute inert JavaScript',async()=>{
+  const files=bodyFiles();files[0].body=Buffer.from('globalThis.PRIVATE_SENTINEL=true;'+privateMarker);
+  const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}),r=await f.run();assert.equal(r.source_observation.entrypoint_mapping_verified,true);assert.equal(r.problem_code,'FUNCTION_SOURCE_MISMATCH');assert.equal(r.exact_reviewed_contact_source_bytes_match,false);assert.equal(f.calls.length,4);assert.equal(globalThis.PRIVATE_SENTINEL,undefined);privateSafe(r);
+});
+test('absolute and file-URL aliases cannot provide duplicate normalized source paths',async()=>{
+  const files=[{path:'/wire/index.ts',body:sources.get('index.ts')},{path:'file:///wire/index.ts',body:sources.get('handler.mjs')}];
+  const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'file:///wire/index.ts'},files})}).run();assert.equal(r.exit_code,1);assert.equal(r.source_observation.decoder_step,'FILE_PART_IDENTITY');privateSafe(r);
+});
+test('mixed absolute and relative aliases cannot map two parts onto the same reviewed destination',async()=>{
+  const files=[{path:'/wire/index.ts',body:sources.get('index.ts')},{path:'index.ts',body:sources.get('handler.mjs')}];
+  const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'file:///wire/index.ts'},files})}).run();assert.equal(r.exit_code,1);assert.equal(r.source_observation.entrypoint_mapping_verified,false);assert.equal(r.source_observation.decoder_step,'EXPECTED_SOURCE_RELATIVE_PATHS');privateSafe(r);
+});
+test('files outside the declared body namespace cannot pass by matching only their basenames',async()=>{
+  const files=bodyFiles('foreign/');const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'source/index.ts'},files})}).run();assert.equal(r.exit_code,1);assert.equal(r.source_observation.entrypoint_mapping_verified,false);assert.equal(r.source_observation.unexpected_relative_file_count,1);privateSafe(r);
+});
+test('exact comparison reports both fixed files with deterministic public hashes and lengths',async()=>{
+  const r=await fixture().run();assert.equal(r.exit_code,0);assert.deepEqual(r.source_comparison.map(x=>x.name),['index.ts','handler.mjs']);
+  for(const x of r.source_comparison){assert.equal(x.comparison_class,'EXACT');assert.equal(x.exact_bytes_match,true);assert.equal(x.reviewed_SHA256,x.downloaded_SHA256);assert.equal(x.reviewed_bytes,x.downloaded_bytes);assert.equal(x.UTF8_decoding_succeeded,true);}privateSafe(r);
+});
+test('both files are compared even when the entrypoint mismatches, with no after-requests',async()=>{
+  const files=bodyFiles();files[0].body=Buffer.from(privateMarker);const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}),r=await f.run();
+  assert.equal(r.problem_code,'FUNCTION_SOURCE_MISMATCH');assert.equal(f.calls.length,4);assert.deepEqual(r.source_comparison.map(x=>x.exact_bytes_match),[false,true]);assert.equal(r.source_comparison[0].comparison_class,'OTHER_BYTES');assert.equal(r.source_comparison[1].comparison_class,'EXACT');privateSafe(r);
+});
+test('the pinned CRLF handler variant satisfies artifact identity while exact LF identity stays false',async()=>{
+  const files=bodyFiles();files[1].body=Buffer.from(files[1].body.toString().replace(/\n/g,'\r\n'));const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}),r=await f.run(),c=r.source_comparison[1];
+  assert.equal(c.comparison_class,'CRLF_ONLY');assert.equal(c.CRLF_normalized_match,true);assert.notEqual(c.reviewed_SHA256,c.downloaded_SHA256);assert.equal(r.exit_code,0);assert.equal(r.exact_reviewed_contact_source_bytes_match,false);assert.equal(r.reviewed_contact_artifacts_match,true);assert.equal(r.six_names_not_consumed_by_matched_source,true);assert.equal(f.calls.length,6);privateSafe(r);
+});
+test('a leading UTF8 BOM is reported separately and still stops source acceptance',async()=>{
+  const files=bodyFiles();files[0].body=Buffer.concat([Buffer.from([0xef,0xbb,0xbf]),files[0].body]);const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}).run(),c=r.source_comparison[0];assert.equal(c.comparison_class,'LEADING_UTF8_BOM_ONLY');assert.equal(c.downloaded_has_leading_UTF8_BOM,true);assert.equal(c.reviewed_has_leading_UTF8_BOM,false);assert.equal(c.CRLF_normalized_match,false);assert.equal(c.leading_BOM_removed_match,true);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('combined leading BOM and CRLF differences have their own descriptive classification',async()=>{
+  const files=bodyFiles();files[1].body=Buffer.concat([Buffer.from([0xef,0xbb,0xbf]),Buffer.from(files[1].body.toString().replace(/\n/g,'\r\n'))]);const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}).run(),c=r.source_comparison[1];assert.equal(c.comparison_class,'BOM_AND_CRLF_ONLY');assert.equal(c.CRLF_normalized_match,false);assert.equal(c.leading_BOM_removed_match,false);assert.equal(c.BOM_and_CRLF_normalized_match,true);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('a single final LF difference is distinguished without trimming other whitespace',async()=>{
+  const files=bodyFiles();files[0].body=Buffer.from(files[0].body.toString().replace(/\n$/,''));const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}).run(),c=r.source_comparison[0];assert.equal(c.comparison_class,'SINGLE_FINAL_LF_AFTER_BOM_CRLF_NORMALIZATION');assert.equal(c.single_final_LF_difference_after_BOM_and_CRLF_normalization,true);assert.equal(c.BOM_and_CRLF_normalized_match,false);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('changed configuration names remain other-byte differences with no source text in the receipt',async()=>{
+  const files=bodyFiles();files[1].body=Buffer.from(files[1].body.toString().replace('MUSHAVO_CONTACT_QUOTA_SECRET',privateMarker));const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}).run(),c=r.source_comparison[1];assert.equal(c.comparison_class,'OTHER_BYTES');assert.equal(c.BOM_and_CRLF_normalized_match,false);assert.equal(c.single_final_LF_difference_after_BOM_and_CRLF_normalization,false);assert.equal(r.exit_code,1);privateSafe(r);
+});
+test('invalid UTF8 source remains a byte mismatch with no replacement-character equivalence',async()=>{
+  const files=bodyFiles();files[1].body=Buffer.from([0xff,0xfe,0x61]);const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}).run(),c=r.source_comparison[1];assert.equal(c.comparison_class,'INVALID_UTF8');assert.equal(c.UTF8_decoding_succeeded,false);assert.equal(c.BOM_and_CRLF_normalized_match,null);assert.equal(c.exact_bytes_match,false);assert.equal(r.problem_code,'FUNCTION_SOURCE_MISMATCH');privateSafe(r);
+});
+test('classification preserves internal BOMs bare CRs spaces code and more than one final LF',()=>{
+  const local=Buffer.from('const value = "a b";\n');
+  for(const altered of ['const value = "ab";\n','const value = "a\uFEFF b";\n','const value = "a b";\r','const value = "a b";\n\n\n','// changed\nconst value = "a b";\n']){
+    const c=compareSourceBytes('index.ts',Buffer.from(altered),local);assert.equal(c.comparison_class,'OTHER_BYTES');assert.equal(c.exact_bytes_match,false);
+  }
+  assert.throws(()=>compareSourceBytes(privateMarker,local,local));
+});
+const toCRLF=bytes=>Buffer.from(bytes.toString('utf8').replace(/\n/g,'\r\n'));
+test('both owner-observed CRLF fingerprints reproduce exactly and finish the six-read stability check',async()=>{
+  const files=bodyFiles().map(f=>({...f,body:toCRLF(f.body)}));const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}),r=await f.run();
+  assert.equal(r.exit_code,0);assert.equal(r.requests_attempted,6);assert.equal(r.exact_reviewed_contact_source_bytes_match,false);assert.equal(r.reviewed_contact_artifacts_match,true);assert.equal(r.source_review_basis,'EXACT_PINNED_CRLF_ARTIFACTS');assert.equal(r.downloaded_source_normalized_for_acceptance,false);assert(r.detail_metadata_agreed_before_and_after&&r.selected_functions_absent_before_and_after&&r.six_names_not_consumed_by_matched_source);
+  assert.deepEqual(r.source_comparison.map(c=>[c.downloaded_bytes,c.downloaded_SHA256]),[[363,'3298a0baa0f4f3dc430e7a633390a26f8150e6f4218c0de5f9bfca6a9d88fb45'],[10881,'a3e355178fc9f9c156c802f7f1d2f4423f7171e7eebb36e30435532491e78974']]);privateSafe(r);
+});
+test('mixed line endings remain unapproved even when CRLF normalization matches the reviewed source',async()=>{
+  const files=bodyFiles();files[0].body=Buffer.from(files[0].body.toString().replace('\n','\r\n'));
+  const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}),r=await f.run();assert.equal(r.source_comparison[0].CRLF_normalized_match,true);assert.equal(r.source_comparison[0].reviewed_artifact_variant,'UNAPPROVED');assert.equal(r.exit_code,1);assert.equal(r.reviewed_contact_artifacts_match,false);assert.equal(f.calls.length,4);privateSafe(r);
+});
+test('a locally changed reviewed baseline cannot define new accepted LF or CRLF variants',()=>{
+  const changed=Buffer.concat([sources.get('index.ts'),Buffer.from('// changed')]);assert.throws(()=>matchReviewedArtifact('index.ts',changed,changed),e=>e.safeCode==='SOURCE_BASELINE_REVIEW_REQUIRED');assert.throws(()=>matchReviewedArtifact(privateMarker,sources.get('index.ts'),sources.get('index.ts')));
+});
+test('pinned CRLF byte identity never bypasses changed after-detail or after-list metadata',async()=>{
+  const files=bodyFiles().map(f=>({...f,body:toCRLF(f.body)}));for(const phase of [5,6]){
+    const f=fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files}),mutate:(i,r)=>i===phase?Response.json(i===5?{...row,import_map:false,entrypoint_path:'file://'+entry,ezbr_sha256:'a'.repeat(64)}:[{...row,version:8}]):r});const r=await f.run();assert.equal(r.reviewed_contact_artifacts_match,true);assert.equal(r.exit_code,1);assert.equal(r.problem_code,'OBSERVATION_CHANGED');assert.equal(r.readiness_approved,false);privateSafe(r);
+  }
+});
+test('request input cannot widen the reviewed artifact allowlist or enable arbitrary normalization',async()=>{
+  for(const input of [{token,allowCRLF:true},{token,reviewedArtifacts:{}},{token,normalize:true}]){const f=fixture();const r=await f.run(input);assert.equal(r.exit_code,1);assert.equal(f.calls.length,0);assert.equal(r.reviewed_contact_artifacts_match,false);privateSafe(r);}
+});
+test('generated public CRLF handler configuration has the same modern and legacy reads and values',async()=>{
+  // Derived solely from the public reviewed repository source, never provider data.
+  const publicVariant=toCRLF(sources.get('handler.mjs'));const reviewedModule=await import('data:text/javascript;base64,'+publicVariant.toString('base64'));
+  for(const modern of [false,true]){const env=environment(modern),lfReads=[],crlfReads=[];const original=readConfiguration(k=>{lfReads.push(k);return env[k];});const variant=reviewedModule.readConfiguration(k=>{crlfReads.push(k);return env[k];});assert.deepEqual(variant,original);assert.deepEqual(crlfReads,lfReads);assert(!crlfReads.some(k=>sixNames.includes(k)));}
+});
+test('only pinned full-file LF or CRLF variants are accepted; BOM and final-LF alterations stay rejected',()=>{
+  for(const [name,local]of sources){assert.equal(matchReviewedArtifact(name,local,local).reviewed_artifact_variant,'REVIEWED_LF');assert.equal(matchReviewedArtifact(name,toCRLF(local),local).reviewed_artifact_variant,'PINNED_OWNER_OBSERVED_CRLF');
+    for(const changed of [Buffer.concat([Buffer.from([0xef,0xbb,0xbf]),toCRLF(local)]),Buffer.from(local.toString().replace(/\n$/,'')),Buffer.concat([local,Buffer.from('\n')])])assert.equal(matchReviewedArtifact(name,changed,local).reviewed_artifact_exact_bytes_match,false);
+  }
+});
+test('the four combinations of exact reviewed LF and pinned CRLF files retain truthful identity fields',async()=>{
+  for(let mask=0;mask<4;mask++){
+    const files=bodyFiles().map((f,i)=>({...f,body:mask&(1<<i)?toCRLF(f.body):f.body}));const r=await fixture({body:multipart({metadata:{deno2_entrypoint_path:'index.ts'},files})}).run();assert.equal(r.exit_code,0);assert.equal(r.reviewed_contact_artifacts_match,true);assert.equal(r.exact_reviewed_contact_source_bytes_match,mask===0);assert.equal(r.source_review_basis,mask===0?'EXACT_REVIEWED_LF_ARTIFACTS':mask===3?'EXACT_PINNED_CRLF_ARTIFACTS':'EXACT_REVIEWED_LF_AND_PINNED_CRLF_ARTIFACTS');privateSafe(r);
+  }
+});

@@ -1,0 +1,158 @@
+{
+  "stage_step": "FR.2.4.E4.3_DATABASE_GUARDS",
+  "result": "OFFLINE_ACTUAL_APPLICATION_RLS_RPC_AND_MODELED_STORAGE_GUARDS_SCOPED_PASS",
+  "scope": "FULL54_SOURCE_E2_SELF_SESSION_COMPONENT_AND_ACTUAL148_RPC_82_POLICY_INTEGRATION_WITH_SYNTHETIC_AUTH_AND_STORAGE_MODEL",
+  "node_version": "v22.17.0",
+  "pglite_version": "0.5.8",
+  "migration_count": 54,
+  "source_files_SHA256_verified": 63,
+  "tests": 32,
+  "pass": 32,
+  "fail": 0,
+  "cases": [
+    {
+      "title": "Offline acknowledgement is required before any guard change",
+      "result": "PASS"
+    },
+    {
+      "title": "Missing E2 and self-session backend refuses partial guard installation",
+      "result": "PASS"
+    },
+    {
+      "title": "An ordinary API role cannot install the candidate even with its offline acknowledgement",
+      "result": "PASS"
+    },
+    {
+      "title": "A changed routine grant stops installation before modifying any guarded function",
+      "result": "PASS"
+    },
+    {
+      "title": "Actual full-source integration installs 148 guards and 82 restrictive policies with protected metadata assertions",
+      "result": "PASS"
+    },
+    {
+      "title": "Reinstallation refuses to stack guards or replace an existing integration",
+      "result": "PASS"
+    },
+    {
+      "title": "All 82 named policies are restrictive, authenticated-only and cover both USING and WITH CHECK",
+      "result": "PASS"
+    },
+    {
+      "title": "Every original public function retains OID, ACL, arguments, defaults, result, volatility and settings",
+      "result": "PASS"
+    },
+    {
+      "title": "Every one of the 148 actual application entrypoints denies a password-only session before original logic",
+      "result": "PASS"
+    },
+    {
+      "title": "Every anonymously callable guarded entrypoint denies the actual anonymous role",
+      "result": "PASS"
+    },
+    {
+      "title": "Unverified existing Personal rows, Business profiles, Admin directory and private file are not released",
+      "result": "PASS"
+    },
+    {
+      "title": "Forged service, Admin, AAL2 and client verification claims do not bypass the actual authenticated role",
+      "result": "PASS"
+    },
+    {
+      "title": "Public catalogue, signup currencies and market rates remain available to anonymous and unverified users",
+      "result": "PASS"
+    },
+    {
+      "title": "The five reviewed public or pure exceptions retain their exact source bodies",
+      "result": "PASS"
+    },
+    {
+      "title": "The service-only mail-challenge path can establish proof while application gates are enforced",
+      "result": "PASS"
+    },
+    {
+      "title": "A different session of the same account remains denied after the first session verifies",
+      "result": "PASS"
+    },
+    {
+      "title": "Verified Personal access retains ownership isolation and the actual provisioning RPC works",
+      "result": "PASS"
+    },
+    {
+      "title": "Verified one-time-payment RPC preserves its nested entitlement, ownership and finance checks",
+      "result": "PASS"
+    },
+    {
+      "title": "Actual direct-table UPDATE works after proof and the unverified same-account session has no effect",
+      "result": "PASS"
+    },
+    {
+      "title": "Unverified direct INSERT cannot use correct owner and workspace values to bypass WITH CHECK",
+      "result": "PASS"
+    },
+    {
+      "title": "Private Storage metadata access requires proof and still enforces original path ownership",
+      "result": "PASS"
+    },
+    {
+      "title": "Business owner permissions and role snapshot work after proof without granting the foreign Business",
+      "result": "PASS"
+    },
+    {
+      "title": "All 36 converted SQL functions execute behind proof with original NULL-input semantics or purpose denials",
+      "result": "PASS"
+    },
+    {
+      "title": "A verified ordinary account remains non-Admin and receives no rows from the Admin subscription monitor",
+      "result": "PASS"
+    },
+    {
+      "title": "A platform Admin must verify first and then retains its existing role-based directory access",
+      "result": "PASS"
+    },
+    {
+      "title": "A genuine modeled service SET ROLE and service JWT retain permitted helper and scheduler paths",
+      "result": "PASS"
+    },
+    {
+      "title": "Service-only scheduler ACL remains unavailable to authenticated and anonymous callers",
+      "result": "PASS"
+    },
+    {
+      "title": "The new private application-context helper is not directly callable by any API role",
+      "result": "PASS"
+    },
+    {
+      "title": "Password invalidation immediately denies actual application RPC and table access again",
+      "result": "PASS"
+    },
+    {
+      "title": "Verified owner deletion still cascades the selected record conversion through the existing FK",
+      "result": "PASS"
+    },
+    {
+      "title": "Modeled Auth middleware signup callback still creates an unverified new Personal account",
+      "result": "PASS"
+    },
+    {
+      "title": "An unprivileged direct SQL pool identity receives no trusted-internal exemption",
+      "result": "PASS"
+    }
+  ],
+  "actual_authenticated_RPC_denial_probes": 148,
+  "actual_anonymous_RPC_denial_probes": 29,
+  "converted_SQL_verified_session_NULL_input_probes": 36,
+  "guarded_application_RPCs": 148,
+  "restrictive_policy_relations": 82,
+  "every_RPC_full_positive_operation_lifecycle_verified": false,
+  "actual_JWT_or_hosted_Storage_provider_schema_verified": false,
+  "canonical_schema_versioned_migration_Edge_Admin_UI_and_Pages_integration_complete": false,
+  "actual_hosted_requests": 0,
+  "actual_email_or_notification_dispatched": false,
+  "hosted_enforcement_installed": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "exit_code": 0
+}

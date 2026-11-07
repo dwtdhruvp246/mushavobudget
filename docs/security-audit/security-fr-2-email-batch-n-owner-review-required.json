@@ -1,0 +1,174 @@
+{
+  "stage_step": "FR.2.4.E5.27_BATCH_N_LOCAL_BROWSER_COOKIE_DOM_AND_SERVICE_WORKER",
+  "batch": "N",
+  "result": "LOCAL_BATCH_N_REVIEW_REQUIRED",
+  "source_parent_commit": "24c0f83dc1383966e35f06e4e63674c9798ef7ce",
+  "node_version": "v22.17.0",
+  "platform": "win32",
+  "source_hashes_verified": 188,
+  "syntax_checks": 39,
+  "tests": 120,
+  "pass": 119,
+  "fail": 1,
+  "groups": [
+    {
+      "name": "RETAINED_UI_ENTRY_AND_SECURITY_REGRESSIONS",
+      "tests": 89,
+      "pass": 89,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "exit_code": 0,
+      "signal": null,
+      "error_code": null,
+      "failed_case_titles": []
+    },
+    {
+      "name": "CDP_TLS_AND_LOOPBACK_GATEWAY_FIXTURE",
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "exit_code": 0,
+      "signal": null,
+      "error_code": null,
+      "failed_case_titles": []
+    }
+  ],
+  "browser": {
+    "stage_step": "FR.2.4.E5.27_BATCH_N_LOCAL_BROWSER_COOKIE_DOM_AND_SERVICE_WORKER",
+    "batch": "N",
+    "result": "LOCAL_BROWSER_BATCH_N_REVIEW_REQUIRED",
+    "scope": "ACTUAL_SHARED_COMPONENTS_GATEWAY_AND_SW_LOCAL_HTTPS_SYNTHETIC_BACKEND",
+    "tests": 21,
+    "pass": 20,
+    "fail": 1,
+    "checks": [
+      {
+        "check": "LOCAL_SECURE_CONTEXT_AND_REAL_DOM",
+        "status": "PASS"
+      },
+      {
+        "check": "NO_AUTOMATIC_EMAIL_AND_PASSWORD_ONLY_LOCKED",
+        "status": "PASS"
+      },
+      {
+        "check": "EXPLICIT_REMEMBER_CHOICE_BOUND",
+        "status": "PASS"
+      },
+      {
+        "check": "NATIVE_PATTERN_BLOCKS_MALFORMED_CODE",
+        "status": "PASS"
+      },
+      {
+        "check": "REAL_DOM_CODE_SUBMISSION_UNLOCKS_AND_CLEARS_INPUT",
+        "status": "PASS"
+      },
+      {
+        "check": "SECURE_HTTPONLY_STRICT_HOST_ONLY_COOKIE",
+        "status": "PASS"
+      },
+      {
+        "check": "REMEMBER_CREDENTIAL_NOT_READABLE_BY_DOCUMENT_COOKIE",
+        "status": "PASS"
+      },
+      {
+        "check": "NEW_SAME_ACCOUNT_SESSION_RESTORES_WITHOUT_MAIL",
+        "status": "PASS"
+      },
+      {
+        "check": "RESTORE_DOES_NOT_EXTEND_COOKIE_DEADLINE",
+        "status": "PASS"
+      },
+      {
+        "check": "OTHER_ACCOUNT_AND_FORGED_BROWSER_FLAGS_STAY_LOCKED",
+        "status": "PASS"
+      },
+      {
+        "check": "GATEWAY_RESTORE_WITH_FALSE_RPC_CANNOT_UNLOCK",
+        "status": "PASS"
+      },
+      {
+        "check": "ORDINARY_PROVED_ACCOUNT_STILL_DENIED_ADMIN",
+        "status": "PASS"
+      },
+      {
+        "check": "ACTOR_CHANGE_SYNCHRONOUSLY_CLEARS_VIEW_AND_TICKET",
+        "status": "PASS"
+      },
+      {
+        "check": "REAL_BROADCAST_CHANNEL_INVALIDATES_PEER_DOM_WITHOUT_UNLOCK_OR_FETCH",
+        "status": "PASS"
+      },
+      {
+        "check": "REAL_DOM_SNAPSHOT_REMOVES_PRIVATE_NODES_PRESERVES_LISTENERS",
+        "status": "PASS"
+      },
+      {
+        "check": "SAMESITE_STRICT_COOKIE_WITHHELD_ON_CROSS_SITE_POST",
+        "status": "PASS"
+      },
+      {
+        "check": "NONREMEMBER_CODE_CREATES_NO_PERSISTENT_ACCOUNT_COOKIE",
+        "status": "PASS"
+      },
+      {
+        "check": "ACTUAL_SW_ACTIVATION_REMOVES_OLD_PRODUCT_CACHE",
+        "status": "PASS"
+      },
+      {
+        "check": "ACTUAL_SW_DOES_NOT_CACHE_API_OR_PRIVATE_RESPONSES",
+        "status": "PASS"
+      },
+      {
+        "check": "ACTUAL_SW_NAVIGATION_OUTAGE_SHOWS_SAFE_OFFLINE_PAGE",
+        "status": "PASS"
+      },
+      {
+        "check": "LOCAL_FIXTURE_NO_UNREVIEWED_ROUTE",
+        "status": "FAIL"
+      }
+    ],
+    "browser_product": "Edg/155.0.4283.62",
+    "isolated_temporary_profile": true,
+    "temporary_profile_removed": true,
+    "browser_process_stopped": true,
+    "loopback_fixture_closed": true,
+    "actual_browser_engine_executed": true,
+    "ephemeral_test_certificate_in_memory": true,
+    "local_certificate_validation_bypassed": true,
+    "real_Auth_database_and_mail_exercised": false,
+    "full_app_or_business_pages_bootstrapped": false,
+    "hosted_TLS_or_CSRF_acceptance": false,
+    "installed_PWA_OS_lifecycle_or_native_acceptance": false,
+    "external_traffic_OS_sandboxed": false,
+    "actual_hosted_requests_by_harness": 0,
+    "real_email_requests": 0,
+    "private_packets_accessed": false,
+    "committed_mode_change_requests": 0,
+    "hosted_acceptance": false,
+    "live_activation_approved": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "checkpoint": "LOCAL_FIXTURE_NO_UNREVIEWED_ROUTE",
+    "problem_code": "LOCAL_BROWSER_CHECK_REQUIRED",
+    "exit_code": 1,
+    "checked_UTC": "2026-10-23T11:21:45.387Z"
+  },
+  "actual_hosted_requests_by_harness": 0,
+  "real_email_requests": 0,
+  "private_packets_accessed": false,
+  "committed_mode_change_requests": 0,
+  "hosted_acceptance": false,
+  "live_activation_approved": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "checkpoint": "ACTUAL_LOCAL_BROWSER",
+  "problem_code": "LOCAL_BATCH_N_SOURCE_OR_BROWSER_REVIEW_REQUIRED",
+  "exit_code": 1
+}

@@ -1,0 +1,77 @@
+{
+  "stage_step": "FR.2.4_ADMIN_READINESS",
+  "result": "LOCAL_READ_ONLY_ADMIN_METADATA_DIAGNOSTIC_SCOPED_PASS",
+  "source_parent_commit": "4092ed756be509f36e1a64201926524de6ef1068",
+  "node_version": "v24.19.0",
+  "migration_count": 54,
+  "tests": [
+    {
+      "test": "Read-only full54-migration catalog returns all36 selected routines without overload ambiguity",
+      "status": "PASS"
+    },
+    {
+      "test": "Exact frozen55 public plus three Storage policy selectors all resolve",
+      "status": "PASS"
+    },
+    {
+      "test": "Source effective execute counts14 anonymous/31 authenticated retained as metadata only",
+      "status": "PASS"
+    },
+    {
+      "test": "No operator/helper metadata yields blocked readiness without promoting shared actors or inferring recovery",
+      "status": "PASS"
+    },
+    {
+      "test": "Only exact CRLF-to-LF body normalization preserves routine fingerprints",
+      "status": "PASS"
+    },
+    {
+      "test": "Single actual routine body drift changes selected fingerprint",
+      "status": "PASS"
+    },
+    {
+      "test": "Effective execute privilege drift changes selected source projection",
+      "status": "PASS"
+    },
+    {
+      "test": "Unexpected selected-name overload is included and exposes catalog drift",
+      "status": "PASS"
+    },
+    {
+      "test": "Changed policy expression changes one exact selected policy fingerprint",
+      "status": "PASS"
+    },
+    {
+      "test": "Missing selected policy is explicitly reported rather than silently omitted",
+      "status": "PASS"
+    },
+    {
+      "test": "Unverified factor excluded; isolated active verified TOTP counts without claiming operator control or recovery",
+      "status": "PASS"
+    },
+    {
+      "test": "Ordinary SQL caller rejected before privileged metadata reads",
+      "status": "PASS"
+    },
+    {
+      "test": "Roles/accounts/factors/public functions/policies remain byte-equivalent after read-only checks",
+      "status": "PASS"
+    },
+    {
+      "test": "Safe output contains catalog hashes/counts and no actor identifiers, raw bodies or credentials",
+      "status": "PASS"
+    }
+  ],
+  "local_PASS": 14,
+  "local_FAIL": 0,
+  "exit_code": 0,
+  "syntax_checks": 1,
+  "modeled_Auth_Storage_and_default_grants": true,
+  "real_hosted_or_genuine_Auth_MFA_cases_run": 0,
+  "SQL_ASCII": true,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "initial_local_attempt_failed": true,
+  "initial_local_attempt_reason": "Local isolated operator fixture omitted app_admins required email; added synthetic local email without changing diagnostic or authorization checks.",
+  "final_local_attempt_passed": true
+}

@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "stage_step": "6.2",
+  "date": "2026-10-12",
+  "source_parent_commit": "87a1d302c0d490578dc0752fa7c0124ef0e4eda7",
+  "scope": "INERT_IDENTITY_EMAIL_DESIGN_AND_ROLLOUT_CONTRACT_NOT_PROVIDER_OR_MAIL_IMPLEMENTATION",
+  "template_candidate": {
+    "paths": [
+      "supabase/templates/invite-user.html",
+      "supabase/templates/invite-user.subject.txt",
+      "supabase/templates/magic-link.html",
+      "supabase/templates/magic-link.subject.txt"
+    ],
+    "purpose": "SUBJECT_AND_BODY_COPY_ONLY",
+    "SiteURL_requirement": "EXACT_SELECTED_HTTPS_ROOT_ORIGIN_WITHOUT_TRAILING_SLASH_QUERY_FRAGMENT_OR_PATH",
+    "route_order": "EXACT_CANONICAL_SENDER_ORDER",
+    "supported_routes": [
+      {
+        "purpose": "business",
+        "path": "/auth.html?flow=business-new&invitation=<36-byte-id>",
+        "delivery": "NEW_IDENTITY_INVITE"
+      },
+      {
+        "purpose": "business",
+        "path": "/auth.html?flow=business-existing&invitation=<36-byte-id>",
+        "delivery": "EXISTING_IDENTITY_OTP"
+      },
+      {
+        "purpose": "business",
+        "path": "/business.html?invitation=<36-byte-id>",
+        "delivery": "RETAINED_LEGACY_CALLBACK"
+      },
+      {
+        "purpose": "admin",
+        "path": "/signup.html?mode=admin-invite&invitation=<36-byte-id>",
+        "delivery": "ADMIN_NEW_OR_UNFINISHED_IDENTITY"
+      }
+    ],
+    "generic_fallback_preserved": true,
+    "ConfirmationURL_placeholder_unchanged": true,
+    "template_id_length_is_not_UUID_or_identity_validation": true,
+    "Go_Supabase_renderer_verified": false,
+    "contextual_HTML_or_URL_escaping_verified": false,
+    "deployed_templates_verified": false
+  },
+  "identity_contract": {
+    "Google_login_intent": "PRIOR_OWNER_INTENT_PRESERVED",
+    "Apple_iOS_option": "PROPOSED_NOT_NEWLY_OWNER_CONFIRMED",
+    "provider_configuration": "UNVERIFIED",
+    "provider_to_Supabase_callback": "REGISTER_EXACT_SELECTED_PROJECT_AUTH_CALLBACK",
+    "Supabase_to_app_callback": "SEPARATE_PURPOSE_BOUND_TRANSACTION_ROUTE_TO_BE_IMPLEMENTED",
+    "web": "PROPOSED_PROVIDER_REDIRECT_WITH_STATE_AND_PKCE_TRANSACTION",
+    "native": "PERMITTED_SYSTEM_OR_NATIVE_PROVIDER_FLOW_WITH_VERIFIED_RETURN_AND_SECURE_VERIFIER_SESSION_HANDOFF",
+    "native_implementation_verified": false,
+    "transaction_requirements": [
+      "Fresh operation/environment binding",
+      "Authenticated initiating UUID binding for manual linking",
+      "State/nonce/verifier verified by appropriate SDK/server flow",
+      "Expiry, replay, cancellation and account-switch handling",
+      "Explicit verified-account transfer",
+      "No fallback from missing/error material to stored unrelated identity",
+      "Immutable Auth UUID retains memberships/finance/plan",
+      "No client email/metadata-based merge or role grant",
+      "Real automatic same-email linking and unconfirmed collision behavior verified",
+      "Apple relay/different-email linking is deliberate and authenticated",
+      "Unfinished Admin invitation/proposed plan not silently replaced",
+      "Required profile and selected currencies completed on social onboarding"
+    ],
+    "provider_tokens_or_secrets_in_frontend": false,
+    "unrelated_Google_data_scopes_proposed": false,
+    "runtime_provider_sign_in_implemented": false,
+    "runtime_link_unlink_implemented": false
+  },
+  "email_contract": {
+    "initial_route": "PRESERVE_EXISTING_SMTP",
+    "new_hook_or_provider_switch_activated": false,
+    "Auth_hook_option": "SEPARATE_REVIEWED_SIGNED_HOOK_REPLACES_SMTP_WHEN_ENABLED_NOT_PARALLEL_OBSERVER",
+    "Auth_hook_requirements": [
+      "Raw-body authenticated signature and timestamp",
+      "Trusted supported Auth action/recipient/token mapping",
+      "Secure email-change current/new recipient and token pairs",
+      "No raw tokens/full links in analytics/shared event queue/log receipts",
+      "Bounded provider error/rate/duplicate outcomes",
+      "Exact previous route/template restoration tested"
+    ],
+    "application_mail_option": "SEPARATE_SERVER_AUTHORIZED_DURABLE_EVENT_WORKER_NOT_EXISTING_WEB_PUSH_DISPATCHER",
+    "application_mail_requirements": [
+      "Server-derived event/workspace/recipient",
+      "Dispatch-time membership/role/event recheck",
+      "Durable claims, idempotency/dedup and bounded retries",
+      "Per-recipient/global budgets, suppression/preferences",
+      "Provider acceptance distinct from inbox delivery",
+      "Approved category retention/redacted monitoring/recovery"
+    ],
+    "runtime_Auth_hook_implemented": false,
+    "runtime_application_email_worker_implemented": false
+  },
+  "rollout_prerequisites": [
+    {
+      "id": "IE-C01",
+      "requirement": "Exact staging deployment, effective Auth settings and selected route/template installation",
+      "status": "UNVERIFIED"
+    },
+    {
+      "id": "IE-C02",
+      "requirement": "Actual canonical SiteURL, exact allowed redirects and provider callbacks",
+      "status": "UNVERIFIED"
+    },
+    {
+      "id": "IE-C03",
+      "requirement": "Google client/audience/branding/domains and selected minimal scopes",
+      "status": "UNVERIFIED"
+    },
+    {
+      "id": "IE-C04",
+      "requirement": "Qualifying iOS login decision, Apple account/capability/client/relay and applicable maintenance",
+      "status": "UNCONFIRMED_UNVERIFIED"
+    },
+    {
+      "id": "IE-C05",
+      "requirement": "Identity linking/onboarding transaction implementation and actual server parity",
+      "status": "UNIMPLEMENTED_UNVERIFIED"
+    },
+    {
+      "id": "IE-C06",
+      "requirement": "Separate recoverable test actors/inboxes and controlled native/device return",
+      "status": "UNVERIFIED"
+    },
+    {
+      "id": "IE-C07",
+      "requirement": "Real Go/Supabase template rendering and full controlled Auth purpose matrix",
+      "status": "UNVERIFIED"
+    },
+    {
+      "id": "IE-C08",
+      "requirement": "Actual selected sender/SMTP/provider operation and any hook restoration",
+      "status": "UNVERIFIED"
+    },
+    {
+      "id": "IE-C09",
+      "requirement": "Approved application email events/budgets/preferences/retention and durable worker",
+      "status": "UNCONFIRMED_UNIMPLEMENTED"
+    },
+    {
+      "id": "IE-C10",
+      "requirement": "Existing AU/AM/Business/NR/privacy dependencies, retention and final re-audit",
+      "status": "OPEN"
+    }
+  ],
+  "staging_project": "dczlddwbtgvfdujgcitb",
+  "production_project_excluded": "kttkospkblwvguuwnhjj",
+  "hosted_acceptance": false,
+  "providers_activated": false,
+  "email_dispatched": false,
+  "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

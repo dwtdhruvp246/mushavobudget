@@ -1,0 +1,1003 @@
+{
+  "schema_version": 1,
+  "stage_step": "6.3",
+  "date": "2026-10-12",
+  "source_parent_commit": "eb4583e6648320fbc993f1d45cd46d886b376807",
+  "result": "HOSTED_IDENTITY_EMAIL_ACCEPTANCE_BLOCKED_WITH_CARRY_FORWARD",
+  "scope": "READ_ONLY_REPOSITORY_INTEGRITY_AND_EXISTING_PREREQUISITE_RECONCILIATION_NOT_HOSTED_PROJECT_INSPECTION",
+  "staging_project": "dczlddwbtgvfdujgcitb",
+  "production_project_excluded": "kttkospkblwvguuwnhjj",
+  "source_integrity": {
+    "selected_current_git_blob_identity_matches": 46,
+    "unexpected_mismatches": 0,
+    "known_template_changes": [
+      {
+        "path": "supabase/templates/invite-user.html",
+        "original_git_blob_sha": "87421f6b60df8da65787f1379310639eeec84174",
+        "candidate_git_blob_sha": "5bac8a393bbcb70b9def70ffaf30c497de095417",
+        "classification": "INTENTIONAL_FOUR_TEMPLATE_COPY_REPAIR"
+      },
+      {
+        "path": "supabase/templates/invite-user.subject.txt",
+        "original_git_blob_sha": "1774650e0b38c7d11852b34a331b6bdd33dcbefb",
+        "candidate_git_blob_sha": "b1a111149a2d5849582cb0dd25736df99b718ab7",
+        "classification": "INTENTIONAL_FOUR_TEMPLATE_COPY_REPAIR"
+      },
+      {
+        "path": "supabase/templates/magic-link.html",
+        "original_git_blob_sha": "b86f35120c018cc95dfd0f43960c27a867a411d5",
+        "candidate_git_blob_sha": "2a84320c8e1fbeb6615c13132b9665f5b67f5d60",
+        "classification": "INTENTIONAL_FOUR_TEMPLATE_COPY_REPAIR"
+      },
+      {
+        "path": "supabase/templates/magic-link.subject.txt",
+        "original_git_blob_sha": "b9a4df502f656e1384e2a2360ea53c0f7285d4da",
+        "candidate_git_blob_sha": "985be39b1e670cacd44b80b06d88ce468e95f6c8",
+        "classification": "INTENTIONAL_FOUR_TEMPLATE_COPY_REPAIR"
+      }
+    ],
+    "candidate_checks": [
+      {
+        "path": "supabase/templates/invite-user.html",
+        "current_git_blob_sha": "5bac8a393bbcb70b9def70ffaf30c497de095417",
+        "current_git_blob_matches": true,
+        "current_SHA256": "21c3060bdddfde0b94ebf9be697d30a9dc1b9e60a8206aac4eee45b47fb4aa80",
+        "local_receipt_SHA256_matches": true,
+        "owner_match": "EXACT_PUBLISHED_BYTES"
+      },
+      {
+        "path": "supabase/templates/invite-user.subject.txt",
+        "current_git_blob_sha": "b1a111149a2d5849582cb0dd25736df99b718ab7",
+        "current_git_blob_matches": true,
+        "current_SHA256": "061aee5815feeeed4f3e6d815f9212a27ac45c4d663b348bfb6496dac6e872e7",
+        "local_receipt_SHA256_matches": true,
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT"
+      },
+      {
+        "path": "supabase/templates/magic-link.html",
+        "current_git_blob_sha": "2a84320c8e1fbeb6615c13132b9665f5b67f5d60",
+        "current_git_blob_matches": true,
+        "current_SHA256": "661e40f1ca32b44a48ed1113da8d638802b6d2a222477eab6de66d2b6613fc16",
+        "local_receipt_SHA256_matches": true,
+        "owner_match": "EXACT_PUBLISHED_BYTES"
+      },
+      {
+        "path": "supabase/templates/magic-link.subject.txt",
+        "current_git_blob_sha": "985be39b1e670cacd44b80b06d88ce468e95f6c8",
+        "current_git_blob_matches": true,
+        "current_SHA256": "96bf36dd932b5a2616c4b42d8fde8a6421d9ae8cd6ea701e4cf57896ce13cb3e",
+        "local_receipt_SHA256_matches": true,
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/helpers/auth-email-template-projection.mjs",
+        "current_git_blob_sha": "52b8ddc89cf971a8a64d684f05918c0f6c77c6ec",
+        "current_git_blob_matches": true,
+        "current_SHA256": "c76106e10fd652670b20034b326d575ac01d916b5167a16cd32b113b7bfdf440",
+        "local_receipt_SHA256_matches": true,
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/stage-6-email-templates.test.mjs",
+        "current_git_blob_sha": "6babdb6a6aa5aa68ae853921cb331052668d33a4",
+        "current_git_blob_matches": true,
+        "current_SHA256": "e3e6e5b82e02505e1e4e28f1892a1ce3c70d00dc4402aca75a56528ee0bbcfd6",
+        "local_receipt_SHA256_matches": true,
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT"
+      },
+      {
+        "path": "scripts/verify-stage-6-identity-email.mjs",
+        "current_git_blob_sha": "3aa1766ba94df638000cf80b6b6153eecf8b4f25",
+        "current_git_blob_matches": true,
+        "current_SHA256": "8bb0812081994f98d43cd8dc4f1ead87baeb4d83b6a41baa02aba39f7613aa6d",
+        "local_receipt_SHA256_matches": true,
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT"
+      },
+      {
+        "path": "tests/fixtures/stage-6-email-template-baseline.json",
+        "current_git_blob_sha": "11b43275e639aac9f1f29e7458b8cd5d08373617",
+        "current_git_blob_matches": true,
+        "current_SHA256": "04c87cb13a7aa83ae5c88b778ea7e38e6fc9a05630478a40bcf803cc2244ea60",
+        "local_receipt_SHA256_matches": true,
+        "owner_match": "EXACT_PUBLISHED_BYTES"
+      },
+      {
+        "path": "tests/stage-3-auth-edge-build.test.mjs",
+        "current_git_blob_sha": "12ff24320f330d75fe46b1a9d41e0b7b101c6448",
+        "current_git_blob_matches": true,
+        "current_SHA256": "82c6f63091147dcc1b463f839b5ce75c38ef255c4e0758bfe00a0163c894e73c",
+        "local_receipt_SHA256_matches": true,
+        "owner_match": "EXACT_LF_TO_CRLF_VARIANT"
+      },
+      {
+        "path": "supabase/functions/invite-business-member/index.ts",
+        "current_git_blob_sha": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+        "current_git_blob_matches": true,
+        "current_SHA256": "980e0911ffddfec984f41d952735734ea926566993f480cece36e90dcbf93a10",
+        "local_receipt_SHA256_matches": true,
+        "owner_match": "EXACT_PUBLISHED_BYTES"
+      },
+      {
+        "path": "docs/security-audit/security-stage-6-identity-email-candidate-contract.json",
+        "current_git_blob_sha": "fb4b84a2ad312221f9ebdd487d32963147736a4e",
+        "current_git_blob_matches": true,
+        "current_SHA256": "56c0b7737b16129fc38635861cf66a0d77d85cd3792b836bd3994c401fa0777b",
+        "local_receipt_SHA256_matches": true,
+        "owner_match": "EXACT_PUBLISHED_BYTES"
+      }
+    ],
+    "source_inventory_observations_are_historical": true,
+    "all_selected_files_fresh_byte_read": false,
+    "fresh_candidate_files_byte_checked": 11,
+    "remaining_selected_files_checked_by_git_metadata": true,
+    "selected_current_source_identities": [
+      {
+        "path": "auth.html",
+        "git_blob_sha": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+        "match": true
+      },
+      {
+        "path": "auth-flows.js",
+        "git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+        "match": true
+      },
+      {
+        "path": "auth-security.js",
+        "git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+        "match": true
+      },
+      {
+        "path": "signup.html",
+        "git_blob_sha": "6093ca502c3a2b954a0289f5c5e4cacbe7def584",
+        "match": true
+      },
+      {
+        "path": "app.js",
+        "git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+        "match": true
+      },
+      {
+        "path": "business.js",
+        "git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+        "match": true
+      },
+      {
+        "path": "config.js",
+        "git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+        "match": true
+      },
+      {
+        "path": "package.json",
+        "git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+        "match": true
+      },
+      {
+        "path": "package-lock.json",
+        "git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+        "match": true
+      },
+      {
+        "path": "supabase/functions/invite-admin-user/index.ts",
+        "git_blob_sha": "a26f1633237126a8a558d8e702ffaa1943173253",
+        "match": true
+      },
+      {
+        "path": "supabase/functions/invite-business-member/index.ts",
+        "git_blob_sha": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+        "match": true
+      },
+      {
+        "path": "supabase/templates/invite-user.html",
+        "git_blob_sha": "5bac8a393bbcb70b9def70ffaf30c497de095417",
+        "match": true
+      },
+      {
+        "path": "supabase/templates/invite-user.subject.txt",
+        "git_blob_sha": "b1a111149a2d5849582cb0dd25736df99b718ab7",
+        "match": true
+      },
+      {
+        "path": "tests/stage-3-auth-flows.test.mjs",
+        "git_blob_sha": "9ba114c045d014af8b0a48f40e1dbf0eda16cb99",
+        "match": true
+      },
+      {
+        "path": "tests/stage-3-auth-page.test.mjs",
+        "git_blob_sha": "90bc8a478e51f1dab79b260b075232ebc680a961",
+        "match": true
+      },
+      {
+        "path": "tests/stage-3-auth-edge-build.test.mjs",
+        "git_blob_sha": "12ff24320f330d75fe46b1a9d41e0b7b101c6448",
+        "match": true
+      },
+      {
+        "path": "app.html",
+        "git_blob_sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+        "match": true
+      },
+      {
+        "path": "business.html",
+        "git_blob_sha": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+        "match": true
+      },
+      {
+        "path": "index.html",
+        "git_blob_sha": "f6e71eb717aaf8071b827ff612ecff31c1e009e4",
+        "match": true
+      },
+      {
+        "path": "app-entry.js",
+        "git_blob_sha": "4496b291102c26aa4dbcf9fbb88882cd972f5775",
+        "match": true
+      },
+      {
+        "path": "workspace-preference.js",
+        "git_blob_sha": "17abce600781bc378e17bba19771316291c26f71",
+        "match": true
+      },
+      {
+        "path": "supabase/config.toml",
+        "git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+        "match": true
+      },
+      {
+        "path": "supabase/schema.sql",
+        "git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+        "match": true
+      },
+      {
+        "path": "supabase/templates/magic-link.html",
+        "git_blob_sha": "2a84320c8e1fbeb6615c13132b9665f5b67f5d60",
+        "match": true
+      },
+      {
+        "path": "supabase/templates/magic-link.subject.txt",
+        "git_blob_sha": "985be39b1e670cacd44b80b06d88ce468e95f6c8",
+        "match": true
+      },
+      {
+        "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+        "git_blob_sha": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+        "match": true
+      },
+      {
+        "path": "supabase/functions/dispatch-push-reminders/index.ts",
+        "git_blob_sha": "ec9b1561cc20f16080099704ee6174044582d67f",
+        "match": true
+      },
+      {
+        "path": "supabase/migrations/20260908170000_notification_outbox.sql",
+        "git_blob_sha": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+        "match": true
+      },
+      {
+        "path": "supabase/migrations/20260916190000_admin_event_notifications.sql",
+        "git_blob_sha": "1218eaf24829e287f8054916248a0dea429f010e",
+        "match": true
+      },
+      {
+        "path": "supabase/migrations/20260922113000_admin_user_invitations.sql",
+        "git_blob_sha": "3559065aea9ad7d693121ea56bfd3837fa4dba35",
+        "match": true
+      },
+      {
+        "path": "supabase/migrations/20260923100000_complete_admin_user_invitations.sql",
+        "git_blob_sha": "46de8cdf2b64736452865de1092f3c92037aad50",
+        "match": true
+      },
+      {
+        "path": "supabase/migrations/20260923143000_replace_pending_admin_invitations.sql",
+        "git_blob_sha": "0dfeb64ae451d78f2fd659393c6f3ce757b5e82a",
+        "match": true
+      },
+      {
+        "path": "supabase/migrations/20260923190000_guard_pending_admin_invitation_workspace.sql",
+        "git_blob_sha": "4fd1e66584d4e895b1fe6372c946145a4dc0ec72",
+        "match": true
+      },
+      {
+        "path": "supabase/migrations/20260923200000_hold_invited_workspace_until_setup.sql",
+        "git_blob_sha": "b1a37fb3bcb57f4c6e4e644bfc87ba6f30621406",
+        "match": true
+      },
+      {
+        "path": "supabase/migrations/20260928170000_business_stage_4_team.sql",
+        "git_blob_sha": "0d979bceddde1c4c122bf725efc632959dd23391",
+        "match": true
+      },
+      {
+        "path": "supabase/migrations/20261004153000_business_custom_roles.sql",
+        "git_blob_sha": "c943e03949affcf1ee326ae86198cc22af5090e5",
+        "match": true
+      },
+      {
+        "path": "supabase/migrations/20261006180000_business_invitation_notifications.sql",
+        "git_blob_sha": "501ae2a45018cf0e89531f0821834c57c904c328",
+        "match": true
+      },
+      {
+        "path": "scripts/build-capacitor.mjs",
+        "git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+        "match": true
+      },
+      {
+        "path": "supabase/functions/_shared/admin-assurance.mjs",
+        "git_blob_sha": "63ed3c4547ff5c4464e57e757655b1f7b7225332",
+        "match": true
+      },
+      {
+        "path": "tests/business-stage-4.test.mjs",
+        "git_blob_sha": "adead380c9306e93e453e5caee9411b9193c4463",
+        "match": true
+      },
+      {
+        "path": "tests/admin-user-invitations.test.mjs",
+        "git_blob_sha": "c3ae95143a316f705c92024159d9257f495ae2fc",
+        "match": true
+      },
+      {
+        "path": "tests/helpers/auth-email-template-projection.mjs",
+        "git_blob_sha": "52b8ddc89cf971a8a64d684f05918c0f6c77c6ec",
+        "match": true
+      },
+      {
+        "path": "tests/stage-6-email-templates.test.mjs",
+        "git_blob_sha": "6babdb6a6aa5aa68ae853921cb331052668d33a4",
+        "match": true
+      },
+      {
+        "path": "scripts/verify-stage-6-identity-email.mjs",
+        "git_blob_sha": "3aa1766ba94df638000cf80b6b6153eecf8b4f25",
+        "match": true
+      },
+      {
+        "path": "tests/fixtures/stage-6-email-template-baseline.json",
+        "git_blob_sha": "11b43275e639aac9f1f29e7458b8cd5d08373617",
+        "match": true
+      },
+      {
+        "path": "docs/security-audit/security-stage-6-identity-email-candidate-contract.json",
+        "git_blob_sha": "fb4b84a2ad312221f9ebdd487d32963147736a4e",
+        "match": true
+      }
+    ]
+  },
+  "retained_local_outcome": {
+    "assistant_final_selected_cases": 46,
+    "assistant_final_pass": 46,
+    "assistant_Node_syntax_checks": 3,
+    "owner_same_case_repeat_pass": 46,
+    "owner_Node_syntax_checks": 3,
+    "owner_node_version": "v22.17.0",
+    "owner_repeat_adds_distinct_cases": false,
+    "initial_assistant_harness_42_PASS_1_FAIL_retained": true,
+    "source_template_repairs": 4,
+    "scope": "43_NODE_TEMPLATE_CONTROL_FLOW_PROJECTIONS_AND_THREE_SYNTHETIC_HANDLER_CASES"
+  },
+  "deployment_status": "UNVERIFIED_NOT_PROBED_BY_OFFLINE_VERIFIERS_OR_THIS_READINESS_REVIEW",
+  "current_provider_dashboard_status": "NOT_INSPECTED_PRIOR_DISABLED_REPORTS_ARE_HISTORICAL",
+  "current_actors_or_inboxes_status": "NOT_INSPECTED_PRIOR_3_5_3_REPORTS_SEPARATE_AUTH_IDENTITIES_UNAVAILABLE",
+  "Go_Supabase_rendering_or_contextual_escaping_verified": false,
+  "provider_login_linking_verified": false,
+  "actual_inbox_delivery_verified": false,
+  "native_return_verified": false,
+  "runtime_provider_login_linking_hook_or_application_email_worker_implemented_in_reviewed_source": false,
+  "prerequisites": [
+    {
+      "id": "IE-P01",
+      "title": "Exact staging deployment and effective settings",
+      "status": "UNVERIFIED",
+      "evidence": "Published source/local hashes match; no staging frontend/Edge/Auth installation or effective catalog/settings inspection was performed.",
+      "required": "Bind exact deployed app/Edge/template/settings pin to staging dczlddwbtgvfdujgcitb; retain AU/AM/Business parity and recovery."
+    },
+    {
+      "id": "IE-P02",
+      "title": "Selected provider/iOS configuration and implementation",
+      "status": "UNIMPLEMENTED_UNCONFIRMED_UNVERIFIED",
+      "evidence": "Reviewed source has no implemented Google/Apple sign-in/link/unlink integration; Google intent is retained and Apple is proposed. Prior disabled reports are historical, not current dashboard observations.",
+      "required": "Complete selected flow/client/capability/audience/domain/scopes and qualifying iOS decision; verify genuine provider state privately without exposing secrets."
+    },
+    {
+      "id": "IE-P03",
+      "title": "Identity transaction, invitation/onboarding and native return",
+      "status": "UNIMPLEMENTED_UNVERIFIED",
+      "evidence": "Existing email-link isolation and invitation guards remain; no implemented provider transaction/verifier/initiating-UUID binding or accepted native return is established.",
+      "required": "Preserve Auth UUID, finance/plan/membership and selected currencies; verify same/different-email/relay/unfinished-Admin collisions and exact callback/session handoff under AU/NR dependencies."
+    },
+    {
+      "id": "IE-P04",
+      "title": "Actual template rendering, callback and inbox matrix",
+      "status": "UNVERIFIED",
+      "evidence": "Four template copy repairs pass 43 Node control-flow projections; no Go/Supabase render/escaping proof or saved template/allowlist/current canonical SiteURL is verified.",
+      "required": "Verify actual Go/Supabase parse/render, authentic links and exact installed subjects/bodies; reconcile canonical SiteURL without trailing slash, APP_ORIGIN and redirect allowlist; use controlled inboxes."
+    },
+    {
+      "id": "IE-P05",
+      "title": "Chosen Auth transport and durable application email",
+      "status": "UNIMPLEMENTED_UNCONFIRMED_UNVERIFIED",
+      "evidence": "Historical SMTP success remains owner evidence. Auth hook and application-email worker are unimplemented in the reviewed source; current provider/sender/full action matrix and operating decisions are unverified.",
+      "required": "Preserve SMTP; approve and complete only the selected route, signed hook if chosen, action/token mappings and rollback; independently complete durable server-authorized event mail, budgets/preferences/retention/monitoring."
+    },
+    {
+      "id": "IE-P06",
+      "title": "Controlled actors, devices, declarations and rollback",
+      "status": "UNVERIFIED_WITH_PRIOR_OWNER_UNAVAILABLE_REPORT",
+      "evidence": "Prior 3.5.3 reports separate controlled Auth identities unavailable; this is a dated receipt, not fresh current actor/provider/device inspection. NR/privacy and rollback evidence remain open.",
+      "required": "Use separate recoverable actors/inboxes and accepted device/native return where required; verify authorization/revocation/cleanup/rollback and applicable disclosures before the accepted batch. Preserve retained fixtures and manual conversions."
+    }
+  ],
+  "groups": [
+    {
+      "id": "IE01",
+      "title": "Provider configuration and safe authentication",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "cases_run": 0,
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE02",
+      "title": "Identity linking and invitation collisions",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "cases_run": 0,
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE03",
+      "title": "Email purpose and callback compatibility",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "cases_run": 0,
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE04",
+      "title": "Apple option and relay compatibility",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "cases_run": 0,
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE05",
+      "title": "Auth email delivery and hook boundary",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "cases_run": 0,
+      "prerequisites": [
+        "IE-P01",
+        "IE-P04",
+        "IE-P05",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE06",
+      "title": "Application email and rollout evidence",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "cases_run": 0,
+      "prerequisites": [
+        "IE-P01",
+        "IE-P05",
+        "IE-P06"
+      ]
+    }
+  ],
+  "case_outcomes": [
+    {
+      "id": "IE01-01",
+      "group": "IE01",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Google approved client/audience/brand/domain and login-only scopes match the selected staging environment.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE01-02",
+      "group": "IE01",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Provider-to-Supabase callback and Supabase-to-app callback are separately registered; wrong environment/host is rejected.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE01-03",
+      "group": "IE01",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Authorization opens in a permitted system/browser flow; cancellation preserves the prior account and workspace.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE01-04",
+      "group": "IE01",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Wrong issuer/audience, tampered ID token or mismatched nonce/state/verifier is rejected by the selected verified flow.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE01-05",
+      "group": "IE01",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Unverified or suspended account cannot acquire protected access; new social identity completes required profile/currency onboarding.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE01-06",
+      "group": "IE01",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Disabled/misconfigured provider fails clearly while existing password sign-in and account data remain usable.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE02-01",
+      "group": "IE02",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Verified same-email password/provider linking retains the original UUID, memberships, finance and subscriptions.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE02-02",
+      "group": "IE02",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Unconfirmed same-email identity collision follows actual Auth server behavior without pre-account takeover or silent workspace grant.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE02-03",
+      "group": "IE02",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Different email or Apple relay identity is linked only through an authenticated deliberate flow; no client-written UUID/email merge.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE02-04",
+      "group": "IE02",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Wrong-account invitation denial holds through callback and direct completion RPC; invitation UUID alone grants nothing.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE02-05",
+      "group": "IE02",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Existing/new Business invite requires deliberate acceptance with live role, scope, expiry and seat checks.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE02-06",
+      "group": "IE02",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Unfinished/replaced/expired Admin invitation plus social login does not create an unintended Free workspace or cancel the selected plan.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE03-01",
+      "group": "IE03",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Signup confirmation and resend show correct purpose/destination and deny unconfirmed protected sign-in.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE03-02",
+      "group": "IE03",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Recovery opens only the intended identity, saves a password and handles newest/expired/replayed links correctly.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE03-03",
+      "group": "IE03",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Admin new-user and unfinished-account resend emails describe setup and resolve to the guarded signup callback.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE03-04",
+      "group": "IE03",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Business new and existing-user emails use Business-specific subjects/body for current Auth callbacks and retained legacy callbacks.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE03-05",
+      "group": "IE03",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Generic magic-link mail remains generic; spoofed/lookalike/external callback never selects privileged-purpose copy or an unsafe redirect.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE03-06",
+      "group": "IE03",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Two accounts/tabs, account switch, system-browser-to-PWA/native handoff and missing verifier preserve deliberate verified-account transfer.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE04-01",
+      "group": "IE04",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Chosen iOS primary-account login complies with the reviewed 4.8 decision and any documented applicable exception.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE04-02",
+      "group": "IE04",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Apple audience, Services/App IDs, capability and selected web/native nonce validation bind the right environment.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE04-03",
+      "group": "IE04",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Hidden-email relay login retains the Auth UUID; invitation to a different real email remains pending rather than auto-merged.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE04-04",
+      "group": "IE04",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Registered sender/return-path/DKIM configuration delivers to a controlled relay inbox; failure is observable without exposing link material.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE04-05",
+      "group": "IE04",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Missing name on repeat sign-in does not overwrite a valid profile; required currencies/onboarding are completed.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE04-06",
+      "group": "IE04",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Provider revocation, unlink/alternate sign-in availability and applicable OAuth secret expiry/rotation preserve recovery.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P02",
+        "IE-P03",
+        "IE-P04",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE05-01",
+      "group": "IE05",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Existing SMTP route and approved purpose templates deliver to controlled inboxes with actual sender/domain authentication.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P04",
+        "IE-P05",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE05-02",
+      "group": "IE05",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Inactive hook does not shadow SMTP; any explicitly selected hook rollout proves routing and restoration of the previous route.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P04",
+        "IE-P05",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE05-03",
+      "group": "IE05",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Enabled HTTP hook rejects altered body, invalid signature, stale timestamp and unauthorized direct calls before dispatch.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P04",
+        "IE-P05",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE05-04",
+      "group": "IE05",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Supported action types and secure email-change old/new recipient/token mappings are exact; unknown action fails safely.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P04",
+        "IE-P05",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE05-05",
+      "group": "IE05",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Provider timeout/rate/bounce and duplicate/retry delivery have bounded, observable outcomes without reporting inbox delivery from API acceptance.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P04",
+        "IE-P05",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE05-06",
+      "group": "IE05",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "OTP/token/hash/full links and credentials are absent from application analytics, shared mail queues and retained operational logs.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P04",
+        "IE-P05",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE06-01",
+      "group": "IE06",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Application-email recipient, event and workspace scope are server-derived; forged caller recipient/body does not create mail.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P05",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE06-02",
+      "group": "IE06",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Recipient membership/role and event validity are rechecked at dispatch, including revoked access and deleted/retained subjects.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P05",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE06-03",
+      "group": "IE06",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Concurrent claim/retry/dedup and stale jobs have durable bounded semantics; provider ambiguity does not produce false delivered status.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P05",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE06-04",
+      "group": "IE06",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Approved event types, per-recipient/global budgets, bounce suppression and preference rules prevent unwanted/cross-tenant mail.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P05",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE06-05",
+      "group": "IE06",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Exact candidate/template/server settings parity, isolated actors/inboxes and rollback are verified before the bounded staging batch.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P05",
+        "IE-P06"
+      ]
+    },
+    {
+      "id": "IE06-06",
+      "group": "IE06",
+      "status": "BLOCKED_NOT_RUN",
+      "expected": "Final web/PWA/native matrix and provider/store declarations reconcile with earlier AU/AM/NR/privacy actions; retained fixtures remain unchanged.",
+      "actual": "NOT_EXECUTED_NO_HOSTED_RESULT",
+      "prerequisites": [
+        "IE-P01",
+        "IE-P05",
+        "IE-P06"
+      ]
+    }
+  ],
+  "planned_grouped_cases": 36,
+  "hosted_grouped_cases_run": 0,
+  "hosted_grouped_cases_blocked": 36,
+  "device_cases_run": 0,
+  "prerequisite_groups": 6,
+  "fresh_local_behavior_tests_run": 0,
+  "fresh_Node_or_Go_syntax_checks_run": 0,
+  "fresh_hosted_catalog_or_settings_requests_run": 0,
+  "actual_provider_or_email_requests_run": 0,
+  "findings_closed": [],
+  "open_action_ids": [
+    "IE-R01",
+    "IE-R02",
+    "IE-R03",
+    "IE-R04",
+    "IE-R05",
+    "IE-R06"
+  ],
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+  "providers_activated": false,
+  "email_dispatched": false,
+  "production_promoted": false,
+  "native_build_or_installed_APK_changed": false,
+  "APK_update_deferred": true,
+  "earlier_receipts_and_matrix_unchanged": true,
+  "owner_SQL_terminal_or_repeated_setup_action_requested": false,
+  "next_step": "6.4",
+  "full_stage_report_due": "6.4"
+}

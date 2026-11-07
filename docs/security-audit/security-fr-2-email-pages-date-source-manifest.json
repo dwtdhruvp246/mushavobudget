@@ -1,0 +1,13 @@
+{
+  "stage_step": "FR.2.4.E5.3_EXACT_PAGES_DATE",
+  "source_parent_commit": "8869cfbb7ceae7d549f2390304f572c4bb382cb5",
+  "file_sha256": {
+    "scripts/set-fr-2-email-pages-date.mjs": "d4b1e35e656a7a0c67c28cd53a9ba22f4f66441f857546b085133af3feee59af",
+    "scripts/run-fr-2-email-pages-date.ps1": "7878b9f64cf1150cd63766b314fa19ef46d4a103a16f7df1bff35785f3b432d9",
+    "scripts/check-fr-2-email-pages-date.mjs": "48dc452444d0f6ca448e3b19e7d77d80e71f6fb022ac809042d92097c400b1e5",
+    "docs/security-audit/security-fr-2-email-pages-date-contract.json": "8f95f17222246fc8c720896aebb518dcc810863c7f470a72a014a252663165d8",
+    "scripts/inspect-fr-2-email-pages.mjs": "e70b2cb0fe8de5afa74df6467a1011afc09d89b46615c7a59f0d60c63443969c",
+    "scripts/inspect-fr-2-email-limiter.mjs": "c9927ff3cae90566d18f359c0791dd1204c3c47490cf51a6d1d9cb5889b017a9",
+    "scripts/check-fr-2-cloudflare-account.mjs": "577de92741f6165970c27e868017bcb868b492fba1acd8897b43bb687bcf08f2"
+  }
+}

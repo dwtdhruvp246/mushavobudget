@@ -1,0 +1,64 @@
+{
+  "stage_step": "FR.2.5.W1_AUTH_SETTINGS_READ_ONLY_AND_FROZEN_AU31",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "batch": "W",
+  "result": "BATCH_W_READ_ONLY_AUTH_SETTINGS_REVIEW_REQUIRED",
+  "actual_hosted_requests": 5,
+  "maximum_direct_HTTP_requests": 5,
+  "Management_requests": 5,
+  "Auth_requests": 0,
+  "Auth_configuration_GET_requests": 1,
+  "SQL_read_only_snapshot_requests": 2,
+  "target_before_verified": true,
+  "target_after_verified": true,
+  "quarantined_catalog_before_verified": true,
+  "quarantined_catalog_after_verified": true,
+  "Auth_settings_read": false,
+  "safe_settings": null,
+  "samples": [
+    {
+      "endpoint": "TARGET_BEFORE",
+      "http_status": 200
+    },
+    {
+      "endpoint": "QUARANTINED_CATALOG_BEFORE",
+      "http_status": 201
+    },
+    {
+      "endpoint": "READ_AUTH_SETTINGS",
+      "http_status": 403
+    },
+    {
+      "endpoint": "QUARANTINED_CATALOG_AFTER",
+      "http_status": 201
+    },
+    {
+      "endpoint": "TARGET_AFTER",
+      "http_status": 200
+    }
+  ],
+  "automatic_request_retries": 0,
+  "real_email_requests": 0,
+  "factor_changes_requested": false,
+  "settings_or_roles_or_accounts_or_sessions_changed": false,
+  "application_rows_read_or_written": false,
+  "private_packets_accessed": false,
+  "raw_config_credentials_URLs_or_provider_bodies_printed": false,
+  "credentials_saved_to_disk_arguments_or_environment": false,
+  "committed_mode_change_requests": 0,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_Auth_workflow_acceptance": false,
+  "hosted_acceptance": false,
+  "live_activation_approved": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "failure_checkpoint": "READ_AUTH_SETTINGS",
+  "final_state_problem_code": null,
+  "checkpoint": "TARGET_AFTER",
+  "problem_code": "BATCH_W_EXISTING_TOKEN_AUTH_CONFIG_READ_NOT_AUTHORIZED",
+  "exit_code": 1,
+  "checked_UTC": "2026-10-26T07:21:25.371Z",
+  "source_hashes_verified": 345
+}

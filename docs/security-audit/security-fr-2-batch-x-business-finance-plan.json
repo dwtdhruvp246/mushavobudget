@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "project": "dczlddwbtgvfdujgcitb",
+  "scope": "business-finance-workflow",
+  "source_parent_commit": "d9703d9b9e8f2da78f0c15e8c7434eb85a50e763",
+  "fixture_name": "audit-batch-x-receipt-d7be160c2026",
+  "expected_support_version": 6,
+  "expected_subscription_version": 3,
+  "case_ids": [
+    "X_REQUEST_LIFECYCLE",
+    "X_REQUEST_BILL_LINK",
+    "X_BILL_PAYMENT_REPLAY",
+    "X_FINANCE_FIXTURE_ISOLATION"
+  ],
+  "preflight": {
+    "status": "suspended",
+    "seats": 1,
+    "active_members": 1,
+    "pending_invites": 0,
+    "suppliers": 0,
+    "bills": 0,
+    "old_request_rows": 1,
+    "physical_Storage_objects": 0,
+    "paid_through_at": "2026-11-08T00:00:00Z",
+    "queue_rows": 0
+  },
+  "sequence": [
+    "Admin resumes only this suspended synthetic workspace using observed support version, and raises its one-seat test grant to two.",
+    "Owner invites the existing controlled B identity as scoped finance_manager through the database RPC; B accepts. No email function is called.",
+    "B creates one synthetic supplier. A creates and submits one USD 1 spending request; self-approval is denied and distinct B approval succeeds. Stale approval and create-request replays are checked.",
+    "B links one bill and retries bill creation. The source request becomes committed and cancellation is denied.",
+    "B records a synthetic ledger-only USD 0.40 payment. Retry with altered amount/reference/source preserves the original row; overpayment and cancellation are rejected.",
+    "B records the remaining USD 0.60. Bill is paid, request fulfilled; replay retains two payment rows totaling USD 1 and one linked bill.",
+    "Finally A removes only B's membership, cancels any exact pending B invitation, verifies B's ordinary session remains valid but Business rows are hidden, Admin restores one seat and suspends the workspace. All three new sessions locally log out."
+  ],
+  "limits": {
+    "core_requests": 24,
+    "exercise_requests": 90,
+    "real_logins": 3,
+    "external_email_requests": 0,
+    "provider_payment_requests": 0,
+    "Storage_uploads": 0,
+    "created_workspace_count": 0
+  },
+  "retained_synthetic_ledger": {
+    "requests": 1,
+    "bills": 1,
+    "payments": 2,
+    "total_USD": 1,
+    "suppliers": 1,
+    "audit_and_inapp_notification_history": true
+  },
+  "preservation": "Existing audit request, claim, archived document, category and dimension fingerprints must match; original Business and manual Family fixtures must remain unchanged.",
+  "fallback": "supabase/diagnostics/security_fr_2_6_business_finance_isolate.sql",
+  "fallback_condition": "Only after CI attempted resume and independent readback confirms the exact workspace remains active; use supported owner/Admin actions under temporary modeled recovery sessions. Never infer HTTP acceptance from compensation.",
+  "excluded": [
+    "No provider charges or external orders.",
+    "No source-claim or document changes.",
+    "No SMTP, scheduler or valid dispatch secret use.",
+    "No actual expiry or third ordinary identity acceptance claim.",
+    "No production change."
+  ]
+}

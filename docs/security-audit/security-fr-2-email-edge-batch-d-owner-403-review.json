@@ -1,0 +1,153 @@
+{
+  "received_date": "2026-10-22",
+  "requested_run_commit": "a624a38c1a25119b983326d2e044bdd3f01c1320",
+  "run_commit_independently_attested": false,
+  "owner_Windows_parent_execution_observed": true,
+  "offline_receipt": {
+    "stage_step": "FR.2.4.E5.17_BATCH_D_FIRST_STAGING_EDGE_DEPLOYMENT",
+    "result": "OFFLINE_BATCH_D_18_PASS_OWNER_DEPLOYMENT_PENDING",
+    "source_parent_commit": "09adf74c5ee9d9dac831a3f41c451219a93f2b8b",
+    "node_version": "v22.17.0",
+    "source_files_SHA256_verified": 40,
+    "syntax_checks": 3,
+    "tests": 18,
+    "pass": 18,
+    "fail": 0,
+    "group": {
+      "tests": 18,
+      "pass": 18,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "failed_case_titles": [],
+      "exit_code": 0,
+      "signal": null,
+      "error_code": null
+    },
+    "actual_deployment_transport_and_readback_exercised_with_synthetic_inputs": true,
+    "all_37_failure_positions_and_partial_deployment_exercised_with_synthetic_responses": true,
+    "downloaded_provider_source_executed_or_saved": false,
+    "Windows_private_runner_verified": false,
+    "live_source_parity_or_shared_configuration_runtime_impact_verified": false,
+    "credentials_or_private_packet_accessed": false,
+    "actual_hosted_requests": 0,
+    "settings_or_deployments_changed": false,
+    "email_push_or_FX_dispatched": false,
+    "uploaded_or_deployed": false,
+    "readiness_approved": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "local_checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0
+  },
+  "offline_exit_code": 0,
+  "receipt": {
+    "stage_step": "FR.2.4.E5.17_BATCH_D_FIRST_STAGING_EDGE_DEPLOYMENT",
+    "batch": "D",
+    "result": "STAGING_BATCH_D_REVIEW_REQUIRED",
+    "actual_hosted_requests": 11,
+    "deployment_POST_requests": 1,
+    "deployment_HTTP_accepted_count": 0,
+    "deployment_write_outcome_uncertain": true,
+    "fresh_source_target_and_six_names_verified": true,
+    "current_review_problem": null,
+    "reviewed_current_metadata_matched": true,
+    "package_SHA256": "e1fb82c6001ee4bb8f3d6999f078a028637cf90d912e275fb14ac84774f192a3",
+    "selected_functions": [
+      {
+        "slug": "invite-admin-user",
+        "verify_jwt_expected": true,
+        "POST_attempted": true,
+        "POST_HTTP_accepted": false,
+        "metadata_readback_matched": false,
+        "source_files_exact": 0,
+        "unauthenticated_HTTP_status": null,
+        "unauthenticated_denied": false,
+        "version": null,
+        "function_identity_SHA256": null,
+        "deployment_bundle_SHA256": null
+      }
+    ],
+    "all_four_source_readbacks_exact": false,
+    "all_four_unauthenticated_requests_denied": false,
+    "unrelated_contact_metadata_and_artifacts_preserved": false,
+    "metadata_snapshot_is_not_a_write_lock": true,
+    "automatic_retry_or_delete_performed": false,
+    "hosted_dependency_bytes_or_lockfile_parity_verified": false,
+    "runtime_authenticated_JWT_and_user_authorization_verified": false,
+    "secret_value_equality_or_full_runtime_access_verified": false,
+    "shared_configuration_runtime_impact_verified": false,
+    "application_rows_read": false,
+    "SQL_Auth_secret_write_or_scheduler_endpoint_used": false,
+    "unauthenticated_Edge_requests": 0,
+    "email_push_or_FX_dispatched": false,
+    "deployment_may_have_changed": true,
+    "uploaded_or_deployed": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "raw_provider_bodies_paths_IDs_or_credentials_printed": false,
+    "token_saved_to_disk_or_environment": false,
+    "samples": [
+      {
+        "endpoint": "PRE_",
+        "http_status": 200
+      },
+      {
+        "endpoint": "PRE__functions",
+        "http_status": 200
+      },
+      {
+        "endpoint": "PRE__functions_submit-enquiry",
+        "http_status": 200
+      },
+      {
+        "endpoint": "PRE__functions_submit-enquiry_body",
+        "http_status": 200
+      },
+      {
+        "endpoint": "PRE__functions_submit-enquiry",
+        "http_status": 200
+      },
+      {
+        "endpoint": "PRE__functions",
+        "http_status": 200
+      },
+      {
+        "endpoint": "PRE__secrets",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_FUNCTION_LIST_PINNED",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_CONTACT_DETAIL_PINNED",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_ABSENCE_BEFORE_invite-admin-user",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_DEPLOY_invite-admin-user",
+        "http_status": 403
+      }
+    ],
+    "checkpoint": "STAGING_DEPLOY_invite-admin-user",
+    "problem_code": "PROVIDER_RESPONSE_REVIEW_REQUIRED",
+    "exit_code": 1,
+    "checked_UTC": "2026-10-22T05:52:06.691Z",
+    "source_hashes_verified": 40
+  },
+  "combined_exit_code": 1,
+  "exact_permission_or_provider_denial_cause_verified": false,
+  "post_attempt_hosted_state_observed": false
+}

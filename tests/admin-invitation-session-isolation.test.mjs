@@ -29,7 +29,7 @@ test("opening or leaving an invite does not replace an admin tab's stored sessio
   assert.equal(temporary.token, "invitee");
   assert.equal(local.token, "admin");
   assert.equal(created[0].storage, temporary);
-  assert.equal(created[0].detectSessionInUrl, true);
+  assert.equal(created[0].detectSessionInUrl, false);
   assert.notEqual(created[0].storageKey, "sb-example-auth-token");
   await client.leaveInvite();
   assert.equal(local.token, "admin");
@@ -38,14 +38,16 @@ test("opening or leaving an invite does not replace an admin tab's stored sessio
 test("a completed workspace promotes the invitee session before opening the app", async () => {
   const actions = [];
   const window = {
+    sessionStorage:{removeItem(){}},
     location: { href: "https://budget.example/signup.html?mode=admin-invite" , replace(url) { actions.push(["navigate", url]); } },
     MushavoPWA: { markFormClean() { actions.push(["clean"]); } }
   };
   const session = { access_token: "access", refresh_token: "refresh", user: { id: "invitee" } };
   const openCompletedInvitation = vm.runInNewContext(`${openSource}\nopenCompletedInvitation`, {
-    window, URL, form: {}, isAdminInvite: true
+    window, URL, form: {}, isAdminInvite: true, accountAcknowledgement:{checked:true},
+    invitationController:{async adopt(app,ack){assert.equal(ack,true);const result=await app.auth.setSession({access_token:"access",refresh_token:"refresh"});assert.equal(result.error,null);}}
   });
-  const inviteClient = { auth: { async getSession() { return { data: { session }, error: null }; } } };
+  const inviteClient = { auth: { async getSession() { return { data: { session }, error: null }; }, async stopAutoRefresh(){} } };
   const createClient = (_url, _key, options) => {
     assert.equal(options.auth.detectSessionInUrl, false);
     return { auth: { async setSession(tokens) {
@@ -59,5 +61,5 @@ test("a completed workspace promotes the invitee session before opening the app"
   assert.deepEqual(actions.map(([action]) => action), ["promote", "clean", "navigate"]);
   assert.equal(actions[0][1].refresh_token, "refresh");
   assert.match(actions[2][1], /app\.html\?signup=invited$/);
-  assert.match(signup, /if \(completionError\) throw completionError;\s+await openCompletedInvitation\(supabase, createClient, config\)/);
+  assert.match(signup, /await invitationController\.complete\([\s\S]*?await openCompletedInvitation\(supabase,createClient,config\)/);
 });

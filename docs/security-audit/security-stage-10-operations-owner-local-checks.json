@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "stage_step": "10.2",
+  "date": "2026-10-13",
+  "candidate_commit": "88503798ebd381aac2d52ab5a7905774636a4afc",
+  "recorded_against_current_commit": "88503798ebd381aac2d52ab5a7905774636a4afc",
+  "scope": "OWNER_REPORTED_WINDOWS_OFFLINE_VERIFIER_AND_FRESH_BYTE_GIT_RECONCILIATION_NOT_INSTALLED_ACCEPTANCE",
+  "reported_receipt": {
+    "stage_step": "10.2",
+    "result": "OFFLINE_ACTUAL_PUBLIC_METADATA_COLLECTOR_AND_CLI_SCOPED_PASS",
+    "scope": "ACTUAL_COLLECTOR_WITH_SYNTHETIC_RESPONSE_STREAMS_REAL_TEMPORARY_FILES_AND_CLI_UNDER_DISABLED_DEFAULT_TRANSPORT",
+    "source_parent_commit": "1b012fd9c47bfb1733596f64c470feee5d308341",
+    "node_version": "v22.17.0",
+    "tests": 27,
+    "pass": 27,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "exit_code": 0,
+    "syntax_checks": 4,
+    "syntax": [
+      {
+        "file": "scripts/lib/stage-10-public-metadata.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/collect-stage-10-public-metadata.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/verify-stage-10-operations.mjs",
+        "pass": true
+      },
+      {
+        "file": "tests/stage-10-public-metadata.test.mjs",
+        "pass": true
+      }
+    ],
+    "file_sha256": {
+      "scripts/lib/stage-10-public-metadata.mjs": "afbef093932d4d31e5d71715f6eb9e8b493296ada17ba98966e0618376eef640",
+      "scripts/collect-stage-10-public-metadata.mjs": "f174e0fe0d20287a8f5822ccea97dfa55ed5dc38588f51b19c13dc2be1b88045",
+      "scripts/verify-stage-10-operations.mjs": "196edf547ec27d7254a513ab93bb9cb1319ffaed4b4fe7abaeedff5545c7d7f7",
+      "tests/stage-10-public-metadata.test.mjs": "53d8fefdcd431af4fdb9478f6ef955e72985cf34430f36e20302138812ba291a",
+      "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+      "config.js": "c14293e16fda6a6b0e483ea5141954b78832b175155cec0ab9f59d35e8b7b0cd",
+      "auth.html": "8d6ff984bfec6ef80356ceceef63e5a70428d1ea6c0bb937c282dc1b47329386",
+      "auth-flows.js": "ef16214f827d6650a507e30bdae7703c975f061437ed0672cf0abf9072e37500",
+      "auth-security.js": "ae6eb487fa9ae5f21b1e3a95f698fe5869a377349bc5ff66bf9e8d32cef6cf54",
+      "admin-mfa.js": "909fd25b8e364e420be9067f6a0435567d705e914c53e9358b536d0187d81f6e",
+      "app.js": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+      "business.js": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+      "app.html": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+      "business.html": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+      "docs/security-audit/security-stage-10-operations-candidate-contract.json": "f4dd254f2e099f242647fdb3cd5f60023a0a0dfa74d731af7a804c479eec5cd0"
+    },
+    "failed_case_titles": [],
+    "actual_public_staging_HTTP_requests": 0,
+    "Auth_API_SQL_jobs_alerts_provider_device_or_store_checks_run": 0,
+    "planned_real_operations_grouped_cases": 24,
+    "full_operations_grouped_cases_run": 0,
+    "full_regression_CI_or_current_backend_job_alert_recovery_verified": false,
+    "candidate_deployed": false,
+    "hosted_operations_acceptance": false,
+    "hosted_acceptance": false,
+    "native_security_acceptance": false,
+    "store_acceptance": false,
+    "actual_notification_email_or_charge_dispatched": false,
+    "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": []
+  },
+  "hash_reconciliation": [
+    {
+      "path": "scripts/lib/stage-10-public-metadata.mjs",
+      "owner_sha256": "afbef093932d4d31e5d71715f6eb9e8b493296ada17ba98966e0618376eef640",
+      "pinned_sha256": "afbef093932d4d31e5d71715f6eb9e8b493296ada17ba98966e0618376eef640",
+      "git_blob_sha": "e70d5738f0dd859f87258e6fed5b187b362744a8",
+      "current_git_blob_sha": "e70d5738f0dd859f87258e6fed5b187b362744a8",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "scripts/collect-stage-10-public-metadata.mjs",
+      "owner_sha256": "f174e0fe0d20287a8f5822ccea97dfa55ed5dc38588f51b19c13dc2be1b88045",
+      "pinned_sha256": "f174e0fe0d20287a8f5822ccea97dfa55ed5dc38588f51b19c13dc2be1b88045",
+      "git_blob_sha": "8dbbd7e352a90aaff9453d7708bd9ba1ddccbe5e",
+      "current_git_blob_sha": "8dbbd7e352a90aaff9453d7708bd9ba1ddccbe5e",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "scripts/verify-stage-10-operations.mjs",
+      "owner_sha256": "196edf547ec27d7254a513ab93bb9cb1319ffaed4b4fe7abaeedff5545c7d7f7",
+      "pinned_sha256": "196edf547ec27d7254a513ab93bb9cb1319ffaed4b4fe7abaeedff5545c7d7f7",
+      "git_blob_sha": "da91113a1934465e8dc4bcc5793874b79d09223c",
+      "current_git_blob_sha": "da91113a1934465e8dc4bcc5793874b79d09223c",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "tests/stage-10-public-metadata.test.mjs",
+      "owner_sha256": "53d8fefdcd431af4fdb9478f6ef955e72985cf34430f36e20302138812ba291a",
+      "pinned_sha256": "53d8fefdcd431af4fdb9478f6ef955e72985cf34430f36e20302138812ba291a",
+      "git_blob_sha": "94f83b6963e279b418302a0417d37dfcdbbfb9df",
+      "current_git_blob_sha": "94f83b6963e279b418302a0417d37dfcdbbfb9df",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "scripts/offline-test-network.cjs",
+      "owner_sha256": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+      "pinned_sha256": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+      "git_blob_sha": "561b7927510be5070f38fed70cd5870e8ed0ecb2",
+      "current_git_blob_sha": "561b7927510be5070f38fed70cd5870e8ed0ecb2",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "config.js",
+      "owner_sha256": "c14293e16fda6a6b0e483ea5141954b78832b175155cec0ab9f59d35e8b7b0cd",
+      "pinned_sha256": "c14293e16fda6a6b0e483ea5141954b78832b175155cec0ab9f59d35e8b7b0cd",
+      "git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+      "current_git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "auth.html",
+      "owner_sha256": "8d6ff984bfec6ef80356ceceef63e5a70428d1ea6c0bb937c282dc1b47329386",
+      "pinned_sha256": "8d6ff984bfec6ef80356ceceef63e5a70428d1ea6c0bb937c282dc1b47329386",
+      "git_blob_sha": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+      "current_git_blob_sha": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "auth-flows.js",
+      "owner_sha256": "ef16214f827d6650a507e30bdae7703c975f061437ed0672cf0abf9072e37500",
+      "pinned_sha256": "ef16214f827d6650a507e30bdae7703c975f061437ed0672cf0abf9072e37500",
+      "git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "current_git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "auth-security.js",
+      "owner_sha256": "ae6eb487fa9ae5f21b1e3a95f698fe5869a377349bc5ff66bf9e8d32cef6cf54",
+      "pinned_sha256": "ae6eb487fa9ae5f21b1e3a95f698fe5869a377349bc5ff66bf9e8d32cef6cf54",
+      "git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "current_git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "admin-mfa.js",
+      "owner_sha256": "909fd25b8e364e420be9067f6a0435567d705e914c53e9358b536d0187d81f6e",
+      "pinned_sha256": "909fd25b8e364e420be9067f6a0435567d705e914c53e9358b536d0187d81f6e",
+      "git_blob_sha": "b34b867301a97473a455f80cb01ab193b224a6ad",
+      "current_git_blob_sha": "b34b867301a97473a455f80cb01ab193b224a6ad",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "app.js",
+      "owner_sha256": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+      "pinned_sha256": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+      "git_blob_sha": "82919e23f74d10bd5e7bc4992ca0929d19f390fb",
+      "current_git_blob_sha": "82919e23f74d10bd5e7bc4992ca0929d19f390fb",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "business.js",
+      "owner_sha256": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+      "pinned_sha256": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+      "git_blob_sha": "28b561065b168ac3dcb1968e490c853a84c0673a",
+      "current_git_blob_sha": "28b561065b168ac3dcb1968e490c853a84c0673a",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "app.html",
+      "owner_sha256": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+      "pinned_sha256": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+      "git_blob_sha": "3564f09e4dea7cdad6669514bc2bea7812dcdfef",
+      "current_git_blob_sha": "3564f09e4dea7cdad6669514bc2bea7812dcdfef",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "business.html",
+      "owner_sha256": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+      "pinned_sha256": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+      "git_blob_sha": "72cb99a21ba40b5140f1312538b677fe15dd6cab",
+      "current_git_blob_sha": "72cb99a21ba40b5140f1312538b677fe15dd6cab",
+      "result": "EXACT_PUBLISHED_BYTES"
+    },
+    {
+      "path": "docs/security-audit/security-stage-10-operations-candidate-contract.json",
+      "owner_sha256": "f4dd254f2e099f242647fdb3cd5f60023a0a0dfa74d731af7a804c479eec5cd0",
+      "pinned_sha256": "f4dd254f2e099f242647fdb3cd5f60023a0a0dfa74d731af7a804c479eec5cd0",
+      "git_blob_sha": "5ed559275f6f60d0d86ec488c5a83cdf3d85caa4",
+      "current_git_blob_sha": "5ed559275f6f60d0d86ec488c5a83cdf3d85caa4",
+      "result": "EXACT_PUBLISHED_BYTES"
+    }
+  ],
+  "summary": {
+    "tests": 27,
+    "pass": 27,
+    "fail": 0,
+    "exit_code": 0,
+    "syntax_checks": 4,
+    "hashes": 15,
+    "exact_published_hashes": 15,
+    "CRLF_variants": 0,
+    "unexpected_mismatches": 0,
+    "Windows_junction_fixture_scope_owner_reported_PASS": true,
+    "new_assistant_behavior_or_syntax_tests_run": 0,
+    "public_or_backend_requests_run": 0
+  },
+  "prior_local_and_failed_receipts_unchanged": true,
+  "owner_additional_SQL_terminal_setup_or_rerun_action_required": false,
+  "hosted_operations_acceptance": false,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "next_step": "10.3"
+}

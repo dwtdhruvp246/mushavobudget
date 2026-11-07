@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "PROVIDER_CONFIRMATION_APPROVED_EXACT_SYNTHETIC_FAMILY_CREATED",
+  "safe_result": {
+    "family_id": "4832ecbe-e35f-4489-a771-44d27920e225",
+    "fixture_name": "audit-family-proof-policy-20261107",
+    "provider_charges": 0,
+    "family_rows_created": 1,
+    "active_legacy_members": 2,
+    "workspace_rows_created": 1,
+    "fixture_entitlement_hours": 1,
+    "modeled_setup_sessions_removed": 1,
+    "application_provisioning_acceptance": false
+  },
+  "production_changed": false,
+  "external_email_requests": 0,
+  "HTTP_acceptance": false
+}

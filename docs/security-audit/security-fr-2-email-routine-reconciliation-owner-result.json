@@ -1,0 +1,40 @@
+{
+  "scope": "READ_ONLY_FUNCTION_AND_EVENT_HOOK_METADATA_NOT_GUARD_INSTALLATION",
+  "stage_step": "FR.2.4.E4.1_ROUTINE_RECONCILIATION",
+  "checked_UTC": "2026-10-16T04:30:28.791943+00:00",
+  "findings_closed": [],
+  "intended_project": "dczlddwbtgvfdujgcitb",
+  "hosted_acceptance": false,
+  "public_function_count": 279,
+  "transaction_read_only": "on",
+  "non_event_trigger_functions": {
+    "count": 278,
+    "metadata_md5": "1cdb447a3d442a4dfcf87459dea1a63f"
+  },
+  "application_routines_invoked": 0,
+  "event_trigger_function_count": 1,
+  "event_trigger_function_details": [
+    {
+      "name": "rls_auto_enable",
+      "definer": true,
+      "body_md5": "99be20677b456ea8d3be47bdd44fb369",
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "arguments": "",
+      "anon_execute": true,
+      "service_execute": true,
+      "bound_event_hooks": 1,
+      "authenticated_execute": true
+    }
+  ],
+  "event_trigger_details_truncated": false,
+  "expected_source_non_event_metadata_md5": "c4f0854e34bb2f8ba4c3a9b79d700fe7",
+  "expected_source_non_event_function_count": 278,
+  "project_selection_independently_verified": false,
+  "application_rows_or_function_bodies_printed": false,
+  "source_matches_excluding_event_trigger_functions": false,
+  "functions_hooks_policies_grants_accounts_or_settings_changed": false,
+  "source_commit": "60f73dbc36c7fb81f63c5a86f6bd10ba46c4568e",
+  "evidence_scope": "OWNER_RETURNED_READ_ONLY_METADATA_NOT_ASSISTANT_DATABASE_ACCESS"
+}

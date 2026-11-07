@@ -1,0 +1,250 @@
+{
+  "date": "2026-10-15",
+  "source_parent_commit": "20b2648438cc21b70f23e2ea8ab183b81c269c4b",
+  "final_verifier_result": {
+    "stage_step": "FR.2.4.E3.4_LIMITER_PACKAGE_OFFLINE",
+    "result": "OFFLINE_ACTUAL_PACKAGE_WRANGLER_DRY_RUN_AND_REFUSAL_CHECKS_SCOPED_PASS",
+    "node_version": "v24.19.0",
+    "source_files_SHA256_verified": 14,
+    "tools": {
+      "wrangler": "4.149.0",
+      "esbuild": "0.28.2",
+      "workerd": "1.20261006.1",
+      "miniflare": "5.20261006.1-alpha"
+    },
+    "tools_lock_SHA256_matched": true,
+    "checks": 18,
+    "pass": 18,
+    "fail": 0,
+    "exit_code": 0,
+    "checks_detail": [
+      {
+        "check": "All reviewed source hashes, complete tools lock and four installed tool versions match",
+        "status": "PASS"
+      },
+      {
+        "check": "Every selected JavaScript input passes its Node syntax check",
+        "status": "PASS"
+      },
+      {
+        "check": "Actual esbuild package and actual offline Wrangler dry run preserve the reviewed Worker bytes",
+        "status": "PASS"
+      },
+      {
+        "check": "Existing preparation is refused without modifying its receipt",
+        "status": "PASS"
+      },
+      {
+        "check": "Output inside the source is refused before any write",
+        "status": "PASS"
+      },
+      {
+        "check": "Public workers.dev route is refused",
+        "status": "PASS"
+      },
+      {
+        "check": "Public preview URL is refused",
+        "status": "PASS"
+      },
+      {
+        "check": "Custom public route is refused",
+        "status": "PASS"
+      },
+      {
+        "check": "Unexpected Worker name is refused",
+        "status": "PASS"
+      },
+      {
+        "check": "Key-value rather than SQLite class migration is refused",
+        "status": "PASS"
+      },
+      {
+        "check": "Unexpected secret or account configuration is refused",
+        "status": "PASS"
+      },
+      {
+        "check": "Additional module discovery is refused",
+        "status": "PASS"
+      },
+      {
+        "check": "Foreign namespace binding is refused",
+        "status": "PASS"
+      },
+      {
+        "check": "Changed Worker bytes are refused",
+        "status": "PASS"
+      },
+      {
+        "check": "An extra private-looking file refuses the entire upload package without reading it",
+        "status": "PASS"
+      },
+      {
+        "check": "Changed source refuses preparation before an output directory is created",
+        "status": "PASS"
+      },
+      {
+        "check": "Changed dependency lock refuses before loading a tool or writing a package",
+        "status": "PASS"
+      },
+      {
+        "check": "The dry-run CLI network guard actually refuses fetch and records no address or payload",
+        "status": "PASS"
+      }
+    ],
+    "syntax_checks": 11,
+    "syntax": [
+      {
+        "file": "supabase/functions/_shared/email-verification-crypto.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-http.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-zoho.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-gateway.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-rate-client.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-pages.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-rate-do.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/lib/build-fr-2-email-workers.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/prepare-fr-2-email-limiter.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/verify-fr-2-email-limiter-package.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/offline-cloudflare-deploy.cjs",
+        "pass": true
+      }
+    ],
+    "actual_package_receipt": {
+      "stage_step": "FR.2.4.E3.4_LIMITER_PACKAGE",
+      "result": "LOCAL_LIMITER_PACKAGE_AND_ACTUAL_WRANGLER_DRY_RUN_SCOPED_PASS_NOT_DEPLOYED",
+      "source_parent_commit": "20b2648438cc21b70f23e2ea8ab183b81c269c4b",
+      "node_version": "v24.19.0",
+      "source_files_SHA256_verified": 14,
+      "tools": {
+        "wrangler": "4.149.0",
+        "esbuild": "0.28.2",
+        "workerd": "1.20261006.1",
+        "miniflare": "5.20261006.1-alpha"
+      },
+      "tools_lock_SHA256_matched": true,
+      "dependency_bytes_independently_hashed": false,
+      "worker_SHA256": "4d10a3f6ea03ab14979b1d821df2c35409d519b0550da8bd4a92f4b28d37b0a1",
+      "configuration_SHA256": "bc73523d98847f678f86b07b2855d8e86259e40e451f471dd9a2320f3452d028",
+      "worker_files": 2,
+      "public_routes_disabled": true,
+      "additional_module_discovery_disabled": true,
+      "SQLite_class_migration_present": true,
+      "secrets_or_account_identifiers_in_configuration": false,
+      "actual_Wrangler_dry_run_exit_code": 0,
+      "Wrangler_output_matches_reviewed_bundle": true,
+      "network_guard_loaded_processes": 3,
+      "blocked_network_attempts": 0,
+      "Node_HTTP_socket_DNS_transports_disabled": true,
+      "unique_unused_auth_profile_selected": true,
+      "cached_default_auth_profile_selected": false,
+      "raw_CLI_output_or_private_paths_printed": false,
+      "local_dry_run_state_removed": true,
+      "account_login_or_private_API_requests": 0,
+      "deployed": false,
+      "Cloudflare_resources_bindings_or_secrets_created": false,
+      "Zoho_encrypted_file_accessed_or_email_dispatched": false,
+      "SQL_Auth_roles_or_Pages_changed": false,
+      "hosted_acceptance": false,
+      "production_or_native_changed": false,
+      "findings_closed": [],
+      "APK_update_deferred": true,
+      "exit_code": 0
+    },
+    "temporary_fixture_cleanup_completed": true,
+    "Windows_Wrangler_execution_verified": false,
+    "actual_Cloudflare_Auth_Zoho_or_SQL_requests": 0,
+    "real_email_dispatched": false,
+    "deployed": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "findings_closed": [],
+    "problem_code": null,
+    "APK_update_deferred": true
+  },
+  "actual_CLI_preparation_result": {
+    "stage_step": "FR.2.4.E3.4_LIMITER_PACKAGE",
+    "result": "LOCAL_LIMITER_PACKAGE_AND_ACTUAL_WRANGLER_DRY_RUN_SCOPED_PASS_NOT_DEPLOYED",
+    "source_parent_commit": "20b2648438cc21b70f23e2ea8ab183b81c269c4b",
+    "node_version": "v24.19.0",
+    "source_files_SHA256_verified": 14,
+    "tools": {
+      "wrangler": "4.149.0",
+      "esbuild": "0.28.2",
+      "workerd": "1.20261006.1",
+      "miniflare": "5.20261006.1-alpha"
+    },
+    "tools_lock_SHA256_matched": true,
+    "dependency_bytes_independently_hashed": false,
+    "worker_SHA256": "4d10a3f6ea03ab14979b1d821df2c35409d519b0550da8bd4a92f4b28d37b0a1",
+    "configuration_SHA256": "bc73523d98847f678f86b07b2855d8e86259e40e451f471dd9a2320f3452d028",
+    "worker_files": 2,
+    "public_routes_disabled": true,
+    "additional_module_discovery_disabled": true,
+    "SQLite_class_migration_present": true,
+    "secrets_or_account_identifiers_in_configuration": false,
+    "actual_Wrangler_dry_run_exit_code": 0,
+    "Wrangler_output_matches_reviewed_bundle": true,
+    "network_guard_loaded_processes": 3,
+    "blocked_network_attempts": 0,
+    "Node_HTTP_socket_DNS_transports_disabled": true,
+    "unique_unused_auth_profile_selected": true,
+    "cached_default_auth_profile_selected": false,
+    "raw_CLI_output_or_private_paths_printed": false,
+    "local_dry_run_state_removed": true,
+    "account_login_or_private_API_requests": 0,
+    "deployed": false,
+    "Cloudflare_resources_bindings_or_secrets_created": false,
+    "Zoho_encrypted_file_accessed_or_email_dispatched": false,
+    "SQL_Auth_roles_or_Pages_changed": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "findings_closed": [],
+    "APK_update_deferred": true,
+    "exit_code": 0
+  },
+  "concrete_review_artifact_created": true,
+  "review_artifact_contains_only_worker_module_and_config_plus_separate_receipt": true,
+  "tools_fixture_lock_entries": 92,
+  "assistant_npm_ci_installed_platform_applicable_packages": 40,
+  "npm_install_scripts_disabled": true,
+  "root_project_package_or_lock_changed": false,
+  "initial_local_attempt_passed_first2_checks_then_refused_blocked_banner_update_check": true,
+  "initial_CLI_exit_code_was0_but_network_guard_counter_correctly_rejected_one_blocked_registry_attempt": true,
+  "correction": "WRANGLER_HIDE_BANNER_TRUE_SKIPS_BANNER_UPDATE_LOOKUP_WITHOUT_PATCHING_WRANGLER",
+  "final_CLI_network_guard_loads": 3,
+  "final_CLI_blocked_network_attempts": 0,
+  "Node_transport_guard_is_not_an_OS_network_sandbox": true,
+  "Windows_actual_Wrangler_execution_verified": false,
+  "actual_Cloudflare_provider_or_SQL_requests": 0,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

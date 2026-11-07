@@ -1,0 +1,341 @@
+const CACHE_PREFIX = "mushavo-budget-";
+const STATIC_CACHE = `${CACHE_PREFIX}pwa-shell-v89`;
+const APP_ENTRY_URL = "/app-entry.html";
+const OFFLINE_URL = "/offline.html";
+const OFFLINE_ENTRY_CACHE_KEY = "/__mushavo-budget-offline/app-entry";
+const OFFLINE_PAGE_CACHE_KEY = "/__mushavo-budget-offline/page";
+const DEFAULT_NOTIFICATION_TITLE = "Mushavo Budget";
+const DEFAULT_NOTIFICATION_BODY = "You have a new Mushavo Budget notification.";
+const DEFAULT_NOTIFICATION_TARGET = "/app.html?source=push#family/payments";
+const NOTIFICATION_ICON = "/assets/pwa-icon-192.png";
+const NOTIFICATION_BADGE = "/assets/pwa-icon-192.png";
+const ALLOWED_NOTIFICATION_PATHS = new Set(["/app.html", "/business.html"]);
+const ALLOWED_NOTIFICATION_HASHES = new Set([
+  "#family/dashboard",
+  "#family/payments",
+  "#family/settings",
+  "#admin/dashboard",
+  "#admin/finance",
+  "#admin/enquiries",
+  "#admin/support"
+]);
+const APP_ENTRY_PATHS = new Set(["/app-entry", "/app-entry.html"]);
+const APP_WINDOW_PATHS = new Set(["/app", "/app.html", "/app-entry", "/app-entry.html", "/business.html"]);
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+const SAFE_SHELL = [
+  "/workspace-preference.js?v=1",
+  "/app-entry.js?v=3",
+  "/pwa-shell.css?v=3",
+  "/pwa-update.css?v=2",
+  "/pwa-install.css?v=2",
+  "/pwa-install.js?v=1",
+  "/pwa.js?v=80",
+  "/assets/mushavo-budget-logo.png",
+  "/assets/pwa-icon-192.png",
+  "/assets/pwa-icon-512.png",
+  "/assets/pwa-icon-maskable-512.png",
+  "/assets/apple-touch-icon.png"
+];
+
+const SAFE_SHELL_PATHS = new Set(SAFE_SHELL.map((url) => new URL(url, self.location.origin).pathname));
+const OFFLINE_DOCUMENTS = Object.freeze({
+  entry: `<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10b981"><title>Mushavo Budget — Offline</title>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#eefbf7;color:#122033;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.card{box-sizing:border-box;width:min(92vw,480px);padding:32px 24px;border:1px solid #c9eee2;border-radius:24px;background:#fff;box-shadow:0 20px 60px rgba(17,94,89,.12);text-align:center}.brand{margin:0 0 16px;color:#087f6d;font-size:.82rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}h1{margin:0 0 12px;font-size:clamp(1.6rem,7vw,2.2rem)}p{margin:0;color:#56677d;line-height:1.6}.notice{margin-top:20px;padding:14px;border-radius:14px;background:#effcf8;color:#176b5d;font-weight:700}</style>
+</head><body><main class="card"><p class="brand">Mushavo Budget</p><h1>Connect to open your workspace</h1><p>Mushavo Budget cannot verify your saved sign-in while offline. No financial information is being shown as current.</p><p class="notice">Reconnect, then open the app again.</p></main></body></html>`,
+  page: `<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10b981"><title>Mushavo Budget — Offline</title>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#eefbf7;color:#122033;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.card{box-sizing:border-box;width:min(92vw,480px);padding:32px 24px;border:1px solid #c9eee2;border-radius:24px;background:#fff;text-align:center}h1{margin:0 0 12px}p{margin:0;color:#56677d;line-height:1.6}</style>
+</head><body><main class="card"><h1>Your workspace needs a connection</h1><p>Reconnect to verify your session and load current payment information.</p></main></body></html>`
+});
+const NEVER_CACHE_PATH_PREFIXES = [
+  "/auth/",
+  "/rest/",
+  "/storage/",
+  "/functions/",
+  "/realtime/"
+];
+
+function isSensitiveRequest(url) {
+  return NEVER_CACHE_PATH_PREFIXES.some((prefix) => url.pathname.startsWith(prefix));
+}
+
+function boundedText(value, fallback, maximumLength) {
+  if (typeof value !== "string") return fallback;
+  const normalized = value.trim().replace(/\s+/g, " ");
+  return normalized ? normalized.slice(0, maximumLength) : fallback;
+}
+
+function safeNotificationTag(value, fallback) {
+  if (typeof value !== "string") return fallback;
+  const normalized = value.trim();
+  return /^[a-z0-9][a-z0-9:_-]{0,95}$/i.test(normalized) ? normalized : fallback;
+}
+
+function safeNotificationTimestamp(value) {
+  const candidate = typeof value === "number" ? value : Date.parse(String(value || ""));
+  return Number.isFinite(candidate) && candidate > 0 ? candidate : Date.now();
+}
+
+function safeNotificationTarget(value) {
+  const fallback = new URL(DEFAULT_NOTIFICATION_TARGET, self.location.origin);
+  if (typeof value !== "string" || !value.trim()) return fallback.href;
+
+  try {
+    const requested = new URL(value, self.location.origin);
+    if (requested.origin !== self.location.origin || !ALLOWED_NOTIFICATION_PATHS.has(requested.pathname)) {
+      return fallback.href;
+    }
+
+    const target = new URL(requested.pathname, self.location.origin);
+    target.searchParams.set("source", "push");
+
+    const workspaceId = requested.searchParams.get("workspace");
+    if (requested.pathname === "/business.html") {
+      const billId = requested.searchParams.get("bill");
+      if (!workspaceId || !UUID_PATTERN.test(workspaceId) || !billId || !UUID_PATTERN.test(billId)
+        || requested.hash !== "#business/bills") return fallback.href;
+      target.searchParams.set("workspace", workspaceId);
+      target.searchParams.set("bill", billId);
+      target.hash = "#business/bills";
+      return target.href;
+    }
+    if (workspaceId && UUID_PATTERN.test(workspaceId)) {
+      target.searchParams.set("workspace", workspaceId);
+    }
+
+    const paymentItemId = requested.searchParams.get("payment_item");
+    const isPaymentReminder = paymentItemId && UUID_PATTERN.test(paymentItemId);
+    if (isPaymentReminder) {
+      target.searchParams.set("payment_item", paymentItemId);
+      const paymentDueDate = requested.searchParams.get("payment_due_date");
+      if (paymentDueDate && DATE_PATTERN.test(paymentDueDate)) {
+        target.searchParams.set("payment_due_date", paymentDueDate);
+      }
+    }
+
+    const notificationId = requested.searchParams.get("notification_id");
+    if (notificationId && UUID_PATTERN.test(notificationId)) {
+      target.searchParams.set("notification_id", notificationId);
+    }
+
+    const subscriptionPaymentId = requested.searchParams.get("subscription_payment");
+    if (
+      subscriptionPaymentId && UUID_PATTERN.test(subscriptionPaymentId) &&
+      workspaceId && UUID_PATTERN.test(workspaceId) &&
+      notificationId && UUID_PATTERN.test(notificationId) &&
+      requested.hash === "#admin/finance"
+    ) {
+      target.searchParams.set("subscription_payment", subscriptionPaymentId);
+    }
+
+    target.hash = isPaymentReminder
+      ? "#family/payments"
+      : ALLOWED_NOTIFICATION_HASHES.has(requested.hash)
+        ? requested.hash
+        : "#family/settings";
+    return target.href;
+  } catch (_error) {
+    return fallback.href;
+  }
+}
+
+function notificationDetails(eventData) {
+  let payload = {};
+  try {
+    const parsed = eventData?.json?.();
+    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) payload = parsed;
+  } catch (_error) {
+    // A malformed provider payload falls back to private, non-financial copy.
+  }
+
+  const isTest = payload.type === "test";
+  const fallbackBody = isTest
+    ? "Your payment reminder notifications are connected."
+    : DEFAULT_NOTIFICATION_BODY;
+  const fallbackTag = isTest ? "mushavo-budget-test-push" : "mushavo-budget-notification";
+
+  return {
+    title: boundedText(payload.title, DEFAULT_NOTIFICATION_TITLE, 80),
+    options: {
+      body: boundedText(payload.body, fallbackBody, 240),
+      icon: NOTIFICATION_ICON,
+      badge: NOTIFICATION_BADGE,
+      tag: safeNotificationTag(payload.tag, fallbackTag),
+      timestamp: safeNotificationTimestamp(payload.timestamp || payload.sent_at),
+      renotify: false,
+      data: {
+        targetUrl: safeNotificationTarget(payload.target_url || payload.url),
+        type: boundedText(payload.type, "notification", 40)
+      }
+    }
+  };
+}
+
+async function showPushNotification(eventData) {
+  const { title, options } = notificationDetails(eventData);
+  await self.registration.showNotification(title, options);
+  if (typeof self.navigator?.setAppBadge === "function") {
+    try {
+      await self.navigator.setAppBadge(1);
+    } catch (_error) {
+      // Badging is an optional enhancement and must never block a push.
+    }
+  }
+}
+
+async function openNotificationTarget(value) {
+  const target = new URL(safeNotificationTarget(value), self.location.origin);
+  if (typeof self.navigator?.clearAppBadge === "function") {
+    try {
+      await self.navigator.clearAppBadge();
+    } catch (_error) {
+      // The application recalculates the badge after it opens.
+    }
+  }
+
+  const windowClients = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+  for (const client of windowClients) {
+    let clientUrl;
+    try {
+      clientUrl = new URL(client.url);
+    } catch (_error) {
+      continue;
+    }
+    if (clientUrl.origin !== self.location.origin || !APP_WINDOW_PATHS.has(clientUrl.pathname)) continue;
+
+    try {
+      const focusedClient = typeof client.navigate === "function"
+        ? (await client.navigate(target.href)) || client
+        : client;
+      await focusedClient.focus();
+      return;
+    } catch (_error) {
+      // If the existing window cannot navigate, open a fresh authorized route.
+    }
+  }
+
+  const openedClient = await self.clients.openWindow(target.href);
+  if (openedClient && typeof openedClient.focus === "function") await openedClient.focus();
+}
+
+async function navigationResponse(request) {
+  try {
+    return await fetch(request, { cache: "no-store" });
+  } catch (_error) {
+    const cache = await caches.open(STATIC_CACHE);
+    const requestUrl = new URL(request.url);
+    const offlineCacheKey = APP_ENTRY_PATHS.has(requestUrl.pathname)
+      ? OFFLINE_ENTRY_CACHE_KEY
+      : OFFLINE_PAGE_CACHE_KEY;
+    const kind = APP_ENTRY_PATHS.has(requestUrl.pathname) ? "entry" : "page";
+    const cached = await cache.match(offlineCacheKey);
+    if (!cached || cached.status !== 200 || !/^text\/html(?:\s*;|$)/i.test(cached.headers.get("Content-Type") || "")) {
+      return inlineOfflineResponse(kind);
+    }
+    // Pages follows .html -> clean-URL redirects during pre-cache fetches. A navigation
+    // with redirect mode manual cannot reuse that response's redirect URL history.
+    // Return the same public bytes and security headers as a fresh response instead.
+    const headers = new Headers(cached.headers);
+    for (const name of ["Content-Length", "Content-Encoding", "Transfer-Encoding"]) headers.delete(name);
+    headers.set("Cache-Control", "no-store");
+    headers.set("X-Mushavo-Offline", "cached");
+    return new Response(cached.body, { status: 200, headers });
+  }
+}
+
+function inlineOfflineResponse(kind) {
+  return new Response(OFFLINE_DOCUMENTS[kind] || OFFLINE_DOCUMENTS.page, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Mushavo-Offline": "inline"
+    }
+  });
+}
+
+async function cacheStaticShell() {
+  const cache = await caches.open(STATIC_CACHE);
+  const shellResults = await Promise.allSettled(SAFE_SHELL.map(async (url) => {
+    const response = await fetch(url, { cache: "no-cache" });
+    if (!response.ok) throw new Error(`PWA_SHELL_FETCH_FAILED:${url}`);
+    await cache.put(url, response);
+  }));
+
+  const documentResults = await Promise.allSettled([
+    fetch(APP_ENTRY_URL, { cache: "no-cache" }).then((response) => {
+      if (!response.ok) throw new Error("PWA_ENTRY_FETCH_FAILED");
+      return cache.put(OFFLINE_ENTRY_CACHE_KEY, response);
+    }),
+    fetch(OFFLINE_URL, { cache: "no-cache" }).then((response) => {
+      if (!response.ok) throw new Error("PWA_OFFLINE_PAGE_FETCH_FAILED");
+      return cache.put(OFFLINE_PAGE_CACHE_KEY, response);
+    })
+  ]);
+
+  return [...shellResults, ...documentResults].every((result) => result.status === "fulfilled");
+}
+
+async function revalidatedShellResponse(request) {
+  const cache = await caches.open(STATIC_CACHE);
+  try {
+    const response = await fetch(request, { cache: "no-cache" });
+    if (response.ok) await cache.put(request, response.clone());
+    return response;
+  } catch (_error) {
+    return (await cache.match(request, { ignoreSearch: true })) || Response.error();
+  }
+}
+
+self.addEventListener("install", (event) => {
+  event.waitUntil((async () => {
+    // This recovery release must replace stale Android registrations even if
+    // an optional shell asset cannot be cached. Navigation still has a fully
+    // private inline fallback and never exposes authenticated app data.
+    await cacheStaticShell();
+    await self.skipWaiting();
+  })());
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys
+      .filter((key) => key.startsWith(CACHE_PREFIX) && key !== STATIC_CACHE)
+      .map((key) => caches.delete(key)));
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener("message", (event) => {
+  if (event.data?.type === "SKIP_WAITING") event.waitUntil(self.skipWaiting());
+});
+
+self.addEventListener("push", (event) => {
+  event.waitUntil(showPushNotification(event.data));
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(openNotificationTarget(event.notification.data?.targetUrl));
+});
+
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
+
+  const requestUrl = new URL(event.request.url);
+  if (requestUrl.origin !== self.location.origin) return;
+  if (isSensitiveRequest(requestUrl)) return;
+
+  if (event.request.mode === "navigate") {
+    event.respondWith(navigationResponse(event.request));
+    return;
+  }
+
+  if (!SAFE_SHELL_PATHS.has(requestUrl.pathname)) return;
+  event.respondWith(revalidatedShellResponse(event.request));
+});

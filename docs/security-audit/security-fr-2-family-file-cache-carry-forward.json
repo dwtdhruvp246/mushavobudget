@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "scope": "UF04_PRIVATE_FILE_CACHED_COPY_REVOCATION",
+  "status": "OPEN_OBSERVED_PROVIDER_CACHE_BEHAVIOR",
+  "source_run": "42374771602",
+  "observed": {
+    "before_removal": {
+      "status": 200,
+      "cache_headers": {
+        "cache-control": "private, no-cache",
+        "cf-cache-status": "MISS",
+        "vary": "Authorization, apikey",
+        "content-type": "image/png"
+      },
+      "bytes": 68,
+      "harmless_fixture_matches": true
+    },
+    "warmed_after_removal": {
+      "status": 200,
+      "cache_headers": {
+        "cache-control": "private, no-cache",
+        "cf-cache-status": "HIT",
+        "vary": "Authorization, apikey",
+        "content-type": "image/png"
+      },
+      "bytes": 68,
+      "harmless_fixture_matches": true
+    },
+    "fresh_after_removal": {
+      "status": 400,
+      "cache_headers": {
+        "cf-cache-status": "BYPASS",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "Storage_status_code": 404
+    },
+    "authoritative_membership_false": true,
+    "new_signing_denied": true
+  },
+  "meaning": "The previously authorized 68-byte immutable test file remained available at the warmed URL with CF cache HIT. A cacheNonce request was denied and the removed member could not obtain a new signature. This proves fresh authorization denial, not immediate withdrawal of an already-cached copy.",
+  "next_scope": "Boundedly compare warm and cold signed URL expiry and supported cache settings with harmless Personal proof files; no new Family or modeled Auth session is needed.",
+  "acceptance_limit": "Do not claim that cache:no-store, private/no-cache headers, a browser TTL reduction or short signed token expiry by themselves guarantee immediate revocation. Verify current provider behavior before a stronger serving contract.",
+  "references": [
+    "https://supabase.com/kb/troubleshooting/storage-private-bucket-files-still-accessible-after-remove-access-or-logout",
+    "https://supabase.com/docs/guides/storage/cdn/smart-cdn"
+  ],
+  "public_policy_or_file_delivery_runtime_changed": false,
+  "findings_closed": []
+}

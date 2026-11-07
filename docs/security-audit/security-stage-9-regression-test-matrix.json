@@ -1,0 +1,448 @@
+{
+  "schema_version": 1,
+  "stage_step": "9.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "2ea0a69b1bbe5ffedf7a3fc5c0d2179ff1b1f895",
+  "scope": "FROZEN_GROUPED_REAL_ACCEPTANCE_REQUIREMENTS_NOT_LOCAL_TEST_COUNT_OR_STORE_APPROVAL",
+  "groups": [
+    {
+      "id": "RG01",
+      "title": "Finance and workspace correctness",
+      "finding_ids": [
+        "F15",
+        "F10"
+      ],
+      "cases": [
+        {
+          "id": "RG01-01",
+          "title": "Personal record binding",
+          "expected": "Own record/item/workspace stays consistent for direct insert/update and legitimate relink; foreign substitution is denied without side effects.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG01-02",
+          "title": "Family membership and attribution",
+          "expected": "Head/member/outsider access, invitation removal and paid-by attribution obey installed permissions and head entitlements.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG01-03",
+          "title": "Business role and scope finance",
+          "expected": "Owner/manager/staff/viewer scopes isolate expenses, reports, receipts and cross-workspace records.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG01-04",
+          "title": "Schedule and history integrity",
+          "expected": "Recurring/custom-day and one-off records preserve due dates, paid state and history across month/timezone changes.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG01-05",
+          "title": "Currency and rates",
+          "expected": "USD/INR totals round consistently; actual automatic scheduler/provider execution and historical conversions are preserved.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG01-06",
+          "title": "Cashbook and entitlements",
+          "expected": "Existing payment selection, duplicate protection, reports and expiry/free-limit behavior retain correct records and access.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        }
+      ]
+    },
+    {
+      "id": "RG02",
+      "title": "Auth and privilege boundaries",
+      "finding_ids": [
+        "F08",
+        "F14",
+        "F15"
+      ],
+      "cases": [
+        {
+          "id": "RG02-01",
+          "title": "Signup and confirmation",
+          "expected": "Separate controlled identities confirm using deployed callbacks; unconfirmed users do not gain forbidden access.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG02-02",
+          "title": "Invitation and identity linking",
+          "expected": "Fresh, expired, reused and wrong-account invitations preserve intended identity/workspace and fail safely.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG02-03",
+          "title": "Password and recovery",
+          "expected": "Actual password enforcement, current/recent-login requirements and recovery links match the accepted policy.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG02-04",
+          "title": "Session and account switching",
+          "expected": "Refresh, logout, offline/transient failures and late callbacks do not expose previous-account data.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG02-05",
+          "title": "Admin MFA and recovery",
+          "expected": "Verified controlled operators prove AAL2 and role checks plus recovery without risking sole-operator lockout.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG02-06",
+          "title": "Direct caller and grants",
+          "expected": "Real allowed and denied database/API callers prove RLS, routines, escalation and effective grants independent of UI.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        }
+      ]
+    },
+    {
+      "id": "RG03",
+      "title": "Files, deletion and privacy",
+      "finding_ids": [
+        "F01",
+        "F02",
+        "F13",
+        "F20"
+      ],
+      "cases": [
+        {
+          "id": "RG03-01",
+          "title": "Trusted upload processing",
+          "expected": "Actual bytes, content/size limits, quotas and rate limits are checked at the trusted boundary.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG03-02",
+          "title": "Proof access and context",
+          "expected": "Own permitted proofs open; foreign/stale context cannot sign, read or remove another workspace's object.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG03-03",
+          "title": "Account deletion and ownership",
+          "expected": "Recoverable isolated deletion honors ownership transfer, shared finance retention and authenticated subject selection.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG03-04",
+          "title": "Cleanup and retry",
+          "expected": "Actual durable jobs remove approved files/provider data, recover interrupted work and avoid false completion.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG03-05",
+          "title": "Data inventory and declarations",
+          "expected": "Installed analytics, processors, SDKs and logs match public privacy and store declarations.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG03-06",
+          "title": "Audience and retention",
+          "expected": "Accepted child/audience/territory/consent decisions and category retention/deletion are implemented and demonstrated.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        }
+      ]
+    },
+    {
+      "id": "RG04",
+      "title": "Usability, performance and PWA",
+      "finding_ids": [
+        "F07",
+        "F10",
+        "F14",
+        "F17"
+      ],
+      "cases": [
+        {
+          "id": "RG04-01",
+          "title": "Cold and warm startup",
+          "expected": "Recorded device/network/data-size timings and failures meet approved budgets; legitimate missing-workspace provisioning stays bounded.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG04-02",
+          "title": "Responsive finance and input",
+          "expected": "Narrow/large screens, keyboard, zoom, focus/error labels and form submission remain usable without cut-off controls.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG04-03",
+          "title": "Dashboard and reports",
+          "expected": "Independent month selectors, carryover, paid-by, sorting and filters remain accurate for controlled datasets.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG04-04",
+          "title": "Realtime and repeated operations",
+          "expected": "Update/entry/delete and reconnect refresh the affected context; concurrent or repeated actions avoid duplicate finance records.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG04-05",
+          "title": "Offline and account privacy",
+          "expected": "Private/API requests are not exposed by offline cache; account switch and network failures display truthful safe state.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG04-06",
+          "title": "Update and interruption",
+          "expected": "Old/current service workers, multiple tabs, dirty forms, in-flight saves and resume preserve accepted update behavior.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        }
+      ]
+    },
+    {
+      "id": "RG05",
+      "title": "Installed deployment and operations",
+      "finding_ids": [
+        "F07",
+        "F09",
+        "F12",
+        "F15",
+        "F19"
+      ],
+      "cases": [
+        {
+          "id": "RG05-01",
+          "title": "Source and deployment pins",
+          "expected": "Frontend, Edge functions, schema, grants and configuration are reconciled to installed staging identities.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG05-02",
+          "title": "Release asset completeness",
+          "expected": "All entry pages and referenced helpers including auth.html, auth-flows.js and auth-security.js exist in the actual serving artifact.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG05-03",
+          "title": "Transport and serving layer",
+          "expected": "Actual redirect/header/TLS/origin behavior and serving-layer mapping meet requirements; historical failed production samples remain visible.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG05-04",
+          "title": "Notification destination and content",
+          "expected": "Installed egress/recipient/preview controls reject invalid or inactive recipients and preserve private display rules.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG05-05",
+          "title": "Scheduler and durable queue",
+          "expected": "Real controlled jobs establish concurrency, reclaim/stale-result behavior, partial delivery and recovery without unintended sends.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG05-06",
+          "title": "Support and operational routing",
+          "expected": "Controlled faults reach monitored support/alerts; quota, ownership, incident and recovery procedures are executable.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        }
+      ]
+    },
+    {
+      "id": "RG06",
+      "title": "Native artifact and device evidence",
+      "finding_ids": [
+        "F05",
+        "F11",
+        "F14",
+        "F17",
+        "F20"
+      ],
+      "cases": [
+        {
+          "id": "RG06-01",
+          "title": "Android identity and signing",
+          "expected": "Final signed AAB/APK identity, version, toolchain and merged manifest are evidenced with signing material kept private.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG06-02",
+          "title": "iOS archive and privacy",
+          "expected": "Final iOS archive, signing, SDKs, privacy manifests and required API reasons match shipped behavior.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG06-03",
+          "title": "Native Auth return",
+          "expected": "Physical-device cold/warm callbacks and wrong/stale/reused links preserve identity, session and route boundaries.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG06-04",
+          "title": "Backup and token persistence",
+          "expected": "Final platform backup exclusions and actual device restore/session storage prevent unintended recovery of private credentials.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG06-05",
+          "title": "Native push lifecycle",
+          "expected": "Implemented transport, permission, registration, foreground/background and multi-account cleanup are verified on controlled devices.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG06-06",
+          "title": "Device compatibility and recovery",
+          "expected": "Accepted OS/device matrix covers rotation, resume, upgrades, crash recovery and no irreversible data loss.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        }
+      ]
+    },
+    {
+      "id": "RG07",
+      "title": "Store and external testing",
+      "finding_ids": [
+        "F05",
+        "F17",
+        "F20",
+        "F02"
+      ],
+      "cases": [
+        {
+          "id": "RG07-01",
+          "title": "Publisher accounts and roles",
+          "expected": "Current account type, identity/verification and authorized publishing/recovery roles are evidenced privately.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG07-02",
+          "title": "Google required testing",
+          "expected": "Account-specific console requirements, continuous opted-in testing where applicable, engagement and production-access decision are evidenced.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG07-03",
+          "title": "TestFlight beta evidence",
+          "expected": "Exact approved build, testing scope, tester feedback and crash outcomes are evidenced; approval is not assumed.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG07-04",
+          "title": "Reviewer access and listings",
+          "expected": "Working controlled review identities/resources and truthful screenshots, descriptions, support/URLs enable full feature review.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG07-05",
+          "title": "Commerce and availability",
+          "expected": "Approved territory/channel catalog, purchases/restores/refunds and expiry match Stage 7 controls and store rules.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG07-06",
+          "title": "Privacy and account deletion",
+          "expected": "Data safety/App Privacy/audience/permissions/SDK disclosures and usable deletion resources match the final app.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        }
+      ]
+    },
+    {
+      "id": "RG08",
+      "title": "Final evidence and release control",
+      "finding_ids": [
+        "F05",
+        "F15",
+        "F19",
+        "F20"
+      ],
+      "cases": [
+        {
+          "id": "RG08-01",
+          "title": "Coverage traceability",
+          "expected": "All 123 original rows and 20 findings link to dated results for exact source/deployment/artifact identities.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG08-02",
+          "title": "Regression completeness",
+          "expected": "Discovered MJS/CJS files and explicit local verifiers have executed/excluded/blocked dispositions; failures and repeats remain separate.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG08-03",
+          "title": "Backup and recovery proof",
+          "expected": "Recoverable backup/restore and incident exercises cover the final accepted system and preserve audit evidence.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG08-04",
+          "title": "Release and rollback package",
+          "expected": "Accepted rollout/rollback ownership and steps reconcile serving layers, schema, settings and artifact versions.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG08-05",
+          "title": "Known gaps and release decision",
+          "expected": "Every open action has an owner and accepted evidence/disposition; missing hosted/device evidence cannot become fixture PASS.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        },
+        {
+          "id": "RG08-06",
+          "title": "Full fresh re-audit",
+          "expected": "Final source, installed systems and signed artifacts undergo required complete re-audit before release authorization.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED"
+        }
+      ]
+    }
+  ],
+  "total_grouped_cases": 48,
+  "executed": 0,
+  "overlap_with_prior_stage_acceptance_requirements": true,
+  "counts_not_additive_global_unique_controls": true,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "findings_closed": []
+}

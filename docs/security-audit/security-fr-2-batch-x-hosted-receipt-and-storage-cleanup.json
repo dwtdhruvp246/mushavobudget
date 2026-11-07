@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batches X/Y",
+  "result": "SCOPED_HOSTED_RECEIPT_AND_REQUEST_REPLAY_PASS_CLEANUP_VERIFIED",
+  "project": "dczlddwbtgvfdujgcitb",
+  "production_changed": false,
+  "hosted_receipt_checks": {
+    "workflow_run": "42243334999",
+    "source_commit": "f5e0886dc6332f5876fe46fe29a785282b6252cc",
+    "assertions": {
+      "EXACT_NEW_BUSINESS_WORKSPACE": true,
+      "WORKSPACE_RECEIPTS_AND_CLAIMS_EMPTY": true,
+      "EXACT_FIXTURE_CATEGORY_AND_DIMENSION": true,
+      "DATABASE_ONLY_INVITATION_BOUND_TO_TEST_STAFF": true,
+      "EXACT_TEST_STAFF_INVITATION_ACCEPTED": true,
+      "EXACT_ACTIVE_STAFF_MEMBERSHIP": true,
+      "CONCURRENT_SAME_REQUEST_ID_PERSISTS_ONE_DRAFT": true,
+      "STAFF_DRAFT_CREATED": true,
+      "UNATTACHED_SUBMISSION_DENIED": true,
+      "REAL_STORAGE_UPLOAD": true,
+      "UPLOADED_RECEIPT_REGISTERED": true,
+      "ATTACHED_CLAIM_SUBMITTED": true,
+      "AUTHORIZED_ORIGINAL_MATCHES_UPLOAD": true,
+      "AUTHORIZED_SIGNED_DOWNLOAD_MATCHES_UPLOAD": true,
+      "ANONYMOUS_ORIGINAL_AND_SIGNING_DENIED": true,
+      "OWNER_REVIEWED_STAFF_CLAIM": true,
+      "STALE_SUBMISSION_AND_REVIEW_REPLAY_DENIED": true,
+      "SCOPED_STAFF_MEMBERSHIP_REMOVED": true,
+      "REMOVED_STAFF_SESSION_STILL_VALID": true,
+      "REMOVED_STAFF_ORIGINAL_AND_SIGNING_DENIED": true
+    },
+    "assertion_count": 20,
+    "ordinary_actor_credentials_source": "EXISTING_GITHUB_ACTIONS_SECRETS_NOT_EXPORTED",
+    "API_requests": 12,
+    "exercise_requests": 30,
+    "created_sessions": 2,
+    "cleanup_sessions": 2,
+    "initial_workflow_exit_code": 1,
+    "initial_problem_code": "EXACT_STORAGE_CLEANUP_READBACK_REQUIRED",
+    "initial_failure_scope": "Physical Storage cleanup; all 20 exercise assertions had passed."
+  },
+  "actual_request_id_race": {
+    "transport": "TWO_CONCURRENT_POSTGREST_HTTP_REQUESTS",
+    "routine": "public.save_business_spending_request",
+    "same_request_id": true,
+    "both_returned_one_draft_version": true,
+    "one_persisted_draft_read_back": true,
+    "not_a_database_lock_overlap_measurement": true,
+    "service_job_concurrency_tested": false
+  },
+  "storage_correction": {
+    "migration": "supabase/migrations/20261107064428_business_document_storage_delete_authorization.sql",
+    "source_commit": "8f17f8bd5be3e4fa112e46a644f6a6b5d39cd919",
+    "staging_installed": true,
+    "production_installed": false,
+    "local_Postgres_assertions": 28,
+    "local_dependencies": "MODELED_APPLICATION_SESSION_AND_PERMISSION_PREDICATES",
+    "pre_catalog_sha256": "c6eeedf37ae17212f4a9dca90e70b2cbbd4f46fccb5a3cce186b86361a56ff26",
+    "post_catalog_sha256": "cbe13656ff46192b424e2479f18ac50e1c5bceaaec1f3caac822ec9f9d92bdad",
+    "rollout_stamp_matches": true,
+    "new_SELECT_scope": [
+      "object.delete",
+      "object.delete_many"
+    ],
+    "archived_download_or_signing_access_added": false,
+    "helper_anon_execute": false,
+    "active_registered_document_deletion_allowed": false
+  },
+  "cleanup_workflow": {
+    "workflow_run": "42348451487",
+    "source_commit": "8b5d0c4f89982fe7f3438d25ba9ff6d5d0b4419d",
+    "receipts": [
+      {
+        "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+        "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+        "checks": {
+          "fixture_owner_and_super_admin_verified": true,
+          "created_sessions_local_logout_acknowledged": true
+        },
+        "accounts": {
+          "USER_A": {
+            "signin_HTTP_status": 200,
+            "confirmed_identity": true,
+            "active_profile": true,
+            "expected_platform_role": true,
+            "owned_workspace_counts": {
+              "personal": 1,
+              "family": 0,
+              "business": 1
+            }
+          },
+          "ADMIN": {
+            "signin_HTTP_status": 200,
+            "confirmed_identity": true,
+            "active_profile": true,
+            "expected_platform_role": true,
+            "owned_workspace_counts": {
+              "personal": 1,
+              "family": 0,
+              "business": 0
+            }
+          }
+        },
+        "API_requests": 12,
+        "created_sessions": 2,
+        "cleanup_sessions": 2,
+        "production_changed": false,
+        "exit_code": 0,
+        "exercise": {
+          "exercise_requests": 5,
+          "exact_workspace_resumed_for_storage_cleanup": true
+        },
+        "disposable_fixture_action": "provision",
+        "full_lettered_batch_X_complete": false,
+        "full_lettered_batch_Y_complete": false,
+        "public_configuration_requests": 1,
+        "run_plan": "2026-11-07-batch-x-fixed-storage-cleanup",
+        "source_commit": "8b5d0c4f89982fe7f3438d25ba9ff6d5d0b4419d",
+        "workflow_run_id": "42348451487",
+        "workflow_run_attempt": "1"
+      },
+      {
+        "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+        "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+        "checks": {
+          "two_ordinary_credentials_and_roles_verified": true,
+          "created_sessions_local_logout_acknowledged": true
+        },
+        "accounts": {
+          "USER_A": {
+            "signin_HTTP_status": 200,
+            "confirmed_identity": true,
+            "active_profile": true,
+            "expected_platform_role": true,
+            "owned_workspace_counts": {
+              "personal": 1,
+              "family": 0,
+              "business": 1
+            }
+          },
+          "USER_B": {
+            "signin_HTTP_status": 200,
+            "confirmed_identity": true,
+            "active_profile": true,
+            "expected_platform_role": true,
+            "owned_workspace_counts": {
+              "personal": 1,
+              "family": 0,
+              "business": 0
+            }
+          }
+        },
+        "API_requests": 12,
+        "created_sessions": 2,
+        "cleanup_sessions": 2,
+        "production_changed": false,
+        "exit_code": 0,
+        "exercise": {
+          "checks": {
+            "EXACT_NEW_BUSINESS_WORKSPACE": true,
+            "EXACT_INDEPENDENT_ARCHIVE_READBACK_BOUND": true,
+            "ARCHIVED_OWNER_ORIGINAL_AND_SIGNING_DENIED": true,
+            "REMOVED_STAFF_ARCHIVE_DELETE_DENIED": true
+          },
+          "upload_attempted": false,
+          "storage_delete_acknowledged": true,
+          "email_requests": 0,
+          "provider_payments": 0,
+          "exercise_requests": 5,
+          "independent_archive_readback_bound": true,
+          "last_refusal": {
+            "status": 400
+          },
+          "storage_delete_http_status": 200
+        },
+        "disposable_fixture_action": "exercise",
+        "full_lettered_batch_X_complete": false,
+        "full_lettered_batch_Y_complete": false,
+        "public_configuration_requests": 1,
+        "run_plan": "2026-11-07-batch-x-fixed-storage-cleanup",
+        "source_commit": "8b5d0c4f89982fe7f3438d25ba9ff6d5d0b4419d",
+        "workflow_run_id": "42348451487",
+        "workflow_run_attempt": "1"
+      },
+      {
+        "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+        "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+        "checks": {
+          "fixture_owner_and_super_admin_verified": true,
+          "created_sessions_local_logout_acknowledged": true
+        },
+        "accounts": {
+          "USER_A": {
+            "signin_HTTP_status": 200,
+            "confirmed_identity": true,
+            "active_profile": true,
+            "expected_platform_role": true,
+            "owned_workspace_counts": {
+              "personal": 1,
+              "family": 0,
+              "business": 1
+            }
+          },
+          "ADMIN": {
+            "signin_HTTP_status": 200,
+            "confirmed_identity": true,
+            "active_profile": true,
+            "expected_platform_role": true,
+            "owned_workspace_counts": {
+              "personal": 1,
+              "family": 0,
+              "business": 0
+            }
+          }
+        },
+        "API_requests": 12,
+        "created_sessions": 2,
+        "cleanup_sessions": 2,
+        "production_changed": false,
+        "exit_code": 0,
+        "exercise": {
+          "exercise_requests": 8,
+          "original_one_seat_restored": true,
+          "disposable_workspace_suspended_with_audit_history": true
+        },
+        "disposable_fixture_action": "suspend",
+        "full_lettered_batch_X_complete": false,
+        "full_lettered_batch_Y_complete": false,
+        "public_configuration_requests": 1,
+        "run_plan": "2026-11-07-batch-x-fixed-storage-cleanup",
+        "source_commit": "8b5d0c4f89982fe7f3438d25ba9ff6d5d0b4419d",
+        "workflow_run_id": "42348451487",
+        "workflow_run_attempt": "1"
+      }
+    ],
+    "exit_code": 0,
+    "email_requests": 0,
+    "provider_payments": 0,
+    "Storage_deletion_via": "NORMAL_OWNER_AUTHENTICATED_STORAGE_API",
+    "SQL_Storage_metadata_deletion": false
+  },
+  "independent_cleanup_readback": {
+    "fixture": {
+      "seats": 1,
+      "active_members": 1,
+      "retained_claims": 1,
+      "support_version": 6,
+      "workspace_status": "suspended",
+      "archived_receipts": 1,
+      "retained_requests": 1,
+      "pending_invitations": 0,
+      "retained_test_grants": 1,
+      "subscription_version": 3,
+      "private_storage_objects": 0
+    },
+    "CI_sessions": 0,
+    "fixture_count": 1,
+    "catalog_matches": true
+  },
+  "retained_fixture_policy": "One suspended synthetic workspace retains one draft request, one changes-requested claim, archived document metadata and the manual test-grant/audit history. The grant foreign key restricts workspace deletion; the physical test file and all CI sessions are absent.",
+  "prior_cleanup_attempts": [
+    {
+      "workflow_run": "42347457375",
+      "result": "ARCHIVED_METADATA_INVISIBLE_TO_ORDINARY_SELECT",
+      "exit_code": 1
+    },
+    {
+      "workflow_run": "42347872388",
+      "result": "SINGLE_OBJECT_DELETE_DENIED_WORKSPACE_SUSPENSION_PASSED",
+      "exit_code": 1
+    }
+  ],
+  "full_lettered_batch_X_complete": false,
+  "full_lettered_batch_Y_complete": false,
+  "stage_3_complete": false,
+  "findings_closed": [],
+  "next_step": "BATCH_Y_CURRENT_BACKEND_CALLER_MATRIX_AND_REMAINING_SCOPE_RECONCILIATION",
+  "exit_code": 0,
+  "source_migration_history_alignment": {
+    "version": "20261107064428",
+    "name": "business_document_storage_delete_authorization",
+    "source_filename_matches_hosted_version": true,
+    "ledger_changed": false
+  }
+}

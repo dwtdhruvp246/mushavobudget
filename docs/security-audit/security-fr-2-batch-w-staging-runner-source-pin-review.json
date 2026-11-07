@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-05",
+  "result": "STAGING_SIGNUP_SOURCE_PIN_RECONCILED",
+  "canonical_source_commit": "7f97a0be9142b1e66a6b6dd63a4f1e83a223c938",
+  "canonical_signup_git_blob": "e180783ad2a4cdef8bfb9018eee7e6ab8d771eaa",
+  "deployed_signup_git_blob": "f1e2dcfd6b856aca78a329e03c62ec9d5ec2bc5b",
+  "deployed_signup_SHA256": "0fcbdf23b1f453fc77d281b80e946f794aa89a71db6ad2996d253b4cd3e1053c",
+  "exact_accepted_staging_preconnect_and_dns_prefetch_substitutions": 2,
+  "executable_signup_code_unchanged": true,
+  "auth_security_session_entry_auth_flows_and_auth_HTML_match_canonical_blobs": true,
+  "public_fetch_requests": 5,
+  "exact_first_runner_user_agent_rows_after_logout": 0,
+  "metadata_query_read_only": true,
+  "application_deployment_changed": false,
+  "private_credentials_read_or_exported": false,
+  "local_guard_tests": 10,
+  "pass": 10,
+  "fail": 0
+}

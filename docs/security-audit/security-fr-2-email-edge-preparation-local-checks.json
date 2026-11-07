@@ -1,0 +1,119 @@
+{
+  "stage_step": "FR.2.4.E5.11_FIRST_EDGE_DEPLOYMENT_PREPARATION",
+  "verification_context": "CLEAN_GIT_TREE_ARCHIVE",
+  "archive_source_tree": "08135289eb2dcd618f4deccf6ed32486c30b616a",
+  "receipt": {
+    "stage_step": "FR.2.4.E5.11_FIRST_EDGE_DEPLOYMENT_PREPARATION",
+    "result": "OFFLINE_FIRST_EDGE_PACKAGE_PREPARATION_SCOPED_PASS_NOT_DEPLOYMENT",
+    "source_parent_commit": "82694d5a9a1d69f23fcf8151cfab37950b5f6048",
+    "node_version": "v24.19.0",
+    "source_files_SHA256_verified": 20,
+    "syntax_checks": 3,
+    "package_SHA256": "e1fb82c6001ee4bb8f3d6999f078a028637cf90d912e275fb14ac84774f192a3",
+    "package_regressions": {
+      "tests": 16,
+      "pass": 16,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "failed_case_titles": [],
+      "exit_code": 0
+    },
+    "native_Deno": {
+      "requested": true,
+      "deno_version": "2.9.5",
+      "type_checks": [
+        {
+          "slug": "invite-admin-user",
+          "pass": true
+        },
+        {
+          "slug": "invite-business-member",
+          "pass": true
+        },
+        {
+          "slug": "send-test-push",
+          "pass": true
+        },
+        {
+          "slug": "sync-exchange-rates",
+          "pass": true
+        }
+      ],
+      "bundles": [
+        {
+          "slug": "invite-admin-user",
+          "pass": true
+        },
+        {
+          "slug": "invite-business-member",
+          "pass": true
+        },
+        {
+          "slug": "send-test-push",
+          "pass": true
+        },
+        {
+          "slug": "sync-exchange-rates",
+          "pass": true
+        }
+      ],
+      "source_runtime": {
+        "tests": 28,
+        "pass": 28,
+        "fail": 0,
+        "exit_code": 0,
+        "bundled_entrypoints": false,
+        "actual_SDK_imports_and_TypeScript_entrypoints_executed": true,
+        "HTTP_and_environment_inputs_synthetic": true,
+        "OS_network_and_subprocess_permissions_denied": true,
+        "unexpected_upstream_attempts": 0
+      },
+      "bundled_runtime": {
+        "tests": 28,
+        "pass": 28,
+        "fail": 0,
+        "exit_code": 0,
+        "bundled_entrypoints": true,
+        "actual_SDK_imports_and_TypeScript_entrypoints_executed": true,
+        "HTTP_and_environment_inputs_synthetic": true,
+        "OS_network_and_subprocess_permissions_denied": true,
+        "unexpected_upstream_attempts": 0
+      }
+    },
+    "tests": 72,
+    "pass": 72,
+    "installed_dependency_bytes_independently_hashed": false,
+    "provider_bundle_or_gateway_JWT_acceptance_verified": false,
+    "Windows_package_execution_verified": false,
+    "credentials_or_private_packet_accessed": false,
+    "actual_hosted_requests": 0,
+    "uploaded_or_deployed": false,
+    "email_or_push_or_FX_dispatched": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "temporary_package_removed": true,
+    "checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0
+  },
+  "package_creation_and_inspection": {
+    "stage_step": "FR.2.4.E5.11_FIRST_EDGE_DEPLOYMENT_PREPARATION",
+    "result": "OFFLINE_FIRST_EDGE_SOURCE_PACKAGE_SCOPED_PASS_NOT_DEPLOYED",
+    "source_files_SHA256_verified": 20,
+    "package_files": 12,
+    "package_SHA256": "e1fb82c6001ee4bb8f3d6999f078a028637cf90d912e275fb14ac84774f192a3",
+    "credentials_requested": false,
+    "actual_hosted_requests": 0,
+    "uploaded_or_deployed": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "exit_code": 0
+  },
+  "archive_exit_code": 0,
+  "actual_hosted_requests": 0
+}

@@ -1,0 +1,7 @@
+{
+  "nodeModulesDir": "none",
+  "lock": {
+    "path": "./edge-deno.lock",
+    "frozen": true
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-29",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "case_id": "AU02.08",
+  "result": "OWNER_SCREENSHOT_BUSINESS_DECLINE_AND_RESERVATION_RELEASE_PASS",
+  "evidence_kind": "OWNER_SCREENSHOT_AFTER_REQUESTED_IN_APP_DECLINE",
+  "screenshot": "image(20261029-193018).png",
+  "invitation_id": "2cbc417b-930e-47b3-b7c3-ec0b551834d2",
+  "observations": {
+    "invitation_status_shown": "rejected",
+    "seat_limit": 10,
+    "active_members": 3,
+    "pending_invitations": 0,
+    "available_seats": 7
+  },
+  "comparison_to_previous_screenshot": {
+    "active_members_unchanged": true,
+    "pending_invitation_reduced_from_1_to_0": true,
+    "available_seats_increased_from_6_to_7": true
+  },
+  "acceptance_scope": "Combine with recorded positive acceptance and accepted-link unavailable/no-duplicate result to complete original AU02.08 accept/decline/replay observations.",
+  "accepted_link_replay_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-existing-recipient-pass.json",
+  "first_recipient_receipt": "docs/security-audit/security-fr-2-batch-w-owner-business-new-recipient-pass.json",
+  "decline_route": "Authenticated existing recipient in-app notification; no resend",
+  "email_delivery_failure_resolved": false,
+  "provider_rate_UI_classification_accepted": false,
+  "undelivered_email_replay_inferred": false,
+  "repeat_Business_invitation_tests_requested": false,
+  "full_lettered_batch_W_complete": false,
+  "batch_V_complete": false,
+  "release_acceptance": false,
+  "assistant_hosted_requests": 0,
+  "assistant_real_email_requests": 0,
+  "new_public_AU_cases_added": 0
+}

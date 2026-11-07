@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-01",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "stage_step": "FR.2.5.AU01.04_OWNER_ORDINARY_CONFIRMATION_PASS",
+  "result": "OWNER_ORDINARY_SIGNUP_CONFIRMATION_AND_MANUAL_PASSWORD_SIGNIN_SCOPED_PASS",
+  "source_parent_commit": "e05929414a3e49229d6cacbe608182159bd1fa3a",
+  "evidence_source": "Owner's seven requested browser answers",
+  "observations": {
+    "pending_confirmation_guidance_appeared": true,
+    "confirmation_email_received": true,
+    "email_confirmed_and_correct_recipient_displayed": true,
+    "confirmation_URL_clean": true,
+    "Go_to_sign_in_displayed_signin_form": true,
+    "password_signin_opened_correct_Free_Personal_workspace": true,
+    "error_reported": "none"
+  },
+  "accepted_case": "AU01.04",
+  "additional_current_positive_observations_retained": [
+    "AU01.01 valid ordinary signup",
+    "AU01.02 pending-confirmation guidance"
+  ],
+  "prior_AU01_03_unconfirmed_signin_denial_receipt": "docs/security-audit/security-fr-2-batch-w-owner-ordinary-signup.json",
+  "prior_unconfirmed_denial_not_repeated": true,
+  "all_eight_invitation_scoped_passes_retained": true,
+  "account_retained_for_following_existing_email_confirmation_request_checks": true,
+  "test_identity_password_and_link_material_omitted": true,
+  "browser_HTTP_requests_measured": false,
+  "actual_browser_HTTP_requests": null,
+  "email_delivery_count_measured": false,
+  "exit_code": null,
+  "repeat_requested": false,
+  "source_confirmation_success_path_unchanged_by_prepared_request_failure_fix": true,
+  "AU01_05_generic_existing_email_resend_failure_rate_acceptance": false,
+  "full_lettered_batch_W_complete": false,
+  "V_complete": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

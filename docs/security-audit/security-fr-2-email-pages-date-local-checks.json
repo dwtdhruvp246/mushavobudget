@@ -1,0 +1,44 @@
+{
+  "stage_step": "FR.2.4.E5.3_EXACT_PAGES_DATE",
+  "result": "OFFLINE_ACTUAL_DATE_MUTATOR_AND_INSPECTOR_SCOPED_PASS",
+  "node_version": "v24.19.0",
+  "new_mutator_boundary_cases": 37,
+  "unchanged_inspector_regression_cases": 18,
+  "tests": 55,
+  "pass": 55,
+  "fail": 0,
+  "syntax_checks": 5,
+  "syntax": [
+    {
+      "file": "scripts/set-fr-2-email-pages-date.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/check-fr-2-email-pages-date.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/inspect-fr-2-email-pages.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/inspect-fr-2-email-limiter.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/check-fr-2-cloudflare-account.mjs",
+      "pass": true
+    }
+  ],
+  "source_files_SHA256_verified": 7,
+  "transport": "SYNTHETIC_CLOUDFLARE_RESPONSES_ONLY",
+  "actual_hosted_requests": 0,
+  "actual_Windows_PowerShell_execution_verified": false,
+  "actual_Cloudflare_PATCH_merge_and_readback_verified": false,
+  "unknown_post_write_state_cannot_be_claimed_unchanged": true,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "findings_closed": [],
+  "exit_code": 0,
+  "minimal_seven_source_export_CLI_verified": true
+}

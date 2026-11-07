@@ -1,0 +1,565 @@
+[
+  {
+    "admin_readiness": {
+      "scope": "READ_ONLY_SELECTED_SOURCE_FINGERPRINTS_EFFECTIVE_EXECUTE_AND_OPERATOR_COUNTS",
+      "readiness": "BLOCKED_NO_VERIFIED_SUPER_OPERATOR",
+      "stage_step": "FR.2.4_ADMIN_READINESS",
+      "checked_UTC": "2026-10-15T04:40:09.814675+00:00",
+      "server_version": "17.11",
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "findings_closed": [],
+      "hosted_acceptance": false,
+      "selected_policies": 58,
+      "policy_fingerprints": [
+        {
+          "name": "Admins can manage audit logs",
+          "sha256": "ac27f18dc9c9aedab00243f5d1b840c08498e548753f2a281e0ca863d10a46c3",
+          "present": true,
+          "relation": "public.admin_audit_logs"
+        },
+        {
+          "name": "Finance staff can read admin currency settings",
+          "sha256": "707b4ef5a7e4577ec407e113ee4f9e93da475257cea690e6ec0fa72bd7307e05",
+          "present": true,
+          "relation": "public.admin_finance_settings"
+        },
+        {
+          "name": "Super admins can read manual grants",
+          "sha256": "633f2c820a822fb57ff97b5e94d0f09ab4a97e10c26f07dc8b1eafaaca71027f",
+          "present": true,
+          "relation": "public.admin_subscription_grants"
+        },
+        {
+          "name": "Admins can manage support notes",
+          "sha256": "f530ea9b20a66b522646d61ced499e36630de78e52d8cb2f48fa0c673374e1f5",
+          "present": true,
+          "relation": "public.admin_support_notes"
+        },
+        {
+          "name": "Authorized admins can read user invitation audit",
+          "sha256": "3a75e682894dfedde24f5fef4a99c03750d078cc3ecb7695ff22ca4848b48958",
+          "present": true,
+          "relation": "public.admin_user_invitation_audit"
+        },
+        {
+          "name": "Authorized admins can read user invitations",
+          "sha256": "3a75e682894dfedde24f5fef4a99c03750d078cc3ecb7695ff22ca4848b48958",
+          "present": true,
+          "relation": "public.admin_user_invitations"
+        },
+        {
+          "name": "Owners and admins can create category budgets",
+          "sha256": "534137d70b30f1cdcfcf1177bdcbd8157b40975d9cd36c6728ad66350c4073fd",
+          "present": true,
+          "relation": "public.category_budgets"
+        },
+        {
+          "name": "Owners and admins can delete category budgets",
+          "sha256": "62608a72ded80dd81254d74666a7a3fd3837e93f083ca55a96d2694ab0e47858",
+          "present": true,
+          "relation": "public.category_budgets"
+        },
+        {
+          "name": "Owners and admins can read category budgets",
+          "sha256": "a0742d7d4b66194d97cad205b97a850ce038456679c408f8dc4386aa2ed8032a",
+          "present": true,
+          "relation": "public.category_budgets"
+        },
+        {
+          "name": "Owners and admins can update category budgets",
+          "sha256": "4303848c8ba736c18b7d7760d975d1686b67ef9b81b8a7200151ea201980dd51",
+          "present": true,
+          "relation": "public.category_budgets"
+        },
+        {
+          "name": "Staff can read countries",
+          "sha256": "7f81971ff4f6144f7e583627a44384ed9179496a6197919148f8892b15291099",
+          "present": true,
+          "relation": "public.countries"
+        },
+        {
+          "name": "Staff can read enquiries",
+          "sha256": "7f81971ff4f6144f7e583627a44384ed9179496a6197919148f8892b15291099",
+          "present": true,
+          "relation": "public.enquiries"
+        },
+        {
+          "name": "Staff can update enquiries",
+          "sha256": "577fc6864c1c1408cc081c71b3d71c933f3a93fff087c34af071bca6f9d59f4d",
+          "present": true,
+          "relation": "public.enquiries"
+        },
+        {
+          "name": "Finance staff can read rate sync diagnostics",
+          "sha256": "707b4ef5a7e4577ec407e113ee4f9e93da475257cea690e6ec0fa72bd7307e05",
+          "present": true,
+          "relation": "public.exchange_rate_sync_runs"
+        },
+        {
+          "name": "Approved heads and admins can create expenses",
+          "sha256": "4f12603a39ca5ca55cf93b6b64e087dbdb03222cf2d946905843625f9f666286",
+          "present": true,
+          "relation": "public.expenses"
+        },
+        {
+          "name": "Approved heads and admins can delete expenses",
+          "sha256": "02cda2faed3d4278d70a7a9aa489ec4854e0d8b2a7ed99d55c1de89320f8183e",
+          "present": true,
+          "relation": "public.expenses"
+        },
+        {
+          "name": "Approved heads and admins can read expenses",
+          "sha256": "27341933028b0cc23136b6cf45e480d7c72afe2eb8ba1eb7c23365e8361cf012",
+          "present": true,
+          "relation": "public.expenses"
+        },
+        {
+          "name": "Approved heads and admins can update expenses",
+          "sha256": "ff2d9328c0243e7223753ad155f100ddc626d4e1fdcbe8932595a301a2cc04dd",
+          "present": true,
+          "relation": "public.expenses"
+        },
+        {
+          "name": "Approved heads and admins can update families",
+          "sha256": "9f7ff1989136bc8a400186d3cfaa60443d26041ce9fb31353af87522a7888308",
+          "present": true,
+          "relation": "public.families"
+        },
+        {
+          "name": "Owners and admins can delete families",
+          "sha256": "e869681129f93a0eb62c8c7142cb2b444f068276bd03b64353fbb3335d877fbf",
+          "present": true,
+          "relation": "public.families"
+        },
+        {
+          "name": "Admins and matching heads can read head approvals",
+          "sha256": "9702fd0f1e6d96f293202e88ea789d14a5136c71273427ef58982c399ce2ac3e",
+          "present": true,
+          "relation": "public.family_heads"
+        },
+        {
+          "name": "Admins can create head approvals",
+          "sha256": "5e2a9045bed8fdd07caafbe58ef82652841ebd235c382247aebbbf7cb3b81d57",
+          "present": true,
+          "relation": "public.family_heads"
+        },
+        {
+          "name": "Admins can delete head approvals",
+          "sha256": "71a42d83482249e342cb2124c944328d2f29cdbc4e2b3064ec5270508213f8bb",
+          "present": true,
+          "relation": "public.family_heads"
+        },
+        {
+          "name": "Admins can update head approvals",
+          "sha256": "622cccff753b0516f89d9e02a252240d187105454aafec4f0398b9ef903f6213",
+          "present": true,
+          "relation": "public.family_heads"
+        },
+        {
+          "name": "Invitation participants can read invitations",
+          "sha256": "9931dff869d84caa9008abc5abc6af40fa69b2a0468c0876fa9f77183e569150",
+          "present": true,
+          "relation": "public.family_invitations"
+        },
+        {
+          "name": "Approved heads and admins can delete family members",
+          "sha256": "71a42d83482249e342cb2124c944328d2f29cdbc4e2b3064ec5270508213f8bb",
+          "present": true,
+          "relation": "public.family_members"
+        },
+        {
+          "name": "Approved heads and admins can update family members",
+          "sha256": "622cccff753b0516f89d9e02a252240d187105454aafec4f0398b9ef903f6213",
+          "present": true,
+          "relation": "public.family_members"
+        },
+        {
+          "name": "Users can create relevant notifications",
+          "sha256": "95491630700d8299f8e75ce706f06fa88efa5fd62630b2a455dde9ad895c29a4",
+          "present": true,
+          "relation": "public.notifications"
+        },
+        {
+          "name": "Authorized users can read payment conversions",
+          "sha256": "653acf9767d61aef443bff649444fcbba1980439351da8a465ec465031881d62",
+          "present": true,
+          "relation": "public.payment_conversions"
+        },
+        {
+          "name": "Household owners can delete payment items",
+          "sha256": "3945027d1efc983437a1f77f3279bff1b807e0216659ec53bb8ccfc4af2b00fa",
+          "present": true,
+          "relation": "public.payment_items"
+        },
+        {
+          "name": "Household owners can update payment items",
+          "sha256": "551532f3bc4dea7c1503a010fdbec88b1565746960fd24c6cb46a64f190bc005",
+          "present": true,
+          "relation": "public.payment_items"
+        },
+        {
+          "name": "Household owners can delete payment records",
+          "sha256": "c04118eeb34ed7aed359b5f12ed69761cc441169ab742702cca2b56bff920573",
+          "present": true,
+          "relation": "public.payment_records"
+        },
+        {
+          "name": "Household owners can update payment records",
+          "sha256": "103648635e2a3dbc134b9da2430875e87ff770aa4030e73212b9e921d6766068",
+          "present": true,
+          "relation": "public.payment_records"
+        },
+        {
+          "name": "Admins can create payments",
+          "sha256": "a828239139db39e83f49ad2a4064ee21686bcff2fde07db130750f985c5dab1a",
+          "present": true,
+          "relation": "public.payments"
+        },
+        {
+          "name": "Admins can delete payments",
+          "sha256": "71a42d83482249e342cb2124c944328d2f29cdbc4e2b3064ec5270508213f8bb",
+          "present": true,
+          "relation": "public.payments"
+        },
+        {
+          "name": "Admins can read payments",
+          "sha256": "aceaeb658588cca16f83fe2925ed7ccbf0a6178abb7f197264c3ed20dcee2f9b",
+          "present": true,
+          "relation": "public.payments"
+        },
+        {
+          "name": "Admins can update payments",
+          "sha256": "7157fe3d6a14b8fd71a438c79edd85508eab04b51f3c799935988e3a97340a46",
+          "present": true,
+          "relation": "public.payments"
+        },
+        {
+          "name": "Authenticated users can read active plan prices",
+          "sha256": "30d1636198b2f72bf4e94e4c162f78df3091256b7603cb44db9f9831d835068a",
+          "present": true,
+          "relation": "public.plan_prices"
+        },
+        {
+          "name": "Authenticated users can read active plans",
+          "sha256": "30d1636198b2f72bf4e94e4c162f78df3091256b7603cb44db9f9831d835068a",
+          "present": true,
+          "relation": "public.plans"
+        },
+        {
+          "name": "Users and admins can read profiles",
+          "sha256": "4cdecae34ba7e113ee5a34b9c6658cfc51707155b981ad27611d01894b08b885",
+          "present": true,
+          "relation": "public.profiles"
+        },
+        {
+          "name": "Support staff can read public enquiry events",
+          "sha256": "7f81971ff4f6144f7e583627a44384ed9179496a6197919148f8892b15291099",
+          "present": true,
+          "relation": "public.public_enquiry_events"
+        },
+        {
+          "name": "business_subscription_audit_owner_guard",
+          "sha256": "6c72430fadf206d015b91eaf00a59fb687b8edc2435523422411edbc9759cb09",
+          "present": true,
+          "relation": "public.subscription_audit_events"
+        },
+        {
+          "name": "business_entitlement_history_owner_guard",
+          "sha256": "4115c4b328a9201c5cd76a6e9d69276b39a2759a858cf290487faec60a016c64",
+          "present": true,
+          "relation": "public.subscription_entitlement_history"
+        },
+        {
+          "name": "Owners can read subscription invoices",
+          "sha256": "7f767219d16474ca5a32e9e230a3f761daa7343ccec5876c6319824a936a0a9a",
+          "present": true,
+          "relation": "public.subscription_invoices"
+        },
+        {
+          "name": "Owners can read subscription proofs",
+          "sha256": "ff628aa2098cb43503c0724eb624af16d5d97a5b601fe5a091d93f5f357ff38c",
+          "present": true,
+          "relation": "public.subscription_payment_proofs"
+        },
+        {
+          "name": "Finance staff can read reviews",
+          "sha256": "e5e0007cb6f5bab5ea8169627d7511c1e06bca0b224639a0bc90c67c54e1ad6f",
+          "present": true,
+          "relation": "public.subscription_payment_reviews"
+        },
+        {
+          "name": "Owners can read subscription payments",
+          "sha256": "7f767219d16474ca5a32e9e230a3f761daa7343ccec5876c6319824a936a0a9a",
+          "present": true,
+          "relation": "public.subscription_payments"
+        },
+        {
+          "name": "Owners can read renewal requests",
+          "sha256": "7f767219d16474ca5a32e9e230a3f761daa7343ccec5876c6319824a936a0a9a",
+          "present": true,
+          "relation": "public.subscription_renewal_requests"
+        },
+        {
+          "name": "Customers and support staff can add ticket messages",
+          "sha256": "2fc71c8fd02c8bad5251a749bf42dcd95d9ea54e12898d3af51e4133d8c53a46",
+          "present": true,
+          "relation": "public.support_ticket_messages"
+        },
+        {
+          "name": "Customers and support staff can read ticket messages",
+          "sha256": "b93b9d8be4c58580ef50a36ec39d9638401654b20463dfd047b8f05710b666c4",
+          "present": true,
+          "relation": "public.support_ticket_messages"
+        },
+        {
+          "name": "Administrators can delete tickets",
+          "sha256": "94765c632edd39e6f1cf2a831c663751683c967e89181df42dd4b54679be5c6a",
+          "present": true,
+          "relation": "public.support_tickets"
+        },
+        {
+          "name": "Customers and support staff can create tickets",
+          "sha256": "c3f7981158445d5e820f1e04faa957cdb61ddec63ffc9c75a17f30aa56ce1d5f",
+          "present": true,
+          "relation": "public.support_tickets"
+        },
+        {
+          "name": "Customers and support staff can read tickets",
+          "sha256": "fffcdb09c9ee467ff1747d0720ccb9af805adf54139a553d463f7fe8ccb19f30",
+          "present": true,
+          "relation": "public.support_tickets"
+        },
+        {
+          "name": "Support staff can update tickets",
+          "sha256": "577fc6864c1c1408cc081c71b3d71c933f3a93fff087c34af071bca6f9d59f4d",
+          "present": true,
+          "relation": "public.support_tickets"
+        },
+        {
+          "name": "Authenticated users can read supported currencies",
+          "sha256": "30d1636198b2f72bf4e94e4c162f78df3091256b7603cb44db9f9831d835068a",
+          "present": true,
+          "relation": "public.supported_currencies"
+        },
+        {
+          "name": "Owners and finance staff can read subscription proofs",
+          "sha256": "dd3e4f0d50658a0b898dc3689154c221daa7fd7ed24050f645e22e1158a219a9",
+          "present": true,
+          "relation": "storage.objects"
+        },
+        {
+          "name": "Owners can delete payment proofs",
+          "sha256": "f133a6fe2f8b5ca2b14b3d0c6b7971c678d31d128d4b08f20f632f177895e42e",
+          "present": true,
+          "relation": "storage.objects"
+        },
+        {
+          "name": "Users can read permitted payment proofs",
+          "sha256": "5acbb867f9e31807481dac21824abdfee30f29e712a7123ce6eae32a33479f98",
+          "present": true,
+          "relation": "storage.objects"
+        }
+      ],
+      "platform_role_counts": {},
+      "routine_fingerprints": [
+        {
+          "name": "admin_analytics_foundation",
+          "sha256": "3f7080e394df953f49ac85dd476b9a85669a9f6bf2e2133f4a70c562d77b5c91",
+          "overloads": 1
+        },
+        {
+          "name": "admin_analytics_page",
+          "sha256": "72d6aa13e0b741717f831e960122ace81e0e3855a6fee45561f737cd625ee723",
+          "overloads": 1
+        },
+        {
+          "name": "admin_business_billing_settings",
+          "sha256": "f797ad0faf7ed74ec6554024e23e4db3f9c5faa4e3018ef72206acbb6051e821",
+          "overloads": 1
+        },
+        {
+          "name": "admin_business_set_status",
+          "sha256": "82aceec17c56585ba9d375bd77a0fed54ff5d5c97dd405accbc0afe85565a01e",
+          "overloads": 1
+        },
+        {
+          "name": "admin_business_subscription_payment_detail",
+          "sha256": "308000e63b29d7e812462da5ece1ad93d84c49fc808a344fbbf2afc3494ee35f",
+          "overloads": 1
+        },
+        {
+          "name": "admin_business_support_snapshot",
+          "sha256": "a601c5e92b53344e64f3261bb6b2a6e5f80f3954a280f933bae33ec31368b522",
+          "overloads": 1
+        },
+        {
+          "name": "admin_business_transfer_owner",
+          "sha256": "85d44237ec3fd5893241db440ed6a2c7fbd645298c1eccc83323f9a25bb0b9af",
+          "overloads": 1
+        },
+        {
+          "name": "admin_cancel_scheduled_plan_price",
+          "sha256": "9ec64004c4d3467cb8f1d543342459a262fd2f7d761e028f715844c32da69d92",
+          "overloads": 1
+        },
+        {
+          "name": "admin_grant_manual_subscription",
+          "sha256": "d3b010acf22b4160935a9c319f9e19a906bb0ae9dc392d2b0514b74c125fac42",
+          "overloads": 1
+        },
+        {
+          "name": "admin_plan_calculation_preview",
+          "sha256": "268456c0ff01d896412057b9ad6f8a023a5bccf3955cc63889ec7df7c326c4b2",
+          "overloads": 1
+        },
+        {
+          "name": "admin_plan_workbench_snapshot",
+          "sha256": "2352e5b7862a4a295b042b4e01bf745a35d632f360d757c141b4ee4cea0bc68b",
+          "overloads": 1
+        },
+        {
+          "name": "admin_save_plan_workbench",
+          "sha256": "53273af631158eff04df8306d090f4d9a6b8953c318610377978234a6d98ce64",
+          "overloads": 1
+        },
+        {
+          "name": "admin_subscription_monitor",
+          "sha256": "333367e971f7a83abdc288c31803f84786b46b391c154fde5b1a261afa3dd006",
+          "overloads": 1
+        },
+        {
+          "name": "backfill_currency_conversions",
+          "sha256": "6a648c12ffa8cbd17bb8c8bd11c93441b4f220c3bd193f020bad346796105ebd",
+          "overloads": 1
+        },
+        {
+          "name": "business_admin_test_permit",
+          "sha256": "e204f52c96ba07c5cd01f1cc0a4ef675dc30151854b92a00bf16c2ff764465aa",
+          "overloads": 1
+        },
+        {
+          "name": "business_subscription_proof_access",
+          "sha256": "fe618c1f3a738dfea4b28ffa3e746d5520cee1de8ee1e719e836b84cec036bf9",
+          "overloads": 1
+        },
+        {
+          "name": "enqueue_admin_event_notification",
+          "sha256": "6412d3b6553b2377501907bc5536db0bba690f0bb6bc0f7753ac9e084be8cf2a",
+          "overloads": 1
+        },
+        {
+          "name": "exchange_rate_status",
+          "sha256": "83e46200fe85ff034e3f9a83181f4043be653ae8ece088fc0553e5eec180cb3d",
+          "overloads": 1
+        },
+        {
+          "name": "guard_account_status_change",
+          "sha256": "6d5833a496950b98227924df7e4501f15c7ce0d751319dfdeec7cf4de2e90cab",
+          "overloads": 1
+        },
+        {
+          "name": "is_active_family_participant",
+          "sha256": "bc7ba3a0c7708253f24be6aba845ac1956bd4a4ce6f3eb536818f2dcf36caebb",
+          "overloads": 1
+        },
+        {
+          "name": "is_app_admin",
+          "sha256": "81b964abc97127e10bee05d278185d03d54694cb64b610c54f38885f5814db6e",
+          "overloads": 1
+        },
+        {
+          "name": "is_platform_staff",
+          "sha256": "4a32ad0a6040b6dbf370b0f056dc72c9790434e66e3f4371c430c5cfaed8e222",
+          "overloads": 1
+        },
+        {
+          "name": "is_workspace_member",
+          "sha256": "b669febc489881dd4f3d9e8bc288348ca85fffb19ae7b3865472cefc3ce94897",
+          "overloads": 1
+        },
+        {
+          "name": "is_workspace_owner",
+          "sha256": "f1313eb0f523c2ab8c8684b846898742c04c4196534fb6aea7b1bf006e6283b0",
+          "overloads": 1
+        },
+        {
+          "name": "reserve_admin_user_invitation",
+          "sha256": "c4c7e45bdac5a37b6da0157674702c6294fc2e70a40031e6b01baaea4eff75c9",
+          "overloads": 1
+        },
+        {
+          "name": "review_subscription_payment",
+          "sha256": "088d72ee5233235553f904c292f89582cef84c84013e75ecfda7ca5d7e65cd55",
+          "overloads": 1
+        },
+        {
+          "name": "review_subscription_payment_before_business_public",
+          "sha256": "2ce2cc74a3fa3fc8653df13c389f178a7d7cf1d1a32f10286b21af552ea7da43",
+          "overloads": 1
+        },
+        {
+          "name": "review_subscription_payment_before_business_stage10",
+          "sha256": "013d22e71da0253568c60cd4492cb3117f888c52ae5795fa2f10983534f639a1",
+          "overloads": 1
+        },
+        {
+          "name": "save_admin_finance_currency_settings",
+          "sha256": "ff9de97dfc20b0c326ffc5beb38ab6a0f6d540b17b2af8d0c50823f11f5a9bf1",
+          "overloads": 1
+        },
+        {
+          "name": "save_business_billing_settings",
+          "sha256": "e97091d2f938750611edd94a9fe6cd2dbd7f7daf3a2809e3c1bb0663065629bf",
+          "overloads": 1
+        },
+        {
+          "name": "save_manual_payment_conversion",
+          "sha256": "a738b3732d4e5fcdc3e1df6decd52e0c25c73382b7c90423862b52c160c5c9ab",
+          "overloads": 1
+        },
+        {
+          "name": "save_plan_definition",
+          "sha256": "f399431a2a8277326c9797560ea34af6a9fb1d0072c1832b757ee9732025e689",
+          "overloads": 1
+        },
+        {
+          "name": "save_plan_price",
+          "sha256": "c2284b1b4397cc462a737f89a2cd0c06b725b201a5443e9bb44799783cf720c4",
+          "overloads": 1
+        },
+        {
+          "name": "set_user_account_status",
+          "sha256": "eb366086c1e1bf8ef310ccb084a5fa20da9d29539e8184f6664d09f847ba04b6",
+          "overloads": 1
+        },
+        {
+          "name": "transfer_business_ownership",
+          "sha256": "496b4d1bb9c624ca1abce8802b9b10652c5edc786f961aa85b5f492dad71ef0f",
+          "overloads": 1
+        },
+        {
+          "name": "workspace_member_usage",
+          "sha256": "943f4b46806e41bb18bf57646d26c78de28be0bd6c003db1d5ce14e8889a6932",
+          "overloads": 1
+        }
+      ],
+      "transaction_read_only": "on",
+      "Auth_settings_verified": false,
+      "selected_routine_names": 36,
+      "candidate_helper_overloads": 0,
+      "observed_selected_policies": 58,
+      "application_routines_invoked": 0,
+      "observed_selected_routine_overloads": 36,
+      "active_super_users_with_verified_totp": 0,
+      "roles_factors_rows_or_settings_changed": false,
+      "selected_anonymous_executable_routines": 14,
+      "shared_audit_actors_with_platform_role": 0,
+      "genuine_AAL1_AAL2_or_recovery_cases_run": 0,
+      "project_selection_independently_verified": false,
+      "selected_authenticated_executable_routines": 31,
+      "fingerprint_match_is_authorization_acceptance": false,
+      "operator_control_or_independent_recovery_verified": false,
+      "raw_rows_function_bodies_actor_identifiers_or_credentials_printed": false
+    }
+  }
+]

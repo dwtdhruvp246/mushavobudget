@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-29",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "case_id": "AU02.07",
+  "result": "OWNER_REPORTED_EXISTING_BUSINESS_RECIPIENT_PASSWORD_PRESERVATION_PASS",
+  "evidence_kind": "OWNER_BROWSER_WORKFLOW_REPORT",
+  "checks": {
+    "joined_without_setting_new_password": true,
+    "existing_password_still_signs_in": true,
+    "correct_Business_workspace_opens": true,
+    "only_one_membership_shown": true
+  },
+  "replay": {
+    "related_case": "AU02.08",
+    "owner_message": "This link or session is unavailable. Open the newest email or request another link.",
+    "used_invitation_unavailable_owner_PASS": true,
+    "earlier_checkbox_description_superseded_by_latest_explicit_result": true,
+    "duplicate_membership_observed": false
+  },
+  "independently_observed_by_assistant": false,
+  "decline_tested": false,
+  "repeat_existing_recipient_or_accepted_link_check_requested": false,
+  "full_lettered_batch_W_complete": false,
+  "batch_V_complete": false,
+  "release_acceptance": false,
+  "secrets_or_invitation_links_recorded": false,
+  "new_public_AU_cases_added": 0,
+  "assistant_hosted_requests": 0,
+  "assistant_real_email_requests": 0,
+  "next_original_case": "AU02.08",
+  "remaining_scope": "Decline an invitation; verify no membership and released reservation; declined invitation cannot be reused to join."
+}

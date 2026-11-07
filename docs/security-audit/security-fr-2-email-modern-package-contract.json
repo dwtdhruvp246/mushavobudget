@@ -1,0 +1,23 @@
+{
+  "stage_step": "FR.2.4.E5.5_MODERN_REPLACEMENT_ZIP",
+  "source_parent_commit": "ab612daeea8e946aacc9341b9b69244d65bab328",
+  "expected_public_files": 44,
+  "unchanged_public_files_except_Worker": 43,
+  "expected_Pages_Worker_SHA256": "a7cbfa8b257eb7a53185fc57cc93a8315bbc453fd0bbbd3cc3b2a5e3cf4ee651",
+  "retained_ZIP_SHA256": "33bee04f34bf564330345ef7c041ca5b52e0222fbab7dd4cbcae1a789f5c6ef1",
+  "target_project": "mushavo-budget-staging",
+  "target_origin": "https://mushavo-budget-staging.pages.dev",
+  "supabase_project": "dczlddwbtgvfdujgcitb",
+  "private_credential_packet_accessed": false,
+  "old_ZIP_or_packets_overwritten": false,
+  "new_candidate_only": true,
+  "strict_canonical_ZIP_readback_required": true,
+  "Windows_independent_dotNET_readback_required": true,
+  "owner_Windows_readback_pending": true,
+  "email_or_provider_calls": 0,
+  "bindings_secrets_SQL_Auth_or_settings_changed": false,
+  "do_not_upload_yet": true,
+  "live_activation_approved": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

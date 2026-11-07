@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-27",
+  "stage_step": "FR.2.5.W38_STAGING_HTML_BASELINE_AND_OUTPUT_IDENTITY_CORRECTION",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "STAGING_HTML_BASELINE_CORRECTION_PACKAGE9_PASS",
+  "source_pin": "6be81d6534549e657d57444a841e27aa9f400527",
+  "tests": 9,
+  "pass": 9,
+  "fail": 0,
+  "syntax_checks": 2,
+  "source_manifest_files": 30,
+  "command": "node --require ./scripts/offline-test-network.cjs --test ./tests/fr-2-smooth-signin-package.test.mjs",
+  "coverage": [
+    "All ten prior hashes match the recorded44-entry browser-trust receipt plus the three-file auto-entry update chain.",
+    "Real app/Business HTML rolled back to retained cache versions and transformed by the independent staging fixture matches the exact recorded old hashes.",
+    "The real staged HTML is accepted by the patcher; updated output keeps staging references and current cache versions.",
+    "Raw source SHA256 stays distinct from staged output SHA256; source bytes are unchanged.",
+    "Unknown ZIP/source/content changes still refuse and mismatches identify only an allowlisted public filename.",
+    "Ten-file patch preserves34 unrelated files/input and canonical archive readback."
+  ],
+  "root_cause": {
+    "app_html_wrong_prior_raw_hash": "db910ee00accc58f37cc3f2ee786a5b26a1d4cd7bdae01cacdec1c2bd7d1bd59",
+    "app_html_correct_prior_staged_hash": "b50e425dc471a26bef18569fd48f748221a6af3ae06ff2584a20b03124dfbdfd",
+    "business_html_wrong_prior_raw_hash": "3ffba4d1057e53ce42b1161c93174496fd8ee6917b73b44260cb528311341b3c",
+    "business_html_correct_prior_staged_hash": "bac1e75d04dd55cb4adbac5b074a77ceaaf311a3ffff0570f9280b6fd63d6183"
+  },
+  "updated_staged_output_SHA256": {
+    "app.html": "96933b18fda558f1a423f76d974153b1a940aee192081a65640d888d0f855e64",
+    "business.html": "694ecc7041783014c0706f60edb5dbf993e579bb1aaf1d775df8814c827706d1"
+  },
+  "application_runtime_UI_source_unchanged_from": "a9a8a195c4950f33b433c15fb2699507b1d7e84f",
+  "prior_runtime140_PASS_retained_not_rerun": true,
+  "old_package5_did_not_cover_staging_HTML_identity": true,
+  "actual_owner_ZIP_positive_preparation_readback_pending": true,
+  "whole_accepted_input_ZIP_SHA256_unchanged": "1696a99a4fd5fde38210818ada25a983a352a5cb0b547294383b007aaa45865b",
+  "guards_relaxed": false,
+  "actual_hosted_requests": 0,
+  "real_email_requests": 0,
+  "settings_SQL_or_account_writes": 0,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

@@ -1,0 +1,54 @@
+{
+  "stage_step": "FR.2.5.W5_EIGHT_CHARACTER_FRONTEND_DEPLOYMENT_AND_EXACT_AUTH_SETTINGS_READBACK",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "status": "LOCAL6_PASS_FIXED_PUBLIC_READBACK_OWNER_READY",
+  "source_parent_commit": "7bd994147f4e6bee817e0435bf8b9ebeec8d7bfe",
+  "entry": "scripts/check-fr-2-batch-w-public.mjs",
+  "tests": "tests/fr-2-batch-w-public.test.mjs",
+  "source_SHA256": {
+    "scripts/check-fr-2-batch-w-public.mjs": "0e562f229e205ff7723171f2d47a8538b9b787c4735b08c23960cb3f7604c472",
+    "tests/fr-2-batch-w-public.test.mjs": "339b649da78b14cbfb91c8607bbe1228caf8a0c1556bf56409e79710730460ec"
+  },
+  "previous_356_source_manifest": "docs/security-audit/security-fr-2-batch-w-eight-source-manifest.json",
+  "source_356_identities_unchanged": true,
+  "public_artifact_receipt": "docs/security-audit/security-fr-2-batch-w-owner-eight-local-and-artifact-pass.json",
+  "public_artifact_receipt_SHA256": "f8bda6a836f57f10939265089501fb654655c831ef76cfdd4fad6bb88c306a10",
+  "reviewed_ZIP_SHA256": "3255992abbc6058afa2e74f804cc19b3d9337d2380db52d52b82d0363454218b",
+  "fixed_origins": [
+    "https://05e04e4d.mushavo-budget-staging.pages.dev",
+    "https://mushavo-budget-staging.pages.dev"
+  ],
+  "selected_files": [
+    "auth-security.js",
+    "auth.html",
+    "signup.html",
+    "config.js",
+    "sw.js"
+  ],
+  "callback_flows": [
+    "confirm",
+    "recover",
+    "business-new",
+    "business-existing"
+  ],
+  "expected_metadata_cases": 18,
+  "maximum_public_GET_requests": 30,
+  "maximum_one_fixed_same_origin_clean_HTML_redirect_per_case": true,
+  "automatic_retries": 0,
+  "request_timeout_ms": 8000,
+  "total_timeout_ms": 90000,
+  "body_limit_bytes": 2097152,
+  "credentials": "omit",
+  "HTTP_method": "GET",
+  "hidden_or_visible_prompts": 0,
+  "browser_or_dependency_installation_required": false,
+  "management_token_password_code_DPAPI_or_ZIP_input_required": false,
+  "Auth_gateway_or_Management_requests": 0,
+  "email_or_Auth_session_created": false,
+  "settings_mode_or_deployment_written": false,
+  "entire_artifact_or_browser_or_Auth_workflow_or_quarantine_verified": false,
+  "required_AU_cases_unchanged": 31,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "production_or_native_changed": false,
+  "hosted_acceptance": false
+}

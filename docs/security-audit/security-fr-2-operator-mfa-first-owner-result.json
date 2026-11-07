@@ -1,0 +1,38 @@
+{
+  "owner_result": {
+    "stage_step": "FR.2.4_OPERATOR_MFA_SETUP",
+    "project": "dczlddwbtgvfdujgcitb",
+    "result": "STAGING_OPERATOR_MFA_REVIEW_REQUIRED",
+    "accounts": [
+      {
+        "slot": "PRIMARY",
+        "password_signin_verified": true,
+        "existing_verified_factor_reused": false,
+        "new_factor_enrollment_attempted": true,
+        "initial_TOTP_and_AAL2_verified": false,
+        "fresh_password_session_and_TOTP_AAL2_verified": false,
+        "local_logout_confirmed": false
+      }
+    ],
+    "problem_code": "HTTP_RESPONSE_TOO_LARGE",
+    "requests_attempted": 5,
+    "all_created_sessions_local_logout_confirmed": true,
+    "password_session_creation_state_may_require_review": false,
+    "enrollment_request_attempted": true,
+    "factor_state_may_require_review": true,
+    "fresh_password_and_TOTP_sessions_verified": false,
+    "roles_SQL_settings_payment_or_workspace_writes_performed": false,
+    "factors_deleted": false,
+    "secret_or_token_files_written": false,
+    "MFA_material_displayed_only_in_private_terminal": true,
+    "credentials_tokens_emails_actor_or_factor_identifiers_in_receipt": false,
+    "publishable_key_ownership_independently_verified": false,
+    "independent_device_or_account_recovery_drill_verified": false,
+    "hosted_Admin_authorization_acceptance": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "findings_closed": [],
+    "completed_UTC": "2026-10-15T06:00:40.273Z"
+  },
+  "owner_reported_exit_code": 1
+}

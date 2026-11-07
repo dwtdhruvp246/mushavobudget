@@ -3,8 +3,8 @@
   "date": "2026-11-07",
   "project": "dczlddwbtgvfdujgcitb",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
-  "result": "BUSINESS_EXPIRY_RUNNER_PREPARED_HOSTED_ACCEPTANCE_PENDING",
-  "source_parent": "9cf5acfc0dfb9d573d359733220d5d38d990ddd2",
+  "result": "BUSINESS_EXPIRY_RUNNER_CORRECTED_SINGLE_FRESH_RUN_PENDING",
+  "source_parent": "ea17c3bad632fc0765370969189759e87bdffdaa",
   "fixture_name": "audit-batch-x-receipt-d7be160c2026",
   "scope": "Same real owner/member sessions before and after four-minute synthetic entitlement expiry, operational read/write denial, Owner-only billing and renewal authorization, complete supported cleanup.",
   "local_guard_tests": {
@@ -15,11 +15,19 @@
   },
   "setup_rehearsal": "SETUP_AND_UNTOUCHED_FIXTURE_RESTORE_PASSED_IN_ROLLED_BACK_TRANSACTION",
   "initial_setup_rehearsal": "Direct workspace status update correctly rejected by BUSINESS_SUPPORT_STATUS_PROCEDURE_REQUIRED and rolled back; final runner uses supported authenticated Admin resume.",
-  "cleanup": "Authenticated Admin restores original 6–7 November manual term; Owner cancels pending invitations and removes temporary member; Admin restores one seat and suspends workspace; runner logs out all its sessions. One synthetic restoration grant, history and Owner notification are retained.",
+  "cleanup": "Admin grants a temporary cleanup term ending 8 November (paid through 9 November); Owner removes test member/cancels invitations; Admin restores one seat and suspends; scoped operator SQL restores exact original paid-through 8 November. Existing catalogue/pricing unchanged.",
   "pricing": "Existing unconfigured pricing preserved. Renewal ownership gate only; no quoted price, renewal proof, or actual payment acceptance claimed.",
   "secrets": "Reuse existing GitHub staging secrets; no Auth user/session table mutations, credential export or email endpoint.",
   "production_changed": false,
   "automatic_rerun": false,
   "full_batch_X_complete": false,
-  "stage_3_complete": false
+  "stage_3_complete": false,
+  "support_acknowledgement": "Support-action UUID plus independent exact-workspace status/version readback.",
+  "initial_review": "docs/security-audit/security-fr-2-batch-x-business-expiry-initial-review.json",
+  "repair_local_tests": {
+    "tests": 8,
+    "pass": 8,
+    "fail": 0,
+    "exit_code": 0
+  }
 }

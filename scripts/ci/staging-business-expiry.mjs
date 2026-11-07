@@ -11,12 +11,13 @@ const RPCS = ['create_business_invitation', 'respond_business_invitation', 'busi
   'admin_grant_manual_subscription', 'remove_business_member', 'cancel_business_invitation', 'admin_set_business_seats'];
 const TABLES = ['budget_workspaces', 'workspace_subscriptions', 'workspace_members', 'workspace_invitations',
   'business_dimensions', 'business_bills', 'business_suppliers'];
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const one = data => Array.isArray(data) && data.length === 1 ? data[0] : data;
 
 export function isBusinessExpiryPlan(plan) {
   return plan.scope === 'business-expiry-boundaries' && plan.project === 'dczlddwbtgvfdujgcitb'
     && plan.fixture_name === FIXTURE && plan.workspace_id === WORKSPACE
-    && plan.expected_support_version === 8 && plan.expected_subscription_version === 6
+    && plan.expected_support_version === 10 && plan.expected_subscription_version === 8
     && plan.original_paid_through_at === '2026-11-08T00:00:00.000Z'
     && Number.isFinite(Date.parse(plan.expiry_at)) && plan.supported_restore === true
     && JSON.stringify(plan.case_ids) === JSON.stringify(CASES);
@@ -49,6 +50,8 @@ export async function checkBusinessExpiry({ actors, accounts, evidence }, key, a
         'User-Agent': agent }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
     let data = null;
     try { data = await response.json(); } catch {}
+    if (response.status >= 400) evidence.last_refusal = { status: response.status,
+      ...(/^[A-Z][A-Z0-9_]{2,79}$/.test(data?.message || '') ? { application_code: data.message } : {}) };
     return { status: response.status, data };
   };
   const rpc = (name, actor, body = {}, cleanup = false) => call('POST', '/rest/v1/rpc/' + name, actor, body, cleanup);
@@ -84,7 +87,7 @@ export async function checkBusinessExpiry({ actors, accounts, evidence }, key, a
       p_expected_version: initial.business_support_version, p_confirmation_name: FIXTURE,
       p_reason: 'Bounded synthetic Business entitlement expiry acceptance', p_request_id: randomUUID() });
     const active = await fixture();
-    check('SUPPORTED_ADMIN_RESUME_VERIFIED', resumed.status === 200 && resumed.data === WORKSPACE
+    check('SUPPORTED_ADMIN_RESUME_VERIFIED', resumed.status === 200 && UUID.test(resumed.data || '')
       && active.status === 'active' && active.business_support_version === plan.expected_support_version + 1);
     const members = await get('workspace_members', 'id,user_id,role,status', scoped + '&status=eq.active', owner);
     const invitations = await get('workspace_invitations', 'id', scoped + '&status=eq.pending', owner);
@@ -163,16 +166,16 @@ export async function checkBusinessExpiry({ actors, accounts, evidence }, key, a
         let grantError;
         try {
           const grant = await rpc('admin_grant_manual_subscription', admin, { p_owner_id: owner.id, p_workspace_id: WORKSPACE,
-            p_plan_id: fixturePlanId, p_billing_period: 'monthly', p_starts_on: '2026-11-06', p_ends_on: '2026-11-07',
-            p_reason: 'Restore original term after synthetic Business expiry acceptance', p_new_business_name: null }, true);
+            p_plan_id: fixturePlanId, p_billing_period: 'monthly', p_starts_on: '2026-11-06', p_ends_on: '2026-11-08',
+            p_reason: 'Temporary synthetic expiry cleanup term; exact original end restored independently', p_new_business_name: null }, true);
           need(grant.status === 200 && grant.data === WORKSPACE, 'EXPIRY_SUPPORTED_RESTORE_ACK_REQUIRED');
         } catch (error) { grantError = error; }
         const restored = await get('workspace_subscriptions', 'plan_id,status,version,member_limit,paid_through_at', scoped, admin, true);
         const restoredSub = one(restored.data);
         evidence.entitlement_restored_verified = restored.status === 200 && restoredSub?.status === 'active'
           && restoredSub.plan_id === fixturePlanId && restoredSub.version === plan.expected_subscription_version + 1
-          && restoredSub.member_limit === 2 && Date.parse(restoredSub.paid_through_at) === Date.parse(plan.original_paid_through_at);
-        check('ORIGINAL_ENTITLEMENT_RESTORED_BY_ADMIN_AND_READ_BACK', evidence.entitlement_restored_verified);
+          && restoredSub.member_limit === 2 && Date.parse(restoredSub.paid_through_at) === Date.parse('2026-11-09T00:00:00Z');
+        check('TEMPORARY_CLEANUP_ENTITLEMENT_GRANTED_BY_ADMIN_AND_READ_BACK', evidence.entitlement_restored_verified);
         evidence.restore_acknowledgement = grantError ? 'INDEPENDENT_READBACK_AFTER_LOST_RESPONSE' : 'ACK_AND_INDEPENDENT_READBACK';
         const invitations = await get('workspace_invitations', 'id,invitee_user_id', scoped + '&status=eq.pending', owner, true);
         need(rows(invitations) && invitations.data.every(row => row.invitee_user_id === member.id), 'EXACT_CLEANUP_INVITATIONS_REQUIRED');
@@ -196,8 +199,9 @@ export async function checkBusinessExpiry({ actors, accounts, evidence }, key, a
         const finalSub = one((await get('workspace_subscriptions', 'status,version,member_limit,paid_through_at', scoped, admin, true)).data);
         evidence.original_seats_restored = seats.status === 200 && seats.data === 1 && finalSub?.member_limit === 1
           && finalSub.version === plan.expected_subscription_version + 2
-          && Date.parse(finalSub.paid_through_at) === Date.parse(plan.original_paid_through_at);
-        check('ORIGINAL_ONE_SEAT_AND_TERM_RESTORED', evidence.original_seats_restored);
+          && Date.parse(finalSub.paid_through_at) === Date.parse('2026-11-09T00:00:00Z');
+        check('ORIGINAL_ONE_SEAT_RESTORED_TEMPORARY_TERM_BOUND', evidence.original_seats_restored);
+        evidence.operator_final_term_restore_required = true;
         evidence.synthetic_restore_history = { manual_grants: 1, entitlement_history_rows: 1, owner_notifications: 1,
           actual_payment_records: 0, external_requests: 0 };
       } catch (error) { cleanupFailure = error; }
@@ -207,7 +211,7 @@ export async function checkBusinessExpiry({ actors, accounts, evidence }, key, a
           const isolated = await rpc('admin_business_set_status', admin, { p_workspace_id: WORKSPACE, p_status: 'suspended',
             p_expected_version: row.business_support_version, p_confirmation_name: FIXTURE,
             p_reason: 'Isolate completed synthetic Business entitlement expiry test', p_request_id: randomUUID() }, true);
-          need(isolated.status === 200 && isolated.data === WORKSPACE, 'EXPIRY_ISOLATION_ACK_REQUIRED');
+          need(isolated.status === 200 && UUID.test(isolated.data || ''), 'EXPIRY_ISOLATION_ACK_REQUIRED');
         }
         evidence.fixture_suspended_verified = (await fixture(true)).status === 'suspended';
         check('EXACT_TEST_WORKSPACE_SUSPENDED_AFTER_EXERCISE', evidence.fixture_suspended_verified);

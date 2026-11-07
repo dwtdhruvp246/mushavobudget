@@ -11,12 +11,12 @@ const actors = { USER_A: actor('1'), USER_B: actor('2'), ADMIN: actor('3') };
 const accounts = { USER_B: { email: 'controlled@example.test' } };
 const plan = { scope: 'business-expiry-boundaries', project: 'dczlddwbtgvfdujgcitb',
   fixture_name: 'audit-batch-x-receipt-d7be160c2026', workspace_id: workspace,
-  expected_support_version: 8, expected_subscription_version: 6, expiry_at: new Date(expiry).toISOString(),
+  expected_support_version: 10, expected_subscription_version: 8, expiry_at: new Date(expiry).toISOString(),
   original_paid_through_at: '2026-11-08T00:00:00.000Z', supported_restore: true,
   case_ids: ['X_EXPIRY_ACTIVE_BASELINE', 'X_EXPIRY_SAME_SESSION_DENIAL', 'X_EXPIRY_OWNER_RENEWAL_GATE', 'X_EXPIRY_FIXTURE_ISOLATION'] };
 
 function backend({ retainedAccess = false, exposedBilling = false, failInvite = false, lateStart = false, lostRestore = false } = {}) {
-  const state = { time: lateStart ? expiry + 1000 : start, status: 'suspended', support: 8, member: false, subVersion: 6, seats: 2, restored: false, pending: false, calls: [] };
+  const state = { time: lateStart ? expiry + 1000 : start, status: 'suspended', support: 10, member: false, subVersion: 8, seats: 2, restored: false, pending: false, calls: [] };
   const fetcher = async (url, options) => {
     const parsed = new URL(url), name = parsed.pathname.split('/').at(-1);
     assert.equal(parsed.origin, 'https://dczlddwbtgvfdujgcitb.supabase.co');
@@ -28,7 +28,7 @@ function backend({ retainedAccess = false, exposedBilling = false, failInvite = 
     const expired = state.time > expiry;
     const ok = data => Response.json(data);
     const no = message => Response.json({ message }, { status: 400 });
-    const sub = { workspace_id: workspace, plan_id: id('9'), status: 'active', member_limit: state.seats, version: state.subVersion, paid_through_at: state.restored ? plan.original_paid_through_at : new Date(expiry).toISOString() };
+    const sub = { workspace_id: workspace, plan_id: id('9'), status: 'active', member_limit: state.seats, version: state.subVersion, paid_through_at: state.restored ? '2026-11-09T00:00:00.000Z' : new Date(expiry).toISOString() };
     if (options.method === 'GET') {
       assert.equal(parsed.searchParams.get('limit'), '3');
       if (name === 'budget_workspaces') return ok(parsed.searchParams.has('workspace_type')
@@ -47,7 +47,7 @@ function backend({ retainedAccess = false, exposedBilling = false, failInvite = 
     }
     if (name === 'respond_business_invitation') { state.member = true; state.pending = false; return ok(workspace); }
     if (name === 'admin_grant_manual_subscription') {
-      assert.equal(caller, actors.ADMIN); assert.equal(body.p_plan_id, id('9'));
+      assert.equal(caller, actors.ADMIN); assert.equal(body.p_plan_id, id('9')); assert.equal(body.p_ends_on, '2026-11-08');
       state.restored = true; state.subVersion++;
       if (lostRestore) throw new Error('lost restore response');
       return ok(workspace);
@@ -67,7 +67,7 @@ function backend({ retainedAccess = false, exposedBilling = false, failInvite = 
     if (name === 'admin_business_set_status') {
       assert.equal(caller, actors.ADMIN); assert.equal(body.p_workspace_id, workspace);
       assert.equal(body.p_expected_version, state.support); assert.ok(['active', 'suspended'].includes(body.p_status));
-      state.status = body.p_status; state.support++; return ok(workspace);
+      state.status = body.p_status; state.support++; return ok(id('c'));
     }
     throw new Error('unplanned test route');
   };
@@ -77,7 +77,7 @@ function backend({ retainedAccess = false, exposedBilling = false, failInvite = 
 test('expiry plan refuses another project, fixture, version, original term or automatic restore assumption', () => {
   assert.equal(isBusinessExpiryPlan(plan), true);
   for (const value of [{ project: 'production' }, { workspace_id: id('4') }, { fixture_name: 'customer business' },
-    { expected_support_version: 9 }, { original_paid_through_at: '2026-12-08T00:00:00.000Z' },
+    { expected_support_version: 11 }, { original_paid_through_at: '2026-12-08T00:00:00.000Z' },
     { supported_restore: false }, { expiry_at: 'invalid' }, { case_ids: [] }])
     assert.equal(isBusinessExpiryPlan({ ...plan, ...value }), false);
 });

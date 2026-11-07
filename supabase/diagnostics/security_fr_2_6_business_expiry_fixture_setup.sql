@@ -16,7 +16,7 @@ begin
     from public.budget_workspaces w join auth.users u on u.id=w.owner_id
     where w.id='dcf3d122-e99f-4fe5-bbd1-03c3547629df'
       and w.name='audit-batch-x-receipt-d7be160c2026' and w.workspace_type='business'
-      and w.status='suspended' and w.business_support_version=8
+      and w.status='suspended' and w.business_support_version=10
       and encode(sha256(convert_to(lower(u.email),'UTF8')),'hex')='78517e097a62a504568d89ea98e37c754446634cd03663e9edb9a6d5be5bab5d';
   select u.id,m.id into strict v_member,v_member_row from auth.users u join public.profiles p on p.id=u.id
     join public.workspace_members m on m.user_id=u.id and m.workspace_id=v_workspace
@@ -35,12 +35,12 @@ begin
     raise exception 'EXACT_IDLE_OWNER_ONLY_SYNTHETIC_FIXTURE_REQUIRED'; end if;
   v_expiry:=clock_timestamp()+interval '4 minutes';
   update public.workspace_subscriptions set paid_through_at=v_expiry,member_limit=2,version=version+1,updated_at=now()
-    where workspace_id=v_workspace and status='active' and version=5 and member_limit=1
+    where workspace_id=v_workspace and status='active' and version=7 and member_limit=1
       and paid_through_at='2026-11-08T00:00:00Z' and entitlement_start_at='2026-11-06T00:00:00Z'
       and business_next_effective_at is null and business_next_member_limit is null;
   if not found then raise exception 'EXACT_ORIGINAL_SYNTHETIC_ENTITLEMENT_REQUIRED'; end if;
   perform set_config('mushavo.business_expiry.setup',jsonb_build_object('fixture_name','audit-batch-x-receipt-d7be160c2026',
-    'expiry_at',v_expiry,'support_version',8,'subscription_version',6,'temporary_seats',2,
+    'expiry_at',v_expiry,'support_version',10,'subscription_version',8,'temporary_seats',2,
     'Auth_rows_changed',0,'ledger_rows_changed',0,'pricing_changed',false,'HTTP_acceptance',false)::text,true);
 end;
 $fixture$;

@@ -3,10 +3,10 @@
   "date": "2026-11-08",
   "project": "dczlddwbtgvfdujgcitb",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
-  "status": "FROZEN_RAW_ROUTE_BEFORE_AFTER_DIAGNOSTIC",
-  "source_parent_commit": "27b3dce6b7efd6454192fc8763cc0cd29457392b",
+  "status": "FROZEN_CORRECTED_S3_BROKER_ACCEPTANCE",
+  "source_parent_commit": "718af3d310905a89bcb1c2a2a5394c515084b419",
   "scope": "private-file-broker",
-  "phase": "enforced-diagnostic",
+  "phase": "enforced-s3",
   "raw_delivery_blocked": true,
   "case_ids": [
     "X_BROKER_PERSONAL_OWNER_FOREIGN",
@@ -26,9 +26,9 @@
     "production_changes": 0
   },
   "enabled": true,
-  "run_id": "2026-11-08-batch-x-private-file-raw-route-diagnostic",
+  "run_id": "2026-11-08-batch-x-private-file-s3-original-route-acceptance",
   "no_automatic_rerun": true,
   "full_batch_X_complete": false,
   "original_cached_access_finding_closed": false,
-  "expected_result": "OBSERVATIONS_AND_CLEANUP_ONLY_NOT_CLOSURE"
+  "expected_result": "OWNER_AND_STAFF_BROKER_POSITIVE_RAW_AND_SIGNING_DENIED_BEFORE_AFTER"
 }

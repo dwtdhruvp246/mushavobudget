@@ -25,7 +25,7 @@ export function isBusinessTeamPlan(plan) {
     && JSON.stringify(plan.case_ids) === JSON.stringify(CASES);
 }
 
-export async function checkBusinessTeam({ actors, accounts, evidence }, key, agent, plan, fetcher = fetch) {
+export async function checkBusinessTeam({ actors, accounts, evidence }, key, agent, plan, fetcher = fetch, now = Date.now) {
   need(isBusinessTeamPlan(plan), 'REVIEWED_BUSINESS_TEAM_PLAN_REQUIRED');
   const owner = actors.USER_A, manager = actors.USER_B, member = actors.USER_C, admin = actors.ADMIN;
   const selected = [owner, manager, member, admin];
@@ -107,7 +107,7 @@ export async function checkBusinessTeam({ actors, accounts, evidence }, key, age
     const initial = await fixture(), sub = await subscription();
     check('EXACT_ISOLATED_FIXTURE_AND_ORIGINAL_TERM', initial.status === 'suspended'
       && initial.business_support_version === plan.expected_support_version && sub.version === plan.expected_subscription_version
-      && sub.member_limit === 1 && Date.parse(sub.paid_through_at) > Date.now() + 600000);
+      && sub.member_limit === 1 && Date.parse(sub.paid_through_at) > now() + 600000);
     evidence.resume_attempted = true;
     await setStatus(initial, 'active');
     const baseline = await members(), invitations = await pending();
@@ -188,7 +188,7 @@ export async function checkBusinessTeam({ actors, accounts, evidence }, key, age
       && rows(removedOverrides) && removedOverrides.data.length === 0);
     const claims = JSON.parse(Buffer.from(member.token.split('.')[1], 'base64url').toString('utf8'));
     const sameSession = await rpc('app_session_status', member);
-    check('REMOVED_MEMBER_SAME_UNEXPIRED_ORDINARY_SESSION_VALID', claims.exp * 1000 > Date.now()
+    check('REMOVED_MEMBER_SAME_UNEXPIRED_ORDINARY_SESSION_VALID', claims.exp * 1000 > now()
       && sameSession.status === 200 && sameSession.data?.session_valid === true && sameSession.data.admin_authorized === false);
     const afterPermission = await permission(member, 'workspace.view');
     check('REMOVED_MEMBER_BUSINESS_PERMISSION_REVOKED', afterPermission.status === 200 && afterPermission.data === false);

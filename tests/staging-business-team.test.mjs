@@ -3,10 +3,11 @@ import test from 'node:test';
 import { checkBusinessTeam, isBusinessTeamPlan } from '../scripts/ci/staging-business-team.mjs';
 import { checkStagingAccess, privateAccounts } from '../scripts/ci/staging-access.mjs';
 
+const frozenNow = () => Date.parse('2026-11-07T12:00:00Z');
 const id = digit => `${digit.repeat(8)}-${digit.repeat(4)}-4${digit.repeat(3)}-8${digit.repeat(3)}-${digit.repeat(12)}`;
 const workspace = 'dcf3d122-e99f-4fe5-bbd1-03c3547629df';
 const actor = digit => ({ id: id(digit), token: 'test.' + Buffer.from(JSON.stringify({ sub: id(digit),
-  session_id: id(digit), exp: Math.floor(Date.now() / 1000) + 3600 })).toString('base64url') + '.test' });
+  session_id: id(digit), exp: Math.floor(frozenNow() / 1000) + 3600 })).toString('base64url') + '.test' });
 const actors = { USER_A: actor('1'), USER_B: actor('2'), USER_C: actor('3'), ADMIN: actor('4') };
 const accounts = Object.fromEntries(Object.entries(actors).map(([slot], i) => [slot,
   { email: `controlled${i}@example.test`, password: `PRIVATE_PASSWORD_${i}` }]));
@@ -117,7 +118,7 @@ test('an unconfigured third credential is refused without weakening the standard
 });
 test('real-session team flow removes the target with the nonowner manager and restores all test access', async () => {
   const { state, fetcher } = backend(), evidence = {};
-  await checkBusinessTeam({ actors, accounts, evidence }, 'public', 'test', plan, fetcher);
+  await checkBusinessTeam({ actors, accounts, evidence }, 'public', 'test', plan, fetcher, frozenNow);
   assert.ok(Object.values(evidence.checks).every(Boolean));
   assert.equal(state.status, 'suspended'); assert.equal(state.seats, 1); assert.equal(state.subVersion, 15);
   assert.equal(state.managerActive, false); assert.equal(state.memberActive, false); assert.equal(state.managerRole, 'finance_manager');
@@ -131,24 +132,24 @@ test('real-session team flow removes the target with the nonowner manager and re
 });
 test('a permissive response to Owner removal is a failure and still isolates the synthetic fixture', async () => {
   const { state, fetcher } = backend({ wrongDenial: true }), evidence = {};
-  await assert.rejects(checkBusinessTeam({ actors, accounts, evidence }, 'public', 'test', plan, fetcher), /MANAGER_CANNOT_REMOVE_OWNER/);
+  await assert.rejects(checkBusinessTeam({ actors, accounts, evidence }, 'public', 'test', plan, fetcher, frozenNow), /MANAGER_CANNOT_REMOVE_OWNER/);
   assert.equal(state.status, 'suspended'); assert.equal(state.managerActive, false); assert.equal(state.memberActive, false);
 });
 test('a lost third invitation response cancels its exact pending invitation and removes the manager', async () => {
   const { state, fetcher } = backend({ lostInvitation: true }), evidence = {};
-  await assert.rejects(checkBusinessTeam({ actors, accounts, evidence }, 'public', 'test', plan, fetcher), /lost third invitation/);
+  await assert.rejects(checkBusinessTeam({ actors, accounts, evidence }, 'public', 'test', plan, fetcher, frozenNow), /lost third invitation/);
   assert.equal(state.pending.length, 0); assert.equal(state.managerActive, false); assert.equal(state.status, 'suspended');
   assert.equal(state.seats, 1); assert.equal(state.calls.filter(value => value.name === 'create_business_invitation').length, 2);
 });
 test('a lost seat-change response is read during cleanup and original seats are restored without repeating expansion', async () => {
   const { state, fetcher } = backend({ lostSeatResponse: true }), evidence = {};
-  await assert.rejects(checkBusinessTeam({ actors, accounts, evidence }, 'public', 'test', plan, fetcher), /lost seat response/);
+  await assert.rejects(checkBusinessTeam({ actors, accounts, evidence }, 'public', 'test', plan, fetcher, frozenNow), /lost seat response/);
   assert.equal(state.status, 'suspended'); assert.equal(state.seats, 1);
   assert.equal(state.calls.filter(value => value.name === 'admin_set_business_seats' && value.body.p_total_seats === 3).length, 1);
 });
 test('a member-cleanup failure cannot pass but workspace isolation is still attempted', async () => {
   const { state, fetcher } = backend({ failedCleanup: true }), evidence = {};
-  await assert.rejects(checkBusinessTeam({ actors, accounts, evidence }, 'public', 'test', plan, fetcher), /manager cleanup failure/);
+  await assert.rejects(checkBusinessTeam({ actors, accounts, evidence }, 'public', 'test', plan, fetcher, frozenNow), /manager cleanup failure/);
   assert.equal(state.status, 'suspended'); assert.equal(evidence.fixture_suspended_verified, true);
   assert.equal(evidence.temporary_members_removed, false);
 });

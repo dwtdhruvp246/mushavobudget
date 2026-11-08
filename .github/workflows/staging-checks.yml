@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: '22'
       - name: Verify runner boundaries without credentials
-        run: node --test tests/staging-runner-guards.test.mjs tests/staging-recovery-guards.test.mjs tests/business-invitation-delivery.test.mjs tests/staging-dispatcher-boundaries.test.mjs tests/staging-account-suspension.test.mjs tests/staging-business-finance.test.mjs tests/staging-family-proof.test.mjs tests/staging-business-expiry.test.mjs tests/staging-business-team.test.mjs tests/staging-private-file-cache.test.mjs tests/dispatcher-send-authorization.test.mjs tests/outbox-claim.test.mjs tests/dispatch-push-reminders.test.mjs tests/admin-event-notifications.test.mjs tests/stage-8-notification-boundaries.test.mjs tests/staging-postgres-authorization-race.test.mjs
+        run: node --test tests/staging-runner-guards.test.mjs tests/staging-recovery-guards.test.mjs tests/business-invitation-delivery.test.mjs tests/staging-dispatcher-boundaries.test.mjs tests/staging-account-suspension.test.mjs tests/staging-business-finance.test.mjs tests/staging-family-proof.test.mjs tests/staging-business-expiry.test.mjs tests/staging-business-team.test.mjs tests/staging-private-file-cache.test.mjs tests/dispatcher-send-authorization.test.mjs tests/outbox-claim.test.mjs tests/dispatch-push-reminders.test.mjs tests/admin-event-notifications.test.mjs tests/stage-8-notification-boundaries.test.mjs tests/staging-postgres-authorization-race.test.mjs tests/staging-private-file-broker.test.mjs tests/private-file-broker.test.mjs tests/private-files-client.test.mjs tests/stage-4-upload-client.test.mjs
       - name: Select the test scope
         id: scope
         run: |
@@ -39,7 +39,7 @@ jobs:
           echo "business_team=$(node -p 'require("./scripts/ci/staging-run.json").scope === "business-team-boundaries"')" >> "$GITHUB_OUTPUT"
           echo "private_file_cache=$(node -p 'require("./scripts/ci/staging-run.json").scope === "private-file-cache-observation"')" >> "$GITHUB_OUTPUT"
           echo "family_proof=$(node -p 'require("./scripts/ci/staging-run.json").scope === "family-proof-path-binding"')" >> "$GITHUB_OUTPUT"
-          echo "api_only=$(node -p '["business-receipt-authorization","dispatcher-boundaries","account-suspension-boundaries","business-finance-workflow","family-proof-path-binding","business-expiry-boundaries","business-team-boundaries","private-file-cache-observation","postgres-authorization-change"].includes(require("./scripts/ci/staging-run.json").scope)')" >> "$GITHUB_OUTPUT"
+          echo "api_only=$(node -p '["business-receipt-authorization","dispatcher-boundaries","account-suspension-boundaries","business-finance-workflow","family-proof-path-binding","business-expiry-boundaries","business-team-boundaries","private-file-cache-observation","postgres-authorization-change","private-file-broker"].includes(require("./scripts/ci/staging-run.json").scope)')" >> "$GITHUB_OUTPUT"
           echo "controlled=$(node -p 'require("./scripts/ci/staging-run.json").scope === "controlled-browser"')" >> "$GITHUB_OUTPUT"
           echo "business_receipt=$(node -p 'require("./scripts/ci/staging-run.json").scope === "business-receipt-authorization"')" >> "$GITHUB_OUTPUT"
           echo "receipt_cleanup=$(node -p 'require("./scripts/ci/staging-run.json").cleanup_fixture === true')" >> "$GITHUB_OUTPUT"

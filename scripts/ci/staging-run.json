@@ -1,36 +1,35 @@
 {
   "schema_version": 1,
+  "enabled": true,
   "date": "2026-11-08",
+  "source_parent_commit": "ac5a1a2c541212a08f128eb132ecc753205f8659",
   "project": "dczlddwbtgvfdujgcitb",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
-  "status": "FROZEN_SERVER_ONLY_RETRIEVAL_ACCEPTANCE",
-  "source_parent_commit": "ed07882356d3ca0666221021948d5c7ab088b682",
-  "scope": "private-file-broker",
-  "phase": "enforced-broker",
-  "raw_delivery_blocked": true,
+  "scope": "family-proof-path-binding",
+  "fixture_name": "audit-family-private-broker-20261108",
+  "family_id": "72492390-f4b8-4519-9f4d-5448d22e325a",
+  "revocation_mode": "BROKER_CURRENT_ACCESS_NO_STORE",
   "case_ids": [
-    "X_BROKER_PERSONAL_OWNER_FOREIGN",
-    "X_BROKER_SUBSCRIPTION_OWNER_STAFF",
-    "X_BROKER_NO_STORE",
-    "X_BROKER_EXACT_CLEANUP",
-    "X_BROKER_RAW_BEFORE_AFTER"
+    "X_FAMILY_PROOF_OWNER_MEMBER",
+    "X_FAMILY_PROOF_PATH_DENIALS",
+    "X_FAMILY_PROOF_REMOVAL",
+    "X_FAMILY_PROOF_CLEANUP",
+    "X_FAMILY_PROOF_BROKER_NO_STORE_AND_RAW_DENIAL"
   ],
   "catalog_sha256": "cc122f36b6cc70e4fa88fe12a765cc83f24a586d495dfd3084f26edc2134e84f",
-  "bounds": {
-    "existing_controlled_sessions": 3,
-    "harmless_files": 2,
-    "exercise_requests_including_cleanup": 48,
-    "Auth_accounts_created": 0,
-    "finance_writes": 0,
-    "provider_or_mail_requests": 0,
-    "production_changes": 0
-  },
-  "enabled": true,
-  "run_id": "2026-11-08-batch-x-server-only-file-retrieval-acceptance",
+  "run_id": "2026-11-08-batch-x-corrected-family-broker-same-session-revocation",
   "no_automatic_rerun": true,
   "full_batch_X_complete": false,
-  "original_cached_access_finding_closed": false,
-  "expected_result": "OWNER_AND_STAFF_BROKER_POSITIVE_RAW_AND_SIGNING_DENIED_BEFORE_AFTER",
-  "server_retrieval_capability_seconds": 15,
-  "client_signed_URLs_expected": 0
+  "stage_3_complete": false,
+  "bounds": {
+    "controlled_sessions": 3,
+    "harmless_uploads_at_most": 7,
+    "exercise_requests_including_cleanup": 60,
+    "Auth_rows_seeded": 0,
+    "provider_requests": 0,
+    "financial_rows_written": 0,
+    "production_changes": 0
+  },
+  "server_retrieval_backend": "SERVER_ONLY_15_SECOND_CAPABILITY",
+  "initial_failed_run_preserved": 42463149157
 }

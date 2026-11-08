@@ -92,6 +92,7 @@ export async function checkFamilyProof({ actors, evidence }, key, agent, plan, f
     if (broker) {
       check('ACTIVE_BROKER_RESPONSE_NO_STORE', /private, no-store/.test(memberFile.cache_headers['cache-control'] || ''));
       const raw = await request('GET','/storage/v1/object/authenticated/payment-proofs/'+memberPath,owner,undefined,false,true);
+      evidence.current_owner_raw_response = safeResponse(raw);
       check('CURRENT_OWNER_RAW_BYTES_BLOCKED',denied(raw));
       const sign = await request('POST','/storage/v1/object/sign/payment-proofs/'+memberPath,owner,{expiresIn:60});
       check('CURRENT_OWNER_SIGNING_BLOCKED',denied(sign));

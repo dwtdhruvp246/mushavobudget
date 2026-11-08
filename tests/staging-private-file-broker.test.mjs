@@ -14,6 +14,7 @@ function backend({foreignAllowed=false,firstUploadLost=false,deleteFails=false}=
     calls.push({route,method:options.method});
     if(route==='/rest/v1/budget_workspaces')return Response.json([{id:id(20),owner_id:actors.USER_A.id,workspace_type:'personal'}]);
     if(route.startsWith('/storage/v1/object/')) {
+      if(options.method==='GET' || route.includes('/sign/'))return Response.json({error:'not_found',statusCode:404},{status:400});
       const key=route.slice('/storage/v1/object/'.length);
       if(options.method==='POST'){files.set(key,Buffer.from(options.body));if(firstUploadLost&&!lost){lost=true;throw new Error('lost acknowledgement');}return Response.json({Key:key});}
       if(deleteFails)return Response.json({}, {status:503});
@@ -48,4 +49,10 @@ test('lost upload response is cleaned without retrying an uncertain upload',asyn
 test('cleanup errors remain a failure',async()=>{
   const b=backend({deleteFails:true}),evidence={};await assert.rejects(checkPrivateFileBroker({actors,evidence},'fixture','runner',plan,b.fetcher),/DELETE_ACK/);
   assert.equal(evidence.storage_cleanup_acknowledged,false);
+});
+
+test('finite enforced diagnostic records raw before/after and signing without claiming closure',async()=>{
+  const b=backend(),evidence={};const selected={...plan,phase:'enforced-diagnostic',raw_delivery_blocked:true,case_ids:[...plan.case_ids,'X_BROKER_RAW_BEFORE_AFTER']};
+  assert.equal(isPrivateFileBrokerPlan(selected),true);await checkPrivateFileBroker({actors,evidence},'public','runner',selected,b.fetcher);
+  assert.equal(evidence.raw_route_observations.length,8);assert.equal(evidence.original_cached_access_finding_closed,false);assert.equal(b.files.size,0);
 });

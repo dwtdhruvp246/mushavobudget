@@ -17,6 +17,7 @@ Deno.serve(createPrivateFileHandler({
   }),
   readPrivateObject: (bucket: string, path: string, maxBytes: number) => readS3PrivateObject({
     bucket, path, maxBytes,
+    onFailure: (failure: { stage: string; status?: number; provider_code?: string }) => console.warn('PRIVATE_FILE_FETCH_FAILURE', failure),
     // Supabase documents temporary S3 credentials as project ref + legacy anon
     // key + valid JWT. Only this server uses the service JWT, after user RLS.
     sign: (request: Request) => new AwsClient({

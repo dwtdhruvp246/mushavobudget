@@ -7,10 +7,12 @@ const result = await readS3PrivateObject({
   sign:request=>new AwsClient({accessKeyId:'dczlddwbtgvfdujgcitb',secretAccessKey:'synthetic-anon-key',
     sessionToken:'synthetic-service-JWT',service:'s3',region:'eu-west-1',retries:0})
     .sign(request,{redirect:'error',cache:'no-store',signal:request.signal}),
-  fetcher:async request=>{
+  fetcher:async (input,init)=>{
+    const request=new Request(input,init);
     calls++;
     assert.match(request.headers.get('authorization'),/^AWS4-HMAC-SHA256 Credential=dczlddwbtgvfdujgcitb\/\d{8}\/eu-west-1\/s3\/aws4_request,/);
     assert.equal(request.headers.get('x-amz-security-token'),'synthetic-service-JWT');
+    assert.doesNotMatch(request.headers.get('authorization'),/cache-control/);
     assert.equal(new URL(request.url).search,'');assert.equal(request.redirect,'error');assert.equal(request.cache,'no-store');
     return new Response('safe');
   },

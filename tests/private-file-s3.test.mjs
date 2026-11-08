@@ -1,12 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readS3PrivateObject } from '../supabase/functions/get-private-file/s3-private-file.mjs';
-const args = { bucket:'payment-proofs', path:'personal/actor/file.png',maxBytes:68,sign:async r=>r };
+const args = { bucket:'payment-proofs', path:'personal/actor/file.png',maxBytes:68,
+  sign:async r=>{r.headers.set('authorization','AWS4-HMAC-SHA256 synthetic');r.headers.set('x-amz-security-token','synthetic');return r;} };
 test('S3 read uses only fixed staging host, signed headers, no-store and no redirects',async()=>{
   let called=0;
-  const result=await readS3PrivateObject({...args,sign:async r=>{r.headers.set('Authorization','AWS4-HMAC-SHA256 synthetic');r.headers.set('X-Amz-Security-Token','private-synthetic');return r;},fetcher:async r=>{
-    called++;assert.equal(r.url,'https://dczlddwbtgvfdujgcitb.storage.supabase.co/storage/v1/s3/payment-proofs/personal/actor/file.png');
-    assert.equal(r.redirect,'error');assert.equal(r.cache,'no-store');assert.equal(r.method,'GET');assert.equal(r.headers.get('Cache-Control'),'no-store');
+  const result=await readS3PrivateObject({...args,sign:async r=>{r.headers.set('Authorization','AWS4-HMAC-SHA256 synthetic');r.headers.set('X-Amz-Security-Token','private-synthetic');return r;},fetcher:async (input,init)=>{
+    const r=new Request(input,init);
+    called++;assert.equal(r.url,'https://dczlddwbtgvfdujgcitb.supabase.co/storage/v1/s3/payment-proofs/personal/actor/file.png');
+    assert.equal(r.redirect,'error');assert.equal(r.cache,'no-store');assert.equal(r.method,'GET');assert.equal(r.headers.get('Cache-Control'),null);
     assert.equal(new URL(r.url).search,'');assert.equal(r.headers.get('X-Amz-Security-Token'),'private-synthetic');return new Response('safe');
   }});
   assert.equal(await result.data.text(),'safe');assert.equal(called,1);assert.doesNotMatch(JSON.stringify(result),/private-synthetic/);

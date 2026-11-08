@@ -15,6 +15,7 @@ import { checkFamilyProof, isFamilyProofPlan } from './staging-family-proof.mjs'
 import { checkBusinessExpiry, isBusinessExpiryPlan } from './staging-business-expiry.mjs';
 import { checkBusinessTeam, isBusinessTeamPlan } from './staging-business-team.mjs';
 import { checkPrivateFileCache, isPrivateFileCachePlan } from './staging-private-file-cache.mjs';
+import { checkBusinessPrivateFiles, isBusinessPrivateFilesPlan } from './staging-business-private-files.mjs';
 import { checkPrivateFileBroker, isPrivateFileBrokerPlan } from './staging-private-file-broker.mjs';
 import { checkPostgresAuthorizationRace, isPostgresAuthorizationRacePlan } from './staging-postgres-authorization-race.mjs';
 
@@ -49,14 +50,15 @@ async function main() {
     const privateFileCache = isPrivateFileCachePlan(plan);
     const postgresAuthorizationRace = isPostgresAuthorizationRacePlan(plan);
     const privateFileBroker = isPrivateFileBrokerPlan(plan);
+    const businessPrivateFiles = isBusinessPrivateFilesPlan(plan);
     need(confirmation || passwordSessions || accountSwitch || recovery || recoverySaveRetry || recoveryFeedback
-      || controlledBrowser || adminBoundaries || businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof || businessExpiry || businessTeam || privateFileCache || postgresAuthorizationRace || privateFileBroker, 'REVIEWED_RUN_SCOPE_REQUIRED');
+      || controlledBrowser || adminBoundaries || businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof || businessExpiry || businessTeam || privateFileCache || postgresAuthorizationRace || privateFileBroker || businessPrivateFiles, 'REVIEWED_RUN_SCOPE_REQUIRED');
     if (adminBoundaries) progress = 'Stage 3/10 | FR.2/8 | Batch V/Z';
     if (businessReceipt) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     if (dispatcherBoundaries || postgresAuthorizationRace) progress = 'Stage 3/10 | FR.2/8 | Batch Y/Z';
     if (accountSuspension) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     if (businessFinance) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
-    if (familyProof || businessExpiry || businessTeam || privateFileCache || privateFileBroker) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
+    if (familyProof || businessExpiry || businessTeam || privateFileCache || privateFileBroker || businessPrivateFiles) progress = 'Stage 3/10 | FR.2/8 | Batch X/Z';
     need(process.env.GITHUB_REPOSITORY === 'dwtdhruvp246/mushavobudget'
       && process.env.GITHUB_REF === 'refs/heads/security/stage-3-authorization', 'STAGING_BRANCH_RUN_REQUIRED');
     const fixtureAction = process.env.MUSHAVO_STAGING_RECEIPT_ADMIN_ACTION || null;
@@ -69,9 +71,10 @@ async function main() {
     if (familyProof) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'FAMILY_PROOF_RERUN_REFUSED');
     if (businessExpiry) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'BUSINESS_EXPIRY_RERUN_REFUSED');
     if (businessTeam) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'BUSINESS_TEAM_RERUN_REFUSED');
+    if (businessPrivateFiles) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'BUSINESS_PRIVATE_FILES_RERUN_REFUSED');
     if (privateFileBroker) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'PRIVATE_FILE_BROKER_RERUN_REFUSED');
     if (privateFileCache) need(process.env.GITHUB_RUN_ATTEMPT === '1', 'PRIVATE_FILE_CACHE_RERUN_REFUSED');
-    const chromium = businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof || businessExpiry || businessTeam || privateFileCache || postgresAuthorizationRace || privateFileBroker ? null
+    const chromium = businessReceipt || dispatcherBoundaries || accountSuspension || businessFinance || familyProof || businessExpiry || businessTeam || privateFileCache || postgresAuthorizationRace || privateFileBroker || businessPrivateFiles ? null
       : (await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs')).chromium;
     if (controlledBrowser) {
       const { checkControlledBrowser } = await import('./staging-controlled-browser.mjs');
@@ -122,6 +125,12 @@ async function main() {
     } else if (businessFinance) {
       report = await checkStagingAccess(accounts, apiTransport(config.key, agent),
         args => checkBusinessFinance(args, config.key, agent, plan), { accountScope });
+      delete report.full_lettered_batch_W_complete;
+      delete report.settings_or_finance_writes_requested;
+      report.full_lettered_batch_X_complete = false;
+    } else if (businessPrivateFiles) {
+      report = await checkStagingAccess(accounts, apiTransport(config.key, agent),
+        args => checkBusinessPrivateFiles(args, config.key, agent, plan), { accountScope });
       delete report.full_lettered_batch_W_complete;
       delete report.settings_or_finance_writes_requested;
       report.full_lettered_batch_X_complete = false;

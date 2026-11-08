@@ -2,6 +2,10 @@
 
 Updated 8 November 2026 after the corrected private-file tests. **Stage 3/10 | FR.2/8 | Batch X/Z — current work.** Batch Y is COMPLETE at its selected current-policy authorization boundary. Full X, main Stage 3, FR.2 and release acceptance remain open; V, X and Z remain three required packages. Production was not changed.
 
+## Business continuation in progress (8 November)
+
+The first Business file run42467355998 completed Owner, nonmember, member and same-session removal checks for both documents/logos. It exited1 because the archive fixture was attached to the already-paid USD1 bill; the paid-proof guard correctly refused archive. All three sessions were logged out. Exact attempted Storage objects2 remain, workspace ACTIVE support19, subscription17/seats2/temporary term9Nov, profile3/logoNULL, only Owner active. No earlier completed access/removal call should be repeated. See security-fr-2-batch-x-business-private-file-initial-review.json and the exact new-document compensation SQL. The previous Business suspended/sub15 statements below describe the pre-run baseline. Current plan disabled pending scoped compensation and remaining archive/cleanup checks.
+
 ## Latest completed work
 
 - Added a private byte download broker for payment proofs, subscription proofs, Business documents and logos. Caller Auth and current app-session checks precede a SECURITY INVOKER Storage/RLS lookup; a second current object/version/RLS check follows the server fetch. All success/error responses are private no-store. Frontend binds bytes to the captured user/workspace/epoch and current listed file; stale responses never open a file.

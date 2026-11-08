@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "enabled": true,
+  "enabled": false,
   "date": "2026-11-08",
   "project": "dczlddwbtgvfdujgcitb",
   "source_parent_commit": "1ebb3bc91ea3d95c0183b5ca40d44752fc91ba75",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
-  "status": "FROZEN_BOUNDED_BUSINESS_FILE_ACCEPTANCE",
+  "status": "ARCHIVED_ACCESS_PASS_PAID_PROOF_ARCHIVE_FIXTURE_REVIEW_REQUIRED",
   "scope": "business-private-files",
   "workspace_id": "dcf3d122-e99f-4fe5-bbd1-03c3547629df",
   "fixture_name": "audit-batch-x-receipt-d7be160c2026",
@@ -60,5 +60,8 @@
   },
   "acceptance_limits": "Current private-file authorization only; no production, actual SMTP/payment/push, native/store or whole-stage release acceptance.",
   "full_batch_X_complete": false,
-  "stage_3_complete": false
+  "stage_3_complete": false,
+  "completed_workflow_run_id": 42467355998,
+  "exit_code": 1,
+  "result_path": "docs/security-audit/security-fr-2-batch-x-business-private-file-initial-review.json"
 }

@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-08",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "BUSINESS_PRIVATE_BROKER_ACCESS_REVOCATION_ARCHIVE_AND_CLEANUP_SCOPED_PASS",
+  "scope": "Genuine ordinary Owner/nonmember/member access to the private byte broker for Business documents and logos, same-session removal, workspace-document archive, and exact fixture cleanup.",
+  "initial_run": {
+    "source_commit": "d9d7dd101aabca77178f729e6f2514703f6d311c",
+    "workflow_run_id": 42467355998,
+    "job_id": 128689862588,
+    "guard_tests": 331,
+    "passed_exercise_assertions": 29,
+    "original_exit_code": 1,
+    "original_failure": "BUSINESS_PAYMENT_PROOF_LOCKED: the archive test attached its new document to an already-paid bill. The installed guard correctly refused archive.",
+    "receipt": "docs/security-audit/security-fr-2-batch-x-business-private-file-initial-review.json",
+    "completed_access_checks_retained_not_repeated": true
+  },
+  "fixture_correction": {
+    "evidence": "docs/security-audit/security-fr-2-batch-x-business-private-file-fixture-correction.json",
+    "delete_executed": false,
+    "change": "Privileged operator reversibly changed only the exact newly-created document parent from the paid bill to the same workspace. No file bytes, original paid bill, policies or triggers changed.",
+    "ordinary_authenticated_document_UPDATE_allowed": false,
+    "not_an_end_user_paid_proof_mutation_pass": true
+  },
+  "completion_run": {
+    "source_commit": "632831f0ad0bfbb376038cfb64f93e56f4fd5f98",
+    "workflow_run_id": 42468803026,
+    "job_id": 128694468658,
+    "guard_tests": 338,
+    "live_assertions": 13,
+    "receipt": {
+      "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+      "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+      "checks": {
+        "fixture_owner_and_super_admin_verified": true,
+        "created_sessions_local_logout_acknowledged": true
+      },
+      "accounts": {
+        "USER_A": {
+          "signin_HTTP_status": 200,
+          "confirmed_identity": true,
+          "active_profile": true,
+          "expected_platform_role": true,
+          "owned_workspace_counts": {
+            "personal": 1,
+            "family": 0,
+            "business": 1
+          }
+        },
+        "ADMIN": {
+          "signin_HTTP_status": 200,
+          "confirmed_identity": true,
+          "active_profile": true,
+          "expected_platform_role": true,
+          "owned_workspace_counts": {
+            "personal": 1,
+            "family": 0,
+            "business": 0
+          }
+        }
+      },
+      "API_requests": 12,
+      "created_sessions": 2,
+      "cleanup_sessions": 2,
+      "production_changed": false,
+      "exit_code": 0,
+      "exercise": {
+        "checks": {
+          "EXACT_RETAINED_RUN_STATE": true,
+          "EXACT_CORRECTED_NEW_FIXTURE": true,
+          "OWNER_WORKSPACE_DOCUMENT_BYTES": true,
+          "WORKSPACE_DOCUMENT_ARCHIVE_ALLOWED": true,
+          "IDENTICAL_WARM_ARCHIVED_DOCUMENT_DENIED": true,
+          "SAME_OWNER_SESSION_STILL_VALID": true,
+          "FILE_DELETE_ACK_business-documents": true,
+          "FILE_DELETE_ACK_business-logos": true,
+          "ORIGINAL_ONLY_OWNER_ACTIVE": true,
+          "NO_PENDING_INVITATIONS": true,
+          "ORIGINAL_SEAT_ACTION_ACK": true,
+          "ORIGINAL_ONE_SEAT_RESTORED": true,
+          "ORIGINAL_SUSPENDED_STATE_RESTORED": true
+        },
+        "exercise_requests": 19,
+        "uploads": 0,
+        "new_invitations": 0,
+        "member_or_role_writes": 0,
+        "financial_ledger_writes": 0,
+        "provider_requests": 0,
+        "storage_cleanup_acknowledged": true,
+        "fixture_suspended": true,
+        "previous_access_run_not_repeated": 42467355998,
+        "cleanup_paths": [
+          {
+            "bucket": "business-documents",
+            "path": "workspaces/dcf3d122-e99f-4fe5-bbd1-03c3547629df/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/e8e09b54-76ed-477b-a266-fb88502bcb40/broker.png"
+          },
+          {
+            "bucket": "business-logos",
+            "path": "dcf3d122-e99f-4fe5-bbd1-03c3547629df/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/af270748-93e4-4020-8fe6-65c68f43312c.png"
+          }
+        ]
+      },
+      "full_lettered_batch_X_complete": false,
+      "public_configuration_requests": 1,
+      "run_plan": "2026-11-08-batch-x-business-unfinished-archive-cleanup",
+      "source_commit": "632831f0ad0bfbb376038cfb64f93e56f4fd5f98",
+      "workflow_run_id": "42468803026",
+      "workflow_run_attempt": "1"
+    }
+  },
+  "accepted_selected_checks": [
+    "Owner/current member receive exact harmless bytes from both Business buckets; foreign caller is denied.",
+    "User signing and authenticated raw originals remain denied in the selected warm tests; retrieval capabilities stay server-only.",
+    "After removal, the same valid member session loses both warmed broker requests while Owner access remains.",
+    "After archive, the identical warmed Owner workspace-document request is denied while the same session stays valid.",
+    "Both exact files were removed through normal Owner Storage API access; branding, seats, original expired term and suspension were restored."
+  ],
+  "independent_final_state": {
+    "queues": 0,
+    "catalog": {
+      "sha": "cc122f36b6cc70e4fa88fe12a765cc83f24a586d495dfd3084f26edc2134e84f",
+      "mode": "ACTIVE",
+      "matches": true
+    },
+    "objects": 0,
+    "profile": {
+      "logo": null,
+      "version": 3,
+      "original_values_hash": "8245f339c1b3ef017c92a4b3a5871973eee59ebfbef2cbcb777fbca6d1a6fb7d"
+    },
+    "bill_hash": "f55eef182e5f7e153e93362a51a90c881357149bf17745808d914dc0e9809a87",
+    "workspace": {
+      "status": "suspended",
+      "support": 20
+    },
+    "checked_at": "2026-11-08T09:51:31.129344+00:00",
+    "subscription": {
+      "term": "2026-11-08T00:00:00+00:00",
+      "seats": 1,
+      "version": 19,
+      "original_values_hash": "b8b683a9f3a2172de0932c6cf5ec4d3e4cba836b2ef9526cf0e868e7012838a0"
+    },
+    "test_document": {
+      "status": "archived",
+      "size_bytes": 68,
+      "parent_type": "workspace"
+    },
+    "active_members": 1,
+    "runner_sessions": 0,
+    "pending_invitations": 0
+  },
+  "original_values_preserved": {
+    "paid_bill_sha256": "f55eef182e5f7e153e93362a51a90c881357149bf17745808d914dc0e9809a87",
+    "profile_original_values_sha256": "8245f339c1b3ef017c92a4b3a5871973eee59ebfbef2cbcb777fbca6d1a6fb7d",
+    "subscription_original_values_sha256": "b8b683a9f3a2172de0932c6cf5ec4d3e4cba836b2ef9526cf0e868e7012838a0"
+  },
+  "cleanup": {
+    "created_sessions": 5,
+    "logged_out_sessions": 5,
+    "all_four_private_bucket_objects": 0,
+    "pending_invitations": 0,
+    "runner_sessions": 0,
+    "queued_normal_or_Admin_messages": 0,
+    "new_document_metadata": "Archived workspace-parented audit fixture retained; physical file absent.",
+    "term_restore": "Exact operator restoration after cleanup changed subscription18 to19 and restored the original expired paid-through value; no finance ledger mutation."
+  },
+  "limits": [
+    "Original failed run and exit1 remain unchanged.",
+    "Operator parent correction is fixture setup; ordinary authenticated callers cannot update these metadata columns.",
+    "No new genuine browser file-preview clicks, native/WebView behavior, OS download caches or full privacy/store acceptance are claimed.",
+    "Bytes previously received by an authorized user cannot be recalled."
+  ],
+  "production_changed": false,
+  "Auth_accounts_or_passwords_changed": false,
+  "financial_ledger_writes": 0,
+  "email_push_or_payment_provider_requests": 0,
+  "policies_or_triggers_weakened": false,
+  "exit_code": 0,
+  "batch_X_decision": "Recorded separately in the current four-group exit ledger; this receipt accepts only its selected Business broker scope."
+}

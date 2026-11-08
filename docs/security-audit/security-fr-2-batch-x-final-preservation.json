@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-08",
+  "project": "dczlddwbtgvfdujgcitb",
+  "scope": "Independent read-only preservation after Business broker completion and exact cleanup",
+  "business": {
+    "scope": "READ_ONLY_POST_API_BUSINESS_COUNTS_RETAINED_FINGERPRINTS_AND_CONVERSION_CONSISTENCY",
+    "stage_step": "FR.2.3_BUSINESS_POST_BATCH_REVIEW",
+    "checked_UTC": "2026-11-08T09:50:43.433154+00:00",
+    "business_state": [
+      {
+        "fixture": "PRIMARY",
+        "paid_claims": 1,
+        "draft_claims": 1,
+        "builtin_roles": 6,
+        "draft_budgets": 1,
+        "active_members": 1,
+        "approved_claims": 1,
+        "inactive_members": 1,
+        "member_overrides": 0,
+        "workspace_active": true,
+        "active_custom_roles": 3,
+        "pending_invitations": 0,
+        "accepted_invitations": 1,
+        "archived_custom_roles": 2,
+        "cancelled_invitations": 2,
+        "reminders_and_fx_disabled_usd": true
+      },
+      {
+        "fixture": "SECONDARY",
+        "paid_claims": 0,
+        "draft_claims": 0,
+        "builtin_roles": 6,
+        "draft_budgets": 0,
+        "active_members": 1,
+        "approved_claims": 2,
+        "inactive_members": 0,
+        "member_overrides": 0,
+        "workspace_active": true,
+        "active_custom_roles": 0,
+        "pending_invitations": 0,
+        "accepted_invitations": 0,
+        "archived_custom_roles": 0,
+        "cancelled_invitations": 0,
+        "reminders_and_fx_disabled_usd": true
+      }
+    ],
+    "target_project": "dczlddwbtgvfdujgcitb",
+    "findings_closed": [],
+    "hosted_acceptance": false,
+    "record_consistency": {
+      "records_total": 5,
+      "null_record_workspaces": 0,
+      "records_without_parent": 0,
+      "parent_workspace_mismatches": 0,
+      "mismatches_matching_prior_audit_item_shape": 0
+    },
+    "cleanup_authorization": false,
+    "transaction_read_only": "on",
+    "conversion_consistency": {
+      "conversions_without_record": 2,
+      "record_workspace_mismatches": 0,
+      "payment_record_conversions_total": 7,
+      "unlinked_rows_matching_audit_owner_usd1_identity_shape": 2
+    },
+    "reference_FK_validated": false,
+    "matched_business_scopes": 2,
+    "retained_old_audit_events": 3,
+    "retained_old_audit_sha256": "74cbb242ff9a95d17858459699e5eeb57672b1bec870b33b251539dcee3ce6a2",
+    "application_routines_invoked": 0,
+    "retained_old_permission_rows": 2,
+    "synthetic_actor_rows_matched": 2,
+    "all_business_workspaces_total": 5,
+    "retained_manual_snapshot_sha256": "d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3",
+    "retained_old_permissions_sha256": "fb1812e78849d04b443c3f1de4792873730a5e1199826dddd46c438ef61d9f65",
+    "retained_old_role_active_members": 0,
+    "retained_old_role_pending_invitations": 0,
+    "retained_old_audit_fingerprint_matches": true,
+    "project_selection_independently_verified": false,
+    "rows_accounts_settings_or_catalog_changed": false,
+    "retained_old_role_fingerprint_rows_matched": 1,
+    "retained_old_permissions_fingerprint_matches": true,
+    "retained_manual_original_column_baseline_matches": true,
+    "raw_rows_identifiers_emails_or_credentials_printed": false,
+    "retained_family_manual_USD1_rows_matching_full_scope": 2,
+    "manual_baseline_excludes_only_derived_payment_record_ref": true
+  },
+  "conversions": {
+    "scope": "READ_ONLY_REFERENCE_STATE_AND_ORIGINAL_COLUMN_MANUAL_BASELINE",
+    "stage_step": "FR.2.2_CONVERSION_REFERENCE_SNAPSHOT",
+    "checked_UTC": "2026-11-08T09:50:45.111188+00:00",
+    "target_project": "dczlddwbtgvfdujgcitb",
+    "hosted_acceptance": false,
+    "record_consistency": {
+      "records_total": 5,
+      "null_record_workspaces": 0,
+      "records_without_parent": 0,
+      "parent_workspace_mismatches": 0,
+      "mismatches_matching_prior_audit_item_shape": 0
+    },
+    "reference_FK_present": true,
+    "transaction_read_only": "on",
+    "conversion_consistency": {
+      "conversions_without_record": 2,
+      "record_workspace_mismatches": 0,
+      "payment_record_conversions_total": 7,
+      "unlinked_rows_matching_audit_owner_usd1_identity_shape": 2
+    },
+    "reference_FK_validated": false,
+    "application_routines_invoked": 0,
+    "synthetic_actor_rows_matched": 2,
+    "retained_manual_snapshot_sha256": "d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3",
+    "generated_reference_column_present": true,
+    "retained_family_fixture_names_matched": 2,
+    "raw_rows_identifiers_or_emails_printed": false,
+    "project_selection_independently_verified": false,
+    "historical_rows_repaired_or_conversions_deleted": false,
+    "audit_shape_is_provenance_or_cleanup_authorization": false,
+    "retained_family_manual_USD1_rows_matching_full_scope": 2,
+    "manual_baseline_excludes_only_derived_payment_record_ref": true
+  },
+  "final_synthetic_Business_state": {
+    "queues": 0,
+    "catalog": {
+      "sha": "cc122f36b6cc70e4fa88fe12a765cc83f24a586d495dfd3084f26edc2134e84f",
+      "mode": "ACTIVE",
+      "matches": true
+    },
+    "objects": 0,
+    "profile": {
+      "logo": null,
+      "version": 3,
+      "original_values_hash": "8245f339c1b3ef017c92a4b3a5871973eee59ebfbef2cbcb777fbca6d1a6fb7d"
+    },
+    "bill_hash": "f55eef182e5f7e153e93362a51a90c881357149bf17745808d914dc0e9809a87",
+    "workspace": {
+      "status": "suspended",
+      "support": 20
+    },
+    "checked_at": "2026-11-08T09:51:31.129344+00:00",
+    "subscription": {
+      "term": "2026-11-08T00:00:00+00:00",
+      "seats": 1,
+      "version": 19,
+      "original_values_hash": "b8b683a9f3a2172de0932c6cf5ec4d3e4cba836b2ef9526cf0e868e7012838a0"
+    },
+    "test_document": {
+      "status": "archived",
+      "size_bytes": 68,
+      "parent_type": "workspace"
+    },
+    "active_members": 1,
+    "runner_sessions": 0,
+    "pending_invitations": 0
+  },
+  "installed_private_file_boundary": {
+    "new_RPC": {
+      "stable": true,
+      "search_path": [
+        "search_path=pg_catalog"
+      ],
+      "anon_execute": false,
+      "service_execute": false,
+      "security_invoker": true,
+      "authenticated_execute": true
+    },
+    "checked_at": "2026-11-08T09:53:09.23704+00:00",
+    "new_private_file_policy": {
+      "kind": "RESTRICTIVE",
+      "roles": [
+        "authenticated"
+      ],
+      "command": "SELECT"
+    },
+    "session_restrictive_guards": 82,
+    "guarded_application_routines": 149,
+    "authenticated_document_UPDATE": false,
+    "old_storage_policies_retained": 7
+  },
+  "comparison": {
+    "original_manual_Family_rows": 2,
+    "manual_Family_sha256_matches": true,
+    "original_role_permission_and_audit_fingerprints_match": true,
+    "original_primary_and_secondary_Business_states_match": true,
+    "records_total": 5,
+    "conversions_total": 7,
+    "historical_conversion_orphans_unchanged": 2,
+    "joined_workspace_mismatches": 0,
+    "reference_FK_still_NOT_VALID": true,
+    "historical_cleanup_or_FK_validation_performed": false
+  },
+  "evidence_limit": "Catalog/read-only snapshots prove preservation and installed policy, not genuine-session HTTP acceptance.",
+  "production_changed": false
+}

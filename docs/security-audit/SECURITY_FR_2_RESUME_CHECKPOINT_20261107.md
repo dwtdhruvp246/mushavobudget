@@ -1,32 +1,39 @@
 # Mushavo Budget — current staging checkpoint
 
-Updated 8 November 2026 after the corrected private-file tests. **Stage 3/10 | FR.2/8 | Batch X/Z — current work.** Batch Y is COMPLETE at its selected current-policy authorization boundary. Full X, main Stage 3, FR.2 and release acceptance remain open; V, X and Z remain three required packages. Production was not changed.
+Updated 8 November 2026. **Stage 3/10 | FR.2/8 | Batch X/Z — hosted work completed; final exit reconciliation being archived.** Y is complete at its selected current-policy authorization boundary. Main Stage3, FR.2 and release acceptance remain open. Production was not changed.
 
-## Business continuation in progress (8 November)
+## Completed — do not replay
 
-The first Business file run42467355998 completed Owner, nonmember, member and same-session removal checks for both documents/logos. It exited1 because the archive fixture was attached to the already-paid USD1 bill; the paid-proof guard correctly refused archive. All three sessions were logged out. Exact attempted Storage objects2 remain, workspace ACTIVE support19, subscription17/seats2/temporary term9Nov, profile3/logoNULL, only Owner active. No earlier completed access/removal call should be repeated. See security-fr-2-batch-x-business-private-file-initial-review.json and the exact new-document compensation SQL. The previous Business suspended/sub15 statements below describe the pre-run baseline. Current plan disabled pending scoped compensation and remaining archive/cleanup checks.
+- Personal/subscription broker run42465233035: 323 guard tests,27 live assertions, exit0; three sessions logged out. [Result](security-fr-2-batch-x-private-file-server-retrieval-staging-result.json).
+- Family broker run42465388841: 323 guard tests,25 live assertions, exit0. Same valid removed-member session loses the warmed broker request, Owner retains access. Three sessions logged out; temporary Family deleted. [Result](security-fr-2-batch-x-private-broker-family-corrected-result.json).
+- Business initial run42467355998 retained29 passed assertions for Owner/nonmember/member access, raw/signing denial and same-session removal across documents/logos. Its exit1 remains: archive was attempted on this run's new proof attached to an already-paid bill; the existing paid-proof lock correctly refused.
+- Only that new document parent was reversibly changed by a privileged operator to its same workspace. The expired-confirmation DELETE never executed. No original bill, bytes, policies or triggers changed. Ordinary authenticated callers lack metadata UPDATE permission. [Correction](security-fr-2-batch-x-business-private-file-fixture-correction.json).
+- Business completion run42468803026, source632831f0ad0bfbb376038cfb64f93e56f4fd5f98: **338 guard tests,13 live assertions, exit0**. Workspace-document archive succeeded, identical warmed Owner request became404/no-store with the same session still valid, and both exact files were removed. Two sessions logged out; original seat, suspension and expired term restored. Earlier access/member calls were not repeated. [Combined result](security-fr-2-batch-x-business-private-file-staging-result.json).
+- Earlier accepted Y nine-group, role/finance/expiry/team scopes remain accepted at their recorded boundaries. Initial Storage and S3 failures remain archived; never rerun their plans without a new reason.
 
-## Latest completed work
+## Installed source
 
-- Added a private byte download broker for payment proofs, subscription proofs, Business documents and logos. Caller Auth and current app-session checks precede a SECURITY INVOKER Storage/RLS lookup; a second current object/version/RLS check follows the server fetch. All success/error responses are private no-store. Frontend binds bytes to the captured user/workspace/epoch and current listed file; stale responses never open a file.
-- Current staging frontend deployment: a1817026-ad12-469a-b41a-ed380b26ffe8. Five changed/new public files match local review; the previous staging headers/worker/config were preserved.
-- Current get-private-file Edge function: v4 ACTIVE, verify_jwt false because its body performs user authentication. Bundle SHA256 33684f5c4b9ea5f6ecc4535fc1bfcab8e2fb90cfb3788a133d66f18b5cfa0054. Three runtime files read back exactly. The API omits deno.json; no config readback is claimed.
-- Server fetch uses an exact 15-second retrieval capability kept only inside the broker. The client receives bytes. This preserves per-request authorization without warming the authenticated-original route in the selected genuine tests. The dependency lock is restored to the original 29 entries, SHA256 eb373bd333000e850a8775bc67796baee9aecbebc818bd53fbdd1e7f507ae8ff; SDK2.110.9 is unchanged.
-- Personal/subscription acceptance: 323 CI guard tests, 27 live assertions, 25 exercise requests, three created/three logged-out sessions; exit0. Owner/Admin reads worked; foreign/anonymous reads, original GETs before/after/nonce and user signing were denied. [Result](security-fr-2-batch-x-private-file-server-retrieval-staging-result.json).
-- Corrected Family acceptance: 323 CI guard tests, 25 live assertions, 31 exercise requests, three created/three logged-out sessions; exit0. Active member bytes200, same-session warmed request404/no-store after supported Owner removal, same application session still valid, membership false, Owner access retained, raw bytes/signing denied. [Result](security-fr-2-batch-x-private-broker-family-corrected-result.json).
-- Initial actual Storage download warmed the authenticated original route even with cacheNonce. The initial Family check caught it and cleaned up. Two S3 variants were rejected with AccessDenied/Missing signature; all their files/sessions were cleaned. These failures remain in their separate receipts. The corrected server-only retrieval run is the accepted implementation; do not rerun archived S3/Family plans.
+Staging project dczlddwbtgvfdujgcitb; security/stage-3-authorization branch.
 
-## Current state and preservation
+Frontend deployment a1817026-ad12-469a-b41a-ed380b26ffe8: five changed/new public files matched; previous headers/worker/config preserved. get-private-file v4 ACTIVE bundle SHA25633684f5c4b9ea5f6ecc4535fc1bfcab8e2fb90cfb3788a133d66f18b5cfa0054; three runtime files matched, API omits deno.json. The broker checks current Auth/app session and invoker Storage/RLS before and after retrieval, returning private no-store bytes. Its15-second retrieval capability stays server-only. SDK2.110.9 and original29-entry lock remain unchanged.
 
-- Latest independent cleanup: 2026-11-08T09:12:13.243926+00:00. All four private buckets have zero objects; temporary Family rows0, runner sessions0, normal/Admin queues0.
-- Catalog ACTIVE matches cc122f36b6cc70e4fa88fe12a765cc83f24a586d495dfd3084f26edc2134e84f. Added only the invoker metadata RPC and one restrictive SELECT policy; all seven previous Storage read/session/delete-selection policies remain. The original 82 session restrictive guards and guarded application RPCs were not relaxed.
-- Synthetic Business audit-batch-x-receipt-d7be160c2026 remains suspended, support18, subscription15, seat1, original expired paid-through 2026-11-08T00:00:00Z. No Business term/status/role/profile writes were made in this continuation.
-- Earlier Y/team/expiry/currency/finance/ordinary passes and original USD1 paid bill remain retained. Original manual Family SHA256 d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3 and two historical conversion orphans remain explicitly owned by prior preservation evidence; no historical cleanup was attempted.
-- The active CI plan is archived/disabled. Use this checkpoint and read current state before preparing any further finite run.
+Catalog ACTIVE matches cc122f36b6cc70e4fa88fe12a765cc83f24a586d495dfd3084f26edc2134e84f. New invoker RPC is authenticated-only; anon/service execution denied. One restrictive Storage SELECT policy added; seven prior Storage policies and82 restrictive session guards remain.
 
-## Remaining authorized work
+## Exact cleanup and preservation
 
-1. Verify the newly routed Business document/logo broker with real Owner/member/foreign/archived cases. The generic handler/local checks cover these buckets, but hosted Business positive acceptance has not yet run. Original paid term is now expired: do not replay old setup scripts or assume previous versions.
-2. Reconcile full X exits and run justified integrated Z checks. Reuse the accepted Y nine-group ledger and previous recorded scopes instead of repeating them.
-3. Keep owner-deferred SMTP/independent Admin recovery, agreed signed-in password retry variant and historical MFA hold under the selected password-only policy explicit. Do not broaden these into new email probes.
-4. No account/password re-entry or renewed blanket permission is required. On reconnect, inspect current deployment/run state before retrying an action.
+Independent final readback **2026-11-08T09:51:31.129344Z**:
+
+- All four private buckets objects0; runner sessions0; normal/Admin queues0; pending invitations0; only original Owner active.
+- Synthetic Business dcf3d122-e99f-4fe5-bbd1-03c3547629df suspended/support20, subscription19, seat1, original expired paid-through2026-11-08T00:00:00Z, profile3/logoNULL. Original profile/subscription values and USD1 paid-bill hashes match baseline.
+- New document e8e09b54-76ed-477b-a266-fb88502bcb40 retained archived with workspace parent and68-byte metadata; physical file absent.
+- Original PRIMARY/SECONDARY Business snapshots, old permissions/audit fingerprints and both manual Family conversions match. Manual SHA256d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3.
+- Payment records5/conversions7, joined workspace mismatches0, historical orphans2 unchanged. Reference FK remains NOT VALID; no historical deletion/validation. [Preservation](security-fr-2-batch-x-final-preservation.json).
+- scripts/ci/staging-run.json is archived with enabled:false. No completed live test should replay on reconnect.
+
+## Next work and holds
+
+Archive X's four original exits against the existing role/finance ledger and all four genuine broker scopes, then record Z readiness/Stage3 decision using the affected338 guards, installed boundary and preservation. Distinguish actual JS/synthetic DOM checks from new genuine browser/native preview acceptance.
+
+V SMTP/independent Admin recovery and historical MFA acceptance remain owner-deferred under the selected password-only policy. The agreed signed-in password retry variant remains deferred. Do not send new email probes or alter factors/passwords. Z and Stage3 cannot close while required V work remains on hold.
+
+On reconnect, inspect this checkpoint, current branch head and recorded run result before retrying. No renewed blanket permission or account/password re-entry is required within the already-authorized staging scope.

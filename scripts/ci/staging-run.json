@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "enabled": true,
+  "enabled": false,
   "date": "2026-11-08",
   "project": "dczlddwbtgvfdujgcitb",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
   "scope": "business-private-files",
   "mode": "unfinished-archive-cleanup",
-  "status": "FROZEN_UNFINISHED_BUSINESS_ARCHIVE_AND_CLEANUP",
+  "status": "ARCHIVED_COMPLETED_DO_NOT_REPLAY",
   "source_parent_commit": "b38ba257d91a2be5de8f66063f620f77d94643e4",
   "workspace_id": "dcf3d122-e99f-4fe5-bbd1-03c3547629df",
   "fixture_name": "audit-batch-x-receipt-d7be160c2026",
@@ -51,7 +51,11 @@
     "status_restore_actions": 1,
     "production_changes": 0
   },
-  "term_restoration": "After sessions logout and physical object absence, run the exact successful term restore sub18 to19; retain original USD1 paid-bill hash.",
+  "term_restoration": "COMPLETE: subscription19, original paid-through2026-11-08T00:00:00Z, seats1, suspended support20.",
   "full_batch_X_complete": false,
-  "stage_3_complete": false
+  "stage_3_complete": false,
+  "completed_source_commit": "632831f0ad0bfbb376038cfb64f93e56f4fd5f98",
+  "completed_workflow_run_id": 42468803026,
+  "result_receipt": "docs/security-audit/security-fr-2-batch-x-business-private-file-staging-result.json",
+  "next_action": "Read the current checkpoint and exit ledger. Completed archive, access/removal and cleanup calls must not replay."
 }

@@ -3,10 +3,10 @@
   "date": "2026-11-08",
   "project": "dczlddwbtgvfdujgcitb",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
-  "status": "FROZEN_S3_EXPLICIT_HEADER_ACCEPTANCE",
-  "source_parent_commit": "1514176475daf4d46e984baf6b6d301847304c02",
+  "status": "FROZEN_SERVER_ONLY_RETRIEVAL_ACCEPTANCE",
+  "source_parent_commit": "ed07882356d3ca0666221021948d5c7ab088b682",
   "scope": "private-file-broker",
-  "phase": "enforced-s3",
+  "phase": "enforced-broker",
   "raw_delivery_blocked": true,
   "case_ids": [
     "X_BROKER_PERSONAL_OWNER_FOREIGN",
@@ -26,9 +26,11 @@
     "production_changes": 0
   },
   "enabled": true,
-  "run_id": "2026-11-08-batch-x-private-file-s3-explicit-header-acceptance",
+  "run_id": "2026-11-08-batch-x-server-only-file-retrieval-acceptance",
   "no_automatic_rerun": true,
   "full_batch_X_complete": false,
   "original_cached_access_finding_closed": false,
-  "expected_result": "OWNER_AND_STAFF_BROKER_POSITIVE_RAW_AND_SIGNING_DENIED_BEFORE_AFTER"
+  "expected_result": "OWNER_AND_STAFF_BROKER_POSITIVE_RAW_AND_SIGNING_DENIED_BEFORE_AFTER",
+  "server_retrieval_capability_seconds": 15,
+  "client_signed_URLs_expected": 0
 }

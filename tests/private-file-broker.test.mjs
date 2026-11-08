@@ -24,13 +24,12 @@ function harness(options = {}) {
           return { data: [{ ...row }] };
         } };
     },
-    createServiceClient() {
+    async readPrivateObject(name, objectPath, maxBytes) {
       calls.service++;
-      return { storage: { from(name) { assert.equal(name, selected.bucket); return { async download(name) {
-        calls.downloads++; assert.equal(name, selected.path);
+      assert.equal(name, selected.bucket); assert.ok(maxBytes > 0);
+        calls.downloads++; assert.equal(objectPath, selected.path);
         if (options.download) return options.download();
         return { data: new Blob(['safe']) };
-      } }; } } };
     },
   });
   const request = (overrides = {}) => new Request('https://staging.invalid/get-private-file', {

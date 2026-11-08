@@ -52,7 +52,7 @@ function safeContext(value, selector) {
     && (selector.bucket !== 'business-logos' || row.mime_type.startsWith('image/')) ? row : null;
 }
 
-export function createPrivateFileHandler({ createUserClient, createServiceClient, allowedOrigin, configured = () => true }) {
+export function createPrivateFileHandler({ createUserClient, readPrivateObject, allowedOrigin, configured = () => true }) {
   return async request => {
     const origin = request.headers.get('origin') || '';
     const originAllowed = !origin || allowedOrigin(origin);
@@ -90,7 +90,7 @@ export function createPrivateFileHandler({ createUserClient, createServiceClient
       };
       const before = await context();
       if (!before) return fail(404, 'FILE_NOT_AVAILABLE');
-      const result = await createServiceClient().storage.from(selector.bucket).download(selector.path);
+      const result = await readPrivateObject(selector.bucket, selector.path, LIMITS[selector.bucket]);
       if (result.error || !(result.data instanceof Blob) || result.data.size !== before.size_bytes
         || result.data.size > LIMITS[selector.bucket]) return fail(404, 'FILE_NOT_AVAILABLE');
       const after = await context();

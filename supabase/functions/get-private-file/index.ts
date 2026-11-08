@@ -1,5 +1,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2.110.9";
+import { AwsClient } from "npm:aws4fetch@1.0.20";
 import { createPrivateFileHandler } from "./handler.mjs";
+import { readS3PrivateObject } from "./s3-private-file.mjs";
 
 const projectUrl = Deno.env.get("SUPABASE_URL") || "";
 const anonKey = Deno.env.get("SUPABASE_ANON_KEY") || "";
@@ -13,13 +15,13 @@ Deno.serve(createPrivateFileHandler({
   createUserClient: (token: string) => createClient(projectUrl, anonKey, {
     ...options, global: { headers: { Authorization: `Bearer ${token}` } },
   }),
-  createServiceClient: () => createClient(projectUrl, serviceKey, {
-    ...options, global: { fetch: (input: RequestInfo | URL, init?: RequestInit) => {
-      const url = new URL(typeof input === 'string' || input instanceof URL ? input : input.url);
-      // A unique documented Storage cache nonce prevents a previous object
-      // version from satisfying this privileged, post-authorization fetch.
-      url.searchParams.set('cacheNonce', crypto.randomUUID());
-      return fetch(url, { ...init, cache: 'no-store' });
-    } },
+  readPrivateObject: (bucket: string, path: string, maxBytes: number) => readS3PrivateObject({
+    bucket, path, maxBytes,
+    // Supabase documents temporary S3 credentials as project ref + legacy anon
+    // key + valid JWT. Only this server uses the service JWT, after user RLS.
+    sign: (request: Request) => new AwsClient({
+      accessKeyId: 'dczlddwbtgvfdujgcitb', secretAccessKey: anonKey,
+      sessionToken: serviceKey, service: 's3', region: 'eu-west-1', retries: 0,
+    }).sign(request, { redirect: 'error', cache: 'no-store', signal: request.signal }),
   }),
 }));

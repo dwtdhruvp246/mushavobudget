@@ -4,7 +4,7 @@ const CASES = ['X_BROKER_PERSONAL_OWNER_FOREIGN', 'X_BROKER_SUBSCRIPTION_OWNER_S
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aF6sAAAAASUVORK5CYII=', 'base64');
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 export function isPrivateFileBrokerPlan(plan) {
-  const diagnostic = plan.phase === 'enforced-diagnostic' && plan.raw_delivery_blocked === true
+  const diagnostic = ['enforced-diagnostic','enforced-s3'].includes(plan.phase) && plan.raw_delivery_blocked === true
     && JSON.stringify(plan.case_ids) === JSON.stringify([...CASES,'X_BROKER_RAW_BEFORE_AFTER']);
   return plan.scope === 'private-file-broker' && plan.project === 'dczlddwbtgvfdujgcitb'
     && (diagnostic || plan.phase === 'additive' && plan.raw_delivery_blocked === false
@@ -29,9 +29,9 @@ export async function checkPrivateFileBroker({ actors, evidence }, key, agent, p
     const metadata = method === 'POST' && route === '/rest/v1/rpc/private_file_download_context'
       && Object.keys(body || {}).sort().join() === 'p_bucket_id,p_object_name'
       && files.some(f => f.bucket === body.p_bucket_id && f.path === body.p_object_name);
-    const rawRead = plan.phase === 'enforced-diagnostic' && method === 'GET' && files.some(f=>u.pathname===`/storage/v1/object/authenticated/${f.bucket}/${f.path}`)
+    const rawRead = ['enforced-diagnostic','enforced-s3'].includes(plan.phase) && method === 'GET' && files.some(f=>u.pathname===`/storage/v1/object/authenticated/${f.bucket}/${f.path}`)
       && ([...u.searchParams.keys()].join()==='' || [...u.searchParams.keys()].join()==='cacheNonce');
-    const signing = plan.phase === 'enforced-diagnostic' && method === 'POST' && files.some(f=>u.pathname===`/storage/v1/object/sign/${f.bucket}/${f.path}`) && body?.expiresIn===60;
+    const signing = ['enforced-diagnostic','enforced-s3'].includes(plan.phase) && method === 'POST' && files.some(f=>u.pathname===`/storage/v1/object/sign/${f.bucket}/${f.path}`) && body?.expiresIn===60;
     const upload = method === 'POST' && binary && attempted.some(f => route === `/storage/v1/object/${f.bucket}/${f.path}`);
     const remove = method === 'DELETE' && cleanup && files.some(f => route === `/storage/v1/object/${f.bucket}`)
       && Array.isArray(body?.prefixes) && body.prefixes.length > 0 && body.prefixes.every(path => attempted.some(f => route.endsWith('/'+f.bucket) && f.path === path));
@@ -49,6 +49,7 @@ export async function checkPrivateFileBroker({ actors, evidence }, key, agent, p
   };
   const observeRaw = async (file,label,fresh=false) => {
     const r=await request('GET',`/storage/v1/object/authenticated/${file.bucket}/${file.path}`+(fresh?'?cacheNonce='+randomUUID():''),owner);
+    if(plan.phase==='enforced-s3')check('RAW_OWNER_DENIED_'+file.bucket+'_'+label,[401,403,404].includes(r.status) || r.status===400 && [401,403,404].includes(Number(r.data?.statusCode)));
     evidence.raw_route_observations.push({bucket:file.bucket,label,status:r.status,headers:r.headers,
       ...(Buffer.isBuffer(r.data)?{bytes:r.data.length,harmless_fixture_matches:digest(r.data)===digest(PNG)}:{Storage_error:r.data?.error,Storage_status_code:r.data?.statusCode})});
   };
@@ -66,13 +67,14 @@ export async function checkPrivateFileBroker({ actors, evidence }, key, agent, p
     for (const [index,file] of files.entries()) {
       attempted.push(file); evidence.cleanup_paths=attempted.map(f=>({...f})); evidence.upload_attempts++;
       check('UPLOAD_'+index,[200,201].includes((await request('POST',`/storage/v1/object/${file.bucket}/${file.path}`,owner,PNG,{binary:true})).status));
-      if(plan.phase==='enforced-diagnostic')await observeRaw(file,'before_broker');
+      if(['enforced-diagnostic','enforced-s3'].includes(plan.phase))await observeRaw(file,'before_broker');
       const own=await get(file,owner); check('OWNER_BYTES_'+index,matches(own));check('OWNER_NO_STORE_'+index,noStore(own));
       evidence['owner_response_'+index]={status:own.status,headers:own.headers,bytes:own.data.length,harmless_fixture_matches:true};
-      if(plan.phase==='enforced-diagnostic'){
+      if(['enforced-diagnostic','enforced-s3'].includes(plan.phase)){
         await observeRaw(file,'after_broker');await observeRaw(file,'after_broker_unique_nonce',true);
         const sign=await request('POST',`/storage/v1/object/sign/${file.bucket}/${file.path}`,owner,{expiresIn:60});
         if(typeof sign.data?.signedURL==='string')evidence.signed_urls_issued++;
+        if(plan.phase==='enforced-s3')check('SIGNING_DENIED_'+file.bucket,typeof sign.data?.signedURL!=='string' && ([401,403,404].includes(sign.status)||sign.status===400 && [401,403,404].includes(Number(sign.data?.statusCode))));
         evidence.raw_route_observations.push({bucket:file.bucket,label:'signing',status:sign.status,Storage_error:sign.data?.error,Storage_status_code:sign.data?.statusCode,signed_URL_returned:typeof sign.data?.signedURL==='string'});
       }
       const denied=await get(file,foreign);check('FOREIGN_DENIED_'+index,denied.status===404 && noStore(denied));

@@ -5,7 +5,7 @@ const id = n => '00000000-0000-4000-8000-'+String(n).padStart(12,'0');
 const actors = Object.fromEntries(['USER_A','USER_B','ADMIN'].map((key,i)=>[key,{id:id(i+1),token:'synthetic.'+Buffer.from(JSON.stringify({sub:id(i+1),session_id:id(i+10)})).toString('base64url')+'.signature'}]));
 const plan = { scope:'private-file-broker', project:'dczlddwbtgvfdujgcitb', phase:'additive',raw_delivery_blocked:false,
   case_ids:['X_BROKER_PERSONAL_OWNER_FOREIGN','X_BROKER_SUBSCRIPTION_OWNER_STAFF','X_BROKER_NO_STORE','X_BROKER_EXACT_CLEANUP'] };
-function backend({foreignAllowed=false,firstUploadLost=false,deleteFails=false}={}) {
+function backend({foreignAllowed=false,firstUploadLost=false,deleteFails=false,rawAllowed=false}={}) {
   const files=new Map(),calls=[];let lost=false;
   const fetcher=async(input,options)=>{
     const url=new URL(input), route=url.pathname;
@@ -14,6 +14,7 @@ function backend({foreignAllowed=false,firstUploadLost=false,deleteFails=false}=
     calls.push({route,method:options.method});
     if(route==='/rest/v1/budget_workspaces')return Response.json([{id:id(20),owner_id:actors.USER_A.id,workspace_type:'personal'}]);
     if(route.startsWith('/storage/v1/object/')) {
+      if(options.method==='GET' && rawAllowed)return new Response('unsafe bytes');
       if(options.method==='GET' || route.includes('/sign/'))return Response.json({error:'not_found',statusCode:404},{status:400});
       const key=route.slice('/storage/v1/object/'.length);
       if(options.method==='POST'){files.set(key,Buffer.from(options.body));if(firstUploadLost&&!lost){lost=true;throw new Error('lost acknowledgement');}return Response.json({Key:key});}
@@ -55,4 +56,14 @@ test('finite enforced diagnostic records raw before/after and signing without cl
   const b=backend(),evidence={};const selected={...plan,phase:'enforced-diagnostic',raw_delivery_blocked:true,case_ids:[...plan.case_ids,'X_BROKER_RAW_BEFORE_AFTER']};
   assert.equal(isPrivateFileBrokerPlan(selected),true);await checkPrivateFileBroker({actors,evidence},'public','runner',selected,b.fetcher);
   assert.equal(evidence.raw_route_observations.length,8);assert.equal(evidence.original_cached_access_finding_closed,false);assert.equal(b.files.size,0);
+});
+
+test('S3 corrected phase requires original and signing denials, in addition to broker success',async()=>{
+ const b=backend(),evidence={};const selected={...plan,phase:'enforced-s3',raw_delivery_blocked:true,case_ids:[...plan.case_ids,'X_BROKER_RAW_BEFORE_AFTER']};
+ await checkPrivateFileBroker({actors,evidence},'public','runner',selected,b.fetcher);assert.equal(evidence.raw_route_observations.length,8);assert.equal(evidence.signed_urls_issued,0);assert.ok(Object.keys(evidence.checks).some(x=>x.startsWith('RAW_OWNER_DENIED_')));
+});
+
+test('corrected S3 acceptance refuses any original byte response and still removes its uploads',async()=>{
+ const b=backend({rawAllowed:true}),evidence={};const selected={...plan,phase:'enforced-s3',raw_delivery_blocked:true,case_ids:[...plan.case_ids,'X_BROKER_RAW_BEFORE_AFTER']};
+ await assert.rejects(checkPrivateFileBroker({actors,evidence},'public','runner',selected,b.fetcher),/RAW_OWNER_DENIED/);assert.equal(b.files.size,0);
 });

@@ -53,8 +53,11 @@
   "readiness_poll_interval_ms": 2000,
   "full_batch_Y_complete": false,
   "stage_3_complete": false,
-  "enabled": true,
+  "enabled": false,
   "run_id": "2026-11-07-batch-y-real-session-postgres-authorization-change",
   "plan_path": "docs/security-audit/security-fr-2-batch-y-authorization-change-plan.json",
-  "no_automatic_rerun": true
+  "no_automatic_rerun": true,
+  "result_path": "docs/security-audit/security-fr-2-batch-y-authorization-change-staging-result.json",
+  "completed_workflow_run_id": "42414754959",
+  "exit_code": 0
 }

@@ -1,8 +1,8 @@
 # Mushavo Budget — current staging checkpoint
 
-Updated 7 November 2026.
+Updated 8 November 2026. The completed test evidence below was recorded on 7 November.
 
-**Stage 3/10 | FR.2/8 | Batch Y/Z — IN PROGRESS.** Main Stage 3, FR.2, full Batch X/Y and release acceptance remain open. Production was not changed.
+**Stage 3/10 | FR.2/8 | Batch Y/Z — COMPLETE at the selected current-policy authorization boundary.** Main Stage 3, FR.2, full Batch X and release acceptance remain open. Required packages V, X and Z remain (three). Production was not changed.
 
 ## Completed scopes and evidence
 
@@ -12,6 +12,7 @@ Updated 7 November 2026.
 | Private-file cache comparison | 21 live assertions passed, exit 0; 84 workflow guard tests passed. Two harmless Personal files used requested upload cache TTLs of 0 and 60 seconds. Both warmed and previously unused signed URLs were denied after token expiry in this staging run. | [Cache result](security-fr-2-batch-x-private-file-cache-staging-result.json) |
 | Business expiry and Owner-only renewal gate | Prior 34 live assertions passed, exit 0; same ordinary sessions were checked before and after supported expiry. Renewal payment itself was not exercised. | [Expiry result](security-fr-2-batch-x-business-expiry-staging-result.json) |
 | Per-device send authorization | Repaired both staging dispatchers to recheck access and the exact current claim before each device. All 23 controlled actual-handler interleavings and 172 CI checks passed; ten live anonymous/ordinary denial requests passed. Both v2 runtime bundles match source. No provider delivery was attempted. | [Send authorization result](security-fr-2-batch-y-send-authorization-staging-result.json) |
+| Live authorization-change overlap | One real read-only PostgreSQL transaction observed a separate genuine Admin suspension commit. The same valid ordinary session lost Business permission without token refresh; genuine HTTP confirmed it. All 176 CI guards passed. | [Authorization-change result](security-fr-2-batch-y-authorization-change-staging-result.json) |
 | Installed backend caller matrix | 100 service-only signatures denied under both actual anonymous and authenticated database roles (200 denials); four harmless read-only service calls passed. Read-only transaction, exit 0. Static inventory covers 310 non-extension routines; service-only set contains 46 trigger functions and 54 helpers/backend signatures. | [Caller matrix result](security-fr-2-batch-y-installed-caller-matrix-staging-result.json) |
 | Independent queue overlap | Two real independent PostgreSQL connections overlapped; the second worker saw the pending row and claimed zero while the first held it. Service-role claims were modeled in database transactions; no actual scheduler/provider delivery is inferred. | [Overlap result](security-fr-2-batch-y-independent-queue-overlap-result.json) |
 | Family proof fresh authorization | Prior 22 live assertions passed. Fresh access and new signing were denied after removal, but the warmed authenticated original URL returned its cached harmless bytes. | [Open cache finding](security-fr-2-family-file-cache-carry-forward.json) |
@@ -20,17 +21,17 @@ The third ordinary credential is now verified through real staging sign-in. No a
 
 ## Cleanup and preservation
 
-- Synthetic Business `audit-batch-x-receipt-d7be160c2026` is suspended, support version 16, subscription version 15, one seat, original paid-through `2026-11-08T00:00:00Z`.
+- Synthetic Business `audit-batch-x-receipt-d7be160c2026` is suspended, support version 18, subscription version 15, one seat, original paid-through `2026-11-08T00:00:00Z`.
 - Owner is the only active member. The original inactive member's finance-manager role is restored; the third synthetic membership remains inactive for history. Temporary scopes, overrides and pending invitations are zero.
-- All eight team-run sessions and four cache-run sessions were logged out. Independent active runner-session count is zero.
+- All eight team-run sessions, four cache-run sessions, two repaired-dispatcher denial-run sessions and three overlap-run sessions were logged out. Independent active runner-session count is zero.
 - Both successful cache-run objects and both initial-run objects are absent. Normal and Admin queues are empty. No CDN purge, bucket policy, Auth setting, email, provider-payment or production change was made.
 - The original USD 1 paid bill, original Business fixture counts and old role/permission/audit fingerprints remain preserved. Manual Family fingerprint remains `d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3`; two historical conversion orphans remain untouched.
 - Catalog remains ACTIVE and matches `4646c0fe0367fe033b4594428f9c180eb96ca9b39ed2d1a2024bdc843804c3d7`.
-- Latest independent cleanup/catalog readback after dispatcher repair: `2026-11-07T21:04:10.188591+00:00`. The run plan is disabled. Do not rerun archived setup scripts against advanced fixture versions.
+- Latest independent cleanup/catalog readback after the overlap run: `2026-11-07T21:14:56.928059+00:00`. The run plan is disabled. Do not rerun archived setup scripts against advanced fixture versions.
 
 ## Remaining authorized work
 
-1. The installed service-only caller matrix and 200 database-role denials now pass. The late send-authorization window is repaired and deployed, with local actual-handler interleavings and live public/ordinary denials. A genuine overlapping PostgreSQL authorization-change witness and original service-workflow reconciliation remain for Batch Y. Reuse the accepted queue expiry/replay, HTTP idempotency and independent-overlap evidence; real provider delivery remains later FR.4 work.
+1. Batch Y's nine exit groups are reconciled in the [Y closeout ledger](security-fr-2-batch-y-current-exit-ledger.json). Reuse these passes. Actual provider delivery, schedules and full operations remain later FR.4 work; Y completion is not launch approval.
 2. Resolve the existing cached-original-file revocation carry-forward. The new signed-expiry measurements do not close the observed Family membership-removal behavior. Freeze a concrete serving contract and affected-case list before changing file delivery.
 3. Reconcile original Personal/Family/Business exits using the [current coverage ledger](security-fr-2-batch-x-remaining-coverage-ledger.json), then perform justified integrated Batch Z checks and issue the actual Stage 3 decision.
 4. Keep owner-deferred SMTP/independent Admin recovery and the agreed signed-in password-change retry variant explicit. Historical MFA remains on hold under the selected password-only policy.

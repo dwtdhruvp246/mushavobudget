@@ -220,5 +220,19 @@
   "completed_since_baseline": [
     "U"
   ],
-  "current_execution_order_change": "Owner explicitly deferred V MFA during phone transfer; independent W work proceeds; V remains an open prerequisite for dependent Admin cases and Z closeout"
+  "current_execution_order_change": "Owner explicitly deferred V MFA during phone transfer; independent W work proceeds; V remains an open prerequisite for dependent Admin cases and Z closeout",
+  "current_status_reconciliation": {
+    "date": "2026-11-08",
+    "original_frozen_scope_and_historical_rows_preserved": true,
+    "Y_status": "COMPLETE_AT_CURRENT_SELECTED_AUTHORIZATION_BOUNDARY",
+    "Y_evidence": "docs/security-audit/security-fr-2-batch-y-current-exit-ledger.json",
+    "remaining_required_letters": [
+      "V",
+      "X",
+      "Z"
+    ],
+    "remaining_required_package_count": 3,
+    "stage_3_complete": false,
+    "FR_2_complete": false
+  }
 }

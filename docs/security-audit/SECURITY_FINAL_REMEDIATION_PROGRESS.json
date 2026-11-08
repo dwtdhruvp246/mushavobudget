@@ -4437,9 +4437,10 @@
       "final_letter": "Z",
       "label": "Batch Y/Z",
       "title": "Backend caller permissions, real database races and containment",
-      "status": "IN_PROGRESS"
+      "status": "COMPLETE",
+      "scope": "Selected current-policy authorization boundary; full provider/operations work remains later."
     },
-    "compact_display": "Stage 3/10 | FR.2/8 | Batch Y/Z — IN PROGRESS",
+    "compact_display": "Stage 3/10 | FR.2/8 | Batch Y/Z — COMPLETE",
     "labels_are_not_completion_percentages": true,
     "current_hierarchy_only_not_a_universal_FR_to_stage_mapping": true,
     "batch_completion_requires_its_full_exit_evidence": true,
@@ -4452,36 +4453,31 @@
       }
     ],
     "latest_completed_action": {
-      "title": "Installed service-only caller matrix and database-role boundaries",
+      "title": "Batch Y exit reconciliation and real authorization-change overlap",
       "status": "COMPLETE",
-      "scope": "100 exact signatures denied under both actual database roles; four read-only service calls passed. Modeled role claims; no new HTTP login or provider delivery.",
-      "actual_database_role_denials": 200,
-      "permitted_service_read_only_calls": 4,
+      "exit_groups": 9,
+      "exit_groups_reconciled": 9,
+      "workflow_guards": 176,
       "exit_code": 0,
-      "evidence": "docs/security-audit/security-fr-2-batch-y-installed-caller-matrix-staging-result.json",
-      "previous_completed_actions": [
-        {
-          "title": "Three ordinary Business actors and same-session revocation",
-          "selected_live_assertions": 42,
-          "exit_code": 0,
-          "evidence": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json"
-        },
-        {
-          "title": "Signed URL expiry and cache-setting observations",
-          "selected_live_assertions": 21,
-          "exit_code": 0,
-          "evidence": "docs/security-audit/security-fr-2-batch-x-private-file-cache-staging-result.json"
-        }
-      ]
+      "evidence": "docs/security-audit/security-fr-2-batch-y-current-exit-ledger.json",
+      "real_Postgres_witness": "docs/security-audit/security-fr-2-batch-y-authorization-change-staging-result.json",
+      "dispatcher_repair": "docs/security-audit/security-fr-2-batch-y-send-authorization-staging-result.json",
+      "evidence_date": "2026-11-07"
     },
     "next_required_action": {
-      "title": "Remaining original backend authorization-change and integrated exits",
+      "title": "Cached-original-file serving contract and remaining X exits",
       "status": "PENDING",
-      "scope": "Reconcile prior service-workflow evidence and applicable original current-policy races; resolve the cached-original-file contract before justified Batch Z checks.",
-      "third_ordinary_credentials_required": false,
-      "checkpoint": "docs/security-audit/SECURITY_FR_2_RESUME_CHECKPOINT_20261107.md"
+      "scope": "Reconcile original X permissions/finance exits and the observed provider-cache behavior. Preserve V deferrals and perform justified integrated Z checks only after its required prerequisites.",
+      "checkpoint": "docs/security-audit/SECURITY_FR_2_RESUME_CHECKPOINT_20261107.md",
+      "new_user_credentials_required": false
     },
-    "updated_date": "2026-11-07"
+    "updated_date": "2026-11-08",
+    "remaining_required_letters": [
+      "V",
+      "X",
+      "Z"
+    ],
+    "remaining_required_package_count": 3
   },
   "progress_display_contract": "docs/security-audit/security-progress-display-contract.json",
   "progress_display_convention": "docs/security-audit/SECURITY_PROGRESS_DISPLAY_CONVENTION.md",

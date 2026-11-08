@@ -198,5 +198,14 @@
   "additional_three_ordinary_team_receipt": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json",
   "additional_private_file_cache_receipt": "docs/security-audit/security-fr-2-batch-x-private-file-cache-staging-result.json",
   "private_file_cache_comparison": "SCOPED_SIGNED_URL_EXPIRY_AND_SUPPORTED_CACHE_SETTINGS_PASS_ORIGINAL_MEMBERSHIP_REVOCATION_FOLLOWUP_OPEN",
-  "additional_installed_backend_caller_matrix_receipt": "docs/security-audit/security-fr-2-batch-y-installed-caller-matrix-staging-result.json"
+  "additional_installed_backend_caller_matrix_receipt": "docs/security-audit/security-fr-2-batch-y-installed-caller-matrix-staging-result.json",
+  "Batch_Y_current_closeout": "docs/security-audit/security-fr-2-batch-y-current-exit-ledger.json",
+  "latest_preservation_after_Y": "docs/security-audit/security-fr-2-batch-y-authorization-change-staging-result.json",
+  "synthetic_Business_current_state": {
+    "status": "suspended",
+    "support_version": 18,
+    "subscription_version": 15,
+    "seats": 1,
+    "paid_through_at": "2026-11-08T00:00:00Z"
+  }
 }

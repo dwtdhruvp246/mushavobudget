@@ -9,7 +9,7 @@ const actors = { USER_A: actor('1'), USER_B: actor('2'), ADMIN: actor('3') };
 const plan = { scope: 'family-proof-path-binding', project: 'dczlddwbtgvfdujgcitb', fixture_name: 'audit-family-proof-policy-20261107', family_id: id('4'),
   case_ids: ['X_FAMILY_PROOF_OWNER_MEMBER', 'X_FAMILY_PROOF_PATH_DENIALS', 'X_FAMILY_PROOF_REMOVAL', 'X_FAMILY_PROOF_CLEANUP'] };
 
-function backend({ loseUploadResponse = false, refuseCleanup = false, warmReadRetained = false } = {}) {
+function backend({ loseUploadResponse = false, refuseCleanup = false, warmReadRetained = false, broker = false, retainBroker = false } = {}) {
   const state = { family: true, member: true, objects: new Map(), calls: [] };
   const fetcher = async (url, options) => {
     const p = new URL(url); assert.equal(p.origin, 'https://dczlddwbtgvfdujgcitb.supabase.co');
@@ -17,13 +17,19 @@ function backend({ loseUploadResponse = false, refuseCleanup = false, warmReadRe
     state.calls.push({ route: p.pathname, method: options.method });
     const ok = value => new Response(JSON.stringify(value), { status: 200 });
     const no = () => new Response(JSON.stringify({ statusCode: '403' }), { status: 400 });
-    if (p.pathname === '/rest/v1/families') return ok(state.family ? [{ id: plan.family_id, name: plan.fixture_name, owner_id: actors.USER_A.id }] : []);
+    if (p.pathname === '/rest/v1/families') return ok(state.family ? [{ id: plan.family_id, name: broker ? 'audit-family-private-broker-20261108' : plan.fixture_name, owner_id: actors.USER_A.id }] : []);
     if (p.pathname === '/rest/v1/family_members') return ok([{ id: id('5'), user_id: actors.USER_B.id, status: 'active' }]);
     if (p.pathname.endsWith('/remove_family_member')) { state.member = false; return ok('removed'); }
     if (p.pathname.endsWith('/app_session_status')) return ok({ session_valid: true, admin_authorized: false });
     if (p.pathname.endsWith('/is_active_family_participant')) return ok(state.member);
     if (p.pathname.endsWith('/delete_family_workspace')) {
       assert.equal(state.objects.size, 0, 'database fixture must survive until all file bytes are gone'); state.family = false; return ok('deleted');
+    }
+    if (p.pathname === '/functions/v1/get-private-file') {
+      const path=JSON.parse(options.body).path;
+      if (!state.objects.has(path)) return new Response(JSON.stringify({error:'FILE_NOT_AVAILABLE'}),{status:404,headers:{'cache-control':'private, no-store'}});
+      if (caller === actors.USER_B && !state.member && !retainBroker) return new Response(JSON.stringify({error:'FILE_NOT_AVAILABLE'}),{status:404,headers:{'cache-control':'private, no-store'}});
+      return new Response(state.objects.get(path),{headers:{'cache-control':'private, no-store','cf-cache-status':'DYNAMIC'}});
     }
     if (options.method === 'DELETE') {
       assert.equal(caller, actors.ADMIN);
@@ -46,6 +52,7 @@ function backend({ loseUploadResponse = false, refuseCleanup = false, warmReadRe
     }
     if (p.pathname.includes('/object/sign/')) return no();
     if (p.pathname.includes('/object/authenticated/payment-proofs/')) {
+      if (broker) return no();
       const path = p.pathname.split('/object/authenticated/payment-proofs/')[1];
       if (!state.objects.has(path)) return new Response(JSON.stringify({ statusCode: '404' }), { status: 400 });
       const cached = caller === actors.USER_B && !state.member && warmReadRetained && !p.searchParams.has('cacheNonce');
@@ -115,4 +122,16 @@ test('staging access accepts the database household type and reports it as Famil
   const report = await checkStagingAccess(accounts, transport);
   assert.equal(report.exit_code, 0); assert.equal(report.accounts.USER_A.owned_workspace_counts.family, 1);
   assert.equal(report.cleanup_sessions, 3);
+});
+
+const brokerPlan = { ...plan, fixture_name:'audit-family-private-broker-20261108', revocation_mode:'BROKER_CURRENT_ACCESS_NO_STORE', case_ids:[...plan.case_ids,'X_FAMILY_PROOF_BROKER_NO_STORE_AND_RAW_DENIAL'] };
+test('broker Family mode keeps identical warmed requests private and cleans the fixture',async()=>{
+  const {state,fetcher}=backend({broker:true}),evidence={};
+  assert.equal(isFamilyProofPlan(brokerPlan),true);await checkFamilyProof({actors,evidence},'public','test',brokerPlan,fetcher);
+  assert.equal(evidence.broker_revocation_verified,true);assert.equal(state.objects.size,0);assert.equal(state.family,false);
+});
+test('broker Family mode refuses a warmed byte response after revocation and still cleans',async()=>{
+  const {state,fetcher}=backend({broker:true,retainBroker:true}),evidence={};
+  await assert.rejects(checkFamilyProof({actors,evidence},'public','test',brokerPlan,fetcher),/WARM_IDENTICAL_BROKER_REQUEST_DENIED/);
+  assert.equal(state.objects.size,0);assert.equal(state.family,false);
 });

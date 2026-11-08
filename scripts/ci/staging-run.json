@@ -1,32 +1,33 @@
 {
   "schema_version": 1,
+  "enabled": true,
   "date": "2026-11-08",
+  "source_parent_commit": "44b14e4e2c71eb894e5cb408794f7c71aa99e5af",
   "project": "dczlddwbtgvfdujgcitb",
   "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
-  "status": "FROZEN_ADDITIVE_BROKER_ACCEPTANCE",
-  "source_parent_commit": "d55e9fef7b6ea56ade1e8c1f11ee09840f98432b",
-  "scope": "private-file-broker",
-  "phase": "additive",
-  "raw_delivery_blocked": false,
+  "scope": "family-proof-path-binding",
+  "fixture_name": "audit-family-private-broker-20261108",
+  "family_id": "7dd3e4af-8213-4e2f-8506-ea0ee1ceff52",
+  "revocation_mode": "BROKER_CURRENT_ACCESS_NO_STORE",
   "case_ids": [
-    "X_BROKER_PERSONAL_OWNER_FOREIGN",
-    "X_BROKER_SUBSCRIPTION_OWNER_STAFF",
-    "X_BROKER_NO_STORE",
-    "X_BROKER_EXACT_CLEANUP"
+    "X_FAMILY_PROOF_OWNER_MEMBER",
+    "X_FAMILY_PROOF_PATH_DENIALS",
+    "X_FAMILY_PROOF_REMOVAL",
+    "X_FAMILY_PROOF_CLEANUP",
+    "X_FAMILY_PROOF_BROKER_NO_STORE_AND_RAW_DENIAL"
   ],
-  "catalog_sha256": "01c7451bc24b5c575b220beee70fc7e9275dd0bf4ac2946fc26588b9ab3ba73d",
-  "bounds": {
-    "existing_controlled_sessions": 3,
-    "harmless_files": 2,
-    "exercise_requests_including_cleanup": 35,
-    "Auth_accounts_created": 0,
-    "finance_writes": 0,
-    "provider_or_mail_requests": 0,
-    "production_changes": 0
-  },
-  "enabled": true,
-  "run_id": "2026-11-08-batch-x-additive-private-file-broker",
+  "catalog_sha256": "cc122f36b6cc70e4fa88fe12a765cc83f24a586d495dfd3084f26edc2134e84f",
+  "run_id": "2026-11-08-batch-x-family-broker-same-session-revocation",
   "no_automatic_rerun": true,
   "full_batch_X_complete": false,
-  "original_cached_access_finding_closed": false
+  "stage_3_complete": false,
+  "bounds": {
+    "controlled_sessions": 3,
+    "harmless_uploads_at_most": 7,
+    "exercise_requests_including_cleanup": 60,
+    "Auth_rows_seeded": 0,
+    "provider_requests": 0,
+    "financial_rows_written": 0,
+    "production_changes": 0
+  }
 }

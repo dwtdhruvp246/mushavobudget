@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { API_ORIGIN, digest, need, tokenIdentity } from './staging-access.mjs';
 
 const FIXTURE = 'audit-family-proof-policy-20261107';
+const BROKER_FIXTURE = 'audit-family-private-broker-20261108';
 const CASES = ['X_FAMILY_PROOF_OWNER_MEMBER', 'X_FAMILY_PROOF_PATH_DENIALS', 'X_FAMILY_PROOF_REMOVAL', 'X_FAMILY_PROOF_CLEANUP'];
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aF6sAAAAASUVORK5CYII=', 'base64');
@@ -14,9 +15,11 @@ export function isFamilyProofPlan(plan) {
   const original = JSON.stringify(plan.case_ids) === JSON.stringify(CASES) && plan.revocation_mode === undefined;
   const observed = plan.revocation_mode === 'ORIGIN_DENIAL_WITH_CACHED_COPY_OBSERVATION'
     && JSON.stringify(plan.case_ids) === JSON.stringify([...CASES, 'X_FAMILY_PROOF_CDN_OBSERVATION']);
+  const broker = plan.revocation_mode === 'BROKER_CURRENT_ACCESS_NO_STORE'
+    && JSON.stringify(plan.case_ids) === JSON.stringify([...CASES, 'X_FAMILY_PROOF_BROKER_NO_STORE_AND_RAW_DENIAL']);
   return plan.scope === 'family-proof-path-binding' && plan.project === 'dczlddwbtgvfdujgcitb'
-    && plan.fixture_name === FIXTURE && UUID.test(plan.family_id || '')
-    && (original || observed);
+    && plan.fixture_name === (broker ? BROKER_FIXTURE : FIXTURE) && UUID.test(plan.family_id || '')
+    && (original || observed || broker);
 }
 
 export async function checkFamilyProof({ actors, evidence }, key, agent, plan, fetcher = fetch) {
@@ -29,6 +32,8 @@ export async function checkFamilyProof({ actors, evidence }, key, agent, plan, f
     cleanup_paths: [], Storage_cleanup_verified: false, synthetic_family_removed: false,
     email_requests: 0, provider_requests: 0, finance_writes: 0 });
   const check = (name, passed) => { evidence.checks[name] = passed === true; need(passed === true, name + '_REQUIRED'); };
+  const broker = plan.revocation_mode === 'BROKER_CURRENT_ACCESS_NO_STORE';
+  const fixtureName = broker ? BROKER_FIXTURE : FIXTURE;
   const family = plan.family_id, nonce = randomUUID();
   const familyPath = (uploader, suffix, familyId = family, ownerId = owner.id) =>
     `families/${familyId}/${ownerId}/${uploader}/${nonce}-${suffix}.png`;
@@ -37,8 +42,11 @@ export async function checkFamilyProof({ actors, evidence }, key, agent, plan, f
   const request = async (method, route, actor, body, cleanup = false, binary = false) => {
     need(evidence.exercise_requests < (cleanup ? 60 : 35), 'FAMILY_PROOF_REQUEST_LIMIT_REQUIRED');
     const url = new URL(route, API_ORIGIN);
+    const brokerRead = broker && method === 'POST' && url.pathname === '/functions/v1/get-private-file'
+      && body?.bucket === 'payment-proofs' && attempted.has(body.path) && Object.keys(body).sort().join() === 'bucket,path';
+    const uploadBody = binary && method === 'POST' && url.pathname.startsWith('/storage/v1/object/payment-proofs/');
     need(route.startsWith('/') && url.origin === API_ORIGIN && !url.hash
-      && (url.pathname.startsWith('/storage/v1/object/')
+      && (brokerRead || url.pathname.startsWith('/storage/v1/object/')
         || method === 'GET' && ['/rest/v1/families','/rest/v1/family_members'].includes(url.pathname)
         || method === 'POST' && ['/rest/v1/rpc/remove_family_member','/rest/v1/rpc/delete_family_workspace',
           '/rest/v1/rpc/is_active_family_participant','/rest/v1/rpc/app_session_status'].includes(url.pathname)),
@@ -46,17 +54,19 @@ export async function checkFamilyProof({ actors, evidence }, key, agent, plan, f
     evidence.exercise_requests++;
     const response = await fetcher(url, { method, redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(15000),
       headers: { apikey: key, 'User-Agent': agent, ...(actor ? { Authorization: 'Bearer ' + actor.token } : {}),
-        ...(body === undefined ? {} : { 'Content-Type': binary ? 'image/png' : 'application/json' }), ...(binary ? { 'x-upsert': 'false' } : {}) },
-      ...(body === undefined ? {} : { body: binary ? body : JSON.stringify(body) }) });
+        ...(body === undefined ? {} : { 'Content-Type': uploadBody ? 'image/png' : 'application/json' }), ...(uploadBody ? { 'x-upsert': 'false' } : {}) },
+      ...(body === undefined ? {} : { body: uploadBody ? body : JSON.stringify(body) }) });
     let data = null;
-    if (method === 'GET' && binary && response.status === 200) data = Buffer.from(await response.arrayBuffer());
+    if ((method === 'GET' || brokerRead) && binary && response.status === 200) data = Buffer.from(await response.arrayBuffer());
     else { try { data = await response.json(); } catch {} }
     const cache_headers = Object.fromEntries(['cache-control','cf-cache-status','age','vary','content-type']
       .map(name => [name, response.headers.get(name)]).filter(([,value]) => typeof value === 'string' && value.length <= 200));
     return { status: response.status, data, cache_headers };
   };
-  const familyRoute = `/rest/v1/families?select=id,owner_id,name&id=eq.${family}&name=eq.${FIXTURE}&limit=2`;
-  const read = (path, actor, cleanup = false, fresh = false) => request('GET', '/storage/v1/object/authenticated/payment-proofs/' + path
+  const familyRoute = `/rest/v1/families?select=id,owner_id,name&id=eq.${family}&name=eq.${fixtureName}&limit=2`;
+  const read = (path, actor, cleanup = false, fresh = false) => broker
+    ? request('POST', '/functions/v1/get-private-file', actor, { bucket: 'payment-proofs', path }, cleanup, true)
+    : request('GET', '/storage/v1/object/authenticated/payment-proofs/' + path
     + (fresh ? '?cacheNonce=' + randomUUID() : ''), actor, undefined, cleanup, true);
   const safeResponse = result => ({ status: result.status, cache_headers: result.cache_headers,
     ...(result.data?.statusCode && /^[0-9]{3}$/.test(String(result.data.statusCode)) ? { Storage_status_code: Number(result.data.statusCode) } : {}),
@@ -68,7 +78,7 @@ export async function checkFamilyProof({ actors, evidence }, key, agent, plan, f
   let fixtureBound = false, failure, cleanupFailure;
   try {
     const current = await request('GET', familyRoute, owner), row = one(current.data);
-    check('EXACT_EMPTY_SYNTHETIC_FAMILY_BOUND', current.status === 200 && row?.id === family && row.owner_id === owner.id && row.name === FIXTURE);
+    check('EXACT_EMPTY_SYNTHETIC_FAMILY_BOUND', current.status === 200 && row?.id === family && row.owner_id === owner.id && row.name === fixtureName);
     fixtureBound = true;
     const membership = await request('GET', `/rest/v1/family_members?select=id,user_id,status&family_id=eq.${family}&user_id=eq.${member.id}&limit=2`, owner);
     const memberRow = one(membership.data);
@@ -79,6 +89,13 @@ export async function checkFamilyProof({ actors, evidence }, key, agent, plan, f
     check('OWN_PERSONAL_UPLOAD_REMAINS_ALLOWED', [200,201].includes((await upload(personal,owner)).status));
     const ownerFile = await read(ownerPath,owner), memberFile = await read(memberPath,member);
     evidence.active_member_read_response = safeResponse(memberFile);
+    if (broker) {
+      check('ACTIVE_BROKER_RESPONSE_NO_STORE', /private, no-store/.test(memberFile.cache_headers['cache-control'] || ''));
+      const raw = await request('GET','/storage/v1/object/authenticated/payment-proofs/'+memberPath,owner,undefined,false,true);
+      check('CURRENT_OWNER_RAW_BYTES_BLOCKED',denied(raw));
+      const sign = await request('POST','/storage/v1/object/sign/payment-proofs/'+memberPath,owner,{expiresIn:60});
+      check('CURRENT_OWNER_SIGNING_BLOCKED',denied(sign));
+    }
     check('UPLOADED_BYTES_MATCH', [ownerFile,memberFile].every(file => file.status === 200 && digest(file.data) === digest(PNG)));
     check('FOREIGN_UPLOADER_PATH_DENIED', denied(await upload(familyPath(member.id,'spoof-uploader'),owner)));
     check('WRONG_FAMILY_OWNER_PATH_DENIED', denied(await upload(familyPath(member.id,'spoof-owner',family,member.id),member)));
@@ -89,6 +106,14 @@ export async function checkFamilyProof({ actors, evidence }, key, agent, plan, f
     check('REMOVED_MEMBER_UPLOAD_DENIED', denied(await upload(familyPath(member.id,'removed'),member)));
     const removedRead = await read(memberPath,member);
     evidence.removed_member_original_read_response = safeResponse(removedRead);
+    if (broker) {
+      check('WARM_IDENTICAL_BROKER_REQUEST_DENIED',removedRead.status === 404 && /private, no-store/.test(removedRead.cache_headers['cache-control'] || ''));
+      const session = await request('POST','/rest/v1/rpc/app_session_status',member,{});
+      check('REMOVED_MEMBER_SAME_ORDINARY_SESSION_VALID',session.status === 200 && session.data?.session_valid === true && session.data.admin_authorized === false);
+      const access = await request('POST','/rest/v1/rpc/is_active_family_participant',member,{p_family_id:family});
+      check('AUTHORITATIVE_MEMBERSHIP_FALSE',access.status === 200 && access.data === false);
+      evidence.broker_revocation_verified = true;
+    }
     if (plan.revocation_mode === 'ORIGIN_DENIAL_WITH_CACHED_COPY_OBSERVATION') {
       const liveSession = await request('POST','/rest/v1/rpc/app_session_status',member,{});
       check('REMOVED_MEMBER_ORDINARY_SESSION_VALID', liveSession.status === 200 && liveSession.data?.session_valid === true

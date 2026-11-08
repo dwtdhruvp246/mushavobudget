@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "enabled": true,
+  "enabled": false,
   "date": "2026-11-08",
   "source_parent_commit": "ac5a1a2c541212a08f128eb132ecc753205f8659",
   "project": "dczlddwbtgvfdujgcitb",
@@ -31,5 +31,9 @@
     "production_changes": 0
   },
   "server_retrieval_backend": "SERVER_ONLY_15_SECOND_CAPABILITY",
-  "initial_failed_run_preserved": 42463149157
+  "initial_failed_run_preserved": 42463149157,
+  "status": "ARCHIVED_CORRECTED_FAMILY_BROKER_SCOPED_PASS",
+  "completed_workflow_run_id": 42465388841,
+  "exit_code": 0,
+  "result_path": "docs/security-audit/security-fr-2-batch-x-private-broker-family-corrected-result.json"
 }

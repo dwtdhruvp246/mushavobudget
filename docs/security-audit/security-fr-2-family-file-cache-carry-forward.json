@@ -62,5 +62,10 @@
     "original_Family_membership_removal_retested": false,
     "immediate_revocation_established": false,
     "cache_policy_or_runtime_changed": false
-  }
+  },
+  "current_status": "SCOPED_FAMILY_BROKER_REVOCATION_PASS_BUSINESS_BROKER_AND_FULL_X_REVIEW_PENDING",
+  "resolution_receipt": "docs/security-audit/security-fr-2-batch-x-private-broker-family-corrected-result.json",
+  "resolution_scope": "NEW_BROKER_SERVED_FAMILY_FILES_SAME_VALID_SESSION_AFTER_MEMBERSHIP_REMOVAL",
+  "historical_observation_preserved": true,
+  "recall_of_previously_downloaded_bytes_claimed": false
 }

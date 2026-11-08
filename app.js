@@ -3,6 +3,7 @@ import { createAdminPlans } from "./admin-plans.js?v=2";
 import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=5";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
+import { openPrivateFile } from "./private-files.js?v=1";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
 const placeholderValues = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
@@ -6795,12 +6796,16 @@ async function reviewSubscriptionPayment(paymentId, decision) {
 
 async function openSubscriptionProof(proofId) {
   const proof = state.adminSubscriptionProofs.find((item) => item.id === proofId);
-  if (!proof) return;
+  const userId = state.session?.user?.id, epoch = authDataEpoch;
+  const workspaceId = currentBudgetWorkspace()?.id || null, path = proof?.storage_path;
+  if (!path || !userId || !state.isAdmin) return;
+  const isCurrent = () => authDataEpoch === epoch && state.session?.user?.id === userId && state.isAdmin
+    && (currentBudgetWorkspace()?.id || null) === workspaceId
+    && state.adminSubscriptionProofs.some(item => item.id === proofId && item.storage_path === path);
   try {
-    const signed = await query("subscription proof link", supabase.storage.from(SUBSCRIPTION_PROOF_BUCKET).createSignedUrl(proof.storage_path, 60));
-    window.open(signed.signedUrl, "_blank", "noopener,noreferrer");
+    await openPrivateFile(supabase, SUBSCRIPTION_PROOF_BUCKET, path, isCurrent, proof.original_name);
   } catch (error) {
-    showToast(error.message);
+    if (isCurrent()) showToast(error.message);
   }
 }
 
@@ -8663,14 +8668,7 @@ async function openPaymentProof(recordId) {
     && currentBudgetWorkspace()?.id === workspaceId && (state.family?.id || null) === familyId
     && state.paymentRecords.some((item) => item.id === recordId && item.proof_path === path);
   try {
-    const { data, error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).createSignedUrl(path, 60);
-    if (!isCurrent()) return;
-    if (error) throw error;
-    const link = document.createElement("a");
-    link.href = data.signedUrl;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.click();
+    await openPrivateFile(supabase, PAYMENT_PROOF_BUCKET, path, isCurrent, record.proof_name);
   } catch (error) {
     if (isCurrent()) showToast(error.message);
   }

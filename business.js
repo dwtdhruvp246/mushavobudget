@@ -2,6 +2,7 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=5";
 import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
+import { fetchPrivateFile, openPrivateFile, revokePrivateFileUrl } from "./private-files.js?v=1";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
 const placeholders = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
@@ -2028,6 +2029,7 @@ function resetBrandingDraft(scope) {
 }
 function clearBusinessBranding() {
   resetBrandingDraft('setup'); resetBrandingDraft('settings');
+  revokePrivateFileUrl(state.businessLogo?.url);
   state.businessLogo = null; brandingLoadKey = null;
   setClaimMessage('#brandingMessage');
   for (const scope of ['setup','settings']) setClaimMessage(`[data-logo-message="${scope}"]`);
@@ -2037,6 +2039,9 @@ function clearBusinessBranding() {
 function renderBusinessBranding() {
   const name = state.businessProfile?.trading_name || state.workspace?.name || 'Business';
   const path = !state.locked && state.businessProfile?.logo_storage_path;
+  if (state.businessLogo && (state.businessLogo.workspaceId !== state.workspace?.id || state.businessLogo.path !== path)) {
+    revokePrivateFileUrl(state.businessLogo.url); state.businessLogo = null;
+  }
   const cached = state.businessLogo;
   const url = cached?.workspaceId === state.workspace?.id && cached.path === path ? cached.url : null;
   $$('[data-business-name]').forEach(node => { node.textContent = name; node.title = name; });
@@ -2055,15 +2060,20 @@ function renderBusinessBranding() {
 }
 async function refreshBusinessLogo(path) {
   const workspaceId = state.workspace?.id, sequence = workspaceLoadSequence, userId = state.session?.user?.id;
+  const sameContext = captureBusinessFileContext();
+  const isCurrent = () => sameContext() && !state.locked && state.businessProfile?.logo_storage_path === path;
   const key = `${userId}:${sequence}:${workspaceId}:${path}`;
   if (brandingLoadKey === key) return;
   brandingLoadKey = key;
   try {
-    const signed = await query('Business logo', supabase.storage.from(BUSINESS_LOGO_BUCKET).createSignedUrl(path, 600));
-    if (sequence !== workspaceLoadSequence || userId !== state.session?.user?.id || state.workspace?.id !== workspaceId || state.businessProfile?.logo_storage_path !== path) return;
-    state.businessLogo = { workspaceId, path, url: signed.signedUrl, expiresAt: Date.now() + 540000 };
+    const file = await fetchPrivateFile(supabase, BUSINESS_LOGO_BUCKET, path, isCurrent);
+    if (!file || !isCurrent()) return;
+    if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.mediaType)) throw new Error('Invalid logo');
+    revokePrivateFileUrl(state.businessLogo?.url);
+    state.businessLogo = { workspaceId, path, url: URL.createObjectURL(file.blob), expiresAt: Date.now() + 60000 };
   } catch {
-    if (sequence !== workspaceLoadSequence || state.workspace?.id !== workspaceId) return;
+    if (!isCurrent()) return;
+    revokePrivateFileUrl(state.businessLogo?.url);
     state.businessLogo = { workspaceId, path, url: null, failedPath: path, expiresAt: Date.now() + 60000 };
   } finally { if (brandingLoadKey === key) brandingLoadKey = null; }
   if (sequence === workspaceLoadSequence && state.workspace?.id === workspaceId) renderBusinessBranding();
@@ -2105,6 +2115,7 @@ function applySavedBusinessBranding(profile, scope) {
   const previousPath = state.businessProfile?.logo_storage_path;
   state.businessProfile = profile; state.workspace.name = profile.trading_name;
   state.workspaces = state.workspaces.map(workspace => workspace.id === profile.workspace_id ? { ...workspace, name: profile.trading_name } : workspace);
+  revokePrivateFileUrl(state.businessLogo?.url);
   state.businessLogo = null; resetBrandingDraft(scope);
   window.MushavoPWA?.markFormClean?.(scope === 'setup' ? '#businessBasicsForm' : '#businessBrandingForm');
   setClaimMessage(`[data-logo-message="${scope}"]`);
@@ -2728,7 +2739,7 @@ async function openBusinessBillingProof(path) {
   if(!businessBillingOwner() || !(state.billingSnapshot?.history || []).some(row=>(row.proofs || []).some(proof=>proof.path===path)))return;
   const isCurrent=captureBusinessFileContext();
   const stillListed=()=>businessBillingOwner() && (state.billingSnapshot?.history || []).some(row=>(row.proofs || []).some(proof=>proof.path===path));
-  try{const signed=await query('Subscription proof',supabase.storage.from('subscription-proofs').createSignedUrl(path,60));if(isCurrent() && stillListed())window.open(signed.signedUrl,'_blank','noopener,noreferrer');}
+  try{await openPrivateFile(supabase,'subscription-proofs',path,()=>isCurrent() && stillListed());}
   catch(error){if(isCurrent() && stillListed())setClaimMessage('#businessBillingMessage',friendlyMessage(error),true);}
 }
 
@@ -2754,8 +2765,7 @@ async function openBusinessDocumentProof(path, kind) {
   if (!isCurrent() || !stillListed()) return;
   const message = kind === "claim" ? "#claimDetailMessage" : "#billDetailMessage";
   try {
-    const signed = await query("Open business proof", supabase.storage.from("business-documents").createSignedUrl(path, 60));
-    if (isCurrent() && stillListed()) window.open(signed.signedUrl, "_blank", "noopener,noreferrer");
+    await openPrivateFile(supabase, "business-documents", path, () => isCurrent() && stillListed());
   } catch (error) {
     if (isCurrent() && stillListed()) setClaimMessage(message, friendlyMessage(error), true);
   }

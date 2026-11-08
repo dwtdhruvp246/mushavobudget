@@ -20,3 +20,8 @@ verify_jwt = false
 # Admin alert delivery uses the same protected server-side Cron secret. Browser
 # requests without that secret are rejected before any queue row is claimed.
 verify_jwt = false
+
+[functions.get-private-file]
+# Validates the bearer with Auth and the current app session, then intersects
+# Storage RLS twice. The privileged file client exists only inside this server.
+verify_jwt = false

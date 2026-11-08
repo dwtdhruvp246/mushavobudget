@@ -60,10 +60,12 @@ test('finite enforced diagnostic records raw before/after and signing without cl
 
 test('S3 corrected phase requires original and signing denials, in addition to broker success',async()=>{
  const b=backend(),evidence={};const selected={...plan,phase:'enforced-s3',raw_delivery_blocked:true,case_ids:[...plan.case_ids,'X_BROKER_RAW_BEFORE_AFTER']};
- await checkPrivateFileBroker({actors,evidence},'public','runner',selected,b.fetcher);assert.equal(evidence.raw_route_observations.length,8);assert.equal(evidence.signed_urls_issued,0);assert.ok(Object.keys(evidence.checks).some(x=>x.startsWith('RAW_OWNER_DENIED_')));
+ await checkPrivateFileBroker({actors,evidence},'public','runner',selected,b.fetcher);assert.equal(evidence.raw_route_observations.length,8);assert.equal(evidence.direct_client_signed_urls_issued,0);assert.ok(Object.keys(evidence.checks).some(x=>x.startsWith('RAW_OWNER_DENIED_')));
 });
 
 test('corrected S3 acceptance refuses any original byte response and still removes its uploads',async()=>{
  const b=backend({rawAllowed:true}),evidence={};const selected={...plan,phase:'enforced-s3',raw_delivery_blocked:true,case_ids:[...plan.case_ids,'X_BROKER_RAW_BEFORE_AFTER']};
  await assert.rejects(checkPrivateFileBroker({actors,evidence},'public','runner',selected,b.fetcher),/RAW_OWNER_DENIED/);assert.equal(b.files.size,0);
 });
+
+test('server-only retrieval acceptance selects the same finite direct-route cases',()=>{assert.equal(isPrivateFileBrokerPlan({...plan,phase:'enforced-broker',raw_delivery_blocked:true,case_ids:[...plan.case_ids,'X_BROKER_RAW_BEFORE_AFTER']}),true);});

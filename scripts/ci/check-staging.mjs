@@ -82,7 +82,7 @@ async function main() {
     } else if (recovery || recoverySaveRetry) {
       report = await checkRecovery(plan, recovery ? privateAccounts(process.env) : {}, chromium);
     } else {
-    const accountScope = fixtureAction ? 'businessFixture' : businessTeam ? 'businessTeam' : businessReceipt || dispatcherBoundaries || privateFileCache ? 'ordinary' : 'standard';
+    const accountScope = fixtureAction || businessPrivateFiles && plan.mode === 'unfinished-archive-cleanup' ? 'businessFixture' : businessTeam ? 'businessTeam' : businessReceipt || dispatcherBoundaries || privateFileCache ? 'ordinary' : 'standard';
     const accounts = privateAccounts(process.env, { accountScope });
     const response = await fetch(WEB_ORIGIN + '/config.js?v=27', { redirect: 'error', signal: AbortSignal.timeout(20000) });
     need(response.status === 200, 'PUBLIC_CONFIGURATION_READ_REQUIRED');

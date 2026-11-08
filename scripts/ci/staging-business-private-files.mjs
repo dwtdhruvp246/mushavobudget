@@ -1,3 +1,4 @@
+import { isBusinessFileCompletionPlan,checkBusinessFileCompletion } from './staging-business-file-completion.mjs';
 import { randomUUID } from 'node:crypto';
 import { API_ORIGIN, digest, need, tokenIdentity } from './staging-access.mjs';
 const WORKSPACE='dcf3d122-e99f-4fe5-bbd1-03c3547629df';
@@ -14,6 +15,7 @@ const RPCS=['app_session_status','admin_business_set_status','admin_set_business
   'archive_business_document','save_business_branding','private_file_download_context'];
 const TABLES=['budget_workspaces','workspace_subscriptions','workspace_members','workspace_invitations','business_profiles','business_bills'];
 export function isBusinessPrivateFilesPlan(plan){
+  if(isBusinessFileCompletionPlan(plan))return true;
   return plan.scope==='business-private-files'&&plan.project==='dczlddwbtgvfdujgcitb'
     &&plan.workspace_id===WORKSPACE&&plan.fixture_name===FIXTURE&&plan.bill_id===BILL
     &&plan.expected_support_version===18&&plan.expected_subscription_version===16&&plan.expected_profile_version===1
@@ -22,6 +24,7 @@ export function isBusinessPrivateFilesPlan(plan){
     &&JSON.stringify(plan.case_ids)===JSON.stringify(CASES);
 }
 export async function checkBusinessPrivateFiles({actors,accounts,evidence},key,agent,plan,fetcher=fetch,now=Date.now){
+  if(isBusinessFileCompletionPlan(plan))return checkBusinessFileCompletion({actors,accounts,evidence},key,agent,plan,fetcher);
   need(isBusinessPrivateFilesPlan(plan),'REVIEWED_BUSINESS_FILE_PLAN_REQUIRED');
   const owner=actors.USER_A,member=actors.USER_B,admin=actors.ADMIN;
   need(Object.keys(actors).length===3&&new Set([owner?.id,member?.id,admin?.id]).size===3

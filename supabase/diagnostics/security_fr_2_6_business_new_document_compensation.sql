@@ -1,3 +1,5 @@
+-- SUPERSEDED / NOT EXECUTED: deletion confirmation expired. Do not retry.
+-- Use the reversible new-document parent correction and normal app archive instead.
 -- Operator-only teardown of the one synthetic metadata row created by run42467355998.
 -- This is not end-user paid-proof deletion acceptance. Keep all policies/triggers
 -- and the original paid bill unchanged. Storage bytes are removed through API later.

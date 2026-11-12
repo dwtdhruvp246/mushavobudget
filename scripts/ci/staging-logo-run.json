@@ -1,8 +1,9 @@
 {
-  "enabled": false,
+  "enabled": true,
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_id": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "scope": "fr3-2-business-logo",
-  "status": "PROVISION_COMPLETE_PENDING_HOSTED_CHECK",
-  "provision_run": 43280937650
+  "status": "HOSTED_EXACT_FIXTURE_ONCE",
+  "provision_run": 43280937650,
+  "validator_bundle": "b5568a62d46205714e0c4ad2f27e37a04be85717d13d8ae70bea644f9adf28d7"
 }

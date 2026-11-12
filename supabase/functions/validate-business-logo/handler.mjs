@@ -41,7 +41,9 @@ async function fingerprint(bytes) {
   return Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
-export function createLogoUploadHandler({ configured, allowedOrigin, createUserClient, gateReady, storeLogo, readLogo }) {
+export function createLogoUploadHandler({ configured, allowedOrigin, createUserClient, gateReady, storeLogo, readLogo,
+  logRejection = (/** @type {string} */ _reason) => {},
+}) {
   return async request => {
     const origin = request.headers.get("origin");
     const allowed = !origin || allowedOrigin(origin);
@@ -80,7 +82,7 @@ export function createLogoUploadHandler({ configured, allowedOrigin, createUserC
       if (request.headers.get("content-type")?.toLowerCase() !== "image/png") {
         return fail(415, "PNG_REQUIRED_FOR_LOGO_TRIAL");
       }
-      const png = normalizeLogoPng(await readUpload(request));
+      const png = await normalizeLogoPng(await readUpload(request));
       const sha = await fingerprint(png);
       const objectId = sha.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
       const path = folder + objectId + ".png";
@@ -96,7 +98,10 @@ export function createLogoUploadHandler({ configured, allowedOrigin, createUserC
       if (!await canWrite(path)) return fail(403, "CURRENT_BUSINESS_OWNER_REQUIRED");
       return json(200, { path });
     } catch (error) {
-      if (error instanceof LogoInputError) return fail(error.status, error.message);
+      if (error instanceof LogoInputError) {
+        if (error.reason) logRejection(error.reason);
+        return fail(error.status, error.message);
+      }
       return fail(503, "LOGO_TRIAL_UNAVAILABLE");
     }
   };

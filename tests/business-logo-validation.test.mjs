@@ -27,37 +27,37 @@ function png({ width = 1, pixels = [0, 200, 50, 100, 255], extra = [], compresse
   ]);
 }
 
-test("static RGB and RGBA PNGs pass and private metadata is removed", () => {
+test("static RGB and RGBA PNGs pass and private metadata is removed", async () => {
   const rgba = png({ extra: [pngChunk("tEXt", Buffer.from("Comment\0internal note"))] });
-  const normalized = normalizeLogoPng(rgba);
-  assert.deepEqual(normalized, normalizeLogoPng(png()));
-  assert.deepEqual(normalized, normalizeLogoPng(normalized));
+  const normalized = await normalizeLogoPng(rgba);
+  assert.deepEqual(normalized, await normalizeLogoPng(png()));
+  assert.deepEqual(normalized, await normalizeLogoPng(normalized));
   assert.equal(Buffer.from(normalized).includes("internal note"), false);
-  assert.ok(normalizeLogoPng(png({ color: 2, pixels: [0, 22, 33, 44] })).length > 0);
+  assert.ok((await normalizeLogoPng(png({ color: 2, pixels: [0, 22, 33, 44] }))).length > 0);
 });
 
-test("rejects a type mismatch, bad checksum, and truncated image", () => {
+test("rejects a type mismatch, bad checksum, and truncated image", async () => {
   const invalid = png();
   invalid[29] ^= 1;
   for (const bytes of [Buffer.alloc(68, 32), invalid, png().subarray(0, -1)]) {
-    assert.throws(() => normalizeLogoPng(bytes), { message: "INVALID_LOGO_PNG" });
+    await assert.rejects(normalizeLogoPng(bytes), { message: "INVALID_LOGO_PNG" });
   }
 });
 
-test("rejects invalid scanlines, trailing compressed data and extra decoded bytes", () => {
+test("rejects invalid scanlines, trailing compressed data and extra decoded bytes", async () => {
   for (const bytes of [
     png({ pixels: [5, 1, 2, 3, 4] }),
     png({ pixels: [0, 1, 2, 3, 4, 5] }),
     png({ pixels: [0, 1, 2] }),
     png({ compressedSuffix: [0] }),
-  ]) assert.throws(() => normalizeLogoPng(bytes), { message: "INVALID_LOGO_PNG" });
+  ]) await assert.rejects(normalizeLogoPng(bytes), { message: "INVALID_LOGO_PNG" });
 });
 
-test("enforces dimension, input and supported encoding limits", () => {
-  assert.throws(() => normalizeLogoPng(png({ width: 1025 })), { message: "LOGO_DIMENSIONS_TOO_LARGE" });
-  assert.throws(() => normalizeLogoPng(Buffer.alloc(MAX_LOGO_BYTES + 1)), { message: "LOGO_TOO_LARGE" });
-  assert.throws(() => normalizeLogoPng(png({ extra: [pngChunk("acTL", Buffer.alloc(8))] })), { message: "UNSUPPORTED_LOGO_PNG" });
-  assert.throws(() => normalizeLogoPng(png({ color: 3 })), { message: "UNSUPPORTED_LOGO_PNG" });
+test("enforces dimension, input and supported encoding limits", async () => {
+  await assert.rejects(normalizeLogoPng(png({ width: 1025 })), { message: "LOGO_DIMENSIONS_TOO_LARGE" });
+  await assert.rejects(normalizeLogoPng(Buffer.alloc(MAX_LOGO_BYTES + 1)), { message: "LOGO_TOO_LARGE" });
+  await assert.rejects(normalizeLogoPng(png({ extra: [pngChunk("acTL", Buffer.alloc(8))] })), { message: "UNSUPPORTED_LOGO_PNG" });
+  await assert.rejects(normalizeLogoPng(png({ color: 3 })), { message: "UNSUPPORTED_LOGO_PNG" });
 });
 
 const user = "11111111-1111-4111-8111-111111111111";
@@ -131,7 +131,7 @@ test("accepted bytes are normalized and retry after a lost acknowledgement retur
   assert.equal(retry.status, 200);
   assert.deepEqual(await retry.json(), { path });
   assert.equal(f.writes(), 1);
-  assert.deepEqual(new Uint8Array(await f.objects.get(path).arrayBuffer()), normalizeLogoPng(png()));
+  assert.deepEqual(new Uint8Array(await f.objects.get(path).arrayBuffer()), await normalizeLogoPng(png()));
 });
 
 test("mismatched persisted bytes and late owner removal withhold the path", async () => {

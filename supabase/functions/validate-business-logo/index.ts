@@ -20,6 +20,7 @@ Deno.serve(createLogoUploadHandler({
     const { data, error } = await privilegedClient().rpc("fr3_logo_fixture_gate_ready");
     return !error && data === true;
   },
+  logRejection: (reason: string) => console.warn("fr3_logo_validation_rejected", reason),
   storeLogo: async (path: string, png: Uint8Array) => {
     const result = await logoStorage().upload(path, png, { contentType: "image/png", upsert: false, cacheControl: "0" });
     if (result.error) throw new Error("Logo write unconfirmed");

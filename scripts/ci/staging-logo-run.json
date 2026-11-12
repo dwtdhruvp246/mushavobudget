@@ -1,9 +1,8 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_id": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "scope": "fr3-2-business-logo",
-  "status": "HOSTED_LOGO_POSITIVE_ONCE",
-  "reuse_run": 43281454455,
-  "dimension_review_run": 43281914875
+  "status": "RUNTIME_COMPATIBILITY_CANDIDATE_PREPARED",
+  "previous_run": 43282426255
 }

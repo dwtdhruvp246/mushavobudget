@@ -2007,6 +2007,10 @@ async function finishBusinessSetup() {
 }
 
 const BUSINESS_LOGO_BUCKET = 'business-logos';
+function usesValidatedLogoTrial(workspaceId) {
+  return config.supabaseUrl === 'https://dczlddwbtgvfdujgcitb.supabase.co'
+    && workspaceId === 'dc22360d-4b49-4bd4-9131-8633f7e821ff';
+}
 let brandingBusy = false;
 let brandingLoadKey = null;
 const brandingDrafts = { setup: { token: 0 }, settings: { token: 0 } };
@@ -2085,10 +2089,13 @@ async function chooseBusinessLogo(scope) {
   try {
     if (!businessOwnerCanSetUp()) throw new Error('BUSINESS_ACTIVE_OWNER_REQUIRED');
     if (!['image/png','image/jpeg','image/webp'].includes(file.type) || file.size < 1 || file.size > 2097152) throw new Error('Choose a PNG, JPG or WebP image up to 2 MB.');
+    const logoTrial = usesValidatedLogoTrial(state.workspace?.id);
+    if (logoTrial && file.type !== 'image/png') throw new Error('Choose a static PNG logo for this workspace.');
     const bitmap = await createImageBitmap(file);
-    const valid = bitmap.width > 0 && bitmap.height > 0 && bitmap.width <= 4096 && bitmap.height <= 4096;
+    const maxSide = logoTrial ? 1024 : 4096;
+    const valid = bitmap.width > 0 && bitmap.height > 0 && bitmap.width <= maxSide && bitmap.height <= maxSide;
     bitmap.close();
-    if (!valid) throw new Error('Use a logo no larger than 4096 × 4096 pixels.');
+    if (!valid) throw new Error(`Use a logo no larger than ${maxSide} × ${maxSide} pixels.`);
     if (sequence !== workspaceLoadSequence || token !== brandingDrafts[scope].token) return;
     resetBrandingDraft(scope);
     brandingDrafts[scope].file = file; brandingDrafts[scope].preview = URL.createObjectURL(file);
@@ -2104,9 +2111,23 @@ async function uploadBrandingDraft(scope) {
   if (draft.remove) return null;
   if (!draft.file) return state.businessProfile?.logo_storage_path || null;
   if (draft.uploadedPath) return draft.uploadedPath;
-  const extension = { 'image/png':'png','image/jpeg':'jpg','image/webp':'webp' }[draft.file.type];
-  const path = `${workspaceId}/${userId}/${crypto.randomUUID()}.${extension}`;
-  await query('Upload Business logo', supabase.storage.from(BUSINESS_LOGO_BUCKET).upload(path, draft.file, { contentType: draft.file.type, upsert: false }));
+  let path;
+  if (usesValidatedLogoTrial(workspaceId)) {
+    const result = await query('Validate Business logo', supabase.functions.invoke('validate-business-logo', {
+      body: draft.file,
+      headers: { 'Content-Type': 'image/png' },
+    }));
+    const prefix = `${workspaceId}/${userId}/`;
+    path = result?.path;
+    if (typeof path !== 'string' || !path.startsWith(prefix)
+        || !/^[0-9a-f-]{36}\.png$/.test(path.slice(prefix.length))) {
+      throw new Error('Logo upload could not be confirmed. Try again.');
+    }
+  } else {
+    const extension = { 'image/png':'png','image/jpeg':'jpg','image/webp':'webp' }[draft.file.type];
+    path = `${workspaceId}/${userId}/${crypto.randomUUID()}.${extension}`;
+    await query('Upload Business logo', supabase.storage.from(BUSINESS_LOGO_BUCKET).upload(path, draft.file, { contentType: draft.file.type, upsert: false }));
+  }
   if (sequence !== workspaceLoadSequence || state.workspace?.id !== workspaceId || state.session?.user?.id !== userId) throw new Error('The workspace changed. Open its settings and try again.');
   draft.uploadedPath = path;
   return path;

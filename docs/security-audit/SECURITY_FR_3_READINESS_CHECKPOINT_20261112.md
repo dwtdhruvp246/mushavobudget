@@ -46,3 +46,5 @@ The prior decision record identifies an owner-reported operator and support cont
 For sole owners, the proposed deletion workflow pauses shared workspace removal until an eligible successor accepts ownership or the workspace closure path is authorized. Personal deletion can be designed separately. The two historical conversion orphans and the unvalidated reference FK remain tracked here. The last readback found no workspace join mismatches and confirmed both retained manual Family conversions by checksum. [Conversion and finance preservation](security-fr-2-batch-x-final-preservation.json)
 
 FR.3.1 has a prepared decision list. FR.3.2 has reconciled upload entry points and reusable download evidence. FR.3.3–FR.3.5 remain open for deletion implementation, factual publication and fresh acceptance. The original Stage 4 actions and findings remain open. This was a source and evidence review with no staging runs or changes.
+
+A locally verified Business logo ingestion candidate now covers the first bounded FR.3.2 slice. Hosted fixture setup and acceptance remain pending. [Business logo candidate](SECURITY_FR_3_2_BUSINESS_LOGO_CANDIDATE_20261112.md)

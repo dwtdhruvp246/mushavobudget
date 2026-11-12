@@ -54,7 +54,7 @@ Stages 0–2 have substantial earlier setup/review work. Stage 3 is the current 
 |---|---|---|---|---|
 | FR.1 — accepted source/static serving | Scoped serving correction complete; wider release mapping carried forward | Reuse accepted staging serving work. Final production headers/contact/serving/artifact mapping is accounted for in FR.4/FR.7/FR.8, not a repeated FR.1 campaign. | 1–2, 9–10 | Included later; no separate double count |
 | FR.2 — permissions/Auth/finance | IN PROGRESS | Finish V policy/privileged scope, W, X, Y and Z. Existing FR.2.1–.3 scoped passes retained. | 3 | 6–10 working days |
-| FR.3 — data/files/deletion/privacy | Required implementation/acceptance remains | FR.3.1–.5 below | 4 | 4–7 days |
+| FR.3 — data/files/deletion/privacy | Readiness review recorded. Selected broker download evidence is reusable. Retention decisions, trusted intake and deletion remain open. [Checkpoint](SECURITY_FR_3_READINESS_CHECKPOINT_20261112.md) | FR.3.1–.5 below | 4 | 4–7 days |
 | FR.4 — jobs/operations/recovery | Required implementation/acceptance remains | FR.4.1–.5 below | 1–2, 8, 10 | 3–5 days |
 | FR.5 — identity/email/providers | Required implementation/acceptance remains | FR.5.1–.4 below | 6; dependencies 3/5 | Web 2–3; full provider scope 5–8 days |
 | FR.6 — commerce/entitlements | Required implementation/acceptance remains | FR.6.1–.5 below | 7 | Web 3–5; full native scope 8–13 days |

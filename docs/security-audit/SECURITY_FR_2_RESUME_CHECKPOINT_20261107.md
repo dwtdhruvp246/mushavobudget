@@ -32,6 +32,8 @@ Independent final readback **2026-11-08T09:51:31.129344Z**:
 
 ## Next work and holds
 
+Stage 4 / FR.3 readiness has been recorded from the exact current source and saved staging evidence. [Stage 4 checkpoint](SECURITY_FR_3_READINESS_CHECKPOINT_20261112.md)
+
 Batch V staging SMTP and independent Admin recovery remain owner-deferred. Historical MFA acceptance remains on hold under the selected password-only policy. The agreed signed-in password retry variant remains deferred. Batch Z can close after the required V exit is accepted and any affected checks are reconciled against the exact staging source.
 
 On reconnect, check the branch, the recorded run and the archived CI plan before retrying. The Business run and cleanup are complete. Reuse their receipts. Stage 4 / FR.3 retains the historical conversion, retention and wider file/privacy work. Stage 5 / FR.7 retains native client acceptance.

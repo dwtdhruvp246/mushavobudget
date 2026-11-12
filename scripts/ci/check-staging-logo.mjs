@@ -25,6 +25,41 @@ const upload = Buffer.concat([
 ]);
 const normalized = normalizeLogoPng(upload);
 
+async function provision({ actors, evidence }, key) {
+  const owner = actors.USER_A, admin = actors.ADMIN;
+  const fixtureRoute = "/rest/v1/budget_workspaces?select=id,owner_id,name,status,business_support_version&name=eq." + NAME + "&limit=2";
+  const planRoute = "/rest/v1/plans?select=id,code,workspace_type,is_active&code=eq.business&workspace_type=eq.business&is_active=eq.true&limit=2";
+  const grantRoute = "/rest/v1/rpc/admin_grant_manual_subscription";
+  async function request(route, payload) {
+    const response = await fetch(API_ORIGIN + route, {
+      method: payload ? "POST" : "GET", redirect: "error", signal: AbortSignal.timeout(15000),
+      headers: { apikey: key, authorization: "Bearer " + admin.token, "content-type": "application/json", "user-agent": AGENT },
+      ...(payload ? { body: JSON.stringify(payload) } : {}),
+    });
+    let data = null;
+    try { data = await response.json(); } catch {}
+    return { status: response.status, data };
+  }
+  const existing = await request(fixtureRoute);
+  need(existing.status === 200 && Array.isArray(existing.data) && existing.data.length === 0, "NEW_LOGO_FIXTURE_REQUIRED");
+  const business = one(await request(planRoute));
+  need(business?.is_active === true && business.code === "business" && business.workspace_type === "business", "EXACT_BUSINESS_PLAN_REQUIRED");
+  const date = new Date(), tomorrow = new Date(date.getTime() + 86400000);
+  const grant = await request(grantRoute, {
+    p_owner_id: owner.id, p_workspace_id: null, p_plan_id: business.id, p_billing_period: "monthly",
+    p_starts_on: date.toISOString().slice(0, 10), p_ends_on: tomorrow.toISOString().slice(0, 10),
+    p_reason: "Isolated synthetic Business logo validation acceptance", p_new_business_name: NAME,
+  });
+  evidence.grant_status = grant.status;
+  if (grant.status !== 200 && /^[A-Z_]{4,80}$/.test(grant.data?.message || "")) evidence.grant_error = grant.data.message;
+  need(grant.status === 200 && /^[0-9a-f-]{36}$/.test(grant.data || ""), "LOGO_TEST_GRANT_ACK_REQUIRED");
+  const bound = one(await request(fixtureRoute));
+  need(bound?.id === grant.data && bound.owner_id === owner.id && bound.status === "active" && bound.name === NAME,
+    "LOGO_TEST_GRANT_READBACK_REQUIRED");
+  evidence.fixture_id = bound.id;
+  evidence.fixture_provisioned = true;
+}
+
 async function exercise({ actors, evidence }, key) {
   const owner = actors.USER_A, other = actors.USER_B, admin = actors.ADMIN;
   const fingerprint = digest(normalized);
@@ -140,16 +175,18 @@ async function exercise({ actors, evidence }, key) {
 async function main() {
   const p = JSON.parse(await readFile(new URL("./staging-logo-run.json", import.meta.url), "utf8"));
   if (p.enabled === false) return { result: "LOGO_PLAN_ARCHIVED", exit_code: 0 };
-  need(p.enabled === true && p.project === "dczlddwbtgvfdujgcitb" && p.fixture_id === FIXTURE_ID
-    && p.scope === "fr3-2-business-logo" && p.status === "HOSTED_EXACT_FIXTURE_ONCE", "EXACT_LOGO_PLAN_REQUIRED");
+  const provisionOnly = p.status === "PROVISION_LOGO_FIXTURE_ONCE" && p.fixture_id === null;
+  need(p.enabled === true && p.project === "dczlddwbtgvfdujgcitb" && p.scope === "fr3-2-business-logo"
+    && (provisionOnly || p.fixture_id === FIXTURE_ID && p.status === "HOSTED_EXACT_FIXTURE_ONCE"), "EXACT_LOGO_PLAN_REQUIRED");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization"
     && process.env.GITHUB_RUN_ATTEMPT === "1", "EXACT_STAGING_RUN_REQUIRED");
   const configuration = await fetch(WEB_ORIGIN + "/config.js?v=27", { redirect: "error", signal: AbortSignal.timeout(15000) });
   need(configuration.ok, "STAGING_PUBLIC_CONFIGURATION_REQUIRED");
   const { key } = readPublicConfiguration(await configuration.text());
-  const report = await checkStagingAccess(privateAccounts(process.env), apiTransport(key, AGENT),
-    async input => exercise(input, key));
+  const options = { accountScope: provisionOnly ? "businessFixture" : "standard" };
+  const report = await checkStagingAccess(privateAccounts(process.env, options), apiTransport(key, AGENT),
+    async input => provisionOnly ? provision(input, key) : exercise(input, key), options);
   return { ...report, progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 Business logos", commit: process.env.GITHUB_SHA };
 }
 

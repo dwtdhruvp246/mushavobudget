@@ -25,13 +25,13 @@ The candidate restrictive Storage policies prevent authenticated and anonymous u
 | Deno type check of the entry point | Passed in an isolated export using the existing frozen lock and Supabase JS 2.110.9. |
 | Business source syntax | Passed |
 
-The local checks cover valid and rejected files, immutable retry after a lost acknowledgement, a changed workspace, a revoked Owner and persisted byte mismatch. The hosted API result below covers real Auth, Storage and branding linkage. Hosted browser acceptance remains open.
+The local checks cover valid and rejected files, immutable retry after a lost acknowledgement, a changed workspace, a revoked Owner and persisted byte mismatch. The hosted API result below covers real Auth, Storage and branding linkage. The hosted browser result is recorded below.
 
 ## Hosted acceptance plan and execution
 
 1. Provision the exact empty synthetic Business workspace for a controlled active Owner. Verify its subscription, profile and Storage state.
 2. Install the fixture-only Storage policies on the verified staging project. Read back both policies and verify direct fixture uploads are denied. Preserve all existing grants and session rules.
-3. Deploy the new function with server-side Auth verification and the candidate browser source to a staging preview. The function checks both exact restrictive policies through a service-only RPC. The active workspace and both policies are required for uploads. The Edge Function is deployed on staging. The candidate browser source remains pending preview publication.
+3. Deploy the new function with server-side Auth verification and the candidate browser source to a staging preview. The function checks both exact restrictive policies through a service-only RPC. The active workspace and both policies are required for uploads. The Edge Function is deployed on staging. A separate Pages preview served the exact candidate Business script with the saved staging assets.
 4. Use a harmless supported PNG to test actual upload, retry, branding save and broker preview. Verify harmless type mismatch, size and owner denials. Restore the logo, remove the exact objects, close the test sessions and independently confirm absence.
 5. Disable the trial after its bounded run. Record results before expanding the supported format set or other upload flows.
 
@@ -43,4 +43,12 @@ Run 43283375591 passed all 11 selected checks with exit 0. A valid static PNG pr
 
 Independent readback confirmed an empty logo field, zero trial objects or sessions, and zero queued messages. The disposable workspace is suspended at support version 8 and the gate is closed. The original paid bill matched its saved checksum. The one-time run plan is archived. [Hosted receipt](security-fr-3-2-business-logo-hosted-result.json)
 
-The hosted 2 MiB byte-limit response and candidate browser preview remain open. Other format validation and wider FR.3.2 controls remain open.
+Other format validation and wider FR.3.2 controls remain open.
+
+## Hosted browser and upload size closeout
+
+Chromium used the published staging preview and a genuine staging session. It verified the exact Business setup screen, rejected an oversized selected file before upload, saved the valid logo, and rendered it again after reload. The preview served the exact candidate script. The browser run retained its original exit 1 because the separate oversized network request timed out.
+
+The revised handler keeps the accepted file limit at 2 MiB and reads small excess requests to completion within a fixed additional 64 KiB before returning the rejection. Run 43289536159 passed with exit 0. A valid synthetic PNG of exactly 2,097,153 bytes returned HTTP 413 with `LOGO_TOO_LARGE`. The Edge log confirmed the exact request length and status. The browser save flow was reused from its completed run.
+
+Independent readback confirmed that the workspace is suspended at support version 14, the gate is closed, the logo field is empty, and no trial files, sessions or queued messages remain. Both live plans are archived. [Combined browser and size receipt](security-fr-3-2-business-logo-browser-and-size-closeout.json)

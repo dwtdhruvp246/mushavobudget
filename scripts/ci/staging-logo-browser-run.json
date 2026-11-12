@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_id": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "preview_id": "cc8c155e-f70b-4ca5-bdb1-ea7c72cfa3ad",
@@ -8,5 +8,7 @@
   "mode": "byte-drain-only",
   "reuse_browser_run": 43287931911,
   "reuse_stream_run": 43288826963,
-  "validator_bundle": "1a4f6d6fd3dfc78684cea42802236bbe1b5b362aad5fc98fb6a7384ff5d0c8df"
+  "result": "HOSTED_BROWSER_AND_2_MIB_STATIC_PNG_SCOPE_PASS",
+  "completed_run": 43289536159,
+  "receipt": "docs/security-audit/security-fr-3-2-business-logo-browser-and-size-closeout.json"
 }

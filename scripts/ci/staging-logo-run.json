@@ -1,10 +1,12 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_id": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "scope": "fr3-2-business-logo",
-  "status": "HOSTED_LOGO_JPEG_ONCE",
+  "status": "ARCHIVED_HOSTED_JPEG_API_PASS",
   "reuse_browser_run": 43287931911,
   "reuse_byte_run": 43289536159,
-  "validator_bundle": "9a98a8c5441cab35984549edbae7b0a3d8b8ae3ec7a05b36532ba2fc05184ff2"
+  "validator_bundle": "9a98a8c5441cab35984549edbae7b0a3d8b8ae3ec7a05b36532ba2fc05184ff2",
+  "completed_run": 43292163574,
+  "receipt": "docs/security-audit/security-fr-3-2-business-logo-jpeg-api-result.json"
 }

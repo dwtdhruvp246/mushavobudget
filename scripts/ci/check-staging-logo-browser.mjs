@@ -1,102 +1,18 @@
 import { Buffer } from "node:buffer";
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
-import { request as httpsRequest } from "node:https";
-import { crc32 } from "node:zlib";
 import { API_ORIGIN, Stop, apiTransport, checkStagingAccess, digest, need, privateAccounts, readPublicConfiguration } from "./staging-access.mjs";
 import { FIXTURE_ID, LOGO_BUCKET } from "../../supabase/functions/validate-business-logo/handler.mjs";
-import { MAX_LOGO_BYTES, normalizeLogoPng } from "../../supabase/functions/validate-business-logo/png.mjs";
+import { normalizeLogoJpeg } from "../../supabase/functions/validate-business-logo/jpeg.mjs";
+import { PROGRESSIVE_ROTATED_JPEG } from "../fixtures/logo-jpeg-tools/images.mjs";
 
 const NAME = "audit-fr3-logo-ingestion-20261112";
-const PREVIEW = "https://cc8c155e.mushavo-budget-staging.pages.dev";
-const PREVIEW_ID = "cc8c155e-f70b-4ca5-bdb1-ea7c72cfa3ad";
-const AGENT = "Mushavo-Staging-FR3-Logo-Browser";
+const PREVIEW = "https://092b8850.mushavo-budget-staging.pages.dev";
+const PREVIEW_ID = "092b8850-25fe-43ac-b29e-cebd3bb9612e";
+const AGENT = "Mushavo-Staging-FR3-Logo-JPEG-Browser";
 const STORAGE_KEY = "sb-dczlddwbtgvfdujgcitb-auth-token";
-const LOGO = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAIXRFWHRDb21tZW50AFN5bnRoZXRpYyBzdGFnaW5nIGZpeHR1cmVG0GGmAAAADUlEQVR4nGMISDnxHwAFAAJ8gi5ZjgAAAABJRU5ErkJggg==", "base64");
-const NORMALIZED = await normalizeLogoPng(LOGO);
-const SHA = digest(NORMALIZED);
-const OBJECT_ID = SHA.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
-const TOO_LARGE = Buffer.alloc(MAX_LOGO_BYTES + 1);
+const LOGO = Buffer.from(PROGRESSIVE_ROTATED_JPEG, "base64");
 const one = result => result.status === 200 && result.data?.length === 1 ? result.data[0] : null;
-
-function checkHostedByteLimit(owner, key) {
-  return new Promise(resolve => {
-    let finished = false, sent = false;
-    const complete = (result) => {
-      if (finished) return;
-      finished = true;
-      clearTimeout(timer);
-      resolve({ body_sent_after_continue: sent, ...result });
-      request.destroy();
-    };
-    const request = httpsRequest(API_ORIGIN + "/functions/v1/validate-business-logo", {
-      method: "POST",
-      headers: { apikey: key, authorization: "Bearer " + owner.token, "content-type": "image/png",
-        "content-length": TOO_LARGE.length, expect: "100-continue", origin: PREVIEW, "user-agent": AGENT },
-    });
-    const timer = setTimeout(() => complete({ transport: "TIMEOUT" }), 18000);
-    request.on("continue", () => {
-      if (!sent && !finished) {
-        sent = true;
-        request.end(TOO_LARGE);
-      }
-    });
-    request.on("response", response => {
-      let body = "";
-      response.setEncoding("utf8");
-      response.on("data", value => { if (body.length < 8192) body += value.slice(0, 8192 - body.length); });
-      response.on("error", () => complete({ transport: "RESPONSE_INTERRUPTED", status: response.statusCode }));
-      response.on("end", () => {
-        let code;
-        try { code = JSON.parse(body)?.error; } catch {}
-        complete({ status: response.statusCode,
-          code: typeof code === "string" && /^[A-Z_]{3,60}$/.test(code) ? code : null });
-      });
-    });
-    request.on("error", error => complete({ transport: /^E[A-Z_]{3,20}$/.test(error.code || "") ? error.code : "REQUEST_FAILED" }));
-    request.flushHeaders();
-  });
-}
-
-async function checkHostedStreamingLimit(owner, key, buffered) {
-  // Add harmless PNG text padding and keep the original image and scanlines.
-  const padding = Buffer.alloc(MAX_LOGO_BYTES + 1 - LOGO.length - 12, 65);
-  padding.write("Comment\0");
-  const chunk = Buffer.alloc(padding.length + 12);
-  chunk.writeUInt32BE(padding.length);
-  chunk.write("tEXt", 4);
-  chunk.set(padding, 8);
-  chunk.writeUInt32BE(crc32(chunk.subarray(4, -4)), chunk.length - 4);
-  const file = Buffer.concat([LOGO.subarray(0, 33), chunk, LOGO.subarray(33)]);
-  need(file.length === MAX_LOGO_BYTES + 1, "EXACT_STREAM_SIZE_REQUIRED");
-  let offset = 0;
-  const body = buffered ? file : new ReadableStream({
-    pull(controller) {
-      if (offset === file.length) {
-        controller.close();
-      } else {
-        const end = Math.min(file.length, offset + 32768);
-        controller.enqueue(file.subarray(offset, end));
-        offset = end;
-      }
-    },
-  });
-  if (buffered) offset = file.length;
-  try {
-    const r = await fetch(API_ORIGIN + "/functions/v1/validate-business-logo", {
-      method: "POST", duplex: "half", redirect: "error", signal: AbortSignal.timeout(35000),
-      headers: { apikey: key, authorization: "Bearer " + owner.token, "content-type": "image/png",
-        origin: PREVIEW, "user-agent": AGENT + "-Byte-Stream" },
-      body,
-    });
-    let code;
-    try { code = (await r.json())?.error; } catch {}
-    return { status: r.status, code: /^[A-Z_]{3,60}$/.test(code || "") ? code : null, enqueued_bytes: offset };
-  } catch (error) {
-    return { transport: error.name === "TimeoutError" ? "TIMEOUT"
-      : /^E[A-Z_]{3,20}$/.test(error.cause?.code || "") ? error.cause.code : "REQUEST_FAILED", enqueued_bytes: offset };
-  }
-}
 
 async function browserFlow(chromium, owner, path, evidence) {
   const browser = await chromium.launch({ headless: true });
@@ -117,7 +33,10 @@ async function browserFlow(chromium, owner, path, evidence) {
       let allow = read && (url.origin === PREVIEW || url.origin === "https://cdn.jsdelivr.net" && url.pathname.startsWith("/npm/"));
       if (url.origin === API_ORIGIN) {
         allow = read || method === "OPTIONS";
-        if (method === "POST" && url.pathname === "/functions/v1/validate-business-logo") allow = ++calls.validator === 1;
+        if (method === "POST" && url.pathname === "/functions/v1/validate-business-logo") {
+          allow = req.headers()["content-type"] === "image/jpeg" && ++calls.validator === 1;
+          if (allow) calls.upload_type = "image/jpeg";
+        }
         if (method === "POST" && url.pathname === "/functions/v1/get-private-file") {
           const payload = req.postDataJSON();
           allow = payload?.bucket === LOGO_BUCKET && payload?.path === path && ++calls.broker <= 4;
@@ -147,14 +66,8 @@ async function browserFlow(chromium, owner, path, evidence) {
     need(await name.inputValue() === NAME, "BROWSER_EXACT_WORKSPACE_REQUIRED");
     evidence.checks.browser_fixture_rendered = true;
 
-    evidence.browser_stage = "BROWSER_FILE_LIMIT";
-    await file.setInputFiles({ name: "oversized.png", mimeType: "image/png", buffer: TOO_LARGE });
-    await page.getByText("Choose a PNG, JPG or WebP image up to 2 MB.", { exact: true }).waitFor({ state: "visible" });
-    need(calls.validator === 0 && calls.branding === 0, "BROWSER_LARGE_FILE_MUST_NOT_UPLOAD");
-    evidence.checks.browser_large_file_rejected_before_upload = true;
-
     evidence.browser_stage = "SELECT_AND_SAVE_LOGO";
-    await file.setInputFiles({ name: "fixture.png", mimeType: "image/png", buffer: LOGO });
+    await file.setInputFiles({ name: "fixture.jpg", mimeType: "image/jpeg", buffer: LOGO });
     await page.getByText("Logo selected. Save your business details to apply it.", { exact: true }).waitFor({ state: "visible" });
     const uploaded = page.waitForResponse(r => r.url() === API_ORIGIN + "/functions/v1/validate-business-logo" && r.request().method() === "POST");
     const saved = page.waitForResponse(r => r.url() === API_ORIGIN + "/rest/v1/rpc/save_business_setup_with_branding" && r.request().method() === "POST");
@@ -172,22 +85,21 @@ async function browserFlow(chromium, owner, path, evidence) {
     await file.waitFor({ state: "visible" });
     await page.waitForFunction(() => {
       const img = document.querySelector('[data-logo-preview="setup"] img');
-      return img?.complete && img.naturalWidth === 1 && img.naturalHeight === 1 && img.src.startsWith("blob:");
+      return img?.complete && img.naturalWidth === 3 && img.naturalHeight === 4 && img.src.startsWith("blob:");
     });
-    need(calls.broker > 0, "BROWSER_PRIVATE_BROKER_REQUIRED");
+    need(calls.broker > 0 && calls.upload_type === "image/jpeg", "BROWSER_JPEG_AND_PRIVATE_BROKER_REQUIRED");
     evidence.checks.browser_reload_renders_saved_logo = true;
   } finally {
     await browser.close();
   }
 }
 
-async function exercise({ actors, evidence }, key, chromium, sizeMode) {
+async function exercise({ actors, evidence }, key, chromium, decoder) {
   const owner = actors.USER_A, admin = actors.ADMIN;
-  const path = `${FIXTURE_ID}/${owner.id}/${OBJECT_ID}.png`;
-  const suspendedVersion = sizeMode === "byte-drain-only" ? 12 : sizeMode ? 10 : 8;
-  const activeVersion = suspendedVersion + 1;
-  const closedVersion = activeVersion + 1;
-  const profileVersion = sizeMode ? 6 : 3;
+  const hash = digest(normalizeLogoJpeg(LOGO, decoder));
+  const objectId = hash.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
+  const path = `${FIXTURE_ID}/${owner.id}/${objectId}.png`;
+  const suspendedVersion = 16, activeVersion = 17, closedVersion = 18, profileVersion = 8;
   const routes = {
     workspace: "/rest/v1/budget_workspaces?select=id,owner_id,name,status,business_support_version&id=eq." + FIXTURE_ID + "&limit=2",
     subscription: "/rest/v1/workspace_subscriptions?select=status,member_limit,paid_through_at&workspace_id=eq." + FIXTURE_ID + "&limit=2",
@@ -215,7 +127,7 @@ async function exercise({ actors, evidence }, key, chromium, sizeMode) {
   const fileContext = () => call("context", owner, { p_bucket_id: LOGO_BUCKET, p_object_name: path });
   const setStatus = (status, version) => call("status", admin, {
     p_workspace_id: FIXTURE_ID, p_status: status, p_expected_version: version, p_confirmation_name: NAME,
-    p_reason: "Isolated Business logo browser acceptance", p_request_id: randomUUID(),
+    p_reason: "Isolated Business JPEG logo browser acceptance", p_request_id: randomUUID(),
   });
   const sameWorkspace = row => row?.id === FIXTURE_ID && row.name === NAME && row.owner_id === owner.id;
   let resumed = false, failure, cleanupFailure;
@@ -228,21 +140,10 @@ async function exercise({ actors, evidence }, key, chromium, sizeMode) {
     const active = await workspace(), p = await profile();
     need(sameWorkspace(active) && active.status === "active" && active.business_support_version === activeVersion
       && p?.version === profileVersion && p.logo_storage_path === null && p.trading_name === NAME, "EXACT_EMPTY_BROWSER_BRANDING_REQUIRED");
-    evidence.byte_limit = sizeMode ? await checkHostedStreamingLimit(owner, key, sizeMode === "byte-drain-only") : await checkHostedByteLimit(owner, key);
-    evidence.checks.hosted_byte_limit = evidence.byte_limit.status === 413 && evidence.byte_limit.code === "LOGO_TOO_LARGE";
-    if (sizeMode) {
-      evidence.browser_run_reused = 43287931911;
-      evidence.byte_check_mode = sizeMode;
-      need((await profile())?.logo_storage_path === null, "STREAM_REJECTION_MUST_NOT_LINK_A_LOGO");
-      const file = await fileContext();
-      need(file.status === 200 && file.data?.length === 0, "STREAM_REJECTION_MUST_NOT_STORE_A_LOGO");
-      evidence.checks.rejected_stream_has_no_logo = true;
-    } else {
-      await browserFlow(chromium, owner, path, evidence);
-      need((await profile())?.logo_storage_path === path, "INDEPENDENT_BROWSER_SAVE_READBACK_REQUIRED");
-      evidence.checks.independent_browser_save_readback = true;
-    }
-    need(evidence.checks.hosted_byte_limit, "HOSTED_BYTE_LIMIT_NEEDS_REVIEW");
+    evidence.reused_jpeg_api_run = 43292163574;
+    await browserFlow(chromium, owner, path, evidence);
+    need((await profile())?.logo_storage_path === path, "INDEPENDENT_BROWSER_SAVE_READBACK_REQUIRED");
+    evidence.checks.independent_browser_save_readback = true;
   } catch (error) {
     failure = error instanceof Stop ? error : new Stop("BROWSER_CHECK_FAILED_" + (evidence.browser_stage || "SETUP"));
   } finally {
@@ -280,13 +181,9 @@ async function exercise({ actors, evidence }, key, chromium, sizeMode) {
 async function main() {
   const plan = JSON.parse(await readFile(new URL("./staging-logo-browser-run.json", import.meta.url), "utf8"));
   if (plan.enabled === false) return { result: "BROWSER_PLAN_ARCHIVED", exit_code: 0 };
-  const sizeMode = plan.reuse_browser_run === 43287931911
-    && (plan.mode === "byte-stream-only" || plan.mode === "byte-drain-only" && plan.reuse_stream_run === 43288826963)
-    ? plan.mode : null;
   need(plan.enabled === true && plan.project === "dczlddwbtgvfdujgcitb" && plan.fixture_id === FIXTURE_ID
-    && plan.preview_id === PREVIEW_ID && plan.preview_origin === PREVIEW && plan.reuse_run === 43283375591
-    && (plan.mode === undefined || sizeMode),
-  "EXACT_STAGING_BROWSER_PLAN_REQUIRED");
+    && plan.preview_id === PREVIEW_ID && plan.preview_origin === PREVIEW && plan.status === "HOSTED_JPEG_BROWSER_ONCE"
+    && plan.reuse_run === 43292163574, "EXACT_STAGING_JPEG_BROWSER_PLAN_REQUIRED");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization" && process.env.GITHUB_RUN_ATTEMPT === "1",
   "EXACT_STAGING_BROWSER_BRANCH_REQUIRED");
@@ -296,14 +193,15 @@ async function main() {
   const local = await readFile(new URL("../../business.js", import.meta.url));
   need(digest(await js.text()) === digest(local), "PREVIEW_BUSINESS_SOURCE_MISMATCH");
   const { key } = readPublicConfiguration(await cfg.text());
-  const chromium = sizeMode ? null : (await import("../fixtures/staging-browser-tools/node_modules/playwright/index.mjs")).chromium;
+  const { chromium } = await import("../fixtures/staging-browser-tools/node_modules/playwright/index.mjs");
+  const { default: jpeg } = await import("../fixtures/logo-jpeg-tools/node_modules/jpeg-js/index.js");
   const options = { accountScope: "businessFixture" };
   const report = await checkStagingAccess(privateAccounts(process.env, options), apiTransport(key, AGENT),
-    input => exercise(input, key, chromium, sizeMode), options);
-  return { ...report, progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 Logo browser", preview: PREVIEW, source_matched: true };
+    input => exercise(input, key, chromium, jpeg.decode), options);
+  return { ...report, progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 JPEG logo browser", preview: PREVIEW, source_matched: true };
 }
 const report = await main().catch(error => ({
-  progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 Logo browser",
+  progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 JPEG logo browser",
   result: "LOGO_BROWSER_REVIEW_REQUIRED", problem_code: error instanceof Stop ? error.code : "BROWSER_PLAN_FAILED", exit_code: 1,
 }));
 console.log(JSON.stringify(report, null, 2));

@@ -1,0 +1,89 @@
+{
+  "date": "2026-11-12",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "HOSTED_JPEG_API_SCOPED_PASS",
+  "run": 43292163574,
+  "job": 131440925810,
+  "validator": {
+    "id": "fe921d00-7027-4f5c-bbe2-826eb24bf0cf",
+    "version": 5,
+    "sha": "9a98a8c5441cab35984549edbae7b0a3d8b8ae3ec7a05b36532ba2fc05184ff2",
+    "runtime_files": 5
+  },
+  "dependency": "jpeg-js@0.4.4",
+  "receipt": {
+    "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 JPEG logos",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "fixture_owner_and_super_admin_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 2
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 12,
+    "created_sessions": 2,
+    "cleanup_sessions": 2,
+    "settings_or_finance_writes_requested": 0,
+    "production_changed": false,
+    "full_lettered_batch_W_complete": false,
+    "exit_code": 0,
+    "exercise": {
+      "checks": {
+        "EXACT_SUSPENDED_LOGO_FIXTURE_REQUIRED": true,
+        "SCOPED_RESUME_ACK_REQUIRED": true,
+        "RESUMED_FIXTURE_READBACK_REQUIRED": true,
+        "EXACT_EMPTY_BRANDING_REQUIRED": true,
+        "INITIAL_LOGO_ABSENCE_REQUIRED": true,
+        "PNG_DECLARED_AS_JPEG_REJECTED": true,
+        "JPEG_MISMATCH_LEFT_STORAGE_EMPTY": true,
+        "NORMALIZED_LOGO_PERSISTED": true,
+        "EXACT_STORAGE_METADATA_REQUIRED": true,
+        "SAME_CONTENT_RETRY_REUSES_OBJECT": true,
+        "BUSINESS_BRANDING_LINK_SAVED": true,
+        "BROKER_RETURNS_NORMALIZED_LOGO": true,
+        "JPEG_ORIENTATION_PRESERVED": true
+      },
+      "requests": 24,
+      "cleanup": {
+        "logo_unlinked": true,
+        "object_absent": true,
+        "fixture_suspended": true
+      },
+      "reused_png_closeout": "b09a5b2b7f41652f65a90b62b3c43b5816a78b1a",
+      "valid_upload_status": 200
+    },
+    "commit": "2bde191469a5cd282e6d20cd34953216e8eeadf0"
+  },
+  "independent_cleanup": {
+    "status": "suspended",
+    "business_support_version": 16,
+    "version": 8,
+    "logo_empty": true,
+    "gate_ready": false,
+    "logo_objects": 0,
+    "sessions": 0
+  },
+  "exit_code": 0
+}

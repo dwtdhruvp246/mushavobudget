@@ -1,14 +1,9 @@
 {
-  "enabled": false,
+  "enabled": true,
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_id": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
-  "preview_id": "cc8c155e-f70b-4ca5-bdb1-ea7c72cfa3ad",
-  "preview_origin": "https://cc8c155e.mushavo-budget-staging.pages.dev",
-  "reuse_run": 43283375591,
-  "mode": "byte-drain-only",
-  "reuse_browser_run": 43287931911,
-  "reuse_stream_run": 43288826963,
-  "result": "HOSTED_BROWSER_AND_2_MIB_STATIC_PNG_SCOPE_PASS",
-  "completed_run": 43289536159,
-  "receipt": "docs/security-audit/security-fr-3-2-business-logo-browser-and-size-closeout.json"
+  "preview_id": "092b8850-25fe-43ac-b29e-cebd3bb9612e",
+  "preview_origin": "https://092b8850.mushavo-budget-staging.pages.dev",
+  "status": "HOSTED_JPEG_BROWSER_ONCE",
+  "reuse_run": 43292163574
 }

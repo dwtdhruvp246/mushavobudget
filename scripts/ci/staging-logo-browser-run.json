@@ -1,11 +1,10 @@
 {
-  "enabled": false,
+  "enabled": true,
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_id": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "preview_id": "cc8c155e-f70b-4ca5-bdb1-ea7c72cfa3ad",
   "preview_origin": "https://cc8c155e.mushavo-budget-staging.pages.dev",
   "reuse_run": 43283375591,
-  "result": "HOSTED_BROWSER_LOGO_FLOW_PASS_BYTE_TRANSPORT_OPEN",
-  "completed_run": 43287931911,
-  "receipt": "docs/security-audit/security-fr-3-2-business-logo-browser-result.json"
+  "mode": "byte-stream-only",
+  "reuse_browser_run": 43287931911
 }

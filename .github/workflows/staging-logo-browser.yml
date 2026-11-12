@@ -25,12 +25,14 @@ jobs:
           node-version: '22'
       - name: Read archived or active scope
         id: plan
-        run: echo "enabled=$(node -p 'require("./scripts/ci/staging-logo-browser-run.json").enabled === true')" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "enabled=$(node -p 'require("./scripts/ci/staging-logo-browser-run.json").enabled === true')" >> "$GITHUB_OUTPUT"
+          echo "browser=$(node -p 'require("./scripts/ci/staging-logo-browser-run.json").mode !== "byte-stream-only"')" >> "$GITHUB_OUTPUT"
       - name: Install locked browser tooling
-        if: steps.plan.outputs.enabled == 'true'
+        if: steps.plan.outputs.enabled == 'true' && steps.plan.outputs.browser == 'true'
         run: npm ci --ignore-scripts --prefix scripts/fixtures/staging-browser-tools
       - name: Install Chromium
-        if: steps.plan.outputs.enabled == 'true'
+        if: steps.plan.outputs.enabled == 'true' && steps.plan.outputs.browser == 'true'
         run: scripts/fixtures/staging-browser-tools/node_modules/.bin/playwright install --with-deps chromium
       - name: Run the isolated browser and file size checks
         if: steps.plan.outputs.enabled == 'true'

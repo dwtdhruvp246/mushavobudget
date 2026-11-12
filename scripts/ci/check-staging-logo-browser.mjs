@@ -2,6 +2,7 @@ import { Buffer } from "node:buffer";
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { request as httpsRequest } from "node:https";
+import { crc32 } from "node:zlib";
 import { API_ORIGIN, Stop, apiTransport, checkStagingAccess, digest, need, privateAccounts, readPublicConfiguration } from "./staging-access.mjs";
 import { FIXTURE_ID, LOGO_BUCKET } from "../../supabase/functions/validate-business-logo/handler.mjs";
 import { MAX_LOGO_BYTES, normalizeLogoPng } from "../../supabase/functions/validate-business-logo/png.mjs";
@@ -55,6 +56,45 @@ function checkHostedByteLimit(owner, key) {
     request.on("error", error => complete({ transport: /^E[A-Z_]{3,20}$/.test(error.code || "") ? error.code : "REQUEST_FAILED" }));
     request.flushHeaders();
   });
+}
+
+async function checkHostedStreamingLimit(owner, key) {
+  // Add harmless PNG text padding and keep the original image and scanlines.
+  const padding = Buffer.alloc(MAX_LOGO_BYTES + 1 - LOGO.length - 12, 65);
+  padding.write("Comment\0");
+  const chunk = Buffer.alloc(padding.length + 12);
+  chunk.writeUInt32BE(padding.length);
+  chunk.write("tEXt", 4);
+  chunk.set(padding, 8);
+  chunk.writeUInt32BE(crc32(chunk.subarray(4, -4)), chunk.length - 4);
+  const file = Buffer.concat([LOGO.subarray(0, 33), chunk, LOGO.subarray(33)]);
+  need(file.length === MAX_LOGO_BYTES + 1, "EXACT_STREAM_SIZE_REQUIRED");
+  let offset = 0;
+  const body = new ReadableStream({
+    pull(controller) {
+      if (offset === file.length) {
+        controller.close();
+      } else {
+        const end = Math.min(file.length, offset + 32768);
+        controller.enqueue(file.subarray(offset, end));
+        offset = end;
+      }
+    },
+  });
+  try {
+    const r = await fetch(API_ORIGIN + "/functions/v1/validate-business-logo", {
+      method: "POST", duplex: "half", redirect: "error", signal: AbortSignal.timeout(35000),
+      headers: { apikey: key, authorization: "Bearer " + owner.token, "content-type": "image/png",
+        origin: PREVIEW, "user-agent": AGENT + "-Byte-Stream" },
+      body,
+    });
+    let code;
+    try { code = (await r.json())?.error; } catch {}
+    return { status: r.status, code: /^[A-Z_]{3,60}$/.test(code || "") ? code : null, enqueued_bytes: offset };
+  } catch (error) {
+    return { transport: error.name === "TimeoutError" ? "TIMEOUT"
+      : /^E[A-Z_]{3,20}$/.test(error.cause?.code || "") ? error.cause.code : "REQUEST_FAILED", enqueued_bytes: offset };
+  }
 }
 
 async function browserFlow(chromium, owner, path, evidence) {
@@ -140,9 +180,13 @@ async function browserFlow(chromium, owner, path, evidence) {
   }
 }
 
-async function exercise({ actors, evidence }, key, chromium) {
+async function exercise({ actors, evidence }, key, chromium, streamOnly) {
   const owner = actors.USER_A, admin = actors.ADMIN;
   const path = `${FIXTURE_ID}/${owner.id}/${OBJECT_ID}.png`;
+  const suspendedVersion = streamOnly ? 10 : 8;
+  const activeVersion = suspendedVersion + 1;
+  const closedVersion = activeVersion + 1;
+  const profileVersion = streamOnly ? 6 : 3;
   const routes = {
     workspace: "/rest/v1/budget_workspaces?select=id,owner_id,name,status,business_support_version&id=eq." + FIXTURE_ID + "&limit=2",
     subscription: "/rest/v1/workspace_subscriptions?select=status,member_limit,paid_through_at&workspace_id=eq." + FIXTURE_ID + "&limit=2",
@@ -176,18 +220,26 @@ async function exercise({ actors, evidence }, key, chromium) {
   let resumed = false, failure, cleanupFailure;
   try {
     const w = await workspace(), s = one(await call("subscription", admin));
-    need(sameWorkspace(w) && w.status === "suspended" && w.business_support_version === 8
+    need(sameWorkspace(w) && w.status === "suspended" && w.business_support_version === suspendedVersion
       && s?.status === "active" && s.member_limit === 1 && Date.parse(s.paid_through_at) > Date.now(), "EXACT_ARCHIVED_BROWSER_FIXTURE_REQUIRED");
-    need((await setStatus("active", 8)).status === 200, "BROWSER_FIXTURE_RESUME_REQUIRED");
+    need((await setStatus("active", suspendedVersion)).status === 200, "BROWSER_FIXTURE_RESUME_REQUIRED");
     resumed = true;
     const active = await workspace(), p = await profile();
-    need(sameWorkspace(active) && active.status === "active" && active.business_support_version === 9
-      && p?.version === 3 && p.logo_storage_path === null && p.trading_name === NAME, "EXACT_EMPTY_BROWSER_BRANDING_REQUIRED");
-    evidence.byte_limit = await checkHostedByteLimit(owner, key);
+    need(sameWorkspace(active) && active.status === "active" && active.business_support_version === activeVersion
+      && p?.version === profileVersion && p.logo_storage_path === null && p.trading_name === NAME, "EXACT_EMPTY_BROWSER_BRANDING_REQUIRED");
+    evidence.byte_limit = streamOnly ? await checkHostedStreamingLimit(owner, key) : await checkHostedByteLimit(owner, key);
     evidence.checks.hosted_byte_limit = evidence.byte_limit.status === 413 && evidence.byte_limit.code === "LOGO_TOO_LARGE";
-    await browserFlow(chromium, owner, path, evidence);
-    need((await profile())?.logo_storage_path === path, "INDEPENDENT_BROWSER_SAVE_READBACK_REQUIRED");
-    evidence.checks.independent_browser_save_readback = true;
+    if (streamOnly) {
+      evidence.browser_run_reused = 43287931911;
+      need((await profile())?.logo_storage_path === null, "STREAM_REJECTION_MUST_NOT_LINK_A_LOGO");
+      const file = await fileContext();
+      need(file.status === 200 && file.data?.length === 0, "STREAM_REJECTION_MUST_NOT_STORE_A_LOGO");
+      evidence.checks.rejected_stream_has_no_logo = true;
+    } else {
+      await browserFlow(chromium, owner, path, evidence);
+      need((await profile())?.logo_storage_path === path, "INDEPENDENT_BROWSER_SAVE_READBACK_REQUIRED");
+      evidence.checks.independent_browser_save_readback = true;
+    }
     need(evidence.checks.hosted_byte_limit, "HOSTED_BYTE_LIMIT_NEEDS_REVIEW");
   } catch (error) {
     failure = error instanceof Stop ? error : new Stop("BROWSER_CHECK_FAILED_" + (evidence.browser_stage || "SETUP"));
@@ -211,10 +263,10 @@ async function exercise({ actors, evidence }, key, chromium) {
       need(after.status === 200 && after.data?.length === 0, "BROWSER_FILE_ABSENCE_REQUIRED");
       evidence.cleanup.object_absent = true;
       const w = await workspace();
-      need(sameWorkspace(w) && w.status === "active" && w.business_support_version === 9
-        && (await setStatus("suspended", 9)).status === 200, "BROWSER_FIXTURE_CLOSE_REQUIRED");
+      need(sameWorkspace(w) && w.status === "active" && w.business_support_version === activeVersion
+        && (await setStatus("suspended", activeVersion)).status === 200, "BROWSER_FIXTURE_CLOSE_REQUIRED");
       const closed = await workspace();
-      need(sameWorkspace(closed) && closed.status === "suspended" && closed.business_support_version === 10,
+      need(sameWorkspace(closed) && closed.status === "suspended" && closed.business_support_version === closedVersion,
         "BROWSER_FIXTURE_CLOSE_READBACK_REQUIRED");
       evidence.cleanup.fixture_suspended = true;
     } catch (error) { cleanupFailure = error; }
@@ -226,8 +278,10 @@ async function exercise({ actors, evidence }, key, chromium) {
 async function main() {
   const plan = JSON.parse(await readFile(new URL("./staging-logo-browser-run.json", import.meta.url), "utf8"));
   if (plan.enabled === false) return { result: "BROWSER_PLAN_ARCHIVED", exit_code: 0 };
+  const streamOnly = plan.mode === "byte-stream-only" && plan.reuse_browser_run === 43287931911;
   need(plan.enabled === true && plan.project === "dczlddwbtgvfdujgcitb" && plan.fixture_id === FIXTURE_ID
-    && plan.preview_id === PREVIEW_ID && plan.preview_origin === PREVIEW && plan.reuse_run === 43283375591,
+    && plan.preview_id === PREVIEW_ID && plan.preview_origin === PREVIEW && plan.reuse_run === 43283375591
+    && (plan.mode === undefined || streamOnly),
   "EXACT_STAGING_BROWSER_PLAN_REQUIRED");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization" && process.env.GITHUB_RUN_ATTEMPT === "1",
@@ -238,10 +292,10 @@ async function main() {
   const local = await readFile(new URL("../../business.js", import.meta.url));
   need(digest(await js.text()) === digest(local), "PREVIEW_BUSINESS_SOURCE_MISMATCH");
   const { key } = readPublicConfiguration(await cfg.text());
-  const { chromium } = await import("../fixtures/staging-browser-tools/node_modules/playwright/index.mjs");
+  const chromium = streamOnly ? null : (await import("../fixtures/staging-browser-tools/node_modules/playwright/index.mjs")).chromium;
   const options = { accountScope: "businessFixture" };
   const report = await checkStagingAccess(privateAccounts(process.env, options), apiTransport(key, AGENT),
-    input => exercise(input, key, chromium), options);
+    input => exercise(input, key, chromium, streamOnly), options);
   return { ...report, progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 Logo browser", preview: PREVIEW, source_matched: true };
 }
 const report = await main().catch(error => ({

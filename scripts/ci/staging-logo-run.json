@@ -1,11 +1,10 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_id": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "scope": "fr3-2-business-logo",
-  "status": "HOSTED_LOGO_REVISED_PARSER_ONCE",
-  "reuse_run": 43281454455,
-  "dimension_review_run": 43281914875,
-  "runtime_review_run": 43282426255,
-  "validator_bundle": "dfb72540057f123271d7ddaa7dad8fc210d7fec3e2336b7f230c56efd9b2bcea"
+  "status": "ARCHIVED_HOSTED_API_SCOPE_PASS",
+  "completed_run": 43283375591,
+  "receipt": "docs/security-audit/security-fr-3-2-business-logo-hosted-result.json",
+  "next": "Hosted browser preview and wider file formats remain open. Read the saved receipt before starting another run."
 }

@@ -25,14 +25,22 @@ The candidate restrictive Storage policies prevent authenticated and anonymous u
 | Deno type check of the entry point | Passed in an isolated export using the existing frozen lock and Supabase JS 2.110.9. |
 | Business source syntax | Passed |
 
-The local check covers valid and rejected files, immutable retry after a lost acknowledgement, a changed workspace, a revoked Owner and persisted byte mismatch. Hosted Auth, Storage, branding linkage and browser behavior still need acceptance. No hosted writes or deployment were made for this candidate.
+The local checks cover valid and rejected files, immutable retry after a lost acknowledgement, a changed workspace, a revoked Owner and persisted byte mismatch. The hosted API result below covers real Auth, Storage and branding linkage. Hosted browser acceptance remains open.
 
-## Hosted acceptance
+## Hosted acceptance plan and execution
 
 1. Provision the exact empty synthetic Business workspace for a controlled active Owner. Verify its subscription, profile and Storage state.
 2. Install the fixture-only Storage policies on the verified staging project. Read back both policies and verify direct fixture uploads are denied. Preserve all existing grants and session rules.
-3. Deploy the new function with server-side Auth verification and the candidate browser source to a staging preview. The function checks both exact restrictive policies through a service-only RPC. The active workspace and both policies are required for uploads.
+3. Deploy the new function with server-side Auth verification and the candidate browser source to a staging preview. The function checks both exact restrictive policies through a service-only RPC. The active workspace and both policies are required for uploads. The Edge Function is deployed on staging. The candidate browser source remains pending preview publication.
 4. Use a harmless supported PNG to test actual upload, retry, branding save and broker preview. Verify harmless type mismatch, size and owner denials. Restore the logo, remove the exact objects, close the test sessions and independently confirm absence.
 5. Disable the trial after its bounded run. Record results before expanding the supported format set or other upload flows.
 
 This is the first bounded slice of UF-R01 and UF-R03. Remaining work includes JPEG/WebP validation for Business logos, wider ingestion formats, aggregate budgets and durable cleanup. [Stage 4 readiness checkpoint](SECURITY_FR_3_READINESS_CHECKPOINT_20261112.md)
+
+## Hosted result
+
+Run 43283375591 passed all 11 selected checks with exit 0. A valid static PNG produced the exact normalized object. The same upload reused the same object and version, the branding save linked the file, the private broker returned the normalized PNG, and the oversized dimension was rejected with HTTP 413. The earlier real nonowner and mislabeled file denials were retained from run 43281454455. The original byte-limit transport stop and two earlier runtime mismatches remain recorded. The revised parser passed the hosted checks after the compatibility changes.
+
+Independent readback confirmed an empty logo field, zero trial objects or sessions, and zero queued messages. The disposable workspace is suspended at support version 8 and the gate is closed. The original paid bill matched its saved checksum. The one-time run plan is archived. [Hosted receipt](security-fr-3-2-business-logo-hosted-result.json)
+
+The hosted 2 MiB byte-limit response and candidate browser preview remain open. Other format validation and wider FR.3.2 controls remain open.

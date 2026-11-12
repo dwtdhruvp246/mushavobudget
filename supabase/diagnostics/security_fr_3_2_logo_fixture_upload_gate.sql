@@ -10,14 +10,14 @@ begin
     select 1
     from public.budget_workspaces w
     join public.business_profiles p on p.workspace_id = w.id
-    where w.id = 'dc22360d-4b49-4bd4-9131-8633f7e821ff'
+    where w.id = '8d9307e6-aada-4c9a-a8f5-43c57e0865e2'
       and w.workspace_type = 'business'
       and w.name = 'audit-fr3-logo-ingestion-20261112'
       and p.logo_storage_path is null
   ) or exists (
     select 1 from storage.objects
     where bucket_id = 'business-logos'
-      and split_part(name, '/', 1) = 'dc22360d-4b49-4bd4-9131-8633f7e821ff'
+      and split_part(name, '/', 1) = '8d9307e6-aada-4c9a-a8f5-43c57e0865e2'
   ) then
     raise exception 'FR3_LOGO_FIXTURE_NOT_EMPTY_OR_MISSING';
   end if;
@@ -28,18 +28,18 @@ create policy fr3_logo_fixture_validator_insert
   on storage.objects as restrictive for insert to authenticated, anon
   with check (
     bucket_id <> 'business-logos'
-    or split_part(name, '/', 1) <> 'dc22360d-4b49-4bd4-9131-8633f7e821ff'
+    or split_part(name, '/', 1) <> '8d9307e6-aada-4c9a-a8f5-43c57e0865e2'
   );
 
 create policy fr3_logo_fixture_validator_update
   on storage.objects as restrictive for update to authenticated, anon
   using (
     bucket_id <> 'business-logos'
-    or split_part(name, '/', 1) <> 'dc22360d-4b49-4bd4-9131-8633f7e821ff'
+    or split_part(name, '/', 1) <> '8d9307e6-aada-4c9a-a8f5-43c57e0865e2'
   )
   with check (
     bucket_id <> 'business-logos'
-    or split_part(name, '/', 1) <> 'dc22360d-4b49-4bd4-9131-8633f7e821ff'
+    or split_part(name, '/', 1) <> '8d9307e6-aada-4c9a-a8f5-43c57e0865e2'
   );
 
 -- The Edge Function calls this with its server credential before accepting bytes.
@@ -49,14 +49,14 @@ language sql stable security invoker set search_path = pg_catalog
 as $$
   select exists (
     select 1 from public.budget_workspaces w
-    where w.id = 'dc22360d-4b49-4bd4-9131-8633f7e821ff'
+    where w.id = '8d9307e6-aada-4c9a-a8f5-43c57e0865e2'
       and w.workspace_type = 'business' and w.status = 'active'
   ) and exists (
     select 1 from pg_class where oid = 'storage.objects'::regclass and relrowsecurity
   ) and (
     select count(*) = 2 from pg_policy p
     cross join (values (
-      '((bucket_id <> ''business-logos''::text) OR (split_part(name, ''/''::text, 1) <> ''dc22360d-4b49-4bd4-9131-8633f7e821ff''::text))'
+      '((bucket_id <> ''business-logos''::text) OR (split_part(name, ''/''::text, 1) <> ''8d9307e6-aada-4c9a-a8f5-43c57e0865e2''::text))'
     )) as expected(expr)
     where p.polrelid = 'storage.objects'::regclass and not p.polpermissive
       and p.polroles @> array[to_regrole('anon')::oid, to_regrole('authenticated')::oid]

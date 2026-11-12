@@ -1,6 +1,6 @@
 import { LogoInputError, MAX_LOGO_BYTES, normalizeLogoPng } from "./png.mjs";
 
-export const FIXTURE_ID = "dc22360d-4b49-4bd4-9131-8633f7e821ff";
+export const FIXTURE_ID = "8d9307e6-aada-4c9a-a8f5-43c57e0865e2";
 export const LOGO_BUCKET = "business-logos";
 const UUID = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/;
 

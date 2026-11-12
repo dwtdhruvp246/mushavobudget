@@ -2009,7 +2009,7 @@ async function finishBusinessSetup() {
 const BUSINESS_LOGO_BUCKET = 'business-logos';
 function usesValidatedLogoTrial(workspaceId) {
   return config.supabaseUrl === 'https://dczlddwbtgvfdujgcitb.supabase.co'
-    && workspaceId === 'dc22360d-4b49-4bd4-9131-8633f7e821ff';
+    && workspaceId === '8d9307e6-aada-4c9a-a8f5-43c57e0865e2';
 }
 let brandingBusy = false;
 let brandingLoadKey = null;

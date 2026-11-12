@@ -2,7 +2,7 @@
 
 12 November 2026. Prepared from `a34bde4860c44a7a1b355e6ab61c879730056fee`. Stage 3 / FR.2 Batches V and Z remain open. This trial covers a single disposable Business workspace on Supabase staging `dczlddwbtgvfdujgcitb`.
 
-The staging fixture is reserved as `dc22360d-4b49-4bd4-9131-8633f7e821ff`, named `audit-fr3-logo-ingestion-20261112`. A read-only staging preflight found the workspace absent, its Storage prefix empty, and both candidate policies absent. The candidate is ready for hosted setup and acceptance.
+The staging fixture was provisioned by the supported Admin test grant as `8d9307e6-aada-4c9a-a8f5-43c57e0865e2`, named `audit-fr3-logo-ingestion-20261112`. The earlier direct SQL confirmation expired without writes. The Admin grant created this exact one-seat fixture in run 43280937650, and both sign-in sessions were closed. Independent readback confirmed the active term and empty logo field. The fixture ID in the client, function and SQL was updated to match the grant.
 
 ## Upload path
 

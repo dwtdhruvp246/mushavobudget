@@ -1,0 +1,141 @@
+{
+  "date": "2026-11-12",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "HOSTED_BROWSER_LOGO_FLOW_PASS_BYTE_TRANSPORT_OPEN",
+  "source_commit": "0db3ebbfe154de793e4282cbfd7c9b36c5cc6e3b",
+  "run": 43287931911,
+  "job": 131426163660,
+  "preview": {
+    "id": "cc8c155e-f70b-4ca5-bdb1-ea7c72cfa3ad",
+    "url": "https://cc8c155e.mushavo-budget-staging.pages.dev",
+    "environment": "preview",
+    "base_deployment": "a1817026-ad12-469a-b41a-ed380b26ffe8",
+    "candidate_business_js_byte_match": true
+  },
+  "scope": "Genuine Chromium session on the hosted preview. Login session was established via the normal staging Auth endpoint and seeded in a fresh browser context. Candidate Business setup selected, validated, saved and reloaded the fixture logo. Browser request fencing omitted unrelated feed reads.",
+  "receipt": {
+    "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Logo browser",
+    "result": "STAGING_ACCESS_REVIEW_REQUIRED",
+    "checks": {
+      "fixture_owner_and_super_admin_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 2
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 12,
+    "created_sessions": 2,
+    "cleanup_sessions": 2,
+    "settings_or_finance_writes_requested": 0,
+    "production_changed": false,
+    "full_lettered_batch_W_complete": false,
+    "exit_code": 1,
+    "exercise": {
+      "checks": {
+        "hosted_byte_limit": false,
+        "browser_fixture_rendered": true,
+        "browser_large_file_rejected_before_upload": true,
+        "browser_logo_saved": true,
+        "browser_reload_renders_saved_logo": true,
+        "independent_browser_save_readback": true
+      },
+      "cleanup": {
+        "logo_unlinked": true,
+        "object_absent": true,
+        "fixture_suspended": true
+      },
+      "requests": 15,
+      "byte_limit": {
+        "body_sent_after_continue": true,
+        "transport": "TIMEOUT"
+      },
+      "browser_requests": {
+        "permitted": 102,
+        "validator": 1,
+        "branding": 1,
+        "broker": 2,
+        "blocked": [
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/business_transaction_feed"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/business_transaction_feed"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/business_transaction_feed"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/business_transaction_feed"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/business_transaction_feed"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/business_transaction_feed"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/business_transaction_feed"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/business_transaction_feed"
+          }
+        ]
+      },
+      "browser_stage": "RELOAD_AND_RENDER_STORED_LOGO",
+      "browser_http": {
+        "upload": 200,
+        "branding": 200
+      }
+    },
+    "problem_code": "HOSTED_BYTE_LIMIT_NEEDS_REVIEW",
+    "preview": "https://cc8c155e.mushavo-budget-staging.pages.dev",
+    "source_matched": true
+  },
+  "independent_cleanup": {
+    "status": "suspended",
+    "business_support_version": 10,
+    "version": 6,
+    "onboarding_status": "in_progress",
+    "logo_empty": true,
+    "gate_ready": false,
+    "logo_objects": 0,
+    "runner_sessions": 0,
+    "queued_messages": 0
+  },
+  "byte_probe": {
+    "result": "TRANSPORT_TIMEOUT_AFTER_CONTINUE",
+    "matching_oversize_function_event_found": false
+  },
+  "existing_hosted_api_run_reused": 43283375591,
+  "browser_scope_pass": true,
+  "full_FR_3_2_complete": false
+}

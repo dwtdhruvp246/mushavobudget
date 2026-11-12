@@ -1,0 +1,162 @@
+{
+  "date": "2026-11-12",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "HOSTED_JPEG_LOGO_API_AND_BROWSER_SCOPE_PASS",
+  "workspace": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
+  "validator": {
+    "id": "fe921d00-7027-4f5c-bbe2-826eb24bf0cf",
+    "version": 5,
+    "sha": "9a98a8c5441cab35984549edbae7b0a3d8b8ae3ec7a05b36532ba2fc05184ff2",
+    "runtime_files": 5
+  },
+  "decoder": {
+    "package": "jpeg-js",
+    "version": "0.4.4",
+    "pinned_in_npm_and_deno_locks": true
+  },
+  "local_checks": {
+    "node": 18,
+    "deno": 14,
+    "frozen_typecheck_pass": true
+  },
+  "hosted_api": {
+    "run": 43292163574,
+    "assertions": 13,
+    "receipt": "docs/security-audit/security-fr-3-2-business-logo-jpeg-api-result.json"
+  },
+  "hosted_browser": {
+    "run": 43292685470,
+    "job": 131442856748,
+    "source_commit": "e79448eb5d06d23c9ccec488421b0213a5b8a9d3",
+    "preview": {
+      "id": "092b8850-25fe-43ac-b29e-cebd3bb9612e",
+      "url": "https://092b8850.mushavo-budget-staging.pages.dev",
+      "environment": "preview",
+      "stage": "success"
+    },
+    "receipt": {
+      "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 JPEG logo browser",
+      "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+      "checks": {
+        "fixture_owner_and_super_admin_verified": true,
+        "created_sessions_local_logout_acknowledged": true
+      },
+      "accounts": {
+        "USER_A": {
+          "signin_HTTP_status": 200,
+          "confirmed_identity": true,
+          "active_profile": true,
+          "expected_platform_role": true,
+          "owned_workspace_counts": {
+            "personal": 1,
+            "family": 0,
+            "business": 2
+          }
+        },
+        "ADMIN": {
+          "signin_HTTP_status": 200,
+          "confirmed_identity": true,
+          "active_profile": true,
+          "expected_platform_role": true,
+          "owned_workspace_counts": {
+            "personal": 1,
+            "family": 0,
+            "business": 0
+          }
+        }
+      },
+      "API_requests": 12,
+      "created_sessions": 2,
+      "cleanup_sessions": 2,
+      "settings_or_finance_writes_requested": 0,
+      "production_changed": false,
+      "full_lettered_batch_W_complete": false,
+      "exit_code": 0,
+      "exercise": {
+        "checks": {
+          "browser_fixture_rendered": true,
+          "browser_logo_saved": true,
+          "browser_reload_renders_saved_logo": true,
+          "independent_browser_save_readback": true
+        },
+        "cleanup": {
+          "logo_unlinked": true,
+          "object_absent": true,
+          "fixture_suspended": true
+        },
+        "requests": 15,
+        "reused_jpeg_api_run": 43292163574,
+        "browser_requests": {
+          "permitted": 101,
+          "validator": 1,
+          "branding": 1,
+          "broker": 2,
+          "blocked": [
+            {
+              "method": "POST",
+              "path": "/rest/v1/rpc/business_transaction_feed"
+            },
+            {
+              "method": "POST",
+              "path": "/rest/v1/rpc/business_transaction_feed"
+            },
+            {
+              "method": "POST",
+              "path": "/rest/v1/rpc/business_transaction_feed"
+            },
+            {
+              "method": "POST",
+              "path": "/rest/v1/rpc/business_transaction_feed"
+            },
+            {
+              "method": "POST",
+              "path": "/rest/v1/rpc/business_transaction_feed"
+            },
+            {
+              "method": "POST",
+              "path": "/rest/v1/rpc/business_transaction_feed"
+            },
+            {
+              "method": "POST",
+              "path": "/rest/v1/rpc/business_transaction_feed"
+            },
+            {
+              "method": "POST",
+              "path": "/rest/v1/rpc/business_transaction_feed"
+            }
+          ],
+          "upload_type": "image/jpeg"
+        },
+        "browser_stage": "RELOAD_AND_RENDER_STORED_LOGO",
+        "browser_http": {
+          "upload": 200,
+          "branding": 200
+        }
+      },
+      "preview": "https://092b8850.mushavo-budget-staging.pages.dev",
+      "source_matched": true
+    }
+  },
+  "prior_png_browser_and_limit_reused": true,
+  "independent_cleanup": {
+    "status": "suspended",
+    "business_support_version": 18,
+    "version": 11,
+    "logo_empty": true,
+    "gate_ready": false,
+    "logo_objects": 0,
+    "trial_sessions": 0,
+    "queued_messages": 0
+  },
+  "origin_readback": {
+    "staging_canonical": "a1817026-ad12-469a-b41a-ed380b26ffe8",
+    "production_worker": "5ee30828-7086-46f6-88a9-ff4605ce58dc"
+  },
+  "remaining": [
+    "WebP logo ingestion",
+    "Other proof and document upload types and entry points",
+    "Aggregate resource limits and durable reconciliation"
+  ],
+  "full_FR_3_2_complete": false,
+  "exit_code": 0
+}

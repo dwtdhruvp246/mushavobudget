@@ -4,4 +4,8 @@ This candidate extends the isolated Business logo workspace to baseline and prog
 
 JPEG decoding uses jpeg-js 0.4.4 with exact npm and Deno lock entries. Node and Deno tests exercise baseline, progressive, grayscale, rotation, malformed files, dimension rejection, output shape and immutable retries. The Edge entry point passed a frozen Deno type check. No Storage policy or permission changes are required.
 
-The existing [hosted PNG and browser result](security-fr-3-2-business-logo-browser-and-size-closeout.json) remains the baseline. The upcoming one-time JPEG API run uses the same disposable workspace after verifying it is suspended and empty. It checks declared-type mismatch, actual normalization, retry, branding save, private readback and exact cleanup. Hosted JPEG browser deployment and WebP remain outside this run.
+The existing [hosted PNG and browser result](security-fr-3-2-business-logo-browser-and-size-closeout.json) remains the baseline. The completed one-time JPEG API run verified declared-type mismatch, normalization, immutable retry, branding save, private readback and exact cleanup. A separate hosted Chromium run served the exact candidate, uploaded the JPEG with its correct media type, saved it through Business setup and rendered the oriented PNG after reload.
+
+Independent staging readback found the fixture suspended at support version 18 with an empty logo, zero trial objects and sessions, and zero queued messages. Both live plans are disabled. The wider FR.3.2 work, including WebP and other upload types, remains open.
+
+[Hosted JPEG closeout](security-fr-3-2-business-logo-jpeg-closeout.json)

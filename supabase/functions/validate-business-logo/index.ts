@@ -1,4 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2.110.9";
+import jpeg from "npm:jpeg-js@0.4.4";
 import { createLogoUploadHandler, LOGO_BUCKET } from "./handler.mjs";
 import { readSignedPrivateObject } from "../get-private-file/signed-private-file.mjs";
 
@@ -10,6 +11,7 @@ const privilegedClient = () => createClient(projectUrl, serviceKey, options);
 const logoStorage = () => privilegedClient().storage.from(LOGO_BUCKET);
 
 Deno.serve(createLogoUploadHandler({
+  decodeJpeg: jpeg.decode,
   configured: () => projectUrl === "https://dczlddwbtgvfdujgcitb.supabase.co"
     && Boolean(anonKey && serviceKey),
   allowedOrigin: (origin: string) => /^https:\/\/(?:[a-z0-9-]+\.)?mushavo-budget-staging\.pages\.dev$/.test(origin),

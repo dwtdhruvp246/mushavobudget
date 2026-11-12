@@ -1,7 +1,7 @@
 import { deflateSync } from "node:zlib";
 
 export const MAX_LOGO_BYTES = 2 * 1024 * 1024;
-const MAX_SIDE = 1024;
+export const MAX_LOGO_SIDE = 1024;
 const SIGNATURE = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
 const CRC_TABLE = Uint32Array.from({ length: 256 }, (_, index) => {
   let value = index;
@@ -45,6 +45,31 @@ function chunk(type, data) {
   bytes.set(data, 8);
   view.setUint32(bytes.length - 4, crc32(bytes.subarray(4, -4)));
   return bytes;
+}
+
+function encodeScanlines(header, pixels) {
+  const normalized = combine([
+    SIGNATURE, chunk("IHDR", header), chunk("IDAT", deflateSync(pixels, { level: 3 })), chunk("IEND", new Uint8Array()),
+  ]);
+  if (normalized.length > MAX_LOGO_BYTES) throw new LogoInputError(413, "LOGO_TOO_LARGE");
+  return normalized;
+}
+
+export function encodeLogoRgbaPng(width, height, data) {
+  if (![width, height].every(value => Number.isInteger(value) && value > 0 && value <= MAX_LOGO_SIDE)
+      || !(data instanceof Uint8Array) || data.length !== width * height * 4) throw invalid("pixel_shape");
+  const header = new Uint8Array(13);
+  const view = new DataView(header.buffer);
+  view.setUint32(0, width);
+  view.setUint32(4, height);
+  header[8] = 8;
+  header[9] = 6;
+  const row = width * 4;
+  const scanlines = new Uint8Array((row + 1) * height);
+  for (let y = 0; y < height; y++) {
+    scanlines.set(data.subarray(y * row, (y + 1) * row), y * (row + 1) + 1);
+  }
+  return encodeScanlines(header, scanlines);
 }
 
 async function decodeScanlines(compressed, expected) {
@@ -110,7 +135,7 @@ export async function normalizeLogoPng(bytes) {
       const width = dimensions.getUint32(0);
       height = dimensions.getUint32(4);
       if (!width || !height) throw invalid("header");
-      if (width > MAX_SIDE || height > MAX_SIDE) throw new LogoInputError(413, "LOGO_DIMENSIONS_TOO_LARGE");
+      if (width > MAX_LOGO_SIDE || height > MAX_LOGO_SIDE) throw new LogoInputError(413, "LOGO_DIMENSIONS_TOO_LARGE");
       if (data[8] !== 8 || ![2, 6].includes(data[9]) || data[10] || data[11] || data[12]) {
         throw new LogoInputError(415, "UNSUPPORTED_LOGO_PNG");
       }
@@ -136,9 +161,5 @@ export async function normalizeLogoPng(bytes) {
   for (let offset = 0; offset < pixels.length; offset += rowBytes) {
     if (pixels[offset] > 4) throw invalid("scanline_filter");
   }
-  const normalized = combine([
-    SIGNATURE, chunk("IHDR", header), chunk("IDAT", deflateSync(pixels, { level: 3 })), chunk("IEND", new Uint8Array()),
-  ]);
-  if (normalized.length > MAX_LOGO_BYTES) throw new LogoInputError(413, "LOGO_TOO_LARGE");
-  return normalized;
+  return encodeScanlines(header, pixels);
 }

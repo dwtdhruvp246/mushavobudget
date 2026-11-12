@@ -1,72 +1,19 @@
 import { Buffer } from "node:buffer";
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
-import { crc32, deflateSync } from "node:zlib";
 import { API_ORIGIN, WEB_ORIGIN, Stop, apiTransport, checkStagingAccess, digest, need, privateAccounts, readPublicConfiguration } from "./staging-access.mjs";
 import { FIXTURE_ID, LOGO_BUCKET } from "../../supabase/functions/validate-business-logo/handler.mjs";
-import { normalizeLogoPng } from "../../supabase/functions/validate-business-logo/png.mjs";
+import { normalizeLogoJpeg } from "../../supabase/functions/validate-business-logo/jpeg.mjs";
+import { PROGRESSIVE_ROTATED_JPEG } from "../fixtures/logo-jpeg-tools/images.mjs";
 
 const NAME = "audit-fr3-logo-ingestion-20261112";
-const AGENT = "Mushavo-Staging-FR3-Logo-Acceptance";
+const AGENT = "Mushavo-Staging-FR3-Logo-JPEG";
 const one = result => result.status === 200 && result.data?.length === 1 ? result.data[0] : null;
 
-function pngChunk(type, bytes = Buffer.alloc(0)) {
-  const payload = Buffer.concat([Buffer.from(type), bytes]);
-  const size = Buffer.alloc(4), crc = Buffer.alloc(4);
-  size.writeUInt32BE(bytes.length);
-  crc.writeUInt32BE(crc32(payload));
-  return Buffer.concat([size, payload, crc]);
-}
-const header = Buffer.from([0, 0, 0, 1, 0, 0, 0, 1, 8, 6, 0, 0, 0]);
-const upload = Buffer.concat([
-  Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
-  pngChunk("IHDR", header), pngChunk("tEXt", Buffer.from("Comment\0Synthetic staging fixture")),
-  pngChunk("IDAT", deflateSync(Buffer.from([0, 80, 100, 200, 255]))), pngChunk("IEND"),
-]);
-const normalized = await normalizeLogoPng(upload);
-const wideHeader = Buffer.from(header);
-wideHeader.writeUInt32BE(1025, 0);
-const widePng = Buffer.concat([
-  upload.subarray(0, 8), pngChunk("IHDR", wideHeader),
-  pngChunk("IDAT", deflateSync(Buffer.alloc(1025 * 4 + 1))), pngChunk("IEND"),
-]);
+const upload = Buffer.from(PROGRESSIVE_ROTATED_JPEG, "base64");
 
-async function provision({ actors, evidence }, key) {
-  const owner = actors.USER_A, admin = actors.ADMIN;
-  const fixtureRoute = "/rest/v1/budget_workspaces?select=id,owner_id,name,status,business_support_version&name=eq." + NAME + "&limit=2";
-  const planRoute = "/rest/v1/plans?select=id,code,workspace_type,is_active&code=eq.business&workspace_type=eq.business&is_active=eq.true&limit=2";
-  const grantRoute = "/rest/v1/rpc/admin_grant_manual_subscription";
-  async function request(route, payload) {
-    const response = await fetch(API_ORIGIN + route, {
-      method: payload ? "POST" : "GET", redirect: "error", signal: AbortSignal.timeout(15000),
-      headers: { apikey: key, authorization: "Bearer " + admin.token, "content-type": "application/json", "user-agent": AGENT },
-      ...(payload ? { body: JSON.stringify(payload) } : {}),
-    });
-    let data = null;
-    try { data = await response.json(); } catch {}
-    return { status: response.status, data };
-  }
-  const existing = await request(fixtureRoute);
-  need(existing.status === 200 && Array.isArray(existing.data) && existing.data.length === 0, "NEW_LOGO_FIXTURE_REQUIRED");
-  const business = one(await request(planRoute));
-  need(business?.is_active === true && business.code === "business" && business.workspace_type === "business", "EXACT_BUSINESS_PLAN_REQUIRED");
-  const date = new Date(), tomorrow = new Date(date.getTime() + 86400000);
-  const grant = await request(grantRoute, {
-    p_owner_id: owner.id, p_workspace_id: null, p_plan_id: business.id, p_billing_period: "monthly",
-    p_starts_on: date.toISOString().slice(0, 10), p_ends_on: tomorrow.toISOString().slice(0, 10),
-    p_reason: "Isolated synthetic Business logo validation acceptance", p_new_business_name: NAME,
-  });
-  evidence.grant_status = grant.status;
-  if (grant.status !== 200 && /^[A-Z_]{4,80}$/.test(grant.data?.message || "")) evidence.grant_error = grant.data.message;
-  need(grant.status === 200 && /^[0-9a-f-]{36}$/.test(grant.data || ""), "LOGO_TEST_GRANT_ACK_REQUIRED");
-  const bound = one(await request(fixtureRoute));
-  need(bound?.id === grant.data && bound.owner_id === owner.id && bound.status === "active" && bound.name === NAME,
-    "LOGO_TEST_GRANT_READBACK_REQUIRED");
-  evidence.fixture_id = bound.id;
-  evidence.fixture_provisioned = true;
-}
-
-async function exercise({ actors, evidence }, key) {
+async function exercise({ actors, evidence }, key, decoder) {
+  const normalized = normalizeLogoJpeg(upload, decoder);
   const owner = actors.USER_A, admin = actors.ADMIN;
   const fingerprint = digest(normalized);
   const id = fingerprint.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
@@ -86,10 +33,7 @@ async function exercise({ actors, evidence }, key) {
   evidence.checks = {};
   evidence.requests = 0;
   evidence.cleanup = {};
-  evidence.reused_initial_run = 43281454455;
-  evidence.dimension_check_review_run = 43281914875;
-  evidence.original_runtime_review_run = 43282426255;
-  evidence.initial_owner_denial_and_type_mismatch_repeated = false;
+  evidence.reused_png_closeout = "b09a5b2b7f41652f65a90b62b3c43b5816a78b1a";
   const check = (name, ok) => {
     evidence.checks[name] = ok === true;
     need(ok === true, name);
@@ -111,7 +55,7 @@ async function exercise({ actors, evidence }, key) {
   const branding = (version, logo) => call("save", owner, {
     p_workspace_id: FIXTURE_ID, p_trading_name: NAME, p_logo_path: logo, p_expected_version: version,
   });
-  const uploadLogo = (actor, bytes = upload, type = "image/png") => call("validate", actor, bytes, type);
+  const uploadLogo = (actor, bytes = upload, type = "image/jpeg") => call("validate", actor, bytes, type);
   const workspace = () => call("workspace", admin);
   const profile = () => call("profile", owner);
   const setStatus = (status, version, reason) => call("suspend", admin, {
@@ -122,17 +66,20 @@ async function exercise({ actors, evidence }, key) {
   try {
     const w = one(await workspace()), s = one(await call("subscription", admin));
     check("EXACT_SUSPENDED_LOGO_FIXTURE_REQUIRED", w?.owner_id === owner.id && w?.id === FIXTURE_ID
-      && w.name === NAME && w.status === "suspended" && w.business_support_version === 6
+      && w.name === NAME && w.status === "suspended" && w.business_support_version === 14
       && s?.status === "active" && s.member_limit === 1 && Date.parse(s.paid_through_at) > Date.now());
-    const resumed = await setStatus("active", 6, "Verify the revised staging PNG parser");
+    const resumed = await setStatus("active", 14, "Verify the isolated JPEG logo path");
     check("SCOPED_RESUME_ACK_REQUIRED", resumed.status === 200);
     bound = true;
     const active = one(await workspace());
     check("RESUMED_FIXTURE_READBACK_REQUIRED", active?.id === FIXTURE_ID && active.status === "active"
-      && active.business_support_version === 7 && active.owner_id === owner.id);
+      && active.business_support_version === 15 && active.owner_id === owner.id);
     const p = one(await profile());
-    check("EXACT_EMPTY_BRANDING_REQUIRED", p?.trading_name === NAME && p.version === 1 && p.logo_storage_path === null);
+    check("EXACT_EMPTY_BRANDING_REQUIRED", p?.trading_name === NAME && p.version === 6 && p.logo_storage_path === null);
     check("INITIAL_LOGO_ABSENCE_REQUIRED", (await context()).data?.length === 0);
+    const mismatch = await uploadLogo(owner, normalized);
+    check("PNG_DECLARED_AS_JPEG_REJECTED", mismatch.status === 422 && mismatch.data?.error === "INVALID_LOGO_JPEG");
+    check("JPEG_MISMATCH_LEFT_STORAGE_EMPTY", (await context()).data?.length === 0);
     const created = await uploadLogo(owner);
     evidence.valid_upload_status = created.status;
     if (created.status >= 400 && /^[A-Z_]{3,70}$/.test(created.data?.error || "")) evidence.valid_upload_error = created.data.error;
@@ -148,9 +95,7 @@ async function exercise({ actors, evidence }, key) {
       && (await profile()).data?.[0]?.logo_storage_path === path);
     const retrieved = await call("broker", owner, { bucket: LOGO_BUCKET, path });
     check("BROKER_RETURNS_NORMALIZED_LOGO", retrieved.status === 200 && retrieved.noStore && digest(retrieved.data) === fingerprint);
-    const large = await uploadLogo(owner, widePng);
-    evidence.dimension_limit_status = large.status;
-    check("DIMENSION_LIMIT_APPLIED", large.status === 413 && large.data?.error === "LOGO_DIMENSIONS_TOO_LARGE");
+    check("JPEG_ORIENTATION_PRESERVED", retrieved.data.readUInt32BE(16) === 3 && retrieved.data.readUInt32BE(20) === 4);
   } catch (error) {
     failure = error;
   } finally {
@@ -173,11 +118,12 @@ async function exercise({ actors, evidence }, key) {
         need(after.status === 200 && after.data?.length === 0, "OBJECT_ABSENCE_READBACK_REQUIRED");
         evidence.cleanup.object_absent = true;
         const w = one(await workspace());
-        need(w?.owner_id === owner.id && w.name === NAME && w.status === "active" && w.business_support_version === 7,
+        need(w?.owner_id === owner.id && w.name === NAME && w.status === "active" && w.business_support_version === 15,
           "EXACT_WORKSPACE_SUSPEND_REQUIRED");
-        const suspend = await setStatus("suspended", 7, "Close the isolated staging logo trial");
+        const suspend = await setStatus("suspended", 15, "Close the isolated staging JPEG trial");
         need(suspend.status === 200, "FIXTURE_SUSPEND_ACK_REQUIRED");
-        need(one(await workspace())?.status === "suspended", "FIXTURE_SUSPEND_READBACK_REQUIRED");
+        const closed = one(await workspace());
+        need(closed?.status === "suspended" && closed.business_support_version === 16, "FIXTURE_SUSPEND_READBACK_REQUIRED");
         evidence.cleanup.fixture_suspended = true;
       } catch (error) { cleanupFailure = error; }
     }
@@ -189,11 +135,9 @@ async function exercise({ actors, evidence }, key) {
 async function main() {
   const p = JSON.parse(await readFile(new URL("./staging-logo-run.json", import.meta.url), "utf8"));
   if (p.enabled === false) return { result: "LOGO_PLAN_ARCHIVED", exit_code: 0 };
-  const provisionOnly = p.status === "PROVISION_LOGO_FIXTURE_ONCE" && p.fixture_id === null;
   need(p.enabled === true && p.project === "dczlddwbtgvfdujgcitb" && p.scope === "fr3-2-business-logo"
-    && (provisionOnly || p.fixture_id === FIXTURE_ID && p.status === "HOSTED_LOGO_REVISED_PARSER_ONCE"
-      && p.reuse_run === 43281454455 && p.dimension_review_run === 43281914875
-      && p.runtime_review_run === 43282426255), "EXACT_LOGO_PLAN_REQUIRED");
+    && p.fixture_id === FIXTURE_ID && p.status === "HOSTED_LOGO_JPEG_ONCE"
+    && p.reuse_browser_run === 43287931911 && p.reuse_byte_run === 43289536159, "EXACT_JPEG_PLAN_REQUIRED");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization"
     && process.env.GITHUB_RUN_ATTEMPT === "1", "EXACT_STAGING_RUN_REQUIRED");
@@ -201,9 +145,10 @@ async function main() {
   need(configuration.ok, "STAGING_PUBLIC_CONFIGURATION_REQUIRED");
   const { key } = readPublicConfiguration(await configuration.text());
   const options = { accountScope: "businessFixture" };
+  const { default: jpeg } = await import("../fixtures/logo-jpeg-tools/node_modules/jpeg-js/index.js");
   const report = await checkStagingAccess(privateAccounts(process.env, options), apiTransport(key, AGENT),
-    async input => provisionOnly ? provision(input, key) : exercise(input, key), options);
-  return { ...report, progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 Business logos", commit: process.env.GITHUB_SHA };
+    input => exercise(input, key, jpeg.decode), options);
+  return { ...report, progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 JPEG logos", commit: process.env.GITHUB_SHA };
 }
 
 const report = await main().catch(error => ({

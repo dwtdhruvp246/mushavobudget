@@ -1,4 +1,7 @@
 import { LogoInputError, MAX_LOGO_BYTES, normalizeLogoPng } from "./png.mjs";
+import { normalizeLogoJpeg } from "./jpeg.mjs";
+
+/** @typedef {(bytes: Uint8Array, options: {useTArray: true, formatAsRGBA: true, tolerantDecoding: false, maxResolutionInMP: number, maxMemoryUsageInMB: number}) => {width: number, height: number, data: Uint8Array}} LogoJpegDecoder */
 
 export const FIXTURE_ID = "8d9307e6-aada-4c9a-a8f5-43c57e0865e2";
 export const LOGO_BUCKET = "business-logos";
@@ -48,6 +51,7 @@ async function fingerprint(bytes) {
 }
 
 export function createLogoUploadHandler({ configured, allowedOrigin, createUserClient, gateReady, storeLogo, readLogo,
+  decodeJpeg = /** @type {LogoJpegDecoder | null} */ (null),
   logRejection = (/** @type {string} */ _reason) => {},
 }) {
   return async request => {
@@ -85,10 +89,12 @@ export function createLogoUploadHandler({ configured, allowedOrigin, createUserC
         return fail(403, "CURRENT_BUSINESS_OWNER_REQUIRED");
       }
       if (!await gateReady()) return fail(503, "LOGO_TRIAL_UNAVAILABLE");
-      if (request.headers.get("content-type")?.toLowerCase() !== "image/png") {
-        return fail(415, "PNG_REQUIRED_FOR_LOGO_TRIAL");
+      const mediaType = request.headers.get("content-type")?.toLowerCase();
+      if (mediaType !== "image/png" && (mediaType !== "image/jpeg" || !decodeJpeg)) {
+        return fail(415, "UNSUPPORTED_LOGO_TYPE");
       }
-      const png = await normalizeLogoPng(await readUpload(request));
+      const bytes = await readUpload(request);
+      const png = mediaType === "image/png" ? await normalizeLogoPng(bytes) : normalizeLogoJpeg(bytes, decodeJpeg);
       const sha = await fingerprint(png);
       const objectId = sha.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
       const path = folder + objectId + ".png";

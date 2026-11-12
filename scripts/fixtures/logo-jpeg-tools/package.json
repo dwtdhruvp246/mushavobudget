@@ -1,0 +1,7 @@
+{
+  "name": "mushavo-logo-jpeg-tools",
+  "private": true,
+  "dependencies": {
+    "jpeg-js": "0.4.4"
+  }
+}

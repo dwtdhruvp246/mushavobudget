@@ -15,16 +15,17 @@ try {
     create role anon; create role authenticated; create role service_role bypassrls;
     create schema storage;
     create table storage.objects(bucket_id text not null, name text not null, primary key(bucket_id,name));
-    create table public.budget_workspaces(id uuid primary key, name text, workspace_type text);
+    create table public.budget_workspaces(id uuid primary key, name text, workspace_type text, status text);
     create table public.business_profiles(workspace_id uuid, logo_storage_path text);
     grant usage on schema storage to anon, authenticated, service_role;
     grant select, insert, update, delete on storage.objects to anon, authenticated, service_role;
+    grant select on public.budget_workspaces to service_role;
     alter table storage.objects enable row level security;
     create policy modeled_existing_access on storage.objects for all to authenticated, anon using (true) with check (true);
   `);
   await assert.rejects(db.exec(sql), /FR3_LOGO_FIXTURE_NOT_EMPTY_OR_MISSING/);
   await db.exec("rollback");
-  await db.query("insert into public.budget_workspaces values($1,'audit-fr3-logo-ingestion-20261112','business')", [FIXTURE_ID]);
+  await db.query("insert into public.budget_workspaces values($1,'audit-fr3-logo-ingestion-20261112','business','active')", [FIXTURE_ID]);
   await db.query("insert into public.business_profiles values($1,null)", [FIXTURE_ID]);
   await insert("business-logos", scopedPath);
   await assert.rejects(db.exec(sql), /FR3_LOGO_FIXTURE_NOT_EMPTY_OR_MISSING/);
@@ -33,6 +34,7 @@ try {
   await db.exec(sql);
 
   await db.exec("set role authenticated");
+  await assert.rejects(db.query("select public.fr3_logo_fixture_gate_ready()"), denied);
   await assert.rejects(insert("business-logos", scopedPath), denied);
   await insert("business-logos", outsidePath);
   await insert("payment-proofs", scopedPath);
@@ -40,10 +42,15 @@ try {
   await db.exec("set role anon");
   await assert.rejects(insert("business-logos", scopedPath), denied);
   await db.exec("set role service_role");
+  assert.equal((await db.query("select public.fr3_logo_fixture_gate_ready() ready")).rows[0].ready, true);
   await insert("business-logos", scopedPath);
   await db.exec("set role authenticated");
   assert.equal((await db.query("update storage.objects set name='other/renamed.png' where bucket_id='business-logos' and name=$1", [scopedPath])).affectedRows, 0);
   assert.equal((await db.query("delete from storage.objects where bucket_id='business-logos' and name=$1", [scopedPath])).affectedRows, 1);
+  await db.exec("reset role");
+  await db.query("update public.budget_workspaces set status='suspended' where id=$1", [FIXTURE_ID]);
+  await db.exec("set role service_role");
+  assert.equal((await db.query("select public.fr3_logo_fixture_gate_ready() ready")).rows[0].ready, false);
   console.log(JSON.stringify({ result: "LOCAL_LOGO_FIXTURE_GATE_PASS", hosted: false, exit_code: 0 }));
 } finally {
   await db.close();

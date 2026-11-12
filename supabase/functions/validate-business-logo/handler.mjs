@@ -41,7 +41,7 @@ async function fingerprint(bytes) {
   return Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
-export function createLogoUploadHandler({ configured, allowedOrigin, createUserClient, storeLogo, readLogo }) {
+export function createLogoUploadHandler({ configured, allowedOrigin, createUserClient, gateReady, storeLogo, readLogo }) {
   return async request => {
     const origin = request.headers.get("origin");
     const allowed = !origin || allowedOrigin(origin);
@@ -76,6 +76,7 @@ export function createLogoUploadHandler({ configured, allowedOrigin, createUserC
       if (!await canWrite(folder + "00000000-0000-4000-8000-000000000000.png")) {
         return fail(403, "CURRENT_BUSINESS_OWNER_REQUIRED");
       }
+      if (!await gateReady()) return fail(503, "LOGO_TRIAL_UNAVAILABLE");
       if (request.headers.get("content-type")?.toLowerCase() !== "image/png") {
         return fail(415, "PNG_REQUIRED_FOR_LOGO_TRIAL");
       }
@@ -84,6 +85,7 @@ export function createLogoUploadHandler({ configured, allowedOrigin, createUserC
       const objectId = sha.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
       const path = folder + objectId + ".png";
       if (!await canWrite(path)) return fail(403, "CURRENT_BUSINESS_OWNER_REQUIRED");
+      if (!await gateReady()) return fail(503, "LOGO_TRIAL_UNAVAILABLE");
 
       // Reconcile a lost response or same-content retry against the actual bytes.
       // Store uses an immutable path. A different object is never overwritten.

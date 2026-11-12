@@ -66,11 +66,12 @@ const auth = "Bearer " + "a".repeat(32);
 function request(body = png(), headers = {}) {
   return new Request(url, { method: "POST", headers: { "content-type": "image/png", authorization: auth, ...headers }, body });
 }
-function fixture({ owner = () => true, session = true, enabled = true, dropAcknowledgement = false, wrongBytes = false } = {}) {
+function fixture({ owner = () => true, session = true, enabled = true, gate = () => true, dropAcknowledgement = false, wrongBytes = false } = {}) {
   const objects = new Map();
-  let writes = 0, ownerChecks = 0;
+  let writes = 0, ownerChecks = 0, gateChecks = 0;
   const handle = createLogoUploadHandler({
     configured: () => enabled,
+    gateReady: () => gate(++gateChecks),
     allowedOrigin: origin => origin === "https://staging.invalid",
     createUserClient: token => {
       assert.equal("Bearer " + token, auth);
@@ -100,6 +101,8 @@ test("auth, origin, configuration and owner checks prevent writes", async () => 
     [{}, { authorization: "" }, 401],
     [{}, { origin: "https://elsewhere.invalid" }, 403],
     [{ enabled: false }, {}, 503],
+    [{ gate: () => false }, {}, 503],
+    [{ gate: check => check === 1 }, {}, 503],
     [{ owner: () => false }, {}, 403],
     [{ session: false }, {}, 403],
     [{ owner: check => check === 1 }, {}, 403],

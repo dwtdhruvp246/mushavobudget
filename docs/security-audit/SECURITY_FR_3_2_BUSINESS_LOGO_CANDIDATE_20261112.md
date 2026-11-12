@@ -12,7 +12,7 @@ The function verifies the current Auth user, application session and active Busi
 
 The function stores the normalized PNG at an immutable path derived from its SHA-256. It confirms the actual persisted bytes using server-only retrieval and rechecks owner and session access before returning the path. A same-content retry can recover a lost upload acknowledgement without overwriting an object.
 
-The candidate restrictive Storage policies prevent authenticated and anonymous users from inserting or changing logo objects within the reserved workspace. The installer requires the exact empty fixture with no linked logo. This makes every new logo in the trial workspace pass through the validator. Existing ownership and cleanup rules still apply.
+The candidate restrictive Storage policies prevent authenticated and anonymous users from inserting or changing logo objects within the reserved workspace. The installer requires the exact empty fixture with no linked logo. This makes every new logo in the trial workspace pass through the validator. Existing ownership and cleanup rules still apply. The service-only readiness check verifies both policy predicates and workspace status before file processing and again before writing.
 
 ## Verification
 
@@ -31,7 +31,7 @@ The local check covers valid and rejected files, immutable retry after a lost ac
 
 1. Provision the exact empty synthetic Business workspace for a controlled active Owner. Verify its subscription, profile and Storage state.
 2. Install the fixture-only Storage policies on the verified staging project. Read back both policies and verify direct fixture uploads are denied. Preserve all existing grants and session rules.
-3. Deploy the new function with server-side Auth verification and the candidate browser source to a staging preview. Enable `MUSHAVO_STAGE4_LOGO_FIXTURE_ENABLED` only after the policies are verified.
+3. Deploy the new function with server-side Auth verification and the candidate browser source to a staging preview. The function checks both exact restrictive policies through a service-only RPC. The active workspace and both policies are required for uploads.
 4. Use a harmless supported PNG to test actual upload, retry, branding save and broker preview. Verify harmless type mismatch, size and owner denials. Restore the logo, remove the exact objects, close the test sessions and independently confirm absence.
 5. Disable the trial after its bounded run. Record results before expanding the supported format set or other upload flows.
 

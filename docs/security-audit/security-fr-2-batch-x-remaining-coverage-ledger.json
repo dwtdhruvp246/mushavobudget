@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "date": "2026-11-08",
+  "date": "2026-11-12",
   "project": "dczlddwbtgvfdujgcitb",
-  "status": "ORIGINAL_FIVE_BUSINESS_CARRY_FORWARD_GROUPS_RECONCILED_AT_RECORDED_SCOPES",
+  "status": "BATCH_X_COMPLETE_AT_CURRENT_SELECTED_AUTHORIZATION_BOUNDARY",
   "original_receipt": "docs/security-audit/security-fr-2-business-corrected-api-owner-result.json",
   "original_completed_ordinary_API_checks_not_repeated": true,
   "original_actor_role_invitations_reporting_and_escalation_passes_retained": true,
@@ -55,7 +55,7 @@
   "current_read_only_conversion_snapshot": {
     "scope": "READ_ONLY_REFERENCE_STATE_AND_ORIGINAL_COLUMN_MANUAL_BASELINE",
     "stage_step": "FR.2.2_CONVERSION_REFERENCE_SNAPSHOT",
-    "checked_UTC": "2026-11-07T18:45:18.599836+00:00",
+    "checked_UTC": "2026-11-08T09:50:45.111188+00:00",
     "target_project": "dczlddwbtgvfdujgcitb",
     "hosted_acceptance": false,
     "record_consistency": {
@@ -89,7 +89,7 @@
   "current_read_only_business_snapshot": {
     "scope": "READ_ONLY_POST_API_BUSINESS_COUNTS_RETAINED_FINGERPRINTS_AND_CONVERSION_CONSISTENCY",
     "stage_step": "FR.2.3_BUSINESS_POST_BATCH_REVIEW",
-    "checked_UTC": "2026-11-07T18:45:16.754599+00:00",
+    "checked_UTC": "2026-11-08T09:50:43.433154+00:00",
     "business_state": [
       {
         "fixture": "PRIMARY",
@@ -174,7 +174,7 @@
   "all_business_workspaces_total": 5,
   "historical_conversion_orphans": 2,
   "historical_conversion_deletion_or_FK_validation_performed": false,
-  "full_lettered_batch_X_complete": false,
+  "full_lettered_batch_X_complete": true,
   "stage_3_complete": false,
   "findings_closed": [],
   "additional_account_suspension_receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json",
@@ -197,18 +197,22 @@
   "additional_independent_backend_overlap_receipt": "docs/security-audit/security-fr-2-batch-y-independent-queue-overlap-result.json",
   "additional_three_ordinary_team_receipt": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json",
   "additional_private_file_cache_receipt": "docs/security-audit/security-fr-2-batch-x-private-file-cache-staging-result.json",
-  "private_file_cache_comparison": "SCOPED_SIGNED_URL_EXPIRY_AND_SUPPORTED_CACHE_SETTINGS_PASS_ORIGINAL_MEMBERSHIP_REVOCATION_FOLLOWUP_OPEN",
+  "private_file_cache_comparison": "HISTORICAL_PROVIDER_CACHE_OBSERVATION_RETAINED_CURRENT_BROKER_SCOPED_PASS",
   "additional_installed_backend_caller_matrix_receipt": "docs/security-audit/security-fr-2-batch-y-installed-caller-matrix-staging-result.json",
   "Batch_Y_current_closeout": "docs/security-audit/security-fr-2-batch-y-current-exit-ledger.json",
   "latest_preservation_after_Y": "docs/security-audit/security-fr-2-batch-y-authorization-change-staging-result.json",
   "synthetic_Business_current_state": {
     "status": "suspended",
-    "support_version": 18,
-    "subscription_version": 15,
+    "support_version": 20,
+    "subscription_version": 19,
     "seats": 1,
-    "paid_through_at": "2026-11-08T00:00:00Z"
+    "paid_through_at": "2026-11-08T00:00:00Z",
+    "checked_at": "2026-11-08T09:51:31.129344+00:00"
   },
-  "private_file_broker_current_status": "GENUINE_PERSONAL_FAMILY_SUBSCRIPTION_PASS_BUSINESS_BROKER_ACCEPTANCE_PENDING",
+  "private_file_broker_current_status": "PERSONAL_SUBSCRIPTION_FAMILY_AND_BUSINESS_SCOPED_HOSTED_PASS",
   "additional_broker_result": "docs/security-audit/security-fr-2-batch-x-private-file-server-retrieval-staging-result.json",
-  "additional_family_broker_result": "docs/security-audit/security-fr-2-batch-x-private-broker-family-corrected-result.json"
+  "additional_family_broker_result": "docs/security-audit/security-fr-2-batch-x-private-broker-family-corrected-result.json",
+  "current_exit_ledger": "docs/security-audit/security-fr-2-batch-x-current-exit-ledger.json",
+  "additional_business_broker_result": "docs/security-audit/security-fr-2-batch-x-business-private-file-staging-result.json",
+  "latest_independent_preservation": "docs/security-audit/security-fr-2-batch-x-final-preservation.json"
 }

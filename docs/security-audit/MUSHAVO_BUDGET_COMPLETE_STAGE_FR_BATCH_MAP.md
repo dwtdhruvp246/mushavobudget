@@ -1,5 +1,5 @@
 # Mushavo Budget — complete stages, FR groups and batches
-As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.19
+As of 12 November 2026 • Full remaining-to-launch hierarchy • Version 1.20
 
 ## Read this structure correctly
 
@@ -7,7 +7,7 @@ As of 7 November 2026 • Full remaining-to-launch hierarchy • Version 1.19
 
 **Main Stage 3 → FR.2 → FR.2.5 → Batch W is complete for the agreed staging scope.** The live recovery password-save retry passed and its disposable account and empty Personal workspace were removed. The existing-password sign-in accepted a seven-character credential on the disposable account under the current policy. Business v25 is live on stable staging, and Chromium confirmed the delivery-failure and resend wait messages against the deployed files using controlled responses. The signed-in password-change failure/retry is owner-deferred. [Closeout receipt](security-fr-2-batch-w-staging-closeout.json).
 
-**Current execution is the remaining X/Y authorization scope.** The document archive action now also enforces the parent team scope. Owner access and foreign-scope denial passed in the selected rollback-only staging test; all temporary records and modeled sessions are absent. [Archive scope evidence](security-fr-2-batch-x-document-archive-scope-staging-result.json).
+**Earlier X/Y authorization evidence.** The document archive action now also enforces the parent team scope. Owner access and foreign-scope denial passed in the selected rollback-only staging test; all temporary records and modeled sessions are absent. [Archive scope evidence](security-fr-2-batch-x-document-archive-scope-staging-result.json).
 
 Both queues now reject stale worker completions on staging. All 24 selected database-role denial calls passed, and both service-role queue lifecycle checks rolled back cleanly. Both paired dispatchers are now deployed on staging. Ten public/ordinary-session HTTP denial checks passed; all test sessions were closed, the queues remain empty and no scheduler was added. Full scheduler/provider delivery remains later operations work. [Deployment evidence](security-fr-2-batch-y-dispatcher-staging-result.json). [Backend evidence](security-fr-2-batch-y-backend-caller-and-lease-staging-result.json).
 
@@ -19,7 +19,7 @@ The real queue-overlap attempt did not establish concurrency: the connection ser
 
 Thirty-six genuine Business finance HTTP assertions passed. The controlled finance manager approved the Owner's request, created one linked bill and recorded two synthetic ledger payments totaling USD 1. Self-approval, stale review, overpayment and invalid cancellation were rejected; replay preserved original amounts and payment sources. The request is fulfilled and the bill paid. The temporary manager was removed, one seat restored and the workspace suspended; all CI sessions are absent and original fixture fingerprints match. [Finance workflow evidence](security-fr-2-batch-x-business-finance-staging-result.json).
 
-The Family proof-upload policy now correlates its lookup to the Storage object path rather than the Family display name. The fix passed 17 PostgreSQL assertions and genuine owner/member/Personal upload checks. The follow-up passed 58 workflow guards and 22 selected HTTP assertions: forged and removed uploads, fresh removed-member downloads and new signing were denied. A previously authorized warmed URL returned a CF cache HIT; immediate cached-copy revocation is not claimed and remains file-delivery follow-up. Both synthetic Families, all physical files and all six genuine test sessions are absent; original manual Family fingerprints match. [Live receipt](security-fr-2-batch-x-family-proof-path-hosted-completion.json) and [cache follow-up](security-fr-2-family-file-cache-carry-forward.json).
+The Family proof-upload policy now correlates its lookup to the Storage object path rather than the Family display name. The fix passed 17 PostgreSQL assertions and genuine owner/member/Personal upload checks. The follow-up passed 58 workflow guards and 22 selected HTTP assertions: forged and removed uploads, fresh removed-member downloads and new signing were denied. A previously authorized warmed URL returned a CF cache HIT. The later broker runs verified current authorization on the selected Family and Business paths. Both synthetic Families, all physical files and all six genuine test sessions are absent; original manual Family fingerprints match. [Live receipt](security-fr-2-batch-x-family-proof-path-hosted-completion.json) and [cache follow-up](security-fr-2-family-file-cache-carry-forward.json).
 
 There are three overlapping views of the SAME project:
 - **Main Stages 0–10** describe the product/security areas.
@@ -37,7 +37,7 @@ The previous seven-deliverable time plan grouped this work for estimation. It wa
 | 0 | Baseline and inventory | Baseline review closed | Retain inventory/findings; check the final release against them. | FR.8 |
 | 1 | Foundations: access, staging and recovery | Scoped setup/review completed; launch gaps remain | Finish required database/file/offsite recovery, accountable operators, monitoring and rollback. | FR.4, FR.8 |
 | 2 | Web hardening | Scoped checks/candidates completed; final acceptance remains | Final HTTPS/security headers, Contact abuse control and Web Push destination enforcement on the release setup. | FR.4, FR.7, FR.8 |
-| 3 | Authorization and Auth | CURRENT implementation work | Finish remaining V/W/X/Y/Z, including actual roles/tenant access, invitation/password/session behavior and authorization closeout. | FR.2 |
+| 3 | Authorization and Auth | CURRENT implementation work | Finish the deferred V recovery acceptance and Z closeout. | FR.2 |
 | 4 | Data lifecycle, uploads and privacy | Review/candidates done; implementation/hosted acceptance remains | Deletion and shared ownership, retention, trusted files/downloads and factual policies/disclosures. | FR.3 |
 | 5 | Native security and compatibility | Review/preparation done; actual native acceptance remains | Final Android/iOS project/signing/builds, secure sessions/device backup, native origins/callbacks and SDK/privacy evidence. | FR.7; dependencies FR.5/FR.6 |
 | 6 | Identity and email | Review/candidates done; launch acceptance remains | Agreed Google/Apple integration, account linking/collisions, confirmation/recovery/invitation callbacks and actual email rendering/delivery. | FR.5 |
@@ -103,20 +103,20 @@ Historical preparation/local pass is not relabelled as current full security acc
 | U | Full-app startup/cache/session lifecycle | Recorded COMPLETE at its accepted scope; reuse applicable evidence. |
 | V | Privileged access, recoverable operators and original MFA scope | IN PROGRESS. Staging Admin access, ordinary denial, session revocation, staff roles and catalog reconciliation passed at their reviewed scope. Independent recovery is owner-deferred and remains open. Historical MFA checks remain on hold. [Batch V evidence](security-fr-2-batch-v-staff-and-catalog-staging-result.json). |
 | W | Auth/password/account/email workflows | Complete for the agreed staging scope. The signed-in password-change failure/retry is owner-deferred. [Closeout receipt](security-fr-2-batch-w-staging-closeout.json). |
-| X | Personal/Family/Business permissions and legitimate finance | Scoped receipt, request/bill, proof-file, suspension and expiry passes retained. The three ordinary actor manager-removal/escalation/override/existing-session scope passed 42 live assertions. A two-file signed URL expiry/cache-setting comparison passed 21 assertions; the earlier Family warmed-original URL after removal remains open. Reconcile all original exits before full closure. [Team evidence](security-fr-2-batch-x-three-ordinary-team-staging-result.json), [cache evidence](security-fr-2-batch-x-private-file-cache-staging-result.json), [coverage ledger](security-fr-2-batch-x-remaining-coverage-ledger.json). |
+| X | Personal/Family/Business permissions and legitimate finance | Complete at the selected staging authorization boundary. Four exit groups reconciled with genuine broker checks across the four private buckets, exact cleanup and preserved finance data. [Current X closeout](security-fr-2-batch-x-current-exit-ledger.json) |
 | Y | Backend caller permissions, real database races and containment | COMPLETE at the selected current-policy authorization boundary. Nine exit groups reconciled: 100 service-only signatures denied under both database roles, selected real service positives, queue lifecycle/replay, genuine independent PostgreSQL claim overlap, HTTP idempotency, real same-session suspension overlap, repaired per-device send checks and exact cleanup/preservation. No provider dispatch or full operations acceptance inferred. [Current Y closeout](security-fr-2-batch-y-current-exit-ledger.json). |
-| Z | Integrated authorization recheck and Stage 3 closeout | PLANNED; reconcile U–Y and original authorization exits, integrated affected recheck and final Stage 3 handoff. |
+| Z | Integrated authorization recheck and Stage 3 closeout | Blocked by the required V exit. Affected checks and preservation are recorded. [Stage 3 decision](security-fr-2-batch-z-stage-3-decision.json) |
 
-**V, X and Z remain open; Y is complete at its selected authorization boundary.** Z is the planned closeout for Stage 3 authorization. FR.3–FR.8 are separate launch work.
+**V and Z remain open.** X and Y are complete at their recorded staging authorization scopes. [Stage 3 decision](security-fr-2-batch-z-stage-3-decision.json)
 
 The original five Business carry-forward groups now have a [current coverage ledger](security-fr-2-batch-x-remaining-coverage-ledger.json). Both original Business fixture states and the archived-role permissions/audit fingerprints match the prior receipt. The two manual Family conversions retain their original SHA-256; the two historical orphans remain untouched.
 
-### Work left inside V/X/Y/Z
+### Remaining authorization work
 
 - **V:** retain the verified Admin staff, Finance, Support and reconciled catalog passes. Independent Admin recovery and SMTP are owner-deferred. Historical MFA criteria remain on hold under the owner's password-only decision. [Current policy reconciliation](SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md).
-- **X:** reconcile earlier Personal/Family/Business passes; execute missing own/foreign/removed/assigned/team/Owner/escalation and invite/removal effects; verify legitimate finance/currency/entitlements; prove exact fixture cleanup and retained-record preservation.
+- **X:** Four original exit groups reconciled at the recorded scope. [Current X closeout](security-fr-2-batch-x-current-exit-ledger.json)
 - **Y:** COMPLETE at the selected current-policy authorization boundary. Reuse the [nine reconciled exit groups](security-fr-2-batch-y-current-exit-ledger.json). Actual provider delivery, external schedules, full monitoring/backup/recovery remain later FR.4 work.
-- **Z:** reconcile required authorization outcomes and current exact installations; run justified integrated/affected regressions; check preservation/cleanup/containment and issue the Stage 3 completion decision/handoff. Unresolved required blockers keep it open.
+- **Z:** Affected regression and preservation evidence is available. Required V acceptance keeps Stage 3 open. [Stage 3 decision](security-fr-2-batch-z-stage-3-decision.json)
 
 X/Y/Z had named scope and exits but no fully enumerated final execution-case counts. That planning gap is explicit. Freeze their exact case lists from existing coverage before running each pack; do not invent a test count or expand with speculative cases mid-pack.
 

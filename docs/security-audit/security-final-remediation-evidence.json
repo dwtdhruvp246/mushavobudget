@@ -10964,6 +10964,33 @@
       "stage_3_complete": false,
       "findings_closed": [],
       "exit_code": 0
+    },
+    {
+      "id": "FRE321",
+      "date": "2026-11-12",
+      "stage_step": "FR.2.6_BATCH_X_EXIT_RECONCILIATION_AND_BATCH_Z_DECISION",
+      "result": "BATCH_X_COMPLETE_AT_CURRENT_SELECTED_AUTHORIZATION_BOUNDARY",
+      "decision": "STAGE_3_CLOSEOUT_BLOCKED_BY_REQUIRED_V_EXIT",
+      "progress_display": "Stage 3/10 | FR.2/8 | Batch Z/Z — BLOCKED",
+      "hosted_evidence_date": "2026-11-08",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-x-current-exit-ledger.json",
+        "docs/security-audit/security-fr-2-batch-z-stage-3-decision.json",
+        "docs/security-audit/security-fr-2-batch-x-business-private-file-staging-result.json",
+        "docs/security-audit/security-fr-2-batch-x-final-preservation.json"
+      ],
+      "guard_tests_passed": 338,
+      "business_completion_exit_code": 0,
+      "original_business_initial_exit_code": 1,
+      "completed_live_checks_repeated": false,
+      "remaining_required_letters": [
+        "V",
+        "Z"
+      ],
+      "stage_3_complete": false,
+      "FR_2_complete": false,
+      "production_changed": false,
+      "findings_closed": []
     }
   ],
   "prior_stage_evidence_preserved": true,

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "date": "2026-11-07",
+  "date": "2026-11-12",
   "phase": "FINAL_REMEDIATION",
   "status": "IN_PROGRESS_AUTHORIZATION_AND_REMAINING_LAUNCH_REMEDIATION",
   "active_batch": "FR.2",
@@ -9,7 +9,7 @@
   "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
   "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
   "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-  "latest_evidence": "FRE320",
+  "latest_evidence": "FRE321",
   "batches": [
     {
       "id": "FR.1",
@@ -1694,7 +1694,7 @@
         },
         {
           "id": "FR.2.6",
-          "status": "IN_PROGRESS_SELECTED_BACKEND_AND_DOCUMENT_SCOPE_RECHECKS_PASS",
+          "status": "AFFECTED_CHECKS_PASS_STAGE_3_CLOSEOUT_BLOCKED_BY_V",
           "title": "Affected recheck and bounded completion report",
           "receipt": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
           "full_Stage_3_complete": false,
@@ -1705,7 +1705,9 @@
           "account_suspension_receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json",
           "real_queue_overlap_receipt": "docs/security-audit/security-fr-2-batch-y-real-queue-overlap-result.json",
           "business_finance_receipt": "docs/security-audit/security-fr-2-batch-x-business-finance-staging-result.json",
-          "family_proof_path_policy_receipt": "docs/security-audit/security-fr-2-batch-x-family-proof-path-hosted-completion.json"
+          "family_proof_path_policy_receipt": "docs/security-audit/security-fr-2-batch-x-family-proof-path-hosted-completion.json",
+          "batch_X_exit_ledger": "docs/security-audit/security-fr-2-batch-x-current-exit-ledger.json",
+          "batch_Z_decision": "docs/security-audit/security-fr-2-batch-z-stage-3-decision.json"
         }
       ],
       "readiness_handoff": "docs/security-audit/SECURITY_FR_2_1_READINESS_HANDOFF.md",
@@ -1716,8 +1718,8 @@
       "findings_closed": [],
       "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
       "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-      "next_step": "BATCH_X_THIRD_ORDINARY_ACTOR_AND_REMAINING_ENTITLEMENT_ACCEPTANCE",
-      "latest_evidence": "FRE319"
+      "next_step": "BATCH_V_DEFERRED_ADMIN_RECOVERY_THEN_Z_CLOSEOUT",
+      "latest_evidence": "FRE321"
     },
     {
       "id": "FR.3",
@@ -1767,7 +1769,7 @@
   "native_security_acceptance": false,
   "store_acceptance": false,
   "APK_update_deferred": true,
-  "next_step": "BATCH_X_THIRD_ORDINARY_ACTOR_AND_REMAINING_ENTITLEMENT_ACCEPTANCE",
+  "next_step": "BATCH_V_DEFERRED_ADMIN_RECOVERY_THEN_Z_CLOSEOUT",
   "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
   "owner_preparation_summary_received": true,
   "owner_dashboard_metadata_required": false,
@@ -4433,14 +4435,14 @@
       "status": "IN_PROGRESS"
     },
     "lettered_batch": {
-      "letter": "Y",
+      "letter": "Z",
       "final_letter": "Z",
-      "label": "Batch Y/Z",
-      "title": "Backend caller permissions, real database races and containment",
-      "status": "COMPLETE",
-      "scope": "Selected current-policy authorization boundary; full provider/operations work remains later."
+      "label": "Batch Z/Z",
+      "title": "Integrated authorization recheck and Stage 3 closeout",
+      "status": "BLOCKED",
+      "scope": "Affected staging checks accepted. Required V exit remains owner-deferred."
     },
-    "compact_display": "Stage 3/10 | FR.2/8 | Batch Y/Z — COMPLETE",
+    "compact_display": "Stage 3/10 | FR.2/8 | Batch Z/Z — BLOCKED",
     "labels_are_not_completion_percentages": true,
     "current_hierarchy_only_not_a_universal_FR_to_stage_mapping": true,
     "batch_completion_requires_its_full_exit_evidence": true,
@@ -4453,31 +4455,27 @@
       }
     ],
     "latest_completed_action": {
-      "title": "Batch Y exit reconciliation and real authorization-change overlap",
+      "title": "Batch X exit reconciliation and Business private-file cleanup",
       "status": "COMPLETE",
-      "exit_groups": 9,
-      "exit_groups_reconciled": 9,
-      "workflow_guards": 176,
+      "exit_groups": 4,
+      "exit_groups_reconciled": 4,
+      "workflow_guards": 338,
       "exit_code": 0,
-      "evidence": "docs/security-audit/security-fr-2-batch-y-current-exit-ledger.json",
-      "real_Postgres_witness": "docs/security-audit/security-fr-2-batch-y-authorization-change-staging-result.json",
-      "dispatcher_repair": "docs/security-audit/security-fr-2-batch-y-send-authorization-staging-result.json",
-      "evidence_date": "2026-11-07"
+      "evidence": "docs/security-audit/security-fr-2-batch-x-current-exit-ledger.json",
+      "evidence_date": "2026-11-08"
     },
     "next_required_action": {
-      "title": "Cached-original-file serving contract and remaining X exits",
-      "status": "PENDING",
-      "scope": "Reconcile original X permissions/finance exits and the observed provider-cache behavior. Preserve V deferrals and perform justified integrated Z checks only after its required prerequisites.",
-      "checkpoint": "docs/security-audit/SECURITY_FR_2_RESUME_CHECKPOINT_20261107.md",
-      "new_user_credentials_required": false
+      "title": "Batch V independent Admin recovery, then Batch Z decision",
+      "status": "OWNER_DEFERRED",
+      "scope": "Resume the deferred V acceptance when the owner is ready to revisit SMTP and independent Admin recovery. Then reconcile Z against the accepted exact staging source and run only justified affected checks.",
+      "checkpoint": "docs/security-audit/SECURITY_FR_2_RESUME_CHECKPOINT_20261107.md"
     },
-    "updated_date": "2026-11-08",
+    "updated_date": "2026-11-12",
     "remaining_required_letters": [
       "V",
-      "X",
       "Z"
     ],
-    "remaining_required_package_count": 3
+    "remaining_required_package_count": 2
   },
   "progress_display_contract": "docs/security-audit/security-progress-display-contract.json",
   "progress_display_convention": "docs/security-audit/SECURITY_PROGRESS_DISPLAY_CONVENTION.md",
@@ -4678,8 +4676,6 @@
   },
   "remaining_required_lettered_batches": [
     "V",
-    "X",
-    "Y",
     "Z"
   ],
   "FR2_batch_w": {
@@ -8366,7 +8362,7 @@
     "provider_setup_confirmed_and_completed": true,
     "cached_copy_followup": "docs/security-audit/security-fr-2-family-file-cache-carry-forward.json"
   },
-  "latest_acceptance_evidence": "FRE319",
+  "latest_acceptance_evidence": "FRE321",
   "output_workflow_review": {
     "status": "COMPLETE",
     "date": "2026-11-07",
@@ -8382,5 +8378,7 @@
       "Z"
     ],
     "next_action": "Resume the existing unfinished Batch X acceptance. Retain cached-file behavior under its existing file-delivery follow-up; no new stage, letter or speculative case is introduced."
-  }
+  },
+  "batch_X_current_exit_ledger": "docs/security-audit/security-fr-2-batch-x-current-exit-ledger.json",
+  "batch_Z_stage_3_decision": "docs/security-audit/security-fr-2-batch-z-stage-3-decision.json"
 }

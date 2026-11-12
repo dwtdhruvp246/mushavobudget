@@ -1,6 +1,6 @@
 # Mushavo Budget — current staging checkpoint
 
-Updated 8 November 2026. **Stage 3/10 | FR.2/8 | Batch X/Z — hosted work completed; final exit reconciliation being archived.** Y is complete at its selected current-policy authorization boundary. Main Stage3, FR.2 and release acceptance remain open. Production was not changed.
+Updated 12 November 2026. **Stage 3/10 | FR.2/8 | Batch Z/Z — BLOCKED.** X and Y are complete at their recorded staging authorization scopes. V and Z remain open. The latest hosted evidence and cleanup readback are from 8 November 2026. [Batch X exit ledger](security-fr-2-batch-x-current-exit-ledger.json) · [Batch Z decision](security-fr-2-batch-z-stage-3-decision.json)
 
 ## Completed — do not replay
 
@@ -32,8 +32,6 @@ Independent final readback **2026-11-08T09:51:31.129344Z**:
 
 ## Next work and holds
 
-Archive X's four original exits against the existing role/finance ledger and all four genuine broker scopes, then record Z readiness/Stage3 decision using the affected338 guards, installed boundary and preservation. Distinguish actual JS/synthetic DOM checks from new genuine browser/native preview acceptance.
+Batch V staging SMTP and independent Admin recovery remain owner-deferred. Historical MFA acceptance remains on hold under the selected password-only policy. The agreed signed-in password retry variant remains deferred. Batch Z can close after the required V exit is accepted and any affected checks are reconciled against the exact staging source.
 
-V SMTP/independent Admin recovery and historical MFA acceptance remain owner-deferred under the selected password-only policy. The agreed signed-in password retry variant remains deferred. Do not send new email probes or alter factors/passwords. Z and Stage3 cannot close while required V work remains on hold.
-
-On reconnect, inspect this checkpoint, current branch head and recorded run result before retrying. No renewed blanket permission or account/password re-entry is required within the already-authorized staging scope.
+On reconnect, check the branch, the recorded run and the archived CI plan before retrying. The Business run and cleanup are complete. Reuse their receipts. Stage 4 / FR.3 retains the historical conversion, retention and wider file/privacy work. Stage 5 / FR.7 retains native client acceptance.

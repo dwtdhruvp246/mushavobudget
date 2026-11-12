@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_date": "2026-10-27",
+  "updated_date": "2026-11-12",
   "current_stage": null,
-  "current_step": "FR.2.5.W67_STABLE_RECOVERY_SAVE_AND_SIGNIN",
-  "current_title": "Main Stage 3 / FR.2 / Batch W: owner public18 source/routes PASS exit0; controlled ordinary Auth inbox pending; V MFA ON HOLD",
+  "current_step": "FR.2.6",
+  "current_title": "Main Stage 3 / FR.2 / Batch Z: X and Y complete at recorded scope; V recovery hold keeps Stage 3 open",
   "stage_0": {
     "status": "CLOSED_BASELINE_WITH_CARRY_FORWARD",
     "owner_approved": true,
@@ -1056,7 +1056,7 @@
   "release_gate": "OPEN_PENDING_REQUIRED_EVIDENCE",
   "secrets_or_customer_records_stored": false,
   "next_stage": null,
-  "next_step": "FR.2.5.W6_CONTROLLED_ORDINARY_AUTH_WORKFLOW_PREPARATION",
+  "next_step": "BATCH_V_DEFERRED_ADMIN_RECOVERY_THEN_Z_CLOSEOUT",
   "stage_2": {
     "status": "CLOSED_STAGE_2_CHECKPOINT_WITH_FAILED_AND_UNVERIFIED_CARRY_FORWARD",
     "started": true,
@@ -3359,16 +3359,16 @@
   "next_phase": "FINAL_REMEDIATION",
   "final_remediation": {
     "schema_version": 1,
-    "date": "2026-10-27",
+    "date": "2026-11-12",
     "phase": "FINAL_REMEDIATION",
-    "status": "FR2_BATCH_W_OWNER_PUBLIC18_SCOPED_PASS_CONTROLLED_WORKFLOW_INBOX_PENDING",
+    "status": "IN_PROGRESS_STAGE_3_CLOSEOUT_BLOCKED_BY_V",
     "active_batch": "FR.2",
-    "active_step": "FR.2.5",
+    "active_step": "FR.2.6",
     "source_parent_commit": "40f3f9ba79e75a9f36bee075658fe19ac18c3fcd",
     "plan": "docs/security-audit/SECURITY_FINAL_REMEDIATION_PLAN.md",
     "original_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
     "evidence": "docs/security-audit/security-final-remediation-evidence.json",
-    "latest_evidence": "FRE227",
+    "latest_evidence": "FRE321",
     "batches": [
       {
         "id": "FR.1",
@@ -4466,8 +4466,11 @@
           },
           {
             "id": "FR.2.6",
-            "status": "PLANNED_NOT_EXECUTED",
-            "title": "Affected recheck and bounded completion report"
+            "status": "AFFECTED_CHECKS_PASS_STAGE_3_CLOSEOUT_BLOCKED_BY_V",
+            "title": "Affected recheck and bounded completion report",
+            "full_Stage_3_complete": false,
+            "batch_X_exit_ledger": "docs/security-audit/security-fr-2-batch-x-current-exit-ledger.json",
+            "batch_Z_decision": "docs/security-audit/security-fr-2-batch-z-stage-3-decision.json"
           }
         ],
         "readiness_handoff": "docs/security-audit/SECURITY_FR_2_1_READINESS_HANDOFF.md",
@@ -4478,7 +4481,8 @@
         "findings_closed": [],
         "readiness_owner_receipt": "docs/security-audit/security-fr-2-readiness-owner-result.json",
         "readiness_outcome_report": "docs/security-audit/SECURITY_FR_2_1_READINESS_OUTCOME.md",
-        "next_step": "FR.2.5.W6_CONTROLLED_ORDINARY_AUTH_WORKFLOW_PREPARATION"
+        "next_step": "BATCH_V_DEFERRED_ADMIN_RECOVERY_THEN_Z_CLOSEOUT",
+        "latest_evidence": "FRE321"
       },
       {
         "id": "FR.3",
@@ -4528,7 +4532,7 @@
     "native_security_acceptance": false,
     "store_acceptance": false,
     "APK_update_deferred": true,
-    "next_step": "FR.2.5.W6_CONTROLLED_ORDINARY_AUTH_WORKFLOW_PREPARATION",
+    "next_step": "BATCH_V_DEFERRED_ADMIN_RECOVERY_THEN_Z_CLOSEOUT",
     "owner_preparation_receipt": "docs/security-audit/security-final-staging-owner-preparation.json",
     "owner_preparation_summary_received": true,
     "owner_dashboard_metadata_required": false,
@@ -7194,14 +7198,14 @@
         "status": "IN_PROGRESS"
       },
       "lettered_batch": {
-        "letter": "Y",
+        "letter": "Z",
         "final_letter": "Z",
-        "label": "Batch Y/Z",
-        "title": "Backend caller permissions, real database races and containment",
-        "status": "COMPLETE",
-        "scope": "Selected current-policy authorization boundary; full provider/operations work remains later."
+        "label": "Batch Z/Z",
+        "title": "Integrated authorization recheck and Stage 3 closeout",
+        "status": "BLOCKED",
+        "scope": "Affected staging checks accepted. Required V exit remains owner-deferred."
       },
-      "compact_display": "Stage 3/10 | FR.2/8 | Batch Y/Z — COMPLETE",
+      "compact_display": "Stage 3/10 | FR.2/8 | Batch Z/Z — BLOCKED",
       "labels_are_not_completion_percentages": true,
       "current_hierarchy_only_not_a_universal_FR_to_stage_mapping": true,
       "batch_completion_requires_its_full_exit_evidence": true,
@@ -7214,31 +7218,27 @@
         }
       ],
       "latest_completed_action": {
-        "title": "Batch Y exit reconciliation and real authorization-change overlap",
+        "title": "Batch X exit reconciliation and Business private-file cleanup",
         "status": "COMPLETE",
-        "exit_groups": 9,
-        "exit_groups_reconciled": 9,
-        "workflow_guards": 176,
+        "exit_groups": 4,
+        "exit_groups_reconciled": 4,
+        "workflow_guards": 338,
         "exit_code": 0,
-        "evidence": "docs/security-audit/security-fr-2-batch-y-current-exit-ledger.json",
-        "real_Postgres_witness": "docs/security-audit/security-fr-2-batch-y-authorization-change-staging-result.json",
-        "dispatcher_repair": "docs/security-audit/security-fr-2-batch-y-send-authorization-staging-result.json",
-        "evidence_date": "2026-11-07"
+        "evidence": "docs/security-audit/security-fr-2-batch-x-current-exit-ledger.json",
+        "evidence_date": "2026-11-08"
       },
       "next_required_action": {
-        "title": "Cached-original-file serving contract and remaining X exits",
-        "status": "PENDING",
-        "scope": "Reconcile original X permissions/finance exits and the observed provider-cache behavior. Preserve V deferrals and perform justified integrated Z checks only after its required prerequisites.",
-        "checkpoint": "docs/security-audit/SECURITY_FR_2_RESUME_CHECKPOINT_20261107.md",
-        "new_user_credentials_required": false
+        "title": "Batch V independent Admin recovery, then Batch Z decision",
+        "status": "OWNER_DEFERRED",
+        "scope": "Resume the deferred V acceptance when the owner is ready to revisit SMTP and independent Admin recovery. Then reconcile Z against the accepted exact staging source and run only justified affected checks.",
+        "checkpoint": "docs/security-audit/SECURITY_FR_2_RESUME_CHECKPOINT_20261107.md"
       },
-      "updated_date": "2026-11-08",
+      "updated_date": "2026-11-12",
       "remaining_required_letters": [
         "V",
-        "X",
         "Z"
       ],
-      "remaining_required_package_count": 3
+      "remaining_required_package_count": 2
     },
     "progress_display_contract": "docs/security-audit/security-progress-display-contract.json",
     "progress_display_convention": "docs/security-audit/SECURITY_PROGRESS_DISPLAY_CONVENTION.md",
@@ -7433,8 +7433,6 @@
     },
     "remaining_required_lettered_batches": [
       "V",
-      "X",
-      "Y",
       "Z"
     ],
     "FR2_batch_w": {
@@ -7680,7 +7678,9 @@
       "expected_nonsecret_input": "Email address of an unused owner-controlled inbox for a separate staging test identity; no password/link/code/token",
       "next_step": "FR.2.5.W6_CONTROLLED_ORDINARY_AUTH_WORKFLOW_PREPARATION"
     },
-    "owner_controlled_test_inbox_information_required": true
+    "owner_controlled_test_inbox_information_required": true,
+    "batch_X_current_exit_ledger": "docs/security-audit/security-fr-2-batch-x-current-exit-ledger.json",
+    "batch_Z_stage_3_decision": "docs/security-audit/security-fr-2-batch-z-stage-3-decision.json"
   },
   "current_phase": "FINAL_REMEDIATION",
   "main_implementation_stage": {

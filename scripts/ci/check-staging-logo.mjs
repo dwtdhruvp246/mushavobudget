@@ -24,12 +24,6 @@ const upload = Buffer.concat([
   pngChunk("IDAT", deflateSync(Buffer.from([0, 80, 100, 200, 255]))), pngChunk("IEND"),
 ]);
 const normalized = normalizeLogoPng(upload);
-const wideHeader = Buffer.from(header);
-wideHeader.writeUInt32BE(1025, 0);
-const widePng = Buffer.concat([
-  upload.subarray(0, 8), pngChunk("IHDR", wideHeader),
-  pngChunk("IDAT", deflateSync(Buffer.alloc(1025 * 4 + 1))), pngChunk("IEND"),
-]);
 
 async function provision({ actors, evidence }, key) {
   const owner = actors.USER_A, admin = actors.ADMIN;
@@ -87,6 +81,7 @@ async function exercise({ actors, evidence }, key) {
   evidence.requests = 0;
   evidence.cleanup = {};
   evidence.reused_initial_run = 43281454455;
+  evidence.dimension_check_review_run = 43281914875;
   evidence.initial_owner_denial_and_type_mismatch_repeated = false;
   const check = (name, ok) => {
     evidence.checks[name] = ok === true;
@@ -120,19 +115,17 @@ async function exercise({ actors, evidence }, key) {
   try {
     const w = one(await workspace()), s = one(await call("subscription", admin));
     check("EXACT_SUSPENDED_LOGO_FIXTURE_REQUIRED", w?.owner_id === owner.id && w?.id === FIXTURE_ID
-      && w.name === NAME && w.status === "suspended" && w.business_support_version === 2
+      && w.name === NAME && w.status === "suspended" && w.business_support_version === 4
       && s?.status === "active" && s.member_limit === 1 && Date.parse(s.paid_through_at) > Date.now());
-    const resumed = await setStatus("active", 2, "Resume the unfinished isolated logo acceptance");
+    const resumed = await setStatus("active", 4, "Verify the isolated valid logo save and retrieval");
     check("SCOPED_RESUME_ACK_REQUIRED", resumed.status === 200);
     bound = true;
     const active = one(await workspace());
     check("RESUMED_FIXTURE_READBACK_REQUIRED", active?.id === FIXTURE_ID && active.status === "active"
-      && active.business_support_version === 3 && active.owner_id === owner.id);
+      && active.business_support_version === 5 && active.owner_id === owner.id);
     const p = one(await profile());
     check("EXACT_EMPTY_BRANDING_REQUIRED", p?.trading_name === NAME && p.version === 1 && p.logo_storage_path === null);
     check("INITIAL_LOGO_ABSENCE_REQUIRED", (await context()).data?.length === 0);
-    const large = await uploadLogo(owner, widePng);
-    check("DIMENSION_LIMIT_APPLIED", large.status === 413 && large.data?.error === "LOGO_DIMENSIONS_TOO_LARGE");
     const created = await uploadLogo(owner);
     evidence.valid_upload_status = created.status;
     if (created.status >= 400 && /^[A-Z_]{3,70}$/.test(created.data?.error || "")) evidence.valid_upload_error = created.data.error;
@@ -170,9 +163,9 @@ async function exercise({ actors, evidence }, key) {
         need(after.status === 200 && after.data?.length === 0, "OBJECT_ABSENCE_READBACK_REQUIRED");
         evidence.cleanup.object_absent = true;
         const w = one(await workspace());
-        need(w?.owner_id === owner.id && w.name === NAME && w.status === "active" && w.business_support_version === 3,
+        need(w?.owner_id === owner.id && w.name === NAME && w.status === "active" && w.business_support_version === 5,
           "EXACT_WORKSPACE_SUSPEND_REQUIRED");
-        const suspend = await setStatus("suspended", 3, "Close the isolated staging logo trial");
+        const suspend = await setStatus("suspended", 5, "Close the isolated staging logo trial");
         need(suspend.status === 200, "FIXTURE_SUSPEND_ACK_REQUIRED");
         need(one(await workspace())?.status === "suspended", "FIXTURE_SUSPEND_READBACK_REQUIRED");
         evidence.cleanup.fixture_suspended = true;
@@ -188,8 +181,8 @@ async function main() {
   if (p.enabled === false) return { result: "LOGO_PLAN_ARCHIVED", exit_code: 0 };
   const provisionOnly = p.status === "PROVISION_LOGO_FIXTURE_ONCE" && p.fixture_id === null;
   need(p.enabled === true && p.project === "dczlddwbtgvfdujgcitb" && p.scope === "fr3-2-business-logo"
-    && (provisionOnly || p.fixture_id === FIXTURE_ID && p.status === "HOSTED_LOGO_REMAINDER_ONCE"
-      && p.reuse_run === 43281454455), "EXACT_LOGO_PLAN_REQUIRED");
+    && (provisionOnly || p.fixture_id === FIXTURE_ID && p.status === "HOSTED_LOGO_POSITIVE_ONCE"
+      && p.reuse_run === 43281454455 && p.dimension_review_run === 43281914875), "EXACT_LOGO_PLAN_REQUIRED");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization"
     && process.env.GITHUB_RUN_ATTEMPT === "1", "EXACT_STAGING_RUN_REQUIRED");

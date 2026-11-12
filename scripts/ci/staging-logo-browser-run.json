@@ -1,10 +1,11 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_id": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "preview_id": "cc8c155e-f70b-4ca5-bdb1-ea7c72cfa3ad",
   "preview_origin": "https://cc8c155e.mushavo-budget-staging.pages.dev",
   "reuse_run": 43283375591,
-  "mode": "byte-stream-only",
-  "reuse_browser_run": 43287931911
+  "mode": "byte-drain-only",
+  "reuse_browser_run": 43287931911,
+  "reuse_stream_run": 43288826963
 }

@@ -58,7 +58,7 @@ function checkHostedByteLimit(owner, key) {
   });
 }
 
-async function checkHostedStreamingLimit(owner, key) {
+async function checkHostedStreamingLimit(owner, key, buffered) {
   // Add harmless PNG text padding and keep the original image and scanlines.
   const padding = Buffer.alloc(MAX_LOGO_BYTES + 1 - LOGO.length - 12, 65);
   padding.write("Comment\0");
@@ -70,7 +70,7 @@ async function checkHostedStreamingLimit(owner, key) {
   const file = Buffer.concat([LOGO.subarray(0, 33), chunk, LOGO.subarray(33)]);
   need(file.length === MAX_LOGO_BYTES + 1, "EXACT_STREAM_SIZE_REQUIRED");
   let offset = 0;
-  const body = new ReadableStream({
+  const body = buffered ? file : new ReadableStream({
     pull(controller) {
       if (offset === file.length) {
         controller.close();
@@ -81,6 +81,7 @@ async function checkHostedStreamingLimit(owner, key) {
       }
     },
   });
+  if (buffered) offset = file.length;
   try {
     const r = await fetch(API_ORIGIN + "/functions/v1/validate-business-logo", {
       method: "POST", duplex: "half", redirect: "error", signal: AbortSignal.timeout(35000),
@@ -180,13 +181,13 @@ async function browserFlow(chromium, owner, path, evidence) {
   }
 }
 
-async function exercise({ actors, evidence }, key, chromium, streamOnly) {
+async function exercise({ actors, evidence }, key, chromium, sizeMode) {
   const owner = actors.USER_A, admin = actors.ADMIN;
   const path = `${FIXTURE_ID}/${owner.id}/${OBJECT_ID}.png`;
-  const suspendedVersion = streamOnly ? 10 : 8;
+  const suspendedVersion = sizeMode === "byte-drain-only" ? 12 : sizeMode ? 10 : 8;
   const activeVersion = suspendedVersion + 1;
   const closedVersion = activeVersion + 1;
-  const profileVersion = streamOnly ? 6 : 3;
+  const profileVersion = sizeMode ? 6 : 3;
   const routes = {
     workspace: "/rest/v1/budget_workspaces?select=id,owner_id,name,status,business_support_version&id=eq." + FIXTURE_ID + "&limit=2",
     subscription: "/rest/v1/workspace_subscriptions?select=status,member_limit,paid_through_at&workspace_id=eq." + FIXTURE_ID + "&limit=2",
@@ -227,10 +228,11 @@ async function exercise({ actors, evidence }, key, chromium, streamOnly) {
     const active = await workspace(), p = await profile();
     need(sameWorkspace(active) && active.status === "active" && active.business_support_version === activeVersion
       && p?.version === profileVersion && p.logo_storage_path === null && p.trading_name === NAME, "EXACT_EMPTY_BROWSER_BRANDING_REQUIRED");
-    evidence.byte_limit = streamOnly ? await checkHostedStreamingLimit(owner, key) : await checkHostedByteLimit(owner, key);
+    evidence.byte_limit = sizeMode ? await checkHostedStreamingLimit(owner, key, sizeMode === "byte-drain-only") : await checkHostedByteLimit(owner, key);
     evidence.checks.hosted_byte_limit = evidence.byte_limit.status === 413 && evidence.byte_limit.code === "LOGO_TOO_LARGE";
-    if (streamOnly) {
+    if (sizeMode) {
       evidence.browser_run_reused = 43287931911;
+      evidence.byte_check_mode = sizeMode;
       need((await profile())?.logo_storage_path === null, "STREAM_REJECTION_MUST_NOT_LINK_A_LOGO");
       const file = await fileContext();
       need(file.status === 200 && file.data?.length === 0, "STREAM_REJECTION_MUST_NOT_STORE_A_LOGO");
@@ -278,10 +280,12 @@ async function exercise({ actors, evidence }, key, chromium, streamOnly) {
 async function main() {
   const plan = JSON.parse(await readFile(new URL("./staging-logo-browser-run.json", import.meta.url), "utf8"));
   if (plan.enabled === false) return { result: "BROWSER_PLAN_ARCHIVED", exit_code: 0 };
-  const streamOnly = plan.mode === "byte-stream-only" && plan.reuse_browser_run === 43287931911;
+  const sizeMode = plan.reuse_browser_run === 43287931911
+    && (plan.mode === "byte-stream-only" || plan.mode === "byte-drain-only" && plan.reuse_stream_run === 43288826963)
+    ? plan.mode : null;
   need(plan.enabled === true && plan.project === "dczlddwbtgvfdujgcitb" && plan.fixture_id === FIXTURE_ID
     && plan.preview_id === PREVIEW_ID && plan.preview_origin === PREVIEW && plan.reuse_run === 43283375591
-    && (plan.mode === undefined || streamOnly),
+    && (plan.mode === undefined || sizeMode),
   "EXACT_STAGING_BROWSER_PLAN_REQUIRED");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization" && process.env.GITHUB_RUN_ATTEMPT === "1",
@@ -292,10 +296,10 @@ async function main() {
   const local = await readFile(new URL("../../business.js", import.meta.url));
   need(digest(await js.text()) === digest(local), "PREVIEW_BUSINESS_SOURCE_MISMATCH");
   const { key } = readPublicConfiguration(await cfg.text());
-  const chromium = streamOnly ? null : (await import("../fixtures/staging-browser-tools/node_modules/playwright/index.mjs")).chromium;
+  const chromium = sizeMode ? null : (await import("../fixtures/staging-browser-tools/node_modules/playwright/index.mjs")).chromium;
   const options = { accountScope: "businessFixture" };
   const report = await checkStagingAccess(privateAccounts(process.env, options), apiTransport(key, AGENT),
-    input => exercise(input, key, chromium, streamOnly), options);
+    input => exercise(input, key, chromium, sizeMode), options);
   return { ...report, progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 Logo browser", preview: PREVIEW, source_matched: true };
 }
 const report = await main().catch(error => ({

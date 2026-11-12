@@ -121,6 +121,32 @@ test("declared type, malformed bytes and streaming size refusals leave storage e
   assert.equal(f.writes(), 0);
 });
 
+test("a small overflow is read to completion, rejected, and never written", async () => {
+  const f = fixture();
+  let enqueued = false, completed = false, canceled = false;
+  const body = new ReadableStream({
+    pull(controller) {
+      if (enqueued) {
+        completed = true;
+        controller.close();
+      } else {
+        controller.enqueue(new Uint8Array(MAX_LOGO_BYTES));
+        controller.enqueue(new Uint8Array([0]));
+        enqueued = true;
+      }
+    },
+    cancel() { canceled = true; },
+  });
+  const response = await f.handle(new Request(url, {
+    method: "POST", headers: { authorization: auth, "content-type": "image/png", "content-length": MAX_LOGO_BYTES + 1 },
+    body, duplex: "half",
+  }));
+  assert.equal(response.status, 413);
+  assert.equal(completed, true);
+  assert.equal(canceled, false);
+  assert.equal(f.writes(), 0);
+});
+
 test("accepted bytes are normalized and retry after a lost acknowledgement returns the same path", async () => {
   const f = fixture({ dropAcknowledgement: true });
   const first = await f.handle(request(png({ extra: [pngChunk("tEXt", Buffer.from("x\0private"))] })));

@@ -3,9 +3,11 @@ import { LogoInputError, MAX_LOGO_BYTES, normalizeLogoPng } from "./png.mjs";
 export const FIXTURE_ID = "8d9307e6-aada-4c9a-a8f5-43c57e0865e2";
 export const LOGO_BUCKET = "business-logos";
 const UUID = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/;
+const REJECTION_READ_LIMIT = MAX_LOGO_BYTES + 64 * 1024;
 
 async function readUpload(request) {
-  if (Number(request.headers.get("content-length")) > MAX_LOGO_BYTES) {
+  const declaredSize = Number(request.headers.get("content-length"));
+  if (declaredSize > REJECTION_READ_LIMIT) {
     throw new LogoInputError(413, "LOGO_TOO_LARGE");
   }
   const reader = request.body?.getReader();
@@ -15,20 +17,24 @@ async function readUpload(request) {
     timedOut = true;
     void reader.cancel().catch(() => {});
   }, 10000);
-  const data = new Uint8Array(MAX_LOGO_BYTES);
+  const data = declaredSize > MAX_LOGO_BYTES ? null : new Uint8Array(MAX_LOGO_BYTES);
   let length = 0;
   try {
     for (;;) {
       const { value, done } = await reader.read();
       if (done) break;
-      if (length + value.byteLength > MAX_LOGO_BYTES) {
+      const nextLength = length + value.byteLength;
+      // Finish a small overflow without canceling the HTTP body. The returned
+      // limit stays unchanged and excess bytes are never copied or stored.
+      if (nextLength > REJECTION_READ_LIMIT) {
         void reader.cancel().catch(() => {});
         throw new LogoInputError(413, "LOGO_TOO_LARGE");
       }
-      data.set(value, length);
-      length += value.byteLength;
+      if (data && nextLength <= MAX_LOGO_BYTES) data.set(value, length);
+      length = nextLength;
     }
     if (timedOut) throw new LogoInputError(408, "LOGO_UPLOAD_TIMEOUT");
+    if (!data || length > MAX_LOGO_BYTES) throw new LogoInputError(413, "LOGO_TOO_LARGE");
     return data.subarray(0, length);
   } finally {
     clearTimeout(timeout);

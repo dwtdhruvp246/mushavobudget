@@ -3,15 +3,15 @@ import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { API_ORIGIN, Stop, apiTransport, checkStagingAccess, digest, need, privateAccounts, readPublicConfiguration } from "./staging-access.mjs";
 import { FIXTURE_ID, LOGO_BUCKET } from "../../supabase/functions/validate-business-logo/handler.mjs";
-import { normalizeLogoJpeg } from "../../supabase/functions/validate-business-logo/jpeg.mjs";
-import { PROGRESSIVE_ROTATED_JPEG } from "../fixtures/logo-jpeg-tools/images.mjs";
+import { normalizeLogoWebp } from "../../supabase/functions/validate-business-logo/webp.mjs";
+import { LOSSY_ALPHA } from "../fixtures/logo-jpeg-tools/webp-images.mjs";
 
 const NAME = "audit-fr3-logo-ingestion-20261112";
-const PREVIEW = "https://092b8850.mushavo-budget-staging.pages.dev";
-const PREVIEW_ID = "092b8850-25fe-43ac-b29e-cebd3bb9612e";
-const AGENT = "Mushavo-Staging-FR3-Logo-JPEG-Browser";
+const PREVIEW = "https://13fc0c26.mushavo-budget-staging.pages.dev";
+const PREVIEW_ID = "13fc0c26-df81-43b3-b6de-3b93e511d543";
+const AGENT = "Mushavo-Staging-FR3-Logo-WebP-Browser";
 const STORAGE_KEY = "sb-dczlddwbtgvfdujgcitb-auth-token";
-const LOGO = Buffer.from(PROGRESSIVE_ROTATED_JPEG, "base64");
+const LOGO = Buffer.from(LOSSY_ALPHA, "base64");
 const one = result => result.status === 200 && result.data?.length === 1 ? result.data[0] : null;
 
 async function browserFlow(chromium, owner, path, evidence) {
@@ -34,8 +34,8 @@ async function browserFlow(chromium, owner, path, evidence) {
       if (url.origin === API_ORIGIN) {
         allow = read || method === "OPTIONS";
         if (method === "POST" && url.pathname === "/functions/v1/validate-business-logo") {
-          allow = req.headers()["content-type"] === "image/jpeg" && ++calls.validator === 1;
-          if (allow) calls.upload_type = "image/jpeg";
+          allow = req.headers()["content-type"] === "image/webp" && ++calls.validator === 1;
+          if (allow) calls.upload_type = "image/webp";
         }
         if (method === "POST" && url.pathname === "/functions/v1/get-private-file") {
           const payload = req.postDataJSON();
@@ -67,7 +67,7 @@ async function browserFlow(chromium, owner, path, evidence) {
     evidence.checks.browser_fixture_rendered = true;
 
     evidence.browser_stage = "SELECT_AND_SAVE_LOGO";
-    await file.setInputFiles({ name: "fixture.jpg", mimeType: "image/jpeg", buffer: LOGO });
+    await file.setInputFiles({ name: "fixture.webp", mimeType: "image/webp", buffer: LOGO });
     await page.getByText("Logo selected. Save your business details to apply it.", { exact: true }).waitFor({ state: "visible" });
     const uploaded = page.waitForResponse(r => r.url() === API_ORIGIN + "/functions/v1/validate-business-logo" && r.request().method() === "POST");
     const saved = page.waitForResponse(r => r.url() === API_ORIGIN + "/rest/v1/rpc/save_business_setup_with_branding" && r.request().method() === "POST");
@@ -87,7 +87,7 @@ async function browserFlow(chromium, owner, path, evidence) {
       const img = document.querySelector('[data-logo-preview="setup"] img');
       return img?.complete && img.naturalWidth === 3 && img.naturalHeight === 4 && img.src.startsWith("blob:");
     });
-    need(calls.broker > 0 && calls.upload_type === "image/jpeg", "BROWSER_JPEG_AND_PRIVATE_BROKER_REQUIRED");
+    need(calls.broker > 0 && calls.upload_type === "image/webp", "BROWSER_WEBP_AND_PRIVATE_BROKER_REQUIRED");
     evidence.checks.browser_reload_renders_saved_logo = true;
   } finally {
     await browser.close();
@@ -96,10 +96,10 @@ async function browserFlow(chromium, owner, path, evidence) {
 
 async function exercise({ actors, evidence }, key, chromium, decoder) {
   const owner = actors.USER_A, admin = actors.ADMIN;
-  const hash = digest(normalizeLogoJpeg(LOGO, decoder));
+  const hash = digest(normalizeLogoWebp(LOGO, decoder));
   const objectId = hash.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
   const path = `${FIXTURE_ID}/${owner.id}/${objectId}.png`;
-  const suspendedVersion = 16, activeVersion = 17, closedVersion = 18, profileVersion = 8;
+  const suspendedVersion = 20, activeVersion = 21, closedVersion = 22, profileVersion = 13;
   const routes = {
     workspace: "/rest/v1/budget_workspaces?select=id,owner_id,name,status,business_support_version&id=eq." + FIXTURE_ID + "&limit=2",
     subscription: "/rest/v1/workspace_subscriptions?select=status,member_limit,paid_through_at&workspace_id=eq." + FIXTURE_ID + "&limit=2",
@@ -127,7 +127,7 @@ async function exercise({ actors, evidence }, key, chromium, decoder) {
   const fileContext = () => call("context", owner, { p_bucket_id: LOGO_BUCKET, p_object_name: path });
   const setStatus = (status, version) => call("status", admin, {
     p_workspace_id: FIXTURE_ID, p_status: status, p_expected_version: version, p_confirmation_name: NAME,
-    p_reason: "Isolated Business JPEG logo browser acceptance", p_request_id: randomUUID(),
+    p_reason: "Isolated Business WebP logo browser acceptance", p_request_id: randomUUID(),
   });
   const sameWorkspace = row => row?.id === FIXTURE_ID && row.name === NAME && row.owner_id === owner.id;
   let resumed = false, failure, cleanupFailure;
@@ -140,7 +140,7 @@ async function exercise({ actors, evidence }, key, chromium, decoder) {
     const active = await workspace(), p = await profile();
     need(sameWorkspace(active) && active.status === "active" && active.business_support_version === activeVersion
       && p?.version === profileVersion && p.logo_storage_path === null && p.trading_name === NAME, "EXACT_EMPTY_BROWSER_BRANDING_REQUIRED");
-    evidence.reused_jpeg_api_run = 43292163574;
+    evidence.reused_webp_api_run = 43469403167;
     await browserFlow(chromium, owner, path, evidence);
     need((await profile())?.logo_storage_path === path, "INDEPENDENT_BROWSER_SAVE_READBACK_REQUIRED");
     evidence.checks.independent_browser_save_readback = true;
@@ -182,8 +182,8 @@ async function main() {
   const plan = JSON.parse(await readFile(new URL("./staging-logo-browser-run.json", import.meta.url), "utf8"));
   if (plan.enabled === false) return { result: "BROWSER_PLAN_ARCHIVED", exit_code: 0 };
   need(plan.enabled === true && plan.project === "dczlddwbtgvfdujgcitb" && plan.fixture_id === FIXTURE_ID
-    && plan.preview_id === PREVIEW_ID && plan.preview_origin === PREVIEW && plan.status === "HOSTED_JPEG_BROWSER_ONCE"
-    && plan.reuse_run === 43292163574, "EXACT_STAGING_JPEG_BROWSER_PLAN_REQUIRED");
+    && plan.preview_id === PREVIEW_ID && plan.preview_origin === PREVIEW && plan.status === "HOSTED_WEBP_BROWSER_ONCE"
+    && plan.reuse_run === 43469403167, "EXACT_STAGING_WEBP_BROWSER_PLAN_REQUIRED");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization" && process.env.GITHUB_RUN_ATTEMPT === "1",
   "EXACT_STAGING_BROWSER_BRANCH_REQUIRED");
@@ -194,14 +194,14 @@ async function main() {
   need(digest(await js.text()) === digest(local), "PREVIEW_BUSINESS_SOURCE_MISMATCH");
   const { key } = readPublicConfiguration(await cfg.text());
   const { chromium } = await import("../fixtures/staging-browser-tools/node_modules/playwright/index.mjs");
-  const { default: jpeg } = await import("../fixtures/logo-jpeg-tools/node_modules/jpeg-js/index.js");
+  const { decode } = await import("../fixtures/logo-jpeg-tools/node_modules/@stacksjs/ts-webp/dist/index.js");
   const options = { accountScope: "businessFixture" };
   const report = await checkStagingAccess(privateAccounts(process.env, options), apiTransport(key, AGENT),
-    input => exercise(input, key, chromium, jpeg.decode), options);
-  return { ...report, progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 JPEG logo browser", preview: PREVIEW, source_matched: true };
+    input => exercise(input, key, chromium, decode), options);
+  return { ...report, progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 WebP logo browser", preview: PREVIEW, source_matched: true };
 }
 const report = await main().catch(error => ({
-  progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 JPEG logo browser",
+  progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 WebP logo browser",
   result: "LOGO_BROWSER_REVIEW_REQUIRED", problem_code: error instanceof Stop ? error.code : "BROWSER_PLAN_FAILED", exit_code: 1,
 }));
 console.log(JSON.stringify(report, null, 2));

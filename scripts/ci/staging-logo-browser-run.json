@@ -1,11 +1,9 @@
 {
-  "enabled": false,
+  "enabled": true,
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_id": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
-  "preview_id": "092b8850-25fe-43ac-b29e-cebd3bb9612e",
-  "preview_origin": "https://092b8850.mushavo-budget-staging.pages.dev",
-  "status": "ARCHIVED_HOSTED_JPEG_BROWSER_PASS",
-  "reuse_run": 43292163574,
-  "completed_run": 43292685470,
-  "receipt": "docs/security-audit/security-fr-3-2-business-logo-jpeg-closeout.json"
+  "preview_id": "13fc0c26-df81-43b3-b6de-3b93e511d543",
+  "preview_origin": "https://13fc0c26.mushavo-budget-staging.pages.dev",
+  "status": "HOSTED_WEBP_BROWSER_ONCE",
+  "reuse_run": 43469403167
 }

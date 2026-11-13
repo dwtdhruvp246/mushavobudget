@@ -111,13 +111,11 @@ async function browserFlow(chromium, owner, jpg, png, path, today, evidence) {
     const headers = await response.allHeaders();
     const mediaType = headers["x-mushavo-media-type"] || "";
     const directives = (headers["cache-control"] || "").toLowerCase().split(",").map(value => value.trim());
-    const downloaded = await response.body();
     const brokerChecks = {
       BROWSER_BROKER_HTTP_OK: response.status() === 200,
       BROWSER_BROKER_MEDIA_TYPE: mediaType === "image/png",
       BROWSER_BROKER_CACHE_PRIVATE: directives.includes("private"),
       BROWSER_BROKER_CACHE_NO_STORE: directives.includes("no-store"),
-      BROWSER_BROKER_RETURNS_EXACT_BYTES: digest(downloaded) === digest(png),
     };
     Object.assign(evidence.checks, brokerChecks);
     evidence.broker_readback = {
@@ -125,7 +123,6 @@ async function browserFlow(chromium, owner, jpg, png, path, today, evidence) {
       cache_control: directives.filter(value => /^(private|public|no-store|no-cache|must-revalidate|max-age=\d+|s-maxage=\d+)$/.test(value)),
       cache_directive_count: directives.filter(Boolean).length,
       expected_bytes: png.length,
-      received_bytes: downloaded.length,
     };
     evidence.browser_stage = "VERIFY_PROOF_IMAGE_RENDER";
     await preview.waitForURL(url => url.protocol === "blob:");
@@ -133,7 +130,18 @@ async function browserFlow(chromium, owner, jpg, png, path, today, evidence) {
       const image = document.querySelector("img");
       return image?.complete && image.naturalWidth === 3 && image.naturalHeight === 4;
     });
-    check("BROWSER_PROOF_IMAGE_RENDERED", preview.url().startsWith("blob:" + PREVIEW + "/"));
+    const proofUrl = preview.url();
+    check("BROWSER_PROOF_IMAGE_RENDERED", proofUrl.startsWith("blob:" + PREVIEW + "/"));
+    const image = await page.evaluate(async ({ url, limit }) => {
+      const result = await fetch(url, { signal: AbortSignal.timeout(5000) });
+      const blob = await result.blob();
+      return { type: blob.type, size: blob.size,
+        bytes: result.ok && blob.size === limit ? Array.from(new Uint8Array(await blob.arrayBuffer())) : [] };
+    }, { url: proofUrl, limit: png.length });
+    evidence.broker_readback.rendered_blob_type = image.type === "image/png" ? image.type : null;
+    evidence.broker_readback.rendered_blob_bytes = image.size;
+    check("BROWSER_RENDERED_BLOB_MATCHES_NORMALIZED_BYTES", image.type === "image/png"
+      && digest(Buffer.from(image.bytes)) === digest(png));
     for (const [name, passed] of Object.entries(brokerChecks)) need(passed, name);
     evidence.browser_stage = "COMPLETE";
     return recordId;
@@ -238,7 +246,7 @@ async function main() {
   const p = JSON.parse(await readFile(new URL("./staging-personal-proof-browser-run.json", import.meta.url), "utf8"));
   if (p.enabled === false) return { result: "PERSONAL_PROOF_PLAN_ARCHIVED", exit_code: 0 };
   need(p.enabled === true && p.project === "dczlddwbtgvfdujgcitb" && p.fixture_item === PAYMENT_ITEM
-    && p.preview === PREVIEW && p.preview_id === PREVIEW_ID && p.status === "HOSTED_PERSONAL_PROOF_BROWSER_READBACK_ONCE", "EXACT_PERSONAL_PROOF_PLAN_REQUIRED");
+    && p.preview === PREVIEW && p.preview_id === PREVIEW_ID && p.status === "HOSTED_PERSONAL_PROOF_BROWSER_BLOB_ONCE", "EXACT_PERSONAL_PROOF_PLAN_REQUIRED");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization" && process.env.GITHUB_RUN_ATTEMPT === "1", "EXACT_STAGING_BRANCH_REQUIRED");
   const r = await fetch(PREVIEW + "/config.js?v=27", { redirect: "error", signal: AbortSignal.timeout(15000) });

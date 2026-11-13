@@ -1,7 +1,8 @@
 {
-  "enabled": false,
+  "enabled": true,
   "project": "dczlddwbtgvfdujgcitb",
   "family": "08e8f0ca-9cc4-4ea5-8544-b14a9b1cf37c",
   "item": "0986f8bc-7905-4ec8-b023-a00f10a18d88",
-  "status": "PREPARED_NO_REPLAY"
+  "status": "HOSTED_FAMILY_PROOF_ONCE",
+  "workspace": "4bef1ec3-0890-4142-8248-7489d0055738"
 }

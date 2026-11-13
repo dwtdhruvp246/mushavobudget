@@ -1,10 +1,9 @@
 {
-  "enabled": false,
+  "enabled": true,
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_item": "97eaee71-6a2e-4653-8eb5-ca0653f101fa",
   "preview": "https://5edb0c6b.mushavo-budget-staging.pages.dev",
   "preview_id": "5edb0c6b-095d-4f8f-9a18-1bf166d784fd",
-  "status": "ARCHIVED_BROWSER_FAILURE_NO_REPLAY",
-  "run_id": 43476280507,
-  "run_commit": "8d46223f03fd4ed79ae481ad1a748e8533880bfe"
+  "status": "HOSTED_PERSONAL_PROOF_BROWSER_READBACK_ONCE",
+  "previous_run_id": 43476280507
 }

@@ -2090,7 +2090,6 @@ async function chooseBusinessLogo(scope) {
     if (!businessOwnerCanSetUp()) throw new Error('BUSINESS_ACTIVE_OWNER_REQUIRED');
     if (!['image/png','image/jpeg','image/webp'].includes(file.type) || file.size < 1 || file.size > 2097152) throw new Error('Choose a PNG, JPG or WebP image up to 2 MB.');
     const logoTrial = usesValidatedLogoTrial(state.workspace?.id);
-    if (logoTrial && !['image/png', 'image/jpeg'].includes(file.type)) throw new Error('Choose a static PNG or JPG logo for this workspace.');
     const bitmap = await createImageBitmap(file);
     const maxSide = logoTrial ? 1024 : 4096;
     const valid = bitmap.width > 0 && bitmap.height > 0 && bitmap.width <= maxSide && bitmap.height <= maxSide;

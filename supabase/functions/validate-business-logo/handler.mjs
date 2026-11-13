@@ -1,5 +1,6 @@
 import { LogoInputError, MAX_LOGO_BYTES, normalizeLogoPng } from "./png.mjs";
 import { normalizeLogoJpeg } from "./jpeg.mjs";
+import { normalizeLogoWebp } from "./webp.mjs";
 
 /** @typedef {(bytes: Uint8Array, options: {useTArray: true, formatAsRGBA: true, tolerantDecoding: false, maxResolutionInMP: number, maxMemoryUsageInMB: number}) => {width: number, height: number, data: Uint8Array}} LogoJpegDecoder */
 
@@ -52,6 +53,7 @@ async function fingerprint(bytes) {
 
 export function createLogoUploadHandler({ configured, allowedOrigin, createUserClient, gateReady, storeLogo, readLogo,
   decodeJpeg = /** @type {LogoJpegDecoder | null} */ (null),
+  decodeWebp = /** @type {((bytes: Uint8Array) => {width: number, height: number, data: Uint8Array | Uint8ClampedArray}) | null} */ (null),
   logRejection = (/** @type {string} */ _reason) => {},
 }) {
   return async request => {
@@ -90,11 +92,13 @@ export function createLogoUploadHandler({ configured, allowedOrigin, createUserC
       }
       if (!await gateReady()) return fail(503, "LOGO_TRIAL_UNAVAILABLE");
       const mediaType = request.headers.get("content-type")?.toLowerCase();
-      if (mediaType !== "image/png" && (mediaType !== "image/jpeg" || !decodeJpeg)) {
+      const normalize = mediaType === "image/png" ? normalizeLogoPng
+        : mediaType === "image/jpeg" && decodeJpeg ? bytes => normalizeLogoJpeg(bytes, decodeJpeg)
+        : mediaType === "image/webp" && decodeWebp ? bytes => normalizeLogoWebp(bytes, decodeWebp) : null;
+      if (!normalize) {
         return fail(415, "UNSUPPORTED_LOGO_TYPE");
       }
-      const bytes = await readUpload(request);
-      const png = mediaType === "image/png" ? await normalizeLogoPng(bytes) : normalizeLogoJpeg(bytes, decodeJpeg);
+      const png = await normalize(await readUpload(request));
       const sha = await fingerprint(png);
       const objectId = sha.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
       const path = folder + objectId + ".png";

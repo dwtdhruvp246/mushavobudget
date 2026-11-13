@@ -3,17 +3,17 @@ import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { API_ORIGIN, WEB_ORIGIN, Stop, apiTransport, checkStagingAccess, digest, need, privateAccounts, readPublicConfiguration } from "./staging-access.mjs";
 import { FIXTURE_ID, LOGO_BUCKET } from "../../supabase/functions/validate-business-logo/handler.mjs";
-import { normalizeLogoJpeg } from "../../supabase/functions/validate-business-logo/jpeg.mjs";
-import { PROGRESSIVE_ROTATED_JPEG } from "../fixtures/logo-jpeg-tools/images.mjs";
+import { normalizeLogoWebp } from "../../supabase/functions/validate-business-logo/webp.mjs";
+import { ANIMATED, LOSSY_ALPHA } from "../fixtures/logo-jpeg-tools/webp-images.mjs";
 
 const NAME = "audit-fr3-logo-ingestion-20261112";
-const AGENT = "Mushavo-Staging-FR3-Logo-JPEG";
+const AGENT = "Mushavo-Staging-FR3-Logo-WebP";
 const one = result => result.status === 200 && result.data?.length === 1 ? result.data[0] : null;
 
-const upload = Buffer.from(PROGRESSIVE_ROTATED_JPEG, "base64");
+const upload = Buffer.from(LOSSY_ALPHA, "base64");
 
 async function exercise({ actors, evidence }, key, decoder) {
-  const normalized = normalizeLogoJpeg(upload, decoder);
+  const normalized = normalizeLogoWebp(upload, decoder);
   const owner = actors.USER_A, admin = actors.ADMIN;
   const fingerprint = digest(normalized);
   const id = fingerprint.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
@@ -55,7 +55,7 @@ async function exercise({ actors, evidence }, key, decoder) {
   const branding = (version, logo) => call("save", owner, {
     p_workspace_id: FIXTURE_ID, p_trading_name: NAME, p_logo_path: logo, p_expected_version: version,
   });
-  const uploadLogo = (actor, bytes = upload, type = "image/jpeg") => call("validate", actor, bytes, type);
+  const uploadLogo = (actor, bytes = upload, type = "image/webp") => call("validate", actor, bytes, type);
   const workspace = () => call("workspace", admin);
   const profile = () => call("profile", owner);
   const setStatus = (status, version, reason) => call("suspend", admin, {
@@ -66,20 +66,22 @@ async function exercise({ actors, evidence }, key, decoder) {
   try {
     const w = one(await workspace()), s = one(await call("subscription", admin));
     check("EXACT_SUSPENDED_LOGO_FIXTURE_REQUIRED", w?.owner_id === owner.id && w?.id === FIXTURE_ID
-      && w.name === NAME && w.status === "suspended" && w.business_support_version === 14
+      && w.name === NAME && w.status === "suspended" && w.business_support_version === 18
       && s?.status === "active" && s.member_limit === 1 && Date.parse(s.paid_through_at) > Date.now());
-    const resumed = await setStatus("active", 14, "Verify the isolated JPEG logo path");
+    const resumed = await setStatus("active", 18, "Verify the isolated WebP logo path");
     check("SCOPED_RESUME_ACK_REQUIRED", resumed.status === 200);
     bound = true;
     const active = one(await workspace());
     check("RESUMED_FIXTURE_READBACK_REQUIRED", active?.id === FIXTURE_ID && active.status === "active"
-      && active.business_support_version === 15 && active.owner_id === owner.id);
+      && active.business_support_version === 19 && active.owner_id === owner.id);
     const p = one(await profile());
-    check("EXACT_EMPTY_BRANDING_REQUIRED", p?.trading_name === NAME && p.version === 6 && p.logo_storage_path === null);
+    check("EXACT_EMPTY_BRANDING_REQUIRED", p?.trading_name === NAME && p.version === 11 && p.logo_storage_path === null);
     check("INITIAL_LOGO_ABSENCE_REQUIRED", (await context()).data?.length === 0);
     const mismatch = await uploadLogo(owner, normalized);
-    check("PNG_DECLARED_AS_JPEG_REJECTED", mismatch.status === 422 && mismatch.data?.error === "INVALID_LOGO_JPEG");
-    check("JPEG_MISMATCH_LEFT_STORAGE_EMPTY", (await context()).data?.length === 0);
+    check("PNG_DECLARED_AS_WEBP_REJECTED", mismatch.status === 422 && mismatch.data?.error === "INVALID_LOGO_WEBP");
+    check("WEBP_MISMATCH_LEFT_STORAGE_EMPTY", (await context()).data?.length === 0);
+    const animated = await uploadLogo(owner, Buffer.from(ANIMATED, "base64"));
+    check("ANIMATED_WEBP_REJECTED", animated.status === 415 && animated.data?.error === "UNSUPPORTED_LOGO_WEBP");
     const created = await uploadLogo(owner);
     evidence.valid_upload_status = created.status;
     if (created.status >= 400 && /^[A-Z_]{3,70}$/.test(created.data?.error || "")) evidence.valid_upload_error = created.data.error;
@@ -95,7 +97,7 @@ async function exercise({ actors, evidence }, key, decoder) {
       && (await profile()).data?.[0]?.logo_storage_path === path);
     const retrieved = await call("broker", owner, { bucket: LOGO_BUCKET, path });
     check("BROKER_RETURNS_NORMALIZED_LOGO", retrieved.status === 200 && retrieved.noStore && digest(retrieved.data) === fingerprint);
-    check("JPEG_ORIENTATION_PRESERVED", retrieved.data.readUInt32BE(16) === 3 && retrieved.data.readUInt32BE(20) === 4);
+    check("WEBP_ORIENTATION_PRESERVED", retrieved.data.readUInt32BE(16) === 3 && retrieved.data.readUInt32BE(20) === 4);
   } catch (error) {
     failure = error;
   } finally {
@@ -118,12 +120,12 @@ async function exercise({ actors, evidence }, key, decoder) {
         need(after.status === 200 && after.data?.length === 0, "OBJECT_ABSENCE_READBACK_REQUIRED");
         evidence.cleanup.object_absent = true;
         const w = one(await workspace());
-        need(w?.owner_id === owner.id && w.name === NAME && w.status === "active" && w.business_support_version === 15,
+        need(w?.owner_id === owner.id && w.name === NAME && w.status === "active" && w.business_support_version === 19,
           "EXACT_WORKSPACE_SUSPEND_REQUIRED");
-        const suspend = await setStatus("suspended", 15, "Close the isolated staging JPEG trial");
+        const suspend = await setStatus("suspended", 19, "Close the isolated staging JPEG trial");
         need(suspend.status === 200, "FIXTURE_SUSPEND_ACK_REQUIRED");
         const closed = one(await workspace());
-        need(closed?.status === "suspended" && closed.business_support_version === 16, "FIXTURE_SUSPEND_READBACK_REQUIRED");
+        need(closed?.status === "suspended" && closed.business_support_version === 20, "FIXTURE_SUSPEND_READBACK_REQUIRED");
         evidence.cleanup.fixture_suspended = true;
       } catch (error) { cleanupFailure = error; }
     }
@@ -136,8 +138,8 @@ async function main() {
   const p = JSON.parse(await readFile(new URL("./staging-logo-run.json", import.meta.url), "utf8"));
   if (p.enabled === false) return { result: "LOGO_PLAN_ARCHIVED", exit_code: 0 };
   need(p.enabled === true && p.project === "dczlddwbtgvfdujgcitb" && p.scope === "fr3-2-business-logo"
-    && p.fixture_id === FIXTURE_ID && p.status === "HOSTED_LOGO_JPEG_ONCE"
-    && p.reuse_browser_run === 43287931911 && p.reuse_byte_run === 43289536159, "EXACT_JPEG_PLAN_REQUIRED");
+    && p.fixture_id === FIXTURE_ID && p.status === "HOSTED_LOGO_WEBP_ONCE"
+    && p.reuse_jpeg_run === 43292163574, "EXACT_WEBP_PLAN_REQUIRED");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization"
     && process.env.GITHUB_RUN_ATTEMPT === "1", "EXACT_STAGING_RUN_REQUIRED");
@@ -145,10 +147,10 @@ async function main() {
   need(configuration.ok, "STAGING_PUBLIC_CONFIGURATION_REQUIRED");
   const { key } = readPublicConfiguration(await configuration.text());
   const options = { accountScope: "businessFixture" };
-  const { default: jpeg } = await import("../fixtures/logo-jpeg-tools/node_modules/jpeg-js/index.js");
+  const { decode } = await import("../fixtures/logo-jpeg-tools/node_modules/@stacksjs/ts-webp/dist/index.js");
   const report = await checkStagingAccess(privateAccounts(process.env, options), apiTransport(key, AGENT),
-    input => exercise(input, key, jpeg.decode), options);
-  return { ...report, progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 JPEG logos", commit: process.env.GITHUB_SHA };
+    input => exercise(input, key, decode), options);
+  return { ...report, progress_display: "Stage 4/10 | FR.3/8 | FR.3.2 WebP logos", commit: process.env.GITHUB_SHA };
 }
 
 const report = await main().catch(error => ({

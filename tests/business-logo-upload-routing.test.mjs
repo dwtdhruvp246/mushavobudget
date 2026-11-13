@@ -59,11 +59,13 @@ test("regular workspaces and other projects keep the existing upload route", asy
   }
 });
 
-test("the staging logo trial sends JPEG bytes with their actual type", async () => {
-  const f = fixture({ fileType: "image/jpeg" });
-  assert.ok((await f.upload()).endsWith(".png"));
-  assert.equal(f.calls[0].name, "validate-business-logo");
-  assert.equal(f.calls[0].options.headers["Content-Type"], "image/jpeg");
+test("the staging logo trial sends JPEG and WebP with their actual type", async () => {
+  for (const fileType of ["image/jpeg", "image/webp"]) {
+    const f = fixture({ fileType });
+    assert.ok((await f.upload()).endsWith(".png"));
+    assert.equal(f.calls[0].name, "validate-business-logo");
+    assert.equal(f.calls[0].options.headers["Content-Type"], fileType);
+  }
 });
 
 test("foreign paths and a changed workspace do not attach a candidate logo", async () => {

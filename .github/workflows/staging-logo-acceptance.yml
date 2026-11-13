@@ -26,7 +26,7 @@ jobs:
       - name: Check logo validation and routing
         run: |
           npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/logo-jpeg-tools
-          node --test tests/business-logo-validation.test.mjs tests/business-logo-upload-routing.test.mjs tests/business-logo-jpeg.test.mjs
+          node --test tests/business-logo-validation.test.mjs tests/business-logo-upload-routing.test.mjs tests/business-logo-jpeg.test.mjs tests/business-logo-webp.test.mjs
       - name: Run the isolated staging logo acceptance
         if: ${{ github.run_attempt == 1 }}
         env:

@@ -8647,23 +8647,30 @@ async function savePaymentRecord(event) {
 async function uploadPaymentProof(item, file) {
   const extension = validateProofFile(file);
   const userId = state.session.user.id;
-  if (config.supabaseUrl === "https://dczlddwbtgvfdujgcitb.supabase.co"
-      && item.id === "97eaee71-6a2e-4653-8eb5-ca0653f101fa"
-      && userId === "ca7bdcf2-e69d-42e2-8ae8-79cac6de2184") {
-    const workspaceId = "017513c6-ce57-48af-b902-9552faeb83dd";
+  const staging = config.supabaseUrl === "https://dczlddwbtgvfdujgcitb.supabase.co";
+  const familyTrial = staging && item.id === "0986f8bc-7905-4ec8-b023-a00f10a18d88";
+  const personalTrial = staging && item.id === "97eaee71-6a2e-4653-8eb5-ca0653f101fa"
+    && userId === "ca7bdcf2-e69d-42e2-8ae8-79cac6de2184";
+  if (personalTrial || familyTrial) {
+    const familyId = familyTrial ? "08e8f0ca-9cc4-4ea5-8544-b14a9b1cf37c" : null;
+    const workspaceId = familyTrial ? item.workspace_id : "017513c6-ce57-48af-b902-9552faeb83dd";
+    const familyOwner = "ca7bdcf2-e69d-42e2-8ae8-79cac6de2184";
     const epoch = authDataEpoch;
     const stillCurrent = () => epoch === authDataEpoch && state.session?.user?.id === userId
-      && currentBudgetWorkspace()?.id === workspaceId && !state.family;
-    if (!stillCurrent()) throw new Error("Open the Personal workspace and try again.");
+      && typeof workspaceId === "string" && currentBudgetWorkspace()?.id === workspaceId
+      && (state.family?.id || null) === familyId
+      && (!familyTrial || (item.visibility === "family" && item.family_id === familyId && state.family.owner_id === familyOwner));
+    if (!stillCurrent()) throw new Error(familyTrial ? "Open the Family workspace and try again." : "Open the Personal workspace and try again.");
     if (file.type === "application/pdf" || file.size > 2097152) {
       throw new Error("This test payment accepts JPG, PNG or WebP images up to 2 MB.");
     }
-    const { data, error } = await supabase.functions.invoke("validate-payment-proof", {
+    const { data, error } = await supabase.functions.invoke(familyTrial ? "validate-family-proof" : "validate-payment-proof", {
       body: file, headers: { "Content-Type": file.type },
     });
     if (error) throw error;
     if (!stillCurrent()) throw new Error("The workspace changed. Open the payment and try again.");
-    const prefix = `personal/${userId}/fr3-proof/${item.id}/`;
+    const prefix = familyTrial ? `families/${familyId}/${familyOwner}/${userId}/fr3-proof/${item.id}/`
+      : `personal/${userId}/fr3-proof/${item.id}/`;
     if (typeof data?.path !== "string" || !data.path.startsWith(prefix)
         || !/^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}\.png$/.test(data.path.slice(prefix.length))
         || data.type !== "image/png" || !Number.isSafeInteger(data.size) || data.size < 1 || data.size > 2097152) {

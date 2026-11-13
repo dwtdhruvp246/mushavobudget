@@ -1,9 +1,11 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_id": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "preview_id": "13fc0c26-df81-43b3-b6de-3b93e511d543",
   "preview_origin": "https://13fc0c26.mushavo-budget-staging.pages.dev",
-  "status": "HOSTED_WEBP_BROWSER_ONCE",
-  "reuse_run": 43469403167
+  "status": "ARCHIVED_HOSTED_WEBP_BROWSER_PASS",
+  "reuse_run": 43469403167,
+  "completed_run": 43469782389,
+  "receipt": "docs/security-audit/security-fr-3-2-business-logo-webp-closeout.json"
 }

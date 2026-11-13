@@ -102,7 +102,13 @@
   "first_activation_commit": "fb9638671683c52ae462489fa044bb8674bb95b6",
   "first_activation_branch_readback": true,
   "first_activation_did_not_queue_actions": true,
-  "hosted_browser_verified": false,
+  "hosted_browser_verified": true,
   "full_FR_3_2_complete": false,
-  "exit_code": 0
+  "exit_code": 0,
+  "hosted_browser": {
+    "run_id": 43480640947,
+    "run_commit": "f21910c751e5c0765582f01232b4cd6da370a949",
+    "receipt": "security-fr-3-2-personal-proof-browser-pass.json",
+    "checks_passed": 14
+  }
 }

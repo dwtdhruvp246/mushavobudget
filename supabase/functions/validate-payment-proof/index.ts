@@ -1,6 +1,8 @@
 import { createClient } from "npm:@supabase/supabase-js@2.110.9";
 import jpeg from "npm:jpeg-js@0.4.4";
 import { decode as decodeWebp } from "npm:@stacksjs/ts-webp@0.1.7";
+import * as pdf from "npm:pdf-lib@1.17.1";
+import { normalizeStaticPdf } from "./pdf.mjs";
 import { BUCKET, createProofHandler } from "./handler.mjs";
 import { readSignedPrivateObject } from "../get-private-file/signed-private-file.mjs";
 
@@ -23,8 +25,9 @@ Deno.serve(createProofHandler({
   },
   decodeJpeg: jpeg.decode,
   decodeWebp,
-  store: async (path: string, bytes: Uint8Array) => {
-    const r = await bucket().upload(path, bytes, { contentType: "image/png", cacheControl: "0", upsert: false });
+  normalizePdf: (bytes: Uint8Array) => normalizeStaticPdf(bytes, pdf, jpeg.decode),
+  store: async (path: string, bytes: Uint8Array, contentType: string) => {
+    const r = await bucket().upload(path, bytes, { contentType, cacheControl: "0", upsert: false });
     if (r.error) throw new Error("Proof write unconfirmed");
   },
   read: async (path: string, maxBytes: number) => (await readSignedPrivateObject({

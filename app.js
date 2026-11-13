@@ -8661,9 +8661,10 @@ async function uploadPaymentProof(item, file) {
       && (state.family?.id || null) === familyId
       && (!familyTrial || (item.visibility === "family" && item.family_id === familyId && state.family.owner_id === familyOwner));
     if (!stillCurrent()) throw new Error(familyTrial ? "Open the Family workspace and try again." : "Open the Personal workspace and try again.");
-    if (file.type === "application/pdf" || file.size > 2097152) {
-      throw new Error("This test payment accepts JPG, PNG or WebP images up to 2 MB.");
+    if (file.type === "application/pdf" && familyTrial) {
+      throw new Error("This test payment accepts JPG, PNG or WebP images.");
     }
+    if (file.size > 2097152) throw new Error("This test payment accepts proofs up to 2 MB.");
     const { data, error } = await supabase.functions.invoke(familyTrial ? "validate-family-proof" : "validate-payment-proof", {
       body: file, headers: { "Content-Type": file.type },
     });
@@ -8671,13 +8672,18 @@ async function uploadPaymentProof(item, file) {
     if (!stillCurrent()) throw new Error("The workspace changed. Open the payment and try again.");
     const prefix = familyTrial ? `families/${familyId}/${familyOwner}/${userId}/fr3-proof/${item.id}/`
       : `personal/${userId}/fr3-proof/${item.id}/`;
+    const pdf = file.type === "application/pdf";
+    const expectedType = pdf ? "application/pdf" : "image/png";
+    const suffix = pdf ? ".pdf" : ".png";
+    const objectId = typeof data?.path === "string" && data.path.endsWith(suffix)
+      ? data.path.slice(prefix.length, -suffix.length) : "";
     if (typeof data?.path !== "string" || !data.path.startsWith(prefix)
-        || !/^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}\.png$/.test(data.path.slice(prefix.length))
-        || data.type !== "image/png" || !Number.isSafeInteger(data.size) || data.size < 1 || data.size > 2097152) {
+        || !/^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(objectId)
+        || data.type !== expectedType || !Number.isSafeInteger(data.size) || data.size < 1 || data.size > 2097152) {
       throw new Error("The validated proof upload could not be confirmed.");
     }
     const name = file.name.replace(/\.[^.]*$/, "").trim().slice(0, 145) || "payment-proof";
-    return { path: data.path, name: name + ".png", type: data.type, size: data.size, validatedTrial: true };
+    return { path: data.path, name: name + suffix, type: data.type, size: data.size, validatedTrial: true };
   }
   const path = item.visibility === "family"
     ? `families/${item.family_id}/${state.family.owner_id}/${userId}/${crypto.randomUUID()}.${extension}`

@@ -1,6 +1,7 @@
 {
-  "enabled": false,
+  "enabled": true,
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_item": "97eaee71-6a2e-4653-8eb5-ca0653f101fa",
-  "status": "PREPARED_NO_REPLAY"
+  "status": "HOSTED_PERSONAL_PROOF_ONCE",
+  "validator_bundle": "4b90cb4ab9580bb7986a5f86a26a77fd541bbc01a03aaacf0a606402a0073ee3"
 }

@@ -45,8 +45,27 @@ async function fingerprint(bytes) {
   return Array.from(new Uint8Array(hash), byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
+function bindPersonalProof(client, userId) {
+  if (userId !== OWNER) return null;
+  return {
+    prefix: PREFIX,
+    async canWrite() {
+      const session = await client.rpc("app_session_status");
+      if (session.error || session.data?.session_valid !== true) return false;
+      const item = await client.from("payment_items").select("id,workspace_id,owner_id,visibility,family_id,status")
+        .eq("id", PAYMENT_ITEM).maybeSingle();
+      if (item.error || item.data?.id !== PAYMENT_ITEM || item.data.workspace_id !== WORKSPACE
+          || item.data.owner_id !== OWNER || item.data.visibility !== "personal" || item.data.family_id !== null
+          || item.data.status !== "active") return false;
+      const entitlement = await client.rpc("effective_workspace_entitlement", { p_workspace_id: WORKSPACE });
+      const e = entitlement.data?.[0];
+      return !entitlement.error && e?.workspace_id === WORKSPACE && e.read_only === false && e.effective_status === "active";
+    },
+  };
+}
+
 export function createProofHandler({ configured, allowedOrigin, createUserClient, gateReady, store, read,
-  decodeJpeg, decodeWebp }) {
+  decodeJpeg, decodeWebp, bind = bindPersonalProof, denied = "PROOF_FIXTURE_OWNER_REQUIRED" }) {
   return async request => {
     const origin = request.headers.get("origin");
     const allowed = !origin || allowedOrigin(origin);
@@ -74,33 +93,23 @@ export function createProofHandler({ configured, allowedOrigin, createUserClient
       const client = createUserClient(token);
       const identity = await client.auth.getUser();
       if (identity.error || !identity.data?.user?.id) return fail(401, "AUTHENTICATION_REQUIRED");
-      if (identity.data.user.id !== OWNER) return fail(403, "PROOF_FIXTURE_OWNER_REQUIRED");
-      const canWrite = async () => {
-        const session = await client.rpc("app_session_status");
-        if (session.error || session.data?.session_valid !== true) return false;
-        const item = await client.from("payment_items").select("id,workspace_id,owner_id,visibility,family_id,status")
-          .eq("id", PAYMENT_ITEM).maybeSingle();
-        if (item.error || item.data?.id !== PAYMENT_ITEM || item.data.workspace_id !== WORKSPACE
-            || item.data.owner_id !== OWNER || item.data.visibility !== "personal" || item.data.family_id !== null
-            || item.data.status !== "active") return false;
-        const entitlement = await client.rpc("effective_workspace_entitlement", { p_workspace_id: WORKSPACE });
-        const e = entitlement.data?.[0];
-        return !entitlement.error && e?.workspace_id === WORKSPACE && e.read_only === false && e.effective_status === "active";
-      };
-      if (!await canWrite()) return fail(403, "PROOF_FIXTURE_OWNER_REQUIRED");
+      const binding = bind(client, identity.data.user.id);
+      if (!binding) return fail(403, denied);
+      const { prefix, canWrite } = binding;
+      if (!await canWrite()) return fail(403, denied);
       if (!await gateReady()) return fail(503, "PROOF_TRIAL_UNAVAILABLE");
       const png = await normalize(await readBoundedImage(request));
       const hash = await fingerprint(png);
       const object = hash.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
-      const path = PREFIX + object + ".png";
-      if (!await canWrite()) return fail(403, "PROOF_FIXTURE_OWNER_REQUIRED");
+      const path = prefix + object + ".png";
+      if (!await canWrite()) return fail(403, denied);
       if (!await gateReady()) return fail(503, "PROOF_TRIAL_UNAVAILABLE");
       try { await store(path, png); } catch { /* Read back an immutable retry or lost acknowledgement. */ }
       const stored = await read(path, png.length);
       if (!(stored instanceof Blob) || stored.size !== png.length || await fingerprint(await stored.arrayBuffer()) !== hash) {
         return fail(503, "PROOF_WRITE_UNCONFIRMED");
       }
-      if (!await canWrite()) return fail(403, "PROOF_FIXTURE_OWNER_REQUIRED");
+      if (!await canWrite()) return fail(403, denied);
       return Response.json({ path, type: "image/png", size: png.length }, { headers });
     } catch (error) {
       if (error instanceof LogoInputError) {

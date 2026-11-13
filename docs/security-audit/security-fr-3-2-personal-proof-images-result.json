@@ -1,0 +1,108 @@
+{
+  "date": "2026-11-13",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "HOSTED_PERSONAL_PAYMENT_PROOF_IMAGE_SCOPE_PASS",
+  "local": {
+    "node_checks": 26,
+    "sql_gate_and_trigger": "PASS",
+    "frozen_deno_entrypoint": "PASS"
+  },
+  "validator": {
+    "id": "64c131df-bd13-458d-a551-ebd1c676c3eb",
+    "version": 1,
+    "sha": "4b90cb4ab9580bb7986a5f86a26a77fd541bbc01a03aaacf0a606402a0073ee3",
+    "runtime_files": 7
+  },
+  "guards": {
+    "gate_ready": false,
+    "service_ready": true,
+    "client_ready": false,
+    "policies": 3,
+    "trigger_count": 1
+  },
+  "hosted_api": {
+    "run": 43474028631,
+    "job": 132053032560,
+    "source_commit": "a7d93baa31ab4ea5a901e35a6e42dae2f92452ac",
+    "assertions": 13,
+    "receipt": {
+      "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Personal proof images",
+      "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+      "checks": {
+        "two_ordinary_credentials_and_roles_verified": true,
+        "created_sessions_local_logout_acknowledged": true
+      },
+      "accounts": {
+        "USER_A": {
+          "signin_HTTP_status": 200,
+          "confirmed_identity": true,
+          "active_profile": true,
+          "expected_platform_role": true,
+          "owned_workspace_counts": {
+            "personal": 1,
+            "family": 0,
+            "business": 2
+          }
+        },
+        "USER_B": {
+          "signin_HTTP_status": 200,
+          "confirmed_identity": true,
+          "active_profile": true,
+          "expected_platform_role": true,
+          "owned_workspace_counts": {
+            "personal": 1,
+            "family": 0,
+            "business": 0
+          }
+        }
+      },
+      "API_requests": 12,
+      "created_sessions": 2,
+      "cleanup_sessions": 2,
+      "settings_or_finance_writes_requested": 0,
+      "production_changed": false,
+      "full_lettered_batch_W_complete": false,
+      "exit_code": 0,
+      "exercise": {
+        "checks": {
+          "EXACT_PERSONAL_WORKSPACE": true,
+          "EMPTY_TRIAL_BASELINE": true,
+          "SYNTHETIC_ITEM_CREATED": true,
+          "OTHER_ACCOUNT_UPLOAD_DENIED": true,
+          "DIRECT_RESERVED_UPLOAD_DENIED": true,
+          "MISSING_OBJECT_LINK_DENIED": true,
+          "MISLABELED_IMAGE_DENIED": true,
+          "VALIDATED_PROOF_PERSISTED": true,
+          "IDENTICAL_UPLOAD_REUSED": true,
+          "INCORRECT_RECORDED_SIZE_DENIED": true,
+          "PAYMENT_RECORD_LINKS_VALIDATED_FILE": true,
+          "BROKER_RETURNS_NORMALIZED_PROOF": true,
+          "OTHER_ACCOUNT_DOWNLOAD_DENIED": true
+        },
+        "requests": 26,
+        "cleanup": {
+          "payment_item_and_record_absent": true,
+          "proof_object_absent": true
+        },
+        "direct_upload_status": 400,
+        "valid_upload_status": 200
+      },
+      "commit": "a7d93baa31ab4ea5a901e35a6e42dae2f92452ac"
+    }
+  },
+  "independent_cleanup": {
+    "gate_ready": false,
+    "trial_items": 0,
+    "trial_records": 0,
+    "trial_objects": 0,
+    "trial_sessions": 0,
+    "queued_messages": 0,
+    "saved_business_bill_matches": true
+  },
+  "first_activation_commit": "fb9638671683c52ae462489fa044bb8674bb95b6",
+  "first_activation_branch_readback": true,
+  "first_activation_did_not_queue_actions": true,
+  "hosted_browser_verified": false,
+  "full_FR_3_2_complete": false,
+  "exit_code": 0
+}

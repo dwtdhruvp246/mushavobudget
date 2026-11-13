@@ -1,8 +1,10 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "fixture_item": "97eaee71-6a2e-4653-8eb5-ca0653f101fa",
-  "status": "HOSTED_PERSONAL_PROOF_ONCE",
+  "status": "ARCHIVED_HOSTED_PERSONAL_PROOF_PASS",
   "validator_bundle": "4b90cb4ab9580bb7986a5f86a26a77fd541bbc01a03aaacf0a606402a0073ee3",
-  "dispatch_note": "Branch verified after an uncertain response; no Actions run existed for the first activation commit."
+  "dispatch_note": "Branch verified after an uncertain response; no Actions run existed for the first activation commit.",
+  "completed_run": 43474028631,
+  "receipt": "docs/security-audit/security-fr-3-2-personal-proof-images-result.json"
 }

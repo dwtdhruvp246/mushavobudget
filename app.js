@@ -2135,10 +2135,27 @@ async function loadWorkspaceSubscriptionData({ familyReady = null, includePerson
     ]);
   }
   requireCurrent();
+  let fixturePlan = null, fixturePrice = null;
+  if (config.supabaseUrl === "https://dczlddwbtgvfdujgcitb.supabase.co"
+      && userId === "ca7bdcf2-e69d-42e2-8ae8-79cac6de2184"
+      && !state.family && workspaces.some(w => w.id === "017513c6-ce57-48af-b902-9552faeb83dd" && w.owner_id === userId)) {
+    const witness = await supabase.rpc("fr3_subscription_proof_browser_witness", {
+      p_path: null, p_name: null, p_size: null,
+    });
+    requireCurrent();
+    const fixture = witness.data;
+    if (!witness.error && fixture?.code === "audit_fr3_subscription_proof"
+        && fixture.plan_id === "21a10bd8-46c8-4b2c-9f04-783164611fa1" && fixture.currency === "USD" && fixture.amount === 1) {
+      fixturePlan = { id: fixture.plan_id, code: fixture.code, workspace_type: "personal",
+        display_name: "Staging subscription proof check", is_active: true, available_for_purchase: true };
+      fixturePrice = { plan_id: fixture.plan_id, billing_period: "monthly", currency: fixture.currency,
+        amount: fixture.amount, extra_member_amount: 0, is_active: true, effective_from: "2026-11-01T00:00:00Z" };
+    }
+  }
   state.workspaces = workspaces;
   state.workspaceMembers = members;
-  state.plans = plans;
-  state.planPrices = prices;
+  state.plans = fixturePlan ? [...plans, fixturePlan] : plans;
+  state.planPrices = fixturePrice ? [...prices, fixturePrice] : prices;
   state.planFeatures = features;
   state.planLimits = limits;
   state.businessCheckoutTerms = businessCheckoutTerms || [];
@@ -5086,6 +5103,40 @@ async function submitSubscriptionRenewal(event) {
       throw new Error("INVALID_FAMILY_MEMBER_COUNT");
     }
     setSubmitting(submitButton, true, "Submitting...");
+    if (plan.code === "audit_fr3_subscription_proof"
+        && config.supabaseUrl === "https://dczlddwbtgvfdujgcitb.supabase.co"
+        && workspace.id === "017513c6-ce57-48af-b902-9552faeb83dd"
+        && state.session?.user?.id === "ca7bdcf2-e69d-42e2-8ae8-79cac6de2184") {
+      if (!proof || validateProofFile(proof) !== "pdf" || proof.size > 2097152) {
+        throw new Error("This staging check requires a PDF proof up to 2 MB.");
+      }
+      const epoch = authDataEpoch;
+      const owner = state.session.user.id;
+      const stillCurrent = () => authDataEpoch === epoch && state.session?.user?.id === owner
+        && currentBudgetWorkspace()?.id === workspace.id;
+      const { data, error } = await supabase.functions.invoke("validate-subscription-proof", {
+        body: proof, headers: { "Content-Type": proof.type },
+      });
+      if (error) throw error;
+      if (!stillCurrent()) throw new Error("The workspace changed. Open the form again.");
+      const prefix = `workspaces/${workspace.id}/${owner}/fr3-subscription-proof/`;
+      if (typeof data?.path !== "string" || !data.path.startsWith(prefix)
+          || !/^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}\.pdf$/.test(data.path.slice(prefix.length))
+          || data.type !== "application/pdf" || !Number.isSafeInteger(data.size) || data.size < 1 || data.size > 2097152) {
+        throw new Error("The validated subscription proof could not be confirmed.");
+      }
+      const receipt = await query("staging subscription proof witness", supabase.rpc("fr3_subscription_proof_browser_witness", {
+        p_path: data.path, p_name: "synthetic-subscription-proof.pdf", p_size: data.size,
+      }));
+      if (!stillCurrent()) return;
+      if (receipt?.payment_linked !== true || receipt.rolled_back !== true) {
+        throw new Error("The staging subscription proof check could not be confirmed.");
+      }
+      $("#renewalForm").reset();
+      $("#renewalDialog").close();
+      showToast("Staging payment proof verified. The test renewal was rolled back.");
+      return;
+    }
     if (proof) proofPath = await uploadSubscriptionProof(proof, workspace.id);
     const request = startsNewBusiness
       ? supabase.rpc("submit_business_plan_request", {

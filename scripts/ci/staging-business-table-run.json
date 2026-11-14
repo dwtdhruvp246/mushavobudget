@@ -1,11 +1,12 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "workspace": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "documents": [
     "90d83c56-a450-4fb2-9d45-bf4dc652b357"
   ],
-  "status": "HOSTED_BUSINESS_XLSX_ONCE",
+  "status": "ARCHIVED_BUSINESS_CSV_XLSX_SCOPED_PASS_NO_REPLAY",
   "paid_through": "2026-11-14T15:42:29.015173Z",
-  "csv_pass_run": 43603307439
+  "csv_pass_run": 43603307439,
+  "xlsx_pass_run": 43603746309
 }

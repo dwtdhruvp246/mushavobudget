@@ -2,12 +2,12 @@ import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { API_ORIGIN, WEB_ORIGIN, Stop, apiTransport, checkStagingAccess, digest, need, privateAccounts, readPublicConfiguration } from "./staging-access.mjs";
 import { BUCKET, OWNER, WORKSPACE, documentPrefix, tableDocuments } from "../../supabase/functions/validate-business-table/scope.mjs";
-import { CSV_MIME, XLSX_MIME } from "../../supabase/functions/validate-business-table/table-files.mjs";
-import { csvCanonical, csvFixture, formatExamples, xlsxFixture } from "../fixtures/business-table-tools/fixtures.mjs";
+import { XLSX_MIME } from "../../supabase/functions/validate-business-table/table-files.mjs";
+import { formatExamples, xlsxFixture } from "../fixtures/business-table-tools/fixtures.mjs";
 
 const AGENT = "Mushavo-Staging-FR3-Business-Table";
 const NAME = "audit-fr3-logo-ingestion-20261112";
-const initialVersion = 26;
+const initialVersion = 28;
 const activeVersion = initialVersion + 1;
 const closedVersion = activeVersion + 1;
 const progress = "Stage 4/10 | FR.3/8 | FR.3.2 Business CSV and XLSX";
@@ -28,7 +28,6 @@ async function exercise({ actors, evidence }, key, paidThrough) {
   need(owner.id === OWNER && other.id !== OWNER && admin.id !== OWNER, "EXACT_TABLE_TEST_ACTORS");
   const xlsx = xlsxFixture();
   const files = [
-    file("CSV", CSV_MIME, csvFixture, csvCanonical, Buffer.from("Item,Amount\nTea,=1+1\n"), "PROOF_CSV_FORMULA_UNSUPPORTED"),
     file("XLSX", XLSX_MIME, xlsx, xlsx, xlsxFixture({cell:formatExamples.formula}), "PROOF_XLSX_ACTIVE_CONTENT_UNSUPPORTED"),
   ];
   Object.assign(evidence, { checks: {}, requests: 0, cleanup: {} });
@@ -87,6 +86,8 @@ async function exercise({ actors, evidence }, key, paidThrough) {
       const foreign = await validate(other, f, f.input);
       mark("OUTSIDE_ACCOUNT_VALIDATION_DENIED", foreign.status === 403 && foreign.data?.error === "BUSINESS_TABLE_FIXTURE_OWNER_REQUIRED");
       const invalid = await validate(owner, f, f.invalid);
+      evidence[f.label + "_formula_http_status"] = invalid.status;
+      if (/^[A-Z_]{4,100}$/.test(invalid.data?.error || "")) evidence[f.label + "_formula_response_code"] = invalid.data.error;
       mark("FORMULA_REFUSED", invalid.status === 422 && invalid.data?.error === f.invalidCode);
       const upload = await validate(owner, f, f.input);
       evidence[f.label + "_validator_status"] = upload.status;
@@ -151,8 +152,8 @@ async function main() {
   const plan = JSON.parse(await readFile(new URL("./staging-business-table-run.json", import.meta.url), "utf8"));
   if (plan.enabled === false) return { result: "BUSINESS_TABLE_PLAN_ARCHIVED", exit_code: 0 };
   need(plan.enabled === true && plan.project === "dczlddwbtgvfdujgcitb" && plan.workspace === WORKSPACE
-    && plan.status === "HOSTED_BUSINESS_TABLE_ONCE" && Date.parse(plan.paid_through) > Date.now()
-    && JSON.stringify(plan.documents) === JSON.stringify([...tableDocuments.values()]), "EXACT_BUSINESS_TABLE_PLAN_REQUIRED");
+    && plan.status === "HOSTED_BUSINESS_XLSX_ONCE" && Date.parse(plan.paid_through) > Date.now()
+    && JSON.stringify(plan.documents) === JSON.stringify([tableDocuments.get(XLSX_MIME)]), "EXACT_BUSINESS_TABLE_PLAN_REQUIRED");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization" && process.env.GITHUB_RUN_ATTEMPT === "1", "EXACT_STAGING_BRANCH_REQUIRED");
   const r = await fetch(WEB_ORIGIN + "/config.js?v=27", { redirect: "error", signal: AbortSignal.timeout(15000) });

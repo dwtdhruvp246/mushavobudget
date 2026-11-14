@@ -6,9 +6,10 @@ import { createProofHandler } from "../supabase/functions/validate-payment-proof
 import { BUCKET, OWNER, bindBusinessTable, documentPrefix, tableDocuments } from "../supabase/functions/validate-business-table/scope.mjs";
 import { csvCanonical, csvFixture, formatExamples, xlsxFixture } from "../scripts/fixtures/business-table-tools/fixtures.mjs";
 
-const sax = createRequire(new URL("../scripts/fixtures/business-table-tools/package.json", import.meta.url))("sax");
+const require = createRequire(new URL("../scripts/fixtures/business-table-tools/package.json", import.meta.url));
+const sax = require("sax"), { Inflate } = require("pako");
 const csv = value => Buffer.from(value);
-const xlsx = options => validateXlsx(xlsxFixture(options), sax);
+const xlsx = options => validateXlsx(xlsxFixture(options), sax, Inflate);
 
 test("normalizes CSV quoting, line endings and signed numeric cells", () => {
   assert.deepEqual(Buffer.from(normalizeCsv(csvFixture)), csvCanonical);
@@ -35,7 +36,7 @@ test("applies CSV field and row budgets", () => {
 
 test("returns the identical XLSX archive for a passive workbook", () => {
   const input = xlsxFixture();
-  assert.equal(validateXlsx(input, sax), input);
+  assert.equal(validateXlsx(input, sax, Inflate), input);
 });
 
 test("rejects XLSX formulas and external workbook relationships", () => {
@@ -46,15 +47,15 @@ test("rejects XLSX formulas and external workbook relationships", () => {
 test("rejects unsupported XLSX parts, malformed XML and ZIP truncation", () => {
   assert.throws(() => xlsx({extra:{"xl/other.xml":"<other/>"}}), {message: "UNSUPPORTED_PROOF_XLSX_PART"});
   assert.throws(() => xlsx({worksheetTail:"<other/>"}), {message: "INVALID_PROOF_XLSX_XML"});
-  assert.throws(() => validateXlsx(xlsxFixture().subarray(0,-12), sax), {message: "INVALID_PROOF_XLSX"});
+  assert.throws(() => validateXlsx(xlsxFixture().subarray(0,-12), sax, Inflate), {message: "INVALID_PROOF_XLSX"});
   const changed = xlsxFixture();
   changed[14] ^= 1;
-  assert.throws(() => validateXlsx(changed, sax), {message: "INVALID_PROOF_XLSX"});
+  assert.throws(() => validateXlsx(changed, sax, Inflate), {message: "INVALID_PROOF_XLSX"});
 });
 
 test("enforces XLSX entry and upload size limits", () => {
   assert.throws(() => xlsx({cell:" ".repeat(2097152)}), {status: 413});
-  assert.throws(() => validateXlsx(Buffer.alloc(2097153), sax), {status: 413});
+  assert.throws(() => validateXlsx(Buffer.alloc(2097153), sax, Inflate), {status: 413});
 });
 
 test("the Business table adapter resolves each MIME into its reserved document path", () => {

@@ -1,4 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2.110.9";
+import pako from "npm:pako@2.1.0";
 import sax from "npm:sax@1.6.1";
 import { createProofHandler } from "../validate-payment-proof/handler.mjs";
 import { CSV_MIME, XLSX_MIME, normalizeCsv, validateXlsx } from "./table-files.mjs";
@@ -18,8 +19,8 @@ Deno.serve(createProofHandler({
   createUserClient: (token: string) => createClient(url, anon, {
     ...options, global: { headers: { Authorization: `Bearer ${token}` } },
   }),
-  gateReady: async () => {
-    const r = await privileged().rpc("fr3_business_table_gate_ready");
+  gateReady: async (mimeType: string) => {
+    const r = await privileged().rpc("fr3_business_table_gate_ready_for_type", { p_mime_type: mimeType });
     return !r.error && r.data === true;
   },
   bind: bindBusinessTable,
@@ -29,7 +30,7 @@ Deno.serve(createProofHandler({
   decodeWebp: null,
   extraFormats: new Map([
     [CSV_MIME, { suffix: ".csv", normalize: normalizeCsv }],
-    [XLSX_MIME, { suffix: ".xlsx", normalize: (bytes: Uint8Array) => validateXlsx(bytes, sax) }],
+    [XLSX_MIME, { suffix: ".xlsx", normalize: (bytes: Uint8Array) => validateXlsx(bytes, sax, pako.Inflate) }],
   ]),
   store: async (path: string, bytes: Uint8Array, contentType: string) => {
     const r = await bucket().upload(path, bytes, { contentType, cacheControl: "0", upsert: false });

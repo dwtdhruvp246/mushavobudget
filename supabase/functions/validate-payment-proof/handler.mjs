@@ -105,7 +105,7 @@ export function createProofHandler({ configured, allowedOrigin, createUserClient
       if (!binding) return fail(403, denied);
       const { prefix, canWrite } = binding;
       if (!await canWrite()) return fail(403, denied);
-      if (!await gateReady()) return fail(503, "PROOF_TRIAL_UNAVAILABLE");
+      if (!await gateReady(type)) return fail(503, "PROOF_TRIAL_UNAVAILABLE");
       const canonical = await normalize(await readBoundedProof(request));
       const isPdf = type === "application/pdf";
       const outputType = format ? type : isPdf ? "application/pdf" : "image/png";
@@ -113,7 +113,7 @@ export function createProofHandler({ configured, allowedOrigin, createUserClient
       const object = hash.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
       const path = prefix + object + (format?.suffix ?? (isPdf ? ".pdf" : ".png"));
       if (!await canWrite()) return fail(403, denied);
-      if (!await gateReady()) return fail(503, "PROOF_TRIAL_UNAVAILABLE");
+      if (!await gateReady(type)) return fail(503, "PROOF_TRIAL_UNAVAILABLE");
       try { await store(path, canonical, outputType); } catch { /* Read back an immutable retry or lost acknowledgement. */ }
       const stored = await read(path, canonical.length);
       if (!(stored instanceof Blob) || stored.size !== canonical.length || await fingerprint(await stored.arrayBuffer()) !== hash) {

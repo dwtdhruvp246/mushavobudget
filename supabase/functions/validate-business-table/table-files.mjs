@@ -1,4 +1,3 @@
-import { inflateRawSync } from "node:zlib";
 import { LogoInputError } from "../validate-business-logo/png.mjs";
 
 export const CSV_MIME = "text/csv";
@@ -115,7 +114,21 @@ function crc32(bytes) {
   return (word ^ 0xffffffff) >>> 0;
 }
 
-function readParts(bytes) {
+function unpack(input, size, Inflate) {
+  const output = new Uint8Array(size);
+  const inflate = new Inflate({ raw: true, chunkSize: 16384 });
+  let written = 0;
+  inflate.onData = chunk => {
+    if (written + chunk.length > size) limit();
+    output.set(chunk, written);
+    written += chunk.length;
+  };
+  if (!inflate.push(input, true) || !inflate.ended || inflate.err !== 0
+      || inflate.strm.avail_in !== 0 || written !== size) reject("INVALID_PROOF_XLSX");
+  return output;
+}
+
+function readParts(bytes, Inflate) {
   const view = new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
   const u16 = i => view.getUint16(i,true), u32 = i => view.getUint32(i,true);
   const end = bytes.length - 22;
@@ -155,12 +168,8 @@ function readParts(bytes) {
   if (next!==index) reject("INVALID_PROOF_XLSX");
   for (const item of entries.values()) {
     const input = bytes.subarray(item.dataStart,item.dataEnd);
-    let result;
-    try { result=item.method===8 ? inflateRawSync(input,{maxOutputLength:item.size,info:true}) : null; }
-    catch (error) { if (error?.code==="ERR_BUFFER_TOO_LARGE") limit(); reject("INVALID_PROOF_XLSX"); }
-    item.bytes = result ? result.buffer : input;
-    if ((result && result.engine.bytesWritten!==input.length) || item.bytes.length!==item.size
-        || crc32(item.bytes)!==item.check) reject("INVALID_PROOF_XLSX");
+    item.bytes = item.method === 8 ? unpack(input, item.size, Inflate) : input;
+    if (item.bytes.length !== item.size || crc32(item.bytes) !== item.check) reject("INVALID_PROOF_XLSX");
   }
   return entries;
 }
@@ -169,9 +178,9 @@ const blockedNodes = new Set(["f","formula","formula1","formula2","definedName",
   "hyperlink","hyperlinks","oleObject","oleObjects","controls","customSheetView","dataValidation","dataValidations",
   "conditionalFormatting","extLst","drawing","legacyDrawing","queryTable","pivotTable","webPublishItem"]);
 
-export function validateXlsx(bytes, sax) {
+export function validateXlsx(bytes, sax, Inflate) {
   boundedInput(bytes);
-  const entries = readParts(bytes);
+  const entries = readParts(bytes, Inflate);
   const sheets = new Set(), workbookLinks = new Map(), declarations = new Map(), defaults = new Map();
   let cells = 0, nodes = 0, rootLinks = 0;
   for (const [name,item] of entries) {

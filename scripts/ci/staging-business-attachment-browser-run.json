@@ -1,9 +1,9 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "workspace": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "preview": "https://13fc0c26.mushavo-budget-staging.pages.dev",
-  "status": "HOSTED_BUSINESS_ATTACHMENT_BROWSER_ONCE",
+  "status": "ARCHIVED_BUSINESS_CLAIM_AND_BILL_SCOPED_PASS_NO_REPLAY",
   "paid_through": "2026-11-14T16:22:12.821429Z",
   "fixture_ids": [
     "454e6059-4b4c-4998-aa9d-ea932b15ca50",
@@ -16,5 +16,6 @@
   "retry_of": 43605333570,
   "onboarding_fixture_version": 20,
   "replaces_run": 43606475234,
-  "claim_preview_passed_in_run": 43606728854
+  "claim_preview_passed_in_run": 43606728854,
+  "bill_preview_passed_in_run": 43606907862
 }

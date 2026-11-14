@@ -9,7 +9,7 @@ import { pdf, receiptPdf } from "../fixtures/pdf-proof-tools/fixtures.mjs";
 
 const AGENT = "Mushavo-Staging-FR3-Business-Attachment-Browser";
 const PREVIEW = "https://13fc0c26.mushavo-budget-staging.pages.dev";
-const initialVersion = 38;
+const initialVersion = 40;
 const activeVersion = initialVersion + 1;
 const closedVersion = activeVersion + 1;
 const NAME = "audit-fr3-logo-ingestion-20261112";
@@ -35,6 +35,17 @@ async function browserFlow(owner, files, input, report) {
       if (location.origin === origin && !localStorage.getItem("sb-dczlddwbtgvfdujgcitb-auth-token")) {
         localStorage.setItem("sb-dczlddwbtgvfdujgcitb-auth-token", JSON.stringify(session));
       }
+      if (location.origin !== origin) return;
+      window.testPrivatePreviewLinks = [];
+      const click = HTMLAnchorElement.prototype.click;
+      HTMLAnchorElement.prototype.click = function () {
+        if (this.href.startsWith("blob:" + origin + "/")) {
+          window.testPrivatePreviewLinks.push({
+            href:this.href, target:this.target, rel:this.rel, referrerPolicy:this.referrerPolicy, download:this.download,
+          });
+        }
+        return click.call(this);
+      };
     }, {origin: PREVIEW, session});
 
     const validated = new Set(), registered = new Set(), opened = new Set();
@@ -136,15 +147,18 @@ async function browserFlow(owner, files, input, report) {
       mark("PRIVATE_FILE_MEDIA_TYPE", mediaType === "application/pdf");
       mark("PRIVATE_FILE_CACHE_CONTROL", cache.includes("private") && cache.includes("no-store"));
 
-      await preview.waitForURL(url => url.protocol === "blob:");
-      const blobUrl = preview.url();
-      mark("PRIVATE_FILE_PREVIEW_OPENED", blobUrl.startsWith("blob:" + PREVIEW + "/"));
+      const link = await page.evaluate(() => window.testPrivatePreviewLinks.at(-1));
+      const rel = link?.rel.split(/\s+/) || [];
+      mark("PRIVATE_FILE_PREVIEW_OPENED", !preview.isClosed() && link?.href.startsWith("blob:" + PREVIEW + "/")
+        && link.target === "_blank" && rel.includes("noopener") && rel.includes("noreferrer")
+        && link.referrerPolicy === "no-referrer" && !link.download);
+      report.browser_step = f.lane + ":READ_PREVIEW_BYTES";
       const rendered = await page.evaluate(async ({url,size}) => {
         const response = await fetch(url, {signal:AbortSignal.timeout(5000)});
         const blob = await response.blob();
         return {type:blob.type,size:blob.size,bytes:response.ok && blob.size === size
           ? Array.from(new Uint8Array(await blob.arrayBuffer())) : []};
-      }, {url:blobUrl,size:f.size});
+      }, {url:link.href,size:f.size});
       Object.assign(observed[f.lane], {preview_type:rendered.type,preview_size:rendered.size,expected_size:f.size});
       mark("PREVIEW_MATCHES_EXACT_BYTES", rendered.type === "application/pdf" && rendered.size === f.size
         && digest(Buffer.from(rendered.bytes)) === f.hash);

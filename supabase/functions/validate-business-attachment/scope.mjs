@@ -3,7 +3,7 @@ import { BUCKET, OWNER, WORKSPACE, bindBusinessDocument } from "../validate-busi
 export { BUCKET, OWNER, WORKSPACE };
 export const attachmentFixtures = new Map([
   ["expense-claim", {
-    document: "e5409ec2-c1c8-4b92-91d3-2ae755836bb8", parent: "454e6059-4b4c-4998-aa9d-ea932b15ca50", type: "expense_claim", table: "business_expense_claims",
+    document: "7b7e5da1-ff93-44a0-91e0-2dd6a400cac3", parent: "454e6059-4b4c-4998-aa9d-ea932b15ca50", type: "expense_claim", table: "business_expense_claims",
   }],
   ["bill-invoice", {
     document: "c877b770-3bb6-4e0c-aae3-a6a10f3234f6", parent: "ac975ebd-b138-40c4-a082-c6e62670a98a", type: "business_bill", table: "business_bills",

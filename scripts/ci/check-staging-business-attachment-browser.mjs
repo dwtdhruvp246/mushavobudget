@@ -9,7 +9,7 @@ import { pdf, receiptPdf } from "../fixtures/pdf-proof-tools/fixtures.mjs";
 
 const AGENT = "Mushavo-Staging-FR3-Business-Attachment-Browser";
 const PREVIEW = "https://13fc0c26.mushavo-budget-staging.pages.dev";
-const initialVersion = 36;
+const initialVersion = 38;
 const activeVersion = initialVersion + 1;
 const closedVersion = activeVersion + 1;
 const NAME = "audit-fr3-logo-ingestion-20261112";
@@ -122,9 +122,33 @@ async function browserFlow(owner, files, input, report) {
         && value.path === f.path && value.type === "application/pdf" && value.size === f.size);
       report.browser_step = f.lane + ":OPEN_FILE";
       const file = dialog.getByRole("button",{name:f.filename,exact:true});
-      const [broker] = await Promise.all([page.waitForResponse(post("get-private-file")),file.click()]);
-      mark("EXACT_PRIVATE_FILE_READ", broker.status() === 200 && broker.headers()["x-mushavo-media-type"] === "application/pdf"
-        && digest(await broker.body()) === f.hash);
+      const [broker, preview] = await Promise.all([
+        page.waitForResponse(post("get-private-file")),
+        context.waitForEvent("page", {predicate: child => child !== page}),
+        file.click(),
+      ]);
+      const headers = await broker.allHeaders();
+      const mediaType = headers["x-mushavo-media-type"] || "";
+      const cache = (headers["cache-control"] || "").toLowerCase().split(",").map(value => value.trim());
+      const observed = report.browser_downloads ??= {};
+      observed[f.lane] = {status:broker.status(),media_type:mediaType,cache_control:cache};
+      mark("PRIVATE_FILE_HTTP_OK", broker.status() === 200);
+      mark("PRIVATE_FILE_MEDIA_TYPE", mediaType === "application/pdf");
+      mark("PRIVATE_FILE_CACHE_CONTROL", cache.includes("private") && cache.includes("no-store"));
+
+      await preview.waitForURL(url => url.protocol === "blob:");
+      const blobUrl = preview.url();
+      mark("PRIVATE_FILE_PREVIEW_OPENED", blobUrl.startsWith("blob:" + PREVIEW + "/"));
+      const rendered = await page.evaluate(async ({url,size}) => {
+        const response = await fetch(url, {signal:AbortSignal.timeout(5000)});
+        const blob = await response.blob();
+        return {type:blob.type,size:blob.size,bytes:response.ok && blob.size === size
+          ? Array.from(new Uint8Array(await blob.arrayBuffer())) : []};
+      }, {url:blobUrl,size:f.size});
+      Object.assign(observed[f.lane], {preview_type:rendered.type,preview_size:rendered.size,expected_size:f.size});
+      mark("PREVIEW_MATCHES_EXACT_BYTES", rendered.type === "application/pdf" && rendered.size === f.size
+        && digest(Buffer.from(rendered.bytes)) === f.hash);
+      await preview.close();
     }
     need(calls.validator === 3 && calls.register === 2 && calls.broker === 2
       && !calls.blocked.some(([method,path]) => ["POST","PUT","PATCH","DELETE"].includes(method) && path.startsWith("/storage/")),
@@ -176,7 +200,7 @@ async function exercise({ actors, evidence }, key, paidThrough) {
         "content-type":"application/pdf","x-mushavo-attachment":f.lane,
       });
       need(invalidOwner.status === 403,"OUTSIDE_ATTACHMENT_ACCOUNT_DENIED");
-      const direct = await call("/storage/v1/object/" + BUCKET + "/" + f.path,"POST",owner,canonical,{
+      const direct = await call("/storage/v1/object/" + BUCKET + "/" + f.path,"POST",owner,Buffer.from(canonical),{
         "content-type":"application/pdf","x-upsert":"false",
       });
       need([401,403].includes(direct.status) || direct.status === 400 && [401,403].includes(Number(direct.data?.statusCode)),"DIRECT_ATTACHMENT_WRITE_DENIED");
@@ -221,7 +245,8 @@ async function main() {
   const plan = JSON.parse(await readFile(new URL("./staging-business-attachment-browser-run.json",import.meta.url),"utf8"));
   if (plan.enabled === false) return {result:"BUSINESS_ATTACHMENT_BROWSER_PLAN_ARCHIVED",exit_code:0};
   need(plan.enabled === true && plan.status === "HOSTED_BUSINESS_ATTACHMENT_BROWSER_ONCE" && plan.project === "dczlddwbtgvfdujgcitb"
-    && plan.preview === PREVIEW && plan.workspace === WORKSPACE && Date.parse(plan.paid_through) > Date.now(),"ATTACHMENT_BROWSER_PLAN_REQUIRED");
+    && plan.preview === PREVIEW && plan.workspace === WORKSPACE && Date.parse(plan.paid_through) > Date.now()
+    && JSON.stringify(plan.document_ids) === JSON.stringify([...attachmentFixtures.values()].map(item => item.document)),"ATTACHMENT_BROWSER_PLAN_REQUIRED");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization" && process.env.GITHUB_RUN_ATTEMPT === "1","ATTACHMENT_BRANCH_REQUIRED");
   const r = await fetch(WEB_ORIGIN + "/config.js?v=27",{redirect:"error",signal:AbortSignal.timeout(15000)});

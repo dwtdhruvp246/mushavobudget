@@ -1235,7 +1235,7 @@ function openClaimDetail(id) {
 }
 
 const validatedBusinessAttachments = new Map([
-  ['454e6059-4b4c-4998-aa9d-ea932b15ca50', { lane: 'expense-claim', document: '7d488239-ba6e-440e-8be1-5e255b2ead79', parentType: 'expense_claim' }],
+  ['454e6059-4b4c-4998-aa9d-ea932b15ca50', { lane: 'expense-claim', document: 'e5409ec2-c1c8-4b92-91d3-2ae755836bb8', parentType: 'expense_claim' }],
   ['ac975ebd-b138-40c4-a082-c6e62670a98a', { lane: 'bill-invoice', document: 'c877b770-3bb6-4e0c-aae3-a6a10f3234f6', parentType: 'business_bill' }],
 ]);
 

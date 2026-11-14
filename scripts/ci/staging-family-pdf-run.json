@@ -1,8 +1,10 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "family": "08e8f0ca-9cc4-4ea5-8544-b14a9b1cf37c",
   "item": "0986f8bc-7905-4ec8-b023-a00f10a18d88",
-  "status": "HOSTED_FAMILY_PDF_ONCE",
-  "workspace": "f341aa05-b162-47a9-8699-3cd2c151f961"
+  "status": "ARCHIVED_FAMILY_PDF_API_PASS_NO_REPLAY",
+  "workspace": "f341aa05-b162-47a9-8699-3cd2c151f961",
+  "run_id": 43562948863,
+  "run_commit": "5d67e8e8a106f2c45d73d68c7df926718dda8897"
 }

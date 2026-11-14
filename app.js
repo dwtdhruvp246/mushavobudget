@@ -8661,9 +8661,6 @@ async function uploadPaymentProof(item, file) {
       && (state.family?.id || null) === familyId
       && (!familyTrial || (item.visibility === "family" && item.family_id === familyId && state.family.owner_id === familyOwner));
     if (!stillCurrent()) throw new Error(familyTrial ? "Open the Family workspace and try again." : "Open the Personal workspace and try again.");
-    if (file.type === "application/pdf" && familyTrial) {
-      throw new Error("This test payment accepts JPG, PNG or WebP images.");
-    }
     if (file.size > 2097152) throw new Error("This test payment accepts proofs up to 2 MB.");
     const { data, error } = await supabase.functions.invoke(familyTrial ? "validate-family-proof" : "validate-payment-proof", {
       body: file, headers: { "Content-Type": file.type },

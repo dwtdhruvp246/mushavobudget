@@ -99,7 +99,7 @@
     "gate_ready": true,
     "catalog_matches": true
   },
-  "browser_verified": false,
+  "browser_verified": true,
   "complete": false,
   "hosted_upload_readback_checks_passed": 14,
   "cleanup_run_id": 43564158578,
@@ -171,5 +171,7 @@
   },
   "hosted_subscription_submission_verified": false,
   "full_FR_3_2_complete": false,
-  "exit_code": 0
+  "exit_code": 0,
+  "browser_scope": "Authenticated Personal renewal browser witness with rollback",
+  "browser_receipt": "security-fr-3-2-subscription-proof-browser-result.json"
 }

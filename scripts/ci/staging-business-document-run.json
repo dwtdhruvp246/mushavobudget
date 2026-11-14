@@ -1,7 +1,8 @@
 {
-  "enabled": false,
+  "enabled": true,
   "project": "dczlddwbtgvfdujgcitb",
   "workspace": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "document": "75e6c01e-e490-4e83-9774-618867654b24",
-  "status": "PREPARED_NO_REPLAY"
+  "status": "HOSTED_BUSINESS_DOCUMENT_ONCE",
+  "paid_through": "2026-11-14T15:40:51.000Z"
 }

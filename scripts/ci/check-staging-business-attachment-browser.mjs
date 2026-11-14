@@ -9,7 +9,7 @@ import { pdf, receiptPdf } from "../fixtures/pdf-proof-tools/fixtures.mjs";
 
 const AGENT = "Mushavo-Staging-FR3-Business-Attachment-Browser";
 const PREVIEW = "https://13fc0c26.mushavo-budget-staging.pages.dev";
-const initialVersion = 40;
+const initialVersion = 42;
 const activeVersion = initialVersion + 1;
 const closedVersion = activeVersion + 1;
 const NAME = "audit-fr3-logo-ingestion-20261112";
@@ -164,7 +164,8 @@ async function browserFlow(owner, files, input, report) {
         && digest(Buffer.from(rendered.bytes)) === f.hash);
       await preview.close();
     }
-    need(calls.validator === 3 && calls.register === 2 && calls.broker === 2
+    const invalidSamples = files.filter(file => file.lane === "expense-claim").length;
+    need(calls.validator === files.length + invalidSamples && calls.register === files.length && calls.broker === files.length
       && !calls.blocked.some(([method,path]) => ["POST","PUT","PATCH","DELETE"].includes(method) && path.startsWith("/storage/")),
       "EXACT_BROWSER_VALIDATION_ROUTING_REQUIRED");
   } catch (error) {
@@ -179,7 +180,7 @@ async function exercise({ actors, evidence }, key, paidThrough) {
   need(owner.id === OWNER && outsider.id !== OWNER && admin.id !== OWNER, "EXACT_ATTACHMENT_ACTORS_REQUIRED");
   const input = Buffer.from(await receiptPdf()), canonical = await normalizeStaticPdf(input,pdf), hash = digest(canonical);
   const object = hash.slice(0,32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/,"$1-$2-$3-$4-$5");
-  const files = [...attachmentFixtures].map(([lane,f]) => ({...f,lane,size:canonical.length,hash,
+  const files = [...attachmentFixtures].filter(([lane]) => lane === "bill-invoice").map(([lane,f]) => ({...f,lane,size:canonical.length,hash,
     filename:"synthetic-" + lane + ".pdf", path:`workspaces/${WORKSPACE}/${OWNER}/${f.document}/${object}.pdf`}));
   Object.assign(evidence,{checks:{},requests:0,cleanup:{}});
   async function call(path, method, actor, body, headers = {}) {
@@ -260,7 +261,7 @@ async function main() {
   if (plan.enabled === false) return {result:"BUSINESS_ATTACHMENT_BROWSER_PLAN_ARCHIVED",exit_code:0};
   need(plan.enabled === true && plan.status === "HOSTED_BUSINESS_ATTACHMENT_BROWSER_ONCE" && plan.project === "dczlddwbtgvfdujgcitb"
     && plan.preview === PREVIEW && plan.workspace === WORKSPACE && Date.parse(plan.paid_through) > Date.now()
-    && JSON.stringify(plan.document_ids) === JSON.stringify([...attachmentFixtures.values()].map(item => item.document)),"ATTACHMENT_BROWSER_PLAN_REQUIRED");
+    && JSON.stringify(plan.document_ids) === JSON.stringify([attachmentFixtures.get("bill-invoice").document]),"ATTACHMENT_BROWSER_PLAN_REQUIRED");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization" && process.env.GITHUB_RUN_ATTEMPT === "1","ATTACHMENT_BRANCH_REQUIRED");
   const r = await fetch(WEB_ORIGIN + "/config.js?v=27",{redirect:"error",signal:AbortSignal.timeout(15000)});

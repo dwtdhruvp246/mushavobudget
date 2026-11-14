@@ -1,8 +1,10 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "workspace": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "document": "75e6c01e-e490-4e83-9774-618867654b24",
-  "status": "HOSTED_BUSINESS_DOCUMENT_ONCE",
-  "paid_through": "2026-11-14T15:40:51.000Z"
+  "status": "ARCHIVED_BUSINESS_DOCUMENT_PDF_SCOPED_PASS_NO_REPLAY",
+  "paid_through": "2026-11-14T15:40:51.000Z",
+  "run_id": 43601006807,
+  "run_commit": "99873590a9a81ec582503cdea5145c5d8ff27b75"
 }

@@ -7,14 +7,17 @@ import { normalizeStaticPdf } from "../../supabase/functions/validate-payment-pr
 import { pdf, receiptPdf } from "../fixtures/pdf-proof-tools/fixtures.mjs";
 
 const AGENT = "Mushavo-Staging-FR3-Business-Attachment-Browser";
-const PREVIEW = "https://5edb0c6b.mushavo-budget-staging.pages.dev";
+const PREVIEW = "https://13fc0c26.mushavo-budget-staging.pages.dev";
+const initialVersion = 32;
+const activeVersion = initialVersion + 1;
+const closedVersion = activeVersion + 1;
 const NAME = "audit-fr3-logo-ingestion-20261112";
 const PROGRESS = "Stage 4/10 | FR.3/8 | FR.3.2 Business attachment browser";
 const RPC_READS = new Set([
   "app_session_status", "my_account_suspended", "get_my_business_invitations", "effective_workspace_entitlement",
   "business_team_snapshot", "business_effective_permissions", "business_billing_snapshot", "business_claim_summary",
   "business_bill_summary", "business_transaction_feed", "business_claim_history", "business_request_feed",
-  "business_budget_feed", "business_roles_snapshot",
+  "business_budget_feed", "business_roles_snapshot", "business_payment_readiness",
 ]);
 
 async function browserFlow(owner, files, input, report) {
@@ -84,7 +87,10 @@ async function browserFlow(owner, files, input, report) {
       const claim = f.lane === "expense-claim";
       const mark = (name, value) => { report.checks[f.lane + "_" + name] = Boolean(value); need(value, "BROWSER_" + name); };
       report.browser_step = f.lane + ":OPEN";
-      await page.goto(PREVIEW + "/business.html?workspace=" + WORKSPACE + "#business/" + (claim ? "activity" : "bills"), {waitUntil:"domcontentloaded"});
+      const main = await page.goto(PREVIEW + "/business?workspace=" + WORKSPACE + "#business/" + (claim ? "activity" : "bills"), {waitUntil:"domcontentloaded"});
+      report.browser_navigation_status = main?.status();
+      need(main?.ok() && new URL(page.url()).origin === PREVIEW, "EXACT_BUSINESS_PREVIEW_PAGE_REQUIRED");
+      await page.locator("#businessApp").waitFor({state:"visible"});
       if (claim) {
         const card = page.locator("#businessClaimActivity .claim-row").filter({hasText:"FR3 synthetic claim receipt"});
         await card.locator("[data-transaction-key]").click();
@@ -151,10 +157,10 @@ async function exercise({ actors, evidence }, key, paidThrough) {
   let confirmed = false, exerciseError, cleanupError;
   try {
     const w = await workspace(), sub = (await call("/rest/v1/workspace_subscriptions?workspace_id=eq." + WORKSPACE,"GET",admin)).data?.[0];
-    need(bound(w) && w.status === "suspended" && w.business_support_version === 30 && sub?.version === 1
+    need(bound(w) && w.status === "suspended" && w.business_support_version === initialVersion && sub?.version === 1
       && sub.member_limit === 1 && sub.status === "active" && Date.parse(sub.paid_through_at) === Date.parse(paidThrough),"EXACT_ATTACHMENT_FIXTURE_REQUIRED");
     confirmed = true;
-    need((await status("active",30)).status === 200,"RESUME_ATTACHMENT_WORKSPACE");
+    need((await status("active",initialVersion)).status === 200,"RESUME_ATTACHMENT_WORKSPACE");
     for (const f of files) {
       const existing = await docs(f);
       need(existing.status === 200 && existing.data?.length === 0,"ATTACHMENT_DOCUMENT_MUST_BE_ABSENT");
@@ -179,7 +185,7 @@ async function exercise({ actors, evidence }, key, paidThrough) {
   finally {
     if (confirmed) try {
       const w = await workspace(); need(bound(w),"ATTACHMENT_CLEANUP_WORKSPACE_BINDING");
-      if (w.status === "active" && w.business_support_version === 31) {
+      if (w.status === "active" && w.business_support_version === activeVersion) {
         for (const f of files) try {
           const list = await docs(f); need(list.status === 200 && [0,1].includes(list.data?.length),"ATTACHMENT_CLEANUP_READ");
           if (list.data.length) {
@@ -192,11 +198,11 @@ async function exercise({ actors, evidence }, key, paidThrough) {
           need(removed.status === 200 && Array.isArray(removed.data) && removed.data.every(x => x.name === f.path),"ATTACHMENT_OBJECT_DELETE_ACK");
           evidence.cleanup[f.lane] = true;
         } catch (error) { cleanupError ??= error; }
-        need((await status("suspended",31)).status === 200,"ATTACHMENT_SUSPEND_ACK");
+        need((await status("suspended",activeVersion)).status === 200,"ATTACHMENT_SUSPEND_ACK");
         const closed = await workspace();
-        need(bound(closed) && closed.status === "suspended" && closed.business_support_version === 32,"ATTACHMENT_CLOSED_READBACK");
+        need(bound(closed) && closed.status === "suspended" && closed.business_support_version === closedVersion,"ATTACHMENT_CLOSED_READBACK");
         evidence.cleanup.suspended = true;
-      } else need(w.status === "suspended" && w.business_support_version === 30,"ATTACHMENT_CLEANUP_STATE_REQUIRED");
+      } else need(w.status === "suspended" && w.business_support_version === initialVersion,"ATTACHMENT_CLEANUP_STATE_REQUIRED");
     } catch (error) { cleanupError ??= error; }
   }
   if (cleanupError) throw cleanupError;

@@ -25,3 +25,7 @@ verify_jwt = false
 # Validates the bearer with Auth and the current app session, then intersects
 # Storage RLS twice. The privileged file client exists only inside this server.
 verify_jwt = false
+
+[functions.validate-business-table]
+# Staging authenticates the application session and isolated fixture before parsing file bytes.
+verify_jwt = false

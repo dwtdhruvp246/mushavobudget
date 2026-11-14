@@ -45,7 +45,7 @@ async function fingerprint(bytes) {
   return Array.from(new Uint8Array(hash), byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
-function bindPersonalProof(client, userId) {
+function bindPersonalProof(client, userId, _type = "") {
   if (userId !== OWNER) return null;
   return {
     prefix: PREFIX,
@@ -67,8 +67,11 @@ function bindPersonalProof(client, userId) {
 /** @type {((bytes: Uint8Array) => Promise<Uint8Array>) | null} */
 const noPdf = null;
 
+/** @type {ReadonlyMap<string, {suffix: string, normalize: (bytes: Uint8Array) => Uint8Array | Promise<Uint8Array>}>} */
+const defaultFormats = new Map();
+
 export function createProofHandler({ configured, allowedOrigin, createUserClient, gateReady, store, read,
-  decodeJpeg, decodeWebp, normalizePdf = noPdf, bind = bindPersonalProof, denied = "PROOF_FIXTURE_OWNER_REQUIRED" }) {
+  decodeJpeg, decodeWebp, normalizePdf = noPdf, bind = bindPersonalProof, extraFormats = defaultFormats, standardFormats = true, denied = "PROOF_FIXTURE_OWNER_REQUIRED" }) {
   return async request => {
     const origin = request.headers.get("origin");
     const allowed = !origin || allowedOrigin(origin);
@@ -86,28 +89,29 @@ export function createProofHandler({ configured, allowedOrigin, createUserClient
     if (!configured()) return fail(503, "PROOF_TRIAL_UNAVAILABLE");
     const token = /^Bearer ([A-Za-z0-9._-]{20,8192})$/i.exec(request.headers.get("authorization") || "")?.[1];
     if (!token) return fail(401, "AUTHENTICATION_REQUIRED");
-    const type = request.headers.get("content-type")?.toLowerCase();
-    const normalize = type === "image/png" ? normalizeLogoPng
+    const type = request.headers.get("content-type")?.toLowerCase() || "";
+    const format = extraFormats.get(type);
+    const normalize = format?.normalize ?? (!standardFormats ? null : type === "image/png" ? normalizeLogoPng
       : type === "image/jpeg" ? bytes => normalizeLogoJpeg(bytes, decodeJpeg)
       : type === "image/webp" ? bytes => normalizeLogoWebp(bytes, decodeWebp)
-      : type === "application/pdf" ? normalizePdf : null;
+      : type === "application/pdf" ? normalizePdf : null);
     if (!normalize) return fail(415, "UNSUPPORTED_PROOF_TYPE");
 
     try {
       const client = createUserClient(token);
       const identity = await client.auth.getUser();
       if (identity.error || !identity.data?.user?.id) return fail(401, "AUTHENTICATION_REQUIRED");
-      const binding = bind(client, identity.data.user.id);
+      const binding = bind(client, identity.data.user.id, type);
       if (!binding) return fail(403, denied);
       const { prefix, canWrite } = binding;
       if (!await canWrite()) return fail(403, denied);
       if (!await gateReady()) return fail(503, "PROOF_TRIAL_UNAVAILABLE");
       const canonical = await normalize(await readBoundedProof(request));
       const isPdf = type === "application/pdf";
-      const outputType = isPdf ? "application/pdf" : "image/png";
+      const outputType = format ? type : isPdf ? "application/pdf" : "image/png";
       const hash = await fingerprint(canonical);
       const object = hash.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
-      const path = prefix + object + (isPdf ? ".pdf" : ".png");
+      const path = prefix + object + (format?.suffix ?? (isPdf ? ".pdf" : ".png"));
       if (!await canWrite()) return fail(403, denied);
       if (!await gateReady()) return fail(503, "PROOF_TRIAL_UNAVAILABLE");
       try { await store(path, canonical, outputType); } catch { /* Read back an immutable retry or lost acknowledgement. */ }
@@ -120,7 +124,7 @@ export function createProofHandler({ configured, allowedOrigin, createUserClient
     } catch (error) {
       if (error instanceof LogoInputError) {
         if (error.status === 413) return fail(413, error.message === "LOGO_DIMENSIONS_TOO_LARGE" ? "PROOF_DIMENSIONS_TOO_LARGE"
-          : error.message === "PROOF_PDF_PROCESSING_LIMIT" ? error.message : "PROOF_TOO_LARGE");
+          : ["PROOF_PDF_PROCESSING_LIMIT", "PROOF_TABLE_PROCESSING_LIMIT"].includes(error.message) ? error.message : "PROOF_TOO_LARGE");
         return fail(error.status, error.message.includes("PROOF_") ? error.message : "INVALID_PROOF_IMAGE");
       }
       return fail(503, "PROOF_TRIAL_UNAVAILABLE");

@@ -62,6 +62,6 @@ test("a genuinely missing Personal workspace is provisioned and reloaded", async
 
 test("the password sign-in handler owns the initial workspace load", () => {
   const authListener = app.slice(app.indexOf("supabase.auth.onAuthStateChange"), app.indexOf("if (state.session) {\n    await openAuthenticatedSession"));
-  assert.match(authListener, /if \(signInInProgress && event === "SIGNED_IN"\) return/);
+  assert.match(authListener, /signInInProgress && event === "SIGNED_IN" && session\?\.user\?\.email\?\.toLowerCase\(\) === signInExpectedEmail/);
   assert.match(app, /signedInSession = authData\.session;\s+await openAuthenticatedSession\(signedInSession\)/);
 });

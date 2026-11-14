@@ -1,0 +1,102 @@
+{
+  "date": "2026-11-14",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "STAGING_FAMILY_PDF_PROOF_API_PASS",
+  "source_commit": "257a2a0715c0b7321fa79bade20ff80c6324e952",
+  "run_commit": "5d67e8e8a106f2c45d73d68c7df926718dda8897",
+  "run_id": 43562948863,
+  "job_id": 132350455210,
+  "validator": {
+    "id": "2eb12d9d-62e7-4a4b-9b35-5219243b8177",
+    "version": 2,
+    "hash": "673c3dbad30520e808008a3923b6cabdafa3695949d133ab293fd7dbbe120407",
+    "exact": true
+  },
+  "hosted_api_checks_passed": 18,
+  "hosted_api": {
+    "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Family PDF proof",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "two_ordinary_credentials_and_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 1,
+          "business": 2
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 12,
+    "created_sessions": 2,
+    "cleanup_sessions": 2,
+    "settings_or_finance_writes_requested": 0,
+    "production_changed": false,
+    "full_lettered_batch_W_complete": false,
+    "exit_code": 0,
+    "exercise": {
+      "checks": {
+        "EXACT_FAMILY_FIXTURE": true,
+        "EXACT_ACTIVE_MEMBERS": true,
+        "EMPTY_FAMILY_PROOF_BASELINE": true,
+        "EXACT_FAMILY_ITEM_CREATED": true,
+        "DIRECT_RESERVED_WRITE_DENIED": true,
+        "MISSING_FILE_LINK_DENIED": true,
+        "TRUNCATED_PDF_DENIED": true,
+        "OWNER_PDF_NORMALIZED": true,
+        "MEMBER_PDF_NORMALIZED": true,
+        "MEMBER_IDENTICAL_RETRY_REUSED": true,
+        "WRONG_PROOF_SIZE_DENIED": true,
+        "FAMILY_PAYMENT_LINKED": true,
+        "OWNER_READS_MEMBER_PROOF": true,
+        "MEMBER_READS_OWN_PROOF": true,
+        "EXACT_MEMBER_REMOVED": true,
+        "FORMER_MEMBER_VALIDATION_DENIED": true,
+        "FORMER_MEMBER_PROOF_READ_DENIED": true,
+        "OWNER_RETAINS_PROOF_ACCESS": true
+      },
+      "requests": 38,
+      "cleanup": {
+        "finance_absent": true,
+        "objects_absent": true,
+        "family_absent": true
+      }
+    },
+    "commit": "5d67e8e8a106f2c45d73d68c7df926718dda8897"
+  },
+  "independent_cleanup": {
+    "families": 0,
+    "workspaces": 0,
+    "legacy_members": 0,
+    "members": 0,
+    "items": 0,
+    "records": 0,
+    "objects": 0,
+    "sessions": 0,
+    "outbox": 0,
+    "gate_ready": false,
+    "catalog_matches": true
+  },
+  "hosted_browser_verified": true,
+  "full_FR_3_2_complete": false,
+  "exit_code": 0,
+  "browser_run_id": 43563097792,
+  "browser_receipt": "security-fr-3-2-family-pdf-browser-result.json"
+}

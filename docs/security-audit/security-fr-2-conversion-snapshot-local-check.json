@@ -1,0 +1,15 @@
+{
+  "scope": "ACTUAL_READ_ONLY_SNAPSHOT_SQL_IN_MINIMAL_SYNTHETIC_CATALOG_NOT_FULL_MIGRATIONS_OR_HOSTED_DB",
+  "engine": "PGlite 0.5.8 PostgreSQL 18.3 WebAssembly",
+  "fixture_execution": "PASS",
+  "aggregate_mismatch_orphan_classification_verified": true,
+  "retained_two_family_scope_and_snapshot_verified": true,
+  "changed_manual_values_and_empty_scope_detected": true,
+  "raw_identifiers_emails_not_output": true,
+  "hosted_queries_run": 0,
+  "earlier_local_verifier_attempt": {
+    "exit_code": 1,
+    "SQL_execution_completed": true,
+    "cause": "Local verifier read an unquoted SQL alias using uppercase USD1; PostgreSQL folds that alias to lowercase. Assertion lookup corrected; no hosted query or mutation."
+  }
+}

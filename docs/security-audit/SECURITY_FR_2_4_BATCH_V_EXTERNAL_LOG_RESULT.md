@@ -1,0 +1,27 @@
+> FRE211–FRE212: **Stage 3/10 | FR.2/8 | Batch V/Z — current recovery runner LOCAL86/86 PASS; owner hosted MFA pending.** Owner cannot recall setup and removed a Supabase authenticator entry during phone transfer; which identity entry this concerned is unproven. No memory-based origin clearance. [Combined current recovery](SECURITY_FR_2_4_BATCH_V_RECOVERY_HANDOFF.md) offers private phone-not-ready exit before credentials/network, saved exact RECOVERY entry resume, or PRIMARY-first fresh-AAL2 followed by exact reviewed unverified RECOVERY replacement if present. Outside pending factors/preexisting selected sessions block changes; other factor metadata is fingerprinted; verified/unknown factors are not generic reset targets.339 source hashes/5 syntax checks, prior334 and frozen U310 preserved; actual installed SQL/68 retained+18 new cases pass. No prior batch/upload repeat, role/mode/production/native change. Full V/FR.2/Stage3/launch and independent recovery acceptance remain open.
+
+# Stage 3/10 | FR.2/8 | Batch V/Z — external log inspection complete, recognition pending
+
+FRE210. The owner returned the corrected query's safe_json with BATCH_V_EXTERNAL_AUTH_LOG_INSPECTION_COMPLETE, exit0,6 selected username-matching rows,3 auth_logs and3 auth_audit_logs, details_truncated:false. Source commit8fbf7322d8a3f2012eaed870cd10a9e12a96c1e1. Exact receipt: security-fr-2-batch-v-owner-external-auth-log-pass.json. This supersedes the syntax-stop checkpoint for the corrected log query only; no repeat query, offline test, installation, credential or MFA action is requested.
+
+| Reported UTC,25October2026 | Zimbabwe UTC+2 | Slot | Recorded action | Sources / recorded client class |
+|---|---|---|---|---|
+|14:03:01|16:03:01|RECOVERY|login|Both sources; audit NODE_OR_UNDICI, service UNRECORDED|
+|14:03:03|16:03:03|RECOVERY|factor_in_progress|Both sources; audit NODE_OR_UNDICI, service UNRECORDED|
+|14:03:16|16:03:16|RECOVERY|logout|Both sources; audit NODE_OR_UNDICI, service UNRECORDED|
+
+These are three distinct action/time pairs represented in two sources, not six logins or six independently measured requests. Shared timestamps/usernames alone do not independently bind requests across the sources. The selected query returns no PRIMARY entries in this window, not proof of no PRIMARY activity outside its actor_username filter/retention/window.
+
+## Interpretation and current owner action
+
+The RECOVERY login → enrollment-start → logout sequence and recorded audit-client class are consistent with an interrupted programmatic MFA setup. The enrollment-start timestamp is close to the current pending factor's previously observed creation time14:03:03.118678UTC. This is an inference, not exact current-factor ID binding or identification of our particular command, host or human. The result explicitly retains selected_operator_username_match_only:true and exact_pending_factor_reference_verified:false, human_or_client_origin_proven:false, log_retention_completeness_verified:false. A login action alone is not proof of successful password verification; enrollment-start is not genuine AAL2/TOTP acceptance. No verification/challenge label appears in this selected result; completeness beyond this filtered result is unproven.
+
+The owner previously said Unrecognized. Ask only whether they were running the supplied MFA setup command for the RECOVERY account at about16:03 Zimbabwe time today, and, if so, whether its authenticator entry was saved. The known public address may be named directly in chat to prevent PRIMARY/RECOVERY confusion. Do not request a password, setup key, QR, code, token, raw ID or provider log. Record recognition and saved-entry availability as unknown until the owner answers; Node-client correlation does not silently change Unrecognized to recognized.
+
+No factor challenge, delete, replacement, reenrollment, password reset or new session is authorized by these logs alone. Do not run the old setup against this changed factor state. If the owner recognizes the interrupted setup and has the entry, prepare an exact-current-factor resume that avoids enrollment/deletion. If recognized but no entry was saved, prepare a separately reviewed bounded recovery path preserving working alternate access and inspecting exact state before any factor write. Neither new path is implemented or executed here. If not recognized or still uncertain, preserve the hold and investigate privately without blind removal or reenrollment. Do not add a new letter or requirement; this resolves V03's existing factor/recovery dependency.
+
+## Scope and unchanged evidence
+
+The owner-hosted external log query is complete at read-only inspection scope. It performs no Auth API or factor/role/mode/settings/deployment/email operation. It cannot attest the target from the data, count dashboard/provider HTTP traffic, or measure live quarantine/current factors/sessions. Its execution time is not present in the returned JSON. Last independent actual quarantine/exact pending factor/zero selected Auth session state remains2026-10-25T15:14:35.7749+00:00 from the earlier database receipt, not a new measurement from this log query.
+
+The previous public synthetic ClickHouse16/16 checks, local database-audit8/8, metadata/MFA68/68 and all335 prior source hashes/all310 U files remain preserved and unchanged. No test/install/accepted U/H/I/J rerun. U remains COMPLETE; V–Z remain five packages with Z final. V04–V16, full V/FR.2/Stage3/findings/release acceptance remain open; production/native unchanged, APK deferred.

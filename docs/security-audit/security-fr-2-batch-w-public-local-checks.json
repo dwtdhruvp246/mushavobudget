@@ -1,0 +1,31 @@
+{
+  "stage_step": "FR.2.5.W5_EIGHT_CHARACTER_FRONTEND_DEPLOYMENT_AND_EXACT_AUTH_SETTINGS_READBACK",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "BATCH_W_NEW_PUBLIC_READER_LOCAL6_PASS_OWNER_HOSTED_READBACK_PENDING",
+  "source_parent_commit": "7bd994147f4e6bee817e0435bf8b9ebeec8d7bfe",
+  "node_version": "v24.22.1",
+  "tests": 6,
+  "pass": 6,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "exit_code": 0,
+  "explicit_entry_syntax_checks": 1,
+  "prior_source_hashes_verified": 356,
+  "new_checker_and_test_SHA256": {
+    "scripts/check-fr-2-batch-w-public.mjs": "0e562f229e205ff7723171f2d47a8538b9b787c4735b08c23960cb3f7604c472",
+    "tests/fr-2-batch-w-public.test.mjs": "339b649da78b14cbfb91c8607bbe1228caf8a0c1556bf56409e79710730460ec"
+  },
+  "real_hosted_requests_in_local_tests": 0,
+  "synthetic_direct_success_cases": 18,
+  "synthetic_fixed_clean_redirect_success_GETs": 30,
+  "all18_direct_transport_failure_positions_exercised": true,
+  "source_MIME_headers_foreign_query_fragment_repeated_redirect_and_timeout_failures_exercised": true,
+  "no_new_dependency_or_browser_required": true,
+  "owner_previous74_pass_reused_not_repeated": true,
+  "source356_bytes_unchanged": true,
+  "actual_older_Node_or_Windows_execution_of_new_reader_verified": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "pending_batch_V_MFA_deferred_by_owner": true
+}

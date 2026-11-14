@@ -1,0 +1,825 @@
+{
+  "stage_step": "FR.2.4.E5.31_BATCH_R_CANONICAL_V89_SOURCE_ALIGNMENT_AND_LOCAL_REGRESSIONS",
+  "batch": "R",
+  "result": "LOCAL_BATCH_R244_CANONICAL_HOSTED_V89_ALIGNMENT_SCOPED_PASS",
+  "source_parent_commit": "78a1bfc4561782190fa6c20da991f7d2a696214f",
+  "node_version": "v24.19.0",
+  "platform": "linux",
+  "source_hashes_verified": 226,
+  "syntax_checks": 66,
+  "tests": 244,
+  "pass": 244,
+  "fail": 0,
+  "groups": [
+    {
+      "name": "SHARED_UI_GATEWAY_AND_CANONICAL_WORKER_N",
+      "tests": 125,
+      "pass": 125,
+      "exit_code": 0,
+      "receipt": {
+        "stage_step": "FR.2.4.E5.27_BATCH_N_LOCAL_BROWSER_COOKIE_DOM_AND_SERVICE_WORKER",
+        "batch": "N",
+        "result": "LOCAL_BATCH_N125_BROWSER_ENGINE_SCOPED_PASS",
+        "source_parent_commit": "0c4582594f53d32e2e4c544276b6bee63109cf93",
+        "run_mode": "FULL_LOCAL_BATCH",
+        "node_version": "v24.19.0",
+        "platform": "linux",
+        "source_hashes_verified": 190,
+        "syntax_checks": 40,
+        "tests": 125,
+        "pass": 125,
+        "fail": 0,
+        "groups": [
+          {
+            "name": "RETAINED_UI_ENTRY_AND_SECURITY_REGRESSIONS",
+            "tests": 89,
+            "pass": 89,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "exit_code": 0,
+            "signal": null,
+            "error_code": null,
+            "failed_case_titles": []
+          },
+          {
+            "name": "CDP_TLS_AND_LOOPBACK_GATEWAY_FIXTURE",
+            "tests": 15,
+            "pass": 15,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "exit_code": 0,
+            "signal": null,
+            "error_code": null,
+            "failed_case_titles": []
+          }
+        ],
+        "browser": {
+          "stage_step": "FR.2.4.E5.27_BATCH_N_LOCAL_BROWSER_COOKIE_DOM_AND_SERVICE_WORKER",
+          "batch": "N",
+          "result": "LOCAL_BROWSER_BATCH_N_SYNTHETIC_COOKIE_DOM_AND_SW_SCOPED_PASS",
+          "scope": "ACTUAL_SHARED_COMPONENTS_GATEWAY_AND_SW_LOCAL_HTTPS_SYNTHETIC_BACKEND",
+          "tests": 21,
+          "pass": 21,
+          "fail": 0,
+          "checks": [
+            {
+              "check": "LOCAL_SECURE_CONTEXT_AND_REAL_DOM",
+              "status": "PASS"
+            },
+            {
+              "check": "NO_AUTOMATIC_EMAIL_AND_PASSWORD_ONLY_LOCKED",
+              "status": "PASS"
+            },
+            {
+              "check": "EXPLICIT_REMEMBER_CHOICE_BOUND",
+              "status": "PASS"
+            },
+            {
+              "check": "NATIVE_PATTERN_BLOCKS_MALFORMED_CODE",
+              "status": "PASS"
+            },
+            {
+              "check": "REAL_DOM_CODE_SUBMISSION_UNLOCKS_AND_CLEARS_INPUT",
+              "status": "PASS"
+            },
+            {
+              "check": "SECURE_HTTPONLY_STRICT_HOST_ONLY_COOKIE",
+              "status": "PASS"
+            },
+            {
+              "check": "REMEMBER_CREDENTIAL_NOT_READABLE_BY_DOCUMENT_COOKIE",
+              "status": "PASS"
+            },
+            {
+              "check": "NEW_SAME_ACCOUNT_SESSION_RESTORES_WITHOUT_MAIL",
+              "status": "PASS"
+            },
+            {
+              "check": "RESTORE_DOES_NOT_EXTEND_COOKIE_DEADLINE",
+              "status": "PASS"
+            },
+            {
+              "check": "OTHER_ACCOUNT_AND_FORGED_BROWSER_FLAGS_STAY_LOCKED",
+              "status": "PASS"
+            },
+            {
+              "check": "GATEWAY_RESTORE_WITH_FALSE_RPC_CANNOT_UNLOCK",
+              "status": "PASS"
+            },
+            {
+              "check": "ORDINARY_PROVED_ACCOUNT_STILL_DENIED_ADMIN",
+              "status": "PASS"
+            },
+            {
+              "check": "ACTOR_CHANGE_SYNCHRONOUSLY_CLEARS_VIEW_AND_TICKET",
+              "status": "PASS"
+            },
+            {
+              "check": "REAL_BROADCAST_CHANNEL_INVALIDATES_PEER_DOM_WITHOUT_UNLOCK_OR_FETCH",
+              "status": "PASS"
+            },
+            {
+              "check": "REAL_DOM_SNAPSHOT_REMOVES_PRIVATE_NODES_PRESERVES_LISTENERS",
+              "status": "PASS"
+            },
+            {
+              "check": "SAMESITE_STRICT_COOKIE_WITHHELD_ON_CROSS_SITE_POST",
+              "status": "PASS"
+            },
+            {
+              "check": "NONREMEMBER_CODE_CREATES_NO_PERSISTENT_ACCOUNT_COOKIE",
+              "status": "PASS"
+            },
+            {
+              "check": "ACTUAL_SW_ACTIVATION_REMOVES_OLD_PRODUCT_CACHE",
+              "status": "PASS"
+            },
+            {
+              "check": "ACTUAL_SW_DOES_NOT_CACHE_API_OR_PRIVATE_RESPONSES",
+              "status": "PASS"
+            },
+            {
+              "check": "ACTUAL_SW_NAVIGATION_OUTAGE_SHOWS_SAFE_OFFLINE_PAGE",
+              "status": "PASS"
+            },
+            {
+              "check": "LOCAL_FIXTURE_NO_UNREVIEWED_ROUTE",
+              "status": "PASS"
+            }
+          ],
+          "browser_product": "HeadlessChrome/153.0.8010.0",
+          "route_audit": {
+            "unexpected_request_count": 0,
+            "overflow_request_count": 0,
+            "entries": []
+          },
+          "isolated_temporary_profile": true,
+          "temporary_profile_removed": true,
+          "browser_process_stopped": true,
+          "loopback_fixture_closed": true,
+          "actual_browser_engine_executed": true,
+          "ephemeral_test_certificate_in_memory": true,
+          "local_certificate_validation_bypassed": true,
+          "real_Auth_database_and_mail_exercised": false,
+          "full_app_or_business_pages_bootstrapped": false,
+          "hosted_TLS_or_CSRF_acceptance": false,
+          "installed_PWA_OS_lifecycle_or_native_acceptance": false,
+          "external_traffic_OS_sandboxed": false,
+          "actual_hosted_requests_by_harness": 0,
+          "real_email_requests": 0,
+          "private_packets_accessed": false,
+          "committed_mode_change_requests": 0,
+          "hosted_acceptance": false,
+          "live_activation_approved": false,
+          "production_or_native_changed": false,
+          "APK_update_deferred": true,
+          "findings_closed": [],
+          "checkpoint": "COMPLETE",
+          "problem_code": null,
+          "exit_code": 0,
+          "checked_UTC": "2026-10-23T16:05:30.746Z"
+        },
+        "actual_hosted_requests_by_harness": 0,
+        "real_email_requests": 0,
+        "private_packets_accessed": false,
+        "committed_mode_change_requests": 0,
+        "hosted_acceptance": false,
+        "live_activation_approved": false,
+        "production_or_native_changed": false,
+        "APK_update_deferred": true,
+        "findings_closed": [],
+        "checkpoint": "COMPLETE",
+        "problem_code": null,
+        "exit_code": 0
+      }
+    },
+    {
+      "name": "PUBLIC_CURRENT_WORKER_AND_FAILURE_GUARDS_O",
+      "tests": 43,
+      "pass": 43,
+      "exit_code": 0,
+      "receipt": {
+        "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
+        "batch": "O",
+        "result": "LOCAL_BATCH_O43_PASS_HOSTED_PUBLIC_PENDING",
+        "source_parent_commit": "1f4412c32ec7a87fc208c3fabf2a127365a81336",
+        "run_mode": "FULL_LOCAL_BATCH",
+        "node_version": "v24.19.0",
+        "platform": "linux",
+        "source_hashes_verified": 200,
+        "syntax_checks": 50,
+        "offline_units": {
+          "tests": 31,
+          "pass": 31,
+          "fail": 0,
+          "exit_code": 0
+        },
+        "local_browser": {
+          "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
+          "batch": "O",
+          "result": "LOCAL_BATCH_O_PUBLIC_BROWSER_FIXTURE_SCOPED_PASS",
+          "scope": "LOCAL_HTTPS_PUBLIC_SOURCE_FIXTURE",
+          "offline_navigation": {
+            "model": "WORKER_FETCH_FAILURE_PAGE_STATE_ONLY",
+            "worker_fetch_failures": 4,
+            "page_navigation_continuations": 0,
+            "document_from_service_worker": true,
+            "document_http_status": 200,
+            "navigation_error_present": false,
+            "navigation_error_class": null,
+            "cached_document_redirected": false,
+            "cached_document_type": "basic",
+            "view": {
+              "document_class": "EXPECTED_APP_PATH",
+              "expected_heading_present": true,
+              "expected_notice_present": true,
+              "navigator_online": false
+            }
+          },
+          "tls_metadata": {
+            "collection_only": true,
+            "document_response_observed": true,
+            "document_matches_original_literal": true,
+            "document_path_class": "OFFLINE_CLEAN",
+            "document_security_state": "insecure",
+            "document_protocol_class": "TLS_1_3",
+            "visible_state_observed": false,
+            "visible_security_state": "MISSING",
+            "visible_protocol_class": "MISSING",
+            "visible_certificate_present": false,
+            "certificate_network_error_present": null,
+            "certificate_currently_valid": null,
+            "certificate_error_event_observed": false
+          },
+          "tls_metadata_only": false,
+          "candidate_worker_exercised": false,
+          "historical_worker_exercised": false,
+          "reviewed_staging_deployment_origin": null,
+          "target_setup_failure": null,
+          "explicit_page_attachment": true,
+          "checks": [
+            {
+              "check": "REAL_PUBLIC_DOM_AND_SECURE_CONTEXT",
+              "status": "PASS"
+            },
+            {
+              "check": "LOCAL_FIXTURE_TLS_BYPASS_EXPLICIT",
+              "status": "PASS"
+            },
+            {
+              "check": "ALL_16_PUBLIC_ASSET_BYTES_MATCH_PINNED_SOURCE",
+              "status": "PASS"
+            },
+            {
+              "check": "FRESH_PROFILE_HAS_NO_AUTH_STORAGE_OR_DEVICE_COOKIE",
+              "status": "PASS"
+            },
+            {
+              "check": "ACTUALLY_EXECUTED_WORKER_SOURCE_MATCHES_PIN",
+              "status": "PASS"
+            },
+            {
+              "check": "STALE_PRODUCT_CACHE_REMOVED_UNRELATED_CACHE_PRESERVED",
+              "status": "PASS"
+            },
+            {
+              "check": "ALL_14_PRODUCT_CACHE_ENTRIES_ARE_EXACT_PUBLIC_SOURCE",
+              "status": "PASS"
+            },
+            {
+              "check": "REAL_WORKER_OFFLINE_NAVIGATION_SHOWS_ONLY_SAFE_DOCUMENT",
+              "status": "PASS"
+            },
+            {
+              "check": "OFFLINE_NAVIGATION_DID_NOT_CACHE_PRIVATE_APP_HTML",
+              "status": "PASS"
+            },
+            {
+              "check": "NO_INTERCEPTED_AUTH_GATEWAY_OR_UNREVIEWED_REQUEST_ALLOWED",
+              "status": "PASS"
+            }
+          ],
+          "tests": 10,
+          "pass": 10,
+          "fail": 0,
+          "browser_product": "HeadlessChrome/153.0.8010.0",
+          "public_assets_verified": 16,
+          "intercepted_request_attempts": 38,
+          "maximum_intercepted_requests": 128,
+          "blocked_unreviewed_requests": 0,
+          "simulated_offline_requests": 4,
+          "intercepted_hosted_request_attempts": 0,
+          "worker_startup_fetches_not_intercepted": true,
+          "total_browser_hosted_requests_independently_counted": false,
+          "document_scripts_disabled": true,
+          "hosted_TLS_verified": false,
+          "hosted_secure_transport_verified": false,
+          "executed_worker_source_verified": true,
+          "isolated_temporary_profile": true,
+          "temporary_profile_removed": true,
+          "browser_process_stopped": true,
+          "private_packets_accessed": false,
+          "credentials_or_Auth_or_gateway_requests_permitted": false,
+          "real_email_requests": 0,
+          "committed_mode_change_requests": 0,
+          "hosted_authenticated_browser_acceptance": false,
+          "installed_PWA_OS_lifecycle_verified": false,
+          "external_traffic_OS_sandboxed": false,
+          "local_certificate_validation_bypassed": true,
+          "hosted_acceptance": false,
+          "live_activation_approved": false,
+          "production_or_native_changed": false,
+          "APK_update_deferred": true,
+          "findings_closed": [],
+          "checkpoint": "COMPLETE",
+          "problem_code": null,
+          "exit_code": 0,
+          "checked_UTC": "2026-10-23T16:06:01.595Z",
+          "local_fixture_variant": "normal",
+          "local_fixture_closed": true,
+          "offline_app_navigation_reached_fixture": 0,
+          "local_fixture_unexpected_requests": 0
+        },
+        "expected_failure_exercises": [
+          {
+            "variant": "source-drift",
+            "expected_denial_and_cleanup_verified": true,
+            "exit_code": 0
+          },
+          {
+            "variant": "unreviewed-route",
+            "expected_denial_and_cleanup_verified": true,
+            "exit_code": 0
+          }
+        ],
+        "offline_PASS": 43,
+        "hosted_public_browser": null,
+        "private_packets_accessed": false,
+        "real_email_requests": 0,
+        "committed_mode_change_requests": 0,
+        "hosted_acceptance": false,
+        "live_activation_approved": false,
+        "production_or_native_changed": false,
+        "APK_update_deferred": true,
+        "findings_closed": [],
+        "checkpoint": "COMPLETE",
+        "problem_code": null,
+        "exit_code": 0
+      }
+    },
+    {
+      "name": "HISTORICAL_REDIRECT_REPRODUCTION_AND_V89_P",
+      "tests": 29,
+      "pass": 29,
+      "exit_code": 0,
+      "receipt": {
+        "stage_step": "FR.2.4.E5.29_BATCH_P_PAGES_REDIRECT_SAFE_OFFLINE_CANDIDATE_AND_RETAINED_ZIP",
+        "batch": "P",
+        "result": "LOCAL_BATCH_P29PASS_CANDIDATE_OWNER_ZIP_PENDING",
+        "source_parent_commit": "df8bdc48490ceaf4879fe4056a0e5aa57e553997",
+        "node_version": "v24.19.0",
+        "platform": "linux",
+        "source_hashes_verified": 204,
+        "syntax_checks": 54,
+        "units": {
+          "tests": 8,
+          "pass": 8,
+          "fail": 0,
+          "exit_code": 0
+        },
+        "expected_historical_v88_worker_redirect_failure": {
+          "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
+          "batch": "O",
+          "result": "BATCH_O_PUBLIC_BROWSER_REVIEW_REQUIRED",
+          "scope": "LOCAL_HTTPS_PUBLIC_SOURCE_FIXTURE",
+          "offline_navigation": {
+            "model": "WORKER_FETCH_FAILURE_PAGE_STATE_ONLY",
+            "worker_fetch_failures": 1,
+            "page_navigation_continuations": 0,
+            "document_from_service_worker": null,
+            "document_http_status": null,
+            "navigation_error_present": true,
+            "navigation_error_class": "ERR_FAILED",
+            "cached_document_redirected": true,
+            "cached_document_type": "basic",
+            "view": {
+              "document_class": "BROWSER_ERROR",
+              "expected_heading_present": false,
+              "expected_notice_present": false,
+              "navigator_online": false
+            }
+          },
+          "tls_metadata": {
+            "collection_only": true,
+            "document_response_observed": true,
+            "document_matches_original_literal": true,
+            "document_path_class": "OFFLINE_CLEAN",
+            "document_security_state": "insecure",
+            "document_protocol_class": "TLS_1_3",
+            "visible_state_observed": false,
+            "visible_security_state": "MISSING",
+            "visible_protocol_class": "MISSING",
+            "visible_certificate_present": false,
+            "certificate_network_error_present": null,
+            "certificate_currently_valid": null,
+            "certificate_error_event_observed": false
+          },
+          "tls_metadata_only": false,
+          "candidate_worker_exercised": false,
+          "historical_worker_exercised": true,
+          "reviewed_staging_deployment_origin": null,
+          "target_setup_failure": null,
+          "explicit_page_attachment": true,
+          "checks": [
+            {
+              "check": "REAL_PUBLIC_DOM_AND_SECURE_CONTEXT",
+              "status": "PASS"
+            },
+            {
+              "check": "LOCAL_FIXTURE_TLS_BYPASS_EXPLICIT",
+              "status": "PASS"
+            },
+            {
+              "check": "ALL_16_PUBLIC_ASSET_BYTES_MATCH_PINNED_SOURCE",
+              "status": "PASS"
+            },
+            {
+              "check": "FRESH_PROFILE_HAS_NO_AUTH_STORAGE_OR_DEVICE_COOKIE",
+              "status": "PASS"
+            },
+            {
+              "check": "ACTUALLY_EXECUTED_WORKER_SOURCE_MATCHES_PIN",
+              "status": "PASS"
+            },
+            {
+              "check": "STALE_PRODUCT_CACHE_REMOVED_UNRELATED_CACHE_PRESERVED",
+              "status": "PASS"
+            },
+            {
+              "check": "ALL_14_PRODUCT_CACHE_ENTRIES_ARE_EXACT_PUBLIC_SOURCE",
+              "status": "PASS"
+            }
+          ],
+          "tests": 7,
+          "pass": 7,
+          "fail": 0,
+          "browser_product": "HeadlessChrome/153.0.8010.0",
+          "public_assets_verified": 16,
+          "intercepted_request_attempts": 39,
+          "maximum_intercepted_requests": 128,
+          "blocked_unreviewed_requests": 0,
+          "simulated_offline_requests": 1,
+          "intercepted_hosted_request_attempts": 0,
+          "worker_startup_fetches_not_intercepted": true,
+          "total_browser_hosted_requests_independently_counted": false,
+          "document_scripts_disabled": true,
+          "hosted_TLS_verified": false,
+          "hosted_secure_transport_verified": false,
+          "executed_worker_source_verified": true,
+          "isolated_temporary_profile": true,
+          "temporary_profile_removed": true,
+          "browser_process_stopped": true,
+          "private_packets_accessed": false,
+          "credentials_or_Auth_or_gateway_requests_permitted": false,
+          "real_email_requests": 0,
+          "committed_mode_change_requests": 0,
+          "hosted_authenticated_browser_acceptance": false,
+          "installed_PWA_OS_lifecycle_verified": false,
+          "external_traffic_OS_sandboxed": false,
+          "local_certificate_validation_bypassed": true,
+          "hosted_acceptance": false,
+          "live_activation_approved": false,
+          "production_or_native_changed": false,
+          "APK_update_deferred": true,
+          "findings_closed": [],
+          "checkpoint": "BROWSER_OFFLINE_NAVIGATION",
+          "problem_code": "OFFLINE_NAVIGATION_NETWORK_ERROR",
+          "exit_code": 1,
+          "checked_UTC": "2026-10-23T16:06:59.512Z",
+          "local_fixture_variant": "pages-redirects",
+          "local_fixture_closed": true,
+          "offline_app_navigation_reached_fixture": 0,
+          "local_fixture_unexpected_requests": 0
+        },
+        "candidate_browsers": [
+          {
+            "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
+            "batch": "O",
+            "result": "LOCAL_BATCH_O_PUBLIC_BROWSER_FIXTURE_SCOPED_PASS",
+            "scope": "LOCAL_HTTPS_PUBLIC_SOURCE_FIXTURE",
+            "offline_navigation": {
+              "model": "WORKER_FETCH_FAILURE_PAGE_STATE_ONLY",
+              "worker_fetch_failures": 4,
+              "page_navigation_continuations": 0,
+              "document_from_service_worker": true,
+              "document_http_status": 200,
+              "navigation_error_present": false,
+              "navigation_error_class": null,
+              "cached_document_redirected": true,
+              "cached_document_type": "basic",
+              "view": {
+                "document_class": "EXPECTED_APP_PATH",
+                "expected_heading_present": true,
+                "expected_notice_present": true,
+                "navigator_online": false
+              }
+            },
+            "tls_metadata": {
+              "collection_only": true,
+              "document_response_observed": true,
+              "document_matches_original_literal": true,
+              "document_path_class": "OFFLINE_CLEAN",
+              "document_security_state": "insecure",
+              "document_protocol_class": "TLS_1_3",
+              "visible_state_observed": false,
+              "visible_security_state": "MISSING",
+              "visible_protocol_class": "MISSING",
+              "visible_certificate_present": false,
+              "certificate_network_error_present": null,
+              "certificate_currently_valid": null,
+              "certificate_error_event_observed": false
+            },
+            "tls_metadata_only": false,
+            "candidate_worker_exercised": true,
+            "historical_worker_exercised": false,
+            "reviewed_staging_deployment_origin": null,
+            "target_setup_failure": null,
+            "explicit_page_attachment": true,
+            "checks": [
+              {
+                "check": "REAL_PUBLIC_DOM_AND_SECURE_CONTEXT",
+                "status": "PASS"
+              },
+              {
+                "check": "LOCAL_FIXTURE_TLS_BYPASS_EXPLICIT",
+                "status": "PASS"
+              },
+              {
+                "check": "ALL_16_PUBLIC_ASSET_BYTES_MATCH_PINNED_SOURCE",
+                "status": "PASS"
+              },
+              {
+                "check": "FRESH_PROFILE_HAS_NO_AUTH_STORAGE_OR_DEVICE_COOKIE",
+                "status": "PASS"
+              },
+              {
+                "check": "ACTUALLY_EXECUTED_WORKER_SOURCE_MATCHES_PIN",
+                "status": "PASS"
+              },
+              {
+                "check": "STALE_PRODUCT_CACHE_REMOVED_UNRELATED_CACHE_PRESERVED",
+                "status": "PASS"
+              },
+              {
+                "check": "ALL_14_PRODUCT_CACHE_ENTRIES_ARE_EXACT_PUBLIC_SOURCE",
+                "status": "PASS"
+              },
+              {
+                "check": "REAL_WORKER_OFFLINE_NAVIGATION_SHOWS_ONLY_SAFE_DOCUMENT",
+                "status": "PASS"
+              },
+              {
+                "check": "OFFLINE_NAVIGATION_DID_NOT_CACHE_PRIVATE_APP_HTML",
+                "status": "PASS"
+              },
+              {
+                "check": "NO_INTERCEPTED_AUTH_GATEWAY_OR_UNREVIEWED_REQUEST_ALLOWED",
+                "status": "PASS"
+              }
+            ],
+            "tests": 10,
+            "pass": 10,
+            "fail": 0,
+            "browser_product": "HeadlessChrome/153.0.8010.0",
+            "public_assets_verified": 16,
+            "intercepted_request_attempts": 42,
+            "maximum_intercepted_requests": 128,
+            "blocked_unreviewed_requests": 0,
+            "simulated_offline_requests": 4,
+            "intercepted_hosted_request_attempts": 0,
+            "worker_startup_fetches_not_intercepted": true,
+            "total_browser_hosted_requests_independently_counted": false,
+            "document_scripts_disabled": true,
+            "hosted_TLS_verified": false,
+            "hosted_secure_transport_verified": false,
+            "executed_worker_source_verified": true,
+            "isolated_temporary_profile": true,
+            "temporary_profile_removed": true,
+            "browser_process_stopped": true,
+            "private_packets_accessed": false,
+            "credentials_or_Auth_or_gateway_requests_permitted": false,
+            "real_email_requests": 0,
+            "committed_mode_change_requests": 0,
+            "hosted_authenticated_browser_acceptance": false,
+            "installed_PWA_OS_lifecycle_verified": false,
+            "external_traffic_OS_sandboxed": false,
+            "local_certificate_validation_bypassed": true,
+            "hosted_acceptance": false,
+            "live_activation_approved": false,
+            "production_or_native_changed": false,
+            "APK_update_deferred": true,
+            "findings_closed": [],
+            "checkpoint": "COMPLETE",
+            "problem_code": null,
+            "exit_code": 0,
+            "checked_UTC": "2026-10-23T16:07:01.984Z",
+            "local_fixture_variant": "candidate-pages-redirects",
+            "local_fixture_closed": true,
+            "offline_app_navigation_reached_fixture": 0,
+            "local_fixture_unexpected_requests": 0
+          },
+          {
+            "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
+            "batch": "O",
+            "result": "LOCAL_BATCH_O_PUBLIC_BROWSER_FIXTURE_SCOPED_PASS",
+            "scope": "LOCAL_HTTPS_PUBLIC_SOURCE_FIXTURE",
+            "offline_navigation": {
+              "model": "WORKER_FETCH_FAILURE_PAGE_STATE_ONLY",
+              "worker_fetch_failures": 4,
+              "page_navigation_continuations": 0,
+              "document_from_service_worker": true,
+              "document_http_status": 200,
+              "navigation_error_present": false,
+              "navigation_error_class": null,
+              "cached_document_redirected": false,
+              "cached_document_type": "basic",
+              "view": {
+                "document_class": "EXPECTED_APP_PATH",
+                "expected_heading_present": true,
+                "expected_notice_present": true,
+                "navigator_online": false
+              }
+            },
+            "tls_metadata": {
+              "collection_only": true,
+              "document_response_observed": true,
+              "document_matches_original_literal": true,
+              "document_path_class": "OFFLINE_CLEAN",
+              "document_security_state": "insecure",
+              "document_protocol_class": "TLS_1_3",
+              "visible_state_observed": false,
+              "visible_security_state": "MISSING",
+              "visible_protocol_class": "MISSING",
+              "visible_certificate_present": false,
+              "certificate_network_error_present": null,
+              "certificate_currently_valid": null,
+              "certificate_error_event_observed": false
+            },
+            "tls_metadata_only": false,
+            "candidate_worker_exercised": true,
+            "historical_worker_exercised": false,
+            "reviewed_staging_deployment_origin": null,
+            "target_setup_failure": null,
+            "explicit_page_attachment": true,
+            "checks": [
+              {
+                "check": "REAL_PUBLIC_DOM_AND_SECURE_CONTEXT",
+                "status": "PASS"
+              },
+              {
+                "check": "LOCAL_FIXTURE_TLS_BYPASS_EXPLICIT",
+                "status": "PASS"
+              },
+              {
+                "check": "ALL_16_PUBLIC_ASSET_BYTES_MATCH_PINNED_SOURCE",
+                "status": "PASS"
+              },
+              {
+                "check": "FRESH_PROFILE_HAS_NO_AUTH_STORAGE_OR_DEVICE_COOKIE",
+                "status": "PASS"
+              },
+              {
+                "check": "ACTUALLY_EXECUTED_WORKER_SOURCE_MATCHES_PIN",
+                "status": "PASS"
+              },
+              {
+                "check": "STALE_PRODUCT_CACHE_REMOVED_UNRELATED_CACHE_PRESERVED",
+                "status": "PASS"
+              },
+              {
+                "check": "ALL_14_PRODUCT_CACHE_ENTRIES_ARE_EXACT_PUBLIC_SOURCE",
+                "status": "PASS"
+              },
+              {
+                "check": "REAL_WORKER_OFFLINE_NAVIGATION_SHOWS_ONLY_SAFE_DOCUMENT",
+                "status": "PASS"
+              },
+              {
+                "check": "OFFLINE_NAVIGATION_DID_NOT_CACHE_PRIVATE_APP_HTML",
+                "status": "PASS"
+              },
+              {
+                "check": "NO_INTERCEPTED_AUTH_GATEWAY_OR_UNREVIEWED_REQUEST_ALLOWED",
+                "status": "PASS"
+              }
+            ],
+            "tests": 10,
+            "pass": 10,
+            "fail": 0,
+            "browser_product": "HeadlessChrome/153.0.8010.0",
+            "public_assets_verified": 16,
+            "intercepted_request_attempts": 38,
+            "maximum_intercepted_requests": 128,
+            "blocked_unreviewed_requests": 0,
+            "simulated_offline_requests": 4,
+            "intercepted_hosted_request_attempts": 0,
+            "worker_startup_fetches_not_intercepted": true,
+            "total_browser_hosted_requests_independently_counted": false,
+            "document_scripts_disabled": true,
+            "hosted_TLS_verified": false,
+            "hosted_secure_transport_verified": false,
+            "executed_worker_source_verified": true,
+            "isolated_temporary_profile": true,
+            "temporary_profile_removed": true,
+            "browser_process_stopped": true,
+            "private_packets_accessed": false,
+            "credentials_or_Auth_or_gateway_requests_permitted": false,
+            "real_email_requests": 0,
+            "committed_mode_change_requests": 0,
+            "hosted_authenticated_browser_acceptance": false,
+            "installed_PWA_OS_lifecycle_verified": false,
+            "external_traffic_OS_sandboxed": false,
+            "local_certificate_validation_bypassed": true,
+            "hosted_acceptance": false,
+            "live_activation_approved": false,
+            "production_or_native_changed": false,
+            "APK_update_deferred": true,
+            "findings_closed": [],
+            "checkpoint": "COMPLETE",
+            "problem_code": null,
+            "exit_code": 0,
+            "checked_UTC": "2026-10-23T16:07:04.504Z",
+            "local_fixture_variant": "candidate-direct",
+            "local_fixture_closed": true,
+            "offline_app_navigation_reached_fixture": 0,
+            "local_fixture_unexpected_requests": 0
+          }
+        ],
+        "tests": 29,
+        "pass": 29,
+        "package": null,
+        "artifact_write_attempted": false,
+        "artifact_write_outcome_requires_inspection": false,
+        "actual_hosted_requests": 0,
+        "private_packets_or_credentials_accessed": false,
+        "email_requests": 0,
+        "committed_mode_change_requests": 0,
+        "uploaded_or_deployed": false,
+        "do_not_upload_yet": true,
+        "hosted_acceptance": false,
+        "live_activation_approved": false,
+        "production_or_native_changed": false,
+        "APK_update_deferred": true,
+        "findings_closed": [],
+        "checkpoint": "COMPLETE",
+        "problem_code": null,
+        "exit_code": 0
+      }
+    },
+    {
+      "name": "Q_PUBLIC_READBACK_BOUNDARIES",
+      "tests": 12,
+      "pass": 12,
+      "fail": 0,
+      "exit_code": 0
+    },
+    {
+      "name": "CANONICAL_AND_HISTORICAL_IDENTITY_R",
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "exit_code": 0
+    },
+    {
+      "name": "PWA_ENTRY_INSTALL_UPDATE_AND_HARDENING",
+      "tests": 33,
+      "pass": 33,
+      "fail": 0,
+      "exit_code": 0
+    }
+  ],
+  "canonical_SW_SHA256": "0bc471318eb7156aed4f004c153a3e45fd08a71f665ad77ba59caa29fd8d8c47",
+  "archived_v88_SW_SHA256": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
+  "canonical_matches_previously_owner_hosted_bytes": true,
+  "cases_include_retained_regressions_and_are_not_unique_coverage": true,
+  "Windows_R_execution_verified": false,
+  "hosted_Q_result_repeated": false,
+  "actual_hosted_requests": 0,
+  "private_packets_or_credentials_accessed": false,
+  "email_requests": 0,
+  "committed_mode_change_requests": 0,
+  "artifact_regenerated_or_uploaded": false,
+  "hosted_acceptance": false,
+  "live_activation_approved": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "checkpoint": "COMPLETE",
+  "problem_code": null,
+  "exit_code": 0,
+  "checked_UTC": "2026-10-23T16:07:07.785Z"
+}

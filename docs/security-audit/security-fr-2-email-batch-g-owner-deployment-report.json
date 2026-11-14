@@ -1,0 +1,17 @@
+{
+  "received_date": "2026-10-22",
+  "evidence_basis": "OWNER_MESSAGE_DONE_WITH_PUBLIC_STAGING_DEPLOYMENT_URL",
+  "owner_reported_upload_complete": true,
+  "owner_message": "done https://e114f8a4.mushavo-budget-staging.pages.dev/",
+  "deployment_URL": "https://e114f8a4.mushavo-budget-staging.pages.dev/",
+  "canonical_staging_origin": "https://mushavo-budget-staging.pages.dev",
+  "expected_frontend_ZIP_SHA256": "867296b5e71747a15d46c7ed8937484558ea9fcac97cd96c66ddf5dc00c8b9da",
+  "ZIP_selection_independently_observed": false,
+  "provider_dashboard_status_or_management_receipt_supplied": false,
+  "database_activation_reported": false,
+  "hosted_acceptance": false,
+  "live_activation_approved": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

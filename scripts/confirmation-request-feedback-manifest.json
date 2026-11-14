@@ -1,0 +1,11 @@
+{
+  "sources": {
+    "auth-flows.js": "1bded7699dbc6e2c2e790465e13b0c0f73a40c5a4f28dd5244caf791dd6d3949",
+    "auth.html": "29e216592f62950ba0725db2adac7bb4f57d092d1e6570afae2b56ede074a244",
+    "scripts/prepare-confirmation-request-retry.mjs": "9742e22413bff213ea7bdf7db492f4eb88556f7fd1c7c13246900197e871445f",
+    "scripts/lib/read-public-zip.mjs": "028781910dc28e64d1bb5c02af7a8d26e9f345d4b82f6f1c35f26e14673ff2b0",
+    "scripts/lib/store-public-zip.mjs": "81eae2723285b56e321141512c2b6311777397f5b84853badcee9f60af3706aa",
+    "tests/confirmation-request-feedback.test.mjs": "bd171b22188caa0e3f3e46ae956adaa0c7aac3464cd09b603664a71e8aae900d",
+    "tests/confirmation-request-retry-package.test.mjs": "2d95b763aaf6ae50a9d23c1e9c6b80a6f3755badb8ff6a32b845a408d0b84380"
+  }
+}

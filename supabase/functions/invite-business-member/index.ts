@@ -1,4 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2.110.9";
+import { requireEmailVerifiedSession, emailVerificationFailure } from "../_shared/email-session-assurance.mjs";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ROLES = new Set(["business_admin", "finance_manager", "team_manager", "staff", "contributor", "viewer"]);
@@ -37,6 +38,13 @@ Deno.serve(async (request) => {
   const { data: userData, error: userError } = await userClient.auth.getUser();
   if (userError || !userData.user) return json({ error: "EDGE_FUNCTION_AUTHENTICATION_FAILED" }, 401, responseOrigin);
 
+  try {
+    await requireEmailVerifiedSession(userClient);
+  } catch (error) {
+    const failure = emailVerificationFailure(error);
+    return json({ error: failure?.code || "EMAIL_VERIFICATION_UNAVAILABLE" }, failure?.status || 503, responseOrigin);
+  }
+
   let body: { action?: unknown; workspace_id?: unknown; email?: unknown; role?: unknown; scope_ids?: unknown; invitation_id?: unknown };
   try { body = await request.json(); } catch { return json({ error: "INVALID_BUSINESS_INVITATION_REQUEST" }, 400, responseOrigin); }
   const action = body.action === "resend" ? "resend" : "create";
@@ -60,7 +68,8 @@ Deno.serve(async (request) => {
   }
 
   const serviceClient = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
-  const redirectTo = `${appOrigin}/business.html?invitation=${encodeURIComponent(reservation.invitation_id)}#business/team`;
+  const linkFlow = reservation.invitee_user_id ? "business-existing" : "business-new";
+  const redirectTo = `${appOrigin}/auth.html?flow=${linkFlow}&invitation=${encodeURIComponent(reservation.invitation_id)}`;
   let invitedUserId = reservation.invitee_user_id || null;
   let mailError: unknown = null;
   if (invitedUserId) {
@@ -87,3 +96,4 @@ Deno.serve(async (request) => {
   if (!succeeded) return json({ error: "BUSINESS_INVITATION_EMAIL_FAILED", invitation_id: reservation.invitation_id }, 502, responseOrigin);
   return json({ status: action === "resend" ? "resent" : "sent", invitation_id: reservation.invitation_id, email: reservation.email }, 200, responseOrigin);
 });
+

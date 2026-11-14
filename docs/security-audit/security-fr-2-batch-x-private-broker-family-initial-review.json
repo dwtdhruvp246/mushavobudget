@@ -1,0 +1,109 @@
+{
+  "result": "INITIAL_FAMILY_BROKER_CUTOVER_REVIEW_REQUIRED",
+  "source_commit": "27b3dce6b7efd6454192fc8763cc0cd29457392b",
+  "workflow_run_id": 42463149157,
+  "job_id": 128676607587,
+  "guard_tests": 306,
+  "receipt": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+    "result": "STAGING_ACCESS_REVIEW_REQUIRED",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 1,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "production_changed": false,
+    "exit_code": 1,
+    "exercise": {
+      "checks": {
+        "EXACT_EMPTY_SYNTHETIC_FAMILY_BOUND": true,
+        "EXACT_ACTIVE_TEST_MEMBER": true,
+        "OWNER_FAMILY_UPLOAD_ALLOWED": true,
+        "ACTIVE_MEMBER_FAMILY_UPLOAD_ALLOWED": true,
+        "OWN_PERSONAL_UPLOAD_REMAINS_ALLOWED": true,
+        "ACTIVE_BROKER_RESPONSE_NO_STORE": true,
+        "CURRENT_OWNER_RAW_BYTES_BLOCKED": false,
+        "EXACT_STORAGE_API_REMOVAL_ACKNOWLEDGED": true,
+        "ALL_ATTEMPTED_TEST_OBJECTS_INDEPENDENTLY_ABSENT": true,
+        "OWNER_DELETED_EMPTY_SYNTHETIC_FAMILY": true,
+        "SYNTHETIC_FAMILY_ABSENT_READBACK": true
+      },
+      "exercise_requests": 14,
+      "upload_attempts": 3,
+      "cleanup_paths": [
+        "families/7dd3e4af-8213-4e2f-8506-ea0ee1ceff52/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/17aeb04a-e3f2-4b3a-b45c-2f5f7cd0840e-owner.png",
+        "families/7dd3e4af-8213-4e2f-8506-ea0ee1ceff52/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/660a1463-6589-4c4d-ab6c-8ee50161038f/17aeb04a-e3f2-4b3a-b45c-2f5f7cd0840e-member.png",
+        "personal/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/17aeb04a-e3f2-4b3a-b45c-2f5f7cd0840e-personal.png"
+      ],
+      "Storage_cleanup_verified": true,
+      "synthetic_family_removed": true,
+      "email_requests": 0,
+      "provider_requests": 0,
+      "finance_writes": 0,
+      "active_member_read_response": {
+        "status": 200,
+        "cache_headers": {
+          "cache-control": "private, no-store, max-age=0, must-revalidate",
+          "cf-cache-status": "DYNAMIC",
+          "vary": "Accept-Encoding, Origin, Authorization, apikey",
+          "content-type": "application/octet-stream"
+        },
+        "bytes": 68,
+        "harmless_fixture_matches": true
+      }
+    },
+    "problem_code": "CURRENT_OWNER_RAW_BYTES_BLOCKED_REQUIRED",
+    "full_lettered_batch_X_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-08-batch-x-family-broker-same-session-revocation",
+    "source_commit": "27b3dce6b7efd6454192fc8763cc0cd29457392b",
+    "workflow_run_id": "42463149157",
+    "workflow_run_attempt": "1"
+  },
+  "independent_cleanup": {
+    "objects": 0,
+    "catalog_matches": true,
+    "runner_sessions": 0,
+    "temporary_family": 0,
+    "storage_latest_migration": 79
+  },
+  "next": "Record raw Storage response before/after privileged fetch with a fresh harmless object before choosing a correction.",
+  "finding_closed": false
+}

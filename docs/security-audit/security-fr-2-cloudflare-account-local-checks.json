@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-15",
+  "source_parent_commit": "13ad8f29c006712776d3b4c959242d1e90e8ecf3",
+  "stage_step": "FR.2.4.E3.4_CLOUDFLARE_ACCOUNT_CHECK",
+  "tests": 15,
+  "pass_count": 15,
+  "fail": 0,
+  "exit_code": 0,
+  "scope": "ACTUAL_PORTABLE_ACCOUNT_CHECKER_WITH_SYNTHETIC_RESPONSES_PLUS_PRIVATE_STDIN_CLI_REJECTION",
+  "default_tests_use_injected_candidate_check_for_transport_cases": true,
+  "actual_retained_review_bundle_and_config_checked_in_separate_selected_case": true,
+  "separate_selected_actual_candidate_case_pass": 1,
+  "actual_provider_requests": 0,
+  "PowerShell_wrapper_source_reviewed": true,
+  "Windows_PowerShell_execution_independently_verified": false,
+  "redirects_followed": 0,
+  "credential_or_account_values_in_outputs": false,
+  "existing_runtime_modules_or_tools_changed": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

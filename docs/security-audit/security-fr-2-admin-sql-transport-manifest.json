@@ -1,0 +1,27 @@
+{
+  "source_commit": "e13b4f48cda563eba8d4cbe3253d31d45ad5493d",
+  "scope": "REVIEWED_FROZEN_SQL_BYTES_ONLY_NOT_DEPLOYMENT_PERMISSION",
+  "artifacts": {
+    "supabase/candidates/security_stage_3_admin_mfa.sql": {
+      "lf_sha256": "e5f8395bcdfe11a34ed24d783ba6487b4e87d0c11fd45ccbfc39c81594685c38",
+      "crlf_sha256": "d0bd6faddcd05ae8d897df9bcb1ba7e9d839f09dfa5d8eb2b4be81683233bac9",
+      "lf_bytes": 199979,
+      "crlf_bytes": 202275,
+      "source_blob": "db61ac7b478a7026c6313f6b741aa1722e6207b5"
+    },
+    "supabase/candidates/security_stage_3_admin_mfa_rollback.sql": {
+      "lf_sha256": "87ffe801bbd2955e221bf8d26de52f6e03a814ba462a8cec474f2d36e28b18c1",
+      "crlf_sha256": "1ba2cff44d5e87164b31b7d5cc9b958a397124f7f39bbcf75b5fa65cabdd45b8",
+      "lf_bytes": 176459,
+      "crlf_bytes": 178881,
+      "source_blob": "5bfa350bbbbf2fed9480663addf0c28daad5a304"
+    },
+    "supabase/diagnostics/security_stage_3_admin_mfa_readiness.sql": {
+      "lf_sha256": "181224ec6639a3308417626ce9f06a0b70318432485144daa30671ebbab62cef",
+      "crlf_sha256": "abb90cce7ca6372ab98af1e12d46caa5b904fd6756b24803a86c411763543f75",
+      "lf_bytes": 31377,
+      "crlf_bytes": 31635,
+      "source_blob": "ee2a9a04b2c9ada909e29c4d8aea3351b8aa8fd1"
+    }
+  }
+}

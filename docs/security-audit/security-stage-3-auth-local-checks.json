@@ -1,0 +1,41 @@
+{
+  "stage_step": "3.5.2",
+  "result": "AUTH_CANDIDATE_LOCAL_SCOPED_PASS",
+  "scope": "NODE_CONTROLLER_VM_PAGE_AND_EDGE_MOCKS_SYNTHETIC_GIT_BUILD",
+  "tests": 111,
+  "pass": 111,
+  "fail": 0,
+  "exit_code": 0,
+  "test_files": [
+    "tests/stage-3-auth-flows.test.mjs",
+    "tests/stage-3-auth-page.test.mjs",
+    "tests/stage-3-auth-edge-build.test.mjs",
+    "tests/session-recovery.test.mjs",
+    "tests/startup-recovery.test.mjs",
+    "tests/admin-invitation-exit.test.mjs",
+    "tests/admin-invitation-setup-retry.test.mjs",
+    "tests/admin-user-invitation-completion.test.mjs",
+    "tests/admin-user-invitations.test.mjs",
+    "tests/admin-invitation-replacement.test.mjs",
+    "tests/signup-currencies.test.mjs",
+    "tests/admin-invitation-session-isolation.test.mjs",
+    "tests/admin-invitation-provision-guard.test.mjs",
+    "tests/stage-3-admin-mfa-ui-edge.test.mjs"
+  ],
+  "syntax_checks": 6,
+  "syntax_files": [
+    "auth-security.js",
+    "auth-flows.js",
+    "app.js",
+    "business.js",
+    "scripts/build-stage-3-auth-staging.cjs",
+    "signup.html inline module"
+  ],
+  "genuine_Auth_or_SMTP_verified": false,
+  "hosted_API_or_browser_checks_run": 0,
+  "Auth_settings_verified": false,
+  "frontend_deployed": false,
+  "Edge_functions_deployed": false,
+  "production_or_native_changed": false,
+  "findings_F08_F15_closed": false
+}

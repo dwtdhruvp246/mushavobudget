@@ -1,0 +1,30 @@
+{
+  "source_parent_commit": "3e465bf082ad5cd269e7112c35e224948c81af19",
+  "scope": "LOCAL_SYNTHETIC_DIR_LINK_EPERM_AND_SELECTED_JUNCTION_BRANCH_NOT_NATIVE_WINDOWS_PROOF",
+  "original_suite_with_dir_symlink_denied": {
+    "tests": 44,
+    "pass": 43,
+    "fail": 1,
+    "exit_code": 1,
+    "failed_case_title": "Redirected artifact roots are rejected before any credential transport"
+  },
+  "corrected_local_suite": {
+    "tests": 44,
+    "pass": 44,
+    "fail": 0,
+    "exit_code": 0
+  },
+  "selected_junction_fixture_branch_with_same_dir_link_denial": {
+    "tests": 18,
+    "pass": 18,
+    "fail": 0,
+    "exit_code": 0
+  },
+  "native_Windows_junction_creation_verified": false,
+  "owner_exact_native_error_received": false,
+  "artifact_rejection_assertion_and_all44_cases_preserved": true,
+  "old_six_source_manifest_and_original_checker_preserved": true,
+  "production_inspector_and_private_readiness_runner_unchanged": true,
+  "provider_requests": 0,
+  "owner_ZIP_or_DPAPI_packet_accessed": false
+}

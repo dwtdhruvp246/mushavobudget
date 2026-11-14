@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-29",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "case_id": "AU02.06",
+  "result": "OWNER_REPORTED_BUSINESS_NEW_RECIPIENT_SETUP_PASS",
+  "evidence_kind": "OWNER_BROWSER_WORKFLOW_REPORT",
+  "checks": {
+    "invitation_email_received": true,
+    "first_password_setup_succeeded": true,
+    "correct_Business_workspace_opened": true,
+    "owner_Team_page_shows_accepted_membership": true
+  },
+  "scope": "Original AU02.06 new-recipient setup and the positive invitation-acceptance observation in AU02.08",
+  "independently_observed_by_assistant": false,
+  "recipient_existing_password_tested": false,
+  "decline_tested": false,
+  "replay_tested": false,
+  "repeat_new_recipient_workflow_requested": false,
+  "full_lettered_batch_W_complete": false,
+  "batch_V_complete": false,
+  "hosted_release_acceptance": false,
+  "secrets_or_invitation_links_recorded": false,
+  "new_public_AU_cases_added": 0,
+  "assistant_hosted_requests": 0,
+  "assistant_real_email_requests": 0,
+  "next_original_case": "AU02.07",
+  "next_scope": "Existing registered recipient joins without password overwrite; retain positive acceptance, then check previously used invitation with no resend."
+}

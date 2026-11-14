@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "stage_step": "10.1",
+  "date": "2026-10-13",
+  "source_parent_commit": "b51fe2e49d32ecf5f3ee5a1f9118d1bc88888719",
+  "scope": "SIX_OPERATIONS_COORDINATING_DECISIONS_UNCONFIRMED_NOT_ADOPTED",
+  "items": [
+    {
+      "id": "OP-D01",
+      "decision": "Exact accepted environment, source/artifact, hosting product/channel and deployment authority",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Both",
+      "related_release_decisions": [
+        "RG-D01"
+      ]
+    },
+    {
+      "id": "OP-D02",
+      "decision": "Responsible operator, alternate/recovery custody, support and incident review coverage",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Owner/Both",
+      "related_release_decisions": [
+        "RG-D02",
+        "RG-D08"
+      ]
+    },
+    {
+      "id": "OP-D03",
+      "decision": "Service/usage scope, health and alert thresholds, review cadence and private log retention",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Owner/Both",
+      "related_release_decisions": [
+        "RG-D03",
+        "RG-D08"
+      ]
+    },
+    {
+      "id": "OP-D04",
+      "decision": "Full recovery components, independent offsite route, retention and RPO/RTO objectives",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Owner/Both",
+      "related_release_decisions": [
+        "RG-D02",
+        "RG-D08"
+      ]
+    },
+    {
+      "id": "OP-D05",
+      "decision": "Version-compatible containment/rollback/resume triggers and authorized safe drill scope",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Both",
+      "related_release_decisions": [
+        "RG-D01",
+        "RG-D08"
+      ]
+    },
+    {
+      "id": "OP-D06",
+      "decision": "Final release channels/dependencies, accountable release disposition and fresh full re-audit scope",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Owner/Both",
+      "related_release_decisions": [
+        "RG-D05",
+        "RG-D06",
+        "RG-D07",
+        "RG-D08"
+      ]
+    }
+  ],
+  "inherited_RG_decisions": "docs/security-audit/security-stage-9-release-decisions.json",
+  "inherited_RG_decisions_unchanged": true,
+  "prior_owner_facts_not_newly_verified": true,
+  "adopted_operations_policy": false,
+  "paid_service_or_alert_provider_selected": false
+}

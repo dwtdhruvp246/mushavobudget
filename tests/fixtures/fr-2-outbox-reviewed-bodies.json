@@ -1,0 +1,183 @@
+{
+  "canonical_schema": "\ndeclare\n  v_workspace_type text;\n  v_workspace_name text;\n  v_detailed_previews boolean := false;\nbegin\n  if new.source_type <> 'payment' then return new; end if;\n  select workspaces.workspace_type, workspaces.name,\n         coalesce(settings.detailed_notification_previews, false)\n  into v_workspace_type, v_workspace_name, v_detailed_previews\n  from public.budget_workspaces as workspaces\n  left join public.workspace_settings as settings on settings.workspace_id = workspaces.id\n  where workspaces.id = new.workspace_id;\n\n  new.target_url := format(\n    '/app.html?source=push&workspace=%s&payment_item=%s#family/payments',\n    new.workspace_id,\n    new.source_id\n  );\n  new.title := case\n    when v_detailed_previews then left(\n      case v_workspace_type\n        when 'household' then 'Family'\n        when 'business' then 'Business'\n        else 'Personal'\n      end || ' \u00b7 ' || coalesce(nullif(btrim(v_workspace_name), ''), 'Workspace'),\n      80\n    )\n    else 'Mushavo Budget'\n  end;\n  return new;\nend;\n",
+  "historical_migration": "\ndeclare\n  v_workspace_type text;\n  v_workspace_name text;\n  v_detailed_previews boolean := false;\nbegin\n  if new.source_type <> 'payment' then return new; end if;\n\n  select workspaces.workspace_type, workspaces.name,\n         coalesce(settings.detailed_notification_previews, false)\n  into v_workspace_type, v_workspace_name, v_detailed_previews\n  from public.budget_workspaces as workspaces\n  left join public.workspace_settings as settings\n    on settings.workspace_id = workspaces.id\n  where workspaces.id = new.workspace_id;\n\n  new.target_url := format(\n    '/app.html?source=push&workspace=%s&payment_item=%s#family/payments',\n    new.workspace_id,\n    new.source_id\n  );\n  new.title := case\n    when v_detailed_previews then left(\n      case v_workspace_type\n        when 'household' then 'Family'\n        when 'business' then 'Business'\n        else 'Personal'\n      end || ' \u00b7 ' || coalesce(nullif(btrim(v_workspace_name), ''), 'Workspace'),\n      80\n    )\n    else 'Mushavo Budget'\n  end;\n  return new;\nend;\n",
+  "reconstructed_deployed_LF": "\ndeclare\n  v_workspace_type text;\n  v_workspace_name text;\n  v_detailed_previews boolean := false;\nbegin\n  if new.source_type <> 'payment' then return new; end if;\n\n  select workspaces.workspace_type, workspaces.name,\n         coalesce(settings.detailed_notification_previews, false)\n  into v_workspace_type, v_workspace_name, v_detailed_previews\n  from public.budget_workspaces as workspaces\n  left join public.workspace_settings as settings\n    on settings.workspace_id = workspaces.id\n  where workspaces.id = new.workspace_id;\n\n  new.target_url := format(\n    '/app.html?source=push&workspace=%s&payment_item=%s#family/payments',\n    new.workspace_id,\n    new.source_id\n  );\n  new.title := case\n    when v_detailed_previews then left(\n      case v_workspace_type\n        when 'household' then 'Family'\n        when 'business' then 'Business'\n        else 'Personal'\n      end || ' \u252c\u2556 ' || coalesce(nullif(btrim(v_workspace_name), ''), 'Workspace'),\n      80\n    )\n    else 'Mushavo Budget'\n  end;\n  return new;\nend;\n",
+  "reconstructed_deployed_CRLF": "\r\ndeclare\r\n  v_workspace_type text;\r\n  v_workspace_name text;\r\n  v_detailed_previews boolean := false;\r\nbegin\r\n  if new.source_type <> 'payment' then return new; end if;\r\n\r\n  select workspaces.workspace_type, workspaces.name,\r\n         coalesce(settings.detailed_notification_previews, false)\r\n  into v_workspace_type, v_workspace_name, v_detailed_previews\r\n  from public.budget_workspaces as workspaces\r\n  left join public.workspace_settings as settings\r\n    on settings.workspace_id = workspaces.id\r\n  where workspaces.id = new.workspace_id;\r\n\r\n  new.target_url := format(\r\n    '/app.html?source=push&workspace=%s&payment_item=%s#family/payments',\r\n    new.workspace_id,\r\n    new.source_id\r\n  );\r\n  new.title := case\r\n    when v_detailed_previews then left(\r\n      case v_workspace_type\r\n        when 'household' then 'Family'\r\n        when 'business' then 'Business'\r\n        else 'Personal'\r\n      end || ' \u252c\u2556 ' || coalesce(nullif(btrim(v_workspace_name), ''), 'Workspace'),\r\n      80\r\n    )\r\n    else 'Mushavo Budget'\r\n  end;\r\n  return new;\r\nend;\r\n",
+  "observed_line_fingerprints": [
+    {
+      "line_number": 1,
+      "bytes": 0,
+      "line_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "line_number": 2,
+      "bytes": 7,
+      "line_sha256": "b7012df7548775c20321ac66c42253e001f5728a66c3309b5706d40409d149b9"
+    },
+    {
+      "line_number": 3,
+      "bytes": 24,
+      "line_sha256": "c37c2f5906f506f6a269cd51b57af4e09733aa1d5cde17a926572746c83186e0"
+    },
+    {
+      "line_number": 4,
+      "bytes": 24,
+      "line_sha256": "072c03b0a72022b969a96f6d9b6071ee5442a72bcda2abf18b25e66356775a97"
+    },
+    {
+      "line_number": 5,
+      "bytes": 39,
+      "line_sha256": "8f3a5a7d9913897cd90b292a4518b43ae52f93d397526f8744bc0baaec6bd598"
+    },
+    {
+      "line_number": 6,
+      "bytes": 5,
+      "line_sha256": "e6f07d43b5c21db0fbb9a31feac2dc599787763393dd5acbfad80e247eb02ad5"
+    },
+    {
+      "line_number": 7,
+      "bytes": 58,
+      "line_sha256": "fe7b24859f7bb95fb257c370e6368865542fba2c8c8a1f12dc6c1d94fa9b9cd5"
+    },
+    {
+      "line_number": 8,
+      "bytes": 0,
+      "line_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "line_number": 9,
+      "bytes": 52,
+      "line_sha256": "0f61b499c033ee8ea43b107c1a4cec1c155cc14b423624cee3f5c103684301fa"
+    },
+    {
+      "line_number": 10,
+      "bytes": 65,
+      "line_sha256": "7fe87b78a270a5f33257ac6218118108f36013fb66b699630b2048062a17fbbc"
+    },
+    {
+      "line_number": 11,
+      "bytes": 62,
+      "line_sha256": "5f0ae42ebadcf1bc651f1c0b9a9190511bd0651b72062846da4521f1f0605951"
+    },
+    {
+      "line_number": 12,
+      "bytes": 45,
+      "line_sha256": "0e4c71090267d9a0b4405a75a945cb6ff9a410d362401b78d45698976cf6bc85"
+    },
+    {
+      "line_number": 13,
+      "bytes": 49,
+      "line_sha256": "30ad1a60d7b812d70d1b5498800aa531db35fef6db3721d321db81dce3525a65"
+    },
+    {
+      "line_number": 14,
+      "bytes": 44,
+      "line_sha256": "7fc8a1184bcda6818006f68035896f3fbefdd296dc8aedd70aa0b02b4de9031e"
+    },
+    {
+      "line_number": 15,
+      "bytes": 41,
+      "line_sha256": "7e71047b59d0928d765216490a717f6012f550cbe2fe105505cc9ebaf899db8c"
+    },
+    {
+      "line_number": 16,
+      "bytes": 0,
+      "line_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "line_number": 17,
+      "bytes": 27,
+      "line_sha256": "e17e4846224c95f274be5a8ffed24105ae9f665cca9b2aed4ff5eac8a6288050"
+    },
+    {
+      "line_number": 18,
+      "bytes": 73,
+      "line_sha256": "dbd681da8135f809806c238f74090159982e4f47e96aa770d4d4015f5d65f905"
+    },
+    {
+      "line_number": 19,
+      "bytes": 21,
+      "line_sha256": "a50e973d7178eedcd061e354292ec3575994438064b6b3ff86815ffd880a4340"
+    },
+    {
+      "line_number": 20,
+      "bytes": 17,
+      "line_sha256": "4ff017364ae7d5f00edcdfe807f98c22dc171afd7b1495aec09022944963b30f"
+    },
+    {
+      "line_number": 21,
+      "bytes": 4,
+      "line_sha256": "3a5d0b9c2fd82493b66bba108059e333b190a7c3f488eab80fbab6a853f4473a"
+    },
+    {
+      "line_number": 22,
+      "bytes": 19,
+      "line_sha256": "8e6550843b1d3bca630252a536dd1392faef736d8902e43233b1132907cabc41"
+    },
+    {
+      "line_number": 23,
+      "bytes": 39,
+      "line_sha256": "4650c0fefd1110d8337cc8a8bc8ae5b15c6f35074fd4e73d8e002c20dedb8a4f"
+    },
+    {
+      "line_number": 24,
+      "bytes": 27,
+      "line_sha256": "b0ef8a01b2a319a1f1823230909f90d17186ff1e0c9303e42ab1b5c73da8b083"
+    },
+    {
+      "line_number": 25,
+      "bytes": 38,
+      "line_sha256": "ac77811939cbadc340f6d7c1b044cb06021564216ed5ab55ff72c98186868d01"
+    },
+    {
+      "line_number": 26,
+      "bytes": 39,
+      "line_sha256": "000ded642c97273823b8f43f3ccf7ffa3a7a7685a78cb6fce206878feb14b417"
+    },
+    {
+      "line_number": 27,
+      "bytes": 23,
+      "line_sha256": "acaa023a30b95e4a065a6e15985ecc848b951bdf5b6b1630c88771a14a86c12e"
+    },
+    {
+      "line_number": 28,
+      "bytes": 86,
+      "line_sha256": "bf145cfcaa43c7f90a52c134e6fdf526f970d3c3a62c937881ee6d8b6c959cb0"
+    },
+    {
+      "line_number": 29,
+      "bytes": 8,
+      "line_sha256": "85707ccb7e16796989af1e9db27d84acf7297cbd43ea860bd35c23933c5e3755"
+    },
+    {
+      "line_number": 30,
+      "bytes": 5,
+      "line_sha256": "ff19446752c33c181ea9232a795beff15bc3feedd2a58087b3f5c33eeb62e992"
+    },
+    {
+      "line_number": 31,
+      "bytes": 25,
+      "line_sha256": "b3c4060431786de1c5313044e745be52a143b884dd1c44aa915e3fcfb881e527"
+    },
+    {
+      "line_number": 32,
+      "bytes": 6,
+      "line_sha256": "e639d13df37d2bea1386085af61c212e8f16382d95536d04432cea9b51c23768"
+    },
+    {
+      "line_number": 33,
+      "bytes": 13,
+      "line_sha256": "178c01f22b954b9e15baa6fe7b42582a775fd9ff2b9d1ff05da98e4a7eb3113b"
+    },
+    {
+      "line_number": 34,
+      "bytes": 4,
+      "line_sha256": "3cad279a8445c86c5190b61be3c978657e7b81f0e8d3bfdc7952c894ddf9fe08"
+    },
+    {
+      "line_number": 35,
+      "bytes": 0,
+      "line_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

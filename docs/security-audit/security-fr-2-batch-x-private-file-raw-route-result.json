@@ -1,0 +1,248 @@
+{
+  "date": "2026-11-08",
+  "result": "RAW_ROUTE_DIAGNOSTIC_REPRODUCED_PRIVILEGED_DOWNLOAD_CACHE_WARMING",
+  "workflow_run_id": 42463436479,
+  "job_id": 128677457655,
+  "guard_tests": 307,
+  "receipt": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "production_changed": false,
+    "exit_code": 0,
+    "exercise": {
+      "checks": {
+        "EXACT_PERSONAL_WORKSPACE": true,
+        "UPLOAD_0": true,
+        "OWNER_BYTES_0": true,
+        "OWNER_NO_STORE_0": true,
+        "FOREIGN_DENIED_0": true,
+        "ANONYMOUS_DENIED_0": true,
+        "INVOKER_METADATA_ONLY_0": true,
+        "UPLOAD_1": true,
+        "OWNER_BYTES_1": true,
+        "OWNER_NO_STORE_1": true,
+        "FOREIGN_DENIED_1": true,
+        "ANONYMOUS_DENIED_1": true,
+        "INVOKER_METADATA_ONLY_1": true,
+        "FINANCE_ADMIN_SUBSCRIPTION_PROOF": true,
+        "CURRENT_OWNER_REPEAT_REQUEST": true,
+        "DELETE_ACK_payment-proofs": true,
+        "DELETED_CONTEXT_EMPTY_payment-proofs": true,
+        "DELETE_ACK_subscription-proofs": true,
+        "DELETED_CONTEXT_EMPTY_subscription-proofs": true
+      },
+      "exercise_requests": 25,
+      "upload_attempts": 2,
+      "cleanup_paths": [
+        {
+          "bucket": "payment-proofs",
+          "path": "personal/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/audit-broker-722c76a7-bb21-4900-8d6c-f3c6d357b8e2.png"
+        },
+        {
+          "bucket": "subscription-proofs",
+          "path": "workspaces/017513c6-ce57-48af-b902-9552faeb83dd/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/audit-broker-722c76a7-bb21-4900-8d6c-f3c6d357b8e2.png"
+        }
+      ],
+      "storage_cleanup_acknowledged": true,
+      "email_requests": 0,
+      "finance_writes": 0,
+      "signed_urls_issued": 0,
+      "original_cached_access_finding_closed": false,
+      "raw_delivery_blocked": false,
+      "raw_route_observations": [
+        {
+          "bucket": "payment-proofs",
+          "label": "before_broker",
+          "status": 400,
+          "headers": {
+            "cache-control": null,
+            "content-type": "application/json; charset=utf-8",
+            "x-mushavo-media-type": null,
+            "cf-cache-status": "BYPASS",
+            "vary": null,
+            "referrer-policy": null,
+            "x-content-type-options": null
+          },
+          "Storage_error": "not_found",
+          "Storage_status_code": "404"
+        },
+        {
+          "bucket": "payment-proofs",
+          "label": "after_broker",
+          "status": 200,
+          "headers": {
+            "cache-control": "private, no-cache",
+            "content-type": "image/png",
+            "x-mushavo-media-type": null,
+            "cf-cache-status": "HIT",
+            "vary": "Authorization, apikey",
+            "referrer-policy": null,
+            "x-content-type-options": null
+          },
+          "bytes": 68,
+          "harmless_fixture_matches": true
+        },
+        {
+          "bucket": "payment-proofs",
+          "label": "after_broker_unique_nonce",
+          "status": 200,
+          "headers": {
+            "cache-control": "private, no-cache",
+            "content-type": "image/png",
+            "x-mushavo-media-type": null,
+            "cf-cache-status": "HIT",
+            "vary": "Authorization, apikey",
+            "referrer-policy": null,
+            "x-content-type-options": null
+          },
+          "bytes": 68,
+          "harmless_fixture_matches": true
+        },
+        {
+          "bucket": "payment-proofs",
+          "label": "signing",
+          "status": 400,
+          "Storage_error": "not_found",
+          "Storage_status_code": "404",
+          "signed_URL_returned": false
+        },
+        {
+          "bucket": "subscription-proofs",
+          "label": "before_broker",
+          "status": 400,
+          "headers": {
+            "cache-control": null,
+            "content-type": "application/json; charset=utf-8",
+            "x-mushavo-media-type": null,
+            "cf-cache-status": "BYPASS",
+            "vary": null,
+            "referrer-policy": null,
+            "x-content-type-options": null
+          },
+          "Storage_error": "not_found",
+          "Storage_status_code": "404"
+        },
+        {
+          "bucket": "subscription-proofs",
+          "label": "after_broker",
+          "status": 200,
+          "headers": {
+            "cache-control": "private, no-cache",
+            "content-type": "image/png",
+            "x-mushavo-media-type": null,
+            "cf-cache-status": "HIT",
+            "vary": "Authorization, apikey",
+            "referrer-policy": null,
+            "x-content-type-options": null
+          },
+          "bytes": 68,
+          "harmless_fixture_matches": true
+        },
+        {
+          "bucket": "subscription-proofs",
+          "label": "after_broker_unique_nonce",
+          "status": 200,
+          "headers": {
+            "cache-control": "private, no-cache",
+            "content-type": "image/png",
+            "x-mushavo-media-type": null,
+            "cf-cache-status": "HIT",
+            "vary": "Authorization, apikey",
+            "referrer-policy": null,
+            "x-content-type-options": null
+          },
+          "bytes": 68,
+          "harmless_fixture_matches": true
+        },
+        {
+          "bucket": "subscription-proofs",
+          "label": "signing",
+          "status": 400,
+          "Storage_error": "not_found",
+          "Storage_status_code": "404",
+          "signed_URL_returned": false
+        }
+      ],
+      "owner_response_0": {
+        "status": 200,
+        "headers": {
+          "cache-control": "private, no-store, max-age=0, must-revalidate",
+          "content-type": "application/octet-stream",
+          "x-mushavo-media-type": "image/png",
+          "cf-cache-status": "DYNAMIC",
+          "vary": "Accept-Encoding, Origin, Authorization, apikey",
+          "referrer-policy": "no-referrer",
+          "x-content-type-options": "nosniff"
+        },
+        "bytes": 68,
+        "harmless_fixture_matches": true
+      },
+      "owner_response_1": {
+        "status": 200,
+        "headers": {
+          "cache-control": "private, no-store, max-age=0, must-revalidate",
+          "content-type": "application/octet-stream",
+          "x-mushavo-media-type": "image/png",
+          "cf-cache-status": "DYNAMIC",
+          "vary": "Accept-Encoding, Origin, Authorization, apikey",
+          "referrer-policy": "no-referrer",
+          "x-content-type-options": "nosniff"
+        },
+        "bytes": 68,
+        "harmless_fixture_matches": true
+      }
+    },
+    "full_lettered_batch_X_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-08-batch-x-private-file-raw-route-diagnostic",
+    "source_commit": "4e2d1d02dc0fddb80f0150ac59b50f4a32c1b698",
+    "workflow_run_id": "42463436479",
+    "workflow_run_attempt": "1"
+  },
+  "interpretation": "In this controlled staging run, raw owner GET was denied before the broker fetch, then returned the harmless 68-byte object with CF HIT after the broker's ordinary Storage API download, including with a unique cacheNonce. Signing stayed denied. Therefore the RLS cutover alone did not close the finding.",
+  "next_correction": "Use authenticated server-side S3 GET instead of the cache-populating ordinary Storage download. Keep both caller RLS checks and restrictive direct-route policy.",
+  "full_batch_X_complete": false,
+  "original_finding_closed": false
+}

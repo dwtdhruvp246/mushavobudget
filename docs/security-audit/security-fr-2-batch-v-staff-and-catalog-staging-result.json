@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-06",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
+  "result": "BATCH_V_STAGING_STAFF_AND_CATALOG_PASS_RECOVERY_OPEN",
+  "project": "dczlddwbtgvfdujgcitb",
+  "source_parent": "ddfe23d4ef397077808fc8f41b1e1f73a109a7a0",
+  "policy": "PASSWORD_ONLY_ALL_USERS",
+  "deployed_staging": {
+    "commit": "22083f59f2efac5e8933331dd01371fa43bd154e",
+    "url": "https://b29545cc.mushavo-budget-staging.pages.dev"
+  },
+  "catalog": {
+    "case_ids": [
+      "V01",
+      "V15"
+    ],
+    "reason": "Supabase-managed Storage migrations applied on 2026-11-05 UTC.",
+    "applied_storage_migrations": [
+      74,
+      75,
+      76,
+      77,
+      78,
+      79
+    ],
+    "exact_live_projection_reproduced": true,
+    "prior_stamp_sha256": "ef3d234dfcbf738b6cf0f2855280835faf576c4d1b1bdc6a535a1a6a548ed545",
+    "pre_storage_migration_projection": {
+      "sha256": "ef3d234dfcbf738b6cf0f2855280835faf576c4d1b1bdc6a535a1a6a548ed545",
+      "projection": "validated_disabled_only",
+      "matches_stamp": true
+    },
+    "stored_and_live_current_sha256": "c6eeedf37ae17212f4a9dca90e70b2cbbd4f46fccb5a3cce186b86361a56ff26",
+    "refreshed_at_UTC": "2026-11-06 13:28:19.486598+00",
+    "mode": "ACTIVE",
+    "one_rollout_control_row_refreshed": true,
+    "independent_exact_match": true,
+    "provider_routines": [
+      {
+        "routine": "storage.delete_lifecycle_objects(uuid[])",
+        "body_match": true,
+        "storage_owned": true,
+        "effective_acl_matches": true,
+        "unprivileged_execute_is_trigger_only": true
+      },
+      {
+        "routine": "storage.enforce_bucket_lifecycle_service_role()",
+        "body_match": true,
+        "storage_owned": true,
+        "effective_acl_matches": true,
+        "unprivileged_execute_is_trigger_only": true
+      },
+      {
+        "routine": "storage.enforce_versioning_status_transition()",
+        "body_match": true,
+        "storage_owned": true,
+        "effective_acl_matches": true,
+        "unprivileged_execute_is_trigger_only": true
+      },
+      {
+        "routine": "storage.protect_active_lifecycle_states()",
+        "body_match": true,
+        "storage_owned": true,
+        "effective_acl_matches": true,
+        "unprivileged_execute_is_trigger_only": true
+      },
+      {
+        "routine": "storage.reconcile_lifecycle_state(text,boolean)",
+        "body_match": true,
+        "storage_owned": true,
+        "effective_acl_matches": true,
+        "unprivileged_execute_is_trigger_only": true
+      },
+      {
+        "routine": "storage.wake_lifecycle_state()",
+        "body_match": true,
+        "storage_owned": true,
+        "effective_acl_matches": true,
+        "unprivileged_execute_is_trigger_only": true
+      }
+    ],
+    "projection_description": "Excluded two provider lifecycle tables and their catalog entries, five added Storage functions and four new triggers. Restored the earlier bucket lifecycle service-role trigger body and the former validated DISABLED-only versioning constraint in the read-only projection. Index-only migrations 77 and 78 are outside the fingerprint."
+  },
+  "staff_scope": {
+    "case_id": "V10",
+    "result": "SCOPED_HOSTED_PASS",
+    "login": "Real Supabase password sessions in the isolated staging deployment origin.",
+    "server_probes": "Read-only hosted PostgreSQL probes using the actual session IDs under modeled authenticated request claims.",
+    "actors": [
+      {
+        "browser": {
+          "fixtureSelected": true,
+          "tabs": {
+            "Plans": true,
+            "Finance": true,
+            "Support": true,
+            "Enquiries": true
+          },
+          "openedSection": "Plans",
+          "sectionRouteMatches": true,
+          "planWorkbenchVisible": true
+        },
+        "database": {
+          "role": "admin_staff",
+          "own_role_row": true,
+          "session_valid": true,
+          "plan_preview_allows": true,
+          "server_role_matches": true,
+          "finance_RLS_allows_read": true,
+          "role_expectations_match": true,
+          "super_admin_seats_denied": true,
+          "real_sign_in_session_selected": true
+        }
+      },
+      {
+        "browser": {
+          "fixtureSelected": true,
+          "tabs": {
+            "Plans": false,
+            "Finance": true,
+            "Support": false,
+            "Enquiries": false
+          },
+          "openedSection": "Finance",
+          "sectionRouteMatches": true,
+          "planWorkbenchVisible": false
+        },
+        "database": {
+          "role": "finance_staff",
+          "own_role_row": true,
+          "session_valid": true,
+          "plan_preview_allows": false,
+          "server_role_matches": true,
+          "finance_RLS_allows_read": true,
+          "role_expectations_match": true,
+          "super_admin_seats_denied": true,
+          "real_sign_in_session_selected": true
+        }
+      },
+      {
+        "browser": {
+          "fixtureSelected": true,
+          "tabs": {
+            "Plans": false,
+            "Finance": true,
+            "Support": true,
+            "Enquiries": true
+          },
+          "openedSection": "Support",
+          "sectionRouteMatches": true,
+          "planWorkbenchVisible": false
+        },
+        "database": {
+          "role": "support_staff",
+          "own_role_row": true,
+          "session_valid": true,
+          "plan_preview_allows": false,
+          "server_role_matches": true,
+          "finance_RLS_allows_read": false,
+          "role_expectations_match": true,
+          "super_admin_seats_denied": true,
+          "real_sign_in_session_selected": true
+        }
+      }
+    ],
+    "auth_users_created": 3,
+    "temporary_roles_assigned": 3,
+    "disposable_free_workspaces_removed": 3,
+    "cleanup": {
+      "profiles": 0,
+      "sessions": 0,
+      "role_rows": 0,
+      "auth_users": 0,
+      "identities": 0,
+      "workspaces": 0,
+      "memberships": 0,
+      "subscriptions": 0,
+      "refresh_tokens": 0,
+      "one_time_tokens": 0,
+      "catalog_still_matches": true,
+      "sole_confirmed_primary_retained": true
+    },
+    "retained_finance_row_counts": {
+      "plans": 4,
+      "invoices": 0,
+      "payments": 0,
+      "plan_prices": 2,
+      "manual_grants": 2,
+      "finance_settings": 1,
+      "admin_invitations": 2,
+      "workspace_subscriptions": 16
+    }
+  },
+  "recovery": {
+    "case_id": "V13",
+    "status": "OPEN_RECOVERY_EMAIL_NOT_OBSERVED",
+    "prior_request_recorded_UTC": "2026-11-06T13:06:14.752354Z",
+    "recovery_mailbox": "support@mushavobudget.com",
+    "inbox_and_spam_checked": true,
+    "email_observed": false,
+    "staging_custom_SMTP_enabled": false,
+    "staging_auth_hook_configured": false,
+    "followup_recovery_requests": 0,
+    "backup_role_assigned": false,
+    "next_action": "Connect the approved staging SMTP sender, verify a bounded recovery message and use a private owner handoff for the password step. Run the temporary backup role and cleanup checks after independent sign-in is verified."
+  },
+  "current_batch_x_preflight": {
+    "read_only": true,
+    "checked_UTC": "2026-11-06T13:48:41.101147+00:00",
+    "retained_business_fixtures": 2,
+    "retained_role_audit_fingerprint_matches": true,
+    "retained_permission_fingerprint_matches": true,
+    "retained_manual_family_conversion_fingerprint_matches": true,
+    "payment_records": 5,
+    "payment_record_conversions": 7,
+    "existing_unlinked_conversion_rows": 2,
+    "private_business_documents_bucket": true,
+    "hosted_workflow_acceptance": false
+  },
+  "production_grant_fix_readback": {
+    "source_merge": "89b1e25af94d07d26d75fb21c241061b12e95f60",
+    "deployment_run": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42116143692",
+    "deployment_conclusion": "success",
+    "production_grant_transaction_exercised": false
+  },
+  "historical_MFA_status": "ON_HOLD",
+  "batch_V_complete": false,
+  "batch_W_scope_complete": true,
+  "stage_3_complete": false,
+  "production_or_native_changed_in_this_session": false,
+  "findings_closed": []
+}

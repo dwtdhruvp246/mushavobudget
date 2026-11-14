@@ -1,6 +1,9 @@
 // Mushavo Budget authenticated application — release 83
 import { createAdminPlans } from "./admin-plans.js?v=2";
+import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=5";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
+import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
+import { openPrivateFile } from "./private-files.js?v=1";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
 const placeholderValues = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
@@ -11,7 +14,8 @@ const isConfigured =
     `${config.supabaseUrl} ${config.supabasePublishableKey}`.includes(value)
   );
 
-const supabase = isConfigured
+const authLinkRedirect = redirectLegacyAuthLink(window.location.href, "budget", href => window.location.replace(href));
+const supabase = isConfigured && !authLinkRedirect
   ? createClient(config.supabaseUrl, config.supabasePublishableKey)
   : null;
 
@@ -29,6 +33,8 @@ function createPushDeviceState() {
 
 const state = {
   session: null,
+  manualSignInRequired: requiresManualSignIn(window.location.href),
+  signingOut: false,
   profile: null,
   isAdmin: false,
   adminRole: null,
@@ -146,7 +152,7 @@ const ANALYTICS_ACTIVITY_INTERVAL_MS = 50 * 60 * 1000;
 
 async function recordVisibleActivity() {
   const userId = state.session?.user?.id;
-  if (!userId || document.visibilityState === "hidden" || !navigator.onLine || analyticsActivity.inFlight) return;
+  if (!emailEntry.authorized || !userId || document.visibilityState === "hidden" || !navigator.onLine || analyticsActivity.inFlight) return;
   if (analyticsActivity.userId !== userId) {
     analyticsActivity.userId = userId;
     analyticsActivity.lastSentAt = 0;
@@ -174,7 +180,12 @@ const dashboardDisclosureState = {
 let dashboardFitFrame = null;
 let appLoadPromise = null;
 let appLoadUserId = null;
+let appLoadToken = null;
 let signInInProgress = false;
+let signInExpectedEmail = null;
+let manualSignInSessionKey = null;
+let pendingSharedSignIn = null;
+let authDataEpoch = 0;
 let preserveSignInDestination = false;
 let startupWorkspacePreference = null;
 let startupWorkspaceUnavailable = false;
@@ -216,6 +227,8 @@ const views = {
   setup: $("#setupView"),
   suspended: $("#suspendedView"),
   admin: $("#adminView"),
+  adminSession: $("#adminEmailView"),
+  emailVerification: $("#emailVerificationView"),
   app: $("#appView")
 };
 
@@ -497,6 +510,11 @@ function setView(viewName) {
   if (viewName) views[viewName].classList.remove("hidden");
 }
 
+function showSignOutStatus(message = "") {
+  $("#signOutStatusMessage").textContent = message;
+  $("#signOutStatus").classList.toggle("hidden", !message);
+}
+
 function showLoading(title = "Opening your workspace", message = "Loading your latest budget...") {
   $("#loadingTitle").textContent = title;
   $("#loadingMessage").textContent = message;
@@ -536,10 +554,10 @@ function protectSubmission(handler) {
 function showSignupSuccessMessage() {
   const url = new URL(window.location.href);
   const signupResult = url.searchParams.get("signup");
-  if (!["success", "invited"].includes(signupResult)) return;
+  if (!["success", "invited", "pending"].includes(signupResult)) return;
   url.searchParams.delete("signup");
   window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
-  showToast(signupResult === "invited"
+  showToast(signupResult === "pending" ? "Check your inbox to confirm your email, then sign in." : signupResult === "invited"
     ? "Your account, workspace, and subscription are ready."
     : "Account created successfully. Sign in with your new account.");
 }
@@ -791,6 +809,12 @@ function friendlyMessage(message = "") {
   if (text.includes("PUSH_TEST_RATE_LIMITED")) {
     return "A test was requested recently. Wait one minute before trying again.";
   }
+  if (text.includes("PUSH_RECIPIENT_INACTIVE")) {
+    return "Notifications are unavailable because your account is not active.";
+  }
+  if (text.includes("PUSH_RECIPIENT_STATUS_CHECK_FAILED")) {
+    return "Your account status could not be checked. Try again shortly.";
+  }
   if (text.includes("PUSH_TEST_DELIVERY_FAILED")) {
     return "The push service could not reach any active device. Re-enable notifications on the device and try again.";
   }
@@ -944,6 +968,78 @@ function assertSupabase() {
   }
 }
 
+function requiresManualSignIn(href) {
+  return ["manual", "signed-out", "expired"].includes(new URL(href).searchParams.get("auth"));
+}
+
+// Only distinguish a new SDK session from a refresh of an unfinished sign-out.
+// Decoded claims are a navigation hint; loadApp still requires server authority.
+function applicationSessionKey(session) {
+  try {
+    const payload = session.access_token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    const claims = JSON.parse(window.atob(payload));
+    if (claims.sub !== session.user.id || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(claims.session_id)) return null;
+    return `${claims.sub}/${claims.session_id}`;
+  } catch (_error) { return null; }
+}
+
+// Keep failed/pending sign-out sessions at sign-in; a new shared login can resume.
+function setManualSignInIntent(reason = "manual", preserveDestination = false) {
+  manualSignInSessionKey = applicationSessionKey(state.session);
+  pendingSharedSignIn = null;
+  state.manualSignInRequired = true;
+  const url = new URL(window.location.href);
+  if (!preserveDestination) { url.search = ""; url.hash = ""; }
+  else {
+    for (const key of ["code", "token", "token_hash", "access_token", "refresh_token", "type"]) url.searchParams.delete(key);
+    if (new URLSearchParams(url.hash.slice(1)).has("access_token")) url.hash = "";
+  }
+  url.searchParams.set("auth", reason);
+  window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
+function clearManualSignInIntent() {
+  state.manualSignInRequired = false;
+  manualSignInSessionKey = null;
+  pendingSharedSignIn = null;
+  const url = new URL(window.location.href);
+  url.searchParams.delete("auth");
+  window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
+function resumeSharedSignIn() {
+  const session = pendingSharedSignIn;
+  if (!session || !state.manualSignInRequired || state.signingOut || signInInProgress) return;
+  pendingSharedSignIn = null;
+  if (state.session?.user?.id !== session.user.id || state.session?.access_token !== session.access_token) return;
+  const key = applicationSessionKey(session);
+  if (!key || key === manualSignInSessionKey) return;
+  clearManualSignInIntent();
+  showSignOutStatus();
+  resetState();
+  state.session = session;
+  adminSession.bind(session);
+  setView("loading");
+  const epoch = authDataEpoch;
+  // Defer SDK work until the Auth callback releases its lock.
+  window.setTimeout(() => {
+    if (epoch !== authDataEpoch || state.manualSignInRequired || state.signingOut ||
+        state.session?.user?.id !== session.user.id || state.session?.access_token !== session.access_token) return;
+    openAuthenticatedSession(session).catch(handleLoadFailure);
+  }, 0);
+}
+
+function beginManualSignOut() {
+  // Persist the navigation intent before push cleanup or Auth sign-out can wait.
+  setManualSignInIntent("signed-out");
+  authDataEpoch++;
+  appLoadPromise = null; appLoadUserId = null; appLoadToken = null;
+  emailEntry.bind(null); adminSession.bind(null);
+  clearApplicationPrivateData();
+  showSignOutStatus();
+  showLoading("Signing out", "Please wait…");
+}
+
 function isSameAuthUser(previousSession, nextSession) {
   return Boolean(previousSession?.user?.id && previousSession.user.id === nextSession?.user?.id);
 }
@@ -978,7 +1074,7 @@ function stopRealtime() {
 }
 
 function startRealtime() {
-  if (!supabase || !state.session) return;
+  if (!supabase || !state.session || !emailEntry.authorized) return;
   stopRealtime();
   if (state.session.access_token) supabase.realtime.setAuth(state.session.access_token);
   const channelName = `mushavo-budget:${state.session.user.id}:${state.isAdmin ? "admin" : "family"}`;
@@ -1023,12 +1119,13 @@ function startRealtime() {
 }
 
 function queueNotificationRefresh() {
-  if (!state.session) return;
+  if (!state.session || !emailEntry.authorized) return;
   if (realtime.notificationTimer) window.clearTimeout(realtime.notificationTimer);
   const userId = state.session.user.id;
   realtime.notificationTimer = window.setTimeout(async () => {
     realtime.notificationTimer = null;
     try {
+      if (state.isAdmin && !await ensureAdminAssurance()) return;
       await loadNotifications();
       if (state.session?.user?.id !== userId) return;
       renderNotifications();
@@ -1043,7 +1140,7 @@ function queueNotificationRefresh() {
 }
 
 function queueRealtimeRefresh(payload = {}) {
-  if (!state.session || appLoadPromise || document.visibilityState === "hidden" || !navigator.onLine) return;
+  if (!state.session || !emailEntry.authorized || appLoadPromise || document.visibilityState === "hidden" || !navigator.onLine) return;
   console.debug("Realtime refresh requested", payload.table || "app", payload.eventType || "REFRESH");
   if (realtime.refreshTimer) window.clearTimeout(realtime.refreshTimer);
   realtime.refreshTimer = window.setTimeout(() => {
@@ -1056,7 +1153,7 @@ function queueRealtimeRefresh(payload = {}) {
 }
 
 async function refreshVisibleData() {
-  if (!state.session || appLoadPromise || !navigator.onLine) return;
+  if (!state.session || !emailEntry.authorized || appLoadPromise || !navigator.onLine) return;
   if (realtime.refreshInFlight) {
     realtime.refreshPending = true;
     return;
@@ -1065,7 +1162,9 @@ async function refreshVisibleData() {
   realtime.refreshInFlight = true;
   try {
     if (state.isAdmin) {
-      await Promise.all([loadAdminData(), loadNotifications()]);
+      if (!await ensureAdminAssurance()) return;
+      await loadAdminData();
+      await loadNotifications();
       if (state.session?.user?.id !== sessionId) return;
       renderAdmin();
       return;
@@ -1088,13 +1187,15 @@ async function refreshVisibleData() {
 }
 
 function refreshAfterAppResume(source) {
-  if (!state.session || appLoadPromise || document.visibilityState === "hidden" || !navigator.onLine) return;
+  if (!state.session || !emailEntry.authorized || appLoadPromise || document.visibilityState === "hidden" || !navigator.onLine) return;
   if (!realtime.channel || realtime.reconnectTimer) startRealtime();
   queueNotificationRefresh();
   queueRealtimeRefresh({ table: source, eventType: "RESUME" });
 }
 
 async function query(label, promise) {
+  const epoch = authDataEpoch;
+  const proofTicket = state.session && !["sign in", "session retry", "session refresh"].includes(label) ? emailEntry.ticket() : null;
   let timeoutId;
   try {
     const { data, error } = await Promise.race([
@@ -1109,9 +1210,11 @@ async function query(label, promise) {
         );
       })
     ]);
+    if (epoch !== authDataEpoch || (proofTicket && !proofTicket())) throw Object.assign(new Error("The active account changed."), { code: "session_changed" });
+    if (error?.message?.includes("EMAIL_VERIFICATION_REQUIRED")) { emailEntry.lock(); throw Object.assign(new Error("Your sign-in ended. Sign in again."), {code:"session_changed"}); }
     if (error) {
-      console.error(label, error);
-      throw new Error(error.message);
+      console.warn(`Request failed: ${label}`);
+      throw Object.assign(new Error(error.message), { code: error.code, status: error.status });
     }
     return data;
   } finally {
@@ -1130,6 +1233,7 @@ async function init() {
   const { data, error } = await supabase.auth.getSession();
   if (error) throw error;
   state.session = data.session;
+  if (state.manualSignInRequired) manualSignInSessionKey = applicationSessionKey(state.session);
 
   supabase.auth.onAuthStateChange((event, session) => {
     if (event === "INITIAL_SESSION") return;
@@ -1137,23 +1241,51 @@ async function init() {
     state.session = session;
     // Password sign-in owns its first workspace load. Auth also emits
     // SIGNED_IN during that request; handling both would race two loaders.
-    if (signInInProgress && event === "SIGNED_IN") return;
+    if (signInInProgress && event === "SIGNED_IN" && session?.user?.email?.toLowerCase() === signInExpectedEmail) return;
+    if (state.manualSignInRequired && session) {
+      const key = applicationSessionKey(session);
+      if (event === "SIGNED_IN" && key && key !== manualSignInSessionKey) pendingSharedSignIn = session;
+      else if (pendingSharedSignIn && key === applicationSessionKey(pendingSharedSignIn)) pendingSharedSignIn = session;
+      resumeSharedSignIn();
+      return;
+    }
+    if (!session) pendingSharedSignIn = null;
 
     if (session && isSameAuthUser(previousSession, session)) {
-      if (session.access_token) supabase.realtime.setAuth(session.access_token);
+      if (previousSession.access_token !== session.access_token) {
+        authDataEpoch++;appLoadPromise=null;appLoadUserId=null;appLoadToken=null;
+        emailEntry.bind(session);adminSession.bind(session);
+        const token=session.access_token;
+        window.setTimeout(() => { if(state.session?.access_token===token)openAuthenticatedSession(session).catch(handleLoadFailure); }, 0);
+      } else if(emailEntry.authorized && session.access_token) supabase.realtime.setAuth(session.access_token);
       return;
     }
 
     if (session) {
+      resetState();
+      state.session = session;
+      adminSession.bind(session);
+      clearAdministrativeData();
+      setView("loading");
+      const epoch = authDataEpoch;
       window.setTimeout(() => {
+        if (epoch !== authDataEpoch || state.session?.user?.id !== session.user.id || state.session?.access_token !== session.access_token) return;
         openAuthenticatedSession(session).catch(handleLoadFailure);
       }, 0);
       return;
     }
-    window.setTimeout(handleSignedOut, 0);
+    resetState();
+    setView("auth");
+    const epoch = authDataEpoch;
+    window.setTimeout(() => { if (epoch === authDataEpoch && !state.session) handleSignedOut(); }, 0);
   });
 
-  if (state.session) {
+  if (state.manualSignInRequired) {
+    showSignOutStatus(new URL(window.location.href).searchParams.get("auth") === "signed-out" && state.session
+      ? "Your previous sign-out did not finish. Retry signing out to end that session." : "");
+    setView("auth");
+    showSignupSuccessMessage();
+  } else if (state.session) {
     await openAuthenticatedSession(state.session);
   } else {
     setView("auth");
@@ -1162,8 +1294,10 @@ async function init() {
 }
 
 function handleSignedOut() {
+  state.manualSignInRequired = true;
   resetState();
-  if (!preserveSignInDestination) window.history.replaceState(null, "", window.location.pathname);
+  setManualSignInIntent("signed-out", preserveSignInDestination);
+  showSignOutStatus();
   setView("auth");
 }
 
@@ -1191,6 +1325,7 @@ function isUnrecoverableSessionError(error) {
 }
 
 async function handleLoadFailure(error, mayRefresh = true) {
+  if (error?.code === "session_changed") return;
   console.error(error);
   if (state.session && mayRefresh && isInvalidStoredSessionError(error)) {
     try {
@@ -1225,14 +1360,17 @@ async function handleLoadFailure(error, mayRefresh = true) {
 function openAuthenticatedSession(session) {
   const userId = session?.user?.id;
   if (!userId) return Promise.reject(new Error("Your secure session could not be opened. Please sign in again."));
-  if (appLoadPromise && appLoadUserId === userId) return appLoadPromise;
+  if (appLoadPromise && appLoadUserId === userId && appLoadToken === session.access_token) return appLoadPromise;
 
   resetState();
   preserveSignInDestination = false;
   state.session = session;
   appLoadUserId = userId;
+  appLoadToken = session.access_token;
+  const epoch = authDataEpoch;
   showLoading("Opening your workspace", "Loading your latest budget...");
   appLoadPromise = loadApp().then(async () => {
+    if (epoch !== authDataEpoch || state.session?.user?.id !== userId) return;
     const url = new URL(window.location.href);
     const requestedPlan = url.searchParams.get("plan");
     if (!state.isAdmin && requestedPlan && state.plans.some((plan) => plan.code === requestedPlan)) {
@@ -1245,7 +1383,7 @@ function openAuthenticatedSession(session) {
       window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
     }
   }).finally(() => {
-    if (appLoadUserId === userId) {
+    if (appLoadUserId === userId && epoch === authDataEpoch) {
       appLoadPromise = null;
       appLoadUserId = null;
     }
@@ -1254,6 +1392,12 @@ function openAuthenticatedSession(session) {
 }
 
 function resetState() {
+  authDataEpoch += 1;
+  appLoadPromise = null;
+  appLoadUserId = null;
+  emailEntry.bind(null);
+  adminSession.bind(null);
+  clearAdministrativeData();
   resetSignOutButtons();
   stopRealtime();
   realtime.lastConnectedUserId = null;
@@ -1389,32 +1533,43 @@ async function blockUnfinishedAdminInvitationSession() {
 
 async function loadApp() {
   assertSupabase();
+  if (!await emailEntry.ensure()) return;
+  const entryTicket=emailEntry.ticket();
   const startedAt = performance.now();
   const loadingUserId = state.session.user.id;
+  const settled = (promise) => Promise.resolve(promise).then(
+    (value) => ({ ok: true, value }),
+    (error) => ({ ok: false, error })
+  );
   // Opening an invitation signs its recipient into Supabase Auth. Only the
   // completed invitation may enter the app or provision any workspace.
-  if (await blockUnfinishedAdminInvitationSession()) return;
-  if (await query("account status load", supabase.rpc("my_account_suspended"))) {
+  // These independent checks must all finish before protected startup continues.
+  const [invitationCheck, accountCheck, preferenceCheck] = await Promise.all([
+    settled(blockUnfinishedAdminInvitationSession()),
+    settled(query("account status load", supabase.rpc("my_account_suspended"))),
+    settled(window.MushavoWorkspace?.hydrate(loadingUserId))
+  ]);
+  if (!entryTicket() || state.session?.user?.id !== loadingUserId) return;
+  for (const check of [invitationCheck, accountCheck, preferenceCheck]) if (!check.ok) throw check.error;
+  if (invitationCheck.value) return;
+  if (accountCheck.value) {
     setView("suspended");
     return;
   }
-  await window.MushavoWorkspace?.hydrate(loadingUserId);
-  if (state.session?.user?.id !== loadingUserId) return;
   startupWorkspacePreference = window.MushavoWorkspace?.startup(loadingUserId) || null;
-  const settled = (promise) => promise.then(
-    () => ({ ok: true }),
-    (error) => ({ ok: false, error })
-  );
   const profileResult = settled(ensureProfile());
   const invitationResult = settled(loadInvitations());
-  const notificationResult = settled(loadNotifications());
-
   if (await loadAccess({ skipAccountCheck: true }) === false) return;
+  if(!entryTicket())return;
+
+  if (state.isAdmin && !await ensureAdminAssurance()) return;
+  const notificationResult = settled(loadNotifications());
 
   if (state.isAdmin) {
     const loadedNotifications = await notificationResult;
     if (!loadedNotifications.ok) throw loadedNotifications.error;
     await loadAdminData();
+    if (!adminSession.authorized || state.session?.user?.id !== loadingUserId) return;
     syncRouteForWorkspace("admin");
     setView("admin");
     renderAdmin();
@@ -1437,15 +1592,21 @@ async function loadApp() {
     return;
   }
 
-  const familyResult = settled(loadFamily());
+  const familyReady = loadFamily();
+  const familyResult = settled(familyReady);
+  // Fetch the catalogue alongside families. The loader waits for the selected
+  // family before reconciling or provisioning any subscription workspace.
+  const subscriptionResult = settled(loadWorkspaceSubscriptionData({ familyReady, includePersonalPlanAccess: true }));
   const loadedFamily = await familyResult;
+  if(!entryTicket())return;
   if (!loadedFamily.ok) throw loadedFamily.error;
 
   // Finance data can load alongside workspace plans instead of adding another
   // network round trip before the dashboard is shown.
   const financialFamilyId = state.family?.id;
-  const financialResult = settled(loadFamilyFinancialData());
-  await loadWorkspaceSubscriptionData();
+  const financialResult = settled(loadFamilyFinancialData({ includePlanAccess: false }));
+  const loadedSubscription = await subscriptionResult;
+  if (!loadedSubscription.ok) throw loadedSubscription.error;
 
   if (routeFromHash().area === "business") {
     const requestedWorkspaceId = new URL(window.location.href).searchParams.get("workspace") || "";
@@ -1470,7 +1631,7 @@ async function loadApp() {
   const loadedFinances = await financialResult;
   if (!loadedFinances.ok) throw loadedFinances.error;
   if (financialFamilyId !== state.family?.id) await loadFamilyFinancialData();
-  await loadPersonalPlanAccess();
+  if(!entryTicket())return;
   syncRouteForWorkspace("family");
   if (state.familyTab === "cashbook") await loadCashbookData();
   if (state.familyTab === "support") await loadUserSupportData();
@@ -1549,8 +1710,8 @@ async function loadAccess({ skipAccountCheck = false } = {}) {
       supabase.from("family_heads").select("*").ilike("email", userEmail).limit(1)
     )
   ]);
-  state.isAdmin = adminRows.length > 0;
-  state.adminRole = adminRows[0]?.role || (state.isAdmin ? "super_admin" : null);
+  state.adminRole = adminRows.find(row => ["super_admin","admin_staff","finance_staff","support_staff"].includes(row.role))?.role || null;
+  state.isAdmin = state.adminRole !== null;
   state.headApproval = headRows[0] || null;
   return true;
 }
@@ -1760,8 +1921,8 @@ async function loadCashbookData(force = false) {
   state.cashbookLoadedWorkspaceId = workspaceId;
 }
 
-async function loadFamilyFinancialData() {
-  await Promise.all([loadMembers(), loadPaymentItems(), loadPaymentRecords()]);
+async function loadFamilyFinancialData({ includePlanAccess = true } = {}) {
+  await Promise.all([loadMembers(), loadPaymentItems({ includePlanAccess }), loadPaymentRecords()]);
 }
 
 async function loadMembers() {
@@ -1779,13 +1940,13 @@ async function loadMembers() {
   );
 }
 
-async function loadPaymentItems() {
+async function loadPaymentItems({ includePlanAccess = true } = {}) {
   let request = supabase.from("payment_items").select("*");
   request = state.family
     ? request.or(`visibility.eq.personal,family_id.eq.${state.family.id}`)
     : request.eq("visibility", "personal");
   state.paymentItems = await query("payment items load", request.order("created_at", { ascending: false }));
-  await loadPersonalPlanAccess();
+  if (includePlanAccess) await loadPersonalPlanAccess();
 }
 
 async function loadPersonalPlanAccess() {
@@ -1829,13 +1990,15 @@ async function loadInvitations() {
 }
 
 async function loadNotifications() {
+  if (state.isAdmin && !adminSession.authorized) return;
+  const stillAuthorized = state.isAdmin ? adminSession.ticket() : null;
   const userId = state.session?.user?.id;
   const [notifications, invitations] = await Promise.all([
     query("notifications load", supabase.from("notifications").select("*")
       .order("created_at", { ascending: false }).limit(30)),
     query("Business notification invitations load", supabase.rpc("get_my_business_invitations"))
   ]);
-  if (state.session?.user?.id !== userId) return;
+  if (state.session?.user?.id !== userId || (stillAuthorized && !stillAuthorized())) return;
   state.notifications = notifications;
   state.businessInvitations = invitations || [];
 }
@@ -1940,7 +2103,14 @@ function currentWorkspaceIsOwned() {
   return currentBudgetWorkspace()?.owner_id === state.session?.user?.id;
 }
 
-async function loadWorkspaceSubscriptionData() {
+async function loadWorkspaceSubscriptionData({ familyReady = null, includePersonalPlanAccess = false } = {}) {
+  const epoch = authDataEpoch, userId = state.session?.user?.id, token = state.session?.access_token;
+  const stillAuthorized = emailEntry.ticket();
+  const requireCurrent = () => {
+    if (epoch !== authDataEpoch || state.session?.user?.id !== userId || state.session?.access_token !== token || !stillAuthorized()) {
+      throw Object.assign(new Error("The active account changed."), { code: "session_changed" });
+    }
+  };
   let [workspaces, members, plans, prices, features, limits, supportedCurrencies, businessCheckoutTerms] = await Promise.all([
     query("workspace load", supabase.from("budget_workspaces").select("*").order("created_at", { ascending: true })),
     query("workspace membership load", supabase.from("workspace_members").select("*").order("created_at", { ascending: true })),
@@ -1951,20 +2121,41 @@ async function loadWorkspaceSubscriptionData() {
     query("supported currencies load", supabase.from("supported_currencies").select("*").eq("is_active", true).order("code")),
     query("Business checkout terms", supabase.rpc("public_business_checkout_terms"))
   ]);
+  if (familyReady) await familyReady;
+  requireCurrent();
   // Existing accounts already have a Personal workspace. Only provision a
   // missing one, avoiding an extra RPC round trip on every sign-in.
   if (!workspaces.some((workspace) => workspace.workspace_type === "personal" &&
     workspace.owner_id === state.session.user.id && workspace.status !== "closed")) {
     await query("personal workspace provision", supabase.rpc("provision_my_budget_workspace"));
+    requireCurrent();
     [workspaces, members] = await Promise.all([
       query("workspace load after provision", supabase.from("budget_workspaces").select("*").order("created_at", { ascending: true })),
       query("workspace membership load after provision", supabase.from("workspace_members").select("*").order("created_at", { ascending: true }))
     ]);
   }
+  requireCurrent();
+  let fixturePlan = null, fixturePrice = null;
+  if (config.supabaseUrl === "https://dczlddwbtgvfdujgcitb.supabase.co"
+      && userId === "ca7bdcf2-e69d-42e2-8ae8-79cac6de2184"
+      && !state.family && workspaces.some(w => w.id === "017513c6-ce57-48af-b902-9552faeb83dd" && w.owner_id === userId)) {
+    const witness = await supabase.rpc("fr3_subscription_proof_browser_witness", {
+      p_path: null, p_name: null, p_size: null,
+    });
+    requireCurrent();
+    const fixture = witness.data;
+    if (!witness.error && fixture?.code === "audit_fr3_subscription_proof"
+        && fixture.plan_id === "21a10bd8-46c8-4b2c-9f04-783164611fa1" && fixture.currency === "USD" && fixture.amount === 1) {
+      fixturePlan = { id: fixture.plan_id, code: fixture.code, workspace_type: "personal",
+        display_name: "Staging subscription proof check", is_active: true, available_for_purchase: true };
+      fixturePrice = { plan_id: fixture.plan_id, billing_period: "monthly", currency: fixture.currency,
+        amount: fixture.amount, extra_member_amount: 0, is_active: true, effective_from: "2026-11-01T00:00:00Z" };
+    }
+  }
   state.workspaces = workspaces;
   state.workspaceMembers = members;
-  state.plans = plans;
-  state.planPrices = prices;
+  state.plans = fixturePlan ? [...plans, fixturePlan] : plans;
+  state.planPrices = fixturePrice ? [...prices, fixturePrice] : prices;
   state.planFeatures = features;
   state.planLimits = limits;
   state.businessCheckoutTerms = businessCheckoutTerms || [];
@@ -2008,8 +2199,10 @@ async function loadWorkspaceSubscriptionData() {
       : Promise.resolve([]),
     ownedBusinessIds.length
       ? query("owned business plans load", supabase.from("workspace_subscriptions").select("workspace_id, status, paid_through_at, entitlement_start_at").in("workspace_id", ownedBusinessIds))
-      : Promise.resolve([])
+      : Promise.resolve([]),
+    includePersonalPlanAccess ? loadPersonalPlanAccess() : Promise.resolve()
   ]);
+  requireCurrent();
   state.workspaceSubscription = subscriptions[0] || null;
   state.workspaceEntitlement = entitlements[0] || null;
   state.personalWorkspaceSubscription = workspace.id === personalWorkspace?.id
@@ -2050,6 +2243,8 @@ async function loadWorkspaceSubscriptionData() {
 }
 
 async function loadAdminData(tab = state.adminTab) {
+  if (!await ensureAdminAssurance()) return;
+  const stillAuthorized = adminSession.ticket();
   if (tab === "analytics") return loadAdminAnalytics();
   const tasks = [];
   const assign = [];
@@ -2158,6 +2353,7 @@ async function loadAdminData(tab = state.adminTab) {
   }
 
   const results = await Promise.all(tasks);
+  if (!stillAuthorized()) return;
   assign.forEach((target, index) => {
     state[target] = results[index];
   });
@@ -3701,10 +3897,12 @@ async function clearApplicationBadge() {
 }
 
 async function removeCurrentDevicePush({ requireDatabaseCleanup = true } = {}) {
+  const userId = state.session?.user?.id;
   if (!("serviceWorker" in navigator) || !("PushManager" in window)) return;
   const registration = await navigator.serviceWorker.getRegistration("/");
   if (!registration) return;
   const subscription = await registration.pushManager.getSubscription();
+  if (state.session?.user?.id !== userId) throw Object.assign(new Error("The active account changed."), {code:"session_changed"});
   const record = state.pushDevice.record;
   if (requireDatabaseCleanup) await deleteOwnPushRecord(subscription, record);
   if (subscription) {
@@ -3791,20 +3989,71 @@ async function sendTestPushNotification() {
   }
 }
 
+async function retrySignOut(button) {
+  if (!supabase || state.signingOut) return;
+  if (state.session) return signOutSafely(button);
+  // A SIGNED_OUT event can arrive after the failed request. Reconcile the
+  // SDK before clearing a stale warning; never sign out a replacement session.
+  const epoch = authDataEpoch;
+  state.signingOut = true;
+  setSubmitting(button, true, "Checking session…");
+  try {
+    const { data, error } = await supabase.auth.getSession();
+    if (epoch !== authDataEpoch || state.session) return;
+    if (error) throw error;
+    if (!data || !("session" in data)) throw new Error("Session unavailable");
+    if (data?.session) {
+      showSignOutStatus("Your session changed. Reload the page to review it before signing out.");
+      setView("auth");
+      return;
+    }
+    handleSignedOut();
+  } catch (_error) {
+    if (epoch === authDataEpoch && !state.session) {
+      showSignOutStatus("Sign-out could not be confirmed. Check your connection and retry signing out.");
+      setView("auth");
+    }
+  } finally {
+    state.signingOut = false;
+    setSubmitting(button, false, "Retry sign-out");
+    resumeSharedSignIn();
+  }
+}
+
 async function signOutSafely(button = null) {
-  if (!supabase || !state.session) return;
+  if (!supabase || !state.session || state.signingOut) return;
+  const leavingSession = state.session;
+  const userId = leavingSession.user.id;
+  const leavingKey = applicationSessionKey(leavingSession);
+  const sameSession = () => state.session?.user?.id === userId &&
+    (leavingKey ? applicationSessionKey(state.session) === leavingKey : state.session?.access_token === leavingSession.access_token);
+  let cleanupFailed = false;
+  state.signingOut = true;
+  beginManualSignOut();
   setSubmitting(button, true, "Signing out…");
   try {
-    await removeCurrentDevicePush();
-    forgetPushOptIn(state.session.user.id);
+    try { await removeCurrentDevicePush(); }
+    catch (_cleanupError) { cleanupFailed = true; }
+    // A push cleanup outage must not prevent the requested Auth sign-out.
+    if (!sameSession()) { setView("auth"); return; }
     preserveSignInDestination = false;
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut({ scope: "local" });
     if (error) throw error;
+    showSignOutStatus();
+    if (!cleanupFailed) forgetPushOptIn(userId);
+    if (!state.session || sameSession()) handleSignedOut();
+    else setView("auth");
+    if (cleanupFailed) showToast("Signed out. Device notification cleanup could not finish; disable notifications in this browser if needed.");
   } catch (error) {
-    showToast(`Sign-out stopped: ${friendlyMessage(error?.message)}`);
+    const message = "Sign-out could not finish. Your session may still be active. Retry signing out.";
+    showSignOutStatus(message);
+    setView("auth");
+    showToast(message);
   } finally {
+    state.signingOut = false;
     // This DOM button survives sign-out and is reused after the next sign-in.
-    setSubmitting(button, false, "Sign out");
+    setSubmitting(button, false, button?.id === "retrySignOutButton" ? "Retry sign-out" : "Sign out");
+    resumeSharedSignIn();
   }
 }
 
@@ -4814,9 +5063,8 @@ function updateRenewalQuote() {
 }
 
 async function uploadSubscriptionProof(file, workspaceId) {
-  validateProofFile(file);
-  const extension = (file.name.split(".").pop() || "bin").toLowerCase().replace(/[^a-z0-9]/g, "");
-  const path = `workspaces/${workspaceId}/${state.session.user.id}/${crypto.randomUUID()}.${extension || "bin"}`;
+  const extension = validateProofFile(file);
+  const path = `workspaces/${workspaceId}/${state.session.user.id}/${crypto.randomUUID()}.${extension}`;
   const { error } = await supabase.storage.from(SUBSCRIPTION_PROOF_BUCKET).upload(path, file, {
     contentType: file.type,
     upsert: false
@@ -4855,6 +5103,40 @@ async function submitSubscriptionRenewal(event) {
       throw new Error("INVALID_FAMILY_MEMBER_COUNT");
     }
     setSubmitting(submitButton, true, "Submitting...");
+    if (plan.code === "audit_fr3_subscription_proof"
+        && config.supabaseUrl === "https://dczlddwbtgvfdujgcitb.supabase.co"
+        && workspace.id === "017513c6-ce57-48af-b902-9552faeb83dd"
+        && state.session?.user?.id === "ca7bdcf2-e69d-42e2-8ae8-79cac6de2184") {
+      if (!proof || validateProofFile(proof) !== "pdf" || proof.size > 2097152) {
+        throw new Error("This staging check requires a PDF proof up to 2 MB.");
+      }
+      const epoch = authDataEpoch;
+      const owner = state.session.user.id;
+      const stillCurrent = () => authDataEpoch === epoch && state.session?.user?.id === owner
+        && currentBudgetWorkspace()?.id === workspace.id;
+      const { data, error } = await supabase.functions.invoke("validate-subscription-proof", {
+        body: proof, headers: { "Content-Type": proof.type },
+      });
+      if (error) throw error;
+      if (!stillCurrent()) throw new Error("The workspace changed. Open the form again.");
+      const prefix = `workspaces/${workspace.id}/${owner}/fr3-subscription-proof/`;
+      if (typeof data?.path !== "string" || !data.path.startsWith(prefix)
+          || !/^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}\.pdf$/.test(data.path.slice(prefix.length))
+          || data.type !== "application/pdf" || !Number.isSafeInteger(data.size) || data.size < 1 || data.size > 2097152) {
+        throw new Error("The validated subscription proof could not be confirmed.");
+      }
+      const receipt = await query("staging subscription proof witness", supabase.rpc("fr3_subscription_proof_browser_witness", {
+        p_path: data.path, p_name: "synthetic-subscription-proof.pdf", p_size: data.size,
+      }));
+      if (!stillCurrent()) return;
+      if (receipt?.payment_linked !== true || receipt.rolled_back !== true) {
+        throw new Error("The staging subscription proof check could not be confirmed.");
+      }
+      $("#renewalForm").reset();
+      $("#renewalDialog").close();
+      showToast("Staging payment proof verified. The test renewal was rolled back.");
+      return;
+    }
     if (proof) proofPath = await uploadSubscriptionProof(proof, workspace.id);
     const request = startsNewBusiness
       ? supabase.rpc("submit_business_plan_request", {
@@ -5761,12 +6043,14 @@ function analyticsFilterValues() {
 }
 
 async function loadAdminAnalytics() {
+  if (!await ensureAdminAssurance()) return;
+  const stillAuthorized = adminSession.ticket();
   const requestId = ++analyticsRequestId;
   $("#analyticsMessage").textContent = "Loading analytics…";
   $("#analyticsResults").classList.add("hidden");
   try {
     const report = await query("admin analytics load", supabase.rpc("admin_analytics_page", analyticsFilterValues()));
-    if (requestId === analyticsRequestId && state.isAdmin) state.adminAnalytics = report;
+    if (requestId === analyticsRequestId && state.isAdmin && stillAuthorized()) state.adminAnalytics = report;
   } catch (error) {
     if (requestId === analyticsRequestId) {
       state.adminAnalytics = null;
@@ -5874,6 +6158,7 @@ function renderAdminAnalytics() {
 }
 
 function renderAdmin() {
+  if (!adminSession.authorized) return;
   renderAdminTabs();
   renderAdminEnquiryBadge();
   renderNotifications();
@@ -6076,6 +6361,62 @@ const adminPlansWorkbench = createAdminPlans($("#adminPlansWorkbench"), {
 });
 function renderAdminPlans() { adminPlansWorkbench.render(); }
 
+// Restore initial DOM nodes (including their listeners), removing generated data,
+// form values and dialogs when assurance/session changes. Hidden data is also cleared.
+const restorePrivateAdminDom=[...document.querySelectorAll('#adminView,dialog')].map(snapshotPrivateView);
+const restorePrivateAppDom=[...document.querySelectorAll('#appView,#adminView,#setupView,dialog')].map(snapshotPrivateView);
+const privateModelDefaults=JSON.parse(JSON.stringify(state));
+const emailEntry=createSessionEntry({client:supabase,getSession:()=>state.manualSignInRequired?null:state.session,root:views.emailVerification,
+  onReset:()=>{authDataEpoch++;appLoadPromise=null;appLoadUserId=null;appLoadToken=null;},
+  show:state=>{if(['loading','verifying'].includes(state?.phase))showLoading('Signing in','Please wait…');else setView('emailVerification');},onInvalidated:()=>clearApplicationPrivateData(),
+  onUnlocked:async({ticket})=>{if(ticket()&&state.session)await openAuthenticatedSession(state.session);},
+  onSignOut:()=>signOutSafely()
+});
+const adminSession=createSessionEntry({client:supabase,getSession:()=>state.manualSignInRequired?null:state.session,root:views.adminSession,requireAdmin:true,retainViewDuringCheck:true,
+  show:()=>setView(emailEntry.authorized?'adminSession':'emailVerification'),onInvalidated:()=>clearAdministrativeData(),
+  onUnlocked:async({ticket})=>{if(ticket())await resumeAdminAfterVerification();},onSignOut:()=>signOutSafely()
+});
+function clearApplicationPrivateData(){
+  stopRealtime();pushRefreshSequence++;analyticsRequestId++;adminDetailsSequence++;adminPlansWorkbench.reset();
+  adminBusinessSupport=null;
+  for(const [key,value]of Object.entries(privateModelDefaults)){
+    if(key==='session')continue;
+    if(Array.isArray(value))state[key]=[];else if(value===null)state[key]=null;
+  }
+  state.isAdmin=false;state.adminRole=null;state.pushDevice=createPushDeviceState();state.billableMemberCount=1;
+  for(const dialog of document.querySelectorAll('dialog[open]'))dialog.close();
+  for(const restore of restorePrivateAppDom)restore();
+  views.app.classList.add('hidden');views.admin.classList.add('hidden');views.setup.classList.add('hidden');
+}
+function clearAdministrativeData() {
+  if(!state.isAdmin && !adminSession.authorized)return;
+  stopRealtime();
+  for(const key of Object.keys(state))if(Array.isArray(state[key]))state[key]=[];
+  for(const key of ['adminAnalytics','adminFinanceSettings','adminRateStatus','exchangeRateStatus','memberUsage'])state[key]=null;
+  adminDetailsSequence++;analyticsRequestId++;adminBusinessSupport=null;adminPlansWorkbench.reset();
+  for(const dialog of document.querySelectorAll('dialog[open]'))dialog.close();
+  for(const restore of restorePrivateAdminDom)restore();
+  views.admin.classList.add('hidden');
+}
+async function ensureAdminAssurance() {
+  const userId=state.session?.user?.id;
+  adminSession.bind(state.session);
+  if(await adminSession.recheck())return true;
+  if(state.session?.user?.id!==userId)return false;
+  clearAdministrativeData();setView('adminSession');
+  return false;
+}
+async function resumeAdminAfterVerification() {
+  if(!state.session || !state.isAdmin)return;
+  const userId=state.session.user.id;
+  if(!await ensureAdminAssurance())return;
+  await loadAdminData();
+  if(!adminSession.authorized || state.session?.user?.id!==userId)return;
+  await loadNotifications();
+  if(!adminSession.authorized || state.session?.user?.id!==userId)return;
+  syncRouteForWorkspace('admin');setView('admin');renderAdmin();startRealtime();
+}
+
 function renderSubscriptionReviews() {
   const list = $("#subscriptionReviewList");
   const pending = state.adminSubscriptionPayments.filter((payment) =>
@@ -6197,6 +6538,34 @@ async function openAdminBusinessSupport(workspaceId, offset = 0) {
   }
 }
 
+function renderAdminBusinessSeatEditor(snapshot, effective) {
+  if (state.adminRole !== "super_admin" || effective !== "active") return "";
+  const seats = Number(snapshot.current_limit) || 1;
+  const usage = Number(snapshot.usage) || 1;
+  return `<section class="admin-detail-section"><h4>Edit Business seats</h4>
+    <p>Workspace: <strong>${escapeHtml(snapshot.workspace.name)}</strong></p>
+    <p class="muted-copy">Current allowance: ${seats} seats · Members and pending invitations: ${usage}. Total seats include the Owner.</p>
+    <form data-business-support-form="seats" class="form-grid">
+      <label class="full">Total seats<input name="total_seats" type="number" min="${Math.max(1,usage)}" max="100" step="1" value="${seats}" required /></label>
+      <button class="primary full" type="submit">Save seats</button>
+    </form></section>`;
+}
+
+function businessSeatEditMessage(error) {
+  const messages = {
+    SUPER_ADMIN_REQUIRED: "Super Admin access is required to edit seats.",
+    INVALID_BUSINESS_SEAT_ALLOWANCE: "Enter a whole number of seats from 1 to 100.",
+    ACTIVE_BUSINESS_WORKSPACE_REQUIRED: "This Business workspace must be active before you can edit its seats.",
+    ACTIVE_BUSINESS_SUBSCRIPTION_REQUIRED: "This workspace needs an active Business subscription.",
+    WORKSPACE_NAME_CONFIRMATION_REQUIRED: "The workspace details changed. Refresh details, then save again.",
+    SUBSCRIPTION_CHANGED_REFRESH_DETAILS: "The subscription changed. Refresh details, then save again.",
+    SCHEDULED_SEAT_CHANGE_REQUIRES_REVIEW: "Resolve the scheduled seat change before editing the current allowance.",
+    RESOLVE_PENDING_BUSINESS_PAYMENT_FIRST: "Review the pending Business payment before editing seats.",
+    BUSINESS_CAPACITY_BELOW_USAGE: "The seat allowance must cover all current members and pending invitations."
+  };
+  return messages[error?.message] || "Seats could not be saved. Refresh details and try again.";
+}
+
 function renderAdminBusinessSupport(snapshot, offset = 0) {
   const w=snapshot.workspace,s=snapshot.subscription || {},owner=snapshot.owner || {};
   const canStatus=snapshot.can_suspend && ['super_admin','admin_staff'].includes(state.adminRole) && ['active','suspended'].includes(w.status);
@@ -6206,12 +6575,13 @@ function renderAdminBusinessSupport(snapshot, offset = 0) {
   const field = (label,value)=>[label,escapeHtml(value ?? 'Not set')];
   const confirmation = '<label class="full">Type the workspace name<input name="confirmation_name" required autocomplete="off" /></label><label class="full">Reason / verified support reference<textarea name="reason" required minlength="8" maxlength="1000" rows="3"></textarea></label>';
   const statusForm=canStatus?`<section class="admin-detail-section"><h4>${w.status==='suspended'?'Restore workspace access':'Suspend workspace access'}</h4><p class="muted-copy">${w.status==='suspended'?'Restoration keeps account suspensions and subscription expiry in force.':'Suspension locks Business activity for every member. Records are retained.'}</p><form data-business-support-form="status" class="form-grid">${confirmation}<button class="${w.status==='suspended'?'primary':'danger'} full" type="submit">${w.status==='suspended'?'Restore workspace':'Suspend workspace'}</button></form></section>`:'';
+  const seatForm=renderAdminBusinessSeatEditor(snapshot,effective);
   const transferForm=canTransfer?`<section class="admin-detail-section"><h4>Recover or transfer ownership</h4><p class="muted-copy">Verify the request before proceeding. Choose an existing active member. The previous Owner becomes a Viewer and loses member permission overrides. This changes neither the subscription nor the number of seats. Suspensions remain in force.</p>${snapshot.pending_payment?'<p role="status">Resolve the pending subscription payment in Finance before transferring ownership.</p>':eligible.length?`<form data-business-support-form="ownership" class="form-grid"><label class="full">New Owner<select name="member_id" required><option value="">Choose an existing member</option>${eligible.map(m=>`<option value="${escapeHtml(m.id)}">${escapeHtml(m.name || m.email)} — ${escapeHtml(m.email)}</option>`).join('')}</select></label><label class="full">Type the new Owner’s email<input name="confirmation_email" type="email" required autocomplete="off" /></label>${confirmation}<button class="primary full" type="submit">Confirm ownership change</button></form>`:'<p>No eligible member. Ask a registered active member to join through the existing invitation process first.</p>'}</section>`:'';
   const history=(snapshot.actions || []).map(a=>`<article class="admin-detail-card"><div><strong>${escapeHtml(titleCase(a.action))}</strong><span>${escapeHtml(a.actor_email || a.actor_id)} · ${escapeHtml(formatAdminDate(a.created_at))}</span><p>${escapeHtml(a.reason)}</p><small>${escapeHtml(a.before_summary?.status || a.before_summary?.owner_id || '')} → ${escapeHtml(a.after_summary?.status || a.after_summary?.owner_id || '')}</small></div></article>`).join('') || '<p class="muted-copy">No platform support actions recorded.</p>';
   showAdminDetails({eyebrow:'Business support',title:w.name,subtitle:owner.email || 'Owner unavailable',body:
     `<section class="admin-detail-section"><h4>Access and subscription</h4>${adminDetailRows([
       field('Owner',owner.name || owner.email || w.owner_id),field('Owner email',owner.email),field('Owner account',owner.account_status),field('Workspace status',w.status),field('Effective access',effective),field('Suspension reason',w.suspension_reason),field('Plan',snapshot.plan_name),field('Billing period',s.billing_period),field('Activation',formatAdminDate(s.entitlement_start_at)),field('Paid through',formatAdminDate(s.paid_through_at)),field('Time remaining',adminExpiryCountdown(s.paid_through_at)),field('Current seats',snapshot.current_limit),field('Members and live reservations',snapshot.usage),field('Invitation capacity',snapshot.invitation_limit),field('Next term seats',s.business_next_member_limit),field('Next term starts',s.business_next_effective_at?formatAdminDate(s.business_next_effective_at):'Not scheduled')
-    ])}<p class="muted-copy">Plan configuration is under Plans. Subscription payments and paid seat approvals are under Finance. These support controls do not grant membership or edit Business finance records.</p><button type="button" data-business-support-refresh>Refresh details</button></section>${statusForm}${transferForm}<section class="admin-detail-section"><h4>Platform support history</h4><div class="admin-detail-stack">${history}</div><div class="row-actions"><button type="button" data-business-support-page="${Math.max(0,offset-20)}" ${offset===0?'disabled':''}>Previous</button><span>${Number(snapshot.action_count)?offset+1:0}–${Math.min(offset+20,Number(snapshot.action_count))} of ${Number(snapshot.action_count)} actions</span><button type="button" data-business-support-page="${offset+20}" ${offset+20>=snapshot.action_count?'disabled':''}>Next</button></div></section>`});
+    ])}<p class="muted-copy">Plan configuration is under Plans. Subscription payments and paid seat approvals are under Finance. Manual seat allowances are available to Super Admins below. These support controls do not grant membership or edit Business finance records.</p><button type="button" data-business-support-refresh>Refresh details</button></section>${seatForm}${statusForm}${transferForm}<section class="admin-detail-section"><h4>Platform support history</h4><div class="admin-detail-stack">${history}</div><div class="row-actions"><button type="button" data-business-support-page="${Math.max(0,offset-20)}" ${offset===0?'disabled':''}>Previous</button><span>${Number(snapshot.action_count)?offset+1:0}–${Math.min(offset+20,Number(snapshot.action_count))} of ${Number(snapshot.action_count)} actions</span><button type="button" data-business-support-page="${offset+20}" ${offset+20>=snapshot.action_count?'disabled':''}>Next</button></div></section>`});
   $("#adminDetailsBody").classList.add("admin-business-support");
   adminBusinessSupport={snapshot,offset,userId:state.session?.user?.id,sequence:adminDetailsSequence,requests:{status:crypto.randomUUID(),ownership:crypto.randomUUID()}};
   // Keep the directory behind the support dialog consistent with its fresh snapshot.
@@ -6230,15 +6600,26 @@ async function submitAdminBusinessSupport(form) {
   const args={p_workspace_id:w.id,p_expected_version:w.version,p_confirmation_name:data.get('confirmation_name'),p_reason:data.get('reason'),p_request_id:context.requests[kind]};
   if (kind==='ownership') Object.assign(args,{p_new_owner_member_id:data.get('member_id'),p_expected_owner_id:w.owner_id,p_confirmation_email:data.get('confirmation_email')});
   else if (kind==='status') args.p_status=w.status==='suspended'?'active':'suspended';
+  else if (kind==='seats') {
+    if(state.adminRole!=='super_admin') return;
+    const totalSeats=Number(data.get('total_seats'));
+    Object.assign(args,{
+      p_total_seats:totalSeats,
+      p_expected_version:context.snapshot.subscription.version,
+      p_confirmation_name:w.name,
+      p_reason:`Admin changed Business seat allowance from ${context.snapshot.current_limit} to ${totalSeats} total seats.`
+    });
+    delete args.p_request_id;
+  }
   else return;
   adminBusinessSupportBusy=true;form.querySelector('button[type="submit"]').disabled=true;
   try {
-    await query('Business support action',supabase.rpc(kind==='ownership'?'admin_business_transfer_owner':'admin_business_set_status',args));
+    await query('Business support action',supabase.rpc(kind==='seats'?'admin_set_business_seats':kind==='ownership'?'admin_business_transfer_owner':'admin_business_set_status',args));
     if (context.sequence!==adminDetailsSequence || context.userId!==state.session?.user?.id || !$('#adminDetailsDialog').open) return;
-    showToast('Business support action recorded.');
+    showToast(kind==='seats'?'Seat allowance saved.':'Business support action recorded.');
     await openAdminBusinessSupport(w.id,0);
   } catch(error) {
-    if (context.sequence===adminDetailsSequence && context.userId===state.session?.user?.id) showToast(error.message);
+    if (context.sequence===adminDetailsSequence && context.userId===state.session?.user?.id) showToast(kind==='seats'?businessSeatEditMessage(error):error.message);
   } finally {
     adminBusinessSupportBusy=false;
     if (form.isConnected) form.querySelector('button[type="submit"]').disabled=false;
@@ -6466,12 +6847,16 @@ async function reviewSubscriptionPayment(paymentId, decision) {
 
 async function openSubscriptionProof(proofId) {
   const proof = state.adminSubscriptionProofs.find((item) => item.id === proofId);
-  if (!proof) return;
+  const userId = state.session?.user?.id, epoch = authDataEpoch;
+  const workspaceId = currentBudgetWorkspace()?.id || null, path = proof?.storage_path;
+  if (!path || !userId || !state.isAdmin) return;
+  const isCurrent = () => authDataEpoch === epoch && state.session?.user?.id === userId && state.isAdmin
+    && (currentBudgetWorkspace()?.id || null) === workspaceId
+    && state.adminSubscriptionProofs.some(item => item.id === proofId && item.storage_path === path);
   try {
-    const signed = await query("subscription proof link", supabase.storage.from(SUBSCRIPTION_PROOF_BUCKET).createSignedUrl(proof.storage_path, 60));
-    window.open(signed.signedUrl, "_blank", "noopener,noreferrer");
+    await openPrivateFile(supabase, SUBSCRIPTION_PROOF_BUCKET, path, isCurrent, proof.original_name);
   } catch (error) {
-    showToast(error.message);
+    if (isCurrent()) showToast(error.message);
   }
 }
 
@@ -6813,6 +7198,7 @@ function refreshAdminManualGrantPlans() {
   const nameField = $("#adminManualBusinessNameField");
   const nameInput = $("#adminManualBusinessName");
   const creatingBusiness = workspaceValue === "__new_business__";
+  $("#adminManualEditSeats").classList.toggle("hidden", state.adminRole !== "super_admin" || workspace?.workspace_type !== "business");
   nameField.classList.toggle("hidden", !creatingBusiness);
   nameInput.required = creatingBusiness;
   $("#adminManualGrantNotice").textContent = creatingBusiness
@@ -6844,6 +7230,12 @@ function refreshAdminManualGrantWorkspaces() {
   if ([...select.options].some((option) => option.value === previous)) select.value = previous;
   refreshAdminManualGrantPlans();
 }
+
+document.addEventListener("click", event => {
+  if (!event.target.closest("#adminManualEditSeats")) return;
+  const workspace=state.adminWorkspaces.find(row=>row.id===$("#adminManualGrantWorkspace").value);
+  if(state.adminRole==="super_admin" && workspace?.workspace_type==="business") void openAdminBusinessSupport(workspace.id);
+});
 
 function renderAdminManualGrantForm() {
   const panel = $("#adminManualGrantPanel");
@@ -7639,6 +8031,7 @@ async function signIn(event) {
   let signedInSession = null;
   try {
     signInInProgress = true;
+    signInExpectedEmail = email.toLowerCase();
     if (submitButton) {
       submitButton.disabled = true;
       submitButton.textContent = "Signing in...";
@@ -7646,17 +8039,31 @@ async function signIn(event) {
     showLoading("Signing you in", "Verifying your account...");
     const authData = await query("sign in", supabase.auth.signInWithPassword({ email, password }));
     if (!authData.session) throw new Error("Sign-in completed without a session. Please try again.");
-    signedInSession = authData.session;
+    const current = await supabase.auth.getSession();
+    if (current.error) throw current.error;
+    if (current.data?.session?.user?.id !== authData.session.user.id ||
+        current.data.session.access_token !== authData.session.access_token) {
+      throw Object.assign(new Error("The active account changed."), {code:"session_changed"});
+    }
+    signedInSession = current.data.session;
+    clearManualSignInIntent();
+    showSignOutStatus();
     await openAuthenticatedSession(signedInSession);
-    showToast("Signed in.");
+    if(emailEntry.authorized)showToast("Signed in.");
   } catch (error) {
+    if (error?.code === "session_changed") {
+      if (state.manualSignInRequired) { setView("auth"); showToast(safeAuthMessage(error)); }
+      return;
+    }
     if (signedInSession) await handleLoadFailure(error);
     else {
       setView("auth");
-      showToast(error.message);
+      showToast(safeAuthMessage(error));
     }
   } finally {
     signInInProgress = false;
+    signInExpectedEmail = null;
+    resumeSharedSignIn();
     if (submitButton) {
       submitButton.disabled = false;
       submitButton.textContent = "Sign in";
@@ -8281,7 +8688,7 @@ async function savePaymentRecord(event) {
     renderFamilyApp();
     showToast(amount + 0.005 >= outstanding ? "Payment recorded as paid in full." : "Partial payment recorded.");
   } catch (error) {
-    if (uploadedProof?.path) {
+    if (uploadedProof?.path && !uploadedProof.validatedTrial) {
       await supabase.storage.from(PAYMENT_PROOF_BUCKET).remove([uploadedProof.path]).catch(() => {});
     }
     showToast(error.message);
@@ -8289,11 +8696,46 @@ async function savePaymentRecord(event) {
 }
 
 async function uploadPaymentProof(item, file) {
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "") || "receipt";
+  const extension = validateProofFile(file);
   const userId = state.session.user.id;
+  const staging = config.supabaseUrl === "https://dczlddwbtgvfdujgcitb.supabase.co";
+  const familyTrial = staging && item.id === "0986f8bc-7905-4ec8-b023-a00f10a18d88";
+  const personalTrial = staging && item.id === "97eaee71-6a2e-4653-8eb5-ca0653f101fa"
+    && userId === "ca7bdcf2-e69d-42e2-8ae8-79cac6de2184";
+  if (personalTrial || familyTrial) {
+    const familyId = familyTrial ? "08e8f0ca-9cc4-4ea5-8544-b14a9b1cf37c" : null;
+    const workspaceId = familyTrial ? item.workspace_id : "017513c6-ce57-48af-b902-9552faeb83dd";
+    const familyOwner = "ca7bdcf2-e69d-42e2-8ae8-79cac6de2184";
+    const epoch = authDataEpoch;
+    const stillCurrent = () => epoch === authDataEpoch && state.session?.user?.id === userId
+      && typeof workspaceId === "string" && currentBudgetWorkspace()?.id === workspaceId
+      && (state.family?.id || null) === familyId
+      && (!familyTrial || (item.visibility === "family" && item.family_id === familyId && state.family.owner_id === familyOwner));
+    if (!stillCurrent()) throw new Error(familyTrial ? "Open the Family workspace and try again." : "Open the Personal workspace and try again.");
+    if (file.size > 2097152) throw new Error("This test payment accepts proofs up to 2 MB.");
+    const { data, error } = await supabase.functions.invoke(familyTrial ? "validate-family-proof" : "validate-payment-proof", {
+      body: file, headers: { "Content-Type": file.type },
+    });
+    if (error) throw error;
+    if (!stillCurrent()) throw new Error("The workspace changed. Open the payment and try again.");
+    const prefix = familyTrial ? `families/${familyId}/${familyOwner}/${userId}/fr3-proof/${item.id}/`
+      : `personal/${userId}/fr3-proof/${item.id}/`;
+    const pdf = file.type === "application/pdf";
+    const expectedType = pdf ? "application/pdf" : "image/png";
+    const suffix = pdf ? ".pdf" : ".png";
+    const objectId = typeof data?.path === "string" && data.path.endsWith(suffix)
+      ? data.path.slice(prefix.length, -suffix.length) : "";
+    if (typeof data?.path !== "string" || !data.path.startsWith(prefix)
+        || !/^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(objectId)
+        || data.type !== expectedType || !Number.isSafeInteger(data.size) || data.size < 1 || data.size > 2097152) {
+      throw new Error("The validated proof upload could not be confirmed.");
+    }
+    const name = file.name.replace(/\.[^.]*$/, "").trim().slice(0, 145) || "payment-proof";
+    return { path: data.path, name: name + suffix, type: data.type, size: data.size, validatedTrial: true };
+  }
   const path = item.visibility === "family"
-    ? `families/${item.family_id}/${state.family.owner_id}/${userId}/${crypto.randomUUID()}-${safeName}`
-    : `personal/${userId}/${crypto.randomUUID()}-${safeName}`;
+    ? `families/${item.family_id}/${state.family.owner_id}/${userId}/${crypto.randomUUID()}.${extension}`
+    : `personal/${userId}/${crypto.randomUUID()}.${extension}`;
   const { error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).upload(path, file, {
     contentType: file.type,
     upsert: false
@@ -8304,17 +8746,17 @@ async function uploadPaymentProof(item, file) {
 
 async function openPaymentProof(recordId) {
   const record = state.paymentRecords.find((item) => item.id === recordId);
-  if (!record?.proof_path) return;
+  const userId = state.session?.user?.id;
+  const workspaceId = currentBudgetWorkspace()?.id;
+  if (!record?.proof_path || !userId || !workspaceId) return;
+  const epoch = authDataEpoch, familyId = state.family?.id || null, path = record.proof_path;
+  const isCurrent = () => authDataEpoch === epoch && state.session?.user?.id === userId
+    && currentBudgetWorkspace()?.id === workspaceId && (state.family?.id || null) === familyId
+    && state.paymentRecords.some((item) => item.id === recordId && item.proof_path === path);
   try {
-    const { data, error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).createSignedUrl(record.proof_path, 60);
-    if (error) throw error;
-    const link = document.createElement("a");
-    link.href = data.signedUrl;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.click();
+    await openPrivateFile(supabase, PAYMENT_PROOF_BUCKET, path, isCurrent, record.proof_name);
   } catch (error) {
-    showToast(error.message);
+    if (isCurrent()) showToast(error.message);
   }
 }
 
@@ -8879,12 +9321,17 @@ function formatFileSize(bytes) {
 }
 
 function validateProofFile(file) {
-  if (!PAYMENT_PROOF_TYPES.has(file.type)) {
+  // Client metadata preflight only; Storage/server content validation is still required.
+  if (!file || !PAYMENT_PROOF_TYPES.has(file.type)) {
     throw new Error("Proof must be a JPG, PNG, WebP, or PDF file.");
+  }
+  if (!Number.isSafeInteger(file.size) || file.size < 1) {
+    throw new Error("Proof files must not be empty.");
   }
   if (file.size > PAYMENT_PROOF_MAX_BYTES) {
     throw new Error("Proof files must be 10 MB or smaller.");
   }
+  return { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "application/pdf": "pdf" }[file.type];
 }
 
 function statusBadge(status) {
@@ -9467,6 +9914,7 @@ $("#adminEnablePushNotificationsButton").addEventListener("click", enablePushNot
 $("#adminSendTestPushButton").addEventListener("click", sendTestPushNotification);
 $("#adminDisablePushNotificationsButton").addEventListener("click", disablePushNotifications);
 $("#signOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
+$("#retrySignOutButton").addEventListener("click", (event) => retrySignOut(event.currentTarget));
 $("#adminSignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
 $("#suspendedSignOutButton").addEventListener("click", (event) => signOutSafely(event.currentTarget));
 $("#obligationCurrencySearch").addEventListener("input", (event) => {
@@ -9641,6 +10089,6 @@ window.setInterval(() => {
   }
 }, PUSH_REFRESH_INTERVAL_MS);
 
-init().catch(handleLoadFailure);
+if (!authLinkRedirect) init().catch(handleLoadFailure);
 
 $("#adminDetailsDialog").addEventListener("close",()=>{adminDetailsSequence++;adminBusinessSupport=null;});

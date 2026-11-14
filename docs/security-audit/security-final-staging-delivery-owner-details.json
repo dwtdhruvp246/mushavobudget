@@ -1,0 +1,97 @@
+{
+  "stage_step": "FR.1.3_DELIVERY_DETAILS",
+  "scope": "OWNER_REPORTED_READ_ONLY_ZIP_AND_SIX_FIXED_PUBLIC_STATIC_GET_METADATA",
+  "source_parent_commit": "2456b017829a11116beb01567bb6c7706529b43b",
+  "ZIP_hash_matches_recorded_upload": true,
+  "ZIP_sha256": "c79819c4abb1cc8184d87ccfeb70c7d0e6b2cd7630e1f89072ea63415ba7707c",
+  "selected_entries": [
+    {
+      "raw_entry_name": "assets\\ledger-mark.svg",
+      "normalized_path": "assets/ledger-mark.svg",
+      "contains_backslash": true,
+      "bytes": 648
+    },
+    {
+      "raw_entry_name": "assets\\pwa-icon.svg",
+      "normalized_path": "assets/pwa-icon.svg",
+      "contains_backslash": true,
+      "bytes": 650
+    },
+    {
+      "raw_entry_name": "manifest.webmanifest",
+      "normalized_path": "manifest.webmanifest",
+      "contains_backslash": false,
+      "bytes": 926
+    }
+  ],
+  "authenticated_requests": 0,
+  "redirects_followed": 0,
+  "samples": [
+    {
+      "path": "/assets/ledger-mark.svg",
+      "probe_query_used": false,
+      "status": 404,
+      "bytes": 335,
+      "sha256": "89c668334f890b949343bef988f0536af966865332df9a411a9a32ee04c4246b",
+      "observed_media_type": "text/html",
+      "cache_status": "OTHER_OR_UNSET",
+      "result": "METADATA_RECEIVED"
+    },
+    {
+      "path": "/assets/ledger-mark.svg",
+      "probe_query_used": true,
+      "status": 404,
+      "bytes": 335,
+      "sha256": "89c668334f890b949343bef988f0536af966865332df9a411a9a32ee04c4246b",
+      "observed_media_type": "text/html",
+      "cache_status": "OTHER_OR_UNSET",
+      "result": "METADATA_RECEIVED"
+    },
+    {
+      "path": "/assets/pwa-icon.svg",
+      "probe_query_used": false,
+      "status": 404,
+      "bytes": 335,
+      "sha256": "89c668334f890b949343bef988f0536af966865332df9a411a9a32ee04c4246b",
+      "observed_media_type": "text/html",
+      "cache_status": "OTHER_OR_UNSET",
+      "result": "METADATA_RECEIVED"
+    },
+    {
+      "path": "/assets/pwa-icon.svg",
+      "probe_query_used": true,
+      "status": 404,
+      "bytes": 335,
+      "sha256": "89c668334f890b949343bef988f0536af966865332df9a411a9a32ee04c4246b",
+      "observed_media_type": "text/html",
+      "cache_status": "OTHER_OR_UNSET",
+      "result": "METADATA_RECEIVED"
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "probe_query_used": false,
+      "status": 200,
+      "bytes": 926,
+      "sha256": "9d70bf76140917b6fd58c11ada54e711ca8408bca7af7f7ec3e9dd0906ade950",
+      "observed_media_type": "OTHER_OR_UNSET",
+      "cache_status": "OTHER_OR_UNSET",
+      "result": "METADATA_RECEIVED"
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "probe_query_used": true,
+      "status": 200,
+      "bytes": 926,
+      "sha256": "9d70bf76140917b6fd58c11ada54e711ca8408bca7af7f7ec3e9dd0906ade950",
+      "observed_media_type": "OTHER_OR_UNSET",
+      "cache_status": "OTHER_OR_UNSET",
+      "result": "METADATA_RECEIVED"
+    }
+  ],
+  "manifest_exact_MIME": "NOT_REPORTED_BY_WHITELIST_CLASSIFICATION",
+  "backslash_packaging_cause": "PLAUSIBLE_NOT_PROVEN",
+  "files_or_settings_changed": false,
+  "bodies_keys_or_exception_text_printed": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

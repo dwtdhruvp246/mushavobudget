@@ -1,0 +1,35 @@
+{
+  "stage_step": "FR.2.4.E5.9_MANAGEMENT_READ_ONLY_TARGET",
+  "source_parent_commit": "0a0244f05e8b81f744afbca526f5a7c80a92564d",
+  "status": "LOCAL21PASS_OWNER_READ_ONLY_TARGET_CHECK_PENDING",
+  "report": "docs/security-audit/SECURITY_FR_2_4_WINDOWS_PASS_AND_MANAGEMENT_TARGET.md",
+  "verifier": "scripts/verify-fr-2-email-management-target.mjs",
+  "private_runner": "scripts/run-fr-2-email-management-target.ps1",
+  "manifest": "docs/security-audit/security-fr-2-email-management-target-source-manifest.json",
+  "local_PASS": 21,
+  "source_hashes": 68,
+  "syntax_checks": 6,
+  "maximum_requests": 2,
+  "fixed_project": "dczlddwbtgvfdujgcitb",
+  "request_contract": [
+    "GET https://api.supabase.com/v1/projects/dczlddwbtgvfdujgcitb",
+    "POST https://api.supabase.com/v1/projects/dczlddwbtgvfdujgcitb/database/query/read-only"
+  ],
+  "requested_scoped_PAT_permissions": [
+    "Project Settings: Read",
+    "Database: Read"
+  ],
+  "general_SQL_endpoint_or_fallback_used": false,
+  "future_installation_target_or_privileges_verified": false,
+  "full_catalog_fingerprints_or_hook_definitions_verified": false,
+  "Windows_private_runner_verified": false,
+  "owner_live_receipt_received": false,
+  "actual_hosted_requests": 0,
+  "email_dispatched": false,
+  "uploaded_or_deployed": false,
+  "live_activation_approved": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

@@ -1,0 +1,217 @@
+{
+  "stage_step": "FR.2.4.E5.26_BATCH_M_BOUNDED_HTTP_ACCEPTANCE_AND_VERIFIED_QUARANTINE",
+  "batch": "M",
+  "result": "BATCH_M_BOUNDED_HTTP_ACCEPTANCE_REVIEW_REQUIRED",
+  "actual_hosted_requests": 35,
+  "maximum_direct_HTTP_requests": 56,
+  "gateway_internal_provider_requests_not_counted": true,
+  "fixed_target_before_and_after_verified": true,
+  "quarantined_catalog_before_verified": true,
+  "live_public_key_matches_private_snapshot": true,
+  "four_ordinary_sessions_verified": true,
+  "quarantined_password_only_HTTP_denied": true,
+  "email_request_attempts": 1,
+  "email_provider_acceptance_observed": true,
+  "email_dispatch_outcome_uncertain": false,
+  "email_code_verified": true,
+  "verification_outcome_uncertain": false,
+  "secure_fixed_deadline_remember_cookie_observed": true,
+  "foreign_account_renamed_cookie_restore_denied": true,
+  "missing_cookie_restore_requires_code": true,
+  "same_account_new_session_restore_approved": true,
+  "repeated_restore_emits_no_cookie": true,
+  "independent_device_and_proof_binding_aggregates_verified": true,
+  "bounded_window_seconds": 300,
+  "allowed_window_accounts": 1,
+  "bounded_open_write_attempts": 1,
+  "open_write_outcome_uncertain": false,
+  "independent_active_window_verified": false,
+  "verified_email_and_restored_session_HTTP_access_passed": false,
+  "same_account_password_only_HTTP_denied": false,
+  "other_account_password_only_HTTP_denied": false,
+  "verified_sessions_foreign_profile_HTTP_denied": false,
+  "pre_quarantine_state_inspected": true,
+  "quarantine_write_attempts": 1,
+  "quarantine_write_outcome_uncertain": false,
+  "quarantine_response_problem_code": null,
+  "explicit_quarantine_and_stale_open_fence_verified": true,
+  "post_window_quarantined_HTTP_denied": false,
+  "committed_mode_change_requests": 2,
+  "exact_generated_device_cleanup_write_attempts": 1,
+  "device_cleanup_write_outcome_uncertain": false,
+  "selected_generated_device_absent": true,
+  "Auth_password_signin_attempts": 4,
+  "Auth_local_logout_attempts": 4,
+  "Auth_session_cleanup_outcome_uncertain": false,
+  "selected_sessions_proofs_and_challenges_absent": true,
+  "quarantined_catalog_after_verified": true,
+  "application_rows_explicitly_written": false,
+  "private_rate_and_send_audit_retained": true,
+  "other_devices_or_Auth_sessions_explicitly_deleted": false,
+  "browser_cookie_cache_or_device_restore_verified": false,
+  "full_cross_account_and_role_acceptance_verified": false,
+  "real_PostgreSQL_concurrency_verified": false,
+  "full_scheduler_or_external_caller_graph_verified": false,
+  "credentials_codes_cookies_or_raw_provider_bodies_in_safe_result": false,
+  "credentials_or_cookies_saved_to_disk_arguments_or_environment": false,
+  "Auth_settings_secrets_schedules_or_deployments_changed": false,
+  "live_activation_approved": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "samples": [
+    {
+      "endpoint": "TARGET_BEFORE",
+      "http_status": 200
+    },
+    {
+      "endpoint": "QUARANTINED_CATALOG_BEFORE",
+      "http_status": 201
+    },
+    {
+      "endpoint": "LIVE_PUBLIC_CONFIGURATION",
+      "http_status": 200
+    },
+    {
+      "endpoint": "AUTH_SIGNIN_1",
+      "http_status": 200
+    },
+    {
+      "endpoint": "AUTH_IDENTITY_1",
+      "http_status": 200
+    },
+    {
+      "endpoint": "AUTH_SIGNIN_2",
+      "http_status": 200
+    },
+    {
+      "endpoint": "AUTH_IDENTITY_2",
+      "http_status": 200
+    },
+    {
+      "endpoint": "AUTH_SIGNIN_3",
+      "http_status": 200
+    },
+    {
+      "endpoint": "AUTH_IDENTITY_3",
+      "http_status": 200
+    },
+    {
+      "endpoint": "AUTH_SIGNIN_4",
+      "http_status": 200
+    },
+    {
+      "endpoint": "AUTH_IDENTITY_4",
+      "http_status": 200
+    },
+    {
+      "endpoint": "FOUR_SELECTED_ACTOR_FACTS",
+      "http_status": 201
+    },
+    {
+      "endpoint": "PASSWORD_ONLY_GATEWAY",
+      "http_status": 200
+    },
+    {
+      "endpoint": "PASSWORD_ONLY_RPC",
+      "http_status": 200
+    },
+    {
+      "endpoint": "PASSWORD_ONLY_PROFILE",
+      "http_status": 200
+    },
+    {
+      "endpoint": "ONE_REMEMBER_EMAIL",
+      "http_status": 200
+    },
+    {
+      "endpoint": "VERIFY_REMEMBER_CODE",
+      "http_status": 200
+    },
+    {
+      "endpoint": "OTHER_ACCOUNT_RENAMED_COOKIE",
+      "http_status": 200
+    },
+    {
+      "endpoint": "SAME_ACCOUNT_MISSING_COOKIE",
+      "http_status": 200
+    },
+    {
+      "endpoint": "SAME_ACCOUNT_RESTORE",
+      "http_status": 200
+    },
+    {
+      "endpoint": "REPEAT_RESTORE_NO_NEW_COOKIE",
+      "http_status": 200
+    },
+    {
+      "endpoint": "INDEPENDENT_DEVICE_BINDING",
+      "http_status": 201
+    },
+    {
+      "endpoint": "OPEN_FIRST_ACCOUNT_FIVE_MINUTE_WINDOW",
+      "http_status": 201
+    },
+    {
+      "endpoint": "INDEPENDENT_ACTIVE_WINDOW",
+      "http_status": 201
+    },
+    {
+      "endpoint": "INSPECT_WINDOW_BEFORE_QUARANTINE",
+      "http_status": 201
+    },
+    {
+      "endpoint": "QUARANTINE_AND_EXACT_WINDOW_CLEANUP",
+      "http_status": 201
+    },
+    {
+      "endpoint": "INDEPENDENT_QUARANTINE_AND_FENCE",
+      "http_status": 201
+    },
+    {
+      "endpoint": "EXACT_GENERATED_DEVICE_CLEANUP",
+      "http_status": 201
+    },
+    {
+      "endpoint": "AUTH_LOCAL_LOGOUT_1",
+      "http_status": 204
+    },
+    {
+      "endpoint": "AUTH_LOCAL_LOGOUT_2",
+      "http_status": 204
+    },
+    {
+      "endpoint": "AUTH_LOCAL_LOGOUT_3",
+      "http_status": 204
+    },
+    {
+      "endpoint": "AUTH_LOCAL_LOGOUT_4",
+      "http_status": 204
+    },
+    {
+      "endpoint": "INDEPENDENT_SELECTED_CLEANUP",
+      "http_status": 201
+    },
+    {
+      "endpoint": "QUARANTINED_CATALOG_AFTER",
+      "http_status": 201
+    },
+    {
+      "endpoint": "TARGET_AFTER",
+      "http_status": 200
+    }
+  ],
+  "cleanup_problem_code": null,
+  "final_state_problem_code": null,
+  "failure_checkpoint": "INDEPENDENT_ACTIVE_WINDOW",
+  "checkpoint": "INDEPENDENT_ACTIVE_WINDOW",
+  "problem_code": "WINDOW_REQUIRED",
+  "exit_code": 1,
+  "checked_UTC": "2026-10-23T10:17:26.340Z",
+  "source_hashes_verified": 162,
+  "retained_gateway_DPAPI_packet_read_only": true,
+  "retained_gateway_packet_unchanged": true,
+  "configured_test_inbox_list_shown_locally": true,
+  "privileged_gateway_secret_values_passed_to_child": false
+}

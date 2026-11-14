@@ -1,0 +1,60 @@
+{
+  "stage_step": "FR.2.5.W6_ORDINARY_SIGNUP_OWNER_RESULT_AND_CONCISE_CONFIRMATION_COPY",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "OWNER_ORDINARY_SIGNUP_CONFIRMATION_PENDING_AND_UNCONFIRMED_SIGNIN_SCOPED_PASS_COPY_SHORTENING_REQUESTED",
+  "received_date": "2026-10-27",
+  "source": "OWNER_TEXT_AND_TWO_SCREENSHOTS",
+  "source_parent_commit": "35a1e70649a4e9407fbe519596959a5f562524a9",
+  "evidence_scope": "OWNER_EXECUTED_BROWSER_RESULTS; NO INDEPENDENT AUTH_HTTP_OR_DATABASE_READBACK",
+  "dedicated_owner_controlled_test_identity_supplied": true,
+  "test_identity_address_omitted": true,
+  "seven_character_password_rejected": true,
+  "seven_character_boundary_scope": "BROWSER_FORM_ONLY; DIRECT_AUTH_SERVER_REJECTION_NOT_TESTED",
+  "eight_character_signup_reported_success": true,
+  "confirmation_email_received": true,
+  "confirmation_pending_guidance_displayed": true,
+  "unconfirmed_signin_denied": true,
+  "confirmation_link_left_unopened": true,
+  "exit_code": null,
+  "screenshot_messages": {
+    "signup_pending": "If an account can be created, check your inbox for confirmation before signing in. Existing account holders can sign in or use Forgot password. Use Resend confirmation if you need another link.",
+    "unconfirmed_signin": "Confirm your email before signing in. Open the newest email or request another confirmation link."
+  },
+  "owner_scoped_case_results": [
+    {
+      "id": "AU01.01",
+      "status": "OWNER_REPORTED_SCOPED_PASS",
+      "scope": "Valid ordinary signup accepted and confirmation email reported received"
+    },
+    {
+      "id": "AU01.02",
+      "status": "OWNER_REPORTED_SCOPED_PASS_COPY_USABILITY_CORRECTION_REQUESTED",
+      "scope": "Pending confirmation guidance displayed"
+    },
+    {
+      "id": "AU01.03",
+      "status": "OWNER_REPORTED_SCOPED_PASS_COPY_USABILITY_CORRECTION_REQUESTED",
+      "scope": "Unconfirmed account sign-in denied"
+    },
+    {
+      "id": "AU03.03",
+      "status": "PARTIAL_OWNER_REPORTED_BOUNDARY_EVIDENCE",
+      "scope": "Seven rejected in browser; exactly eight accepted at signup; direct server rejection below minimum untested"
+    }
+  ],
+  "case_AU01_04_actual_confirmation_destination": "PENDING_UNOPENED_LINK",
+  "server_character_class_enforcement_verified": false,
+  "application_email_code_proof_or_access_verified": false,
+  "owner_browser_HTTP_request_count": null,
+  "owner_actual_mail_dispatch_count": null,
+  "assistant_new_hosted_requests": 0,
+  "assistant_mail_or_account_or_settings_operations": 0,
+  "confirmation_recovery_resend_rate_and_session_acceptance_remain_pending": true,
+  "test_account_state": "UNCONFIRMED; RETAIN_FOR_FOLLOWING_CONFIRMATION_AND_RECOVERY_CHECKS",
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

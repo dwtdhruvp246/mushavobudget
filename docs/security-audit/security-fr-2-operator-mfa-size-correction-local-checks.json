@@ -1,0 +1,31 @@
+{
+  "stage_step": "FR.2.4_OPERATOR_MFA_PREPARATION",
+  "result": "OFFLINE_ACTUAL_OPERATOR_MFA_FLOW_WITH_SYNTHETIC_AUTH_SCOPED_PASS",
+  "scope": "ACTUAL_NODE_CLIENT_CONTROL_FLOW_WITH_SYNTHETIC_AUTH_HTTP_STREAMS_AND_CLI_REJECTION_CASES",
+  "node_version": "v24.19.0",
+  "tests": 31,
+  "pass": 31,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "exit_code": 0,
+  "syntax_checks": 4,
+  "file_sha256": {
+    "scripts/lib/fr-2-operator-mfa.mjs": "a6f4024d60db6cd5f52c7875794d6dbb954a4c4ea9320329b14dd626abaeb6da",
+    "scripts/setup-fr-2-operator-mfa.mjs": "2fdc120f493e6e1078a36e4f21aadec959959646c7bf313ff085e5ce35a76422",
+    "scripts/verify-fr-2-operator-mfa.mjs": "35774110942c35defb56572a45acd20c4a374b401f73c25b424fa12ac37580fb",
+    "tests/fr-2-operator-mfa.test.mjs": "02666fb523910d32d95d26a39ae667fde8325c683872c734dedcafc6e13e3e37",
+    "tests/fixtures/fr-2-operator-mfa-pre-size-fix.txt": "d8bd5ab559e3ed9fbde9a462bd397c147a2f77a15f01554774e6a9f75965a70a"
+  },
+  "real_hosted_requests": 0,
+  "actual_Auth_signin_or_factor_enrollment_or_AAL2_verified": false,
+  "Windows_PowerShell_or_terminal_secret_display_execution_verified": false,
+  "hosted_Auth_accounts_roles_SQL_or_settings_changed": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "source_parent_commit": "cbaef696f707f5d5d32d3a94bdb43379ce71bf50",
+  "frozen_previous_core_sha256": "d8bd5ab559e3ed9fbde9a462bd397c147a2f77a15f01554774e6a9f75965a70a",
+  "frozen_previous_core_exact_error_and_five_request_reproduced_with_synthetic_400KiB_enrollment_response": true,
+  "actual_hosted_response_bytes_or_QR_content_not_captured": true,
+  "initial_new_test_harness_tee_cancel_deadlock_stopped_and_replaced_with_direct_frozen_core_reproduction": true
+}

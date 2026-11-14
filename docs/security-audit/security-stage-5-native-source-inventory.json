@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "stage_step": "5.1",
+  "evidence_id": "S5E01",
+  "date": "2026-10-11",
+  "source_commit": "83f5dd2ac04be107e82baf992f796f47e24d7049",
+  "scope": "TRACKED_SOURCE_AND_BUILD_INPUT_INVENTORY_WITH_OWNER_METADATA_HANDOFF",
+  "status": "SOURCE_REVIEW_COMPLETE_OWNER_LOCAL_METADATA_PENDING",
+  "recursive_tree_complete": true,
+  "selected_source_blob_matches": 16,
+  "source_blob_mismatches": 0,
+  "files": [
+    {
+      "path": "package.json",
+      "sha256": "fe28c33c1a1c93b8f5efaf7b098b6884afca7b61f7910e767f8ce069ff1d8c6a",
+      "git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+      "bytes": 883
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "cb476c5d8cebfa65f44edf0f54c8d1124d446f0cecef2c305e92f38dae13cd0f",
+      "git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+      "bytes": 70459
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "bff24b929186884e2c94ecb69c6c8686c2e7d2f2f37fc42b99e1933b83db09e5",
+      "git_blob_sha": "8be1cc17f0dbbdb40d0bfe3d71a654b160e4b158",
+      "bytes": 129
+    },
+    {
+      "path": "scripts/build-capacitor.mjs",
+      "sha256": "20d6a31e4955433c119db9c1777941ae70272f48681f3237b3b190df63a9fe38",
+      "git_blob_sha": "d911f7f777a9b80bb27d8b99cf88a3e16dd8599e",
+      "bytes": 4490
+    },
+    {
+      "path": "docs/LAST_WORKSPACE.md",
+      "sha256": "e87ac98ad65da1519ac745f0cebcbaed4a2ec159b054d4e134aac784db2fa377",
+      "git_blob_sha": "e927e7ab818bb6525e843dbcfec390bfc79de1f8",
+      "bytes": 5728
+    },
+    {
+      "path": "workspace-preference.js",
+      "sha256": "913fa62e34cf16d6f6eb1791e3bb9dad0b37001d64ed408dac2773ebbb37ce56",
+      "git_blob_sha": "17abce600781bc378e17bba19771316291c26f71",
+      "bytes": 4677
+    },
+    {
+      "path": "app-entry.js",
+      "sha256": "a2a15b461036cdf6b201ca6c9f022fb64c30b0b4f40f0f77e3d5169b91c081a7",
+      "git_blob_sha": "4496b291102c26aa4dbcf9fbb88882cd972f5775",
+      "bytes": 6807
+    },
+    {
+      "path": "app-entry.html",
+      "sha256": "303ce44a28399dd5a2028d15f2c80e411daea56cb8eaf2a26feb1ee6fd7d8ae0",
+      "git_blob_sha": "eab3265c5a9fb31696266a182b28b2e560125c7a",
+      "bytes": 1990
+    },
+    {
+      "path": "auth.html",
+      "sha256": "8d6ff984bfec6ef80356ceceef63e5a70428d1ea6c0bb937c282dc1b47329386",
+      "git_blob_sha": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+      "bytes": 2864
+    },
+    {
+      "path": "auth-flows.js",
+      "sha256": "ef16214f827d6650a507e30bdae7703c975f061437ed0672cf0abf9072e37500",
+      "git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "bytes": 8343
+    },
+    {
+      "path": "auth-security.js",
+      "sha256": "ae6eb487fa9ae5f21b1e3a95f698fe5869a377349bc5ff66bf9e8d32cef6cf54",
+      "git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "bytes": 9909
+    },
+    {
+      "path": "tests/capacitor-build.test.mjs",
+      "sha256": "df83e369a7fc4c7bbb432a8fa8e8e2c4d68947c1df8face68dd206f275804dff",
+      "git_blob_sha": "1dc349a4270442ab940d3ee111cb53f66a4b82c7",
+      "bytes": 6536
+    },
+    {
+      "path": "tests/workspace-preference.test.mjs",
+      "sha256": "7b67262f3a25caa17f4550be47bbace8f6615ce04031994f8503e154b37ee426",
+      "git_blob_sha": "1da274830ccf27056a7969f5ba96d90b62747d05",
+      "bytes": 6269
+    },
+    {
+      "path": "app.js",
+      "git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+      "verification": "LOCAL_BYTES_MATCH_CURRENT_REMOTE_GIT_BLOB",
+      "sha256": "eb4222245c6d75bf3708335d6c5f24c942c62715d3ce0afdf7d79cb3777cb6f6"
+    },
+    {
+      "path": "business.js",
+      "git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+      "verification": "LOCAL_BYTES_MATCH_CURRENT_REMOTE_GIT_BLOB",
+      "sha256": "6754f92c72399bf45ea849ef692318a6d88a227a413b552a6ca50ee9e1b98f6f"
+    },
+    {
+      "path": "admin-mfa.js",
+      "sha256": "909fd25b8e364e420be9067f6a0435567d705e914c53e9358b536d0187d81f6e",
+      "git_blob_sha": "b34b867301a97473a455f80cb01ab193b224a6ad",
+      "bytes": 7574
+    }
+  ],
+  "tracked_android_project": false,
+  "tracked_ios_project": false,
+  "tracked_capacitor_config": false,
+  "source_absence_is_not_owner_local_absence": true,
+  "package_capacitor_versions": {
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.5.2",
+    "@capacitor/preferences": "8.0.1",
+    "@capacitor/android": "8.5.2"
+  },
+  "dev_capacitor_cli_version": "8.5.2",
+  "ios_platform_dependency_declared": false,
+  "packaging_gap": {
+    "status": "SOURCE_REVIEW_GAP_NOT_EXECUTED_BUILD_FAILURE",
+    "omitted": [
+      "admin-mfa.js",
+      "auth.html",
+      "auth-flows.js",
+      "auth-security.js"
+    ],
+    "evidence": [
+      "app.js imports ./admin-mfa.js?v=1",
+      "app.html and business.html link to auth.html",
+      "auth.html loads auth-flows.js; auth-flows.js imports auth-security.js",
+      "builder fixed HTML/asset lists omit all four"
+    ],
+    "stage_5_work_item": "5.4",
+    "existing_finding_dependencies": [
+      "F05",
+      "F14"
+    ]
+  },
+  "workspace_preferences_are_not_auth_token_secure_storage_proof": true,
+  "owner_local_metadata_received": false,
+  "owner_script_executed_by_assistant": false,
+  "new_behavior_tests_run": 0,
+  "native_builds_run": 0,
+  "native_sync_install_sign_or_upload_run": false,
+  "device_checks_run": 0,
+  "hosted_checks_run": 0,
+  "native_security_acceptance": false,
+  "findings_closed": [],
+  "APK_update_deferred": true
+}

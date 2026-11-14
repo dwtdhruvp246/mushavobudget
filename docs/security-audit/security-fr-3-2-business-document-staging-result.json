@@ -1,0 +1,114 @@
+{
+  "date": "2026-11-14",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "STAGING_BUSINESS_DOCUMENT_PDF_SCOPED_PASS",
+  "source_commit": "bc841e0f3554e81af3398c924ad4ece03863de8d",
+  "run_commit": "99873590a9a81ec582503cdea5145c5d8ff27b75",
+  "run_id": 43601006807,
+  "job_id": 132465532570,
+  "hosted_api_checks_passed": 16,
+  "local_metadata_cases": {
+    "reject": 8,
+    "accept": 4
+  },
+  "validator": {
+    "id": "9e2e8bab-ef7d-4d47-9125-98f0337d72d9",
+    "version": 1,
+    "bundle_sha256": "f10505c422209b8cefa050adcd58925d08896b44b3cf87c14a49357e3582c5ef",
+    "exact": true
+  },
+  "hosted_api": {
+    "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Business document",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 2
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "settings_or_finance_writes_requested": 0,
+    "production_changed": false,
+    "full_lettered_batch_W_complete": false,
+    "exit_code": 0,
+    "exercise": {
+      "checks": {
+        "EXACT_SUSPENDED_EMPTY_FIXTURE": true,
+        "EXACT_FIXTURE_RESUMED": true,
+        "ACTIVE_FIXTURE_READBACK": true,
+        "EMPTY_DOCUMENT_AND_OBJECT": true,
+        "MISSING_OBJECT_REFUSED": true,
+        "DIRECT_RESERVED_UPLOAD_REFUSED": true,
+        "OUTSIDE_ACCOUNT_VALIDATION_DENIED": true,
+        "TRUNCATED_PDF_DENIED": true,
+        "VALIDATED_PDF_STORED": true,
+        "UNREGISTERED_PDF_HIDDEN": true,
+        "WRONG_SIZE_REFUSED": true,
+        "OUTSIDE_ACCOUNT_REGISTER_DENIED": true,
+        "EXACT_DOCUMENT_REGISTERED": true,
+        "BROKER_RETURNS_EXACT_PDF": true,
+        "OUTSIDE_ACCOUNT_DOWNLOAD_DENIED": true,
+        "ARCHIVED_PDF_BROKER_DENIED": true
+      },
+      "requests": 25,
+      "cleanup": {
+        "fixture_suspended": true
+      },
+      "validator_http_status": 200
+    },
+    "commit": "99873590a9a81ec582503cdea5145c5d8ff27b75"
+  },
+  "independent_cleanup": {
+    "status": "suspended",
+    "business_support_version": 24,
+    "subscription_version": 1,
+    "paid_through_at": "2026-11-14 00:00:00+00",
+    "gate_ready": false,
+    "active_documents": 0,
+    "archived_fixture_documents": 1,
+    "objects": 0,
+    "sessions": 0,
+    "outbox": 0,
+    "catalog_matches": true
+  },
+  "workspace_parent_verified": true,
+  "expense_and_bill_browser_verified": false,
+  "csv_xlsx_content_verified": false,
+  "full_FR_3_2_complete": false,
+  "exit_code": 0
+}

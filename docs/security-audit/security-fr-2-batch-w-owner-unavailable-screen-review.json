@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-28",
+  "stage_step": "FR.2.5.W41_UNAVAILABLE_SCREEN_NETWORK_AND_BOUNDED_WINDOW_REVIEW",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "OWNER_VERIFICATION_UNAVAILABLE_SCREEN_REVIEW_CAUSE_NOT_ESTABLISHED",
+  "owner_report": "Still battling with Verify your sign-in repeatedly appearing.",
+  "screenshot_name": "image(20261028-041931).png",
+  "screenshot_SHA256": "8319df19084937a425431ff75510fb1c98b86ef86ee5c8eb1cde8965456c81e8",
+  "visible_title": "Verify your sign-in",
+  "visible_message": "Verification is unavailable. Try again.",
+  "browser_trust_checked": true,
+  "visible_buttons": [
+    "Send email code",
+    "Check again",
+    "Sign out"
+  ],
+  "code_input_visible": false,
+  "origin_address_bar_and_Network_mode_visible": false,
+  "code_rejection_or_new_code_requirement_established": false,
+  "browser_trust_loss_established": false,
+  "last_handoff_was_controlled_Offline_reconnect_case": "AU05.03",
+  "current_tab_online_state_confirmed": false,
+  "current_window_mode_expiry_or_proof_independently_measured": false,
+  "last_reported_window_expiry": "2026-10-27T17:21:26.533063+00:00",
+  "new_safe_window_receipt_received": false,
+  "source_review": [
+    "Frontend uses the same unavailable state for proof/RPC/restore transport, response and authorization failures. The screenshot alone does not identify which request failed.",
+    "The bounded staging session_valid predicate also requires ACTIVE rollout and an unexpired window containing the exact actor.",
+    "An approved remembered-device restore followed by false bounded SQL proof is converted to UNAVAILABLE; another email code cannot remove a closed staging fence.",
+    "Gateway accepts only the canonical staging origin; screenshot has no address bar, so preview-host use cannot be excluded."
+  ],
+  "possible_causes_not_live_diagnoses": [
+    "Tab remains Offline or another transport failure after the deliberate offline test.",
+    "Expired/not-ready bounded staging application window.",
+    "Other unobserved gateway, Auth or proof response failure.",
+    "A deployment-specific preview origin instead of canonical staging."
+  ],
+  "next_action": "Restore No throttling/Online first and retry once. If still unavailable, use the unchanged exact one-account window query, require its ready result, and click Check again once.",
+  "actual_new_Auth_SQL_gateway_email_or_public_HTTP_requests": 0,
+  "raw_email_account_ID_cookie_token_password_or_link_stored": false,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

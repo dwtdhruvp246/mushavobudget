@@ -1,0 +1,95 @@
+{
+  "received_date": "2026-10-22",
+  "requested_run_commit": "6192de9114b6bf5e4779d2e20d64ed5a52b66fd5",
+  "evidence_basis": "OWNER_PASTED_SAFE_WINDOWS_HOSTED_RESULT",
+  "separate_offline_verifier_receipt_supplied": false,
+  "owner_offline_test_count_not_inferred": true,
+  "independent_machine_or_provider_attestation": false,
+  "receipt": {
+    "stage_step": "FR.2.4.E5.21_BATCH_H_QUARANTINED_STAGING_DATABASE_INSTALLATION",
+    "batch": "H",
+    "result": "BATCH_H_STAGING_DATABASE_INSTALLED_QUARANTINED_AND_READ_BACK",
+    "actual_hosted_requests": 8,
+    "fresh_dormant_review_passed": true,
+    "precheck_problem_code": null,
+    "activation_POST_requests": 1,
+    "activation_HTTP_accepted": true,
+    "activation_write_outcome_uncertain": false,
+    "independent_readback_attempted": true,
+    "quarantined_committed_state_observed": true,
+    "installer_catalog_version_reference_exact": true,
+    "guarded_RPCs": 148,
+    "restrictive_policies": 82,
+    "public_guard_policies": 81,
+    "storage_guard_policies": 1,
+    "backend_forced_RLS_tables": 5,
+    "backend_schema_API_denied": true,
+    "post_target_metadata_matched": true,
+    "readback_problem_code": null,
+    "installation_problem_code": null,
+    "general_write_capable_SQL_endpoint_used": true,
+    "application_rows_explicitly_read_or_written": false,
+    "private_control_rows_aggregated": true,
+    "private_catalog_function_may_have_run": true,
+    "reviewed_DDL_hooks_may_have_run": true,
+    "application_guards_may_have_changed": true,
+    "resume_or_quarantine_recovery_invoked": false,
+    "automatic_write_retry_or_delete_performed": false,
+    "email_push_or_FX_dispatched": false,
+    "Auth_settings_secrets_schedules_or_deployments_changed": false,
+    "raw_provider_bodies_SQL_sources_or_credentials_printed": false,
+    "token_saved_to_disk_or_environment": false,
+    "ZIP_DPAPI_or_saved_credentials_accessed": false,
+    "metadata_observation_is_not_a_write_lock": true,
+    "target_GUC_is_acknowledgement_not_independent_attestation": true,
+    "actual_PostgreSQL_concurrency_verified": false,
+    "authenticated_gateway_or_delivery_verified": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "samples": [
+      {
+        "endpoint": "PRE_STAGING_TARGET_BEFORE",
+        "http_status": 200
+      },
+      {
+        "endpoint": "PRE_STAGING_CATALOG_BEFORE",
+        "http_status": 201
+      },
+      {
+        "endpoint": "PRE_STAGING_REGISTERED_CONTROL",
+        "http_status": 201
+      },
+      {
+        "endpoint": "PRE_STAGING_CATALOG_AFTER",
+        "http_status": 201
+      },
+      {
+        "endpoint": "PRE_STAGING_TARGET_AFTER",
+        "http_status": 200
+      },
+      {
+        "endpoint": "INSTALL_QUARANTINED",
+        "http_status": 201
+      },
+      {
+        "endpoint": "INDEPENDENT_QUARANTINED_READBACK",
+        "http_status": 201
+      },
+      {
+        "endpoint": "TARGET_AFTER",
+        "http_status": 200
+      }
+    ],
+    "checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0,
+    "checked_UTC": "2026-10-22T17:16:45.624Z",
+    "source_hashes_verified": 105
+  },
+  "owner_printed_combined_exit_code": 0,
+  "owner_printed_batch_complete": true,
+  "actual_hosted_requests_by_assistant": 0
+}

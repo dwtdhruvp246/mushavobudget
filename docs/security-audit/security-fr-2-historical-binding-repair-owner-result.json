@@ -1,0 +1,20 @@
+[
+  {
+    "historical_binding_repair": {
+      "result": "ONE_FINGERPRINTED_RECORD_WORKSPACE_REPAIRED_COMMITTED_NOT_FULL_ACCEPTANCE",
+      "stage_step": "FR.2.2_EXACT_HISTORICAL_BINDING_REPAIR",
+      "checked_UTC": "2026-10-14T07:44:47.489071+00:00",
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "findings_closed": [],
+      "hosted_acceptance": false,
+      "only_target_workspace_id_changed": true,
+      "unlinked_or_manual_conversions_deleted": false,
+      "records_repaired_under_exact_assertions": 1,
+      "project_selection_independently_verified": false,
+      "canonical_schema_or_migration_integration_performed": false,
+      "remaining_joined_workspace_mismatches_under_assertions": 0,
+      "claims_context_transaction_local_not_genuine_Auth_acceptance": true,
+      "all_items_other_records_and_all_conversions_compared_unchanged": true
+    }
+  }
+]

@@ -1,0 +1,223 @@
+{
+  "received_date": "2026-10-22",
+  "requested_run_commit": "30c78642499ed9bc2ed3604b1a15caf3b72ee479",
+  "evidence_basis": "OWNER_UPLOADED_SAFE_READ_ONLY_REVIEW_OUTPUT",
+  "uploaded_filename": "Pasted text(20261022-104634).txt",
+  "uploaded_bytes_SHA256": "e187b54ff7e18f6e8519ff3050f1ecdd3dede6b91f0e1b3f68c15ba167fdf157",
+  "independent_machine_or_provider_attestation": false,
+  "separate_offline_verifier_receipt_supplied": false,
+  "owner_offline_test_count_not_inferred": true,
+  "receipt": {
+    "stage_step": "FR.2.4.E5.19R_READ_ONLY_DORMANT_REGISTRATION_REVIEW",
+    "result": "READ_ONLY_VERSIONED_DORMANT_REGISTRATION_AND_STATE_SCOPED_PASS",
+    "actual_hosted_requests": 5,
+    "fixed_staging_target_before_and_after_verified": true,
+    "privileged_read_only_context_verified": true,
+    "selected_eight_baseline_checks_passed": true,
+    "server_version_num": 170011,
+    "server_major": 17,
+    "reference_basis": "EXACT_PINNED_REFERENCE_FOR_POSTGRES_17",
+    "reference_adjustments": [
+      "PRE18_FOUR_NOT_NULL_CATALOG_ROWS_ABSENT_COLUMN_NOT_NULL_FLAGS_STILL_EXACT"
+    ],
+    "original_reference_exact": false,
+    "version_reference_exact": true,
+    "catalog_comparison": [
+      {
+        "section": "columns",
+        "original_reference_exact": true,
+        "version_reference_exact": true,
+        "original_reference_rows": 5,
+        "version_reference_rows": 5,
+        "observed_rows": 5,
+        "shape_valid": true,
+        "unexpected_identity_count": 0,
+        "expected_SHA256": "26993dfcb33a8f6e580f5c10496ee40da354a21263dee4624100b3a29d8ef613",
+        "observed_SHA256": "26993dfcb33a8f6e580f5c10496ee40da354a21263dee4624100b3a29d8ef613",
+        "differences": []
+      },
+      {
+        "section": "indexes",
+        "original_reference_exact": true,
+        "version_reference_exact": true,
+        "original_reference_rows": 1,
+        "version_reference_rows": 1,
+        "observed_rows": 1,
+        "shape_valid": true,
+        "unexpected_identity_count": 0,
+        "expected_SHA256": "607ed31404e65949745ee40defb28040e37ca5abcd5a28f705334f74d2e7e6cb",
+        "observed_SHA256": "607ed31404e65949745ee40defb28040e37ca5abcd5a28f705334f74d2e7e6cb",
+        "differences": []
+      },
+      {
+        "section": "schemas",
+        "original_reference_exact": true,
+        "version_reference_exact": true,
+        "original_reference_rows": 1,
+        "version_reference_rows": 1,
+        "observed_rows": 1,
+        "shape_valid": true,
+        "unexpected_identity_count": 0,
+        "expected_SHA256": "876ad106191e0f2042775d8673a761a6b2295ed4a1811b2f615ea541dac6fa77",
+        "observed_SHA256": "876ad106191e0f2042775d8673a761a6b2295ed4a1811b2f615ea541dac6fa77",
+        "differences": []
+      },
+      {
+        "section": "policies",
+        "original_reference_exact": true,
+        "version_reference_exact": true,
+        "original_reference_rows": 0,
+        "version_reference_rows": 0,
+        "observed_rows": 0,
+        "shape_valid": true,
+        "unexpected_identity_count": 0,
+        "expected_SHA256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "observed_SHA256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "differences": []
+      },
+      {
+        "section": "triggers",
+        "original_reference_exact": true,
+        "version_reference_exact": true,
+        "original_reference_rows": 0,
+        "version_reference_rows": 0,
+        "observed_rows": 0,
+        "shape_valid": true,
+        "unexpected_identity_count": 0,
+        "expected_SHA256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "observed_SHA256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "differences": []
+      },
+      {
+        "section": "functions",
+        "original_reference_exact": true,
+        "version_reference_exact": true,
+        "original_reference_rows": 5,
+        "version_reference_rows": 5,
+        "observed_rows": 5,
+        "shape_valid": true,
+        "unexpected_identity_count": 0,
+        "expected_SHA256": "65f3a1bec78597184db8aa09d89d1bcdbc2a63467e443ccd638c8c2de53283d2",
+        "observed_SHA256": "65f3a1bec78597184db8aa09d89d1bcdbc2a63467e443ccd638c8c2de53283d2",
+        "differences": []
+      },
+      {
+        "section": "relations",
+        "original_reference_exact": true,
+        "version_reference_exact": true,
+        "original_reference_rows": 2,
+        "version_reference_rows": 2,
+        "observed_rows": 2,
+        "shape_valid": true,
+        "unexpected_identity_count": 0,
+        "expected_SHA256": "999a03debb79a4fd91287517a9ba70db2b835d1d020fbf5aaaa3e13241816f76",
+        "observed_SHA256": "999a03debb79a4fd91287517a9ba70db2b835d1d020fbf5aaaa3e13241816f76",
+        "differences": []
+      },
+      {
+        "section": "constraints",
+        "original_reference_exact": false,
+        "version_reference_exact": true,
+        "original_reference_rows": 10,
+        "version_reference_rows": 6,
+        "observed_rows": 6,
+        "shape_valid": true,
+        "unexpected_identity_count": 0,
+        "expected_SHA256": "a16d75be272966f40e03456604cf20ba2f2df162cc84c837f58f1e023375bfe8",
+        "observed_SHA256": "a16d75be272966f40e03456604cf20ba2f2df162cc84c837f58f1e023375bfe8",
+        "differences": []
+      },
+      {
+        "section": "table_api_access",
+        "original_reference_exact": true,
+        "version_reference_exact": true,
+        "original_reference_rows": 3,
+        "version_reference_rows": 3,
+        "observed_rows": 3,
+        "shape_valid": true,
+        "unexpected_identity_count": 0,
+        "expected_SHA256": "001662dce9d09fd0c16d1707e005b33023a6213d24c7f8960e245ceab64d6622",
+        "observed_SHA256": "001662dce9d09fd0c16d1707e005b33023a6213d24c7f8960e245ceab64d6622",
+        "differences": []
+      },
+      {
+        "section": "schema_api_access",
+        "original_reference_exact": true,
+        "version_reference_exact": true,
+        "original_reference_rows": 3,
+        "version_reference_rows": 3,
+        "observed_rows": 3,
+        "shape_valid": true,
+        "unexpected_identity_count": 0,
+        "expected_SHA256": "e4a2ff08aec9af859be88d21f7374ada5e5951b7dd515f1e4dfa9477bc92b5db",
+        "observed_SHA256": "e4a2ff08aec9af859be88d21f7374ada5e5951b7dd515f1e4dfa9477bc92b5db",
+        "differences": []
+      }
+    ],
+    "catalog_observations_agreed": true,
+    "checks": {
+      "observed_storage_tables_have_rls": true,
+      "public_table_count_and_rls_match": true,
+      "public_view_invoker_metadata_matches": true,
+      "reviewed_event_hook_metadata_matches": true,
+      "selected_166_policy_fingerprint_matches": true,
+      "selected_278_routine_fingerprint_matches": true,
+      "email_backend_installer_and_guards_absent": false,
+      "privileged_origin_matches_installer_context": true,
+      "required_auth_and_profile_column_types_present": true
+    },
+    "application_guards_absent_observed": true,
+    "private_control_rows_aggregated": true,
+    "registered_control_verified": true,
+    "current_dormant_registration_state_verified": true,
+    "historical_registration_receipt_remains_unchanged": true,
+    "registration_write_attempts": 0,
+    "activation_or_resume_or_quarantine_invoked": false,
+    "general_SQL_endpoint_used": true,
+    "all_SQL_transactions_explicitly_READ_ONLY": true,
+    "application_rows_read_or_written": false,
+    "application_or_Edge_functions_explicitly_invoked": 0,
+    "settings_roles_grants_data_secrets_or_deployments_changed": false,
+    "raw_provider_bodies_SQL_sources_or_unselected_identifiers_printed": false,
+    "token_saved_to_disk_or_environment": false,
+    "ZIP_DPAPI_or_saved_credentials_accessed": false,
+    "email_push_or_FX_dispatched": false,
+    "metadata_observation_is_not_a_write_lock": true,
+    "all_catalog_fields_or_real_PostgreSQL_concurrency_verified": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "samples": [
+      {
+        "endpoint": "STAGING_TARGET_BEFORE",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_CATALOG_BEFORE",
+        "http_status": 201
+      },
+      {
+        "endpoint": "STAGING_REGISTERED_CONTROL",
+        "http_status": 201
+      },
+      {
+        "endpoint": "STAGING_CATALOG_AFTER",
+        "http_status": 201
+      },
+      {
+        "endpoint": "STAGING_TARGET_AFTER",
+        "http_status": 200
+      }
+    ],
+    "checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0,
+    "checked_UTC": "2026-10-22T10:46:11.030Z",
+    "source_hashes_verified": 101
+  },
+  "owner_printed_combined_exit_code": 0,
+  "owner_printed_read_only_review_complete": true,
+  "actual_hosted_requests_by_assistant": 0
+}

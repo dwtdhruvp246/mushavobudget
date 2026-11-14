@@ -1,0 +1,47 @@
+{
+  "stage_step": "FR.2.4_ORDINARY_IDENTITY_CREATION_HANDOFF",
+  "source_parent_commit": "b37cb2b0be82b53fd489270435683b2c18a36436",
+  "target_project": "dczlddwbtgvfdujgcitb",
+  "owner_clarification": "docs/security-audit/security-fr-2-operator-setup-owner-clarification.json",
+  "step": "OWNER_DASHBOARD_CREATE_ONLY_MISSING_ORDINARY_AUTH_USERS_THEN_READ_ONLY_STATUS",
+  "planned_operator_slots": [
+    "PRIMARY",
+    "RECOVERY"
+  ],
+  "real_email_values_entered_privately_or_substituted_only_in_chat_handoff": true,
+  "default_PostgreSQL_role": "authenticated",
+  "Mushavo_platform_roles_assigned": false,
+  "MFA_installer_rollback_or_enrollment_run": false,
+  "shared_audit_owner_and_outsider_excluded": true,
+  "notification_sender_login_not_required_for_this_step": true,
+  "duplicate_or_existing_account_not_modified": true,
+  "existing_role_or_finance_or_Family_Business_scope_blocks_ordinary_isolation_readiness": true,
+  "only_new_owner_controlled_staging_test_users_may_be_dashboard_autoconfirmed": true,
+  "global_email_confirmation_setting_unchanged": true,
+  "email_confirmation_timestamp_not_delivery_or_mailbox_control_evidence": true,
+  "owner_dashboard_create_user_action_pending": true,
+  "owner_read_only_SQL": "supabase/diagnostics/security_fr_2_4_operator_identity_check.sql",
+  "SQL_template_sha256": "3c068765710faeb7d41937ba5616a38c207c609b7252b2c68ccb3aaaa43368c6",
+  "private_SQL_substitutions_only": [
+    "mushavo.operator_primary_email",
+    "mushavo.operator_recovery_email"
+  ],
+  "SQL_read_only": true,
+  "statement_timeout_seconds": 15,
+  "lock_timeout_seconds": 3,
+  "local_receipt": "docs/security-audit/security-fr-2-operator-identity-local-checks.json",
+  "local_PASS": 10,
+  "local_exit_code": 0,
+  "model_includes_documented_Supabase_auth_users_email_confirmed_at_column": true,
+  "actual_dashboard_Auth_creation_email_or_signin_not_verified": true,
+  "source_documentation": [
+    "https://supabase.com/docs/guides/auth/users",
+    "https://supabase.com/docs/reference/javascript/auth-admin-createuser",
+    "https://supabase.com/docs/guides/auth/auth-mfa/totp"
+  ],
+  "owner_identity_check_result_received": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "findings_closed": [],
+  "APK_update_deferred": true
+}

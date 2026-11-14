@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-27",
+  "stage_step": "FR.2.5.W39_SMOOTH_SIGNIN_OWNER_PACKAGE_PASS_DEPLOYMENT_AND_BROWSER_UX_CHECK",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "AUTOMATED_PUBLIC_READBACK_BLOCKED_NO_SOURCE_PARITY_CREDIT",
+  "deployment_URL": "https://082009fe.mushavo-budget-staging.pages.dev/",
+  "reader_URLs_attempted": [
+    "https://082009fe.mushavo-budget-staging.pages.dev/auth.html",
+    "https://082009fe.mushavo-budget-staging.pages.dev/session-entry.js?v=4"
+  ],
+  "reader_result": "Both URLs inaccessible; no source content returned.",
+  "direct_diagnostic_GETs": 1,
+  "direct_diagnostic_URL": "https://082009fe.mushavo-budget-staging.pages.dev/auth.html",
+  "direct_HTTP_status": 403,
+  "Cloudflare_error_1010": true,
+  "selected_public_read_attempts_total": 3,
+  "independent_hosted_source_parity_verified": false,
+  "owner_browser_outage_or_source_mismatch_inferred": false,
+  "Auth_gateway_SQL_or_email_requests": 0,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

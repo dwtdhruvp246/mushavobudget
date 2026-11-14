@@ -1,0 +1,10 @@
+// Synthetic platform fixture. Real reviewed hook definitions plus four inert count stand-ins.
+import {readFile} from 'node:fs/promises';
+const root=new URL('../../',import.meta.url);
+export async function prepareReviewedEmailPlatform(db){
+ const ensure=JSON.parse(await readFile(new URL('tests/fixtures/fr-2-reviewed-ensure-rls.json',root),'utf8'));
+ const providers=JSON.parse(await readFile(new URL('tests/fixtures/fr-2-reviewed-provider-hooks.json',root),'utf8')).hooks;
+ await db.exec("alter table auth.users add column email_confirmed_at timestamptz,add column encrypted_password varchar(255),add column banned_until timestamptz;create table auth.sessions(id uuid primary key,user_id uuid not null references auth.users(id),not_after timestamptz);alter table storage.buckets enable row level security;create role supabase_admin superuser;create function public.rls_auto_enable() returns event_trigger language plpgsql security definer set search_path=pg_catalog as $hook$"+ensure.body+"$hook$;create event trigger ensure_rls on ddl_command_end when tag in ('CREATE TABLE','CREATE TABLE AS','SELECT INTO') execute function public.rls_auto_enable()");
+ for(const h of providers)await db.exec('create function extensions.'+h.name+"() returns event_trigger language plpgsql set search_path='' as $provider$"+h.body+'$provider$;alter function extensions.'+h.name+'() owner to supabase_admin;create event trigger '+h.name+' on '+h.event+' execute function extensions.'+h.name+'();alter event trigger '+h.name+' owner to supabase_admin');
+ for(const [name,event,tag]of [['fixture_graphql_drop','sql_drop','DROP EXTENSION'],['fixture_cron','ddl_command_end','CREATE EXTENSION'],['fixture_graphql','ddl_command_end','CREATE EXTENSION'],['fixture_net','ddl_command_end','CREATE EXTENSION']])await db.exec('create function extensions.'+name+'() returns event_trigger language plpgsql as $$begin return;end;$$;create event trigger '+name+' on '+event+" when tag in ('"+tag+"') execute function extensions."+name+'()');
+}

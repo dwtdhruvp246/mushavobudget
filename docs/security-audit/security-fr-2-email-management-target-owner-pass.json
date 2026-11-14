@@ -1,0 +1,62 @@
+{
+  "received_date": "2026-10-21",
+  "handoff_commit": "a6002634e010894ca82e93ff3aa6f48f918bcfd3",
+  "evidence_source": "OWNER_PASTED_SAFE_PRIVATE_RUNNER_RESULT",
+  "receipt": {
+    "stage_step": "FR.2.4.E5.9_MANAGEMENT_READ_ONLY_TARGET",
+    "result": "PROVIDER_ROUTED_STAGING_READ_ONLY_CATALOG_SCOPED_PASS_NOT_INSTALLATION",
+    "requests_attempted": 2,
+    "fixed_staging_project_metadata_matched": true,
+    "fixed_staging_database_host_matched": true,
+    "provider_routed_read_only_catalog_request_confirmed": true,
+    "read_only_role_and_transaction_confirmed": true,
+    "selected_eight_catalog_checks_match": true,
+    "checks": {
+      "selected_routine_count_matches": true,
+      "selected_policy_counts_match": true,
+      "public_table_count_and_rls_match": true,
+      "public_view_invoker_metadata_matches": true,
+      "observed_storage_tables_have_rls": true,
+      "required_auth_and_profile_column_types_present": true,
+      "event_hook_count_matches": true,
+      "email_backend_installer_and_guards_absent": true
+    },
+    "samples": [
+      {
+        "endpoint": "STAGING_PROJECT_METADATA",
+        "http_status": 200,
+        "JSON_received": true
+      },
+      {
+        "endpoint": "STAGING_FIXED_READ_ONLY_CATALOG",
+        "http_status": 201,
+        "JSON_received": true
+      }
+    ],
+    "future_installation_target_or_privileges_verified": false,
+    "full_catalog_fingerprints_or_hook_definitions_verified": false,
+    "token_permission_scope_independently_inspected": false,
+    "arbitrary_SQL_or_general_query_endpoint_used": false,
+    "application_rows_read": false,
+    "application_or_hook_functions_invoked": 0,
+    "rows_roles_grants_Auth_or_settings_changed": false,
+    "raw_token_provider_bodies_or_database_identifiers_printed": false,
+    "token_saved_to_disk_or_environment": false,
+    "ZIP_DPAPI_or_saved_application_keys_accessed": false,
+    "email_dispatched": false,
+    "uploaded_or_deployed": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0,
+    "checked_UTC": "2026-10-21T08:54:12.854Z",
+    "source_hashes_verified": 68
+  },
+  "terminal_exit_code": 0,
+  "separate_owner_offline_verifier_receipt_received": false,
+  "PowerShell_version_or_parser_output_supplied": false
+}

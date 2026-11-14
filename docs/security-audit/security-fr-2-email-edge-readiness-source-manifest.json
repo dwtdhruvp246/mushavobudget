@@ -1,0 +1,42 @@
+{
+  "stage_step": "FR.2.4.E5.12_EDGE_CONFIGURATION_AND_SCHEDULER_READINESS",
+  "source_file_count": 14,
+  "file_sha256": {
+    "scripts/check-fr-2-email-edge-readiness-db.mjs": "429547f2872b8e63262dbba98b82c9ca6833c2567ae1ef8fea95f7aa1a9278f6",
+    "scripts/check-fr-2-email-edge-readiness.mjs": "8c3463796e8549f50638f4c797be9aa28485f45b5fbfabc74eacb95a1aaf35d1",
+    "scripts/fixtures/email-session-review-tools/package-lock.json": "016a47678f4d552bf80121203c8907561b60da8de63123398a84941b1a6fd322",
+    "scripts/fixtures/email-session-review-tools/package.json": "b2f802b29de80f29a039ada02b51de6dcdaafca68b240a8e41fae3a70b61ff9c",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+    "scripts/run-fr-2-email-edge-readiness.ps1": "dd971c8dd4f256dda0717c53d31dd6790580bad38d0308e1a356a4e9cd50cf17",
+    "scripts/verify-fr-2-email-edge-readiness.mjs": "ebf9d098daea0af61e32a0f43c2c6d459ec4e175b2a8ffddc13b7c2fb97b337c",
+    "supabase/diagnostics/security_fr_2_4_email_edge_scheduler_access.sql": "c7770e00379fede1b38a64db8e1cc246b16f830db23fc3e73722022fcdc9d85e",
+    "supabase/diagnostics/security_fr_2_4_email_edge_scheduler_aggregates.sql": "232a039c6565a9f43fb5e36948847d290ba81efa9b82bc4d8375f1421833908d",
+    "supabase/functions/invite-admin-user/index.ts": "1f69b0d15b8305acd3b5fb7aa2d6f2c14045190c17dc6f17ee754a5274c4d39f",
+    "supabase/functions/invite-business-member/index.ts": "8ae109f85763672b655ec8b390d12bbf2e11bbc32dea94cae91c830f863e3521",
+    "supabase/functions/send-test-push/index.ts": "3952c165396ac865c6b213d9c3b14025cbdaa1eab8e7cf7d3bb9abd34d8f3473",
+    "supabase/functions/sync-exchange-rates/index.ts": "20636029adcc4550864d31b32c676e4b5c585c12e3301b4ccef47e70234aa6c7",
+    "tests/fr-2-email-edge-readiness.test.mjs": "6ae7f00fa68a254e450d34c4afdec4004c7db8e748faa8eb4b1189ea9a2d3bdf"
+  },
+  "syntax_paths": [
+    "scripts/check-fr-2-email-edge-readiness.mjs",
+    "scripts/verify-fr-2-email-edge-readiness.mjs",
+    "scripts/check-fr-2-email-edge-readiness-db.mjs",
+    "tests/fr-2-email-edge-readiness.test.mjs"
+  ],
+  "test_groups": [
+    {
+      "name": "fixed_private_transport_and_metadata",
+      "files": [
+        "tests/fr-2-email-edge-readiness.test.mjs"
+      ],
+      "expected_tests": 26
+    },
+    {
+      "name": "actual_read_only_scheduler_SQL",
+      "files": [
+        "scripts/check-fr-2-email-edge-readiness-db.mjs"
+      ],
+      "expected_tests": 7
+    }
+  ]
+}

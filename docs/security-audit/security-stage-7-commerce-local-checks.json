@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "stage_step": "7.2",
+  "date": "2026-10-12",
+  "source_parent_commit": "1153f77b612170612111b6b00ec82e620a78d749",
+  "execution_history": [
+    {
+      "attempt": 1,
+      "result": "PASS",
+      "primary_cases": 20,
+      "existing_regression_cases": 10,
+      "pass": 30,
+      "fail": 0,
+      "exit_code": 0
+    }
+  ],
+  "final_local_result": {
+    "stage_step": "7.2",
+    "result": "OFFLINE_SYNTHETIC_COMMERCE_MODEL_AND_EXISTING_MANUAL_REGRESSION_SCOPED_PASS",
+    "scope": "PURE_REVIEW_MODEL_WITH_SYNTHETIC_ADAPTER_PLUS_SELECTED_ACTUAL_CLIENT_VM_AND_SQL_SOURCE_ASSERTIONS",
+    "source_parent_commit": "1153f77b612170612111b6b00ec82e620a78d749",
+    "node_version": "v24.19.0",
+    "tests": 30,
+    "pass": 30,
+    "fail": 0,
+    "exit_code": 0,
+    "synthetic_commerce_model": {
+      "tests": 20,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    "selected_existing_manual_regressions": {
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    "syntax_checks": 3,
+    "file_sha256": {
+      "scripts/lib/stage-7-commerce-model.mjs": "0b63d723f5da155512430cd08161c30bd65eb0c277efae6ab996d5f3c30e9ecf",
+      "tests/stage-7-commerce-model.test.mjs": "83a3630dc511863b6b5a5f5f9b5aa4568c4e73ff28acc5dc340f45cfbc77412d",
+      "scripts/verify-stage-7-commerce.mjs": "c95267fb430c47a8d49f68078b29c8c4b6a73cfb852d991b867cab53bf34ecff",
+      "tests/business-stage-10.test.mjs": "405bef6a89bd76a37afb54abcf75a73e97b55471d76ea0e709858dcf9baef7c5",
+      "tests/admin-manual-subscription.test.mjs": "0d7057b3211392e4f4ce9a2e546d058162d65ed0ab75c2c70d3ac8297fc28eb4",
+      "business.js": "6754f92c72399bf45ea849ef692318a6d88a227a413b552a6ca50ee9e1b98f6f",
+      "app.js": "eb4222245c6d75bf3708335d6c5f24c942c62715d3ce0afdf7d79cb3777cb6f6",
+      "app.html": "e1025272e36af37c2262a7ce260c06bf4e89f345a18cd9e23328698dab85db5a",
+      "supabase/schema.sql": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+      "supabase/migrations/20260930090000_business_stage_10_billing.sql": "150cdfc2b70521b4fc2f0b666adf4b772513a56ce43a39b7e912cdd00b3e6215",
+      "supabase/migrations/20260928090000_admin_manual_subscription_grants.sql": "a5e965d072d34c8c48d55aba5d8f45e7047dc1b114f858e67e8ac6ee383fba25",
+      "docs/security-audit/security-stage-7-commerce-candidate-contract.json": "ecbb2280dc705380f6e9adc720f8b4764476451a14208b2e8b80a2720aa1072b"
+    },
+    "actual_provider_receipt_signature_or_webhook_verification": false,
+    "actual_durable_ledger_global_chain_ownership_or_concurrent_DB_CAS_verified": false,
+    "actual_app_native_purchase_or_backend_commerce_integration_implemented": false,
+    "hosted_CO01_CO08_grouped_cases_run": 0,
+    "planned_hosted_grouped_cases": 48,
+    "candidate_deployed": false,
+    "hosted_acceptance": false,
+    "real_charges_performed": false,
+    "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": []
+  },
+  "selected_existing_regression_scope": {
+    "actual_business_client_VM_cases": 4,
+    "actual_admin_date_helper_VM_cases": 1,
+    "SQL_and_UI_source_assertion_cases": 5,
+    "actual_PostgreSQL_RLS_staff_MFA_or_entitlement_mutations_verified": false
+  },
+  "pinned_regression_input_git_blob_checks": [
+    {
+      "path": "tests/business-stage-10.test.mjs",
+      "expected_git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+      "observed_git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/admin-manual-subscription.test.mjs",
+      "expected_git_blob_sha": "7d9f8d2895bc9e2bd06c772add0488579135a580",
+      "observed_git_blob_sha": "7d9f8d2895bc9e2bd06c772add0488579135a580",
+      "result": "MATCH"
+    },
+    {
+      "path": "business.js",
+      "expected_git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+      "observed_git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+      "result": "MATCH"
+    },
+    {
+      "path": "app.js",
+      "expected_git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+      "observed_git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+      "result": "MATCH"
+    },
+    {
+      "path": "app.html",
+      "expected_git_blob_sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+      "observed_git_blob_sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/schema.sql",
+      "expected_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "observed_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+      "expected_git_blob_sha": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+      "observed_git_blob_sha": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/migrations/20260928090000_admin_manual_subscription_grants.sql",
+      "expected_git_blob_sha": "859b123f33f00b4bc7aa26fca4f9795a04244eaf",
+      "observed_git_blob_sha": "859b123f33f00b4bc7aa26fca4f9795a04244eaf",
+      "result": "MATCH"
+    }
+  ],
+  "input_hash_mismatches": 0,
+  "owner_repeat": "OPTIONAL_PINNED_EXPORT_COMMAND_SUPPLIED_FULLY_IN_CHAT_NOT_YET_REPORTED",
+  "current_app_SQL_native_and_existing_tests_unchanged": true,
+  "findings_closed": []
+}

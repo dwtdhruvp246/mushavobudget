@@ -1,0 +1,506 @@
+{
+  "schema_version": 1,
+  "stage_step": "6.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "fe2c281ce13e7d0d8cb49115fa1bd6c195579c4e",
+  "scope": "FRESH_SELECTED_REPOSITORY_BYTES_AND_PUBLIC_PRIMARY_DOCUMENTATION_ONLY",
+  "source_files": [
+    {
+      "path": "auth.html",
+      "bytes": 2864,
+      "sha256": "8d6ff984bfec6ef80356ceceef63e5a70428d1ea6c0bb937c282dc1b47329386",
+      "git_blob_sha": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+      "expected_git_blob_sha": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+      "match": true
+    },
+    {
+      "path": "auth-flows.js",
+      "bytes": 8343,
+      "sha256": "ef16214f827d6650a507e30bdae7703c975f061437ed0672cf0abf9072e37500",
+      "git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "expected_git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "match": true
+    },
+    {
+      "path": "auth-security.js",
+      "bytes": 9909,
+      "sha256": "ae6eb487fa9ae5f21b1e3a95f698fe5869a377349bc5ff66bf9e8d32cef6cf54",
+      "git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "expected_git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "match": true
+    },
+    {
+      "path": "signup.html",
+      "bytes": 36123,
+      "sha256": "1bf9c338caa32d239364f145fbd563e32a019be8ce90f0e46f6a9f5a7229b613",
+      "git_blob_sha": "6093ca502c3a2b954a0289f5c5e4cacbe7def584",
+      "expected_git_blob_sha": "6093ca502c3a2b954a0289f5c5e4cacbe7def584",
+      "match": true
+    },
+    {
+      "path": "app.js",
+      "bytes": 504595,
+      "sha256": "eb4222245c6d75bf3708335d6c5f24c942c62715d3ce0afdf7d79cb3777cb6f6",
+      "git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+      "expected_git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+      "match": true
+    },
+    {
+      "path": "business.js",
+      "bytes": 239567,
+      "sha256": "6754f92c72399bf45ea849ef692318a6d88a227a413b552a6ca50ee9e1b98f6f",
+      "git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+      "expected_git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+      "match": true
+    },
+    {
+      "path": "config.js",
+      "bytes": 279,
+      "sha256": "c14293e16fda6a6b0e483ea5141954b78832b175155cec0ab9f59d35e8b7b0cd",
+      "git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+      "expected_git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+      "match": true
+    },
+    {
+      "path": "package.json",
+      "bytes": 883,
+      "sha256": "fe28c33c1a1c93b8f5efaf7b098b6884afca7b61f7910e767f8ce069ff1d8c6a",
+      "git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+      "expected_git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+      "match": true
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 70459,
+      "sha256": "cb476c5d8cebfa65f44edf0f54c8d1124d446f0cecef2c305e92f38dae13cd0f",
+      "git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+      "expected_git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/invite-admin-user/index.ts",
+      "bytes": 13668,
+      "sha256": "c6ab833c9579f8e8559d7b54b3c0a84d85f8752edfc28eaa6c2438838e8fe3d9",
+      "git_blob_sha": "a26f1633237126a8a558d8e702ffaa1943173253",
+      "expected_git_blob_sha": "a26f1633237126a8a558d8e702ffaa1943173253",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/invite-business-member/index.ts",
+      "bytes": 6614,
+      "sha256": "980e0911ffddfec984f41d952735734ea926566993f480cece36e90dcbf93a10",
+      "git_blob_sha": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+      "expected_git_blob_sha": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+      "match": true
+    },
+    {
+      "path": "supabase/templates/invite-user.html",
+      "bytes": 1474,
+      "sha256": "73c3221de410c6a14541eb71ac45b169e70da3b8616ecdb2d6871f16fc1ce29e",
+      "git_blob_sha": "87421f6b60df8da65787f1379310639eeec84174",
+      "expected_git_blob_sha": "87421f6b60df8da65787f1379310639eeec84174",
+      "match": true
+    },
+    {
+      "path": "supabase/templates/invite-user.subject.txt",
+      "bytes": 308,
+      "sha256": "411fcc34faeb73ba1b5f63abfe873542d1ea324d2ec7464624d028e9b9706040",
+      "git_blob_sha": "1774650e0b38c7d11852b34a331b6bdd33dcbefb",
+      "expected_git_blob_sha": "1774650e0b38c7d11852b34a331b6bdd33dcbefb",
+      "match": true
+    },
+    {
+      "path": "tests/stage-3-auth-flows.test.mjs",
+      "bytes": 19893,
+      "sha256": "3377d8f3f07997a8d4ce046741a34beff6c9077aeb061df9163cf2e91ee7bc75",
+      "git_blob_sha": "9ba114c045d014af8b0a48f40e1dbf0eda16cb99",
+      "expected_git_blob_sha": "9ba114c045d014af8b0a48f40e1dbf0eda16cb99",
+      "match": true
+    },
+    {
+      "path": "tests/stage-3-auth-page.test.mjs",
+      "bytes": 7365,
+      "sha256": "1e1dec730f7d65dc77d69a6a6677eb3d880239c945f64f26a587a25e5db0923f",
+      "git_blob_sha": "90bc8a478e51f1dab79b260b075232ebc680a961",
+      "expected_git_blob_sha": "90bc8a478e51f1dab79b260b075232ebc680a961",
+      "match": true
+    },
+    {
+      "path": "tests/stage-3-auth-edge-build.test.mjs",
+      "bytes": 6320,
+      "sha256": "82c6f63091147dcc1b463f839b5ce75c38ef255c4e0758bfe00a0163c894e73c",
+      "git_blob_sha": "12ff24320f330d75fe46b1a9d41e0b7b101c6448",
+      "expected_git_blob_sha": "12ff24320f330d75fe46b1a9d41e0b7b101c6448",
+      "match": true
+    },
+    {
+      "path": "app.html",
+      "bytes": 112549,
+      "sha256": "e1025272e36af37c2262a7ce260c06bf4e89f345a18cd9e23328698dab85db5a",
+      "git_blob_sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+      "expected_git_blob_sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+      "match": true
+    },
+    {
+      "path": "business.html",
+      "bytes": 72858,
+      "sha256": "cd076bd8f8f2d6b49efa78b08ae5b97101fffcba3739090e093d103c0ec5504e",
+      "git_blob_sha": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+      "expected_git_blob_sha": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+      "match": true
+    },
+    {
+      "path": "index.html",
+      "bytes": 9850,
+      "sha256": "dc4e56568aec303d43ae7565c209c781bdf5028d1610ab41cc569cd88e74bc61",
+      "git_blob_sha": "f6e71eb717aaf8071b827ff612ecff31c1e009e4",
+      "expected_git_blob_sha": "f6e71eb717aaf8071b827ff612ecff31c1e009e4",
+      "match": true
+    },
+    {
+      "path": "app-entry.js",
+      "bytes": 6807,
+      "sha256": "a2a15b461036cdf6b201ca6c9f022fb64c30b0b4f40f0f77e3d5169b91c081a7",
+      "git_blob_sha": "4496b291102c26aa4dbcf9fbb88882cd972f5775",
+      "expected_git_blob_sha": "4496b291102c26aa4dbcf9fbb88882cd972f5775",
+      "match": true
+    },
+    {
+      "path": "workspace-preference.js",
+      "bytes": 4677,
+      "sha256": "913fa62e34cf16d6f6eb1791e3bb9dad0b37001d64ed408dac2773ebbb37ce56",
+      "git_blob_sha": "17abce600781bc378e17bba19771316291c26f71",
+      "expected_git_blob_sha": "17abce600781bc378e17bba19771316291c26f71",
+      "match": true
+    },
+    {
+      "path": "supabase/config.toml",
+      "bytes": 867,
+      "sha256": "527c331d074845665dba4d79ea782cc3e22ff37473564f9b20280daa9b8de9fb",
+      "git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+      "expected_git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+      "match": true
+    },
+    {
+      "path": "supabase/schema.sql",
+      "bytes": 953717,
+      "sha256": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+      "git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "expected_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "match": true
+    },
+    {
+      "path": "supabase/templates/magic-link.html",
+      "bytes": 1466,
+      "sha256": "aab99054eac280d6abcc14418a66e25906f6e6fe48c1ed8ec496fed1e619e143",
+      "git_blob_sha": "b86f35120c018cc95dfd0f43960c27a867a411d5",
+      "expected_git_blob_sha": "b86f35120c018cc95dfd0f43960c27a867a411d5",
+      "match": true
+    },
+    {
+      "path": "supabase/templates/magic-link.subject.txt",
+      "bytes": 298,
+      "sha256": "6f78ee1920bcb9c9199fb11927e01c4f46e3ef135971127994565a0ae5c4f155",
+      "git_blob_sha": "b9a4df502f656e1384e2a2360ea53c0f7285d4da",
+      "expected_git_blob_sha": "b9a4df502f656e1384e2a2360ea53c0f7285d4da",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+      "bytes": 11765,
+      "sha256": "cd7bb726bf20a51ebc6c95f946ce0e6a05737fa44ed2cbd9cc3a2d1ef6201214",
+      "git_blob_sha": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+      "expected_git_blob_sha": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/dispatch-push-reminders/index.ts",
+      "bytes": 16399,
+      "sha256": "b0307b200dbf2f3834deab1f584f19d130953c732ec819160301ed00bc653202",
+      "git_blob_sha": "ec9b1561cc20f16080099704ee6174044582d67f",
+      "expected_git_blob_sha": "ec9b1561cc20f16080099704ee6174044582d67f",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260908170000_notification_outbox.sql",
+      "bytes": 17119,
+      "sha256": "ae51a96d8bd4db671efd2debb8e2ba17590bc79071a8a56c7810873f5d2210ca",
+      "git_blob_sha": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+      "expected_git_blob_sha": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260916190000_admin_event_notifications.sql",
+      "bytes": 12315,
+      "sha256": "be09f4b456f77a5b4ae27627c894cf907cb6900703e0d70ab4c54c6cf52e0e66",
+      "git_blob_sha": "1218eaf24829e287f8054916248a0dea429f010e",
+      "expected_git_blob_sha": "1218eaf24829e287f8054916248a0dea429f010e",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260922113000_admin_user_invitations.sql",
+      "bytes": 18795,
+      "sha256": "55c87362414ffb2097f0e1e2f323733903f6acb052a26c416422bb37a743d89a",
+      "git_blob_sha": "3559065aea9ad7d693121ea56bfd3837fa4dba35",
+      "expected_git_blob_sha": "3559065aea9ad7d693121ea56bfd3837fa4dba35",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260923100000_complete_admin_user_invitations.sql",
+      "bytes": 20419,
+      "sha256": "9ee1514ccb853cc779cadb8dd55a0e02760a9eccc3f4dd399492b48db461d849",
+      "git_blob_sha": "46de8cdf2b64736452865de1092f3c92037aad50",
+      "expected_git_blob_sha": "46de8cdf2b64736452865de1092f3c92037aad50",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260923143000_replace_pending_admin_invitations.sql",
+      "bytes": 14998,
+      "sha256": "4d0330b7975caef72af622abad0226ac10e4117cc9eae96c0b5d46b39484dbdd",
+      "git_blob_sha": "0dfeb64ae451d78f2fd659393c6f3ce757b5e82a",
+      "expected_git_blob_sha": "0dfeb64ae451d78f2fd659393c6f3ce757b5e82a",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260923190000_guard_pending_admin_invitation_workspace.sql",
+      "bytes": 747,
+      "sha256": "31fb1eb72e2e21a2269994643e8cd6e841d6f575dbde208450d1c4aff07518f9",
+      "git_blob_sha": "4fd1e66584d4e895b1fe6372c946145a4dc0ec72",
+      "expected_git_blob_sha": "4fd1e66584d4e895b1fe6372c946145a4dc0ec72",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260923200000_hold_invited_workspace_until_setup.sql",
+      "bytes": 6332,
+      "sha256": "9339d43ade0042b0216c0ded6e56909791ce2cf43b4fdf5ddd6001edd0db77b7",
+      "git_blob_sha": "b1a37fb3bcb57f4c6e4e644bfc87ba6f30621406",
+      "expected_git_blob_sha": "b1a37fb3bcb57f4c6e4e644bfc87ba6f30621406",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260928170000_business_stage_4_team.sql",
+      "bytes": 32451,
+      "sha256": "c95aee8239de7d0ff6feb4e4e02b4ccadfd29168ce14686d1e0fead3e7e24cab",
+      "git_blob_sha": "0d979bceddde1c4c122bf725efc632959dd23391",
+      "expected_git_blob_sha": "0d979bceddde1c4c122bf725efc632959dd23391",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20261004153000_business_custom_roles.sql",
+      "bytes": 47709,
+      "sha256": "b8db2c387545729f9f5b6421b1ef9cf222027eefe03fdb96d22ba0bfc5d8433e",
+      "git_blob_sha": "c943e03949affcf1ee326ae86198cc22af5090e5",
+      "expected_git_blob_sha": "c943e03949affcf1ee326ae86198cc22af5090e5",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20261006180000_business_invitation_notifications.sql",
+      "bytes": 5040,
+      "sha256": "8efd199e9c480cbf33dea64a3d8daea3f5a81281896c38f1ca5348b7e94db9f0",
+      "git_blob_sha": "501ae2a45018cf0e89531f0821834c57c904c328",
+      "expected_git_blob_sha": "501ae2a45018cf0e89531f0821834c57c904c328",
+      "match": true
+    },
+    {
+      "path": "scripts/build-capacitor.mjs",
+      "bytes": 4556,
+      "sha256": "86ac88ab42f1c21a0c13cbad69731bf4003e608d597a43321089c8fa5899aaa0",
+      "git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+      "expected_git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/_shared/admin-assurance.mjs",
+      "bytes": 630,
+      "sha256": "afd30ba055c453d85f6ad87f43d0ea8903e6ef31b5fe483d877f430076b41278",
+      "git_blob_sha": "63ed3c4547ff5c4464e57e757655b1f7b7225332",
+      "expected_git_blob_sha": "63ed3c4547ff5c4464e57e757655b1f7b7225332",
+      "match": true
+    },
+    {
+      "path": "tests/business-stage-4.test.mjs",
+      "bytes": 4720,
+      "sha256": "8bfb02124ece44a8d7bfb840cbb6380be361efaeec62ed4c84aafddbf53488de",
+      "git_blob_sha": "adead380c9306e93e453e5caee9411b9193c4463",
+      "expected_git_blob_sha": "adead380c9306e93e453e5caee9411b9193c4463",
+      "match": true
+    },
+    {
+      "path": "tests/admin-user-invitations.test.mjs",
+      "bytes": 4186,
+      "sha256": "dee231fb6bac0e2424e78c7cfc080ad38bdef5d273557917a5d7aad1cf82f9d6",
+      "git_blob_sha": "c3ae95143a316f705c92024159d9257f495ae2fc",
+      "expected_git_blob_sha": "c3ae95143a316f705c92024159d9257f495ae2fc",
+      "match": true
+    }
+  ],
+  "source_files_hash_verified": 41,
+  "source_blob_mismatches": 0,
+  "review_is_not_full_hosted_or_native_inventory": true,
+  "observations": [
+    {
+      "id": "IE-O01",
+      "status": "SOURCE_FEATURE_GAP",
+      "paths": [
+        "app.js",
+        "app.html",
+        "signup.html",
+        "auth-security.js",
+        "auth-flows.js",
+        "package.json",
+        "supabase/config.toml"
+      ],
+      "description": "Selected login/UI/config/dependency paths have no provider sign-in/link/unlink integration. No auth.external or Send Email Hook declaration is tracked in selected TOML. Prior disabled-provider reports remain historical; live status was not read."
+    },
+    {
+      "id": "IE-O02",
+      "status": "SOURCE_PRESENT_HOSTED_UNVERIFIED",
+      "paths": [
+        "auth-security.js",
+        "auth-flows.js",
+        "signup.html"
+      ],
+      "description": "Email callback controller captures/scrubs material, requires SDK getUser identity validation, confirmed email and live Business invitation, isolates link storage and requires deliberate transfer. Flow allowlist has confirm/recover/business-new/business-existing only; adding OAuth needs a separate transaction contract rather than labeling it confirm."
+    },
+    {
+      "id": "IE-O03",
+      "status": "SOURCE_MISMATCH_NOT_HOSTED_FAILURE",
+      "paths": [
+        "supabase/functions/invite-business-member/index.ts",
+        "supabase/templates/invite-user.html",
+        "supabase/templates/invite-user.subject.txt",
+        "supabase/templates/magic-link.html",
+        "supabase/templates/magic-link.subject.txt"
+      ],
+      "description": "Current sender uses /auth.html?flow=business-new|business-existing&invitation=...; all four tracked templates only recognize .SiteURL + /business.html?invitation=. When rendered with current redirects they select generic fallback copy. No deployed template/render/mail failure was inspected."
+    },
+    {
+      "id": "IE-O04",
+      "status": "SOURCE_PRESENT_TEMPLATE_PURPOSE_GAP",
+      "paths": [
+        "supabase/functions/invite-admin-user/index.ts",
+        "signup.html",
+        "supabase/templates/invite-user.html",
+        "supabase/templates/invite-user.subject.txt",
+        "supabase/templates/magic-link.html",
+        "supabase/templates/magic-link.subject.txt"
+      ],
+      "description": "Admin setup targets signup.html?mode=admin-invite; retained unfinished identity uses OTP shouldCreateUser=false. Generic magic-link template does not distinguish Admin setup. Source Admin role/MFA guard and UUID/email/profile-binding completion remain separate access controls."
+    },
+    {
+      "id": "IE-O05",
+      "status": "SOURCE_PRESENT_COLLISION_VERIFICATION_REQUIRED",
+      "paths": [
+        "supabase/schema.sql",
+        "supabase/migrations/20260928170000_business_stage_4_team.sql",
+        "supabase/migrations/20261004153000_business_custom_roles.sql"
+      ],
+      "description": "Business invitation scope uses bound invitee UUID OR server JWT email; response includes authenticated identity, pending/expiry, workspace/subscription, seats and explicit accept/decline. Provider/relay alias and UUID/email changes require actual collision tests. Source declarations are not a hosted effective catalog."
+    },
+    {
+      "id": "IE-O06",
+      "status": "SOURCE_ONBOARDING_DEPENDENCY",
+      "paths": [
+        "supabase/schema.sql",
+        "supabase/migrations/20260923200000_hold_invited_workspace_until_setup.sql",
+        "signup.html"
+      ],
+      "description": "Profile trigger allows google as a signup-source label but that is not OAuth implementation. Provisioning defaults missing currency metadata and blocks unfinished Admin invitation setup. Social first-login onboarding must preserve user-selected currencies, profile/plan and invitation protections."
+    },
+    {
+      "id": "IE-O07",
+      "status": "SOURCE_ARCHITECTURE_GAP",
+      "paths": [
+        "supabase/config.toml",
+        "supabase/functions/dispatch-push-reminders/index.ts",
+        "supabase/functions/dispatch-admin-notifications/index.ts",
+        "supabase/migrations/20260908170000_notification_outbox.sql"
+      ],
+      "description": "Existing selected dispatchers are Web Push/in-app notification paths; no inspected shared Auth hook or application-email provider worker. Existing outbox does not establish email semantics or delivered-inbox proof."
+    },
+    {
+      "id": "IE-O08",
+      "status": "NATIVE_DEPENDENCY_UNVERIFIED",
+      "paths": [
+        "scripts/build-capacitor.mjs",
+        "app-entry.js",
+        "workspace-preference.js",
+        "package.json"
+      ],
+      "description": "Builder bridges App/Preferences and packages Auth resources; no inspected native provider/URL-dispatch integration. Stage 5 NR callback/storage/platform/artifact actions remain open; no native project/config/device inspected here."
+    }
+  ],
+  "references": [
+    {
+      "id": "S6P01",
+      "url": "https://supabase.com/docs/guides/auth/social-login/auth-google",
+      "topic": "Google scopes, provider callback and app redirect are distinct",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_PROJECT_CONFIGURATION"
+    },
+    {
+      "id": "S6P02",
+      "url": "https://developers.google.com/identity/protocols/oauth2/policies",
+      "topic": "Owned/authorized domains, public homepage/policies and secure browser authorization",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_PROJECT_CONFIGURATION"
+    },
+    {
+      "id": "S6P03",
+      "url": "https://supabase.com/docs/guides/auth/auth-identity-linking",
+      "topic": "Automatic email linking, unconfirmed identity removal and authenticated manual linking",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_PROJECT_CONFIGURATION"
+    },
+    {
+      "id": "S6P04",
+      "url": "https://developer.apple.com/app-store/review/guidelines/#login-services",
+      "topic": "4.8 equivalent privacy-preserving login and listed exceptions",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_PROJECT_CONFIGURATION"
+    },
+    {
+      "id": "S6P05",
+      "url": "https://supabase.com/docs/guides/auth/social-login/auth-apple",
+      "topic": "Web/native integration differences, first-name availability and OAuth secret rotation",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_PROJECT_CONFIGURATION"
+    },
+    {
+      "id": "S6P06",
+      "url": "https://developer.apple.com/help/account/capabilities/configure-private-email-relay-service",
+      "topic": "Register outbound sources and authenticate actual sender domains",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_PROJECT_CONFIGURATION"
+    },
+    {
+      "id": "S6P07",
+      "url": "https://supabase.com/docs/guides/auth/auth-hooks/send-email-hook",
+      "topic": "Hook replaces built-in/SMTP sending; signed payload, email-change token mapping",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_PROJECT_CONFIGURATION"
+    },
+    {
+      "id": "S6P08",
+      "url": "https://supabase.com/docs/guides/auth/auth-email-templates",
+      "topic": "Per-purpose Auth templates and hosted configuration differ from checked-in files",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_PROJECT_CONFIGURATION"
+    },
+    {
+      "id": "S6P09",
+      "url": "https://supabase.com/docs/guides/auth/redirect-urls",
+      "topic": "Site URL and exact app callback allowlisting",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_PROJECT_CONFIGURATION"
+    }
+  ],
+  "local_behavior_tests_run": 0,
+  "hosted_checks_run": 0,
+  "device_checks_run": 0,
+  "provider_config_or_dashboard_inspected": false,
+  "email_dispatched": false,
+  "candidate_deployed": false,
+  "production_or_native_changed": false,
+  "findings_closed": []
+}

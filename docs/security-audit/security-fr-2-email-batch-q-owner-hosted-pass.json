@@ -1,0 +1,344 @@
+{
+  "stage_step": "FR.2.4.E5.30_BATCH_Q_REVIEWED_STAGING_SW_UPLOAD_AND_PUBLIC_BROWSER_READBACK",
+  "batch": "Q",
+  "result": "BATCH_Q_PUBLIC_READBACK_SCOPED_PASS",
+  "mode": "HOSTED_PUBLIC_READBACK",
+  "node_version": "v22.17.0",
+  "platform": "win32",
+  "source_hashes_verified": 206,
+  "syntax_checks": 0,
+  "offline_units": null,
+  "reviewed_ZIP_verified": true,
+  "ZIP_SHA256": "5bbbea1dfaca36a05c513b087012657c0dfd7380901dcf2f47dc2eac45309fe0",
+  "SW_SHA256": "0bc471318eb7156aed4f004c153a3e45fd08a71f665ad77ba59caa29fd8d8c47",
+  "hosted_public_readback": {
+    "stage_step": "FR.2.4.E5.30_BATCH_Q_REVIEWED_STAGING_SW_UPLOAD_AND_PUBLIC_BROWSER_READBACK",
+    "batch": "Q",
+    "result": "BATCH_Q_REVIEWED_STAGING_SW_AND_TWO_ORIGIN_PUBLIC_BROWSER_SCOPED_PASS",
+    "ZIP_SHA256": "5bbbea1dfaca36a05c513b087012657c0dfd7380901dcf2f47dc2eac45309fe0",
+    "SW_SHA256": "0bc471318eb7156aed4f004c153a3e45fd08a71f665ad77ba59caa29fd8d8c47",
+    "cache_version": "pwa-shell-v89",
+    "reviewed_ZIP_verified": true,
+    "deployment_origin": "https://d24b6611.mushavo-budget-staging.pages.dev",
+    "canonical_origin": "https://mushavo-budget-staging.pages.dev",
+    "direct_public_GET_requests": 4,
+    "maximum_direct_public_GET_requests": 4,
+    "samples": [
+      {
+        "endpoint": "PUBLIC_SERVICE_WORKER",
+        "http_status": 200,
+        "byte_match": true,
+        "JavaScript_MIME": true,
+        "selected_headers_match": true,
+        "origin": "DEPLOYMENT"
+      },
+      {
+        "endpoint": "PUBLIC_STAGING_CONFIGURATION",
+        "http_status": 200,
+        "byte_match": true,
+        "JavaScript_MIME": true,
+        "selected_headers_match": true,
+        "origin": "DEPLOYMENT"
+      },
+      {
+        "endpoint": "PUBLIC_SERVICE_WORKER",
+        "http_status": 200,
+        "byte_match": true,
+        "JavaScript_MIME": true,
+        "selected_headers_match": true,
+        "origin": "CANONICAL"
+      },
+      {
+        "endpoint": "PUBLIC_STAGING_CONFIGURATION",
+        "http_status": 200,
+        "byte_match": true,
+        "JavaScript_MIME": true,
+        "selected_headers_match": true,
+        "origin": "CANONICAL"
+      }
+    ],
+    "public_browser_results": [
+      {
+        "origin": "DEPLOYMENT",
+        "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
+        "batch": "O",
+        "result": "BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SW_SCOPED_PASS",
+        "scope": "HOSTED_PUBLIC_SOURCE_TLS_AND_BROWSER_SERVICE_WORKER",
+        "offline_navigation": {
+          "model": "WORKER_FETCH_FAILURE_PAGE_STATE_ONLY",
+          "worker_fetch_failures": 4,
+          "page_navigation_continuations": 0,
+          "document_from_service_worker": true,
+          "document_http_status": 200,
+          "navigation_error_present": false,
+          "navigation_error_class": null,
+          "cached_document_redirected": true,
+          "cached_document_type": "basic",
+          "view": {
+            "document_class": "EXPECTED_APP_PATH",
+            "expected_heading_present": true,
+            "expected_notice_present": true,
+            "navigator_online": false
+          }
+        },
+        "tls_metadata": {
+          "collection_only": true,
+          "document_response_observed": true,
+          "document_matches_original_literal": true,
+          "document_path_class": "OFFLINE_CLEAN",
+          "document_security_state": "secure",
+          "document_protocol_class": "QUIC",
+          "visible_state_observed": true,
+          "visible_security_state": "secure",
+          "visible_protocol_class": "QUIC",
+          "visible_certificate_present": true,
+          "certificate_network_error_present": false,
+          "certificate_currently_valid": true,
+          "certificate_error_event_observed": false
+        },
+        "tls_metadata_only": false,
+        "candidate_worker_exercised": true,
+        "reviewed_staging_deployment_origin": "https://d24b6611.mushavo-budget-staging.pages.dev",
+        "target_setup_failure": null,
+        "explicit_page_attachment": true,
+        "checks": [
+          {
+            "check": "REAL_PUBLIC_DOM_AND_SECURE_CONTEXT",
+            "status": "PASS"
+          },
+          {
+            "check": "BROWSER_SECURE_TRANSPORT_AND_CERTIFICATE_VERIFIED",
+            "status": "PASS"
+          },
+          {
+            "check": "ALL_16_PUBLIC_ASSET_BYTES_MATCH_PINNED_SOURCE",
+            "status": "PASS"
+          },
+          {
+            "check": "FRESH_PROFILE_HAS_NO_AUTH_STORAGE_OR_DEVICE_COOKIE",
+            "status": "PASS"
+          },
+          {
+            "check": "ACTUALLY_EXECUTED_WORKER_SOURCE_MATCHES_PIN",
+            "status": "PASS"
+          },
+          {
+            "check": "STALE_PRODUCT_CACHE_REMOVED_UNRELATED_CACHE_PRESERVED",
+            "status": "PASS"
+          },
+          {
+            "check": "ALL_14_PRODUCT_CACHE_ENTRIES_ARE_EXACT_PUBLIC_SOURCE",
+            "status": "PASS"
+          },
+          {
+            "check": "REAL_WORKER_OFFLINE_NAVIGATION_SHOWS_ONLY_SAFE_DOCUMENT",
+            "status": "PASS"
+          },
+          {
+            "check": "OFFLINE_NAVIGATION_DID_NOT_CACHE_PRIVATE_APP_HTML",
+            "status": "PASS"
+          },
+          {
+            "check": "NO_INTERCEPTED_AUTH_GATEWAY_OR_UNREVIEWED_REQUEST_ALLOWED",
+            "status": "PASS"
+          }
+        ],
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "browser_product": "Chrome/155.0.8059.79",
+        "public_assets_verified": 16,
+        "intercepted_request_attempts": 46,
+        "maximum_intercepted_requests": 128,
+        "blocked_unreviewed_requests": 0,
+        "simulated_offline_requests": 4,
+        "intercepted_hosted_request_attempts": 41,
+        "worker_startup_fetches_not_intercepted": true,
+        "total_browser_hosted_requests_independently_counted": false,
+        "document_scripts_disabled": true,
+        "hosted_TLS_verified": true,
+        "hosted_secure_transport_verified": true,
+        "executed_worker_source_verified": true,
+        "isolated_temporary_profile": true,
+        "temporary_profile_removed": true,
+        "browser_process_stopped": true,
+        "private_packets_accessed": false,
+        "credentials_or_Auth_or_gateway_requests_permitted": false,
+        "real_email_requests": 0,
+        "committed_mode_change_requests": 0,
+        "hosted_authenticated_browser_acceptance": false,
+        "installed_PWA_OS_lifecycle_verified": false,
+        "external_traffic_OS_sandboxed": false,
+        "local_certificate_validation_bypassed": false,
+        "hosted_acceptance": false,
+        "live_activation_approved": false,
+        "production_or_native_changed": false,
+        "APK_update_deferred": true,
+        "findings_closed": [],
+        "checkpoint": "COMPLETE",
+        "problem_code": null,
+        "exit_code": 0,
+        "checked_UTC": "2026-10-23T15:55:22.577Z"
+      },
+      {
+        "origin": "CANONICAL",
+        "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
+        "batch": "O",
+        "result": "BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SW_SCOPED_PASS",
+        "scope": "HOSTED_PUBLIC_SOURCE_TLS_AND_BROWSER_SERVICE_WORKER",
+        "offline_navigation": {
+          "model": "WORKER_FETCH_FAILURE_PAGE_STATE_ONLY",
+          "worker_fetch_failures": 4,
+          "page_navigation_continuations": 0,
+          "document_from_service_worker": true,
+          "document_http_status": 200,
+          "navigation_error_present": false,
+          "navigation_error_class": null,
+          "cached_document_redirected": true,
+          "cached_document_type": "basic",
+          "view": {
+            "document_class": "EXPECTED_APP_PATH",
+            "expected_heading_present": true,
+            "expected_notice_present": true,
+            "navigator_online": false
+          }
+        },
+        "tls_metadata": {
+          "collection_only": true,
+          "document_response_observed": true,
+          "document_matches_original_literal": true,
+          "document_path_class": "OFFLINE_CLEAN",
+          "document_security_state": "secure",
+          "document_protocol_class": "QUIC",
+          "visible_state_observed": true,
+          "visible_security_state": "secure",
+          "visible_protocol_class": "QUIC",
+          "visible_certificate_present": true,
+          "certificate_network_error_present": false,
+          "certificate_currently_valid": true,
+          "certificate_error_event_observed": false
+        },
+        "tls_metadata_only": false,
+        "candidate_worker_exercised": true,
+        "reviewed_staging_deployment_origin": "https://mushavo-budget-staging.pages.dev",
+        "target_setup_failure": null,
+        "explicit_page_attachment": true,
+        "checks": [
+          {
+            "check": "REAL_PUBLIC_DOM_AND_SECURE_CONTEXT",
+            "status": "PASS"
+          },
+          {
+            "check": "BROWSER_SECURE_TRANSPORT_AND_CERTIFICATE_VERIFIED",
+            "status": "PASS"
+          },
+          {
+            "check": "ALL_16_PUBLIC_ASSET_BYTES_MATCH_PINNED_SOURCE",
+            "status": "PASS"
+          },
+          {
+            "check": "FRESH_PROFILE_HAS_NO_AUTH_STORAGE_OR_DEVICE_COOKIE",
+            "status": "PASS"
+          },
+          {
+            "check": "ACTUALLY_EXECUTED_WORKER_SOURCE_MATCHES_PIN",
+            "status": "PASS"
+          },
+          {
+            "check": "STALE_PRODUCT_CACHE_REMOVED_UNRELATED_CACHE_PRESERVED",
+            "status": "PASS"
+          },
+          {
+            "check": "ALL_14_PRODUCT_CACHE_ENTRIES_ARE_EXACT_PUBLIC_SOURCE",
+            "status": "PASS"
+          },
+          {
+            "check": "REAL_WORKER_OFFLINE_NAVIGATION_SHOWS_ONLY_SAFE_DOCUMENT",
+            "status": "PASS"
+          },
+          {
+            "check": "OFFLINE_NAVIGATION_DID_NOT_CACHE_PRIVATE_APP_HTML",
+            "status": "PASS"
+          },
+          {
+            "check": "NO_INTERCEPTED_AUTH_GATEWAY_OR_UNREVIEWED_REQUEST_ALLOWED",
+            "status": "PASS"
+          }
+        ],
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "browser_product": "Chrome/155.0.8059.79",
+        "public_assets_verified": 16,
+        "intercepted_request_attempts": 46,
+        "maximum_intercepted_requests": 128,
+        "blocked_unreviewed_requests": 0,
+        "simulated_offline_requests": 4,
+        "intercepted_hosted_request_attempts": 41,
+        "worker_startup_fetches_not_intercepted": true,
+        "total_browser_hosted_requests_independently_counted": false,
+        "document_scripts_disabled": true,
+        "hosted_TLS_verified": true,
+        "hosted_secure_transport_verified": true,
+        "executed_worker_source_verified": true,
+        "isolated_temporary_profile": true,
+        "temporary_profile_removed": true,
+        "browser_process_stopped": true,
+        "private_packets_accessed": false,
+        "credentials_or_Auth_or_gateway_requests_permitted": false,
+        "real_email_requests": 0,
+        "committed_mode_change_requests": 0,
+        "hosted_authenticated_browser_acceptance": false,
+        "installed_PWA_OS_lifecycle_verified": false,
+        "external_traffic_OS_sandboxed": false,
+        "local_certificate_validation_bypassed": false,
+        "hosted_acceptance": false,
+        "live_activation_approved": false,
+        "production_or_native_changed": false,
+        "APK_update_deferred": true,
+        "findings_closed": [],
+        "checkpoint": "COMPLETE",
+        "problem_code": null,
+        "exit_code": 0,
+        "checked_UTC": "2026-10-23T15:55:25.602Z"
+      }
+    ],
+    "public_byte_checks": 4,
+    "public_browser_checks": 20,
+    "hosted_scoped_checks": 24,
+    "upload_action_automated": false,
+    "reviewed_public_release_observed_on_both_origins": true,
+    "Pages_binding_or_secret_metadata_rechecked": false,
+    "total_browser_hosted_requests_independently_counted": false,
+    "maximum_intercepted_requests_per_browser": 128,
+    "private_packets_or_credentials_accessed": false,
+    "email_requests": 0,
+    "committed_mode_change_requests": 0,
+    "database_state_read_or_changed": false,
+    "hosted_authenticated_browser_acceptance": false,
+    "installed_PWA_OS_lifecycle_verified": false,
+    "hosted_acceptance": false,
+    "live_activation_approved": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0,
+    "checked_UTC": "2026-10-23T15:55:25.602Z"
+  },
+  "artifact_regenerated": false,
+  "artifact_written": false,
+  "automatic_upload_attempted": false,
+  "private_packets_or_credentials_accessed": false,
+  "email_requests": 0,
+  "committed_mode_change_requests": 0,
+  "hosted_acceptance": false,
+  "live_activation_approved": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "checkpoint": "COMPLETE",
+  "problem_code": null,
+  "exit_code": 0
+}

@@ -1,0 +1,84 @@
+{
+  "date": "2026-11-14",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Business attachment browser",
+  "result": "STAGING_BUSINESS_ATTACHMENT_BROWSER_REVIEW_REQUIRED",
+  "prior_business_csv_xlsx": "docs/security-audit/security-fr-3-2-business-table-staging-result.json",
+  "commit": "8e603560a6b7b58fa2874fc4b24bad9690dc3dd3",
+  "run_id": 43605530523,
+  "job_id": 132479235303,
+  "previous_runs": [
+    {
+      "id": 43604865653,
+      "result": "BUSINESS_HTML_PREVIEW_NAVIGATION_STOP"
+    },
+    {
+      "id": 43605068851,
+      "result": "FIXTURE_ONBOARDING_HID_ACTIVITY"
+    },
+    {
+      "id": 43605333570,
+      "result": "PLAYWRIGHT_FIXTURE_BUFFER_REQUIRED"
+    }
+  ],
+  "validator": {
+    "version": 1,
+    "hash": "a2e545ddd27b3020bf4d276fbd140ece7753b3ca08b3a3ea6d32f2314e4bd7b6",
+    "exact": 10
+  },
+  "browser": {
+    "checks": {
+      "expense-claim_TRUNCATED_REFUSED_BEFORE_REGISTRATION": true,
+      "expense-claim_VALIDATED_METADATA_REGISTERED": true,
+      "expense-claim_EXACT_PRIVATE_FILE_READ": false
+    },
+    "requests": 17,
+    "cleanup": {
+      "expense-claim": true,
+      "bill-invoice": true,
+      "suspended": true
+    },
+    "browser": {
+      "validator": 2,
+      "register": 1,
+      "broker": 1,
+      "reads": 73,
+      "blocked": []
+    },
+    "browser_step": "expense-claim:OPEN_FILE",
+    "browser_navigation_status": 200,
+    "browser_error_kind": "BROWSER_EXACT_PRIVATE_FILE_READ"
+  },
+  "created_sessions": 3,
+  "cleaned_sessions": 3,
+  "claim_receipt_validation_and_exact_registration_passed": true,
+  "claim_broker_http_status_from_edge_logs": 200,
+  "claim_private_response_header_and_bytes_assertion_passed": false,
+  "bill_browser_path_tested": false,
+  "independent_cleanup": {
+    "status": "suspended",
+    "business_support_version": 38,
+    "onboarding_status": "in_progress",
+    "profile_version": 18,
+    "paid_through_at": "2026-11-14 00:00:00+00",
+    "subscription_version": 1,
+    "attachment_gate": false,
+    "document_gate": false,
+    "csv_gate": false,
+    "xlsx_gate": false,
+    "objects": 0,
+    "active_documents": 0,
+    "archived_claim_file_rows": 1,
+    "retained_draft_claims": 1,
+    "retained_unpaid_bills": 1,
+    "retained_test_suppliers": 1,
+    "bill_payments": 0,
+    "test_window_sessions": 0,
+    "outbox": 0,
+    "catalog_matches": true
+  },
+  "exact_draft_fixture_deletion_confirmation_expired": true,
+  "retained_synthetic_records_for_review": true,
+  "full_FR_3_2_complete": false,
+  "exit_code": 1
+}

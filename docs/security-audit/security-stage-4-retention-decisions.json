@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "stage_step": "4.1.2",
+  "scope": "UNAPPROVED_REVIEW_TEMPLATE_NOT_PRODUCT_OR_LEGAL_POLICY",
+  "source_commit": "6b0f30c116ecb4fdddbf43b4ccd3671cbaf3e622",
+  "approved": false,
+  "operator_facts_verified": false,
+  "operator_audience_territories": null,
+  "categories": {
+    "identity": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "personal": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "shared_finance": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "invitations_support": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "telemetry_devices": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "storage": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "processors_backups": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "completion_record": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    }
+  },
+  "owner_action_requested": false,
+  "hosted_execution_authorized": false,
+  "note": "Null fields are unresolved decisions. Synthetic TEST-ONLY values in local tests cannot approve this template. No legal retention duration or erasure deadline has been adopted."
+}

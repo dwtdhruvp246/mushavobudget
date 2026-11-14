@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-29",
+  "stage_step": "FR.2.5.AU02.01_AU02.02_CURRENT_POLICY_PREPARATION",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "SOURCE_PREREQUISITE_RECONCILED_OWNER_SCOPED_INVITATION_PENDING",
+  "source_parent_commit": "760973feae2329880dd70129d852eb33c71ac767",
+  "owner_policy": "PASSWORD_SIGNIN_ALL_USERS_INCLUDING_ADMIN",
+  "owner_policy_receipt": "docs/security-audit/security-fr-2-batch-w-password-signin-owner-policy.json",
+  "reconciliation": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_PASSWORD_POLICY_RECONCILIATION.md",
+  "handoff": "docs/security-audit/SECURITY_FR_2_5_BATCH_W_ADMIN_INVITATION_CHECK.md",
+  "original_AU_cases_retained": [
+    "AU02.01",
+    "AU02.02",
+    "AU02.03",
+    "AU02.04",
+    "AU02.05"
+  ],
+  "immediate_cases": [
+    "AU02.01",
+    "AU02.02"
+  ],
+  "source_reviewed": [
+    "app.js",
+    "app.html",
+    "signup.html",
+    "supabase/functions/invite-admin-user/index.ts",
+    "docs/security-audit/security-fr-2-batch-v-contract.json"
+  ],
+  "historical_MFA_criteria_marked_pass": false,
+  "V_complete": false,
+  "source_reviews_are_hosted_acceptance": false,
+  "owner_live_results_received": false,
+  "maximum_requested_invitation_send_actions": 1,
+  "stop_on_rate_limit_or_error": true,
+  "rate_limit_reset_verified": false,
+  "new_public_AU_cases_added": 0,
+  "assistant_hosted_requests": 0,
+  "assistant_real_email_requests": 0,
+  "runtime_or_SQL_changed": false,
+  "production_or_native_changed": false,
+  "full_lettered_batch_W_complete": false
+}

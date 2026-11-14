@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "source_parent_commit": "3f1ccb62163e1c0d65a930d74de1869fbb7446b1",
+  "scope": "FAMILY_PAYMENT_PROOF_UPLOAD_PATH_BINDING",
+  "defect": "Inside the installed payment-proofs INSERT policy's Family subquery, unqualified name is bound to public.families.name. Legitimate Family object paths are therefore checked against the Family display name.",
+  "old_policy_fingerprint": "2b4234683af9de0380b2e71c7213864f",
+  "current_catalog": "e902fca1d972f7cb76a0cc7b8f5ca649f24dfd2ae198cc77a1d96526a82172e8",
+  "change": "ALTER only the existing INSERT policy check; explicitly correlate all path segments to storage.objects.name. Preserve bucket, authenticated role, command, Personal own-user branch, Family owner/uploader/membership checks and restrictive current-session gate.",
+  "local_verification": {
+    "engine": "PGlite PostgreSQL",
+    "assertions": 17,
+    "original_owner_and_member_denials_reproduced": true,
+    "corrected_owner_and_member_allowed": true,
+    "foreign_owner_uploader_family_and_removed_session_denials": true
+  },
+  "deployment": "Use Supabase apply_migration on staging only, guard exact prior policy fingerprint and catalog stamp, refresh catalog stamp after the explained policy change, then independently compare every other Storage policy.",
+  "hosted_acceptance_plan": "Prepare one named synthetic Family fixture bound only to A/B, with a short fixture-only household entitlement. This operator data setup is not acceptance of Family signup/subscription provisioning. Use genuine A/B/Admin sessions for harmless PNG upload, forged/removed/anonymous denial and exact Storage API cleanup, followed by Owner deletion of the empty synthetic Family. No existing retained Family is changed.",
+  "existing_bucket_preflight": {
+    "four_buckets_private": true,
+    "limits_match_prior_source": true,
+    "physical_objects_across_four_buckets": 0
+  },
+  "external_email_or_provider_requests": 0,
+  "production_changed": false,
+  "trusted_content_processing_acceptance": false,
+  "full_batch_X_complete": false
+}

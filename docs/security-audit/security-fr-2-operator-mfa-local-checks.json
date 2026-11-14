@@ -1,0 +1,29 @@
+{
+  "stage_step": "FR.2.4_OPERATOR_MFA_PREPARATION",
+  "result": "OFFLINE_ACTUAL_OPERATOR_MFA_FLOW_WITH_SYNTHETIC_AUTH_SCOPED_PASS",
+  "scope": "ACTUAL_NODE_CLIENT_CONTROL_FLOW_WITH_SYNTHETIC_AUTH_HTTP_STREAMS_AND_CLI_REJECTION_CASES",
+  "node_version": "v24.19.0",
+  "tests": 27,
+  "pass": 27,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "exit_code": 0,
+  "syntax_checks": 4,
+  "file_sha256": {
+    "scripts/lib/fr-2-operator-mfa.mjs": "d8bd5ab559e3ed9fbde9a462bd397c147a2f77a15f01554774e6a9f75965a70a",
+    "scripts/setup-fr-2-operator-mfa.mjs": "2fdc120f493e6e1078a36e4f21aadec959959646c7bf313ff085e5ce35a76422",
+    "scripts/verify-fr-2-operator-mfa.mjs": "0c01329ce9242d8ff856de5a3eaf5be2f980036ef1eb721b897533a2fc140074",
+    "tests/fr-2-operator-mfa.test.mjs": "f41459561a6f70cb44ca44ff92397f5e85c16021c4d1827ee4fa0065af40fe3a"
+  },
+  "real_hosted_requests": 0,
+  "actual_Auth_signin_or_factor_enrollment_or_AAL2_verified": false,
+  "Windows_PowerShell_or_terminal_secret_display_execution_verified": false,
+  "hosted_Auth_accounts_roles_SQL_or_settings_changed": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "source_parent_commit": "440f6bedb633a9844393dd88092e12cbffe69112",
+  "additional_Linux_TTY_invalid_email_rejection_exercised": true,
+  "additional_TTY_check_hosted_requests": 0,
+  "initial_test_expectation_review": "First run25/26 passed; test request-count expectation25 corrected to27 (one config plus13 per actor); final27/27 passed. No hosted operation was run."
+}

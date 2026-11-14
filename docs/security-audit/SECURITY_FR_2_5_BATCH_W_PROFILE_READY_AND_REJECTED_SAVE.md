@@ -1,0 +1,17 @@
+# Profile and test window ready; rejected password save next
+
+Stage 3/10 | FR.2/8 | Batch W/Z. 27 October 2026, FRE249.
+
+[Owner SQL receipts](security-fr-2-batch-w-owner-profile-and-window-ready.json) report one new active profile, no existing-profile/Auth credential/workspace/proof changes, then an expired window reopened for one confirmed active account/1800 seconds. The reported expiry is **27 October2026 17:21:26UTC /19:21:26 Africa/Johannesburg**. These are owner-scoped readiness results, not independent application/session acceptance. The historical missing-profile cause remains unknown; the normal signup path was not changed. No repeated profile repair, new SQL, upload, code request or successful new-password save is requested at this checkpoint.
+
+The next [handoff](security-fr-2-batch-w-recovery-same-password-handoff.json) is the provider-refusal part of existing **AU04.05 Password-save failure/retry**, not an added acceptance case. Supabase documents **same_password** as refusal to replace a password with its current value: [official error codes](https://supabase.com/docs/guides/auth/debugging/error-codes), checked27October2026. The existing app maps it to **Choose a password different from your current password.** An initial provider error leaves controller.passwordSaved false; the page resets/hides the password form and starts email verification only after a successful save. Existing source tests already cover initial same_password/weak_password refusal and later post-write retry; no source changed or test suite rerun here. Runtime pin a1feb46df4a8c118a7e7a7d2255d4dd4e82448b4 remains unchanged.
+
+Owner steps:
+
+1. In the original genuine **Choose a new password** form for the same account, replace both mismatched entries with the exact **current** test-account password, at least eight characters, and click **Save password once**. Keep the value private. If the current password is not known, report that instead of guessing or recreating an account.
+2. Expect **Choose a password different from your current password.** and the password form still available. Stop after this one response. A different error or unexpected saved state must be reported as observed; do not infer the provider code or repeat the request.
+3. Return the displayed message, whether the password form remains visible, and whether the prepared **ZOHO_TEST_RECIPIENTS_JSON** secret was saved in **both deployment environments of mushavo-budget-staging** before the accepted redeployment. Do not return the secret value. That save confirmation is still outstanding; local clipboard preparation and the deployment URL alone do not establish it.
+
+This is one actual Auth update attempt intended to be refused, with no new-password retry or gateway code request yet. The rejection branch does not depend on gateway mail delivery. Successful retry/verification/explicit app-session continuation follows only after its result, recipient readiness and current bounded-window/session freshness. Do not equate the app acceptance-window deadline with the provider recovery-session lifetime. The original form stays open; do not refresh or reopen the consumed original link. No mailbox/code/token/password should be pasted into chat.
+
+Profile14/window12 and all previous evidence retain their original scope and source pins. Both UI deferrals remain deferred. V Admin MFA on hold; full W/FR.2/Stage3/release/findings remain open; production/native unchanged and APK deferred.

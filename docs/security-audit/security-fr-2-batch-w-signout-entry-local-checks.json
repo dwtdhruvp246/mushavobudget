@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-28",
+  "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "source_parent_commit": "2e395b7d9b5e3ef38f8f4c924da5e0d34f0ea3fa",
+  "source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51",
+  "result": "LOCAL_SOURCE_REPRODUCTION_AND_FIX_PASS_NOT_HOSTED",
+  "runtime_checks": 154,
+  "runtime_PASS": 154,
+  "runtime_FAIL": 0,
+  "runtime_exit_code": 0,
+  "runtime_command": "node --require ./scripts/offline-test-network.cjs --test ./tests/fr-2-email-ui.test.mjs ./tests/fr-2-email-entry.test.mjs ./tests/fr-2-persistent-device.test.mjs ./tests/stage-3-auth-page.test.mjs ./tests/stage-3-auth-flows.test.mjs ./tests/session-recovery.test.mjs ./tests/signout-entry.test.mjs",
+  "new_signout_source_checks": 14,
+  "package_checks": 8,
+  "package_PASS": 8,
+  "package_FAIL": 0,
+  "package_exit_code": 0,
+  "package_command": "node --require ./scripts/offline-test-network.cjs --test ./tests/fr-2-signout-entry-package.test.mjs",
+  "logs": {
+    "runtime": {
+      "SHA256": "6ec14c7feca207e01cd45d67e88ce54bd87eb478fa33ca716935235a0b4ba6e5",
+      "result": "PASS"
+    },
+    "package": {
+      "SHA256": "c4d2eb9d139bcc13d2cd4f31bd7799feb04ad093ddcfe357632726f830dd4aee",
+      "result": "PASS"
+    }
+  },
+  "prior_source_failure_reproduced": [
+    "Explicit signed-out reload with stored SDK session reopens protected entry.",
+    "Delayed push cleanup has not yet persisted a signed-out navigation intent."
+  ],
+  "initial_existing_fixture_failures": "Two source-slice fixtures needed their init end marker updated for the new manual-intent branch; production assertions were preserved and the final runtime154 passed.",
+  "runtime_coverage": [
+    "Sign-out/reload before delayed cleanup",
+    "Completed logout and leftover-session startup",
+    "Auth logout failure/persistent retry",
+    "manual/signed-out/expired intent",
+    "Duplicate attempt and actor replacement",
+    "Refresh/cross-tab suppression",
+    "Successful password/current SDK actor-token consistency",
+    "Wrong password and session race",
+    "Callback-material stripping",
+    "Actual Personal/Admin entry getter denial"
+  ],
+  "package_coverage": [
+    "Actual29-source manifest and import closure",
+    "Patch2/preserve42 and input",
+    "Canonical ZIP readback/corruption refusal",
+    "Actual CLI rejects wrong ZIP without writing",
+    "Prior accepted per-entry chain",
+    "Distinct raw/staged HTML hashes, staging origins and module119",
+    "Safe selected filename on refused prior entry"
+  ],
+  "syntax_checks": 7,
+  "source_manifest_entries_verified": 29,
+  "published_source_tree_exact_blob_changes": 9,
+  "published_source_tree_deletions": 0,
+  "transitive_manifest_matches_published_tree": true,
+  "tests_are_synthetic_not_real_browser": true,
+  "real_retained_Windows_ZIP_available_to_assistant": false,
+  "Windows_package_preparation_pending": true,
+  "new_browser_screenshot_or_viewport_validation": false,
+  "actual_new_hosted_Auth_gateway_SQL_email_or_public_HTTP_requests": 0,
+  "private_cookies_tokens_or_account_credentials_read": false,
+  "prior_frozen_source_or_historical_test_acceptance_recredited": false,
+  "old_UI140_package9_window12_retained_at_original_pins": true,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

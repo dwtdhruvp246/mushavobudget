@@ -1,0 +1,301 @@
+{
+  "date": "2026-11-08",
+  "source_commit": "ac5a1a2c541212a08f128eb132ecc753205f8659",
+  "workflow_run_id": 42465233035,
+  "job_id": 128683103467,
+  "guard_tests": 323,
+  "receipt": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "production_changed": false,
+    "exit_code": 0,
+    "exercise": {
+      "checks": {
+        "EXACT_PERSONAL_WORKSPACE": true,
+        "UPLOAD_0": true,
+        "RAW_OWNER_DENIED_payment-proofs_before_broker": true,
+        "OWNER_BYTES_0": true,
+        "OWNER_NO_STORE_0": true,
+        "RAW_OWNER_DENIED_payment-proofs_after_broker": true,
+        "RAW_OWNER_DENIED_payment-proofs_after_broker_unique_nonce": true,
+        "SIGNING_DENIED_payment-proofs": true,
+        "FOREIGN_DENIED_0": true,
+        "ANONYMOUS_DENIED_0": true,
+        "INVOKER_METADATA_ONLY_0": true,
+        "UPLOAD_1": true,
+        "RAW_OWNER_DENIED_subscription-proofs_before_broker": true,
+        "OWNER_BYTES_1": true,
+        "OWNER_NO_STORE_1": true,
+        "RAW_OWNER_DENIED_subscription-proofs_after_broker": true,
+        "RAW_OWNER_DENIED_subscription-proofs_after_broker_unique_nonce": true,
+        "SIGNING_DENIED_subscription-proofs": true,
+        "FOREIGN_DENIED_1": true,
+        "ANONYMOUS_DENIED_1": true,
+        "INVOKER_METADATA_ONLY_1": true,
+        "FINANCE_ADMIN_SUBSCRIPTION_PROOF": true,
+        "CURRENT_OWNER_REPEAT_REQUEST": true,
+        "DELETE_ACK_payment-proofs": true,
+        "DELETED_CONTEXT_EMPTY_payment-proofs": true,
+        "DELETE_ACK_subscription-proofs": true,
+        "DELETED_CONTEXT_EMPTY_subscription-proofs": true
+      },
+      "exercise_requests": 25,
+      "upload_attempts": 2,
+      "cleanup_paths": [
+        {
+          "bucket": "payment-proofs",
+          "path": "personal/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/audit-broker-9975c4aa-2460-49d8-a0ed-fdf8f8d7e6e4.png"
+        },
+        {
+          "bucket": "subscription-proofs",
+          "path": "workspaces/017513c6-ce57-48af-b902-9552faeb83dd/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/audit-broker-9975c4aa-2460-49d8-a0ed-fdf8f8d7e6e4.png"
+        }
+      ],
+      "storage_cleanup_acknowledged": true,
+      "email_requests": 0,
+      "finance_writes": 0,
+      "direct_client_signed_urls_issued": 0,
+      "original_cached_access_finding_closed": false,
+      "raw_delivery_blocked": false,
+      "raw_route_observations": [
+        {
+          "bucket": "payment-proofs",
+          "label": "before_broker",
+          "status": 400,
+          "headers": {
+            "cache-control": null,
+            "content-type": "application/json; charset=utf-8",
+            "x-mushavo-media-type": null,
+            "cf-cache-status": "BYPASS",
+            "vary": null,
+            "referrer-policy": null,
+            "x-content-type-options": null
+          },
+          "Storage_error": "not_found",
+          "Storage_status_code": "404"
+        },
+        {
+          "bucket": "payment-proofs",
+          "label": "after_broker",
+          "status": 400,
+          "headers": {
+            "cache-control": null,
+            "content-type": "application/json; charset=utf-8",
+            "x-mushavo-media-type": null,
+            "cf-cache-status": "BYPASS",
+            "vary": null,
+            "referrer-policy": null,
+            "x-content-type-options": null
+          },
+          "Storage_error": "not_found",
+          "Storage_status_code": "404"
+        },
+        {
+          "bucket": "payment-proofs",
+          "label": "after_broker_unique_nonce",
+          "status": 400,
+          "headers": {
+            "cache-control": null,
+            "content-type": "application/json; charset=utf-8",
+            "x-mushavo-media-type": null,
+            "cf-cache-status": "BYPASS",
+            "vary": null,
+            "referrer-policy": null,
+            "x-content-type-options": null
+          },
+          "Storage_error": "not_found",
+          "Storage_status_code": "404"
+        },
+        {
+          "bucket": "payment-proofs",
+          "label": "signing",
+          "status": 400,
+          "Storage_error": "not_found",
+          "Storage_status_code": "404",
+          "signed_URL_returned": false
+        },
+        {
+          "bucket": "subscription-proofs",
+          "label": "before_broker",
+          "status": 400,
+          "headers": {
+            "cache-control": null,
+            "content-type": "application/json; charset=utf-8",
+            "x-mushavo-media-type": null,
+            "cf-cache-status": "BYPASS",
+            "vary": null,
+            "referrer-policy": null,
+            "x-content-type-options": null
+          },
+          "Storage_error": "not_found",
+          "Storage_status_code": "404"
+        },
+        {
+          "bucket": "subscription-proofs",
+          "label": "after_broker",
+          "status": 400,
+          "headers": {
+            "cache-control": null,
+            "content-type": "application/json; charset=utf-8",
+            "x-mushavo-media-type": null,
+            "cf-cache-status": "BYPASS",
+            "vary": null,
+            "referrer-policy": null,
+            "x-content-type-options": null
+          },
+          "Storage_error": "not_found",
+          "Storage_status_code": "404"
+        },
+        {
+          "bucket": "subscription-proofs",
+          "label": "after_broker_unique_nonce",
+          "status": 400,
+          "headers": {
+            "cache-control": null,
+            "content-type": "application/json; charset=utf-8",
+            "x-mushavo-media-type": null,
+            "cf-cache-status": "BYPASS",
+            "vary": null,
+            "referrer-policy": null,
+            "x-content-type-options": null
+          },
+          "Storage_error": "not_found",
+          "Storage_status_code": "404"
+        },
+        {
+          "bucket": "subscription-proofs",
+          "label": "signing",
+          "status": 400,
+          "Storage_error": "not_found",
+          "Storage_status_code": "404",
+          "signed_URL_returned": false
+        }
+      ],
+      "owner_response_0": {
+        "status": 200,
+        "headers": {
+          "cache-control": "private, no-store, max-age=0, must-revalidate",
+          "content-type": "application/octet-stream",
+          "x-mushavo-media-type": "image/png",
+          "cf-cache-status": "DYNAMIC",
+          "vary": "Accept-Encoding, Origin, Authorization, apikey",
+          "referrer-policy": "no-referrer",
+          "x-content-type-options": "nosniff"
+        },
+        "bytes": 68,
+        "harmless_fixture_matches": true
+      },
+      "owner_response_1": {
+        "status": 200,
+        "headers": {
+          "cache-control": "private, no-store, max-age=0, must-revalidate",
+          "content-type": "application/octet-stream",
+          "x-mushavo-media-type": "image/png",
+          "cf-cache-status": "DYNAMIC",
+          "vary": "Accept-Encoding, Origin, Authorization, apikey",
+          "referrer-policy": "no-referrer",
+          "x-content-type-options": "nosniff"
+        },
+        "bytes": 68,
+        "harmless_fixture_matches": true
+      }
+    },
+    "full_lettered_batch_X_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-08-batch-x-server-only-file-retrieval-acceptance",
+    "source_commit": "ac5a1a2c541212a08f128eb132ecc753205f8659",
+    "workflow_run_id": "42465233035",
+    "workflow_run_attempt": "1"
+  },
+  "independent_cleanup": {
+    "objects": 0,
+    "checked_at": "2026-11-08T09:00:52.062016+00:00",
+    "catalog_matches": true,
+    "runner_sessions": 0,
+    "temporary_families": 0
+  },
+  "Edge_deployment": {
+    "id": "4d718f9c-fcfc-4b6d-b717-746d52ddcea8",
+    "slug": "get-private-file",
+    "name": "get-private-file",
+    "status": "ACTIVE",
+    "version": 4,
+    "created_at": 1794125796517,
+    "updated_at": 1794128345182,
+    "verify_jwt": false,
+    "import_map": false,
+    "entrypoint_path": "file:///tmp/user_fn_dczlddwbtgvfdujgcitb_4d718f9c-fcfc-4b6d-b717-746d52ddcea8_4/source/supabase/functions/get-private-file/index.ts",
+    "ezbr_sha256": "33684f5c4b9ea5f6ecc4535fc1bfcab8e2fb90cfb3788a133d66f18b5cfa0054"
+  },
+  "runtime_files": [
+    {
+      "file": "get-private-file/index.ts",
+      "matches": true
+    },
+    {
+      "file": "get-private-file/handler.mjs",
+      "matches": true
+    },
+    {
+      "file": "get-private-file/signed-private-file.mjs",
+      "matches": true
+    }
+  ],
+  "frontend_deployment": {
+    "id": "a1817026-ad12-469a-b41a-ed380b26ffe8",
+    "url": "https://a1817026.mushavo-budget-staging.pages.dev",
+    "environment": "production",
+    "latest_stage": {
+      "name": "queued",
+      "started_on": null,
+      "ended_on": null,
+      "status": "idle"
+    }
+  },
+  "scope": "GENUINE_PERSONAL_AND_SUBSCRIPTION_BROKER_POSITIVE_RAW_AND_SIGNING_DENIED_BEFORE_AFTER",
+  "internal_retrieval_capability_seconds": 15,
+  "capability_returned_to_client": false,
+  "full_batch_X_complete": false
+}

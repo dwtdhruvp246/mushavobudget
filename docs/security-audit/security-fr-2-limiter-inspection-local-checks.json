@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-15",
+  "source_parent_commit": "9a3ff5c6e6ef0fcfb1fb325eaa7e07817b373fc1",
+  "stage_step": "FR.2.4.E3.4_LIMITER_READ_ONLY_REVIEW",
+  "scope": "ACTUAL_INSPECTOR_WITH_SYNTHETIC_TRANSPORT_AND_CANDIDATE_PORT_PLUS_ACTUAL_MALFORMED_STDIN_CLI",
+  "tests": 15,
+  "pass_count": 15,
+  "fail": 0,
+  "exit_code": 0,
+  "namespace_array_null_absent_and_nonempty_error_shapes_tested": true,
+  "missing_or_false_success_cannot_pass": true,
+  "wrong_account403_pagination_transport_and_public_URL_failures_tested": true,
+  "error_messages_tokens_and_namespace_identifiers_not_emitted": true,
+  "only_fixed_GET_methods_tested": true,
+  "actual_Cloudflare_requests": 0,
+  "PowerShell_wrapper_source_reviewed": true,
+  "actual_new_Windows_wrapper_execution_verified": false,
+  "old_deployer_and_limiter_artifacts_changed": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

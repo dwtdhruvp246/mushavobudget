@@ -1,0 +1,166 @@
+{
+  "received_date": "2026-10-22",
+  "requested_run_commit": "09adf74c5ee9d9dac831a3f41c451219a93f2b8b",
+  "run_commit_independently_attested": false,
+  "separate_offline_verifier_receipt_received": false,
+  "receipt": {
+    "stage_step": "FR.2.4.E5.16R_READ_ONLY_POST_INSTALL_SOURCE_REVIEW",
+    "result": "CURRENT_CONTACT_ARTIFACTS_AND_SIX_INSTALLED_NAMES_SCOPED_PASS_CAUSE_UNVERIFIED",
+    "requests_attempted": 7,
+    "fixed_staging_project_metadata_matched": true,
+    "fixed_staging_database_host_matched": true,
+    "selected_functions_absent_before_and_after": true,
+    "single_unrelated_function_matches_reviewed_contact_slug": true,
+    "detail_metadata_agreed_before_and_after": true,
+    "all_six_names_listed": true,
+    "reviewed_contact_artifacts_match": true,
+    "six_names_not_consumed_by_matched_source": true,
+    "secret_name_metadata_endpoint_used": true,
+    "metadata_snapshot_is_not_a_write_lock": true,
+    "APK_update_deferred": true,
+    "prior_metadata_fingerprint_matches": false,
+    "prior_function_ID_or_version_equality_independently_verified": false,
+    "metadata_change_cause_verified": false,
+    "exact_reviewed_contact_source_bytes_match": false,
+    "downloaded_source_normalized_for_acceptance": false,
+    "shared_configuration_runtime_impact_verified": false,
+    "previous_deployable_artifact_retained": false,
+    "recovery_execution_verified": false,
+    "configuration_values_collected": false,
+    "application_rows_read": false,
+    "SQL_endpoint_used": false,
+    "secret_write_attempted": false,
+    "downloaded_source_executed_or_saved": false,
+    "raw_source_provider_bodies_paths_or_unselected_identifiers_printed": false,
+    "token_saved_to_disk_or_environment": false,
+    "token_permission_scope_independently_inspected": false,
+    "settings_data_roles_grants_or_schedules_changed": false,
+    "email_push_or_FX_dispatched": false,
+    "readiness_approved": false,
+    "uploaded_or_deployed": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "other_function_metadata_SHA256": "f8fe331bf335145aff9cb8979816b3d092bc900c93c78e8856be1afbb975296e",
+    "downloaded_source_files": 2,
+    "source_observation": {
+      "decoder_step": "COMPLETE",
+      "multipart_parts_observed": 3,
+      "file_parts_observed": 2,
+      "source_files_decoded": 2,
+      "parts_with_content_disposition": 3,
+      "parts_with_supabase_path": 0,
+      "parts_with_quoted_filename": 2,
+      "metadata_part_observed": true,
+      "metadata_has_primary_entrypoint": false,
+      "metadata_has_deno2_entrypoint": true,
+      "metadata_entrypoint_matches_detail": false,
+      "body_entrypoint_selected": "DENO2_METADATA",
+      "body_entrypoint_form": "RELATIVE",
+      "entrypoint_mapping_verified": true,
+      "mapped_relative_file_count": 2,
+      "file_path_forms": {
+        "absolute_posix": 0,
+        "file_URL": 0,
+        "relative": 2,
+        "unsupported": 0
+      },
+      "expected_relative_files": [
+        {
+          "name": "index.ts",
+          "observed": true
+        },
+        {
+          "name": "handler.mjs",
+          "observed": true
+        }
+      ],
+      "unexpected_relative_file_count": 0
+    },
+    "source_comparison": [
+      {
+        "name": "index.ts",
+        "exact_original_LF_bytes_match": false,
+        "reviewed_artifact_variant": "PINNED_OWNER_OBSERVED_CRLF",
+        "reviewed_artifact_exact_bytes_match": true
+      },
+      {
+        "name": "handler.mjs",
+        "exact_original_LF_bytes_match": false,
+        "reviewed_artifact_variant": "PINNED_OWNER_OBSERVED_CRLF",
+        "reviewed_artifact_exact_bytes_match": true
+      }
+    ],
+    "installed_configuration_names": [
+      {
+        "name": "APP_ORIGIN",
+        "listed": true
+      },
+      {
+        "name": "VAPID_PUBLIC_KEY",
+        "listed": true
+      },
+      {
+        "name": "VAPID_PRIVATE_KEY",
+        "listed": true
+      },
+      {
+        "name": "VAPID_SUBJECT",
+        "listed": true
+      },
+      {
+        "name": "CURRENCYAPI_API_KEY",
+        "listed": true
+      },
+      {
+        "name": "CURRENCY_SYNC_SECRET",
+        "listed": true
+      }
+    ],
+    "source_review_basis": "EXACT_PINNED_CRLF_ARTIFACTS",
+    "Edge_functions_invoked": 0,
+    "findings_closed": [],
+    "samples": [
+      {
+        "endpoint": "STAGING_PROJECT_METADATA",
+        "http_status": 200,
+        "bounded_body_received": true
+      },
+      {
+        "endpoint": "STAGING_FUNCTION_LIST_BEFORE",
+        "http_status": 200,
+        "bounded_body_received": true
+      },
+      {
+        "endpoint": "STAGING_CONTACT_DETAIL_BEFORE",
+        "http_status": 200,
+        "bounded_body_received": true
+      },
+      {
+        "endpoint": "STAGING_CONTACT_SOURCE",
+        "http_status": 200,
+        "bounded_body_received": true
+      },
+      {
+        "endpoint": "STAGING_CONTACT_DETAIL_AFTER",
+        "http_status": 200,
+        "bounded_body_received": true
+      },
+      {
+        "endpoint": "STAGING_FUNCTION_LIST_AFTER",
+        "http_status": 200,
+        "bounded_body_received": true
+      },
+      {
+        "endpoint": "STAGING_INSTALLED_CONFIGURATION_NAMES",
+        "http_status": 200,
+        "bounded_body_received": true
+      }
+    ],
+    "checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0,
+    "checked_UTC": "2026-10-22T05:35:12.841Z",
+    "source_hashes_verified": 14
+  }
+}

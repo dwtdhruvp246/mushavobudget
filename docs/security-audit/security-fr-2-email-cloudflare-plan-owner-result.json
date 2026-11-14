@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-15",
+  "stage_step": "FR.2.4.E3.4",
+  "source_parent_commit": "b3ac835b8a72cb466ce74e269da79271204ba0f4",
+  "scope": "OWNER_REPORTED_PLAN_AND_EXPLICIT_UNCERTAINTY_NOT_RESOURCE_ABSENCE",
+  "Workers_plan_owner_reported": "FREE",
+  "exact_Worker_name": "mushavo-email-rate-staging",
+  "exact_Worker_name_exists_owner_reported": "UNSURE",
+  "exact_Worker_exists_verified": null,
+  "unknown_is_not_treated_as_absent": true,
+  "prior_recorded_workflow_has_not_deployed_candidate_Worker": true,
+  "that_history_does_not_prove_no_existing_account_resource": true,
+  "actual_account_plan_or_worker_inventory_independently_verified": false,
+  "actual_Cloudflare_API_requests": 0,
+  "resource_secret_binding_upload_or_plan_change_performed": false,
+  "email_dispatched": false,
+  "SQL_Auth_roles_or_production_native_changed": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

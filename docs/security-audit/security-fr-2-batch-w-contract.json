@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-26",
+  "stage_step": "FR.2.5.W1_AUTH_SETTINGS_READ_ONLY_AND_FROZEN_AU31",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "status": "LOCAL20_PASS_READ_ONLY_SETTINGS_REVIEW_OWNER_HOSTED_PENDING",
+  "source_parent_commit": "4396cb32033802d37b4fd2a8d7f84da92e692901",
+  "owner_requested_V_MFA_deferral_during_phone_transfer": true,
+  "V_status": "PENDING_OWNER_PHONE_TRANSFER",
+  "V_completion_required_for_Admin_dependent_W_acceptance": true,
+  "MFA_bypass_or_disable_requested": false,
+  "required_AU_case_count": 31,
+  "acceptance_definition_source": "docs/security-audit/SECURITY_STAGE_3_5_AUTH_FLOWS.md",
+  "acceptance_cases": [
+    {
+      "id": "AU01.01",
+      "group": "AU01",
+      "title": "Valid ordinary signup",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU01.02",
+      "group": "AU01",
+      "title": "Confirmation-pending guidance",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU01.03",
+      "group": "AU01",
+      "title": "Unconfirmed sign-in denial",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU01.04",
+      "group": "AU01",
+      "title": "Correct confirmation destination",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU01.05",
+      "group": "AU01",
+      "title": "Generic existing-email/resend failure and rate response",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU02.01",
+      "group": "AU02",
+      "title": "Admin new-recipient setup",
+      "status": "BLOCKED_BY_PENDING_V_ADMIN_MFA",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU02.02",
+      "group": "AU02",
+      "title": "Admin-tab isolation",
+      "status": "BLOCKED_BY_PENDING_V_ADMIN_MFA",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU02.03",
+      "group": "AU02",
+      "title": "Wrong-recipient denial",
+      "status": "BLOCKED_BY_PENDING_V_ADMIN_MFA",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU02.04",
+      "group": "AU02",
+      "title": "Expired/cancelled/replaced invitation denial",
+      "status": "BLOCKED_BY_PENDING_V_ADMIN_MFA",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU02.05",
+      "group": "AU02",
+      "title": "Completion retry/idempotence",
+      "status": "BLOCKED_BY_PENDING_V_ADMIN_MFA",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU02.06",
+      "group": "AU02",
+      "title": "Business new-recipient first password",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU02.07",
+      "group": "AU02",
+      "title": "Existing Business recipient without password overwrite",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU02.08",
+      "group": "AU02",
+      "title": "Business accept/decline/replay",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU03.01",
+      "group": "AU03",
+      "title": "Ordinary valid sign-in including older valid password",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU03.02",
+      "group": "AU03",
+      "title": "Invalid credentials",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU03.03",
+      "group": "AU03",
+      "title": "Configured new-password boundary",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU03.04",
+      "group": "AU03",
+      "title": "Signed-in password change and retry",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU03.05",
+      "group": "AU03",
+      "title": "Required recent-login/reauthentication failure/success",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU04.01",
+      "group": "AU04",
+      "title": "Generic recovery request",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU04.02",
+      "group": "AU04",
+      "title": "Valid recovery opens dedicated new-password view",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU04.03",
+      "group": "AU04",
+      "title": "Wrong/no session",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU04.04",
+      "group": "AU04",
+      "title": "Expired/used link",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU04.05",
+      "group": "AU04",
+      "title": "Password-save failure/retry",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU04.06",
+      "group": "AU04",
+      "title": "Cross-tab/current-account isolation and sanitized URL",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU05.01",
+      "group": "AU05",
+      "title": "Same-user access refresh",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU05.02",
+      "group": "AU05",
+      "title": "Invalid refresh cleanup",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU05.03",
+      "group": "AU05",
+      "title": "Transient network preservation/retry",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU05.04",
+      "group": "AU05",
+      "title": "Sign-out with push cleanup failure",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU05.05",
+      "group": "AU05",
+      "title": "Auth sign-out failure",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU05.06",
+      "group": "AU05",
+      "title": "Account switch with in-flight/Business UI clearing",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    },
+    {
+      "id": "AU05.07",
+      "group": "AU05",
+      "title": "Selected Auth rate errors and observed stale-token window",
+      "status": "PENDING_HOSTED_EVIDENCE",
+      "required_evidence": "Actual scoped positive/negative hosted evidence; relevant prior accepted evidence may be reused after exact applicability review",
+      "settings_inspection_satisfies_case": false
+    }
+  ],
+  "new_acceptance_requirements_added": 0,
+  "initial_action": "One read-only staging target/quarantine/Auth configuration inspection; no AU case credited",
+  "entry": "scripts/review-fr-2-batch-w-auth.mjs",
+  "entry_flag": "--staging-auth-read-only",
+  "verifier": "scripts/verify-fr-2-batch-w-auth.mjs",
+  "controller": "scripts/lib/auth-batch-w-review.mjs",
+  "tests": "tests/fr-2-batch-w-auth.test.mjs",
+  "source_manifest": "docs/security-audit/security-fr-2-batch-w-source-manifest.json",
+  "source_hashes": 345,
+  "syntax_checks": 4,
+  "new_local_tests": 20,
+  "prior339_sources_unchanged": true,
+  "frozen_U310_sources_unchanged": true,
+  "new_dependency_install_required": false,
+  "previous_owner_V86_pass_reused_not_repeated": true,
+  "maximum_direct_HTTP_requests": 5,
+  "request_sequence": [
+    "GET fixed staging project",
+    "POST exact existing READ ONLY/ROLLBACK catalog snapshot",
+    "GET fixed staging config/auth",
+    "POST same READ ONLY/ROLLBACK final snapshot",
+    "GET fixed staging project"
+  ],
+  "Management_SQL_transport_read_only_flag": false,
+  "SQL_transaction_enforces_read_only": true,
+  "Auth_user_or_factor_endpoint_requests": 0,
+  "settings_write_requested": false,
+  "mode_or_role_or_account_or_session_write_requested": false,
+  "Auth_config_GET_may_include_private_provider_fields_in_memory_only": true,
+  "safe_result_projects_only_fixed_field_names_typed_values_counts_and_enums": true,
+  "arbitrary_strings_URLs_SMTP_OAuth_keys_templates_and_fences_not_printed": true,
+  "secret_values_or_secret_hashes_persisted": false,
+  "raw_response_persistence": false,
+  "existing_token_permission_denial_is_review_required_not_retry_or_scope_escalation": true,
+  "expected_prompts": [
+    "Same staging Management token (hidden, star masked); no other prompt"
+  ],
+  "token_source": "Reuse owner-retained staging Management token; no new token/rotation requested",
+  "Auth_config_read_permission_documentation": "https://supabase.com/docs/reference/api/v1-get-auth-service-config",
+  "Auth_config_read_permission": "auth_config_read (existing token support to be observed; no automatic permission change)",
+  "settings_values_missing_or_null_are_unknown": true,
+  "redirect_literal_presence_does_not_prove_glob_matching_delivery_or_identity": true,
+  "UI_new_password_minimum_from_unchanged_pinned_source": 12,
+  "settings_review_differences_do_not_trigger_PATCH_or_password_reset": true,
+  "actual_hosted_requests_in_assistant_tests": 0,
+  "real_email_requests": 0,
+  "real_factor_changes": false,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

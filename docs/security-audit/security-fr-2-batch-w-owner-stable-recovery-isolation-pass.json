@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-28",
+  "stage_step": "FR.2.5.W66_SHARED_TABS_OWNER_PASS_CURRENT_ORIGIN_RECOVERY_ISOLATION",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "OWNER_STABLE_RECOVERY_IDENTITY_CLEAN_URL_AND_ORIGINAL_DASHBOARD_ISOLATION_PASS",
+  "existing_case": "AU04.06",
+  "source_parent_commit": "3acfe2f3666f305ee02d6bab4735757e6cdfeb26",
+  "origin": "https://mushavo-budget-staging.pages.dev",
+  "expected_app_source_pin": "7005e81825049510aa8b45c08d21c42031328794",
+  "source": "OWNER_EXPLICIT_TEXT_REPORT_FOLLOWING_BOUNDED_STABLE_ORIGIN_HANDOFF",
+  "owner_exact_report": {
+    "recovery identity matches": "yes",
+    "URL clean": "yes",
+    "dashboard unchanged": "yes"
+  },
+  "recovery_identity_matches_owner_PASS": true,
+  "clean_stable_URL_owner_PASS": true,
+  "original_dashboard_unchanged_owner_PASS": true,
+  "scope": "Existing AU04.06 real other-account recovery-link view before password saving or normal-session adoption",
+  "password_save_or_successful_recovery_adoption_reported": false,
+  "independent_browser_trace": false,
+  "repeat_requested": false,
+  "new_public_AU_cases_added": 0,
+  "new_assistant_Auth_SQL_email_settings_password_or_deployment_operations": 0,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "V_remains_on_hold": true,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

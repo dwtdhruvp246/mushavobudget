@@ -1,0 +1,39 @@
+[
+  {
+    "factor_audit_review": {
+      "result": "BATCH_V_READ_ONLY_AUTH_AUDIT_INSPECTION_COMPLETE",
+      "exit_code": 0,
+      "stage_step": "FR.2.4.E5.35_BATCH_V_ADMIN_MFA_OPERATOR_FACTOR_AND_CATALOG_REVIEW",
+      "checked_UTC": "2026-10-25T15:14:35.7749+00:00",
+      "audit_review": {
+        "events": [],
+        "event_limit": 50,
+        "table_status": "AVAILABLE",
+        "target_project": "dczlddwbtgvfdujgcitb",
+        "window_end_utc": "2026-10-25T14:10:00Z",
+        "window_start_utc": "2026-10-25T13:35:00Z",
+        "details_truncated": false,
+        "human_or_client_origin_proven": false,
+        "selected_matching_rows_capped": 0,
+        "current_operator_session_counts": [
+          { "slot": "PRIMARY", "sessions": 0 },
+          { "slot": "RECOVERY", "sessions": 0 }
+        ],
+        "absence_of_removal_event_proves_no_cleanup": false,
+        "reviewed_RECOVERY_factor_currently_matches": true,
+        "Auth_API_or_factor_or_mode_or_setting_write": false,
+        "database_audit_retention_completeness_verified": false,
+        "raw_payloads_IDs_emails_IPs_or_credentials_printed": false
+      },
+      "Auth_requests": 0,
+      "findings_closed": [],
+      "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
+      "hosted_acceptance": false,
+      "transaction_read_only": "on",
+      "factor_changes_requested": false,
+      "production_or_native_changed": false,
+      "committed_mode_change_requests": 0,
+      "quarantined_before_and_after_verified": true
+    }
+  }
+]

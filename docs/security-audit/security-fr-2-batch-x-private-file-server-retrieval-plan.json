@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-08",
+  "status": "FROZEN_SERVER_ONLY_RETRIEVAL_CORRECTION",
+  "target_project": "dczlddwbtgvfdujgcitb",
+  "source_parent": "4cc265adb2ae36326d7a856992b4ca6d2dfca5be",
+  "catalog_unchanged": "cc122f36b6cc70e4fa88fe12a765cc83f24a586d495dfd3084f26edc2134e84f",
+  "contract": [
+    "Auth getUser and current app session precede first SECURITY INVOKER object/RLS lookup.",
+    "After caller authorization, use the existing server-only client to mint a 15-second retrieval URL and immediately fetch bytes. Exact origin/path and token-only query are mandatory; no redirects, automatic retries or unbounded body.",
+    "The temporary capability stays inside the server: no response field, frontend log, source artifact, error, or browser request carries it.",
+    "A second current object/version/RLS lookup follows retrieval. Responses are private no-store bytes, independent of the internal signed cache.",
+    "Authenticated original bytes and user signing stay blocked by the restrictive policy. Actual raw before/after/nonce probes must prove that the server fetch does not warm those paths.",
+    "Repeat the same-session warmed Family removal test only after owner/foreign/staff original-route checks pass."
+  ],
+  "dependency_state": {
+    "SDK": "2.110.9",
+    "Deno_lock_restored_sha256": "eb373bd333000e850a8775bc67796baee9aecbebc818bd53fbdd1e7f507ae8ff",
+    "locked_npm_entries": 29,
+    "unused_S3_dependency_and_code_removed": true
+  },
+  "verification": {
+    "Node_guard_tests": 323,
+    "hosted_acceptance": false
+  },
+  "production_changed": false
+}

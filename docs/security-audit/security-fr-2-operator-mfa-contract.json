@@ -1,0 +1,60 @@
+{
+  "stage_step": "FR.2.4_OPERATOR_MFA_HANDOFF",
+  "source_parent_commit": "440f6bedb633a9844393dd88092e12cbffe69112",
+  "project": "dczlddwbtgvfdujgcitb",
+  "owner_signin_receipt": "docs/security-audit/security-fr-2-operator-signin-owner-result.json",
+  "report": "docs/security-audit/SECURITY_FR_2_4_OPERATOR_SIGNIN_OUTCOME_AND_MFA_HANDOFF.md",
+  "local_receipt": "docs/security-audit/security-fr-2-operator-mfa-local-checks.json",
+  "tool_source_sha256": {
+    "scripts/lib/fr-2-operator-mfa.mjs": "d8bd5ab559e3ed9fbde9a462bd397c147a2f77a15f01554774e6a9f75965a70a",
+    "scripts/setup-fr-2-operator-mfa.mjs": "2fdc120f493e6e1078a36e4f21aadec959959646c7bf313ff085e5ce35a76422",
+    "scripts/verify-fr-2-operator-mfa.mjs": "0c01329ce9242d8ff856de5a3eaf5be2f980036ef1eb721b897533a2fc140074",
+    "tests/fr-2-operator-mfa.test.mjs": "f41459561a6f70cb44ca44ff92397f5e85c16021c4d1827ee4fa0065af40fe3a"
+  },
+  "tool_files": [
+    "scripts/lib/fr-2-operator-mfa.mjs",
+    "scripts/setup-fr-2-operator-mfa.mjs",
+    "scripts/verify-fr-2-operator-mfa.mjs",
+    "tests/fr-2-operator-mfa.test.mjs"
+  ],
+  "ordinary_operator_metadata_checkpoint": "docs/security-audit/security-fr-2-operator-identity-owner-result.json",
+  "planned_actions": [
+    "Read fixed public staging config; reject production/push/secret key shapes",
+    "Prompt two distinct isolated non-audit emails and hidden passwords locally",
+    "Create own password sessions and authenticate actor through fixed Auth GET/user",
+    "Reuse exactly one verified TOTP or enroll once only when no factors exist",
+    "Display new base32 key on private alternate terminal screen only; manually add authenticator entry",
+    "Challenge/verify TOTP and check constrained AAL2 claims plus server-authenticated user/factor readback",
+    "Locally log out; password sign in again with distinct session ID and verify a new TOTP",
+    "Locally log out both created sessions per account; repeat for second account",
+    "Return slot-only safe JSON; no credentials/tokens/IDs persisted"
+  ],
+  "factor_delete_or_reset_permitted": false,
+  "preexisting_pending_multiple_or_nonTOTP_factors_stop": true,
+  "ambiguous_or_lost_enrollment_response_requires_review_no_blind_rerun": true,
+  "no_automatic_promotion_or_MFA_installer_SQL": true,
+  "no_dependency_install_or_CDN_import": true,
+  "network_hosts": [
+    "mushavo-budget-staging.pages.dev",
+    "dczlddwbtgvfdujgcitb.supabase.co"
+  ],
+  "redirects_followed": false,
+  "max_config_body_bytes": 8192,
+  "max_Auth_body_bytes": 262144,
+  "request_timeout_seconds": 20,
+  "verified_new_run_expected_requests_without_retries": 27,
+  "genuine_MFA_owner_result_received": false,
+  "local_tests": 27,
+  "local_exit_code": 0,
+  "syntax_checks": 4,
+  "Windows_execution_not_claimed": true,
+  "publishable_key_project_ownership_independently_verified": false,
+  "private_alt_screen_not_a_secure_erasure_or_external_recorder_guarantee": true,
+  "full_recovery_drill_or_independent_device_unverified": true,
+  "owner_command_action_required": true,
+  "SQL_action_required": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "findings_closed": [],
+  "APK_update_deferred": true
+}

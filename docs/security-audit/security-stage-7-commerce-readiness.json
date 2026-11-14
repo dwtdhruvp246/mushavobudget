@@ -1,0 +1,1258 @@
+{
+  "schema_version": 1,
+  "stage_step": "7.3",
+  "date": "2026-10-12",
+  "source_parent_commit": "787081b45f9ea92d6e99aee3d7abba19220ca94c",
+  "result": "BOUNDED_READINESS_COMPLETE_HOSTED_STORE_ACCEPTANCE_BLOCKED",
+  "scope": "CURRENT_REPOSITORY_IDENTITY_AND_PRESERVED_RECEIPT_RECONCILIATION_NOT_HOSTED_OR_PROVIDER_PROBING",
+  "candidate_commit": "7f58fa2b8aa48becec4c8b3b611700ba2b71c078",
+  "owner_repeat_record_commit": "787081b45f9ea92d6e99aee3d7abba19220ca94c",
+  "target_if_later_authorized": {
+    "staging_project": "dczlddwbtgvfdujgcitb",
+    "production_project_excluded": "kttkospkblwvguuwnhjj",
+    "project_dashboard_or_settings_inspected_this_step": false
+  },
+  "integrity": {
+    "prior_7_1_source_identity_checks": [
+      {
+        "path": "app.js",
+        "recorded_git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+        "current_git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+        "result": "MATCH"
+      },
+      {
+        "path": "app.html",
+        "recorded_git_blob_sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+        "current_git_blob_sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+        "result": "MATCH"
+      },
+      {
+        "path": "business.js",
+        "recorded_git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+        "current_git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+        "result": "MATCH"
+      },
+      {
+        "path": "business.html",
+        "recorded_git_blob_sha": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+        "current_git_blob_sha": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+        "result": "MATCH"
+      },
+      {
+        "path": "admin-plans.js",
+        "recorded_git_blob_sha": "c6a7620703d83b9f5a3df9f62f69e4c4f41b32c2",
+        "current_git_blob_sha": "c6a7620703d83b9f5a3df9f62f69e4c4f41b32c2",
+        "result": "MATCH"
+      },
+      {
+        "path": "package.json",
+        "recorded_git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+        "current_git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+        "result": "MATCH"
+      },
+      {
+        "path": "package-lock.json",
+        "recorded_git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+        "current_git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+        "result": "MATCH"
+      },
+      {
+        "path": "pricing.html",
+        "recorded_git_blob_sha": "abb1db5130f943c4bbc761c6c93ced2abadcdc54",
+        "current_git_blob_sha": "abb1db5130f943c4bbc761c6c93ced2abadcdc54",
+        "result": "MATCH"
+      },
+      {
+        "path": "config.js",
+        "recorded_git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+        "current_git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/schema.sql",
+        "recorded_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+        "current_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260928090000_admin_manual_subscription_grants.sql",
+        "recorded_git_blob_sha": "859b123f33f00b4bc7aa26fca4f9795a04244eaf",
+        "current_git_blob_sha": "859b123f33f00b4bc7aa26fca4f9795a04244eaf",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+        "recorded_git_blob_sha": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+        "current_git_blob_sha": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20261001190000_admin_plans_workbench.sql",
+        "recorded_git_blob_sha": "2dc028ccd92314e6f6f92388fc2107142ea2ddf2",
+        "current_git_blob_sha": "2dc028ccd92314e6f6f92388fc2107142ea2ddf2",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20261002042500_reconcile_business_plan_seats.sql",
+        "recorded_git_blob_sha": "2bf290c33957d0c7cb85e7ea928355fcceb4b124",
+        "current_git_blob_sha": "2bf290c33957d0c7cb85e7ea928355fcceb4b124",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260921090000_additional_family_subscriptions.sql",
+        "recorded_git_blob_sha": "34addfdd2b4abef3e9a73bbe992f51a85464a505",
+        "current_git_blob_sha": "34addfdd2b4abef3e9a73bbe992f51a85464a505",
+        "result": "MATCH"
+      },
+      {
+        "path": "docs/BUSINESS_STAGE_10_BILLING.md",
+        "recorded_git_blob_sha": "6400b419fdd53fd12b42fec4cfdd9c22d738a879",
+        "current_git_blob_sha": "6400b419fdd53fd12b42fec4cfdd9c22d738a879",
+        "result": "MATCH"
+      },
+      {
+        "path": "docs/ADMIN_PLANS_WORKBENCH.md",
+        "recorded_git_blob_sha": "63ad9fc91697c1ed0dad2bba28993071af42a339",
+        "current_git_blob_sha": "63ad9fc91697c1ed0dad2bba28993071af42a339",
+        "result": "MATCH"
+      },
+      {
+        "path": "SUBSCRIPTION_DEPLOYMENT.md",
+        "recorded_git_blob_sha": "d4e87662624bbe6fd6ef6f424c1eeece6e96b584",
+        "current_git_blob_sha": "d4e87662624bbe6fd6ef6f424c1eeece6e96b584",
+        "result": "MATCH"
+      },
+      {
+        "path": "STAGE_2_ADDITIONAL_FAMILY_SUBSCRIPTIONS.md",
+        "recorded_git_blob_sha": "40181fcf15c11c468f2ace01391b165417fc825e",
+        "current_git_blob_sha": "40181fcf15c11c468f2ace01391b165417fc825e",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/admin-manual-subscription.test.mjs",
+        "recorded_git_blob_sha": "7d9f8d2895bc9e2bd06c772add0488579135a580",
+        "current_git_blob_sha": "7d9f8d2895bc9e2bd06c772add0488579135a580",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/admin-plans-workbench.test.mjs",
+        "recorded_git_blob_sha": "31a981bb4d024a8c6946df62f4d0336818f7737b",
+        "current_git_blob_sha": "31a981bb4d024a8c6946df62f4d0336818f7737b",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/additional-family-subscription.test.mjs",
+        "recorded_git_blob_sha": "ee821c74749de37b4d8b2de81f7daac1796ebf2a",
+        "current_git_blob_sha": "ee821c74749de37b4d8b2de81f7daac1796ebf2a",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/subscription-expiry.test.mjs",
+        "recorded_git_blob_sha": "c5e48e64fd3faaeeaabbd31dc533f43b97e19b25",
+        "current_git_blob_sha": "c5e48e64fd3faaeeaabbd31dc533f43b97e19b25",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/subscription-overview.test.mjs",
+        "recorded_git_blob_sha": "e0b488f6c30f25a45c4646b60fa411551c11ee25",
+        "current_git_blob_sha": "e0b488f6c30f25a45c4646b60fa411551c11ee25",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/diagnostics/business_stage_10_billing_diagnostic.sql",
+        "recorded_git_blob_sha": "9d7641d7ccebb737097b2001f45148cacf16523b",
+        "current_git_blob_sha": "9d7641d7ccebb737097b2001f45148cacf16523b",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260925090000_expiry_and_account_suspension.sql",
+        "recorded_git_blob_sha": "ddf61a186a128a2a4ffe593560197440209e8328",
+        "current_git_blob_sha": "ddf61a186a128a2a4ffe593560197440209e8328",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260925120000_family_extra_places.sql",
+        "recorded_git_blob_sha": "8a63e75e94965c7d737d7a8194f3f37feeffea5d",
+        "current_git_blob_sha": "8a63e75e94965c7d737d7a8194f3f37feeffea5d",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260903091000_dynamic_family_plan_selection.sql",
+        "recorded_git_blob_sha": "8e4abea4561de370232c7213d336c86b4bcc839c",
+        "current_git_blob_sha": "8e4abea4561de370232c7213d336c86b4bcc839c",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260928070000_business_stage_2_security_foundation.sql",
+        "recorded_git_blob_sha": "4ec51d1c99311e29577b7c53283ef7fcc9fedf6b",
+        "current_git_blob_sha": "4ec51d1c99311e29577b7c53283ef7fcc9fedf6b",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260928130000_business_stage_3_onboarding.sql",
+        "recorded_git_blob_sha": "a8fd4e1771255a13b5f32e6042bba75874b205d1",
+        "current_git_blob_sha": "a8fd4e1771255a13b5f32e6042bba75874b205d1",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260928170000_business_stage_4_team.sql",
+        "recorded_git_blob_sha": "0d979bceddde1c4c122bf725efc632959dd23391",
+        "current_git_blob_sha": "0d979bceddde1c4c122bf725efc632959dd23391",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20260930110000_business_stage_11_admin.sql",
+        "recorded_git_blob_sha": "d505b0c16529147fea998d794a60c55d5ff38e84",
+        "current_git_blob_sha": "d505b0c16529147fea998d794a60c55d5ff38e84",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20261002060000_business_public_availability.sql",
+        "recorded_git_blob_sha": "04577f4423d3473501f247621fa92a69616c13bd",
+        "current_git_blob_sha": "04577f4423d3473501f247621fa92a69616c13bd",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/migrations/20261004153000_business_custom_roles.sql",
+        "recorded_git_blob_sha": "c943e03949affcf1ee326ae86198cc22af5090e5",
+        "current_git_blob_sha": "c943e03949affcf1ee326ae86198cc22af5090e5",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/candidates/security_stage_3_admin_mfa.sql",
+        "recorded_git_blob_sha": "db61ac7b478a7026c6313f6b741aa1722e6207b5",
+        "current_git_blob_sha": "db61ac7b478a7026c6313f6b741aa1722e6207b5",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/functions/_shared/admin-assurance.mjs",
+        "recorded_git_blob_sha": "63ed3c4547ff5c4464e57e757655b1f7b7225332",
+        "current_git_blob_sha": "63ed3c4547ff5c4464e57e757655b1f7b7225332",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/config.toml",
+        "recorded_git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+        "current_git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/business-stage-10.test.mjs",
+        "recorded_git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+        "current_git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/business-stage-11.test.mjs",
+        "recorded_git_blob_sha": "c76723ee66752b2ed17950e85d694604d114cdab",
+        "current_git_blob_sha": "c76723ee66752b2ed17950e85d694604d114cdab",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/business-plan-workspace-actions.test.mjs",
+        "recorded_git_blob_sha": "73f83737a83fa13269a57ee5df811ff05cb32959",
+        "current_git_blob_sha": "73f83737a83fa13269a57ee5df811ff05cb32959",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/diagnostics/admin_manual_subscription_diagnostic.sql",
+        "recorded_git_blob_sha": "568e189dd5952a6380f0e53b63eaec8ba6c8a247",
+        "current_git_blob_sha": "568e189dd5952a6380f0e53b63eaec8ba6c8a247",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/diagnostics/admin_plans_workbench_diagnostic.sql",
+        "recorded_git_blob_sha": "b2d700f9e68d80cb29ba4de285424f120960f236",
+        "current_git_blob_sha": "b2d700f9e68d80cb29ba4de285424f120960f236",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+        "recorded_git_blob_sha": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+        "current_git_blob_sha": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/functions/dispatch-push-reminders/index.ts",
+        "recorded_git_blob_sha": "ec9b1561cc20f16080099704ee6174044582d67f",
+        "current_git_blob_sha": "ec9b1561cc20f16080099704ee6174044582d67f",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/functions/invite-admin-user/index.ts",
+        "recorded_git_blob_sha": "a26f1633237126a8a558d8e702ffaa1943173253",
+        "current_git_blob_sha": "a26f1633237126a8a558d8e702ffaa1943173253",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/functions/invite-business-member/index.ts",
+        "recorded_git_blob_sha": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+        "current_git_blob_sha": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/functions/send-test-push/index.ts",
+        "recorded_git_blob_sha": "ba209ea5a0a7e246e10be544fbfa4f7487dfbd5f",
+        "current_git_blob_sha": "ba209ea5a0a7e246e10be544fbfa4f7487dfbd5f",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/functions/submit-enquiry/index.ts",
+        "recorded_git_blob_sha": "890f5a02eb01c6d3de4c68f6dd78534b6cbcc71a",
+        "current_git_blob_sha": "890f5a02eb01c6d3de4c68f6dd78534b6cbcc71a",
+        "result": "MATCH"
+      },
+      {
+        "path": "supabase/functions/sync-exchange-rates/index.ts",
+        "recorded_git_blob_sha": "0c5a1b60a1e15c103cfd9a05422f23f94eee2133",
+        "current_git_blob_sha": "0c5a1b60a1e15c103cfd9a05422f23f94eee2133",
+        "result": "MATCH"
+      },
+      {
+        "path": "scripts/build-capacitor.mjs",
+        "recorded_git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+        "current_git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+        "result": "MATCH"
+      },
+      {
+        "path": "site.js",
+        "recorded_git_blob_sha": "f3d5abb558476b2ae1701e4911c3d1b58a50f348",
+        "current_git_blob_sha": "f3d5abb558476b2ae1701e4911c3d1b58a50f348",
+        "result": "MATCH"
+      },
+      {
+        "path": "index.html",
+        "recorded_git_blob_sha": "f6e71eb717aaf8071b827ff612ecff31c1e009e4",
+        "current_git_blob_sha": "f6e71eb717aaf8071b827ff612ecff31c1e009e4",
+        "result": "MATCH"
+      }
+    ],
+    "candidate_checks": [
+      {
+        "path": "scripts/lib/stage-7-commerce-model.mjs",
+        "current_git_blob_sha": "160a59600d166a2c355b50397d4a72bd52f3b185",
+        "computed_git_blob_sha": "160a59600d166a2c355b50397d4a72bd52f3b185",
+        "recorded_sha256": "0b63d723f5da155512430cd08161c30bd65eb0c277efae6ab996d5f3c30e9ecf",
+        "observed_sha256": "0b63d723f5da155512430cd08161c30bd65eb0c277efae6ab996d5f3c30e9ecf",
+        "result": "MATCH"
+      },
+      {
+        "path": "tests/stage-7-commerce-model.test.mjs",
+        "current_git_blob_sha": "8abc71108656c39414d538bb7f43a002e16070aa",
+        "computed_git_blob_sha": "8abc71108656c39414d538bb7f43a002e16070aa",
+        "recorded_sha256": "83a3630dc511863b6b5a5f5f9b5aa4568c4e73ff28acc5dc340f45cfbc77412d",
+        "observed_sha256": "83a3630dc511863b6b5a5f5f9b5aa4568c4e73ff28acc5dc340f45cfbc77412d",
+        "result": "MATCH"
+      },
+      {
+        "path": "scripts/verify-stage-7-commerce.mjs",
+        "current_git_blob_sha": "8659f41215976271a2e7a865161eb1235764b898",
+        "computed_git_blob_sha": "8659f41215976271a2e7a865161eb1235764b898",
+        "recorded_sha256": "c95267fb430c47a8d49f68078b29c8c4b6a73cfb852d991b867cab53bf34ecff",
+        "observed_sha256": "c95267fb430c47a8d49f68078b29c8c4b6a73cfb852d991b867cab53bf34ecff",
+        "result": "MATCH"
+      },
+      {
+        "path": "docs/security-audit/security-stage-7-commerce-candidate-contract.json",
+        "current_git_blob_sha": "b02302c82553661231c28650c09507220e80ab71",
+        "computed_git_blob_sha": "b02302c82553661231c28650c09507220e80ab71",
+        "recorded_sha256": "ecbb2280dc705380f6e9adc720f8b4764476451a14208b2e8b80a2720aa1072b",
+        "observed_sha256": "ecbb2280dc705380f6e9adc720f8b4764476451a14208b2e8b80a2720aa1072b",
+        "result": "MATCH"
+      }
+    ],
+    "distinct_current_input_identity_matches": 56,
+    "candidate_SHA256_matches": 4,
+    "preserved_owner_receipt_current_input_references": 12,
+    "owner_exact_published_hashes": 7,
+    "owner_exact_CRLF_variants": 5,
+    "unexpected_drift": 0,
+    "stage_7_non_document_diff_from_initial_pin": [
+      "scripts/lib/stage-7-commerce-model.mjs",
+      "scripts/verify-stage-7-commerce.mjs",
+      "tests/stage-7-commerce-model.test.mjs"
+    ],
+    "stage_7_runtime_SQL_Edge_dependency_or_native_diff": [],
+    "immutable_record_identities": [
+      {
+        "path": "docs/security-audit/security-stage-7-commerce-source-inventory.json",
+        "git_blob_sha": "71c4c6822f31afa71cc16da0f650c9b2b67da1a9",
+        "preserved": true
+      },
+      {
+        "path": "docs/security-audit/security-stage-7-commerce-decisions.json",
+        "git_blob_sha": "4fe97c56b1f0a0d2aa4ddd3cc39e2875ff8f1ce9",
+        "preserved": true
+      },
+      {
+        "path": "docs/security-audit/security-stage-7-commerce-test-matrix.json",
+        "git_blob_sha": "8ff487607c50b6fc95c8be7ffb8bb8535ffb3e09",
+        "preserved": true
+      },
+      {
+        "path": "docs/security-audit/security-stage-7-commerce-candidate-contract.json",
+        "git_blob_sha": "b02302c82553661231c28650c09507220e80ab71",
+        "preserved": true
+      },
+      {
+        "path": "docs/security-audit/security-stage-7-commerce-local-checks.json",
+        "git_blob_sha": "81b83a54a9ff6677ee14eb0ebf39191f8f53902d",
+        "preserved": true
+      },
+      {
+        "path": "docs/security-audit/security-stage-7-commerce-owner-local-checks.json",
+        "git_blob_sha": "394f0484c4ab61ebc555ee31e625bb07e376a3d8",
+        "preserved": true
+      }
+    ]
+  },
+  "prerequisites": [
+    {
+      "id": "CO-P01",
+      "status": "BLOCKED_DECISIONS_UNCONFIRMED",
+      "title": "Approved channel, catalog, prices and terms",
+      "evidence": "All eight CO-D decisions remain unconfirmed; runtime catalog is null. Configurable manual Business prices/public availability are source behavior, not inspected current settings or accepted store products.",
+      "required": [
+        "Approve actual web/PWA/Play/iOS/sideload route and verified storefront/program eligibility",
+        "Bind exact environment/app/product/plan/cycle/capacity and accepted prices/offers/terms",
+        "Choose or explicitly exclude an optional web gateway without inferring a provider from prior inquiries"
+      ],
+      "actions": [
+        "CO-R01",
+        "CO-R06",
+        "CO-R08"
+      ]
+    },
+    {
+      "id": "CO-P02",
+      "status": "BLOCKED_RUNTIME_COMMERCE_IMPLEMENTATION_MISSING_IN_REVIEWED_SOURCE",
+      "title": "Trusted verification and durable purchase/event processing",
+      "evidence": "The 7.2 contract has zero configured adapters and no runtime integration, provider verification or durable ledger/receiver. The complete Stage 7 non-document diff contains only three offline files.",
+      "required": [
+        "Implement provider-specific authoritative verification and authenticated event transport",
+        "Implement durable purchase-chain ownership, transactional transitions/CAS/outbox/retry/reconciliation and acknowledgment",
+        "Bind actual accepted staged source/schema/grants/provider configuration before genuine positive/negative protocol cases"
+      ],
+      "actions": [
+        "CO-R02",
+        "CO-R03",
+        "CO-R04",
+        "CO-R08"
+      ]
+    },
+    {
+      "id": "CO-P03",
+      "status": "BLOCKED_STAGED_GUARD_PARITY_AND_DIRECT_BEHAVIOR_UNVERIFIED",
+      "title": "Manual billing, Admin assurance and proof prerequisites",
+      "evidence": "The ten 7.2 existing regressions are selected source/VM cases. Earlier AU/AM/Business/UF dependencies retain staged source/grant/MFA/role/proof-validation/cleanup gaps; no new dashboard/SQL/API check was performed here.",
+      "required": [
+        "Verify exact isolated staging dczlddwbtgvfdujgcitb source/schema/RPC/policy/grant and effective Admin assurance parity",
+        "Bind recoverable controlled own/foreign/non-owner/anonymous/staff/MFA actors and original fixtures",
+        "Directly verify quote/retry/review/delegation/self-review/manual-grant and private proof/content/cleanup effects"
+      ],
+      "actions": [
+        "CO-R07",
+        "CO-R05",
+        "CO-R08"
+      ]
+    },
+    {
+      "id": "CO-P04",
+      "status": "BLOCKED_LIFECYCLE_OWNERSHIP_CAPACITY_POLICY_AND_RUNTIME_UNACCEPTED",
+      "title": "Lifecycle, ownership, capacity and source precedence",
+      "evidence": "Ownership/transfer, native proration/effective capacity and overlapping-source decisions remain unconfirmed. The model uses synthetic sequence and lifecycle labels, declines unmapped grace and returns REVIEW_SOURCE_PRECEDENCE for overlap.",
+      "required": [
+        "Approve actual provider lifecycle/grace/hold/refund/restore and account/workspace transfer rules",
+        "Implement reserved invitations, effective future capacity and provider-product changes without replacing accepted manual algorithms/invoices",
+        "Implement explicit independent-source precedence and suspension behavior, then verify real provider/server effects"
+      ],
+      "actions": [
+        "CO-R04",
+        "CO-R05",
+        "CO-R02",
+        "CO-R08"
+      ]
+    },
+    {
+      "id": "CO-P05",
+      "status": "BLOCKED_NATIVE_AND_SANDBOX_PREREQUISITES_UNVERIFIED",
+      "title": "Actual native route and controlled store sandbox",
+      "evidence": "No store billing bridge is identified in selected source; shared native bundle copies the manual app/business flow. Actual final signed artifact, current store accounts/enrollment/products/service roles/sandbox identities and provider configuration were not inspected. Earlier NR requirements remain open; APK update is deferred.",
+      "required": [
+        "Implement approved channel UX/bridge or qualifying access-only route and verify the actual final test artifact/device identity/callback routing",
+        "Verify actual sandbox products/permissions and separate recoverable test identities/workspaces without sharing secrets",
+        "Exercise genuine isolated purchase/manage/restore/cancel/relaunch flows with authoritative backend evidence"
+      ],
+      "actions": [
+        "CO-R06",
+        "CO-R08",
+        "CO-R02",
+        "CO-R04"
+      ]
+    },
+    {
+      "id": "CO-P06",
+      "status": "BLOCKED_OPERATIONS_PRIVACY_RETENTION_AND_RECOVERY_UNVERIFIED",
+      "title": "Operations, disclosures, ledger retention and rollback",
+      "evidence": "No live commerce ledger/event worker or genuine provider recovery drill was exercised. Stage 4 privacy/operator/audience/retention and earlier operations/native/release dependencies remain open.",
+      "required": [
+        "Approve actual collected purchase/ledger/refund data, retention/deletion, operator/terms/disclosure decisions",
+        "Verify server-only credential roles/rotation, processing budgets, redacted monitoring, durable recovery and reconciliation",
+        "Verify rollback preserves purchases/invoices/source attribution/retained fixtures and complete final residual remediation/full re-audit"
+      ],
+      "actions": [
+        "CO-R08",
+        "CO-R03",
+        "CO-R04"
+      ]
+    }
+  ],
+  "group_outcomes": [
+    {
+      "id": "CO01",
+      "title": "Channel/product/price decisions",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "CO02",
+      "title": "Manual web/proof/Admin regression",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "CO03",
+      "title": "Provider proof and ownership binding",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "CO04",
+      "title": "Event authentication/idempotency/recovery",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "CO05",
+      "title": "Subscription lifecycle/refund/restore",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "CO06",
+      "title": "Seats/plan changes/cross-channel consistency",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "CO07",
+      "title": "Native purchase/manage/restore UX",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    },
+    {
+      "id": "CO08",
+      "title": "Sandbox/operations/release evidence",
+      "planned_cases": 6,
+      "status": "BLOCKED_NOT_RUN",
+      "executed": 0,
+      "passed": 0,
+      "failed": 0,
+      "blocked": 6
+    }
+  ],
+  "case_outcomes": [
+    {
+      "id": "CO01-01",
+      "group": "CO01",
+      "expected": "Selected web/PWA/Play/iOS/sideload route matches actual distribution/storefront/program eligibility; unsupported payment CTAs are unavailable.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P03"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO01-02",
+      "group": "CO01",
+      "expected": "Server-approved product/plan/cycle/seat mapping rejects arbitrary product, unsupported quantity and wrong environment/app.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P03"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO01-03",
+      "group": "CO01",
+      "expected": "Native displayed localized product/offer price matches provider checkout; client amount/currency or finance FX cannot determine entitlement.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P03"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO01-04",
+      "group": "CO01",
+      "expected": "Price/configuration changes invalidate unsubmitted quotes while accepted invoice amounts and future effective terms remain preserved.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P03"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO01-05",
+      "group": "CO01",
+      "expected": "Null/unconfigured, zero/no-charge and Free plan paths remain distinct; no implied paid purchase or fake receipt.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P03"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO01-06",
+      "group": "CO01",
+      "expected": "Business purchase availability and complete pricing constraints are enforced directly, including stale/cached clients.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P03"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO02-01",
+      "group": "CO02",
+      "expected": "Own active workspace can submit valid server-priced Personal/Family requests; foreign/non-owner/anonymous/suspended direct calls fail.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P03"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO02-02",
+      "group": "CO02",
+      "expected": "Proof path/object/metadata and private access remain bound to actor/workspace/payment; invalid files and unauthorized signing are denied.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P03"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO02-03",
+      "group": "CO02",
+      "expected": "Business pending quote/payment and public-purchase submission retries preserve one invoice/request and accepted quote identity.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P03"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO02-04",
+      "group": "CO02",
+      "expected": "Approved/rejected review replay has no duplicate financial or entitlement effect; exact allowed staff roles and required MFA are enforced.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P03"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO02-05",
+      "group": "CO02",
+      "expected": "Business self-review restriction, suspension and invoice/workspace/owner binding hold through private and public review delegation.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P03"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO02-06",
+      "group": "CO02",
+      "expected": "Authorized manual/test grants retain bounded dates/reason/audit and create no fabricated provider purchase or payment receipt.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P03"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO03-01",
+      "group": "CO03",
+      "expected": "Genuine selected sandbox purchase is verified by the trusted backend/provider before a server entitlement is granted.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO03-02",
+      "group": "CO03",
+      "expected": "Forged client success, screenshot, JSON verified flag or unverified JWS/token creates no store entitlement.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO03-03",
+      "group": "CO03",
+      "expected": "Wrong package/bundle/product/environment, invalid signing chain/signature or untrusted provider response is rejected.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO03-04",
+      "group": "CO03",
+      "expected": "Purchase/transaction is bound to server-approved account/workspace intent; wrong account, email alias or attacker-selected workspace is denied.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO03-05",
+      "group": "CO03",
+      "expected": "Pending/failed/canceled purchase yields the correct non-grant state; repeated client callback cannot add extra time or capacity.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO03-06",
+      "group": "CO03",
+      "expected": "Renewal/linked-token/transaction chain retains one rightful owner; cross-account reuse and mistaken source transfer are rejected.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO04-01",
+      "group": "CO04",
+      "expected": "Google push receiver verifies configured JWT/claims and re-fetches authoritative purchase state before projecting entitlements.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P02",
+        "CO-P05",
+        "CO-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO04-02",
+      "group": "CO04",
+      "expected": "Apple signed notification/transaction/renewal data is verified for selected environment and app; altered payload is rejected.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P02",
+        "CO-P05",
+        "CO-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO04-03",
+      "group": "CO04",
+      "expected": "Any selected web-provider callback follows its own actual raw-body/signature/replay protocol; no generic trust-by-body.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO04-04",
+      "group": "CO04",
+      "expected": "Duplicate/reordered notifications and concurrent client/worker claims preserve one logical transition and do not extend time twice.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P02",
+        "CO-P05",
+        "CO-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO04-05",
+      "group": "CO04",
+      "expected": "Provider timeout, acknowledgment ambiguity and partial database failure retain durable retry/reconciliation without false completion.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P02",
+        "CO-P05",
+        "CO-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO04-06",
+      "group": "CO04",
+      "expected": "Transport message dedup and business purchase-chain state are separate; forged old events cannot roll back a newer accepted state.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P02",
+        "CO-P05",
+        "CO-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO05-01",
+      "group": "CO05",
+      "expected": "Renewal updates the server-derived entitlement window once; server times and verified status override caller timestamps.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO05-02",
+      "group": "CO05",
+      "expected": "Cancellation preserves access through the legitimate paid term where applicable; expiry removes only the paid entitlement.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO05-03",
+      "group": "CO05",
+      "expected": "Grace/hold/paused/recovered states follow the chosen provider and approved product policy across web/native.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO05-04",
+      "group": "CO05",
+      "expected": "Verified refund/revocation or chargeback updates the right purchase source and capacity without deleting finance records.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO05-05",
+      "group": "CO05",
+      "expected": "Restore on a new device/reinstall or account switch reconciles rightful ownership without minting a second purchase.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO05-06",
+      "group": "CO05",
+      "expected": "Concurrent manual grant/store recovery, expiry and suspension follow explicit source precedence and do not undo account suspension.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO06-01",
+      "group": "CO06",
+      "expected": "Family and Business included/extra seat mappings preserve owner counts, accepted members and unexpired reserved invitations.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P03",
+        "CO-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO06-02",
+      "group": "CO06",
+      "expected": "Existing Family anchored pricing and Business remaining-term fractions remain correct for manual web routes and old accepted invoices.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P03",
+        "CO-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO06-03",
+      "group": "CO06",
+      "expected": "Native seat/upgrade/downgrade charge/effective date uses approved provider product rules rather than blindly copying manual proration.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P03",
+        "CO-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO06-04",
+      "group": "CO06",
+      "expected": "Scheduled reduction retains current access until effective boundary and prevents new reservations above the approved next capacity.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P03",
+        "CO-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO06-05",
+      "group": "CO06",
+      "expected": "Multiple workspaces, ownership transfer and overlapping web/store subscriptions follow explicit binding/precedence without duplicate benefits.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P03",
+        "CO-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO06-06",
+      "group": "CO06",
+      "expected": "Removed member or expired source cannot buy/transfer/refund another workspace purchase; shared access remains separate from member's own plan.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P03",
+        "CO-P04"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO07-01",
+      "group": "CO07",
+      "expected": "Correct approved native purchase or qualifying consumption-only flow is shown for the verified channel/storefront.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO07-02",
+      "group": "CO07",
+      "expected": "Permitted native billing bridge/product query/purchase result works on a final test build; WebView manual checkout is not silently shipped as store billing.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO07-03",
+      "group": "CO07",
+      "expected": "Purchase cancellation/network interruption/process death and relaunch reconcile server state without showing unverified success.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO07-04",
+      "group": "CO07",
+      "expected": "Manage/cancel/restore surfaces and required price/renewal disclosures refer to the actual selected store plan and current account.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO07-05",
+      "group": "CO07",
+      "expected": "Deep link/callback to purchase or restored subscription preserves identity, role/MFA/tenant restrictions and prior workspace selection.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO07-06",
+      "group": "CO07",
+      "expected": "Older/offline/cached clients cannot expose unsupported payment routes or override backend entitlement; valid existing web access remains usable.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P04",
+        "CO-P05"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO08-01",
+      "group": "CO08",
+      "expected": "Exact staged source/schema/grants/providers/products/settings and recoverable isolated actors are verified before the accepted batch.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P03",
+        "CO-P04",
+        "CO-P05",
+        "CO-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO08-02",
+      "group": "CO08",
+      "expected": "Supported provider keys/service accounts/certificates remain server-only with appropriate roles, rotation and separate sandbox/production boundaries.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P03",
+        "CO-P04",
+        "CO-P05",
+        "CO-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO08-03",
+      "group": "CO08",
+      "expected": "Authenticated processing budgets, monitoring, durable reconciliation and recovery drills detect missing/misordered events without raw proof/token leakage.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P03",
+        "CO-P04",
+        "CO-P05",
+        "CO-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO08-04",
+      "group": "CO08",
+      "expected": "Ledger/refund/retention/deletion and operator/channel/terms/disclosure decisions align with actual collected data and provider contracts.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P03",
+        "CO-P04",
+        "CO-P05",
+        "CO-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO08-05",
+      "group": "CO08",
+      "expected": "Final signed native artifact contains approved SDK/channel flows; store sandbox purchase/restore/refund/renewal evidence is retained at correct scope.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P03",
+        "CO-P04",
+        "CO-P05",
+        "CO-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    },
+    {
+      "id": "CO08-06",
+      "group": "CO08",
+      "expected": "Rollback preserves purchases/invoices/entitlement attribution and retained synthetic fixtures; final residual resolution/full re-audit remains required.",
+      "status": "BLOCKED_NOT_RUN",
+      "actual": "NOT_EXECUTED",
+      "blocked_by": [
+        "CO-P01",
+        "CO-P02",
+        "CO-P03",
+        "CO-P04",
+        "CO-P05",
+        "CO-P06"
+      ],
+      "evidence_scope": "READINESS_ONLY_NO_ACTUAL_HOSTED_PROVIDER_DATABASE_OR_DEVICE_CASE"
+    }
+  ],
+  "summary": {
+    "prerequisite_groups_blocked": 6,
+    "planned_grouped_cases": 48,
+    "hosted_or_store_sandbox_cases_run": 0,
+    "device_cases_run": 0,
+    "blocked_not_run": 48,
+    "actual_case_passes": 0,
+    "actual_case_failures": 0,
+    "new_behavior_or_syntax_tests_run": 0,
+    "prior_offline_unique_cases": 30,
+    "assistant_same_case_pass": 30,
+    "owner_same_case_pass": 30,
+    "prior_assistant_and_owner_syntax_checks_each": 3,
+    "unconfirmed_decisions": 8,
+    "open_actions": 8
+  },
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "actual_provider_verification_purchase_refund_restore_cancellation_or_callback_run": false,
+  "price_product_gateway_SDK_activation_or_account_creation_performed": false,
+  "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "owner_SQL_terminal_setup_or_file_opening_action_required": false,
+  "prior_progress_receipts_and_original_definitions_preserved": true,
+  "findings_closed": [],
+  "next_step": "7.4",
+  "report_due_step": "7.4"
+}

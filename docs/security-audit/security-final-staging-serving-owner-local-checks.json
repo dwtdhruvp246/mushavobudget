@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "stage_step": "FR.1.3",
+  "source_parent_commit": "25a52a84c263938e5b2b3dc4f590ed7cdd43ee1b",
+  "candidate_commit": "25a52a84c263938e5b2b3dc4f590ed7cdd43ee1b",
+  "scope": "OWNER_WINDOWS_OFFLINE_CHECKER_REPEAT_WITH_EXACT_TOOL_IDENTITY_RECONCILIATION",
+  "reported_receipt": {
+    "stage_step": "FR.1.3",
+    "result": "OFFLINE_PUBLIC_SERVING_CHECKER_SCOPED_PASS",
+    "scope": "ACTUAL_CHECKER_AND_CLI_WITH_SYNTHETIC_RESPONSES_STREAMS_FIXED_REDIRECTS_TIMERS_AND_DISABLED_DEFAULT_TRANSPORT_NOT_LIVE_HOSTED_CHECKS",
+    "source_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
+    "node_version": "v22.17.0",
+    "tests": 16,
+    "pass": 16,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "exit_code": 0,
+    "syntax_checks": 3,
+    "syntax": [
+      {
+        "file": "scripts/check-final-staging-serving.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/verify-final-staging-serving.mjs",
+        "pass": true
+      },
+      {
+        "file": "tests/final-staging-serving.test.mjs",
+        "pass": true
+      }
+    ],
+    "file_sha256": {
+      "scripts/check-final-staging-serving.mjs": "2a4ea0233e72b80d5f926d107fc117ba405c35d58d2414193213de64ca495265",
+      "scripts/verify-final-staging-serving.mjs": "4a8e5a6426fc9408e2ac72603c8fd81858f8cecec8c85e6505747bf7670843fd",
+      "tests/final-staging-serving.test.mjs": "4db7ebb693ac2a85defa5b02f5682b1ffe10ad761b146cdf26e726b8893e1f56",
+      "scripts/prepare-final-staging.mjs": "8d016c5469d73accb290ffaf54645cdb401bdfb513c04ba1ca582e0f7c322bfa",
+      "scripts/prepare-stage-2-headers.cjs": "f52d8c555acc55792e5d2dc941557116d32eda447ba7490aca19ffa25b0cb169",
+      "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+      "docs/security-audit/security-final-staging-source-contract.json": "c620d8cdfe23551d3bda5ab3c66e8508eec5b59e16aafe52f737c8d95ca4c2cb"
+    },
+    "failed_case_titles": [],
+    "actual_public_staging_HTTP_responses": 0,
+    "Auth_API_SQL_jobs_provider_device_or_store_checks_run": 0,
+    "hosted_acceptance": false,
+    "candidate_deployed_by_this_verifier": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": []
+  },
+  "input_identity_checks": [
+    {
+      "path": "scripts/check-final-staging-serving.mjs",
+      "sha256": "2a4ea0233e72b80d5f926d107fc117ba405c35d58d2414193213de64ca495265",
+      "git_blob_sha": "e3f3907eb5db0a4b9de915f8ff7ff6e9d92d0bb8",
+      "result": "EXACT_BYTE_SHA256_AND_CURRENT_GIT_MATCH"
+    },
+    {
+      "path": "scripts/verify-final-staging-serving.mjs",
+      "sha256": "4a8e5a6426fc9408e2ac72603c8fd81858f8cecec8c85e6505747bf7670843fd",
+      "git_blob_sha": "33aaee5a5796c96ac512f9f4902d4fd5ec3aa858",
+      "result": "EXACT_BYTE_SHA256_AND_CURRENT_GIT_MATCH"
+    },
+    {
+      "path": "tests/final-staging-serving.test.mjs",
+      "sha256": "4db7ebb693ac2a85defa5b02f5682b1ffe10ad761b146cdf26e726b8893e1f56",
+      "git_blob_sha": "a6a82d25c1f98488bc6ec36f7b7ff9718432af44",
+      "result": "EXACT_BYTE_SHA256_AND_CURRENT_GIT_MATCH"
+    },
+    {
+      "path": "scripts/prepare-final-staging.mjs",
+      "sha256": "8d016c5469d73accb290ffaf54645cdb401bdfb513c04ba1ca582e0f7c322bfa",
+      "git_blob_sha": "9ad63c07ba057921269bace87f8a08dafe08795e",
+      "result": "EXACT_BYTE_SHA256_AND_CURRENT_GIT_MATCH"
+    },
+    {
+      "path": "scripts/prepare-stage-2-headers.cjs",
+      "sha256": "f52d8c555acc55792e5d2dc941557116d32eda447ba7490aca19ffa25b0cb169",
+      "git_blob_sha": "a9215731331dd7a520d5bb2e17ee9a99ec5193e1",
+      "result": "EXACT_BYTE_SHA256_AND_CURRENT_GIT_MATCH"
+    },
+    {
+      "path": "scripts/offline-test-network.cjs",
+      "sha256": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+      "git_blob_sha": "561b7927510be5070f38fed70cd5870e8ed0ecb2",
+      "result": "EXACT_BYTE_SHA256_AND_CURRENT_GIT_MATCH"
+    },
+    {
+      "path": "docs/security-audit/security-final-staging-source-contract.json",
+      "sha256": "c620d8cdfe23551d3bda5ab3c66e8508eec5b59e16aafe52f737c8d95ca4c2cb",
+      "git_blob_sha": "e67d27cdf16b67ae77b9b6756216f71106445d90",
+      "result": "EXACT_BYTE_SHA256_AND_CURRENT_GIT_MATCH"
+    }
+  ],
+  "exact_published_matches": 7,
+  "unexpected_mismatches": 0,
+  "CRLF_variants": 0,
+  "historical_case_executions": 48,
+  "historical_case_PASS": 48,
+  "historical_case_FAIL": 0,
+  "unique_cases": 16,
+  "owner_actual_live_requests_in_this_offline_receipt": 0,
+  "prior_FR_1_1_18_case_Windows_receipt_supplied": false,
+  "hosted_acceptance": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

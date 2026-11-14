@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "stage_step": "FR.1.2",
+  "source_parent_commit": "f5a960ba9d296bbc8b93d744897b94045cf4a0ba",
+  "result": "OWNER_SCREENSHOT_AND_DIRECT_UPLOAD_MAPPING_RECORDED_HANDOFF_PREPARED_NOT_DEPLOYED",
+  "evidence": {
+    "owner_statement": "Deployment method: direct upload",
+    "screenshot_name": "image(20261013-112729).png",
+    "screenshot_inspected": true,
+    "observed_primary_domain": "mushavo-budget-staging.pages.dev",
+    "observed_channel": "Production",
+    "observed_source_label": "main",
+    "observed_prior_deployment_url": "https://6d0326e1.mushavo-budget-staging.pages.dev",
+    "observed_success_status": true,
+    "observed_relative_age": "3 days ago",
+    "absolute_deployment_date_asserted": false,
+    "screenshot_sha256": "96e6b4ab5342f64cae260c847bfd27542c765d8cf77b34719933556e0338002f"
+  },
+  "target": {
+    "serving_product": "CLOUDFLARE_PAGES_FROM_PAGES_DOMAIN_AND_DEPLOYMENT_UI",
+    "project_name": "mushavo-budget-staging",
+    "project_name_basis": "Domain-derived project identifier; upload steps require selected project to show this exact domain.",
+    "method": "DIRECT_UPLOAD_OWNER_CONFIRMED",
+    "channel": "PRODUCTION_CHANNEL_WITHIN_ISOLATED_STAGING_PAGES_PROJECT",
+    "canonical_origin": "https://mushavo-budget-staging.pages.dev",
+    "database_project": "dczlddwbtgvfdujgcitb",
+    "production_application_target": false
+  },
+  "source": {
+    "reviewed_source_commit": "268eb30b21154c14b5eede7e3ceb187341ef586b",
+    "candidate_tool_commit": "360befd88bc747d2af309161840fe564a0e8ba9c",
+    "uploaded_artifact_source_pin_planned": true,
+    "current_deployed_Git_commit_verified": false,
+    "source_label_main_is_not_Git_commit_proof": true
+  },
+  "package": {
+    "script": "scripts/package-final-staging.ps1",
+    "expected_public_files": 40,
+    "expected_non_config_receipt_hashes": 39,
+    "expected_ZIP_content_hashes": 40,
+    "archive_path": "NEW_GUID_ZIP_OUTSIDE_PUBLIC_FOLDER",
+    "owner_preflight_run": false,
+    "PowerShell_runtime_execution_by_assistant": false,
+    "scope": "LOCAL_MANIFEST_ALLOWLIST_CONFIGURATION_SHAPE_AND_ARCHIVE_INTEGRITY_NOT_INDEPENDENT_SOURCE_OR_KEY_OWNERSHIP",
+    "network_scope": "GIT_FETCH_READ_ONLY_ONLY"
+  },
+  "deployment_handoff": {
+    "prepared": true,
+    "owner_dashboard_steps": "Open existing staging Pages project > Create a new deployment > Production > Upload only checked ZIP > Save and Deploy.",
+    "existing_prior_deployment_preserved": true,
+    "prior_deployment_reference": "6d0326e1",
+    "deployment_report_received": false,
+    "staging_domain_changed": false
+  },
+  "references": [
+    {
+      "url": "https://developers.cloudflare.com/pages/get-started/direct-upload/",
+      "read_date": "2026-10-13",
+      "scope": "Existing Pages project can select primary/preview and drag/drop prebuilt ZIP or folder."
+    }
+  ],
+  "Windows_verifier_receipt_from_FR_1_1_supplied": false,
+  "assistant_new_tests_SQL_hosted_provider_or_device_requests_run": 0,
+  "hosted_acceptance": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "next_step": "OWNER_ZIP_PREFLIGHT_AND_STAGING_DIRECT_UPLOAD_THEN_FR_1_3_RECHECK"
+}

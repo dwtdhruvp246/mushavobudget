@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-15",
+  "source_commit": "51df7703e24172266288069bb403c9c064582a83",
+  "handoff_commit": "6e4963df553eced6946250a5aec812152b84004f",
+  "evidence_scope": "OWNER_RETURNED_WINDOWS_NODE_STDIN_CHECK_NOT_ASSISTANT_HOSTED_EXECUTION",
+  "receipt": {
+    "stage_step": "FR.2.4.E2_DEPENDENCY_RECHECK",
+    "result": "SOURCE_HASHES_AND_PINNED_DEPENDENCY_METADATA_PASS",
+    "node_version": "v22.17.0",
+    "source_files_SHA256_verified": 59,
+    "installed_package_name_and_version_match": true,
+    "package_lock_version_registry_and_integrity_match": true,
+    "installed_package_bytes_independently_hashed": false,
+    "backend_tests_rerun": false,
+    "hosted_requests": 0,
+    "files_or_settings_changed": false,
+    "hosted_acceptance": false,
+    "exit_code": 0
+  },
+  "terminal_exit_code": 0,
+  "previous_PowerShell_parser_error_resolved_by_Node_JSON_parse": true,
+  "previous46_backend_PASS_preserved": true,
+  "FR2_E2_status": "OFFLINE_SOURCE_CHECKPOINT_COMPLETE_NOT_HOSTED_ACCEPTANCE",
+  "findings_closed": [],
+  "APK_update_deferred": true
+}

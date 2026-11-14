@@ -1,0 +1,1005 @@
+{
+  "schema_version": 1,
+  "stage_step": "9.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "2ea0a69b1bbe5ffedf7a3fc5c0d2179ff1b1f895",
+  "scope": "COMPLETE_PINNED_GIT_TREE_FILE_CATALOG_NOT_TEST_EXECUTION_OR_ASSERTION_COVERAGE",
+  "tests": [
+    {
+      "path": "tests/account-interface-polish.test.mjs",
+      "git_blob_sha": "da0a973453dd30026bb6bf1959a06116a61a9d43",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/additional-family-subscription.test.mjs",
+      "git_blob_sha": "ee821c74749de37b4d8b2de81f7daac1796ebf2a",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/admin-analytics.test.mjs",
+      "git_blob_sha": "33b32c336b8299b93632aa790f3d90653a507eed",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/admin-console-redesign.test.mjs",
+      "git_blob_sha": "dc0bc202a5f110960e9562476ee5156340670323",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/admin-event-notifications.test.mjs",
+      "git_blob_sha": "125316d9c7ee198362cd09f8677807e28f3ed80f",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/admin-invitation-exit.test.mjs",
+      "git_blob_sha": "539262093d638c2cc1aeff08e7c0bf5997a0b977",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/admin-invitation-provision-guard.test.mjs",
+      "git_blob_sha": "994598fa416738ec8ba84cc7f5007ab19ae9678f",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/admin-invitation-replacement.test.mjs",
+      "git_blob_sha": "457de24229c88ea469b3d5f0411986a0770c601e",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/admin-invitation-session-isolation.test.mjs",
+      "git_blob_sha": "354b6c8dd3bba7e266912384a116c4e74f401413",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/admin-invitation-setup-retry.test.mjs",
+      "git_blob_sha": "f09fbf03fdb397783cece8356ca6b474e864e60b",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/admin-manual-subscription.test.mjs",
+      "git_blob_sha": "7d9f8d2895bc9e2bd06c772add0488579135a580",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/admin-plans-workbench.test.mjs",
+      "git_blob_sha": "31a981bb4d024a8c6946df62f4d0336818f7737b",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/admin-user-invitation-completion.test.mjs",
+      "git_blob_sha": "be52f2c0160ab41b58c3a1c20a0737057fb00bea",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/admin-user-invitations.test.mjs",
+      "git_blob_sha": "c3ae95143a316f705c92024159d9257f495ae2fc",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/analytics-activity.test.mjs",
+      "git_blob_sha": "7c3d8ac4ef6394264dfdfc7956714ceff377cc56",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-custom-roles.test.mjs",
+      "git_blob_sha": "d7116f4596a9c8ede0c15269d479b331bf487dec",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-invitation-notifications.test.mjs",
+      "git_blob_sha": "9358d731c77f9e98d42227d6010e558ed39908f4",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-plan-workspace-actions.test.mjs",
+      "git_blob_sha": "73f83737a83fa13269a57ee5df811ff05cb32959",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-public-availability.test.mjs",
+      "git_blob_sha": "0e1fe4a0689ee8bda3f80f4326885d2e9099e2a9",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-setup-navigation.test.mjs",
+      "git_blob_sha": "c28f909458873b042e3ea690f37ee2ac5d3beb20",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-stage-0.test.mjs",
+      "git_blob_sha": "d3b82e684d5e7502b1284cc9bac62e60df3d8d4e",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-stage-1.test.mjs",
+      "git_blob_sha": "b5ec1d54f50b2ddd5506a86e2381a93f21c1c996",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-stage-10.test.mjs",
+      "git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-stage-11.test.mjs",
+      "git_blob_sha": "c76723ee66752b2ed17950e85d694604d114cdab",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-stage-12.test.mjs",
+      "git_blob_sha": "92ac50e613f9cf8cfeaf47b9653aad4f4debfab8",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-stage-2.test.mjs",
+      "git_blob_sha": "f49d63c0b195a618da32e336fba77bc298741581",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-stage-3.test.mjs",
+      "git_blob_sha": "67f1faf2a3cf44c8e1bbe1a7d1cc9ad9e310264f",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-stage-4.test.mjs",
+      "git_blob_sha": "adead380c9306e93e453e5caee9411b9193c4463",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-stage-5.test.mjs",
+      "git_blob_sha": "35a9b52bc899c94b3dc30d721179e81c2b891af6",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-stage-6.test.mjs",
+      "git_blob_sha": "8c1a493c53a0e3d6b3708e2876417fd509653b12",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-stage-7.test.mjs",
+      "git_blob_sha": "929de477039289ee6eb6d31e17fe9d780ac331af",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-stage-8.test.mjs",
+      "git_blob_sha": "1dca1b7cd82cf12cd17efe15b1090a9ea4fedf69",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-stage-9.test.mjs",
+      "git_blob_sha": "babfa3a260c5dd766c0a46b787988a81769b5afd",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/business-timezone.test.mjs",
+      "git_blob_sha": "c975cd2da8203b0c1a7a7d044c67921bbc883162",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/capacitor-build.test.mjs",
+      "git_blob_sha": "24c7faf5f15533abc132c2e282278e2539b1635d",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/cashbook-private-test.test.mjs",
+      "git_blob_sha": "b535e1155f51150be9303cca797040cbd9b8d8c8",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/cloudflare-assets.test.mjs",
+      "git_blob_sha": "47dec6e4b337cdeedaa48dd4b31f886189b77efd",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/currency-recovery.test.mjs",
+      "git_blob_sha": "22356b5f0cb96b56dafee2af28c364014d1a20f1",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/dashboard-completed-payment.test.mjs",
+      "git_blob_sha": "51b47646b3c23a6d4715485ac4e2b7530c2437fd",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/dashboard-payment-cards.test.mjs",
+      "git_blob_sha": "61e3c6fe12b2d423fa0a037019ce252a302e1696",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/dispatch-push-reminders.test.mjs",
+      "git_blob_sha": "40ef77891a778e85e65146e51c98c5bce9f9cadf",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/family-extra-places.test.mjs",
+      "git_blob_sha": "f8822fe66520a4ac8b757e0d02b96cac915a7f59",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/family-invitation-cancellation.test.mjs",
+      "git_blob_sha": "113004d2ed750826be16f388b4d700323a686c5b",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/member-plan-and-payment-attribution.test.mjs",
+      "git_blob_sha": "46f4573f56f2378cabb7566edc9f2c44ab965944",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/notification-outbox.test.mjs",
+      "git_blob_sha": "f1ad370f06cac22fcb14caf1b22c7c53a03bf493",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/notification-workspace-context.test.mjs",
+      "git_blob_sha": "2f40cf02467bf8eeb228e698c2ee91ae66f97399",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/payment-schedule-integrity.test.mjs",
+      "git_blob_sha": "8b866422f133e0c455f63465b098dda87eecee40",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/payments-page-management.test.mjs",
+      "git_blob_sha": "61c699accb3834c3931e1d6a7c1c8fdc097494d2",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/personal-workspace-route.test.mjs",
+      "git_blob_sha": "16cb38731b18df0cf6dc84fa6dfff61b2949f675",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/plan-card-layout.test.mjs",
+      "git_blob_sha": "2ce0588bbdbde8feaeec1a864cf7a3d94f445bb0",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/push-display-click.test.mjs",
+      "git_blob_sha": "c1e2663a83d768817085126a574609f9326e5545",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/push-notifications.test.mjs",
+      "git_blob_sha": "2d4795c90a5ac9f12c8c79791871ed3af73fcef1",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/pwa-entry.test.mjs",
+      "git_blob_sha": "7a4d0bbe57dce5dd9da0f79e030070f4d8fee1c4",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/pwa-install.test.mjs",
+      "git_blob_sha": "38d5a12c19fb8133509cf01712c360732e0800a5",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/pwa-stage-13-hardening.test.mjs",
+      "git_blob_sha": "52e175e569b2792f4a1b5f918ffa4d3d80ffa07c",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/pwa-update.test.mjs",
+      "git_blob_sha": "9d3d51891be8d4dcba5125b9a8300c0e8dc0cdaa",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/realtime-workspace-refresh.test.mjs",
+      "git_blob_sha": "788b243c8f2d952465b009c7adac9d466788c4c7",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/security-stage-0.test.mjs",
+      "git_blob_sha": "f0a5810a75ce0f3a44f00919768609e2235dd776",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/security-stage-1-database-properties-toc.test.cjs",
+      "git_blob_sha": "f8172f5309a8d9337736fb4d9fc428a3b5126bf2",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/security-stage-1-role-coverage.test.cjs",
+      "git_blob_sha": "8e09e26611de9b270700ddf751c2f508e5528cd4",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/security-stage-1-setting-coverage.test.cjs",
+      "git_blob_sha": "7efd69f81aa1431dad3ff316a750addcaaba9344",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/security-stage-1-storage-backup.test.mjs",
+      "git_blob_sha": "f7b27abd38c4d12f1a533bdd02e08f06acfc4a5f",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/security-stage-2-contact-api-check.test.mjs",
+      "git_blob_sha": "4b37d171f41391e6adab79ce27691a611d0cd5bb",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/security-stage-2-contact-byte-preparation.test.mjs",
+      "git_blob_sha": "185094edd5b6fdd5f54b3a777d107d936c65a311",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/security-stage-2-contact-file-diagnostic.test.mjs",
+      "git_blob_sha": "4cb225fda7a7fbaa670b5bfbcef6c04386c8053a",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/security-stage-2-contact.test.mjs",
+      "git_blob_sha": "eecf4794234d28152dff0e2882f2c48d3996969b",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/security-stage-2-headers.test.mjs",
+      "git_blob_sha": "ca3dabed279182e9c6a1d7f44cd438475ebf69c0",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/security-stage-2-push-destination.test.mjs",
+      "git_blob_sha": "1a43368b833d0c902994a1eb4b7aa7f0d77e838b",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/send-test-push.test.mjs",
+      "git_blob_sha": "e0f18287d0e88b4a9aae6d31b82945d4fbfc386d",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/session-recovery.test.mjs",
+      "git_blob_sha": "8fe80b12541393a164145081f62bd11ec9dcd037",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/signup-currencies.test.mjs",
+      "git_blob_sha": "0bbe70a779ca4e9fcd01f8b58450545817f97d0d",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-3-admin-mfa-ui-edge.test.mjs",
+      "git_blob_sha": "69b2889048d9ae3f8fb46718e778020f4a94dcc7",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-3-auth-edge-build.test.mjs",
+      "git_blob_sha": "12ff24320f330d75fe46b1a9d41e0b7b101c6448",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-3-auth-flows.test.mjs",
+      "git_blob_sha": "9ba114c045d014af8b0a48f40e1dbf0eda16cb99",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-3-auth-page.test.mjs",
+      "git_blob_sha": "90bc8a478e51f1dab79b260b075232ebc680a961",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-3-business-api.test.cjs",
+      "git_blob_sha": "3f255a19c10a36e2602d89444aab231fd91097a5",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-3-currency-api.test.cjs",
+      "git_blob_sha": "2af83a1252bbc643c88b8bb07ced6c1486dc2589",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-3-family-api.test.cjs",
+      "git_blob_sha": "5a43b47b14318b96fc8a2ee79a6c1dd6be3fd39e",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-3-personal-api.test.cjs",
+      "git_blob_sha": "7c02fcd352659d786cf5b88e621c1a824eb781b2",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-4-lifecycle-review.test.mjs",
+      "git_blob_sha": "f1daf23322a473eed55c481adfda465001dedba4",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-4-privacy-review.test.mjs",
+      "git_blob_sha": "e627f6eae1c68f22bccbde54867922714721940a",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-4-upload-client.test.mjs",
+      "git_blob_sha": "a6449d962a606ca26e6d6a9ad2b354c4ce673ac8",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-6-email-templates.test.mjs",
+      "git_blob_sha": "6babdb6a6aa5aa68ae853921cb331052668d33a4",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-7-commerce-model.test.mjs",
+      "git_blob_sha": "8abc71108656c39414d538bb7f43a002e16070aa",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/stage-8-notification-boundaries.test.mjs",
+      "git_blob_sha": "4b4b99bc3de970a60e0cdeb070d5d7ec0a8366e8",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/startup-recovery.test.mjs",
+      "git_blob_sha": "305a553e0d3fa134717ad7afffb22901a8178cca",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/subscription-expiry.test.mjs",
+      "git_blob_sha": "c5e48e64fd3faaeeaabbd31dc533f43b97e19b25",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/subscription-overview.test.mjs",
+      "git_blob_sha": "e0b488f6c30f25a45c4646b60fa411551c11ee25",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/support-ticket-workflow.test.mjs",
+      "git_blob_sha": "2041935ae94c6ff779240214b419c5f5a7ed0c9a",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/workspace-preference.test.mjs",
+      "git_blob_sha": "1da274830ccf27056a7969f5ba96d90b62747d05",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "tests/workspace-startup.test.mjs",
+      "git_blob_sha": "c6e09da463f0f7121c47b2dc3c9b1f70d623ba89",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    }
+  ],
+  "scripts": [
+    {
+      "path": "scripts/build-capacitor.mjs",
+      "git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/build-stage-3-admin-mfa.mjs",
+      "git_blob_sha": "8379f87d45c3c85b3c2e96ea141adcb0903daaaa",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/build-stage-3-auth-staging.cjs",
+      "git_blob_sha": "d6ede11c3161cafce595e5408c060519ea8bda48",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/build-staging-frontend.cjs",
+      "git_blob_sha": "3e7e39f9aeb5e62d8a677b745d9ec9244e63c373",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/build-staging-schema.cjs",
+      "git_blob_sha": "2122687c3c4087e4cc1be6a953e0a63fdfe3ad30",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/check-stage-3-admin-mfa.mjs",
+      "git_blob_sha": "e7f183796d106db08d31225bcf03269a3a62997c",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/check-stage-3-business-api.cjs",
+      "git_blob_sha": "f378118286b734cb31d14b15d161f47710556995",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/check-stage-3-currency-api.cjs",
+      "git_blob_sha": "129cde60f5527ef50dd4d583966912caa4f7dcc8",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/check-stage-3-family-api.cjs",
+      "git_blob_sha": "be3b92fb4578273bb6aeddb18245971dd9efbabc",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/check-stage-3-personal-api.cjs",
+      "git_blob_sha": "ee1b0f6e76aa3aae112252fd1015100e50eee5f0",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/check-staging-contact-api.cjs",
+      "git_blob_sha": "a83f93a5e8a9d21663dad7c66ad9c25d1d706d8d",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/diagnose-staging-contact-files.cjs",
+      "git_blob_sha": "1d2a36cf7f3854a3080ee523f89428b590fa07dc",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/export-synthetic-recovery-source.ps1",
+      "git_blob_sha": "38fce9be69913d14623740f74ffe278683d3f27a",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/inspect-stage-3-admin-source.mjs",
+      "git_blob_sha": "17bd297f5fb87295173887cad27d5ec73cd78fe7",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/lib/stage-3-local-db.mjs",
+      "git_blob_sha": "f5c66b2f3aa75d6d017a30e676d81c8498e63f95",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/lib/stage-4-lifecycle-review.mjs",
+      "git_blob_sha": "3ff05c4bee55a4eafcb34cef92d66f81e8afb4fe",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/lib/stage-4-privacy-review.mjs",
+      "git_blob_sha": "d2d467f7dc33c52d3d709e2632d0275b701d5b1b",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/lib/stage-7-commerce-model.mjs",
+      "git_blob_sha": "160a59600d166a2c355b50397d4a72bd52f3b185",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/prepare-local-recovery-target.ps1",
+      "git_blob_sha": "75e7e460962003571471c56a9427788366a011b8",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/prepare-stage-2-contact.cjs",
+      "git_blob_sha": "2343b0e15a71724dcb71d4acf2fe22f51f6ff8bd",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/prepare-stage-2-contact.ps1",
+      "git_blob_sha": "53e64c6a52e248810c992249b3eef9c98720604b",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/prepare-stage-2-headers.cjs",
+      "git_blob_sha": "a9215731331dd7a520d5bb2e17ee9a99ec5193e1",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/prepare-synthetic-restore.cjs",
+      "git_blob_sha": "1777194ad547e9dca9dcc1184d59b1dcac5a1de2",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/read-stage-5-backup-config.ps1",
+      "git_blob_sha": "a8d03f4de144c5d81bd2f7f4f49f71e77137f4a2",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/read-stage-5-native-metadata.ps1",
+      "git_blob_sha": "b0b45ba7f506eb4f693a972ccbd4b1a889feb33b",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/read-stage-5-platform-config.ps1",
+      "git_blob_sha": "d89b0c5db41850481fed5a5f7014853720962214",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/restore-synthetic-recovery.ps1",
+      "git_blob_sha": "8e4feb2860f3664a8ce9435a49d5b8c6d0fb65d9",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/run-stage-3-auth-readiness.ps1",
+      "git_blob_sha": "68dacc2db40664739a26d7ff054176b15e9f88ba",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/run-stage-3-business-acceptance.ps1",
+      "git_blob_sha": "21de60016e542091ca6442a6b4e7b087fd956abd",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/run-stage-3-currency-acceptance.ps1",
+      "git_blob_sha": "4faf0cfa2be5e15b350a8e8da208796a0237dd2e",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/run-stage-3-family-acceptance.ps1",
+      "git_blob_sha": "286b765f10cfe919d55027ac1fdeacc4f63f8f09",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/run-stage-3-personal-acceptance.ps1",
+      "git_blob_sha": "c6a10b177d77c1f8177083a095147a7c3325876d",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/run-staging-contact-acceptance.ps1",
+      "git_blob_sha": "41282ce733344a149be14d7e1ab6060329d807ef",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-0-check.mjs",
+      "git_blob_sha": "780fd2f59ec9dfc3e9b2bfaca6c281f381e6b221",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-connection-check.ps1",
+      "git_blob_sha": "38b1073ba2bcef975efddb67b877cb95e76bd002",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-database-encryption.ps1",
+      "git_blob_sha": "ce0d37390f84a7377a1a88985d015f6a358a3e71",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-database-export.ps1",
+      "git_blob_sha": "106d1381eef060771edd73fc7075889dc8df47c5",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-database-properties-toc-check.ps1",
+      "git_blob_sha": "79786d53d573dbfef4b074ad2bc8cf7b059b9bef",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-database-properties-toc.cjs",
+      "git_blob_sha": "2ddfa1ebb5ab13eeef37335700f6251654bf5ace",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-download-format-check.ps1",
+      "git_blob_sha": "2c756e5217b4b10ea30b96e0b850eef50d76d73d",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-drive-download-check.ps1",
+      "git_blob_sha": "0cbc315d77a6e4bf2c1e3bf46b349ae64c97aa7c",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-encryption-synthetic-check.ps1",
+      "git_blob_sha": "9152d1aa6f7d41d5e2d0145f8480de88ae183ee7",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-encryption-tool-check.ps1",
+      "git_blob_sha": "03b35f33b85a84a54ee2631f4febabf632888d0e",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-local-backup-folder.ps1",
+      "git_blob_sha": "d9c8b511d6a7c5b265829ae8eef8fcb439295bec",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-local-coverage-check.ps1",
+      "git_blob_sha": "054fa02ef7f7d13d11246c5e02cdadab48bb82cc",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-original-archive-selection.ps1",
+      "git_blob_sha": "b64a8049a4e95aa79ac4fc677e59cfe6899b3802",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-role-coverage-check.ps1",
+      "git_blob_sha": "f909139d8442bbd7baa61ff6a1beed22f807360e",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-role-coverage.cjs",
+      "git_blob_sha": "7e7aa5f6cb1463fb5141939b2b847d9bcd880502",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-role-encryption.ps1",
+      "git_blob_sha": "7edcb2a501d0ef23e2a9fc45f5800c94a5b42662",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-role-export.ps1",
+      "git_blob_sha": "16e2d3c5f9a507fd546eae428e626f4f499cd9e8",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-setting-coverage-check.ps1",
+      "git_blob_sha": "a67bb3fee08f64324910ecaa095e0e9c55374aa5",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-setting-coverage.cjs",
+      "git_blob_sha": "18ee5bed07835aec0432f690bf5d6ede2dd1324c",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-storage-backup-check.ps1",
+      "git_blob_sha": "e87fe119b7bc7b22121fd8e6101d95118809523d",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-storage-backup.cjs",
+      "git_blob_sha": "1c6d1ca70be9d285b19042eb4f0ab3830fd8f156",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/security-stage-1-tool-inventory.ps1",
+      "git_blob_sha": "a3de17476480e02ebf09dca1eab16334ba06b17d",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-admin-plans-sql.cjs",
+      "git_blob_sha": "8d66f4e9a4692f521ecaee4710f9a904622024e8",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-admin-plans-ui.cjs",
+      "git_blob_sha": "3165ade088256503e0b37235085fcdef5bab0f58",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-branding-sql.cjs",
+      "git_blob_sha": "0604ceefb93655d75b3f1fcec694448cbb030a42",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-branding-ui.cjs",
+      "git_blob_sha": "250ee702ba8b897d03b80af4e35ca403b8e5054c",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-custom-roles-sql.cjs",
+      "git_blob_sha": "489227d2064be01aaa5e69569a6c1158e631f313",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-custom-roles-ui.cjs",
+      "git_blob_sha": "8224dfc8bb8d66389be094754a2b5cb2f5fff813",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-invitation-notifications-sql.cjs",
+      "git_blob_sha": "c8d755b54f7d70dedc395953f55f03a13a209adb",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-pilot-expense-ui.cjs",
+      "git_blob_sha": "0060df4c8bedd0400a0e36936156d1a75ffba7f4",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-public-sales-sql.cjs",
+      "git_blob_sha": "1a6fb4b133db43e12084724a95f787c155d0da6a",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-public-sales-ui.cjs",
+      "git_blob_sha": "4c1ab790ac4dd464eeb05aeea635868d01a2482e",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-setup-navigation.cjs",
+      "git_blob_sha": "220105579a1d4ae09e475ee127e103c7483bca51",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-stage-10-sql.cjs",
+      "git_blob_sha": "9930f0f82c80784841197ba6b316404a4df5c149",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-stage-10-ui.cjs",
+      "git_blob_sha": "f3140adb90092b2dd0dbc4327c02f875ab2c0d6d",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-stage-11-sql.cjs",
+      "git_blob_sha": "46ca85ed92b34805335dfc428a9b3b2c95bcca3c",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-stage-11-ui.cjs",
+      "git_blob_sha": "eaf251c02f53d18ec2b9a87280cb7a57566d5ec7",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-stage-12-sql.cjs",
+      "git_blob_sha": "abda76084e30f00c6bf7229a8b0111a145af5607",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-stage-12-ui.cjs",
+      "git_blob_sha": "4198fd137a9666017556cc57612d965c9019f288",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-stage-7-ui.cjs",
+      "git_blob_sha": "9fe3dcf2ab6108e80d9b2d5835d0898f6772db3b",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-stage-8-sql.cjs",
+      "git_blob_sha": "3de447da5db5d88f31dbe11c35d4fdab1d5a98d1",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-stage-8-ui.cjs",
+      "git_blob_sha": "80fe5a0bd2904aaefbe93429239ea9a93f1020a7",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-stage-9-sql.cjs",
+      "git_blob_sha": "84219b6091211f8dff7f227f561629e987ec1ff1",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-business-stage-9-ui.cjs",
+      "git_blob_sha": "65cf44bcbb5ca382a8f177ae97599546209185fb",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-last-workspace-ui.cjs",
+      "git_blob_sha": "e3754a6e77c7297fe65fa19cfc19ecd1a3df831e",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-local-recovery-probe.cjs",
+      "git_blob_sha": "2e5674c1fd79f9a1e83561d099290266401858ca",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-native-build-dependencies.cjs",
+      "git_blob_sha": "d392489d1502e89f3e803b8881b183c8c4209d4e",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-security-stage-0-currency-sql.cjs",
+      "git_blob_sha": "a12e1612f1b08e1d515a0b29a313698cb85a67b3",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-security-stage-0-private-reads-sql.cjs",
+      "git_blob_sha": "8f5f92a7f4cc37fa1b57bccab770e6a1fc33d2ca",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-security-stage-0-sql.cjs",
+      "git_blob_sha": "445f30302a331640860bde9ddbaa55ec9e09c711",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-security-stage-1-backup-inventory.cjs",
+      "git_blob_sha": "1585618e37803c213c3ffda05d7b6c6b6204488d",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-security-stage-1-recovery-dependencies.cjs",
+      "git_blob_sha": "b89f2a9927f010cc00602c66fa5135b19bf7dfca",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-security-stage-1-setting-scope.cjs",
+      "git_blob_sha": "a7973ffcf0a2a6fbd720a0a64637165b2f49e480",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-security-stage-1-staging-preflight.cjs",
+      "git_blob_sha": "edcfa1cdaa1b2fced6763db4f9053e5694d04c86",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-2-push-transport.mjs",
+      "git_blob_sha": "e0f0bd1ae2f2c2401e363d5c5b427f8f9e3b0309",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-3-admin-mfa.mjs",
+      "git_blob_sha": "e30a588c5fa7ef0c9ec04195c2d2b5661ab56236",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-3-auth.mjs",
+      "git_blob_sha": "5e75acbf9fe5345427cea224aed2da63a0134d3f",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-3-business-source.mjs",
+      "git_blob_sha": "965bb971a523ab5db75031c2df86a95414d2f6df",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-3-currency-source.mjs",
+      "git_blob_sha": "5970eda81331eea7ae354affde38bd853d9dac39",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-3-family-source.mjs",
+      "git_blob_sha": "0933515e58aa5ddbd7b2e933a4fdf674bf72cf81",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-3-permission-baseline.mjs",
+      "git_blob_sha": "3f97deab3ffdf67e94754172591739465738e121",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-3-personal-workspace-bindings.mjs",
+      "git_blob_sha": "a83bfe8be20a8543ea42f1af3d4b53e916e4b630",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-4-files.mjs",
+      "git_blob_sha": "78659a2175fb058df8eddf24985cc9127603d5b2",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-4-lifecycle.mjs",
+      "git_blob_sha": "5548d709d9de10499e4aa5158efd1d375732e79a",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-4-privacy.mjs",
+      "git_blob_sha": "66dbc4f5c56c0d8ad5a5f1e3427e1e0d268c9aa5",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-5-packaging.mjs",
+      "git_blob_sha": "58977dbdb957baf738a7893833166ada40dc1b32",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-6-identity-email.mjs",
+      "git_blob_sha": "3aa1766ba94df638000cf80b6b6153eecf8b4f25",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-7-commerce.mjs",
+      "git_blob_sha": "8659f41215976271a2e7a865161eb1235764b898",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-stage-8-notifications.mjs",
+      "git_blob_sha": "41788d728a8c03fb62b0c9e70150dc8cfa0706be",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-staging-personal-api-fixtures.cjs",
+      "git_blob_sha": "afb31a0492291f6242814179ee5f02e5c0173d6d",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-staging-personal-api.cjs",
+      "git_blob_sha": "85b03871efba58573f9ab0148c48c9a79235e74e",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-synthetic-recovery-export.cjs",
+      "git_blob_sha": "4380c59341926c430f7ba50c672a31d5a0390be5",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    },
+    {
+      "path": "scripts/verify-synthetic-restore.cjs",
+      "git_blob_sha": "8e46a9248f7804be06c612b6d2bbb84bb7d4da7b",
+      "inventory_scope": "GIT_TREE_DISCOVERY_NOT_EXECUTION"
+    }
+  ],
+  "default_npm_test": {
+    "command": "node --experimental-strip-types --test tests/*.test.mjs",
+    "included_test_files": 84,
+    "excluded_CJS_test_files": 7
+  },
+  "dedicated_verifiers": "106 script paths include historical hosted/owner/setup/build tools and offline verifiers; do not run the entire script inventory. Review explicit dependency/network/mutation boundaries before 9.2.",
+  "latest_CI_run_or_deployed_artifact_verified": false,
+  "all_catalogued_tests_read": false,
+  "tests_executed_in_9_1": 0
+}

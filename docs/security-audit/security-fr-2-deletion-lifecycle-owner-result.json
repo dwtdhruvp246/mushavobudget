@@ -1,0 +1,230 @@
+[
+  {
+    "deletion_lifecycle_review": {
+      "scope": "READ_ONLY_DELETE_TRIGGER_FK_POLICY_AND_GRANT_METADATA_NOT_DELETION_ACCEPTANCE",
+      "stage_step": "FR.2.2_DELETION_LIFECYCLE_REVIEW",
+      "checked_UTC": "2026-10-14T08:22:46.531192+00:00",
+      "FK_references": [
+        {
+          "validated": true,
+          "constraint_name": "payment_conversions_entered_by_fkey",
+          "delete_action_code": "n",
+          "referenced_columns": [
+            "id"
+          ],
+          "referenced_relation": "auth.users",
+          "referencing_columns": [
+            "entered_by"
+          ],
+          "referencing_relation": "payment_conversions"
+        },
+        {
+          "validated": true,
+          "constraint_name": "payment_conversions_workspace_id_fkey",
+          "delete_action_code": "c",
+          "referenced_columns": [
+            "id"
+          ],
+          "referenced_relation": "budget_workspaces",
+          "referencing_columns": [
+            "workspace_id"
+          ],
+          "referencing_relation": "payment_conversions"
+        },
+        {
+          "validated": true,
+          "constraint_name": "payment_records_family_id_fkey",
+          "delete_action_code": "c",
+          "referenced_columns": [
+            "id"
+          ],
+          "referenced_relation": "families",
+          "referencing_columns": [
+            "family_id"
+          ],
+          "referencing_relation": "payment_records"
+        },
+        {
+          "validated": true,
+          "constraint_name": "payment_records_owner_id_fkey",
+          "delete_action_code": "c",
+          "referenced_columns": [
+            "id"
+          ],
+          "referenced_relation": "auth.users",
+          "referencing_columns": [
+            "owner_id"
+          ],
+          "referencing_relation": "payment_records"
+        },
+        {
+          "validated": true,
+          "constraint_name": "payment_records_paid_by_member_id_fkey",
+          "delete_action_code": "n",
+          "referenced_columns": [
+            "id"
+          ],
+          "referenced_relation": "family_members",
+          "referencing_columns": [
+            "paid_by_member_id"
+          ],
+          "referencing_relation": "payment_records"
+        },
+        {
+          "validated": true,
+          "constraint_name": "payment_records_payment_item_id_fkey",
+          "delete_action_code": "c",
+          "referenced_columns": [
+            "id"
+          ],
+          "referenced_relation": "payment_items",
+          "referencing_columns": [
+            "payment_item_id"
+          ],
+          "referencing_relation": "payment_records"
+        },
+        {
+          "validated": true,
+          "constraint_name": "payment_records_recorded_by_fkey",
+          "delete_action_code": "c",
+          "referenced_columns": [
+            "id"
+          ],
+          "referenced_relation": "auth.users",
+          "referencing_columns": [
+            "recorded_by"
+          ],
+          "referencing_relation": "payment_records"
+        },
+        {
+          "validated": true,
+          "constraint_name": "payment_records_workspace_id_fkey",
+          "delete_action_code": "c",
+          "referenced_columns": [
+            "id"
+          ],
+          "referenced_relation": "budget_workspaces",
+          "referencing_columns": [
+            "workspace_id"
+          ],
+          "referencing_relation": "payment_records"
+        }
+      ],
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "delete_triggers": [
+        {
+          "event_bits": 31,
+          "anon_execute": true,
+          "enabled_mode": "O",
+          "trigger_name": "guard_payment_record_write_trigger",
+          "function_name": "guard_workspace_finance_write",
+          "relation_name": "payment_records",
+          "function_schema": "public",
+          "security_definer": true,
+          "function_settings": [
+            "search_path=public, pg_temp"
+          ],
+          "function_lf_body_md5": "783883ce4af23615f768a0990b6f2478",
+          "authenticated_execute": true
+        },
+        {
+          "event_bits": 31,
+          "anon_execute": true,
+          "enabled_mode": "O",
+          "trigger_name": "guard_suspended_account_write_trigger",
+          "function_name": "guard_suspended_account_write",
+          "relation_name": "payment_records",
+          "function_schema": "public",
+          "security_definer": true,
+          "function_settings": [
+            "search_path=public, pg_temp"
+          ],
+          "function_lf_body_md5": "83011cf2afe6be237b3b33da73ba08df",
+          "authenticated_execute": true
+        }
+      ],
+      "findings_closed": [],
+      "hosted_acceptance": false,
+      "FK_reference_count": 8,
+      "selected_relations": [
+        {
+          "RLS": true,
+          "name": "payment_conversions",
+          "force_RLS": false,
+          "relation_kind": "r",
+          "anon_DELETE_grant": true,
+          "rewrite_rule_count": 0,
+          "authenticated_DELETE_grant": true
+        },
+        {
+          "RLS": true,
+          "name": "payment_records",
+          "force_RLS": false,
+          "relation_kind": "r",
+          "anon_DELETE_grant": true,
+          "rewrite_rule_count": 0,
+          "authenticated_DELETE_grant": true
+        }
+      ],
+      "FK_details_truncated": false,
+      "delete_trigger_count": 2,
+      "transaction_read_only": "on",
+      "policy_details_truncated": false,
+      "application_routines_invoked": 0,
+      "selected_policy_fingerprints": [
+        {
+          "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+          "using_md5": "0f8278e09340c34fd7c74403d9387a2f",
+          "permissive": true,
+          "policy_name": "Authorized users can read payment conversions",
+          "command_code": "r",
+          "relation_name": "payment_conversions"
+        },
+        {
+          "check_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+          "using_md5": "78c6d7936fb46f9a37d8c1223655ea63",
+          "permissive": false,
+          "policy_name": "Account must be active",
+          "command_code": "*",
+          "relation_name": "payment_records"
+        },
+        {
+          "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+          "using_md5": "e5c4afc2546788d8440fa463f3d7fd65",
+          "permissive": true,
+          "policy_name": "Household owners can delete payment records",
+          "command_code": "d",
+          "relation_name": "payment_records"
+        },
+        {
+          "check_md5": "cac466f2e233ddb7f2965918707a7080",
+          "using_md5": "c5116703e93ac22c3f49e0184eea33b2",
+          "permissive": true,
+          "policy_name": "Household owners can update payment records",
+          "command_code": "w",
+          "relation_name": "payment_records"
+        },
+        {
+          "check_md5": "97a729a5b6f83ae0e684aad923669b89",
+          "using_md5": "d41d8cd98f00b204e9800998ecf8427e",
+          "permissive": true,
+          "policy_name": "Household participants can create payment records",
+          "command_code": "a",
+          "relation_name": "payment_records"
+        },
+        {
+          "check_md5": "d41d8cd98f00b204e9800998ecf8427e",
+          "using_md5": "867572036b19568384171098dd889fb2",
+          "permissive": true,
+          "policy_name": "Household participants can read payment records",
+          "command_code": "r",
+          "relation_name": "payment_records"
+        }
+      ],
+      "delete_trigger_details_truncated": false,
+      "project_selection_independently_verified": false,
+      "rows_triggers_functions_policies_grants_accounts_or_settings_changed": false,
+      "payment_rows_function_bodies_credentials_or_actor_identifiers_printed": false
+    }
+  }
+]

@@ -1,0 +1,167 @@
+{
+  "date": "2026-11-08",
+  "result": "BUSINESS_ACCESS_REMOVAL_SCOPED_PASS_ARCHIVE_FIXTURE_REVIEW_REQUIRED",
+  "source_commit": "d9d7dd101aabca77178f729e6f2514703f6d311c",
+  "workflow_run_id": 42467355998,
+  "job_id": 128689862588,
+  "guard_tests": 331,
+  "raw_receipt": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+    "result": "STAGING_ACCESS_REVIEW_REQUIRED",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "production_changed": false,
+    "exit_code": 1,
+    "exercise": {
+      "checks": {
+        "EXACT_SUSPENDED_BASELINE": true,
+        "ONLY_ORIGINAL_OWNER_ACTIVE": true,
+        "ORIGINAL_PROFILE_AND_NO_PENDING_INVITATIONS": true,
+        "ORIGINAL_USD1_PAID_BILL_BOUND": true,
+        "UPLOAD_business-documents": true,
+        "UPLOAD_business-logos": true,
+        "UNREGISTERED_DOCUMENT_HIDDEN": true,
+        "OWNER_UNLINKED_LOGO_ALLOWED": true,
+        "EXACT_DOCUMENT_REGISTERED": true,
+        "EXACT_LOGO_LINKED": true,
+        "OWNER_BYTES_business-documents": true,
+        "FOREIGN_DENIED_business-documents": true,
+        "RAW_ORIGINAL_BLOCKED_business-documents": true,
+        "CLIENT_SIGNING_BLOCKED_business-documents": true,
+        "OWNER_BYTES_business-logos": true,
+        "FOREIGN_DENIED_business-logos": true,
+        "RAW_ORIGINAL_BLOCKED_business-logos": true,
+        "CLIENT_SIGNING_BLOCKED_business-logos": true,
+        "CONTROLLED_DATABASE_ONLY_INVITATION": true,
+        "EXACT_MEMBER_JOINED": true,
+        "MEMBER_BYTES_business-documents": true,
+        "MEMBER_BYTES_business-logos": true,
+        "OWNER_REMOVED_EXACT_TEMPORARY_MEMBER": true,
+        "REMOVED_MEMBER_SAME_ORDINARY_SESSION_VALID": true,
+        "WARM_REMOVED_MEMBER_DENIED_business-documents": true,
+        "OWNER_RETAINS_business-documents": true,
+        "WARM_REMOVED_MEMBER_DENIED_business-logos": true,
+        "OWNER_RETAINS_business-logos": true,
+        "EXACT_DOCUMENT_ARCHIVED": false,
+        "ORIGINAL_BRANDING_RESTORED": true
+      },
+      "exercise_requests": 43,
+      "upload_attempts": 2,
+      "cleanup_paths": [
+        {
+          "bucket": "business-documents",
+          "path": "workspaces/dcf3d122-e99f-4fe5-bbd1-03c3547629df/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/e8e09b54-76ed-477b-a266-fb88502bcb40/broker.png"
+        },
+        {
+          "bucket": "business-logos",
+          "path": "dcf3d122-e99f-4fe5-bbd1-03c3547629df/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/af270748-93e4-4020-8fe6-65c68f43312c.png"
+        }
+      ],
+      "provider_email_requests": 0,
+      "provider_payment_requests": 0,
+      "financial_ledger_writes": 0,
+      "Auth_accounts_created": 0,
+      "raw_observations": [
+        {
+          "bucket": "business-documents",
+          "status": 400,
+          "headers": {
+            "cache-control": null,
+            "cf-cache-status": "BYPASS",
+            "vary": null,
+            "content-type": "application/json; charset=utf-8"
+          }
+        },
+        {
+          "bucket": "business-logos",
+          "status": 400,
+          "headers": {
+            "cache-control": null,
+            "cf-cache-status": "BYPASS",
+            "vary": null,
+            "content-type": "application/json; charset=utf-8"
+          }
+        }
+      ],
+      "fixture_suspended": false,
+      "storage_cleanup_acknowledged": false,
+      "original_seats_restored": false,
+      "branding_restored": true,
+      "temporary_member_removed": false,
+      "last_application_refusal": {
+        "status": 400,
+        "code": "BUSINESS_PAYMENT_PROOF_LOCKED"
+      }
+    },
+    "problem_code": "DOCUMENT_CLEANUP_ARCHIVE_REQUIRED",
+    "full_lettered_batch_X_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-08-batch-x-business-private-file-broker",
+    "source_commit": "d9d7dd101aabca77178f729e6f2514703f6d311c",
+    "workflow_run_id": "42467355998",
+    "workflow_run_attempt": "1"
+  },
+  "independent_state": {
+    "objects": 2,
+    "pending": 0,
+    "profile": {
+      "logo": null,
+      "version": 3
+    },
+    "sessions": 0,
+    "workspace": {
+      "status": "active",
+      "support": 19
+    },
+    "checked_at": "2026-11-08T09:30:23.545504+00:00",
+    "subscription": {
+      "term": "2026-11-09T00:00:00+00:00",
+      "seats": 2,
+      "version": 17
+    }
+  },
+  "explanation": "The archive test used the retained already-paid USD1 bill. Its existing paid-proof guard correctly returned BUSINESS_PAYMENT_PROOF_LOCKED. Access/foreign/member/removal/raw/signing checks passed; the run exit remains1 and file/seat/status cleanup was not complete.",
+  "next": "Do not repeat completed Owner/member/removal calls. Remove only the exact new synthetic document metadata through privileged operator teardown, delete its attempted files through Storage API, and use a separate workspace attachment for the remaining archive check.",
+  "policies_or_triggers_changed": false,
+  "original_bill_hash": "f55eef182e5f7e153e93362a51a90c881357149bf17745808d914dc0e9809a87"
+}

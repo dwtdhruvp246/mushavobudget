@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "result": "PRIVATE_FILE_CACHE_COMPARISON_PREPARED_HOSTED_OBSERVATION_PENDING",
+  "source_parent_commit": "e1f1fef13e6a07530814d0e0cd7b68fd73396307",
+  "scope": "Two generated 68-byte Personal proof images. Request upload cache-control max-age 0 and 60; compare warmed 10-second signed links with never-requested 12-second signed links after both expire. Record cacheNonce outcomes without treating a cache observation as immediate revocation acceptance.",
+  "source_carry_forward": "docs/security-audit/security-fr-2-family-file-cache-carry-forward.json",
+  "ordinary_actor_slots": [
+    "USER_A",
+    "USER_B"
+  ],
+  "changes": "Upload two generated owner-scoped objects and physically delete every attempted object through the ordinary owner's Storage API; independently require fresh absence. No database fixture, bucket policy, pricing, auth settings or service-role key.",
+  "request_bounds": {
+    "exercise": 35,
+    "including_cleanup": 44,
+    "short_lived_tokens_seconds": [
+      10,
+      12
+    ]
+  },
+  "local_checks": {
+    "tests": 83,
+    "pass": 83,
+    "fail": 0,
+    "exit_code": 0,
+    "syntax_checks": 2
+  },
+  "cleanup_paths_exported_without_tokens": true,
+  "signed_tokens_or_full_signed_URLs_exported": false,
+  "external_email_or_payment_requests": 0,
+  "application_or_file_delivery_runtime_changed": false,
+  "production_changed": false,
+  "observed_expired_warm_cache_is_not_an_authorization_pass": true,
+  "immediate_revocation_acceptance": false,
+  "full_batch_X_complete": false,
+  "stage_3_complete": false,
+  "references": [
+    "https://supabase.com/docs/guides/storage/cdn/smart-cdn",
+    "https://supabase.com/docs/guides/storage/cdn/purge-cdn-cache"
+  ]
+}

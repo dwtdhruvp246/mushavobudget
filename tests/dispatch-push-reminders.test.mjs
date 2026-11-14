@@ -47,14 +47,14 @@ test("payment state, assignment, membership, and preferences are revalidated", (
   assert.match(functionSource, /assignedUserId !== job\.user_id/);
   assert.match(functionSource, /workspace_members/);
   assert.match(functionSource, /paid >= Number\(item\.amount/);
-  assert.match(functionSource, /status: "cancelled"/);
+  assert.match(functionSource, /cancelClaimedOutboxJob\(serviceClient, "notification_outbox", job/);
 });
 
 test("delivery is multi-device and retires permanent endpoints", () => {
   assert.match(functionSource, /for \(const subscription of subscriptions/);
   assert.match(functionSource, /statusCode === 404 \|\| statusCode === 410/);
   assert.match(functionSource, /disabled_at: permanentlyGone \? sentAt : null/);
-  assert.match(functionSource, /record_notification_outbox_result/);
+  assert.match(functionSource, /recordClaimedOutboxResult\(serviceClient, "notification_outbox", job/);
 });
 
 test("logs and responses exclude delivery credentials", () => {

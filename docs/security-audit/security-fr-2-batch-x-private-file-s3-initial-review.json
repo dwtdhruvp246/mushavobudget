@@ -1,0 +1,116 @@
+{
+  "date": "2026-11-08",
+  "result": "S3_INITIAL_FETCH_REVIEW_REQUIRED",
+  "source_commit": "94e4f7a8b7eef596ffb8d9a5a4e98d6447398ee8",
+  "workflow_run_id": 42463984112,
+  "job_id": 128679146474,
+  "guard_tests": 317,
+  "receipt": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+    "result": "STAGING_ACCESS_REVIEW_REQUIRED",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "production_changed": false,
+    "exit_code": 1,
+    "exercise": {
+      "checks": {
+        "EXACT_PERSONAL_WORKSPACE": true,
+        "UPLOAD_0": true,
+        "RAW_OWNER_DENIED_payment-proofs_before_broker": true,
+        "OWNER_BYTES_0": false,
+        "DELETE_ACK_payment-proofs": true,
+        "DELETED_CONTEXT_EMPTY_payment-proofs": true
+      },
+      "exercise_requests": 6,
+      "upload_attempts": 1,
+      "cleanup_paths": [
+        {
+          "bucket": "payment-proofs",
+          "path": "personal/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/audit-broker-85b769ca-0f66-48be-835d-690020015e71.png"
+        }
+      ],
+      "storage_cleanup_acknowledged": true,
+      "email_requests": 0,
+      "finance_writes": 0,
+      "signed_urls_issued": 0,
+      "original_cached_access_finding_closed": false,
+      "raw_delivery_blocked": false,
+      "raw_route_observations": [
+        {
+          "bucket": "payment-proofs",
+          "label": "before_broker",
+          "status": 400,
+          "headers": {
+            "cache-control": null,
+            "content-type": "application/json; charset=utf-8",
+            "x-mushavo-media-type": null,
+            "cf-cache-status": "BYPASS",
+            "vary": null,
+            "referrer-policy": null,
+            "x-content-type-options": null
+          },
+          "Storage_error": "not_found",
+          "Storage_status_code": "404"
+        }
+      ]
+    },
+    "problem_code": "OWNER_BYTES_0_REQUIRED",
+    "full_lettered_batch_X_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-08-batch-x-private-file-s3-original-route-acceptance",
+    "source_commit": "94e4f7a8b7eef596ffb8d9a5a4e98d6447398ee8",
+    "workflow_run_id": "42463984112",
+    "workflow_run_attempt": "1"
+  },
+  "provider_log_observation": {
+    "window_start": "2026-11-08T08:40:00Z",
+    "window_end": "2026-11-08T08:50:00Z",
+    "S3_GET_status": 403,
+    "error_code": "AccessDenied",
+    "message": "Missing signature",
+    "raw_credentials_or_headers_printed": false
+  },
+  "correction": "Explicitly copy signed headers into native fetch options against the documented standard project S3 endpoint; assert signature/session headers before transport, and retain opaque client failures. Do not change signing credentials or account authorization.",
+  "full_batch_X_complete": false,
+  "original_finding_closed": false
+}

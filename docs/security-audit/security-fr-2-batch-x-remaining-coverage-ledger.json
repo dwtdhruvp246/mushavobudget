@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-12",
+  "project": "dczlddwbtgvfdujgcitb",
+  "status": "BATCH_X_COMPLETE_AT_CURRENT_SELECTED_AUTHORIZATION_BOUNDARY",
+  "original_receipt": "docs/security-audit/security-fr-2-business-corrected-api-owner-result.json",
+  "original_completed_ordinary_API_checks_not_repeated": true,
+  "original_actor_role_invitations_reporting_and_escalation_passes_retained": true,
+  "groups": [
+    {
+      "original": "B05 Complete submit/review and review replay with valid receipt",
+      "original_state": "BLOCKED_NO_CONTROLLED_PRIVATE_FILE_PREPARED",
+      "current_state": "SCOPED_HTTP_PASS",
+      "evidence": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json"
+    },
+    {
+      "original": "B06 Harmless private receipt original/download authorization",
+      "original_state": "BLOCKED_NO_CONTROLLED_PRIVATE_FILE_PREPARED",
+      "current_state": "SCOPED_HTTP_PASS_WITH_PHYSICAL_FILE_CLEANUP",
+      "evidence": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json"
+    },
+    {
+      "original": "B05 Bill and spending-request lifecycle",
+      "original_state": "BLOCKED_NOT_SELECTED_FOR_THIS_TWO_ACCOUNT_BATCH",
+      "current_state": "SCOPED_HTTP_REQUEST_APPROVAL_LINKED_BILL_PARTIAL_FINAL_PAYMENT_AND_REPLAY_PASS",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-x-staging-database-and-receipt-readiness.json",
+        "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
+        "docs/security-audit/security-fr-2-batch-x-business-finance-staging-result.json"
+      ]
+    },
+    {
+      "original": "B07 Nonowner manager removes another ordinary member",
+      "original_state": "BLOCKED_THIRD_DISTINCT_IDENTITY_NOT_AVAILABLE",
+      "current_state": "SCOPED_REAL_HTTP_THREE_ORDINARY_ACTORS_MANAGER_REMOVAL_AND_SAME_SESSION_REVOCATION_PASS",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-x-staging-database-and-receipt-readiness.json",
+        "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json"
+      ],
+      "third_account_UI_setup": "BROWSER_CONNECTION_DID_NOT_RESPOND_NO_ACCOUNT_CREATED",
+      "third_account_current_status": "EXISTING_CONTROLLED_ORDINARY_IDENTITY_AND_SAVED_CREDENTIALS_VERIFIED"
+    },
+    {
+      "original": "B07 Suspended account and expired entitlement acceptance",
+      "original_state": "BLOCKED_ISOLATED_STATE_FIXTURES_NOT_PREPARED",
+      "current_state": "SCOPED_POSTGRES_AND_REAL_SESSION_ACCOUNT_SUSPENSION_AND_BUSINESS_EXPIRY_OWNER_RENEWAL_GATE_PASS",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-x-staging-database-and-receipt-readiness.json",
+        "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json",
+        "docs/security-audit/security-fr-2-batch-x-business-expiry-staging-result.json"
+      ]
+    }
+  ],
+  "additional_document_archive_scope": "docs/security-audit/security-fr-2-batch-x-document-archive-scope-staging-result.json",
+  "current_read_only_conversion_snapshot": {
+    "scope": "READ_ONLY_REFERENCE_STATE_AND_ORIGINAL_COLUMN_MANUAL_BASELINE",
+    "stage_step": "FR.2.2_CONVERSION_REFERENCE_SNAPSHOT",
+    "checked_UTC": "2026-11-08T09:50:45.111188+00:00",
+    "target_project": "dczlddwbtgvfdujgcitb",
+    "hosted_acceptance": false,
+    "record_consistency": {
+      "records_total": 5,
+      "null_record_workspaces": 0,
+      "records_without_parent": 0,
+      "parent_workspace_mismatches": 0,
+      "mismatches_matching_prior_audit_item_shape": 0
+    },
+    "reference_FK_present": true,
+    "transaction_read_only": "on",
+    "conversion_consistency": {
+      "conversions_without_record": 2,
+      "record_workspace_mismatches": 0,
+      "payment_record_conversions_total": 7,
+      "unlinked_rows_matching_audit_owner_usd1_identity_shape": 2
+    },
+    "reference_FK_validated": false,
+    "application_routines_invoked": 0,
+    "synthetic_actor_rows_matched": 2,
+    "retained_manual_snapshot_sha256": "d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3",
+    "generated_reference_column_present": true,
+    "retained_family_fixture_names_matched": 2,
+    "raw_rows_identifiers_or_emails_printed": false,
+    "project_selection_independently_verified": false,
+    "historical_rows_repaired_or_conversions_deleted": false,
+    "audit_shape_is_provenance_or_cleanup_authorization": false,
+    "retained_family_manual_USD1_rows_matching_full_scope": 2,
+    "manual_baseline_excludes_only_derived_payment_record_ref": true
+  },
+  "current_read_only_business_snapshot": {
+    "scope": "READ_ONLY_POST_API_BUSINESS_COUNTS_RETAINED_FINGERPRINTS_AND_CONVERSION_CONSISTENCY",
+    "stage_step": "FR.2.3_BUSINESS_POST_BATCH_REVIEW",
+    "checked_UTC": "2026-11-08T09:50:43.433154+00:00",
+    "business_state": [
+      {
+        "fixture": "PRIMARY",
+        "paid_claims": 1,
+        "draft_claims": 1,
+        "builtin_roles": 6,
+        "draft_budgets": 1,
+        "active_members": 1,
+        "approved_claims": 1,
+        "inactive_members": 1,
+        "member_overrides": 0,
+        "workspace_active": true,
+        "active_custom_roles": 3,
+        "pending_invitations": 0,
+        "accepted_invitations": 1,
+        "archived_custom_roles": 2,
+        "cancelled_invitations": 2,
+        "reminders_and_fx_disabled_usd": true
+      },
+      {
+        "fixture": "SECONDARY",
+        "paid_claims": 0,
+        "draft_claims": 0,
+        "builtin_roles": 6,
+        "draft_budgets": 0,
+        "active_members": 1,
+        "approved_claims": 2,
+        "inactive_members": 0,
+        "member_overrides": 0,
+        "workspace_active": true,
+        "active_custom_roles": 0,
+        "pending_invitations": 0,
+        "accepted_invitations": 0,
+        "archived_custom_roles": 0,
+        "cancelled_invitations": 0,
+        "reminders_and_fx_disabled_usd": true
+      }
+    ],
+    "target_project": "dczlddwbtgvfdujgcitb",
+    "findings_closed": [],
+    "hosted_acceptance": false,
+    "record_consistency": {
+      "records_total": 5,
+      "null_record_workspaces": 0,
+      "records_without_parent": 0,
+      "parent_workspace_mismatches": 0,
+      "mismatches_matching_prior_audit_item_shape": 0
+    },
+    "cleanup_authorization": false,
+    "transaction_read_only": "on",
+    "conversion_consistency": {
+      "conversions_without_record": 2,
+      "record_workspace_mismatches": 0,
+      "payment_record_conversions_total": 7,
+      "unlinked_rows_matching_audit_owner_usd1_identity_shape": 2
+    },
+    "reference_FK_validated": false,
+    "matched_business_scopes": 2,
+    "retained_old_audit_events": 3,
+    "retained_old_audit_sha256": "74cbb242ff9a95d17858459699e5eeb57672b1bec870b33b251539dcee3ce6a2",
+    "application_routines_invoked": 0,
+    "retained_old_permission_rows": 2,
+    "synthetic_actor_rows_matched": 2,
+    "all_business_workspaces_total": 5,
+    "retained_manual_snapshot_sha256": "d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3",
+    "retained_old_permissions_sha256": "fb1812e78849d04b443c3f1de4792873730a5e1199826dddd46c438ef61d9f65",
+    "retained_old_role_active_members": 0,
+    "retained_old_role_pending_invitations": 0,
+    "retained_old_audit_fingerprint_matches": true,
+    "project_selection_independently_verified": false,
+    "rows_accounts_settings_or_catalog_changed": false,
+    "retained_old_role_fingerprint_rows_matched": 1,
+    "retained_old_permissions_fingerprint_matches": true,
+    "retained_manual_original_column_baseline_matches": true,
+    "raw_rows_identifiers_emails_or_credentials_printed": false,
+    "retained_family_manual_USD1_rows_matching_full_scope": 2,
+    "manual_baseline_excludes_only_derived_payment_record_ref": true
+  },
+  "manual_family_rows_and_original_hash_preserved": true,
+  "old_role_permissions_and_audit_preserved": true,
+  "original_primary_and_secondary_business_states_match_prior_receipt": true,
+  "all_business_workspaces_total": 5,
+  "historical_conversion_orphans": 2,
+  "historical_conversion_deletion_or_FK_validation_performed": false,
+  "full_lettered_batch_X_complete": true,
+  "stage_3_complete": false,
+  "findings_closed": [],
+  "additional_account_suspension_receipt": "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json",
+  "additional_business_finance_receipt": "docs/security-audit/security-fr-2-batch-x-business-finance-staging-result.json",
+  "additional_family_proof_path_policy": "docs/security-audit/security-fr-2-batch-x-family-proof-path-hosted-completion.json",
+  "family_proof_live_HTTP_acceptance": "SCOPED_UPLOAD_WARM_BROKER_SAME_SESSION_REMOVAL_AND_EXACT_CLEANUP_PASS",
+  "private_file_cache_followup": "docs/security-audit/security-fr-2-family-file-cache-carry-forward.json",
+  "additional_business_expiry_receipt": "docs/security-audit/security-fr-2-batch-x-business-expiry-staging-result.json",
+  "remaining_third_actor_prerequisite": {
+    "existing_ordinary_account_available": true,
+    "email_confirmed": true,
+    "active_profile": true,
+    "platform_staff": false,
+    "personal_workspaces": 1,
+    "third_ordinary_credential_slot": "USER_C",
+    "credential_availability": "VERIFIED_BY_REAL_STAGING_SIGNIN",
+    "three_ordinary_manager_removal": "SCOPED_HTTP_PASS",
+    "password_or_auth_user_changes_performed": false
+  },
+  "additional_independent_backend_overlap_receipt": "docs/security-audit/security-fr-2-batch-y-independent-queue-overlap-result.json",
+  "additional_three_ordinary_team_receipt": "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json",
+  "additional_private_file_cache_receipt": "docs/security-audit/security-fr-2-batch-x-private-file-cache-staging-result.json",
+  "private_file_cache_comparison": "HISTORICAL_PROVIDER_CACHE_OBSERVATION_RETAINED_CURRENT_BROKER_SCOPED_PASS",
+  "additional_installed_backend_caller_matrix_receipt": "docs/security-audit/security-fr-2-batch-y-installed-caller-matrix-staging-result.json",
+  "Batch_Y_current_closeout": "docs/security-audit/security-fr-2-batch-y-current-exit-ledger.json",
+  "latest_preservation_after_Y": "docs/security-audit/security-fr-2-batch-y-authorization-change-staging-result.json",
+  "synthetic_Business_current_state": {
+    "status": "suspended",
+    "support_version": 20,
+    "subscription_version": 19,
+    "seats": 1,
+    "paid_through_at": "2026-11-08T00:00:00Z",
+    "checked_at": "2026-11-08T09:51:31.129344+00:00"
+  },
+  "private_file_broker_current_status": "PERSONAL_SUBSCRIPTION_FAMILY_AND_BUSINESS_SCOPED_HOSTED_PASS",
+  "additional_broker_result": "docs/security-audit/security-fr-2-batch-x-private-file-server-retrieval-staging-result.json",
+  "additional_family_broker_result": "docs/security-audit/security-fr-2-batch-x-private-broker-family-corrected-result.json",
+  "current_exit_ledger": "docs/security-audit/security-fr-2-batch-x-current-exit-ledger.json",
+  "additional_business_broker_result": "docs/security-audit/security-fr-2-batch-x-business-private-file-staging-result.json",
+  "latest_independent_preservation": "docs/security-audit/security-fr-2-batch-x-final-preservation.json"
+}

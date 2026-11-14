@@ -1,0 +1,86 @@
+{
+  "date": "2026-11-13",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "STAGING_CATALOG_RECONCILED",
+  "preflight": {
+    "date": "2026-11-13",
+    "project": "dczlddwbtgvfdujgcitb",
+    "result": "STOPPED_FOR_REVIEW_STAGING_CATALOG_MISMATCH",
+    "fixture_exists": false,
+    "fixture_created": false,
+    "stamped_catalog_sha256": "cc122f36b6cc70e4fa88fe12a765cc83f24a586d495dfd3084f26edc2134e84f",
+    "live_catalog_sha256": "f1e6c35c005e72b1e21585d46c0279b0265f0e14ae70f3be32dcaac2b8e300ff",
+    "catalog_sha256_excluding_known_fr_3_2_additions": "c54ae6a66d80114a5629f40a641455f881e8d9199389e9dabb41f0d1f5f8d850",
+    "excluded_stage_4_functions": 3,
+    "excluded_stage_4_policies": 5,
+    "excluded_stage_4_triggers": 1,
+    "exit_code": 1
+  },
+  "upstream_storage": {
+    "version": 80,
+    "name": "revoke-extra-lifecycle-postgres-grants",
+    "hash": "18cfbf5c5b356469e1e95f3aa1b59ba111d82a06",
+    "commit": "6bb2e4c360767bef715955e2ba25dfc45c0f0af7",
+    "affected_tables": [
+      "storage.bucket_lifecycle_states",
+      "storage.lifecycle_abandoned_artifacts"
+    ],
+    "affected_functions": [
+      "storage.reconcile_lifecycle_state(text,boolean)",
+      "storage.delete_lifecycle_objects(uuid[])"
+    ],
+    "live_acl_readback": {
+      "relations": [
+        {
+          "acl": "{supabase_storage_admin=arwdDxtm/supabase_storage_admin,service_role=arwdDxtm/supabase_storage_admin,postgres=r/supabase_storage_admin}",
+          "name": "bucket_lifecycle_states",
+          "owner": "supabase_storage_admin"
+        },
+        {
+          "acl": "{supabase_storage_admin=arwdDxtm/supabase_storage_admin,service_role=arwdDxtm/supabase_storage_admin,postgres=r/supabase_storage_admin}",
+          "name": "lifecycle_abandoned_artifacts",
+          "owner": "supabase_storage_admin"
+        }
+      ],
+      "functions": [
+        {
+          "acl": "{supabase_storage_admin=X/supabase_storage_admin,service_role=X/supabase_storage_admin}",
+          "name": "reconcile_lifecycle_state",
+          "owner": "supabase_storage_admin"
+        },
+        {
+          "acl": "{supabase_storage_admin=X/supabase_storage_admin,service_role=X/supabase_storage_admin}",
+          "name": "delete_lifecycle_objects",
+          "owner": "supabase_storage_admin"
+        }
+      ]
+    }
+  },
+  "reviewed_application_migrations": [
+    {
+      "version": "20261112183459",
+      "name": "security_fr3_logo_fixture_guard",
+      "sha256": "984d9c3489a5bbf30a23b19b7ec423f7fc9ad12336177d5447b910bdf0e4b5ad"
+    },
+    {
+      "version": "20261113173135",
+      "name": "security_fr3_personal_proof_fixture_guard",
+      "sha256": "3f191ec3cb4fe8bd14052853264c336e3f42c77e1868eb4984c7a7fc7901e425"
+    }
+  ],
+  "prior_hash_reconstructed": "cc122f36b6cc70e4fa88fe12a765cc83f24a586d495dfd3084f26edc2134e84f",
+  "rolled_back_guard_check": {
+    "mode": "ACTIVE",
+    "catalog_sha256": "f1e6c35c005e72b1e21585d46c0279b0265f0e14ae70f3be32dcaac2b8e300ff",
+    "matches": true
+  },
+  "independent_post_commit": {
+    "mode": "ACTIVE",
+    "catalog_sha256": "f1e6c35c005e72b1e21585d46c0279b0265f0e14ae70f3be32dcaac2b8e300ff",
+    "matches": true,
+    "fixture_rows": 0,
+    "selected_rls_enabled": true
+  },
+  "schema_or_grants_changed_by_reconciliation": false,
+  "exit_code": 0
+}

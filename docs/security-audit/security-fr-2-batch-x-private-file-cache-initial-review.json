@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "SIGNED_EXPIRY_ERROR_CLASSIFICATION_REVIEW_REQUIRED",
+  "source_commit": "e6c671f5aeaff05e3d7a9f8f817b691c8ca5dc63",
+  "workflow_run_id": 42403474093,
+  "workflow_job_id": 128496059743,
+  "hosted_report": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+    "result": "STAGING_ACCESS_REVIEW_REQUIRED",
+    "checks": {
+      "two_ordinary_credentials_and_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 12,
+    "created_sessions": 2,
+    "cleanup_sessions": 2,
+    "production_changed": false,
+    "exit_code": 1,
+    "exercise": {
+      "checks": {
+        "UPLOAD_CACHE_0_ACCEPTED": true,
+        "OWNER_ORIGINAL_CACHE_0_MATCHES": true,
+        "WARM_SIGNED_CACHE_0_MATCHES_BEFORE_EXPIRY": true,
+        "UPLOAD_CACHE_60_ACCEPTED": true,
+        "OWNER_ORIGINAL_CACHE_60_MATCHES": true,
+        "WARM_SIGNED_CACHE_60_MATCHES_BEFORE_EXPIRY": true,
+        "FOREIGN_ORIGINAL_DENIED": true,
+        "FOREIGN_SIGNING_DENIED": true,
+        "ANONYMOUS_ORIGINAL_DENIED": true,
+        "ANONYMOUS_SIGNING_DENIED": true,
+        "ALL_TEST_SIGNED_TOKENS_EXPIRED": true,
+        "COLD_SIGNED_CACHE_0_DENIED_AFTER_EXPIRY": false,
+        "EXACT_PERSONAL_TEST_OBJECT_DELETE_ACKNOWLEDGED": true,
+        "ALL_ATTEMPTED_PERSONAL_OBJECTS_FRESHLY_ABSENT": true
+      },
+      "exercise_requests": 21,
+      "upload_attempts": 2,
+      "cleanup_paths": [
+        "personal/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/audit-cache-841496c0-50bd-4638-8e46-3b1f436b3268-0.png",
+        "personal/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/audit-cache-841496c0-50bd-4638-8e46-3b1f436b3268-60.png"
+      ],
+      "Storage_cleanup_verified": true,
+      "email_requests": 0,
+      "provider_payment_requests": 0,
+      "finance_writes": 0,
+      "browser_cache_tested": false,
+      "membership_revocation_tested": false,
+      "CDN_purge_requested": false,
+      "cached_copy_immediate_revocation_claimed": false,
+      "observations": [
+        {
+          "requested_upload_cache_control_seconds": 0,
+          "original_before": {
+            "status": 200,
+            "cache_headers": {
+              "cache-control": "private, max-age=0, must-revalidate",
+              "cf-cache-status": "MISS",
+              "vary": "Authorization, apikey",
+              "content-type": "image/png"
+            },
+            "bytes": 68,
+            "harmless_fixture_matches": true
+          },
+          "warm_before": {
+            "status": 200,
+            "cache_headers": {
+              "cf-cache-status": "MISS",
+              "content-type": "image/png"
+            },
+            "bytes": 68,
+            "harmless_fixture_matches": true
+          },
+          "cold_after_expiry": {
+            "status": 400,
+            "cache_headers": {
+              "cache-control": "private, no-cache",
+              "cf-cache-status": "DYNAMIC",
+              "content-type": "application/json; charset=utf-8"
+            },
+            "Storage_status_code": 400
+          },
+          "warm_after_expiry": {
+            "status": 400,
+            "cache_headers": {
+              "cache-control": "private, no-cache",
+              "cf-cache-status": "DYNAMIC",
+              "content-type": "application/json; charset=utf-8"
+            },
+            "Storage_status_code": 400
+          },
+          "fresh_warm_after_expiry": {
+            "status": 400,
+            "cache_headers": {
+              "cache-control": "private, no-cache",
+              "cf-cache-status": "DYNAMIC",
+              "content-type": "application/json; charset=utf-8"
+            },
+            "Storage_status_code": 400
+          },
+          "owner_original_after_signed_expiry": {
+            "status": 200,
+            "cache_headers": {
+              "cache-control": "private, max-age=0, must-revalidate",
+              "cf-cache-status": "HIT",
+              "vary": "Authorization, apikey",
+              "content-type": "image/png"
+            },
+            "bytes": 68,
+            "harmless_fixture_matches": true
+          },
+          "expired_warm_copy_observed": false,
+          "nonce_copy_after_expiry_observed": false
+        },
+        {
+          "requested_upload_cache_control_seconds": 60,
+          "original_before": {
+            "status": 200,
+            "cache_headers": {
+              "cache-control": "private, max-age=60, must-revalidate",
+              "cf-cache-status": "MISS",
+              "vary": "Authorization, apikey",
+              "content-type": "image/png"
+            },
+            "bytes": 68,
+            "harmless_fixture_matches": true
+          },
+          "warm_before": {
+            "status": 200,
+            "cache_headers": {
+              "cf-cache-status": "MISS",
+              "content-type": "image/png"
+            },
+            "bytes": 68,
+            "harmless_fixture_matches": true
+          }
+        }
+      ]
+    },
+    "problem_code": "COLD_SIGNED_CACHE_0_DENIED_AFTER_EXPIRY_REQUIRED",
+    "full_lettered_batch_X_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-07-batch-x-private-file-cache-observation",
+    "source_commit": "e6c671f5aeaff05e3d7a9f8f817b691c8ca5dc63",
+    "workflow_run_id": "42403474093",
+    "workflow_run_attempt": "1"
+  },
+  "diagnosis": "Cold and warm expired links returned HTTP 400 for the zero-cache-control test; the classifier did not recognize the response. The initial receipt omitted the provider error name/message, so the precise initial error text is unknown. Corrected code recognizes the exp-claim timestamp failure format as well as jwt-expired wording, records a whitelisted error name and boolean expiry diagnostic, and still refuses unrelated JWT errors. The 60-second post-expiry comparison did not run before the initial assertion stopped.",
+  "independent_cleanup": {
+    "physical_test_objects": 0,
+    "runner_sessions": 0,
+    "normal_queue": 0,
+    "admin_queue": 0,
+    "catalog_matches": true
+  },
+  "local_correction_tests": {
+    "tests": 9,
+    "pass": 9,
+    "fail": 0,
+    "exit_code": 0
+  },
+  "immediate_revocation_acceptance": false,
+  "exit_code": 1
+}

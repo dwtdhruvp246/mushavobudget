@@ -1,0 +1,347 @@
+{
+  "schema_version": 1,
+  "stage_step": "FR.2.2",
+  "source_parent_commit": "8220ae5a85673bb4d06725ca9245560625e42bf2",
+  "staging_project": "dczlddwbtgvfdujgcitb",
+  "source_catalog_migrations": 52,
+  "selected_exact_source_inputs": 55,
+  "source_inputs": [
+    {
+      "path": "scripts/lib/stage-3-local-db.mjs",
+      "git_blob_sha": "f5c66b2f3aa75d6d017a30e676d81c8498e63f95",
+      "sha256": "df8dbe979098465213255247363ad956ac2c61ab4a5f852fcf0d133b8596c3d9",
+      "bytes": 2680
+    },
+    {
+      "path": "scripts/offline-test-network.cjs",
+      "git_blob_sha": "561b7927510be5070f38fed70cd5870e8ed0ecb2",
+      "sha256": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+      "bytes": 1004
+    },
+    {
+      "path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "git_blob_sha": "4ca474dce0806ba483aa53a24dee64e20d942187",
+      "sha256": "b86bccd9e1f86aff81504b92300c9a9433fa42bd8b8500bf6882a0fc947917a3",
+      "bytes": 206306
+    },
+    {
+      "path": "supabase/migrations/20260903090000_public_website_enquiries.sql",
+      "git_blob_sha": "43425235fd1dfff5646761482ec472f234466ec7",
+      "sha256": "5c24e6c43bde07115f2d30af086ccc5258193be671b901e688e8b6156fe4d60b",
+      "bytes": 14729
+    },
+    {
+      "path": "supabase/migrations/20260903091000_dynamic_family_plan_selection.sql",
+      "git_blob_sha": "8e4abea4561de370232c7213d336c86b4bcc839c",
+      "sha256": "1baa17d0d7a81add1b3dd83b32de29aec17ca75d6ab2572753167ed5c8341c8c",
+      "bytes": 17529
+    },
+    {
+      "path": "supabase/migrations/20260903120000_align_enquiry_workflow.sql",
+      "git_blob_sha": "e8edf51c81ae42125aab757e8a9d2be0cc2d41ca",
+      "sha256": "02272f8d9b51fc409b3a8e9e83604cae7db771335ddd7c51735e6e2e987c5f4e",
+      "bytes": 9897
+    },
+    {
+      "path": "supabase/migrations/20260903123000_direct_enquiry_submission.sql",
+      "git_blob_sha": "82254777c3397fe06d02ed7c7ec99a83b0a0099c",
+      "sha256": "4bdcb3526e631db50f45ae93e6f9d6b88d00ff2bb3b1ebfc253a95eedab02c02",
+      "bytes": 1780
+    },
+    {
+      "path": "supabase/migrations/20260905090000_expand_global_currencies.sql",
+      "git_blob_sha": "80853d91277149bd0c8c2fd2071b912c2f54d541",
+      "sha256": "b463fad5fa6e9acb3993faca8c39c6f4fb91275228fa06ffdcd83f62bde9155d",
+      "bytes": 5879
+    },
+    {
+      "path": "supabase/migrations/20260905120000_signup_currency_preferences.sql",
+      "git_blob_sha": "3689ae95d29d7611d4372a54615583bd53254f7a",
+      "sha256": "526e358eab5a8cac5fb227a22dde999f64fa99e2edfc93a3d647b1ff92628df8",
+      "bytes": 7736
+    },
+    {
+      "path": "supabase/migrations/20260905143000_payment_daily_recurrence.sql",
+      "git_blob_sha": "82a3f7bf780d1a3dea32753739a29094e220354a",
+      "sha256": "6e18698a174a880127342c82f2ce16ca5dd165281cff77aa677463dedc0d4412",
+      "bytes": 454
+    },
+    {
+      "path": "supabase/migrations/20260907150000_push_subscriptions.sql",
+      "git_blob_sha": "91d6012df8cfdc57a81f02e867a79b57e015bfc6",
+      "sha256": "56a32f2b641c2036fffa7d328c817d89b33c7e45e59e62d22c00baaaee0c1004",
+      "bytes": 4048
+    },
+    {
+      "path": "supabase/migrations/20260908130000_push_test_rate_limit.sql",
+      "git_blob_sha": "69dc3ac43815f25c0a892d25e83403008b6d70cb",
+      "sha256": "cb95eb5d5a82f94e1b2d422ab57e0ba1093e1c41a14b6966f9a4a146bfa05454",
+      "bytes": 1770
+    },
+    {
+      "path": "supabase/migrations/20260908170000_notification_outbox.sql",
+      "git_blob_sha": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+      "sha256": "ae51a96d8bd4db671efd2debb8e2ba17590bc79071a8a56c7810873f5d2210ca",
+      "bytes": 17119
+    },
+    {
+      "path": "supabase/migrations/20260912120000_support_ticket_workflow.sql",
+      "git_blob_sha": "719ba585f7bdbbe44f6fafd6b6a5de13c62802db",
+      "sha256": "3f445b31f0b800d0e764a0e96deee5cc011d372d2a9d2f34bf31c8a7b648928d",
+      "bytes": 6624
+    },
+    {
+      "path": "supabase/migrations/20260916190000_admin_event_notifications.sql",
+      "git_blob_sha": "1218eaf24829e287f8054916248a0dea429f010e",
+      "sha256": "be09f4b456f77a5b4ae27627c894cf907cb6900703e0d70ab4c54c6cf52e0e66",
+      "bytes": 12315
+    },
+    {
+      "path": "supabase/migrations/20260921090000_additional_family_subscriptions.sql",
+      "git_blob_sha": "34addfdd2b4abef3e9a73bbe992f51a85464a505",
+      "sha256": "5f16d5ca23d2fa50f261a86807aafa34b5866618f823e24f6175c738bbe895dc",
+      "bytes": 17258
+    },
+    {
+      "path": "supabase/migrations/20260921130000_notification_workspace_context.sql",
+      "git_blob_sha": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+      "sha256": "9e61d4139b44f2849acce24c9968931f5c20ff8912a46a0800263702ec480390",
+      "bytes": 11890
+    },
+    {
+      "path": "supabase/migrations/20260922113000_admin_user_invitations.sql",
+      "git_blob_sha": "3559065aea9ad7d693121ea56bfd3837fa4dba35",
+      "sha256": "55c87362414ffb2097f0e1e2f323733903f6acb052a26c416422bb37a743d89a",
+      "bytes": 18795
+    },
+    {
+      "path": "supabase/migrations/20260923100000_complete_admin_user_invitations.sql",
+      "git_blob_sha": "46de8cdf2b64736452865de1092f3c92037aad50",
+      "sha256": "9ee1514ccb853cc779cadb8dd55a0e02760a9eccc3f4dd399492b48db461d849",
+      "bytes": 20419
+    },
+    {
+      "path": "supabase/migrations/20260923143000_replace_pending_admin_invitations.sql",
+      "git_blob_sha": "0dfeb64ae451d78f2fd659393c6f3ce757b5e82a",
+      "sha256": "4d0330b7975caef72af622abad0226ac10e4117cc9eae96c0b5d46b39484dbdd",
+      "bytes": 14998
+    },
+    {
+      "path": "supabase/migrations/20260923190000_guard_pending_admin_invitation_workspace.sql",
+      "git_blob_sha": "4fd1e66584d4e895b1fe6372c946145a4dc0ec72",
+      "sha256": "31fb1eb72e2e21a2269994643e8cd6e841d6f575dbde208450d1c4aff07518f9",
+      "bytes": 747
+    },
+    {
+      "path": "supabase/migrations/20260923200000_hold_invited_workspace_until_setup.sql",
+      "git_blob_sha": "b1a37fb3bcb57f4c6e4e644bfc87ba6f30621406",
+      "sha256": "9339d43ade0042b0216c0ded6e56909791ce2cf43b4fdf5ddd6001edd0db77b7",
+      "bytes": 6332
+    },
+    {
+      "path": "supabase/migrations/20260924100000_analytics_data_foundation.sql",
+      "git_blob_sha": "81e1049b8289215f41e1a446f7f5388b73c23c36",
+      "sha256": "9e01a281a66c26e70472142a5c18d7696592c4715fe18fe5f6bbb8045f5283f6",
+      "bytes": 10481
+    },
+    {
+      "path": "supabase/migrations/20260924110000_admin_analytics_page.sql",
+      "git_blob_sha": "b916b91777334bb7fb2ee2d8ab906b3b07ef8b24",
+      "sha256": "55edd0145be2f5d73751d06054ab71fc6d12b9c1c044908b33e855bf297dc332",
+      "bytes": 16440
+    },
+    {
+      "path": "supabase/migrations/20260924130000_guard_payment_record_payer.sql",
+      "git_blob_sha": "eb83b5f4513581335f8c17e261f354fe84eb6d50",
+      "sha256": "0e288f40cad6886c80a25761edeaf2a69b7b7f1290c537149f5520003783583d",
+      "bytes": 1907
+    },
+    {
+      "path": "supabase/migrations/20260924143000_repair_payment_recurrence_constraints.sql",
+      "git_blob_sha": "bcdb619d48a10bd0e61c23c06a159e184263d40d",
+      "sha256": "46aa95129b7b8b61f1f0072e8259a38a35341c1ddbeb86b7fe7065446c50d16b",
+      "bytes": 1005
+    },
+    {
+      "path": "supabase/migrations/20260925080000_cancel_pending_family_invitation.sql",
+      "git_blob_sha": "ab049c067da85e3b783dd0efbf2bc9698eb91ff3",
+      "sha256": "51431266ea91b5bb150df0e324c74bb679709f0376acd0a38528088e5736c17b",
+      "bytes": 1646
+    },
+    {
+      "path": "supabase/migrations/20260925090000_expiry_and_account_suspension.sql",
+      "git_blob_sha": "ddf61a186a128a2a4ffe593560197440209e8328",
+      "sha256": "773801fd17c53a6fbde92206db62383ee3e70a26d2ec7841fe7f91d5b8efe641",
+      "bytes": 20196
+    },
+    {
+      "path": "supabase/migrations/20260925120000_family_extra_places.sql",
+      "git_blob_sha": "8a63e75e94965c7d737d7a8194f3f37feeffea5d",
+      "sha256": "12b0b6c5b83d8d5f12ec89eee95897e5bffeb4af481867c3973ba6f5380ecee7",
+      "bytes": 24699
+    },
+    {
+      "path": "supabase/migrations/20260927103000_personal_cashbook_private_test.sql",
+      "git_blob_sha": "8ebcff8d90440218316240ae9b0ea5a1f63167e1",
+      "sha256": "efbcb8542f38a00e1fb1c431f67ea6589acded19362d0cc1a88482ae249f13c6",
+      "bytes": 21592
+    },
+    {
+      "path": "supabase/migrations/20260927140000_dashboard_completed_payments.sql",
+      "git_blob_sha": "1c7bb1c21d00e72f32038c5d3ac85f61bb554a0c",
+      "sha256": "67819eb80802fbec0b4e56edcdbdeb63927e8ac49988ca9fc11f2b4566e81a43",
+      "bytes": 5804
+    },
+    {
+      "path": "supabase/migrations/20260927183000_business_stage_0_launch_lock.sql",
+      "git_blob_sha": "ef756e2ba8f873f61e189372839db164b0e804eb",
+      "sha256": "9304f342a6561714142dc6c3b9feb27685e8ac9fcee5b2e57e323c1d5d280753",
+      "bytes": 12839
+    },
+    {
+      "path": "supabase/migrations/20260928070000_business_stage_2_security_foundation.sql",
+      "git_blob_sha": "4ec51d1c99311e29577b7c53283ef7fcc9fedf6b",
+      "sha256": "37b22be806048adaeecc3eacc667057420286b3de5c2067b5fa0b9b675d96ac1",
+      "bytes": 68728
+    },
+    {
+      "path": "supabase/migrations/20260928090000_admin_manual_subscription_grants.sql",
+      "git_blob_sha": "859b123f33f00b4bc7aa26fca4f9795a04244eaf",
+      "sha256": "a5e965d072d34c8c48d55aba5d8f45e7047dc1b114f858e67e8ac6ee383fba25",
+      "bytes": 12426
+    },
+    {
+      "path": "supabase/migrations/20260928130000_business_stage_3_onboarding.sql",
+      "git_blob_sha": "a8fd4e1771255a13b5f32e6042bba75874b205d1",
+      "sha256": "e87a11df4c69160bc6c6dbf878b41c432201a7e46efd00fed5652b6d81ca0ee8",
+      "bytes": 18114
+    },
+    {
+      "path": "supabase/migrations/20260928170000_business_stage_4_team.sql",
+      "git_blob_sha": "0d979bceddde1c4c122bf725efc632959dd23391",
+      "sha256": "c95aee8239de7d0ff6feb4e4e02b4ccadfd29168ce14686d1e0fead3e7e24cab",
+      "bytes": 32451
+    },
+    {
+      "path": "supabase/migrations/20260928200000_business_stage_5_expense_claims.sql",
+      "git_blob_sha": "3635ad6c7d9f256bed39090f1498043223c2b9b0",
+      "sha256": "468950a85f4bb7250740c07f9090a6809260c8b655878339787a30f47578dc48",
+      "bytes": 31619
+    },
+    {
+      "path": "supabase/migrations/20260928213000_business_stage_6_bills.sql",
+      "git_blob_sha": "d20f9d99910c8b2585ea299ca47eba6986ffe616",
+      "sha256": "b4f99719e3eddb4123fca8c589d75c9be078745668dbc6a4305115f3566d28c4",
+      "bytes": 44104
+    },
+    {
+      "path": "supabase/migrations/20260928222000_stage_6_reminder_url_compatibility.sql",
+      "git_blob_sha": "865a70ea8d3e3b30dfe7b4e4ac9ee531f6cf3e16",
+      "sha256": "1e24b416532617a0a846f2e95b27b34b6ad243d965c1dde1f0c5930473e8bd85",
+      "bytes": 695
+    },
+    {
+      "path": "supabase/migrations/20260929193000_business_stage_7_transactions.sql",
+      "git_blob_sha": "2a36e10e23372e7c73f3df1f1eb9209355d2479d",
+      "sha256": "54b0b58d8c582f3cddc2643fdff17bbf0efcab5e5c9bc8456e77f382abbbfa02",
+      "bytes": 22222
+    },
+    {
+      "path": "supabase/migrations/20260930060000_business_stage_8_budgets_approvals.sql",
+      "git_blob_sha": "91650ec00ef5300724b3da1e0ba8e9c429cf9387",
+      "sha256": "7842e395cc32fc991cfc6e37f6c612a2b9be49daef0a639be7d6469bd764bd48",
+      "bytes": 43433
+    },
+    {
+      "path": "supabase/migrations/20260930073000_business_stage_9_reports.sql",
+      "git_blob_sha": "640421d095741262ee6727aeadd99afab4b8311e",
+      "sha256": "b4a32106e3d7a81bafae5b1b11c26ee9e1828a1339f289a177d6e6d840ee6ce6",
+      "bytes": 29148
+    },
+    {
+      "path": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+      "git_blob_sha": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+      "sha256": "150cdfc2b70521b4fc2f0b666adf4b772513a56ce43a39b7e912cdd00b3e6215",
+      "bytes": 50506
+    },
+    {
+      "path": "supabase/migrations/20260930110000_business_stage_11_admin.sql",
+      "git_blob_sha": "d505b0c16529147fea998d794a60c55d5ff38e84",
+      "sha256": "ad484062b7377cb0838ad9735292895149a7f609870e06399493d1de921637a4",
+      "bytes": 20281
+    },
+    {
+      "path": "supabase/migrations/20260930130000_business_stage_12_realtime.sql",
+      "git_blob_sha": "8e44bd0a3c08a373181114a137e66c11310b8a2f",
+      "sha256": "0a30d86292d787456d7e24eaebdda29b5d516ecc8a9f79ebdae1aabfefd757a2",
+      "bytes": 5270
+    },
+    {
+      "path": "supabase/migrations/20261001190000_admin_plans_workbench.sql",
+      "git_blob_sha": "2dc028ccd92314e6f6f92388fc2107142ea2ddf2",
+      "sha256": "e8d566fc693c8060278e06e489deb6f1fec6337c5267d28775eba9dda85c0a7a",
+      "bytes": 21233
+    },
+    {
+      "path": "supabase/migrations/20261002042500_reconcile_business_plan_seats.sql",
+      "git_blob_sha": "2bf290c33957d0c7cb85e7ea928355fcceb4b124",
+      "sha256": "184a0ec0179f29874951eabc2afc7037144e7390f25dc7d29768fa7f56b10465",
+      "bytes": 1666
+    },
+    {
+      "path": "supabase/migrations/20261002060000_business_public_availability.sql",
+      "git_blob_sha": "04577f4423d3473501f247621fa92a69616c13bd",
+      "sha256": "9ecee7a8e679b1044ba8d21f6be70f9319f2ac4fa284e50dc9d62ec1136bad96",
+      "bytes": 29689
+    },
+    {
+      "path": "supabase/migrations/20261002070000_business_branding.sql",
+      "git_blob_sha": "d49d530a311f3ef4677cbe1e8413fe6b897dc8be",
+      "sha256": "8ee464d6d042e67f2e0b43c5ea89246ecd4ddf0a80b46c19ea961f26631f0877",
+      "bytes": 6428
+    },
+    {
+      "path": "supabase/migrations/20261004153000_business_custom_roles.sql",
+      "git_blob_sha": "c943e03949affcf1ee326ae86198cc22af5090e5",
+      "sha256": "b8db2c387545729f9f5b6421b1ef9cf222027eefe03fdb96d22ba0bfc5d8433e",
+      "bytes": 47709
+    },
+    {
+      "path": "supabase/migrations/20261006043000_security_stage_0_private_reads.sql",
+      "git_blob_sha": "57622217d1b180bd16aac47debe0618d70693e71",
+      "sha256": "b60fb78d5dd7b76f3b439c9b66e31806d9a0dbf76225e7785bbfa5e9736432fe",
+      "bytes": 2847
+    },
+    {
+      "path": "supabase/migrations/20261006050000_security_stage_0_currency_helpers.sql",
+      "git_blob_sha": "7b954296e256a46e0274a893a4852e62fa77190f",
+      "sha256": "344b3c65d524ae1f390c182d28c8a44b42e74702f935217fa5f13bb4d8dd32ac",
+      "bytes": 3127
+    },
+    {
+      "path": "supabase/migrations/20261006180000_business_invitation_notifications.sql",
+      "git_blob_sha": "501ae2a45018cf0e89531f0821834c57c904c328",
+      "sha256": "8efd199e9c480cbf33dea64a3d8daea3f5a81281896c38f1ca5348b7e94db9f0",
+      "bytes": 5040
+    },
+    {
+      "path": "supabase/migrations/20261009190000_public_enquiry_submission_gate.sql",
+      "git_blob_sha": "6c9f26f2000aeb98f5175c410f4e95917a78289c",
+      "sha256": "da0de9bf8e42dfe9e1041d1340ea1859e6c06075a013276293c781db26d7fd54",
+      "bytes": 7306
+    },
+    {
+      "path": "supabase/schema.sql",
+      "git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "sha256": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+      "bytes": 953717
+    }
+  ],
+  "expected_local_cases": 32,
+  "controlled_installer": "supabase/remediation/security_fr_2_2_paid_record_binding.sql",
+  "guarded_rollback": "supabase/remediation/security_fr_2_2_paid_record_binding_rollback.sql",
+  "automatic_migration_or_schema_integration_performed": false,
+  "historical_repair_performed": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

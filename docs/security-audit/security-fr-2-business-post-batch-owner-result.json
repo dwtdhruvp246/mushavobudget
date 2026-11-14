@@ -1,0 +1,86 @@
+[
+  {
+    "business_post_batch_review": {
+      "scope": "READ_ONLY_POST_API_BUSINESS_COUNTS_RETAINED_FINGERPRINTS_AND_CONVERSION_CONSISTENCY",
+      "stage_step": "FR.2.3_BUSINESS_POST_BATCH_REVIEW",
+      "checked_UTC": "2026-10-15T04:29:41.409915+00:00",
+      "business_state": [
+        {
+          "fixture": "PRIMARY",
+          "paid_claims": 1,
+          "draft_claims": 1,
+          "builtin_roles": 6,
+          "draft_budgets": 1,
+          "active_members": 1,
+          "approved_claims": 1,
+          "inactive_members": 1,
+          "member_overrides": 0,
+          "workspace_active": true,
+          "active_custom_roles": 3,
+          "pending_invitations": 0,
+          "accepted_invitations": 1,
+          "archived_custom_roles": 2,
+          "cancelled_invitations": 2,
+          "reminders_and_fx_disabled_usd": true
+        },
+        {
+          "fixture": "SECONDARY",
+          "paid_claims": 0,
+          "draft_claims": 0,
+          "builtin_roles": 6,
+          "draft_budgets": 0,
+          "active_members": 1,
+          "approved_claims": 2,
+          "inactive_members": 0,
+          "member_overrides": 0,
+          "workspace_active": true,
+          "active_custom_roles": 0,
+          "pending_invitations": 0,
+          "accepted_invitations": 0,
+          "archived_custom_roles": 0,
+          "cancelled_invitations": 0,
+          "reminders_and_fx_disabled_usd": true
+        }
+      ],
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "findings_closed": [],
+      "hosted_acceptance": false,
+      "record_consistency": {
+        "records_total": 5,
+        "null_record_workspaces": 0,
+        "records_without_parent": 0,
+        "parent_workspace_mismatches": 0,
+        "mismatches_matching_prior_audit_item_shape": 0
+      },
+      "cleanup_authorization": false,
+      "transaction_read_only": "on",
+      "conversion_consistency": {
+        "conversions_without_record": 2,
+        "record_workspace_mismatches": 0,
+        "payment_record_conversions_total": 7,
+        "unlinked_rows_matching_audit_owner_usd1_identity_shape": 2
+      },
+      "reference_FK_validated": false,
+      "matched_business_scopes": 2,
+      "retained_old_audit_events": 3,
+      "retained_old_audit_sha256": "74cbb242ff9a95d17858459699e5eeb57672b1bec870b33b251539dcee3ce6a2",
+      "application_routines_invoked": 0,
+      "retained_old_permission_rows": 2,
+      "synthetic_actor_rows_matched": 2,
+      "all_business_workspaces_total": 2,
+      "retained_manual_snapshot_sha256": "d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3",
+      "retained_old_permissions_sha256": "fb1812e78849d04b443c3f1de4792873730a5e1199826dddd46c438ef61d9f65",
+      "retained_old_role_active_members": 0,
+      "retained_old_role_pending_invitations": 0,
+      "retained_old_audit_fingerprint_matches": true,
+      "project_selection_independently_verified": false,
+      "rows_accounts_settings_or_catalog_changed": false,
+      "retained_old_role_fingerprint_rows_matched": 1,
+      "retained_old_permissions_fingerprint_matches": true,
+      "retained_manual_original_column_baseline_matches": true,
+      "raw_rows_identifiers_emails_or_credentials_printed": false,
+      "retained_family_manual_USD1_rows_matching_full_scope": 2,
+      "manual_baseline_excludes_only_derived_payment_record_ref": true
+    }
+  }
+]

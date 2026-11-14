@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "stage_step": "7.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "bcb8f055f93cb9c145a0f74556e4bacb39847593",
+  "scope": "KNOWN_PRODUCT_SCOPE_AND_UNCONFIRMED_COMMERCE_DECISIONS_NOT_PRICE_OR_CHARGE_APPROVAL",
+  "known_scope": {
+    "workspaces": [
+      "Personal",
+      "Family/Household",
+      "Business"
+    ],
+    "web_PWA_and_native_distribution_planned": true,
+    "recorded_user_payments_distinct_from_Mushavo_digital_subscription_sales": true,
+    "preserve_existing_manual_web_flow": true,
+    "preserve_existing_finance_and_member_access_rules": true,
+    "operator_prior_owner_report": {
+      "name": "Dhruv Parekh",
+      "country": "Zimbabwe",
+      "type": "INDIVIDUAL_NOT_YET_REGISTERED_BUSINESS",
+      "independently_verified": false
+    },
+    "territories_and_country_exclusions": "UNCONFIRMED",
+    "store_accounts": "PRIOR_OWNER_REPORTED_ABSENT_NOT_FRESHLY_INSPECTED"
+  },
+  "source_vs_decision": {
+    "Business_rates_and_included_capacity": "CONFIGURABLE_SOURCE_NOT_NEW_OWNER_APPROVED_CURRENT_PRICES",
+    "public_Business_sales": "LATER_SOURCE_HAS_CONFIGURABLE_COMPLETE_PRICE_GATES_NOT_ALWAYS_CLOSED",
+    "manual_Admin_grants": "EXISTING_PRIVILEGED_SOURCE_OPERATION_NOT_PROVIDER_PURCHASE",
+    "Paynow_Stripe_or_other_web_gateway": "NO_IMPLEMENTATION_IDENTIFIED_IN_SELECTED_SOURCE_NO_PROVIDER_CHOICE_INFERRED"
+  },
+  "decisions": [
+    {
+      "id": "CO-D01",
+      "topic": "Native/web/PWA/sideload checkout and storefront routes",
+      "status": "UNCONFIRMED",
+      "proposal": "Standard store-supported native purchase route unless a qualified alternative/access-only route is explicitly selected and verified for the actual distribution/storefront/enrollment."
+    },
+    {
+      "id": "CO-D02",
+      "topic": "Exact store products, plan/cycle/seat variants and buyer/workspace mapping",
+      "status": "UNCONFIRMED",
+      "proposal": "Versioned server-approved mapping; immutable account/workspace purchase intent; no client-defined price or arbitrary store quantity."
+    },
+    {
+      "id": "CO-D03",
+      "topic": "Native prices/currencies/offers/tax and terms",
+      "status": "UNCONFIRMED",
+      "proposal": "Use actual selected store products and localized checkout values; web rate/FX and legacy finance rounding are not native purchase authority. No new price adopted here."
+    },
+    {
+      "id": "CO-D04",
+      "topic": "Ownership transfer/restore and multiple workspaces",
+      "status": "UNCONFIRMED",
+      "proposal": "Explicit policy retains one rightful purchaser/source binding and valid workspace access; no email-based purchase merge."
+    },
+    {
+      "id": "CO-D05",
+      "topic": "Seat proration/upgrade/downgrade/effective date",
+      "status": "UNCONFIRMED",
+      "proposal": "Preserve accepted manual Family/Business algorithms; define provider-product changes and future capacity without overbooking."
+    },
+    {
+      "id": "CO-D06",
+      "topic": "Optional web gateway and eligible alternative-billing programs",
+      "status": "UNCONFIRMED",
+      "proposal": "Select only after operator/merchant/channel/program facts are verified; no Paynow/Stripe integration or external native link is implied."
+    },
+    {
+      "id": "CO-D07",
+      "topic": "Overlapping sources/manual grants/refunds/suspension precedence",
+      "status": "UNCONFIRMED",
+      "proposal": "Separate provider-verified store state from privileged manual grants; project entitlements under approved precedence rather than blind last-writer overwrite."
+    },
+    {
+      "id": "CO-D08",
+      "topic": "Sandbox actors/products/provider roles, ledger retention/operations/rollback",
+      "status": "UNCONFIRMED_UNVERIFIED",
+      "proposal": "Keep secrets private/server-only; accepted isolated sandbox transactions and recovery precede real charging or release."
+    }
+  ],
+  "runtime_store_purchase_or_provider_webhook_implemented": false,
+  "actual_config_prices_products_accounts_or_region_eligibility_verified": false,
+  "payment_provider_activated": false,
+  "real_charges_performed": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false
+}

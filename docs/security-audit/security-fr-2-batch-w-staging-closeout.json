@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-06",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "BATCH_W_AGREED_STAGING_SCOPE_COMPLETE",
+  "source_commit": "22083f59f2efac5e8933331dd01371fa43bd154e",
+  "staging_project": "dczlddwbtgvfdujgcitb",
+  "staging_web_origin": "https://mushavo-budget-staging.pages.dev",
+  "original_case_groups": 31,
+  "new_case_groups": 0,
+  "owner_deferred_cases": [
+    "AU03.04 failure/retry variant"
+  ],
+  "full_original_case_contract_executed": false,
+  "stage_3_complete": false,
+  "local_regression_tests": {
+    "passed": 34,
+    "failed": 0
+  },
+  "recovery_password_save_retry": {
+    "case": "AU04.05",
+    "retained_live_scoped_pass": true,
+    "real_password_update_HTTP_status": 200,
+    "receipt": "docs/security-audit/security-fr-2-batch-w-live-recovery-save-retry.json",
+    "workflow_run_url": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42171574114"
+  },
+  "legacy_signin": {
+    "case": "AU03.01",
+    "fixture": "Existing disposable recovery account with a seeded legacy bcrypt credential",
+    "password_length": 7,
+    "historical_account_age_simulated": false,
+    "global_password_policy_changed": false,
+    "new_password_boundary_reused": "docs/security-audit/security-fr-2-batch-w-password-session-pass.json",
+    "live_browser": {
+      "check": "existing_short_password_signin",
+      "transport": "Chromium with TLS-verified runner requests",
+      "hosted_password_signin_requests": 1,
+      "hosted_password_updates": 0,
+      "recovery_or_email_requests": 0,
+      "chromium_version": "143.0.7499.0",
+      "signin_form_accepts_seven_characters": true,
+      "signin_HTTP_status": 200,
+      "weak_password_length_signal": true,
+      "dashboard_visible": true,
+      "server_and_dashboard_identity_verified": true,
+      "result": "SCOPED_PASS",
+      "local_logout_HTTP_status": 204,
+      "new_session_logout_acknowledged": true,
+      "isolated_browser_closed": true
+    },
+    "temporary_credential_retired": true
+  },
+  "business_invitation_error_ui": {
+    "case": "AU05.07",
+    "deployment_id": "b29545cc-bbb5-4b2a-b92a-bd0c2e151c1f",
+    "previous_staging_deployment_id": "c8977c16-f44c-4a38-b2c3-0582e786bdf5",
+    "deployment_url": "https://b29545cc.mushavo-budget-staging.pages.dev",
+    "served_script_version": 25,
+    "package_sha256": "4dbff05c42bb262e5a036f8c95962947e6dedfbbb8b5dc8b5fba5b0b63bc4e3a",
+    "archive_entries": 42,
+    "public_served_files_matched": 39,
+    "archive_entries_preserved": 40,
+    "changed_public_files": [
+      "business.html",
+      "business.js"
+    ],
+    "security_header_and_retired_route_readback": true,
+    "controlled_chromium_on_exact_hosted_source": {
+      "controlled_502_saved_invitation_and_resend_visible": true,
+      "controlled_429_wait_guidance_and_existing_row_retained": true,
+      "real_sdk_null_PKCE_fields_and_exact_session_guard_verified": true
+    },
+    "real_invitation_writes": 0,
+    "real_invitation_emails": 0,
+    "actual_provider_outage_measured": false
+  },
+  "exact_fixture_cleanup": {
+    "guarded_SQL": "supabase/diagnostics/security_fr_2_5_batch_w_live_retry_fixture_cleanup.sql",
+    "transaction_result": "EXACT_NEW_RECOVERY_FIXTURES_ABSENT",
+    "execution_surface": "Staging Supabase dashboard",
+    "independent_readback": {
+      "auth_users": 0,
+      "profiles": 0,
+      "personal_workspaces": 0,
+      "memberships": 0,
+      "auth_identities": 0,
+      "sessions": 0,
+      "refresh_tokens": 0,
+      "one_time_tokens": 0
+    }
+  },
+  "additional_real_email_requests": 0,
+  "production_or_native_deployment": false,
+  "global_auth_policy_changed": false,
+  "exit_code": 0
+}

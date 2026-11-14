@@ -1,0 +1,14 @@
+{
+  "stage_step": "FR.2.4.E3.3_PRIVATE_ZOHO_SETUP",
+  "source_parent_commit": "696a9d90b5f1f2dcf9bfa63b1a0d8f187892dd65",
+  "file_sha256": {
+    "scripts/lib/fr-2-zoho-private-setup.mjs": "c69f30166b95d805b773fe7cb9fd4fe36ef13b02df0c0abc3e90d74c07473bf4",
+    "scripts/fr-2-zoho-private-setup.mjs": "3d5a02488879aba3067aa8ca7515e5422ab9d267dc3f809fcbf4209191ef345f",
+    "scripts/setup-fr-2-zoho-private.ps1": "5c83177367e62439fca453afa74a7c98c55fab2fb1bad2011612441060bf9f87",
+    "scripts/verify-fr-2-zoho-private-setup.mjs": "163c2f82a67dc4dae3967779f9c9fc9bdcb07494d39dde601d68259cfc4cd08c",
+    "tests/fr-2-zoho-private-setup.test.mjs": "7bfaa6ed103cfdebe0e76073f62545df784a1ef77080e8d89e09c8e2b0ab708c",
+    "supabase/functions/_shared/email-verification-http.mjs": "b28a80658d55725ad78a833be2192b353a9b08ba7987f8cbcb0ae40edd17e395",
+    "supabase/functions/_shared/email-verification-zoho.mjs": "757270e2535e8c349c5e44ab022d3dd56d251ffdebab2bfdc9a4978fc5737793",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5"
+  }
+}

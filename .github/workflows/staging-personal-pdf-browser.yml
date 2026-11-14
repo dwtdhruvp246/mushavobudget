@@ -1,0 +1,46 @@
+name: Staging Personal PDF browser
+on:
+  push:
+    branches: ["security/stage-3-authorization"]
+    paths: ["scripts/ci/staging-personal-pdf-browser-run.json"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mushavo-staging-acceptance
+  cancel-in-progress: false
+
+jobs:
+  browser:
+    if: github.repository == 'dwtdhruvp246/mushavobudget' && github.ref == 'refs/heads/security/stage-3-authorization' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '22'
+      - name: Read archived or active scope
+        id: plan
+        run: |
+          echo "enabled=$(node -p 'require("./scripts/ci/staging-personal-pdf-browser-run.json").enabled === true')" >> "$GITHUB_OUTPUT"
+      - name: Install locked browser tooling
+        if: steps.plan.outputs.enabled == 'true'
+        run: |
+          npm ci --ignore-scripts --prefix scripts/fixtures/staging-browser-tools
+          npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/logo-jpeg-tools
+          npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/pdf-proof-tools
+      - name: Install Chromium
+        if: steps.plan.outputs.enabled == 'true'
+        run: scripts/fixtures/staging-browser-tools/node_modules/.bin/playwright install --with-deps chromium
+      - name: Run the isolated Personal PDF browser checks
+        if: steps.plan.outputs.enabled == 'true'
+        env:
+          MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}
+          MUSHAVO_STAGING_USER_A_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_A_PASSWORD }}
+          MUSHAVO_STAGING_USER_B_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_B_EMAIL }}
+          MUSHAVO_STAGING_USER_B_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_B_PASSWORD }}
+        run: node scripts/ci/check-staging-personal-pdf-browser.mjs

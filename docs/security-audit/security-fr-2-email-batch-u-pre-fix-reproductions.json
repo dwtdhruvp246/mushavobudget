@@ -1,0 +1,28 @@
+{
+  "stage_step": "FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE_PREPARATION",
+  "scope": "SYNTHETIC_LOCAL_PRE_FIX_REPRODUCTIONS_ONLY",
+  "source_parent_commit": "5721a07f8e70fb3f7d25afceefb3fc372f0aca30",
+  "default_global_signout": {
+    "source_app_SHA256": "6df6e954a1f71d74b1c73bc7d83f96f086cef01c2eb73e23cbe05cb31210edb9",
+    "checkpoint": "ACTUAL_UI_SIGNOUT_SCOPE",
+    "problem_code": "FULL_APP_CHECK_REQUIRED",
+    "synthetic_global_logout_requests": 1,
+    "unrelated_synthetic_Auth_session_preserved": false,
+    "expected_preservation_check_failed": true,
+    "checked_UTC": "2026-10-24T12:08:36.323Z"
+  },
+  "option_values_reset_to_empty": {
+    "source_session_entry_SHA256": "09ad4dc4f03d1bce098a1849362a5e547e91cbfcb0715821a94cf81408ffef0e",
+    "scope": "ACTUAL_FULL_PAGE_BOOTSTRAP_AFTER_LOCAL_LOGOUT_FIX",
+    "fixed_diagnostic": "NULL_FAMILY_OPTION_AT_RENDER_PAYMENT_SCOPE",
+    "dashboard_startup_failed": true,
+    "raw_exception_or_DOM_in_this_receipt": false,
+    "source_localization_inferred_from_option_reset_and_reproduction": true
+  },
+  "correction_local_receipt": "docs/security-audit/security-fr-2-email-batch-u-local-checks.json",
+  "actual_hosted_requests": 0,
+  "real_email_requests": 0,
+  "private_packets_or_real_credentials_accessed": false,
+  "production_or_native_changed": false,
+  "findings_closed": []
+}

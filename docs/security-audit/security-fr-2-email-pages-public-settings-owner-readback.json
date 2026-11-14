@@ -1,0 +1,251 @@
+{
+  "stage_step": "FR.2.4.E5.2_PAGES_CONFIGURATION_BASELINE",
+  "result": "STAGING_PAGES_CONFIGURATION_BASELINE_COLLECTED_NOT_ROLLOUT_ACCEPTANCE",
+  "requests_attempted": 4,
+  "verified_local_ZIP_SHA256": "33bee04f34bf564330345ef7c041ca5b52e0222fbab7dd4cbcae1a789f5c6ef1",
+  "local_44_file_review_artifact_unchanged": true,
+  "staging_Pages_project_in_selected_account": true,
+  "limiter_Worker_present": true,
+  "selected_SQLite_namespace_verified": true,
+  "limiter_public_URLs_disabled": true,
+  "source_control_integration_observed": "NO_GIT_SOURCE_REPORTED",
+  "canonical_deployment_uses_functions": false,
+  "channels": [
+    {
+      "environment": "PRODUCTION_CHANNEL_OF_STAGING_PAGES_PROJECT",
+      "configuration_metadata_reported": true,
+      "compatibility_date_matches_reviewed": false,
+      "always_use_latest_compatibility_date": false,
+      "fail_open": false,
+      "environment_entry_count": 3,
+      "required_variables": [
+        {
+          "name": "EMAIL_GATE_MODE",
+          "state": "PLAIN_TEXT"
+        },
+        {
+          "name": "EMAIL_GATE_PROJECT",
+          "state": "PLAIN_TEXT"
+        },
+        {
+          "name": "EMAIL_GATE_ORIGIN",
+          "state": "PLAIN_TEXT"
+        },
+        {
+          "name": "EMAIL_GATE_PEPPERS_JSON",
+          "state": "ABSENT"
+        },
+        {
+          "name": "EMAIL_GATE_KEY_VERSION",
+          "state": "ABSENT"
+        },
+        {
+          "name": "EMAIL_GATE_RATE_PEPPER",
+          "state": "ABSENT"
+        },
+        {
+          "name": "SUPABASE_PUBLISHABLE_KEY",
+          "state": "ABSENT"
+        },
+        {
+          "name": "SUPABASE_SERVICE_ROLE_KEY",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_MAIL_ORIGIN",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_ACCOUNTS_ORIGIN",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_ACCOUNT_ID",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_FROM_ADDRESS",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_CLIENT_ID",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_CLIENT_SECRET",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_REFRESH_TOKEN",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_TEST_RECIPIENTS_JSON",
+          "state": "ABSENT"
+        }
+      ],
+      "sensitive_required_variables_in_plaintext": 0,
+      "non_secret_staging_markers": [
+        {
+          "name": "EMAIL_GATE_MODE",
+          "state": "MATCH"
+        },
+        {
+          "name": "EMAIL_GATE_PROJECT",
+          "state": "MATCH"
+        },
+        {
+          "name": "EMAIL_GATE_ORIGIN",
+          "state": "MATCH"
+        }
+      ],
+      "limiter_binding": "MATCH",
+      "other_Durable_Object_binding_count": 0
+    },
+    {
+      "environment": "PREVIEW_CHANNEL_OF_STAGING_PAGES_PROJECT",
+      "configuration_metadata_reported": true,
+      "compatibility_date_matches_reviewed": false,
+      "always_use_latest_compatibility_date": false,
+      "fail_open": false,
+      "environment_entry_count": 3,
+      "required_variables": [
+        {
+          "name": "EMAIL_GATE_MODE",
+          "state": "PLAIN_TEXT"
+        },
+        {
+          "name": "EMAIL_GATE_PROJECT",
+          "state": "PLAIN_TEXT"
+        },
+        {
+          "name": "EMAIL_GATE_ORIGIN",
+          "state": "PLAIN_TEXT"
+        },
+        {
+          "name": "EMAIL_GATE_PEPPERS_JSON",
+          "state": "ABSENT"
+        },
+        {
+          "name": "EMAIL_GATE_KEY_VERSION",
+          "state": "ABSENT"
+        },
+        {
+          "name": "EMAIL_GATE_RATE_PEPPER",
+          "state": "ABSENT"
+        },
+        {
+          "name": "SUPABASE_PUBLISHABLE_KEY",
+          "state": "ABSENT"
+        },
+        {
+          "name": "SUPABASE_SERVICE_ROLE_KEY",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_MAIL_ORIGIN",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_ACCOUNTS_ORIGIN",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_ACCOUNT_ID",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_FROM_ADDRESS",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_CLIENT_ID",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_CLIENT_SECRET",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_REFRESH_TOKEN",
+          "state": "ABSENT"
+        },
+        {
+          "name": "ZOHO_TEST_RECIPIENTS_JSON",
+          "state": "ABSENT"
+        }
+      ],
+      "sensitive_required_variables_in_plaintext": 0,
+      "non_secret_staging_markers": [
+        {
+          "name": "EMAIL_GATE_MODE",
+          "state": "MATCH"
+        },
+        {
+          "name": "EMAIL_GATE_PROJECT",
+          "state": "MATCH"
+        },
+        {
+          "name": "EMAIL_GATE_ORIGIN",
+          "state": "MATCH"
+        }
+      ],
+      "limiter_binding": "MATCH",
+      "other_Durable_Object_binding_count": 0
+    }
+  ],
+  "samples": [
+    {
+      "endpoint": "STAGING_PAGES_PROJECT",
+      "http_status": 200,
+      "JSON_received": true,
+      "success": true,
+      "errors_shape": "ARRAY",
+      "error_count": 0
+    },
+    {
+      "endpoint": "WORKER_INVENTORY",
+      "http_status": 200,
+      "JSON_received": true,
+      "success": true,
+      "errors_shape": "ARRAY",
+      "error_count": 0
+    },
+    {
+      "endpoint": "NAMESPACE_INVENTORY",
+      "http_status": 200,
+      "JSON_received": true,
+      "success": true,
+      "errors_shape": "NULL",
+      "error_count": null
+    },
+    {
+      "endpoint": "LIMITER_PUBLIC_URL_SETTINGS",
+      "http_status": 200,
+      "JSON_received": true,
+      "success": true,
+      "errors_shape": "ARRAY",
+      "error_count": 0
+    }
+  ],
+  "raw_environment_values_hashes_account_or_namespace_identifiers_printed": false,
+  "secret_values_used_or_printed": false,
+  "token_saved_to_disk_or_environment": false,
+  "upload_or_settings_write_attempted": false,
+  "Zoho_file_accessed": false,
+  "actual_email_or_provider_dispatch": false,
+  "SQL_or_Auth_requests": 0,
+  "gateway_configuration_ready_verified": false,
+  "Supabase_project_selection_independently_verified": false,
+  "deployed": false,
+  "live_activation_approved": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "checkpoint": "COMPLETE",
+  "problem_code": null,
+  "exit_code": 0,
+  "checked_UTC": "2026-10-19T17:58:40.978Z",
+  "source_hashes_verified": 6
+}

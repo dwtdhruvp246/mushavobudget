@@ -1,0 +1,791 @@
+{
+  "stage_step": "3.4.1",
+  "scope": "LOCAL_ORDERED_SOURCE_CATALOG_WITH_MODELED_AUTH_STORAGE_DEFAULT_GRANTS",
+  "hosted_metadata_or_authorization_verified": false,
+  "migration_count": 52,
+  "routines": [
+    {
+      "name": "admin_analytics_foundation",
+      "args": "p_from date, p_to date",
+      "security_definer": true,
+      "body_md5": "99ef14370afce2b0ff25c12bf3d17cd3",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "admin_analytics_page",
+      "args": "p_from date, p_to date, p_country text, p_plan text, p_workspace_type text, p_subscription_status text, p_billing_period text, p_currency text",
+      "security_definer": true,
+      "body_md5": "55957503f7d2b0cea488ddafeea7ce27",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "admin_business_billing_settings",
+      "args": "",
+      "security_definer": true,
+      "body_md5": "4ad0f4db75fcbd7788e56552fcb94512",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "admin_business_set_status",
+      "args": "p_workspace_id uuid, p_status text, p_expected_version integer, p_confirmation_name text, p_reason text, p_request_id uuid",
+      "security_definer": true,
+      "body_md5": "8d7029a14bc6b711e8d8ae916f5b1521",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "admin_business_subscription_payment_detail",
+      "args": "p_payment_id uuid",
+      "security_definer": true,
+      "body_md5": "c24c804f6a2049e4792aeea819892c58",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "admin_business_support_snapshot",
+      "args": "p_workspace_id uuid, p_offset integer",
+      "security_definer": true,
+      "body_md5": "031fca5c3b890d6221f69f3b0f59825b",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "admin_business_transfer_owner",
+      "args": "p_workspace_id uuid, p_new_owner_member_id uuid, p_expected_owner_id uuid, p_expected_version integer, p_confirmation_name text, p_confirmation_email text, p_reason text, p_request_id uuid",
+      "security_definer": true,
+      "body_md5": "175ef8648601700db626cdacb6fb0294",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "admin_cancel_scheduled_plan_price",
+      "args": "p_plan_id uuid, p_price_id uuid, p_edit_token text",
+      "security_definer": true,
+      "body_md5": "94f7097ba883f093303ce92d07d49aba",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "admin_grant_manual_subscription",
+      "args": "p_owner_id uuid, p_workspace_id uuid, p_plan_id uuid, p_billing_period text, p_starts_on date, p_ends_on date, p_reason text, p_new_business_name text",
+      "security_definer": true,
+      "body_md5": "e5de74ee9405c3bc6765346201ff1b8a",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "admin_plan_calculation_preview",
+      "args": "p_workspace_type text, p_base numeric, p_seat_price numeric, p_included integer, p_total integer, p_extra integer, p_start timestamp with time zone, p_end timestamp with time zone, p_at timestamp with time zone, p_period text",
+      "security_definer": true,
+      "body_md5": "d21112de384008ebeecc1e82d267954f",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "admin_plan_workbench_snapshot",
+      "args": "p_plan_id uuid",
+      "security_definer": true,
+      "body_md5": "05e562d9eeaf540c96daeb1cf516e1dd",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "admin_save_plan_workbench",
+      "args": "p_plan_id uuid, p_edit_token text, p_definition jsonb, p_business jsonb, p_price jsonb",
+      "security_definer": true,
+      "body_md5": "d39e7c1f5bd71b3e6ec4bee24a53e56b",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "admin_subscription_monitor",
+      "args": "",
+      "security_definer": true,
+      "body_md5": "946b83d1d33388628eff3798a6a84455",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "backfill_currency_conversions",
+      "args": "",
+      "security_definer": true,
+      "body_md5": "37870f1342cdc68a3eae523511ab5374",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "business_admin_test_permit",
+      "args": "p_workspace_id uuid, p_owner_id uuid",
+      "security_definer": true,
+      "body_md5": "45fdae49edde60e8282c63184908fe98",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": false
+    },
+    {
+      "name": "business_subscription_proof_access",
+      "args": "p_path text, p_write boolean",
+      "security_definer": true,
+      "body_md5": "29384de40e5d5a2dd1f336727a254040",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "enqueue_admin_event_notification",
+      "args": "p_event_type text, p_source_id uuid, p_actor_id uuid",
+      "security_definer": true,
+      "body_md5": "304a36476209573a56a42035987ec6d8",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": false
+    },
+    {
+      "name": "exchange_rate_status",
+      "args": "p_include_admin_details boolean",
+      "security_definer": true,
+      "body_md5": "1e8f16389c6331922aa7f5a5ecfad445",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "guard_account_status_change",
+      "args": "",
+      "security_definer": true,
+      "body_md5": "4d7d6eda05706cb4915ac6d09f0f55c8",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "is_active_family_participant",
+      "args": "p_family_id uuid",
+      "security_definer": true,
+      "body_md5": "3ea90b1679ba5298ca9c182f3656b93f",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "is_app_admin",
+      "args": "",
+      "security_definer": true,
+      "body_md5": "25e2e8eddc2262f5a8857809d86e1f75",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "is_platform_staff",
+      "args": "p_roles text[]",
+      "security_definer": true,
+      "body_md5": "5b2bc442c06de5c432a089b0a7d894e6",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "is_workspace_member",
+      "args": "p_workspace_id uuid",
+      "security_definer": true,
+      "body_md5": "51a764e62edf69ab00d434dca89a18bd",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "is_workspace_owner",
+      "args": "p_workspace_id uuid",
+      "security_definer": true,
+      "body_md5": "d2d732726b25ce9dfd7c909bae3ce571",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "reserve_admin_user_invitation",
+      "args": "p_actor_id uuid, p_email text, p_full_name text, p_country_code text, p_plan_id uuid, p_workspace_name text, p_billing_period text, p_subscription_currency text, p_entitlement_start_date date, p_paid_through_date date, p_enabled_currencies text[], p_default_currency text, p_family_limit integer, p_can_add_members boolean, p_payment_received boolean, p_payment_amount numeric, p_payment_currency text, p_payment_date date, p_payment_method text, p_payment_reference text, p_payment_notes text",
+      "security_definer": true,
+      "body_md5": "75fbf8b7d3e4e6a383d659716de857e4",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": false
+    },
+    {
+      "name": "review_subscription_payment",
+      "args": "p_payment_id uuid, p_decision text, p_reason text",
+      "security_definer": true,
+      "body_md5": "0659e5f3461f9041cce1cd90dc6cf7cc",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "review_subscription_payment_before_business_public",
+      "args": "p_payment_id uuid, p_decision text, p_reason text",
+      "security_definer": true,
+      "body_md5": "5292be8cf33b27c0ade130e1dd0ac121",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": false
+    },
+    {
+      "name": "review_subscription_payment_before_business_stage10",
+      "args": "p_payment_id uuid, p_decision text, p_reason text",
+      "security_definer": true,
+      "body_md5": "a86977601ab5825790cd38957fc998f9",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": false
+    },
+    {
+      "name": "save_admin_finance_currency_settings",
+      "args": "p_reporting_currency text, p_enabled_receipt_currencies text[], p_conversion_enabled boolean",
+      "security_definer": true,
+      "body_md5": "ade932dfb2ae1ab036f15651fc4411d6",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "save_business_billing_settings",
+      "args": "p_plan_id uuid, p_expected_version integer, p_pilot_enabled boolean, p_included_seats integer, p_currency text, p_monthly_base numeric, p_annual_base numeric, p_monthly_seat numeric, p_annual_seat numeric, p_payment_instructions text",
+      "security_definer": true,
+      "body_md5": "09cda50ebcb51cabbc6627718c1da675",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "save_manual_payment_conversion",
+      "args": "p_entity_type text, p_entity_id uuid, p_reporting_currency text, p_exchange_rate numeric, p_converted_amount numeric",
+      "security_definer": true,
+      "body_md5": "413e75353fb5cdd3a00daa0b1878a638",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "save_plan_definition",
+      "args": "p_plan_id uuid, p_code text, p_display_name text, p_description text, p_marketing_summary text, p_workspace_type text, p_included_member_seats integer, p_active_payment_limit integer, p_is_active boolean, p_is_public boolean, p_is_featured boolean, p_available_for_purchase boolean, p_cta_label text, p_sort_order integer, p_feature_codes text[]",
+      "security_definer": true,
+      "body_md5": "c94a23a0e53b5027ae021366acf8fab9",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "save_plan_price",
+      "args": "p_plan_code text, p_billing_period text, p_currency text, p_amount numeric, p_extra_member_amount numeric",
+      "security_definer": true,
+      "body_md5": "d6327f9346043296987cc7c0bcba440a",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "set_user_account_status",
+      "args": "p_user_id uuid, p_status text",
+      "security_definer": true,
+      "body_md5": "3dfcdad3f784e843f67f94eb71de2501",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "transfer_business_ownership",
+      "args": "p_workspace_id uuid, p_new_owner_member_id uuid, p_confirmation_name text",
+      "security_definer": true,
+      "body_md5": "070281c6f66cf6114b9032196079d746",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": true,
+      "modeled_anon_execute": false,
+      "modeled_authenticated_execute": true
+    },
+    {
+      "name": "workspace_member_usage",
+      "args": "p_workspace_id uuid",
+      "security_definer": true,
+      "body_md5": "6e6518e57c9ad8dc6a220bb5390aa1ce",
+      "direct_staff_reference": true,
+      "assurance_reference": false,
+      "direct_suspension_reference": false,
+      "modeled_anon_execute": true,
+      "modeled_authenticated_execute": true
+    }
+  ],
+  "policies": [
+    {
+      "relation_name": "admin_audit_logs",
+      "name": "Admins can manage audit logs",
+      "command": "*",
+      "permissive": true,
+      "expression": "(EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) ((actor_id = ( SELECT auth.uid() AS uid)) AND (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))))"
+    },
+    {
+      "relation_name": "admin_finance_settings",
+      "name": "Finance staff can read admin currency settings",
+      "command": "r",
+      "permissive": true,
+      "expression": "is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'finance_staff'::text]) "
+    },
+    {
+      "relation_name": "admin_subscription_grants",
+      "name": "Super admins can read manual grants",
+      "command": "r",
+      "permissive": true,
+      "expression": "(is_platform_staff(ARRAY['super_admin'::text]) AND (NOT my_account_suspended())) "
+    },
+    {
+      "relation_name": "admin_support_notes",
+      "name": "Admins can manage support notes",
+      "command": "*",
+      "permissive": true,
+      "expression": "(EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) ((created_by = ( SELECT auth.uid() AS uid)) AND (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))))"
+    },
+    {
+      "relation_name": "admin_user_invitation_audit",
+      "name": "Authorized admins can read user invitation audit",
+      "command": "r",
+      "permissive": true,
+      "expression": "is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text]) "
+    },
+    {
+      "relation_name": "admin_user_invitations",
+      "name": "Authorized admins can read user invitations",
+      "command": "r",
+      "permissive": true,
+      "expression": "is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text]) "
+    },
+    {
+      "relation_name": "category_budgets",
+      "name": "Owners and admins can create category budgets",
+      "command": "a",
+      "permissive": true,
+      "expression": " ((created_by = ( SELECT auth.uid() AS uid)) AND ((EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = category_budgets.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))))"
+    },
+    {
+      "relation_name": "category_budgets",
+      "name": "Owners and admins can delete category budgets",
+      "command": "d",
+      "permissive": true,
+      "expression": "((EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = category_budgets.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))) "
+    },
+    {
+      "relation_name": "category_budgets",
+      "name": "Owners and admins can read category budgets",
+      "command": "r",
+      "permissive": true,
+      "expression": "((EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = category_budgets.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))) "
+    },
+    {
+      "relation_name": "category_budgets",
+      "name": "Owners and admins can update category budgets",
+      "command": "w",
+      "permissive": true,
+      "expression": "((EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = category_budgets.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))) ((created_by = ( SELECT auth.uid() AS uid)) AND ((EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = category_budgets.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))))"
+    },
+    {
+      "relation_name": "countries",
+      "name": "Staff can read countries",
+      "command": "r",
+      "permissive": true,
+      "expression": "is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'support_staff'::text]) "
+    },
+    {
+      "relation_name": "enquiries",
+      "name": "Staff can read enquiries",
+      "command": "r",
+      "permissive": true,
+      "expression": "is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'support_staff'::text]) "
+    },
+    {
+      "relation_name": "enquiries",
+      "name": "Staff can update enquiries",
+      "command": "w",
+      "permissive": true,
+      "expression": "is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'support_staff'::text]) is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'support_staff'::text])"
+    },
+    {
+      "relation_name": "exchange_rate_sync_runs",
+      "name": "Finance staff can read rate sync diagnostics",
+      "command": "r",
+      "permissive": true,
+      "expression": "is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'finance_staff'::text]) "
+    },
+    {
+      "relation_name": "expenses",
+      "name": "Approved heads and admins can create expenses",
+      "command": "a",
+      "permissive": true,
+      "expression": " ((user_id = ( SELECT auth.uid() AS uid)) AND ((EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = expenses.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))) AND ((member_id IS NULL) OR (EXISTS ( SELECT 1\n   FROM family_members\n  WHERE ((family_members.id = expenses.member_id) AND (family_members.family_id = expenses.family_id))))) AND ((paid_by_member_id IS NULL) OR (EXISTS ( SELECT 1\n   FROM family_members\n  WHERE ((family_members.id = expenses.paid_by_member_id) AND (family_members.family_id = expenses.family_id))))))"
+    },
+    {
+      "relation_name": "expenses",
+      "name": "Approved heads and admins can delete expenses",
+      "command": "d",
+      "permissive": true,
+      "expression": "((EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = expenses.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))) "
+    },
+    {
+      "relation_name": "expenses",
+      "name": "Approved heads and admins can read expenses",
+      "command": "r",
+      "permissive": true,
+      "expression": "((EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = expenses.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))) "
+    },
+    {
+      "relation_name": "expenses",
+      "name": "Approved heads and admins can update expenses",
+      "command": "w",
+      "permissive": true,
+      "expression": "((EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = expenses.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))) ((user_id = ( SELECT auth.uid() AS uid)) AND ((EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = expenses.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))) AND ((member_id IS NULL) OR (EXISTS ( SELECT 1\n   FROM family_members\n  WHERE ((family_members.id = expenses.member_id) AND (family_members.family_id = expenses.family_id))))) AND ((paid_by_member_id IS NULL) OR (EXISTS ( SELECT 1\n   FROM family_members\n  WHERE ((family_members.id = expenses.paid_by_member_id) AND (family_members.family_id = expenses.family_id))))))"
+    },
+    {
+      "relation_name": "families",
+      "name": "Approved heads and admins can update families",
+      "command": "w",
+      "permissive": true,
+      "expression": "((EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (owner_id = ( SELECT auth.uid() AS uid))) ((EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (owner_id = ( SELECT auth.uid() AS uid)))"
+    },
+    {
+      "relation_name": "families",
+      "name": "Owners and admins can delete families",
+      "command": "d",
+      "permissive": true,
+      "expression": "((owner_id = ( SELECT auth.uid() AS uid)) OR (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid))))) "
+    },
+    {
+      "relation_name": "family_heads",
+      "name": "Admins and matching heads can read head approvals",
+      "command": "r",
+      "permissive": true,
+      "expression": "((lower(email) = lower(( SELECT (auth.jwt() ->> 'email'::text)))) OR (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid))))) "
+    },
+    {
+      "relation_name": "family_heads",
+      "name": "Admins can create head approvals",
+      "command": "a",
+      "permissive": true,
+      "expression": " ((created_by = ( SELECT auth.uid() AS uid)) AND (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))))"
+    },
+    {
+      "relation_name": "family_heads",
+      "name": "Admins can delete head approvals",
+      "command": "d",
+      "permissive": true,
+      "expression": "(EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) "
+    },
+    {
+      "relation_name": "family_heads",
+      "name": "Admins can update head approvals",
+      "command": "w",
+      "permissive": true,
+      "expression": "(EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid))))"
+    },
+    {
+      "relation_name": "family_invitations",
+      "name": "Invitation participants can read invitations",
+      "command": "r",
+      "permissive": true,
+      "expression": "((invited_by = ( SELECT auth.uid() AS uid)) OR (lower(invitee_email) = lower(( SELECT (auth.jwt() ->> 'email'::text)))) OR (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid))))) "
+    },
+    {
+      "relation_name": "family_members",
+      "name": "Approved heads and admins can delete family members",
+      "command": "d",
+      "permissive": true,
+      "expression": "(EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) "
+    },
+    {
+      "relation_name": "family_members",
+      "name": "Approved heads and admins can update family members",
+      "command": "w",
+      "permissive": true,
+      "expression": "(EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid))))"
+    },
+    {
+      "relation_name": "notifications",
+      "name": "Users can create relevant notifications",
+      "command": "a",
+      "permissive": true,
+      "expression": " ((created_by = ( SELECT auth.uid() AS uid)) AND ((user_id = ( SELECT auth.uid() AS uid)) OR (email IS NOT NULL) OR (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid))))))"
+    },
+    {
+      "relation_name": "payment_conversions",
+      "name": "Authorized users can read payment conversions",
+      "command": "r",
+      "permissive": true,
+      "expression": "(((workspace_id IS NOT NULL) AND is_workspace_member(workspace_id)) OR ((workspace_id IS NULL) AND is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'finance_staff'::text]))) "
+    },
+    {
+      "relation_name": "payment_items",
+      "name": "Household owners can delete payment items",
+      "command": "d",
+      "permissive": true,
+      "expression": "(((visibility = 'personal'::text) AND (owner_id = ( SELECT auth.uid() AS uid))) OR (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = payment_items.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))) "
+    },
+    {
+      "relation_name": "payment_items",
+      "name": "Household owners can update payment items",
+      "command": "w",
+      "permissive": true,
+      "expression": "(((visibility = 'personal'::text) AND (owner_id = ( SELECT auth.uid() AS uid))) OR ((visibility = 'family'::text) AND (owner_id = ( SELECT auth.uid() AS uid)) AND is_active_family_participant(family_id)) OR (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = payment_items.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))) ((owner_id = ( SELECT auth.uid() AS uid)) AND (((visibility = 'personal'::text) AND (family_id IS NULL) AND (responsible_member_id IS NULL)) OR ((visibility = 'family'::text) AND is_active_family_participant(family_id))) AND ((responsible_member_id IS NULL) OR (EXISTS ( SELECT 1\n   FROM family_members\n  WHERE ((family_members.id = payment_items.responsible_member_id) AND (family_members.family_id = payment_items.family_id))))))"
+    },
+    {
+      "relation_name": "payment_records",
+      "name": "Household owners can delete payment records",
+      "command": "d",
+      "permissive": true,
+      "expression": "(((visibility = 'personal'::text) AND (owner_id = ( SELECT auth.uid() AS uid))) OR (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = payment_records.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))) "
+    },
+    {
+      "relation_name": "payment_records",
+      "name": "Household owners can update payment records",
+      "command": "w",
+      "permissive": true,
+      "expression": "(((visibility = 'personal'::text) AND (owner_id = ( SELECT auth.uid() AS uid))) OR ((visibility = 'family'::text) AND (owner_id = ( SELECT auth.uid() AS uid)) AND is_active_family_participant(family_id)) OR (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) OR (EXISTS ( SELECT 1\n   FROM families\n  WHERE ((families.id = payment_records.family_id) AND (families.owner_id = ( SELECT auth.uid() AS uid)))))) ((owner_id = ( SELECT auth.uid() AS uid)) AND (((visibility = 'personal'::text) AND (family_id IS NULL)) OR ((visibility = 'family'::text) AND is_active_family_participant(family_id))))"
+    },
+    {
+      "relation_name": "payments",
+      "name": "Admins can create payments",
+      "command": "a",
+      "permissive": true,
+      "expression": " ((recorded_by = ( SELECT auth.uid() AS uid)) AND (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))))"
+    },
+    {
+      "relation_name": "payments",
+      "name": "Admins can delete payments",
+      "command": "d",
+      "permissive": true,
+      "expression": "(EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) "
+    },
+    {
+      "relation_name": "payments",
+      "name": "Admins can read payments",
+      "command": "r",
+      "permissive": true,
+      "expression": "(EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) "
+    },
+    {
+      "relation_name": "payments",
+      "name": "Admins can update payments",
+      "command": "w",
+      "permissive": true,
+      "expression": "(EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))) ((recorded_by = ( SELECT auth.uid() AS uid)) AND (EXISTS ( SELECT 1\n   FROM app_admins\n  WHERE (app_admins.user_id = ( SELECT auth.uid() AS uid)))))"
+    },
+    {
+      "relation_name": "plan_prices",
+      "name": "Authenticated users can read active plan prices",
+      "command": "r",
+      "permissive": true,
+      "expression": "(is_active OR is_platform_staff(NULL::text[])) "
+    },
+    {
+      "relation_name": "plans",
+      "name": "Authenticated users can read active plans",
+      "command": "r",
+      "permissive": true,
+      "expression": "(is_active OR is_platform_staff(NULL::text[])) "
+    },
+    {
+      "relation_name": "profiles",
+      "name": "Users and admins can read profiles",
+      "command": "r",
+      "permissive": true,
+      "expression": "((( SELECT auth.uid() AS uid) = id) OR ( SELECT is_app_admin() AS is_app_admin)) "
+    },
+    {
+      "relation_name": "public_enquiry_events",
+      "name": "Support staff can read public enquiry events",
+      "command": "r",
+      "permissive": true,
+      "expression": "is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'support_staff'::text]) "
+    },
+    {
+      "relation_name": "subscription_audit_events",
+      "name": "business_subscription_audit_owner_guard",
+      "command": "r",
+      "permissive": false,
+      "expression": "((NOT (EXISTS ( SELECT 1\n   FROM budget_workspaces\n  WHERE ((budget_workspaces.id = subscription_audit_events.workspace_id) AND (budget_workspaces.workspace_type = 'business'::text))))) OR business_billing_owner(workspace_id) OR is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'finance_staff'::text, 'support_staff'::text])) "
+    },
+    {
+      "relation_name": "subscription_entitlement_history",
+      "name": "business_entitlement_history_owner_guard",
+      "command": "r",
+      "permissive": false,
+      "expression": "((NOT (EXISTS ( SELECT 1\n   FROM budget_workspaces\n  WHERE ((budget_workspaces.id = subscription_entitlement_history.workspace_id) AND (budget_workspaces.workspace_type = 'business'::text))))) OR business_billing_owner(workspace_id) OR is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'finance_staff'::text, 'support_staff'::text])) "
+    },
+    {
+      "relation_name": "subscription_invoices",
+      "name": "Owners can read subscription invoices",
+      "command": "r",
+      "permissive": true,
+      "expression": "(is_workspace_owner(workspace_id) OR is_platform_staff(ARRAY['finance_staff'::text, 'support_staff'::text])) "
+    },
+    {
+      "relation_name": "subscription_payment_proofs",
+      "name": "Owners can read subscription proofs",
+      "command": "r",
+      "permissive": true,
+      "expression": "((uploaded_by = auth.uid()) OR is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'finance_staff'::text, 'support_staff'::text])) "
+    },
+    {
+      "relation_name": "subscription_payment_reviews",
+      "name": "Finance staff can read reviews",
+      "command": "r",
+      "permissive": true,
+      "expression": "is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'finance_staff'::text, 'support_staff'::text]) "
+    },
+    {
+      "relation_name": "subscription_payments",
+      "name": "Owners can read subscription payments",
+      "command": "r",
+      "permissive": true,
+      "expression": "(is_workspace_owner(workspace_id) OR is_platform_staff(ARRAY['finance_staff'::text, 'support_staff'::text])) "
+    },
+    {
+      "relation_name": "subscription_renewal_requests",
+      "name": "Owners can read renewal requests",
+      "command": "r",
+      "permissive": true,
+      "expression": "(is_workspace_owner(workspace_id) OR is_platform_staff(ARRAY['finance_staff'::text, 'support_staff'::text])) "
+    },
+    {
+      "relation_name": "support_ticket_messages",
+      "name": "Customers and support staff can add ticket messages",
+      "command": "a",
+      "permissive": true,
+      "expression": " ((author_id = ( SELECT auth.uid() AS uid)) AND (is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'support_staff'::text]) OR ((NOT is_internal) AND (EXISTS ( SELECT 1\n   FROM support_tickets\n  WHERE ((support_tickets.id = support_ticket_messages.ticket_id) AND (support_tickets.customer_id = ( SELECT auth.uid() AS uid)) AND (support_tickets.status <> 'closed'::text)))))))"
+    },
+    {
+      "relation_name": "support_ticket_messages",
+      "name": "Customers and support staff can read ticket messages",
+      "command": "r",
+      "permissive": true,
+      "expression": "(is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'support_staff'::text]) OR ((NOT is_internal) AND (EXISTS ( SELECT 1\n   FROM support_tickets\n  WHERE ((support_tickets.id = support_ticket_messages.ticket_id) AND (support_tickets.customer_id = ( SELECT auth.uid() AS uid))))))) "
+    },
+    {
+      "relation_name": "support_tickets",
+      "name": "Administrators can delete tickets",
+      "command": "d",
+      "permissive": true,
+      "expression": "is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text]) "
+    },
+    {
+      "relation_name": "support_tickets",
+      "name": "Customers and support staff can create tickets",
+      "command": "a",
+      "permissive": true,
+      "expression": " ((created_by = ( SELECT auth.uid() AS uid)) AND (((customer_id = ( SELECT auth.uid() AS uid)) AND ((workspace_id IS NULL) OR is_workspace_member(workspace_id)) AND (assigned_admin_id IS NULL) AND (status = 'open'::text) AND (resolved_at IS NULL)) OR is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'support_staff'::text])))"
+    },
+    {
+      "relation_name": "support_tickets",
+      "name": "Customers and support staff can read tickets",
+      "command": "r",
+      "permissive": true,
+      "expression": "((customer_id = ( SELECT auth.uid() AS uid)) OR is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'support_staff'::text])) "
+    },
+    {
+      "relation_name": "support_tickets",
+      "name": "Support staff can update tickets",
+      "command": "w",
+      "permissive": true,
+      "expression": "is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'support_staff'::text]) is_platform_staff(ARRAY['super_admin'::text, 'admin_staff'::text, 'support_staff'::text])"
+    },
+    {
+      "relation_name": "supported_currencies",
+      "name": "Authenticated users can read supported currencies",
+      "command": "r",
+      "permissive": true,
+      "expression": "(is_active OR is_platform_staff(NULL::text[])) "
+    }
+  ]
+}

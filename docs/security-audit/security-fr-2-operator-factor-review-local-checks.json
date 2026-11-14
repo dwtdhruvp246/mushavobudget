@@ -1,0 +1,66 @@
+{
+  "stage_step": "FR.2.4_OPERATOR_FACTOR_REVIEW",
+  "result": "LOCAL_READ_ONLY_FACTOR_METADATA_DIAGNOSTIC_SCOPED_PASS",
+  "migration_count": 54,
+  "node_version": "v24.19.0",
+  "tests": [
+    {
+      "test": "Missing users/factors remain uncreated with empty bounded metadata",
+      "status": "PASS"
+    },
+    {
+      "test": "Two source-created active ordinary profiles are identified by slot only",
+      "status": "PASS"
+    },
+    {
+      "test": "Pending expected-label factor within failed-run window is reported without cleanup permission",
+      "status": "PASS"
+    },
+    {
+      "test": "Output contains no raw identifiers/email/secret and fingerprints selected metadata only",
+      "status": "PASS"
+    },
+    {
+      "test": "Changing only excluded synthetic secret cannot affect metadata fingerprint",
+      "status": "PASS"
+    },
+    {
+      "test": "Verified-state changes are distinguished without implying AAL2 acceptance",
+      "status": "PASS"
+    },
+    {
+      "test": "Unexpected labels/times and excessive factor detail remain bounded with explicit truncation",
+      "status": "PASS"
+    },
+    {
+      "test": "Read-only transaction preserves complete modeled factor rows including excluded secrets",
+      "status": "PASS"
+    },
+    {
+      "test": "Input guard rejects reserved audit identity",
+      "status": "PASS"
+    },
+    {
+      "test": "Input guard rejects duplicate slots",
+      "status": "PASS"
+    },
+    {
+      "test": "Input guard rejects unfilled template",
+      "status": "PASS"
+    },
+    {
+      "test": "Unprivileged SQL role cannot inspect Auth factor metadata",
+      "status": "PASS"
+    }
+  ],
+  "pass": 12,
+  "fail": 0,
+  "exit_code": 0,
+  "modeled_documented_Auth_metadata_columns_added_locally": true,
+  "real_hosted_requests": 0,
+  "actual_hosted_pending_factor_status_or_provenance_verified": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "source_parent_commit": "cbaef696f707f5d5d32d3a94bdb43379ce71bf50",
+  "syntax_checks": 1
+}

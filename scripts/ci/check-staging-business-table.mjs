@@ -7,6 +7,9 @@ import { csvCanonical, csvFixture, formatExamples, xlsxFixture } from "../fixtur
 
 const AGENT = "Mushavo-Staging-FR3-Business-Table";
 const NAME = "audit-fr3-logo-ingestion-20261112";
+const initialVersion = 26;
+const activeVersion = initialVersion + 1;
+const closedVersion = activeVersion + 1;
 const progress = "Stage 4/10 | FR.3/8 | FR.3.2 Business CSV and XLSX";
 const one = r => r.status === 200 && r.data?.length === 1 ? r.data[0] : null;
 const empty = r => r.status === 200 && r.data?.length === 0;
@@ -68,16 +71,16 @@ async function exercise({ actors, evidence }, key, paidThrough) {
   try {
     const w = await workspace();
     const sub = one(await call("/rest/v1/workspace_subscriptions?workspace_id=eq." + WORKSPACE + "&limit=2", "GET", admin));
-    check("EXACT_SUSPENDED_TABLE_FIXTURE", exactWorkspace(w) && w.status === "suspended" && w.business_support_version === 24
+    check("EXACT_SUSPENDED_TABLE_FIXTURE", exactWorkspace(w) && w.status === "suspended" && w.business_support_version === initialVersion
       && sub?.workspace_id === WORKSPACE && sub.status === "active" && sub.version === 1 && sub.member_limit === 1
       && Date.parse(sub.paid_through_at) === Date.parse(paidThrough) && Date.parse(paidThrough) > Date.now());
     fixtureBound = true;
-    check("EXACT_TABLE_FIXTURE_RESUMED", (await status("active", 24)).status === 200);
+    check("EXACT_TABLE_FIXTURE_RESUMED", (await status("active", initialVersion)).status === 200);
     const active = await workspace();
-    check("ACTIVE_TABLE_FIXTURE_READBACK", exactWorkspace(active) && active.status === "active" && active.business_support_version === 25);
+    check("ACTIVE_TABLE_FIXTURE_READBACK", exactWorkspace(active) && active.status === "active" && active.business_support_version === activeVersion);
     for (const f of files) {
       const mark = (name, ok) => check(f.label + "_" + name, ok);
-      mark("DOCUMENT_ABSENT", empty(await docs()));
+      mark("DOCUMENT_ABSENT", empty(await docs(f)));
       mark("MISSING_OBJECT_REFUSED", rejected(await register(f, f.canonical.length), "BUSINESS_DOCUMENT_UPLOAD_NOT_FOUND"));
       f.attempted = true;
       mark("DIRECT_RESERVED_UPLOAD_REFUSED", denied(await call("/storage/v1/object/" + BUCKET + "/" + f.path, "POST", owner, f.canonical, f.mime)));
@@ -105,7 +108,7 @@ async function exercise({ actors, evidence }, key, paidThrough) {
     if (fixtureBound) try {
       const current = await workspace();
       need(exactWorkspace(current), "EXACT_TABLE_CLEANUP_WORKSPACE");
-      if (current.status === "active" && current.business_support_version === 25) {
+      if (current.status === "active" && current.business_support_version === activeVersion) {
         for (const f of files) try {
           const listed = await docs(f);
           need(listed.status === 200 && [0,1].includes(listed.data?.length), "EXACT_TABLE_CLEANUP_STATE");
@@ -126,18 +129,19 @@ async function exercise({ actors, evidence }, key, paidThrough) {
           if (listed.data.length) check(f.label + "_ARCHIVED_BROKER_DENIED", (await broker(owner, f)).status === 404);
           evidence.cleanup[f.label] = true;
         } catch (error) { cleanupFailure ??= error; }
-        need((await status("suspended", 25)).status === 200, "EXACT_TABLE_SUSPEND_ACK");
+        need((await status("suspended", activeVersion)).status === 200, "EXACT_TABLE_SUSPEND_ACK");
         const closed = await workspace();
-        need(exactWorkspace(closed) && closed.status === "suspended" && closed.business_support_version === 26,
+        need(exactWorkspace(closed) && closed.status === "suspended" && closed.business_support_version === closedVersion,
           "EXACT_CLOSED_TABLE_WORKSPACE_READBACK");
         evidence.cleanup.fixture_suspended = true;
       } else {
-        need(current.status === "suspended" && current.business_support_version === 24 && files.every(f => !f.attempted),
+        need(current.status === "suspended" && current.business_support_version === initialVersion && files.every(f => !f.attempted),
           "EXACT_TABLE_SCOPE_CLEANUP_REVIEW");
         evidence.cleanup.fixture_suspended = true;
       }
     } catch (error) { cleanupFailure ??= error; }
     if (failure instanceof Stop) evidence.failed_check = failure.code;
+    else if (failure) evidence.failed_check = "BUSINESS_TABLE_REQUEST_OR_RUNNER_FAILURE";
   }
   if (cleanupFailure) throw cleanupFailure;
   if (failure) throw failure;

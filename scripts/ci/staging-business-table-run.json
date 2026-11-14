@@ -7,5 +7,7 @@
     "90d83c56-a450-4fb2-9d45-bf4dc652b357"
   ],
   "status": "HOSTED_BUSINESS_TABLE_ONCE",
-  "paid_through": "2026-11-14T15:36:19.579823Z"
+  "paid_through": "2026-11-14T15:36:19.579823Z",
+  "retry_of_run": 43603140436,
+  "retry_reason": "FIXTURE_ARGUMENT_CORRECTED"
 }

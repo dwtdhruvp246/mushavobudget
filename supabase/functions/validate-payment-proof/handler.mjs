@@ -45,7 +45,7 @@ async function fingerprint(bytes) {
   return Array.from(new Uint8Array(hash), byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
-function bindPersonalProof(client, userId, _type = "") {
+function bindPersonalProof(client, userId, _type = "", _request = /** @type {Request | undefined} */ (undefined)) {
   if (userId !== OWNER) return null;
   return {
     prefix: PREFIX,
@@ -71,14 +71,15 @@ const noPdf = null;
 const defaultFormats = new Map();
 
 export function createProofHandler({ configured, allowedOrigin, createUserClient, gateReady, store, read,
-  decodeJpeg, decodeWebp, normalizePdf = noPdf, bind = bindPersonalProof, extraFormats = defaultFormats, standardFormats = true, denied = "PROOF_FIXTURE_OWNER_REQUIRED" }) {
+  decodeJpeg, decodeWebp, normalizePdf = noPdf, bind = bindPersonalProof, extraFormats = defaultFormats, standardFormats = true, attachmentHeader = false, denied = "PROOF_FIXTURE_OWNER_REQUIRED" }) {
   return async request => {
     const origin = request.headers.get("origin");
     const allowed = !origin || allowedOrigin(origin);
     const headers = {
       "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff",
       Vary: "Origin, Authorization, apikey",
-      "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-client-info",
+      "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-client-info"
+        + (attachmentHeader ? ", x-mushavo-attachment" : ""),
       "Access-Control-Allow-Methods": "POST, OPTIONS",
       ...(origin && allowed ? { "Access-Control-Allow-Origin": origin } : {}),
     };
@@ -101,7 +102,7 @@ export function createProofHandler({ configured, allowedOrigin, createUserClient
       const client = createUserClient(token);
       const identity = await client.auth.getUser();
       if (identity.error || !identity.data?.user?.id) return fail(401, "AUTHENTICATION_REQUIRED");
-      const binding = bind(client, identity.data.user.id, type);
+      const binding = bind(client, identity.data.user.id, type, request);
       if (!binding) return fail(403, denied);
       const { prefix, canWrite } = binding;
       if (!await canWrite()) return fail(403, denied);

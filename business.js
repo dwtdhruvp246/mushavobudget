@@ -1234,6 +1234,34 @@ function openClaimDetail(id) {
   renderClaimDetail();
 }
 
+const validatedBusinessAttachments = new Map([
+  ['454e6059-4b4c-4998-aa9d-ea932b15ca50', { lane: 'expense-claim', document: '7d488239-ba6e-440e-8be1-5e255b2ead79', parentType: 'expense_claim' }],
+  ['ac975ebd-b138-40c4-a082-c6e62670a98a', { lane: 'bill-invoice', document: 'c877b770-3bb6-4e0c-aae3-a6a10f3234f6', parentType: 'business_bill' }],
+]);
+
+function businessAttachmentTrial(workspace, parentId, parentType) {
+  const attachment = validatedBusinessAttachments.get(parentId);
+  return workspace === '8d9307e6-aada-4c9a-a8f5-43c57e0865e2' && attachment?.parentType === parentType ? attachment : null;
+}
+
+async function validateBusinessAttachment(file, fixture, isCurrent) {
+  const { data: result } = await supabase.functions.invoke('validate-business-attachment', {
+    body: file,
+    headers: { 'Content-Type': file.type, 'X-Mushavo-Attachment': fixture.lane },
+  });
+  const prefix = `workspaces/${state.workspace?.id}/${state.session?.user?.id}/${fixture.document}/`;
+  const type = file.type === 'application/pdf' ? 'application/pdf' : 'image/png';
+  const extension = type === 'application/pdf' ? '.pdf' : '.png';
+  if (!isCurrent()) throw new Error('The workspace changed. Open the record and try again.');
+  if (!result || typeof result.path !== 'string' || !result.path.startsWith(prefix)
+      || !/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}[.](pdf|png)$/.test(result.path.slice(prefix.length))
+      || !result.path.endsWith(extension) || result.type !== type
+      || !Number.isSafeInteger(result.size) || result.size < 1 || result.size > 2097152) {
+    throw new Error('The file could not be validated. Choose a supported JPG, PNG, WebP or PDF file up to 2 MB.');
+  }
+  return result;
+}
+
 async function uploadClaimReceipt() {
   const file = $("#claimReceiptFile").files[0];
   const claim = state.claims.find((item) => item.id === openedClaimId);
@@ -1242,26 +1270,34 @@ async function uploadClaimReceipt() {
     setClaimMessage("#claimDetailMessage", "Choose a JPG, PNG, WebP or PDF file up to 10 MB.", true);
     return;
   }
+  const fixture = businessAttachmentTrial(claim.workspace_id, claim.id, 'expense_claim');
+  const matchesWorkspace = captureBusinessFileContext();
+  const isCurrent = () => matchesWorkspace() && openedClaimId === claim.id;
   claimBusy = true;
-  const documentId = crypto.randomUUID();
+  const documentId = fixture?.document || crypto.randomUUID();
   const cleanName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 120) || "receipt";
-  const path = `workspaces/${claim.workspace_id}/${state.session.user.id}/${documentId}/${cleanName}`;
+  const directPath = `workspaces/${claim.workspace_id}/${state.session.user.id}/${documentId}/${cleanName}`;
   let uploaded = false;
   try {
-    await query("Upload receipt", supabase.storage.from("business-documents").upload(path, file, { contentType: file.type, upsert: false }));
-    uploaded = true;
+    let confirmed = { path: directPath, type: file.type, size: file.size };
+    if (fixture) confirmed = await validateBusinessAttachment(file, fixture, isCurrent);
+    else {
+      await query("Upload receipt", supabase.storage.from("business-documents").upload(directPath, file, { contentType: file.type, upsert: false }));
+      uploaded = true;
+    }
     await query("Register receipt", supabase.rpc("register_business_document", {
       p_document_id: documentId, p_workspace_id: claim.workspace_id,
       p_parent_type: "expense_claim", p_parent_id: claim.id,
-      p_storage_path: path, p_original_name: file.name,
-      p_mime_type: file.type, p_size_bytes: file.size
+      p_storage_path: confirmed.path, p_original_name: file.name,
+      p_mime_type: confirmed.type, p_size_bytes: confirmed.size
     }));
+    if (fixture && !isCurrent()) return;
     $("#claimReceiptFile").value = "";
     await refreshClaims();
-    setClaimMessage("#claimDetailMessage", "Receipt attached.");
+    if (!fixture || isCurrent()) setClaimMessage("#claimDetailMessage", "Receipt attached.");
   } catch (error) {
-    if (uploaded) await supabase.storage.from("business-documents").remove([path]);
-    setClaimMessage("#claimDetailMessage", friendlyMessage(error), true);
+    if (uploaded) await supabase.storage.from("business-documents").remove([directPath]);
+    if (!fixture || isCurrent()) setClaimMessage("#claimDetailMessage", friendlyMessage(error), true);
   } finally { claimBusy = false; }
 }
 
@@ -1568,27 +1604,35 @@ async function uploadBillProof() {
     setClaimMessage("#billDetailMessage", "Choose a JPG, PNG, WebP or PDF up to 10 MB.", true);
     return;
   }
-  billBusy = true;
-  const documentId = crypto.randomUUID();
-  const path = `workspaces/${bill.workspace_id}/${state.session.user.id}/${documentId}/${(file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 120) || "proof")}`;
   const parentId = $("#billProofParent").value;
   const parentType = parentId === bill.id ? "business_bill" : "business_bill_payment";
+  const fixture = businessAttachmentTrial(bill.workspace_id, parentId, parentType);
+  const matchesWorkspace = captureBusinessFileContext();
+  const isCurrent = () => matchesWorkspace() && openedBillId === bill.id && $("#billProofParent").value === parentId;
+  billBusy = true;
+  const documentId = fixture?.document || crypto.randomUUID();
+  const directPath = `workspaces/${bill.workspace_id}/${state.session.user.id}/${documentId}/${(file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 120) || "proof")}`;
   let uploaded = false;
   try {
-    await query("Upload bill proof", supabase.storage.from("business-documents").upload(path, file, { contentType: file.type, upsert: false }));
-    uploaded = true;
+    let confirmed = { path: directPath, type: file.type, size: file.size };
+    if (fixture) confirmed = await validateBusinessAttachment(file, fixture, isCurrent);
+    else {
+      await query("Upload bill proof", supabase.storage.from("business-documents").upload(directPath, file, { contentType: file.type, upsert: false }));
+      uploaded = true;
+    }
     await query("Register bill proof", supabase.rpc("register_business_document", {
       p_document_id: documentId, p_workspace_id: bill.workspace_id,
       p_parent_type: parentType, p_parent_id: parentId,
-      p_storage_path: path, p_original_name: file.name,
-      p_mime_type: file.type, p_size_bytes: file.size
+      p_storage_path: confirmed.path, p_original_name: file.name,
+      p_mime_type: confirmed.type, p_size_bytes: confirmed.size
     }));
+    if (fixture && !isCurrent()) return;
     $("#billProofFile").value = "";
     await refreshBills();
-    setClaimMessage("#billDetailMessage", "Proof attached.");
+    if (!fixture || isCurrent()) setClaimMessage("#billDetailMessage", "Proof attached.");
   } catch (error) {
-    if (uploaded) await supabase.storage.from("business-documents").remove([path]);
-    setClaimMessage("#billDetailMessage", friendlyMessage(error), true);
+    if (uploaded) await supabase.storage.from("business-documents").remove([directPath]);
+    if (!fixture || isCurrent()) setClaimMessage("#billDetailMessage", friendlyMessage(error), true);
   } finally { billBusy = false; }
 }
 

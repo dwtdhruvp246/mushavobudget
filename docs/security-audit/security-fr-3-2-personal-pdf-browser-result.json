@@ -1,0 +1,144 @@
+{
+  "date": "2026-11-14",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "STAGING_PERSONAL_PDF_PROOF_BROWSER_PASS",
+  "run_commit": "f2856d1ee19283d72a5cc425e9f8501b2f1091bf",
+  "run_id": 43487325967,
+  "job_id": 132099105704,
+  "hosted_browser_checks_passed": 15,
+  "browser_setup": {
+    "preview_id": "5edb0c6b-095d-4f8f-9a18-1bf166d784fd",
+    "app_js_served_from_pinned_checkout": true,
+    "staging_backend_requests_real": true,
+    "separate_preview_created": false
+  },
+  "hosted_browser": {
+    "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Personal PDF browser",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "two_ordinary_credentials_and_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 2
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 12,
+    "created_sessions": 2,
+    "cleanup_sessions": 2,
+    "settings_or_finance_writes_requested": 0,
+    "production_changed": false,
+    "full_lettered_batch_W_complete": false,
+    "exit_code": 0,
+    "exercise": {
+      "checks": {
+        "EXACT_PERSONAL_WORKSPACE": true,
+        "EMPTY_TRIAL_BASELINE": true,
+        "SYNTHETIC_ITEM_CREATED": true,
+        "BROWSER_EXACT_PERSONAL_ITEM_RENDERED": true,
+        "BROWSER_PDF_NORMALIZED": true,
+        "BROWSER_PAYMENT_SAVED": true,
+        "BROWSER_RECORD_RESTORED": true,
+        "BROWSER_BROKER_HTTP_OK": true,
+        "BROWSER_BROKER_MEDIA_TYPE": true,
+        "BROWSER_BROKER_CACHE_PRIVATE": true,
+        "BROWSER_BROKER_CACHE_NO_STORE": true,
+        "BROWSER_PRIVATE_PDF_OPENED": true,
+        "PINNED_CANDIDATE_EXECUTED_ON_BOTH_LOADS": true,
+        "BROWSER_OPENED_BLOB_MATCHES_NORMALIZED_BYTES": true,
+        "EXACT_BROWSER_RECORD_READBACK": true
+      },
+      "requests": 14,
+      "cleanup": {
+        "payment_item_and_record_absent": true,
+        "proof_object_absent": true
+      },
+      "browser_requests": {
+        "permitted": 122,
+        "validator": 1,
+        "payment": 1,
+        "broker": 1,
+        "blocked": [
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/get_my_business_invitations"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/record_my_analytics_activity"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/get_my_business_invitations"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/get_my_business_invitations"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/record_my_analytics_activity"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/get_my_business_invitations"
+          }
+        ],
+        "candidate_app": 2
+      },
+      "browser_stage": "COMPLETE",
+      "browser_http": {
+        "validator": 200,
+        "payment": 201,
+        "broker": 200
+      },
+      "broker_readback": {
+        "media_type": "application/pdf",
+        "cache_control": [
+          "private",
+          "no-store",
+          "max-age=0",
+          "must-revalidate"
+        ],
+        "cache_directive_count": 4,
+        "expected_bytes": 791,
+        "opened_blob_type": "application/pdf",
+        "opened_blob_bytes": 791
+      }
+    },
+    "commit": "f2856d1ee19283d72a5cc425e9f8501b2f1091bf"
+  },
+  "independent_cleanup": {
+    "mode": "ACTIVE",
+    "catalog_sha256": "99243c5a8cd04c9f7fc666be599abfedb9f5c02079c03e298a044e1f0fb96323",
+    "matches": true,
+    "gate_ready": false,
+    "items": 0,
+    "records": 0,
+    "objects": 0,
+    "sessions": 0,
+    "outbox": 0
+  },
+  "full_FR_3_2_complete": false,
+  "exit_code": 0
+}

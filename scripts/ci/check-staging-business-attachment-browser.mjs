@@ -8,7 +8,7 @@ import { pdf, receiptPdf } from "../fixtures/pdf-proof-tools/fixtures.mjs";
 
 const AGENT = "Mushavo-Staging-FR3-Business-Attachment-Browser";
 const PREVIEW = "https://13fc0c26.mushavo-budget-staging.pages.dev";
-const initialVersion = 32;
+const initialVersion = 34;
 const activeVersion = initialVersion + 1;
 const closedVersion = activeVersion + 1;
 const NAME = "audit-fr3-logo-ingestion-20261112";
@@ -91,6 +91,9 @@ async function browserFlow(owner, files, input, report) {
       report.browser_navigation_status = main?.status();
       need(main?.ok() && new URL(page.url()).origin === PREVIEW, "EXACT_BUSINESS_PREVIEW_PAGE_REQUIRED");
       await page.locator("#businessApp").waitFor({state:"visible"});
+      report.browser_step = f.lane + ":VERIFY_ACTIVE_TAB";
+      await page.locator(`[data-business-panel="${claim ? "activity" : "bills"}"]`).waitFor({state:"visible"});
+      report.browser_step = f.lane + ":OPEN_FIXTURE_RECORD";
       if (claim) {
         const card = page.locator("#businessClaimActivity .claim-row").filter({hasText:"FR3 synthetic claim receipt"});
         await card.locator("[data-transaction-key]").click();

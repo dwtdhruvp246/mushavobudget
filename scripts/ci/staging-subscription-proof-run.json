@@ -1,6 +1,9 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "workspace": "017513c6-ce57-48af-b902-9552faeb83dd",
-  "status": "HOSTED_SUBSCRIPTION_PROOF_CLEANUP_ONCE"
+  "status": "ARCHIVED_SUBSCRIPTION_PROOF_SCOPED_PASS_NO_REPLAY",
+  "run_id": 43564060389,
+  "cleanup_run_id": 43564158578,
+  "run_commit": "b8ab8f4c21d40c88704428f2e3430a4f2493776b"
 }

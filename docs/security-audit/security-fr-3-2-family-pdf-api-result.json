@@ -94,7 +94,9 @@
     "gate_ready": false,
     "catalog_matches": true
   },
-  "hosted_browser_verified": false,
+  "hosted_browser_verified": true,
   "full_FR_3_2_complete": false,
-  "exit_code": 0
+  "exit_code": 0,
+  "browser_run_id": 43563097792,
+  "browser_receipt": "security-fr-3-2-family-pdf-browser-result.json"
 }

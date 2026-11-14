@@ -1,3 +1,4 @@
+import { Buffer } from "node:buffer";
 import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import { randomUUID } from "node:crypto";
@@ -8,7 +9,7 @@ import { pdf, receiptPdf } from "../fixtures/pdf-proof-tools/fixtures.mjs";
 
 const AGENT = "Mushavo-Staging-FR3-Business-Attachment-Browser";
 const PREVIEW = "https://13fc0c26.mushavo-budget-staging.pages.dev";
-const initialVersion = 34;
+const initialVersion = 36;
 const activeVersion = initialVersion + 1;
 const closedVersion = activeVersion + 1;
 const NAME = "audit-fr3-logo-ingestion-20261112";
@@ -128,13 +129,17 @@ async function browserFlow(owner, files, input, report) {
     need(calls.validator === 3 && calls.register === 2 && calls.broker === 2
       && !calls.blocked.some(([method,path]) => ["POST","PUT","PATCH","DELETE"].includes(method) && path.startsWith("/storage/")),
       "EXACT_BROWSER_VALIDATION_ROUTING_REQUIRED");
+  } catch (error) {
+    report.browser_error_kind = error instanceof Stop ? error.code
+      : error instanceof TypeError ? "TYPE_ERROR" : error?.name === "TimeoutError" ? "TIMEOUT" : "BROWSER_ACTION_ERROR";
+    throw error;
   } finally { await browser.close(); }
 }
 
 async function exercise({ actors, evidence }, key, paidThrough) {
   const owner = actors.USER_A, outsider = actors.USER_B, admin = actors.ADMIN;
   need(owner.id === OWNER && outsider.id !== OWNER && admin.id !== OWNER, "EXACT_ATTACHMENT_ACTORS_REQUIRED");
-  const input = await receiptPdf(), canonical = await normalizeStaticPdf(input,pdf), hash = digest(canonical);
+  const input = Buffer.from(await receiptPdf()), canonical = await normalizeStaticPdf(input,pdf), hash = digest(canonical);
   const object = hash.slice(0,32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/,"$1-$2-$3-$4-$5");
   const files = [...attachmentFixtures].map(([lane,f]) => ({...f,lane,size:canonical.length,hash,
     filename:"synthetic-" + lane + ".pdf", path:`workspaces/${WORKSPACE}/${OWNER}/${f.document}/${object}.pdf`}));

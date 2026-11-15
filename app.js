@@ -3,7 +3,7 @@ import { createAdminPlans } from "./admin-plans.js?v=2";
 import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=5";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
-import { openPrivateFile } from "./private-files.js?v=1";
+import { openPrivateFile, usesManagedSubscriptionPdf, uploadManagedSubscriptionPdf } from "./private-files.js?v=2";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
 const placeholderValues = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
@@ -4909,7 +4909,7 @@ async function submitFamilySeats(event) {
   const button = $("#familySeatsSubmit");
   const workspaceId = currentBudgetWorkspace()?.id;
   const displayed = state.familySeatQuote;
-  let proofPath = null;
+  let uploadedProof = null;
   let submitted = false;
   try {
     setSubmitting(button, true, "Submitting...");
@@ -4925,7 +4925,7 @@ async function submitFamilySeats(event) {
       return;
     }
     const proof = Number(quote.amount) > 0 ? $("#familySeatsProof").files[0] || null : null;
-    if (proof) proofPath = await uploadSubscriptionProof(proof, workspaceId);
+    if (proof) uploadedProof = await uploadSubscriptionProof(proof, workspaceId);
     await query("Family places request", supabase.rpc("submit_family_extra_places", {
       p_workspace_id: workspaceId,
       p_count: Number(quote.additional_count),
@@ -4934,10 +4934,10 @@ async function submitFamilySeats(event) {
       p_payment_date: Number(quote.amount) > 0 ? $("#familySeatsPaymentDate").value : null,
       p_reference_number: Number(quote.amount) > 0 ? $("#familySeatsReference").value.trim() : null,
       p_notes: $("#familySeatsNotes").value.trim() || null,
-      p_proof_path: proofPath,
-      p_proof_name: proof?.name || null,
-      p_proof_mime_type: proof?.type || null,
-      p_proof_size_bytes: proof?.size || null
+      p_proof_path: uploadedProof?.path || null,
+      p_proof_name: uploadedProof?.name || null,
+      p_proof_mime_type: uploadedProof?.type || null,
+      p_proof_size_bytes: uploadedProof?.size || null
     }));
     submitted = true;
     $("#familySeatsDialog").close();
@@ -4945,7 +4945,7 @@ async function submitFamilySeats(event) {
     renderFamilyApp();
     showToast("Extra places requested. You can invite more members after approval.");
   } catch (error) {
-    if (proofPath && !submitted) await supabase.storage.from(SUBSCRIPTION_PROOF_BUCKET).remove([proofPath]).catch(() => {});
+    if (uploadedProof && !uploadedProof.managed && !submitted) await supabase.storage.from(SUBSCRIPTION_PROOF_BUCKET).remove([uploadedProof.path]).catch(() => {});
     showToast(friendlyMessage(error.message));
   } finally {
     setSubmitting(button, false, "Submit payment for review");
@@ -5064,13 +5064,19 @@ function updateRenewalQuote() {
 
 async function uploadSubscriptionProof(file, workspaceId) {
   const extension = validateProofFile(file);
-  const path = `workspaces/${workspaceId}/${state.session.user.id}/${crypto.randomUUID()}.${extension}`;
+  const userId = state.session?.user?.id;
+  if (usesManagedSubscriptionPdf(config, file)) {
+    const epoch = authDataEpoch;
+    return uploadManagedSubscriptionPdf(supabase, file, workspaceId, userId,
+      () => authDataEpoch === epoch && state.session?.user?.id === userId && currentBudgetWorkspace()?.id === workspaceId);
+  }
+  const path = `workspaces/${workspaceId}/${userId}/${crypto.randomUUID()}.${extension}`;
   const { error } = await supabase.storage.from(SUBSCRIPTION_PROOF_BUCKET).upload(path, file, {
     contentType: file.type,
     upsert: false
   });
   if (error) throw new Error(error.message);
-  return path;
+  return { path, type: file.type, size: file.size, name: file.name };
 }
 
 async function submitSubscriptionRenewal(event) {
@@ -5094,7 +5100,7 @@ async function submitSubscriptionRenewal(event) {
     : Math.max(includedSeats, Number(state.memberUsage?.used_member_count || state.billableMemberCount || 1));
   const amount = planInvoiceTotal(plan, price, managesMemberLimit ? requestedMemberCount : null);
   const familyName = $("#renewalFamilyName").value.trim();
-  let proofPath = null;
+  let uploadedProof = null;
   try {
     if (!workspace || !plan || !price) throw new Error("Choose a plan with an active price.");
     if (startsNewBusiness && familyName.length < 2) throw new Error("Enter a Business name with at least two characters.");
@@ -5137,7 +5143,7 @@ async function submitSubscriptionRenewal(event) {
       showToast("Staging payment proof verified. The test renewal was rolled back.");
       return;
     }
-    if (proof) proofPath = await uploadSubscriptionProof(proof, workspace.id);
+    if (proof) uploadedProof = await uploadSubscriptionProof(proof, workspace.id);
     const request = startsNewBusiness
       ? supabase.rpc("submit_business_plan_request", {
         p_personal_workspace_id: workspace.id,p_business_name:familyName,p_total_member_count:requestedMemberCount,
@@ -5145,7 +5151,7 @@ async function submitSubscriptionRenewal(event) {
         p_expected_settings_version:state.businessCheckoutTerms.find(x=>x.plan_id===plan.id)?.settings_version,
         p_payment_method:$("#renewalMethod").value,p_payment_date:$("#renewalPaymentDate").value,
         p_reference_number:$("#renewalReference").value.trim(),p_notes:$("#renewalNotes").value.trim()||null,
-        p_proof_path:proofPath,p_proof_name:proof?.name||null,p_proof_mime_type:proof?.type||null,p_proof_size_bytes:proof?.size||null,
+        p_proof_path:uploadedProof?.path||null,p_proof_name:uploadedProof?.name||null,p_proof_mime_type:uploadedProof?.type||null,p_proof_size_bytes:uploadedProof?.size||null,
         p_submission_id:businessPurchaseSubmissionId || (businessPurchaseSubmissionId=crypto.randomUUID())
       }) : startsNewFamily
       ? supabase.rpc("submit_family_plan_request", {
@@ -5160,10 +5166,10 @@ async function submitSubscriptionRenewal(event) {
         p_payment_date: $("#renewalPaymentDate").value,
         p_reference_number: $("#renewalReference").value.trim(),
         p_notes: $("#renewalNotes").value.trim() || null,
-        p_proof_path: proofPath,
-        p_proof_name: proof?.name || null,
-        p_proof_mime_type: proof?.type || null,
-        p_proof_size_bytes: proof?.size || null
+        p_proof_path: uploadedProof?.path || null,
+        p_proof_name: uploadedProof?.name || null,
+        p_proof_mime_type: uploadedProof?.type || null,
+        p_proof_size_bytes: uploadedProof?.size || null
       })
       : supabase.rpc("submit_subscription_renewal", {
       p_workspace_id: workspace.id,
@@ -5176,10 +5182,10 @@ async function submitSubscriptionRenewal(event) {
       p_payment_date: $("#renewalPaymentDate").value,
       p_reference_number: $("#renewalReference").value.trim(),
       p_notes: $("#renewalNotes").value.trim() || null,
-      p_proof_path: proofPath,
-      p_proof_name: proof?.name || null,
-      p_proof_mime_type: proof?.type || null,
-      p_proof_size_bytes: proof?.size || null
+      p_proof_path: uploadedProof?.path || null,
+      p_proof_name: uploadedProof?.name || null,
+      p_proof_mime_type: uploadedProof?.type || null,
+      p_proof_size_bytes: uploadedProof?.size || null
       });
     await query("subscription payment submit", request);
     $("#renewalForm").reset();
@@ -5190,7 +5196,7 @@ async function submitSubscriptionRenewal(event) {
       ? "Family plan submitted for review. The family will be created after approval."
       : "Payment submitted for review. Access changes only after approval.");
   } catch (error) {
-    if (proofPath && !startsNewBusiness) await supabase.storage.from(SUBSCRIPTION_PROOF_BUCKET).remove([proofPath]).catch(() => {});
+    if (uploadedProof && !uploadedProof.managed && !startsNewBusiness) await supabase.storage.from(SUBSCRIPTION_PROOF_BUCKET).remove([uploadedProof.path]).catch(() => {});
     showToast(error.message);
   } finally {
     setSubmitting(submitButton, false, "Submit for review");

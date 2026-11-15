@@ -2,7 +2,7 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=5";
 import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
-import { fetchPrivateFile, openPrivateFile, revokePrivateFileUrl } from "./private-files.js?v=1";
+import { fetchPrivateFile, openPrivateFile, revokePrivateFileUrl, usesManagedSubscriptionPdf, uploadManagedSubscriptionPdf } from "./private-files.js?v=2";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
 const placeholders = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
@@ -2786,18 +2786,26 @@ async function submitBusinessBillingPayment(event) {
   const proof=$('#businessBillingPaymentProof').files[0];
   const args={p_workspace_id:workspaceId,p_quote_id:quote.id,p_payment_id:submissionId,p_payment_method:$('#businessBillingPaymentMethod').value,p_payment_date:$('#businessBillingPaymentDate').value || null,p_reference_number:$('#businessBillingPaymentReference').value,p_notes:$('#businessBillingPaymentNotes').value};
   await withBusinessBillingBusy(async()=>{
-    let path=null,submitted=false;
+    let directPath=null,submitted=false;
     try{
-      if(proof){if(!['image/jpeg','image/png','image/webp','application/pdf'].includes(proof.type) || proof.size<1 || proof.size>10485760)throw new Error('Use a JPG, PNG, WEBP or PDF payment proof up to 10 MB.');
-        path=`workspaces/${workspaceId}/${state.session.user.id}/${crypto.randomUUID()}.${proof.type==='application/pdf'?'pdf':proof.type.split('/')[1]}`;
-        await query('Business payment proof upload',supabase.storage.from('subscription-proofs').upload(path,proof,{contentType:proof.type,upsert:false}));
-        args.p_proof_path=path;args.p_proof_name=proof.name;args.p_proof_mime_type=proof.type;args.p_proof_size_bytes=proof.size;
+      if(proof){
+        if(!['image/jpeg','image/png','image/webp','application/pdf'].includes(proof.type) || proof.size<1 || proof.size>10485760)throw new Error('Use a JPG, PNG, WEBP or PDF payment proof up to 10 MB.');
+        const userId=state.session.user.id;
+        if(usesManagedSubscriptionPdf(config,proof)){
+          const receipt=await uploadManagedSubscriptionPdf(supabase,proof,workspaceId,userId,
+            ()=>sequence===workspaceLoadSequence && state.session?.user?.id===userId && state.workspace?.id===workspaceId);
+          args.p_proof_path=receipt.path;args.p_proof_name=receipt.name;args.p_proof_mime_type=receipt.type;args.p_proof_size_bytes=receipt.size;
+        }else{
+          directPath=`workspaces/${workspaceId}/${userId}/${crypto.randomUUID()}.${proof.type==='application/pdf'?'pdf':proof.type.split('/')[1]}`;
+          await query('Business payment proof upload',supabase.storage.from('subscription-proofs').upload(directPath,proof,{contentType:proof.type,upsert:false}));
+          args.p_proof_path=directPath;args.p_proof_name=proof.name;args.p_proof_mime_type=proof.type;args.p_proof_size_bytes=proof.size;
+        }
       }
       if(sequence!==workspaceLoadSequence)return;
       await query('Business subscription payment',supabase.rpc('submit_business_subscription_payment',args));submitted=true;
       if(sequence!==workspaceLoadSequence)return;
       $('#businessBillingDialog').close();invalidateBusinessBillingQuote();billingOffset=0;await refreshBusinessBilling();setClaimMessage('#businessBillingMessage','Submitted for admin review. Your existing access and seats remain unchanged until approval.');
-    }finally{if(path&&!submitted)await supabase.storage.from('subscription-proofs').remove([path]).catch(()=>{});}
+    }finally{if(directPath&&!submitted)await supabase.storage.from('subscription-proofs').remove([directPath]).catch(()=>{});}
   });
 }
 async function openBusinessBillingProof(path) {

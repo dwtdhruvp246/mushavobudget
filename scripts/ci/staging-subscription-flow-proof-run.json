@@ -1,0 +1,12 @@
+{
+  "enabled": true,
+  "project": "dczlddwbtgvfdujgcitb",
+  "version": 1,
+  "lanes": [
+    "personal",
+    "family-plan",
+    "family-renewal",
+    "family-extra",
+    "business"
+  ]
+}

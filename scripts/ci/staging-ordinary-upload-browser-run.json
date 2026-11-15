@@ -1,7 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
-  "origin": "https://mushavo-budget-staging.pages.dev",
-  "server_only": true,
-  "pass": "canonical-staging-after-cutover"
+  "status": "ARCHIVED_AFTER_STAGE_FR32_BROWSER_CUTOVER_AND_CLEANUP_PASS"
 }

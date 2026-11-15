@@ -2,7 +2,7 @@
 
 ## Current result
 
-**Stage 4/10 · FR.3/8 · FR.3.2 · Committed subscription proof and review batch passed in staging. FR.3.2 remains open.**
+**Stage 4/10 · FR.3/8 · FR.3.2 · COMPLETE on staging.** The canonical staging browser, authenticated file endpoints, server-only Storage policies, and signed cleanup were verified.
 
 | Subscription proof flow | Hosted checks | Saved result |
 |---|---:|---|
@@ -30,15 +30,15 @@ Server-side replacement cleanup is enabled by default for staging Business works
 
 The shared private-file broker now counts requests and bytes per authenticated account across all four staging buckets. The staged limits are 60 requests and 64 MiB per minute. The [hosted download check](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43730403569) confirmed two normal proof downloads and two cross-account denials. Local SQL tests exercised the rate and byte limits across all four supported buckets, and 38 broker tests passed. [Logo cleanup and download evidence](security-fr-3-2-logo-cleanup-and-download-budget-staging-result.json)
 
-## Broader FR.3.2 coverage
+## Final coverage
 
-| Surface | Staging evidence | Remaining work |
-|---|---|---|
-| Personal and Family payment proofs | Selected image and PDF validators and browser entry points | Ordinary upload routes still use direct Storage calls. Enroll those routes in trusted validation, quotas and cleanup. |
-| Business logos | PNG, JPEG and WebP selection, validation and preview in the isolated workspace | Scheduled reconciliation for replaced logos is enabled on staging. Ordinary uploads still use direct Storage. Add trusted validation and reservations for newly uploaded logos. |
-| Business documents | Workspace attachments, CSV and XLSX, claim receipts, unpaid invoices, and paid bill proofs | Extend validated uploads and reservations to ordinary paths. |
-| Subscription proofs | Five committed submissions, authorized rejection and broker retrieval on staging | Managed subscription PDFs, reservation and cleanup passed on staging. Verify browser deployment and migrate ordinary image proofs. The public Business plan remains unavailable for purchase in staging. |
-| File capacity and cleanup | Selected Business capacity and concurrency checks, authenticated download limits, and signed Cloudflare invocation that removed a real orphan | Shared download quotas, replaced-logo cleanup and managed subscription cleanup are enabled on staging. General reservations and orphan cleanup for the remaining ordinary routes are open. |
+| Surface | Verified outcome |
+|---|---|
+| Personal and Family payment proofs | Ordinary uploads validated and attached through the completed-payment RPC. Private readback succeeded in both workspaces. |
+| Business logos | Staging uses the managed logo route. Owner branding update and private readback passed, an unrelated account was denied, and scheduled replacement cleanup removed the detached test logo. |
+| Business documents | The ordinary endpoint validated and registered CSV and XLSX, verified retained private downloads and refused unregistered private downloads. Existing claim, bill and bill-payment evidence is linked below. |
+| Subscription proofs | Managed PDF and image validation passed. The earlier hosted PDF run stored and read back a 10,482,531-byte receipt. |
+| File capacity, cleanup and direct writes | Staging requires the server routes for uploads across four private buckets. Reservation and private download limits apply. Scheduled cleanup removed unlinked test files and preserved linked receipts. |
 
 [Business bill-payment proof and download budget](security-fr-3-2-business-bill-payment-quota-staging-result.json) · [Scheduled Business cleanup](security-fr-3-2-scheduled-business-cleanup-staging-result.json)
 
@@ -49,4 +49,10 @@ The managed subscription endpoint preserves the 10 MiB PDF size allowance for su
 
 The database reserves room before accepting a new object. The limits are eight unlinked files or 32 MiB per workspace owner. The billing proofs trigger binds validated metadata to the submitting owner and workspace. A ready file has 30 minutes to be attached. Disposable PostgreSQL tests checked the byte cap, repeated reservations, verified linking, exclusion of linked files from cleanup, and claim replay rejection. On staging, the signed scheduler removed both intentionally expired synthetic files and preserved all seven previously linked receipts. [Test evidence](security-fr-3-2-managed-subscription-upload-staging-result.json)
 
-The staging browser source reads the validated receipt for subscription PDF uploads. Local checks cover staging-only selection, the returned path, normalized metadata, and rejection of stale workspace context. A hosted Pages release of this browser revision remains unverified. Ordinary payment proof, Business document and new logo uploads remain open. Subscription image proofs still use the existing upload route, and the new restrictive policies protect the managed namespace.
+The canonical staging browser routes subscription images and PDFs through the managed endpoint and passes the returned metadata to the billing forms. Local checks cover staging-only selection, returned paths, normalized metadata and stale workspace context.
+
+## Browser cutover and sign-off
+
+The [hosted API run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43736994976) passed seven ordinary upload cases with disposable Personal, Family and Business fixtures. The first two browser attempts identified a form-entry test issue and a stale constant in the client receipt helper. The corrected preview passed. The canonical staging build then passed the hosted Add Payment form test, private readback, test payment deletion and direct Storage denial after cutover. Five changed browser assets and the staging configuration matched the staged payload byte for byte. [Preview run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43738524613) · [Canonical browser run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43738791222)
+
+The final readback recorded four private buckets and two restrictive policies covering browser inserts and updates. The signed cleanup completed with zero pending managed uploads. Eight ordinary and three subscription test objects were reconciled as removed. Two linked synthetic Business documents and seven prior linked subscription proofs remain available as preservation evidence. The temporary Business and Family fixture settings were restored. [Completion evidence](security-fr-3-2-staging-completion.json)

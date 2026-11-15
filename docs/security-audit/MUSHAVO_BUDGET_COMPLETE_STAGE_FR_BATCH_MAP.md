@@ -141,7 +141,7 @@ Each row states a concrete finishing outcome. Status for all rows below: **plann
 | Proposed work pack | Deliverable | Work and completion outcome |
 |---|---|---|
 | FR.3.1 | Approve data/retention/shared-ownership facts | Adopt actual operator/contact/audience, category retention and transfer-or-closure decisions; identify processor/backup treatment. |
-| FR.3.2 | Implement trusted files and downloads | Validate actual allowed content/size/quota and authoritative ownership/object binding; demonstrate allowed and foreign/forged/oversized denials. |
+| FR.3.2 | Implement trusted files and downloads | **Staging complete.** Trusted uploads, ownership binding, quotas, private downloads, canonical browser, restrictive Storage policies and signed cleanup verified. [FR.3.2 sign-off](SECURITY_FR_3_2_STAGING_CHECKPOINT_20261115.md) |
 | FR.3.3 | Implement account deletion and shared-data handling | Authenticated request/status, persistent retry/idempotency, dependency-aware transfer/closure, authoritative file cleanup and appropriate session/provider cleanup. |
 | FR.3.4 | Publish factual privacy/terms/support/deletion resources | Working public/app links and monitored contact; copy matches actual collection, retention and implemented deletion. |
 | FR.3.5 | Accept data lifecycle/files/privacy | Run bounded disposable-account/file positive, denial and failure/retry checks; prove other users/shared financial data preserved and reconcile cleanup. |

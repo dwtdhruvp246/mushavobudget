@@ -1,8 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
-  "version": 1,
-  "lanes": [
-    "family-extra"
-  ]
+  "status": "ARCHIVED_AFTER_HOSTED_CHECKS_AND_FIXTURE_RESTORE"
 }

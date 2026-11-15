@@ -1,5 +1,6 @@
 {
   "enabled": true,
+  "pass": "retry-dashboard-entry",
   "project": "dczlddwbtgvfdujgcitb",
   "origin": "https://2f308ee0.mushavo-budget-staging.pages.dev"
 }

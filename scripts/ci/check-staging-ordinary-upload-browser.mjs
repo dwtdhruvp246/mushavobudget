@@ -9,7 +9,7 @@ const NOTE="FR.3.2 synthetic browser receipt";
 const image=Buffer.from(encodeLogoRgbaPng(2,1,Uint8Array.from([5,10,120,255,4,12,125,255])));
 const RPCS=new Set(["app_session_status","my_account_suspended","get_my_admin_user_invitation",
   "public_business_checkout_terms","effective_workspace_entitlement","personal_payment_plan_access",
-  "workspace_billable_member_count","workspace_member_usage","exchange_rate_status"]);
+  "workspace_billable_member_count","workspace_member_usage","exchange_rate_status","get_my_business_invitations"]);
 const safeId=x=>/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/.test(x || "");
 const filePath=x=>typeof x==="string"&&x.startsWith("personal/"+OWNER+"/managed-upload-v1/")
   && x.split("/").length===5&&safeId(x.split("/")[3])&&/^[a-f0-9-]{36}[.]png$/.test(x.split("/")[4]);
@@ -73,9 +73,10 @@ async function exercise({actors,evidence},key,origin,chromium){
       return route.abort("blockedbyclient");
     });
     const page=await ctx.newPage();
-    stats.phase="OPEN_PAYMENT_PAGE";
-    await page.goto(origin+"/app#personal/payments",{waitUntil:"domcontentloaded"});
-    await page.locator("[data-open-payment-item-dialog]").click();
+    stats.phase="OPEN_DASHBOARD";
+    await page.goto(origin+"/app#personal/dashboard",{waitUntil:"domcontentloaded"});
+    await page.locator("[data-open-dashboard-payment]").click();
+    stats.phase="OPEN_COMPLETED_PAYMENT_FORM";
     await page.locator('[data-payment-entry-choice="completed"]').click();
     const form=page.locator("#completedPaymentForm");
     await form.waitFor({state:"visible"});

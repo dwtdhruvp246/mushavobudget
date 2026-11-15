@@ -54,7 +54,7 @@ Stages 0–2 have substantial earlier setup/review work. Stage 3 is the current 
 |---|---|---|---|---|
 | FR.1 — accepted source/static serving | Scoped serving correction complete; wider release mapping carried forward | Reuse accepted staging serving work. Final production headers/contact/serving/artifact mapping is accounted for in FR.4/FR.7/FR.8, not a repeated FR.1 campaign. | 1–2, 9–10 | Included later; no separate double count |
 | FR.2 — permissions/Auth/finance | IN PROGRESS | Finish V policy/privileged scope, W, X, Y and Z. Existing FR.2.1–.3 scoped passes retained. | 3 | 6–10 working days |
-| FR.3 — data/files/deletion/privacy | Readiness review recorded. Selected broker download evidence is reusable. Retention decisions, trusted intake and deletion remain open. [Checkpoint](SECURITY_FR_3_READINESS_CHECKPOINT_20261112.md) | FR.3.1–.5 below | 4 | 4–7 days |
+| FR.3 — data/files/deletion/privacy | Trusted files and downloads passed on staging. Deletion request API passed on staging. Retention decisions, account erasure and privacy resources remain open. [Checkpoint](SECURITY_FR_3_3_STAGING_CHECKPOINT_20261115.md) | FR.3.1–.5 below | 4 | 4–7 days |
 | FR.4 — jobs/operations/recovery | Required implementation/acceptance remains | FR.4.1–.5 below | 1–2, 8, 10 | 3–5 days |
 | FR.5 — identity/email/providers | Required implementation/acceptance remains | FR.5.1–.4 below | 6; dependencies 3/5 | Web 2–3; full provider scope 5–8 days |
 | FR.6 — commerce/entitlements | Required implementation/acceptance remains | FR.6.1–.5 below | 7 | Web 3–5; full native scope 8–13 days |
@@ -142,7 +142,7 @@ Each row states a concrete finishing outcome. Status for all rows below: **plann
 |---|---|---|
 | FR.3.1 | Approve data/retention/shared-ownership facts | Adopt actual operator/contact/audience, category retention and transfer-or-closure decisions; identify processor/backup treatment. |
 | FR.3.2 | Implement trusted files and downloads | **Staging complete.** Trusted uploads, ownership binding, quotas, private downloads, canonical browser, restrictive Storage policies and signed cleanup verified. [FR.3.2 sign-off](SECURITY_FR_3_2_STAGING_CHECKPOINT_20261115.md) |
-| FR.3.3 | Implement account deletion and shared-data handling | Authenticated request/status, persistent retry/idempotency, dependency-aware transfer/closure, authoritative file cleanup and appropriate session/provider cleanup. |
+| FR.3.3 | Implement account deletion and shared-data handling | **Request API passed on staging.** The request/status/cancel API and ownership review hold were verified with live staging sessions. The browser release, transfer/closure decisions, erasure execution, file and provider cleanup remain open. [Checkpoint](SECURITY_FR_3_3_STAGING_CHECKPOINT_20261115.md) |
 | FR.3.4 | Publish factual privacy/terms/support/deletion resources | Working public/app links and monitored contact; copy matches actual collection, retention and implemented deletion. |
 | FR.3.5 | Accept data lifecycle/files/privacy | Run bounded disposable-account/file positive, denial and failure/retry checks; prove other users/shared financial data preserved and reconcile cleanup. |
 | FR.4.1 | Reconcile installed jobs and caller configuration | Inventory relevant scheduler/Edge/job routes, credentials/bindings and required permitted/denied callers; reuse Y's authorization evidence. |

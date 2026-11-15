@@ -1,0 +1,42 @@
+name: Business upload lifecycle checks
+on:
+  push:
+    branches: ["security/stage-3-authorization"]
+    paths:
+      - ".github/workflows/business-ingestion-lifecycle-check.yml"
+      - "scripts/check-fr-3-business-ingestion-lifecycle.mjs"
+      - "scripts/fixtures/ingestion-lifecycle-tools/**"
+      - "supabase/diagnostics/security_fr_3_2_business_ingestion_lifecycle_candidate.sql"
+      - "supabase/functions/_shared/business-upload-cleanup.mjs"
+permissions:
+  contents: read
+jobs:
+  disposable-postgres:
+    if: github.repository == 'dwtdhruvp246/mushavobudget'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    services:
+      postgres:
+        image: postgres:17.6-bookworm
+        env:
+          POSTGRES_DB: mushavo_lifecycle_test
+          POSTGRES_PASSWORD: disposable-postgres-test
+        ports: ["127.0.0.1:55432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: "22"
+      - run: npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/ingestion-lifecycle-tools
+      - name: Exercise real PostgreSQL transactions
+        env:
+          PGUSER: postgres
+          PGPASSWORD: disposable-postgres-test
+        run: node scripts/check-fr-3-business-ingestion-lifecycle.mjs 127.0.0.1 scripts/fixtures/ingestion-lifecycle-tools/node_modules/pg

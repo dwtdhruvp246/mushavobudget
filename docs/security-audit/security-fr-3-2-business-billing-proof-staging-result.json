@@ -1,0 +1,58 @@
+{
+  "stage": "4/10",
+  "final_remediation": "FR.3/8",
+  "step": "FR.3.2",
+  "scope": "Synthetic staging billing proof submission and rejection",
+  "workflow": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43729033993",
+  "commit": "88cb82cb269955114293701f7a8a26fa7084dddc",
+  "checks": {
+    "business-purchase": {
+      "checks": {
+        "PRIVATE_TEST_PLAN_STAYS_OUT_OF_PUBLIC_CHECKOUT": true,
+        "EXACT_LEDGER_BASELINE": true,
+        "UNRELATED_ACCOUNT_UPLOAD_DENIED": true,
+        "VALIDATED_PROOF_WRITTEN": true,
+        "IDENTICAL_UPLOAD_RETURNED_SAME_PROOF": true,
+        "SCOPED_UPLOAD_QUOTA_DENIED_SECOND_FILE": true,
+        "REAL_SUBMISSION_COMMITTED": true,
+        "OWNER_AND_AMOUNT_BOUND": true,
+        "ORDINARY_ACCOUNT_REVIEW_DENIED": true,
+        "AUTHORIZED_STAFF_REJECTED_SYNTHETIC_PAYMENT": true,
+        "OWNER_CAN_READ_REVIEW_OUTCOME": true,
+        "PROOF_METADATA_SURVIVED_REVIEW": true,
+        "OWNER_DOWNLOADED_EXACT_PROOF": true,
+        "AUTHORIZED_STAFF_DOWNLOADED_EXACT_PROOF": true,
+        "UNRELATED_ACCOUNT_DOWNLOAD_DENIED": true
+      },
+      "upload_status": 200,
+      "submission_status": 200,
+      "staff_review_status": 200
+    },
+    "business-extra": {
+      "checks": {
+        "EXACT_LEDGER_BASELINE": true,
+        "UNRELATED_ACCOUNT_UPLOAD_DENIED": true,
+        "VALIDATED_PROOF_WRITTEN": true,
+        "IDENTICAL_UPLOAD_RETURNED_SAME_PROOF": true,
+        "SCOPED_UPLOAD_QUOTA_DENIED_SECOND_FILE": true,
+        "REAL_SUBMISSION_COMMITTED": true,
+        "OWNER_AND_AMOUNT_BOUND": true,
+        "ORDINARY_ACCOUNT_REVIEW_DENIED": true,
+        "AUTHORIZED_STAFF_REJECTED_SYNTHETIC_PAYMENT": true,
+        "OWNER_CAN_READ_REVIEW_OUTCOME": true,
+        "PROOF_METADATA_SURVIVED_REVIEW": true,
+        "OWNER_DOWNLOADED_EXACT_PROOF": true,
+        "AUTHORIZED_STAFF_DOWNLOADED_EXACT_PROOF": true,
+        "UNRELATED_ACCOUNT_DOWNLOAD_DENIED": true
+      },
+      "upload_status": 200,
+      "submission_status": 200,
+      "staff_review_status": 200
+    }
+  },
+  "application_requests": 35,
+  "auth_requests": 18,
+  "created_sessions": 3,
+  "logged_out_sessions": 3,
+  "exit_code": 0
+}

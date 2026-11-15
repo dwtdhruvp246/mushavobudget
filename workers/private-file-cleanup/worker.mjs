@@ -10,7 +10,7 @@ export async function dispatchCleanup(env, fetcher = fetch) {
   const signature = new Uint8Array(await crypto.subtle.sign({name:"ECDSA",hash:"SHA-256"}, key,
     encoder.encode([PURPOSE,timestamp,nonce].join("\n"))));
   const response = await fetcher(ENDPOINT,{
-    method:"POST",redirect:"error",signal:AbortSignal.timeout(25000),
+    method:"POST",redirect:"manual",signal:AbortSignal.timeout(25000),
     headers:{"Content-Type":"application/json","x-mushavo-attachment":"scheduled-reconcile",
       "x-mushavo-cleanup-time":timestamp,"x-mushavo-cleanup-nonce":nonce,
       "x-mushavo-cleanup-signature":Array.from(signature,byte => byte.toString(16).padStart(2,"0")).join("")},

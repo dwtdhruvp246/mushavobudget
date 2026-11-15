@@ -10,7 +10,7 @@ test("scheduled cleanup uses the fixed staging endpoint and a fresh signed invoc
   let received;
   await dispatchCleanup(env, async (url,init) => {
     assert.equal(url,"https://dczlddwbtgvfdujgcitb.supabase.co/functions/v1/validate-business-lifecycle");
-    assert.equal(init.redirect,"error");
+    assert.equal(init.redirect,"manual");
     assert.equal(init.method,"POST");
     assert.equal(init.headers["x-mushavo-attachment"],"scheduled-reconcile");
     received = new Headers(init.headers);

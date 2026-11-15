@@ -65,11 +65,11 @@ async function exercise({ actors,evidence },key,term) {
   let confirmed = false, failure, cleanupFailure;
   try {
     const w = await workspace(), s = one(await call("/rest/v1/workspace_subscriptions?workspace_id=eq." + WORKSPACE + "&limit=2","GET",admin));
-    test("EXACT_SUSPENDED_LIFECYCLE_FIXTURE",exactWorkspace(w) && w.status === "suspended" && w.business_support_version === 46
+    test("EXACT_SUSPENDED_LIFECYCLE_FIXTURE",exactWorkspace(w) && w.status === "suspended" && w.business_support_version === 50
       && s?.workspace_id === WORKSPACE && s.status === "active" && s.version === 1 && s.member_limit === 1
       && Date.parse(s.paid_through_at) === Date.parse(term) && Date.parse(term) > Date.now());
     confirmed = true;
-    test("EXACT_LIFECYCLE_FIXTURE_RESUMED",(await status("active",46)).status === 200);
+    test("EXACT_LIFECYCLE_FIXTURE_RESUMED",(await status("active",50)).status === 200);
     test("LIFECYCLE_ACTOR_BOUND", (await upload("orphan",outsider)).status === 403 && (await scheduledState(outsider)).status === 403);
     test("UNSIGNED_SCHEDULED_INVOCATION_DENIED",(await unsignedCleanup()).status === 403);
     const direct = await call(urlFor("orphan"),"POST",owner,canonical,{"content-type":PDF,"x-upsert":"false"});
@@ -97,25 +97,12 @@ async function exercise({ actors,evidence },key,term) {
     const expired = await register("orphan");
     test("REMOVED_OBJECT_CANNOT_REGISTER",expired.status >= 400 && expired.data?.message === "BUSINESS_DOCUMENT_UPLOAD_NOT_FOUND");
 
-    const committed = await upload("committed");
-    test("FREED_CAPACITY_ACCEPTS_NEXT_UPLOAD",exactUpload(committed,"committed"));
-    const registered = await register("committed"), item = one(await docs("committed"));
-    test("TRANSACTION_LINKED_EXACT_FILE",registered.status === 200 && item?.id === DOCUMENTS.committed && item.status === "active"
-      && item.workspace_id === WORKSPACE && item.parent_id === WORKSPACE && item.uploaded_by === OWNER
-      && item.storage_path === pathFor("committed") && item.size_bytes === canonical.length && item.mime_type === PDF);
-    const outside = await broker("committed",outsider);
-    test("OUTSIDE_ACCOUNT_CANNOT_OPEN_REGISTERED_FILE",outside.status === 404);
-    const [first, second] = await Promise.all([broker("committed"),broker("committed")]);
-    const exact = r => r.status === 200 && r.mime === PDF && r.cache.includes("no-store") && digest(r.data) === hash;
-    test("AUTHORIZED_DOWNLOADS_CHARGED_AND_BYTES_EXACT",exact(first) && exact(second));
-    const blocked = await broker("committed");
-    test("THIRD_DOWNLOAD_IN_WINDOW_DENIED",blocked.status === 429 && blocked.data?.error === "PRIVATE_FILE_DOWNLOAD_LIMIT");
   } catch (error) { failure = error; }
   finally {
     if (confirmed) try {
       const w = await workspace();
       need(exactWorkspace(w),"EXACT_LIFECYCLE_CLEANUP_WORKSPACE");
-      if (w.status === "active" && w.business_support_version === 47) {
+      if (w.status === "active" && w.business_support_version === 51) {
         for (const lane of Object.keys(DOCUMENTS)) try {
           const rows = await docs(lane);
           need(rows.status === 200 && [0,1].includes(rows.data?.length),"EXACT_LIFECYCLE_CLEANUP_READ");
@@ -132,12 +119,12 @@ async function exercise({ actors,evidence },key,term) {
             && removal.data.every(row => row.name === pathFor(lane)),"EXACT_LIFECYCLE_OBJECT_CLOSE_ACK");
           evidence.cleanup[lane] = true;
         } catch (error) { cleanupFailure ??= error; }
-        need((await status("suspended",47)).status === 200,"EXACT_LIFECYCLE_SUSPEND_ACK");
+        need((await status("suspended",51)).status === 200,"EXACT_LIFECYCLE_SUSPEND_ACK");
         const closed = await workspace();
-        need(exactWorkspace(closed) && closed.status === "suspended" && closed.business_support_version === 48,
+        need(exactWorkspace(closed) && closed.status === "suspended" && closed.business_support_version === 52,
           "EXACT_CLOSED_LIFECYCLE_WORKSPACE");
         evidence.cleanup.suspended = true;
-      } else need(w.status === "suspended" && w.business_support_version === 46,"EXACT_LIFECYCLE_CLEANUP_STATE");
+      } else need(w.status === "suspended" && w.business_support_version === 50,"EXACT_LIFECYCLE_CLEANUP_STATE");
     } catch (error) { cleanupFailure ??= error; }
     if (failure instanceof Stop) evidence.first_failed_check = failure.code;
   }

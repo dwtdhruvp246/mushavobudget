@@ -2,7 +2,7 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=5";
 import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
-import { fetchPrivateFile, openPrivateFile, revokePrivateFileUrl, usesManagedSubscriptionPdf, uploadManagedSubscriptionPdf } from "./private-files.js?v=2";
+import { fetchPrivateFile, openPrivateFile, revokePrivateFileUrl, usesManagedSubscriptionUpload, uploadManagedSubscriptionProof, usesManagedPrivateUploads, uploadManagedPrivateFile } from "./private-files.js?v=3";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
 const placeholders = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
@@ -1282,6 +1282,10 @@ async function uploadClaimReceipt() {
   try {
     let confirmed = { path: directPath, type: file.type, size: file.size };
     if (fixture) confirmed = await validateBusinessAttachment(file, fixture, isCurrent);
+    else if (usesManagedPrivateUploads(config)) confirmed = await uploadManagedPrivateFile(supabase, file, {
+      bucket: "business-documents", workspaceId: claim.workspace_id, userId: state.session.user.id, attachment: documentId,
+      parentType: "expense_claim", parentId: claim.id, isCurrent
+    });
     else {
       await query("Upload receipt", supabase.storage.from("business-documents").upload(directPath, file, { contentType: file.type, upsert: false }));
       uploaded = true;
@@ -1617,6 +1621,10 @@ async function uploadBillProof() {
   try {
     let confirmed = { path: directPath, type: file.type, size: file.size };
     if (fixture) confirmed = await validateBusinessAttachment(file, fixture, isCurrent);
+    else if (usesManagedPrivateUploads(config)) confirmed = await uploadManagedPrivateFile(supabase, file, {
+      bucket: "business-documents", workspaceId: bill.workspace_id, userId: state.session.user.id, attachment: documentId,
+      parentType, parentId, isCurrent
+    });
     else {
       await query("Upload bill proof", supabase.storage.from("business-documents").upload(directPath, file, { contentType: file.type, upsert: false }));
       uploaded = true;
@@ -2156,7 +2164,13 @@ async function uploadBrandingDraft(scope) {
   if (!draft.file) return state.businessProfile?.logo_storage_path || null;
   if (draft.uploadedPath) return draft.uploadedPath;
   let path;
-  if (usesValidatedLogoTrial(workspaceId)) {
+  if (usesManagedPrivateUploads(config)) {
+    const receipt = await uploadManagedPrivateFile(supabase, draft.file, {
+      bucket: BUSINESS_LOGO_BUCKET, workspaceId, userId,
+      isCurrent: () => sequence === workspaceLoadSequence && state.workspace?.id === workspaceId && state.session?.user?.id === userId
+    });
+    path = receipt.path;
+  } else if (usesValidatedLogoTrial(workspaceId)) {
     const result = await query('Validate Business logo', supabase.functions.invoke('validate-business-logo', {
       body: draft.file,
       headers: { 'Content-Type': draft.file.type },
@@ -2185,7 +2199,7 @@ function applySavedBusinessBranding(profile, scope) {
   window.MushavoPWA?.markFormClean?.(scope === 'setup' ? '#businessBasicsForm' : '#businessBrandingForm');
   setClaimMessage(`[data-logo-message="${scope}"]`);
   renderIdentity(); renderWorkspaceSelectors();
-  if (previousPath && previousPath !== profile.logo_storage_path) {
+  if (previousPath && previousPath !== profile.logo_storage_path && !previousPath.split('/')[2]?.startsWith('f3320000-')) {
     // Never remove a newly uploaded file after an ambiguous submission response.
     // Only clean the old, unlinked file after a confirmed successful save.
     void supabase.storage.from(BUSINESS_LOGO_BUCKET).remove([previousPath]).catch(() => {});
@@ -2791,8 +2805,8 @@ async function submitBusinessBillingPayment(event) {
       if(proof){
         if(!['image/jpeg','image/png','image/webp','application/pdf'].includes(proof.type) || proof.size<1 || proof.size>10485760)throw new Error('Use a JPG, PNG, WEBP or PDF payment proof up to 10 MB.');
         const userId=state.session.user.id;
-        if(usesManagedSubscriptionPdf(config,proof)){
-          const receipt=await uploadManagedSubscriptionPdf(supabase,proof,workspaceId,userId,
+        if(usesManagedSubscriptionUpload(config,proof)){
+          const receipt=await uploadManagedSubscriptionProof(supabase,proof,workspaceId,userId,
             ()=>sequence===workspaceLoadSequence && state.session?.user?.id===userId && state.workspace?.id===workspaceId);
           args.p_proof_path=receipt.path;args.p_proof_name=receipt.name;args.p_proof_mime_type=receipt.type;args.p_proof_size_bytes=receipt.size;
         }else{

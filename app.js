@@ -3,7 +3,7 @@ import { createAdminPlans } from "./admin-plans.js?v=2";
 import { createSessionEntry, snapshotPrivateView } from "./session-entry.js?v=5";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 import { safeAuthMessage, redirectLegacyAuthLink } from "./auth-security.js?v=1";
-import { openPrivateFile, usesManagedSubscriptionPdf, uploadManagedSubscriptionPdf } from "./private-files.js?v=2";
+import { openPrivateFile, usesManagedSubscriptionUpload, uploadManagedSubscriptionProof, usesManagedPrivateUploads, uploadManagedPrivateFile, isManagedPaymentProof } from "./private-files.js?v=3";
 
 const config = window.MUSHAVO_BUDGET_CONFIG || window.EXPENSE_TRACKER_CONFIG || {};
 const placeholderValues = ["YOUR-PROJECT-REF", "YOUR-SUPABASE-PUBLISHABLE-KEY"];
@@ -5065,9 +5065,9 @@ function updateRenewalQuote() {
 async function uploadSubscriptionProof(file, workspaceId) {
   const extension = validateProofFile(file);
   const userId = state.session?.user?.id;
-  if (usesManagedSubscriptionPdf(config, file)) {
+  if (usesManagedSubscriptionUpload(config, file)) {
     const epoch = authDataEpoch;
-    return uploadManagedSubscriptionPdf(supabase, file, workspaceId, userId,
+    return uploadManagedSubscriptionProof(supabase, file, workspaceId, userId,
       () => authDataEpoch === epoch && state.session?.user?.id === userId && currentBudgetWorkspace()?.id === workspaceId);
   }
   const path = `workspaces/${workspaceId}/${userId}/${crypto.randomUUID()}.${extension}`;
@@ -8332,7 +8332,7 @@ async function saveCompletedPayment(event) {
     renderFamilyApp();
     showToast("Completed payment saved. It now appears as paid in Payments.");
   } catch (error) {
-    if (uploadedProof?.path) {
+    if (uploadedProof?.path && !uploadedProof.managed) {
       await supabase.storage.from(PAYMENT_PROOF_BUCKET).remove([uploadedProof.path]).catch(() => {});
     }
     showToast(error.message);
@@ -8694,7 +8694,7 @@ async function savePaymentRecord(event) {
     renderFamilyApp();
     showToast(amount + 0.005 >= outstanding ? "Payment recorded as paid in full." : "Partial payment recorded.");
   } catch (error) {
-    if (uploadedProof?.path && !uploadedProof.validatedTrial) {
+    if (uploadedProof?.path && !uploadedProof.validatedTrial && !uploadedProof.managed) {
       await supabase.storage.from(PAYMENT_PROOF_BUCKET).remove([uploadedProof.path]).catch(() => {});
     }
     showToast(error.message);
@@ -8739,6 +8739,19 @@ async function uploadPaymentProof(item, file) {
     const name = file.name.replace(/\.[^.]*$/, "").trim().slice(0, 145) || "payment-proof";
     return { path: data.path, name: name + suffix, type: data.type, size: data.size, validatedTrial: true };
   }
+  if (usesManagedPrivateUploads(config)) {
+    const workspaceId = currentBudgetWorkspace()?.id;
+    const familyId = item.visibility === "family" ? state.family?.id : null;
+    const familyOwner = familyId ? state.family?.owner_id : null;
+    const epoch = authDataEpoch;
+    const matches = () => Boolean(workspaceId) && authDataEpoch === epoch && state.session?.user?.id === userId
+      && currentBudgetWorkspace()?.id === workspaceId && (!item.workspace_id || item.workspace_id === workspaceId)
+      && (item.visibility !== "family" || ((state.family?.id || null) === familyId
+        && familyId === item.family_id && Boolean(familyOwner)));
+    return uploadManagedPrivateFile(supabase, file, {
+      bucket: PAYMENT_PROOF_BUCKET, workspaceId, userId, familyId, familyOwner, isCurrent: matches
+    });
+  }
   const path = item.visibility === "family"
     ? `families/${item.family_id}/${state.family.owner_id}/${userId}/${crypto.randomUUID()}.${extension}`
     : `personal/${userId}/${crypto.randomUUID()}.${extension}`;
@@ -8772,7 +8785,7 @@ async function deletePaymentRecord(recordId) {
   try {
     await query("payment_records delete", supabase.from("payment_records").delete().eq("id", recordId));
     let proofCleanupFailed = false;
-    if (record?.proof_path) {
+    if (record?.proof_path && !isManagedPaymentProof(record.proof_path)) {
       const { error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).remove([record.proof_path]);
       proofCleanupFailed = Boolean(error);
     }
@@ -8793,8 +8806,9 @@ async function deletePaymentItem(itemId) {
     if (state.paymentHistoryItemId === itemId && $("#paymentHistoryDialog").open) $("#paymentHistoryDialog").close();
     await query("payment item delete", supabase.from("payment_items").delete().eq("id", itemId));
     let proofCleanupFailed = false;
-    if (proofPaths.length) {
-      const { error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).remove(proofPaths);
+    const directProofPaths = proofPaths.filter(path => !isManagedPaymentProof(path));
+    if (directProofPaths.length) {
+      const { error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).remove(directProofPaths);
       proofCleanupFailed = Boolean(error);
     }
     await loadFamilyData();
@@ -9034,8 +9048,9 @@ async function deleteSelectedFamily() {
       supabase.rpc("delete_family_workspace", { p_family_id: familyId })
     );
     let proofCleanupFailed = false;
-    if (proofPaths.length) {
-      const { error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).remove(proofPaths);
+    const directProofPaths = proofPaths.filter(path => !isManagedPaymentProof(path));
+    if (directProofPaths.length) {
+      const { error } = await supabase.storage.from(PAYMENT_PROOF_BUCKET).remove(directProofPaths);
       proofCleanupFailed = Boolean(error);
     }
     window.localStorage.removeItem(selectedFamilyStorageKey());

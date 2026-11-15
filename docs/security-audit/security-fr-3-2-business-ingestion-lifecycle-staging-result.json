@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-15",
+  "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Business upload lifecycle",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "STAGING_BUSINESS_UPLOAD_LIFECYCLE_SCOPED_PASS",
+  "candidate_commit": "fe10c096ac9bf1db8dfa88ea59637e90034e1ac4",
+  "run_id": 43691204793,
+  "job_id": 132742050272,
+  "hosted_checks_passed": 14,
+  "hosted_exercise": {
+    "checks": {
+      "EXACT_SUSPENDED_LIFECYCLE_FIXTURE": true,
+      "EXACT_LIFECYCLE_FIXTURE_RESUMED": true,
+      "LIFECYCLE_ACTOR_BOUND": true,
+      "DIRECT_RESERVED_PATH_UPLOAD_DENIED": true,
+      "VALIDATED_BUT_UNREGISTERED_UPLOAD": true,
+      "SECOND_UPLOAD_AT_CAPACITY_DENIED": true,
+      "UNREGISTERED_FILE_STAYS_PRIVATE": true,
+      "UNEXPIRED_UPLOAD_PRESERVED": true,
+      "EXPIRED_UNREGISTERED_OBJECT_REMOVED": true,
+      "REMOVED_OBJECT_CANNOT_REGISTER": true,
+      "FREED_CAPACITY_ACCEPTS_NEXT_UPLOAD": true,
+      "TRANSACTION_LINKED_EXACT_FILE": true,
+      "RECONCILER_PRESERVES_REGISTERED_FILE": true,
+      "OUTSIDE_ACCOUNT_CANNOT_OPEN_REGISTERED_FILE": true
+    },
+    "requests": 26,
+    "cleanup": {
+      "orphan": true,
+      "committed": true,
+      "suspended": true
+    },
+    "first_upload_status": 200,
+    "cleanup_result": {
+      "claimed": 1,
+      "removed": 1,
+      "retry": 0
+    }
+  },
+  "trial_limits": {
+    "maximum_files": 1,
+    "maximum_aggregate_bytes": 2097152,
+    "maximum_in_flight": 1,
+    "reservation_ttl_seconds": 40,
+    "scope": "Two reserved Business PDF document namespaces in one isolated staging workspace"
+  },
+  "validator": {
+    "version": 1,
+    "bundle_sha256": "456b085d03a7bc426b195243e1c5d13e1a0db15f6a74963c6383ec146f2c01c1",
+    "files": 11,
+    "exact": 11
+  },
+  "local_regression_checks_passed": 107,
+  "disposable_postgres": {
+    "run_id": 43691204736,
+    "job_id": 132742050005,
+    "checks_passed": 12
+  },
+  "staging_database_gate_dry_run": {
+    "catalog": "701b195780b6b7ac2c4b8b88f214ed049f5d7353688782364304c3488261fc3e",
+    "gate": false,
+    "matching_policies": 2,
+    "service_execute": true,
+    "authenticated_execute": false
+  },
+  "created_sessions": 3,
+  "logged_out_sessions": 3,
+  "independent_cleanup": {
+    "status": "suspended",
+    "business_support_version": 46,
+    "paid_through_at": "2026-11-14 00:00:00+00",
+    "subscription_version": 1,
+    "enabled": false,
+    "lifecycle_gate": false,
+    "attachment_gate": false,
+    "active_documents": 0,
+    "archived_trial_document": 1,
+    "objects": 0,
+    "test_window_sessions": 0,
+    "outbox": 0,
+    "catalog_matches": true,
+    "manifest": {
+      "a1a26ceb-d569-43ae-93f7-496fe0927ebc": {
+        "state": "removed",
+        "cleanup_attempts": 1
+      },
+      "c48c3db5-8eb6-4614-9b2e-784a5502a662": {
+        "state": "registered",
+        "cleanup_attempts": 0
+      }
+    }
+  },
+  "production_changed": false,
+  "real_storage_removal_verified": true,
+  "all_workspace_types_enforced": false,
+  "automatic_cleanup_schedule_verified": false,
+  "download_rate_and_egress_budget_verified": false,
+  "full_FR_3_2_complete": false,
+  "exit_code": 0
+}

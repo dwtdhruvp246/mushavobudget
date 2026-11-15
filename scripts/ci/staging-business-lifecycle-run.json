@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "workspace": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "documents": [
@@ -7,5 +7,6 @@
     "c48c3db5-8eb6-4614-9b2e-784a5502a662"
   ],
   "paid_through": "2026-11-15T09:09:16.597707Z",
-  "status": "HOSTED_BUSINESS_LIFECYCLE_ONCE"
+  "status": "ARCHIVED_BUSINESS_LIFECYCLE_SCOPED_PASS_NO_REPLAY",
+  "completed_run": 43691204793
 }

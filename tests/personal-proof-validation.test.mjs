@@ -65,7 +65,7 @@ test("Personal proof validation fails closed before writing", async () => {
   assert.equal(f.objects.size, 0);
 });
 
-test("the app uses confirmed normalized metadata only for the isolated item", async () => {
+test("the app uses validated metadata for isolated and ordinary staging payment proofs", async () => {
   const source = await readFile(new URL("../app.js", import.meta.url), "utf8");
   const code = source.slice(source.indexOf("async function uploadPaymentProof("), source.indexOf("async function openPaymentProof("));
   const path = PREFIX + "11111111-1111-4111-8111-111111111111.png";
@@ -75,6 +75,15 @@ test("the app uses confirmed normalized metadata only for the isolated item", as
     state: { session: { user: { id: OWNER } }, family: null }, authDataEpoch: 1,
     currentBudgetWorkspace: () => ({ id: WORKSPACE }), validateProofFile: () => "jpg",
     crypto: { randomUUID: () => "123" }, PAYMENT_PROOF_BUCKET: "payment-proofs",
+    usesManagedPrivateUploads: config => config.supabaseUrl === "https://dczlddwbtgvfdujgcitb.supabase.co",
+    uploadManagedPrivateFile: async (_client, _file, scope) => {
+      assert.equal(scope.bucket, "payment-proofs");
+      assert.equal(scope.workspaceId, WORKSPACE);
+      assert.equal(scope.userId, OWNER);
+      assert.equal(scope.isCurrent(), true);
+      calls.push(["ordinary-managed"]);
+      return {managed:true, type:"image/png", size:78};
+    },
     supabase: {
       functions: { invoke: async (name, options) => { calls.push([name, options]); return { data: { path, type: "image/png", size: 78 } }; } },
       storage: { from: bucket => ({ upload: async (name, file) => { calls.push([bucket, name, file]); return {}; } }) },
@@ -89,7 +98,11 @@ test("the app uses confirmed normalized metadata only for the isolated item", as
   assert.equal(accepted.size, 78);
   assert.equal(accepted.validatedTrial, true);
   assert.equal(calls[0][1].headers["Content-Type"], "image/jpeg");
+  const ordinary = await run({ id: "other", visibility: "personal" }, file);
+  assert.equal(ordinary.managed, true);
+  assert.equal(calls[1][0], "ordinary-managed");
+  globals.config.supabaseUrl = "https://other-project.invalid";
   await run({ id: "other", visibility: "personal" }, file);
-  assert.equal(calls[1][0], "payment-proofs");
-  assert.ok(calls[1][1].endsWith(".jpg"));
+  assert.equal(calls[2][0], "payment-proofs");
+  assert.ok(calls[2][1].endsWith(".jpg"));
 });

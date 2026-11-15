@@ -56,7 +56,7 @@ export async function uploadManagedSubscriptionProof(client, file, workspaceId, 
     if (error.context?.status === 429) throw new Error('Too many proof uploads are pending. Try again after earlier uploads finish.');
     throw error;
   }
-  return verifyUploadReceipt(data, file, prefix, MAX_MANAGED_PDF_SIZE);
+  return verifyUploadReceipt(data, file, prefix, MAX_MANAGED_PROOF_SIZE);
 }
 
 export function usesManagedPrivateUploads(config) {
@@ -106,5 +106,5 @@ export async function uploadManagedPrivateFile(client, file, scope) {
     if (status === 429) throw new Error('Too many uploads are pending. Try again after earlier uploads finish.');
     throw error;
   }
-  return verifyUploadReceipt(data,file,prefix,logo ? 2097152 : MAX_MANAGED_PDF_SIZE,logo ? attachment + '.png' : null);
+  return verifyUploadReceipt(data,file,prefix,logo ? 2097152 : MAX_MANAGED_PROOF_SIZE,logo ? attachment + '.png' : null);
 }

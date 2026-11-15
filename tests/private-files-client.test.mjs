@@ -102,3 +102,31 @@ for (const change of ['account','epoch','sequence','workspace','path','locked'])
   if (change === 'locked') h.context.state.locked = true;
   h.finish(); await work; assert.equal(h.calls.created, 0); assert.deepEqual(h.calls.revoked, []);
 });
+
+test('managed browser uploads validate and return canonical receipt metadata', async () => {
+  const scope = {
+    bucket: 'payment-proofs', workspaceId: '1f307423-e846-409c-ac82-3b4307ea9af3',
+    userId: '2f307423-e846-409c-ac82-3b4307ea9af3', isCurrent: () => true,
+  };
+  const id = '3f307423-e846-409c-ac82-3b4307ea9af3';
+  const file = { name: 'receipt.jpg', type: 'image/jpeg' };
+  const path = ['personal',scope.userId,'managed-upload-v1',id,id + '.png'].join('/');
+  const context = {crypto:{randomUUID:()=>id}};
+  vm.runInNewContext(source,context);
+  const client = {functions:{invoke:async (name,request)=>{
+    assert.equal(name,'validate-ordinary-private-upload');
+    assert.equal(request.body,file);
+    return {data:{path,type:'image/png',size:78}};
+  }}};
+  const receipt = await context.uploadManagedPrivateFile(client,file,scope);
+  assert.equal(receipt.path,path);
+  assert.equal(receipt.name,'receipt.png');
+  assert.equal(receipt.size,78);
+  assert.equal(receipt.managed,true);
+  const subscriptionPath = ['workspaces',scope.workspaceId,scope.userId,'managed-proof-v1',id,id+'.png'].join('/');
+  client.functions.invoke=async name=>{
+    assert.equal(name,'validate-managed-subscription-proof');
+    return {data:{path:subscriptionPath,type:'image/png',size:78}};
+  };
+  assert.equal((await context.uploadManagedSubscriptionProof(client,file,scope.workspaceId,scope.userId,scope.isCurrent)).path,subscriptionPath);
+});

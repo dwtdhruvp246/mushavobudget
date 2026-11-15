@@ -5,6 +5,7 @@ import { runInNewContext } from "node:vm";
 import { FIXTURE_ID } from "../supabase/functions/validate-business-logo/handler.mjs";
 
 const business = await readFile(new URL("../business.js", import.meta.url), "utf8");
+const managed = (await readFile(new URL("../private-files.js", import.meta.url), "utf8")).replaceAll("export ", "");
 function extract(start, end) {
   return business.slice(business.indexOf(start), business.indexOf(end, business.indexOf(start)));
 }
@@ -17,7 +18,7 @@ const user = "11111111-1111-4111-8111-111111111111";
 const id = "22222222-2222-4222-8222-222222222222";
 function fixture({ project = staging, workspace = FIXTURE_ID, responsePath, fileType = "image/png", changeWorkspace = false } = {}) {
   const calls = [];
-  const draft = { file: { type: fileType } };
+  const draft = { file: { type: fileType, name: "synthetic-logo", size: 78 } };
   const state = { workspace: { id: workspace }, session: { user: { id: user } } };
   const context = {
     config: { supabaseUrl: project },
@@ -31,39 +32,40 @@ function fixture({ project = staging, workspace = FIXTURE_ID, responsePath, file
       functions: { invoke: async (name, options) => {
         calls.push({ name, options });
         if (changeWorkspace) state.workspace = { id };
-        return { path: responsePath ?? `${workspace}/${user}/${id}.png` };
+        return { data: { path: responsePath ?? `${workspace}/${user}/f3320000${id.slice(8)}.png`, type: "image/png", size: 77 } };
       } },
       storage: { from: bucket => ({ upload: async (path, file, options) => calls.push({ bucket, path, file, options }) }) },
     },
   };
-  runInNewContext(code[0] + "\n}\n" + code[1], context);
+  runInNewContext(managed + "\n" + code[0] + "\n}\n" + code[1], context);
   return { upload: () => context.uploadBrandingDraft("settings"), calls, draft };
 }
 
-test("the isolated staging workspace uses the validator and reuses its confirmed path", async () => {
+test("the staging workspace uses the ordinary validator and reuses its confirmed path", async () => {
   const f = fixture();
   const path = await f.upload();
-  assert.equal(path, `${FIXTURE_ID}/${user}/${id}.png`);
+  assert.equal(path, `${FIXTURE_ID}/${user}/f3320000${id.slice(8)}.png`);
   assert.equal(await f.upload(), path);
   assert.equal(f.calls.length, 1);
-  assert.equal(f.calls[0].name, "validate-business-logo");
+  assert.equal(f.calls[0].name, "validate-ordinary-private-upload");
   assert.equal(f.calls[0].options.headers["Content-Type"], "image/png");
 });
 
-test("regular workspaces and other projects keep the existing upload route", async () => {
-  for (const input of [{ workspace: id }, { project: "https://other-project.invalid" }]) {
-    const f = fixture({ ...input, fileType: "image/webp" });
-    assert.ok((await f.upload()).endsWith(".webp"));
-    assert.equal(f.calls[0].bucket, "business-logos");
-    assert.equal(f.calls[0].options.upsert, false);
-  }
+test("ordinary staging workspaces use validation and other projects retain their route", async () => {
+  const staged = fixture({ workspace: id, fileType: "image/webp" });
+  assert.ok((await staged.upload()).endsWith(".png"));
+  assert.equal(staged.calls[0].name, "validate-ordinary-private-upload");
+  const other = fixture({ project: "https://other-project.invalid", fileType: "image/webp" });
+  assert.ok((await other.upload()).endsWith(".webp"));
+  assert.equal(other.calls[0].bucket, "business-logos");
+  assert.equal(other.calls[0].options.upsert, false);
 });
 
-test("the staging logo trial sends JPEG and WebP with their actual type", async () => {
+test("staging logos send JPEG and WebP with their actual type", async () => {
   for (const fileType of ["image/jpeg", "image/webp"]) {
     const f = fixture({ fileType });
     assert.ok((await f.upload()).endsWith(".png"));
-    assert.equal(f.calls[0].name, "validate-business-logo");
+    assert.equal(f.calls[0].name, "validate-ordinary-private-upload");
     assert.equal(f.calls[0].options.headers["Content-Type"], fileType);
   }
 });

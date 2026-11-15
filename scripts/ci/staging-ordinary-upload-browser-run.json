@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "pass": "direct-browser-cors-observation",
   "project": "dczlddwbtgvfdujgcitb",
-  "origin": "https://2f308ee0.mushavo-budget-staging.pages.dev"
+  "origin": "https://0618c5cb.mushavo-budget-staging.pages.dev",
+  "pass": "fixed-receipt-helper"
 }

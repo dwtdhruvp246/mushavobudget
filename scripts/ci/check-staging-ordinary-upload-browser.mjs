@@ -1,4 +1,5 @@
 import {readFile} from "node:fs/promises";
+import {randomUUID} from "node:crypto";
 import {API_ORIGIN,Stop,apiTransport,checkStagingAccess,digest,need,privateAccounts,readPublicConfiguration} from "./staging-access.mjs";
 import {encodeLogoRgbaPng} from "../../supabase/functions/validate-business-logo/png.mjs";
 
@@ -16,7 +17,7 @@ const filePath=x=>typeof x==="string"&&x.startsWith("personal/"+OWNER+"/managed-
 const get=async (origin,path)=>fetch(origin+path,{redirect:"error",signal:AbortSignal.timeout(15000),
   headers:{"user-agent":"Mozilla/5.0 "+AGENT}});
 
-async function exercise({actors,evidence},key,origin,chromium){
+async function exercise({actors,evidence},key,origin,chromium,verifyPolicy){
   const {USER_A:owner,USER_B:other}=actors;
   need(owner.id===OWNER&&other.id!==OWNER,"EXACT_ORDINARY_BROWSER_ACTORS");
   evidence.served_source={};
@@ -113,6 +114,20 @@ async function exercise({actors,evidence},key,origin,chromium){
       need(stats.disposable_payment_deleted,"BROWSER_DISPOSABLE_PAYMENT_CLEANUP");
     }
   }
+  if(verifyPolicy){
+    const path="personal/"+OWNER+"/"+randomUUID()+".png";
+    const headers={apikey:key,authorization:"Bearer "+owner.token,origin};
+    const r=await fetch(API_ORIGIN+"/storage/v1/object/payment-proofs/"+path,{method:"POST",redirect:"error",
+      signal:AbortSignal.timeout(15000),headers:{...headers,"content-type":"image/png","x-upsert":"false"},body:image});
+    const reply=await r.json().catch(()=>null);
+    if(r.ok){
+      const reset=await fetch(API_ORIGIN+"/storage/v1/object/payment-proofs",{method:"DELETE",redirect:"error",
+        signal:AbortSignal.timeout(15000),headers:{...headers,"content-type":"application/json"},body:JSON.stringify({prefixes:[path]})});
+      stats.direct_attempt_removed=reset.ok;
+    }
+    stats.direct_policy_denial=r.status===403||(r.status===400&&Number(reply?.statusCode)===403);
+    need(stats.direct_policy_denial,"BROWSER_DIRECT_BUCKET_UPLOAD_POLICY_REQUIRED");
+  }
 }
 
 async function main(){
@@ -127,7 +142,7 @@ async function main(){
   const {chromium}=await import("../fixtures/staging-browser-tools/node_modules/playwright/index.mjs");
   const options={accountScope:"ordinary"};
   const report=await checkStagingAccess(privateAccounts(process.env,options),apiTransport(key,AGENT),
-    x=>exercise(x,key,p.origin,chromium),options);
+    x=>exercise(x,key,p.origin,chromium,p.server_only===true),options);
   return {...report,progress_display:"Stage 4/10 | FR.3/8 | FR.3.2 ordinary browser uptake",commit:process.env.GITHUB_SHA};
 }
 const output=await main().catch(error=>({result:"STAGING_ORDINARY_BROWSER_REVIEW_REQUIRED",

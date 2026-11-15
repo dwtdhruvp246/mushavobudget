@@ -1,6 +1,7 @@
 {
   "enabled": true,
   "project": "dczlddwbtgvfdujgcitb",
-  "origin": "https://0618c5cb.mushavo-budget-staging.pages.dev",
-  "pass": "fixed-receipt-helper"
+  "origin": "https://mushavo-budget-staging.pages.dev",
+  "server_only": true,
+  "pass": "canonical-staging-after-cutover"
 }

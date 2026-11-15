@@ -19,13 +19,17 @@ Deno.serve(createPrivateFileHandler({
     ...options, global: { headers: { Authorization: `Bearer ${token}` } },
   }),
   authorizeDownload: async ({userId, bucket, path, size}) => {
-    if (bucket !== "business-documents"
-        || !budgetedFilePrefixes.some(prefix => path.startsWith(prefix))) return true;
-    const r = await createClient(projectUrl, serviceKey, options).rpc("fr3_reserve_trial_download", {
-      p_user: userId, p_path: path, p_size: size,
+    const client = createClient(projectUrl, serviceKey, options);
+    if (bucket === "business-documents" && budgetedFilePrefixes.some(prefix => path.startsWith(prefix))) {
+      const trial = await client.rpc("fr3_reserve_trial_download", {p_user:userId, p_path:path, p_size:size});
+      if (trial.error || typeof trial.data !== "boolean") throw new Error("Download quota unavailable");
+      if (!trial.data) return false;
+    }
+    const reply = await client.rpc("reserve_private_file_download", {
+      p_user:userId, p_bucket:bucket, p_path:path, p_size:size,
     });
-    if (r.error || typeof r.data !== "boolean") throw new Error("Download quota unavailable");
-    return r.data;
+    if (reply.error || typeof reply.data !== "boolean") throw new Error("Download quota unavailable");
+    return reply.data;
   },
   readPrivateObject: (bucket: string, path: string, maxBytes: number) => readSignedPrivateObject({
     bucket, path, maxBytes,

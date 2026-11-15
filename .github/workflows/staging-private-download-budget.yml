@@ -1,0 +1,34 @@
+name: Staging shared private download budget
+on:
+  push:
+    branches: ["security/stage-3-authorization"]
+    paths: ["scripts/ci/staging-private-download-budget-run.json"]
+permissions:
+  contents: read
+concurrency:
+  group: mushavo-staging-acceptance
+  cancel-in-progress: false
+jobs:
+  quota:
+    if: github.repository == 'dwtdhruvp246/mushavobudget' && github.ref == 'refs/heads/security/stage-3-authorization' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '22'
+      - name: Check download quota and broker invariants
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/email-session-review-tools
+          node scripts/check-fr-3-private-download-budget.mjs
+          node --test tests/private-file-broker.test.mjs
+      - name: Verify authorized staging downloads
+        env:
+          MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}
+          MUSHAVO_STAGING_USER_A_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_A_PASSWORD }}
+          MUSHAVO_STAGING_USER_B_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_B_EMAIL }}
+          MUSHAVO_STAGING_USER_B_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_B_PASSWORD }}
+        run: node scripts/ci/check-staging-private-download-budget.mjs

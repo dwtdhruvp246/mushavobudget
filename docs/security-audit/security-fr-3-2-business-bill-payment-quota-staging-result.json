@@ -1,0 +1,87 @@
+{
+  "date": "2026-11-15",
+  "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Business bill-payment and download quota",
+  "result": "STAGING_BUSINESS_BILL_PAYMENT_AND_DOWNLOAD_QUOTA_SCOPED_PASS",
+  "source_commit": "658849300f34169800e637aa2d5ec7305d23e826",
+  "run_id": 43693571898,
+  "job_id": 132749199292,
+  "hosted_checks_passed": 9,
+  "local_broker_and_scheduler_tests_passed": 39,
+  "local_download_limit_sql_checks_passed": 11,
+  "hosted": {
+    "checks": {
+      "bill-payment_BROWSER_SELECTED_EXACT_BILL_PAYMENT": true,
+      "bill-payment_VALIDATED_METADATA_REGISTERED": true,
+      "bill-payment_PRIVATE_FILE_HTTP_OK": true,
+      "bill-payment_PRIVATE_FILE_MEDIA_TYPE": true,
+      "bill-payment_PRIVATE_FILE_CACHE_CONTROL": true,
+      "bill-payment_PRIVATE_FILE_PREVIEW_OPENED": true,
+      "bill-payment_PREVIEW_MATCHES_EXACT_BYTES": true,
+      "paid_proof_archive_refused": true,
+      "owner_download_budget_enforced": true
+    },
+    "requests": 15,
+    "cleanup": {
+      "retained_referenced_proof": true,
+      "suspended": true
+    },
+    "browser": {
+      "validator": 1,
+      "register": 1,
+      "broker": 1,
+      "reads": 71,
+      "blocked": []
+    },
+    "browser_step": "bill-payment:READ_PREVIEW_BYTES",
+    "browser_navigation_status": 200,
+    "browser_downloads": {
+      "bill-payment": {
+        "status": 200,
+        "media_type": "application/pdf",
+        "cache_control": [
+          "private",
+          "no-store",
+          "max-age=0",
+          "must-revalidate"
+        ],
+        "preview_type": "application/pdf",
+        "preview_size": 791,
+        "expected_size": 791
+      }
+    }
+  },
+  "cleanup": {
+    "status": "suspended",
+    "business_support_version": 50,
+    "onboarding_status": "in_progress",
+    "paid_through_at": "2026-11-14 00:00:00+00",
+    "payment_gate": false,
+    "lifecycle_gate": false,
+    "total_objects": 1,
+    "exact_referenced_proofs": 1,
+    "trial_sessions": 0,
+    "outbox": 0,
+    "quota_usage": {
+      "requests": 2,
+      "byte_count": 1582
+    },
+    "sessions_logged_out": 3
+  },
+  "scope": "One staged paid bill receipt and its authenticated owner",
+  "first_scheduler_attempt": {
+    "run_id": 43692947038,
+    "job_id": 132747209312,
+    "problem_code": "SCHEDULED_WORKER_REMOVED_EXPIRED_OBJECT",
+    "restored": {
+      "status": "suspended",
+      "business_support_version": 48,
+      "enabled": false,
+      "paid_through_at": "2026-11-14 00:00:00+00",
+      "closed": false
+    },
+    "supabase_protected_extensions_dry_run_rolled_back": true
+  },
+  "automatic_cleanup_passed": false,
+  "full_FR_3_2_complete": false,
+  "exit_code": 0
+}

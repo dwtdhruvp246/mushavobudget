@@ -1235,6 +1235,7 @@ function openClaimDetail(id) {
 }
 
 const validatedBusinessAttachments = new Map([
+  ['89fd5fb1-d177-4c3a-ad7a-3ba4ec34a120', { lane: 'bill-payment', document: 'ef6fb184-5e10-44b8-9d8a-a4ed532733c7', parentType: 'business_bill_payment', endpoint: 'validate-business-bill-payment-proof' }],
   ['454e6059-4b4c-4998-aa9d-ea932b15ca50', { lane: 'expense-claim', document: '7b7e5da1-ff93-44a0-91e0-2dd6a400cac3', parentType: 'expense_claim' }],
   ['ac975ebd-b138-40c4-a082-c6e62670a98a', { lane: 'bill-invoice', document: 'c877b770-3bb6-4e0c-aae3-a6a10f3234f6', parentType: 'business_bill' }],
 ]);
@@ -1245,7 +1246,7 @@ function businessAttachmentTrial(workspace, parentId, parentType) {
 }
 
 async function validateBusinessAttachment(file, fixture, isCurrent) {
-  const { data: result } = await supabase.functions.invoke('validate-business-attachment', {
+  const { data: result } = await supabase.functions.invoke(fixture.endpoint || 'validate-business-attachment', {
     body: file,
     headers: { 'Content-Type': file.type, 'X-Mushavo-Attachment': fixture.lane },
   });

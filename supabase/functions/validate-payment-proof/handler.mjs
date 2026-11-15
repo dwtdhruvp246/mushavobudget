@@ -67,11 +67,15 @@ function bindPersonalProof(client, userId, _type = "", _request = /** @type {Req
 /** @type {((bytes: Uint8Array) => Promise<Uint8Array>) | null} */
 const noPdf = null;
 
+/** @type {{reserve: (file: {path:string, type:string, size:number}) => Promise<boolean>,
+ *  verify: (file: {path:string, type:string, size:number}) => Promise<boolean>} | null} */
+const noLifecycle = null;
+
 /** @type {ReadonlyMap<string, {suffix: string, normalize: (bytes: Uint8Array) => Uint8Array | Promise<Uint8Array>}>} */
 const defaultFormats = new Map();
 
 export function createProofHandler({ configured, allowedOrigin, createUserClient, gateReady, store, read,
-  decodeJpeg, decodeWebp, normalizePdf = noPdf, bind = bindPersonalProof, extraFormats = defaultFormats, standardFormats = true, attachmentHeader = false, denied = "PROOF_FIXTURE_OWNER_REQUIRED" }) {
+  decodeJpeg, decodeWebp, normalizePdf = noPdf, bind = bindPersonalProof, extraFormats = defaultFormats, standardFormats = true, attachmentHeader = false, lifecycle = noLifecycle, denied = "PROOF_FIXTURE_OWNER_REQUIRED" }) {
   return async request => {
     const origin = request.headers.get("origin");
     const allowed = !origin || allowedOrigin(origin);
@@ -115,13 +119,16 @@ export function createProofHandler({ configured, allowedOrigin, createUserClient
       const path = prefix + object + (format?.suffix ?? (isPdf ? ".pdf" : ".png"));
       if (!await canWrite()) return fail(403, denied);
       if (!await gateReady(type)) return fail(503, "PROOF_TRIAL_UNAVAILABLE");
+      const file = { path, type: outputType, size: canonical.length };
+      if (lifecycle && !await lifecycle.reserve(file)) return fail(429, "PROOF_UPLOAD_CAPACITY_REACHED");
       try { await store(path, canonical, outputType); } catch { /* Read back an immutable retry or lost acknowledgement. */ }
       const stored = await read(path, canonical.length);
       if (!(stored instanceof Blob) || stored.size !== canonical.length || await fingerprint(await stored.arrayBuffer()) !== hash) {
         return fail(503, "PROOF_WRITE_UNCONFIRMED");
       }
       if (!await canWrite()) return fail(403, denied);
-      return Response.json({ path, type: outputType, size: canonical.length }, { headers });
+      if (lifecycle && !await lifecycle.verify(file)) return fail(503, "PROOF_WRITE_UNCONFIRMED");
+      return Response.json(file, { headers });
     } catch (error) {
       if (error instanceof LogoInputError) {
         if (error.status === 413) return fail(413, error.message === "LOGO_DIMENSIONS_TOO_LARGE" ? "PROOF_DIMENSIONS_TOO_LARGE"

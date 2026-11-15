@@ -162,6 +162,18 @@ try {
     assert.equal(await scalar(`select cleanup_attempts as value from ${scope}.business_uploads where object_name=$1`,[unregistered.path]),2);
   });
 
+  await pass("a late Storage write is rediscovered after cleanup has finished", async () => {
+    assert.equal(await state(forgotten),"removed");
+    await pretendStore(forgotten);
+    const work = await claim(w[2]);
+    assert.equal(work.length,1);
+    assert.equal(work[0].object_name,forgotten.path);
+    assert.equal(await finish(work[0].object_name,work[0].cleanup_token),false);
+    await db.query("delete from storage.objects where bucket_id='business-documents' and name=$1",[forgotten.path]);
+    assert.equal(await finish(work[0].object_name,work[0].cleanup_token),true);
+    assert.deepEqual(await claim(w[2]),[]);
+  });
+
   await pass("an older document reference prevents orphan cleanup", async () => {
     const legacy = make(81,unknown);
     await register(legacy);

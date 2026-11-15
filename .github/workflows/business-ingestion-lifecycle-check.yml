@@ -8,6 +8,8 @@ on:
       - "scripts/fixtures/ingestion-lifecycle-tools/**"
       - "supabase/diagnostics/security_fr_3_2_business_ingestion_lifecycle_candidate.sql"
       - "supabase/functions/_shared/business-upload-cleanup.mjs"
+      - "supabase/functions/validate-payment-proof/handler.mjs"
+      - "tests/business-ingestion-lifecycle-handler.test.mjs"
 permissions:
   contents: read
 jobs:
@@ -35,6 +37,8 @@ jobs:
         with:
           node-version: "22"
       - run: npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/ingestion-lifecycle-tools
+      - name: Check upload lifecycle routing
+        run: node --test tests/business-ingestion-lifecycle-handler.test.mjs
       - name: Exercise real PostgreSQL transactions
         env:
           PGUSER: postgres

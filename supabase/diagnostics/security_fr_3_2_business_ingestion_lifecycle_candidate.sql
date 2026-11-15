@@ -37,7 +37,7 @@ create index business_uploads_workspace_live
   where state <> 'removed';
 create index business_uploads_cleanup
   on mushavo_file_ingest.business_uploads(expires_at, object_name)
-  where state in ('reserved', 'verified', 'removing');
+  where state in ('reserved', 'verified', 'removing', 'removed');
 
 alter table mushavo_file_ingest.workspace_limits enable row level security;
 alter table mushavo_file_ingest.business_uploads enable row level security;
@@ -162,7 +162,9 @@ as $$
       from mushavo_file_ingest.business_uploads u
       where u.workspace_id=p_workspace
         and ((u.state in ('reserved','verified') and u.expires_at<=clock_timestamp())
-          or (u.state='removing' and u.cleanup_lease_until<=clock_timestamp()))
+          or (u.state='removing' and u.cleanup_lease_until<=clock_timestamp())
+          or (u.state='removed' and exists (select 1 from storage.objects o
+            where o.bucket_id='business-documents' and o.name=u.object_name)))
         and not exists (select 1 from public.business_documents d where d.storage_path=u.object_name)
       order by u.expires_at,u.object_name
       limit greatest(0,least(coalesce(p_limit,0),20)) for update of u skip locked

@@ -22,7 +22,7 @@ export async function reconcileBusinessUploads(workspaceId, { claim, remove, fin
   for (const { object_name, cleanup_token } of batch) {
     try {
       const { data, error } = await remove("business-documents", object_name);
-      if (!error && Array.isArray(data) && data.every(object => object?.name === object_name)
+      if (!error && Array.isArray(data) && data.length <= 1 && data.every(object => object?.name === object_name)
           && await finish(object_name, cleanup_token) === true) {
         counts.removed++;
       } else counts.retry++;

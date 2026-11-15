@@ -1,0 +1,96 @@
+import { createClient } from "npm:@supabase/supabase-js@2.110.9";
+import jpeg from "npm:jpeg-js@0.4.4";
+import { decode as decodeWebp } from "npm:@stacksjs/ts-webp@0.1.7";
+import * as pdf from "npm:pdf-lib@1.17.1";
+import { normalizeStaticPdf } from "../validate-payment-proof/pdf.mjs";
+import { createProofHandler } from "../validate-payment-proof/handler.mjs";
+import { BUCKET, DOCUMENTS, OWNER, WORKSPACE, bindLifecycleTrial, prefix } from "./scope.mjs";
+import { bindBusinessDocument } from "../validate-business-document/scope.mjs";
+import { readSignedPrivateObject } from "../get-private-file/signed-private-file.mjs";
+import { reconcileBusinessUploads } from "../_shared/business-upload-cleanup.mjs";
+
+const url = Deno.env.get("SUPABASE_URL") || "";
+const anon = Deno.env.get("SUPABASE_ANON_KEY") || "";
+const secret = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+const options = { auth: { persistSession: false, autoRefreshToken: false } };
+const configured = () => url === "https://dczlddwbtgvfdujgcitb.supabase.co" && Boolean(anon && secret);
+const allowedOrigin = (origin: string) => /^https:\/\/(?:[a-z0-9-]+\.)?mushavo-budget-staging\.pages\.dev$/.test(origin);
+const privileged = () => createClient(url, secret, options);
+const bucket = () => privileged().storage.from(BUCKET);
+const createUserClient = (token: string) => createClient(url, anon, {
+  ...options, global: { headers: { Authorization: `Bearer ${token}` } },
+});
+const gateReady = async () => {
+  const r = await privileged().rpc("fr3_lifecycle_trial_ready");
+  return !r.error && r.data === true;
+};
+const contextualDocument = (path: string) => Object.values(DOCUMENTS).find(id => path.startsWith(prefix(id)));
+const upload = createProofHandler({
+  configured, allowedOrigin, createUserClient, gateReady,
+  bind: bindLifecycleTrial, attachmentHeader: true,
+  denied: "BUSINESS_LIFECYCLE_FIXTURE_OWNER_REQUIRED",
+  decodeJpeg: jpeg.decode, decodeWebp,
+  normalizePdf: (bytes: Uint8Array) => normalizeStaticPdf(bytes, pdf, jpeg.decode),
+  lifecycle: {
+    reserve: async ({path,type,size}) => {
+      const document = contextualDocument(path);
+      if (!document || type !== "application/pdf") return false;
+      const r = await privileged().rpc("fr3_reserve_lifecycle_trial", {
+        p_document:document,p_object:path,p_size:size,
+      });
+      if (r.error) throw new Error("Reservation status unavailable");
+      return r.data === true;
+    },
+    verify: async ({path}) => {
+      const r = await privileged().rpc("fr3_verify_lifecycle_trial", {p_object:path});
+      return !r.error && r.data === true;
+    },
+  },
+  store: async (path: string, bytes: Uint8Array, contentType: string) => {
+    const r = await bucket().upload(path, bytes, { contentType, cacheControl: "0", upsert: false });
+    if (r.error) throw new Error("Storage write unconfirmed");
+  },
+  read: async (path: string, maxBytes: number) => (await readSignedPrivateObject({
+    bucket: BUCKET, path, maxBytes,
+    mint: (_bucket: string, name: string, seconds: number) => bucket().createSignedUrl(name, seconds),
+  })).data,
+});
+
+Deno.serve(async request => {
+  if (request.headers.get("x-mushavo-attachment") !== "reconcile" || request.method !== "POST") {
+    if (request.method === "POST" && request.headers.get("content-type")?.toLowerCase() !== "application/pdf") {
+      return Response.json({error:"UNSUPPORTED_PROOF_TYPE"},{status:415});
+    }
+    return upload(request);
+  }
+  const origin = request.headers.get("origin") || "";
+  const headers = { "Cache-Control":"private, no-store", "X-Content-Type-Options":"nosniff",
+    ...(allowedOrigin(origin) ? {"Access-Control-Allow-Origin":origin,Vary:"Origin"} : {}) };
+  const failure = (status: number) => Response.json({error:"BUSINESS_LIFECYCLE_RECONCILIATION_UNAVAILABLE"},{status,headers});
+  if (!configured() || !allowedOrigin(origin)) return failure(403);
+  const token = /^Bearer ([A-Za-z0-9._-]{20,8192})$/i.exec(request.headers.get("authorization") || "")?.[1];
+  if (!token) return failure(401);
+  const client = createUserClient(token);
+  try {
+    const identity = await client.auth.getUser();
+    if (identity.error || identity.data.user?.id !== OWNER) return failure(403);
+    const scope = bindBusinessDocument(client, OWNER);
+    if (!scope || !await scope.canWrite() || !await gateReady()) return failure(403);
+    const result = await reconcileBusinessUploads(WORKSPACE, {
+      claim: async (_workspace: string, limit: number) => {
+        const r = await privileged().rpc("fr3_claim_lifecycle_trial", {p_limit:limit});
+        if (r.error) throw new Error("Cleanup claim unconfirmed");
+        return r.data;
+      },
+      remove: async (_bucket: string, path: string) => {
+        if (!contextualDocument(path) || !await gateReady()) throw new Error("Cleanup scope closed");
+        return await bucket().remove([path]);
+      },
+      finish: async (path: string, cleanupToken: string) => {
+        const r = await privileged().rpc("fr3_finish_lifecycle_trial", {p_object:path,p_token:cleanupToken});
+        return !r.error && r.data === true;
+      },
+    });
+    return Response.json(result,{headers});
+  } catch { return failure(503); }
+});

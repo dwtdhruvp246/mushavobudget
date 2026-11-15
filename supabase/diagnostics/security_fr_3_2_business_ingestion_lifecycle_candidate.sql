@@ -11,6 +11,8 @@ create table mushavo_file_ingest.workspace_limits (
   max_files integer not null check (max_files between 1 and 10000),
   max_bytes bigint not null check (max_bytes > 0),
   max_in_flight integer not null check (max_in_flight between 1 and max_files),
+  enabled boolean not null default true,
+  reservation_ttl_seconds integer not null default 1800 check (reservation_ttl_seconds between 30 and 1800),
   reservation_revision bigint not null default 0
 );
 
@@ -73,7 +75,7 @@ begin
   then return false; end if;
 
   select * into limits from mushavo_file_ingest.workspace_limits
-    where workspace_id = p_workspace for update;
+    where workspace_id = p_workspace and enabled for update;
   if not found then return false; end if;
 
   select * into existing from mushavo_file_ingest.business_uploads
@@ -92,7 +94,7 @@ begin
 
   insert into mushavo_file_ingest.business_uploads
     (workspace_id,uploader_id,document_id,object_name,mime_type,num_bytes,expires_at)
-    values (p_workspace,p_uploader,p_document,p_object,p_mime,p_bytes,clock_timestamp()+interval '30 minutes')
+    values (p_workspace,p_uploader,p_document,p_object,p_mime,p_bytes,clock_timestamp()+make_interval(secs => limits.reservation_ttl_seconds))
     on conflict do nothing;
   if not found then return false; end if;
 
@@ -141,7 +143,7 @@ create function mushavo_file_ingest.bind_business_document()
 returns trigger language plpgsql security definer set search_path = pg_catalog
 as $$
 begin
-  if exists (select 1 from mushavo_file_ingest.workspace_limits where workspace_id=new.workspace_id)
+  if exists (select 1 from mushavo_file_ingest.workspace_limits where workspace_id=new.workspace_id and enabled)
     and not mushavo_file_ingest.link_business_upload(new.workspace_id, new.uploaded_by, new.id,
       new.storage_path, new.mime_type, new.size_bytes::integer)
   then raise exception 'VERIFIED_BUSINESS_UPLOAD_REQUIRED'; end if;

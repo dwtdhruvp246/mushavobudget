@@ -33,3 +33,7 @@ verify_jwt = false
 [functions.validate-business-attachment]
 # The staging handler verifies the application session and a fixed attachment parent.
 verify_jwt = false
+
+[functions.validate-business-lifecycle]
+# The staging-only handler verifies the session and fixed test workspace itself.
+verify_jwt = false

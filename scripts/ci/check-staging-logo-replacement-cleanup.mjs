@@ -13,9 +13,9 @@ const BUCKET = "business-logos";
 const REASON = "Synthetic FR.3.2 logo replacement cleanup";
 const one = response => response.status === 200 && response.data?.length === 1 ? response.data[0] : null;
 
-function sample(red, green, blue) {
+async function sample(red, green, blue) {
   const bytes = encodeLogoRgbaPng(2, 2, new Uint8Array(Array.from({length: 4}, () => [red,green,blue,255]).flat()));
-  const canonical = normalizeLogoPng(bytes);
+  const canonical = await normalizeLogoPng(bytes);
   const sha = digest(canonical);
   const name = sha.slice(0,32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
   return {bytes, sha, path: WORKSPACE + "/" + OWNER + "/" + name + ".png"};
@@ -24,8 +24,7 @@ function sample(red, green, blue) {
 async function exercise({actors,evidence}, key) {
   const {USER_A:owner,USER_B:other,ADMIN:admin} = actors;
   need(owner.id === OWNER && other.id !== OWNER && admin.id !== OWNER, "EXACT_LOGO_ACCOUNTS_REQUIRED");
-  const old = sample(178,60,196);
-  const current = sample(25,90,206);
+  const [old, current] = await Promise.all([sample(178,60,196),sample(25,90,206)]);
   evidence.checks = {};
   evidence.requests = 0;
   const check = (name, value) => {

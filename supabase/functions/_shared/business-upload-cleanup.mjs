@@ -1,6 +1,7 @@
 const MAX_CLEANUP_BATCH = 20;
-const MAX_LOGO_BATCH = 5;
+const MAX_SMALL_BATCH = 5;
 const UUID = "[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}";
+const SUBSCRIPTION_PATH = new RegExp(`^workspaces/${UUID}/${UUID}/managed-proof-v1/${UUID}/${UUID}[.](?:pdf|png)$`);
 const TOKEN = new RegExp(`^${UUID}$`);
 const LOGO_PATH = new RegExp(`^${UUID}/${UUID}/${UUID}[.](?:png|jpg|webp)$`);
 const PATH = new RegExp(`^workspaces/(${UUID})/${UUID}/${UUID}/${UUID}[.](?:pdf|png|csv|xlsx)$`);
@@ -14,7 +15,12 @@ export async function reconcileBusinessUploads(workspaceId, { claim, remove, fin
 }
 
 export async function reconcileReplacedLogos({claim, remove, finish}) {
-  return reconcile("business-logos", await claim(MAX_LOGO_BATCH), path => LOGO_PATH.test(path), MAX_LOGO_BATCH, remove, finish);
+  return reconcile("business-logos", await claim(MAX_SMALL_BATCH), path => LOGO_PATH.test(path), MAX_SMALL_BATCH, remove, finish);
+}
+
+export async function reconcileUnlinkedSubscriptions({claim, remove, finish}) {
+  return reconcile("subscription-proofs", await claim(MAX_SMALL_BATCH), path => SUBSCRIPTION_PATH.test(path),
+    MAX_SMALL_BATCH, remove, finish);
 }
 
 async function reconcile(bucket, batch, validPath, limit, remove, finish) {

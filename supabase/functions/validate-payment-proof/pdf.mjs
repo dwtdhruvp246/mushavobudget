@@ -1,5 +1,6 @@
 import { inflateSync } from "node:zlib";
 import { LogoInputError } from "../validate-business-logo/png.mjs";
+import { ORDINARY_PROOF_MAX_BYTES } from "./handler.mjs";
 
 export const PDF_MAX_BYTES = 2 * 1024 * 1024;
 const MAX_OBJECTS = 512;
@@ -74,6 +75,17 @@ function parseAt(bytes, pdf, context, budget, dict = false) {
     }
     if (--budget.names < 0) throw bounded();
     return parseName();
+  };
+  // Decode hex strings in one bounded pass. pdf-lib appends one character at a
+  // time, which uses substantially more heap for multi-megabyte metadata.
+  parser.parseHexString = () => {
+    const start = parser.bytes.offset() + 1;
+    const end = bytes.indexOf(62, start);
+    requireValid(end >= start);
+    const value = decoder.decode(bytes.subarray(start, end));
+    requireValid(/^[0-9A-Fa-f\t\n\f\r \0]*$/.test(value));
+    parser.bytes.moveTo(end + 1);
+    return pdf.PDFHexString.of(value);
   };
   const parse = parser.parseObject.bind(parser);
   parser.parseObject = () => {
@@ -177,8 +189,11 @@ function verifyObjects(pdf, context, trailer, decodeJpeg) {
   context.trailerInfo = { Root: rootRef };
 }
 
-export async function normalizeStaticPdf(bytes, pdf, decodeJpeg) {
-  if (bytes.length > PDF_MAX_BYTES) throw bounded();
+export async function normalizeStaticPdf(bytes, pdf, decodeJpeg, { maxBytes = PDF_MAX_BYTES } = {}) {
+  if (!Number.isSafeInteger(maxBytes) || maxBytes < 1 || maxBytes > ORDINARY_PROOF_MAX_BYTES) {
+    throw new RangeError("Invalid PDF normalization byte limit");
+  }
+  if (bytes.length > maxBytes) throw bounded();
   try {
     const text = decoder.decode(bytes);
     requireValid(/^%PDF-1\.[0-7](?:\r\n|\n|\r)/.test(text));
@@ -215,7 +230,7 @@ export async function normalizeStaticPdf(bytes, pdf, decodeJpeg) {
     }
     verifyObjects(pdf, context, parsedTrailer.value, decodeJpeg);
     const output = await pdf.PDFWriter.forContext(context, Infinity).serializeToBuffer();
-    if (output.length > PDF_MAX_BYTES) throw bounded();
+    if (output.length > maxBytes) throw bounded();
     return output;
   } catch (error) {
     if (error instanceof LogoInputError) throw error;

@@ -7,14 +7,17 @@ export const WORKSPACE = "017513c6-ce57-48af-b902-9552faeb83dd";
 export const OWNER = "ca7bdcf2-e69d-42e2-8ae8-79cac6de2184";
 export const BUCKET = "payment-proofs";
 export const PREFIX = `personal/${OWNER}/fr3-proof/${PAYMENT_ITEM}/`;
-const DRAIN_LIMIT = MAX_LOGO_BYTES + 64 * 1024;
+const DRAIN_MARGIN = 64 * 1024;
+export const ORDINARY_PROOF_MAX_BYTES = 10 * 1024 * 1024;
 
-async function readBoundedProof(request) {
-  if (Number(request.headers.get("content-length")) > DRAIN_LIMIT) throw new LogoInputError(413, "PROOF_TOO_LARGE");
+async function readBoundedProof(request, limit) {
+  const drainLimit = limit + DRAIN_MARGIN;
+  const declaredBytes = Number(request.headers.get("content-length"));
+  if (declaredBytes > drainLimit) throw new LogoInputError(413, "PROOF_TOO_LARGE");
   const reader = request.body?.getReader();
   if (!reader) throw new LogoInputError(422, "INVALID_PROOF_IMAGE");
   let length = 0, timedOut = false;
-  const bytes = new Uint8Array(MAX_LOGO_BYTES);
+  const bytes = new Uint8Array(limit);
   const timer = setTimeout(() => {
     timedOut = true;
     void reader.cancel().catch(() => {});
@@ -24,15 +27,15 @@ async function readBoundedProof(request) {
       const { done, value } = await reader.read();
       if (done) break;
       const next = length + value.byteLength;
-      if (next > DRAIN_LIMIT) {
+      if (next > drainLimit) {
         void reader.cancel().catch(() => {});
         throw new LogoInputError(413, "PROOF_TOO_LARGE");
       }
-      if (next <= MAX_LOGO_BYTES) bytes.set(value, length);
+      if (next <= limit) bytes.set(value, length);
       length = next;
     }
     if (timedOut) throw new LogoInputError(408, "PROOF_UPLOAD_TIMEOUT");
-    if (length > MAX_LOGO_BYTES) throw new LogoInputError(413, "PROOF_TOO_LARGE");
+    if (length > limit) throw new LogoInputError(413, "PROOF_TOO_LARGE");
     return bytes.subarray(0, length);
   } finally {
     clearTimeout(timer);
@@ -75,7 +78,10 @@ const noLifecycle = null;
 const defaultFormats = new Map();
 
 export function createProofHandler({ configured, allowedOrigin, createUserClient, gateReady, store, read,
-  decodeJpeg, decodeWebp, normalizePdf = noPdf, bind = bindPersonalProof, extraFormats = defaultFormats, standardFormats = true, attachmentHeader = false, lifecycle = noLifecycle, denied = "PROOF_FIXTURE_OWNER_REQUIRED" }) {
+  decodeJpeg, decodeWebp, normalizePdf = noPdf, bind = bindPersonalProof, extraFormats = defaultFormats, standardFormats = true, attachmentHeader = false, pdfInputLimit = MAX_LOGO_BYTES, lifecycle = noLifecycle, denied = "PROOF_FIXTURE_OWNER_REQUIRED" }) {
+  if (!Number.isSafeInteger(pdfInputLimit) || pdfInputLimit < 1 || pdfInputLimit > ORDINARY_PROOF_MAX_BYTES) {
+    throw new RangeError("Invalid PDF upload byte limit");
+  }
   return async request => {
     const origin = request.headers.get("origin");
     const allowed = !origin || allowedOrigin(origin);
@@ -111,8 +117,10 @@ export function createProofHandler({ configured, allowedOrigin, createUserClient
       const { prefix, canWrite } = binding;
       if (!await canWrite()) return fail(403, denied);
       if (!await gateReady(type)) return fail(503, "PROOF_TRIAL_UNAVAILABLE");
-      const canonical = await normalize(await readBoundedProof(request));
       const isPdf = type === "application/pdf";
+      const limit = isPdf ? pdfInputLimit : MAX_LOGO_BYTES;
+      const canonical = await normalize(await readBoundedProof(request, limit));
+      if (canonical.length > limit) return fail(413, "PROOF_TOO_LARGE");
       const outputType = format ? type : isPdf ? "application/pdf" : "image/png";
       const hash = await fingerprint(canonical);
       const object = hash.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");

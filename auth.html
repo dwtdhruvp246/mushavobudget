@@ -9,7 +9,7 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="stylesheet" href="styles.css?v=81" />
     <script src="config.js?v=27"></script>
-    <script type="module" src="auth-flows.js?v=9"></script>
+    <script type="module" src="auth-flows.js?v=10"></script>
   </head>
   <body>
     <main class="workspace">
@@ -23,6 +23,13 @@
           <h2>Your account</h2>
           <p>You sign in with your email and password.</p>
           <a class="button-link" href="auth.html?flow=change">Change password</a>
+          <section aria-labelledby="securityDeletionTitle">
+            <h3 id="securityDeletionTitle">Account deletion</h3>
+            <p id="securityDeletionStatus" role="status" aria-live="polite">Checking request status…</p>
+            <button id="securityDeletionRequest" type="button" hidden>Request account deletion</button>
+            <button id="securityDeletionCancel" type="button" hidden>Cancel deletion request</button>
+            <button id="securityDeletionRetry" type="button" hidden>Check request status</button>
+          </section>
         </section>
         <form id="securityRequest" class="form-grid" hidden>
           <label>Email<input id="securityEmail" type="email" autocomplete="email" required /></label>

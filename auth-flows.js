@@ -179,8 +179,58 @@ async function showAccountSecurity() {
   $('#securityAccountControls').hidden=false;
   $('#securityResume').hidden=true;
   $('#securityCancel').textContent='Return to app';
-  message('Manage the password for your signed-in account.');
+  message('Manage your password and account deletion requests.');
+  await accountDeletion('status');
 }
+const deletionStatus = {
+  none: 'You have no pending account deletion request.',
+  staff_review: 'Your request is pending a review of your staff access.',
+  ownership_review: 'Your request is pending a review of the shared workspaces you own.',
+  shared_records_review: 'Your request is pending a review of your shared records.',
+  retention_review: 'Your request is pending a review of which records must be kept.'
+};
+async function accountDeletion(action) {
+  const actor = identity;
+  if (!actor) return;
+  const current = $('#securityDeletionStatus');
+  const request = $('#securityDeletionRequest');
+  const cancel = $('#securityDeletionCancel');
+  const retry = $('#securityDeletionRetry');
+  const rpc = {
+    status: 'fr33_account_deletion_status',
+    request: 'fr33_request_account_deletion',
+    cancel: 'fr33_cancel_account_deletion'
+  };
+  try {
+    await currentIdentity();
+    const { data, error } = await passwordClient.rpc(rpc[action]);
+    await currentIdentity();
+    if (error) throw error;
+    if (!Object.hasOwn(deletionStatus, data?.status)) throw authError('account_deletion_status_unavailable');
+    current.textContent = deletionStatus[data.status];
+    request.hidden = data.status !== 'none';
+    cancel.hidden = data.status === 'none';
+    retry.hidden = true;
+  } catch (error) {
+    if (actor !== identity) return;
+    const needsPassword = error?.message === 'ACCOUNT_DELETION_FRESH_PASSWORD_REQUIRED';
+    current.textContent = needsPassword
+      ? 'Sign out and sign in with your password, then return here within 10 minutes to submit your request.'
+      : 'Your request status could not be confirmed. Check the status to see whether the change was saved.';
+    if (!needsPassword) {
+      request.hidden = true;
+      cancel.hidden = true;
+    }
+    retry.hidden = false;
+  }
+}
+$('#securityDeletionRequest').addEventListener('click', () => {
+  if (window.confirm('Submit an account deletion request for this signed-in account? Your account stays available while the request is reviewed.')) {
+    operation(() => accountDeletion('request'));
+  }
+});
+$('#securityDeletionCancel').addEventListener('click', () => operation(() => accountDeletion('cancel')));
+$('#securityDeletionRetry').addEventListener('click', () => operation(() => accountDeletion('status')));
 $('#securityRequestCode').addEventListener('click', () => operation(async () => {
   if (Date.now() < cooldownUntil) throw {status:429};
   await currentIdentity(); cooldownUntil = Date.now()+60000;

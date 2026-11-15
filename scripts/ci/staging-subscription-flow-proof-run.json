@@ -1,5 +1,9 @@
 {
-  "enabled": false,
+  "enabled": true,
   "project": "dczlddwbtgvfdujgcitb",
-  "status": "ARCHIVED_AFTER_HOSTED_CHECKS_AND_FIXTURE_RESTORE"
+  "version": 1,
+  "lanes": [
+    "business-purchase",
+    "business-extra"
+  ]
 }

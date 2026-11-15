@@ -13,7 +13,7 @@ const options = { auth: { persistSession: false, autoRefreshToken: false } };
 const bucketName = "subscription-proofs";
 const privileged = () => createClient(url, secret, options);
 const bucket = () => privileged().storage.from(bucketName);
-const scopePattern = /^(personal|family-plan|family-renewal|family-extra|business):([0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})$/;
+const scopePattern = /^(personal|family-plan|family-renewal|family-extra|business(?:-extra|-purchase)?):([0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})$/;
 
 type Proof = { path: string; type: string; size: number };
 async function record(file: Proof, verify: boolean) {

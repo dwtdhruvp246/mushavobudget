@@ -19,10 +19,31 @@ const LANES = {
   "family-renewal": FAMILY,
   "family-extra": FAMILY,
   business: BUSINESS,
+  "business-extra": BUSINESS,
+  "business-purchase": PERSONAL,
 };
 const one = r => r.status === 200 && r.data?.length === 1 ? r.data[0] : null;
 const uuid = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/;
 const isDenial = r => r.status >= 400 && r.status < 500;
+
+function billingSubmission(lane, workspace, renewal, quote) {
+  switch (lane) {
+    case "family-extra":
+      return ["submit_family_extra_places", {p_workspace_id: workspace, p_count: 1, p_expected_amount: quote.amount}];
+    case "business":
+    case "business-extra":
+      return ["submit_business_subscription_payment", {p_workspace_id: workspace, p_quote_id: quote.id, p_payment_id: randomUUID()}];
+    case "business-purchase":
+      return ["submit_business_plan_request", {
+        ...renewal, p_plan_code: "audit_fr32_business", p_total_member_count: 1, p_expected_settings_version: 1,
+        p_personal_workspace_id: workspace, p_business_name: "Synthetic FR32 Business purchase", p_submission_id: randomUUID(),
+      }];
+    case "family-plan":
+      return ["submit_family_plan_request", {...renewal, p_personal_workspace_id: workspace, p_family_name: "Synthetic FR32 Family request"}];
+    default:
+      return ["submit_subscription_renewal", {...renewal, p_workspace_id: workspace}];
+  }
+}
 
 async function exercise({ actors, evidence }, key, decodeJpeg, selected) {
   const owner = actors.USER_A, other = actors.USER_B, admin = actors.ADMIN;
@@ -62,10 +83,11 @@ async function exercise({ actors, evidence }, key, decodeJpeg, selected) {
         q.data?.message === "ACTIVE_FAMILY_SUBSCRIPTION_REQUIRED" ? "FAMILY_EXTRA_ACTIVE_TERM_REQUIRED" : "FAMILY_EXTRA_REAL_QUOTE_REQUIRED");
       return q.data;
     }
-    if (lane === "business") {
+    if (lane === "business" || lane === "business-extra") {
       const q = await rpc(owner, "business_subscription_quote",
-        {p_workspace_id: ws, p_kind: "renewal", p_billing_period: "monthly", p_quantity: 1});
-      need(q.status === 200 && uuid.test(q.data?.id || "") && q.data.workspace_id === ws && q.data.amount === 1,
+        {p_workspace_id: ws, p_kind: lane === "business-extra" ? "extra_seats" : "renewal", p_billing_period: "monthly", p_quantity: 1});
+      need(q.status === 200 && uuid.test(q.data?.id || "") && q.data.workspace_id === ws && q.data.amount === 1
+        && (lane !== "business-extra" || q.data.total_seats === 2 && q.data.additional_seats === 1),
         "BUSINESS_REAL_QUOTE_REQUIRED");
       return q.data;
     }
@@ -96,6 +118,11 @@ async function exercise({ actors, evidence }, key, decodeJpeg, selected) {
     const upload = (actor, bytes) => call(actor, "/functions/v1/validate-subscription-flow-proof", bytes, {
       "content-type": "application/pdf", "x-mushavo-attachment": lane + ":" + ws,
     });
+    if (lane === "business-purchase") {
+      const terms = await rpc(other, "public_business_checkout_terms", {});
+      check("PRIVATE_TEST_PLAN_STAYS_OUT_OF_PUBLIC_CHECKOUT", terms.status === 200 && Array.isArray(terms.data)
+        && !terms.data.some(term => term.plan_id === "0b8eacc8-eae9-4b83-89f8-d8684fe05c9a"));
+    }
     const initial = await inspect(admin, reference);
     check("EXACT_LEDGER_BASELINE", initial.status === 200 && initial.data?.length <= 1);
     let payment = one(initial);
@@ -121,13 +148,7 @@ async function exercise({ actors, evidence }, key, decodeJpeg, selected) {
       };
       const renewal = { p_plan_code: lane === "personal" ? "audit_fr32_personal" : "audit_fr32_household",
         p_total_member_count: lane === "personal" ? 1 : 4, p_billing_period: "monthly", p_currency: "USD", p_amount: 1 };
-      const [method, args] = lane === "family-extra"
-        ? ["submit_family_extra_places", {p_workspace_id: ws, p_count: 1, p_expected_amount: q.amount}]
-        : lane === "business"
-          ? ["submit_business_subscription_payment", {p_workspace_id: ws, p_quote_id: q.id, p_payment_id: randomUUID()}]
-          : lane === "family-plan"
-            ? ["submit_family_plan_request", {...renewal, p_personal_workspace_id: ws, p_family_name: "Synthetic FR32 Family request"}]
-            : ["submit_subscription_renewal", {...renewal, p_workspace_id: ws}];
+      const [method, args] = billingSubmission(lane, ws, renewal, q);
       const sent = await rpc(owner, method, {...common, ...args});
       record.submission_status = sent.status;
       if (/^[A-Z_0-9]{4,110}$/.test(sent.data?.message || "")) record.submission_error = sent.data.message;
@@ -160,7 +181,7 @@ async function exercise({ actors, evidence }, key, decodeJpeg, selected) {
 
   let suspendedVersion, failure = false;
   try {
-    if (selected.includes("business")) {
+    if (selected.includes("business") || selected.includes("business-extra")) {
       const initial = one(await workspace(admin));
       need(exactBusiness(initial) && initial.status === "suspended"
         && [52, 54, 56, 58].includes(initial.business_support_version), "EXACT_SUSPENDED_BUSINESS_FIXTURE");
@@ -193,7 +214,7 @@ async function main() {
   const p = JSON.parse(await readFile(new URL("./staging-subscription-flow-proof-run.json", import.meta.url), "utf8"));
   if (p.enabled === false) return {result: "SUBSCRIPTION_FLOW_PLAN_ARCHIVED", exit_code: 0};
   need(p.enabled === true && p.project === "dczlddwbtgvfdujgcitb" && p.version === 1
-    && Array.isArray(p.lanes) && p.lanes.length >= 1 && p.lanes.length <= 5
+    && Array.isArray(p.lanes) && p.lanes.length >= 1 && p.lanes.length <= Object.keys(LANES).length
     && new Set(p.lanes).size === p.lanes.length && p.lanes.every(lane => Object.hasOwn(LANES, lane)),
     "EXACT_STAGING_SUBSCRIPTION_RUN");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"

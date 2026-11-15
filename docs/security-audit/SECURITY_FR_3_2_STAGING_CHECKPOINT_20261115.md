@@ -22,14 +22,24 @@ After the runs, the five temporary upload gates were closed and the temporary ch
 
 The [Business billing follow-up](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43729033993) added 29 hosted checks. The private test plan stayed unavailable in public checkout. The two additional rejected proofs remain linked, and the Business fixture's original plan and term were restored. [Business billing evidence](security-fr-3-2-business-billing-proof-staging-result.json)
 
+## Logo cleanup and private downloads
+
+The [signed logo cleanup retry](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43730473635) passed 19 hosted checks. The scheduler removed the replaced file while the new logo remained linked and readable. It then removed the final synthetic logo after unlinking. Across the test runs it removed four synthetic objects on the first claim for each. The first run stopped at fixture encoding before upload. The second runner timed out before the first scheduled invocation reached staging. The final run completed after the schedule became active.
+
+Server-side replacement cleanup is enabled by default for staging Business workspaces. Valid replaced paths enter a queue with a one-hour grace period. The signed staging Worker checks once per minute and skips claiming when nothing is due. The scheduler removes objects through the Storage API. It checks that the path is no longer linked and verifies absence before settling the lease.
+
+The shared private-file broker now counts requests and bytes per authenticated account across all four staging buckets. The staged limits are 60 requests and 64 MiB per minute. The [hosted download check](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43730403569) confirmed two normal proof downloads and two cross-account denials. Local SQL tests exercised the rate and byte limits across all four supported buckets, and 38 broker tests passed. [Logo cleanup and download evidence](security-fr-3-2-logo-cleanup-and-download-budget-staging-result.json)
+
 ## Broader FR.3.2 coverage
 
 | Surface | Staging evidence | Remaining work |
 |---|---|---|
 | Personal and Family payment proofs | Selected image and PDF validators and browser entry points | Ordinary upload routes still use direct Storage calls. Enroll those routes in trusted validation, quotas and cleanup. |
-| Business logos | PNG, JPEG and WebP selection, validation and preview in the isolated workspace | Ordinary logo uploads still use direct Storage calls. Replacing a logo relies on the browser to attempt deletion, so add server-side reconciliation. |
+| Business logos | PNG, JPEG and WebP selection, validation and preview in the isolated workspace | Scheduled reconciliation for replaced logos is enabled on staging. Ordinary uploads still use direct Storage. Add trusted validation and reservations for newly uploaded logos. |
 | Business documents | Workspace attachments, CSV and XLSX, claim receipts, unpaid invoices, and paid bill proofs | Extend validated uploads and reservations to ordinary paths. |
 | Subscription proofs | Five committed submissions, authorized rejection and broker retrieval on staging | Ordinary upload routing and cleanup still need rollout. The public Business plan remains unavailable for purchase in staging. |
-| File capacity and cleanup | Selected Business capacity and concurrency checks, authenticated download limits, and signed Cloudflare invocation that removed a real orphan | Generalize upload and download quotas and scheduled cleanup. The shared Business workspace limit currently has no enabled workspace. |
+| File capacity and cleanup | Selected Business capacity and concurrency checks, authenticated download limits, and signed Cloudflare invocation that removed a real orphan | Shared download quotas and replaced-logo cleanup are enabled on staging. General upload reservations and scheduled orphan reconciliation for newly uploaded files are open. |
 
 [Business bill-payment proof and download budget](security-fr-3-2-business-bill-payment-quota-staging-result.json) · [Scheduled Business cleanup](security-fr-3-2-scheduled-business-cleanup-staging-result.json)
+
+The regular proof UI accepts up to 10 MiB. The selected trusted proof validator accepts input up to 2 MiB. Broad upload cutover remains open because it would reject some previously supported proofs and requires changing the normal app routes together with the database policies.

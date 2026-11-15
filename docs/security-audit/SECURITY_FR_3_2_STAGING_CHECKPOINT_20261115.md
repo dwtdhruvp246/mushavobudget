@@ -42,4 +42,4 @@ The shared private-file broker now counts requests and bytes per authenticated a
 
 [Business bill-payment proof and download budget](security-fr-3-2-business-bill-payment-quota-staging-result.json) · [Scheduled Business cleanup](security-fr-3-2-scheduled-business-cleanup-staging-result.json)
 
-The regular proof UI accepts up to 10 MiB. The selected trusted proof validator accepts input up to 2 MiB. Broad upload cutover remains open because it would reject some previously supported proofs and requires changing the normal app routes together with the database policies.
+The regular proof UI accepts up to 10 MiB. The selected trusted proof validator accepts input up to 2 MiB. A locally generated 3,687,731-byte static PDF opened successfully in the PDF test library and was rejected by the validator at its configured size limit. Broad upload cutover remains open because it would reject some previously supported proofs and requires changing the normal app routes together with the database policies.

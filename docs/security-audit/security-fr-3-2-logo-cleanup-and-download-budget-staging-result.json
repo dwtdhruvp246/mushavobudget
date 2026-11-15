@@ -80,5 +80,11 @@
   "remaining": [
     "Ordinary upload routing for payment proofs, subscription proofs, Business documents, and Business logos still needs trusted validation.",
     "Ordinary upload reservations and orphan reconciliation are not rolled out. Current proof UI accepts up to 10 MiB. The selected trusted proof validator is limited to 2 MiB."
-  ]
+  ],
+  "ordinary_upload_cutover_probe": {
+    "valid_synthetic_pdf_size": 3687731,
+    "regular_client_limit": 10485760,
+    "trusted_limit": 2097152,
+    "compatibility_regression_confirmed": true
+  }
 }

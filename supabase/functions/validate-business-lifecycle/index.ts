@@ -8,7 +8,7 @@ import { BUCKET, DOCUMENTS, OWNER, WORKSPACE, bindLifecycleTrial, prefix } from 
 import { bindBusinessDocument } from "../validate-business-document/scope.mjs";
 import { verifiedCleanupAttempt } from "./scheduled-auth.mjs";
 import { readSignedPrivateObject } from "../get-private-file/signed-private-file.mjs";
-import { reconcileBusinessUploads, reconcileReplacedLogos, reconcileUnlinkedSubscriptions } from "../_shared/business-upload-cleanup.mjs";
+import { reconcileBusinessUploads, reconcileReplacedLogos, reconcileUnlinkedSubscriptions, reconcileOrdinaryUploads } from "../_shared/business-upload-cleanup.mjs";
 
 const url = Deno.env.get("SUPABASE_URL") || "";
 const anon = Deno.env.get("SUPABASE_ANON_KEY") || "";
@@ -108,6 +108,22 @@ async function runSubscriptionCleanup(nonce: string, epoch: number) {
   });
 }
 
+async function runOrdinaryCleanup(nonce: string, epoch: number) {
+  const client = privileged();
+  return reconcileOrdinaryUploads({
+    claim: async (limit: number) => {
+      const r = await client.rpc("fr32_claim_ordinary_cleanup", {p_nonce:nonce,p_epoch:epoch,p_limit:limit});
+      if (r.error || !Array.isArray(r.data)) throw new Error("Ordinary upload cleanup claim unconfirmed");
+      return r.data;
+    },
+    remove: async (name: string,path: string) => client.storage.from(name).remove([path]),
+    finish: async (name: string,path: string,token: string) => {
+      const r = await client.rpc("fr32_finish_ordinary_cleanup",{p_bucket:name,p_path:path,p_token:token});
+      return !r.error && r.data === true;
+    },
+  });
+}
+
 Deno.serve(async request => {
   const mode = request.headers.get("x-mushavo-attachment");
   if (request.method !== "POST" || !["scheduled-reconcile","status"].includes(mode || "")) {
@@ -138,17 +154,19 @@ Deno.serve(async request => {
     const signed = await verifiedCleanupAttempt(request.headers,schedulerKey);
     if (!signed) return fail(403);
     const client = privileged();
-    const [documentMode, logoMode, subscriptionMode] = await Promise.all([
+    const [documentMode, logoMode, subscriptionMode, ordinaryMode] = await Promise.all([
       gateReady(), client.rpc("fr32_logo_replacement_mode"), client.rpc("managed_subscription_cleanup_due"),
+      client.rpc("fr32_ordinary_cleanup_due"),
     ]);
-    if (logoMode.error || subscriptionMode.error || typeof logoMode.data !== "boolean"
-      || typeof subscriptionMode.data !== "boolean") return fail(503);
-    if (!documentMode && !logoMode.data && !subscriptionMode.data) {
+    if (logoMode.error || subscriptionMode.error || ordinaryMode.error || typeof logoMode.data !== "boolean"
+      || typeof subscriptionMode.data !== "boolean" || typeof ordinaryMode.data !== "boolean") return fail(503);
+    if (!documentMode && !logoMode.data && !subscriptionMode.data && !ordinaryMode.data) {
       return new Response(null,{status:204,headers});
     }
     const extra: Record<string, unknown> = {};
     if (logoMode.data) extra.logos = await runLogoCleanup(signed.nonce, signed.seconds);
     if (subscriptionMode.data) extra.subscriptionProofs = await runSubscriptionCleanup(signed.nonce, signed.seconds);
+    if (ordinaryMode.data) extra.ordinaryUploads = await runOrdinaryCleanup(signed.nonce, signed.seconds);
     if (!documentMode) return Response.json(extra,{headers});
     const auth = await privileged().rpc("fr3_consume_cleanup_dispatch", {p_nonce:signed.nonce,p_epoch:signed.seconds});
     if (auth.error || auth.data !== true) return fail(403);

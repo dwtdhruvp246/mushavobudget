@@ -23,6 +23,28 @@ export async function reconcileUnlinkedSubscriptions({claim, remove, finish}) {
     MAX_SMALL_BATCH, remove, finish);
 }
 
+const ORDINARY_PATTERNS = new Map([
+  ["payment-proofs", new RegExp("^(?:personal/"+UUID+"|families/"+UUID+"/"+UUID+"/"+UUID+")/managed-upload-v1/"+UUID+"/"+UUID+"[.](pdf|png)$")],
+  ["business-documents", new RegExp("^workspaces/"+UUID+"/"+UUID+"/"+UUID+"/managed-upload-v1/"+UUID+"[.](pdf|png|csv|xlsx)$")],
+  ["business-logos", new RegExp("^"+UUID+"/"+UUID+"/f3320000(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}[.]png$")],
+]);
+
+export async function reconcileOrdinaryUploads({claim,remove,finish}) {
+  const pending = await claim(MAX_SMALL_BATCH);
+  if (!Array.isArray(pending) || pending.length > MAX_SMALL_BATCH || pending.some(x =>
+    !ORDINARY_PATTERNS.get(x?.bucket_id)?.test(x?.object_name || "") || !TOKEN.test(x?.cleanup_token || "")
+  )) throw new Error("Invalid ordinary cleanup claim");
+  const counts = {claimed:0,removed:0,retry:0};
+  for (const [bucket, pattern] of ORDINARY_PATTERNS) {
+    const rows = pending.filter(item => item.bucket_id === bucket);
+    if (!rows.length) continue;
+    const result = await reconcile(bucket, rows, path => pattern.test(path), MAX_SMALL_BATCH, remove,
+      (path,token) => finish(bucket,path,token));
+    for (const key of Object.keys(counts)) counts[key] += result[key];
+  }
+  return counts;
+}
+
 async function reconcile(bucket, batch, validPath, limit, remove, finish) {
   if (!Array.isArray(batch) || batch.length > limit) throw new Error("Invalid cleanup batch");
   const seen = new Set();

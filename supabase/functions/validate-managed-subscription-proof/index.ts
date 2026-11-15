@@ -2,7 +2,7 @@ import { createClient } from "npm:@supabase/supabase-js@2.110.9";
 import jpeg from "npm:jpeg-js@0.4.4";
 import { decode as decodeWebp } from "npm:@stacksjs/ts-webp@0.1.7";
 import * as pdf from "npm:pdf-lib@1.17.1";
-import { createProofHandler, ORDINARY_PROOF_MAX_BYTES } from "../validate-payment-proof/handler.mjs";
+import { createProofHandler, ORDINARY_PROOF_MAX_BYTES, ORDINARY_PROOF_IMAGE_LIMITS } from "../validate-payment-proof/handler.mjs";
 import { normalizeStaticPdf } from "../validate-payment-proof/pdf.mjs";
 import { readSignedPrivateObject } from "../get-private-file/signed-private-file.mjs";
 
@@ -38,6 +38,7 @@ Deno.serve(request => {
     gateReady: async () => true,
     attachmentHeader: true,
     pdfInputLimit: ORDINARY_PROOF_MAX_BYTES,
+    imageLimits: ORDINARY_PROOF_IMAGE_LIMITS,
     bind: (client, userId, inputType) => {
       if (!scope || !userScope.test(userId)) return null;
       const prefix = "workspaces/" + scope.workspace + "/" + userId + "/managed-proof-v1/" + scope.upload + "/";

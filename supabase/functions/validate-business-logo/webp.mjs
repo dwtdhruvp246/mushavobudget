@@ -1,4 +1,4 @@
-import { LogoInputError, MAX_LOGO_BYTES, MAX_LOGO_SIDE, encodeLogoRgbaPng } from "./png.mjs";
+import { LogoInputError, LOGO_IMAGE_LIMITS, encodeLogoRgbaPng } from "./png.mjs";
 import { exifOrientation, orientRgba } from "./orientation.mjs";
 
 const fourCC = (bytes, offset) => String.fromCharCode(...bytes.subarray(offset, offset + 4));
@@ -6,9 +6,9 @@ const le24 = (bytes, i) => bytes[i] | bytes[i + 1] << 8 | bytes[i + 2] << 16;
 const invalid = () => new LogoInputError(422, "INVALID_LOGO_WEBP", "webp_container");
 const unsupported = () => new LogoInputError(415, "UNSUPPORTED_LOGO_WEBP");
 
-function checkDimensions(width, height) {
+function checkDimensions(width, height, limits) {
   if (!width || !height) throw invalid();
-  if (width > MAX_LOGO_SIDE || height > MAX_LOGO_SIDE) {
+  if (width > limits.maxSide || height > limits.maxSide || width * height > limits.maxPixels) {
     throw new LogoInputError(413, "LOGO_DIMENSIONS_TOO_LARGE");
   }
 }
@@ -25,9 +25,9 @@ function imageDimensions(type, data) {
   return { width: view.getUint16(6, true) & 0x3fff, height: view.getUint16(8, true) & 0x3fff };
 }
 
-function inspectWebp(bytes) {
+function inspectWebp(bytes, limits) {
   if (!(bytes instanceof Uint8Array) || bytes.length < 20 || fourCC(bytes, 0) !== "RIFF" || fourCC(bytes, 8) !== "WEBP") throw invalid();
-  if (bytes.length > MAX_LOGO_BYTES) throw new LogoInputError(413, "LOGO_TOO_LARGE");
+  if (bytes.length > limits.maxBytes) throw new LogoInputError(413, "LOGO_TOO_LARGE");
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   if (view.getUint32(4, true) + 8 !== bytes.length || bytes.length % 2) throw invalid();
 
@@ -45,13 +45,13 @@ function inspectWebp(bytes) {
         // Animation and color-managed files require a separate policy and decoder path.
         if (flags & 0x22) throw unsupported();
         canvas = { width: le24(data, 4) + 1, height: le24(data, 7) + 1 };
-        checkDimensions(canvas.width, canvas.height);
+        checkDimensions(canvas.width, canvas.height, limits);
         break;
       case "VP8 ":
       case "VP8L":
         if (image || (type === "VP8L" && alpha) || (!canvas && (i !== 12 || next !== bytes.length))) throw invalid();
         image = imageDimensions(type, data);
-        checkDimensions(image.width, image.height);
+        checkDimensions(image.width, image.height, limits);
         if (canvas && (image.width !== canvas.width || image.height !== canvas.height)) throw invalid();
         break;
       case "ALPH":
@@ -78,8 +78,8 @@ function inspectWebp(bytes) {
   return { ...image, orientation };
 }
 
-export function normalizeLogoWebp(bytes, decode) {
-  const image = inspectWebp(bytes);
+export function normalizeLogoWebp(bytes, decode, limits = LOGO_IMAGE_LIMITS) {
+  const image = inspectWebp(bytes, limits);
   let result;
   try {
     result = decode(bytes);
@@ -93,5 +93,5 @@ export function normalizeLogoWebp(bytes, decode) {
   }
   const data = new Uint8Array(result.data.buffer, result.data.byteOffset, result.data.byteLength);
   const oriented = orientRgba(data, image.width, image.height, image.orientation);
-  return encodeLogoRgbaPng(oriented.width, oriented.height, oriented.data);
+  return encodeLogoRgbaPng(oriented.width, oriented.height, oriented.data, limits);
 }

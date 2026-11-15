@@ -1,4 +1,4 @@
-import { LogoInputError, MAX_LOGO_BYTES, MAX_LOGO_SIDE, encodeLogoRgbaPng } from "./png.mjs";
+import { LogoInputError, LOGO_IMAGE_LIMITS, encodeLogoRgbaPng } from "./png.mjs";
 
 import { exifOrientation, orientRgba } from "./orientation.mjs";
 
@@ -12,10 +12,10 @@ function invalid(reason) {
 
 // Bound frame dimensions, component geometry and scan count before the decoder
 // performs pixel work. Decoder validation still checks the compressed scan data.
-function inspectJpeg(bytes) {
+function inspectJpeg(bytes, limits) {
   if (!(bytes instanceof Uint8Array) || bytes.length < 4
       || bytes[0] !== 255 || bytes[1] !== 216) throw invalid("jpeg_signature");
-  if (bytes.length > MAX_LOGO_BYTES) throw new LogoInputError(413, "LOGO_TOO_LARGE");
+  if (bytes.length > limits.maxBytes) throw new LogoInputError(413, "LOGO_TOO_LARGE");
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   let cursor = 2, frame, orientation, scans = 0, segments = 0;
   while (cursor < bytes.length) {
@@ -37,7 +37,7 @@ function inspectJpeg(bytes) {
       const height = view.getUint16(start + 1), width = view.getUint16(start + 3);
       const components = bytes[start + 5];
       if (!width || !height || length !== 8 + 3 * components) throw invalid("jpeg_frame");
-      if (width > MAX_LOGO_SIDE || height > MAX_LOGO_SIDE) {
+      if (width > limits.maxSide || height > limits.maxSide || width * height > limits.maxPixels) {
         throw new LogoInputError(413, "LOGO_DIMENSIONS_TOO_LARGE");
       }
       if (bytes[start] !== 8 || ![1, 3].includes(components)) {
@@ -78,13 +78,13 @@ function inspectJpeg(bytes) {
   throw invalid("jpeg_end");
 }
 
-export function normalizeLogoJpeg(bytes, decode) {
-  const frame = inspectJpeg(bytes);
+export function normalizeLogoJpeg(bytes, decode, limits = LOGO_IMAGE_LIMITS) {
+  const frame = inspectJpeg(bytes, limits);
   let decoded;
   try {
     decoded = decode(bytes, {
       useTArray: true, formatAsRGBA: true, tolerantDecoding: false,
-      maxResolutionInMP: 1.049, maxMemoryUsageInMB: 32,
+      maxResolutionInMP: limits.maxPixels / 1_000_000, maxMemoryUsageInMB: limits.jpegMemoryMB,
     });
   } catch {
     throw invalid("jpeg_decode");
@@ -94,5 +94,5 @@ export function normalizeLogoJpeg(bytes, decode) {
     throw invalid("jpeg_pixels");
   }
   const image = orientRgba(decoded.data, frame.width, frame.height, frame.orientation);
-  return encodeLogoRgbaPng(image.width, image.height, image.data);
+  return encodeLogoRgbaPng(image.width, image.height, image.data, limits);
 }

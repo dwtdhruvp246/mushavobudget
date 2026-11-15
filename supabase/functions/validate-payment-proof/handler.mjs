@@ -1,4 +1,4 @@
-import { LogoInputError, MAX_LOGO_BYTES, normalizeLogoPng } from "../validate-business-logo/png.mjs";
+import { LogoInputError, LOGO_IMAGE_LIMITS, MAX_LOGO_BYTES, normalizeLogoPng } from "../validate-business-logo/png.mjs";
 import { normalizeLogoJpeg } from "../validate-business-logo/jpeg.mjs";
 import { normalizeLogoWebp } from "../validate-business-logo/webp.mjs";
 
@@ -9,6 +9,8 @@ export const BUCKET = "payment-proofs";
 export const PREFIX = `personal/${OWNER}/fr3-proof/${PAYMENT_ITEM}/`;
 const DRAIN_MARGIN = 64 * 1024;
 export const ORDINARY_PROOF_MAX_BYTES = 10 * 1024 * 1024;
+export const ORDINARY_PROOF_IMAGE_LIMITS = Object.freeze({maxBytes: ORDINARY_PROOF_MAX_BYTES,
+  maxSide: 4096, maxPixels: 4194304, jpegMemoryMB: 80});
 
 async function readBoundedProof(request, limit) {
   const drainLimit = limit + DRAIN_MARGIN;
@@ -78,7 +80,7 @@ const noLifecycle = null;
 const defaultFormats = new Map();
 
 export function createProofHandler({ configured, allowedOrigin, createUserClient, gateReady, store, read,
-  decodeJpeg, decodeWebp, normalizePdf = noPdf, bind = bindPersonalProof, extraFormats = defaultFormats, standardFormats = true, attachmentHeader = false, pdfInputLimit = MAX_LOGO_BYTES, lifecycle = noLifecycle, denied = "PROOF_FIXTURE_OWNER_REQUIRED" }) {
+  decodeJpeg, decodeWebp, normalizePdf = noPdf, bind = bindPersonalProof, extraFormats = defaultFormats, standardFormats = true, attachmentHeader = false, pdfInputLimit = MAX_LOGO_BYTES, imageLimits = LOGO_IMAGE_LIMITS, lifecycle = noLifecycle, denied = "PROOF_FIXTURE_OWNER_REQUIRED" }) {
   if (!Number.isSafeInteger(pdfInputLimit) || pdfInputLimit < 1 || pdfInputLimit > ORDINARY_PROOF_MAX_BYTES) {
     throw new RangeError("Invalid PDF upload byte limit");
   }
@@ -102,9 +104,9 @@ export function createProofHandler({ configured, allowedOrigin, createUserClient
     if (!token) return fail(401, "AUTHENTICATION_REQUIRED");
     const type = request.headers.get("content-type")?.toLowerCase() || "";
     const format = extraFormats.get(type);
-    const normalize = format?.normalize ?? (!standardFormats ? null : type === "image/png" ? normalizeLogoPng
-      : type === "image/jpeg" ? bytes => normalizeLogoJpeg(bytes, decodeJpeg)
-      : type === "image/webp" ? bytes => normalizeLogoWebp(bytes, decodeWebp)
+    const normalize = format?.normalize ?? (!standardFormats ? null : type === "image/png" ? bytes => normalizeLogoPng(bytes, imageLimits)
+      : type === "image/jpeg" ? bytes => normalizeLogoJpeg(bytes, decodeJpeg, imageLimits)
+      : type === "image/webp" ? bytes => normalizeLogoWebp(bytes, decodeWebp, imageLimits)
       : type === "application/pdf" ? normalizePdf : null);
     if (!normalize) return fail(415, "UNSUPPORTED_PROOF_TYPE");
 
@@ -112,19 +114,20 @@ export function createProofHandler({ configured, allowedOrigin, createUserClient
       const client = createUserClient(token);
       const identity = await client.auth.getUser();
       if (identity.error || !identity.data?.user?.id) return fail(401, "AUTHENTICATION_REQUIRED");
-      const binding = bind(client, identity.data.user.id, type, request);
+      const binding = await bind(client, identity.data.user.id, type, request);
       if (!binding) return fail(403, denied);
       const { prefix, canWrite } = binding;
       if (!await canWrite()) return fail(403, denied);
       if (!await gateReady(type)) return fail(503, "PROOF_TRIAL_UNAVAILABLE");
       const isPdf = type === "application/pdf";
-      const limit = isPdf ? pdfInputLimit : MAX_LOGO_BYTES;
+      const limit = isPdf ? pdfInputLimit : format ? MAX_LOGO_BYTES : imageLimits.maxBytes;
       const canonical = await normalize(await readBoundedProof(request, limit));
       if (canonical.length > limit) return fail(413, "PROOF_TOO_LARGE");
       const outputType = format ? type : isPdf ? "application/pdf" : "image/png";
       const hash = await fingerprint(canonical);
       const object = hash.slice(0, 32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5");
-      const path = prefix + object + (format?.suffix ?? (isPdf ? ".pdf" : ".png"));
+      const extension = format?.suffix ?? (isPdf ? ".pdf" : ".png");
+      const path = prefix + (binding.objectName?.(object) ?? object) + extension;
       if (!await canWrite()) return fail(403, denied);
       if (!await gateReady(type)) return fail(503, "PROOF_TRIAL_UNAVAILABLE");
       const file = { path, type: outputType, size: canonical.length };

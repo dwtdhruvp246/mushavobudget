@@ -21,10 +21,11 @@ async function sample(red, green, blue) {
   return {bytes, sha, path: WORKSPACE + "/" + OWNER + "/" + name + ".png"};
 }
 
-async function exercise({actors,evidence}, key) {
+async function exercise({actors,evidence}, key, plan) {
   const {USER_A:owner,USER_B:other,ADMIN:admin} = actors;
   need(owner.id === OWNER && other.id !== OWNER && admin.id !== OWNER, "EXACT_LOGO_ACCOUNTS_REQUIRED");
-  const [old, current] = await Promise.all([sample(178,60,196),sample(25,90,206)]);
+  const [old, current] = await Promise.all([sample(184,60,196),sample(32,90,206)]);
+  const startVersion = plan.support_version;
   evidence.checks = {};
   evidence.requests = 0;
   const check = (name, value) => {
@@ -72,11 +73,11 @@ async function exercise({actors,evidence}, key) {
   let resumed = false, failure, cleanupFailure;
   try {
     const start = await workspace();
-    check("EXACT_SUSPENDED_LOGO_FIXTURE", exact(start) && start.status === "suspended" && start.business_support_version === 56);
-    check("FIXTURE_ACTIVATED", (await businessStatus("active",56)).status === 200);
+    check("EXACT_SUSPENDED_LOGO_FIXTURE", exact(start) && start.status === "suspended" && start.business_support_version === startVersion);
+    check("FIXTURE_ACTIVATED", (await businessStatus("active",startVersion)).status === 200);
     resumed = true;
     const initial = await profile();
-    check("EXACT_EMPTY_BRANDING_FIXTURE", initial?.trading_name === NAME && initial.logo_storage_path === null && initial.version === 23);
+    check("EXACT_EMPTY_BRANDING_FIXTURE", initial?.trading_name === NAME && initial.logo_storage_path === null && initial.version === plan.profile_version);
     const unsigned = await call(other,"/functions/v1/validate-business-lifecycle",{},{"x-mushavo-attachment":"scheduled-reconcile"});
     check("UNSIGNED_CLEANUP_DENIED", unsigned.status === 403);
     const first = await validate(old);
@@ -109,10 +110,10 @@ async function exercise({actors,evidence}, key) {
       } catch (error) { cleanupFailure = error; }
       try {
         const active = await workspace();
-        need(exact(active) && active.status === "active" && active.business_support_version === 57, "EXACT_LOGO_FIXTURE_RESTORE_REQUIRED");
-        check("BUSINESS_FIXTURE_RESUSPENDED", (await businessStatus("suspended",57)).status === 200);
+        need(exact(active) && active.status === "active" && active.business_support_version === startVersion + 1, "EXACT_LOGO_FIXTURE_RESTORE_REQUIRED");
+        check("BUSINESS_FIXTURE_RESUSPENDED", (await businessStatus("suspended",startVersion + 1)).status === 200);
         const final = await workspace();
-        check("BUSINESS_SUSPENSION_READBACK", exact(final) && final.status === "suspended" && final.business_support_version === 58);
+        check("BUSINESS_SUSPENSION_READBACK", exact(final) && final.status === "suspended" && final.business_support_version === startVersion + 2);
       } catch (error) { cleanupFailure ??= error; }
     }
   }
@@ -124,6 +125,7 @@ async function main() {
   const plan = JSON.parse(await readFile(new URL("./staging-logo-replacement-cleanup-run.json",import.meta.url),"utf8"));
   if (plan.enabled === false) return {result:"STAGING_LOGO_REPLACEMENT_PLAN_ARCHIVED", exit_code:0};
   need(plan.enabled === true && plan.workspace === WORKSPACE && plan.project === "dczlddwbtgvfdujgcitb"
+    && plan.support_version === 58 && plan.profile_version === 26
     && process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization"
     && process.env.GITHUB_RUN_ATTEMPT === "1", "EXACT_STAGING_LOGO_RUN_REQUIRED");
@@ -132,7 +134,7 @@ async function main() {
   const {key} = readPublicConfiguration(await response.text());
   const options = {accountScope:"standard"};
   const result = await checkStagingAccess(privateAccounts(process.env,options),apiTransport(key,AGENT),
-    input => exercise(input,key),options);
+    input => exercise(input,key,plan),options);
   return {...result,progress_display:"Stage 4/10 | FR.3/8 | FR.3.2 Business logo replacement cleanup",commit:process.env.GITHUB_SHA};
 }
 

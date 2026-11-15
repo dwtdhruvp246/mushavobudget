@@ -6,12 +6,14 @@ import { normalizeStaticPdf } from "../validate-payment-proof/pdf.mjs";
 import { createProofHandler } from "../validate-payment-proof/handler.mjs";
 import { BUCKET, DOCUMENTS, OWNER, WORKSPACE, bindLifecycleTrial, prefix } from "./scope.mjs";
 import { bindBusinessDocument } from "../validate-business-document/scope.mjs";
+import { verifiedCleanupAttempt } from "./scheduled-auth.mjs";
 import { readSignedPrivateObject } from "../get-private-file/signed-private-file.mjs";
 import { reconcileBusinessUploads } from "../_shared/business-upload-cleanup.mjs";
 
 const url = Deno.env.get("SUPABASE_URL") || "";
 const anon = Deno.env.get("SUPABASE_ANON_KEY") || "";
 const secret = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+const schedulerKey: JsonWebKey = {"kty":"EC","x":"Zt1i3wh5Xkq-G9upQFy04bF_7qMN2AwKmPSJbptHT24","y":"yCwOmXUEVOHjgWJ4dLpwVK_bz3vx_Fc8oSycQ2quH5U","crv":"P-256"};
 const options = { auth: { persistSession: false, autoRefreshToken: false } };
 const configured = () => url === "https://dczlddwbtgvfdujgcitb.supabase.co" && Boolean(anon && secret);
 const allowedOrigin = (origin: string) => /^https:\/\/(?:[a-z0-9-]+\.)?mushavo-budget-staging\.pages\.dev$/.test(origin);
@@ -56,41 +58,61 @@ const upload = createProofHandler({
   })).data,
 });
 
+async function runCleanup() {
+  return await reconcileBusinessUploads(WORKSPACE, {
+    claim: async (_workspace: string, limit: number) => {
+      const r = await privileged().rpc("fr3_claim_lifecycle_trial", {p_limit:limit});
+      if (r.error) throw new Error("Cleanup claim unconfirmed");
+      return r.data;
+    },
+    remove: async (_bucket: string, path: string) => {
+      if (!contextualDocument(path) || !await gateReady()) throw new Error("Cleanup scope closed");
+      return await bucket().remove([path]);
+    },
+    finish: async (path: string, cleanupToken: string) => {
+      const r = await privileged().rpc("fr3_finish_lifecycle_trial", {p_object:path,p_token:cleanupToken});
+      return !r.error && r.data === true;
+    },
+  });
+}
+
 Deno.serve(async request => {
-  if (request.headers.get("x-mushavo-attachment") !== "reconcile" || request.method !== "POST") {
+  const mode = request.headers.get("x-mushavo-attachment");
+  if (request.method !== "POST" || !["scheduled-reconcile","status"].includes(mode || "")) {
     if (request.method === "POST" && request.headers.get("content-type")?.toLowerCase() !== "application/pdf") {
       return Response.json({error:"UNSUPPORTED_PROOF_TYPE"},{status:415});
     }
     return upload(request);
   }
+
   const origin = request.headers.get("origin") || "";
   const headers = { "Cache-Control":"private, no-store", "X-Content-Type-Options":"nosniff",
-    ...(allowedOrigin(origin) ? {"Access-Control-Allow-Origin":origin,Vary:"Origin"} : {}) };
-  const failure = (status: number) => Response.json({error:"BUSINESS_LIFECYCLE_RECONCILIATION_UNAVAILABLE"},{status,headers});
-  if (!configured() || !allowedOrigin(origin)) return failure(403);
-  const token = /^Bearer ([A-Za-z0-9._-]{20,8192})$/i.exec(request.headers.get("authorization") || "")?.[1];
-  if (!token) return failure(401);
-  const client = createUserClient(token);
+    ...(mode === "status" && allowedOrigin(origin) ? {"Access-Control-Allow-Origin":origin,Vary:"Origin"} : {}) };
+  const fail = (status: number) => Response.json({error:"BUSINESS_LIFECYCLE_RECONCILIATION_UNAVAILABLE"},{status,headers});
+  if (!configured()) return fail(503);
   try {
-    const identity = await client.auth.getUser();
-    if (identity.error || identity.data.user?.id !== OWNER) return failure(403);
-    const scope = bindBusinessDocument(client, OWNER);
-    if (!scope || !await scope.canWrite() || !await gateReady()) return failure(403);
-    const result = await reconcileBusinessUploads(WORKSPACE, {
-      claim: async (_workspace: string, limit: number) => {
-        const r = await privileged().rpc("fr3_claim_lifecycle_trial", {p_limit:limit});
-        if (r.error) throw new Error("Cleanup claim unconfirmed");
-        return r.data;
-      },
-      remove: async (_bucket: string, path: string) => {
-        if (!contextualDocument(path) || !await gateReady()) throw new Error("Cleanup scope closed");
-        return await bucket().remove([path]);
-      },
-      finish: async (path: string, cleanupToken: string) => {
-        const r = await privileged().rpc("fr3_finish_lifecycle_trial", {p_object:path,p_token:cleanupToken});
-        return !r.error && r.data === true;
-      },
+    if (mode === "status") {
+      const token = /^Bearer ([A-Za-z0-9._-]{20,8192})$/i.exec(request.headers.get("authorization") || "")?.[1];
+      if (!allowedOrigin(origin) || !token) return fail(403);
+      const client = createUserClient(token);
+      const identity = await client.auth.getUser();
+      const scope = bindBusinessDocument(client, identity.data.user?.id);
+      if (identity.error || !scope || identity.data.user?.id !== OWNER || !await scope.canWrite()) return fail(403);
+      const ready = await privileged().rpc("fr3_scheduled_cleanup_witness");
+      if (ready.error || typeof ready.data !== "boolean") return fail(503);
+      return Response.json({removed:ready.data},{headers});
+    }
+
+    const signed = await verifiedCleanupAttempt(request.headers,schedulerKey);
+    if (!signed) return fail(403);
+    if (!await gateReady()) return new Response(null,{status:204,headers});
+    const auth = await privileged().rpc("fr3_consume_cleanup_dispatch", {p_nonce:signed.nonce,p_epoch:signed.seconds});
+    if (auth.error || auth.data !== true) return fail(403);
+    const result = await runCleanup();
+    const receipt = await privileged().rpc("fr3_finish_cleanup_dispatch", {
+      p_nonce:signed.nonce,p_claimed:result.claimed,p_removed:result.removed,p_retry:result.retry,
     });
+    if (receipt.error || receipt.data !== true) return fail(503);
     return Response.json(result,{headers});
-  } catch { return failure(503); }
+  } catch { return fail(503); }
 });

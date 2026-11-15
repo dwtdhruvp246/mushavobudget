@@ -10,6 +10,7 @@ function harness(options = {}) {
   const row = { object_id: 'object-A', bucket_id: selected.bucket, object_name: selected.path,
     object_version: 'v1:updated', size_bytes: 4, mime_type: 'image/png', ...options.row };
   const handle = createPrivateFileHandler({
+    authorizeDownload: options.authorizeDownload,
     configured: () => options.configured !== false,
     allowedOrigin: origin => origin === 'https://mushavo-budget-staging.pages.dev',
     createUserClient(received) {
@@ -116,4 +117,26 @@ test('selector accepts current generated paths, rejects URL query/fragment and i
   for (const value of ['personal/actor/file.png?x=1', 'personal/actor/file.png#x', '/personal/actor/file.png', 'personal\\actor\\file.png'])
     assert.ok(!validPrivateFileSelector({ bucket, path: value }));
   assert.ok(!validPrivateFileSelector({ bucket: '__proto__', path }));
+});
+
+test("authorized download checks the authoritative size before touching Storage", async () => {
+  let charged;
+  const h = harness({authorizeDownload: async input => { charged = input; return false; }});
+  const r = await h.handle(h.request());
+  assert.equal(r.status, 429);
+  assert.equal((await r.json()).error, "PRIVATE_FILE_DOWNLOAD_LIMIT");
+  assert.deepEqual(charged, {userId:"actor",bucket,path,size:4});
+  assert.equal(h.calls.service, 0);
+});
+
+test("download quota does not reveal missing or unauthorized file metadata", async () => {
+  const h = harness({context: () => ({data:[]}), authorizeDownload: () => assert.fail("charged without access")});
+  assert.equal((await h.handle(h.request())).status, 404);
+  assert.equal(h.calls.service, 0);
+});
+
+test("a failed quota lookup cannot proceed to Storage", async () => {
+  const h = harness({authorizeDownload: () => { throw new Error("quota unavailable"); }});
+  assert.equal((await h.handle(h.request())).status, 503);
+  assert.equal(h.calls.service, 0);
 });

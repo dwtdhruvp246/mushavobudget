@@ -52,7 +52,11 @@ function safeContext(value, selector) {
     && (selector.bucket !== 'business-logos' || row.mime_type.startsWith('image/')) ? row : null;
 }
 
-export function createPrivateFileHandler({ createUserClient, readPrivateObject, allowedOrigin, configured = () => true }) {
+/** @param {{userId:string, bucket:string, path:string, size:number}} _request */
+async function noDownloadBudget(_request) { return true; }
+
+export function createPrivateFileHandler({ createUserClient, readPrivateObject, allowedOrigin,
+  configured = () => true, authorizeDownload = noDownloadBudget }) {
   return async request => {
     const origin = request.headers.get('origin') || '';
     const originAllowed = !origin || allowedOrigin(origin);
@@ -90,6 +94,11 @@ export function createPrivateFileHandler({ createUserClient, readPrivateObject, 
       };
       const before = await context();
       if (!before) return fail(404, 'FILE_NOT_AVAILABLE');
+      const allowed = await authorizeDownload({
+        userId: identity.user.id, bucket: selector.bucket, path: selector.path, size: before.size_bytes,
+      });
+      if (allowed === false) return fail(429, 'PRIVATE_FILE_DOWNLOAD_LIMIT');
+      if (allowed !== true) return fail(503, 'PRIVATE_FILE_UNAVAILABLE');
       const result = await readPrivateObject(selector.bucket, selector.path, LIMITS[selector.bucket]);
       if (result.error || !(result.data instanceof Blob) || result.data.size !== before.size_bytes
         || result.data.size > LIMITS[selector.bucket]) return fail(404, 'FILE_NOT_AVAILABLE');

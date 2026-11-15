@@ -2,8 +2,8 @@ import { BUCKET, OWNER, WORKSPACE, bindBusinessDocument } from "../validate-busi
 
 export { BUCKET, OWNER, WORKSPACE };
 export const DOCUMENTS = Object.freeze({
-  orphan: "a1a26ceb-d569-43ae-93f7-496fe0927ebc",
-  committed: "c48c3db5-8eb6-4614-9b2e-784a5502a662",
+  orphan: "a83a436a-a324-45a3-b321-17084d2d5062",
+  committed: "32ea8cbf-0a6c-43cc-a21a-42dfe989b424",
 });
 export const prefix = document => `workspaces/${WORKSPACE}/${OWNER}/${document}/`;
 export function bindLifecycleTrial(client, userId, _type, request) {

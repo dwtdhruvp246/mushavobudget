@@ -1,12 +1,11 @@
 {
-  "enabled": false,
+  "enabled": true,
   "project": "dczlddwbtgvfdujgcitb",
   "workspace": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
   "documents": [
-    "a1a26ceb-d569-43ae-93f7-496fe0927ebc",
-    "c48c3db5-8eb6-4614-9b2e-784a5502a662"
+    "a83a436a-a324-45a3-b321-17084d2d5062",
+    "32ea8cbf-0a6c-43cc-a21a-42dfe989b424"
   ],
-  "paid_through": "2026-11-15T09:09:16.597707Z",
-  "status": "ARCHIVED_BUSINESS_LIFECYCLE_SCOPED_PASS_NO_REPLAY",
-  "completed_run": 43691204793
+  "paid_through": "2026-11-15T10:03:29.879358Z",
+  "status": "HOSTED_BUSINESS_SCHEDULED_LIFECYCLE_ONCE"
 }

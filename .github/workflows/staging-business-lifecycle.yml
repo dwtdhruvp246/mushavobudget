@@ -12,7 +12,7 @@ jobs:
   proof:
     if: github.repository == 'dwtdhruvp246/mushavobudget' && github.ref == 'refs/heads/security/stage-3-authorization' && github.run_attempt == 1
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
@@ -24,7 +24,7 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/logo-jpeg-tools
           npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/pdf-proof-tools
-          node --test tests/pdf-proof-validation.test.mjs tests/family-proof-validation.test.mjs tests/personal-proof-validation.test.mjs tests/business-logo-validation.test.mjs tests/business-logo-jpeg.test.mjs tests/business-logo-webp.test.mjs tests/business-logo-upload-routing.test.mjs
+          node --test tests/business-cleanup-scheduler.test.mjs tests/private-file-broker.test.mjs tests/pdf-proof-validation.test.mjs tests/family-proof-validation.test.mjs tests/personal-proof-validation.test.mjs tests/business-logo-validation.test.mjs tests/business-logo-jpeg.test.mjs tests/business-logo-webp.test.mjs tests/business-logo-upload-routing.test.mjs
       - name: Read acceptance plan
         id: plan
         run: |

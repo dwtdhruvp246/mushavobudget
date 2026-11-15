@@ -14,6 +14,15 @@ Deno.serve(createPrivateFileHandler({
   createUserClient: (token: string) => createClient(projectUrl, anonKey, {
     ...options, global: { headers: { Authorization: `Bearer ${token}` } },
   }),
+  authorizeDownload: async ({userId, bucket, path, size}) => {
+    if (bucket !== "business-documents"
+        || !path.startsWith("workspaces/8d9307e6-aada-4c9a-a8f5-43c57e0865e2/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/32ea8cbf-0a6c-43cc-a21a-42dfe989b424/")) return true;
+    const r = await createClient(projectUrl, serviceKey, options).rpc("fr3_reserve_trial_download", {
+      p_user: userId, p_path: path, p_size: size,
+    });
+    if (r.error || typeof r.data !== "boolean") throw new Error("Download quota unavailable");
+    return r.data;
+  },
   readPrivateObject: (bucket: string, path: string, maxBytes: number) => readSignedPrivateObject({
     bucket, path, maxBytes,
     mint: (name: string, objectPath: string, seconds: number) => createClient(projectUrl, serviceKey, options)

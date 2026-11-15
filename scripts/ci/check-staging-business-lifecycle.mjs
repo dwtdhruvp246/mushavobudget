@@ -6,7 +6,7 @@ import { BUCKET, OWNER, WORKSPACE, DOCUMENTS, prefix } from "../../supabase/func
 import { normalizeStaticPdf } from "../../supabase/functions/validate-payment-proof/pdf.mjs";
 import { pdf, receiptPdf } from "../fixtures/pdf-proof-tools/fixtures.mjs";
 
-const AGENT = "Mushavo-Staging-FR3-Business-Lifecycle";
+const AGENT = "Mushavo-Staging-FR3-Scheduled-File-Lifecycle";
 const NAME = "audit-fr3-logo-ingestion-20261112";
 const PROGRESS = "Stage 4/10 | FR.3/8 | FR.3.2 Business upload lifecycle";
 const PDF = "application/pdf";
@@ -25,7 +25,7 @@ async function exercise({ actors,evidence },key,term) {
   const test = (name,value) => { evidence.checks[name] = Boolean(value); need(value,name); };
   Object.assign(evidence,{checks:{},requests:0,cleanup:{}});
   async function call(path,method,actor,body,headers = {}) {
-    need(++evidence.requests <= 45, "LIFECYCLE_REQUEST_BOUND");
+    need(++evidence.requests <= 60, "LIFECYCLE_REQUEST_BOUND");
     const response = await fetch(API_ORIGIN + path,{
       method,cache:"no-store",redirect:"error",signal:AbortSignal.timeout(18000),
       headers:{apikey:key,authorization:"Bearer " + actor.token,origin:WEB_ORIGIN,
@@ -48,8 +48,11 @@ async function exercise({ actors,evidence },key,term) {
   const upload = (lane,actor = owner) => call("/functions/v1/validate-business-lifecycle","POST",actor,input,{
     "content-type":PDF,"x-mushavo-attachment":lane,
   });
-  const reconcile = (actor = owner) => call("/functions/v1/validate-business-lifecycle","POST",actor,{},{
-    "x-mushavo-attachment":"reconcile",
+  const scheduledState = (actor = owner) => call("/functions/v1/validate-business-lifecycle","POST",actor,{},{
+    "x-mushavo-attachment":"status",
+  });
+  const unsignedCleanup = () => call("/functions/v1/validate-business-lifecycle","POST",owner,{},{
+    "x-mushavo-attachment":"scheduled-reconcile",
   });
   const register = lane => rpc("register_business_document",owner,{
     p_document_id:DOCUMENTS[lane],p_workspace_id:WORKSPACE,p_parent_type:"workspace",p_parent_id:WORKSPACE,
@@ -62,12 +65,13 @@ async function exercise({ actors,evidence },key,term) {
   let confirmed = false, failure, cleanupFailure;
   try {
     const w = await workspace(), s = one(await call("/rest/v1/workspace_subscriptions?workspace_id=eq." + WORKSPACE + "&limit=2","GET",admin));
-    test("EXACT_SUSPENDED_LIFECYCLE_FIXTURE",exactWorkspace(w) && w.status === "suspended" && w.business_support_version === 44
+    test("EXACT_SUSPENDED_LIFECYCLE_FIXTURE",exactWorkspace(w) && w.status === "suspended" && w.business_support_version === 46
       && s?.workspace_id === WORKSPACE && s.status === "active" && s.version === 1 && s.member_limit === 1
       && Date.parse(s.paid_through_at) === Date.parse(term) && Date.parse(term) > Date.now());
     confirmed = true;
-    test("EXACT_LIFECYCLE_FIXTURE_RESUMED",(await status("active",44)).status === 200);
-    test("LIFECYCLE_ACTOR_BOUND", (await upload("orphan",outsider)).status === 403 && (await reconcile(outsider)).status === 403);
+    test("EXACT_LIFECYCLE_FIXTURE_RESUMED",(await status("active",46)).status === 200);
+    test("LIFECYCLE_ACTOR_BOUND", (await upload("orphan",outsider)).status === 403 && (await scheduledState(outsider)).status === 403);
+    test("UNSIGNED_SCHEDULED_INVOCATION_DENIED",(await unsignedCleanup()).status === 403);
     const direct = await call(urlFor("orphan"),"POST",owner,canonical,{"content-type":PDF,"x-upsert":"false"});
     test("DIRECT_RESERVED_PATH_UPLOAD_DENIED",deny(direct));
 
@@ -78,16 +82,18 @@ async function exercise({ actors,evidence },key,term) {
     const invalid = await upload("committed");
     test("SECOND_UPLOAD_AT_CAPACITY_DENIED",invalid.status === 429 && invalid.data?.error === "PROOF_UPLOAD_CAPACITY_REACHED");
     test("UNREGISTERED_FILE_STAYS_PRIVATE",(await broker("orphan")).status === 404);
-    const early = await reconcile();
-    test("UNEXPIRED_UPLOAD_PRESERVED",early.status === 200 && early.data?.claimed === 0);
+    const early = await scheduledState();
+    test("UNEXPIRED_UPLOAD_PRESERVED",early.status === 200 && early.data?.removed === false);
 
-    // Wait once for the exact 40-second fixture TTL. The attempted upload was
-    // acknowledged before this deadline and remains unregistered by design.
-    await pause(41000);
-    const recovered = await reconcile();
-    evidence.cleanup_result = recovered.data && Object.fromEntries(["claimed","removed","retry"].map(k => [k,recovered.data[k]]));
-    test("EXPIRED_UNREGISTERED_OBJECT_REMOVED",recovered.status === 200 && recovered.data?.claimed === 1
-      && recovered.data.removed === 1 && recovered.data.retry === 0);
+    let removed = false;
+    for (let attempt=0; attempt<31 && !removed; attempt++) {
+      await pause(9000);
+      const state = await scheduledState();
+      need(state.status === 200 && typeof state.data?.removed === "boolean","AUTHORIZED_SCHEDULED_STATUS_REQUIRED");
+      removed = state.data.removed;
+      evidence.status_polls = attempt+1;
+    }
+    test("SCHEDULED_WORKER_REMOVED_EXPIRED_OBJECT",removed);
     const expired = await register("orphan");
     test("REMOVED_OBJECT_CANNOT_REGISTER",expired.status >= 400 && expired.data?.message === "BUSINESS_DOCUMENT_UPLOAD_NOT_FOUND");
 
@@ -97,16 +103,19 @@ async function exercise({ actors,evidence },key,term) {
     test("TRANSACTION_LINKED_EXACT_FILE",registered.status === 200 && item?.id === DOCUMENTS.committed && item.status === "active"
       && item.workspace_id === WORKSPACE && item.parent_id === WORKSPACE && item.uploaded_by === OWNER
       && item.storage_path === pathFor("committed") && item.size_bytes === canonical.length && item.mime_type === PDF);
-    const checkProtection = await reconcile(), opened = await broker("committed");
-    test("RECONCILER_PRESERVES_REGISTERED_FILE",checkProtection.status === 200 && checkProtection.data?.claimed === 0
-      && opened.status === 200 && opened.mime === PDF && opened.cache.includes("no-store") && digest(opened.data) === hash);
-    test("OUTSIDE_ACCOUNT_CANNOT_OPEN_REGISTERED_FILE",(await broker("committed",outsider)).status === 404);
+    const outside = await broker("committed",outsider);
+    test("OUTSIDE_ACCOUNT_CANNOT_OPEN_REGISTERED_FILE",outside.status === 404);
+    const [first, second] = await Promise.all([broker("committed"),broker("committed")]);
+    const exact = r => r.status === 200 && r.mime === PDF && r.cache.includes("no-store") && digest(r.data) === hash;
+    test("AUTHORIZED_DOWNLOADS_CHARGED_AND_BYTES_EXACT",exact(first) && exact(second));
+    const blocked = await broker("committed");
+    test("THIRD_DOWNLOAD_IN_WINDOW_DENIED",blocked.status === 429 && blocked.data?.error === "PRIVATE_FILE_DOWNLOAD_LIMIT");
   } catch (error) { failure = error; }
   finally {
     if (confirmed) try {
       const w = await workspace();
       need(exactWorkspace(w),"EXACT_LIFECYCLE_CLEANUP_WORKSPACE");
-      if (w.status === "active" && w.business_support_version === 45) {
+      if (w.status === "active" && w.business_support_version === 47) {
         for (const lane of Object.keys(DOCUMENTS)) try {
           const rows = await docs(lane);
           need(rows.status === 200 && [0,1].includes(rows.data?.length),"EXACT_LIFECYCLE_CLEANUP_READ");
@@ -123,12 +132,12 @@ async function exercise({ actors,evidence },key,term) {
             && removal.data.every(row => row.name === pathFor(lane)),"EXACT_LIFECYCLE_OBJECT_CLOSE_ACK");
           evidence.cleanup[lane] = true;
         } catch (error) { cleanupFailure ??= error; }
-        need((await status("suspended",45)).status === 200,"EXACT_LIFECYCLE_SUSPEND_ACK");
+        need((await status("suspended",47)).status === 200,"EXACT_LIFECYCLE_SUSPEND_ACK");
         const closed = await workspace();
-        need(exactWorkspace(closed) && closed.status === "suspended" && closed.business_support_version === 46,
+        need(exactWorkspace(closed) && closed.status === "suspended" && closed.business_support_version === 48,
           "EXACT_CLOSED_LIFECYCLE_WORKSPACE");
         evidence.cleanup.suspended = true;
-      } else need(w.status === "suspended" && w.business_support_version === 44,"EXACT_LIFECYCLE_CLEANUP_STATE");
+      } else need(w.status === "suspended" && w.business_support_version === 46,"EXACT_LIFECYCLE_CLEANUP_STATE");
     } catch (error) { cleanupFailure ??= error; }
     if (failure instanceof Stop) evidence.first_failed_check = failure.code;
   }
@@ -140,7 +149,7 @@ async function main() {
   const plan = JSON.parse(await readFile(new URL("./staging-business-lifecycle-run.json",import.meta.url),"utf8"));
   if (plan.enabled === false) return {result:"BUSINESS_LIFECYCLE_PLAN_ARCHIVED",exit_code:0};
   need(plan.enabled === true && plan.project === "dczlddwbtgvfdujgcitb" && plan.workspace === WORKSPACE
-    && plan.status === "HOSTED_BUSINESS_LIFECYCLE_ONCE" && Date.parse(plan.paid_through) > Date.now()
+    && plan.status === "HOSTED_BUSINESS_SCHEDULED_LIFECYCLE_ONCE" && Date.parse(plan.paid_through) > Date.now()
     && JSON.stringify(plan.documents) === JSON.stringify(Object.values(DOCUMENTS)),"EXACT_LIFECYCLE_PLAN_REQUIRED");
   need(process.env.GITHUB_REPOSITORY === "dwtdhruvp246/mushavobudget"
     && process.env.GITHUB_REF === "refs/heads/security/stage-3-authorization" && process.env.GITHUB_RUN_ATTEMPT === "1","EXACT_LIFECYCLE_BRANCH_REQUIRED");

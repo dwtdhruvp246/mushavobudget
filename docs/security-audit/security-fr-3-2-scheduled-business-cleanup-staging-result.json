@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-15",
+  "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 scheduled Business file cleanup",
+  "result": "STAGING_SIGNED_SCHEDULED_BUSINESS_CLEANUP_SCOPED_PASS",
+  "source_commit": "b479f34e84f52a8e3efee0b6232adebadb4307f7",
+  "run_id": 43694386481,
+  "job_id": 132751597610,
+  "hosted_checks_passed": 11,
+  "local_regression_checks_passed": 111,
+  "local_sql_download_quota_checks_passed": 11,
+  "first_run": {
+    "id": 43692947038,
+    "result": "TIMEOUT_WITH_NO_WORKER_REQUEST",
+    "worker_runtime_cause": "REDIRECT_ERROR_MODE_UNSUPPORTED",
+    "supabase_pg_net_acl_dry_run_rolled_back": true
+  },
+  "cloudflare": {
+    "worker": "mushavo-budget-stg-private-file-cleanup",
+    "bundle_etag": "a36404b9973c79100f2fafababb89e7391ae94b556d5fdeb1292493ecf338973",
+    "signed_idle_request_readback": "2026-11-15T08:23:45.071000",
+    "signed_dispatch_receipt_verified": true,
+    "temporary_schedule_removed": true,
+    "public_subdomain_enabled": false
+  },
+  "edge_function_version": 3,
+  "dispatch_postgres_witness": {
+    "expiry_and_duplicate_requests_denied": true,
+    "receipt_written_once": true
+  },
+  "hosted": {
+    "checks": {
+      "EXACT_SUSPENDED_LIFECYCLE_FIXTURE": true,
+      "EXACT_LIFECYCLE_FIXTURE_RESUMED": true,
+      "LIFECYCLE_ACTOR_BOUND": true,
+      "UNSIGNED_SCHEDULED_INVOCATION_DENIED": true,
+      "DIRECT_RESERVED_PATH_UPLOAD_DENIED": true,
+      "VALIDATED_BUT_UNREGISTERED_UPLOAD": true,
+      "SECOND_UPLOAD_AT_CAPACITY_DENIED": true,
+      "UNREGISTERED_FILE_STAYS_PRIVATE": true,
+      "UNEXPIRED_UPLOAD_PRESERVED": true,
+      "SCHEDULED_WORKER_REMOVED_EXPIRED_OBJECT": true,
+      "REMOVED_OBJECT_CANNOT_REGISTER": true
+    },
+    "requests": 28,
+    "cleanup": {
+      "orphan": true,
+      "committed": true,
+      "suspended": true
+    },
+    "first_upload_status": 200,
+    "status_polls": 9
+  },
+  "independent_cleanup": {
+    "status": "suspended",
+    "business_support_version": 52,
+    "onboarding_status": "in_progress",
+    "paid_through_at": "2026-11-14 00:00:00+00",
+    "subscription_version": 1,
+    "enabled": false,
+    "scheduler_gate": false,
+    "paid_attachment_gate": false,
+    "exact_scheduler_removal_receipts": 1,
+    "orphan_manifest": {
+      "state": "removed",
+      "attempts": 1
+    },
+    "orphan_objects": 0,
+    "preserved_referenced_proof": 1,
+    "test_sessions": 0,
+    "cron_network_extensions": 0,
+    "outbox": 0,
+    "catalog_matches": true
+  },
+  "logged_out_sessions": 3,
+  "stage_business_bill_payment_quota_evidence": "security-fr-3-2-business-bill-payment-quota-staging-result.json",
+  "production_changed": false,
+  "full_FR_3_2_complete": false,
+  "exit_code": 0
+}

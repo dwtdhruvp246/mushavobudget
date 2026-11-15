@@ -27,7 +27,7 @@ async function exercise({actors,evidence},key,origin,chromium){
     need(evidence.served_source[file],"EXACT_BROWSER_RELEASE_ASSETS");
   }
   const stats=evidence.browser={validator:0,submission:0,direct_storage_writes:0,blocked:[],phase:"START"};
-  let receipt, itemId;
+  let receipt, itemId, intent, page;
   const browser=await chromium.launch({headless:true});
   try{
     const ctx=await browser.newContext({serviceWorkers:"block",userAgent:"Mozilla/5.0 "+AGENT,timezoneId:"UTC"});
@@ -48,18 +48,14 @@ async function exercise({actors,evidence},key,origin,chromium){
           const parts=(req.headers()["x-mushavo-attachment"]||"").split(":");
           allow=++stats.validator===1&&parts.length===3&&parts[0]==="payment-proofs"&&parts[1]===WORKSPACE&&safeId(parts[2])
             && req.headers()["content-type"]==="image/png"&&req.postDataBuffer()?.equals(image);
-          if(allow){
-            const response=await route.fetch({maxRedirects:0});
-            if(response.status()===200)receipt=await response.json();
-            stats.validator_http=response.status();
-            return route.fulfill({response});
-          }
+          if(allow) intent=parts[2];
         }else if(method==="POST"&&url.pathname==="/rest/v1/rpc/create_completed_one_time_payment"){
           const p=req.postDataJSON();
           allow=++stats.submission===1&&p.p_workspace_id===WORKSPACE&&p.p_name===NOTE&&p.p_amount===0.02
-            &&p.p_currency==="USD"&&p.p_paid_by_member_id===null&&filePath(receipt?.path)
-            &&p.p_proof_path===receipt.path&&p.p_proof_name==="synthetic-browser.png"
-            &&p.p_proof_mime_type===receipt.type&&receipt.type==="image/png"&&p.p_proof_size_bytes===receipt.size;
+            &&p.p_currency==="USD"&&p.p_paid_by_member_id===null&&filePath(p.p_proof_path)
+            &&p.p_proof_path.split("/")[3]===intent&&p.p_proof_name==="synthetic-browser.png"
+            &&p.p_proof_mime_type==="image/png"&&Number.isInteger(p.p_proof_size_bytes)&&p.p_proof_size_bytes>0&&p.p_proof_size_bytes<1024;
+          if(allow) stats.attached_size=p.p_proof_size_bytes;
           if(allow){
             const response=await route.fetch({maxRedirects:0});
             stats.submission_http=response.status();
@@ -72,7 +68,8 @@ async function exercise({actors,evidence},key,origin,chromium){
       if(stats.blocked.length<20&&[origin,API_ORIGIN].includes(url.origin))stats.blocked.push([method,url.pathname.replace(/[a-f0-9-]{36}/g,"[id]").slice(0,125)]);
       return route.abort("blockedbyclient");
     });
-    const page=await ctx.newPage();
+    page=await ctx.newPage();
+    page.on("pageerror",error=>{ stats.browser_error_class=error.name; });
     stats.phase="OPEN_DASHBOARD";
     await page.goto(origin+"/app#personal/dashboard",{waitUntil:"domcontentloaded"});
     await page.locator("[data-open-dashboard-payment]").click();
@@ -86,7 +83,11 @@ async function exercise({actors,evidence},key,origin,chromium){
     await form.locator("#completedPaymentProof").setInputFiles({name:"synthetic-browser.png",mimeType:"image/png",buffer:image});
     stats.phase="SUBMIT_FROM_BROWSER_FORM";
     const isPayment=r=>r.url()===API_ORIGIN+"/rest/v1/rpc/create_completed_one_time_payment"&&r.request().method()==="POST";
-    const [result]=await Promise.all([page.waitForResponse(isPayment),form.locator("#completedPaymentSubmit").click()]);
+    const validator=page.waitForResponse(r=>r.url()===API_ORIGIN+"/functions/v1/validate-ordinary-private-upload"&&r.request().method()==="POST");
+    const payment=page.waitForResponse(isPayment);
+    const readValidator=validator.then(async r=>{stats.validator_http=r.status(); if(r.ok())receipt=await r.json();});
+    const [result]=await Promise.all([payment,readValidator,form.locator("#completedPaymentSubmit").click()]);
+    need(filePath(receipt?.path)&&receipt.size===stats.attached_size,"BROWSER_CANONICAL_METADATA_MATCH");
     need(result.status()===200&&safeId(itemId)&&stats.validator===1&&stats.submission===1&&stats.direct_storage_writes===0,
       "BROWSER_USED_MANAGED_UPLOAD_AND_REGISTERED_RECEIPT");
     await form.waitFor({state:"hidden"});
@@ -96,6 +97,13 @@ async function exercise({actors,evidence},key,origin,chromium){
     stats.broker_exact=b.status===200&&Buffer.from(await b.arrayBuffer()).length===receipt.size;
     need(stats.broker_exact,"BROWSER_ATTACHED_PROOF_PRIVATE_READBACK");
     stats.phase="COMPLETE";
+  }catch(error){
+    if(page){
+      const label=await page.locator("#toast").textContent({timeout:1200}).catch(()=>"");
+      const known=["workspace changed","validated file could not be confirmed","fetch","Edge Function","size or processing","format could not be validated","Too many uploads"];
+      stats.ui_error_class=known.find(value=>label.toLowerCase().includes(value.toLowerCase()))||null;
+    }
+    throw error;
   }finally{
     await browser.close();
     if(safeId(itemId)){

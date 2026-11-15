@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "pass": "retry-dashboard-entry",
+  "pass": "direct-browser-cors-observation",
   "project": "dczlddwbtgvfdujgcitb",
   "origin": "https://2f308ee0.mushavo-budget-staging.pages.dev"
 }

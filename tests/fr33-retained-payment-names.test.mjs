@@ -210,3 +210,43 @@ test('payment history displays saved names when the original account link is gon
   assert.deepEqual(emitted, [12, 'date · ref · cash · Recorded by Actual Recorder']);
   assert.equal(business.match(/fr33_bill_payment_names\(recorder_name\)/g)?.length, 2);
 });
+
+test('Business claim and income details display the retained names', async () => {
+  const source = await readFile(new URL('../business.js', import.meta.url), 'utf8');
+  const nodes = new Map();
+  const $ = (selector) => {
+    if (!nodes.has(selector)) nodes.set(selector, {
+      open: true, classList: { toggle() {}, add() {} }, reset() {},
+      replaceChildren(...children) { this.children = children; },
+      append() {}
+    });
+    return nodes.get(selector);
+  };
+  const claim = {
+    id: 'claim', kind: 'reimbursement', status: 'paid', submitted_by: null,
+    retained_submitter_name: 'Former Submitter', retained_reviewer_name: 'Former Reviewer',
+    retained_payer_name: 'Former Payer', employee_payment_source: 'Cash'
+  };
+  const income = {
+    status: 'voided', retained_recorder_name: 'Former Recorder',
+    retained_voider_name: 'Former Voider'
+  };
+  const context = {
+    $, claim, income, openedIncome: null, openedClaimId: claim.id,
+    state: { claims: [claim], session: { user: { id: 'owner' } }, workspaceMembers: [{ user_id: null, full_name: 'Unrelated' }],
+      businessCategories: [], businessDimensions: [], claimReceipts: [] },
+    detailLine: (label, value) => [label, value], formatDate: String, formatDateTime: String,
+    money: String, sourceLabel: String, claimNode() {}, claimPermission: () => false,
+    setClaimMessage() {}, supabase: { rpc() {} }, query: async () => []
+  };
+  const incomeDetail = source.slice(source.indexOf('function showIncomeDetail('), source.indexOf('async function voidIncome('));
+  const claimDetail = source.slice(source.indexOf('async function renderClaimDetail('), source.indexOf('function openClaimDetail('));
+  await runInNewContext(`${incomeDetail}\n${claimDetail}\nshowIncomeDetail(income); renderClaimDetail();`, context);
+  const claimFields = new Map($('#claimDetailFields').children);
+  assert.equal(claimFields.get('Employee paid by'), 'Former Submitter · Cash');
+  assert.equal(claimFields.get('Reviewed by'), 'Former Reviewer');
+  assert.equal(claimFields.get('Paid by'), 'Former Payer');
+  const incomeFields = new Map($('#incomeDetailFields').children);
+  assert.equal(incomeFields.get('Recorded by'), 'Former Recorder');
+  assert.equal(incomeFields.get('Voided by'), 'Former Voider');
+});

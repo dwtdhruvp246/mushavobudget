@@ -516,7 +516,10 @@ function showIncomeDetail(receipt) {
     detailLine('From', receipt.received_from || '—'), detailLine('Reference', receipt.reference), detailLine('Payment source', sourceLabel(receipt.payment_source)),
     detailLine('Category', state.businessCategories.find((item) => item.id === receipt.category_id)?.name || 'Archived category'),
     detailLine('Project, branch or team', state.businessDimensions.find((item) => item.id === receipt.dimension_id)?.name || 'None'),
-    detailLine('Notes', receipt.description || '—'), detailLine('Recorded', formatDateTime(receipt.created_at)), detailLine('Void reason', receipt.void_reason || '—'), detailLine('Voided', formatDateTime(receipt.voided_at)));
+    detailLine('Notes', receipt.description || '—'), detailLine('Recorded', formatDateTime(receipt.created_at)),
+    ...(receipt.retained_recorder_name ? [detailLine('Recorded by', receipt.retained_recorder_name)] : []),
+    detailLine('Void reason', receipt.void_reason || '—'), detailLine('Voided', formatDateTime(receipt.voided_at)),
+    ...(receipt.retained_voider_name ? [detailLine('Voided by', receipt.retained_voider_name)] : []));
   $('#incomeVoidForm').classList.toggle('hidden', receipt.status !== 'received' || !claimPermission('finance.record_payment'));
   $('#incomeVoidForm').reset(); setClaimMessage('#incomeDetailMessage');
   if (!$('#businessIncomeDetailDialog').open) $('#businessIncomeDetailDialog').showModal();
@@ -1177,6 +1180,9 @@ async function renderClaimDetail() {
   const claim = state.claims.find((item) => item.id === openedClaimId);
   if (!claim || !$("#businessClaimDetailDialog").open) return;
   const own = claim.submitted_by === state.session.user.id;
+  const submitterName = claim.retained_submitter_name ||
+    state.workspaceMembers.find((member) => member.user_id === claim.submitted_by)?.full_name ||
+    (own ? 'You' : 'Submitting member');
   $("#claimDetailTitle").textContent = claim.title;
   $("#claimDetailMeta").textContent = `${claim.kind === "reimbursement" ? "Reimbursement claim" : "Company expense"} · ${claim.status.replaceAll("_", " ")}`;
   $("#claimDetailFields").replaceChildren(
@@ -1185,9 +1191,12 @@ async function renderClaimDetail() {
     detailLine("Expense date", formatDate(claim.expense_date)),
     detailLine("Category", state.businessCategories.find((item) => item.id === claim.category_id)?.name || "Archived category"),
     detailLine("Details", claim.description || "—"),
-    detailLine("Employee paid by", claim.kind === 'reimbursement' ? `${state.workspaceMembers.find((member) => member.user_id === claim.submitted_by)?.full_name || (own ? 'You' : 'Submitting member')} · ${sourceLabel(claim.employee_payment_source)}` : 'Not an employee reimbursement'),
+    detailLine("Employee paid by", claim.kind === 'reimbursement' ? `${submitterName} · ${sourceLabel(claim.employee_payment_source)}` : 'Not an employee reimbursement'),
+    ...(claim.kind !== 'reimbursement' && claim.retained_submitter_name ? [detailLine('Submitted by', submitterName)] : []),
     detailLine("Review", claim.review_reason || "—"),
-    detailLine("Payment", claim.paid_at ? `${formatDate(claim.paid_at)} · ${claim.payment_reference} · ${sourceLabel(claim.payment_source)}` : "Not recorded")
+    ...(claim.retained_reviewer_name ? [detailLine('Reviewed by', claim.retained_reviewer_name)] : []),
+    detailLine("Payment", claim.paid_at ? `${formatDate(claim.paid_at)} · ${claim.payment_reference} · ${sourceLabel(claim.payment_source)}` : "Not recorded"),
+    ...(claim.retained_payer_name ? [detailLine('Paid by', claim.retained_payer_name)] : [])
   );
   const receipts = state.claimReceipts.filter((item) => item.parent_id === claim.id);
   const receiptList = $("#claimReceiptList");

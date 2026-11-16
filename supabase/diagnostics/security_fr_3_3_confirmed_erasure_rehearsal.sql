@@ -1,4 +1,4 @@
--- Staging-only owned Business erasure regression with disposable accounts.
+-- Staging-only account erasure rehearsal with disposable accounts and finance records.
 BEGIN;
 SET LOCAL lock_timeout='1500ms';
 SET LOCAL statement_timeout='25s';
@@ -49,6 +49,15 @@ DECLARE
   audit_snapshot jsonb;
   surviving_audit_snapshot jsonb;
   billing_grant uuid := gen_random_uuid();
+  retained_claim uuid := gen_random_uuid();
+  retained_income uuid := gen_random_uuid();
+  historical_void uuid := gen_random_uuid();
+  retained_claim_before jsonb;
+  retained_income_before jsonb;
+  historical_void_before jsonb;
+  updated_income public.business_income_receipts%ROWTYPE;
+  outsider uuid := gen_random_uuid();
+  outsider_session uuid := gen_random_uuid();
 BEGIN
  IF NOT EXISTS(SELECT FROM mushavo_email_install.rollout_control WHERE target_project='dczlddwbtgvfdujgcitb') THEN RAISE EXCEPTION 'STAGING_ONLY'; END IF;
  INSERT INTO auth.users(id,email,raw_user_meta_data,email_confirmed_at,created_at,updated_at)
@@ -170,6 +179,40 @@ BEGIN
  SELECT jsonb_agg(to_jsonb(audit) ORDER BY id) INTO audit_snapshot
  FROM public.business_audit_events audit WHERE workspace_id=owned_business;
  SELECT (to_jsonb(audit)-'actor_id') INTO STRICT surviving_audit_snapshot FROM public.business_audit_events audit WHERE id=surviving_event;
+
+ INSERT INTO public.business_expense_claims(id,workspace_id,submitted_by,kind,title,category_id,amount,currency,
+   reporting_currency,reporting_amount,exchange_rate,rate_effective_at,rate_provider,expense_date,status,
+   reviewed_by,reviewed_at,paid_by,paid_at,payment_reference)
+ VALUES(retained_claim,surviving_business,departing_user,'reimbursement','Retained synthetic claim',category_uuid,27,'USD',
+   'USD',27,1,now(),'identity',current_date,'paid',owner_user,now(),departing_user,now(),'Fixture paid claim');
+ INSERT INTO public.business_income_receipts(id,workspace_id,title,reference,category_id,amount,currency,reporting_currency,
+   reporting_amount,exchange_rate,rate_effective_at,rate_provider,received_on,payment_source,recorded_by,status,voided_by,voided_at,void_reason)
+ VALUES(retained_income,surviving_business,'Retained synthetic income','Fixture retained income',category_uuid,29,'USD','USD',
+   29,1,now(),'identity',current_date,'cash',departing_user,'received',NULL,NULL,NULL),
+ (historical_void,surviving_business,'Retained voided income','Fixture voided income',category_uuid,37,'USD','USD',
+   37,1,now(),'identity',current_date,'cash',owner_user,'voided',departing_user,now(),'Fixture void');
+ SELECT to_jsonb(claim)-ARRAY['submitted_by','paid_by','retained_submitter_name','retained_payer_name']
+   INTO STRICT retained_claim_before FROM public.business_expense_claims claim WHERE id=retained_claim;
+ SELECT to_jsonb(income_row)-ARRAY['recorded_by','retained_recorder_name']
+   INTO STRICT retained_income_before FROM public.business_income_receipts income_row WHERE id=retained_income;
+ SELECT to_jsonb(income_row)-ARRAY['voided_by','retained_voider_name']
+   INTO STRICT historical_void_before FROM public.business_income_receipts income_row WHERE id=historical_void;
+ BEGIN
+   UPDATE public.business_income_receipts SET retained_voider_name='Forged name' WHERE id=historical_void;
+   RAISE EXCEPTION 'ORDINARY_HISTORY_EDIT_ALLOWED';
+ EXCEPTION WHEN raise_exception THEN
+   IF SQLERRM <> 'FR33_BUSINESS_HISTORY_ATTRIBUTION_IMMUTABLE' THEN RAISE; END IF;
+ END;
+ BEGIN
+   UPDATE public.business_expense_claims SET paid_by=NULL WHERE id=retained_claim;
+   RAISE EXCEPTION 'ORDINARY_PAID_ACTOR_CLEAR_ALLOWED';
+ EXCEPTION WHEN raise_exception THEN
+   IF SQLERRM <> 'FR33_BUSINESS_HISTORY_ATTRIBUTION_IMMUTABLE' THEN RAISE; END IF;
+ END;
+ INSERT INTO auth.users(id,email,raw_user_meta_data,email_confirmed_at,created_at,updated_at)
+ VALUES(outsider,'outsider-'||outsider||'@fr33familydetach.example.invalid',
+   '{"signup_source":"admin_invitation","full_name":"Synthetic Outsider"}',now(),now(),now());
+ INSERT INTO auth.sessions(id,user_id,created_at,updated_at,aal) VALUES(outsider_session,outsider,now(),now(),'aal1');
  INSERT INTO auth.mfa_amr_claims(id,session_id,created_at,updated_at,authentication_method)
  VALUES(gen_random_uuid(),departing_session,now(),now(),'password');
  departing_claims := jsonb_build_object('role','authenticated','sub',departing_user::text,
@@ -249,6 +292,10 @@ BEGIN
     OR NOT EXISTS (SELECT FROM public.payment_records WHERE id=owned_record)
     OR NOT EXISTS (SELECT FROM public.workspace_members WHERE workspace_id=test_workspace AND user_id=departing_user)
     OR NOT EXISTS (SELECT FROM public.payment_records WHERE id=test_payment AND recorded_by=departing_user)
+    OR NOT EXISTS (SELECT FROM public.business_expense_claims WHERE id=retained_claim AND submitted_by=departing_user
+       AND paid_by=departing_user AND retained_submitter_name IS NULL AND retained_payer_name IS NULL)
+    OR NOT EXISTS (SELECT FROM public.business_income_receipts WHERE id=retained_income AND recorded_by=departing_user
+       AND retained_recorder_name IS NULL)
     OR NOT EXISTS (SELECT FROM public.business_bill_payments WHERE id=bill_payment_uuid AND recorded_by=departing_user)
     OR EXISTS (SELECT FROM public.fr33_family_payment_names WHERE payment_id=test_payment)
  THEN RAISE EXCEPTION 'FAILED_EXECUTION_DID_NOT_ROLL_BACK'; END IF;
@@ -309,6 +356,19 @@ BEGIN
  EXCEPTION WHEN raise_exception THEN
    IF SQLERRM <> 'BUSINESS_AUDIT_IMMUTABLE' THEN RAISE; END IF;
  END;
+ IF NOT EXISTS (SELECT FROM public.business_expense_claims claim WHERE id=retained_claim AND submitted_by IS NULL
+      AND paid_by IS NULL AND retained_submitter_name='Synthetic Retained Family Person'
+      AND retained_payer_name='Synthetic Retained Family Person'
+      AND to_jsonb(claim)-ARRAY['submitted_by','paid_by','retained_submitter_name','retained_payer_name']=retained_claim_before)
+   OR NOT EXISTS (SELECT FROM public.business_income_receipts income_row WHERE id=retained_income AND recorded_by IS NULL
+      AND retained_recorder_name='Synthetic Retained Family Person'
+      AND to_jsonb(income_row)-ARRAY['recorded_by','retained_recorder_name']=retained_income_before)
+   OR NOT EXISTS (SELECT FROM public.business_income_receipts income_row WHERE id=historical_void AND voided_by IS NULL
+      AND retained_voider_name='Synthetic Retained Family Person'
+      AND to_jsonb(income_row)-ARRAY['voided_by','retained_voider_name']=historical_void_before)
+   OR EXISTS (SELECT FROM mushavo_account_deletion.business_attribution_permits)
+   OR has_function_privilege('authenticated','mushavo_account_deletion.detach_retained_business_claim_and_income_actors(uuid)','EXECUTE')
+ THEN RAISE EXCEPTION 'BUSINESS_FINANCIAL_HISTORY_CHANGED'; END IF;
  IF NOT EXISTS (SELECT FROM public.business_bill_payments payment WHERE id=bill_payment_uuid AND recorded_by IS NULL
       AND to_jsonb(payment)-'recorded_by'=bill_before)
     OR NOT EXISTS (SELECT FROM public.fr33_bill_payment_names WHERE payment_id=bill_payment_uuid
@@ -331,6 +391,23 @@ BEGIN
     OR NOT EXISTS (SELECT FROM public.fr33_bill_payment_names WHERE payment_id=bill_payment_uuid
        AND recorder_name='Synthetic Retained Family Person')
  THEN RAISE EXCEPTION 'SURVIVING_OWNER_CANNOT_READ_BUSINESS_HISTORY'; END IF;
+ IF NOT EXISTS (SELECT FROM public.business_expense_claims WHERE id=retained_claim AND retained_submitter_name='Synthetic Retained Family Person')
+   OR NOT EXISTS (SELECT FROM public.business_income_receipts WHERE id=retained_income AND retained_recorder_name='Synthetic Retained Family Person')
+ THEN RAISE EXCEPTION 'BUSINESS_MEMBER_CANNOT_READ_RETAINED_ATTRIBUTION'; END IF;
+ SELECT * INTO updated_income
+ FROM public.void_business_income(surviving_business,retained_income,'Synthetic void after erasure');
+ IF updated_income.retained_recorder_name IS DISTINCT FROM 'Synthetic Retained Family Person'
+   OR NOT EXISTS (SELECT FROM public.business_income_receipts WHERE id=retained_income
+     AND status='voided' AND voided_by=owner_user)
+ THEN RAISE EXCEPTION 'BUSINESS_INCOME_VOID_LOST_HISTORICAL_RECORDER'; END IF;
+ RESET ROLE;
+ PERFORM set_config('request.jwt.claims',jsonb_build_object('role','authenticated','sub',outsider::text,
+  'session_id',outsider_session::text,'aal','aal1','exp',floor(extract(epoch from now()+interval '5 minutes'))::bigint)::text,true);
+ SET LOCAL ROLE authenticated;
+ IF public.app_session_status()->>'session_valid' IS DISTINCT FROM 'true'
+   OR EXISTS (SELECT FROM public.business_expense_claims WHERE id=retained_claim)
+   OR EXISTS (SELECT FROM public.business_income_receipts WHERE id IN (retained_income,historical_void))
+ THEN RAISE EXCEPTION 'BUSINESS_RETAINED_ATTRIBUTION_SCOPE_CHANGED'; END IF;
  RESET ROLE;
  IF has_function_privilege('authenticated','mushavo_account_deletion.detach_retained_family_memberships(uuid)','EXECUTE') THEN
    RAISE EXCEPTION 'FAMILY_MEMBERSHIP_HELPER_PUBLIC';
@@ -339,7 +416,7 @@ BEGIN
     OR has_function_privilege('service_role','mushavo_account_deletion.detach_retained_family_payment_actors(uuid)','EXECUTE')
     OR has_table_privilege('authenticated','mushavo_account_deletion.family_payment_update_permits','INSERT')
  THEN RAISE EXCEPTION 'ORDINARY_USER_HAS_DETACH_GRANT'; END IF;
- RAISE NOTICE 'FR33_OWNED_BUSINESS_ERASURE_REHEARSAL_PASSED';
+ RAISE NOTICE 'FR33_BUSINESS_FINANCE_RETENTION_REHEARSAL_PASSED';
 END;
 $trial$;
 ROLLBACK;

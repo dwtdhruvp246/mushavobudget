@@ -268,8 +268,13 @@ test('deletion requests are private, idempotent, cancellable and held for review
       INSERT INTO public.fixture_family_records VALUES ('${modernFamily}');
       INSERT INTO public.fixture_workspace_records VALUES ('${business}'), ('${workspace}'), ('${workspace}');
       INSERT INTO public.families VALUES ('${sharedFamily}', '${other}', 'Shared Family');
-      ALTER TABLE public.family_members ADD COLUMN id uuid, ADD COLUMN created_by uuid;
-      INSERT INTO public.family_members VALUES ('${owner}', '${payer}', '${other}');
+      ALTER TABLE auth.users ADD COLUMN email text;
+      UPDATE auth.users SET email = 'fixture@example.invalid' WHERE id = '${owner}';
+      CREATE TABLE public.profiles (id uuid PRIMARY KEY, full_name text);
+      ALTER TABLE public.family_members ADD COLUMN id uuid, ADD COLUMN created_by uuid,
+        ADD COLUMN family_id uuid, ADD COLUMN name text, ADD COLUMN email text;
+      INSERT INTO public.family_members VALUES
+        ('${owner}', '${payer}', '${other}', '${sharedFamily}', 'Fixture Name', 'fixture@example.invalid');
       CREATE TABLE public.payment_items (id uuid PRIMARY KEY, owner_id uuid, created_by uuid);
       CREATE TABLE public.payment_records (
         family_id uuid, payment_item_id uuid, paid_by_member_id uuid, owner_id uuid,
@@ -325,6 +330,27 @@ test('deletion requests are private, idempotent, cancellable and held for review
       business_income_receipts: 1,
       business_paid_claims: 1
     });
+    assert.deepEqual(report.historical_payment_names, {
+      family_recordings_without_name: 0,
+      family_payers_without_name: 0,
+      profile_name_available: false
+    });
+    assert.ok(!JSON.stringify(report).includes('Fixture Name'));
+
+    await db.exec(`UPDATE public.family_members SET name = 'fixture@example.invalid' WHERE id = '${payer}'`);
+    assert.deepEqual((await reviewWorkspace(confirmed.request_id)).historical_payment_names, {
+      family_recordings_without_name: 1,
+      family_payers_without_name: 1,
+      profile_name_available: false
+    });
+    await db.exec(`INSERT INTO public.profiles VALUES ('${owner}', 'Fixture Profile Name')`);
+    const profileFallback = await reviewWorkspace(confirmed.request_id);
+    assert.deepEqual(profileFallback.historical_payment_names, {
+      family_recordings_without_name: 0,
+      family_payers_without_name: 0,
+      profile_name_available: true
+    });
+    assert.ok(!JSON.stringify(profileFallback).includes('Fixture Profile Name'));
     const rows = Object.fromEntries(report.direct_dependencies.map(row => [row.relation, [row.on_delete, row.matching_rows]]));
     assert.deepEqual(rows, { fixture_family_records: ['CASCADE', 1], fixture_workspace_records: ['RESTRICT', 1] });
     assert.ok(!JSON.stringify(report).includes(business));

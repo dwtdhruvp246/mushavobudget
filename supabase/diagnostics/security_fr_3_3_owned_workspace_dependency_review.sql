@@ -21,6 +21,9 @@ DECLARE
   dependencies jsonb := '[]'::jsonb;
   shared_family_payments bigint;
   shared_family_proofs bigint;
+  unnamed_family_recordings bigint;
+  unnamed_family_payers bigint;
+  profile_name_available boolean;
 BEGIN
   SELECT r.subject_id, r.workspace_impact_token, r.workspace_impact_confirmed_at
   INTO subject, confirmed_token, confirmed_at
@@ -101,8 +104,24 @@ BEGIN
 
   -- Account deletion can affect a payment through its recorder, its payment
   -- item or the linked payer. Count each payment once in the surviving Family.
-  SELECT count(*), count(*) FILTER (WHERE p.proof_path IS NOT NULL)
-  INTO shared_family_payments, shared_family_proofs
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles profile
+    JOIN auth.users account ON account.id = profile.id
+    WHERE profile.id = subject AND nullif(btrim(profile.full_name), '') IS NOT NULL
+      AND lower(btrim(profile.full_name)) IS DISTINCT FROM lower(btrim(account.email))
+  ) INTO profile_name_available;
+
+  SELECT count(*), count(*) FILTER (WHERE p.proof_path IS NOT NULL),
+    count(*) FILTER (WHERE p.recorded_by = subject AND NOT profile_name_available AND NOT EXISTS (
+      SELECT 1 FROM public.family_members recorder
+      WHERE recorder.family_id = f.id AND recorder.user_id = subject
+        AND nullif(btrim(recorder.name), '') IS NOT NULL
+        AND lower(btrim(recorder.name)) IS DISTINCT FROM lower(btrim(recorder.email))
+    )),
+    count(*) FILTER (WHERE payer.user_id = subject AND NOT profile_name_available AND (
+      nullif(btrim(payer.name), '') IS NULL OR lower(btrim(payer.name)) IS NOT DISTINCT FROM lower(btrim(payer.email))
+    ))
+  INTO shared_family_payments, shared_family_proofs, unnamed_family_recordings, unnamed_family_payers
   FROM public.payment_records p
   JOIN public.families f ON f.id = p.family_id
   JOIN public.payment_items i ON i.id = p.payment_item_id
@@ -144,6 +163,11 @@ BEGIN
         WHERE w.workspace_type = 'business' AND w.owner_id IS DISTINCT FROM subject
           AND c.status = 'paid' AND (c.submitted_by = subject OR c.paid_by = subject OR c.reviewed_by = subject)
       )
+    ),
+    'historical_payment_names', jsonb_build_object(
+      'family_recordings_without_name', unnamed_family_recordings,
+      'family_payers_without_name', unnamed_family_payers,
+      'profile_name_available', profile_name_available
     ),
     'file_ledger_rows', jsonb_build_object(
       'ordinary', (SELECT count(*) FROM mushavo_file_ingest.ordinary_uploads u WHERE u.workspace_id = ANY(workspace_ids)),

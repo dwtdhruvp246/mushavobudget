@@ -5,18 +5,18 @@ import {
 } from './staging-access.mjs';
 
 const verifiedHostedTargets = {
-  preview: 'https://441ddf26.mushavo-budget-staging.pages.dev',
+  preview: 'https://7106e2c5.mushavo-budget-staging.pages.dev',
   canonical: WEB_ORIGIN
 };
 const deployedAssetHashes = {
   "/app": "914ac7337a632d71ade8ed8341fa6d1f248ee555fd7372f3b4948a78e4470a7f",
   "/app.js": "7277c26175f2b0e5b8fa1eff47fb2e8c206984f1cd8dcfa9aa7d893c36502308",
-  "/auth": "f3888b4b2423a564fb9d83f3fcc4a257214cdbfd1dcaa97c67d2baaf1fc09f6b",
-  "/auth-flows.js": "b2e55ce9288700d7697ed69b5723225ce6de517f21c3a2558fcc50c1304a7263",
+  "/auth": "1e6709a0827d1419f6e98b4db6792b20368f7b36aab7684b067fbfcd039d3f83",
+  "/auth-flows.js": "6047de0c73e770ef7c5b3cb5b35d5f02abf1c8c6e1254ffb3d7f52e26558d1f1",
   "/business": "1bdb7ac1df770528fc105637918a7d7eb429415ee34f1bf8f0e104a4c2eda292",
   "/business.js": "8166bf5efa83cc4d2d7dc19bddddc017ae8a8479e1c6b9616f3071444cf38111",
   "/business.css": "8c61e8e16848f04e0795eda892c64bf65d8637b260356f4526877990829eff7c",
-  "/styles.css": "16a6b4f5ae04bbce2946b75e821217005a38b42a934fc27b7348db3bc946beb0",
+  "/styles.css": "5297acddf4caa776d0bba4e00ca6753499631c690267e7771e48e50af5e11e94",
   "/config.js": "be23e23251470da5a1caa5c19f9af46763aa9192dee62e96700c317c479cc74c"
 };
 const target = process.env.MUSHAVO_FR33_BROWSER_TARGET || 'candidate';

@@ -18,6 +18,11 @@ const impactMigration = await readFile(new URL(
   import.meta.url
 ), 'utf8');
 
+const workspaceReview = await readFile(new URL(
+  '../supabase/diagnostics/security_fr_3_3_owned_workspace_dependency_review.sql',
+  import.meta.url
+), 'utf8');
+
 const owner = '10000000-0000-4000-8000-000000000001';
 const other = '10000000-0000-4000-8000-000000000002';
 const session = '10000000-0000-4000-8000-000000000003';
@@ -238,6 +243,63 @@ test('deletion requests are private, idempotent, cancellable and held for review
     await assert.rejects(impact, /ACCOUNT_DELETION_OWNERSHIP_REVIEW_REQUIRED/);
     await assert.rejects(() => submit(after.impact_token), /ACCOUNT_DELETION_OWNERSHIP_REVIEW_REQUIRED/);
     await db.exec('RESET ROLE');
+  });
+
+  await t.test('owned workspace dependency review excludes other owners and requires current confirmation', async () => {
+    const modernFamily = '10000000-0000-4000-8000-000000000010';
+    const familyWorkspace = '10000000-0000-4000-8000-000000000012';
+    const business = '10000000-0000-4000-8000-000000000013';
+    await db.exec(`
+      UPDATE public.families SET owner_id = '${owner}' WHERE id = '${modernFamily}';
+      ALTER TABLE public.budget_workspaces ADD PRIMARY KEY (id);
+      ALTER TABLE mushavo_file_ingest.ordinary_uploads ADD COLUMN workspace_id uuid;
+      ALTER TABLE mushavo_file_ingest.subscription_uploads ADD COLUMN workspace_id uuid;
+      ALTER TABLE mushavo_file_ingest.business_uploads ADD COLUMN workspace_id uuid;
+      UPDATE mushavo_file_ingest.ordinary_uploads SET workspace_id =
+        CASE WHEN actor_id = '${owner}' THEN '${familyWorkspace}'::uuid ELSE '${workspace}'::uuid END;
+      UPDATE mushavo_file_ingest.subscription_uploads SET workspace_id = '${workspace}';
+      UPDATE mushavo_file_ingest.business_uploads SET workspace_id = '${business}';
+      CREATE TABLE public.fixture_family_records (family_id uuid REFERENCES public.families (id) ON DELETE CASCADE);
+      CREATE TABLE public.fixture_workspace_records (workspace_id uuid REFERENCES public.budget_workspaces (id) ON DELETE RESTRICT);
+      INSERT INTO public.fixture_family_records VALUES ('${modernFamily}');
+      INSERT INTO public.fixture_workspace_records VALUES ('${business}'), ('${workspace}'), ('${workspace}');
+    `);
+    await db.exec(workspaceReview);
+    const reviewWorkspace = async id => (await db.query(
+      'SELECT mushavo_account_deletion.review_owned_workspace_dependencies($1) AS payload', [id]
+    )).rows[0].payload;
+
+    await actor(owner, session);
+    await cancel();
+    const unconfirmed = await request();
+    await assert.rejects(() => reviewWorkspace(unconfirmed.request_id), { code: '42501' });
+    await db.exec('RESET ROLE');
+    assert.deepEqual(await reviewWorkspace(unconfirmed.request_id), { status: 'WORKSPACE_IMPACT_NOT_CONFIRMED' });
+
+    await actor(owner, session);
+    const confirmed = await submit((await impact()).impact_token);
+    await db.exec('RESET ROLE');
+    const report = await reviewWorkspace(confirmed.request_id);
+    assert.equal(report.status, 'REVIEW_ONLY');
+    assert.equal(report.owned_workspaces, 2);
+    assert.equal(report.owned_legacy_families, 2);
+    assert.equal(report.memberships_in_other_workspaces, 1);
+    assert.deepEqual(report.file_ledger_rows, { ordinary: 1, subscription: 0, business: 1 });
+    const rows = Object.fromEntries(report.direct_dependencies.map(row => [row.relation, [row.on_delete, row.matching_rows]]));
+    assert.deepEqual(rows, { fixture_family_records: ['CASCADE', 1], fixture_workspace_records: ['RESTRICT', 1] });
+    assert.ok(!JSON.stringify(report).includes(business));
+    assert.ok(!JSON.stringify(report).includes(owner));
+
+    await db.exec('SET ROLE service_role');
+    await assert.rejects(() => reviewWorkspace(confirmed.request_id), { code: '42501' });
+    await db.exec('RESET ROLE');
+    await db.exec(`UPDATE public.budget_workspaces SET status = 'closed' WHERE id = '${business}'`);
+    assert.deepEqual(await reviewWorkspace(confirmed.request_id), { status: 'WORKSPACE_IMPACT_CHANGED' });
+
+    await actor(owner, session);
+    await cancel();
+    await db.exec('RESET ROLE');
+    assert.deepEqual(await reviewWorkspace(confirmed.request_id), { status: 'REQUEST_UNAVAILABLE' });
   });
 
 });

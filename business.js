@@ -22,7 +22,7 @@ const TAB_COPY = {
   budgets: ["Business planning", "Budgets", "Plan company spending and monitor limits."],
   reports: ["Business analysis", "Reports", "Understand income, paid spending, and commitments."],
   team: ["People & access", "Team", "Workspace members, roles, and access status."],
-  settings: ["Workspace setup", "Settings", "Business identity and reporting preferences."],
+  settings: ["Workspace setup", "Settings", "Business and account preferences."],
   subscription: ["Plan & access", "Subscription & Billing", "Subscription dates, status, and renewal access."]
 };
 const ROLE_LABELS = {
@@ -2911,9 +2911,11 @@ function resolveWorkspaceLock() {
 
 function renderRoute() {
   let tab = currentTab();
-  if (state.locked) tab = state.lockOwner ? "subscription" : "overview";
-  if (!state.locked && businessOwnerCanSetUp() &&
-      (state.businessProfile?.onboarding_status !== "complete" || setupOpen)) {
+  if (state.locked && tab !== "settings") tab = state.lockOwner ? "subscription" : "overview";
+  const needsSetup = !state.locked && businessOwnerCanSetUp() &&
+    (state.businessProfile?.onboarding_status !== "complete" || setupOpen);
+  const accountOnlySettings = tab === "settings" && (state.locked || needsSetup);
+  if (needsSetup && !accountOnlySettings) {
     state.tab = "overview";
     $("#businessOnboarding").classList.remove("hidden");
     $$("#businessPanels [data-business-panel]").forEach((panel) => panel.classList.add("hidden"));
@@ -2929,11 +2931,13 @@ function renderRoute() {
   state.tab = tab;
   if (tab === 'team' && !state.locked && !state.rolesAttempted) refreshBusinessRoles();
   const [breadcrumb, title, intro] = TAB_COPY[tab];
-  $("#businessBreadcrumb").textContent = breadcrumb;
+  $("#businessBreadcrumb").textContent = accountOnlySettings ? "Account" : breadcrumb;
   $("#businessPageTitle").textContent = title;
-  $("#businessPageIntro").textContent = intro;
+  $("#businessPageIntro").textContent = accountOnlySettings ? "Manage your signed-in account." : intro;
+  $("#businessWorkspaceSettings").classList.toggle("hidden", accountOnlySettings);
+  const hideLockedPanels = state.locked && !state.lockOwner && !accountOnlySettings;
   $$("[data-business-panel]").forEach((panel) => {
-    panel.classList.toggle("hidden", state.locked && !state.lockOwner ? true : panel.dataset.businessPanel !== tab);
+    panel.classList.toggle("hidden", hideLockedPanels || panel.dataset.businessPanel !== tab);
   });
   $$("[data-business-nav]").forEach((link) => { link.classList.toggle("active", link.dataset.businessNav === tab); if (link.dataset.businessNav === tab) link.setAttribute("aria-current", "page"); else link.removeAttribute("aria-current"); });
   if (window.location.hash !== `#business/${tab}`) setWorkspaceUrl(state.workspace.id);

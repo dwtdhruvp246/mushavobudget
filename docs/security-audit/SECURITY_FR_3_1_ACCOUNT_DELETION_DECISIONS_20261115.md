@@ -13,8 +13,10 @@ The request API records a pending case. The rules below would govern processing 
 | Owns a Personal workspace | Erase its payments, cashbook, settings and exclusively personal attachments with the account. Handle platform subscription and billing records under the adopted billing rules. |
 | Owns a Family or Business workspace with active members | Automatically delete the workspace with the owner's account. List the workspace in the confirmation and warn that all its members will lose access. Apply the adopted rules for any underlying records that must be retained. |
 | Sole remaining member and owner of a Family or Business workspace | Automatically delete the workspace with the owner's account. Include it in the confirmation. Apply the adopted rules for any underlying records that must be retained. |
-| Member of a Family or Business workspace | Remove membership and access. Review authored records and files for independently necessary workspace history. Where approved, remove personal contact details and replace display attribution with a neutral label while retaining the amounts, dates and accounting relationships the workspace needs. |
+| Member of a Family or Business workspace owned by someone else | Remove membership and access. Keep the member’s payments in that workspace, including when the member deletes their Mushavo Budget account. Review historical attribution and attached proof separately. |
 | Holds a Mushavo Budget staff role | Review role removal, active access and any independent audit retention obligations before executing account deletion. |
+
+The workspace-payment rule was confirmed on 16 November 2026. Payment amounts, dates and accounting relationships stay in the surviving workspace. The user’s confirmation concerned payment records. The disposition of proof files and identifiable attribution remains open.
 
 ## Data outcomes for approval
 

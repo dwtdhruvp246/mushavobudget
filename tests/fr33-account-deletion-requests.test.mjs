@@ -8,6 +8,11 @@ const migration = await readFile(new URL(
   import.meta.url
 ), 'utf8');
 
+const reviewMigration = await readFile(new URL(
+  '../supabase/migrations/20261116104500_fr33_deletion_dependency_review.sql',
+  import.meta.url
+), 'utf8');
+
 const owner = '10000000-0000-4000-8000-000000000001';
 const other = '10000000-0000-4000-8000-000000000002';
 const session = '10000000-0000-4000-8000-000000000003';
@@ -46,11 +51,36 @@ test('deletion requests are private, idempotent, cancellable and held for review
     INSERT INTO auth.mfa_amr_claims VALUES ('${session}', 'password', now()), ('${otherSession}', 'password', now() - interval '1 hour');
   `);
   await db.exec(migration);
+  await db.exec(`
+    ALTER TABLE auth.users ADD COLUMN external_ref text UNIQUE;
+    CREATE SCHEMA storage;
+    CREATE TABLE storage.objects (owner_id text, owner uuid, name text);
+    CREATE SCHEMA mushavo_file_ingest;
+    CREATE TABLE mushavo_file_ingest.ordinary_uploads (actor_id uuid);
+    CREATE TABLE mushavo_file_ingest.subscription_uploads (uploader_id uuid);
+    CREATE TABLE mushavo_file_ingest.business_uploads (uploader_id uuid);
+    CREATE TABLE public.fixture_billing (owner_id uuid REFERENCES auth.users (id) ON DELETE RESTRICT);
+    CREATE TABLE public.fixture_payments (recorded_by uuid REFERENCES auth.users (id) ON DELETE CASCADE);
+    INSERT INTO public.fixture_billing VALUES ('${owner}'), ('${other}');
+    INSERT INTO public.fixture_payments VALUES ('${owner}'), ('${owner}'), ('${other}');
+    INSERT INTO storage.objects VALUES
+      ('${owner}', NULL, 'owned'),
+      (NULL, '${owner}', 'legacy'),
+      ('${other}', '${owner}', 'conflict'),
+      ('${other}', '${other}', 'other');
+    INSERT INTO mushavo_file_ingest.ordinary_uploads VALUES ('${owner}'), ('${other}');
+    INSERT INTO mushavo_file_ingest.subscription_uploads VALUES ('${owner}');
+    INSERT INTO mushavo_file_ingest.business_uploads VALUES ('${other}');
+  `);
+  await db.exec(reviewMigration);
 
   const call = async name => (await db.query(`SELECT public.${name}() AS payload`)).rows[0].payload;
   const status = () => call('fr33_account_deletion_status');
   const request = () => call('fr33_request_account_deletion');
   const cancel = () => call('fr33_cancel_account_deletion');
+  const review = async id => (await db.query(
+    'SELECT mushavo_account_deletion.review_dependencies($1) AS payload', [id]
+  )).rows[0].payload;
   const actor = (subject, sessionId) => db.exec(`
     RESET ROLE;
     SET request.jwt.claim.sub = '${subject}';
@@ -75,6 +105,39 @@ test('deletion requests are private, idempotent, cancellable and held for review
     assert.deepEqual(await request(), open);
     assert.deepEqual(await status(), open);
     await assert.rejects(db.exec('SELECT * FROM mushavo_account_deletion.requests'), {code: '42501'});
+  });
+  await t.test('operator inventory counts exact request dependencies and protects the details', async () => {
+    const id = (await status()).request_id;
+    await assert.rejects(review(id), {code: '42501'});
+    await db.exec('RESET ROLE; SET ROLE service_role');
+    await assert.rejects(review(id), {code: '42501'});
+    await db.exec('RESET ROLE; SET ROLE anon');
+    await assert.rejects(review(id), {code: '42501'});
+    await db.exec('RESET ROLE');
+
+    const result = await review(id);
+    assert.equal(result.status, 'REVIEW_ONLY');
+    assert.equal(result.restrictive_references_with_rows, 1);
+    assert.equal(result.cascading_references_with_rows, 1);
+    assert.deepEqual(result.direct_dependencies
+      .filter(entry => entry.relation.startsWith('fixture_'))
+      .map(entry => [entry.relation, entry.on_delete, entry.matching_rows]), [
+        ['fixture_billing', 'RESTRICT', 1], ['fixture_payments', 'CASCADE', 2]
+      ]);
+    assert.deepEqual(result.storage, {
+      objects_with_subject_owner: 3, conflicting_owner_metadata: 1,
+      ordinary_upload_ledger_rows: 1, subscription_upload_ledger_rows: 1, business_upload_ledger_rows: 0
+    });
+    assert.ok(!JSON.stringify(result).includes(owner));
+    assert.ok(!JSON.stringify(result).includes(other));
+    assert.ok(!JSON.stringify(result).includes('"conflict"'));
+
+    await db.exec('CREATE TABLE public.unknown_reference (value text REFERENCES auth.users (external_ref))');
+    assert.equal((await review(id)).status, 'INCOMPLETE_DIRECT_INVENTORY');
+    assert.equal((await review(id)).unsupported_direct_references, 1);
+    await db.exec('DROP TABLE public.unknown_reference');
+    assert.deepEqual(await review(other), { status: 'REQUEST_UNAVAILABLE' });
+    await actor(owner, session);
   });
   await t.test('other accounts cannot see or cancel the request, and stale verification denies submission', async () => {
     await actor(other, otherSession);
@@ -108,6 +171,7 @@ test('deletion requests are private, idempotent, cancellable and held for review
     assert.equal((await cancel()).status, 'none');
     assert.notEqual((await request()).request_id, prior);
     await db.exec('RESET ROLE');
+    assert.deepEqual(await review(prior), { status: 'REQUEST_UNAVAILABLE' });
     const rows = (await db.query('SELECT cancelled_at FROM mushavo_account_deletion.requests')).rows;
     assert.equal(rows.length, 2);
     assert.equal(rows.filter(row => row.cancelled_at === null).length, 1);

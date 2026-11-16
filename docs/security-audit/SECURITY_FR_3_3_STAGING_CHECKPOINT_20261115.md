@@ -88,6 +88,14 @@ The staging rollback rehearsal saved and read a disposable Family name as the au
 
 The Family payment history, Family paid badges and reports, and Business bill history were updated on the remediation branch. The web assets still need a staging deployment. Permanent erasure still needs to call capture in the erasure transaction and detach the original Auth references. Business paid claims and income receipts are outside this capture migration.
 
+## Removing the account link from a retained Business bill payment
+
+[Migration `20261116130629`](../../supabase/migrations/20261116130629_fr33_detach_bill_payment_recorders.sql) is installed on staging. The private erasure step saves the name and clears the recorder only for a confirmed request’s bill payments in another owner’s Business. Normal payment creation still requires a recorder. A linked proof blocks the operation and undoes any partial name capture. API roles cannot invoke the detachment step.
+
+The post-install rollback test removed a disposable Auth account after detachment and verified that the Business payment’s amount, other fields and saved name remained. Zero temporary accounts, open requests and detached test rows remained. All 60 local tests passed.
+
+The staging web archive `mushavo-budget-fr33-retained-names-staging.zip` contains only the Family and Business name display patch and updated script version references relative to deployment `b01f8c14-85ee-44df-9947-fa2cbcfbf372`. Offline rendering and archive checks passed. Archive SHA-256 `734ee18939e076304d9597147a17f2bd9fe7e6d6b480166b458232ff5033261f`. Cloudflare upload remains pending.
+
 ## Requirements for actual erasure
 
 1. Review the [proposed workspace and retention rules](SECURITY_FR_3_1_ACCOUNT_DELETION_DECISIONS_20261115.md), then adopt the [retention decisions](security-stage-4-retention-decisions.json) for identity, personal records, shared finance, invitations and support, telemetry and devices, Storage, processors and backups, and the completion record. Record the data disposition, any required retention period, access and responsible operator for each category.

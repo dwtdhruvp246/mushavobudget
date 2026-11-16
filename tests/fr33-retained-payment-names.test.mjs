@@ -14,6 +14,9 @@ const billDetachment = await readFile(new URL(
 const retainProofs = await readFile(new URL(
   '../supabase/migrations/20261116133213_fr33_retain_business_bill_proofs.sql', import.meta.url
 ), 'utf8');
+const retainManagedProofs = await readFile(new URL(
+  '../supabase/migrations/20261116135850_fr33_retain_managed_bill_proofs.sql', import.meta.url
+), 'utf8');
 
 test('retained names are captured by role and follow existing payment access', async t => {
   const db = new PGlite();
@@ -28,6 +31,7 @@ test('retained names are captured by role and follow existing payment access', a
     CREATE SCHEMA auth;
     CREATE SCHEMA storage;
     CREATE SCHEMA mushavo_account_deletion;
+    CREATE SCHEMA mushavo_file_ingest;
     CREATE TABLE auth.users (id uuid PRIMARY KEY, email text);
     CREATE TABLE public.profiles (id uuid PRIMARY KEY, full_name text);
     CREATE TABLE public.families (id uuid PRIMARY KEY, owner_id uuid);
@@ -43,6 +47,26 @@ test('retained names are captured by role and follow existing payment access', a
     CREATE TABLE storage.objects (id uuid PRIMARY KEY, bucket_id text, name text, owner_id text, owner uuid);
     CREATE FUNCTION public.fr32_is_managed_ordinary_upload(text, text) RETURNS boolean LANGUAGE sql
       AS $$ SELECT starts_with($2, 'managed/') $$;
+    CREATE FUNCTION mushavo_file_ingest.bind_ordinary_upload() RETURNS trigger
+      LANGUAGE plpgsql SECURITY DEFINER SET search_path TO pg_catalog
+    AS $binder$
+    declare
+      old_row jsonb := to_jsonb(old);
+      j jsonb := to_jsonb(new);
+    begin
+  case tg_table_name
+    when 'business_documents' then
+      if tg_op = 'UPDATE' and public.fr32_is_managed_ordinary_upload('business-documents', old.storage_path)
+        and (new.uploaded_by, new.storage_path) is distinct from (old.uploaded_by, old.storage_path) then
+        raise exception 'MANAGED_UPLOAD_REFERENCE_IMMUTABLE';
+      end if;
+    else raise exception 'MANAGED_UPLOAD_UNEXPECTED_TABLE';
+  end case;
+  return new;
+    end;
+    $binder$;
+    CREATE TRIGGER zz_bind_ordinary_upload BEFORE UPDATE ON public.business_documents
+    FOR EACH ROW EXECUTE FUNCTION mushavo_file_ingest.bind_ordinary_upload();
     CREATE TABLE mushavo_account_deletion.requests (id uuid PRIMARY KEY, subject_id uuid, cancelled_at timestamptz,
       workspace_impact_token text, workspace_impact_confirmed_at timestamptz);
     CREATE FUNCTION mushavo_account_deletion.owned_workspace_impact(uuid) RETURNS jsonb LANGUAGE sql
@@ -97,8 +121,6 @@ test('retained names are captured by role and follow existing payment access', a
     await db.query("UPDATE storage.objects SET owner_id = NULL, owner = NULL, name = 'managed/original.pdf' WHERE id = $1", [storageId]);
     await db.query("UPDATE public.business_documents SET storage_path = 'managed/original.pdf' WHERE id = $1", [proofId]);
     await assert.rejects(detach, /FR33_BILL_PROOF_INGESTION_HANDOFF_REQUIRED/);
-    await db.query("UPDATE storage.objects SET name = 'original.pdf' WHERE id = $1", [storageId]);
-    await db.query("UPDATE public.business_documents SET storage_path = 'original.pdf' WHERE id = $1", [proofId]);
     await db.query('INSERT INTO public.business_documents VALUES ($1, $2, $3, $4, $5, $6, $7)',
       [otherProof, workspace, 'business_bill_payment', otherBill, subject, 'other.pdf', 'active']);
     await db.query("INSERT INTO storage.objects VALUES ($1, 'business-documents', 'other.pdf', NULL, NULL)", [otherProof]);
@@ -122,7 +144,10 @@ test('retained names are captured by role and follow existing payment access', a
   await db.exec(`RESET ROLE; UPDATE public.profiles SET full_name = 'subject@example.invalid' WHERE id = '${subject}'`);
   await assert.rejects(capture, /FR33_RETAINED_PAYMENT_NAME_REQUIRED/);
   await db.exec(`UPDATE public.profiles SET full_name = 'Actual Profile Name' WHERE id = '${subject}'`);
-  await t.test('detachment preserves both bill documents, including a proof uploaded for a different recorder', async () => {
+  await db.exec(retainManagedProofs);
+  await assert.rejects(db.query('UPDATE public.business_documents SET uploaded_by = $1 WHERE id = $2', [owner, proofId]),
+    /MANAGED_UPLOAD_REFERENCE_IMMUTABLE/);
+  await t.test('detachment preserves the managed proof and a proof uploaded for a different recorder', async () => {
     const objects = (await db.query('SELECT * FROM storage.objects ORDER BY id')).rows;
     assert.deepEqual(await detach(), {business_bill_payments_detached: 1, business_bill_proofs_retained: 2});
     assert.deepEqual(await detach(), {business_bill_payments_detached: 0, business_bill_proofs_retained: 0});
@@ -134,10 +159,13 @@ test('retained names are captured by role and follow existing payment access', a
     ]);
     const documents = (await db.query('SELECT id, uploaded_by, storage_path, status FROM public.business_documents ORDER BY id')).rows;
     assert.deepEqual(documents, [
-      {id: proofId, uploaded_by: null, storage_path: 'original.pdf', status: 'active'},
+      {id: proofId, uploaded_by: null, storage_path: 'managed/original.pdf', status: 'active'},
       {id: otherProof, uploaded_by: null, storage_path: 'other.pdf', status: 'active'}
     ]);
     assert.deepEqual((await db.query('SELECT * FROM storage.objects ORDER BY id')).rows, objects);
+    assert.equal((await db.query('SELECT count(*)::int AS count FROM mushavo_account_deletion.retained_bill_proofs WHERE detach_transaction IS NOT NULL')).rows[0].count, 0);
+    await assert.rejects(db.query('UPDATE public.business_documents SET uploaded_by = $1 WHERE id = $2', [owner, proofId]),
+      /MANAGED_UPLOAD_REFERENCE_IMMUTABLE/);
     await assert.rejects(db.query('DELETE FROM auth.users WHERE id = $1', [subject]), error =>
       ['23001', '23503'].includes(error.code) && error.constraint === 'business_bill_payments_recorded_by_fkey');
     await db.query('DELETE FROM public.business_bill_payments WHERE id = $1', [ownedBill]);

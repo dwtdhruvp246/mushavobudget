@@ -7,7 +7,7 @@
 | Authenticated deletion request, status and cancellation | Staging API passed | [Acceptance run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43755043392) on `00ef2bebd4091a0ca97866a868499fa4f3345858` |
 | Account Settings browser and release | Published and verified on main staging | The account security controls sit under workspace Settings. [Layout checks](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43830875653), [preview browser run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43831993584) and [main staging browser run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43832314600) passed. Main staging deployment is `5889780c-a7f6-4a03-ba3d-f2c9cb10581f`. |
 | Business owner review | Hosted pass | The owner of retained Business test workspaces received `ownership_review`. No workspace ownership or membership was changed. |
-| Deletion of owned Family and Business workspaces | Owner rule confirmed. Warning and request confirmation verified on the candidate. | Active and inactive owned workspaces are included in account erasure. Main staging publication of the warning, applicable retention rules and execution remain pending. |
+| Deletion of owned Family and Business workspaces | Owner rule confirmed. Warning and request confirmation verified on main staging. | The [signed-in trial](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43855085805) exercised an active Family workspace and the Business workspaces. Permanent erasure and the applicable retention rules remain pending. |
 | Account erasure, execution retry, Storage and provider cleanup | Pending | The installed workflow has no destructive executor. The policy and provider prerequisites below still apply. |
 
 ## Verified on staging
@@ -46,7 +46,13 @@ On 16 November 2026 the owner confirmed that permanent account erasure automatic
 
 The staging migration derives the impact from the authenticated subject and records a confirmation digest on the request. It rejects stale confirmation after a workspace change. Legacy submissions without the new confirmation require fresh authorization before any future executor can use them. No account or workspace deletion executes from the confirmation endpoint.
 
-All 54 local tests passed, including both workspace types, legacy Family deduplication, cross-account isolation, and changed-scope rollback. The [candidate browser run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43835595786) exercised the new warning and the live staging endpoints. Readback found zero open requests, one cancelled test with confirmation and zero remaining test sessions. The warning archive is ready for staging publication and the canonical website still serves the preceding layout release.
+All 54 local tests passed, including both workspace types, legacy Family deduplication, cross-account isolation, and changed-scope rollback. The [candidate browser run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43835595786) exercised the new warning and the live staging endpoints. Readback found zero open requests, one cancelled test with confirmation and zero remaining test sessions. The warning archive was published to [main staging](https://mushavo-budget-staging.pages.dev/auth?flow=account) as deployment `b01f8c14-85ee-44df-9947-fa2cbcfbf372`. Twenty hosted readback checks passed, and the [canonical browser run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43851996066) passed with exit code 0.
+
+## Active Family acceptance and owned workspace dependencies
+
+The [signed-in active Family trial](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43855085805) passed with exit code 0. The owner saw the active Family and Business workspaces listed, and the browser verified confirmation, request isolation, reload and cancellation. Readback after cleanup showed zero temporary workspaces, open requests, and browser test sessions.
+
+The [owned workspace dependency diagnostic](../../supabase/diagnostics/security_fr_3_3_owned_workspace_dependency_review.sql) checks the current confirmation and counts direct database dependencies and upload ledger entries for the owner's workspaces. Another owner's workspace is excluded. The diagnostic rejects stale or missing confirmation and is unavailable to API roles. A staging trial with disposable Family data passed and rolled back the fixtures and diagnostic installation. The request and lifecycle suites passed 55 of 55 local tests.
 
 ## Requirements for actual erasure
 

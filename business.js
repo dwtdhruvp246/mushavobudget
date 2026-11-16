@@ -552,7 +552,7 @@ async function openBusinessSource(row, messageSelector = '#businessActivityMessa
     } else if (['bill', 'bill_payment','bill_invoice'].includes(row.record_type)) {
       const id = row.parent_id || row.record_id;
       const bill = await query('Bill record', supabase.from('business_bills').select('*').eq('workspace_id', workspaceId).eq('id', id).single());
-      const payments = await query('Bill payment history', supabase.from('business_bill_payments').select('*').eq('workspace_id', workspaceId).eq('bill_id', id));
+      const payments = await query('Bill payment history', supabase.from('business_bill_payments').select('*, fr33_bill_payment_names(recorder_name)').eq('workspace_id', workspaceId).eq('bill_id', id));
       const documents = await query('Bill proof', supabase.from('business_documents').select('*').eq('workspace_id', workspaceId).eq('status', 'active').in('parent_type', ['business_bill', 'business_bill_payment']).in('parent_id', [id, ...payments.map((item) => item.id)]));
       if (sequence !== workspaceLoadSequence) return;
       state.bills = [...state.bills.filter((item) => item.id !== id), bill];
@@ -1412,7 +1412,7 @@ async function refreshBills() {
     query("Supplier load", supabase.from("business_suppliers").select("*").eq("workspace_id", workspaceId).eq("status", "active").order("name").limit(500)),
     query("Bill schedule load", supabase.from("business_bill_schedules").select("*").eq("workspace_id", workspaceId).order("created_at", { ascending: false }).limit(500)),
     query("Bill load", supabase.from("business_bills").select("*").eq("workspace_id", workspaceId).order("due_on", { ascending: false }).limit(500)),
-    query("Bill payment load", supabase.from("business_bill_payments").select("*").eq("workspace_id", workspaceId).order("paid_at", { ascending: false }).limit(500)),
+    query("Bill payment load", supabase.from("business_bill_payments").select("*, fr33_bill_payment_names(recorder_name)").eq("workspace_id", workspaceId).order("paid_at", { ascending: false }).limit(500)),
     query("Bill document load", supabase.from("business_documents").select("*").eq("workspace_id", workspaceId).in("parent_type", ["business_bill", "business_bill_payment"]).eq("status", "active").limit(500)),
     query("Bill summary", supabase.rpc("business_bill_summary", { p_workspace_id: workspaceId }))
   ]);
@@ -1551,8 +1551,11 @@ function renderBillDetail() {
   );
   $("#billPaymentList").replaceChildren(...(payments.length ? payments.map((item) => {
     const row = claimNode("div", "claim-row");
+    const recorder = item.fr33_bill_payment_names?.recorder_name;
+    const details = [formatDateTime(item.paid_at), item.reference, sourceLabel(item.payment_source)];
+    if (recorder) details.push(`Recorded by ${recorder}`);
     row.append(claimNode("strong", "", money(item.amount, item.currency)),
-      claimNode("small", "", `${formatDateTime(item.paid_at)} · ${item.reference} · ${sourceLabel(item.payment_source)}`));
+      claimNode("small", "", details.join(" · ")));
     return row;
   }) : [claimNode("p", "claim-empty", "No payments recorded.")]));
   $("#billPaymentForm").classList.toggle("hidden", bill.status !== "open" || !claimPermission("finance.record_payment"));

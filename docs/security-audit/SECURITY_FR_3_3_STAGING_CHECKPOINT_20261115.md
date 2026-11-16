@@ -90,11 +90,19 @@ The Family payment history, Family paid badges and reports, and Business bill hi
 
 ## Removing the account link from a retained Business bill payment
 
-[Migration `20261116130629`](../../supabase/migrations/20261116130629_fr33_detach_bill_payment_recorders.sql) is installed on staging. The private erasure step saves the name and clears the recorder only for a confirmed request’s bill payments in another owner’s Business. Normal payment creation still requires a recorder. A linked proof blocks the operation and undoes any partial name capture. API roles cannot invoke the detachment step.
+[Migration `20261116130629`](../../supabase/migrations/20261116130629_fr33_detach_bill_payment_recorders.sql) is installed on staging. The private erasure step saves the name and clears the recorder only for a confirmed request’s bill payments in another owner’s Business. Normal payment creation still requires a recorder. At that checkpoint, a linked proof blocked the operation and undid any partial name capture. API roles cannot invoke the detachment step.
 
 The post-install rollback test removed a disposable Auth account after detachment and verified that the Business payment’s amount, other fields and saved name remained. Zero temporary accounts, open requests and detached test rows remained. All 60 local tests passed.
 
-The staging web archive `mushavo-budget-fr33-retained-names-staging.zip` contains only the Family and Business name display patch and updated script version references relative to deployment `b01f8c14-85ee-44df-9947-fa2cbcfbf372`. Offline rendering and archive checks passed. Archive SHA-256 `734ee18939e076304d9597147a17f2bd9fe7e6d6b480166b458232ff5033261f`. Cloudflare upload remains pending.
+The staging web archive `mushavo-budget-fr33-retained-names-staging.zip` contains only the Family and Business name display patch and updated script version references relative to deployment `b01f8c14-85ee-44df-9947-fa2cbcfbf372`. Offline rendering and archive checks passed. Archive SHA-256 `734ee18939e076304d9597147a17f2bd9fe7e6d6b480166b458232ff5033261f`. Cloudflare deployment `cb4afeb3-86cc-44a4-9447-508cefba57a2` was verified. The four deployed files matched the archive byte for byte.
+
+## Proof retention for surviving workspaces
+
+On 16 November 2026 the owner approved keeping payment proofs in surviving Family and Business workspaces through their existing access rules.
+
+[Migration `20261116133213`](../../supabase/migrations/20261116133213_fr33_retain_business_bill_proofs.sql) is installed on staging. For a supported Business bill proof already stored without a personal owner and outside the uploader-bound ingestion path, erasure saves the proof’s Storage reference and removes the record’s uploader link. The same object, document details and payment survive the original Auth user. App roles cannot invoke detachment or read the internal proof records.
+
+A rolled-back staging trial removed a disposable account, verified the exact existing bill, saved name, document fields and Storage metadata, and left no trial records. All 60 local tests passed. Managed uploads and files still tied to a person’s Storage ownership need their respective handoffs. Family proof retention and an authenticated end-to-end download after erasure remain pending.
 
 ## Requirements for actual erasure
 

@@ -5,13 +5,19 @@ import {
 } from './staging-access.mjs';
 
 const verifiedHostedTargets = {
-  preview: 'https://47f4d139.mushavo-budget-staging.pages.dev',
+  preview: 'https://441ddf26.mushavo-budget-staging.pages.dev',
   canonical: WEB_ORIGIN
 };
 const deployedAssetHashes = {
-  '/auth': 'b7459850aaa078d2140cda0de8cb0151f0d9e5c389f9ef7342330c44ad5141ba',
-  '/auth-flows.js': 'c4993cd783abb4790c0ef8d76ce73c2ef1c9d56cb8dc222a041eda02f70a1ff5',
-  '/config.js': 'be23e23251470da5a1caa5c19f9af46763aa9192dee62e96700c317c479cc74c'
+  "/app": "914ac7337a632d71ade8ed8341fa6d1f248ee555fd7372f3b4948a78e4470a7f",
+  "/app.js": "7277c26175f2b0e5b8fa1eff47fb2e8c206984f1cd8dcfa9aa7d893c36502308",
+  "/auth": "f3888b4b2423a564fb9d83f3fcc4a257214cdbfd1dcaa97c67d2baaf1fc09f6b",
+  "/auth-flows.js": "b2e55ce9288700d7697ed69b5723225ce6de517f21c3a2558fcc50c1304a7263",
+  "/business": "1bdb7ac1df770528fc105637918a7d7eb429415ee34f1bf8f0e104a4c2eda292",
+  "/business.js": "8166bf5efa83cc4d2d7dc19bddddc017ae8a8479e1c6b9616f3071444cf38111",
+  "/business.css": "8c61e8e16848f04e0795eda892c64bf65d8637b260356f4526877990829eff7c",
+  "/styles.css": "16a6b4f5ae04bbce2946b75e821217005a38b42a934fc27b7348db3bc946beb0",
+  "/config.js": "be23e23251470da5a1caa5c19f9af46763aa9192dee62e96700c317c479cc74c"
 };
 const target = process.env.MUSHAVO_FR33_BROWSER_TARGET || 'candidate';
 const origin = verifiedHostedTargets[target] || WEB_ORIGIN;
@@ -36,18 +42,19 @@ try {
   const configBytes = Buffer.from(await response.arrayBuffer());
   if (hosted) {
     step = 'VERIFY_DEPLOYED_ASSETS_AND_HEADERS';
-    const [account, client, retiredRoute] = await Promise.all([
-      readHosted(accountPath), readHosted('/auth-flows.js'), readHosted('/api/email-verification/status')
+    const files = Object.entries(deployedAssetHashes);
+    const hash = bytes => createHash('sha256').update(Buffer.from(bytes)).digest('hex');
+    const [retiredRoute] = await Promise.all([
+      readHosted('/api/email-verification/status'),
+      ...files.map(async ([path, expected]) => {
+        const asset = path === '/config.js' ? response : await readHosted(path);
+        need(asset.ok && asset.headers.get('x-content-type-options') === 'nosniff', 'FR33_HOSTED_ASSET_UNAVAILABLE');
+        const bytes = path === '/config.js' ? configBytes : await asset.arrayBuffer();
+        need(hash(bytes) === expected, 'FR33_HOSTED_ASSET_MISMATCH');
+      })
     ]);
-    need(account.ok && client.ok && account.headers.get('x-content-type-options') === 'nosniff',
-      'FR33_HOSTED_ACCOUNT_ASSETS_OR_HEADERS_UNAVAILABLE');
     need(retiredRoute.status === 410 && (await retiredRoute.json()).result === 'SIGNIN_VERIFICATION_REMOVED',
       'FR33_STAGING_WORKER_NOT_PRESENT');
-    const [accountBytes, clientBytes] = await Promise.all([account.arrayBuffer(), client.arrayBuffer()]);
-    const hash = bytes => createHash('sha256').update(Buffer.from(bytes)).digest('hex');
-    need(hash(accountBytes) === deployedAssetHashes[accountPath], 'FR33_HOSTED_ACCOUNT_DOCUMENT_MISMATCH');
-    need(hash(clientBytes) === deployedAssetHashes['/auth-flows.js'], 'FR33_HOSTED_ACCOUNT_CLIENT_MISMATCH');
-    need(hash(configBytes) === deployedAssetHashes['/config.js'], 'FR33_HOSTED_CONFIGURATION_MISMATCH');
     hostedAssetsVerified = true;
   }
   const configText = configBytes.toString('utf8');
@@ -129,7 +136,7 @@ try {
         const ownerReview = page.getByText('Your request is pending a review of the shared workspaces you own.', { exact: true });
 
         step = 'OPEN_ACCOUNT_SETTINGS';
-        await page.goto(origin + accountPath + '?flow=account', { waitUntil: 'domcontentloaded' });
+        await page.goto(origin + accountPath + '?flow=account&from=personal-settings', { waitUntil: 'domcontentloaded' });
         await page.getByRole('heading', { name: 'Account settings', exact: true }).waitFor();
         await noRequest.waitFor();
         await newRequest.waitFor();
@@ -163,6 +170,13 @@ try {
         await newRequest.waitFor();
         need((await rpc(statusPath, owner.token)).status === 'none', 'FR33_BROWSER_CANCEL_NOT_PERSISTED');
         evidence.cancellation_visible_and_persisted = true;
+
+        step = 'RETURN_TO_WORKSPACE_SETTINGS';
+        const back = page.getByRole('button', { name: 'Back to settings', exact: true });
+        await back.click();
+        await page.waitForURL(url => url.origin === origin && ['/app','/app.html'].includes(url.pathname)
+          && url.hash === '#personal/settings');
+        evidence.return_to_workspace_settings = true;
       } finally {
         try {
           // Reconcile the same test account if the request reached the API but a UI assertion failed.

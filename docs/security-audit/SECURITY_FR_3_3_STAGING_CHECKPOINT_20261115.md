@@ -64,7 +64,7 @@ The owner confirmed that a departing member’s payments stay in a Family or Bus
 
 A rolled-back staging trial called the Family removal procedure as the workspace owner. Both membership records became inactive and a full comparison showed the payment row was identical before and after. A Business staging readback found both bill payments still linked to an inactive finance member. The trial used existing Business payment history. Renewing or reactivating the suspended Business fixture was outside this check.
 
-The dependency diagnostic now counts Family payment links and Business bill payments, income receipts and paid claims that involve a departing member in somebody else’s workspace. The revised diagnostic passed both staging trials and 55 local tests. It only reports dependencies. The permanent erasure executor still needs to preserve these payment rows without leaving an Auth dependency. Proof files, displayed attribution and platform billing/audit retention remain open.
+The dependency diagnostic now counts Family payment links and Business bill payments, income receipts and paid claims that involve a departing member in somebody else’s workspace. The revised diagnostic passed both staging trials and 55 local tests. It only reports dependencies. The permanent erasure executor still needs to preserve these payment rows without leaving an Auth dependency. Proof files and platform billing/audit retention remain open. The retained payment name rule is confirmed.
 
 ## Database protection for retained payments
 
@@ -73,6 +73,12 @@ The dependency diagnostic now counts Family payment links and Business bill paym
 The post-install staging rehearsal deliberately attempted to delete a disposable recorder and verified the payment row in the surviving Family workspace was identical. The same rehearsal then used the existing Family closure procedure with its owner and verified that the owned workspace’s payment item and record were removed. The transaction rolled back and readback found no disposable identities. All 56 local tests passed.
 
 The permanent erasure worker still needs to detach shared payment attribution and handle proofs before it removes the login. For owned workspaces it must run explicit scoped cleanup before deleting the account. Production deployment remains pending.
+
+## Name shown on retained payments
+
+On 16 November 2026 the owner confirmed that a deleted account’s existing name stays on its retained payments in other people’s Family and Business workspaces. The approved display is the person’s name.
+
+The read-only diagnostic now reports whether the Family payer and recorder can be named and whether a profile name is available for Business records. Missing names require attention. Email addresses do not serve as a name source and the report emits only counts and availability. All 56 local tests and a rolled-back Business staging trial passed. Persisting and displaying the name after permanent account erasure is part of the pending executor work.
 
 ## Requirements for actual erasure
 

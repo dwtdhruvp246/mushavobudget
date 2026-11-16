@@ -1,4 +1,4 @@
--- Staging-only account erasure rehearsal with disposable identities.
+-- Staging-only owned Business erasure regression with disposable accounts.
 BEGIN;
 SET LOCAL lock_timeout='1500ms';
 SET LOCAL statement_timeout='25s';
@@ -40,6 +40,15 @@ DECLARE
   bill_payment_uuid uuid := gen_random_uuid();
   bill_before jsonb;
   blocker text;
+  owned_supplier uuid := gen_random_uuid();
+  owned_category uuid := gen_random_uuid();
+  owned_schedule uuid := gen_random_uuid();
+  owned_bill uuid := gen_random_uuid();
+  owned_claim uuid := gen_random_uuid();
+  surviving_event uuid := gen_random_uuid();
+  audit_snapshot jsonb;
+  surviving_audit_snapshot jsonb;
+  billing_grant uuid := gen_random_uuid();
 BEGIN
  IF NOT EXISTS(SELECT FROM mushavo_email_install.rollout_control WHERE target_project='dczlddwbtgvfdujgcitb') THEN RAISE EXCEPTION 'STAGING_ONLY'; END IF;
  INSERT INTO auth.users(id,email,raw_user_meta_data,email_confirmed_at,created_at,updated_at)
@@ -102,6 +111,65 @@ BEGIN
    exchange_rate,rate_effective_at,rate_provider,paid_at,reference,recorded_by)
  VALUES(bill_payment_uuid,surviving_business,bill_uuid,43,'USD',43,'USD',1,now(),'identity',now(),'synthetic bill',departing_user);
  SELECT to_jsonb(payment)-'recorded_by' INTO STRICT bill_before FROM public.business_bill_payments payment WHERE id=bill_payment_uuid;
+
+ PERFORM set_config('request.jwt.claims',staff_claims,true);
+ INSERT INTO public.business_admin_test_provisioning(workspace_id,owner_id,admin_id,transaction_id)
+ VALUES(owned_business,departing_user,staff_user,txid_current());
+ INSERT INTO public.budget_workspaces(id,owner_id,workspace_type,name)
+ VALUES(owned_business,departing_user,'business','Owned Synthetic Business');
+ INSERT INTO public.workspace_members(workspace_id,user_id,role,status)
+ VALUES(owned_business,departing_user,'business_owner','active');
+ DELETE FROM public.business_admin_test_provisioning WHERE workspace_id=owned_business;
+ INSERT INTO public.business_team_operation_permits(transaction_id,workspace_id,operation)
+ VALUES(txid_current(),owned_business,'member_write');
+ INSERT INTO public.workspace_members(workspace_id,user_id,role,status)
+ VALUES(owned_business,owner_user,'viewer','active');
+ DELETE FROM public.business_team_operation_permits WHERE workspace_id=owned_business;
+ INSERT INTO public.business_suppliers(id,workspace_id,name)
+ VALUES(owned_supplier,owned_business,'Owned synthetic supplier');
+ INSERT INTO public.business_categories(id,workspace_id,category_type,name)
+ VALUES(owned_category,owned_business,'both','Owned synthetic category');
+ INSERT INTO public.business_bill_schedules(id,workspace_id,supplier_id,title,category_id,amount,currency,frequency,starts_on)
+ VALUES(owned_schedule,owned_business,owned_supplier,'Owned synthetic schedule',owned_category,23,'USD','monthly',current_date);
+ INSERT INTO public.business_expense_claims(id,workspace_id,submitted_by,kind,title,category_id,amount,currency,
+   reporting_currency,reporting_amount,exchange_rate,rate_effective_at,rate_provider,expense_date)
+ VALUES(owned_claim,owned_business,departing_user,'company_expense','Owned synthetic claim',owned_category,23,'USD',
+   'USD',23,1,now(),'identity',current_date);
+ INSERT INTO public.business_spending_requests(id,workspace_id,submitted_by,title,description,category_id,amount,currency,
+  reporting_currency,reporting_amount,exchange_rate,rate_effective_at,rate_provider,planned_on)
+ VALUES(gen_random_uuid(),owned_business,departing_user,'Owned synthetic request','Fixture',owned_category,23,'USD',
+  'USD',23,1,now(),'identity',current_date);
+ INSERT INTO public.business_income_receipts(id,workspace_id,title,reference,category_id,amount,currency,reporting_currency,
+   reporting_amount,exchange_rate,rate_effective_at,rate_provider,received_on,payment_source,recorded_by)
+ VALUES(gen_random_uuid(),owned_business,'Owned synthetic income','Fixture',owned_category,41,'USD','USD',
+   41,1,now(),'identity',current_date,'cash',departing_user);
+ INSERT INTO public.business_budgets(id,workspace_id,name,starts_on,ends_on,period_type,planned_amount,reporting_currency,created_by)
+ VALUES(gen_random_uuid(),owned_business,'Owned synthetic budget',current_date,current_date+30,'custom',61,'USD',departing_user);
+ INSERT INTO public.business_bills(id,workspace_id,supplier_id,category_id,title,amount,currency,reporting_amount,
+  reporting_currency,exchange_rate,rate_effective_at,rate_provider,due_on,paid_amount,status,schedule_id,occurrence_number,source_claim_id)
+ VALUES(owned_bill,owned_business,owned_supplier,owned_category,'Owned synthetic bill',23,'USD',23,'USD',1,now(),
+ 'identity',current_date,23,'paid',owned_schedule,1,owned_claim);
+ INSERT INTO public.business_bill_payments(id,workspace_id,bill_id,amount,currency,reporting_amount,reporting_currency,
+  exchange_rate,rate_effective_at,rate_provider,paid_at,reference,recorded_by)
+ VALUES(gen_random_uuid(),owned_business,owned_bill,23,'USD',23,'USD',1,now(),'identity',now(),'fixture',departing_user);
+ INSERT INTO public.business_audit_events(id,workspace_id,actor_id,action,target_type,target_id,after_summary)
+ VALUES (gen_random_uuid(),owned_business,departing_user,'bill.payment_recorded','business_bill',owned_bill,'{"amount":23}'),
+   (surviving_event,surviving_business,departing_user,'bill.payment_recorded','business_bill',bill_uuid,'{"amount":43}');
+ BEGIN
+   UPDATE public.business_audit_events SET actor_id=NULL WHERE id=surviving_event;
+   RAISE EXCEPTION 'ORDINARY_AUDIT_EDIT_ALLOWED';
+ EXCEPTION WHEN raise_exception THEN
+   IF SQLERRM <> 'BUSINESS_AUDIT_IMMUTABLE' THEN RAISE; END IF;
+ END;
+ BEGIN
+   DELETE FROM public.business_audit_events WHERE workspace_id=owned_business;
+   RAISE EXCEPTION 'ORDINARY_AUDIT_DELETE_ALLOWED';
+ EXCEPTION WHEN raise_exception THEN
+   IF SQLERRM <> 'BUSINESS_AUDIT_IMMUTABLE' THEN RAISE; END IF;
+ END;
+ SELECT jsonb_agg(to_jsonb(audit) ORDER BY id) INTO audit_snapshot
+ FROM public.business_audit_events audit WHERE workspace_id=owned_business;
+ SELECT (to_jsonb(audit)-'actor_id') INTO STRICT surviving_audit_snapshot FROM public.business_audit_events audit WHERE id=surviving_event;
  INSERT INTO auth.mfa_amr_claims(id,session_id,created_at,updated_at,authentication_method)
  VALUES(gen_random_uuid(),departing_session,now(),now(),'password');
  departing_claims := jsonb_build_object('role','authenticated','sub',departing_user::text,
@@ -132,6 +200,9 @@ BEGIN
  PERFORM set_config('request.jwt.claims',departing_claims,true);
  SET LOCAL ROLE authenticated;
  IF public.app_session_status()->>'session_valid' IS DISTINCT FROM 'true' THEN RAISE EXCEPTION 'FIXTURE_SESSION_INVALID'; END IF;
+ IF NOT EXISTS (SELECT FROM jsonb_array_elements(public.fr33_account_deletion_impact()->'workspaces') entry
+   WHERE entry->>'name'='Owned Synthetic Business')
+ THEN RAISE EXCEPTION 'OWNED_BUSINESS_NOT_DISCLOSED'; END IF;
  request_uuid := (public.fr33_submit_account_deletion(public.fr33_account_deletion_impact()->>'impact_token')->>'request_id')::uuid;
  RESET ROLE;
  PERFORM set_config('request.jwt.claims','{}',true);
@@ -145,38 +216,26 @@ BEGIN
  END;
  UPDATE public.families SET name='Synthetic Owned Active Family' WHERE id=owned_family;
 
- -- A newly created Business already has its immutable audit event.
+ -- Unclassified platform billing still blocks completion and rolls back both the archive and finance deletes.
+ INSERT INTO public.admin_subscription_grants(id,workspace_id,owner_id,plan_id,billing_period,starts_on,
+   ends_on,grant_kind,reason,granted_by)
+ VALUES(billing_grant,owned_business,departing_user,plan_uuid,'monthly',current_date,current_date+30,
+   'business_test','Synthetic billing retention test',staff_user);
  BEGIN
-   PERFORM set_config('request.jwt.claims',staff_claims,true);
-   INSERT INTO public.business_admin_test_provisioning(workspace_id,owner_id,admin_id,transaction_id)
-   VALUES(owned_business,departing_user,staff_user,txid_current());
-   INSERT INTO public.budget_workspaces(id,owner_id,workspace_type,name)
-   VALUES(owned_business,departing_user,'business','Owned Synthetic Business');
-   INSERT INTO public.workspace_members(workspace_id,user_id,role,status)
-   VALUES(owned_business,departing_user,'business_owner','active');
-   DELETE FROM public.business_admin_test_provisioning WHERE workspace_id=owned_business;
-   PERFORM set_config('request.jwt.claims',departing_claims,true);
-   SET LOCAL ROLE authenticated;
-   IF NOT EXISTS (SELECT FROM jsonb_array_elements(public.fr33_account_deletion_impact()->'workspaces') entry
-     WHERE entry->>'name'='Owned Synthetic Business') THEN RAISE EXCEPTION 'OWNED_BUSINESS_NOT_DISCLOSED'; END IF;
-   PERFORM public.fr33_submit_account_deletion(public.fr33_account_deletion_impact()->>'impact_token');
-   RESET ROLE;
-   PERFORM set_config('request.jwt.claims','{}',true);
-   BEGIN
-     PERFORM mushavo_account_deletion.execute_confirmed_request(request_uuid);
-     RAISE EXCEPTION 'BUSINESS_AUDIT_DEPENDENCY_WAS_IGNORED';
-   EXCEPTION WHEN raise_exception THEN
-     GET STACKED DIAGNOSTICS blocker = PG_EXCEPTION_DETAIL;
-     IF SQLERRM <> 'FR33_OWNED_WORKSPACE_DEPENDENCY_REVIEW_REQUIRED'
-       OR blocker <> 'public.business_audit_events.workspace_id' THEN RAISE; END IF;
-   END;
-   IF NOT EXISTS (SELECT FROM public.budget_workspaces WHERE id=owned_business)
-     OR NOT EXISTS (SELECT FROM public.business_audit_events WHERE workspace_id=owned_business)
-   THEN RAISE EXCEPTION 'BUSINESS_BLOCKER_DID_NOT_PRESERVE_OWNED_DATA'; END IF;
-   RAISE EXCEPTION 'DISCARD_SYNTHETIC_OWNED_BUSINESS';
+   PERFORM mushavo_account_deletion.execute_confirmed_request(request_uuid);
+   RAISE EXCEPTION 'BILLING_RETENTION_DEPENDENCY_WAS_IGNORED';
  EXCEPTION WHEN raise_exception THEN
-   IF SQLERRM <> 'DISCARD_SYNTHETIC_OWNED_BUSINESS' THEN RAISE; END IF;
+   GET STACKED DIAGNOSTICS blocker = PG_EXCEPTION_DETAIL;
+   IF SQLERRM <> 'FR33_OWNED_WORKSPACE_DEPENDENCY_REVIEW_REQUIRED'
+     OR blocker IS DISTINCT FROM 'public.admin_subscription_grants.workspace_id' THEN RAISE; END IF;
  END;
+ IF EXISTS (SELECT 1 FROM mushavo_account_deletion.closed_business_audit_events WHERE workspace_id=owned_business)
+   OR (SELECT jsonb_agg(to_jsonb(audit) ORDER BY id) FROM public.business_audit_events audit WHERE workspace_id=owned_business)
+      IS DISTINCT FROM audit_snapshot
+   OR NOT EXISTS (SELECT 1 FROM public.business_bills WHERE id=owned_bill)
+   OR NOT EXISTS (SELECT 1 FROM public.business_audit_events WHERE id=surviving_event AND actor_id=departing_user)
+ THEN RAISE EXCEPTION 'BUSINESS_BILLING_BLOCKER_DID_NOT_ROLL_BACK'; END IF;
+ DELETE FROM public.admin_subscription_grants WHERE id=billing_grant;
 
  -- This legacy shared reference is unhandled. Execution must roll back every prior mutation.
  INSERT INTO public.category_budgets(id,family_id,category,created_by) VALUES(guarded_budget,test_family,'Synthetic retained budget',departing_user);
@@ -223,6 +282,33 @@ BEGIN
     OR NOT EXISTS(SELECT FROM public.payment_records p WHERE id=test_payment AND owner_id=owner_user AND recorded_by IS NULL AND to_jsonb(p)-'owner_id'-'recorded_by'=before_payment)
     OR NOT EXISTS(SELECT FROM public.fr33_family_payment_names WHERE payment_id=test_payment AND recorder_name='Synthetic Retained Family Person' AND payer_name='Synthetic Retained Family Person')
  THEN RAISE EXCEPTION 'FAMILY_HISTORY_CHANGED_OR_NAME_MISSING'; END IF;
+ IF EXISTS (SELECT FROM public.budget_workspaces WHERE id=owned_business)
+   OR EXISTS (SELECT FROM public.workspace_members WHERE workspace_id=owned_business)
+   OR NOT EXISTS (SELECT FROM public.workspace_members WHERE workspace_id=surviving_business
+       AND user_id=owner_user AND role='business_owner' AND status='active')
+   OR EXISTS (SELECT FROM public.business_audit_events WHERE workspace_id=owned_business)
+   OR EXISTS (SELECT FROM public.business_bills WHERE workspace_id=owned_business)
+   OR EXISTS (SELECT FROM public.business_bill_payments WHERE workspace_id=owned_business)
+   OR EXISTS (SELECT FROM public.business_bill_schedules WHERE workspace_id=owned_business)
+   OR EXISTS (SELECT FROM public.business_expense_claims WHERE workspace_id=owned_business)
+   OR EXISTS (SELECT FROM public.business_spending_requests WHERE workspace_id=owned_business)
+   OR EXISTS (SELECT FROM public.business_income_receipts WHERE workspace_id=owned_business)
+   OR EXISTS (SELECT FROM public.business_budgets WHERE workspace_id=owned_business)
+   OR (SELECT jsonb_agg(event ORDER BY event_id) FROM mushavo_account_deletion.closed_business_audit_events WHERE workspace_id=owned_business)
+      IS DISTINCT FROM audit_snapshot
+   OR NOT EXISTS (SELECT FROM public.business_audit_events audit WHERE id=surviving_event AND actor_id IS NULL
+      AND (to_jsonb(audit)-'actor_id')=surviving_audit_snapshot)
+   OR EXISTS (SELECT FROM mushavo_account_deletion.business_audit_erasure_permits)
+   OR has_table_privilege('authenticated','mushavo_account_deletion.closed_business_audit_events','SELECT')
+   OR has_table_privilege('service_role','mushavo_account_deletion.closed_business_audit_events','SELECT')
+   OR has_function_privilege('authenticated','mushavo_account_deletion.prepare_business_workspace_erasure(uuid)','EXECUTE')
+ THEN RAISE EXCEPTION 'OWNED_BUSINESS_OR_AUDIT_STATE_MISMATCH'; END IF;
+ BEGIN
+   DELETE FROM mushavo_account_deletion.closed_business_audit_events WHERE workspace_id=owned_business;
+   RAISE EXCEPTION 'ARCHIVED_AUDIT_DELETE_ALLOWED';
+ EXCEPTION WHEN raise_exception THEN
+   IF SQLERRM <> 'BUSINESS_AUDIT_IMMUTABLE' THEN RAISE; END IF;
+ END;
  IF NOT EXISTS (SELECT FROM public.business_bill_payments payment WHERE id=bill_payment_uuid AND recorded_by IS NULL
       AND to_jsonb(payment)-'recorded_by'=bill_before)
     OR NOT EXISTS (SELECT FROM public.fr33_bill_payment_names WHERE payment_id=bill_payment_uuid
@@ -253,7 +339,7 @@ BEGIN
     OR has_function_privilege('service_role','mushavo_account_deletion.detach_retained_family_payment_actors(uuid)','EXECUTE')
     OR has_table_privilege('authenticated','mushavo_account_deletion.family_payment_update_permits','INSERT')
  THEN RAISE EXCEPTION 'ORDINARY_USER_HAS_DETACH_GRANT'; END IF;
- RAISE NOTICE 'FR33_CONFIRMED_ACCOUNT_ERASURE_REHEARSAL_PASSED';
+ RAISE NOTICE 'FR33_OWNED_BUSINESS_ERASURE_REHEARSAL_PASSED';
 END;
 $trial$;
 ROLLBACK;

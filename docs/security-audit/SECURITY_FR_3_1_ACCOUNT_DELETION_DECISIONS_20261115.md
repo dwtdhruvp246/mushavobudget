@@ -13,10 +13,10 @@ The request API records a pending case. The rules below would govern processing 
 | Owns a Personal workspace | Erase its payments, cashbook, settings and exclusively personal attachments with the account. Handle platform subscription and billing records under the adopted billing rules. |
 | Owns a Family or Business workspace with active members | Automatically delete the workspace with the owner's account. List the workspace in the confirmation and warn that all its members will lose access. Apply the adopted rules for any underlying records that must be retained. |
 | Sole remaining member and owner of a Family or Business workspace | Automatically delete the workspace with the owner's account. Include it in the confirmation. Apply the adopted rules for any underlying records that must be retained. |
-| Member of a Family or Business workspace owned by someone else | Remove membership and access. Keep the member’s payments and their existing name on those payments, including when the member deletes their Mushavo Budget account. Review attached proof separately. |
+| Member of a Family or Business workspace owned by someone else | Remove membership and access. Keep the member’s payments and their existing name on those payments, including when the member deletes their Mushavo Budget account. Keep attached payment proofs available through the workspace’s existing access rules. |
 | Holds a Mushavo Budget staff role | Review role removal, active access and any independent audit retention obligations before executing account deletion. |
 
-The workspace-payment and name rules were confirmed on 16 November 2026. Payment amounts, dates, accounting relationships and the person’s existing display name stay on the retained payment in the surviving workspace. Account erasure must preserve that name without substituting an email address. The disposition of proof files remains open.
+The workspace-payment and name rules were confirmed on 16 November 2026. Payment amounts, dates, accounting relationships and the person’s existing display name stay on the retained payment in the surviving workspace. Account erasure must preserve that name without substituting an email address. On 16 November 2026 the owner confirmed that attached proofs stay with retained payments and remain available to authorized members of the surviving workspace.
 
 ## Data outcomes for approval
 

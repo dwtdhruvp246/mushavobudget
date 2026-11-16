@@ -5,6 +5,15 @@ import { createAuthCallbackEntry } from './session-entry.js?v=5';
 const $ = selector => document.querySelector(selector);
 const material = consumeAuthUrl(window.location.href, value => window.history.replaceState(null, '', value));
 const flow = material.flow === 'devices' ? 'account' : material.flow;
+const settingsDestinations = new Map([
+  ['budget-settings', './app.html#personal/settings'],
+  ['personal-settings', './app.html#personal/settings'],
+  ['family-settings', './app.html#family/settings'],
+  ['admin-settings', './app.html#admin/settings'],
+  ['business-settings', './business.html#business/settings']
+]);
+const settingsSource = new URLSearchParams(window.location.search).get('from');
+const settingsDestination = settingsDestinations.get(settingsSource);
 const settings = window.MUSHAVO_BUDGET_CONFIG || {};
 let isolated, app, controller, changer, busy = false, identity = null, cooldownUntil = 0, emailEntry = null, passwordClient = null;
 const message = value => { $('#securityMessage').textContent = value; };
@@ -73,6 +82,7 @@ async function init() {
     return;
   }
   if (['change','account'].includes(flow)) {
+    if (settingsDestination) $('#securityCancel').textContent = 'Back to settings';
     app = normalClient();
     const current = await app.auth.getSession();
     if (current.error) throw current.error;
@@ -178,7 +188,13 @@ async function showAccountSecurity() {
   $('#securityTitle').textContent='Account settings';
   $('#securityAccountControls').hidden=false;
   $('#securityResume').hidden=true;
-  $('#securityCancel').textContent='Return to app';
+  $('#securityCancel').textContent = settingsDestination ? 'Back to settings' : 'Return to app';
+  if (settingsDestination) {
+    const changePassword = $('#securityChangePassword');
+    const destination = new URL(changePassword.href);
+    destination.searchParams.set('from', settingsSource);
+    changePassword.href = destination.href;
+  }
   message('Manage your password and account deletion requests.');
   await accountDeletion('status');
 }
@@ -264,7 +280,8 @@ async function cancelSecurityFlow(logoutNormal = false) {
     const {error} = await target.auth.signOut({scope:'local'});
     if (error && !['session_not_found','session_expired'].includes(error.code)) throw error;
   }
-  const destination=['change','account'].includes(flow)&&!logoutNormal?'./app.html':'./app.html?auth=manual';
+  const destination = ['change','account'].includes(flow) && !logoutNormal
+    ? settingsDestination || './app.html' : './app.html?auth=manual';
   window.location.replace(new URL(destination, window.location.href).href);
 }
 $('#securityCancel').addEventListener('click', () => { cancelSecurityFlow().catch(error=>message(safeAuthMessage(error))); });

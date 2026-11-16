@@ -232,7 +232,7 @@ const views = {
   app: $("#appView")
 };
 
-const adminTabs = new Set(["dashboard", "analytics", "households", "users", "plans", "finance", "enquiries", "support"]);
+const adminTabs = new Set(["dashboard", "analytics", "households", "users", "plans", "finance", "enquiries", "support", "settings"]);
 const familyTabs = new Set(["dashboard", "payments", "reports", "members", "subscription", "settings", "support", "cashbook"]);
 const cashbookSections = new Set(["overview", "accounts", "reports"]);
 const currencyNames = {
@@ -3363,6 +3363,11 @@ function renderSettings() {
     : `${paymentCount}/${entitlement.active_payment_limit} active personal payments used`;
   $("#settingsMemberAccess").textContent = canManageAnyFamily ? "Can invite family members" : "Can join invited families";
   $("#settingsEmail").textContent = state.session.user.email || "-";
+  for (const link of document.querySelectorAll("[data-budget-security-flow]")) {
+    const destination = new URL(link.href);
+    destination.searchParams.set("from", `${budgetRouteArea()}-settings`);
+    link.href = destination.href;
+  }
   renderPushNotificationSettings();
   schedulePushNotificationRefresh(false, true);
   renderWorkspaceCurrencySettings();

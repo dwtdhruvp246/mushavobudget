@@ -66,6 +66,14 @@ A rolled-back staging trial called the Family removal procedure as the workspace
 
 The dependency diagnostic now counts Family payment links and Business bill payments, income receipts and paid claims that involve a departing member in somebody else’s workspace. The revised diagnostic passed both staging trials and 55 local tests. It only reports dependencies. The permanent erasure executor still needs to preserve these payment rows without leaving an Auth dependency. Proof files, displayed attribution and platform billing/audit retention remain open.
 
+## Database protection for retained payments
+
+[Migration `20261116122201`](../../supabase/migrations/20261116122201_fr33_protect_payment_history.sql) is installed and verified in staging. The account references for Family and Personal payment items and payment records now reject a direct Auth deletion while those references exist. Existing Family and payment-item deletion cascades still run when those objects are explicitly deleted. Business bill payments already had a restrictive recorder reference.
+
+The post-install staging rehearsal deliberately attempted to delete a disposable recorder and verified the payment row in the surviving Family workspace was identical. The same rehearsal then used the existing Family closure procedure with its owner and verified that the owned workspace’s payment item and record were removed. The transaction rolled back and readback found no disposable identities. All 56 local tests passed.
+
+The permanent erasure worker still needs to detach shared payment attribution and handle proofs before it removes the login. For owned workspaces it must run explicit scoped cleanup before deleting the account. Production deployment remains pending.
+
 ## Requirements for actual erasure
 
 1. Review the [proposed workspace and retention rules](SECURITY_FR_3_1_ACCOUNT_DELETION_DECISIONS_20261115.md), then adopt the [retention decisions](security-stage-4-retention-decisions.json) for identity, personal records, shared finance, invitations and support, telemetry and devices, Storage, processors and backups, and the completion record. Record the data disposition, any required retention period, access and responsible operator for each category.

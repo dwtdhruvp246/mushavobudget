@@ -1969,7 +1969,7 @@ function isPaymentActive(item) {
 }
 
 async function loadPaymentRecords() {
-  let request = supabase.from("payment_records").select("*");
+  let request = supabase.from("payment_records").select("*, fr33_family_payment_names(payer_name,recorder_name)");
   request = state.family
     ? request.or(`visibility.eq.personal,family_id.eq.${state.family.id}`)
     : request.eq("visibility", "personal");
@@ -3072,7 +3072,7 @@ function renderObligationCard(item, occurrenceChoices = []) {
   const planPaused = isPlanPaused(item);
   const isPaused = item.status === "inactive" || planPaused;
   const completedRecord = completedOneTimePaymentRecord(item);
-  const completedPayer = memberById(completedRecord?.paid_by_member_id);
+  const completedPayer = completedRecord ? paymentRecordPeople(completedRecord).payerName : "";
   const recordDisabled = workspaceReadOnly || isPaused || !occurrence || Boolean(completedRecord);
   const recordReason = workspaceReadOnly
     ? "Renew this workspace to record payments"
@@ -3091,7 +3091,7 @@ function renderObligationCard(item, occurrenceChoices = []) {
       <div class="badge-row">
         ${statusBadge(completedRecord ? "paid" : planPaused ? "paused by plan limit" : item.status || "active")}
         <span class="mini-badge payment-workspace-badge ${workspaceClass}">${escapeHtml(workspaceLabel)}</span>
-        <span class="mini-badge">${escapeHtml(completedRecord ? completedPayer ? `Paid by ${completedPayer.name}` : `Paid ${completedRecord.payment_date}` : member?.name || "No assigned member")}</span>
+        <span class="mini-badge">${escapeHtml(completedRecord ? completedPayer && completedPayer !== "Member not recorded" ? `Paid by ${completedPayer}` : `Paid ${completedRecord.payment_date}` : member?.name || "No assigned member")}</span>
         <span class="mini-badge reminder-badge">${completedRecord ? "Completed one-time payment · No reminders" : `Daily reminder · ${item.reminder_days_before ?? 0} day${Number(item.reminder_days_before ?? 0) === 1 ? "" : "s"} before`}</span>
       </div>
     </div>
@@ -9101,11 +9101,12 @@ function memberById(id) {
 }
 
 function paymentRecordPeople(record) {
-  const recorder = state.members.find((member) => member.user_id === record.recorded_by);
-  const recorderName = recorder?.name || (record.recorded_by === state.session?.user?.id
+  const recorder = record.recorded_by && state.members.find((member) => member.user_id === record.recorded_by);
+  const retained = record.fr33_family_payment_names;
+  const recorderName = recorder?.name || retained?.recorder_name || (record.recorded_by && record.recorded_by === state.session?.user?.id
     ? state.profile?.full_name || state.session?.user?.email || "You" : "Member unavailable");
   const payerName = record.visibility === "family" || record.family_id
-    ? memberById(record.paid_by_member_id)?.name || "Member not recorded" : "";
+    ? memberById(record.paid_by_member_id)?.name || retained?.payer_name || "Member not recorded" : "";
   return { payerName, recorderName };
 }
 

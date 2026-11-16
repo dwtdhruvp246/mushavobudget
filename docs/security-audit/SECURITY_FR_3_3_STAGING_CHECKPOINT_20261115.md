@@ -54,6 +54,10 @@ The [signed-in active Family trial](https://github.com/dwtdhruvp246/mushavobudge
 
 The [owned workspace dependency diagnostic](../../supabase/diagnostics/security_fr_3_3_owned_workspace_dependency_review.sql) checks the current confirmation and counts direct database dependencies and upload ledger entries for the owner's workspaces. Another owner's workspace is excluded. The diagnostic rejects stale or missing confirmation and is unavailable to API roles. A staging trial with disposable Family data passed and rolled back the fixtures and diagnostic installation. The request and lifecycle suites passed 55 of 55 local tests.
 
+The database erasure rehearsal used two disposable identities and Family workspaces in one staging transaction. Deleting the confirmed owner's Family removed its synchronized workspace and member rows. Deleting the fixture Auth account removed its profile while the other identity and workspace remained. The transaction rolled back and readback confirmed that no fixture identities persisted.
+
+A separate rollback trial verified the diagnostic against the two existing Business test workspaces and confirmed that they have restrictive dependencies. Business erasure, Storage byte deletion, and access revocation with real sessions still require acceptance.
+
 ## Requirements for actual erasure
 
 1. Review the [proposed workspace and retention rules](SECURITY_FR_3_1_ACCOUNT_DELETION_DECISIONS_20261115.md), then adopt the [retention decisions](security-stage-4-retention-decisions.json) for identity, personal records, shared finance, invitations and support, telemetry and devices, Storage, processors and backups, and the completion record. Record the data disposition, any required retention period, access and responsible operator for each category.

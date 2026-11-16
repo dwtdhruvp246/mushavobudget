@@ -8,13 +8,16 @@ import { PGlite } from '../scripts/fixtures/email-session-review-tools/node_modu
 const migration = await readFile(new URL(
   '../supabase/migrations/20261116124345_fr33_retained_payment_names.sql', import.meta.url
 ), 'utf8');
+const billDetachment = await readFile(new URL(
+  '../supabase/migrations/20261116130629_fr33_detach_bill_payment_recorders.sql', import.meta.url
+), 'utf8');
 
 test('retained names are captured by role and follow existing payment access', async t => {
   const db = new PGlite();
   t.after(() => db.close());
-  const ids = Array.from({length: 12}, (_, i) => `00000000-0000-4000-8000-${String(i + 1).padStart(12, '0')}`);
+  const ids = Array.from({length: 13}, (_, i) => `00000000-0000-4000-8000-${String(i + 1).padStart(12, '0')}`);
   const [subject, owner, family, ownedFamily, member, payment, bill, workspace, ownedWorkspace,
-    ownedPayment, ownedBill, request] = ids;
+    ownedPayment, ownedBill, request, otherBill] = ids;
   await db.exec(`
     CREATE ROLE anon;
     CREATE ROLE authenticated;
@@ -27,7 +30,9 @@ test('retained names are captured by role and follow existing payment access', a
     CREATE TABLE public.family_members (id uuid PRIMARY KEY, family_id uuid, user_id uuid, name text, email text, status text);
     CREATE TABLE public.payment_records (id uuid PRIMARY KEY, family_id uuid, recorded_by uuid, paid_by_member_id uuid, visibility text);
     CREATE TABLE public.budget_workspaces (id uuid PRIMARY KEY, owner_id uuid, workspace_type text);
-    CREATE TABLE public.business_bill_payments (id uuid PRIMARY KEY, workspace_id uuid, recorded_by uuid);
+    CREATE TABLE public.business_bill_payments (id uuid PRIMARY KEY, workspace_id uuid,
+      recorded_by uuid NOT NULL REFERENCES auth.users(id) ON DELETE RESTRICT, amount numeric NOT NULL);
+    CREATE TABLE public.business_documents (workspace_id uuid, parent_type text, parent_id uuid);
     CREATE TABLE mushavo_account_deletion.requests (id uuid PRIMARY KEY, subject_id uuid, cancelled_at timestamptz,
       workspace_impact_token text, workspace_impact_confirmed_at timestamptz);
     CREATE FUNCTION mushavo_account_deletion.owned_workspace_impact(uuid) RETURNS jsonb LANGUAGE sql
@@ -51,19 +56,38 @@ test('retained names are captured by role and follow existing payment access', a
     INSERT INTO public.budget_workspaces VALUES
       ('${workspace}', '${owner}', 'business'), ('${ownedWorkspace}', '${subject}', 'business');
     INSERT INTO public.business_bill_payments VALUES
-      ('${bill}', '${workspace}', '${subject}'), ('${ownedBill}', '${ownedWorkspace}', '${subject}');
+      ('${bill}', '${workspace}', '${subject}', 12.5), ('${ownedBill}', '${ownedWorkspace}', '${subject}', 14),
+      ('${otherBill}', '${workspace}', '${owner}', 20);
     INSERT INTO mushavo_account_deletion.requests VALUES ('${request}', '${subject}', NULL, md5('${subject}'), now());
     ${migration}
+    ${billDetachment}
   `);
 
   const capture = async () => (await db.query(
     'SELECT mushavo_account_deletion.capture_retained_payment_names($1) AS result', [request]
   )).rows[0].result;
+  const detach = async () => (await db.query(
+    'SELECT mushavo_account_deletion.detach_retained_business_bill_recorders($1) AS result', [request]
+  )).rows[0].result;
+
+  await t.test('a proof or a missing name prevents account-link changes', async () => {
+    const clearRecorder = db.query('UPDATE public.business_bill_payments SET recorded_by = NULL WHERE id = $1', [bill]);
+    await assert.rejects(clearRecorder, /FR33_BILL_PAYMENT_RECORDER_REQUIRED/);
+    await assert.rejects(db.query('INSERT INTO public.business_bill_payments VALUES ($1, $2, NULL, 12)', [request, workspace]),
+      /FR33_BILL_PAYMENT_RECORDER_REQUIRED/);
+    await db.query('INSERT INTO public.business_documents VALUES ($1, $2, $3)', [workspace, 'business_bill_payment', bill]);
+    await assert.rejects(detach, /FR33_BILL_PAYMENT_PROOF_REQUIRES_RETENTION_DECISION/);
+    assert.deepEqual((await db.query('SELECT * FROM public.fr33_bill_payment_names')).rows, []);
+    assert.equal((await db.query('SELECT recorded_by FROM public.business_bill_payments WHERE id = $1', [bill])).rows[0].recorded_by, subject);
+    await db.query('DELETE FROM public.business_documents WHERE parent_id = $1', [bill]);
+  });
+
   assert.deepEqual(await capture(), {family_payments: 1, business_bill_payments: 1});
   assert.deepEqual(await capture(), {family_payments: 1, business_bill_payments: 1});
 
   await db.exec('SET ROLE authenticated');
   await assert.rejects(capture, {code: '42501'});
+  await assert.rejects(detach, {code: '42501'});
   await assert.rejects(db.exec('DELETE FROM public.fr33_family_payment_names'), {code: '42501'});
   assert.deepEqual((await db.query('SELECT * FROM public.fr33_family_payment_names')).rows, []);
   assert.deepEqual((await db.query('SELECT * FROM public.fr33_bill_payment_names')).rows, []);
@@ -75,6 +99,20 @@ test('retained names are captured by role and follow existing payment access', a
 
   await db.exec(`RESET ROLE; UPDATE public.profiles SET full_name = 'subject@example.invalid' WHERE id = '${subject}'`);
   await assert.rejects(capture, /FR33_RETAINED_PAYMENT_NAME_REQUIRED/);
+  await db.exec(`UPDATE public.profiles SET full_name = 'Actual Profile Name' WHERE id = '${subject}'`);
+  await t.test('detachment clears the recorder only for payments in someone else’s Business', async () => {
+    assert.deepEqual(await detach(), {business_bill_payments_detached: 1});
+    assert.deepEqual(await detach(), {business_bill_payments_detached: 0});
+    const payments = (await db.query('SELECT id, recorded_by, amount FROM public.business_bill_payments ORDER BY id')).rows;
+    assert.deepEqual(payments, [
+      {id: bill, recorded_by: null, amount: '12.5'},
+      {id: ownedBill, recorded_by: subject, amount: '14'},
+      {id: otherBill, recorded_by: owner, amount: '20'}
+    ]);
+    await assert.rejects(db.query('DELETE FROM auth.users WHERE id = $1', [subject]), error =>
+      ['23001', '23503'].includes(error.code) && error.constraint === 'business_bill_payments_recorded_by_fkey');
+    await db.query('DELETE FROM public.business_bill_payments WHERE id = $1', [ownedBill]);
+  });
   await db.exec(`UPDATE mushavo_account_deletion.requests SET cancelled_at = now() WHERE id = '${request}'`);
   await assert.rejects(capture, /FR33_CONFIRMED_REQUEST_REQUIRED/);
   await db.exec(`DELETE FROM public.family_members WHERE id = '${member}'; DELETE FROM auth.users WHERE id = '${subject}'`);

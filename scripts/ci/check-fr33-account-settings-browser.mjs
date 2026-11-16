@@ -27,9 +27,10 @@ const agent = 'MushavoBudget-FR33-Browser-Acceptance';
 const browserKey = 'sb-dczlddwbtgvfdujgcitb-auth-token';
 const scope = { accountScope: 'ordinary' };
 const statusPath = '/rest/v1/rpc/fr33_account_deletion_status';
-const requestPath = '/rest/v1/rpc/fr33_request_account_deletion';
+const requestPath = '/rest/v1/rpc/fr33_submit_account_deletion';
+const impactPath = '/rest/v1/rpc/fr33_account_deletion_impact';
 const cancelPath = '/rest/v1/rpc/fr33_cancel_account_deletion';
-const allowedPost = new Set([statusPath, requestPath, cancelPath, '/rest/v1/rpc/app_session_status']);
+const allowedPost = new Set([statusPath, impactPath, requestPath, cancelPath, '/rest/v1/rpc/app_session_status']);
 
 let report = { result: 'FR33_BROWSER_PREFLIGHT_FAILED', exit_code: 1 };
 let step = 'READ_STAGING_CONFIGURATION';
@@ -62,6 +63,7 @@ try {
   const source = new Map([
     ['/auth.html', { contentType: 'text/html; charset=utf-8', body: await readFile(new URL('../../auth.html', import.meta.url)) }],
     ['/auth-flows.js', { contentType: 'application/javascript; charset=utf-8', body: await readFile(new URL('../../auth-flows.js', import.meta.url)) }],
+    ['/styles.css', { contentType: 'text/css; charset=utf-8', body: await readFile(new URL('../../styles.css', import.meta.url)) }],
     ['/config.js', { contentType: 'application/javascript; charset=utf-8', body: configText }]
   ]);
   const { chromium } = await import('../fixtures/staging-browser-tools/node_modules/playwright/index.mjs');
@@ -114,7 +116,7 @@ try {
             }
             const candidate = source.get(url.pathname);
             if (!candidate) return route.continue();
-            if (url.pathname !== '/config.js') assetLoads++;
+            if (url.pathname === accountPath || url.pathname === '/auth-flows.js') assetLoads++;
             return route.fulfill({ status: 200, ...candidate });
           }
           if (url.origin === 'https://cdn.jsdelivr.net' && method === 'GET' && url.pathname.startsWith('/npm/')) return route.continue();
@@ -133,7 +135,7 @@ try {
         const newRequest = page.getByRole('button', { name: 'Request account deletion', exact: true });
         const cancelRequest = page.getByRole('button', { name: 'Cancel deletion request', exact: true });
         const noRequest = page.getByText('You have no pending account deletion request.', { exact: true });
-        const ownerReview = page.getByText('Your request is pending a review of the shared workspaces you own.', { exact: true });
+        const ownerReview = page.getByText('Your request is pending. Deleting your account will also delete the Family and Business workspaces you own.', { exact: true });
 
         step = 'OPEN_ACCOUNT_SETTINGS';
         await page.goto(origin + accountPath + '?flow=account&from=personal-settings', { waitUntil: 'domcontentloaded' });
@@ -142,15 +144,42 @@ try {
         await newRequest.waitFor();
         evidence.initial_status_visible = true;
 
-        step = 'DISMISS_CONFIRMATION';
-        page.once('dialog', dialog => dialog.dismiss());
+        step = 'CHECK_WORKSPACE_IMPACT_WARNING';
+        const expectedImpact = await rpc(impactPath, owner.token);
+        const otherImpact = await rpc(impactPath, other.token);
         await newRequest.click();
+        const dialog = page.getByRole('dialog', { name: 'Confirm account deletion request' });
+        const confirm = dialog.getByRole('button', { name: 'Submit deletion request' });
+        const acknowledge = dialog.getByRole('checkbox', { name: 'I understand what will be permanently deleted.' });
+        const list = dialog.getByRole('list', { name: 'Workspaces that will be deleted' });
+        await dialog.waitFor();
+        await list.waitFor();
+        need(expectedImpact.workspaces.some(row => row.kind === 'business'), 'FR33_BROWSER_OWNED_FIXTURE_REQUIRED');
+        need(await list.getByRole('listitem').count() === expectedImpact.workspaces.length,
+          'FR33_BROWSER_OWNED_WORKSPACE_COUNT_MISMATCH');
+        const expectedLabels = expectedImpact.workspaces.map(row => {
+          const kind = row.kind === 'business' ? 'Business' : 'Family';
+          const state = { active: 'Active', suspended: 'Suspended', closed: 'Closed' }[row.status];
+          return state ? `${row.name} (${kind}, ${state})` : `${row.name} (${kind})`;
+        });
+        need(JSON.stringify(await list.getByRole('listitem').allTextContents()) === JSON.stringify(expectedLabels),
+          'FR33_BROWSER_OWNED_WORKSPACE_WARNING_MISMATCH');
+        need(otherImpact.impact_token !== expectedImpact.impact_token && !(await confirm.isEnabled()),
+          'FR33_BROWSER_IMPACT_SCOPE_OR_CONFIRMATION_MISMATCH');
+        await dialog.getByText('All members will lose access to these workspaces.', { exact: false }).waitFor();
+        evidence.owned_workspace_warning = true;
+
+        step = 'DISMISS_CONFIRMATION';
+        await dialog.getByRole('button', { name: 'Go back' }).click();
+        await dialog.waitFor({ state: 'hidden' });
         need(!submitted, 'FR33_BROWSER_SUBMITTED_WITHOUT_CONFIRMATION');
         evidence.dismissal_prevents_request = true;
 
         step = 'SUBMIT_AND_READ_OWNERSHIP_HOLD';
-        page.once('dialog', dialog => dialog.accept());
         await newRequest.click();
+        await acknowledge.check();
+        need(await confirm.isEnabled(), 'FR33_BROWSER_CONFIRMATION_UNAVAILABLE');
+        await confirm.click();
         await ownerReview.waitFor();
         await cancelRequest.waitFor();
         need(submitted, 'FR33_BROWSER_NO_REQUEST_SENT');

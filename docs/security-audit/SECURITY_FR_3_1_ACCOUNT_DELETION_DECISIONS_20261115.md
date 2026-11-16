@@ -6,11 +6,13 @@ The request API records a pending case. The rules below would govern processing 
 
 ## Workspace ownership
 
+**Owner decision recorded on 16 November 2026.** When permanent account deletion completes, automatically close and delete the Family and Business workspaces the departing account owns. Warn the owner by listing those workspaces before confirming the request.
+
 | Account situation | Proposed handling |
 | --- | --- |
 | Owns a Personal workspace | Erase its payments, cashbook, settings and exclusively personal attachments with the account. Handle platform subscription and billing records under the adopted billing rules. |
-| Owns a Family or Business workspace with active members | Transfer ownership to an eligible member who accepts it. Verify the successor's access and independent membership before removing the former owner's access. If transfer cannot be completed, route the case for authorized review and tell the requester what action is needed. |
-| Sole remaining member and owner of a Family or Business workspace | Allow explicit workspace closure as a separate step. Check obligations for shared financial history before erasing workspace contents. Include archived workspaces and historical membership in that review. |
+| Owns a Family or Business workspace with active members | Automatically delete the workspace with the owner's account. List the workspace in the confirmation and warn that all its members will lose access. Apply the adopted rules for any underlying records that must be retained. |
+| Sole remaining member and owner of a Family or Business workspace | Automatically delete the workspace with the owner's account. Include it in the confirmation. Apply the adopted rules for any underlying records that must be retained. |
 | Member of a Family or Business workspace | Remove membership and access. Review authored records and files for independently necessary workspace history. Where approved, remove personal contact details and replace display attribution with a neutral label while retaining the amounts, dates and accounting relationships the workspace needs. |
 | Holds a Mushavo Budget staff role | Review role removal, active access and any independent audit retention obligations before executing account deletion. |
 
@@ -31,7 +33,7 @@ The request API records a pending case. The rules below would govern processing 
 
 - Confirm the operator's legal name, launch countries and monitored privacy contact. Identify the relevant obligations and distinguish Mushavo Budget billing records from customer-managed bookkeeping records.
 - Record the applicable retention purpose and expiry trigger for each exception. Verify the configured deletion and backup behavior for the services in use before setting notice or completion language.
-- Approve the ownership rules above and identify who can resolve a request when an eligible successor is unavailable.
+- Confirm the outstanding retention rules for records in deleted workspaces. The approved ownership rule applies to both active and inactive owned workspaces.
 
 Apple requires apps that support account creation to let people initiate deletion in the app. Google Play also calls for an external web resource and asks for retention practices to be disclosed. [Apple App Review](https://developer.apple.com/help/app-review/guideline-reference/5-1-1-account-deletion) · [Google Play User Data policy](https://support.google.com/googleplay/android-developer/answer/10144311)
 

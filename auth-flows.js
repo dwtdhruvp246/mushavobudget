@@ -14,10 +14,16 @@ const settingsDestinations = new Map([
 ]);
 const settingsSource = new URLSearchParams(window.location.search).get('from');
 const settingsDestination = settingsDestinations.get(settingsSource);
+const deletionDialog = $('#securityDeletionDialog');
+let deletionImpactToken = null;
 const settings = window.MUSHAVO_BUDGET_CONFIG || {};
 let isolated, app, controller, changer, busy = false, identity = null, cooldownUntil = 0, emailEntry = null, passwordClient = null;
 const message = value => { $('#securityMessage').textContent = value; };
-function hideForms() { for (const id of ['#securityRequest','#securityPassword','#securityContinue','#securitySelfSignup','#securityResume','#securityAccountControls']) $(id).hidden = true; }
+function hideForms() {
+  if (deletionDialog.open) deletionDialog.close();
+  deletionImpactToken = null;
+  for (const id of ['#securityRequest','#securityPassword','#securityContinue','#securitySelfSignup','#securityResume','#securityAccountControls']) $(id).hidden = true;
+}
 function showIdentity(user) { identity = user; $('#securityIdentity').hidden = false; $('#securityIdentity').textContent = `Verified account: ${user.email || ''}`; }
 async function operation(action) {
   if (busy) return;
@@ -201,11 +207,11 @@ async function showAccountSecurity() {
 const deletionStatus = {
   none: 'You have no pending account deletion request.',
   staff_review: 'Your request is pending a review of your staff access.',
-  ownership_review: 'Your request is pending a review of the shared workspaces you own.',
+  ownership_review: 'Your request is pending. Deleting your account will also delete the Family and Business workspaces you own.',
   shared_records_review: 'Your request is pending a review of your shared records.',
   retention_review: 'Your request is pending a review of which records must be kept.'
 };
-async function accountDeletion(action) {
+async function accountDeletion(action, impactToken) {
   const actor = identity;
   if (!actor) return;
   const current = $('#securityDeletionStatus');
@@ -214,12 +220,13 @@ async function accountDeletion(action) {
   const retry = $('#securityDeletionRetry');
   const rpc = {
     status: 'fr33_account_deletion_status',
-    request: 'fr33_request_account_deletion',
+    request: 'fr33_submit_account_deletion',
     cancel: 'fr33_cancel_account_deletion'
   };
   try {
     await currentIdentity();
-    const { data, error } = await passwordClient.rpc(rpc[action]);
+    const { data, error } = await passwordClient.rpc(rpc[action],
+      action === 'request' ? { p_impact_token: impactToken } : {});
     await currentIdentity();
     if (error) throw error;
     if (!Object.hasOwn(deletionStatus, data?.status)) throw authError('account_deletion_status_unavailable');
@@ -229,6 +236,12 @@ async function accountDeletion(action) {
     retry.hidden = true;
   } catch (error) {
     if (actor !== identity) return;
+    if (error?.message === 'ACCOUNT_DELETION_IMPACT_CHANGED') {
+      current.textContent = 'Your owned workspaces changed. Review the updated list before submitting again.';
+      request.hidden = false;
+      retry.hidden = false;
+      return;
+    }
     const needsPassword = error?.message === 'ACCOUNT_DELETION_FRESH_PASSWORD_REQUIRED';
     current.textContent = needsPassword
       ? 'Sign out and sign in with your password, then return here within 10 minutes to submit your request.'
@@ -240,10 +253,51 @@ async function accountDeletion(action) {
     retry.hidden = false;
   }
 }
-$('#securityDeletionRequest').addEventListener('click', () => {
-  if (window.confirm('Submit an account deletion request for this signed-in account? Your account stays available while the request is reviewed.')) {
-    operation(() => accountDeletion('request'));
+async function openDeletionConfirmation() {
+  const actor = identity;
+  if (!actor) return;
+  const current = $('#securityDeletionStatus');
+  try {
+    await currentIdentity();
+    const { data, error } = await passwordClient.rpc('fr33_account_deletion_impact');
+    await currentIdentity();
+    if (actor !== identity) return;
+    if (error) throw error;
+    if (!/^[0-9a-f]{64}$/.test(data?.impact_token || '') || !Array.isArray(data?.workspaces)) {
+      throw authError('account_deletion_impact_unavailable');
+    }
+    const items = data.workspaces.map(workspace => {
+      if (!['family', 'business'].includes(workspace.kind) || typeof workspace.name !== 'string') {
+        throw authError('account_deletion_impact_unavailable');
+      }
+      const item = document.createElement('li');
+      const kind = workspace.kind === 'business' ? 'Business' : 'Family';
+      const state = { active: 'Active', suspended: 'Suspended', closed: 'Closed' }[workspace.status];
+      item.textContent = state ? `${workspace.name} (${kind}, ${state})` : `${workspace.name} (${kind})`;
+      return item;
+    });
+    $('#securityDeletionWorkspaces').replaceChildren(...items);
+    $('#securityDeletionWorkspaceImpact').hidden = items.length === 0;
+    $('#securityDeletionConfirmForm').reset();
+    $('#securityDeletionConfirm').disabled = true;
+    deletionImpactToken = data.impact_token;
+    deletionDialog.showModal();
+  } catch {
+    if (actor === identity) current.textContent = 'We could not check which workspaces would be deleted. Try again.';
   }
+}
+$('#securityDeletionRequest').addEventListener('click', () => operation(openDeletionConfirmation));
+$('#securityDeletionGoBack').addEventListener('click', () => deletionDialog.close());
+deletionDialog.addEventListener('close', () => { deletionImpactToken = null; });
+$('#securityDeletionAcknowledge').addEventListener('change', event => {
+  $('#securityDeletionConfirm').disabled = !event.target.checked;
+});
+$('#securityDeletionConfirmForm').addEventListener('submit', event => {
+  event.preventDefault();
+  if (!deletionImpactToken || !$('#securityDeletionAcknowledge').checked) return;
+  const token = deletionImpactToken;
+  deletionDialog.close();
+  operation(() => accountDeletion('request', token));
 });
 $('#securityDeletionCancel').addEventListener('click', () => operation(() => accountDeletion('cancel')));
 $('#securityDeletionRetry').addEventListener('click', () => operation(() => accountDeletion('status')));

@@ -31,7 +31,7 @@ jobs:
           scripts/fixtures/staging-browser-tools/node_modules/.bin/playwright install --with-deps chromium
       - name: Verify Account Settings with the staging API
         env:
-          MUSHAVO_FR33_BROWSER_TARGET: canonical
+          MUSHAVO_FR33_BROWSER_TARGET: candidate
           MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}
           MUSHAVO_STAGING_USER_A_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_A_PASSWORD }}
           MUSHAVO_STAGING_USER_B_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_B_EMAIL }}

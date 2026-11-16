@@ -7,9 +7,9 @@
     <meta http-equiv="Cache-Control" content="no-store" />
     <title>Account security | Mushavo Budget</title>
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
-    <link rel="stylesheet" href="styles.css?v=82" />
+    <link rel="stylesheet" href="styles.css?v=83" />
     <script src="config.js?v=27"></script>
-    <script type="module" src="auth-flows.js?v=11"></script>
+    <script type="module" src="auth-flows.js?v=12"></script>
   </head>
   <body>
     <main class="workspace">
@@ -31,6 +31,24 @@
             <button id="securityDeletionRetry" type="button" hidden>Check request status</button>
           </section>
         </section>
+        <dialog id="securityDeletionDialog" class="account-deletion-dialog" aria-labelledby="securityDeletionDialogTitle" aria-describedby="securityDeletionWarning">
+          <form id="securityDeletionConfirmForm">
+            <h2 id="securityDeletionDialogTitle">Confirm account deletion request</h2>
+            <p id="securityDeletionWarning">Permanent account deletion cannot be undone.</p>
+            <div id="securityDeletionWorkspaceImpact" hidden>
+              <p>Deleting your account will also permanently delete the Family and Business workspaces you own, including active workspaces. All members will lose access to these workspaces.</p>
+              <ul id="securityDeletionWorkspaces" aria-label="Workspaces that will be deleted"></ul>
+            </div>
+            <label class="account-deletion-confirmation">
+              <input id="securityDeletionAcknowledge" type="checkbox" required />
+              <span>I understand what will be permanently deleted.</span>
+            </label>
+            <div class="button-row">
+              <button id="securityDeletionGoBack" type="button" autofocus>Go back</button>
+              <button id="securityDeletionConfirm" class="danger" type="submit" disabled>Submit deletion request</button>
+            </div>
+          </form>
+        </dialog>
         <form id="securityRequest" class="form-grid" hidden>
           <label>Email<input id="securityEmail" type="email" autocomplete="email" required /></label>
           <button class="primary" type="submit">Send link</button>

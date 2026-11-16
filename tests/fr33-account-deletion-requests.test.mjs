@@ -13,6 +13,11 @@ const reviewMigration = await readFile(new URL(
   import.meta.url
 ), 'utf8');
 
+const impactMigration = await readFile(new URL(
+  '../supabase/migrations/20261116111000_fr33_confirm_owned_workspace_impact.sql',
+  import.meta.url
+), 'utf8');
+
 const owner = '10000000-0000-4000-8000-000000000001';
 const other = '10000000-0000-4000-8000-000000000002';
 const session = '10000000-0000-4000-8000-000000000003';
@@ -42,7 +47,10 @@ test('deletion requests are private, idempotent, cancellable and held for review
       ) THEN RAISE insufficient_privilege; END IF;
     END; $$;
     CREATE TABLE public.app_admins (user_id uuid);
-    CREATE TABLE public.budget_workspaces (id uuid, owner_id uuid, workspace_type text);
+    CREATE TABLE public.budget_workspaces (
+      id uuid, owner_id uuid, workspace_type text, name text, status text, legacy_family_id uuid
+    );
+    CREATE TABLE public.families (id uuid PRIMARY KEY, owner_id uuid, name text);
     CREATE TABLE public.workspace_members (user_id uuid, workspace_id uuid);
     CREATE TABLE public.family_heads (user_id uuid);
     CREATE TABLE public.family_members (user_id uuid);
@@ -73,11 +81,16 @@ test('deletion requests are private, idempotent, cancellable and held for review
     INSERT INTO mushavo_file_ingest.business_uploads VALUES ('${other}');
   `);
   await db.exec(reviewMigration);
+  await db.exec(impactMigration);
 
   const call = async name => (await db.query(`SELECT public.${name}() AS payload`)).rows[0].payload;
   const status = () => call('fr33_account_deletion_status');
   const request = () => call('fr33_request_account_deletion');
   const cancel = () => call('fr33_cancel_account_deletion');
+  const impact = () => call('fr33_account_deletion_impact');
+  const submit = async token => (await db.query(
+    'SELECT public.fr33_submit_account_deletion($1) AS payload', [token]
+  )).rows[0].payload;
   const review = async id => (await db.query(
     'SELECT mushavo_account_deletion.review_dependencies($1) AS payload', [id]
   )).rows[0].payload;
@@ -92,6 +105,8 @@ test('deletion requests are private, idempotent, cancellable and held for review
     await db.exec('SET ROLE anon');
     await assert.rejects(request, {code: '42501'});
     await assert.rejects(status, {code: '42501'});
+    await assert.rejects(impact, {code: '42501'});
+    await assert.rejects(() => submit('a'.repeat(64)), {code: '42501'});
     await db.exec('RESET ROLE; SET ROLE service_role');
     await assert.rejects(cancel, {code: '42501'});
     await db.exec('RESET ROLE');
@@ -150,7 +165,7 @@ test('deletion requests are private, idempotent, cancellable and held for review
   await t.test('ownership, former membership and staff access take precedence over retention review', async () => {
     await db.exec(`
       RESET ROLE;
-      INSERT INTO public.budget_workspaces VALUES ('${workspace}', '${owner}', 'business');
+      INSERT INTO public.budget_workspaces (id,owner_id,workspace_type) VALUES ('${workspace}', '${owner}', 'business');
     `);
     await actor(owner, session);
     assert.equal((await status()).status, 'ownership_review');
@@ -176,4 +191,53 @@ test('deletion requests are private, idempotent, cancellable and held for review
     assert.equal(rows.length, 2);
     assert.equal(rows.filter(row => row.cancelled_at === null).length, 1);
   });
+  await t.test('owned Family and Business scope is confirmed without including other members’ workspaces', async () => {
+    const modernFamily = '10000000-0000-4000-8000-000000000010';
+    const oldFamily = '10000000-0000-4000-8000-000000000011';
+    const familyAlias = '10000000-0000-4000-8000-000000000012';
+    const business = '10000000-0000-4000-8000-000000000013';
+    await db.exec(`
+      DELETE FROM public.app_admins WHERE user_id = '${owner}';
+      INSERT INTO public.families VALUES
+        ('${modernFamily}', '${owner}', 'Legacy alias'),
+        ('${oldFamily}', '${owner}', 'Legacy Family');
+      INSERT INTO public.budget_workspaces VALUES
+        ('${familyAlias}', '${owner}', 'household', 'Active Family', 'active', '${modernFamily}'),
+        ('${business}', '${owner}', 'business', 'Active Business', 'active', NULL);
+      UPDATE public.budget_workspaces SET name = 'Someone else''s Business', status = 'active' WHERE id = '${workspace}';
+    `);
+
+    await actor(owner, session);
+    await cancel();
+    const before = await impact();
+    assert.deepEqual(before.workspaces.map(row => row.name), ['Active Business', 'Legacy Family', 'Active Family']);
+    assert.ok(before.workspaces.every(row => !('id' in row) && !('legacy_family_id' in row)));
+    await assert.rejects(() => submit(null), /ACCOUNT_DELETION_IMPACT_CONFIRMATION_REQUIRED/);
+
+    await actor(other, otherSession);
+    assert.deepEqual((await impact()).workspaces.map(row => row.name), ["Someone else's Business"]);
+    await assert.rejects(() => submit(before.impact_token), /ACCOUNT_DELETION_FRESH_PASSWORD_REQUIRED/);
+
+    await db.exec(`RESET ROLE; UPDATE public.budget_workspaces SET name = 'Renamed Business' WHERE id = '${business}'`);
+    await actor(owner, session);
+    await assert.rejects(() => submit(before.impact_token), /ACCOUNT_DELETION_IMPACT_CHANGED/);
+    assert.equal((await status()).status, 'none');
+
+    const after = await impact();
+    const first = await submit(after.impact_token);
+    assert.equal(first.status, 'ownership_review');
+    assert.deepEqual(await submit(after.impact_token), first);
+    await db.exec('RESET ROLE');
+    const receipt = (await db.query(`SELECT workspace_impact_token, workspace_impact_confirmed_at
+      FROM mushavo_account_deletion.requests WHERE id = $1`, [first.request_id])).rows[0];
+    assert.equal(receipt.workspace_impact_token, after.impact_token);
+    assert.ok(receipt.workspace_impact_confirmed_at);
+
+    await db.exec(`UPDATE public.families SET owner_id = '${other}' WHERE id = '${modernFamily}'`);
+    await actor(owner, session);
+    await assert.rejects(impact, /ACCOUNT_DELETION_OWNERSHIP_REVIEW_REQUIRED/);
+    await assert.rejects(() => submit(after.impact_token), /ACCOUNT_DELETION_OWNERSHIP_REVIEW_REQUIRED/);
+    await db.exec('RESET ROLE');
+  });
+
 });

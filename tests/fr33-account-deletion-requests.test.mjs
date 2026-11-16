@@ -249,6 +249,10 @@ test('deletion requests are private, idempotent, cancellable and held for review
     const modernFamily = '10000000-0000-4000-8000-000000000010';
     const familyWorkspace = '10000000-0000-4000-8000-000000000012';
     const business = '10000000-0000-4000-8000-000000000013';
+    const sharedFamily = '10000000-0000-4000-8000-000000000014';
+    const ownerItem = '10000000-0000-4000-8000-000000000015';
+    const sharedItem = '10000000-0000-4000-8000-000000000016';
+    const payer = '10000000-0000-4000-8000-000000000017';
     await db.exec(`
       UPDATE public.families SET owner_id = '${owner}' WHERE id = '${modernFamily}';
       ALTER TABLE public.budget_workspaces ADD PRIMARY KEY (id);
@@ -263,6 +267,35 @@ test('deletion requests are private, idempotent, cancellable and held for review
       CREATE TABLE public.fixture_workspace_records (workspace_id uuid REFERENCES public.budget_workspaces (id) ON DELETE RESTRICT);
       INSERT INTO public.fixture_family_records VALUES ('${modernFamily}');
       INSERT INTO public.fixture_workspace_records VALUES ('${business}'), ('${workspace}'), ('${workspace}');
+      INSERT INTO public.families VALUES ('${sharedFamily}', '${other}', 'Shared Family');
+      ALTER TABLE public.family_members ADD COLUMN id uuid, ADD COLUMN created_by uuid;
+      INSERT INTO public.family_members VALUES ('${owner}', '${payer}', '${other}');
+      CREATE TABLE public.payment_items (id uuid PRIMARY KEY, owner_id uuid, created_by uuid);
+      CREATE TABLE public.payment_records (
+        family_id uuid, payment_item_id uuid, paid_by_member_id uuid, owner_id uuid,
+        recorded_by uuid, proof_path text
+      );
+      INSERT INTO public.payment_items VALUES
+        ('${ownerItem}', '${owner}', '${owner}'), ('${sharedItem}', '${other}', '${other}');
+      INSERT INTO public.payment_records VALUES
+        ('${modernFamily}', '${ownerItem}', NULL, '${owner}', '${owner}', 'owned-proof'),
+        ('${sharedFamily}', '${sharedItem}', '${payer}', '${other}', '${owner}', 'shared-proof'),
+        ('${sharedFamily}', '${ownerItem}', NULL, '${other}', '${other}', NULL),
+        ('${sharedFamily}', '${sharedItem}', NULL, '${other}', '${other}', NULL),
+        (NULL, '${ownerItem}', NULL, '${owner}', '${owner}', 'personal-proof');
+      CREATE TABLE public.business_bill_payments (workspace_id uuid, recorded_by uuid);
+      CREATE TABLE public.business_income_receipts (workspace_id uuid, recorded_by uuid, voided_by uuid);
+      CREATE TABLE public.business_expense_claims (
+        workspace_id uuid, status text, submitted_by uuid, paid_by uuid, reviewed_by uuid
+      );
+      INSERT INTO public.business_bill_payments VALUES
+        ('${business}', '${owner}'), ('${workspace}', '${owner}'), ('${workspace}', '${other}');
+      INSERT INTO public.business_income_receipts VALUES
+        ('${business}', '${owner}', '${owner}'), ('${workspace}', '${other}', '${owner}');
+      INSERT INTO public.business_expense_claims VALUES
+        ('${business}', 'paid', '${owner}', '${other}', NULL),
+        ('${workspace}', 'paid', '${owner}', '${owner}', '${owner}'),
+        ('${workspace}', 'draft', '${owner}', NULL, NULL);
     `);
     await db.exec(workspaceReview);
     const reviewWorkspace = async id => (await db.query(
@@ -285,6 +318,13 @@ test('deletion requests are private, idempotent, cancellable and held for review
     assert.equal(report.owned_legacy_families, 2);
     assert.equal(report.memberships_in_other_workspaces, 1);
     assert.deepEqual(report.file_ledger_rows, { ordinary: 1, subscription: 0, business: 1 });
+    assert.deepEqual(report.payments_in_other_workspaces, {
+      family_payments: 2,
+      family_payments_with_linked_proof: 1,
+      business_bill_payments: 1,
+      business_income_receipts: 1,
+      business_paid_claims: 1
+    });
     const rows = Object.fromEntries(report.direct_dependencies.map(row => [row.relation, [row.on_delete, row.matching_rows]]));
     assert.deepEqual(rows, { fixture_family_records: ['CASCADE', 1], fixture_workspace_records: ['RESTRICT', 1] });
     assert.ok(!JSON.stringify(report).includes(business));

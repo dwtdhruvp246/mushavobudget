@@ -154,7 +154,10 @@ try {
         const list = dialog.getByRole('list', { name: 'Workspaces that will be deleted' });
         await dialog.waitFor();
         await list.waitFor();
-        need(expectedImpact.workspaces.some(row => row.kind === 'business'), 'FR33_BROWSER_OWNED_FIXTURE_REQUIRED');
+        for (const kind of ['family', 'business']) {
+          need(expectedImpact.workspaces.some(row => row.kind === kind), 'FR33_BROWSER_OWNED_FIXTURE_REQUIRED_' + kind.toUpperCase());
+        }
+        evidence.active_family_warning = expectedImpact.workspaces.some(row => row.kind === 'family' && row.status === 'active');
         need(await list.getByRole('listitem').count() === expectedImpact.workspaces.length,
           'FR33_BROWSER_OWNED_WORKSPACE_COUNT_MISMATCH');
         const expectedLabels = expectedImpact.workspaces.map(row => {

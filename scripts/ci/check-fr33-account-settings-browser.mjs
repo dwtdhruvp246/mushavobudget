@@ -1,8 +1,22 @@
+import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import {
   API_ORIGIN, WEB_ORIGIN, apiTransport, checkStagingAccess, need, privateAccounts, readPublicConfiguration
 } from './staging-access.mjs';
 
+const verifiedHostedTargets = {
+  preview: 'https://47f4d139.mushavo-budget-staging.pages.dev',
+  canonical: WEB_ORIGIN
+};
+const deployedAssetHashes = {
+  '/auth': 'b7459850aaa078d2140cda0de8cb0151f0d9e5c389f9ef7342330c44ad5141ba',
+  '/auth-flows.js': 'c4993cd783abb4790c0ef8d76ce73c2ef1c9d56cb8dc222a041eda02f70a1ff5',
+  '/config.js': 'be23e23251470da5a1caa5c19f9af46763aa9192dee62e96700c317c479cc74c'
+};
+const target = process.env.MUSHAVO_FR33_BROWSER_TARGET || 'candidate';
+const origin = verifiedHostedTargets[target] || WEB_ORIGIN;
+const hosted = target !== 'candidate';
+const accountPath = hosted ? '/auth' : '/auth.html';
 const agent = 'MushavoBudget-FR33-Browser-Acceptance';
 const browserKey = 'sb-dczlddwbtgvfdujgcitb-auth-token';
 const scope = { accountScope: 'ordinary' };
@@ -13,10 +27,30 @@ const allowedPost = new Set([statusPath, requestPath, cancelPath, '/rest/v1/rpc/
 
 let report = { result: 'FR33_BROWSER_PREFLIGHT_FAILED', exit_code: 1 };
 let step = 'READ_STAGING_CONFIGURATION';
+let hostedAssetsVerified = false;
 try {
-  const response = await fetch(WEB_ORIGIN + '/config.js', { redirect: 'error', signal: AbortSignal.timeout(20000) });
+  need(!hosted || Object.hasOwn(verifiedHostedTargets, target), 'FR33_UNKNOWN_BROWSER_TARGET');
+  const readHosted = path => fetch(origin + path, { redirect: 'error', signal: AbortSignal.timeout(20000) });
+  const response = await readHosted('/config.js');
   need(response.ok, 'FR33_STAGING_CONFIGURATION_UNAVAILABLE');
-  const configText = await response.text();
+  const configBytes = Buffer.from(await response.arrayBuffer());
+  if (hosted) {
+    step = 'VERIFY_DEPLOYED_ASSETS_AND_HEADERS';
+    const [account, client, retiredRoute] = await Promise.all([
+      readHosted(accountPath), readHosted('/auth-flows.js'), readHosted('/api/email-verification/status')
+    ]);
+    need(account.ok && client.ok && account.headers.get('x-content-type-options') === 'nosniff',
+      'FR33_HOSTED_ACCOUNT_ASSETS_OR_HEADERS_UNAVAILABLE');
+    need(retiredRoute.status === 410 && (await retiredRoute.json()).result === 'SIGNIN_VERIFICATION_REMOVED',
+      'FR33_STAGING_WORKER_NOT_PRESENT');
+    const [accountBytes, clientBytes] = await Promise.all([account.arrayBuffer(), client.arrayBuffer()]);
+    const hash = bytes => createHash('sha256').update(Buffer.from(bytes)).digest('hex');
+    need(hash(accountBytes) === deployedAssetHashes[accountPath], 'FR33_HOSTED_ACCOUNT_DOCUMENT_MISMATCH');
+    need(hash(clientBytes) === deployedAssetHashes['/auth-flows.js'], 'FR33_HOSTED_ACCOUNT_CLIENT_MISMATCH');
+    need(hash(configBytes) === deployedAssetHashes['/config.js'], 'FR33_HOSTED_CONFIGURATION_MISMATCH');
+    hostedAssetsVerified = true;
+  }
+  const configText = configBytes.toString('utf8');
   const { key } = readPublicConfiguration(configText);
   const source = new Map([
     ['/auth.html', { contentType: 'text/html; charset=utf-8', body: await readFile(new URL('../../auth.html', import.meta.url)) }],
@@ -59,14 +93,18 @@ try {
           if (location.origin === origin && !localStorage.getItem(key)) {
             localStorage.setItem(key, JSON.stringify(session));
           }
-        }, { origin: WEB_ORIGIN, key: browserKey, session });
+        }, { origin, key: browserKey, session });
 
         let assetLoads = 0;
         await context.route('**/*', async route => {
           const request = route.request();
           const url = new URL(request.url());
           const method = request.method();
-          if (url.origin === WEB_ORIGIN && method === 'GET') {
+          if (url.origin === origin && method === 'GET') {
+            if (hosted) {
+              if (url.pathname === accountPath || url.pathname === '/auth-flows.js') assetLoads++;
+              return route.continue();
+            }
             const candidate = source.get(url.pathname);
             if (!candidate) return route.continue();
             if (url.pathname !== '/config.js') assetLoads++;
@@ -91,7 +129,7 @@ try {
         const ownerReview = page.getByText('Your request is pending a review of the shared workspaces you own.', { exact: true });
 
         step = 'OPEN_ACCOUNT_SETTINGS';
-        await page.goto(WEB_ORIGIN + '/auth.html?flow=account', { waitUntil: 'domcontentloaded' });
+        await page.goto(origin + accountPath + '?flow=account', { waitUntil: 'domcontentloaded' });
         await page.getByRole('heading', { name: 'Account settings', exact: true }).waitFor();
         await noRequest.waitFor();
         await newRequest.waitFor();
@@ -116,7 +154,7 @@ try {
         await page.reload({ waitUntil: 'domcontentloaded' });
         await ownerReview.waitFor();
         await cancelRequest.waitFor();
-        need(assetLoads === 4, 'FR33_BROWSER_CANDIDATE_ASSETS_NOT_RELOADED');
+        need(assetLoads === 4, 'FR33_BROWSER_ACCOUNT_ASSETS_NOT_RELOADED');
         evidence.review_status_survives_reload = true;
 
         step = 'CANCEL_FROM_ACCOUNT_SETTINGS';
@@ -140,5 +178,7 @@ try {
   // Stage errors can contain account credentials or private identifiers.
 }
 report.browser_step = step;
+report.browser_target = target;
+report.hosted_assets_verified = hostedAssetsVerified;
 console.log(JSON.stringify(report));
 process.exitCode = report.exit_code;

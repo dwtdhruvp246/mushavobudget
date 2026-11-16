@@ -78,7 +78,15 @@ The permanent erasure worker still needs to detach shared payment attribution an
 
 On 16 November 2026 the owner confirmed that a deleted account’s existing name stays on its retained payments in other people’s Family and Business workspaces. The approved display is the person’s name.
 
-The read-only diagnostic now reports whether the Family payer and recorder can be named and whether a profile name is available for Business records. Missing names require attention. Email addresses do not serve as a name source and the report emits only counts and availability. All 56 local tests and a rolled-back Business staging trial passed. Persisting and displaying the name after permanent account erasure is part of the pending executor work.
+The read-only diagnostic now reports whether the Family payer and recorder can be named and whether a profile name is available for Business records. Missing names require attention. Email addresses do not serve as a name source and the report emits only counts and availability. All 56 local tests and a rolled-back Business staging trial passed. Name capture and payment history support are recorded below.
+
+## Saved names for retained payments
+
+[Migration `20261116124345`](../../supabase/migrations/20261116124345_fr33_retained_payment_names.sql) is installed on staging. The private capture step requires an open, confirmed request with the current owned-workspace confirmation. It saves only the departing member’s payer or recorder name for a surviving Family payment, and their recorder name for a surviving Business bill payment. The resulting name rows inherit read visibility from the underlying payment.
+
+The staging rollback rehearsal saved and read a disposable Family name as the authorized owner and exercised two existing Business test payments. Readback found no retained test names, temporary identities or open requests. All 58 local tests passed, including the renderer using saved names after the original links disappeared.
+
+The Family payment history, Family paid badges and reports, and Business bill history were updated on the remediation branch. The web assets still need a staging deployment. Permanent erasure still needs to call capture in the erasure transaction and detach the original Auth references. Business paid claims and income receipts are outside this capture migration.
 
 ## Requirements for actual erasure
 

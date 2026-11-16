@@ -56,6 +56,8 @@ DECLARE
   retained_income_before jsonb;
   historical_void_before jsonb;
   updated_income public.business_income_receipts%ROWTYPE;
+  removed_upload text;
+  unresolved_upload text;
   outsider uuid := gen_random_uuid();
   outsider_session uuid := gen_random_uuid();
 BEGIN
@@ -259,6 +261,23 @@ BEGIN
  END;
  UPDATE public.families SET name='Synthetic Owned Active Family' WHERE id=owned_family;
 
+ -- Cleanup already removed this disposable file. Its upload entry can leave with the account.
+ removed_upload := 'personal/'||departing_user||'/managed-upload-v1/'||gen_random_uuid()||'.pdf';
+ unresolved_upload := 'personal/'||departing_user||'/managed-upload-v1/'||gen_random_uuid()||'.pdf';
+ INSERT INTO mushavo_file_ingest.ordinary_uploads(bucket_id,path,workspace_id,actor_id,attachment_id, mime_type,byte_count,state,expires_at)
+ VALUES ('payment-proofs',removed_upload,personal_workspace,departing_user,gen_random_uuid(),'application/pdf',12,'removed',now()),
+   ('payment-proofs',unresolved_upload,personal_workspace,departing_user,gen_random_uuid(),'application/pdf',12,'ready',now());
+ BEGIN
+   PERFORM mushavo_account_deletion.execute_confirmed_request(request_uuid);
+   RAISE EXCEPTION 'UNFINISHED_UPLOAD_WAS_BYPASSED';
+ EXCEPTION WHEN raise_exception THEN
+   IF SQLERRM <> 'FR33_STORAGE_HANDOFF_REQUIRED' THEN RAISE; END IF;
+ END;
+ IF NOT EXISTS (SELECT FROM mushavo_file_ingest.ordinary_uploads WHERE path=removed_upload AND state='removed')
+   OR NOT EXISTS (SELECT FROM mushavo_file_ingest.ordinary_uploads WHERE path=unresolved_upload AND state='ready')
+ THEN RAISE EXCEPTION 'UPLOAD_CLEANUP_NOT_ATOMIC'; END IF;
+ DELETE FROM mushavo_file_ingest.ordinary_uploads WHERE path=unresolved_upload AND actor_id=departing_user;
+
  -- Unclassified platform billing still blocks completion and rolls back both the archive and finance deletes.
  INSERT INTO public.admin_subscription_grants(id,workspace_id,owner_id,plan_id,billing_period,starts_on,
    ends_on,grant_kind,reason,granted_by)
@@ -367,6 +386,9 @@ BEGIN
       AND retained_voider_name='Synthetic Retained Family Person'
       AND to_jsonb(income_row)-ARRAY['voided_by','retained_voider_name']=historical_void_before)
    OR EXISTS (SELECT FROM mushavo_account_deletion.business_attribution_permits)
+   OR EXISTS (SELECT FROM mushavo_file_ingest.ordinary_uploads WHERE path IN (removed_upload,unresolved_upload))
+   OR EXISTS (SELECT FROM mushavo_account_deletion.retained_paid_claim_proofs)
+   OR has_function_privilege('authenticated','mushavo_account_deletion.prepare_shared_proof_retention(uuid)','EXECUTE')
    OR has_function_privilege('authenticated','mushavo_account_deletion.detach_retained_business_claim_and_income_actors(uuid)','EXECUTE')
  THEN RAISE EXCEPTION 'BUSINESS_FINANCIAL_HISTORY_CHANGED'; END IF;
  IF NOT EXISTS (SELECT FROM public.business_bill_payments payment WHERE id=bill_payment_uuid AND recorded_by IS NULL

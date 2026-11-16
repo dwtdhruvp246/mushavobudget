@@ -19,6 +19,8 @@ DECLARE
   inspected_references integer := 0;
   unsupported_references integer := 0;
   dependencies jsonb := '[]'::jsonb;
+  shared_family_payments bigint;
+  shared_family_proofs bigint;
 BEGIN
   SELECT r.subject_id, r.workspace_impact_token, r.workspace_impact_confirmed_at
   INTO subject, confirmed_token, confirmed_at
@@ -97,6 +99,18 @@ BEGIN
     END IF;
   END LOOP;
 
+  -- Account deletion can affect a payment through its recorder, its payment
+  -- item or the linked payer. Count each payment once in the surviving Family.
+  SELECT count(*), count(*) FILTER (WHERE p.proof_path IS NOT NULL)
+  INTO shared_family_payments, shared_family_proofs
+  FROM public.payment_records p
+  JOIN public.families f ON f.id = p.family_id
+  JOIN public.payment_items i ON i.id = p.payment_item_id
+  LEFT JOIN public.family_members payer ON payer.id = p.paid_by_member_id
+  WHERE f.owner_id IS DISTINCT FROM subject
+    AND (p.owner_id = subject OR p.recorded_by = subject OR i.owner_id = subject
+      OR i.created_by = subject OR payer.user_id = subject OR payer.created_by = subject);
+
   RETURN jsonb_build_object(
     'status', CASE WHEN unsupported_references > 0 THEN 'INCOMPLETE_DIRECT_INVENTORY' ELSE 'REVIEW_ONLY' END,
     'owned_workspaces', cardinality(workspace_ids),
@@ -108,6 +122,28 @@ BEGIN
       SELECT count(*) FROM public.workspace_members m
       JOIN public.budget_workspaces w ON w.id = m.workspace_id
       WHERE m.user_id = subject AND w.owner_id IS DISTINCT FROM subject
+    ),
+    'payments_in_other_workspaces', jsonb_build_object(
+      'family_payments', shared_family_payments,
+      'family_payments_with_linked_proof', shared_family_proofs,
+      'business_bill_payments', (
+        SELECT count(*) FROM public.business_bill_payments p
+        JOIN public.budget_workspaces w ON w.id = p.workspace_id
+        WHERE w.workspace_type = 'business' AND w.owner_id IS DISTINCT FROM subject
+          AND p.recorded_by = subject
+      ),
+      'business_income_receipts', (
+        SELECT count(*) FROM public.business_income_receipts r
+        JOIN public.budget_workspaces w ON w.id = r.workspace_id
+        WHERE w.workspace_type = 'business' AND w.owner_id IS DISTINCT FROM subject
+          AND (r.recorded_by = subject OR r.voided_by = subject)
+      ),
+      'business_paid_claims', (
+        SELECT count(*) FROM public.business_expense_claims c
+        JOIN public.budget_workspaces w ON w.id = c.workspace_id
+        WHERE w.workspace_type = 'business' AND w.owner_id IS DISTINCT FROM subject
+          AND c.status = 'paid' AND (c.submitted_by = subject OR c.paid_by = subject OR c.reviewed_by = subject)
+      )
     ),
     'file_ledger_rows', jsonb_build_object(
       'ordinary', (SELECT count(*) FROM mushavo_file_ingest.ordinary_uploads u WHERE u.workspace_id = ANY(workspace_ids)),

@@ -1,12 +1,10 @@
 {
-  "owner": "f1bb2cd4-e5cb-4148-a1d2-760260bef6c8",
-  "uploader": "d9bc8992-6ac1-459d-bbcb-d631d4c33f24",
-  "outsider": "6bda3245-fe25-49a0-8a01-a82efa6b2aac",
-  "workspace": "16b66824-7112-42f3-be2b-634ec3801b06",
-  "attachment": "0530bc7d-5d9b-49f1-973b-064dad00992d",
-  "category": "56ad0f61-db80-4520-99e8-d9022600fd57",
-  "claim": "7cad75fa-c554-4b7b-9d8d-5ff71e03c3db",
-  "scope": "fr33-owned-business-proof",
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
-  "enabled": true
+  "scope": "fr33-owned-workspace-proof-cleanup",
+  "archived_runs": [
+    44048115964,
+    44049319813
+  ],
+  "result": "FR33_OWNED_FAMILY_AND_BUSINESS_PROOFS_REMOVED"
 }

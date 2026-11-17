@@ -1,12 +1,7 @@
 {
-  "workspace": "cf75f97c-195b-4403-85a0-27222e218416",
-  "category": "4640d1d3-4c4d-4590-b127-afda8401979f",
-  "claim": "36bc78fa-ce2a-41b7-81e2-f3b40a0f1121",
-  "attachment": "92da34e4-ed17-4338-865b-3c605730aa1b",
-  "owner": "998a3c71-0605-4693-bd5d-115046252b07",
-  "uploader": "353f53c5-9608-43f6-899f-c84c21960f12",
-  "outsider": "07288657-90da-4958-9d62-901b80b77090",
-  "enabled": true,
+  "enabled": false,
+  "project": "dczlddwbtgvfdujgcitb",
   "scope": "fr33-business-proof",
-  "project": "dczlddwbtgvfdujgcitb"
+  "archived_run": 44043414301,
+  "result": "FR33_BUSINESS_PROOF_BYTES_MATCH"
 }

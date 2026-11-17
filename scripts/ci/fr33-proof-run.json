@@ -1,14 +1,7 @@
 {
-  "family": "f6c459cc-04f8-4eab-a68c-38eecc9a9b86",
-  "item": "624949e5-41e6-4142-b1f9-84037309cfc1",
-  "payment": "63ca181c-57bc-4f2c-8bd9-3af98632756d",
-  "attachment": "d22f547d-edd6-4488-a188-f5802d2ec30e",
-  "owner": "7549e837-0565-4abf-b47e-e227668f9134",
-  "uploader": "538008ff-5ca1-4708-bf5d-486b0b6c1138",
-  "outsider": "8c734a24-cdfc-4b1a-8871-ac25d213acc1",
-  "workspace": "4fb76df4-ee41-4b7f-9405-1531e4b0579d",
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
   "scope": "fr33-family-proof",
-  "enabled": true,
-  "attempt": 3
+  "archived_run": 44037807250,
+  "result": "FR33_FAMILY_PROOF_BYTES_MATCH"
 }

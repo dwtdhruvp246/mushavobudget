@@ -21,7 +21,7 @@ jobs:
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with:
           node-version: '22'
-      - name: Verify the disposable Family proof before and after uploader erasure
+      - name: Verify the disposable workspace proof before and after uploader erasure
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/ci/fr33-proof-acceptance.mjs

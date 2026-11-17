@@ -198,6 +198,14 @@ Against the actual linked proof in staging, a rolled-back rehearsal matched the 
 
 On 17 November 2026, a temporary fixture adapter ran only under the signed staging schedule and uploaded a 75-byte PNG at the exact older bill-proof path for a disposable Business workspace. The original worker bundle was restored byte-for-byte as Edge version 9 before account erasure. The private scheduler ran once against the staged fixture request and removed the owner, workspace, bill payment and proof record. At that point, the proof object was present and the receipt was pending. The normal cleanup worker then removed the object and its cleanup journal through the Storage API. Readback recorded the completed receipt after database erasure and zero pending targets. The pre-existing proof and its Storage identity and version matched the pre-test fingerprint. The scheduler scope was cleared and the account-erasure schedule paused.
 
+## Provider-owned proof Storage API verification
+
+An isolated staging probe used a disposable signed-in user's upload to create a 75-byte PNG owned by that user. A service-credential copy over the original key produced the same bytes and a new version, while the database still recorded the original user as owner. Copying the current version to a new key produced an ownerless object with exactly the same bytes. The source remained user-owned and unchanged by that copy. The provider rejected a copy pinned to a nonexistent source version and created no destination object for it.
+
+The signed staging worker removed the disposable files and bucket via the Storage API. The normal Edge bundle was restored byte-for-byte as version 12. Readback verified zero fixture files, buckets, accounts, sessions or fixture policies. The account-erasure scheduler stayed paused.
+
+For a proof in a surviving workspace, the release path still needs to complete the copy, verify the bytes and ownership, re-link the exact document, and verify that the old object is absent before erasing its owner. The Storage API probe covered the copy behavior only and left the application’s deletion path unchanged.
+
 ## Requirements for actual erasure
 
 1. Review the [proposed workspace and retention rules](SECURITY_FR_3_1_ACCOUNT_DELETION_DECISIONS_20261115.md), then adopt the [retention decisions](security-stage-4-retention-decisions.json) for identity, personal records, shared finance, invitations and support, telemetry and devices, Storage, processors and backups, and the completion record. Record the data disposition, any required retention period, access and responsible operator for each category.

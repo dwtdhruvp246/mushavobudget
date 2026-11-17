@@ -29,16 +29,23 @@ const ORDINARY_PATTERNS = new Map([
   ["business-logos", new RegExp("^"+UUID+"/"+UUID+"/f3320000(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}[.]png$")],
 ]);
 
+function validOrdinaryClaimPath(item) {
+  const path = item?.object_name || "";
+  if (item?.legacy_account_erasure === true) return item.bucket_id === "business-documents" && PATH.test(path);
+  return ORDINARY_PATTERNS.get(item?.bucket_id)?.test(path) === true;
+}
+
 export async function reconcileOrdinaryUploads({claim,remove,finish}) {
   const pending = await claim(MAX_SMALL_BATCH);
   if (!Array.isArray(pending) || pending.length > MAX_SMALL_BATCH || pending.some(x =>
-    !ORDINARY_PATTERNS.get(x?.bucket_id)?.test(x?.object_name || "") || !TOKEN.test(x?.cleanup_token || "")
+    !validOrdinaryClaimPath(x) || !TOKEN.test(x?.cleanup_token || "")
   )) throw new Error("Invalid ordinary cleanup claim");
   const counts = {claimed:0,removed:0,retry:0};
-  for (const [bucket, pattern] of ORDINARY_PATTERNS) {
+  for (const bucket of ORDINARY_PATTERNS.keys()) {
     const rows = pending.filter(item => item.bucket_id === bucket);
     if (!rows.length) continue;
-    const result = await reconcile(bucket, rows, path => pattern.test(path), MAX_SMALL_BATCH, remove,
+    const allowedPaths = new Set(rows.map(row => row.object_name));
+    const result = await reconcile(bucket, rows, path => allowedPaths.has(path), MAX_SMALL_BATCH, remove,
       (path,token) => finish(bucket,path,token));
     for (const key of Object.keys(counts)) counts[key] += result[key];
   }

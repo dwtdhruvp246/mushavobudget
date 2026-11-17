@@ -190,10 +190,16 @@ The fixture-only schedule was paused after its successful run. The two remaining
 
 Staging metadata identified older linked Business Storage outside the managed flow and subscription proof files. These still require a verified disposition. Platform billing and support retention rules remain pending in the [decision register](security-stage-4-retention-decisions.json).
 
+## Older Business bill-payment proof cleanup
+
+[Migration `20261117093913`](../../supabase/migrations/20261117093913_fr33_owned_legacy_bill_proof_cleanup.sql) allows account deletion to schedule an ownerless, older bill-payment proof only when the workspace is closing and the file matches the payment, document, uploader path, size and MIME type. Cleanup claims also check the Storage object identity and version. The Edge adapter deployed on staging as `validate-business-lifecycle` version 7 accepts that older path only when the database marks the claim for account erasure. The existing worker still performs physical removal via the Storage API.
+
+Against the actual linked proof in staging, a rolled-back rehearsal matched the object identity and confirmed that the worker could not claim the file while the document still referenced it. A second case verified lease-token enforcement and final receipt completion for a synthetic target already absent from Storage. The live older proof remained in place. The worker adapter tests exercised the removal and acknowledgment calls with a substitute Storage adapter. All 11 offline tests passed. Physical removal of an older proof on a live disposable account remains unverified.
+
 ## Requirements for actual erasure
 
 1. Review the [proposed workspace and retention rules](SECURITY_FR_3_1_ACCOUNT_DELETION_DECISIONS_20261115.md), then adopt the [retention decisions](security-stage-4-retention-decisions.json) for identity, personal records, shared finance, invitations and support, telemetry and devices, Storage, processors and backups, and the completion record. Record the data disposition, any required retention period, access and responsible operator for each category.
 2. Use the approved automatic workspace closure rule to plan database and file cleanup for owned Family and Business workspaces. Confirm the disposition of shared finance, attachments and historical attribution before enabling the executor.
 3. Use the approved decisions to implement and verify durable erasure execution with restart and retry, authoritative file cleanup, Auth session and account cleanup, and residual provider access. Test those effects with disposable identities and known synthetic files. Verify that completion and retained records are reported accurately before offering erasure to users.
 
-**FR.3.3 remains open for release.** Staging verified automatic database erasure and managed file cleanup for the disposable Business scope. Broad activation remains paused. Legacy and provider-owned Storage, and the disposition of the platform's invoices, subscription payments and proofs, renewals, grants and support tickets require completion before broad activation.
+**FR.3.3 remains open for release.** Staging verified automatic database erasure and managed file removal for the disposable Business scope. The older ownerless bill-proof path is staged and passed rolled-back verification. Broad activation remains paused. Unmatched legacy files, provider-owned Storage, and the disposition of the platform's invoices, subscription payments and proofs, renewals, grants and support tickets require completion before broad activation.

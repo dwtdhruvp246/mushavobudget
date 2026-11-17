@@ -31,7 +31,10 @@ const ORDINARY_PATTERNS = new Map([
 
 function validOrdinaryClaimPath(item) {
   const path = item?.object_name || "";
-  if (item?.legacy_account_erasure === true) return item.bucket_id === "business-documents" && PATH.test(path);
+  if (item?.legacy_account_erasure === true) {
+    return (item.bucket_id === "business-documents" && PATH.test(path))
+      || (item.bucket_id === "business-logos" && LOGO_PATH.test(path));
+  }
   return ORDINARY_PATTERNS.get(item?.bucket_id)?.test(path) === true;
 }
 

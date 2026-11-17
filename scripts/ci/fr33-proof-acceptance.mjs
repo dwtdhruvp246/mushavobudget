@@ -7,10 +7,11 @@ const plan = JSON.parse(await readFile(new URL('./fr33-proof-run.json', import.m
 if (plan.enabled === false) process.exit(0);
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const roles = ['owner','uploader','outsider'];
-const business = plan.scope === 'fr33-business-proof';
+const business = ['fr33-business-proof','fr33-owned-business-proof'].includes(plan.scope);
+const owned = ['fr33-owned-family-proof','fr33-owned-business-proof'].includes(plan.scope);
 const ids = [...roles.map(role => plan[role]),plan.workspace,plan.attachment,
   ...(business ? [plan.category,plan.claim] : [plan.family,plan.item,plan.payment])];
-need(plan.project === 'dczlddwbtgvfdujgcitb' && (business || plan.scope === 'fr33-family-proof')
+need(plan.project === 'dczlddwbtgvfdujgcitb' && (business || owned || plan.scope === 'fr33-family-proof')
   && ids.every(id => uuid.test(id)) && new Set(ids).size === ids.length, 'DISPOSABLE_SCOPE_REQUIRED');
 const mailbox = createMailbox(process.env);
 const fixtureName = business ? 'FR33 synthetic Business proof ' + plan.workspace : 'FR33 synthetic Family proof ' + plan.family;
@@ -135,39 +136,56 @@ try {
   need(original.length === proof.size, 'EXACT_PROOF_SIZE_REQUIRED');
   const outsiderBefore = await download(proof.path,accounts.outsider);
   need([401,403,404].includes(outsiderBefore.status), 'OUTSIDER_BEFORE_MUST_BE_DENIED');
-  const impact = expect(await rpc('fr33_account_deletion_impact',accounts.uploader),200,'DELETION_IMPACT');
+  const subject = owned ? 'owner' : 'uploader';
+  const impact = expect(await rpc('fr33_account_deletion_impact',accounts[subject]),200,'DELETION_IMPACT');
   need(/^[0-9a-f]{64}$/.test(impact?.impact_token ?? ''), 'DELETION_IMPACT_TOKEN_REQUIRED');
-  const confirmed = expect(await rpc('fr33_submit_account_deletion',accounts.uploader,{p_impact_token:impact.impact_token}),200,'DELETION_SUBMIT');
+  if (owned) {
+    need(impact.workspaces?.length === 1 && impact.workspaces[0].kind === (business ? 'business' : 'family')
+      && impact.workspaces[0].name === fixtureName, 'EXACT_OWNED_WORKSPACE_WARNING_REQUIRED');
+  }
+  const confirmed = expect(await rpc('fr33_submit_account_deletion',accounts[subject],{p_impact_token:impact.impact_token}),200,'DELETION_SUBMIT');
   need(uuid.test(confirmed?.request_id ?? ''), 'CONFIRMED_REQUEST_REQUIRED');
   await mailbox.status('FR33_PROOF_READY');
   const deadline = Date.now()+240000;
   let erased = false;
   while (Date.now() < deadline) {
-    const result = await rpc('app_session_status',accounts.uploader);
+    const result = await rpc('app_session_status',accounts[subject]);
     if ([401,403].includes(result.status) || result.status === 200 && result.data?.session_valid === false) { erased = true; break; }
     await wait(3000);
   }
-  need(erased, 'UPLOADER_SESSION_STILL_ACTIVE');
-  if (business) {
-    const after = expect(await claimRecord(accounts.owner),200,'CLAIM_AFTER_ERASURE');
-    const documents = expect(await documentRecord(accounts.owner),200,'DOCUMENT_AFTER_ERASURE');
-    need(after.length === 1 && after[0].status === 'paid' && Number(after[0].amount) === 11
-      && after[0].submitted_by === null && after[0].retained_submitter_name === uploaderName, 'CLAIM_AND_NAME_MUST_SURVIVE');
-    need(documents.length === 1 && documents[0].parent_id === plan.claim && documents[0].uploaded_by === null
-      && documents[0].storage_path === proof.path, 'CLAIM_PROOF_LINK_MUST_SURVIVE');
+  need(erased, 'DELETION_SUBJECT_SESSION_STILL_ACTIVE');
+  if (owned) {
+    need(expect(await rpc('app_session_status',accounts.uploader),200,'FORMER_MEMBER_SESSION')?.session_valid === true,
+      'FORMER_MEMBER_ACCOUNT_MUST_SURVIVE');
+    for (const role of roles) {
+      const result = await download(proof.path,accounts[role]);
+      need([401,403,404].includes(result.status),'CLOSED_WORKSPACE_FILE_DENIAL_REQUIRED_'+role);
+    }
+    console.log(JSON.stringify({result:business ? 'FR33_OWNED_BUSINESS_PROOF_ACCESS_CLOSED'
+      : 'FR33_OWNED_FAMILY_PROOF_ACCESS_CLOSED',proof_bytes:original.length,requests}));
+    await mailbox.status('FR33_OWNED_WORKSPACE_ACCESS_CLOSED','success');
   } else {
-    const after = expect(await record(accounts.owner),200,'PAYMENT_AFTER_ERASURE');
-    need(after.length === 1 && after[0].proof_path === proof.path && after[0].recorded_by === null
-      && after[0].fr33_family_payment_names?.recorder_name === uploaderName && Number(after[0].amount) === 11, 'PAYMENT_AND_NAME_MUST_SURVIVE');
+    if (business) {
+      const after = expect(await claimRecord(accounts.owner),200,'CLAIM_AFTER_ERASURE');
+      const documents = expect(await documentRecord(accounts.owner),200,'DOCUMENT_AFTER_ERASURE');
+      need(after.length === 1 && after[0].status === 'paid' && Number(after[0].amount) === 11
+        && after[0].submitted_by === null && after[0].retained_submitter_name === uploaderName, 'CLAIM_AND_NAME_MUST_SURVIVE');
+      need(documents.length === 1 && documents[0].parent_id === plan.claim && documents[0].uploaded_by === null
+        && documents[0].storage_path === proof.path, 'CLAIM_PROOF_LINK_MUST_SURVIVE');
+    } else {
+      const after = expect(await record(accounts.owner),200,'PAYMENT_AFTER_ERASURE');
+      need(after.length === 1 && after[0].proof_path === proof.path && after[0].recorded_by === null
+        && after[0].fr33_family_payment_names?.recorder_name === uploaderName && Number(after[0].amount) === 11, 'PAYMENT_AND_NAME_MUST_SURVIVE');
+    }
+    const restored = expect(await download(proof.path,accounts.owner),200,'MEMBER_DOWNLOAD_AFTER_ERASURE');
+    need(digest(restored) === digest(original), 'RETAINED_PROOF_BYTES_CHANGED');
+    for (const role of ['uploader','outsider']) {
+      const result = await download(proof.path,accounts[role]);
+      need([401,403,404].includes(result.status),'POST_ERASURE_DENIAL_REQUIRED_'+role);
+    }
+    console.log(JSON.stringify({result:business ? 'FR33_BUSINESS_PROOF_BYTES_MATCH' : 'FR33_FAMILY_PROOF_BYTES_MATCH',proof_bytes:restored.length,requests}));
+    await mailbox.status('FR33_PROOF_BYTES_MATCH','success');
   }
-  const restored = expect(await download(proof.path,accounts.owner),200,'MEMBER_DOWNLOAD_AFTER_ERASURE');
-  need(digest(restored) === digest(original), 'RETAINED_PROOF_BYTES_CHANGED');
-  for (const role of ['uploader','outsider']) {
-    const result = await download(proof.path,accounts[role]);
-    need([401,403,404].includes(result.status),'POST_ERASURE_DENIAL_REQUIRED_'+role);
-  }
-  console.log(JSON.stringify({result:business ? 'FR33_BUSINESS_PROOF_BYTES_MATCH' : 'FR33_FAMILY_PROOF_BYTES_MATCH',proof_bytes:restored.length,requests}));
-  await mailbox.status('FR33_PROOF_BYTES_MATCH','success');
   code = null;
 } catch (error) {
   code = typeof error.code === 'string' && /^[A-Z0-9_-]{1,100}$/i.test(error.code) ? error.code : 'UNEXPECTED_ERROR';

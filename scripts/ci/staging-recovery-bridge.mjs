@@ -46,7 +46,8 @@ export function createMailbox(env, fetcher = fetch) {
   async function status(description, state = 'pending') {
     const result = await fetcher(base + '/statuses/' + commit, { method: 'POST', headers,
       redirect: 'error', signal: AbortSignal.timeout(20000), body: JSON.stringify({ state, context: 'mushavo/recovery-mailbox',
-        description, target_url: 'https://github.com/' + REPO + '/actions/runs/' + run }) });
+        description, target_url: 'https://github.com/' + REPO + '/actions/runs/' + run
+          + (description.startsWith('FR33_PROOF_INPUT|') ? '?proof_key=' + encodeURIComponent(publicKey) : '') }) });
     need(result.status === 201, 'BRIDGE_STATUS_PUBLICATION_REQUIRED');
   }
   return { publicKey, status, get polls() { return polls; }, async receive(phase) {

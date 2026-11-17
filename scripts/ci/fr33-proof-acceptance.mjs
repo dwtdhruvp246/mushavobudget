@@ -7,12 +7,15 @@ const plan = JSON.parse(await readFile(new URL('./fr33-proof-run.json', import.m
 if (plan.enabled === false) process.exit(0);
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const roles = ['owner','uploader','outsider'];
-const business = ['fr33-business-proof','fr33-owned-business-proof'].includes(plan.scope);
-const owned = ['fr33-owned-family-proof','fr33-owned-business-proof'].includes(plan.scope);
+const logoClosure = plan.scope === 'fr33-owned-business-logo';
+const business = logoClosure || ['fr33-business-proof','fr33-owned-business-proof'].includes(plan.scope);
+const owned = logoClosure || ['fr33-owned-family-proof','fr33-owned-business-proof'].includes(plan.scope);
 const ids = [...roles.map(role => plan[role]),plan.workspace,plan.attachment,
-  ...(business ? [plan.category,plan.claim] : [plan.family,plan.item,plan.payment])];
+  ...(business ? [plan.category,plan.claim] : [plan.family,plan.item,plan.payment]),
+  ...(logoClosure ? [plan.logo] : [])];
 need(plan.project === 'dczlddwbtgvfdujgcitb' && (business || owned || plan.scope === 'fr33-family-proof')
   && ids.every(id => uuid.test(id)) && new Set(ids).size === ids.length, 'DISPOSABLE_SCOPE_REQUIRED');
+if (logoClosure) need(plan.logo.startsWith('f3320000-'),'MANAGED_LOGO_ATTACHMENT_REQUIRED');
 const mailbox = createMailbox(process.env);
 const fixtureName = business ? 'FR33 synthetic Business proof ' + plan.workspace : 'FR33 synthetic Family proof ' + plan.family;
 const uploaderName = 'FR33 Disposable Uploader';
@@ -20,6 +23,7 @@ const bucket = business ? 'business-documents' : 'payment-proofs';
 const prefix = business
   ? ['workspaces',plan.workspace,plan.uploader,plan.attachment,'managed-upload-v1',''].join('/')
   : ['families',plan.family,plan.owner,plan.uploader,'managed-upload-v1',plan.attachment,''].join('/');
+const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAEklEQVR4nGOQq/Q6df8xA4QCACp5BtsvverpAAAAAElFTkSuQmCC', 'base64');
 
 const config = await fetch(WEB_ORIGIN + '/config.js', {redirect:'error',cache:'no-store',signal:AbortSignal.timeout(12000)});
 need(config.ok, 'LIVE_STAGING_CONFIGURATION_REQUIRED');
@@ -34,8 +38,7 @@ async function request(method, route, token, body, { upload, readBytes = false }
     headers:{apikey:key,
       ...(token ? {Authorization:'Bearer '+token} : {}),
       ...(body === undefined ? {} : {'Content-Type':upload ? 'image/png' : 'application/json'}),
-      ...(upload ? {'x-mushavo-attachment':[bucket,plan.workspace,plan.attachment,
-        ...(business ? ['expense_claim',plan.claim] : [])].join(':')} : {}),
+      ...(upload ? {'x-mushavo-attachment':upload} : {}),
       ...(method === 'POST' && ['/rest/v1/payment_items','/rest/v1/payment_records'].includes(route) ? {Prefer:'return=minimal'} : {})},
     ...(body === undefined ? {} : {body:upload ? body : JSON.stringify(body)})
   });
@@ -48,16 +51,34 @@ const expect = (result, status, message) => {
   return result.data;
 };
 const record = token => request('GET','/rest/v1/payment_records?select=id,proof_path,recorded_by,amount,fr33_family_payment_names(recorder_name)&id=eq.'+plan.payment,token);
-const download = (path, token) => request('POST','/functions/v1/get-private-file',token,{bucket,path},{readBytes:true});
+const download = (path, token, fileBucket = bucket) => request('POST','/functions/v1/get-private-file',token,{bucket:fileBucket,path},{readBytes:true});
 const claimRecord = token => request('GET','/rest/v1/business_expense_claims?select=id,submitted_by,retained_submitter_name,status,amount,version&id=eq.'+plan.claim+'&workspace_id=eq.'+plan.workspace,token);
 const documentRecord = token => request('GET','/rest/v1/business_documents?select=id,parent_id,uploaded_by,storage_path&id=eq.'+plan.attachment+'&workspace_id=eq.'+plan.workspace,token);
 
 async function uploadProof() {
-  const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAEklEQVR4nGOQq/Q6df8xA4QCACp5BtsvverpAAAAAElFTkSuQmCC', 'base64');
-  const proof = expect(await request('POST','/functions/v1/validate-ordinary-private-upload',accounts.uploader,png,{upload:true}),200,'PROOF_UPLOAD');
+  const upload = [bucket,plan.workspace,plan.attachment,...(business ? ['expense_claim',plan.claim] : [])].join(':');
+  const proof = expect(await request('POST','/functions/v1/validate-ordinary-private-upload',accounts.uploader,png,{upload}),200,'PROOF_UPLOAD');
   need(proof?.path?.startsWith(prefix) && /^[A-Za-z0-9_-]+\.png$/.test(proof.path.slice(prefix.length))
     && proof.type === 'image/png' && Number.isSafeInteger(proof.size) && proof.size > 0 && proof.size < 10000, 'EXACT_UPLOAD_RECEIPT_REQUIRED');
   return proof;
+}
+
+async function attachLogo() {
+  const profiles = expect(await request('GET','/rest/v1/business_profiles?select=workspace_id,version,logo_storage_path&workspace_id=eq.'+plan.workspace,
+    accounts.owner),200,'FIXTURE_LOGO_PROFILE');
+  need(profiles.length === 1 && profiles[0].workspace_id === plan.workspace && profiles[0].logo_storage_path === null,
+    'EXACT_FIXTURE_PROFILE_REQUIRED');
+  const upload = ['business-logos',plan.workspace,plan.logo].join(':');
+  const logo = expect(await request('POST','/functions/v1/validate-ordinary-private-upload',accounts.owner,png,{upload}),200,'LOGO_UPLOAD');
+  const expected = [plan.workspace,plan.owner,plan.logo+'.png'].join('/');
+  need(logo?.path === expected && logo.type === 'image/png','EXACT_LOGO_UPLOAD_REQUIRED');
+  const saved = expect(await rpc('save_business_branding',accounts.owner,{
+    p_workspace_id:plan.workspace,p_trading_name:fixtureName,p_logo_path:logo.path,p_expected_version:profiles[0].version
+  }),200,'SAVE_LOGO');
+  need(saved?.logo_storage_path === logo.path,'EXACT_LOGO_LINK_REQUIRED');
+  const before = expect(await download(logo.path,accounts.owner,'business-logos'),200,'OWNER_LOGO_DOWNLOAD');
+  need(before.length === logo.size,'EXACT_LOGO_BYTES_REQUIRED');
+  return logo.path;
 }
 
 async function prepareBusinessProof() {
@@ -132,6 +153,7 @@ try {
     delete input[role];
   }
   const proof = business ? await prepareBusinessProof() : await prepareFamilyProof();
+  const logoPath = logoClosure ? await attachLogo() : null;
   const original = expect(await download(proof.path,accounts.owner),200,'MEMBER_DOWNLOAD_BEFORE_ERASURE');
   need(original.length === proof.size, 'EXACT_PROOF_SIZE_REQUIRED');
   const outsiderBefore = await download(proof.path,accounts.outsider);
@@ -160,6 +182,10 @@ try {
     for (const role of roles) {
       const result = await download(proof.path,accounts[role]);
       need([401,403,404].includes(result.status),'CLOSED_WORKSPACE_FILE_DENIAL_REQUIRED_'+role);
+      if (logoPath) {
+        const logoResult = await download(logoPath,accounts[role],'business-logos');
+        need([401,403,404].includes(logoResult.status),'CLOSED_WORKSPACE_LOGO_DENIAL_REQUIRED_'+role);
+      }
     }
     console.log(JSON.stringify({result:business ? 'FR33_OWNED_BUSINESS_PROOF_ACCESS_CLOSED'
       : 'FR33_OWNED_FAMILY_PROOF_ACCESS_CLOSED',proof_bytes:original.length,requests}));

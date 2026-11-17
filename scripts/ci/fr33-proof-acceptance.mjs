@@ -59,11 +59,17 @@ try {
   const families = expect(await request('GET','/rest/v1/families?select=id,name,owner_id&id=eq.'+plan.family,accounts.owner),200,'FAMILY');
   need(families.length === 1 && families[0].owner_id === plan.owner && families[0].name === fixtureName, 'EXACT_FAMILY_REQUIRED');
   const today = new Date().toISOString().slice(0,10);
-  expect(await request('POST','/rest/v1/payment_items',accounts.owner,{
-    id:plan.item,family_id:plan.family,owner_id:plan.owner,created_by:plan.owner,visibility:'family',
-    name:'FR33 disposable proof payment',category:'Other',amount:11,currency:'USD',start_date:today,status:'active'
-  }),201,'PAYMENT_ITEM');
-  const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aF6sAAAAASUVORK5CYII=', 'base64');
+  const items = expect(await request('GET','/rest/v1/payment_items?select=id,owner_id,family_id,name&id=eq.'+plan.item,accounts.owner),200,'FIND_PAYMENT_ITEM');
+  if (items.length === 0) {
+    expect(await request('POST','/rest/v1/payment_items',accounts.owner,{
+      id:plan.item,family_id:plan.family,owner_id:plan.owner,created_by:plan.owner,visibility:'family',
+      name:'FR33 disposable proof payment',category:'Other',amount:11,currency:'USD',start_date:today,status:'active'
+    }),201,'PAYMENT_ITEM');
+  } else {
+    need(items.length === 1 && items[0].owner_id === plan.owner && items[0].family_id === plan.family
+      && items[0].name === 'FR33 disposable proof payment', 'EXACT_RETRY_ITEM_REQUIRED');
+  }
+  const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAEklEQVR4nGOQq/Q6df8xA4QCACp5BtsvverpAAAAAElFTkSuQmCC', 'base64');
   const proof = expect(await request('POST','/functions/v1/validate-ordinary-private-upload',accounts.uploader,png,{upload:true}),200,'PROOF_UPLOAD');
   need(proof?.path?.startsWith(prefix) && /^[A-Za-z0-9_.-]+\.png$/.test(proof.path.slice(prefix.length))
     && proof.type === 'image/png' && Number.isSafeInteger(proof.size) && proof.size > 0 && proof.size < 10000, 'EXACT_UPLOAD_RECEIPT_REQUIRED');
@@ -110,7 +116,7 @@ try {
   console.log(JSON.stringify({result:'FR33_PROOF_REVIEW',code,requests}));
   try { await mailbox.status(code.slice(0,110),'failure'); } catch {}
 } finally {
-  for (const role of ['owner','outsider']) {
+  for (const role of roles) {
     if (accounts[role]) {
       try { await request('POST','/auth/v1/logout?scope=local',accounts[role]); } catch {}
     }

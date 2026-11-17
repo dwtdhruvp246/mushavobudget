@@ -1,13 +1,7 @@
 {
-  "owner": "4aa4f284-0da2-4e23-8901-c9bc512a0815",
-  "uploader": "d5eb213d-72b5-4363-bc48-9443aebc28ec",
-  "outsider": "c55e02b8-bb7b-4061-a6ef-c93b4da66b9f",
-  "workspace": "8d244755-6583-4baa-bc71-aff16b83e16a",
-  "attachment": "f31cc567-3477-48bc-9210-0e3712cdf36c",
-  "category": "d9de8d5b-0f3c-48bf-ae31-ed0a76a0c150",
-  "claim": "9cc38a4d-eaa9-4254-a06f-29ef8a127450",
-  "logo": "f3320000-22fd-4b85-a112-bc9f020605bc",
-  "scope": "fr33-owned-business-logo",
+  "enabled": false,
   "project": "dczlddwbtgvfdujgcitb",
-  "enabled": true
+  "scope": "fr33-scheduled-business-closure",
+  "archived_run": 44052199254,
+  "result": "FR33_SCHEDULED_ERASURE_AND_TWO_FILE_CLEANUP_PASSED"
 }

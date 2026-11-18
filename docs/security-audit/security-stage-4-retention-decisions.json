@@ -5,7 +5,9 @@
   "source_commit": "6b0f30c116ecb4fdddbf43b4ccd3671cbaf3e622",
   "approved": false,
   "operator_facts_verified": false,
-  "operator_audience_territories": null,
+  "operator_audience_territories": [
+    "worldwide"
+  ],
   "categories": {
     "identity": {
       "approved": false,
@@ -90,5 +92,17 @@
   },
   "owner_action_requested": false,
   "hosted_execution_authorized": false,
-  "note": "Null fields are unresolved decisions. Synthetic TEST-ONLY values in local tests cannot approve this template. No legal retention duration or erasure deadline has been adopted."
+  "note": "The owner requested worldwide availability and indefinite record preservation. The applicable duration and basis for retaining identifiable information are unresolved. No production retention policy or erasure deadline has been adopted.",
+  "owner_direction": {
+    "recorded_on": "2026-11-18",
+    "records_to_keep_after_account_deletion": [
+      "platform invoices",
+      "subscription payment records",
+      "subscription payment proofs",
+      "support tickets and messages"
+    ],
+    "requested_retention": "indefinite",
+    "purpose_as_reported_by_owner": "Preserve records needed for platform operations.",
+    "worldwide_identifiable_retention_rule_verified": false
+  }
 }

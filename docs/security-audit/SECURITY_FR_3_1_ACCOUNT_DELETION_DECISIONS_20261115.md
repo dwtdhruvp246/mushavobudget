@@ -18,6 +18,12 @@ The request API records a pending case. The rules below would govern processing 
 
 The workspace-payment and name rules were confirmed on 16 November 2026. Payment amounts, dates, accounting relationships and the person’s existing display name stay on the retained payment in the surviving workspace. Account erasure must preserve that name without substituting an email address. On 16 November 2026 the owner confirmed that attached proofs stay with retained payments and remain available to authorized members of the surviving workspace.
 
+## Worldwide availability and platform records
+
+**Owner direction recorded on 18 November 2026.** Launch in all countries. Keep all Mushavo platform invoices, subscription payment records and proofs, and support tickets and messages after account deletion. The owner requested permanent preservation because these records are needed for operations.
+
+Zimbabwe's Cyber and Data Protection Act section 7 and GDPR Article 5(1)(e), where applicable, limit how long identifying information can be kept. Article 17(3) allows exceptions to erasure where necessary, including applicable legal obligations and legal claims. The requested duration is recorded in the decision register. Production retention still needs record-specific justification for retaining identifiable fields and a rule for when to anonymize or erase them. [Zimbabwe Act](https://zimlii.org/akn/zw/act/2021/5/eng%402022-03-11/source.pdf) · [EU GDPR](https://eur-lex.europa.eu/eli/reg/2016/679/oj)
+
 ## Data outcomes for approval
 
 | Register category | Proposed handling | Fact to record before adoption |
@@ -33,12 +39,12 @@ The workspace-payment and name rules were confirmed on 16 November 2026. Payment
 
 ## Facts that determine the retention schedule
 
-- Confirm the operator's legal name, launch countries and monitored privacy contact. Identify the relevant obligations and distinguish Mushavo Budget billing records from customer-managed bookkeeping records.
+- Confirm the operator's legal name and monitored privacy contact for the worldwide launch. Identify the relevant obligations and distinguish Mushavo Budget billing records from customer-managed bookkeeping records.
 - Record the applicable retention purpose and expiry trigger for each exception. Verify the configured deletion and backup behavior for the services in use before setting notice or completion language.
 - Confirm the outstanding retention rules for records in deleted workspaces. The approved ownership rule applies to both active and inactive owned workspaces.
 
 Apple requires apps that support account creation to let people initiate deletion in the app. Google Play also calls for an external web resource and asks for retention practices to be disclosed. [Apple App Review](https://developer.apple.com/help/app-review/guideline-reference/5-1-1-account-deletion) · [Google Play User Data policy](https://support.google.com/googleplay/android-developer/answer/10144311)
 
-If Zimbabwe law applies to the operator, section 13 of the Cyber and Data Protection Act addresses limiting identifiable data to the period necessary for its purpose. Check jurisdiction and record-specific obligations before choosing periods. [Zimbabwe Ministry of ICT](https://ictministry.gov.zw/assets/documents/Cyber-and-Data-Protection-Act-Chapter-1207.pdf)
+If Zimbabwe law applies to the operator, section 7 of the Cyber and Data Protection Act limits retention of identifiable data to the time needed for its purpose. Check jurisdiction and record-specific obligations before choosing periods. [Zimbabwe Ministry of ICT](https://ictministry.gov.zw/assets/documents/Cyber-and-Data-Protection-Act-Chapter-1207.pdf)
 
 Supabase requires resolving Storage object ownership before Auth user deletion. Previously issued JWTs can still be cryptographically valid until expiry, so the staging acceptance must verify actual application and object denial after access removal. [Supabase Auth user management](https://supabase.com/docs/guides/auth/managing-user-data)

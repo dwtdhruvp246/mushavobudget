@@ -1,3 +1,4 @@
+import { reconcileSharedProof } from "../_shared/fr33-shared-proof-handoff.mjs";
 import { createClient } from "npm:@supabase/supabase-js@2.110.9";
 import jpeg from "npm:jpeg-js@0.4.4";
 import { decode as decodeWebp } from "npm:@stacksjs/ts-webp@0.1.7";
@@ -124,6 +125,38 @@ async function runOrdinaryCleanup(nonce: string, epoch: number) {
   });
 }
 
+async function runSharedProofHandoff() {
+  const client = privileged();
+  return reconcileSharedProof({
+    claim: async () => {
+      const r = await client.rpc("fr33_claim_shared_proof_handoff");
+      if (r.error) throw new Error("Proof transfer claim unconfirmed");
+      return r.data;
+    },
+    step: async (plan, step, digest = null) => {
+      const r = await client.rpc("fr33_shared_proof_handoff_step", {
+        p_id:plan.id,p_token:plan.lease_token,p_step:step,p_digest:digest,
+      });
+      if (r.error || typeof r.data !== "boolean") throw new Error("Proof transfer step unconfirmed");
+      return r.data;
+    },
+    copy: async (bucketId, sourceKey, sourceVersionId, destinationKey) => {
+      const response = await fetch(url + "/storage/v1/object/copy", {
+        method:"POST", headers:{authorization:"Bearer " + secret,apikey:secret,"content-type":"application/json"},
+        body:JSON.stringify({bucketId,sourceKey,sourceVersionId,destinationKey}),
+        redirect:"error",signal:AbortSignal.timeout(15000),
+      });
+      // The target may already exist after a previous attempt. The worker
+      // verifies bytes and Postgres checks the target's metadata before linking.
+      await response.body?.cancel();
+    },
+    read: async (name, path, maxBytes) => (await readSignedPrivateObject({
+      bucket:name,path,maxBytes,mint:(_name, key, seconds)=>client.storage.from(name).createSignedUrl(key,seconds),
+    })).data,
+    remove: async (name, path) => client.storage.from(name).remove([path]),
+  });
+}
+
 Deno.serve(async request => {
   const mode = request.headers.get("x-mushavo-attachment");
   if (request.method !== "POST" || !["scheduled-reconcile","status"].includes(mode || "")) {
@@ -160,10 +193,12 @@ Deno.serve(async request => {
     ]);
     if (logoMode.error || subscriptionMode.error || ordinaryMode.error || typeof logoMode.data !== "boolean"
       || typeof subscriptionMode.data !== "boolean" || typeof ordinaryMode.data !== "boolean") return fail(503);
-    if (!documentMode && !logoMode.data && !subscriptionMode.data && !ordinaryMode.data) {
+    const proofTransfer = await runSharedProofHandoff();
+    if (!documentMode && !logoMode.data && !subscriptionMode.data && !ordinaryMode.data && proofTransfer.claimed === 0) {
       return new Response(null,{status:204,headers});
     }
     const extra: Record<string, unknown> = {};
+    if (proofTransfer.claimed) extra.proofTransfer = proofTransfer;
     if (logoMode.data) extra.logos = await runLogoCleanup(signed.nonce, signed.seconds);
     if (subscriptionMode.data) extra.subscriptionProofs = await runSubscriptionCleanup(signed.nonce, signed.seconds);
     if (ordinaryMode.data) extra.ordinaryUploads = await runOrdinaryCleanup(signed.nonce, signed.seconds);

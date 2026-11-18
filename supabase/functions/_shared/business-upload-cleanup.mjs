@@ -29,13 +29,16 @@ const ORDINARY_PATTERNS = new Map([
   ["business-logos", new RegExp("^"+UUID+"/"+UUID+"/f3320000(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}[.]png$")],
 ]);
 
+const TRANSFERRED_FAMILY_IMAGE = new RegExp(`^families/${UUID}/${UUID}/${UUID}/managed-upload-v1/${UUID}/${UUID}[.](?:jpe?g|webp)$`);
+
 function validOrdinaryClaimPath(item) {
   const path = item?.object_name || "";
   if (item?.legacy_account_erasure === true) {
     return (item.bucket_id === "business-documents" && PATH.test(path))
       || (item.bucket_id === "business-logos" && LOGO_PATH.test(path));
   }
-  return ORDINARY_PATTERNS.get(item?.bucket_id)?.test(path) === true;
+  return ORDINARY_PATTERNS.get(item?.bucket_id)?.test(path) === true
+    || (item?.bucket_id === "payment-proofs" && TRANSFERRED_FAMILY_IMAGE.test(path));
 }
 
 export async function reconcileOrdinaryUploads({claim,remove,finish}) {

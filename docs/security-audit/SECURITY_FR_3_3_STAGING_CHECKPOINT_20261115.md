@@ -220,7 +220,17 @@ On 18 November 2026 the owner confirmed worldwide availability and requested per
 
 [Migration `20261118075342`](../../supabase/migrations/20261118075342_fr33_archive_deleted_customer_support.sql) is installed on staging. The executor copies the departing customer's tickets and their messages into a private archive in the same transaction as account erasure. The rolled-back staging rehearsal preserved the full ticket, customer message and internal reply, left a different customer's ticket intact, and verified that an unexpected dependent table blocks erasure. Repeating the run did not create duplicate archive entries. The archive has row-level security and excludes anonymous, signed-in and service API roles. Post-rehearsal readback confirmed zero archived records and a paused account-erasure scheduler. The existing 55 request and lifecycle tests passed.
 
-Billing records and subscription proofs still need to be preserved by the executor. This support path covers tickets belonging to the departing customer. Cases involving accounts or closed workspaces linked to another customer's ticket still use the existing dependency review.
+The support path covers tickets belonging to the departing customer. Cases involving accounts or closed workspaces linked to another customer's ticket still use the existing dependency review.
+
+## Billing and proof preservation for deleted workspaces
+
+[Migration `20261118093652`](../../supabase/migrations/20261118093652_fr33_archive_owned_workspace_billing.sql) archives billing rows for workspaces closed by the confirmed account deletion. It records original invoices, payment and renewal relationships, reviews, and related subscription history in a private schema. It matches each linked subscription proof to the workspace, original file, and Storage object version. The proof stays in its private bucket, with restrictive Storage policies and a worker claim guard. A missing or mismatched proof blocks the erasure transaction.
+
+A rolled-back staging rehearsal against the installed migration used a disposable Personal workspace and a real 75-byte managed proof. It verified exact archival of the invoice, renewal, payment, review, proof record, subscription, entitlement, audit event and currency conversion. It verified that the Storage object retained its identity and version after account and workspace deletion, and that a new cleanup claim was refused. A missing proof blocked erasure, and a second customer's account and invoice stayed in place. All 57 local request, lifecycle and cleanup tests passed.
+
+The signed fixture worker removed the disposable Storage object after the rehearsal. The original Edge bundle was restored byte-for-byte as version 17. Readback found zero disposable files, users, workspaces or archive rows. The stage account-erasure schedule was paused.
+
+This acceptance run covers billed workspaces closed by their owner and verified proofs with no user owner in Storage. Billing rows tied to a surviving workspace and proof files still owned by a user continue through the existing dependency and Storage checks. The private archive currently uses database-operator access.
 
 ## Requirements for actual erasure
 
@@ -228,4 +238,4 @@ Billing records and subscription proofs still need to be preserved by the execut
 2. Use the approved automatic workspace closure rule to plan database and file cleanup for owned Family and Business workspaces. Confirm the disposition of shared finance, attachments and historical attribution before enabling the executor.
 3. Use the approved decisions to implement and verify durable erasure execution with restart and retry, authoritative file cleanup, Auth session and account cleanup, and residual provider access. Test those effects with disposable identities and known synthetic files. Verify that completion and retained records are reported accurately before offering erasure to users.
 
-**FR.3.3 remains open for production release.** Staging verified automatic workspace erasure, cleanup of supported files and preservation of the departing customer's support records in a private archive. Production still needs the required session and storage services, billing and proof preservation, the surviving-workspace path for user-owned proofs, and an applicable identifiable-data retention policy. The owner requested a worldwide launch.
+**FR.3.3 remains open for production release.** Staging verified automatic workspace erasure, cleanup of supported files, support archiving and billing preservation for the tested owned workspace with an ownerless proof. Production still needs the required session and storage services, the surviving-workspace path for user-owned files and unresolved billing dependencies, and an applicable identifiable-data retention policy. The owner requested a worldwide launch.

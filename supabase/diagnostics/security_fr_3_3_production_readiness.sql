@@ -17,6 +17,9 @@ SELECT
   to_regprocedure('mushavo_account_deletion.execute_confirmed_request(uuid)') IS NOT NULL AS erasure_executor_present,
   to_regprocedure('mushavo_account_deletion.process_confirmed_requests()') IS NOT NULL AS scheduler_processor_present,
   to_regprocedure('public.fr33_claim_shared_proof_handoff()') IS NOT NULL AS proof_handoff_claim_present,
+  to_regprocedure('mushavo_account_deletion.process_retention_batch(integer)') IS NOT NULL AS retention_processor_present,
+  to_regprocedure('public.fr33_assigned_support_archive(uuid,integer)') IS NOT NULL AS assigned_support_archive_present,
+  to_regprocedure('mushavo_account_deletion.preview_archived_invoice_retention(uuid,date,date,date,date)') IS NOT NULL AS billing_retention_preview_present,
   (
     SELECT count(*) FROM storage.buckets
     WHERE id IN ('subscription-proofs','payment-proofs','business-documents','business-logos')

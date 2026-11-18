@@ -117,5 +117,16 @@
     "completed_erasure_receipt_months": 12,
     "controlled_backup_max_days": 30,
     "preserve_anonymized_history": true
+  },
+  "retention_implementation": {
+    "staging_closed_support_and_receipts": "REHEARSED_PROCESSOR_DISABLED",
+    "staging_support_archive_access": "DATABASE_AUTHORIZATION_REHEARSED",
+    "staging_billing_retention": "READ_ONLY_PREVIEW_REHEARSED",
+    "production_rollout": "DEPENDENCIES_AND_OPERATIONAL_FACTS_PENDING",
+    "operator_facts_needed": [
+      "operating business jurisdiction",
+      "company financial year-end",
+      "actual provider and backup retention"
+    ]
   }
 }

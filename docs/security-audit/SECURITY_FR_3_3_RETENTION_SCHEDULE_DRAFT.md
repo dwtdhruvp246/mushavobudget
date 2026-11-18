@@ -29,3 +29,11 @@ Zimbabwe's Cyber and Data Protection Act ties identifiable retention to the purp
 ## Implementing the approved policy
 
 Record the adopted retention periods, reasons, access rules and scheduled disposition in the retention register. Apply the expiry rules to existing archives as well as new records. Recalculate expiry when an approved legal hold is lifted. Verify that the archive survives legitimate account deletion, an authorized role can retrieve it, and the expiry job handles data and object bytes. Verify true anonymization against free text, identifiers in filenames and correlatable references before approving permanent history.
+
+## FR.3.3 account deletion notice for release review
+
+When you delete your account, Mushavo removes your profile, sign-in access, and personal workspace. If you own Family or Business workspaces, the confirmation screen lists the workspaces that will close. A workspace owned by someone else keeps shared transactions, payment evidence and names needed for that workspace's records.
+
+Mushavo keeps identifiable billing records for the applicable accounting period, with a six-year baseline from the relevant financial year-end. Closed support cases are retained for 24 months. A specific legal obligation or open dispute may require selected records for longer. Mushavo keeps anonymized history after the identifiable records expire.
+
+This notice section is prepared for use once production enforcement, operator details and provider backup handling are verified. The approved schedule uses a 30-day maximum for copies under Mushavo's control. Publish the actual backup and processor behavior with the full privacy notice once verified.

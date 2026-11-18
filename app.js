@@ -6828,7 +6828,7 @@ async function openSubscriptionPaymentDetails(paymentId) {
       ["Receipt", escapeHtml(payment.receipt_number || "Not issued")],
       ["Submitted", escapeHtml(formatAdminDate(payment.created_at))],
       ["Reviewed", escapeHtml(formatAdminDate(review?.created_at))],
-      ["Reviewer", escapeHtml(reviewer?.email || review?.reviewer_id || "Not reviewed")],
+      ["Reviewer", escapeHtml(reviewer?.email || review?.reviewer_id || (review ? "Former account" : "Not reviewed"))],
       ["Decision reason", escapeHtml(review?.reason || request?.rejection_reason || "No reason recorded")]
     ])}${payment.notes ? `<p class="admin-detail-note"><strong>Notes</strong><span>${escapeHtml(payment.notes)}</span></p>` : ""}${proof ? `<div class="admin-detail-actions"><button type="button" data-open-subscription-proof="${proof.id}">View payment proof</button></div>` : ""}</section>`
   });

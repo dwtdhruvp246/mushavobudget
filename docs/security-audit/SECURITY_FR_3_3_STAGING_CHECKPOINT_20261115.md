@@ -230,7 +230,15 @@ A rolled-back staging rehearsal against the installed migration used a disposabl
 
 The signed fixture worker removed the disposable Storage object after the rehearsal. The original Edge bundle was restored byte-for-byte as version 17. Readback found zero disposable files, users, workspaces or archive rows. The stage account-erasure schedule was paused.
 
-This acceptance run covers billed workspaces closed by their owner and verified proofs with no user owner in Storage. Billing rows tied to a surviving workspace and proof files still owned by a user continue through the existing dependency and Storage checks. The private archive currently uses database-operator access.
+This rehearsal covers billed workspaces closed by their owner and proofs with no individual owner in Storage. The private archive currently uses database-operator access.
+
+## Billing and proof preservation for surviving workspaces
+
+[Migration `20261118101447`](../../supabase/migrations/20261118101447_fr33_retain_surviving_workspace_billing.sql) is installed on staging. A confirmed deletion keeps terminal invoices, renewals, payments, reviews, and verified subscription proofs in a surviving workspace. The actor links can be detached only by the erasure transaction, which keeps their original record references in a private table. In-flight billing or an unverifiable proof stops erasure. Linked proofs keep their original Storage path and the surviving workspace's existing access rules.
+
+The [rolled-back staging rehearsal](../../supabase/diagnostics/security_fr_3_3_surviving_billing_rehearsal.sql) confirmed that the departing account was erased while the other account and workspace, the billing amounts, and the payment decision remained. It refused an in-flight invoice, a missing proof, a null actor on a new record, and a direct edit of historical attribution. Repeating the same request returned its completed receipt. A second rolled-back rehearsal used a real 75-byte managed subscription proof and confirmed that the surviving invoice retained the same file and that a later closure of the workspace archived that same Storage object and its upload record. These tests verified the database and Storage linkage. A signed-in hosted download of this subscription-proof case is still pending.
+
+The signed fixture worker removed the synthetic file through the Storage API. The normal Edge bundle was restored byte-for-byte as version 19. Readback found zero fixture accounts, workspaces, files or private billing attribution records. The staging account-erasure scheduler is paused.
 
 ## Requirements for actual erasure
 
@@ -238,4 +246,4 @@ This acceptance run covers billed workspaces closed by their owner and verified 
 2. Use the approved automatic workspace closure rule to plan database and file cleanup for owned Family and Business workspaces. Confirm the disposition of shared finance, attachments and historical attribution before enabling the executor.
 3. Use the approved decisions to implement and verify durable erasure execution with restart and retry, authoritative file cleanup, Auth session and account cleanup, and residual provider access. Test those effects with disposable identities and known synthetic files. Verify that completion and retained records are reported accurately before offering erasure to users.
 
-**FR.3.3 remains open for production release.** Staging verified automatic workspace erasure, cleanup of supported files, support archiving and billing preservation for the tested owned workspace with an ownerless proof. Production still needs the required session and storage services, the surviving-workspace path for user-owned files and unresolved billing dependencies, and an applicable identifiable-data retention policy. The owner requested a worldwide launch.
+**FR.3.3 remains open for production release.** Staging verified automatic workspace erasure, cleanup of supported files, support archiving, and terminal billing preservation in the tested closing and surviving workspaces. Production still needs the required session and Storage services. Staging still needs an end-to-end handoff for surviving proofs owned by the departing user and hosted download verification for the subscription-proof case. The requested worldwide launch also needs a retention schedule for identifiable billing and support records.

@@ -3,13 +3,18 @@ const identifier = new RegExp(`^${uuid}$`);
 const familyExtensions = "pdf|png|jpe?g|webp";
 const familySource = new RegExp(`^families/${uuid}/${uuid}/${uuid}/${uuid}[.](?:${familyExtensions})$`);
 const businessSource = new RegExp(`^workspaces/${uuid}/${uuid}/${uuid}/${uuid}[.](?:pdf|png)$`);
+const subscriptionSource = new RegExp(`^workspaces/${uuid}/${uuid}/(?:proof/)?${uuid}[.](?:${familyExtensions})$`);
+const subscriptionTargetSuffix = new RegExp(`^fr33-retained-v1/${uuid}[.](?:${familyExtensions})$`);
 const familyTargetSuffix = new RegExp(`^managed-upload-v1/${uuid}/${uuid}[.](?:${familyExtensions})$`);
 const businessTargetSuffix = new RegExp(`^managed-upload-v1/${uuid}[.](?:pdf|png)$`);
 
 function validHandoff(plan) {
   const family = plan.bucket === "payment-proofs";
   const business = plan.bucket === "business-documents";
-  if (!family && !business) return false;
+  const subscription = plan.bucket === "subscription-proofs";
+  if (!family && !business && !subscription) return false;
+  const sourcePattern = subscription ? subscriptionSource : family ? familySource : businessSource;
+  const targetPattern = subscription ? subscriptionTargetSuffix : family ? familyTargetSuffix : businessTargetSuffix;
   const { source_path: source, target_path: target, source_version: version,
     byte_count: bytes, mime_type: type, relinked, sha256 } = plan;
   if (![source, target, version, plan.id, plan.lease_token].every(value => typeof value === "string")
@@ -17,14 +22,14 @@ function validHandoff(plan) {
     || !identifier.test(version) || typeof relinked !== "boolean"
     || !Number.isInteger(bytes) || bytes < 1 || bytes > 10_485_760
     || (sha256 !== null && !/^[a-f0-9]{64}$/.test(sha256))
-    || !(family ? familySource : businessSource).test(source)
+    || !sourcePattern.test(source)
   ) return false;
   const prefix = source.slice(0, source.lastIndexOf("/") + 1);
   const extension = source.slice(source.lastIndexOf("."));
   const media = { ".pdf": "application/pdf", ".png": "image/png", ".jpg": "image/jpeg",
     ".jpeg": "image/jpeg", ".webp": "image/webp" };
   return target.startsWith(prefix)
-    && (family ? familyTargetSuffix : businessTargetSuffix).test(target.slice(prefix.length))
+    && targetPattern.test(target.slice(prefix.length))
     && target.endsWith(extension)
     && type === media[extension];
 }

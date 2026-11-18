@@ -91,3 +91,24 @@ test('older Family JPEG and WebP images can also be transferred and cleaned', as
     assert.deepEqual(cleanup,{claimed:1,removed:1,retry:0});
   }
 });
+
+test('legacy subscription images relink only under the same workspace and uploader', async () => {
+  for (const folder of ['', 'proof/']) {
+    const root = `workspaces/${ids[0]}/${ids[1]}/${folder}`;
+    const subscription = {
+      ...plan, bucket:'subscription-proofs',
+      source_path:`${root}${ids[4]}.webp`, target_path:`${root}fr33-retained-v1/${ids[5]}.webp`,
+      mime_type:'image/webp',
+    };
+    const exact = fixture(subscription);
+    assert.deepEqual(await reconcileSharedProof(exact.handlers), {claimed:1,advanced:1});
+    const crossWorkspace = fixture({
+      ...subscription, target_path:subscription.target_path.replace(ids[0],ids[6]),
+    });
+    await assert.rejects(reconcileSharedProof(crossWorkspace.handlers), /Invalid proof transfer claim/);
+    assert.deepEqual(crossWorkspace.calls, []);
+    const wrongFormat = fixture({...subscription, mime_type:'image/jpeg'});
+    await assert.rejects(reconcileSharedProof(wrongFormat.handlers), /Invalid proof transfer claim/);
+    assert.deepEqual(wrongFormat.calls, []);
+  }
+});

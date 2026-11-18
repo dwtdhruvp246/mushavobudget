@@ -1,4 +1,4 @@
--- Run on staging with the retained billing actors migration installed.
+-- Run on staging after the retained billing and automatic retry migrations.
 BEGIN;
 DO $fixture$
 #variable_conflict use_variable
@@ -76,6 +76,35 @@ BEGIN
     OR EXISTS (SELECT 1 FROM mushavo_account_deletion.retained_billing_actors retained WHERE retained.actor_id = subject)
   THEN RAISE EXCEPTION 'REFUSED_ERASURE_DID_NOT_ROLL_BACK'; END IF;
 
+  IF NOT EXISTS (SELECT 1 FROM mushavo_account_deletion.processor_control WHERE singleton
+    AND fixture_request_id IS NULL AND confirmed_since IS NULL)
+  THEN RAISE EXCEPTION 'FR33_TEST_PROCESSOR_SCOPE_UNAVAILABLE'; END IF;
+  UPDATE mushavo_account_deletion.processor_control SET fixture_request_id=request_id,confirmed_since=now()-interval '5 minutes' WHERE singleton;
+  UPDATE public.subscription_payments payment SET status='pending_review' WHERE payment.id=payment_id;
+  PERFORM mushavo_account_deletion.process_confirmed_requests();
+  IF NOT EXISTS (SELECT 1 FROM mushavo_account_deletion.processor_attempts attempt WHERE attempt.request_id=request_id
+    AND attempt.review_code='FR33_BILLING_IN_REVIEW' AND attempt.retry_at >= now()+interval '23 hours')
+    OR NOT EXISTS (SELECT 1 FROM auth.users account WHERE account.id=subject)
+  THEN RAISE EXCEPTION 'FR33_PENDING_REVIEW_RETRY_MISSING'; END IF;
+
+  UPDATE public.subscription_payments payment SET status='rejected' WHERE payment.id=payment_id;
+  INSERT INTO public.subscription_payment_proofs(id,payment_id,storage_path,original_name,mime_type,size_bytes,uploaded_by)
+    VALUES (proof_id,payment_id,proof_path,'synthetic.png','image/png',75,subject);
+  UPDATE mushavo_account_deletion.processor_attempts attempt SET retry_at=now(),attempted_at=now()-interval '1 minute' WHERE attempt.request_id=request_id;
+  PERFORM mushavo_account_deletion.process_confirmed_requests();
+  IF NOT EXISTS (SELECT 1 FROM mushavo_account_deletion.processor_attempts attempt WHERE attempt.request_id=request_id
+    AND attempt.review_code='FR33_SURVIVING_BILLING_PROOF_HANDOFF_REQUIRED' AND attempt.retry_at >= now()+interval '23 hours')
+    OR NOT EXISTS (SELECT 1 FROM auth.users account WHERE account.id=subject)
+  THEN RAISE EXCEPTION 'FR33_MISSING_PROOF_RETRY_MISSING'; END IF;
+
+  -- Undo this rehearsal's synthetic missing-proof row to mimic a resolved hold.
+  DELETE FROM public.subscription_payment_proofs proof WHERE proof.id=proof_id;
+  UPDATE mushavo_account_deletion.processor_attempts attempt SET retry_at=now(),attempted_at=now()-interval '1 minute' WHERE attempt.request_id=request_id;
+  PERFORM mushavo_account_deletion.process_confirmed_requests();
+  IF NOT EXISTS (SELECT 1 FROM mushavo_account_deletion.processor_attempts attempt WHERE attempt.request_id=request_id
+    AND attempt.review_code IS NULL AND attempt.retry_at IS NULL)
+  THEN RAISE EXCEPTION 'FR33_REVIEW_DID_NOT_RESUME'; END IF;
+
   billing_result := mushavo_account_deletion.execute_confirmed_request(request_id);
   IF billing_result->>'status' IS DISTINCT FROM 'completed' THEN RAISE EXCEPTION 'ERASURE_INCOMPLETE: %',billing_result; END IF;
   IF EXISTS (SELECT 1 FROM auth.users account WHERE account.id = subject)
@@ -103,5 +132,5 @@ BEGIN
   END;
 END;
 $fixture$;
-SELECT 'PASS' AS surviving_billing_account_erasure, 'PASS' AS unsafe_changes_and_missing_proof_refused;
+SELECT 'PASS' AS surviving_billing_account_erasure, 'PASS' AS unsafe_changes_and_missing_proof_refused, 'PASS' AS billing_and_proof_holds_resume;
 ROLLBACK;

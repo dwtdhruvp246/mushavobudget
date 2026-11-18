@@ -1,14 +1,27 @@
+const stagingProject = "https://dczlddwbtgvfdujgcitb.supabase.co";
+const productionProject = "https://kttkospkblwvguuwnhjj.supabase.co";
+
+export function privateFileDeployment(projectUrl, productionEnabled = false) {
+  if (projectUrl === stagingProject) {
+    return { staging: true, allowsOrigin: origin => /^https:\/\/(?:[a-z0-9-]+\.)?mushavo-budget-staging\.pages\.dev$/.test(origin) };
+  }
+  if (projectUrl === productionProject && productionEnabled) {
+    return { staging: false, allowsOrigin: origin => origin === "https://mushavobudget.com" || origin === "https://www.mushavobudget.com" };
+  }
+  return null;
+}
+
 // The temporary retrieval capability is used only on the server. It is never
 // returned, logged, or accepted as caller authority. User access is checked by
 // the broker immediately before and after this fetch.
-export async function readSignedPrivateObject({ bucket, path, maxBytes, mint, fetcher = fetch }) {
+export async function readSignedPrivateObject({ bucket, path, maxBytes, mint, fetcher = fetch, projectUrl = stagingProject }) {
   let reader;
   try {
     const result = await mint(bucket, path, 15);
     if (result.error || typeof result.data?.signedUrl !== 'string') throw new Error('unavailable');
     const url = new URL(result.data.signedUrl);
     const expected = '/storage/v1/object/sign/' + encodeURIComponent(bucket) + '/' + path.split('/').map(encodeURIComponent).join('/');
-    if (url.origin !== 'https://dczlddwbtgvfdujgcitb.supabase.co' || url.pathname !== expected
+    if (!privateFileDeployment(projectUrl, true) || url.origin !== projectUrl || url.pathname !== expected
       || [...url.searchParams.keys()].join() !== 'token' || !url.searchParams.get('token') || url.hash) throw new Error('scope');
     const response = await fetcher(url, { method:'GET', redirect:'error', cache:'no-store', signal:AbortSignal.timeout(15000) });
     if (response.status !== 200 || !response.body || Number(response.headers.get('content-length')) > maxBytes) {

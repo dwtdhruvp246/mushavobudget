@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-08",
+  "result": "LOCAL_PRIVATE_FILE_BROKER_PASS_HOSTED_CUTOVER_PENDING",
+  "source_parent": "328516d8a99b45ad5a3c89f25642cc1fcbf77add",
+  "tests": {
+    "selected_Node_tests": 129,
+    "pass": 129,
+    "fail": 0,
+    "actual_handler_cases": 35,
+    "shared_frontend_and_Admin_logo_cases": 25,
+    "actual_application_upload_and_context_cases": 63,
+    "export_and_existing_policy_regression_cases": 6,
+    "local_actual_migration_SQL_checks": 43,
+    "local_SQL_existing_session_and_bucket_helpers": "MODELED_NOT_HOSTED",
+    "Deno_2_9_5_type_check": "PASS",
+    "Deno_dependency_entries": 29,
+    "Deno_lock_unchanged_sha256": "eb373bd333000e850a8775bc67796baee9aecbebc818bd53fbdd1e7f507ae8ff",
+    "syntax_checks": "PASS"
+  },
+  "current_staging_baseline": {
+    "deployment_id": "b29545cc-bbb5-4b2a-b92a-bd0c2e151c1f",
+    "saved_artifact_sha256": "4dbff05c42bb262e5a036f8c95962947e6dedfbbb8b5dc8b5fba5b0b63bc4e3a",
+    "public_files_compared_exactly": ["app.js", "business.js", "config.js", "sw.js", "index.html", "app.html", "business.html", "auth.html"],
+    "all_eight_match_saved_artifact": true,
+    "all_four_private_bucket_objects_before_changes": 0,
+    "payment_records_with_proof_before_changes": 0
+  },
+  "hosted_acceptance": false,
+  "original_cached_access_finding_closed": false,
+  "full_batch_X_complete": false,
+  "stage_3_complete": false,
+  "production_changed": false,
+  "exit_code": 0
+}

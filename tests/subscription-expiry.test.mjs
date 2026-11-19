@@ -16,7 +16,7 @@ test("expiry pauses excess Personal payments deterministically and restores them
   assert.match(migration, /create or replace function public\.set_personal_free_payment_selection/);
   assert.match(migration, /count\(distinct id\)/);
   assert.match(migration, /owner_id = auth\.uid\(\)/);
-  assert.match(schema, /Release 4\.9\.8: subscription expiry/);
+  assert.ok(schema.includes(migration), 'Canonical schema retains the complete expiry migration');
 });
 
 test("paused payments disappear from active occurrences and cannot be edited or recorded", () => {

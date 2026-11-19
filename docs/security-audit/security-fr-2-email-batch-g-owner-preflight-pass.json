@@ -1,0 +1,94 @@
+{
+  "received_date": "2026-10-22",
+  "requested_run_commit": "f3374dd05cc820ba39cf00c85576a5eb940d4c9e",
+  "evidence_basis": "OWNER_PASTED_SAFE_WINDOWS_PREFLIGHT_OUTPUT",
+  "independent_machine_or_provider_attestation": false,
+  "separate_offline_verifier_receipt_supplied": false,
+  "owner_offline_test_count_not_inferred": true,
+  "receipt": {
+    "stage_step": "FR.2.4.E5.20_BATCH_G_FRONTEND_GATEWAY_ROLLOUT_PREPARATION",
+    "batch": "G",
+    "result": "BATCH_G_FRONTEND_AND_PAGES_PREFLIGHT_PASS_MANUAL_STAGING_UPLOAD_NEXT",
+    "actual_hosted_requests": 5,
+    "retained_Batch_B_ZIP_identity_verified": true,
+    "public_files": 44,
+    "ZIP_SHA256": "867296b5e71747a15d46c7ed8937484558ea9fcac97cd96c66ddf5dc00c8b9da",
+    "Worker_SHA256": "a7cbfa8b257eb7a53185fc57cc93a8315bbc453fd0bbbd3cc3b2a5e3cf4ee651",
+    "frontend_staging_configuration_and_public_push_key_present": true,
+    "fresh_Pages_limiter_and_namespace_baseline_passed": true,
+    "static_unmanaged_staging_project_verified": true,
+    "both_channels_fixed_date_fail_closed_markers_and_binding_verified": true,
+    "both_channels_13_secret_text_names_present": true,
+    "selected_project_deployment_and_channel_metadata_stable": true,
+    "previous_static_deployment_identity_SHA256": "6833b9f2a3226bbfe01bb218ae4665b9f8e7cc22833ce29e399906589fc10e3d",
+    "manual_staging_frontend_upload_preflight_passed": true,
+    "channels": [
+      {
+        "environment": "PRODUCTION_CHANNEL_OF_STAGING_PAGES_PROJECT",
+        "reviewed_date_matches": true,
+        "fail_open": false,
+        "three_markers_match": true,
+        "secret_text_names_present": 13,
+        "limiter_binding_matches": true
+      },
+      {
+        "environment": "PREVIEW_CHANNEL_OF_STAGING_PAGES_PROJECT",
+        "reviewed_date_matches": true,
+        "fail_open": false,
+        "three_markers_match": true,
+        "secret_text_names_present": 13,
+        "limiter_binding_matches": true
+      }
+    ],
+    "samples": [
+      {
+        "endpoint": "STAGING_PAGES_BEFORE",
+        "http_status": 200
+      },
+      {
+        "endpoint": "WORKER_INVENTORY",
+        "http_status": 200
+      },
+      {
+        "endpoint": "NAMESPACE_INVENTORY",
+        "http_status": 200
+      },
+      {
+        "endpoint": "LIMITER_PUBLIC_URL_SETTINGS",
+        "http_status": 200
+      },
+      {
+        "endpoint": "INDEPENDENT_PAGES_METADATA_AFTER",
+        "http_status": 200
+      }
+    ],
+    "secret_values_read_or_verified": false,
+    "shared_configuration_runtime_impact_verified": false,
+    "full_scheduler_or_external_caller_graph_verified": false,
+    "automatic_upload_or_settings_write_attempted": false,
+    "SQL_Auth_or_Edge_endpoint_used": false,
+    "application_rows_accessed": false,
+    "email_push_or_FX_dispatched": false,
+    "raw_provider_bodies_credentials_or_account_namespace_deployment_IDs_printed": false,
+    "token_saved_to_disk_or_environment": false,
+    "DPAPI_or_saved_private_credentials_accessed": false,
+    "metadata_snapshot_is_not_a_write_lock": true,
+    "frontend_live_source_or_gateway_runtime_verified": false,
+    "application_guard_activation_approved": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0,
+    "checked_UTC": "2026-10-22T16:00:14.404Z",
+    "source_hashes_verified": 127
+  },
+  "owner_printed_combined_exit_code": 0,
+  "owner_printed_preflight_complete": true,
+  "owner_verified_frontend_ZIP_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\mushavo-batch-b-27ecd840ce3a42fb9a5c9bd008f3d9e4\\batch-b-frontend\\mushavo-email-push-review.zip",
+  "manual_upload_completion_supplied": false,
+  "actual_hosted_requests_by_assistant": 0
+}

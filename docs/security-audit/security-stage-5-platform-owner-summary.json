@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "evidence_id": "S5E06",
+  "stage_step": "5.3",
+  "received_date": "2026-10-12",
+  "scope": "OWNER_REPORTED_SELECTED_NATIVE_SOURCE_SUMMARY_WITH_ASSISTANT_RECONCILIATION",
+  "audit_branch_parent_commit": "f117b6bb4a8e47339e847b5f862368f23cbcc8dd",
+  "attachment": {
+    "name": "Pasted text(20261012-054144).txt",
+    "sha256": "f62320235bde532ce5e86bbd85575ebd65c1b5cec4891a596ef42fc734fccae2"
+  },
+  "owner_receipt": {
+    "stage_step": "5.3",
+    "scope": "OWNER_SELECTED_CAPACITOR_JSON_AND_ANDROID_MAIN_SOURCE_ONLY",
+    "capacitor_config": {
+      "status": "PARSED_SOURCE_ONLY",
+      "app_id": "com.mushavo.budget",
+      "web_dir_is_www": true,
+      "server_hostname": "UNSET",
+      "android_scheme": "UNSET",
+      "ios_scheme": "UNSET",
+      "server_url_summary": {
+        "status": "UNSET"
+      },
+      "cleartext": "UNSET",
+      "allow_navigation_entries": [
+        "UNSET"
+      ],
+      "allow_mixed_content": "UNSET",
+      "web_contents_debugging": "UNSET",
+      "logging_behavior": "UNSET",
+      "android_logging_behavior": "UNSET",
+      "plugin_config_present": false
+    },
+    "android_application_attributes": {
+      "usesCleartextTraffic": "UNSET",
+      "debuggable": "UNSET",
+      "networkSecurityConfig": "UNSET"
+    },
+    "android_permissions": [
+      {
+        "name": "android.permission.INTERNET",
+        "max_sdk": "UNSET"
+      }
+    ],
+    "android_components": [
+      {
+        "type": "activity",
+        "name": ".MainActivity",
+        "exported": "true",
+        "permission": "UNSET",
+        "grant_uri_permissions": "UNSET",
+        "file_provider_resources": [],
+        "intent_filters": [
+          {
+            "auto_verify": "UNSET",
+            "actions": [
+              "android.intent.action.MAIN"
+            ],
+            "categories": [
+              "android.intent.category.LAUNCHER"
+            ],
+            "data": []
+          }
+        ]
+      },
+      {
+        "type": "provider",
+        "name": "androidx.core.content.FileProvider",
+        "exported": "false",
+        "permission": "UNSET",
+        "grant_uri_permissions": "true",
+        "file_provider_resources": [
+          "@xml/file_paths"
+        ],
+        "intent_filters": []
+      }
+    ],
+    "selected_network_and_file_path_resources": [
+      {
+        "path": "android/app/src/main/res/xml/file_paths.xml",
+        "nodes": [
+          {
+            "element": "paths"
+          },
+          {
+            "element": "external-path",
+            "name": "my_images",
+            "path": "."
+          },
+          {
+            "element": "cache-path",
+            "name": "my_cache_images",
+            "path": "."
+          }
+        ]
+      }
+    ],
+    "file_metadata": {
+      "capacitor.config.json": {
+        "status": "READ_SOURCE_ONLY",
+        "sha256": "857b89b8e5127bad99450458e5ca2b02f457b4a9f5db94ce7d0f2b2a606a0508"
+      },
+      "android/app/src/main/AndroidManifest.xml": {
+        "status": "READ_SOURCE_ONLY",
+        "sha256": "b642d0f51d088301d0107c9b94c85994fbc612e0a7b6a9cb1754113ae1be90cd"
+      },
+      "android/app/src/main/res/xml/file_paths.xml": {
+        "status": "READ_SOURCE_ONLY",
+        "sha256": "a46ed43ef65c90cb6778f4581decf3556e3f0055aad8f36d69dae16f9a0e99aa"
+      }
+    },
+    "merged_release_or_effective_native_settings_verified": false,
+    "actual_callback_origin_link_delivery_or_privacy_archive_verified": false,
+    "hosted_or_device_checks_run": 0,
+    "files_settings_or_accounts_changed": false,
+    "build_sync_install_or_sign_run": false,
+    "native_security_acceptance": false
+  },
+  "reconciliation": {
+    "status": "COMPLETE_SOURCE_LOCAL_OWNER_REVIEW_WITH_NATIVE_ACCEPTANCE_UNVERIFIED_CARRY_FORWARD",
+    "owner_reported_source_hash_matches": 3,
+    "owner_hash_comparisons": [
+      {
+        "path": "capacitor.config.json",
+        "reported_sha256": "857b89b8e5127bad99450458e5ca2b02f457b4a9f5db94ce7d0f2b2a606a0508",
+        "prior_reported_sha256": "857b89b8e5127bad99450458e5ca2b02f457b4a9f5db94ce7d0f2b2a606a0508",
+        "matches_prior_owner_hash": true
+      },
+      {
+        "path": "android/app/src/main/AndroidManifest.xml",
+        "reported_sha256": "b642d0f51d088301d0107c9b94c85994fbc612e0a7b6a9cb1754113ae1be90cd",
+        "prior_reported_sha256": "b642d0f51d088301d0107c9b94c85994fbc612e0a7b6a9cb1754113ae1be90cd",
+        "matches_prior_owner_hash": true
+      },
+      {
+        "path": "android/app/src/main/res/xml/file_paths.xml",
+        "reported_sha256": "a46ed43ef65c90cb6778f4581decf3556e3f0055aad8f36d69dae16f9a0e99aa",
+        "prior_reported_sha256": "a46ed43ef65c90cb6778f4581decf3556e3f0055aad8f36d69dae16f9a0e99aa",
+        "matches_prior_owner_hash": true
+      }
+    ],
+    "hashes_independently_recomputed_from_owner_files_by_assistant": false,
+    "public_app_id": "com.mushavo.budget",
+    "web_dir_is_www": true,
+    "selected_main_manifest_permission_names": [
+      "android.permission.INTERNET"
+    ],
+    "selected_main_components": 2,
+    "launcher_activity_exported_true_is_not_alone_an_exposure_finding": true,
+    "main_source_VIEW_BROWSABLE_callback_filters_identified": false,
+    "effective_final_or_installed_native_callback_registration_verified": false,
+    "file_provider_exported": false,
+    "file_provider_grant_uri_permissions": true,
+    "file_provider_bindings": [
+      "@xml/file_paths"
+    ],
+    "broad_path_rules": [
+      {
+        "element": "external-path",
+        "name": "my_images",
+        "path": "."
+      },
+      {
+        "element": "cache-path",
+        "name": "my_cache_images",
+        "path": "."
+      }
+    ],
+    "broad_path_source_scope_requires_narrowing_and_grant_review": true,
+    "actual_file_URI_leak_or_overwrite_demonstrated": false,
+    "transport_debug_config_values_unset_not_false": true,
+    "actual_native_origin_or_effective_TLS_debug_navigation_policy_verified": false,
+    "allow_navigation_UNSET_sentinel_is_not_a_usable_allowed_host": true,
+    "collector_does_not_disambiguate_missing_null_from_literal_UNSET_navigation_element": true,
+    "ios_archive_and_privacy_declarations_not_inspected": true,
+    "existing_finding_links": [
+      "F05",
+      "F06",
+      "F10",
+      "F13",
+      "F14",
+      "F17"
+    ],
+    "prior_local_callback_tests_pass": 11,
+    "fresh_local_behavior_tests_run": 0,
+    "hosted_or_device_checks_run": 0,
+    "native_builds_run": 0,
+    "owner_rerun_or_further_5_3_SQL_terminal_action_requested": false,
+    "runtime_native_files_settings_accounts_or_production_changed": false,
+    "native_security_acceptance": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "next_step": "5.4"
+  },
+  "references": [
+    {
+      "url": "https://developer.android.com/privacy-and-security/risks/file-providers",
+      "accessed": "2026-10-12",
+      "scope": "NARROW_PATH_AND_MINIMUM_URI_GRANT_GUIDANCE_NOT_PROOF_OF_ACTUAL_LEAK"
+    },
+    {
+      "url": "https://developer.android.com/training/app-links/verify-applinks",
+      "accessed": "2026-10-12",
+      "scope": "NATIVE_APP_LINK_REGISTRATION_AND_VERIFICATION_GUIDANCE_NOT_INSTALLED_LINK_TEST"
+    }
+  ]
+}

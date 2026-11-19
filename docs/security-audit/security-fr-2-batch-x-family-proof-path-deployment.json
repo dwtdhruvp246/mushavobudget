@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "source_commit": "7549c5e673dc89749db9466cb9e31ecbfaac9b7c",
+  "result": "FAMILY_PROOF_PATH_POLICY_INSTALLED_HOSTED_ACCEPTANCE_PENDING",
+  "migration_version": "20261107085131",
+  "migration_name": "family_payment_proof_path_binding",
+  "canonical_migration": "supabase/migrations/20261107085131_family_payment_proof_path_binding.sql",
+  "source_candidate": "supabase/remediation/security_fr_2_6_family_payment_proof_path_binding.sql",
+  "old_catalog": "e902fca1d972f7cb76a0cc7b8f5ca649f24dfd2ae198cc77a1d96526a82172e8",
+  "new_catalog": "4646c0fe0367fe033b4594428f9c180eb96ca9b39ed2d1a2024bdc843804c3d7",
+  "catalog_matches": true,
+  "local_PostgreSQL_assertions": 17,
+  "initial_guard_refusal": {
+    "cause": "Policy deparse fingerprint depends on search_path. The first wrapper omitted pg_catalog search_path and refused before DDL.",
+    "independent_original_policy_fingerprint": "2b4234683af9de0380b2e71c7213864f",
+    "original_catalog_unchanged": true,
+    "migration_history_rows_after_refusal": 0,
+    "correction": "Set local search_path=pg_catalog for the guard; keep the same reviewed policy and fingerprint."
+  },
+  "other_Storage_policies_unchanged_in_independent_before_after_comparison": true,
+  "registration_routine_fingerprints_unchanged": true,
+  "all_four_buckets_private": true,
+  "physical_objects_after_install": 0,
+  "production_changed": false,
+  "hosted_HTTP_acceptance": false
+}

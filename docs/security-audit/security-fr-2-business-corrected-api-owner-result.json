@@ -1,0 +1,282 @@
+{
+  "owner_reported_exit_code": 0,
+  "source_commit": "972c58f763ae425deecf4f849bcfaf72d563be5c",
+  "receipt": {
+    "stage_step": "3.3.3",
+    "result": "STAGING_BUSINESS_API_SCOPED_PASS_WITH_CARRY_FORWARD",
+    "project": "dczlddwbtgvfdujgcitb",
+    "checks": [
+      {
+        "check": "Deployed config targets staging, with no production reference or push key",
+        "status": "PASS"
+      },
+      {
+        "check": "Both verified sessions are distinct ordinary active staging accounts",
+        "status": "PASS"
+      },
+      {
+        "check": "Two isolated businesses have active synthetic entitlement, exact known dimensions and approved USD 1 claims; reminders and FX disabled",
+        "status": "PASS"
+      },
+      {
+        "check": "B01 Owner has known effective permissions; unknown, foreign and anonymous boundaries deny access to known claims",
+        "status": "PASS"
+      },
+      {
+        "check": "B03 Owner creates, edits and archives a custom role; nonowner/anonymous, dependency, own-mode, stale-version, system-role and direct-table controls preserve protected state",
+        "status": "PASS"
+      },
+      {
+        "check": "B04 Owner invitation create/edit/cancel and matching recipient acceptance work; wrong-recipient, anonymous, stale edit, cancelled and accepted replay have no membership effects",
+        "status": "PASS"
+      },
+      {
+        "check": "B01 business_admin effective grant/dependency capture and legitimate workspace/report control",
+        "status": "PASS"
+      },
+      {
+        "check": "B01 finance_manager effective grant/dependency capture and legitimate workspace/report control",
+        "status": "PASS"
+      },
+      {
+        "check": "B01 team_manager effective grant/dependency capture and legitimate workspace/report control",
+        "status": "PASS"
+      },
+      {
+        "check": "B01 staff effective grant/dependency capture and legitimate workspace/report control",
+        "status": "PASS"
+      },
+      {
+        "check": "B01 contributor effective grant/dependency capture and legitimate workspace/report control",
+        "status": "PASS"
+      },
+      {
+        "check": "B01 viewer effective grant/dependency capture and legitimate workspace/report control",
+        "status": "PASS"
+      },
+      {
+        "check": "B04 Scoped Team Manager can create/edit/cancel a lower-role database-only invitation; privilege, outside-scope, self, Owner and foreign-member changes are rejected",
+        "status": "PASS"
+      },
+      {
+        "check": "B05 Staff creates/edits an attributed draft; parent/workspace substitution, other submitter, direct DML, stale edit and missing-receipt state checks preserve known claims; unauthorized review is denied",
+        "status": "PASS"
+      },
+      {
+        "check": "B05 Complete submit/review and review replay with valid receipt",
+        "status": "BLOCKED",
+        "problem_code": "NO_CONTROLLED_PRIVATE_FILE_PREPARED"
+      },
+      {
+        "check": "B02 Custom own role sees its own known claim and report row; other submitter rows stay hidden",
+        "status": "PASS"
+      },
+      {
+        "check": "B02 Custom assigned role sees known matching scope and report rows; empty assignment and outside-dimension writes are rejected",
+        "status": "PASS"
+      },
+      {
+        "check": "B02 Custom all sees both matching-business dimensions; all never grants another business",
+        "status": "PASS"
+      },
+      {
+        "check": "B03 In-use archive/scope changes and nonowner/direct overrides are blocked; Owner deny/allow/clear works and export cannot bypass denied report view",
+        "status": "PASS"
+      },
+      {
+        "check": "B06 Known report rows and original protected export agree; stale fingerprint, foreign filters/business and Viewer export denial are verified",
+        "status": "PASS"
+      },
+      {
+        "check": "B06 Harmless private receipt original/download authorization",
+        "status": "BLOCKED",
+        "problem_code": "NO_CONTROLLED_PRIVATE_FILE_PREPARED"
+      },
+      {
+        "check": "B05 Owner draft budget and Finance Manager synthetic payment recording work; Viewer budget, foreign dimension, direct DML and payment replay are denied",
+        "status": "PASS"
+      },
+      {
+        "check": "B05 Bill and spending-request lifecycle",
+        "status": "BLOCKED",
+        "problem_code": "NOT_SELECTED_FOR_THIS_TWO_ACCOUNT_BATCH"
+      },
+      {
+        "check": "B08 Business labels cannot gain platform staff; ordinary callers cannot invoke protected provisioning/team permits or directly promote membership",
+        "status": "PASS"
+      },
+      {
+        "check": "B07 Exact matching member is removed; same session loses known claim/RPC/report access and cannot regain membership by replay or PATCH; Owner and separate business stay accessible",
+        "status": "PASS"
+      },
+      {
+        "check": "B07 Nonowner manager removes another ordinary member",
+        "status": "BLOCKED",
+        "problem_code": "THIRD_DISTINCT_IDENTITY_NOT_AVAILABLE"
+      },
+      {
+        "check": "B07 Suspended account and expired entitlement acceptance",
+        "status": "BLOCKED",
+        "problem_code": "ISOLATED_STATE_FIXTURES_NOT_PREPARED"
+      },
+      {
+        "check": "B08 Second Business selected state and previous Personal/Family/payment/conversion values remain unchanged",
+        "status": "PASS"
+      },
+      {
+        "check": "Only the two generated API sessions receive local logout",
+        "status": "PASS"
+      }
+    ],
+    "problem_code": null,
+    "positive_rpc_failure": null,
+    "effective_permission_captures": [
+      {
+        "role": "business_owner",
+        "allowed": [
+          "approvals.review",
+          "approvals.view",
+          "audit.view",
+          "budgets.manage",
+          "budgets.view",
+          "categories.manage",
+          "categories.view",
+          "dimensions.manage",
+          "dimensions.view",
+          "documents.create",
+          "documents.manage",
+          "documents.view",
+          "finance.create",
+          "finance.record_payment",
+          "finance.view_all",
+          "profile.manage",
+          "reports.export",
+          "reports.view",
+          "settings.manage",
+          "subscription.manage",
+          "subscription.view",
+          "team.manage",
+          "team.view",
+          "workspace.view"
+        ]
+      },
+      {
+        "role": "business_admin",
+        "allowed": [
+          "approvals.review",
+          "approvals.view",
+          "audit.view",
+          "budgets.manage",
+          "budgets.view",
+          "categories.manage",
+          "categories.view",
+          "dimensions.manage",
+          "dimensions.view",
+          "documents.create",
+          "documents.manage",
+          "documents.view",
+          "finance.create",
+          "finance.record_payment",
+          "finance.view_all",
+          "profile.manage",
+          "reports.export",
+          "reports.view",
+          "settings.manage",
+          "subscription.view",
+          "team.manage",
+          "team.view",
+          "workspace.view"
+        ]
+      },
+      {
+        "role": "finance_manager",
+        "allowed": [
+          "approvals.review",
+          "approvals.view",
+          "audit.view",
+          "budgets.manage",
+          "budgets.view",
+          "categories.view",
+          "dimensions.view",
+          "documents.create",
+          "documents.manage",
+          "documents.view",
+          "finance.create",
+          "finance.record_payment",
+          "finance.view_all",
+          "reports.export",
+          "reports.view",
+          "subscription.view",
+          "workspace.view"
+        ]
+      },
+      {
+        "role": "team_manager",
+        "allowed": [
+          "approvals.review",
+          "approvals.view",
+          "budgets.view",
+          "categories.view",
+          "dimensions.view",
+          "documents.create",
+          "documents.view",
+          "finance.create",
+          "reports.view",
+          "team.manage",
+          "team.view",
+          "workspace.view"
+        ]
+      },
+      {
+        "role": "staff",
+        "allowed": [
+          "approvals.view",
+          "categories.view",
+          "dimensions.view",
+          "documents.create",
+          "documents.view",
+          "finance.create",
+          "workspace.view"
+        ]
+      },
+      {
+        "role": "contributor",
+        "allowed": [
+          "approvals.view",
+          "categories.view",
+          "dimensions.view",
+          "documents.create",
+          "documents.view",
+          "finance.create",
+          "workspace.view"
+        ]
+      },
+      {
+        "role": "viewer",
+        "allowed": [
+          "categories.view",
+          "dimensions.view",
+          "documents.view",
+          "reports.view",
+          "workspace.view"
+        ]
+      }
+    ],
+    "request_count": 493,
+    "test_sessions_logged_out": true,
+    "exact_primary_member_removed": true,
+    "synthetic_business_fixtures_retained": true,
+    "retained_archive_contract_required": true,
+    "retained_archive_three_owner_fingerprints_matched": true,
+    "retained_archive_role_permissions_audit_and_usage_unchanged": true,
+    "post_batch_privileged_SQL_snapshot_rechecked": false,
+    "hosted_acceptance": false,
+    "findings_closed": [],
+    "incomplete_write_effects_may_remain": false,
+    "private_original_download_or_actual_dispatch_verified": false,
+    "full_role_operation_matrix_or_F15_acceptance_verified": false,
+    "Auth_platform_roles_product_launch_production_or_native_changed": false,
+    "credentials_tokens_keys_private_identifiers_or_raw_rows_printed": false,
+    "completed_utc": "2026-10-15T04:18:52.563Z"
+  }
+}

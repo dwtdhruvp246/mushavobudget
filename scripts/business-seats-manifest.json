@@ -1,0 +1,10 @@
+{
+  "sources": {
+    "app.js": "ef929190577ea942e3df1d5d1fa49d05966d4f846719271c4bee5d1dc747db82",
+    "app.html": "9993b18f6dde811459f59920d50b6c7429530ff9d5af2a3d00ee295f11baf90d",
+    "supabase/candidates/security_fr_2_5_business_seats.sql": "0346abc57ba2c99b2512fbb7b3c8474815a5873c38588d0a68556c547fa88869",
+    "scripts/prepare-business-seats.mjs": "30ae8c50a5ae443d97bed8aceecfec1034c9e81d7142c4305d3405f28e1bb3f5",
+    "scripts/lib/read-public-zip.mjs": "028781910dc28e64d1bb5c02af7a8d26e9f345d4b82f6f1c35f26e14673ff2b0",
+    "scripts/lib/store-public-zip.mjs": "81eae2723285b56e321141512c2b6311777397f5b84853badcee9f60af3706aa"
+  }
+}

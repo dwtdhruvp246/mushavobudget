@@ -1,0 +1,234 @@
+{
+  "stage_step": "FR.2.2",
+  "result": "OFFLINE_REVIEWED_PROVIDER_HOOK_BINDING_CANDIDATE_SCOPED_PASS",
+  "scope": "ACTUAL_SQL_IN_PGLITE_ORDERED_52_MIGRATION_CATALOG_WITH_MODELED_AUTH_STORAGE_DEFAULT_GRANTS_AND_SYNTHETIC_ACTORS_NOT_HOSTED_API_OR_AUTH",
+  "node_version": "v24.19.0",
+  "engine": "PostgreSQL 18.3 (PGlite 0.5.8) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "source_migrations_compiled": 52,
+  "selected_source_inputs_verified": 55,
+  "tests": 48,
+  "pass": 48,
+  "fail": 0,
+  "exit_code": 0,
+  "cases": [
+    {
+      "title": "original complete catalog permits the submitted foreign workspace gap",
+      "result": "PASS"
+    },
+    {
+      "title": "actual guarded candidate compiles and adds only workspace_id UPDATE coverage",
+      "result": "PASS"
+    },
+    {
+      "title": "installation preserves all existing fixture rows and both locked conversions",
+      "result": "PASS"
+    },
+    {
+      "title": "all source routines policies grants and unrelated triggers remain identical",
+      "result": "PASS"
+    },
+    {
+      "title": "reapplying exact candidate is idempotent without data changes",
+      "result": "PASS"
+    },
+    {
+      "title": "direct foreign workspace UPDATE normalizes to the matching owner parent",
+      "result": "PASS"
+    },
+    {
+      "title": "direct NULL workspace UPDATE derives the parent workspace",
+      "result": "PASS"
+    },
+    {
+      "title": "owner can still update legitimate record amount",
+      "result": "PASS"
+    },
+    {
+      "title": "owner can still update legitimate record notes",
+      "result": "PASS"
+    },
+    {
+      "title": "INSERT with submitted foreign workspace derives authorized parent binding",
+      "result": "PASS"
+    },
+    {
+      "title": "valid relink to another own parent retains correct workspace",
+      "result": "PASS"
+    },
+    {
+      "title": "foreign-parent relink is denied and preserves the authorized parent",
+      "result": "PASS"
+    },
+    {
+      "title": "nonexistent-parent relink is rejected without changing the row",
+      "result": "PASS"
+    },
+    {
+      "title": "outsider cannot read known foreign record",
+      "result": "PASS"
+    },
+    {
+      "title": "outsider UPDATE cannot change known foreign record",
+      "result": "PASS"
+    },
+    {
+      "title": "outsider DELETE cannot remove known foreign record",
+      "result": "PASS"
+    },
+    {
+      "title": "anonymous writes are denied or affect zero known foreign rows",
+      "result": "PASS"
+    },
+    {
+      "title": "each owner can delete an exact own synthetic record and verify absence",
+      "result": "PASS"
+    },
+    {
+      "title": "two retained manual conversions remain byte-identical after selected authorized writes and record deletions",
+      "result": "PASS"
+    },
+    {
+      "title": "guarded rollback restores exact prior trigger coverage without row changes",
+      "result": "PASS"
+    },
+    {
+      "title": "candidate reinstalls after reviewed rollback",
+      "result": "PASS"
+    },
+    {
+      "title": "changed function body aborts installation and retains existing trigger",
+      "result": "PASS"
+    },
+    {
+      "title": "disabled sync trigger aborts installation without bypassing the guard",
+      "result": "PASS"
+    },
+    {
+      "title": "unexpected WHEN condition aborts installation without changing that trigger",
+      "result": "PASS"
+    },
+    {
+      "title": "unexpected UPDATE column coverage aborts installation",
+      "result": "PASS"
+    },
+    {
+      "title": "missing finance guard trigger aborts installation",
+      "result": "PASS"
+    },
+    {
+      "title": "wrong sync function association aborts installation",
+      "result": "PASS"
+    },
+    {
+      "title": "unreviewed sync search_path aborts installation",
+      "result": "PASS"
+    },
+    {
+      "title": "ordinary authenticated role cannot install privileged coverage change",
+      "result": "PASS"
+    },
+    {
+      "title": "non-origin replication mode aborts candidate installation",
+      "result": "PASS"
+    },
+    {
+      "title": "unreviewed active CREATE TRIGGER event hook aborts installation",
+      "result": "PASS"
+    },
+    {
+      "title": "all drift fixtures restore exact source metadata and the candidate can reapply",
+      "result": "PASS"
+    },
+    {
+      "title": "exact reviewed provider hooks allow installation without hook or row changes",
+      "result": "PASS"
+    },
+    {
+      "title": "reviewed provider hook installation is idempotent",
+      "result": "PASS"
+    },
+    {
+      "title": "foreign workspace normalization still works with provider hooks active",
+      "result": "PASS"
+    },
+    {
+      "title": "reviewed rollback and reinstall preserve active provider hooks and existing rows",
+      "result": "PASS"
+    },
+    {
+      "title": "same provider hook name with altered body is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "same provider body with unexpected function owner is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "same provider body with unexpected hook owner is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "provider security-definer drift is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "provider search-path drift is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "provider enabled-mode drift is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "provider event association drift is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "provider command-tag shape drift is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "additional unknown unfiltered sql-drop hook is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "drop-watch body drift is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "only CRLF-to-LF provider body normalization is accepted",
+      "result": "PASS"
+    },
+    {
+      "title": "all provider drift fixtures restore exact hooks and metadata",
+      "result": "PASS"
+    }
+  ],
+  "file_sha256": {
+    "tests/fixtures/fr-2-reviewed-provider-hooks.json": "e720447d892028e5468d47724725c502f0bdd0f036e9518fa021da623ab9deb2",
+    "scripts/verify-fr-2-reviewed-hooks.mjs": "77aab72c3cbb8d022be1ce6c19fdc0c64834282f0600130d06fe4277fd2cb509",
+    "scripts/lib/stage-3-local-db.mjs": "df8dbe979098465213255247363ad956ac2c61ab4a5f852fcf0d133b8596c3d9",
+    "docs/security-audit/security-fr-2-binding-candidate-contract.json": "bb02e87a6f1af7ea16bff9010b485d2daa1ce774e584f54604136e67bec98579",
+    "supabase/remediation/security_fr_2_2_paid_record_binding_reviewed_hooks.sql": "f0be981e302e7bac808a9c8929ab7cd539dec2b5314e3a0c3afe7135ed04b8d0",
+    "supabase/remediation/security_fr_2_2_paid_record_binding_rollback_reviewed_hooks.sql": "47bc8efca4bb692749a7ba89aa3b473b783f4fc24949be6deb508db9cc9bf971"
+  },
+  "local_unlinked_synthetic_conversion_rows_after_selected_record_deletion": 2,
+  "conversion_cleanup_or_retention_acceptance": false,
+  "hosted_checks_run": 0,
+  "candidate_installed_to_staging": false,
+  "historical_staging_rows_or_conversions_changed": false,
+  "production_or_native_changed": false,
+  "hosted_acceptance": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "JS_syntax_checks": 1,
+  "default_network_disabled": true,
+  "current_audit_branch_source_blob_matches": 55,
+  "earlier_local_setup_attempt": {
+    "pass": 32,
+    "fail": 0,
+    "exit_code": 1,
+    "failure_code": "42501",
+    "cause": "Synthetic supabase_admin initially lacked superuser status required to own event triggers; fixture role corrected before final 48-case run. No hosted role changed."
+  }
+}

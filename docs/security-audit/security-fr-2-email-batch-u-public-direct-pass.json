@@ -1,0 +1,118 @@
+{
+  "stage_step": "FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch U/Z — IN PROGRESS",
+  "batch": "U",
+  "result": "BATCH_U_TWO_ORIGIN_DIRECT_PUBLIC_BYTES_HEADERS_SCOPED_PASS",
+  "scope": "PUBLIC_TWO_FILE_LIFECYCLE_CONFIG_WORKER_TLS_AND_OFFLINE_READBACK_ONLY",
+  "execution_source_pin": "f4fe5d525c1d376974c101bcbdcee990afbc86fb",
+  "owner_reviewed_ZIP_SHA256": "03542ed32e0ef32392f718f518248954a81f5317e94b77adf90c5c2b9457fd1a",
+  "deployment_origin": "https://28beb907.mushavo-budget-staging.pages.dev",
+  "canonical_origin": "https://mushavo-budget-staging.pages.dev",
+  "previous_configuration_origin": "https://d24b6611.mushavo-budget-staging.pages.dev",
+  "direct_public_GET_requests": 9,
+  "maximum_direct_public_GET_requests": 9,
+  "samples": [
+    {
+      "path": "/config.js",
+      "http_status": 200,
+      "JavaScript_MIME": true,
+      "selected_headers_match": true,
+      "origin": "PREVIOUS_ACCEPTED",
+      "staging_configuration_shape": true
+    },
+    {
+      "path": "/app.js",
+      "http_status": 200,
+      "JavaScript_MIME": true,
+      "selected_headers_match": true,
+      "origin": "DEPLOYMENT",
+      "byte_match": true
+    },
+    {
+      "path": "/session-entry.js",
+      "http_status": 200,
+      "JavaScript_MIME": true,
+      "selected_headers_match": true,
+      "origin": "DEPLOYMENT",
+      "byte_match": true
+    },
+    {
+      "path": "/sw.js",
+      "http_status": 200,
+      "JavaScript_MIME": true,
+      "selected_headers_match": true,
+      "origin": "DEPLOYMENT",
+      "byte_match": true
+    },
+    {
+      "path": "/config.js",
+      "http_status": 200,
+      "JavaScript_MIME": true,
+      "selected_headers_match": true,
+      "origin": "DEPLOYMENT",
+      "byte_match": true
+    },
+    {
+      "path": "/app.js",
+      "http_status": 200,
+      "JavaScript_MIME": true,
+      "selected_headers_match": true,
+      "origin": "CANONICAL",
+      "byte_match": true
+    },
+    {
+      "path": "/session-entry.js",
+      "http_status": 200,
+      "JavaScript_MIME": true,
+      "selected_headers_match": true,
+      "origin": "CANONICAL",
+      "byte_match": true
+    },
+    {
+      "path": "/sw.js",
+      "http_status": 200,
+      "JavaScript_MIME": true,
+      "selected_headers_match": true,
+      "origin": "CANONICAL",
+      "byte_match": true
+    },
+    {
+      "path": "/config.js",
+      "http_status": 200,
+      "JavaScript_MIME": true,
+      "selected_headers_match": true,
+      "origin": "CANONICAL",
+      "byte_match": true
+    }
+  ],
+  "public_browser_results": [],
+  "public_browser_requested": false,
+  "direct_scoped_checks": 9,
+  "public_browser_checks": 0,
+  "hosted_scoped_checks": 9,
+  "both_origins_lifecycle_source_exact": true,
+  "both_origins_worker_exact": true,
+  "both_origins_public_configuration_preserved": true,
+  "entire_deployed_artifact_verified": false,
+  "deployed_gateway_source_or_binding_secret_metadata_verified": false,
+  "public_configuration_printed_or_saved": false,
+  "private_packets_or_credentials_accessed": false,
+  "real_email_requests": 0,
+  "Auth_or_gateway_requests_permitted": false,
+  "database_state_read_or_changed": false,
+  "committed_mode_change_requests": 0,
+  "upload_or_write_performed": false,
+  "total_browser_background_requests_independently_counted": false,
+  "worker_startup_fetches_not_intercepted": true,
+  "hosted_authenticated_full_app_acceptance": false,
+  "lettered_Batch_U_complete": false,
+  "hosted_acceptance": false,
+  "live_activation_approved": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "checkpoint": "COMPLETE",
+  "problem_code": null,
+  "exit_code": 0,
+  "checked_UTC": "2026-10-24T16:46:02.996Z"
+}

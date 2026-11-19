@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "dependencies": {
+    "deno": "2.9.5"
+  }
+}

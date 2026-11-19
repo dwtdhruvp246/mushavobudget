@@ -1,0 +1,3108 @@
+{
+  "schema_version": 1,
+  "stage_step": "9.3",
+  "date": "2026-10-13",
+  "source_parent_commit": "26c9faf0f21969487175d46e0436d665b1ee54aa",
+  "result": "BOUNDED_READINESS_COMPLETE_HOSTED_DEVICE_STORE_ACCEPTANCE_BLOCKED",
+  "scope": "CURRENT_GIT_AND_BYTE_RECEIPT_RECONCILIATION_PLUS_PUBLIC_STATIC_FRONTEND_METADATA_NOT_AUTHENTICATED_RLS_DEVICE_STORE_OR_PERFORMANCE_ACCEPTANCE",
+  "current_input_identity_checks": [
+    {
+      "path": "tests/account-interface-polish.test.mjs",
+      "initial_git_blob_sha": "da0a973453dd30026bb6bf1959a06116a61a9d43",
+      "expected_current_git_blob_sha": "da0a973453dd30026bb6bf1959a06116a61a9d43",
+      "current_git_blob_sha": "da0a973453dd30026bb6bf1959a06116a61a9d43",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/additional-family-subscription.test.mjs",
+      "initial_git_blob_sha": "ee821c74749de37b4d8b2de81f7daac1796ebf2a",
+      "expected_current_git_blob_sha": "ee821c74749de37b4d8b2de81f7daac1796ebf2a",
+      "current_git_blob_sha": "ee821c74749de37b4d8b2de81f7daac1796ebf2a",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/admin-analytics.test.mjs",
+      "initial_git_blob_sha": "33b32c336b8299b93632aa790f3d90653a507eed",
+      "expected_current_git_blob_sha": "b8b0b202187c82ae318dae3995a3c7f0faf14bc6",
+      "current_git_blob_sha": "b8b0b202187c82ae318dae3995a3c7f0faf14bc6",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/admin-console-redesign.test.mjs",
+      "initial_git_blob_sha": "dc0bc202a5f110960e9562476ee5156340670323",
+      "expected_current_git_blob_sha": "dc0bc202a5f110960e9562476ee5156340670323",
+      "current_git_blob_sha": "dc0bc202a5f110960e9562476ee5156340670323",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/admin-event-notifications.test.mjs",
+      "initial_git_blob_sha": "125316d9c7ee198362cd09f8677807e28f3ed80f",
+      "expected_current_git_blob_sha": "4dbb8536d1dcda9d6afdd189c3b3caaecdc36b8f",
+      "current_git_blob_sha": "4dbb8536d1dcda9d6afdd189c3b3caaecdc36b8f",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/admin-invitation-exit.test.mjs",
+      "initial_git_blob_sha": "539262093d638c2cc1aeff08e7c0bf5997a0b977",
+      "expected_current_git_blob_sha": "539262093d638c2cc1aeff08e7c0bf5997a0b977",
+      "current_git_blob_sha": "539262093d638c2cc1aeff08e7c0bf5997a0b977",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/admin-invitation-provision-guard.test.mjs",
+      "initial_git_blob_sha": "994598fa416738ec8ba84cc7f5007ab19ae9678f",
+      "expected_current_git_blob_sha": "994598fa416738ec8ba84cc7f5007ab19ae9678f",
+      "current_git_blob_sha": "994598fa416738ec8ba84cc7f5007ab19ae9678f",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/admin-invitation-replacement.test.mjs",
+      "initial_git_blob_sha": "457de24229c88ea469b3d5f0411986a0770c601e",
+      "expected_current_git_blob_sha": "457de24229c88ea469b3d5f0411986a0770c601e",
+      "current_git_blob_sha": "457de24229c88ea469b3d5f0411986a0770c601e",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/admin-invitation-session-isolation.test.mjs",
+      "initial_git_blob_sha": "354b6c8dd3bba7e266912384a116c4e74f401413",
+      "expected_current_git_blob_sha": "354b6c8dd3bba7e266912384a116c4e74f401413",
+      "current_git_blob_sha": "354b6c8dd3bba7e266912384a116c4e74f401413",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/admin-invitation-setup-retry.test.mjs",
+      "initial_git_blob_sha": "f09fbf03fdb397783cece8356ca6b474e864e60b",
+      "expected_current_git_blob_sha": "f09fbf03fdb397783cece8356ca6b474e864e60b",
+      "current_git_blob_sha": "f09fbf03fdb397783cece8356ca6b474e864e60b",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/admin-manual-subscription.test.mjs",
+      "initial_git_blob_sha": "7d9f8d2895bc9e2bd06c772add0488579135a580",
+      "expected_current_git_blob_sha": "7d9f8d2895bc9e2bd06c772add0488579135a580",
+      "current_git_blob_sha": "7d9f8d2895bc9e2bd06c772add0488579135a580",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/admin-plans-workbench.test.mjs",
+      "initial_git_blob_sha": "31a981bb4d024a8c6946df62f4d0336818f7737b",
+      "expected_current_git_blob_sha": "e69bbdf4e87b6516e442c29be8ecc7d00bd70ff6",
+      "current_git_blob_sha": "e69bbdf4e87b6516e442c29be8ecc7d00bd70ff6",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/admin-user-invitation-completion.test.mjs",
+      "initial_git_blob_sha": "be52f2c0160ab41b58c3a1c20a0737057fb00bea",
+      "expected_current_git_blob_sha": "be52f2c0160ab41b58c3a1c20a0737057fb00bea",
+      "current_git_blob_sha": "be52f2c0160ab41b58c3a1c20a0737057fb00bea",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/admin-user-invitations.test.mjs",
+      "initial_git_blob_sha": "c3ae95143a316f705c92024159d9257f495ae2fc",
+      "expected_current_git_blob_sha": "c3ae95143a316f705c92024159d9257f495ae2fc",
+      "current_git_blob_sha": "c3ae95143a316f705c92024159d9257f495ae2fc",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/analytics-activity.test.mjs",
+      "initial_git_blob_sha": "7c3d8ac4ef6394264dfdfc7956714ceff377cc56",
+      "expected_current_git_blob_sha": "7c3d8ac4ef6394264dfdfc7956714ceff377cc56",
+      "current_git_blob_sha": "7c3d8ac4ef6394264dfdfc7956714ceff377cc56",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-custom-roles.test.mjs",
+      "initial_git_blob_sha": "d7116f4596a9c8ede0c15269d479b331bf487dec",
+      "expected_current_git_blob_sha": "d7116f4596a9c8ede0c15269d479b331bf487dec",
+      "current_git_blob_sha": "d7116f4596a9c8ede0c15269d479b331bf487dec",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-invitation-notifications.test.mjs",
+      "initial_git_blob_sha": "9358d731c77f9e98d42227d6010e558ed39908f4",
+      "expected_current_git_blob_sha": "9358d731c77f9e98d42227d6010e558ed39908f4",
+      "current_git_blob_sha": "9358d731c77f9e98d42227d6010e558ed39908f4",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-plan-workspace-actions.test.mjs",
+      "initial_git_blob_sha": "73f83737a83fa13269a57ee5df811ff05cb32959",
+      "expected_current_git_blob_sha": "73f83737a83fa13269a57ee5df811ff05cb32959",
+      "current_git_blob_sha": "73f83737a83fa13269a57ee5df811ff05cb32959",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-public-availability.test.mjs",
+      "initial_git_blob_sha": "0e1fe4a0689ee8bda3f80f4326885d2e9099e2a9",
+      "expected_current_git_blob_sha": "0e1fe4a0689ee8bda3f80f4326885d2e9099e2a9",
+      "current_git_blob_sha": "0e1fe4a0689ee8bda3f80f4326885d2e9099e2a9",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-setup-navigation.test.mjs",
+      "initial_git_blob_sha": "c28f909458873b042e3ea690f37ee2ac5d3beb20",
+      "expected_current_git_blob_sha": "c28f909458873b042e3ea690f37ee2ac5d3beb20",
+      "current_git_blob_sha": "c28f909458873b042e3ea690f37ee2ac5d3beb20",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-0.test.mjs",
+      "initial_git_blob_sha": "d3b82e684d5e7502b1284cc9bac62e60df3d8d4e",
+      "expected_current_git_blob_sha": "d3b82e684d5e7502b1284cc9bac62e60df3d8d4e",
+      "current_git_blob_sha": "d3b82e684d5e7502b1284cc9bac62e60df3d8d4e",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-1.test.mjs",
+      "initial_git_blob_sha": "b5ec1d54f50b2ddd5506a86e2381a93f21c1c996",
+      "expected_current_git_blob_sha": "1f65947fef1ffd133324024153e3ae8b07dd9278",
+      "current_git_blob_sha": "1f65947fef1ffd133324024153e3ae8b07dd9278",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-10.test.mjs",
+      "initial_git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+      "expected_current_git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+      "current_git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-11.test.mjs",
+      "initial_git_blob_sha": "c76723ee66752b2ed17950e85d694604d114cdab",
+      "expected_current_git_blob_sha": "c76723ee66752b2ed17950e85d694604d114cdab",
+      "current_git_blob_sha": "c76723ee66752b2ed17950e85d694604d114cdab",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-12.test.mjs",
+      "initial_git_blob_sha": "92ac50e613f9cf8cfeaf47b9653aad4f4debfab8",
+      "expected_current_git_blob_sha": "92ac50e613f9cf8cfeaf47b9653aad4f4debfab8",
+      "current_git_blob_sha": "92ac50e613f9cf8cfeaf47b9653aad4f4debfab8",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-2.test.mjs",
+      "initial_git_blob_sha": "f49d63c0b195a618da32e336fba77bc298741581",
+      "expected_current_git_blob_sha": "f49d63c0b195a618da32e336fba77bc298741581",
+      "current_git_blob_sha": "f49d63c0b195a618da32e336fba77bc298741581",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-3.test.mjs",
+      "initial_git_blob_sha": "67f1faf2a3cf44c8e1bbe1a7d1cc9ad9e310264f",
+      "expected_current_git_blob_sha": "4b1aaaf9e09535699b8585c8a6caa3041401a53d",
+      "current_git_blob_sha": "4b1aaaf9e09535699b8585c8a6caa3041401a53d",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-4.test.mjs",
+      "initial_git_blob_sha": "adead380c9306e93e453e5caee9411b9193c4463",
+      "expected_current_git_blob_sha": "adead380c9306e93e453e5caee9411b9193c4463",
+      "current_git_blob_sha": "adead380c9306e93e453e5caee9411b9193c4463",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-5.test.mjs",
+      "initial_git_blob_sha": "35a9b52bc899c94b3dc30d721179e81c2b891af6",
+      "expected_current_git_blob_sha": "35a9b52bc899c94b3dc30d721179e81c2b891af6",
+      "current_git_blob_sha": "35a9b52bc899c94b3dc30d721179e81c2b891af6",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-6.test.mjs",
+      "initial_git_blob_sha": "8c1a493c53a0e3d6b3708e2876417fd509653b12",
+      "expected_current_git_blob_sha": "8c1a493c53a0e3d6b3708e2876417fd509653b12",
+      "current_git_blob_sha": "8c1a493c53a0e3d6b3708e2876417fd509653b12",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-7.test.mjs",
+      "initial_git_blob_sha": "929de477039289ee6eb6d31e17fe9d780ac331af",
+      "expected_current_git_blob_sha": "929de477039289ee6eb6d31e17fe9d780ac331af",
+      "current_git_blob_sha": "929de477039289ee6eb6d31e17fe9d780ac331af",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-8.test.mjs",
+      "initial_git_blob_sha": "1dca1b7cd82cf12cd17efe15b1090a9ea4fedf69",
+      "expected_current_git_blob_sha": "1dca1b7cd82cf12cd17efe15b1090a9ea4fedf69",
+      "current_git_blob_sha": "1dca1b7cd82cf12cd17efe15b1090a9ea4fedf69",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-9.test.mjs",
+      "initial_git_blob_sha": "babfa3a260c5dd766c0a46b787988a81769b5afd",
+      "expected_current_git_blob_sha": "babfa3a260c5dd766c0a46b787988a81769b5afd",
+      "current_git_blob_sha": "babfa3a260c5dd766c0a46b787988a81769b5afd",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-timezone.test.mjs",
+      "initial_git_blob_sha": "c975cd2da8203b0c1a7a7d044c67921bbc883162",
+      "expected_current_git_blob_sha": "c975cd2da8203b0c1a7a7d044c67921bbc883162",
+      "current_git_blob_sha": "c975cd2da8203b0c1a7a7d044c67921bbc883162",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/capacitor-build.test.mjs",
+      "initial_git_blob_sha": "24c7faf5f15533abc132c2e282278e2539b1635d",
+      "expected_current_git_blob_sha": "24c7faf5f15533abc132c2e282278e2539b1635d",
+      "current_git_blob_sha": "24c7faf5f15533abc132c2e282278e2539b1635d",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/cashbook-private-test.test.mjs",
+      "initial_git_blob_sha": "b535e1155f51150be9303cca797040cbd9b8d8c8",
+      "expected_current_git_blob_sha": "3f9aa2771fe1f30b4e2493525b5a8d0f5a3cd739",
+      "current_git_blob_sha": "3f9aa2771fe1f30b4e2493525b5a8d0f5a3cd739",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/cloudflare-assets.test.mjs",
+      "initial_git_blob_sha": "47dec6e4b337cdeedaa48dd4b31f886189b77efd",
+      "expected_current_git_blob_sha": "47dec6e4b337cdeedaa48dd4b31f886189b77efd",
+      "current_git_blob_sha": "47dec6e4b337cdeedaa48dd4b31f886189b77efd",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/currency-recovery.test.mjs",
+      "initial_git_blob_sha": "22356b5f0cb96b56dafee2af28c364014d1a20f1",
+      "expected_current_git_blob_sha": "22356b5f0cb96b56dafee2af28c364014d1a20f1",
+      "current_git_blob_sha": "22356b5f0cb96b56dafee2af28c364014d1a20f1",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/dashboard-completed-payment.test.mjs",
+      "initial_git_blob_sha": "51b47646b3c23a6d4715485ac4e2b7530c2437fd",
+      "expected_current_git_blob_sha": "51b47646b3c23a6d4715485ac4e2b7530c2437fd",
+      "current_git_blob_sha": "51b47646b3c23a6d4715485ac4e2b7530c2437fd",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/dashboard-payment-cards.test.mjs",
+      "initial_git_blob_sha": "61e3c6fe12b2d423fa0a037019ce252a302e1696",
+      "expected_current_git_blob_sha": "61e3c6fe12b2d423fa0a037019ce252a302e1696",
+      "current_git_blob_sha": "61e3c6fe12b2d423fa0a037019ce252a302e1696",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/dispatch-push-reminders.test.mjs",
+      "initial_git_blob_sha": "40ef77891a778e85e65146e51c98c5bce9f9cadf",
+      "expected_current_git_blob_sha": "40ef77891a778e85e65146e51c98c5bce9f9cadf",
+      "current_git_blob_sha": "40ef77891a778e85e65146e51c98c5bce9f9cadf",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/family-extra-places.test.mjs",
+      "initial_git_blob_sha": "f8822fe66520a4ac8b757e0d02b96cac915a7f59",
+      "expected_current_git_blob_sha": "f8822fe66520a4ac8b757e0d02b96cac915a7f59",
+      "current_git_blob_sha": "f8822fe66520a4ac8b757e0d02b96cac915a7f59",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/family-invitation-cancellation.test.mjs",
+      "initial_git_blob_sha": "113004d2ed750826be16f388b4d700323a686c5b",
+      "expected_current_git_blob_sha": "113004d2ed750826be16f388b4d700323a686c5b",
+      "current_git_blob_sha": "113004d2ed750826be16f388b4d700323a686c5b",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/member-plan-and-payment-attribution.test.mjs",
+      "initial_git_blob_sha": "46f4573f56f2378cabb7566edc9f2c44ab965944",
+      "expected_current_git_blob_sha": "46f4573f56f2378cabb7566edc9f2c44ab965944",
+      "current_git_blob_sha": "46f4573f56f2378cabb7566edc9f2c44ab965944",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/notification-outbox.test.mjs",
+      "initial_git_blob_sha": "f1ad370f06cac22fcb14caf1b22c7c53a03bf493",
+      "expected_current_git_blob_sha": "f1ad370f06cac22fcb14caf1b22c7c53a03bf493",
+      "current_git_blob_sha": "f1ad370f06cac22fcb14caf1b22c7c53a03bf493",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/notification-workspace-context.test.mjs",
+      "initial_git_blob_sha": "2f40cf02467bf8eeb228e698c2ee91ae66f97399",
+      "expected_current_git_blob_sha": "2f40cf02467bf8eeb228e698c2ee91ae66f97399",
+      "current_git_blob_sha": "2f40cf02467bf8eeb228e698c2ee91ae66f97399",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/payment-schedule-integrity.test.mjs",
+      "initial_git_blob_sha": "8b866422f133e0c455f63465b098dda87eecee40",
+      "expected_current_git_blob_sha": "8b866422f133e0c455f63465b098dda87eecee40",
+      "current_git_blob_sha": "8b866422f133e0c455f63465b098dda87eecee40",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/payments-page-management.test.mjs",
+      "initial_git_blob_sha": "61c699accb3834c3931e1d6a7c1c8fdc097494d2",
+      "expected_current_git_blob_sha": "61c699accb3834c3931e1d6a7c1c8fdc097494d2",
+      "current_git_blob_sha": "61c699accb3834c3931e1d6a7c1c8fdc097494d2",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/personal-workspace-route.test.mjs",
+      "initial_git_blob_sha": "16cb38731b18df0cf6dc84fa6dfff61b2949f675",
+      "expected_current_git_blob_sha": "16cb38731b18df0cf6dc84fa6dfff61b2949f675",
+      "current_git_blob_sha": "16cb38731b18df0cf6dc84fa6dfff61b2949f675",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/plan-card-layout.test.mjs",
+      "initial_git_blob_sha": "2ce0588bbdbde8feaeec1a864cf7a3d94f445bb0",
+      "expected_current_git_blob_sha": "2ce0588bbdbde8feaeec1a864cf7a3d94f445bb0",
+      "current_git_blob_sha": "2ce0588bbdbde8feaeec1a864cf7a3d94f445bb0",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/push-display-click.test.mjs",
+      "initial_git_blob_sha": "c1e2663a83d768817085126a574609f9326e5545",
+      "expected_current_git_blob_sha": "c1e2663a83d768817085126a574609f9326e5545",
+      "current_git_blob_sha": "c1e2663a83d768817085126a574609f9326e5545",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/push-notifications.test.mjs",
+      "initial_git_blob_sha": "2d4795c90a5ac9f12c8c79791871ed3af73fcef1",
+      "expected_current_git_blob_sha": "3c9aad46f0bdfb748c0615f2956be50e12d35be9",
+      "current_git_blob_sha": "3c9aad46f0bdfb748c0615f2956be50e12d35be9",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/pwa-entry.test.mjs",
+      "initial_git_blob_sha": "7a4d0bbe57dce5dd9da0f79e030070f4d8fee1c4",
+      "expected_current_git_blob_sha": "7a4d0bbe57dce5dd9da0f79e030070f4d8fee1c4",
+      "current_git_blob_sha": "7a4d0bbe57dce5dd9da0f79e030070f4d8fee1c4",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/pwa-install.test.mjs",
+      "initial_git_blob_sha": "38d5a12c19fb8133509cf01712c360732e0800a5",
+      "expected_current_git_blob_sha": "7e7589a976dd0e335a582811e6f0fb3e95c94b7f",
+      "current_git_blob_sha": "7e7589a976dd0e335a582811e6f0fb3e95c94b7f",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/pwa-stage-13-hardening.test.mjs",
+      "initial_git_blob_sha": "52e175e569b2792f4a1b5f918ffa4d3d80ffa07c",
+      "expected_current_git_blob_sha": "4e5f0e0ad060da5fa5436e0da4c97c765ba63805",
+      "current_git_blob_sha": "4e5f0e0ad060da5fa5436e0da4c97c765ba63805",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/pwa-update.test.mjs",
+      "initial_git_blob_sha": "9d3d51891be8d4dcba5125b9a8300c0e8dc0cdaa",
+      "expected_current_git_blob_sha": "b124d6198477c7a800870e96a834cec27620c6e9",
+      "current_git_blob_sha": "b124d6198477c7a800870e96a834cec27620c6e9",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/realtime-workspace-refresh.test.mjs",
+      "initial_git_blob_sha": "788b243c8f2d952465b009c7adac9d466788c4c7",
+      "expected_current_git_blob_sha": "788b243c8f2d952465b009c7adac9d466788c4c7",
+      "current_git_blob_sha": "788b243c8f2d952465b009c7adac9d466788c4c7",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/security-stage-0.test.mjs",
+      "initial_git_blob_sha": "f0a5810a75ce0f3a44f00919768609e2235dd776",
+      "expected_current_git_blob_sha": "f0a5810a75ce0f3a44f00919768609e2235dd776",
+      "current_git_blob_sha": "f0a5810a75ce0f3a44f00919768609e2235dd776",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/security-stage-1-database-properties-toc.test.cjs",
+      "initial_git_blob_sha": "f8172f5309a8d9337736fb4d9fc428a3b5126bf2",
+      "expected_current_git_blob_sha": "be67ba875f33617ba0641979a214174946f9edc7",
+      "current_git_blob_sha": "be67ba875f33617ba0641979a214174946f9edc7",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/security-stage-1-role-coverage.test.cjs",
+      "initial_git_blob_sha": "8e09e26611de9b270700ddf751c2f508e5528cd4",
+      "expected_current_git_blob_sha": "8e09e26611de9b270700ddf751c2f508e5528cd4",
+      "current_git_blob_sha": "8e09e26611de9b270700ddf751c2f508e5528cd4",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/security-stage-1-setting-coverage.test.cjs",
+      "initial_git_blob_sha": "7efd69f81aa1431dad3ff316a750addcaaba9344",
+      "expected_current_git_blob_sha": "7efd69f81aa1431dad3ff316a750addcaaba9344",
+      "current_git_blob_sha": "7efd69f81aa1431dad3ff316a750addcaaba9344",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/security-stage-1-storage-backup.test.mjs",
+      "initial_git_blob_sha": "f7b27abd38c4d12f1a533bdd02e08f06acfc4a5f",
+      "expected_current_git_blob_sha": "f7b27abd38c4d12f1a533bdd02e08f06acfc4a5f",
+      "current_git_blob_sha": "f7b27abd38c4d12f1a533bdd02e08f06acfc4a5f",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/security-stage-2-contact-api-check.test.mjs",
+      "initial_git_blob_sha": "4b37d171f41391e6adab79ce27691a611d0cd5bb",
+      "expected_current_git_blob_sha": "4b37d171f41391e6adab79ce27691a611d0cd5bb",
+      "current_git_blob_sha": "4b37d171f41391e6adab79ce27691a611d0cd5bb",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/security-stage-2-contact-byte-preparation.test.mjs",
+      "initial_git_blob_sha": "185094edd5b6fdd5f54b3a777d107d936c65a311",
+      "expected_current_git_blob_sha": "185094edd5b6fdd5f54b3a777d107d936c65a311",
+      "current_git_blob_sha": "185094edd5b6fdd5f54b3a777d107d936c65a311",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/security-stage-2-contact-file-diagnostic.test.mjs",
+      "initial_git_blob_sha": "4cb225fda7a7fbaa670b5bfbcef6c04386c8053a",
+      "expected_current_git_blob_sha": "4cb225fda7a7fbaa670b5bfbcef6c04386c8053a",
+      "current_git_blob_sha": "4cb225fda7a7fbaa670b5bfbcef6c04386c8053a",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/security-stage-2-contact.test.mjs",
+      "initial_git_blob_sha": "eecf4794234d28152dff0e2882f2c48d3996969b",
+      "expected_current_git_blob_sha": "eecf4794234d28152dff0e2882f2c48d3996969b",
+      "current_git_blob_sha": "eecf4794234d28152dff0e2882f2c48d3996969b",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/security-stage-2-headers.test.mjs",
+      "initial_git_blob_sha": "ca3dabed279182e9c6a1d7f44cd438475ebf69c0",
+      "expected_current_git_blob_sha": "93548d7f9d676bf134329289269b14f27eace9ef",
+      "current_git_blob_sha": "93548d7f9d676bf134329289269b14f27eace9ef",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/security-stage-2-push-destination.test.mjs",
+      "initial_git_blob_sha": "1a43368b833d0c902994a1eb4b7aa7f0d77e838b",
+      "expected_current_git_blob_sha": "1a43368b833d0c902994a1eb4b7aa7f0d77e838b",
+      "current_git_blob_sha": "1a43368b833d0c902994a1eb4b7aa7f0d77e838b",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/send-test-push.test.mjs",
+      "initial_git_blob_sha": "e0f18287d0e88b4a9aae6d31b82945d4fbfc386d",
+      "expected_current_git_blob_sha": "e0f18287d0e88b4a9aae6d31b82945d4fbfc386d",
+      "current_git_blob_sha": "e0f18287d0e88b4a9aae6d31b82945d4fbfc386d",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/session-recovery.test.mjs",
+      "initial_git_blob_sha": "8fe80b12541393a164145081f62bd11ec9dcd037",
+      "expected_current_git_blob_sha": "8fe80b12541393a164145081f62bd11ec9dcd037",
+      "current_git_blob_sha": "8fe80b12541393a164145081f62bd11ec9dcd037",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/signup-currencies.test.mjs",
+      "initial_git_blob_sha": "0bbe70a779ca4e9fcd01f8b58450545817f97d0d",
+      "expected_current_git_blob_sha": "0bbe70a779ca4e9fcd01f8b58450545817f97d0d",
+      "current_git_blob_sha": "0bbe70a779ca4e9fcd01f8b58450545817f97d0d",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-3-admin-mfa-ui-edge.test.mjs",
+      "initial_git_blob_sha": "69b2889048d9ae3f8fb46718e778020f4a94dcc7",
+      "expected_current_git_blob_sha": "69b2889048d9ae3f8fb46718e778020f4a94dcc7",
+      "current_git_blob_sha": "69b2889048d9ae3f8fb46718e778020f4a94dcc7",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-3-auth-edge-build.test.mjs",
+      "initial_git_blob_sha": "12ff24320f330d75fe46b1a9d41e0b7b101c6448",
+      "expected_current_git_blob_sha": "b5e92754560dd7c1ffa29b022cec6b2c0a58f473",
+      "current_git_blob_sha": "b5e92754560dd7c1ffa29b022cec6b2c0a58f473",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-3-auth-flows.test.mjs",
+      "initial_git_blob_sha": "9ba114c045d014af8b0a48f40e1dbf0eda16cb99",
+      "expected_current_git_blob_sha": "fa0f1fb49499c7985129dda13d76902cf0699ac7",
+      "current_git_blob_sha": "fa0f1fb49499c7985129dda13d76902cf0699ac7",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-3-auth-page.test.mjs",
+      "initial_git_blob_sha": "90bc8a478e51f1dab79b260b075232ebc680a961",
+      "expected_current_git_blob_sha": "90bc8a478e51f1dab79b260b075232ebc680a961",
+      "current_git_blob_sha": "90bc8a478e51f1dab79b260b075232ebc680a961",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-3-business-api.test.cjs",
+      "initial_git_blob_sha": "3f255a19c10a36e2602d89444aab231fd91097a5",
+      "expected_current_git_blob_sha": "3f255a19c10a36e2602d89444aab231fd91097a5",
+      "current_git_blob_sha": "3f255a19c10a36e2602d89444aab231fd91097a5",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-3-currency-api.test.cjs",
+      "initial_git_blob_sha": "2af83a1252bbc643c88b8bb07ced6c1486dc2589",
+      "expected_current_git_blob_sha": "2af83a1252bbc643c88b8bb07ced6c1486dc2589",
+      "current_git_blob_sha": "2af83a1252bbc643c88b8bb07ced6c1486dc2589",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-3-family-api.test.cjs",
+      "initial_git_blob_sha": "5a43b47b14318b96fc8a2ee79a6c1dd6be3fd39e",
+      "expected_current_git_blob_sha": "5a43b47b14318b96fc8a2ee79a6c1dd6be3fd39e",
+      "current_git_blob_sha": "5a43b47b14318b96fc8a2ee79a6c1dd6be3fd39e",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-3-personal-api.test.cjs",
+      "initial_git_blob_sha": "7c02fcd352659d786cf5b88e621c1a824eb781b2",
+      "expected_current_git_blob_sha": "7c02fcd352659d786cf5b88e621c1a824eb781b2",
+      "current_git_blob_sha": "7c02fcd352659d786cf5b88e621c1a824eb781b2",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-4-lifecycle-review.test.mjs",
+      "initial_git_blob_sha": "f1daf23322a473eed55c481adfda465001dedba4",
+      "expected_current_git_blob_sha": "f1daf23322a473eed55c481adfda465001dedba4",
+      "current_git_blob_sha": "f1daf23322a473eed55c481adfda465001dedba4",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-4-privacy-review.test.mjs",
+      "initial_git_blob_sha": "e627f6eae1c68f22bccbde54867922714721940a",
+      "expected_current_git_blob_sha": "e627f6eae1c68f22bccbde54867922714721940a",
+      "current_git_blob_sha": "e627f6eae1c68f22bccbde54867922714721940a",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-4-upload-client.test.mjs",
+      "initial_git_blob_sha": "a6449d962a606ca26e6d6a9ad2b354c4ce673ac8",
+      "expected_current_git_blob_sha": "a6449d962a606ca26e6d6a9ad2b354c4ce673ac8",
+      "current_git_blob_sha": "a6449d962a606ca26e6d6a9ad2b354c4ce673ac8",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-6-email-templates.test.mjs",
+      "initial_git_blob_sha": "6babdb6a6aa5aa68ae853921cb331052668d33a4",
+      "expected_current_git_blob_sha": "6babdb6a6aa5aa68ae853921cb331052668d33a4",
+      "current_git_blob_sha": "6babdb6a6aa5aa68ae853921cb331052668d33a4",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-7-commerce-model.test.mjs",
+      "initial_git_blob_sha": "8abc71108656c39414d538bb7f43a002e16070aa",
+      "expected_current_git_blob_sha": "8abc71108656c39414d538bb7f43a002e16070aa",
+      "current_git_blob_sha": "8abc71108656c39414d538bb7f43a002e16070aa",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-8-notification-boundaries.test.mjs",
+      "initial_git_blob_sha": "4b4b99bc3de970a60e0cdeb070d5d7ec0a8366e8",
+      "expected_current_git_blob_sha": "4b4b99bc3de970a60e0cdeb070d5d7ec0a8366e8",
+      "current_git_blob_sha": "4b4b99bc3de970a60e0cdeb070d5d7ec0a8366e8",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/startup-recovery.test.mjs",
+      "initial_git_blob_sha": "305a553e0d3fa134717ad7afffb22901a8178cca",
+      "expected_current_git_blob_sha": "305a553e0d3fa134717ad7afffb22901a8178cca",
+      "current_git_blob_sha": "305a553e0d3fa134717ad7afffb22901a8178cca",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/subscription-expiry.test.mjs",
+      "initial_git_blob_sha": "c5e48e64fd3faaeeaabbd31dc533f43b97e19b25",
+      "expected_current_git_blob_sha": "c5e48e64fd3faaeeaabbd31dc533f43b97e19b25",
+      "current_git_blob_sha": "c5e48e64fd3faaeeaabbd31dc533f43b97e19b25",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/subscription-overview.test.mjs",
+      "initial_git_blob_sha": "e0b488f6c30f25a45c4646b60fa411551c11ee25",
+      "expected_current_git_blob_sha": "e0b488f6c30f25a45c4646b60fa411551c11ee25",
+      "current_git_blob_sha": "e0b488f6c30f25a45c4646b60fa411551c11ee25",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/support-ticket-workflow.test.mjs",
+      "initial_git_blob_sha": "2041935ae94c6ff779240214b419c5f5a7ed0c9a",
+      "expected_current_git_blob_sha": "2041935ae94c6ff779240214b419c5f5a7ed0c9a",
+      "current_git_blob_sha": "2041935ae94c6ff779240214b419c5f5a7ed0c9a",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/workspace-preference.test.mjs",
+      "initial_git_blob_sha": "1da274830ccf27056a7969f5ba96d90b62747d05",
+      "expected_current_git_blob_sha": "1da274830ccf27056a7969f5ba96d90b62747d05",
+      "current_git_blob_sha": "1da274830ccf27056a7969f5ba96d90b62747d05",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/workspace-startup.test.mjs",
+      "initial_git_blob_sha": "c6e09da463f0f7121c47b2dc3c9b1f70d623ba89",
+      "expected_current_git_blob_sha": "89b0fb5d78388cdd3d029a357c86f0f3b93f94db",
+      "current_git_blob_sha": "89b0fb5d78388cdd3d029a357c86f0f3b93f94db",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/build-capacitor.mjs",
+      "initial_git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+      "expected_current_git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+      "current_git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/build-stage-3-admin-mfa.mjs",
+      "initial_git_blob_sha": "8379f87d45c3c85b3c2e96ea141adcb0903daaaa",
+      "expected_current_git_blob_sha": "8379f87d45c3c85b3c2e96ea141adcb0903daaaa",
+      "current_git_blob_sha": "8379f87d45c3c85b3c2e96ea141adcb0903daaaa",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/build-stage-3-auth-staging.cjs",
+      "initial_git_blob_sha": "d6ede11c3161cafce595e5408c060519ea8bda48",
+      "expected_current_git_blob_sha": "d6ede11c3161cafce595e5408c060519ea8bda48",
+      "current_git_blob_sha": "d6ede11c3161cafce595e5408c060519ea8bda48",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/build-staging-frontend.cjs",
+      "initial_git_blob_sha": "3e7e39f9aeb5e62d8a677b745d9ec9244e63c373",
+      "expected_current_git_blob_sha": "3e7e39f9aeb5e62d8a677b745d9ec9244e63c373",
+      "current_git_blob_sha": "3e7e39f9aeb5e62d8a677b745d9ec9244e63c373",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/build-staging-schema.cjs",
+      "initial_git_blob_sha": "2122687c3c4087e4cc1be6a953e0a63fdfe3ad30",
+      "expected_current_git_blob_sha": "2122687c3c4087e4cc1be6a953e0a63fdfe3ad30",
+      "current_git_blob_sha": "2122687c3c4087e4cc1be6a953e0a63fdfe3ad30",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/check-stage-3-admin-mfa.mjs",
+      "initial_git_blob_sha": "e7f183796d106db08d31225bcf03269a3a62997c",
+      "expected_current_git_blob_sha": "e7f183796d106db08d31225bcf03269a3a62997c",
+      "current_git_blob_sha": "e7f183796d106db08d31225bcf03269a3a62997c",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/check-stage-3-business-api.cjs",
+      "initial_git_blob_sha": "f378118286b734cb31d14b15d161f47710556995",
+      "expected_current_git_blob_sha": "f378118286b734cb31d14b15d161f47710556995",
+      "current_git_blob_sha": "f378118286b734cb31d14b15d161f47710556995",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/check-stage-3-currency-api.cjs",
+      "initial_git_blob_sha": "129cde60f5527ef50dd4d583966912caa4f7dcc8",
+      "expected_current_git_blob_sha": "129cde60f5527ef50dd4d583966912caa4f7dcc8",
+      "current_git_blob_sha": "129cde60f5527ef50dd4d583966912caa4f7dcc8",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/check-stage-3-family-api.cjs",
+      "initial_git_blob_sha": "be3b92fb4578273bb6aeddb18245971dd9efbabc",
+      "expected_current_git_blob_sha": "be3b92fb4578273bb6aeddb18245971dd9efbabc",
+      "current_git_blob_sha": "be3b92fb4578273bb6aeddb18245971dd9efbabc",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/check-stage-3-personal-api.cjs",
+      "initial_git_blob_sha": "ee1b0f6e76aa3aae112252fd1015100e50eee5f0",
+      "expected_current_git_blob_sha": "ee1b0f6e76aa3aae112252fd1015100e50eee5f0",
+      "current_git_blob_sha": "ee1b0f6e76aa3aae112252fd1015100e50eee5f0",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/check-staging-contact-api.cjs",
+      "initial_git_blob_sha": "a83f93a5e8a9d21663dad7c66ad9c25d1d706d8d",
+      "expected_current_git_blob_sha": "a83f93a5e8a9d21663dad7c66ad9c25d1d706d8d",
+      "current_git_blob_sha": "a83f93a5e8a9d21663dad7c66ad9c25d1d706d8d",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/diagnose-staging-contact-files.cjs",
+      "initial_git_blob_sha": "1d2a36cf7f3854a3080ee523f89428b590fa07dc",
+      "expected_current_git_blob_sha": "1d2a36cf7f3854a3080ee523f89428b590fa07dc",
+      "current_git_blob_sha": "1d2a36cf7f3854a3080ee523f89428b590fa07dc",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/export-synthetic-recovery-source.ps1",
+      "initial_git_blob_sha": "38fce9be69913d14623740f74ffe278683d3f27a",
+      "expected_current_git_blob_sha": "38fce9be69913d14623740f74ffe278683d3f27a",
+      "current_git_blob_sha": "38fce9be69913d14623740f74ffe278683d3f27a",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/inspect-stage-3-admin-source.mjs",
+      "initial_git_blob_sha": "17bd297f5fb87295173887cad27d5ec73cd78fe7",
+      "expected_current_git_blob_sha": "17bd297f5fb87295173887cad27d5ec73cd78fe7",
+      "current_git_blob_sha": "17bd297f5fb87295173887cad27d5ec73cd78fe7",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/lib/stage-3-local-db.mjs",
+      "initial_git_blob_sha": "f5c66b2f3aa75d6d017a30e676d81c8498e63f95",
+      "expected_current_git_blob_sha": "f5c66b2f3aa75d6d017a30e676d81c8498e63f95",
+      "current_git_blob_sha": "f5c66b2f3aa75d6d017a30e676d81c8498e63f95",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/lib/stage-4-lifecycle-review.mjs",
+      "initial_git_blob_sha": "3ff05c4bee55a4eafcb34cef92d66f81e8afb4fe",
+      "expected_current_git_blob_sha": "3ff05c4bee55a4eafcb34cef92d66f81e8afb4fe",
+      "current_git_blob_sha": "3ff05c4bee55a4eafcb34cef92d66f81e8afb4fe",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/lib/stage-4-privacy-review.mjs",
+      "initial_git_blob_sha": "d2d467f7dc33c52d3d709e2632d0275b701d5b1b",
+      "expected_current_git_blob_sha": "d2d467f7dc33c52d3d709e2632d0275b701d5b1b",
+      "current_git_blob_sha": "d2d467f7dc33c52d3d709e2632d0275b701d5b1b",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/lib/stage-7-commerce-model.mjs",
+      "initial_git_blob_sha": "160a59600d166a2c355b50397d4a72bd52f3b185",
+      "expected_current_git_blob_sha": "160a59600d166a2c355b50397d4a72bd52f3b185",
+      "current_git_blob_sha": "160a59600d166a2c355b50397d4a72bd52f3b185",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/prepare-local-recovery-target.ps1",
+      "initial_git_blob_sha": "75e7e460962003571471c56a9427788366a011b8",
+      "expected_current_git_blob_sha": "75e7e460962003571471c56a9427788366a011b8",
+      "current_git_blob_sha": "75e7e460962003571471c56a9427788366a011b8",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/prepare-stage-2-contact.cjs",
+      "initial_git_blob_sha": "2343b0e15a71724dcb71d4acf2fe22f51f6ff8bd",
+      "expected_current_git_blob_sha": "2343b0e15a71724dcb71d4acf2fe22f51f6ff8bd",
+      "current_git_blob_sha": "2343b0e15a71724dcb71d4acf2fe22f51f6ff8bd",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/prepare-stage-2-contact.ps1",
+      "initial_git_blob_sha": "53e64c6a52e248810c992249b3eef9c98720604b",
+      "expected_current_git_blob_sha": "53e64c6a52e248810c992249b3eef9c98720604b",
+      "current_git_blob_sha": "53e64c6a52e248810c992249b3eef9c98720604b",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/prepare-stage-2-headers.cjs",
+      "initial_git_blob_sha": "a9215731331dd7a520d5bb2e17ee9a99ec5193e1",
+      "expected_current_git_blob_sha": "a9215731331dd7a520d5bb2e17ee9a99ec5193e1",
+      "current_git_blob_sha": "a9215731331dd7a520d5bb2e17ee9a99ec5193e1",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/prepare-synthetic-restore.cjs",
+      "initial_git_blob_sha": "1777194ad547e9dca9dcc1184d59b1dcac5a1de2",
+      "expected_current_git_blob_sha": "1777194ad547e9dca9dcc1184d59b1dcac5a1de2",
+      "current_git_blob_sha": "1777194ad547e9dca9dcc1184d59b1dcac5a1de2",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/read-stage-5-backup-config.ps1",
+      "initial_git_blob_sha": "a8d03f4de144c5d81bd2f7f4f49f71e77137f4a2",
+      "expected_current_git_blob_sha": "a8d03f4de144c5d81bd2f7f4f49f71e77137f4a2",
+      "current_git_blob_sha": "a8d03f4de144c5d81bd2f7f4f49f71e77137f4a2",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/read-stage-5-native-metadata.ps1",
+      "initial_git_blob_sha": "b0b45ba7f506eb4f693a972ccbd4b1a889feb33b",
+      "expected_current_git_blob_sha": "b0b45ba7f506eb4f693a972ccbd4b1a889feb33b",
+      "current_git_blob_sha": "b0b45ba7f506eb4f693a972ccbd4b1a889feb33b",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/read-stage-5-platform-config.ps1",
+      "initial_git_blob_sha": "d89b0c5db41850481fed5a5f7014853720962214",
+      "expected_current_git_blob_sha": "d89b0c5db41850481fed5a5f7014853720962214",
+      "current_git_blob_sha": "d89b0c5db41850481fed5a5f7014853720962214",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/restore-synthetic-recovery.ps1",
+      "initial_git_blob_sha": "8e4feb2860f3664a8ce9435a49d5b8c6d0fb65d9",
+      "expected_current_git_blob_sha": "8e4feb2860f3664a8ce9435a49d5b8c6d0fb65d9",
+      "current_git_blob_sha": "8e4feb2860f3664a8ce9435a49d5b8c6d0fb65d9",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/run-stage-3-auth-readiness.ps1",
+      "initial_git_blob_sha": "68dacc2db40664739a26d7ff054176b15e9f88ba",
+      "expected_current_git_blob_sha": "68dacc2db40664739a26d7ff054176b15e9f88ba",
+      "current_git_blob_sha": "68dacc2db40664739a26d7ff054176b15e9f88ba",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/run-stage-3-business-acceptance.ps1",
+      "initial_git_blob_sha": "21de60016e542091ca6442a6b4e7b087fd956abd",
+      "expected_current_git_blob_sha": "21de60016e542091ca6442a6b4e7b087fd956abd",
+      "current_git_blob_sha": "21de60016e542091ca6442a6b4e7b087fd956abd",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/run-stage-3-currency-acceptance.ps1",
+      "initial_git_blob_sha": "4faf0cfa2be5e15b350a8e8da208796a0237dd2e",
+      "expected_current_git_blob_sha": "4faf0cfa2be5e15b350a8e8da208796a0237dd2e",
+      "current_git_blob_sha": "4faf0cfa2be5e15b350a8e8da208796a0237dd2e",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/run-stage-3-family-acceptance.ps1",
+      "initial_git_blob_sha": "286b765f10cfe919d55027ac1fdeacc4f63f8f09",
+      "expected_current_git_blob_sha": "286b765f10cfe919d55027ac1fdeacc4f63f8f09",
+      "current_git_blob_sha": "286b765f10cfe919d55027ac1fdeacc4f63f8f09",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/run-stage-3-personal-acceptance.ps1",
+      "initial_git_blob_sha": "c6a10b177d77c1f8177083a095147a7c3325876d",
+      "expected_current_git_blob_sha": "c6a10b177d77c1f8177083a095147a7c3325876d",
+      "current_git_blob_sha": "c6a10b177d77c1f8177083a095147a7c3325876d",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/run-staging-contact-acceptance.ps1",
+      "initial_git_blob_sha": "41282ce733344a149be14d7e1ab6060329d807ef",
+      "expected_current_git_blob_sha": "41282ce733344a149be14d7e1ab6060329d807ef",
+      "current_git_blob_sha": "41282ce733344a149be14d7e1ab6060329d807ef",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-0-check.mjs",
+      "initial_git_blob_sha": "780fd2f59ec9dfc3e9b2bfaca6c281f381e6b221",
+      "expected_current_git_blob_sha": "780fd2f59ec9dfc3e9b2bfaca6c281f381e6b221",
+      "current_git_blob_sha": "780fd2f59ec9dfc3e9b2bfaca6c281f381e6b221",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-connection-check.ps1",
+      "initial_git_blob_sha": "38b1073ba2bcef975efddb67b877cb95e76bd002",
+      "expected_current_git_blob_sha": "38b1073ba2bcef975efddb67b877cb95e76bd002",
+      "current_git_blob_sha": "38b1073ba2bcef975efddb67b877cb95e76bd002",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-database-encryption.ps1",
+      "initial_git_blob_sha": "ce0d37390f84a7377a1a88985d015f6a358a3e71",
+      "expected_current_git_blob_sha": "ce0d37390f84a7377a1a88985d015f6a358a3e71",
+      "current_git_blob_sha": "ce0d37390f84a7377a1a88985d015f6a358a3e71",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-database-export.ps1",
+      "initial_git_blob_sha": "106d1381eef060771edd73fc7075889dc8df47c5",
+      "expected_current_git_blob_sha": "106d1381eef060771edd73fc7075889dc8df47c5",
+      "current_git_blob_sha": "106d1381eef060771edd73fc7075889dc8df47c5",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-database-properties-toc-check.ps1",
+      "initial_git_blob_sha": "79786d53d573dbfef4b074ad2bc8cf7b059b9bef",
+      "expected_current_git_blob_sha": "79786d53d573dbfef4b074ad2bc8cf7b059b9bef",
+      "current_git_blob_sha": "79786d53d573dbfef4b074ad2bc8cf7b059b9bef",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-database-properties-toc.cjs",
+      "initial_git_blob_sha": "2ddfa1ebb5ab13eeef37335700f6251654bf5ace",
+      "expected_current_git_blob_sha": "7a75b29589b39a1dd68ab70dbd5841a44c3ac5da",
+      "current_git_blob_sha": "7a75b29589b39a1dd68ab70dbd5841a44c3ac5da",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-download-format-check.ps1",
+      "initial_git_blob_sha": "2c756e5217b4b10ea30b96e0b850eef50d76d73d",
+      "expected_current_git_blob_sha": "2c756e5217b4b10ea30b96e0b850eef50d76d73d",
+      "current_git_blob_sha": "2c756e5217b4b10ea30b96e0b850eef50d76d73d",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-drive-download-check.ps1",
+      "initial_git_blob_sha": "0cbc315d77a6e4bf2c1e3bf46b349ae64c97aa7c",
+      "expected_current_git_blob_sha": "0cbc315d77a6e4bf2c1e3bf46b349ae64c97aa7c",
+      "current_git_blob_sha": "0cbc315d77a6e4bf2c1e3bf46b349ae64c97aa7c",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-encryption-synthetic-check.ps1",
+      "initial_git_blob_sha": "9152d1aa6f7d41d5e2d0145f8480de88ae183ee7",
+      "expected_current_git_blob_sha": "9152d1aa6f7d41d5e2d0145f8480de88ae183ee7",
+      "current_git_blob_sha": "9152d1aa6f7d41d5e2d0145f8480de88ae183ee7",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-encryption-tool-check.ps1",
+      "initial_git_blob_sha": "03b35f33b85a84a54ee2631f4febabf632888d0e",
+      "expected_current_git_blob_sha": "03b35f33b85a84a54ee2631f4febabf632888d0e",
+      "current_git_blob_sha": "03b35f33b85a84a54ee2631f4febabf632888d0e",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-local-backup-folder.ps1",
+      "initial_git_blob_sha": "d9c8b511d6a7c5b265829ae8eef8fcb439295bec",
+      "expected_current_git_blob_sha": "d9c8b511d6a7c5b265829ae8eef8fcb439295bec",
+      "current_git_blob_sha": "d9c8b511d6a7c5b265829ae8eef8fcb439295bec",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-local-coverage-check.ps1",
+      "initial_git_blob_sha": "054fa02ef7f7d13d11246c5e02cdadab48bb82cc",
+      "expected_current_git_blob_sha": "054fa02ef7f7d13d11246c5e02cdadab48bb82cc",
+      "current_git_blob_sha": "054fa02ef7f7d13d11246c5e02cdadab48bb82cc",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-original-archive-selection.ps1",
+      "initial_git_blob_sha": "b64a8049a4e95aa79ac4fc677e59cfe6899b3802",
+      "expected_current_git_blob_sha": "b64a8049a4e95aa79ac4fc677e59cfe6899b3802",
+      "current_git_blob_sha": "b64a8049a4e95aa79ac4fc677e59cfe6899b3802",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-role-coverage-check.ps1",
+      "initial_git_blob_sha": "f909139d8442bbd7baa61ff6a1beed22f807360e",
+      "expected_current_git_blob_sha": "f909139d8442bbd7baa61ff6a1beed22f807360e",
+      "current_git_blob_sha": "f909139d8442bbd7baa61ff6a1beed22f807360e",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-role-coverage.cjs",
+      "initial_git_blob_sha": "7e7aa5f6cb1463fb5141939b2b847d9bcd880502",
+      "expected_current_git_blob_sha": "7e7aa5f6cb1463fb5141939b2b847d9bcd880502",
+      "current_git_blob_sha": "7e7aa5f6cb1463fb5141939b2b847d9bcd880502",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-role-encryption.ps1",
+      "initial_git_blob_sha": "7edcb2a501d0ef23e2a9fc45f5800c94a5b42662",
+      "expected_current_git_blob_sha": "7edcb2a501d0ef23e2a9fc45f5800c94a5b42662",
+      "current_git_blob_sha": "7edcb2a501d0ef23e2a9fc45f5800c94a5b42662",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-role-export.ps1",
+      "initial_git_blob_sha": "16e2d3c5f9a507fd546eae428e626f4f499cd9e8",
+      "expected_current_git_blob_sha": "16e2d3c5f9a507fd546eae428e626f4f499cd9e8",
+      "current_git_blob_sha": "16e2d3c5f9a507fd546eae428e626f4f499cd9e8",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-setting-coverage-check.ps1",
+      "initial_git_blob_sha": "a67bb3fee08f64324910ecaa095e0e9c55374aa5",
+      "expected_current_git_blob_sha": "a67bb3fee08f64324910ecaa095e0e9c55374aa5",
+      "current_git_blob_sha": "a67bb3fee08f64324910ecaa095e0e9c55374aa5",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-setting-coverage.cjs",
+      "initial_git_blob_sha": "18ee5bed07835aec0432f690bf5d6ede2dd1324c",
+      "expected_current_git_blob_sha": "18ee5bed07835aec0432f690bf5d6ede2dd1324c",
+      "current_git_blob_sha": "18ee5bed07835aec0432f690bf5d6ede2dd1324c",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-storage-backup-check.ps1",
+      "initial_git_blob_sha": "e87fe119b7bc7b22121fd8e6101d95118809523d",
+      "expected_current_git_blob_sha": "e87fe119b7bc7b22121fd8e6101d95118809523d",
+      "current_git_blob_sha": "e87fe119b7bc7b22121fd8e6101d95118809523d",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-storage-backup.cjs",
+      "initial_git_blob_sha": "1c6d1ca70be9d285b19042eb4f0ab3830fd8f156",
+      "expected_current_git_blob_sha": "1c6d1ca70be9d285b19042eb4f0ab3830fd8f156",
+      "current_git_blob_sha": "1c6d1ca70be9d285b19042eb4f0ab3830fd8f156",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/security-stage-1-tool-inventory.ps1",
+      "initial_git_blob_sha": "a3de17476480e02ebf09dca1eab16334ba06b17d",
+      "expected_current_git_blob_sha": "a3de17476480e02ebf09dca1eab16334ba06b17d",
+      "current_git_blob_sha": "a3de17476480e02ebf09dca1eab16334ba06b17d",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-admin-plans-sql.cjs",
+      "initial_git_blob_sha": "8d66f4e9a4692f521ecaee4710f9a904622024e8",
+      "expected_current_git_blob_sha": "8d66f4e9a4692f521ecaee4710f9a904622024e8",
+      "current_git_blob_sha": "8d66f4e9a4692f521ecaee4710f9a904622024e8",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-admin-plans-ui.cjs",
+      "initial_git_blob_sha": "3165ade088256503e0b37235085fcdef5bab0f58",
+      "expected_current_git_blob_sha": "3165ade088256503e0b37235085fcdef5bab0f58",
+      "current_git_blob_sha": "3165ade088256503e0b37235085fcdef5bab0f58",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-branding-sql.cjs",
+      "initial_git_blob_sha": "0604ceefb93655d75b3f1fcec694448cbb030a42",
+      "expected_current_git_blob_sha": "0604ceefb93655d75b3f1fcec694448cbb030a42",
+      "current_git_blob_sha": "0604ceefb93655d75b3f1fcec694448cbb030a42",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-branding-ui.cjs",
+      "initial_git_blob_sha": "250ee702ba8b897d03b80af4e35ca403b8e5054c",
+      "expected_current_git_blob_sha": "250ee702ba8b897d03b80af4e35ca403b8e5054c",
+      "current_git_blob_sha": "250ee702ba8b897d03b80af4e35ca403b8e5054c",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-custom-roles-sql.cjs",
+      "initial_git_blob_sha": "489227d2064be01aaa5e69569a6c1158e631f313",
+      "expected_current_git_blob_sha": "489227d2064be01aaa5e69569a6c1158e631f313",
+      "current_git_blob_sha": "489227d2064be01aaa5e69569a6c1158e631f313",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-custom-roles-ui.cjs",
+      "initial_git_blob_sha": "8224dfc8bb8d66389be094754a2b5cb2f5fff813",
+      "expected_current_git_blob_sha": "8224dfc8bb8d66389be094754a2b5cb2f5fff813",
+      "current_git_blob_sha": "8224dfc8bb8d66389be094754a2b5cb2f5fff813",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-invitation-notifications-sql.cjs",
+      "initial_git_blob_sha": "c8d755b54f7d70dedc395953f55f03a13a209adb",
+      "expected_current_git_blob_sha": "c8d755b54f7d70dedc395953f55f03a13a209adb",
+      "current_git_blob_sha": "c8d755b54f7d70dedc395953f55f03a13a209adb",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-pilot-expense-ui.cjs",
+      "initial_git_blob_sha": "0060df4c8bedd0400a0e36936156d1a75ffba7f4",
+      "expected_current_git_blob_sha": "0060df4c8bedd0400a0e36936156d1a75ffba7f4",
+      "current_git_blob_sha": "0060df4c8bedd0400a0e36936156d1a75ffba7f4",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-public-sales-sql.cjs",
+      "initial_git_blob_sha": "1a6fb4b133db43e12084724a95f787c155d0da6a",
+      "expected_current_git_blob_sha": "1a6fb4b133db43e12084724a95f787c155d0da6a",
+      "current_git_blob_sha": "1a6fb4b133db43e12084724a95f787c155d0da6a",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-public-sales-ui.cjs",
+      "initial_git_blob_sha": "4c1ab790ac4dd464eeb05aeea635868d01a2482e",
+      "expected_current_git_blob_sha": "4c1ab790ac4dd464eeb05aeea635868d01a2482e",
+      "current_git_blob_sha": "4c1ab790ac4dd464eeb05aeea635868d01a2482e",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-setup-navigation.cjs",
+      "initial_git_blob_sha": "220105579a1d4ae09e475ee127e103c7483bca51",
+      "expected_current_git_blob_sha": "220105579a1d4ae09e475ee127e103c7483bca51",
+      "current_git_blob_sha": "220105579a1d4ae09e475ee127e103c7483bca51",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-stage-10-sql.cjs",
+      "initial_git_blob_sha": "9930f0f82c80784841197ba6b316404a4df5c149",
+      "expected_current_git_blob_sha": "9930f0f82c80784841197ba6b316404a4df5c149",
+      "current_git_blob_sha": "9930f0f82c80784841197ba6b316404a4df5c149",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-stage-10-ui.cjs",
+      "initial_git_blob_sha": "f3140adb90092b2dd0dbc4327c02f875ab2c0d6d",
+      "expected_current_git_blob_sha": "f3140adb90092b2dd0dbc4327c02f875ab2c0d6d",
+      "current_git_blob_sha": "f3140adb90092b2dd0dbc4327c02f875ab2c0d6d",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-stage-11-sql.cjs",
+      "initial_git_blob_sha": "46ca85ed92b34805335dfc428a9b3b2c95bcca3c",
+      "expected_current_git_blob_sha": "46ca85ed92b34805335dfc428a9b3b2c95bcca3c",
+      "current_git_blob_sha": "46ca85ed92b34805335dfc428a9b3b2c95bcca3c",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-stage-11-ui.cjs",
+      "initial_git_blob_sha": "eaf251c02f53d18ec2b9a87280cb7a57566d5ec7",
+      "expected_current_git_blob_sha": "eaf251c02f53d18ec2b9a87280cb7a57566d5ec7",
+      "current_git_blob_sha": "eaf251c02f53d18ec2b9a87280cb7a57566d5ec7",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-stage-12-sql.cjs",
+      "initial_git_blob_sha": "abda76084e30f00c6bf7229a8b0111a145af5607",
+      "expected_current_git_blob_sha": "abda76084e30f00c6bf7229a8b0111a145af5607",
+      "current_git_blob_sha": "abda76084e30f00c6bf7229a8b0111a145af5607",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-stage-12-ui.cjs",
+      "initial_git_blob_sha": "4198fd137a9666017556cc57612d965c9019f288",
+      "expected_current_git_blob_sha": "4198fd137a9666017556cc57612d965c9019f288",
+      "current_git_blob_sha": "4198fd137a9666017556cc57612d965c9019f288",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-stage-7-ui.cjs",
+      "initial_git_blob_sha": "9fe3dcf2ab6108e80d9b2d5835d0898f6772db3b",
+      "expected_current_git_blob_sha": "9fe3dcf2ab6108e80d9b2d5835d0898f6772db3b",
+      "current_git_blob_sha": "9fe3dcf2ab6108e80d9b2d5835d0898f6772db3b",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-stage-8-sql.cjs",
+      "initial_git_blob_sha": "3de447da5db5d88f31dbe11c35d4fdab1d5a98d1",
+      "expected_current_git_blob_sha": "3de447da5db5d88f31dbe11c35d4fdab1d5a98d1",
+      "current_git_blob_sha": "3de447da5db5d88f31dbe11c35d4fdab1d5a98d1",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-stage-8-ui.cjs",
+      "initial_git_blob_sha": "80fe5a0bd2904aaefbe93429239ea9a93f1020a7",
+      "expected_current_git_blob_sha": "80fe5a0bd2904aaefbe93429239ea9a93f1020a7",
+      "current_git_blob_sha": "80fe5a0bd2904aaefbe93429239ea9a93f1020a7",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-stage-9-sql.cjs",
+      "initial_git_blob_sha": "84219b6091211f8dff7f227f561629e987ec1ff1",
+      "expected_current_git_blob_sha": "84219b6091211f8dff7f227f561629e987ec1ff1",
+      "current_git_blob_sha": "84219b6091211f8dff7f227f561629e987ec1ff1",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-business-stage-9-ui.cjs",
+      "initial_git_blob_sha": "65cf44bcbb5ca382a8f177ae97599546209185fb",
+      "expected_current_git_blob_sha": "65cf44bcbb5ca382a8f177ae97599546209185fb",
+      "current_git_blob_sha": "65cf44bcbb5ca382a8f177ae97599546209185fb",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-last-workspace-ui.cjs",
+      "initial_git_blob_sha": "e3754a6e77c7297fe65fa19cfc19ecd1a3df831e",
+      "expected_current_git_blob_sha": "e3754a6e77c7297fe65fa19cfc19ecd1a3df831e",
+      "current_git_blob_sha": "e3754a6e77c7297fe65fa19cfc19ecd1a3df831e",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-local-recovery-probe.cjs",
+      "initial_git_blob_sha": "2e5674c1fd79f9a1e83561d099290266401858ca",
+      "expected_current_git_blob_sha": "2e5674c1fd79f9a1e83561d099290266401858ca",
+      "current_git_blob_sha": "2e5674c1fd79f9a1e83561d099290266401858ca",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-native-build-dependencies.cjs",
+      "initial_git_blob_sha": "d392489d1502e89f3e803b8881b183c8c4209d4e",
+      "expected_current_git_blob_sha": "d392489d1502e89f3e803b8881b183c8c4209d4e",
+      "current_git_blob_sha": "d392489d1502e89f3e803b8881b183c8c4209d4e",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-security-stage-0-currency-sql.cjs",
+      "initial_git_blob_sha": "a12e1612f1b08e1d515a0b29a313698cb85a67b3",
+      "expected_current_git_blob_sha": "a12e1612f1b08e1d515a0b29a313698cb85a67b3",
+      "current_git_blob_sha": "a12e1612f1b08e1d515a0b29a313698cb85a67b3",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-security-stage-0-private-reads-sql.cjs",
+      "initial_git_blob_sha": "8f5f92a7f4cc37fa1b57bccab770e6a1fc33d2ca",
+      "expected_current_git_blob_sha": "8f5f92a7f4cc37fa1b57bccab770e6a1fc33d2ca",
+      "current_git_blob_sha": "8f5f92a7f4cc37fa1b57bccab770e6a1fc33d2ca",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-security-stage-0-sql.cjs",
+      "initial_git_blob_sha": "445f30302a331640860bde9ddbaa55ec9e09c711",
+      "expected_current_git_blob_sha": "445f30302a331640860bde9ddbaa55ec9e09c711",
+      "current_git_blob_sha": "445f30302a331640860bde9ddbaa55ec9e09c711",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-security-stage-1-backup-inventory.cjs",
+      "initial_git_blob_sha": "1585618e37803c213c3ffda05d7b6c6b6204488d",
+      "expected_current_git_blob_sha": "1585618e37803c213c3ffda05d7b6c6b6204488d",
+      "current_git_blob_sha": "1585618e37803c213c3ffda05d7b6c6b6204488d",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-security-stage-1-recovery-dependencies.cjs",
+      "initial_git_blob_sha": "b89f2a9927f010cc00602c66fa5135b19bf7dfca",
+      "expected_current_git_blob_sha": "b89f2a9927f010cc00602c66fa5135b19bf7dfca",
+      "current_git_blob_sha": "b89f2a9927f010cc00602c66fa5135b19bf7dfca",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-security-stage-1-setting-scope.cjs",
+      "initial_git_blob_sha": "a7973ffcf0a2a6fbd720a0a64637165b2f49e480",
+      "expected_current_git_blob_sha": "a7973ffcf0a2a6fbd720a0a64637165b2f49e480",
+      "current_git_blob_sha": "a7973ffcf0a2a6fbd720a0a64637165b2f49e480",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-security-stage-1-staging-preflight.cjs",
+      "initial_git_blob_sha": "edcfa1cdaa1b2fced6763db4f9053e5694d04c86",
+      "expected_current_git_blob_sha": "edcfa1cdaa1b2fced6763db4f9053e5694d04c86",
+      "current_git_blob_sha": "edcfa1cdaa1b2fced6763db4f9053e5694d04c86",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-2-push-transport.mjs",
+      "initial_git_blob_sha": "e0f0bd1ae2f2c2401e363d5c5b427f8f9e3b0309",
+      "expected_current_git_blob_sha": "e0f0bd1ae2f2c2401e363d5c5b427f8f9e3b0309",
+      "current_git_blob_sha": "e0f0bd1ae2f2c2401e363d5c5b427f8f9e3b0309",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-3-admin-mfa.mjs",
+      "initial_git_blob_sha": "e30a588c5fa7ef0c9ec04195c2d2b5661ab56236",
+      "expected_current_git_blob_sha": "e30a588c5fa7ef0c9ec04195c2d2b5661ab56236",
+      "current_git_blob_sha": "e30a588c5fa7ef0c9ec04195c2d2b5661ab56236",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-3-auth.mjs",
+      "initial_git_blob_sha": "5e75acbf9fe5345427cea224aed2da63a0134d3f",
+      "expected_current_git_blob_sha": "5e75acbf9fe5345427cea224aed2da63a0134d3f",
+      "current_git_blob_sha": "5e75acbf9fe5345427cea224aed2da63a0134d3f",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-3-business-source.mjs",
+      "initial_git_blob_sha": "965bb971a523ab5db75031c2df86a95414d2f6df",
+      "expected_current_git_blob_sha": "965bb971a523ab5db75031c2df86a95414d2f6df",
+      "current_git_blob_sha": "965bb971a523ab5db75031c2df86a95414d2f6df",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-3-currency-source.mjs",
+      "initial_git_blob_sha": "5970eda81331eea7ae354affde38bd853d9dac39",
+      "expected_current_git_blob_sha": "5970eda81331eea7ae354affde38bd853d9dac39",
+      "current_git_blob_sha": "5970eda81331eea7ae354affde38bd853d9dac39",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-3-family-source.mjs",
+      "initial_git_blob_sha": "0933515e58aa5ddbd7b2e933a4fdf674bf72cf81",
+      "expected_current_git_blob_sha": "0933515e58aa5ddbd7b2e933a4fdf674bf72cf81",
+      "current_git_blob_sha": "0933515e58aa5ddbd7b2e933a4fdf674bf72cf81",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-3-permission-baseline.mjs",
+      "initial_git_blob_sha": "3f97deab3ffdf67e94754172591739465738e121",
+      "expected_current_git_blob_sha": "3f97deab3ffdf67e94754172591739465738e121",
+      "current_git_blob_sha": "3f97deab3ffdf67e94754172591739465738e121",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-3-personal-workspace-bindings.mjs",
+      "initial_git_blob_sha": "a83bfe8be20a8543ea42f1af3d4b53e916e4b630",
+      "expected_current_git_blob_sha": "a83bfe8be20a8543ea42f1af3d4b53e916e4b630",
+      "current_git_blob_sha": "a83bfe8be20a8543ea42f1af3d4b53e916e4b630",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-4-files.mjs",
+      "initial_git_blob_sha": "78659a2175fb058df8eddf24985cc9127603d5b2",
+      "expected_current_git_blob_sha": "78659a2175fb058df8eddf24985cc9127603d5b2",
+      "current_git_blob_sha": "78659a2175fb058df8eddf24985cc9127603d5b2",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-4-lifecycle.mjs",
+      "initial_git_blob_sha": "5548d709d9de10499e4aa5158efd1d375732e79a",
+      "expected_current_git_blob_sha": "5548d709d9de10499e4aa5158efd1d375732e79a",
+      "current_git_blob_sha": "5548d709d9de10499e4aa5158efd1d375732e79a",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-4-privacy.mjs",
+      "initial_git_blob_sha": "66dbc4f5c56c0d8ad5a5f1e3427e1e0d268c9aa5",
+      "expected_current_git_blob_sha": "66dbc4f5c56c0d8ad5a5f1e3427e1e0d268c9aa5",
+      "current_git_blob_sha": "66dbc4f5c56c0d8ad5a5f1e3427e1e0d268c9aa5",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-5-packaging.mjs",
+      "initial_git_blob_sha": "58977dbdb957baf738a7893833166ada40dc1b32",
+      "expected_current_git_blob_sha": "58977dbdb957baf738a7893833166ada40dc1b32",
+      "current_git_blob_sha": "58977dbdb957baf738a7893833166ada40dc1b32",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-6-identity-email.mjs",
+      "initial_git_blob_sha": "3aa1766ba94df638000cf80b6b6153eecf8b4f25",
+      "expected_current_git_blob_sha": "3aa1766ba94df638000cf80b6b6153eecf8b4f25",
+      "current_git_blob_sha": "3aa1766ba94df638000cf80b6b6153eecf8b4f25",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-7-commerce.mjs",
+      "initial_git_blob_sha": "8659f41215976271a2e7a865161eb1235764b898",
+      "expected_current_git_blob_sha": "8659f41215976271a2e7a865161eb1235764b898",
+      "current_git_blob_sha": "8659f41215976271a2e7a865161eb1235764b898",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-8-notifications.mjs",
+      "initial_git_blob_sha": "41788d728a8c03fb62b0c9e70150dc8cfa0706be",
+      "expected_current_git_blob_sha": "41788d728a8c03fb62b0c9e70150dc8cfa0706be",
+      "current_git_blob_sha": "41788d728a8c03fb62b0c9e70150dc8cfa0706be",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-staging-personal-api-fixtures.cjs",
+      "initial_git_blob_sha": "afb31a0492291f6242814179ee5f02e5c0173d6d",
+      "expected_current_git_blob_sha": "afb31a0492291f6242814179ee5f02e5c0173d6d",
+      "current_git_blob_sha": "afb31a0492291f6242814179ee5f02e5c0173d6d",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-staging-personal-api.cjs",
+      "initial_git_blob_sha": "85b03871efba58573f9ab0148c48c9a79235e74e",
+      "expected_current_git_blob_sha": "85b03871efba58573f9ab0148c48c9a79235e74e",
+      "current_git_blob_sha": "85b03871efba58573f9ab0148c48c9a79235e74e",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-synthetic-recovery-export.cjs",
+      "initial_git_blob_sha": "4380c59341926c430f7ba50c672a31d5a0390be5",
+      "expected_current_git_blob_sha": "4380c59341926c430f7ba50c672a31d5a0390be5",
+      "current_git_blob_sha": "4380c59341926c430f7ba50c672a31d5a0390be5",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-synthetic-restore.cjs",
+      "initial_git_blob_sha": "8e46a9248f7804be06c612b6d2bbb84bb7d4da7b",
+      "expected_current_git_blob_sha": "8e46a9248f7804be06c612b6d2bbb84bb7d4da7b",
+      "current_git_blob_sha": "8e46a9248f7804be06c612b6d2bbb84bb7d4da7b",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/build-public-site.mjs",
+      "initial_git_blob_sha": null,
+      "expected_current_git_blob_sha": "19982bf1a13724a8262c53ab5bc4e5420e82dff7",
+      "current_git_blob_sha": "19982bf1a13724a8262c53ab5bc4e5420e82dff7",
+      "disposition": "INTENTIONAL_CANDIDATE_ADDITION",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/offline-test-network.cjs",
+      "initial_git_blob_sha": null,
+      "expected_current_git_blob_sha": "561b7927510be5070f38fed70cd5870e8ed0ecb2",
+      "current_git_blob_sha": "561b7927510be5070f38fed70cd5870e8ed0ecb2",
+      "disposition": "INTENTIONAL_CANDIDATE_ADDITION",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/run-offline-tests.mjs",
+      "initial_git_blob_sha": null,
+      "expected_current_git_blob_sha": "e026db17edda4f318add895afd36dda0524d01f1",
+      "current_git_blob_sha": "e026db17edda4f318add895afd36dda0524d01f1",
+      "disposition": "INTENTIONAL_CANDIDATE_ADDITION",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-stage-9-regression.mjs",
+      "initial_git_blob_sha": null,
+      "expected_current_git_blob_sha": "8dc21e15a8a13c459511ce7a26e69fad6ced6c92",
+      "current_git_blob_sha": "8dc21e15a8a13c459511ce7a26e69fad6ced6c92",
+      "disposition": "INTENTIONAL_CANDIDATE_ADDITION",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/stage-9-regression-release.test.mjs",
+      "initial_git_blob_sha": null,
+      "expected_current_git_blob_sha": "8666c0901015574c6230c9a5b9fb750f0743979d",
+      "current_git_blob_sha": "8666c0901015574c6230c9a5b9fb750f0743979d",
+      "disposition": "INTENTIONAL_CANDIDATE_ADDITION",
+      "result": "MATCH"
+    },
+    {
+      "path": "package.json",
+      "initial_git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+      "expected_current_git_blob_sha": "8a263ae19cb340e5298f656d5f50a9d3e2ba74cc",
+      "current_git_blob_sha": "8a263ae19cb340e5298f656d5f50a9d3e2ba74cc",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "package-lock.json",
+      "initial_git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+      "expected_current_git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+      "current_git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": ".github/workflows/pages.yml",
+      "initial_git_blob_sha": "8f4433b99535e7ed6af0148b0fa24e23de9adb16",
+      "expected_current_git_blob_sha": "05b699e9c870b371cb4de10f048c4b2ad608853b",
+      "current_git_blob_sha": "05b699e9c870b371cb4de10f048c4b2ad608853b",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": "wrangler.jsonc",
+      "initial_git_blob_sha": "dcf7961ab88639fb35e25b0aec251277a15d23a1",
+      "expected_current_git_blob_sha": "dcf7961ab88639fb35e25b0aec251277a15d23a1",
+      "current_git_blob_sha": "dcf7961ab88639fb35e25b0aec251277a15d23a1",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": ".assetsignore",
+      "initial_git_blob_sha": "0014d568d62e2bec1a50685488fdf2e66952ccc4",
+      "expected_current_git_blob_sha": "0014d568d62e2bec1a50685488fdf2e66952ccc4",
+      "current_git_blob_sha": "0014d568d62e2bec1a50685488fdf2e66952ccc4",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "auth.html",
+      "initial_git_blob_sha": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+      "expected_current_git_blob_sha": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+      "current_git_blob_sha": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "auth-flows.js",
+      "initial_git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "expected_current_git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "current_git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "auth-security.js",
+      "initial_git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "expected_current_git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "current_git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "app.html",
+      "initial_git_blob_sha": "3564f09e4dea7cdad6669514bc2bea7812dcdfef",
+      "expected_current_git_blob_sha": "3564f09e4dea7cdad6669514bc2bea7812dcdfef",
+      "current_git_blob_sha": "3564f09e4dea7cdad6669514bc2bea7812dcdfef",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "business.html",
+      "initial_git_blob_sha": "72cb99a21ba40b5140f1312538b677fe15dd6cab",
+      "expected_current_git_blob_sha": "72cb99a21ba40b5140f1312538b677fe15dd6cab",
+      "current_git_blob_sha": "72cb99a21ba40b5140f1312538b677fe15dd6cab",
+      "disposition": "ORIGINAL_IDENTITY_PRESERVED",
+      "result": "MATCH"
+    },
+    {
+      "path": "_headers",
+      "initial_git_blob_sha": "6f1109ea4f616843cafef113f1f6f48e984e8858",
+      "expected_current_git_blob_sha": "074d30d1c7f4e64b2096ad85af8438165c4f6896",
+      "current_git_blob_sha": "074d30d1c7f4e64b2096ad85af8438165c4f6896",
+      "disposition": "INTENTIONAL_CANDIDATE_REPLACEMENT",
+      "result": "MATCH"
+    },
+    {
+      "path": ".gitattributes",
+      "initial_git_blob_sha": null,
+      "expected_current_git_blob_sha": "c697d585a3e2df9ac439480ad06bd6e385aa71bf",
+      "current_git_blob_sha": "c697d585a3e2df9ac439480ad06bd6e385aa71bf",
+      "disposition": "ADDITIONAL_CANDIDATE_TARGET",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-regression-candidate-contract.json",
+      "initial_git_blob_sha": null,
+      "expected_current_git_blob_sha": "aac2cdaf1e74206fa41c1ab8b04842a1de786d6a",
+      "current_git_blob_sha": "aac2cdaf1e74206fa41c1ab8b04842a1de786d6a",
+      "disposition": "ADDITIONAL_CANDIDATE_TARGET",
+      "result": "MATCH"
+    }
+  ],
+  "current_candidate_byte_checks": [
+    {
+      "path": ".github/workflows/pages.yml",
+      "owner_sha256": "0e93a6212cba9cb63d14a0116f787bf8828afdaa33d4d0a2922a043da75b3609",
+      "pinned_sha256": "0e93a6212cba9cb63d14a0116f787bf8828afdaa33d4d0a2922a043da75b3609",
+      "CRLF_sha256": "fa54fbf6041a551bad401a4273dbb2a1757ef4364d1504293506b067631ce235",
+      "git_blob_sha": "05b699e9c870b371cb4de10f048c4b2ad608853b",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "0e93a6212cba9cb63d14a0116f787bf8828afdaa33d4d0a2922a043da75b3609",
+      "current_git_blob_sha": "05b699e9c870b371cb4de10f048c4b2ad608853b"
+    },
+    {
+      "path": "_headers",
+      "owner_sha256": "3bfa142f590b3bec5679bb551d0911530ffd7a96902337016060ce63208a8250",
+      "pinned_sha256": "3bfa142f590b3bec5679bb551d0911530ffd7a96902337016060ce63208a8250",
+      "CRLF_sha256": "cf2211e49803c77afd048966ae14ce86c6eb7ba33b3868d56851074657b60646",
+      "git_blob_sha": "074d30d1c7f4e64b2096ad85af8438165c4f6896",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "3bfa142f590b3bec5679bb551d0911530ffd7a96902337016060ce63208a8250",
+      "current_git_blob_sha": "074d30d1c7f4e64b2096ad85af8438165c4f6896"
+    },
+    {
+      "path": "package.json",
+      "owner_sha256": "f33fa5b1cd6ea07cf2584fe7d7b458c3653251f46043dd594821d42f843ad999",
+      "pinned_sha256": "f33fa5b1cd6ea07cf2584fe7d7b458c3653251f46043dd594821d42f843ad999",
+      "CRLF_sha256": "493a31a05c9b16b2e69458dfe0579f3778a32ff89ab526d9a8958035d2869e0b",
+      "git_blob_sha": "8a263ae19cb340e5298f656d5f50a9d3e2ba74cc",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "f33fa5b1cd6ea07cf2584fe7d7b458c3653251f46043dd594821d42f843ad999",
+      "current_git_blob_sha": "8a263ae19cb340e5298f656d5f50a9d3e2ba74cc"
+    },
+    {
+      "path": "scripts/build-public-site.mjs",
+      "owner_sha256": "4c37fceb04f37316a12d359c7d906060c4e7c3670c4237eb13682843ed01cc4c",
+      "pinned_sha256": "4c37fceb04f37316a12d359c7d906060c4e7c3670c4237eb13682843ed01cc4c",
+      "CRLF_sha256": "0df4643844348bcaafc855ec45c041c51e30cdb6ff01170652c9d7fc36309a04",
+      "git_blob_sha": "19982bf1a13724a8262c53ab5bc4e5420e82dff7",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "4c37fceb04f37316a12d359c7d906060c4e7c3670c4237eb13682843ed01cc4c",
+      "current_git_blob_sha": "19982bf1a13724a8262c53ab5bc4e5420e82dff7"
+    },
+    {
+      "path": "scripts/offline-test-network.cjs",
+      "owner_sha256": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+      "pinned_sha256": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+      "CRLF_sha256": "5042434f0c7aae87f7fb466e1bcfac0517aed7762d0f1b5d4d1453d9e4143230",
+      "git_blob_sha": "561b7927510be5070f38fed70cd5870e8ed0ecb2",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+      "current_git_blob_sha": "561b7927510be5070f38fed70cd5870e8ed0ecb2"
+    },
+    {
+      "path": "scripts/run-offline-tests.mjs",
+      "owner_sha256": "6cabdb5e7bd44b3798d7f1b903ea8c4bcdaf974dba3286f35411ceaa0489b3d5",
+      "pinned_sha256": "6cabdb5e7bd44b3798d7f1b903ea8c4bcdaf974dba3286f35411ceaa0489b3d5",
+      "CRLF_sha256": "887d47a0178e7c3469b5995847a8bb7ca7b0addc06d5d50d3258c65701a3e4a8",
+      "git_blob_sha": "e026db17edda4f318add895afd36dda0524d01f1",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "6cabdb5e7bd44b3798d7f1b903ea8c4bcdaf974dba3286f35411ceaa0489b3d5",
+      "current_git_blob_sha": "e026db17edda4f318add895afd36dda0524d01f1"
+    },
+    {
+      "path": "scripts/verify-stage-9-regression.mjs",
+      "owner_sha256": "68d8db3609d76b9fc8870a8afd28de363954f12418a58436c34a447e5d2a8d02",
+      "pinned_sha256": "68d8db3609d76b9fc8870a8afd28de363954f12418a58436c34a447e5d2a8d02",
+      "CRLF_sha256": "b867dc1da4582deba60caa3093c642a9eed5e3aa25912d6e912e03bfae6827df",
+      "git_blob_sha": "8dc21e15a8a13c459511ce7a26e69fad6ced6c92",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "68d8db3609d76b9fc8870a8afd28de363954f12418a58436c34a447e5d2a8d02",
+      "current_git_blob_sha": "8dc21e15a8a13c459511ce7a26e69fad6ced6c92"
+    },
+    {
+      "path": "tests/admin-analytics.test.mjs",
+      "owner_sha256": "e7c40cb25e8f6ce37cf7ab62552a9e8956edbfe920b55d672c859c37c07e09c2",
+      "pinned_sha256": "e7c40cb25e8f6ce37cf7ab62552a9e8956edbfe920b55d672c859c37c07e09c2",
+      "CRLF_sha256": "072e1f6cff5393e6419f7073b061100267a6766a185a29abe9b1c758e4d37ece",
+      "git_blob_sha": "b8b0b202187c82ae318dae3995a3c7f0faf14bc6",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "e7c40cb25e8f6ce37cf7ab62552a9e8956edbfe920b55d672c859c37c07e09c2",
+      "current_git_blob_sha": "b8b0b202187c82ae318dae3995a3c7f0faf14bc6"
+    },
+    {
+      "path": "tests/admin-event-notifications.test.mjs",
+      "owner_sha256": "8933821a4de8ffb679bbe037dfe2e15a3dc7f3734f13abdacf792249f7db217c",
+      "pinned_sha256": "8933821a4de8ffb679bbe037dfe2e15a3dc7f3734f13abdacf792249f7db217c",
+      "CRLF_sha256": "ed45034b270035465e664ddcc85a452da540d26669b42afa916f7fdb693acca2",
+      "git_blob_sha": "4dbb8536d1dcda9d6afdd189c3b3caaecdc36b8f",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "8933821a4de8ffb679bbe037dfe2e15a3dc7f3734f13abdacf792249f7db217c",
+      "current_git_blob_sha": "4dbb8536d1dcda9d6afdd189c3b3caaecdc36b8f"
+    },
+    {
+      "path": "tests/admin-plans-workbench.test.mjs",
+      "owner_sha256": "2eb894ccf5172e63d12a884da7b0ed4c4ec678adbad5652bbda0a0b061c52744",
+      "pinned_sha256": "2eb894ccf5172e63d12a884da7b0ed4c4ec678adbad5652bbda0a0b061c52744",
+      "CRLF_sha256": "350c3364ef471b5c4943f5550c25aa90b6c6b8d7fcf1a4c6f601dc27f531127a",
+      "git_blob_sha": "e69bbdf4e87b6516e442c29be8ecc7d00bd70ff6",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "2eb894ccf5172e63d12a884da7b0ed4c4ec678adbad5652bbda0a0b061c52744",
+      "current_git_blob_sha": "e69bbdf4e87b6516e442c29be8ecc7d00bd70ff6"
+    },
+    {
+      "path": "tests/business-stage-1.test.mjs",
+      "owner_sha256": "ebef8d6f3046a39bf0ae259aed29be0ab422483f1835c06153b9c1c674fd8609",
+      "pinned_sha256": "ebef8d6f3046a39bf0ae259aed29be0ab422483f1835c06153b9c1c674fd8609",
+      "CRLF_sha256": "8ef6bd786897ed15723169f936cae848eaf4e30bc5a6f0cf7dd88aa14d299eaf",
+      "git_blob_sha": "1f65947fef1ffd133324024153e3ae8b07dd9278",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "ebef8d6f3046a39bf0ae259aed29be0ab422483f1835c06153b9c1c674fd8609",
+      "current_git_blob_sha": "1f65947fef1ffd133324024153e3ae8b07dd9278"
+    },
+    {
+      "path": "tests/business-stage-3.test.mjs",
+      "owner_sha256": "7067915b962a571765695b8e46b575208cffd7f79400c79b7be38aa77ae698c1",
+      "pinned_sha256": "7067915b962a571765695b8e46b575208cffd7f79400c79b7be38aa77ae698c1",
+      "CRLF_sha256": "92707f06780d82e5902e8e70432dbb1db92264591424e95774a7a091d785c4db",
+      "git_blob_sha": "4b1aaaf9e09535699b8585c8a6caa3041401a53d",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "7067915b962a571765695b8e46b575208cffd7f79400c79b7be38aa77ae698c1",
+      "current_git_blob_sha": "4b1aaaf9e09535699b8585c8a6caa3041401a53d"
+    },
+    {
+      "path": "tests/cashbook-private-test.test.mjs",
+      "owner_sha256": "bb57d8ed3f35dd5579399efe7609bd63ff56acde6a6fb29361555880029d51b1",
+      "pinned_sha256": "bb57d8ed3f35dd5579399efe7609bd63ff56acde6a6fb29361555880029d51b1",
+      "CRLF_sha256": "3307e0aa622b3f41fec667626f433d95fc1185f6e8d177f1ae3c724f899cc628",
+      "git_blob_sha": "3f9aa2771fe1f30b4e2493525b5a8d0f5a3cd739",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "bb57d8ed3f35dd5579399efe7609bd63ff56acde6a6fb29361555880029d51b1",
+      "current_git_blob_sha": "3f9aa2771fe1f30b4e2493525b5a8d0f5a3cd739"
+    },
+    {
+      "path": "tests/push-notifications.test.mjs",
+      "owner_sha256": "705f07eda0440bf78b95575668bcb0cd940125302ddea2c87119275de4ccb9e4",
+      "pinned_sha256": "705f07eda0440bf78b95575668bcb0cd940125302ddea2c87119275de4ccb9e4",
+      "CRLF_sha256": "ab9d4b9df08340aaede31d3a5e89c59b80a7b3b8a037e634aedb63b11aa8e144",
+      "git_blob_sha": "3c9aad46f0bdfb748c0615f2956be50e12d35be9",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "705f07eda0440bf78b95575668bcb0cd940125302ddea2c87119275de4ccb9e4",
+      "current_git_blob_sha": "3c9aad46f0bdfb748c0615f2956be50e12d35be9"
+    },
+    {
+      "path": "tests/pwa-install.test.mjs",
+      "owner_sha256": "3bbd1f8ed4c7f991098520570b705e4336c001548a95849e3b597625a734b414",
+      "pinned_sha256": "3bbd1f8ed4c7f991098520570b705e4336c001548a95849e3b597625a734b414",
+      "CRLF_sha256": "1d5536f436d626930319a067b49cc31733cb8b44e7dfef72ca21fe03c6a55f40",
+      "git_blob_sha": "7e7589a976dd0e335a582811e6f0fb3e95c94b7f",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "3bbd1f8ed4c7f991098520570b705e4336c001548a95849e3b597625a734b414",
+      "current_git_blob_sha": "7e7589a976dd0e335a582811e6f0fb3e95c94b7f"
+    },
+    {
+      "path": "tests/pwa-stage-13-hardening.test.mjs",
+      "owner_sha256": "89b9e22e7ac8682c63a8982ab081936190ebb0d19fcc1ebfa59b02986cc01998",
+      "pinned_sha256": "89b9e22e7ac8682c63a8982ab081936190ebb0d19fcc1ebfa59b02986cc01998",
+      "CRLF_sha256": "a5e10c776795b4aa8499e0f44b115a1d35cb41d82d77650106b2443700e511d5",
+      "git_blob_sha": "4e5f0e0ad060da5fa5436e0da4c97c765ba63805",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "89b9e22e7ac8682c63a8982ab081936190ebb0d19fcc1ebfa59b02986cc01998",
+      "current_git_blob_sha": "4e5f0e0ad060da5fa5436e0da4c97c765ba63805"
+    },
+    {
+      "path": "tests/pwa-update.test.mjs",
+      "owner_sha256": "6e6a0746c5d7976d0215840b26fda12a93eece493bd3e9180db3c1fe4efc73ae",
+      "pinned_sha256": "6e6a0746c5d7976d0215840b26fda12a93eece493bd3e9180db3c1fe4efc73ae",
+      "CRLF_sha256": "1bd9b8d5d87ec9aca16a3fb44829f95ac32e97e161894aebac1afbedac223e9c",
+      "git_blob_sha": "b124d6198477c7a800870e96a834cec27620c6e9",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "6e6a0746c5d7976d0215840b26fda12a93eece493bd3e9180db3c1fe4efc73ae",
+      "current_git_blob_sha": "b124d6198477c7a800870e96a834cec27620c6e9"
+    },
+    {
+      "path": "tests/stage-3-auth-flows.test.mjs",
+      "owner_sha256": "1719e640d49650738b07cd2d52bc274d29d44cd6166090c0598bd608a57e22c5",
+      "pinned_sha256": "1719e640d49650738b07cd2d52bc274d29d44cd6166090c0598bd608a57e22c5",
+      "CRLF_sha256": "a337b06553d3d2d639e9fdd591fef8665d330bc1b70ec79b3a9718e34e7d5f46",
+      "git_blob_sha": "fa0f1fb49499c7985129dda13d76902cf0699ac7",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "1719e640d49650738b07cd2d52bc274d29d44cd6166090c0598bd608a57e22c5",
+      "current_git_blob_sha": "fa0f1fb49499c7985129dda13d76902cf0699ac7"
+    },
+    {
+      "path": "tests/stage-9-regression-release.test.mjs",
+      "owner_sha256": "0d72f4e62737465acd003fd89a26e06d7693d4eb72c299d51f1a339cc2d56b22",
+      "pinned_sha256": "0d72f4e62737465acd003fd89a26e06d7693d4eb72c299d51f1a339cc2d56b22",
+      "CRLF_sha256": "066b56b48c1f55db3139040a43fc6188dd9fa4c0552629b7d537860801c83d47",
+      "git_blob_sha": "8666c0901015574c6230c9a5b9fb750f0743979d",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "0d72f4e62737465acd003fd89a26e06d7693d4eb72c299d51f1a339cc2d56b22",
+      "current_git_blob_sha": "8666c0901015574c6230c9a5b9fb750f0743979d"
+    },
+    {
+      "path": "tests/workspace-startup.test.mjs",
+      "owner_sha256": "20f31c8f9675641e6456de6fd4e675f43d6d828767fb11aed0e1b80d7e812966",
+      "pinned_sha256": "20f31c8f9675641e6456de6fd4e675f43d6d828767fb11aed0e1b80d7e812966",
+      "CRLF_sha256": "e7f2f25a3af4b79001789dfb4cab8db9ed715f1b00a452a611e69a308a84938c",
+      "git_blob_sha": "89b0fb5d78388cdd3d029a357c86f0f3b93f94db",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "20f31c8f9675641e6456de6fd4e675f43d6d828767fb11aed0e1b80d7e812966",
+      "current_git_blob_sha": "89b0fb5d78388cdd3d029a357c86f0f3b93f94db"
+    },
+    {
+      "path": ".gitattributes",
+      "owner_sha256": "0aecf3541117e4a7a9b1c68fffae73b133b0162c70ab1e08b8bc54392b23a11b",
+      "pinned_sha256": "629e7b3dc86b9f2a1da50d34c796c5a55c5e7770f649e1939e533a041ada9ba0",
+      "CRLF_sha256": "0aecf3541117e4a7a9b1c68fffae73b133b0162c70ab1e08b8bc54392b23a11b",
+      "git_blob_sha": "c697d585a3e2df9ac439480ad06bd6e385aa71bf",
+      "result": "EXACT_CRLF_VARIANT",
+      "current_sha256": "629e7b3dc86b9f2a1da50d34c796c5a55c5e7770f649e1939e533a041ada9ba0",
+      "current_git_blob_sha": "c697d585a3e2df9ac439480ad06bd6e385aa71bf"
+    },
+    {
+      "path": "scripts/security-stage-1-database-properties-toc.cjs",
+      "owner_sha256": "dd3498194f53bf85692c3948385d4182569b0207fea42c7ac67b7b86a4e179fc",
+      "pinned_sha256": "dd3498194f53bf85692c3948385d4182569b0207fea42c7ac67b7b86a4e179fc",
+      "CRLF_sha256": "4b37a85b4b6237f95b265641d8be6bb71a213e324d5c6df17a970d53abad5c64",
+      "git_blob_sha": "7a75b29589b39a1dd68ab70dbd5841a44c3ac5da",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "dd3498194f53bf85692c3948385d4182569b0207fea42c7ac67b7b86a4e179fc",
+      "current_git_blob_sha": "7a75b29589b39a1dd68ab70dbd5841a44c3ac5da"
+    },
+    {
+      "path": "tests/security-stage-1-database-properties-toc.test.cjs",
+      "owner_sha256": "c79faa2ec548ae23ccc14da046ad240fcf2ea824299b1455744edf290afc0661",
+      "pinned_sha256": "c79faa2ec548ae23ccc14da046ad240fcf2ea824299b1455744edf290afc0661",
+      "CRLF_sha256": "75ccf19f1c99f3916ece91ca9ac5fe9a334b687ca46192cb8a254b4fd8554720",
+      "git_blob_sha": "be67ba875f33617ba0641979a214174946f9edc7",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "c79faa2ec548ae23ccc14da046ad240fcf2ea824299b1455744edf290afc0661",
+      "current_git_blob_sha": "be67ba875f33617ba0641979a214174946f9edc7"
+    },
+    {
+      "path": "tests/security-stage-2-headers.test.mjs",
+      "owner_sha256": "3d3a999d37582399a49886f066c64d5323ef566767918609a94fc0da91a12c9b",
+      "pinned_sha256": "3d3a999d37582399a49886f066c64d5323ef566767918609a94fc0da91a12c9b",
+      "CRLF_sha256": "a507513be24b6cebb052fefe3d5b7556bc4b1000e2cfe74cdf380c048ef11626",
+      "git_blob_sha": "93548d7f9d676bf134329289269b14f27eace9ef",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "3d3a999d37582399a49886f066c64d5323ef566767918609a94fc0da91a12c9b",
+      "current_git_blob_sha": "93548d7f9d676bf134329289269b14f27eace9ef"
+    },
+    {
+      "path": "tests/stage-3-auth-edge-build.test.mjs",
+      "owner_sha256": "321b6966ea393c9451a5212655c1c87ec1a3ed83345e733f592b5fcbc308bf1a",
+      "pinned_sha256": "321b6966ea393c9451a5212655c1c87ec1a3ed83345e733f592b5fcbc308bf1a",
+      "CRLF_sha256": "3d7e9487c66fa855c96d4be533184b0722aa05328524d61329aadd40124e7604",
+      "git_blob_sha": "b5e92754560dd7c1ffa29b022cec6b2c0a58f473",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "321b6966ea393c9451a5212655c1c87ec1a3ed83345e733f592b5fcbc308bf1a",
+      "current_git_blob_sha": "b5e92754560dd7c1ffa29b022cec6b2c0a58f473"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-regression-candidate-contract.json",
+      "owner_sha256": "69f05ec786c135321642b8229aa9d167e6832ee7fe8533c16b96f91aafc3b931",
+      "pinned_sha256": "69f05ec786c135321642b8229aa9d167e6832ee7fe8533c16b96f91aafc3b931",
+      "CRLF_sha256": "d217d844837b3827eef05797b838101668a1c791abc7a0690615e6ee694e18a5",
+      "git_blob_sha": "aac2cdaf1e74206fa41c1ab8b04842a1de786d6a",
+      "result": "EXACT_PUBLISHED_BYTES",
+      "current_sha256": "69f05ec786c135321642b8229aa9d167e6832ee7fe8533c16b96f91aafc3b931",
+      "current_git_blob_sha": "aac2cdaf1e74206fa41c1ab8b04842a1de786d6a"
+    }
+  ],
+  "immutable_structured_records": [
+    {
+      "path": "docs/security-audit/security-stage-9-regression-source-inventory.json",
+      "sha256": "4fece0294a1a195178714ac364e3d6dffc8d38627d68a295f04f04e06814a404",
+      "git_blob_sha": "1f8bf6ff022bb2b2461d9e63038181a61c8d7317",
+      "result": "MATCH_PRESERVE_UNCHANGED"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-regression-catalog.json",
+      "sha256": "1d78f7411e1af32419a47c9d12b2cce1cd6b09abf062ceff66aceec37d0a430d",
+      "git_blob_sha": "da3779c8e20db37ef5fbd76ebed93d87cdc0e69a",
+      "result": "MATCH_PRESERVE_UNCHANGED"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-release-decisions.json",
+      "sha256": "ff4d7397cd39e3c90d265c3832f27e4406af92c498bdf4ca38c43ca5e8473596",
+      "git_blob_sha": "82f18473162be6c4c8860e3ab78bbed133c546a6",
+      "result": "MATCH_PRESERVE_UNCHANGED"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-regression-test-matrix.json",
+      "sha256": "37a20fe3993d5660ff859384eca387ebb2e19e99f96fa1086cd008454740c8af",
+      "git_blob_sha": "a69338e6fdb839b9b40781d9b40d351c217edc32",
+      "result": "MATCH_PRESERVE_UNCHANGED"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-regression-candidate-contract.json",
+      "sha256": "69f05ec786c135321642b8229aa9d167e6832ee7fe8533c16b96f91aafc3b931",
+      "git_blob_sha": "aac2cdaf1e74206fa41c1ab8b04842a1de786d6a",
+      "result": "MATCH_PRESERVE_UNCHANGED"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-regression-local-checks.json",
+      "sha256": "14f60e2d801e120de6f04d36e3917cd8c6e401ef49a6fb11a3c202088af767cb",
+      "git_blob_sha": "c656ddeb2e35578abca43dca9556a62af652990b",
+      "result": "MATCH_PRESERVE_UNCHANGED"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-regression-owner-local-checks.json",
+      "sha256": "b80ae4ae0dcafa20354b4ae3424f92fa23f9fe51fcb4887fc6d606a1081ac678",
+      "git_blob_sha": "c73aa0563ecf1d92bba188838905056dbee16e24",
+      "result": "MATCH_PRESERVE_UNCHANGED"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-regression-windows-correction-checks.json",
+      "sha256": "2d490936e2b745293fa2754e4409fa5a41d0a67ef1b4da934dca8b33acd635fd",
+      "git_blob_sha": "7f914906ace6b562fc9fd8943e12a4575c18d4bb",
+      "result": "MATCH_PRESERVE_UNCHANGED"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-regression-owner-recheck.json",
+      "sha256": "21fdf0d996d0e6d0b2c6606fa59efe9db26a4a3678d05076a9d2e499220745bd",
+      "git_blob_sha": "8c92a4fa1e6a7d9011257d42a563a5d0cc16f6ee",
+      "result": "MATCH_PRESERVE_UNCHANGED"
+    }
+  ],
+  "summary": {
+    "distinct_current_input_identities": 215,
+    "current_catalog_targets": 202,
+    "current_test_files": 92,
+    "current_script_paths": 110,
+    "original_catalog_identities_preserved": 181,
+    "intentional_catalog_replacements": 16,
+    "intentional_catalog_additions": 5,
+    "current_candidate_byte_and_SHA256_matches": 26,
+    "owner_exact_published_hashes": 25,
+    "owner_exact_CRLF_variants": 1,
+    "immutable_structured_records": 9,
+    "unexpected_drift": 0,
+    "prerequisite_groups_blocked": 6,
+    "planned_grouped_cases": 48,
+    "grouped_cases_blocked_not_run": 48,
+    "full_grouped_cases_executed": 0,
+    "full_grouped_case_PASS": 0,
+    "full_grouped_case_FAIL": 0,
+    "new_local_behavior_or_syntax_tests_run": 0,
+    "public_frontend_metadata_GETs": 12,
+    "Auth_API_SQL_provider_or_device_requests": 0
+  },
+  "public_frontend_metadata": {
+    "scope": "PUBLIC_READ_ONLY_STAGING_STATIC_RESPONSE_METADATA_ONLY",
+    "config": {
+      "scope": "READ_ONLY_PUBLIC_STAGING_FRONTEND_CONFIG_METADATA",
+      "url": "https://mushavo-budget-staging.pages.dev/config.js",
+      "redirects_followed": false,
+      "status": 200,
+      "bytes": 198,
+      "sha256": "30b846243a614de6c0c83d40e1238e497d3cf87fbfb530d46edada51310bb357",
+      "expected_staging_project_reference_present": true,
+      "production_project_reference_present": false,
+      "result": "PUBLIC_CONFIG_RETRIEVED_NOT_DEPLOYMENT_ACCEPTANCE",
+      "Auth_or_hosted_acceptance_cases_run": 0
+    },
+    "static_samples": {
+      "scope": "PUBLIC_STATIC_STAGING_METADATA_ONLY_NO_SESSION_API_DEVICE_OR_STORE_TEST",
+      "checked_UTC": "2026-10-13T04:43:32.370491+00:00",
+      "requests": 8,
+      "samples": [
+        {
+          "path": "app.html",
+          "url": "https://mushavo-budget-staging.pages.dev/app.html",
+          "redirects_followed": false,
+          "status": 308,
+          "result": "HTTP_REVIEW"
+        },
+        {
+          "path": "business.html",
+          "url": "https://mushavo-budget-staging.pages.dev/business.html",
+          "redirects_followed": false,
+          "status": 308,
+          "result": "HTTP_REVIEW"
+        },
+        {
+          "path": "auth.html",
+          "url": "https://mushavo-budget-staging.pages.dev/auth.html",
+          "redirects_followed": false,
+          "status": 200,
+          "bytes": 9850,
+          "sha256": "f65b1f4c406164b5dd98333be1bf3119e8937cff795803a2cb46bdf9fab5335e",
+          "expected_pinned_sha256": "8d6ff984bfec6ef80356ceceef63e5a70428d1ea6c0bb937c282dc1b47329386",
+          "exact_source_bytes_match": false,
+          "normalized_source_match": false,
+          "normalized_staging_reference_overlay_match": false,
+          "result": "SELECTED_STATIC_SAMPLE_DIFFERS_FROM_CURRENT_CANDIDATE"
+        },
+        {
+          "path": "app.js",
+          "url": "https://mushavo-budget-staging.pages.dev/app.js",
+          "redirects_followed": false,
+          "status": 200,
+          "bytes": 497532,
+          "sha256": "3db774eb22115bd0b5ff6c4e0c2a93a4efd249e33360b3008a4391a3d8febbb2",
+          "expected_pinned_sha256": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+          "exact_source_bytes_match": false,
+          "normalized_source_match": false,
+          "normalized_staging_reference_overlay_match": false,
+          "result": "SELECTED_STATIC_SAMPLE_DIFFERS_FROM_CURRENT_CANDIDATE"
+        },
+        {
+          "path": "business.js",
+          "url": "https://mushavo-budget-staging.pages.dev/business.js",
+          "redirects_followed": false,
+          "status": 200,
+          "bytes": 236502,
+          "sha256": "b5a742c6ed35811f078718a7033d5339fd0492a866bb0c430e11fd4ea6294f8b",
+          "expected_pinned_sha256": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+          "exact_source_bytes_match": false,
+          "normalized_source_match": false,
+          "normalized_staging_reference_overlay_match": false,
+          "result": "SELECTED_STATIC_SAMPLE_DIFFERS_FROM_CURRENT_CANDIDATE"
+        },
+        {
+          "path": "auth-flows.js",
+          "url": "https://mushavo-budget-staging.pages.dev/auth-flows.js",
+          "redirects_followed": false,
+          "status": 200,
+          "bytes": 9850,
+          "sha256": "f65b1f4c406164b5dd98333be1bf3119e8937cff795803a2cb46bdf9fab5335e",
+          "expected_pinned_sha256": "ef16214f827d6650a507e30bdae7703c975f061437ed0672cf0abf9072e37500",
+          "exact_source_bytes_match": false,
+          "normalized_source_match": false,
+          "normalized_staging_reference_overlay_match": false,
+          "result": "SELECTED_STATIC_SAMPLE_DIFFERS_FROM_CURRENT_CANDIDATE"
+        },
+        {
+          "path": "auth-security.js",
+          "url": "https://mushavo-budget-staging.pages.dev/auth-security.js",
+          "redirects_followed": false,
+          "status": 200,
+          "bytes": 9850,
+          "sha256": "f65b1f4c406164b5dd98333be1bf3119e8937cff795803a2cb46bdf9fab5335e",
+          "expected_pinned_sha256": "ae6eb487fa9ae5f21b1e3a95f698fe5869a377349bc5ff66bf9e8d32cef6cf54",
+          "exact_source_bytes_match": false,
+          "normalized_source_match": false,
+          "normalized_staging_reference_overlay_match": false,
+          "result": "SELECTED_STATIC_SAMPLE_DIFFERS_FROM_CURRENT_CANDIDATE"
+        },
+        {
+          "path": "admin-mfa.js",
+          "url": "https://mushavo-budget-staging.pages.dev/admin-mfa.js",
+          "redirects_followed": false,
+          "status": 200,
+          "bytes": 9850,
+          "sha256": "f65b1f4c406164b5dd98333be1bf3119e8937cff795803a2cb46bdf9fab5335e",
+          "expected_pinned_sha256": "909fd25b8e364e420be9067f6a0435567d705e914c53e9358b536d0187d81f6e",
+          "exact_source_bytes_match": false,
+          "normalized_source_match": false,
+          "normalized_staging_reference_overlay_match": false,
+          "result": "SELECTED_STATIC_SAMPLE_DIFFERS_FROM_CURRENT_CANDIDATE"
+        }
+      ],
+      "redirects_followed": 0,
+      "Auth_SQL_provider_or_device_requests": 0,
+      "acceptance_cases_run": 0
+    },
+    "canonical_page_and_asset_type_followup": {
+      "scope": "READ_ONLY_PUBLIC_STAGING_CANONICAL_PAGES_AND_ASSET_TYPE_FOLLOWUP",
+      "checked_UTC": "2026-10-13T04:45:39.306944+00:00",
+      "requests": 3,
+      "samples": [
+        {
+          "route": "app",
+          "expected_source_path": "app.html",
+          "url": "https://mushavo-budget-staging.pages.dev/app",
+          "redirects_followed": false,
+          "status": 200,
+          "bytes": 110990,
+          "sha256": "db96c983befdad20b7568d8813c5eb20c181ccd34e1178ae9bf18621b6791e3f",
+          "content_type": "text/html",
+          "looks_like_HTML": true,
+          "normalized_staging_overlay_match": false,
+          "result": "SELECTED_STATIC_SAMPLE_DIFFERS_FROM_CURRENT_CANDIDATE"
+        },
+        {
+          "route": "business",
+          "expected_source_path": "business.html",
+          "url": "https://mushavo-budget-staging.pages.dev/business",
+          "redirects_followed": false,
+          "status": 200,
+          "bytes": 72745,
+          "sha256": "0ba1cb4deabf462d6cc03b37ba924f6fd739a2804bbc6947f0c9e5ea5db274b3",
+          "content_type": "text/html",
+          "looks_like_HTML": true,
+          "normalized_staging_overlay_match": false,
+          "result": "SELECTED_STATIC_SAMPLE_DIFFERS_FROM_CURRENT_CANDIDATE"
+        },
+        {
+          "route": "auth-flows.js",
+          "expected_source_path": "auth-flows.js",
+          "url": "https://mushavo-budget-staging.pages.dev/auth-flows.js",
+          "redirects_followed": false,
+          "status": 200,
+          "bytes": 9850,
+          "sha256": "f65b1f4c406164b5dd98333be1bf3119e8937cff795803a2cb46bdf9fab5335e",
+          "content_type": "text/html",
+          "looks_like_HTML": true,
+          "normalized_staging_overlay_match": false,
+          "result": "SELECTED_STATIC_SAMPLE_DIFFERS_FROM_CURRENT_CANDIDATE"
+        }
+      ],
+      "redirects_followed": 0,
+      "Auth_SQL_provider_device_requests": 0,
+      "acceptance_cases_run": 0
+    },
+    "total_GETs": 12,
+    "redirects_followed": 0,
+    "authenticated_requests": 0,
+    "body_source_or_keys_printed": false,
+    "observations": [
+      {
+        "id": "RG-OBS01",
+        "result": "EXPECTED_STAGING_REFERENCE_OBSERVED_AT_CONFIG_SCOPE",
+        "description": "config.js contains the expected staging project ref and no production project ref in that sampled response; project-key ownership and installed backend settings are not proved."
+      },
+      {
+        "id": "RG-OBS02",
+        "result": "REVIEW_SELECTED_STATIC_PARITY_NOT_ESTABLISHED",
+        "description": "Selected canonical pages and application scripts differ from current source after newline/project-reference overlay comparison. Deployed version/transformation is not identified; no global app malfunction is inferred."
+      },
+      {
+        "id": "RG-OBS03",
+        "result": "FAIL_AT_SELECTED_PUBLIC_ASSET_TYPE_SCOPE_NOT_FULL_RG_CASE",
+        "description": "The requested auth-flows.js module URL returned status 200 with text/html and an HTML body. Other Auth/MFA asset samples share its body SHA. This is an explicit unmet candidate asset prerequisite; HTTP 200 is not a module availability PASS."
+      }
+    ],
+    "full_RG05_group_cases_executed": 0
+  },
+  "prerequisite_groups": [
+    {
+      "id": "RG-P01",
+      "title": "Installed frontend/Edge/schema/grant/Auth parity",
+      "status": "BLOCKED",
+      "evidence": "Selected public frontend samples differ from the current source under raw/newline/project-overlay comparisons; auth-flows.js returns HTML. Exact installed Edge, schema, grants and Auth settings remain unverified.",
+      "decision_ids": [
+        "RG-D01"
+      ],
+      "carry_forward": "RG-R05; Stage 3 installed enforcement and Stage 6 callbacks."
+    },
+    {
+      "id": "RG-P02",
+      "title": "Completed direct security/data/native/commerce implementations",
+      "status": "BLOCKED",
+      "evidence": "Prior Personal binding/relink/automatic-rate/history work, trusted file/deletion/retention adapters, installed native push and provider/commerce verification remain unresolved in the accepted records. Local models and mocks do not provide these implementations.",
+      "decision_ids": [
+        "RG-D01",
+        "RG-D06"
+      ],
+      "carry_forward": "PF/DL/UF/PR/NR/IE/CO/ND actions and RG-R01/R02/R03/R06."
+    },
+    {
+      "id": "RG-P03",
+      "title": "Recoverable controlled actors, datasets and safe operational scope",
+      "status": "BLOCKED",
+      "evidence": "Retained synthetic actors/two USD 1 conversions and earlier scoped API passes are preserved; they do not establish the full current actor/MFA/recovery, file/deletion, inbox and provider/sandbox matrix needed by the 48 cases.",
+      "decision_ids": [
+        "RG-D02",
+        "RG-D07"
+      ],
+      "carry_forward": "Stage 3 controlled role/MFA/Auth and Stage 4/6/7/8 acceptance scopes."
+    },
+    {
+      "id": "RG-P04",
+      "title": "Accepted measurement/device matrix and final artifact evidence",
+      "status": "BLOCKED",
+      "evidence": "Budgets, representative datasets/networks, browser/accessibility and physical Android/iOS matrix remain unconfirmed; no final merged/signed artifacts, SDK/privacy archive or actual device/performance results are accepted here.",
+      "decision_ids": [
+        "RG-D03",
+        "RG-D04"
+      ],
+      "carry_forward": "RG-R04/R06; Stage 5/8 native and device work."
+    },
+    {
+      "id": "RG-P05",
+      "title": "Publisher/account, audience/privacy/catalog and beta/reviewer decisions",
+      "status": "BLOCKED",
+      "evidence": "Current developer account type/verification/signing custody and accepted audience/territory/data declarations/commerce/beta/reviewer arrangements are unavailable as verified requirements. Earlier owner facts are retained; no current account absence is inferred.",
+      "decision_ids": [
+        "RG-D05",
+        "RG-D06",
+        "RG-D07"
+      ],
+      "carry_forward": "RG-R03/R07; Stage 4/5/6/7/8 policy/implementation prerequisites."
+    },
+    {
+      "id": "RG-P06",
+      "title": "Operational recovery/rollback and final coverage/release evidence",
+      "status": "BLOCKED",
+      "evidence": "Installed schedule/queue/egress/support/alert/recovery and rollback evidence remains incomplete; the final full re-audit has not started. Prior 123 coverage rows/20 findings are preserved but not globally cleared.",
+      "decision_ids": [
+        "RG-D08"
+      ],
+      "carry_forward": "RG-R05/R08; Stage 1/2/8/10 operations and final remediation/full re-audit."
+    }
+  ],
+  "acceptance_groups": [
+    {
+      "id": "RG01",
+      "title": "Finance and workspace correctness",
+      "finding_ids": [
+        "F15",
+        "F10"
+      ],
+      "cases": [
+        {
+          "id": "RG01-01",
+          "title": "Personal record binding",
+          "expected": "Own record/item/workspace stays consistent for direct insert/update and legitimate relink; foreign substitution is denied without side effects.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG01-02",
+          "title": "Family membership and attribution",
+          "expected": "Head/member/outsider access, invitation removal and paid-by attribution obey installed permissions and head entitlements.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG01-03",
+          "title": "Business role and scope finance",
+          "expected": "Owner/manager/staff/viewer scopes isolate expenses, reports, receipts and cross-workspace records.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG01-04",
+          "title": "Schedule and history integrity",
+          "expected": "Recurring/custom-day and one-off records preserve due dates, paid state and history across month/timezone changes.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG01-05",
+          "title": "Currency and rates",
+          "expected": "USD/INR totals round consistently; actual automatic scheduler/provider execution and historical conversions are preserved.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03",
+            "RG-P06"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG01-06",
+          "title": "Cashbook and entitlements",
+          "expected": "Existing payment selection, duplicate protection, reports and expiry/free-limit behavior retain correct records and access.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        }
+      ]
+    },
+    {
+      "id": "RG02",
+      "title": "Auth and privilege boundaries",
+      "finding_ids": [
+        "F08",
+        "F14",
+        "F15"
+      ],
+      "cases": [
+        {
+          "id": "RG02-01",
+          "title": "Signup and confirmation",
+          "expected": "Separate controlled identities confirm using deployed callbacks; unconfirmed users do not gain forbidden access.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG02-02",
+          "title": "Invitation and identity linking",
+          "expected": "Fresh, expired, reused and wrong-account invitations preserve intended identity/workspace and fail safely.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG02-03",
+          "title": "Password and recovery",
+          "expected": "Actual password enforcement, current/recent-login requirements and recovery links match the accepted policy.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03",
+            "RG-P05"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG02-04",
+          "title": "Session and account switching",
+          "expected": "Refresh, logout, offline/transient failures and late callbacks do not expose previous-account data.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03",
+            "RG-P04"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG02-05",
+          "title": "Admin MFA and recovery",
+          "expected": "Verified controlled operators prove AAL2 and role checks plus recovery without risking sole-operator lockout.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03",
+            "RG-P05"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG02-06",
+          "title": "Direct caller and grants",
+          "expected": "Real allowed and denied database/API callers prove RLS, routines, escalation and effective grants independent of UI.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        }
+      ]
+    },
+    {
+      "id": "RG03",
+      "title": "Files, deletion and privacy",
+      "finding_ids": [
+        "F01",
+        "F02",
+        "F13",
+        "F20"
+      ],
+      "cases": [
+        {
+          "id": "RG03-01",
+          "title": "Trusted upload processing",
+          "expected": "Actual bytes, content/size limits, quotas and rate limits are checked at the trusted boundary.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG03-02",
+          "title": "Proof access and context",
+          "expected": "Own permitted proofs open; foreign/stale context cannot sign, read or remove another workspace's object.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG03-03",
+          "title": "Account deletion and ownership",
+          "expected": "Recoverable isolated deletion honors ownership transfer, shared finance retention and authenticated subject selection.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03",
+            "RG-P05"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG03-04",
+          "title": "Cleanup and retry",
+          "expected": "Actual durable jobs remove approved files/provider data, recover interrupted work and avoid false completion.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03",
+            "RG-P06"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG03-05",
+          "title": "Data inventory and declarations",
+          "expected": "Installed analytics, processors, SDKs and logs match public privacy and store declarations.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P04",
+            "RG-P05"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG03-06",
+          "title": "Audience and retention",
+          "expected": "Accepted child/audience/territory/consent decisions and category retention/deletion are implemented and demonstrated.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P02",
+            "RG-P05",
+            "RG-P06"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        }
+      ]
+    },
+    {
+      "id": "RG04",
+      "title": "Usability, performance and PWA",
+      "finding_ids": [
+        "F07",
+        "F10",
+        "F14",
+        "F17"
+      ],
+      "cases": [
+        {
+          "id": "RG04-01",
+          "title": "Cold and warm startup",
+          "expected": "Recorded device/network/data-size timings and failures meet approved budgets; legitimate missing-workspace provisioning stays bounded.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03",
+            "RG-P04"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG04-02",
+          "title": "Responsive finance and input",
+          "expected": "Narrow/large screens, keyboard, zoom, focus/error labels and form submission remain usable without cut-off controls.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P04"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG04-03",
+          "title": "Dashboard and reports",
+          "expected": "Independent month selectors, carryover, paid-by, sorting and filters remain accurate for controlled datasets.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03",
+            "RG-P04"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG04-04",
+          "title": "Realtime and repeated operations",
+          "expected": "Update/entry/delete and reconnect refresh the affected context; concurrent or repeated actions avoid duplicate finance records.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03",
+            "RG-P04"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG04-05",
+          "title": "Offline and account privacy",
+          "expected": "Private/API requests are not exposed by offline cache; account switch and network failures display truthful safe state.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03",
+            "RG-P04"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG04-06",
+          "title": "Update and interruption",
+          "expected": "Old/current service workers, multiple tabs, dirty forms, in-flight saves and resume preserve accepted update behavior.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03",
+            "RG-P04"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        }
+      ]
+    },
+    {
+      "id": "RG05",
+      "title": "Installed deployment and operations",
+      "finding_ids": [
+        "F07",
+        "F09",
+        "F12",
+        "F15",
+        "F19"
+      ],
+      "cases": [
+        {
+          "id": "RG05-01",
+          "title": "Source and deployment pins",
+          "expected": "Frontend, Edge functions, schema, grants and configuration are reconciled to installed staging identities.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": true
+        },
+        {
+          "id": "RG05-02",
+          "title": "Release asset completeness",
+          "expected": "All entry pages and referenced helpers including auth.html, auth-flows.js and auth-security.js exist in the actual serving artifact.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": true
+        },
+        {
+          "id": "RG05-03",
+          "title": "Transport and serving layer",
+          "expected": "Actual redirect/header/TLS/origin behavior and serving-layer mapping meet requirements; historical failed production samples remain visible.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P06"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG05-04",
+          "title": "Notification destination and content",
+          "expected": "Installed egress/recipient/preview controls reject invalid or inactive recipients and preserve private display rules.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG05-05",
+          "title": "Scheduler and durable queue",
+          "expected": "Real controlled jobs establish concurrency, reclaim/stale-result behavior, partial delivery and recovery without unintended sends.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03",
+            "RG-P06"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG05-06",
+          "title": "Support and operational routing",
+          "expected": "Controlled faults reach monitored support/alerts; quota, ownership, incident and recovery procedures are executable.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03",
+            "RG-P06"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        }
+      ]
+    },
+    {
+      "id": "RG06",
+      "title": "Native artifact and device evidence",
+      "finding_ids": [
+        "F05",
+        "F11",
+        "F14",
+        "F17",
+        "F20"
+      ],
+      "cases": [
+        {
+          "id": "RG06-01",
+          "title": "Android identity and signing",
+          "expected": "Final signed AAB/APK identity, version, toolchain and merged manifest are evidenced with signing material kept private.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P04",
+            "RG-P05"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG06-02",
+          "title": "iOS archive and privacy",
+          "expected": "Final iOS archive, signing, SDKs, privacy manifests and required API reasons match shipped behavior.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P04",
+            "RG-P05"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG06-03",
+          "title": "Native Auth return",
+          "expected": "Physical-device cold/warm callbacks and wrong/stale/reused links preserve identity, session and route boundaries.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03",
+            "RG-P04"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG06-04",
+          "title": "Backup and token persistence",
+          "expected": "Final platform backup exclusions and actual device restore/session storage prevent unintended recovery of private credentials.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P02",
+            "RG-P03",
+            "RG-P04"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG06-05",
+          "title": "Native push lifecycle",
+          "expected": "Implemented transport, permission, registration, foreground/background and multi-account cleanup are verified on controlled devices.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03",
+            "RG-P04"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG06-06",
+          "title": "Device compatibility and recovery",
+          "expected": "Accepted OS/device matrix covers rotation, resume, upgrades, crash recovery and no irreversible data loss.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P03",
+            "RG-P04",
+            "RG-P06"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        }
+      ]
+    },
+    {
+      "id": "RG07",
+      "title": "Store and external testing",
+      "finding_ids": [
+        "F05",
+        "F17",
+        "F20",
+        "F02"
+      ],
+      "cases": [
+        {
+          "id": "RG07-01",
+          "title": "Publisher accounts and roles",
+          "expected": "Current account type, identity/verification and authorized publishing/recovery roles are evidenced privately.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P05"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG07-02",
+          "title": "Google required testing",
+          "expected": "Account-specific console requirements, continuous opted-in testing where applicable, engagement and production-access decision are evidenced.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P04",
+            "RG-P05"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG07-03",
+          "title": "TestFlight beta evidence",
+          "expected": "Exact approved build, testing scope, tester feedback and crash outcomes are evidenced; approval is not assumed.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P04",
+            "RG-P05"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG07-04",
+          "title": "Reviewer access and listings",
+          "expected": "Working controlled review identities/resources and truthful screenshots, descriptions, support/URLs enable full feature review.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P03",
+            "RG-P04",
+            "RG-P05"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG07-05",
+          "title": "Commerce and availability",
+          "expected": "Approved territory/channel catalog, purchases/restores/refunds and expiry match Stage 7 controls and store rules.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03",
+            "RG-P05"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG07-06",
+          "title": "Privacy and account deletion",
+          "expected": "Data safety/App Privacy/audience/permissions/SDK disclosures and usable deletion resources match the final app.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P04",
+            "RG-P05"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        }
+      ]
+    },
+    {
+      "id": "RG08",
+      "title": "Final evidence and release control",
+      "finding_ids": [
+        "F05",
+        "F15",
+        "F19",
+        "F20"
+      ],
+      "cases": [
+        {
+          "id": "RG08-01",
+          "title": "Coverage traceability",
+          "expected": "All 123 original rows and 20 findings link to dated results for exact source/deployment/artifact identities.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P04",
+            "RG-P06"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG08-02",
+          "title": "Regression completeness",
+          "expected": "Discovered MJS/CJS files and explicit local verifiers have executed/excluded/blocked dispositions; failures and repeats remain separate.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P04",
+            "RG-P06"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG08-03",
+          "title": "Backup and recovery proof",
+          "expected": "Recoverable backup/restore and incident exercises cover the final accepted system and preserve audit evidence.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P03",
+            "RG-P06"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG08-04",
+          "title": "Release and rollback package",
+          "expected": "Accepted rollout/rollback ownership and steps reconcile serving layers, schema, settings and artifact versions.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P04",
+            "RG-P06"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG08-05",
+          "title": "Known gaps and release decision",
+          "expected": "Every open action has an owner and accepted evidence/disposition; missing hosted/device evidence cannot become fixture PASS.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P04",
+            "RG-P05",
+            "RG-P06"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        },
+        {
+          "id": "RG08-06",
+          "title": "Full fresh re-audit",
+          "expected": "Final source, installed systems and signed artifacts undergo required complete re-audit before release authorization.",
+          "status": "BLOCKED_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "blocked_by": [
+            "RG-P01",
+            "RG-P02",
+            "RG-P03",
+            "RG-P04",
+            "RG-P05",
+            "RG-P06"
+          ],
+          "prior_contract_status": "PENDING_NOT_RUN",
+          "partial_public_metadata_only": false
+        }
+      ]
+    }
+  ],
+  "open_actions": 8,
+  "unconfirmed_decisions": 8,
+  "earlier_assistant_and_owner_PASS_FAILURE_history_preserved": true,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "current_installed_parity_verified": false,
+  "performance_or_full_CI_or_signed_artifact_verified": false,
+  "actual_notification_email_or_charge_dispatched": false,
+  "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "owner_SQL_terminal_setup_or_rerun_required": false,
+  "findings_closed": [],
+  "final_remediation_and_full_reaudit_required": true,
+  "next_step": "9.4"
+}

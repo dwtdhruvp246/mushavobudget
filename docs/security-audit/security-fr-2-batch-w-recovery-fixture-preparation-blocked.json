@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "stage_step": "FR.2.5_AU04_DISPOSABLE_FIXTURE_PREPARATION",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "FIXTURE_EXECUTION_NOT_STARTED_SUPABASE_CONFIRMATION_EXPIRED",
+  "source_commit": "9d3284bf07797506ed3521d11e7df38bb06d3782",
+  "fixture_run_id": "w300-mw3dwzsv-m9siry",
+  "preflight": {
+    "planned_exact_disposable_Auth_accounts": 0,
+    "unknown_alias_Auth_accounts": 0,
+    "connected_Gmail_profiles_match_two_intended_base_accounts": true
+  },
+  "dry_run": {
+    "transaction_rollback_requested": true,
+    "existing_accounts_targeted": false,
+    "connector_result": "confirmation expired",
+    "SQL_execution_verified": false
+  },
+  "disposable_Auth_accounts_created": 0,
+  "confirmation_email_requests": 0,
+  "recovery_email_requests": 0,
+  "fixture_SQL_writes_verified": 0,
+  "global_Auth_policy_changed": false,
+  "source_and_local_guards_prepared": true,
+  "local_guard_tests": 24,
+  "prepared_crypto_bridge_hosted_verified": false,
+  "fixture_cleanup_SQL_hosted_verified": false,
+  "remaining_fixture_cases": [
+    "AU04.03",
+    "AU04.04",
+    "AU04.05"
+  ],
+  "saved_password_values_read_or_exported": false,
+  "new_public_cases": 0,
+  "full_lettered_batch_W_complete": false
+}

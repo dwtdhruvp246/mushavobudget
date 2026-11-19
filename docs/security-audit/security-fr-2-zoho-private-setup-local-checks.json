@@ -1,0 +1,51 @@
+{
+  "stage_step": "FR.2.4.E3.3_PRIVATE_ZOHO_SETUP_OFFLINE",
+  "result": "OFFLINE_ACTUAL_OAUTH_SETUP_HANDLER_AND_PRIVATE_OUTPUT_SCOPED_PASS",
+  "node_version": "v24.19.0",
+  "source_files_SHA256_verified": 8,
+  "syntax_checks": 7,
+  "syntax": [
+    {
+      "file": "scripts/lib/fr-2-zoho-private-setup.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/fr-2-zoho-private-setup.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/verify-fr-2-zoho-private-setup.mjs",
+      "pass": true
+    },
+    {
+      "file": "tests/fr-2-zoho-private-setup.test.mjs",
+      "pass": true
+    },
+    {
+      "file": "supabase/functions/_shared/email-verification-http.mjs",
+      "pass": true
+    },
+    {
+      "file": "supabase/functions/_shared/email-verification-zoho.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/offline-test-network.cjs",
+      "pass": true
+    }
+  ],
+  "tests": 27,
+  "pass": 27,
+  "fail": 0,
+  "exit_code": 0,
+  "scope": "ACTUAL_JS_HANDLER_SYNTHETIC_ZOHO_PORTS_CLI_REJECTIONS_AND_POWERSHELL_SOURCE_ASSERTIONS",
+  "Windows_PowerShell_execution_or_DPAPI_encryption_verified": false,
+  "actual_OAuth_Auth_Zoho_or_Cloudflare_HTTP_requests": 0,
+  "actual_email_dispatched": false,
+  "hosted_settings_or_Auth_roles_SQL_or_native_changed": false,
+  "installed_or_live_application_guards_verified": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "problem_code": null,
+  "APK_update_deferred": true
+}

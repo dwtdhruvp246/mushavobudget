@@ -4,6 +4,7 @@ import test from "node:test";
 
 const migration = await readFile(new URL("../supabase/migrations/20260923100000_complete_admin_user_invitations.sql", import.meta.url), "utf8");
 const schema = await readFile(new URL("../supabase/schema.sql", import.meta.url), "utf8");
+const controller = await readFile(new URL("../auth-security.js", import.meta.url), "utf8");
 const signup = await readFile(new URL("../signup.html", import.meta.url), "utf8");
 const appPage = await readFile(new URL("../app.html", import.meta.url), "utf8");
 const application = await readFile(new URL("../app.js", import.meta.url), "utf8");
@@ -57,14 +58,14 @@ test("currency choices are server-validated and saved to workspace settings", ()
 
 test("the invite setup page verifies the server session before accepting a password", () => {
   assert.match(signup, /meta name="referrer" content="no-referrer"/);
-  assert.match(signup, /detectSessionInUrl: true/);
-  assert.match(signup, /supabase\.auth\.getUser\(\)/);
-  assert.match(signup, /supabase\.rpc\("get_my_admin_user_invitation"/);
+  assert.match(signup, /detectSessionInUrl: false/);
+  assert.match(controller, /verifiedUser\(client/);
+  assert.match(controller, /client\.rpc\('get_my_admin_user_invitation'/);
   assert.match(signup, /nameInput\.readOnly = true/);
   assert.match(signup, /emailInput\.readOnly = true/);
-  assert.match(signup, /supabase\.auth\.updateUser\(/);
-  assert.match(signup, /supabase\.rpc\("complete_admin_user_invitation"/);
-  assert.match(signup, /sanitizeInviteUrl\(\)/);
+  assert.match(controller, /client\.auth\.updateUser\(/);
+  assert.match(controller, /client\.rpc\('complete_admin_user_invitation'/);
+  assert.match(signup, /consumeAuthUrl\(window.location.href/);
   assert.doesNotMatch(signup, /service_role/i);
 });
 

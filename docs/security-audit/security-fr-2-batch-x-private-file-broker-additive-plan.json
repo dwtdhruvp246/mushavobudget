@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-08",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "status": "FROZEN_ADDITIVE_BROKER_ACCEPTANCE",
+  "source_parent_commit": "d55e9fef7b6ea56ade1e8c1f11ee09840f98432b",
+  "scope": "private-file-broker",
+  "phase": "additive",
+  "raw_delivery_blocked": false,
+  "case_ids": [
+    "X_BROKER_PERSONAL_OWNER_FOREIGN",
+    "X_BROKER_SUBSCRIPTION_OWNER_STAFF",
+    "X_BROKER_NO_STORE",
+    "X_BROKER_EXACT_CLEANUP"
+  ],
+  "catalog_sha256": "01c7451bc24b5c575b220beee70fc7e9275dd0bf4ac2946fc26588b9ab3ba73d",
+  "bounds": {
+    "existing_controlled_sessions": 3,
+    "harmless_files": 2,
+    "exercise_requests_including_cleanup": 35,
+    "Auth_accounts_created": 0,
+    "finance_writes": 0,
+    "provider_or_mail_requests": 0,
+    "production_changes": 0
+  },
+  "enabled": true,
+  "run_id": "2026-11-08-batch-x-additive-private-file-broker",
+  "no_automatic_rerun": true,
+  "full_batch_X_complete": false,
+  "original_cached_access_finding_closed": false
+}

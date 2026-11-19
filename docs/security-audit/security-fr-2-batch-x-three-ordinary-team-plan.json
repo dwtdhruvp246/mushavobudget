@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "result": "THREE_ORDINARY_TEAM_RUNNER_PREPARED_HOSTED_ACCEPTANCE_PENDING",
+  "source_parent_commit": "a2b2a8a6c9fdff0bf4d149ca9fc2e550ed553d7c",
+  "scope": "Three real ordinary accounts and one separate platform Super Admin; scoped Team Manager removes another Staff member, same-session revocation, Owner protection and privilege-escalation denials.",
+  "actor_slots": {
+    "USER_A": "ordinary Business Owner",
+    "USER_B": "ordinary scoped Team Manager",
+    "USER_C": "ordinary scoped Staff",
+    "ADMIN": "separate Super Admin for fixture preparation and cleanup only"
+  },
+  "credentials": "Existing GitHub Actions secrets only. All four identities and roles must pass before any fixture write; no secret/session/email body exported.",
+  "fixture": {
+    "name": "audit-batch-x-receipt-d7be160c2026",
+    "status": "suspended",
+    "support_version": 12,
+    "subscription_version": 11,
+    "member_limit": 1,
+    "paid_through_at": "2026-11-08T00:00:00.000Z"
+  },
+  "temporary_changes": [
+    "Resume exact test workspace through Admin API",
+    "Raise test seat allowance from one to three",
+    "Database-only invitations and acceptance for two known ordinary identities",
+    "One Staff team.view allow override and one Manager team.manage deny override",
+    "Manager removes Staff and thereby clears target scope and override"
+  ],
+  "cleanup": [
+    "Cancel only exact test invitees' pending invitations",
+    "Restore the original inactive member's finance_manager role before removal",
+    "Owner removes remaining temporary test membership",
+    "Verify all temporary scopes and overrides absent",
+    "Admin restores one seat, original paid-through term unchanged",
+    "Admin suspends exact workspace",
+    "Locally log out every session created by the runner"
+  ],
+  "local_checks": {
+    "tests": 75,
+    "pass": 75,
+    "fail": 0,
+    "exit_code": 0,
+    "syntax_checks": 2
+  },
+  "email_requests_expected": 0,
+  "provider_payment_requests_expected": 0,
+  "finance_or_Storage_writes_expected": 0,
+  "production_changed": false,
+  "full_batch_X_complete": false,
+  "stage_3_complete": false,
+  "hosted_acceptance": false
+}

@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "result": "BATCH_X_DATABASE_AND_HOSTED_RECEIPT_SCOPED_PASS_BACKEND_CLOSEOUT_OPEN",
+  "project": "dczlddwbtgvfdujgcitb",
+  "source_parent": "eb3686f4eebf217571a9d29a3dcb8f71a7c026a3",
+  "batch_v": {
+    "independent_recovery": "OWNER_DEFERRED_SMTP_AND_RECOVERY",
+    "full_batch_complete": false,
+    "earlier_scoped_passes_retained": true
+  },
+  "batch_x_database": {
+    "cases": [
+      "ORDINARY_TEAM_MANAGER_SESSION_VALID",
+      "MANAGER_EXPLICIT_TEAM_MANAGE_DENIAL_ENFORCED",
+      "STAFF_SEES_ACTIVE_WORKSPACE_BEFORE_REMOVAL",
+      "RECEIPT_REQUIRED_BEFORE_SUBMISSION",
+      "REQUEST_DRAFT_CREATED",
+      "REQUEST_SUBMITTED",
+      "REQUEST_SELF_APPROVAL_DENIED",
+      "DELEGATE_CANNOT_REMOVE_OWNER",
+      "FINANCE_APPROVES_OTHER_REQUEST",
+      "REQUEST_APPROVAL_REPLAY_DENIED",
+      "LINKED_BILL_RETRY_DOES_NOT_DUPLICATE",
+      "PARTIAL_BILL_PAYMENT_RETRY_COUNTS_ONCE",
+      "BILL_SETTLEMENT_FULFILLS_REQUEST",
+      "DELEGATED_MANAGER_REMOVES_SCOPED_STAFF",
+      "REMOVAL_CLEARS_SCOPE_AND_OVERRIDES",
+      "SAME_STAFF_SESSION_LOSES_REMOVED_WORKSPACE_ACCESS",
+      "SAME_FINANCE_SESSION_LOSES_ACCESS_WHEN_SUSPENDED",
+      "EXPIRED_BUSINESS_BLOCKS_NONOWNER_WITH_LIVE_SESSION",
+      "EXPIRED_BUSINESS_RETAINS_OWNER_RENEWAL_GATE_ONLY"
+    ],
+    "result": "BATCH_X_SELECTED_DATABASE_CASES_PASS",
+    "cleanup": "ROLLBACK_AND_INDEPENDENT_ABSENCE_READBACK",
+    "project": "dczlddwbtgvfdujgcitb",
+    "case_count": 19,
+    "auth_claims": "MODELED_TRANSACTION_ONLY",
+    "outbound_email_requested": 0,
+    "provider_payments_requested": 0,
+    "physical_storage_upload_tested": false,
+    "independent_readback": {
+      "fixture_auth_users": 0,
+      "fixture_business_workspaces": 0,
+      "existing_platform_admin_rows": 1,
+      "business_workspaces": 4,
+      "subscription_rows": 16
+    },
+    "modeled_roles": [
+      "ordinary Business Owner",
+      "Team Manager",
+      "Staff",
+      "Finance Manager"
+    ],
+    "test_scope": "Actual staging PostgreSQL functions and RLS exercised under modeled authenticated claims in one rolled-back transaction.",
+    "hosted_browser_or_http_acceptance": false,
+    "harness_corrections": [
+      "The deployed Team Manager role includes team.manage. The negative case uses a supported explicit per-member denial.",
+      "The suspended role can be rejected by the session gate before the protected bill read reaches RLS. The harness verifies invalid session status and confirms the protected read returns no row or fails with the deployed access error."
+    ]
+  },
+  "receipt_and_private_original": {
+    "status": "SCOPED_HOSTED_PASS_CLEANUP_VERIFIED",
+    "evidence": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json",
+    "original_hosted_assertions": 20,
+    "real_Storage_upload_and_original_and_signed_download": true,
+    "anonymous_and_removed_member_denials": true,
+    "archived_download_and_signing_denied": true,
+    "physical_test_objects_remaining": 0,
+    "CI_sessions_remaining": 0,
+    "retained_suspended_workspace_count": 1
+  },
+  "batch_y_read_only_preflight": {
+    "checks": {
+      "anon_reminder_helper_denied_at_execute_grant": true,
+      "three_mutation_entrypoints_service_only_metadata": true,
+      "authenticated_reminder_helper_denied_at_execute_grant": true,
+      "service_reminder_read_allowed_and_missing_bill_denied": true,
+      "service_billing_usage_read_allowed_and_missing_workspace_zero": true
+    },
+    "result": "BATCH_Y_SCOPED_BACKEND_READ_ONLY_PASS",
+    "concurrency_acceptance": "SELECTED_REQUEST_ID_HTTP_RACE_PASSED_SERVICE_JOBS_STILL_OPEN",
+    "external_delivery_requests": 0,
+    "dispatch_or_queue_operations_invoked": 0,
+    "request_id_concurrency_evidence": "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json"
+  },
+  "full_lettered_batch_X_complete": false,
+  "full_lettered_batch_Y_complete": false,
+  "stage_3_complete": false,
+  "findings_closed": []
+}

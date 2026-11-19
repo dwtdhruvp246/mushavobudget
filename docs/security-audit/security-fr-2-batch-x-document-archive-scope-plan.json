@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "stage_step": "FR.2.6_X_DOCUMENT_ARCHIVE_SCOPE_RECONCILIATION",
+  "source_parent": "54b13735dbce5d3a469c74f6d4543f51670eb0a6",
+  "project": "dczlddwbtgvfdujgcitb",
+  "status": "FROZEN_BEFORE_REHEARSAL",
+  "cases": [
+    "Bound owner/Admin/scoped modeled sessions",
+    "Owner positive archive control",
+    "Scoped manager has documents.manage but cannot view the parent/document",
+    "Foreign-scope archive denied and document preserved",
+    "Rollback and independent fixture/session absence"
+  ],
+  "bounds": {
+    "physical_storage_uploads": 0,
+    "committed_writes": 0,
+    "external_email_requests": 0,
+    "modeled_auth_sessions": 3,
+    "new_document_metadata_rows": 2,
+    "new_claims": 1,
+    "new_team_dimensions": 1
+  },
+  "mechanism": "CURRENT_STAGING_POSTGRES_FUNCTIONS_AND_RLS_WITH_MODELED_AUTH_CLAIMS",
+  "hosted_HTTP_login_or_upload_acceptance": false
+}

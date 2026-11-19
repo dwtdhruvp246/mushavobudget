@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-28",
+  "stage_step": "FR.2.5.W44_MAIL_UNAVAILABLE_RETAINED_CONFIGURATION_DIAGNOSTIC",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "OWNER_CANONICAL_BEGIN_HTTP503_MAIL_UNAVAILABLE_CONFIRMED",
+  "screenshots": [
+    {
+      "SHA256": "79f57a3fb774606f97e5cebc1cfe0d9f50016a6e042cece5aecdfc906c453c05"
+    },
+    {
+      "SHA256": "521bfb012f441f600c3908de1247e10432d049254727eeb94df949e1381c3fb2"
+    }
+  ],
+  "observed_origin": "https://mushavo-budget-staging.pages.dev",
+  "request_path": "/api/email-verification/begin",
+  "request_method": "POST",
+  "observed_HTTP_status": 503,
+  "response_result": "MAIL_UNAVAILABLE",
+  "visible_message": "Your code could not be sent. Try again later.",
+  "separate_429_request_visible_in_console": true,
+  "429_response_result_not_shown": true,
+  "currently_selected_response_result": "MAIL_UNAVAILABLE",
+  "prior_generic_UNAVAILABLE_cause_candidates_narrowed_by_result": true,
+  "source_review": "The MAIL_UNAVAILABLE branch requires a begun challenge and a returned set_delivery result, then rejects if the mailer did not accept or delivery is not READY. A recipient restriction, Zoho token/send failure, or superseded/not-ready delivery acknowledgement can yield this result.",
+  "source_does_not_prove_Zoho_received_request": true,
+  "provider_failure_reason_or_inbox_delivery_verified": false,
+  "current_account_email_not_visible_in_screenshots": true,
+  "latest_private_test_recipient_reused_in_owner_command": true,
+  "live_Cloudflare_secret_values_or_current_runtime_parity_read": false,
+  "recipient_setting_save_in_both_channels_prior_explicit_receipt_absent": true,
+  "earlier_functional_recovery_code_success_preserved_not_reversed": true,
+  "AU05_03_owner_reported_PASS_preserved": true,
+  "next_action": "Run retained configuration diagnostic once; no additional Send email code requests at this checkpoint.",
+  "actual_new_hosted_requests_by_assistant": 0,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

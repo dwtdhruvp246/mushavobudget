@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "stage_step": "FR.2.5.W15_OWNER_UX_DEFERRAL_AND_INVALID_CREDENTIALS_PREPARATION",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "OWNER_ACCEPTS_CURRENT_VERIFICATION_UI_BACKGROUND_SPEED_POLISH_DEFERRED_AU03_02_NEXT",
+  "source_parent_commit": "eba410f72274a4a71eee3ec8481136447096fe2a",
+  "owner_text": "its ok for the current version. but it doesnt look professional like this. it needs to happen in the background and fast. its ok. we can move onto the next thing",
+  "current_version_UI_accepted_for_continuation": true,
+  "deferred_UX": {
+    "id": "UX_AUTH_BACKGROUND_VERIFICATION",
+    "status": "DEFERRED_BY_OWNER",
+    "desired_behavior": "Trusted-browser verification runs without showing the code form. Use a minimal Signing in indicator, then open the dashboard. Show the verification form only when user action is actually required.",
+    "performance": "Reduce perceived and measured sign-in delay; measure before choosing a specific timing target.",
+    "security_invariants": [
+      "Do not open or fetch protected views before server proof succeeds",
+      "Retain actor/token binding, revocation and failure handling",
+      "Keep new-browser email-code checks and separate Admin MFA"
+    ],
+    "runtime_implementation_requested_now": false
+  },
+  "fresh_same_browser_signout_password_cycle_explicitly_confirmed": false,
+  "fresh_cycle_unconfirmed_status_retained_without_requesting_another_repeat_now": true,
+  "new_browser_code_test": {
+    "status": "PENDING_CONTROLLED_RECIPIENT_AND_WINDOW_READINESS",
+    "source_constraint": "The gateway mailer matches the exact lowercased recipient against ZOHO_TEST_RECIPIENTS_JSON; an alias is not automatically included because its base Gmail address is allowed.",
+    "current_alias_allowlist_membership_observed": null,
+    "current_acceptance_window_deadline_observed": null,
+    "send_code_requested_now": false
+  },
+  "next_case": {
+    "id": "AU03.02",
+    "title": "Invalid credentials",
+    "variant": "Known confirmed test email with an intentionally wrong nonempty password",
+    "status": "PREPARED_OWNER_BROWSER_RESULT_PENDING",
+    "manual_password_attempt_limit": 1,
+    "email_dispatch_required": false,
+    "new_acceptance_window_required": false,
+    "target": "https://mushavo-budget-staging.pages.dev/app.html?auth=manual",
+    "identity": "Same owner-controlled test email that reached the dashboard",
+    "instructions": "Use a signed-out private/browser context. Enter that email and a deliberately wrong password of at least eight characters, then click Sign in once. Return the displayed error and whether dashboard access remained denied. Keep all passwords private.",
+    "expected_UI_message": "The email or password was not accepted. Check both and try again.",
+    "expected_access": "Remain signed out; no dashboard or verification-code step",
+    "cleanup": "Close the separate test context after reporting; do not clear the trusted original browser data."
+  },
+  "frozen_AU_contract_unchanged": true,
+  "new_acceptance_requirements_added": false,
+  "new_local_tests_run": 0,
+  "assistant_new_Auth_SQL_email_or_account_requests": 0,
+  "new_mode_or_settings_or_factor_or_runtime_changes": 0,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

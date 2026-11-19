@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "stage_step": "FR.2.5.W10_SIGNUP_LINK_BROWSER_TRUST_AND_PERSISTENT_DEVICE_APPROVAL",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "owner_report": "After signup email confirmation and a later sign-in, the existing application verification screen still requires an email code.",
+  "owner_selected_policy": {
+    "normal_signin": "email_and_password",
+    "signup_confirmation_browser": "Automatically enroll the browser/profile that opens and validates the original signup confirmation link; return to manual sign-in.",
+    "other_browser": "One emailed code is required, then trust this browser by default.",
+    "application_trust_deadline": null,
+    "seven_day_expiry_removed": true,
+    "exceptions": [
+      "Owner revokes browser approval",
+      "Browser credential is cleared or expires in the browser",
+      "Account security reset, suspension or credential change",
+      "Shared-browser opt-out"
+    ],
+    "identity_scope": "Browser/profile, not immutable physical hardware",
+    "browser_cookie_limit": "400-day browser credential, renewed after a successful trusted-device restore; browsers may clear storage sooner.",
+    "existing_confirmed_account": "A consumed confirmation link cannot retroactively supply a browser credential; one new-device code may be needed after upgrade."
+  },
+  "supersedes": "The earlier retain-existing-seven-day choice only where it conflicts with this explicit persistent-browser policy.",
+  "retained_controls": [
+    "Remote Auth validation of exact bearer",
+    "Real current Auth session and active profile",
+    "One-use ten-minute email codes",
+    "Server-held credential digests",
+    "Secure HttpOnly host cookie",
+    "Device/account revocation",
+    "Password/security reset invalidation",
+    "148 guarded RPCs",
+    "82 restrictive application policies",
+    "Bounded staging acceptance controller",
+    "Separate deferred Admin MFA"
+  ],
+  "backend_upgrade_required": true,
+  "frontend_only_patch_sufficient": false,
+  "assistant_actual_hosted_requests": 0,
+  "real_email_requests": 0,
+  "database_upgrade_applied": false,
+  "frontend_uploaded": false,
+  "hosted_acceptance": false,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

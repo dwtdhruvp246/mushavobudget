@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "stage_step": "10.1",
+  "date": "2026-10-13",
+  "source_parent_commit": "b51fe2e49d32ecf5f3ee5a1f9118d1bc88888719",
+  "scope": "FROZEN_GROUPED_REAL_OPERATIONS_ACCEPTANCE_REQUIREMENTS_NOT_LOCAL_TEST_COUNTS_OR_RELEASE_APPROVAL",
+  "groups": [
+    {
+      "id": "OP01",
+      "title": "Release mapping and administrative authority",
+      "finding_ids": [
+        "F18",
+        "F19",
+        "F08"
+      ],
+      "cases": [
+        {
+          "id": "OP01-01",
+          "title": "Exact environment/version/channel",
+          "expected": "Source commit, public artifact, serving product/project/branch, frontend configuration and installed Edge/schema/grants/Auth map to the accepted staging target with no production access or private asset exposure.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP01-02",
+          "title": "Administrative custody and recovery",
+          "expected": "Provider/repository/application administrative access is least-privileged and independently recoverable; real operators and effective MFA are evidenced without exposing recovery secrets.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP01-03",
+          "title": "Build and deployment provenance",
+          "expected": "Actual accepted workflow, locked dependencies/tools, artifact identities and repository/deployment protection are recorded; default read-only and deployment authority are verified in their actual scope.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP01-04",
+          "title": "Installed candidate asset and dependency closure",
+          "expected": "Actual canonical Auth/app routes return intended types/assets; backend dependencies and serving headers match the accepted candidate; dated staging HTML-module failure is explicitly rechecked.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "OP02",
+      "title": "Schedules, queues and protected outbound outcomes",
+      "finding_ids": [
+        "F12",
+        "F15",
+        "F19"
+      ],
+      "cases": [
+        {
+          "id": "OP02-01",
+          "title": "Scheduler-to-business-result correlation",
+          "expected": "Named installed cron/job schedule, asynchronous HTTP outcome, exact Edge version and business outcome are linked; missing secret/wrong caller is denied without queue or provider side effects.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP02-02",
+          "title": "Queue claim, retry and terminal history",
+          "expected": "Recoverable synthetic rows demonstrate concurrency, bounded attempts, stale-claim recovery, idempotency and retry/failure/cancellation state; duplicate provider dispatch and history loss are assessed.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP02-03",
+          "title": "Automatic currency integrity",
+          "expected": "Actual scheduler/provider success and failure preserve cached rates, locked/manual historical conversions and the two retained USD 1 fixtures; partial backfill and freshness remain explicit.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP02-04",
+          "title": "Recipient and outbound destination boundary",
+          "expected": "Installed outbound guard, user/workspace/device/staff eligibility, cancellation and permanent-failure cleanup are verified with controlled recipients/endpoints; unauthorized destinations and recipients receive no dispatch.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "OP03",
+      "title": "Observability, support and incident ownership",
+      "finding_ids": [
+        "F19",
+        "F08"
+      ],
+      "cases": [
+        {
+          "id": "OP03-01",
+          "title": "Service-scoped health and budgets",
+          "expected": "Health timestamps, missing/failed/stale states, relevant queue/cron/provider/usage scope and accepted thresholds are visible without customer identifiers, credentials or raw payloads.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP03-02",
+          "title": "Alert detection and accountable receipt",
+          "expected": "An accepted bounded safe test demonstrates relevant error/backup/dispatch/outage detection, routing and receipt by the responsible operator; missing policies or unsupported services remain explicit.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP03-03",
+          "title": "Support review and escalation",
+          "expected": "Owner-controlled support receipt, review frequency, escalation/alternate, response ownership and incident link are exercised; prior incoming mail PASS alone does not establish automated alerts.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP03-04",
+          "title": "Private incident evidence and retention",
+          "expected": "A bounded incident walkthrough produces useful dated evidence with redaction, approved log/receipt retention, budget/availability impact and actionable follow-up; no private request headers or user data are copied.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "OP04",
+      "title": "Protected backup and genuine isolated recovery",
+      "finding_ids": [
+        "F16",
+        "F19",
+        "F08"
+      ],
+      "cases": [
+        {
+          "id": "OP04-01",
+          "title": "Recoverable component and offsite coverage",
+          "expected": "Accepted database/data/roles/grants/files/Auth/config/Edge/provider/key inventory has private protected artifacts, integrity/retention/ownership and independent offsite coverage; omissions are explicit.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP04-02",
+          "title": "Backup completion and failure operation",
+          "expected": "A controlled backup/incomplete/failure check proves operator detection, integrity/completeness and retention without exposing artifacts or overwriting successful recovery evidence.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP04-03",
+          "title": "Realistic isolated restore and integrity",
+          "expected": "A fresh authorized isolated target restores applicable service components and verifies data/permission/Auth/Storage/provider constraints with measured accepted RPO/RTO; a dummy file or local public-schema restore is not full recovery.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP04-04",
+          "title": "Independent access and key recovery",
+          "expected": "Owner/provider identity and safely retained independent credentials/keys can recover accepted access without removing the sole working factor or disclosing material; service/managed-role authority is respected.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "OP05",
+      "title": "Compatible containment, rollback and operator exercise",
+      "finding_ids": [
+        "F16",
+        "F18",
+        "F19",
+        "F15"
+      ],
+      "cases": [
+        {
+          "id": "OP05-01",
+          "title": "Bounded dispatcher containment",
+          "expected": "Accepted named staging job can be paused with protected authority while preserving queue history; unintended destinations, other jobs and production remain unaffected.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP05-02",
+          "title": "Serving-product web rollback",
+          "expected": "The correct Pages/Worker/other artifact rollback path uses an accepted actual target and preserves Auth/PWA confidentiality and backend compatibility; preview eligibility is not inferred.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP05-03",
+          "title": "Edge/schema/security rollback compatibility",
+          "expected": "Version-specific Edge/config/data-migration rollback or forward repair preserves required access controls, records/history and schema compatibility; destructive recipes and weakened MFA are not run blindly.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP05-04",
+          "title": "Operator incident and resumption drill",
+          "expected": "The responsible operator follows accepted stop/triage/recovery/resume instructions in the isolated scope and demonstrates expected health/outcomes with dated durations, failures and escalation.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "OP06",
+      "title": "Final evidence and release disposition",
+      "finding_ids": [
+        "F05",
+        "F17",
+        "F18",
+        "F19",
+        "F20"
+      ],
+      "cases": [
+        {
+          "id": "OP06-01",
+          "title": "Original audit and action traceability",
+          "expected": "All original 123 coverage rows, 20 finding definitions, stage actions and failed/partial/unrun receipts map to final source/artifact/installed evidence with no unearned closures.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP06-02",
+          "title": "Actual artifact, user and store dependencies",
+          "expected": "Required implemented finance/Auth/privacy/commerce/notification controls, measured browser/device behavior, final signed artifacts and account-specific store/reviewer/declaration evidence are accepted.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP06-03",
+          "title": "Explicit release/rollback/incident responsibility",
+          "expected": "Accepted channel/audience/operator/contacts/known-gap disposition, recovery/rollback triggers, budgets and release responsibility are concrete and reviewable; unconfirmed material decisions block release.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        },
+        {
+          "id": "OP06-04",
+          "title": "Fresh full final re-audit",
+          "expected": "The final accepted source, installed services and final artifacts receive a full fresh audit with affected direct tests, failures and required remediation; prior offline PASS or stage closure cannot replace it.",
+          "status": "PENDING_NOT_RUN",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisites": [
+            "Exact accepted isolated environment and source/artifact mapping",
+            "Recoverable controlled actors/data plus approved applicable operational decisions",
+            "Relevant earlier implementation and hosted/device/recovery dependencies"
+          ]
+        }
+      ]
+    }
+  ],
+  "total_grouped_cases": 24,
+  "executed": 0,
+  "overlap_with_prior_stage_and_RG_acceptance_requirements": true,
+  "counts_not_additive_unique_global_controls": true,
+  "hosted_operations_acceptance": false,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "findings_closed": []
+}

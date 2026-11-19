@@ -1,0 +1,384 @@
+{
+  "date": "2026-11-06",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
+  "result": "BATCH_V_CURRENT_ADMIN_ACCESS_SCOPED_STAGING_PASS_FULL_BATCH_OPEN",
+  "frozen_case_count": 16,
+  "policy": "PASSWORD_ONLY_ALL_USERS",
+  "scope": "Stable staging browser, Supabase APIs and read-only database metadata, plus an isolated PostgreSQL role matrix with modeled Auth claims.",
+  "catalog": {
+    "checked_UTC": "2026-11-06T12:40:54.507151+00:00",
+    "read_only": true,
+    "selected_routines": 36,
+    "matching_routines": 36,
+    "selected_policies": 58,
+    "matching_policies": 58,
+    "selected_routine_grants_match": true,
+    "installed_guarded_routines": 149,
+    "restrictive_policies": 82,
+    "legacy_dispatch_RPCS_executable": 0,
+    "admin_role_RLS_enabled": true,
+    "permissive_Admin_role_write_policies": 0,
+    "additional_Business_seat_RPC_matches_reviewed_source_and_grants": true,
+    "additional_Business_seat_RPC_body_SHA256": "2262cd8c188de9a9b0ca5fd303d41f007c1a24c0dd8e86735a645bcc76f77816",
+    "broader_catalog_stamp_matches": false,
+    "catalog_last_stamped_UTC": "2026-10-29T17:09:27.904733+00:00",
+    "stamped_catalog_SHA256": "ef3d234dfcbf738b6cf0f2855280835faf576c4d1b1bdc6a535a1a6a548ed545",
+    "observed_catalog_SHA256": "c6eeedf37ae17212f4a9dca90e70b2cbbd4f46fccb5a3cce186b86361a56ff26",
+    "broader_catalog_reconciliation": "OPEN. The catalog fingerprint covers more than the selected Admin surfaces. Root cause is unverified."
+  },
+  "earlier_attempt": {
+    "run": 42219257835,
+    "source_commit": "7a08c865a318c7fbffa0a43e35422872777c528c",
+    "result": "ADMIN_BROWSER_REQUEST_ALLOWLIST_STOP",
+    "direct_probes_passed": 19,
+    "ordinary_deep_link_denial_passed": true,
+    "created_sessions": 3,
+    "scoped_logout_acknowledgements": 3,
+    "disposition": "The browser refused a request before reaching the Admin editor or revocation check. The rerun included the source-reviewed Admin dashboard read."
+  },
+  "hosted_run": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "settings_or_finance_writes_requested": 0,
+    "production_changed": false,
+    "exit_code": 0,
+    "exercise": {
+      "probes": {
+        "ADMIN_SESSION": {
+          "HTTP_status": 200,
+          "passed": true
+        },
+        "ADMIN_ROLE_ROW": {
+          "HTTP_status": 200,
+          "passed": true
+        },
+        "ADMIN_FINANCE_ROW": {
+          "HTTP_status": 200,
+          "passed": true
+        },
+        "ADMIN_PLAN_PREVIEW": {
+          "HTTP_status": 200,
+          "passed": true
+        },
+        "ADMIN_EDGE_REACHES_PAYLOAD_VALIDATION": {
+          "HTTP_status": 400,
+          "passed": true
+        },
+        "USER_A_SESSION": {
+          "HTTP_status": 200,
+          "passed": true
+        },
+        "USER_A_ROLE_ROW_DENIED": {
+          "HTTP_status": 200,
+          "passed": true
+        },
+        "USER_A_FINANCE_ROW_DENIED": {
+          "HTTP_status": 200,
+          "passed": true
+        },
+        "USER_A_PLAN_PREVIEW_DENIED": {
+          "HTTP_status": 400,
+          "passed": true
+        },
+        "USER_A_EDGE_DENIED": {
+          "HTTP_status": 403,
+          "passed": true
+        },
+        "USER_B_SESSION": {
+          "HTTP_status": 200,
+          "passed": true
+        },
+        "USER_B_ROLE_ROW_DENIED": {
+          "HTTP_status": 200,
+          "passed": true
+        },
+        "USER_B_FINANCE_ROW_DENIED": {
+          "HTTP_status": 200,
+          "passed": true
+        },
+        "USER_B_PLAN_PREVIEW_DENIED": {
+          "HTTP_status": 400,
+          "passed": true
+        },
+        "USER_B_EDGE_DENIED": {
+          "HTTP_status": 403,
+          "passed": true
+        },
+        "MISSING_BEARER_SESSION_DENIED": {
+          "HTTP_status": 401,
+          "passed": true
+        },
+        "MISSING_BEARER_EDGE_DENIED": {
+          "HTTP_status": 401,
+          "passed": true
+        },
+        "INVALID_BEARER_SESSION_DENIED": {
+          "HTTP_status": 401,
+          "passed": true
+        },
+        "INVALID_BEARER_EDGE_DENIED": {
+          "HTTP_status": 401,
+          "passed": true
+        },
+        "REVOKED_ADMIN_SESSION": {
+          "HTTP_status": 200,
+          "passed": true
+        },
+        "REVOKED_ADMIN_ROLE_ROW_DENIED": {
+          "HTTP_status": 200,
+          "passed": true
+        },
+        "REVOKED_ADMIN_FINANCE_ROW_DENIED": {
+          "HTTP_status": 200,
+          "passed": true
+        },
+        "REVOKED_ADMIN_PLAN_PREVIEW_DENIED": {
+          "HTTP_status": 403,
+          "passed": true
+        },
+        "REVOKED_ADMIN_EDGE_DENIED": {
+          "HTTP_status": 401,
+          "passed": true
+        },
+        "UNRELATED_TEST_SESSION_STILL_VALID": {
+          "HTTP_status": 200,
+          "passed": true
+        }
+      },
+      "direct_probe_requests": 25,
+      "browser_checks": {
+        "ordinary_deep_link_opened_Personal_without_Admin_data": true,
+        "live_Super_Admin_opened_Plans_and_loaded_editor": true,
+        "revoked_Admin_recheck_hid_view_and_cleared_loaded_editor": true
+      },
+      "role_or_finance_writes_requested": 0,
+      "invitation_requests_with_recipient": 0,
+      "service_workers": "blocked_in_isolated_CI_context",
+      "selected_Admin_local_logout_acknowledged": true,
+      "ordinary_browser": {
+        "backend_requests": 37,
+        "refused_requests": 0,
+        "refresh_requests": 0,
+        "local_logout_requests": 0,
+        "local_logout_acknowledgements": 0,
+        "normal_activity_RPCs": 1,
+        "test_context_closed": true
+      },
+      "Admin_browser": {
+        "backend_requests": 34,
+        "refused_requests": 0,
+        "refresh_requests": 0,
+        "local_logout_requests": 0,
+        "local_logout_acknowledgements": 0,
+        "normal_activity_RPCs": 1,
+        "test_context_closed": true
+      },
+      "revoked_Admin_JWT_still_before_expiry": true
+    },
+    "full_lettered_batch_V_complete": false,
+    "public_sources": {
+      "public_source_reads": 5,
+      "reviewed_app_and_session_sources_verified": true
+    },
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-06-admin-boundaries-with-monitor",
+    "source_commit": "228a604ad0488c14dc7682c364edd39af530a4c0",
+    "workflow_run_id": "42219839815",
+    "workflow_run_attempt": "1"
+  },
+  "cleanup_independent_readback": {
+    "run_1_sessions": 0,
+    "run_2_sessions": 0,
+    "sole_super_admin_still_active": true,
+    "auth_session_refresh_token_delete_cascade": true
+  },
+  "selected_record_fingerprints_before_and_after": {
+    "Admin roles": {
+      "count": 1,
+      "matched": true
+    },
+    "Plan prices": {
+      "count": 2,
+      "matched": true
+    },
+    "Manual grants": {
+      "count": 2,
+      "matched": true
+    },
+    "Finance settings": {
+      "count": 1,
+      "matched": true
+    },
+    "Plans and prices": {
+      "count": 4,
+      "matched": true
+    },
+    "Admin invitations": {
+      "count": 2,
+      "matched": true
+    },
+    "Subscription invoices": {
+      "count": 0,
+      "matched": true
+    },
+    "Subscription payments": {
+      "count": 0,
+      "matched": true
+    },
+    "Workspace subscriptions": {
+      "count": 16,
+      "matched": true
+    }
+  },
+  "preservation_scope": "Compared selected record identities, status and timestamp fields where applicable. Subscription payment and invoice tables had no staging fixtures.",
+  "isolated_SQL_matrix": {
+    "source": "tests/fr-2-batch-v-role-boundaries.check.mjs",
+    "role_paths_passed": [
+      "super_admin",
+      "admin_staff",
+      "finance_staff",
+      "support_staff",
+      "ordinary_with_forged_user_metadata"
+    ],
+    "node_test_count_including_parent": 6,
+    "failures": 0,
+    "application_SQL": "Current migrations with the reviewed staging installers, password-only session policy and Business seat RPC.",
+    "actual_Auth_provider_or_staging_role_fixture_used": false,
+    "write_rollback_and_roles_finance_preserved": true
+  },
+  "live_roster": {
+    "active_confirmed_super_admin": 1,
+    "admin_staff": 0,
+    "finance_staff": 0,
+    "support_staff": 0
+  },
+  "cases": [
+    {
+      "id": "V01",
+      "status": "SCOPED_CURRENT_PARITY_PASS_FULL_CATALOG_OPEN",
+      "evidence": "36 selected routines and 58 policies matched, with current session authority and the later Business seat RPC verified separately."
+    },
+    {
+      "id": "V02",
+      "status": "SCOPED_IDENTITY_PASS",
+      "evidence": "Retained historical operator identity evidence and live verified sole Super Admin. A separate recovery Admin remains unverified."
+    },
+    {
+      "id": "V03",
+      "status": "HISTORICAL_FACTOR_REVIEW_RETAINED",
+      "evidence": "Existing origin uncertainty remains on hold."
+    },
+    {
+      "id": "V04",
+      "status": "HISTORICAL_MFA_ON_HOLD",
+      "evidence": "Genuine primary AAL2 remains unmet."
+    },
+    {
+      "id": "V05",
+      "status": "HISTORICAL_MFA_ON_HOLD",
+      "evidence": "Genuine backup AAL2 remains unmet. Independent control is tracked in V13."
+    },
+    {
+      "id": "V06",
+      "status": "SCOPED_LIVE_PASS",
+      "evidence": "Current session and active assigned role agreed across browser, RPC/RLS and Edge for exercised actors."
+    },
+    {
+      "id": "V07",
+      "status": "SCOPED_LIVE_PASS",
+      "evidence": "Super Admin opened Plans, loaded an editor, ran a no-write preview and read finance settings. Prior seat-editor and invitation evidence retained."
+    },
+    {
+      "id": "V08",
+      "status": "SCOPED_LIVE_PASS",
+      "evidence": "Missing and invalid bearers denied. Revoked still-unexpired token denied."
+    },
+    {
+      "id": "V09",
+      "status": "SCOPED_LIVE_AND_LOCAL_PASS",
+      "evidence": "Both ordinary users denied privileged data and actions. Staging role table has no permissive write policy. Isolated self-elevation and forged metadata were denied."
+    },
+    {
+      "id": "V10",
+      "status": "LOCAL_PASS_HOSTED_STAFF_ROLES_OPEN",
+      "evidence": "Role matrix passed locally. Staging lacks Admin staff, Finance staff and Support staff fixtures."
+    },
+    {
+      "id": "V11",
+      "status": "SCOPED_LIVE_PASS",
+      "evidence": "Selected local logout blocked the still-unexpired Admin token, cleared the open Admin editor and preserved the separate ordinary test session."
+    },
+    {
+      "id": "V12",
+      "status": "HISTORICAL_MFA_ON_HOLD",
+      "evidence": "Factor lifecycle operation remains on hold."
+    },
+    {
+      "id": "V13",
+      "status": "OPEN_INDEPENDENT_RECOVERY",
+      "evidence": "No separately controlled staging backup Admin established."
+    },
+    {
+      "id": "V14",
+      "status": "SCOPED_PRESERVATION_PASS",
+      "evidence": "Legitimate Super Admin finance read worked, service-only invitation grant remained, and selected retained record fingerprints matched."
+    },
+    {
+      "id": "V15",
+      "status": "SCOPED_CLEANUP_PASS_FULL_CATALOG_OPEN",
+      "evidence": "Both finite runs closed their browser contexts and no matching sessions remained. The wider catalog fingerprint requires reconciliation."
+    },
+    {
+      "id": "V16",
+      "status": "OPEN",
+      "evidence": "Live staff roles, independent Admin recovery and wider catalog reconciliation remain."
+    }
+  ],
+  "production_or_native_changed": false,
+  "existing_credentials_roles_or_auth_settings_changed": false,
+  "mail_requests_with_recipients": 0,
+  "full_lettered_batch_V_complete": false,
+  "findings_closed": []
+}

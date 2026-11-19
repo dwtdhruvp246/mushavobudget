@@ -1,0 +1,363 @@
+{
+  "schema_version": 1,
+  "evidence_id": "S5E10",
+  "stage_step": "5.5",
+  "date": "2026-10-12",
+  "source_parent_commit": "967081fa3ae06ef3dad9b02ba24725aafb5a698c",
+  "scope": "READ_ONLY_CURRENT_GIT_IDENTITY_AND_RECEIPT_RECONCILIATION_NOT_NATIVE_ACCEPTANCE_OR_FRESH_BEHAVIOR_TESTS",
+  "source_receipt_observations": 85,
+  "distinct_current_source_paths": 50,
+  "current_git_blob_identity_matches": 50,
+  "current_sources": [
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "package.json",
+      "sha": "ab314c838a49dcee05beabf2604213ab297ab979"
+    },
+    {
+      "receipt": "security-stage-5-native-source-inventory.json",
+      "path": "package-lock.json",
+      "sha": "7880998659b6bd106024cf9cea6528a6e2d28714"
+    },
+    {
+      "receipt": "security-stage-5-native-source-inventory.json",
+      "path": ".gitignore",
+      "sha": "8be1cc17f0dbbdb40d0bfe3d71a654b160e4b158"
+    },
+    {
+      "receipt": "corrected_candidate",
+      "path": "scripts/build-capacitor.mjs",
+      "sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14"
+    },
+    {
+      "receipt": "security-stage-5-platform-review.json",
+      "path": "docs/LAST_WORKSPACE.md",
+      "sha": "e927e7ab818bb6525e843dbcfec390bfc79de1f8"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "workspace-preference.js",
+      "sha": "17abce600781bc378e17bba19771316291c26f71"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "app-entry.js",
+      "sha": "4496b291102c26aa4dbcf9fbb88882cd972f5775"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "app-entry.html",
+      "sha": "eab3265c5a9fb31696266a182b28b2e560125c7a"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "auth.html",
+      "sha": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "auth-flows.js",
+      "sha": "206f0c32277a4da9a0bab667a06905468fdcc444"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "auth-security.js",
+      "sha": "cbaa03fbce8be39407abf9366f11e972520fd45e"
+    },
+    {
+      "receipt": "corrected_candidate",
+      "path": "tests/capacitor-build.test.mjs",
+      "sha": "24c7faf5f15533abc132c2e282278e2539b1635d"
+    },
+    {
+      "receipt": "security-stage-5-storage-review.json",
+      "path": "tests/workspace-preference.test.mjs",
+      "sha": "1da274830ccf27056a7969f5ba96d90b62747d05"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "app.js",
+      "sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "business.js",
+      "sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "admin-mfa.js",
+      "sha": "b34b867301a97473a455f80cb01ab193b224a6ad"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "sw.js",
+      "sha": "b61477393fa2b0ed7baa3c52d61076df549df948"
+    },
+    {
+      "receipt": "security-stage-5-platform-review.json",
+      "path": "_headers",
+      "sha": "6f1109ea4f616843cafef113f1f6f48e984e8858"
+    },
+    {
+      "receipt": "security-stage-5-platform-review.json",
+      "path": "supabase/functions/invite-business-member/index.ts",
+      "sha": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e"
+    },
+    {
+      "receipt": "security-stage-5-platform-review.json",
+      "path": "supabase/functions/invite-admin-user/index.ts",
+      "sha": "a26f1633237126a8a558d8e702ffaa1943173253"
+    },
+    {
+      "receipt": "security-stage-5-platform-review.json",
+      "path": "tests/stage-3-auth-flows.test.mjs",
+      "sha": "9ba114c045d014af8b0a48f40e1dbf0eda16cb99"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "pwa-install.css",
+      "sha": "cffe6a260f4588005763fb9e1c0d4e6c18a9c038"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "styles.css",
+      "sha": "6e8f8da472cdc48b25dff2d5bfe0045716ac8699"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "app.html",
+      "sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "pwa-update.css",
+      "sha": "ce14d53c01c246f69bba0e44f4bdcd0a08955731"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "contact.html",
+      "sha": "8fe5a2689b0cb83fac5f6e85034e9eff8cb9a6eb"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "about.html",
+      "sha": "6c10088db686923f0c5d2952b35c1eefbade4e82"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "site.css",
+      "sha": "4ac792d91fc3bdfc6d7e9a627e0a6d9f349b9eb9"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "push-notifications.js",
+      "sha": "2e3fb6dd0fbf8126bb7ec0405e39ec072d2bc68c"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "index.html",
+      "sha": "f6e71eb717aaf8071b827ff612ecff31c1e009e4"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "business.css",
+      "sha": "0c95acf71e902dd03c490ac0cb199297e362fb1a"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "pricing.html",
+      "sha": "abb1db5130f943c4bbc761c6c93ced2abadcdc54"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "pwa.js",
+      "sha": "026dc2aefaba5eea0a1570764020a8eb4100a679"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "config.js",
+      "sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "admin-plans.js",
+      "sha": "c6a7620703d83b9f5a3df9f62f69e4c4f41b32c2"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "offline.html",
+      "sha": "74ec210d864062a617b6c9bf6b3a7b0b50b989f9"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "manifest.webmanifest",
+      "sha": "58c701867538153b64166582588c4e3dbf86a0a9"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "site.js",
+      "sha": "f3d5abb558476b2ae1701e4911c3d1b58a50f348"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "business.html",
+      "sha": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "signup.html",
+      "sha": "6093ca502c3a2b954a0289f5c5e4cacbe7def584"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "pwa-shell.css",
+      "sha": "547f38a07896a89573789526e22c3637aafe046e"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "pwa-install.js",
+      "sha": "29868087b3d80264b80f1075f1ddae668ebd261c"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "assets/pwa-icon.svg",
+      "sha": "43acc6b6e1c8d235d47ee1eaf8bfcd934331cd79"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "assets/pwa-icon-maskable-512.png",
+      "sha": "8191d37eed2cce8e6773af3719daf85316deb4ee"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "assets/ledger-mark.svg",
+      "sha": "b8d98a9e0f2aff7c367753260f2659878737e08f"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "assets/pwa-icon-512.png",
+      "sha": "8191d37eed2cce8e6773af3719daf85316deb4ee"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "assets/pwa-icon-192.png",
+      "sha": "b7bf86f4ef92235127d8e12661b89452de3ad492"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "assets/apple-touch-icon.png",
+      "sha": "7ecb5d7e45674115a5b43d3a56eaf434c81d152b"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "assets/mushavo-budget-logo.png",
+      "sha": "e12e29d349fd5cbca903eb88c10355c26dcf37ce"
+    },
+    {
+      "receipt": "corrected_candidate",
+      "path": "scripts/verify-stage-5-packaging.mjs",
+      "sha": "58977dbdb957baf738a7893833166ada40dc1b32"
+    }
+  ],
+  "known_historical_changed_source_rows": [
+    {
+      "receipt": "security-stage-5-native-source-inventory.json",
+      "path": "scripts/build-capacitor.mjs",
+      "sha": "d911f7f777a9b80bb27d8b99cf88a3e16dd8599e"
+    },
+    {
+      "receipt": "security-stage-5-native-source-inventory.json",
+      "path": "tests/capacitor-build.test.mjs",
+      "sha": "1dc349a4270442ab940d3ee111cb53f66a4b82c7"
+    },
+    {
+      "receipt": "security-stage-5-storage-review.json",
+      "path": "scripts/build-capacitor.mjs",
+      "sha": "d911f7f777a9b80bb27d8b99cf88a3e16dd8599e"
+    },
+    {
+      "receipt": "security-stage-5-platform-review.json",
+      "path": "scripts/build-capacitor.mjs",
+      "sha": "d911f7f777a9b80bb27d8b99cf88a3e16dd8599e"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "scripts/build-capacitor.mjs",
+      "sha": "d911f7f777a9b80bb27d8b99cf88a3e16dd8599e"
+    },
+    {
+      "receipt": "security-stage-5-packaging-readiness.json",
+      "path": "tests/capacitor-build.test.mjs",
+      "sha": "1dc349a4270442ab940d3ee111cb53f66a4b82c7"
+    },
+    {
+      "receipt": "security-stage-5-packaging-local-checks.json",
+      "path": "tests/capacitor-build.test.mjs",
+      "sha": "c26c978867355044782db62f5c1a927844516f60"
+    }
+  ],
+  "intentional_historical_changed_paths": [
+    "scripts/build-capacitor.mjs",
+    "tests/capacitor-build.test.mjs"
+  ],
+  "unexpected_source_differences": 0,
+  "current_candidate_SHA256_matches": 3,
+  "original_test_variant_rechecked": true,
+  "code_byte_checks": [
+    {
+      "path": "scripts/build-capacitor.mjs",
+      "ref": "967081fa3ae06ef3dad9b02ba24725aafb5a698c",
+      "LF_sha256": "86ac88ab42f1c21a0c13cbad69731bf4003e608d597a43321089c8fa5899aaa0",
+      "CRLF_sha256": "1dbba5ba4378ffee93863f0be418b9cf7b71d83fd23cc703c20923f52d56ef6e",
+      "git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14"
+    },
+    {
+      "path": "tests/capacitor-build.test.mjs",
+      "ref": "967081fa3ae06ef3dad9b02ba24725aafb5a698c",
+      "LF_sha256": "802d161a011658f4e1c36ca9a9a54e2c0f788611a69cfc4b234d049102c55dfd",
+      "CRLF_sha256": "575bd7c12ab39e8b2bb365b3ca7be9c3835ea58cd5fff71b23bb6c59241e0b3e",
+      "git_blob_sha": "24c7faf5f15533abc132c2e282278e2539b1635d"
+    },
+    {
+      "path": "scripts/verify-stage-5-packaging.mjs",
+      "ref": "967081fa3ae06ef3dad9b02ba24725aafb5a698c",
+      "LF_sha256": "39a3c5653b93350905c1fa0325a6bf80ca6e8bc2aad68a4cfb5d13c0c3834d4b",
+      "CRLF_sha256": "c35ec2f1bc2603cbb00f9733056e3b9a576684efb7318bdc060e0486137a8fcf",
+      "git_blob_sha": "58977dbdb957baf738a7893833166ada40dc1b32"
+    },
+    {
+      "path": "tests/capacitor-build.test.mjs",
+      "ref": "c1c2c682421f081c47c723d88a23ed9eed19eb73",
+      "LF_sha256": "4e9c3154eb6458e6ca582847b1c76bcc97bc35bad37e8feb330d0278c2a7826c",
+      "CRLF_sha256": "e8e62bbc2cc5d558ab99d8aaf866ebee2889bd808650056c542f3a2d9dfcc568",
+      "git_blob_sha": "c26c978867355044782db62f5c1a927844516f60"
+    }
+  ],
+  "owner_reported_code_hash_values_reconciled": 6,
+  "owner_exact_CRLF_hash_values": 6,
+  "owner_distinct_code_CRLF_hashes": 4,
+  "unexplained_owner_hash_mismatches": 0,
+  "stage5_non_document_changed_paths": [
+    "scripts/build-capacitor.mjs",
+    "scripts/read-stage-5-backup-config.ps1",
+    "scripts/read-stage-5-native-metadata.ps1",
+    "scripts/read-stage-5-platform-config.ps1",
+    "scripts/verify-stage-5-packaging.mjs",
+    "tests/capacitor-build.test.mjs"
+  ],
+  "removed_paths_since_stage5_start": 0,
+  "application_page_Auth_MFA_business_SQL_or_package_code_changed_in_stage5": false,
+  "previous_stage0_4_progress_objects_preserved": true,
+  "previous_closed_stage5_1_to_4_objects_preserved": true,
+  "original_coverage_rows": 123,
+  "original_finding_definitions": 20,
+  "fresh_behavior_tests_run": 0,
+  "fresh_syntax_checks_run": 0,
+  "fresh_hosted_or_device_checks_run": 0,
+  "native_security_acceptance": false,
+  "real_dependency_bundle_native_compile_sign_install_upload_run": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "next_step": "6.1"
+}

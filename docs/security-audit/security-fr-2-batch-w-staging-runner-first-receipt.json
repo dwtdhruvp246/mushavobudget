@@ -1,0 +1,72 @@
+{
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "STAGING_ACCESS_REVIEW_REQUIRED",
+  "checks": {
+    "three_private_credentials_and_expected_roles_verified": true,
+    "created_sessions_local_logout_acknowledged": true
+  },
+  "accounts": {
+    "USER_A": {
+      "signin_HTTP_status": 200,
+      "confirmed_identity": true,
+      "active_profile": true,
+      "expected_platform_role": true,
+      "owned_workspace_counts": {
+        "personal": 1,
+        "family": 0,
+        "business": 0
+      }
+    },
+    "USER_B": {
+      "signin_HTTP_status": 200,
+      "confirmed_identity": true,
+      "active_profile": true,
+      "expected_platform_role": true,
+      "owned_workspace_counts": {
+        "personal": 1,
+        "family": 0,
+        "business": 0
+      }
+    },
+    "ADMIN": {
+      "signin_HTTP_status": 200,
+      "confirmed_identity": true,
+      "active_profile": true,
+      "expected_platform_role": true,
+      "owned_workspace_counts": {
+        "personal": 1,
+        "family": 0,
+        "business": 0
+      }
+    }
+  },
+  "API_requests": 18,
+  "created_sessions": 3,
+  "cleanup_sessions": 3,
+  "settings_or_finance_writes_requested": 0,
+  "production_changed": false,
+  "full_lettered_batch_W_complete": false,
+  "exit_code": 1,
+  "exercise": {
+    "case_id": "AU01.05",
+    "status": "REVIEW_REQUIRED",
+    "checks": {
+      "test_browser_context_closed": true
+    },
+    "duplicate_signup_requests_forwarded": 0,
+    "resend_requests_forwarded": 0,
+    "blocked_resend_attempts": 0,
+    "public_currency_reads": 1,
+    "refused_unplanned_requests": 0,
+    "service_workers": "blocked_for_network_interception",
+    "provider_429_exercised": false,
+    "actual_duplicate_signup_email_delivery_measured": false,
+    "problem_code": "DEPLOYED_SOURCE_IDENTITY_MISMATCH"
+  },
+  "problem_code": "DEPLOYED_SOURCE_IDENTITY_MISMATCH",
+  "run_plan": "2026-11-05-access-and-confirmation-01",
+  "source_commit": "8bf01c724eeae04c070a9d140a87b5cf1b0cb3bc",
+  "workflow_run_id": "41990926495",
+  "workflow_run_attempt": "1",
+  "public_configuration_requests": 1
+}

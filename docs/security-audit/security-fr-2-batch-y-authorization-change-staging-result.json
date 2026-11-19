@@ -1,0 +1,287 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "result": "REAL_POSTGRES_OVERLAPPING_STATUS_REVOCATION_AND_SAME_SESSION_ACCESS_SCOPED_PASS",
+  "plan_commit": "30f714c75c0fa6e8659fea8ad904534482dce2cb",
+  "run_commit": "df46ea27e2246a6db3f3550d25a5aad52b32b0da",
+  "workflow_run_id": "42414754959",
+  "workflow_guards": {
+    "run_id": "42414754959",
+    "job_id": "128530299839",
+    "tests": 176,
+    "pass": 176,
+    "fail": 0,
+    "exit_code": 0
+  },
+  "local_harness": {
+    "tests": 24,
+    "pass": 24,
+    "fail": 0,
+    "skipped": 0
+  },
+  "genuine_HTTP_runner": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "production_changed": false,
+    "exit_code": 0,
+    "exercise": {
+      "checks": {
+        "USER_A_REAL_SESSION_VALID": true,
+        "USER_B_REAL_SESSION_VALID": true,
+        "ADMIN_REAL_SESSION_VALID": true,
+        "BASELINE_SUSPENDED_VERSION_16": true,
+        "OWNER_BUSINESS_PERMISSION_BEFORE": true,
+        "SAME_TOKEN_BUSINESS_PERMISSION_AFTER": true,
+        "SAME_UNEXPIRED_SESSION_STILL_VALID": true,
+        "EXACT_FINAL_SUSPENDED_VERSION_18": true
+      },
+      "exercise_requests": 14,
+      "email_requests": 0,
+      "provider_push_requests": 0,
+      "finance_write_requests": 0,
+      "Auth_user_or_session_row_writes": 0,
+      "resume_attempted": true,
+      "fixture_suspended_verified": true,
+      "independent_Postgres_witness_required": true,
+      "active_window_started_at": "2026-11-07T21:12:52.687Z",
+      "suspension_acknowledged_at": "2026-11-07T21:13:28.769Z"
+    },
+    "full_lettered_batch_Y_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-07-batch-y-real-session-postgres-authorization-change",
+    "source_commit": "df46ea27e2246a6db3f3550d25a5aad52b32b0da",
+    "workflow_run_id": "42414754959",
+    "workflow_run_attempt": "1"
+  },
+  "independent_read_only_Postgres_witness": {
+    "after": {
+      "observed_at": "2026-11-07T21:13:34.909682+00:00",
+      "session_valid": true,
+      "platform_Admin": false,
+      "support_version": 18,
+      "workspace_status": "suspended",
+      "backend_fingerprint": "1aff474eec3e826d9fe4557ede21fcb6",
+      "business_permission": false,
+      "session_fingerprint": "a70e812ee3128a2678fd8a2c49d5d28b"
+    },
+    "before": {
+      "observed_at": "2026-11-07T21:12:54.863214+00:00",
+      "session_valid": true,
+      "platform_Admin": false,
+      "support_version": 17,
+      "workspace_status": "active",
+      "backend_fingerprint": "1aff474eec3e826d9fe4557ede21fcb6",
+      "business_permission": true,
+      "session_fingerprint": "a70e812ee3128a2678fd8a2c49d5d28b"
+    },
+    "claims": "MODELED_WITH_REAL_CURRENT_ORDINARY_AUTH_SESSION_AND_CONSERVATIVE_EXPIRY",
+    "project": "dczlddwbtgvfdujgcitb",
+    "exit_code": 0,
+    "same_backend": true,
+    "provider_requests": 0,
+    "same_real_session": true,
+    "concurrent_mutation": "SEPARATE_GENUINE_ADMIN_HTTP_REQUEST",
+    "transaction_isolation": "read committed",
+    "transaction_read_only": "on",
+    "committed_witness_writes": 0
+  },
+  "independent_cleanup": {
+    "checked_at": "2026-11-07T21:14:56.928059+00:00",
+    "admin_queue": 0,
+    "normal_queue": 0,
+    "catalog_active": true,
+    "catalog_matches": true,
+    "runner_sessions": 0,
+    "business_fixture": {
+      "seats": 1,
+      "status": "suspended",
+      "paid_through_at": "2026-11-08T00:00:00+00:00",
+      "support_version": 18,
+      "subscription_version": 15
+    }
+  },
+  "manual_Family_snapshot": {
+    "scope": "READ_ONLY_REFERENCE_STATE_AND_ORIGINAL_COLUMN_MANUAL_BASELINE",
+    "stage_step": "FR.2.2_CONVERSION_REFERENCE_SNAPSHOT",
+    "checked_UTC": "2026-11-07T21:16:22.146438+00:00",
+    "target_project": "dczlddwbtgvfdujgcitb",
+    "hosted_acceptance": false,
+    "record_consistency": {
+      "records_total": 5,
+      "null_record_workspaces": 0,
+      "records_without_parent": 0,
+      "parent_workspace_mismatches": 0,
+      "mismatches_matching_prior_audit_item_shape": 0
+    },
+    "reference_FK_present": true,
+    "transaction_read_only": "on",
+    "conversion_consistency": {
+      "conversions_without_record": 2,
+      "record_workspace_mismatches": 0,
+      "payment_record_conversions_total": 7,
+      "unlinked_rows_matching_audit_owner_usd1_identity_shape": 2
+    },
+    "reference_FK_validated": false,
+    "application_routines_invoked": 0,
+    "synthetic_actor_rows_matched": 2,
+    "retained_manual_snapshot_sha256": "d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3",
+    "generated_reference_column_present": true,
+    "retained_family_fixture_names_matched": 2,
+    "raw_rows_identifiers_or_emails_printed": false,
+    "project_selection_independently_verified": false,
+    "historical_rows_repaired_or_conversions_deleted": false,
+    "audit_shape_is_provenance_or_cleanup_authorization": false,
+    "retained_family_manual_USD1_rows_matching_full_scope": 2,
+    "manual_baseline_excludes_only_derived_payment_record_ref": true
+  },
+  "original_Business_snapshot": {
+    "scope": "READ_ONLY_POST_API_BUSINESS_COUNTS_RETAINED_FINGERPRINTS_AND_CONVERSION_CONSISTENCY",
+    "stage_step": "FR.2.3_BUSINESS_POST_BATCH_REVIEW",
+    "checked_UTC": "2026-11-07T21:16:24.106517+00:00",
+    "business_state": [
+      {
+        "fixture": "PRIMARY",
+        "paid_claims": 1,
+        "draft_claims": 1,
+        "builtin_roles": 6,
+        "draft_budgets": 1,
+        "active_members": 1,
+        "approved_claims": 1,
+        "inactive_members": 1,
+        "member_overrides": 0,
+        "workspace_active": true,
+        "active_custom_roles": 3,
+        "pending_invitations": 0,
+        "accepted_invitations": 1,
+        "archived_custom_roles": 2,
+        "cancelled_invitations": 2,
+        "reminders_and_fx_disabled_usd": true
+      },
+      {
+        "fixture": "SECONDARY",
+        "paid_claims": 0,
+        "draft_claims": 0,
+        "builtin_roles": 6,
+        "draft_budgets": 0,
+        "active_members": 1,
+        "approved_claims": 2,
+        "inactive_members": 0,
+        "member_overrides": 0,
+        "workspace_active": true,
+        "active_custom_roles": 0,
+        "pending_invitations": 0,
+        "accepted_invitations": 0,
+        "archived_custom_roles": 0,
+        "cancelled_invitations": 0,
+        "reminders_and_fx_disabled_usd": true
+      }
+    ],
+    "target_project": "dczlddwbtgvfdujgcitb",
+    "findings_closed": [],
+    "hosted_acceptance": false,
+    "record_consistency": {
+      "records_total": 5,
+      "null_record_workspaces": 0,
+      "records_without_parent": 0,
+      "parent_workspace_mismatches": 0,
+      "mismatches_matching_prior_audit_item_shape": 0
+    },
+    "cleanup_authorization": false,
+    "transaction_read_only": "on",
+    "conversion_consistency": {
+      "conversions_without_record": 2,
+      "record_workspace_mismatches": 0,
+      "payment_record_conversions_total": 7,
+      "unlinked_rows_matching_audit_owner_usd1_identity_shape": 2
+    },
+    "reference_FK_validated": false,
+    "matched_business_scopes": 2,
+    "retained_old_audit_events": 3,
+    "retained_old_audit_sha256": "74cbb242ff9a95d17858459699e5eeb57672b1bec870b33b251539dcee3ce6a2",
+    "application_routines_invoked": 0,
+    "retained_old_permission_rows": 2,
+    "synthetic_actor_rows_matched": 2,
+    "all_business_workspaces_total": 5,
+    "retained_manual_snapshot_sha256": "d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3",
+    "retained_old_permissions_sha256": "fb1812e78849d04b443c3f1de4792873730a5e1199826dddd46c438ef61d9f65",
+    "retained_old_role_active_members": 0,
+    "retained_old_role_pending_invitations": 0,
+    "retained_old_audit_fingerprint_matches": true,
+    "project_selection_independently_verified": false,
+    "rows_accounts_settings_or_catalog_changed": false,
+    "retained_old_role_fingerprint_rows_matched": 1,
+    "retained_old_permissions_fingerprint_matches": true,
+    "retained_manual_original_column_baseline_matches": true,
+    "raw_rows_identifiers_emails_or_credentials_printed": false,
+    "retained_family_manual_USD1_rows_matching_full_scope": 2,
+    "manual_baseline_excludes_only_derived_payment_record_ref": true
+  },
+  "interpretation": "The same open real READ COMMITTED transaction observed a separate genuine Admin HTTP commit; the same real ordinary session stayed valid while Business permission changed true to false. Genuine ordinary HTTP independently confirmed denial with the same token.",
+  "limits": [
+    "SQL role claims use a real current session and conservative modeled expiry; no JWT signature validation inside SQL is claimed.",
+    "Only the controlled synthetic Business workspace was suspended; two supported status/audit/history entries remain."
+  ],
+  "exact_final_fixture": {
+    "status": "suspended",
+    "support_version": 18,
+    "subscription_version": 15,
+    "seats": 1,
+    "paid_through_at": "2026-11-08T00:00:00Z"
+  },
+  "new_Auth_user_or_session_row_writes": 0,
+  "created_sessions": 3,
+  "locally_logged_out_sessions": 3,
+  "emails": 0,
+  "pushes": 0,
+  "financial_or_subscription_or_role_writes": 0,
+  "production_changed": false,
+  "full_batch_Y_complete_by_this_receipt_alone": false,
+  "stage_3_complete": false,
+  "findings_closed": [],
+  "exit_code": 0,
+  "archived_date": "2026-11-08"
+}

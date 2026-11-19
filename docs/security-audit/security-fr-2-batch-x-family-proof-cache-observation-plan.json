@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "scope": "family-proof-path-binding",
+  "fixture_name": "audit-family-proof-policy-20261107",
+  "case_ids": [
+    "X_FAMILY_PROOF_OWNER_MEMBER",
+    "X_FAMILY_PROOF_PATH_DENIALS",
+    "X_FAMILY_PROOF_REMOVAL",
+    "X_FAMILY_PROOF_CLEANUP",
+    "X_FAMILY_PROOF_CDN_OBSERVATION"
+  ],
+  "revocation_mode": "ORIGIN_DENIAL_WITH_CACHED_COPY_OBSERVATION",
+  "source_parent_commit": "e0042968bdd777ca1006636cce3dcdd852bf6a9d",
+  "prior_review": "docs/security-audit/security-fr-2-batch-x-family-proof-initial-hosted-review.json",
+  "reason": "The first real run passed legitimate owner/member/Personal uploads and all path spoof/anonymous/removed upload checks, then stopped at a warmed authenticated read after member removal. Cleanup succeeded.",
+  "bounded_observation": [
+    "Record only status, cache-control/CF cache status/age/vary/content-type and match to the harmless PNG; never record tokens or signed URLs.",
+    "After normal member removal verify genuine B session remains valid and is_active_family_participant returns false.",
+    "Require a new cacheNonce authenticated request and a new signing request to be denied.",
+    "Record the original warmed URL outcome separately; a retained cached copy is carry-forward file delivery work and does not close the original immediate-revocation assertion.",
+    "Use a fresh instance of the same exact empty fixture after confirmation. All attempted objects, the Family/workspace and new sessions must be removed."
+  ],
+  "limits": {
+    "core_requests": 24,
+    "exercise_requests": 60,
+    "successful_harmless_files": 3,
+    "email_or_provider_requests": 0
+  },
+  "provider_references": [
+    "https://supabase.com/kb/troubleshooting/storage-private-bucket-files-still-accessible-after-remove-access-or-logout",
+    "https://supabase.com/docs/guides/storage/cdn/smart-cdn",
+    "https://supabase.com/docs/reference/javascript/file-buckets-download"
+  ],
+  "production_changed": false,
+  "full_batch_X_complete": false
+}

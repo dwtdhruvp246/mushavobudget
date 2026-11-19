@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-15",
+  "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Business upload lifecycle",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "BUSINESS_UPLOAD_LIFECYCLE_CANDIDATE_SCOPED_PASS",
+  "candidate_commit": "e2289ee9f28f1cb5ba60a6b141256df33cc4ece7",
+  "prior_attachment_checkpoint": "41293e2826114a7f7a68c75ce3c17f461a58d408",
+  "disposable_postgres": {
+    "run_id": 43690788774,
+    "job_id": 132740805900,
+    "result": "BUSINESS_UPLOAD_LIFECYCLE_DISPOSABLE_POSTGRES_PASS",
+    "postgres": "17.6 (Debian 17.6-2.pgdg12+1)",
+    "checks": [
+      "service-only database functions and manifest",
+      "immutable reservation and exact quota boundary",
+      "capacity blocks a second in-flight upload and permits it after registration",
+      "transaction rollback keeps an uncommitted registration eligible for cleanup",
+      "worker retains an unconfirmed removal and frees capacity only after absence is confirmed",
+      "a late Storage write is rediscovered after cleanup has finished",
+      "an older document reference prevents orphan cleanup",
+      "parallel PostgreSQL sessions serialize reservations for the same workspace",
+      "repeatable-read reservations fail closed on a stale snapshot",
+      "cleanup workers skip a leased row while it is locked by another worker",
+      "registration in progress is invisible to cleanup and survives commit",
+      "unsafe cleanup responses never reach the file removal adapter"
+    ],
+    "exit_code": 0
+  },
+  "upload_handler_checks_passed": 4,
+  "local_regression_checks_passed": 107,
+  "staging_database_rollback_witness": {
+    "quota_and_cleanup_passed": true,
+    "service_execute": true,
+    "authenticated_execute": false
+  },
+  "independent_rollback_readback": {
+    "lifecycle_schema_absent": true,
+    "lifecycle_trigger_absent": true,
+    "catalog_matches": true,
+    "attachment_gate": false,
+    "fixture_objects": 0
+  },
+  "staging_upload_reservations_enabled": false,
+  "staging_cleanup_worker_enabled": false,
+  "hosted_storage_lifecycle_verified": false,
+  "retained_synthetic_claim_bill_supplier": true,
+  "full_FR_3_2_complete": false,
+  "exit_code": 0
+}

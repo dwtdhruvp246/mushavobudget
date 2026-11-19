@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "stage_step": "4.1.2",
+  "scope": "FR33_OWNER_APPROVED_SCHEDULE_PENDING_VERIFIED_IMPLEMENTATION",
+  "source_commit": "6b0f30c116ecb4fdddbf43b4ccd3671cbaf3e622",
+  "approved": false,
+  "operator_facts_verified": false,
+  "operator_audience_territories": [
+    "worldwide"
+  ],
+  "categories": {
+    "identity": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "personal": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "shared_finance": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "invitations_support": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "telemetry_devices": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "storage": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "processors_backups": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    },
+    "completion_record": {
+      "approved": false,
+      "disposition": null,
+      "decision_id": null,
+      "purpose": null,
+      "grounds": null,
+      "expiry_rule": null,
+      "access_rule": null,
+      "notice_version": null
+    }
+  },
+  "owner_action_requested": false,
+  "hosted_execution_authorized": false,
+  "note": "The owner approved the FR.3.3 retention schedule. The hosted execution gate remains pending verified operator facts, retention enforcement, privacy notice and production service readiness.",
+  "owner_direction": {
+    "recorded_on": "2026-11-18",
+    "records_to_keep_after_account_deletion": [
+      "platform invoices",
+      "subscription payment records",
+      "subscription payment proofs",
+      "support tickets and messages"
+    ],
+    "requested_retention": "indefinite",
+    "purpose_as_reported_by_owner": "Preserve records needed for platform operations.",
+    "worldwide_identifiable_retention_rule_verified": false
+  },
+  "owner_schedule_approval": {
+    "decision": "approved",
+    "recorded_on": "2026-11-18",
+    "approved_schedule_revision": "04bf25ff78ca6b55fdc37759076b7ae7439e78f0",
+    "schedule_path": "docs/security-audit/SECURITY_FR_3_3_RETENTION_SCHEDULE_DRAFT.md",
+    "accounting_baseline_years": 6,
+    "closed_support_months": 24,
+    "non_accounting_proof_review_months": 12,
+    "operational_telemetry_days": 90,
+    "completed_erasure_receipt_months": 12,
+    "controlled_backup_max_days": 30,
+    "preserve_anonymized_history": true
+  },
+  "retention_implementation": {
+    "staging_closed_support_and_receipts": "REHEARSED_PROCESSOR_DISABLED",
+    "staging_support_archive_access": "DATABASE_AUTHORIZATION_REHEARSED",
+    "staging_billing_retention": "CLOSED_ARCHIVE_STORAGE_EXPIRY_REHEARSED_PROCESSOR_DISABLED",
+    "production_rollout": "DEPENDENCIES_AND_OPERATIONAL_FACTS_PENDING",
+    "operator_facts_needed": [
+      "operating entity and applicable Zimbabwe tax registrations",
+      "Mushavo's confirmed financial year-end and applicable accounting and VAT record dates",
+      "actual provider and backup retention"
+    ]
+  },
+  "operator_planning_context": {
+    "recorded_on": "2026-11-19",
+    "planned_registration_country": "ZW",
+    "registration_status": "planned",
+    "accounting_year_end_preview": "12-31",
+    "financial_year_end_confirmed": false,
+    "accounting_year_end_basis": "31 December used for planned rollout and staging; verified company fiscal periods required for actual invoice reviews"
+  }
+}

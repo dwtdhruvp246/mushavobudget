@@ -1,0 +1,7 @@
+# Batch H complete: staging database installed and quarantined
+
+22 October 2026, FRE133. The [owner receipt](security-fr-2-email-batch-h-owner-pass.json) at17:16:45.624Z reports eight hosted requests, one accepted installation POST, independent readback, matching final provider target and exit0. The committed QUARANTINED state is observed; installation write uncertainty is false.
+
+Readback establishes148 guarded RPCs,82 restrictive policies (81 public,1 storage),5 forced-RLS private backend tables, denied API-role backend schema access and an exact version-specific private installer catalog. No application row was explicitly read/written by Batch H. No resume/recovery, authenticated gateway, email/push/FX, production/native or deployment action is reported. The separate owner offline verifier JSON was not supplied; no new owner test count or Node version is inferred. The prior29-case local receipt remains separate historical evidence.
+
+**Do not repeat Batch H installation.** The current committed controls are already installed. [Batch I](SECURITY_FR_2_4_BATCH_I_HANDOFF.md) combines the next controlled one-account Auth/email-code probe with a recovery transaction that always rolls back and selected-session cleanup. Application access remains closed; genuine active-state HTTP, browser/device, cross-account and release acceptance remain pending. Findings, production/native/store release and APK update remain open/deferred.

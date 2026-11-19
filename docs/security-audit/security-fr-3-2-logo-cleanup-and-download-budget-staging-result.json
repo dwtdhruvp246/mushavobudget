@@ -1,0 +1,90 @@
+{
+  "stage": "4/10",
+  "final_remediation": "FR.3/8",
+  "step": "FR.3.2",
+  "status": "OPEN",
+  "production_changed": false,
+  "logo_cleanup": {
+    "workflow": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43730473635",
+    "checks": {
+      "EXACT_SUSPENDED_LOGO_FIXTURE": true,
+      "FIXTURE_ACTIVATED": true,
+      "EXACT_EMPTY_BRANDING_FIXTURE": true,
+      "UNSIGNED_CLEANUP_DENIED": true,
+      "VALIDATED_FIRST_LOGO_WRITTEN": true,
+      "FIRST_LOGO_SAVED": true,
+      "FIRST_LOGO_RETRIEVED": true,
+      "VALIDATED_REPLACEMENT_WRITTEN": true,
+      "FIRST_LOGO_LINKED_BEFORE_REPLACEMENT": true,
+      "REPLACEMENT_COMMITTED": true,
+      "PREVIOUS_LOGO_STILL_EXISTS_AFTER_REPLACEMENT": true,
+      "REPLACEMENT_REMAINS_LINKED": true,
+      "SCHEDULER_REMOVED_PREVIOUS_LOGO": true,
+      "SCHEDULER_PRESERVED_CURRENT_LOGO": true,
+      "UNRELATED_ACCOUNT_CANNOT_READ_CURRENT_LOGO": true,
+      "SCHEDULER_REMOVED_FINAL_TEST_LOGO": true,
+      "BRANDING_FIXTURE_RESTORED": true,
+      "BUSINESS_FIXTURE_RESUSPENDED": true,
+      "BUSINESS_SUSPENSION_READBACK": true
+    },
+    "requests": 34,
+    "exit_code": 0,
+    "prior_attempts": [
+      {
+        "workflow": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43729799184",
+        "result": "Test fixture encoding failed before the exercise"
+      },
+      {
+        "workflow": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43729896383",
+        "result": "Scheduled invocation had not reached the Edge Function before runner timeout"
+      }
+    ],
+    "default_enabled_on_staging": true,
+    "grace_seconds": 3600,
+    "schedule": "* * * * *",
+    "rollback_enrollment_and_relink_guard_passed": true,
+    "removed_synthetic_logos": 4
+  },
+  "shared_download_quota": {
+    "workflow": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43730403569",
+    "requests_per_account_per_minute": 60,
+    "bytes_per_account_per_minute": 67108864,
+    "staged_downloads": 2,
+    "staged_cross_account_denials": 2,
+    "exit_code": 0,
+    "local_broker_tests": 38,
+    "local_sql_buckets": 4,
+    "edge_function_version": 7
+  },
+  "final_readback": {
+    "catalog_sha256": "757155d4b82e51fab557a5990348a5ca64ad953eee7d2b1fc2a483f87e0aa6e0",
+    "catalog_matches": true,
+    "logo_rollout_enabled": true,
+    "pending_logo_cleanup": false,
+    "scheduled_logo_removals": 4,
+    "logo_objects": 0,
+    "retained_subscription_proofs": 7,
+    "receipt_storage_missing": 0,
+    "pending_trial_payments": 0,
+    "admin_outbox": 0,
+    "notification_outbox": 0,
+    "business_fixture": {
+      "status": "suspended",
+      "business_support_version": 60,
+      "version": 29,
+      "logo_storage_path": null,
+      "paid_through_at": "2026-11-14 00:00:00+00",
+      "subscription_version": 1
+    }
+  },
+  "remaining": [
+    "Ordinary upload routing for payment proofs, subscription proofs, Business documents, and Business logos still needs trusted validation.",
+    "Ordinary upload reservations and orphan reconciliation are not rolled out. Current proof UI accepts up to 10 MiB. The selected trusted proof validator is limited to 2 MiB."
+  ],
+  "ordinary_upload_cutover_probe": {
+    "valid_synthetic_pdf_size": 3687731,
+    "regular_client_limit": 10485760,
+    "trusted_limit": 2097152,
+    "compatibility_regression_confirmed": true
+  }
+}

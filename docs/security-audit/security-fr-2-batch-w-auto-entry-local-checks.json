@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-27",
+  "stage_step": "FR.2.5.W35_RECOVERY_CODE_VERIFIED_AUTOMATIC_APP_ENTRY",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "TARGETED_AUTH_AND_AUTO_ENTRY_PACKAGE_64_OF_64_PASS",
+  "source_parent_commit": "90f992f168847aee897f47feca6a411f57b1149d",
+  "source_pin": "5fce41918705643b3c80219b421cdaf66b74a61d",
+  "command": "node --require ./scripts/offline-test-network.cjs --test ./tests/stage-3-auth-page.test.mjs ./tests/stage-3-auth-flows.test.mjs ./tests/fr-2-auto-entry-package.test.mjs",
+  "tests": 64,
+  "passed": 64,
+  "failed": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "coverage": [
+    "40 existing auth flow/controller checks",
+    "19 real-page DOM fixture checks: automatic recovery, wrong code, missing proof, actor/bearer switch, adoption/destination retry, Business explicit choice and duplicate-event handling",
+    "5 package checks: source manifest, exact three-file patch with 41 preserved entries/input, invalid replacement refusal, canonical ZIP corruption refusal and unknown-input CLI refusal"
+  ],
+  "syntax_checks_passed": 6,
+  "source_manifest_files": 17,
+  "initial_fixture_failure_corrected": "Business-new fixture must complete its existing initial verification before password entry; test sequence corrected without relaxing the production behavior.",
+  "accepted_owner_ZIP_positive_packaging_run_locally": false,
+  "synthetic_canonical_ZIP_roundtrip_verified": true,
+  "owner_actual_ZIP_preparation_and_portable_readback_pending": true,
+  "Windows_dotNET_ZIP_readback_verified": false,
+  "limitations": [
+    "DOM fixtures and mocked Auth/gateway/proof results do not reproduce a live Supabase, gateway or real browser.",
+    "The accepted owner ZIP is on Windows, so actual input archive patch/readback remains pending.",
+    "Dashboard entry and current server deadline were not independently verified."
+  ],
+  "prior_194_window_12_profile_14_suites_retained_not_rerun": true,
+  "new_public_AU_cases_added": 0,
+  "actual_hosted_requests": 0,
+  "real_email_requests": 0,
+  "settings_SQL_or_account_writes": 0,
+  "frontend_uploaded": false,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-30",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "OWNER_FOUR_SQL_RESULTS_SUCCESS_TERMINAL_STOP_BEFORE_DENIAL_RPC",
+  "original_runtime_commit": "23a4b707421313c5aea2cfab9ab2b4583afb0a59",
+  "repair_source_commit": "67d4661e83707d52ab0778cee27ba33a3b7c349d",
+  "owner_repair_terminal_JSON_received": false,
+  "owner_SQL_results": [
+    {
+      "safe_result": {
+        "result": "EXPIRED_FIXTURE_READY",
+        "email_requests": 0,
+        "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+        "hosted_denial_acceptance": false,
+        "settings_or_profile_writes": 0
+      }
+    },
+    {
+      "safe_result": {
+        "result": "CANCELLED_FIXTURE_READY",
+        "email_requests": 0,
+        "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+        "hosted_denial_acceptance": false,
+        "settings_or_profile_writes": 0
+      }
+    },
+    {
+      "safe_result": {
+        "result": "REPLACED_STATE_FIXTURE_READY",
+        "email_requests": 0,
+        "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+        "hosted_denial_acceptance": false,
+        "settings_or_profile_writes": 0
+      }
+    },
+    {
+      "safe_result": {
+        "result": "TEMPORARY_INVITATION_FIXTURE_ABSENT",
+        "email_requests": 0,
+        "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+        "hosted_denial_acceptance": false,
+        "settings_or_profile_writes": 0
+      }
+    }
+  ],
+  "owner_terminal_safe_JSON": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+    "result": "UNAVAILABLE_ADMIN_INVITATION_REVIEW_REQUIRED",
+    "checks": {
+      "real_distinct_recipient_and_super_admin_verified": true,
+      "complete_cleanup_SQL_prepared_before_fixture": true,
+      "created_sessions_cleaned_up": false
+    },
+    "variants": {},
+    "actual_hosted_requests": 14,
+    "manual_SQL_dashboard_requests_measured": false,
+    "real_email_requests": 0,
+    "completion_RPC_calls": 0,
+    "valid_first_provisioning_requested": false,
+    "unprovisioned_fixture_completion_denial_attempts": 0,
+    "settings_or_existing_account_writes_requested": 0,
+    "fixture_SQL_steps_acknowledged": 2,
+    "created_sessions": 2,
+    "cleanup_sessions": 0,
+    "fixture_cleanup_required": true,
+    "full_lettered_batch_W_complete": false,
+    "exit_code": 1,
+    "problem_code": "EXACT_UNPROVISIONED_FIXTURE_NOT_VERIFIED",
+    "cleanup_problem_code": "FIXTURE_CLEANUP_NOT_VERIFIED",
+    "session_cleanup_problem_code": "SCOPED_SESSION_CLEANUP_NOT_VERIFIED",
+    "source_hashes_verified": 8,
+    "retained_staging_ZIP_verified": true
+  },
+  "terminal_requested_phases": [
+    "expired",
+    "cleanup"
+  ],
+  "all_three_test_phases_requested_by_terminal": false,
+  "owner_SQL_reports_all_four_phases": true,
+  "ordering_between_SQL_runs_and_first_DONE_independently_established": false,
+  "terminal_error_HTTP_status_or_response_shape_received": false,
+  "SQL_fixture_cleanup_owner_reported": true,
+  "API_fixture_cleanup_verified": false,
+  "Auth_session_cleanup_verified": false,
+  "root_cause_established": false,
+  "expired_access_token_cause_established": false,
+  "actual_wrong_recipient_or_unavailable_invitation_denials_executed": false,
+  "AU02_04_accepted": false,
+  "prior_AU02_01_02_03_05_idempotence_and_Business_results_retained": true,
+  "next_step_read_only_state_diagnostic": "supabase/diagnostics/security_fr_2_5_unavailable_invitation_post_stop.sql",
+  "no_additional_fixture_or_login_requested": true,
+  "no_broad_session_revocation_requested": true,
+  "assistant_application_Auth_SQL_or_email_requests": 0,
+  "full_lettered_batch_W_complete": false,
+  "V_complete": false
+}

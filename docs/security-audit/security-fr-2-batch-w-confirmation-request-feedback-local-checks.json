@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-01",
+  "source_parent_commit": "e05929414a3e49229d6cacbe608182159bd1fa3a",
+  "stage_step": "FR.2.5.AU01.05_CONFIRMATION_REQUEST_FAILURE_FEEDBACK_FIX",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "LOCAL_CONFIRMATION_REQUEST_FEEDBACK_AND_PACKAGE_13_PASS_NOT_DEPLOYED",
+  "defect": "SDK network and server errors were replaced by neutral inbox guidance. The request form now shows safe retry feedback for operational failures while retaining uniform account-state responses.",
+  "runtime": "Node v24.22.1",
+  "original_source_baseline": {
+    "tests": 9,
+    "pass": 6,
+    "fail": 3,
+    "failures": "SDK network/server failure guidance, retry after network failure, shared recovery-request network/server failure guidance"
+  },
+  "initial_VM_object_realm_assertion_issue_corrected_before_baseline": true,
+  "new_local_tests": 13,
+  "pass": 13,
+  "fail": 0,
+  "groups": {
+    "actual_submit_handler_VM_with_SDK_shaped_results": 9,
+    "package_integrity_and_real_portable_ZIP_readback": 4
+  },
+  "syntax_checks": 4,
+  "exit_code": 0,
+  "source_hashes": {
+    "auth-flows.js": "1bded7699dbc6e2c2e790465e13b0c0f73a40c5a4f28dd5244caf791dd6d3949",
+    "auth.html": "29e216592f62950ba0725db2adac7bb4f57d092d1e6570afae2b56ede074a244",
+    "scripts/prepare-confirmation-request-retry.mjs": "9742e22413bff213ea7bdf7db492f4eb88556f7fd1c7c13246900197e871445f",
+    "scripts/lib/read-public-zip.mjs": "028781910dc28e64d1bb5c02af7a8d26e9f345d4b82f6f1c35f26e14673ff2b0",
+    "scripts/lib/store-public-zip.mjs": "81eae2723285b56e321141512c2b6311777397f5b84853badcee9f60af3706aa",
+    "tests/confirmation-request-feedback.test.mjs": "bd171b22188caa0e3f3e46ae956adaa0c7aac3464cd09b603664a71e8aae900d",
+    "tests/confirmation-request-retry-package.test.mjs": "2d95b763aaf6ae50a9d23c1e9c6b80a6f3755badb8ff6a32b845a408d0b84380"
+  },
+  "public_before_SHA256": {
+    "auth-flows.js": "3bf445e67347e57f4f746e22baaa16866fd3ecb5570342d729fed8bbe4c47720",
+    "auth.html": "966e2b8e7a10c429c134fb2fa44a83f112c3ae0ca8db118baeb3cbe6a5c8f1dc"
+  },
+  "public_after_SHA256": {
+    "auth-flows.js": "1bded7699dbc6e2c2e790465e13b0c0f73a40c5a4f28dd5244caf791dd6d3949",
+    "auth.html": "29e216592f62950ba0725db2adac7bb4f57d092d1e6570afae2b56ede074a244"
+  },
+  "public_entry_count": 42,
+  "changed_public_entries": [
+    "auth-flows.js",
+    "auth.html"
+  ],
+  "preserved_public_entries": 40,
+  "synthetic_ZIP_readback_verified": true,
+  "real_owner_retained_ZIP_available_to_assistant": false,
+  "real_owner_ZIP_prepared": false,
+  "Windows_dotNET_readback_verified": false,
+  "source_and_input_tampering_refused_before_output": true,
+  "operational_failure_cases": [
+    "SDK status0",
+    "SDK AuthRetryableFetchError",
+    "HTTP500",
+    "HTTP503",
+    "thrown transport error"
+  ],
+  "privacy_cases": "Account-state 400/422 errors retain the same neutral response and omit raw provider details.",
+  "existing_rate_response_and_60_second_UI_cooldown_preserved": true,
+  "real_provider_rate_limit_or_quota_exercised": false,
+  "server_settings_SQL_and_policy_changes": 0,
+  "assistant_application_Auth_or_email_requests": 0,
+  "frontend_uploaded": false,
+  "AU01_05_hosted_verified": false,
+  "full_lettered_batch_W_complete": false,
+  "V_complete": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

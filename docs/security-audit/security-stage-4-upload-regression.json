@@ -1,0 +1,35 @@
+{
+  "stage_step": "4.2.2",
+  "scope": "SELECTED_EXISTING_LOCAL_SOURCE_AND_VM_REGRESSION_TESTS",
+  "node_version": "v24.19.0",
+  "tests": 36,
+  "pass": 36,
+  "fail": 0,
+  "skipped": 0,
+  "todo": 0,
+  "cancelled": 0,
+  "exit_code": 0,
+  "test_files": [
+    "tests/dashboard-completed-payment.test.mjs",
+    "tests/business-stage-5.test.mjs",
+    "tests/business-stage-6.test.mjs",
+    "tests/business-stage-11.test.mjs",
+    "tests/business-stage-12.test.mjs",
+    "tests/family-extra-places.test.mjs",
+    "tests/session-recovery.test.mjs"
+  ],
+  "file_sha256": {
+    "tests/dashboard-completed-payment.test.mjs": "992eabdf6ff2ad35e8a255157cfc8975b7d894dbc635643d09b84b7d5ec5a754",
+    "tests/business-stage-5.test.mjs": "e02ae6f5dbed49d4a273e21b3b659c63e0da510fce90546552d5031de4f1e029",
+    "tests/business-stage-6.test.mjs": "e2f4b05209bafd4d605cde07a3700eb0d70dc153e4b08d02d73f07df74a17e03",
+    "tests/business-stage-11.test.mjs": "12ba6eada142da2f5a089aa46e52f50261a0b7d56128ffd4ad325e2794e62a13",
+    "tests/business-stage-12.test.mjs": "d6cad015cbf5da6f7b4c83dda52f9507df581438c9c609e31072a5ef1eaaa818",
+    "tests/family-extra-places.test.mjs": "65cf5269617d156085a55f3539c4cea4bf35329f3cc599e56a61692c535e8657",
+    "tests/session-recovery.test.mjs": "e6de34f789657bb6c8aedd975e1f27e07ea4329d6588d46e73d8f1fcec81406e",
+    "app.js": "eb4222245c6d75bf3708335d6c5f24c942c62715d3ce0afdf7d79cb3777cb6f6",
+    "business.js": "6754f92c72399bf45ea849ef692318a6d88a227a413b552a6ca50ee9e1b98f6f"
+  },
+  "hosted_checks_run": 0,
+  "candidate_deployed": false,
+  "findings_closed": []
+}

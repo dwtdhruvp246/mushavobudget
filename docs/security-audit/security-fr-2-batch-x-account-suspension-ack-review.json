@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "result": "RUNNER_VOID_ACKNOWLEDGEMENT_REVIEW_ACCOUNT_RESTORED",
+  "product_defect_established": false,
+  "workflow_run_id": "42355118392",
+  "workflow_job_id": "128351409897",
+  "source_commit": "142a6008e1840390ca7c4f23fa41ead0ae444973",
+  "offline_checks": 46,
+  "offline_pass": 46,
+  "hosted_report": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+    "result": "STAGING_ACCESS_REVIEW_REQUIRED",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "production_changed": false,
+    "exit_code": 1,
+    "exercise": {
+      "checks": {
+        "TARGET_INITIAL_SESSION_VALID": true,
+        "OTHER_INITIAL_SESSION_VALID": true,
+        "ADMIN_INITIAL_SESSION_AUTHORIZED": true,
+        "BOTH_PERSONAL_BASELINES_PRESENT": true,
+        "TARGET_INITIAL_ACTIVE": true,
+        "ORDINARY_CANNOT_SUSPEND_TARGET": true,
+        "ORDINARY_DENIAL_PRESERVED_ACTIVE": true,
+        "ADMIN_SUSPENSION_ACKNOWLEDGED": false,
+        "ADMIN_RESTORATION_ACKNOWLEDGED": false,
+        "TARGET_ACTIVE_AFTER_CLEANUP": true,
+        "SAME_SESSION_VALID_AFTER_RESTORE": true,
+        "TARGET_WORKSPACES_RESTORED_EXACTLY": true
+      },
+      "exercise_requests": 14,
+      "status_write_requests": 3,
+      "email_requests": 0,
+      "provider_requests": 0,
+      "finance_write_requests": 0,
+      "suspension_attempted": true,
+      "restoration_attempted": true,
+      "restored_active_verified": true
+    },
+    "problem_code": "ACCOUNT_SUSPENSION_ADMIN_RESTORATION_ACKNOWLEDGED_REQUIRED",
+    "full_lettered_batch_X_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-07-batch-x-account-suspension",
+    "source_commit": "142a6008e1840390ca7c4f23fa41ead0ae444973",
+    "workflow_run_id": "42355118392",
+    "workflow_run_attempt": "1"
+  },
+  "independent_readback": {
+    "target_active": true,
+    "catalog_matches": true,
+    "matched_account": 1,
+    "security_version": 1,
+    "remaining_CI_sessions": 0,
+    "profile_hash_except_update_time": "425b1fdb570ffaa68c26ea25178fd13e"
+  },
+  "compensating_SQL_used": false,
+  "next_step": "Fresh bounded run after accepting 200 or 204 plus independent status readback for the supported void RPC; do not rerun the original workflow.",
+  "exit_code": 1
+}

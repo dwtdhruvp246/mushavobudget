@@ -1,0 +1,66 @@
+{
+  "received_date": "2026-10-21",
+  "handoff_commit": "ade14955002b1492e493accabcd3541d8346b012",
+  "evidence_source": "OWNER_PASTED_SAFE_PRIVATE_RUNNER_RESULT",
+  "receipt": {
+    "stage_step": "FR.2.4.E5.10_EDGE_METADATA_INVENTORY",
+    "diagnostic_revision": 2,
+    "result": "STAGING_EDGE_METADATA_REVIEW_REQUIRED",
+    "requests_attempted": 2,
+    "fixed_staging_project_metadata_matched": true,
+    "fixed_staging_database_host_matched": true,
+    "selected_function_count": 4,
+    "observed_total_function_count": 1,
+    "selected_functions": [],
+    "function_list_observations": [
+      {
+        "observation": "BEFORE",
+        "total_functions": 1,
+        "selected_functions": [
+          {"slug": "invite-admin-user", "present": false, "status_is_ACTIVE": false},
+          {"slug": "invite-business-member", "present": false, "status_is_ACTIVE": false},
+          {"slug": "send-test-push", "present": false, "status_is_ACTIVE": false},
+          {"slug": "sync-exchange-rates", "present": false, "status_is_ACTIVE": false}
+        ]
+      }
+    ],
+    "selected_metadata_agreed_across_list_detail_list": false,
+    "selected_metadata_SHA256": null,
+    "deployment_source_parity_verified": false,
+    "previous_deployable_artifacts_retained": false,
+    "runtime_JWT_or_service_access_verified": false,
+    "token_permission_scope_independently_inspected": false,
+    "future_installation_target_or_privileges_verified": false,
+    "database_or_SQL_endpoint_used": false,
+    "application_rows_read": false,
+    "Edge_functions_invoked": 0,
+    "function_bodies_or_secrets_requested": false,
+    "raw_provider_bodies_paths_or_identifiers_printed": false,
+    "token_saved_to_disk_or_environment": false,
+    "ZIP_DPAPI_or_saved_application_keys_accessed": false,
+    "settings_or_deployments_changed": false,
+    "email_or_push_dispatched": false,
+    "uploaded_or_deployed": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "samples": [
+      {"endpoint": "STAGING_PROJECT_METADATA", "http_status": 200, "JSON_received": true},
+      {"endpoint": "STAGING_FUNCTION_LIST_BEFORE", "http_status": 200, "JSON_received": true}
+    ],
+    "checkpoint": "STAGING_FUNCTION_LIST_BEFORE",
+    "problem_code": "SELECTED_FUNCTION_MISSING_OR_INACTIVE",
+    "exit_code": 1,
+    "checked_UTC": "2026-10-21T16:53:29.846Z",
+    "source_hashes_verified": 18
+  },
+  "terminal_exit_code": 1,
+  "specific_missing_or_inactive_function_identified": true,
+  "all_four_selected_functions_absent_from_returned_list": true,
+  "other_observed_function_count": 1,
+  "other_function_identity_status_source_and_configuration_not_supplied": true,
+  "separate_owner_offline_verifier_receipt_received": false,
+  "full_active_inventory_prerequisite_satisfied": false
+}

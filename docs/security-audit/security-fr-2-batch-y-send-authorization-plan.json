@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "status": "FROZEN_BEFORE_REPRODUCTION_AND_REPAIR",
+  "source_parent_commit": "479936380c847ab6e80de172676437c781334697",
+  "scope_basis": "Existing Batch Y current-policy authorization-change and stale-worker boundary; no new letter, authentication policy or provider-delivery acceptance scope.",
+  "finding": "Both dispatchers validate access before device lookup and then send using the earlier result. A claim may also expire or be superseded before provider handoff. Completion fencing alone does not prevent the old worker's provider call.",
+  "exact_actual_handler_case_ids": [
+    "Y_SEND_ACTIVE_PERSONAL",
+    "Y_SEND_ACTIVE_BUSINESS",
+    "Y_SEND_ACTIVE_ADMIN",
+    "Y_SEND_PERSONAL_SUSPENDED",
+    "Y_SEND_MEMBER_REMOVED",
+    "Y_SEND_ASSIGNMENT_CHANGED",
+    "Y_SEND_BUSINESS_ACCESS_ENDED",
+    "Y_SEND_ADMIN_ROLE_ENDED",
+    "Y_SEND_ADMIN_SUSPENDED",
+    "Y_SEND_ADMIN_BETWEEN_DEVICES",
+    "Y_SEND_MEMBER_BETWEEN_DEVICES",
+    "Y_SEND_BUSINESS_BETWEEN_DEVICES",
+    "Y_SEND_PREVIEW_BETWEEN_DEVICES",
+    "Y_SEND_AUTH_LOOKUP_ERROR",
+    "Y_SEND_PARTIAL_LOOKUP_ERROR",
+    "Y_SEND_SUPERSEDED_PERSONAL",
+    "Y_SEND_SUPERSEDED_ADMIN",
+    "Y_SEND_EXPIRED_PERSONAL",
+    "Y_SEND_EXPIRED_ADMIN",
+    "Y_SEND_RECLAIM_BETWEEN_DEVICES",
+    "Y_SEND_TERMINAL_CLAIM",
+    "Y_SEND_MISSING_CLAIM",
+    "Y_SEND_CLAIM_LOOKUP_ERROR"
+  ],
+  "actual_handler_case_count": 23,
+  "acceptance": {
+    "current_actor_and_source_rechecked_before_each_device": true,
+    "current_exact_claim_checked_before_each_device": true,
+    "late_revocation_blocks_remaining_devices": true,
+    "lookup_uncertainty_blocks_send": true,
+    "already_accepted_delivery_preserved": true,
+    "stale_worker_does_not_mutate_new_claim": true,
+    "provider_side_effects_simulated": true
+  },
+  "current_source": [
+    "supabase/functions/dispatch-push-reminders/index.ts",
+    "supabase/functions/dispatch-admin-notifications/index.ts",
+    "supabase/functions/_shared/outbox-claim.mjs"
+  ],
+  "existing_real_Postgres_and_real_session_evidence_reused": [
+    "docs/security-audit/security-fr-2-batch-y-backend-caller-and-lease-staging-result.json",
+    "docs/security-audit/security-fr-2-batch-y-independent-queue-overlap-result.json",
+    "docs/security-audit/security-fr-2-batch-y-installed-caller-matrix-staging-result.json",
+    "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-staging-result.json",
+    "docs/security-audit/security-fr-2-batch-x-business-expiry-staging-result.json",
+    "docs/security-audit/security-fr-2-batch-x-account-suspension-staging-result.json"
+  ],
+  "bounded_hosted_acceptance": {
+    "paired_staging_Edge_deployments": 2,
+    "unchanged_JWT_verification_setting": false,
+    "protected_handler_self_authentication_preserved": true,
+    "source_readback_required": true,
+    "prior_10_anonymous_ordinary_dispatcher_denials_rerun_against_changed_bytes": true,
+    "independent_catalog_queues_sessions_and_fixture_readback": true
+  },
+  "writes_excluded": {
+    "production": true,
+    "database_schema": true,
+    "Auth_users_passwords_settings": true,
+    "financial_records": true,
+    "provider_push_or_email": true,
+    "cron_schedules": true,
+    "secrets": true
+  },
+  "limit": "Per-device checks enforce the latest observed authorization and claim before provider handoff. They cannot recall a provider-accepted message or eliminate a change after the final database read. Local controlled interleavings are not reported as new real PostgreSQL concurrency or provider delivery.",
+  "full_batch_Y_complete": false,
+  "stage_3_complete": false
+}

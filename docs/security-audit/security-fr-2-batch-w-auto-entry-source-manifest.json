@@ -1,0 +1,24 @@
+{
+  "stage_step": "FR.2.5.W35_RECOVERY_CODE_VERIFIED_AUTOMATIC_APP_ENTRY",
+  "source_parent_commit": "90f992f168847aee897f47feca6a411f57b1149d",
+  "source_file_count": 17,
+  "file_sha256": {
+    "app.js": "ba02a923b8373d5812df1499ab570fafb45cad078d252ef63d42cb087a866e8e",
+    "auth-flows.js": "d22778e9f3b21180d30161a6588b4675f73ac5c2f939bc4b82c224a81106cffa",
+    "auth-security.js": "dbe1d2ef5edce2a626bb08375cd38dff2217a56e6393477474678052d14ec4da",
+    "auth.html": "e07cffa1be014ad28197b402978020e7b7e40b79797d9ea64cc485d87870fb4e",
+    "business.js": "bacb6b6d01db0018361253332777f2296332a3ac66b367a99494b3124f1b7628",
+    "email-verification.js": "9273be56b63614d7bf8041133362070cc34bfea5266dc8fd2272209c0fce8743",
+    "scripts/lib/build-fr-2-email-workers.mjs": "6d0b141b56c3d75d175714a39533a96670af33463fcaf3195cea176a2c92cac9",
+    "scripts/lib/store-public-zip.mjs": "81eae2723285b56e321141512c2b6311777397f5b84853badcee9f60af3706aa",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+    "scripts/prepare-final-staging.mjs": "3f58dae50896af7998f02291bf583e48b2192d690ac527956d68e37c4af83edf",
+    "scripts/prepare-fr-2-batch-w-auto-entry.mjs": "807ed23faa56cc0028ec9ff99856787a5746446115ab73d8efbc0d33e87c48f4",
+    "scripts/prepare-fr-2-email-modern-package.mjs": "dce93977a2092c250c24a79261c825a4d065177824c8253b8b2e2e5a23553de0",
+    "session-entry.js": "e4beb5ab129d8ed0b75f22670e37bdd18f79a9637377ec629328e89cd5c3df53",
+    "tests/fr-2-auto-entry-package.test.mjs": "e6a2434456f15c8fe81b1cf28d912c18cf12e25a14dfb0b7bf33723db242241f",
+    "tests/helpers/security-page.mjs": "5c2e57e5fe5dc3db2afece4e5f01e74ffaa3c0155f093caa1bed161e3a66fbb8",
+    "tests/stage-3-auth-flows.test.mjs": "40aedef62f702e04f9a1d6c106a5261e72920f10679c6ad805a6123d40166ee3",
+    "tests/stage-3-auth-page.test.mjs": "5a004625492df3e6db5edd683e76675f5a30d000bc20c552e00813461e5b554b"
+  }
+}

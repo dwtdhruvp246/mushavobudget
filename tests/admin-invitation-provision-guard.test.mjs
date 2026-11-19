@@ -85,7 +85,7 @@ test("every Free provisioning path refuses pending, replaced, and failed invite 
   }
   assert.match(replacement, /set status = 'cancelled'[^]*?status = 'sent'/);
   assert.match(replacement, /set full_name = btrim\(p_full_name\), signup_source = 'self_signup'[^]*?v_workspace_id := public.provision_budget_user\(v_user_id\)/);
-  assert.match(setupPage, /await saveInvitedPassword\([^]*?supabase\.rpc\("complete_admin_user_invitation"/);
+  assert.match(setupPage, /await invitationController\.savePassword\([^]*?await invitationController\.complete\(/);
 });
 
 test("resends target setup and an old empty workspace can be repaired safely", () => {

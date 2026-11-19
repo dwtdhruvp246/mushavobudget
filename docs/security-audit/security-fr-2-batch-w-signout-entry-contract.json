@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-28",
+  "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "source_parent_commit": "2e395b7d9b5e3ef38f8f4c924da5e0d34f0ea3fa",
+  "runtime_and_packager_source_pin": "522c883f50724efdd4daf967200bc4934eeb7a51",
+  "problem": "app.js ignored existing auth=manual/signed-out/expired entry intent and awaited push cleanup before Auth sign-out. Reload during that delay could restore the saved SDK session into application verification.",
+  "evidence_scope": "Actual prior source reproduced with a synthetic leftover session and delayed push cleanup. This establishes a source-level trigger consistent with the owner report, not the sole live cause or provider/cookie state.",
+  "changed_public_files": [
+    "app.js",
+    "app.html"
+  ],
+  "preserved_public_entries": 42,
+  "public_entry_count": 44,
+  "behavior": [
+    "Write nonsecret sign-out URL intent, invalidate entry tickets and clear private views synchronously before waiting for cleanup or SDK logout.",
+    "Honor existing manual/signed-out/expired intent during startup and nonnull Auth events, showing sign-in instead of automatically opening verification.",
+    "Keep a leftover SDK session only for explicit sign-out retry, with a persistent warning when logout did not finish.",
+    "Keep current-account guard and duplicate-attempt guard around asynchronous sign-out.",
+    "Release manual intent only after successful password authentication matches the current SDK actor and access token.",
+    "Ordinary saved-session startup without manual intent still uses the existing server verification path.",
+    "Version the app module to119 and use the existing notice styling for the explicit retry."
+  ],
+  "security_invariants": [
+    "URL intent is denial/presentation only. It cannot create application proof, authorize protected views or declare SDK logout successful.",
+    "No protected entry ticket/session is exposed from manual sign-in UI.",
+    "Failed password or mismatched actor/token cannot reopen the saved account.",
+    "No private browser storage deletion or fabricated proof. Existing server gate, device approval, Admin assurance and bounded window remain required.",
+    "No SQL, gateway/worker, Auth configuration, callback route, account or mail-provider changes."
+  ],
+  "retained_input_ZIP_SHA256": "e49c866aa56aa3d634ef78cf8ea37c77e5a19143e7a5e0a5e63f67e28c8cb05e",
+  "retained_input_filename": "mushavo-smooth-signin-staging.zip",
+  "output_filename": "mushavo-signout-entry-staging.zip",
+  "preparer": "scripts/prepare-fr-2-batch-w-signout-entry.mjs",
+  "preparer_SHA256": "d83a7cfa7a967f9c31a4a1139327b0c83f1d599c20e5050513d34f959edbf30d",
+  "source_manifest": "docs/security-audit/security-fr-2-batch-w-signout-entry-source-manifest.json",
+  "source_file_count": 29,
+  "package_checks": "Exact input digest, historical entry provenance, raw-source/staging-output identities, unchanged42 entries and input, complete ZIP readback, safe refusal.",
+  "canonical_app_URL": "https://mushavo-budget-staging.pages.dev/app.html",
+  "deployment_target": "mushavo-budget-staging",
+  "existing_frozen_cases_related": [
+    "AU05.04",
+    "AU05.05",
+    "AU05.06"
+  ],
+  "frozen_AU_case_count": 31,
+  "new_public_AU_cases_added": 0,
+  "acceptance_scope": "After exit0/upload, sign out on the fresh canonical app and reload once. Expect sign-in form, no Verify your sign-in. Report persistent warning if logout failed. This single UI check does not close all cleanup, failure, account-switch or Business variants.",
+  "old_window_cannot_require_verification_on_logged_out_manual_UI": true,
+  "new_authenticated_signin_may_still_require_current_bounded_window": true,
+  "recovery_or_consumed_callback_replay_requested": false,
+  "owner_package_prepared": false,
+  "frontend_uploaded": false,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

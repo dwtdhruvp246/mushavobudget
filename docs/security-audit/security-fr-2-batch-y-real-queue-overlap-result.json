@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "project": "dczlddwbtgvfdujgcitb",
+  "plan_commit": "a930820dffc6b5d1dc1378a19febe9cece458575",
+  "result": "REAL_WORKER_OVERLAP_NOT_OBSERVED",
+  "worker_a": {
+    "worker": "A",
+    "started_at": "2026-11-07T07:59:35.994259+00:00",
+    "backend_hash": "af5c6c88964d541c04ad3e89eb909878",
+    "hold_finished_at": "2026-11-07T07:59:44.007257+00:00",
+    "provider_requests": 0,
+    "exact_fixture_claimed": true
+  },
+  "worker_b": {
+    "worker": "B",
+    "started_at": "2026-11-07T07:59:45.66469+00:00",
+    "finished_at": "2026-11-07T07:59:45.666079+00:00",
+    "backend_hash": "ab2f538af56620540090b4a0bf55d0bd",
+    "claimed_count": null,
+    "overlap_observed": false,
+    "provider_requests": 0,
+    "claim_call_attempted": false,
+    "pending_candidate_visible_before_claim": null
+  },
+  "distinct_backend_hashes": true,
+  "worker_b_started_after_worker_a_hold_finished": true,
+  "actual_concurrent_acceptance": false,
+  "claim_function_defect_inferred": false,
+  "cleanup": {
+    "deleted_fixture_rows": 1,
+    "remaining_admin_queue_rows": 0,
+    "remaining_normal_queue_rows": 0
+  },
+  "independent_readback": {
+    "remaining_fixture_rows": 0,
+    "normal_queue_rows": 0,
+    "admin_queue_rows": 0,
+    "catalog_matches": true
+  },
+  "external_provider_requests": 0,
+  "production_changed": false,
+  "full_batch_Y_complete": false,
+  "exit_code": 1,
+  "next_step": "Use an independent supported SQL/API connection for the overlapping-worker case. Do not repeat the serialized attempt."
+}

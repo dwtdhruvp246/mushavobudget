@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "stage_step": "FR.2.5.W2_OWNER_READ_ONLY_DASHBOARD_AUTH_SUMMARY",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "BATCH_W_OWNER_DASHBOARD_SUMMARY_ACCEPTED_WITH_EXPLICIT_POST_RUN_CORRECTIONS",
+  "evidence_scope": "OWNER_REPORTED_VISIBLE_VALUES_PLUS_LATER_TEXT_CORRECTION_NOT_INDEPENDENT_API_READBACK",
+  "source_commit": "7589ab3e06af4cb5ebd50e9fc1da1bafb025ba9e",
+  "original_receipt": "docs/security-audit/security-fr-2-batch-w-owner-dashboard-original.json",
+  "original_checked_UTC": "2026-10-26T07:49:54.3030992Z",
+  "original_command_exit_code": 1,
+  "original_combined_exit_code": 1,
+  "correction_received_date": "2026-10-26",
+  "correction_received_exact_time_not_available": true,
+  "no_new_process_run_or_exit_code_invented": true,
+  "corrected_process_exit_code": null,
+  "source_of_correction": "Owner subsequent message explicitly corrects nine answers and confirms view-only/no saved changes",
+  "owner_confirmed_staging_selection": true,
+  "target_project": "dczlddwbtgvfdujgcitb",
+  "original_failure_checkpoint": "OWNER_NO_CHANGES_CONFIRMATION",
+  "original_problem_code": "OWNER_SETTINGS_CHANGE_STATE_REQUIRES_REVIEW",
+  "owner_no_change_uncertainty_resolved_by_explicit_clarification": true,
+  "owner_reports_no_settings_changes": true,
+  "corrected_settings": {
+    "email_signin_enabled": true,
+    "signup_enabled": true,
+    "email_confirmation_enabled": true,
+    "minimum_password_length": 6,
+    "required_character_class": "NONE",
+    "require_reauthentication_on_password_change": null,
+    "require_current_password_on_change": false,
+    "secure_email_change_enabled": false,
+    "site_URL_is_exact_canonical_staging_root": true,
+    "redirect_entry_category": "UNKNOWN",
+    "single_session_per_user": false,
+    "session_timebox_nonzero_enabled": false,
+    "inactivity_timeout_nonzero_enabled": false
+  },
+  "corrections": [
+    {
+      "field": "settings.minimum_password_length",
+      "original_recorded_value": 12,
+      "owner_corrected_value": 6
+    },
+    {
+      "field": "settings.required_character_class",
+      "original_recorded_value": "UNKNOWN",
+      "owner_corrected_value": "NONE"
+    },
+    {
+      "field": "settings.require_current_password_on_change",
+      "original_recorded_value": null,
+      "owner_corrected_value": false
+    },
+    {
+      "field": "settings.require_reauthentication_on_password_change",
+      "original_recorded_value": true,
+      "owner_corrected_value": null
+    },
+    {
+      "field": "settings.secure_email_change_enabled",
+      "original_recorded_value": null,
+      "owner_corrected_value": false
+    },
+    {
+      "field": "settings.single_session_per_user",
+      "original_recorded_value": null,
+      "owner_corrected_value": false
+    },
+    {
+      "field": "settings.session_timebox_nonzero_enabled",
+      "original_recorded_value": null,
+      "owner_corrected_value": false
+    },
+    {
+      "field": "settings.inactivity_timeout_nonzero_enabled",
+      "original_recorded_value": null,
+      "owner_corrected_value": false
+    },
+    {
+      "field": "owner_reports_no_settings_changes",
+      "original_recorded_value": null,
+      "owner_corrected_value": true
+    }
+  ],
+  "pinned_UI_new_password_minimum": 12,
+  "server_password_minimum_owner_reported": 6,
+  "server_and_UI_minimum_mismatch_recorded_not_changed": true,
+  "confirmation_email_signin_signup_and_canonical_site_root_retained_from_original_report": true,
+  "uncorrected_unknowns": [
+    "require_reauthentication_on_password_change",
+    "redirect_entry_category"
+  ],
+  "API_only_settings_and_full_allowlist_and_provider_delivery_not_verified": true,
+  "new_settings_Auth_factor_account_role_or_mode_writes": false,
+  "Management_API_requests_by_correction": 0,
+  "Auth_API_requests_by_correction": 0,
+  "dashboard_browser_requests_not_independently_counted": true,
+  "quarantine_remeasured_by_correction": false,
+  "last_quarantine_receipt_checked_UTC": "2026-10-26T07:21:25.371Z",
+  "last_quarantine_receipt_mode": "QUARANTINED",
+  "prior_owner20_and_V86_passes_reused_not_repeated": true,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "required_AU_cases_unchanged": 31,
+  "actual_new_hosted_AU_cases_run": 0,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

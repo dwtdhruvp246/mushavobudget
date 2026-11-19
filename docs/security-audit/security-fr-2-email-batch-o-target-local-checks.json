@@ -1,0 +1,129 @@
+{
+  "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
+  "batch": "O",
+  "result": "LOCAL_BATCH_O24_PASS_HOSTED_PUBLIC_PENDING",
+  "source_parent_commit": "25d76a3029e9abd009098437b6fa328d543647fa",
+  "node_version": "v24.19.0",
+  "platform": "linux",
+  "source_hashes_verified": 195,
+  "syntax_checks": 45,
+  "offline_units": {
+    "tests": 12,
+    "pass": 12,
+    "fail": 0,
+    "exit_code": 0
+  },
+  "local_browser": {
+    "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
+    "batch": "O",
+    "result": "LOCAL_BATCH_O_PUBLIC_BROWSER_FIXTURE_SCOPED_PASS",
+    "scope": "LOCAL_HTTPS_PUBLIC_SOURCE_FIXTURE",
+    "target_setup_failure": null,
+    "explicit_page_attachment": true,
+    "checks": [
+      {
+        "check": "REAL_PUBLIC_DOM_AND_SECURE_CONTEXT",
+        "status": "PASS"
+      },
+      {
+        "check": "LOCAL_FIXTURE_TLS_BYPASS_EXPLICIT",
+        "status": "PASS"
+      },
+      {
+        "check": "ALL_16_PUBLIC_ASSET_BYTES_MATCH_PINNED_SOURCE",
+        "status": "PASS"
+      },
+      {
+        "check": "FRESH_PROFILE_HAS_NO_AUTH_STORAGE_OR_DEVICE_COOKIE",
+        "status": "PASS"
+      },
+      {
+        "check": "ACTUALLY_EXECUTED_WORKER_SOURCE_MATCHES_PIN",
+        "status": "PASS"
+      },
+      {
+        "check": "STALE_PRODUCT_CACHE_REMOVED_UNRELATED_CACHE_PRESERVED",
+        "status": "PASS"
+      },
+      {
+        "check": "ALL_14_PRODUCT_CACHE_ENTRIES_ARE_EXACT_PUBLIC_SOURCE",
+        "status": "PASS"
+      },
+      {
+        "check": "REAL_WORKER_OFFLINE_NAVIGATION_SHOWS_ONLY_SAFE_DOCUMENT",
+        "status": "PASS"
+      },
+      {
+        "check": "OFFLINE_NAVIGATION_DID_NOT_CACHE_PRIVATE_APP_HTML",
+        "status": "PASS"
+      },
+      {
+        "check": "NO_INTERCEPTED_AUTH_GATEWAY_OR_UNREVIEWED_REQUEST_ALLOWED",
+        "status": "PASS"
+      }
+    ],
+    "tests": 10,
+    "pass": 10,
+    "fail": 0,
+    "browser_product": "HeadlessChrome/153.0.8010.0",
+    "public_assets_verified": 16,
+    "intercepted_request_attempts": 38,
+    "maximum_intercepted_requests": 128,
+    "blocked_unreviewed_requests": 0,
+    "simulated_offline_requests": 4,
+    "intercepted_hosted_request_attempts": 0,
+    "worker_startup_fetches_not_intercepted": true,
+    "total_browser_hosted_requests_independently_counted": false,
+    "document_scripts_disabled": true,
+    "hosted_TLS_verified": false,
+    "executed_worker_source_verified": true,
+    "isolated_temporary_profile": true,
+    "temporary_profile_removed": true,
+    "browser_process_stopped": true,
+    "private_packets_accessed": false,
+    "credentials_or_Auth_or_gateway_requests_permitted": false,
+    "real_email_requests": 0,
+    "committed_mode_change_requests": 0,
+    "hosted_authenticated_browser_acceptance": false,
+    "installed_PWA_OS_lifecycle_verified": false,
+    "external_traffic_OS_sandboxed": false,
+    "local_certificate_validation_bypassed": true,
+    "hosted_acceptance": false,
+    "live_activation_approved": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0,
+    "checked_UTC": "2026-10-23T11:53:48.539Z",
+    "local_fixture_variant": "normal",
+    "local_fixture_closed": true,
+    "local_fixture_unexpected_requests": 0
+  },
+  "expected_failure_exercises": [
+    {
+      "variant": "source-drift",
+      "expected_denial_and_cleanup_verified": true,
+      "exit_code": 0
+    },
+    {
+      "variant": "unreviewed-route",
+      "expected_denial_and_cleanup_verified": true,
+      "exit_code": 0
+    }
+  ],
+  "offline_PASS": 24,
+  "hosted_public_browser": null,
+  "private_packets_accessed": false,
+  "real_email_requests": 0,
+  "committed_mode_change_requests": 0,
+  "hosted_acceptance": false,
+  "live_activation_approved": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "checkpoint": "COMPLETE",
+  "problem_code": null,
+  "exit_code": 0
+}

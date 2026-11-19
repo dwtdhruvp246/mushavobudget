@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-28",
+  "stage_step": "FR.2.5.W42_SIGNOUT_RELOAD_MANUAL_ENTRY_AND_LOGOUT_RETRY",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "owner_statement": "It was not caused by selecting Offline; the verification screen appeared after sign-out and reload, before Offline was selected.",
+  "supersedes_initial_offline_trigger_candidate_in": "FRE257",
+  "prior_screenshot_SHA256": "8319df19084937a425431ff75510fb1c98b86ef86ee5c8eb1cde8965456c81e8",
+  "prior_screenshot_receipt": "docs/security-audit/security-fr-2-batch-w-owner-unavailable-screen-review.json",
+  "new_screenshot_or_network_trace_received": false,
+  "live_logout_result_or_stored_SDK_session_inspected": false,
+  "sole_live_root_cause_proven": false,
+  "offline_is_initial_trigger_owner_reported": false,
+  "prior_normal_signin_UX_acceptance_preserved": "docs/security-audit/security-fr-2-batch-w-owner-smooth-signin-ux-accepted.json",
+  "AU05_03_status": "PAUSED_OWNER_REPORT_PRECEDES_OFFLINE_SELECTION",
+  "new_email_password_code_SQL_or_settings_requested": false,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

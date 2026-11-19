@@ -1,0 +1,32 @@
+{
+  "stage_step": "FR.2.2_RELINK_CANDIDATE",
+  "source_parent_commit": "9200566f7dd9a022381e6fb5a908280095ee7452",
+  "owner_before_snapshot": "docs/security-audit/security-fr-2-conversion-snapshot-owner-result.json",
+  "checker": "scripts/check-fr-2-personal-relink.cjs",
+  "runner": "scripts/run-fr-2-personal-relink.ps1",
+  "immutable_shared_checker": "scripts/check-stage-3-personal-api.cjs",
+  "expected_hosted_PASS_groups": 16,
+  "request_budget": 160,
+  "max_visible_conversion_rows_per_actor": 100,
+  "actors": "TWO_RETAINED_ORDINARY_SYNTHETIC_STAGING_APP_IDENTITIES",
+  "preflight_USD_reporting_and_enabled_currency_required": true,
+  "new_fixtures": {
+    "inactive_payment_items": 4,
+    "paid_records": 2,
+    "parent_restored_before_success": true,
+    "intentionally_retained_with_derived_conversion_rows": true,
+    "marker_prefix": "AUDIT-FR22-RELINK-"
+  },
+  "historical_record_or_conversion_repair_requested": false,
+  "conversion_deletion_requested": false,
+  "settings_change_requested": false,
+  "private_before_after_conversion_comparison": true,
+  "post_batch_SQL_snapshot_required": true,
+  "retained_manual_before_snapshot_sha256": "d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3",
+  "new_conversion_count": "0_OR_1_PER_RECORD_DEPENDING_ON_UNCHANGED_CONVERSION_ENABLED_SETTING",
+  "cleanup_scope": "SEPARATE_EXACT_RUN_MARKER_AND_PROVENANCE_REVIEW_NOT_BROAD_DELETE",
+  "local_receipt": "docs/security-audit/security-fr-2-relink-local-checks.json",
+  "hosted_candidate_execution_result_received": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

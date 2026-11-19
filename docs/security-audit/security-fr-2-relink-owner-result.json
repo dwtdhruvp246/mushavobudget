@@ -1,0 +1,93 @@
+{
+  "recorded_under": "FR.2.2",
+  "owner_supplied_JSON": {
+    "stage_step": "FR.2.2_RELINK",
+    "result": "STAGING_PERSONAL_RELINK_SCOPED_PASS",
+    "project": "dczlddwbtgvfdujgcitb",
+    "checks": [
+      {
+        "check": "Public configuration is staging-only with push disabled",
+        "status": "PASS"
+      },
+      {
+        "check": "Two verified distinct ordinary nonsuspended staging accounts",
+        "status": "PASS"
+      },
+      {
+        "check": "Own distinct Personal workspaces have unchanged USD identity settings",
+        "status": "PASS"
+      },
+      {
+        "check": "Existing visible conversion rows and both attributed Family manual USD1 rows privately captured",
+        "status": "PASS"
+      },
+      {
+        "check": "Owner 1 creates two inactive own parents and an attributed USD1 paid record",
+        "status": "PASS"
+      },
+      {
+        "check": "Owner 1 valid own-parent relink preserves workspace ownership and finance values",
+        "status": "PASS"
+      },
+      {
+        "check": "Owner 1 generated absent-parent relink is rejected with unchanged record",
+        "status": "PASS"
+      },
+      {
+        "check": "Owner 1 restores the new record original parent and verifies full selected values",
+        "status": "PASS"
+      },
+      {
+        "check": "Owner 2 creates two inactive own parents and an attributed USD1 paid record",
+        "status": "PASS"
+      },
+      {
+        "check": "Owner 2 valid own-parent relink preserves workspace ownership and finance values",
+        "status": "PASS"
+      },
+      {
+        "check": "Owner 2 generated absent-parent relink is rejected with unchanged record",
+        "status": "PASS"
+      },
+      {
+        "check": "Owner 2 restores the new record original parent and verifies full selected values",
+        "status": "PASS"
+      },
+      {
+        "check": "New record conversion rows remain byte-identical through relink and restore",
+        "status": "PASS"
+      },
+      {
+        "check": "All previously visible conversion rows including retained manual rows remain byte-identical",
+        "status": "PASS"
+      },
+      {
+        "check": "Original selected settings and exact new inactive parents and restored records remain",
+        "status": "PASS"
+      },
+      {
+        "check": "Only the two API-created test sessions are logged out",
+        "status": "PASS"
+      }
+    ],
+    "problem_code": null,
+    "run_marker": "AUDIT-FR22-RELINK-5f93bfbe-5830-457d-b3a4-c1088d4711fd",
+    "new_inactive_items_created": 4,
+    "new_paid_records_created": 2,
+    "new_fixture_rows_intentionally_retained": true,
+    "incomplete_new_fixture_effects_may_remain": false,
+    "preexisting_visible_conversion_rows_unchanged": true,
+    "test_sessions_logged_out": true,
+    "existing_historical_records_or_conversions_repaired": false,
+    "derived_conversion_rows_cleanup_verified": false,
+    "post_batch_SQL_snapshot_rechecked": false,
+    "hosted_acceptance": false,
+    "findings_closed": [],
+    "production_or_native_changed": false,
+    "credentials_tokens_keys_raw_rows_and_actor_identifiers_printed": false,
+    "completed_utc": "2026-10-14T05:28:27.362Z"
+  },
+  "owner_reported_terminal_exit_code": 0,
+  "source_pin": "04fbec4abc74a91bd4e86721bceabc4447f27fa7",
+  "recorded_date": "2026-10-14"
+}

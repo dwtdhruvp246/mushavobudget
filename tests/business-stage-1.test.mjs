@@ -10,7 +10,7 @@ const launchLock = readFileSync(new URL("../supabase/migrations/20260927183000_b
 
 test("Stage 1 has a dedicated Business application and all approved sections", () => {
   assert.match(page, /business\.css\?v=13/);
-  assert.match(page, /business\.js\?v=18/);
+  assert.match(page, /business\.js\?v=22/);
   assert.match(page, /Version 4\.9\.40/);
   for (const section of [
     "overview", "activity", "bills", "approvals", "budgets", "reports", "team", "settings", "subscription"
@@ -49,7 +49,8 @@ test("Business never reads Personal, Family, payments, or Cashbook data", () => 
   ]) {
     assert.doesNotMatch(business, new RegExp(`from\\(\"${table}\"\\)`));
   }
-  assert.doesNotMatch(business, /supabase\.from\("[^"]+"\)\.(insert|update|delete|upsert)\(/);
+  const directWrites = [...business.matchAll(/supabase\.from\("([^"]+)"\)\.(insert|update|delete|upsert)\(/g)].map(match => [match[1], match[2]]);
+  assert.deepEqual(directWrites, [["push_subscriptions", "delete"]], "Only current-device push retirement is a direct write; finance remains RPC guarded");
   assert.match(page, /not included in financial totals yet/);
 });
 

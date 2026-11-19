@@ -53,7 +53,7 @@ test("admin dispatcher is secret-protected and revalidates every queued event", 
   assert.match(config, /\[functions\.dispatch-admin-notifications\][\s\S]*verify_jwt = false/);
   assert.match(dispatcher, /secureEqual\(suppliedSecret, cronSecret\)/);
   assert.match(dispatcher, /claim_admin_notification_outbox/);
-  assert.match(dispatcher, /record_admin_notification_outbox_result/);
+  assert.match(dispatcher, /recordClaimedOutboxResult\(serviceClient, "admin_notification_outbox", job/);
   assert.match(dispatcher, /from\("app_admins"\)/);
   assert.match(dispatcher, /from\("subscription_payments"\)/);
   assert.match(dispatcher, /from\("support_tickets"\)/);
@@ -78,7 +78,11 @@ test("admin shell exposes bell controls and optional per-device push settings", 
   assert.match(html, /id="adminEnablePushNotificationsButton"/);
   assert.match(application, /function renderAdminPushNotificationSettings/);
   assert.match(application, /Admin notifications enabled on this device/);
-  assert.match(application, /Promise\.all\(\[loadAdminData\(\), loadNotifications\(\)\]\)/);
+  const load = application.slice(application.indexOf("async function loadApp()"), application.indexOf("async function ensureProfile()"));
+  assert.ok(load.includes("ensureAdminAssurance()") && load.includes("settled(loadNotifications())"));
+  assert.ok(load.indexOf("ensureAdminAssurance()") < load.indexOf("settled(loadNotifications())"));
+  assert.match(load, /await loadAdminData\(\)/);
+  assert.match(load, /!adminSession\.authorized/);
   assert.doesNotMatch(application, /if \(!userId \|\| state\.isAdmin\) return/);
 });
 

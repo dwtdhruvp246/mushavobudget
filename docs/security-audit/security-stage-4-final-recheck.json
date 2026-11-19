@@ -1,0 +1,424 @@
+{
+  "schema_version": 1,
+  "stage_step": "4.4",
+  "recorded_date": "2026-10-11",
+  "evidence_id": "S4E12",
+  "result": "STAGE_4_FINAL_INTEGRITY_EVIDENCE_RECONCILIATION_PASS_HOSTED_ACCEPTANCE_BLOCKED",
+  "scope": "READ_ONLY_GIT_BLOB_AND_CANDIDATE_SHA256_PRIOR_RECEIPT_DOCUMENT_RECONCILIATION_NOT_NEW_BEHAVIOR_OR_HOSTED_TESTS",
+  "source_parent_commit": "fdd9ebdba2c0f8ba3b6c79528fcecb1c8db2ab27",
+  "nontruncated_git_tree": true,
+  "source_inventory_union_files": 96,
+  "checked_source_and_candidate_files": 115,
+  "exact_current_git_blob_matches": 115,
+  "git_blob_mismatches": [],
+  "current_git_blob_sha1": {
+    ".github/workflows/pages.yml": "8f4433b99535e7ed6af0148b0fa24e23de9adb16",
+    "_headers": "6f1109ea4f616843cafef113f1f6f48e984e8858",
+    "about.html": "6c10088db686923f0c5d2952b35c1eefbade4e82",
+    "admin-mfa.js": "b34b867301a97473a455f80cb01ab193b224a6ad",
+    "admin-plans.js": "c6a7620703d83b9f5a3df9f62f69e4c4f41b32c2",
+    "app-entry.html": "eab3265c5a9fb31696266a182b28b2e560125c7a",
+    "app-entry.js": "4496b291102c26aa4dbcf9fbb88882cd972f5775",
+    "app.html": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+    "app.js": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+    "auth-flows.js": "206f0c32277a4da9a0bab667a06905468fdcc444",
+    "auth-security.js": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+    "auth.html": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+    "business.html": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+    "business.js": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+    "config.js": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+    "contact.html": "8fe5a2689b0cb83fac5f6e85034e9eff8cb9a6eb",
+    "docs/security-audit/SECURITY_STAGE_4_3_PRIVACY_NOTICE_REVIEW_DRAFT.md": "b1be7305c53d481b6767ee480576f2d819fc57bb",
+    "docs/security-audit/security-stage-4-privacy-decisions.json": "0b0a15e4c2bd1ac50f435b27b340d565f09738bd",
+    "docs/security-audit/security-stage-4-privacy-source-inventory.json": "23a53897eb1c04fcf25d661212e9ca8b306ce844",
+    "docs/security-audit/security-stage-4-retention-decisions.json": "88e7d04e490bd68c9622b0d92d54165f65ada7c1",
+    "index.html": "f6e71eb717aaf8071b827ff612ecff31c1e009e4",
+    "manifest.webmanifest": "58c701867538153b64166582588c4e3dbf86a0a9",
+    "offline.html": "74ec210d864062a617b6c9bf6b3a7b0b50b989f9",
+    "package-lock.json": "7880998659b6bd106024cf9cea6528a6e2d28714",
+    "package.json": "ab314c838a49dcee05beabf2604213ab297ab979",
+    "pricing.html": "abb1db5130f943c4bbc761c6c93ced2abadcdc54",
+    "push-notifications.js": "2e3fb6dd0fbf8126bb7ec0405e39ec072d2bc68c",
+    "pwa-install.js": "29868087b3d80264b80f1075f1ddae668ebd261c",
+    "pwa.js": "026dc2aefaba5eea0a1570764020a8eb4100a679",
+    "scripts/build-capacitor.mjs": "d911f7f777a9b80bb27d8b99cf88a3e16dd8599e",
+    "scripts/lib/stage-4-lifecycle-review.mjs": "3ff05c4bee55a4eafcb34cef92d66f81e8afb4fe",
+    "scripts/lib/stage-4-privacy-review.mjs": "d2d467f7dc33c52d3d709e2632d0275b701d5b1b",
+    "scripts/verify-stage-4-files.mjs": "78659a2175fb058df8eddf24985cc9127603d5b2",
+    "scripts/verify-stage-4-lifecycle.mjs": "5548d709d9de10499e4aa5158efd1d375732e79a",
+    "scripts/verify-stage-4-privacy.mjs": "66dbc4f5c56c0d8ad5a5f1e3427e1e0d268c9aa5",
+    "signup.html": "6093ca502c3a2b954a0289f5c5e4cacbe7def584",
+    "site.js": "f3d5abb558476b2ae1701e4911c3d1b58a50f348",
+    "supabase/config.toml": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+    "supabase/cron-push-reminders.sql": "1a56f688d62302cbf45097c2387945c00f0eba93",
+    "supabase/functions/_shared/currencyapi.ts": "111937516dc8dc54839479299942697be32dfc0e",
+    "supabase/functions/_shared/push-destination.mjs": "047a76e7607cef3ba164e70ea5bfaa5977398042",
+    "supabase/functions/dispatch-admin-notifications/index.ts": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+    "supabase/functions/dispatch-push-reminders/index.ts": "ec9b1561cc20f16080099704ee6174044582d67f",
+    "supabase/functions/invite-admin-user/index.ts": "a26f1633237126a8a558d8e702ffaa1943173253",
+    "supabase/functions/invite-business-member/index.ts": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+    "supabase/functions/send-test-push/index.ts": "ba209ea5a0a7e246e10be544fbfa4f7487dfbd5f",
+    "supabase/functions/submit-enquiry/handler.mjs": "c06ca858bcc8e60986dd693ad5d94f32bafd9341",
+    "supabase/functions/submit-enquiry/index.ts": "890f5a02eb01c6d3de4c68f6dd78534b6cbcc71a",
+    "supabase/functions/sync-exchange-rates/index.ts": "0c5a1b60a1e15c103cfd9a05422f23f94eee2133",
+    "supabase/migrations/20260901061500_currencyapi_multicurrency.sql": "4ca474dce0806ba483aa53a24dee64e20d942187",
+    "supabase/migrations/20260903090000_public_website_enquiries.sql": "43425235fd1dfff5646761482ec472f234466ec7",
+    "supabase/migrations/20260903091000_dynamic_family_plan_selection.sql": "8e4abea4561de370232c7213d336c86b4bcc839c",
+    "supabase/migrations/20260903120000_align_enquiry_workflow.sql": "e8edf51c81ae42125aab757e8a9d2be0cc2d41ca",
+    "supabase/migrations/20260903123000_direct_enquiry_submission.sql": "82254777c3397fe06d02ed7c7ec99a83b0a0099c",
+    "supabase/migrations/20260905090000_expand_global_currencies.sql": "80853d91277149bd0c8c2fd2071b912c2f54d541",
+    "supabase/migrations/20260905120000_signup_currency_preferences.sql": "3689ae95d29d7611d4372a54615583bd53254f7a",
+    "supabase/migrations/20260905143000_payment_daily_recurrence.sql": "82a3f7bf780d1a3dea32753739a29094e220354a",
+    "supabase/migrations/20260907150000_push_subscriptions.sql": "91d6012df8cfdc57a81f02e867a79b57e015bfc6",
+    "supabase/migrations/20260908130000_push_test_rate_limit.sql": "69dc3ac43815f25c0a892d25e83403008b6d70cb",
+    "supabase/migrations/20260908170000_notification_outbox.sql": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+    "supabase/migrations/20260912120000_support_ticket_workflow.sql": "719ba585f7bdbbe44f6fafd6b6a5de13c62802db",
+    "supabase/migrations/20260916190000_admin_event_notifications.sql": "1218eaf24829e287f8054916248a0dea429f010e",
+    "supabase/migrations/20260921090000_additional_family_subscriptions.sql": "34addfdd2b4abef3e9a73bbe992f51a85464a505",
+    "supabase/migrations/20260921130000_notification_workspace_context.sql": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+    "supabase/migrations/20260922113000_admin_user_invitations.sql": "3559065aea9ad7d693121ea56bfd3837fa4dba35",
+    "supabase/migrations/20260923100000_complete_admin_user_invitations.sql": "46de8cdf2b64736452865de1092f3c92037aad50",
+    "supabase/migrations/20260923143000_replace_pending_admin_invitations.sql": "0dfeb64ae451d78f2fd659393c6f3ce757b5e82a",
+    "supabase/migrations/20260923190000_guard_pending_admin_invitation_workspace.sql": "4fd1e66584d4e895b1fe6372c946145a4dc0ec72",
+    "supabase/migrations/20260923200000_hold_invited_workspace_until_setup.sql": "b1a37fb3bcb57f4c6e4e644bfc87ba6f30621406",
+    "supabase/migrations/20260924100000_analytics_data_foundation.sql": "81e1049b8289215f41e1a446f7f5388b73c23c36",
+    "supabase/migrations/20260924110000_admin_analytics_page.sql": "b916b91777334bb7fb2ee2d8ab906b3b07ef8b24",
+    "supabase/migrations/20260924130000_guard_payment_record_payer.sql": "eb83b5f4513581335f8c17e261f354fe84eb6d50",
+    "supabase/migrations/20260924143000_repair_payment_recurrence_constraints.sql": "bcdb619d48a10bd0e61c23c06a159e184263d40d",
+    "supabase/migrations/20260925080000_cancel_pending_family_invitation.sql": "ab049c067da85e3b783dd0efbf2bc9698eb91ff3",
+    "supabase/migrations/20260925090000_expiry_and_account_suspension.sql": "ddf61a186a128a2a4ffe593560197440209e8328",
+    "supabase/migrations/20260925120000_family_extra_places.sql": "8a63e75e94965c7d737d7a8194f3f37feeffea5d",
+    "supabase/migrations/20260927103000_personal_cashbook_private_test.sql": "8ebcff8d90440218316240ae9b0ea5a1f63167e1",
+    "supabase/migrations/20260927140000_dashboard_completed_payments.sql": "1c7bb1c21d00e72f32038c5d3ac85f61bb554a0c",
+    "supabase/migrations/20260927183000_business_stage_0_launch_lock.sql": "ef756e2ba8f873f61e189372839db164b0e804eb",
+    "supabase/migrations/20260928070000_business_stage_2_security_foundation.sql": "4ec51d1c99311e29577b7c53283ef7fcc9fedf6b",
+    "supabase/migrations/20260928090000_admin_manual_subscription_grants.sql": "859b123f33f00b4bc7aa26fca4f9795a04244eaf",
+    "supabase/migrations/20260928130000_business_stage_3_onboarding.sql": "a8fd4e1771255a13b5f32e6042bba75874b205d1",
+    "supabase/migrations/20260928170000_business_stage_4_team.sql": "0d979bceddde1c4c122bf725efc632959dd23391",
+    "supabase/migrations/20260928200000_business_stage_5_expense_claims.sql": "3635ad6c7d9f256bed39090f1498043223c2b9b0",
+    "supabase/migrations/20260928213000_business_stage_6_bills.sql": "d20f9d99910c8b2585ea299ca47eba6986ffe616",
+    "supabase/migrations/20260928222000_stage_6_reminder_url_compatibility.sql": "865a70ea8d3e3b30dfe7b4e4ac9ee531f6cf3e16",
+    "supabase/migrations/20260929193000_business_stage_7_transactions.sql": "2a36e10e23372e7c73f3df1f1eb9209355d2479d",
+    "supabase/migrations/20260930060000_business_stage_8_budgets_approvals.sql": "91650ec00ef5300724b3da1e0ba8e9c429cf9387",
+    "supabase/migrations/20260930073000_business_stage_9_reports.sql": "640421d095741262ee6727aeadd99afab4b8311e",
+    "supabase/migrations/20260930090000_business_stage_10_billing.sql": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+    "supabase/migrations/20260930110000_business_stage_11_admin.sql": "d505b0c16529147fea998d794a60c55d5ff38e84",
+    "supabase/migrations/20260930130000_business_stage_12_realtime.sql": "8e44bd0a3c08a373181114a137e66c11310b8a2f",
+    "supabase/migrations/20261001190000_admin_plans_workbench.sql": "2dc028ccd92314e6f6f92388fc2107142ea2ddf2",
+    "supabase/migrations/20261002042500_reconcile_business_plan_seats.sql": "2bf290c33957d0c7cb85e7ea928355fcceb4b124",
+    "supabase/migrations/20261002060000_business_public_availability.sql": "04577f4423d3473501f247621fa92a69616c13bd",
+    "supabase/migrations/20261002070000_business_branding.sql": "d49d530a311f3ef4677cbe1e8413fe6b897dc8be",
+    "supabase/migrations/20261004153000_business_custom_roles.sql": "c943e03949affcf1ee326ae86198cc22af5090e5",
+    "supabase/migrations/20261006043000_security_stage_0_private_reads.sql": "57622217d1b180bd16aac47debe0618d70693e71",
+    "supabase/migrations/20261006050000_security_stage_0_currency_helpers.sql": "7b954296e256a46e0274a893a4852e62fa77190f",
+    "supabase/migrations/20261006180000_business_invitation_notifications.sql": "501ae2a45018cf0e89531f0821834c57c904c328",
+    "supabase/migrations/20261009190000_public_enquiry_submission_gate.sql": "6c9f26f2000aeb98f5175c410f4e95917a78289c",
+    "supabase/schema.sql": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+    "sw.js": "b61477393fa2b0ed7baa3c52d61076df549df948",
+    "tests/business-stage-11.test.mjs": "c76723ee66752b2ed17950e85d694604d114cdab",
+    "tests/business-stage-12.test.mjs": "92ac50e613f9cf8cfeaf47b9653aad4f4debfab8",
+    "tests/business-stage-5.test.mjs": "35a9b52bc899c94b3dc30d721179e81c2b891af6",
+    "tests/business-stage-6.test.mjs": "8c1a493c53a0e3d6b3708e2876417fd509653b12",
+    "tests/dashboard-completed-payment.test.mjs": "51b47646b3c23a6d4715485ac4e2b7530c2437fd",
+    "tests/family-extra-places.test.mjs": "f8822fe66520a4ac8b757e0d02b96cac915a7f59",
+    "tests/session-recovery.test.mjs": "8fe80b12541393a164145081f62bd11ec9dcd037",
+    "tests/stage-4-lifecycle-review.test.mjs": "f1daf23322a473eed55c481adfda465001dedba4",
+    "tests/stage-4-privacy-review.test.mjs": "e627f6eae1c68f22bccbde54867922714721940a",
+    "tests/stage-4-upload-client.test.mjs": "a6449d962a606ca26e6d6a9ad2b354c4ce673ac8",
+    "workspace-preference.js": "17abce600781bc378e17bba19771316291c26f71",
+    "wrangler.jsonc": "dcf7961ab88639fb35e25b0aec251277a15d23a1"
+  },
+  "source_inventory_comparisons": {
+    "lifecycle": {
+      "recorded_files": 75,
+      "unchanged": 73,
+      "differences": [
+        {
+          "path": "app.js",
+          "original_blob": "6abd41c7c0bbd78265b453d15c813ac5184676ec",
+          "current_blob": "135f832d6720e5e8aeffe97e0ede39fa24d73658"
+        },
+        {
+          "path": "business.js",
+          "original_blob": "e9114a888ea9773c13ae0a30e035baeafa021010",
+          "current_blob": "c37c7d12c1e82fa47a57b61e2653708d6746256f"
+        }
+      ]
+    },
+    "upload": {
+      "recorded_files": 65,
+      "unchanged": 63,
+      "differences": [
+        {
+          "path": "app.js",
+          "original_blob": "6abd41c7c0bbd78265b453d15c813ac5184676ec",
+          "current_blob": "135f832d6720e5e8aeffe97e0ede39fa24d73658"
+        },
+        {
+          "path": "business.js",
+          "original_blob": "e9114a888ea9773c13ae0a30e035baeafa021010",
+          "current_blob": "c37c7d12c1e82fa47a57b61e2653708d6746256f"
+        }
+      ]
+    },
+    "privacy": {
+      "recorded_files": 96,
+      "unchanged": 96,
+      "differences": []
+    }
+  },
+  "intentional_source_changes_from_4_1_4_2_early_inventories": [
+    "app.js",
+    "business.js"
+  ],
+  "intentional_changes_supported_by_4_2_candidate_sha256": true,
+  "candidate_receipt_sha256_matches": 21,
+  "candidate_receipt_sha256_mismatches": [],
+  "candidate_file_hashes": {
+    "app.js": {
+      "sha256": "eb4222245c6d75bf3708335d6c5f24c942c62715d3ce0afdf7d79cb3777cb6f6",
+      "CRLF_variant_sha256": "d4ee7b1d597e6adf33a0e1c5bfc933c8720a46dee58c45e41ae87c5b809ca860",
+      "git_blob_sha1": "135f832d6720e5e8aeffe97e0ede39fa24d73658"
+    },
+    "business.js": {
+      "sha256": "6754f92c72399bf45ea849ef692318a6d88a227a413b552a6ca50ee9e1b98f6f",
+      "CRLF_variant_sha256": "2e42180d4f3fa18a8866ec5e4f98a7c1d1847ddc29b28121943f7f35d295ddce",
+      "git_blob_sha1": "c37c7d12c1e82fa47a57b61e2653708d6746256f"
+    },
+    "docs/security-audit/SECURITY_STAGE_4_3_PRIVACY_NOTICE_REVIEW_DRAFT.md": {
+      "sha256": "cc52a40669df32153c7b4ed4a6a568738b1695cde44121cdef1c68c8afcc20ae",
+      "CRLF_variant_sha256": "638977431b51065e283ff7ecb2618e61ac294ad930ab51dabe3c9d21776347cb",
+      "git_blob_sha1": "b1be7305c53d481b6767ee480576f2d819fc57bb"
+    },
+    "docs/security-audit/security-stage-4-privacy-decisions.json": {
+      "sha256": "e7768f7dec3a9cad2f1bed011a8e63eb17740cdacf442930363e7a084068e3a6",
+      "CRLF_variant_sha256": "27b38651c89fa6446e6474f213830a98d2ed6b8db731311839b8d8284de2dea6",
+      "git_blob_sha1": "0b0a15e4c2bd1ac50f435b27b340d565f09738bd"
+    },
+    "docs/security-audit/security-stage-4-privacy-source-inventory.json": {
+      "sha256": "220d7e1f7c1deaa943e462c498cc4cf219596866cb2b3b362687ec6bfee1ae0d",
+      "CRLF_variant_sha256": "30dfb758e0037f0300688c897dafe9ea8729fb10cd4912ad066fb9a43cb3e2e9",
+      "git_blob_sha1": "23a53897eb1c04fcf25d661212e9ca8b306ce844"
+    },
+    "docs/security-audit/security-stage-4-retention-decisions.json": {
+      "sha256": "0e94fdf0f4fe3e71f4f6442835ed457ded3c09d2e9e5c53e8c06bb67c587e398",
+      "CRLF_variant_sha256": "5bf1a53fb18290db7496d25d34592a208b0ac877947bae6c926c4177ce23198a",
+      "git_blob_sha1": "88e7d04e490bd68c9622b0d92d54165f65ada7c1"
+    },
+    "scripts/lib/stage-4-lifecycle-review.mjs": {
+      "sha256": "ace1165804c6bc72ea241039cc216223789a1da5548798f513748f9ce6732073",
+      "CRLF_variant_sha256": "69d613cf7d89d07ba09d53b9930f2e208d1400eeb6db3b5b5652c3abe75df081",
+      "git_blob_sha1": "3ff05c4bee55a4eafcb34cef92d66f81e8afb4fe"
+    },
+    "scripts/lib/stage-4-privacy-review.mjs": {
+      "sha256": "1923ef51321b22c9096ea1f0ec1dfd59bc1a8b4cb24c5efef32582268ad8776e",
+      "CRLF_variant_sha256": "22e168f38f196b92c40bd4a7d92822c9c1789e079f09f8e03e096092aa157c79",
+      "git_blob_sha1": "d2d467f7dc33c52d3d709e2632d0275b701d5b1b"
+    },
+    "scripts/verify-stage-4-files.mjs": {
+      "sha256": "e0798b7f13e25a421bd9499861d58d4f9b3197cb0840bfd38e85126cda55156c",
+      "CRLF_variant_sha256": "64e674299cca7075f223f40814934e7ffdde16f533d12f5baac6693dd07281e1",
+      "git_blob_sha1": "78659a2175fb058df8eddf24985cc9127603d5b2"
+    },
+    "scripts/verify-stage-4-lifecycle.mjs": {
+      "sha256": "29c3447e40b4bfccd2378631ff18c8e0acd715b4444f23750e6e398d7b734378",
+      "CRLF_variant_sha256": "8ae1436ccc80187f5ce056a595ca11c784b4c089b63514b99d90df2abe94823a",
+      "git_blob_sha1": "5548d709d9de10499e4aa5158efd1d375732e79a"
+    },
+    "scripts/verify-stage-4-privacy.mjs": {
+      "sha256": "80db5f27666c8bf06e43a1869769e1f27d43123c61d4f2b7715d081cf5f72e7f",
+      "CRLF_variant_sha256": "bd3224df2c6142bd14c9efe181f86d5ab18b6338f1d53bf7f8cedf21453399a4",
+      "git_blob_sha1": "66dbc4f5c56c0d8ad5a5f1e3427e1e0d268c9aa5"
+    },
+    "tests/business-stage-11.test.mjs": {
+      "sha256": "12ba6eada142da2f5a089aa46e52f50261a0b7d56128ffd4ad325e2794e62a13",
+      "CRLF_variant_sha256": "bc16537fbf72e92cab01d4764f4c7284d266facdcb26a0bf2f3da2ae889011ea",
+      "git_blob_sha1": "c76723ee66752b2ed17950e85d694604d114cdab"
+    },
+    "tests/business-stage-12.test.mjs": {
+      "sha256": "d6cad015cbf5da6f7b4c83dda52f9507df581438c9c609e31072a5ef1eaaa818",
+      "CRLF_variant_sha256": "a9af35a82707f4b682bf8fbaee68010d097ef0c12da3949d88ff9a4b9aa622a9",
+      "git_blob_sha1": "92ac50e613f9cf8cfeaf47b9653aad4f4debfab8"
+    },
+    "tests/business-stage-5.test.mjs": {
+      "sha256": "e02ae6f5dbed49d4a273e21b3b659c63e0da510fce90546552d5031de4f1e029",
+      "CRLF_variant_sha256": "2c4bf330b7c5b58f62330db6a418212fea473b05835db35275fe5517082c334d",
+      "git_blob_sha1": "35a9b52bc899c94b3dc30d721179e81c2b891af6"
+    },
+    "tests/business-stage-6.test.mjs": {
+      "sha256": "e2f4b05209bafd4d605cde07a3700eb0d70dc153e4b08d02d73f07df74a17e03",
+      "CRLF_variant_sha256": "08e9c0d3075fd9efce32d3d968cc6d83ca591a91e080d2a13b7580fa22a055db",
+      "git_blob_sha1": "8c1a493c53a0e3d6b3708e2876417fd509653b12"
+    },
+    "tests/dashboard-completed-payment.test.mjs": {
+      "sha256": "992eabdf6ff2ad35e8a255157cfc8975b7d894dbc635643d09b84b7d5ec5a754",
+      "CRLF_variant_sha256": "ac49d1e51e9e719c99b686e5b091aafef12c367f45298e8355e28c477f2fed4e",
+      "git_blob_sha1": "51b47646b3c23a6d4715485ac4e2b7530c2437fd"
+    },
+    "tests/family-extra-places.test.mjs": {
+      "sha256": "65cf5269617d156085a55f3539c4cea4bf35329f3cc599e56a61692c535e8657",
+      "CRLF_variant_sha256": "70ba355a593ddfa94424bbf707ccd0cb5be0052ed9d0dfe7597fc9ffc1b2e8bb",
+      "git_blob_sha1": "f8822fe66520a4ac8b757e0d02b96cac915a7f59"
+    },
+    "tests/session-recovery.test.mjs": {
+      "sha256": "e6de34f789657bb6c8aedd975e1f27e07ea4329d6588d46e73d8f1fcec81406e",
+      "CRLF_variant_sha256": "a6e7b784a2babbe839732a0efe6c7e5eea611662467319e6909762edc57d9230",
+      "git_blob_sha1": "8fe80b12541393a164145081f62bd11ec9dcd037"
+    },
+    "tests/stage-4-lifecycle-review.test.mjs": {
+      "sha256": "a9a280481f6f2425e650e3db873f885705f95e3a97b761dc05d66d903a28fee4",
+      "CRLF_variant_sha256": "7991b86f068967e1bf22980167044fe8b33f00d7a19e337a6bf8505dfc66fe02",
+      "git_blob_sha1": "f1daf23322a473eed55c481adfda465001dedba4"
+    },
+    "tests/stage-4-privacy-review.test.mjs": {
+      "sha256": "22f82a6fb5c2642a35fb93fcc1974ffa4a702bec02c477ca1a73bdd858e9834f",
+      "CRLF_variant_sha256": "e150a8002293e613d68d4d5ffc8c5132531b471c9759a733ca0b0ffc5b5e4a3d",
+      "git_blob_sha1": "e627f6eae1c68f22bccbde54867922714721940a"
+    },
+    "tests/stage-4-upload-client.test.mjs": {
+      "sha256": "4a267cc88261780e76ae3750df8629dd9f8617e9e46e5943910b635f8f7825f1",
+      "CRLF_variant_sha256": "3f0e4e271004cdf6c450e82daf9298724052238fd6347153b443fbf70524e8e4",
+      "git_blob_sha1": "a6449d962a606ca26e6d6a9ad2b354c4ce673ac8"
+    }
+  },
+  "owner_hash_reconciliation": [
+    {
+      "kind": "files",
+      "path": "app.js",
+      "owner_sha256": "eb4222245c6d75bf3708335d6c5f24c942c62715d3ce0afdf7d79cb3777cb6f6",
+      "match": "EXACT_BYTES"
+    },
+    {
+      "kind": "files",
+      "path": "business.js",
+      "owner_sha256": "6754f92c72399bf45ea849ef692318a6d88a227a413b552a6ca50ee9e1b98f6f",
+      "match": "EXACT_BYTES"
+    },
+    {
+      "kind": "files",
+      "path": "tests/stage-4-upload-client.test.mjs",
+      "owner_sha256": "3f0e4e271004cdf6c450e82daf9298724052238fd6347153b443fbf70524e8e4",
+      "match": "EXACT_LF_TO_CRLF_VARIANT"
+    },
+    {
+      "kind": "files",
+      "path": "scripts/verify-stage-4-files.mjs",
+      "owner_sha256": "64e674299cca7075f223f40814934e7ffdde16f533d12f5baac6693dd07281e1",
+      "match": "EXACT_LF_TO_CRLF_VARIANT"
+    },
+    {
+      "kind": "privacy",
+      "path": "scripts/lib/stage-4-privacy-review.mjs",
+      "owner_sha256": "22e168f38f196b92c40bd4a7d92822c9c1789e079f09f8e03e096092aa157c79",
+      "match": "EXACT_LF_TO_CRLF_VARIANT"
+    },
+    {
+      "kind": "privacy",
+      "path": "scripts/verify-stage-4-privacy.mjs",
+      "owner_sha256": "bd3224df2c6142bd14c9efe181f86d5ab18b6338f1d53bf7f8cedf21453399a4",
+      "match": "EXACT_LF_TO_CRLF_VARIANT"
+    },
+    {
+      "kind": "privacy",
+      "path": "tests/stage-4-privacy-review.test.mjs",
+      "owner_sha256": "e150a8002293e613d68d4d5ffc8c5132531b471c9759a733ca0b0ffc5b5e4a3d",
+      "match": "EXACT_LF_TO_CRLF_VARIANT"
+    },
+    {
+      "kind": "privacy",
+      "path": "docs/security-audit/security-stage-4-privacy-decisions.json",
+      "owner_sha256": "e7768f7dec3a9cad2f1bed011a8e63eb17740cdacf442930363e7a084068e3a6",
+      "match": "EXACT_BYTES"
+    },
+    {
+      "kind": "privacy",
+      "path": "docs/security-audit/security-stage-4-privacy-source-inventory.json",
+      "owner_sha256": "220d7e1f7c1deaa943e462c498cc4cf219596866cb2b3b362687ec6bfee1ae0d",
+      "match": "EXACT_BYTES"
+    },
+    {
+      "kind": "privacy",
+      "path": "docs/security-audit/SECURITY_STAGE_4_3_PRIVACY_NOTICE_REVIEW_DRAFT.md",
+      "owner_sha256": "cc52a40669df32153c7b4ed4a6a568738b1695cde44121cdef1c68c8afcc20ae",
+      "match": "EXACT_BYTES"
+    }
+  ],
+  "owner_exact_byte_matches": 5,
+  "owner_exact_CRLF_script_variant_matches": 5,
+  "unexplained_owner_hash_mismatches": 0,
+  "prior_assistant_local_batches": [
+    {
+      "step": "4.1.2",
+      "tests": 46,
+      "pass": 46,
+      "fail": 0,
+      "syntax_checks": 3,
+      "scope": "OFFLINE_LIFECYCLE_PREFLIGHT_AND_PURE_RETRY_MODEL"
+    },
+    {
+      "step": "4.2.2",
+      "tests": 99,
+      "pass": 99,
+      "fail": 0,
+      "primary_VM_client_tests": 63,
+      "related_existing_regressions": 36,
+      "syntax_checks": 4,
+      "scope": "SELECTED_ACTUAL_CLIENT_VM_FUNCTIONS_AND_EXISTING_LOCAL_REGRESSIONS"
+    },
+    {
+      "step": "4.3.2",
+      "tests": 43,
+      "pass": 43,
+      "fail": 0,
+      "syntax_checks": 3,
+      "scope": "OFFLINE_PRIVACY_REVIEW_CONTRACT_AND_DRAFT"
+    }
+  ],
+  "prior_assistant_test_case_executions": 188,
+  "prior_assistant_syntax_checks": 10,
+  "owner_repeated_file_checks": 63,
+  "owner_repeated_privacy_checks": 43,
+  "owner_repeats_add_distinct_primary_checks": false,
+  "fresh_local_behavior_tests_run": 0,
+  "fresh_hosted_HTTP_catalog_SQL_Auth_Storage_provider_device_checks_run": 0,
+  "hosted_batches": [
+    {
+      "step": "4.1",
+      "planned": 25,
+      "run": 0,
+      "status": "BLOCKED"
+    },
+    {
+      "step": "4.2",
+      "planned": 30,
+      "run": 0,
+      "status": "BLOCKED"
+    },
+    {
+      "step": "4.3",
+      "planned": 25,
+      "run": 0,
+      "status": "BLOCKED"
+    }
+  ],
+  "total_planned_hosted_grouped_cases": 80,
+  "total_hosted_grouped_cases_run": 0,
+  "total_hosted_grouped_cases_blocked": 80,
+  "adopted_retention_policy": false,
+  "public_privacy_draft_adopted_or_published": false,
+  "publication_blockers": 36,
+  "actual_genuine_deletion_or_trusted_file_processing_or_privacy_controls_verified": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "four_bounded_stage4_steps_recorded": true,
+  "stage4_status": "CLOSED_WITH_CARRY_FORWARD_HOSTED_ACCEPTANCE_BLOCKED",
+  "stage4_remediation_action_count": 18,
+  "original_123_rows_and_20_definitions_to_be_preserved": true,
+  "owner_SQL_terminal_or_setup_action_requested": false,
+  "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+  "provider_email_job_executed": false,
+  "production_or_native_changed": false,
+  "next_stage": 5,
+  "next_step": "5.1",
+  "next_scope": "EXISTING_NATIVE_SOURCE_CONFIGURATION_AND_BUILD_PREREQUISITE_INVENTORY_ONLY_APK_UPDATE_DEFERRED"
+}

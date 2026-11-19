@@ -1,0 +1,36 @@
+name: Staging managed subscription proof uploads
+on:
+  push:
+    branches: ["security/stage-3-authorization"]
+    paths: ["scripts/ci/staging-managed-subscription-upload-run.json"]
+permissions:
+  contents: read
+concurrency:
+  group: mushavo-staging-acceptance
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.repository == 'dwtdhruvp246/mushavobudget' && github.ref == 'refs/heads/security/stage-3-authorization' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '22'
+      - name: Run proof validator and cleanup regressions
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/pdf-proof-tools
+          npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/logo-jpeg-tools
+          npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/email-session-review-tools
+          node scripts/check-fr-3-managed-subscription-upload.mjs
+          node --test tests/pdf-proof-validation.test.mjs tests/personal-proof-validation.test.mjs tests/family-proof-validation.test.mjs tests/business-logo-replacement-cleanup.test.mjs
+      - name: Verify staging large managed proofs
+        env:
+          MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}
+          MUSHAVO_STAGING_USER_A_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_A_PASSWORD }}
+          MUSHAVO_STAGING_USER_B_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_B_EMAIL }}
+          MUSHAVO_STAGING_USER_B_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_B_PASSWORD }}
+        run: node scripts/ci/check-staging-managed-subscription-upload.mjs

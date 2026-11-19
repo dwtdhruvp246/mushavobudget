@@ -1,0 +1,28 @@
+{
+  "stage_step": "FR.2.3_OUTBOX_EXACT_DRIFT_RECONCILIATION",
+  "source_parent_commit": "127a23a92c41ce2c3b3caf12dba0885a38888c20",
+  "owner_checked_UTC": "2026-10-14T16:27:19.546281+00:00",
+  "historical_source_body_MD5": "097128330dee61398b475cf244293e30",
+  "canonical_source_body_MD5": "85794a38ffbe61b56bab8aff4b0a3319",
+  "reconstructed_deployed_LF_MD5": "12f6ae6147b24860005e0cd6b4e59a2a",
+  "reconstructed_deployed_LF_SHA256": "d8b10220c422d168bf38c538916872a203bfe3c0c736f151ea4fa5d5ca2fbd39",
+  "reconstructed_LF_bytes": 1023,
+  "reconstructed_CRLF_bytes": 1057,
+  "all35_deployed_line_fingerprints_exactly_matched": true,
+  "historical_lines_matching_in_same_position": 34,
+  "changed_historical_line": 28,
+  "expected_separator": "U+00B7",
+  "observed_separator_codepoints": [
+    "U+252C",
+    "U+2556"
+  ],
+  "UTF8_bytes_decoded_as_CP437_reconstruct_exact_observed_separator": true,
+  "specific_historical_tool_or_operator_causing_corruption_proven": false,
+  "semantic_change": "CORRUPTED_TITLE_SEPARATOR_LITERAL_ONLY_NOT_PERMISSION_OR_ROUTE_EXPANSION",
+  "generic_whitespace_stripping_used": false,
+  "source_body_replaced_on_host": false,
+  "existing_Business_fixture_guard_requires_MD5": "097128330dee61398b475cf244293e30",
+  "existing_fixture_guard_CRLF_normalization_and_current_closure_recheck_still_required": true,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

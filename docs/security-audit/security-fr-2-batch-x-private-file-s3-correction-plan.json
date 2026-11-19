@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-08",
+  "status": "FROZEN_S3_BACKEND_CORRECTION",
+  "target_project": "dczlddwbtgvfdujgcitb",
+  "source_parent": "4e2d1d02dc0fddb80f0150ac59b50f4a32c1b698",
+  "region_verified": "eu-west-1",
+  "endpoint": "https://dczlddwbtgvfdujgcitb.storage.supabase.co/storage/v1/s3",
+  "credentials": "Existing server environment: project ref, legacy anon key and service JWT as temporary S3 credentials. No new S3 access keys or frontend secrets.",
+  "new_pinned_dependency": {
+    "name": "aws4fetch",
+    "version": "1.0.20",
+    "dependencies": 0,
+    "integrity": "sha512-/djoAN709iY65ETD6LKCtyyEI04XIBP5xVvfmNxsEP0uJB5tyaGBztSryRr4HqMStr9R06PisQE7m9zDTXKu6g==",
+    "original_29_locked_dependencies_unchanged": true,
+    "new_lock_sha256": "502017edb80a1b7a0395f2feebe24640dd9e9273ef87a74c60aedcfe49a8dc74"
+  },
+  "safety": [
+    "No redirects or automatic retries; fixed staging host, S3 path, region and read-only method.",
+    "Credentials remain in signed request headers on the server. Byte stream is bounded before returning it.",
+    "First user/session/RLS check precedes S3 GET; second current object/version/RLS check follows it.",
+    "Raw before/after/unique-nonce GETs and signing must stay denied in genuine acceptance, with owner/staff broker reads still positive.",
+    "Repeat the exact warmed Family membership-removal test only after corrected original-route acceptance. Cleanup every harmless object and created session."
+  ],
+  "verification": {
+    "Node_guard_tests": 317,
+    "pass": 317,
+    "fail": 0,
+    "Deno_frozen_typecheck": "PASS",
+    "real_pinned_signer_offline": "PASS_NO_NETWORK",
+    "hosted_acceptance": false
+  },
+  "source_basis": [
+    "https://supabase.com/docs/guides/storage/s3/authentication",
+    "https://supabase.com/kb/troubleshooting/storage-private-bucket-files-still-accessible-after-remove-access-or-logout"
+  ],
+  "production_changed": false
+}

@@ -1,0 +1,38 @@
+{
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "CONTROLLED_BROWSER_SCOPED_PASS",
+  "case_ids": [
+    "AU04.05",
+    "AU05.07"
+  ],
+  "checks": {
+    "controlled_502_saved_invitation_and_resend_visible": true,
+    "controlled_429_wait_guidance_and_existing_row_retained": true,
+    "real_sdk_null_PKCE_fields_and_exact_session_guard_verified": true
+  },
+  "actual_hosted_backend_requests": 0,
+  "real_email_requests": 0,
+  "frontend_uploaded": false,
+  "live_recovery_save_retry_verified": false,
+  "deployed_business_candidate_verified": false,
+  "exit_code": 0,
+  "run_plan": "2026-11-05-recovery-guard-and-business-browser",
+  "source_commit": "963b0c34e8bc5a2f8f0e0fe7923f89612063255e",
+  "workflow_run_id": "42098492193",
+  "workflow_run_attempt": "1",
+  "date": "2026-11-05",
+  "workflow_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42098492193",
+  "scope": "Exact Business Team handlers and markup exercised in Chromium with controlled function responses and the pinned Supabase SDK. The actual SDK password request was intercepted before any backend call.",
+  "credentials_step_skipped": true,
+  "fixture_backend_responses_only": true,
+  "remaining_original_checks": [
+    "AU03.01 older valid short-password compatibility",
+    "AU04.05 live password-save failure/retry",
+    "AU05.07 deployed Business candidate verification"
+  ],
+  "original_Batch_W_case_groups": 31,
+  "new_public_AU_cases": 0,
+  "full_lettered_batch_W_complete": false,
+  "findings_closed": [],
+  "next_step": "FR.2.5_LIVE_RECOVERY_SAVE_RETRY_AND_DEPLOYED_BUSINESS_VERIFICATION"
+}

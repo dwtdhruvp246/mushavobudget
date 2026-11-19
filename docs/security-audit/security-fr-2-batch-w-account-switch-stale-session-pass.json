@@ -1,0 +1,116 @@
+{
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+  "checks": {
+    "three_private_credentials_and_expected_roles_verified": true,
+    "created_sessions_local_logout_acknowledged": true
+  },
+  "accounts": {
+    "USER_A": {
+      "signin_HTTP_status": 200,
+      "confirmed_identity": true,
+      "active_profile": true,
+      "expected_platform_role": true,
+      "owned_workspace_counts": {
+        "personal": 1,
+        "family": 0,
+        "business": 0
+      }
+    },
+    "USER_B": {
+      "signin_HTTP_status": 200,
+      "confirmed_identity": true,
+      "active_profile": true,
+      "expected_platform_role": true,
+      "owned_workspace_counts": {
+        "personal": 1,
+        "family": 0,
+        "business": 0
+      }
+    },
+    "ADMIN": {
+      "signin_HTTP_status": 200,
+      "confirmed_identity": true,
+      "active_profile": true,
+      "expected_platform_role": true,
+      "owned_workspace_counts": {
+        "personal": 1,
+        "family": 0,
+        "business": 0
+      }
+    }
+  },
+  "API_requests": 18,
+  "created_sessions": 3,
+  "cleanup_sessions": 3,
+  "settings_or_finance_writes_requested": 0,
+  "production_changed": false,
+  "full_lettered_batch_W_complete": false,
+  "exit_code": 0,
+  "exercise": {
+    "scope": "account-switch-and-stale-session",
+    "cases": {
+      "AU05_06": {
+        "case_id": "AU05.06",
+        "status": "SCOPED_PASS",
+        "checks": {
+          "actual_Business_staff_workspace_opened": true,
+          "real_distinct_replacement_session_adopted": true,
+          "old_Business_view_hidden_before_response_release": true,
+          "branding_activity_and_dialogs_cleared": true,
+          "delayed_old_response_did_not_restore_private_view": true,
+          "replacement_Personal_dashboard_survives_reload": true
+        },
+        "response_payload_modified": false,
+        "actual_server_response_held": true,
+        "held_response_HTTP_status": 200,
+        "backend_requests": 156,
+        "refused_requests": 0,
+        "refresh_requests": 0,
+        "local_logout_requests": 0,
+        "local_logout_acknowledgements": 0,
+        "normal_activity_RPCs": 3,
+        "test_context_closed": true
+      },
+      "AU05_07_stale": {
+        "case_id": "AU05.07",
+        "status": "STALE_SESSION_VARIANT_SCOPED_PASS",
+        "checks": {
+          "access_JWT_still_before_expiry": true,
+          "existing_server_contract_denies_revoked_session": true,
+          "protected_profile_not_returned": true
+        },
+        "provider_rate_limit_exercised": false,
+        "JWT_expiry_modified": false,
+        "session_status_HTTP_status": 200,
+        "profile_HTTP_status": 200
+      }
+    },
+    "settings_or_finance_writes_requested": 0,
+    "new_public_AU_cases": 0,
+    "existing_passwords_changed": false,
+    "mail_requests": 0,
+    "service_workers": "blocked_in_isolated_CI_context",
+    "public_source_reads": 3,
+    "stale_session_snapshot_requests": 2,
+    "status": "ACCOUNT_SWITCH_AND_STALE_SESSION_VARIANT_SCOPED_PASS"
+  },
+  "run_plan": "2026-11-05-account-switch-and-stale-session-01",
+  "source_commit": "c349f769c0765308ffda8350a3597fc574199479",
+  "workflow_run_id": "42000458416",
+  "workflow_run_attempt": "1",
+  "public_configuration_requests": 1,
+  "date": "2026-11-05",
+  "evidence": "FRE299",
+  "workflow_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42000458416",
+  "exact_tagged_session_rows_remaining": 0,
+  "independent_session_metadata_query_read_only": true,
+  "normal_foreground_activity_RPCs": 3,
+  "all_previous_scoped_passes_retained": true,
+  "older_unbound_Node_session_cleanup_verified": false,
+  "AU03_04_retry_owner_deferred": true,
+  "actual_email_provider_quota_or_reset_verified": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

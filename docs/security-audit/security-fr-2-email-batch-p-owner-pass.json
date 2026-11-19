@@ -1,0 +1,429 @@
+{
+  "stage_step": "FR.2.4.E5.29_BATCH_P_PAGES_REDIRECT_SAFE_OFFLINE_CANDIDATE_AND_RETAINED_ZIP",
+  "batch": "P",
+  "result": "BATCH_P_LOCAL29PASS_RETAINED_PUBLIC_ZIP_PREPARED_NOT_DEPLOYED",
+  "source_parent_commit": "df8bdc48490ceaf4879fe4056a0e5aa57e553997",
+  "node_version": "v22.17.0",
+  "platform": "win32",
+  "source_hashes_verified": 203,
+  "syntax_checks": 53,
+  "units": {
+    "tests": 8,
+    "pass": 8,
+    "fail": 0,
+    "exit_code": 0
+  },
+  "expected_current_worker_redirect_failure": {
+    "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
+    "batch": "O",
+    "result": "BATCH_O_PUBLIC_BROWSER_REVIEW_REQUIRED",
+    "scope": "LOCAL_HTTPS_PUBLIC_SOURCE_FIXTURE",
+    "offline_navigation": {
+      "model": "WORKER_FETCH_FAILURE_PAGE_STATE_ONLY",
+      "worker_fetch_failures": 1,
+      "page_navigation_continuations": 0,
+      "document_from_service_worker": null,
+      "document_http_status": null,
+      "navigation_error_present": true,
+      "navigation_error_class": "ERR_FAILED",
+      "cached_document_redirected": true,
+      "cached_document_type": "basic",
+      "view": {
+        "document_class": "BROWSER_ERROR",
+        "expected_heading_present": false,
+        "expected_notice_present": false,
+        "navigator_online": false
+      }
+    },
+    "tls_metadata": {
+      "collection_only": true,
+      "document_response_observed": true,
+      "document_matches_original_literal": true,
+      "document_path_class": "OFFLINE_CLEAN",
+      "document_security_state": "insecure",
+      "document_protocol_class": "TLS_1_3",
+      "visible_state_observed": true,
+      "visible_security_state": "insecure-broken",
+      "visible_protocol_class": "TLS_1_3",
+      "visible_certificate_present": true,
+      "certificate_network_error_present": true,
+      "certificate_currently_valid": true,
+      "certificate_error_event_observed": false
+    },
+    "tls_metadata_only": false,
+    "candidate_worker_exercised": false,
+    "target_setup_failure": null,
+    "explicit_page_attachment": true,
+    "checks": [
+      {
+        "check": "REAL_PUBLIC_DOM_AND_SECURE_CONTEXT",
+        "status": "PASS"
+      },
+      {
+        "check": "LOCAL_FIXTURE_TLS_BYPASS_EXPLICIT",
+        "status": "PASS"
+      },
+      {
+        "check": "ALL_16_PUBLIC_ASSET_BYTES_MATCH_PINNED_SOURCE",
+        "status": "PASS"
+      },
+      {
+        "check": "FRESH_PROFILE_HAS_NO_AUTH_STORAGE_OR_DEVICE_COOKIE",
+        "status": "PASS"
+      },
+      {
+        "check": "ACTUALLY_EXECUTED_WORKER_SOURCE_MATCHES_PIN",
+        "status": "PASS"
+      },
+      {
+        "check": "STALE_PRODUCT_CACHE_REMOVED_UNRELATED_CACHE_PRESERVED",
+        "status": "PASS"
+      },
+      {
+        "check": "ALL_14_PRODUCT_CACHE_ENTRIES_ARE_EXACT_PUBLIC_SOURCE",
+        "status": "PASS"
+      }
+    ],
+    "tests": 7,
+    "pass": 7,
+    "fail": 0,
+    "browser_product": "Chrome/155.0.8059.79",
+    "public_assets_verified": 16,
+    "intercepted_request_attempts": 42,
+    "maximum_intercepted_requests": 128,
+    "blocked_unreviewed_requests": 0,
+    "simulated_offline_requests": 1,
+    "intercepted_hosted_request_attempts": 0,
+    "worker_startup_fetches_not_intercepted": true,
+    "total_browser_hosted_requests_independently_counted": false,
+    "document_scripts_disabled": true,
+    "hosted_TLS_verified": false,
+    "hosted_secure_transport_verified": false,
+    "executed_worker_source_verified": true,
+    "isolated_temporary_profile": true,
+    "temporary_profile_removed": true,
+    "browser_process_stopped": true,
+    "private_packets_accessed": false,
+    "credentials_or_Auth_or_gateway_requests_permitted": false,
+    "real_email_requests": 0,
+    "committed_mode_change_requests": 0,
+    "hosted_authenticated_browser_acceptance": false,
+    "installed_PWA_OS_lifecycle_verified": false,
+    "external_traffic_OS_sandboxed": false,
+    "local_certificate_validation_bypassed": true,
+    "hosted_acceptance": false,
+    "live_activation_approved": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "checkpoint": "BROWSER_OFFLINE_NAVIGATION",
+    "problem_code": "OFFLINE_NAVIGATION_NETWORK_ERROR",
+    "exit_code": 1,
+    "checked_UTC": "2026-10-23T14:26:38.045Z",
+    "local_fixture_variant": "pages-redirects",
+    "local_fixture_closed": true,
+    "offline_app_navigation_reached_fixture": 0,
+    "local_fixture_unexpected_requests": 0
+  },
+  "candidate_browsers": [
+    {
+      "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
+      "batch": "O",
+      "result": "LOCAL_BATCH_O_PUBLIC_BROWSER_FIXTURE_SCOPED_PASS",
+      "scope": "LOCAL_HTTPS_PUBLIC_SOURCE_FIXTURE",
+      "offline_navigation": {
+        "model": "WORKER_FETCH_FAILURE_PAGE_STATE_ONLY",
+        "worker_fetch_failures": 5,
+        "page_navigation_continuations": 0,
+        "document_from_service_worker": true,
+        "document_http_status": 200,
+        "navigation_error_present": false,
+        "navigation_error_class": null,
+        "cached_document_redirected": true,
+        "cached_document_type": "basic",
+        "view": {
+          "document_class": "EXPECTED_APP_PATH",
+          "expected_heading_present": true,
+          "expected_notice_present": true,
+          "navigator_online": false
+        }
+      },
+      "tls_metadata": {
+        "collection_only": true,
+        "document_response_observed": true,
+        "document_matches_original_literal": true,
+        "document_path_class": "OFFLINE_CLEAN",
+        "document_security_state": "insecure",
+        "document_protocol_class": "TLS_1_3",
+        "visible_state_observed": true,
+        "visible_security_state": "insecure-broken",
+        "visible_protocol_class": "TLS_1_3",
+        "visible_certificate_present": true,
+        "certificate_network_error_present": true,
+        "certificate_currently_valid": true,
+        "certificate_error_event_observed": false
+      },
+      "tls_metadata_only": false,
+      "candidate_worker_exercised": true,
+      "target_setup_failure": null,
+      "explicit_page_attachment": true,
+      "checks": [
+        {
+          "check": "REAL_PUBLIC_DOM_AND_SECURE_CONTEXT",
+          "status": "PASS"
+        },
+        {
+          "check": "LOCAL_FIXTURE_TLS_BYPASS_EXPLICIT",
+          "status": "PASS"
+        },
+        {
+          "check": "ALL_16_PUBLIC_ASSET_BYTES_MATCH_PINNED_SOURCE",
+          "status": "PASS"
+        },
+        {
+          "check": "FRESH_PROFILE_HAS_NO_AUTH_STORAGE_OR_DEVICE_COOKIE",
+          "status": "PASS"
+        },
+        {
+          "check": "ACTUALLY_EXECUTED_WORKER_SOURCE_MATCHES_PIN",
+          "status": "PASS"
+        },
+        {
+          "check": "STALE_PRODUCT_CACHE_REMOVED_UNRELATED_CACHE_PRESERVED",
+          "status": "PASS"
+        },
+        {
+          "check": "ALL_14_PRODUCT_CACHE_ENTRIES_ARE_EXACT_PUBLIC_SOURCE",
+          "status": "PASS"
+        },
+        {
+          "check": "REAL_WORKER_OFFLINE_NAVIGATION_SHOWS_ONLY_SAFE_DOCUMENT",
+          "status": "PASS"
+        },
+        {
+          "check": "OFFLINE_NAVIGATION_DID_NOT_CACHE_PRIVATE_APP_HTML",
+          "status": "PASS"
+        },
+        {
+          "check": "NO_INTERCEPTED_AUTH_GATEWAY_OR_UNREVIEWED_REQUEST_ALLOWED",
+          "status": "PASS"
+        }
+      ],
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "browser_product": "Chrome/155.0.8059.79",
+      "public_assets_verified": 16,
+      "intercepted_request_attempts": 47,
+      "maximum_intercepted_requests": 128,
+      "blocked_unreviewed_requests": 0,
+      "simulated_offline_requests": 5,
+      "intercepted_hosted_request_attempts": 0,
+      "worker_startup_fetches_not_intercepted": true,
+      "total_browser_hosted_requests_independently_counted": false,
+      "document_scripts_disabled": true,
+      "hosted_TLS_verified": false,
+      "hosted_secure_transport_verified": false,
+      "executed_worker_source_verified": true,
+      "isolated_temporary_profile": true,
+      "temporary_profile_removed": true,
+      "browser_process_stopped": true,
+      "private_packets_accessed": false,
+      "credentials_or_Auth_or_gateway_requests_permitted": false,
+      "real_email_requests": 0,
+      "committed_mode_change_requests": 0,
+      "hosted_authenticated_browser_acceptance": false,
+      "installed_PWA_OS_lifecycle_verified": false,
+      "external_traffic_OS_sandboxed": false,
+      "local_certificate_validation_bypassed": true,
+      "hosted_acceptance": false,
+      "live_activation_approved": false,
+      "production_or_native_changed": false,
+      "APK_update_deferred": true,
+      "findings_closed": [],
+      "checkpoint": "COMPLETE",
+      "problem_code": null,
+      "exit_code": 0,
+      "checked_UTC": "2026-10-23T14:26:39.437Z",
+      "local_fixture_variant": "candidate-pages-redirects",
+      "local_fixture_closed": true,
+      "offline_app_navigation_reached_fixture": 0,
+      "local_fixture_unexpected_requests": 0
+    },
+    {
+      "stage_step": "FR.2.4.E5.28_BATCH_O_HOSTED_PUBLIC_BROWSER_TLS_AND_SERVICE_WORKER",
+      "batch": "O",
+      "result": "LOCAL_BATCH_O_PUBLIC_BROWSER_FIXTURE_SCOPED_PASS",
+      "scope": "LOCAL_HTTPS_PUBLIC_SOURCE_FIXTURE",
+      "offline_navigation": {
+        "model": "WORKER_FETCH_FAILURE_PAGE_STATE_ONLY",
+        "worker_fetch_failures": 5,
+        "page_navigation_continuations": 0,
+        "document_from_service_worker": true,
+        "document_http_status": 200,
+        "navigation_error_present": false,
+        "navigation_error_class": null,
+        "cached_document_redirected": false,
+        "cached_document_type": "basic",
+        "view": {
+          "document_class": "EXPECTED_APP_PATH",
+          "expected_heading_present": true,
+          "expected_notice_present": true,
+          "navigator_online": false
+        }
+      },
+      "tls_metadata": {
+        "collection_only": true,
+        "document_response_observed": true,
+        "document_matches_original_literal": true,
+        "document_path_class": "OFFLINE_CLEAN",
+        "document_security_state": "insecure",
+        "document_protocol_class": "TLS_1_3",
+        "visible_state_observed": true,
+        "visible_security_state": "insecure-broken",
+        "visible_protocol_class": "TLS_1_3",
+        "visible_certificate_present": true,
+        "certificate_network_error_present": true,
+        "certificate_currently_valid": true,
+        "certificate_error_event_observed": false
+      },
+      "tls_metadata_only": false,
+      "candidate_worker_exercised": true,
+      "target_setup_failure": null,
+      "explicit_page_attachment": true,
+      "checks": [
+        {
+          "check": "REAL_PUBLIC_DOM_AND_SECURE_CONTEXT",
+          "status": "PASS"
+        },
+        {
+          "check": "LOCAL_FIXTURE_TLS_BYPASS_EXPLICIT",
+          "status": "PASS"
+        },
+        {
+          "check": "ALL_16_PUBLIC_ASSET_BYTES_MATCH_PINNED_SOURCE",
+          "status": "PASS"
+        },
+        {
+          "check": "FRESH_PROFILE_HAS_NO_AUTH_STORAGE_OR_DEVICE_COOKIE",
+          "status": "PASS"
+        },
+        {
+          "check": "ACTUALLY_EXECUTED_WORKER_SOURCE_MATCHES_PIN",
+          "status": "PASS"
+        },
+        {
+          "check": "STALE_PRODUCT_CACHE_REMOVED_UNRELATED_CACHE_PRESERVED",
+          "status": "PASS"
+        },
+        {
+          "check": "ALL_14_PRODUCT_CACHE_ENTRIES_ARE_EXACT_PUBLIC_SOURCE",
+          "status": "PASS"
+        },
+        {
+          "check": "REAL_WORKER_OFFLINE_NAVIGATION_SHOWS_ONLY_SAFE_DOCUMENT",
+          "status": "PASS"
+        },
+        {
+          "check": "OFFLINE_NAVIGATION_DID_NOT_CACHE_PRIVATE_APP_HTML",
+          "status": "PASS"
+        },
+        {
+          "check": "NO_INTERCEPTED_AUTH_GATEWAY_OR_UNREVIEWED_REQUEST_ALLOWED",
+          "status": "PASS"
+        }
+      ],
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "browser_product": "Chrome/155.0.8059.79",
+      "public_assets_verified": 16,
+      "intercepted_request_attempts": 43,
+      "maximum_intercepted_requests": 128,
+      "blocked_unreviewed_requests": 0,
+      "simulated_offline_requests": 5,
+      "intercepted_hosted_request_attempts": 0,
+      "worker_startup_fetches_not_intercepted": true,
+      "total_browser_hosted_requests_independently_counted": false,
+      "document_scripts_disabled": true,
+      "hosted_TLS_verified": false,
+      "hosted_secure_transport_verified": false,
+      "executed_worker_source_verified": true,
+      "isolated_temporary_profile": true,
+      "temporary_profile_removed": true,
+      "browser_process_stopped": true,
+      "private_packets_accessed": false,
+      "credentials_or_Auth_or_gateway_requests_permitted": false,
+      "real_email_requests": 0,
+      "committed_mode_change_requests": 0,
+      "hosted_authenticated_browser_acceptance": false,
+      "installed_PWA_OS_lifecycle_verified": false,
+      "external_traffic_OS_sandboxed": false,
+      "local_certificate_validation_bypassed": true,
+      "hosted_acceptance": false,
+      "live_activation_approved": false,
+      "production_or_native_changed": false,
+      "APK_update_deferred": true,
+      "findings_closed": [],
+      "checkpoint": "COMPLETE",
+      "problem_code": null,
+      "exit_code": 0,
+      "checked_UTC": "2026-10-23T14:26:40.801Z",
+      "local_fixture_variant": "candidate-direct",
+      "local_fixture_closed": true,
+      "offline_app_navigation_reached_fixture": 0,
+      "local_fixture_unexpected_requests": 0
+    }
+  ],
+  "tests": 29,
+  "pass": 29,
+  "package": {
+    "stage_step": "FR.2.4.E5.29_BATCH_P_PAGES_REDIRECT_SAFE_OFFLINE_CANDIDATE_AND_RETAINED_ZIP",
+    "batch": "P",
+    "result": "BATCH_P_LOCAL_PUBLIC_ZIP_PREPARED_NOT_DEPLOYED",
+    "target_Pages_project": "mushavo-budget-staging",
+    "target_origin": "https://mushavo-budget-staging.pages.dev",
+    "target_Supabase_project": "dczlddwbtgvfdujgcitb",
+    "public_files": 44,
+    "unchanged_public_entries": 43,
+    "only_sw_js_changed": true,
+    "retained_ZIP_SHA256_verified": "867296b5e71747a15d46c7ed8937484558ea9fcac97cd96c66ddf5dc00c8b9da",
+    "retained_ZIP_unchanged": true,
+    "staging_configuration_and_public_push_key_byte_preserved": true,
+    "Cloudflare_gateway_worker_and_headers_byte_preserved": true,
+    "candidate_SW_SHA256": "0bc471318eb7156aed4f004c153a3e45fd08a71f665ad77ba59caa29fd8d8c47",
+    "candidate_cache_version": "pwa-shell-v89",
+    "ZIP_path": "C:\\Users\\HP\\AppData\\Local\\Temp\\mushavo-batch-p-397169b10cd441e7b9a7833f67e56484\\public-candidate\\mushavo-pages-offline-review.zip",
+    "ZIP_SHA256": "5bbbea1dfaca36a05c513b087012657c0dfd7380901dcf2f47dc2eac45309fe0",
+    "portable_ZIP_readback_verified": true,
+    "Windows_dotNET_ZIP_readback_verified": true,
+    "do_not_upload_yet": true,
+    "actual_hosted_requests": 0,
+    "private_packets_or_credentials_accessed": false,
+    "keys_or_credentials_regenerated": false,
+    "email_requests": 0,
+    "committed_mode_change_requests": 0,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "exit_code": 0
+  },
+  "artifact_write_attempted": true,
+  "artifact_write_outcome_requires_inspection": false,
+  "actual_hosted_requests": 0,
+  "private_packets_or_credentials_accessed": false,
+  "email_requests": 0,
+  "committed_mode_change_requests": 0,
+  "uploaded_or_deployed": false,
+  "do_not_upload_yet": true,
+  "hosted_acceptance": false,
+  "live_activation_approved": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "checkpoint": "COMPLETE",
+  "problem_code": null,
+  "exit_code": 0,
+  "Windows_independent_preserved_entries": 43
+}

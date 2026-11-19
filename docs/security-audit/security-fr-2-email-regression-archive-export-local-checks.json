@@ -1,0 +1,16 @@
+{
+  "scope": "ACTUAL_ISOLATED_GIT_ARCHIVE_AND_TAR_NOT_NATIVE_WINDOWS_EXECUTION",
+  "node_version": "v24.19.0",
+  "git_version": "2.51.1",
+  "tar_version": "GNU tar 1.35",
+  "tests": 3,
+  "pass_count": 3,
+  "fail": 0,
+  "exit_code": 0,
+  "legacy_text_auto_and_core_eol_crlf_first_source_mismatch_reproduced": true,
+  "core_autocrlf_false_alone_prevents_archive_EOL_conversion": false,
+  "current_attributes_preserve_all612_sources_and_binaries_under_crlf_and_lf": true,
+  "user_checkout_or_global_Git_configuration_changed": false,
+  "remote_Git_or_provider_requests": 0,
+  "actual_Windows_execution_verified": false
+}

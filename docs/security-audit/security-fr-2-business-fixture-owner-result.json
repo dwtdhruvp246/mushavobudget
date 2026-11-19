@@ -1,0 +1,33 @@
+[
+  {
+    "business_fixture_preparation": {
+      "result": "TWO_CONTROLLED_BUSINESS_FIXTURES_COMMITTED_NOT_API_ACCEPTANCE",
+      "stage_step": "FR.2.3_BUSINESS_FIXTURE_PREPARATION",
+      "checked_UTC": "2026-10-14T18:40:25.47337+00:00",
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "findings_closed": [],
+      "active_dimensions": 4,
+      "hosted_acceptance": false,
+      "reminders_enabled": false,
+      "seats_per_business": 4,
+      "APK_update_deferred": true,
+      "synthetic_businesses": 2,
+      "payment_records_total": 5,
+      "synthetic_USD1_claims": 4,
+      "synthetic_entitlement_days": 7,
+      "automatic_conversion_enabled": false,
+      "production_or_native_changed": false,
+      "product_launch_switch_changed": false,
+      "reviewed_catalog_guard_passed": true,
+      "hosted_Business_API_checks_run": 0,
+      "payment_record_conversions_total": 7,
+      "project_selection_independently_verified": false,
+      "rows_identifiers_emails_or_credentials_printed": false,
+      "email_Edge_provider_payment_or_scheduler_invoked": false,
+      "application_trigger_callbacks_invoked_for_new_fixtures": true,
+      "claims_context_transaction_local_not_genuine_Auth_acceptance": true,
+      "previous_rows_Auth_identity_metadata_and_factors_compared_unchanged": true,
+      "public_functions_triggers_policies_grants_and_RLS_compared_unchanged": true
+    }
+  }
+]

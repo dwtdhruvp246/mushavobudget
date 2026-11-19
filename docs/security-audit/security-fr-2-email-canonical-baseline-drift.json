@@ -1,0 +1,106 @@
+{
+  "routines": {
+    "migration": 278,
+    "schema": 275,
+    "diff": [
+      {
+        "key": "guard_payment_record_payer()",
+        "missing": false
+      },
+      {
+        "key": "provision_budget_user(p_user_id uuid)",
+        "missing": false
+      },
+      {
+        "key": "record_public_enquiry_event()",
+        "missing": true
+      },
+      {
+        "key": "save_plan_definition(p_plan_id uuid, p_code text, p_display_name text, p_description text, p_marketing_summary text, p_workspace_type text, p_included_member_seats integer, p_active_payment_limit integer, p_is_active boolean, p_is_public boolean, p_is_featured boolean, p_available_for_purchase boolean, p_cta_label text, p_sort_order integer, p_feature_codes text[])",
+        "missing": false
+      },
+      {
+        "key": "set_admin_notification_workspace_context()",
+        "missing": false
+      },
+      {
+        "key": "set_notification_workspace_context()",
+        "missing": false
+      },
+      {
+        "key": "set_payment_outbox_workspace_context()",
+        "missing": false
+      },
+      {
+        "key": "submit_family_plan_request(p_personal_workspace_id uuid, p_family_name text, p_total_member_count integer, p_plan_code text, p_billing_period text, p_currency text, p_amount numeric, p_payment_method text, p_payment_date date, p_reference_number text, p_notes text, p_proof_path text, p_proof_name text, p_proof_mime_type text, p_proof_size_bytes bigint)",
+        "missing": false
+      },
+      {
+        "key": "submit_subscription_renewal(p_workspace_id uuid, p_plan_code text, p_total_member_count integer, p_billing_period text, p_currency text, p_amount numeric, p_payment_method text, p_payment_date date, p_reference_number text, p_notes text, p_proof_path text, p_proof_name text, p_proof_mime_type text, p_proof_size_bytes bigint)",
+        "missing": false
+      },
+      {
+        "key": "submit_verified_public_enquiry(p_submission jsonb, p_email_hash text)",
+        "missing": true
+      },
+      {
+        "key": "touch_public_enquiry()",
+        "missing": true
+      },
+      {
+        "key": "touch_support_ticket_updated_at()",
+        "missing": false
+      }
+    ],
+    "extra": []
+  },
+  "tables": {
+    "migration": 82,
+    "schema": 80,
+    "diff": [
+      {
+        "key": "enquiry_submission_limits",
+        "missing": true
+      },
+      {
+        "key": "public_enquiry_events",
+        "missing": true
+      }
+    ],
+    "extra": []
+  },
+  "policies": {
+    "migration": 166,
+    "schema": 165,
+    "diff": [
+      {
+        "key": "public.enquiry_submission_limits.enquiry_gate_owner",
+        "missing": true
+      },
+      {
+        "key": "public.public_enquiry_events.Support staff can read public enquiry events",
+        "missing": true
+      }
+    ],
+    "extra": [
+      "public.enquiries.Public can submit enquiries"
+    ]
+  },
+  "stage_step": "FR.2.4.E4.10_CANONICAL_BASELINE",
+  "source_parent_commit": "19d7babc0fa08af83f030dd3ae863799ba92da0f",
+  "scope": "LOCAL_MODELED_SCHEMA_BOOTSTRAP_VERSUS_UNCHANGED54_MIGRATIONS_NOT_HOSTED_DRIFT",
+  "original_schema_SHA256": "cbd06ae32d5bf05d7e8a96ad85bfae86416eaafbf5898b04454e150888115e24",
+  "generated_schema_SHA256": "162f16bd21a936aff8fb4576dd5b0cccc8748e09688d3cdc9476bcc5b68f4645",
+  "routine_body_differences": 8,
+  "routine_effective_API_ACL_differences": 1,
+  "missing_routines": 3,
+  "missing_public_relations": 2,
+  "missing_policies": 2,
+  "extra_obsolete_public_insert_policy": 1,
+  "original_schema_source_catalog_was_not_equivalent_to_migration_history": true,
+  "hosted_catalog_or_installed_permissions_rechecked": false,
+  "original_ordered_migration_files_changed": false,
+  "hosted_requests": 0,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

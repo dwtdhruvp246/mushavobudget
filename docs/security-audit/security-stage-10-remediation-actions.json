@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "stage_step": "10.1",
+  "date": "2026-10-13",
+  "source_parent_commit": "b51fe2e49d32ecf5f3ee5a1f9118d1bc88888719",
+  "scope": "SIX_COORDINATING_OPERATIONS_ACTIONS_LINKED_TO_EXISTING_FINDINGS_NOT_NEW_FINDING_DEFINITIONS",
+  "actions": [
+    {
+      "id": "OP-R01",
+      "status": "OPEN",
+      "action": "Reconcile release mapping and protected deployment provenance",
+      "owner": "Both",
+      "finding_ids": [
+        "F18",
+        "F19",
+        "F08",
+        "F05"
+      ],
+      "acceptance_groups": [
+        "OP01"
+      ],
+      "related_RG_actions": [
+        "RG-R05",
+        "RG-R06",
+        "RG-R08"
+      ],
+      "remediation": "Establish accepted exact staging/serving/backend version and isolated configuration; reconcile historical instructions, workflow provenance, artifact allowlist and protected operator/recovery authority.",
+      "prerequisites": "Applicable accepted OP decisions, exact staging source/installed mapping, recoverable fixtures/operators and earlier implementation/acceptance dependencies.",
+      "recheck": "OP01-01 through OP01-04"
+    },
+    {
+      "id": "OP-R02",
+      "status": "OPEN",
+      "action": "Verify protected jobs, queue lifecycle and actual outcomes",
+      "owner": "Both",
+      "finding_ids": [
+        "F12",
+        "F15",
+        "F19"
+      ],
+      "acceptance_groups": [
+        "OP02"
+      ],
+      "related_RG_actions": [
+        "RG-R01",
+        "RG-R02",
+        "RG-R05"
+      ],
+      "remediation": "Complete actual scheduler-to-HTTP/Edge/business correlation, queue concurrency/retry/terminal and recipient/egress checks, automatic rate/history integrity and safe cleanup on controlled fixtures.",
+      "prerequisites": "Applicable accepted OP decisions, exact staging source/installed mapping, recoverable fixtures/operators and earlier implementation/acceptance dependencies.",
+      "recheck": "OP02-01 through OP02-04"
+    },
+    {
+      "id": "OP-R03",
+      "status": "OPEN",
+      "action": "Establish measurable monitoring, support and incident response",
+      "owner": "Owner/Both",
+      "finding_ids": [
+        "F19",
+        "F08"
+      ],
+      "acceptance_groups": [
+        "OP03"
+      ],
+      "related_RG_actions": [
+        "RG-R04",
+        "RG-R05",
+        "RG-R08"
+      ],
+      "remediation": "Approve service/usage scopes, budgets, alert destinations, cadence, private logs and accountable responder/alternate; demonstrate safe detection/receipt and support/incident operation.",
+      "prerequisites": "Applicable accepted OP decisions, exact staging source/installed mapping, recoverable fixtures/operators and earlier implementation/acceptance dependencies.",
+      "recheck": "OP03-01 through OP03-04"
+    },
+    {
+      "id": "OP-R04",
+      "status": "OPEN",
+      "action": "Complete protected backup and full-service recovery evidence",
+      "owner": "Both",
+      "finding_ids": [
+        "F16",
+        "F19",
+        "F08"
+      ],
+      "acceptance_groups": [
+        "OP04"
+      ],
+      "related_RG_actions": [
+        "RG-R03",
+        "RG-R06",
+        "RG-R08"
+      ],
+      "remediation": "Resolve private component/file/settings/key coverage, offsite/retention and failure handling; prove independent access and realistic fresh isolated recovery against accepted RPO/RTO without rerunning the committed local restore.",
+      "prerequisites": "Applicable accepted OP decisions, exact staging source/installed mapping, recoverable fixtures/operators and earlier implementation/acceptance dependencies.",
+      "recheck": "OP04-01 through OP04-04"
+    },
+    {
+      "id": "OP-R05",
+      "status": "OPEN",
+      "action": "Prepare and exercise compatible containment and rollback",
+      "owner": "Both",
+      "finding_ids": [
+        "F16",
+        "F18",
+        "F19",
+        "F15"
+      ],
+      "acceptance_groups": [
+        "OP05"
+      ],
+      "related_RG_actions": [
+        "RG-R05",
+        "RG-R08"
+      ],
+      "remediation": "Separate product-specific web rollback, scheduler containment, Edge/config and schema/data/security recovery; review exact installed compatibility and preserve history/access controls during accepted operator exercises.",
+      "prerequisites": "Applicable accepted OP decisions, exact staging source/installed mapping, recoverable fixtures/operators and earlier implementation/acceptance dependencies.",
+      "recheck": "OP05-01 through OP05-04"
+    },
+    {
+      "id": "OP-R06",
+      "status": "OPEN",
+      "action": "Reconcile all final dependencies before release disposition",
+      "owner": "Owner/Both",
+      "finding_ids": [
+        "F05",
+        "F17",
+        "F18",
+        "F19",
+        "F20"
+      ],
+      "acceptance_groups": [
+        "OP06"
+      ],
+      "related_RG_actions": [
+        "RG-R06",
+        "RG-R07",
+        "RG-R08"
+      ],
+      "remediation": "Complete earlier remediation/installed/device/store evidence and all original coverage/action traceability; prepare accountable release/rollback/incident disposition and perform a fresh full final audit.",
+      "prerequisites": "Applicable accepted OP decisions, exact staging source/installed mapping, recoverable fixtures/operators and earlier implementation/acceptance dependencies.",
+      "recheck": "OP06-01 through OP06-04"
+    }
+  ],
+  "total": 6,
+  "open": 6,
+  "inherited_RG_actions": "docs/security-audit/security-stage-9-remediation-actions.json",
+  "inherited_RG_actions_unchanged": true,
+  "findings_closed": [],
+  "hosted_operations_acceptance": false,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "final_remediation_and_full_reaudit_required": true,
+  "latest_step": "10.4",
+  "latest_evidence": "S10E06",
+  "source_candidate": {
+    "report": "docs/security-audit/SECURITY_STAGE_10_2_OPERATIONS_CANDIDATE.md",
+    "runbooks": "docs/security-audit/SECURITY_STAGE_10_OPERATIONAL_RUNBOOKS.md",
+    "contract": "docs/security-audit/security-stage-10-operations-candidate-contract.json",
+    "receipt": "docs/security-audit/security-stage-10-operations-local-checks.json",
+    "partial_source_contribution": [
+      "OP-R01"
+    ],
+    "prepared_not_exercised_actions": [
+      "OP-R02",
+      "OP-R03",
+      "OP-R04",
+      "OP-R05",
+      "OP-R06"
+    ],
+    "local_unique_cases": 27,
+    "syntax_checks": 4,
+    "real_operations_cases_run": 0,
+    "action_closures": 0,
+    "owner_repeat_received": true
+  },
+  "owner_offline_repeat": {
+    "receipt": "docs/security-audit/security-stage-10-operations-owner-local-checks.json",
+    "result": "PASS_27_EXIT_0",
+    "syntax_checks": 4,
+    "exact_published_hashes": 15,
+    "unexpected_mismatches": 0,
+    "action_closures": 0
+  },
+  "bounded_readiness": {
+    "report": "docs/security-audit/SECURITY_STAGE_10_3_READINESS_CHECKPOINT.md",
+    "receipt": "docs/security-audit/security-stage-10-operations-readiness.json",
+    "result": "BLOCKED_FULL_OPERATIONS_WITH_EXPLICIT_PUBLIC_PREREQUISITE_FAILURES",
+    "public_GETs": 9,
+    "selected_public_asset_type_FAILs": 3,
+    "selected_source_parity_REVIEWs": 5,
+    "blocked_prerequisite_groups": 6,
+    "planned_grouped_cases": 24,
+    "full_grouped_cases_executed": 0,
+    "installed_candidate_parity_verified": false,
+    "action_closures": 0,
+    "final_remediation_and_full_reaudit_required": true
+  },
+  "stage_status": "CLOSED_WITH_CARRY_FORWARD",
+  "completion_report": "docs/security-audit/SECURITY_STAGE_10_COMPLETION_REPORT.md",
+  "final_recheck": "docs/security-audit/security-stage-10-final-recheck.json",
+  "final_remediation_handoff": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
+  "final_remediation_status": "PROPOSED_NOT_EXECUTED",
+  "next_step": "FR.1"
+}

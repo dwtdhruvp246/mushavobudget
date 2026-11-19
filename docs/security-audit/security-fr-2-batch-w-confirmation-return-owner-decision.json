@@ -1,0 +1,32 @@
+{
+  "stage_step": "FR.2.5.W8_CONFIRMATION_ONLY_SUCCESS_AND_RETURN_TO_SIGNIN",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "received_date": "2026-10-27",
+  "result": "OWNER_REJECTS_DUPLICATE_CODE_ON_SIGNUP_CONFIRMATION_AND_RETAINS_EXISTING_SIGNIN_SECURITY",
+  "source": "OWNER_TWO_SCREENSHOTS_TEXT_AND_SCOPE_SELECTION",
+  "owner_request": "The signup confirmation link is sufficient to confirm the email; then the user goes to the sign-in page.",
+  "scope_question": "Should the existing email-code check still apply to new-device sign-ins after email confirmation?",
+  "selected_option": "Keep sign-in security (Recommended)",
+  "interpretation": "Remove the code gate from signup-confirmation completion; retain existing seven-day/new-device sign-in verification.",
+  "owner_screenshot_observations": {
+    "Email_confirmed_heading": true,
+    "verified_identity_matches_supplied_test_account": true,
+    "extra_verify_your_signin_code_view_present": true,
+    "remember_device_controls_present": true,
+    "code_delivery_error_visible_in_one_image": true,
+    "actual_code_delivered_or_verified": null,
+    "browser_address_bar_or_clean_callback_URL_visible": false
+  },
+  "case_AU01_04_scope": "OWNER_LINK_SUCCESS_AND_INTENDED_IDENTITY_VISIBLE; CLEAN_ROUTE_AND_CORRECTED_RETURN_BEHAVIOR_PENDING",
+  "current_test_identity_state": "EMAIL_CONFIRMED; PREVIOUS_LINK_CONSUMED; DO_NOT_REUSE_FOR_SUCCESS_TEST",
+  "new_signup_or_code_or_password_or_role_or_settings_or_mode_actions_requested_now": false,
+  "ordinary_password_signin_email_security_retained": true,
+  "Admin_assurance_not_changed": true,
+  "new_assistant_Auth_email_or_hosted_requests": 0,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

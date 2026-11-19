@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-30",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "source_commit": "a169e996ed8dccfac899c727ac0513caba26eea8",
+  "evidence_source": "Owner terminal attachment Pasted text(20261030-113052).txt",
+  "result": "OWNER_UNAVAILABLE_ADMIN_INVITATION_API_STATE_DENIAL_SCOPED_PASS",
+  "owner_safe_JSON": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+    "result": "UNAVAILABLE_ADMIN_INVITATION_SERVER_STATE_DENIAL_SCOPED_PASS",
+    "checks": {
+      "real_distinct_recipient_and_super_admin_verified": true,
+      "complete_cleanup_SQL_prepared_before_fixture": true,
+      "original_profile_and_owned_workspaces_preserved": true,
+      "temporary_invitation_and_audit_absent": true,
+      "created_sessions_cleaned_up": true,
+      "session_renewals_verified": true
+    },
+    "variants": {
+      "expired": {
+        "exact_recipient_bound_fixture_verified": true,
+        "invitation_read_denied": true,
+        "completion_denied": true
+      },
+      "cancelled": {
+        "exact_recipient_bound_fixture_verified": true,
+        "invitation_read_denied": true,
+        "completion_denied": true
+      },
+      "replaced": {
+        "exact_recipient_bound_fixture_verified": true,
+        "invitation_read_denied": true,
+        "completion_denied": true
+      }
+    },
+    "actual_hosted_requests": 25,
+    "manual_SQL_dashboard_requests_measured": false,
+    "real_email_requests": 0,
+    "completion_RPC_calls": 3,
+    "valid_first_provisioning_requested": false,
+    "unprovisioned_fixture_completion_denial_attempts": 3,
+    "settings_or_existing_account_writes_requested": 0,
+    "fixture_SQL_steps_acknowledged": 4,
+    "created_sessions": 2,
+    "cleanup_sessions": 2,
+    "fixture_cleanup_required": false,
+    "refresh_grants": 0,
+    "refresh_checks": [],
+    "fixture_preflights": {
+      "expired": {
+        "HTTP_status": 200,
+        "response_is_array": true,
+        "row_count": 1,
+        "error_code": null,
+        "invitation_id_matches": true,
+        "recipient_user_matches": true,
+        "inviter_matches": true,
+        "recipient_email_matches": true,
+        "name_marker_matches": true,
+        "workspace_marker_matches": true,
+        "free_personal": true,
+        "no_payment": true,
+        "unprovisioned": true
+      },
+      "cancelled": {
+        "HTTP_status": 200,
+        "response_is_array": true,
+        "row_count": 1,
+        "error_code": null,
+        "invitation_id_matches": true,
+        "recipient_user_matches": true,
+        "inviter_matches": true,
+        "recipient_email_matches": true,
+        "name_marker_matches": true,
+        "workspace_marker_matches": true,
+        "free_personal": true,
+        "no_payment": true,
+        "unprovisioned": true
+      },
+      "replaced": {
+        "HTTP_status": 200,
+        "response_is_array": true,
+        "row_count": 1,
+        "error_code": null,
+        "invitation_id_matches": true,
+        "recipient_user_matches": true,
+        "inviter_matches": true,
+        "recipient_email_matches": true,
+        "name_marker_matches": true,
+        "workspace_marker_matches": true,
+        "free_personal": true,
+        "no_payment": true,
+        "unprovisioned": true
+      }
+    },
+    "session_cleanup_responses": [
+      {
+        "account_slot": "super_admin",
+        "HTTP_status": 204,
+        "error_code": null
+      },
+      {
+        "account_slot": "ordinary_test_user",
+        "HTTP_status": 204,
+        "error_code": null
+      }
+    ],
+    "other_existing_sessions_signout_requested": false,
+    "full_lettered_batch_W_complete": false,
+    "exit_code": 0,
+    "fixture_cleanup_responses": {
+      "invitation": {
+        "HTTP_status": 200,
+        "response_is_array": true,
+        "row_count": 0,
+        "error_code": null
+      },
+      "audit": {
+        "HTTP_status": 200,
+        "response_is_array": true,
+        "row_count": 0,
+        "error_code": null
+      }
+    },
+    "source_hashes_verified": 10,
+    "retained_staging_ZIP_verified": true
+  },
+  "owner_local_tests": 25,
+  "owner_local_pass": 25,
+  "owner_local_fail": 0,
+  "accepted_case": "AU02.04",
+  "accepted_scope": "Actual recipient-bound API read/completion denial for controlled expired, cancelled and stored replaced states.",
+  "expired_completion_expected_code": "ADMIN_INVITATION_EXPIRED",
+  "cancelled_and_replaced_completion_expected_code": "ADMIN_INVITATION_NOT_AVAILABLE",
+  "fixture_and_audit_cleanup_verified": true,
+  "new_test_sessions_cleanup_verified": 2,
+  "Windows_clipboard_copy_and_readback_verified_for_four_steps": true,
+  "real_new_invitation_delivery_or_replacement_reservation_flow_exercised": false,
+  "real_Auth_email_link_TTL_exercised": false,
+  "live_refresh_grant_exercised": false,
+  "AU05_01_live_native_refresh_acceptance_added": false,
+  "repeat_requested": false,
+  "older_failed_run_Node_session_cleanup_verified": false,
+  "older_Node_rows_current_state_remeasured": false,
+  "AU02_05_incomplete_setup_network_retry_remaining": true,
+  "assistant_application_Auth_SQL_or_email_requests": 0,
+  "new_runtime_changes": 0,
+  "new_tests_run_by_assistant": 0,
+  "full_lettered_batch_W_complete": false,
+  "V_complete": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

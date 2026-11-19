@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-12",
+  "project": "dczlddwbtgvfdujgcitb",
+  "source": "525ec58498799335ed1a5167c4a1bbfd46a2fdce",
+  "run": 43282426255,
+  "job": 131406927356,
+  "result": "VALID_PNG_REFUSED_ON_HOSTED_RUNTIME",
+  "received_content_length_header": 115,
+  "http_status": 422,
+  "code": "INVALID_LOGO_PNG",
+  "exit_code": 1,
+  "created_sessions": 2,
+  "logged_out_sessions": 2,
+  "independent_cleanup": {
+    "support_version": 6,
+    "suspended": true,
+    "logo_empty": true,
+    "objects": 0,
+    "gate_ready": false
+  },
+  "revised_parser": "Portable byte views, unsigned checksum arithmetic, bounded Web decompression and fixed rejection-stage labels. Local Node 11 checks, Deno 8 checks and frozen entry point type check passed."
+}

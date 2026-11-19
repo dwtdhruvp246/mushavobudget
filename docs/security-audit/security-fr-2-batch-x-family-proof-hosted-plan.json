@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "source_parent_commit": "7549c5e673dc89749db9466cb9e31ecbfaac9b7c",
+  "scope": "family-proof-path-binding",
+  "fixture_name": "audit-family-proof-policy-20261107",
+  "case_ids": [
+    "X_FAMILY_PROOF_OWNER_MEMBER",
+    "X_FAMILY_PROOF_PATH_DENIALS",
+    "X_FAMILY_PROOF_REMOVAL",
+    "X_FAMILY_PROOF_CLEANUP"
+  ],
+  "fixture_setup": "One new empty synthetic Family with A as Owner and B as an active Adult member; operator-only setup, one-hour synthetic household entitlement and no actual payment/grant. This does not claim Family signup, invitation or subscription-provisioning acceptance.",
+  "assertions": [
+    "Real owner/member Family uploads and own Personal upload accept the harmless 68-byte PNG and return matching bytes.",
+    "Forged uploader, wrong Family owner, nonexistent Family and anonymous upload are denied.",
+    "Owner removes B with the supported RPC; B's upload/read/signing access is denied while Owner retains access.",
+    "In finally remove every exact attempted object path through Storage API with the bound staging Admin; independently confirm absence before Owner deletes the synthetic Family.",
+    "Verify all new Family/workspace rows, physical files and newly-created CI sessions absent; original fixtures retained."
+  ],
+  "limits": {
+    "exercise_requests": 60,
+    "core_requests": 24,
+    "logins": 3,
+    "maximum_harmless_successful_objects": 3,
+    "provider_or_email_requests": 0,
+    "finance_writes": 0
+  },
+  "recovery": "The safe CI receipt records only exact synthetic cleanup paths. If bytes remain, use Storage API first. The pinned SQL cleanup refuses any Family with files, payment records/items or an Admin grant.",
+  "catalog_stamp": "4646c0fe0367fe033b4594428f9c180eb96ca9b39ed2d1a2024bdc843804c3d7",
+  "production_changed": false
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "source_commit": "d744dea1bf7263dea8ff5c31765a968d411e5a84",
+  "project": "dczlddwbtgvfdujgcitb",
+  "functions": [
+    "dispatch-push-reminders",
+    "dispatch-admin-notifications"
+  ],
+  "verify_jwt": false,
+  "handler_authentication": "REQUIRED_NONEMPTY_CONSTANT_TIME_CRON_SECRET_BEFORE_DATABASE_ACCESS",
+  "source_assets_sha256": {
+    "supabase/functions/dispatch-push-reminders/index.ts": "565fd4c81c172d88ffd92f0bbcf1bce70d7c4eb7c6e117f1aa8ab3489a74e55d",
+    "supabase/functions/dispatch-admin-notifications/index.ts": "a61e77fd7f632af8c239b13844e1fdae84bc68c7d721abf3164dffad3c45402f",
+    "supabase/functions/dispatch-push-reminders/deno.json": "5335690600914ad53e9b4873a8287e0baba01902ef94eec02d01b35ca6d7b3be",
+    "supabase/functions/dispatch-admin-notifications/deno.json": "5335690600914ad53e9b4873a8287e0baba01902ef94eec02d01b35ca6d7b3be",
+    "supabase/functions/_shared/push-destination.mjs": "3c04dd7ca25442cdc600cc836f347553a0e2e88920c333ed1d975c58a1742743",
+    "supabase/functions/_shared/notification-recipient.mjs": "638a890a23cc49b77bcc2712e9e61135f9fde24fd031d868ea2c76780c704f24",
+    "supabase/functions/_shared/outbox-claim.mjs": "2587dbfb8461e7b23cfe79f063f1ea4033233d1706a80972db52672469189f30",
+    "scripts/fixtures/email-deno-runtime/edge-deno.lock": "eb373bd333000e850a8775bc67796baee9aecbebc818bd53fbdd1e7f507ae8ff"
+  },
+  "deployment_lock_source": "scripts/fixtures/email-deno-runtime/edge-deno.lock",
+  "deployment_lock_targets": [
+    "supabase/functions/dispatch-push-reminders/deno.lock",
+    "supabase/functions/dispatch-admin-notifications/deno.lock"
+  ],
+  "existing_project_functions_before": 5,
+  "database_scheduler_present_before": false,
+  "normal_queue_rows_before": 0,
+  "admin_queue_rows_before": 0,
+  "case_ids": [
+    "Y_EDGE_METHOD",
+    "Y_EDGE_NO_SECRET",
+    "Y_EDGE_WRONG_SECRET",
+    "Y_EDGE_HUMAN_CALLER"
+  ],
+  "planned_HTTP_checks_per_function": 5,
+  "ordinary_test_accounts": 2,
+  "maximum_login_sessions": 2,
+  "valid_cron_secret_requested_or_used": false,
+  "provider_delivery_requests": 0,
+  "cron_jobs_added": 0,
+  "production_changed": false,
+  "scope_limit": "Worker deployment and authorization boundary only. Full scheduler/provider delivery stays in later operational work."
+}

@@ -1,3 +1,4 @@
+import { PUBLIC_SITE_FILES } from '../scripts/build-public-site.mjs';
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
@@ -285,7 +286,7 @@ test("service worker uses explicit activation and revalidation without caching p
   const shellStart = workerSource.indexOf("const SAFE_SHELL = [");
   const shellEnd = workerSource.indexOf("];", shellStart);
   const safeShellSource = workerSource.slice(shellStart, shellEnd);
-  assert.match(workerSource, /pwa-shell-v88/);
+  assert.match(workerSource, /pwa-shell-v89/);
   assert.match(workerSource, /await self\.skipWaiting\(\)/);
   assert.match(workerSource, /X-Mushavo-Offline/);
   assert.match(workerSource, /event\.waitUntil\(self\.skipWaiting\(\)\)/);
@@ -293,9 +294,9 @@ test("service worker uses explicit activation and revalidation without caching p
   assert.doesNotMatch(safeShellSource, /"\/app\.html/);
   assert.doesNotMatch(safeShellSource, /"\/config\.js/);
   assert.doesNotMatch(workerSource, /supabase/i);
-  assert.match(workflowSource, /pwa-update\.css/);
-  assert.match(workflowSource, /pwa-install\.js/);
-  assert.match(workflowSource, /pwa-install\.css/);
+  assert.match(workflowSource, /node scripts\/build-public-site\.mjs/);
+  for (const asset of ["pwa-update.css", "pwa-install.js", "pwa-install.css"]) assert.ok(PUBLIC_SITE_FILES.includes(asset), asset + " is shipped by the actual exporter");
+
 });
 
 test("saved persistent settings are marked clean after successful writes", () => {

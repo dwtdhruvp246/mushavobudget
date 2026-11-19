@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "stage_step": "FR.2.5.W32_GUARDED_RECOVERY_PROFILE_REPAIR",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "source_parent_commit": "f360f5fb258689766ae0b2be21859df287fedc05",
+  "review_source_count": 10,
+  "owner_executes_only": "supabase/candidates/security_fr_2_5_recovery_profile_repair.sql",
+  "files": [
+    {
+      "path": "supabase/candidates/security_fr_2_5_recovery_profile_repair.sql",
+      "SHA256": "2ee0ecd4a8127a221e4310270ff84830e93b9ac3fcbc16ef85e9893a6de0e10e"
+    },
+    {
+      "path": "tests/recovery-profile-repair.check.mjs",
+      "SHA256": "aca0e7c5e4c4af85e0a8d7e187e4559ac56836a36ee76d705e30fb6e12df443c"
+    },
+    {
+      "path": "tests/fixtures/recovery-profile-guard.sql",
+      "SHA256": "544aa4d753162b2ec36fc9052f34aadd885f3e988d0b5f78f68d0deb73e24769"
+    },
+    {
+      "path": "supabase/candidates/security_fr_2_4_email_verification_backend.sql",
+      "SHA256": "45c715381db6e270633f9967a4e9a705740bf50d1fbbedb2e119f02735358bbe"
+    },
+    {
+      "path": "tests/fixtures/persistent-device-staging-model.sql",
+      "SHA256": "58d52bb981a230499d0ca577248daacb88052b20c9f18530270ad3f29b79b016"
+    },
+    {
+      "path": "supabase/candidates/security_fr_2_4_email_acceptance_window.sql",
+      "SHA256": "b256ea6b7d4da7785bd7c8f99b0bff6fef12b7473c6b9d8bfe3591c437e9546d"
+    },
+    {
+      "path": "supabase/candidates/security_fr_2_5_persistent_device_component.sql",
+      "SHA256": "2536f43f192c49b8c784efbe53ad561226814f45ecee77c4a45b6fb2a8370a0c"
+    },
+    {
+      "path": "supabase/candidates/security_fr_2_5_recovery_test_window.sql",
+      "SHA256": "600082e01d6eef21a1a36f1c7b57e9ee853c0dab1552bf7e957773bae97a2d2c"
+    },
+    {
+      "path": "scripts/offline-test-network.cjs",
+      "SHA256": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5"
+    },
+    {
+      "path": "app.js",
+      "SHA256": "ba02a923b8373d5812df1499ab570fafb45cad078d252ef63d42cb087a866e8e"
+    }
+  ],
+  "canonical_reference": {
+    "path": "supabase/schema.sql",
+    "Git_blob_SHA": "a4bc3ef765a937d94b6b908bb19cdf94d42d939f",
+    "full_blob_reviewed_prior_and_unchanged": true
+  },
+  "scope": "New repair/test/exact guard fixture only. Existing backend/device/predicate/controllers and application source remain unchanged; app.js supplies the normal three-field profile fallback reference, not a new runtime edit."
+}

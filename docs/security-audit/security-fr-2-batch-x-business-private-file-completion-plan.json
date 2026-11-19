@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "enabled": false,
+  "date": "2026-11-08",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "scope": "business-private-files",
+  "mode": "unfinished-archive-cleanup",
+  "status": "FROZEN_AFTER_REVERSIBLE_NEW_FIXTURE_CORRECTION",
+  "source_parent_commit": "0dc706a2328194a01641ecf3b2b485c9ce2fb931",
+  "workspace_id": "dcf3d122-e99f-4fe5-bbd1-03c3547629df",
+  "fixture_name": "audit-batch-x-receipt-d7be160c2026",
+  "document_id": "e8e09b54-76ed-477b-a266-fb88502bcb40",
+  "expected_support_version": 19,
+  "expected_subscription_version": 17,
+  "expected_profile_version": 3,
+  "parent_type": "workspace",
+  "temporary_paid_through_at": "2026-11-09T00:00:00.000Z",
+  "original_paid_through_at": "2026-11-08T00:00:00.000Z",
+  "cleanup_files": [
+    {
+      "bucket": "business-documents",
+      "path": "workspaces/dcf3d122-e99f-4fe5-bbd1-03c3547629df/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/e8e09b54-76ed-477b-a266-fb88502bcb40/broker.png"
+    },
+    {
+      "bucket": "business-logos",
+      "path": "dcf3d122-e99f-4fe5-bbd1-03c3547629df/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/af270748-93e4-4020-8fe6-65c68f43312c.png"
+    }
+  ],
+  "case_ids": [
+    "X_RETAIN_COMPLETED_BUSINESS_ACCESS_CASES",
+    "X_WORKSPACE_DOCUMENT_ARCHIVE",
+    "X_EXACT_BUSINESS_FILE_CLEANUP"
+  ],
+  "catalog_sha256": "cc122f36b6cc70e4fa88fe12a765cc83f24a586d495dfd3084f26edc2134e84f",
+  "run_id": "2026-11-08-batch-x-business-unfinished-archive-cleanup",
+  "no_automatic_rerun": true,
+  "previous_access_removal_run_reused": 42467355998,
+  "metadata_correction": "Only this run's new document parent was reversibly changed by privileged operator to the same workspace. No delete occurred, no policy/trigger was changed; ordinary authenticated callers have no table or parent-column UPDATE privilege.",
+  "bounds": {
+    "genuine_sessions": 2,
+    "uploads": 0,
+    "new_invitations": 0,
+    "member_or_role_writes": 0,
+    "financial_ledger_writes": 0,
+    "provider_requests": 0,
+    "exercise_requests_including_cleanup": 40,
+    "archive_calls_at_most": 2,
+    "Storage_file_deletions": 2,
+    "seat_restore_actions": 1,
+    "status_restore_actions": 1,
+    "production_changes": 0
+  },
+  "term_restoration": "After sessions logout and physical object absence, run the exact successful term restore sub18 to19; retain original USD1 paid-bill hash.",
+  "full_batch_X_complete": false,
+  "stage_3_complete": false
+}
+

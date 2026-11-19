@@ -1,0 +1,26 @@
+{
+  "source_LF_MD5": "cb3b123fa3eb25aed3d2cb0ef3a025db",
+  "source_LF_SHA256": "1366f72eeb32ffd7eb06fb306d32e8fc8d33e608c3ff9fb0709a89a168c95145",
+  "reconstructed_corrupted_LF_MD5": "140dff26cec8361452eb317ec74225b2",
+  "reconstructed_corrupted_LF_SHA256": "74ed421080439cca6616ba92e398b17f66d9eff661e8b5191597b9dd646b16c2",
+  "source_LF_bytes": 3473,
+  "reconstructed_corrupted_LF_bytes": 3477,
+  "line_count": 59,
+  "changed_line_numbers": [
+    42
+  ],
+  "corruption_reconstruction": "UTF8_BYTES_DECODED_AS_CP437",
+  "original_codepoint": "U+00B7",
+  "corrupted_codepoints": [
+    "U+252C",
+    "U+2556"
+  ],
+  "specific_historical_tool_or_operator_not_proven": true,
+  "owner_fingerprint_match_is_MD5_only_until_guarded_SHA256_assertion_on_host": true,
+  "source_parent_commit": "2d416772f57b8a9600db4622f105a411c1f233b5",
+  "source_migration": "supabase/migrations/20260928213000_business_stage_6_bills.sql",
+  "owner_body_MD5": "140dff26cec8361452eb317ec74225b2",
+  "owner_body_MD5_matches_reconstruction": true,
+  "hosted_SHA256_or_per_line_body_not_yet_observed": true,
+  "guarded_install_requires_both_full_SHA256_and_public_catalog_baseline_before_change": true
+}

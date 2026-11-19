@@ -1,0 +1,68 @@
+{
+  "stage_step": "FR.2.4.E5.35_BATCH_V_ADMIN_MFA_OPERATOR_FACTOR_AND_CATALOG_REVIEW",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z",
+  "status": "OWNER_READ_ONLY_SQL_PASS_AVAILABLE_ZERO_MATCHES_EXTERNAL_LOG_REVIEW_REQUIRED",
+  "source_parent_commit": "cd454f9fecdaa8f7fdb920cb119569faae75c46b",
+  "owner_recognizes_current_RECOVERY_setup": false,
+  "owner_MFA_repeat_requested": false,
+  "owner_next_action": "ONE_READ_ONLY_DASHBOARD_EXPLORER_LOGS_QUERY_NO_MFA_REPEAT",
+  "SQL": "supabase/diagnostics/security_fr_2_4_operator_factor_audit.sql",
+  "verifier": "scripts/verify-fr-2-batch-v-factor-audit.mjs",
+  "tests": "tests/fr-2-batch-v-factor-audit.test.mjs",
+  "source_manifest": "docs/security-audit/security-fr-2-batch-v-factor-audit-source-manifest.json",
+  "local_receipt": "docs/security-audit/security-fr-2-batch-v-factor-audit-local-checks.json",
+  "handoff": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_AUTH_AUDIT_HANDOFF.md",
+  "source_hashes": 335,
+  "existing_executed_source_hashes_unchanged": 332,
+  "frozen_U_source_hashes_unchanged": 310,
+  "local_tests": 8,
+  "local_PASS": 8,
+  "local_FAIL": 0,
+  "new_syntax_checks": 2,
+  "owner_offline_repeat_or_dependency_install_required": false,
+  "window_start_utc": "2026-10-25T13:35:00Z",
+  "window_end_utc": "2026-10-25T14:10:00Z",
+  "maximum_selected_rows_counted": 51,
+  "maximum_events_printed": 50,
+  "raw_audit_payloads_IDs_names_emails_IPs_or_secrets_output": false,
+  "Auth_API_or_factor_or_role_or_mode_or_setting_write": false,
+  "SQL_read_only_and_ROLLBACK": true,
+  "optional_database_audit_storage_handled": true,
+  "missing_events_prove_no_factor_creation_or_cleanup": false,
+  "matching_IP_proves_human_identity": false,
+  "hosted_Auth_build_or_cleanup_behavior_verified": false,
+  "upstream_Auth_source_commit": "c3348e8f1cb31454e9783e4eb9eab1e71ad9652f",
+  "upstream_Auth_sources": [
+    {
+      "path": "internal/api/mfa.go",
+      "git_blob_sha": "6082009f8d62b93df926bb2c7c0841b6fc88d636"
+    },
+    {
+      "path": "internal/models/factor.go",
+      "git_blob_sha": "faa35c936d97fbb90b171d5f63c05d19d655461a"
+    },
+    {
+      "path": "internal/models/audit_log_entry.go",
+      "git_blob_sha": "f8b493a783ea2776d65cf2d38fd6f693e7ce4888"
+    }
+  ],
+  "provider_can_purge_expired_unchallenged_unverified_factors_in_reviewed_public_source": true,
+  "actual_hosted_factor_origin_verified": false,
+  "full_lettered_batch_V_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "owner_receipt": "docs/security-audit/security-fr-2-batch-v-owner-factor-audit-review.json",
+  "owner_exit_code": 0,
+  "owner_checked_UTC": "2026-10-25T15:14:35.7749+00:00",
+  "owner_audit_table_status": "AVAILABLE",
+  "owner_selected_matching_rows": 0,
+  "owner_selected_session_counts": {
+    "PRIMARY": 0,
+    "RECOVERY": 0
+  },
+  "owner_reviewed_RECOVERY_factor_currently_matches": true,
+  "owner_quarantined_before_and_after_verified": true,
+  "next_handoff": "docs/security-audit/SECURITY_FR_2_4_BATCH_V_EXTERNAL_AUTH_LOGS_HANDOFF.md"
+}

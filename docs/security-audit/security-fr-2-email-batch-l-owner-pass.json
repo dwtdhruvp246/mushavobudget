@@ -1,0 +1,64 @@
+{
+  "stage_step": "FR.2.4.E5.25_BATCH_L_QUARANTINED_ACCEPTANCE_CONTROL_UPGRADE_AND_READBACK",
+  "batch": "L",
+  "result": "BATCH_L_CLOSED_CONTROLS_UPGRADED_AND_READ_BACK",
+  "actual_hosted_requests": 5,
+  "maximum_hosted_requests": 5,
+  "target_before_verified": true,
+  "quarantined_precheck_verified": true,
+  "controls_already_installed_before_run": false,
+  "upgrade_write_attempts": 1,
+  "upgrade_HTTP_accepted": true,
+  "write_response_problem_code": null,
+  "upgrade_write_outcome_uncertain": false,
+  "independent_readback_attempted": true,
+  "bounded_controls_verified": true,
+  "window_table_empty": true,
+  "quarantined_catalog_after_verified": true,
+  "target_after_verified": true,
+  "automatic_write_retry_performed": false,
+  "guarded_RPCs": 148,
+  "restrictive_policies": 82,
+  "backend_forced_RLS_tables": 5,
+  "private_schema_API_denied": true,
+  "application_rows_read_or_written": false,
+  "application_access_opened": false,
+  "Auth_settings_secrets_schedules_or_deployments_changed": false,
+  "email_push_or_FX_dispatched": false,
+  "private_packets_accessed": false,
+  "token_saved_to_disk_arguments_or_environment": false,
+  "raw_provider_bodies_printed": false,
+  "committed_mode_change_requests": 0,
+  "hosted_acceptance": false,
+  "live_activation_approved": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "samples": [
+    {
+      "endpoint": "TARGET_BEFORE",
+      "http_status": 200
+    },
+    {
+      "endpoint": "QUARANTINED_SOURCE_PRECHECK",
+      "http_status": 201
+    },
+    {
+      "endpoint": "INSTALL_CLOSED_CONTROLS",
+      "http_status": 201
+    },
+    {
+      "endpoint": "INDEPENDENT_CLOSED_READBACK",
+      "http_status": 201
+    },
+    {
+      "endpoint": "TARGET_AFTER",
+      "http_status": 200
+    }
+  ],
+  "checkpoint": "COMPLETE",
+  "problem_code": null,
+  "exit_code": 0,
+  "checked_UTC": "2026-10-23T09:33:05.020Z",
+  "source_hashes_verified": 155
+}

@@ -1,0 +1,89 @@
+{
+  "stage_step": "FR.2.5.W5_EIGHT_CHARACTER_FRONTEND_DEPLOYMENT_AND_EXACT_AUTH_SETTINGS_READBACK",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "BATCH_W_OWNER_SETTINGS_SCREENSHOT_METADATA_REVIEW_COMPLETE",
+  "source_parent_commit": "7bd994147f4e6bee817e0435bf8b9ebeec8d7bfe",
+  "received_date": "2026-10-26",
+  "evidence_scope": "ASSISTANT_VISUAL_REVIEW_OF_THREE_OWNER_SCREENSHOTS_NOT_AUTH_CONFIG_API_READBACK",
+  "screenshots": [
+    {
+      "filename": "image(20261026-164433).png",
+      "SHA256": "a16b5d0c997fb53e9a8cb8bd5ccc6001fb2c24eb316da490f18c95279505cc86"
+    },
+    {
+      "filename": "image(20261026-164444).png",
+      "SHA256": "cdd5c9e01ea280406365de33685ecd4c066ec9d29cb29f2d4f8aa882ec6b20c9"
+    },
+    {
+      "filename": "image(20261026-164456).png",
+      "SHA256": "2451f15880e0b736ecbfbf3fad1c46f9efed9f29cf63edede12c1fd280b1deec"
+    }
+  ],
+  "project_settings": {
+    "project_name": "Mushavo Budget Staging",
+    "project_reference": "dczlddwbtgvfdujgcitb",
+    "project_reference_visible_and_matches": true,
+    "other_accounts_or_organization_members_not_recorded": true
+  },
+  "Email_form_visible": {
+    "email_provider_enabled": true,
+    "minimum_password_length": 8,
+    "password_requirements_display": "Select an option",
+    "selected_character_rule_not_displayed": true,
+    "required_character_class_API_verified": false,
+    "required_character_class": null,
+    "UI_blank_selector_consistent_with_no_extra_class_only": true,
+    "secure_email_change_enabled": true,
+    "secure_password_change_enabled": false,
+    "require_current_password_when_updating": false,
+    "leaked_password_protection_enabled": false,
+    "Email_OTP_expiration_seconds": 3600,
+    "Email_OTP_length_digits": 8,
+    "Email_OTP_length_not_password_requirements": true,
+    "saved_backend_values_or_reload_independently_proven": false
+  },
+  "URL_configuration_visible": {
+    "site_URL": "https://mushavo-budget-staging.pages.dev",
+    "site_URL_preserved": true,
+    "displayed_total_URLs": 8,
+    "all_8_entries_visible": true,
+    "original_four_redirects_preserved": true,
+    "four_exact_auth_callback_literals_present": true,
+    "staging_double_star_wildcard_present": false,
+    "redirect_entry_category": "E",
+    "entries": [
+      "https://mushavo-budget-staging.pages.dev/signup.html",
+      "https://mushavo-budget-staging.pages.dev/signup.html?mode=self-signup",
+      "https://mushavo-budget-staging.pages.dev/app.html",
+      "https://mushavo-budget-staging.pages.dev/",
+      "https://mushavo-budget-staging.pages.dev/auth.html?flow=confirm",
+      "https://mushavo-budget-staging.pages.dev/auth.html?flow=recover",
+      "https://mushavo-budget-staging.pages.dev/auth.html?flow=business-new",
+      "https://mushavo-budget-staging.pages.dev/auth.html?flow=business-existing"
+    ]
+  },
+  "differences_from_older_owner_report": {
+    "secure_email_change_was_reported_false_now_shown_true": true,
+    "reauthentication_was_unknown_now_secure_password_change_shown_false": true,
+    "change_time_actor_cause_or_other_saved_changes_not_proven": true,
+    "no_revert_or_extra_setting_save_requested": true
+  },
+  "current_project_name_main_PRODUCTION_badge_not_separate_production_target": true,
+  "manual_exit_code": null,
+  "new_terminal_rerun_or_upload_or_Save_requested_for_screenshots": false,
+  "new_assistant_public_direct_GET_attempts": 1,
+  "new_assistant_public_HTTP_responses": 0,
+  "public_source_or_site_failure_inferred": false,
+  "public_readback_pending": true,
+  "Auth_gateway_or_Management_requests": 0,
+  "settings_or_mode_or_factor_or_account_writes": 0,
+  "quarantine_remeasured": false,
+  "required_AU_cases_unchanged": 31,
+  "actual_hosted_AU_cases_run": 0,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

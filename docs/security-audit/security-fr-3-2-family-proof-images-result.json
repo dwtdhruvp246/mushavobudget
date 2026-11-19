@@ -1,0 +1,104 @@
+{
+  "date": "2026-11-13",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "STAGING_FAMILY_PROOF_IMAGES_API_PASS",
+  "source_commit": "5cf816c5c288981f48ad1cc78ffaf896bb2ab454",
+  "run_commit": "90c65bc65ce10733560ec5e0201db9459755b9aa",
+  "run_id": 43483646867,
+  "job_id": 132086287941,
+  "local_checks_passed": 28,
+  "deno_typecheck_exit_code": 0,
+  "hosted_api_checks_passed": 18,
+  "validator": {
+    "id": "2eb12d9d-62e7-4a4b-9b35-5219243b8177",
+    "version": 1,
+    "bundle_sha256": "064949abc7e21e2f32742e978c51103f46f7864f9edce0c34cbeb88c5f80da26",
+    "exact_source_readback": true
+  },
+  "hosted_api": {
+    "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Family proof images",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "two_ordinary_credentials_and_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 1,
+          "business": 2
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 12,
+    "created_sessions": 2,
+    "cleanup_sessions": 2,
+    "settings_or_finance_writes_requested": 0,
+    "production_changed": false,
+    "full_lettered_batch_W_complete": false,
+    "exit_code": 0,
+    "exercise": {
+      "checks": {
+        "EXACT_FAMILY_FIXTURE": true,
+        "EXACT_ACTIVE_MEMBERS": true,
+        "EMPTY_FAMILY_PROOF_BASELINE": true,
+        "EXACT_FAMILY_ITEM_CREATED": true,
+        "DIRECT_RESERVED_WRITE_DENIED": true,
+        "MISSING_FILE_LINK_DENIED": true,
+        "MISLABELED_IMAGE_DENIED": true,
+        "OWNER_PROOF_NORMALIZED": true,
+        "MEMBER_PROOF_NORMALIZED": true,
+        "MEMBER_IDENTICAL_RETRY_REUSED": true,
+        "WRONG_PROOF_SIZE_DENIED": true,
+        "FAMILY_PAYMENT_LINKED": true,
+        "OWNER_READS_MEMBER_PROOF": true,
+        "MEMBER_READS_OWN_PROOF": true,
+        "EXACT_MEMBER_REMOVED": true,
+        "FORMER_MEMBER_VALIDATION_DENIED": true,
+        "FORMER_MEMBER_PROOF_READ_DENIED": true,
+        "OWNER_RETAINS_PROOF_ACCESS": true
+      },
+      "requests": 38,
+      "cleanup": {
+        "finance_absent": true,
+        "objects_absent": true,
+        "family_absent": true
+      }
+    },
+    "commit": "90c65bc65ce10733560ec5e0201db9459755b9aa"
+  },
+  "independent_cleanup": {
+    "families": 0,
+    "workspaces": 0,
+    "legacy_members": 0,
+    "members": 0,
+    "items": 0,
+    "records": 0,
+    "objects": 0,
+    "sessions": 0,
+    "outbox": 0,
+    "gate_ready": false,
+    "catalog_matches": true
+  },
+  "hosted_browser_verified": true,
+  "full_FR_3_2_complete": false,
+  "exit_code": 0,
+  "browser_run_id": 43484592688,
+  "browser_receipt": "security-fr-3-2-family-proof-browser-result.json"
+}

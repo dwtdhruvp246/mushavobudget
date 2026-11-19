@@ -1,0 +1,355 @@
+{
+  "stage_step": "FR.2.4.E4.17_DENO_EDGE_RUNTIME",
+  "result": "ACTUAL_DENO_TYPES_BUNDLES_SDK_BOUNDARIES_AND_SQL_REGRESSIONS_SCOPED_PASS",
+  "source_parent_commit": "4be4a0fa87ed695153ea21b623e20937eb50cac1",
+  "node_version": "v24.19.0",
+  "deno_version": "2.9.5",
+  "source_files_SHA256_verified": 119,
+  "tools_locks_and_installed_versions_verified": true,
+  "installed_binary_or_package_bytes_independently_hashed": false,
+  "actual_Deno_type_checks": [
+    {
+      "entrypoint": "invite-admin-user",
+      "pass": true
+    },
+    {
+      "entrypoint": "invite-business-member",
+      "pass": true
+    },
+    {
+      "entrypoint": "send-test-push",
+      "pass": true
+    },
+    {
+      "entrypoint": "sync-exchange-rates",
+      "pass": true
+    }
+  ],
+  "actual_Deno_bundles": [
+    {
+      "entrypoint": "invite-admin-user",
+      "bytes": 774515,
+      "sha256": "ee13ca09973385761c25728ed8c7707322f857051026b06fe34d67e9e69481e2"
+    },
+    {
+      "entrypoint": "invite-business-member",
+      "bytes": 768674,
+      "sha256": "91ba2d86fe688f4a1fe9746a658a5136afe87b04d83700efc862a8da0807ee22"
+    },
+    {
+      "entrypoint": "send-test-push",
+      "bytes": 1027137,
+      "sha256": "acdda54b711a687383ac40dbe4f62bfdd1c7ad2dfc093667eeb5cd9c6b68408d"
+    },
+    {
+      "entrypoint": "sync-exchange-rates",
+      "bytes": 307114,
+      "sha256": "786b0f241fa8791883afb48ffffec5559c856eb75dd0ee5e776c9fcd777a2bc9"
+    }
+  ],
+  "old_generic_client_type_error_reproduced": true,
+  "type_only_change_emits_identical_runtime_JavaScript": true,
+  "source_runtime_checks": {
+    "stage_step": "FR.2.4.E4.17_DENO_EDGE_RUNTIME",
+    "result": "ACTUAL_DENO_IMPORTED_SDK_AND_FOUR_EDGE_BOUNDARIES_SCOPED_PASS",
+    "deno_version": "2.9.5",
+    "tests": 28,
+    "pass": 28,
+    "fail": 0,
+    "exit_code": 0,
+    "checks": [
+      {
+        "check": "invite-admin-user: missing bearer refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-admin-user: real SDK Auth rejection precedes proof",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-admin-user: password-only SDK proof is rejected",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-admin-user: malformed proof fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-admin-user: SDK proof error fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-admin-user: verified proof retains independent role or recipient boundary",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-admin-user: unsupported method refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: missing bearer refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: real SDK Auth rejection precedes proof",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: password-only SDK proof is rejected",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: malformed proof fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: SDK proof error fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: verified proof retains independent role or recipient boundary",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: unsupported method refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: missing bearer refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: real SDK Auth rejection precedes proof",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: password-only SDK proof is rejected",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: malformed proof fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: SDK proof error fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: verified proof retains independent role or recipient boundary",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: unsupported method refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: missing bearer refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: real SDK Auth rejection precedes proof",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: password-only SDK proof is rejected",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: malformed proof fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: SDK proof error fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: verified proof retains independent role or recipient boundary",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: unsupported method refused before SDK HTTP",
+        "status": "PASS"
+      }
+    ],
+    "actual_SDK_imports_and_TypeScript_entrypoints_executed": true,
+    "bundled_entrypoints": false,
+    "SDK_objects_or_source_imports_replaced": false,
+    "HTTP_and_environment_inputs_synthetic": true,
+    "OS_network_and_subprocess_permissions_denied": true,
+    "unexpected_upstream_attempts": 0,
+    "real_Auth_SQL_mail_push_FX_or_Cloudflare_requests": 0,
+    "real_notification_email_or_charge_dispatched": false,
+    "actual_provider_Supabase_Edge_runtime_or_JWT_validation_verified": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "findings_closed": [],
+    "problem_code": null
+  },
+  "bundled_runtime_checks": {
+    "stage_step": "FR.2.4.E4.17_DENO_EDGE_RUNTIME",
+    "result": "ACTUAL_DENO_IMPORTED_SDK_AND_FOUR_EDGE_BOUNDARIES_SCOPED_PASS",
+    "deno_version": "2.9.5",
+    "tests": 28,
+    "pass": 28,
+    "fail": 0,
+    "exit_code": 0,
+    "checks": [
+      {
+        "check": "invite-admin-user: missing bearer refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-admin-user: real SDK Auth rejection precedes proof",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-admin-user: password-only SDK proof is rejected",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-admin-user: malformed proof fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-admin-user: SDK proof error fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-admin-user: verified proof retains independent role or recipient boundary",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-admin-user: unsupported method refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: missing bearer refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: real SDK Auth rejection precedes proof",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: password-only SDK proof is rejected",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: malformed proof fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: SDK proof error fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: verified proof retains independent role or recipient boundary",
+        "status": "PASS"
+      },
+      {
+        "check": "invite-business-member: unsupported method refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: missing bearer refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: real SDK Auth rejection precedes proof",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: password-only SDK proof is rejected",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: malformed proof fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: SDK proof error fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: verified proof retains independent role or recipient boundary",
+        "status": "PASS"
+      },
+      {
+        "check": "send-test-push: unsupported method refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: missing bearer refused before SDK HTTP",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: real SDK Auth rejection precedes proof",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: password-only SDK proof is rejected",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: malformed proof fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: SDK proof error fails closed",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: verified proof retains independent role or recipient boundary",
+        "status": "PASS"
+      },
+      {
+        "check": "sync-exchange-rates: unsupported method refused before SDK HTTP",
+        "status": "PASS"
+      }
+    ],
+    "actual_SDK_imports_and_TypeScript_entrypoints_executed": true,
+    "bundled_entrypoints": true,
+    "SDK_objects_or_source_imports_replaced": false,
+    "HTTP_and_environment_inputs_synthetic": true,
+    "OS_network_and_subprocess_permissions_denied": true,
+    "unexpected_upstream_attempts": 0,
+    "real_Auth_SQL_mail_push_FX_or_Cloudflare_requests": 0,
+    "real_notification_email_or_charge_dispatched": false,
+    "actual_provider_Supabase_Edge_runtime_or_JWT_validation_verified": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "findings_closed": [],
+    "problem_code": null
+  },
+  "affected_Node_and_actual_SQL_regressions": {
+    "tests": 88,
+    "pass": 88,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "exit_code": 0,
+    "TypeScript_experimental_warning": true
+  },
+  "tests": 144,
+  "pass": 144,
+  "fail": 0,
+  "exit_code": 0,
+  "local_checkpoint": "COMPLETE",
+  "problem_code": null,
+  "temporary_source_and_bundle_output_removed": true,
+  "public_dependency_cache_retained_locally": true,
+  "dependency_downloads_separate_from_denied_network_runtime_checks": true,
+  "original_SDK_import_specifiers_and_all_API_logic_preserved": true,
+  "real_Auth_SQL_Zoho_push_FX_or_Cloudflare_requests": 0,
+  "email_notification_or_charge_dispatched": false,
+  "private_credentials_DPAPI_or_hosted_settings_accessed": false,
+  "hosted_deployment_or_email_activation_performed": false,
+  "actual_provider_Supabase_Edge_runtime_JWT_or_browser_acceptance_verified": false,
+  "full_Windows_1525_regression_rerun": false,
+  "hosted_acceptance": false,
+  "live_activation_approved": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

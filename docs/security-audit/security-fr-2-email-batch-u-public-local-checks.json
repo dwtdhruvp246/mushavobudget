@@ -1,0 +1,13 @@
+{
+  "result": "LOCAL_PUBLIC_READBACK_BOUNDARIES_AND_RETAINED_Q23_PASS",
+  "tests": 23,
+  "pass": 23,
+  "fail": 0,
+  "new_U_public_tests": 11,
+  "retained_Q_tests": 12,
+  "syntax_checks": 2,
+  "actual_new_hosted_requests_in_tests": 0,
+  "actual_browser_executed_in_these_units": false,
+  "owner_Windows55_rerun_requested": false,
+  "exit_code": 0
+}

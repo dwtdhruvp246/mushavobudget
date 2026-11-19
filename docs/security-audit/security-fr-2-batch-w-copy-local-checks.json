@@ -1,0 +1,54 @@
+{
+  "stage_step": "FR.2.5.W6_ORDINARY_SIGNUP_OWNER_RESULT_AND_CONCISE_CONFIRMATION_COPY",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "CONCISE_CONFIRMATION_COPY_AND_RETAINED_ZIP_PATCH_LOCAL44_PASS_OWNER_PACKAGE_PENDING",
+  "date": "2026-10-27",
+  "source_parent_commit": "35a1e70649a4e9407fbe519596959a5f562524a9",
+  "node_version": "v24.22.1",
+  "tests": 44,
+  "pass": 44,
+  "fail": 0,
+  "exit_code": 0,
+  "syntax_checks": 4,
+  "source_hashes_verified": 15,
+  "groups": [
+    {
+      "file": "tests/stage-3-auth-flows.test.mjs",
+      "tests": 40,
+      "pass": 40,
+      "fail": 0
+    },
+    {
+      "file": "tests/fr-2-batch-w-copy.test.mjs",
+      "tests": 4,
+      "pass": 4,
+      "fail": 0
+    }
+  ],
+  "test_network_disabled_with_existing_preload": true,
+  "real_hosted_requests": 0,
+  "real_email_requests": 0,
+  "new_dependencies_required": false,
+  "product_changes": [
+    "app.js",
+    "auth-security.js"
+  ],
+  "product_changes_are_only_two_literal_messages": true,
+  "new_copy": {
+    "signup_pending": "Check your inbox to confirm your email, then sign in.",
+    "unconfirmed_signin": "Confirm your email before signing in."
+  },
+  "ZIP_fixture_scope": "SYNTHETIC_CANONICAL_44_ENTRY_ARCHIVE; EXACT_RETAINED_OWNER_ZIP_NOT_AVAILABLE",
+  "preservation_checks": "TWO_EXPECTED_SOURCE_HASHES_CHANGED; ALL42_OTHER_ENTRY_BYTES_AND_ORIGINAL_INPUT_PRESERVED",
+  "CLI_invalid_retained_archive_refused_without_writes": true,
+  "real_owner_ZIP_preparation": false,
+  "frontend_uploaded": false,
+  "new_copy_live": false,
+  "prior_owner74_and_public18_not_rerun_or_recredited": true,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

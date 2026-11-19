@@ -10,7 +10,9 @@ const digest = buffer => crypto.createHash("sha256").update(buffer).digest("hex"
 function runLocal(root, pgRestore, runner = spawnSync) {
   const component = privateDatabaseComponent(root);
   const exe = fs.lstatSync(pgRestore);
-  if (!exe.isFile() || exe.isSymbolicLink() || exe.size < 1) throw new Error("PG_RESTORE_EXECUTABLE_REVIEW");
+  const canonical = value => process.platform === 'win32' ? path.resolve(value).toLowerCase() : path.resolve(value);
+  if (!exe.isFile() || exe.isSymbolicLink() || exe.size < 1 ||
+      canonical(fs.realpathSync(pgRestore)) !== canonical(pgRestore)) throw new Error("PG_RESTORE_EXECUTABLE_REVIEW");
   const directory = path.join(root, "DatabasePropertiesToc-" + crypto.randomUUID());
   fs.mkdirSync(directory);
   const listingFile = path.join(directory, "full-archive.toc.txt");

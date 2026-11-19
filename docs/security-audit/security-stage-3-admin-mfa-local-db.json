@@ -1,0 +1,244 @@
+{
+  "stage_step": "3.4.2",
+  "scope": "OFFLINE_PGLITE_MODELED_AUTH_STORAGE_GRANTS",
+  "hosted_acceptance": false,
+  "auth_issued_tokens_or_totp_verified": false,
+  "migration_count": 52,
+  "candidate_sha256": "e5f8395bcdfe11a34ed24d783ba6487b4e87d0c11fd45ccbfc39c81594685c38",
+  "passed": 58,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "all 52 frozen migrations compile",
+      "result": "PASS"
+    },
+    {
+      "name": "read-only readiness compiles with no staff and records blocker",
+      "result": "PASS"
+    },
+    {
+      "name": "installer refuses unreviewed recovery and rolls back",
+      "result": "PASS"
+    },
+    {
+      "name": "installer refuses absent verified super operator",
+      "result": "PASS"
+    },
+    {
+      "name": "installer rejects changed routine body without helper residue",
+      "result": "PASS"
+    },
+    {
+      "name": "installer rejects changed security-definer shape",
+      "result": "PASS"
+    },
+    {
+      "name": "installer rejects changed policy without helper residue",
+      "result": "PASS"
+    },
+    {
+      "name": "exact reviewed CRLF body variant installs",
+      "result": "PASS"
+    },
+    {
+      "name": "existing routine ACLs unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "new bootstrap/assurance helpers have no anonymous execution",
+      "result": "PASS"
+    },
+    {
+      "name": "super_admin aal1 raw identity and own role bootstrap remain",
+      "result": "PASS"
+    },
+    {
+      "name": "super_admin aal1 foreign Family row invisible",
+      "result": "PASS"
+    },
+    {
+      "name": "super_admin aal1 foreign Family mutation has no effect",
+      "result": "PASS"
+    },
+    {
+      "name": "super_admin aal1 Admin RPC denied",
+      "result": "PASS"
+    },
+    {
+      "name": "super_admin aal2 raw-branch Family read permitted",
+      "result": "PASS"
+    },
+    {
+      "name": "super_admin aal2 helper-backed analytics returns report",
+      "result": "PASS"
+    },
+    {
+      "name": "super_admin retains exact finance writer role",
+      "result": "PASS"
+    },
+    {
+      "name": "admin_staff aal1 raw identity and own role bootstrap remain",
+      "result": "PASS"
+    },
+    {
+      "name": "admin_staff aal1 foreign Family row invisible",
+      "result": "PASS"
+    },
+    {
+      "name": "admin_staff aal1 foreign Family mutation has no effect",
+      "result": "PASS"
+    },
+    {
+      "name": "admin_staff aal1 Admin RPC denied",
+      "result": "PASS"
+    },
+    {
+      "name": "admin_staff aal2 raw-branch Family read permitted",
+      "result": "PASS"
+    },
+    {
+      "name": "admin_staff aal2 helper-backed analytics returns report",
+      "result": "PASS"
+    },
+    {
+      "name": "admin_staff retains exact finance writer role",
+      "result": "PASS"
+    },
+    {
+      "name": "finance_staff aal1 raw identity and own role bootstrap remain",
+      "result": "PASS"
+    },
+    {
+      "name": "finance_staff aal1 foreign Family row invisible",
+      "result": "PASS"
+    },
+    {
+      "name": "finance_staff aal1 foreign Family mutation has no effect",
+      "result": "PASS"
+    },
+    {
+      "name": "finance_staff aal1 Admin RPC denied",
+      "result": "PASS"
+    },
+    {
+      "name": "finance_staff aal2 raw-branch Family read permitted",
+      "result": "PASS"
+    },
+    {
+      "name": "finance_staff aal2 helper-backed analytics returns report",
+      "result": "PASS"
+    },
+    {
+      "name": "finance_staff retains exact finance writer role",
+      "result": "PASS"
+    },
+    {
+      "name": "support_staff aal1 raw identity and own role bootstrap remain",
+      "result": "PASS"
+    },
+    {
+      "name": "support_staff aal1 foreign Family row invisible",
+      "result": "PASS"
+    },
+    {
+      "name": "support_staff aal1 foreign Family mutation has no effect",
+      "result": "PASS"
+    },
+    {
+      "name": "support_staff aal1 Admin RPC denied",
+      "result": "PASS"
+    },
+    {
+      "name": "support_staff aal2 raw-branch Family read permitted",
+      "result": "PASS"
+    },
+    {
+      "name": "support_staff aal2 helper-backed analytics returns report",
+      "result": "PASS"
+    },
+    {
+      "name": "support_staff retains exact finance writer role",
+      "result": "PASS"
+    },
+    {
+      "name": "aal1 owner reads own Family row",
+      "result": "PASS"
+    },
+    {
+      "name": "aal1 actual Family participant helper retained",
+      "result": "PASS"
+    },
+    {
+      "name": "aal1 actual workspace owner retained",
+      "result": "PASS"
+    },
+    {
+      "name": "aal1 staff without membership loses workspace override",
+      "result": "PASS"
+    },
+    {
+      "name": "ordinary verified aal2 owner still lacks Admin authority",
+      "result": "PASS"
+    },
+    {
+      "name": "user-editable role/MFA metadata cannot grant administrative authority",
+      "result": "PASS"
+    },
+    {
+      "name": "Storage private proof denied to low-assurance staff",
+      "result": "PASS"
+    },
+    {
+      "name": "Storage private proof available to stepped-up staff",
+      "result": "PASS"
+    },
+    {
+      "name": "Storage private proof owner branch retained",
+      "result": "PASS"
+    },
+    {
+      "name": "Storage denied delete leaves owner object unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "last factor removal denies stale aal2 token",
+      "result": "PASS"
+    },
+    {
+      "name": "unverified factor does not satisfy assurance",
+      "result": "PASS"
+    },
+    {
+      "name": "same-session suspended staff denies read and mutation",
+      "result": "PASS"
+    },
+    {
+      "name": "missing profile denies authorization even with staff and factor",
+      "result": "PASS"
+    },
+    {
+      "name": "same-session staff revocation denies administrative RPC",
+      "result": "PASS"
+    },
+    {
+      "name": "trusted service currency backfill remains callable",
+      "result": "PASS"
+    },
+    {
+      "name": "raw internal recipient/permit/reservation routines remain unavailable to ordinary API roles",
+      "result": "PASS"
+    },
+    {
+      "name": "repeat install refused without mutations",
+      "result": "PASS"
+    },
+    {
+      "name": "rollback refuses missing operator review",
+      "result": "PASS"
+    },
+    {
+      "name": "reviewed rollback restores baseline policies and routines without dropping fixtures",
+      "result": "PASS"
+    }
+  ]
+}

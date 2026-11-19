@@ -1,0 +1,210 @@
+{
+  "stage_step": "FR.2.4.E2",
+  "source_commit": "51df7703e24172266288069bb403c9c064582a83",
+  "evidence_scope": "OWNER_RETURNED_WINDOWS_POWERSHELL_TRANSCRIPT_NOT_ASSISTANT_HOSTED_EXECUTION",
+  "backend_receipt": {
+    "stage_step": "FR.2.4.E2",
+    "result": "OFFLINE_ACTUAL_EMAIL_BACKEND_SQL_AND_CRYPTO_SCOPED_PASS",
+    "scope": "FULL54_SOURCE_PLUS_ACTUAL_CANDIDATE_SQL_WITH_MODELED_AUTH_AND_SERVICE_ROLE_CALLS_NOT_REAL_AUTH_OR_EMAIL",
+    "node_version": "v22.17.0",
+    "pglite_version": "0.5.8",
+    "migration_count": 54,
+    "source_files_SHA256_verified": 59,
+    "backend_checks": 39,
+    "crypto_tests": 7,
+    "tests": 46,
+    "pass": 46,
+    "fail": 0,
+    "exit_code": 0,
+    "syntax_checks": 4,
+    "checks": [
+      {
+        "test": "Missing offline acknowledgement refuses candidate before any schema creation",
+        "status": "PASS"
+      },
+      {
+        "test": "Actual backend candidate compiles after all54 source migrations against modeled Auth sessions",
+        "status": "PASS"
+      },
+      {
+        "test": "API service role cannot become schema owner even with the offline acknowledgement",
+        "status": "PASS"
+      },
+      {
+        "test": "Existing public routine bodies/ACLs, policies and original triggers stay byte/metadata-identical",
+        "status": "PASS"
+      },
+      {
+        "test": "Candidate creation leaves modeled Auth users and original payment rows unchanged",
+        "status": "PASS"
+      },
+      {
+        "test": "All five private tables force RLS and deny direct schema/table access to every API role",
+        "status": "PASS"
+      },
+      {
+        "test": "Only eight pinned-search-path service RPCs are callable; all private helper EXECUTE grants are revoked",
+        "status": "PASS"
+      },
+      {
+        "test": "Reinstallation cannot replace an existing email namespace or application entrypoint",
+        "status": "PASS"
+      },
+      {
+        "test": "Ordinary/anonymous callers cannot forge service privilege with JWT claim settings",
+        "status": "PASS"
+      },
+      {
+        "test": "Foreign, nonexistent, unconfirmed and timeboxed-expired Auth sessions cannot start proof",
+        "status": "PASS"
+      },
+      {
+        "test": "Both ordinary users and platform Admins start without a verified-session exemption",
+        "status": "PASS"
+      },
+      {
+        "test": "Server-clock10-minute challenge TTL and60-second cooldown do not grant data proof",
+        "status": "PASS"
+      },
+      {
+        "test": "Pending or failed mail delivery cannot authorize even the correct bound code",
+        "status": "PASS"
+      },
+      {
+        "test": "Service context supports key rotation without exposing code/MAC or another actor challenge",
+        "status": "PASS"
+      },
+      {
+        "test": "Resend supersedes the old code and late delivery callbacks cannot revive it",
+        "status": "PASS"
+      },
+      {
+        "test": "Wrong HMAC commits an attempt counter and grants no session proof",
+        "status": "PASS"
+      },
+      {
+        "test": "Challenge cannot be applied to another session or account, including an Admin",
+        "status": "PASS"
+      },
+      {
+        "test": "Correct delivered code creates one session proof and exactly604800 seconds of device approval",
+        "status": "PASS"
+      },
+      {
+        "test": "Consumed code replay cannot mint a second device approval or renew trust",
+        "status": "PASS"
+      },
+      {
+        "test": "A fresh same-account session can restore approval without sliding the original expiry",
+        "status": "PASS"
+      },
+      {
+        "test": "Another account or an unrelated device credential always requires its own code",
+        "status": "PASS"
+      },
+      {
+        "test": "Platform Admin is verified through the same email backend; ordinary proof never promotes a role",
+        "status": "PASS"
+      },
+      {
+        "test": "Five wrong attempts lock the challenge; a later correct code cannot bypass lockout",
+        "status": "PASS"
+      },
+      {
+        "test": "Expired code is denied using database time rather than caller timestamps",
+        "status": "PASS"
+      },
+      {
+        "test": "Remember-off verification creates a session proof without any reusable device credential",
+        "status": "PASS"
+      },
+      {
+        "test": "After day7 existing verified sessions remain valid while a new sign-in needs a code",
+        "status": "PASS"
+      },
+      {
+        "test": "Actual modeled Auth session timebox independently invalidates a previously verified session",
+        "status": "PASS"
+      },
+      {
+        "test": "Auth session deletion cascades proof/challenge cleanup while remembered-device approval is retained",
+        "status": "PASS"
+      },
+      {
+        "test": "Forget-device requires proof and revokes device-derived sessions without unrelated session loss",
+        "status": "PASS"
+      },
+      {
+        "test": "Revoke-all invalidates account proofs, pending challenges and old credentials without affecting another user",
+        "status": "PASS"
+      },
+      {
+        "test": "Password change trigger revokes proof and remembered approval before reuse",
+        "status": "PASS"
+      },
+      {
+        "test": "Email change invalidates proof without persisting a duplicate password/credential snapshot",
+        "status": "PASS"
+      },
+      {
+        "test": "Auth ban and later unban cannot revive old session/device proof",
+        "status": "PASS"
+      },
+      {
+        "test": "Profile suspension revokes proof, and reactivation requires fresh verification",
+        "status": "PASS"
+      },
+      {
+        "test": "Account-wide rolling five-per-hour send budget survives resend attempts across sessions",
+        "status": "PASS"
+      },
+      {
+        "test": "Auth logout cannot erase send budget; rolling-window expiry permits a later request",
+        "status": "PASS"
+      },
+      {
+        "test": "Existing workspace-owner FK still blocks premature Auth account deletion without private-state loss",
+        "status": "PASS"
+      },
+      {
+        "test": "Private-state cascade removes only its actor records, leaving other verified accounts and Auth rows intact",
+        "status": "PASS"
+      },
+      {
+        "test": "Existing application routine/policy/trigger definitions remain unchanged after all backend exercises",
+        "status": "PASS"
+      }
+    ],
+    "file_sha256": {
+      "supabase/candidates/security_fr_2_4_email_verification_backend.sql": "45c715381db6e270633f9967a4e9a705740bf50d1fbbedb2e119f02735358bbe",
+      "supabase/functions/_shared/email-verification-crypto.mjs": "5ce08d08e1ca00248fc2800c3c4f62e5299b86a7ffcd2397a416520fd1fd1ac5",
+      "scripts/verify-fr-2-email-backend.mjs": "8d448872495a2a91647a2ce5eeb49e68bf6c21ff09f1663c2c85bd3caae85556",
+      "scripts/lib/stage-3-local-db.mjs": "df8dbe979098465213255247363ad956ac2c61ab4a5f852fcf0d133b8596c3d9",
+      "tests/fr-2-email-crypto.test.mjs": "b31ffefc3a0943e9eeaf7845c14bfe34a4a8facb5c52e2c242bd69f8f12d93c4"
+    },
+    "modeled_Auth_session_and_credential_columns_used": true,
+    "privileged_fixture_clock_and_budget_manipulation_used": true,
+    "real_parallel_PostgreSQL_connections_or_races_verified": false,
+    "real_Auth_email_gateway_device_cookie_or_native_checks_run": 0,
+    "application_RLS_RPC_Edge_Storage_gate_installed": false,
+    "existing_application_public_functions_policies_and_original_triggers_unchanged": true,
+    "hosted_SQL_or_Auth_changes": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "findings_closed": [],
+    "APK_update_deferred": true
+  },
+  "backend_terminal_exit_code": 0,
+  "source_hash_loop_completed": true,
+  "npm_install_reported_one_package": true,
+  "PowerShell_package_lock_ConvertFrom_Json_failed": true,
+  "subsequent_integrity_mismatch_was_uninitialized_object_comparison": true,
+  "actual_dependency_integrity_mismatch_established": false,
+  "package_lock_integrity_successfully_verified_by_owner": false,
+  "backend_continued_after_top_level_pasted_statement_error": true,
+  "corrected_dependency_only_recheck_pending": true,
+  "hosted_changes": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "APK_update_deferred": true
+}

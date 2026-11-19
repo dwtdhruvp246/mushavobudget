@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-13",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "STOPPED_FOR_REVIEW_STAGING_CATALOG_MISMATCH",
+  "fixture_exists": false,
+  "fixture_created": false,
+  "stamped_catalog_sha256": "cc122f36b6cc70e4fa88fe12a765cc83f24a586d495dfd3084f26edc2134e84f",
+  "live_catalog_sha256": "f1e6c35c005e72b1e21585d46c0279b0265f0e14ae70f3be32dcaac2b8e300ff",
+  "catalog_sha256_excluding_known_fr_3_2_additions": "c54ae6a66d80114a5629f40a641455f881e8d9199389e9dabb41f0d1f5f8d850",
+  "excluded_stage_4_functions": 3,
+  "excluded_stage_4_policies": 5,
+  "excluded_stage_4_triggers": 1,
+  "exit_code": 1
+}

@@ -1,0 +1,383 @@
+{
+  "expected_execution_commit_from_preceding_handoff": "35c2d1b46f6bd06c7c0792aecf4fe28d9e712e68",
+  "execution_commit_explicitly_in_attachment": false,
+  "attachment_name": "Pasted text(20261025-114306).txt",
+  "attachment_SHA256": "a470d32523f6338cd09013f4038b3ae840dc2d6a2496e6091dc2fd77c640bd5d",
+  "hosted_result": {
+    "stage_step": "FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE",
+    "batch": "U",
+    "result": "BATCH_U_SCOPED_FIXTURE_FULL_APP_AND_EXACT_CLEANUP_PASS",
+    "actual_hosted_requests": 37,
+    "maximum_direct_HTTP_requests": 44,
+    "gateway_internal_provider_requests_not_counted": true,
+    "fixed_target_before_and_after_verified": true,
+    "quarantined_catalog_before_verified": true,
+    "live_public_key_matches_private_snapshot": true,
+    "management_multiple_SELECT_result_shape": "LAST_ROWSET_ONLY",
+    "active_window_readback_rows": 1,
+    "active_window_readback_shape_matched": true,
+    "active_window_lease_matched": true,
+    "active_window_remaining_seconds": 299,
+    "four_ordinary_sessions_verified": true,
+    "quarantined_password_only_HTTP_denied": true,
+    "email_request_attempts": 1,
+    "email_provider_acceptance_observed": true,
+    "email_dispatch_outcome_uncertain": false,
+    "email_code_verified": true,
+    "verification_outcome_uncertain": false,
+    "secure_fixed_deadline_remember_cookie_observed": true,
+    "foreign_account_renamed_cookie_restore_denied": true,
+    "missing_cookie_restore_requires_code": true,
+    "same_account_new_session_restore_approved": true,
+    "repeated_restore_emits_no_cookie": true,
+    "independent_device_and_proof_binding_aggregates_verified": true,
+    "bounded_window_seconds": 300,
+    "allowed_window_accounts": 1,
+    "bounded_open_write_attempts": 1,
+    "open_write_outcome_uncertain": false,
+    "independent_active_window_verified": true,
+    "verified_email_and_restored_session_HTTP_access_passed": true,
+    "same_account_password_only_HTTP_denied": true,
+    "other_account_password_only_HTTP_denied": true,
+    "verified_sessions_foreign_profile_HTTP_denied": true,
+    "pre_quarantine_state_inspected": true,
+    "quarantine_write_attempts": 1,
+    "quarantine_write_outcome_uncertain": false,
+    "quarantine_response_problem_code": null,
+    "explicit_quarantine_and_stale_open_fence_verified": true,
+    "post_window_quarantined_HTTP_denied": true,
+    "committed_mode_change_requests": 2,
+    "exact_generated_device_cleanup_write_attempts": 1,
+    "device_cleanup_write_outcome_uncertain": false,
+    "selected_generated_device_absent": true,
+    "Auth_password_signin_attempts": 4,
+    "Auth_local_logout_attempts": 3,
+    "Auth_session_cleanup_outcome_uncertain": false,
+    "selected_sessions_proofs_and_challenges_absent": true,
+    "quarantined_catalog_after_verified": true,
+    "application_rows_explicitly_written": true,
+    "automatic_activity_RPC_write_attempts": 9,
+    "finance_or_profile_table_writes_allowed": false,
+    "existing_session_device_and_finance_state_preserved": true,
+    "full_app_fixture_prerequisites_verified": true,
+    "full_app_fixture_checks": {
+      "profiles_match_Auth_metadata": true,
+      "existing_personal_workspaces": true,
+      "existing_first_account_payment_marker": true
+    },
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch U/Z \u2014 IN PROGRESS",
+    "private_rate_and_send_audit_retained": true,
+    "other_devices_or_Auth_sessions_explicitly_deleted": false,
+    "browser_cookie_cache_or_device_restore_verified": true,
+    "full_cross_account_and_role_acceptance_verified": false,
+    "real_PostgreSQL_concurrency_verified": false,
+    "full_scheduler_or_external_caller_graph_verified": false,
+    "credentials_codes_cookies_or_raw_provider_bodies_in_safe_result": false,
+    "credentials_or_cookies_saved_to_disk_arguments_or_environment": false,
+    "Auth_settings_secrets_schedules_or_deployments_changed": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "browser": {
+      "scope": "HOSTED_ACTUAL_FULL_APP_REAL_SDK_WITH_ACCEPTANCE_MEMORY_STORAGE_SHIM",
+      "browser_product": "Chrome/155.0.8059.79",
+      "actual_app_HTML_and_bootstrap_executed": true,
+      "browser_password_form_exercised": false,
+      "selected_sessions_established_by_private_parent_then_actual_SDK_setSession": true,
+      "executed_SDK_modules_verified": 9,
+      "registered_worker_source_verified": true,
+      "worker_controls_app": true,
+      "normal_hosted_TLS_verified": true,
+      "local_certificate_validation_bypassed": false,
+      "acceptance_memory_storage_shim_used": true,
+      "native_persistent_Auth_storage_or_OS_PWA_verified": false,
+      "physical_memory_heap_swap_forensic_guarantee": false,
+      "SDK_modules_fulfilled_from_pinned_fixture": true,
+      "private_web_storage_native_backing_empty": true,
+      "email_provider_acceptance_observed": true,
+      "email_dispatch_outcome_uncertain": false,
+      "email_code_verified": true,
+      "verification_outcome_uncertain": false,
+      "secure_fixed_deadline_remember_cookie_observed": true,
+      "password_only_browser_denied": true,
+      "same_account_new_session_restore_approved": true,
+      "foreign_account_renamed_cookie_restore_denied": true,
+      "cookie_free_same_account_browser_denied": true,
+      "repeated_restore_emits_no_cookie": true,
+      "quarantined_proof_keeps_view_locked": true,
+      "code_input_cleared": true,
+      "credential_not_document_readable": true,
+      "verified_browser_views_and_HTTP_passed": true,
+      "account_change_clears_private_view": true,
+      "same_account_session_change_clears_private_view": true,
+      "quarantine_clears_private_view": true,
+      "post_quarantine_browser_HTTP_denied": true,
+      "private_web_storage_and_cache_empty": true,
+      "private_cache_canaries_absent": true,
+      "SDK_refresh_and_both_tabs_rebound": true,
+      "cross_tab_signout_clears_private_view": true,
+      "late_old_account_response_discarded": true,
+      "late_response_released_after_account_switch": true,
+      "offline_worker_document_verified": true,
+      "reconnect_restores_authorized_app": true,
+      "actual_entry_router_executed": true,
+      "actual_Business_entry_executed": true,
+      "full_Business_workspace_or_role_matrix_verified": false,
+      "incognito_contexts_disposed": true,
+      "disposed_context_cookies_absent": true,
+      "browser_process_stopped": true,
+      "temporary_profile_removed": true,
+      "cleanup_verified": true,
+      "request_guard": {
+        "attempts": 1019,
+        "blocked": 0,
+        "session_transitions": 2,
+        "retired_requests_cancelled": 0,
+        "preflights": 386,
+        "begin": 1,
+        "verify": 1,
+        "refresh": 1,
+        "localLogout": 1,
+        "activity": 9,
+        "maximum": 1800
+      },
+      "worker_startup_fetches_not_intercepted": true,
+      "total_browser_requests_independently_counted": false,
+      "external_traffic_OS_sandboxed": false,
+      "automatic_activity_RPC_write_attempts": 9,
+      "application_table_writes_allowed": false,
+      "private_finance_response_observed": true,
+      "checkpoint": "FULL_APP_POST_QUARANTINE",
+      "problem_code": null,
+      "SDK_fixture_fulfillments": 108,
+      "TLS_metadata": {
+        "document_response_observed": true,
+        "document_path_class": "APP_CLEAN",
+        "document_security_state": "secure",
+        "document_protocol_class": "QUIC",
+        "visible_state_observed": true,
+        "visible_security_state": "secure",
+        "visible_protocol_class": "QUIC",
+        "visible_certificate_present": true,
+        "certificate_network_error_present": false,
+        "certificate_currently_valid": true,
+        "certificate_error_event_observed": false
+      },
+      "reload_stage": "WAIT_PROOF_VIEW",
+      "own_private_finance_marker_rendered": true,
+      "Business_password_only_gate_denied": true,
+      "real_SDK_refresh_response_observed": true,
+      "late_response_held": true,
+      "UI_local_logout_HTTP_accepted": true,
+      "offline_worker_fetch_failures": 5,
+      "offline_document_from_service_worker": true,
+      "offline_document_HTTP_status": 200,
+      "offline_document_public_hash_matched": true,
+      "replacement_session_identity_responses_verified": 2,
+      "session_change_clear_checks": 2,
+      "native_storage_and_private_cache_readback_verified": true,
+      "acceptance_memory_storage_cleared": true,
+      "public_HTML_redirects_verified": 20,
+      "public_HTML_redirect_requests_verified": 12,
+      "email_request_attempts": 1,
+      "verify_attempts": 1,
+      "guard_denial": null,
+      "guard_denial_facts": null
+    },
+    "samples": [
+      {
+        "endpoint": "TARGET_BEFORE",
+        "http_status": 200
+      },
+      {
+        "endpoint": "QUARANTINED_CATALOG_BEFORE",
+        "http_status": 201
+      },
+      {
+        "endpoint": "READ_ONLY_MANAGEMENT_RESULT_SHAPE",
+        "http_status": 201
+      },
+      {
+        "endpoint": "LIVE_PUBLIC_CONFIGURATION",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_SIGNIN_1",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_IDENTITY_1",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_SIGNIN_2",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_IDENTITY_2",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_SIGNIN_3",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_IDENTITY_3",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_SIGNIN_4",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_IDENTITY_4",
+        "http_status": 200
+      },
+      {
+        "endpoint": "FOUR_SELECTED_ACTOR_FACTS",
+        "http_status": 201
+      },
+      {
+        "endpoint": "FULL_APP_FIXTURE_PREREQUISITES",
+        "http_status": 201
+      },
+      {
+        "endpoint": "BEFORE_EXISTING_STATE_FINGERPRINTS",
+        "http_status": 201
+      },
+      {
+        "endpoint": "INDEPENDENT_DEVICE_BINDING",
+        "http_status": 201
+      },
+      {
+        "endpoint": "OPEN_FIRST_ACCOUNT_FIVE_MINUTE_WINDOW",
+        "http_status": 201
+      },
+      {
+        "endpoint": "INDEPENDENT_ACTIVE_WINDOW",
+        "http_status": 201
+      },
+      {
+        "endpoint": "INSPECT_WINDOW_BEFORE_QUARANTINE",
+        "http_status": 201
+      },
+      {
+        "endpoint": "QUARANTINE_AND_EXACT_WINDOW_CLEANUP",
+        "http_status": 201
+      },
+      {
+        "endpoint": "INDEPENDENT_QUARANTINE_AND_FENCE",
+        "http_status": 201
+      },
+      {
+        "endpoint": "EXACT_GENERATED_DEVICE_CLEANUP",
+        "http_status": 201
+      },
+      {
+        "endpoint": "AUTH_LOCAL_LOGOUT_2",
+        "http_status": 204
+      },
+      {
+        "endpoint": "AUTH_LOCAL_LOGOUT_3",
+        "http_status": 204
+      },
+      {
+        "endpoint": "AUTH_LOCAL_LOGOUT_4",
+        "http_status": 204
+      },
+      {
+        "endpoint": "INDEPENDENT_SELECTED_CLEANUP",
+        "http_status": 201
+      },
+      {
+        "endpoint": "AFTER_EXISTING_STATE_FINGERPRINTS",
+        "http_status": 201
+      },
+      {
+        "endpoint": "QUARANTINED_CATALOG_AFTER",
+        "http_status": 201
+      },
+      {
+        "endpoint": "TARGET_AFTER",
+        "http_status": 200
+      }
+    ],
+    "cleanup_problem_code": null,
+    "final_state_problem_code": null,
+    "failure_checkpoint": null,
+    "checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0,
+    "checked_UTC": "2026-10-25T07:35:50.069Z",
+    "acceptance_core_direct_HTTP_requests": 29,
+    "scoped_fixture": {
+      "scope": "ONE_PRIVILEGED_STAGING_TEMPORARY_PERSONAL_ITEM",
+      "preparation_reached": true,
+      "empty_personal_scope_verified": true,
+      "create_write_attempts": 1,
+      "create_response_problem_code": null,
+      "create_write_outcome_uncertain": false,
+      "independent_created_row_verified": true,
+      "cleanup_inspection_attempted": true,
+      "delete_write_attempts": 1,
+      "delete_response_problem_code": null,
+      "delete_write_outcome_uncertain": false,
+      "exact_fixture_absent_verified": true,
+      "existing_Auth_device_and_finance_state_preserved": true,
+      "final_quarantine_catalog_verified": true,
+      "final_target_verified": true,
+      "extra_direct_requests": 8,
+      "maximum_extra_direct_requests": 12,
+      "problem_code": null,
+      "cleanup_problem_code": null,
+      "cleanup_readback_problem_code": null,
+      "final_absence_readback_resolved": false,
+      "samples": [
+        {
+          "endpoint": "SCOPED_FIXTURE_READ_ONLY_PLAN",
+          "http_status": 201
+        },
+        {
+          "endpoint": "SCOPED_FIXTURE_CREATE_ONCE",
+          "http_status": 201
+        },
+        {
+          "endpoint": "SCOPED_FIXTURE_INDEPENDENT_CREATE_READBACK",
+          "http_status": 201
+        },
+        {
+          "endpoint": "SCOPED_FIXTURE_INSPECT_BEFORE_CLEANUP",
+          "http_status": 201
+        },
+        {
+          "endpoint": "SCOPED_FIXTURE_EXACT_DELETE_ONCE",
+          "http_status": 201
+        },
+        {
+          "endpoint": "SCOPED_FIXTURE_INDEPENDENT_DELETE_READBACK",
+          "http_status": 201
+        },
+        {
+          "endpoint": "SCOPED_FIXTURE_FINAL_QUARANTINE_CATALOG",
+          "http_status": 201
+        },
+        {
+          "endpoint": "SCOPED_FIXTURE_FINAL_TARGET",
+          "http_status": 200
+        }
+      ]
+    },
+    "source_hashes_verified": 310,
+    "retained_gateway_DPAPI_packet_read_only": true,
+    "retained_gateway_packet_unchanged": true,
+    "configured_test_inbox_list_shown_locally": true,
+    "privileged_gateway_secret_values_passed_to_child": false
+  },
+  "combined_exit_code": 0,
+  "separate_owner_focused14_receipt_supplied": false,
+  "observed_local_logout_total": 4,
+  "observed_logout_total_basis": "3 terminal logout204 samples plus 1 accepted actual UI local logout",
+  "reviewed_against_fixed_U_exit_evidence": true
+}

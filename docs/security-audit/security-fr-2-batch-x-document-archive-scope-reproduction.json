@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "stage_step": "FR.2.6_X_DOCUMENT_ARCHIVE_SCOPE_RECONCILIATION",
+  "project": "dczlddwbtgvfdujgcitb",
+  "plan_commit": "17399baf6d0895f9ae50e9e6edaa2e25cb8faaed",
+  "result": "SCOPED_MANAGER_CAN_ARCHIVE_OUT_OF_SCOPE_CLAIM_RECEIPT_FIX_REQUIRED",
+  "observed": {
+    "checks": {
+      "owner_modeled_session_valid": true,
+      "foreign_scope_archive_denied": false,
+      "scoped_modeled_session_valid": true,
+      "scoped_manager_cannot_view_parent": true,
+      "foreign_scope_receipt_hidden_by_RLS": true,
+      "scoped_manager_has_document_management": true,
+      "foreign_scope_document_preserved_active": false,
+      "owner_may_archive_own_scoped_claim_receipt": true
+    },
+    "project": "dczlddwbtgvfdujgcitb",
+    "auth_claims": "MODELED_TRANSACTION_ONLY",
+    "provider_requests": 0,
+    "rollback_required": true,
+    "external_email_requests": 0,
+    "foreign_document_status": "archived",
+    "committed_fixture_writes": 0,
+    "physical_Storage_uploads": 0
+  },
+  "independent_rollback_readback": {
+    "fixture": {
+      "seats": 1,
+      "claims": 1,
+      "status": "suspended",
+      "documents": 1,
+      "active_members": 1,
+      "support_version": 6,
+      "pending_invitations": 0,
+      "subscription_version": 3
+    },
+    "new_claims": 0,
+    "new_documents": 0,
+    "new_dimensions": 0,
+    "catalog_matches": true,
+    "archive_function": {
+      "acl": [
+        "postgres=X/postgres",
+        "authenticated=X/postgres",
+        "service_role=X/postgres"
+      ],
+      "md5": "908cd7f08ae4acc574029f1a10c8d140"
+    },
+    "temporary_sessions": 0
+  },
+  "production_changed": false,
+  "hosted_HTTP_login_acceptance": false,
+  "exit_code": 1
+}

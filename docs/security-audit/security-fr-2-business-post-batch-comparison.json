@@ -1,0 +1,26 @@
+{
+  "stage_step": "FR.2.3_BUSINESS_POST_BATCH_RECONCILIATION",
+  "owner_receipt": "docs/security-audit/security-fr-2-business-post-batch-owner-result.json",
+  "owner_checked_UTC": "2026-10-15T04:29:41.409915+00:00",
+  "result": "SCOPED_BUSINESS_POST_API_EXPECTATIONS_MATCH_WITH_FIVE_CARRY_FORWARD_GROUPS",
+  "comparisons": [
+    "PRIMARY selected aggregate state matches exact planned completed batch",
+    "SECONDARY selected aggregate state matches exact planned completed batch",
+    "Original archived role row hash matches exactly once; two permission rows and three audit rows retain full hashes",
+    "Both old-role active-member and pending-valid-invitation usage counts zero",
+    "Five payment records and seven payment_record conversions retained; zero joined workspace mismatches",
+    "Two old orphan identities preserved without asserting deleted-record provenance or cleanup authority",
+    "Two locked manual Family USD1 original-column baseline fingerprints unchanged",
+    "Reference FK remains NOT VALID; no validation or historical deletion performed",
+    "Read-only owner result invokes zero application routines and reports no row/account/settings/catalog changes"
+  ],
+  "comparisons_are_reconciliation_not_additional_hosted_API_test_count": true,
+  "previous_API_PASS": 24,
+  "previous_API_BLOCKED": 5,
+  "previous_API_exit_code": 0,
+  "FR2_3_scoped_completion": true,
+  "full_Business_F15_or_file_third_actor_suspension_expiry_acceptance": false,
+  "fixtures_and_audit_history_retained": true,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

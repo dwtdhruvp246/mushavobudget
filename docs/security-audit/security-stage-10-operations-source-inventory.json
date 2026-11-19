@@ -1,0 +1,807 @@
+{
+  "schema_version": 1,
+  "stage_step": "10.1",
+  "date": "2026-10-13",
+  "source_parent_commit": "b51fe2e49d32ecf5f3ee5a1f9118d1bc88888719",
+  "source_tree_sha": "c927694df9d7e08c41276cbe5ed9d4e185466c1f",
+  "result": "SOURCE_OPERATIONS_EVIDENCE_INVENTORY_SCOPED_COMPLETE",
+  "scope": "CURRENT_SELECTED_SOURCE_IDENTITY_AND_TARGETED_SOURCE_REVIEW_PLUS_PRIOR_DATED_RECEIPTS_AND_PRIMARY_DOCS_NOT_CURRENT_PROVIDER_SETTINGS_OR_HOSTED_ACCEPTANCE",
+  "selected_inputs": [
+    {
+      "path": ".github/workflows/pages.yml",
+      "bytes": 2247,
+      "sha256": "0e93a6212cba9cb63d14a0116f787bf8828afdaa33d4d0a2922a043da75b3609",
+      "git_blob_sha": "05b699e9c870b371cb4de10f048c4b2ad608853b",
+      "expected_git_blob_sha": "05b699e9c870b371cb4de10f048c4b2ad608853b",
+      "result": "MATCH"
+    },
+    {
+      "path": "wrangler.jsonc",
+      "bytes": 211,
+      "sha256": "155b7b715a9e3055b494072cc686c3107ab9f4639062bc33fdff41c4ef6a42ae",
+      "git_blob_sha": "dcf7961ab88639fb35e25b0aec251277a15d23a1",
+      "expected_git_blob_sha": "dcf7961ab88639fb35e25b0aec251277a15d23a1",
+      "result": "MATCH"
+    },
+    {
+      "path": "package.json",
+      "bytes": 862,
+      "sha256": "f33fa5b1cd6ea07cf2584fe7d7b458c3653251f46043dd594821d42f843ad999",
+      "git_blob_sha": "8a263ae19cb340e5298f656d5f50a9d3e2ba74cc",
+      "expected_git_blob_sha": "8a263ae19cb340e5298f656d5f50a9d3e2ba74cc",
+      "result": "MATCH"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 70459,
+      "sha256": "cb476c5d8cebfa65f44edf0f54c8d1124d446f0cecef2c305e92f38dae13cd0f",
+      "git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+      "expected_git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+      "result": "MATCH"
+    },
+    {
+      "path": "config.js",
+      "bytes": 279,
+      "sha256": "c14293e16fda6a6b0e483ea5141954b78832b175155cec0ab9f59d35e8b7b0cd",
+      "git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+      "expected_git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+      "result": "MATCH"
+    },
+    {
+      "path": "_headers",
+      "bytes": 1285,
+      "sha256": "3bfa142f590b3bec5679bb551d0911530ffd7a96902337016060ce63208a8250",
+      "git_blob_sha": "074d30d1c7f4e64b2096ad85af8438165c4f6896",
+      "expected_git_blob_sha": "074d30d1c7f4e64b2096ad85af8438165c4f6896",
+      "result": "MATCH"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "bytes": 926,
+      "sha256": "9d70bf76140917b6fd58c11ada54e711ca8408bca7af7f7ec3e9dd0906ade950",
+      "git_blob_sha": "58c701867538153b64166582588c4e3dbf86a0a9",
+      "expected_git_blob_sha": "58c701867538153b64166582588c4e3dbf86a0a9",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/build-public-site.mjs",
+      "bytes": 1924,
+      "sha256": "4c37fceb04f37316a12d359c7d906060c4e7c3670c4237eb13682843ed01cc4c",
+      "git_blob_sha": "19982bf1a13724a8262c53ab5bc4e5420e82dff7",
+      "expected_git_blob_sha": "19982bf1a13724a8262c53ab5bc4e5420e82dff7",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/build-staging-frontend.cjs",
+      "bytes": 2695,
+      "sha256": "e8e18690cc096d133c2cf583a7c5d2c0bc3a539505e62dfc4852ff99caea70a5",
+      "git_blob_sha": "3e7e39f9aeb5e62d8a677b745d9ec9244e63c373",
+      "expected_git_blob_sha": "3e7e39f9aeb5e62d8a677b745d9ec9244e63c373",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/build-stage-3-auth-staging.cjs",
+      "bytes": 3887,
+      "sha256": "123a398c809202c1395fa6bfc814a5eafc48336821754a50e10461b82168c0a7",
+      "git_blob_sha": "d6ede11c3161cafce595e5408c060519ea8bda48",
+      "expected_git_blob_sha": "d6ede11c3161cafce595e5408c060519ea8bda48",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/build-stage-3-admin-mfa.mjs",
+      "bytes": 15357,
+      "sha256": "f653e9516b2132babeabc91f203f02416247214ff87e0ab33efb5d52fdcce7f7",
+      "git_blob_sha": "8379f87d45c3c85b3c2e96ea141adcb0903daaaa",
+      "expected_git_blob_sha": "8379f87d45c3c85b3c2e96ea141adcb0903daaaa",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/build-staging-schema.cjs",
+      "bytes": 1825,
+      "sha256": "4c4acb61ee526c3c84b91165493bd419a11a4a4bda90e16b3e6387f763b81bdf",
+      "git_blob_sha": "2122687c3c4087e4cc1be6a953e0a63fdfe3ad30",
+      "expected_git_blob_sha": "2122687c3c4087e4cc1be6a953e0a63fdfe3ad30",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/build-capacitor.mjs",
+      "bytes": 4556,
+      "sha256": "86ac88ab42f1c21a0c13cbad69731bf4003e608d597a43321089c8fa5899aaa0",
+      "git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+      "expected_git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/config.toml",
+      "bytes": 867,
+      "sha256": "527c331d074845665dba4d79ea782cc3e22ff37473564f9b20280daa9b8de9fb",
+      "git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+      "expected_git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/schema.sql",
+      "bytes": 953717,
+      "sha256": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+      "git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "expected_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/cron-push-reminders.sql",
+      "bytes": 1400,
+      "sha256": "5a8b21f95eb9f227f895d79a8d3e27d3b37d7f622d3a64693f209ec97d538800",
+      "git_blob_sha": "1a56f688d62302cbf45097c2387945c00f0eba93",
+      "expected_git_blob_sha": "1a56f688d62302cbf45097c2387945c00f0eba93",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/cron-admin-notifications.sql",
+      "bytes": 1430,
+      "sha256": "3ac9ae98c23bade5a15eba05f47851122bded33c323f38c60fe889f9cab79499",
+      "git_blob_sha": "cc7b2a72100026160c3ffcdd2b5d12a074ee9e6a",
+      "expected_git_blob_sha": "cc7b2a72100026160c3ffcdd2b5d12a074ee9e6a",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/cron-currency-rates.sql",
+      "bytes": 1995,
+      "sha256": "5c6335eedf61962a952f2f1b5a5d43cb2f68b9d6ab588e3860ae63158352d65e",
+      "git_blob_sha": "edeba2e20e9f25317d0874d79b14a5df479eb213",
+      "expected_git_blob_sha": "edeba2e20e9f25317d0874d79b14a5df479eb213",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/pwa-stage-13-monitoring.sql",
+      "bytes": 5670,
+      "sha256": "27e08f137cdee48e2d281c689b068489e81b56071ed10ce78e3d3ca45379e87b",
+      "git_blob_sha": "5e2fe1e7c828fef2775ecd68b42e28a8f5f3f4cf",
+      "expected_git_blob_sha": "5e2fe1e7c828fef2775ecd68b42e28a8f5f3f4cf",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/functions/dispatch-push-reminders/index.ts",
+      "bytes": 16748,
+      "sha256": "f7946520e7328254be2747282d91f29b1763782c1541771cbb53cab044b7afa9",
+      "git_blob_sha": "b1b8a4d964e349033e7a1a30818dbd252238a697",
+      "expected_git_blob_sha": "b1b8a4d964e349033e7a1a30818dbd252238a697",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+      "bytes": 11999,
+      "sha256": "e1ebda3cface358c9dc4916913e0ef417f68ef307faa60ab8815ccb034c5cb18",
+      "git_blob_sha": "40f32dacb8bc0c9254647627bdbbfbc68a51d33c",
+      "expected_git_blob_sha": "40f32dacb8bc0c9254647627bdbbfbc68a51d33c",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/functions/send-test-push/index.ts",
+      "bytes": 6903,
+      "sha256": "708f9ca7720ead8c3fd1becbd9db327ae448bb12c264462bfff948d7c68905d7",
+      "git_blob_sha": "6215a1d2131c840193fe01f863542940f2cb99fb",
+      "expected_git_blob_sha": "6215a1d2131c840193fe01f863542940f2cb99fb",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/functions/sync-exchange-rates/index.ts",
+      "bytes": 8927,
+      "sha256": "0614f2cba2d2de22157e4a5e1e7b96c2421c03d35cc233f6ac072aff409dfa0c",
+      "git_blob_sha": "0c5a1b60a1e15c103cfd9a05422f23f94eee2133",
+      "expected_git_blob_sha": "0c5a1b60a1e15c103cfd9a05422f23f94eee2133",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/functions/_shared/admin-assurance.mjs",
+      "bytes": 630,
+      "sha256": "afd30ba055c453d85f6ad87f43d0ea8903e6ef31b5fe483d877f430076b41278",
+      "git_blob_sha": "63ed3c4547ff5c4464e57e757655b1f7b7225332",
+      "expected_git_blob_sha": "63ed3c4547ff5c4464e57e757655b1f7b7225332",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/functions/_shared/currencyapi.ts",
+      "bytes": 4771,
+      "sha256": "e7864c35fe09971042e913690874d3464326a23b0859e3a801ead12f5b63ca00",
+      "git_blob_sha": "111937516dc8dc54839479299942697be32dfc0e",
+      "expected_git_blob_sha": "111937516dc8dc54839479299942697be32dfc0e",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/functions/_shared/notification-recipient.mjs",
+      "bytes": 1704,
+      "sha256": "638a890a23cc49b77bcc2712e9e61135f9fde24fd031d868ea2c76780c704f24",
+      "git_blob_sha": "b8d341176f8c7bb3c44971af6478d4246b0b01fb",
+      "expected_git_blob_sha": "b8d341176f8c7bb3c44971af6478d4246b0b01fb",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/functions/_shared/push-destination.mjs",
+      "bytes": 6968,
+      "sha256": "3c04dd7ca25442cdc600cc836f347553a0e2e88920c333ed1d975c58a1742743",
+      "git_blob_sha": "047a76e7607cef3ba164e70ea5bfaa5977398042",
+      "expected_git_blob_sha": "047a76e7607cef3ba164e70ea5bfaa5977398042",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/functions/submit-enquiry/handler.mjs",
+      "bytes": 10703,
+      "sha256": "392aa8ff50c4ba40fc122b1dc62786261f1e90faf407474e9339319a680da761",
+      "git_blob_sha": "c06ca858bcc8e60986dd693ad5d94f32bafd9341",
+      "expected_git_blob_sha": "c06ca858bcc8e60986dd693ad5d94f32bafd9341",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/functions/submit-enquiry/index.ts",
+      "bytes": 357,
+      "sha256": "86f877cb8615432d962c6533a4c9620354a371c799cccfd05f9006dbfa47271f",
+      "git_blob_sha": "890f5a02eb01c6d3de4c68f6dd78534b6cbcc71a",
+      "expected_git_blob_sha": "890f5a02eb01c6d3de4c68f6dd78534b6cbcc71a",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/migrations/20260908170000_notification_outbox.sql",
+      "bytes": 17119,
+      "sha256": "ae51a96d8bd4db671efd2debb8e2ba17590bc79071a8a56c7810873f5d2210ca",
+      "git_blob_sha": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+      "expected_git_blob_sha": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/migrations/20260916190000_admin_event_notifications.sql",
+      "bytes": 12315,
+      "sha256": "be09f4b456f77a5b4ae27627c894cf907cb6900703e0d70ab4c54c6cf52e0e66",
+      "git_blob_sha": "1218eaf24829e287f8054916248a0dea429f010e",
+      "expected_git_blob_sha": "1218eaf24829e287f8054916248a0dea429f010e",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/migrations/20260912120000_support_ticket_workflow.sql",
+      "bytes": 6624,
+      "sha256": "3f445b31f0b800d0e764a0e96deee5cc011d372d2a9d2f34bf31c8a7b648928d",
+      "git_blob_sha": "719ba585f7bdbbe44f6fafd6b6a5de13c62802db",
+      "expected_git_blob_sha": "719ba585f7bdbbe44f6fafd6b6a5de13c62802db",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/diagnostics/security_stage_1_backup_inventory.sql",
+      "bytes": 7734,
+      "sha256": "37f488bd35691480585e4e89509513476171b862efafb11458cdcf8721fb3fec",
+      "git_blob_sha": "f932a4cf7bad254c0541f4f5a88544ffa2a350a5",
+      "expected_git_blob_sha": "f932a4cf7bad254c0541f4f5a88544ffa2a350a5",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/diagnostics/security_stage_1_recovery_dependencies.sql",
+      "bytes": 7797,
+      "sha256": "7f08d8e82278ed6cbc24c72cbd4f8a6863c26fccbc5897fb3ddc45afc3d85e2c",
+      "git_blob_sha": "a985decdf87b4dabfdf729b3e13b14999085e36b",
+      "expected_git_blob_sha": "a985decdf87b4dabfdf729b3e13b14999085e36b",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/restore-synthetic-recovery.ps1",
+      "bytes": 14806,
+      "sha256": "cf90104cc5f0a0295255fdd06f91245a531906d2edd4dcbbc2a1c966e985118e",
+      "git_blob_sha": "8e4feb2860f3664a8ce9435a49d5b8c6d0fb65d9",
+      "expected_git_blob_sha": "8e4feb2860f3664a8ce9435a49d5b8c6d0fb65d9",
+      "result": "MATCH"
+    },
+    {
+      "path": "scripts/verify-local-recovery-probe.cjs",
+      "bytes": 1501,
+      "sha256": "6f54a70915ec8c2c5ec363923493082b858867903314e6119e988947eaa8a0da",
+      "git_blob_sha": "2e5674c1fd79f9a1e83561d099290266401858ca",
+      "expected_git_blob_sha": "2e5674c1fd79f9a1e83561d099290266401858ca",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/rollback-notification-outbox.sql",
+      "bytes": 654,
+      "sha256": "85087b65e8b079a9514645b7e52633f69f7c624c9ebe203d189378d46132d69c",
+      "git_blob_sha": "ca9b02bc65920e88ef28ecfea4f8d0836e2cbbf5",
+      "expected_git_blob_sha": "ca9b02bc65920e88ef28ecfea4f8d0836e2cbbf5",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/rollback-push-dispatcher.sql",
+      "bytes": 685,
+      "sha256": "8871816d3bdac2f2baae0e2a49a7f005631790c325ca9ad9b37cc3622a600b0e",
+      "git_blob_sha": "16ffa311573462b016cd165fb69d60167e33f5ab",
+      "expected_git_blob_sha": "16ffa311573462b016cd165fb69d60167e33f5ab",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/candidates/security_stage_3_admin_mfa_rollback.sql",
+      "bytes": 176459,
+      "sha256": "87ffe801bbd2955e221bf8d26de52f6e03a814ba462a8cec474f2d36e28b18c1",
+      "git_blob_sha": "5bfa350bbbbf2fed9480663addf0c28daad5a304",
+      "expected_git_blob_sha": "5bfa350bbbbf2fed9480663addf0c28daad5a304",
+      "result": "MATCH"
+    },
+    {
+      "path": "PWA_STAGE_13_DEPLOYMENT.md",
+      "bytes": 6466,
+      "sha256": "2cce399bccec06c03b6be3d2a6aaef334aca28e46a488f434b7d47b6fa9b6511",
+      "git_blob_sha": "62ec1c096b67339f8d34931371c9260e2f5f638d",
+      "expected_git_blob_sha": "62ec1c096b67339f8d34931371c9260e2f5f638d",
+      "result": "MATCH"
+    },
+    {
+      "path": "ADMIN_OPERATIONS_4_6_DEPLOYMENT.md",
+      "bytes": 3786,
+      "sha256": "c5bbe6c5a5933e847a73bf25a7145cb1df99948cfebd57c9b0eecd6dbdec4d6c",
+      "git_blob_sha": "1ee2bd6f085d78aa387120d8980a0db6fe0643e3",
+      "expected_git_blob_sha": "1ee2bd6f085d78aa387120d8980a0db6fe0643e3",
+      "result": "MATCH"
+    },
+    {
+      "path": "PUBLIC_WEBSITE_DEPLOYMENT.md",
+      "bytes": 5455,
+      "sha256": "7bc7baf09874745f9a3582101b59a383fab6b53eae6f5d39c0ce31a85ceec841",
+      "git_blob_sha": "b4bf81aa983617fd527fc3f293a3fbcd0899d6b9",
+      "expected_git_blob_sha": "b4bf81aa983617fd527fc3f293a3fbcd0899d6b9",
+      "result": "MATCH"
+    },
+    {
+      "path": "CURRENCYAPI_DEPLOYMENT.md",
+      "bytes": 8583,
+      "sha256": "40e99e447116835c74d1ee8a29a8d2e18b97c595b2a0bf3ccd6e646ed468c842",
+      "git_blob_sha": "5c1adb6440de51fced27175e29e8e4696eb9e005",
+      "expected_git_blob_sha": "5c1adb6440de51fced27175e29e8e4696eb9e005",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_1_COMPLETION_REPORT.md",
+      "bytes": 16421,
+      "sha256": "ccf390664c0f40f7c8922f6f327ac7296da4791c2b4c3a5aa167a26221d8a8b4",
+      "git_blob_sha": "2af30ab8260684dc910ea1dbd4e85b4bd7854cd1",
+      "expected_git_blob_sha": "2af30ab8260684dc910ea1dbd4e85b4bd7854cd1",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_2_COMPLETION_REPORT.md",
+      "bytes": 14244,
+      "sha256": "eb37fe8f7a3c83098c0041e2da1bb71ee38212356ecdecb3eaf08a27aa820e58",
+      "git_blob_sha": "8fc33b1b2eefed1a171e27338c4279165c9bab41",
+      "expected_git_blob_sha": "8fc33b1b2eefed1a171e27338c4279165c9bab41",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_3_COMPLETION_REPORT.md",
+      "bytes": 30207,
+      "sha256": "efc8821e758072316501a963a21b7407ab42a750f925e857068b03428b146b85",
+      "git_blob_sha": "eeba01c8eeeec8a4f1507055b04253fdb96700f4",
+      "expected_git_blob_sha": "eeba01c8eeeec8a4f1507055b04253fdb96700f4",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_4_COMPLETION_REPORT.md",
+      "bytes": 19930,
+      "sha256": "bdd19c9af9d058668cd1886f0a427786911660e31d03ff5811c07536219dc921",
+      "git_blob_sha": "42319fb3328547a246d05eba8f0cd8da915d8431",
+      "expected_git_blob_sha": "42319fb3328547a246d05eba8f0cd8da915d8431",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_5_COMPLETION_REPORT.md",
+      "bytes": 13901,
+      "sha256": "86d609ec85762010100b1c1bac35591cd59c00b1c92a6f36ed17d4edf2236db7",
+      "git_blob_sha": "274872bb9d0aba4cfc4cf1bb0f0b7fbb5369b6d4",
+      "expected_git_blob_sha": "274872bb9d0aba4cfc4cf1bb0f0b7fbb5369b6d4",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_6_COMPLETION_REPORT.md",
+      "bytes": 12344,
+      "sha256": "3a2f117b47506ffa109a6f4adef12215da3f3edc6653165ed7eb1cdfd21d6dfb",
+      "git_blob_sha": "d93c215a2ee50c57a10d75ff552414f3cc06da98",
+      "expected_git_blob_sha": "d93c215a2ee50c57a10d75ff552414f3cc06da98",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_7_COMPLETION_REPORT.md",
+      "bytes": 16155,
+      "sha256": "74a6c47709c93b0a3d7a217786dbb682790830c1b15d0117cebf26fc16bf9f7f",
+      "git_blob_sha": "10bddb578083fd67b60fe36d28a42c4aa4112f8e",
+      "expected_git_blob_sha": "10bddb578083fd67b60fe36d28a42c4aa4112f8e",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_8_COMPLETION_REPORT.md",
+      "bytes": 18863,
+      "sha256": "ac2b52f912f094fe9a748c1d9a439e1141a5bbf1c27ba4d584adcc75a808fafb",
+      "git_blob_sha": "00f0c41d69c9044d9d0b2fb9b245cd201b70dfc6",
+      "expected_git_blob_sha": "00f0c41d69c9044d9d0b2fb9b245cd201b70dfc6",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_9_COMPLETION_REPORT.md",
+      "bytes": 20902,
+      "sha256": "5b79e04fe7a0e4490e45b66df24513fae9caf70c91b253929276a5bcf3670b84",
+      "git_blob_sha": "44b4affe8ae581c3bfbab738c4d74dc94ecff5fe",
+      "expected_git_blob_sha": "44b4affe8ae581c3bfbab738c4d74dc94ecff5fe",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_AUDIT_PROGRESS.json",
+      "bytes": 144846,
+      "sha256": "83aaa737668b6959f76f941e7ef06f7307e3f3984e64d9eaca0e1f73f6b2cb59",
+      "git_blob_sha": "1c8b9971d04641bc706ab933991f7b01880a38b2",
+      "expected_git_blob_sha": "1c8b9971d04641bc706ab933991f7b01880a38b2",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_AUDIT_REGISTER.md",
+      "bytes": 107458,
+      "sha256": "f94424e76e4f6c7e654ed83d7330d81a6c14bad86b672306237355b4a2ebfb05",
+      "git_blob_sha": "bfacc977513d6686acdeb2d91b364880c587068d",
+      "expected_git_blob_sha": "bfacc977513d6686acdeb2d91b364880c587068d",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_AUDIT_CARRY_FORWARD.md",
+      "bytes": 126765,
+      "sha256": "15fe3bdecdaf7efa8a53776878ab09b0a3780059c32eaaba53d4b2a3c6b78217",
+      "git_blob_sha": "6d0e77e6b0408eaf8ac59a1f86bfc386226331c5",
+      "expected_git_blob_sha": "6d0e77e6b0408eaf8ac59a1f86bfc386226331c5",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/security-stage-1-evidence.json",
+      "bytes": 263788,
+      "sha256": "1125112838d914bc0cc7b9867d326c7a563ba5531e17624f15d4007d91b2a677",
+      "git_blob_sha": "d2003ec384983a1bada001b04ffe427b86a113d5",
+      "expected_git_blob_sha": "d2003ec384983a1bada001b04ffe427b86a113d5",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-final-recheck.json",
+      "bytes": 135732,
+      "sha256": "2b026bb24f2d38b1536a5f7d7c1c80b12e1ac9f8856acf244ec5bfea0dfeda54",
+      "git_blob_sha": "c5ea4e7788ed52e78db4ae4beac688fb0318b347",
+      "expected_git_blob_sha": "c5ea4e7788ed52e78db4ae4beac688fb0318b347",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-regression-readiness.json",
+      "bytes": 139997,
+      "sha256": "381005014b041a8390c8f514eab4a05725041ad4d28fed8f51736566d02f0613",
+      "git_blob_sha": "5281857b5b7bae79b07800f83e9211944fc5a7c0",
+      "expected_git_blob_sha": "5281857b5b7bae79b07800f83e9211944fc5a7c0",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-release-decisions.json",
+      "bytes": 2482,
+      "sha256": "ff4d7397cd39e3c90d265c3832f27e4406af92c498bdf4ca38c43ca5e8473596",
+      "git_blob_sha": "82f18473162be6c4c8860e3ab78bbed133c546a6",
+      "expected_git_blob_sha": "82f18473162be6c4c8860e3ab78bbed133c546a6",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/security-stage-9-remediation-actions.json",
+      "bytes": 8479,
+      "sha256": "cad6e29c482f4abbe4f62dba4488d321c16ee1efbd3c53019f6a3a7dbcc5916c",
+      "git_blob_sha": "2418118df9549388c6369fad5ca9b5a580f5ce71",
+      "expected_git_blob_sha": "2418118df9549388c6369fad5ca9b5a580f5ce71",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_1_4_CHECKPOINT_REPORT.md",
+      "bytes": 9298,
+      "sha256": "339cbb347ced58ae1ab1f4d51359dfa7c218bc1f4c4715f9f212176f05e0235c",
+      "git_blob_sha": "919921ba3283fa643dfecacbf82a5cbab6587913",
+      "expected_git_blob_sha": "919921ba3283fa643dfecacbf82a5cbab6587913",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_1_5_OPERATIONAL_RUNBOOKS.md",
+      "bytes": 9052,
+      "sha256": "b01e61a33a4dce905cdef6d0b83759e4e6d3a984b6ce1e7a5902cc71139f0254",
+      "git_blob_sha": "b1c55120f9d27a5e846c89583abbf52dfefcd3cf",
+      "expected_git_blob_sha": "b1c55120f9d27a5e846c89583abbf52dfefcd3cf",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_1_5_INVENTORY.md",
+      "bytes": 6962,
+      "sha256": "fab8f1598d6145146f46f78c6546889b39098b16609546e4edf00d39ba5f792f",
+      "git_blob_sha": "b4273d99131d80a508a3b2b18f4bff345e7e8b0b",
+      "expected_git_blob_sha": "b4273d99131d80a508a3b2b18f4bff345e7e8b0b",
+      "result": "MATCH"
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_1_5_CHECKPOINT_REPORT.md",
+      "bytes": 5606,
+      "sha256": "719c4dded1317d4b55a0f44a7a3825e14f7ed78f205ff2052a46abc7f8568e47",
+      "git_blob_sha": "727f95178e7ad14718331877c9a4b1c9283224eb",
+      "expected_git_blob_sha": "727f95178e7ad14718331877c9a4b1c9283224eb",
+      "result": "MATCH"
+    }
+  ],
+  "selected_input_count": 64,
+  "source_config_script_SQL_and_historical_deployment_docs": 43,
+  "prior_audit_records": 21,
+  "byte_and_git_matches": 64,
+  "mismatches": 0,
+  "read_scope": "Targeted source sections and prior report/evidence summaries; manifest/lock/config identities are not full dependency or secret scans.",
+  "current_tree_discovery": {
+    "tracked_files": 619,
+    "AGENTS_files": [],
+    "tracked_android_or_ios_project_paths": [],
+    "tracked_root_redirects_file_present": false,
+    "selected_absences_do_not_prove_external_or_owner_local_absence": true
+  },
+  "observations": [
+    {
+      "id": "OP-S01",
+      "title": "Release source and serving-channel mapping",
+      "result": "REVIEW_CURRENT_INSTALLED_MAPPING_UNVERIFIED",
+      "source_paths": [
+        ".github/workflows/pages.yml",
+        "wrangler.jsonc",
+        "scripts/build-public-site.mjs",
+        "scripts/build-staging-frontend.cjs",
+        "scripts/build-stage-3-auth-staging.cjs"
+      ],
+      "observed": "Tracked workflow triggers main/PR/manual runs and deploys a public allowlist to GitHub Pages; wrangler.jsonc points assets at the repository root. Earlier owner evidence identifies a production Cloudflare Worker/domain; staging uses a pages.dev URL. The active Cloudflare build/version/artifact and complete staging isolation are not mapped to the candidate.",
+      "required": "Record exact project/channel/branch/source/artifact/Edge/schema/grants/config/headers and final asset types; use only accepted isolated staging for controlled checks.",
+      "action_ids": [
+        "OP-R01"
+      ],
+      "finding_ids": [
+        "F18",
+        "F19",
+        "F05"
+      ],
+      "prior_evidence": [
+        "S1E91",
+        "S1E92",
+        "S9E05",
+        "S9E06"
+      ]
+    },
+    {
+      "id": "OP-S02",
+      "title": "Historical deployment instructions need explicit version scope",
+      "result": "SOURCE_CONFLICT_REQUIRES_RUNBOOK_RECONCILIATION",
+      "source_paths": [
+        "PUBLIC_WEBSITE_DEPLOYMENT.md",
+        "PWA_STAGE_13_DEPLOYMENT.md",
+        "ADMIN_OPERATIONS_4_6_DEPLOYMENT.md",
+        "supabase/functions/submit-enquiry/handler.mjs",
+        "supabase/config.toml"
+      ],
+      "observed": "Historical public-site instructions describe direct enquiry inserts and deleting submit-enquiry; the current selected source instead includes the hardened submit-enquiry handler. Older deployment notes retain older web/version/worker markers and production commands. They are historical inputs, not executable current instructions.",
+      "required": "Prepare source-bound runbooks using current accepted code and installed state. Do not run old delete/deploy/rollback snippets as part of inventory.",
+      "action_ids": [
+        "OP-R01",
+        "OP-R05"
+      ],
+      "finding_ids": [
+        "F09",
+        "F18",
+        "F19"
+      ],
+      "prior_evidence": [
+        "S2E38",
+        "S9E06"
+      ]
+    },
+    {
+      "id": "OP-S03",
+      "title": "Schedules versus end-to-end execution",
+      "result": "SOURCE_SCHEDULES_PRESENT_INSTALLED_EXECUTION_UNVERIFIED",
+      "source_paths": [
+        "supabase/cron-push-reminders.sql",
+        "supabase/cron-admin-notifications.sql",
+        "supabase/cron-currency-rates.sql",
+        "supabase/functions/sync-exchange-rates/index.ts",
+        "supabase/functions/dispatch-push-reminders/index.ts",
+        "supabase/functions/dispatch-admin-notifications/index.ts"
+      ],
+      "observed": "Source proposes reminders every 15 minutes, admin dispatch every five minutes and currency sync at 00:15/12:15. Protected cron headers and dedicated server-side environment/Vault names are present. Currency sync includes a provider timeout, run status, duplicate-running handling and partial historical backfill reporting. No current installed job or successful provider run was checked in 10.1.",
+      "required": "Bind actual cron job to HTTP response, Edge version, business result and controlled delivery/history. Scheduler success alone does not prove final outcome; do not enable or invoke jobs here.",
+      "action_ids": [
+        "OP-R02"
+      ],
+      "finding_ids": [
+        "F19",
+        "F15",
+        "F12"
+      ],
+      "prior_evidence": [
+        "S1E92",
+        "S3E25",
+        "S8E05"
+      ]
+    },
+    {
+      "id": "OP-S04",
+      "title": "Queue retry, claims and outbound boundaries",
+      "result": "SOURCE_CONTROLS_PRESENT_DATABASE_AND_DELIVERY_RECHECK_PENDING",
+      "source_paths": [
+        "supabase/migrations/20260908170000_notification_outbox.sql",
+        "supabase/migrations/20260916190000_admin_event_notifications.sql",
+        "supabase/functions/_shared/push-destination.mjs",
+        "supabase/functions/_shared/notification-recipient.mjs",
+        "supabase/functions/send-test-push/index.ts"
+      ],
+      "observed": "Selected migrations define unique keys, pending/processing/sent/retry/failed/cancelled states, up to three attempts, 15-minute abandoned-claim release, FOR UPDATE SKIP LOCKED and five-/30-minute retry delays. Selected push functions use recipient/destination helpers and permanent-device-failure handling. Earlier synthetic passes do not verify current PostgreSQL concurrency, retries, final recipient display or actual delivery.",
+      "required": "Use recoverable controlled synthetic queues/recipients and correlate due/claim/attempt/result with real permission/egress boundaries. Preserve terminal states, stale-claim history and failed results.",
+      "action_ids": [
+        "OP-R02"
+      ],
+      "finding_ids": [
+        "F12",
+        "F15",
+        "F19"
+      ],
+      "prior_evidence": [
+        "S2E38",
+        "S8E05",
+        "S9E06"
+      ]
+    },
+    {
+      "id": "OP-S05",
+      "title": "Monitoring, budgets, alert/support ownership",
+      "result": "PARTIAL_HISTORICAL_EVIDENCE_CURRENT_OPERATION_UNVERIFIED",
+      "source_paths": [
+        "supabase/pwa-stage-13-monitoring.sql",
+        "supabase/migrations/20260912120000_support_ticket_workflow.sql",
+        "docs/security-audit/SECURITY_STAGE_1_5_OPERATIONAL_RUNBOOKS.md"
+      ],
+      "observed": "The source monitoring query returns aggregate customer-reminder cron/queue/subscription health; it does not prove alert detection/delivery or cover every service. Stage 1 recorded no policies in the shown Cloudflare account view, an owner-confirmed incoming Zoho support test and six usage values below displayed limits with project/cycle attribution unresolved. Those are dated scoped observations, not current absence or full operational PASS.",
+      "required": "Select scope-labelled metrics/budgets, account/service coverage, private logs/redaction/retention, review frequency, responsible responder/alternate and actual bounded alert/support receipt evidence.",
+      "action_ids": [
+        "OP-R03"
+      ],
+      "finding_ids": [
+        "F19",
+        "F08"
+      ],
+      "prior_evidence": [
+        "S1E94",
+        "S1E95",
+        "S1E96"
+      ]
+    },
+    {
+      "id": "OP-S06",
+      "title": "Recovery, offsite protection and component coverage",
+      "result": "PRIOR_SYNTHETIC_RESTORE_PASS_FULL_SERVICE_RECOVERY_UNVERIFIED",
+      "source_paths": [
+        "scripts/restore-synthetic-recovery.ps1",
+        "scripts/verify-local-recovery-probe.cjs",
+        "supabase/diagnostics/security_stage_1_backup_inventory.sql",
+        "supabase/diagnostics/security_stage_1_recovery_dependencies.sql",
+        "docs/security-audit/SECURITY_STAGE_1_4_CHECKPOINT_REPORT.md"
+      ],
+      "observed": "Prior owner Windows PostgreSQL 17.11 loopback restore committed selected staging public application data; selected role/RLS/data and dummy-file hashes passed and the server stopped. Reported 11 seconds is that narrow drill, not production RTO. Actual Storage service/bytes, hosted Auth/config/providers/managed roles, encryption/offsite/failure operations and full RPO/RTO remain open. Google offsite route was deferred.",
+      "required": "Inventory privately protected components/keys/settings and independent recovery access, accepted retention and RPO/RTO, realistic isolated target authority and full-service restore validation. Keep the successful local target stopped; do not drop or rerun its empty-target helper.",
+      "action_ids": [
+        "OP-R04"
+      ],
+      "finding_ids": [
+        "F16",
+        "F19",
+        "F08"
+      ],
+      "prior_evidence": [
+        "S1E88",
+        "S1E96",
+        "S1E99"
+      ]
+    },
+    {
+      "id": "OP-S07",
+      "title": "Containment and rollback are different scopes",
+      "result": "SOURCE_RECIPES_PRESENT_UNEXERCISED_AND_COMPATIBILITY_UNVERIFIED",
+      "source_paths": [
+        "supabase/rollback-push-dispatcher.sql",
+        "supabase/rollback-notification-outbox.sql",
+        "supabase/candidates/security_stage_3_admin_mfa_rollback.sql",
+        "docs/security-audit/SECURITY_STAGE_1_5_OPERATIONAL_RUNBOOKS.md"
+      ],
+      "observed": "One dispatcher recipe unschedules a named job while retaining queue history; another rollback removes queue/functions. The MFA rollback restores pre-candidate routine/policy definitions and drops candidate helpers. Existing recipes are not evidence of safe current rollback, compatible schema/artifacts or an operator exercise.",
+      "required": "Prefer reversible bounded containment in the accepted environment. Separate front-end rollback, Edge/config rollback, data migrations/restoration and security enforcement. Review exact installed shapes, data/history preservation and accepted authority before any exercise.",
+      "action_ids": [
+        "OP-R05"
+      ],
+      "finding_ids": [
+        "F16",
+        "F19",
+        "F15",
+        "F18"
+      ],
+      "prior_evidence": [
+        "S1E96",
+        "S3E25",
+        "S9E06"
+      ]
+    },
+    {
+      "id": "OP-S08",
+      "title": "Final release dependencies and supply-chain evidence",
+      "result": "CARRY_FORWARD_OPEN_NO_RELEASE_ACCEPTANCE",
+      "source_paths": [
+        ".github/workflows/pages.yml",
+        "package-lock.json",
+        "scripts/build-capacitor.mjs",
+        "docs/security-audit/SECURITY_STAGE_9_COMPLETION_REPORT.md",
+        "docs/security-audit/security-stage-9-final-recheck.json"
+      ],
+      "observed": "Workflow has default contents-read and job-scoped deploy permissions, but action references use version tags and no full current CI/provider provenance or final signed artifact is accepted. Prior final Windows offline result is 882 PASS, 21 syntax checks; all failures remain retained. 48 RG cases, eight RG actions/eight decisions, native/store/privacy/commerce and a dated staging Auth module asset-type FAIL remain carry-forward.",
+      "required": "Reconcile actual reproducible artifact/source/access/dependency evidence and complete earlier implementation/hosted/device/store dependencies plus final remediation and fresh full re-audit; source metadata and docs alone cannot authorize release.",
+      "action_ids": [
+        "OP-R01",
+        "OP-R06"
+      ],
+      "finding_ids": [
+        "F05",
+        "F18",
+        "F19",
+        "F20",
+        "F17"
+      ],
+      "prior_evidence": [
+        "S9E06"
+      ]
+    }
+  ],
+  "primary_references": [
+    {
+      "id": "OP-REF01",
+      "title": "Supabase Database Backups",
+      "url": "https://supabase.com/docs/guides/platform/backups",
+      "reviewed_date": "2026-10-13",
+      "scope": "Database recovery component boundaries",
+      "requirement_summary": "Database backups exclude Storage object bytes and omit custom-role passwords. Project deletion removes associated backups. Recovery planning therefore needs separately protected file/configuration/access components; no account plan or current backup entitlement is inferred."
+    },
+    {
+      "id": "OP-REF02",
+      "title": "Cloudflare Pages Rollbacks",
+      "url": "https://developers.cloudflare.com/pages/configuration/rollbacks/",
+      "reviewed_date": "2026-10-13",
+      "scope": "Pages deployment rollback only",
+      "requirement_summary": "Successful production Pages deployments are valid rollback targets; preview deployments are not. This is not a Worker rollback instruction or a database/Edge/configuration restore. Actual serving product and accepted target must be identified."
+    },
+    {
+      "id": "OP-REF03",
+      "title": "Supabase Production Checklist",
+      "url": "https://supabase.com/docs/guides/deployment/going-into-prod",
+      "reviewed_date": "2026-10-13",
+      "scope": "Production readiness reference, not settings verification",
+      "requirement_summary": "Review RLS, protected provider/admin access, SMTP, performance and availability. The deployed application's actual policies/settings/capacity and access recovery need evidence; this reference does not prove they are enabled."
+    },
+    {
+      "id": "OP-REF04",
+      "title": "GitHub Actions Secure use reference",
+      "url": "https://docs.github.com/en/actions/reference/security/secure-use",
+      "reviewed_date": "2026-10-13",
+      "scope": "Workflow provenance and least permissions",
+      "requirement_summary": "Use minimum token permissions and review untrusted code/action handling. Current guidance discusses workflow dependency lockfiles and, where not adopted, verified full commit SHA action references. Assess the actual workflow/repository controls; no pinning or protection change is made in inventory."
+    }
+  ],
+  "prior_positive_evidence_preserved": [
+    "S1E88 scoped owner local synthetic restore",
+    "S1E94 incoming owner support receipt",
+    "S9E04 owner Windows 882 PASS",
+    "S9E06 final Stage 9 reconciliation"
+  ],
+  "prior_failed_or_uncertain_evidence_preserved": true,
+  "new_local_behavior_or_syntax_tests_run": 0,
+  "new_public_staging_GETs_run": 0,
+  "new_Auth_API_SQL_provider_device_or_store_requests_run": 0,
+  "new_alert_email_notification_or_charge_dispatched": false,
+  "hosted_operations_acceptance": false,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "source_runtime_settings_production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "next_step": "10.2"
+}

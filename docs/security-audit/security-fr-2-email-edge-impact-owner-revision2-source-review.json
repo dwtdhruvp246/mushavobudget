@@ -1,0 +1,110 @@
+{
+  "received_date": "2026-10-21",
+  "requested_run_commit": "87f1157c39cdcd91097fb3426d31e83d0cf94581",
+  "run_commit_independently_attested": false,
+  "evidence_source": "OWNER_PASTED_SAFE_PRIVATE_RUNNER_RESULT_AND_TERMINAL_EXIT",
+  "receipt": {
+    "stage_step": "FR.2.4.E5.13_PRIVATE_EDGE_CONFIGURATION_AND_SHARED_IMPACT_PREPARATION",
+    "result": "STAGING_EDGE_SHARED_IMPACT_REVIEW_REQUIRED",
+    "requests_attempted": 4,
+    "fixed_staging_project_metadata_matched": true,
+    "fixed_staging_database_host_matched": true,
+    "prior_other_function_metadata_matched": true,
+    "selected_functions_absent_before_and_after": false,
+    "single_unrelated_function_matches_reviewed_contact_slug": true,
+    "detail_metadata_agreed_before_and_after": false,
+    "other_function_metadata_SHA256": "a88734d959d4c93173609d771f13f5761f76d3478b1b9b7eb1aaca829f76ee78",
+    "downloaded_source_files": 0,
+    "exact_reviewed_contact_source_bytes_match": false,
+    "six_names_not_consumed_by_matched_source": false,
+    "shared_configuration_runtime_impact_verified": false,
+    "previous_deployable_artifact_retained": false,
+    "recovery_execution_verified": false,
+    "configuration_values_collected": false,
+    "secret_or_SQL_endpoint_used": false,
+    "application_rows_read": false,
+    "Edge_functions_invoked": 0,
+    "downloaded_source_executed_or_saved": false,
+    "raw_source_provider_bodies_paths_or_unselected_identifiers_printed": false,
+    "token_saved_to_disk_or_environment": false,
+    "token_permission_scope_independently_inspected": false,
+    "metadata_snapshot_is_not_a_write_lock": true,
+    "settings_data_roles_grants_or_schedules_changed": false,
+    "email_push_or_FX_dispatched": false,
+    "readiness_approved": false,
+    "uploaded_or_deployed": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "samples": [
+      {
+        "endpoint": "STAGING_PROJECT_METADATA",
+        "http_status": 200,
+        "bounded_body_received": true
+      },
+      {
+        "endpoint": "STAGING_FUNCTION_LIST_BEFORE",
+        "http_status": 200,
+        "bounded_body_received": true
+      },
+      {
+        "endpoint": "STAGING_CONTACT_DETAIL_BEFORE",
+        "http_status": 200,
+        "bounded_body_received": true
+      },
+      {
+        "endpoint": "STAGING_CONTACT_SOURCE",
+        "http_status": 200,
+        "bounded_body_received": true
+      }
+    ],
+    "checkpoint": "STAGING_CONTACT_SOURCE",
+    "problem_code": "FUNCTION_SOURCE_REVIEW_REQUIRED",
+    "exit_code": 1,
+    "checked_UTC": "2026-10-21T18:53:01.852Z",
+    "source_hashes_verified": 8,
+    "diagnostic_revision": 2,
+    "source_observation": {
+      "decoder_step": "METADATA_ENTRYPOINT",
+      "multipart_parts_observed": 3,
+      "file_parts_observed": 2,
+      "source_files_decoded": 2,
+      "parts_with_content_disposition": 3,
+      "parts_with_supabase_path": 0,
+      "parts_with_quoted_filename": 2,
+      "metadata_part_observed": true,
+      "metadata_has_primary_entrypoint": false,
+      "metadata_has_deno2_entrypoint": true,
+      "metadata_entrypoint_matches_detail": false,
+      "file_path_forms": {
+        "absolute_posix": 0,
+        "file_URL": 0,
+        "relative": 2,
+        "unsupported": 0
+      },
+      "expected_relative_files": [
+        {
+          "name": "index.ts",
+          "observed": false
+        },
+        {
+          "name": "handler.mjs",
+          "observed": false
+        }
+      ],
+      "unexpected_relative_file_count": 0
+    }
+  },
+  "private_runner_terminal_exit_code": 1,
+  "owner_reported_private_runner_execution_completed": true,
+  "separate_owner_offline_verifier_receipt_received": false,
+  "parser_root_cause_identified": true,
+  "source_mismatch_or_zero_provider_files_inferred": false,
+  "after_detail_or_after_list_requested": false,
+  "hosted_acceptance": false,
+  "identified_rejection": "CROSS_ENDPOINT_LITERAL_ENTRYPOINT_EQUALITY_REJECTED_DENO2_BODY_NAMESPACE",
+  "private_path_strings_received": false,
+  "source_byte_comparison_reached": false
+}

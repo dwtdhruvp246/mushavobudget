@@ -1,0 +1,203 @@
+{
+  "stage_step": "FR.2.2_CONVERSION_REFERENCE_CANONICAL_INTEGRATION",
+  "result": "OFFLINE_54_MIGRATION_CANONICAL_REFERENCE_AND_UPGRADE_SCOPED_PASS",
+  "scope": "ACTUAL_54_ORDERED_MIGRATIONS_AND_APPENDED_CANONICAL_TRANSACTION_PLUS_LEGACY_ORPHAN_UPGRADE_BEHAVIOR_IN_MODELED_AUTH_PGLITE_NOT_FULL_SCHEMA_BOOTSTRAP_OR_HOSTED_CONCURRENCY",
+  "engine": "PostgreSQL 18.3 (PGlite 0.5.8) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "node_version": "v24.19.0",
+  "source_migrations_compiled": 54,
+  "selected_source_inputs_verified": 57,
+  "tests": 42,
+  "pass": 42,
+  "fail": 0,
+  "exit_code": 0,
+  "cases": [
+    {
+      "title": "all 54 ordered migrations compile a fresh catalog with private generated-reference enforcement and accepted binding coverage",
+      "result": "PASS"
+    },
+    {
+      "title": "canonical schema preserves its entire previous prefix and appends the exact accepted migration transaction",
+      "result": "PASS"
+    },
+    {
+      "title": "actual appended canonical schema transaction replays idempotently with all catalog function policy grant and trigger metadata unchanged",
+      "result": "PASS"
+    },
+    {
+      "title": "exact reviewed rollback prepares a source-equivalent legacy catalog for existing orphan upgrade tests without changing base rows",
+      "result": "PASS"
+    },
+    {
+      "title": "actual installation preserves every original conversion column including two existing orphan identities and two locked manual stand-ins",
+      "result": "PASS"
+    },
+    {
+      "title": "exact already-installed objects allow idempotent application",
+      "result": "PASS"
+    },
+    {
+      "title": "new authorized record creation still generates its normal identity conversion with a valid reference",
+      "result": "PASS"
+    },
+    {
+      "title": "multiple reporting-currency derivatives can reference the same existing record",
+      "result": "PASS"
+    },
+    {
+      "title": "old orphan ID cannot be reused by a new record to attach or delete old conversions",
+      "result": "PASS"
+    },
+    {
+      "title": "record key cannot be changed to another owner old orphan ID",
+      "result": "PASS"
+    },
+    {
+      "title": "new private reservation helper has no anon authenticated or service-role direct execute grant",
+      "result": "PASS"
+    },
+    {
+      "title": "generated reference cannot be forged through explicit assignment",
+      "result": "PASS"
+    },
+    {
+      "title": "new missing-parent record conversion rejected by FK",
+      "result": "PASS"
+    },
+    {
+      "title": "changed entity ID cannot detach a conversion to a missing record",
+      "result": "PASS"
+    },
+    {
+      "title": "other entity types get null generated reference and are preserved even with matching UUID",
+      "result": "PASS"
+    },
+    {
+      "title": "outsider DELETE affects no owner record and no conversions",
+      "result": "PASS"
+    },
+    {
+      "title": "anonymous DELETE affects no owner record or conversions",
+      "result": "PASS"
+    },
+    {
+      "title": "direct authenticated conversion deletion stays blocked by unchanged RLS policy",
+      "result": "PASS"
+    },
+    {
+      "title": "suspended account guard prevents record deletion and cascade",
+      "result": "PASS"
+    },
+    {
+      "title": "authorized owner record deletion cascades only its record conversions in one transaction",
+      "result": "PASS"
+    },
+    {
+      "title": "late conversion writer after record deletion cannot recreate an orphan",
+      "result": "PASS"
+    },
+    {
+      "title": "rollback of authorized DELETE restores parent and its conversion",
+      "result": "PASS"
+    },
+    {
+      "title": "authorized deletion of a manually converted record removes its manual derivative without changing retained manual row",
+      "result": "PASS"
+    },
+    {
+      "title": "item deletion cascades its record and conversion through existing parent FK",
+      "result": "PASS"
+    },
+    {
+      "title": "earlier orphans remain untouched and full FK validation fails while they remain",
+      "result": "PASS"
+    },
+    {
+      "title": "ordinary authenticated SQL role cannot install schema enforcement",
+      "result": "PASS"
+    },
+    {
+      "title": "disabled or altered source DELETE guard stops installation",
+      "result": "PASS"
+    },
+    {
+      "title": "extra conversion DELETE trigger stops installation",
+      "result": "PASS"
+    },
+    {
+      "title": "unexpected incoming FK stops installation",
+      "result": "PASS"
+    },
+    {
+      "title": "changed old FK action with same graph count stops installation",
+      "result": "PASS"
+    },
+    {
+      "title": "same FK name with changed action is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "same index name with incorrect predicate is rejected",
+      "result": "PASS"
+    },
+    {
+      "title": "reservation helper body drift stops installation",
+      "result": "PASS"
+    },
+    {
+      "title": "direct API-role grant drift on private reservation helper stops installation",
+      "result": "PASS"
+    },
+    {
+      "title": "disabled reservation trigger stops installation",
+      "result": "PASS"
+    },
+    {
+      "title": "partial object state stops rather than silently filling missing objects",
+      "result": "PASS"
+    },
+    {
+      "title": "non-origin replication mode stops installation",
+      "result": "PASS"
+    },
+    {
+      "title": "unknown relevant event hook stops installation without disabling it",
+      "result": "PASS"
+    },
+    {
+      "title": "rollback removes only exact objects, preserves every remaining base row, and does not recreate deleted conversions",
+      "result": "PASS"
+    },
+    {
+      "title": "reinstall after exact rollback preserves the two old orphans and remaining rows",
+      "result": "PASS"
+    },
+    {
+      "title": "exact reviewed provider hooks permit installation and rollback without base row changes",
+      "result": "PASS"
+    },
+    {
+      "title": "altered provider hook body stops installation",
+      "result": "PASS"
+    }
+  ],
+  "file_sha256": {
+    "supabase/schema.sql": "cbd06ae32d5bf05d7e8a96ad85bfae86416eaafbf5898b04454e150888115e24",
+    "supabase/migrations/20261014125500_payment_record_conversion_reference.sql": "2b84996b690c87f63dd686354060561287c83fb6635ac79242347dcee35c5f46",
+    "supabase/remediation/security_fr_2_2_conversion_reference_rollback.sql": "d28772b2e647dcac402f28598f05f0a0d28c6ca7971f577da8036df5ece9fd63",
+    "scripts/verify-fr-2-conversion-reference-integration.mjs": "44922cfcd8d98ef4efeab967e1887c0c0d20f6cf8cce17c11fa73fa7c39101ac"
+  },
+  "hosted_checks_run": 0,
+  "concurrent_session_behavior_verified": false,
+  "real_Family_manual_baseline_reproduced": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "syntax_checks": 1,
+  "default_network_disabled": true,
+  "first_local_attempt": {
+    "tests": 2,
+    "pass": 1,
+    "fail": 1,
+    "exit_code": 1,
+    "cause": "The copied checker still loaded the previous manual installer variable while asserting equality against the new migration header. Its byte-prefix equality assertion caught the test wiring error after all54 migrations compiled. The checker now loads the migration and uses Buffer byte offsets for UTF8 canonical-tail execution. Schema/migration SQL, guards and assertion requirements were not loosened."
+  }
+}

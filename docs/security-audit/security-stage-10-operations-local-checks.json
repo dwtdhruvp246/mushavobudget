@@ -1,0 +1,195 @@
+{
+  "stage_step": "10.2",
+  "result": "OFFLINE_ACTUAL_PUBLIC_METADATA_COLLECTOR_AND_CLI_SCOPED_PASS",
+  "scope": "ACTUAL_COLLECTOR_WITH_SYNTHETIC_RESPONSE_STREAMS_REAL_TEMPORARY_FILES_AND_CLI_UNDER_DISABLED_DEFAULT_TRANSPORT",
+  "source_parent_commit": "1b012fd9c47bfb1733596f64c470feee5d308341",
+  "node_version": "v24.19.0",
+  "tests": 27,
+  "pass": 27,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "todo": 0,
+  "exit_code": 0,
+  "syntax_checks": 4,
+  "syntax": [
+    {
+      "file": "scripts/lib/stage-10-public-metadata.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/collect-stage-10-public-metadata.mjs",
+      "pass": true
+    },
+    {
+      "file": "scripts/verify-stage-10-operations.mjs",
+      "pass": true
+    },
+    {
+      "file": "tests/stage-10-public-metadata.test.mjs",
+      "pass": true
+    }
+  ],
+  "file_sha256": {
+    "scripts/lib/stage-10-public-metadata.mjs": "afbef093932d4d31e5d71715f6eb9e8b493296ada17ba98966e0618376eef640",
+    "scripts/collect-stage-10-public-metadata.mjs": "f174e0fe0d20287a8f5822ccea97dfa55ed5dc38588f51b19c13dc2be1b88045",
+    "scripts/verify-stage-10-operations.mjs": "196edf547ec27d7254a513ab93bb9cb1319ffaed4b4fe7abaeedff5545c7d7f7",
+    "tests/stage-10-public-metadata.test.mjs": "53d8fefdcd431af4fdb9478f6ef955e72985cf34430f36e20302138812ba291a",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+    "config.js": "c14293e16fda6a6b0e483ea5141954b78832b175155cec0ab9f59d35e8b7b0cd",
+    "auth.html": "8d6ff984bfec6ef80356ceceef63e5a70428d1ea6c0bb937c282dc1b47329386",
+    "auth-flows.js": "ef16214f827d6650a507e30bdae7703c975f061437ed0672cf0abf9072e37500",
+    "auth-security.js": "ae6eb487fa9ae5f21b1e3a95f698fe5869a377349bc5ff66bf9e8d32cef6cf54",
+    "admin-mfa.js": "909fd25b8e364e420be9067f6a0435567d705e914c53e9358b536d0187d81f6e",
+    "app.js": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+    "business.js": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+    "app.html": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+    "business.html": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+    "docs/security-audit/security-stage-10-operations-candidate-contract.json": "f4dd254f2e099f242647fdb3cd5f60023a0a0dfa74d731af7a804c479eec5cd0"
+  },
+  "failed_case_titles": [],
+  "actual_public_staging_HTTP_requests": 0,
+  "Auth_API_SQL_jobs_alerts_provider_device_or_store_checks_run": 0,
+  "planned_real_operations_grouped_cases": 24,
+  "full_operations_grouped_cases_run": 0,
+  "full_regression_CI_or_current_backend_job_alert_recovery_verified": false,
+  "candidate_deployed": false,
+  "hosted_operations_acceptance": false,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "actual_notification_email_or_charge_dispatched": false,
+  "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "execution_history": [
+    {
+      "execution": "initial actual collector and CLI test batch",
+      "tests": 27,
+      "pass": 27,
+      "fail": 0,
+      "exit_code": 0,
+      "default_transport_disabled": true
+    },
+    {
+      "execution": "final verifier after contract guard and source bound review",
+      "tests": 27,
+      "pass": 27,
+      "fail": 0,
+      "exit_code": 0,
+      "syntax_checks": 4,
+      "default_transport_disabled": true
+    }
+  ],
+  "historical_case_executions": 54,
+  "unique_cases": 27,
+  "source_inputs_reconciled": [
+    {
+      "path": "config.js",
+      "sha256": "c14293e16fda6a6b0e483ea5141954b78832b175155cec0ab9f59d35e8b7b0cd",
+      "git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+      "expected_git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+      "match": true
+    },
+    {
+      "path": "auth.html",
+      "sha256": "8d6ff984bfec6ef80356ceceef63e5a70428d1ea6c0bb937c282dc1b47329386",
+      "git_blob_sha": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+      "expected_git_blob_sha": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+      "match": true
+    },
+    {
+      "path": "auth-flows.js",
+      "sha256": "ef16214f827d6650a507e30bdae7703c975f061437ed0672cf0abf9072e37500",
+      "git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "expected_git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "match": true
+    },
+    {
+      "path": "auth-security.js",
+      "sha256": "ae6eb487fa9ae5f21b1e3a95f698fe5869a377349bc5ff66bf9e8d32cef6cf54",
+      "git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "expected_git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "match": true
+    },
+    {
+      "path": "admin-mfa.js",
+      "sha256": "909fd25b8e364e420be9067f6a0435567d705e914c53e9358b536d0187d81f6e",
+      "git_blob_sha": "b34b867301a97473a455f80cb01ab193b224a6ad",
+      "expected_git_blob_sha": "b34b867301a97473a455f80cb01ab193b224a6ad",
+      "match": true
+    },
+    {
+      "path": "app.js",
+      "sha256": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+      "git_blob_sha": "82919e23f74d10bd5e7bc4992ca0929d19f390fb",
+      "expected_git_blob_sha": "82919e23f74d10bd5e7bc4992ca0929d19f390fb",
+      "match": true
+    },
+    {
+      "path": "business.js",
+      "sha256": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+      "git_blob_sha": "28b561065b168ac3dcb1968e490c853a84c0673a",
+      "expected_git_blob_sha": "28b561065b168ac3dcb1968e490c853a84c0673a",
+      "match": true
+    },
+    {
+      "path": "app.html",
+      "sha256": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+      "git_blob_sha": "3564f09e4dea7cdad6669514bc2bea7812dcdfef",
+      "expected_git_blob_sha": "3564f09e4dea7cdad6669514bc2bea7812dcdfef",
+      "match": true
+    },
+    {
+      "path": "business.html",
+      "sha256": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+      "git_blob_sha": "72cb99a21ba40b5140f1312538b677fe15dd6cab",
+      "expected_git_blob_sha": "72cb99a21ba40b5140f1312538b677fe15dd6cab",
+      "match": true
+    },
+    {
+      "path": "scripts/offline-test-network.cjs",
+      "sha256": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+      "git_blob_sha": "561b7927510be5070f38fed70cd5870e8ed0ecb2",
+      "expected_git_blob_sha": "561b7927510be5070f38fed70cd5870e8ed0ecb2",
+      "match": true
+    },
+    {
+      "path": "supabase/cron-push-reminders.sql",
+      "sha256": "5a8b21f95eb9f227f895d79a8d3e27d3b37d7f622d3a64693f209ec97d538800",
+      "git_blob_sha": "1a56f688d62302cbf45097c2387945c00f0eba93",
+      "expected_git_blob_sha": "1a56f688d62302cbf45097c2387945c00f0eba93",
+      "match": true
+    },
+    {
+      "path": "supabase/cron-admin-notifications.sql",
+      "sha256": "3ac9ae98c23bade5a15eba05f47851122bded33c323f38c60fe889f9cab79499",
+      "git_blob_sha": "cc7b2a72100026160c3ffcdd2b5d12a074ee9e6a",
+      "expected_git_blob_sha": "cc7b2a72100026160c3ffcdd2b5d12a074ee9e6a",
+      "match": true
+    },
+    {
+      "path": "supabase/cron-currency-rates.sql",
+      "sha256": "5c6335eedf61962a952f2f1b5a5d43cb2f68b9d6ab588e3860ae63158352d65e",
+      "git_blob_sha": "edeba2e20e9f25317d0874d79b14a5df479eb213",
+      "expected_git_blob_sha": "edeba2e20e9f25317d0874d79b14a5df479eb213",
+      "match": true
+    },
+    {
+      "path": "supabase/pwa-stage-13-monitoring.sql",
+      "sha256": "27e08f137cdee48e2d281c689b068489e81b56071ed10ce78e3d3ca45379e87b",
+      "git_blob_sha": "5e2fe1e7c828fef2775ecd68b42e28a8f5f3f4cf",
+      "expected_git_blob_sha": "5e2fe1e7c828fef2775ecd68b42e28a8f5f3f4cf",
+      "match": true
+    },
+    {
+      "path": "supabase/rollback-push-dispatcher.sql",
+      "sha256": "8871816d3bdac2f2baae0e2a49a7f005631790c325ca9ad9b37cc3622a600b0e",
+      "git_blob_sha": "16ffa311573462b016cd165fb69d60167e33f5ab",
+      "expected_git_blob_sha": "16ffa311573462b016cd165fb69d60167e33f5ab",
+      "match": true
+    }
+  ],
+  "owner_repeat_status": "REQUESTED_NOT_RECEIVED"
+}

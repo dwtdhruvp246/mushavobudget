@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "stage_step": "FR.2.5_AU05_07_BUSINESS_ERROR_CANDIDATE_AND_HISTORICAL_TEST_SESSION_BINDING",
+  "result": "BUSINESS_ERROR_CANDIDATE_CONTROLLED_PASS_HISTORICAL_TEST_SESSIONS_IDENTIFIED_REVOCATION_PAUSED",
+  "source_parent_commit": "d974e7dc3c09f792f88d25b73b6602a4c928b221",
+  "business_error": {
+    "original_case_id": "AU05.07",
+    "actual_prior_provider429_backend_receipt_retained": true,
+    "existing_UI_behavior_reproduced": "SDK generic non-2xx message for Edge502 saved-mail failure and function429 cooldown",
+    "function_response_reader": "error.context.json for documented 502 saved invitation and 429 invitation cooldown",
+    "candidate_browser_assets": [
+      "business.js",
+      "business.html"
+    ],
+    "business_script_cache_version": 25,
+    "regression_test": "tests/business-invitation-delivery.test.mjs",
+    "targeted_checks": 6,
+    "baseline_failed": 3,
+    "candidate_passed": 6,
+    "whole_candidate_script_parsed": true,
+    "verification": "Actual extracted client handlers with controlled SDK HTTP-error responses and DOM/RPC stubs in JavaScript",
+    "hosted_candidate_browser_verification": false,
+    "frontend_uploaded": false,
+    "invitation_or_email_requests": 0
+  },
+  "historical_sessions": {
+    "old_checker_commit": "23a4b707421313c5aea2cfab9ab2b4583afb0a59",
+    "old_stop_receipt": "docs/security-audit/security-fr-2-batch-w-owner-unavailable-invitation-sql-ready-api-stop.json",
+    "log_range_utc": [
+      "2026-10-30T08:37:45Z",
+      "2026-10-30T08:42:30Z"
+    ],
+    "matched_checker_preflight_requests": 9,
+    "password_grants": 2,
+    "actor_session_bound_reads": 7,
+    "invitation_and_audit_filter_same_fixture": true,
+    "exact_log_session_and_actor_digests_match_current_rows": true,
+    "exact_current_test_sessions": 2,
+    "linked_refresh_tokens": 2,
+    "other_sessions_on_two_accounts": 1,
+    "reviewed_direct_cascade_FKs": 4,
+    "second_hop_dependencies": 0,
+    "noninternal_deletion_triggers": 0,
+    "connector_revocation_request": "CANCELLED_BY_USER",
+    "transaction_committed": false,
+    "readback_target_sessions_after_cancel": 2,
+    "readback_target_refresh_tokens_after_cancel": 2,
+    "revocation_prepared": "supabase/diagnostics/security_fr_2_5_w_historical_invitation_session_cleanup.sql",
+    "revocation_paused": true,
+    "raw_session_ids_tokens_or_credentials_exported": false
+  },
+  "recovery": {
+    "known_disposable_accounts_remaining": 0,
+    "existing_unused_recovery_rows_for_selected_accounts": 0,
+    "recent_auth_email_or_rate_log_rows_observed_in_sample": 0,
+    "mail_availability_established": false,
+    "execution_environment_available": false,
+    "proposed_disposable_account_count": 1,
+    "proposed_confirmation_email_count": 1,
+    "second_actor_source": "existing designated ordinary runner session",
+    "remaining_hosted_variants": [
+      "AU04.03",
+      "AU04.04",
+      "AU04.05"
+    ],
+    "new_recovery_requests": 0,
+    "expired_token_restore_path_validated": false
+  },
+  "legacy_short_password_fixture_available": false,
+  "AU03_04_owner_deferral_retained": true,
+  "additional_public_case_groups": 0,
+  "full_lettered_batch_W_complete": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

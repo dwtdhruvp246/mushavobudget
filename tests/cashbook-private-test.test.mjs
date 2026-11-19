@@ -18,7 +18,7 @@ test("Cashbook is a published Personal-only navigation route", () => {
   assert.match(html, /data-family-tab="cashbook" data-personal-only/);
   assert.match(app, /element\.hidden = !personalWorkspace/);
   assert.match(pwa, /const RELEASE = "4\.9\.40"/);
-  assert.match(html, /app\.js\?v=112/);
+  assert.match(html, /app\.js\?v=117/);
   assert.match(html, /styles\.css\?v=79/);
 });
 
@@ -74,5 +74,5 @@ test("Cashbook provides responsive accounts, entries, reports, and reversal cont
 test("the consolidated schema includes the Personal Cashbook foundation", () => {
   assert.match(schema, /Personal Cashbook foundation/);
   assert.match(schema, /create or replace function public\.create_cashbook_payment_entry/);
-  assert.match(schema, /notify pgrst, 'reload schema';\s*commit;\s*$/);
+  assert.ok(schema.includes(migration), 'Canonical schema retains the complete Cashbook migration');
 });

@@ -1,0 +1,37 @@
+name: Staging Business CSV and XLSX acceptance
+on:
+  push:
+    branches: ["security/stage-3-authorization"]
+    paths: ["scripts/ci/staging-business-table-run.json"]
+permissions:
+  contents: read
+concurrency:
+  group: mushavo-staging-acceptance
+  cancel-in-progress: false
+jobs:
+  proof:
+    if: github.repository == 'dwtdhruvp246/mushavobudget' && github.ref == 'refs/heads/security/stage-3-authorization' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '22'
+      - name: Verify spreadsheet content validation and proof routing
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/logo-jpeg-tools
+          npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/pdf-proof-tools
+          npm ci --ignore-scripts --no-audit --no-fund --prefix scripts/fixtures/business-table-tools
+          node --test tests/business-table-validation.test.mjs tests/pdf-proof-validation.test.mjs tests/family-proof-validation.test.mjs tests/personal-proof-validation.test.mjs tests/business-logo-validation.test.mjs tests/business-logo-jpeg.test.mjs tests/business-logo-webp.test.mjs tests/business-logo-upload-routing.test.mjs
+      - name: Run isolated Business CSV and XLSX checks
+        env:
+          MUSHAVO_STAGING_USER_A_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_A_EMAIL }}
+          MUSHAVO_STAGING_USER_A_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_A_PASSWORD }}
+          MUSHAVO_STAGING_USER_B_EMAIL: ${{ secrets.MUSHAVO_STAGING_USER_B_EMAIL }}
+          MUSHAVO_STAGING_USER_B_PASSWORD: ${{ secrets.MUSHAVO_STAGING_USER_B_PASSWORD }}
+          MUSHAVO_STAGING_ADMIN_EMAIL: ${{ secrets.MUSHAVO_STAGING_ADMIN_EMAIL }}
+          MUSHAVO_STAGING_ADMIN_PASSWORD: ${{ secrets.MUSHAVO_STAGING_ADMIN_PASSWORD }}
+        run: node scripts/ci/check-staging-business-table.mjs

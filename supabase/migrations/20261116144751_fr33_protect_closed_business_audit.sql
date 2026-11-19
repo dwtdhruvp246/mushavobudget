@@ -1,0 +1,3 @@
+CREATE TRIGGER closed_business_audit_events_immutable
+BEFORE UPDATE OR DELETE ON mushavo_account_deletion.closed_business_audit_events
+FOR EACH ROW EXECUTE FUNCTION public.prevent_business_audit_mutation();

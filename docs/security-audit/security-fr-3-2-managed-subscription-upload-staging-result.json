@@ -1,0 +1,43 @@
+{
+  "stage": "4/10",
+  "final_remediation": "FR.3/8",
+  "step": "FR.3.2",
+  "state": "OPEN",
+  "test_scope": "Managed subscription PDF uploads on staging",
+  "api_workflow": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43734802612",
+  "api_test_commit": "f7d8c55c9aea1a1fa6ccdfe8f989ced5bbcb978e",
+  "api_exit_code": 0,
+  "test_pdf_cases": [
+    {
+      "input_bytes": 3687266,
+      "canonical_bytes": 3687254,
+      "other_workspace_denied": true,
+      "status": 200,
+      "exact_readback": true
+    },
+    {
+      "input_bytes": 10482531,
+      "canonical_bytes": 10482519,
+      "status": 200,
+      "exact_readback": true
+    }
+  ],
+  "created_sessions": 2,
+  "closed_sessions": 2,
+  "configured_pdf_max_bytes": 10485760,
+  "unlinked_file_limit_per_workspace_owner": 8,
+  "unlinked_total_bytes_per_workspace_owner": 33554432,
+  "ready_file_timeout_minutes": 30,
+  "reservation_timeout_minutes": 5,
+  "linked_and_unlinked_cleanup_states_verified_in_disposable_postgres": true,
+  "final_staging_state": {
+    "catalog_sha256": "eeb72286f341c7e5028c0071aefa99abc612a7a4863c48968e73ba52b8a6dbe0",
+    "matches": true,
+    "signed_dispatches": 1,
+    "removed": 2,
+    "managed_storage_objects": 0,
+    "retained_linked_receipts": 7
+  },
+  "staging_browser_routing": "Source committed and client checks passed. Hosted Pages release not verified.",
+  "production_changed": false
+}

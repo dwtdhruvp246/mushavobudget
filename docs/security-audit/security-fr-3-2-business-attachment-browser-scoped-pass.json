@@ -1,0 +1,136 @@
+{
+  "date": "2026-11-14",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Business browser attachments",
+  "result": "STAGING_BUSINESS_CLAIM_AND_UNPAID_BILL_ATTACHMENT_SCOPED_PASS",
+  "browser_checks_passed": 13,
+  "local_regression_checks_passed": 103,
+  "claim": {
+    "run_id": 43606728854,
+    "commit": "f47adaeff22bb3bc9970058969595852b24a340c",
+    "job_id": 132482864455,
+    "browser": {
+      "checks": {
+        "expense-claim_TRUNCATED_REFUSED_BEFORE_REGISTRATION": true,
+        "expense-claim_VALIDATED_METADATA_REGISTERED": true,
+        "expense-claim_PRIVATE_FILE_HTTP_OK": true,
+        "expense-claim_PRIVATE_FILE_MEDIA_TYPE": true,
+        "expense-claim_PRIVATE_FILE_CACHE_CONTROL": true,
+        "expense-claim_PRIVATE_FILE_PREVIEW_OPENED": true,
+        "expense-claim_PREVIEW_MATCHES_EXACT_BYTES": true
+      },
+      "requests": 17,
+      "cleanup": {
+        "expense-claim": true,
+        "bill-invoice": true,
+        "suspended": true
+      },
+      "browser": {
+        "validator": 2,
+        "register": 1,
+        "broker": 1,
+        "reads": 73,
+        "blocked": []
+      },
+      "browser_step": "bill-invoice:OPEN",
+      "browser_downloads": {
+        "expense-claim": {
+          "status": 200,
+          "media_type": "application/pdf",
+          "cache_control": [
+            "private",
+            "no-store",
+            "max-age=0",
+            "must-revalidate"
+          ],
+          "preview_type": "application/pdf",
+          "preview_size": 791,
+          "expected_size": 791
+        }
+      },
+      "browser_error_kind": "EXACT_BUSINESS_PREVIEW_PAGE_REQUIRED"
+    },
+    "run_exit_code": 1,
+    "run_stop_after_claim": "SAME_PAGE_HASH_NAVIGATION_RETURNED_NO_HTTP_RESPONSE",
+    "scope": "Draft company expense receipt"
+  },
+  "bill": {
+    "run_id": 43606907862,
+    "commit": "4f428ac642d1e5489ef04b3ae4d501709b011a7e",
+    "job_id": 132483407449,
+    "browser": {
+      "checks": {
+        "bill-invoice_VALIDATED_METADATA_REGISTERED": true,
+        "bill-invoice_PRIVATE_FILE_HTTP_OK": true,
+        "bill-invoice_PRIVATE_FILE_MEDIA_TYPE": true,
+        "bill-invoice_PRIVATE_FILE_CACHE_CONTROL": true,
+        "bill-invoice_PRIVATE_FILE_PREVIEW_OPENED": true,
+        "bill-invoice_PREVIEW_MATCHES_EXACT_BYTES": true
+      },
+      "requests": 14,
+      "cleanup": {
+        "bill-invoice": true,
+        "suspended": true
+      },
+      "browser": {
+        "validator": 1,
+        "register": 1,
+        "broker": 1,
+        "reads": 71,
+        "blocked": []
+      },
+      "browser_step": "bill-invoice:READ_PREVIEW_BYTES",
+      "browser_navigation_status": 200,
+      "browser_downloads": {
+        "bill-invoice": {
+          "status": 200,
+          "media_type": "application/pdf",
+          "cache_control": [
+            "private",
+            "no-store",
+            "max-age=0",
+            "must-revalidate"
+          ],
+          "preview_type": "application/pdf",
+          "preview_size": 791,
+          "expected_size": 791
+        }
+      }
+    },
+    "run_exit_code": 0,
+    "scope": "Unpaid bill invoice proof",
+    "outside_account_and_direct_write_denied": true,
+    "registration_metadata_read_back": true
+  },
+  "validator": {
+    "version": 3,
+    "sha256": "4396b5bef6b9eeabe733aee2fa282db7262a17fd914f5fa4f23ac4adb70617f5"
+  },
+  "test_sessions_acknowledged": 6,
+  "independent_cleanup": {
+    "status": "suspended",
+    "business_support_version": 44,
+    "onboarding_status": "in_progress",
+    "profile_version": 21,
+    "paid_through_at": "2026-11-14 00:00:00+00",
+    "subscription_version": 1,
+    "attachment_gate": false,
+    "objects": 0,
+    "active_documents": 0,
+    "archived_accepted_documents": 2,
+    "retained_synthetic_claims": 1,
+    "retained_synthetic_bills": 1,
+    "retained_synthetic_suppliers": 1,
+    "bill_payments": 0,
+    "test_window_sessions": 0,
+    "admin_outbox": 0,
+    "catalog_matches": true
+  },
+  "excluded_from_this_scope": [
+    "Bill payment proof",
+    "Aggregate upload budgets",
+    "Durable cleanup across upload flows"
+  ],
+  "full_FR_3_2_complete": false,
+  "exit_code": 0
+}

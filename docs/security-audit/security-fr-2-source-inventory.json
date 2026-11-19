@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "stage_step": "FR.2.1",
+  "date": "2026-10-13",
+  "source_parent_commit": "12286dcbade07309bfb8ffe919224252f6cb8bff",
+  "scope": "SELECTED_CURRENT_SOURCE_AND_HISTORICAL_EVIDENCE_REVIEW_NOT_HOSTED_PARITY_OR_FULL_CATALOG",
+  "selected_review_inputs": 19,
+  "exact_git_blob_matches": 19,
+  "inputs": [
+    {
+      "path": "admin-mfa.js",
+      "git_blob_sha": "b34b867301a97473a455f80cb01ab193b224a6ad",
+      "sha256": "909fd25b8e364e420be9067f6a0435567d705e914c53e9358b536d0187d81f6e",
+      "bytes": 7574
+    },
+    {
+      "path": "app.js",
+      "git_blob_sha": "82919e23f74d10bd5e7bc4992ca0929d19f390fb",
+      "sha256": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+      "bytes": 504869
+    },
+    {
+      "path": "auth-flows.js",
+      "git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "sha256": "ef16214f827d6650a507e30bdae7703c975f061437ed0672cf0abf9072e37500",
+      "bytes": 8343
+    },
+    {
+      "path": "auth-security.js",
+      "git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "sha256": "ae6eb487fa9ae5f21b1e3a95f698fe5869a377349bc5ff66bf9e8d32cef6cf54",
+      "bytes": 9909
+    },
+    {
+      "path": "business.js",
+      "git_blob_sha": "28b561065b168ac3dcb1968e490c853a84c0673a",
+      "sha256": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+      "bytes": 242102
+    },
+    {
+      "path": "docs/security-audit/SECURITY_FINAL_REMEDIATION_HANDOFF.md",
+      "git_blob_sha": "bd764bc88fee3a71fdc78a497bb68a7591e1469f",
+      "sha256": "848834ff152a1c6ba1630b6658a0a4f736f84fa132c8e0ddd9a538a0c33ad438",
+      "bytes": 14166
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_3_2_CHECKPOINT_REPORT.md",
+      "git_blob_sha": "a58cae0cd0bb9d5ca41c0dbbe5b97b35980d7781",
+      "sha256": "323c7a312f1aeb4a53811c95ca6e9550cc4d26dd6d279daa5be79df90baf70f7",
+      "bytes": 9954
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_3_3_CHECKPOINT_REPORT.md",
+      "git_blob_sha": "213579eddac6d54290fd273b0b43bf7ae50e36d4",
+      "sha256": "02f660519d689202d7f70c371108a5f05dce2d4579f97b27dda83a2f5483dc09",
+      "bytes": 5567
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_3_4_CHECKPOINT_REPORT.md",
+      "git_blob_sha": "d5d274bf02dfb900636ad9c509322c36e4a80dbf",
+      "sha256": "8aa6052d56004233b3ecf2f877ecadfe5bce9718a6bb0c16173ce73022820d7c",
+      "bytes": 7401
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_3_5_CHECKPOINT_REPORT.md",
+      "git_blob_sha": "ce337cc98ebd4fb7efd780e3ce92f38ca83ffe20",
+      "sha256": "1e29c3fa9d620234430bafef78064c44ecb31dd7492988d80b9d0b71f9e298bc",
+      "bytes": 8827
+    },
+    {
+      "path": "docs/security-audit/SECURITY_STAGE_3_COMPLETION_REPORT.md",
+      "git_blob_sha": "eeba01c8eeeec8a4f1507055b04253fdb96700f4",
+      "sha256": "efc8821e758072316501a963a21b7407ab42a750f925e857068b03428b146b85",
+      "bytes": 30207
+    },
+    {
+      "path": "docs/security-audit/security-final-staging-corrected-serving-owner-result.json",
+      "git_blob_sha": "0bc7aecaff39f40d7f3d012abc8c0a712a8c43ac",
+      "sha256": "579b465289cc959183d3806d5d2d665692e9feda5da02d186bb68fcb44869950",
+      "bytes": 29130
+    },
+    {
+      "path": "docs/security-audit/security-stage-3-admin-mfa-owner-readiness.json",
+      "git_blob_sha": "b0f624f730c4658370fae96ec4f4e4a7f47c2895",
+      "sha256": "ea438378268f690364c9d931c54093d0ed60b7aa032d3d1c8e9070079c158bdc",
+      "bytes": 3203
+    },
+    {
+      "path": "docs/security-audit/security-stage-3-auth-owner-readiness.json",
+      "git_blob_sha": "cec7de81a4154dbd3f9db72f0fed832058e8e606",
+      "sha256": "052ee791c6de37eaebbfe54da30d93012c792abb7dce331440007444e6618f63",
+      "bytes": 785
+    },
+    {
+      "path": "scripts/verify-stage-3-personal-workspace-bindings.mjs",
+      "git_blob_sha": "a83bfe8be20a8543ea42f1af3d4b53e916e4b630",
+      "sha256": "ff42ae3c286d73774ee016e4bf99151249b783e353ef0f190e56d6cd5f1ab966",
+      "bytes": 7443
+    },
+    {
+      "path": "supabase/migrations/20260901061500_currencyapi_multicurrency.sql",
+      "git_blob_sha": "4ca474dce0806ba483aa53a24dee64e20d942187",
+      "sha256": "b86bccd9e1f86aff81504b92300c9a9433fa42bd8b8500bf6882a0fc947917a3",
+      "bytes": 206306
+    },
+    {
+      "path": "supabase/migrations/20260921130000_notification_workspace_context.sql",
+      "git_blob_sha": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+      "sha256": "9e61d4139b44f2849acce24c9968931f5c20ff8912a46a0800263702ec480390",
+      "bytes": 11890
+    },
+    {
+      "path": "supabase/migrations/20260925090000_expiry_and_account_suspension.sql",
+      "git_blob_sha": "ddf61a186a128a2a4ffe593560197440209e8328",
+      "sha256": "773801fd17c53a6fbde92206db62383ee3e70a26d2ec7841fe7f91d5b8efe641",
+      "bytes": 20196
+    },
+    {
+      "path": "supabase/schema.sql",
+      "git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "sha256": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+      "bytes": 953717
+    }
+  ],
+  "selected_source_function_fingerprints": [
+    {
+      "name": "sync_payment_record_workspace",
+      "schema_definitions": 1,
+      "last_definition_selected": true,
+      "lf_body_md5": "8f568f342d4e928b4c27437ba7f544e5"
+    },
+    {
+      "name": "guard_workspace_finance_write",
+      "schema_definitions": 2,
+      "last_definition_selected": true,
+      "lf_body_md5": "783883ce4af23615f768a0990b6f2478"
+    },
+    {
+      "name": "set_payment_outbox_workspace_context",
+      "schema_definitions": 1,
+      "last_definition_selected": true,
+      "lf_body_md5": "85794a38ffbe61b56bab8aff4b0a3319"
+    }
+  ],
+  "query": {
+    "path": "supabase/diagnostics/security_fr_2_readiness.sql",
+    "sha256": "dab30e022d1c8e3085c6521ff5c5e486126d54dbc4831acf34ed473976a04476",
+    "functions_selected": 3,
+    "triggers_selected": 4,
+    "public_relations_selected": 9,
+    "SQL_executed_locally": false,
+    "SQL_executed_hosted": false,
+    "owner_result_status": "PENDING",
+    "application_routines_invoked": 0,
+    "SQL_runtime_or_parser_PASS_claimed": false,
+    "privileged_SQL_editor_catalog_guard_present": true
+  },
+  "source_observations": [
+    "Paid-record sync trigger still excludes direct workspace_id-only UPDATE",
+    "Final finance guard derives record entitlement from parent without comparison of submitted record workspace",
+    "Source outbox function matches reviewed snapshot; historical hosted LF mismatch unresolved",
+    "Current client new-password minimum is 12; historical dashboard server minimum was 8",
+    "Current Admin frontend calls admin_mfa_status; historical helper count was zero; fresh hosted helper presence pending"
+  ],
+  "historical_business_API_checks_run": 0,
+  "historical_Auth_AU_cases_run": 0,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "new_permission_or_account_changes": false,
+  "findings_closed": []
+}

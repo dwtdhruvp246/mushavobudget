@@ -1,4 +1,5 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.110.9";
+import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.110.9";
+import { requireEmailVerifiedSession, emailVerificationFailure } from "../_shared/email-session-assurance.mjs";
 import {
   normalizeCurrencyApiPayload,
   PROVIDER_BASE_CURRENCY,
@@ -23,7 +24,7 @@ function json(body: Record<string, unknown>, status = 200): Response {
 
 async function authorizeRequest(
   request: Request,
-  serviceClient: ReturnType<typeof createClient>,
+  serviceClient: SupabaseClient,
   supabaseUrl: string,
   anonKey: string,
   cronSecret: string,
@@ -41,6 +42,7 @@ async function authorizeRequest(
   });
   const { data: userData, error: userError } = await userClient.auth.getUser();
   if (userError || !userData.user) throw new Error("EDGE_FUNCTION_AUTHENTICATION_FAILED");
+  await requireEmailVerifiedSession(userClient);
 
   const { data: admin, error: adminError } = await serviceClient
     .from("app_admins")
@@ -193,6 +195,10 @@ Deno.serve(async (request) => {
     if (completeError) throw new Error("SYNC_RUN_COMPLETE_FAILED");
     return json({ status: finalStatus, rates_stored: ratesStored });
   } catch (error) {
+    const verificationFailure = emailVerificationFailure(error);
+    if (verificationFailure) {
+      return json({ error: verificationFailure.code }, verificationFailure.status);
+    }
     const safeError = safeProviderError(error);
     if (runId) {
       await serviceClient.from("exchange_rate_sync_runs").update({
@@ -205,3 +211,4 @@ Deno.serve(async (request) => {
     return json({ error: safeError }, authFailure ? 401 : 502);
   }
 });
+

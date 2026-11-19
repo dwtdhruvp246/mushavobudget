@@ -1,0 +1,118 @@
+{
+  "date": "2026-11-13",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "STOPPED_FOR_REVIEW_BROWSER_BROKER_ASSERTION",
+  "candidate_commit": "e1269d52cc5425fb4196c1f1b9fed1e0b157b385",
+  "run_commit": "8d46223f03fd4ed79ae481ad1a748e8533880bfe",
+  "run_id": 43476280507,
+  "job_id": 132060810509,
+  "preview_id": "5edb0c6b-095d-4f8f-9a18-1bf166d784fd",
+  "hosted_browser_verified": false,
+  "full_FR_3_2_complete": false,
+  "workflow_receipt": {
+    "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Personal proof browser",
+    "result": "STAGING_ACCESS_REVIEW_REQUIRED",
+    "checks": {
+      "two_ordinary_credentials_and_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 2
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 12,
+    "created_sessions": 2,
+    "cleanup_sessions": 2,
+    "settings_or_finance_writes_requested": 0,
+    "production_changed": false,
+    "full_lettered_batch_W_complete": false,
+    "exit_code": 1,
+    "exercise": {
+      "checks": {
+        "EXACT_PERSONAL_WORKSPACE": true,
+        "EMPTY_TRIAL_BASELINE": true,
+        "SYNTHETIC_ITEM_CREATED": true,
+        "BROWSER_EXACT_PERSONAL_ITEM_RENDERED": true,
+        "BROWSER_IMAGE_NORMALIZED": true,
+        "BROWSER_PAYMENT_SAVED": true,
+        "BROWSER_RECORD_RESTORED": true,
+        "BROWSER_BROKER_RETURNS_EXACT_BYTES": false
+      },
+      "requests": 13,
+      "cleanup": {
+        "payment_item_and_record_absent": true,
+        "proof_object_absent": true
+      },
+      "browser_requests": {
+        "permitted": 120,
+        "validator": 1,
+        "payment": 1,
+        "broker": 1,
+        "blocked": [
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/get_my_business_invitations"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/record_my_analytics_activity"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/get_my_business_invitations"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/get_my_business_invitations"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/record_my_analytics_activity"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/get_my_business_invitations"
+          }
+        ]
+      },
+      "browser_stage": "RELOAD_AND_OPEN_HISTORY_PROOF",
+      "browser_http": {
+        "validator": 200,
+        "payment": 201,
+        "broker": 200
+      },
+      "browser_failure": "BROWSER_BROKER_RETURNS_EXACT_BYTES"
+    },
+    "problem_code": "BROWSER_BROKER_RETURNS_EXACT_BYTES",
+    "commit": "8d46223f03fd4ed79ae481ad1a748e8533880bfe"
+  },
+  "independent_cleanup": {
+    "items": 0,
+    "records": 0,
+    "objects": 0,
+    "sessions": 0,
+    "outbox": 0
+  },
+  "resume_at": "Identify the failing comparison for the browser broker response. Record media type, cache directives and SHA-256 equality as separate assertions before verifying PNG rendering.",
+  "exit_code": 1
+}

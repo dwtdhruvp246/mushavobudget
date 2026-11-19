@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-30",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "case_ids": [
+    "AU02.01",
+    "AU02.02"
+  ],
+  "result": "OWNER_REPORTED_ADMIN_NEW_RECIPIENT_AND_PRE_ADOPTION_TAB_ISOLATION_PASS",
+  "evidence_kind": "OWNER_FIVE_REQUESTED_BROWSER_OBSERVATIONS",
+  "checks": {
+    "email_received": true,
+    "correct_recipient_displayed": true,
+    "original_Admin_tab_unchanged_before_completion": true,
+    "password_and_Complete_setup_succeeded": true,
+    "correct_recipient_Free_Personal_workspace_opened": true
+  },
+  "scope": "Original AU02.01 new-recipient setup and AU02.02 Admin-tab isolation before explicit recipient adoption.",
+  "independently_observed_by_assistant": false,
+  "post_adoption_Admin_tab_unchanged_claimed": false,
+  "repeat_requested": false,
+  "email_rate_configuration_or_reset_independently_verified": false,
+  "Admin_invitation_negative_or_retry_cases_complete": false,
+  "full_lettered_batch_W_complete": false,
+  "batch_V_complete": false,
+  "release_acceptance": false,
+  "new_public_AU_cases_added": 0,
+  "assistant_hosted_requests": 0,
+  "assistant_real_email_requests": 0,
+  "next_scope": "AU02.03 real wrong-recipient API denials; AU02.05 already-completed invitation idempotence; unavailable variants and setup/provider retry remain separate."
+}

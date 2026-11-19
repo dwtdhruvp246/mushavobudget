@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "evidence_id": "S5E09",
+  "stage_step": "5.4",
+  "received_date": "2026-10-12",
+  "scope": "OWNER_WINDOWS_RECHECK_OF_CORRECTED_PINNED_OFFLINE_FIXTURE",
+  "candidate_commit": "a4cdfc98f36494b0e9313e47d2191a30e2c87a8b",
+  "evidence_source": "USER_POWERSHELL_TRANSCRIPT_AND_COMPLETE_JSON_SUMMARY",
+  "owner_receipt": {
+    "stage_step": "5.4",
+    "result": "OFFLINE_NATIVE_PACKAGING_FIXTURE_SCOPED_PASS",
+    "scope": "ACTUAL_BUILDER_IN_TEMPORARY_FIXTURES_WITH_MOCK_ESBUILD_AND_CAPACITOR_MODULES",
+    "source_parent_commit": "82b30e4197a282c25c427c84052e65bdf0239378",
+    "node_version": "v22.17.0",
+    "tests": 9,
+    "pass": 9,
+    "fail": 0,
+    "exit_code": 0,
+    "syntax_checks": 3,
+    "syntax": [
+      {
+        "file": "scripts/build-capacitor.mjs",
+        "pass": true
+      },
+      {
+        "file": "tests/capacitor-build.test.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/verify-stage-5-packaging.mjs",
+        "pass": true
+      }
+    ],
+    "file_sha256": {
+      "scripts/build-capacitor.mjs": "1dbba5ba4378ffee93863f0be418b9cf7b71d83fd23cc703c20923f52d56ef6e",
+      "tests/capacitor-build.test.mjs": "575bd7c12ab39e8b2bb365b3ca7be9c3835ea58cd5fff71b23bb6c59241e0b3e",
+      "scripts/verify-stage-5-packaging.mjs": "c35ec2f1bc2603cbb00f9733056e3b9a576684efb7318bdc060e0486137a8fcf"
+    },
+    "real_dependency_bundle_or_native_compile_verified": false,
+    "root_www_or_existing_native_project_changed": false,
+    "native_sync_install_sign_upload_run": false,
+    "hosted_or_device_checks_run": 0,
+    "native_security_acceptance": false,
+    "APK_update_deferred": true,
+    "production_or_accounts_settings_changed": false,
+    "findings_closed": []
+  },
+  "hash_reconciliation": [
+    {
+      "path": "scripts/build-capacitor.mjs",
+      "owner_sha256": "1dbba5ba4378ffee93863f0be418b9cf7b71d83fd23cc703c20923f52d56ef6e",
+      "published_LF_sha256": "86ac88ab42f1c21a0c13cbad69731bf4003e608d597a43321089c8fa5899aaa0",
+      "published_CRLF_sha256": "1dbba5ba4378ffee93863f0be418b9cf7b71d83fd23cc703c20923f52d56ef6e",
+      "match": "EXACT_CRLF"
+    },
+    {
+      "path": "tests/capacitor-build.test.mjs",
+      "owner_sha256": "575bd7c12ab39e8b2bb365b3ca7be9c3835ea58cd5fff71b23bb6c59241e0b3e",
+      "published_LF_sha256": "802d161a011658f4e1c36ca9a9a54e2c0f788611a69cfc4b234d049102c55dfd",
+      "published_CRLF_sha256": "575bd7c12ab39e8b2bb365b3ca7be9c3835ea58cd5fff71b23bb6c59241e0b3e",
+      "match": "EXACT_CRLF"
+    },
+    {
+      "path": "scripts/verify-stage-5-packaging.mjs",
+      "owner_sha256": "c35ec2f1bc2603cbb00f9733056e3b9a576684efb7318bdc060e0486137a8fcf",
+      "published_LF_sha256": "39a3c5653b93350905c1fa0325a6bf80ca6e8bc2aad68a4cfb5d13c0c3834d4b",
+      "published_CRLF_sha256": "c35ec2f1bc2603cbb00f9733056e3b9a576684efb7318bdc060e0486137a8fcf",
+      "match": "EXACT_CRLF"
+    }
+  ],
+  "exact_CRLF_hash_matches": 3,
+  "unexplained_hash_mismatches": 0,
+  "historical_failure_receipt": "docs/security-audit/security-stage-5-packaging-owner-checks.json",
+  "historical_failure_preserved": true,
+  "correction_scope": "TEST_ONLY_ESM_PRELOAD_PATH_TO_FILE_URL",
+  "corrected_nine_case_owner_batch_passed": true,
+  "same_batch_repeat_does_not_add_distinct_controls": true,
+  "native_compile_device_security_or_release_acceptance_verified": false,
+  "fresh_assistant_behavior_tests_run": 0,
+  "owner_rerun_or_further_code_required": false,
+  "findings_closed": [],
+  "next_step": "5.5"
+}

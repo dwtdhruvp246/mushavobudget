@@ -1,0 +1,140 @@
+{
+  "stage": "4/10",
+  "final_remediation": "FR.3/8",
+  "step": "FR.3.2",
+  "batch": "Committed subscription proof and review",
+  "scope": "Selected staging fixtures",
+  "status": "SCOPED_PASS",
+  "step_closed": false,
+  "production_changed": false,
+  "evidence": [
+    {
+      "url": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43695816545",
+      "commit": "1c632c746e115366161b1be03af00bf45a15764e",
+      "exit_code": 1,
+      "API_requests": 18,
+      "exercise_requests": 68,
+      "created_sessions": 3,
+      "cleanup_sessions": 3,
+      "lanes": {
+        "personal": {
+          "passed": 14,
+          "failed": 0,
+          "problem": null
+        },
+        "family-plan": {
+          "passed": 14,
+          "failed": 0,
+          "problem": null
+        },
+        "family-renewal": {
+          "passed": 14,
+          "failed": 0,
+          "problem": null
+        },
+        "family-extra": {
+          "passed": 5,
+          "failed": 0,
+          "problem": "FAMILY_EXTRA_ACTIVE_TERM_REQUIRED"
+        },
+        "business": {
+          "passed": 14,
+          "failed": 0,
+          "problem": null
+        }
+      }
+    },
+    {
+      "url": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43696010695",
+      "commit": "0579f7ee5aa0e0e79275bd60db230c9daefb20f1",
+      "exit_code": 0,
+      "API_requests": 18,
+      "exercise_requests": 15,
+      "created_sessions": 3,
+      "cleanup_sessions": 3,
+      "lanes": {
+        "family-extra": {
+          "passed": 14,
+          "failed": 0,
+          "problem": null
+        }
+      }
+    }
+  ],
+  "outcomes": {
+    "personal": {
+      "checks_passed": 14,
+      "payment": "rejected",
+      "request": "rejected",
+      "invoice": "rejected",
+      "staff_role": "super_admin",
+      "exact_owner_and_staff_download": true,
+      "unrelated_account_denied": true
+    },
+    "family-plan": {
+      "checks_passed": 14,
+      "payment": "rejected",
+      "request": "rejected",
+      "invoice": "rejected",
+      "staff_role": "super_admin",
+      "exact_owner_and_staff_download": true,
+      "unrelated_account_denied": true
+    },
+    "family-renewal": {
+      "checks_passed": 14,
+      "payment": "rejected",
+      "request": "rejected",
+      "invoice": "rejected",
+      "staff_role": "super_admin",
+      "exact_owner_and_staff_download": true,
+      "unrelated_account_denied": true
+    },
+    "family-extra": {
+      "checks_passed": 14,
+      "payment": "rejected",
+      "request": "rejected",
+      "invoice": "rejected",
+      "staff_role": "super_admin",
+      "exact_owner_and_staff_download": true,
+      "unrelated_account_denied": true
+    },
+    "business": {
+      "checks_passed": 14,
+      "payment": "rejected",
+      "request": "rejected",
+      "invoice": "rejected",
+      "staff_role": "super_admin",
+      "exact_owner_and_staff_download": true,
+      "unrelated_account_denied": true
+    }
+  },
+  "archiving": {
+    "catalog_sha256": "4fb5bedf8ff8dd4ebd5bbef1ba416f8d89efec8886b9fb1af1c50880999ba2be",
+    "catalog_matches": true,
+    "mode": "ACTIVE",
+    "open_trial_lanes": 0,
+    "retained_linked_proofs": 5,
+    "trial_orphan_count": 0,
+    "pending_trial_payments": 0,
+    "admin_notification_outbox_rows": 0,
+    "notification_outbox_rows": 0,
+    "private_buckets": 4,
+    "business_fixture_suspended": true,
+    "business_support_version": 54,
+    "business_subscription_restored": true,
+    "family_fixture_closed": true,
+    "temporary_family_entitlement_check_removed": true,
+    "private_business_pilot_enabled": false,
+    "public_business_plan_available_for_purchase": false,
+    "workflow_created_sessions": 6,
+    "workflow_sessions_logged_out": 6,
+    "preexisting_admin_session_preserved": true,
+    "manual_provider_transfers": 0
+  },
+  "gaps": [
+    "Normal upload paths still use direct Storage calls outside selected staging fixtures.",
+    "General upload and download quotas and scheduled orphan cleanup are not enrolled across the four buckets.",
+    "Business logo replacement cleanup remains a browser-side attempt.",
+    "New Business plan purchase and extra-seat billing proof were not covered by the five selected flows. The public Business plan is unavailable for purchase in staging."
+  ]
+}

@@ -1,3 +1,4 @@
+import { reconcileBillingArchiveExpiry } from "../_shared/fr33-billing-archive-expiry.mjs";
 import { reconcileSharedProof } from "../_shared/fr33-shared-proof-handoff.mjs";
 import { createClient } from "npm:@supabase/supabase-js@2.110.9";
 import jpeg from "npm:jpeg-js@0.4.4";
@@ -194,11 +195,21 @@ Deno.serve(async request => {
     if (logoMode.error || subscriptionMode.error || ordinaryMode.error || typeof logoMode.data !== "boolean"
       || typeof subscriptionMode.data !== "boolean" || typeof ordinaryMode.data !== "boolean") return fail(503);
     const proofTransfer = await runSharedProofHandoff();
-    if (!documentMode && !logoMode.data && !subscriptionMode.data && !ordinaryMode.data && proofTransfer.claimed === 0) {
+    const billingExpiry = await reconcileBillingArchiveExpiry({
+      step: async (workspace?: string, lease?: string) => {
+        const r = await client.rpc("fr33_billing_archive_expiry_step", workspace
+          ? {p_workspace:workspace,p_lease:lease} : {});
+        if (r.error) throw new Error("Billing archive expiry step failed");
+        return r.data;
+      },
+      remove: async (bucket: string, path: string) => client.storage.from(bucket).remove([path]),
+    }).catch(() => ({status:"retry"}));
+    if (!documentMode && !logoMode.data && !subscriptionMode.data && !ordinaryMode.data && proofTransfer.claimed === 0 && billingExpiry === null) {
       return new Response(null,{status:204,headers});
     }
     const extra: Record<string, unknown> = {};
     if (proofTransfer.claimed) extra.proofTransfer = proofTransfer;
+    if (billingExpiry !== null) extra.billingExpiry = billingExpiry;
     if (logoMode.data) extra.logos = await runLogoCleanup(signed.nonce, signed.seconds);
     if (subscriptionMode.data) extra.subscriptionProofs = await runSubscriptionCleanup(signed.nonce, signed.seconds);
     if (ordinaryMode.data) extra.ordinaryUploads = await runOrdinaryCleanup(signed.nonce, signed.seconds);

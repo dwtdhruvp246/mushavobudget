@@ -21,6 +21,8 @@ SELECT
   to_regprocedure('public.fr33_assigned_support_archive(uuid,integer)') IS NOT NULL AS assigned_support_archive_present,
   to_regprocedure('mushavo_account_deletion.preview_archived_invoice_retention(uuid,date,date,date,date)') IS NOT NULL AS billing_retention_preview_present,
   to_regprocedure('mushavo_account_deletion.preview_zw_invoice_retention(uuid,date,date,date,date,text,date,date)') IS NOT NULL AS zw_billing_retention_preview_present,
+  to_regprocedure('mushavo_account_deletion.prepare_billing_archive_expiry(uuid,date,jsonb)') IS NOT NULL AS billing_expiry_preparation_present,
+  to_regprocedure('public.fr33_billing_archive_expiry_step(uuid,uuid)') IS NOT NULL AS billing_expiry_worker_present,
   (
     SELECT count(*) FROM storage.buckets
     WHERE id IN ('subscription-proofs','payment-proofs','business-documents','business-logos')

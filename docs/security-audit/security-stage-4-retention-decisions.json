@@ -121,7 +121,7 @@
   "retention_implementation": {
     "staging_closed_support_and_receipts": "REHEARSED_PROCESSOR_DISABLED",
     "staging_support_archive_access": "DATABASE_AUTHORIZATION_REHEARSED",
-    "staging_billing_retention": "ZIMBABWE_READ_ONLY_PREVIEW_REHEARSED",
+    "staging_billing_retention": "CLOSED_ARCHIVE_STORAGE_EXPIRY_REHEARSED_PROCESSOR_DISABLED",
     "production_rollout": "DEPENDENCIES_AND_OPERATIONAL_FACTS_PENDING",
     "operator_facts_needed": [
       "operating entity and applicable Zimbabwe tax registrations",
@@ -134,6 +134,7 @@
     "planned_registration_country": "ZW",
     "registration_status": "planned",
     "accounting_year_end_preview": "12-31",
-    "financial_year_end_confirmed": false
+    "financial_year_end_confirmed": false,
+    "accounting_year_end_basis": "31 December used for planned rollout and staging; verified company fiscal periods required for actual invoice reviews"
   }
 }

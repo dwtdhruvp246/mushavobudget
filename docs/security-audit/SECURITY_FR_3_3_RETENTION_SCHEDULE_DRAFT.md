@@ -26,6 +26,12 @@ Zimbabwe's Cyber and Data Protection Act ties identifiable retention to the purp
 - [IRS record-retention guidance](https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records)
 - [Supabase backup coverage and plan windows](https://supabase.com/docs/guides/platform/backups)
 
+## Zimbabwe planning
+
+On 19 November 2026 the project owner identified Zimbabwe as the planned registration country. The staging preview uses 31 December as a planning assumption because ZIMRA uses that end date for its ordinary tax-year notices and provides for approved alternative accounting years. Confirm Mushavo’s actual financial year and applicability of its tax obligations before using live dates. [ZIMRA public notice on the 31 December tax year](https://zimra.co.zw/public-notices?download=4485%3Apublic-notice-20-of-2026-submission-of-income-tax-returns-itf12c-for-tax-year-ended-31st-december-2025&start=20)
+
+For covered records, section 37B of the Income Tax Act generally measures the six-year period from the last entry in the relevant books or records. Where VAT record duties apply, section 57(3) measures six years from the last book entry or from completion of the relevant transaction, act or operation for records kept outside book form. The preview uses the latest of the approved six-year financial-year baseline, the applicable statutory dates and any documented longer requirement. [Income Tax Act §37B](https://www.zimra.co.zw/legislation/category/17-acts?download=4233%3Aincome-tax-act-updated-to-1st-dec-2024) · [VAT Act §57(3)](https://www.zimra.co.zw/downloads/category/17-acts?download=4231%3Avalued-added-tax-act-updated-to-1st-dec-2024)
+
 ## Implementing the approved policy
 
 Record the adopted retention periods, reasons, access rules and scheduled disposition in the retention register. Apply the expiry rules to existing archives as well as new records. Recalculate expiry when an approved legal hold is lifted. Verify that the archive survives legitimate account deletion, an authorized role can retrieve it, and the expiry job handles data and object bytes. Verify true anonymization against free text, identifiers in filenames and correlatable references before approving permanent history.

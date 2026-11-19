@@ -121,12 +121,19 @@
   "retention_implementation": {
     "staging_closed_support_and_receipts": "REHEARSED_PROCESSOR_DISABLED",
     "staging_support_archive_access": "DATABASE_AUTHORIZATION_REHEARSED",
-    "staging_billing_retention": "READ_ONLY_PREVIEW_REHEARSED",
+    "staging_billing_retention": "ZIMBABWE_READ_ONLY_PREVIEW_REHEARSED",
     "production_rollout": "DEPENDENCIES_AND_OPERATIONAL_FACTS_PENDING",
     "operator_facts_needed": [
-      "operating business jurisdiction",
-      "company financial year-end",
+      "operating entity and applicable Zimbabwe tax registrations",
+      "Mushavo's confirmed financial year-end and applicable accounting and VAT record dates",
       "actual provider and backup retention"
     ]
+  },
+  "operator_planning_context": {
+    "recorded_on": "2026-11-19",
+    "planned_registration_country": "ZW",
+    "registration_status": "planned",
+    "accounting_year_end_preview": "12-31",
+    "financial_year_end_confirmed": false
   }
 }

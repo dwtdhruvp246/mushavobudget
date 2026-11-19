@@ -18,6 +18,7 @@ SELECT
   to_regprocedure('mushavo_account_deletion.process_confirmed_requests()') IS NOT NULL AS scheduler_processor_present,
   to_regprocedure('public.fr33_claim_shared_proof_handoff()') IS NOT NULL AS proof_handoff_claim_present,
   to_regprocedure('mushavo_account_deletion.process_retention_batch(integer)') IS NOT NULL AS retention_processor_present,
+  to_regprocedure('public.fr33_list_assigned_support_archive(uuid)') IS NOT NULL AS assigned_support_archive_list_present,
   to_regprocedure('public.fr33_assigned_support_archive(uuid,integer)') IS NOT NULL AS assigned_support_archive_present,
   to_regprocedure('mushavo_account_deletion.preview_archived_invoice_retention(uuid,date,date,date,date)') IS NOT NULL AS billing_retention_preview_present,
   to_regprocedure('mushavo_account_deletion.preview_zw_invoice_retention(uuid,date,date,date,date,text,date,date)') IS NOT NULL AS zw_billing_retention_preview_present,

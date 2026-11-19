@@ -6872,6 +6872,10 @@ async function openSubscriptionProof(proofId) {
 }
 
 function renderAdminTabs() {
+  if (state.adminTab !== "support") {
+    const archive = $("#adminAssignedSupportArchive");
+    if (archive) archive.open = false;
+  }
   document.querySelectorAll("[data-admin-tab]").forEach((button) => {
     if (button.dataset.adminTab === "plans") {
       button.classList.toggle("hidden", !["super_admin", "admin_staff"].includes(state.adminRole));
@@ -7925,7 +7929,114 @@ async function saveAdminSupportTicket(ticketId, button) {
   }
 }
 
+function bindAdminSupportArchive() {
+  const panel = $("#adminAssignedSupportArchive");
+  const content = $("#adminAssignedSupportArchiveContent");
+  if (!panel || !content || panel.ontoggle) return;
+
+  let requestSequence = 0;
+  function bindRequest() {
+    const sequence = ++requestSequence;
+    const epoch = authDataEpoch;
+    const session = state.session;
+    return () => sequence === requestSequence && panel.isConnected && panel.open
+      && epoch === authDataEpoch && session === state.session && adminSession.authorized
+      && state.adminTab === "support" && views.admin.classList.contains("hidden") === false;
+  }
+
+  async function loadArchivePage(after = null) {
+    const current = bindRequest();
+    if (!current()) return;
+    content.textContent = "Loading archived cases…";
+    try {
+      const rows = await query("archived support list",
+        supabase.rpc("fr33_list_assigned_support_archive", { p_after: after }));
+      if (!current()) return;
+      const visible = rows.slice(0, 20);
+      content.innerHTML = visible.length
+        ? visible.map(ticket => `<article class="support-ticket-card">
+            <div class="support-ticket-body">
+              <strong>${escapeHtml(ticket.subject || "Archived support case")}</strong>
+              <span class="mini-badge">${escapeHtml(supportCategoryLabel(ticket.status || "unknown"))}</span>
+              <button type="button" data-archive-open="${escapeHtml(ticket.ticket_id)}">View case</button>
+            </div>
+          </article>`).join("")
+        : emptyState("No assigned archived cases", "Cases assigned to you will appear here.");
+      if (after || rows.length > 20) {
+        content.insertAdjacentHTML("beforeend", `<div class="row-actions">
+          ${after ? '<button type="button" data-archive-first>First page</button>' : ''}
+          ${rows.length > 20 ? '<button type="button" data-archive-next>Next page</button>' : ''}
+        </div>`);
+      }
+      content.querySelector("[data-archive-first]")?.addEventListener("click", () => loadArchivePage());
+      content.querySelector("[data-archive-next]")?.addEventListener("click", () => loadArchivePage(visible.at(-1).ticket_id));
+      content.querySelectorAll("[data-archive-open]").forEach(button => {
+        button.addEventListener("click", () => loadArchiveCase(button.dataset.archiveOpen, after, 0));
+      });
+    } catch {
+      if (current()) content.textContent = "Archived cases could not be loaded. Close and reopen this section to try again.";
+    }
+  }
+
+  async function loadArchiveCase(id, after, offset) {
+    const current = bindRequest();
+    if (!current()) return;
+    content.textContent = "Loading archived case…";
+    try {
+      const result = await query("archived support case",
+        supabase.rpc("fr33_assigned_support_archive", { p_ticket_id: id, p_offset: offset }));
+      if (!current()) return;
+      const ticket = result?.ticket;
+      const messages = result?.messages || [];
+      const canClose = ticket && ["open", "in_progress", "waiting_customer", "resolved"].includes(ticket.status);
+      content.innerHTML = `<div class="row-actions"><button type="button" data-archive-back>Back to archived cases</button></div>
+        ${ticket ? `<article class="support-ticket-card"><div class="support-ticket-body">
+          <h4>${escapeHtml(ticket.subject || "Archived support case")}</h4>
+          <p>${escapeHtml(ticket.description || "").replace(/\n/g, "<br />")}</p>
+          ${messages.map(message => `<div class="notice">
+            <small>${message.is_internal ? "Internal note" : "Message"} ·
+              ${escapeHtml(new Date(message.created_at).toLocaleString())}</small>
+            <p>${escapeHtml(message.body || "").replace(/\n/g, "<br />")}</p>
+          </div>`).join("")}
+          <div class="row-actions">
+            ${offset ? '<button type="button" data-archive-previous>Previous messages</button>' : ''}
+            ${messages.length === 100 ? '<button type="button" data-archive-more>More messages</button>' : ''}
+            ${canClose ? '<button type="button" data-archive-close>Close case</button>' : ''}
+          </div>
+        </div></article>` : emptyState("Case unavailable", "This case may have been reassigned or reached the end of its retention period.")}`;
+      content.querySelector("[data-archive-back]").addEventListener("click", () => loadArchivePage(after));
+      content.querySelector("[data-archive-previous]")?.addEventListener("click", () => loadArchiveCase(id, after, offset - 100));
+      content.querySelector("[data-archive-more]")?.addEventListener("click", () => loadArchiveCase(id, after, offset + 100));
+      content.querySelector("[data-archive-close]")?.addEventListener("click", async event => {
+        if (!current() || !window.confirm("Close this archived support case?")) return;
+        const button = event.currentTarget;
+        button.disabled = true;
+        try {
+          const closed = await query("close archived support case",
+            supabase.rpc("fr33_close_support_archive", { p_ticket_id: id }));
+          if (!current()) return;
+          showToast(closed ? "Archived case closed." : "This case can no longer be closed.");
+          await loadArchiveCase(id, after, offset);
+        } catch {
+          if (current()) { button.disabled = false; showToast("The case could not be closed."); }
+        }
+      });
+    } catch {
+      if (current()) {
+        content.innerHTML = '<p>The archived case could not be loaded.</p><button type="button">Back to archived cases</button>';
+        content.querySelector("button").addEventListener("click", () => loadArchivePage(after));
+      }
+    }
+  }
+
+  panel.ontoggle = () => {
+    if (panel.open) void loadArchivePage();
+    else { requestSequence++; content.replaceChildren(); }
+  };
+}
+
 function renderAdminSupport() {
+  bindAdminSupportArchive();
   renderAdminSupportWorkspaceOptions();
   $("#adminSupportOpen").textContent = state.adminSupportTickets.filter((ticket) => ticket.status === "open").length;
   $("#adminSupportProgress").textContent = state.adminSupportTickets.filter((ticket) => ticket.status === "in_progress").length;

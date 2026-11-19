@@ -11,3 +11,7 @@ The production session-status policy is `ACTIVE_SUPABASE_SESSION`. It preserves 
 
 After installation, the live private-file Edge Function returned `403 ORIGIN_NOT_ALLOWED` with the production browser origin and `503 PRIVATE_FILE_UNAVAILABLE` without an origin. The download ledger contained zero rows. Authenticated testing of the new path and production staff sign-in remains pending before frontend routing or broker activation.
 
+
+## Production account deletion request schema
+
+Added production migration `20261119103357_fr33_production_account_deletion_request_schema.sql` using the staged request, dependency review and workspace confirmation code. The hosted rehearsal resolved all ten existing account inventories without returning any names or workspace details. Production readback found five request RPCs, forced row-level security on the request table, zero API roles able to call the RPCs, and zero submitted requests. The website and automatic deletion remain disabled for this feature while the executor and worker are prepared.

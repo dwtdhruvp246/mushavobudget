@@ -294,9 +294,26 @@ Migration `20261119085608_fr33_list_assigned_support_archive.sql` installs a bou
 
 The staged database migration and caller grants were read back. Synthetic database tests covered multiple owners, excluded unassigned and message records, denied an inactive session and a Finance staff session, and checked pagination without exposing message content. Client syntax and an isolated DOM test of open, read, close and stale response handling passed. The Admin Support panel is committed for the next staging site build. Hosted browser acceptance remains pending.
 
+## Production session and private-file database checks
+
+The two migrations below were rehearsed in rolled-back production transactions, tested against disposable local PostgreSQL fixtures, applied to production, and read back.
+
+| Migration | Production result |
+| --- | --- |
+| `20261119102913_fr33_production_application_session.sql` | Added an authenticated session-status RPC and private session guard. The readback recognized six eligible stored sessions, including one email-code session. A request for an unknown session returned invalid and no staff role. There were no active production staff sessions in the readback. A disposable local staff session returned its stored role. |
+| `20261119103127_fr33_production_private_download_context.sql` | Added the Storage metadata lookup and service-only budget reservation. Storage row access remains governed by existing RLS. Local tests denied a different owner and an inactive session, checked file size constraints, and exercised the per-minute budget and reset. |
+
+The production session-status policy is `ACTIVE_SUPABASE_SESSION`. It preserves the Auth methods already used on the live site. The account deletion request separately requires a recent password authentication event. The migrations install no global pre-request hook and attach to no live policy or existing frontend caller.
+
+After installation, the live private-file Edge Function returned `403 ORIGIN_NOT_ALLOWED` with the production browser origin and `503 PRIVATE_FILE_UNAVAILABLE` without an origin. The download ledger contained zero rows. Authenticated testing of the new path and production staff sign-in remains pending before frontend routing or broker activation.
+
+## Production account deletion request schema
+
+Added production migration `20261119103357_fr33_production_account_deletion_request_schema.sql` using the staged request, dependency review and workspace confirmation code. The hosted rehearsal resolved all ten existing account inventories without returning any names or workspace details. Production readback found five request RPCs, forced row-level security on the request table, zero API roles able to call the RPCs, and zero submitted requests. The website and automatic deletion remain disabled for this feature while the executor and worker are prepared.
+
 ## Production release preparation
 
-The [read-only production check](../../supabase/diagnostics/security_fr_3_3_production_readiness.sql) confirmed that the four expected Storage buckets are private and that the application session guard, session-status function, private-download context, upload ledgers, erasure executor scheduler processor, and billing archive preparation and expiry functions are absent. The production private-file broker was installed as `get-private-file` version 1, and the deployment readback matched all three pinned source files. The production download switch was left off and the database authorization and quota prerequisites are absent. The disabled configuration rejected browser requests and made zero Auth, RPC or Storage calls in the isolated handler test. The production proof lifecycle worker is still absent. Cloudflare reports that `mushavobudget.com` is served by the `mushavobudget` production Worker. The GitHub production and staging branches have diverged, so use a selective port based on production `main`.
+The [read-only production check](../../supabase/diagnostics/security_fr_3_3_production_readiness.sql) confirmed that the four expected Storage buckets are private and that the session guard, private-file RPCs and request schema are installed. The upload ledgers, erasure executor, scheduler, and billing archive preparation and expiry functions are still absent. The production private-file broker was installed as `get-private-file` version 1, and the deployment readback matched all three pinned source files. The production download switch remains off pending signed-in acceptance. The disabled configuration rejected browser requests and made zero Auth, RPC or Storage calls in the isolated handler test. The production proof lifecycle worker is still absent. Cloudflare reports that `mushavobudget.com` is served by the `mushavobudget` production Worker. The GitHub production and staging branches have diverged, so use a selective port based on production `main`.
 
 1. Port the application session boundary to production-backed sign-in, including the actual callback URLs, and verify existing users and staff roles before enforcing it on live requests.
 2. Install and verify the production Storage access and tracking rules, private-file broker, and signed proof lifecycle worker. Route production proof downloads through the broker and verify existing private downloads and uploads. Rehearse the two existing account-owned logo cases using a disposable fixture before erasure activation.

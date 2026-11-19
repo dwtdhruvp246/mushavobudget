@@ -1,14 +1,16 @@
 # FR.3.3 account deletion checkpoint
 
-**Stage 4/10 · FR.3/8 · FR.3.3 · Updated 16 November 2026**
+**Stage 4/10 · FR.3/8 · FR.3.3 · Updated 19 November 2026**
 
 | Scope | State | Evidence |
 | --- | --- | --- |
 | Authenticated deletion request, status and cancellation | Staging API passed | [Acceptance run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43755043392) on `00ef2bebd4091a0ca97866a868499fa4f3345858` |
 | Account Settings browser and release | Published and verified on main staging | The account security controls sit under workspace Settings. [Layout checks](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43830875653), [preview browser run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43831993584) and [main staging browser run](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43832314600) passed. Main staging deployment is `5889780c-a7f6-4a03-ba3d-f2c9cb10581f`. |
 | Business owner review | Hosted pass | The owner of retained Business test workspaces received `ownership_review`. No workspace ownership or membership was changed. |
-| Deletion of owned Family and Business workspaces | Owner rule confirmed. Warning and request confirmation verified on main staging. | The [signed-in trial](https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43855085805) exercised an active Family workspace and the Business workspaces. Permanent erasure and the applicable retention rules remain pending. |
-| Account erasure, execution retry, Storage and provider cleanup | Pending | The installed workflow has no destructive executor. The policy and provider prerequisites below still apply. |
+| Deletion of owned Family and Business workspaces | Staging passed with disposable accounts and workspaces | The confirmation, permanent erasure and supported proof cleanup passed in the hosted Family and Business cases documented below. |
+| Account erasure, execution retry and supported Storage cleanup | Staging passed in the documented cases | The private executor, signed worker, and account deletion receipts were exercised with disposable staging fixtures. Production session and Storage dependencies and provider recovery verification remain pending. |
+| Closed billing archive expiry | Hosted staging rehearsal passed | The signed worker removed a disposable proof through the Storage API, retired its linked billing records and preserved anonymous counts. Processing is disabled. |
+| Production release | Pending | The 19 November read-only check confirmed that the production session, private-file, deletion and retention functions covered by the preflight are absent. |
 
 ## Verified on staging
 
@@ -288,7 +290,7 @@ A [rolled-back database rehearsal](../../supabase/diagnostics/security_fr_3_3_bi
 
 ## Production release preparation
 
-The [read-only production check](../../supabase/diagnostics/security_fr_3_3_production_readiness.sql) confirmed that the four expected Storage buckets are private and that the application session guard, session-status function, private-download context, upload ledgers, erasure executor and scheduler processor are absent. A separate deployment check found no production private-file broker or proof lifecycle worker. The private-file broker source now has an explicit production configuration, bound to the production Supabase project and the two approved Mushavo web origins. It stays disabled until the production switch is configured. Unit tests verify that a staging URL or unrelated object cannot be used for a production read.
+The [read-only production check](../../supabase/diagnostics/security_fr_3_3_production_readiness.sql) confirmed that the four expected Storage buckets are private and that the application session guard, session-status function, private-download context, upload ledgers, erasure executor scheduler processor, and billing archive preparation and expiry functions are absent. A separate deployment check found no production private-file broker or proof lifecycle worker. The private-file broker source now has an explicit production configuration, bound to the production Supabase project and the two approved Mushavo web origins. It stays disabled until the production switch is configured. Unit tests verify that a staging URL or unrelated object cannot be used for a production read.
 
 1. Port the application session boundary to production-backed sign-in, including the actual callback URLs, and verify existing users and staff roles before enforcing it on live requests.
 2. Install and verify the production Storage access and tracking rules, private-file broker, and signed proof lifecycle worker. Route production proof downloads through the broker and verify existing private downloads and uploads. Rehearse the two existing account-owned logo cases using a disposable fixture before erasure activation.

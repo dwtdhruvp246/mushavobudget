@@ -42,3 +42,9 @@ The production Supabase Scheduled Backups screen on 20 November confirmed that t
 
 - [Supabase production backup settings](https://supabase.com/dashboard/project/kttkospkblwvguuwnhjj/database/backups/scheduled)
 - [Supabase backup coverage](https://supabase.com/docs/guides/platform/backups)
+
+## Refresh the private production backup on Windows
+
+Run `scripts/fr33-production-private-backup.ps1` through the pinned PowerShell handoff with the reviewed `scripts/security-stage-1-storage-backup.cjs`. The runner checks the existing protected NTFS backup folder, exports a current database archive using the production certificate and native password prompt, renders the full archive offline, verifies its encrypted extraction, and downloads and verifies current Storage object bytes using the reviewed helper. The database password, Storage access key, and backup passphrase are entered only at local prompts. The final JSON exposes status, counts, and error codes. Archives and reports containing private data stay in the existing protected directory.
+
+The Storage helper is pinned to the previously reviewed blob `1c6d1ca70be9d285b19042eb4f0ab3830fd8f156`. Its ten existing fixture tests and a focused test of the runner's embedded bridge passed. The Windows PowerShell, PostgreSQL, and 7-Zip steps require the operator's laptop and have not been run in this session. A successful local package check proves current backup readability and encrypted extraction. An isolated restore and recovery-coverage review are separate release gates. Record the actual maximum backup lifetime before enabling customer deletion.

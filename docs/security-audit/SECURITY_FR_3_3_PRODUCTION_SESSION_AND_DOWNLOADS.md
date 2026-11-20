@@ -27,3 +27,18 @@ A [rolled-back production database rehearsal](../../supabase/diagnostics/securit
 [Production readback](../../supabase/diagnostics/security_fr33_production_erasure_readback.sql) confirmed zero test accounts, requests, cleanup targets or shared proof handoffs, 21 existing payment records, and two existing account-owned Business logos. The cron job and both archive-expiry controls were disabled. This readback did not use or remove an existing customer's file.
 
 Production still requires the independently authenticated Storage cleanup worker, disposable end-to-end tests of private downloads and actual Storage cleanup, staff archive acceptance, and recovery/provider verification before opening customer deletion requests. Billing expiry also requires confirmed accounting periods and entity details.
+
+## Production Storage cleanup worker
+
+The production Edge Function is `fr33-file-cleanup` version 3. It accepts expiring P-256 scheduler signatures scoped to production, and the database consumes each dispatch nonce once. Cloudflare holds the signing key as the `FR33_SIGNING_KEY` secret binding for `mushavo-fr33-production-cleanup`. PostgreSQL owns the release controls and checks them again at dispatch. Production's pg_net queue had provider-owned read ACLs, so the production signer stays independent of that queue.
+
+A disposable 68-byte PNG was uploaded to the private production payment-proof bucket. The actual cleanup handler claimed one matching upload, removed it through the Storage API, and received a database acknowledgment after the object was absent. The job returned one removal and zero retries. The two existing Business logo object IDs and versions matched the pre-test fingerprint. An unsigned live request returned 403. The rolled-back nonce check denied a replay and an expired timestamp. All four scheduler and cleanup adapter regression tests passed.
+
+A temporary fixture-only signing key was used for the end-to-end file rehearsal because the newly provisioned Cloudflare cron had no observed invocation during the run. The final Edge version removes that key and the upload fixture handler. All seven deployed source files matched the reviewed bundle. There were zero remaining fixture objects, upload ledger entries, dispatch rows, or deletion requests. The Cloudflare schedule and the Supabase account deletion job are paused. Production dispatch, backup-based erasure verification, and customer requests are closed. An end-to-end scheduled Cloudflare invocation and signed-in production acceptance remain pending.
+
+## Production backup recovery
+
+The production Supabase Scheduled Backups screen on 20 November confirmed that the project is on the Free plan and has no scheduled database backups. Supabase database backups do not include Storage object bytes. The earlier encrypted Windows database and role packages were verified for a historical snapshot, and the previous native restore used synthetic staging data. Those results do not establish present production database and file recovery. A current encrypted database and Storage backup and isolated restore verification are required before customer deletion can open. Use the existing private backup location or an approved protected destination, and record only sanitized status and counts in release evidence.
+
+- [Supabase production backup settings](https://supabase.com/dashboard/project/kttkospkblwvguuwnhjj/database/backups/scheduled)
+- [Supabase backup coverage](https://supabase.com/docs/guides/platform/backups)

@@ -15,3 +15,7 @@ verify_jwt = false
 # Admin alert delivery uses the same protected server-side Cron secret. Browser
 # requests without that secret are rejected before any queue row is claimed.
 verify_jwt = false
+
+# The worker requires a production scheduler signature and consumes a private dispatch nonce.
+[functions.fr33-file-cleanup]
+verify_jwt = false

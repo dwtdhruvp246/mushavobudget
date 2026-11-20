@@ -58,3 +58,9 @@ After deployment, the scheduled Worker reached the production Edge Function with
 ## Windows backup preflight follow-up
 
 The first owner-run Windows preflight stopped at `verify_native_tools` before any backup or credential prompt. The revised runner reports separate PostgreSQL, CA certificate, 7-Zip, Node, helper hash, and environment checks. The PowerShell handoff now reads the two pinned Git blobs as raw bytes, avoiding changes from terminal text encoding when validating the Storage helper. The embedded backup bridge test passed again. The current encrypted backup and isolated restore remain pending.
+
+## Resume the verified database export after encryption stops
+
+The operator's 20 November 2026 run reached the production database, wrote the custom-format dump, and passed the offline archive read. The encrypted database package and Storage backup were pending when it stopped during `database_encryption`.
+
+The runner accepts the exact `completed_utc` from that local safe receipt. It reopens the matching protected run and revalidates the saved dump without reconnecting to the production database. The new package and extraction verification live in a separate protected folder. The database component now invokes native 7-Zip directly for visible passphrase prompts and reports separate create, encrypted-header, and extraction outcomes. The existing Storage helper performs the Storage component after the database package passes. Its ten fixture tests passed again. The new native path still requires the operator's Windows run. An isolated live-service restore remains a separate release step.

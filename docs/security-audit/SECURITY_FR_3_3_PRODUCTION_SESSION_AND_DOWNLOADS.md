@@ -48,3 +48,13 @@ The production Supabase Scheduled Backups screen on 20 November confirmed that t
 Run `scripts/fr33-production-private-backup.ps1` through the pinned PowerShell handoff with the reviewed `scripts/security-stage-1-storage-backup.cjs`. The runner checks the existing protected NTFS backup folder, exports a current database archive using the production certificate and native password prompt, renders the full archive offline, verifies its encrypted extraction, and downloads and verifies current Storage object bytes using the reviewed helper. The database password, Storage access key, and backup passphrase are entered only at local prompts. The final JSON exposes status, counts, and error codes. Archives and reports containing private data stay in the existing protected directory.
 
 The Storage helper is pinned to the previously reviewed blob `1c6d1ca70be9d285b19042eb4f0ab3830fd8f156`. Its ten existing fixture tests and a focused test of the runner's embedded bridge passed. The Windows PowerShell, PostgreSQL, and 7-Zip steps require the operator's laptop and have not been run in this session. A successful local package check proves current backup readability and encrypted extraction. An isolated restore and recovery-coverage review are separate release gates. Record the actual maximum backup lifetime before enabling customer deletion.
+
+## Scheduled production verification
+
+Cloudflare recorded scheduled invocations that failed at Fetch initialization because its runtime rejected the original redirect setting. The deployed scheduler now uses manual redirect handling and fails on HTTP redirect responses. A regression test verifies that it sends the signed request once and never follows the redirect. All five scheduler and cleanup tests passed.
+
+After deployment, the scheduled Worker reached the production Edge Function with its normal signing key. Supabase recorded a signed invocation and a cleanup claim in an empty rehearsal scope. The test had no upload or customer deletion requests. Readback after cleanup confirmed zero test rows, zero active schedules, a retained production signing binding, disabled diagnostic logs, and closed customer deletion submission.
+
+## Windows backup preflight follow-up
+
+The first owner-run Windows preflight stopped at `verify_native_tools` before any backup or credential prompt. The revised runner reports separate PostgreSQL, CA certificate, 7-Zip, Node, helper hash, and environment checks. The PowerShell handoff now reads the two pinned Git blobs as raw bytes, avoiding changes from terminal text encoding when validating the Storage helper. The embedded backup bridge test passed again. The current encrypted backup and isolated restore remain pending.

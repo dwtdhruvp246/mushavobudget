@@ -64,25 +64,44 @@ try {
         throw "A fixed NTFS drive with at least 1 GiB free is required."
     }
 
-    $step = "verify_native_tools"
+    $step = "verify_postgresql_17"
     $postgres = Join-Path $env:ProgramFiles "PostgreSQL\17\bin"
     $dump = Join-Path $postgres "pg_dump.exe"
     $restore = Join-Path $postgres "pg_restore.exe"
-    $cert = Join-Path ([Environment]::GetFolderPath("DesktopDirectory")) "Mushavo Budget\prod-ca-2021.crt"
-    $zip = Join-Path $env:ProgramFiles "7-Zip\7z.exe"
-    $node = (Get-Command node.exe -CommandType Application -ErrorAction Stop).Source
-    foreach ($file in @($dump, $restore, $cert, $zip, $StorageHelper)) {
-        $item = Get-Item -LiteralPath $file -Force
-        if ($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
-            throw "A required backup tool or input was unavailable."
-        }
+    if (-not (Test-Path -LiteralPath $dump -PathType Leaf) -or -not (Test-Path -LiteralPath $restore -PathType Leaf)) {
+        $dump = (Get-Command pg_dump.exe -CommandType Application -ErrorAction Stop).Source
+        $restore = Join-Path ([IO.Path]::GetDirectoryName($dump)) "pg_restore.exe"
     }
+    $dumpVersion = (& $dump --version | Out-String).Trim()
+    if ($LASTEXITCODE -ne 0 -or $dumpVersion -notmatch '^pg_dump \(PostgreSQL\) 17\.') { throw "PostgreSQL 17 pg_dump is required." }
+    $restoreVersion = (& $restore --version | Out-String).Trim()
+    if ($LASTEXITCODE -ne 0 -or $restoreVersion -notmatch '^pg_restore \(PostgreSQL\) 17\.') { throw "PostgreSQL 17 pg_restore is required." }
+
+    $step = "verify_production_certificate"
+    $cert = Join-Path ([Environment]::GetFolderPath("DesktopDirectory")) "Mushavo Budget\prod-ca-2021.crt"
+    $certificate = Get-Item -LiteralPath $cert -Force
+    if ($certificate.PSIsContainer -or ($certificate.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+        throw "The production CA certificate was unavailable."
+    }
+
+    $step = "verify_7zip"
+    $zip = Join-Path $env:ProgramFiles "7-Zip\7z.exe"
+    if (-not (Test-Path -LiteralPath $zip -PathType Leaf)) {
+        $zip = (Get-Command 7z.exe -CommandType Application -ErrorAction Stop).Source
+    }
+    if (-not (Test-Path -LiteralPath $zip -PathType Leaf)) { throw "7-Zip was unavailable." }
+
+    $step = "verify_node"
+    $node = (Get-Command node.exe -CommandType Application -ErrorAction Stop).Source
+
+    $step = "verify_storage_helper"
     if ((Get-FileHash -LiteralPath $StorageHelper -Algorithm SHA256).Hash -ne "C7DA9847A36D90BBDFDC4A40DDF0B4D1C4A785B79FBF1F14C63236E0694AC626") {
         throw "The Storage helper does not match the reviewed source."
     }
-    if ((Test-Path Env:PGPASSWORD) -or (Test-Path Env:PGPASSFILE) -or (Test-Path Env:MUSHAVO_STORAGE_BACKUP_KEY) -or
-        $env:NODE_TLS_REJECT_UNAUTHORIZED -eq "0") {
-        throw "A pre-existing credential or TLS override needs local review."
+
+    $step = "verify_credential_and_tls_environment"
+    if ((Test-Path Env:MUSHAVO_STORAGE_BACKUP_KEY) -or $env:NODE_TLS_REJECT_UNAUTHORIZED -eq "0") {
+        throw "A pre-existing backup credential or TLS override needs local review."
     }
 
     $run = Join-Path $root ("FR33-Production-" + [DateTime]::UtcNow.ToString("yyyyMMddTHHmmssZ") + "-" + [guid]::NewGuid().ToString("N"))

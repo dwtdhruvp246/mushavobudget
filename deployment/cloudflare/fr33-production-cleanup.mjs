@@ -14,7 +14,9 @@ export default {
       new TextEncoder().encode([PURPOSE,time,nonce].join("\n")));
     const hex = Array.from(new Uint8Array(signature), byte => byte.toString(16).padStart(2,"0")).join("");
     const response = await fetch(ENDPOINT, {
-      method:"POST", redirect:"error", signal:AbortSignal.timeout(20000),
+      // Workers uses manual redirect handling. The status check prevents a
+      // signed dispatch from following a redirect to another host.
+      method:"POST", redirect:"manual", signal:AbortSignal.timeout(20000),
       headers: {
         "x-mushavo-cleanup-time":time,
         "x-mushavo-cleanup-nonce":nonce,

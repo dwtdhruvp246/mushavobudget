@@ -74,3 +74,20 @@ test("a different proof in the queue or missing seeder fails without touching St
   mode = "rehearsal_seed";
   assert.equal((await runner(await signedRequest())).status,503);
 });
+
+test("Cloudflare returns a redirect to the scheduler without following it", async () => {
+  const fetchOriginal = globalThis.fetch;
+  let requests = 0;
+  try {
+    globalThis.fetch = async (url, options) => {
+      requests++;
+      assert.equal(new URL(url).origin,"https://kttkospkblwvguuwnhjj.supabase.co");
+      assert.equal(options.redirect,"manual");
+      return new Response(null,{status:302,headers:{location:"https://example.invalid/redirect"}});
+    };
+    await assert.rejects(scheduler.scheduled({}, {FR33_SIGNING_KEY:privateJWK}),/Storage dispatch failed/);
+    assert.equal(requests,1);
+  } finally {
+    globalThis.fetch = fetchOriginal;
+  }
+});

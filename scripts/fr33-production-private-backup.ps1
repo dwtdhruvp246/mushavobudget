@@ -196,7 +196,7 @@ try {
     $package = Join-Path $database "database-component.partial.7z"
     $name = [IO.Path]::GetFileName($archive)
     $originalHash = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash
-    Write-Host "7-Zip will ask you to enter and confirm your backup passphrase. Choose one you can keep and reuse for extraction."
+    Write-Host "Enter your private backup passphrase when 7-Zip prompts. Use the same passphrase again for extraction."
     Push-Location -LiteralPath $payload
     try {
         & $zip a -t7z -mhe=on -p $package $name
@@ -222,7 +222,8 @@ try {
     $verifyDirectory = Join-Path $database "verified-files"
     New-Item -ItemType Directory -Path $verifyDirectory | Out-Null
     Write-Host "7-Zip will now ask for the same backup passphrase to verify extraction."
-    & $zip x -p "-o$verifyDirectory" $package
+    # Let 7-Zip request the passphrase when it opens the encrypted header.
+    & $zip x "-o$verifyDirectory" $package
     if ($LASTEXITCODE -ne 0) { throw "7-Zip could not extract the database package." }
     $extracted = @(Get-ChildItem -LiteralPath $verifyDirectory -Force)
     if ($extracted.Count -ne 1 -or $extracted[0].Name -ne $name -or $extracted[0].PSIsContainer -or

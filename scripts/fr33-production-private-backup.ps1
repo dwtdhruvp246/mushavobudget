@@ -15,6 +15,8 @@ $summary = [ordered]@{
     result = "STOPPED_FOR_REVIEW"
     failure_step = $null
     reused_database_export = $false
+    reused_verified_database_backup = $false
+    database_backup_source_completed_utc = $null
     database_archive_read_verified = $false
     database_encrypted_extraction_verified = $false
     storage_encrypted_extraction_verified = $false
@@ -22,6 +24,7 @@ $summary = [ordered]@{
     storage_objects = $null
     storage_objects_downloaded = $null
     storage_problem_codes = @()
+    storage_helper_exit_code = $null
     isolated_live_service_restore_verified = $false
     exit_code = 2
     completed_utc = $null
@@ -29,9 +32,6 @@ $summary = [ordered]@{
 
 $step = "verify_private_location"
 $run = $null
-$secure = $null
-$pointer = [IntPtr]::Zero
-$setStorageKey = $false
 
 try {
     Write-Host "STARTED FR.3.3 production backup. All archives stay in your private Windows backup folder."
@@ -66,26 +66,6 @@ try {
         throw "A fixed NTFS drive with at least 1 GiB free is required."
     }
 
-    $step = "verify_postgresql_17"
-    $postgres = Join-Path $env:ProgramFiles "PostgreSQL\17\bin"
-    $dump = Join-Path $postgres "pg_dump.exe"
-    $restore = Join-Path $postgres "pg_restore.exe"
-    if (-not (Test-Path -LiteralPath $dump -PathType Leaf) -or -not (Test-Path -LiteralPath $restore -PathType Leaf)) {
-        $dump = (Get-Command pg_dump.exe -CommandType Application -ErrorAction Stop).Source
-        $restore = Join-Path ([IO.Path]::GetDirectoryName($dump)) "pg_restore.exe"
-    }
-    $dumpVersion = (& $dump --version | Out-String).Trim()
-    if ($LASTEXITCODE -ne 0 -or $dumpVersion -notmatch '^pg_dump \(PostgreSQL\) 17\.') { throw "PostgreSQL 17 pg_dump is required." }
-    $restoreVersion = (& $restore --version | Out-String).Trim()
-    if ($LASTEXITCODE -ne 0 -or $restoreVersion -notmatch '^pg_restore \(PostgreSQL\) 17\.') { throw "PostgreSQL 17 pg_restore is required." }
-
-    $step = "verify_production_certificate"
-    $cert = Join-Path ([Environment]::GetFolderPath("DesktopDirectory")) "Mushavo Budget\prod-ca-2021.crt"
-    $certificate = Get-Item -LiteralPath $cert -Force
-    if ($certificate.PSIsContainer -or ($certificate.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
-        throw "The production CA certificate was unavailable."
-    }
-
     $step = "verify_7zip"
     $zip = Join-Path $env:ProgramFiles "7-Zip\7z.exe"
     if (-not (Test-Path -LiteralPath $zip -PathType Leaf)) {
@@ -94,7 +74,7 @@ try {
     if (-not (Test-Path -LiteralPath $zip -PathType Leaf)) { throw "7-Zip was unavailable." }
 
     $step = "verify_node"
-    $node = (Get-Command node.exe -CommandType Application -ErrorAction Stop).Source
+    $node = (Get-Command node.exe -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
 
     $step = "verify_storage_helper"
     if ((Get-FileHash -LiteralPath $StorageHelper -Algorithm SHA256).Hash -ne "C7DA9847A36D90BBDFDC4A40DDF0B4D1C4A785B79FBF1F14C63236E0694AC626") {
@@ -112,6 +92,7 @@ try {
     New-Item -ItemType Directory -Path $run | Out-Null
     New-Item -ItemType Directory -Path $database | Out-Null
 
+    $previousRun = $null
     if ($ResumeCompletedUtc) {
         $step = "locate_previous_export"
         $resumeTime = [DateTimeOffset]::Parse($ResumeCompletedUtc, [Globalization.CultureInfo]::InvariantCulture)
@@ -125,140 +106,224 @@ try {
                     $receipt = Get-Content -LiteralPath $receiptPath -Raw | ConvertFrom-Json
                     $when = [DateTimeOffset]$receipt.completed_utc
                     if ($when -eq $resumeTime -and $receipt.project -eq $summary.project -and
-                        $receipt.fr -eq $summary.fr -and $receipt.database_archive_read_verified -eq $true -and
-                        $receipt.database_encrypted_extraction_verified -eq $false -and
-                        [string]$receipt.failure_step -like "database_encryption*") {
-                        $candidate.FullName
+                        $receipt.fr -eq $summary.fr -and $receipt.batch -eq $summary.batch -and
+                        $receipt.result -eq "STOPPED_FOR_REVIEW" -and $receipt.database_archive_read_verified -eq $true -and
+                        (($receipt.database_encrypted_extraction_verified -eq $false -and
+                          [string]$receipt.failure_step -like "database_encryption*") -or
+                         ($receipt.database_encrypted_extraction_verified -eq $true -and
+                          [string]$receipt.failure_step -like "storage_*"))) {
+                        [pscustomobject]@{ Folder = $candidate; Receipt = $receipt }
                     }
                 } catch { continue }
             }
         )
         if ($match.Count -ne 1) { throw "No unique verified export matched the supplied backup receipt." }
-        $previousDatabase = Get-Item -LiteralPath (Join-Path $match[0] "Database") -Force
-        $previousPayload = Get-Item -LiteralPath (Join-Path $previousDatabase.FullName "payload") -Force
-        foreach ($previousDirectory in @($previousDatabase, $previousPayload)) {
-            if (-not $previousDirectory.PSIsContainer -or ($previousDirectory.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
-                throw "The previous archive directory changed."
-            }
+        $previousRun = $match[0]
+        $previousDatabase = Get-Item -LiteralPath (Join-Path $previousRun.Folder.FullName "Database") -Force
+        if (-not $previousDatabase.PSIsContainer -or
+            ($previousDatabase.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+            throw "The previous database directory changed."
         }
-        $payload = $previousPayload.FullName
-        $archive = Join-Path $payload "production.database.dump"
-        $previousArchive = Get-Item -LiteralPath $archive -Force
-        if ($previousArchive.PSIsContainer -or ($previousArchive.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
-            $previousArchive.Length -le 0) {
-            throw "The verified database dump is unavailable."
+    }
+
+    if ($previousRun -and $previousRun.Receipt.database_encrypted_extraction_verified -eq $true) {
+        $step = "reuse_verified_database_backup"
+        $previousPackage = Get-Item -LiteralPath (Join-Path $previousDatabase.FullName "database-component.7z") -Force
+        if ($previousPackage.PSIsContainer -or ($previousPackage.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
+            $previousPackage.Length -le 0) {
+            throw "The verified encrypted database archive is unavailable."
+        }
+        $package = Join-Path $database "database-component.7z"
+        $expectedHash = (Get-FileHash -LiteralPath $previousPackage.FullName -Algorithm SHA256).Hash
+        Copy-Item -LiteralPath $previousPackage.FullName -Destination $package
+        if ((Get-FileHash -LiteralPath $package -Algorithm SHA256).Hash -ne $expectedHash) {
+            throw "The reused encrypted database archive did not match."
         }
         $summary.reused_database_export = $true
-        Write-Host "Reusing the database export from your previous run."
+        $summary.reused_verified_database_backup = $true
+        $summary.database_backup_source_completed_utc = $ResumeCompletedUtc
+        $summary.database_archive_read_verified = $true
+        $summary.database_encrypted_extraction_verified = $true
+        Write-Host "Reusing the encrypted database backup verified in your previous run. Starting the Storage backup."
     } else {
-        $payload = Join-Path $database "payload"
-        New-Item -ItemType Directory -Path $payload | Out-Null
-        $archive = Join-Path $payload "production.database.dump"
-        $partialDump = Join-Path $database "production.partial.dump"
-        $certValue = (Resolve-Path -LiteralPath $cert).ProviderPath.Replace("\", "/").Replace("'", "\'")
-        $connection = @(
-            "host=aws-0-eu-central-1.pooler.supabase.com"
-            "port=5432"
-            "dbname=postgres"
-            "user=postgres.kttkospkblwvguuwnhjj"
-            "sslmode=verify-full"
-            "sslrootcert='$certValue'"
-            "gssencmode=disable"
-            "connect_timeout=15"
-            "application_name=mushavo_fr33_production_backup"
-        ) -join " "
-        $step = "database_export"
-        Write-Host "Enter the production database password at pg_dump's native prompt."
-        & $dump --format=custom --lock-wait-timeout=30000 --password --dbname $connection --file $partialDump
-        if ($LASTEXITCODE -ne 0 -or (Get-Item -LiteralPath $partialDump).Length -le 0) { throw "The database export did not complete." }
-    }
-
-    $step = "database_archive_read"
-    $readTarget = if ($summary.reused_database_export) { $archive } else { $partialDump }
-    $contents = @(& $restore --list $readTarget)
-    if ($LASTEXITCODE -ne 0) { throw "The archive inventory could not be read." }
-    $expected = @("auth users", "public profiles", "public budget_workspaces", "public payment_records",
-        "mushavo_account_deletion requests", "storage buckets", "storage objects")
-    foreach ($table in $expected) {
-        if (-not ($contents -match (" TABLE DATA " + [regex]::Escape($table) + " "))) {
-            throw "The archive is missing a required table-data entry."
+        $step = "verify_postgresql_17"
+        $postgres = Join-Path $env:ProgramFiles "PostgreSQL\17\bin"
+        $dump = Join-Path $postgres "pg_dump.exe"
+        $restore = Join-Path $postgres "pg_restore.exe"
+        if (-not (Test-Path -LiteralPath $dump -PathType Leaf) -or -not (Test-Path -LiteralPath $restore -PathType Leaf)) {
+            $dump = (Get-Command pg_dump.exe -CommandType Application -ErrorAction Stop).Source
+            $restore = Join-Path ([IO.Path]::GetDirectoryName($dump)) "pg_restore.exe"
         }
-    }
-    & $restore --file=NUL $readTarget
-    if ($LASTEXITCODE -ne 0) { throw "The archive payload could not be read." }
-    if (-not $summary.reused_database_export) {
-        Move-Item -LiteralPath $partialDump -Destination $archive
-        $contents | Set-Content -LiteralPath (Join-Path $payload "archive-contents.txt") -Encoding UTF8
-    }
-    $summary.database_archive_read_verified = $true
+        $dumpVersion = (& $dump --version | Out-String).Trim()
+        if ($LASTEXITCODE -ne 0 -or $dumpVersion -notmatch '^pg_dump \(PostgreSQL\) 17\.') { throw "PostgreSQL 17 pg_dump is required." }
+        $restoreVersion = (& $restore --version | Out-String).Trim()
+        if ($LASTEXITCODE -ne 0 -or $restoreVersion -notmatch '^pg_restore \(PostgreSQL\) 17\.') { throw "PostgreSQL 17 pg_restore is required." }
 
-    $step = "database_encryption_create"
-    $package = Join-Path $database "database-component.partial.7z"
-    $name = [IO.Path]::GetFileName($archive)
-    $originalHash = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash
-    Write-Host "Enter your private backup passphrase when 7-Zip prompts. Use the same passphrase again for extraction."
-    Push-Location -LiteralPath $payload
-    try {
-        & $zip a -t7z -mhe=on -p $package $name
-        $archiveExit = $LASTEXITCODE
-    } finally { Pop-Location }
-    if ($archiveExit -ne 0 -or -not (Test-Path -LiteralPath $package -PathType Leaf)) {
-        throw "7-Zip did not create the encrypted database package."
+        $step = "verify_production_certificate"
+        $cert = Join-Path ([Environment]::GetFolderPath("DesktopDirectory")) "Mushavo Budget\prod-ca-2021.crt"
+        $certificate = Get-Item -LiteralPath $cert -Force
+        if ($certificate.PSIsContainer -or ($certificate.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+            throw "The production CA certificate was unavailable."
+        }
+
+        if ($previousRun) {
+            $previousPayload = Get-Item -LiteralPath (Join-Path $previousDatabase.FullName "payload") -Force
+            if (-not $previousPayload.PSIsContainer -or
+                ($previousPayload.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+                throw "The previous archive directory changed."
+            }
+            $payload = $previousPayload.FullName
+            $archive = Join-Path $payload "production.database.dump"
+            $previousArchive = Get-Item -LiteralPath $archive -Force
+            if ($previousArchive.PSIsContainer -or ($previousArchive.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
+                $previousArchive.Length -le 0) {
+                throw "The verified database dump is unavailable."
+            }
+            $summary.reused_database_export = $true
+            Write-Host "Reusing the database export from your previous run."
+        } else {
+            $payload = Join-Path $database "payload"
+            New-Item -ItemType Directory -Path $payload | Out-Null
+            $archive = Join-Path $payload "production.database.dump"
+            $partialDump = Join-Path $database "production.partial.dump"
+            $certValue = (Resolve-Path -LiteralPath $cert).ProviderPath.Replace("\", "/").Replace("'", "\'")
+            $connection = @(
+                "host=aws-0-eu-central-1.pooler.supabase.com"
+                "port=5432"
+                "dbname=postgres"
+                "user=postgres.kttkospkblwvguuwnhjj"
+                "sslmode=verify-full"
+                "sslrootcert='$certValue'"
+                "gssencmode=disable"
+                "connect_timeout=15"
+                "application_name=mushavo_fr33_production_backup"
+            ) -join " "
+            $step = "database_export"
+            Write-Host "Enter the production database password at pg_dump's native prompt."
+            & $dump --format=custom --lock-wait-timeout=30000 --password --dbname $connection --file $partialDump
+            if ($LASTEXITCODE -ne 0 -or (Get-Item -LiteralPath $partialDump).Length -le 0) { throw "The database export did not complete." }
+        }
+
+        $step = "database_archive_read"
+        $readTarget = if ($summary.reused_database_export) { $archive } else { $partialDump }
+        $contents = @(& $restore --list $readTarget)
+        if ($LASTEXITCODE -ne 0) { throw "The archive inventory could not be read." }
+        $expected = @("auth users", "public profiles", "public budget_workspaces", "public payment_records",
+            "mushavo_account_deletion requests", "storage buckets", "storage objects")
+        foreach ($table in $expected) {
+            if (-not ($contents -match (" TABLE DATA " + [regex]::Escape($table) + " "))) {
+                throw "The archive is missing a required table-data entry."
+            }
+        }
+        & $restore --file=NUL $readTarget
+        if ($LASTEXITCODE -ne 0) { throw "The archive payload could not be read." }
+        if (-not $summary.reused_database_export) {
+            Move-Item -LiteralPath $partialDump -Destination $archive
+            $contents | Set-Content -LiteralPath (Join-Path $payload "archive-contents.txt") -Encoding UTF8
+        }
+        $summary.database_archive_read_verified = $true
+
+        $step = "database_encryption_create"
+        $package = Join-Path $database "database-component.partial.7z"
+        $name = [IO.Path]::GetFileName($archive)
+        $originalHash = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash
+        Write-Host "Enter your private backup passphrase when 7-Zip prompts. Use the same passphrase again for extraction."
+        Push-Location -LiteralPath $payload
+        try {
+            & $zip a -t7z -mhe=on -p $package $name
+            $archiveExit = $LASTEXITCODE
+        } finally { Pop-Location }
+        if ($archiveExit -ne 0 -or -not (Test-Path -LiteralPath $package -PathType Leaf)) {
+            throw "7-Zip did not create the encrypted database package."
+        }
+
+        $step = "database_encryption_headers"
+        $sentinel = [Guid]::NewGuid().ToString("N")
+        $savedPreference = $ErrorActionPreference
+        try {
+            $ErrorActionPreference = "Continue"
+            $negative = @(& $zip l -slt "-p$sentinel" $package 2>&1)
+            $negativeExit = $LASTEXITCODE
+        } finally { $ErrorActionPreference = $savedPreference }
+        if ($negativeExit -ne 2 -or (($negative | Out-String) -match [regex]::Escape($name))) {
+            throw "The encrypted archive header did not pass its wrong-password check."
+        }
+
+        $step = "database_encryption_extract"
+        $verifyDirectory = Join-Path $database "verified-files"
+        New-Item -ItemType Directory -Path $verifyDirectory | Out-Null
+        Write-Host "7-Zip will now ask for the same backup passphrase to verify extraction."
+        # Let 7-Zip request the passphrase when it opens the encrypted header.
+        & $zip x "-o$verifyDirectory" $package
+        if ($LASTEXITCODE -ne 0) { throw "7-Zip could not extract the database package." }
+        $extracted = @(Get-ChildItem -LiteralPath $verifyDirectory -Force)
+        if ($extracted.Count -ne 1 -or $extracted[0].Name -ne $name -or $extracted[0].PSIsContainer -or
+            ($extracted[0].Attributes -band [IO.FileAttributes]::ReparsePoint) -or
+            (Get-FileHash -LiteralPath $extracted[0].FullName -Algorithm SHA256).Hash -ne $originalHash -or
+            (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash -ne $originalHash) {
+            throw "The extracted database dump did not match the verified original."
+        }
+        Move-Item -LiteralPath $package -Destination (Join-Path $database "database-component.7z")
+        $summary.database_encrypted_extraction_verified = $true
     }
 
-    $step = "database_encryption_headers"
-    $sentinel = [Guid]::NewGuid().ToString("N")
-    $savedPreference = $ErrorActionPreference
-    try {
-        $ErrorActionPreference = "Continue"
-        $negative = @(& $zip l -slt "-p$sentinel" $package 2>&1)
-        $negativeExit = $LASTEXITCODE
-    } finally { $ErrorActionPreference = $savedPreference }
-    if ($negativeExit -ne 2 -or (($negative | Out-String) -match [regex]::Escape($name))) {
-        throw "The encrypted archive header did not pass its wrong-password check."
-    }
-
-    $step = "database_encryption_extract"
-    $verifyDirectory = Join-Path $database "verified-files"
-    New-Item -ItemType Directory -Path $verifyDirectory | Out-Null
-    Write-Host "7-Zip will now ask for the same backup passphrase to verify extraction."
-    # Let 7-Zip request the passphrase when it opens the encrypted header.
-    & $zip x "-o$verifyDirectory" $package
-    if ($LASTEXITCODE -ne 0) { throw "7-Zip could not extract the database package." }
-    $extracted = @(Get-ChildItem -LiteralPath $verifyDirectory -Force)
-    if ($extracted.Count -ne 1 -or $extracted[0].Name -ne $name -or $extracted[0].PSIsContainer -or
-        ($extracted[0].Attributes -band [IO.FileAttributes]::ReparsePoint) -or
-        (Get-FileHash -LiteralPath $extracted[0].FullName -Algorithm SHA256).Hash -ne $originalHash -or
-        (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash -ne $originalHash) {
-        throw "The extracted database dump did not match the verified original."
-    }
-    Move-Item -LiteralPath $package -Destination (Join-Path $database "database-component.7z")
-    $summary.database_encrypted_extraction_verified = $true
-
-    $step = "storage_export"
+    $step = "storage_helper_preflight"
     $localHelper = Join-Path $run "storage-backup.cjs"
     Copy-Item -LiteralPath $StorageHelper -Destination $localHelper
-    $secure = Read-Host "Existing production Supabase secret key for the local Storage export" -AsSecureString
-    $pointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure)
-    $env:MUSHAVO_STORAGE_BACKUP_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($pointer)
-    $setStorageKey = $true
-    [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($pointer)
+    & $node --check $localHelper
+    if ($LASTEXITCODE -ne 0) { throw "Node could not load the reviewed Storage helper." }
+
+    $start = [Diagnostics.ProcessStartInfo]::new()
+    $start.FileName = $node
+    $start.WorkingDirectory = $run
+    $start.Arguments = '"{0}" "{1}" "{2}"' -f $localHelper, $run, $zip
+    $start.UseShellExecute = $false
+    $step = "storage_key_prompt"
+    $secret = Read-Host "Existing production Supabase secret key for the local Storage export" -AsSecureString
     $pointer = [IntPtr]::Zero
-    & $node $localHelper $run $zip
-    $storageExit = $LASTEXITCODE
-    Remove-Item Env:MUSHAVO_STORAGE_BACKUP_KEY
-    $setStorageKey = $false
+    $process = $null
+    try {
+        $step = "storage_key_prepare"
+        if ($null -eq $secret -or $secret.Length -eq 0) { throw "A production Supabase secret key is required." }
+        $pointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret)
+        $start.EnvironmentVariables["MUSHAVO_STORAGE_BACKUP_KEY"] = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($pointer)
+        $step = "storage_helper_start"
+        $process = [Diagnostics.Process]::Start($start)
+        if ($null -eq $process) { throw "Node did not start." }
+    } finally {
+        $start.EnvironmentVariables.Remove("MUSHAVO_STORAGE_BACKUP_KEY")
+        if ($pointer -ne [IntPtr]::Zero) { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($pointer) }
+        if ($null -ne $secret) { $secret.Dispose() }
+    }
+    $step = "storage_helper_wait"
+    try {
+        $process.WaitForExit()
+        $summary.storage_helper_exit_code = $process.ExitCode
+    } finally {
+        $process.Dispose()
+    }
+    $step = "storage_receipt_read"
     $dirs = @(Get-ChildItem -LiteralPath $run -Directory -Filter "StorageComponent-*")
-    if ($dirs.Count -ne 1) { throw "The new Storage verification receipt is unavailable." }
-    $receiptFile = Join-Path $dirs[0].FullName "verification.json"
-    $storageSummary = (Get-Content -LiteralPath $receiptFile -Raw | ConvertFrom-Json).summary
+    if ($dirs.Count -ne 1 -or ($dirs[0].Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+        $summary.storage_problem_codes = @("STORAGE_RUN_DIRECTORY_UNAVAILABLE")
+        throw "The new Storage run directory is unavailable."
+    }
+    $receiptFile = Get-Item -LiteralPath (Join-Path $dirs[0].FullName "verification.json") -ErrorAction SilentlyContinue
+    if (-not $receiptFile -or $receiptFile.PSIsContainer -or
+        ($receiptFile.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+        $summary.storage_problem_codes = @("STORAGE_RECEIPT_UNAVAILABLE")
+        throw "The new Storage verification receipt is unavailable."
+    }
+    $storageSummary = (Get-Content -LiteralPath $receiptFile.FullName -Raw | ConvertFrom-Json).summary
     if ($storageSummary.project -ne $summary.project) { throw "The Storage receipt targets a different project." }
     $summary.storage_objects = $storageSummary.object_count
     $summary.storage_objects_downloaded = $storageSummary.downloaded_objects
     $summary.storage_problem_codes = @($storageSummary.problem_codes | Where-Object { $_ -match '^[A-Z0-9_]{1,100}$' })
     $summary.storage_inventory_stable = $storageSummary.before_after_inventory_equal
     $summary.storage_encrypted_extraction_verified = $storageSummary.encrypted_package_and_extracted_hashes_verified
-    if ($storageExit -ne 0 -or $storageSummary.result -ne "STORAGE_CURRENT_COMPONENT_LOCAL_PASS") {
+    $step = "storage_verification"
+    if ($summary.storage_helper_exit_code -ne 0 -or $storageSummary.result -ne "STORAGE_CURRENT_COMPONENT_LOCAL_PASS" -or
+        -not $summary.storage_inventory_stable -or -not $summary.storage_encrypted_extraction_verified) {
         throw "The Storage backup needs local review."
     }
 
@@ -269,10 +334,6 @@ try {
     if ($run -and (Test-Path -LiteralPath $run -PathType Container)) {
         try { $_.ToString() | Set-Content -LiteralPath (Join-Path $run "private-error.txt") -Encoding UTF8 } catch {}
     }
-} finally {
-    if ($setStorageKey) { Remove-Item Env:MUSHAVO_STORAGE_BACKUP_KEY -ErrorAction SilentlyContinue }
-    if ($pointer -ne [IntPtr]::Zero) { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($pointer) }
-    if ($null -ne $secure) { $secure.Dispose() }
 }
 
 $summary.completed_utc = [DateTime]::UtcNow.ToString("o")

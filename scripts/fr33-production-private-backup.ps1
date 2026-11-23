@@ -77,7 +77,7 @@ try {
     $node = (Get-Command node.exe -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
 
     $step = "verify_storage_helper"
-    if ((Get-FileHash -LiteralPath $StorageHelper -Algorithm SHA256).Hash -ne "C7DA9847A36D90BBDFDC4A40DDF0B4D1C4A785B79FBF1F14C63236E0694AC626") {
+    if ((Get-FileHash -LiteralPath $StorageHelper -Algorithm SHA256).Hash -ne "AD877D68E52016982B1186F8E355B4A23454F01FA9423A45D4EC6E0B0CEC9056") {
         throw "The Storage helper does not match the reviewed source."
     }
 

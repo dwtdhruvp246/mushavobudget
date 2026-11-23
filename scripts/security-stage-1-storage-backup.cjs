@@ -39,16 +39,15 @@ function objectRoute(bucket, name) {
 }
 function keyHeaders(key) {
   if (typeof key !== 'string' || key.length > 4096 || /[\s\x00-\x1f]/.test(key)) fail('PRIVILEGED_KEY_REQUIRED');
-  const headers = { apikey: key, Authorization: 'Bearer ' + key };
-  // The hosted Storage endpoint uses the SDK's matching API key and bearer headers.
-  if (/^sb_secret_[A-Za-z0-9_-]{20,}$/.test(key)) return headers;
+  // This production Storage endpoint expects a JWT in Authorization.
+  if (key.startsWith('sb_secret_')) fail('STORAGE_SERVICE_ROLE_JWT_REQUIRED');
   const parts = key.split('.');
   if (parts.length !== 3 || !parts.every(p => /^[A-Za-z0-9_-]+$/.test(p))) fail('PRIVILEGED_KEY_REQUIRED');
   let claims;
   try { claims = JSON.parse(Buffer.from(parts[1], 'base64url')); } catch { fail('PRIVILEGED_KEY_REQUIRED'); }
   // Syntax/scope check only: Supabase authenticates the signature and authority.
-  if (claims.role !== 'service_role' || claims.ref !== PROJECT) fail('PRIVILEGED_KEY_REQUIRED');
-  return headers;
+  if (claims?.role !== 'service_role' || claims.ref !== PROJECT) fail('PRIVILEGED_KEY_REQUIRED');
+  return { apikey: key, Authorization: 'Bearer ' + key };
 }
 function client(key, fetcher = fetch, limits = LIMITS) {
   const headers = keyHeaders(key), deadline = Date.now() + limits.runMs;
@@ -68,7 +67,9 @@ function client(key, fetcher = fetch, limits = LIMITS) {
     } catch { fail('NETWORK_OR_TIMEOUT'); }
     if (response.status !== 200) {
       await response.body?.cancel().catch(() => {});
-      fail(response.status === 401 || response.status === 403 ? 'ACCESS_DENIED' : response.status >= 300 && response.status < 400 ? 'REDIRECT_REFUSED' : 'HTTP_READ_FAILED');
+      if (response.status === 401 || response.status === 403) fail('ACCESS_DENIED');
+      if (response.status >= 300 && response.status < 400) fail('REDIRECT_REFUSED');
+      fail('HTTP_READ_FAILED_' + response.status);
     }
     return response;
   };

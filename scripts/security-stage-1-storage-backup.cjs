@@ -39,14 +39,16 @@ function objectRoute(bucket, name) {
 }
 function keyHeaders(key) {
   if (typeof key !== 'string' || key.length > 4096 || /[\s\x00-\x1f]/.test(key)) fail('PRIVILEGED_KEY_REQUIRED');
-  if (/^sb_secret_[A-Za-z0-9_-]{20,}$/.test(key)) return { apikey: key };
+  const headers = { apikey: key, Authorization: 'Bearer ' + key };
+  // The hosted Storage endpoint uses the SDK's matching API key and bearer headers.
+  if (/^sb_secret_[A-Za-z0-9_-]{20,}$/.test(key)) return headers;
   const parts = key.split('.');
   if (parts.length !== 3 || !parts.every(p => /^[A-Za-z0-9_-]+$/.test(p))) fail('PRIVILEGED_KEY_REQUIRED');
   let claims;
   try { claims = JSON.parse(Buffer.from(parts[1], 'base64url')); } catch { fail('PRIVILEGED_KEY_REQUIRED'); }
   // Syntax/scope check only: Supabase authenticates the signature and authority.
   if (claims.role !== 'service_role' || claims.ref !== PROJECT) fail('PRIVILEGED_KEY_REQUIRED');
-  return { apikey: key, Authorization: 'Bearer ' + key };
+  return headers;
 }
 function client(key, fetcher = fetch, limits = LIMITS) {
   const headers = keyHeaders(key), deadline = Date.now() + limits.runMs;

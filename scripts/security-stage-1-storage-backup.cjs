@@ -38,15 +38,24 @@ function objectRoute(bucket, name) {
   return '/object/authenticated/' + segment(bucket) + '/' + name.split('/').map(segment).join('/');
 }
 function keyHeaders(key) {
-  if (typeof key !== 'string' || key.length > 4096 || /[\s\x00-\x1f]/.test(key)) fail('PRIVILEGED_KEY_REQUIRED');
+  if (typeof key !== 'string' || !key.trim()) fail('STORAGE_KEY_EMPTY');
+  key = key.trim();
+  if (key.length > 4096 || /[\s\x00-\x1f]/.test(key)) fail('STORAGE_KEY_COPY_FORMAT');
   // This production Storage endpoint expects a JWT in Authorization.
   if (key.startsWith('sb_secret_')) fail('STORAGE_SERVICE_ROLE_JWT_REQUIRED');
+  if (key.startsWith('sb_publishable_')) fail('STORAGE_KEY_PUBLIC');
   const parts = key.split('.');
-  if (parts.length !== 3 || !parts.every(p => /^[A-Za-z0-9_-]+$/.test(p))) fail('PRIVILEGED_KEY_REQUIRED');
-  let claims;
-  try { claims = JSON.parse(Buffer.from(parts[1], 'base64url')); } catch { fail('PRIVILEGED_KEY_REQUIRED'); }
+  if (parts.length !== 3 || !parts.every(p => /^[A-Za-z0-9_-]+$/.test(p))) fail('STORAGE_KEY_COPY_FORMAT');
+  let header, claims;
+  try {
+    header = JSON.parse(Buffer.from(parts[0], 'base64url'));
+    claims = JSON.parse(Buffer.from(parts[1], 'base64url'));
+  } catch { fail('STORAGE_KEY_COPY_FORMAT'); }
+  if (claims?.role === 'anon') fail('STORAGE_KEY_PUBLIC');
+  if (claims?.role !== 'service_role') fail('STORAGE_KEY_ROLE_MISMATCH');
+  if (claims.ref !== PROJECT) fail('STORAGE_KEY_PROJECT_MISMATCH');
+  if (header?.alg !== 'HS256' || parts[2].length !== 43) fail('STORAGE_KEY_COPY_FORMAT');
   // Syntax/scope check only: Supabase authenticates the signature and authority.
-  if (claims?.role !== 'service_role' || claims.ref !== PROJECT) fail('PRIVILEGED_KEY_REQUIRED');
   return { apikey: key, Authorization: 'Bearer ' + key };
 }
 function client(key, fetcher = fetch, limits = LIMITS) {
@@ -231,6 +240,16 @@ module.exports = { PROJECT, ORIGIN, LIMITS, keyHeaders, objectRoute, client, inv
 if (require.main === module) {
   const key = process.env.MUSHAVO_STORAGE_BACKUP_KEY;
   delete process.env.MUSHAVO_STORAGE_BACKUP_KEY; // 7-Zip never inherits the API credential.
-  runPass(process.argv[2],key,process.argv[3]).then(s => { console.log(JSON.stringify(s,null,2)); process.exitCode = s.result === 'STORAGE_CURRENT_COMPONENT_LOCAL_PASS' ? 0 : 2; })
-    .catch(() => { console.log(JSON.stringify({stage_step:'1.2',work_item:'1.2.2',result:'STORAGE_PASS_BLOCKED',problem_codes:['PRIVATE_LOCAL_RUN_FAILED'],complete_platform_backup_verified:false})); process.exitCode = 2; });
+  if (process.argv[2] === '--check-credential') {
+    try {
+      keyHeaders(key);
+      console.log('STORAGE_KEY_ACCEPTED_LOCALLY');
+    } catch (error) {
+      console.log(safeCode(error));
+      process.exitCode = 2;
+    }
+  } else {
+    runPass(process.argv[2],key,process.argv[3]).then(s => { console.log(JSON.stringify(s,null,2)); process.exitCode = s.result === 'STORAGE_CURRENT_COMPONENT_LOCAL_PASS' ? 0 : 2; })
+      .catch(() => { console.log(JSON.stringify({stage_step:'1.2',work_item:'1.2.2',result:'STORAGE_PASS_BLOCKED',problem_codes:['PRIVATE_LOCAL_RUN_FAILED'],complete_platform_backup_verified:false})); process.exitCode = 2; });
+  }
 }

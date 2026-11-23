@@ -77,7 +77,7 @@ try {
     $node = (Get-Command node.exe -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
 
     $step = "verify_storage_helper"
-    if ((Get-FileHash -LiteralPath $StorageHelper -Algorithm SHA256).Hash -ne "885E23C7B281B8B8289F51EF6620A2FA9E2434F74EB2140019AD8DFC15989DFB") {
+    if ((Get-FileHash -LiteralPath $StorageHelper -Algorithm SHA256).Hash -ne "4E8955F83A8D919C856F6C9932F54EB7EFC6DDA3A744667BAF83C0FFCF0AB4B2") {
         throw "The Storage helper does not match the reviewed source."
     }
 
@@ -276,25 +276,59 @@ try {
     $start = [Diagnostics.ProcessStartInfo]::new()
     $start.FileName = $node
     $start.WorkingDirectory = $run
-    $start.Arguments = '"{0}" "{1}" "{2}"' -f $localHelper, $run, $zip
     $start.UseShellExecute = $false
-    $step = "storage_key_prompt"
-    $secret = Read-Host "Production legacy service_role API key (starts with eyJ)" -AsSecureString
-    $pointer = [IntPtr]::Zero
-    $process = $null
-    try {
-        $step = "storage_key_prepare"
-        if ($null -eq $secret -or $secret.Length -eq 0) { throw "A production Supabase secret key is required." }
-        $pointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret)
-        $start.EnvironmentVariables["MUSHAVO_STORAGE_BACKUP_KEY"] = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($pointer)
-        $step = "storage_helper_start"
-        $process = [Diagnostics.Process]::Start($start)
-        if ($null -eq $process) { throw "Node did not start." }
-    } finally {
-        $start.EnvironmentVariables.Remove("MUSHAVO_STORAGE_BACKUP_KEY")
-        if ($pointer -ne [IntPtr]::Zero) { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($pointer) }
-        if ($null -ne $secret) { $secret.Dispose() }
+    $keyMessages = @{
+        STORAGE_KEY_EMPTY = "The entry was empty. Paste the copied key into the masked prompt."
+        STORAGE_KEY_COPY_FORMAT = "The entry is not a complete legacy API key. Use the Copy button on the service_role row."
+        STORAGE_SERVICE_ROLE_JWT_REQUIRED = "That is a new-format key. Open the Legacy API Keys tab and copy the service_role row."
+        STORAGE_KEY_PUBLIC = "That is a public key. Use the service_role row in the Legacy API Keys tab."
+        STORAGE_KEY_ROLE_MISMATCH = "That key does not have the service_role role. Copy the legacy service_role API key."
+        STORAGE_KEY_PROJECT_MISMATCH = "That key does not identify the production project. Open API Keys for $($summary.project)."
     }
+    $process = $null
+    for ($attempt = 1; $attempt -le 3; $attempt++) {
+        $step = "storage_key_prompt"
+        $secret = Read-Host "Production legacy service_role API key" -AsSecureString
+        $pointer = [IntPtr]::Zero
+        try {
+            $step = "storage_key_validation"
+            if ($null -ne $secret -and $secret.Length -gt 0) {
+                $pointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret)
+                $start.EnvironmentVariables["MUSHAVO_STORAGE_BACKUP_KEY"] = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($pointer)
+            }
+            $start.Arguments = '"{0}" --check-credential' -f $localHelper
+            $start.RedirectStandardOutput = $true
+            $check = [Diagnostics.Process]::Start($start)
+            if ($null -eq $check) { throw "Node could not start the local key check." }
+            try {
+                $keyCode = $check.StandardOutput.ReadToEnd().Trim()
+                $check.WaitForExit()
+                $keyExit = $check.ExitCode
+            } finally {
+                $check.Dispose()
+            }
+            if ($keyExit -eq 0 -and $keyCode -eq "STORAGE_KEY_ACCEPTED_LOCALLY") {
+                $summary.storage_problem_codes = @()
+                $step = "storage_helper_start"
+                $start.Arguments = '"{0}" "{1}" "{2}"' -f $localHelper, $run, $zip
+                $start.RedirectStandardOutput = $false
+                $process = [Diagnostics.Process]::Start($start)
+                if ($null -eq $process) { throw "Node did not start." }
+                break
+            }
+            if ($keyExit -ne 2 -or -not $keyMessages.ContainsKey($keyCode)) {
+                $summary.storage_problem_codes = @("STORAGE_KEY_CHECK_UNAVAILABLE")
+                throw "The local key check did not return a recognized result."
+            }
+            $summary.storage_problem_codes = @($keyCode)
+            Write-Host $keyMessages[$keyCode]
+        } finally {
+            $start.EnvironmentVariables.Remove("MUSHAVO_STORAGE_BACKUP_KEY")
+            if ($pointer -ne [IntPtr]::Zero) { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($pointer) }
+            if ($null -ne $secret) { $secret.Dispose() }
+        }
+    }
+    if ($null -eq $process) { throw "The Storage key check stopped after three attempts." }
     $step = "storage_helper_wait"
     try {
         $process.WaitForExit()

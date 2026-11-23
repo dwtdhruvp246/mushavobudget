@@ -208,7 +208,7 @@ async function main([root, completed, docker, zip]) {
     full_platform_recovery_verified: false,
     isolated_live_service_restore_verified: false, exit_code: 2,
   };
-  const id = crypto.randomBytes(8).toString('hex');
+  const runId = crypto.randomBytes(8).toString('hex');
   const names = [];
   let step = 'backup_receipt', run, log;
   function command(name, args, code, options = {}) {
@@ -230,17 +230,17 @@ async function main([root, completed, docker, zip]) {
     command(zip, ['x', '-o' + folder, name], 'ARCHIVE_EXTRACTION_FAILED', { stdio: 'inherit' });
   }
   function create(service, image, network, env, args = []) {
-    const name = 'mushavo-fr33-' + id + '-' + service;
-    const id = container(['create', '--name', name, '--network', network, '--restart', 'no',
-      '--label', 'mushavo.fr33.restore=' + id,
+    const name = 'mushavo-fr33-' + runId + '-' + service;
+    const containerId = container(['create', '--name', name, '--network', network, '--restart', 'no',
+      '--label', 'mushavo.fr33.restore=' + runId,
       ...Object.entries(env).flatMap(([key, value]) => ['-e', key + '=' + value]), image, ...args], 'DOCKER_CREATE_' + service.toUpperCase()).trim();
     names.push(name);
     const info = JSON.parse(container(['inspect', name], 'DOCKER_ISOLATION_INSPECT'))[0].HostConfig;
     requireCheck(info.NetworkMode === network && !info.PublishAllPorts && !Object.keys(info.PortBindings || {}).length &&
       !info.Privileged && !info.Binds?.length, 'DOCKER_ISOLATION_CHECK_FAILED');
     container(['start', name], 'DOCKER_START_' + service.toUpperCase());
-    requireCheck(/^[0-9a-f]{64}$/.test(id), 'DOCKER_CONTAINER_ID_UNEXPECTED');
-    return id;
+    requireCheck(/^[0-9a-f]{64}$/.test(containerId), 'DOCKER_CONTAINER_ID_UNEXPECTED');
+    return containerId;
   }
   function dbExec(name, utility, options, code, input) {
     return container(['exec', '-i', name, utility, ...options], code, input);
@@ -266,19 +266,8 @@ async function main([root, completed, docker, zip]) {
       }
     }
 
-    step = 'archive_extraction';
-    const dbInput = path.join(run, 'db');
-    const storageInput = path.join(run, 'storage');
-    console.log('Enter the saved database archive passphrase at the local 7-Zip prompt.');
-    unwrap(sources.database, dbInput);
-    console.log('Enter the saved Storage archive passphrase at the local 7-Zip prompt.');
-    unwrap(sources.objects, storageInput);
-    const dump = path.join(dbInput, 'production.database.dump');
-    ordinary(dump);
-    const payload = path.join(storageInput, 'payload');
-    const storage = verifyStoragePayload(payload, sources.count);
-
     step = 'database_bootstrap';
+    console.log('Starting and checking the isolated PostgreSQL container.');
     const password = crypto.randomBytes(32).toString('hex');
     const db = create('db', IMAGES.db, 'none',
       { POSTGRES_PASSWORD: password, POSTGRES_DB: 'postgres', PGPORT: '5432', POSTGRES_PORT: '5432',
@@ -301,6 +290,18 @@ async function main([root, completed, docker, zip]) {
       "ALTER ROLE supabase_storage_admin LOGIN PASSWORD '" + password + "';",
       "CREATE DATABASE fr33_restore OWNER postgres TEMPLATE template0;",
     ].join('\n'), 'ISOLATED_DATABASE_CREATE');
+
+    step = 'archive_extraction';
+    const dbInput = path.join(run, 'db');
+    const storageInput = path.join(run, 'storage');
+    console.log('Enter the saved database archive passphrase at the local 7-Zip prompt.');
+    unwrap(sources.database, dbInput);
+    console.log('Enter the saved Storage archive passphrase at the local 7-Zip prompt.');
+    unwrap(sources.objects, storageInput);
+    const dump = path.join(dbInput, 'production.database.dump');
+    ordinary(dump);
+    const payload = path.join(storageInput, 'payload');
+    const storage = verifyStoragePayload(payload, sources.count);
 
     step = 'database_restore';
     container(['cp', dump, db + ':/tmp/fr33-private.dump'], 'DATABASE_ARCHIVE_COPY');
@@ -360,13 +361,18 @@ async function main([root, completed, docker, zip]) {
     const probe = 'const run = ' + serviceChecks.toString() +
       "; const fs = require('node:fs'); run(JSON.parse(fs.readFileSync(0,'utf8'))).then(r=>console.log(JSON.stringify(r))).catch(e=>{console.error(/^[A-Z_]+$/.test(e.message)?e.message:'ISOLATED_SERVICE_REQUEST_FAILED');process.exitCode=2;});";
     const serviceOutput = container(['exec', '-i', '-u', '0', storageName, 'node', '-e', probe],
-      'ISOLATED_SERVICE_CHECKS_FAILED', JSON.stringify({ id, password, serviceJwt, entries: storage.entries }));
+      'ISOLATED_SERVICE_CHECKS_FAILED', JSON.stringify({ id: runId, password, serviceJwt, entries: storage.entries }));
     Object.assign(summary, JSON.parse(serviceOutput.trim()));
     requireCheck(summary.auth_sign_in && summary.storage_objects_verified === sources.count &&
       summary.storage_outsider_denials === sources.count, 'ISOLATED_SERVICE_CHECK_COUNT');
   } catch (error) {
     summary.failure_step = step;
-    summary.failure_code = /^[A-Z_]+$/.test(error.message) ? error.message : 'LOCAL_RESTORE_ERROR';
+    const message = String(error.message);
+    summary.failure_code = /^[A-Z_]+$/.test(message) ? message
+      : error instanceof ReferenceError ? 'LOCAL_RESTORE_REFERENCE_ERROR' : 'LOCAL_RESTORE_ERROR';
+    if (log && summary.failure_code.startsWith('LOCAL_RESTORE_')) {
+      try { fs.appendFileSync(log, String(error.stack || error) + '\n'); } catch {}
+    }
   } finally {
     let clean = true;
     for (const name of names.reverse()) {
@@ -377,7 +383,7 @@ async function main([root, completed, docker, zip]) {
     if (run) {
       try {
         if (summary.failure_step && fs.existsSync(log)) {
-          fs.renameSync(log, path.join(root, 'FR33-Restore-Diagnostics-' + id + '.txt'));
+          fs.renameSync(log, path.join(root, 'FR33-Restore-Diagnostics-' + runId + '.txt'));
         }
         fs.rmSync(run, { recursive: true, force: true });
       } catch { clean = false; }

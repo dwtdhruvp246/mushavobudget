@@ -77,7 +77,7 @@ try {
     $node = (Get-Command node.exe -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
 
     $step = "verify_storage_helper"
-    if ((Get-FileHash -LiteralPath $StorageHelper -Algorithm SHA256).Hash -ne "AD877D68E52016982B1186F8E355B4A23454F01FA9423A45D4EC6E0B0CEC9056") {
+    if ((Get-FileHash -LiteralPath $StorageHelper -Algorithm SHA256).Hash -ne "885E23C7B281B8B8289F51EF6620A2FA9E2434F74EB2140019AD8DFC15989DFB") {
         throw "The Storage helper does not match the reviewed source."
     }
 
@@ -279,7 +279,7 @@ try {
     $start.Arguments = '"{0}" "{1}" "{2}"' -f $localHelper, $run, $zip
     $start.UseShellExecute = $false
     $step = "storage_key_prompt"
-    $secret = Read-Host "Existing production Supabase secret key for the local Storage export" -AsSecureString
+    $secret = Read-Host "Production legacy service_role API key (starts with eyJ)" -AsSecureString
     $pointer = [IntPtr]::Zero
     $process = $null
     try {

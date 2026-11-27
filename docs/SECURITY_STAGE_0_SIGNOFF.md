@@ -1,10 +1,10 @@
-# Stage 0 sign-off proposal
+# Stage 0 sign-off record
 
-Prepared 7 October 2026. **Baseline collection is accounted for; sign-off awaits owner agreement. Stage 1 has not started.** This is a factual baseline with known gaps and prerequisites assigned, not a declaration that the application is secure, all 123 controls pass or the app is ready for stores.
+Accepted by the owner 7 October 2026. **Stage 0 baseline is CLOSED with known gaps/prerequisites assigned; Stage 1 is authorized and IN PROGRESS at 1.1.** Sign-off does not certify all 123 controls, security, recovery, native artifacts or stores.
 
 ## Scope and evidence
 
-Original baseline: `d2a32032b1c560bbae853de87837c3436ea44887`, web/PWA 4.9.39. Reviewed production-source merge: `464f52c39ff56cc57bf8dfd2b0e35bd3d51a4436`, web/PWA 4.9.40 through PR #90. The documentation reconciliation is in draft PR #91. The baseline/register retain all **123 audit sections**, **20 original finding definitions** and E1–E32, with historical snapshots preserved.
+Original baseline: `d2a32032b1c560bbae853de87837c3436ea44887`, web/PWA 4.9.39. Reviewed production-source merge: `464f52c39ff56cc57bf8dfd2b0e35bd3d51a4436`, web/PWA 4.9.40 through PR #90. Documentation PR #91 is merged at `067cb5f00ad7f644647926c5fd1e82a5c754f058`; its recorded merge time is 7 October 05:51:06Z. The baseline/register retain all **123 audit sections**, **20 original finding definitions** and E1–E33, with historical snapshots preserved.
 
 Narrow table/helper permission repairs pass the owner's metadata rechecks. Notification SQL is owner-reported 8/8 PASS. Locked native dependency/asset checks pass locally, on owner Windows and in CI; this is not native compilation. The invitation candidate's historical full automated suite passed 406/406 and its scoped SQL fixtures passed, with fixture limitations retained. Merged-commit deployment checks, dated 4.9.40 public source evidence and the owner's normal working notification/SMTP reports are recorded separately from wider live authorization, event and device guarantees. The documentation update does not change runtime, SQL, provider settings or APKs.
 
@@ -31,6 +31,6 @@ The full email architecture remains a Stage 6 proposal, coordinated with Stage 1
 
 Worldwide intent and an undecided legal operator are inputs for future work, not legal or store approval. Unknowns are explicitly carried forward with owners/stages; no unavailable property is silently marked PASS. A failed or untested workflow must retain its own evidence limit even after Stage 0 baseline sign-off.
 
-## Proposed acceptance
+## Owner acceptance
 
-The owner may accept **Stage 0 baseline complete, known gaps and prerequisites assigned**, and authorize [the bounded Stage 1 foundations worklist](SECURITY_STAGE_1_FOUNDATIONS_PLAN.md). Signing off the baseline does not sign off recovery, authorization, native/store release or the full email architecture. Until that agreement, the recorded state remains **READY FOR OWNER SIGN-OFF**, with Stage 1 **NOT STARTED**.
+The owner explicitly accepted **Stage 0 baseline complete, known gaps and prerequisites assigned** and authorized the Stage 1 foundations scope. Actual Stage 1.1 security/recovery results remain pending. The owner additionally requires a report at every stage end, numbered stage.step messages and final resolution/full re-audit of residual failed/uncertain items. See [the completion report](SECURITY_STAGE_0_COMPLETION_REPORT.md), [workflow](SECURITY_AUDIT_WORKFLOW.md) and [carry-forward actions](SECURITY_AUDIT_CARRY_FORWARD.md). Stage closure does not close findings without their recheck evidence.

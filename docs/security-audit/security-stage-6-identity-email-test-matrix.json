@@ -1,0 +1,335 @@
+{
+  "schema_version": 1,
+  "stage_step": "6.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "fe2c281ce13e7d0d8cb49115fa1bd6c195579c4e",
+  "scope": "PLANNED_GROUPED_ACCEPTANCE_CONTRACT_NOT_EXECUTED_TESTS",
+  "groups": [
+    {
+      "id": "IE01",
+      "title": "Provider configuration and safe authentication",
+      "planned_cases": 6
+    },
+    {
+      "id": "IE02",
+      "title": "Identity linking and invitation collisions",
+      "planned_cases": 6
+    },
+    {
+      "id": "IE03",
+      "title": "Email purpose and callback compatibility",
+      "planned_cases": 6
+    },
+    {
+      "id": "IE04",
+      "title": "Apple option and relay compatibility",
+      "planned_cases": 6
+    },
+    {
+      "id": "IE05",
+      "title": "Auth email delivery and hook boundary",
+      "planned_cases": 6
+    },
+    {
+      "id": "IE06",
+      "title": "Application email and rollout evidence",
+      "planned_cases": 6
+    }
+  ],
+  "cases": [
+    {
+      "id": "IE01-01",
+      "group": "IE01",
+      "title": "Provider configuration and safe authentication",
+      "expected": "Google approved client/audience/brand/domain and login-only scopes match the selected staging environment.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE01-02",
+      "group": "IE01",
+      "title": "Provider configuration and safe authentication",
+      "expected": "Provider-to-Supabase callback and Supabase-to-app callback are separately registered; wrong environment/host is rejected.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE01-03",
+      "group": "IE01",
+      "title": "Provider configuration and safe authentication",
+      "expected": "Authorization opens in a permitted system/browser flow; cancellation preserves the prior account and workspace.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE01-04",
+      "group": "IE01",
+      "title": "Provider configuration and safe authentication",
+      "expected": "Wrong issuer/audience, tampered ID token or mismatched nonce/state/verifier is rejected by the selected verified flow.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE01-05",
+      "group": "IE01",
+      "title": "Provider configuration and safe authentication",
+      "expected": "Unverified or suspended account cannot acquire protected access; new social identity completes required profile/currency onboarding.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE01-06",
+      "group": "IE01",
+      "title": "Provider configuration and safe authentication",
+      "expected": "Disabled/misconfigured provider fails clearly while existing password sign-in and account data remain usable.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE02-01",
+      "group": "IE02",
+      "title": "Identity linking and invitation collisions",
+      "expected": "Verified same-email password/provider linking retains the original UUID, memberships, finance and subscriptions.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE02-02",
+      "group": "IE02",
+      "title": "Identity linking and invitation collisions",
+      "expected": "Unconfirmed same-email identity collision follows actual Auth server behavior without pre-account takeover or silent workspace grant.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE02-03",
+      "group": "IE02",
+      "title": "Identity linking and invitation collisions",
+      "expected": "Different email or Apple relay identity is linked only through an authenticated deliberate flow; no client-written UUID/email merge.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE02-04",
+      "group": "IE02",
+      "title": "Identity linking and invitation collisions",
+      "expected": "Wrong-account invitation denial holds through callback and direct completion RPC; invitation UUID alone grants nothing.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE02-05",
+      "group": "IE02",
+      "title": "Identity linking and invitation collisions",
+      "expected": "Existing/new Business invite requires deliberate acceptance with live role, scope, expiry and seat checks.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE02-06",
+      "group": "IE02",
+      "title": "Identity linking and invitation collisions",
+      "expected": "Unfinished/replaced/expired Admin invitation plus social login does not create an unintended Free workspace or cancel the selected plan.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE03-01",
+      "group": "IE03",
+      "title": "Email purpose and callback compatibility",
+      "expected": "Signup confirmation and resend show correct purpose/destination and deny unconfirmed protected sign-in.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE03-02",
+      "group": "IE03",
+      "title": "Email purpose and callback compatibility",
+      "expected": "Recovery opens only the intended identity, saves a password and handles newest/expired/replayed links correctly.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE03-03",
+      "group": "IE03",
+      "title": "Email purpose and callback compatibility",
+      "expected": "Admin new-user and unfinished-account resend emails describe setup and resolve to the guarded signup callback.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE03-04",
+      "group": "IE03",
+      "title": "Email purpose and callback compatibility",
+      "expected": "Business new and existing-user emails use Business-specific subjects/body for current Auth callbacks and retained legacy callbacks.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE03-05",
+      "group": "IE03",
+      "title": "Email purpose and callback compatibility",
+      "expected": "Generic magic-link mail remains generic; spoofed/lookalike/external callback never selects privileged-purpose copy or an unsafe redirect.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE03-06",
+      "group": "IE03",
+      "title": "Email purpose and callback compatibility",
+      "expected": "Two accounts/tabs, account switch, system-browser-to-PWA/native handoff and missing verifier preserve deliberate verified-account transfer.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE04-01",
+      "group": "IE04",
+      "title": "Apple option and relay compatibility",
+      "expected": "Chosen iOS primary-account login complies with the reviewed 4.8 decision and any documented applicable exception.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE04-02",
+      "group": "IE04",
+      "title": "Apple option and relay compatibility",
+      "expected": "Apple audience, Services/App IDs, capability and selected web/native nonce validation bind the right environment.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE04-03",
+      "group": "IE04",
+      "title": "Apple option and relay compatibility",
+      "expected": "Hidden-email relay login retains the Auth UUID; invitation to a different real email remains pending rather than auto-merged.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE04-04",
+      "group": "IE04",
+      "title": "Apple option and relay compatibility",
+      "expected": "Registered sender/return-path/DKIM configuration delivers to a controlled relay inbox; failure is observable without exposing link material.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE04-05",
+      "group": "IE04",
+      "title": "Apple option and relay compatibility",
+      "expected": "Missing name on repeat sign-in does not overwrite a valid profile; required currencies/onboarding are completed.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE04-06",
+      "group": "IE04",
+      "title": "Apple option and relay compatibility",
+      "expected": "Provider revocation, unlink/alternate sign-in availability and applicable OAuth secret expiry/rotation preserve recovery.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE05-01",
+      "group": "IE05",
+      "title": "Auth email delivery and hook boundary",
+      "expected": "Existing SMTP route and approved purpose templates deliver to controlled inboxes with actual sender/domain authentication.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE05-02",
+      "group": "IE05",
+      "title": "Auth email delivery and hook boundary",
+      "expected": "Inactive hook does not shadow SMTP; any explicitly selected hook rollout proves routing and restoration of the previous route.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE05-03",
+      "group": "IE05",
+      "title": "Auth email delivery and hook boundary",
+      "expected": "Enabled HTTP hook rejects altered body, invalid signature, stale timestamp and unauthorized direct calls before dispatch.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE05-04",
+      "group": "IE05",
+      "title": "Auth email delivery and hook boundary",
+      "expected": "Supported action types and secure email-change old/new recipient/token mappings are exact; unknown action fails safely.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE05-05",
+      "group": "IE05",
+      "title": "Auth email delivery and hook boundary",
+      "expected": "Provider timeout/rate/bounce and duplicate/retry delivery have bounded, observable outcomes without reporting inbox delivery from API acceptance.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE05-06",
+      "group": "IE05",
+      "title": "Auth email delivery and hook boundary",
+      "expected": "OTP/token/hash/full links and credentials are absent from application analytics, shared mail queues and retained operational logs.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE06-01",
+      "group": "IE06",
+      "title": "Application email and rollout evidence",
+      "expected": "Application-email recipient, event and workspace scope are server-derived; forged caller recipient/body does not create mail.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE06-02",
+      "group": "IE06",
+      "title": "Application email and rollout evidence",
+      "expected": "Recipient membership/role and event validity are rechecked at dispatch, including revoked access and deleted/retained subjects.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE06-03",
+      "group": "IE06",
+      "title": "Application email and rollout evidence",
+      "expected": "Concurrent claim/retry/dedup and stale jobs have durable bounded semantics; provider ambiguity does not produce false delivered status.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE06-04",
+      "group": "IE06",
+      "title": "Application email and rollout evidence",
+      "expected": "Approved event types, per-recipient/global budgets, bounce suppression and preference rules prevent unwanted/cross-tenant mail.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE06-05",
+      "group": "IE06",
+      "title": "Application email and rollout evidence",
+      "expected": "Exact candidate/template/server settings parity, isolated actors/inboxes and rollback are verified before the bounded staging batch.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    },
+    {
+      "id": "IE06-06",
+      "group": "IE06",
+      "title": "Application email and rollout evidence",
+      "expected": "Final web/PWA/native matrix and provider/store declarations reconcile with earlier AU/AM/NR/privacy actions; retained fixtures remain unchanged.",
+      "status": "PENDING_NOT_RUN",
+      "hosted_checks_run": 0
+    }
+  ],
+  "total_planned_grouped_cases": 36,
+  "hosted_cases_run": 0,
+  "device_cases_run": 0,
+  "overlap_with_prior_AU_AM_NR_cases": true,
+  "counts_are_not_additive_unique_global_controls": true,
+  "hosted_acceptance": false
+}

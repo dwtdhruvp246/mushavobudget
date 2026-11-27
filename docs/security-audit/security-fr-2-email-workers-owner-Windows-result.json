@@ -1,0 +1,192 @@
+{
+  "date": "2026-10-15",
+  "source_commit": "d89d8ca49b738fb29a4812fcd30b1ee26e9c3a87",
+  "evidence_scope": "OWNER_RETURNED_WINDOWS_NATIVE_LOCAL_RUNTIME_RESULT_NOT_HOSTED_ACCEPTANCE",
+  "receipt": {
+    "stage_step": "FR.2.4.E3.2",
+    "result": "ACTUAL_BUNDLE_AND_LOCAL_DURABLE_LIMITER_SCOPED_PASS",
+    "source_parent_commit": "413e8388cbfbd75b3d959b663a0be4e70aa748b9",
+    "node_version": "v22.17.0",
+    "source_files_SHA256_verified": 16,
+    "full_dependency_lock_SHA256_matched": true,
+    "installed_package_bytes_independently_hashed": false,
+    "tools": {
+      "esbuild": "0.28.2",
+      "miniflare": "4.20260730.0",
+      "workerd": "1.20260730.1"
+    },
+    "syntax_checks": 12,
+    "syntax": [
+      {
+        "file": "scripts/check-fr-2-email-workers.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/lib/build-fr-2-email-workers.mjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/offline-test-network.cjs",
+        "pass": true
+      },
+      {
+        "file": "scripts/verify-fr-2-email-workers.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-crypto.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-gateway.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-http.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-pages.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-rate-client.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-rate-do.mjs",
+        "pass": true
+      },
+      {
+        "file": "supabase/functions/_shared/email-verification-zoho.mjs",
+        "pass": true
+      },
+      {
+        "file": "tests/fr-2-email-rate-client.test.mjs",
+        "pass": true
+      }
+    ],
+    "tests": 31,
+    "pass": 31,
+    "fail": 0,
+    "exit_code": 0,
+    "problem_code": null,
+    "runtime_receipt": {
+      "stage_step": "FR.2.4.E3.2",
+      "result": "ACTUAL_ESBUILD_AND_LOCAL_WORKERD_DURABLE_LIMITER_SCOPED_PASS",
+      "scope": "REAL_ESBUILD_NATIVE_COMPILER_AND_LOCAL_WORKERD_SQLITE_DO_WITH_INTERCEPTED_AUTH_ZOHO_PORTS_NOT_HOSTED_RUNTIME",
+      "node_version": "v22.17.0",
+      "esbuild_version": "0.28.2",
+      "miniflare_version": "4.20260730.0",
+      "checks": [
+        {
+          "check": "Pinned actual esbuild creates two import-free ESM bundles from exactly seven runtime modules",
+          "status": "PASS"
+        },
+        {
+          "check": "Limiter candidate config has no public route and declares a SQLite-backed namespace",
+          "status": "PASS"
+        },
+        {
+          "check": "Actual workerd Pages bundle serves static assets with preserved headers and no cookie/bearer forwarding",
+          "status": "PASS"
+        },
+        {
+          "check": "Missing Durable Object namespace fails closed before Auth in the actual runtime",
+          "status": "PASS"
+        },
+        {
+          "check": "Foreign-origin API request is refused before any Auth/provider request in workerd",
+          "status": "PASS"
+        },
+        {
+          "check": "Bundled gateway reaches the real local Durable Object before its synthetic Auth/RPC ports",
+          "status": "PASS"
+        },
+        {
+          "check": "Bundled WebCrypto challenge and Zoho adapter execute in workerd with only synthetic upstream acceptance",
+          "status": "PASS"
+        },
+        {
+          "check": "Actual workerd response emits a secure account-specific cookie while JSON remains credential-free",
+          "status": "PASS"
+        },
+        {
+          "check": "Compiled remembered-device restore does not renew the cookie deadline",
+          "status": "PASS"
+        },
+        {
+          "check": "120 simultaneous calls to the actual SQLite-backed Durable Object allow exactly60 within its rolling minute",
+          "status": "PASS"
+        },
+        {
+          "check": "Separate bindings share the same durable namespace while another object identity has an independent quota",
+          "status": "PASS"
+        },
+        {
+          "check": "Actual Durable Object rejects caller timestamps,policy overrides and non-protocol requests",
+          "status": "PASS"
+        },
+        {
+          "check": "Limiter Worker public fetch entrypoint never exposes or forwards to its private namespace",
+          "status": "PASS"
+        },
+        {
+          "check": "The61st gateway request for a fresh IP is denied by the real bound limiter",
+          "status": "PASS"
+        },
+        {
+          "check": "Quota survives complete local runtime disposal/restart from its persisted SQLite state",
+          "status": "PASS"
+        },
+        {
+          "check": "All outbound fetches were intercepted locally; no external Auth,Zoho or Cloudflare request occurred",
+          "status": "PASS"
+        }
+      ],
+      "worker_checks": 16,
+      "rate_client_tests": 15,
+      "pass": 31,
+      "fail": 0,
+      "tests": 31,
+      "exit_code": 0,
+      "planned_checks": 31,
+      "problem_code": null,
+      "local_runtime_and_temporary_state_cleanup_completed": true,
+      "bundle_sha256": {
+        "pages": "fb089fffe0cabd9be4fb5e8cfed165786ef56dee8cd5209b7be679166ef4ae99",
+        "limiter": "4d10a3f6ea03ab14979b1d821df2c35409d519b0550da8bd4a92f4b28d37b0a1"
+      },
+      "real_local_worker_bundles": 2,
+      "real_local_Durable_Object_SQLite_and_parallel_requests_verified": true,
+      "real_local_persisted_runtime_restart_verified": true,
+      "hosted_Auth_Zoho_Cloudflare_requests": 0,
+      "real_email_sent": false,
+      "hosted_resources_bindings_secrets_or_settings_changed": false,
+      "actual_Cloudflare_ingress_IP_or_hosted_multipop_behavior_verified": false,
+      "actual_Zoho_sender_data_centre_credentials_scopes_or_delivery_verified": false,
+      "browser_cookie_jar_native_or_app_wide_guards_verified": false,
+      "hosted_acceptance": false,
+      "production_or_native_changed": false,
+      "findings_closed": [],
+      "APK_update_deferred": true
+    },
+    "package_downloads_are_separate_from_offline_runtime_checks": true,
+    "real_Auth_Zoho_or_Cloudflare_requests": 0,
+    "actual_email_dispatched": false,
+    "real_hosted_resources_bindings_secrets_SQL_Auth_roles_or_settings_changed": false,
+    "owner_browser_or_hosted_ingress_delivery_full_guard_acceptance_verified": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "findings_closed": [],
+    "APK_update_deferred": true
+  },
+  "terminal_exit_code": 0,
+  "both_bundle_hashes_match_pinned_assistant_outputs": true,
+  "tools_install_reported_packages": 30,
+  "tools_install_scripts_disabled": true,
+  "FR2_E3_2_status": "OFFLINE_SOURCE_AND_NATIVE_LOCAL_RUNTIME_CHECKPOINT_COMPLETE",
+  "hosted_checks_run": 0,
+  "findings_closed": [],
+  "APK_update_deferred": true
+}

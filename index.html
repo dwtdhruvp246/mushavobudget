@@ -3,20 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Mushavo Budget keeps personal, family, and business payments organised in one clear workspace." />
+    <meta name="description" content="Track upcoming bills and reminders with Mushavo Budget. Pay through your usual provider, then manually record what you paid." />
     <meta name="theme-color" content="#10b981" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="Mushavo Budget" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <title>Mushavo Budget | Personal, family and business payment planning</title>
+    <title>Mushavo Budget | Bill tracking and manual payment records</title>
     <link rel="preconnect" href="https://kttkospkblwvguuwnhjj.supabase.co" crossorigin />
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
     <link rel="stylesheet" href="/pwa-update.css?v=2" />
     <link rel="stylesheet" href="/pwa-install.css?v=2" />
-    <link rel="stylesheet" href="site.css?v=6" />
+    <link rel="stylesheet" href="site.css?v=7" />
     <script src="config.js?v=26"></script>
     <script src="/pwa.js?v=80" defer></script>
     <script src="/pwa-install.js?v=1" defer></script>
@@ -42,101 +42,86 @@
     </header>
 
     <main id="mainContent">
-      <section class="hero-section">
+      <section class="hero-section" aria-labelledby="homeHeading">
         <div class="hero-copy">
-          <p class="site-eyebrow">PAYMENT PLANNING, MADE CLEAR</p>
-          <h1>Know what is due, who is responsible, and what has been paid.</h1>
-          <p class="hero-lead">Mushavo Budget brings personal expenses, family responsibilities, and business payments into organised workspaces—without losing the details that matter.</p>
+          <p class="site-eyebrow">BILL TRACKING &amp; REMINDERS</p>
+          <h1 id="homeHeading">Track your bills. <span>Record what you paid.</span></h1>
+          <p class="hero-lead">See what’s due and when. <strong>Pay each bill outside Mushavo Budget</strong> through your bank, mobile money app, or bill provider. Then manually record what you paid here.</p>
+          <p class="payment-safety">Keep your bank login and payment PIN with your payment provider.</p>
           <div class="hero-actions">
-            <a class="site-button" href="signup.html">Start with a free account</a>
-            <a class="secondary-button" href="pricing.html">Compare plans</a>
+            <a class="site-button" href="signup.html">Start tracking for free</a>
+            <a class="secondary-button" href="#how-it-works">How it works</a>
           </div>
-          <ul class="trust-list" aria-label="Key benefits">
-            <li>Free personal workspace</li>
-            <li>Shared family responsibilities</li>
-            <li>Payment records and proof</li>
+        </div>
+        <aside class="product-preview" aria-labelledby="trackerPreviewHeading">
+          <p class="preview-label">EXAMPLE WORKSPACE</p>
+          <h2 id="trackerPreviewHeading">Your bill tracker</h2>
+          <dl class="preview-totals">
+            <div><dt>Outstanding</dt><dd>$85.00</dd></div>
+            <div><dt>Payments recorded</dt><dd>$50.00</dd></div>
+          </dl>
+          <ul class="preview-list" role="list">
+            <li><div><strong>Internet bill</strong><span>Due 6 Dec</span></div><div><b>$85.00</b><span class="preview-status due">Upcoming</span></div></li>
+            <li><div><strong>Water bill</strong><span>Paid 2 Dec</span></div><div><b>$50.00</b><span class="preview-status recorded">Recorded manually</span></div></li>
           </ul>
+          <p class="preview-note">A bill’s status updates when you record what you paid.</p>
+        </aside>
+      </section>
+
+      <section id="how-it-works" class="workflow-section page-section" aria-labelledby="workflowHeading">
+        <div class="section-intro compact-intro">
+          <h2 id="workflowHeading">From due date to payment record</h2>
         </div>
-        <div class="product-preview" aria-label="Example Mushavo Budget payment overview">
-          <div class="preview-heading">
-            <div><span>August overview</span><strong>Payments at a glance</strong></div>
-            <span class="status-pill">On track</span>
-          </div>
-          <div class="preview-totals">
-            <div><span>Due this month</span><strong>$850.00</strong></div>
-            <div><span>Paid</span><strong>$500.00</strong></div>
-            <div><span>Outstanding</span><strong>$350.00</strong></div>
-          </div>
-          <div class="preview-progress"><span style="width: 58%"></span></div>
-          <div class="preview-list">
-            <article><span class="date-box"><strong>01</strong><small>SEP</small></span><div><strong>Vehicle payment</strong><small>Personal · Upcoming</small></div><b>$350.00</b></article>
-            <article><span class="date-box"><strong>06</strong><small>SEP</small></span><div><strong>Internet service</strong><small>Family · Assigned to Priya</small></div><b>$65.00</b></article>
-          </div>
-        </div>
+        <ol class="workflow-list" role="list">
+          <li><span aria-hidden="true">1</span><div><h3>Add your bill</h3><p>Enter the amount, due date, and how often the bill repeats. Set a reminder for when you want to act.</p></div></li>
+          <li><span aria-hidden="true">2</span><div><h3>Pay through your provider</h3><p>Use your bank, mobile money app, or the biller’s own payment service to pay the bill.</p></div></li>
+          <li><span aria-hidden="true">3</span><div><h3>Record what you paid</h3><p>Choose <strong>Record payment</strong> in Mushavo Budget. Enter the full or partial amount and date, and attach a receipt if you have one.</p></div></li>
+        </ol>
       </section>
 
       <section class="audience-section page-section" aria-labelledby="workspaceHeading">
         <div class="section-intro">
-          <p class="site-eyebrow">ONE LOGIN, SEPARATE WORKSPACES</p>
-          <h2 id="workspaceHeading">Built around the way money responsibilities are actually shared.</h2>
-          <p>Keep each budget separate while moving between the workspaces you own or have been invited to join.</p>
+          <h2 id="workspaceHeading">One account, separate budgets</h2>
+          <p>Switch between the workspaces you own or have been invited to join.</p>
         </div>
         <div class="workspace-grid">
           <article>
-            <span class="workspace-number">01</span>
             <h3>Personal</h3>
-            <p>Track your own recurring payments, due dates, payment history, and receipts.</p>
+            <p>Stay on top of your own bills, reminders, and receipts.</p>
             <a href="pricing.html#personal-plans">View personal plans</a>
           </article>
           <article>
-            <span class="workspace-number">02</span>
             <h3>Family</h3>
-            <p>Assign responsibilities, invite registered members, and see household progress together.</p>
+            <p>Assign household bills and see what family members have recorded.</p>
             <a href="pricing.html#family-plans">View family plans</a>
           </article>
           <article>
-            <span class="workspace-number">03</span>
             <h3>Business</h3>
-            <p>Organise team payment responsibilities with stronger oversight and reporting controls.</p>
+            <p>Organise team responsibilities and review spending with workspace reports.</p>
             <a href="pricing.html#business-plans">View business plans</a>
           </article>
         </div>
       </section>
 
-      <section class="workflow-section page-section" aria-labelledby="workflowHeading">
-        <div class="section-intro compact-intro">
-          <p class="site-eyebrow">FROM DUE DATE TO PAYMENT RECORD</p>
-          <h2 id="workflowHeading">A complete payment workflow, not just a list.</h2>
-        </div>
-        <ol class="workflow-list">
-          <li><span>1</span><div><h3>Plan the payment</h3><p>Add the amount, frequency, currency, due date, reminder timing, and responsible person.</p></div></li>
-          <li><span>2</span><div><h3>See what needs attention</h3><p>Use the dashboard to review due, upcoming, outstanding, and overdue payments.</p></div></li>
-          <li><span>3</span><div><h3>Record what happened</h3><p>Save a full or partial payment with its date, method, reference, notes, and proof.</p></div></li>
-          <li><span>4</span><div><h3>Review progress</h3><p>Use reports and workload views to understand spending and responsibility over time.</p></div></li>
-        </ol>
-      </section>
-
       <section class="feature-section page-section" aria-labelledby="featureHeading">
         <div class="section-intro">
-          <p class="site-eyebrow">THE DETAILS STAY CONNECTED</p>
-          <h2 id="featureHeading">Everything needed to follow a payment through.</h2>
+          <h2 id="featureHeading">Reminders, receipts, and reports</h2>
         </div>
         <div class="feature-list">
           <article><h3>Recurring schedules</h3><p>Set one-time, monthly, annual, or custom payment cycles with upcoming occurrences.</p></article>
           <article><h3>Useful reminders</h3><p>Choose how many days before a due date reminders should begin and keep the in-app bell informed.</p></article>
-          <article><h3>Payment proof</h3><p>Attach a receipt or document and preserve the payment reference and notes with the record.</p></article>
+          <article><h3>Receipts and references</h3><p>Attach proof and keep the payment reference and notes with your record.</p></article>
           <article><h3>Multi-currency records</h3><p>Keep original currencies intact while supported exchange rates provide consolidated reporting.</p></article>
           <article><h3>Member responsibility</h3><p>Make ownership visible, review member workload, and remove access without deleting another person.</p></article>
-          <article><h3>Plan-based access</h3><p>Free personal limits, shared family access, additional seats, and reporting are applied by workspace.</p></article>
+          <article><h3>Payment history and reports</h3><p>Review what you recorded, what’s outstanding, and how spending changes over time.</p></article>
         </div>
         <a class="inline-arrow" href="about.html">Explore every feature <span aria-hidden="true">→</span></a>
       </section>
 
       <section class="pricing-preview-section page-section" aria-labelledby="pricingPreviewHeading">
         <div class="section-intro compact-intro">
-          <p class="site-eyebrow">PLANS THAT GROW WITH THE WORKSPACE</p>
-          <h2 id="pricingPreviewHeading">Start personally, then add the right shared plan.</h2>
-          <p>Prices below are loaded from the current Mushavo Budget plan catalogue.</p>
+          <h2 id="pricingPreviewHeading">Mushavo Budget plans</h2>
+          <p>Choose a plan for your personal, family, or business budget.</p>
         </div>
         <div id="homePlanPreview" class="public-plan-preview" aria-live="polite">
           <div class="site-loading">Loading current plans…</div>
@@ -145,16 +130,16 @@
       </section>
 
       <section class="closing-section page-section">
-        <div><p class="site-eyebrow">READY WHEN YOU ARE</p><h2>Bring the next payment into focus.</h2></div>
-        <div><p>Create a free personal workspace now. You can join a family workspace without purchasing a separate plan.</p><a class="site-button" href="signup.html">Create free account</a></div>
+        <div><h2>Start with your next bill.</h2></div>
+        <div><p>Create a free Personal workspace to track your next due date and record it once you’ve paid.</p><a class="site-button" href="signup.html">Create free account</a></div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <div class="footer-brand"><img src="assets/mushavo-budget-logo.png" alt="Mushavo Budget" width="148" height="100" /><p>Clear payment planning for personal, family, and business life.</p></div>
+      <div class="footer-brand"><img src="assets/mushavo-budget-logo.png" alt="Mushavo Budget" width="148" height="100" /><p>Bill reminders and manual payment records for Personal, Family, and Business.</p></div>
       <div><strong>Explore</strong><a href="about.html">About</a><a href="pricing.html">Pricing</a><a href="contact.html">Contact</a></div>
       <div><strong>Account</strong><a href="app.html">Sign in</a><a href="signup.html">Create account</a></div>
-      <div class="footer-bottom"><span>© 2026 Mushavo Budget</span><span>Built for organised financial responsibility.</span></div>
+      <div class="footer-bottom"><span>© 2026 Mushavo Budget</span></div>
     </footer>
   </body>
 </html>

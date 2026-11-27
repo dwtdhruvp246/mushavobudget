@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "stage_step": "10.2",
+  "source_parent_commit": "1b012fd9c47bfb1733596f64c470feee5d308341",
+  "project": "dczlddwbtgvfdujgcitb",
+  "origin": "https://mushavo-budget-staging.pages.dev",
+  "scope": "FIXED_PUBLIC_STATIC_METADATA_COLLECTOR_AND_OPERATIONAL_RUNBOOK_CANDIDATE_NOT_BACKEND_JOB_ALERT_OR_RECOVERY_ACCEPTANCE",
+  "source_targets": [
+    {
+      "source": "config.js",
+      "route": "config.js",
+      "type": "javascript",
+      "normalized_source_sha256": "c14293e16fda6a6b0e483ea5141954b78832b175155cec0ab9f59d35e8b7b0cd"
+    },
+    {
+      "source": "auth.html",
+      "route": "auth.html",
+      "type": "html",
+      "normalized_source_sha256": "8d6ff984bfec6ef80356ceceef63e5a70428d1ea6c0bb937c282dc1b47329386"
+    },
+    {
+      "source": "auth-flows.js",
+      "route": "auth-flows.js",
+      "type": "javascript",
+      "normalized_source_sha256": "ef16214f827d6650a507e30bdae7703c975f061437ed0672cf0abf9072e37500"
+    },
+    {
+      "source": "auth-security.js",
+      "route": "auth-security.js",
+      "type": "javascript",
+      "normalized_source_sha256": "ae6eb487fa9ae5f21b1e3a95f698fe5869a377349bc5ff66bf9e8d32cef6cf54"
+    },
+    {
+      "source": "admin-mfa.js",
+      "route": "admin-mfa.js",
+      "type": "javascript",
+      "normalized_source_sha256": "909fd25b8e364e420be9067f6a0435567d705e914c53e9358b536d0187d81f6e"
+    },
+    {
+      "source": "app.js",
+      "route": "app.js",
+      "type": "javascript",
+      "normalized_source_sha256": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4"
+    },
+    {
+      "source": "business.js",
+      "route": "business.js",
+      "type": "javascript",
+      "normalized_source_sha256": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e"
+    },
+    {
+      "source": "app.html",
+      "route": "app",
+      "type": "html",
+      "normalized_source_sha256": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d"
+    },
+    {
+      "source": "business.html",
+      "route": "business",
+      "type": "html",
+      "normalized_source_sha256": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a"
+    }
+  ],
+  "expected_offline_cases": 27,
+  "candidate_deployed": false,
+  "hosted_acceptance": false,
+  "hosted_operations_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "actual_notification_email_or_charge_dispatched": false,
+  "SQL_or_cron_or_settings_changed": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

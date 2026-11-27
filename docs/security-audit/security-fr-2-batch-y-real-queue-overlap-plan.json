@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "status": "FROZEN_BEFORE_COMMITTED_SYNTHETIC_QUEUE_FIXTURE",
+  "parent_source": "28c7febdc8a5f3fb34f7179214473138fee9d54a",
+  "cases": [
+    "Create exactly one synthetic queue row without a real payment source",
+    "Worker A claims the exact row and holds its transaction for eight seconds",
+    "Worker B observes the overlapping control lock and an eligible pending snapshot, then skips the locked job",
+    "Confirm distinct backends, one claim and zero duplicate claims during the actual overlap",
+    "Delete only the exact synthetic queue row and independently verify empty queues and matched catalog"
+  ],
+  "fixture_marker": "AUDIT-Y-CLAIM-OVERLAP-20261107",
+  "fixture_row_limit": 1,
+  "fixture_reference_time": "1900-01-01T00:00:00Z",
+  "maximum_server_hold_seconds": 8,
+  "provider_HTTP_dispatch_invoked": false,
+  "real_payment_source": false,
+  "cron_jobs_added": 0,
+  "production_changed": false,
+  "acceptance_rule": "A serialized connector execution is reported as not observed, not as concurrent acceptance.",
+  "cleanup_sql": "supabase/diagnostics/security_fr_2_6_overlap_fixture_cleanup.sql"
+}

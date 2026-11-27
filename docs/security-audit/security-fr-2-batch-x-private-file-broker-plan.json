@@ -1,0 +1,43 @@
+{
+  "contract": 1,
+  "date": "2026-11-08",
+  "stage_step": "FR.2_BATCH_X_PRIVATE_FILE_REVOCATION",
+  "status": "FROZEN_LOCAL_IMPLEMENTATION_AND_VERIFICATION_AUTHORIZED",
+  "target_project": "dczlddwbtgvfdujgcitb",
+  "source_parent": "328516d8a99b45ad5a3c89f25642cc1fcbf77add",
+  "initial_catalog_sha256": "4646c0fe0367fe033b4594428f9c180eb96ca9b39ed2d1a2024bdc843804c3d7",
+  "buckets": ["payment-proofs", "subscription-proofs", "business-documents", "business-logos"],
+  "serving_contract": [
+    "User JWT validated with Auth and current application session before any privileged file fetch.",
+    "An authenticated SECURITY INVOKER metadata RPC intersects all existing Storage RLS policies; no caller-supplied user, role, or workspace authority.",
+    "The server fetches bytes only after authorization and rechecks current object identity, version and RLS after fetching; no signed URL is issued.",
+    "All success and error responses are private no-store; bytes are attachment/octet-stream with nosniff and no-referrer.",
+    "Frontend binds each response to captured user/workspace/epoch and current listed file; discarded responses never create URLs. Blob URLs are revoked after use or branding reset.",
+    "A separate restrictive Storage SELECT policy blocks raw byte downloads, rendering and signed URL creation while retaining existing authorized metadata/upload/delete operations.",
+    "The four private buckets must be empty before the restrictive cutover so no old cached object remains in scope. This does not recall copies a user already downloaded."
+  ],
+  "deployment_order": [
+    "Test local actual-handler, frontend, invoker/RLS intersection and operation cases; preserve pinned dependency lock.",
+    "Add metadata RPC with an exact catalog precondition and reviewed atomic catalog rebind, leaving old serving paths working.",
+    "Deploy and read back the staging-only Edge broker, then prove genuine owner/foreign/session denials with harmless fixtures.",
+    "Prepare and publish a reviewed staging static bundle preserving the current pinned SDK, headers and worker; verify bundle identity.",
+    "Only after frontend availability and empty-bucket readback, apply restrictive SELECT policy and reviewed catalog rebind; exercise finite revocation and cleanup cases."
+  ],
+  "hosted_cases": [
+    "Personal own/foreign/anonymous and current-session denial; metadata RPC conveys no bytes.",
+    "Family active owner/member then same-session removed member; identical warmed broker request denied after removal, owner still allowed.",
+    "Business registered document parent scope and archived/removal denial; logo owner/member/removal and subscription owner/staff/foreign boundaries.",
+    "Direct authenticated/public bytes, rendering and signing denied for the four buckets after cutover; ordinary upload/delete still work.",
+    "Exact fixture, object and session cleanup; original manual Family, Business money rows, roles, inactive membership and expired paid-through preserved."
+  ],
+  "fixture_bounds": {
+    "auth_accounts": "existing controlled A/B/Admin only; no Auth row creation/reset",
+    "files": "unique harmless 68-byte PNG files; Storage API upload/delete only",
+    "family": "one new isolated public Family fixture; remove member through supported RPC and delete fixture after checks",
+    "business": "only existing isolated audit-batch-x-receipt-d7be160c2026; exact temporary entitlement and supported seats/status/member actions with guarded restoration",
+    "production": "excluded",
+    "provider_email_push_payment": "excluded"
+  },
+  "rollback": "Clean exact attempted fixture objects and sessions first; restore reviewed static artifact and remove only the new restrictive policy/RPC in reverse order with exact catalog guards. Do not silently re-enable unsafe delivery as a successful fix.",
+  "acceptance_limits": "Local or additive broker passes do not close the original cached access finding. Closure requires actual restrictive cutover and same-session warmed-request revocation acceptance; full X, V, Z and release remain open."
+}

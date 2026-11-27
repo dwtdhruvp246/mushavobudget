@@ -1,0 +1,148 @@
+{
+  "date": "2026-11-12",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "HOSTED_STATIC_PNG_LOGO_UPLOAD_SAVE_AND_RETRIEVAL_SCOPED_PASS",
+  "fixture_id": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
+  "provision": {
+    "workflow_run": 43280937650,
+    "mechanism": "Supported Admin test grant",
+    "original_SQL_confirmation_expired_without_writes": true,
+    "created_sessions": 2,
+    "logged_out_sessions": 2
+  },
+  "installed_guard": {
+    "migration": "security_fr3_logo_fixture_guard",
+    "restrictive_policies": 2,
+    "service_only_readiness": true
+  },
+  "deployed_validator": {
+    "id": "fe921d00-7027-4f5c-bbe2-826eb24bf0cf",
+    "version": 3,
+    "sha": "dfb72540057f123271d7ddaa7dad8fc210d7fec3e2336b7f230c56efd9b2bcea",
+    "files": 4
+  },
+  "retained_live_passes": [
+    {
+      "workflow_run": 43281454455,
+      "checks": [
+        "Nonowner denied",
+        "Declared PNG containing synthetic text refused"
+      ],
+      "limitation": "Oversized body transport stopped before a usable result."
+    }
+  ],
+  "retained_reviews": [
+    {
+      "workflow_run": 43281914875,
+      "result": "HTTP 422 observed for dimension case against original runtime."
+    },
+    {
+      "workflow_run": 43282426255,
+      "result": "HTTP 422 INVALID_LOGO_PNG for valid input against original runtime."
+    }
+  ],
+  "runtime_correction": "Portable byte views and unsigned PNG checksum, bounded Web decompression, and fixed rejection reason labels. Revised runtime source readback matched all four files.",
+  "completion": {
+    "workflow_run": 43283375591,
+    "job": 131410240290,
+    "source_commit": "3dc7394fbfcddfba1c49584515ff7f6026fcdb81",
+    "receipt": {
+      "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Business logos",
+      "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+      "checks": {
+        "fixture_owner_and_super_admin_verified": true,
+        "created_sessions_local_logout_acknowledged": true
+      },
+      "accounts": {
+        "USER_A": {
+          "signin_HTTP_status": 200,
+          "confirmed_identity": true,
+          "active_profile": true,
+          "expected_platform_role": true,
+          "owned_workspace_counts": {
+            "personal": 1,
+            "family": 0,
+            "business": 2
+          }
+        },
+        "ADMIN": {
+          "signin_HTTP_status": 200,
+          "confirmed_identity": true,
+          "active_profile": true,
+          "expected_platform_role": true,
+          "owned_workspace_counts": {
+            "personal": 1,
+            "family": 0,
+            "business": 0
+          }
+        }
+      },
+      "API_requests": 12,
+      "created_sessions": 2,
+      "cleanup_sessions": 2,
+      "settings_or_finance_writes_requested": 0,
+      "production_changed": false,
+      "full_lettered_batch_W_complete": false,
+      "exit_code": 0,
+      "exercise": {
+        "checks": {
+          "EXACT_SUSPENDED_LOGO_FIXTURE_REQUIRED": true,
+          "SCOPED_RESUME_ACK_REQUIRED": true,
+          "RESUMED_FIXTURE_READBACK_REQUIRED": true,
+          "EXACT_EMPTY_BRANDING_REQUIRED": true,
+          "INITIAL_LOGO_ABSENCE_REQUIRED": true,
+          "NORMALIZED_LOGO_PERSISTED": true,
+          "EXACT_STORAGE_METADATA_REQUIRED": true,
+          "SAME_CONTENT_RETRY_REUSES_OBJECT": true,
+          "BUSINESS_BRANDING_LINK_SAVED": true,
+          "BROKER_RETURNS_NORMALIZED_LOGO": true,
+          "DIMENSION_LIMIT_APPLIED": true
+        },
+        "requests": 23,
+        "cleanup": {
+          "logo_unlinked": true,
+          "object_absent": true,
+          "fixture_suspended": true
+        },
+        "reused_initial_run": 43281454455,
+        "dimension_check_review_run": 43281914875,
+        "original_runtime_review_run": 43282426255,
+        "initial_owner_denial_and_type_mismatch_repeated": false,
+        "valid_upload_status": 200,
+        "dimension_limit_status": 413
+      },
+      "commit": "3dc7394fbfcddfba1c49584515ff7f6026fcdb81"
+    }
+  },
+  "independent_cleanup": {
+    "status": "suspended",
+    "business_support_version": 8,
+    "member_limit": 1,
+    "paid_through_at": "2026-11-14 00:00:00+00",
+    "version": 3,
+    "logo_empty": true,
+    "gate_ready": false,
+    "logo_objects": 0,
+    "runner_sessions": 0,
+    "queued_messages": 0,
+    "original_paid_bill_preserved": true
+  },
+  "production_worker_readback": {
+    "id": "5ee30828-7086-46f6-88a9-ff4605ce58dc",
+    "created_on": "2026-11-05T21:50:19.232713Z",
+    "versions": [
+      {
+        "version_id": "2f4a8a78-42fb-4f0c-9d52-b4e10abf7c33",
+        "percentage": 100
+      }
+    ]
+  },
+  "acceptance_limits": [
+    "Hosted API scope uses one disposable workspace and static PNG.",
+    "The 2 MiB streaming limit has local coverage. The oversized hosted body request did not yield a usable response.",
+    "Candidate browser routing passed local tests. Hosted browser preview, other file formats, aggregate budgets and durable cleanup remain open."
+  ],
+  "full_FR_3_2_complete": false,
+  "production_changed": false,
+  "exit_code": 0
+}

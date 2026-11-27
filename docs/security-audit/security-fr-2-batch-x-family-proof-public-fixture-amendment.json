@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "original_plan": "docs/security-audit/security-fr-2-batch-x-family-proof-cache-observation-plan.json",
+  "change": "Remove the redundant modeled Auth preflight session from follow-up setup; keep exactly one public synthetic Family, two public memberships and a one-hour synthetic entitlement. Genuine HTTP Owner removal already passed in run 42373564899.",
+  "Auth_session_user_or_proof_writes": 0,
+  "retained_product_authorization_guards": true,
+  "source": "supabase/diagnostics/security_fr_2_6_family_proof_public_fixture_create.sql",
+  "same_case_list_and_cleanup": true,
+  "prior_followup_confirmation_expired": true
+}

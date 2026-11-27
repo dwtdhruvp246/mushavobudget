@@ -1,0 +1,634 @@
+{
+  "schema_version": 1,
+  "stage_step": "8.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "5306aa19adc42654cde1a8f415aa4318a4289321",
+  "scope": "SELECTED_TRACKED_SOURCE_CONFIG_SQL_TEST_DOCUMENT_BYTES_AND_PUBLIC_PRIMARY_REFERENCES_NOT_HOSTED_NATIVE_OR_DEVICE_ACCEPTANCE",
+  "source_files": [
+    {
+      "path": "push-notifications.js",
+      "bytes": 3125,
+      "sha256": "9ed9e471a92d1d58d9ea7902b6fbd8093b382cd412280616910ed6459fe57e91",
+      "git_blob_sha": "2e3fb6dd0fbf8126bb7ec0405e39ec072d2bc68c",
+      "expected_git_blob_sha": "2e3fb6dd0fbf8126bb7ec0405e39ec072d2bc68c",
+      "match": true
+    },
+    {
+      "path": "sw.js",
+      "bytes": 13508,
+      "sha256": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
+      "git_blob_sha": "b61477393fa2b0ed7baa3c52d61076df549df948",
+      "expected_git_blob_sha": "b61477393fa2b0ed7baa3c52d61076df549df948",
+      "match": true
+    },
+    {
+      "path": "manifest.webmanifest",
+      "bytes": 926,
+      "sha256": "9d70bf76140917b6fd58c11ada54e711ca8408bca7af7f7ec3e9dd0906ade950",
+      "git_blob_sha": "58c701867538153b64166582588c4e3dbf86a0a9",
+      "expected_git_blob_sha": "58c701867538153b64166582588c4e3dbf86a0a9",
+      "match": true
+    },
+    {
+      "path": "offline.html",
+      "bytes": 1178,
+      "sha256": "5f8b7c5d5d676b038e66be2ddb96a857af147696f868178d9cf6a837134f24be",
+      "git_blob_sha": "74ec210d864062a617b6c9bf6b3a7b0b50b989f9",
+      "expected_git_blob_sha": "74ec210d864062a617b6c9bf6b3a7b0b50b989f9",
+      "match": true
+    },
+    {
+      "path": "app.js",
+      "bytes": 504595,
+      "sha256": "eb4222245c6d75bf3708335d6c5f24c942c62715d3ce0afdf7d79cb3777cb6f6",
+      "git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+      "expected_git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+      "match": true
+    },
+    {
+      "path": "app.html",
+      "bytes": 112549,
+      "sha256": "e1025272e36af37c2262a7ce260c06bf4e89f345a18cd9e23328698dab85db5a",
+      "git_blob_sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+      "expected_git_blob_sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+      "match": true
+    },
+    {
+      "path": "business.js",
+      "bytes": 239567,
+      "sha256": "6754f92c72399bf45ea849ef692318a6d88a227a413b552a6ca50ee9e1b98f6f",
+      "git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+      "expected_git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+      "match": true
+    },
+    {
+      "path": "business.html",
+      "bytes": 72858,
+      "sha256": "cd076bd8f8f2d6b49efa78b08ae5b97101fffcba3739090e093d103c0ec5504e",
+      "git_blob_sha": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+      "expected_git_blob_sha": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+      "match": true
+    },
+    {
+      "path": "site.js",
+      "bytes": 17878,
+      "sha256": "01c938fbda2469aea36cefc9b45fc6a7ab76202d049d758b2190ca6f5dd6ec02",
+      "git_blob_sha": "f3d5abb558476b2ae1701e4911c3d1b58a50f348",
+      "expected_git_blob_sha": "f3d5abb558476b2ae1701e4911c3d1b58a50f348",
+      "match": true
+    },
+    {
+      "path": "config.js",
+      "bytes": 279,
+      "sha256": "c14293e16fda6a6b0e483ea5141954b78832b175155cec0ab9f59d35e8b7b0cd",
+      "git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+      "expected_git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+      "match": true
+    },
+    {
+      "path": "package.json",
+      "bytes": 883,
+      "sha256": "fe28c33c1a1c93b8f5efaf7b098b6884afca7b61f7910e767f8ce069ff1d8c6a",
+      "git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+      "expected_git_blob_sha": "ab314c838a49dcee05beabf2604213ab297ab979",
+      "match": true
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 70459,
+      "sha256": "cb476c5d8cebfa65f44edf0f54c8d1124d446f0cecef2c305e92f38dae13cd0f",
+      "git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+      "expected_git_blob_sha": "7880998659b6bd106024cf9cea6528a6e2d28714",
+      "match": true
+    },
+    {
+      "path": "scripts/build-capacitor.mjs",
+      "bytes": 4556,
+      "sha256": "86ac88ab42f1c21a0c13cbad69731bf4003e608d597a43321089c8fa5899aaa0",
+      "git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+      "expected_git_blob_sha": "98b9f213dd31cb97991a98989ad3c8bcdf1e1b14",
+      "match": true
+    },
+    {
+      "path": "supabase/config.toml",
+      "bytes": 867,
+      "sha256": "527c331d074845665dba4d79ea782cc3e22ff37473564f9b20280daa9b8de9fb",
+      "git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+      "expected_git_blob_sha": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+      "match": true
+    },
+    {
+      "path": "supabase/schema.sql",
+      "bytes": 953717,
+      "sha256": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+      "git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "expected_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/send-test-push/index.ts",
+      "bytes": 6535,
+      "sha256": "ab59e80c06a7e3c07131852597052b83fa15462637633131a50ae53eb46b9974",
+      "git_blob_sha": "ba209ea5a0a7e246e10be544fbfa4f7487dfbd5f",
+      "expected_git_blob_sha": "ba209ea5a0a7e246e10be544fbfa4f7487dfbd5f",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/dispatch-push-reminders/index.ts",
+      "bytes": 16399,
+      "sha256": "b0307b200dbf2f3834deab1f584f19d130953c732ec819160301ed00bc653202",
+      "git_blob_sha": "ec9b1561cc20f16080099704ee6174044582d67f",
+      "expected_git_blob_sha": "ec9b1561cc20f16080099704ee6174044582d67f",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+      "bytes": 11765,
+      "sha256": "cd7bb726bf20a51ebc6c95f946ce0e6a05737fa44ed2cbd9cc3a2d1ef6201214",
+      "git_blob_sha": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+      "expected_git_blob_sha": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/send-test-push/deno.json",
+      "bytes": 31,
+      "sha256": "5335690600914ad53e9b4873a8287e0baba01902ef94eec02d01b35ca6d7b3be",
+      "git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+      "expected_git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/dispatch-push-reminders/deno.json",
+      "bytes": 31,
+      "sha256": "5335690600914ad53e9b4873a8287e0baba01902ef94eec02d01b35ca6d7b3be",
+      "git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+      "expected_git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/dispatch-admin-notifications/deno.json",
+      "bytes": 31,
+      "sha256": "5335690600914ad53e9b4873a8287e0baba01902ef94eec02d01b35ca6d7b3be",
+      "git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+      "expected_git_blob_sha": "fbd70ec480291a34d3871b16b1599a47e834baa5",
+      "match": true
+    },
+    {
+      "path": "supabase/functions/_shared/push-destination.mjs",
+      "bytes": 6968,
+      "sha256": "3c04dd7ca25442cdc600cc836f347553a0e2e88920c333ed1d975c58a1742743",
+      "git_blob_sha": "047a76e7607cef3ba164e70ea5bfaa5977398042",
+      "expected_git_blob_sha": "047a76e7607cef3ba164e70ea5bfaa5977398042",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260907150000_push_subscriptions.sql",
+      "bytes": 4048,
+      "sha256": "56a32f2b641c2036fffa7d328c817d89b33c7e45e59e62d22c00baaaee0c1004",
+      "git_blob_sha": "91d6012df8cfdc57a81f02e867a79b57e015bfc6",
+      "expected_git_blob_sha": "91d6012df8cfdc57a81f02e867a79b57e015bfc6",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260908130000_push_test_rate_limit.sql",
+      "bytes": 1770,
+      "sha256": "cb95eb5d5a82f94e1b2d422ab57e0ba1093e1c41a14b6966f9a4a146bfa05454",
+      "git_blob_sha": "69dc3ac43815f25c0a892d25e83403008b6d70cb",
+      "expected_git_blob_sha": "69dc3ac43815f25c0a892d25e83403008b6d70cb",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260908170000_notification_outbox.sql",
+      "bytes": 17119,
+      "sha256": "ae51a96d8bd4db671efd2debb8e2ba17590bc79071a8a56c7810873f5d2210ca",
+      "git_blob_sha": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+      "expected_git_blob_sha": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260916190000_admin_event_notifications.sql",
+      "bytes": 12315,
+      "sha256": "be09f4b456f77a5b4ae27627c894cf907cb6900703e0d70ab4c54c6cf52e0e66",
+      "git_blob_sha": "1218eaf24829e287f8054916248a0dea429f010e",
+      "expected_git_blob_sha": "1218eaf24829e287f8054916248a0dea429f010e",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260921130000_notification_workspace_context.sql",
+      "bytes": 11890,
+      "sha256": "9e61d4139b44f2849acce24c9968931f5c20ff8912a46a0800263702ec480390",
+      "git_blob_sha": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+      "expected_git_blob_sha": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20260928222000_stage_6_reminder_url_compatibility.sql",
+      "bytes": 695,
+      "sha256": "1e24b416532617a0a846f2e95b27b34b6ad243d965c1dde1f0c5930473e8bd85",
+      "git_blob_sha": "865a70ea8d3e3b30dfe7b4e4ac9ee531f6cf3e16",
+      "expected_git_blob_sha": "865a70ea8d3e3b30dfe7b4e4ac9ee531f6cf3e16",
+      "match": true
+    },
+    {
+      "path": "supabase/migrations/20261006180000_business_invitation_notifications.sql",
+      "bytes": 5040,
+      "sha256": "8efd199e9c480cbf33dea64a3d8daea3f5a81281896c38f1ca5348b7e94db9f0",
+      "git_blob_sha": "501ae2a45018cf0e89531f0821834c57c904c328",
+      "expected_git_blob_sha": "501ae2a45018cf0e89531f0821834c57c904c328",
+      "match": true
+    },
+    {
+      "path": "supabase/cron-push-reminders.sql",
+      "bytes": 1400,
+      "sha256": "5a8b21f95eb9f227f895d79a8d3e27d3b37d7f622d3a64693f209ec97d538800",
+      "git_blob_sha": "1a56f688d62302cbf45097c2387945c00f0eba93",
+      "expected_git_blob_sha": "1a56f688d62302cbf45097c2387945c00f0eba93",
+      "match": true
+    },
+    {
+      "path": "supabase/cron-admin-notifications.sql",
+      "bytes": 1430,
+      "sha256": "3ac9ae98c23bade5a15eba05f47851122bded33c323f38c60fe889f9cab79499",
+      "git_blob_sha": "cc7b2a72100026160c3ffcdd2b5d12a074ee9e6a",
+      "expected_git_blob_sha": "cc7b2a72100026160c3ffcdd2b5d12a074ee9e6a",
+      "match": true
+    },
+    {
+      "path": "tests/dispatch-push-reminders.test.mjs",
+      "bytes": 3848,
+      "sha256": "9efd0865ca81976497221f5b719d763646990abd3d4969b9cd40cc54c9f3d508",
+      "git_blob_sha": "40ef77891a778e85e65146e51c98c5bce9f9cadf",
+      "expected_git_blob_sha": "40ef77891a778e85e65146e51c98c5bce9f9cadf",
+      "match": true
+    },
+    {
+      "path": "tests/send-test-push.test.mjs",
+      "bytes": 4193,
+      "sha256": "fb1eddc54dea5da0a3a063efb41052e7f63e25164c69fa31053830ccbdd46dfd",
+      "git_blob_sha": "e0f18287d0e88b4a9aae6d31b82945d4fbfc386d",
+      "expected_git_blob_sha": "e0f18287d0e88b4a9aae6d31b82945d4fbfc386d",
+      "match": true
+    },
+    {
+      "path": "tests/notification-outbox.test.mjs",
+      "bytes": 3592,
+      "sha256": "a8d0baad749fab5c0a52787990802cca9f1fd28dca8d814f4d3f8d3e53ac6ea9",
+      "git_blob_sha": "f1ad370f06cac22fcb14caf1b22c7c53a03bf493",
+      "expected_git_blob_sha": "f1ad370f06cac22fcb14caf1b22c7c53a03bf493",
+      "match": true
+    },
+    {
+      "path": "tests/notification-workspace-context.test.mjs",
+      "bytes": 3418,
+      "sha256": "3a69d18d882ccd01e0c87536019a82ef781b3b6789aea4d7b58c4940c555c477",
+      "git_blob_sha": "2f40cf02467bf8eeb228e698c2ee91ae66f97399",
+      "expected_git_blob_sha": "2f40cf02467bf8eeb228e698c2ee91ae66f97399",
+      "match": true
+    },
+    {
+      "path": "tests/push-display-click.test.mjs",
+      "bytes": 7004,
+      "sha256": "b0bead17fa4ce393c75614ec1d1f9edbdb89ca146f53221f9b8304626bd61123",
+      "git_blob_sha": "c1e2663a83d768817085126a574609f9326e5545",
+      "expected_git_blob_sha": "c1e2663a83d768817085126a574609f9326e5545",
+      "match": true
+    },
+    {
+      "path": "tests/push-notifications.test.mjs",
+      "bytes": 14941,
+      "sha256": "22ab98196edbfbe2302b41ca223d13de87d2467e23c67b49b795180a7a7c2461",
+      "git_blob_sha": "2d4795c90a5ac9f12c8c79791871ed3af73fcef1",
+      "expected_git_blob_sha": "2d4795c90a5ac9f12c8c79791871ed3af73fcef1",
+      "match": true
+    },
+    {
+      "path": "tests/admin-event-notifications.test.mjs",
+      "bytes": 5657,
+      "sha256": "94612fe90cd1d4e1d8ea677fda508085193c8ebdc44e927174faa8ce9861fb44",
+      "git_blob_sha": "125316d9c7ee198362cd09f8677807e28f3ed80f",
+      "expected_git_blob_sha": "125316d9c7ee198362cd09f8677807e28f3ed80f",
+      "match": true
+    },
+    {
+      "path": "tests/business-invitation-notifications.test.mjs",
+      "bytes": 8198,
+      "sha256": "1700d43b484bcac69560ffc1e55010427f31725a01ed706f99b8db06df1b67de",
+      "git_blob_sha": "9358d731c77f9e98d42227d6010e558ed39908f4",
+      "expected_git_blob_sha": "9358d731c77f9e98d42227d6010e558ed39908f4",
+      "match": true
+    },
+    {
+      "path": "tests/security-stage-2-push-destination.test.mjs",
+      "bytes": 17552,
+      "sha256": "75e001d34e80a4db6ab2e60a93e3226c4ebbe4c01c1d8bdd0967f80286fd5e5f",
+      "git_blob_sha": "ef6cae3c399a85cf57fe8f6a2de90a4049ea94cb",
+      "expected_git_blob_sha": "ef6cae3c399a85cf57fe8f6a2de90a4049ea94cb",
+      "match": true
+    },
+    {
+      "path": "docs/PWA_WEB_PUSH_BUILD_ROADMAP.md",
+      "bytes": 42243,
+      "sha256": "1839d4ba73bca7dbc5dc1cca402c40f91b04b0a7218804fc1c0c67826bbefa95",
+      "git_blob_sha": "59d1dfe80cc41387f6a742464a8a983ba0a76457",
+      "expected_git_blob_sha": "59d1dfe80cc41387f6a742464a8a983ba0a76457",
+      "match": true
+    },
+    {
+      "path": "NOTIFICATION_WORKSPACE_CONTEXT_DEPLOYMENT.md",
+      "bytes": 2364,
+      "sha256": "78b62144e4611c554c2a069487896bb87daff998229b908d0e227b460c17e6b6",
+      "git_blob_sha": "602b0d137bcc775f5ddcf6f79439d63da99373f0",
+      "expected_git_blob_sha": "602b0d137bcc775f5ddcf6f79439d63da99373f0",
+      "match": true
+    },
+    {
+      "path": "app-entry.html",
+      "bytes": 1990,
+      "sha256": "303ce44a28399dd5a2028d15f2c80e411daea56cb8eaf2a26feb1ee6fd7d8ae0",
+      "git_blob_sha": "eab3265c5a9fb31696266a182b28b2e560125c7a",
+      "expected_git_blob_sha": "eab3265c5a9fb31696266a182b28b2e560125c7a",
+      "match": true
+    },
+    {
+      "path": "app-entry.js",
+      "bytes": 6807,
+      "sha256": "a2a15b461036cdf6b201ca6c9f022fb64c30b0b4f40f0f77e3d5169b91c081a7",
+      "git_blob_sha": "4496b291102c26aa4dbcf9fbb88882cd972f5775",
+      "expected_git_blob_sha": "4496b291102c26aa4dbcf9fbb88882cd972f5775",
+      "match": true
+    },
+    {
+      "path": "workspace-preference.js",
+      "bytes": 4677,
+      "sha256": "913fa62e34cf16d6f6eb1791e3bb9dad0b37001d64ed408dac2773ebbb37ce56",
+      "git_blob_sha": "17abce600781bc378e17bba19771316291c26f71",
+      "expected_git_blob_sha": "17abce600781bc378e17bba19771316291c26f71",
+      "match": true
+    },
+    {
+      "path": "pwa.js",
+      "bytes": 6111,
+      "sha256": "749b9898def77f6cb0c257bc036420b417770833afd96d120a31ed3d786c93e0",
+      "git_blob_sha": "026dc2aefaba5eea0a1570764020a8eb4100a679",
+      "expected_git_blob_sha": "026dc2aefaba5eea0a1570764020a8eb4100a679",
+      "match": true
+    },
+    {
+      "path": "tests/pwa-entry.test.mjs",
+      "bytes": 11088,
+      "sha256": "4cda1c0ca9730c855eadd1e100dea0dae9d41b0793a0c53566793a6c8da358c2",
+      "git_blob_sha": "7a4d0bbe57dce5dd9da0f79e030070f4d8fee1c4",
+      "expected_git_blob_sha": "7a4d0bbe57dce5dd9da0f79e030070f4d8fee1c4",
+      "match": true
+    },
+    {
+      "path": "tests/pwa-update.test.mjs",
+      "bytes": 10440,
+      "sha256": "b15e547b4a093a5f5b48ec47fd9464ed94074fa9583f1f5a6f03e11b837de48d",
+      "git_blob_sha": "9d3d51891be8d4dcba5125b9a8300c0e8dc0cdaa",
+      "expected_git_blob_sha": "9d3d51891be8d4dcba5125b9a8300c0e8dc0cdaa",
+      "match": true
+    },
+    {
+      "path": "tests/pwa-stage-13-hardening.test.mjs",
+      "bytes": 3747,
+      "sha256": "1bf370099d46473f45cc9bf6f90c08d472694e53d7cb39fe0ba44486b841f44e",
+      "git_blob_sha": "52e175e569b2792f4a1b5f918ffa4d3d80ffa07c",
+      "expected_git_blob_sha": "52e175e569b2792f4a1b5f918ffa4d3d80ffa07c",
+      "match": true
+    },
+    {
+      "path": "tests/workspace-preference.test.mjs",
+      "bytes": 6269,
+      "sha256": "7b67262f3a25caa17f4550be47bbace8f6615ce04031994f8503e154b37ee426",
+      "git_blob_sha": "1da274830ccf27056a7969f5ba96d90b62747d05",
+      "expected_git_blob_sha": "1da274830ccf27056a7969f5ba96d90b62747d05",
+      "match": true
+    },
+    {
+      "path": "supabase/pwa-stage-13-monitoring.sql",
+      "bytes": 5670,
+      "sha256": "27e08f137cdee48e2d281c689b068489e81b56071ed10ce78e3d3ca45379e87b",
+      "git_blob_sha": "5e2fe1e7c828fef2775ecd68b42e28a8f5f3f4cf",
+      "expected_git_blob_sha": "5e2fe1e7c828fef2775ecd68b42e28a8f5f3f4cf",
+      "match": true
+    },
+    {
+      "path": "PWA_STAGE_13_DEPLOYMENT.md",
+      "bytes": 6466,
+      "sha256": "2cce399bccec06c03b6be3d2a6aaef334aca28e46a488f434b7d47b6fa9b6511",
+      "git_blob_sha": "62ec1c096b67339f8d34931371c9260e2f5f638d",
+      "expected_git_blob_sha": "62ec1c096b67339f8d34931371c9260e2f5f638d",
+      "match": true
+    },
+    {
+      "path": ".github/workflows/pages.yml",
+      "bytes": 2715,
+      "sha256": "4c494dae6fcb54503e82a9951ef40bca157a1fc931563f14be7de4a303424713",
+      "git_blob_sha": "8f4433b99535e7ed6af0148b0fa24e23de9adb16",
+      "expected_git_blob_sha": "8f4433b99535e7ed6af0148b0fa24e23de9adb16",
+      "match": true
+    }
+  ],
+  "selected_source_inputs_hash_verified": 53,
+  "source_blob_mismatches": 0,
+  "code_config_SQL_inputs": 37,
+  "feature_documents": 3,
+  "test_files_read_not_run": 13,
+  "selected_Edge_entrypoints": 3,
+  "observations": [
+    {
+      "id": "ND-O01",
+      "classification": "SOURCE_EXISTING_WEB_PUSH_NOT_NATIVE_PROOF",
+      "finding_ids": [
+        "F11",
+        "F12"
+      ],
+      "paths": [
+        "push-notifications.js",
+        "app.js",
+        "sw.js",
+        "supabase/functions/_shared/push-destination.mjs"
+      ],
+      "detail": "Web Push uses browser APIs/explicit permission, own-record lookup and shared guarded sender across three Edge handlers. Stage 2 local guard/transport evidence remains scoped; current deployed key/endpoint/runtime/device parity is unverified."
+    },
+    {
+      "id": "ND-O02",
+      "classification": "SOURCE_NATIVE_TRANSPORT_GAP",
+      "finding_ids": [
+        "F11",
+        "F05",
+        "F17"
+      ],
+      "paths": [
+        "package.json",
+        "scripts/build-capacitor.mjs",
+        "pwa.js"
+      ],
+      "detail": "Selected dependencies/build bridge contain Capacitor App/Preferences, no identified native push plugin/receiver/provider registration path. PWA service worker registration is skipped on detected native platform. Existing Web Push UI/code copied into native bundle does not establish FCM/APNs delivery."
+    },
+    {
+      "id": "ND-O03",
+      "classification": "SOURCE_CLEANUP_AND_IDENTITY_RACE_REVIEW",
+      "finding_ids": [
+        "F11",
+        "F14",
+        "F15"
+      ],
+      "paths": [
+        "app.js",
+        "business.js"
+      ],
+      "detail": "Main signOutSafely attempts current-device DB/browser cleanup before Auth sign-out and allows Auth sign-out if cleanup fails; Business signOut uses Auth local sign-out without equivalent cleanup. Automatic Auth state reset is not remote endpoint retirement. refresh sequence guards apply to final UI commits, but delayed opt-in/reconciliation mutation and account-switch boundaries need direct tests."
+    },
+    {
+      "id": "ND-O04",
+      "classification": "SOURCE_QUEUED_PREVIEW_RECHECK_GAP",
+      "finding_ids": [
+        "F11",
+        "F20"
+      ],
+      "paths": [
+        "supabase/schema.sql",
+        "supabase/migrations/20260908170000_notification_outbox.sql",
+        "supabase/migrations/20260921130000_notification_workspace_context.sql",
+        "supabase/functions/dispatch-push-reminders/index.ts",
+        "sw.js"
+      ],
+      "detail": "Personal/Family and Business enqueue can snapshot payment/bill name, amount/currency and workspace title when detailed_notification_previews is enabled. Current dispatcher sends stored job title/body after eligibility checks without rereading/redacting detailed preview choice; disabling it after enqueue may leave detailed queued copy. Worker bounds text but does not authenticate current session or redact valid detailed copy. No actual lock-screen disclosure was observed."
+    },
+    {
+      "id": "ND-O05",
+      "classification": "SOURCE_RECIPIENT_GUARD_INCONSISTENCY_REVIEW",
+      "finding_ids": [
+        "F11",
+        "F08",
+        "F15"
+      ],
+      "paths": [
+        "supabase/functions/send-test-push/index.ts",
+        "supabase/functions/dispatch-admin-notifications/index.ts",
+        "supabase/functions/dispatch-push-reminders/index.ts",
+        "supabase/schema.sql"
+      ],
+      "detail": "Payment send revalidates active profile/membership/settings/payment state; Business uses current bill/eligibility RPC. Test push authenticates getUser and rate limit but has no explicit active-profile check in handler. Admin send checks current app_admins role, unread owned notification and source status but no explicit active-profile check in validateAdminJob. Effective hosted guard/migration parity remains unverified."
+    },
+    {
+      "id": "ND-O06",
+      "classification": "SOURCE_OUTBOX_SEMANTICS_NOT_EXACTLY_ONCE_DELIVERY",
+      "finding_ids": [
+        "F11",
+        "F15",
+        "F19"
+      ],
+      "paths": [
+        "supabase/schema.sql",
+        "supabase/migrations/20260908170000_notification_outbox.sql",
+        "supabase/migrations/20260916190000_admin_event_notifications.sql",
+        "supabase/functions/dispatch-push-reminders/index.ts",
+        "supabase/functions/dispatch-admin-notifications/index.ts"
+      ],
+      "detail": "Unique enqueue keys, SKIP LOCKED, three attempts, 15-minute abandoned-claim recovery and 5/30-minute retry delays exist in source. Result writers match processing state but no claim-generation argument. Any successful device marks job sent, even with another temporary failure; ambiguous delivery/result-write failure can duplicate retry effects. Provider acceptance is not OS display/user acknowledgment. Actual concurrency/recovery/partial-delivery behavior remains unverified."
+    },
+    {
+      "id": "ND-O07",
+      "classification": "SOURCE_ROUTE_CONTEXT_BOUNDARY",
+      "finding_ids": [
+        "F11",
+        "F10",
+        "F14",
+        "F15"
+      ],
+      "paths": [
+        "sw.js",
+        "app.js",
+        "business.js",
+        "workspace-preference.js",
+        "supabase/migrations/20261006180000_business_invitation_notifications.sql"
+      ],
+      "detail": "Worker targets allow same-origin app/admin routes and context-bound Business bill route; click navigates/focuses app windows. App reload rechecks session/workspace/member/Admin assurance. Cached IDs and remembered workspace are navigation intent, not permission. Business invitations are server-created in-app notifications with guarded metadata, not an identified invitation Web Push outbox pipeline."
+    },
+    {
+      "id": "ND-O08",
+      "classification": "SOURCE_PWA_UPDATE_OFFLINE_REVIEW",
+      "finding_ids": [
+        "F11",
+        "F07",
+        "F14",
+        "F17"
+      ],
+      "paths": [
+        "sw.js",
+        "pwa.js",
+        "app-entry.js",
+        "app-entry.html",
+        "manifest.webmanifest"
+      ],
+      "detail": "Network-first no-store navigation has generic offline entry/page fallback; same-origin safe shell is cached, sensitive API prefixes and external requests are not intercepted. Worker install immediately skipWaiting/activation clients.claim; page reload waits for Refresh action and dirty/in-flight work uses beforeunload protection. Native PWA registration is skipped. Actual multi-tab/cache/version/offline/device behavior remains unverified."
+    },
+    {
+      "id": "ND-O09",
+      "classification": "SOURCE_SERVER_SCHEDULER_OPERATIONS_NOT_RUN",
+      "finding_ids": [
+        "F11",
+        "F12",
+        "F19",
+        "F20"
+      ],
+      "paths": [
+        "supabase/cron-push-reminders.sql",
+        "supabase/cron-admin-notifications.sql",
+        "supabase/pwa-stage-13-monitoring.sql",
+        ".github/workflows/pages.yml",
+        "PWA_STAGE_13_DEPLOYMENT.md"
+      ],
+      "detail": "Cron templates use protected Vault secret names, 15-minute reminder/five-minute Admin schedules and dedicated cron header; three senders retain destination guard and generic logs. Aggregate monitoring/manual rollback docs exist. These source templates/workflow are not current hosted scheduler/hosting/deployment/device proof. Historical owner smoke and empty staging key remain dated reports, not fresh observations."
+    }
+  ],
+  "references": [
+    {
+      "id": "ND-REF01",
+      "url": "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/",
+      "topic": "Home Screen Web Push and permission requested through direct user interaction; browser Web Push is distinct from installed native transport",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_MUSHAVO_DEVICE_ACCEPTANCE"
+    },
+    {
+      "id": "ND-REF02",
+      "url": "https://developer.android.com/develop/ui/compose/notifications/notification-permission",
+      "topic": "Android 13+ non-exempt native notification runtime permission and allow/deny behavior",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_MERGED_MANIFEST_OR_DEVICE_PROOF"
+    },
+    {
+      "id": "ND-REF03",
+      "url": "https://firebase.google.com/docs/cloud-messaging/manage-tokens",
+      "topic": "Current registration freshness/retirement guidance, including FID and legacy token sections; actual SDK/API registration scheme must be selected and verified",
+      "reviewed_date": "2026-10-12",
+      "scope": "PUBLIC_PRIMARY_DOCUMENTATION_NOT_PROVIDER_CHOICE_OR_FIXED_TOKEN_SCHEMA"
+    },
+    {
+      "id": "ND-REF04",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/notificationclick_event",
+      "topic": "Notification click lifetime with waitUntil and client focus/open APIs; application authorization remains separate",
+      "reviewed_date": "2026-10-12",
+      "scope": "PRIMARY_API_DOCUMENTATION_NOT_ROUTE_AUTHORIZATION_ACCEPTANCE"
+    },
+    {
+      "id": "ND-REF05",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers",
+      "topic": "Service worker installation/activation, old caches, client control and update lifecycle",
+      "reviewed_date": "2026-10-12",
+      "scope": "PRIMARY_API_DOCUMENTATION_NOT_INSTALLED_WORKER_CACHE_STATE"
+    }
+  ],
+  "local_behavior_tests_run": 0,
+  "hosted_provider_scheduler_or_device_cases_run": 0,
+  "notification_dispatched": false,
+  "device_permission_subscription_or_registration_changed": false,
+  "provider_SDK_activated": false,
+  "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

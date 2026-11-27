@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "source_parent_commit": "ec1faa82330e8522360a481d54a6c914856045d0",
+  "stage_step": "FR.2.5.W28_LOCAL_RECIPIENT_ADDITION_PREPARATION",
+  "source_file_count": 8,
+  "file_sha256": {
+    "scripts/prepare-fr-2-batch-w-recipient-addition.ps1": "f33e04c2583385d00c07f09a4c8ab344dbde0af3791d3e1b94b50857dc817175",
+    "scripts/plan-fr-2-batch-w-recipient-addition.mjs": "6fe04d5fa65c2d8abb6d912ecd83fa553e376faf9e6d424f6ae70e94c38d9d14",
+    "scripts/check-fr-2-batch-w-recovery-recipient.mjs": "22419d83009fa4ecd7aed6c0769412553daab1a014ef02c06ebd50f22136e817",
+    "tests/recipient-addition-local.test.mjs": "e58ac9e2cf036d4ecbea955fa93f56a08c8207b3fd7bea2d8875ba6601e11de4",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5",
+    "scripts/run-fr-2-batch-w-recovery-recipient.ps1": "6fda50a4991a5eb10508242352bccec52b806f5715d97dc986af865b53b85572",
+    "supabase/functions/_shared/email-verification-zoho.mjs": "757270e2535e8c349c5e44ab022d3dd56d251ffdebab2bfdc9a4978fc5737793",
+    "supabase/functions/_shared/email-verification-gateway.mjs": "aa3225be25f3d8a446b47c937c28fd42d7ce26c8d93e7c5940bfb08c9312531f"
+  },
+  "owner_execution_source_hashes": 3,
+  "application_runtime_Worker_or_SQL_files_changed": false,
+  "historical_manifests_and_receipts_preserved": true
+}

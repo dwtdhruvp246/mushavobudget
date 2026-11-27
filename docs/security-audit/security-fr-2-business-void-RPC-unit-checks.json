@@ -1,0 +1,18 @@
+{
+  "scope": "KNOWN_VOID_RPC_STATUS_BODY_CONTRACT_UNIT_CASES",
+  "tests": 17,
+  "pass_count": 17,
+  "fail": 0,
+  "exit_code": 0,
+  "cases": [
+    "Known void204 empty accepted",
+    "Known void200 legacy null/string/empty accepted",
+    "204 nonempty and200 unexpected/malformed/unreadable rejected",
+    "201/202/403/500 rejected",
+    "Unknown and nonvoid204 rejected",
+    "Nonvoid200 JSON accepted"
+  ],
+  "hosted_HTTP_calls": 0,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

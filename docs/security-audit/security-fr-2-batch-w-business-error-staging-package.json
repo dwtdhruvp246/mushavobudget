@@ -1,0 +1,31 @@
+{
+  "result": "EXACT_ACCEPTED_BASELINE_REBUILT_BUSINESS_CANDIDATE_PREPARED",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "exact_accepted_staging_ZIP_sha256": "2006961ea38c6219a3a9b70f85cff7b683cae4d28879aa5df5ec722119feeaff",
+  "candidate_ZIP_sha256": "4dbff05c42bb262e5a036f8c95962947e6dedfbbb8b5dc8b5fba5b0b63bc4e3a",
+  "public_entries": 42,
+  "byte_identical_entries": 40,
+  "changed_public_files": [
+    "business.html",
+    "business.js"
+  ],
+  "changed_public_file_sha256": {
+    "business.html": "071eb64e2c50350e06a198566031839ab97bba691d4886f5e806d0e264426fd6",
+    "business.js": "fb44510b0d278eb1e3df9380cf4f725e10d79c2bd29cc664da2092cf2a963591"
+  },
+  "SQL_install_required": false,
+  "frontend_uploaded": false,
+  "real_email_requests": 0,
+  "hosted_acceptance": false,
+  "date": "2026-11-05",
+  "candidate_source_commit": "c8344cd5a85e684ca028b77d830cfab7e1f19edd",
+  "ZIP_filename": "mushavo-business-invitation-errors-staging.zip",
+  "baseline_source": "The prior staging deployment and pinned historical source reconstructed all 42 entries and reproduced the accepted archive checksum.",
+  "controlled_browser_receipt": "docs/security-audit/security-fr-2-batch-w-controlled-browser-checks.json",
+  "stable_staging_serves_business_JS_version": 24,
+  "candidate_business_JS_version": 25,
+  "stage_only": true,
+  "production_or_native_changed": false,
+  "original_Batch_W_case_groups": 31,
+  "full_lettered_batch_W_complete": false
+}

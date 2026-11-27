@@ -1,0 +1,104 @@
+{
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "WRONG_RECOVERY_SESSION_AND_CONTROLLED_EXPIRY_SCOPED_PASS_SAVE_RETRY_PENDING",
+  "date": "2026-11-05",
+  "live_run_URL": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/42095468799",
+  "live_runner_receipt": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+    "result": "RECOVERY_VARIANTS_REVIEW_REQUIRED",
+    "case_ids": [
+      "AU04.03",
+      "AU04.04",
+      "AU04.05"
+    ],
+    "run_plan": "2026-11-05-recovery-variants-single-fixture",
+    "source_commit": "884d3196e577ff3bb442738a732f4512a39be39c",
+    "workflow_run_id": "42095468799",
+    "workflow_run_attempt": "1",
+    "checks": {
+      "six_accepted_deployed_sources_verified": true,
+      "one_new_confirmed_fixture_and_distinct_existing_runner_identity": true,
+      "original_validity_restored_to_same_unused_disposable_token": true,
+      "all_isolated_contexts_closed": true,
+      "all_existing_account_runner_sessions_scoped_logout": true,
+      "external_guarded_SQL_fixture_and_session_absence_acknowledged": true,
+      "saved_accounts_passwords_and_settings_not_targeted": true
+    },
+    "cases": {
+      "AU04_04": {
+        "status": "CONTROLLED_EXPIRED_FIXTURE_SCOPED_PASS",
+        "actual_verify_HTTP_status": 403,
+        "error_code": "otp_expired",
+        "new_disposable_fixture_timestamp_backdated": true,
+        "global_expiry_policy_changed": false,
+        "natural_hour_long_expiry_observed": false,
+        "password_view_hidden_and_URL_clean": true,
+        "password_update_not_dispatched": true
+      },
+      "AU04_03": {
+        "status": "SCOPED_PASS",
+        "real_distinct_account_substitution_denied_before_password_update": true,
+        "explicit_account_changed_message": true,
+        "normal_account_and_password_form_retained": true
+      }
+    },
+    "direct_API_requests": 8,
+    "browser_backend_requests": 46,
+    "signup_requests": 1,
+    "recovery_requests": 1,
+    "actual_confirmation_email_requests": 1,
+    "actual_recovery_email_requests": 1,
+    "recovery_request_responses": [
+      {
+        "HTTP_status": 200,
+        "error_code": null,
+        "accepted_by_Auth": true,
+        "rate_limited": false
+      }
+    ],
+    "accepted_recovery_email_requests": 1,
+    "password_updates_forwarded": 0,
+    "password_updates_blocked": 0,
+    "created_fixture_accounts": 1,
+    "created_sessions": 3,
+    "scoped_logout_acknowledgements": 3,
+    "context_cleanup_count": 3,
+    "global_Auth_policy_changed": false,
+    "saved_account_passwords_changed": false,
+    "finance_or_shared_workspace_writes": false,
+    "production_or_native_changed": false,
+    "service_workers": "blocked_for_interception",
+    "full_lettered_batch_W_complete": false,
+    "owner_deferred_AU03_04_restarted": false,
+    "natural_hour_long_expiry_observed": false,
+    "provider_quota_exhaustion_attempted": false,
+    "legacy_short_password_candidate_available": false,
+    "exit_code": 1,
+    "problem_code": "EXACT_NEW_FIXTURE_PASSWORD_WRITE_REQUIRED",
+    "session_cleanup_method": "own_local_logout_then_guarded_new_fixture_deletion_with_external_SQL_absence_readback",
+    "mailbox_polls": 120
+  },
+  "independent_exact_fixture_cleanup_readback": {
+    "exact_fixture_profiles": 0,
+    "exact_fixture_workspaces": 0,
+    "remaining_runner_sessions": 0,
+    "exact_fixture_Auth_accounts": 0,
+    "exact_fixture_recovery_tokens": 0,
+    "remaining_other_selected_sessions": 1
+  },
+  "accepted_original_cases": [
+    "AU04.03",
+    "AU04.04"
+  ],
+  "remaining_original_case": "AU04.05",
+  "password_save_retry_failure_cause": "The runner rejected the two null PKCE fields the pinned Supabase SDK adds to a password-only update.",
+  "corrected_guard": "The exact disposable user, exact recovery session and new fixture password must match. Only the password and optional null PKCE fields are allowed.",
+  "local_guard_and_Business_checks_passed": 33,
+  "live_AU04_05_save_retry_verified": false,
+  "repeated_email_attempted": false,
+  "original_Batch_W_case_groups": 31,
+  "full_lettered_batch_W_complete": false,
+  "production_or_native_changed": false,
+  "findings_closed": [],
+  "next_step": "FR.2.5_RECOVERY_SAVE_RETRY_AND_BUSINESS_ERROR_BROWSER_VERIFICATION"
+}

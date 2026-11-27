@@ -1,0 +1,15 @@
+[
+  {
+    "binding_installation": {
+      "result": "PREVENTIVE_BINDING_TRIGGER_INSTALLED_METADATA_NOT_API_ACCEPTANCE",
+      "stage_step": "FR.2.2",
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "findings_closed": [],
+      "hosted_authorization_acceptance": false,
+      "workspace_update_column_present": true,
+      "project_selection_independently_verified": false,
+      "existing_rows_or_conversions_rewritten_by_this_script": false,
+      "functions_policies_grants_accounts_or_factors_changed": false
+    }
+  }
+]

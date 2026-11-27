@@ -1,0 +1,394 @@
+{
+  "schema_version": 1,
+  "stage_step": "8.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "5306aa19adc42654cde1a8f415aa4318a4289321",
+  "scope": "PLANNED_GROUPED_NOTIFICATION_DEVICE_ACCEPTANCE_NOT_EXECUTED_TESTS",
+  "groups": [
+    {
+      "id": "ND01",
+      "title": "Permission/channel/native transport",
+      "planned_cases": 6
+    },
+    {
+      "id": "ND02",
+      "title": "Device/account lifecycle",
+      "planned_cases": 6
+    },
+    {
+      "id": "ND03",
+      "title": "Private display/content",
+      "planned_cases": 6
+    },
+    {
+      "id": "ND04",
+      "title": "Server authorization/recipient/event guards",
+      "planned_cases": 6
+    },
+    {
+      "id": "ND05",
+      "title": "Outbox/scheduler/egress/recovery",
+      "planned_cases": 6
+    },
+    {
+      "id": "ND06",
+      "title": "Click/workspace/identity routing",
+      "planned_cases": 6
+    },
+    {
+      "id": "ND07",
+      "title": "PWA update/offline/cache/device state",
+      "planned_cases": 6
+    },
+    {
+      "id": "ND08",
+      "title": "Isolated devices/operations/release",
+      "planned_cases": 6
+    }
+  ],
+  "cases": [
+    {
+      "id": "ND01-01",
+      "group": "ND01",
+      "expected": "Explicit user gesture/support detection and allow/deny/dismiss/revoke paths are correct on real supported browser/PWA/native surfaces.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND01-02",
+      "group": "ND01",
+      "expected": "iOS/iPadOS Home Screen Web Push and ordinary tab unsupported state are correctly distinguished without claiming native push.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND01-03",
+      "group": "ND01",
+      "expected": "Actual selected native Android permission/channel and iOS capability/environment/configuration work on the accepted signed test artifact.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND01-04",
+      "group": "ND01",
+      "expected": "Configured public browser key and server-only provider credentials match exact isolated environment; malformed/missing configuration fails safely.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND01-05",
+      "group": "ND01",
+      "expected": "Selected actual provider/SDK registration freshness/change/retirement protocol is implemented; no hard-coded obsolete token schema or trust in caller device ID.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND01-06",
+      "group": "ND01",
+      "expected": "Native wrapper does not expose a falsely successful browser Web Push path or silently enable local/tab reminder scheduling.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND02-01",
+      "group": "ND02",
+      "expected": "Own authenticated device registration/update/read/delete succeeds; anonymous/foreign user/account reassignment and server-health edits fail directly.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND02-02",
+      "group": "ND02",
+      "expected": "Main app and Business explicit sign-out retire current-device server association/browser subscription or follow a recorded safe failure recovery without blocking requested Auth sign-out.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND02-03",
+      "group": "ND02",
+      "expected": "Delayed permission/subscribe/lookup/save/reconcile completion during account switch cannot mutate or display the wrong user's device association.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND02-04",
+      "group": "ND02",
+      "expected": "Permission revocation, disabled/expired endpoint and re-registration clear stale associations/badges and respect explicit prior opt-in.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND02-05",
+      "group": "ND02",
+      "expected": "Multiple tabs/devices/accounts and unique endpoint conflicts preserve rightful binding; removing this device does not remove another valid device.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND02-06",
+      "group": "ND02",
+      "expected": "Auth expiry/forced sign-out/offline cleanup/reinstall/provider registration change cannot retain unintended cross-account delivery; recovery/retention is auditable.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND03-01",
+      "group": "ND03",
+      "expected": "Default push preview contains only approved generic copy, never payment names/amounts, workspace/customer identities, proofs or secrets.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND03-02",
+      "group": "ND03",
+      "expected": "Detailed previews follow approved recipient/device/workspace authority and actual lock-screen/foreground privacy checks.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND03-03",
+      "group": "ND03",
+      "expected": "Turning previews off after enqueue redacts pending/retried content before send; current queued settings cannot preserve stale sensitive copy.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND03-04",
+      "group": "ND03",
+      "expected": "Malformed/oversized/control-rich payloads produce bounded generic display, approved icon/tag/badge and no executable/injected navigation.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND03-05",
+      "group": "ND03",
+      "expected": "Displayed retained notifications/badges and click handling across sign-out/account switch do not disclose the previous account's financial details.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND03-06",
+      "group": "ND03",
+      "expected": "Actual payload/provider/log/ledger retention and deletion agree with operator/privacy declarations without leaking raw endpoints, keys, proof or customer contents.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND04-01",
+      "group": "ND04",
+      "expected": "Test sender authenticates actual active account before dispatch and applies authoritative per-user cooldown; wrong origin/method/token/inadequate account status are denied.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND04-02",
+      "group": "ND04",
+      "expected": "Cron sender rejects missing/wrong/empty secret and malformed source before claim/send; browser public keys cannot trigger service dispatch.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND04-03",
+      "group": "ND04",
+      "expected": "Personal/Family paid/paused/deleted/reassigned/removed/suspended/settings changes cancel stale reminders before delivery.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND04-04",
+      "group": "ND04",
+      "expected": "Business bill fully-paid/due-date/workspace/owner/member/subscription/suspension changes invalidate stale reminders.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND04-05",
+      "group": "ND04",
+      "expected": "Admin recipient active account/role/unread source and source status are revalidated; removed/suspended/inadequate-role recipients receive no unauthorized alert.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND04-06",
+      "group": "ND04",
+      "expected": "In-app invitation/notification create/read/mark-read metadata and membership acceptance remain protected; invitation visibility is not an implicit push pipeline or access grant.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND05-01",
+      "group": "ND05",
+      "expected": "Server due generation uses authoritative saved timezone/local date/delivery time and recurrence/overdue semantics without client-tab scheduling.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND05-02",
+      "group": "ND05",
+      "expected": "Unique enqueue and genuine concurrent claim/reclaim/result writes preserve claim ownership and do not overwrite a newer attempt with a stale worker result.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND05-03",
+      "group": "ND05",
+      "expected": "Temporary/permanent/no-subscription/blocked-destination/partial-device outcomes follow approved retry policy with observable correct totals.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND05-04",
+      "group": "ND05",
+      "expected": "Provider acceptance then result-write failure/timeout/process interruption recovers durably; duplicate delivery ambiguity is documented and bounded.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND05-05",
+      "group": "ND05",
+      "expected": "Stage 2 destination/DNS/TLS/proxy/redirect/runtime compatibility and legitimate provider delivery hold in actual installed senders.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND05-06",
+      "group": "ND05",
+      "expected": "Actual cron/Vault/Edge parity, failure budgets/private logs/queue age/retirement and recovery/rollback are verified without secrets or production sends.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND06-01",
+      "group": "ND06",
+      "expected": "External/wrong-origin/lookalike/path/query targets fall back safely; approved context is preserved without treating URL IDs as permission.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND06-02",
+      "group": "ND06",
+      "expected": "Valid Personal/Family reminder selects an accessible workspace and correct payment/due occurrence after current session revalidation.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND06-03",
+      "group": "ND06",
+      "expected": "Business bill route binds valid accessible workspace/bill and handles signed-out/removed/expired/deleted targets safely.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND06-04",
+      "group": "ND06",
+      "expected": "Admin alert click enforces current role/MFA/source access and notification ownership before displaying private queue data.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND06-05",
+      "group": "ND06",
+      "expected": "Old notification from another account or previously open tab cannot select a foreign workspace or reveal cached data after switch.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND06-06",
+      "group": "ND06",
+      "expected": "Valid invitation/manual sign-in/last-workspace/native return intent is retained while malformed/replayed/unavailable intent is rejected through actual platform flow.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND07-01",
+      "group": "ND07",
+      "expected": "Fresh/current/old worker and deployment markers are reconciled; actual installation/activation and shell failures recover safely.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND07-02",
+      "group": "ND07",
+      "expected": "Worker activation across tabs is tested separately from explicit page refresh, with dirty forms/in-flight operations preserved.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND07-03",
+      "group": "ND07",
+      "expected": "Offline navigation and failed Auth checks show generic connection-required UI rather than private or falsely-current financial data.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND07-04",
+      "group": "ND07",
+      "expected": "Sensitive API/private responses and cross-origin requests are not cached/intercepted incorrectly; obsolete shell caches are retired safely.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND07-05",
+      "group": "ND07",
+      "expected": "Foreground/resume/online update and last-workspace checks preserve current account/session; native bypass behavior is correct on a real artifact.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND07-06",
+      "group": "ND07",
+      "expected": "Physical browser/PWA/app closed/minimized/background/offline/relaunch states match accepted update/badge/delivery expectations; no native OTA behavior is inferred from PWA refresh.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND08-01",
+      "group": "ND08",
+      "expected": "Exact staged source/schema/grants/configuration and controlled recoverable actors/devices/subscriptions are verified before the bounded batch.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND08-02",
+      "group": "ND08",
+      "expected": "Closed/minimized real-device delivery and provider acceptance/display/interaction evidence are separately recorded for the accepted platform matrix.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND08-03",
+      "group": "ND08",
+      "expected": "Sign-out/account-switch/permission-revoke/removed-member/suspension/detailed-preview cases pass without touching retained fixtures or two conversions.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND08-04",
+      "group": "ND08",
+      "expected": "Server credentials/registration roles/channel settings and operations signals remain private with actual retention/deletion/rotation evidence.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND08-05",
+      "group": "ND08",
+      "expected": "Rollback/retry/claim recovery preserves finance/notification attribution and safely stops/restarts accepted schedules without destructive fixture cleanup.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    },
+    {
+      "id": "ND08-06",
+      "group": "ND08",
+      "expected": "Final signed artifact/provider/privacy/data declarations and Stage 9 broad regression/full re-audit remain required before release approval.",
+      "status": "PENDING_NOT_RUN",
+      "actual": "NOT_EXECUTED"
+    }
+  ],
+  "planned_grouped_cases": 48,
+  "hosted_or_device_cases_run": 0,
+  "overlap_with_prior_WebPush_AU_AM_DL_PR_NR_IE_CO_dependencies": true,
+  "counts_not_additive_unique_global_controls": true,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "notification_dispatched": false
+}

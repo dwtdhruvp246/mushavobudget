@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "scope": "account-suspension-boundaries",
+  "source_parent_commit": "5611c278b74131d6bf2a9b048380c9cb13b414c2",
+  "target_slot": "USER_A",
+  "cases": [
+    "X_ACCOUNT_NONADMIN_DENIAL",
+    "X_ACCOUNT_EXISTING_SESSION_SUSPENDED",
+    "X_ACCOUNT_OTHER_ACTORS_UNAFFECTED",
+    "X_ACCOUNT_SUPPORTED_RESTORE"
+  ],
+  "credentials": "Existing three GitHub Actions staging account secrets; no secrets read or exported.",
+  "target_preflight": {
+    "account_active": true,
+    "platform_roles": 0,
+    "active_devices": 0,
+    "ready_challenges": 0,
+    "session_proofs": 0,
+    "security_version": null,
+    "active_business_memberships": 1,
+    "owned_business_is_isolated_audit_fixture": true,
+    "profile_hash_except_update_time": "425b1fdb570ffaa68c26ea25178fd13e"
+  },
+  "status_action": {
+    "signature": "public.set_user_account_status(uuid,text)",
+    "definition_md5": "36db915a64c75544a32afed531edb678",
+    "successful_changes": "Suspend exact ordinary USER_A once, then restore active once in finally; independent read after each."
+  },
+  "limits": {
+    "core_requests": 24,
+    "exercise_requests": 30,
+    "status_action_requests": 3,
+    "Auth_logins": 3,
+    "email_requests": 0,
+    "provider_requests": 0,
+    "finance_writes": 0
+  },
+  "assertions": [
+    "Ordinary B cannot suspend A; active status preserved.",
+    "Admin can suspend A; existing A session loses application status, protected workspace reads and an absent-target protected mutation.",
+    "Underlying Auth user read remains valid; B and Admin unaffected.",
+    "Finally restore active and verify same A JWT and exact original workspace snapshot.",
+    "Local logout every newly-created session, independently confirm no retained CI sessions."
+  ],
+  "expected_retained_metadata": [
+    "Monotonic security version established or advanced by normal suspension trigger; never decremented.",
+    "Business access/realtime signals from normal account status trigger.",
+    "Profile update timestamp may change; final status and other profile fields match baseline."
+  ],
+  "failure_handling": "Never retry suspension. Read exact target status as Admin in finally, restore once if suspended, then independently read active. If CI restoration fails and independent connector read confirms still suspended, execute the pinned compensating SQL once; report it separately from HTTP acceptance.",
+  "fallback": "supabase/diagnostics/security_fr_2_6_account_suspension_restore.sql",
+  "excluded": [
+    "No existing passwords changed.",
+    "No existing sessions globally revoked; only newly created sessions locally logged out.",
+    "No stored SMTP/VAPID/CRON/service secrets accessed.",
+    "No entitlement expiry claims or third ordinary member claims.",
+    "No production changes."
+  ]
+}

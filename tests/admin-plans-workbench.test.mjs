@@ -1,3 +1,4 @@
+import { PUBLIC_SITE_FILES } from '../scripts/build-public-site.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -58,5 +59,6 @@ test('customer cards and renewal price selection exclude future and previous ver
 });
 test('GitHub Pages ships the imported editor module',async()=>{
  const workflow=await readFile(new URL('../.github/workflows/pages.yml',import.meta.url),'utf8');
- assert.match(workflow,/cp app-entry\.js app\.js admin-plans\.js business\.js/);
+ assert.match(workflow, /node scripts\/build-public-site\.mjs/);
+  for (const asset of ["app-entry.js", "app.js", "admin-plans.js", "business.js"]) assert.ok(PUBLIC_SITE_FILES.includes(asset), asset + " is shipped by the actual exporter");
 });

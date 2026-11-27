@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-12",
+  "evidence_date": "2026-11-08",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z — COMPLETE",
+  "result": "BATCH_X_COMPLETE_AT_CURRENT_SELECTED_AUTHORIZATION_BOUNDARY",
+  "baseline": "docs/security-audit/security-stage-3-lettered-batch-baseline.json",
+  "case_reconciliation": [
+    {
+      "id": "X_EXIT_ACTORS_AND_FIXTURES",
+      "status": "PASS_AT_RECORDED_SCOPE",
+      "scope": "Personal Owner and foreign ordinary user; subscription Owner and authorized Admin; exact temporary Family 72492390-f4b8-4519-9f4d-5448d22e325a with head/current/removed member; isolated Business dcf3d122-e99f-4fe5-bbd1-03c3547629df with Owner, temporary finance manager, third staff actor, foreign/removed callers and super Admin. Exact actor IDs, relationships and finance fixtures are retained in the pinned plans and original receipts.",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-x-remaining-coverage-ledger.json",
+        "docs/security-audit/security-fr-2-batch-x-private-file-server-retrieval-acceptance-plan.json",
+        "docs/security-audit/security-fr-2-batch-x-private-broker-family-corrected-plan.json",
+        "docs/security-audit/security-fr-2-batch-x-business-private-file-plan.json",
+        "docs/security-audit/security-fr-2-batch-x-three-ordinary-team-plan.json"
+      ]
+    },
+    {
+      "id": "X_EXIT_ALLOWED_AND_DENIED_PATHS",
+      "status": "PASS_AT_RECORDED_SCOPE",
+      "scope": "Preserved Personal finance binding, relink and deletion, Family settings and proof scope, Business role/finance/seat/expiry and suspension passes. Genuine HTTP covers all four private buckets with current access and selected owner/foreign/removed/archived boundaries. The affected UI authorization paths were exercised in actual frontend JavaScript with a synthetic DOM (63 application and 25 shared/Admin/logo cases), alongside earlier accepted U browser coverage.",
+      "evidence": [
+        "docs/security-audit/security-fr-2-personal-api-owner-recheck.json",
+        "docs/security-audit/security-fr-2-relink-owner-result.json",
+        "docs/security-audit/security-fr-2-personal-deletion-owner-result.json",
+        "docs/security-audit/security-fr-2-batch-x-remaining-coverage-ledger.json",
+        "docs/security-audit/security-fr-2-batch-x-private-file-server-retrieval-staging-result.json",
+        "docs/security-audit/security-fr-2-batch-x-private-broker-family-corrected-result.json",
+        "docs/security-audit/security-fr-2-batch-x-business-private-file-staging-result.json",
+        "docs/security-audit/security-fr-2-batch-x-private-file-broker-local-result.json"
+      ]
+    },
+    {
+      "id": "X_EXIT_CLEANUP_AND_PRESERVATION",
+      "status": "PASS_AT_RECORDED_SCOPE",
+      "scope": "Exact synthetic files removed, temporary Family absent, Business restored to suspended with one seat and its original expired term, runner sessions and queues empty. Both manual Family conversions, original Business states and paid bill/profile/subscription values match saved fingerprints. The archived new document metadata remains as an audit fixture.",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-x-final-preservation.json",
+        "docs/security-audit/security-fr-2-batch-x-business-private-file-staging-result.json",
+        "docs/security-audit/security-fr-2-batch-x-private-file-server-retrieval-staging-result.json",
+        "docs/security-audit/security-fr-2-batch-x-private-broker-family-corrected-result.json"
+      ]
+    },
+    {
+      "id": "X_EXIT_LATER_DATA_AND_RETENTION",
+      "status": "RECONCILED_WITH_EXPLICIT_LATER_OWNERSHIP",
+      "scope": "Stage 4 / FR.3 owns the historical conversion retention decision, the two unchanged orphan rows and any future validation of the reference FK. The checked workspace joins have zero mismatches. Later Stage 4 / FR.3 file lifecycle/privacy and Stage 5 / FR.7 native/WebView acceptance remain open.",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-x-final-preservation.json",
+        "docs/security-audit/MUSHAVO_BUDGET_COMPLETE_STAGE_FR_BATCH_MAP.md"
+      ]
+    }
+  ],
+  "exit_groups": 4,
+  "exit_groups_reconciled": 4,
+  "full_lettered_batch_X_complete": true,
+  "completion_scope": "Selected staging authorization and legitimate finance boundary, with the four frozen exit groups reconciled against recorded evidence.",
+  "evidence_limits": [
+    "The original paid-proof archive run retains exit1. The corrected archive uses an exact workspace document and an ordinary Owner session after privileged fixture setup.",
+    "File UI authorization evidence uses actual JavaScript and a synthetic DOM. Live broker evidence uses genuine staging sessions over HTTP. Genuine browser preview rendering, native clients and OS download behavior remain outside this acceptance.",
+    "The current broker enforces the selected fresh-request authorization boundaries. Previously delivered bytes cannot be recalled."
+  ],
+  "completed_live_checks_repeated_on_resume": false,
+  "remaining_required_letters": [
+    "V",
+    "Z"
+  ],
+  "stage_3_complete": false,
+  "FR_2_complete": false,
+  "release_accepted": false,
+  "production_changed": false,
+  "findings_closed": []
+}

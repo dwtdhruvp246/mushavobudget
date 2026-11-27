@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "stage_step": "7.2",
+  "date": "2026-10-12",
+  "source_parent_commit": "1153f77b612170612111b6b00ec82e620a78d749",
+  "scope": "INERT_REVIEW_MODEL_AND_EXISTING_MANUAL_REGRESSION_NOT_RUNTIME_COMMERCE_IMPLEMENTATION",
+  "model_module": "scripts/lib/stage-7-commerce-model.mjs",
+  "model_fixture_catalog_is_synthetic": true,
+  "approved_runtime_catalog": null,
+  "configured_provider_adapters": [],
+  "provider_signature_receipt_or_API_verification_implemented": false,
+  "durable_purchase_ledger_or_event_receiver_implemented": false,
+  "runtime_integration_implemented": false,
+  "candidate_deployed": false,
+  "hosted_acceptance": false,
+  "real_charges_performed": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "unconfirmed_decision_ids": [
+    "CO-D01",
+    "CO-D02",
+    "CO-D03",
+    "CO-D04",
+    "CO-D05",
+    "CO-D06",
+    "CO-D07",
+    "CO-D08"
+  ],
+  "trusted_model_inputs": [
+    "server-held account/workspace/intent binding",
+    "unique synthetic provider/environment/application/product catalog",
+    "synthetic adapter snapshot with fixture-only monotonic sequence",
+    "prior record with expected revision"
+  ],
+  "required_before_runtime_adoption": [
+    "Provider-specific authenticated verification, authoritative state normalization and retry semantics",
+    "Approved products/channels/ownership/transfer/grace/precedence policy",
+    "Transactional unique logical chain ownership, durable compare-and-swap/outbox and recovery",
+    "Seat reservations, scheduled capacity, source precedence and actual accepted provider change rules",
+    "Actual backend/native integration and genuine staged/store sandbox acceptance"
+  ],
+  "model_limits": [
+    "Adapter injection is a test port, not a security trust boundary in a deployed service",
+    "Synthetic sequence is not a real provider event-ordering mechanism",
+    "Prior record argument does not enforce global ownership or concurrent persistence",
+    "No signature checks, purchase acknowledgment, webhook authentication, network, payments or database writes",
+    "Normalized lifecycle labels do not implement actual Google/Apple lifecycle rules",
+    "Access projection is a proposal; independent sources and finance records are not mutated"
+  ],
+  "findings_closed": []
+}

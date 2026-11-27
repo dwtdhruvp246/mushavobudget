@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-08",
+  "result": "REVERSIBLE_NEW_TEST_DOCUMENT_PARENT_CORRECTED_NO_DELETION",
+  "delete_attempt": {
+    "status": "CONFIRMATION_EXPIRED_NOT_EXECUTED",
+    "independent_readback": {
+      "runner_sessions": 0,
+      "storage_objects": 2,
+      "new_document_hash": "348d9c475b11bb33be236c3068fb113de4623de72ee628ae313d42fe17169c9f",
+      "new_document_rows": 1,
+      "new_document_parent": "business_bill"
+    },
+    "no_retry": true
+  },
+  "reversible_update_result": {
+    "Auth_rows_changed": 0,
+    "Storage_rows_changed": 0,
+    "ordinary_API_acceptance": false,
+    "document_or_content_deleted": false,
+    "financial_ledger_rows_changed": 0,
+    "exact_new_test_parent_corrected": true
+  },
+  "caller_boundary_readback": {
+    "new_document": {
+      "status": "active",
+      "parent_id": "dcf3d122-e99f-4fe5-bbd1-03c3547629df",
+      "parent_type": "workspace"
+    },
+    "write_policies": [
+      {
+        "cmd": "ALL",
+        "name": "Account must be active",
+        "check": "(NOT my_account_suspended())",
+        "roles": [
+          "authenticated"
+        ],
+        "using": "(NOT my_account_suspended())",
+        "permissive": "RESTRICTIVE"
+      },
+      {
+        "cmd": "ALL",
+        "name": "Email verified session required",
+        "check": "( SELECT email_gate_current_session_verified() AS email_gate_current_session_verified)",
+        "roles": [
+          "authenticated"
+        ],
+        "using": "( SELECT email_gate_current_session_verified() AS email_gate_current_session_verified)",
+        "permissive": "RESTRICTIVE"
+      }
+    ],
+    "authenticated_update_privilege": false,
+    "authenticated_parent_column_update": false
+  },
+  "original_paid_bill_hash": "f55eef182e5f7e153e93362a51a90c881357149bf17745808d914dc0e9809a87",
+  "privileged_operator_only_not_end_user_acceptance": true,
+  "Auth_rows_changed": 0,
+  "policies_or_triggers_changed": false,
+  "Storage_metadata_or_bytes_changed": false,
+  "next": "Only remaining workspace-document archive and exact two-file/seat/status cleanup; completed access/removal cases not repeated."
+}
+

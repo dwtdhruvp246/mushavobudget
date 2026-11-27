@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "stage_step": "8.2",
+  "date": "2026-10-12",
+  "source_parent_commit": "a51e29cb2b71182dc5373c3804ec5ebc4a3c2ce0",
+  "scope": "SOURCE_CANDIDATE_AND_ACTUAL_CLIENT_EDGE_FUNCTION_FIXTURES_NOT_HOSTED_OR_DEVICE_ACCEPTANCE",
+  "runtime_source_candidate_changes": [
+    "business.js",
+    "business.html",
+    "supabase/functions/_shared/notification-recipient.mjs",
+    "supabase/functions/send-test-push/index.ts",
+    "supabase/functions/dispatch-push-reminders/index.ts",
+    "supabase/functions/dispatch-admin-notifications/index.ts",
+    "app.js",
+    "app.html"
+  ],
+  "offline_changes": [
+    "tests/stage-8-notification-boundaries.test.mjs",
+    "scripts/verify-stage-8-notifications.mjs",
+    "tests/security-stage-2-push-destination.test.mjs"
+  ],
+  "preserved_web_reminders_preview_defaults_roles_finance_and_egress_guard": true,
+  "business_cleanup_deadline_ms": 10000,
+  "cleanup_failure_does_not_block_requested_Auth_signout": true,
+  "cleanup_anchored_user_and_Auth_epoch": true,
+  "preview_revalidation": "CURRENT_WORKSPACE_SETTINGS_READ_AFTER_JOB_ELIGIBILITY_AND_SUBSCRIPTION_LOOKUP_BEFORE_PAYLOAD_CONSTRUCTION",
+  "privacy_limit": "Read snapshot is not an atomic setting/send transaction and cannot recall already accepted/displayed notifications; in-flight setting or account changes and provider queue require real-device acceptance.",
+  "recipient_profile_state_required": "active",
+  "recipient_read_failure_fails_closed": true,
+  "new_provider_or_native_registration_SDK_selected": false,
+  "native_push_transport_implemented": false,
+  "SQL_or_schema_or_cron_changed": false,
+  "actual_notification_dispatched": false,
+  "device_permission_or_subscription_changed": false,
+  "candidate_deployed": false,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "user_visible_status_errors": "Existing friendly formatter maps new inactive/lookup-failure codes; app/business script cache references advanced without adopting a release or rebuilding native."
+}

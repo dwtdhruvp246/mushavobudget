@@ -1,0 +1,24 @@
+{
+  "stage_step": "FR.2.2_RELINK_CANDIDATE",
+  "result": "OFFLINE_ACTUAL_API_CHECKER_AND_DRIVER_SYNTHETIC_TRANSPORT_SCOPED_PASS",
+  "scope": "ACTUAL_NODE_CHECKER_WITH_SYNTHETIC_AUTH_REST_AND_CONVERSION_PORTS_PLUS_STATIC_POWERSHELL_DRIVER_NODE_EXECUTION_NOT_HOSTED_OR_WINDOWS_PS",
+  "tests": 21,
+  "pass_count": 21,
+  "fail": 0,
+  "exit_code": 0,
+  "syntax_checks": 2,
+  "default_network_disabled": true,
+  "earlier_19_case_pass_preserved_as_pre_driver_check": true,
+  "model_actual_SQL_RLS_or_provider_not_executed": true,
+  "Windows_PowerShell_runner_execution_verified": false,
+  "hosted_requests_run": 0,
+  "fixture_rows_created_on_staging": 0,
+  "file_sha256": {
+    "scripts/check-fr-2-personal-relink.cjs": "9778316b8905d458909dc6f9d67dd171e5bfc0f2672929ef640738bb3a665d18",
+    "scripts/run-fr-2-personal-relink.ps1": "29149a8d1b0d6fc3a4382b326275412c7d833d61f85fdd45f8ae2a842d06c3b7",
+    "tests/fr-2-personal-relink.test.cjs": "b57967ddb09ee6760eeda72214f51905fd00195ea0edb4ed0b32b57d0b74a9f3",
+    "scripts/check-stage-3-personal-api.cjs": "e157dd2ba70cfc8b45e25ea75536d5f96ace195d808e0ba97d6263adcc5fd5dd",
+    "scripts/offline-test-network.cjs": "8aaea88e1a0793d7c490b3251466cd403160685c21a65ac352e011d69a6e50f5"
+  },
+  "findings_closed": []
+}

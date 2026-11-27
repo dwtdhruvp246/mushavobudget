@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "enabled": false,
+  "date": "2026-11-08",
+  "project": "dczlddwbtgvfdujgcitb",
+  "source_parent_commit": "e39a8b7fd66ea105bd16ce64e7bbdfae4657691e",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+  "status": "FROZEN_BEFORE_EXACT_SYNTHETIC_TERM_SETUP",
+  "scope": "business-private-files",
+  "workspace_id": "dcf3d122-e99f-4fe5-bbd1-03c3547629df",
+  "fixture_name": "audit-batch-x-receipt-d7be160c2026",
+  "bill_id": "c88a0a8c-fae6-4452-bdf0-b9ce7bf71b45",
+  "expected_support_version": 18,
+  "expected_subscription_version": 16,
+  "expected_profile_version": 1,
+  "original_paid_through_at": "2026-11-08T00:00:00.000Z",
+  "temporary_paid_through_at": "2026-11-09T00:00:00.000Z",
+  "catalog_sha256": "cc122f36b6cc70e4fa88fe12a765cc83f24a586d495dfd3084f26edc2134e84f",
+  "case_ids": [
+    "X_BUSINESS_BROKER_OWNER_FOREIGN",
+    "X_BUSINESS_BROKER_REGISTERED_PARENT",
+    "X_BUSINESS_BROKER_MEMBER_REMOVAL",
+    "X_BUSINESS_BROKER_ARCHIVE",
+    "X_BUSINESS_BROKER_EXACT_CLEANUP"
+  ],
+  "run_id": "2026-11-08-batch-x-business-private-file-broker",
+  "no_automatic_rerun": true,
+  "bounds": {
+    "genuine_sessions": 3,
+    "harmless_PNG_files": 2,
+    "exercise_requests_including_cleanup": 100,
+    "status_changes": 2,
+    "seat_changes": 2,
+    "existing_controlled_member_reactivation": 1,
+    "DB_only_invitation": 1,
+    "branding_writes": 2,
+    "document_metadata_register_archive": 2,
+    "financial_ledger_writes": 0,
+    "provider_mail_push_or_payment_requests": 0,
+    "Auth_users_or_password_changes": 0,
+    "production_changes": 0
+  },
+  "setup": "Operator extends only exact isolated subscription15 to16; no plan/pricing/payment/owner changes. Original expired term restored after successful cleanup at sub18 to19.",
+  "cleanup": "Owner unlinks only this run's logo, archives only this run's document, removes attempted Storage objects, cancels only controlled pending invite, removes test member, restores one seat, and Admin suspends exact workspace. Review actual state before compensating any uncertain write.",
+  "preserved_fingerprints": {
+    "bill_hash": "f55eef182e5f7e153e93362a51a90c881357149bf17745808d914dc0e9809a87",
+    "profile_original_except_version_time": "8245f339c1b3ef017c92a4b3a5871973eee59ebfbef2cbcb777fbca6d1a6fb7d",
+    "subscription_original_except_version_time": "b8b683a9f3a2172de0932c6cf5ec4d3e4cba836b2ef9526cf0e868e7012838a0"
+  },
+  "expected_final_state": {
+    "workspace_status": "suspended",
+    "support_version": 20,
+    "subscription_version": 19,
+    "seats": 1,
+    "paid_through_at": "2026-11-08T00:00:00.000Z",
+    "profile_version": 3,
+    "logo": null,
+    "only_owner_active": true,
+    "new_archived_document_rows": 1
+  },
+  "acceptance_limits": "Current private-file authorization only; no production, actual SMTP/payment/push, native/store or whole-stage release acceptance.",
+  "full_batch_X_complete": false,
+  "stage_3_complete": false
+}
+

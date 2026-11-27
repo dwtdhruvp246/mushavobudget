@@ -1,0 +1,43 @@
+# Windows result received — FR.2.4.E4.3: 32 PASS, exit 0
+
+16 October 2026, FRE67. [Owner receipt](security-fr-2-email-data-guard-owner-Windows-pass.json) records 32/32 PASS on Node v22.17.0/PGlite 0.5.8, with all 63 source hashes and 54 migrations matched. This supersedes the Windows-pending action below. No hosted installation or full finding is accepted. Continue with the [Edge guard batch](SECURITY_FR_2_4_DATABASE_PASS_AND_EDGE_GUARDS.md). The original FRE66 checkpoint is retained below.
+
+---
+
+# FR.2.4.E4.3 — shared session check passed on Windows; database integration ready
+
+16 October 2026, FRE66. [Owner Windows receipt](security-fr-2-email-session-owner-Windows-pass.json): 24 PASS, zero FAIL, exit 0 on Node v22.17.0 and PGlite 0.5.8; all 61 source hashes and 54 ordered migrations matched. The isolated locked npm installation added one package and the terminal guard completed. This closes that component's Windows check, not hosted enforcement or a full finding.
+
+## Concrete database integration
+
+[Candidate SQL](../../supabase/candidates/security_fr_2_4_email_data_guards.sql), [verifier](../../scripts/verify-fr-2-email-data-guards.mjs), [278-function classification and 82-relation coverage](security-fr-2-email-data-guard-coverage.json), [63-file manifest](security-fr-2-email-data-guard-source-manifest.json), [local checks](security-fr-2-email-data-guard-local-checks.json), [contract](security-fr-2-email-data-guard-candidate-contract.json).
+
+The offline candidate integrates the actual E2 backend and E4.2 current-session predicate with 148 application RPCs and restrictive policies on all 81 source public tables plus storage.objects. It requires its own explicit offline acknowledgement, postgres/origin execution, the preceding backend, the exact combined routine baseline and no existing integration. Each selected function's signature, source MD5, language and definer shape are checked. Unknown routine/grant drift stops installation. The candidate is not a hosted installer; it is not requested for execution in the Supabase SQL editor.
+
+For 112 PLpgSQL functions an outer block checks authorization before entering the entire previous block, including its DECLARE initializers. For 36 SQL functions, a PLpgSQL body checks first and then runs the original scalar query or RETURN QUERY. The intentional language change is recorded; use_column resolution preserves SQL column-name precedence. Original OIDs, input names/defaults, return types, volatility, search paths, owners and grants are preserved. Existing policies remain and the 82 added policies are restrictive for all operations to authenticated, with both USING and WITH CHECK. The invoker view continues to inherit its underlying table rules. Provider-managed Storage tables beyond objects are not modified or claimed to be modeled.
+
+All 278 original functions receive an explicit classification. Five exceptions preserve exact bodies: public plan catalogue, public signup currencies, public market-rate lookup, pure Business occurrence-date calculation and pure path-to-workspace parsing. Parsing a path never authorizes an object. The 74 trigger functions are retained because their pseudotype prevents direct RPC calls; 27 of those have existing authenticated EXECUTE. The other 51 functions have no authenticated EXECUTE and retain existing grants/service paths. Anonymous execute grants on 29 guarded application functions are preserved but those calls now receive a fixed verification denial. Existing owner/workspace/role/suspension/entitlement checks remain inside each body; proof alone grants no role or foreign workspace.
+
+## Distinguishing users, services and Auth callbacks
+
+The new private application-context assertion is not callable directly by API roles. Nested definer execution retains the actual SET ROLE setting, so an authenticated caller still needs its own stored proof even when current_user becomes postgres. A claimed service role alone cannot bypass it. The normal service path requires both an actual service_role SET ROLE and a service JWT role; privileged internal SQL requires a privileged session_user and no SET ROLE. The unprivileged authenticator connection gets no such exemption.
+
+An additional least-privilege exception preserves existing Auth trigger callbacks only when session_user is exactly supabase_auth_admin, SET ROLE is none and pg_trigger_depth is positive. Supabase documents this database role as the Auth middleware's connection identity: https://supabase.com/docs/guides/database/postgres/roles and https://supabase.com/docs/guides/auth/auth-hooks . This is not a Mushavo app Admin or a client-supplied role claim. The local regression test reproduced a blocked profile-creation trigger without the exception, then verified signup provisioning and zero proof creation with it. A forged supabase_auth_admin claim under the authenticated database role is denied. No production role, membership or permission was added by the candidate.
+
+The local role tests use transaction-local SESSION AUTHORIZATION and explicitly restore the modeled postgres identity after each role exercise; they do not represent actual Supabase sign-in. This avoids depending on the embedded database's cross-query RESET SESSION AUTHORIZATION default behavior. There is no broad Auth-role or trigger-depth-only bypass.
+
+## Actual local evidence and limits
+
+32 checks pass, exit 0, on Node v24.19.0/PGlite 0.5.8 with all 54 original migrations, the actual E2 and E4.2 SQL and 63 hashed source/tool inputs. Within the checks, all 148 application entrypoints receive real SQL denial probes under a password-only authenticated role, all 29 anonymous-callable guarded functions receive anonymous denial probes, and the 36 converted SQL functions run under a verified session with NULL arguments, accepting only their normal result or original purpose/permission denial. NULL probes do not verify all positive business lifecycles.
+
+Positive checks cover actual Personal provisioning, owner/foreign isolation, completed payment creation through nested entitlement/finance checks, direct UPDATE and INSERT denial, private Storage metadata ownership, Business permissions/role snapshot, ordinary-user versus platform-Admin directory access, modeled service/internal scheduler enqueue calls, password invalidation, Auth signup callbacks and a denied unprivileged pool identity. One genuine derived identity conversion is asserted present before deleting its parent; the original FK then removes the record and conversion. Enqueue functions run only against the local synthetic database; no provider or hosted scheduler execution is claimed. The candidate compares protected metadata and leaves the pre-install Auth/payment/conversion rows unchanged when adding guards.
+
+The source currently has no new canonical email migration or schema integration. Complete Edge service-client gates, Admin assurance/UI contract, login/code/remember-device UI, coordinated Pages gateway/bindings/secrets/deployment, real JWT/Storage provider behavior, performance and full positive operation matrix remain pending. Auth and Storage schemas here are explicit stand-ins; the actual provider callback, session lifecycle and every live job still need hosted acceptance. Nothing has been installed on staging by this verifier. No full finding is closed.
+
+## Owner action
+
+Run the complete pinned PowerShell command in chat. It exports selected files to a new temporary folder, installs the same one locked PGlite dependency there with npm.cmd ci --ignore-scripts, and executes the new integration batch. The dependency install can contact npm; the subsequent checks disable default Node fetch/HTTP transport and use an in-memory database. That transport guard is not an operating-system sandbox. Installed package name/version and lock integrity are checked; installed package bytes are not independently hashed.
+
+Return its JSON and exit code. Expected: OFFLINE_ACTUAL_APPLICATION_RLS_RPC_AND_MODELED_STORAGE_GUARDS_SCOPED_PASS, 32 PASS, zero FAIL, exit 0. If a step fails, return the result before retrying or changing guards. No hosted SQL, password/token entry, Zoho file access, Cloudflare change, real email, root dependency install or APK action is requested. This repeats only the new integration cases, not the earlier 24-case component batch.
+
+All 20 original findings stay open. Release gate OPEN_PENDING_REQUIRED_EVIDENCE; full re-audit PLANNED_NOT_PERFORMED. Production excluded; APK/native deferred. Original stages, prior events, retained fixtures, manual conversion baseline and carry-forward work are preserved.

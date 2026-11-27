@@ -1,0 +1,13 @@
+{
+  "stage_step": "FR.2.4.E5.1_LOCAL_UPLOAD_CANDIDATE",
+  "result": "LOCAL_PACKAGE_REVIEW_REQUIRED_NOT_DEPLOYED",
+  "problem_code": "LOCAL_SOURCE_CONFIG_PACKAGE_OR_ZIP_READBACK_REVIEW_REQUIRED",
+  "local_checkpoint": "SOURCE_TOOLS_AND_PACKAGE_PREPARATION",
+  "new_local_candidate_may_remain": true,
+  "previous_candidate_changed": false,
+  "raw_exceptions_configuration_or_keys_printed": false,
+  "actual_hosted_requests": 0,
+  "deployed": false,
+  "hosted_acceptance": false,
+  "exit_code": 1
+}

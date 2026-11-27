@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-28",
+  "stage_step": "FR.2.5.W46_OWNER_FOUR_RECIPIENT_AND_SIGNOUT_PACKAGE_PASS_DEPLOYMENT_RECEIVED",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "PUBLIC_READER_INACCESSIBLE_NO_HTTP_METADATA_SOURCE_PARITY_UNKNOWN",
+  "attempted_URLs": [
+    "https://490ba810.mushavo-budget-staging.pages.dev/app.html",
+    "https://mushavo-budget-staging.pages.dev/app.html"
+  ],
+  "public_open_attempts": 2,
+  "reader_returned": "URL is not accessible via this tool.",
+  "HTTP_status_or_response_body_received": false,
+  "actual_origin_HTTP_request_completion_count_known": false,
+  "canonical_or_preview_serving_broken_inferred": false,
+  "deployed_public_source_hash_or_browser_UI_verified": false,
+  "new_Auth_SQL_gateway_provider_or_email_requests": 0,
+  "repeated_public_fallback_requested": false,
+  "owner_browser_site_availability_not_determined_by_reader_error": true,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

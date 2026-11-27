@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-07",
+  "result": "RUNNER_ACKNOWLEDGEMENT_AND_RESTORE_PRECONDITIONS_REVIEW_REQUIRED",
+  "source_commit": "ea17c3bad632fc0765370969189759e87bdffdaa",
+  "workflow_run_id": 42397852222,
+  "workflow_job_id": 128478989631,
+  "hosted_report": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+    "result": "STAGING_ACCESS_REVIEW_REQUIRED",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "production_changed": false,
+    "exit_code": 1,
+    "exercise": {
+      "checks": {
+        "EXACT_SUSPENDED_SYNTHETIC_FIXTURE_BOUND": true,
+        "REVIEWED_RESTORE_DATE_CURRENT": true,
+        "EXACT_SHORT_LIVED_TEST_ENTITLEMENT_BOUND": true,
+        "SUPPORTED_ADMIN_RESUME_VERIFIED": false,
+        "ORIGINAL_ENTITLEMENT_RESTORED_BY_ADMIN_AND_READ_BACK": false
+      },
+      "exercise_requests": 9,
+      "email_requests": 0,
+      "provider_payment_requests": 0,
+      "Storage_requests": 0,
+      "supported_restore_required": true,
+      "fixture_suspended_verified": false,
+      "entitlement_restored_verified": false,
+      "temporary_member_removed": false,
+      "original_seats_restored": false,
+      "pricing_configuration_changed": false,
+      "operational_finance_writes_expected": 0,
+      "entitlement_restore_attempted": true
+    },
+    "problem_code": "ORIGINAL_ENTITLEMENT_RESTORED_BY_ADMIN_AND_READ_BACK_REQUIRED",
+    "full_lettered_batch_X_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-07-batch-x-business-expiry",
+    "source_commit": "ea17c3bad632fc0765370969189759e87bdffdaa",
+    "workflow_run_id": "42397852222",
+    "workflow_run_attempt": "1"
+  },
+  "diagnosis": [
+    "Admin status operation correctly returned its support-action UUID; runner incorrectly compared this with the workspace UUID.",
+    "Admin manual grant intentionally requires an end date after today, so restoring the original same-day term through that RPC was refused before any grant was written."
+  ],
+  "compensation": {
+    "workspace_suspended": true,
+    "support_version": 10,
+    "original_term_restored": true,
+    "original_seats": 1,
+    "subscription_version": 7,
+    "test_sessions_remaining": 0,
+    "Auth_rows_mutated_by_operator": 0,
+    "ledger_rows_changed": 0
+  },
+  "expiry_cases_executed": false,
+  "acceptance_claimed": false,
+  "exit_code": 1
+}

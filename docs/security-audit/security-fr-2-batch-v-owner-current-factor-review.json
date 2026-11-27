@@ -1,0 +1,112 @@
+{
+  "stage_step": "FR.2.4.E5.35_BATCH_V_ADMIN_MFA_OPERATOR_FACTOR_AND_CATALOG_REVIEW",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch V/Z — READ ONLY REVIEW",
+  "result": "BATCH_V_READ_ONLY_REVIEW_COMPLETE",
+  "actual_hosted_requests": 5,
+  "maximum_direct_HTTP_requests": 5,
+  "target_before_and_after_verified": true,
+  "quarantined_catalog_before_verified": true,
+  "quarantined_catalog_after_verified": true,
+  "review": {
+    "source_and_effective_grants_match_current_installed_baseline": true,
+    "admin_surface": {
+      "selected_routine_names": 36,
+      "observed_selected_routine_overloads": 36,
+      "selected_policies": 58,
+      "observed_selected_policies": 58,
+      "routine_mismatches": [],
+      "policy_mismatches": [],
+      "candidate_helper_overloads": 0,
+      "selected_anonymous_executable_routines": 14,
+      "selected_authenticated_executable_routines": 31,
+      "platform_role_counts": {},
+      "active_super_users_with_verified_totp": 0,
+      "shared_audit_actors_with_platform_role": 0,
+      "server_version": "17.11"
+    },
+    "operator_identities": [
+      {
+        "slot": "PRIMARY",
+        "auth_users": 1,
+        "platform_roles": 0,
+        "active_profiles": 1,
+        "owned_payment_items": 0,
+        "owned_payment_records": 0,
+        "verified_totp_factors": 0,
+        "owned_family_or_business": 0,
+        "email_confirmation_timestamps": 1,
+        "active_family_or_business_memberships": 0
+      },
+      {
+        "slot": "RECOVERY",
+        "auth_users": 1,
+        "platform_roles": 0,
+        "active_profiles": 1,
+        "owned_payment_items": 0,
+        "owned_payment_records": 0,
+        "verified_totp_factors": 0,
+        "owned_family_or_business": 0,
+        "email_confirmation_timestamps": 1,
+        "active_family_or_business_memberships": 0
+      }
+    ],
+    "factor_metadata": [
+      {
+        "slot": "PRIMARY",
+        "factors": [],
+        "auth_users": 1,
+        "factor_count": 0,
+        "verified_totp": 0,
+        "platform_roles": 0,
+        "active_profiles": 1,
+        "unverified_totp": 0,
+        "details_truncated": false
+      },
+      {
+        "slot": "RECOVERY",
+        "factors": [
+          {
+            "slot": "RECOVERY",
+            "status": "unverified",
+            "created_utc": "2026-10-25T14:03:03.118678+00:00",
+            "factor_type": "totp",
+            "updated_utc": "2026-10-25T14:03:03.118678+00:00",
+            "metadata_sha256": "6c694294cb8273bce316aa86fd706e32a8028f2e3fba3ac65d4e75f98e6854cc",
+            "created_in_failed_run_window": false,
+            "matches_expected_setup_label": true
+          }
+        ],
+        "auth_users": 1,
+        "factor_count": 1,
+        "verified_totp": 0,
+        "platform_roles": 0,
+        "active_profiles": 1,
+        "unverified_totp": 1,
+        "details_truncated": false
+      }
+    ],
+    "operators_ready_as_ordinary_isolated_identities": true,
+    "next_action": "REVIEW_EXISTING_UNVERIFIED_FACTOR_BEFORE_ANY_ENROLLMENT"
+  },
+  "Auth_requests": 0,
+  "real_email_requests": 0,
+  "accounts_roles_factors_or_application_rows_changed": false,
+  "committed_mode_change_requests": 0,
+  "credentials_addresses_IDs_factor_secrets_or_provider_bodies_in_safe_result": false,
+  "factor_metadata_does_not_authorize_cleanup": true,
+  "independent_operator_control_or_recovery_verified": false,
+  "genuine_AAL2_cases_run": 0,
+  "factor_secrets_or_secret_hashes_read": false,
+  "hosted_Admin_MFA_acceptance": false,
+  "hosted_acceptance": false,
+  "live_activation_approved": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "checkpoint": "COMPLETE",
+  "problem_code": null,
+  "final_state_problem_code": null,
+  "exit_code": 0,
+  "checked_UTC": "2026-10-25T14:23:19.296Z",
+  "source_hashes_verified": 332
+}

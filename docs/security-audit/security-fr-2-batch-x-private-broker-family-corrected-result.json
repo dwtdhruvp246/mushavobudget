@@ -1,0 +1,193 @@
+{
+  "date": "2026-11-08",
+  "result": "CORRECTED_FAMILY_PRIVATE_FILE_REVOCATION_SCOPED_PASS",
+  "source_commit": "f5f44c35453ca5e3df0ab15327dbcdd63c606aec",
+  "workflow_run_id": 42465388841,
+  "job_id": 128683588314,
+  "guard_tests": 323,
+  "live_assertions": 25,
+  "receipt": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 1,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "production_changed": false,
+    "exit_code": 0,
+    "exercise": {
+      "checks": {
+        "EXACT_EMPTY_SYNTHETIC_FAMILY_BOUND": true,
+        "EXACT_ACTIVE_TEST_MEMBER": true,
+        "OWNER_FAMILY_UPLOAD_ALLOWED": true,
+        "ACTIVE_MEMBER_FAMILY_UPLOAD_ALLOWED": true,
+        "OWN_PERSONAL_UPLOAD_REMAINS_ALLOWED": true,
+        "ACTIVE_BROKER_RESPONSE_NO_STORE": true,
+        "CURRENT_OWNER_RAW_BYTES_BLOCKED": true,
+        "CURRENT_OWNER_SIGNING_BLOCKED": true,
+        "UPLOADED_BYTES_MATCH": true,
+        "FOREIGN_UPLOADER_PATH_DENIED": true,
+        "WRONG_FAMILY_OWNER_PATH_DENIED": true,
+        "NONEXISTENT_FAMILY_PATH_DENIED": true,
+        "ANONYMOUS_UPLOAD_DENIED": true,
+        "OWNER_REMOVED_EXACT_TEST_MEMBER": true,
+        "REMOVED_MEMBER_UPLOAD_DENIED": true,
+        "WARM_IDENTICAL_BROKER_REQUEST_DENIED": true,
+        "REMOVED_MEMBER_SAME_ORDINARY_SESSION_VALID": true,
+        "AUTHORITATIVE_MEMBERSHIP_FALSE": true,
+        "REMOVED_MEMBER_ORIGINAL_READ_DENIED": true,
+        "REMOVED_MEMBER_SIGNING_DENIED": true,
+        "FAMILY_OWNER_RETAINS_MEMBER_FILE_ACCESS": true,
+        "EXACT_STORAGE_API_REMOVAL_ACKNOWLEDGED": true,
+        "ALL_ATTEMPTED_TEST_OBJECTS_INDEPENDENTLY_ABSENT": true,
+        "OWNER_DELETED_EMPTY_SYNTHETIC_FAMILY": true,
+        "SYNTHETIC_FAMILY_ABSENT_READBACK": true
+      },
+      "exercise_requests": 31,
+      "upload_attempts": 8,
+      "cleanup_paths": [
+        "families/72492390-f4b8-4519-9f4d-5448d22e325a/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/8fb6b219-0493-444a-8550-76431154250d-owner.png",
+        "families/72492390-f4b8-4519-9f4d-5448d22e325a/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/660a1463-6589-4c4d-ab6c-8ee50161038f/8fb6b219-0493-444a-8550-76431154250d-member.png",
+        "personal/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/8fb6b219-0493-444a-8550-76431154250d-personal.png",
+        "families/72492390-f4b8-4519-9f4d-5448d22e325a/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/660a1463-6589-4c4d-ab6c-8ee50161038f/8fb6b219-0493-444a-8550-76431154250d-spoof-uploader.png",
+        "families/72492390-f4b8-4519-9f4d-5448d22e325a/660a1463-6589-4c4d-ab6c-8ee50161038f/660a1463-6589-4c4d-ab6c-8ee50161038f/8fb6b219-0493-444a-8550-76431154250d-spoof-owner.png",
+        "families/00000000-0000-4000-8000-000000000000/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/8fb6b219-0493-444a-8550-76431154250d-absent-family.png",
+        "families/72492390-f4b8-4519-9f4d-5448d22e325a/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/8fb6b219-0493-444a-8550-76431154250d-anonymous.png",
+        "families/72492390-f4b8-4519-9f4d-5448d22e325a/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/660a1463-6589-4c4d-ab6c-8ee50161038f/8fb6b219-0493-444a-8550-76431154250d-removed.png"
+      ],
+      "Storage_cleanup_verified": true,
+      "synthetic_family_removed": true,
+      "email_requests": 0,
+      "provider_requests": 0,
+      "finance_writes": 0,
+      "active_member_read_response": {
+        "status": 200,
+        "cache_headers": {
+          "cache-control": "private, no-store, max-age=0, must-revalidate",
+          "cf-cache-status": "DYNAMIC",
+          "vary": "Accept-Encoding, Origin, Authorization, apikey",
+          "content-type": "application/octet-stream"
+        },
+        "bytes": 68,
+        "harmless_fixture_matches": true
+      },
+      "current_owner_raw_response": {
+        "status": 400,
+        "cache_headers": {
+          "cf-cache-status": "BYPASS",
+          "content-type": "application/json; charset=utf-8"
+        },
+        "Storage_status_code": 404
+      },
+      "removed_member_original_read_response": {
+        "status": 404,
+        "cache_headers": {
+          "cache-control": "private, no-store, max-age=0, must-revalidate",
+          "cf-cache-status": "DYNAMIC",
+          "vary": "Accept-Encoding, Origin, Authorization, apikey",
+          "content-type": "application/json"
+        }
+      },
+      "broker_revocation_verified": true
+    },
+    "full_lettered_batch_X_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-08-batch-x-corrected-family-broker-same-session-revocation",
+    "source_commit": "f5f44c35453ca5e3df0ab15327dbcdd63c606aec",
+    "workflow_run_id": "42465388841",
+    "workflow_run_attempt": "1"
+  },
+  "independent_cleanup": {
+    "objects": 0,
+    "checked_at": "2026-11-08T09:12:13.243926+00:00",
+    "admin_queue": 0,
+    "normal_queue": 0,
+    "catalog_matches": true,
+    "runner_sessions": 0,
+    "temporary_family": 0
+  },
+  "Edge_deployment": {
+    "id": "4d718f9c-fcfc-4b6d-b717-746d52ddcea8",
+    "slug": "get-private-file",
+    "name": "get-private-file",
+    "status": "ACTIVE",
+    "version": 4,
+    "created_at": 1794125796517,
+    "updated_at": 1794128345182,
+    "verify_jwt": false,
+    "import_map": false,
+    "entrypoint_path": "file:///tmp/user_fn_dczlddwbtgvfdujgcitb_4d718f9c-fcfc-4b6d-b717-746d52ddcea8_4/source/supabase/functions/get-private-file/index.ts",
+    "ezbr_sha256": "33684f5c4b9ea5f6ecc4535fc1bfcab8e2fb90cfb3788a133d66f18b5cfa0054"
+  },
+  "runtime_files_readback": [
+    {
+      "file": "get-private-file/index.ts",
+      "matches": true
+    },
+    {
+      "file": "get-private-file/handler.mjs",
+      "matches": true
+    },
+    {
+      "file": "get-private-file/signed-private-file.mjs",
+      "matches": true
+    }
+  ],
+  "frontend_deployment": {
+    "id": "a1817026-ad12-469a-b41a-ed380b26ffe8",
+    "url": "https://a1817026.mushavo-budget-staging.pages.dev",
+    "environment": "production",
+    "latest_stage": {
+      "name": "queued",
+      "started_on": null,
+      "ended_on": null,
+      "status": "idle"
+    }
+  },
+  "selected_guarantee": "The active member fetched harmless bytes; after real Owner removal the identical broker request using the same still-valid ordinary session returned 404/no-store. The Owner retained access. Raw original and client-signing paths stayed denied. No retrieval capability reached the client.",
+  "limits": [
+    "Genuine positive/negative broker coverage here is Personal, Family and subscription proofs. Business document/logo broker acceptance remains pending.",
+    "Cannot recall bytes a user previously downloaded. No real provider email/push/payment, native/store release or production change.",
+    "Initial cache-warming and S3 transport failures remain preserved in separate receipts."
+  ],
+  "full_batch_X_complete": false,
+  "stage_3_complete": false
+}

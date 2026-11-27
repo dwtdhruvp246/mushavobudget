@@ -1,0 +1,570 @@
+{
+  "schema_version": 1,
+  "stage_step": "10.3",
+  "date": "2026-10-13",
+  "source_parent_commit": "5b8242ac92fbe2166f17557a5858712515d8cc9e",
+  "result": "BOUNDED_PUBLIC_STAGING_METADATA_HANDOFF_PREPARED_RESULT_PENDING",
+  "scope": "OWNER_FIXED_PUBLIC_GET_COLLECTION_AND_SOURCE_PRIOR_EVIDENCE_PREREQUISITE_ASSESSMENT_NOT_ACTUAL_FULL_OPERATIONS_EXECUTION",
+  "candidate_commit": "88503798ebd381aac2d52ab5a7905774636a4afc",
+  "collector_reviewed_source_pin": "1b012fd9c47bfb1733596f64c470feee5d308341",
+  "candidate_inputs": [
+    {
+      "path": "scripts/lib/stage-10-public-metadata.mjs",
+      "sha256": "afbef093932d4d31e5d71715f6eb9e8b493296ada17ba98966e0618376eef640",
+      "git_blob_sha": "e70d5738f0dd859f87258e6fed5b187b362744a8",
+      "result": "MATCH_OWNER_VERIFIED_CURRENT_BYTES"
+    },
+    {
+      "path": "scripts/collect-stage-10-public-metadata.mjs",
+      "sha256": "f174e0fe0d20287a8f5822ccea97dfa55ed5dc38588f51b19c13dc2be1b88045",
+      "git_blob_sha": "8dbbd7e352a90aaff9453d7708bd9ba1ddccbe5e",
+      "result": "MATCH_OWNER_VERIFIED_CURRENT_BYTES"
+    },
+    {
+      "path": "config.js",
+      "sha256": "c14293e16fda6a6b0e483ea5141954b78832b175155cec0ab9f59d35e8b7b0cd",
+      "git_blob_sha": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+      "result": "MATCH_OWNER_VERIFIED_CURRENT_BYTES"
+    },
+    {
+      "path": "auth.html",
+      "sha256": "8d6ff984bfec6ef80356ceceef63e5a70428d1ea6c0bb937c282dc1b47329386",
+      "git_blob_sha": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+      "result": "MATCH_OWNER_VERIFIED_CURRENT_BYTES"
+    },
+    {
+      "path": "auth-flows.js",
+      "sha256": "ef16214f827d6650a507e30bdae7703c975f061437ed0672cf0abf9072e37500",
+      "git_blob_sha": "206f0c32277a4da9a0bab667a06905468fdcc444",
+      "result": "MATCH_OWNER_VERIFIED_CURRENT_BYTES"
+    },
+    {
+      "path": "auth-security.js",
+      "sha256": "ae6eb487fa9ae5f21b1e3a95f698fe5869a377349bc5ff66bf9e8d32cef6cf54",
+      "git_blob_sha": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+      "result": "MATCH_OWNER_VERIFIED_CURRENT_BYTES"
+    },
+    {
+      "path": "admin-mfa.js",
+      "sha256": "909fd25b8e364e420be9067f6a0435567d705e914c53e9358b536d0187d81f6e",
+      "git_blob_sha": "b34b867301a97473a455f80cb01ab193b224a6ad",
+      "result": "MATCH_OWNER_VERIFIED_CURRENT_BYTES"
+    },
+    {
+      "path": "app.js",
+      "sha256": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+      "git_blob_sha": "82919e23f74d10bd5e7bc4992ca0929d19f390fb",
+      "result": "MATCH_OWNER_VERIFIED_CURRENT_BYTES"
+    },
+    {
+      "path": "business.js",
+      "sha256": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+      "git_blob_sha": "28b561065b168ac3dcb1968e490c853a84c0673a",
+      "result": "MATCH_OWNER_VERIFIED_CURRENT_BYTES"
+    },
+    {
+      "path": "app.html",
+      "sha256": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+      "git_blob_sha": "3564f09e4dea7cdad6669514bc2bea7812dcdfef",
+      "result": "MATCH_OWNER_VERIFIED_CURRENT_BYTES"
+    },
+    {
+      "path": "business.html",
+      "sha256": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+      "git_blob_sha": "72cb99a21ba40b5140f1312538b677fe15dd6cab",
+      "result": "MATCH_OWNER_VERIFIED_CURRENT_BYTES"
+    },
+    {
+      "path": "docs/security-audit/security-stage-10-operations-candidate-contract.json",
+      "sha256": "f4dd254f2e099f242647fdb3cd5f60023a0a0dfa74d731af7a804c479eec5cd0",
+      "git_blob_sha": "5ed559275f6f60d0d86ec488c5a83cdf3d85caa4",
+      "result": "MATCH_OWNER_VERIFIED_CURRENT_BYTES"
+    }
+  ],
+  "inputs_reconciled": 12,
+  "source_mismatches": 0,
+  "owner_offline_result": {
+    "tests": 27,
+    "pass": 27,
+    "fail": 0,
+    "exit_code": 0,
+    "syntax_checks": 4,
+    "receipt": "docs/security-audit/security-stage-10-operations-owner-local-checks.json"
+  },
+  "collection_contract": {
+    "origin": "https://mushavo-budget-staging.pages.dev",
+    "project": "dczlddwbtgvfdujgcitb",
+    "routes": [
+      "config.js",
+      "auth.html",
+      "auth-flows.js",
+      "auth-security.js",
+      "admin-mfa.js",
+      "app.js",
+      "business.js",
+      "app",
+      "business"
+    ],
+    "maximum_requests": 9,
+    "method": "GET",
+    "redirect_policy": "manual_no_follow",
+    "credentials": "omit",
+    "authorization_header": false,
+    "request_timeout_ms": 6000,
+    "total_timeout_ms": 30000,
+    "config_body_limit_bytes": 32768,
+    "other_body_limit_bytes": 2097152,
+    "raw_body_keys_or_headers_in_receipt": false,
+    "success_exit_code": 0,
+    "review_outcome_exit_code": 1,
+    "collection_not_started_exit_code": 2
+  },
+  "owner_collection_result_received": false,
+  "assistant_live_public_HTTP_requests": 0,
+  "assistant_new_behavior_or_syntax_tests_run": 0,
+  "prerequisite_groups": [
+    {
+      "id": "OP-P01",
+      "title": "Exact accepted installed source/serving/backend parity",
+      "status": "BLOCKED_NOT_ACCEPTED",
+      "evidence": "Owner offline candidate passed; accepted Cloudflare serving product/version/artifact, installed Edge/schema/grants/Auth/settings and full staging isolation remain unverified. Dated 9.3 public Auth module asset-type FAIL is retained; current public collection is pending.",
+      "decision_ids": [
+        "OP-D01"
+      ],
+      "actions": [
+        "OP-R01"
+      ]
+    },
+    {
+      "id": "OP-P02",
+      "title": "Controlled operators, actors, recoverable fixtures and effective privileges",
+      "status": "BLOCKED_NOT_ACCEPTED",
+      "evidence": "Historical Personal/Family fixtures and scoped passes do not establish the full current Business/Admin MFA/recovery/direct-caller operations matrix or safe recipient/queue test authority.",
+      "decision_ids": [
+        "OP-D01",
+        "OP-D02"
+      ],
+      "actions": [
+        "OP-R01",
+        "OP-R02"
+      ]
+    },
+    {
+      "id": "OP-P03",
+      "title": "Service budgets, alert/support destinations and accountable review",
+      "status": "BLOCKED_NOT_ACCEPTED",
+      "evidence": "Current service/usage scopes, health thresholds, alert detection/receipt, responsible alternate/review cadence and private log retention remain unconfirmed. Earlier incoming support receipt and shown-view alert/usage observations are retained in dated scope.",
+      "decision_ids": [
+        "OP-D02",
+        "OP-D03"
+      ],
+      "actions": [
+        "OP-R03"
+      ]
+    },
+    {
+      "id": "OP-P04",
+      "title": "Protected complete backup/offsite and realistic recovery authority",
+      "status": "BLOCKED_NOT_ACCEPTED",
+      "evidence": "Earlier scoped loopback public-application/dummy-file restore remains PASS with its target stopped. Actual Storage/Auth/config/provider/managed access coverage, independent offsite retention and full RPO/RTO acceptance remain open.",
+      "decision_ids": [
+        "OP-D04"
+      ],
+      "actions": [
+        "OP-R04"
+      ]
+    },
+    {
+      "id": "OP-P05",
+      "title": "Compatible containment/rollback and accepted safe operator drill",
+      "status": "BLOCKED_NOT_ACCEPTED",
+      "evidence": "Source-bound instructions were prepared, not exercised. Exact version-compatible target, history/access preservation, incident authority and resumption criteria are not accepted for a genuine drill.",
+      "decision_ids": [
+        "OP-D05"
+      ],
+      "actions": [
+        "OP-R05"
+      ]
+    },
+    {
+      "id": "OP-P06",
+      "title": "Earlier implementation/device/store dependencies and final disposition",
+      "status": "BLOCKED_NOT_ACCEPTED",
+      "evidence": "Required finance binding/relink/rate/history, Auth/MFA, trusted files/deletion/retention/privacy, provider/commerce and actual device/native/store evidence remain carry-forward. Final remediation/full fresh audit and material release decisions are not complete.",
+      "decision_ids": [
+        "OP-D06"
+      ],
+      "actions": [
+        "OP-R06"
+      ]
+    }
+  ],
+  "planned_full_groups": [
+    {
+      "id": "OP01",
+      "title": "Release mapping and administrative authority",
+      "cases": [
+        {
+          "id": "OP01-01",
+          "title": "Exact environment/version/channel",
+          "expected": "Source commit, public artifact, serving product/project/branch, frontend configuration and installed Edge/schema/grants/Auth map to the accepted staging target with no production access or private asset exposure.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P06"
+          ]
+        },
+        {
+          "id": "OP01-02",
+          "title": "Administrative custody and recovery",
+          "expected": "Provider/repository/application administrative access is least-privileged and independently recoverable; real operators and effective MFA are evidenced without exposing recovery secrets.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P06"
+          ]
+        },
+        {
+          "id": "OP01-03",
+          "title": "Build and deployment provenance",
+          "expected": "Actual accepted workflow, locked dependencies/tools, artifact identities and repository/deployment protection are recorded; default read-only and deployment authority are verified in their actual scope.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P06"
+          ]
+        },
+        {
+          "id": "OP01-04",
+          "title": "Installed candidate asset and dependency closure",
+          "expected": "Actual canonical Auth/app routes return intended types/assets; backend dependencies and serving headers match the accepted candidate; dated staging HTML-module failure is explicitly rechecked.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P06"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "OP02",
+      "title": "Schedules, queues and protected outbound outcomes",
+      "cases": [
+        {
+          "id": "OP02-01",
+          "title": "Scheduler-to-business-result correlation",
+          "expected": "Named installed cron/job schedule, asynchronous HTTP outcome, exact Edge version and business outcome are linked; missing secret/wrong caller is denied without queue or provider side effects.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P03",
+            "OP-P06"
+          ]
+        },
+        {
+          "id": "OP02-02",
+          "title": "Queue claim, retry and terminal history",
+          "expected": "Recoverable synthetic rows demonstrate concurrency, bounded attempts, stale-claim recovery, idempotency and retry/failure/cancellation state; duplicate provider dispatch and history loss are assessed.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P03",
+            "OP-P06"
+          ]
+        },
+        {
+          "id": "OP02-03",
+          "title": "Automatic currency integrity",
+          "expected": "Actual scheduler/provider success and failure preserve cached rates, locked/manual historical conversions and the two retained USD 1 fixtures; partial backfill and freshness remain explicit.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P03",
+            "OP-P06"
+          ]
+        },
+        {
+          "id": "OP02-04",
+          "title": "Recipient and outbound destination boundary",
+          "expected": "Installed outbound guard, user/workspace/device/staff eligibility, cancellation and permanent-failure cleanup are verified with controlled recipients/endpoints; unauthorized destinations and recipients receive no dispatch.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P03",
+            "OP-P06"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "OP03",
+      "title": "Observability, support and incident ownership",
+      "cases": [
+        {
+          "id": "OP03-01",
+          "title": "Service-scoped health and budgets",
+          "expected": "Health timestamps, missing/failed/stale states, relevant queue/cron/provider/usage scope and accepted thresholds are visible without customer identifiers, credentials or raw payloads.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P03"
+          ]
+        },
+        {
+          "id": "OP03-02",
+          "title": "Alert detection and accountable receipt",
+          "expected": "An accepted bounded safe test demonstrates relevant error/backup/dispatch/outage detection, routing and receipt by the responsible operator; missing policies or unsupported services remain explicit.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P03"
+          ]
+        },
+        {
+          "id": "OP03-03",
+          "title": "Support review and escalation",
+          "expected": "Owner-controlled support receipt, review frequency, escalation/alternate, response ownership and incident link are exercised; prior incoming mail PASS alone does not establish automated alerts.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P03"
+          ]
+        },
+        {
+          "id": "OP03-04",
+          "title": "Private incident evidence and retention",
+          "expected": "A bounded incident walkthrough produces useful dated evidence with redaction, approved log/receipt retention, budget/availability impact and actionable follow-up; no private request headers or user data are copied.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P03"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "OP04",
+      "title": "Protected backup and genuine isolated recovery",
+      "cases": [
+        {
+          "id": "OP04-01",
+          "title": "Recoverable component and offsite coverage",
+          "expected": "Accepted database/data/roles/grants/files/Auth/config/Edge/provider/key inventory has private protected artifacts, integrity/retention/ownership and independent offsite coverage; omissions are explicit.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P02",
+            "OP-P03",
+            "OP-P04"
+          ]
+        },
+        {
+          "id": "OP04-02",
+          "title": "Backup completion and failure operation",
+          "expected": "A controlled backup/incomplete/failure check proves operator detection, integrity/completeness and retention without exposing artifacts or overwriting successful recovery evidence.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P02",
+            "OP-P03",
+            "OP-P04"
+          ]
+        },
+        {
+          "id": "OP04-03",
+          "title": "Realistic isolated restore and integrity",
+          "expected": "A fresh authorized isolated target restores applicable service components and verifies data/permission/Auth/Storage/provider constraints with measured accepted RPO/RTO; a dummy file or local public-schema restore is not full recovery.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P02",
+            "OP-P03",
+            "OP-P04"
+          ]
+        },
+        {
+          "id": "OP04-04",
+          "title": "Independent access and key recovery",
+          "expected": "Owner/provider identity and safely retained independent credentials/keys can recover accepted access without removing the sole working factor or disclosing material; service/managed-role authority is respected.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P02",
+            "OP-P03",
+            "OP-P04"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "OP05",
+      "title": "Compatible containment, rollback and operator exercise",
+      "cases": [
+        {
+          "id": "OP05-01",
+          "title": "Bounded dispatcher containment",
+          "expected": "Accepted named staging job can be paused with protected authority while preserving queue history; unintended destinations, other jobs and production remain unaffected.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P04",
+            "OP-P05"
+          ]
+        },
+        {
+          "id": "OP05-02",
+          "title": "Serving-product web rollback",
+          "expected": "The correct Pages/Worker/other artifact rollback path uses an accepted actual target and preserves Auth/PWA confidentiality and backend compatibility; preview eligibility is not inferred.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P04",
+            "OP-P05"
+          ]
+        },
+        {
+          "id": "OP05-03",
+          "title": "Edge/schema/security rollback compatibility",
+          "expected": "Version-specific Edge/config/data-migration rollback or forward repair preserves required access controls, records/history and schema compatibility; destructive recipes and weakened MFA are not run blindly.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P04",
+            "OP-P05"
+          ]
+        },
+        {
+          "id": "OP05-04",
+          "title": "Operator incident and resumption drill",
+          "expected": "The responsible operator follows accepted stop/triage/recovery/resume instructions in the isolated scope and demonstrates expected health/outcomes with dated durations, failures and escalation.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P04",
+            "OP-P05"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "OP06",
+      "title": "Final evidence and release disposition",
+      "cases": [
+        {
+          "id": "OP06-01",
+          "title": "Original audit and action traceability",
+          "expected": "All original 123 coverage rows, 20 finding definitions, stage actions and failed/partial/unrun receipts map to final source/artifact/installed evidence with no unearned closures.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P03",
+            "OP-P04",
+            "OP-P05",
+            "OP-P06"
+          ]
+        },
+        {
+          "id": "OP06-02",
+          "title": "Actual artifact, user and store dependencies",
+          "expected": "Required implemented finance/Auth/privacy/commerce/notification controls, measured browser/device behavior, final signed artifacts and account-specific store/reviewer/declaration evidence are accepted.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P03",
+            "OP-P04",
+            "OP-P05",
+            "OP-P06"
+          ]
+        },
+        {
+          "id": "OP06-03",
+          "title": "Explicit release/rollback/incident responsibility",
+          "expected": "Accepted channel/audience/operator/contacts/known-gap disposition, recovery/rollback triggers, budgets and release responsibility are concrete and reviewable; unconfirmed material decisions block release.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P03",
+            "OP-P04",
+            "OP-P05",
+            "OP-P06"
+          ]
+        },
+        {
+          "id": "OP06-04",
+          "title": "Fresh full final re-audit",
+          "expected": "The final accepted source, installed services and final artifacts receive a full fresh audit with affected direct tests, failures and required remediation; prior offline PASS or stage closure cannot replace it.",
+          "execution_result": "NOT_EXECUTED",
+          "prerequisite_assessment": "BLOCKED_NOT_ACCEPTED",
+          "blocked_by": [
+            "OP-P01",
+            "OP-P02",
+            "OP-P03",
+            "OP-P04",
+            "OP-P05",
+            "OP-P06"
+          ]
+        }
+      ]
+    }
+  ],
+  "full_grouped_cases_executed": 0,
+  "full_grouped_cases": 24,
+  "open_actions": 6,
+  "unconfirmed_decisions": 6,
+  "original_frozen_case_contract_unchanged": true,
+  "prior_stage_0_to_9_and_completed_10_1_10_2_records_preserved": true,
+  "hosted_operations_acceptance": false,
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "store_acceptance": false,
+  "current_installed_backend_job_alert_recovery_or_final_artifact_verified": false,
+  "source_runtime_SQL_cron_or_settings_changed": false,
+  "actual_notification_email_or_charge_dispatched": false,
+  "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": [],
+  "owner_SQL_or_backend_setup_action_required": false,
+  "owner_public_metadata_terminal_handoff_supplied": true,
+  "stage_10_3_outcome_complete": false,
+  "report_due_step": "10.4",
+  "next_step": "10.3"
+}

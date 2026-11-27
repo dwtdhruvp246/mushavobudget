@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "source_parent_commit": "ec1faa82330e8522360a481d54a6c914856045d0",
+  "stage_step": "FR.2.5.W28_LOCAL_RECIPIENT_ADDITION_PREPARATION",
+  "result": "LOCAL_RECIPIENT_ADDITION12_PASS_OWNER_WINDOWS_PREPARATION_PENDING",
+  "node_version": "v24.22.1",
+  "tests": 12,
+  "pass": 12,
+  "fail": 0,
+  "exit_code": 0,
+  "command": "node --require ./scripts/offline-test-network.cjs --test ./tests/recipient-addition-local.test.mjs",
+  "scope": [
+    "Actual offline private child process plans use synthetic packets",
+    "Two-address preservation, order/case retention, one explicit addition and three-address reuse",
+    "Wrong target, malformed input, foreign project/markers and unexpected counts fail closed",
+    "The private plan contains only recipient JSON and a safe receipt, never the gateway packet/provider keys"
+  ],
+  "new_PowerShell_parser_or_DPAPI_write_or_clipboard_execution": false,
+  "preexisting_reader_owner_Windows_DPAPI_pass_reused_not_repeated": true,
+  "actual_hosted_requests": 0,
+  "real_email_requests": 0,
+  "Cloudflare_SQL_or_account_writes": 0,
+  "actual_recovery_password_save": false,
+  "old16_original194_window11_public16_not_rerun": true,
+  "hosted_acceptance": false,
+  "full_lettered_batch_W_complete": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

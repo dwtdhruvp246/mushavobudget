@@ -1,0 +1,111 @@
+{
+  "received_date": "2026-10-22",
+  "requested_run_commit": "267da01c12481c13fd93681798d2a82a941858a8",
+  "run_commit_independently_attested": false,
+  "separate_offline_verifier_receipt_received": false,
+  "receipt": {
+    "stage_step": "FR.2.4.E5.16_BATCH_C_STAGING_EDGE_CONFIGURATION_INSTALLATION",
+    "batch": "C",
+    "result": "STAGING_BATCH_C_REVIEW_REQUIRED",
+    "local_candidate_and_private_pair_verified": true,
+    "fresh_source_target_precheck_passed": true,
+    "source_target_precheck_problem": null,
+    "six_configuration_names_absent_before": true,
+    "CurrencyAPI_status_HTTP_accepted": true,
+    "CurrencyAPI_quota_available": true,
+    "CurrencyAPI_FX_endpoint_access_verified": false,
+    "pre_install_checks_passed": true,
+    "secret_write_attempted": true,
+    "secret_write_HTTP_accepted": true,
+    "independent_configuration_name_readback_received": true,
+    "six_configuration_names_listed_after": true,
+    "other_configuration_names_unchanged": true,
+    "post_install_source_target_check_passed": false,
+    "installed_variable_count": 6,
+    "settings_may_have_changed": true,
+    "write_outcome_uncertain": false,
+    "secret_value_equality_or_runtime_access_verified": false,
+    "shared_configuration_runtime_impact_verified": false,
+    "metadata_snapshot_is_not_a_write_lock": true,
+    "token_permission_scope_independently_inspected": false,
+    "actual_hosted_requests": 12,
+    "secret_POST_requests": 1,
+    "application_or_Edge_functions_invoked": 0,
+    "SQL_or_Auth_or_deployment_endpoint_used": false,
+    "downloaded_source_executed_or_saved": false,
+    "raw_provider_bodies_paths_or_private_values_printed": false,
+    "email_push_or_FX_dispatched": false,
+    "uploaded_or_deployed": false,
+    "readiness_approved": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "samples": [
+      {
+        "endpoint": "STAGING_PROJECT_METADATA",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_FUNCTION_METADATA",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_FUNCTION_METADATA",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_CONTACT_SOURCE",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_FUNCTION_METADATA",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_FUNCTION_METADATA",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_CONFIGURATION_NAME_METADATA",
+        "http_status": 200
+      },
+      {
+        "endpoint": "CURRENCYAPI_STATUS",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_INSTALL_SIX_CONFIGURATION_VALUES",
+        "http_status": 201
+      },
+      {
+        "endpoint": "STAGING_CONFIGURATION_NAME_METADATA",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_PROJECT_METADATA",
+        "http_status": 200
+      },
+      {
+        "endpoint": "STAGING_FUNCTION_METADATA",
+        "http_status": 200
+      }
+    ],
+    "checked_UTC": "2026-10-22T04:54:12.334Z",
+    "checkpoint": "POST_INSTALL_SOURCE_AND_TARGET",
+    "problem_code": "POST_INSTALL_SOURCE_TARGET_REVIEW_REQUIRED",
+    "exit_code": 1,
+    "source_hashes_verified": 105,
+    "Batch_A_encrypted_packet_read_only": true,
+    "encrypted_packet_unchanged": true,
+    "installation_result_received": true,
+    "hosted_write_outcome_requires_inspection": false,
+    "token_saved_to_disk_or_environment": false,
+    "private_values_or_email_printed": false,
+    "credentials_in_arguments_or_environment": false,
+    "batch_run_finished": true
+  },
+  "reported_combined_exit_code": 1,
+  "interpretation": "SIX_NAME_CONFIGURATION_WRITE_AND_READBACK_CONFIRMED_POST_CHECK_REQUIRES_READ_ONLY_REVIEW_NO_INSTALL_RETRY"
+}

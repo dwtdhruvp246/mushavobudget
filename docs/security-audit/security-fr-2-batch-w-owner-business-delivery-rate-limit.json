@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-29",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "case_under_test": "AU02.08",
+  "related_case": "AU05.07",
+  "result": "AUTH_PROVIDER_429_OBSERVED_DECLINE_PENDING",
+  "invitation_id": "2cbc417b-930e-47b3-b7c3-ec0b551834d2",
+  "owner_safe_result": {
+    "delivery_status": "failed",
+    "invitation_found": true,
+    "invitation_status": "pending",
+    "provider_status_or_code": "429",
+    "recipient_profile_exists": true,
+    "recipient_linked_to_account": true,
+    "recipient_auth_account_exists": true,
+    "recipient_already_active_member": false
+  },
+  "meaning": "Auth mail request was rate-limited. Exact rate-limit dimension, configured quota and reset time are not established.",
+  "edge_response_status": 502,
+  "edge_error": "BUSINESS_INVITATION_EMAIL_FAILED",
+  "UI_error": "Edge Function returned a non-2xx status code",
+  "in_app_decline_available_in_reviewed_source": true,
+  "source_basis": [
+    "supabase/migrations/20261006180000_business_invitation_notifications.sql",
+    "supabase/migrations/20260928170000_business_stage_4_team.sql",
+    "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+    "app.js"
+  ],
+  "next_owner_action": "Existing invited account signs in normally on stable staging, opens Notifications and chooses Decline for the pending Business invitation. Owner refreshes Team and verifies no added membership, no pending reservation and released capacity.",
+  "resend_requested": false,
+  "rate_limit_or_SMTP_settings_change_requested": false,
+  "exact_wait_promised": false,
+  "decline_accepted": false,
+  "rate_UI_classification_accepted": false,
+  "stale_token_window_accepted": false,
+  "full_lettered_batch_W_complete": false,
+  "assistant_hosted_requests": 0,
+  "assistant_real_email_requests": 0
+}

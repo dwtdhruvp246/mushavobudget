@@ -1,0 +1,98 @@
+{
+  "stage_step": "FR.2.4.E5.3_EXACT_PAGES_DATE",
+  "result": "EXACT_PAGES_DATES_SET_AND_READ_BACK_SCOPED_PASS_NOT_ROLLOUT_ACCEPTANCE",
+  "requests_attempted": 6,
+  "local_44_file_review_artifact_unchanged": true,
+  "fresh_four_endpoint_baseline_passed": true,
+  "public_settings_prerequisites_passed": true,
+  "date_only_payload_verified": true,
+  "date_patch_attempted": true,
+  "date_patch_HTTP_accepted": true,
+  "fresh_channel_readback_verified": true,
+  "all_observed_channel_settings_except_date_compared_unchanged": true,
+  "selected_project_source_build_and_deployment_metadata_compared_unchanged": true,
+  "both_reviewed_dates_verified": true,
+  "no_write_needed": false,
+  "remote_state_may_require_review": false,
+  "reviewed_compatibility_date": "2026-07-01",
+  "channels": [
+    {
+      "environment": "PRODUCTION_CHANNEL_OF_STAGING_PAGES_PROJECT",
+      "compatibility_date_matches_reviewed": true,
+      "fail_open": false,
+      "always_use_latest_compatibility_date": false,
+      "three_staging_markers_match": true,
+      "limiter_binding": "MATCH"
+    },
+    {
+      "environment": "PREVIEW_CHANNEL_OF_STAGING_PAGES_PROJECT",
+      "compatibility_date_matches_reviewed": true,
+      "fail_open": false,
+      "always_use_latest_compatibility_date": false,
+      "three_staging_markers_match": true,
+      "limiter_binding": "MATCH"
+    }
+  ],
+  "samples": [
+    {
+      "endpoint": "STAGING_PAGES_PROJECT",
+      "http_status": 200,
+      "JSON_received": true,
+      "success": true,
+      "errors_shape": "ARRAY",
+      "error_count": 0
+    },
+    {
+      "endpoint": "WORKER_INVENTORY",
+      "http_status": 200,
+      "JSON_received": true,
+      "success": true,
+      "errors_shape": "ARRAY",
+      "error_count": 0
+    },
+    {
+      "endpoint": "NAMESPACE_INVENTORY",
+      "http_status": 200,
+      "JSON_received": true,
+      "success": true,
+      "errors_shape": "NULL",
+      "error_count": null
+    },
+    {
+      "endpoint": "LIMITER_PUBLIC_URL_SETTINGS",
+      "http_status": 200,
+      "JSON_received": true,
+      "success": true,
+      "errors_shape": "ARRAY",
+      "error_count": 0
+    },
+    {
+      "endpoint": "EXACT_DATE_PATCH",
+      "http_status": 200,
+      "JSON_received": true
+    },
+    {
+      "endpoint": "POST_PATCH_PROJECT_READBACK",
+      "http_status": 200,
+      "JSON_received": true
+    }
+  ],
+  "concurrent_configuration_changes_excluded": false,
+  "raw_responses_values_hashes_identifiers_or_credentials_printed": false,
+  "token_saved_to_disk_or_environment": false,
+  "Zoho_file_accessed": false,
+  "email_or_provider_dispatch_attempted": false,
+  "upload_or_redeployment_attempted": false,
+  "SQL_or_Auth_requests": 0,
+  "gateway_configuration_ready_verified": false,
+  "live_activation_approved": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "checkpoint": "COMPLETE",
+  "problem_code": null,
+  "exit_code": 0,
+  "checked_UTC": "2026-10-19T18:13:26.062Z",
+  "source_hashes_verified": 7
+}

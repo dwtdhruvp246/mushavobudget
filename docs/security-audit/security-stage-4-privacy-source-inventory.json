@@ -1,0 +1,663 @@
+{
+  "schema_version": 1,
+  "stage_step": "4.3.1",
+  "recorded_date": "2026-10-11",
+  "scope": "PINNED_SELECTED_SOURCE_AND_PRIOR_EVIDENCE_NOT_DEPLOYED_NETWORK_NATIVE_OR_LEGAL_FACT_CONFIRMATION",
+  "source_parent_commit": "29b6c1cffeb4f9c38cad446c931fe1d1a9583ee2",
+  "source_git_blob_sha1": {
+    "supabase/migrations/20260901061500_currencyapi_multicurrency.sql": "4ca474dce0806ba483aa53a24dee64e20d942187",
+    "supabase/migrations/20260903090000_public_website_enquiries.sql": "43425235fd1dfff5646761482ec472f234466ec7",
+    "supabase/migrations/20260903091000_dynamic_family_plan_selection.sql": "8e4abea4561de370232c7213d336c86b4bcc839c",
+    "supabase/migrations/20260903120000_align_enquiry_workflow.sql": "e8edf51c81ae42125aab757e8a9d2be0cc2d41ca",
+    "supabase/migrations/20260903123000_direct_enquiry_submission.sql": "82254777c3397fe06d02ed7c7ec99a83b0a0099c",
+    "supabase/migrations/20260905090000_expand_global_currencies.sql": "80853d91277149bd0c8c2fd2071b912c2f54d541",
+    "supabase/migrations/20260905120000_signup_currency_preferences.sql": "3689ae95d29d7611d4372a54615583bd53254f7a",
+    "supabase/migrations/20260905143000_payment_daily_recurrence.sql": "82a3f7bf780d1a3dea32753739a29094e220354a",
+    "supabase/migrations/20260907150000_push_subscriptions.sql": "91d6012df8cfdc57a81f02e867a79b57e015bfc6",
+    "supabase/migrations/20260908130000_push_test_rate_limit.sql": "69dc3ac43815f25c0a892d25e83403008b6d70cb",
+    "supabase/migrations/20260908170000_notification_outbox.sql": "6db63559e2b0fde696484861b27fb0e6ef41d3ac",
+    "supabase/migrations/20260912120000_support_ticket_workflow.sql": "719ba585f7bdbbe44f6fafd6b6a5de13c62802db",
+    "supabase/migrations/20260916190000_admin_event_notifications.sql": "1218eaf24829e287f8054916248a0dea429f010e",
+    "supabase/migrations/20260921090000_additional_family_subscriptions.sql": "34addfdd2b4abef3e9a73bbe992f51a85464a505",
+    "supabase/migrations/20260921130000_notification_workspace_context.sql": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+    "supabase/migrations/20260922113000_admin_user_invitations.sql": "3559065aea9ad7d693121ea56bfd3837fa4dba35",
+    "supabase/migrations/20260923100000_complete_admin_user_invitations.sql": "46de8cdf2b64736452865de1092f3c92037aad50",
+    "supabase/migrations/20260923143000_replace_pending_admin_invitations.sql": "0dfeb64ae451d78f2fd659393c6f3ce757b5e82a",
+    "supabase/migrations/20260923190000_guard_pending_admin_invitation_workspace.sql": "4fd1e66584d4e895b1fe6372c946145a4dc0ec72",
+    "supabase/migrations/20260923200000_hold_invited_workspace_until_setup.sql": "b1a37fb3bcb57f4c6e4e644bfc87ba6f30621406",
+    "supabase/migrations/20260924100000_analytics_data_foundation.sql": "81e1049b8289215f41e1a446f7f5388b73c23c36",
+    "supabase/migrations/20260924110000_admin_analytics_page.sql": "b916b91777334bb7fb2ee2d8ab906b3b07ef8b24",
+    "supabase/migrations/20260924130000_guard_payment_record_payer.sql": "eb83b5f4513581335f8c17e261f354fe84eb6d50",
+    "supabase/migrations/20260924143000_repair_payment_recurrence_constraints.sql": "bcdb619d48a10bd0e61c23c06a159e184263d40d",
+    "supabase/migrations/20260925080000_cancel_pending_family_invitation.sql": "ab049c067da85e3b783dd0efbf2bc9698eb91ff3",
+    "supabase/migrations/20260925090000_expiry_and_account_suspension.sql": "ddf61a186a128a2a4ffe593560197440209e8328",
+    "supabase/migrations/20260925120000_family_extra_places.sql": "8a63e75e94965c7d737d7a8194f3f37feeffea5d",
+    "supabase/migrations/20260927103000_personal_cashbook_private_test.sql": "8ebcff8d90440218316240ae9b0ea5a1f63167e1",
+    "supabase/migrations/20260927140000_dashboard_completed_payments.sql": "1c7bb1c21d00e72f32038c5d3ac85f61bb554a0c",
+    "supabase/migrations/20260927183000_business_stage_0_launch_lock.sql": "ef756e2ba8f873f61e189372839db164b0e804eb",
+    "supabase/migrations/20260928070000_business_stage_2_security_foundation.sql": "4ec51d1c99311e29577b7c53283ef7fcc9fedf6b",
+    "supabase/migrations/20260928090000_admin_manual_subscription_grants.sql": "859b123f33f00b4bc7aa26fca4f9795a04244eaf",
+    "supabase/migrations/20260928130000_business_stage_3_onboarding.sql": "a8fd4e1771255a13b5f32e6042bba75874b205d1",
+    "supabase/migrations/20260928170000_business_stage_4_team.sql": "0d979bceddde1c4c122bf725efc632959dd23391",
+    "supabase/migrations/20260928200000_business_stage_5_expense_claims.sql": "3635ad6c7d9f256bed39090f1498043223c2b9b0",
+    "supabase/migrations/20260928213000_business_stage_6_bills.sql": "d20f9d99910c8b2585ea299ca47eba6986ffe616",
+    "supabase/migrations/20260928222000_stage_6_reminder_url_compatibility.sql": "865a70ea8d3e3b30dfe7b4e4ac9ee531f6cf3e16",
+    "supabase/migrations/20260929193000_business_stage_7_transactions.sql": "2a36e10e23372e7c73f3df1f1eb9209355d2479d",
+    "supabase/migrations/20260930060000_business_stage_8_budgets_approvals.sql": "91650ec00ef5300724b3da1e0ba8e9c429cf9387",
+    "supabase/migrations/20260930073000_business_stage_9_reports.sql": "640421d095741262ee6727aeadd99afab4b8311e",
+    "supabase/migrations/20260930090000_business_stage_10_billing.sql": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+    "supabase/migrations/20260930110000_business_stage_11_admin.sql": "d505b0c16529147fea998d794a60c55d5ff38e84",
+    "supabase/migrations/20260930130000_business_stage_12_realtime.sql": "8e44bd0a3c08a373181114a137e66c11310b8a2f",
+    "supabase/migrations/20261001190000_admin_plans_workbench.sql": "2dc028ccd92314e6f6f92388fc2107142ea2ddf2",
+    "supabase/migrations/20261002042500_reconcile_business_plan_seats.sql": "2bf290c33957d0c7cb85e7ea928355fcceb4b124",
+    "supabase/migrations/20261002060000_business_public_availability.sql": "04577f4423d3473501f247621fa92a69616c13bd",
+    "supabase/migrations/20261002070000_business_branding.sql": "d49d530a311f3ef4677cbe1e8413fe6b897dc8be",
+    "supabase/migrations/20261004153000_business_custom_roles.sql": "c943e03949affcf1ee326ae86198cc22af5090e5",
+    "supabase/migrations/20261006043000_security_stage_0_private_reads.sql": "57622217d1b180bd16aac47debe0618d70693e71",
+    "supabase/migrations/20261006050000_security_stage_0_currency_helpers.sql": "7b954296e256a46e0274a893a4852e62fa77190f",
+    "supabase/migrations/20261006180000_business_invitation_notifications.sql": "501ae2a45018cf0e89531f0821834c57c904c328",
+    "supabase/migrations/20261009190000_public_enquiry_submission_gate.sql": "6c9f26f2000aeb98f5175c410f4e95917a78289c",
+    "supabase/schema.sql": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+    "about.html": "6c10088db686923f0c5d2952b35c1eefbade4e82",
+    "app-entry.html": "eab3265c5a9fb31696266a182b28b2e560125c7a",
+    "app.html": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+    "auth.html": "b32cc13cfeb851bcaef0f99f3178fd4f28c3ef56",
+    "business.html": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+    "contact.html": "8fe5a2689b0cb83fac5f6e85034e9eff8cb9a6eb",
+    "index.html": "f6e71eb717aaf8071b827ff612ecff31c1e009e4",
+    "offline.html": "74ec210d864062a617b6c9bf6b3a7b0b50b989f9",
+    "pricing.html": "abb1db5130f943c4bbc761c6c93ced2abadcdc54",
+    "signup.html": "6093ca502c3a2b954a0289f5c5e4cacbe7def584",
+    "app.js": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+    "business.js": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+    "auth-security.js": "cbaa03fbce8be39407abf9366f11e972520fd45e",
+    "auth-flows.js": "206f0c32277a4da9a0bab667a06905468fdcc444",
+    "site.js": "f3d5abb558476b2ae1701e4911c3d1b58a50f348",
+    "push-notifications.js": "2e3fb6dd0fbf8126bb7ec0405e39ec072d2bc68c",
+    "pwa.js": "026dc2aefaba5eea0a1570764020a8eb4100a679",
+    "pwa-install.js": "29868087b3d80264b80f1075f1ddae668ebd261c",
+    "sw.js": "b61477393fa2b0ed7baa3c52d61076df549df948",
+    "workspace-preference.js": "17abce600781bc378e17bba19771316291c26f71",
+    "app-entry.js": "4496b291102c26aa4dbcf9fbb88882cd972f5775",
+    "package.json": "ab314c838a49dcee05beabf2604213ab297ab979",
+    "config.js": "25ca315c1fc3fff4add1c9e4ffa9a213194009f7",
+    ".github/workflows/pages.yml": "8f4433b99535e7ed6af0148b0fa24e23de9adb16",
+    "_headers": "6f1109ea4f616843cafef113f1f6f48e984e8858",
+    "supabase/config.toml": "3ee1a8c32aced0a75d916347b90186224ca3fc7c",
+    "supabase/cron-push-reminders.sql": "1a56f688d62302cbf45097c2387945c00f0eba93",
+    "supabase/functions/_shared/currencyapi.ts": "111937516dc8dc54839479299942697be32dfc0e",
+    "supabase/functions/_shared/push-destination.mjs": "047a76e7607cef3ba164e70ea5bfaa5977398042",
+    "supabase/functions/dispatch-admin-notifications/index.ts": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+    "supabase/functions/dispatch-push-reminders/index.ts": "ec9b1561cc20f16080099704ee6174044582d67f",
+    "supabase/functions/invite-admin-user/index.ts": "a26f1633237126a8a558d8e702ffaa1943173253",
+    "supabase/functions/invite-business-member/index.ts": "7db8206db8bcc349f8e8fa81e8cf58e4d4a5586e",
+    "supabase/functions/send-test-push/index.ts": "ba209ea5a0a7e246e10be544fbfa4f7487dfbd5f",
+    "supabase/functions/submit-enquiry/handler.mjs": "c06ca858bcc8e60986dd693ad5d94f32bafd9341",
+    "supabase/functions/submit-enquiry/index.ts": "890f5a02eb01c6d3de4c68f6dd78534b6cbcc71a",
+    "supabase/functions/sync-exchange-rates/index.ts": "0c5a1b60a1e15c103cfd9a05422f23f94eee2133",
+    "package-lock.json": "7880998659b6bd106024cf9cea6528a6e2d28714",
+    "wrangler.jsonc": "dcf7961ab88639fb35e25b0aec251277a15d23a1",
+    "scripts/build-capacitor.mjs": "d911f7f777a9b80bb27d8b99cf88a3e16dd8599e",
+    "admin-mfa.js": "b34b867301a97473a455f80cb01ab193b224a6ad",
+    "admin-plans.js": "c6a7620703d83b9f5a3df9f62f69e4c4f41b32c2",
+    "manifest.webmanifest": "58c701867538153b64166582588c4e3dbf86a0a9"
+  },
+  "selected_source_files_hash_verified": 96,
+  "source_blob_mismatches": 0,
+  "SQL_source_files": 53,
+  "selected_HTML_pages": 10,
+  "selected_Edge_entrypoints": 7,
+  "tree_absence_checks": {
+    "privacy_terms_or_deletion_source_files": [],
+    "tracked_native_platform_files": [],
+    "tracked_native_config": []
+  },
+  "source_absence_not_hosted_route_or_native_binary_proof": true,
+  "data_flow_categories": [
+    {
+      "id": "DF01",
+      "category": "Account, profile and authentication",
+      "fields": [
+        "account UUID",
+        "full name",
+        "email",
+        "country",
+        "signup/invitation linkage",
+        "locale/timezone/currency preferences",
+        "Auth credentials/session and conditional staff MFA state"
+      ],
+      "purpose": "Sign-in, recovery, account administration and workspace preferences",
+      "source_refs": [
+        "app.js",
+        "business.js",
+        "auth-flows.js",
+        "auth-security.js",
+        "admin-mfa.js",
+        "supabase/schema.sql",
+        "supabase/migrations/20260905120000_signup_currency_preferences.sql"
+      ],
+      "destination": "Supabase Auth/DB; browser session storage behavior; staff MFA interaction where enabled",
+      "limit": "Auth/settings/MFA deployment and provider log retention unverified; no new credential or factor read performed"
+    },
+    {
+      "id": "DF02",
+      "category": "Personal and Family financial records",
+      "fields": [
+        "payment names",
+        "amounts/currencies",
+        "due/repeat schedules",
+        "paid-by/recorded-by identities",
+        "notes/references",
+        "cashbook links",
+        "currency conversion history"
+      ],
+      "purpose": "Budgeting, reminders, accounting views and reports",
+      "source_refs": [
+        "app.js",
+        "supabase/schema.sql",
+        "supabase/migrations/20260927103000_personal_cashbook_private_test.sql",
+        "supabase/migrations/20260927140000_dashboard_completed_payments.sql"
+      ],
+      "destination": "Supabase DB; authorized workspace UI and generated exports",
+      "limit": "Full authorization/derived-workspace/history and hosted release parity remain open"
+    },
+    {
+      "id": "DF03",
+      "category": "Family membership and invitations",
+      "fields": [
+        "member names",
+        "user/member identifiers",
+        "invitation email",
+        "role/status",
+        "head/member approvals",
+        "join/leave/removal history"
+      ],
+      "purpose": "Shared workspace access, invitations and attribution",
+      "source_refs": [
+        "app.js",
+        "supabase/schema.sql",
+        "supabase/migrations/20260925080000_cancel_pending_family_invitation.sql"
+      ],
+      "destination": "Supabase DB/Auth mail; relevant owner/member views",
+      "limit": "May concern people entered or invited by another user; Family feature does not establish a child-directed audience"
+    },
+    {
+      "id": "DF04",
+      "category": "Business identity, contacts and branding",
+      "fields": [
+        "legal/trading name",
+        "industry",
+        "registration country/number",
+        "tax number",
+        "contact email/phone",
+        "website",
+        "address JSON",
+        "logo path",
+        "financial period preferences"
+      ],
+      "purpose": "Business setup, branding and reporting context",
+      "source_refs": [
+        "business.js",
+        "supabase/migrations/20260928070000_business_stage_2_security_foundation.sql",
+        "supabase/migrations/20260928130000_business_stage_3_onboarding.sql",
+        "supabase/migrations/20261002070000_business_branding.sql"
+      ],
+      "destination": "Supabase DB/Storage; permitted Business UI",
+      "limit": "Business workspace legal name is not necessarily the Mushavo service operator"
+    },
+    {
+      "id": "DF05",
+      "category": "Business operations and roles",
+      "fields": [
+        "suppliers/contacts",
+        "bills/payments",
+        "employee claims/receipts",
+        "transactions/income",
+        "budgets/requests/approvals",
+        "categories/dimensions",
+        "roles/scopes",
+        "actor/audit attribution"
+      ],
+      "purpose": "Business finance operations, approvals and scoped reporting",
+      "source_refs": [
+        "business.js",
+        "supabase/schema.sql",
+        "supabase/migrations/20260928200000_business_stage_5_expense_claims.sql",
+        "supabase/migrations/20260928213000_business_stage_6_bills.sql",
+        "supabase/migrations/20261004153000_business_custom_roles.sql"
+      ],
+      "destination": "Supabase DB/Storage; intended authorized Business participants",
+      "limit": "Complete hosted role/scoped/staff matrix remains unverified; organizations can enter third-person information"
+    },
+    {
+      "id": "DF06",
+      "category": "Uploaded proofs, documents and logos",
+      "fields": [
+        "file bytes",
+        "original names",
+        "MIME/size",
+        "bucket/path",
+        "uploader/workspace/parent identifiers",
+        "signed-link capabilities"
+      ],
+      "purpose": "Proof/receipt attachment, registration and branding",
+      "source_refs": [
+        "app.js",
+        "business.js",
+        "supabase/schema.sql",
+        "supabase/migrations/20261002070000_business_branding.sql"
+      ],
+      "destination": "Four source-private Supabase buckets and DB metadata; permitted downloads",
+      "limit": "Actual content may contain financial/contact/other sensitive information beyond named form fields; trusted processing and durable cleanup remain open"
+    },
+    {
+      "id": "DF07",
+      "category": "Subscription, billing and administration",
+      "fields": [
+        "plan/seats/expiry",
+        "quotes/invoices/receipts",
+        "manual payment amount/method/date/reference",
+        "review decisions",
+        "proof linkage",
+        "entitlement/audit history",
+        "administrative support notes"
+      ],
+      "purpose": "Access entitlement, manual subscription review and operational support",
+      "source_refs": [
+        "app.js",
+        "business.js",
+        "admin-plans.js",
+        "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+        "supabase/migrations/20260930110000_business_stage_11_admin.sql"
+      ],
+      "destination": "Supabase DB/Storage; authorized billing owners/staff",
+      "limit": "No complete native-store or external card/payment integration inventory is established; freeform proofs can contain payment data"
+    },
+    {
+      "id": "DF08",
+      "category": "Public enquiries and anti-abuse state",
+      "fields": [
+        "full name",
+        "email",
+        "country",
+        "enquiry type/message",
+        "challenge token transiently",
+        "HMAC email quota key",
+        "quota windows/counts"
+      ],
+      "purpose": "Contact/support/sales handling and abuse prevention",
+      "source_refs": [
+        "contact.html",
+        "site.js",
+        "supabase/functions/submit-enquiry/handler.mjs",
+        "supabase/migrations/20261009190000_public_enquiry_submission_gate.sql"
+      ],
+      "destination": "Form payload to Supabase Edge/DB; browser signals and challenge token to Cloudflare Turnstile",
+      "limit": "Handler forwards secret/token, not the enquiry body or explicit remote IP, to Siteverify. HMAC is linkable/pseudonymous. Old quota windows are deleted during invocation; this is not a guaranteed two-hour maximum or enquiry-message retention period"
+    },
+    {
+      "id": "DF09",
+      "category": "Support tickets, messages and email",
+      "fields": [
+        "customer/creator/assigned staff identifiers",
+        "workspace link",
+        "subject/description",
+        "category/priority/status",
+        "message bodies",
+        "internal-note flag",
+        "timestamps"
+      ],
+      "purpose": "Customer support and resolution history",
+      "source_refs": [
+        "app.js",
+        "supabase/migrations/20260912120000_support_ticket_workflow.sql",
+        "contact.html",
+        "supabase/functions/invite-admin-user/index.ts",
+        "supabase/functions/invite-business-member/index.ts"
+      ],
+      "destination": "Supabase support tables and Auth transactional mail; operator support inbox outside app",
+      "limit": "support@mushavobudget.com is source-published. Privacy-duty assignment, mailbox retention and current SMTP provider configuration are not established by source"
+    },
+    {
+      "id": "DF10",
+      "category": "First-party account-linked analytics",
+      "fields": [
+        "user UUID",
+        "UTC hour_start",
+        "last_seen_at",
+        "profile last_active_at",
+        "signup country/source and financial aggregates in admin views"
+      ],
+      "purpose": "Usage/registration/engagement and operational analytics",
+      "source_refs": [
+        "app.js",
+        "supabase/migrations/20260924100000_analytics_data_foundation.sql",
+        "supabase/migrations/20260924110000_admin_analytics_page.sql"
+      ],
+      "destination": "Supabase analytics_activity_hours/profiles; administrative aggregates",
+      "limit": "app.js records visible online activity with a 50-minute local throttle; SQL has one row per user/hour. User-linked underlying rows are not anonymous. No matching Business heartbeat was identified in business.js, no general analytics choice/withdrawal or timed analytics purge was identified in selected source"
+    },
+    {
+      "id": "DF11",
+      "category": "Push subscriptions and notification delivery",
+      "fields": [
+        "user UUID",
+        "endpoint",
+        "p256dh/auth subscription keys",
+        "device label",
+        "user-agent",
+        "delivery/failure/disabled timestamps",
+        "notification titles/bodies/targets"
+      ],
+      "purpose": "Optional payment/administrative reminders and device delivery management",
+      "source_refs": [
+        "app.js",
+        "push-notifications.js",
+        "sw.js",
+        "supabase/migrations/20260907150000_push_subscriptions.sql",
+        "supabase/migrations/20260908170000_notification_outbox.sql",
+        "supabase/functions/dispatch-push-reminders/index.ts",
+        "supabase/functions/_shared/push-destination.mjs"
+      ],
+      "destination": "Supabase DB/Edge and browser-specific Web Push service; operating-system notification surface",
+      "limit": "Detailed previews can include payment name/amount/currency. Notification permission does not establish consent for unrelated analytics. Complete current payload, endpoint/provider, revocation and native transport evidence remains pending"
+    },
+    {
+      "id": "DF12",
+      "category": "Browser/device persistence and application shell",
+      "fields": [
+        "SDK session state",
+        "per-user selected workspace/family identifiers",
+        "savedAt preference timestamp",
+        "push opt-in preference",
+        "install/update state",
+        "static shell cache"
+      ],
+      "purpose": "Signed-in sessions, startup restoration, optional notifications and PWA reliability",
+      "source_refs": [
+        "app.js",
+        "app-entry.js",
+        "auth-security.js",
+        "workspace-preference.js",
+        "pwa.js",
+        "pwa-install.js",
+        "sw.js",
+        "scripts/build-capacitor.mjs"
+      ],
+      "destination": "Browser local/session or isolated memory storage depending flow; native Preferences when packaged; service-worker static caches",
+      "limit": "Preferences are not proven encrypted secure storage. Source cache exclusions do not prove every deployed/native cache or full post-deletion device cleanup"
+    },
+    {
+      "id": "DF13",
+      "category": "Audit, diagnostics, infrastructure and backup copies",
+      "fields": [
+        "actor/action/status/time",
+        "support/admin audit metadata",
+        "selected error/status logs",
+        "provider request/network metadata potentially retained externally",
+        "database/role/Storage backup artifacts"
+      ],
+      "purpose": "Security, operational diagnosis, attribution and recovery",
+      "source_refs": [
+        "app.js",
+        "business.js",
+        "wrangler.jsonc",
+        "supabase/schema.sql",
+        "supabase/functions/dispatch-admin-notifications/index.ts"
+      ],
+      "destination": "App DB and operator/provider logs/backups; exact enabled sinks unknown",
+      "limit": "Source logging and observability declaration do not establish provider log fields/regions/retention. Earlier backup work is incomplete; no universal delete-all-copies or fixed expiry promise"
+    },
+    {
+      "id": "DF14",
+      "category": "Reports, downloads and user-directed exports",
+      "fields": [
+        "selected financial report rows",
+        "business report CSV",
+        "administrative finance CSV",
+        "printed/downloaded receipts and documents"
+      ],
+      "purpose": "User-requested finance reporting and external use",
+      "source_refs": [
+        "app.js",
+        "business.js"
+      ],
+      "destination": "Downloaded files, print/PDF/browser output and recipients chosen outside the app",
+      "limit": "The operator cannot promise automatic recall or deletion of copies already downloaded by authorized users"
+    }
+  ],
+  "provider_service_components": [
+    {
+      "id": "TP01",
+      "service": "Supabase Auth/Postgres/Storage/Edge/Realtime",
+      "status": "IDENTIFIED_IN_SOURCE",
+      "data": "Account, finance, memberships, support, analytics, files and operational data",
+      "refs": [
+        "app.js",
+        "business.js",
+        "supabase/functions/submit-enquiry/handler.mjs"
+      ],
+      "pending": "Actual projects/regions, contracts, subprocessor/log/backup retention, SMTP handoff and deployed settings"
+    },
+    {
+      "id": "TP02",
+      "service": "Cloudflare hosting/edge/observability",
+      "status": "SOURCE_AND_PRIOR_HOSTING_EVIDENCE",
+      "data": "Served pages and infrastructure request/diagnostic metadata depending actual configuration",
+      "refs": [
+        ".github/workflows/pages.yml",
+        "wrangler.jsonc",
+        "_headers"
+      ],
+      "pending": "Final Pages/Workers configuration, request/log fields, retention/regions and administrative access"
+    },
+    {
+      "id": "TP03",
+      "service": "Cloudflare Turnstile",
+      "status": "IDENTIFIED_CONTACT_INTEGRATION_SOURCE",
+      "data": "Browser/security signals; transient Siteverify challenge token. Own handler does not forward enquiry body",
+      "refs": [
+        "site.js",
+        "supabase/functions/submit-enquiry/handler.mjs"
+      ],
+      "pending": "Deployed widget modes, pre-clearance/ephemeral settings and provider roles; provider documentation identifies both service protection and improvement processing"
+    },
+    {
+      "id": "TP04",
+      "service": "Cloudflare Web Analytics",
+      "status": "HISTORICAL_HOSTED_OBSERVATION_CURRENT_NOT_RECHECKED",
+      "data": "Prior injected beacon; actual deployed performance/usage fields and pages must be verified",
+      "refs": [
+        "docs/security-audit/SECURITY_AUDIT_CARRY_FORWARD.md"
+      ],
+      "pending": "Current injection/configuration/network traffic and choice/retention treatment. Separate from account-linked SQL analytics"
+    },
+    {
+      "id": "TP05",
+      "service": "Transactional/support email; Zoho previously owner-selected",
+      "status": "AUTH_MAIL_SOURCE_PROVIDER_CURRENT_UNVERIFIED",
+      "data": "Recipient email, invitation/recovery/confirmation message/link; support messages submitted to inbox",
+      "refs": [
+        "contact.html",
+        "supabase/functions/invite-admin-user/index.ts",
+        "supabase/functions/invite-business-member/index.ts"
+      ],
+      "pending": "Actual SMTP provider/sender/region/log/mailbox retention and monitored privacy contact; selection is not configuration proof"
+    },
+    {
+      "id": "TP06",
+      "service": "Browser Web Push providers",
+      "status": "ALLOWLISTED_SOURCE_NOT_ACTUAL_CURRENT_ENDPOINT_INVENTORY",
+      "data": "Push endpoint/delivery metadata and encrypted Web Push transport; raw payload generated by app server",
+      "refs": [
+        "supabase/functions/_shared/push-destination.mjs",
+        "supabase/functions/dispatch-push-reminders/index.ts"
+      ],
+      "pending": "Used Google/Mozilla/Apple/Microsoft endpoint families, contracts, lifetimes, payload previews, native distinction and account-switch/deletion behavior"
+    },
+    {
+      "id": "TP07",
+      "service": "CurrencyAPI",
+      "status": "IDENTIFIED_SERVER_RATE_FETCH_SOURCE",
+      "data": "Server request/API credential and rate endpoint/date; currencies are used for response normalization; no user/finance payload identified in rate fetch",
+      "refs": [
+        "supabase/functions/sync-exchange-rates/index.ts",
+        "supabase/functions/_shared/currencyapi.ts"
+      ],
+      "pending": "Deployed scheduler/provider settings, account/request log retention and actual outgoing request shape"
+    },
+    {
+      "id": "TP08",
+      "service": "jsDelivr/esm.sh and package registries",
+      "status": "IDENTIFIED_REMOTE_CODE_DELIVERY_AND_BUILD_DEPENDENCIES",
+      "data": "Remote module/code requests; infrastructure metadata for browser CDN requests; build dependency delivery",
+      "refs": [
+        "app.js",
+        "business.js",
+        "site.js",
+        "supabase/functions/sync-exchange-rates/index.ts",
+        "package-lock.json"
+      ],
+      "pending": "Final bundled versus remote runtime delivery, provider request handling, precise SDK versions and supply chain. Build-only tools are not automatically data processors for user finance"
+    },
+    {
+      "id": "TP09",
+      "service": "Capacitor native framework/App/Preferences/Android",
+      "status": "TRACKED_PACKAGES_AND_BUNDLING_INTENT_ONLY",
+      "data": "Native workspace preference and app-state APIs; exact final packaged SDK behavior unknown",
+      "refs": [
+        "package.json",
+        "package-lock.json",
+        "scripts/build-capacitor.mjs",
+        "workspace-preference.js"
+      ],
+      "pending": "Actual Android/iOS release manifests, plugins, permissions, privacy manifests, storage/logging and store labels; native projects/config absent from selected tracked tree"
+    },
+    {
+      "id": "TP10",
+      "service": "Operator backup destinations and exported copies",
+      "status": "HISTORICAL_PARTIAL_BACKUP_EVIDENCE_NOT_CURRENT_PROVIDER_COMPLETE",
+      "data": "Database/role/Storage records or user-generated report copies depending workflow",
+      "refs": [
+        "docs/security-audit/SECURITY_AUDIT_CARRY_FORWARD.md",
+        "app.js",
+        "business.js"
+      ],
+      "pending": "Complete actual destinations/accounts/regions, encrypted handling, access, lifetime and deletion/recovery limitations. Deferred Google Drive work is not proof of active automated customer backup"
+    }
+  ],
+  "components_are_not_distinct_company_or_contract_count": true,
+  "primary_documents_checked": [
+    {
+      "title": "Google Play User Data",
+      "url": "https://support.google.com/googleplay/android-developer/answer/10144311?hl=en"
+    },
+    {
+      "title": "Google Play Data safety definitions",
+      "url": "https://support.google.com/googleplay/android-developer/answer/10787469?hl=en"
+    },
+    {
+      "title": "Apple App Review privacy guidelines",
+      "url": "https://developer.apple.com/app-store/review/guidelines/#privacy"
+    },
+    {
+      "title": "Apple App Privacy details",
+      "url": "https://developer.apple.com/app-store/app-privacy-details/"
+    },
+    {
+      "title": "Cloudflare Turnstile service overview",
+      "url": "https://developers.cloudflare.com/turnstile/"
+    },
+    {
+      "title": "Cloudflare Turnstile Privacy Addendum",
+      "url": "https://www.cloudflare.com/turnstile-privacy-policy/"
+    },
+    {
+      "title": "Cloudflare Web Analytics collection",
+      "url": "https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/"
+    }
+  ],
+  "operator_legal_identity_confirmed": false,
+  "minimum_age_and_minors_account_policy_confirmed": false,
+  "privacy_contact_duty_assignment_confirmed": false,
+  "launch_territory_and_applicable_obligation_mapping_confirmed": false,
+  "adopted_retention_periods": false,
+  "current_provider_DPA_region_log_retention_confirmed": false,
+  "future_Google_login_current_source_implementation_identified": false,
+  "public_notice_publication_performed": false,
+  "native_and_store_data_declarations_verified": false,
+  "acceptance_groups": [
+    {
+      "id": "PR01",
+      "title": "Operator and collection facts",
+      "cases": [
+        "Confirmed operator/privacy contact and launch audience/territories",
+        "Per-surface actual fields and affected users/non-users",
+        "Required versus optional collection with valid alternative paths",
+        "Purpose and recipient/control allocation for Personal/Family/Business",
+        "Owner-adopted facts replace every unresolved placeholder without unsupported promises"
+      ]
+    },
+    {
+      "id": "PR02",
+      "title": "Processors, SDKs and transfers",
+      "cases": [
+        "Actual Supabase/email regions/contracts/subprocessors and configuration",
+        "Cloudflare hosting/Turnstile/Web Analytics deployed settings and distinct signals",
+        "Actual push providers/payloads/device metadata and delivery handling",
+        "CDN/runtime rate-fetch requests distinguished from build-only dependencies",
+        "Final Android/iOS SDK/permission/WebView and future Google-login data inventory"
+      ]
+    },
+    {
+      "id": "PR03",
+      "title": "Retention and user controls",
+      "cases": [
+        "Category-specific approved grounds/period/expiry and minimization",
+        "Analytics lifecycle and genuine implemented choice/withdrawal where needed",
+        "Enquiry/support/mail and HMAC quota expiry behavior under inactivity",
+        "Account/shared-file/backup deletion with factual retained copies and limits",
+        "Privacy contact/request identity verification and actual bounded fulfillment workflow"
+      ]
+    },
+    {
+      "id": "PR04",
+      "title": "Notices and user surfaces",
+      "cases": [
+        "Public privacy/terms/support/deletion resources have working intended responses",
+        "Public/signup/authenticated/Business/native notices and links are accessible",
+        "Version/effective date/operator/purpose/processor/retention text agree with adopted facts",
+        "Required prominent disclosure/consent precedes processing and withdrawal works",
+        "Subscription, proof/freeform-content, exports and lock-screen notice claims match behavior"
+      ]
+    },
+    {
+      "id": "PR05",
+      "title": "Evidence and release consistency",
+      "cases": [
+        "Genuine browser/device network/storage/telemetry capture matches frozen inventory",
+        "Implemented choices control all applicable collection across roles and regions",
+        "Play Data safety classifications use actual collection/sharing criteria",
+        "Apple App Privacy linked-data/tracking classifications use final release SDK behavior",
+        "Owner adoption, monitored contact and final artifacts preserved without premature store submission"
+      ]
+    }
+  ],
+  "planned_grouped_cases": 25,
+  "fresh_local_behavior_tests_run": 0,
+  "hosted_HTTP_SQL_Auth_Storage_or_provider_checks_run": 0,
+  "owner_action_requested": false,
+  "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+  "production_or_native_changed": false,
+  "findings_closed": [],
+  "open_actions": [
+    "PR-R01",
+    "PR-R02",
+    "PR-R03",
+    "PR-R04",
+    "PR-R05",
+    "PR-R06"
+  ],
+  "next_step": "4.3.2",
+  "stage_4_full_report_due_at": "4.4"
+}

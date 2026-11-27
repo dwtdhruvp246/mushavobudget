@@ -1,0 +1,112 @@
+{
+  "stage": "4/10",
+  "final_remediation": "FR.3/8",
+  "step": "FR.3.2",
+  "state": "COMPLETE_ON_STAGING",
+  "batch": "Ordinary managed uploads and browser cutover",
+  "staging_origin": "https://mushavo-budget-staging.pages.dev",
+  "staging_project": "dczlddwbtgvfdujgcitb",
+  "canonical_deployment": "78498daf-0020-47a3-96fc-7a96c72e7954",
+  "canonical_source_commit": "72922548380362c48cc5c0d66dd024647e29dcaa",
+  "canonical_served_hashes": {
+    "app.html": true,
+    "business.html": true,
+    "app.js": true,
+    "business.js": true,
+    "private-files.js": true,
+    "config.js": true
+  },
+  "preview_deployment": "0618c5cb-326b-4087-a75d-6f0c816f8595",
+  "validated_browser_preview_run": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43738524613",
+  "canonical_browser_run": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43738791222",
+  "staging_api_run": "https://github.com/dwtdhruvp246/mushavobudget/actions/runs/43736994976",
+  "api_cases": {
+    "personal": true,
+    "family": true,
+    "subscription_image": true,
+    "business_csv": true,
+    "business_xlsx": true,
+    "business_logo": true,
+    "business_unlinked": true
+  },
+  "api_fixture_restored": true,
+  "preview_browser": {
+    "validator": 1,
+    "submission": 1,
+    "direct_storage_writes": 0,
+    "blocked": [
+      [
+        "POST",
+        "/rest/v1/rpc/fr3_subscription_proof_browser_witness"
+      ],
+      [
+        "POST",
+        "/rest/v1/rpc/record_my_analytics_activity"
+      ],
+      [
+        "POST",
+        "/rest/v1/rpc/fr3_subscription_proof_browser_witness"
+      ]
+    ],
+    "phase": "COMPLETE",
+    "validator_http": 200,
+    "attached_size": 74,
+    "submission_http": 200,
+    "broker_exact": true,
+    "disposable_payment_deleted": true
+  },
+  "canonical_browser": {
+    "validator": 1,
+    "submission": 1,
+    "direct_storage_writes": 0,
+    "blocked": [
+      [
+        "POST",
+        "/rest/v1/rpc/fr3_subscription_proof_browser_witness"
+      ],
+      [
+        "POST",
+        "/rest/v1/rpc/record_my_analytics_activity"
+      ],
+      [
+        "POST",
+        "/rest/v1/rpc/fr3_subscription_proof_browser_witness"
+      ]
+    ],
+    "phase": "COMPLETE",
+    "validator_http": 200,
+    "attached_size": 74,
+    "submission_http": 200,
+    "broker_exact": true,
+    "disposable_payment_deleted": true,
+    "direct_policy_denial": true
+  },
+  "selected_local_test_passes": 115,
+  "disposable_postgres_quota_binding_cleanup": "PASS",
+  "accepted_prior_near_10_mib_pdf_input_bytes": 10482531,
+  "ordinary_receipt_limits": {
+    "max_bytes": 10485760,
+    "min_family_business_pattern_scope": true,
+    "max_side": 4096,
+    "max_pixels": 4194304
+  },
+  "pending_upload_limits_per_workspace_uploader": {
+    "max_files": 8,
+    "max_bytes": 33554432
+  },
+  "stage4_account_deletion_and_privacy_outside_this_batch": true,
+  "production_changed": false,
+  "readback": {
+    "catalog_sha256": "c8c7e95ef631b5f1234fa59fcb1b39ed346d3377e769129bd985b1a01a1898db",
+    "catalog_matches": true,
+    "private_buckets": 4,
+    "server_only_policies": 2,
+    "pending_ordinary_uploads": 0,
+    "removed_ordinary_uploads": 8,
+    "linked_ordinary_files": 2,
+    "pending_subscription_uploads": 0,
+    "removed_subscription_uploads": 3,
+    "original_signed_receipts": 7,
+    "ordinary_signed_dispatches": 5
+  }
+}

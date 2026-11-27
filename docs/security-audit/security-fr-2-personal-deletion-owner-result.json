@@ -1,0 +1,148 @@
+{
+  "stage_step": "FR.2.2_DELETION",
+  "result": "STAGING_PERSONAL_DELETION_AND_CONVERSION_CASCADE_SCOPED_PASS",
+  "project": "dczlddwbtgvfdujgcitb",
+  "checks": [
+    {
+      "check": "Public configuration is staging-only with push disabled",
+      "status": "PASS"
+    },
+    {
+      "check": "Two verified distinct ordinary nonsuspended staging accounts",
+      "status": "PASS"
+    },
+    {
+      "check": "Own distinct Personal scopes already use enabled conversions and USD reporting; settings privately captured",
+      "status": "PASS"
+    },
+    {
+      "check": "New generated reference is visible in the API schema cache and has the expected baseline shape",
+      "status": "PASS"
+    },
+    {
+      "check": "All visible payment rows and conversions, including both retained Family manual USD1 rows, privately captured",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 1 RECORD path creates exact inactive USD1 item, paid record and generated identity conversion",
+      "status": "PASS"
+    },
+    {
+      "check": "Outsider cannot delete owner 1 RECORD path parents or conversion; full owner readbacks unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "Anonymous cannot delete owner 1 RECORD path parents or conversion; full owner readbacks unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 1 RECORD path direct conversion DELETE has no effect under unchanged RLS",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 1 record DELETE removes exact record and conversion while retaining its inactive parent",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 1 removes only the now-empty item from this new RECORD path",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 1 ITEM path creates exact inactive USD1 item, paid record and generated identity conversion",
+      "status": "PASS"
+    },
+    {
+      "check": "Outsider cannot delete owner 1 ITEM path parents or conversion; full owner readbacks unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "Anonymous cannot delete owner 1 ITEM path parents or conversion; full owner readbacks unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 1 ITEM path direct conversion DELETE has no effect under unchanged RLS",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 1 item DELETE cascades through its exact new record and generated conversion",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 2 RECORD path creates exact inactive USD1 item, paid record and generated identity conversion",
+      "status": "PASS"
+    },
+    {
+      "check": "Outsider cannot delete owner 2 RECORD path parents or conversion; full owner readbacks unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "Anonymous cannot delete owner 2 RECORD path parents or conversion; full owner readbacks unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 2 RECORD path direct conversion DELETE has no effect under unchanged RLS",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 2 record DELETE removes exact record and conversion while retaining its inactive parent",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 2 removes only the now-empty item from this new RECORD path",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 2 ITEM path creates exact inactive USD1 item, paid record and generated identity conversion",
+      "status": "PASS"
+    },
+    {
+      "check": "Outsider cannot delete owner 2 ITEM path parents or conversion; full owner readbacks unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "Anonymous cannot delete owner 2 ITEM path parents or conversion; full owner readbacks unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 2 ITEM path direct conversion DELETE has no effect under unchanged RLS",
+      "status": "PASS"
+    },
+    {
+      "check": "Owner 2 item DELETE cascades through its exact new record and generated conversion",
+      "status": "PASS"
+    },
+    {
+      "check": "Both actors full visible payment and conversion baselines, including old orphan and manual rows, match their private pre-run captures",
+      "status": "PASS"
+    },
+    {
+      "check": "All four new inactive items, four paid records and four generated identity conversions are absent; currency settings unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "Only the two API-created test sessions are logged out",
+      "status": "PASS"
+    }
+  ],
+  "problem_code": null,
+  "run_marker": "AUDIT-FR22-DELETE-d3f8d44e-a1a1-468b-a422-856475c24b84",
+  "requests_attempted": 190,
+  "new_inactive_items_created": 4,
+  "new_paid_records_created": 4,
+  "new_identity_conversions_verified": 4,
+  "selected_new_fixture_and_conversion_absence_verified": true,
+  "incomplete_new_fixture_effects_may_remain": false,
+  "preexisting_visible_payment_and_conversion_rows_unchanged": true,
+  "test_sessions_logged_out": true,
+  "existing_historical_records_or_orphan_conversions_repaired_or_deleted": false,
+  "existing_settings_changed": false,
+  "derived_conversion_rows_cleanup_verified": true,
+  "schema_cache_generated_reference_verified": true,
+  "post_batch_SQL_snapshot_rechecked": false,
+  "concurrent_transactions_or_provider_jobs_verified": false,
+  "hosted_acceptance": false,
+  "findings_closed": [],
+  "production_or_native_changed": false,
+  "credentials_tokens_keys_raw_rows_and_actor_identifiers_printed": false,
+  "completed_utc": "2026-10-14T12:47:57.368Z"
+}

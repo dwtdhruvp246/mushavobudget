@@ -1,0 +1,15 @@
+{
+  "execution_source": "078c07682e6b077fdb44f7c42895b6cb297d82a9",
+  "test_only_fixed_method_instrumentation": true,
+  "fixture": "ACTUAL_NATIVE_BROWSER_REAL_308_PAGES_REDIRECT",
+  "problem": "BROWSER_NAVIGATION_REQUIRED",
+  "first_async_failure": {
+    "checkpoint": "FULL_APP_PUBLIC_PREFLIGHT",
+    "code": "CDP_COMMAND_REQUIRED"
+  },
+  "failed_CDP_method": "Fetch.getResponseBody",
+  "browser_process_stopped": true,
+  "temporary_profile_removed": true,
+  "real_email_requests": 0,
+  "actual_hosted_requests": 0
+}

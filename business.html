@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="referrer" content="no-referrer" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Manage a Mushavo Budget Business workspace." />
     <meta name="theme-color" content="#12222a" />
@@ -14,12 +15,12 @@
     <link rel="icon" href="/assets/pwa-icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest?v=5" />
-    <link rel="stylesheet" href="/business.css?v=13" />
+    <link rel="stylesheet" href="/business.css?v=15" />
     <link rel="stylesheet" href="/pwa-update.css?v=2" />
     <script src="/workspace-preference.js?v=1"></script>
     <script src="/config.js?v=27"></script>
     <script src="/pwa.js?v=80" defer></script>
-    <script type="module" src="/business.js?v=18"></script>
+    <script type="module" src="/business.js?v=30"></script>
   </head>
   <body>
     <a class="skip-link" href="#businessMain">Skip to Business content</a>
@@ -32,6 +33,8 @@
         <p>Verifying your session and workspace access…</p>
       </section>
     </main>
+
+    <main id="businessEmailVerification" class="gate-view hidden"><section id="businessEmailVerificationContent" class="gate-card"></section></main>
 
     <main id="businessConfig" class="gate-view hidden">
       <section class="gate-card">
@@ -331,7 +334,18 @@
 
           <section class="business-panel hidden" data-business-panel="settings">
             <div class="section-heading"><div><p class="eyebrow">Workspace setup</p><h2>Settings</h2><p>Business identity, reporting preferences, notifications, and security.</p></div><button id="editBusinessSetup" class="button primary hidden" type="button">Edit business setup</button></div>
-            <div class="settings-grid"><article class="content-card"><h3>Business details</h3><form id="businessBrandingForm" class="onboarding-form branding-form hidden"><label class="field-wide">Business name<input id="brandingBusinessName" minlength="2" maxlength="120" required autocomplete="organization" /></label><div class="field-wide branding-upload"><div class="branding-preview company-mark" data-logo-preview="settings" aria-hidden="true">B</div><div><label for="settingsBusinessLogo">Business logo <small>(optional)</small></label><input id="settingsBusinessLogo" data-logo-input="settings" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="settingsLogoHelp" /><small id="settingsLogoHelp">PNG, JPG or WebP · up to 2 MB. A square logo works best.</small><button class="button secondary branding-remove" type="button" data-logo-remove="settings">Remove logo</button><p class="team-message hidden" role="status" data-logo-message="settings"></p></div></div><p class="branding-caption field-wide">Your business identity appears across this workspace for all members.</p><div class="field-wide"><button class="button primary" type="submit">Save business identity</button></div><p id="brandingMessage" class="team-message field-wide hidden" role="status"></p></form><dl class="detail-list"><div><dt>Workspace</dt><dd id="settingsWorkspaceName">—</dd></div><div><dt>Your role</dt><dd id="settingsUserRole">—</dd></div><div><dt>Status</dt><dd id="settingsWorkspaceStatus">—</dd></div></dl></article><article class="content-card"><h3>Regional settings</h3><dl class="detail-list"><div><dt>Base currency</dt><dd id="settingsCurrency">—</dd></div><div><dt>Enabled currencies</dt><dd id="settingsEnabledCurrencies">—</dd></div><div><dt>Locale</dt><dd id="settingsLocale">—</dd></div><div><dt>Timezone</dt><dd id="settingsTimezone">—</dd></div><div><dt>Financial year starts</dt><dd id="settingsFinancialMonth">—</dd></div><div><dt>Period starts on</dt><dd id="settingsPeriodDay">—</dd></div></dl></article></div>
+            <div id="businessWorkspaceSettings" class="settings-grid"><article class="content-card"><h3>Business details</h3><form id="businessBrandingForm" class="onboarding-form branding-form hidden"><label class="field-wide">Business name<input id="brandingBusinessName" minlength="2" maxlength="120" required autocomplete="organization" /></label><div class="field-wide branding-upload"><div class="branding-preview company-mark" data-logo-preview="settings" aria-hidden="true">B</div><div><label for="settingsBusinessLogo">Business logo <small>(optional)</small></label><input id="settingsBusinessLogo" data-logo-input="settings" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="settingsLogoHelp" /><small id="settingsLogoHelp">PNG, JPG or WebP · up to 2 MB. A square logo works best.</small><button class="button secondary branding-remove" type="button" data-logo-remove="settings">Remove logo</button><p class="team-message hidden" role="status" data-logo-message="settings"></p></div></div><p class="branding-caption field-wide">Your business identity appears across this workspace for all members.</p><div class="field-wide"><button class="button primary" type="submit">Save business identity</button></div><p id="brandingMessage" class="team-message field-wide hidden" role="status"></p></form><dl class="detail-list"><div><dt>Workspace</dt><dd id="settingsWorkspaceName">—</dd></div><div><dt>Your role</dt><dd id="settingsUserRole">—</dd></div><div><dt>Status</dt><dd id="settingsWorkspaceStatus">—</dd></div></dl></article><article class="content-card"><h3>Regional settings</h3><dl class="detail-list"><div><dt>Base currency</dt><dd id="settingsCurrency">—</dd></div><div><dt>Enabled currencies</dt><dd id="settingsEnabledCurrencies">—</dd></div><div><dt>Locale</dt><dd id="settingsLocale">—</dd></div><div><dt>Timezone</dt><dd id="settingsTimezone">—</dd></div><div><dt>Financial year starts</dt><dd id="settingsFinancialMonth">—</dd></div><div><dt>Period starts on</dt><dd id="settingsPeriodDay">—</dd></div></dl></article></div>
+            <article class="content-card account-security-settings" aria-labelledby="businessAccountSecurityTitle">
+              <h3 id="businessAccountSecurityTitle">Account security</h3>
+              <div class="account-security-setting">
+                <span>Password</span>
+                <a class="button secondary" href="/auth.html?flow=change&amp;from=business-settings">Change password</a>
+              </div>
+              <div class="account-security-setting">
+                <span>Account deletion</span>
+                <a class="button secondary" href="/auth.html?flow=account&amp;from=business-settings">Manage deletion requests</a>
+              </div>
+            </article>
           </section>
 
           <section class="business-panel hidden" data-business-panel="subscription">

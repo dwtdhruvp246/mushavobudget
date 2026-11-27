@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "REAL_UPLOAD_PATH_CHECKS_PASS_REMOVED_MEMBER_READ_REVIEW_ALL_FIXTURES_CLEANED",
+  "source_commit": "e0042968bdd777ca1006636cce3dcdd852bf6a9d",
+  "workflow_run_id": "42373564899",
+  "workflow_job_id": "128406462377",
+  "offline_guard_tests": 57,
+  "hosted_report": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+    "result": "STAGING_ACCESS_REVIEW_REQUIRED",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 1,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "production_changed": false,
+    "exit_code": 1,
+    "exercise": {
+      "checks": {
+        "EXACT_EMPTY_SYNTHETIC_FAMILY_BOUND": true,
+        "EXACT_ACTIVE_TEST_MEMBER": true,
+        "OWNER_FAMILY_UPLOAD_ALLOWED": true,
+        "ACTIVE_MEMBER_FAMILY_UPLOAD_ALLOWED": true,
+        "OWN_PERSONAL_UPLOAD_REMAINS_ALLOWED": true,
+        "UPLOADED_BYTES_MATCH": true,
+        "FOREIGN_UPLOADER_PATH_DENIED": true,
+        "WRONG_FAMILY_OWNER_PATH_DENIED": true,
+        "NONEXISTENT_FAMILY_PATH_DENIED": true,
+        "ANONYMOUS_UPLOAD_DENIED": true,
+        "OWNER_REMOVED_EXACT_TEST_MEMBER": true,
+        "REMOVED_MEMBER_UPLOAD_DENIED": true,
+        "REMOVED_MEMBER_ORIGINAL_READ_DENIED": false,
+        "EXACT_STORAGE_API_REMOVAL_ACKNOWLEDGED": true,
+        "ALL_ATTEMPTED_TEST_OBJECTS_INDEPENDENTLY_ABSENT": true,
+        "OWNER_DELETED_EMPTY_SYNTHETIC_FAMILY": true,
+        "SYNTHETIC_FAMILY_ABSENT_READBACK": true
+      },
+      "exercise_requests": 25,
+      "upload_attempts": 8,
+      "cleanup_paths": [
+        "families/4832ecbe-e35f-4489-a771-44d27920e225/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/3340d0c3-2c11-408b-bf4c-c85566f49068-owner.png",
+        "families/4832ecbe-e35f-4489-a771-44d27920e225/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/660a1463-6589-4c4d-ab6c-8ee50161038f/3340d0c3-2c11-408b-bf4c-c85566f49068-member.png",
+        "personal/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/3340d0c3-2c11-408b-bf4c-c85566f49068-personal.png",
+        "families/4832ecbe-e35f-4489-a771-44d27920e225/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/660a1463-6589-4c4d-ab6c-8ee50161038f/3340d0c3-2c11-408b-bf4c-c85566f49068-spoof-uploader.png",
+        "families/4832ecbe-e35f-4489-a771-44d27920e225/660a1463-6589-4c4d-ab6c-8ee50161038f/660a1463-6589-4c4d-ab6c-8ee50161038f/3340d0c3-2c11-408b-bf4c-c85566f49068-spoof-owner.png",
+        "families/00000000-0000-4000-8000-000000000000/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/3340d0c3-2c11-408b-bf4c-c85566f49068-absent-family.png",
+        "families/4832ecbe-e35f-4489-a771-44d27920e225/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/3340d0c3-2c11-408b-bf4c-c85566f49068-anonymous.png",
+        "families/4832ecbe-e35f-4489-a771-44d27920e225/ca7bdcf2-e69d-42e2-8ae8-79cac6de2184/660a1463-6589-4c4d-ab6c-8ee50161038f/3340d0c3-2c11-408b-bf4c-c85566f49068-removed.png"
+      ],
+      "Storage_cleanup_verified": true,
+      "synthetic_family_removed": true,
+      "email_requests": 0,
+      "provider_requests": 0,
+      "finance_writes": 0
+    },
+    "problem_code": "REMOVED_MEMBER_ORIGINAL_READ_DENIED_REQUIRED",
+    "full_lettered_batch_X_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-07-batch-x-family-proof-path-binding",
+    "source_commit": "e0042968bdd777ca1006636cce3dcdd852bf6a9d",
+    "workflow_run_id": "42373564899",
+    "workflow_run_attempt": "1"
+  },
+  "passed_selected_assertions": 16,
+  "failed_selected_assertions": 1,
+  "independent_cleanup": {
+    "family_rows": 0,
+    "workspace_rows": 0,
+    "physical_objects": 0,
+    "setup_sessions": 0,
+    "run_sessions": 0,
+    "catalog_matches": true
+  },
+  "cause_established": false,
+  "cache_headers_recorded_in_initial_run": false,
+  "next_step": "Capture exact warmed and cacheNonce response status/cache headers, independently check authoritative Family participation, and test new signing authorization. Preserve the original warm-read denial failure as open.",
+  "production_changed": false,
+  "full_batch_X_complete": false,
+  "exit_code": 1
+}

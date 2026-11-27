@@ -1,0 +1,112 @@
+{
+  "date": "2026-11-14",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "STAGING_SUBSCRIPTION_PROOF_BROWSER_ROLLBACK_PASS",
+  "source_commit": "a9d0c8c850a9e032a873cecf33b554108b058c92",
+  "run_commit": "2e8d39a8406505e143baea51662a22eee8a7b967",
+  "run_id": 43600202563,
+  "job_id": 132463112417,
+  "hosted_browser_checks_passed": 7,
+  "hosted_browser": {
+    "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Subscription proof browser",
+    "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+    "checks": {
+      "two_ordinary_credentials_and_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 2
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 12,
+    "created_sessions": 2,
+    "cleanup_sessions": 2,
+    "settings_or_finance_writes_requested": 0,
+    "production_changed": false,
+    "full_lettered_batch_W_complete": false,
+    "exit_code": 0,
+    "exercise": {
+      "checks": {
+        "empty_subscription_object_scope": true,
+        "EXACT_FIXTURE_PLAN_AND_PRICE_VISIBLE": true,
+        "BROWSER_UPLOADED_CANONICAL_PDF": true,
+        "GENUINE_RENEWAL_AND_LINK_VERIFIED": true,
+        "RENEWAL_AND_NOTIFICATION_ROLLED_BACK": true,
+        "SAME_BROWSER_SESSION_READS_EXACT_PRIVATE_PDF": true,
+        "PINNED_CANDIDATE_AND_BOUNDED_WRITES": true
+      },
+      "cleanup": {
+        "proof_object_absent": true
+      },
+      "browser_requests": {
+        "permitted": 63,
+        "validator": 1,
+        "witness": 1,
+        "config": 1,
+        "broker": 1,
+        "blocked": [
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/get_my_business_invitations"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/record_my_analytics_activity"
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/get_my_business_invitations"
+          }
+        ],
+        "candidate_app": 1
+      },
+      "browser_stage": "COMPLETE",
+      "browser_http": {
+        "validator": 200,
+        "witness": 200
+      }
+    },
+    "commit": "2e8d39a8406505e143baea51662a22eee8a7b967"
+  },
+  "live_authenticated_renewal_routine_executed": true,
+  "direct_public_renewal_submission_persisted": false,
+  "renewal_transaction_disposition": "rollback",
+  "independent_cleanup": {
+    "gate_ready": false,
+    "active_marker": 0,
+    "fixture_prices": 0,
+    "requests": 0,
+    "payments": 0,
+    "invoices": 0,
+    "audit": 0,
+    "proofs": 0,
+    "objects": 0,
+    "outbox": 0,
+    "sessions": 0,
+    "catalog_matches": true
+  },
+  "witness_execution_revoked": true,
+  "catalog_sha256": "56f6f3ede94013d0c51903e98f793b0969466d7968b0f6360487126b42eb6449",
+  "full_FR_3_2_complete": false,
+  "exit_code": 0
+}

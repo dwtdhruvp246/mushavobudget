@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "stage_step": "FR.2.5.W31_PROFILE_PROVISIONING_METADATA_READ_ONLY",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "source_commit": "15678865efc14f613029143ea07fa8f5f86181d1",
+  "canonical_schema": "supabase/schema.sql",
+  "canonical_schema_Git_blob_SHA": "a4bc3ef765a937d94b6b908bb19cdf94d42d939f",
+  "canonical_schema_bytes": 1228409,
+  "canonical_schema_lines": 23773,
+  "source_access": "Full immutable Git blob content; the contents endpoint omitted the over-1MB file body. Last canonical function definition and original trigger definition were reviewed, together with later profile-status default and invitation provisioning changes.",
+  "automatic_profile_trigger": {
+    "relation": "auth.users",
+    "name": "on_auth_user_created_create_profile",
+    "events": "AFTER INSERT OR UPDATE OF email, raw_user_meta_data FOR EACH ROW",
+    "expected_tgtype": 21,
+    "function": "public.handle_new_user_profile()",
+    "function_body_LF_SHA256": "0c70136bcb3e2ebce36bd1829ad83f8e168e774f072faf5d16ca42e1cc502c03",
+    "function_body_bytes": 2091,
+    "language": "plpgsql",
+    "security_definer": true,
+    "search_path": "public, pg_temp"
+  },
+  "expected_profile_default": "account_status text NOT NULL DEFAULT 'active' CHECK IN ('active','suspended')",
+  "normal_function_effects": [
+    "Insert/synchronize the Auth identity's profile and supported signup/invitation metadata",
+    "Link matching legacy family-head records",
+    "Provision a Personal workspace through provision_budget_user for a non-admin-invitation signup"
+  ],
+  "invitation_constraints": "Pending Admin invitations and unfinished admin_invitation profiles must not gain a Free workspace through a provisioning workaround. Protected profile origin fields are server-managed; authenticated fallback inserts are limited to id, full_name and email.",
+  "frontend_fallback": "app.js ensureProfile loads by the current actor and inserts id/full_name/email when absent. Both the email actor lock and bounded application predicate require an existing active profile.",
+  "live_metadata_still_required": "Whether this provisioning trigger is present, fires in origin mode, points at the expected function, matches reviewed source, and whether profile INSERT has additional enabled user triggers; the live cause of the missing row is not established by the source.",
+  "writes_or_repair_selected": false,
+  "no_public_runtime_or_SQL_function_definition_changed": true
+}

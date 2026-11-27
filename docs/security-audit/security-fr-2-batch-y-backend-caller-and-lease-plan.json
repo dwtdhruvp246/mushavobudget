@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "status": "FROZEN_BEFORE_BACKEND_TRANSACTION_TEST",
+  "project": "dczlddwbtgvfdujgcitb",
+  "source_parent": "78fca91b460d250e60a8cfb4d83716ec7b40436e",
+  "selected_backend_routines": [
+    {
+      "md5": "d15dccbce06c483e3451a74caf5cb0a0",
+      "anon": false,
+      "service": true,
+      "function": "business_bill_reminder_allowed",
+      "signature": "p_bill_id uuid, p_recipient uuid",
+      "return_type": "boolean",
+      "authenticated": false,
+      "security_definer": true
+    },
+    {
+      "md5": "c68fa6b8d2bec1f95761ba1da61742ce",
+      "anon": false,
+      "service": true,
+      "function": "business_billing_usage",
+      "signature": "p_workspace_id uuid",
+      "return_type": "integer",
+      "authenticated": false,
+      "security_definer": true
+    },
+    {
+      "md5": "5cc4a7fea2b64334e16bc2917c839f81",
+      "anon": false,
+      "service": true,
+      "function": "claim_admin_notification_outbox",
+      "signature": "p_batch_size integer, p_reference_time timestamp with time zone",
+      "return_type": "SETOF public.admin_notification_outbox",
+      "authenticated": false,
+      "security_definer": true
+    },
+    {
+      "md5": "a7c819609163839e0cecdf9a7f29cec8",
+      "anon": false,
+      "service": true,
+      "function": "claim_notification_outbox",
+      "signature": "p_batch_size integer, p_reference_time timestamp with time zone",
+      "return_type": "SETOF public.notification_outbox",
+      "authenticated": false,
+      "security_definer": true
+    },
+    {
+      "md5": "3d5720ff7af844d413fdf616255147c6",
+      "anon": false,
+      "service": true,
+      "function": "claim_push_test_rate_limit",
+      "signature": "p_user_id uuid, p_cooldown_seconds integer",
+      "return_type": "boolean",
+      "authenticated": false,
+      "security_definer": true
+    },
+    {
+      "md5": "245f0c49714013c273a7ed973cf9a143",
+      "anon": false,
+      "service": true,
+      "function": "enqueue_due_business_bill_reminders",
+      "signature": "p_reference_time timestamp with time zone",
+      "return_type": "integer",
+      "authenticated": false,
+      "security_definer": true
+    },
+    {
+      "md5": "4e1dafacc0bc48ac2a88c4f379feaa18",
+      "anon": false,
+      "service": true,
+      "function": "enqueue_due_payment_reminders",
+      "signature": "p_reference_time timestamp with time zone",
+      "return_type": "integer",
+      "authenticated": false,
+      "security_definer": true
+    },
+    {
+      "md5": "f1a376e6ee3444ad0aa7c21c265ca7b0",
+      "anon": false,
+      "service": true,
+      "function": "generate_business_bill_occurrences",
+      "signature": "p_reference_date date, p_workspace_id uuid",
+      "return_type": "integer",
+      "authenticated": false,
+      "security_definer": true
+    },
+    {
+      "md5": "afc4a37b78eb86e2134ad8b3bf80156a",
+      "anon": false,
+      "service": true,
+      "function": "record_admin_notification_outbox_result",
+      "signature": "p_outbox_id uuid, p_succeeded boolean, p_permanent_failure boolean, p_error text, p_reference_time timestamp with time zone",
+      "return_type": "public.admin_notification_outbox",
+      "authenticated": false,
+      "security_definer": true
+    },
+    {
+      "md5": "665eb764ded51412c85c8ae80047bd51",
+      "anon": false,
+      "service": true,
+      "function": "record_notification_outbox_result",
+      "signature": "p_outbox_id uuid, p_succeeded boolean, p_permanent_failure boolean, p_error text, p_reference_time timestamp with time zone",
+      "return_type": "public.notification_outbox",
+      "authenticated": false,
+      "security_definer": true
+    }
+  ],
+  "case_groups": [
+    {
+      "id": "Y_BACKEND_01",
+      "title": "Exact selected backend definitions and service-only grants"
+    },
+    {
+      "id": "Y_BACKEND_02",
+      "title": "Actual anonymous and authenticated database-role execution denials"
+    },
+    {
+      "id": "Y_BACKEND_03",
+      "title": "Service role claims only the exact isolated historical-time fixture"
+    },
+    {
+      "id": "Y_BACKEND_04",
+      "title": "A second claim before expiry cannot claim the same job"
+    },
+    {
+      "id": "Y_BACKEND_05",
+      "title": "Expired claim is reclaimed once with a new attempt"
+    },
+    {
+      "id": "Y_BACKEND_06",
+      "title": "Completion from an older claim cannot overwrite the newer claim"
+    },
+    {
+      "id": "Y_BACKEND_07",
+      "title": "Rollback and independent absence with non-target preservation"
+    }
+  ],
+  "bounds": {
+    "committed_database_writes": 0,
+    "provider_requests": 0,
+    "emails": 0,
+    "pushes": 0,
+    "queue_fixture_rows": 1,
+    "reference_time": "1900-01-01T00:00:00Z",
+    "ordinary_jwt_claims": "MODELED_FOR_EXECUTE_GRANT_DENIAL_ONLY",
+    "service_role": "ACTUAL_SET_ROLE_DATABASE_CONTEXT",
+    "overlapping_service_transactions_tested": false
+  },
+  "live_edge_dispatchers_present": false,
+  "not_claimed": [
+    "Actual scheduler/provider delivery",
+    "True overlapping service worker transactions",
+    "Full Batch Y or Stage 3 closure"
+  ],
+  "repair_recheck": {
+    "source_commit": "5fde40987b83bee6851adda58bb77e3fa51da2fd",
+    "case_groups_reused": [
+      "Y_BACKEND_01",
+      "Y_BACKEND_02",
+      "Y_BACKEND_03",
+      "Y_BACKEND_04",
+      "Y_BACKEND_05",
+      "Y_BACKEND_06",
+      "Y_BACKEND_07"
+    ],
+    "implementations": [
+      "notification_outbox",
+      "admin_notification_outbox"
+    ],
+    "new_seven_argument_result_signatures": 2,
+    "legacy_signatures_fail_closed": true,
+    "max_fixture_rows_per_transaction": 1,
+    "existing_owner_notice": "REFERENCE_ONLY_WITH_CHECKSUM_PRESERVATION",
+    "external_delivery_requests": 0,
+    "overlapping_service_transactions": false,
+    "local_Postgres_assertions": 42,
+    "shared_helper_tests": 10,
+    "affected_dispatcher_checks": 9,
+    "deno_typechecked_dispatchers": 2,
+    "frozen_dependency_integrity_matches": 29
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "stage_step": "FR.2.5.W20_AU04_02_RECOVERY_LINK_VIEW_OWNER_PASS",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "AU04_02_VERIFIED_RECOVERY_IDENTITY_AND_DEDICATED_PASSWORD_VIEW_OWNER_SCOPED_PASS",
+  "source_parent_commit": "fc3fc73589fb183dcd87d035e1b26fbeb1bd87e3",
+  "runtime_source_commit": "a1feb46df4a8c118a7e7a7d2255d4dd4e82448b4",
+  "case_id": "AU04.02",
+  "screenshots": [
+    {
+      "filename": "image(20261027-111844).png",
+      "sha256": "3d9106f4bce185734d50276d2704aa8310ff454c06cb87535a65e3055ad769fe"
+    },
+    {
+      "filename": "image(20261027-112011).png",
+      "sha256": "d25212dae09eb85308e0131a71f926fa8f28166bf5b54889a56df728de0eaddb"
+    }
+  ],
+  "visible_heading": "Choose a new password",
+  "visible_message": "Your email link has been verified.",
+  "verified_account_matches_current_recovery_request_address": true,
+  "exact_address_not_republished": true,
+  "New_password_and_Repeat_new_password_fields_visible_and_empty": true,
+  "Save_password_and_Back_to_sign_in_controls_visible": true,
+  "owner_corrected_loaded_URL_suffix": "auth?flow=recover",
+  "previous_encoded_suffix_report": "auth.html%3Fflow%3Drecover",
+  "previous_encoded_suffix_report_superseded_by_owner_correction": true,
+  "extensionless_recovery_route_accepted": true,
+  "address_bar_visible_in_screenshots": false,
+  "AU04_06_clean_route_suffix_owner_reported_partial_observation": true,
+  "full_URL_secret_absence_or_cross_tab_isolation_independently_verified": false,
+  "source_URL_demonstration": {
+    "source_only_synthetic_no_network": true,
+    "callbackUrl_result": "https://mushavo-budget-staging.pages.dev/auth.html?flow=recover",
+    "nested_redirect_query_normally_percent_encodes_question_and_equals": true,
+    "consumeAuthUrl_removes_synthetic_link_material": true,
+    "literal_encoded_path_has_no_flow_query": true,
+    "does_not_establish_actual_provider_redirect_trace": true
+  },
+  "password_change_or_application_continuation_accepted": false,
+  "used_link_wrong_session_or_save_retry_cases_accepted": false,
+  "no_redirect_defect_or_runtime_fix_inferred_from_superseded_encoded_report": true,
+  "new_local_test_suite_runs": 0,
+  "assistant_Auth_SQL_email_or_account_requests": 0,
+  "runtime_or_SQL_or_settings_changes": 0,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

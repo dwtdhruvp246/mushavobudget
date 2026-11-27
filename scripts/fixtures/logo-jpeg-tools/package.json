@@ -1,0 +1,8 @@
+{
+  "name": "mushavo-logo-jpeg-tools",
+  "private": true,
+  "dependencies": {
+    "@stacksjs/ts-webp": "0.1.7",
+    "jpeg-js": "0.4.4"
+  }
+}

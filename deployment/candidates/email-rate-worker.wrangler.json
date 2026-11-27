@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "mushavo-email-rate-staging",
+  "main": "../../supabase/functions/_shared/email-verification-rate-do.mjs",
+  "compatibility_date": "2026-07-01",
+  "workers_dev": false,
+  "preview_urls": false,
+  "durable_objects": {
+    "bindings": [
+      {"name": "EMAIL_GATE_LIMITER_NS", "class_name": "EmailGatewayRateLimiter"}
+    ]
+  },
+  "migrations": [
+    {"tag": "email-rate-v1", "new_sqlite_classes": ["EmailGatewayRateLimiter"]}
+  ],
+  "observability": {"enabled": false}
+}

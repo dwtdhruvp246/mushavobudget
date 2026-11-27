@@ -1,0 +1,37 @@
+> Latest checkpoint FRE152: owner Windows Edge short diagnostic **36/36 PASS**, exit 0; final route audit 0 unexpected requests and cleanup verified. Local browser scope complete; no N rerun needed. Prior failed route remains unidentified. See [Batch N completion](SECURITY_FR_2_4_BATCH_N_COMPLETE.md). Hosted browser/PWA acceptance remains pending.
+
+# Current checkpoint: owner119/120 route stop; use short route-review handoff
+
+Windows owner passed99regression/fixture tests and20browser behavior checks; final unknown-route guard failed, cleanup verified. See SECURITY_FR_2_4_BATCH_N_ROUTE_REVIEW.md for exact manifest fixture bytes and safe route diagnostics. Local full125/short36 pass; owner short diagnostic pending. Original120 preparation history below is retained; do not rerun its old pin.
+
+# Batch N — local browser cookie, DOM and service-worker acceptance
+
+23 October2026. Main Stage3 — Authorization and Admin MFA remains current. Retain FRE148 Batch M hosted scoped HTTP pass (53requests,oneemail,exit0, explicit quarantine and exact generated cleanup). Last owner-observed staging mode QUARANTINED. Do not repeat completed H/I/J/K/L/M.
+
+## Purpose and exact scope
+
+Prior controller/entry tests used synthetic DOM objects. Batch N adds a **real Chromium engine** around the actual shared email-verification.js and session-entry.js components, actual gateway cookie/HMAC routes and actual sw.js. It runs only against an ephemeral loopback HTTPS fixture. Auth, database/proof RPC and mail are modeled in memory; two generated synthetic code deliveries never leave the process. No real staging token, password, inbox, packet or hosted acceptance window is used. No application/deployment/configuration change is introduced.
+
+The test page is a small fixture, not the complete app.js or business.js application bootstrap. Their extracted invalidation/entry hooks remain covered by retained89 regressions. Static shell assets other than the five explicitly served source files are harmless fixture placeholders. The worker's actual cache/navigation implementation runs, including actual offline.html bytes. This is not a complete production-asset or OS-installed-PWA acceptance claim.
+
+21 engine checks: secure local DOM; no automatic send/password-only lock; remember choice bound; native malformed-code pattern; real DOM submission and cleared input; Secure/HttpOnly/Strict/host-only cookie flags and seven-day bound; JavaScript cookie isolation; same-account new-session restore without mail; deadline unchanged; other-account and browser-flag denial; gateway approval insufficient without RPC; ordinary proved account denied Admin; actor switch clears view/ticket; real BroadcastChannel invalidation clears peers without fetching/unlocking; real DOM snapshot removes generated content and preserves listeners; Strict cookie withheld on cross-site POST between localhost and127.0.0.1; nonremember account gets no persistent cookie; actual worker removes old product cache; API/private responses absent from cache; failed network navigation uses safe offline page; all browser requests use reviewed fixture routes.
+
+The offline navigation case simulates a network failure by closing only the fixture's app-navigation connection. It is not an OS airplane-mode or physical-device suspension test. Broadcast and DOM tests exercise shared components in the fixture; full frontend role/finance workflows, real provider effects, Admin MFA and installed-PWA resume/back-cache lifecycle remain pending.
+
+## Isolation and cleanup
+
+Use an installed Edge or Chrome executable. Start a new headless child with a unique temporary profile; never attach to an existing browser/user profile, import sessions or close normal browser windows. Debugging and HTTPS listeners bind loopback only, using ephemeral ports. Debugger URLs are strictly127.0.0.1; app fixture routes are fixed. Browser flags disable background/sync/extensions/update activity and DNS is restricted to loopback. This is **not an OS firewall/network sandbox guarantee**. The harness itself issues no hosted app/provider requests.
+
+Generate a localhost-only synthetic self-signed certificate/key in memory for that fixture and discard them. No real key regeneration, rotation, trusted-root installation or private config change. Only the isolated child receives the certificate-error bypass flag; no persistent browser security setting is changed. Therefore hosted TLS/certificate validation and production-origin CSRF acceptance are not proven. Fixture request handling first checks the loopback Origin/CSRF header, then translates to the gateway's fixed staging Origin inside memory. Real browser same-site/cookie behavior runs on localhost/127.0.0.1; the origin translation remains a stated limit.
+
+Finally close the owned browser child/debugger, shut down the HTTPS listener and delete the synthetic profile; all three cleanup booleans are mandatory for success. Only that spawned process is targeted. Never kill all Edge/Chrome processes. No cookie/code/raw browser console, stderr, profile path, certificate/key or debugger endpoint appears in the safe receipt. The temporary profile can hold synthetic cookies during the run; it is removed afterwards.
+
+## Local evidence and owner action
+
+Final combined local pass120/120:89 retained UI/entry/account-security regressions under the existing network-denying loader;10 CDP/TLS/loopback fixture tests;21 actual engine checks.188hashes,39syntax checks, Node24.19.0/Linux, HeadlessChrome153.0.8010.0. No PGlite/npm/Playwright dependency or browser download is required on the owner's Windows computer. Windows Edge/Chrome behavior and Node22.17.0 remain pending until the owner run; a local Linux engine pass does not substitute for them.
+
+The workspace's initial Playwright browser download failed. A separately published @sparticuz/chromium153.0.0 package supplied the test-only binary, decompressed under scratch after inspecting incomplete extraction. It is not added to the repository, runtime dependencies or owner's setup. Linux root execution passes --no-sandbox/--disable-setuid-sandbox only for the fixed synthetic fixture; Windows does not pass those flags. Initial local fixture issues (non-UUID modeled session and missing alternate-loopback DNS exception) were corrected before the final120 pass. No hosted action or product-source defect is inferred from those fixture failures.
+
+Run from a temporary archive of the published commit. Verify hashes/syntax and99 automated regressions first; then run21 engine checks. Safe result includes browser product/version, platform, per-check booleans and cleanup flags. No credentials or real emails needed. Only possible text prompt: if standard Edge/Chrome paths are absent, enter the full path to an EXISTING msedge.exe or chrome.exe. No browser installation, token, account/password/code, packet, SQL or dashboard prompts. No firewall/security-setting change is requested. A policy-blocked/missing browser stops locally for review.
+
+No changes to staging mode, database/secret/schedule/deployment, production or native packages. APK updates deferred. Full hosted acceptance, original findings closure and launch approval remain false. After owner Windows pass, prepare separately controlled hosted browser/PWA acceptance with explicit containment; do not infer it from this local batch. December2026 is still the target month without a guaranteed launch day.

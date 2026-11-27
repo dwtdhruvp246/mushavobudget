@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-12",
+  "evidence_date": "2026-11-08",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Z/Z — BLOCKED",
+  "result": "STAGE_3_CLOSEOUT_BLOCKED_BY_REQUIRED_V_EXIT",
+  "status": "BLOCKED_REVIEW_REQUIRED",
+  "baseline": "docs/security-audit/security-stage-3-lettered-batch-baseline.json",
+  "reconciled_batches": [
+    {
+      "letter": "U",
+      "status": "COMPLETE_AT_RECORDED_SCOPE",
+      "evidence": [
+        "docs/security-audit/security-fr-2-email-batch-u-owner-scoped-hosted-pass.json"
+      ]
+    },
+    {
+      "letter": "V",
+      "status": "OWNER_DEFERRED_REQUIRED_EXIT_OPEN",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-v-staff-and-catalog-staging-result.json"
+      ],
+      "remaining": [
+        "Staging SMTP and independent Admin recovery remain deferred.",
+        "Historical MFA acceptance remains on hold under the selected password-only policy."
+      ]
+    },
+    {
+      "letter": "W",
+      "status": "COMPLETE_AT_AGREED_STAGING_SCOPE",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-w-staging-closeout.json"
+      ],
+      "retained_deferral": "Signed-in password-change failure/retry variant remains deferred."
+    },
+    {
+      "letter": "X",
+      "status": "COMPLETE_AT_CURRENT_SELECTED_AUTHORIZATION_BOUNDARY",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-x-current-exit-ledger.json"
+      ]
+    },
+    {
+      "letter": "Y",
+      "status": "COMPLETE_AT_CURRENT_SELECTED_AUTHORIZATION_BOUNDARY",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-y-current-exit-ledger.json"
+      ]
+    }
+  ],
+  "integrated_affected_evidence": {
+    "source_commit": "632831f0ad0bfbb376038cfb64f93e56f4fd5f98",
+    "workflow_run": 42468803026,
+    "guard_tests_passed": 338,
+    "completion_HTTP_assertions_passed": 13,
+    "exit_code": 0,
+    "frontend_deployment": "a1817026-ad12-469a-b41a-ed380b26ffe8",
+    "broker": "get-private-file v4",
+    "catalog": {
+      "sha": "cc122f36b6cc70e4fa88fe12a765cc83f24a586d495dfd3084f26edc2134e84f",
+      "mode": "ACTIVE",
+      "matches": true
+    },
+    "installed_boundary": {
+      "new_RPC": {
+        "stable": true,
+        "search_path": [
+          "search_path=pg_catalog"
+        ],
+        "anon_execute": false,
+        "service_execute": false,
+        "security_invoker": true,
+        "authenticated_execute": true
+      },
+      "checked_at": "2026-11-08T09:53:09.23704+00:00",
+      "new_private_file_policy": {
+        "kind": "RESTRICTIVE",
+        "roles": [
+          "authenticated"
+        ],
+        "command": "SELECT"
+      },
+      "session_restrictive_guards": 82,
+      "guarded_application_routines": 149,
+      "authenticated_document_UPDATE": false,
+      "old_storage_policies_retained": 7
+    },
+    "independent_cleanup_and_preservation": "docs/security-audit/security-fr-2-batch-x-final-preservation.json"
+  },
+  "remaining_required_letters": [
+    "V",
+    "Z"
+  ],
+  "remaining_required_package_count": 2,
+  "next_step": "Resume the deferred V acceptance when the owner is ready to revisit SMTP and independent Admin recovery. Then reconcile Z against the accepted exact staging source and run only justified affected checks.",
+  "stage_3_complete": false,
+  "FR_2_complete": false,
+  "release_accepted": false,
+  "production_changed": false,
+  "findings_closed": []
+}

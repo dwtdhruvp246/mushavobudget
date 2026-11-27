@@ -1,0 +1,11 @@
+{
+  "scope": "ORIGINAL_PINNED_CHECKER_WITH_UPDATED_VOID204_SYNTHETIC_TRANSPORT_NOT_HOSTED_HTTP",
+  "original_checker_pin": "70bc6676ee330162945ab3f3f04bbe97d532413f",
+  "original_checker_problem_code": "POSITIVE_ARCHIVE_BUSINESS_ROLE_FAILED",
+  "requests": 118,
+  "model_actual_role_status": "archived",
+  "model_actual_role_version": 3,
+  "test_sessions_logged_out": true,
+  "original_failure_reproduced": true,
+  "exit_code": 0
+}

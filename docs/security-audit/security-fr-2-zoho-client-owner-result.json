@@ -1,0 +1,23 @@
+{
+  "stage_step": "FR.2.4.E3.3_PRIVATE_CLIENT_PREPARATION",
+  "date": "2026-10-15",
+  "source_parent_commit": "1a0e90f0b020332194207c2abaf0c28046b35bc4",
+  "scope": "OWNER_REPORTED_CLIENT_REGISTRATION_AND_HOSTNAME_NOT_PROVIDER_TOKEN_OR_SEND_ACCEPTANCE",
+  "notification_Zoho_account_selected_owner_reported": true,
+  "sender_mailbox_localpart_corrected_to_plural_notifications": true,
+  "previous_singular_sender_assumption_superseded": true,
+  "sender_mailbox_API_identity_verified": false,
+  "API_console_hostname_owner_reported": "api-console.zoho.com",
+  "Self_Client_created_owner_reported": true,
+  "Client_ID_and_Client_Secret_kept_private_owner_reported": true,
+  "later_full_console_link_included_client_identifier": true,
+  "client_identifier_full_link_and_secret_not_stored_in_this_record": true,
+  "Client_Secret_or_authorization_code_or_refresh_token_received": false,
+  "authorization_code_exchange_or_mail_API_check_completed": false,
+  "email_dispatched": false,
+  "Cloudflare_or_Supabase_changed_by_this_checkpoint": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "findings_closed": [],
+  "APK_update_deferred": true
+}

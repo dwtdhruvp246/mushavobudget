@@ -76,8 +76,12 @@ test("original archive component changes during native listing are rejected", t 
 test("invalid native listing and redirected executable are rejected", t => {
   const f = fixture(t);
   assert.throws(() => runLocal(f.root, f.exe, f.runner("")), /FULL_TOC_FILE_TYPE_OR_SIZE_REVIEW/);
-  const link = path.join(f.root, "redirected-pg_restore.exe"); fs.symlinkSync(f.exe, link);
-  assert.throws(() => runLocal(f.root, link, f.runner()), /PG_RESTORE_EXECUTABLE_REVIEW/);
+  const target = path.join(f.root, "native-tool"), alias = path.join(f.root, "redirected-native-tool");
+  fs.mkdirSync(target); fs.copyFileSync(f.exe, path.join(target, "pg_restore.exe"));
+  fs.symlinkSync(target, alias, process.platform === 'win32' ? 'junction' : 'dir');
+  let launched = false;
+  assert.throws(() => runLocal(f.root, path.join(alias, "pg_restore.exe"), () => { launched = true; }), /PG_RESTORE_EXECUTABLE_REVIEW/);
+  assert.equal(launched, false, "Reject the redirected executable before native execution");
 });
 test("CLI malformed private input prints no artifact content/path/hash or native error", t => {
   const f = fixture(t); fs.writeFileSync(path.join(f.root, f.run + ".manifest.json"), "PRIVATE-ARTIFACT-SENTINEL");

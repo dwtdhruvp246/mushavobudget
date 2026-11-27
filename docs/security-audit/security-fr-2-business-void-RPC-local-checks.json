@@ -1,0 +1,202 @@
+{
+  "stage_step": "FR.2.3_BUSINESS_VOID_RPC_REVIEW",
+  "result": "LOCAL_BUSINESS_VOID_RPC_TRANSPORT_AND_READBACK_SCOPED_PASS",
+  "migration_count": 54,
+  "tests": [
+    {
+      "test": "Read-only trigger diagnostic accepts ordered source and discloses no raw bodies",
+      "status": "PASS"
+    },
+    {
+      "test": "Read-only diagnostic identifies Unknown trigger rejected before fixture writes",
+      "status": "PASS"
+    },
+    {
+      "test": "Unknown trigger rejected before fixture writes",
+      "status": "PASS"
+    },
+    {
+      "test": "Read-only diagnostic identifies Reattached known function rejected before fixture writes",
+      "status": "PASS"
+    },
+    {
+      "test": "Reattached known function rejected before fixture writes",
+      "status": "PASS"
+    },
+    {
+      "test": "Read-only diagnostic identifies Changed source trigger body rejected before fixture writes",
+      "status": "PASS"
+    },
+    {
+      "test": "Changed source trigger body rejected before fixture writes",
+      "status": "PASS"
+    },
+    {
+      "test": "Completed Family removal and two manual conversions established as preservation controls",
+      "status": "PASS"
+    },
+    {
+      "test": "Disabled expected trigger rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Missing expected trigger rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Changed direct function grant rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Added API overload rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Unreviewed CHECK callback rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Active cron metadata blocks setup without running a job",
+      "status": "PASS"
+    },
+    {
+      "test": "Third Auth identity blocks setup",
+      "status": "PASS"
+    },
+    {
+      "test": "Ordinary SQL role rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Non-origin replication role rejected",
+      "status": "PASS"
+    },
+    {
+      "test": "Injected prior-conversion mutation aborts entire fixture transaction",
+      "status": "PASS"
+    },
+    {
+      "test": "CRLF source catalog accepted with retained manual and two modeled orphan conversions unchanged",
+      "status": "PASS"
+    },
+    {
+      "test": "Repeated setup rejected without another business or entitlement",
+      "status": "PASS"
+    },
+    {
+      "test": "real ordered source lifecycle",
+      "status": "PASS",
+      "checks": 24,
+      "requests": 484,
+      "blocked": 5
+    },
+    {
+      "test": "false_denial",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 67,
+      "blocked": 0
+    },
+    {
+      "test": "missing_function",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 67,
+      "blocked": 0
+    },
+    {
+      "test": "hidden_write",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 71,
+      "blocked": 0
+    },
+    {
+      "test": "foreign_read",
+      "status": "PASS",
+      "checks": 4,
+      "requests": 58,
+      "blocked": 0
+    },
+    {
+      "test": "logout",
+      "status": "PASS",
+      "checks": 23,
+      "requests": 484,
+      "blocked": 5
+    },
+    {
+      "test": "legacy_void",
+      "status": "PASS",
+      "checks": 24,
+      "requests": 484,
+      "blocked": 5
+    },
+    {
+      "test": "void_noeffect",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 120,
+      "blocked": 0
+    },
+    {
+      "test": "void_body",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 119,
+      "blocked": 0
+    },
+    {
+      "test": "nonvoid_204",
+      "status": "PASS",
+      "checks": 5,
+      "requests": 108,
+      "blocked": 0
+    },
+    {
+      "test": "Read-only diagnostic distinguishes edited active role from completed archive",
+      "status": "PASS"
+    },
+    {
+      "test": "Read-only role state review preserves actual role rows",
+      "status": "PASS"
+    },
+    {
+      "test": "Read-only diagnostic reports archived version3 and its exact audit/unused permission scope after modeled204",
+      "status": "PASS"
+    }
+  ],
+  "provider_auth_storage_and_http_adapters_used": true,
+  "hosted_PostgREST_or_real_file_or_dispatch_verified": false,
+  "production_staging_or_native_changed": false,
+  "local_tests": 33,
+  "local_PASS": 33,
+  "local_FAIL": 0,
+  "exit_code": 0,
+  "SQL_ASCII_only": true,
+  "Business_fixture_rows_created_on_host": 0,
+  "hosted_Business_API_checks_run": 0,
+  "findings_closed": [],
+  "source_parent_commit": "aec05a99ce5080a9f96baed33eb92ebd5299a68f",
+  "Node_version": "v24.19.0",
+  "PGlite_version": "0.5.8",
+  "syntax_checks": 3,
+  "unit_tests": 17,
+  "unit_PASS": 17,
+  "total_model_and_unit_tests": 50,
+  "total_model_and_unit_PASS": 50,
+  "original_118_request_stop_reproduced_separately": true,
+  "legacy_reproduction": "docs/security-audit/security-fr-2-business-void-RPC-legacy-reproduction.json",
+  "initial_local_attempts": [
+    {
+      "result": "FAIL",
+      "reason": "New adapter return-type SQL literal needed proper JavaScript template quoting; fixed before model run."
+    },
+    {
+      "result": "FAIL",
+      "reason": "Diagnostic assumed created_at/updated_at on business_roles; ordered schema has neither; removed nonexistent fields."
+    }
+  ],
+  "final_local_attempt_passed": true,
+  "actual_live_RPC_status_observed": false
+}

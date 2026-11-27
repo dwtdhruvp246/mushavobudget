@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "evidence_id": "S4E06",
+  "recorded_date": "2026-10-11",
+  "stage_step": "4.2.2",
+  "candidate_commit": "06d4ca99c798a04c83d8be5b353731975fff887c",
+  "evidence_source": "OWNER_PASTED_POWERSHELL_EXPORT_AND_OFFLINE_NODE_VERIFIER_OUTPUT",
+  "owner_receipt": {
+    "stage_step": "4.2.2",
+    "result": "OFFLINE_ACTUAL_CLIENT_FUNCTION_CHECKS_SCOPED_PASS",
+    "scope": "VM_EXECUTION_OF_SELECTED_APP_BUSINESS_FUNCTIONS_WITH_SYNTHETIC_STORAGE_RESPONSES",
+    "node_version": "v22.17.0",
+    "tests": 63,
+    "pass": 63,
+    "fail": 0,
+    "exit_code": 0,
+    "syntax_checks": 4,
+    "file_sha256": {
+      "app.js": "eb4222245c6d75bf3708335d6c5f24c942c62715d3ce0afdf7d79cb3777cb6f6",
+      "business.js": "6754f92c72399bf45ea849ef692318a6d88a227a413b552a6ca50ee9e1b98f6f",
+      "tests/stage-4-upload-client.test.mjs": "3f0e4e271004cdf6c450e82daf9298724052238fd6347153b443fbf70524e8e4",
+      "scripts/verify-stage-4-files.mjs": "64e674299cca7075f223f40814934e7ffdde16f533d12f5baac6693dd07281e1"
+    },
+    "hosted_checks_run": 0,
+    "candidate_deployed": false,
+    "server_content_validation_verified": false,
+    "hosted_authorization_quota_cleanup_verified": false,
+    "actual_upload_removal_or_signed_URL_request": false,
+    "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+    "production_or_native_changed": false,
+    "findings_closed": []
+  },
+  "hash_reconciliation": {
+    "method": "FETCH_PINNED_PUBLISHED_UTF8_CONTENT_AND_COMPARE_SHA256_OF_EXACT_LF_AND_DETERMINISTIC_CRLF_VARIANTS",
+    "application_exact_LF_hash_matches": 2,
+    "test_and_verifier_exact_CRLF_variant_hash_matches": 2,
+    "unexplained_hash_mismatches": 0,
+    "all_four_owner_reported_hashes_match_published_content_at_recorded_line_ending_variant": true,
+    "published_LF_sha256": {
+      "tests/stage-4-upload-client.test.mjs": "4a267cc88261780e76ae3750df8629dd9f8617e9e46e5943910b635f8f7825f1",
+      "scripts/verify-stage-4-files.mjs": "e0798b7f13e25a421bd9499861d58d4f9b3197cb0840bfd38e85126cda55156c"
+    },
+    "published_attributes": "*.js is explicitly eol=lf; *.mjs has no explicit eol rule beyond * text=auto",
+    "owner_Git_EOL_configuration_independently_inspected": false,
+    "owner_file_bytes_independently_collected": false
+  },
+  "interpretation": {
+    "same_63_case_batch_repeated_on_owner_Windows_Node": true,
+    "additional_unique_security_controls": 0,
+    "assistant_original_tests_preserved": 99,
+    "owner_related_36_case_regression_rerun": false,
+    "hosted_acceptance": false,
+    "no_rerun_required": true,
+    "next_step": "4.2.3",
+    "stage_4_full_report_due_at": "4.4"
+  }
+}

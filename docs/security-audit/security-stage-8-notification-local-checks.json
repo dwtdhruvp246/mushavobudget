@@ -1,0 +1,312 @@
+{
+  "schema_version": 1,
+  "stage_step": "8.2",
+  "date": "2026-10-12",
+  "source_parent_commit": "a51e29cb2b71182dc5373c3804ec5ebc4a3c2ce0",
+  "scope": "ACTUAL_SELECTED_CLIENT_EDGE_AND_HELPER_OFFLINE_FUNCTIONS_WITH_SYNTHETIC_PORTS_NOT_DEPLOYMENT_DELIVERY_OR_DEVICE_PROOF",
+  "execution_history": [
+    {
+      "attempt": "PRIMARY_STANDALONE",
+      "tests": 32,
+      "pass": 32,
+      "fail": 0,
+      "exit_code": 0,
+      "non_failing_TypeScript_experimental_warning": true
+    },
+    {
+      "attempt": "FIRST_VERIFIER_BEFORE_FRIENDLY_STATUS_COPY",
+      "local_result": {
+        "stage_step": "8.2",
+        "result": "OFFLINE_ACTUAL_NOTIFICATION_BOUNDARIES_AND_SELECTED_REGRESSIONS_SCOPED_PASS",
+        "scope": "ACTUAL_BUSINESS_SIGNOUT_VM_SHARED_HELPERS_AND_STRIPPED_EDGE_HANDLERS_WITH_SYNTHETIC_AUTH_DB_BROWSER_TRANSPORT_PORTS",
+        "source_parent_commit": "a51e29cb2b71182dc5373c3804ec5ebc4a3c2ce0",
+        "node_version": "v24.19.0",
+        "tests": 70,
+        "pass": 70,
+        "fail": 0,
+        "exit_code": 0,
+        "notification_boundaries": {
+          "tests": 32,
+          "pass": 32,
+          "fail": 0,
+          "skipped": 0,
+          "exit_code": 0,
+          "non_failing_TypeScript_experimental_warning": true
+        },
+        "selected_existing_regressions": {
+          "tests": 38,
+          "pass": 38,
+          "fail": 0,
+          "skipped": 0,
+          "exit_code": 0,
+          "non_failing_TypeScript_experimental_warning": true
+        },
+        "syntax_checks": 8,
+        "Node_JS_syntax_checks": 5,
+        "stripped_TS_Node_syntax_checks": 3,
+        "file_sha256": {
+          "business.js": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+          "supabase/functions/_shared/notification-recipient.mjs": "638a890a23cc49b77bcc2712e9e61135f9fde24fd031d868ea2c76780c704f24",
+          "tests/stage-8-notification-boundaries.test.mjs": "06399254de84b8084d363b9f02c5224c1c7497cdf005b9761cfb5acd9169934b",
+          "scripts/verify-stage-8-notifications.mjs": "3515fe7468702791d45896ffbc694546fc6d6f326ce0958181885d0f502b086a",
+          "tests/security-stage-2-push-destination.test.mjs": "23362fe99d4963cdc04a3d54b5f0487ea70fd030164f8a2402f3619d8fee262d",
+          "supabase/functions/send-test-push/index.ts": "708f9ca7720ead8c3fd1becbd9db327ae448bb12c264462bfff948d7c68905d7",
+          "supabase/functions/dispatch-push-reminders/index.ts": "f7946520e7328254be2747282d91f29b1763782c1541771cbb53cab044b7afa9",
+          "supabase/functions/dispatch-admin-notifications/index.ts": "e1ebda3cface358c9dc4916913e0ef417f68ef307faa60ab8815ccb034c5cb18",
+          "business.html": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+          "supabase/functions/_shared/push-destination.mjs": "3c04dd7ca25442cdc600cc836f347553a0e2e88920c333ed1d975c58a1742743",
+          "tests/push-display-click.test.mjs": "b0bead17fa4ce393c75614ec1d1f9edbdb89ca146f53221f9b8304626bd61123",
+          "tests/notification-workspace-context.test.mjs": "3a69d18d882ccd01e0c87536019a82ef781b3b6789aea4d7b58c4940c555c477",
+          "tests/business-stage-10.test.mjs": "405bef6a89bd76a37afb54abcf75a73e97b55471d76ea0e709858dcf9baef7c5",
+          "sw.js": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
+          "app.js": "eb4222245c6d75bf3708335d6c5f24c942c62715d3ce0afdf7d79cb3777cb6f6",
+          "supabase/schema.sql": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+          "supabase/migrations/20260930090000_business_stage_10_billing.sql": "150cdfc2b70521b4fc2f0b666adf4b772513a56ce43a39b7e912cdd00b3e6215",
+          "supabase/migrations/20260921130000_notification_workspace_context.sql": "9e61d4139b44f2849acce24c9968931f5c20ff8912a46a0800263702ec480390",
+          "supabase/notification-workspace-context-diagnostic.sql": "61a749ae5d15025737172f6b0cb107d241dc69944081b372cd0486730cc967e2",
+          "docs/security-audit/security-stage-8-notification-candidate-contract.json": "5eb74978f374fde829ab19fa9211e7b839a4cbe25c9513e76b7ee92f0db4ddd0"
+        },
+        "actual_Deno_dependency_resolution_bundle_or_hosted_execution_verified": false,
+        "actual_PostgreSQL_RLS_roles_MFA_concurrent_claims_or_recovery_verified": false,
+        "actual_provider_OS_display_account_switch_privacy_or_cleanup_verified": false,
+        "native_push_SDK_transport_or_registration_implemented": false,
+        "hosted_ND01_ND08_grouped_cases_run": 0,
+        "planned_hosted_device_grouped_cases": 48,
+        "candidate_deployed": false,
+        "hosted_acceptance": false,
+        "native_security_acceptance": false,
+        "actual_notification_dispatched": false,
+        "device_permission_or_subscription_changed": false,
+        "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+        "production_or_native_changed": false,
+        "APK_update_deferred": true,
+        "findings_closed": []
+      },
+      "reason_for_repeat": "Added existing-app friendly status messages and asset cache references; final source verified again."
+    },
+    {
+      "attempt": "FINAL_VERIFIER",
+      "tests": 70,
+      "primary": 32,
+      "selected_existing": 38,
+      "pass": 70,
+      "fail": 0,
+      "exit_code": 0,
+      "syntax_checks": 9,
+      "non_failing_TypeScript_experimental_warning": true
+    }
+  ],
+  "final_local_result": {
+    "stage_step": "8.2",
+    "result": "OFFLINE_ACTUAL_NOTIFICATION_BOUNDARIES_AND_SELECTED_REGRESSIONS_SCOPED_PASS",
+    "scope": "ACTUAL_BUSINESS_SIGNOUT_VM_SHARED_HELPERS_AND_STRIPPED_EDGE_HANDLERS_WITH_SYNTHETIC_AUTH_DB_BROWSER_TRANSPORT_PORTS",
+    "source_parent_commit": "a51e29cb2b71182dc5373c3804ec5ebc4a3c2ce0",
+    "node_version": "v24.19.0",
+    "tests": 70,
+    "pass": 70,
+    "fail": 0,
+    "exit_code": 0,
+    "notification_boundaries": {
+      "tests": 32,
+      "pass": 32,
+      "fail": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "non_failing_TypeScript_experimental_warning": true
+    },
+    "selected_existing_regressions": {
+      "tests": 38,
+      "pass": 38,
+      "fail": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "non_failing_TypeScript_experimental_warning": true
+    },
+    "syntax_checks": 9,
+    "Node_JS_syntax_checks": 6,
+    "stripped_TS_Node_syntax_checks": 3,
+    "file_sha256": {
+      "business.js": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+      "app.js": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+      "supabase/functions/_shared/notification-recipient.mjs": "638a890a23cc49b77bcc2712e9e61135f9fde24fd031d868ea2c76780c704f24",
+      "tests/stage-8-notification-boundaries.test.mjs": "06399254de84b8084d363b9f02c5224c1c7497cdf005b9761cfb5acd9169934b",
+      "scripts/verify-stage-8-notifications.mjs": "1ce4f19e9edaa13234069b32e4bfb1c897e9b0ba185452e7f93c64e056c0b629",
+      "tests/security-stage-2-push-destination.test.mjs": "23362fe99d4963cdc04a3d54b5f0487ea70fd030164f8a2402f3619d8fee262d",
+      "supabase/functions/send-test-push/index.ts": "708f9ca7720ead8c3fd1becbd9db327ae448bb12c264462bfff948d7c68905d7",
+      "supabase/functions/dispatch-push-reminders/index.ts": "f7946520e7328254be2747282d91f29b1763782c1541771cbb53cab044b7afa9",
+      "supabase/functions/dispatch-admin-notifications/index.ts": "e1ebda3cface358c9dc4916913e0ef417f68ef307faa60ab8815ccb034c5cb18",
+      "business.html": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+      "app.html": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+      "supabase/functions/_shared/push-destination.mjs": "3c04dd7ca25442cdc600cc836f347553a0e2e88920c333ed1d975c58a1742743",
+      "tests/push-display-click.test.mjs": "b0bead17fa4ce393c75614ec1d1f9edbdb89ca146f53221f9b8304626bd61123",
+      "tests/notification-workspace-context.test.mjs": "3a69d18d882ccd01e0c87536019a82ef781b3b6789aea4d7b58c4940c555c477",
+      "tests/business-stage-10.test.mjs": "405bef6a89bd76a37afb54abcf75a73e97b55471d76ea0e709858dcf9baef7c5",
+      "sw.js": "de41c590f8538b9998eebc7c5a181792a616db44711486fe3f976f7f0d2e750c",
+      "supabase/schema.sql": "9eccb262755b90d6e66324e5f65a211408999ca550b71871c2acc033be177c53",
+      "supabase/migrations/20260930090000_business_stage_10_billing.sql": "150cdfc2b70521b4fc2f0b666adf4b772513a56ce43a39b7e912cdd00b3e6215",
+      "supabase/migrations/20260921130000_notification_workspace_context.sql": "9e61d4139b44f2849acce24c9968931f5c20ff8912a46a0800263702ec480390",
+      "supabase/notification-workspace-context-diagnostic.sql": "61a749ae5d15025737172f6b0cb107d241dc69944081b372cd0486730cc967e2",
+      "docs/security-audit/security-stage-8-notification-candidate-contract.json": "14fc9f717c590ec336a799d9b40b17846bd005f1bba025c054dd63c7d9bc043a"
+    },
+    "actual_Deno_dependency_resolution_bundle_or_hosted_execution_verified": false,
+    "actual_PostgreSQL_RLS_roles_MFA_concurrent_claims_or_recovery_verified": false,
+    "actual_provider_OS_display_account_switch_privacy_or_cleanup_verified": false,
+    "native_push_SDK_transport_or_registration_implemented": false,
+    "hosted_ND01_ND08_grouped_cases_run": 0,
+    "planned_hosted_device_grouped_cases": 48,
+    "candidate_deployed": false,
+    "hosted_acceptance": false,
+    "native_security_acceptance": false,
+    "actual_notification_dispatched": false,
+    "device_permission_or_subscription_changed": false,
+    "accounts_fixtures_Auth_Storage_SQL_settings_changed": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": []
+  },
+  "history_summary": {
+    "assistant_case_executions": 172,
+    "assistant_pass": 172,
+    "assistant_fail": 0,
+    "unique_final_suite_cases": 70,
+    "primary_unique_cases": 32,
+    "selected_existing_cases": 38,
+    "historical_Node_syntax_target_executions": 17,
+    "counts_not_additive_unique_global_controls": true
+  },
+  "intentional_candidate_replacements": [
+    {
+      "path": "business.js",
+      "parent_git_blob_sha": "c37c7d12c1e82fa47a57b61e2653708d6746256f",
+      "parent_sha256": "6754f92c72399bf45ea849ef692318a6d88a227a413b552a6ca50ee9e1b98f6f",
+      "candidate_git_blob_sha": "28b561065b168ac3dcb1968e490c853a84c0673a",
+      "candidate_sha256": "288bd6518f885460f53aa0ad2e187eb8ca9190a049934ee19c70f043f2671e0e",
+      "change": "INTENTIONAL_CANDIDATE_REPLACEMENT"
+    },
+    {
+      "path": "business.html",
+      "parent_git_blob_sha": "d7fddb8699c1f0fb1c1ca311aec335809cf11dcb",
+      "parent_sha256": "cd076bd8f8f2d6b49efa78b08ae5b97101fffcba3739090e093d103c0ec5504e",
+      "candidate_git_blob_sha": "72cb99a21ba40b5140f1312538b677fe15dd6cab",
+      "candidate_sha256": "3ea6c3a9b3acf0b2aa4cf7f6a95384a2b8cc78de61ee60ef03a27e7416910a2a",
+      "change": "INTENTIONAL_CANDIDATE_REPLACEMENT"
+    },
+    {
+      "path": "supabase/functions/send-test-push/index.ts",
+      "parent_git_blob_sha": "ba209ea5a0a7e246e10be544fbfa4f7487dfbd5f",
+      "parent_sha256": "ab59e80c06a7e3c07131852597052b83fa15462637633131a50ae53eb46b9974",
+      "candidate_git_blob_sha": "6215a1d2131c840193fe01f863542940f2cb99fb",
+      "candidate_sha256": "708f9ca7720ead8c3fd1becbd9db327ae448bb12c264462bfff948d7c68905d7",
+      "change": "INTENTIONAL_CANDIDATE_REPLACEMENT"
+    },
+    {
+      "path": "supabase/functions/dispatch-push-reminders/index.ts",
+      "parent_git_blob_sha": "ec9b1561cc20f16080099704ee6174044582d67f",
+      "parent_sha256": "b0307b200dbf2f3834deab1f584f19d130953c732ec819160301ed00bc653202",
+      "candidate_git_blob_sha": "b1b8a4d964e349033e7a1a30818dbd252238a697",
+      "candidate_sha256": "f7946520e7328254be2747282d91f29b1763782c1541771cbb53cab044b7afa9",
+      "change": "INTENTIONAL_CANDIDATE_REPLACEMENT"
+    },
+    {
+      "path": "supabase/functions/dispatch-admin-notifications/index.ts",
+      "parent_git_blob_sha": "cfa1dcd6df2d29606c0d460288934332c19c1d59",
+      "parent_sha256": "cd7bb726bf20a51ebc6c95f946ce0e6a05737fa44ed2cbd9cc3a2d1ef6201214",
+      "candidate_git_blob_sha": "40f32dacb8bc0c9254647627bdbbfbc68a51d33c",
+      "candidate_sha256": "e1ebda3cface358c9dc4916913e0ef417f68ef307faa60ab8815ccb034c5cb18",
+      "change": "INTENTIONAL_CANDIDATE_REPLACEMENT"
+    },
+    {
+      "path": "app.js",
+      "parent_git_blob_sha": "135f832d6720e5e8aeffe97e0ede39fa24d73658",
+      "parent_sha256": "eb4222245c6d75bf3708335d6c5f24c942c62715d3ce0afdf7d79cb3777cb6f6",
+      "candidate_git_blob_sha": "82919e23f74d10bd5e7bc4992ca0929d19f390fb",
+      "candidate_sha256": "06da15da3946e7adec94045af97b37001702ec5206e22678985478211c7af7d4",
+      "change": "INTENTIONAL_CANDIDATE_REPLACEMENT"
+    },
+    {
+      "path": "app.html",
+      "parent_git_blob_sha": "0c597c4a9e1686bb0210a15a921974205cc5aee6",
+      "parent_sha256": "e1025272e36af37c2262a7ce260c06bf4e89f345a18cd9e23328698dab85db5a",
+      "candidate_git_blob_sha": "3564f09e4dea7cdad6669514bc2bea7812dcdfef",
+      "candidate_sha256": "f2b49c748373dcf60dc42326954efe8eb149a161dc942d9ae17c9f702fff718d",
+      "change": "INTENTIONAL_CANDIDATE_REPLACEMENT"
+    },
+    {
+      "path": "tests/security-stage-2-push-destination.test.mjs",
+      "parent_git_blob_sha": "ef6cae3c399a85cf57fe8f6a2de90a4049ea94cb",
+      "parent_sha256": "75e001d34e80a4db6ab2e60a93e3226c4ebbe4c01c1d8bdd0967f80286fd5e5f",
+      "candidate_git_blob_sha": "1a43368b833d0c902994a1eb4b7aa7f0d77e838b",
+      "candidate_sha256": "23362fe99d4963cdc04a3d54b5f0487ea70fd030164f8a2402f3619d8fee262d",
+      "change": "INTENTIONAL_CANDIDATE_REPLACEMENT"
+    }
+  ],
+  "added_non_document_paths": [
+    "supabase/functions/_shared/notification-recipient.mjs",
+    "tests/stage-8-notification-boundaries.test.mjs",
+    "scripts/verify-stage-8-notifications.mjs"
+  ],
+  "unchanged_consumed_parent_blob_checks": [
+    {
+      "path": "supabase/functions/_shared/push-destination.mjs",
+      "parent_git_blob_sha": "047a76e7607cef3ba164e70ea5bfaa5977398042",
+      "current_git_blob_sha": "047a76e7607cef3ba164e70ea5bfaa5977398042",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/push-display-click.test.mjs",
+      "parent_git_blob_sha": "c1e2663a83d768817085126a574609f9326e5545",
+      "current_git_blob_sha": "c1e2663a83d768817085126a574609f9326e5545",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/notification-workspace-context.test.mjs",
+      "parent_git_blob_sha": "2f40cf02467bf8eeb228e698c2ee91ae66f97399",
+      "current_git_blob_sha": "2f40cf02467bf8eeb228e698c2ee91ae66f97399",
+      "result": "MATCH"
+    },
+    {
+      "path": "tests/business-stage-10.test.mjs",
+      "parent_git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+      "current_git_blob_sha": "e6176c82dec0c3c4921bfd3a477386fe5479e8b7",
+      "result": "MATCH"
+    },
+    {
+      "path": "sw.js",
+      "parent_git_blob_sha": "b61477393fa2b0ed7baa3c52d61076df549df948",
+      "current_git_blob_sha": "b61477393fa2b0ed7baa3c52d61076df549df948",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/schema.sql",
+      "parent_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "current_git_blob_sha": "fa0527f178be7b5b363c4a39e377fd722547e46b",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/migrations/20260930090000_business_stage_10_billing.sql",
+      "parent_git_blob_sha": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+      "current_git_blob_sha": "8d25689028e3c9f37ec9c53b2d8bd59d2f43e5f8",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/migrations/20260921130000_notification_workspace_context.sql",
+      "parent_git_blob_sha": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+      "current_git_blob_sha": "c698ea687532c1f9c65f8eceff53a30c69b8fa96",
+      "result": "MATCH"
+    },
+    {
+      "path": "supabase/notification-workspace-context-diagnostic.sql",
+      "parent_git_blob_sha": "43794ed7225bb48fff41824353770a3fd55d4932",
+      "current_git_blob_sha": "43794ed7225bb48fff41824353770a3fd55d4932",
+      "result": "MATCH"
+    }
+  ],
+  "old_guard_regression_harness_update": "Same 17 assertions/cases retained. Fixture adds current active profile and enabled reminder settings; data-URI import resolves actual new shared module.",
+  "unchanged_source_inventory_8_1_preserved": true,
+  "owner_repeat": "OPTIONAL_PINNED_TEMP_EXPORT_COMMAND_SUPPLIED_FULLY_IN_CHAT_NOT_YET_REPORTED",
+  "hosted_acceptance": false,
+  "native_security_acceptance": false,
+  "findings_closed": [],
+  "next_step": "8.3",
+  "report_due_step": "8.4"
+}

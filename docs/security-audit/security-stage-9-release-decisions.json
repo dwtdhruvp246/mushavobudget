@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "stage_step": "9.1",
+  "date": "2026-10-12",
+  "source_parent_commit": "2ea0a69b1bbe5ffedf7a3fc5c0d2179ff1b1f895",
+  "scope": "RELEASE_REGRESSION_DECISIONS_UNCONFIRMED_NOT_ADOPTED",
+  "items": [
+    {
+      "id": "RG-D01",
+      "decision": "Exact accepted source/deployment and release serving channel",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Both"
+    },
+    {
+      "id": "RG-D02",
+      "decision": "Recoverable isolated actors, finance/file datasets and cleanup boundary",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Both"
+    },
+    {
+      "id": "RG-D03",
+      "decision": "Performance budgets, representative data sizes and network conditions",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Both"
+    },
+    {
+      "id": "RG-D04",
+      "decision": "Browser/PWA/Android/iOS versions, physical devices and accessibility coverage",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Both"
+    },
+    {
+      "id": "RG-D05",
+      "decision": "Current developer account type/verification, publisher identity and signing custody",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Both"
+    },
+    {
+      "id": "RG-D06",
+      "decision": "Audience, territories, privacy/retention declarations and supported commerce catalog",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Both"
+    },
+    {
+      "id": "RG-D07",
+      "decision": "Controlled beta/reviewer access, feedback contact and external testing schedule",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Both"
+    },
+    {
+      "id": "RG-D08",
+      "decision": "Release/rollback approval, incident ownership and final full re-audit evidence",
+      "status": "UNCONFIRMED",
+      "accepted_value": null,
+      "owner": "Both"
+    }
+  ],
+  "owner_facts_carried_forward": {
+    "operator": "Dhruv Parekh, Zimbabwe; individual/not yet registered business",
+    "privacy_contact": "support@mushavobudget.com",
+    "age_restriction_intent": "None reported; does not establish accepted child/audience controls",
+    "territory_exclusions": "Unconfirmed",
+    "store_accounts_and_Mac_Xcode": "Earlier absence/prerequisite reports remain historical; current verified availability unknown"
+  },
+  "adopted_release_policy": false,
+  "public_or_store_declaration_published": false
+}

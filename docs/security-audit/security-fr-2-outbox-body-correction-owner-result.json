@@ -1,0 +1,22 @@
+[
+  {
+    "outbox_body_correction": {
+      "result": "REVIEWED_OUTBOX_BODY_ALIGNED_NOT_BUSINESS_ACCEPTANCE",
+      "stage_step": "FR.2.3_OUTBOX_BODY_CORRECTION",
+      "checked_UTC": "2026-10-14T17:49:33.84635+00:00",
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "findings_closed": [],
+      "hosted_acceptance": false,
+      "observed_LF_body_md5": "097128330dee61398b475cf244293e30",
+      "production_or_native_changed": false,
+      "reviewed_target_body_matches": true,
+      "Business_fixture_rows_created": 0,
+      "hosted_Business_API_checks_run": 0,
+      "project_selection_independently_verified": false,
+      "outbox_rows_compared_unchanged_in_transaction": true,
+      "target_outbox_function_or_dispatch_invoked_by_this_script": false,
+      "only_reviewed_target_body_change_permitted_under_assertions": true,
+      "public_function_metadata_grants_policies_relations_and_triggers_compared_unchanged": true
+    }
+  }
+]

@@ -1,0 +1,127 @@
+{
+  "date": "2026-11-12",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "HOSTED_BROWSER_AND_2_MIB_STATIC_PNG_SCOPE_PASS",
+  "fixture": "8d9307e6-aada-4c9a-a8f5-43c57e0865e2",
+  "preview": {
+    "id": "cc8c155e-f70b-4ca5-bdb1-ea7c72cfa3ad",
+    "origin": "https://cc8c155e.mushavo-budget-staging.pages.dev",
+    "base_deployment": "a1817026-ad12-469a-b41a-ed380b26ffe8",
+    "source_bytes_verified": true
+  },
+  "api_baseline_run": 43283375591,
+  "browser": {
+    "run": 43287931911,
+    "job": 131426163660,
+    "result": "HOSTED_BROWSER_SCOPE_PASS",
+    "original_combined_exit_code": 1,
+    "original_combined_nonpassing_check": "Oversized raw upload transport timeout",
+    "checks": [
+      "Real Business onboarding screen rendered for exact fixture",
+      "Browser rejected oversized file before any upload",
+      "Hosted validator accepted valid PNG",
+      "Normal branding save linked the exact object",
+      "Reloaded page rendered the saved private logo",
+      "Independent profile readback matched saved path"
+    ],
+    "evidence": "docs/security-audit/security-fr-3-2-business-logo-browser-result.json"
+  },
+  "initial_stream_run": 43288826963,
+  "revised_validator": {
+    "id": "fe921d00-7027-4f5c-bbe2-826eb24bf0cf",
+    "version": 4,
+    "sha": "1a4f6d6fd3dfc78684cea42802236bbe1b5b362aad5fc98fb6a7384ff5d0c8df",
+    "runtime_files": 4
+  },
+  "correction": "The exact 2 MiB acceptance limit is unchanged. For a small excess request, the handler reads to completion within a bounded extra 64 KiB, discards those bytes, and returns the size error. The targeted local regression passed in Node and Deno.",
+  "limit": {
+    "run": 43289536159,
+    "job": 131431775251,
+    "source_commit": "cf4d9cfb6d43ea1f617bb0b00f77a10ec1d5e5e2",
+    "receipt": {
+      "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Logo browser",
+      "result": "STAGING_ACCESS_AND_SELECTED_CHECKS_SCOPED_PASS",
+      "checks": {
+        "fixture_owner_and_super_admin_verified": true,
+        "created_sessions_local_logout_acknowledged": true
+      },
+      "accounts": {
+        "USER_A": {
+          "signin_HTTP_status": 200,
+          "confirmed_identity": true,
+          "active_profile": true,
+          "expected_platform_role": true,
+          "owned_workspace_counts": {
+            "personal": 1,
+            "family": 0,
+            "business": 2
+          }
+        },
+        "ADMIN": {
+          "signin_HTTP_status": 200,
+          "confirmed_identity": true,
+          "active_profile": true,
+          "expected_platform_role": true,
+          "owned_workspace_counts": {
+            "personal": 1,
+            "family": 0,
+            "business": 0
+          }
+        }
+      },
+      "API_requests": 12,
+      "created_sessions": 2,
+      "cleanup_sessions": 2,
+      "settings_or_finance_writes_requested": 0,
+      "production_changed": false,
+      "full_lettered_batch_W_complete": false,
+      "exit_code": 0,
+      "exercise": {
+        "checks": {
+          "hosted_byte_limit": true,
+          "rejected_stream_has_no_logo": true
+        },
+        "cleanup": {
+          "logo_unlinked": true,
+          "object_absent": true,
+          "fixture_suspended": true
+        },
+        "requests": 14,
+        "byte_limit": {
+          "status": 413,
+          "code": "LOGO_TOO_LARGE",
+          "enqueued_bytes": 2097153
+        },
+        "browser_run_reused": 43287931911,
+        "byte_check_mode": "byte-drain-only"
+      },
+      "preview": "https://cc8c155e.mushavo-budget-staging.pages.dev",
+      "source_matched": true
+    },
+    "provider_edge_log": {
+      "logged_413": 1,
+      "content_length_2097153": true
+    }
+  },
+  "independent_cleanup": {
+    "status": "suspended",
+    "business_support_version": 14,
+    "version": 6,
+    "logo_empty": true,
+    "gate_ready": false,
+    "logo_objects": 0,
+    "runner_sessions": 0,
+    "queued_messages": 0
+  },
+  "origin_readback": {
+    "staging_canonical": "a1817026-ad12-469a-b41a-ed380b26ffe8",
+    "production_worker": "5ee30828-7086-46f6-88a9-ff4605ce58dc"
+  },
+  "full_FR_3_2_complete": false,
+  "remaining": [
+    "Other image/document types and upload entry points",
+    "Aggregate resource limits",
+    "Durable cleanup and reconciliation"
+  ],
+  "exit_code": 0
+}

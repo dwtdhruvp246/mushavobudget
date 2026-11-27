@@ -6561,3 +6561,104 @@ input[type="file"] {
 .support-message, .admin-detail-card, .device-notifications-panel, .cashbook-page, .cashbook-selected-balance, .cashbook-entry-dialog, .payment-choice-dialog, .invite-member-dialog { border: 1px solid var(--box-border, #000000); }
 
 .occurrence-facts > div, .workload-metrics > div, .workload-detail-row, .admin-invite-summary > div, .workspace-plan-owner-note.coming-soon-note, .plan-publication-options, .cashbook-report-card dl > div, #adminPlansWorkbench .ap-message, #adminPlansWorkbench .ap-audit-values { border: 1px solid var(--box-border, #000000); }
+
+/* Keep the browser-trust checkbox compact beside its label. */
+.verification-trust-choice {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.verification-trust-choice input[type="checkbox"] {
+  width: 1.1rem;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+/* A compact status replaces verification controls while approval is checked. */
+.verification-progress {
+  display: flex; align-items: center; gap: .75rem;
+  min-height: 3rem; margin: .75rem 0; color: var(--muted);
+}
+.verification-progress::before {
+  content: ''; width: 1.15rem; height: 1.15rem; flex: 0 0 auto;
+  border: 2px solid #dce7e5; border-top-color: #069b77;
+  border-radius: 50%; animation: spin 850ms linear infinite;
+}
+.verification-code-form { display: grid; gap: 1rem; max-width: 28rem; }
+.verification-code-form[hidden] { display: none; }
+.verification-code-form label { display: grid; gap: .5rem; }
+.verification-code-form input { font-size: 1.25rem; letter-spacing: .2em; }
+@media (prefers-reduced-motion: reduce) {
+  .verification-progress::before { animation: none; }
+}
+
+[data-email-verification] > [hidden] { display: none !important; }
+
+.account-security-setting {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.24);
+}
+
+.account-security-setting:first-of-type {
+  margin-top: 12px;
+}
+
+.account-security-setting:last-child {
+  padding-bottom: 0;
+}
+
+.account-security-setting > span {
+  font-weight: 700;
+}
+
+.account-deletion-dialog {
+  width: min(32rem, calc(100% - 24px));
+  max-width: none;
+  max-height: calc(100dvh - 24px);
+  margin: auto;
+  padding: clamp(16px, 4vw, 28px);
+  border: 1px solid var(--box-border);
+  border-radius: 16px;
+  background: #fff;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.account-deletion-dialog::backdrop {
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.account-deletion-dialog form {
+  display: grid;
+  gap: 16px;
+}
+
+.account-deletion-dialog :is(h2, p, ul) {
+  margin: 0;
+}
+
+#securityDeletionWorkspaces {
+  padding: 8px 0 0 1.25rem;
+}
+
+.account-deletion-confirmation {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.account-deletion-confirmation input {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  min-height: 0;
+  height: 1.1rem;
+}

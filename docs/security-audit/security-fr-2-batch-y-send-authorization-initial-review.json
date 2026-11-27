@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "source_commit": "ab52ba3983fadb7ec5e1cdc35651ae571945bdaa",
+  "result": "EXISTING_DISPATCHER_LATE_AUTHORIZATION_AND_STALE_SEND_REPRODUCED",
+  "deployed_source_parity": {
+    "two_entrypoints_and_claim_helper_match": true,
+    "versions": [
+      1,
+      1
+    ],
+    "comparison": "LF_NORMALIZED_CONTENT_EQUAL"
+  },
+  "actual_handler_tests": {
+    "tests": 23,
+    "pass": 3,
+    "fail": 20,
+    "cancelled": 0,
+    "skipped": 0,
+    "failed_titles": [
+      "not ok 4 - Y_SEND_PERSONAL_SUSPENDED: a change during device lookup cancels before sending",
+      "not ok 5 - Y_SEND_MEMBER_REMOVED: a change during device lookup cancels before sending",
+      "not ok 6 - Y_SEND_ASSIGNMENT_CHANGED: a change during device lookup cancels before sending",
+      "not ok 7 - Y_SEND_BUSINESS_ACCESS_ENDED: a change during device lookup cancels before sending",
+      "not ok 8 - Y_SEND_ADMIN_ROLE_ENDED: a change during device lookup cancels before sending",
+      "not ok 9 - Y_SEND_ADMIN_SUSPENDED: a change during device lookup cancels before sending",
+      "not ok 10 - Y_SEND_ADMIN_BETWEEN_DEVICES: accepted first delivery does not authorize the next device",
+      "not ok 11 - Y_SEND_MEMBER_BETWEEN_DEVICES: accepted first delivery does not authorize the next device",
+      "not ok 12 - Y_SEND_BUSINESS_BETWEEN_DEVICES: accepted first delivery does not authorize the next device",
+      "not ok 13 - Y_SEND_PREVIEW_BETWEEN_DEVICES: the second payload uses the current privacy setting",
+      "not ok 14 - Y_SEND_AUTH_LOOKUP_ERROR: failed final authorization lookup sends nothing and retries safely",
+      "not ok 15 - Y_SEND_PARTIAL_LOOKUP_ERROR: failed revalidation stops remaining devices and preserves accepted delivery",
+      "not ok 16 - Y_SEND_SUPERSEDED_PERSONAL: a newer claim blocks provider and queue mutation",
+      "not ok 17 - Y_SEND_SUPERSEDED_ADMIN: a newer claim blocks provider and queue mutation",
+      "not ok 18 - Y_SEND_EXPIRED_PERSONAL: an expired claim blocks provider and queue mutation",
+      "not ok 19 - Y_SEND_EXPIRED_ADMIN: an expired claim blocks provider and queue mutation",
+      "not ok 20 - Y_SEND_RECLAIM_BETWEEN_DEVICES: the old worker stops without modifying the new claim",
+      "not ok 21 - Y_SEND_TERMINAL_CLAIM: terminal rows are never used to send",
+      "not ok 22 - Y_SEND_MISSING_CLAIM: a removed row cannot authorize delivery",
+      "not ok 23 - Y_SEND_CLAIM_LOOKUP_ERROR: database uncertainty stops provider delivery"
+    ]
+  },
+  "provider_requests": 0,
+  "provider_replaced_by": "IN_MEMORY_SYNTHETIC_PROVIDER",
+  "database_replaced_by": "CONTROLLED_IN_MEMORY_CLIENT_FOR_INTERLEAVINGS",
+  "genuine_new_Postgres_race": false,
+  "committed_writes": 0,
+  "Auth_sessions_created": 0,
+  "production_changed": false,
+  "exit_code": 1
+}

@@ -1,0 +1,87 @@
+{
+  "date": "2026-11-12",
+  "project": "dczlddwbtgvfdujgcitb",
+  "run": 43281454455,
+  "job": 131403483842,
+  "result": "INITIAL_SCOPE_PARTIAL_TRANSPORT_STOP",
+  "source": "44f0a61fc9b8fde3f098b7260c38eb5ae7611889",
+  "receipt": {
+    "progress_display": "Stage 4/10 | FR.3/8 | FR.3.2 Business logos",
+    "result": "STAGING_ACCESS_REVIEW_REQUIRED",
+    "checks": {
+      "three_private_credentials_and_expected_roles_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 2
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 18,
+    "created_sessions": 3,
+    "cleanup_sessions": 3,
+    "settings_or_finance_writes_requested": 0,
+    "production_changed": false,
+    "full_lettered_batch_W_complete": false,
+    "exit_code": 1,
+    "exercise": {
+      "checks": {
+        "EXACT_EMPTY_LOGO_FIXTURE_REQUIRED": true,
+        "INITIAL_LOGO_ABSENCE_REQUIRED": true,
+        "OTHER_USER_DENIED": true,
+        "DECLARED_PNG_TYPE_MISMATCH_DENIED": true
+      },
+      "requests": 14,
+      "cleanup": {
+        "logo_unlinked": true,
+        "object_absent": true,
+        "fixture_suspended": true
+      }
+    },
+    "problem_code": "REQUEST_OR_BROWSER_CHECK_FAILED",
+    "commit": "44f0a61fc9b8fde3f098b7260c38eb5ae7611889"
+  },
+  "independent_cleanup": {
+    "status": "suspended",
+    "business_support_version": 2,
+    "term_status": "active",
+    "member_limit": 1,
+    "paid_through_at": "2026-11-14 00:00:00+00",
+    "version": 1,
+    "logo_empty": true,
+    "gate_ready": false,
+    "logo_objects": 0,
+    "queued_messages": 0
+  },
+  "next": "Retain ordinary-user denial and declared-type mismatch. The oversized body request stopped before a usable response; use a valid small PNG with an oversized dimension for the hosted boundary. Byte-size validation has local coverage."
+}

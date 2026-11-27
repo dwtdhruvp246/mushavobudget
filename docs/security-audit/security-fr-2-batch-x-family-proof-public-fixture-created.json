@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "safe_result": {
+    "family_id": "07def34b-bf6b-423a-bf11-563c5f908911",
+    "fixture_name": "audit-family-proof-policy-20261107",
+    "provider_charges": 0,
+    "Auth_rows_changed": 0,
+    "family_rows_created": 1,
+    "active_legacy_members": 2,
+    "workspace_rows_created": 1,
+    "fixture_entitlement_hours": 1,
+    "application_provisioning_acceptance": false
+  },
+  "HTTP_acceptance": false,
+  "production_changed": false
+}

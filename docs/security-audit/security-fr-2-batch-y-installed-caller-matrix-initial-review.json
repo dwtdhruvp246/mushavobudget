@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "source_commit": "9ce0c179985829e23923067e812d4216351d673a",
+  "result": "STOPPED_AT_DEFINITION_RENDERING_PRECONDITION",
+  "error_code": "P0001",
+  "safe_error": "FROZEN_DEFINITION_OR_GRANT_MISMATCH",
+  "exit_code": 1,
+  "actual_role_execution_tests_started": false,
+  "positive_service_calls_started": false,
+  "transaction_rolled_back": true,
+  "committed_writes": 0,
+  "diagnosis": "Seven pg_get_functiondef outputs qualify public table or enum types differently under the diagnostic's fixed pg_catalog search_path. The original rendering path still matches all 100 frozen definitions and the installed catalog stamp matches.",
+  "default_rendering_diagnostic": {
+    "exact_targets": 100,
+    "rendering_path": "\"\\$user\", public, extensions",
+    "catalog_matches": true,
+    "definition_matches": 100
+  },
+  "canonical_rendering_mismatched_signatures": [
+    {
+      "name": "claim_admin_notification_outbox",
+      "arguments": "p_batch_size integer, p_reference_time timestamp with time zone",
+      "previous_rendered_md5": "e47bab9239e077cde6c48d04a061652e",
+      "pg_catalog_rendered_md5": "5cc4a7fea2b64334e16bc2917c839f81"
+    },
+    {
+      "name": "claim_notification_outbox",
+      "arguments": "p_batch_size integer, p_reference_time timestamp with time zone",
+      "previous_rendered_md5": "0eef461a77bb8e46473c15843b753f95",
+      "pg_catalog_rendered_md5": "a7c819609163839e0cecdf9a7f29cec8"
+    },
+    {
+      "name": "record_admin_notification_outbox_result",
+      "arguments": "p_outbox_id uuid, p_succeeded boolean, p_permanent_failure boolean, p_error text, p_reference_time timestamp with time zone",
+      "previous_rendered_md5": "6648fd0445cc6a1143463a62f1f21826",
+      "pg_catalog_rendered_md5": "f1ee6c1056405b6f0d202ddf4061e8db"
+    },
+    {
+      "name": "record_admin_notification_outbox_result",
+      "arguments": "p_outbox_id uuid, p_succeeded boolean, p_permanent_failure boolean, p_error text, p_reference_time timestamp with time zone, p_expected_attempt_count integer, p_expected_claimed_at timestamp with time zone",
+      "previous_rendered_md5": "0d1c0eee181db79567de8e198676bf51",
+      "pg_catalog_rendered_md5": "742905b5d1a943ddc3e05e6f1d5a8e78"
+    },
+    {
+      "name": "record_notification_outbox_result",
+      "arguments": "p_outbox_id uuid, p_succeeded boolean, p_permanent_failure boolean, p_error text, p_reference_time timestamp with time zone",
+      "previous_rendered_md5": "9b938262e794a74efd88fd3c9fcc34a8",
+      "pg_catalog_rendered_md5": "e0248b99ded506c01933d06cdd639da5"
+    },
+    {
+      "name": "record_notification_outbox_result",
+      "arguments": "p_outbox_id uuid, p_succeeded boolean, p_permanent_failure boolean, p_error text, p_reference_time timestamp with time zone, p_expected_attempt_count integer, p_expected_claimed_at timestamp with time zone",
+      "previous_rendered_md5": "505484943bc286a0f03873d034321909",
+      "pg_catalog_rendered_md5": "67b40c312df4d99770a5b94f7cc99621"
+    },
+    {
+      "name": "save_business_profile",
+      "arguments": "p_workspace_id uuid, p_legal_name text, p_trading_name text, p_industry text, p_registration_country text, p_registration_number text, p_tax_number text, p_contact_email text, p_contact_phone text, p_website text, p_address jsonb, p_financial_year_start_month integer, p_period_start_day integer, p_onboarding_status text, p_expected_version integer",
+      "previous_rendered_md5": "88ec628fc721f7733efc1c89e977926d",
+      "pg_catalog_rendered_md5": "b602aa560b9fa3d34e15ef829bc35937"
+    }
+  ],
+  "planned_correction": "Freeze hashes rendered under the same fixed pg_catalog search_path as the execution diagnostic. Do not weaken definition/grant checks or change database routines.",
+  "production_changed": false
+}

@@ -1,0 +1,39 @@
+{
+  "stage_step": "FR.2.2_HISTORICAL_REVIEW",
+  "scope": "ACTUAL_READ_ONLY_SQL_IN_MINIMAL_SYNTHETIC_PGLITE_CATALOG_NOT_FULL_MIGRATIONS_OR_HOSTED_DB",
+  "engine": "PostgreSQL 18.3 (PGlite 0.5.8) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "tests": 6,
+  "pass": 6,
+  "fail": 0,
+  "exit_code": 0,
+  "query_sha256": "2fbfe3cd25aea4453feadf1b0a7f0ba7b1d9642cdcba2e4015e672a72a715108",
+  "cases": [
+    {
+      "title": "actual query links paired mismatches and checks parent workspace ownership",
+      "result": "PASS"
+    },
+    {
+      "title": "missing record identity conversion is bounded and not claimed as proven lineage",
+      "result": "PASS"
+    },
+    {
+      "title": "two retained Family rows retain full scoped checksum; changed value is detected",
+      "result": "PASS"
+    },
+    {
+      "title": "manual orphan and timestamp outside known recheck are classified without exclusion",
+      "result": "PASS"
+    },
+    {
+      "title": "details cap twenty while counters report every orphan",
+      "result": "PASS"
+    },
+    {
+      "title": "actual read-only output hides fixture IDs/emails and does not mutate tables",
+      "result": "PASS"
+    }
+  ],
+  "hosted_queries_run": 0,
+  "hosted_acceptance": false,
+  "syntax_checks": 1
+}

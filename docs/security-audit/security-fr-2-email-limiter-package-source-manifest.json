@@ -1,0 +1,21 @@
+{
+  "stage_step": "FR.2.4.E3.4_LIMITER_PACKAGE",
+  "source_parent_commit": "20b2648438cc21b70f23e2ea8ab183b81c269c4b",
+  "tools_lock_SHA256": "c3ca2f4eee990438e70442d56280cd86bccc906cc65d57ea392900b59488431c",
+  "file_sha256": {
+    "supabase/functions/_shared/email-verification-crypto.mjs": "5ce08d08e1ca00248fc2800c3c4f62e5299b86a7ffcd2397a416520fd1fd1ac5",
+    "supabase/functions/_shared/email-verification-http.mjs": "b28a80658d55725ad78a833be2192b353a9b08ba7987f8cbcb0ae40edd17e395",
+    "supabase/functions/_shared/email-verification-zoho.mjs": "757270e2535e8c349c5e44ab022d3dd56d251ffdebab2bfdc9a4978fc5737793",
+    "supabase/functions/_shared/email-verification-gateway.mjs": "f9c39c3d599f3834dea1d7e8c17d6819c4656213ed3292efcb970d9b00b1dc09",
+    "supabase/functions/_shared/email-verification-rate-client.mjs": "e95a11a05c3865f9751c927246afa3b61da4100b6653f28b12f2404cc1958053",
+    "supabase/functions/_shared/email-verification-pages.mjs": "bd451abbf4ff8a59ef400d5d4cd34534534ff612fd21c90e7af1af2139437f03",
+    "supabase/functions/_shared/email-verification-rate-do.mjs": "929551832b76e989d7a80510d976043eef557b53eff4be36a405305a8324b232",
+    "scripts/lib/build-fr-2-email-workers.mjs": "6d0b141b56c3d75d175714a39533a96670af33463fcaf3195cea176a2c92cac9",
+    "deployment/candidates/email-rate-worker.wrangler.json": "77faed4211d5285408f5a5ae0f2fed3d5d2123a4d747952e42e52edb046b6a54",
+    "scripts/prepare-fr-2-email-limiter.mjs": "8c9622ed8f640110d819b0b2c2dc41d22ac387093d7249a4ac0d4c168a8059f3",
+    "scripts/verify-fr-2-email-limiter-package.mjs": "8becdda3e672297c7ca95a36c74207cc4bfa8fa02266c3132944148eda23ab14",
+    "scripts/offline-cloudflare-deploy.cjs": "b35413b82b358cbe233ffa19618c0df3da34d03f53ce9c9fa73ea9292c3a106d",
+    "scripts/fixtures/email-limiter-deploy-tools/package.json": "1ad23916dc13022acd8a452e4a9757f02a6931b294b853d54ee0bf8a5f3afb9d",
+    "scripts/fixtures/email-limiter-deploy-tools/package-lock.json": "c3ca2f4eee990438e70442d56280cd86bccc906cc65d57ea392900b59488431c"
+  }
+}

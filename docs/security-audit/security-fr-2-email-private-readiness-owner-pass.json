@@ -1,0 +1,217 @@
+{
+  "received_date": "2026-10-20",
+  "expected_command_commit_from_current_handoff": "5c9689dbf7be9342a3c0f5fcb18a47eb9e31bd49",
+  "command_commit_not_independently_included_in_receipt": true,
+  "separate_offline_verifier_receipt_supplied": false,
+  "receipt": {
+    "stage_step": "FR.2.4.E5.6_PRIVATE_READ_ONLY_READINESS",
+    "result": "STAGING_PRIVATE_KEYS_AND_SELECTED_TARGET_READINESS_SCOPED_PASS_NOT_INSTALLATION",
+    "requests_attempted": 7,
+    "local_modern_ZIP_and_Windows_receipt_verified": true,
+    "private_packet_scope_and_constructor_validated": true,
+    "retained_public_key_matches_packet": true,
+    "staging_Pages_project_in_selected_account": true,
+    "limiter_Worker_SQLite_namespace_and_disabled_public_URLs_verified": true,
+    "both_channels_public_settings_match": true,
+    "remaining13_gateway_variables_absent_in_both_channels": true,
+    "negative_API_key_control_rejected": true,
+    "publishable_key_accepted_by_staging_Auth_settings": true,
+    "modern_secret_key_accepted_by_staging_Auth_settings": true,
+    "API_key_acceptance_scope": "FIXED_STAGING_AUTH_SETTINGS_WITH_INVALID_KEY_NEGATIVE_CONTROL_ONLY",
+    "service_role_DB_privileges_or_user_JWT_authorization_verified": false,
+    "Zoho_refresh_or_email_delivery_verified": false,
+    "settings_values_rows_identifiers_credentials_or_hashes_printed": false,
+    "credential_packet_changed": false,
+    "Cloudflare_secrets_SQL_Auth_accounts_or_settings_changed": false,
+    "Auth_sessions_created": 0,
+    "application_routines_invoked": 0,
+    "email_dispatched": false,
+    "uploaded_or_deployed": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "channels": [
+      {
+        "environment": "PRODUCTION_CHANNEL_OF_STAGING_PAGES_PROJECT",
+        "reviewed_date_matches": true,
+        "fail_open": false,
+        "latest_date_enabled": false,
+        "three_public_markers_match": true,
+        "limiter_binding_matches": true,
+        "remaining_variable_states": [
+          {
+            "name": "EMAIL_GATE_PEPPERS_JSON",
+            "state": "ABSENT"
+          },
+          {
+            "name": "EMAIL_GATE_KEY_VERSION",
+            "state": "ABSENT"
+          },
+          {
+            "name": "EMAIL_GATE_RATE_PEPPER",
+            "state": "ABSENT"
+          },
+          {
+            "name": "SUPABASE_PUBLISHABLE_KEY",
+            "state": "ABSENT"
+          },
+          {
+            "name": "SUPABASE_SERVICE_ROLE_KEY",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_MAIL_ORIGIN",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_ACCOUNTS_ORIGIN",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_ACCOUNT_ID",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_FROM_ADDRESS",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_CLIENT_ID",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_CLIENT_SECRET",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_REFRESH_TOKEN",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_TEST_RECIPIENTS_JSON",
+            "state": "ABSENT"
+          }
+        ]
+      },
+      {
+        "environment": "PREVIEW_CHANNEL_OF_STAGING_PAGES_PROJECT",
+        "reviewed_date_matches": true,
+        "fail_open": false,
+        "latest_date_enabled": false,
+        "three_public_markers_match": true,
+        "limiter_binding_matches": true,
+        "remaining_variable_states": [
+          {
+            "name": "EMAIL_GATE_PEPPERS_JSON",
+            "state": "ABSENT"
+          },
+          {
+            "name": "EMAIL_GATE_KEY_VERSION",
+            "state": "ABSENT"
+          },
+          {
+            "name": "EMAIL_GATE_RATE_PEPPER",
+            "state": "ABSENT"
+          },
+          {
+            "name": "SUPABASE_PUBLISHABLE_KEY",
+            "state": "ABSENT"
+          },
+          {
+            "name": "SUPABASE_SERVICE_ROLE_KEY",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_MAIL_ORIGIN",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_ACCOUNTS_ORIGIN",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_ACCOUNT_ID",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_FROM_ADDRESS",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_CLIENT_ID",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_CLIENT_SECRET",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_REFRESH_TOKEN",
+            "state": "ABSENT"
+          },
+          {
+            "name": "ZOHO_TEST_RECIPIENTS_JSON",
+            "state": "ABSENT"
+          }
+        ]
+      }
+    ],
+    "samples": [
+      {
+        "endpoint": "STAGING_PAGES_PROJECT",
+        "http_status": 200,
+        "JSON_received": true,
+        "success": true,
+        "errors_shape": "ARRAY",
+        "error_count": 0
+      },
+      {
+        "endpoint": "WORKER_INVENTORY",
+        "http_status": 200,
+        "JSON_received": true,
+        "success": true,
+        "errors_shape": "ARRAY",
+        "error_count": 0
+      },
+      {
+        "endpoint": "NAMESPACE_INVENTORY",
+        "http_status": 200,
+        "JSON_received": true,
+        "success": true,
+        "errors_shape": "NULL",
+        "error_count": null
+      },
+      {
+        "endpoint": "LIMITER_PUBLIC_URL_SETTINGS",
+        "http_status": 200,
+        "JSON_received": true,
+        "success": true,
+        "errors_shape": "ARRAY",
+        "error_count": 0
+      },
+      {
+        "endpoint": "INVALID_KEY_NEGATIVE_CONTROL",
+        "http_status": 401,
+        "JSON_received": false
+      },
+      {
+        "endpoint": "PUBLISHABLE_KEY_SETTINGS",
+        "http_status": 200,
+        "JSON_received": true
+      },
+      {
+        "endpoint": "MODERN_SECRET_KEY_SETTINGS",
+        "http_status": 200,
+        "JSON_received": true
+      }
+    ],
+    "checkpoint": "COMPLETE",
+    "problem_code": null,
+    "exit_code": 0,
+    "checked_UTC": "2026-10-20T05:42:30.965Z",
+    "source_hashes_verified": 26,
+    "DPAPI_packet_and_modern_ZIP_compared_unchanged": true
+  }
+}

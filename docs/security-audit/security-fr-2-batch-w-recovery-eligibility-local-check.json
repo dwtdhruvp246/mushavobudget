@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "stage_step": "FR.2.5.W30_RECOVERY_ACCOUNT_ELIGIBILITY_READ_ONLY",
+  "result": "READ_ONLY_DIAGNOSTIC_SQL_SYNTAX_AND_SAFE_PROJECTION_CHECK_PASS",
+  "source_parent_commit": "abd5e3ae22429cc948a307ea325744f372915cc1",
+  "source": "supabase/diagnostics/security_fr_2_5_recovery_account_eligibility.sql",
+  "source_SHA256": "3de4c77417ce11d714b8e2d2378acaa73e3093c5d6c7f4469ad7e546034349bb",
+  "validation": "Actual diagnostic executes in an explicit READ ONLY transaction against an offline synthetic confirmed-account/missing-profile fixture; safe projection matches expected booleans and enums.",
+  "persistent_test_file_added": false,
+  "new_test_suite_or_prior_suite_rerun": false,
+  "network_disabled": true,
+  "actual_hosted_SQL_Auth_or_email_requests": 0,
+  "hosted_acceptance": false,
+  "new_AU_cases_added": 0
+}

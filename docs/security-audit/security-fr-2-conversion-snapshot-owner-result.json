@@ -1,0 +1,34 @@
+[
+  {
+    "conversion_snapshot": {
+      "scope": "READ_ONLY_CONSISTENCY_COUNTS_AND_RETAINED_MANUAL_BASELINE",
+      "stage_step": "FR.2.2_CONVERSION_SNAPSHOT",
+      "checked_UTC": "2026-10-14T04:49:47.049132+00:00",
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "hosted_acceptance": false,
+      "record_consistency": {
+        "records_total": 5,
+        "null_record_workspaces": 0,
+        "records_without_parent": 0,
+        "parent_workspace_mismatches": 1,
+        "mismatches_matching_prior_audit_item_shape": 1
+      },
+      "transaction_read_only": "on",
+      "conversion_consistency": {
+        "conversions_without_record": 2,
+        "record_workspace_mismatches": 1,
+        "payment_record_conversions_total": 7,
+        "unlinked_rows_matching_audit_owner_usd1_identity_shape": 2
+      },
+      "application_routines_invoked": 0,
+      "synthetic_actor_rows_matched": 2,
+      "retained_manual_snapshot_sha256": "d707a69847876b25aea7d1ac453b80175affd454712820aa6944fb0d6986ddd3",
+      "retained_family_fixture_names_matched": 2,
+      "raw_rows_identifiers_or_emails_printed": false,
+      "project_selection_independently_verified": false,
+      "historical_rows_repaired_or_conversions_deleted": false,
+      "audit_shape_is_provenance_or_cleanup_authorization": false,
+      "retained_family_manual_USD1_rows_matching_full_scope": 2
+    }
+  }
+]

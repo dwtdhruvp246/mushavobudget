@@ -26,6 +26,7 @@ function harness({ delayFirstAccess = false } = {}) {
   };
   const context = {
     appLoadPromise: null,
+    emailEntry: {authorized:true},
     state: {
       session: { user: { id: "user-1" }, access_token: "token" },
       isAdmin: false,
@@ -72,6 +73,7 @@ function harness({ delayFirstAccess = false } = {}) {
     api: context.realtimeApi,
     calls,
     timers,
+    setApproved(value) { context.emailEntry.authorized=value; },
     setStartup(value) { context.appLoadPromise = value ? Promise.resolve() : null; },
     setOnline(value) { context.navigator.onLine = value; },
     getStatusCallback: () => statusCallback,
@@ -175,4 +177,8 @@ test("background refreshes stay quiet when startup is running or connectivity is
   h.setOnline(false);
   h.api.refreshAfterAppResume("focus");
   assert.equal(h.timers.length, 1);
+});
+
+test('unverified sessions cannot start subscriptions or refresh private workspace data',async()=>{
+ const h=harness();h.setApproved(false);h.api.startRealtime();assert.equal(h.getStatusCallback(),null);await h.api.refreshVisibleData();assert.equal(h.getAccessCalls(),0);assert.deepEqual(h.calls,[]);
 });

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "stage_step": "FR.2.5_HISTORICAL_INVITATION_TEST_SESSION_CLEANUP",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "result": "TWO_EXACT_OCTOBER_30_TEST_SESSIONS_REVOKED",
+  "owner_resume_received": true,
+  "source_parent_commit": "c8344cd5a85e684ca028b77d830cfab7e1f19edd",
+  "project": "dczlddwbtgvfdujgcitb",
+  "source_SQL": "supabase/diagnostics/security_fr_2_5_w_historical_invitation_session_cleanup.sql",
+  "source_SQL_commit": "c8344cd5a85e684ca028b77d830cfab7e1f19edd",
+  "proof_of_exact_binding": "docs/security-audit/security-fr-2-batch-w-business-error-and-historical-session-binding.json",
+  "editor_readback_matches_complete_pinned_SQL": true,
+  "execution_surface": "Connected Supabase staging dashboard",
+  "committed": true,
+  "revoked_test_sessions": 2,
+  "linked_refresh_tokens_removed": 2,
+  "independent_readback": {
+    "result": "HISTORICAL_TEST_SESSION_CLEANUP_READBACK",
+    "SQL_writes": 0,
+    "target_sessions_remaining": 0,
+    "other_sessions_on_two_accounts": 1,
+    "target_refresh_tokens_remaining": 0
+  },
+  "other_sessions_preserved": true,
+  "created_sessions": 0,
+  "real_email_requests": 0,
+  "existing_account_password_changes": 0,
+  "production_or_native_changed": false,
+  "full_lettered_batch_W_complete": false,
+  "screenshot": "docs/security-audit/security-fr-2-batch-w-historical-invitation-session-cleanup.png",
+  "exit_code": 0
+}

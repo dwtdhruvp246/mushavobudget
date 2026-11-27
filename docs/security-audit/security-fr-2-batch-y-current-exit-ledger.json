@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch Y/Z",
+  "result": "BATCH_Y_COMPLETE_AT_CURRENT_SELECTED_AUTHORIZATION_BOUNDARY",
+  "baseline": "docs/security-audit/security-stage-3-lettered-batch-baseline.json",
+  "baseline_traceability": [
+    "FR.2.4 human versus service callers",
+    "FR.2.6 affected backend recheck"
+  ],
+  "case_reconciliation": [
+    {
+      "id": "Y_EXIT_CALLER_MATRIX",
+      "status": "PASS_AT_RECORDED_SCOPE",
+      "scope": "310 non-extension routines classified; all 100 service-only signatures denied under actual anon and authenticated database roles.",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-y-installed-caller-matrix-staging-result.json"
+      ]
+    },
+    {
+      "id": "Y_EXIT_PERMITTED_SELECTED_BACKENDS",
+      "status": "PASS_AT_RECORDED_SCOPE",
+      "scope": "Four read-only service positives plus actual service-role queue lifecycle positives; helper/trigger grants distinguished from direct human API access.",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-y-installed-caller-matrix-staging-result.json",
+        "docs/security-audit/security-fr-2-batch-y-backend-caller-and-lease-staging-result.json"
+      ]
+    },
+    {
+      "id": "Y_EXIT_EXTERNAL_UNAUTHORIZED_CALLERS",
+      "status": "PASS_AT_RECORDED_SCOPE",
+      "scope": "Ten live anonymous and ordinary HTTP denials against both repaired version2 dispatchers.",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-y-send-authorization-staging-result.json"
+      ]
+    },
+    {
+      "id": "Y_EXIT_QUEUE_LEASE_AND_REPLAY",
+      "status": "PASS_AT_RECORDED_SCOPE",
+      "scope": "Both queues reject stale, mismatched and expired completion and terminal replay; original failures and corrected installation retained.",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-y-backend-caller-and-lease-staging-result.json"
+      ]
+    },
+    {
+      "id": "Y_EXIT_INDEPENDENT_DATABASE_OVERLAP",
+      "status": "PASS_AT_RECORDED_SCOPE",
+      "scope": "Distinct real connections overlap and the second worker skips the held claim; modeled service claims are not presented as provider dispatch.",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-y-independent-queue-overlap-result.json"
+      ]
+    },
+    {
+      "id": "Y_EXIT_HTTP_IDEMPOTENCY",
+      "status": "PASS_AT_RECORDED_SCOPE",
+      "scope": "Concurrent real HTTP requests with one request ID return one persisted spending-request draft; no database lock overlap inferred.",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-x-hosted-receipt-and-storage-cleanup.json"
+      ]
+    },
+    {
+      "id": "Y_EXIT_AUTHORIZATION_CHANGE_OVERLAP",
+      "status": "PASS_AT_RECORDED_SCOPE",
+      "scope": "A real read-only transaction observes a separate genuine Admin suspension; the same valid ordinary session loses Business access, also confirmed over HTTP.",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-y-authorization-change-staging-result.json"
+      ]
+    },
+    {
+      "id": "Y_EXIT_DISPATCHER_LAST_CHECKS",
+      "status": "PASS_AT_RECORDED_SCOPE",
+      "scope": "23 actual-handler interleavings pass with simulated clients/providers; per-device current access, privacy and exact claim checks are deployed and source-matched.",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-y-send-authorization-staging-result.json"
+      ]
+    },
+    {
+      "id": "Y_EXIT_CONTAINMENT_PRESERVATION",
+      "status": "PASS_AT_RECORDED_SCOPE",
+      "scope": "Exact suspended fixture, original subscription/seat/term, zero queues/sessions and original manual/role/audit/finance snapshots independently verified.",
+      "evidence": [
+        "docs/security-audit/security-fr-2-batch-y-authorization-change-staging-result.json",
+        "docs/security-audit/security-fr-2-batch-y-send-authorization-staging-result.json",
+        "docs/security-audit/security-fr-2-batch-y-backend-caller-and-lease-staging-result.json",
+        "docs/security-audit/security-fr-2-batch-y-independent-queue-overlap-result.json"
+      ]
+    }
+  ],
+  "exit_groups": 9,
+  "exit_groups_reconciled": 9,
+  "current_policy": "PASSWORD_ONLY_ALL_USERS",
+  "historical_proof_factor_device_scope": "Retained under the owner-deferred V policy record; unrun MFA or retired proof/device criteria are not converted to PASS.",
+  "completion_scope": "The existing Y selected caller, permitted backend, concurrency/replay/expiry/revocation, containment and preservation boundary.",
+  "excluded_later_operations": [
+    "Actual provider delivery and valid scheduled dispatch",
+    "All external schedulers, monitoring and backup/recovery",
+    "Every service-role mutation workflow",
+    "Production/native/store rollout"
+  ],
+  "evidence_limits": [
+    "Catalog and textual caller graphs are not execution evidence.",
+    "SQL modeled claims are distinguished from genuine HTTP JWT sessions.",
+    "Final per-device checks observe current state; provider-accepted notifications cannot be recalled."
+  ],
+  "remaining_required_letters": [
+    "V",
+    "X",
+    "Z"
+  ],
+  "remaining_required_package_count": 3,
+  "full_batch_Y_complete_at_current_required_scope": true,
+  "FR_2_complete": false,
+  "stage_3_complete": false,
+  "release_accepted": false,
+  "production_changed": false,
+  "findings_closed": [],
+  "exit_code": 0,
+  "archived_date": "2026-11-08"
+}

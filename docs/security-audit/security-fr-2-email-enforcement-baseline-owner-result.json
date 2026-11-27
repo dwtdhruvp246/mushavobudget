@@ -1,0 +1,62 @@
+{
+  "scope": "READ_ONLY_CATALOG_COUNTS_AND_FINGERPRINTS_NOT_APP_ROWS_OR_GUARD_INSTALLATION",
+  "policies": {
+    "total": 166,
+    "restrictive": 50,
+    "metadata_md5": "c4d08b3911e268d7e133a8ed3d3d330e"
+  },
+  "stage_step": "FR.2.4.E4.1_ENFORCEMENT_BASELINE",
+  "checked_UTC": "2026-10-16T04:24:45.933211+00:00",
+  "view_metadata": [
+    {
+      "rls": false,
+      "kind": "v",
+      "name": "cashbook_account_balances",
+      "options": [
+        "security_invoker=true"
+      ],
+      "force_rls": false,
+      "schema_name": "public"
+    }
+  ],
+  "findings_closed": [],
+  "public_routines": {
+    "total": 279,
+    "metadata_md5": "3d45f08fd2d35d47ef0170a2875be8d1",
+    "anonymous_executable": 60,
+    "authenticated_executable": 181,
+    "authenticated_executable_definers": 176,
+    "authenticated_executable_trigger_functions": 27
+  },
+  "relation_counts": [
+    {
+      "total": 82,
+      "views": 1,
+      "tables": 81,
+      "schema_name": "public",
+      "tables_without_rls": 0
+    },
+    {
+      "total": 8,
+      "views": 0,
+      "tables": 8,
+      "schema_name": "storage",
+      "tables_without_rls": 0
+    }
+  ],
+  "intended_project": "dczlddwbtgvfdujgcitb",
+  "hosted_acceptance": false,
+  "transaction_read_only": "on",
+  "Auth_session_table_present": true,
+  "application_routines_invoked": 0,
+  "email_backend_schema_present": false,
+  "email_gate_public_function_count": 0,
+  "Auth_user_required_columns_present": true,
+  "Auth_session_required_columns_present": true,
+  "project_selection_independently_verified": false,
+  "email_enforcement_installed_by_this_script": false,
+  "application_rows_or_function_bodies_printed": false,
+  "functions_policies_grants_accounts_factors_or_settings_changed": false,
+  "source_commit": "287784f86ef621cfbfa3adc6376c9b855549875f",
+  "evidence_scope": "OWNER_RETURNED_PRIVILEGED_STAGING_METADATA_NOT_ASSISTANT_DATABASE_ACCESS"
+}

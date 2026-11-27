@@ -1,0 +1,14 @@
+{
+  "stage_step": "FR.2.4_OPERATOR_SETUP_CLARIFICATION",
+  "owner_reported_mailbox_accounts": 3,
+  "primary_mailbox_has_alias": true,
+  "alias_is_independent_mailbox": false,
+  "owner_reported_no_Admin_account_in_staging": true,
+  "existing_Auth_user_presence_for_future_operator_addresses_not_yet_checked": true,
+  "mailbox_independent_credentials_and_recovery_route_verified": false,
+  "real_mailbox_addresses_not_stored": true,
+  "accounts_created_by_assistant": false,
+  "roles_or_factors_changed": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

@@ -1,0 +1,278 @@
+{
+  "expected_execution_commit_from_preceding_handoff": "bea7aa7b98db49199a75e5b762bb6c82891988e3",
+  "execution_commit_in_attachment": false,
+  "attachment_name": "Pasted text(20261025-064800).txt",
+  "attachment_SHA256": "5e1752a4f6355070f6c18f38e24418e0dd2aad00cdfa971141a1a080cd91eb9c",
+  "hosted_result": {
+    "stage_step": "FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE",
+    "batch": "U",
+    "result": "BATCH_U_BOUNDED_HTTP_ACCEPTANCE_REVIEW_REQUIRED",
+    "actual_hosted_requests": 21,
+    "maximum_direct_HTTP_requests": 32,
+    "gateway_internal_provider_requests_not_counted": true,
+    "fixed_target_before_and_after_verified": true,
+    "quarantined_catalog_before_verified": true,
+    "live_public_key_matches_private_snapshot": true,
+    "management_multiple_SELECT_result_shape": "LAST_ROWSET_ONLY",
+    "active_window_readback_rows": null,
+    "active_window_readback_shape_matched": false,
+    "active_window_lease_matched": false,
+    "active_window_remaining_seconds": null,
+    "four_ordinary_sessions_verified": true,
+    "quarantined_password_only_HTTP_denied": false,
+    "email_request_attempts": 0,
+    "email_provider_acceptance_observed": false,
+    "email_dispatch_outcome_uncertain": false,
+    "email_code_verified": false,
+    "verification_outcome_uncertain": false,
+    "secure_fixed_deadline_remember_cookie_observed": false,
+    "foreign_account_renamed_cookie_restore_denied": false,
+    "missing_cookie_restore_requires_code": false,
+    "same_account_new_session_restore_approved": false,
+    "repeated_restore_emits_no_cookie": false,
+    "independent_device_and_proof_binding_aggregates_verified": false,
+    "bounded_window_seconds": 300,
+    "allowed_window_accounts": 1,
+    "bounded_open_write_attempts": 0,
+    "open_write_outcome_uncertain": false,
+    "independent_active_window_verified": false,
+    "verified_email_and_restored_session_HTTP_access_passed": false,
+    "same_account_password_only_HTTP_denied": false,
+    "other_account_password_only_HTTP_denied": false,
+    "verified_sessions_foreign_profile_HTTP_denied": false,
+    "pre_quarantine_state_inspected": false,
+    "quarantine_write_attempts": 0,
+    "quarantine_write_outcome_uncertain": false,
+    "quarantine_response_problem_code": null,
+    "explicit_quarantine_and_stale_open_fence_verified": false,
+    "post_window_quarantined_HTTP_denied": false,
+    "committed_mode_change_requests": 0,
+    "exact_generated_device_cleanup_write_attempts": 0,
+    "device_cleanup_write_outcome_uncertain": false,
+    "selected_generated_device_absent": true,
+    "Auth_password_signin_attempts": 4,
+    "Auth_local_logout_attempts": 4,
+    "Auth_session_cleanup_outcome_uncertain": false,
+    "selected_sessions_proofs_and_challenges_absent": true,
+    "quarantined_catalog_after_verified": true,
+    "application_rows_explicitly_written": false,
+    "automatic_activity_RPC_write_attempts": 0,
+    "finance_or_profile_table_writes_allowed": false,
+    "existing_session_device_and_finance_state_preserved": false,
+    "full_app_fixture_prerequisites_verified": false,
+    "full_app_fixture_checks": {
+      "profiles_match_Auth_metadata": true,
+      "existing_personal_workspaces": true,
+      "existing_first_account_payment_marker": false
+    },
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch U/Z \u2014 IN PROGRESS",
+    "private_rate_and_send_audit_retained": true,
+    "other_devices_or_Auth_sessions_explicitly_deleted": false,
+    "browser_cookie_cache_or_device_restore_verified": false,
+    "full_cross_account_and_role_acceptance_verified": false,
+    "real_PostgreSQL_concurrency_verified": false,
+    "full_scheduler_or_external_caller_graph_verified": false,
+    "credentials_codes_cookies_or_raw_provider_bodies_in_safe_result": false,
+    "credentials_or_cookies_saved_to_disk_arguments_or_environment": false,
+    "Auth_settings_secrets_schedules_or_deployments_changed": false,
+    "live_activation_approved": false,
+    "hosted_acceptance": false,
+    "production_or_native_changed": false,
+    "APK_update_deferred": true,
+    "findings_closed": [],
+    "browser": {
+      "scope": "HOSTED_ACTUAL_FULL_APP_REAL_SDK_WITH_ACCEPTANCE_MEMORY_STORAGE_SHIM",
+      "browser_product": "Chrome/155.0.8059.79",
+      "actual_app_HTML_and_bootstrap_executed": true,
+      "browser_password_form_exercised": false,
+      "selected_sessions_established_by_private_parent_then_actual_SDK_setSession": true,
+      "executed_SDK_modules_verified": 9,
+      "registered_worker_source_verified": true,
+      "worker_controls_app": true,
+      "normal_hosted_TLS_verified": true,
+      "local_certificate_validation_bypassed": false,
+      "acceptance_memory_storage_shim_used": true,
+      "native_persistent_Auth_storage_or_OS_PWA_verified": false,
+      "physical_memory_heap_swap_forensic_guarantee": false,
+      "SDK_modules_fulfilled_from_pinned_fixture": true,
+      "private_web_storage_native_backing_empty": false,
+      "email_provider_acceptance_observed": false,
+      "email_dispatch_outcome_uncertain": false,
+      "email_code_verified": false,
+      "verification_outcome_uncertain": false,
+      "secure_fixed_deadline_remember_cookie_observed": false,
+      "password_only_browser_denied": false,
+      "same_account_new_session_restore_approved": false,
+      "foreign_account_renamed_cookie_restore_denied": false,
+      "cookie_free_same_account_browser_denied": false,
+      "repeated_restore_emits_no_cookie": false,
+      "quarantined_proof_keeps_view_locked": false,
+      "code_input_cleared": false,
+      "credential_not_document_readable": false,
+      "verified_browser_views_and_HTTP_passed": false,
+      "account_change_clears_private_view": false,
+      "same_account_session_change_clears_private_view": false,
+      "quarantine_clears_private_view": false,
+      "post_quarantine_browser_HTTP_denied": false,
+      "private_web_storage_and_cache_empty": false,
+      "private_cache_canaries_absent": false,
+      "SDK_refresh_and_both_tabs_rebound": false,
+      "cross_tab_signout_clears_private_view": false,
+      "late_old_account_response_discarded": false,
+      "late_response_released_after_account_switch": false,
+      "offline_worker_document_verified": false,
+      "reconnect_restores_authorized_app": false,
+      "actual_entry_router_executed": false,
+      "actual_Business_entry_executed": false,
+      "full_Business_workspace_or_role_matrix_verified": false,
+      "incognito_contexts_disposed": true,
+      "disposed_context_cookies_absent": true,
+      "browser_process_stopped": true,
+      "temporary_profile_removed": true,
+      "cleanup_verified": true,
+      "request_guard": {
+        "attempts": 21,
+        "blocked": 0,
+        "session_transitions": 0,
+        "retired_requests_cancelled": 0,
+        "preflights": 0,
+        "begin": 0,
+        "verify": 0,
+        "refresh": 0,
+        "localLogout": 0,
+        "activity": 0,
+        "maximum": 1800
+      },
+      "worker_startup_fetches_not_intercepted": true,
+      "total_browser_requests_independently_counted": false,
+      "external_traffic_OS_sandboxed": false,
+      "automatic_activity_RPC_write_attempts": 0,
+      "application_table_writes_allowed": false,
+      "private_finance_response_observed": false,
+      "checkpoint": "FULL_APP_PUBLIC_PREFLIGHT",
+      "problem_code": null,
+      "SDK_fixture_fulfillments": 9,
+      "TLS_metadata": {
+        "document_response_observed": true,
+        "document_path_class": "APP_CLEAN",
+        "document_security_state": "secure",
+        "document_protocol_class": "QUIC",
+        "visible_state_observed": true,
+        "visible_security_state": "secure",
+        "visible_protocol_class": "QUIC",
+        "visible_certificate_present": true,
+        "certificate_network_error_present": false,
+        "certificate_currently_valid": true,
+        "certificate_error_event_observed": false
+      },
+      "acceptance_memory_storage_cleared": true,
+      "public_HTML_redirects_verified": 3,
+      "public_HTML_redirect_requests_verified": 3,
+      "email_request_attempts": 0,
+      "verify_attempts": 0,
+      "guard_denial": null,
+      "guard_denial_facts": null
+    },
+    "samples": [
+      {
+        "endpoint": "TARGET_BEFORE",
+        "http_status": 200
+      },
+      {
+        "endpoint": "QUARANTINED_CATALOG_BEFORE",
+        "http_status": 201
+      },
+      {
+        "endpoint": "READ_ONLY_MANAGEMENT_RESULT_SHAPE",
+        "http_status": 201
+      },
+      {
+        "endpoint": "LIVE_PUBLIC_CONFIGURATION",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_SIGNIN_1",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_IDENTITY_1",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_SIGNIN_2",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_IDENTITY_2",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_SIGNIN_3",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_IDENTITY_3",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_SIGNIN_4",
+        "http_status": 200
+      },
+      {
+        "endpoint": "AUTH_IDENTITY_4",
+        "http_status": 200
+      },
+      {
+        "endpoint": "FOUR_SELECTED_ACTOR_FACTS",
+        "http_status": 201
+      },
+      {
+        "endpoint": "FULL_APP_FIXTURE_PREREQUISITES",
+        "http_status": 201
+      },
+      {
+        "endpoint": "AUTH_LOCAL_LOGOUT_1",
+        "http_status": 204
+      },
+      {
+        "endpoint": "AUTH_LOCAL_LOGOUT_2",
+        "http_status": 204
+      },
+      {
+        "endpoint": "AUTH_LOCAL_LOGOUT_3",
+        "http_status": 204
+      },
+      {
+        "endpoint": "AUTH_LOCAL_LOGOUT_4",
+        "http_status": 204
+      },
+      {
+        "endpoint": "INDEPENDENT_SELECTED_CLEANUP",
+        "http_status": 201
+      },
+      {
+        "endpoint": "QUARANTINED_CATALOG_AFTER",
+        "http_status": 201
+      },
+      {
+        "endpoint": "TARGET_AFTER",
+        "http_status": 200
+      }
+    ],
+    "cleanup_problem_code": null,
+    "final_state_problem_code": null,
+    "failure_checkpoint": "FULL_APP_FIXTURE_PREREQUISITES",
+    "checkpoint": "FULL_APP_FIXTURE_PREREQUISITES",
+    "problem_code": "ORDINARY_ACTORS_REQUIRED",
+    "exit_code": 1,
+    "checked_UTC": "2026-10-25T06:47:26.328Z",
+    "source_hashes_verified": 299,
+    "retained_gateway_DPAPI_packet_read_only": true,
+    "retained_gateway_packet_unchanged": true,
+    "configured_test_inbox_list_shown_locally": true,
+    "privileged_gateway_secret_values_passed_to_child": false
+  },
+  "combined_exit_code": 1,
+  "separate_focused8_or_public_preflight_wrapper_receipt_supplied": false,
+  "other_retained_inbox_payment_eligibility_observed": false
+}

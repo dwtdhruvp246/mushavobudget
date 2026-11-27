@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "INITIAL_PERMISSION_UPDATE_ACKNOWLEDGEMENT_REVIEW_REQUIRED",
+  "source_commit": "dd8deb3b2a650378f808c1a42471c673b5d8e0ee",
+  "workflow_run_id": 42402397250,
+  "workflow_job_id": 128492813638,
+  "hosted_report": {
+    "progress_display": "Stage 3/10 | FR.2/8 | Batch X/Z",
+    "result": "STAGING_ACCESS_REVIEW_REQUIRED",
+    "checks": {
+      "three_ordinary_credentials_and_separate_super_admin_verified": true,
+      "created_sessions_local_logout_acknowledged": true
+    },
+    "accounts": {
+      "USER_A": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 1
+        }
+      },
+      "USER_B": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "USER_C": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      },
+      "ADMIN": {
+        "signin_HTTP_status": 200,
+        "confirmed_identity": true,
+        "active_profile": true,
+        "expected_platform_role": true,
+        "owned_workspace_counts": {
+          "personal": 1,
+          "family": 0,
+          "business": 0
+        }
+      }
+    },
+    "API_requests": 24,
+    "created_sessions": 4,
+    "cleanup_sessions": 4,
+    "production_changed": false,
+    "exit_code": 1,
+    "exercise": {
+      "checks": {
+        "USER_A_APPLICATION_SESSION_VALID": true,
+        "USER_B_APPLICATION_SESSION_VALID": true,
+        "USER_C_APPLICATION_SESSION_VALID": true,
+        "ADMIN_APPLICATION_SESSION_VALID": true,
+        "EXACT_ISOLATED_FIXTURE_AND_ORIGINAL_TERM": true,
+        "EXACT_ORIGINAL_OWNER_AND_INACTIVE_MANAGER": true,
+        "EXISTING_SYNTHETIC_TEAM_BOUND": true,
+        "USER_B_DATABASE_ONLY_INVITATION_BOUND": true,
+        "USER_B_ACCEPTED_EXACT_BUSINESS": true,
+        "USER_C_DATABASE_ONLY_INVITATION_BOUND": true,
+        "USER_C_ACCEPTED_EXACT_BUSINESS": true,
+        "EXACT_THREE_ORDINARY_ACTIVE_MEMBERS": true,
+        "ORDINARY_MANAGER_AND_STAFF_ROLES_BOUND": true,
+        "MANAGER_ASSIGNED_SYNTHETIC_SCOPE_BOUND": true,
+        "MEMBER_ASSIGNED_SYNTHETIC_SCOPE_BOUND": true,
+        "MANAGER_HAS_DELEGATED_TEAM_MANAGE": true,
+        "STAFF_CANNOT_REMOVE_MANAGER": true,
+        "MANAGER_CANNOT_REMOVE_OWNER": true,
+        "MANAGER_CANNOT_REMOVE_SELF": true,
+        "MANAGER_CANNOT_GRANT_MEMBER_OVERRIDE": true,
+        "MANAGER_CANNOT_ESCALATE_MEMBER_ROLE": true,
+        "OWNER_SET_ONE_REMOVABLE_MEMBER_OVERRIDE": false,
+        "ONLY_OWNER_ACTIVE_AND_ORIGINAL_MANAGER_ROLE_RESTORED": true,
+        "MEMBER_TEMPORARY_SCOPES_AND_OVERRIDES_CLEANED": true,
+        "MANAGER_TEMPORARY_SCOPES_AND_OVERRIDES_CLEANED": true,
+        "ORIGINAL_ONE_SEAT_AND_UNCHANGED_TERM_RESTORED": true,
+        "EXACT_TEAM_FIXTURE_SUSPENDED_AFTER_CLEANUP": true
+      },
+      "exercise_requests": 47,
+      "email_requests": 0,
+      "provider_payment_requests": 0,
+      "Storage_requests": 0,
+      "finance_write_requests": 0,
+      "resume_attempted": true,
+      "temporary_members_removed": true,
+      "original_seats_restored": true,
+      "fixture_suspended_verified": true,
+      "last_refusal": {
+        "status": 400,
+        "application_code": "BUSINESS_PRIVILEGE_ESCALATION_BLOCKED"
+      }
+    },
+    "problem_code": "OWNER_SET_ONE_REMOVABLE_MEMBER_OVERRIDE_REQUIRED",
+    "full_lettered_batch_X_complete": false,
+    "public_configuration_requests": 1,
+    "run_plan": "2026-11-07-batch-x-three-ordinary-team",
+    "source_commit": "dd8deb3b2a650378f808c1a42471c673b5d8e0ee",
+    "workflow_run_id": "42402397250",
+    "workflow_run_attempt": "1"
+  },
+  "third_saved_credential_verified": true,
+  "initial_void_HTTP_status_retained": false,
+  "diagnosis": "The deployed permission function returns void; its audit row confirms team.view allow was written. The runner required HTTP 200. PostgREST documents HTTP 204 for void RPCs. This explains the failed assertion by inference; the initial HTTP status was not retained. The corrected runner accepts 200/null or 204/no body, still requires exact stored state, and records the observed status.",
+  "reference": "https://docs.postgrest.org/en/v10/releases/v10.0.0.html",
+  "independent_cleanup": {
+    "fixture_status": "suspended",
+    "support_version": 14,
+    "subscription_version": 13,
+    "seats": 1,
+    "active_members": 1,
+    "pending_invitations": 0,
+    "runner_sessions": 0,
+    "original_term_preserved": true
+  },
+  "new_local_correction_tests": {
+    "tests": 9,
+    "pass": 9,
+    "fail": 0,
+    "exit_code": 0
+  },
+  "nonowner_removal_acceptance": false,
+  "exit_code": 1
+}

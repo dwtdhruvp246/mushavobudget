@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A public website and authenticated personal, family, and business payment tracker powered by Supabase Auth and Postgres. It is designed for users who need to track what must be paid, who is responsible, when it is due, how much has been paid, and what is still outstanding.",
   "scripts": {
-    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "test": "node scripts/run-offline-tests.mjs",
     "build:capacitor": "node scripts/build-capacitor.mjs"
   },
   "devDependencies": {

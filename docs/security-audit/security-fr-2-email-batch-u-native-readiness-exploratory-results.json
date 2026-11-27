@@ -1,0 +1,206 @@
+{
+  "stage_step": "FR.2.4.E5.34_BATCH_U_FULL_APP_BOOTSTRAP_PRIVATE_CACHE_AND_SESSION_LIFECYCLE_PREPARATION",
+  "source_parent_commit": "771c1509873a3f689824ccbc927f79b37123cfa9",
+  "cases": [
+    {
+      "case": "CONTROLLED_READINESS_REPRO_EXPLORATORY_STOP",
+      "scope": "EXPLORATORY_SYNTHETIC_LOCAL_ONLY_UNPUBLISHED_WORKING_CHANGES_PARENT771C150",
+      "exit_code": 1,
+      "group": null,
+      "positive_checks": 19,
+      "checkpoint": "EXPLICIT_QUARANTINE_AND_ACTUAL_APP_REFRESH",
+      "problem_code": "CDP_COMMAND_REQUIRED",
+      "first_async_failure": {
+        "operation": "REQUEST_INTERCEPTION",
+        "CDP_method": "Fetch.continueResponse",
+        "checkpoint": "EXPLICIT_QUARANTINE_AND_ACTUAL_APP_REFRESH"
+      },
+      "initial_email_controls_observed": {
+        "view_visible": true,
+        "send_present": true,
+        "send_enabled": false,
+        "remember_enabled": false,
+        "form_visible": false,
+        "code_enabled": false,
+        "verify_enabled": false
+      },
+      "disabled_native_email_click_ignored": true,
+      "email_send_native_action_accepted": true,
+      "email_verify_native_action_accepted": true,
+      "public_response_cancellation_evidence": null,
+      "cleanup_problem_code": null,
+      "selected_cleanup_verified": true,
+      "preexisting_preserved": true,
+      "contexts_disposed": true,
+      "process_stopped": true,
+      "profile_removed": true,
+      "fixture_closed": true,
+      "checked_UTC": "2026-10-24T15:54:42.628Z"
+    },
+    {
+      "case": "PUBLIC_RESPONSE_POLICY_EXPLORATORY_FULL53_STOP",
+      "scope": "EXPLORATORY_SYNTHETIC_LOCAL_ONLY_UNPUBLISHED_WORKING_CHANGES_PARENT771C150",
+      "exit_code": 1,
+      "group": {
+        "tests": 53,
+        "pass": 52,
+        "fail": 1,
+        "skipped": 0,
+        "cancelled": 0,
+        "exit_code": 1,
+        "failed_case_numbers": [
+          1
+        ]
+      },
+      "positive_checks": 19,
+      "checkpoint": "EXPLICIT_QUARANTINE_AND_ACTUAL_APP_REFRESH",
+      "problem_code": "CDP_COMMAND_REQUIRED",
+      "first_async_failure": {
+        "operation": "REQUEST_INTERCEPTION",
+        "CDP_method": "Fetch.continueResponse",
+        "checkpoint": "EXPLICIT_QUARANTINE_AND_ACTUAL_APP_REFRESH"
+      },
+      "initial_email_controls_observed": {
+        "view_visible": true,
+        "send_present": true,
+        "send_enabled": false,
+        "remember_enabled": false,
+        "form_visible": false,
+        "code_enabled": false,
+        "verify_enabled": false
+      },
+      "disabled_native_email_click_ignored": true,
+      "email_send_native_action_accepted": true,
+      "email_verify_native_action_accepted": true,
+      "public_response_cancellation_evidence": null,
+      "cleanup_problem_code": null,
+      "selected_cleanup_verified": true,
+      "preexisting_preserved": true,
+      "contexts_disposed": true,
+      "process_stopped": true,
+      "profile_removed": true,
+      "fixture_closed": true,
+      "checked_UTC": "2026-10-24T15:59:17.570Z"
+    },
+    {
+      "case": "PUBLIC_MODULE_CONTINUATION_DIAGNOSTIC",
+      "scope": "EXPLORATORY_SYNTHETIC_LOCAL_ONLY_UNPUBLISHED_WORKING_CHANGES_PARENT771C150",
+      "exit_code": 1,
+      "group": null,
+      "positive_checks": 19,
+      "checkpoint": "EXPLICIT_QUARANTINE_AND_ACTUAL_APP_REFRESH",
+      "problem_code": "CDP_COMMAND_REQUIRED",
+      "first_async_failure": {
+        "operation": "REQUEST_INTERCEPTION",
+        "CDP_method": "Fetch.continueResponse",
+        "checkpoint": "EXPLICIT_QUARANTINE_AND_ACTUAL_APP_REFRESH",
+        "public_response_path": "/session-entry.js",
+        "response_bytes_verified": true
+      },
+      "initial_email_controls_observed": {
+        "view_visible": true,
+        "send_present": true,
+        "send_enabled": false,
+        "remember_enabled": false,
+        "form_visible": false,
+        "code_enabled": false,
+        "verify_enabled": false
+      },
+      "disabled_native_email_click_ignored": true,
+      "email_send_native_action_accepted": true,
+      "email_verify_native_action_accepted": true,
+      "public_response_cancellation_evidence": null,
+      "cleanup_problem_code": null,
+      "selected_cleanup_verified": true,
+      "preexisting_preserved": true,
+      "contexts_disposed": true,
+      "process_stopped": true,
+      "profile_removed": true,
+      "fixture_closed": true,
+      "checked_UTC": "2026-10-24T16:00:20.100Z"
+    },
+    {
+      "case": "CONTROLLED_NATIVE_PUBLIC_CANCELLATION",
+      "scope": "EXPLORATORY_SYNTHETIC_LOCAL_ONLY_UNPUBLISHED_WORKING_CHANGES_PARENT771C150",
+      "exit_code": 0,
+      "group": null,
+      "positive_checks": 1,
+      "checkpoint": "COMPLETE",
+      "problem_code": null,
+      "first_async_failure": null,
+      "initial_email_controls_observed": null,
+      "disabled_native_email_click_ignored": null,
+      "email_send_native_action_accepted": null,
+      "email_verify_native_action_accepted": null,
+      "public_response_cancellation_evidence": {
+        "bytes_verified": true,
+        "native_cancelled": true,
+        "protocol_code": -32602,
+        "protocol_class": "INTERCEPTION_NOT_FOUND"
+      },
+      "cleanup_problem_code": null,
+      "selected_cleanup_verified": true,
+      "preexisting_preserved": true,
+      "contexts_disposed": true,
+      "process_stopped": true,
+      "profile_removed": true,
+      "fixture_closed": true,
+      "checked_UTC": "2026-10-24T16:04:40.164Z"
+    },
+    {
+      "case": "EXPLORATORY_FULL55_BEFORE_FREEZE_BARRIER",
+      "scope": "EXPLORATORY_SYNTHETIC_LOCAL_ONLY_UNPUBLISHED_WORKING_CHANGES_PARENT771C150",
+      "exit_code": 1,
+      "group": {
+        "tests": 55,
+        "pass": 54,
+        "fail": 1,
+        "skipped": 0,
+        "cancelled": 0,
+        "exit_code": 1,
+        "failed_case_numbers": [
+          1
+        ]
+      },
+      "positive_checks": 19,
+      "checkpoint": "EXPLICIT_QUARANTINE_AND_ACTUAL_APP_REFRESH",
+      "problem_code": "CDP_CONNECTION_REQUIRED",
+      "first_async_failure": {
+        "operation": "REQUEST_INTERCEPTION",
+        "CDP_method": "Fetch.getResponseBody",
+        "checkpoint": "EXPLICIT_QUARANTINE_AND_ACTUAL_APP_REFRESH",
+        "public_response_path": null,
+        "response_bytes_verified": false,
+        "response_cancelled": false,
+        "protocol_code": null,
+        "protocol_class": "OTHER"
+      },
+      "initial_email_controls_observed": {
+        "view_visible": true,
+        "send_present": true,
+        "send_enabled": false,
+        "remember_enabled": false,
+        "form_visible": false,
+        "code_enabled": false,
+        "verify_enabled": false
+      },
+      "disabled_native_email_click_ignored": true,
+      "email_send_native_action_accepted": true,
+      "email_verify_native_action_accepted": true,
+      "public_response_cancellation_evidence": null,
+      "cleanup_problem_code": null,
+      "selected_cleanup_verified": true,
+      "preexisting_preserved": true,
+      "contexts_disposed": true,
+      "process_stopped": true,
+      "profile_removed": true,
+      "fixture_closed": true,
+      "checked_UTC": "2026-10-24T16:08:28.084Z"
+    }
+  ],
+  "final_frozen_suite_receipt": "docs/security-audit/security-fr-2-email-batch-u-native-readiness-local-checks.json",
+  "actual_hosted_requests": 0,
+  "real_email_requests": 0,
+  "production_or_native_changed": false,
+  "findings_closed": []
+}

@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-07",
+  "project": "dczlddwbtgvfdujgcitb",
+  "result": "PROVIDER_SETUP_CONFIRMATION_EXPIRED_NO_FIXTURE_WRITES",
+  "message": "Supabase confirmation expired before setup execution. Independent readback confirms no synthetic Family, workspace, setup session or physical proof object was created.",
+  "fixture_rows": 0,
+  "workspace_rows": 0,
+  "setup_sessions": 0,
+  "physical_objects": 0,
+  "catalog_matches": true,
+  "installed_policy_fix_retained": true,
+  "hosted_runner_prepared": true,
+  "HTTP_acceptance": false,
+  "production_changed": false
+}

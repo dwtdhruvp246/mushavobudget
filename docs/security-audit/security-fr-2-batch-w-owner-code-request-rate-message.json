@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-28",
+  "stage_step": "FR.2.5.W47_ACCOUNT_SEND_RATE_LIMIT_READ_ONLY_RETRY_TIME",
+  "progress_display": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "latest_owner_message": "Too many requests. Try again later.",
+  "prior_owner_message_after_deployment": "Verification is unavailable. Try again.",
+  "prior_unavailable_trigger_action_not_supplied": true,
+  "new_HTTP_status_response_result_or_screenshot_supplied": false,
+  "reviewed_client_mapping": "The latest exact string maps to RATE_LIMIT, the begin_challenge per-account hourly reservation check. IP RATE_LIMITED and60-second COOLDOWN have different mapped messages.",
+  "reviewed_backend_limit_per_account_per_rolling_hour": 5,
+  "failed_mail_delivery_reservations_count": true,
+  "rate_denied_attempt_adds_another_reservation": false,
+  "specific_live_counter_count_or_retry_timestamp_verified": false,
+  "source_paths": [
+    "email-verification.js",
+    "supabase/candidates/security_fr_2_4_email_verification_backend.sql",
+    "supabase/functions/_shared/email-verification-gateway.mjs"
+  ],
+  "last_owner_reported_deployment_URL": "https://490ba810.mushavo-budget-staging.pages.dev/",
+  "secret_save_in_both_channels_before_deployment_explicit_confirmation_still_absent": true,
+  "live_email_delivery_provider_health_application_proof_or_signout_reload_accepted": false,
+  "owner_requested_stage_prefix_every_update": true,
+  "visible_progress_prefix": "Stage 3/10 | FR.2/8 | Batch W/Z",
+  "next_action": "Read-only single-account retry timing in staging SQL Editor; no new Send email code click, reset, account switch or counter changes.",
+  "actual_new_Auth_SQL_gateway_provider_email_or_public_HTTP_requests_by_assistant": 0,
+  "pending_batch_V_MFA_deferred_by_owner": true,
+  "full_lettered_batch_W_complete": false,
+  "hosted_acceptance": false,
+  "production_or_native_changed": false,
+  "APK_update_deferred": true,
+  "findings_closed": []
+}

@@ -1,0 +1,16 @@
+{
+  "stage_step": "FR.2.4_OPERATOR_SIGNIN_AND_PRIVATE_CONTROL",
+  "scope": "OWNER_REPORTED_BROWSER_SIGNIN_SIGNOUT_AND_PRIVATE_CREDENTIAL_CONTROL_NOT_INDEPENDENT_REPLAY",
+  "received_date": "2026-10-15",
+  "PRIMARY_signin": "PASS",
+  "RECOVERY_signin": "PASS",
+  "both_accounts_signed_out_successfully": true,
+  "two_inboxes_use_separate_passwords": true,
+  "recovery_credentials_accessible_independently_of_primary_Mushavo_login": true,
+  "raw_credentials_mailbox_addresses_and_actor_identifiers_not_stored": true,
+  "MFA_or_AAL2_verified": false,
+  "actual_recovery_drill_or_independent_factor_device_verified": false,
+  "hosted_Admin_authorization_acceptance": false,
+  "hosted_acceptance": false,
+  "findings_closed": []
+}

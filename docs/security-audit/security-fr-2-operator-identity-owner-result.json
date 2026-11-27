@@ -1,0 +1,46 @@
+[
+  {
+    "operator_identity_check": {
+      "scope": "READ_ONLY_AUTH_IDENTITY_STATUS_BEFORE_MFA_OR_ADMIN_ROLE_ASSIGNMENT",
+      "accounts": [
+        {
+          "slot": "PRIMARY",
+          "auth_users": 1,
+          "platform_roles": 0,
+          "active_profiles": 1,
+          "owned_payment_items": 0,
+          "owned_payment_records": 0,
+          "verified_totp_factors": 0,
+          "owned_family_or_business": 0,
+          "email_confirmation_timestamps": 1,
+          "active_family_or_business_memberships": 0
+        },
+        {
+          "slot": "RECOVERY",
+          "auth_users": 1,
+          "platform_roles": 0,
+          "active_profiles": 1,
+          "owned_payment_items": 0,
+          "owned_payment_records": 0,
+          "verified_totp_factors": 0,
+          "owned_family_or_business": 0,
+          "email_confirmation_timestamps": 1,
+          "active_family_or_business_memberships": 0
+        }
+      ],
+      "stage_step": "FR.2.4_OPERATOR_IDENTITY_CHECK",
+      "checked_UTC": "2026-10-15T05:36:39.377312+00:00",
+      "target_project": "dczlddwbtgvfdujgcitb",
+      "findings_closed": [],
+      "hosted_acceptance": false,
+      "transaction_read_only": "on",
+      "application_routines_invoked": 0,
+      "ready_for_private_MFA_preparation": true,
+      "accounts_roles_factors_or_data_changed": false,
+      "project_selection_independently_verified": false,
+      "genuine_signin_MFA_recovery_or_Admin_acceptance_verified": false,
+      "identifiers_emails_passwords_tokens_or_factor_secrets_printed": false,
+      "email_delivery_mailbox_independence_or_account_control_verified": false
+    }
+  }
+]

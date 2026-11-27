@@ -461,3 +461,29 @@ body:has(#businessMoreDialog[open]) { overflow: hidden; }
 #businessRoleForm input, #businessRoleForm select, #businessMemberPermissionChoices select { min-width: 0; width: 100%; max-width: 100%; }
 #businessRolePermissionChoices input[type=checkbox] { width: 20px; }
 @media (max-width: 600px) { #businessRoleForm .team-form { grid-template-columns: minmax(0, 1fr); } }
+
+.settings-grid + .account-security-settings {
+  margin-top: 18px;
+}
+
+.account-security-setting {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+
+.account-security-setting:first-of-type {
+  margin-top: 12px;
+}
+
+.account-security-setting:last-child {
+  padding-bottom: 0;
+}
+
+.account-security-setting > span {
+  font-weight: 700;
+}

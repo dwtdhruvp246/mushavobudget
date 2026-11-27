@@ -1,4 +1,5 @@
 // Mushavo Budget authenticated application — release 83
+import { redirectLegacyAuthLink } from "./auth-security.js?v=133";
 import { createAdminPlans } from "./admin-plans.js?v=2";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.9/+esm";
 
@@ -219,7 +220,7 @@ const views = {
   app: $("#appView")
 };
 
-const adminTabs = new Set(["dashboard", "analytics", "households", "users", "plans", "finance", "enquiries", "support"]);
+const adminTabs = new Set(["dashboard", "analytics", "households", "users", "plans", "finance", "enquiries", "support", "settings"]);
 const familyTabs = new Set(["dashboard", "payments", "reports", "members", "subscription", "settings", "support", "cashbook"]);
 const cashbookSections = new Set(["overview", "accounts", "reports"]);
 const currencyNames = {
@@ -1120,6 +1121,9 @@ async function query(label, promise) {
 }
 
 async function init() {
+  const callback = new URL(window.location.href);
+  if (callback.searchParams.has("securityFlow") &&
+      redirectLegacyAuthLink(callback.href, "budget", href => window.location.replace(href))) return;
   showLoading("Opening your workspace", "Checking your secure session...");
   if (!isConfigured) {
     setView("configWarning");
@@ -1808,7 +1812,7 @@ function isPaymentActive(item) {
 }
 
 async function loadPaymentRecords() {
-  let request = supabase.from("payment_records").select("*");
+  let request = supabase.from("payment_records").select("*, fr33_family_payment_names(payer_name,recorder_name)");
   request = state.family
     ? request.or(`visibility.eq.personal,family_id.eq.${state.family.id}`)
     : request.eq("visibility", "personal");
@@ -2164,6 +2168,11 @@ async function loadAdminData(tab = state.adminTab) {
 }
 
 function renderFamilyApp() {
+  for (const link of document.querySelectorAll("[data-budget-security-flow]")) {
+    const href = new URL(link.href);
+    href.searchParams.set("from", state.family ? "family-settings" : "personal-settings");
+    link.href = href.href;
+  }
   renderFamilyTabs();
   renderFamilyHeader();
   renderMemberOptions();
@@ -8638,11 +8647,12 @@ function memberById(id) {
 }
 
 function paymentRecordPeople(record) {
-  const recorder = state.members.find((member) => member.user_id === record.recorded_by);
-  const recorderName = recorder?.name || (record.recorded_by === state.session?.user?.id
+  const recorder = record.recorded_by && state.members.find((member) => member.user_id === record.recorded_by);
+  const retained = record.fr33_family_payment_names;
+  const recorderName = recorder?.name || retained?.recorder_name || (record.recorded_by && record.recorded_by === state.session?.user?.id
     ? state.profile?.full_name || state.session?.user?.email || "You" : "Member unavailable");
   const payerName = record.visibility === "family" || record.family_id
-    ? memberById(record.paid_by_member_id)?.name || "Member not recorded" : "";
+    ? memberById(record.paid_by_member_id)?.name || retained?.payer_name || "Member not recorded" : "";
   return { payerName, recorderName };
 }
 

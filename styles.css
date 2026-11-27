@@ -6561,3 +6561,25 @@ input[type="file"] {
 .support-message, .admin-detail-card, .device-notifications-panel, .cashbook-page, .cashbook-selected-balance, .cashbook-entry-dialog, .payment-choice-dialog, .invite-member-dialog { border: 1px solid var(--box-border, #000000); }
 
 .occurrence-facts > div, .workload-metrics > div, .workload-detail-row, .admin-invite-summary > div, .workspace-plan-owner-note.coming-soon-note, .plan-publication-options, .cashbook-report-card dl > div, #adminPlansWorkbench .ap-message, #adminPlansWorkbench .ap-audit-values { border: 1px solid var(--box-border, #000000); }
+
+.account-security-setting {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.24);
+}
+
+.account-security-setting:first-of-type {
+  margin-top: 12px;
+}
+
+.account-security-setting:last-child {
+  padding-bottom: 0;
+}
+
+.account-security-setting > span {
+  font-weight: 700;
+}

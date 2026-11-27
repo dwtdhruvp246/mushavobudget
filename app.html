@@ -78,6 +78,10 @@
           </div>
           <a class="auth-home-link" href="index.html">Return to the Mushavo Budget website</a>
         </form>
+            <div class="row-actions">
+              <a class="button-link" href="auth.html?flow=request-recovery">Forgot password</a>
+              <a class="button-link" href="auth.html?flow=request-confirmation">Resend confirmation</a>
+            </div>
       </section>
 
       <section id="setupView" class="setup-panel hidden" aria-labelledby="setupTitle">
@@ -162,6 +166,7 @@
               <button class="tab-button" type="button" data-admin-tab="finance">Finance</button>
               <button class="tab-button" type="button" data-admin-tab="enquiries">Enquiries <span id="adminEnquiryBadge" class="nav-count hidden">0</span></button>
               <button class="tab-button" type="button" data-admin-tab="support">Support</button>
+              <button class="tab-button" type="button" data-admin-tab="settings">Settings</button>
             </nav>
             <div class="topbar-actions">
               <button class="notification-sidebar-button" type="button" data-open-notifications>
@@ -509,6 +514,20 @@
               </section>
             </details>
           </section>
+          <section class="screen-panel hidden" data-admin-panel="settings">
+            <header class="topbar"><div><h2>Settings</h2></div></header>
+            <section class="ledger-panel account-security-settings" aria-labelledby="adminAccountSecurityTitle">
+              <h3 id="adminAccountSecurityTitle">Account security</h3>
+              <div class="account-security-setting">
+                <span>Password</span>
+                <a class="button-link" href="auth.html?flow=change&amp;from=admin-settings">Change password</a>
+              </div>
+              <div class="account-security-setting">
+                <span>Account deletion</span>
+                <a class="button-link" href="auth.html?flow=account&amp;from=admin-settings">Account settings</a>
+              </div>
+            </section>
+          </section>
         </div>
       </section>
 
@@ -832,6 +851,17 @@
               <p class="muted-copy">For platform statistics, we record the hour you use the app while it is open. We do not record your location or payment details in activity data.</p>
             </section>
             <section class="content-grid settings-content-grid">
+              <section class="ledger-panel account-security-settings" aria-labelledby="budgetAccountSecurityTitle">
+                <h3 id="budgetAccountSecurityTitle">Account security</h3>
+                <div class="account-security-setting">
+                  <span>Password</span>
+                  <a class="button-link" href="auth.html?flow=change&amp;from=budget-settings" data-budget-security-flow>Change password</a>
+                </div>
+                <div class="account-security-setting">
+                  <span>Account deletion</span>
+                  <a class="button-link" href="auth.html?flow=account&amp;from=budget-settings" data-budget-security-flow>Account settings</a>
+                </div>
+              </section>
               <section class="ledger-panel device-notifications-panel" aria-labelledby="deviceNotificationsTitle">
                 <div class="device-notifications-heading">
                   <div class="panel-heading">
